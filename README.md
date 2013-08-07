@@ -32,6 +32,8 @@ The unit tests use [jasmine](http://pivotal.github.com/jasmine/) and [Karma](htt
 * start `scripts/test.sh` (on windows: `scripts\test.bat`)
   * a browser will start and connect to the Karma server (Chrome is default browser, others can be captured by loading the same url as the one in Chrome or by changing the `config/karma.conf.js` file)
 * if you keep the tests running as you develop, they will automatically be re-run every time something in the file system changes
+* *Note:* If Karma is having issues launching the browser then you can just manually navigate to the location it gives you (eg: http://localhost:9876) in a browser of your choice and everything will still work.
+	* You can hack at Karma's actual launcher preferences for your local machine inside node's global node_modules folder. For example, on my Ubuntu machine I can find the chrome launcher settings here: `/usr/local/lib/node_modules/karma-chrome-launcher/index.js` and I can see or modify the command being used to launch chrome in the DEFAULT_CMD.linux property.
 
 
 ## End-to-End Tests
