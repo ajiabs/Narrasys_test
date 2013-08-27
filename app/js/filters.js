@@ -1,5 +1,4 @@
 'use strict';
 
-/* Declare the player.filters module and its dependencies */
-
+// Declare the player.filters module
 angular.module('player.filters', []);

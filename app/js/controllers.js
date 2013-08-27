@@ -1,20 +1,9 @@
 'use strict';
 
-/* Declare the player.controllers module and its dependencies */
-
-angular.module('player.controllers', []).
+// Declare the player.controllers module
+angular.module('player.controllers', [])
 	
-	// Episode Controller
-	controller('EpisodeCtrl', ['$scope', function($scope) {
-		$scope.currTemplate = "partials/episode.html";
-	}])
+// Episode Controller
+.controller('EpisodeController', ['$scope', function($scope) {
 	
-	// Scene Controller
-	.controller('SceneCtrl', ['$scope', function($scope) {
-		$scope.currTemplate = "partials/scene.html";
-	}]);
-	
-	// Transmedia Controller
-	//.controller('TransmediaCtrl', [function() {
-		
-	//}]);
+}]);

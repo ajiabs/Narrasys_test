@@ -1,10 +1,26 @@
 'use strict';
 
-/* Declare the player.directives module and its dependencies */
+// Declare the player.directives module
+angular.module('player.directives', [])
 
-angular.module('player.directives', []).
-	directive('appVersion', ['version', function(version) {
-		return function(scope, elm, attrs) {
-			elm.text(version);
-		};
-	}]);
+// Scene Directive
+.directive('scene', function() {
+	return {
+
+	};
+})
+
+// Transmedia Directive
+.directive('transmedia', function() {
+	return {
+
+	};
+})
+
+// Video.js Wrapper Directive
+// Scene Directive
+.directive('videoJSWrapper', function() {
+	return {
+
+	};
+});

@@ -1,5 +1,4 @@
 'use strict';
 
-/* Declare the player.services module and its dependencies */
-
+// Declare the player.services module
 angular.module('player.services', []);
