@@ -1,0 +1,9 @@
+{
+   "episode": {
+      "title": "Episode 2",
+      "template": "remote/templates/episode-2.html"
+   },
+   "chapters": [
+      
+   ]
+}
