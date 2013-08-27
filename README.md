@@ -88,7 +88,9 @@ info.
       test.bat          --> autotests unit tests with Karma (windows)
       test.sh           --> autotests unit tests with Karma (*nix)
       web-server.js     --> simple development webserver based on node.js
-
+	
+    server-mock/               --> contains mock files that would be stored on a remote server in live application
+	
     test/               --> test source files and libraries
       e2e/              -->
         runner.html     --> end-to-end test runner (open in your browser to run)
