@@ -13,7 +13,7 @@ angular.module('player.controllers', [])
 // Episode Controller
 .controller('EpisodeController', ['$scope', '$rootScope', '$location', '$routeParams', '$http', function($scope, $rootScope, $location, $routeParams, $http) {
 
-	$http({method: 'GET', url: 'remote/data/episode-' + $routeParams.epId + '.json'})
+	$http({method: 'GET', url: '/server-mock/data/episode-' + $routeParams.epId + '.json'})
 	.success(function(data, status, headers, config) {
 		$scope.episode = {
 			title: data.episode.title,
