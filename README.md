@@ -2,7 +2,7 @@
 
 ## Running Locally
 
-The app/index.html file should be served from a local webserver to a local browser or device, as attempting to load it from the filesystem directly to a browser will cause problems.
+The app/player.html file should be served from a local webserver to a local browser or device, as attempting to load it from the filesystem directly to a browser will cause problems.
 
 * You may setup your own webserver
 * You may use the included node.js webserver (you will also need node to run unit tests)
@@ -13,7 +13,7 @@ The app/index.html file should be served from a local webserver to a local brows
 	* [Instructions for Ubuntu](https://github.com/gtczap/node-install-ubuntu)
 * Execute the following command from the root project/repo directory:
 	* `node ./scripts/web-server.js` (Run this process in the background if you prefer)
-* Navigate your browser to `http://localhost:8000/app/index.html`
+* Navigate your browser to `http://localhost:8000/app/player.html#/episode/<episode_id>`
 
 
 ## Unit Tests
@@ -63,10 +63,10 @@ info.
       css/              --> css files
         app.css         --> default stylesheet
       img/              --> image files
-      index.html        --> app layout file (the main html template file of the app)
-      index-async.html  --> just like index.html, but loads js files asynchronously
+      player.html       --> app layout file (the main html template file of the app)
+      player-async.html  --> just like player.html, but loads js files asynchronously
       js/               --> javascript files
-        app.js          --> application
+        player.js          --> application
         controllers.js  --> application controllers
         directives.js   --> application directives
         filters.js      --> custom angular filters
@@ -78,8 +78,6 @@ info.
           angular-*.js      --> angular add-on modules
           version.txt       --> version number
       partials/             --> angular view partials (partial html templates)
-        partial1.html
-        partial2.html
 
     config/karma.conf.js        --> config file for running unit tests with Karma
     config/karma-e2e.conf.js    --> config file for running e2e tests with Karma
