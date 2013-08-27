@@ -1,7 +1,7 @@
 {
    "episode": {
       "title": "Episode 1",
-      "template": "remote/templates/episode-1.html"
+      "template": "remote/templates/episode-template-A.html"
    },
    "chapters": [
       

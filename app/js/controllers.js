@@ -21,6 +21,7 @@ angular.module('player.controllers', [])
 		};
 	})
 	.error(function(data, status, headers, config) {
+		// TODO: Should probably be using a service instead of root scope
 		$rootScope.uiErrorMsg = "Unable to load data for Episode: " + $routeParams.epId;
 		$location.path('/error');
 	});
