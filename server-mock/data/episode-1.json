@@ -4,6 +4,37 @@
       "template": "/server-mock/templates/episode-template-A.html"
    },
    "chapters": [
-      
+      {
+      	"title": "Scene 1",
+      	"template": "/server-mock/templates/scene-template-A.html"
+      },
+      {
+      	"title": "Scene 2",
+      	"template": "/server-mock/templates/scene-template-B.html"
+      },
+      {
+      	"title": "Scene 3",
+      	"template": "/server-mock/templates/scene-template-C.html"
+      },
+      {
+      	"title": "Scene 4",
+      	"template": "/server-mock/templates/scene-template-D.html"
+      },
+      {
+      	"title": "Scene 5",
+      	"template": "/server-mock/templates/scene-template-A.html"
+      },
+      {
+      	"title": "Scene 6",
+      	"template": "/server-mock/templates/scene-template-B.html"
+      },
+      {
+      	"title": "Scene 7",
+      	"template": "/server-mock/templates/scene-template-C.html"
+      },
+      {
+      	"title": "Scene 8",
+      	"template": "/server-mock/templates/scene-template-D.html"
+      }
    ]
 }

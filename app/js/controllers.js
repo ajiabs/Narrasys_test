@@ -11,7 +11,7 @@ angular.module('player.controllers', [])
 }])
 	
 // Episode Controller
-.controller('EpisodeController', ['$scope', '$rootScope', '$location', '$routeParams', '$http', function($scope, $rootScope, $location, $routeParams, $http) {
+.controller('EpisodeController', ['$timeout', '$scope', '$rootScope', '$location', '$routeParams', '$http', function($timeout, $scope, $rootScope, $location, $routeParams, $http) {
 
 	$http({method: 'GET', url: '/server-mock/data/episode-' + $routeParams.epId + '.json'})
 	.success(function(data, status, headers, config) {
@@ -19,6 +19,21 @@ angular.module('player.controllers', [])
 			title: data.episode.title,
 			templateUrl: data.episode.template
 		};
+
+		$scope.scenes = [];
+		for (var i=0; i < data.chapters.length; i++) {
+			$scope.scenes.push({
+				title: data.chapters[i].title,
+				templateUrl: data.chapters[i].template
+			});
+		}
+
+		$scope.currentScene = $scope.scenes[0];
+		/*
+		$timeout(function(){
+			$scope.currentScene = $scope.scenes[1];
+		}, 2000);
+		*/
 	})
 	.error(function(data, status, headers, config) {
 		// TODO: Should probably be using a service instead of root scope

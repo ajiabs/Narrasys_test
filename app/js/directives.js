@@ -6,7 +6,15 @@ angular.module('player.directives', [])
 // Scene Directive
 .directive('scene', function() {
 	return {
-
+		restrict: 'A',
+		replace: false,
+		template: '<div ng-include="scene.templateUrl">Loading Scene...</div>',
+		link: function(scope) {
+			console.log("SCOPE:", scope);
+		},
+		scope: {
+			scene: '='
+		}
 	};
 })
 
@@ -18,7 +26,6 @@ angular.module('player.directives', [])
 })
 
 // Video.js Wrapper Directive
-// Scene Directive
 .directive('videoJSWrapper', function() {
 	return {
 

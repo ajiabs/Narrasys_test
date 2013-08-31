@@ -19,7 +19,7 @@ angular.module('player', [
 		})
 		.when('/episode/:epId', {
 			controller: 'EpisodeController',
-			template: '<div ng-include="episode.templateUrl">Loading...</div>'
+			template: '<div ng-include="episode.templateUrl">Loading Episode...</div>'
 		})
 		.otherwise({redirectTo: '/error'});
 }]);
