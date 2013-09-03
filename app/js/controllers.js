@@ -28,7 +28,7 @@ angular.module('player.controllers', [])
 			});
 		}
 
-		$scope.currentScene = $scope.scenes[0];
+		$scope.episode.currentScene = $scope.scenes[0];
 		/*
 		$timeout(function(){
 			$scope.currentScene = $scope.scenes[1];

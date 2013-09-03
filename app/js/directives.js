@@ -8,13 +8,13 @@ angular.module('player.directives', [])
 	return {
 		restrict: 'A',
 		replace: false,
-		template: '<div ng-include="scene.templateUrl">Loading Scene...</div>',
+		template: '<div ng-include="scene.templateUrl || episode.currentScene.templateUrl">Loading Scene...</div>',
 		link: function(scope) {
 			console.log("SCOPE:", scope);
 		},
-		scope: {
-			scene: '='
-		}
+		scope: true //{
+			//scene: '='
+		//}
 	};
 })
 
