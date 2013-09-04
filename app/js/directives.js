@@ -4,29 +4,29 @@
 angular.module('player.directives', [])
 
 // Scene Directive
-.directive('scene', function() {
+.directive('plScene', function() {
 	return {
 		restrict: 'A',
 		replace: false,
-		template: '<div ng-include="scene.templateUrl || episode.currentScene.templateUrl">Loading Scene...</div>',
+		template: '<div ng-include="scene.templateUrl">Loading Scene...</div>',
 		link: function(scope) {
 			console.log("SCOPE:", scope);
 		},
-		scope: true //{
-			//scene: '='
-		//}
+		scope: {
+			scene: '='
+		}
 	};
 })
 
 // Transmedia Directive
-.directive('transmedia', function() {
+.directive('plTransmedia', function() {
 	return {
 
 	};
 })
 
 // Video.js Wrapper Directive
-.directive('videoJSWrapper', function() {
+.directive('plVideoJSWrapper', function() {
 	return {
 
 	};
