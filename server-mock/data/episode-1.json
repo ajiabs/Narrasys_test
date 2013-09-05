@@ -1,40 +1,71 @@
 {
    "episode": {
       "title": "Episode 1",
-      "template": "/server-mock/templates/episode-template-A.html"
+      "template": "/server-mock/templates/episode-template-A.html",
+      "span": 80
    },
    "chapters": [
       {
       	"title": "Scene 1",
-      	"template": "/server-mock/templates/scene-template-A.html"
+      	"template": "/server-mock/templates/scene-template-A.html",
+         "start": 1
       },
       {
       	"title": "Scene 2",
-      	"template": "/server-mock/templates/scene-template-B.html"
+      	"template": "/server-mock/templates/scene-template-B.html",
+         "start": 21
       },
       {
       	"title": "Scene 3",
-      	"template": "/server-mock/templates/scene-template-C.html"
+      	"template": "/server-mock/templates/scene-template-A.html",
+         "start": 41
       },
       {
       	"title": "Scene 4",
-      	"template": "/server-mock/templates/scene-template-D.html"
+      	"template": "/server-mock/templates/scene-template-B.html",
+         "start": 61
+      }
+   ],
+   "transmedia": [
+      {
+         "title": "Item 1",
+         "template": "/server-mock/templates/transmedia-template-A.html",
+         "start": 1
       },
       {
-      	"title": "Scene 5",
-      	"template": "/server-mock/templates/scene-template-A.html"
+         "title": "Item 2",
+         "template": "/server-mock/templates/transmedia-template-B.html",
+         "start": 10
       },
       {
-      	"title": "Scene 6",
-      	"template": "/server-mock/templates/scene-template-B.html"
+         "title": "Item 3",
+         "template": "/server-mock/templates/transmedia-template-A.html",
+         "start": 21
       },
       {
-      	"title": "Scene 7",
-      	"template": "/server-mock/templates/scene-template-C.html"
+         "title": "Item 4",
+         "template": "/server-mock/templates/transmedia-template-B.html",
+         "start": 30
       },
       {
-      	"title": "Scene 8",
-      	"template": "/server-mock/templates/scene-template-D.html"
+         "title": "Item 5",
+         "template": "/server-mock/templates/transmedia-template-A.html",
+         "start": 41
+      },
+      {
+         "title": "Item 6",
+         "template": "/server-mock/templates/transmedia-template-B.html",
+         "start": 50
+      },
+      {
+         "title": "Item 7",
+         "template": "/server-mock/templates/transmedia-template-A.html",
+         "start": 61
+      },
+      {
+         "title": "Item 8",
+         "template": "/server-mock/templates/transmedia-template-B.html",
+         "start": 70
       }
    ]
 }
