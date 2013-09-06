@@ -26,9 +26,19 @@ angular.module('player.directives', [])
 		template: '<div ng-include="transmedia.templateUrl">Loading Transmedia...</div>',
 		link: function(scope, iElement, iAttrs, controller) {
 			console.log("TRANSMEDIA SCOPE:", scope);
-			scope.showAlert = function(msg) {
-				alert(msg);
+			var somePrivateMethod = function(arg) {
+				return true;
 			};
+			var showAlert = function(msg) {
+				if (somePrivateMethod(msg)) {
+					alert(msg);
+				}
+			};
+			var showDecoratedAlert = function(msg) {
+				showAlert(msg + "~extra stuff~");
+			};
+			scope.popup = showAlert;
+			scope.popupPlus = showDecoratedAlert;
 		},
 		scope: {
 			transmedia: '='
