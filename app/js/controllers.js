@@ -41,11 +41,15 @@ angular.module('player.controllers', [])
 
 		// sort transmedia into their respective scenes based on their start times
 		for (var i=0; i < data.transmedia.length; i++) {
-			var transmediaObj = {
-				title: data.transmedia[i].title,
-				templateUrl: data.transmedia[i].template,
-				startTime: data.transmedia[i].start
-			};
+			// GREG: is there a reason not to do this instead of copying individual data fields in one at a time)?
+			var transmediaObj = data.transmedia[i];
+
+			transmediaObj.templateUrl = transmediaObj.template; // why two names?
+			transmediaObj.startTime = transmediaObj.start;      // ditto
+			
+			// more conversions (is this the appropriate place for these?
+			transmediaObj.displayTime = Math.floor(transmediaObj.start/60) + ":" + ("0"+Math.floor(transmediaObj.start)%60).slice(-2);
+
 			for (var j=0; j < $scope.scenes.length; j++) {
 				if (transmediaObj.startTime >= $scope.scenes[j].startTime &&
 					transmediaObj.startTime <= $scope.scenes[j].endTime) {
