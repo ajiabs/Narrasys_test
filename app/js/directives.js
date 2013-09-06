@@ -9,7 +9,7 @@ angular.module('player.directives', [])
 		restrict: 'A',
 		replace: false,
 		template: '<div ng-include="scene.templateUrl">Loading Scene...</div>',
-		link: function(scope) {
+		link: function(scope, iElement, iAttrs, controller) {
 			console.log("SCENE SCOPE:", scope);
 		},
 		scope: {
@@ -24,8 +24,11 @@ angular.module('player.directives', [])
 		restrict: 'A',
 		replace: false,
 		template: '<div ng-include="transmedia.templateUrl">Loading Transmedia...</div>',
-		link: function(scope) {
+		link: function(scope, iElement, iAttrs, controller) {
 			console.log("TRANSMEDIA SCOPE:", scope);
+			scope.showAlert = function(msg) {
+				alert(msg);
+			};
 		},
 		scope: {
 			transmedia: '='
