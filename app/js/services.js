@@ -3,6 +3,34 @@
 // Declare the player.services module
 angular.module('player.services', [])
 
+
+// Note: This uses the angular $window oject to call alert() instead of calling alert as a
+// global.. this allows for better testing becuase we can mock $window if we need to.
+.factory('alertSvc', ['$window', function($window) {
+
+	// not part of the service interface
+	var somePrivateMethod = function(arg) {
+		return true;
+	};
+
+	var svc = {};
+
+	// add this method to the service interface
+	svc.showAlert = function(msg) {
+		if (somePrivateMethod(msg)) {
+			$window.alert(msg);
+		}
+	};
+
+	// add this method to the service interface
+	svc.showDecoratedAlert = function(msg) {
+		svc.showAlert(msg + "~extra stuff~");
+	};
+
+	return svc;
+}])
+
+
 /*	Timeline Service
 	Manages the conceptual timeline for the episode by publishing key topics
 	to subscribers. A subscriber must provide a 'span' object which contains
