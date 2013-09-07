@@ -85,32 +85,35 @@ angular.module('player.services', [])
 		and changes span states as needed. Fires the callback for the span whenever there
 		is a state change.
 		TODO: jsPerf to maximize the speed of the scan. Try things like defining subscriptions[i]
-			  outside of the loop, case vs. if, lazy truth vs equality checks, nested vs composite ifs, etc.
+			  outside of the loop, case vs. if, lazy truth vs equality checks, nested vs composite ifs,
+			  needScan condition, etc.
 	*/
 	var scan = function() {
-		var i,
-			len = subscriptions.length,
-			span;
-		for (i=0; i < len; i++) {
-			span = subscriptions[i];
-			// if the span is active
-			if (span.isActive) {
-				// and the playhead is outside of the span range
-				if (playhead < span.begin && playhead > span.end) {
-					// deactivate the span
-					span.isActive = false;
-					// and 'publish' EXIT event
-					span.callback.call({begin: span.begin, end: span.end}, EXIT);
+		if (needScan) {
+			var i,
+				len = subscriptions.length,
+				span;
+			for (i=0; i < len; i++) {
+				span = subscriptions[i];
+				// if the span is active
+				if (span.isActive) {
+					// and the playhead is outside of the span range
+					if (playhead < span.begin && playhead > span.end) {
+						// deactivate the span
+						span.isActive = false;
+						// and 'publish' EXIT event
+						span.callback.call({begin: span.begin, end: span.end}, EXIT);
+					}
 				}
-			}
-			// else if the span is inactive
-			else if (!span.isActive) {
-				// and the playhead is inside of the span range
-				if (playhead >= span.begin && playhead <= span.end) {
-					// activate the span
-					span.isActive = true;
-					// and 'publish' ENTER event
-					span.callback.call({begin: span.begin, end: span.end}, ENTER);
+				// else if the span is inactive
+				else if (!span.isActive) {
+					// and the playhead is inside of the span range
+					if (playhead >= span.begin && playhead <= span.end) {
+						// activate the span
+						span.isActive = true;
+						// and 'publish' ENTER event
+						span.callback.call({begin: span.begin, end: span.end}, ENTER);
+					}
 				}
 			}
 		}
