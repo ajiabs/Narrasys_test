@@ -40,28 +40,88 @@ angular.module('player.services', [])
 	when the playhead first enters an inactive span, and an 'exit' topic will be
 	published when the playhead first exits an active span. The service needs to be
 	configured with a timeline provider which keeps the service informed of the playhead
-	location, thus synchronizing it with a media item's timeline. A collection of spans
-	is iterated on for every playhead change, so performance is directly tied to
-	the interval frequency of playhead change events from the timeline provider.
+	location, thus synchronizing it with a media item's timeline.
 */
-.factory('timeline', ['$window', function(win) {
+.factory('timelineSvc', ['$window', function(win) {
 	var svc = {};
 
+	// Event 'constants'
+	var ENTER = "enter",
+		EXIT = "exit";
+
+	// A collection of spans that have been subscribed with this service
+	var subscriptions = [];
+
+	// A dictionary of existing subscription keys, used for speedy reference to 
+	// check if a subscription exists inside the subscriptions collection
+	var subscriptionKeys = {};
+
+	// A unique string to identify the timeline provider
+	var providerId;
+
+	// Playhead Position
+	var playhead;
+
+	// Flag will be set to true whenever the playhead position changes
+	var needScan = false;
+
+	// Reference to the interval timer which kicks off scans
+	var scanIntervalId;
+
+	// Generate a key for the inSubscriptions dictionary
 	var spanToKey = function(span) {
 		return span.begin + '-' + span.end;
 	};
 
-	// Events
-	var ENTER = "enter",
-		EXIT = "exit";
+	/*	Sets the playhead position. A reference to this function will be given to the registered
+		timeline provider and they are expected to call it whenever the playhead position changes.
+	*/
+	var setPlayhead = function(position) {
+		playhead = position;
+		needScan = true;
+	};
 
-	// A hashmap of active subscriptions keyed by [span.begin]-[span.end]
-	var subscriptions = {};
+	/*	Scans the current subscriptions dictionary against the current playhead position,
+		and changes span states as needed. Fires the callback for the span whenever there
+		is a state change.
+		TODO: jsPerf to maximize the speed of the scan. Try things like defining subscriptions[i]
+			  outside of the loop, case vs. if, lazy truth vs equality checks, nested vs composite ifs, etc.
+	*/
+	var scan = function() {
+		var i,
+			len = subscriptions.length,
+			span;
+		for (i=0; i < len; i++) {
+			span = subscriptions[i];
+			// if the span is active
+			if (span.isActive) {
+				// and the playhead is outside of the span range
+				if (playhead < span.begin && playhead > span.end) {
+					// deactivate the span
+					span.isActive = false;
+					// and 'publish' EXIT event
+					span.callback.call({begin: span.begin, end: span.end}, EXIT);
+				}
+			}
+			// else if the span is inactive
+			else if (!span.isActive) {
+				// and the playhead is inside of the span range
+				if (playhead >= span.begin && playhead <= span.end) {
+					// activate the span
+					span.isActive = true;
+					// and 'publish' ENTER event
+					span.callback.call({begin: span.begin, end: span.end}, ENTER);
+				}
+			}
+		}
+	};
 
 	/*	Allow consumer to subscribe to enter/exit events for the given span. Span should be
 		an object with 'begin' and 'end' properties as positive integers. If the given span
 		already exists the subscription will fail. Callback should be a function that accepts
 		a span argument (returning the span object) and an event argument (returning the event string).
+		For each span, the callback is fired with an ENTER event when an inactive span becomes active,
+		and an EXIT event when an active span becomes inactive.
 		Returns true if the subscription was successful and false if the subscription failed.
 	 */
 	svc.subscribe = function(span, callback) {
@@ -71,15 +131,18 @@ angular.module('player.services', [])
 			toString.call(callback) != '[object Function]' 	||
 			toString.call(span.begin) != '[object Number]' 	||
 			toString.call(span.end) != '[object Number]' 	||
-			subscriptions[spanToKey(span)]					){
+			subscriptionKeys[spanToKey(span)]				){
 			return false;
 		}
 
-		subscriptions[spanToKey(span)] = {
+		subscriptionKeys[spanToKey(span)] = true;
+
+		subscriptions.push({
 			begin: span.begin,
 			end: span.end,
-			isActive: false // TODO: ignorant of playhead position
-		};
+			callback: callback,
+			isActive: false
+		});
 
 		return true;
 	};
@@ -92,14 +155,62 @@ angular.module('player.services', [])
 		if (!span ||
 			toString.call(span.begin) != '[object Number]' 	||
 			toString.call(span.end) != '[object Number]'	||
-			!subscriptions[spanToKey(span)]					){
+			!subscriptionKeys[spanToKey(span)]				){
 			return false;
 		}
 
-		delete subscriptions[spanToKey(span)];
+		delete subscriptionKeys[spanToKey(span)];
+
+		var i,
+			len = subscriptions.length;
+		for (i=0; i < len; i++) {
+			if (subscriptions[i].begin == span.begin && subscriptions[i].end == span.end) {
+				subscriptions.splice(i,1); // remove this item
+				break;
+			}
+		}
 
 		return true;
 	};
+
+	/*	Allows a timeline provider to be registered with the timeline service. id arg
+		is created by the service consumer and will be the unique id by which the provider can
+		can be referenced or unregistered later. interval arg is optional and should be a number
+		in milliseconds by which scans should occur. If interval is undefined then a default of 1000
+		will be used. The scan intervals start as soon as the provider is registered.
+
+		When method is successful it will return a reference to the
+		setPlayhead function, which should be called in the service scope via setPlayhead.call().
+		If a provider is already registered the method will return false.
+
+		TODO: Invent a secure mechanism by which the setPlayhead function is implicitly tied
+		to the providerId (eg: via a dictionary reference). Right now the returned setPlayhead
+		function could still be used even after the provider has been unregistered.
+		TODO: Validation around id, it must be a primitive that can pass an equality check
+		TODO: Validation around interval (sould fall within acceptable range)
+	*/
+	svc.registerProvider = function(id, inverval) {
+		if (providerId) {
+			return false;
+		}
+		providerId = id;
+		// TODO: probably a better way to do this than using the raw window method. This will create
+		// testability problems.
+		scanIntervalId = $window.setTimeout(scan, interval || 1000);
+		return setPlayhead;
+	}
+
+	/*	Unregisters a timeline provider. Returns true if the operation was successful and
+		false if the provider was not registered.
+	*/
+	svc.unregisterProvider = function(id) {
+		if (providerId != id) {
+			return false;
+		}
+		providerId = null;
+		$window.clearInterval(scanIntervalId);
+		return true;
+	}
 
 	return svc;
 }]);
