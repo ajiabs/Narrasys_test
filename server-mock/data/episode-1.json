@@ -1,71 +1,82 @@
 {
    "episode": {
       "title": "Episode 1",
-      "template": "/server-mock/templates/episode-template-A.html",
-      "span": 80
+      "template": "/server-mock/templates/episode-template-A.html"
    },
    "chapters": [
       {
       	"title": "Scene 1",
       	"template": "/server-mock/templates/scene-template-A.html",
-         "start": 1
+         "start": 1,
+         "end": 19
       },
       {
       	"title": "Scene 2",
       	"template": "/server-mock/templates/scene-template-B.html",
-         "start": 21
+         "start": 20,
+         "end": 39
       },
       {
       	"title": "Scene 3",
       	"template": "/server-mock/templates/scene-template-A.html",
-         "start": 41
+         "start": 40,
+         "end": 59
       },
       {
       	"title": "Scene 4",
       	"template": "/server-mock/templates/scene-template-B.html",
-         "start": 61
+         "start": 60,
+         "end": 79
       }
    ],
    "transmedia": [
       {
          "title": "Item 1",
          "template": "/server-mock/templates/transmedia-template-A.html",
-         "start": 1
+         "start": 1,
+         "end": 9
       },
       {
          "title": "Item 2",
          "template": "/server-mock/templates/transmedia-template-B.html",
-         "start": 10
+         "start": 10,
+         "end": 19
       },
       {
          "title": "Item 3",
          "template": "/server-mock/templates/transmedia-template-A.html",
-         "start": 21
+         "start": 20,
+         "end": 29
       },
       {
          "title": "Item 4",
          "template": "/server-mock/templates/transmedia-template-B.html",
-         "start": 30
+         "start": 30,
+         "end": 39
       },
       {
          "title": "Item 5",
          "template": "/server-mock/templates/transmedia-template-A.html",
-         "start": 41
+         "start": 40,
+         "end": 49
       },
       {
          "title": "Item 6",
          "template": "/server-mock/templates/transmedia-template-B.html",
-         "start": 50
+         "start": 50,
+         "end": 59
       },
       {
          "title": "Item 7",
          "template": "/server-mock/templates/transmedia-template-A.html",
-         "start": 61
+         "start": 60,
+         "end": 69
       },
       {
          "title": "Item 8",
          "template": "/server-mock/templates/transmedia-template-B.html",
-         "start": 70
+         "start": 70,
+         "end": 79
       }
    ]
 }

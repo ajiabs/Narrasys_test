@@ -42,12 +42,12 @@ angular.module('player.services', [])
 	configured with a timeline provider which keeps the service informed of the playhead
 	location, thus synchronizing it with a media item's timeline.
 */
-.factory('timelineSvc', ['$window', function(win) {
+.factory('timelineSvc', ['$window', function($window) {
 	var svc = {};
 
-	// Event 'constants'
-	var ENTER = "enter",
-		EXIT = "exit";
+	// Event 'constants' (public)
+	svc.ENTER = "enter",
+	svc.EXIT = "exit";
 
 	// A collection of spans that have been subscribed with this service
 	var subscriptions = [];
@@ -77,6 +77,7 @@ angular.module('player.services', [])
 		timeline provider and they are expected to call it whenever the playhead position changes.
 	*/
 	var setPlayhead = function(position) {
+		console.log('setPlayhead(' + position + ')');
 		playhead = position;
 		needScan = true;
 	};
@@ -90,32 +91,42 @@ angular.module('player.services', [])
 	*/
 	var scan = function() {
 		if (needScan) {
+			console.log('scan()');
 			var i,
 				len = subscriptions.length,
 				span;
+			console.log('len:', len);
 			for (i=0; i < len; i++) {
 				span = subscriptions[i];
+				console.log("looping span:", span)
 				// if the span is active
 				if (span.isActive) {
+					console.log("-- span.isActive")
 					// and the playhead is outside of the span range
 					if (playhead < span.begin && playhead > span.end) {
 						// deactivate the span
 						span.isActive = false;
 						// and 'publish' EXIT event
-						span.callback.call({begin: span.begin, end: span.end}, EXIT);
+						console.log("publishing EXIT");
+						span.callback.call(undefined, {begin: span.begin, end: span.end}, svc.EXIT, playhead);
+						// TODO: this needs to be called from the object scope where callback was originally passed in
 					}
 				}
 				// else if the span is inactive
 				else if (!span.isActive) {
+					console.log("-- !span.isActive")
 					// and the playhead is inside of the span range
 					if (playhead >= span.begin && playhead <= span.end) {
 						// activate the span
 						span.isActive = true;
 						// and 'publish' ENTER event
-						span.callback.call({begin: span.begin, end: span.end}, ENTER);
+						console.log("publishing ENTER");
+						span.callback.call(undefined, {begin: span.begin, end: span.end}, svc.ENTER, playhead);
+						// TODO: this needs to be called from the object scope where callback was originally passed in
 					}
 				}
 			}
+			needScan = false;
 		}
 	};
 
@@ -126,9 +137,10 @@ angular.module('player.services', [])
 		For each span, the callback is fired with an ENTER event when an inactive span becomes active,
 		and an EXIT event when an active span becomes inactive.
 		Returns true if the subscription was successful and false if the subscription failed.
+		TODO: Validate params
 	 */
 	svc.subscribe = function(span, callback) {
-		// validate
+		/* validate
 		if (!span 											||
 			!callback 										||
 			toString.call(callback) != '[object Function]' 	||
@@ -137,6 +149,9 @@ angular.module('player.services', [])
 			subscriptionKeys[spanToKey(span)]				){
 			return false;
 		}
+		*/
+
+		console.log("span:", span)
 
 		subscriptionKeys[spanToKey(span)] = true;
 
@@ -152,15 +167,17 @@ angular.module('player.services', [])
 
 	/* 	Unsubscribe the given span. Unsubscribe will fail if the subscription does not exist.
 		Returns true if the unsubscribe was successful and false if the unsubscribe failed.
+		// TODO: Validate params
 	*/
 	svc.unsubscribe = function(span) {
-		// validate
+		/* validate
 		if (!span ||
 			toString.call(span.begin) != '[object Number]' 	||
 			toString.call(span.end) != '[object Number]'	||
 			!subscriptionKeys[spanToKey(span)]				){
 			return false;
 		}
+		*/
 
 		delete subscriptionKeys[spanToKey(span)];
 
@@ -192,14 +209,15 @@ angular.module('player.services', [])
 		TODO: Validation around id, it must be a primitive that can pass an equality check
 		TODO: Validation around interval (sould fall within acceptable range)
 	*/
-	svc.registerProvider = function(id, inverval) {
+	svc.registerProvider = function(id, interval) {
+		console.log('registerProvider()')
 		if (providerId) {
 			return false;
 		}
 		providerId = id;
 		// TODO: probably a better way to do this than using the raw window method. This will create
 		// testability problems.
-		scanIntervalId = $window.setTimeout(scan, interval || 1000);
+		scanIntervalId = $window.setInterval(scan, interval || 1000);
 		return setPlayhead;
 	}
 

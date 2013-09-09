@@ -22,4 +22,15 @@ angular.module('player', [
 			template: '<div ng-include="episode.templateUrl">Loading Episode...</div>'
 		})
 		.otherwise({redirectTo: '/error'});
+}])
+
+// App kickoff
+.run(['timelineSvc', '$window', function(timelineSvc, $window) {
+	// fake timeline provider (temporary until videoJSWrapper directive is finished)
+	var setPlayhead = timelineSvc.registerProvider('mockTimeline', 1000);
+	var position = 0;
+	$window.setTimeout(function(){
+		position += 1;
+		setPlayhead(position);
+	}, 1500);
 }]);

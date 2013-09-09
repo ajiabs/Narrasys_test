@@ -11,7 +11,7 @@ angular.module('player.controllers', [])
 }])
 	
 // Episode Controller
-.controller('EpisodeController', ['$timeout', '$scope', '$rootScope', '$location', '$routeParams', '$http', function($timeout, $scope, $rootScope, $location, $routeParams, $http) {
+.controller('EpisodeController', ['timelineSvc', '$scope', '$rootScope', '$location', '$routeParams', '$http', function(timelineSvc, $scope, $rootScope, $location, $routeParams, $http) {
 
 	$http({method: 'GET', url: '/server-mock/data/episode-' + $routeParams.epId + '.json'})
 	.success(function(data, status, headers, config) {
@@ -19,7 +19,9 @@ angular.module('player.controllers', [])
 		// Create an episode object on the scope
 		$scope.episode = {
 			title: data.episode.title,
-			templateUrl: data.episode.template
+			templateUrl: data.episode.template,
+			playheadPosition: 0,
+			currentScene: null
 		};
 
 		// Create a collection of scenes from the chapters array
@@ -30,25 +32,47 @@ angular.module('player.controllers', [])
 				title: data.chapters[i].title,
 				templateUrl: data.chapters[i].template,
 				startTime: data.chapters[i].start,
-				endTime: data.chapters[(i+1)] ? data.chapters[(i+1)].start-1 : 9999999999999999999999999999, //TODO: no magic numbers
+				endTime: data.chapters[i].end,
+				isActive: false,
+				wasActive: false,
 				transmedia: []
 			};
-			$scope.scenes.push(sceneObj);
+
+			var scenesLen = $scope.scenes.push(sceneObj);
+
+			// since we're creating anonymous callbacks in a loop we
+			// create a closure to preserve variable scope in each iteration
+			(function(sceneIdx){
+				timelineSvc.subscribe({
+					begin: $scope.scenes[sceneIdx].startTime,
+					end: $scope.scenes[sceneIdx].endTime
+				}, function(span, evt, playheadPos) {
+					console.log("Callback event:", evt, "for: ", $scope.scenes[sceneIdx].title);
+					$scope.episode.playheadPosition = playheadPos;
+					if (evt === timelineSvc.ENTER) {
+						$scope.scenes[sceneIdx].isActive = true;
+						$scope.episode.currentScene = sceneObj;
+					}
+					else if (evt === timelineSvc.EXIT) {
+						$scope.scenes[sceneIdx].isActive = false;
+						$scope.scenes[sceneIdx].wasActive = true;
+					}
+					console.log("isActive set to:", $scope.scenes[sceneIdx].isActive, "and wasActive set to:", $scope.scenes[sceneIdx].wasActive);
+				});
+			})(scenesLen-1);
 		}
 
-		// TODO: Temporary until we bind to timeline service
-		$scope.episode.currentScene = $scope.scenes[0];
-
-		// sort transmedia into their respective scenes based on their start times
+		// create transmedia and sort them into their respective scenes based on their start times
+		// TODO: sort and combine transmedia array(s) before looping, they should be in order of start times otherwise the end time calculations could break
 		for (var i=0; i < data.transmedia.length; i++) {
-			// GREG: is there a reason not to do this instead of copying individual data fields in one at a time)?
-			var transmediaObj = data.transmedia[i];
 
-			transmediaObj.templateUrl = transmediaObj.template; // why two names?
-			transmediaObj.startTime = transmediaObj.start;      // ditto
+			var transmediaObj = {
+				title: data.transmedia[i].title,
+				templateUrl: data.transmedia[i].template,
+				startTime: data.transmedia[i].start
+			};
 			
-			// more conversions (is this the appropriate place for these?
-			transmediaObj.displayTime = Math.floor(transmediaObj.start/60) + ":" + ("0"+Math.floor(transmediaObj.start)%60).slice(-2);
+			transmediaObj.displayTime = Math.floor(transmediaObj.startTime/60) + ":" + ("0"+Math.floor(transmediaObj.startTime)%60).slice(-2);
 
 			for (var j=0; j < $scope.scenes.length; j++) {
 				if (transmediaObj.startTime >= $scope.scenes[j].startTime &&
@@ -66,11 +90,6 @@ angular.module('player.controllers', [])
 
 		console.log("EPISODE CONTROLLER SCOPE:", $scope);
 
-		/*
-		$timeout(function(){
-			$scope.currentScene = $scope.scenes[1];
-		}, 2000);
-		*/
 	})
 	.error(function(data, status, headers, config) {
 		// TODO: Should probably be using a service instead of root scope

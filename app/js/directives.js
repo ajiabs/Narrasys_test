@@ -38,6 +38,11 @@ angular.module('player.directives', [])
 // Video.js Wrapper Directive
 .directive('videoJSWrapper', function() {
 	return {
-
+		restrict: 'A',
+		replace: false,
+		template: '<div ng-include="transmedia.templateUrl">Loading Transmedia...</div>',
+		link: function(scope, iElement, iAttrs, controller) {
+			
+		}
 	};
 });
