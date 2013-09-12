@@ -3,36 +3,8 @@
 // Declare the player.services module
 angular.module('player.services', [])
 
-
-// Note: This uses the angular $window oject to call alert() instead of calling alert as a
-// global.. this allows for better testing becuase we can mock $window if we need to.
-.factory('alertSvc', ['$window', function($window) {
-
-	// not part of the service interface
-	var somePrivateMethod = function(arg) {
-		return true;
-	};
-
-	var svc = {};
-
-	// add this method to the service interface
-	svc.showAlert = function(msg) {
-		if (somePrivateMethod(msg)) {
-			$window.alert(msg);
-		}
-	};
-
-	// add this method to the service interface
-	svc.showDecoratedAlert = function(msg) {
-		svc.showAlert(msg + "~extra stuff~");
-	};
-
-	return svc;
-}])
-
-
 /*	Timeline Service
-	Manages the conceptual timeline for the episode by publishing key topics
+	Manages the conceptual timeline for the episode by publishing key events
 	to subscribers. A subscriber must provide a 'span' object which contains
 	integer properties 'begin' and 'end'. The service keeps an internal record
 	of span states. A span state is active when the playhead is within the begin-end
@@ -77,7 +49,7 @@ angular.module('player.services', [])
 		timeline provider and they are expected to call it whenever the playhead position changes.
 	*/
 	var setPlayhead = function(position) {
-		console.log('setPlayhead(' + position + ')');
+		console.log("setPlayhead("+position+")");
 		playhead = position;
 		needScan = true;
 	};
@@ -91,36 +63,29 @@ angular.module('player.services', [])
 	*/
 	var scan = function() {
 		if (needScan) {
-			console.log('scan()');
 			var i,
 				len = subscriptions.length,
 				span;
-			console.log('len:', len);
 			for (i=0; i < len; i++) {
 				span = subscriptions[i];
-				console.log("looping span:", span)
 				// if the span is active
 				if (span.isActive) {
-					console.log("-- span.isActive")
 					// and the playhead is outside of the span range
-					if (playhead < span.begin && playhead > span.end) {
+					if (playhead < span.begin || playhead > span.end) {
 						// deactivate the span
 						span.isActive = false;
 						// and 'publish' EXIT event
-						console.log("publishing EXIT");
 						span.callback.call(undefined, {begin: span.begin, end: span.end}, svc.EXIT, playhead);
 						// TODO: this needs to be called from the object scope where callback was originally passed in
 					}
 				}
 				// else if the span is inactive
 				else if (!span.isActive) {
-					console.log("-- !span.isActive")
 					// and the playhead is inside of the span range
 					if (playhead >= span.begin && playhead <= span.end) {
 						// activate the span
 						span.isActive = true;
 						// and 'publish' ENTER event
-						console.log("publishing ENTER");
 						span.callback.call(undefined, {begin: span.begin, end: span.end}, svc.ENTER, playhead);
 						// TODO: this needs to be called from the object scope where callback was originally passed in
 					}
@@ -150,8 +115,6 @@ angular.module('player.services', [])
 			return false;
 		}
 		*/
-
-		console.log("span:", span)
 
 		subscriptionKeys[spanToKey(span)] = true;
 
@@ -210,7 +173,6 @@ angular.module('player.services', [])
 		TODO: Validation around interval (sould fall within acceptable range)
 	*/
 	svc.registerProvider = function(id, interval) {
-		console.log('registerProvider()')
 		if (providerId) {
 			return false;
 		}
@@ -234,4 +196,5 @@ angular.module('player.services', [])
 	}
 
 	return svc;
+	
 }]);

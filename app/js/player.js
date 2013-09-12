@@ -26,10 +26,10 @@ angular.module('player', [
 
 // App kickoff
 .run(['timelineSvc', '$window', function(timelineSvc, $window) {
-	// fake timeline provider (temporary until videoJSWrapper directive is finished)
+	// fake a timeline provider (temporary until videoJSWrapper directive is finished)
 	var setPlayhead = timelineSvc.registerProvider('mockTimeline', 1000);
 	var position = 0;
-	$window.setTimeout(function(){
+	$window.setInterval(function(){
 		position += 1;
 		setPlayhead(position);
 	}, 1500);

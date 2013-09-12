@@ -19,9 +19,7 @@ angular.module('player.controllers', [])
 		// Create an episode object on the scope
 		$scope.episode = {
 			title: data.episode.title,
-			templateUrl: data.episode.template,
-			playheadPosition: 0,
-			currentScene: null
+			templateUrl: data.episode.template
 		};
 
 		// Create a collection of scenes from the chapters array
@@ -38,28 +36,26 @@ angular.module('player.controllers', [])
 				transmedia: []
 			};
 
-			var scenesLen = $scope.scenes.push(sceneObj);
-
 			// since we're creating anonymous callbacks in a loop we
 			// create a closure to preserve variable scope in each iteration
-			(function(sceneIdx){
+			(function(sceneObj){
 				timelineSvc.subscribe({
-					begin: $scope.scenes[sceneIdx].startTime,
-					end: $scope.scenes[sceneIdx].endTime
+					begin: sceneObj.startTime,
+					end: sceneObj.endTime
 				}, function(span, evt, playheadPos) {
-					console.log("Callback event:", evt, "for: ", $scope.scenes[sceneIdx].title);
-					$scope.episode.playheadPosition = playheadPos;
-					if (evt === timelineSvc.ENTER) {
-						$scope.scenes[sceneIdx].isActive = true;
-						$scope.episode.currentScene = sceneObj;
-					}
-					else if (evt === timelineSvc.EXIT) {
-						$scope.scenes[sceneIdx].isActive = false;
-						$scope.scenes[sceneIdx].wasActive = true;
-					}
-					console.log("isActive set to:", $scope.scenes[sceneIdx].isActive, "and wasActive set to:", $scope.scenes[sceneIdx].wasActive);
+					$scope.$apply(function(){
+						if (evt === timelineSvc.ENTER) {
+							sceneObj.isActive = true;
+						}
+						else if (evt === timelineSvc.EXIT) {
+							sceneObj.isActive = false;
+							sceneObj.wasActive = true;
+						}
+					});
 				});
-			})(scenesLen-1);
+			})(sceneObj);
+
+			$scope.scenes.push(sceneObj);
 		}
 
 		// create transmedia and sort them into their respective scenes based on their start times
@@ -69,11 +65,32 @@ angular.module('player.controllers', [])
 			var transmediaObj = {
 				title: data.transmedia[i].title,
 				templateUrl: data.transmedia[i].template,
-				startTime: data.transmedia[i].start
+				startTime: data.transmedia[i].start,
+				endTime: data.transmedia[i].end,
+				displayTime: Math.floor(data.transmedia[i].start/60) + ":" + ("0"+Math.floor(data.transmedia[i].start)%60).slice(-2)
 			};
-			
-			transmediaObj.displayTime = Math.floor(transmediaObj.startTime/60) + ":" + ("0"+Math.floor(transmediaObj.startTime)%60).slice(-2);
 
+			// since we're creating anonymous callbacks in a loop we
+			// create a closure to preserve variable scope in each iteration
+			(function(transmediaObj){
+				timelineSvc.subscribe({
+					begin: transmediaObj.startTime,
+					end: transmediaObj.endTime
+				}, function(span, evt, playheadPos) {
+					$scope.$apply(function(){
+						if (evt === timelineSvc.ENTER) {
+							transmediaObj.isActive = true;
+						}
+						else if (evt === timelineSvc.EXIT) {
+							transmediaObj.isActive = false;
+							transmediaObj.wasActive = true;
+						}
+					});
+				});
+			})(transmediaObj);
+			
+			// TODO: If a transmedia item ever spanned across scene boundaries it would
+			// not be added to any scene container and we are not handling that case
 			for (var j=0; j < $scope.scenes.length; j++) {
 				if (transmediaObj.startTime >= $scope.scenes[j].startTime &&
 					transmediaObj.startTime <= $scope.scenes[j].endTime) {
@@ -82,13 +99,6 @@ angular.module('player.controllers', [])
 				}
 			}
 		}
-
-		// TODO: Temporary until we bind to timeline service
-		for (var i=0; i < $scope.scenes.length; i++) {
-			$scope.scenes[i].currentTransmedia = $scope.scenes[i].transmedia[0];
-		}
-
-		console.log("EPISODE CONTROLLER SCOPE:", $scope);
 
 	})
 	.error(function(data, status, headers, config) {

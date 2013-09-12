@@ -1,6 +1,18 @@
+<style type="text/css">
+	.inactive {
+		background-color: #D1FFF0;
+	}
+	.active {
+		background-color: #ACFF83;
+	}
+	.previously-active {
+		background-color: #809980;
+	}
+</style>
+
 <blockquote>
-	<h2>{{episode.title}} [{{episode.playheadPosition}}]</h2>
+	<h2>{{episode.title}}</h2>
 	<p><em>episode-template-A ({{episode.templateUrl}})</em></p>
-	
-	<div data-scene="episode.currentScene"></div>
+
+	<div data-ng-repeat="scene in scenes" data-scene="scene"></div>
 </blockquote>
