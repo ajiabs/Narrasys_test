@@ -16,87 +16,120 @@ angular.module('player.controllers', [])
 	$http({method: 'GET', url: '/server-mock/data/episode-' + $routeParams.epId + '.json'})
 	.success(function(data, status, headers, config) {
 		
-		// Create an episode object on the scope
+		// Create an episode model.
 		$scope.episode = {
 			title: data.episode.title,
 			templateUrl: data.episode.template
 		};
 
-		// Create a collection of scenes from the chapters array
-		// TODO: sort chapters array by start before we iterate, otherwise we could break endTime
+		// Create a collection of scene models
 		$scope.scenes = [];
-		for (var i=0; i < data.chapters.length; i++) {
-			var sceneObj = {
-				title: data.chapters[i].title,
-				templateUrl: data.chapters[i].template,
-				startTime: data.chapters[i].start,
-				endTime: data.chapters[i].end,
-				isActive: false,
-				wasActive: false,
-				transmedia: []
-			};
+		for (var i=0; i < data.events.length; i++) {
+			if (data.events[i].type == "scene") {
 
-			// since we're creating anonymous callbacks in a loop we
-			// create a closure to preserve variable scope in each iteration
-			(function(sceneObj){
-				timelineSvc.subscribe({
-					begin: sceneObj.startTime,
-					end: sceneObj.endTime
-				}, function(span, evt, playheadPos) {
-					$scope.$apply(function(){
-						if (evt === timelineSvc.ENTER) {
-							sceneObj.isActive = true;
-						}
-						else if (evt === timelineSvc.EXIT) {
-							sceneObj.isActive = false;
-							sceneObj.wasActive = true;
-						}
+				// scene model
+				var sceneModel = {
+					type: data.events[i].type,
+					title: data.events[i].title,
+					description: data.events[i].description,
+					templateUrl: data.events[i].template,
+					startTime: data.events[i].start,
+					endTime: data.events[i].end,
+					thumbnail: data.events[i].src,
+					isActive: false,
+					wasActive: false,
+					items: []
+				};
+
+				// subscribe the scene model to the timeline service for state awareness
+				// use a closure to preserve variable scope in each loop iteration
+				(function(sceneModel){
+					timelineSvc.subscribe({
+						begin: sceneModel.startTime,
+						end: sceneModel.endTime
+					}, function(span, evt, playheadPos) {
+						$scope.$apply(function(){
+							if (evt === timelineSvc.ENTER) {
+								sceneModel.isActive = true;
+							}
+							else if (evt === timelineSvc.EXIT) {
+								sceneModel.isActive = false;
+								sceneModel.wasActive = true;
+							}
+						});
 					});
-				});
-			})(sceneObj);
+				})(sceneModel);
 
-			$scope.scenes.push(sceneObj);
+				$scope.scenes.push(sceneModel);
+			}
 		}
 
-		// create transmedia and sort them into their respective scenes based on their start times
-		// TODO: sort and combine transmedia array(s) before looping, they should be in order of start times otherwise the end time calculations could break
-		for (var i=0; i < data.transmedia.length; i++) {
+		// create item/transmedia models and place them into the items collection of their respective scenes
+		// TODO: ?? Create a model-factory with inheritable model classes to hide this complexity ??
+		for (var i=0; i < data.events.length; i++) {
+			if (data.events[i].type != "scene") {
 
-			var transmediaObj = {
-				title: data.transmedia[i].title,
-				templateUrl: data.transmedia[i].template,
-				startTime: data.transmedia[i].start,
-				endTime: data.transmedia[i].end,
-				displayTime: Math.floor(data.transmedia[i].start/60) + ":" + ("0"+Math.floor(data.transmedia[i].start)%60).slice(-2)
-			};
+				// base item model
+				var itemModel = {
+					type: data.events[i].type,
+					category: data.events[i].category,
+					startTime: data.events[i].start,
+					endTime: data.events[i].end,
+					templateUrl: data.events[i].template,
+					displayTime: Math.floor(data.events[i].start/60) + ":" + ("0"+Math.floor(data.events[i].start)%60).slice(-2)
+				};
 
-			// since we're creating anonymous callbacks in a loop we
-			// create a closure to preserve variable scope in each iteration
-			(function(transmediaObj){
-				timelineSvc.subscribe({
-					begin: transmediaObj.startTime,
-					end: transmediaObj.endTime
-				}, function(span, evt, playheadPos) {
-					$scope.$apply(function(){
-						if (evt === timelineSvc.ENTER) {
-							transmediaObj.isActive = true;
-						}
-						else if (evt === timelineSvc.EXIT) {
-							transmediaObj.isActive = false;
-							transmediaObj.wasActive = true;
-						}
+				// subscribe the item model to the timeline service for state awareness
+				// use a closure to preserve variable scope in each loop iteration
+				(function(itemModel){
+					timelineSvc.subscribe({
+						begin: itemModel.startTime,
+						end: itemModel.endTime
+					}, function(span, evt, playheadPos) {
+						$scope.$apply(function(){
+							if (evt === timelineSvc.ENTER) {
+								itemModel.isActive = true;
+							}
+							else if (evt === timelineSvc.EXIT) {
+								itemModel.isActive = false;
+								itemModel.wasActive = true;
+							}
+						});
 					});
-				});
-			})(transmediaObj);
-			
-			// TODO: If a transmedia item ever spanned across scene boundaries it would
-			// not be added to any scene container and we are not handling that case
-			for (var j=0; j < $scope.scenes.length; j++) {
-				if (transmediaObj.startTime >= $scope.scenes[j].startTime &&
-					transmediaObj.startTime <= $scope.scenes[j].endTime) {
-					$scope.scenes[j].transmedia.push(transmediaObj);
-					break;
+				})(itemModel);
+				
+				// extend base model based on item type
+				switch(data.events[i].type) {
+					case "transcript":
+						itemModel.authorName = data.events[i].author.name;
+						itemModel.authorThumbSrc = data.events[i].author.src;
+						itemModel.annotation = data.events[i].annotation;
+						break;
+
+					case "link":
+						itemModel.title = data.events[i].title;
+						itemModel.description = data.events[i].description;
+						itemModel.thumbSrc = data.events[i].src;
+						itemModel.source = data.events[i].href;
+						break;
+
+					case "image":
+						itemModel.title = data.events[i].title;
+						itemModel.description = data.events[i].description;
+						itemModel.source = data.events[i].src;
+						break;
 				}
+
+				// TODO: If a transmedia item ever spanned across scene boundaries it would
+				// not be added to any scene container and we are not handling that case
+				for (var j=0; j < $scope.scenes.length; j++) {
+					if (itemModel.startTime >= $scope.scenes[j].startTime && 
+						itemModel.startTime <= $scope.scenes[j].endTime) {
+						$scope.scenes[j].items.push(itemModel);
+						break;
+					}
+				}
+
 			}
 		}
 
