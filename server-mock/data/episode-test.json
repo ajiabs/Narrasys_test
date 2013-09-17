@@ -11,7 +11,7 @@
         "title": "S1: The Green Economy",
         "description": "Understand how sustainability helps build a vibrant economy.",
         "src": "http://theplatform-static.edgesuite.net/In_The_Telling/toc0__189165.png",
-        "template": "/server-mock/templates/scene-template-all-items.html"
+        "template": "/server-mock/templates/scene-default.html"
       },
       {
         "type":"scene",
@@ -20,7 +20,7 @@
         "title": "S2: Energy Infrastructure",
         "description": "Differences in the Global North and the Global South",
         "src": "http://theplatform-static.edgesuite.net/In_The_Telling/toc1__351283.png",
-        "template": "/server-mock/templates/scene-template-single-item.html"
+        "template": "/server-mock/templates/scene-default.html"
       },
       {
         "type":"scene",
@@ -29,13 +29,13 @@
         "title": "S3: Energy Technologies",
         "description": "Strengths and weaknesses",
         "src": "http://theplatform-static.edgesuite.net/In_The_Telling/toc2__709927.png",
-        "template": "/server-mock/templates/scene-template-all-items.html"
+        "template": "/server-mock/templates/scene-default.html"
       },
       {
          "type":"transcript",
          "start": 1,
          "end": 6,
-         "template": "/server-mock/template/transmedia-transcript-default.html",
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Frank Bergh",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -46,7 +46,7 @@
          "type":"transcript",
          "start": 7,
          "end": 15,
-         "template": "/server-mock/template/transmedia-transcript-default.html",
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Frank Bergh",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -57,7 +57,7 @@
          "type":"transcript",
          "start": 16,
          "end": 20,
-         "template": "/server-mock/template/transmedia-transcript-default.html",
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Frank Bergh",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -68,7 +68,7 @@
          "type":"transcript",
          "start": 21,
          "end": 27,
-         "template": "/server-mock/template/transmedia-transcript-default.html",
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Frank Bergh",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -79,7 +79,7 @@
          "type":"transcript",
          "start": 28,
          "end": 34,
-         "template": "/server-mock/template/transmedia-transcript-default.html",
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Frank Bergh",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -90,7 +90,7 @@
          "type":"transcript",
          "start": 35,
          "end": 40,
-         "template": "/server-mock/template/transmedia-transcript-default.html",
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Frank Bergh",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -101,7 +101,7 @@
          "type":"transcript",
          "start":41,
          "end": 46,
-         "template": "/server-mock/template/transmedia-transcript-default.html",
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Frank Bergh",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -112,7 +112,7 @@
          "type":"transcript",
          "start": 47,
          "end": 52,
-         "template": "/server-mock/template/transmedia-transcript-default.html",
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Frank Bergh",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -123,7 +123,7 @@
          "type":"transcript",
          "start": 53,
          "end": 60,
-         "template": "/server-mock/template/transmedia-transcript-default.html",
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Frank Bergh",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -135,7 +135,7 @@
          "category": "Links",
          "start":1,
          "end": 5,
-         "template": "/server-mock/template/transmedia-link-default.html",
+         "template": "/server-mock/templates/transmedia-link-default.html",
          "title":"Poor People's Energy Outlook",
          "description":"Overview of energy access challenges to the world\u2019s poor. ",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Poor_People_s_Energy_Outlook.PNG",
@@ -146,7 +146,7 @@
          "category": "Links",
          "start":6,
          "end": 10,
-         "template": "/server-mock/template/transmedia-link-default.html",
+         "template": "/server-mock/templates/transmedia-link-default.html",
          "title":"Water for Mulobere",
          "description":"Clean water project in Uganda, by EWB-USA University of Minnesota.",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Water_for_Mulobere.PNG",
@@ -157,7 +157,7 @@
          "category": "Links",
          "start": 11,
          "end": 15,
-         "template": "/server-mock/template/transmedia-link-default.html",
+         "template": "/server-mock/templates/transmedia-link-default.html",
          "title":"EWB Rwanda Project",
          "description":"The EWB-USA UC Boulder, and EWB-USA Johnson Space Center project",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/EWB_Rwanda_Project.PNG",
@@ -168,7 +168,7 @@
          "category": "Links",
          "start": 16,
          "end": 20,
-         "template": "/server-mock/template/transmedia-link-default.html",
+         "template": "/server-mock/templates/transmedia-link-default.html",
          "title":"Estimations of PV Systems",
          "description":"Primer on sizing battery-based PV systems and estimating costs.",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Estimating_PV_System_Size_and_Cost__820892.PNG",
@@ -179,7 +179,7 @@
          "category": "links",
          "start":21,
          "end": 34,
-         "template": "/server-mock/template/transmedia-link-default.html",
+         "template": "/server-mock/templates/transmedia-link-default.html",
          "title":"Burkina Faso - Solar",
          "description":"EWB-USA University of Maryland solar lighting project.",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
@@ -190,7 +190,7 @@
          "category": "In Depth",
          "start": 25,
          "end": 30,
-         "template": "/server-mock/template/transmedia-link-default.html",
+         "template": "/server-mock/templates/transmedia-link-default.html",
          "title":"Energy Poverty",
          "description":"How to make modern energy access universal?",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Energy_Poverty.PNG",
@@ -201,7 +201,7 @@
          "category": "In Depth",
          "start": 36,
          "end": 40,
-         "template": "/server-mock/template/transmedia-link-default.html",
+         "template": "/server-mock/templates/transmedia-link-default.html",
          "title":"Community-Driven Empowerment",
          "description":"An EWB-USA approach to solar PV in developing communities",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Community_Driven_Empowerment.PNG",
@@ -212,7 +212,7 @@
          "category": "Slides",
          "start": 41,
          "end": 50,
-         "template": "/server-mock/template/transmedia-image-default.html",
+         "template": "/server-mock/templates/transmedia-image-default.html",
          "title":"The Solar Resource",
          "description":"Insolation",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Slide51.JPG"
@@ -222,7 +222,7 @@
          "category": "Slides",
          "start": 51,
          "end": 60,
-         "template": "/server-mock/template/transmedia-image-default.html",
+         "template": "/server-mock/templates/transmedia-image-default.html",
          "title":"Annual Solar Radiation",
          "description":"Watts per meter, squared",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Slide52.jpg"
@@ -232,7 +232,7 @@
          "category": "Slides",
          "start": 51,
          "end": 60,
-         "template": "/server-mock/template/transmedia-image-default.html",
+         "template": "/server-mock/templates/transmedia-image-default.html",
          "title":"Tilt Angle and Sun Tracking",
          "description":"Maximum energy yield, array orientation, single axis and dual axis tracking",
          "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Slide7.JPG"

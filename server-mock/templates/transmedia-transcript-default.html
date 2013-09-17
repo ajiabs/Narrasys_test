@@ -1,5 +1,6 @@
-{{transmedia.displayTime}}
-Annotation: {{transmedia.annotation}}
-{{transmedia.author.name}}
-
-{{transmedia}}
+<div data-ng-class='{"active-item": item.isActive, "inactive-item": !item.isActive && !item.wasActive, "previously-active-item": !item.isActive && item.wasActive}'>
+	<p>
+		<strong>{{item.authorName}}</strong> [<em>{{item.displayTime}}</em>]<br />
+		{{item.annotation}}
+	</p>
+</div>

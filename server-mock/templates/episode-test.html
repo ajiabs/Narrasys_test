@@ -1,18 +1,39 @@
 <style type="text/css">
-	.inactive {
+	img {
+		width: 150px;
+		height: 150px;
+	}
+	.video-js {
+		height: 350px;
+	}
+	.inactive-item {
 		background-color: #D1FFF0;
 	}
-	.active {
+	.active-item {
 		background-color: #ACFF83;
 	}
-	.previously-active {
+	.previously-active-item {
 		background-color: #809980;
+	}
+	.left-box {
+		width: 48%;
+		float: left;
+		border: 5px solid black;
+	}
+	.right-box {
+		width: 48%;
+		float: right;
+		border: 5px solid black;
+	}
+	.bottom-box {
+		border: 5px solid black;
+	}
+	.clear {
+		clear: both;
+		height: 10px;
 	}
 </style>
 
-<blockquote>
-	<h2>{{episode.title}}</h2>
-	<p><em>episode-template-A ({{episode.templateUrl}})</em></p>
+<h1>{{episode.title}}</h1>
 
-	<div data-ng-repeat="scene in scenes" data-scene="scene"></div>
-</blockquote>
+<div data-ng-repeat="scene in scenes" data-scene="scene" data-ng-show="scene.isActive"></div>

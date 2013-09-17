@@ -19,16 +19,16 @@ angular.module('player.directives', [])
 }])
 
 // Transmedia Directive
-.directive('transmedia', [function() {
+.directive('item', [function() {
 	return {
 		restrict: 'A',
 		replace: false,
-		template: '<div ng-include="transmedia.templateUrl">Loading Transmedia...</div>',
+		template: '<div ng-include="item.templateUrl">Loading Transmedia...</div>',
 		link: function(scope, iElement, iAttrs, controller) {
 			console.log("TRANSMEDIA SCOPE:", scope);
 		},
 		scope: {
-			transmedia: '='
+			item: '='
 		}
 	};
 }])

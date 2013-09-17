@@ -32,5 +32,5 @@ angular.module('player', [
 	$window.setInterval(function(){
 		position += 1;
 		setPlayhead(position);
-	}, 1500);
+	}, 1000);
 }]);
