@@ -19,7 +19,13 @@ angular.module('player.controllers', [])
 		// Create an episode model.
 		$scope.episode = {
 			title: data.episode.title,
-			templateUrl: data.episode.template
+			category: data.episode.category,
+			coverUrl: data.episode.cover,
+			templateUrl: data.episode.template,
+			videos: {
+				webm: data.episode.videos.webm,
+				mpeg4: data.episode.videos.mpeg4
+			}
 		};
 
 		// Create a collection of scene models

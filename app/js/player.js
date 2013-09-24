@@ -24,7 +24,8 @@ angular.module('player', [
 		.otherwise({redirectTo: '/error'});
 }])
 
-// App kickoff
+
+/*
 .run(['timelineSvc', '$window', function(timelineSvc, $window) {
 	// fake a timeline provider (temporary until videoJSWrapper directive is finished)
 	var setPlayhead = timelineSvc.registerProvider('mockTimeline', 1000);
@@ -34,3 +35,4 @@ angular.module('player', [
 		setPlayhead(position);
 	}, 1000);
 }]);
+*/

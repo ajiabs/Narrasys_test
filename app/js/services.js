@@ -14,6 +14,7 @@ angular.module('player.services', [])
 	configured with a timeline provider which keeps the service informed of the playhead
 	location, thus synchronizing it with a media item's timeline.
 */
+// TODO: Change name to queuePointScheduler
 .factory('timelineSvc', ['$window', function($window) {
 	var svc = {};
 
