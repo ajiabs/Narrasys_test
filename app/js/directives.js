@@ -4,7 +4,7 @@
 angular.module('player.directives', [])
 
 // Scene Directive
-.directive('scene', [function() {
+.directive('ittScene', [function() {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -19,7 +19,7 @@ angular.module('player.directives', [])
 }])
 
 // Transmedia Directive
-.directive('item', [function() {
+.directive('ittItem', [function() {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -39,9 +39,8 @@ angular.module('player.directives', [])
 .directive('ittVideo', ['timelineSvc', function(timelineSvc) {
 	return {
 		restrict: 'A',
-		replace: false,
+		replace: true,
 		templateUrl: 'partials/video.html',
-		scope: true,
 		link: function(scope, iElement, iAttrs, controller) {
 			console.log("VIDEO SCOPE:", scope);
 			// Register this video directive as the provider for the timeline service
@@ -56,22 +55,43 @@ angular.module('player.directives', [])
 					setPlayhead(player.currentTime());
 				});
 			});
-		}//,
-		//controller: function($scope, $element, $attrs, $transclude) {
-		//}
+			// listen for videoMagnet events and resize/reposition ourselves if we recieve one
+			scope.$on('videoMagnet', function(vmElement) {
+				// TODO: Animate?
+				iElement.offset(vmElement.offset());
+				iElement.width(vmElement.width());
+				iElement.height(vmElement.height());
+			});
+		}
 	};
 }])
 
 // This directive is basically an placeholder which can be removed/replaced
 // or reparented within the dom. When present in the dom the ittVideo directive
-// will automatically change its size and position to overlay the magnet directive
-.directive('ittVideoMagnet', ['timelineSvc', function(timelineSvc) {
+// will automatically change its size and position to overlay the magnet directive.
+// multiple magnets may be used in the dom. A magnet will 'attract' the video directive
+// when it goes from being hidden to visible in the dom (whether by insertion or display/hidden
+// of self or parent node.
+.directive('ittVideoMagnet', ['timelineSvc', '$rootScope', function(timelineSvc, $rootScope) {
 	return {
 		restrict: 'A',
-		replace: false,
+		replace: true,
 		scope: true,
 		link: function(scope, iElement, iAttrs, controller) {
-			
+			// 'activate' a dom instance of the itt-video-magnet directive by broadcasting an event from the root scope
+			// with a reference to the itt-video-magnet's dom element. The itt-video directive listens for these events
+			// and utilizes the dom element to reposition itself appropriately.
+			scope.activate = function() {
+				$rootScope.$broadcast('videoMagnet', iElement);
+			};
+			// watch this elements visisbility and if it becomes visible in the dom then automatically activate it
+			scope.$watch(function() {
+				return iElement.is(':visible');
+			}, scope.activate);
+			// if this element is visible now at time of rendering then activate it
+			if (iElement.is(':visible')) {
+				scope.activate();
+			}
 		}
 	};
 }]);

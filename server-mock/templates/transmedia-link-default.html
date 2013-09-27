@@ -1,4 +1,4 @@
-<div data-ng-class='{"active-item": item.isActive, "inactive-item": !item.isActive && !item.wasActive, "previously-active-item": !item.isActive && item.wasActive}'>
+<div x-ng-class='{"active-item": item.isActive, "inactive-item": !item.isActive && !item.wasActive, "previously-active-item": !item.isActive && item.wasActive}'>
 	<p>
 		<a href="{{item.source}}" target="_blank"><strong>{{item.title}}</strong></a><br />
 		<em>{{item.description}}</em>

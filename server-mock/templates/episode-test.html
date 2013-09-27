@@ -36,5 +36,6 @@
 
 <h1>{{episode.title}}</h1>
 
-<div data-itt-video></div>
-<div data-ng-repeat="scene in scenes" data-scene="scene" data-ng-show="scene.isActive"></div>
+<div x-itt-video></div>
+
+<div x-ng-repeat="scene in scenes" x-itt-scene="scene" x-ng-show="scene.isActive"></div>

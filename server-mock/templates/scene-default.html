@@ -1,9 +1,9 @@
 <h2>{{scene.title}}</h2>
-<div class="left-box video-js">VideoJS Placeholder</div>
+<div class="left-box video-js" x-itt-video-magnet>VideoJS Placeholder</div>
 <div class="right-box">
-	<div data-ng-repeat="item in scene.items | type: ['transcript']" data-item="item"></div>
+	<div x-ng-repeat="item in scene.items | type: ['transcript']" x-itt-item="item"></div>
 </div>
 <div class="clear"></div>
 <div class="bottom-box">
-	<div data-ng-repeat="item in scene.items | type: ['image', 'link']" data-item="item"></div>
+	<div x-ng-repeat="item in scene.items | type: ['image', 'link']" x-itt-item="item"></div>
 </div>
