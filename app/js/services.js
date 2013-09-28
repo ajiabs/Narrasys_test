@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare the player.services module
-angular.module('player.services', [])
+angular.module('com.inthetelling.player.services', [])
 
 /*	Timeline Service
 	Manages the conceptual timeline for the episode by publishing key events

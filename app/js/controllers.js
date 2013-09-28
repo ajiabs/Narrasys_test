@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare the player.controllers module
-angular.module('player.controllers', [])
+angular.module('com.inthetelling.player.controllers', [])
 
 // UI Error Controller (Shows an error through the UI)
 .controller('UIErrorController', ['$scope', '$rootScope', function($scope, $rootScope) {

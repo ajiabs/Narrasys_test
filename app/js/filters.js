@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare the player.filters module
-angular.module('player.filters', [])
+angular.module('com.inthetelling.player.filters', [])
 
 /*	Filters a collection of item models by their type property. Should be provided an array of allowed types.
 	Usage example:

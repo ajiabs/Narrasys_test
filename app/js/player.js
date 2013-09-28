@@ -1,13 +1,13 @@
 'use strict';
 
 // Declare the top level application module 'player'
-angular.module('player', [
+angular.module('com.inthetelling.player', [
 	// dependencies
 	'ngRoute',
-	'player.filters',
-	'player.services',
-	'player.directives',
-	'player.controllers'
+	'com.inthetelling.player.filters',
+	'com.inthetelling.player.services',
+	'com.inthetelling.player.directives',
+	'com.inthetelling.player.controllers'
 ])
 
 // Configure routing
@@ -24,10 +24,19 @@ angular.module('player', [
 		.otherwise({redirectTo: '/error'});
 }])
 
+// Configure x-domain resource whitelist
+.config(['$sceDelegateProvider', function($sceDelegateProvider) {
+     $sceDelegateProvider.resourceUrlWhitelist([
+     	'self',
+     	/^https?:\/\/danielbeck.net/,
+     	/^https?:\/\/platformuniv-p.edgesuite.net/
+     ]);
+ }])
 
-/*
+
+
 .run(['timelineSvc', '$window', function(timelineSvc, $window) {
-	// fake a timeline provider (temporary until videoJSWrapper directive is finished)
+	// fake a timeline provider (for testing and debugging)
 	var setPlayhead = timelineSvc.registerProvider('mockTimeline', 1000);
 	var position = 0;
 	$window.setInterval(function(){
@@ -35,4 +44,4 @@ angular.module('player', [
 		setPlayhead(position);
 	}, 1000);
 }]);
-*/
+

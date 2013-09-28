@@ -1,16 +1,21 @@
 <!doctype html>
-<html lang="en" data-ng-app="player">
+<html lang="en" data-ng-app="com.inthetelling.player">
 <head>
 	<meta charset="utf-8">
 	<title>In The Telling Player</title>
 	<link href="css/app.css" rel="stylesheet" />
+	<!-- TODO: Should be imported conditionally only if we are using video.js -->
+	<link href="http://vjs.zencdn.net/4.1/video-js.css" rel="stylesheet" />
 </head>
 <body>
 	
 	<div data-ng-view></div>
 
-	<!--<script src="lib/jquery/1.10.2/jquery.js"></script>
-	<script src="lib/jquery-ui/1.10.3/jquery-ui.js"></script>-->
+	<!-- TODO: Should be imported conditionally only if we are using video.js -->
+	<script src="http://vjs.zencdn.net/4.1/video.js"></script>
+
+	<script src="lib/jquery/1.10.2/jquery.js"></script>
+	<!--<script src="lib/jquery-ui/1.10.3/jquery-ui.js"></script>-->
 	<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular.js"></script>-->
 	<script src="lib/angular/1.2.0-rc.2-snapshot/angular.js"></script>
 	<script src="lib/angular/1.2.0-rc.2-snapshot/angular-route.js"></script>
