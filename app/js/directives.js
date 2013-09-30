@@ -40,25 +40,36 @@ angular.module('com.inthetelling.player.directives', [])
 	return {
 		restrict: 'A',
 		replace: false,
-		templateUrl: 'partials/video.html',
 		link: function(scope, iElement, iAttrs, controller) {
 			console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
+
+			// Create the DOM node contents
+			iElement.html(function() {
+				var node = '<video id="vjs" class="video-js vjs-default-skin" autoplay preload poster="' + scope.episode.coverUrl + '" width="100%" height="100%">';
+				node += '<source type="video/mp4" src="' + scope.episode.videos.mpeg4 + '" />';
+				node += '<source type="video/webm" src="' + scope.episode.videos.webm + '" />';
+				node += '</video>';
+				return node;
+			});
+
 			// Register this video directive as the provider for the timeline service
-			var setPlayhead = timelineSvc.registerProvider('directive.video', 10);
+			var setPlayhead = timelineSvc.registerProvider('ittVideo', 10);
+
 			// Initialize the videojs player and register a listener on it to inform the timeline
 			// service wheneve the playhead position changes. We perform this here rather than the
 			// controller because linking happens after the template has been applid and the DOM is updated
 			// TODO: Need to inject or scope a reference to videojs instead of the global, for testability
-			/*$timeout(function() {
-				scope.$apply(function() {
+			$timeout(function() {
+				//scope.$apply(function() {
 					videojs("vjs", {}, function() {
 						var player = this;
 						player.on("timeupdate", function() {
 							setPlayhead(player.currentTime());
 						});
 					});
-				});
-			}, 0);*/
+				//});
+			}, 0);
+
 			// listen for videoMagnet events and resize/reposition ourselves if we recieve one
 			scope.$on('videoMagnet', function(evt, el) {
 				// TODO: Animate?
@@ -94,11 +105,15 @@ angular.module('com.inthetelling.player.directives', [])
 			// watch this elements visisbility and if it becomes visible in the dom then automatically activate it
 			scope.$watch(function() {
 				return iElement.is(':visible');
-			}, scope.activate);
+			}, function() {
+				if (iElement.is(':visible')) {
+					scope.activate();
+				}
+			});
 			// if this element is visible now at time of rendering then activate it
-			if (iElement.is(':visible')) {
-				scope.activate();
-			}
+			//if (iElement.is(':visible')) {
+			//	scope.activate();
+			//}
 		}
 	};
 }]);

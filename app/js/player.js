@@ -34,7 +34,7 @@ angular.module('com.inthetelling.player', [
  }])
 
 
-
+/*
 .run(['timelineSvc', '$window', function(timelineSvc, $window) {
 	// fake a timeline provider (for testing and debugging)
 	var setPlayhead = timelineSvc.registerProvider('mockTimeline', 1000);
@@ -44,4 +44,4 @@ angular.module('com.inthetelling.player', [
 		setPlayhead(position);
 	}, 1000);
 }]);
-
+*/
