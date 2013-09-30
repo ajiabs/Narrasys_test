@@ -59,16 +59,14 @@ angular.module('com.inthetelling.player.directives', [])
 			// service wheneve the playhead position changes. We perform this here rather than the
 			// controller because linking happens after the template has been applid and the DOM is updated
 			// TODO: Need to inject or scope a reference to videojs instead of the global, for testability
-			$timeout(function() {
-				//scope.$apply(function() {
-					videojs("vjs", {}, function() {
-						var player = this;
-						player.on("timeupdate", function() {
-							setPlayhead(player.currentTime());
-						});
-					});
-				//});
-			}, 0);
+			videojs("vjs", {
+				"controls": true
+			}, function() {
+				var player = this;
+				player.on("timeupdate", function() {
+					setPlayhead(player.currentTime());
+				});
+			});
 
 			// listen for videoMagnet events and resize/reposition ourselves if we recieve one
 			scope.$on('videoMagnet', function(evt, el) {
@@ -87,7 +85,7 @@ angular.module('com.inthetelling.player.directives', [])
 // will automatically change its size and position to overlay the magnet directive.
 // multiple magnets may be used in the dom. A magnet will 'attract' the video directive
 // when it goes from being hidden to visible in the dom (whether by insertion or display/hidden
-// of self or parent node.
+// of self or parent node).
 .directive('ittVideoMagnet', ['timelineSvc', '$rootScope', function(timelineSvc, $rootScope) {
 	return {
 		restrict: 'A',
