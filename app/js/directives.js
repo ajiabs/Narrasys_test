@@ -64,6 +64,7 @@ angular.module('com.inthetelling.player.directives', [])
 			}, function() {
 				var player = this;
 				player.on("timeupdate", function() {
+					console.log("$$ timeupdate &&", player.currentTime());
 					setPlayhead(player.currentTime());
 				});
 			});

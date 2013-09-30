@@ -21,7 +21,7 @@
       },
       {
         "type":"scene",
-        "start": 21,
+        "start": 20,
         "end": 40,
         "title": "S2: Energy Infrastructure",
         "description": "Differences in the Global North and the Global South",
@@ -30,7 +30,7 @@
       },
       {
         "type":"scene",
-        "start": 41,
+        "start": 40,
         "end": 60,
         "title": "S3: Energy Technologies",
         "description": "Strengths and weaknesses",

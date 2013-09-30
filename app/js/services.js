@@ -72,7 +72,7 @@ angular.module('com.inthetelling.player.services', [])
 				// if the span is active
 				if (span.isActive) {
 					// and the playhead is outside of the span range
-					if (playhead < span.begin || playhead > span.end) {
+					if (playhead < span.begin || playhead >= span.end) {
 						// deactivate the span
 						span.isActive = false;
 						// and 'publish' EXIT event
@@ -83,7 +83,7 @@ angular.module('com.inthetelling.player.services', [])
 				// else if the span is inactive
 				else if (!span.isActive) {
 					// and the playhead is inside of the span range
-					if (playhead >= span.begin && playhead <= span.end) {
+					if (playhead >= span.begin && playhead < span.end) {
 						// activate the span
 						span.isActive = true;
 						// and 'publish' ENTER event
