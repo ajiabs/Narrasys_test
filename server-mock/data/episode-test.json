@@ -12,7 +12,7 @@
    "events": [
       {
         "type": "scene",
-        "start": 1,
+        "start": 0,
         "end": 20,
         "title": "S1: The Green Economy",
         "description": "Understand how sustainability helps build a vibrant economy.",
