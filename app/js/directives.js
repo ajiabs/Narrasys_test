@@ -1,7 +1,7 @@
 'use strict';
 
-// Declare the player.directives module
-angular.module('com.inthetelling.player.directives', [])
+// Declare the module
+angular.module('com.inthetelling.player')
 
 // Scene Directive
 .directive('ittScene', [function() {
@@ -36,7 +36,7 @@ angular.module('com.inthetelling.player.directives', [])
 // Video.js Wrapper Directive
 // - can only declare one of these for an episode
 // - should never be reparented or removed from the dom (use ittVideoMagnet directives instead)
-.directive('ittVideo', ['timelineSvc', '$timeout', function(timelineSvc, $timeout) {
+.directive('ittVideo', ['queuePointScheduler', '$timeout', function(queuePointScheduler, $timeout) {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -53,7 +53,7 @@ angular.module('com.inthetelling.player.directives', [])
 			});
 
 			// Register this video directive as the provider for the timeline service
-			var setPlayhead = timelineSvc.registerProvider('ittVideo', 10);
+			var setPlayhead = queuePointScheduler.registerProvider('ittVideo', 10);
 
 			// Initialize the videojs player and register a listener on it to inform the timeline
 			// service wheneve the playhead position changes. We perform this here rather than the
@@ -87,7 +87,7 @@ angular.module('com.inthetelling.player.directives', [])
 // multiple magnets may be used in the dom. A magnet will 'attract' the video directive
 // when it goes from being hidden to visible in the dom (whether by insertion or display/hidden
 // of self or parent node).
-.directive('ittVideoMagnet', ['timelineSvc', '$rootScope', function(timelineSvc, $rootScope) {
+.directive('ittVideoMagnet', ['queuePointScheduler', '$rootScope', function(queuePointScheduler, $rootScope) {
 	return {
 		restrict: 'A',
 		replace: true,

@@ -1,9 +1,85 @@
 'use strict';
 
-// Declare the player.services module
-angular.module('com.inthetelling.player.services', [])
+// Declare the module
+angular.module('com.inthetelling.player')
 
-/*	Timeline Service
+.factory('modelFactory', ['$window', function($window) {
+
+	var svc = {};
+
+	svc.createEpisodeModel = function(data) {
+		var model = {};
+
+		model.title = data.title,
+		model.category = data.category,
+		model.coverUrl = data.cover,
+		model.templateUrl = data.template,
+		model.videos = {
+			webm: data.videos.webm,
+			mpeg4: data.videos.mpeg4
+		};
+		model.scenes = [];
+
+		return model;
+	};
+
+	svc.createSceneModel = function(data) {
+		var model = {};
+		
+		model.type = data.type;
+		model.title = data.title;
+		model.description = data.description;
+		model.templateUrl = data.template;
+		model.startTime = data.start;
+		model.endTime = data.end;
+		model.thumbnail = data.src;
+		model.isActive = false;
+		model.wasActive = false;
+		model.items = [];
+
+		return model;
+	};
+
+	svc.createItemModel = function(data) {
+		var model = {};
+		
+		// base model
+		model.type = data.type;
+		model.category = data.category;
+		model.startTime = data.start;
+		model.endTime = data.end;
+		model.templateUrl = data.template;
+		model.displayTime = Math.floor(data.start/60) + ":" + ("0"+Math.floor(data.start)%60).slice(-2);
+
+		// extend base model based on item type
+		switch(data.type) {
+			case "transcript":
+				model.authorName = data.author.name;
+				model.authorThumbSrc = data.author.src;
+				model.annotation = data.annotation;
+				break;
+
+			case "link":
+				model.title = data.title;
+				model.description = data.description;
+				model.thumbSrc = data.src;
+				model.source = data.href;
+				break;
+
+			case "image":
+				model.title = data.title;
+				model.description = data.description;
+				model.source = data.src;
+				break;
+		}
+
+		return model;
+	};
+
+	return svc;
+}])
+
+/*	QueuePointScheduler Service
 	Manages the conceptual timeline for the episode by publishing key events
 	to subscribers. A subscriber must provide a 'span' object which contains
 	integer properties 'begin' and 'end'. The service keeps an internal record
@@ -12,10 +88,9 @@ angular.module('com.inthetelling.player.services', [])
 	when the playhead first enters an inactive span, and an 'exit' topic will be
 	published when the playhead first exits an active span. The service needs to be
 	configured with a timeline provider which keeps the service informed of the playhead
-	location, thus synchronizing it with a media item's timeline.
+	position, thus synchronizing it with a media item's timeline.
 */
-// TODO: Change name to queuePointScheduler
-.factory('timelineSvc', ['$window', function($window) {
+.factory('queuePointScheduler', ['$window', function($window) {
 	var svc = {};
 
 	// Event 'constants' (public)

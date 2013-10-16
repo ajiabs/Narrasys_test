@@ -1,14 +1,7 @@
 'use strict';
 
-// Declare the top level application module 'player'
-angular.module('com.inthetelling.player', [
-	// dependencies
-	'ngRoute',
-	'com.inthetelling.player.filters',
-	'com.inthetelling.player.services',
-	'com.inthetelling.player.directives',
-	'com.inthetelling.player.controllers'
-])
+// Declare the top level application module and its dependencies
+angular.module('com.inthetelling.player', ['ngRoute'])
 
 // Configure routing
 .config(['$routeProvider', function($routeProvider) {
