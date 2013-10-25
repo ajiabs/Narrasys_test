@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" data-ng-app="com.inthetelling.player">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>InTheTelling Player</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+		<!-- build:css(.tmp) styles/combined.css -->
+		<link rel="stylesheet" href="styles/main.css" />
+		<link rel="stylesheet" href="bower_components/video.js/video-js.css" />
+		<!-- endbuild -->
+    </head>
+	<body>
+		<!--[if lt IE 7]>
+			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+
+		<!--[if lt IE 9]>
+			<script src="bower_components/es5-shim/es5-shim.js"></script>
+			<script src="bower_components/json3/lib/json3.min.js"></script>
+		<![endif]-->
+
+		<div data-ng-view=""></div>
+
+		<script src="bower_components/jquery/jquery.js"></script>
+		<script src="bower_components/angular/angular.js"></script>
+
+		<!-- build:js scripts/libraries-combined.js -->
+		<script src="bower_components/underscore/underscore.js"></script>
+		<script src="bower_components/video.js/video.js"></script>
+		<!-- endbuild -->
+
+		<!-- build:js scripts/modules-combined.js -->
+		<script src="bower_components/angular-resource/angular-resource.js"></script>
+		<script src="bower_components/angular-route/angular-route.js"></script>
+		<!-- endbuild -->
+
+		<!-- build:js({.tmp,app}) scripts/app-combined.js -->
+		<script src="scripts/app.js"></script>
+		<script src="scripts/controllers/UIErrorController.js"></script>
+		<script src="scripts/controllers/EpisodeController.js"></script>
+		<script src="scripts/directives/ittScene.js"></script>
+		<script src="scripts/directives/ittItem.js"></script>
+		<script src="scripts/directives/ittVideo.js"></script>
+		<script src="scripts/directives/ittVideoMagnet.js"></script>
+		<script src="scripts/filters/type.js"></script>
+		<script src="scripts/services/modelFactory.js"></script>
+		<script src="scripts/services/queuePointScheduler.js"></script>
+		<!-- endbuild -->
+    </body>
+</html>
