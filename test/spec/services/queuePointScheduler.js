@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: Queuepointscheduler', function () {
+xdescribe('Service: queuePointScheduler', function () {
 
-  // load the service's module
-  beforeEach(module('ComInthetellingPlayerApp'));
+	// load the service's module
+	beforeEach(module('com.inthetelling.player'));
 
-  // instantiate service
-  var Queuepointscheduler;
-  beforeEach(inject(function (_Queuepointscheduler_) {
-    Queuepointscheduler = _Queuepointscheduler_;
-  }));
+	// instantiate service
+	var queuePointScheduler;
+	beforeEach(inject(function (_queuePointScheduler_) {
+		queuePointScheduler = _queuePointScheduler_;
+	}));
 
-  it('should do something', function () {
-    expect(!!Queuepointscheduler).toBe(true);
-  });
+	xit('should do something', function () {
+		expect(!!queuePointScheduler).toBe(true);
+	});
 
 });
