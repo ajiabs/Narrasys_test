@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: Rename to CuePointScheduler
+
 /*  QueuePointScheduler Service
   Manages the conceptual timeline for the episode by publishing key events
   to subscribers. A subscriber must provide a 'span' object which contains
@@ -175,8 +177,6 @@ angular.module('com.inthetelling.player')
       return false;
     }
     providerId = id;
-    // TODO: probably a better way to do this than using the raw window method. This will create
-    // testability problems.
     scanIntervalId = $window.setInterval(scan, interval || 1000);
     return setPlayhead;
   };
