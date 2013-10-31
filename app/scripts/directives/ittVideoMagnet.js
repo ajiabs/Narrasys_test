@@ -7,13 +7,13 @@
 // when it goes from being hidden to visible in the dom (whether by insertion or display/hidden
 // of self or parent node).
 angular.module('com.inthetelling.player')
-.directive('ittVideoMagnet', function (queuePointScheduler, $rootScope) {
+.directive('ittVideoMagnet', function ($rootScope) {
 	return {
 		restrict: 'A',
 		replace: true,
 		scope: true,
 		link: function(scope, iElement, iAttrs, controller) {
-			console.log("ITT-VIDEO-MAGNET LINKING FUNCTION: [scope:", scope, "]");
+			//console.log("ITT-VIDEO-MAGNET LINKING FUNCTION: [scope:", scope, "]");
 			// 'activate' a dom instance of the itt-video-magnet directive by broadcasting an event from the root scope
 			// with a reference to the itt-video-magnet's dom element. The itt-video directive listens for these events
 			// and utilizes the dom element to reposition itself appropriately.

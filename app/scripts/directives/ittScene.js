@@ -7,9 +7,6 @@ angular.module('com.inthetelling.player')
 		restrict: 'A',
 		replace: false,
 		template: '<div ng-include="scene.templateUrl">Loading Scene...</div>',
-		link: function(scope, iElement, iAttrs, controller) {
-			console.log("ITT-SCENE LINKING FUNCTION: [scope:", scope, "]");
-		},
 		scope: {
 			scene: '=ittScene'
 		}

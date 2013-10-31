@@ -1,20 +1,21 @@
 'use strict';
 
-xdescribe('Directive: ittItem', function () {
+describe('Directive: ittItem', function () {
 
 	// load the directive's module
 	beforeEach(module('com.inthetelling.player'));
 
 	var element,
-		scope;
+		parentScope;
 
-	beforeEach(inject(function ($rootScope) {
-		scope = $rootScope.$new();
+	beforeEach(inject(function ($rootScope, $compile) {
+		parentScope = $rootScope.$new();
+		parentScope.itemModel = { "test": true };
+		element = angular.element('<div itt-item="itemModel"></div>');
+		element = $compile(element)(parentScope);
 	}));
 
-	xit('should make hidden element visible', inject(function ($compile) {
-		element = angular.element('<itt-item></itt-item>');
-		element = $compile(element)(scope);
-		expect(element.text()).toBe('this is the ittItem directive');
-	}));
+	it('should create an isolate scope containing the model from parent scope', function() {
+		expect(element.scope().item).toEqual(parentScope.itemModel);
+	});
 });
