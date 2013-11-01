@@ -10,7 +10,7 @@ angular.module('com.inthetelling.player')
 		model.title = data.title;
 		model.category = data.category;
 		model.coverUrl = data.cover;
-		model.templateUrl = data.template;
+		model.templateUrl = data.template || "/server-mock/templates/episode-default.html";
 		model.videos = {
 			webm: data.videos.webm,
 			mpeg4: data.videos.mpeg4
@@ -26,13 +26,17 @@ angular.module('com.inthetelling.player')
 		model.type = data.type;
 		model.title = data.title;
 		model.description = data.description;
-		model.templateUrl = data.template;
 		model.startTime = data.start;
 		model.endTime = data.end;
 		model.thumbnail = data.src; // TODO: change to model.thumbSrc (for consistency with item thumbnails and of calling item url/src in var name)
 		model.isActive = false;
 		model.wasActive = false;
 		model.items = [];
+
+		model.templateUrl = data.template || "/server-mock/templates/scene-combined.html";
+		model.layout = data.layout || "combined";
+		model.styles = data.styles || "";
+		
 
 		return model;
 	};
@@ -45,8 +49,11 @@ angular.module('com.inthetelling.player')
 		model.category = data.category;
 		model.startTime = data.start;
 		model.endTime = data.end;
-		model.templateUrl = data.template;
 		model.displayTime = Math.floor(data.start/60) + ":" + ("0"+Math.floor(data.start)%60).slice(-2);
+
+		model.templateUrl = data.template || console.error("ERROR no templateUrl specified for item");
+		model.layout = data.layout || "inline";
+		model.styles = data.styles || "";
 
 		// extend base model based on item type
 		switch(data.type) {

@@ -1,0 +1,37 @@
+<div class="scene">
+	<div class="fillParent windowBg itemsCurrent">
+		<div class="item" x-ng-repeat="item in scene.items | layout: ['windowBg']" x-itt-item="item"></div>
+	</div>
+	<h2>{{scene.title}}</h2>
+	<div class="videoContainer">
+		<div class="fillParent" x-itt-video-magnet>VideoJS Placeholder</div>
+		<div class="fillParent videoOverlay itemsCurrent">
+			<div class="item" x-ng-repeat="item in scene.items | layout: ['videoOverlay']" x-itt-item="item"></div>
+		</div>
+	</div>
+	<div class="itemsTranscript">
+		<div class="fillParent itemsCurrent">
+			<div class="item" x-ng-repeat="item in scene.items | layout: ['transcriptBg']" x-itt-item="item"></div>
+		</div>
+		<div class="fillParent">
+			<div class="item" x-ng-repeat="item in scene.items | type: ['transcript'] | layout: ['inline', 'sidebarL', 'sidebarR', 'burstL','burstR','burst']" x-itt-item="item"></div>
+		</div>
+		<div class="fillParent itemsCurrent">
+			<div class="item" x-ng-repeat="item in scene.items | layout: ['transcriptFg']" x-itt-item="item"></div>
+		</div>
+	</div>
+	<div class="itemsTransmedia">
+		<div class="fillParent itemsCurrent">
+			<div class="item" x-ng-repeat="item in scene.items | layout: ['transmediaBg']" x-itt-item="item"></div>
+		</div>
+		<div class="fillParent">
+			<div class="item" x-ng-repeat="item in scene.items | type: ['image','link'] | layout: ['inline', 'sidebarL', 'sidebarR', 'burstL','burstR','burst']" x-itt-item="item"></div>
+		</div>
+		<div class="fillParent itemsCurrent">
+			<div class="item" x-ng-repeat="item in scene.items | layout: ['transmediaFg']" x-itt-item="item"></div>
+		</div>
+	</div>
+	<div class="fillParent  itemsCurrentwindowFg">
+		<div class="item" x-ng-repeat="item in scene.items | layout: ['windowFg']" x-itt-item="item"></div>
+	</div>
+</div>
