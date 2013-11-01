@@ -1,247 +1,247 @@
 {
-   "episode": {
-      "title": "Test Episode",
-      "category": "EWB-USA/Prototype/Module 1 Solar PV",
-      "cover": "http://theplatform-static.edgesuite.net/In_The_Telling/toc8_1280x720_25781827819.jpg",
-      "template": "/server-mock/templates/episode-test.html",
-      "videos": {
-         "webm": "http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
-         "mpeg4": "http://platformuniv-p.edgesuite.net/dynamic/In_The_Telling/S3T2_Importance_of_Geography__192694.mp4"
-      }
-   },
-   "events": [
-      {
-        "type": "scene",
-        "start": 0,
-        "end": 20,
-        "title": "S1: The Green Economy",
-        "description": "Understand how sustainability helps build a vibrant economy.",
-        "src": "http://theplatform-static.edgesuite.net/In_The_Telling/toc0__189165.png",
-        "template": "/server-mock/templates/scene-default.html"
-      },
-      {
-        "type":"scene",
-        "start": 20,
-        "end": 40,
-        "title": "S2: Energy Infrastructure",
-        "description": "Differences in the Global North and the Global South",
-        "src": "http://theplatform-static.edgesuite.net/In_The_Telling/toc1__351283.png",
-        "template": "/server-mock/templates/scene-default.html"
-      },
-      {
-        "type":"scene",
-        "start": 40,
-        "end": 60,
-        "title": "S3: Energy Technologies",
-        "description": "Strengths and weaknesses",
-        "src": "http://theplatform-static.edgesuite.net/In_The_Telling/toc2__709927.png",
-        "template": "/server-mock/templates/scene-default.html"
-      },
-      {
-         "type":"transcript",
-         "start": 1,
-         "end": 6,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "author":{
-            "name":"Frank Bergh",
-            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
-         },
-         "annotation":"Hi, I'm Frank Bergh, and I'm the Director of the Energy Standing Content Committee for Engineers Without Borders, USA. Historically, the development of energy infrastructure has been different in the Global North and the Global South."
-      },
-      {
-         "type":"transcript",
-         "start": 7,
-         "end": 15,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "author":{
-            "name":"Frank Bergh",
-            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
-         },
-         "annotation":"In Western post-industrial economies, we have robust energy infrastructure\u2014centralized, capital-intensive, driven by reliability, and constantly growing demand. "
-      },
-      {
-         "type":"transcript",
-         "start": 16,
-         "end": 20,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "author":{
-            "name":"Frank Bergh",
-            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
-         },
-         "annotation":"However, in the Global South, we see the political realities and resource constraints have created a much different energy landscape, and 1.4 billion people in the world suffer from what's called \"energy poverty\"\u2014a lack of reliable access to electricity."
-      },
-      {
-         "type":"transcript",
-         "start": 21,
-         "end": 27,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "author":{
-            "name":"Frank Bergh",
-            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
-         },
-         "annotation":"Well solar panels enable Engineers Without Borders in the communities we serve to bring an end to energy poverty in a developing world. "
-      },
-      {
-         "type":"transcript",
-         "start": 28,
-         "end": 34,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "author":{
-            "name":"Frank Bergh",
-            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
-         },
-         "annotation":"This graphic shows annual solar radiation, with the lighter areas representing the most sun. It illustrates why solar power can be such a great resource for the developing world."
-      },
-      {
-         "type":"transcript",
-         "start": 35,
-         "end": 40,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "author":{
-            "name":"Frank Bergh",
-            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
-         },
-         "annotation":"Like any energy technology, solar photovoltaic systems have inherent strengths and weaknesses. On the bright side, there's no fuel cost to operate a solar power system once it's installed. Solar panels are modular, scalable and expandable over time if the system needs to grow."
-      },
-      {
-         "type":"transcript",
-         "start":41,
-         "end": 46,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "author":{
-            "name":"Frank Bergh",
-            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
-         },
-         "annotation":"There's no moving parts, which simplifies maintenance. It's safe to operate, with no health risks to the end user. And it allows for local ownership to be operated either on or off the grid. However, for some communities, solar energy can be very cost-prohibitive in terms of the capital-intensive upfront costs of installing the initial system."
-      },
-      {
-         "type":"transcript",
-         "start": 47,
-         "end": 52,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "author":{
-            "name":"Frank Bergh",
-            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
-         },
-         "annotation":"Additionally, solar energy is non-dispatchable, unless coupled with an energy storage system. That means that the energy is only available during daylight, and for using electricity at night, you need a battery storage system or an alternative backup generator."
-      },
-      {
-         "type":"transcript",
-         "start": 53,
-         "end": 60,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "author":{
-            "name":"Frank Bergh",
-            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
-         },
-         "annotation":"In developing communities, there may be a knowledge gap for understanding what makes these systems tick. Unfortunately, solar energy systems may become a target for theft or vandalism, in the case of a lack of community interests, or if the benefits of this system are not equally shared among all stakeholders."
-      },
-      {
-         "type": "link",
-         "category": "Links",
-         "start":1,
-         "end": 5,
-         "template": "/server-mock/templates/transmedia-link-default.html",
-         "title":"Poor People's Energy Outlook",
-         "description":"Overview of energy access challenges to the world\u2019s poor. ",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Poor_People_s_Energy_Outlook.PNG",
-         "href":"http://practicalaction.org/poor-peoples-energy-outlook-2010"
-      },
-      {
-         "type": "link",
-         "category": "Links",
-         "start":6,
-         "end": 10,
-         "template": "/server-mock/templates/transmedia-link-default.html",
-         "title":"Water for Mulobere",
-         "description":"Clean water project in Uganda, by EWB-USA University of Minnesota.",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Water_for_Mulobere.PNG",
-         "href":"http://bb1.inthetelling.com/webapps/blackboard/execute/content/blankPage?cmd=view&content_id=_351_1&course_id=_61_1 "
-      },
-      {
-         "type": "link",
-         "category": "Links",
-         "start": 11,
-         "end": 15,
-         "template": "/server-mock/templates/transmedia-link-default.html",
-         "title":"EWB Rwanda Project",
-         "description":"The EWB-USA UC Boulder, and EWB-USA Johnson Space Center project",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/EWB_Rwanda_Project.PNG",
-         "href":"http://bb1.inthetelling.com/webapps/blackboard/execute/content/blankPage?cmd=view&content_id=_352_1&course_id=_61_1 "
-      },
-      {
-         "type": "link",
-         "category": "Links",
-         "start": 16,
-         "end": 20,
-         "template": "/server-mock/templates/transmedia-link-default.html",
-         "title":"Estimations of PV Systems",
-         "description":"Primer on sizing battery-based PV systems and estimating costs.",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Estimating_PV_System_Size_and_Cost__820892.PNG",
-         "href":"http://www.infinitepower.org/pdf/FactSheet-24.pdf"
-      },
-      {
-         "type":"link",
-         "category": "links",
-         "start":21,
-         "end": 34,
-         "template": "/server-mock/templates/transmedia-link-default.html",
-         "title":"Burkina Faso - Solar",
-         "description":"EWB-USA University of Maryland solar lighting project.",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
-         "href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
-      },
-      {
-         "type":"link",
-         "category": "In Depth",
-         "start": 25,
-         "end": 30,
-         "template": "/server-mock/templates/transmedia-link-default.html",
-         "title":"Energy Poverty",
-         "description":"How to make modern energy access universal?",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Energy_Poverty.PNG",
-         "href":"https://s3.amazonaws.com/EWB_PDFs/Topic+1+Content/Energy-Poverty.pdf"
-      },
-      {
-         "type":"link",
-         "category": "In Depth",
-         "start": 36,
-         "end": 40,
-         "template": "/server-mock/templates/transmedia-link-default.html",
-         "title":"Community-Driven Empowerment",
-         "description":"An EWB-USA approach to solar PV in developing communities",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Community_Driven_Empowerment.PNG",
-         "href":"https://s3.amazonaws.com/EWB_PDFs/Topic+1+Content/Community-Driven+Empowerment--An+EWB-USA+Approach+to+Solar+PV+in+Developing+Communities.pdf "
-      },
-      {
-         "type":"image",
-         "category": "Slides",
-         "start": 41,
-         "end": 50,
-         "template": "/server-mock/templates/transmedia-image-default.html",
-         "title":"The Solar Resource",
-         "description":"Insolation",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Slide51.JPG"
-      },
-      {
-         "type":"image",
-         "category": "Slides",
-         "start": 51,
-         "end": 60,
-         "template": "/server-mock/templates/transmedia-image-default.html",
-         "title":"Annual Solar Radiation",
-         "description":"Watts per meter, squared",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Slide52.jpg"
-      },
-      {
-         "type":"image",
-         "category": "Slides",
-         "start": 51,
-         "end": 60,
-         "template": "/server-mock/templates/transmedia-image-default.html",
-         "title":"Tilt Angle and Sun Tracking",
-         "description":"Maximum energy yield, array orientation, single axis and dual axis tracking",
-         "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Slide7.JPG"
-      }
-   ]
+	"episode": {
+		"title": "Test Episode",
+		"category": "EWB-USA/Prototype/Module 1 Solar PV",
+		"cover": "http://theplatform-static.edgesuite.net/In_The_Telling/toc8_1280x720_25781827819.jpg",
+		"template": "/server-mock/templates/test/episode-test.html",
+		"videos": {
+			"webm": "http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
+			"mpeg4": "http://platformuniv-p.edgesuite.net/dynamic/In_The_Telling/S3T2_Importance_of_Geography__192694.mp4"
+		}
+	},
+	"events": [
+		{
+			"type": "scene",
+			"start": 0,
+			"end": 20,
+			"title": "S1: The Green Economy",
+			"description": "Understand how sustainability helps build a vibrant economy.",
+			"src": "http://theplatform-static.edgesuite.net/In_The_Telling/toc0__189165.png",
+			"template": "/server-mock/templates/test/scene-default.html"
+		},
+		{
+			"type":"scene",
+			"start": 20,
+			"end": 40,
+			"title": "S2: Energy Infrastructure",
+			"description": "Differences in the Global North and the Global South",
+			"src": "http://theplatform-static.edgesuite.net/In_The_Telling/toc1__351283.png",
+			"template": "/server-mock/templates/test/scene-alt.html"
+		},
+		{
+			"type":"scene",
+			"start": 40,
+			"end": 60,
+			"title": "S3: Energy Technologies",
+			"description": "Strengths and weaknesses",
+			"src": "http://theplatform-static.edgesuite.net/In_The_Telling/toc2__709927.png",
+			"template": "/server-mock/templates/test/scene-default.html"
+		},
+		{
+			"type":"transcript",
+			"start": 1,
+			"end": 6,
+			"template": "/server-mock/templates/test/transmedia-transcript-default.html",
+			"author":{
+				"name":"Frank Bergh",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Hi, I'm Frank Bergh, and I'm the Director of the Energy Standing Content Committee for Engineers Without Borders, USA. Historically, the development of energy infrastructure has been different in the Global North and the Global South."
+		},
+		{
+			"type":"transcript",
+			"start": 7,
+			"end": 15,
+			"template": "/server-mock/templates/test/transmedia-transcript-default.html",
+			"author":{
+				"name":"Frank Bergh",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"In Western post-industrial economies, we have robust energy infrastructure\u2014centralized, capital-intensive, driven by reliability, and constantly growing demand. "
+		},
+		{
+			"type":"transcript",
+			"start": 16,
+			"end": 20,
+			"template": "/server-mock/templates/test/transmedia-transcript-default.html",
+			"author":{
+				"name":"Frank Bergh",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"However, in the Global South, we see the political realities and resource constraints have created a much different energy landscape, and 1.4 billion people in the world suffer from what's called \"energy poverty\"\u2014a lack of reliable access to electricity."
+		},
+		{
+			"type":"transcript",
+			"start": 21,
+			"end": 27,
+			"template": "/server-mock/templates/test/transmedia-transcript-default.html",
+			"author":{
+				"name":"Frank Bergh",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Well solar panels enable Engineers Without Borders in the communities we serve to bring an end to energy poverty in a developing world. "
+		},
+		{
+			"type":"transcript",
+			"start": 28,
+			"end": 34,
+			"template": "/server-mock/templates/test/transmedia-transcript-default.html",
+			"author":{
+				"name":"Frank Bergh",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"This graphic shows annual solar radiation, with the lighter areas representing the most sun. It illustrates why solar power can be such a great resource for the developing world."
+		},
+		{
+			"type":"transcript",
+			"start": 35,
+			"end": 40,
+			"template": "/server-mock/templates/test/transmedia-transcript-default.html",
+			"author":{
+				"name":"Frank Bergh",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Like any energy technology, solar photovoltaic systems have inherent strengths and weaknesses. On the bright side, there's no fuel cost to operate a solar power system once it's installed. Solar panels are modular, scalable and expandable over time if the system needs to grow."
+		},
+		{
+			"type":"transcript",
+			"start":41,
+			"end": 46,
+			"template": "/server-mock/templates/test/transmedia-transcript-default.html",
+			"author":{
+				"name":"Frank Bergh",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"There's no moving parts, which simplifies maintenance. It's safe to operate, with no health risks to the end user. And it allows for local ownership to be operated either on or off the grid. However, for some communities, solar energy can be very cost-prohibitive in terms of the capital-intensive upfront costs of installing the initial system."
+		},
+		{
+			"type":"transcript",
+			"start": 47,
+			"end": 52,
+			"template": "/server-mock/templates/test/transmedia-transcript-default.html",
+			"author":{
+				"name":"Frank Bergh",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Additionally, solar energy is non-dispatchable, unless coupled with an energy storage system. That means that the energy is only available during daylight, and for using electricity at night, you need a battery storage system or an alternative backup generator."
+		},
+		{
+			"type":"transcript",
+			"start": 53,
+			"end": 60,
+			"template": "/server-mock/templates/test/transmedia-transcript-default.html",
+			"author":{
+				"name":"Frank Bergh",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"In developing communities, there may be a knowledge gap for understanding what makes these systems tick. Unfortunately, solar energy systems may become a target for theft or vandalism, in the case of a lack of community interests, or if the benefits of this system are not equally shared among all stakeholders."
+		},
+		{
+			"type": "link",
+			"category": "Links",
+			"start":1,
+			"end": 5,
+			"template": "/server-mock/templates/test/transmedia-link-default.html",
+			"title":"Poor People's Energy Outlook",
+			"description":"Overview of energy access challenges to the world\u2019s poor. ",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Poor_People_s_Energy_Outlook.PNG",
+			"href":"http://practicalaction.org/poor-peoples-energy-outlook-2010"
+		},
+		{
+			"type": "link",
+			"category": "Links",
+			"start":6,
+			"end": 10,
+			"template": "/server-mock/templates/test/transmedia-link-default.html",
+			"title":"Water for Mulobere",
+			"description":"Clean water project in Uganda, by EWB-USA University of Minnesota.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Water_for_Mulobere.PNG",
+			"href":"http://bb1.inthetelling.com/webapps/blackboard/execute/content/blankPage?cmd=view&content_id=_351_1&course_id=_61_1 "
+		},
+		{
+			"type": "link",
+			"category": "Links",
+			"start": 11,
+			"end": 15,
+			"template": "/server-mock/templates/test/transmedia-link-default.html",
+			"title":"EWB Rwanda Project",
+			"description":"The EWB-USA UC Boulder, and EWB-USA Johnson Space Center project",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/EWB_Rwanda_Project.PNG",
+			"href":"http://bb1.inthetelling.com/webapps/blackboard/execute/content/blankPage?cmd=view&content_id=_352_1&course_id=_61_1 "
+		},
+		{
+			"type": "link",
+			"category": "Links",
+			"start": 16,
+			"end": 20,
+			"template": "/server-mock/templates/test/transmedia-link-default.html",
+			"title":"Estimations of PV Systems",
+			"description":"Primer on sizing battery-based PV systems and estimating costs.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Estimating_PV_System_Size_and_Cost__820892.PNG",
+			"href":"http://www.infinitepower.org/pdf/FactSheet-24.pdf"
+		},
+		{
+			"type":"link",
+			"category": "links",
+			"start":21,
+			"end": 34,
+			"template": "/server-mock/templates/test/transmedia-link-default.html",
+			"title":"Burkina Faso - Solar",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"link",
+			"category": "In Depth",
+			"start": 25,
+			"end": 30,
+			"template": "/server-mock/templates/test/transmedia-link-default.html",
+			"title":"Energy Poverty",
+			"description":"How to make modern energy access universal?",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Energy_Poverty.PNG",
+			"href":"https://s3.amazonaws.com/EWB_PDFs/Topic+1+Content/Energy-Poverty.pdf"
+		},
+		{
+			"type":"link",
+			"category": "In Depth",
+			"start": 36,
+			"end": 40,
+			"template": "/server-mock/templates/test/transmedia-link-default.html",
+			"title":"Community-Driven Empowerment",
+			"description":"An EWB-USA approach to solar PV in developing communities",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Community_Driven_Empowerment.PNG",
+			"href":"https://s3.amazonaws.com/EWB_PDFs/Topic+1+Content/Community-Driven+Empowerment--An+EWB-USA+Approach+to+Solar+PV+in+Developing+Communities.pdf "
+		},
+		{
+			"type":"image",
+			"category": "Slides",
+			"start": 41,
+			"end": 50,
+			"template": "/server-mock/templates/test/transmedia-image-default.html",
+			"title":"The Solar Resource",
+			"description":"Insolation",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Slide51.JPG"
+		},
+		{
+			"type":"image",
+			"category": "Slides",
+			"start": 51,
+			"end": 60,
+			"template": "/server-mock/templates/test/transmedia-image-default.html",
+			"title":"Annual Solar Radiation",
+			"description":"Watts per meter, squared",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Slide52.jpg"
+		},
+		{
+			"type":"image",
+			"category": "Slides",
+			"start": 51,
+			"end": 60,
+			"template": "/server-mock/templates/test/transmedia-image-default.html",
+			"title":"Tilt Angle and Sun Tracking",
+			"description":"Maximum energy yield, array orientation, single axis and dual axis tracking",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Slide7.JPG"
+		}
+	]
 }

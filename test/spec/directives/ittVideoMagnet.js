@@ -6,15 +6,16 @@ xdescribe('Directive: ittVideoMagnet', function () {
 	beforeEach(module('com.inthetelling.player'));
 
 	var element,
-		scope;
+		parentScope;
 
-	beforeEach(inject(function ($rootScope) {
-		scope = $rootScope.$new();
+	beforeEach(inject(function ($rootScope, $compile) {
+		parentScope = $rootScope.$new();
+		parentScope.testProperty = { "test": true };
+		element = angular.element('<div itt-video-magnet></div>');
+		element = $compile(element)(parentScope);
 	}));
 
-	xit('should make hidden element visible', inject(function ($compile) {
-		element = angular.element('<itt-video-magnet></itt-video-magnet>');
-		element = $compile(element)(scope);
-		expect(element.text()).toBe('this is the ittVideoMagnet directive');
-	}));
+	it('should inherit parent scope', function() {
+		expect(element.scope().testProperty).toEqual(parentScope.testProperty);
+	});
 });

@@ -37,17 +37,21 @@
 		<!-- endbuild -->
 
 		<!-- build:js({.tmp,app}) scripts/app-combined.js -->
+                <script src="scripts/config.js"></script>
 		<script src="scripts/app.js"></script>
 		<script src="scripts/controllers/UIErrorController.js"></script>
 		<script src="scripts/controllers/EpisodeController.js"></script>
+		<script src="scripts/services/modelFactory.js"></script>
+		<script src="scripts/services/queuePointScheduler.js"></script>
+		<script src="scripts/services/underscore.js"></script>
+		<script src="scripts/services/videojs.js"></script>
+		<script src="scripts/services/config.js"></script>
 		<script src="scripts/directives/ittScene.js"></script>
 		<script src="scripts/directives/ittItem.js"></script>
 		<script src="scripts/directives/ittVideo.js"></script>
 		<script src="scripts/directives/ittVideoMagnet.js"></script>
 		<script src="scripts/filters/type.js"></script>
 		<script src="scripts/filters/layout.js"></script>
-		<script src="scripts/services/modelFactory.js"></script>
-		<script src="scripts/services/queuePointScheduler.js"></script>
 		<!-- endbuild -->
     </body>
 </html>

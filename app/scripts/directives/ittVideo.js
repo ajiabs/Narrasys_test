@@ -4,12 +4,12 @@
 // - can only declare one of these for an episode
 // - should never be reparented or removed from the dom (use ittVideoMagnet directives instead)
 angular.module('com.inthetelling.player')
-.directive('ittVideo', function (queuePointScheduler, $timeout) {
+.directive('ittVideo', function (queuePointScheduler, videojs, $timeout) {
 	return {
 		restrict: 'A',
 		replace: false,
 		link: function(scope, iElement, iAttrs, controller) {
-			console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
+			//console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
 
 			// Create the DOM node contents
 			iElement.html(function() {
@@ -24,7 +24,7 @@ angular.module('com.inthetelling.player')
 			var setPlayhead = queuePointScheduler.registerProvider('ittVideo', 10);
 
 			// Initialize the videojs player and register a listener on it to inform the timeline
-			// service wheneve the playhead position changes. We perform this here rather than the
+			// service whenever the playhead position changes. We perform this here rather than the
 			// controller because linking happens after the template has been applid and the DOM is updated
 			// TODO: Need to inject or scope a reference to videojs instead of the global, for testability
 			videojs("vjs", {

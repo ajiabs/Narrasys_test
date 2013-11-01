@@ -4,7 +4,7 @@
 angular.module('com.inthetelling.player')
 .controller('EpisodeController', function (queuePointScheduler, modelFactory, $scope, $rootScope, $location, $routeParams, $http) {
 
-	$http({method: 'GET', url: '/server-mock/data/episode-' + $routeParams.epId + '.json'})
+	$http({method: 'GET', url: 'server-mock/data/episode-' + $routeParams.epId + '.json'})
 	.success(function(data, status, headers, config) {
 		
 		var i, j;
@@ -44,7 +44,6 @@ angular.module('com.inthetelling.player')
 		}
 
 		// create item/transmedia models and place them into the items collection of their respective scenes
-		// TODO: ?? Create a model-factory with inheritable model classes to hide this complexity ??
 		for (i = 0; i < data.events.length; i++) {
 			if (data.events[i].type !== "scene") {
 
@@ -75,7 +74,7 @@ angular.module('com.inthetelling.player')
 				// not be added to any scene container and we are not handling that case
 				for (j = 0; j < $scope.scenes.length; j++) {
 					if (itemModel.startTime >= $scope.scenes[j].startTime &&
-						itemModel.startTime <= $scope.scenes[j].endTime) {
+						itemModel.endTime <= $scope.scenes[j].endTime) {
 						$scope.scenes[j].items.push(itemModel);
 						break;
 					}

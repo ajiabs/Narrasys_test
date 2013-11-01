@@ -7,9 +7,6 @@ angular.module('com.inthetelling.player')
 		restrict: 'A',
 		replace: false,
 		template: '<div ng-include="item.templateUrl">Loading Item...</div>',
-		link: function(scope, iElement, iAttrs, controller) {
-			console.log("ITT-ITEM LINKING FUNCTION: [scope:", scope, "]");
-		},
 		scope: {
 			item: '=ittItem'
 		}
