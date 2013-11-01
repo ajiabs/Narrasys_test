@@ -11,7 +11,6 @@ angular.module('com.inthetelling.player')
 	return {
 		restrict: 'A',
 		replace: true,
-		scope: true,
 		link: function(scope, iElement, iAttrs, controller) {
 			//console.log("ITT-VIDEO-MAGNET LINKING FUNCTION: [scope:", scope, "]");
 			// 'activate' a dom instance of the itt-video-magnet directive by broadcasting an event from the root scope
@@ -21,18 +20,20 @@ angular.module('com.inthetelling.player')
 				console.log("ittVideoMagnet.activate()!");
 				$rootScope.$broadcast('videoMagnet', iElement);
 			};
+			// watch this directive's parent scene and if its state changes to active then activate the video magnet
+			scope.$watch('scene.isActive', function(newValue, oldValue) {
+				if (newValue && newValue !== oldValue) {
+					scope.activate();
+				}
+			});
 			// watch this elements visisbility and if it becomes visible in the dom then automatically activate it
-			scope.$watch(function() {
+			/*scope.$watch(function() {
 				return iElement.is(':visible');
 			}, function() {
 				if (iElement.is(':visible')) {
 					scope.activate();
 				}
-			});
-			// if this element is visible now at time of rendering then activate it
-			//if (iElement.is(':visible')) {
-			//	scope.activate();
-			//}
+			});*/
 		}
 	};
 });
