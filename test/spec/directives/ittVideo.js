@@ -3,6 +3,10 @@
 describe('Directive: ittVideo', function () {
 
 	// mock global videojs dependency
+	// videojs service will throw error if videojs service is not
+	// on the page.
+	// TODO: Better way to do this would be to mock out the
+	// videojs service dependency here. We need to test it anyways.
 	window.videojs = jasmine.createSpy('videojs');
 
 	// load the directive's module
@@ -18,11 +22,11 @@ describe('Directive: ittVideo', function () {
 		element = $compile(element)(parentScope);
 	}));
 
-	it('should inherit parent scope', function() {
+	it ('should inherit from the parent scope', function() {
+		expect(element.scope().hasOwnProperty('testProperty')).toBe(true);
 		expect(element.scope().testProperty).toEqual(parentScope.testProperty);
 	});
 
-	it('should wire up videojs', function() {
-		expect(window.videojs).toHaveBeenCalled();
-	});
+	// TODO: add specs for videojs.init() and scope.$on
+	
 });

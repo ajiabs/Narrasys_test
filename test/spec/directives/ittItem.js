@@ -15,7 +15,17 @@ describe('Directive: ittItem', function () {
 		element = $compile(element)(parentScope);
 	}));
 
-	it('should create an isolate scope containing the model from parent scope', function() {
+	it ('should create an isolate scope', function() {
+		expect(!!element.scope().itemModel).toBe(false);
+	});
+
+	it('should add an item property to the isolate scope', function() {
+		expect(element.scope().hasOwnProperty('item')).toBe(true);
 		expect(element.scope().item).toEqual(parentScope.itemModel);
+	});
+
+	it('should add a launchDetailView method to the isolate scope', function() {
+		expect(element.scope().hasOwnProperty('launchDetailView')).toBe(true);
+		expect(typeof element.scope().launchDetailView).toBe('function');
 	});
 });

@@ -1,14 +1,14 @@
 'use strict';
 
 // Declare the top level application module and its dependencies
-angular.module('com.inthetelling.player', ['ngRoute'])
+angular.module('com.inthetelling.player', ['ngRoute', 'ui.bootstrap'])
 
 // Configure routing
 .config(function($routeProvider) {
 	$routeProvider
 		.when('/error', {
 			controller: 'UIErrorController',
-			templateUrl: 'views/error.html'
+			templateUrl: 'templates/error.html'
 		})
 		.when('/episode/:epId', {
 			controller: 'EpisodeController',

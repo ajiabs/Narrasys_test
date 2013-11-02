@@ -46,6 +46,7 @@ angular.module('com.inthetelling.player')
 		model.startTime = data.start;
 		model.endTime = data.end;
 		model.templateUrl = data.template;
+		model.itemDetailTemplateUrl = data.itemDetailTemplate; // TODO: guessing this var name for now
 		model.displayTime = Math.floor(data.start/60) + ":" + ("0"+Math.floor(data.start)%60).slice(-2);
 
 		// extend base model based on item type

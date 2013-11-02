@@ -15,7 +15,12 @@ describe('Directive: ittScene', function () {
 		element = $compile(element)(parentScope);
 	}));
 
-	it('should create an isolate scope containing the model from parent scope', function() {
-		expect(element.scope().item).toEqual(parentScope.itemModel);
+	it ('should create an isolate scope', function() {
+		expect(!!element.scope().sceneModel).toBe(false);
+	});
+
+	it('should add a scene property to the isolate scope', function() {
+		expect(element.scope().hasOwnProperty('scene')).toBe(true);
+		expect(element.scope().scene).toEqual(parentScope.sceneModel);
 	});
 });
