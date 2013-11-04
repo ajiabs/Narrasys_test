@@ -55,6 +55,9 @@ angular.module('com.inthetelling.player')
 		model.templateUrl = data.template || console.error("ERROR no templateUrl specified for item");
 		model.layout = data.layout || "inline";
 		model.styles = data.styles || "";
+		model.required = data.required || false;
+		model.cosmetic = data.cosmetic || false;
+		model.stop = data.stop || false;
 
 		// extend base model based on item type
 		switch(data.type) {

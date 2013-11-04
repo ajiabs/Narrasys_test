@@ -1,5 +1,3 @@
-<div class="{{item.layout}}" x-ng-class='{"active-item": item.isActive, "inactive-item": !item.isActive && !item.wasActive, "previously-active-item": !item.isActive && item.wasActive}'>
-
-{{item.layout}}
+<div class="{{item.layout}} {{item.styles}}" x-ng-class='{"active-item": item.isActive, "inactive-item": !item.isActive && !item.wasActive, "previously-active-item": !item.isActive && item.wasActive}'>
 	<img x-ng-src="{{item.source}}" />
 </div>

@@ -1,30 +1,80 @@
-* {box-model: border-box}
-
+* {box-model: border-box; margin: 0; padding: 0}
 
 .vjs-wrapper {
 	position: absolute;
-	z-index: 999999;
+
 }
-
-
 
 /*============================
  *
- * In progress
+ * zIndex
+ *
+//===========================*/
+
+.scene {}
+
+
+.windowBg .item {z-index: 1}
+.contentMainBg .item , .contentAltBg .item {z-index: 2}
+.contentMain .item, .contentAlt .item {z-index: 3}
+.contentMainFg .item, .contentAltFg .item {z-index: 4}
+
+.vjs-wrapper {z-index: 5}
+.videoOverlay .item {z-index: 6}
+.windowFg .item {z-index: 7}
+
+
+/* 
+Allow clicks on overlay items to fall through.  TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
+Need workaround for most IE: may need to manually capture click events and pass them through using document.getElementFromPoint? 
+*/
+.contentMainFg .item, .contentAltFg .item, .videoOverlay .item, .windowFg .item {
+	pointer-events: none
+}
+.contentMainFg .item a, .contentAltFg .item a, .videoOverlay .item a,  .windowFg .item a {
+	pointer-events: auto
+}
+
+/*============================
+ *
+ * Scene structure
  *
 //===========================*/
 
 
-.scene {position:relative}
+.scene {}
 
-.fillParent {
-	position:absolute; top: 0; left: 0; right: 0; bottom: 0;
-}
+.pane {}
+.video {position: absolute; top: 0; right: 0;left: 0; bottom: 0}
 
-.itemsCurrent .inactive-item {display:none}
-.itemsCurrent .previously-active-item {display:none}
-.itemsCurrent .active-item {display:block}
+.fillPane .item {position: absolute; top: 0; left: 0; right: 0; bottom: 0}
 
+/*============================
+ *
+ * Scene layouts
+ *
+//===========================*/
+
+/* default */
+.videoContainer {position:relative; width: 50%; height: 200px}
+.contentMain {width: 50%; left: 0;  top: 0; bottom: 0; }
+.contentAlt  {width: 50%; right: 0; top: 0; bottom: 0; z-index:2}
+
+
+.fillPane .inactive-item {display:none}
+.fillPane .active-item {display:block}
+.fillPane .previously-active-item {display:none}
+
+/*============================
+ *
+ * TMP
+ *
+//===========================*/
+
+
+.inactive-item {color: #CCC}
+.previously-active-item {color: #EEE}
+.active-item {color: #000}
 /*============================
  *
  * Shared Modal

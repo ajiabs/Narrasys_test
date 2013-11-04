@@ -15,7 +15,7 @@
         "end": 10,
         "title": "Episode Title",
         "description": "Opening title.",
-      "template": "/server-mock/templates/scene-combined.html"
+        "template": "/server-mock/templates/scene-splittransmedia.html"
       },
       {
          "type":"transcript",
@@ -352,7 +352,7 @@
          "start": 3,
          "end": 6,
          "template": "/server-mock/templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/128/127"
+         "src":"http://placekitten.com/128/126"
       },
       {
          "type":"image",
@@ -360,7 +360,7 @@
          "start": 6,
          "end": 9,
          "template": "/server-mock/templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/128/127"
+         "src":"http://placekitten.com/128/125"
       },
       {
          "type":"image",
