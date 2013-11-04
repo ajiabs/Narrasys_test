@@ -8,11 +8,6 @@
 
 
 
-/*============================
- *
- * In progress
- *
-//===========================*/
 
 
 .scene {position:relative}
@@ -21,10 +16,13 @@
 	position:absolute; top: 0; left: 0; right: 0; bottom: 0;
 }
 
+<<<<<<< HEAD
+
 .itemsCurrent .inactive-item {display:none}
 .itemsCurrent .previously-active-item {display:none}
 .itemsCurrent .active-item {display:block}
 
+=======
 /*============================
  *
  * Shared Modal
@@ -51,3 +49,4 @@
   border: 2px solid black;
   padding: 20px;
 }
+>>>>>>> master

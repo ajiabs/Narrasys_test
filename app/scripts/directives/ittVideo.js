@@ -4,35 +4,32 @@
 // - can only declare one of these for an episode
 // - should never be reparented or removed from the dom (use ittVideoMagnet directives instead)
 angular.module('com.inthetelling.player')
-.directive('ittVideo', function (queuePointScheduler, videojs, $timeout) {
+.directive('ittVideo', function (queuePointScheduler, videojs, $timeout, config) {
 	return {
 		restrict: 'A',
 		replace: false,
 		link: function(scope, iElement, iAttrs, controller) {
 			//console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
 
-			// Create the DOM node contents
+			// Create the DOM node contents required by videojs
 			iElement.html(function() {
-				var node = '<video id="vjs" class="video-js vjs-default-skin" autoplay preload poster="' + scope.episode.coverUrl + '" width="100%" height="100%">';
+				var node = '<video id="' + config.videoJSElementId + '" class="video-js vjs-default-skin" autoplay preload poster="' + scope.episode.coverUrl + '" controls width="100%" height="100%">';
 				node += '<source type="video/mp4" src="' + scope.episode.videos.mpeg4 + '" />';
 				node += '<source type="video/webm" src="' + scope.episode.videos.webm + '" />';
 				node += '</video>';
 				return node;
 			});
 
-			// Register this video directive as the provider for the timeline service
-			var setPlayhead = queuePointScheduler.registerProvider('ittVideo', 10);
+			// Register videojs as the provider for the queuePointScheduler service.
+			// We are only using videoJSElementId as a UID here for convenience. queuePointScheduler has no DOM awareness.
+			var setPlayhead = queuePointScheduler.registerProvider(config.videoJSElementId, config.queuePointScanInterval);
 
-			// Initialize the videojs player and register a listener on it to inform the timeline
-			// service whenever the playhead position changes. We perform this here rather than the
-			// controller because linking happens after the template has been applid and the DOM is updated
-			// TODO: Need to inject or scope a reference to videojs instead of the global, for testability
-			videojs("vjs", {
-				"controls": true
-			}, function() {
-				var player = this;
+			// Initialize videojs via the videojs service, passing it the videoJSElementId we just used to build the videojs DOM node
+			videojs.init(config.videoJSElementId, function(player) {
+				// register a listener on the instantiated player to inform the queuePointScheduler
+				// service whenever the playhead position changes.
 				player.on("timeupdate", function() {
-					console.log("$$ timeupdate &&", player.currentTime());
+					//console.log("$$ timeupdate &&", player.currentTime());
 					setPlayhead(player.currentTime());
 				});
 			});
@@ -40,7 +37,7 @@ angular.module('com.inthetelling.player')
 			// listen for videoMagnet events and resize/reposition ourselves if we recieve one
 			scope.$on('videoMagnet', function(evt, el) {
 				// TODO: Animate?
-				console.log("videoMagent.on()!", evt, el);
+				//console.log("videoMagent.on()!", evt, el);
 				iElement.offset(el.offset());
 				iElement.width(el.width());
 				iElement.height(el.height());

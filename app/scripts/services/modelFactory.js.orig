@@ -49,7 +49,11 @@ angular.module('com.inthetelling.player')
 		model.category = data.category;
 		model.startTime = data.start;
 		model.endTime = data.end;
+<<<<<<< HEAD
+=======
+		model.templateUrl = data.template;
 		model.itemDetailTemplateUrl = data.itemDetailTemplate; // TODO: guessing this var name for now
+>>>>>>> master
 		model.displayTime = Math.floor(data.start/60) + ":" + ("0"+Math.floor(data.start)%60).slice(-2);
 
 		model.templateUrl = data.template || console.error("ERROR no templateUrl specified for item");
