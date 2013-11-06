@@ -1,9 +1,5 @@
 * {box-model: border-box; margin: 0; padding: 0}
 
-.vjs-wrapper {
-	position: absolute;
-
-}
 
 /*============================
  *
@@ -23,58 +19,20 @@
 .videoOverlay .item {z-index: 6}
 .windowFg .item {z-index: 7}
 
-
 /* 
 Allow clicks on overlay items to fall through.  TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
 Need workaround for most IE: may need to manually capture click events and pass them through using document.getElementFromPoint? 
+Note that windowFg should NOT get pointer-events:none, as it'll be used for stop media.
+(hmm, maybe that should be true for the contentpane fg items too?)
 */
-.contentMainFg .item, .contentAltFg .item, .videoOverlay .item, .windowFg .item {
+.contentMainFg .item, .contentAltFg .item, .videoOverlay .item {
 	pointer-events: none
 }
-.contentMainFg .item a, .contentAltFg .item a, .videoOverlay .item a,  .windowFg .item a {
+.contentMainFg .item a, .contentAltFg .item a, .videoOverlay .item a {
 	pointer-events: auto
 }
 
-/*============================
- *
- * Scene structure
- *
-//===========================*/
 
-
-.scene {}
-
-.pane {}
-.video {position: absolute; top: 0; right: 0;left: 0; bottom: 0}
-
-.fillPane .item {position: absolute; top: 0; left: 0; right: 0; bottom: 0}
-
-/*============================
- *
- * Scene layouts
- *
-//===========================*/
-
-/* default */
-.videoContainer {position:relative; width: 50%; height: 200px}
-.contentMain {width: 50%; left: 0;  top: 0; bottom: 0; }
-.contentAlt  {width: 50%; right: 0; top: 0; bottom: 0; z-index:2}
-
-
-.fillPane .inactive-item {display:none}
-.fillPane .active-item {display:block}
-.fillPane .previously-active-item {display:none}
-
-/*============================
- *
- * TMP
- *
-//===========================*/
-
-
-.inactive-item {color: #CCC}
-.previously-active-item {color: #EEE}
-.active-item {color: #000}
 /*============================
  *
  * Shared Modal
@@ -101,3 +59,4 @@ Need workaround for most IE: may need to manually capture click events and pass 
   border: 2px solid black;
   padding: 20px;
 }
+

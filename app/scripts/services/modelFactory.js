@@ -10,7 +10,7 @@ angular.module('com.inthetelling.player')
 		model.title = data.title;
 		model.category = data.category;
 		model.coverUrl = data.cover;
-		model.templateUrl = data.template || "/server-mock/templates/episode-default.html";
+		model.templateUrl = data.template || "templates/episode-default.html";
 		model.videos = {
 			webm: data.videos.webm,
 			mpeg4: data.videos.mpeg4
@@ -33,7 +33,7 @@ angular.module('com.inthetelling.player')
 		model.wasActive = false;
 		model.items = [];
 
-		model.templateUrl = data.template || "/server-mock/templates/scene-combined.html";
+		model.templateUrl = data.template || "templates/scene-combined.html";
 		model.layout = data.layout || "combined";
 		model.styles = data.styles || "";
 		
