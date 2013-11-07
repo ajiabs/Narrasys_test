@@ -7,16 +7,17 @@
  *
 //===========================*/
 
+.windowBg {z-index: 1}
+.scene {z-index: 2}
+.contentMainBg .item , .contentAltBg .item {z-index: 3}
+.contentMain .item, .contentAlt .item {z-index: 4}
+.contentMainFg .item, .contentAltFg .item {z-index: 5}
 
-
-.windowBg .item {z-index: 1}
-.contentMainBg .item , .contentAltBg .item {z-index: 2}
-.contentMain .item, .contentAlt .item {z-index: 3}
-.contentMainFg .item, .contentAltFg .item {z-index: 4}
-
-.vjs-wrapper {z-index: 5}
-.videoOverlay .item {z-index: 6}
-.windowFg .item {z-index: 7}
+.vjs-wrapper {z-index: 6}
+.videoOverlay .item {z-index: 7}
+.toolbar {z-index: 8}
+.sidepanel {z-index: 9}
+.windowFg .item {z-index: 10}
 
 /* 
 Allow clicks on overlay items to fall through.  TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
