@@ -70,11 +70,14 @@ angular.module('com.inthetelling.player')
 				})(itemModel);
 
 				// Add the item model to its relevant scene
-				// TODO: If a transmedia item ever spanned across scene boundaries it would
-				// not be added to any scene container and we are not handling that case
+				// NOTE depends on scenes being in correct order in json(?)
+				
 				for (j = 0; j < $scope.scenes.length; j++) {
-					if (itemModel.startTime >= $scope.scenes[j].startTime &&
-						itemModel.endTime <= $scope.scenes[j].endTime) {
+					if (itemModel.startTime >= $scope.scenes[j].startTime) {
+						if (itemModel.endTime >= $scope.scenes[j].endTime) {
+							console.warn("ERROR: item end time extends past scene end; coercing");
+							itemModel.endTime = $scope.scenes[j].endTime;
+						}
 						$scope.scenes[j].items.push(itemModel);
 						break;
 					}
