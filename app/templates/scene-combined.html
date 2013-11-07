@@ -6,9 +6,9 @@ scene
 		video
 		fillPane videoOverlay
 	pane contentMain
-		fillPane contentMainBg
-		contentMain
-		fillPane contentMainFg
+		fillPane paneBg
+		content
+		fillPane paneFg
 fillPane windowFg
 -->
 
@@ -24,13 +24,13 @@ fillPane windowFg
 		</div>
 	</div>
 	<div class="pane contentMain">
-		<div class="fillPane contentMainBg">
+		<div class="fillPane paneBg">
 		<div class="item" x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 		</div>
-		<div class="contentMain">
+		<div class="content">
 			<div class="item" x-ng-repeat="item in scene.items | layout: 'content'" x-itt-item="item"></div>
 		</div>
-		<div class="fillPane contentMainFg">
+		<div class="fillPane paneFg">
 		<div class="item" x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
 		</div>
 	</div>
