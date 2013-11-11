@@ -9,7 +9,7 @@
 
 .pane {position:relative; border: 1px dotted #000;}
 
-.content, .paneBg, .paneFg {position:absolute; top: 0; left: 0; right: 0; bottom: 0}
+.content, .paneBg, .paneFg, .videoOverlay {position:absolute; top: 0; left: 0; right: 0; bottom: 0}
 
 
 

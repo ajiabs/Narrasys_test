@@ -1,11 +1,11 @@
 'use strict';
 
-// This directive is basically an placeholder which can be removed/replaced
-// or reparented within the dom. When present in the dom the ittVideo directive
-// will automatically change its size and position to overlay the magnet directive.
+// This directive is basically a placeholder which can be removed/replaced
+// or reparented within the dom. When present in the dom all ittMagnetized directive elements
+// will automatically change their size and position to overlay the magnet directive.
 // multiple magnets may be used in the dom. A magnet will 'attract' the video directive
-// when it goes from being hidden to visible in the dom (whether by insertion or display/hidden
-// of self or parent node).
+// when the scene which contains it becomes active. Only one magnet should be present in any scene.
+
 angular.module('com.inthetelling.player')
 .directive('ittVideoMagnet', function ($rootScope) {
 	return {
@@ -26,14 +26,6 @@ angular.module('com.inthetelling.player')
 					scope.activate();
 				}
 			});
-			// watch this elements visisbility and if it becomes visible in the dom then automatically activate it
-			/*scope.$watch(function() {
-				return iElement.is(':visible');
-			}, function() {
-				if (iElement.is(':visible')) {
-					scope.activate();
-				}
-			});*/
 		}
 	};
 });

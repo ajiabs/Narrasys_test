@@ -4,7 +4,6 @@ scene
 	title
 	pane videoContainer
 		video
-		fillPane videoOverlay
 	pane contentMain
 		fillPane paneBg
 		content
@@ -13,6 +12,7 @@ scene
 		fillPane paneBg
 		content
 		fillPane paneFg
+fillPane videoOverlay
 fillPane windowFg
 -->
 
@@ -23,9 +23,6 @@ fillPane windowFg
 	<h2 class="title">{{scene.title}}</h2>
 	<div class="pane videoContainer">
 		<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/img/aspectratiopreserver-16x9.gif"></div>
-		<div class="fillPane videoOverlay">
-			<div class="item" x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item" ></div>
-		</div>
 	</div>
 	<div class="pane contentMain">
 		<div class="fillPane paneBg">
@@ -47,6 +44,10 @@ fillPane windowFg
 		</div>
 	</div>
 </div>
+<div class="fillPane videoOverlay" x-itt-magnetized>
+	<div class="item" x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item" ></div>
+</div>
+
 <div class="fillPane windowFg {{scene.layout}} {{scene.styles}}">
 		<div class="item" x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>
 </div>
