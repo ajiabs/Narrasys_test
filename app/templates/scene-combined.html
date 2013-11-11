@@ -8,8 +8,8 @@ scene
 		fillPane paneBg
 		content
 		fillPane paneFg
+videoOverlay
 fillPane windowFg
-fillPane videoOverlay
 -->
 
 <div class="fillPane windowBg {{scene.layout}} {{scene.styles}}">
@@ -32,9 +32,7 @@ fillPane videoOverlay
 		</div>
 	</div>
 </div>
-<div class="fillPane videoOverlay">
-	<div class="item" x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>
-</div>
+<div x-itt-magnetized class="item" x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item" ></div>
 <div class="fillPane windowFg {{scene.layout}} {{scene.styles}}">
 		<div class="item" x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>
 </div>
