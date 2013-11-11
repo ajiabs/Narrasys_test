@@ -20,12 +20,28 @@ angular.module('com.inthetelling.player')
 				console.log("ittVideoMagnet.activate()!");
 				$rootScope.$broadcast('videoMagnet', iElement);
 			};
+
 			// watch this directive's parent scene and if its state changes to active then activate the video magnet
 			scope.$watch('scene.isActive', function(newValue, oldValue) {
 				if (newValue && newValue !== oldValue) {
 					scope.activate();
 				}
 			});
+
+			// watch for window resize events to active magnet (in the active scene only)
+			scope.getWidth = function() {
+				return $(window).width();
+			};
+			window.onresize = function(){
+					scope.$apply();
+			};
+			scope.$watch(scope.getWidth, function(newValue, oldValue) {
+				scope.windowWidth = newValue;
+				if (scope.scene.isActive) {
+					scope.activate();
+				}
+			});
+			
 		}
 	};
 });
