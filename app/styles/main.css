@@ -25,10 +25,10 @@ Need workaround for most IE: may need to manually capture click events and pass 
 Note that windowFg should NOT get pointer-events:none, as it'll be used for stop media.
 (hmm, maybe that should be true for the contentpane fg items too?)
 */
-.contentMainFg .item, .contentAltFg .item, .videoOverlay .item {
+.contentMainFg .item, .contentAltFg .item, .videoOverlay {
 	pointer-events: none
 }
-.contentMainFg .item a, .contentAltFg .item a, .videoOverlay .item a {
+.contentMainFg .item a, .contentAltFg .item a, .videoOverlay a {
 	pointer-events: auto
 }
 
