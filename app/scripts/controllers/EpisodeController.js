@@ -70,14 +70,9 @@ angular.module('com.inthetelling.player')
 				})(itemModel);
 
 				// Add the item model to its relevant scene
-				// NOTE depends on scenes being in correct order in json(?)
-				
 				for (j = 0; j < $scope.scenes.length; j++) {
-					if (itemModel.startTime >= $scope.scenes[j].startTime) {
-						if (itemModel.endTime >= $scope.scenes[j].endTime) {
-							console.warn("ERROR: item end time extends past scene end; coercing");
-							itemModel.endTime = $scope.scenes[j].endTime;
-						}
+					if (itemModel.startTime >= $scope.scenes[j].startTime &&
+						itemModel.startTime < $scope.scenes[j].endTime) {
 						$scope.scenes[j].items.push(itemModel);
 						break;
 					}
