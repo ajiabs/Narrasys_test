@@ -17,7 +17,7 @@ fillPane windowFg
 -->
 
 <div class="fillPane windowBg {{scene.layout}} {{scene.styles}}">
-		<div class="item" x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
+		<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
 </div>
 <div class="scene {{scene.layout}} {{scene.styles}}">
 	<h2 class="title">{{scene.title}}</h2>
@@ -26,25 +26,30 @@ fillPane windowFg
 	</div>
 	<div class="pane contentMain">
 		<div class="fillPane paneBg">
-		<div class="item" x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
+			<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 		</div>
 		<div class="content">
-			<div class="item" x-ng-repeat="item in scene.items | layout: 'required'" x-itt-item="item"></div>
+			<div x-ng-repeat="item in scene.items | layout: 'required'" x-itt-item="item"></div>
 		</div>
 		<div class="fillPane paneFg">
+			<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
 		</div>
 	</div>
 	<div class="pane contentAlt">
 		<div class="fillPane paneBg">
+			<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
 		</div>
 		<div class="content">
-			<div class="item" x-ng-repeat="item in scene.items | layout: 'optional'" x-itt-item="item"></div>
+			<div x-ng-repeat="item in scene.items | layout: 'optional'" x-itt-item="item"></div>
 		</div>
 		<div class="fillPane paneFg">
+			<div x-ng-repeat="item in scene.items | layout: 'altFg'" x-itt-item="item"></div>
 		</div>
 	</div>
 </div>
-<div x-itt-magnetized class="item" x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item" ></div>
+<div x-itt-magnetized class="fillPane videoOverlay {{scene.layout}} {{scene.styles}}">
+		<div x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>
+</div>
 <div class="fillPane windowFg {{scene.layout}} {{scene.styles}}">
-		<div class="item" x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>
+		<div x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>
 </div>

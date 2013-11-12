@@ -1,5 +1,5 @@
 * {box-model: border-box; margin: 0; padding: 0}
-
+.clear {clear:both}
 
 /*============================
  *
@@ -10,7 +10,7 @@
 .windowBg {z-index: 1}
 .scene {z-index: 2}
 .paneBg {z-index: 3}
-.content {z-index: 4}
+.content .item {position: relative; z-index: 4}
 .paneFg {z-index: 5}
 
 .vjs-wrapper {z-index: 6}

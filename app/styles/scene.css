@@ -5,12 +5,13 @@
 //===========================*/
 
 
-.scene {position:relative; border: 3px solid #00F;height: 300px;}
+.scene {position:relative; border: 3px solid #00F;}
 
 .pane {position:relative; border: 1px dotted #000;}
 
-.content, .paneBg, .paneFg, .videoOverlay {position:absolute; top: 0; left: 0; right: 0; bottom: 0}
-
+.videoOverlay {position:absolute}
+.paneBg, .paneFg {position:absolute; top: 0; left: 0; right: 0; bottom: 0}
+.fillPane {overflow:hidden}
 
 
 /*============================
@@ -22,11 +23,8 @@
 /* default */
 
 
-.pane.videoContainer {position:fixed ; width: 50%;}
-.pane.contentMain {width: 50%; left: 0;  top: 0; bottom: 0; border: 3px solid #F00; height: 9000px;}
-.pane.contentAlt  {width: 50%; right: 0; top: 0; bottom: 0; border: 3px solid #0F0}
+.pane.videoContainer {width: 50%;}
+.pane.contentMain {width: 50%;border: 3px solid #F00;}
+.pane.contentAlt  {width: 50%;border: 3px solid #0F0}
 
 
-.testsplitscene .pane.videoContainer {position:relative; width: 49%; float:left;}
-.testsplitscene .pane.contentMain {position:relative; width: 49%; float:left; clear:left}
-.testsplitscene .pane.contentAlt {position:relative; width: 49%; float:right}
