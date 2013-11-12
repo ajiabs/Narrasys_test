@@ -38,7 +38,7 @@
          "start": 0,
          "end": 3,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/500/150"
+         "src":"http://placekitten.com/200/250"
       },
       {
          "type":"image",
@@ -155,7 +155,7 @@
             "name":"Mr. Universe",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
          },
-         "annotation":"Now all panes should now have kittens in the bottom right corner background."
+         "annotation":"Now all panes should now have kittens in the bottom left corner background."
       },
       {
          "type":"image",
@@ -189,8 +189,8 @@
 
       {
          "type":"transcript",
-         "start": 9,
-         "end": 12,
+         "start": 12,
+         "end": 15,
          "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author": {
             "name": "Mr. Universe",

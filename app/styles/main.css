@@ -15,7 +15,7 @@
 
 .vjs-wrapper {z-index: 6}
 .videoOverlay {z-index: 7}
-.toolbar {z-index: 8}
+.toolbar, .vjs-control-bar {z-index: 8}
 .sidepanel {z-index: 9}
 .windowFg {z-index: 10}
 
