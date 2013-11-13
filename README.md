@@ -29,11 +29,6 @@ Install the required Grunt packages for the project, specified in the project's 
 * cd to the root project directory
 * `npm install` **NEVER use sudo for a non-global npm install!**
 
-Install the required Bower packages for the project, specified in the project's bower.json file:
-
-* cd to the root project directory
-* `bower install`
-
 ## Grunt Tasks
 
 * `grunt server`: Run project in local browser
@@ -46,3 +41,12 @@ Install the required Bower packages for the project, specified in the project's 
 * `grunt`: Run jshint, test, and build the project
 
 These tasks and others are defined in the project's Gruntfile.js.
+
+## Bower Dependencies
+
+Bower dependencies (specified in bower.json) have been included in the app/bower_components folder, so that a `bower install` on a fresh repo cannot unexpectedly break the app due to breaking changes of external dependenices like angular, jquery, etc. Bower dependencies should still be updated occasionally but this is an explicity step that needs to be done by a developer, and any subsequent breakages in unit tests or the app need to be addressed by the updater.
+
+To update the bower dependencies:
+
+* cd to the root project directory
+* `bower update`
