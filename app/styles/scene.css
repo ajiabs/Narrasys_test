@@ -5,12 +5,12 @@
 //===========================*/
 
 
-.scene {position:relative; border: 3px solid #00F;}
-
-.pane {position:relative; border: 1px dotted #000;}
+.scene,
+.pane {position:relative;}
 
 .videoOverlay {position:absolute}
-.paneBg, .paneFg {position:absolute; top: 0; left: 0; right: 0; bottom: 0}
+.paneBg, 
+.paneFg {position:absolute; top: 0; left: 0; right: 0; bottom: 0}
 .fillPane {overflow:hidden}
 
 
@@ -23,8 +23,8 @@
 /* default */
 
 
-.pane.videoContainer {width: 50%;}
-.pane.contentMain {width: 50%;border: 3px solid #F00;}
-.pane.contentAlt  {width: 50%;border: 3px solid #0F0}
 
+.videoContainer {width: 50%;}
+.contentMain {width: 50%;border: 1px solid #F00;}
+.contentAlt  {width: 50%;border: 1px solid #0F0}
 
