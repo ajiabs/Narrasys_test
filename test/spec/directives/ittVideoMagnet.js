@@ -15,7 +15,8 @@ xdescribe('Directive: ittVideoMagnet', function () {
 		element = $compile(element)(parentScope);
 	}));
 
-	it('should inherit parent scope', function() {
+	it('should inherit from the parent scope', function() {
+		expect(element.scope().hasOwnProperty('testProperty')).toBe(true);
 		expect(element.scope().testProperty).toEqual(parentScope.testProperty);
 	});
 });
