@@ -87,5 +87,35 @@ angular.module('com.inthetelling.player')
 		$rootScope.uiErrorMsg = "Unable to load data for Episode: " + $routeParams.epId;
 		$location.path('/error');
 	});
+	
+	/* Handler for toolbar buttons to change scene templates. */
+	$scope.setSceneTemplate = function(newTemplate) {
+		console.log("setSceneTemplate " + newTemplate);
+		
+		$scope.currentSceneTemplate = newTemplate;
+		
+		if (newTemplate) {
+			// set all scenes to use newTemplate
+			for (var i=0; i<$scope.scenes.length; i++) {
+				$scope.scenes[i].directedTemplateUrl = $scope.scenes[i].templateUrl;   // so we can revert to it later
+				$scope.scenes[i].templateUrl = "templates/scene-"+newTemplate+".html"; // hardcoded for now
+			}
+		} else {
+			// revert all scenes to the template specified in the source data
+			for (var i=0; i<$scope.scenes.length; i++) {
+				if ($scope.scenes[i].directedTemplateUrl) { // if this is undefined, we've never left directed view so don't need to do anything here
+					$scope.scenes[i].templateUrl = $scope.scenes[i].directedTemplateUrl;
+				}
+			}
+		}
+	};
+	
+	/* detect which view we're in */
+	/* this is a bizarre syntax but seems to be how it's supposed to work... */
+	$scope.currentSceneTemplateIs = function(compare) {
+		return $scope.currentSceneTemplate === compare;
+	};
+
+
 
 });
