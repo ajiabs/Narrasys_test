@@ -15,16 +15,6 @@ angular.module('com.inthetelling.player')
 			scope.$on('videoMagnet', function(evt, el) {
 			console.log("ittMagnetized triggered");
 			
-			if (el === undefined) {
-				// find the videoMagnet node inside the current scene and use that
-				// strictly speaking we could do that every time but passing it in when we can
-				// saves us a DOM search
-				
-				console.log("DOM search for the correct magnet TODO");
-				return;
-			}
-			
-			
 				// TODO: Animate?
 				if (el.parent().css("position") === "fixed") {
 					// if videoContainer is position:fixed, video should be too

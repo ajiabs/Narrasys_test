@@ -11,9 +11,9 @@ tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
 
 .fillPane .item {position: absolute; max-width: 100%; max-height: 100%}
 
-.fillPane .inactive-item {display:none}
-.fillPane .active-item {display:block; position: absolute;}
-.fillPane .previously-active-item {display:none}
+.fillPane .futureItem {display:none}
+.fillPane .currentItem {display:block; position: absolute;}
+.fillPane .pastItem {display:none}
 
 .fillPane .bl    {top: auto; right: auto; bottom: 0   ; left: 0   ;}
 .fillPane .tl    {top: 0   ; right: auto; bottom: auto; left: 0   ;}
@@ -41,7 +41,7 @@ tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
  *
 //===========================*/
 
-.inactive-item {color: #CCC}
-.previously-active-item {color: #EEE}
-.active-item {color: #000}
+.futureItem {color: #CCC}
+.pastItem {color: #EEE}
+.currentItem {color: #000}
 

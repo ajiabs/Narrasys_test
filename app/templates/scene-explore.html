@@ -11,7 +11,7 @@ scene
 videoOverlay
 fillPane windowFg
 -->
-<div class="scenelayoutExplore {{scene.styles}}">
+<div class="scenelayoutExplore {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 	<div class="fillPane windowBg">
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
 	</div>

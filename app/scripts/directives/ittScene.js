@@ -5,7 +5,7 @@ angular.module('com.inthetelling.player')
 .directive('ittScene', function () {
 	return {
 		restrict: 'A',
-		replace: false,
+		replace: true,
 		template: '<div ng-include="scene.templateUrl">Loading Scene...</div>',
 		scope: {
 			scene: '=ittScene'

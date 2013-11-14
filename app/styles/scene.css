@@ -22,6 +22,8 @@
 
 /* default */
 
+.futureScene, .pastScene {display:none}
+
 
 /*
 .videoContainer {width: 50%;}
@@ -29,7 +31,7 @@
 .contentAlt  {width: 50%;border: 1px solid #0F0}
 */
 
-/* fullscreen video */
+/* fullscreen video mode */
 
 .scenelayoutVideo .videoContainer {
 	width: 90%;
@@ -45,6 +47,9 @@
 	width: 100%;
 }
 
+/* Explore mode */
+
+.scenelayoutExplore.futureScene, .scenelayoutExplore.pastScene {display:block}
 
 .scenelayoutExplore .videoContainer {
 	position:absolute;

@@ -115,7 +115,9 @@ angular.module('com.inthetelling.player')
 			}
 		}
 		
-		//TODO need to trigger videoMagnet at this point
+		// TODO: need to send out an event to tell the current videoMagnet to activate
+		//$rootScope.$broadcast('videoMagnet'); isn't it
+
 	};
 	
 	/* detect which view we're in */
