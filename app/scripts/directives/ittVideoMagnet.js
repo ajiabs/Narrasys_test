@@ -7,7 +7,7 @@
 // when the scene which contains it becomes active. Only one magnet should be present in any scene.
 
 angular.module('com.inthetelling.player')
-.directive('ittVideoMagnet', function ($window, $timeout, s$rootScope) {
+.directive('ittVideoMagnet', function ($window, $timeout, $rootScope) {
 	return {
 		restrict: 'A',
 		replace: true,
