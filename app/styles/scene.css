@@ -52,11 +52,11 @@
 .scenelayoutExplore.futureScene, .scenelayoutExplore.pastScene {display:block}
 
 .scenelayoutExplore .videoContainer {
-	position:absolute;
-	top: 0;
+	position:fixed;
+	top: 60px;
 	right: 0;
 	width: 20%;
-	box-shadow: 4px 4px 4px rgba(0,0,0,1);
+	border: 1px solid #000;
 }
 
 .scenelayoutExplore .contentMain {

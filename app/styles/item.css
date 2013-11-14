@@ -15,10 +15,11 @@ tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
 .fillPane .currentItem {display:block; position: absolute;}
 .fillPane .pastItem {display:none}
 
-.fillPane .bl    {top: auto; right: auto; bottom: 0   ; left: 0   ;}
+/* Nope, can't explain the -3px. TODO */
+.fillPane .bl    {top: auto; right: auto; bottom: -3px; left: 0   ;}
 .fillPane .tl    {top: 0   ; right: auto; bottom: auto; left: 0   ;}
 .fillPane .tr    {top: 0   ; right: 0   ; bottom: auto; left: auto;}
-.fillPane .br    {top: auto; right: 0   ; bottom: 0   ; left: auto;}
+.fillPane .br    {top: auto; right: 0   ; bottom: -3px; left: auto;}
 
 /* TODO (also need to set image h/w to 100% for these)
 .fillPane .b     {top: auto; right: 0   ; bottom: 0   ; left: 0   ;}

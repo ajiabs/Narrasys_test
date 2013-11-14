@@ -11,14 +11,16 @@ scene
 videoOverlay
 fillPane windowFg
 -->
+<div class="scenelayoutExplore">
+<div class="pane videoContainer">
+	<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/img/aspectratiopreserver-16x9.gif"></div>
+</div>
+</div>
 <div class="scenelayoutExplore {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 	<div class="fillPane windowBg">
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
 	</div>
 	<div class="scene">
-		<div class="pane videoContainer">
-			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/img/aspectratiopreserver-16x9.gif"></div>
-		</div>
 		<div class="pane contentMain">
 			<div class="fillPane paneBg">
 			<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
