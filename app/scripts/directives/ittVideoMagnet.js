@@ -22,7 +22,7 @@ angular.module('com.inthetelling.player')
 					// DOM hasn't changed so can do this immediately:
 					$rootScope.$broadcast('videoMagnet', iElement);
 				} else {
-					// HACK: the css class in the scene template needs to be set before this is broadcast, otherwise the magnet
+					// TODO/HACK: the css class in the scene template needs to be set before this is broadcast, otherwise the magnet
 					// can't find the correct position (because the newly-active scene will still be hidden when the magnet tries to do its thing.)
 					// Couldn't figure out how to get angular's $timeout in here, and timeouts are probably not the best solution to this anyway
 					$timeout(function() {
