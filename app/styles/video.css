@@ -1,0 +1,11 @@
+.vjs-wrapper {
+	position: absolute;
+}
+
+.vjs-control-bar {
+	position: fixed !important;
+	bottom: 0 !important;
+}
+.video, .video-js {width: 100% !important; height: 100% !important}
+
+.aspectratiopreserver {width:100%}

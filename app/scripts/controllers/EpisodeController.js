@@ -70,11 +70,9 @@ angular.module('com.inthetelling.player')
 				})(itemModel);
 
 				// Add the item model to its relevant scene
-				// TODO: If a transmedia item ever spanned across scene boundaries it would
-				// not be added to any scene container and we are not handling that case
 				for (j = 0; j < $scope.scenes.length; j++) {
 					if (itemModel.startTime >= $scope.scenes[j].startTime &&
-						itemModel.endTime <= $scope.scenes[j].endTime) {
+						itemModel.startTime < $scope.scenes[j].endTime) {
 						$scope.scenes[j].items.push(itemModel);
 						break;
 					}
@@ -89,5 +87,60 @@ angular.module('com.inthetelling.player')
 		$rootScope.uiErrorMsg = "Unable to load data for Episode: " + $routeParams.epId;
 		$location.path('/error');
 	});
+	
+	/* Handler for toolbar buttons to change scene templates. */
+	/* TODO: write test for this */
+	$scope.setSceneTemplate = function(newTemplate) {
+		console.log("setSceneTemplate " + newTemplate);
+		
+		$scope.currentSceneTemplate = newTemplate;
+			// set all scenes to use newTemplate
+		for (var i=0; i<$scope.scenes.length; i++) {
+			var thisScene = $scope.scenes[i];
+			if (newTemplate) {
+				if (thisScene.origTemplateUrl === undefined) {
+					thisScene.origTemplateUrl = thisScene.templateUrl;   // so we can revert to it later
+//				thisScene.origLayout = thisScene.layout;
+				}
+				thisScene.templateUrl = "templates/scene-"+newTemplate+".html"; // hardcoded for now
+//			newTemplate === "video" 
+//				? thisScene.layout = "layoutVideo"
+//				: thisScene.layout = "layoutExplore"
+//			;
+			} else {
+				if (thisScene.origTemplateUrl) { // if this is undefined, we've never left directed view so don't need to do anything here
+					thisScene.templateUrl = thisScene.origTemplateUrl;
+// 					thisScene.layout = thisScene.origLayout;
+				}
+			}
+		}
+		
+		// TODO: ought to be able to
+		$rootScope.$broadcast('videoMagnet', $('.scene .videoContainer'));
+		// but triggering window resize will fake it for now:
+		
+		console.log($('.scene .videoContainer'));
+		
+		
+		// oh ffs I miss jquery all I need is $(window).trigger('resize')
+		$(window).trigger('resize');
+		// this should trigger window resize but doesn't
+		var evt = document.createEvent('UIEvents');
+		evt.initUIEvent('resize', true, false,window,0);
+		window.dispatchEvent(evt);
+		
+		// how about this:
+		window.dispatchEvent(new Event('resize'));
+		// nope
+		// argh
+	};
+	
+	/* detect which view we're in */
+	/* this is a bizarre syntax but seems to be how it's supposed to work... */
+	$scope.currentSceneTemplateIs = function(compare) {
+		return $scope.currentSceneTemplate === compare;
+	};
+
+
 
 });

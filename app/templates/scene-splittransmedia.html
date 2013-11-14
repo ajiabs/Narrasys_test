@@ -1,0 +1,57 @@
+<!--
+fillPane windowBg
+scene
+	title
+	pane videoContainer
+		video
+	pane contentMain
+		fillPane paneBg
+		content
+		fillPane paneFg
+	pane contentAlt
+		fillPane paneBg
+		content
+		fillPane paneFg
+videoOverlay
+fillPane windowFg
+-->
+<div class="scene{{scene.layout}} {{scene.styles}}">
+
+	<div class="fillPane windowBg">
+			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
+	</div>
+	<div class="scene">
+		<div class="pane videoContainer">
+			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/img/aspectratiopreserver-16x9.gif" /></div>
+		</div>
+		<div class="pane contentMain">
+			<div class="fillPane paneBg">
+				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
+			</div>
+			<div class="content">
+				<h2 class="scenetitle">{{scene.title}}</h2>
+				<div x-ng-repeat="item in scene.items | layout: 'transcript'" x-itt-item="item"></div>
+			</div>
+			<div class="fillPane paneFg">
+				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
+			</div>
+		</div>
+		<div class="pane contentAlt">
+			<div class="fillPane paneBg">
+				<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
+			</div>
+			<div class="content">
+				<div x-ng-repeat="item in scene.items | layout: 'transmedia'" x-itt-item="item"></div>
+			</div>
+			<div class="fillPane paneFg">
+				<div x-ng-repeat="item in scene.items | layout: 'altFg'" x-itt-item="item"></div>
+			</div>
+		</div>
+	</div>
+	<div x-itt-magnetized class="fillPane videoOverlay">
+			<div x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>
+	</div>
+	<div class="fillPane windowFg">
+			<div x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>
+	</div>
+</div>

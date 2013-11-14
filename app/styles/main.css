@@ -1,33 +1,37 @@
-/* app css stylesheet */
+* {box-model: border-box; margin: 0; padding: 0}
+.clear {clear:both}
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+/*============================
+ *
+ * zIndex
+ *
+//===========================*/
+
+.windowBg {z-index: 1}
+.scene {z-index: 2}
+.paneBg {z-index: 3}
+.content {position: relative; z-index: 4}
+.paneFg {z-index: 5}
+
+.vjs-wrapper {z-index: 6}
+.videoOverlay {z-index: 7}
+.toolbar, .vjs-control-bar {z-index: 8}
+.sidepanel {z-index: 9}
+.windowFg {z-index: 10}
+
+/* 
+Allow clicks on overlay items to fall through.  TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
+Need workaround for most IE: may need to manually capture click events and pass them through using document.getElementFromPoint? 
+Note that windowFg should NOT get pointer-events:none, as it'll be used for stop media.
+(hmm, maybe that should be true for the contentpane fg items too?)
+*/
+.paneFg, .videoOverlay {
+	pointer-events: none
+}
+.paneFg a, .videoOverlay a {
+	pointer-events: auto
 }
 
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
-  display: inline;
-}
-
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
-}
 
 /*============================
  *
@@ -55,3 +59,4 @@
   border: 2px solid black;
   padding: 20px;
 }
+

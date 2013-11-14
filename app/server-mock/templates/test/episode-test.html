@@ -41,6 +41,6 @@
 
 <h1>{{episode.title}}</h1>
 
-<div x-itt-video class="vjs-wrapper"></div>
+<div x-itt-video x-itt-magnetized class="vjs-wrapper"></div>
 
 <div x-ng-repeat="scene in scenes" x-itt-scene="scene" x-ng-show="scene.isActive"></div>

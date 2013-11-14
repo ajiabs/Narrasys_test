@@ -1,13 +1,13 @@
 'use strict';
 
-// This directive is basically an placeholder which can be removed/replaced
-// or reparented within the dom. When present in the dom the ittVideo directive
-// will automatically change its size and position to overlay the magnet directive.
+// This directive is basically a placeholder which can be removed/replaced
+// or reparented within the dom. When present in the dom all ittMagnetized directive elements
+// will automatically change their size and position to overlay the magnet directive.
 // multiple magnets may be used in the dom. A magnet will 'attract' the video directive
-// when it goes from being hidden to visible in the dom (whether by insertion or display/hidden
-// of self or parent node).
+// when the scene which contains it becomes active. Only one magnet should be present in any scene.
+
 angular.module('com.inthetelling.player')
-.directive('ittVideoMagnet', function ($rootScope) {
+.directive('ittVideoMagnet', function ($window, $rootScope) {
 	return {
 		restrict: 'A',
 		replace: true,
@@ -20,20 +20,37 @@ angular.module('com.inthetelling.player')
 				console.log("ittVideoMagnet.activate()!");
 				$rootScope.$broadcast('videoMagnet', iElement);
 			};
+
 			// watch this directive's parent scene and if its state changes to active then activate the video magnet
 			scope.$watch('scene.isActive', function(newValue, oldValue) {
 				if (newValue && newValue !== oldValue) {
 					scope.activate();
 				}
 			});
-			// watch this elements visisbility and if it becomes visible in the dom then automatically activate it
-			/*scope.$watch(function() {
-				return iElement.is(':visible');
-			}, function() {
-				if (iElement.is(':visible')) {
+
+			$window.onresize = function(){
+				if (scope.scene.isActive) {
 					scope.activate();
 				}
-			});*/
+			};
+
+// WEIRD BUG!
+// Don't actually need this for the video magnet -- but it's (somehow) inadvertently allowing the
+// episode setSceneTemplate to trigger the magnet as a  side effect!
+// which I can't otherwise figure out how to do.
+
+// 
+// 			// watch for window resize events to active magnet (in the active scene only)
+// 			scope.getWidth = function() {
+// 				return $(window).width();
+// 			};
+// 			scope.$watch(scope.getWidth, function(newValue, oldValue) {
+// 				scope.windowWidth = newValue;
+// 				if (scope.scene.isActive) {
+// 					scope.activate();
+// 				}
+// 			});
+			
 		}
 	};
 });

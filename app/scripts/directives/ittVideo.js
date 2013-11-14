@@ -33,15 +33,6 @@ angular.module('com.inthetelling.player')
 					setPlayhead(player.currentTime());
 				});
 			});
-
-			// listen for videoMagnet events and resize/reposition ourselves if we recieve one
-			scope.$on('videoMagnet', function(evt, el) {
-				// TODO: Animate?
-				//console.log("videoMagent.on()!", evt, el);
-				iElement.offset(el.offset());
-				iElement.width(el.width());
-				iElement.height(el.height());
-			});
 		}
 	};
 });

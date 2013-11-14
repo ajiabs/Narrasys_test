@@ -5,7 +5,7 @@ angular.module('com.inthetelling.player')
 .directive('ittItem', function () {
 	return {
 		restrict: 'A',
-		replace: false,
+		replace: true,
 		template: '<div ng-include="item.templateUrl">Loading Item...</div>',
 		scope: {
 			item: '=ittItem'

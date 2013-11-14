@@ -1,0 +1,271 @@
+{
+   "episode": {
+      "title": "Episode Title",
+      "category": "CATEGORY",
+      "cover": "http://theplatform-static.edgesuite.net/In_The_Telling/toc8_1280x720_25781827819.jpg",
+      "videos": {
+         "webm": "http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
+         "mpeg4": "http://platformuniv-p.edgesuite.net/dynamic/In_The_Telling/S3T2_Importance_of_Geography__192694.mp4"
+      }
+   },
+   "events": [
+      {
+        "type": "scene",
+        "start": 0,
+        "end": 18,
+        "title": "Scene One",
+        "description": "Opening title.",
+        "template": "templates/scene-splittransmedia.html"
+      },
+
+
+
+      {
+         "type":"transcript",
+         "start": 0,
+         "end": 3,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "author":{
+            "name":"Mr. Universe",
+            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation":"All panes should now have kittens in the top left corner background."
+      },
+      {
+         "type":"image",
+         "layout": "videoOverlay",
+         "styles": "tl",
+         "start": 0,
+         "end": 3,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/200/250"
+      },
+      {
+         "type":"image",
+         "layout": "mainBg",
+         "styles": "tl",
+         "start": 0,
+         "end": 3,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/660/261"
+      },
+      {
+         "type":"image",
+         "layout": "altBg",
+         "styles": "tl",
+         "start": 0,
+         "end": 3,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/60/61"
+      },
+
+
+
+
+      {
+         "type":"transcript",
+         "start": 3,
+         "end": 6,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "author":{
+            "name":"Mr. Universe",
+            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation":"Here are kittens in the top right corner background."
+      },
+      {
+         "type":"image",
+         "layout": "videoOverlay",
+         "styles": "tr",
+         "start": 3,
+         "end": 6,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/70/61"
+      },
+      {
+         "type":"image",
+         "layout": "mainBg",
+         "styles": "tr",
+         "start": 3,
+         "end": 6,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/70/61"
+      },
+      {
+         "type":"image",
+         "layout": "altBg",
+         "styles": "tr",
+         "start": 3,
+         "end": 6,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/70/61"
+      },
+
+
+
+
+      {
+         "type":"transcript",
+         "start": 6,
+         "end": 9,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "author":{
+            "name":"Mr. Universe",
+            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation":"Now all panes should now have kittens in the bottom right corner background."
+      },
+      {
+         "type":"image",
+         "layout": "videoOverlay",
+         "styles": "br",
+         "start": 6,
+         "end": 9,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/80/61"
+      },
+      {
+         "type":"image",
+         "layout": "mainBg",
+         "styles": "br",
+         "start": 6,
+         "end": 9,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/80/61"
+      },
+      {
+         "type":"image",
+         "layout": "altBg",
+         "styles": "br",
+         "start": 6,
+         "end": 9,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/80/61"
+      },
+
+
+
+
+      {
+         "type":"transcript",
+         "start": 9,
+         "end": 12,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "author":{
+            "name":"Mr. Universe",
+            "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation":"Now all panes should now have kittens in the bottom left corner background."
+      },
+      {
+         "type":"image",
+         "layout": "videoOverlay",
+         "styles": "bl",
+         "start": 9,
+         "end": 12,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/90/61"
+      },
+      {
+         "type":"image",
+         "layout": "mainBg",
+         "styles": "bl",
+         "start": 9,
+         "end": 12,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/90/61"
+      },
+      {
+         "type":"image",
+         "layout": "altBg",
+         "styles": "bl",
+         "start": 9,
+         "end": 12,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/90/61"
+      },
+
+
+
+      {
+         "type":"transcript",
+         "start": 12,
+         "end": 15,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "All panes with filled backgrounds:"
+      },
+      {
+         "type":"image",
+         "layout": "videoOverlay",
+         "styles": "fill",
+         "start": 12,
+         "end": 15,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/100/61"
+      },
+      {
+         "type":"image",
+         "layout": "mainBg",
+         "styles": "fill",
+         "start": 12,
+         "end": 15,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/100/61"
+      },
+      {
+         "type":"image",
+         "layout": "altBg",
+         "styles": "fill",
+         "start": 12,
+         "end": 15,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/100/61"
+      },
+
+
+
+      {
+         "type":"transcript",
+         "start": 15,
+         "end": 18,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "All panes with filled foregrounds:"
+      },
+      {
+         "type":"image",
+         "layout": "videoOverlay",
+         "styles": "fill",
+         "start": 16,
+         "end": 18,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/400/400"
+      },
+      {
+         "type":"image",
+         "layout": "mainFg",
+         "styles": "fill",
+         "start": 16,
+         "end": 18,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/400/401"
+      },
+      {
+         "type":"image",
+         "layout": "altFg",
+         "styles": "fill",
+         "start": 16,
+         "end": 18,
+         "template": "templates/transmedia-image-plain.html",
+         "src":"http://placekitten.com/401/402"
+      }
+
+   ]
+}
