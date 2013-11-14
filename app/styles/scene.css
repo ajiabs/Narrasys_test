@@ -23,17 +23,42 @@
 /* default */
 
 
-
+/*
 .videoContainer {width: 50%;}
 .contentMain {width: 50%;border: 1px solid #F00;}
 .contentAlt  {width: 50%;border: 1px solid #0F0}
-
+*/
 
 /* fullscreen video */
 
-.layoutVideo .videoContainer {width: 90%;float: right}
-.layoutVideo .contentAlt {
+.scenelayoutVideo .videoContainer {
+	width: 90%;
+	float: right;
+}
+.scenelayoutVideo .contentAlt {
 	position:absolute;
 	top:0;
 	bottom: 0;
+	overflow-vertical: scroll;
+}
+.scenelayoutVideo .contentMain {
+	width: 100%;
+}
+
+
+.scenelayoutExplore .videoContainer {
+	position:absolute;
+	top: 0;
+	right: 0;
+	width: 20%;
+	box-shadow: 4px 4px 4px rgba(0,0,0,1);
+}
+
+.scenelayoutExplore .contentMain {
+	background-color: #EEEEEE;
+	border-right: 1px solid #CCCCCC;
+	height: 100%;
+	padding-left: 10%;
+	padding-right: 10%;
+	width: 33%;
 }

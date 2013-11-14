@@ -10,7 +10,7 @@
 .windowBg {z-index: 1}
 .scene {z-index: 2}
 .paneBg {z-index: 3}
-.content .item {position: relative; z-index: 4}
+.content {position: relative; z-index: 4}
 .paneFg {z-index: 5}
 
 .vjs-wrapper {z-index: 6}
