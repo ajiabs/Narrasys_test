@@ -7,7 +7,7 @@
 // when the scene which contains it becomes active. Only one magnet should be present in any scene.
 
 angular.module('com.inthetelling.player')
-.directive('ittVideoMagnet', function ($rootScope) {
+.directive('ittVideoMagnet', function ($window, $rootScope) {
 	return {
 		restrict: 'A',
 		replace: true,
@@ -28,7 +28,7 @@ angular.module('com.inthetelling.player')
 				}
 			});
 
-			window.onresize = function(){
+			$window.onresize = function(){
 				if (scope.scene.isActive) {
 					scope.activate();
 				}
