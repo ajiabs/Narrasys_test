@@ -7,7 +7,7 @@
 // when the scene which contains it becomes active. Only one magnet should be present in any scene.
 
 angular.module('com.inthetelling.player')
-.directive('ittVideoMagnet', function ($window, $rootScope) {
+.directive('ittVideoMagnet', function ($window, $timeout, s$rootScope) {
 	return {
 		restrict: 'A',
 		replace: true,
@@ -25,9 +25,9 @@ angular.module('com.inthetelling.player')
 					// HACK: the css class in the scene template needs to be set before this is broadcast, otherwise the magnet
 					// can't find the correct position (because the newly-active scene will still be hidden when the magnet tries to do its thing.)
 					// Couldn't figure out how to get angular's $timeout in here, and timeouts are probably not the best solution to this anyway
-					$window.setTimeout(function() {
+					$timeout(function() {
 						$rootScope.$broadcast('videoMagnet', iElement);
-					},1);
+					}, 1);
 				}
 			};
 
@@ -43,7 +43,7 @@ angular.module('com.inthetelling.player')
 				if (scope.scene.isActive) {
 					scope.activate();
 				}
-			}); 
+			});
 
 			angular.element($window).bind('resize', function() {
 				if (scope.scene.isActive) {
