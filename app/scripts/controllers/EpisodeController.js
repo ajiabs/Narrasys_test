@@ -2,7 +2,7 @@
 
 // Episode Controller
 angular.module('com.inthetelling.player')
-.controller('EpisodeController', function (queuePointScheduler, modelFactory, $scope, $rootScope, $location, $routeParams, $http) {
+.controller('EpisodeController', function (queuePointScheduler, modelFactory, $scope, $rootScope, $location, $routeParams, $http, $window) {
 
 	$http({method: 'GET', url: 'server-mock/data/episode-' + $routeParams.epId + '.json'})
 	.success(function(data, status, headers, config) {
@@ -115,8 +115,11 @@ angular.module('com.inthetelling.player')
 			}
 		}
 		
-		// TODO: need to send out an event to tell the current videoMagnet to activate
-		//$rootScope.$broadcast('videoMagnet'); isn't it
+		// Is rootScope the correct place for this?
+		// and again I'm resorting to the HACK: of using setTimeout so this happesn after the DOM updates
+		$window.setTimeout(function() {
+			$rootScope.$broadcast('triggerCurrentlyActiveVideoMagnet');
+		},1);
 
 	};
 	
