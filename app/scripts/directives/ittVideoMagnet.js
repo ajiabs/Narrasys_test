@@ -28,11 +28,11 @@ angular.module('com.inthetelling.player')
 				}
 			});
 
-			$window.onresize = function(){
+			angular.element($window).bind('resize', function() {
 				if (scope.scene.isActive) {
 					scope.activate();
 				}
-			};
+			});
 
 		}
 	};
