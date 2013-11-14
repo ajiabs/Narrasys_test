@@ -34,7 +34,7 @@ angular.module('com.inthetelling.player')
 		model.items = [];
 
 		model.templateUrl = data.template || "templates/scene-combined.html";
-		model.layout = data.layout || "combined";
+		model.layout = data.layout || "layoutCombined";
 		model.styles = data.styles || "";
 		
 
