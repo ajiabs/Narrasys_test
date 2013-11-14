@@ -19,7 +19,7 @@
 		<a ng-click="setSceneTemplate('explore');" class="button button-explore"  ng-class="{cur: currentSceneTemplateIs('explore')}" href="javascript:void 1;"><span>Explore view</span></a>
 	</div>
 </div>
-<div class="episode">
+<div class="episode episode{{episode.layout}} {{episode.styles}}">
 	<!-- TODO <div class="scene sceneintro"></div> -->
 	<div x-ng-repeat="scene in scenes" x-itt-scene="scene" x-ng-show="scene.isActive"></div>
 	<!-- TODO <div class="scene sceneoutro"></div> -->

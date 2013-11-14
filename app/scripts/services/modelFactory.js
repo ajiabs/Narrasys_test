@@ -11,6 +11,8 @@ angular.module('com.inthetelling.player')
 		model.category = data.category;
 		model.coverUrl = data.cover;
 		model.templateUrl = data.template || "templates/episode-default.html";
+		model.layout = data.layout || "layoutDefault";
+		model.styles = data.styles;
 		model.videos = {
 			webm: data.videos.webm,
 			mpeg4: data.videos.mpeg4
@@ -35,7 +37,7 @@ angular.module('com.inthetelling.player')
 
 		model.templateUrl = data.template || "templates/scene-combined.html";
 		model.layout = data.layout || "layoutCombined";
-		model.styles = data.styles || "";
+		model.styles = data.styles;
 		
 
 		return model;
@@ -54,7 +56,7 @@ angular.module('com.inthetelling.player')
 
 		model.templateUrl = data.template || console.error("ERROR no templateUrl specified for item");
 		model.layout = data.layout || "inline";
-		model.styles = data.styles || "";
+		model.styles = data.styles;
 		model.required = data.required || false;
 		model.cosmetic = data.cosmetic || false;
 		model.stop = data.stop || false;
