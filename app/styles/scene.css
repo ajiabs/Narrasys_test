@@ -28,3 +28,12 @@
 .contentMain {width: 50%;border: 1px solid #F00;}
 .contentAlt  {width: 50%;border: 1px solid #0F0}
 
+
+/* fullscreen video */
+
+.layoutVideo .videoContainer {width: 90%;float: right}
+.layoutVideo .contentAlt {
+	position:absolute;
+	top:0;
+	bottom: 0;
+}
