@@ -34,23 +34,6 @@ angular.module('com.inthetelling.player')
 				}
 			};
 
-// WEIRD BUG!
-// Don't actually need this for the video magnet -- but it's (somehow) inadvertently allowing the
-// episode setSceneTemplate to trigger the magnet as a  side effect!
-// which I can't otherwise figure out how to do.
-
-// 
-// 			// watch for window resize events to active magnet (in the active scene only)
-// 			scope.getWidth = function() {
-// 				return $(window).width();
-// 			};
-// 			scope.$watch(scope.getWidth, function(newValue, oldValue) {
-// 				scope.windowWidth = newValue;
-// 				if (scope.scene.isActive) {
-// 					scope.activate();
-// 				}
-// 			});
-			
 		}
 	};
 });

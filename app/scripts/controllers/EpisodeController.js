@@ -115,24 +115,7 @@ angular.module('com.inthetelling.player')
 			}
 		}
 		
-		// TODO: ought to be able to
-		$rootScope.$broadcast('videoMagnet', $('.scene .videoContainer'));
-		// but triggering window resize will fake it for now:
-		
-		console.log($('.scene .videoContainer'));
-		
-		
-		// oh ffs I miss jquery all I need is $(window).trigger('resize')
-		$(window).trigger('resize');
-		// this should trigger window resize but doesn't
-		var evt = document.createEvent('UIEvents');
-		evt.initUIEvent('resize', true, false,window,0);
-		window.dispatchEvent(evt);
-		
-		// how about this:
-		window.dispatchEvent(new Event('resize'));
-		// nope
-		// argh
+		//TODO need to trigger videoMagnet at this point
 	};
 	
 	/* detect which view we're in */
