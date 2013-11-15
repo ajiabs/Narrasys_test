@@ -349,6 +349,8 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('build', [
+		'jshint',
+		'test',
 		'clean:dist',
 		'ngtemplates',
 		'useminPrepare',
@@ -363,10 +365,11 @@ module.exports = function (grunt) {
 		'rev',
 		'usemin'
 	]);
-
+	/*
 	grunt.registerTask('default', [
 		'jshint',
 		'test',
 		'build'
 	]);
+	*/
 };
