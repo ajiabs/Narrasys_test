@@ -2,7 +2,7 @@
 
 // Episode Controller
 angular.module('com.inthetelling.player')
-.controller('EpisodeController', function (queuePointScheduler, modelFactory, $scope, $rootScope, $location, $routeParams, $http, $window) {
+.controller('EpisodeController', function (queuePointScheduler, modelFactory, $scope, $rootScope, $location, $routeParams, $http, $window, $timeout) {
 
 	$http({method: 'GET', url: 'server-mock/data/episode-' + $routeParams.epId + '.json'})
 	.success(function(data, status, headers, config) {
@@ -115,11 +115,9 @@ angular.module('com.inthetelling.player')
 			}
 		}
 		
-		// Is rootScope the correct place for this?
-		// and again I'm resorting to the HACK: of using setTimeout so this happesn after the DOM updates
-		$window.setTimeout(function() {
+		$timeout(function() {
 			$rootScope.$broadcast('triggerCurrentlyActiveVideoMagnet');
-		},1);
+		}, 0);
 
 	};
 	

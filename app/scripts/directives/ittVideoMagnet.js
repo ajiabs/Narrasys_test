@@ -16,19 +16,12 @@ angular.module('com.inthetelling.player')
 			// 'activate' a dom instance of the itt-video-magnet directive by broadcasting an event from the root scope
 			// with a reference to the itt-video-magnet's dom element. The itt-video directive listens for these events
 			// and utilizes the dom element to reposition itself appropriately.
-			scope.activate = function(beforeDOM) {
+			scope.activate = function() {
 				console.log("ittVideoMagnet.activate()", iElement);
-				if (beforeDOM) {
-					// DOM hasn't changed so can do this immediately:
+
+				$timeout(function() {
 					$rootScope.$broadcast('videoMagnet', iElement);
-				} else {
-					// TODO/HACK: the css class in the scene template needs to be set before this is broadcast, otherwise the magnet
-					// can't find the correct position (because the newly-active scene will still be hidden when the magnet tries to do its thing.)
-					// Couldn't figure out how to get angular's $timeout in here, and timeouts are probably not the best solution to this anyway
-					$timeout(function() {
-						$rootScope.$broadcast('videoMagnet', iElement);
-					}, 1);
-				}
+				}, 0);
 			};
 
 			// watch this directive's parent scene and if its state changes to active then activate the video magnet
@@ -47,7 +40,7 @@ angular.module('com.inthetelling.player')
 
 			angular.element($window).bind('resize', function() {
 				if (scope.scene.isActive) {
-					scope.activate(true);
+					scope.activate();
 				}
 			});
 
