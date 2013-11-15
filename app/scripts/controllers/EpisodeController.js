@@ -115,6 +115,7 @@ angular.module('com.inthetelling.player')
 			}
 		}
 		
+		// Need timeout because videoMagnet needs to run after DOM update; so don't wind up trying to test against a display:none node
 		$timeout(function() {
 			$rootScope.$broadcast('triggerCurrentlyActiveVideoMagnet');
 		}, 0);
