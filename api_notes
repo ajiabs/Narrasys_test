@@ -1,0 +1,9 @@
+ 
+API Base URL:
+http://api-dev-sub.inthetelling.com/
+
+Assets Base URL:
+https://s3.amazonaws.com/itt.uploads
+
+Auth Header:
+Authorization: Token token="c7624368e407355eb587500862322413"
