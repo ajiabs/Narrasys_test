@@ -14,14 +14,6 @@
 .fillPane {overflow:hidden}
 
 
-.content.hasLeftSidebar {
-	padding-left: 20%;
-	border: 1px solid #F00
-}
-.content.hasRightSidebar {
-	padding-right: 20%;
-}
-
 
 /* default */
 
@@ -82,8 +74,6 @@
 .scene-1col {}
 
 .scene-1col .contentMain {
-	margin: 0 2em;
-	padding: 2em;
 }
 
 

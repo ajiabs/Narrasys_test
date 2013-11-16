@@ -42,6 +42,7 @@ tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
  *
 //===========================*/
 
+.item {border: 1px solid #FFC}
 .futureItem {color: #CCC}
 .pastItem {color: #EEE}
 .currentItem {color: #000}
@@ -50,13 +51,30 @@ tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
 /*============================
  *
  * Sidebars
- * (if we change the size of these, also change in scene.css .content.hasLeftSidebar and .content.hasRightSidebar)
  *
 //===========================*/
 
-/* TODO: make this responsive */
-.item.burstL {margin-left: -20%}
-.item.burstR {margin-right: -20%}
-.item.burst {margin-left: -20%; margin-right: -20%}
-.item.sidebarL {width: 20%; margin-left: -20%; float:left; clear:left}
-.item.sidebarR {width: 20%; margin-right: -20%; float:right; clear:right}
+/* TODO: add breakpoints to adjust sidebar widths based on screen size */
+
+.content.hasLeftSidebar .item {
+	margin-left: 35%;
+}
+.content.hasRightSidebar .item {
+	margin-right: 35%;
+}
+
+.content.hasLeftSidebar.hasRightSidebar .item {
+	margin-left: 25%;
+	margin-right: 25%;
+}
+
+.content .item.burstL {margin-left: 0}
+.content .item.burstR {margin-right: 0}
+.content .item.burst {margin-left: 0; margin-right: 0}
+.content .item.sidebarL {width: 35%; margin-left: 0; float:left; clear:left}
+.content .item.sidebarR {width: 35%; margin-right: 0; float:right; clear:right}
+.content.hasLeftSidebar.hasRightSidebar .item.sidebarL {width: 25%; margin-left: 0;}
+.content.hasLeftSidebar.hasRightSidebar .item.sidebarR {width: 25%; margin-right: 0;}
+.content.hasLeftSidebar.hasRightSidebar .item.burstL {margin-left: 0;}
+.content.hasLeftSidebar.hasRightSidebar .item.burstR {margin-right: 0;}
+.content.hasLeftSidebar.hasRightSidebar .item.burst {margin-left: 0; margin-right: 0;}
