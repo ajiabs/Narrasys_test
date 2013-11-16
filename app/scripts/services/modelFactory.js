@@ -37,6 +37,8 @@ angular.module('com.inthetelling.player')
 
 		model.templateUrl = data.template || "templates/scene-1col.html";
 		model.layout = data.layout || "";
+
+		/* TODO this logic belongs in the scene directive, doesn't it */
 		if (model.layout.match(/splitRequired/)) {
 			model.mainPaneContents = 'required';
 			model.altPaneContents = 'optional';
@@ -45,8 +47,6 @@ angular.module('com.inthetelling.player')
 			model.mainPaneContents = 'transcript';
 			model.altPaneContents = 'transmedia';
 		}
-
-
 
 		model.styles = data.styles;
 		model.testfield = "transcript";

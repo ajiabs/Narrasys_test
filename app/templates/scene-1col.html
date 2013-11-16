@@ -20,8 +20,8 @@
 			<div class="fillPane paneBg">
 			<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content">
-				<h2 class="scenetitle" style="z-index: 1000" x-itt-magnetized>{{scene.title}}</h2>
+			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.contentLeft, "hasRightSidebar": scene.sidebars.contentRight}'>
+				<h2 class="scenetitle">{{scene.title}}</h2>{{scene.sidebars}}
 				<div x-ng-repeat="item in scene.items | layout: 'content'" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">
@@ -36,3 +36,9 @@
 			<div x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>
 	</div>
 </div>
+
+
+
+
+
+

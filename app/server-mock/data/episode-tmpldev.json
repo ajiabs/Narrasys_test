@@ -9,6 +9,17 @@
       }
    },
    "events": [
+      {
+        "type": "scene",
+        "start": 0,
+        "end": 18,
+        "title": "Scene One",
+        "description": "Opening title.",
+        "template": "templates/scene-1col.html",
+        "layout": "splitRequired"
+      },
+
+
    
    
 	{
@@ -17,6 +28,7 @@
 	"start":1,
 	"end": 10,
 	"template": "templates/transmedia-link-default.html",
+	"layout": "burstR",
 	"title":"Burkina Faso - Solar",
 	"description":"EWB-USA University of Maryland solar lighting project.",
 	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
@@ -28,6 +40,7 @@
 	"start":5,
 	"end": 15,
 	"template": "templates/transmedia-link-default.html",
+	"layout": "sidebarR",
 	"title":"Burkina Faso - Solar",
 	"description":"EWB-USA University of Maryland solar lighting project.",
 	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
@@ -58,17 +71,6 @@
 
 
 
-      {
-        "type": "scene",
-        "start": 0,
-        "end": 18,
-        "title": "Scene One",
-        "description": "Opening title.",
-        "template": "templates/scene-2col.html",
-        "layout": "splitRequired"
-      },
-
-
 
       {
          "type":"transcript",
@@ -93,7 +95,7 @@
       {
          "type":"image",
          "layout": "mainBg",
-         "styles": "tl",
+         "styles": "fill",
          "start": 0,
          "end": 3,
          "template": "templates/transmedia-image-plain.html",
@@ -114,6 +116,7 @@
 
       {
          "type":"transcript",
+         "layout": "burstL",
          "start": 3,
          "end": 6,
          "template": "/server-mock/templates/transmedia-transcript-default.html",
