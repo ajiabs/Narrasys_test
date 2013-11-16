@@ -28,7 +28,7 @@ angular.module('com.inthetelling.player')
 					} else if (layout === 'transmedia') {
 						if (items[i].type !== 'transcript') {itemsIn.push(items[i]);}
 					} else if (layout === 'required') {
-						if (items[i].type === 'transcript' && items[i].required) {itemsIn.push(items[i]);}
+						if (items[i].type === 'transcript' || items[i].required) {itemsIn.push(items[i]);}
 					} else if (layout === 'optional') {
 						if (items[i].type !== 'transcript' && !(items[i].required)) {itemsIn.push(items[i]);}
 					} else { // content
