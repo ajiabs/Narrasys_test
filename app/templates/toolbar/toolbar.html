@@ -1,0 +1,14 @@
+<div class="toolbar">
+	<a class="button button-showscenenav" href="javascript: void 1;" ng-click="showNavigationPanel()">
+		<span>Scenes</span>
+	</a>
+	<a class="button button-search" href="javascript: void 1;" ng-click="showSearchPanel()">
+		<span>Search</span>
+	</a>
+	<div id="frameselections">
+		<!-- TODO: trigger view changes on click -->
+		<a ng-click="setSceneTemplate('video');"   class="button button-video"    ng-class="{cur: currentSceneTemplateIs('video')}"   href="javascript:void 1;"><span>Video view</span></a>
+		<a ng-click="setSceneTemplate();"          class="button button-directed" ng-class="{cur: currentSceneTemplateIs()}"          href="javascript:void 1;"><span>Directed view</span></a>
+		<a ng-click="setSceneTemplate('explore');" class="button button-explore"  ng-class="{cur: currentSceneTemplateIs('explore')}" href="javascript:void 1;"><span>Explore view</span></a>
+	</div>
+</div>

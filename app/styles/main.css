@@ -19,8 +19,11 @@
 .sidepanel {z-index: 9}
 .windowFg {z-index: 10}
 
+.modal-backdrop {z-index: 11}
+.modal {z-index: 12}
+
 /* 
-Allow clicks on overlay items to fall through.  TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
+Allow clicks on overlay items to fall through.	TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
 Need workaround for most IE: may need to manually capture click events and pass them through using document.getElementFromPoint? 
 Note that windowFg should NOT get pointer-events:none, as it'll be used for stop media.
 (hmm, maybe that should be true for the contentpane fg items too?)
@@ -40,23 +43,23 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 //===========================*/
 
 .modal-backdrop {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0,0,0,.9);
-  color: #fff;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0,0,0,.9);
+	color: #fff;
 }
 
 .modal {
-  position: absolute;
-  top: 15%;
-  bottom: 15%;
-  left: 15%;
-  right: 15%;
-  background-color: white;
-  border: 2px solid black;
-  padding: 20px;
+	position: absolute;
+	top: 15%;
+	bottom: 15%;
+	left: 15%;
+	right: 15%;
+	background-color: white;
+	border: 2px solid black;
+	padding: 20px;
 }
 

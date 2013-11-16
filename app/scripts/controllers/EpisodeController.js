@@ -2,7 +2,7 @@
 
 // Episode Controller
 angular.module('com.inthetelling.player')
-.controller('EpisodeController', function (queuePointScheduler, modelFactory, $scope, $rootScope, $location, $routeParams, $http, $window, $timeout) {
+.controller('EpisodeController', function (queuePointScheduler, modelFactory, $scope, $rootScope, $location, $routeParams, $http) {
 
 	$http({method: 'GET', url: 'server-mock/data/episode-' + $routeParams.epId + '.json'})
 	.success(function(data, status, headers, config) {
@@ -87,47 +87,38 @@ angular.module('com.inthetelling.player')
 		$rootScope.uiErrorMsg = "Unable to load data for Episode: " + $routeParams.epId;
 		$location.path('/error');
 	});
-	
-	/* Handler for toolbar buttons to change scene templates. */
-	/* TODO: write test for this */
-	$scope.setSceneTemplate = function(newTemplate) {
-		console.log("setSceneTemplate " + newTemplate);
-		
-		$scope.currentSceneTemplate = newTemplate;
-			// set all scenes to use newTemplate
-		for (var i=0; i<$scope.scenes.length; i++) {
-			var thisScene = $scope.scenes[i];
-			if (newTemplate) {
-				if (thisScene.origTemplateUrl === undefined) {
-					thisScene.origTemplateUrl = thisScene.templateUrl;   // so we can revert to it later
-//				thisScene.origLayout = thisScene.layout;
-				}
-				thisScene.templateUrl = "templates/scene-"+newTemplate+".html"; // hardcoded for now
-//			newTemplate === "video" 
-//				? thisScene.layout = "layoutVideo"
-//				: thisScene.layout = "layoutExplore"
-//			;
-			} else {
-				if (thisScene.origTemplateUrl) { // if this is undefined, we've never left directed view so don't need to do anything here
-					thisScene.templateUrl = thisScene.origTemplateUrl;
-// 					thisScene.layout = thisScene.origLayout;
-				}
-			}
-		}
-		
-		// Need timeout because videoMagnet needs to run after DOM update; so don't wind up trying to test against a display:none node
-		$timeout(function() {
-			$rootScope.$broadcast('triggerCurrentlyActiveVideoMagnet');
-		}, 0);
 
+	// TODO: Get these methods out of the episode scope. They really belong in the toolbar directive's scope,
+	// but in order for that to work they would need to go into the toolbar directive's dom which is inappropriate
+	// and breaks their sizing. Better then to create an ittControls (or ittEpisodeControls) directive to declare
+	// in the episode template's dom, and then declare the toolbar and these panels as siblings inside of the ittControl
+	// template. Then the below methods can go into the controller for ittControls, and will be accessible from the toolbar
+	// and from the panel directives themselves.
+
+	// Add some flags for the panel components to bind their visibility states to
+	$scope.show = {
+		navigationPanel: false,
+		searchPanel: false
 	};
-	
-	/* detect which view we're in */
-	/* this is a bizarre syntax but seems to be how it's supposed to work... */
-	$scope.currentSceneTemplateIs = function(compare) {
-		return $scope.currentSceneTemplate === compare;
+	// Show navigation panel
+	$scope.showNavigationPanel = function() {
+		console.log("showNavigationPanel()");
+		$scope.show.navigationPanel = true;
 	};
-
-
+	// Hide navigation panel
+	$scope.hideNavigationPanel = function() {
+		console.log("hideNavigationPanel()");
+		$scope.show.navigationPanel = false;
+	};
+	// Show search panel
+	$scope.showSearchPanel = function() {
+		console.log("showSearchPanel()");
+		$scope.show.searchPanel = true;
+	};
+	// Hide search panel
+	$scope.hideSearchPanel = function() {
+		console.log("hideSearchPanel()");
+		$scope.show.searchPanel = false;
+	};
 
 });

@@ -41,3 +41,21 @@
 .toolbar .button-search span {background-image: url("/img/btn-search.png")}
 .toolbar .button-search.cur span {background-image: url("/img/btn-search-cur.png")}
 .toolbar .button-showscenenav span {background-image: url("/img/btn-showscenenav.gif")}
+
+
+.sidepanel {
+	background-color: white;
+	position: absolute;
+	width: 300px;
+	height: 100%;
+}
+
+.sidepanel#scenenav {
+	top: 0;
+	left: 0;
+}
+
+.sidepanel#search {
+	top: 0;
+	right: 0;
+}
