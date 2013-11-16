@@ -49,7 +49,6 @@ angular.module('com.inthetelling.player')
 		}
 
 		model.styles = data.styles;
-		model.testfield = "transcript";
 		
 		return model;
 	};
