@@ -21,7 +21,7 @@
 			<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
 			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.contentLeft, "hasRightSidebar": scene.sidebars.contentRight}'>
-				<h2 class="scenetitle">{{scene.title}}</h2>{{scene.sidebars}}
+				<h2 class="scenetitle">{{scene.title}}</h2>
 				<div x-ng-repeat="item in scene.items | layout: 'content'" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">

@@ -46,3 +46,17 @@ tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
 .pastItem {color: #EEE}
 .currentItem {color: #000}
 
+
+/*============================
+ *
+ * Sidebars
+ * (if we change the size of these, also change in scene.css .content.hasLeftSidebar and .content.hasRightSidebar)
+ *
+//===========================*/
+
+/* TODO: make this responsive */
+.item.burstL {margin-left: -20%}
+.item.burstR {margin-right: -20%}
+.item.burst {margin-left: -20%; margin-right: -20%}
+.item.sidebarL {width: 20%; margin-left: -20%; float:left; clear:left}
+.item.sidebarR {width: 20%; margin-right: -20%; float:right; clear:right}
