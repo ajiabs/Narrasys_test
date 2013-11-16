@@ -35,11 +35,22 @@ angular.module('com.inthetelling.player')
 		model.wasActive = false;
 		model.items = [];
 
-		model.templateUrl = data.template || "templates/scene-combined.html";
-		model.layout = data.layout || "layoutCombined";
-		model.styles = data.styles;
-		
+		model.templateUrl = data.template || "templates/scene-1col.html";
+		model.layout = data.layout || "";
+		if (model.layout.match(/splitRequired/)) {
+			model.mainPaneContents = 'required';
+			model.altPaneContents = 'optional';
+		} else {
+			// Default:
+			model.mainPaneContents = 'transcript';
+			model.altPaneContents = 'transmedia';
+		}
 
+
+
+		model.styles = data.styles;
+		model.testfield = "transcript";
+		
 		return model;
 	};
 

@@ -9,13 +9,63 @@
       }
    },
    "events": [
+   
+   
+	{
+	"type":"link",
+	"category": "links",
+	"start":1,
+	"end": 10,
+	"template": "templates/transmedia-link-default.html",
+	"title":"Burkina Faso - Solar",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+	{
+	"type":"link",
+	"category": "links",
+	"start":5,
+	"end": 15,
+	"template": "templates/transmedia-link-default.html",
+	"title":"Burkina Faso - Solar",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+	{
+	"type":"link",
+	"category": "links",
+	"start":9,
+	"end": 19,
+	"template": "templates/transmedia-link-default.html",
+	"title":"Burkina Faso - Solar",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+	{
+	"type":"link",
+	"category": "links",
+	"start":20,
+	"end": 30,
+	"template": "templates/transmedia-link-default.html",
+	"title":"Burkina Faso - Solar",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+
+
+
       {
         "type": "scene",
         "start": 0,
         "end": 18,
         "title": "Scene One",
         "description": "Opening title.",
-        "template": "templates/scene-splittransmedia.html"
+        "template": "templates/scene-2col.html",
+        "layout": "splitRequired"
       },
 
 
@@ -276,7 +326,7 @@
         "end": 50,
         "title": "Scene Two",
         "description": "Opening title.",
-        "template": "templates/scene-splittransmedia.html"
+        "template": "templates/scene-2col.html"
       },
       {
          "type":"transcript",

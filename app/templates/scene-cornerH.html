@@ -3,7 +3,7 @@ fillPane windowBg
 scene
 	title
 	pane videoContainer
-		fillPane video
+		video
 	pane contentMain
 		fillPane paneBg
 		content
@@ -15,21 +15,22 @@ scene
 videoOverlay
 fillPane windowFg
 -->
-<div class="scene{{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
+<div class="scene-cornerH {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
+
 	<div class="fillPane windowBg">
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
 	</div>
 	<div class="scene">
 		<div class="pane videoContainer">
-			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/img/aspectratiopreserver-16x9.gif"></div>
+			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/img/aspectratiopreserver-16x9.gif" /></div>
 		</div>
 		<div class="pane contentMain">
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
 			<div class="content">
-				<h2 class="scenetitle" style="z-index: 1000" x-itt-magnetized>{{scene.title}}</h2>
-				<div x-ng-repeat="item in scene.items | layout: 'required'" x-itt-item="item"></div>
+				<h2 class="scenetitle">{{scene.title}}</h2>
+				<div x-ng-repeat="item in scene.items | layout: scene.mainPaneContents" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
@@ -40,7 +41,7 @@ fillPane windowFg
 				<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
 			</div>
 			<div class="content">
-				<div x-ng-repeat="item in scene.items | layout: 'optional'" x-itt-item="item"></div>
+				<div x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'altFg'" x-itt-item="item"></div>

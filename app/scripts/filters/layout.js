@@ -10,6 +10,9 @@
 */
 angular.module('com.inthetelling.player')
 .filter('layout', function() {
+
+
+
 	return function(items, layout) {
 		var itemsIn = [], i, j, allowedLayouts;
 		if (layout === 'required' || layout === 'optional' || layout === 'transcript' || layout === 'transmedia' || layout === 'content') {

@@ -1,18 +1,14 @@
 <!--
-fillPane windowBg
-scene
-	title
-	pane videoContainer
-		video
-	pane contentMain
-		fillPane paneBg
-		content
-		fillPane paneFg
-videoOverlay
-fillPane windowFg
+	One content pane, centered on page.
+
+	Video defaults to centered on page above content (in portrait orientation) or to the left of the content (in landscape).
+	
+	Layout modifiers:
+
 -->
 
-<div class="scene{{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
+
+<div class="scene-1col {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 	<div class="fillPane windowBg">
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
 	</div>

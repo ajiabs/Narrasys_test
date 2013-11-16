@@ -14,44 +14,46 @@
 .fillPane {overflow:hidden}
 
 
+
+/* default */
+
+.futureScene, .pastScene {display:none}
+
 /*============================
  *
  * Scene layouts
  *
 //===========================*/
 
-/* default */
+.videoContainer {border: 2px solid #F00}
+.contentMain {border: 2px solid #0F0;}
+.contentAlt  {border: 2px solid #00F;}
 
-.futureScene, .pastScene {display:none}
-
-
-/*
-.videoContainer {width: 50%;}
-.contentMain {width: 50%;border: 1px solid #F00;}
-.contentAlt  {width: 50%;border: 1px solid #0F0}
-*/
-
+/*============================*/
 /* fullscreen video mode */
 
-.scenelayoutVideo .videoContainer {
+.scene-video .videoContainer {
 	width: 90%;
 	float: right;
 }
-.scenelayoutVideo .contentAlt {
+.scene-video .contentAlt {
 	position:absolute;
 	top:0;
 	bottom: 0;
 	overflow-vertical: scroll;
 }
-.scenelayoutVideo .contentMain {
+.scene-video .contentMain {
 	width: 100%;
 }
 
+
+/*============================*/
 /* Explore mode */
 
-.scenelayoutExplore.futureScene, .scenelayoutExplore.pastScene {display:block}
+.scene-explore.futureScene, 
+.scene-explore.pastScene {display:block}
 
-.scenelayoutExplore .videoContainer {
+.scene-explore .videoContainer {
 	position:fixed;
 	top: 60px;
 	right: 0;
@@ -59,7 +61,7 @@
 	border: 1px solid #000;
 }
 
-.scenelayoutExplore .contentMain {
+.scene-explore .contentMain {
 	background-color: #EEEEEE;
 	border-right: 1px solid #CCCCCC;
 	height: 100%;
@@ -67,3 +69,17 @@
 	padding-right: 10%;
 	width: 33%;
 }
+
+
+/*============================*/
+.scene-centered {}
+
+
+/*============================*/
+.scene-1col {}
+/*============================*/
+.scene-2col {}
+/*============================*/
+.scene-cornerV {}
+/*============================*/
+.scene-cornerH {}
