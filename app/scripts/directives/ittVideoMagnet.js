@@ -11,6 +11,7 @@ angular.module('com.inthetelling.player')
 	return {
 		restrict: 'A',
 		replace: true,
+		// TODO: Give this directive a child scope, and put the scope.activate method in a controller
 		link: function(scope, iElement, iAttrs, controller) {
 			//console.log("ITT-VIDEO-MAGNET LINKING FUNCTION: [scope:", scope, "]");
 			// 'activate' a dom instance of the itt-video-magnet directive by broadcasting an event from the root scope

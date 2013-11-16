@@ -12,9 +12,10 @@ angular.module('com.inthetelling.player')
 			// thus anything that is added to this scope here is private to the directive,
 			// but everything on parent scope is still accessible.
 		},
+		/* TODO: Abstract this into an explicit controller class rather than inline? */
 		controller: function($scope, $timeout, $rootScope) {
+			
 			/* Handler for toolbar buttons to change scene templates. */
-			/* TODO: write test for this */
 			$scope.setSceneTemplate = function(newTemplate) {
 				console.log("setSceneTemplate " + newTemplate);
 				
