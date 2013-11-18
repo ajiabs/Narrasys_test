@@ -13,10 +13,9 @@
         "type": "scene",
         "start": 0,
         "end": 18,
-        "title": "Scene One",
-        "description": "Opening title.",
-        "template": "templates/scene-1col.html",
-        "layout": "splitRequired"
+        "title": "Scene One: default scene template",
+        "description": "Cycles through the various item background styles"
+
       },
 
 
@@ -28,7 +27,6 @@
 	"start":1,
 	"end": 10,
 	"template": "templates/transmedia-link-default.html",
-	"layout": "burstR",
 	"title":"Burkina Faso - Solar",
 	"description":"EWB-USA University of Maryland solar lighting project.",
 	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
@@ -40,7 +38,6 @@
 	"start":5,
 	"end": 15,
 	"template": "templates/transmedia-link-default.html",
-	"layout": "sidebarR",
 	"title":"Burkina Faso - Solar",
 	"description":"EWB-USA University of Maryland solar lighting project.",
 	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
@@ -116,7 +113,6 @@
 
       {
          "type":"transcript",
-         "layout": "burstL",
          "start": 3,
          "end": 6,
          "template": "/server-mock/templates/transmedia-transcript-default.html",
@@ -326,22 +322,253 @@
       {
         "type": "scene",
         "start": 18,
-        "end": 50,
-        "title": "Scene Two",
-        "description": "Opening title.",
-        "template": "templates/scene-2col.html"
+        "end": 30,
+        "title": "Scene Two: content layouts",
+        "description": "SplitTransmedia, showList; uses various item layouts inside content panes ",
+        "template": "templates/scene-2col.html",
+        "layout": "splitTransmedia showList"
       },
       {
          "type":"transcript",
          "start": 18,
-         "end": 50,
+         "end": 20,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "layout": "inline",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "Inline transcript item"
+      },
+      {
+         "type":"transcript",
+         "start": 20,
+         "end": 22,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "layout": "sidebarL",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "sidebarL transcript item"
+      },
+      {
+         "type":"transcript",
+         "start": 22,
+         "end": 24,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "layout": "sidebarR",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "sidebarR transcript item"
+      },
+      {
+         "type":"transcript",
+         "start": 24,
+         "end": 26,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "layout": "burst",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "Burst-layout transcript item"
+      },
+      {
+         "type":"transcript",
+         "start": 26,
+         "end": 28,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "layout": "burstL",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "BurstL-layout transcript item"
+      },
+      {
+         "type":"transcript",
+         "start": 26,
+         "end": 28,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "layout": "burstR",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "BurstR-layout transcript item"
+      },
+      {
+         "type":"transcript",
+         "start": 28,
+         "end": 30,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "layout": "burstR",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "Inline transcript item"
+      },
+	{
+	"type":"link",
+	"category": "links",
+	"start":18,
+	"end": 20,
+	"template": "templates/transmedia-link-default.html",
+	"title":"This pane has only inline and sidebarR items, to show the single-sidebar layout",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+	{
+	"type":"link",
+	"category": "links",
+	"layout": "sidebarR",
+	"start":20,
+	"end": 25,
+	"template": "templates/transmedia-link-default.html",
+	"title":"This is the sidebarR one",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+	{
+	"type":"link",
+	"category": "links",
+	"start":25,
+	"end": 30,
+	"template": "templates/transmedia-link-default.html",
+	"title":"This is inline again",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+	
+	      {
+        "type": "scene",
+        "start": 30,
+        "end": 45,
+        "title": "Scene Three: scene-centered",
+        "description": "Scene-centered layout",
+        "template": "templates/scene-centered.html"
+      },
+      {
+         "type":"transcript",
+         "start": 30,
+         "end": 45,
          "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author": {
             "name": "Mr. Universe",
             "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
          },
-         "annotation": "Scene two!"
-      }
+         "annotation": "This scene uses the scene-centered layout"
+      },
+      
+      
+      
+      
+	      {
+        "type": "scene",
+        "start": 45,
+        "end": 60,
+        "title": "Scene Four: cornerV",
+        "description": "Scene-centered layout",
+        "template": "templates/scene-cornerV.html",
+        "layout": "splitRequired showList videoRight"
+      },
+      {
+         "type":"transcript",
+         "start": 45,
+         "end": 60,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "This scene uses the cornerV layout, videoRight, splitOptional"
+      },
+	{
+	"type":"link",
+	"category": "links",
+	"start":45,
+	"end": 60,
+	"template": "templates/transmedia-link-default.html",
+	"optional": true,
+	"title":"This is an optional link",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+	{
+	"type":"link",
+	"category": "links",
+	"start":45,
+	"end": 60,
+	"template": "templates/transmedia-link-default.html",
+	"title":"This is a required link",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
 
+
+	      {
+        "type": "scene",
+        "start": 60,
+        "end": 75,
+        "title": "Scene Five: cornerH",
+        "description": "Scene-centered layout",
+        "template": "templates/scene-cornerH.html",
+        "layout": "splitTransmedia showCurrent videoLeft"
+      },
+      {
+         "type":"transcript",
+         "start": 60,
+         "end": 75,
+         "template": "/server-mock/templates/transmedia-transcript-default.html",
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "This scene uses the cornerH layout, videoLeft, splitTransmedia, showCurrent"
+      },
+	{
+	"type":"link",
+	"category": "links",
+	"start":60,
+	"end": 65,
+	"template": "templates/transmedia-link-default.html",
+	"optional": true,
+	"title":"This is an optional link. Only one link should be visible at a time...",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+	{
+	"type":"link",
+	"category": "links",
+	"start":65,
+	"end": 70,
+	"template": "templates/transmedia-link-default.html",
+	"title":"This is a required link. Only one link should be visible at a time",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+	{
+	"type":"link",
+	"category": "links",
+	"start":70,
+	"end": 75,
+	"template": "templates/transmedia-link-default.html",
+	"title":"This is a required link. Only one link should be visible at a time",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	}
+      
    ]
 }
