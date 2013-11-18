@@ -68,13 +68,13 @@ tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
 	margin-right: 25%;
 }
 
-.content .item.burstL {margin-left: 0}
-.content .item.burstR {margin-right: 0}
-.content .item.burst {margin-left: 0; margin-right: 0}
-.content .item.sidebarL {width: 35%; margin-left: 0; float:left; clear:left}
-.content .item.sidebarR {width: 35%; margin-right: 0; float:right; clear:right}
-.content.hasLeftSidebar.hasRightSidebar .item.sidebarL {width: 25%; margin-left: 0;}
-.content.hasLeftSidebar.hasRightSidebar .item.sidebarR {width: 25%; margin-right: 0;}
+.content .item.burstL {margin-left: 0; clear:left}
+.content .item.burstR {margin-right: 0; clear:right}
+.content .item.burst {margin-left: 0; margin-right: 0; clear:both}
+.content .item.sidebarL {width: 35%; margin-right: 0; margin-left: 0; float:left; clear:left}
+.content .item.sidebarR {width: 35%; margin-right: 0; margin-left: 0; float:right; clear:right}
+.content.hasLeftSidebar.hasRightSidebar .item.sidebarL {width: 25%; margin-left: 0; margin-right: 0}
+.content.hasLeftSidebar.hasRightSidebar .item.sidebarR {width: 25%; margin-left: 0; margin-right: 0}
 .content.hasLeftSidebar.hasRightSidebar .item.burstL {margin-left: 0;}
 .content.hasLeftSidebar.hasRightSidebar .item.burstR {margin-right: 0;}
 .content.hasLeftSidebar.hasRightSidebar .item.burst {margin-left: 0; margin-right: 0;}
