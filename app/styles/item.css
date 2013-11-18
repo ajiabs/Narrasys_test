@@ -78,3 +78,18 @@ tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
 .content.hasLeftSidebar.hasRightSidebar .item.burstL {margin-left: 0;}
 .content.hasLeftSidebar.hasRightSidebar .item.burstR {margin-right: 0;}
 .content.hasLeftSidebar.hasRightSidebar .item.burst {margin-left: 0; margin-right: 0;}
+
+/*============================
+ *
+ * Defaults
+ *
+//===========================*/
+
+.item .type {}
+.item .category {}
+.item .starttime {}
+.item .title {}
+.item .author {}
+.item .icon {}
+.item .text {}
+.item .url {}
