@@ -35,11 +35,21 @@ angular.module('com.inthetelling.player')
 		model.wasActive = false;
 		model.items = [];
 
-		model.templateUrl = data.template || "templates/scene-combined.html";
-		model.layout = data.layout || "layoutCombined";
+		model.templateUrl = data.template || "templates/scene-1col.html";
+		model.layout = data.layout || "";
+
+		/* TODO this logic belongs in the scene directive, doesn't it */
+		if (model.layout.match(/splitRequired/)) {
+			model.mainPaneContents = 'required';
+			model.altPaneContents = 'optional';
+		} else {
+			// Default:
+			model.mainPaneContents = 'transcript';
+			model.altPaneContents = 'transmedia';
+		}
+
 		model.styles = data.styles;
 		
-
 		return model;
 	};
 

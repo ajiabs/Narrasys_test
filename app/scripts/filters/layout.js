@@ -4,13 +4,17 @@
 	Filters the item list based on where they need to appear. layout = any valid scene.layout, or one of
 		required (returns transcript and required transmedia)
 		optional (returns non-required transmedia)
-		content (all transcript and transmedia)
+		content (returns all transcript and transmedia)
 		transcript
 		transmedia
 */
 angular.module('com.inthetelling.player')
 .filter('layout', function() {
+
+
+
 	return function(items, layout) {
+		if (!items) {return [];}
 		var itemsIn = [], i, j, allowedLayouts;
 		if (layout === 'required' || layout === 'optional' || layout === 'transcript' || layout === 'transmedia' || layout === 'content') {
 			allowedLayouts = ['inline', 'sidebarL', 'sidebarR', 'burstL','burstR','burst'];
@@ -25,7 +29,7 @@ angular.module('com.inthetelling.player')
 					} else if (layout === 'transmedia') {
 						if (items[i].type !== 'transcript') {itemsIn.push(items[i]);}
 					} else if (layout === 'required') {
-						if (items[i].type === 'transcript' && items[i].required) {itemsIn.push(items[i]);}
+						if (items[i].type === 'transcript' || items[i].required) {itemsIn.push(items[i]);}
 					} else if (layout === 'optional') {
 						if (items[i].type !== 'transcript' && !(items[i].required)) {itemsIn.push(items[i]);}
 					} else { // content

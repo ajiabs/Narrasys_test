@@ -1,0 +1,17 @@
+<div class="item {{item.layout}} {{item.styles}}" x-ng-class='{"currentItem": item.isActive, "futureItem": !item.isActive && !item.wasActive, "pastItem": !item.isActive && item.wasActive}'>
+	<p>
+		<strong>{{item.title}}</strong><br />
+		<img x-ng-src="{{item.source}}" />
+	</p>
+</div>
+
+<div class="item {{item.layout}} {{item.styles}}" x-ng-class='{"currentItem": item.isActive, "futureItem": !item.isActive && !item.wasActive, "pastItem": !item.isActive && item.wasActive}'>
+	<div class="type"></div>
+	<div class="category"></div>
+	<div class="starttime"></div>
+	<div class="title"></div>
+	<div class="author"></div>
+	<div class="icon"></div>
+	<div class="text"></div>
+	<div class="url"></div>
+</div>

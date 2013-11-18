@@ -15,7 +15,7 @@ scene
 videoOverlay
 fillPane windowFg
 -->
-<div class="scene{{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
+<div class="scene-cornerV {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 
 	<div class="fillPane windowBg">
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
@@ -28,7 +28,7 @@ fillPane windowFg
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content">
+			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.mainPaneLeft, "hasRightSidebar": scene.sidebars.mainPaneRight}'>
 				<h2 class="scenetitle">{{scene.title}}</h2>
 				<div x-ng-repeat="item in scene.items | layout: 'transcript'" x-itt-item="item"></div>
 			</div>
@@ -40,7 +40,7 @@ fillPane windowFg
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content">
+			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.altPaneLeft, "hasRightSidebar": scene.sidebars.altPaneRight}'>
 				<div x-ng-repeat="item in scene.items | layout: 'transmedia'" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">
