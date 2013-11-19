@@ -10,7 +10,7 @@
 				</div>
 				<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.altPaneLeft, "hasRightSidebar": scene.sidebars.altPaneRight}'>
 					<!-- TODO: need to be able to force a particular item template here... -->
-					<div x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
+					<div data-force-template="icon" x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
 				</div>
 				<div class="fillPane paneFg">
 					<div x-ng-repeat="item in scene.items | layout: 'altFg'" x-itt-item="item"></div>
