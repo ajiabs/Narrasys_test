@@ -1,17 +1,16 @@
-<div class="item {{item.layout}} {{item.styles}}" x-ng-class='{"currentItem": item.isActive, "futureItem": !item.isActive && !item.wasActive, "pastItem": !item.isActive && item.wasActive}'>
-	<p>
-		<a href="{{item.source}}" target="_blank"><strong>{{item.title}}</strong></a><br />
-		<em>{{item.description}}</em>
-	</p>
-</div>
-
-<div class="item {{item.layout}} {{item.styles}}" x-ng-class='{"currentItem": item.isActive, "futureItem": !item.isActive && !item.wasActive, "pastItem": !item.isActive && item.wasActive}'>
-	<div class="type"></div>
-	<div class="category"></div>
-	<div class="starttime"></div>
-	<div class="title"></div>
-	<div class="author"></div>
-	<div class="icon"></div>
-	<div class="text"></div>
-	<div class="url"></div>
+<div class="item {{item.layout}} {{item.styles}} " x-ng-class='{
+	"currentItem": item.isActive, 
+	"futureItem": !item.isActive && !item.wasActive, 
+	"pastItem": !item.isActive && item.wasActive,
+	"isRequired": item.required,
+	"isCosmetic": item.cosmetic
+}'>
+	<div class="icon"><img x-ng-src="{{item.thumbSrc}}"></div>
+	<div class="category">{{item.category}}</div>
+	<div class="starttime">{{item.displayTime}}</div>
+	<div class="title"><a href="{{item.source}}" target="_blank">{{item.title}}</a></div>
+	<button ng-click="launchDetailView()">Detail View</button>
+	<div class="detail">
+		<div class="text">{{item.description}}</div>
+	</div>
 </div>

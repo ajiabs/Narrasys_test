@@ -75,7 +75,6 @@
          "type":"transcript",
          "start": 0,
          "end": 3,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Mr. Universe",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -117,7 +116,6 @@
          "type":"transcript",
          "start": 3,
          "end": 6,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Mr. Universe",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -159,7 +157,6 @@
          "type":"transcript",
          "start": 6,
          "end": 9,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Mr. Universe",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -201,7 +198,6 @@
          "type":"transcript",
          "start": 9,
          "end": 12,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author":{
             "name":"Mr. Universe",
             "src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -242,7 +238,6 @@
          "type":"transcript",
          "start": 12,
          "end": 15,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author": {
             "name": "Mr. Universe",
             "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -283,7 +278,6 @@
          "type":"transcript",
          "start": 15,
          "end": 18,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author": {
             "name": "Mr. Universe",
             "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -334,7 +328,6 @@
          "type":"transcript",
          "start": 18,
          "end": 20,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "layout": "inline",
          "author": {
             "name": "Mr. Universe",
@@ -346,7 +339,6 @@
          "type":"transcript",
          "start": 20,
          "end": 22,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "layout": "sidebarL",
          "author": {
             "name": "Mr. Universe",
@@ -358,7 +350,6 @@
          "type":"transcript",
          "start": 22,
          "end": 24,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "layout": "sidebarR",
          "author": {
             "name": "Mr. Universe",
@@ -370,7 +361,6 @@
          "type":"transcript",
          "start": 24,
          "end": 26,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "layout": "burst",
          "author": {
             "name": "Mr. Universe",
@@ -382,7 +372,6 @@
          "type":"transcript",
          "start": 26,
          "end": 28,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "layout": "burstL",
          "author": {
             "name": "Mr. Universe",
@@ -394,7 +383,6 @@
          "type":"transcript",
          "start": 26,
          "end": 28,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "layout": "burstR",
          "author": {
             "name": "Mr. Universe",
@@ -406,7 +394,6 @@
          "type":"transcript",
          "start": 28,
          "end": 30,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "layout": "inline",
          "author": {
             "name": "Mr. Universe",
@@ -461,7 +448,6 @@
          "type":"transcript",
          "start": 30,
          "end": 45,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author": {
             "name": "Mr. Universe",
             "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -485,7 +471,6 @@
          "type":"transcript",
          "start": 45,
          "end": 60,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author": {
             "name": "Mr. Universe",
             "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
@@ -530,7 +515,6 @@
          "type":"transcript",
          "start": 60,
          "end": 75,
-         "template": "/server-mock/templates/transmedia-transcript-default.html",
          "author": {
             "name": "Mr. Universe",
             "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"

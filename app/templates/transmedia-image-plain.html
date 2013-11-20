@@ -1,2 +1,7 @@
-<div class="item {{item.layout}} {{item.styles}}" x-ng-class='{"currentItem": item.isActive, "futureItem": !item.isActive && !item.wasActive, "pastItem": !item.isActive && item.wasActive}'><img x-ng-src="{{item.source}}" /></div>
+<div class="item {{item.layout}} {{item.styles}} " x-ng-class='{
+	"currentItem": item.isActive, 
+	"futureItem": !item.isActive && !item.wasActive, 
+	"pastItem": !item.isActive && item.wasActive
+}'>
+<img x-ng-src="{{item.source}}" /></div>
 
