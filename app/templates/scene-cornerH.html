@@ -1,20 +1,3 @@
-<!--
-fillPane windowBg
-scene
-	title
-	pane videoContainer
-		video
-	pane contentMain
-		fillPane paneBg
-		content
-		fillPane paneFg
-	pane contentAlt
-		fillPane paneBg
-		content
-		fillPane paneFg
-videoOverlay
-fillPane windowFg
--->
 <div class="scene-cornerH {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 
 	<div class="fillPane windowBg">
@@ -24,7 +7,7 @@ fillPane windowFg
 		<div class="pane videoContainer">
 			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/img/aspectratiopreserver-16x9.gif" /></div>
 		</div>
-		<div class="pane contentMain">
+		<div class="pane contentMain matchVideoHeight">
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
@@ -36,7 +19,7 @@ fillPane windowFg
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
 			</div>
 		</div>
-		<div class="pane contentAlt">
+		<div class="pane contentAlt stretchToViewportBottom">
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
 			</div>

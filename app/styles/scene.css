@@ -50,6 +50,7 @@
 /*============================*/
 /* Explore mode */
 
+.scene-explore {clear:both}
 .scene-explore.futureScene, 
 .scene-explore.pastScene {display:block}
 
@@ -57,17 +58,29 @@
 	position:fixed;
 	top: 60px;
 	right: 0;
-	width: 20%;
+	width: 30%;
+}
+
+.scene-explore.currentScene .videoContainer {
+	     box-shadow: -3px 3px 4px rgba(0,0,0,0.5);
+	-moz-box-shadow:  -3px 3px 4px rgba(0,0,0,0.5);
 	border: 1px solid #000;
+	z-index:2;
 }
 
 .scene-explore .contentMain {
 	background-color: #EEEEEE;
 	border-right: 1px solid #CCCCCC;
 	height: 100%;
-	padding-left: 10%;
-	padding-right: 10%;
-	width: 33%;
+	width: 50%;
+	float:left;
+}
+.scene-explore .contentAlt {
+	background-color: #EEEEEE;
+	border-right: 1px solid #CCCCCC;
+	height: 100%;
+	width: 50%;
+	float:right;
 }
 
 /*============================*/
@@ -80,10 +93,75 @@
 /*============================*/
 .scene-centered {}
 
+.scene-centered .scene {
+}
+
+.scene-centered .videoContainer {
+	position:fixed; width: 60%;
+	margin: 10% 20% 0 20%;
+}
+
+.scene-centered .contentMain {
+	padding-top: 10%;
+	width: 60%;
+	margin: 0 20%;
+}
 
 /*============================*/
 .scene-2col {}
-/*============================*/
-.scene-cornerV {}
+
+.scene-2col .videoContainer {
+	position:fixed; width: 50%; margin: 0 25%;
+}
+
+.scene-2col.videoLeft .videoContainer {
+	margin: 0 70% 0 0;
+}
+.scene-2col.videoRight .videoContainer {
+	margin: 0 0 0 70%;
+}
+
+.scene-2colL .contentMain {
+	width: 50%;
+	float:left;
+}
+.scene-2colL .contentAlt {
+	width: 50%;
+	float:right;
+}
+.scene-2colR .contentMain {
+	width: 50%;
+	float:right;
+}
+.scene-2colR .contentAlt {
+	width: 50%;
+	float:left;
+}
+
 /*============================*/
 .scene-cornerH {}
+
+.scene-cornerH .videoContainer {
+	width: 50%;float:left;
+}
+
+.scene-cornerH .contentMain {
+	width: 50%;float:right;
+	overflow-y: scroll;
+}
+
+.scene-cornerH.videoRight .videoContainer {float:right;}
+.scene-cornerH.videoRight .contentMain {float:left;}
+
+.scene-cornerH .contentAlt {clear:both}
+
+
+/*============================*/
+.scene-cornerV {}
+.scene-cornerV .scene-cornerV-column {
+	width: 50%; float:left;
+}
+
+.scene-cornerV .contentAlt {width: 50%; float:right;}
+.scene-cornerV.videoRight .scene-cornerV-column {float:right;}
+.scene-cornerV.videoRight .contentAlt {float:left}

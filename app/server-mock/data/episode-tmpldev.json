@@ -11,6 +11,8 @@
    "events": [
       {
         "type": "scene",
+        "template": "templates/scene-cornerV.html",
+        "layout": "videoRight",
         "start": 0,
         "end": 18,
         "title": "Scene One: default scene template",
@@ -92,7 +94,7 @@
       {
          "type":"image",
          "layout": "mainBg",
-         "styles": "fill",
+         "styles": "tl",
          "start": 0,
          "end": 3,
          "template": "templates/transmedia-image-plain.html",
@@ -325,7 +327,7 @@
         "end": 30,
         "title": "Scene Two: content layouts",
         "description": "SplitTransmedia, showList; uses various item layouts inside content panes ",
-        "template": "templates/scene-2col.html",
+        "template": "templates/scene-2colR.html",
         "layout": "splitTransmedia showList"
       },
       {
@@ -405,7 +407,7 @@
          "start": 28,
          "end": 30,
          "template": "/server-mock/templates/transmedia-transcript-default.html",
-         "layout": "burstR",
+         "layout": "inline",
          "author": {
             "name": "Mr. Universe",
             "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
