@@ -2,7 +2,7 @@
 	text-align: center;
 	position: fixed;
 	height: 85px; margin-bottom: -25px;
-	background: url('/img/toolbar-bg.png') top left repeat-x;
+	background: url('/images/toolbar-bg.png') top left repeat-x;
 	top: 0; left: 0; right: 0;
 	white-space: nowrap;
 }
@@ -13,11 +13,11 @@
 	display:inline-block;
 	width: 48px; height: 48px;
 	padding: 6px; margin: 6px;
-	background: url('/img/button.png') 50% 0 no-repeat;
+	background: url('/images/button.png') 50% 0 no-repeat;
 }
 
 .toolbar .button.cur {
-	background-image: url("/img/button-active.png");
+	background-image: url("/images/button-active.png");
 }
 
 
@@ -28,19 +28,19 @@
 	background-position: 50% 50%; background-repeat: no-repeat;
 }
 
-.toolbar .button-video span {background-image: url("/img/btn-video.png")}
-.toolbar .button-video.cur span {background-image: url("/img/btn-video-cur.png")}
-.toolbar .button-directed span {background-image: url("/img/btn-directed.png")}
-.toolbar .button-directed.cur span {background-image: url("/img/btn-directed-cur.png")}
-.toolbar .button-explore span {background-image: url("/img/btn-explore.png")}
-.toolbar .button-explore.cur span {background-image: url("/img/btn-explore-cur.png")}
+.toolbar .button-video span {background-image: url("/images/btn-video.png")}
+.toolbar .button-video.cur span {background-image: url("/images/btn-video-cur.png")}
+.toolbar .button-directed span {background-image: url("/images/btn-directed.png")}
+.toolbar .button-directed.cur span {background-image: url("/images/btn-directed-cur.png")}
+.toolbar .button-explore span {background-image: url("/images/btn-explore.png")}
+.toolbar .button-explore.cur span {background-image: url("/images/btn-explore-cur.png")}
 
 .toolbar .button-search {float:right}
 .toolbar .button-showscenenav {float:left}
 
-.toolbar .button-search span {background-image: url("/img/btn-search.png")}
-.toolbar .button-search.cur span {background-image: url("/img/btn-search-cur.png")}
-.toolbar .button-showscenenav span {background-image: url("/img/btn-showscenenav.gif")}
+.toolbar .button-search span {background-image: url("/images/btn-search.png")}
+.toolbar .button-search.cur span {background-image: url("/images/btn-search-cur.png")}
+.toolbar .button-showscenenav span {background-image: url("/images/btn-showscenenav.gif")}
 
 
 .sidepanel {

@@ -42,14 +42,6 @@ module.exports = function (grunt) {
 			}
 		},
 		watch: {
-			coffee: {
-				files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-				tasks: ['coffee:dist']
-			},
-			coffeeTest: {
-				files: ['test/spec/{,*/}*.coffee'],
-				tasks: ['coffee:test']
-			},
 			styles: {
 				files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
 				tasks: ['copy:styles', 'autoprefixer']
@@ -136,43 +128,14 @@ module.exports = function (grunt) {
 				'<%= yeoman.app %>/scripts/{,*/}*.js'
 			]
 		},
-		coffee: {
-			options: {
-				sourceMap: true,
-				sourceRoot: ''
-			},
-			dist: {
-				files: [{
-					expand: true,
-					cwd: '<%= yeoman.app %>/scripts',
-					src: '{,*/}*.coffee',
-					dest: '.tmp/scripts',
-					ext: '.js'
-				}]
-			},
-			test: {
-				files: [{
-					expand: true,
-					cwd: 'test/spec',
-					src: '{,*/}*.coffee',
-					dest: '.tmp/spec',
-					ext: '.js'
-				}]
-			}
-		},
-		// not used since Uglify task does concat,
-		// but still available if needed
-		/*concat: {
-			dist: {}
-		},*/
 		rev: {
 			dist: {
 				files: {
 					src: [
 						'<%= yeoman.dist %>/scripts/{,*/}*.js',
-						'<%= yeoman.dist %>/styles/{,*/}*.css',
-						'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-						'<%= yeoman.dist %>/styles/fonts/*'
+						'<%= yeoman.dist %>/styles/{,*/}*.css'//,
+						//'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+						//'<%= yeoman.dist %>/styles/fonts/*'
 					]
 				}
 			}
@@ -254,10 +217,9 @@ module.exports = function (grunt) {
 					dest: '<%= yeoman.dist %>',
 					src: [
 						'*.{ico,png,txt}',
-						'.htaccess',
-						'bower_components/**/*',
-						'images/{,*/}*.{gif,webp}',
-						'styles/fonts/*'
+						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+						'styles/fonts/*',
+						'server-mock/**/*.{html,json}' //TODO: For testing server:dist only! Do not distribute with server-mock!
 					]
 				}, {
 					expand: true,
@@ -268,6 +230,13 @@ module.exports = function (grunt) {
 					]
 				}]
 			},
+			serverDist: {
+				expand: true,
+				dot: true,
+				cwd: '<%= yeoman.app %>',
+				dest: '<%= yeoman.dist %>',
+				src: 'server-mock/**/*.{html,json}'
+			},
 			styles: {
 				expand: true,
 				cwd: '<%= yeoman.app %>/styles',
@@ -277,15 +246,12 @@ module.exports = function (grunt) {
 		},
 		concurrent: {
 			server: [
-				'coffee:dist',
 				'copy:styles'
 			],
 			test: [
-				'coffee',
 				'copy:styles'
 			],
 			dist: [
-				'coffee',
 				'copy:styles',
 				'imagemin',
 				'svgmin',
@@ -298,11 +264,6 @@ module.exports = function (grunt) {
 				singleRun: true
 			}
 		},
-		cdnify: {
-			dist: {
-				html: ['<%= yeoman.dist %>/*.html']
-			}
-		},
 		ngmin: {
 			dist: {
 				files: [{
@@ -312,21 +273,16 @@ module.exports = function (grunt) {
 					dest: '<%= yeoman.dist %>/scripts'
 				}]
 			}
-		},
-		uglify: {
-			dist: {
-				files: {
-					'<%= yeoman.dist %>/scripts/scripts.js': [
-						'<%= yeoman.dist %>/scripts/scripts.js'
-					]
-				}
-			}
 		}
 	});
 
 	grunt.registerTask('server', function (target) {
 		if (target === 'dist') {
-			return grunt.task.run(['build', 'connect:dist:keepalive']);
+			return grunt.task.run([
+				'build',
+				'copy:serverDist',
+				'connect:dist:keepalive'
+			]);
 		}
 
 		grunt.task.run([
@@ -358,18 +314,11 @@ module.exports = function (grunt) {
 		'autoprefixer',
 		'concat',
 		'copy:dist',
-		'cdnify',
 		'ngmin',
 		'cssmin',
 		'uglify',
 		'rev',
 		'usemin'
 	]);
-	/*
-	grunt.registerTask('default', [
-		'jshint',
-		'test',
-		'build'
-	]);
-	*/
+	
 };

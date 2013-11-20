@@ -6,7 +6,7 @@
 		<title>InTheTelling Player</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width">
-		<!-- build:css(.tmp) styles/combined.css -->
+		<!-- build:css(.tmp) styles/app-combined.css -->
 		<link rel="stylesheet" href="styles/main.css" />
 		<link rel="stylesheet" href="styles/video.css" />
 		<link rel="stylesheet" href="styles/episode.css" />
@@ -15,6 +15,8 @@
 		<link rel="stylesheet" href="styles/transitions.css" />
 		<link rel="stylesheet" href="styles/colors.css" />
 		<link rel="stylesheet" href="styles/highlights.css" />
+		<!-- endbuild -->
+		<!-- build:css styles/vendor-combined.css -->
 		<link rel="stylesheet" href="bower_components/video.js/video-js.css" />
 		<link rel="stylesheet" href="bower_components/animate.css/animate.css" />
 		<!-- endbuild -->
@@ -25,28 +27,23 @@
 		<![endif]-->
 
 		<!--[if lt IE 9]>
-			<script src="bower_components/es5-shim/es5-shim.js"></script>
-			<script src="bower_components/json3/lib/json3.min.js"></script>
+			<script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.1.0/es5-shim.min.js"></script>
+			<script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.5/json3.min.js"></script>
 		<![endif]-->
 
 		<div data-ng-view=""></div>
 
+		<!-- build:js scripts/vendor-combined.js -->
 		<script src="bower_components/jquery/jquery.js"></script>
 		<script src="bower_components/angular/angular.js"></script>
-
-		<!-- build:js scripts/libraries-combined.js -->
-		<script src="bower_components/underscore/underscore.js"></script>
-		<script src="bower_components/video.js/video.js"></script>
-		<!-- endbuild -->
-
-		<!-- build:js scripts/modules-combined.js -->
 		<script src="bower_components/angular-resource/angular-resource.js"></script>
 		<script src="bower_components/angular-route/angular-route.js"></script>
 		<script src="bower_components/angular-animate/angular-animate.js"></script>
 		<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+		<script src="bower_components/underscore/underscore.js"></script>
+		<script src="bower_components/video.js/video.js"></script>
 		<!-- endbuild -->
-
-		<!-- build:js({.tmp,app}) scripts/app-combined.js -->
+		<!-- build:js scripts/app-combined.js -->
 		<script src="scripts/config.js"></script>
 		<script src="scripts/app.js"></script>
 		<script src="scripts/templates.js"></script>

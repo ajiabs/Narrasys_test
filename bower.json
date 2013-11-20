@@ -8,8 +8,6 @@
     "angular-route": "~1.2.1",
     "angular-animate": "~1.2.1",
     "angular-bootstrap": "~0.6.0",
-    "json3": "~3.2.4",
-    "es5-shim": "~2.0.8",
     "video.js": "~4.2.2",
     "underscore": "~1.5.2",
     "animate.css": "~2.1.1"
