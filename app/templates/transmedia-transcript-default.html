@@ -1,10 +1,3 @@
-<div class="item {{item.layout}} {{item.styles}}" x-ng-class='{"currentItem": item.isActive, "futureItem": !item.isActive && !item.wasActive, "pastItem": !item.isActive && item.wasActive}'>
-	<p>
-		<strong>{{item.authorName}}</strong> [<em>{{item.displayTime}}</em>]<br />
-		{{item.annotation}}
-	</p>
-</div>
-
 <div class="item {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
@@ -16,8 +9,8 @@
 	<div class="category"></div>
 	<div class="displayTime">{{item.displayTime}}</div>
 	<div class="title"></div>
+	<div class="thumbSrc"><img x-ng-src="{{item.authorThumbSrc}}"></div>
 	<div class="authorName">{{item.authorName}}</div>
-	<div class="thumbSrc"><img src="{{item.</div>
 	<div class="text">{{item.annotation}}</div>
 	<div class="url"></div>
 </div>

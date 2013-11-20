@@ -1,4 +1,4 @@
-<div class="scene-cornerH {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
+<div class="scene-2col scene-2colL {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 
 	<div class="fillPane windowBg">
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
@@ -7,11 +7,15 @@
 		<div class="pane videoContainer">
 			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" /></div>
 		</div>
-		<div class="pane contentMain matchVideoHeight">
+		
+		<div class="pane contentMain stretchToViewportBottom">
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
 			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.mainPaneLeft, "hasRightSidebar": scene.sidebars.mainPaneRight}'>
+				<div class="matchVideoHeight">
+					<!-- TODO: check videoLeft or videoRight to decide which column(s) to include this in -->
+				</div>
 				<h2 class="scenetitle">{{scene.title}}</h2>
 				<div x-ng-repeat="item in scene.items | layout: scene.mainPaneContents" x-itt-item="item"></div>
 			</div>
@@ -24,6 +28,9 @@
 				<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
 			</div>
 			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.altPaneLeft, "hasRightSidebar": scene.sidebars.altPaneRight}'>
+				<div class="matchVideoHeight">
+					<!-- TODO: check videoLeft or videoRight to decide which column(s) to include this in -->
+				</div>
 				<div x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">

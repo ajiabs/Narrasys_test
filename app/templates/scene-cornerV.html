@@ -21,10 +21,11 @@ fillPane windowFg
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
 	</div>
 	<div class="scene">
-		<div class="pane videoContainer">
-			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" /></div>
+		<div class="scene-cornerV-column stretchToViewportBottom">
+			<div class="pane videoContainer">
+			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/img/aspectratiopreserver-16x9.gif" /></div>
 		</div>
-		<div class="pane contentMain">
+			<div class="pane contentMain stretchToViewportBottom">
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
@@ -36,7 +37,8 @@ fillPane windowFg
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
 			</div>
 		</div>
-		<div class="pane contentAlt">
+		</div>
+		<div class="pane contentAlt stretchToViewportBottom">
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
 			</div>

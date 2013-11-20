@@ -64,7 +64,6 @@ angular.module('com.inthetelling.player')
 		model.itemDetailTemplateUrl = data.itemDetailTemplate; // TODO: guessing this var name for now
 		model.displayTime = Math.floor(data.start/60) + ":" + ("0"+Math.floor(data.start)%60).slice(-2);
 
-		model.templateUrl = data.template || console.error("ERROR no templateUrl specified for item");
 		model.layout = data.layout || "inline";
 		model.styles = data.styles;
 		model.required = data.required || false;
@@ -74,12 +73,14 @@ angular.module('com.inthetelling.player')
 		// extend base model based on item type
 		switch(data.type) {
 			case "transcript":
+				model.templateUrl = data.template || "templates/transmedia-transcript-default.html";
 				model.authorName = data.author.name;
 				model.authorThumbSrc = data.author.src;
 				model.annotation = data.annotation;
 				break;
 
 			case "link":
+				model.templateUrl = data.template || "templates/transmedia-link-default.html";
 				model.title = data.title;
 				model.description = data.description;
 				model.thumbSrc = data.src;
@@ -87,6 +88,7 @@ angular.module('com.inthetelling.player')
 				break;
 
 			case "image":
+				model.templateUrl = data.template || "templates/transmedia-image-default.html";
 				model.title = data.title;
 				model.description = data.description;
 				model.source = data.src; // TODO: Change model.source to model.src
