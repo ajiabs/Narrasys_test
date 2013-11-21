@@ -13,7 +13,7 @@ angular.module('com.inthetelling.player')
 			console.log("ittMagnetized link");
 
 			// TODO failed attempt to unbind previous magnet event in this scope
-			if (scope.magnetFunction) {scope.magnetFunction()};
+			if (scope.magnetFunction) {scope.magnetFunction();}
 
 			// listen for videoMagnet events and resize/reposition ourselves if we receive one
 			scope.magnetFunction = scope.$on('videoMagnet', function(evt, el) {
