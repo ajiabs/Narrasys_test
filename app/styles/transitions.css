@@ -18,23 +18,4 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 	        animation-fill-mode: both;
 }
 
-/*
-.showCurrent .item.pastItem {display:none}
-.showCurrent .item.futureItem {display:none}
-*/
 
-/*============================
- *
- * transitionFade
- *
-//===========================*/
-
-/* Full (for showCurrent) */
-
-.item.ng-enter {
-  animation: fadeIn 1s;
-}
-
-.item.ng-leave {
-  animation: fadeOut 1s;
-}

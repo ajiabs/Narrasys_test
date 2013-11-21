@@ -3,7 +3,7 @@
       "title": "Episode Title",
       "category": "CATEGORY",
       "cover": "http://theplatform-static.edgesuite.net/In_The_Telling/toc8_1280x720_25781827819.jpg",
-      "styles": "transitionSlideL",
+      "styles": "transitionFade",
       "videos": {
          "webm": "http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
          "mpeg4": "http://platformuniv-p.edgesuite.net/dynamic/In_The_Telling/S3T2_Importance_of_Geography__192694.mp4"
