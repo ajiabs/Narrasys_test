@@ -19,12 +19,10 @@
 		</div>
 		
 		<div class="pane contentMain">
-
 			<div class="fillPane paneBg">
-			
 			<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.contentLeft, "hasRightSidebar": scene.sidebars.contentRight}'>
+			<div class="content showCurrent" x-ng-class='{"hasLeftSidebar": scene.sidebars.contentLeft, "hasRightSidebar": scene.sidebars.contentRight}'>
 			<div class="matchVideoHeight"></div>
 				<h2 class="scenetitle" style="z-index: 1000" x-itt-magnetized>{{scene.title}}</h2>
 				<div x-ng-repeat="item in scene.items | layout: 'content'" x-itt-item="item"></div>

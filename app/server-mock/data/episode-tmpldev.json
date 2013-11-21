@@ -3,6 +3,7 @@
       "title": "Episode Title",
       "category": "CATEGORY",
       "cover": "http://theplatform-static.edgesuite.net/In_The_Telling/toc8_1280x720_25781827819.jpg",
+      "styles": "transitionSlideL",
       "videos": {
          "webm": "http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
          "mpeg4": "http://platformuniv-p.edgesuite.net/dynamic/In_The_Telling/S3T2_Importance_of_Geography__192694.mp4"
@@ -11,7 +12,7 @@
    "events": [
       {
         "type": "scene",
-        "template": "templates/scene-cornerV.html",
+        "template": "/templates/scene-cornerV.html",
         "layout": "videoRight",
         "start": 0,
         "end": 18,
@@ -447,12 +448,32 @@
       {
          "type":"transcript",
          "start": 30,
-         "end": 45,
+         "end": 35,
          "author": {
             "name": "Mr. Universe",
             "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
          },
          "annotation": "This scene uses the scene-centered layout"
+      },
+      {
+         "type":"transcript",
+         "start": 35,
+         "end": 40,
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "This is the second transcript node in the scene. ONly one should be visible"
+      },
+      {
+         "type":"transcript",
+         "start": 40,
+         "end": 45,
+         "author": {
+            "name": "Mr. Universe",
+            "src": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+         },
+         "annotation": "This is the third node"
       },
       
       

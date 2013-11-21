@@ -1,5 +1,6 @@
-/*  Valid styles:
-tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
+/*  Valid styles for items:
+	tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content) 
+*/
 
 
 
@@ -43,14 +44,15 @@ tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content)
 //===========================*/
 
 .content .item {border: 1px solid #666}
+/*
 .futureItem {color: #CCC}
 .pastItem {color: #EEE}
 .currentItem {color: #000}
-
+*/
 
 /*============================
  *
- * Sidebars
+ * Item positioning
  *
 //===========================*/
 
