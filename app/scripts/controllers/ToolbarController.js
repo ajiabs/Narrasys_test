@@ -1,5 +1,7 @@
 'use strict';
 
+//TODO: explore view needs to stash and remove showCurrent from scene layout if present
+
 // Controller for ittToolbar
 angular.module('com.inthetelling.player')
 .controller('ToolbarController', function ($scope, $timeout, $rootScope) {
