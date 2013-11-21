@@ -504,8 +504,8 @@
 	"start":45,
 	"end": 60,
 	"template": "templates/transmedia-link-default.html",
-	"optional": true,
-	"title":"This is an optional link",
+	"required": true,
+	"title":"This is an required link",
 	"description":"EWB-USA University of Maryland solar lighting project.",
 	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
 	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
@@ -548,8 +548,8 @@
 	"start":60,
 	"end": 65,
 	"template": "templates/transmedia-link-default.html",
-	"optional": true,
-	"title":"This is an optional link. Only one link should be visible at a time...",
+	"required": true,
+	"title":"This is a required link. Only one link should be visible at a time...",
 	"description":"EWB-USA University of Maryland solar lighting project.",
 	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
 	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
