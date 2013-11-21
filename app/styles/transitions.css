@@ -1,1 +1,40 @@
+/* TODO: alternatives for IE 8 and below */
+/* TODO: check if these can safely be used on scenes too */
 
+
+
+body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
+	-webkit-backface-visibility: hidden;
+}
+
+.item {
+	-webkit-animation-duration: 1s;
+	   -moz-animation-duration: 1s;
+	     -o-animation-duration: 1s;
+	        animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	   -moz-animation-fill-mode: both;
+	     -o-animation-fill-mode: both;
+	        animation-fill-mode: both;
+}
+
+/*
+.showCurrent .item.pastItem {display:none}
+.showCurrent .item.futureItem {display:none}
+*/
+
+/*============================
+ *
+ * transitionFade
+ *
+//===========================*/
+
+/* Full (for showCurrent) */
+
+.item.ng-enter {
+  animation: fadeIn 1s;
+}
+
+.item.ng-leave {
+  animation: fadeOut 1s;
+}
