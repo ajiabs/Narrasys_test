@@ -135,7 +135,7 @@ module.exports = function (grunt) {
 						'<%= yeoman.dist %>/scripts/{,*/}*.js',
 						'<%= yeoman.dist %>/styles/{,*/}*.css'//,
 						//'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-						//'<%= yeoman.dist %>/styles/fonts/*'
+						//'<%= yeoman.dist %>/styles/font/*'
 					]
 				}
 			}
@@ -218,8 +218,7 @@ module.exports = function (grunt) {
 					src: [
 						'*.{ico,png,txt}',
 						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-						'styles/fonts/*',
-						'server-mock/**/*.{html,json}' //TODO: For testing server:dist only! Do not distribute with server-mock!
+						'styles/font/*'
 					]
 				}, {
 					expand: true,

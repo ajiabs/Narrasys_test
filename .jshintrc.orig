@@ -20,6 +20,10 @@
 	"globals": {
 		"angular": false,
 		"videojs": false,
+<<<<<<< HEAD
+		"$": true
+=======
 		"$": false
+>>>>>>> master
 	}
 }

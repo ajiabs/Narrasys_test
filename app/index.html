@@ -17,10 +17,11 @@
 		<link rel="stylesheet" href="styles/highlights.css" />
 		<!-- endbuild -->
 		<!-- build:css(.tmp) styles/vendor-combined.css -->
-		<link rel="stylesheet" href="bower_components/video.js/video-js.css" />
-		<link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+		<link rel="stylesheet" href="styles/animate.css" />
+		<link rel="stylesheet" href="styles/video-js.dev.css" />
 		<!-- endbuild -->
-    </head>
+
+	</head>
 	<body>
 		<!--[if lt IE 7]>
 			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -33,7 +34,7 @@
 
 		<div data-ng-view=""></div>
 
-		<!-- build:js scripts/vendor-combined.js -->
+		<!-- build:js({.tmp,app}) scripts/vendor-combined.js -->
 		<script src="bower_components/jquery/jquery.js"></script>
 		<script src="bower_components/angular/angular.js"></script>
 		<script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -41,14 +42,16 @@
 		<script src="bower_components/angular-animate/angular-animate.js"></script>
 		<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
 		<script src="bower_components/underscore/underscore.js"></script>
-		<script src="bower_components/video.js/video.js"></script>
+		<script src="bower_components/video.js/video.dev.js"></script>
 		<!-- endbuild -->
-		<!-- build:js scripts/app-combined.js -->
+		<!-- build:js({.tmp,app}) scripts/app-combined.js -->
 		<script src="scripts/config.js"></script>
 		<script src="scripts/app.js"></script>
 		<script src="scripts/templates.js"></script>
 		<script src="scripts/controllers/UIErrorController.js"></script>
 		<script src="scripts/controllers/EpisodeController.js"></script>
+		<script src="scripts/controllers/ItemController.js"></script>
+		<script src="scripts/controllers/ToolbarController.js"></script>
 		<script src="scripts/services/modelFactory.js"></script>
 		<script src="scripts/services/modalMgr.js"></script>
 		<script src="scripts/services/queuePointScheduler.js"></script>
