@@ -25,11 +25,6 @@ angular.module('com.inthetelling.player')
 				}
 			}
 		},
-		controller: function($scope, modalMgr) {
-			// pass through method to modal.createItemDetailOverlay() for templates
-			$scope.launchDetailView = function() {
-				modalMgr.createItemDetailOverlay($scope);
-			};
-		}
+		controller: "ItemController"
 	};
 });
