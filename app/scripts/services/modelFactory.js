@@ -47,6 +47,9 @@ angular.module('com.inthetelling.player')
 			model.mainPaneContents = 'transcript';
 			model.altPaneContents = 'transmedia';
 		}
+		if (model.layout.match(/showCurrent/)) {
+			model.showCurrent=true;
+		}
 
 		model.styles = data.styles;
 		

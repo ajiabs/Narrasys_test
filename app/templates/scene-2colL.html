@@ -17,7 +17,8 @@
 					<!-- TODO: check videoLeft or videoRight to decide which column(s) to include this in -->
 				</div>
 				<h2 class="scenetitle">{{scene.title}}</h2>
-				<div x-ng-repeat="item in scene.items | layout: scene.mainPaneContents" x-itt-item="item"></div>
+				<div x-ng-if="scene.showCurrent"  x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.mainPaneContents" x-itt-item="item"></div>
+				<div x-ng-if="!scene.showCurrent" x-ng-repeat="item in scene.items | layout: scene.mainPaneContents" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
@@ -31,7 +32,8 @@
 				<div class="matchVideoHeight">
 					<!-- TODO: check videoLeft or videoRight to decide which column(s) to include this in -->
 				</div>
-				<div x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
+				<div x-ng-if="scene.showCurrent"  x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.altPaneContents" x-itt-item="item"></div>
+				<div x-ng-if="!scene.showCurrent" x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'altFg'" x-itt-item="item"></div>
