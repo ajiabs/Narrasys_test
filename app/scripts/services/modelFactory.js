@@ -29,6 +29,7 @@ angular.module('com.inthetelling.player')
 		model.title = data.title;
 		model.description = data.description;
 		model.startTime = data.start;
+		model.displayTime = Math.floor(data.start/60) + ":" + ("0"+Math.floor(data.start)%60).slice(-2);
 		model.endTime = data.end;
 		model.thumbnail = data.src; // TODO: change to model.thumbSrc (for consistency with item thumbnails and of calling item url/src in var name)
 		model.isActive = false;
