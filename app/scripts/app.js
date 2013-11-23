@@ -21,6 +21,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ui.bootstrap
 .config(function($sceDelegateProvider) {
 	$sceDelegateProvider.resourceUrlWhitelist([
 		'self',
+		/.*/,
 		/^https?:\/\/danielbeck.net/,
 		/^https?:\/\/platformuniv-p.edgesuite.net/
 	]);
