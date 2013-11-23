@@ -1,11 +1,13 @@
-<div x-itt-video x-itt-magnetized class="vjs-wrapper"></div>
-<div x-itt-search-panel ng-show="show.searchPanel"></div>
-<div x-itt-navigation-panel ng-show="show.navigationPanel"></div>
-<div x-itt-toolbar></div>
-<div class="episode episode{{episode.layout}} {{episode.styles}}">
-	<!-- TODO <div class="scene sceneintro"></div> -->
-	<div x-ng-repeat="scene in scenes" x-itt-scene="scene"></div>
-	<!-- TODO <div class="scene sceneoutro"></div> -->
+<div class="{{episode.styles}}">
+	<div x-itt-video x-itt-magnetized class="vjs-wrapper"></div>
+	<div x-itt-search-panel ng-show="show.searchPanel"></div>
+	<div x-itt-navigation-panel ng-show="show.navigationPanel"></div>
+	<div x-itt-toolbar></div>
+	<div class="episode episode{{episode.layout}}">
+		<!-- TODO <div class="scene sceneintro"></div> -->
+		<div x-ng-repeat="scene in scenes" x-itt-scene="scene"></div>
+		<!-- TODO <div class="scene sceneoutro"></div> -->
+	</div>
 </div>
 
 <div id="footertrigger"><!-- TODO tap/hover event to force video nav to show --></div>
