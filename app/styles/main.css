@@ -52,7 +52,7 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-color: rgba(0,0,0,.9);
+	background-color: rgba(0,0,0,0.4);
 	color: #fff;
 }
 
@@ -63,7 +63,13 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 	left: 15%;
 	right: 15%;
 	background-color: white;
-	border: 2px solid black;
-	padding: 20px;
 }
 
+.modal iframe {
+	position:absolute;
+	top: 20px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border: none;
+}
