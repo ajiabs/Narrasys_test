@@ -44,15 +44,20 @@
 
 
 .sidepanel {
-	background-color: white;
 	position: absolute;
 	width: 300px;
 	height: 100%;
+	box-shadow: 8px 8px 10px rgba(0,0,0,0.5)
 }
 
 .sidepanel#scenenav {
 	top: 0;
 	left: 0;
+}
+
+#scenenav .scene {
+	padding: 0.3em;
+	border-bottom: 1px solid rgba(0,0,0,0.7);
 }
 
 /* animate on show */

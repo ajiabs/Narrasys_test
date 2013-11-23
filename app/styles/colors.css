@@ -1,4 +1,103 @@
-.colorInvert {
-	background-color: #000;
-	color: #FFF;
+
+/*============================
+ *
+ * default
+ *
+//===========================*/
+
+
+.contentMain {
+	background-color: #FFF;
+}
+
+.contentAlt {
+	background-color: #EEE;
+}
+
+a {
+	color: #00C
+}
+
+/*============================
+ *
+ * colorInvert
+ *
+//===========================*/
+
+.colorInvert, .colorInvert .contentMain {
+	color: #CCC;
+	background-color: #333;
+}
+
+.colorInvert .contentAlt {
+	background-color: #444;
+}
+
+.colorInvert a {color: #FFF}
+
+
+/*============================
+ *
+ * colorSepia
+ *
+//===========================*/
+
+.colorSepia, .colorSepia .contentMain {
+	color: #643B0F;
+	background-color: #F9E9CE;
+}
+
+.colorSepia .contentAlt {
+	background-color: #FBF7ED;
+}
+
+.colorSepia a {
+	color: #B7521E;
+}
+
+
+
+/*============================
+ *
+ * colorSolarized
+ *
+//===========================*/
+
+.colorSolarized, .colorSolarized .contentMain {
+	color: #586E75;
+	background-color: #FeF6E4;
+}
+
+.colorSolarized .contentAlt {
+	background-color: #EFE9D6;
+}
+
+.colorSolarized a {
+	color: #288Cd2;
+}
+
+
+
+/*============================
+ *
+ * colorVivid
+ *
+//===========================*/
+
+
+.colorVivid, .colorVivid .contentMain {
+	color: #595959;
+	background-color: #FFF;
+}
+
+.colorVivid .contentAlt {
+	background-color: #C2E2A5;
+}
+
+.colorVivid a {
+	color: #FF9209;
+}
+
+.colorVivid .contentAlt a {
+	color: #F30;
 }
