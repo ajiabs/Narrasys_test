@@ -64,7 +64,6 @@ angular.module('com.inthetelling.player')
 		model.category = data.category;
 		model.startTime = data.start;
 		model.endTime = data.end;
-		model.itemDetailTemplateUrl = data.itemDetailTemplate; // TODO: guessing this var name for now
 		model.displayTime = Math.floor(data.start/60) + ":" + ("0"+Math.floor(data.start)%60).slice(-2);
 
 		model.layout = data.layout || "inline";
@@ -84,6 +83,7 @@ angular.module('com.inthetelling.player')
 
 			case "link":
 				model.templateUrl = data.template || "templates/transmedia-link-default.html";
+				model.itemDetailTemplateUrl = "templates/modal-link-default.html"; // hardcoded for now, not sure if we'll want to allow variations here
 				model.title = data.title;
 				model.description = data.description;
 				model.thumbSrc = data.src;
