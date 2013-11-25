@@ -1,0 +1,71 @@
+
+/*============================
+ *
+ * Default
+ *
+//===========================*/
+
+/* TODO: selectively include fonts as links in index.html instead.  
+Tricky bit is need to look for typography* styles on 
+episide, scene, and items to know which to include! */
+
+
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700|EB+Garamond|Droid+Serif|Roboto:400,300,700,400italic);
+
+body {font-family: 'Droid Sans', sans-serif}
+a {text-decoration: none;}
+
+.title {font-size: 1.2em}
+.authorName, 
+.category {font-size: 0.8em; font-weight: 700}
+.text {}
+
+/*============================
+ *
+ * typographySerif
+ *
+//===========================*/
+
+
+.typographySerif {
+	font-family: 'Droid Serif', serif
+}
+.typographySerif .category, .typographySerif .displayTime {
+	font-family: 'Droid Sans', sans-serif
+}
+
+
+/*============================
+ *
+ * typographySans
+ *
+//===========================*/
+
+/* (is default) */
+
+
+
+/*============================
+ *
+ * typographyBook
+ *
+//===========================*/
+
+.typographyBook {
+    font-family: 'EB Garamond', Garamond,serif;
+    font-size: 116%;
+}
+
+/*============================
+ *
+ * typographySwiss
+ *
+//===========================*/
+
+.typographySwiss {
+	font-family: 'Roboto', sans-serif;
+}
+
+.typographySwiss .authorName, .typographySwiss .title {
+	font-weight: 300
+}

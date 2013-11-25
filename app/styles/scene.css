@@ -13,21 +13,57 @@
 .paneFg {position:absolute; top: 0; left: 0; right: 0; bottom: 0}
 .fillPane {overflow:hidden}
 
+/*============================
+ *
+ * Item positioning
+ *
+//===========================*/
+
+/* TODO: add breakpoints to adjust sidebar widths based on screen size */
+
+.content.hasLeftSidebar .item {
+	margin-left: 35%;
+}
+.content.hasRightSidebar .item {
+	margin-right: 35%;
+}
+
+.content.hasLeftSidebar.hasRightSidebar .item {
+	margin-left: 25%;
+	margin-right: 25%;
+}
+
+.content .item.burstL {margin-left: 0; clear:left}
+.content .item.burstR {margin-right: 0; clear:right}
+.content .item.burst {margin-left: 0; margin-right: 0; clear:both}
+.content .item.sidebarL {width: 35%; margin-right: 0; margin-left: 0; float:left; clear:left}
+.content .item.sidebarR {width: 35%; margin-right: 0; margin-left: 0; float:right; clear:right}
+.content.hasLeftSidebar.hasRightSidebar .item.sidebarL {width: 25%; margin-left: 0; margin-right: 0}
+.content.hasLeftSidebar.hasRightSidebar .item.sidebarR {width: 25%; margin-left: 0; margin-right: 0}
+.content.hasLeftSidebar.hasRightSidebar .item.burstL {margin-left: 0;}
+.content.hasLeftSidebar.hasRightSidebar .item.burstR {margin-right: 0;}
+.content.hasLeftSidebar.hasRightSidebar .item.burst {margin-left: 0; margin-right: 0;}
 
 
-/* default */
 
-.futureScene, .pastScene {display:none}
+
 
 /*============================
  *
  * Scene layouts
  *
 //===========================*/
+/* default */
 
+.futureScene, .pastScene {display:none}
+
+
+/*
 .videoContainer {border: 2px solid #F00}
 .contentMain {border: 2px solid #0F0;}
 .contentAlt  {border: 2px solid #00F;}
+*/
+
 
 /*============================*/
 /* fullscreen video mode */
@@ -44,6 +80,7 @@
 }
 .scene-video .contentMain {
 	width: 100%;
+	background-color: #000;
 }
 
 
