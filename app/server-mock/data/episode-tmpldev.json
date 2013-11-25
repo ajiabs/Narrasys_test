@@ -60,6 +60,8 @@
 	{
 	"type":"link",
 	"category": "links",
+	"styles": "timestampInline",
+	"layout": "inline",
 	"start":20,
 	"end": 30,
 	"template": "templates/transmedia-link-default.html",
@@ -325,8 +327,11 @@
         "template": "templates/scene-2colR.html",
         "layout": "splitTransmedia showList"
       },
+      
+      
       {
          "type":"transcript",
+         "styles": "timestampInline",
          "start": 18,
          "end": 20,
          "layout": "inline",
@@ -338,6 +343,7 @@
       },
       {
          "type":"transcript",
+         "styles": "timestampInline",
          "start": 20,
          "end": 22,
          "layout": "sidebarL",
@@ -349,6 +355,7 @@
       },
       {
          "type":"transcript",
+         "styles": "timestampInline",
          "start": 22,
          "end": 24,
          "layout": "sidebarR",
@@ -360,6 +367,7 @@
       },
       {
          "type":"transcript",
+         "styles": "timestampInline",
          "start": 24,
          "end": 26,
          "layout": "burst",
@@ -371,6 +379,7 @@
       },
       {
          "type":"transcript",
+         "styles": "timestampInline",
          "start": 26,
          "end": 28,
          "layout": "burstL",
@@ -382,6 +391,7 @@
       },
       {
          "type":"transcript",
+         "styles": "timestampInline",
          "start": 26,
          "end": 28,
          "layout": "burstR",
@@ -393,6 +403,7 @@
       },
       {
          "type":"transcript",
+         "styles": "timestampInline",
          "start": 28,
          "end": 30,
          "layout": "inline",
@@ -405,7 +416,8 @@
 	{
 	"type":"link",
 	"category": "links",
-	"start":18,
+	"styles": "timestampInline",
+"start":18,
 	"end": 20,
 	"template": "templates/transmedia-link-default.html",
 	"title":"This pane has only inline and sidebarR items, to show the single-sidebar layout",
@@ -417,7 +429,8 @@
 	"type":"link",
 	"category": "links",
 	"layout": "sidebarR",
-	"start":20,
+	"styles": "timestampInline",
+"start":20,
 	"end": 25,
 	"template": "templates/transmedia-link-default.html",
 	"title":"This is the sidebarR one",
@@ -428,7 +441,8 @@
 	{
 	"type":"link",
 	"category": "links",
-	"start":25,
+	"styles": "timestampInline",
+"start":25,
 	"end": 30,
 	"template": "templates/transmedia-link-default.html",
 	"title":"This is inline again",

@@ -8,7 +8,6 @@
 }
 .episode {margin-top: 60px}
 
-
 .toolbar .button {
 	display:inline-block;
 	width: 48px; height: 48px;
@@ -35,12 +34,30 @@
 .toolbar .button-explore span {background-image: url("/images/btn-explore.png")}
 .toolbar .button-explore.cur span {background-image: url("/images/btn-explore-cur.png")}
 
+.toolbar .button-video, .toolbar .button-explore {
+	transition: all 1s;
+	transform: scale(0.76);
+}
+
+.toolbar .button-video.cur, .toolbar .button-explore.cur {
+	transform: scale(1)
+}
+
 .toolbar .button-search {float:right}
 .toolbar .button-showscenenav {float:left}
 
 .toolbar .button-search span {background-image: url("/images/btn-search.png")}
 .toolbar .button-search.cur span {background-image: url("/images/btn-search-cur.png")}
 .toolbar .button-showscenenav span {background-image: url("/images/btn-showscenenav.gif")}
+
+
+.escapelink {
+	display:block;
+	width: 32px; height: 32px;
+	overflow:hidden; line-height: 600px;
+	background: url('/images/escape.png') 50% 50% no-repeat;
+}
+
 
 /*============================
  *
@@ -49,9 +66,9 @@
 //===========================*/
 
 .sidePanel {
-	position: absolute;
+	position: fixed;
 	height: 100%;
-	box-shadow: 8px 8px 10px rgba(0,0,0,0.5);
+	box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
 .sidePanel .sidePanelInner {

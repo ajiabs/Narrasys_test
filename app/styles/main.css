@@ -20,11 +20,11 @@
 .vjs-wrapper {z-index: 6}
 .videoOverlay {z-index: 7}
 .toolbar, .vjs-control-bar {z-index: 8}
-.sidepanel {z-index: 9}
-.windowFg {z-index: 10}
 
-.modal-backdrop {z-index: 11}
-.modal {z-index: 12}
+.modal-backdrop {z-index: 9}
+.modal {z-index: 10}
+
+.windowFg {z-index: 11}
 
 /* 
 Allow clicks on overlay items to fall through.	TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
@@ -66,14 +66,19 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 
 .itemDetailModal {
 	position:absolute;
+	text-align:right;
 	top: 10%; left: 5%; right: 5%; bottom: 10%
 }
 
-.modal iframe {
+.itemDetailModal iframe {
 	position:absolute;
-	top: 20px;
+	top: 40px;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	border: 1px solid #444;
+}
+.itemDetailModal .escapelink {
+	float:right;
+	background-image: url('/images/escape-white.png');
 }

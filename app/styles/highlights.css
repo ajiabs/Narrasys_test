@@ -3,14 +3,17 @@
 	For now, avoid adding colors here, instead add images or rgba colors to modify existing background.
 	(Once we have a solidified set of options in colors.css, may add matching variants for each of them here instead.)
 
-highlightSolid
-highlightBorder
-highlightSide
-highlightHighlighter
-highlightTilt
-highlightBloom
-
 */
+
+/* Prevent highlighting when only current items are visible */
+.showCurrent .content .item.currentItem,
+.showCurrent.content .item.currentItem {
+	background-image: none !important;
+	background-color: none !important;
+}
+
+
+
 
 .highlightSolid .content .item.currentItem,
 .highlightSolid.item.currentItem
