@@ -5,10 +5,11 @@
 	"isRequired": item.required,
 	"isCosmetic": item.cosmetic
 }'>
-
-	<div class="startTime displayTime" ng-click="gotoItem()">{{item.displayTime}}</div>
-	<div class="category">{{item.category}}</div>
-	<div class="icon"><img x-ng-src="{{item.thumbSrc}}"></div>
+	<div class="itemHead">
+		<div class="startTime displayTime" ng-click="gotoItem()">{{item.displayTime}}</div>
+		<div class="category">{{item.category}}</div>
+	</div>
+	<!-- <div class="icon"><img x-ng-src="{{item.thumbSrc}}"></div> -->
 	<div class="text">
 		<div class="title"><a href="javascript:void 1;" ng-click="launchDetailView()">{{item.title}}</a></div>
 		<div>{{item.description}}</div>

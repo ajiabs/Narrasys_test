@@ -55,42 +55,26 @@
 //===========================*/
 
 .content .item {
-	margin: 2%;
-	padding: 0.3em;
+	padding: 0.5em 5%;
 }
+
+.content .item .itemHead * {display:inline; line-height: 1em}
+
+.content .item .icon {
+	max-width: 55px;
+}
+
 
 .content .item .icon img {
     width: 100%;
 }
 
-.content .item .icon {
-	max-width: 55px;
-	float:left;clear:left;
-}
-
 .content .item .text {
-	padding-left: 55px;
 }
 
 .content .item .startTime {
 	cursor: pointer; cursor: hand;
 }
-
-
-
-
-.item .type {}
-.item .category {}
-.item .startTime {}
-.item .title {}
-.item .author {}
-.item .icon {}
-.item .text {}
-.item .url {}
-
-
-
-
 
 /*============================ ============================ ============================
  *
@@ -100,5 +84,4 @@
 
 
 .content .item .displayTime {
-	float:left; width: 60px;
 }
