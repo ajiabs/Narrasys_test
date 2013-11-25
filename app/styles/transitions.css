@@ -8,6 +8,7 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 }
 
 .item {
+	transition: all 1s; /* let's just get that over with */
 	-webkit-animation-duration: 1s;
 	   -moz-animation-duration: 1s;
 	     -o-animation-duration: 1s;

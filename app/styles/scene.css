@@ -98,6 +98,8 @@
 	width: 30%;
 }
 
+.scene-explore {border-top: 1px solid rgba(0,0,0,0.5)}
+
 .scene-explore.currentScene .videoContainer {
 	     box-shadow: -3px 3px 4px rgba(0,0,0,0.5);
 	-moz-box-shadow:  -3px 3px 4px rgba(0,0,0,0.5);
@@ -106,15 +108,12 @@
 }
 
 .scene-explore .contentMain {
-	background-color: #EEEEEE;
 	border-right: 1px solid #CCCCCC;
 	height: 100%;
 	width: 50%;
 	float:left;
 }
 .scene-explore .contentAlt {
-	background-color: #EEEEEE;
-	border-right: 1px solid #CCCCCC;
 	height: 100%;
 	width: 50%;
 	float:right;
