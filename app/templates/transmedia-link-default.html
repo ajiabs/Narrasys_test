@@ -5,14 +5,18 @@
 	"isRequired": item.required,
 	"isCosmetic": item.cosmetic
 }'>
-	<div class="icon"><img x-ng-src="{{item.thumbSrc}}"></div>
+
+	<div class="starttime displayTime" ng-click="gotoCuePoint(item.startTime)">{{item.displayTime}}</div>
 	<div class="category">{{item.category}}</div>
-	<div class="starttime displayTime">{{item.displayTime}}</div>
-	<div class="title"><a href="javascript:void 1;" ng-click="launchDetailView()">{{item.title}}</a></div>
-	<div class="text">{{item.description}}</div>
+	<div class="icon"><img x-ng-src="{{item.thumbSrc}}"></div>
+	<div class="text">
+		<div class="title"><a href="javascript:void 1;" ng-click="launchDetailView()">{{item.title}}</a></div>
+		<div>{{item.description}}</div>
+	</div>
 	<div class="detail" ng-show="item.showInlineDetail">
 		<a href="{{item.injectedSource}}" target="_blank" class="escapelink">(new window)</a>
 		<!-- load without real iframe src initially; wait until user clicks on the item. -->
 		<iframe src="{{item.injectedSource}}" width="100%" height="300px"></iframe>
 	</div>
 </div>
+<!-- TODO: add "required" / "optional" marker of some kind -->

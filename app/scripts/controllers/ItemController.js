@@ -2,7 +2,7 @@
 
 // Controller for ittItem
 angular.module('com.inthetelling.player')
-.controller('ItemController', function ($scope, $element, modalMgr) {
+.controller('ItemController', function ($scope, $element, modalMgr, videojs) {
 
 	// pass through method to modal.createItemDetailOverlay() for templates
 	$scope.launchDetailView = function(x) {
@@ -13,6 +13,11 @@ angular.module('com.inthetelling.player')
 		} else {
 			modalMgr.createItemDetailOverlay($scope);
 		}
+	};
+	
+	// convenience method to set video time
+	$scope.gotoCuePoint = function(t) {
+		videojs.player.currentTime(t);
 	};
 
 });
