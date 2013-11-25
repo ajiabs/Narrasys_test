@@ -86,9 +86,12 @@
  *
 //=========================== */
 
-
-.content .item .displayTime {
+.timestampNone .content .item,
+.content .item.timestampNone 
+{
+	padding-left: 5%
 }
+
 
 .timestampNone .content .item .displayTime,
 .content .item.timestampNone .displayTime

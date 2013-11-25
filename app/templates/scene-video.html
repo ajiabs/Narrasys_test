@@ -4,7 +4,7 @@
 	</div>
 	<div class="scene">
 		<div style="position:relative; background-color: #000 !important">
-			<div class="pane contentAlt">
+			<div class="pane contentAlt timestampNone">
 				<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.altPaneLeft, "hasRightSidebar": scene.sidebars.altPaneRight}'>
 					<div x-ng-if="scene.showCurrent"  data-force-template="icon" x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.altPaneContents " x-itt-item="item"></div>
 					<div x-ng-if="!scene.showCurrent" data-force-template="icon" x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
