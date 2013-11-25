@@ -23,6 +23,7 @@ angular.module('com.inthetelling.player')
 			keyboard: true,
 			backdrop: true,
 			templateUrl: itemScope.item.itemDetailTemplateUrl,
+			windowClass: 'itemDetailModal',
 			scope: itemScope,
 			controller: function ($scope, $modalInstance) {
 				$scope.close = function() {

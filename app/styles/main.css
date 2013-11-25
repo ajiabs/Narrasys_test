@@ -64,11 +64,16 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 	on modal creation so it can be unique to each modal. */
 }
 
+.itemDetailModal {
+	position:absolute;
+	top: 10%; left: 5%; right: 5%; bottom: 10%
+}
+
 .modal iframe {
 	position:absolute;
 	top: 20px;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	border: none;
+	border: 1px solid #444;
 }
