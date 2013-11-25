@@ -2,8 +2,6 @@
 	tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content) 
 */
 
-
-
 /*============================
  *
  * Overlays
@@ -49,36 +47,6 @@
 .currentItem {color: #000}
 */
 
-/*============================
- *
- * Item positioning
- *
-//===========================*/
-
-/* TODO: add breakpoints to adjust sidebar widths based on screen size */
-
-.content.hasLeftSidebar .item {
-	margin-left: 35%;
-}
-.content.hasRightSidebar .item {
-	margin-right: 35%;
-}
-
-.content.hasLeftSidebar.hasRightSidebar .item {
-	margin-left: 25%;
-	margin-right: 25%;
-}
-
-.content .item.burstL {margin-left: 0; clear:left}
-.content .item.burstR {margin-right: 0; clear:right}
-.content .item.burst {margin-left: 0; margin-right: 0; clear:both}
-.content .item.sidebarL {width: 35%; margin-right: 0; margin-left: 0; float:left; clear:left}
-.content .item.sidebarR {width: 35%; margin-right: 0; margin-left: 0; float:right; clear:right}
-.content.hasLeftSidebar.hasRightSidebar .item.sidebarL {width: 25%; margin-left: 0; margin-right: 0}
-.content.hasLeftSidebar.hasRightSidebar .item.sidebarR {width: 25%; margin-left: 0; margin-right: 0}
-.content.hasLeftSidebar.hasRightSidebar .item.burstL {margin-left: 0;}
-.content.hasLeftSidebar.hasRightSidebar .item.burstR {margin-right: 0;}
-.content.hasLeftSidebar.hasRightSidebar .item.burst {margin-left: 0; margin-right: 0;}
 
 /*============================
  *
@@ -86,13 +54,83 @@
  *
 //===========================*/
 
-.content .item {padding: 0.3em;}
+.content .item {
+	padding: 0.5em 5%;
+	padding-left: 60px;
+}
 
-.item .type {}
-.item .category {}
-.item .starttime {}
-.item .title {}
-.item .author {}
-.item .icon {}
-.item .text {}
-.item .url {}
+.content .item .itemHead {display:inline; line-height: 1em}
+
+.content .item .icon {
+	max-width: 55px;
+}
+
+.content .item .icon img {
+    width: 100%;
+}
+
+.content .item .text {
+}
+
+.content .item .startTime {
+	cursor: pointer; cursor: hand;
+	margin-left: -55px;
+	width: 50px;
+	text-align:right;
+	float:left;
+}
+
+/*============================ ============================ ============================
+ *
+ * timestamps
+ *
+//=========================== */
+
+
+.content .item .displayTime {
+}
+
+.timestampNone .content .item .displayTime,
+.content .item.timestampNone .displayTime
+{
+	display:none
+}
+
+/* =========================== */
+
+.timestampInline .content .item,
+.content .item.timestampInline 
+{
+	padding-left: 0.5em;
+}
+
+.timestampInline .content .item .startTime,
+.content .item.timestampInline .startTime {
+	display:inline; margin-left: 0; width:auto; text-align:left; padding-right: 0.4em;
+}
+
+/* =========================== */
+
+.timestampSidebar .content .item,
+.content .item.timestampSidebar {
+	padding-left: 40px;
+}
+
+.timestampSidebar .content .item .startTime,
+.content .item.timestampSidebar .startTime {
+	transform: rotate(90deg) translateX(100%);
+	transform-origin: 100% 0;
+	width: auto;
+	font-size: 20px;
+	margin-left: -45px;
+}
+
+/* =========================== */
+
+.timestampSmall .content .item .displayTime,
+.content .item.timestampSmall .displayTime
+{
+	font-size: 0.86em;
+}
+
+/* =========================== */

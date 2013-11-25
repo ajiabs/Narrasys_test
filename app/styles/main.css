@@ -3,7 +3,7 @@
 	margin: 0; 
 	padding: 0
 }
-.clear {clear:both}
+.clear:after {clear:both; content: ""; display:block;}
 
 /*============================
  *
@@ -52,7 +52,7 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-color: rgba(0,0,0,0.8);
+	background-color: rgba(0,0,0,0.3);
 	-webkit-animation: fadeIn 0.5s;
 	-moz-animation: fadeIn 0.5s;
 	-ms-animation: fadeIn 0.5s;

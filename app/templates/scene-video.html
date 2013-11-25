@@ -3,17 +3,11 @@
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
 	</div>
 	<div class="scene">
-		<div class="colorInvert" style="position:relative">
+		<div style="position:relative; background-color: #000 !important">
 			<div class="pane contentAlt">
-				<div class="fillPane paneBg">
-					<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
-				</div>
 				<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.altPaneLeft, "hasRightSidebar": scene.sidebars.altPaneRight}'>
 					<div x-ng-if="scene.showCurrent"  data-force-template="icon" x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.altPaneContents " x-itt-item="item"></div>
 					<div x-ng-if="!scene.showCurrent" data-force-template="icon" x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
-				</div>
-				<div class="fillPane paneFg">
-					<div x-ng-repeat="item in scene.items | layout: 'altFg'" x-itt-item="item"></div>
 				</div>
 			</div>
 			<div class="pane videoContainer">
@@ -21,7 +15,7 @@
 			</div>
 			<div class="clear"></div>
 		</div>
-		<div class="pane contentMain">
+		<div class="pane contentMain colorInvert stretchToViewportBottom">
 			<div class="fillPane paneBg">
 			<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>

@@ -16,9 +16,9 @@ body {font-family: 'Droid Sans', sans-serif}
 a {text-decoration: none;}
 
 .title {font-size: 1.2em}
-.authorName {font-weight: 700}
+.authorName, 
+.category {font-size: 0.8em; font-weight: 700}
 .text {}
-.category {font-size: 0.76em;}
 
 /*============================
  *

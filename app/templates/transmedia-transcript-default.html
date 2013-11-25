@@ -5,9 +5,11 @@
 	"isRequired": item.required,
 	"isCosmetic": item.cosmetic
 }'>
-	<div class="starttime displayTime" ng-click="gotoCuePoint(item.startTime)">{{item.displayTime}}</div>
-	<div class="authorName">{{item.authorName}}</div>
-	<div class="icon"><img x-ng-src="{{item.authorThumbSrc}}"></div>
+	<div class="itemHead">
+		<div class="startTime displayTime" ng-click="gotoItem()">{{item.displayTime}}</div>
+		<div class="authorName">{{item.authorName}}</div>
+	</div>
+	<!-- <div class="icon"><img x-ng-src="{{item.authorThumbSrc}}"><div class="clear"></div></div> -->
 	<div class="text">
 		{{item.annotation}}
 	</div>

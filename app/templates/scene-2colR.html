@@ -16,7 +16,7 @@
 				<div class="matchVideoHeight">
 					<!-- TODO: check videoLeft or videoRight to decide which column(s) to include this in -->
 				</div>
-				<h2 class="scenetitle">{{scene.title}}</h2>
+				<h2 class="sceneTitle">{{scene.title}}</h2>
 				<div x-ng-if="scene.showCurrent"  x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.mainPaneContents" x-itt-item="item"></div>
 				<div x-ng-if="!scene.showCurrent" x-ng-repeat="item in scene.items | layout: scene.mainPaneContents" x-itt-item="item"></div>
 			</div>

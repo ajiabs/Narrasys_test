@@ -30,7 +30,7 @@ fillPane windowFg
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
 			<div class="content showCurrent" x-ng-class='{"hasLeftSidebar": scene.sidebars.mainPaneLeft, "hasRightSidebar": scene.sidebars.mainPaneRight}'>
-				<h2 class="scenetitle">{{scene.title}}</h2>
+				<h2 class="sceneTitle">{{scene.title}}</h2>
 				<div x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.mainPaneContents" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">
