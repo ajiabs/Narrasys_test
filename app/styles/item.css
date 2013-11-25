@@ -56,14 +56,14 @@
 
 .content .item {
 	padding: 0.5em 5%;
+	padding-left: 60px;
 }
 
-.content .item .itemHead * {display:inline; line-height: 1em}
+.content .item .itemHead {display:inline; line-height: 1em}
 
 .content .item .icon {
 	max-width: 55px;
 }
-
 
 .content .item .icon img {
     width: 100%;
@@ -74,6 +74,10 @@
 
 .content .item .startTime {
 	cursor: pointer; cursor: hand;
+	margin-left: -55px;
+	width: 50px;
+	text-align:right;
+	float:left;
 }
 
 /*============================ ============================ ============================
@@ -85,3 +89,48 @@
 
 .content .item .displayTime {
 }
+
+.timestampNone .content .item .displayTime,
+.content .item.timestampNone .displayTime
+{
+	display:none
+}
+
+/* =========================== */
+
+.timestampInline .content .item,
+.content .item.timestampInline 
+{
+	padding-left: 0.5em;
+}
+
+.timestampInline .content .item .startTime,
+.content .item.timestampInline .startTime {
+	display:inline; margin-left: 0; width:auto; text-align:left; padding-right: 0.4em;
+}
+
+/* =========================== */
+
+.timestampSidebar .content .item,
+.content .item.timestampSidebar {
+	padding-left: 40px;
+}
+
+.timestampSidebar .content .item .startTime,
+.content .item.timestampSidebar .startTime {
+	transform: rotate(90deg) translateX(100%);
+	transform-origin: 100% 0;
+	width: auto;
+	font-size: 20px;
+	margin-left: -45px;
+}
+
+/* =========================== */
+
+.timestampSmall .content .item .displayTime,
+.content .item.timestampSmall .displayTime
+{
+	font-size: 0.86em;
+}
+
+/* =========================== */
