@@ -7,7 +7,7 @@
 }'>
 	<div class="icon"><img src="{{item.thumbSrc}}"></div>
 	<div class="category">{{item.category}}</div>
-	<div class="starttime">{{item.displayTime}}</div>
+	<div class="startTime displayTime" ng-click="gotoCuePoint(item.startTime)">{{item.displayTime}}</div>
 	<div class="title">{{item.title}}</div>
 	<button ng-click="launchDetailView()">Detail View</button>
 	<div class="detail">
@@ -15,3 +15,4 @@
 		<div class="text">{{item.description}}</div>
 	</div>
 </div>
+<!-- TODO: add "required" / "optional" marker of some kind -->
