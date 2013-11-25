@@ -9,17 +9,17 @@
 			<dd>
 				<label><input type="checkbox" id="searchalltypes" checked="checked"><span> All transmedia types</span></label>
 				<div id="searchtypes" class="accordion">
-					<label><input type="checkbox" name="searchcategory" id="searchtype-transcript" ng-model="selectedItemTypes.transcript"><span> Transcripts</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-links" ng-model="selectedItemTypes.link"><span> Links</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-slides" ng-model="selectedItemTypes.slide"><span> Slides</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-in_depth" ng-model="selectedItemTypes.indepth"><span> In Depth</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-projects" ng-model="selectedItemTypes.project"><span> Projects</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-discussions" ng-model="selectedItemTypes.discussion"><span> Discussions</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-transcript" ng-model="searchTypes.transcript"><span> {{prettyTypeMap['transcript']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-links" ng-model="searchTypes.link"><span> {{prettyTypeMap['link']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-slides" ng-model="searchTypes.slide"><span> {{prettyTypeMap['slide']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-in_depth" ng-model="searchTypes.indepth"><span> {{prettyTypeMap['indepth']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-projects" ng-model="searchTypes.project"><span> {{prettyTypeMap['project']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-discussions" ng-model="searchTypes.discussion"><span> {{prettyTypeMap['discussion']}}</span></label>
 				</div>
 			</dd>
 			<dt>Sort by:</dt>
 			<dd>
-				<select id="searchsort" size="1">
+				<select id="searchsort" size="1" ng-model="sortBy">
 					<option value="startTime">Time</option>
 					<option value="type">Type</option>
 				</select>
@@ -28,13 +28,28 @@
 	</div>
 	<hr />
 	<div id="searchresults">
-		<div ng-repeat="scene in scenes">
-			<h2>{{scene.title}}</h2>
-			<div ng-repeat="item in scene.items | orderBy:'startTime' | filter:searchText | type:selectedItemTypes">
-				<span><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.startTime}}</a></span> ({{item.type}})<br />
-				<!-- TODO: It would be nice to have a consistent contract across items for things like this -->
-				<span>{{item.description || item.annotation}}</span>
+
+		<!-- sorted by start time -->
+		<div ng-if="sortBy == 'startTime'">
+			<div ng-repeat="scene in scenes">
+				<h2>{{scene.title}}</h2>
+				<div ng-repeat="item in scene.items | orderBy:'startTime' | filter:searchText | type:searchTypes">
+					<span><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.startTime}}</a></span> ({{item.type}})<br />
+					<span>{{item.description || item.annotation}}</span><!-- TODO: It would be nice to have a consistent contract across items for things like this -->
+				</div>
 			</div>
 		</div>
+
+		<!-- sorted by type -->
+		<div ng-if="sortBy == 'type'">
+			<div ng-repeat="(type, items) in allItemsByType | orderBy:'type'" ng-if="searchTypes[type]">
+				<h2>{{prettyTypeMap[type]}}</h2>
+				<div ng-repeat="item in items | orderBy:'startTime' | type:searchTypes | filter:searchText">
+					<span><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.startTime}}</a></span> ({{item.type}})<br />
+					<span>{{item.description || item.annotation}}</span><!-- TODO: It would be nice to have a consistent contract across items for things like this -->
+				</div>
+			</div>
+		</div>
+
 	</div>
 </div>
