@@ -1,0 +1,12 @@
+<div class="sidePanelInner colorInvert">
+	<h2>{{episode.title}}</h2>
+	<div class="scene" ng-repeat="scene in scenes">
+		<span class="displayTime">{{scene.displayTime}}</span> <a href="javascript:void 1" ng-click="gotoScene(scene)">{{scene.title}}</a><br>
+		<p>{{scene.description}}</p>
+	</div>	
+	<hr>
+	<i>For testing: episode style:<br>
+	<input type="text" ng-model="episode.styles">
+	<br>
+	
+</div>

@@ -30,13 +30,53 @@ angular.module('com.inthetelling.player')
 				};
 			}
 		});
-		// The $modal.open() method returns an object which contains an angular promise called result.
-		// We pass two methods to the then() method of the promise because the first method will be triggered if the modal
-		// closes 'successfully' and the second if it is dismissed (eg: clicking the backdrop or escape key). In this
-		// case we don't care how the modal is closed, we just want to resume playback.
 		modal.result.then(function(){
+			// if the modal closes 'successfully'
 			videojs.player.play();
 		}, function() {
+			// if the modal is 'dismissed'
+			videojs.player.play();
+		});
+	};
+
+	// Method to show the search panel
+	svc.createSearchPanelOverlay = function(episodeScope) {
+		console.log("createSearchPanelOverlay()");
+		videojs.player.pause();
+		var modal = $modal.open({
+			keyboard: true,
+			backdrop: true,
+			templateUrl: 'templates/overlays/searchPanel.html',
+			windowClass: 'sidePanel searchPanel',
+			scope: episodeScope,
+			controller: 'SearchPanelController'
+		});
+		modal.result.then(function(){
+			// if the modal closes 'successfully'
+			videojs.player.play();
+		}, function() {
+			// if the modal is 'dismissed'
+			videojs.player.play();
+		});
+	};
+
+	// Method to show the search panel
+	svc.createNavigationPanelOverlay = function(episodeScope) {
+		console.log("createNavigationPanelOverlay()");
+		videojs.player.pause();
+		var modal = $modal.open({
+			keyboard: true,
+			backdrop: true,
+			templateUrl: 'templates/overlays/navigationPanel.html',
+			windowClass: 'sidePanel navigationPanel',
+			scope: episodeScope,
+			controller: 'NavigationPanelController'
+		});
+		modal.result.then(function(){
+			// if the modal closes 'successfully'
+			videojs.player.play();
+		}, function() {
+			// if the modal is 'dismissed'
 			videojs.player.play();
 		});
 	};
@@ -49,10 +89,7 @@ angular.module('com.inthetelling.player')
 			initOverlay = $modal.open({
 				keyboard: false,
 				backdrop: 'static',
-				templateUrl: 'views/overlays/init.html',
-				controller: function ($scope, $modalInstance) {
-					$scope.close = $modalInstance.close;
-				}
+				templateUrl: 'templates/overlays/init.html'
 			});
 		}
 	};

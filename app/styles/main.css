@@ -52,17 +52,16 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-color: rgba(0,0,0,0.4);
-	color: #fff;
+	background-color: rgba(0,0,0,0.8);
+	-webkit-animation: fadeIn 0.5s;
+	-moz-animation: fadeIn 0.5s;
+	-ms-animation: fadeIn 0.5s;
+	animation: fadeIn 0.5s;
 }
 
 .modal {
-	position: absolute;
-	top: 15%;
-	bottom: 15%;
-	left: 15%;
-	right: 15%;
-	background-color: white;
+	/* Let this be styled by the class inserted by modalMgr
+	on modal creation so it can be unique to each modal. */
 }
 
 .modal iframe {

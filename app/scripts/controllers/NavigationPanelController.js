@@ -1,6 +1,6 @@
 'use strict';
 
-// Controller for ittItem
+// Controller for the navigation panel overlay
 angular.module('com.inthetelling.player')
 .controller('NavigationPanelController', function ($scope, videojs) {
 

@@ -1,0 +1,39 @@
+<div class="sidePanelInner colorInvert">
+	<div class="filters">
+		<dl>
+			<dt>Search:</dt>
+			<dd>
+				<input id="searchtext" type="text" ng-model="searchText" />
+			</dd>
+			<dt>Types:</dt>
+			<dd>
+				<label><input type="checkbox" id="searchalltypes" checked="checked"><span> All transmedia types</span></label>
+				<div id="searchtypes" class="accordion">
+					<label><input type="checkbox" name="searchcategory" id="searchtype-transcript" ng-model="selectedItemTypes.transcript"><span> Transcripts</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-links" ng-model="selectedItemTypes.link"><span> Links</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-slides" ng-model="selectedItemTypes.slide"><span> Slides</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-in_depth" ng-model="selectedItemTypes.indepth"><span> In Depth</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-projects" ng-model="selectedItemTypes.project"><span> Projects</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-discussions" ng-model="selectedItemTypes.discussion"><span> Discussions</span></label>
+				</div>
+			</dd>
+			<dt>Sort by:</dt>
+			<dd>
+				<select id="searchsort" size="1">
+					<option value="start">Time</option>
+					<option value="type">Type</option>
+				</select>
+			</dd>
+		</dl>
+	</div>
+	<hr />
+	<div id="searchresults">
+		<div ng-repeat="scene in scenes">
+			<h2>{{scene.title}}</h2>
+			<div ng-repeat="item in scene.items | filter:searchText | type:selectedItemTypes">
+				<span>{{item.startTime}}</span> ({{item.type}})<br />
+				<span>{{item.description || item.annotation}}</span>
+			</div>
+		</div>
+	</div>
+</div>

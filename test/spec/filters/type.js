@@ -24,7 +24,7 @@ describe('Filter: type', function () {
 	});
 
 	it('should filter the items collection down to the allowed types', function () {
-		var allowedTypes = ["one", "three", "five"];
+		var allowedTypes = {one:true, three:true, five:true};
 		expect(typeFilter(items, allowedTypes)).toEqual([
 			{type: "one"},
 			{type: "three"},
@@ -33,7 +33,7 @@ describe('Filter: type', function () {
 	});
 	
 	it('should ignore an allowed type not present in the collection', function () {
-		var allowedTypes = ["one", "two", "FNORD"];
+		var allowedTypes = {one:true, two:true, FNORD:true};
 		expect(typeFilter(items, allowedTypes)).toEqual([
 			{type: "one"},
 			{type: "two"}
@@ -42,7 +42,7 @@ describe('Filter: type', function () {
 
 	it('should ignore a collection item without a type field', function () {
 		items.push({notype: "FNORD"});
-		var allowedTypes = ["one", "two", "FNORD"];
+		var allowedTypes = {one:true, two:true, FNORD:true};
 		expect(typeFilter(items, allowedTypes)).toEqual([
 			{type: "one"},
 			{type: "two"}

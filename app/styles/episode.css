@@ -42,61 +42,84 @@
 .toolbar .button-search.cur span {background-image: url("/images/btn-search-cur.png")}
 .toolbar .button-showscenenav span {background-image: url("/images/btn-showscenenav.gif")}
 
+/*============================
+ *
+ * All Panel Modals
+ *
+//===========================*/
 
-.sidepanel {
+.sidePanel {
 	position: absolute;
-	width: 300px;
 	height: 100%;
-	box-shadow: 8px 8px 10px rgba(0,0,0,0.5)
+	box-shadow: 8px 8px 10px rgba(0,0,0,0.5);
 }
 
-.sidepanel#scenenav {
+.sidePanel .sidePanelInner {
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+}
+
+/*============================
+ *
+ * Search Panel Modal
+ *
+//===========================*/
+
+.searchPanel {
+	top: 0;
+	right: 0;
+	width: 40%;
+}
+
+/* animate on show */
+.searchPanel {
+	-webkit-animation: slideInRight 1s;
+	-moz-animation: slideInRight 1s;
+	-ms-animation: slideInRight 1s;
+	animation: slideInRight 1s;
+}
+
+/* animate on hide TODO: Checking into how best to do animations with modal: https://github.com/angular-ui/bootstrap/issues/1294
+.searchPanel.ng-hide-add {
+	-webkit-animation: slideOutRight 1s;
+	-moz-animation: slideOutRight 1s;
+	-ms-animation: slideOutRight 1s;
+	animation: slideOutRight 1s;
+}
+*/
+
+/*============================
+ *
+ * Naviation Panel Modal
+ *
+//===========================*/
+
+.navigationPanel {
 	top: 0;
 	left: 0;
+	width: 250px;
 }
 
-#scenenav .scene {
+.navigationPanel .scene {
 	padding: 0.3em;
 	border-bottom: 1px solid rgba(0,0,0,0.7);
 }
 
 /* animate on show */
-#scenenav.ng-hide-remove {
+.navigationPanel {
 	-webkit-animation: slideInLeft 1s;
 	-moz-animation: slideInLeft 1s;
 	-ms-animation: slideInLeft 1s;
 	animation: slideInLeft 1s;
-	display: block !important;
 }
 
-/* animate on hide */
-#scenenav.ng-hide-add {
+/* animate on hide 
+.navigationPanel.ng-hide-add {
 	-webkit-animation: slideOutLeft 1s;
 	-moz-animation: slideOutLeft 1s;
 	-ms-animation: slideOutLeft 1s;
 	animation: slideOutLeft 1s;
 	display: block !important;
 }
-
-.sidepanel#search {
-	top: 0;
-	right: 0;
-}
-
-/* animate on show */
-#search.ng-hide-remove {
-	-webkit-animation: slideInRight 1s;
-	-moz-animation: slideInRight 1s;
-	-ms-animation: slideInRight 1s;
-	animation: slideInRight 1s;
-	display: block !important;
-}
-
-/* animate on hide */
-#search.ng-hide-add {
-	-webkit-animation: slideOutRight 1s;
-	-moz-animation: slideOutRight 1s;
-	-ms-animation: slideOutRight 1s;
-	animation: slideOutRight 1s;
-	display: block !important;
-}
+*/

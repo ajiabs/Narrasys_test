@@ -4,7 +4,7 @@
 
 // Controller for ittToolbar
 angular.module('com.inthetelling.player')
-.controller('ToolbarController', function ($scope, $timeout, $rootScope) {
+.controller('ToolbarController', function ($scope, $timeout, $rootScope, modalMgr) {
 
 	/* Handler for toolbar buttons to change scene templates. */
 	$scope.setSceneTemplate = function(newTemplate) {
@@ -43,6 +43,17 @@ angular.module('com.inthetelling.player')
 	/* this is a bizarre syntax but seems to be how it's supposed to work... */
 	$scope.currentSceneTemplateIs = function(compare) {
 		return $scope.currentSceneTemplate === compare;
+	};
+
+	// Show navigation panel overlay
+	$scope.showNavigationPanel = function() {
+		console.log("showNavigationPanel()");
+		modalMgr.createNavigationPanelOverlay($scope);
+	};
+	// Show search panel overlay
+	$scope.showSearchPanel = function() {
+		console.log("showSearchPanel()");
+		modalMgr.createSearchPanelOverlay($scope);
 	};
 
 });
