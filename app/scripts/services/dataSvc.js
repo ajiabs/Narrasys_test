@@ -49,6 +49,7 @@ angular.module('com.inthetelling.player')
 				/v1/templates
 				/v1/layouts
 				/v1/styles
+				TODO: GEt event categories also, they will eventually be used in the player
 			*/
 			var firstStackComplete = false,
 				secondStackComplete = false,
