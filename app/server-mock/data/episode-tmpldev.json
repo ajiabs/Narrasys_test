@@ -3,7 +3,7 @@
       "title": "Episode Title",
       "category": "CATEGORY",
       "cover": "http://theplatform-static.edgesuite.net/In_The_Telling/toc8_1280x720_25781827819.jpg",
-      "styles": "transitionFade typographySerif",
+      "styles": "typographySerif",
       "videos": {
          "webm": "http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
          "mpeg4": "http://platformuniv-p.edgesuite.net/dynamic/In_The_Telling/S3T2_Importance_of_Geography__192694.mp4"
@@ -12,66 +12,14 @@
    "events": [
       {
         "type": "scene",
-        "template": "/templates/scene-cornerV.html",
-        "layout": "videoRight",
+
+        "layout": "",
         "start": 0,
         "end": 18,
         "title": "Scene One: default scene template",
         "description": "Cycles through the various item background styles"
 
       },
-
-
-   
-   
-	{
-	"type":"link",
-	"category": "links",
-	"start":1,
-	"end": 10,
-	"template": "templates/transmedia-link-default.html",
-	"title":"Burkina Faso - Solar",
-	"description":"EWB-USA University of Maryland solar lighting project.",
-	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
-	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
-	},
-	{
-	"type":"link",
-	"category": "links",
-	"start":5,
-	"end": 15,
-	"template": "templates/transmedia-link-default.html",
-	"title":"Burkina Faso - Solar",
-	"description":"EWB-USA University of Maryland solar lighting project.",
-	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
-	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
-	},
-	{
-	"type":"link",
-	"category": "links",
-	"start":9,
-	"end": 19,
-	"template": "templates/transmedia-link-default.html",
-	"title":"Burkina Faso - Solar",
-	"description":"EWB-USA University of Maryland solar lighting project.",
-	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
-	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
-	},
-	{
-	"type":"link",
-	"category": "links",
-	"styles": "timestampInline",
-	"layout": "inline",
-	"start":20,
-	"end": 30,
-	"template": "templates/transmedia-link-default.html",
-	"title":"Burkina Faso - Solar",
-	"description":"EWB-USA University of Maryland solar lighting project.",
-	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
-	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
-	},
-
-
 
 
       {
@@ -111,9 +59,19 @@
          "template": "templates/transmedia-image-plain.html",
          "src":"http://placekitten.com/260/261"
       },
-
-
-
+   
+	{
+	"type":"link",
+	"category": "links",
+	"start":1,
+	"end": 10,
+	"required": true,
+	"template": "templates/transmedia-link-default.html",
+	"title":"Burkina Faso - Solar",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
 
       {
          "type":"transcript",
@@ -153,6 +111,18 @@
          "src":"http://placekitten.com/271/261"
       },
 
+	{
+	"type":"link",
+	"category": "links",
+	"start":5,
+	"end": 15,
+	"required": true,
+	"template": "templates/transmedia-link-default.html",
+	"title":"Burkina Faso - Solar",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
 
 
 
@@ -195,6 +165,17 @@
       },
 
 
+	{
+	"type":"link",
+	"category": "links",
+	"start":9,
+	"end": 19,
+	"template": "templates/transmedia-link-default.html",
+	"title":"Burkina Faso - Solar",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
 
 
       {
@@ -353,6 +334,21 @@
          },
          "annotation": "sidebarL transcript item"
       },
+
+	{
+	"type":"link",
+	"category": "links",
+	"styles": "timestampInline",
+	"layout": "inline",
+	"start":20,
+	"end": 30,
+	"template": "templates/transmedia-link-default.html",
+	"title":"Burkina Faso - Solar",
+	"description":"EWB-USA University of Maryland solar lighting project.",
+	"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+	"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+	},
+
       {
          "type":"transcript",
          "styles": "timestampInline",
@@ -500,7 +496,7 @@
         "title": "Scene Four: cornerV",
         "description": "The vertical corner layout",
         "template": "templates/scene-cornerV.html",
-        "layout": "splitRequired showList videoRight"
+        "layout": "splitOptional showList videoRight"
       },
       {
          "type":"transcript",
