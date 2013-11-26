@@ -91,7 +91,7 @@
          "start": 0,
          "end": 3,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/200/250"
+         "src":"http://placekitten.com/70/70"
       },
       {
          "type":"image",
@@ -109,7 +109,7 @@
          "start": 0,
          "end": 3,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/60/61"
+         "src":"http://placekitten.com/260/261"
       },
 
 
@@ -132,7 +132,7 @@
          "start": 3,
          "end": 6,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/70/61"
+         "src":"http://placekitten.com/120/121"
       },
       {
          "type":"image",
@@ -141,7 +141,7 @@
          "start": 3,
          "end": 6,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/70/61"
+         "src":"http://placekitten.com/270/261"
       },
       {
          "type":"image",
@@ -150,7 +150,7 @@
          "start": 3,
          "end": 6,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/70/61"
+         "src":"http://placekitten.com/271/261"
       },
 
 
@@ -173,7 +173,7 @@
          "start": 6,
          "end": 9,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/80/61"
+         "src":"http://placekitten.com/120/111"
       },
       {
          "type":"image",
@@ -182,7 +182,7 @@
          "start": 6,
          "end": 9,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/80/61"
+         "src":"http://placekitten.com/181/62"
       },
       {
          "type":"image",
@@ -191,7 +191,7 @@
          "start": 6,
          "end": 9,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/80/61"
+         "src":"http://placekitten.com/480/461"
       },
 
 
@@ -214,7 +214,7 @@
          "start": 9,
          "end": 12,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/90/61"
+         "src":"http://placekitten.com/110/111"
       },
       {
          "type":"image",
@@ -223,7 +223,7 @@
          "start": 9,
          "end": 12,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/90/61"
+         "src":"http://placekitten.com/290/161"
       },
       {
          "type":"image",
@@ -232,7 +232,7 @@
          "start": 9,
          "end": 12,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/90/61"
+         "src":"http://placekitten.com/290/121"
       },
 
 
@@ -254,7 +254,7 @@
          "start": 12,
          "end": 15,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/100/61"
+         "src":"http://placekitten.com/200/151"
       },
       {
          "type":"image",
@@ -263,7 +263,7 @@
          "start": 12,
          "end": 15,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/100/61"
+         "src":"http://placekitten.com/200/141"
       },
       {
          "type":"image",
@@ -272,7 +272,7 @@
          "start": 12,
          "end": 15,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/100/61"
+         "src":"http://placekitten.com/400/151"
       },
 
 
@@ -312,7 +312,7 @@
          "start": 16,
          "end": 18,
          "template": "templates/transmedia-image-plain.html",
-         "src":"http://placekitten.com/401/402"
+         "src":"http://blogs.discovermagazine.com/badastronomy/files/2006/cthulhu_kitty.jpg"
       },
       
       
@@ -498,7 +498,7 @@
         "start": 45,
         "end": 60,
         "title": "Scene Four: cornerV",
-        "description": "Scene-centered layout",
+        "description": "The vertical corner layout",
         "template": "templates/scene-cornerV.html",
         "layout": "splitRequired showList videoRight"
       },
@@ -542,7 +542,7 @@
         "start": 60,
         "end": 75,
         "title": "Scene Five: cornerH",
-        "description": "Scene-centered layout",
+        "description": "The horizontal corner layout",
         "template": "templates/scene-cornerH.html",
         "layout": "splitTransmedia showCurrent videoLeft"
       },
