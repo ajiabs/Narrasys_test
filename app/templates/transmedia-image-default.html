@@ -6,7 +6,10 @@
 	"isCosmetic": item.cosmetic
 }'>
 	<div class="icon"><img src="{{item.thumbSrc}}"></div>
-	<div class="category">{{item.category}}</div>
+	<div class="category">
+		{{item.category}}
+		<span ng-if="item.required">(Required viewing)</span>
+	</div>
 	<div class="startTime displayTime" ng-click="gotoItem()">{{item.displayTime}}</div>
 	<div class="title">{{item.title}}</div>
 	<button ng-click="launchDetailView()">Detail View</button>
@@ -15,4 +18,3 @@
 		<div class="text">{{item.description}}</div>
 	</div>
 </div>
-<!-- TODO: add "required" / "optional" marker of some kind -->
