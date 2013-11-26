@@ -27,6 +27,15 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ui.bootstrap
 	]);
 });
 
+/*
+// Configure http headers
+.config(function($httpProvider) {
+	$httpProvider.defaults.headers.get = {
+		'Authorization': 'Token token="c7624368e407355eb587500862322413"',
+		'Content-Type': 'application/json'
+	};
+});
+*/
 
 /*
 .run(['timelineSvc', '$window', function(timelineSvc, $window) {

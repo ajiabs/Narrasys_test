@@ -2,11 +2,9 @@
 
 // Episode Controller
 angular.module('com.inthetelling.player')
-.controller('EpisodeController', function (queuePointScheduler, modelFactory, $scope, $rootScope, $location, $routeParams, $http) {
+.controller('EpisodeController', function (dataSvc, modelFactory, queuePointScheduler, $scope, $rootScope, $location, $routeParams) {
 
-	$http({method: 'GET', url: 'server-mock/data/episode-' + $routeParams.epId + '.json'})
-	.success(function(data, status, headers, config) {
-		
+	dataSvc.get($routeParams.epId, function(data) { // ON SUCCESS
 		var i, j;
 
 		// Create an episode model.
@@ -81,8 +79,7 @@ angular.module('com.inthetelling.player')
 			}
 		}
 
-	})
-	.error(function(data, status, headers, config) {
+	}, function(data) { // ON ERROR
 		// TODO: Should probably be using a service instead of root scope
 		$rootScope.uiErrorMsg = "Unable to load data for Episode: " + $routeParams.epId;
 		$location.path('/error');
