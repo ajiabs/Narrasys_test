@@ -5,3 +5,53 @@
 		<p>{{scene.description}}</p>
 	</div>
 </div>
+
+<!-- TOTAL GODAWFUL HACK JUST FOR DEMO code not meant for real life -->
+
+<div class="dev" style="position:absolute; bottom: 0">
+
+	<select class="epstylepart" size="1" onchange="hack()">
+		<option value="">Typography:</option>
+		<option value="typographySerif">Serif</option>
+		<option value="typographySans">Sans</option>
+		<option value="typographyBook">Book</option>
+		<option value="typographySwiss">Swiss</option>
+	</select>
+	<select class="epstylepart" size="1" onchange="hack()">
+		<option value="">Color:</option>
+		<option value="colorInvert">Invert</option>
+		<option value="colorSepia">Sepia</option>
+		<option value="colorSolarized">Solarized</option>
+		<option value="colorVivid">Vivid</option>
+</select>
+	<select class="epstylepart" size="1" onchange="hack()">
+		<option value="">Highlight:</option>
+<option value="highlightSolid">Solid</option>
+<option value="highlightBorder">Border</option>
+<option value="highlightSide">Side</option>
+<option value="highlightHighlighter">Highlighter</option>
+<option value="highlightTilt">Tilt</option>
+<option value="highlightBloom">Bloom</option>
+</select>
+	<select class="epstylepart" size="1" onchange="hack()">
+		<option value="">Timestamp:</option>
+<option value="timestampDefault">Default</option>
+<option value="timestampNone">None</option>
+<option value="timestampSmall">Small</option>
+<option value="timestampInline">Inline</option>
+<option value="timestampSidebar">Sidebar</option>
+</select>
+
+	<input class="epstyle" type="text" ng-model="episode.styles" style="visibility:hidden">
+</div>
+
+<script language="javascript"><!--
+function hack() {
+	var s = "";
+	$('.epstylepart').each(function() {
+		s = s + " " + $(this).val()
+	});
+	$('.epstyle').val(s).trigger('input');
+}
+
+<!-- END GODAWFUL DEMO HACK -->
