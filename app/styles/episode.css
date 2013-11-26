@@ -75,6 +75,8 @@
 	height: 100%;
 	width: 100%;
 	overflow-y: auto;
+	padding: 0.4em;
+	font-size: 90%;
 }
 
 /*============================
