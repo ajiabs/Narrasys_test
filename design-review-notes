@@ -1,0 +1,82 @@
+Design Review Notes
+
+Note: Some of these items are redundant with TODO or HACK comments already in code. I just wanted them all in one place and to hilight that some TODO or HACKs need to be done asap.
+
+---
+
+Model Factory Service:
+
+	Model Properties that can default:
+
+		Episode:
+			model.templateUrl
+			model.layout
+			model.styles
+
+		Scene:
+			model.templateUrl
+			model.layout
+			model.styles
+
+		Item:
+			model.templateUrl
+			model.layout
+			model.styles
+			model.required
+			model.cosmetic
+			model.stop
+
+	- What is the difference between the default layout "defaultLayout" in episode and "" in scene? Why not have a "defaultLayout" in scene as well?
+	- I noticed that styles are assigned directly from data with no default. Are there no default styles? What happens when the data does not return styles?
+	- Is there a reason to keep this logic on the client? We need to either relegate responsibility to the authoring tool and/or service, or abstract default values to client config and create an implicitely clear/consistent system for how defaults are being assigned.
+
+Layout Filter:
+
+	- Red Flag: Heavy/cryptic string manipulation & matching logic. What problem is this trying to solve and is this the best or only way to solve it?
+	- Use a hash/dictionary instead of the inner loop for better performance. Nested loops in a filter are bad news.
+
+Scene Directive:
+
+	- Red Flag: Heavy/cryptic string manipulation & matching logic. What problem is this trying to solve and is this the best or only way to solve it?
+	- Double Red Flag: Uses layout filter which contains another red flag.
+
+Item Directive:
+
+	- Who sets the forceTemplate attribute on the item? Does the toolbar do this when it wants to override the template? If so then this is a roundabout way to instigate template changes on items. If toolbar wants to change the template for an item then toolbar controller should update the templateUrl property in the item's model and make use of the ng-include template bindings already set up in the item directive for this purpose.
+	- Red Flag: There is a dual-state here (saving the original template) implying that this block can get hit multiple times. But being inside the linking function means it will only be called on widget instantiation, therefore second state conditions are not likely to ever get fired. Confusing because either a: part of this block will never be called, or b: it will be called but only because something is artificially forcing the linking function to fire multiple times and in that case theres probably a better way to solve the problem.
+
+Magnetized Directive:
+
+	- Rename "videoMagnet" event to something more appropriate like "videoMagnet.activated"
+	- scope.magnetFunction -- Since this directive has no child scope, all instances of magnetized directive will be accessing the same parent/episode scope, which means that they are all haphazardly storing and calling the same reference to scope.magnetFunction. I don't understand why you would want to call the results of scope.$on before you create it and then overwrite the reference to what you just called.
+	- Line 25: if (el.parent().css("position") === "fixed") -- This assumes that the parent element to the directive element is a video container, which would mean that the video itself is a magnetized directive. But in fact the magnetized directive is used for everything BUT the video directive. How does this work? Does this css manipulation apply to any and every element that could ever want to be magnetized? If not maybe it belongs somewhere else.
+	- What elements are the .matchVideoHeight and .stretchToViewportBottom classes supposed to be on? Are they items? If so why don't we just have those items become magnetized directives and each manage their own dom via iElement? I don't understand what this hack is for that can't already be solved. This is a nasty hack because this directive is going and changing the dom of other directives and its not at all clear what is being targetted.
+	- If the magnetized directive is going to have different meanings and behaviors for different types of directives which it could be applied to (eg: video, item, etc) then maybe we should get rid of magnetized all together and just have each interested directive bind to the $on('videoMagnet') event and do its own thing.
+	- For performance, magnetized elements might want to inspect their own dom against the video magnet's dom and only manipulate themselves if needed. Eliminate any potential redundancy of changing dom values into what the already are (in the case that magnet was activated and one or more dom elements update themselves even though in this case they are already where they need to be.)
+
+Video Magnet Directive:
+	- Rename "videoMagnet" event to something more appropriate like "videoMagnet.activated"
+	- Give this directive a child scope, and put the scope.activate method in a controller. Currently putting scope.activate on parent scope is bad practice.
+	- Because of the references to scope.scene, this directive has special requirements of where it can and cannot be put in the dom. That needs to be made explicit by throwing an exception and/or console error if it is ever placed somewhere that scope.scene is not available, like inside the episode dom. Also needs to be made clear in the documentation.
+	- Window.resize triggering activate() could trigger an avalanche of dom manipulations by magnetized directives and would be more performant if activate() only fired when window resize() event is complete. What bigger problem are we trying to solve by doing this? We may want to either have it fire only at the end of a chain of window resize events, or address the problem directly (ie: watch for when the size of video.js changes)
+
+Item Controller:
+	- if ($element.closest('.content').width() > 400) -- Should never bind any controller to the dom (dom references only in directive linking functions and in some special cases a service). Easy fix is to move the declaration of the launchDetailView() method to the directive linking function instead.
+	- Also, just curious, what is the $element service being injected into the controller? I can't seem to find any angular documentation for $element.
+	- In the iframe section of the transmedia tempaltes, you should use an ng-if instead of ng-show. This will keep the iframe out of the dom except when its needed, and allow you to make bindings directly to item.source instad of item.injectedSource.. allowing you to get rid of item.injectedSource entirely. As it stands currently, the iframe will be put into the dom in a hidden state whenever the launchDetailView() method is fired and will stay there afterwards, creating potential performance and memory issues as more item overlays are viewed.
+	- $scope.item.showInlineDetail = !$scope.item.showInlineDetail; -- this line functions like a toggle, but it is not wrapped in a toggle method. Changing the name of launchDetailView to toggleDetailView would be more clear. (I'm assuming here that in the case of the iframe the launchDetailView method IS used like a toggle from the ui.)
+	- Now, some nice-to-have's to keep in mind for later:
+	- We might also want to establish a method here by which the iframe is automatically removed (eg: automatically fire the launchDetailView/toggleDetailView method) when the user moves on.. by active state or whatever.. to prevent users from loading a bunch of iframes into the dom, forgetting to close them, and slowing themselves down. (Nice to have feature... what you might call a stupidity buffer)
+	- A potential edge case bug here: User sizes their desktop screen to less than 400, toggles the iframe on, sizes their desktop to larger then 400, tries to toggle it off and instead launches an overlay.
+	- We may need to end up breaking the launchDetailView() method out into several methods for clarity: launchDetailView, closeDetailView, and toggleDetailView. I know there's some redundancy but that way if something wants to automatically close a detail view (for example) it can do so explicitely without worrying that it might accidentally toggle it on.
+
+Toolbar Controller:
+	- Change the triggerCurrentlyActiveVideoMagnet event to something like toolbar.updatedSceneTemplate. Video magnet can subscribe to this event instead, and still trigger its active state. This way toolbar is only broadcasting something to do with its own state change, and other components can interpret what to do with that differently.
+
+
+
+-------------------------------
+
+Note on Red Flags (Design-flags, not angular specific):
+
+	- Red flags are operations that are cryptic or difficult to grasp or understand. Maintainer requires special knowledge to understand what the code is doing and why. Can involve magic numbers and magic strings. Prone to bugs and difficult to debug. Can usually be addressed by understanding and decomposing the larger problem that the red flag is trying to solve, and then designing a solution that addresses the problem in smaller logical chunks and/or applying an appropriate design pattern.
