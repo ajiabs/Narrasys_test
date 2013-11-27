@@ -40,7 +40,7 @@ angular.module('com.inthetelling.player')
 		model.layout = data.layout || "";
 
 		/* TODO this logic belongs in the scene directive, doesn't it */
-		if (model.layout.match(/splitRequired/)) {
+		if (model.layout.match(/splitOptional/)) {
 			model.mainPaneContents = 'required';
 			model.altPaneContents = 'optional';
 		} else {
@@ -51,9 +51,7 @@ angular.module('com.inthetelling.player')
 		if (model.layout.match(/showCurrent/)) {
 			model.showCurrent=true;
 		}
-
 		model.styles = data.styles;
-		
 		return model;
 	};
 

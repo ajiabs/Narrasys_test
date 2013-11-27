@@ -1,4 +1,4 @@
-<div class="sidePanelInner colorInvert">
+<div class="sidePanelInner colorInvert {{episode.styles}}">
 	<div class="filters">
 		<dl>
 			<dt>Search:</dt>
@@ -40,7 +40,7 @@
 			<div ng-repeat="scene in scenes">
 				<h2>{{scene.title}}</h2>
 				<div ng-repeat="item in scene.items | orderBy:'startTime' | filter:searchText | type:searchTypes">
-					<span><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.startTime}}</a></span> ({{item.type}})<br />
+					<span><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.displayTime}}</a></span> ({{item.type}})<br />
 					<span>{{item.description || item.annotation}}</span><!-- TODO: It would be nice to have a consistent contract across items for things like this -->
 				</div>
 			</div>
@@ -51,7 +51,7 @@
 			<div ng-repeat="(type, items) in allItemsByType | orderBy:'type'" ng-if="searchTypes[type]">
 				<h2>{{prettyTypeMap[type]}}</h2>
 				<div ng-repeat="item in items | orderBy:'startTime' | type:searchTypes | filter:searchText">
-					<span><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.startTime}}</a></span> ({{item.type}})<br />
+					<span><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.displayTime}}</a></span> ({{item.type}})<br />
 					<span>{{item.description || item.annotation}}</span><!-- TODO: It would be nice to have a consistent contract across items for things like this -->
 				</div>
 			</div>

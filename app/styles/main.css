@@ -22,7 +22,7 @@
 .toolbar, .vjs-control-bar {z-index: 8}
 
 .modal-backdrop {z-index: 9}
-.modal {z-index: 10}
+.modal {z-index: 10} /* including search and nav panes */
 
 .windowFg {z-index: 11}
 
@@ -47,7 +47,7 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 //===========================*/
 
 .modal-backdrop {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
