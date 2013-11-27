@@ -11,8 +11,6 @@
 angular.module('com.inthetelling.player')
 .filter('layout', function() {
 
-
-
 	return function(items, layout) {
 		if (!items) {return [];}
 		var itemsIn = [], i, j, allowedLayouts;
@@ -41,11 +39,4 @@ angular.module('com.inthetelling.player')
 		}
 		return itemsIn;
 	};
-})
-
-
-
-
-
-
-;
+});
