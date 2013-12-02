@@ -5,8 +5,14 @@
 	a complete episode in the player. Data service can run against local data or api data,
 	based on value of config.localData.
 */
+// TODO: Refactor this class to utilize $http and/or $resource level caching, and just
+// make the requests every time. This way it can be used like a real service class and nobody
+// has to worry about calling get() before getAssetById() for example. It will all be async,
+// but just implement the promise api for consumers to use the service in a familiar way.
+// Service will then be capable of full crud, and can flush appropriate caches in the underlying
+// $http/$resources when POST/PUT methods are called.
 angular.module('com.inthetelling.player')
-.factory('dataSvc', function (config, $http, $q) {
+.factory('dataSvc', function (config, $http, $q, _) {
 	
 	// Cache all the data returned from dataSvc.get(). This data will be used for all the
 	// individual lookup methods like dataSvc.getAssetById(). Currently these individual
@@ -19,6 +25,7 @@ angular.module('com.inthetelling.player')
 	// will get data either from a local .json file or from apis.
 	svc.get = function(episodeId, callback, errback) {
 
+		// key the stored data by episode id
 		data[episodeId] = {};
 
 		// Local Data
@@ -119,10 +126,52 @@ angular.module('com.inthetelling.player')
 
 	};
 
-	// Retrieve the data for an asset based on its id. Method is synchronous and will scan all containers
-	// in the data cache, returning undefined if the asset is not already cached.
-	svc.getAssetById = function(id) {
+	// Retrieve the data for an asset based on its id. Method is synchronous and will scan the data cache,
+	// returning undefined if the item is not found.
+	svc.getAssetById = function(id, episodeId) {
+		if (!_.isArray("data[episodeId].assets")) { return; }
+		var i;
+		for (i=0; i < data[episodeId].assets.length; i++) {
+			if (data[episodeId].assets[i]._id === id) {
+				return data[episodeId].assets[i];
+			}
+		}
+	};
 
+	// Retrieve the data for a template based on its id. Method is synchronous and will scan the data cache,
+	// returning undefined if the item is not found.
+	svc.getTemplateById = function(id, episodeId) {
+		if (!_.isArray("data[episodeId].templates")) { return; }
+		var i;
+		for (i=0; i < data[episodeId].templates.length; i++) {
+			if (data[episodeId].templates[i]._id === id) {
+				return data[episodeId].templates[i];
+			}
+		}
+	};
+
+	// Retrieve the data for a layout based on its id. Method is synchronous and will scan the data cache,
+	// returning undefined if the item is not found.
+	svc.getLayoutById = function(id, episodeId) {
+		if (!_.isArray("data[episodeId].layouts")) { return; }
+		var i;
+		for (i=0; i < data[episodeId].layouts.length; i++) {
+			if (data[episodeId].layouts[i]._id === id) {
+				return data[episodeId].layouts[i];
+			}
+		}
+	};
+
+	// Retrieve the data for a style based on its id. Method is synchronous and will scan the data cache,
+	// returning undefined if the item is not found.
+	svc.getStyleById = function(id, episodeId) {
+		if (!_.isArray("data[episodeId].styles")) { return; }
+		var i;
+		for (i=0; i < data[episodeId].styles.length; i++) {
+			if (data[episodeId].styles[i]._id === id) {
+				return data[episodeId].styles[i];
+			}
+		}
 	};
 
 	return svc;
