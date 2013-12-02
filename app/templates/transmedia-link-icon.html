@@ -5,7 +5,7 @@
 	"isRequired": item.required,
 	"isCosmetic": item.cosmetic
 }'>
-	<div class="icon"><a href="javascript:void 1;" ng-click="launchDetailView()"><img x-ng-src="{{item.thumbSrc}}"></a></div>
+	<div class="icon"><a href="javascript:void 1;" ng-click="toggleDetailView()"><img x-ng-src="{{item.thumbSrc}}"></a></div>
 	<div class="detail" ng-if="item.showInlineDetail">
 		<!-- load without real iframe src initially; wait until user clicks on the item. -->
 		<a href="{{item.source}}" target="_blank" class="escapelink">(new window)</a>
