@@ -2,7 +2,7 @@
 
 // Controller for ittItem
 angular.module('com.inthetelling.player')
-.controller('ItemController', function ($scope, $element, videojs) {
+.controller('ItemController', function ($scope, videojs) {
 
 	
 	
