@@ -6,7 +6,6 @@ angular.module('com.inthetelling.player')
 
 	// pass through method to modal.createItemDetailOverlay() for templates
 	$scope.launchDetailView = function() {
-		$scope.item.injectedSource=$scope.item.source; // gives URL to iframes
 		// If pane width > 400 show the iframe inline; otherwise pop a modal
 		if ($element.closest('.content').width() > 400) {
 			$scope.item.showInlineDetail = !$scope.item.showInlineDetail;
