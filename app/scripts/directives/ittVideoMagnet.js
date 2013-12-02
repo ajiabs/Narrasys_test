@@ -34,7 +34,7 @@ angular.module('com.inthetelling.player')
 			});
 
 			// for triggering video magnets from outside the scene. Only the magnet in the active scene should respond.
-			$rootScope.$on('triggerCurrentlyActiveVideoMagnet', function() {
+			$rootScope.$on('changedSceneTemplate', function() {
 				if (scope.scene.isActive) {
 					scope.activate();
 				}
