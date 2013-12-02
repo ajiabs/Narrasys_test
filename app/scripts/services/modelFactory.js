@@ -66,6 +66,13 @@ angular.module('com.inthetelling.player')
 		model.displayTime = Math.floor(data.start/60) + ":" + ("0"+Math.floor(data.start)%60).slice(-2);
 
 		model.layout = data.layout || "inline";
+		
+		// Precalculate whether the item will be inline in a content pane or an overlay/underlay.
+		// NOTE/TODO: in producer need to recalculate this if item layout changes!  Does modelFactory handle that for us or do
+		// we need to keep track of it ourselves?
+		if (model.layout === 'inline' || model.layout.match(/sidebar/) || model.layout.match(/burst/)) {
+			model.inContentPane = true;
+		} 
 		model.styles = data.styles;
 		model.required = data.required || false;
 		model.cosmetic = data.cosmetic || false;
