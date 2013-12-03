@@ -22,7 +22,7 @@ angular.module('com.inthetelling.player')
 				if (scope.item.origTemplateUrl) {
 					scope.item.templateUrl = scope.item.origTemplateUrl;
 				}
-			};
+			}
 			
 			scope.toggleDetailView = function() {
 				if (scope.item.showInlineDetail) {
@@ -35,7 +35,7 @@ angular.module('com.inthetelling.player')
 					// otherwise pop a modal
 					modalMgr.createItemDetailOverlay(scope);
 				}
-			}
+			};
 
 		},
 		controller: "ItemController"

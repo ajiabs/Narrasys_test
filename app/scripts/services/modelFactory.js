@@ -72,7 +72,7 @@ angular.module('com.inthetelling.player')
 		// we need to keep track of it ourselves?
 		if (model.layout === 'inline' || model.layout.match(/sidebar/) || model.layout.match(/burst/)) {
 			model.inContentPane = true;
-		} 
+		}
 		model.styles = data.styles;
 		model.required = data.required || false;
 		model.cosmetic = data.cosmetic || false;

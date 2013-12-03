@@ -58,70 +58,62 @@ angular.module('com.inthetelling.player')
 				/v1/styles
 				TODO: GEt event categories also, they will eventually be used in the player
 			*/
-			var firstStackComplete = false,
-				secondStackComplete = false,
-				returnData = function() {
-					if (firstStackComplete && secondStackComplete) {
-						console.log("Compiled API Data:", data[episodeId]);
-						//callback(data[episodeId]);
-					}
-				};
 
-			// common headers
-			var hdrs = {
-				'Content-Type': 'application/json',
+			// TODO: Only necessary until auth tokens are implemented
+			$http.defaults.headers.get = {
 				'Authorization': 'Token token="c7624368e407355eb587500862322413"'
 			};
 
 			// TODO: group both 'call stacks' into another $q with a single then that returns the data
 
-			// first call stack
-			$http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v1/episodes/' + episodeId})
+			// first set of calls
+			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId)
 			.then(function(response) {
 				data[episodeId].episode = response.data;
 				return $q.all([
-					$http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets'}),
-					$http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id})
+					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets'),
+					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id)
 				]);
 			})
 			.then(function(responses) {
 				data[episodeId].assets = responses[0].data.files;
 				return $q.all([
-					$http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets'}),
-					$http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id})
+					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets'),
+					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id)
 				]);
 			})
 			.then(function(responses) {
-				data[episodeId].assets.push(responses[0].data.files);
-				return $http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets'});
+				data[episodeId].assets.concat(responses[0].data.files);
+				return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets');
 			})
 			.then(function(response) {
-				data[episodeId].assets.push(response.data.files);
-
-				firstStackComplete = true;
-				returnData();
-
+				data[episodeId].assets.concat(response.data.files);
 			});
 
-			// second call stack
-			$q.all([
-				$http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events'}),
-				$http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v1/templates'}),
-				$http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v1/layouts'}),
-				$http({method:'GET', headers:hdrs, data:'', url:config.apiDataBaseUrl + '/v1/styles'})
+			// second set of calls
+			var secondSet = $q.all([
+				$http.get(config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events'),
+				$http.get(config.apiDataBaseUrl + '/v1/templates'),
+				$http.get(config.apiDataBaseUrl + '/v1/layouts'),
+				$http.get(config.apiDataBaseUrl + '/v1/styles')
 			])
 			.then(function(responses) {
-
 				data[episodeId].events = responses[0].data;
 				data[episodeId].templates = responses[1].data;
 				data[episodeId].layouts = responses[2].data;
 				data[episodeId].styles = responses[3].data;
-
-				secondStackComplete = true;
-				returnData();
-
 			});
-
+			
+			// completion
+			$q.all([
+				firstSet,
+				secondSet
+			])
+			.then(function(responses) {
+				console.log("Compiled API Data:", data[episodeId]);
+				//callback(data[episodeId]);
+			});
+			
 		}
 
 	};
