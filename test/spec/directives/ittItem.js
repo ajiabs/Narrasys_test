@@ -20,8 +20,9 @@ describe('Directive: ittItem', function () {
 		expect(element.isolateScope().item).toEqual(parentScope.itemModel);
 	});
 
-	it('should add a launchDetailView method to the isolate scope', function() {
-		expect(element.isolateScope().hasOwnProperty('launchDetailView')).toBe(true);
-		expect(typeof element.isolateScope().launchDetailView).toBe('function');
+	it('should add a toggleDetailView method to the isolate scope', function() {
+		expect(element.isolateScope().hasOwnProperty('toggleDetailView')).toBe(true);
+		expect(typeof element.isolateScope().toggleDetailView).toBe('function');
 	});
+
 });
