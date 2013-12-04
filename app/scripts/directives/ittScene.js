@@ -59,7 +59,7 @@ angular.module('com.inthetelling.player')
 						}
 					}
 				},0);
-			}
+			};
 			
 			angular.element(window).bind('resize', twiddleSceneLayout);
 			$rootScope.$on('toolbar.changedSceneTemplate', twiddleSceneLayout);
