@@ -1,0 +1,6 @@
+<div class="item {{item.layout}} {{item.styles}}" x-ng-class='{"currentItem": item.isActive, "futureItem": !item.isActive && !item.wasActive, "pastItem": !item.isActive && item.wasActive}'>
+	<p>
+		<strong>{{item.authorName}}</strong> [<em>{{item.displayTime}}</em>]<br />
+		{{item.annotation}}
+	</p>
+</div>
