@@ -11,18 +11,23 @@ angular.module('com.inthetelling.player')
 	return {
 		restrict: 'A',
 		replace: true,
+		scope: true,
 		// TODO: Give this directive a child scope, and put the scope.activate method in a controller
 		link: function(scope, iElement, iAttrs, controller) {
+		
+		
+		//TODO: throw a console error if the scope isn't a scene
+		
 			//console.log("ITT-VIDEO-MAGNET LINKING FUNCTION: [scope:", scope, "]");
 			// 'activate' a dom instance of the itt-video-magnet directive by broadcasting an event from the root scope
-			// with a reference to the itt-video-magnet's dom element. The itt-video directive listens for these events
+			// with a reference to the itt-video-magnet's dom element. The itt-magnetized directive listens for these events
 			// and utilizes the dom element to reposition itself appropriately.
 			scope.activate = function() {
 				console.log("ittVideoMagnet.activate()", iElement);
 
 				// Need timeout because this needs to run after DOM update; so we don't wind up trying to test against a display:none node
 				$timeout(function() {
-					$rootScope.$broadcast('videoMagnet', iElement);
+					$rootScope.$emit('videoMagnet', iElement);
 				}, 0);
 			};
 
@@ -34,7 +39,7 @@ angular.module('com.inthetelling.player')
 			});
 
 			// for triggering video magnets from outside the scene. Only the magnet in the active scene should respond.
-			$rootScope.$on('changedSceneTemplate', function() {
+			$rootScope.$on('toolbar.changedSceneTemplate', function() {
 				if (scope.scene.isActive) {
 					scope.activate();
 				}

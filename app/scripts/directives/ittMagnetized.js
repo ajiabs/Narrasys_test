@@ -3,23 +3,21 @@
 // ittMagnetized elements respond to videoMagnet events and reposition themselves to match
 // the active videoMagnet node.
 
+// TODO: There is still a memory leak here, but much smaller.
+
+
 angular.module('com.inthetelling.player')
 .directive('ittMagnetized', function ($rootScope) {
 	return {
 		restrict: 'A',
 		replace: true,
-		link: function(scope, iElement, iAttrs, controller) {
-	
-			console.log("ittMagnetized link");
-
-			// TODO failed attempt to unbind previous magnet event in this scope
-			if (scope.magnetFunction) {scope.magnetFunction();}
+		scope: true,
+		link: function(scope, iElement) {
+			console.log("ittMagnetized", iElement);
 
 			// listen for videoMagnet events and resize/reposition ourselves if we receive one
-			scope.magnetFunction = scope.$on('videoMagnet', function(evt, el) {
+			function magnet(evt, el) {
 				console.log("ittMagnetized triggered");
-
-
 				// TODO: Animate?
 				if (el.parent().css("position") === "fixed") {
 					// if videoContainer is position:fixed, video should be too
@@ -35,17 +33,21 @@ angular.module('com.inthetelling.player')
 				}
 				
 				// TODO HACK
-				// Need to refactor the videoMagnet, trigger it once per scene instead of
-				// once per magnetized element, and include this as part of it.... as it is this
-				// is 7 events when it could be one per scene
-				// Separating the following out into separate directives too
-				// would just multiply that problem, so for now I'm just going to handle it directly.
+				// Move this stuff to scene directive
 				$('.currentScene .matchVideoHeight').height(el.height());
 				$('.currentScene .stretchToViewportBottom').each(function() {
 					$(this).css("min-height",($(window).height() - this.offsetTop - 60));
 				});
-
-
+			}
+			var unbindMagnet = $rootScope.$on('videoMagnet', magnet);
+			
+			// TODO / BUG: memory leak
+			// This is destroying most, but not all, bound videoMagnet events!
+			// For each time toolbar.changedSceneTemplate is run, it leaves one extra videoMagnet event per magnetized element.
+			// Leak is no longer exponential, at least, leaving for now
+			scope.$on('$destroy', function() {
+				console.log("Destroying videoMagnet event");
+				unbindMagnet();
 			});
 		}
 	};
