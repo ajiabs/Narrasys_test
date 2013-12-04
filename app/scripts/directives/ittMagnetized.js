@@ -32,7 +32,7 @@ angular.module('com.inthetelling.player')
 					iElement.height(el.height());
 				}
 			}
-			scope.unbindMagnet = $rootScope.$on('videoMagnet', magnet);
+			scope.unbindMagnet = $rootScope.$on('videoMagnet.activated', magnet);
 			
 			// TODO / BUG: memory leak
 			// This is destroying most, but not all, bound videoMagnet events!
