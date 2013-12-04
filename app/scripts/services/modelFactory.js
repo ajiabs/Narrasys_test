@@ -1,11 +1,20 @@
 'use strict';
 
 angular.module('com.inthetelling.player')
-.factory('modelFactory', function(config, dataSvc) {
+.factory('modelFactory', function(dataSvc, _) {
 
-	// Takes a template id, looks it up, and returns the template url or undefined
-	var resolveTemplate = function(templateId) {
-		if (templateId) {
+	// test if the passed object is a 24-bit uid
+	var isUid = function(test) {
+		if (_.isString(test) && test.match(/^[0-9a-fA-F]{24}$/)) {
+			return true;
+		}
+		return false;
+	};
+
+	// Takes a template id, looks it up, and returns the template url
+	// Will return (reflect) the passed property if not a valid id
+	var resolveTemplateUrl = function(templateId) {
+		if (isUid(templateId)) {
 			var template = dataSvc.getTemplateById(templateId);
 			if (template) {
 				return template.url;
@@ -13,11 +22,13 @@ angular.module('com.inthetelling.player')
 				console.error("Template lookup failed for:", templateId);
 			}
 		}
+		return templateId;
 	};
 
-	// Takes an array of layout ids, looks them all up, and returns a concatenated css string or undefined
-	var resolveLayout = function(layoutIds) {
-		if (layoutIds && layoutIds.length) {
+	// Takes an array of layout ids, looks them all up, and returns a concatenated css string
+	// Will return (reflect) the passed property if not a valid id
+	var resolveLayoutCSS = function(layoutIds) {
+		if (_.isArray(layoutIds)) {
 			var i, layout, layoutCSS = "";
 			for (i=0; i < layoutIds.length; i++) {
 				layout = dataSvc.getLayoutById(layoutIds[i]);
@@ -32,11 +43,13 @@ angular.module('com.inthetelling.player')
 			}
 			return layoutCSS;
 		}
+		return layoutIds;
 	};
 
-	// Takes an array of styles ids, looks them all up, and returns a concatenated css string or undefined
-	var resolveStyles = function(styleIds) {
-		if (styleIds && styleIds.length) {
+	// Takes an array of styles ids, looks them all up, and returns a concatenated css string
+	// Will return (reflect) the passed property if not a valid id
+	var resolveStyleCSS = function(styleIds) {
+		if (_.isArray(styleIds)) {
 			var i, style, styleCSS = "";
 			for (i=0; i < styleIds.length; i++) {
 				style = dataSvc.getStyleById(styleIds[i]);
@@ -51,12 +64,14 @@ angular.module('com.inthetelling.player')
 			}
 			return styleCSS;
 		}
+		return styleIds;
 	};
 
-	// Takes an id for a master asset (video), looks it up, and returns a video definition object or undefined
-	var resolveMasterAsset = function(masterAssetId) {
-		if (masterAssetId) {
-			var masterAsset = svc.getAssetById(masterAssetId);
+	// Takes an id for a master asset (video), looks it up, and returns a video definition object
+	// Will return (reflect) the passed property if not a valid id
+	var resolveMasterAssetVideo = function(masterAssetId) {
+		if (isUid(masterAssetId)) {
+			var masterAsset = dataSvc.getAssetById(masterAssetId);
 			if (masterAsset) {
 				return {
 					mpeg4: masterAsset.url
@@ -65,30 +80,35 @@ angular.module('com.inthetelling.player')
 				console.error("Master Asset lookup failed for:", masterAssetId);
 			}
 		}
+		return masterAssetId;
 	};
 
-	// Takes an id for an asset, looks it up, and returns the asset url or undefined
-	var resolveAsset = function(assetId) {
-		if (assetId) {
-			var asset = svc.getAssetById(assetId);
+	// Takes an id for an asset, looks it up, and returns the asset url
+	// Will return (reflect) the passed property if not a valid id
+	var resolveAssetUrl = function(assetId) {
+		if (isUid(assetId)) {
+			var asset = dataSvc.getAssetById(assetId);
 			if (asset) {
 				return asset.url;
 			} else {
 				console.error("Asset lookup failed for:", assetId);
 			}
 		}
+		return assetId;
 	};
 
-	// Takes an id for an asset, looks it up, and returns the mime type or undefined
+	// Takes an id for an asset, looks it up, and returns the mime type
+	// Will return (reflect) the passed property if not a valid id
 	var resolveAssetMimeType = function(assetId) {
-		if (assetId) {
-			var asset = svc.getAssetById(assetId);
+		if (isUid(assetId)) {
+			var asset = dataSvc.getAssetById(assetId);
 			if (asset) {
 				return asset._type;
 			} else {
 				console.error("Asset lookup failed for:", assetId);
 			}
 		}
+		return assetId;
 	};
 
 	var svc = {};
@@ -101,10 +121,10 @@ angular.module('com.inthetelling.player')
 		model.title = data.title;
 		model.category = "Fnord"; // TODO: Implement categories
 		model.coverUrl = "http://placekitten.com/260/261"; // TODO: Implement cover
-		model.templateUrl = ( config.localData ? data.template : resolveTemplate(data.template_id) ) || "templates/episode-default.html";
-		model.layout = ( config.localData ? data.layout : resolveLayout(data.layout_id) ) || "";
-		model.styles = ( config.localData ? data.styles : resolveStyles(data.style_id) ) || "";
-		model.videos = config.localData ? data.master_asset_id : resolveMasterAsset(data.master_asset_id);
+		model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/episode-default.html";
+		model.layout = resolveLayoutCSS(data.layout_id) || "";
+		model.styles = resolveStyleCSS(data.style_id) || "";
+		model.videos = resolveMasterAssetVideo(data.master_asset_id);
 
 		return model;
 	};
@@ -117,9 +137,9 @@ angular.module('com.inthetelling.player')
 		model.description = data.description;
 		model.startTime = data.start_time;
 		model.endTime = data.end_time;
-		model.templateUrl = ( config.localData ? data.template : resolveTemplate(data.template_id) ) || "templates/scene-1col.html";
-		model.layout = ( config.localData ? data.layout : resolveLayout(data.layout_id) ) || "";
-		model.styles = ( config.localData ? data.styles : resolveStyles(data.style_id) ) || "";
+		model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/scene-1col.html";
+		model.layout = resolveLayoutCSS(data.layout_id) || "";
+		model.styles = resolveStyleCSS(data.style_id) || "";
 		model.displayTime = Math.floor(data.start_time/60) + ":" + ("0"+Math.floor(data.start_time)%60).slice(-2);
 		model.isActive = false;
 		model.wasActive = false;
@@ -149,8 +169,8 @@ angular.module('com.inthetelling.player')
 		//model.category = data.category; //TODO: Implement dynamic categories
 		model.startTime = data.start_time;
 		model.endTime = data.end_time;
-		model.layout = ( config.localData ? data.layout : resolveLayout(data.layout_id) ) || "inline";
-		model.styles = ( config.localData ? data.styles : resolveStyles(data.style_id) ) || "";
+		model.layout = resolveLayoutCSS(data.layout_id) || "inline";
+		model.styles = resolveStyleCSS(data.style_id) || "";
 		model.required = data.required || false;
 		model.cosmetic = data.cosmetic || false;
 		model.stop = data.stop || false;
@@ -166,31 +186,31 @@ angular.module('com.inthetelling.player')
 		// extend base model based on item type
 		switch(data.type) {
 			case "annotation":
-				model.templateUrl = ( config.localData ? data.template : resolveTemplate(data.template_id) ) || "templates/transmedia-transcript-default.html";
+				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-transcript-default.html";
 				model.authorName = data.annotator;
-				model.authorThumbSrc = config.localData ? data.annotation_image_id : resolveAsset(data.annotation_image_id);
+				model.authorThumbSrc = resolveAssetUrl(data.annotation_image_id);
 				model.annotation = data.annotation;
 				break;
 
 			case "link":
-				model.templateUrl = ( config.localData ? data.template : resolveTemplate(data.template_id) ) || "templates/transmedia-link-default.html";
+				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-link-default.html";
 				model.itemDetailTemplateUrl = "templates/modal-link-default.html"; // hardcoded for now, not sure if we'll want to allow variations here
 				model.category = "links"; // TODO: Hardcoded for now. This can go once we implement dynamic categories in the base model construction.
 				model.title = data.title;
 				model.description = data.description;
-				model.thumbSrc = config.localData ? data.link_image_id : resolveAsset(data.link_image_id);
+				model.thumbSrc = resolveAssetUrl(data.link_image_id);
 				model.source = data.url;
 				break;
 
 			case "upload":
-				var mimeType = resolveAssetMimeType(data.asset_id) || "";
+				var mimeType = data.mimeType || resolveAssetMimeType(data.asset_id); // TODO: data.mimeType will only be truthy in local data. Hopefully this hack can go away with better handling of subtyping. See TODO below.
 				if (mimeType.match(/image/)) {
-					data.type = "image"; // TODO: Temporary hack. We could handle subtyping better by creating a subtype or mimetype property and keying off that, instead of changing the actual type. This hack is not CRUD friendly.
+					model.type = "image"; // TODO: Temporary/ugly hack. We could handle subtyping better by creating a subtype or mimetype property and keying off that in the views, instead of changing the actual type on the model, because this is not CRUD friendly.
 				}
-				model.templateUrl = ( config.localData ? data.template : resolveTemplate(data.template_id) ) || "templates/transmedia-image-default.html";
+				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-image-default.html";
 				model.title = data.title;
 				model.description = data.description;
-				model.source = config.localData ? data.asset_id : resolveAsset(data.asset_id);
+				model.source = resolveAssetUrl(data.asset_id);
 				break;
 		}
 

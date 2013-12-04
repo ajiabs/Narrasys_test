@@ -17,7 +17,7 @@ angular.module('com.inthetelling.player')
 	// Cache all the data returned from dataSvc.get(). This data will be used for all the
 	// individual lookup methods like dataSvc.getAssetById(). Currently these individual
 	// lookup methods are synchronous and do not use the apis or write to the cache.
-	var data = {};
+	var data;
 
 	var svc = {};
 
@@ -25,8 +25,8 @@ angular.module('com.inthetelling.player')
 	// will get data either from a local .json file or from apis.
 	svc.get = function(episodeId, callback, errback) {
 
-		// key the stored data by episode id
-		data[episodeId] = {};
+		// new up an empty data object
+		data = {};
 
 		// Local Data
 		if (config.localData) {
@@ -69,25 +69,25 @@ angular.module('com.inthetelling.player')
 			// first set of calls
 			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId)
 			.then(function(response) {
-				data[episodeId].episode = response.data;
+				data.episode = response.data;
 				return $q.all([
 					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets'),
 					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id)
 				]);
 			})
 			.then(function(responses) {
-				data[episodeId].assets = responses[0].data.files;
+				data.assets = responses[0].data.files;
 				return $q.all([
 					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets'),
 					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id)
 				]);
 			})
 			.then(function(responses) {
-				data[episodeId].assets.concat(responses[0].data.files);
+				data.assets.concat(responses[0].data.files);
 				return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets');
 			})
 			.then(function(response) {
-				data[episodeId].assets.concat(response.data.files);
+				data.assets.concat(response.data.files);
 			});
 
 			// second set of calls
@@ -98,10 +98,10 @@ angular.module('com.inthetelling.player')
 				$http.get(config.apiDataBaseUrl + '/v1/styles')
 			])
 			.then(function(responses) {
-				data[episodeId].events = responses[0].data;
-				data[episodeId].templates = responses[1].data;
-				data[episodeId].layouts = responses[2].data;
-				data[episodeId].styles = responses[3].data;
+				data.events = responses[0].data;
+				data.templates = responses[1].data;
+				data.layouts = responses[2].data;
+				data.styles = responses[3].data;
 			});
 			
 			// completion
@@ -110,8 +110,17 @@ angular.module('com.inthetelling.player')
 				secondSet
 			])
 			.then(function(responses) {
-				console.log("Compiled API Data:", data[episodeId]);
-				//callback(data[episodeId]);
+				console.log("Compiled API Data:", data);
+
+				//// DIRTY PREPROCESSING HACK ////
+				// TODO: Remove it when api updates the type field to be lowercase
+				for (var i = 0; i < data.events.length; i++) {
+					data.events[i].type = data.events[i].type.toLowerCase();
+					data.events[i]._type = data.events[i]._type.toLowerCase();
+				}
+				///////////////////
+
+				callback(data);
 			});
 			
 		}
@@ -120,48 +129,48 @@ angular.module('com.inthetelling.player')
 
 	// Retrieve the data for an asset based on its id. Method is synchronous and will scan the data cache,
 	// returning undefined if the item is not found.
-	svc.getAssetById = function(id, episodeId) {
-		if (!_.isArray("data[episodeId].assets")) { return; }
+	svc.getAssetById = function(id) {
+		if (!_.isArray(data.assets)) { return; }
 		var i;
-		for (i=0; i < data[episodeId].assets.length; i++) {
-			if (data[episodeId].assets[i]._id === id) {
-				return data[episodeId].assets[i];
+		for (i=0; i < data.assets.length; i++) {
+			if (data.assets[i]._id === id) {
+				return data.assets[i];
 			}
 		}
 	};
 
 	// Retrieve the data for a template based on its id. Method is synchronous and will scan the data cache,
 	// returning undefined if the item is not found.
-	svc.getTemplateById = function(id, episodeId) {
-		if (!_.isArray("data[episodeId].templates")) { return; }
+	svc.getTemplateById = function(id) {
+		if (!_.isArray(data.templates)) { return; }
 		var i;
-		for (i=0; i < data[episodeId].templates.length; i++) {
-			if (data[episodeId].templates[i]._id === id) {
-				return data[episodeId].templates[i];
+		for (i=0; i < data.templates.length; i++) {
+			if (data.templates[i]._id === id) {
+				return data.templates[i];
 			}
 		}
 	};
 
 	// Retrieve the data for a layout based on its id. Method is synchronous and will scan the data cache,
 	// returning undefined if the item is not found.
-	svc.getLayoutById = function(id, episodeId) {
-		if (!_.isArray("data[episodeId].layouts")) { return; }
+	svc.getLayoutById = function(id) {
+		if (!_.isArray(data.layouts)) { return; }
 		var i;
-		for (i=0; i < data[episodeId].layouts.length; i++) {
-			if (data[episodeId].layouts[i]._id === id) {
-				return data[episodeId].layouts[i];
+		for (i=0; i < data.layouts.length; i++) {
+			if (data.layouts[i]._id === id) {
+				return data.layouts[i];
 			}
 		}
 	};
 
 	// Retrieve the data for a style based on its id. Method is synchronous and will scan the data cache,
 	// returning undefined if the item is not found.
-	svc.getStyleById = function(id, episodeId) {
-		if (!_.isArray("data[episodeId].styles")) { return; }
+	svc.getStyleById = function(id) {
+		if (!_.isArray(data.styles)) { return; }
 		var i;
-		for (i=0; i < data[episodeId].styles.length; i++) {
-			if (data[episodeId].styles[i]._id === id) {
-				return data[episodeId].styles[i];
+		for (i=0; i < data.styles.length; i++) {
+			if (data.styles[i]._id === id) {
+				return data.styles[i];
 			}
 		}
 	};

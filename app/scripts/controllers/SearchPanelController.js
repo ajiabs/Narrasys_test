@@ -6,7 +6,7 @@ angular.module('com.inthetelling.player')
 
 	// map for the search panel checkboxes to bind to, which can also be passed to the type filter
 	$scope.searchTypes = {
-		transcript: true,
+		annotation: true,
 		link: true,
 		slide: true,
 		indepth: true,
@@ -19,7 +19,7 @@ angular.module('com.inthetelling.player')
 
 	// map type literals to pretty/printable version
 	$scope.prettyTypeMap = {
-		transcript: "Transcripts",
+		annotation: "Transcripts",
 		link: "Links",
 		slide: "Slides",
 		indepth: "In Depth",

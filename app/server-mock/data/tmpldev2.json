@@ -25,7 +25,8 @@
 			"annotation":"All panes should now have kittens in the top left corner background."
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"videoOverlay",
 			"styles_id":"tl",
 			"start_time":0,
@@ -34,7 +35,8 @@
 			"asset_id":"http://placekitten.com/70/70"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"mainBg",
 			"styles_id":"tl",
 			"start_time":0,
@@ -43,7 +45,8 @@
 			"asset_id":"http://placekitten.com/660/261"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"altBg",
 			"styles_id":"tl",
 			"start_time":0,
@@ -72,7 +75,8 @@
 			"annotation":"Here are kittens in the top right corner background."
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"videoOverlay",
 			"styles_id":"tr",
 			"start_time":3,
@@ -81,7 +85,8 @@
 			"asset_id":"http://placekitten.com/120/121"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"mainBg",
 			"styles_id":"tr",
 			"start_time":3,
@@ -90,7 +95,8 @@
 			"asset_id":"http://placekitten.com/270/261"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"altBg",
 			"styles_id":"tr",
 			"start_time":3,
@@ -119,7 +125,8 @@
 			"annotation":"Now all panes should now have kittens in the bottom right corner background."
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"videoOverlay",
 			"styles_id":"br",
 			"start_time":6,
@@ -128,7 +135,8 @@
 			"asset_id":"http://placekitten.com/120/111"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"mainBg",
 			"styles_id":"br",
 			"start_time":6,
@@ -137,7 +145,8 @@
 			"asset_id":"http://placekitten.com/181/62"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"altBg",
 			"styles_id":"br",
 			"start_time":6,
@@ -165,7 +174,8 @@
 			"annotation":"Now all panes should now have kittens in the bottom left corner background."
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"videoOverlay",
 			"styles_id":"bl",
 			"start_time":9,
@@ -174,7 +184,8 @@
 			"asset_id":"http://placekitten.com/110/111"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"mainBg",
 			"styles_id":"bl",
 			"start_time":9,
@@ -183,7 +194,8 @@
 			"asset_id":"http://placekitten.com/290/161"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"altBg",
 			"styles_id":"bl",
 			"start_time":9,
@@ -200,7 +212,8 @@
 			"annotation":"All panes with filled backgrounds:"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"videoOverlay",
 			"styles_id":"fill",
 			"start_time":12,
@@ -209,7 +222,8 @@
 			"asset_id":"http://placekitten.com/200/151"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"mainBg",
 			"styles_id":"fill",
 			"start_time":12,
@@ -218,7 +232,8 @@
 			"asset_id":"http://placekitten.com/200/141"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"altBg",
 			"styles_id":"fill",
 			"start_time":12,
@@ -235,7 +250,8 @@
 			"annotation":"All panes with filled foregrounds:"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"videoOverlay",
 			"styles_id":"fill",
 			"start_time":16,
@@ -244,7 +260,8 @@
 			"asset_id":"http://placekitten.com/400/400"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"mainFg",
 			"styles_id":"fill",
 			"start_time":16,
@@ -253,7 +270,8 @@
 			"asset_id":"http://placekitten.com/400/401"
 		},
 		{
-			"type":"image",
+			"type":"upload",
+			"mimeType":"image",
 			"layout_id":"altFg",
 			"styles_id":"fill",
 			"start_time":16,

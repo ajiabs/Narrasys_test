@@ -24,3 +24,14 @@ API Flow:
 /v1/templates
 /v1/layouts
 /v1/styles
+
+
+--------
+
+Issues for tomorrow:
+
+~ Missing assets (Bill)
+~ I'm always going against type not _type (Bill)
+~ Need to lowercase type (Bill)
+~ Debug local mode, cat positions and anything else (Daniel)
+~ Debug API mode, 404 on transcript-default.html (Daniel)
