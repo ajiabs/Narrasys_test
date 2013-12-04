@@ -2,7 +2,7 @@
 
 // Scene Directive
 angular.module('com.inthetelling.player')
-.directive('ittScene', function ($filter) {
+.directive('ittScene', function ($filter, $rootScope) {
 	return {
 		restrict: 'A',
 		replace: true,
@@ -10,18 +10,12 @@ angular.module('com.inthetelling.player')
 		scope: {
 			scene: '=ittScene'
 		},
-		link: function ($scope, element) {
-			console.log("scene: ",element);
+		link: function ($scope) {
+			// console.log("scene: ", $scope);
 			
-			// TODO (possibly):  We could avoid having to manually loop through these arrays here by putting this in the item
-			// link function instead and having it set classes directly on the item parent()... That would be technically bad practice
-			// but more efficient, and probably safe (since the items don't ever change parents)
-			
-			// but for now I'm trying to be good :)
-			
+			// TODO: move this into modelFactory, just so we have all the precalc stuff in the same place?
 			// For each possible content pane, we're going to set variables for whether extra left or right margin will be needed
 			// there are three possible panes in a given scene (panes) which will be identified in the template by scene.sidebars.(paneNames[x])
-			
 			$scope.scene.sidebars = {};
 			var panes = ["content", $scope.scene.mainPaneContents, $scope.scene.altPaneContents];
 			var paneNames = ["content","mainPane","altPane"];
@@ -37,6 +31,21 @@ angular.module('com.inthetelling.player')
 					}
 				}
 			}
+		
+			// Set heights of elements within the scene based on viewport or video size.
+			// TODO: don't use jQuery here if possible?
+			// TODO: limit effects to this scene: I can't seem to get a handle on the element node from here...?
+			$scope.twiddleHeights = function() {
+				$('.matchVideoHeight:visible').height($('.videoContainer:visible').height());
+				$('.stretchToViewportBottom:visible').each(function() {
+					$(this).css("min-height",($(window).height() - this.offsetTop - 60));
+				});
+				// TODO: add stretchToSceneBottom as well (would be useful in explore template for example)
+			}
+			
+			angular.element(window).bind('resize', $scope.twiddleHeights);
+			$rootScope.$on('toolbar.changedSceneTemplate', $scope.twiddleHeights);
+			$scope.$watch('scene.isActive', $scope.twiddleHeights);
 		}
 	};
 });

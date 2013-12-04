@@ -145,7 +145,6 @@ angular.module('com.inthetelling.player')
 		model.wasActive = false;
 		model.items = [];
 
-		/* TODO this logic belongs in the scene directive, doesn't it */
 		if (model.layout.match(/splitOptional/)) {
 			model.mainPaneContents = 'required';
 			model.altPaneContents = 'optional';

@@ -31,15 +31,8 @@ angular.module('com.inthetelling.player')
 					iElement.width(el.width());
 					iElement.height(el.height());
 				}
-				
-				// TODO HACK
-				// Move this stuff to scene directive
-				$('.currentScene .matchVideoHeight').height(el.height());
-				$('.currentScene .stretchToViewportBottom').each(function() {
-					$(this).css("min-height",($(window).height() - this.offsetTop - 60));
-				});
 			}
-			var unbindMagnet = $rootScope.$on('videoMagnet', magnet);
+			scope.unbindMagnet = $rootScope.$on('videoMagnet', magnet);
 			
 			// TODO / BUG: memory leak
 			// This is destroying most, but not all, bound videoMagnet events!
@@ -47,7 +40,7 @@ angular.module('com.inthetelling.player')
 			// Leak is no longer exponential, at least, leaving for now
 			scope.$on('$destroy', function() {
 				console.log("Destroying videoMagnet event");
-				unbindMagnet();
+				scope.unbindMagnet();
 			});
 		}
 	};
