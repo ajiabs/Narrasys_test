@@ -7,7 +7,7 @@
 		required   (returns annotation and required transmedia)
 		optional   (returns non-required transmedia)
 		content    (returns all annotation and transmedia)
-		transcript (returns all annotation items) // TODO: This probably needs to be updated to annotation, since new api contract has renamed item type transcript to annotation
+		transcript (returns all annotation items) 
 		transmedia (returns all except annotation items)
 */
 angular.module('com.inthetelling.player')
@@ -17,7 +17,7 @@ angular.module('com.inthetelling.player')
 		if (!items || !layout) {return [];}
 		var filteredItems = [], i;
 		if (layout === 'required' || layout === 'optional' || layout === 'transcript' || layout === 'transmedia' || layout === 'content') {
-			// return items for one of the four types of content pane.
+			// return items for one of the five types of content pane.
 			// We can ignore any items here for which item.inContentPane is false.
 			for (i=0; i<items.length; i++) {
 				if (items[i].inContentPane) {
