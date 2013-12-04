@@ -7,7 +7,7 @@
 			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" /></div>
 		</div>
 		<div class="pane contentMain">
-			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.mainPaneLeft, "hasRightSidebar": scene.sidebars.mainPaneRight}'>
+			<div class="content" x-ng-class='{"noSidebars": scene.sidebars.mainPaneNone, "hasLeftSidebar": (scene.sidebars.mainPaneLeft && !scene.sidebars.mainPaneNone), "hasRightSidebar": (scene.sidebars.mainPaneRight && !scene.sidebars.mainPaneNone)}'>
 				<h2 class="sceneTitle">{{scene.title}}</h2>
 				<div x-ng-repeat="item in scene.items | layout: scene.mainPaneContents" x-itt-item="item"></div>
 			</div>
@@ -16,7 +16,7 @@
 			<div ng-if="scene.startTime == 0" class="matchVideoHeight">
 				<!-- in explore view, need to pad the first scene to make room for the video -->
 			</div>
-			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.altPaneLeft, "hasRightSidebar": scene.sidebars.altPaneRight}'>
+			<div class="content" x-ng-class='{"noSidebars": scene.sidebars.altPaneNone, "hasLeftSidebar": (scene.sidebars.altPaneLeft && !scene.sidebars.altPaneNone), "hasRightSidebar": (scene.sidebars.altPaneRight && !scene.sidebars.altPaneNone)}'>
 				<div x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
 			</div>
 		</div>

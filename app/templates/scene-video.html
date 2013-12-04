@@ -5,7 +5,7 @@
 	<div class="scene">
 		<div style="position:relative; background-color: #000 !important">
 			<div class="pane showCurrent contentAlt timestampNone">
-				<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.altPaneLeft, "hasRightSidebar": scene.sidebars.altPaneRight}'>
+				<div class="content">
 					<div data-force-template="icon" x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.altPaneContents " x-itt-item="item"></div>
 				</div>
 			</div>
@@ -18,7 +18,7 @@
 			<div class="fillPane paneBg">
 			<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content showCurrent" x-ng-class='{"hasLeftSidebar": scene.sidebars.mainPaneLeft, "hasRightSidebar": scene.sidebars.mainPaneRight}'>
+			<div class="content showCurrent noSidebars">
 				<div x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | filter:{isActive:true}" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">

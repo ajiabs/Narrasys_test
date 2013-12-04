@@ -12,7 +12,7 @@
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.mainPaneLeft, "hasRightSidebar": scene.sidebars.mainPaneRight}'>
+			<div class="content" x-ng-class='{"noSidebars": scene.sidebars.mainPaneNone, "hasLeftSidebar": (scene.sidebars.mainPaneLeft && !scene.sidebars.mainPaneNone), "hasRightSidebar": (scene.sidebars.mainPaneRight && !scene.sidebars.mainPaneNone)}'>
 				<div class="matchVideoHeight">
 					<!-- TODO: check videoLeft or videoRight to decide which column(s) to include this in -->
 				</div>
@@ -28,7 +28,7 @@
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content" x-ng-class='{"hasLeftSidebar": scene.sidebars.altPaneLeft, "hasRightSidebar": scene.sidebars.altPaneRight}'>
+			<div class="content" x-ng-class='{"noSidebars": scene.sidebars.altPaneNone, "hasLeftSidebar": (scene.sidebars.altPaneLeft && !scene.sidebars.altPaneNone), "hasRightSidebar": (scene.sidebars.altPaneRight && !scene.sidebars.altPaneNone)}'>
 				<div class="matchVideoHeight">
 					<!-- TODO: check videoLeft or videoRight to decide which column(s) to include this in -->
 				</div>
