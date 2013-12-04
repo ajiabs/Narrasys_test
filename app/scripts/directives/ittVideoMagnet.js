@@ -16,7 +16,10 @@ angular.module('com.inthetelling.player')
 		link: function(scope, iElement, iAttrs, controller) {
 		
 		
-		//TODO: throw a console error if the scope isn't a scene
+			// Throw a console error if the scope isn't a scene
+			if (!scope.scene) {
+				console.warn("PROBABLE ERROR: videoMagnet directive should have scene scope. Got this instead:", scope);
+			}
 		
 			//console.log("ITT-VIDEO-MAGNET LINKING FUNCTION: [scope:", scope, "]");
 			// 'activate' a dom instance of the itt-video-magnet directive by broadcasting an event from the root scope
