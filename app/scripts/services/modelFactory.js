@@ -123,7 +123,7 @@ angular.module('com.inthetelling.player')
 		model.coverUrl = "http://placekitten.com/260/261"; // TODO: Implement cover
 		model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/episode-default.html";
 		model.layout = resolveLayoutCSS(data.layout_id) || "";
-		model.styles = resolveStyleCSS(data.style_id) || "";
+		model.styles = resolveStyleCSS(data.styles_id) || "";
 		model.videos = resolveMasterAssetVideo(data.master_asset_id);
 
 		return model;
@@ -139,7 +139,7 @@ angular.module('com.inthetelling.player')
 		model.endTime = data.end_time;
 		model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/scene-1col.html";
 		model.layout = resolveLayoutCSS(data.layout_id) || "";
-		model.styles = resolveStyleCSS(data.style_id) || "";
+		model.styles = resolveStyleCSS(data.styles_id) || "";
 		model.displayTime = Math.floor(data.start_time/60) + ":" + ("0"+Math.floor(data.start_time)%60).slice(-2);
 		model.isActive = false;
 		model.wasActive = false;
@@ -170,7 +170,7 @@ angular.module('com.inthetelling.player')
 		model.startTime = data.start_time;
 		model.endTime = data.end_time;
 		model.layout = resolveLayoutCSS(data.layout_id) || "inline";
-		model.styles = resolveStyleCSS(data.style_id) || "";
+		model.styles = resolveStyleCSS(data.styles_id) || "";
 		model.required = data.required || false;
 		model.cosmetic = data.cosmetic || false;
 		model.stop = data.stop || false;
