@@ -185,7 +185,7 @@ angular.module('com.inthetelling.player')
 		// extend base model based on item type
 		switch(data.type) {
 			case "annotation":
-				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-transcript-default.html";
+				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transcript-default.html";
 				model.authorName = data.annotator;
 				model.authorThumbSrc = resolveAssetUrl(data.annotation_image_id);
 				model.annotation = data.annotation;
