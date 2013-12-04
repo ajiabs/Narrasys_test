@@ -186,7 +186,7 @@
 
 .scene-cornerH .contentMain {
 	width: 50%;float:right;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .scene-cornerH.videoRight .videoContainer {float:right;}
