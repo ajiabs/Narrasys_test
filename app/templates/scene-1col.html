@@ -22,8 +22,8 @@
 			</div>
 			<div class="content" x-ng-class='{"noSidebars": scene.sidebars.mainPaneNone, "hasLeftSidebar": (scene.sidebars.mainPaneLeft && !scene.sidebars.mainPaneNone), "hasRightSidebar": (scene.sidebars.mainPaneRight && !scene.sidebars.mainPaneNone)}'>
 				<h2 class="sceneTitle">{{scene.title}}</h2>
-				<div x-ng-if="scene.showCurrent"  x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: 'content'" x-itt-item="item"></div>
-				<div x-ng-if="!scene.showCurrent" x-ng-repeat="item in scene.items | layout: 'content'" x-itt-item="item"></div>
+				<div x-ng-if="scene.showCurrent"  class="item-animate" x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: 'content'" x-itt-item="item"></div>
+				<div x-ng-if="!scene.showCurrent" class="item-animate" x-ng-repeat="item in scene.items | layout: 'content'" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>

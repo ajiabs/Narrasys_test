@@ -1,6 +1,12 @@
 /* TODO: alternatives for IE 8 and below */
 /* TODO: check if these can safely be used on scenes too */
 
+/* 
+Will need separate rules for showCurrent (which will use ng-enter and ng-leave) versus other lists 
+(where non-current items are not removed; there we use pastItem and futureItem classes instead.)
+*/
+
+
 
 
 body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
@@ -19,4 +25,35 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 	        animation-fill-mode: both;
 }
 
+/* These work fine: */
+.item-animate.ng-enter {
+  -webkit-transition: 1s linear all;
+  transition: 1s linear all;
+	position:relative;
+}
 
+.item-animate.ng-enter {
+	left: -50px;
+}
+
+.item-animate.ng-enter.ng-enter-active {
+	left: 0px;
+}
+
+
+/* But if ng-leave had a duration > 0, items never get removed from the ng-repeat! */
+
+
+.item-animate.ng-leave {
+  -webkit-transition: 0;
+  transition: 0;
+  position:relative;
+}
+
+.item-animate.ng-leave {
+	left: 0px;
+}
+
+.item-animate.ng-leave.ng-leave-active {
+	left: 50px;
+}
