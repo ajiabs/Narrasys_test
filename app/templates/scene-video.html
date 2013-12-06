@@ -6,7 +6,7 @@
 		<div style="position:relative; background-color: #000 !important">
 			<div class="pane showCurrent contentAlt timestampNone">
 				<div class="content noSidebars">
-					<div data-force-template="icon" x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.altPaneContents " x-itt-item="item"></div>
+					<div data-force-item-template="icon" x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.altPaneContents " x-itt-item="item"></div>
 				</div>
 			</div>
 			<div class="pane videoContainer">
@@ -34,3 +34,5 @@
 			<div x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>
 	</div>
 </div>
+
+

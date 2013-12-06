@@ -1,14 +1,30 @@
 /* TODO: alternatives for IE 8 and below */
 /* TODO: check if these can safely be used on scenes too */
+/* TODO: try to use angular ng-class animations for non showCurrent lists instead of looking directly at pastItem and futureItem; animating from futureItem to currentItem is buggy currently) */
 
+/* 
+Will need separate rules for item-animate (which will use ng-enter and ng-leave) versus other lists 
+(item-no-animate, where non-current items are not removed; there we use pastItem and futureItem classes instead.)
+*/
+
+/* 
+	transitionFade
+	transitionSlideL
+	transitionSlideR
+	transitionPop
+*/
 
 
 body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 	-webkit-backface-visibility: hidden;
 }
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* Make all durations 1s */
 
 .item {
-	transition: all 1s; /* let's just get that over with */
+	-webkit-transition: 1s ease-in-out all;
+	transition: 1s ease-in-out all;
+	/*
 	-webkit-animation-duration: 1s;
 	   -moz-animation-duration: 1s;
 	     -o-animation-duration: 1s;
@@ -17,6 +33,178 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 	   -moz-animation-fill-mode: both;
 	     -o-animation-fill-mode: both;
 	        animation-fill-mode: both;
+	*/
+}
+
+.item-animate.ng-enter,
+.item-animate.ng-leave,
+.item-animate.ng-move {
+	-webkit-transition: 1s ease-in-out all;
+	transition: 1s ease-in-out all;
+}
+
+/* Always animate max-height when leaving; this allows items after the item to be removed to slide up instead of jumping */
+/* Ideally we would measure the actual height instead of using an arbitrary max-height of 500 but this is a lot simpler and looks fine */
+
+.item-animate.ng-leave {
+	max-height: 500px
+}
+.item-animate.ng-leave-active {
+	max-height: 0
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* transitionFade */
+
+.transitionFade .item-animate.ng-enter,
+.transitionFade.item-animate.ng-enter
+{
+	opacity: 0;
+}
+
+.transitionFade .item-animate.ng-enter-active,
+.transitionFade.item-animate.ng-enter-active,
+.transitionFade .item-animate.ng-leave,
+.transitionFade.item-animate.ng-leave
+{
+	opacity: 1;
+}
+
+.transitionFade .item-animate.ng-leave-active,
+.transitionFade.item-animate.ng-leave-active
+{
+	opacity: 0;
+}
+
+.transitionFade .item-no-animate .pastItem,
+.transitionFade.item-no-animate .pastItem 
+{
+	opacity: 0.5;
+}
+
+.transitionFade .item-no-animate .currentItem,
+.transitionFade.item-no-animate .currentItem 
+{
+	opacity: 1
+}
+
+.transitionFade .item-no-animate .futureItem,
+.transitionFade.item-no-animate .futureItem 
+{
+	opacity: 0.5
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* transitionSlideL */
+
+
+.transitionSlideL .item-animate.ng-enter,
+.transitionSlideL.item-animate.ng-enter
+{
+	transform: translateX(50px);
+	-webkit-transform: translateX(50px);
+	opacity: 0;
+}
+
+.transitionSlideL .item-animate.ng-enter-active,
+.transitionSlideL.item-animate.ng-enter-active,
+.transitionSlideL .item-animate.ng-leave,
+.transitionSlideL.item-animate.ng-leave
+{
+	transform: translateX(0);
+	-webkit-transform: translateX(0);
+	opacity: 1;
+}
+
+.transitionSlideL .item-animate.ng-leave-active,
+.transitionSlideL.item-animate.ng-leave-active
+{
+	transform: translateX(-50px);
+	-webkit-transform: translateX(-50px);
+	opacity: 0;
+}
+
+/* (do nothing in non-showCurrent lists) */
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* transitionSlideR */
+
+.transitionSlideR .item-animate.ng-enter,
+.transitionSlideR.item-animate.ng-enter
+{
+	transform: translateX(-50px);
+	-webkit-transform: translateX(-50px);
+	opacity: 0;
+}
+
+.transitionSlideR .item-animate.ng-enter-active,
+.transitionSlideR.item-animate.ng-enter-active,
+.transitionSlideR .item-animate.ng-leave,
+.transitionSlideR.item-animate.ng-leave
+{
+	transform: translateX(0);
+	-webkit-transform: translateX(0);
+	opacity: 1;
+}
+
+.transitionSlideR .item-animate.ng-leave-active,
+.transitionSlideR.item-animate.ng-leave-active
+{
+	transform: translateX(50px);
+	-webkit-transform: translateX(50px);
+	opacity: 0;
+}
+
+/* (do nothing in non-showCurrent lists) */
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* transitionPop */
+
+.transitionPop .item-animate.ng-enter,
+.transitionPop.item-animate.ng-enter
+{
+	transform: scale(0.8);
+	-webkit-transform: scale(0.8);
+	opacity: 0;
+}
+
+.transitionPop .item-animate.ng-enter-active,
+.transitionPop.item-animate.ng-enter-active,
+.transitionPop .item-animate.ng-leave,
+.transitionPop.item-animate.ng-leave
+{
+	transform: scale(1);
+	-webkit-transform: scale(1);
+	opacity: 1;
+}
+
+.transitionPop .item-animate.ng-leave-active,
+.transitionPop.item-animate.ng-leave-active
+{
+	transform: scale(1.2);
+	-webkit-transform: scale(1.2);
+	opacity: 0;
+}
+
+.transitionPop .item-no-animate .pastItem,
+.transitionPop.item-no-animate .pastItem 
+{
+	transform: scale(0.95);
+	-webkit-transform: scale(0.95);
+}
+
+.transitionPop .item-no-animate .currentItem,
+.transitionPop.item-no-animate .currentItem 
+{
+	transform: scale(1);
+	-webkit-transform: scale(1);
+}
+
+.transitionPop .item-no-animate .futureItem,
+.transitionPop.item-no-animate .futureItem 
+{
+	transform: scale(1);
+	-webkit-transform: scale(1);
 }
 
 

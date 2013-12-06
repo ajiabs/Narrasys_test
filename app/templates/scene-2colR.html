@@ -1,5 +1,4 @@
 <div class="scene-2col scene-2colR {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
-
 	<div class="fillPane windowBg">
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
 	</div>
@@ -7,18 +6,13 @@
 		<div class="pane videoContainer">
 			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" /></div>
 		</div>
-		
 		<div class="pane contentMain stretchToViewportBottom">
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content" x-ng-class='{"noSidebars": scene.sidebars.mainPaneNone, "hasLeftSidebar": (scene.sidebars.mainPaneLeft && !scene.sidebars.mainPaneNone), "hasRightSidebar": (scene.sidebars.mainPaneRight && !scene.sidebars.mainPaneNone)}'>
-				<div class="matchVideoHeight">
-					<!-- TODO: check videoLeft or videoRight to decide which column(s) to include this in -->
-				</div>
-				<h2 class="sceneTitle">{{scene.title}}</h2>
-				<div x-ng-if="scene.showCurrent"  x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.mainPaneContents" x-itt-item="item"></div>
-				<div x-ng-if="!scene.showCurrent" x-ng-repeat="item in scene.items | layout: scene.mainPaneContents" x-itt-item="item"></div>
+			<div>
+				<div class="matchVideoHeight"></div>
+				<div data-pane="main" data-content="{{scene.mainPaneContents}}" x-itt-content-pane></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
@@ -28,12 +22,9 @@
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content" x-ng-class='{"noSidebars": scene.sidebars.altPaneNone, "hasLeftSidebar": (scene.sidebars.altPaneLeft && !scene.sidebars.altPaneNone), "hasRightSidebar": (scene.sidebars.altPaneRight && !scene.sidebars.altPaneNone)}'>
-				<div class="matchVideoHeight">
-					<!-- TODO: check videoLeft or videoRight to decide which column(s) to include this in -->
-				</div>
-				<div x-ng-if="scene.showCurrent"  x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.altPaneContents" x-itt-item="item"></div>
-				<div x-ng-if="!scene.showCurrent" x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
+			<div>
+				<div class="matchVideoHeight"></div>
+				<div data-pane="alt" data-content="{{scene.altPaneContents}}" x-itt-content-pane></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'altFg'" x-itt-item="item"></div>
@@ -47,4 +38,3 @@
 			<div x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>
 	</div>
 </div>
-

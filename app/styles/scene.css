@@ -21,13 +21,20 @@
  *
 //===========================*/
 
+.content > div {
+	perspective: 600px;
+	-webkit-perspective: 600px;
+}
+
+
 /* TODO: add breakpoints to adjust sidebar widths based on screen size */
 
+
 .content.hasLeftSidebar .item {
-	margin-left: 35%;
+	margin-left: 30%;
 }
 .content.hasRightSidebar .item {
-	margin-right: 35%;
+	margin-right: 30%;
 }
 
 .content.hasLeftSidebar.hasRightSidebar .item {
@@ -46,7 +53,7 @@
 .content.hasLeftSidebar.hasRightSidebar .item.burstR {margin-right: 0;}
 .content.hasLeftSidebar.hasRightSidebar .item.burst {margin-left: 0; margin-right: 0;}
 
-/* Overrides for no-sidebar items. Don't need to worry about hasLeftSidebar or hasRightSidebar rules here, as noSidebar will prevent those appearing */
+/* Overrides for no-sidebar items. Don't need to worry about hasLeftSidebar or hasRightSidebar rules here, as noSidebars will prevent those appearing */
 .content.noSidebars .item.sidebarL {float:none; width:auto;}
 .content.noSidebars .item.sidebarR {float:none; width:auto;}
 
@@ -59,7 +66,7 @@
 
 .futureScene, .pastScene {display:none}
 
-.scene .sceneTitle {padding: 0.5em}
+.scene .sceneTitle {padding: 0.5em; display:none} /* TODO: add a styles option to scenes for showing the title */
 
 /*
 .videoContainer {border: 2px solid #F00}
@@ -140,8 +147,11 @@
 	margin: 10% 20% 0 20%;
 }
 
+.scene-centered .centeredVideoPad {
+	padding-top: 10%
+}
+
 .scene-centered .contentMain {
-	padding-top: 10%;
 	width: 60%;
 	margin: 0 20%;
 }

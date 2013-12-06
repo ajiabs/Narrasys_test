@@ -45,9 +45,6 @@
 	background-size: 100% 100%;
 }
 
-.highlightTilt .content > div {
-	perspective: 800px;
-}
 
 .highlightTilt .content .item.currentItem,
 .highlightTilt.item.currentItem

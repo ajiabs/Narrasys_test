@@ -1,13 +1,3 @@
-<!--
-	One content pane, centered on page.
-
-	Video defaults to centered on page above content (in portrait orientation) or to the left of the content (in landscape).
-	
-	Layout modifiers:
-
--->
-
-
 <div class="scene-1col {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 	<div class="fillPane windowBg">
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
@@ -18,13 +8,9 @@
 		</div>
 		<div class="pane contentMain stretchToViewportBottom">
 			<div class="fillPane paneBg">
-			<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
+				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content" x-ng-class='{"noSidebars": scene.sidebars.mainPaneNone, "hasLeftSidebar": (scene.sidebars.mainPaneLeft && !scene.sidebars.mainPaneNone), "hasRightSidebar": (scene.sidebars.mainPaneRight && !scene.sidebars.mainPaneNone)}'>
-				<h2 class="sceneTitle">{{scene.title}}</h2>
-				<div x-ng-if="scene.showCurrent"  x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: 'content'" x-itt-item="item"></div>
-				<div x-ng-if="!scene.showCurrent" x-ng-repeat="item in scene.items | layout: 'content'" x-itt-item="item"></div>
-			</div>
+			<div x-itt-content-pane></div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
 			</div>

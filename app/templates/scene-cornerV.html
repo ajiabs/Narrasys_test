@@ -29,10 +29,7 @@ fillPane windowFg
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content showCurrent" x-ng-class='{"noSidebars": scene.sidebars.mainPaneNone, "hasLeftSidebar": (scene.sidebars.mainPaneLeft && !scene.sidebars.mainPaneNone), "hasRightSidebar": (scene.sidebars.mainPaneRight && !scene.sidebars.mainPaneNone)}'>
-				<h2 class="sceneTitle">{{scene.title}}</h2>
-				<div x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.mainPaneContents" x-itt-item="item"></div>
-			</div>
+			<div data-pane="main" data-no-sidebars="true" data-show-current="true" data-content="{{scene.mainPaneContents}}" x-itt-content-pane></div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
 			</div>
@@ -42,10 +39,7 @@ fillPane windowFg
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'altBg'" x-itt-item="item"></div>
 			</div>
-			<div class="content" x-ng-class='{"noSidebars": scene.sidebars.altPaneNone, "hasLeftSidebar": (scene.sidebars.altPaneLeft && !scene.sidebars.altPaneNone), "hasRightSidebar": (scene.sidebars.altPaneRight && !scene.sidebars.altPaneNone)}'>
-				<div x-ng-if="scene.showCurrent"  x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: scene.altPaneContents" x-itt-item="item"></div>
-				<div x-ng-if="!scene.showCurrent" x-ng-repeat="item in scene.items | layout: scene.altPaneContents" x-itt-item="item"></div>
-			</div>
+			<div data-pane="alt" data-content="{{scene.altPaneContents}}" x-itt-content-pane></div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'altFg'" x-itt-item="item"></div>
 			</div>
