@@ -59,7 +59,7 @@
 
 .futureScene, .pastScene {display:none}
 
-.scene .sceneTitle {padding: 0.5em}
+.scene .sceneTitle {padding: 0.5em; display:none} /* TODO: add a styles option to scenes for showing the title */
 
 /*
 .videoContainer {border: 2px solid #F00}
