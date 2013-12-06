@@ -30,6 +30,12 @@ angular.module('com.inthetelling.player')
 			// Whether to show only current items or all items:
 			scope.showCurrent = (scope.scene.showCurrent || attrs.showCurrent);
 			
+			// Special case: explore view is never showCurrent:
+			// TODO make this dependent on something less fragile than the template url
+			if (scope.scene.templateUrl === "templates/scene-explore.html") {
+				scope.showCurrent = false;
+			}
+			
 			// Whether to force a particular item template:
 			scope.forceItemTemplate = attrs.forceItemTemplate;
 

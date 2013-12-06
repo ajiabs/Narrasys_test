@@ -21,7 +21,14 @@
  *
 //===========================*/
 
+.content > div {
+	perspective: 600px;
+	-webkit-perspective: 600px;
+}
+
+
 /* TODO: add breakpoints to adjust sidebar widths based on screen size */
+
 
 .content.hasLeftSidebar .item {
 	margin-left: 30%;
