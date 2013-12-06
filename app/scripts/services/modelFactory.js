@@ -74,7 +74,8 @@ angular.module('com.inthetelling.player')
 			var masterAsset = dataSvc.getAssetById(masterAssetId);
 			if (masterAsset) {
 				return {
-					mpeg4: masterAsset.url
+					mpeg4: masterAsset.url,
+					webm: masterAsset.url.replace(".mp4", ".webm")
 				};
 			} else {
 				console.error("Master Asset lookup failed for:", masterAssetId);
