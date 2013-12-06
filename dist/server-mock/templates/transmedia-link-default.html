@@ -1,0 +1,6 @@
+<div class="item {{item.layout}} {{item.styles}}" x-ng-class='{"currentItem": item.isActive, "futureItem": !item.isActive && !item.wasActive, "pastItem": !item.isActive && item.wasActive}'>
+	<p>
+		<a href="{{item.source}}" target="_blank"><strong>{{item.title}}</strong></a><br />
+		<em>{{item.description}}</em>
+	</p>
+</div>

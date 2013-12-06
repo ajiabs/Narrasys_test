@@ -1,0 +1,555 @@
+{
+	"episode":{
+		"title":"Episode Title",
+		"category":"CATEGORY",
+		"cover":"http://theplatform-static.edgesuite.net/In_The_Telling/toc8_1280x720_25781827819.jpg",
+		"styles":"typographySerif",
+		"videos":{
+			"webm":"http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
+			"mpeg4":"http://platformuniv-p.edgesuite.net/dynamic/In_The_Telling/S3T2_Importance_of_Geography__192694.mp4"
+		}
+	},
+	"events":[
+		{
+			"type":"scene",
+			"layout":"",
+			"start":0,
+			"end":18,
+			"title":"Scene One: default scene template",
+			"description":"Cycles through the various item background styles"
+		},
+		{
+			"type":"transcript",
+			"start":0,
+			"end":3,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"All panes should now have kittens in the top left corner background."
+		},
+		{
+			"type":"image",
+			"layout":"videoOverlay",
+			"styles":"tl",
+			"start":0,
+			"end":3,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/70/70"
+		},
+		{
+			"type":"image",
+			"layout":"mainBg",
+			"styles":"tl",
+			"start":0,
+			"end":3,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/660/261"
+		},
+		{
+			"type":"image",
+			"layout":"altBg",
+			"styles":"tl",
+			"start":0,
+			"end":3,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/260/261"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"start":1,
+			"end":10,
+			"required":true,
+			"template":"templates/transmedia-link-default.html",
+			"title":"Burkina Faso - Solar",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"transcript",
+			"start":3,
+			"end":6,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Here are kittens in the top right corner background."
+		},
+		{
+			"type":"image",
+			"layout":"videoOverlay",
+			"styles":"tr",
+			"start":3,
+			"end":6,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/120/121"
+		},
+		{
+			"type":"image",
+			"layout":"mainBg",
+			"styles":"tr",
+			"start":3,
+			"end":6,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/270/261"
+		},
+		{
+			"type":"image",
+			"layout":"altBg",
+			"styles":"tr",
+			"start":3,
+			"end":6,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/271/261"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"start":5,
+			"end":15,
+			"required":true,
+			"template":"templates/transmedia-link-default.html",
+			"title":"Burkina Faso - Solar",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"transcript",
+			"start":6,
+			"end":9,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Now all panes should now have kittens in the bottom right corner background."
+		},
+		{
+			"type":"image",
+			"layout":"videoOverlay",
+			"styles":"br",
+			"start":6,
+			"end":9,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/120/111"
+		},
+		{
+			"type":"image",
+			"layout":"mainBg",
+			"styles":"br",
+			"start":6,
+			"end":9,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/181/62"
+		},
+		{
+			"type":"image",
+			"layout":"altBg",
+			"styles":"br",
+			"start":6,
+			"end":9,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/480/461"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"start":9,
+			"end":19,
+			"template":"templates/transmedia-link-default.html",
+			"title":"Burkina Faso - Solar",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"transcript",
+			"start":9,
+			"end":12,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Now all panes should now have kittens in the bottom left corner background."
+		},
+		{
+			"type":"image",
+			"layout":"videoOverlay",
+			"styles":"bl",
+			"start":9,
+			"end":12,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/110/111"
+		},
+		{
+			"type":"image",
+			"layout":"mainBg",
+			"styles":"bl",
+			"start":9,
+			"end":12,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/290/161"
+		},
+		{
+			"type":"image",
+			"layout":"altBg",
+			"styles":"bl",
+			"start":9,
+			"end":12,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/290/121"
+		},
+		{
+			"type":"transcript",
+			"start":12,
+			"end":15,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"All panes with filled backgrounds:"
+		},
+		{
+			"type":"image",
+			"layout":"videoOverlay",
+			"styles":"fill",
+			"start":12,
+			"end":15,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/200/151"
+		},
+		{
+			"type":"image",
+			"layout":"mainBg",
+			"styles":"fill",
+			"start":12,
+			"end":15,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/200/141"
+		},
+		{
+			"type":"image",
+			"layout":"altBg",
+			"styles":"fill",
+			"start":12,
+			"end":15,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/400/151"
+		},
+		{
+			"type":"transcript",
+			"start":15,
+			"end":18,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"All panes with filled foregrounds:"
+		},
+		{
+			"type":"image",
+			"layout":"videoOverlay",
+			"styles":"fill",
+			"start":16,
+			"end":18,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/400/400"
+		},
+		{
+			"type":"image",
+			"layout":"mainFg",
+			"styles":"fill",
+			"start":16,
+			"end":18,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://placekitten.com/400/401"
+		},
+		{
+			"type":"image",
+			"layout":"altFg",
+			"styles":"fill",
+			"start":16,
+			"end":18,
+			"template":"templates/transmedia-image-plain.html",
+			"src":"http://blogs.discovermagazine.com/badastronomy/files/2006/cthulhu_kitty.jpg"
+		},
+		{
+			"type":"scene",
+			"start":18,
+			"end":30,
+			"title":"Scene Two: content layouts",
+			"description":"SplitTransmedia, showList; uses various item layouts inside content panes ",
+			"template":"templates/scene-2colR.html",
+			"layout":"splitTransmedia showList"
+		},
+		{
+			"type":"transcript",
+			"styles":"timestampInline",
+			"start":18,
+			"end":20,
+			"layout":"inline",
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Inline transcript item"
+		},
+		{
+			"type":"transcript",
+			"styles":"timestampInline",
+			"start":20,
+			"end":22,
+			"layout":"sidebarL",
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"sidebarL transcript item"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"styles":"timestampInline",
+			"layout":"inline",
+			"start":20,
+			"end":30,
+			"template":"templates/transmedia-link-default.html",
+			"title":"Burkina Faso - Solar",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"transcript",
+			"styles":"timestampInline",
+			"start":22,
+			"end":24,
+			"layout":"sidebarR",
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"sidebarR transcript item"
+		},
+		{
+			"type":"transcript",
+			"styles":"timestampInline",
+			"start":24,
+			"end":26,
+			"layout":"burst",
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Burst-layout transcript item"
+		},
+		{
+			"type":"transcript",
+			"styles":"timestampInline",
+			"start":26,
+			"end":28,
+			"layout":"burstL",
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"BurstL-layout transcript item"
+		},
+		{
+			"type":"transcript",
+			"styles":"timestampInline",
+			"start":26,
+			"end":28,
+			"layout":"burstR",
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"BurstR-layout transcript item"
+		},
+		{
+			"type":"transcript",
+			"styles":"timestampInline",
+			"start":28,
+			"end":30,
+			"layout":"inline",
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"Inline transcript item"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"styles":"timestampInline",
+			"start":18,
+			"end":20,
+			"template":"templates/transmedia-link-default.html",
+			"title":"This pane has only inline and sidebarR items, to show the single-sidebar layout",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"layout":"sidebarR",
+			"styles":"timestampInline",
+			"start":20,
+			"end":25,
+			"template":"templates/transmedia-link-default.html",
+			"title":"This is the sidebarR one",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"styles":"timestampInline",
+			"start":25,
+			"end":30,
+			"template":"templates/transmedia-link-default.html",
+			"title":"This is inline again",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"scene",
+			"start":30,
+			"end":45,
+			"title":"Scene Three: scene-centered",
+			"description":"Scene-centered layout",
+			"template":"templates/scene-centered.html"
+		},
+		{
+			"type":"transcript",
+			"start":30,
+			"end":35,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"This scene uses the scene-centered layout"
+		},
+		{
+			"type":"transcript",
+			"start":35,
+			"end":40,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"This is the second transcript node in the scene. ONly one should be visible"
+		},
+		{
+			"type":"transcript",
+			"start":40,
+			"end":45,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"This is the third node"
+		},
+		{
+			"type":"scene",
+			"start":45,
+			"end":60,
+			"title":"Scene Four: cornerV",
+			"description":"The vertical corner layout",
+			"template":"templates/scene-cornerV.html",
+			"layout":"splitOptional showList videoRight"
+		},
+		{
+			"type":"transcript",
+			"start":45,
+			"end":60,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"This scene uses the cornerV layout, videoRight, splitOptional"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"start":45,
+			"end":60,
+			"template":"templates/transmedia-link-default.html",
+			"required":true,
+			"title":"This is a required link",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"start":45,
+			"end":60,
+			"template":"templates/transmedia-link-default.html",
+			"title":"This is an optional link",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"scene",
+			"start":60,
+			"end":75,
+			"title":"Scene Five: cornerH",
+			"description":"The horizontal corner layout",
+			"template":"templates/scene-cornerH.html",
+			"layout":"splitTransmedia showCurrent videoLeft"
+		},
+		{
+			"type":"transcript",
+			"start":60,
+			"end":75,
+			"author":{
+				"name":"Mr. Universe",
+				"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png"
+			},
+			"annotation":"This scene uses the cornerH layout, videoLeft, splitTransmedia, showCurrent"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"start":60,
+			"end":65,
+			"template":"templates/transmedia-link-default.html",
+			"required":true,
+			"title":"This is a required link. Only one link should be visible at a time...",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"start":65,
+			"end":70,
+			"template":"templates/transmedia-link-default.html",
+			"title":"This is a required link. Only one link should be visible at a time",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		},
+		{
+			"type":"link",
+			"category":"links",
+			"start":70,
+			"end":75,
+			"template":"templates/transmedia-link-default.html",
+			"title":"This is a required link. Only one link should be visible at a time",
+			"description":"EWB-USA University of Maryland solar lighting project.",
+			"src":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
+			"href":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+		}
+	]
+}
