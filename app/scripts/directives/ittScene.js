@@ -2,7 +2,7 @@
 
 // Scene Directive
 angular.module('com.inthetelling.player')
-.directive('ittScene', function ($filter, $rootScope, $timeout) {
+.directive('ittScene', function ($rootScope, $timeout) {
 	return {
 		restrict: 'A',
 		replace: false,

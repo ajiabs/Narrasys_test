@@ -7,7 +7,7 @@ angular.module('com.inthetelling.player')
 		replace: false,
 		scope: true,
 		templateUrl: 'templates/contentpane.html',
-		link: function(scope, iElement, iAttrs) {
+		link: function(scope, element, attrs) {
 			// scope is a child scope that inherits from EpisodeController scope
 			// thus anything that is added to this scope here is private to the directive,
 			// but everything on parent scope is still accessible.
@@ -21,22 +21,22 @@ angular.module('com.inthetelling.player')
 					- data-force-item-template (See item directive; this just passes it through)
 			*/
 
-			scope.pane = iAttrs.pane || "main";
+			scope.pane = attrs.pane || "main";
 
 			// which content to include in pane:
-			scope.contentLayout = iAttrs.content || "content";
+			scope.contentLayout = attrs.content || "content";
 			scope.itemlist = $filter('layout')(scope.scene.items,scope.contentLayout);
 
 			// Whether to show only current items or all items:
-			scope.showCurrent = (scope.scene.showCurrent || iAttrs.showCurrent);
+			scope.showCurrent = (scope.scene.showCurrent || attrs.showCurrent);
 			
 			// Whether to force a particular item template:
-			scope.forceItemTemplate = iAttrs.forceItemTemplate;
+			scope.forceItemTemplate = attrs.forceItemTemplate;
 
 			// Sidebars:
 			var checkForSidebars = function() {
 				console.log("contentpane checkForSidebars");
-				if (iAttrs.noSidebars) {
+				if (attrs.noSidebars) {
 					scope.noSidebars = true;
 					return;
 				}
@@ -57,7 +57,7 @@ angular.module('com.inthetelling.player')
 
 			// Responsive pane width:
 			scope.$watch(function () {
-				return iElement.width();
+				return element.width();
 			}, function (newValue, oldValue) {
 				if (newValue > 0 && newValue < 450) {
 					scope.noSidebars = true;
