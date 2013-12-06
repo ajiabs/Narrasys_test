@@ -45,15 +45,16 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 
 
 .item-animate.ng-leave {
-  -webkit-transition: 0;
-  transition: 0;
+  -webkit-transition: 1s linear all;
+  transition: 1s linear all;
   position:relative;
 }
 
 .item-animate.ng-leave {
-	left: 0px;
+	left: 0;
 }
 
-.item-animate.ng-leave.ng-leave-active {
+.item-animate.ng-leave-active {
 	left: 50px;
 }
+
