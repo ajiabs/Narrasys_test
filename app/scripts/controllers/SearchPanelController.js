@@ -19,7 +19,7 @@ angular.module('com.inthetelling.player')
 
 	// map type literals to pretty/printable version
 	$scope.prettyTypeMap = {
-		annotation: "Transcripts",
+		annotation: "Transcript",
 		link: "Links",
 		slide: "Slides",
 		indepth: "In Depth",

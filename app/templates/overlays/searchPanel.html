@@ -1,10 +1,12 @@
-<div class="sidePanelInner colorInvert {{episode.styles}}">
+<div class="sidePanelInner {{episode.styles}}">
 	<div class="filters">
 		<dl>
 			<dt>Search:</dt>
 			<dd>
 				<input id="searchtext" type="text" ng-model="searchText" />
 			</dd>
+<!--
+TODO: bring this back when we implement categories (and use the episode's categories to build the list of options)
 			<dt>Types:</dt>
 			<dd>
 				<label><input type="checkbox" id="searchalltypes" checked="checked"><span> All transmedia types</span></label>
@@ -17,6 +19,9 @@
 					<label><input type="checkbox" name="searchcategory" id="searchtype-discussions" ng-model="searchTypes.discussion"><span> {{prettyTypeMap['discussion']}}</span></label>
 				</div>
 			</dd>
+			
+
+-->
 			<dt>Sort by:</dt>
 			<dd>
 				<select id="searchsort" size="1" ng-model="sortBy">
@@ -26,36 +31,34 @@
 			</dd>
 		</dl>
 	</div>
-	<hr />
-	<div id="searchresults">
-
-	<!-- TODO:
-		- Wire up all types checkbox
-		- Check ordering in items by type
-		- Hide type header when no child items are visible
-	-->
-
-		<!-- sorted by start time -->
-		<div ng-if="sortBy == 'startTime'">
-			<div ng-repeat="scene in scenes">
-				<h2>{{scene.title}}</h2>
-				<div ng-repeat="item in scene.items | orderBy:'startTime' | filter:searchText | type:searchTypes">
-					<span><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.displayTime}}</a></span> ({{item.type}})<br />
-					<span>{{item.description || item.annotation}}</span><!-- TODO: It would be nice to have a consistent contract across items for things like this -->
+	<div class="scrollContainer">
+		<div class="searchResults">
+		<!-- TODO:
+			- Wire up all types checkbox
+			- Check ordering in items by type
+			- Hide type header when no child items are visible
+		-->
+			<!-- sorted by start time -->
+			<div ng-if="sortBy == 'startTime'">
+				<div ng-repeat="scene in scenes">
+					<h3>{{scene.title}}</h3>
+					<div class="item" ng-repeat="item in scene.items | orderBy:'startTime' | filter:searchText | type:searchTypes">
+						<span class="displayTime"><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
+						<div class="description">{{item.description || item.annotation}}</div>
+					</div>
+				</div>
+			</div>
+	
+			<!-- sorted by type -->
+			<div ng-if="sortBy == 'type'">
+				<div class="sortedbytype" ng-repeat="(type, items) in allItemsByType | orderBy:'type'" ng-if="searchTypes[type]">
+					<h3>{{prettyTypeMap[type]}}</h3>
+					<div class="item" ng-repeat="item in items | orderBy:'startTime' | type:searchTypes | filter:searchText">
+						<span class="displayTime"><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
+						<div class="description">{{item.description || item.annotation}}</div>
+					</div>
 				</div>
 			</div>
 		</div>
-
-		<!-- sorted by type -->
-		<div ng-if="sortBy == 'type'">
-			<div ng-repeat="(type, items) in allItemsByType | orderBy:'type'" ng-if="searchTypes[type]">
-				<h2>{{prettyTypeMap[type]}}</h2>
-				<div ng-repeat="item in items | orderBy:'startTime' | type:searchTypes | filter:searchText">
-					<span><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.displayTime}}</a></span> ({{item.type}})<br />
-					<span>{{item.description || item.annotation}}</span><!-- TODO: It would be nice to have a consistent contract across items for things like this -->
-				</div>
-			</div>
-		</div>
-
 	</div>
 </div>
