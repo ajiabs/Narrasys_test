@@ -61,7 +61,7 @@ angular.module('com.inthetelling.player')
 
 			// TODO: Only necessary until auth tokens are implemented
 			$http.defaults.headers.get = {
-				'Authorization': 'Token token="c7624368e407355eb587500862322413"'
+				'Authorization': config.apiAuthToken
 			};
 
 			// TODO: group both 'call stacks' into another $q with a single then that returns the data
