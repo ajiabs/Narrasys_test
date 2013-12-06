@@ -28,7 +28,7 @@ angular.module('com.inthetelling.player')
 	
 				},0);
 			};
-			$scope.$watch(function() {return element.width()}, twiddleSceneLayout);
+			$scope.$watch(function() {return element.width();}, twiddleSceneLayout);
 			$rootScope.$on('toolbar.changedSceneTemplate', twiddleSceneLayout);
 			$scope.$watch('scene.isActive', twiddleSceneLayout);
 

@@ -79,9 +79,9 @@ angular.module('com.inthetelling.player')
 		}
 
 		//Sort scenes and items within scenes
-		$scope.scenes.sort(function(a, b) {return a.startTime - b.startTime});
+		$scope.scenes.sort(function(a, b) {return a.startTime - b.startTime;});
 		for (i=0; i<$scope.scenes.length; i++) {
-			$scope.scenes[i].items.sort(function(a, b) {return a.startTime - b.startTime});
+			$scope.scenes[i].items.sort(function(a, b) {return a.startTime - b.startTime;});
 		}
 
 		console.log("Created Scope:", $scope);
