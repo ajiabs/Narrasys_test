@@ -46,7 +46,7 @@
 .content.hasLeftSidebar.hasRightSidebar .item.burstR {margin-right: 0;}
 .content.hasLeftSidebar.hasRightSidebar .item.burst {margin-left: 0; margin-right: 0;}
 
-/* Overrides for no-sidebar items. Don't need to worry about hasLeftSidebar or hasRightSidebar rules here, as noSidebar will prevent those appearing */
+/* Overrides for no-sidebar items. Don't need to worry about hasLeftSidebar or hasRightSidebar rules here, as noSidebars will prevent those appearing */
 .content.noSidebars .item.sidebarL {float:none; width:auto;}
 .content.noSidebars .item.sidebarR {float:none; width:auto;}
 

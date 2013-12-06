@@ -1,14 +1,14 @@
 <div class="content" x-ng-class='{"noSidebars": noSidebars, "hasLeftSidebar": hasLeftSidebar, "hasRightSidebar": hasRightSidebar}'>
 	<h2 x-ng-if="pane == 'main'" class="sceneTitle">{{scene.title}}</h2>
 	<span x-ng-if="showCurrent">
-			<div x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: contentLayout" 
+			<div x-ng-repeat="item in itemlist | filter:{isActive:true}" 
 					class="item-animate" 
 					data-force-item-template="{{forceItemTemplate}}" 
 					x-itt-item="item">
 			</div>
 	</span>
 	<span x-ng-if="!showCurrent">
-			<div x-ng-repeat="item in scene.items | layout: contentLayout" 
+			<div x-ng-repeat="item in itemlist" 
 					class="item-animate" 
 					data-force-item-template="{{forceItemTemplate}}" 
 					x-itt-item="item">

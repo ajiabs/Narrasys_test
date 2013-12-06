@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.player')
-.directive('ittContentPane', function () {
+.directive('ittContentPane', function ($filter) {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -21,8 +21,11 @@ angular.module('com.inthetelling.player')
 					- data-force-item-template (See item directive; this just passes it through)
 			*/
 
+			scope.pane = iAttrs.pane || "main";
+
 			// which content to include in pane:
 			scope.contentLayout = iAttrs.content || "content";
+			scope.itemlist = $filter('layout')(scope.scene.items,scope.contentLayout);
 
 			// Whether to show only current items or all items:
 			scope.showCurrent = (scope.scene.showCurrent || iAttrs.showCurrent);
@@ -31,24 +34,39 @@ angular.module('com.inthetelling.player')
 			scope.forceItemTemplate = iAttrs.forceItemTemplate;
 
 			// Sidebars:
-			scope.pane = iAttrs.pane || "main";
-			if (iAttrs.noSidebars) {
-				// scene template specifically requests no sidebar
-				scope.noSidebars = true;
-			} else {
-				// Sidebars appear if scene directive requests them for this pane. (TODO move that functionality here instead)
-				scope.noSidebars = (scope.pane === "main") ? scope.scene.sidebars.mainPaneNone 
-				                                           : scope.scene.sidebars.altPaneNone;
-				if (!scope.noSidebars) {
-					scope.hasLeftSidebar = (scope.pane === "main") ? scope.scene.sidebars.mainPaneLeft
-					                                               : scope.scene.sidebars.altPaneLeft;
-					scope.hasRightSidebar = (scope.pane === "main") ? scope.scene.sidebars.mainPaneRight 
-					                                                : scope.scene.sidebars.altPaneRight;
+			var checkForSidebars = function() {
+				console.log("contentpane checkForSidebars");
+				if (iAttrs.noSidebars) {
+					scope.noSidebars = true;
+					return;
 				}
-			}
+				// scan through the items to see if sidebars are needed in this content pane:
+				for (var i=0; i<scope.itemlist.length; i++) {
+					var layout = scope.itemlist[i].layout;
+					if (layout === "burst") {
+						scope.hasLeftSidebar = true;
+						scope.hasRightSidebar = true;
+					} else if (layout === "sidebarL" || layout === "burstL") {
+						scope.hasLeftSidebar = true;
+					} else if (layout === "sidebarR" || layout === "burstR") {
+						scope.hasRightSidebar = true;
+					}
+				}
+			};
+			checkForSidebars();  // This may be redundant, as the $watch seems to fire immediately anyway, but it feels unsafe to leave it out
 
+			// Responsive pane width:
+			scope.$watch(function () {
+				return iElement.width();
+			}, function (newValue, oldValue) {
+				if (newValue > 0 && newValue < 450) {
+					scope.noSidebars = true;
+					scope.hasLeftSidebar = false;
+					scope.hasRightSidebar = false;
+				} else {
+					checkForSidebars();
+				}
+			}, true);
 		}
-
 	};
 });
-
