@@ -1,14 +1,3 @@
-<!--
-	One content pane.
-	Video centered on page, with content pane below.
-	Content pane always shows current items only.
-	
-	No valid "layout" modifiers.
--->
-
-
-	
-
 <div class="scene-centered {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 	<div class="fillPane windowBg">
 			<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
@@ -17,19 +6,15 @@
 		<div class="pane videoContainer">
 			<div class="fillPane video" x-itt-video-magnet><img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif"/></div>
 		</div>
-		
-		<div class="pane contentMain">
-			<div class="fillPane paneBg">
-			<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
-			</div>
-			<div class="content showCurrent noSidebars">
-			<div class="matchVideoHeight"></div>
-				<h2 class="scenetitle">{{scene.title}}</h2>
-				<div x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: 'content'" x-itt-item="item"></div>
-			</div>
-			<div class="fillPane paneFg">
-				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
-			</div>
+		<div class="centeredVideoPad matchVideoHeight"></div>
+		<div class="pane contentMain stretchToViewportBottom">
+				<div class="fillPane paneBg">
+					<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
+				</div>
+				<div data-no-sidebars="true" data-show-current="true" data-content="content" x-itt-content-pane></div>
+				<div class="fillPane paneFg">
+					<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
+				</div>
 		</div>
 	</div>
 	<div x-itt-magnetized class="fillPane videoOverlay">

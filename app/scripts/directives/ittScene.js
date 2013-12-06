@@ -48,6 +48,7 @@ angular.module('com.inthetelling.player')
 	
 					// check each content pane and control whether it should allow or disallow sidebars (after DOM updates).  Breakpoint is currently 450px
 					// TODO (someday maybe): for some medium range of sizes, allow margin bursts but not full sidebars
+					// TODO: move this to contenPane directive
 					var paneNames = ["mainPane","altPane"];
 					var paneClassNames = [".contentMain:visible",".contentAlt:visible"];
 					for (var i=0; i<paneNames.length; i++) {

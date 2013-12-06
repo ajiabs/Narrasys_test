@@ -24,10 +24,10 @@
 /* TODO: add breakpoints to adjust sidebar widths based on screen size */
 
 .content.hasLeftSidebar .item {
-	margin-left: 35%;
+	margin-left: 30%;
 }
 .content.hasRightSidebar .item {
-	margin-right: 35%;
+	margin-right: 30%;
 }
 
 .content.hasLeftSidebar.hasRightSidebar .item {
@@ -140,8 +140,11 @@
 	margin: 10% 20% 0 20%;
 }
 
+.scene-centered .centeredVideoPad {
+	padding-top: 10%
+}
+
 .scene-centered .contentMain {
-	padding-top: 10%;
 	width: 60%;
 	margin: 0 20%;
 }

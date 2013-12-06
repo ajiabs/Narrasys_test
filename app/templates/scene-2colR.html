@@ -12,7 +12,7 @@
 			</div>
 			<div>
 				<div class="matchVideoHeight"></div>
-				<div data-content="{{scene.mainPaneContents}}" x-itt-content-pane></div>
+				<div data-pane="main" data-content="{{scene.mainPaneContents}}" x-itt-content-pane></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
@@ -24,7 +24,7 @@
 			</div>
 			<div>
 				<div class="matchVideoHeight"></div>
-				<div data-content="{{scene.altPaneContents}}" x-itt-content-pane></div>
+				<div data-pane="alt" data-content="{{scene.altPaneContents}}" x-itt-content-pane></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'altFg'" x-itt-item="item"></div>

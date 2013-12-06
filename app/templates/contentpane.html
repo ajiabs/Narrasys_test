@@ -1,9 +1,35 @@
-<div class="content" x-ng-class='{"noSidebars": scene.sidebars.mainPaneNone, "hasLeftSidebar": (scene.sidebars.mainPaneLeft && !scene.sidebars.mainPaneNone), "hasRightSidebar": (scene.sidebars.mainPaneRight && !scene.sidebars.mainPaneNone)}'>
+<!-- TODO: probably can simplify all these ng-ifs -->
+
+<div class="content" x-ng-class='{"noSidebars": noSidebars, "hasLeftSidebar": hasLeftSidebar, "hasRightSidebar": hasRightSidebar}'>
 	<!--<h2 class="sceneTitle">{{scene.title}}</h2>-->
-	<span x-ng-if="scene.showCurrent || forceCurrent">
-		<div class="item-animate" x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: contentLayout" x-itt-item="item"></div>
+	<span x-ng-if="showCurrent">
+		<span x-ng-if="forceItemTemplate">
+			<div x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: contentLayout" 
+					class="item-animate" 
+					data-force-item-template="{{forceItemTemplate}}" 
+					x-itt-item="item">
+			</div>
+		</span>
+		<span x-ng-if="!forceItemTemplate">
+			<div x-ng-repeat="item in scene.items | filter:{isActive:true} | layout: contentLayout" 
+					class="item-animate" 
+					x-itt-item="item">
+			</div>
+		</span>
 	</span>
-	<span x-ng-if="!scene.showCurrent">
-		<div class="item-animate" x-ng-repeat="item in scene.items | layout: contentLayout" x-itt-item="item"></div>
+	<span x-ng-if="!showCurrent">
+		<span x-ng-if="forceItemTemplate">
+			<div x-ng-repeat="item in scene.items | layout: contentLayout" 
+					class="item-animate" 
+					data-force-item-template="{{forceItemTemplate}}" 
+					x-itt-item="item">
+			</div>
+		</span>
+		<span x-ng-if="!forceItemTemplate">
+			<div x-ng-repeat="item in scene.items | layout: contentLayout" 
+					class="item-animate" 
+					x-itt-item="item">
+			</div>
+		</span>
 	</span>
 </div>
