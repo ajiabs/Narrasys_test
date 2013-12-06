@@ -89,14 +89,10 @@ Create an annotated version tag and push it to the remote. Commands for doing th
 - `git tag -a v1.2.3 -m "Commit notes"`
 - `git push origin v1.2.3`
 
-Once the tag has been pushed you should **never** modify it! This is by convention and best practice, not necessity, but I believe git will bark at you if you try to change a tag.
+Note that once a tag has been pushed, it is generally considered bad practice to squash it. Some teams adhere to a strict no-squash policy and others allow it up to the point of deployment.
 
-The following standard incremental version numbering system is being used:
+The following standard incremental version numbering system is being used by convention: **v[major].[minor].[revision]**
 
-**v[major].[minor].[revision]**
-
-- Major: Major refactors, features, and breaking changes
-- Minor: Changes that ensure backwards compatibility, or minor contract changes
-- Revision: Bug fixes and changes are always backards compatible and no contract changes
-
-Incrementing major should reset minor and revision, incrementing minor should reset revision, incrementing revision resets nothing.
+- Major: Major refactors, features, and breaking changes (increments reset minor and revision)
+- Minor: Changes that ensure backwards compatibility, or minor contract changes (increments reset revision)
+- Revision: Bug fixes and changes are always backards compatible and no contract changes (increments reset nothing)
