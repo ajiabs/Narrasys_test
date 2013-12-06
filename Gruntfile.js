@@ -304,7 +304,7 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('build', [
-		'jshint',
+		//'jshint',
 		//'test',
 		'clean:dist',
 		'ngtemplates',

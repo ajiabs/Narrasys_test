@@ -58,3 +58,41 @@ Here are a few common bower commands and workflows:
 * `bower uninstall packageName --save`: Removes the package from app/bower_components. The `--save` flag tells bower to remove the dependency from  bower.json.
 
 Note: You can get around using the `bower install packageName` and `bower update packageName` commands by simply editing the bower.json file by hand and then running `bower install` or `bower update`.
+
+## Release Process
+
+The following steps are required to release a new version:
+
+### Checkout master branch
+
+You should be working out of the master branch when generating new builds. Be sure that you have merged in any feature branches and that master is current.
+
+### Build to /dist
+
+Before building you should be sure to run `grunt jshint` and `grunt test` to make sure linting and unit tests are passing.
+
+Use one of the following commands to generate a new build and output it to the /dist directory. These commands will always replace the current contents of /dist.
+
+- `grunt server:dist` Outputs a new build to /dist and runs server from /dist for local browser testing.
+- `grunt build` Outputs a new build to /dist.
+
+*Note that for some reason the `grunt server:dist` command does not always pop open a browser window for you so you may need to do that manually.*
+
+### Push /dist to git
+
+Commit your changes to master and push to the remote as you would any other changes.
+
+### Create a git version tag
+
+Create an annotated version tag and push it to the remote. Commands for doing this are as follows:
+
+- `git tag -a v1.2.3 -m "Commit notes"`
+- `git push origin v1.2.3`
+
+Note that once a tag has been pushed, it is generally considered bad practice to squash it. Some teams adhere to a strict no-squash policy and others allow it up to the point of deployment.
+
+The following standard incremental version numbering system is being used by convention: **v[major].[minor].[revision]**
+
+- Major: Major refactors, features, and breaking changes (increments reset minor and revision)
+- Minor: Changes that ensure backwards compatibility, or minor contract changes (increments reset revision)
+- Revision: Bug fixes and changes are always backards compatible and no contract changes (increments reset nothing)
