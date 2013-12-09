@@ -75,7 +75,6 @@
 	height: 100%;
 	width: 100%;
 	overflow-y: auto;
-	padding: 0.4em;
 	font-size: 90%;
 }
 
@@ -108,6 +107,67 @@
 }
 */
 
+.searchPanel .sidePanelInner {
+	background-color: #EEE;
+}
+
+.searchPanel .filters {
+	background-color: #AAA;
+	padding: 0.5em;
+}
+
+.searchPanel .searchresults {
+	padding: 0.5em;
+}
+
+.searchPanel .filters {font-size: 0.86em}
+.searchPanel .filters select {font-size: 1em}
+.searchPanel .filters dd {
+	margin: 5px 0 5px 75px;
+}
+.searchPanel .filters dt {
+	float: left;
+	width: 64px;
+	text-align: right;
+	margin: 5px;
+	clear: left;
+}
+
+.searchPanel input[type="text"], 
+.searchPanel select {
+    background-color: #888888;
+    border: 1px solid #777;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    font-size: 1em;
+    height: 2em;
+    width: 100%;
+    padding-left: 8px;
+}
+
+.searchPanel select {padding: 3px 3px 3px 8px}
+.searchPanel option {
+    padding: 0 2em;
+}
+
+.searchResults h3 {padding: 0.5em 0.3em 0.1em 0.3em}
+
+.searchResults .item {border-bottom: 1px solid #CCC; padding: 0.1em 0.3em}
+.searchResults .item .displayTime {
+	cursor: pointer; cursor: hand; 
+	color: #C44343; 
+	float:left; 
+	display:inline; 
+	width: 35px;
+}
+.searchResults .description {
+	font-size: 0.86em;
+	margin-left: 35px
+}
+
+.searchResults .type {opacity: 0.4; font-size: 0.86em}
+.searchResults .sortedbytype .type {display:none}
+
 /*============================
  *
  * Naviation Panel Modal
@@ -118,6 +178,10 @@
 	top: 0;
 	left: 0;
 	width: 300px;
+}
+
+.navigationPanel .sidePanelInner {
+	padding: 0.5em;
 }
 
 .navigationPanel .scene {

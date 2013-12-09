@@ -74,7 +74,8 @@ angular.module('com.inthetelling.player')
 			var masterAsset = dataSvc.getAssetById(masterAssetId);
 			if (masterAsset) {
 				return {
-					mpeg4: masterAsset.url
+					mpeg4: masterAsset.url,
+					webm: masterAsset.url.replace(".mp4", ".webm")
 				};
 			} else {
 				console.error("Master Asset lookup failed for:", masterAssetId);
@@ -119,8 +120,8 @@ angular.module('com.inthetelling.player')
 		var model = {};
 
 		model.title = data.title;
-		model.category = "Fnord"; // TODO: Implement categories
-		model.coverUrl = "http://placekitten.com/260/261"; // TODO: Implement cover
+		model.category = "Fnord"; // TODO: Implement categories.  Hey I can't see this. How strange.
+		model.coverUrl = "/images/coverlogo.png"; // TODO: Implement cover
 		model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/episode-default.html";
 		model.layout = resolveLayoutCSS(data.layout_id) || "";
 		model.styles = resolveStyleCSS(data.style_id) || "";

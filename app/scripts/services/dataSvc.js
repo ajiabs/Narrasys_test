@@ -61,7 +61,7 @@ angular.module('com.inthetelling.player')
 
 			// TODO: Only necessary until auth tokens are implemented
 			$http.defaults.headers.get = {
-				'Authorization': 'Token token="c7624368e407355eb587500862322413"'
+				'Authorization': config.apiAuthToken
 			};
 
 			// TODO: group both 'call stacks' into another $q with a single then that returns the data
@@ -70,6 +70,7 @@ angular.module('com.inthetelling.player')
 			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId)
 			.then(function(response) {
 				data.episode = response.data;
+				//console.log(response.config.url + ":", response.data);
 				return $q.all([
 					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets'),
 					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id)
@@ -77,17 +78,22 @@ angular.module('com.inthetelling.player')
 			})
 			.then(function(responses) {
 				data.assets = responses[0].data.files;
+				//console.log(responses[0].config.url + ":", responses[0].data);
+				//console.log(responses[1].config.url + ":", responses[1].data);
 				return $q.all([
 					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets'),
 					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id)
 				]);
 			})
 			.then(function(responses) {
-				data.assets.concat(responses[0].data.files);
+				data.assets = data.assets.concat(responses[0].data.files);
+				//console.log(responses[0].config.url + ":", responses[0].data);
+				//console.log(responses[1].config.url + ":", responses[1].data);
 				return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets');
 			})
 			.then(function(response) {
-				data.assets.concat(response.data.files);
+				data.assets = data.assets.concat(response.data.files);
+				//console.log(response.config.url + ":", response.data);
 			});
 
 			// second set of calls
