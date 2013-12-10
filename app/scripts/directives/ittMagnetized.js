@@ -15,7 +15,7 @@ angular.module('com.inthetelling.player')
 			// resize/reposition ourselves to the passed magnet's element.
 			// (iElement is the magnetized node, el is the magnet node.)
 			var reposition = function(evt, el) {
-				console.log("ittMagnetized triggered", el.width(), el.height());
+				console.log("ittMagnetized triggered");
 				// TODO: Animate?
 
 				// A race condition on load can cause the height to resolve to 0; if that happens we force it to a 16:9 aspect ratio.
@@ -23,8 +23,6 @@ angular.module('com.inthetelling.player')
 				if (el.height() === 0) {
 					console.warn("Videocontainer height appears to be zero; forcing to 16:9 aspect ratio");
 					newHeight = el.width() * 9 / 16;
-					el.height(newHeight);
-					console.log(el);
 				} else {
 					newHeight = el.height();
 				}
