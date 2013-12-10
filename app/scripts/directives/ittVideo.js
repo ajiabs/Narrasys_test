@@ -2,7 +2,7 @@
 
 // Video.js Wrapper Directive
 // - can only declare one of these for an episode
-// - should never be reparented or removed from the dom (use ittVideoMagnet directives instead)
+// - should never be reparented or removed from the dom (use ittMagnet directives instead)
 angular.module('com.inthetelling.player')
 .directive('ittVideo', function (queuePointScheduler, videojs, $timeout, config) {
 	return {
