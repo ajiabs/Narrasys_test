@@ -93,7 +93,7 @@ which if we ever do that we've done something terribly wrong.
 					},
 					get: function (key) {
 						for (var i = 0; i < stack.length; i++) {
-							if (key == stack[i].key) {
+							if (key === stack[i].key) {
 								return stack[i];
 							}
 						}
@@ -111,7 +111,7 @@ which if we ever do that we've done something terribly wrong.
 					remove: function (key) {
 						var idx = -1;
 						for (var i = 0; i < stack.length; i++) {
-							if (key == stack[i].key) {
+							if (key === stack[i].key) {
 								idx = i;
 								break;
 							}
@@ -144,7 +144,7 @@ which if we ever do that we've done something terribly wrong.
 				});
 				scope.close = function (evt) {
 					var modal = $modalStack.getTop();
-					if (modal && modal.value.backdrop && modal.value.backdrop != 'static') {
+					if (modal && modal.value.backdrop && modal.value.backdrop !== 'static') {
 						evt.preventDefault();
 						evt.stopPropagation();
 						$modalStack.dismiss(modal.key, 'backdrop click');
@@ -200,7 +200,7 @@ which if we ever do that we've done something terribly wrong.
 				//remove window DOM element
 				modalWindow.modalDomEl.remove();
 				//remove backdrop if no longer needed
-				if (backdropIndex() == -1) {
+				if (backdropIndex() === -1) {
 					backdropDomEl.remove();
 					backdropDomEl = undefined;
 				}
