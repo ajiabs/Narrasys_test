@@ -67,7 +67,7 @@
 
 .sidePanel {
 	position: fixed;
-	height: 100%;
+	top: 0; bottom: 0;
 	box-shadow: 0 0 20px rgba(0,0,0,0.5);
 	z-index: 10;
 }
@@ -101,7 +101,7 @@
 	opacity:0;
 	transform: rotateY(60deg) translateX(200px);
 }
-.searchPanel.ng-hide-add, .searchPanel.ng-hide-remove {
+.sidePanel.ng-hide-add, .sidePanel.ng-hide-remove {
   display:block!important;
 }
 
@@ -117,11 +117,6 @@
 	opacity:0;
 	transform: rotateY(-60deg) translateX(-200px);
 }
-.navigationPanel.ng-hide-add, .navigationPanel.ng-hide-remove {
-  display:block!important;
-}
-
-
 
 /*============================
  *
@@ -130,10 +125,8 @@
 //===========================*/
 
 .searchPanel {
-	top: 0;
 	right: 0;
-	bottom: 0;
-	width: 40%;
+	max-width: 40%;
 	background-color: #EEE;
 }
 
@@ -171,19 +164,19 @@
 
 .searchPanel input[type="text"], 
 .searchPanel select {
-    background-color: #888888;
-    border: 1px solid #777;
-    border-radius: 4px 4px 4px 4px;
-    color: #FFFFFF;
-    font-size: 1em;
-    height: 2em;
-    width: 100%;
-    padding-left: 8px;
+	background-color: #888888;
+	border: 1px solid #777;
+	border-radius: 4px 4px 4px 4px;
+	color: #FFFFFF;
+	font-size: 1em;
+	height: 2em;
+	width: 100%;
+	padding-left: 8px;
 }
 
 .searchPanel select {padding: 3px 3px 3px 8px}
 .searchPanel option {
-    padding: 0 2em;
+	padding: 0 2em;
 }
 
 .searchResults h3 {padding: 0.5em 0.3em 0.1em 0.3em}
@@ -206,20 +199,17 @@
 
 /*============================
  *
- * Naviation Panel
+ * Navigation Panel
  *
 //===========================*/
 
 .navigationPanel {
-	top: 0;
-	left: 0;
-	width: 300px;
-	bottom: 0;
-	position:absolute;
-	background-color: #333;
+	max-width: 40%;
 }
 
-
+.navigationPanel h2 {
+	padding: 0.4em;
+}
 
 .navigationPanel .scene {
 	padding: 0.3em;
@@ -230,12 +220,12 @@
 	background-color: rgba(255,255,255,0.1);
 }
 
-/* animate on show */
-
-.navigationPanel {
-	-webkit-animation: navPanelIn 1s;
-	-moz-animation: navPanelIn 1s;
-	-ms-animation: navPanelIn 1s;
-	animation: navPanelIn 1s;
+.navigationPanel .displayTime {
+	width: 45px; 
+	float:left;
+	text-align:right;
+	padding-right: 10px;
 }
-
+.navigationPanel p {
+	margin-left: 45px;
+}

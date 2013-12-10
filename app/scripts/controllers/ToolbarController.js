@@ -4,7 +4,7 @@
 
 // Controller for ittToolbar
 angular.module('com.inthetelling.player')
-.controller('ToolbarController', function ($scope, $timeout, $rootScope) {
+.controller('ToolbarController', function ($scope, $timeout, $rootScope, videojs) {
 
 	/* Handler for toolbar buttons to change scene templates. */
 	$scope.setSceneTemplate = function(newTemplate) {
@@ -26,9 +26,7 @@ angular.module('com.inthetelling.player')
 			}
 		}
 		
-		
-		// TODO: set button states immediately since scene redraw takes a while
-		
+		// TODO: set button states immediately since scene redraw takes a while; need to give users feedback that it's working
 		
 		// Need timeout because videoMagnet needs to run after DOM update; so don't wind up trying to test against a display:none node
 		$timeout(function() {
@@ -50,12 +48,15 @@ angular.module('com.inthetelling.player')
 	}
 
 	$scope.showNavigationPanel = function() {
+		videojs.player.pause();
 		$scope.show.navigationPanel = true;
 	};
 	$scope.showSearchPanel = function() {
+		videojs.player.pause();
 		$scope.show.searchPanel = true;
 	};
 	$scope.hidePanels = function() {
+		// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 		$scope.show.navigationPanel = false;
 		$scope.show.searchPanel = false;
 	};

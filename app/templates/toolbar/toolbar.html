@@ -19,9 +19,12 @@
 		<div x-ng-show="show.navigationPanel" class="sidePanel navigationPanel colorInvert">
 			<div x-ng-controller="NavigationPanelController">
 					<h2>{{episode.title}}</h2>
-					<div class="scene" x-ng-repeat="scene in scenes" x-ng-class="{currentScene: scene.isActive}">
-						<span class="displayTime">{{scene.displayTime}}</span> <a href="javascript:void 1" x-ng-click="gotoScene(scene)">{{scene.title}}</a><br>
-						<p>{{scene.description}}</p>
+					<div class="scene" x-ng-repeat="scene in scenes" x-ng-class="{currentScene: scene.isActive}" x-ng-click="gotoScene(scene)">
+						<span class="displayTime">{{scene.displayTime}}</span>
+						<p>
+							<a href="javascript:void 1;">{{scene.title}}</a><br>
+							{{scene.description}}
+						</p>
 					</div>
 				</div>
 		</div>
