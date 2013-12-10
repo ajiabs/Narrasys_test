@@ -5,14 +5,14 @@
 	"isRequired": item.required,
 	"isCosmetic": item.cosmetic
 }'>
-	<div class="icon"><img src="{{item.thumbSrc}}"></div>
+	<div class="icon"><img x-ng-src="{{item.thumbSrc}}"></div>
 	<div class="category">
 		<!--{{item.category}}-->
-		<span ng-if="item.required">(Required viewing)</span>
+		<span x-ng-if="item.required">(Required viewing)</span>
 	</div>
-	<div class="startTime displayTime" ng-click="gotoItem()">{{item.displayTime}}</div>
+	<div class="startTime displayTime" x-ng-click="gotoItem()">{{item.displayTime}}</div>
 	<div class="title">{{item.title}}</div>
-	<button ng-click="toggleDetailView()">Detail View</button>
+	<button x-ng-click="toggleDetailView()">Detail View</button>
 	<div class="detail">
 		<img x-ng-src="{{item.source}}">
 		<div class="text">{{item.description}}</div>

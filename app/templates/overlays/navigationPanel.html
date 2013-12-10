@@ -1,7 +1,7 @@
 <div class="sidePanelInner colorInvert {{episode.styles}}">
 	<h2>{{episode.title}}</h2>
-	<div class="scene" ng-repeat="scene in scenes">
-		<span class="displayTime">{{scene.displayTime}}</span> <a href="javascript:void 1" ng-click="gotoScene(scene)">{{scene.title}}</a><br>
+	<div class="scene" x-ng-repeat="scene in scenes">
+		<span class="displayTime">{{scene.displayTime}}</span> <a href="javascript:void 1" x-ng-click="gotoScene(scene)">{{scene.title}}</a><br>
 		<p>{{scene.description}}</p>
 	</div>
 </div>
@@ -42,7 +42,7 @@
 <option value="timestampSidebar">Sidebar</option>
 </select>
 
-	<input class="epstyle" type="text" ng-model="episode.styles" style="visibility:hidden">
+	<input class="epstyle" type="text" x-ng-model="episode.styles" style="visibility:hidden">
 </div>
 
 <script language="javascript"><!--
