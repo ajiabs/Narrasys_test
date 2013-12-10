@@ -3,7 +3,7 @@
 		<dl>
 			<dt>Search:</dt>
 			<dd>
-				<input id="searchtext" type="text" ng-model="searchText" />
+				<input id="searchtext" type="text" x-ng-model="searchText" />
 			</dd>
 <!--
 TODO: bring this back when we implement categories (and use the episode's categories to build the list of options)
@@ -11,12 +11,12 @@ TODO: bring this back when we implement categories (and use the episode's catego
 			<dd>
 				<label><input type="checkbox" id="searchalltypes" checked="checked"><span> All transmedia types</span></label>
 				<div id="searchtypes" class="accordion">
-					<label><input type="checkbox" name="searchcategory" id="searchtype-transcript" ng-model="searchTypes.annotation"><span> {{prettyTypeMap['annotation']}}</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-links" ng-model="searchTypes.link"><span> {{prettyTypeMap['link']}}</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-slides" ng-model="searchTypes.slide"><span> {{prettyTypeMap['slide']}}</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-in_depth" ng-model="searchTypes.indepth"><span> {{prettyTypeMap['indepth']}}</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-projects" ng-model="searchTypes.project"><span> {{prettyTypeMap['project']}}</span></label>
-					<label><input type="checkbox" name="searchcategory" id="searchtype-discussions" ng-model="searchTypes.discussion"><span> {{prettyTypeMap['discussion']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-transcript" x-ng-model="searchTypes.annotation"><span> {{prettyTypeMap['annotation']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-links" x-ng-model="searchTypes.link"><span> {{prettyTypeMap['link']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-slides" x-ng-model="searchTypes.slide"><span> {{prettyTypeMap['slide']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-in_depth" x-ng-model="searchTypes.indepth"><span> {{prettyTypeMap['indepth']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-projects" x-ng-model="searchTypes.project"><span> {{prettyTypeMap['project']}}</span></label>
+					<label><input type="checkbox" name="searchcategory" id="searchtype-discussions" x-ng-model="searchTypes.discussion"><span> {{prettyTypeMap['discussion']}}</span></label>
 				</div>
 			</dd>
 			
@@ -24,7 +24,7 @@ TODO: bring this back when we implement categories (and use the episode's catego
 -->
 			<dt>Sort by:</dt>
 			<dd>
-				<select id="searchsort" size="1" ng-model="sortBy">
+				<select id="searchsort" size="1" x-ng-model="sortBy">
 					<option value="startTime">Time</option>
 					<option value="type">Type</option>
 				</select>
@@ -39,22 +39,22 @@ TODO: bring this back when we implement categories (and use the episode's catego
 			- Hide type header when no child items are visible
 		-->
 			<!-- sorted by start time -->
-			<div ng-if="sortBy == 'startTime'">
-				<div ng-repeat="scene in scenes">
+			<div x-ng-if="sortBy == 'startTime'">
+				<div x-ng-repeat="scene in scenes">
 					<h3>{{scene.title}}</h3>
-					<div class="item" ng-repeat="item in scene.items | orderBy:'startTime' | filter:searchText | type:searchTypes">
-						<span class="displayTime"><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
+					<div class="item" x-ng-repeat="item in scene.items | orderBy:'startTime' | filter:searchText | type:searchTypes">
+						<span class="displayTime"><a href="javascript:void 1" x-ng-click="gotoItem(item)">{{item.displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
 						<div class="description">{{item.description || item.annotation}}</div>
 					</div>
 				</div>
 			</div>
 	
 			<!-- sorted by type -->
-			<div ng-if="sortBy == 'type'">
-				<div class="sortedbytype" ng-repeat="(type, items) in allItemsByType | orderBy:'type'" ng-if="searchTypes[type]">
+			<div x-ng-if="sortBy == 'type'">
+				<div class="sortedbytype" x-ng-repeat="(type, items) in allItemsByType | orderBy:'type'" x-ng-if="searchTypes[type]">
 					<h3>{{prettyTypeMap[type]}}</h3>
-					<div class="item" ng-repeat="item in items | orderBy:'startTime' | type:searchTypes | filter:searchText">
-						<span class="displayTime"><a href="javascript:void 1" ng-click="gotoItem(item)">{{item.displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
+					<div class="item" x-ng-repeat="item in items | orderBy:'startTime' | type:searchTypes | filter:searchText">
+						<span class="displayTime"><a href="javascript:void 1" x-ng-click="gotoItem(item)">{{item.displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
 						<div class="description">{{item.description || item.annotation}}</div>
 					</div>
 				</div>
