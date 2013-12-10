@@ -10,7 +10,7 @@
 			<div data-pane="main" data-content="{{scene.mainPaneContents}}" x-itt-content-pane></div>
 		</div>
 		<div class="pane contentAlt">
-			<div ng-if="scene.startTime == 0" class="matchVideoHeight">
+			<div x-ng-if="scene.startTime == 0" class="matchVideoHeight">
 				<!-- in explore view, need to pad the first scene to make room for the video -->
 			</div>
 			<div data-pane="alt" data-content="{{scene.altPaneContents}}" x-itt-content-pane></div>
