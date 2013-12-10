@@ -82,3 +82,16 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 	float:right;
 	background-image: url('/images/escape-white.png');
 }
+
+
+/*============================
+ *
+ * 3D transforms
+ *
+//===========================*/
+
+
+.threedee {
+	perspective: 800px;
+	transform-origin: 50% 50%;
+}
