@@ -45,16 +45,18 @@ angular.module('com.inthetelling.player')
 	$scope.show = {
 		navigationPanel: false,
 		searchPanel: false
-	}
+	};
 
 	$scope.showNavigationPanel = function() {
 		videojs.player.pause();
 		$scope.show.navigationPanel = true;
 	};
+	
 	$scope.showSearchPanel = function() {
 		videojs.player.pause();
 		$scope.show.searchPanel = true;
 	};
+	
 	$scope.hidePanels = function() {
 		// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 		$scope.show.navigationPanel = false;
