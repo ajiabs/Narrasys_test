@@ -44,7 +44,6 @@ angular.module('com.inthetelling.player')
 	$scope.gotoItem = function(item) {
 		// set the video playhead to the item's start time
 		videojs.player.currentTime(item.startTime);
-		$scope.$close();
 	};
 
 });

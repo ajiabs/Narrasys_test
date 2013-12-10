@@ -40,48 +40,6 @@ angular.module('com.inthetelling.player')
 		});
 	};
 
-	// Method to show the search panel
-	svc.createSearchPanelOverlay = function(episodeScope) {
-		console.log("createSearchPanelOverlay()");
-		videojs.player.pause();
-		var modal = $modal.open({
-			keyboard: true,
-			backdrop: true,
-			templateUrl: 'templates/overlays/searchPanel.html',
-			windowClass: 'sidePanel searchPanel',
-			scope: episodeScope,
-			controller: 'SearchPanelController'
-		});
-		modal.result.then(function(){
-			// if the modal closes 'successfully'
-			videojs.player.play();
-		}, function() {
-			// if the modal is 'dismissed'
-			videojs.player.play();
-		});
-	};
-
-	// Method to show the search panel
-	svc.createNavigationPanelOverlay = function(episodeScope) {
-		console.log("createNavigationPanelOverlay()");
-		videojs.player.pause();
-		var modal = $modal.open({
-			keyboard: true,
-			backdrop: true,
-			templateUrl: 'templates/overlays/navigationPanel.html',
-			windowClass: 'sidePanel navigationPanel',
-			scope: episodeScope,
-			controller: 'NavigationPanelController'
-		});
-		modal.result.then(function(){
-			// if the modal closes 'successfully'
-			videojs.player.play();
-		}, function() {
-			// if the modal is 'dismissed'
-			videojs.player.play();
-		});
-	};
-	
 	// Method to show the global initialization overlay
 	// Does not require a scope or a model
 	svc.createInitOverlay = function() {

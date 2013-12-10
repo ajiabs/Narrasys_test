@@ -69,6 +69,7 @@
 	position: fixed;
 	height: 100%;
 	box-shadow: 0 0 20px rgba(0,0,0,0.5);
+	z-index: 10;
 }
 
 .sidePanel .sidePanelInner {
@@ -170,7 +171,7 @@
 
 /*============================
  *
- * Naviation Panel Modal
+ * Naviation Panel
  *
 //===========================*/
 
@@ -178,10 +179,13 @@
 	top: 0;
 	left: 0;
 	width: 300px;
+	bottom: 0;
+	position:absolute;
 }
 
 .navigationPanel .sidePanelInner {
 	padding: 0.5em;
+	height:100%;
 }
 
 .navigationPanel .scene {
@@ -189,22 +193,16 @@
 	border-bottom: 1px solid rgba(0,0,0,0.7);
 }
 
+.navigationPanel .currentScene {
+	background-color: rgba(255,255,255,0.1);
+}
+
 /* animate on show */
 
 .navigationPanel {
-	-webkit-animation: slideInLeft 1s;
-	-moz-animation: slideInLeft 1s;
-	-ms-animation: slideInLeft 1s;
-	animation: slideInLeft 1s;
+	-webkit-animation: navPanelIn 1s;
+	-moz-animation: navPanelIn 1s;
+	-ms-animation: navPanelIn 1s;
+	animation: navPanelIn 1s;
 }
 
-
-/* animate on hide 
-.navigationPanel.ng-hide-add {
-	-webkit-animation: slideOutLeft 1s;
-	-moz-animation: slideOutLeft 1s;
-	-ms-animation: slideOutLeft 1s;
-	animation: slideOutLeft 1s;
-	display: block !important;
-}
-*/

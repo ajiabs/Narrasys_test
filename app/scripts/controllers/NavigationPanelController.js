@@ -8,7 +8,6 @@ angular.module('com.inthetelling.player')
 	$scope.gotoScene = function(scene) {
 		// set the video playhead to the scene's start time
 		videojs.player.currentTime(scene.startTime);
-		$scope.$close();
 	};
 
 });
