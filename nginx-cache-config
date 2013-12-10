@@ -1,0 +1,21 @@
+# Configure cache headers used by the browser / user agent
+
+# never cache the root config.js file because we want config changes to take effect immediately
+location ^~ /config.js {
+	expires -1
+}
+
+# never cache .html files because they reference combined resource files
+location ~* \.(html)$ {
+	expires -1
+}
+
+# cache combined resource files forever because their filenames contain a unique content hash, eg: 7bccc435.vendor-combined.css
+location ~* [0-9a-zA-Z]*\..*-combined\.(js|css)$ {
+	expires max
+}
+
+# cache any unmatched files for 24 hours
+location / {
+	expires 24h
+}
