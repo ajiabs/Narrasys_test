@@ -1,13 +1,10 @@
 'use strict';
 
-// ittMagnetized elements respond to videoMagnet events and reposition themselves to match
-// the active videoMagnet node.
-
-// TODO: There is still a memory leak here, but much smaller.
-
+// ittMagnetized elements respond to ittMagnet events and reposition themselves to match
+// the active ittMagnet's node.
 
 angular.module('com.inthetelling.player')
-.directive('ittMagnetized', function ($rootScope) {
+.directive('ittMagnetized', function ($rootScope, $timeout) {
 	return {
 		restrict: 'A',
 		replace: true,
@@ -15,8 +12,8 @@ angular.module('com.inthetelling.player')
 		link: function(scope, iElement) {
 			console.log("ittMagnetized", iElement);
 
-			// listen for videoMagnet events and resize/reposition ourselves if we receive one
-			function magnet(evt, el) {
+			// resize/reposition ourselves against the passed magnet's element
+			var reposition = function(evt, el) {
 				console.log("ittMagnetized triggered");
 				// TODO: Animate?
 				if (el.parent().css("position") === "fixed") {
@@ -31,16 +28,14 @@ angular.module('com.inthetelling.player')
 					iElement.width(el.width());
 					iElement.height(el.height());
 				}
-			}
-			scope.unbindMagnet = $rootScope.$on('videoMagnet.activated', magnet);
+			};
+
+			// reposition ourselves on magent events
+			var unsubscribe = $rootScope.$on('magnet.activated', reposition);
 			
-			// TODO / BUG: memory leak
-			// This is destroying most, but not all, bound videoMagnet events!
-			// For each time toolbar.changedSceneTemplate is run, it leaves one extra videoMagnet event per magnetized element.
-			// Leak is no longer exponential, at least, leaving for now
+			// cleanup routine on destroy
 			scope.$on('$destroy', function() {
-				console.log("Destroying videoMagnet event");
-				scope.unbindMagnet();
+				unsubscribe();
 			});
 		}
 	};
