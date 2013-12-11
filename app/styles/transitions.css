@@ -22,24 +22,12 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 /* Make all durations 1s */
 
 .item {
-	-webkit-transition: 1s ease-in-out all;
 	transition: 1s ease-in-out all;
-	/*
-	-webkit-animation-duration: 1s;
-	   -moz-animation-duration: 1s;
-	     -o-animation-duration: 1s;
-	        animation-duration: 1s;
-	-webkit-animation-fill-mode: both;
-	   -moz-animation-fill-mode: both;
-	     -o-animation-fill-mode: both;
-	        animation-fill-mode: both;
-	*/
 }
 
 .item-animate.ng-enter,
 .item-animate.ng-leave,
 .item-animate.ng-move {
-	-webkit-transition: 1s ease-in-out all;
 	transition: 1s ease-in-out all;
 }
 
@@ -102,7 +90,6 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionSlideL.item-animate.ng-enter
 {
 	transform: translateX(50px);
-	-webkit-transform: translateX(50px);
 	opacity: 0;
 }
 
@@ -112,7 +99,6 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionSlideL.item-animate.ng-leave
 {
 	transform: translateX(0);
-	-webkit-transform: translateX(0);
 	opacity: 1;
 }
 
@@ -120,7 +106,6 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionSlideL.item-animate.ng-leave-active
 {
 	transform: translateX(-50px);
-	-webkit-transform: translateX(-50px);
 	opacity: 0;
 }
 
@@ -133,7 +118,6 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionSlideR.item-animate.ng-enter
 {
 	transform: translateX(-50px);
-	-webkit-transform: translateX(-50px);
 	opacity: 0;
 }
 
@@ -143,7 +127,6 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionSlideR.item-animate.ng-leave
 {
 	transform: translateX(0);
-	-webkit-transform: translateX(0);
 	opacity: 1;
 }
 
@@ -151,7 +134,6 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionSlideR.item-animate.ng-leave-active
 {
 	transform: translateX(50px);
-	-webkit-transform: translateX(50px);
 	opacity: 0;
 }
 
@@ -164,7 +146,6 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionPop.item-animate.ng-enter
 {
 	transform: scale(0.8);
-	-webkit-transform: scale(0.8);
 	opacity: 0;
 }
 
@@ -174,7 +155,6 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionPop.item-animate.ng-leave
 {
 	transform: scale(1);
-	-webkit-transform: scale(1);
 	opacity: 1;
 }
 
@@ -182,7 +162,6 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionPop.item-animate.ng-leave-active
 {
 	transform: scale(1.2);
-	-webkit-transform: scale(1.2);
 	opacity: 0;
 }
 
@@ -190,21 +169,18 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionPop.item-no-animate .pastItem 
 {
 	transform: scale(0.95);
-	-webkit-transform: scale(0.95);
 }
 
 .transitionPop .item-no-animate .currentItem,
 .transitionPop.item-no-animate .currentItem 
 {
 	transform: scale(1);
-	-webkit-transform: scale(1);
 }
 
 .transitionPop .item-no-animate .futureItem,
 .transitionPop.item-no-animate .futureItem 
 {
 	transform: scale(1);
-	-webkit-transform: scale(1);
 }
 
 

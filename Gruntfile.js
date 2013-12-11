@@ -64,7 +64,7 @@ module.exports = function (grunt) {
 			}
 		},
 		autoprefixer: {
-			options: ['last 1 version'],
+			options: ['last 2 versions'],
 			dist: {
 				files: [{
 					expand: true,

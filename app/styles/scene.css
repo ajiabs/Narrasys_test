@@ -23,7 +23,6 @@
 
 .content > div {
 	perspective: 600px;
-	-webkit-perspective: 600px;
 }
 
 
@@ -113,7 +112,6 @@
 
 .scene-explore.currentScene .videoContainer {
 	     box-shadow: -3px 3px 4px rgba(0,0,0,0.5);
-	-moz-box-shadow:  -3px 3px 4px rgba(0,0,0,0.5);
 	border: 1px solid #000;
 	z-index:2;
 }
