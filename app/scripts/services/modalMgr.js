@@ -72,8 +72,11 @@ angular.module('com.inthetelling.player')
 
 /* 
 Below is the part of bootstrap.ui that we were actually using. 
-TODO: Lots of this code is still unnecessary; lots of it is for handling multiple modals at the same time, 
-which if we ever do that we've done something terribly wrong. 
+
+TODO: combine modalBackdrop and modalWindow into one directive+template (we'll always have backdrop); move close() function from backdrop directive  to modal
+TODO: rip out everything to do with managing multiple modals simultaneously (instead throw an error if try to open two at once)
+TODO: was I overhasty in replacing templateUrl with a built-in template below?
+TODO: (possibly) For items, inject modal into scene node instead of document root, so it can pick up the correct css path? (not sure about this, need to test...)
 */
 
 /**
@@ -136,7 +139,7 @@ which if we ever do that we've done something terribly wrong.
 		return {
 			restrict: 'EA',
 			replace: true,
-			template: '<div class="modal-backdrop" x-ng-click="close($event)"></div>',
+			template: '<div class="modal-backdrop" x-ng-click="close($event)"></div>', 
 			link: function (scope, element, attrs) {
 				//trigger CSS transitions
 				$timeout(function () {
