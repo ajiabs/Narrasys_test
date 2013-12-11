@@ -4,7 +4,7 @@
 
 // Controller for ittToolbar
 angular.module('com.inthetelling.player')
-.controller('ToolbarController', function ($scope, $timeout, $rootScope, modalMgr) {
+.controller('ToolbarController', function ($scope, $timeout, $rootScope, videojs) {
 
 	/* Handler for toolbar buttons to change scene templates. */
 	$scope.setSceneTemplate = function(newTemplate) {
@@ -26,7 +26,9 @@ angular.module('com.inthetelling.player')
 			}
 		}
 		
-		// Need timeout because ittMagnet needs to run after DOM update; so don't wind up trying to test against a display:none node
+		// TODO: set button states immediately since scene redraw takes a while; need to give users feedback that it's working
+		
+		// Need timeout because videoMagnet needs to run after DOM update; so don't wind up trying to test against a display:none node
 		$timeout(function() {
 			$rootScope.$emit('toolbar.changedSceneTemplate');
 		}, 0);
@@ -39,15 +41,33 @@ angular.module('com.inthetelling.player')
 		return $scope.currentSceneTemplate === compare;
 	};
 
-	// Show navigation panel overlay
-	$scope.showNavigationPanel = function() {
-		console.log("showNavigationPanel()");
-		modalMgr.createNavigationPanelOverlay($scope);
+	// Nav and Search:
+	$scope.show = {
+		navigationPanel: false,
+		searchPanel: false,
+		searchPanelInternals: false // 
 	};
-	// Show search panel overlay
+
+	$scope.showNavigationPanel = function() {
+		videojs.player.pause();
+		$scope.show.navigationPanel = true;
+	};
+	
 	$scope.showSearchPanel = function() {
-		console.log("showSearchPanel()");
-		modalMgr.createSearchPanelOverlay($scope);
+		videojs.player.pause();
+		$scope.show.searchPanel = true;
+		// Wait a tick before building the search panel internals. (Possibly unnecessary, but just in case...)
+		$timeout(function() {
+			$scope.show.searchPanelInternals = true;
+		},0);
+	};
+	
+	$scope.hidePanels = function() {
+		// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
+		$scope.show.navigationPanel = false;
+		$scope.show.searchPanel = false;
+		// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
+		// TODO if this causes memory problems on old devices we can change this, but let's wait and see if that happens first
 	};
 
 });
