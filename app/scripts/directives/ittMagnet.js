@@ -26,7 +26,7 @@ angular.module('com.inthetelling.player')
 				console.log("ittMagnet.activate()", iElement);
 				// Need timeout because this needs to run after DOM update; so we don't wind up trying to test against a display:none node
 				$timeout(function() {
-					$rootScope.$emit('magnet.activate', iElement);
+					$rootScope.$emit('magnet.activated', iElement);
 				}, 0);
 			};
 
