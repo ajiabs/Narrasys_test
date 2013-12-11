@@ -44,7 +44,8 @@ angular.module('com.inthetelling.player')
 	// Nav and Search:
 	$scope.show = {
 		navigationPanel: false,
-		searchPanel: false
+		searchPanel: false,
+		searchPanelInternals: false // 
 	};
 
 	$scope.showNavigationPanel = function() {
@@ -55,12 +56,18 @@ angular.module('com.inthetelling.player')
 	$scope.showSearchPanel = function() {
 		videojs.player.pause();
 		$scope.show.searchPanel = true;
+		// Wait a tick before building the search panel internals. (Possibly unnecessary, but just in case...)
+		$timeout(function() {
+			$scope.show.searchPanelInternals = true;
+		},0);
 	};
 	
 	$scope.hidePanels = function() {
 		// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 		$scope.show.navigationPanel = false;
 		$scope.show.searchPanel = false;
+		// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
+		// TODO if this causes memory problems on old devices we can change this, but let's wait and see if that happens first
 	};
 
 });
