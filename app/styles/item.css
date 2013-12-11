@@ -93,8 +93,8 @@
 }
 
 
-.timestampNone .content .item .displayTime,
-.content .item.timestampNone .displayTime
+.timestampNone .content .item .startTime,
+.content .item.timestampNone .startTime
 {
 	display:none
 }
@@ -130,8 +130,8 @@
 
 /* =========================== */
 
-.timestampSmall .content .item .displayTime,
-.content .item.timestampSmall .displayTime
+.timestampSmall .content .item .startTime,
+.content .item.timestampSmall .startTime
 {
 	font-size: 0.86em;
 }

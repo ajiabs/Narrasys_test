@@ -183,7 +183,7 @@
 .searchResults h3 {padding: 0.5em 0.3em 0.1em 0.3em}
 
 .searchResults .item {border-bottom: 1px solid #CCC; padding: 0.1em 0.3em}
-.searchResults .item .displayTime {
+.searchResults .item .startTime {
 	cursor: pointer; cursor: hand; 
 	color: #C44343; 
 	float:left; 
@@ -221,7 +221,7 @@
 	background-color: rgba(255,255,255,0.1);
 }
 
-.navigationPanel .displayTime {
+.navigationPanel .startTime {
 	width: 45px; 
 	float:left;
 	text-align:right;

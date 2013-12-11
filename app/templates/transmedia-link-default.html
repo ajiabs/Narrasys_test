@@ -6,7 +6,7 @@
 	"isCosmetic": item.cosmetic
 }'>
 	<div class="itemHead">
-		<div class="startTime displayTime" x-ng-click="gotoItem()">{{item.displayTime}}</div>
+		<div class="startTime startTime" x-ng-click="gotoItem()">{{item.startTime | displayTime}}</div>
 		<div class="category">
 		<!--{{item.category}}-->
 			<span x-ng-if="item.required">(Required viewing)</span>

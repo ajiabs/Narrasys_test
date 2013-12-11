@@ -141,7 +141,6 @@ angular.module('com.inthetelling.player')
 		model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/scene-1col.html";
 		model.layout = resolveLayoutCSS(data.layout_id) || "";
 		model.styles = resolveStyleCSS(data.style_id) || "";
-		model.displayTime = Math.floor(data.start_time/60) + ":" + ("0"+Math.floor(data.start_time)%60).slice(-2);
 		model.isActive = false;
 		model.wasActive = false;
 		model.items = [];
@@ -174,7 +173,6 @@ angular.module('com.inthetelling.player')
 		model.required = data.required || false;
 		model.cosmetic = data.cosmetic || false;
 		model.stop = data.stop || false;
-		model.displayTime = Math.floor(data.start_time/60) + ":" + ("0"+Math.floor(data.start_time)%60).slice(-2);
 		
 		// Precalculate whether the item will be inline in a content pane or an overlay/underlay.
 		// NOTE/TODO: in producer need to recalculate this if item layout changes!  Does modelFactory handle that for us or do
