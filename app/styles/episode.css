@@ -6,6 +6,10 @@
 	top: 0; left: 0; right: 0;
 	white-space: nowrap;
 }
+
+.toolbar {pointer-events: none}
+.toolbar a, .toolbar div {pointer-events:auto}
+
 .episode {margin-top: 60px}
 
 .toolbar .button {
