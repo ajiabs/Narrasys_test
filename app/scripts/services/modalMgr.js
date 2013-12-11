@@ -14,7 +14,7 @@ angular.module('com.inthetelling.player')
 	svc.createItemDetailOverlay = function(itemScope) {
 		console.log("createItemDetailOverlay:", itemScope.item);
 		
-		itemScope.videoWasPaused = (videojs.player.paused()); // So we know whether to start it again when the modal is closed
+		itemScope.videoWasPlaying = !(videojs.player.paused()); // So we know whether to start it again when the modal is closed
 		
 		videojs.player.pause();
 		
@@ -32,12 +32,12 @@ angular.module('com.inthetelling.player')
 		});
 		modal.result.then(function(){
 			// if the modal closes 'successfully'
-			if (!itemScope.videoWasPaused) {
+			if (itemScope.videoWasPlaying) {
 				videojs.player.play();
 			}
 		}, function() {
 			// if the modal is 'dismissed'
-			if (!itemScope.videoWasPaused) {
+			if (itemScope.videoWasPlaying) {
 				videojs.player.play();
 			}
 		});
