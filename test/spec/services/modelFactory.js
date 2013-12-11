@@ -112,6 +112,7 @@ describe('Service: modelFactory', function () {
 		expect(itemModel.startTime).toEqual(transcriptItemData.start);
 		expect(itemModel.endTime).toEqual(transcriptItemData.end);
 		expect(itemModel.templateUrl).toEqual(transcriptItemData.template);
+		expect(itemModel.displayTime).toEqual(Math.floor(transcriptItemData.start/60) + ":" + ("0"+Math.floor(transcriptItemData.start)%60).slice(-2));
 		// transcript
 		expect(itemModel.authorName).toEqual(transcriptItemData.author.name);
 		expect(itemModel.authorThumbSrc).toEqual(transcriptItemData.author.src);
@@ -126,6 +127,7 @@ describe('Service: modelFactory', function () {
 		expect(itemModel.startTime).toEqual(linkItemData.start);
 		expect(itemModel.endTime).toEqual(linkItemData.end);
 		expect(itemModel.templateUrl).toEqual(linkItemData.template);
+		expect(itemModel.displayTime).toEqual(Math.floor(linkItemData.start/60) + ":" + ("0"+Math.floor(linkItemData.start)%60).slice(-2));
 		// transcript
 		expect(itemModel.title).toEqual(linkItemData.title);
 		expect(itemModel.description).toEqual(linkItemData.description);
@@ -141,6 +143,7 @@ describe('Service: modelFactory', function () {
 		expect(itemModel.startTime).toEqual(imageItemData.start);
 		expect(itemModel.endTime).toEqual(imageItemData.end);
 		expect(itemModel.templateUrl).toEqual(imageItemData.template);
+		expect(itemModel.displayTime).toEqual(Math.floor(imageItemData.start/60) + ":" + ("0"+Math.floor(imageItemData.start)%60).slice(-2));
 		// transcript
 		expect(itemModel.title).toEqual(imageItemData.title);
 		expect(itemModel.description).toEqual(imageItemData.description);

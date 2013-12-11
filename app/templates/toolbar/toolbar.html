@@ -19,7 +19,7 @@
 			<div x-ng-controller="NavigationPanelController">
 					<h2>{{episode.title}}</h2>
 					<div class="scene" x-ng-repeat="scene in scenes" x-ng-class="{currentScene: scene.isActive}" x-ng-click="gotoScene(scene)">
-						<span class="startTime">{{scene.startTime | displayTime}}</span>
+						<span class="displayTime">{{scene.displayTime}}</span>
 						<p>
 							<a href="javascript:void 1;">{{scene.title}}</a><br>
 							{{scene.description}}
@@ -72,7 +72,7 @@
 						<div x-ng-repeat="scene in scenes">
 							<h3>{{scene.title}}</h3>
 							<div class="item" x-ng-repeat="item in scene.items | orderBy:'startTime' | filter:searchText | type:searchTypes">
-								<span class="startTime"><a href="javascript:void 1" x-ng-click="gotoItem(item)">{{item.startTime | displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
+								<span class="displayTime"><a href="javascript:void 1" x-ng-click="gotoItem(item)">{{item.displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
 								<div class="description">{{item.description || item.annotation}}</div>
 							</div>
 						</div>
@@ -83,7 +83,7 @@
 						<div class="sortedbytype" x-ng-repeat="(type, items) in allItemsByType | orderBy:'type'" x-ng-if="searchTypes[type]">
 							<h3>{{prettyTypeMap[type]}}</h3>
 							<div class="item" x-ng-repeat="item in items | orderBy:'startTime' | type:searchTypes | filter:searchText">
-								<span class="startTime"><a href="javascript:void 1" x-ng-click="gotoItem(item)">{{item.startTime | displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
+								<span class="displayTime"><a href="javascript:void 1" x-ng-click="gotoItem(item)">{{item.displayTime}}</a></span> <span class="type">({{prettyTypeMap[item.type]}})</span>
 								<div class="description">{{item.description || item.annotation}}</div>
 							</div>
 						</div>

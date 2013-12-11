@@ -10,7 +10,7 @@
 		<!--{{item.category}}-->
 		<span x-ng-if="item.required">(Required viewing)</span>
 	</div>
-	<div class="startTime startTime" x-ng-click="gotoItem()">{{item.startTime | displayTime}}</div>
+	<div class="startTime displayTime" x-ng-click="gotoItem()">{{item.displayTime}}</div>
 	<div class="title">{{item.title}}</div>
 	<button x-ng-click="toggleDetailView()">Detail View</button>
 	<div class="detail">

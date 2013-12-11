@@ -30,7 +30,7 @@ a {text-decoration: none;}
 .typographySerif {
 	font-family: 'Droid Serif', serif
 }
-.typographySerif .category, .typographySerif .startTime {
+.typographySerif .category, .typographySerif .displayTime {
 	font-family: 'Droid Sans', sans-serif
 }
 
