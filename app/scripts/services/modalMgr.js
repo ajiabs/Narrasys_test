@@ -139,7 +139,7 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 		return {
 			restrict: 'EA',
 			replace: true,
-			template: '<div class="modal-backdrop" x-ng-click="close($event)"></div>', 
+			template: '<div class="modal-backdrop" x-ng-click="close($event)"></div>',
 			link: function (scope, element, attrs) {
 				//trigger CSS transitions
 				$timeout(function () {
