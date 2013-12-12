@@ -135,7 +135,7 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 /**
  * A helper directive for the $modal service. It creates a backdrop element.
  */
-	.directive('modalBackdrop', ['$modalStack', '$timeout', function ($modalStack, $timeout) {
+	.directive('modalBackdrop', function ($modalStack, $timeout) {
 		return {
 			restrict: 'EA',
 			replace: true,
@@ -155,9 +155,9 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 				};
 			}
 		};
-	}])
+	})
 
-	.directive('modalWindow', ['$timeout', function ($timeout) {
+	.directive('modalWindow', function ($timeout) {
 		return {
 			restrict: 'EA',
 			scope: {
@@ -174,10 +174,9 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 				});
 			}
 		};
-	}])
+	})
 
-	.factory('$modalStack', ['$document', '$compile', '$rootScope', '$$stackedMap',
-		function ($document, $compile, $rootScope, $$stackedMap) {
+	.factory('$modalStack', function ($document, $compile, $rootScope, $$stackedMap) {
 			var backdropjqLiteEl, backdropDomEl;
 			var backdropScope = $rootScope.$new(true);
 			var body = $document.find('body').eq(0);
@@ -259,7 +258,7 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 				return openedWindows.top();
 			};
 			return $modalStack;
-		}])
+		})
 
 	.provider('$modal', function () {
 		var $modalProvider = {
@@ -267,8 +266,7 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 				backdrop: true, //can be also false or 'static'
 				keyboard: true
 			},
-			$get: ['$injector', '$rootScope', '$q', '$http', '$templateCache', '$controller', '$modalStack',
-				function ($injector, $rootScope, $q, $http, $templateCache, $controller, $modalStack) {
+			$get: function ($rootScope, $q, $http, $templateCache, $controller, $modalStack) {
 					var $modal = {};
 					function getTemplatePromise(options) {
 						return options.template ? $q.when(options.template) :
@@ -342,7 +340,7 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 						return modalInstance;
 					};
 					return $modal;
-				}]
+				}
 		};
 		return $modalProvider;
 	});
