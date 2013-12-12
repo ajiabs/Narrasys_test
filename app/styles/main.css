@@ -90,6 +90,8 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 
 .threedee {
 	perspective: 800px;
-	-webkit-perspective: 800px;
+	-webkit-perspective: none; /* Safari is choking on the 3d transforms. TODO figure out why; for now just revert to 2d */
 	transform-origin: 50% 50%;
 }
+
+
