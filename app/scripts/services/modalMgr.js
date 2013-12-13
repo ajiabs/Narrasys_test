@@ -17,33 +17,31 @@ angular.module('com.inthetelling.player')
 		itemScope.videoWasPlaying = !(videojs.player.paused()); // So we know whether to start it again when the modal is closed
 		
 		videojs.player.pause();
+
+		var resumeVideo = function() {
+			if (itemScope.videoWasPlaying) {
+				videojs.player.play();
+			}
+		};
 		
 		var modal = $modal.open({
 			keyboard: true,
 			backdrop: true,
 			templateUrl: itemScope.item.itemDetailTemplateUrl,
 			windowClass: 'itemDetailModal',
-			scope: itemScope,
-			controller: function ($scope, $modalInstance) {
-				$scope.close = function() {
-					$modalInstance.close();
-				};
-			}
+			scope: itemScope
 		});
+
 		modal.result.then(function(){
 			// if the modal closes 'successfully'
-			if (itemScope.videoWasPlaying) {
-				videojs.player.play();
-			}
+			resumeVideo();
 		}, function() {
 			// if the modal is 'dismissed'
-			if (itemScope.videoWasPlaying) {
-				videojs.player.play();
-			}
+			resumeVideo();
 		});
 	};
 
-
+	/*
 	// Method to show the global initialization overlay
 	// Does not require a scope or a model
 	svc.createInitOverlay = function() {
@@ -65,6 +63,7 @@ angular.module('com.inthetelling.player')
 			initOverlay = null;
 		}
 	};
+	*/
 
 	return svc;
 
@@ -76,6 +75,7 @@ Below is the part of bootstrap.ui that we were actually using.
 TODO: combine modalBackdrop and modalWindow into one directive+template (we'll always have backdrop); move close() function from backdrop directive  to modal
 TODO: rip out everything to do with managing multiple modals simultaneously (instead throw an error if try to open two at once)
 TODO: was I overhasty in replacing templateUrl with a built-in template below?
+	TODO RE templateUrl: To abstract a template into an individual file just add it somewhere to the views directory and the build process will make sure it gets added to $templateCache. Then you can reference its templateUrl path anywhere and it will simply be retrieved (synchronously) from $templateCache.
 TODO: (possibly) For items, inject modal into scene node instead of document root, so it can pick up the correct css path? (not sure about this, need to test...)
 */
 

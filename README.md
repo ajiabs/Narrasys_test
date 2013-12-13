@@ -67,6 +67,10 @@ The following steps are required to release a new version:
 
 You should be working out of the master branch when generating new builds. Be sure that you have merged in any feature branches and that master is current.
 
+### Version.txt
+
+Update the app/version.txt file to reflect whatever version we are going to build. Grunt will copy this file to /dist along with the generated build. The file is only for convenience, to make it easy to check which version of the player is currently deployed like this: `http://example.com/version.txt`
+
 ### Build to /dist
 
 Before building you should be sure to run `grunt jshint` and `grunt test` to make sure linting and unit tests are passing.

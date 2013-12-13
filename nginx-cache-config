@@ -1,5 +1,10 @@
 # Configure cache headers used by the browser / user agent
 
+# never cache the version.txt file
+location ^~ /version.txt {
+	expires -1;
+}
+
 # never cache the root config.js file because we want config changes to take effect immediately
 location ^~ /config.js {
 	expires -1;
