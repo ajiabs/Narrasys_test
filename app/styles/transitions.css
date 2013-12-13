@@ -19,11 +19,7 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 	-webkit-backface-visibility: hidden;
 }
 /* ------------------------------------------------------------------------------------------------------------------ */
-/* Make all durations 1s */
 
-.item {
-	transition: 1s ease-in-out all;
-}
 
 .item-animate.ng-enter,
 .item-animate.ng-leave,
@@ -31,14 +27,14 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 	transition: 1s ease-in-out all;
 }
 
-/* Always animate max-height when leaving; this allows items after the item to be removed to slide up instead of jumping */
-/* Ideally we would measure the actual height instead of using an arbitrary max-height of 500 but this is a lot simpler and looks fine */
+
 
 .item-animate.ng-leave {
-	max-height: 500px
+	max-height: 500px;
 }
 .item-animate.ng-leave-active {
-	max-height: 0
+	max-height: 0;
+	display: none; /* NOTE this is a fix for ng-animate failing to clean up animated items when scene is out of scope; make sure display:block is set on all legitimate animations */
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -62,6 +58,7 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 .transitionFade.item-animate.ng-leave-active
 {
 	opacity: 0;
+	display:block;
 }
 
 .transitionFade .item-no-animate .pastItem,
@@ -107,6 +104,7 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 {
 	transform: translateX(-50px);
 	opacity: 0;
+	display:block;
 }
 
 /* (do nothing in non-showCurrent lists) */
@@ -135,6 +133,7 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 {
 	transform: translateX(50px);
 	opacity: 0;
+	display:block;
 }
 
 /* (do nothing in non-showCurrent lists) */
@@ -163,6 +162,7 @@ body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 {
 	transform: scale(1.2);
 	opacity: 0;
+	display:block;
 }
 
 .transitionPop .item-no-animate .pastItem,
