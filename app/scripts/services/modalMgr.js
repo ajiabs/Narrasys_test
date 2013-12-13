@@ -260,7 +260,7 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 			return $modalStack;
 		})
 
-	.provider('$modal', function () {
+	.provider('$modal', function ($injector) {
 		var $modalProvider = {
 			options: {
 				backdrop: true, //can be also false or 'static'
