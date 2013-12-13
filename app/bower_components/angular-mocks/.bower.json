@@ -13,6 +13,6 @@
     "commit": "dd16b20c9e1778bc09ab90271f4e0cfb717559d5"
   },
   "_source": "git://github.com/angular/bower-angular-mocks.git",
-  "_target": "~1.2.0",
+  "_target": "1.2.4",
   "_originalSource": "angular-mocks"
 }
