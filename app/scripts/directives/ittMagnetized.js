@@ -10,12 +10,12 @@ angular.module('com.inthetelling.player')
 		replace: true,
 		scope: true,
 		link: function(scope, iElement) {
-			console.log("ittMagnetized", iElement);
+//			console.log("ittMagnetized", iElement);
 
 			// resize/reposition ourselves to the passed magnet's element.
 			// (iElement is the magnetized node, el is the magnet node.)
 			var reposition = function(evt, el) {
-				console.log("ittMagnetized triggered");
+//				console.log("ittMagnetized triggered");
 				// TODO: Animate?
 
 				// A race condition on load can cause the height to resolve to 0; if that happens we force it to a 16:9 aspect ratio.

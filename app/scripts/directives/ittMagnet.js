@@ -23,7 +23,7 @@ angular.module('com.inthetelling.player')
 			// with a reference to the itt-magnet's dom element. The itt-magnetized directive listens for these events
 			// and utilizes the dom element to reposition itself appropriately.
 			var activate = function() {
-				console.log("ittMagnet.activate()", iElement);
+//				console.log("ittMagnet.activate()", iElement);
 				// Need timeout because this needs to run after DOM update; so we don't wind up trying to test against a display:none node
 				$timeout(function() {
 					$rootScope.$emit('magnet.activated', iElement);

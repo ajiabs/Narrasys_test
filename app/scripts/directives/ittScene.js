@@ -19,7 +19,7 @@ angular.module('com.inthetelling.player')
 			//       (can't use isActive, as sometimes inactive scenes are still visible)
 			var twiddleSceneLayout = function() {
 				$timeout(function() { // wait for any DOM updates first
-					console.log("twiddleSceneLayout");
+//					console.log("twiddleSceneLayout");
 					element.find('.matchVideoHeight:visible').height(element.find('.videoContainer').height()); // TODO check if this works with multiple .matchVideoHeight elements in the scene
 					element.find('.stretchToViewportBottom:visible').each(function() {
 						$(this).css("min-height",($(window).height() - this.offsetTop - 60));
