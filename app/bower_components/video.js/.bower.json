@@ -13,6 +13,6 @@
     "commit": "f61bcc61cafd4dcb4c4407b02831fa769291aa24"
   },
   "_source": "git://github.com/videojs/video.js-component.git",
-  "_target": "~4.2.2",
+  "_target": "4.2.2",
   "_originalSource": "video.js"
 }
