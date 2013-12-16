@@ -54,14 +54,11 @@
 .toolbar .button-search.cur span {background-image: url("/images/btn-search-cur.png")}
 .toolbar .button-showscenenav span {background-image: url("/images/btn-showscenenav.gif")}
 
-
 .escapelink {
 	display:block;
-	width: 32px; height: 32px;
-	overflow:hidden; line-height: 600px;
-	background: url('/images/escape.png') 50% 50% no-repeat;
+	min-width: 32px; min-height: 32px; padding-left: 32px; line-height: 32px;
+	background: url('/images/escape.png') 0 50% no-repeat;
 }
-
 
 /*============================
  *

@@ -83,7 +83,7 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 
 /*============================
  *
- * 3D transforms
+ * The ever-popular "misc"
  *
 //===========================*/
 
@@ -95,3 +95,6 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 }
 
 
+.hidetext {
+	overflow:hidden; line-height: 100000px; font-size: 0.01em;
+}
