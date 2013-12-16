@@ -26,6 +26,17 @@
 		},
 		{
 			"type":"upload",
+			"event_category_id":"foobar",
+			"start_time":1,
+			"end_time":10,
+			"required":true,
+			"template_id":"templates/transmedia-image-default.html",
+			"title":"A picture of a kitten",
+			"description":"Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
+			"asset_id":"http://placekitten.com/70/70"
+		},
+		{
+			"type":"upload",
 			"mimeType":"image",
 			"layout_id":"videoOverlay",
 			"style_id":"tl",
@@ -60,7 +71,7 @@
 			"start_time":1,
 			"end_time":10,
 			"required":true,
-			"template_id":"templates/transmedia-link-default.html",
+			"template_id":"templates/transmedia-link-noembed.html",
 			"title":"Burkina Faso - Solar",
 			"description":"EWB-USA University of Maryland solar lighting project.",
 			"link_image_id":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
@@ -110,11 +121,11 @@
 			"start_time":5,
 			"end_time":15,
 			"required":true,
-			"template_id":"templates/transmedia-link-default.html",
-			"title":"Burkina Faso - Solar",
-			"description":"EWB-USA University of Maryland solar lighting project.",
-			"link_image_id":"http://theplatform-static.edgesuite.net/In_The_Telling/Burkina_Faso_-_Solar.PNG",
-			"url":"http://www.ewb.umd.edu/projects/dissin-lighting-2008"
+			"template_id":"templates/transmedia-link-youtube.html",
+			"title":"Monsters",
+			"description":"Some monsters",
+			"link_image_id":"http://placekitten.com/60/60",
+			"url":"http://www.youtube.com/embed/0SFgUW0GqMo"
 		},
 		{
 			"type":"annotation",
