@@ -1,3 +1,10 @@
+/* 
+	TODO: make sure all colors play nice when combined with colorInvert 
+	(in both directions, i.e. .colorInvert .colorFoo, and .colorFoo .colorInvert) 
+
+*/
+
+
 
 /*============================
  *
@@ -6,17 +13,13 @@
 //===========================*/
 
 
-.contentMain {
-	background-color: #FFF;
-}
+.contentMain {}
 
 .contentAlt {
-	background-color: #EEE;
+	background-color: rgba(0,0,0,0.05);
 }
 
-a {
-	color: #00C
-}
+a {color: #00C}
 
 /*============================
  *
@@ -24,13 +27,9 @@ a {
  *
 //===========================*/
 
-.colorInvert, .colorInvert .contentMain {
+.colorInvert {
 	color: #CCC;
 	background-color: #333;
-}
-
-.colorInvert .contentAlt {
-	background-color: #444;
 }
 
 .colorInvert a {color: #FFF}
@@ -42,19 +41,19 @@ a {
  *
 //===========================*/
 
-.colorSepia, .colorSepia .contentMain {
-	color: #643B0F;
-	background-color: #F9E9CE;
-}
-
-.colorSepia .contentAlt {
-	background-color: #FBF7ED;
+.colorSepia {
+	color: #4B4235;
+	background-color: #EFE0C8;
 }
 
 .colorSepia a {
 	color: #B7521E;
 }
 
+.colorInvert .colorSepia, 
+.colorSepia .colorInvert {
+	color: #EFE0C8;
+}
 
 
 /*============================
@@ -63,17 +62,21 @@ a {
  *
 //===========================*/
 
-.colorSolarized, .colorSolarized .contentMain {
+.colorSolarized {
 	color: #586E75;
-	background-color: #FeF6E4;
+	background-color: #EFE0C8;
 }
 
 .colorSolarized .contentAlt {
-	background-color: #EFE9D6;
 }
 
 .colorSolarized a {
-	color: #288Cd2;
+	color: #288CD2;
+}
+
+.colorInvert .colorSolarized,
+.colorSolarized .colorInvert {
+	color: #EFE0C8
 }
 
 
@@ -85,14 +88,11 @@ a {
 //===========================*/
 
 
-.colorVivid, .colorVivid .contentMain {
+.colorVivid {
 	color: #595959;
-	background-color: #FFF;
+	background-color: rgba(224, 240, 210, 0.5);
 }
 
-.colorVivid .contentAlt {
-	background-color: #C2E2A5;
-}
 
 .colorVivid a {
 	color: #FF9209;
