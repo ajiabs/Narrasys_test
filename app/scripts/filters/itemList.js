@@ -16,7 +16,6 @@ angular.module('com.inthetelling.player')
 					filteredItems.push(items[i]);
 				}
 			}
-			console.log(filteredItems);
 			return filteredItems;
 		} else {
 			return items;

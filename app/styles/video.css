@@ -1,5 +1,6 @@
 .vjs-wrapper {
 	position: absolute;
+	top: 60px; left: 0; right: 0; bottom: 0; /* on first load */
 }
 
 .vjs-control-bar {
@@ -9,3 +10,8 @@
 .video, .video-js {width: 100% !important; height: 100% !important}
 
 .aspectratiopreserver {width:100%}
+
+.vjs-big-play-button {
+	left: 20% !important;
+	top: 20% !important;
+}
