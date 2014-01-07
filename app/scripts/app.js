@@ -14,7 +14,11 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
 			controller: 'EpisodeController',
 			template: '<div ng-include="episode.templateUrl">Loading Episode...</div>'
 		})
-		.otherwise({redirectTo: '/error'});
+		.when('/episode/:epId/:authKey', {
+			controller: 'EpisodeController',
+			template: '<div ng-include="episode.templateUrl">Loading Episode...</div>'
+		})
+		.otherwise({redirectTo: '/error'});  // TODO I'd rather not rewrite the url if the user makes a typo
 })
 
 // Configure x-domain resource whitelist

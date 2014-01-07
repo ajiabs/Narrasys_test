@@ -4,7 +4,7 @@
 angular.module('com.inthetelling.player')
 .controller('EpisodeController', function (dataSvc, modelFactory, queuePointScheduler, $scope, $rootScope, $location, $routeParams) {
 
-	dataSvc.get($routeParams.epId, function(data) { // ON SUCCESS
+	dataSvc.get($routeParams, function(data) { // ON SUCCESS
 		var i, j;
 
 		// Create an episode model.

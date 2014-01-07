@@ -23,7 +23,13 @@ angular.module('com.inthetelling.player')
 
 	// Retrieve and cache the full set of data required to display an episode. Method is async and
 	// will get data either from a local .json file or from apis.
-	svc.get = function(episodeId, callback, errback) {
+	svc.get = function(routeParams, callback, errback) {
+	
+	console.log(routeParams);
+		// the only two currently valid params are episodeId (required) and authKey (optional)
+		var episodeId = routeParams.epId;
+		var authKey = routeParams.authKey;
+		
 
 		// new up an empty data object
 		data = {};
@@ -59,21 +65,28 @@ angular.module('com.inthetelling.player')
 				TODO: GEt event categories also, they will eventually be used in the player
 			*/
 
-			// TODO: Only necessary until auth tokens are implemented
-			$http.defaults.headers.get = {
-				'Authorization': config.apiAuthToken
-			};
+
+			// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
+			var authParam = "";
+			if (config.apiAuthToken) {
+				$http.defaults.headers.get = {
+					'Authorization': config.apiAuthToken
+				};
+			} else {
+				authParam = (authKey) ? "?access_token="+authKey : "" ;
+			}
+			
 
 			// TODO: group both 'call stacks' into another $q with a single then that returns the data
 
 			// first set of calls
-			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId)
+			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId + authParam)
 			.then(function(response) {
 				data.episode = response.data;
 				//console.log(response.config.url + ":", response.data);
 				return $q.all([
-					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets'),
-					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id)
+					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets' + authParam),
+					$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + authParam)
 				]);
 			})
 			.then(function(responses) {
@@ -81,15 +94,15 @@ angular.module('com.inthetelling.player')
 				//console.log(responses[0].config.url + ":", responses[0].data);
 				//console.log(responses[1].config.url + ":", responses[1].data);
 				return $q.all([
-					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets'),
-					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id)
+					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam),
+					$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + authParam)
 				]);
 			})
 			.then(function(responses) {
 				data.assets = data.assets.concat(responses[0].data.files);
 				//console.log(responses[0].config.url + ":", responses[0].data);
 				//console.log(responses[1].config.url + ":", responses[1].data);
-				return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets');
+				return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam);
 			})
 			.then(function(response) {
 				data.assets = data.assets.concat(response.data.files);
@@ -98,10 +111,10 @@ angular.module('com.inthetelling.player')
 
 			// second set of calls
 			var secondSet = $q.all([
-				$http.get(config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events'),
-				$http.get(config.apiDataBaseUrl + '/v1/templates'),
-				$http.get(config.apiDataBaseUrl + '/v1/layouts'),
-				$http.get(config.apiDataBaseUrl + '/v1/styles')
+				$http.get(config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events' + authParam),
+				$http.get(config.apiDataBaseUrl + '/v1/templates' + authParam),
+				$http.get(config.apiDataBaseUrl + '/v1/layouts' + authParam),
+				$http.get(config.apiDataBaseUrl + '/v1/styles' + authParam)
 			])
 			.then(function(responses) {
 				data.events = responses[0].data;
