@@ -2,7 +2,7 @@
 
 // Episode Controller
 angular.module('com.inthetelling.player')
-.controller('EpisodeController', function (dataSvc, modelFactory, queuePointScheduler, $scope, $rootScope, $location, $routeParams) {
+.controller('EpisodeController', function (dataSvc, modelFactory, cuePointScheduler, $scope, $rootScope, $location, $routeParams) {
 
 	dataSvc.get($routeParams, function(data) { // ON SUCCESS
 		var i, j;
@@ -18,18 +18,18 @@ angular.module('com.inthetelling.player')
 				// scene model
 				var sceneModel = modelFactory.createSceneModel(data.events[i]);
 
-				// subscribe the scene model to the queuepoint scheduler service for state awareness
+				// subscribe the scene model to the cuePoint scheduler service for state awareness
 				// use a closure to preserve variable scope in each loop iteration
 				(function(sceneModel){
-					queuePointScheduler.subscribe({
+					cuePointScheduler.subscribe({
 						begin: sceneModel.startTime,
 						end: sceneModel.endTime
 					}, function(span, evt, playheadPos) {
 						$scope.$apply(function(){
-							if (evt === queuePointScheduler.ENTER) {
+							if (evt === cuePointScheduler.ENTER) {
 								sceneModel.isActive = true;
 							}
-							else if (evt === queuePointScheduler.EXIT) {
+							else if (evt === cuePointScheduler.EXIT) {
 								sceneModel.isActive = false;
 								sceneModel.wasActive = true;
 							}
@@ -48,18 +48,18 @@ angular.module('com.inthetelling.player')
 				// base item model
 				var itemModel = modelFactory.createItemModel(data.events[i]);
 
-				// subscribe the item model to the queuepoint scheduler for state awareness
+				// subscribe the item model to the cuePoint scheduler for state awareness
 				// use a closure to preserve variable scope in each loop iteration
 				(function(itemModel){
-					queuePointScheduler.subscribe({
+					cuePointScheduler.subscribe({
 						begin: itemModel.startTime,
 						end: itemModel.endTime
 					}, function(span, evt, playheadPos) {
 						$scope.$apply(function(){
-							if (evt === queuePointScheduler.ENTER) {
+							if (evt === cuePointScheduler.ENTER) {
 								itemModel.isActive = true;
 							}
-							else if (evt === queuePointScheduler.EXIT) {
+							else if (evt === cuePointScheduler.EXIT) {
 								itemModel.isActive = false;
 								itemModel.wasActive = true;
 							}

@@ -1,14 +1,14 @@
 'use strict';
 
-describe('Service: queuePointScheduler', function () {
+describe('Service: cuePointScheduler', function () {
 
 	// load the service's module
 	beforeEach(module('com.inthetelling.player'));
 
 	// instantiate service
-	var queuePointScheduler;
-	beforeEach(inject(function (_queuePointScheduler_) {
-		queuePointScheduler = _queuePointScheduler_;
+	var cuePointScheduler;
+	beforeEach(inject(function (_cuePointScheduler_) {
+		cuePointScheduler = _cuePointScheduler_;
 	}));
 
 	// setup the jasmine mock clock for synchronous testing of this service
@@ -38,37 +38,37 @@ describe('Service: queuePointScheduler', function () {
 	});
 
 	it('should register and unregister timeline provider', function () {
-		var registerResult = queuePointScheduler.registerProvider(providerId, scanInterval);
+		var registerResult = cuePointScheduler.registerProvider(providerId, scanInterval);
 		expect(typeof registerResult).toBe("function");
-		var unregisterResult = queuePointScheduler.unregisterProvider(providerId);
+		var unregisterResult = cuePointScheduler.unregisterProvider(providerId);
 		expect(unregisterResult).toBe(true);
 	});
 
 	it('should subscribe and unsubscribe a span', function () {
-		var subscribeResult = queuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
+		var subscribeResult = cuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
 		expect(subscribeResult).toBe(true);
-		var unsubscribeResult = queuePointScheduler.unsubscribe(subscriber1.span);
+		var unsubscribeResult = cuePointScheduler.unsubscribe(subscriber1.span);
 		expect(unsubscribeResult).toBe(true);
 	});
 
 	it('should fire ENTER event for a single subscriber callback', function () {
 		// subscribe to service
-		var setPlayhead = queuePointScheduler.registerProvider(providerId, scanInterval);
-		queuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
+		var setPlayhead = cuePointScheduler.registerProvider(providerId, scanInterval);
+		cuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
 		expect(subscriber1.callback).not.toHaveBeenCalled();
 		// generate an ENTER event
 		setPlayhead(subscriber1.span.begin);
 		jasmine.Clock.tick(scanInterval);
 		expect(subscriber1.callback.callCount).toEqual(1);
 		expect(subscriber1.callback.mostRecentCall.args[0]).toEqual(subscriber1.span);
-		expect(subscriber1.callback.mostRecentCall.args[1]).toEqual(queuePointScheduler.ENTER);
+		expect(subscriber1.callback.mostRecentCall.args[1]).toEqual(cuePointScheduler.ENTER);
 		expect(subscriber1.callback.mostRecentCall.args[2]).toEqual(subscriber1.span.begin);
 	});
 
 	it('should fire EXIT event for a single subscriber callback', function () {
 		// subscribe to service
-		var setPlayhead = queuePointScheduler.registerProvider(providerId, scanInterval);
-		queuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
+		var setPlayhead = cuePointScheduler.registerProvider(providerId, scanInterval);
+		cuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
 		expect(subscriber1.callback).not.toHaveBeenCalled();
 		// We must enter the span before we can exit it
 		setPlayhead(subscriber1.span.begin);
@@ -78,7 +78,7 @@ describe('Service: queuePointScheduler', function () {
 		jasmine.Clock.tick(scanInterval);
 		expect(subscriber1.callback.callCount).toEqual(2);
 		expect(subscriber1.callback.mostRecentCall.args[0]).toEqual(subscriber1.span);
-		expect(subscriber1.callback.mostRecentCall.args[1]).toEqual(queuePointScheduler.EXIT);
+		expect(subscriber1.callback.mostRecentCall.args[1]).toEqual(cuePointScheduler.EXIT);
 		expect(subscriber1.callback.mostRecentCall.args[2]).toEqual(subscriber1.span.end);
 	});
 
@@ -87,9 +87,9 @@ describe('Service: queuePointScheduler', function () {
 		expect(subscriber1.span).toEqual(subscriber2.span);
 		expect(subscriber1.callback).not.toEqual(subscriber2.callback);
 		// subscribe to service
-		var setPlayhead = queuePointScheduler.registerProvider(providerId, scanInterval);
-		queuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
-		queuePointScheduler.subscribe(subscriber2.span, subscriber2.callback);
+		var setPlayhead = cuePointScheduler.registerProvider(providerId, scanInterval);
+		cuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
+		cuePointScheduler.subscribe(subscriber2.span, subscriber2.callback);
 		expect(subscriber1.callback).not.toHaveBeenCalled();
 		expect(subscriber2.callback).not.toHaveBeenCalled();
 		// generate an ENTER event
@@ -97,11 +97,11 @@ describe('Service: queuePointScheduler', function () {
 		jasmine.Clock.tick(scanInterval);
 		expect(subscriber1.callback.callCount).toEqual(1);
 		expect(subscriber1.callback.mostRecentCall.args[0]).toEqual(subscriber1.span);
-		expect(subscriber1.callback.mostRecentCall.args[1]).toEqual(queuePointScheduler.ENTER);
+		expect(subscriber1.callback.mostRecentCall.args[1]).toEqual(cuePointScheduler.ENTER);
 		expect(subscriber1.callback.mostRecentCall.args[2]).toEqual(subscriber1.span.begin);
 		expect(subscriber2.callback.callCount).toEqual(1);
 		expect(subscriber2.callback.mostRecentCall.args[0]).toEqual(subscriber2.span);
-		expect(subscriber2.callback.mostRecentCall.args[1]).toEqual(queuePointScheduler.ENTER);
+		expect(subscriber2.callback.mostRecentCall.args[1]).toEqual(cuePointScheduler.ENTER);
 		expect(subscriber2.callback.mostRecentCall.args[2]).toEqual(subscriber2.span.begin);
 	});
 
@@ -110,9 +110,9 @@ describe('Service: queuePointScheduler', function () {
 		expect(subscriber1.span).toEqual(subscriber2.span);
 		expect(subscriber1.callback).not.toEqual(subscriber2.callback);
 		// subscribe to service
-		var setPlayhead = queuePointScheduler.registerProvider(providerId, scanInterval);
-		queuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
-		queuePointScheduler.subscribe(subscriber2.span, subscriber2.callback);
+		var setPlayhead = cuePointScheduler.registerProvider(providerId, scanInterval);
+		cuePointScheduler.subscribe(subscriber1.span, subscriber1.callback);
+		cuePointScheduler.subscribe(subscriber2.span, subscriber2.callback);
 		expect(subscriber1.callback).not.toHaveBeenCalled();
 		expect(subscriber2.callback).not.toHaveBeenCalled();
 		// We must enter the span before we can exit it
@@ -123,11 +123,11 @@ describe('Service: queuePointScheduler', function () {
 		jasmine.Clock.tick(scanInterval);
 		expect(subscriber1.callback.callCount).toEqual(2);
 		expect(subscriber1.callback.mostRecentCall.args[0]).toEqual(subscriber1.span);
-		expect(subscriber1.callback.mostRecentCall.args[1]).toEqual(queuePointScheduler.EXIT);
+		expect(subscriber1.callback.mostRecentCall.args[1]).toEqual(cuePointScheduler.EXIT);
 		expect(subscriber1.callback.mostRecentCall.args[2]).toEqual(subscriber1.span.end);
 		expect(subscriber2.callback.callCount).toEqual(2);
 		expect(subscriber2.callback.mostRecentCall.args[0]).toEqual(subscriber2.span);
-		expect(subscriber2.callback.mostRecentCall.args[1]).toEqual(queuePointScheduler.EXIT);
+		expect(subscriber2.callback.mostRecentCall.args[1]).toEqual(cuePointScheduler.EXIT);
 		expect(subscriber2.callback.mostRecentCall.args[2]).toEqual(subscriber2.span.end);
 	});
 

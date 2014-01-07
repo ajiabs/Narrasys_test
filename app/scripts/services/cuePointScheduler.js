@@ -2,7 +2,7 @@
 
 // TODO: Rename to CuePointScheduler
 
-/*  QueuePointScheduler Service
+/*  cuePointScheduler Service
   Manages the conceptual timeline for the episode by publishing key events
   to subscribers. A subscriber must provide a 'span' object which contains
   integer properties 'begin' and 'end'. The service keeps an internal record
@@ -14,7 +14,7 @@
   position, thus synchronizing it with a media item's timeline.
 */
 angular.module('com.inthetelling.player')
-.factory('queuePointScheduler', function ($window) {
+.factory('cuePointScheduler', function ($window) {
 	var svc = {};
 
   // Event 'constants' (public)

@@ -4,7 +4,7 @@
 // - can only declare one of these for an episode
 // - should never be reparented or removed from the dom (use ittMagnet directives instead)
 angular.module('com.inthetelling.player')
-.directive('ittVideo', function (queuePointScheduler, videojs, $timeout, config) {
+.directive('ittVideo', function (cuePointScheduler, videojs, $timeout, config) {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -20,14 +20,14 @@ angular.module('com.inthetelling.player')
 				return node;
 			});
 
-			// Register videojs as the provider for the queuePointScheduler service.
-			// We are only using videoJSElementId as a UID here for convenience. queuePointScheduler has no DOM awareness.
-			var setPlayhead = queuePointScheduler.registerProvider(config.videoJSElementId, config.queuePointScanInterval);
+			// Register videojs as the provider for the cuePointScheduler service.
+			// We are only using videoJSElementId as a UID here for convenience. cuePointScheduler has no DOM awareness.
+			var setPlayhead = cuePointScheduler.registerProvider(config.videoJSElementId, config.cuePointScanInterval);
 
 			// Initialize videojs via the videojs service, passing it the videoJSElementId we just used to build the videojs DOM node
 			// (This is NOT calling videojs directly; extra layer of indirection through services/video.js!)
 			videojs.init(config.videoJSElementId, function(player) {
-				// register a listener on the instantiated player to inform the queuePointScheduler
+				// register a listener on the instantiated player to inform the cuePointScheduler
 				// service whenever the playhead position changes.
 				player.on("timeupdate", function() {
 					//console.log("$$ timeupdate &&", player.currentTime());
