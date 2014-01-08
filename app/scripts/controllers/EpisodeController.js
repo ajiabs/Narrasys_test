@@ -88,7 +88,7 @@ angular.module('com.inthetelling.player')
 
 	}, function(data) { // ON ERROR
 		// TODO: Should probably be using a service instead of root scope
-		$rootScope.uiErrorMsg = "Unable to load data for Episode: " + $routeParams.epId;
+		$rootScope.uiErrorMsg = "Unable to load data for episode: " + $routeParams.epId;
 		$location.path('/error');
 	});
 

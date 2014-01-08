@@ -98,3 +98,8 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 .hidetext {
 	overflow:hidden; line-height: 100000px; font-size: 0.01em;
 }
+
+.error {
+	margin: 1em; padding: 1em;
+	border: 2px solid #C00;
+}

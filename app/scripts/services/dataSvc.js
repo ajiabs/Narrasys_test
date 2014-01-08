@@ -12,7 +12,7 @@
 // Service will then be capable of full crud, and can flush appropriate caches in the underlying
 // $http/$resources when POST/PUT methods are called.
 angular.module('com.inthetelling.player')
-.factory('dataSvc', function (config, $http, $q, _) {
+.factory('dataSvc', function (config, $route, $location, $http, $q, _) {
 	
 	// Cache all the data returned from dataSvc.get(). This data will be used for all the
 	// individual lookup methods like dataSvc.getAssetById(). Currently these individual
@@ -140,6 +140,17 @@ angular.module('com.inthetelling.player')
 				///////////////////
 
 				callback(data);
+			}).catch(function(response) {
+				// AJAX fail.
+				// Try falling back to localData:
+				if (!config.localData) {
+					console.warn("Couldn't load episode, falling back to local data");
+					config.localData = true;
+					$route.reload();
+				} else {
+					$location.path('/error');
+				}
+
 			});
 			
 		}
