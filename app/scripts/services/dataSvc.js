@@ -25,7 +25,6 @@ angular.module('com.inthetelling.player')
 	// will get data either from a local .json file or from apis.
 	svc.get = function(routeParams, callback, errback) {
 	
-	console.log(routeParams);
 		// the only two currently valid params are episodeId (required) and authKey (optional)
 		var episodeId = routeParams.epId;
 		var authKey = routeParams.authKey;
@@ -36,7 +35,7 @@ angular.module('com.inthetelling.player')
 
 		// Local Data
 		if (config.localData) {
-			console.log("dataSvc.get() [Mode: Local Data]");
+//			console.log("dataSvc.get() [Mode: Local Data]");
 			$http({method: 'GET', url: config.localDataBaseUrl + '/' + episodeId + '.json'})
 			.success(function(data, status, headers, config) {
 				callback(data);
@@ -47,7 +46,7 @@ angular.module('com.inthetelling.player')
 		}
 		// API Data
 		else {
-			console.log("dataSvc.get() [Mode: API Data]");
+//			console.log("dataSvc.get() [Mode: API Data]");
 			// TODO: Retry on api errors before rejecting a promise.
 
 			/*
@@ -129,7 +128,7 @@ angular.module('com.inthetelling.player')
 				secondSet
 			])
 			.then(function(responses) {
-				console.log("Compiled API Data:", data);
+//				console.log("Compiled API Data:", data);
 
 				//// DIRTY PREPROCESSING HACK ////
 				// TODO: Remove it when api updates the type field to be lowercase
