@@ -73,9 +73,13 @@ angular.module('com.inthetelling.player')
 		if (isUid(masterAssetId)) {
 			var masterAsset = dataSvc.getAssetById(masterAssetId);
 			if (masterAsset) {
+				// TODO The webm regexp is a bit of a hack, since current API only has one asset url
+				// TODO the you_tube_url is a complete and total hack, only because it's not worth going back and modifying existing authoring to support youtube
+				
 				return {
 					mpeg4: masterAsset.url,
-					webm: masterAsset.url.replace(".mp4", ".webm")
+					webm: masterAsset.url.replace(".mp4", ".webm"),
+					youtube: masterAsset.you_tube_url
 				};
 			} else {
 				console.error("Master Asset lookup failed for:", masterAssetId);
