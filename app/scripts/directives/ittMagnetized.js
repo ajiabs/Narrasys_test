@@ -9,11 +9,11 @@ angular.module('com.inthetelling.player')
 			restrict: 'A',
 			replace: true,
 			scope: true,
-			link: function (scope, iElement) {
-				//			console.log("ittMagnetized", iElement);
+			link: function (scope, element) {
+				//			console.log("ittMagnetized", element);
 
 				// resize/reposition ourselves to the passed magnet's element.
-				// (iElement is the magnetized node, el is the magnet node.)
+				// (element is the magnetized node, el is the magnet node.)
 				var reposition = function (evt, el) {
 					//				console.log("ittMagnetized triggered");
 					// TODO: Animate?
@@ -32,15 +32,15 @@ angular.module('com.inthetelling.player')
 
 					if (el.css("position") === "fixed") {
 						// if videoContainer is position:fixed, video should be too
-						iElement.css("position", "fixed");
-						iElement.offset(el.offset());
-						iElement.width(el.width());
-						iElement.height(newHeight);
+						element.css("position", "fixed");
+						element.offset(el.offset());
+						element.width(el.width());
+						element.height(newHeight);
 					} else {
-						iElement.css("position", "absolute");
-						iElement.offset(el.offset());
-						iElement.width(el.width());
-						iElement.height(newHeight);
+						element.css("position", "absolute");
+						element.offset(el.offset());
+						element.width(el.width());
+						element.height(newHeight);
 					}
 				};
 

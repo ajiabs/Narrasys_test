@@ -8,13 +8,13 @@ angular.module('com.inthetelling.player')
 		return {
 			restrict: 'A',
 			replace: false,
-			link: function (scope, iElement, iAttrs, controller) {
+			link: function (scope, element, attrs) {
 				// console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
 
 				// Create the DOM node contents required by videojs
 				// For now, youtube overrides others if present!
 
-				iElement.html(function () {
+				element.html(function () {
 					var node = '<video id="' + config.videoJSElementId + '" class="video-js vjs-default-skin" poster="' + scope.episode.coverUrl + '">';
 					if (scope.episode.videos.youtube) {
 						node += '<source type="video/youtube" src="' + scope.episode.videos.youtube + '" />';

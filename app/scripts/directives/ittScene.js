@@ -10,8 +10,8 @@ angular.module('com.inthetelling.player')
 			scope: {
 				scene: '=ittScene'
 			},
-			link: function ($scope, element) {
-				// console.log("scene: ", $scope);
+			link: function (scope, element, attrs) {
+				// console.log("scene: ", scope);
 
 				// Make cosmetic adjustments within the scene based on viewport or video size.
 				// TODO: don't use jQuery here if possible?
@@ -19,7 +19,7 @@ angular.module('com.inthetelling.player')
 				//       (can't use isActive, as sometimes inactive scenes are still visible)
 				var twiddleSceneLayout = function () {
 					$timeout(function () { // wait for any DOM updates first
-						//					console.log("twiddleSceneLayout");
+						// console.log("twiddleSceneLayout");
 						element.find('.matchVideoHeight:visible').height(element.find('.videoContainer').height()); // TODO check if this works with multiple .matchVideoHeight elements in the scene
 						element.find('.stretchToViewportBottom:visible').each(function () {
 							$(this).css("min-height", ($(window).height() - this.offsetTop - 60));
@@ -28,11 +28,11 @@ angular.module('com.inthetelling.player')
 
 					}, 0);
 				};
-				$scope.$watch(function () {
+				scope.$watch(function () {
 					return element.width();
 				}, twiddleSceneLayout);
 				$rootScope.$on('toolbar.changedSceneTemplate', twiddleSceneLayout);
-				$scope.$watch('scene.isActive', twiddleSceneLayout);
+				scope.$watch('scene.isActive', twiddleSceneLayout);
 
 			}
 		};

@@ -12,7 +12,7 @@ angular.module('com.inthetelling.player')
 			restrict: 'A',
 			replace: true,
 			scope: true,
-			link: function (scope, iElement, iAttrs, controller) {
+			link: function (scope, element, attrs, controller) {
 
 				// Throw a console error if the scope isn't a scene
 				if (!scope.scene) {
@@ -23,10 +23,10 @@ angular.module('com.inthetelling.player')
 				// with a reference to the itt-magnet's dom element. The itt-magnetized directive listens for these events
 				// and utilizes the dom element to reposition itself appropriately.
 				var activate = function () {
-					//				console.log("ittMagnet.activate()", iElement);
+					//				console.log("ittMagnet.activate()", element);
 					// Need timeout because this needs to run after DOM update; so we don't wind up trying to test against a display:none node
 					$timeout(function () {
-						$rootScope.$emit('magnet.activated', iElement);
+						$rootScope.$emit('magnet.activated', element);
 					}, 0);
 				};
 
