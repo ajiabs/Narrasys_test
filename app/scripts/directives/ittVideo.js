@@ -15,7 +15,7 @@ angular.module('com.inthetelling.player')
 				// Create the DOM node contents required by videojs.  (Injecting this manually because including it in the template causes lots of bogus warnings and a vjs error that I don't want to track down)
 				// For now, youtube overrides others if present!
 				element.find('.video').html(function () {
-					var node = '<video id="' + config.videoJSElementId + '" class="video-js vjs-default-skin" poster="' + scope.episode.coverUrl + '">';
+					var node = '<video id="' + config.videoJSElementId + '" class="video-js vjs-story-skin" poster="' + scope.episode.coverUrl + '">';
 					if (scope.episode.videos.youtube) {
 						node += '<source type="video/youtube" src="' + scope.episode.videos.youtube + '" />';
 					} else {
@@ -39,16 +39,16 @@ angular.module('com.inthetelling.player')
 						//console.log("$$ timeupdate &&", player.currentTime());
 						setPlayhead(player.currentTime());
 					});
-					
-					
+
+
 					// move our custom controls into the vjs control bar
 					element.find('.injectedvideocontrols').appendTo(element.find('.vjs-control-bar'));
 				});
-				
-				
-				scope.testme = function() {
+
+
+				scope.testme = function () {
 					console.log("testme worked");
-				}
+				};
 			}
 		};
 	});
