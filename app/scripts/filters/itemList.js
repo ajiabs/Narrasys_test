@@ -7,19 +7,20 @@
 
 */
 angular.module('com.inthetelling.player')
-.filter('itemList', function () {
-	return function(items, showCurrent) {
-		if (showCurrent) {
-			var filteredItems = [], i;
-			for (i = 0; i < items.length; i++) {
-				if (items[i].isActive) {
-					filteredItems.push(items[i]);
+	.filter('itemList', function () {
+		return function (items, showCurrent) {
+			if (showCurrent) {
+				var filteredItems = [],
+					i;
+				for (i = 0; i < items.length; i++) {
+					if (items[i].isActive) {
+						filteredItems.push(items[i]);
+					}
 				}
+				return filteredItems;
+			} else {
+				return items;
 			}
-			return filteredItems;
-		} else {
-			return items;
-		}
 
-	};
-});
+		};
+	});

@@ -2,8 +2,8 @@
      causes youtube and no-embed items to use this template.  Probably force-template
      is the wrong strategy; instead need to make every template aware of when it's in
      a tiny space and show an icon alternate instead of its normal stuff -->
-     
-     
+
+
 
 <div class="item {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
@@ -12,6 +12,9 @@
 	"isRequired": item.required,
 	"isCosmetic": item.cosmetic
 }'>
-	<div class="icon"><a href="{{item.source}}" target="_blank"><img x-ng-src="{{item.thumbSrc}}"></a></div>
+	<div class="icon">
+		<a href="{{item.source}}" target="_blank">
+			<img x-ng-src="{{item.thumbSrc}}">
+		</a>
+	</div>
 </div>
-

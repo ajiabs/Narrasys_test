@@ -11,19 +11,17 @@
 	<div class="itemHead">
 		<div class="startTime displayTime" x-ng-click="gotoItem()">{{item.displayTime}}</div>
 		<div class="category">
-		<!--{{item.category}}-->
+			<!--{{item.category}}-->
 			<span x-ng-if="item.required">(Required viewing)</span>
 		</div>
 	</div>
 	<!-- <div class="icon"><img x-ng-src="{{item.thumbSrc}}"></div> -->
 	<div class="text">
-		<div class="title"><a href="javascript:void 1;" x-ng-click="toggleDetailView()">{{item.title}}</a></div>
+		<div class="title"><a href="javascript:void 1;" x-ng-click="toggleDetailView()">{{item.title}}</a>
+		</div>
 		<div>{{item.description}}</div>
 	</div>
 	<div class="detail" x-ng-if="item.showInlineDetail" style="width: 100%;position: relative;padding-bottom: 56.25%;height: 0;">
 		<iframe x-ng-src="{{item.source}}" style="position:absolute; width: 100%; height: 100%; "></iframe>
 	</div>
 </div>
-
-
-

@@ -2,13 +2,13 @@
 
 // Controller for ittItem
 angular.module('com.inthetelling.player')
-.controller('ItemController', function ($scope, videojs) {
+	.controller('ItemController', function ($scope, videojs) {
 
-	
-	
-	// convenience method to set video time
-	$scope.gotoItem = function() {
-		videojs.player.currentTime($scope.item.startTime);
-	};
 
-});
+
+		// convenience method to set video time
+		$scope.gotoItem = function () {
+			videojs.player.currentTime($scope.item.startTime);
+		};
+
+	});

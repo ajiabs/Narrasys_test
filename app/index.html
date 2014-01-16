@@ -1,78 +1,81 @@
 <!doctype html>
 <html lang="en" data-ng-app="com.inthetelling.player">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>InTheTelling Player</title>
-		<meta name="description" content="">
-		<meta name="viewport" content="width=device-width">
-		<base href="/" />
-		<!-- build:css(.tmp) styles/app-combined.css -->
-		<link rel="stylesheet" href="styles/main.css" />
-		<link rel="stylesheet" href="styles/video.css" />
-		<link rel="stylesheet" href="styles/episode.css" />
-		<link rel="stylesheet" href="styles/scene.css" />
-		<link rel="stylesheet" href="styles/item.css" />
-		<link rel="stylesheet" href="styles/transitions.css" />
-		<link rel="stylesheet" href="styles/typography.css" />
-		<link rel="stylesheet" href="styles/colors.css" />
-		<link rel="stylesheet" href="styles/highlights.css" />
-		<!-- endbuild -->
-		<!-- build:css(.tmp) styles/vendor-combined.css -->
-		<link rel="stylesheet" href="styles/video-js.dev.css" />
-		<!-- endbuild -->
-		<!-- TODO: use js to build only the fonts needed for this episode -->
-		<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|EB+Garamond|Droid+Serif|Roboto:400,300,700,400italic' rel='stylesheet' type='text/css'>
-	</head>
-	<body>
-		<!--[if lt IE 7]>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>InTheTelling Player</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width">
+	<base href="/" />
+	<!-- build:css(.tmp) styles/app-combined.css -->
+	<link rel="stylesheet" href="styles/main.css" />
+	<link rel="stylesheet" href="styles/video.css" />
+	<link rel="stylesheet" href="styles/episode.css" />
+	<link rel="stylesheet" href="styles/scene.css" />
+	<link rel="stylesheet" href="styles/item.css" />
+	<link rel="stylesheet" href="styles/transitions.css" />
+	<link rel="stylesheet" href="styles/typography.css" />
+	<link rel="stylesheet" href="styles/colors.css" />
+	<link rel="stylesheet" href="styles/highlights.css" />
+	<!-- endbuild -->
+	<!-- build:css(.tmp) styles/vendor-combined.css -->
+	<link rel="stylesheet" href="styles/video-js.dev.css" />
+	<!-- endbuild -->
+	<!-- TODO: use js to build only the fonts needed for this episode -->
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|EB+Garamond|Droid+Serif|Roboto:400,300,700,400italic' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+	<!--[if lt IE 7]>
 			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
 
-		<!--[if lt IE 9]>
+	<!--[if lt IE 9]>
 			<script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.1.0/es5-shim.min.js"></script>
 			<script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.5/json3.min.js"></script>
 		<![endif]-->
 
-		<div data-ng-view=""></div>
+	<div data-ng-view=""></div>
 
-		<script src="config.js"></script>
-		<!-- build:js({.tmp,app}) scripts/vendor-combined.js -->
-		<script src="bower_components/jquery/jquery.js"></script>
-		<script src="bower_components/angular/angular.js"></script>
-		<script src="bower_components/angular-resource/angular-resource.js"></script>
-		<script src="bower_components/angular-route/angular-route.js"></script>
-		<script src="bower_components/angular-animate/angular-animate.js"></script>
-		<script src="bower_components/underscore/underscore.js"></script>
-		<script src="bower_components/video.js/video.dev.js"></script>
-		<script src="bower_components/videojs-youtube/vjs.youtube.js"></script>
-		<!-- endbuild -->
-		<!-- build:js({.tmp,app}) scripts/app-combined.js -->
-		<script src="scripts/app.js"></script>
-		<script src="scripts/templates.js"></script>
-		<script src="scripts/controllers/UIErrorController.js"></script>
-		<script src="scripts/controllers/EpisodeController.js"></script>
-		<script src="scripts/controllers/ItemController.js"></script>
-		<script src="scripts/controllers/ToolbarController.js"></script>
-		<script src="scripts/controllers/NavigationPanelController.js"></script>
-		<script src="scripts/controllers/SearchPanelController.js"></script>
-		<script src="scripts/services/dataSvc.js"></script>
-		<script src="scripts/services/modelFactory.js"></script>
-		<script src="scripts/services/modalMgr.js"></script>
-		<script src="scripts/services/cuePointScheduler.js"></script>
-		<script src="scripts/services/underscore.js"></script>
-		<script src="scripts/services/videojs.js"></script>
-		<script src="scripts/services/config.js"></script>
-		<script src="scripts/directives/ittScene.js"></script>
-		<script src="scripts/directives/ittItem.js"></script>
-		<script src="scripts/directives/ittVideo.js"></script>
-		<script src="scripts/directives/ittMagnet.js"></script>
-		<script src="scripts/directives/ittMagnetized.js"></script>
-		<script src="scripts/directives/ittToolbar.js"></script>
-		<script src="scripts/directives/ittContentPane.js"></script>
-		<script src="scripts/filters/type.js"></script>
-		<script src="scripts/filters/layout.js"></script>
-		<script src="scripts/filters/itemList.js"></script>
-		<!-- endbuild -->
-    </body>
+	<script src="config.js"></script>
+	<!-- build:js({.tmp,app}) scripts/vendor-combined.js -->
+	<script src="bower_components/jquery/jquery.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-resource/angular-resource.js"></script>
+	<script src="bower_components/angular-route/angular-route.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.js"></script>
+	<script src="bower_components/underscore/underscore.js"></script>
+	<script src="bower_components/video.js/video.dev.js"></script>
+	<script src="bower_components/videojs-youtube/vjs.youtube.js"></script>
+	<!-- endbuild -->
+	<!-- build:js({.tmp,app}) scripts/app-combined.js -->
+	<script src="scripts/app.js"></script>
+	<script src="scripts/templates.js"></script>
+	<script src="scripts/controllers/UIErrorController.js"></script>
+	<script src="scripts/controllers/EpisodeController.js"></script>
+	<script src="scripts/controllers/ItemController.js"></script>
+	<script src="scripts/controllers/ToolbarController.js"></script>
+	<script src="scripts/controllers/NavigationPanelController.js"></script>
+	<script src="scripts/controllers/SearchPanelController.js"></script>
+	<script src="scripts/services/dataSvc.js"></script>
+	<script src="scripts/services/modelFactory.js"></script>
+	<script src="scripts/services/modalMgr.js"></script>
+	<script src="scripts/services/cuePointScheduler.js"></script>
+	<script src="scripts/services/underscore.js"></script>
+	<script src="scripts/services/videojs.js"></script>
+	<script src="scripts/services/config.js"></script>
+	<script src="scripts/directives/ittScene.js"></script>
+	<script src="scripts/directives/ittItem.js"></script>
+	<script src="scripts/directives/ittVideo.js"></script>
+	<script src="scripts/directives/ittMagnet.js"></script>
+	<script src="scripts/directives/ittMagnetized.js"></script>
+	<script src="scripts/directives/ittToolbar.js"></script>
+	<script src="scripts/directives/ittContentPane.js"></script>
+	<script src="scripts/filters/type.js"></script>
+	<script src="scripts/filters/layout.js"></script>
+	<script src="scripts/filters/itemList.js"></script>
+	<!-- endbuild -->
+</body>
+
 </html>

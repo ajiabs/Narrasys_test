@@ -6,17 +6,18 @@
 	<div ng-repeat="item in scene.items | types:{link: true, image: true}]"></div>
 */
 angular.module('com.inthetelling.player')
-.filter('type', function () {
-	return function(items, allowedTypes) {
-		if (allowedTypes) {
-			var itemsIn = [], i;
-			for (i = 0; i < items.length; i++) {
-				if (allowedTypes[items[i].type]) {
-					itemsIn.push(items[i]);
+	.filter('type', function () {
+		return function (items, allowedTypes) {
+			if (allowedTypes) {
+				var itemsIn = [],
+					i;
+				for (i = 0; i < items.length; i++) {
+					if (allowedTypes[items[i].type]) {
+						itemsIn.push(items[i]);
+					}
 				}
+				return itemsIn;
 			}
-			return itemsIn;
-		}
-		return [];
-	};
-});
+			return [];
+		};
+	});

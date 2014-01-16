@@ -3,7 +3,9 @@
 <div class="clear scene-explore {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 	<div class="scene">
 		<div class="pane videoContainer" x-itt-magnet>
-			<div class="fillPane video"><img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" /></div>
+			<div class="fillPane video">
+				<img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" />
+			</div>
 		</div>
 		<div class="pane contentMain">
 			<div data-pane="main" data-content="{{scene.mainPaneContents}}" x-itt-content-pane></div>
@@ -16,6 +18,6 @@
 		</div>
 	</div>
 	<div x-itt-magnetized class="fillPane videoOverlay">
-			<div x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>
+		<div x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>
 	</div>
 </div>

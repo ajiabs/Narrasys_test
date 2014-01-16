@@ -4,7 +4,7 @@
 angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
 
 // Configure routing
-.config(function($routeProvider, $locationProvider) {
+.config(function ($routeProvider, $locationProvider) {
 	$routeProvider
 		.when('/error', {
 			controller: 'UIErrorController',
@@ -18,15 +18,16 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
 			controller: 'EpisodeController',
 			template: '<div ng-include="episode.templateUrl">Loading Episode...</div>'
 		})
-		.otherwise(
-			{redirectTo: '/error'} // TODO I'd rather not rewrite the url if the user makes a typo; is there a better way to handle errors than a route redirect?
-		);  
-		$locationProvider.html5Mode(true);
-		
+		.otherwise({
+				redirectTo: '/error'
+			} // TODO I'd rather not rewrite the url if the user makes a typo; is there a better way to handle errors than a route redirect?
+	);
+	$locationProvider.html5Mode(true);
+
 })
 
 // Configure x-domain resource whitelist
-.config(function($sceDelegateProvider) {
+.config(function ($sceDelegateProvider) {
 	$sceDelegateProvider.resourceUrlWhitelist([
 		'self',
 		/.*/,

@@ -7,10 +7,6 @@
 
 <div class="content" x-ng-class='{"noSidebars": noSidebars, "hasLeftSidebar": hasLeftSidebar, "hasRightSidebar": hasRightSidebar}'>
 	<h2 x-ng-if="pane == 'main'" class="sceneTitle">{{scene.title}}</h2>
-	<div x-ng-repeat="item in itemlist | itemList:showCurrent" 
-			class="item-animate" 
-			x-ng-class="item.styles"
-			data-force-item-template="{{forceItemTemplate}}" 
-			x-itt-item="item">
+	<div x-ng-repeat="item in itemlist | itemList:showCurrent" class="item-animate" x-ng-class="item.styles" data-force-item-template="{{forceItemTemplate}}" x-itt-item="item">
 	</div>
 </div>
