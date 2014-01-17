@@ -12,6 +12,57 @@
 .aspectratiopreserver {
 	width:100%
 }
+/* ------------------------------------------------------------------------------------------------ */
+
+/* Scene Markers */
+ .vjs-marker {
+	bottom: 0;
+	height: 100%;
+	left: 0;
+	position: absolute;
+	width: 1em;
+	font-size: 0.6em;
+	line-height: 3em;
+}
+.vjs-marker:before {
+	content:"\e009";
+	font-family: VideoJS;
+	position: absolute;
+	transform: rotate(-45deg);
+}
+.vjs-marker:hover {
+	cursor: pointer;
+	transform: scale(1.5, 1.5);
+	transform-origin: 50% 50%;
+}
+.vjs-tip {
+	bottom: 2em;
+	display: block;
+	font-size: 1.3em;
+	opacity: 0.7;
+	padding: 5px;
+	position: absolute;
+	visibility: hidden;
+	z-index: 100000;
+}
+.vjs-tip-arrow {
+	background: url("data:image/gif;base64,R0lGODlhCQAJAIABAAAAAAAAACH5BAEAAAEALAAAAAAJAAkAAAIRjAOnwIrcDJxvwkplPtchVQAAOw==") no-repeat scroll left bottom rgba(0, 0, 0, 0);
+	bottom: 0;
+	height: 5px;
+	left: 50%;
+	margin-left: -0.5em;
+	position: absolute;
+	width: 9px;
+}
+.vjs-tip-inner {
+	background-color: #000;
+	border-radius: 6px;
+	color: #FFFFFF;
+	max-width: 200px;
+	padding: 5px 8px;
+	text-align: center;
+	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+}
 /* Custom Icon Font
 --------------------------------------------------------------------------------
 The control icons are from a custom font. Each icon corresponds to a character
@@ -32,29 +83,23 @@ The control icons are from a custom font. Each icon corresponds to a character
 	bottom:0;
 	left: 0;
 	right: 0;
-	height: 80px;
+	height: 6em;
 	background-color:#FFF;
 	background-color: rgba(255, 255, 255, 0.8);
-	box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
 	border-top: 1px solid #CCC;
+	color: #333;
 	display:none;
-	/* start hidden */
 }
 /* Slider - used for Volume bar and Seek bar */
  .vjs-story-skin .vjs-slider {
-	/* Replace browser focus hightlight with handle highlight */
-	outline: 0;
 	position: relative;
 	cursor: pointer;
 	padding: 0;
 	background-color:rgba(0, 0, 0, 0.2);
-	border-radius:2em;
+	border-radius:1em;
 }
 .vjs-story-skin .vjs-slider:focus {
-	/* box-shadow */
-	-webkit-box-shadow: 0 0 2em #ffffff;
-	-moz-box-shadow: 0 0 2em #ffffff;
-	box-shadow: 0 0 2em #ffffff;
 }
 .vjs-story-skin .vjs-slider-handle {
 	position: absolute;
@@ -71,12 +116,6 @@ The control icons are from a custom font. Each icon corresponds to a character
 	position: absolute;
 	top: 0;
 	left: 0;
-	/* Rotate the square icon to make a diamond */
-	/* transform */
-	-webkit-transform: rotate(-45deg);
-	-moz-transform: rotate(-45deg);
-	-ms-transform: rotate(-45deg);
-	-o-transform: rotate(-45deg);
 	transform: rotate(-45deg);
 }
 /* Control Bar
@@ -91,9 +130,6 @@ The default control bar that is a container for most of the controls.
 	visibility: visible;
 	opacity: 1;
 	/* transition */
-	-webkit-transition: visibility 0.1s, opacity 0.1s;
-	-moz-transition: visibility 0.1s, opacity 0.1s;
-	-o-transition: visibility 0.1s, opacity 0.1s;
 	transition: visibility 0.1s, opacity 0.1s;
 }
 /* Hide the control bar when the video is playing and the user is inactive  */
@@ -102,9 +138,6 @@ The default control bar that is a container for most of the controls.
 	visibility: hidden;
 	opacity: 0;
 	/* transition */
-	-webkit-transition: visibility 1s, opacity 1s;
-	-moz-transition: visibility 1s, opacity 1s;
-	-o-transition: visibility 1s, opacity 1s;
 	transition: visibility 1s, opacity 1s;
 }
 .vjs-story-skin.vjs-controls-disabled .vjs-control-bar {
@@ -126,18 +159,15 @@ fonts to show/hide properly.
 /* General styles for individual controls. */
  .vjs-story-skin .vjs-control {
 	outline: none;
-	position: relative;
-	float: left;
 	text-align: center;
 	margin: 0;
 	padding: 0;
 	height: 3.0em;
-	width: 4em;
 }
 /* FontAwsome button icons */
  .vjs-story-skin .vjs-control:before {
 	font-family: VideoJS;
-	font-size: 1.5em;
+	font-size: 1.7em;
 	line-height: 2;
 	position: absolute;
 	top: 0;
@@ -145,20 +175,9 @@ fonts to show/hide properly.
 	width: 100%;
 	height: 100%;
 	text-align: center;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-}
-/* Replacement for focus outline */
- .vjs-story-skin .vjs-control:focus:before, .vjs-story-skin .vjs-control:hover:before {
-	text-shadow: 0em 0em 1em #ffffff;
-}
-.vjs-story-skin .vjs-control:focus {
-	/*  outline: 0; */
-	/* keyboard-only users cannot see the focus on several of the UI elements when
-  this is set to 0 */
 }
 /* Hide control text visually, but have it available for screenreaders */
  .vjs-story-skin .vjs-control-text {
-	/* hide-visually */
 	border: 0;
 	clip: rect(0 0 0 0);
 	height: 1px;
@@ -172,8 +191,11 @@ fonts to show/hide properly.
 --------------------------------------------------------------------------------
 */
  .vjs-story-skin .vjs-play-control {
+	position:absolute;
 	width: 5em;
 	cursor: pointer;
+	bottom: 0.5em;
+	left: 1em;
 }
 .vjs-story-skin .vjs-play-control:before {
 	content:"\e001";
@@ -184,8 +206,10 @@ fonts to show/hide properly.
 /* Volume/Mute
 -------------------------------------------------------------------------------- */
  .vjs-story-skin .vjs-mute-control, .vjs-story-skin .vjs-volume-menu-button {
+	position:absolute;
 	cursor: pointer;
-	float: right;
+	bottom: 0.5em;
+	left: 44%;
 }
 .vjs-story-skin .vjs-mute-control:before, .vjs-story-skin .vjs-volume-menu-button:before {
 	content:"\e006";
@@ -200,12 +224,14 @@ fonts to show/hide properly.
 	content:"\e005";
 }
 .vjs-story-skin .vjs-volume-control {
+	position: absolute;
 	width: 5em;
-	float: right;
+	bottom: 0.5em;
+	left: 48%;
 }
 .vjs-story-skin .vjs-volume-bar {
-	width: 5em;
-	height: 0.6em;
+	width: 8em;
+	height: 1em;
 	margin: 1.1em auto 0;
 }
 .vjs-story-skin .vjs-volume-menu-button .vjs-menu-content {
@@ -215,7 +241,8 @@ fonts to show/hide properly.
 	position: absolute;
 	top: 0;
 	left: 0;
-	height: 0.5em;
+	height: 1em;
+	border-radius:1em;
 	background: #66a8cc url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
 .vjs-story-skin .vjs-volume-bar .vjs-volume-handle {
@@ -224,10 +251,6 @@ fonts to show/hide properly.
 }
 .vjs-story-skin .vjs-volume-handle:before {
 	font-size: 0.9em;
-	top: -0.2em;
-	left: -0.2em;
-	width: 1em;
-	height: 1em;
 }
 .vjs-story-skin .vjs-volume-menu-button .vjs-menu .vjs-menu-content {
 	width: 6em;
@@ -238,32 +261,13 @@ fonts to show/hide properly.
 */
  .vjs-story-skin .vjs-progress-control {
 	position: absolute;
-	left: 0;
-	right: 0;
+	left: 7em;
+	right: 7em;
 	width: auto;
-	font-size: 0.3em;
-	height: 1em;
-	/* Set above the rest of the controls. */
-	top: -1em;
-	/* Shrink the bar slower than it grows. */
-	/* transition */
-	-webkit-transition: all 0.4s;
-	-moz-transition: all 0.4s;
-	-o-transition: all 0.4s;
-	transition: all 0.4s;
-}
-/* On hover, make the progress bar grow to something that's more clickable.
-    This simply changes the overall font for the progress bar, and this
-    updates both the em-based widths and heights, as wells as the icon font */
- .vjs-story-skin:hover .vjs-progress-control {
-	font-size: .9em;
-	/* Even though we're not changing the top/height, we need to include them in
-      the transition so they're handled correctly. */
-	/* transition */
-	-webkit-transition: all 0.2s;
-	-moz-transition: all 0.2s;
-	-o-transition: all 0.2s;
-	transition: all 0.2s;
+	height: 1.7em;
+	top: 0.6em;
+	border-radius: 1em;
+	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4) inset;
 }
 /* Box containing play and load progresses. Also acts as seek scrubber. */
  .vjs-story-skin .vjs-progress-holder {
@@ -281,6 +285,7 @@ fonts to show/hide properly.
 	top: 0;
 }
 .vjs-story-skin .vjs-play-progress {
+	border-radius:1em 0 0 1em;
 	/*
     Using a data URI to create the white diagonal lines with a transparent
       background. Surprisingly works in IE8.
@@ -295,7 +300,7 @@ fonts to show/hide properly.
 	background: #646464
 	/* IE8- Fallback */
 	;
-	background: rgba(255, 255, 255, 0.4);
+	background: rgba(255, 255, 255, 0.6);
 }
 .vjs-story-skin .vjs-seek-handle {
 	width: 1.5em;
@@ -309,33 +314,25 @@ fonts to show/hide properly.
 /* Time Display
 --------------------------------------------------------------------------------
 */
- .vjs-story-skin .vjs-time-controls {
-	font-size: 1em;
-	/* Align vertically by making the line height the same as the control bar */
-	line-height: 3em;
+ .vjs-story-skin .vjs-time-controls, .vjs-story-skin .vjs-time-divider, .vjs-story-skin .vjs-current-time, .vjs-story-skin .vjs-duration, .vjs-story-skin .vjs-remaining-time {
+	font-size: 1.2em;
+	float:left;
+	margin-top:2em;
+	padding: 0 0.1em;
 }
 .vjs-story-skin .vjs-current-time {
 	float: left;
-}
-.vjs-story-skin .vjs-duration {
-	float: left;
+	margin-left: 6em;
 }
 /* Remaining time is in the HTML, but not included in default design */
  .vjs-story-skin .vjs-remaining-time {
 	display: none;
-	float: left;
-}
-.vjs-time-divider {
-	float: left;
-	line-height: 3em;
 }
 /* Fullscreen
 --------------------------------------------------------------------------------
 */
  .vjs-story-skin .vjs-fullscreen-control {
-	width: 3.8em;
-	cursor: pointer;
-	float: right;
+	display:none;
 }
 .vjs-story-skin .vjs-fullscreen-control:before {
 	content:"\e000";
@@ -367,18 +364,8 @@ easily in the skin designer. http://designer.videojs.com/
 	background-color: #07141e;
 	background-color: rgba(7, 20, 30, 0.7);
 	border: 0.1em solid #3b4249;
-	/* border-radius */
-	-webkit-border-radius: 0.8em;
-	-moz-border-radius: 0.8em;
 	border-radius: 0.8em;
-	/* box-shadow */
-	-webkit-box-shadow: 0px 0px 1em rgba(255, 255, 255, 0.25);
-	-moz-box-shadow: 0px 0px 1em rgba(255, 255, 255, 0.25);
 	box-shadow: 0px 0px 1em rgba(255, 255, 255, 0.25);
-	/* transition */
-	-webkit-transition: all 0.4s;
-	-moz-transition: all 0.4s;
-	-o-transition: all 0.4s;
 	transition: all 0.4s;
 }
 /* Hide if controls are disabled */
@@ -400,14 +387,7 @@ easily in the skin designer. http://designer.videojs.com/
 	/* IE8 needs a non-glow hover state */
 	background-color: #505050;
 	background-color: rgba(50, 50, 50, 0.75);
-	/* box-shadow */
-	-webkit-box-shadow: 0 0 3em #ffffff;
-	-moz-box-shadow: 0 0 3em #ffffff;
 	box-shadow: 0 0 3em #ffffff;
-	/* transition */
-	-webkit-transition: all 0s;
-	-moz-transition: all 0s;
-	-o-transition: all 0s;
 	transition: all 0s;
 }
 .vjs-story-skin .vjs-big-play-button:before {
@@ -429,7 +409,7 @@ easily in the skin designer. http://designer.videojs.com/
 --------------------------------------------------------------------------------
 */
  .vjs-loading-spinner {
-	display: none;
+	display: block;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -440,14 +420,10 @@ easily in the skin designer. http://designer.videojs.com/
 	margin-left: -0.5em;
 	margin-top: -0.5em;
 	opacity: 0.75;
-	/* animation */
-	-webkit-animation: spin 1.5s infinite linear;
-	-moz-animation: spin 1.5s infinite linear;
-	-o-animation: spin 1.5s infinite linear;
 	animation: spin 1.5s infinite linear;
 }
 .vjs-story-skin .vjs-loading-spinner:before {
-	content:"\e00a";
+	content:".";
 	font-family: VideoJS;
 	position: absolute;
 	top: 0;
@@ -455,7 +431,6 @@ easily in the skin designer. http://designer.videojs.com/
 	width: 1em;
 	height: 1em;
 	text-align: center;
-	text-shadow: 0em 0em 0.1em #000;
 }
 @-moz-keyframes spin {
 	0% {
@@ -528,9 +503,6 @@ easily in the skin designer. http://designer.videojs.com/
 	/* background-color-with-alpha */
 	background-color: #07141e;
 	background-color: rgba(7, 20, 30, 0.7);
-	/* box-shadow */
-	-webkit-box-shadow: -0.2em -0.2em 0.3em rgba(255, 255, 255, 0.2);
-	-moz-box-shadow: -0.2em -0.2em 0.3em rgba(255, 255, 255, 0.2);
 	box-shadow: -0.2em -0.2em 0.3em rgba(255, 255, 255, 0.2);
 }
 .vjs-story-skin .vjs-menu-button:hover .vjs-menu {
@@ -554,9 +526,6 @@ easily in the skin designer. http://designer.videojs.com/
 	/* background-color-with-alpha */
 	background-color: #ffffff;
 	background-color: rgba(255, 255, 255, 0.75);
-	/* box-shadow */
-	-webkit-box-shadow: 0 0 1em #ffffff;
-	-moz-box-shadow: 0 0 1em #ffffff;
 	box-shadow: 0 0 1em #ffffff;
 }
 .vjs-story-skin .vjs-menu-button ul li.vjs-menu-title {
@@ -579,9 +548,6 @@ easily in the skin designer. http://designer.videojs.com/
 }
 /* Replacement for focus outline */
  .vjs-story-skin .vjs-captions-button:focus .vjs-control-content:before, .vjs-story-skin .vjs-captions-button:hover .vjs-control-content:before {
-	/* box-shadow */
-	-webkit-box-shadow: 0 0 1em #ffffff;
-	-moz-box-shadow: 0 0 1em #ffffff;
 	box-shadow: 0 0 1em #ffffff;
 }
 /*
@@ -612,7 +578,7 @@ control positioning and full window mode. **
 	font-style: normal;
 	/* Avoiding helvetica: issue #376 */
 	font-family: Arial, sans-serif;
-	/* Turn off user selection (text highlighting) by story.
+	/* Turn off user selection (text highlighting) by default.
      The majority of player components will not be text blocks.
      Text areas will need to turn user selection back on. */
 	/* user-select */

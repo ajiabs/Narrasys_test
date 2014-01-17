@@ -12,10 +12,13 @@ angular.module('com.inthetelling.player')
 			link: function (scope, element, attrs) {
 				// console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
 
-				// Create the DOM node contents required by videojs.  (Injecting this manually because including it in the template causes lots of bogus warnings and a vjs error that I don't want to track down)
-				// For now, youtube overrides others if present!
+				// Create the DOM node contents required by videojs.  
+				// (Injecting this manually because including it in the template causes lots of bogus warnings 
+				// and a vjs error that I don't want to track down)
+
 				element.find('.video').html(function () {
 					var node = '<video id="' + config.videoJSElementId + '" class="video-js vjs-story-skin" poster="' + scope.episode.coverUrl + '">';
+					// For now, youtube overrides others if present!
 					if (scope.episode.videos.youtube) {
 						node += '<source type="video/youtube" src="' + scope.episode.videos.youtube + '" />';
 					} else {
@@ -40,10 +43,35 @@ angular.module('com.inthetelling.player')
 						setPlayhead(player.currentTime());
 					});
 
+					// Wait until we know the player duration, then set the scene markers (and kill the $watch)
+					// TODO if we can get the video duration in the json we'll be able to init this directly
+					var durationWatcher = scope.$watch(function () {
+						return player.duration();
+					}, function (newVal, oldVal) {
+						if (newVal !== 0) {
+							durationWatcher(); // removes the watcher
+							var markerBreaks = [];
+							var markerText = [];
+							for (var i = 0; i < scope.scenes.length; i++) {
+								markerBreaks.push(scope.scenes[i].startTime);
+								markerText.push(scope.scenes[i].title);
+							}
+							//set up videojs.markers
+							player.markers({
+								setting: {},
+								marker_breaks: markerBreaks,
+								marker_text: markerText
+							});
+							player.trigger("loadedmetadata"); //tells the plugin to do its thing
+						}
+					});
 
 					// move our custom controls into the vjs control bar
 					element.find('.injectedvideocontrols').appendTo(element.find('.vjs-control-bar'));
 				});
+
+
+
 
 
 				scope.testme = function () {
