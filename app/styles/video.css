@@ -17,23 +17,22 @@
 /* Scene Markers */
  .vjs-marker {
 	bottom: 0;
+	font-size: 1em;
 	height: 100%;
 	left: 0;
 	position: absolute;
 	width: 1em;
-	font-size: 0.6em;
-	line-height: 3em;
+	margin-left: -0.5em;
+	padding-top: 0.3em;
 }
 .vjs-marker:before {
-	content:"\e009";
+	content:"\e007";
 	font-family: Story;
 	position: absolute;
-	transform: rotate(-45deg);
 }
 .vjs-marker:hover {
 	cursor: pointer;
-	transform: scale(1.5, 1.5);
-	transform-origin: 50% 50%;
+	color:#FFF;
 }
 .vjs-tip {
 	bottom: 2em;
@@ -66,28 +65,41 @@
 /* Injected Controls
 --------------------------------------------------------------------------------
 */
- .video-prevscene {
-	position:absolute;
-	top:1em;
-	left:1em;
-	width:5em;
-	height:3em;
-	border:1px solid #F00;
+ .video-prevscene a, .video-nextscene a {
+	color:#000;
+}
+.video-prevscene a:hover, .video-nextscene a:hover {
+	color:#006;
+}
+.video-prevscene, .video-nextscene {
+	font-family: Story;
+	font-size: 2em;
+	height: 2em;
+	position: absolute;
+	top: 0;
+	width: 1em;
+	line-height: 1.4em;
+	cursor: pointer;
+	cursor: hand;
+}
+.video-prevscene a:before {
+	content:"\e601";
+	font-family: Story;
+}
+.video-prevscene {
+	left:2em;
+}
+.video-nextscene a:before {
+	content:"\e600";
 }
 .video-nextscene {
-	position:absolute;
-	top:1em;
-	right:1em;
-	width:5em;
-	height:3em;
-	border:1px solid #F00;
+	right:2em;
 }
 /* Custom Icon Font
 --------------------------------------------------------------------------------
 The control icons are from a custom font. Each icon corresponds to a character
 (e.g. "\e001"). Font icons allow for easy scaling and coloring of icons.
 */
-
  @font-face {
 	font-family:'Story';
 	src: url('/images/font/story.eot');
@@ -95,8 +107,6 @@ The control icons are from a custom font. Each icon corresponds to a character
 	font-weight: normal;
 	font-style: normal;
 }
-
-
 /*
  @font-face {
 	font-family:'VideoJs';
@@ -106,7 +116,6 @@ The control icons are from a custom font. Each icon corresponds to a character
 	font-style: normal;
 }
 */
-
 
 /* Our skin
 --------------------------------------------------------------------------------
@@ -141,15 +150,11 @@ The control icons are from a custom font. Each icon corresponds to a character
 	top: 0;
 }
 .vjs-story-skin .vjs-slider-handle:before {
-	content:"\e009";
+	content:"\e007";
 	font-family: Story;
 	font-size: 1.5em;
-	line-height: 1;
-	text-align: center;
 	position: absolute;
-	top: 0;
-	left: 0;
-	transform: rotate(-45deg);
+	text-align: center;
 }
 /* Control Bar
 --------------------------------------------------------------------------------
@@ -197,11 +202,10 @@ fonts to show/hide properly.
 	padding: 0;
 	height: 3.0em;
 }
-/* FontAwsome button icons */
- .vjs-story-skin .vjs-control:before {
+.vjs-story-skin .vjs-control:before {
 	font-family: Story;
-	font-size: 1.7em;
-	line-height: 2;
+	font-size: 2em;
+	line-height: 2em;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -227,7 +231,7 @@ fonts to show/hide properly.
 	position:absolute;
 	width: 5em;
 	cursor: pointer;
-	bottom: 0.5em;
+	bottom: 1em;
 	left: 1em;
 }
 .vjs-story-skin .vjs-play-control:before {
@@ -241,7 +245,7 @@ fonts to show/hide properly.
  .vjs-story-skin .vjs-mute-control, .vjs-story-skin .vjs-volume-menu-button {
 	position:absolute;
 	cursor: pointer;
-	bottom: 0.5em;
+	bottom: 1em;
 	left: 44%;
 }
 .vjs-story-skin .vjs-mute-control:before, .vjs-story-skin .vjs-volume-menu-button:before {
@@ -266,6 +270,7 @@ fonts to show/hide properly.
 	width: 8em;
 	height: 1em;
 	margin: 1.1em auto 0;
+	overflow: hidden;
 }
 .vjs-story-skin .vjs-volume-menu-button .vjs-menu-content {
 	height: 2.9em;
@@ -276,14 +281,15 @@ fonts to show/hide properly.
 	left: 0;
 	height: 1em;
 	border-radius:1em;
-	background: #66a8cc url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
+	background: #333 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
 .vjs-story-skin .vjs-volume-bar .vjs-volume-handle {
 	width: 0.5em;
 	height: 0.5em;
+	margin-left:-0.5em;
 }
 .vjs-story-skin .vjs-volume-handle:before {
-	font-size: 0.9em;
+	font-size: 1em;
 }
 .vjs-story-skin .vjs-volume-menu-button .vjs-menu .vjs-menu-content {
 	width: 6em;
@@ -337,12 +343,8 @@ fonts to show/hide properly.
 }
 .vjs-story-skin .vjs-seek-handle {
 	width: 1.5em;
+	margin-left:-0.75em;
 	height: 100%;
-}
-.vjs-story-skin .vjs-seek-handle:before {
-	padding-top: 0.1em
-	/* Minor adjustment */
-	;
 }
 /* Time Display
 --------------------------------------------------------------------------------

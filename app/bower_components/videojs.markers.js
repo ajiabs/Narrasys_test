@@ -30,7 +30,7 @@
             pos = (time / duration) * 100;
             m = $("<div class='vjs-marker'  id='" + key + "'></div>");
             m.css({
-               "margin-left": -parseFloat(m.css("width")) / 2 + 'px',
+               //             "margin-left": -parseFloat(m.css("width")) / 2 + 'px',
                "left": pos + '%'
             });
 
