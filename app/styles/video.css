@@ -63,6 +63,25 @@
 	text-align: center;
 	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
 }
+/* Injected Controls
+--------------------------------------------------------------------------------
+*/
+ .video-prevscene {
+	position:absolute;
+	top:1em;
+	left:1em;
+	width:5em;
+	height:3em;
+	border:1px solid #F00;
+}
+.video-nextscene {
+	position:absolute;
+	top:1em;
+	right:1em;
+	width:5em;
+	height:3em;
+	border:1px solid #F00;
+}
 /* Custom Icon Font
 --------------------------------------------------------------------------------
 The control icons are from a custom font. Each icon corresponds to a character

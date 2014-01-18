@@ -1,5 +1,14 @@
 <div class="video">This will be the video</div>
+
+<!-- TODO ARIA controls on all clickables -->
 <div class="injectedvideocontrols">
-	<!-- todo -->
+	<div x-ng-if="curScene.$prevScene" class="video-prevscene">
+		<a x-ng-click="gotoTime(curScene.$prevScene.startTime)">Previous scene {{curScene.$prevScene.title}}</a>
+	</div>
+
+	<div x-ng-if="curScene.$nextScene" class="video-nextscene">
+		<a x-ng-click="gotoTime(curScene.$nextScene.startTime)"> Next scene {{curScene.$nextScene.startTime}}</a>
+	</div>
+	<!-- more TODO: 'fullscreen/CC' mode button -->
 	<div x-ng-click="testme()"></div>
 </div>
