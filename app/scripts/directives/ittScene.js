@@ -25,14 +25,25 @@ angular.module('com.inthetelling.player')
 							$(this).css("min-height", ($(window).height() - this.offsetTop - 60));
 						});
 						// TODO: add support for .stretchToSceneBottom as well (would be useful in explore template for example)
-
 					}, 0);
 				};
+
 				scope.$watch(function () {
 					return element.width();
 				}, twiddleSceneLayout);
 				$rootScope.$on('toolbar.changedSceneTemplate', twiddleSceneLayout);
 				scope.$watch('scene.isActive', twiddleSceneLayout);
+
+				/*
+				// In case we need scene enter / exit events someday...
+				scope.$watch('scene.isActive', function (newVal, oldVal) {
+					if (newVal) {
+						console.log("SCENE ENTERING", scope.scene);
+					} else {
+						//console.log("SCENE EXIT", scope);
+					}
+				});
+				*/
 
 			}
 		};
