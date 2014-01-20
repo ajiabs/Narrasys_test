@@ -90,7 +90,7 @@ angular.module('com.inthetelling.player')
 				});
 
 				scope.gotoTime = function (t) {
-					videojs.player.currentTime(t);
+					videojs.player.currentTime(t + 0.001); // fudge: add a bit to ensure that we're inside the next scene's range
 				};
 			}
 		};

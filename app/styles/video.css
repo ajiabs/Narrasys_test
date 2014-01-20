@@ -38,7 +38,6 @@
 	bottom: 2em;
 	display: block;
 	font-size: 1.3em;
-	opacity: 0.7;
 	padding: 5px;
 	position: absolute;
 	visibility: hidden;
@@ -55,6 +54,8 @@
 }
 .vjs-tip-inner {
 	background-color: #000;
+	background-color: rgba(0, 0, 0, 0.7);
+	border: 2px solid #000;
 	border-radius: 6px;
 	color: #FFFFFF;
 	max-width: 200px;
@@ -65,13 +66,10 @@
 /* Injected Controls
 --------------------------------------------------------------------------------
 */
- .video-prevscene a, .video-nextscene a {
+ .video-prevscene a, .video-nextscene a, .video-scenemenu a {
 	color:#000;
 }
-.video-prevscene a:hover, .video-nextscene a:hover {
-	color:#006;
-}
-.video-prevscene, .video-nextscene {
+.video-prevscene, .video-nextscene, .video-scenemenu {
 	font-family: Story;
 	font-size: 2em;
 	height: 2em;
@@ -80,7 +78,21 @@
 	width: 1em;
 	line-height: 1.4em;
 	cursor: pointer;
-	cursor: hand;
+}
+.video-scenemenu {
+	left: 7em;
+	width: 3em;
+	height: 1.7em;
+	top: 0.5em;
+	background-color: #CCC;
+	font-size: 1em;
+	border-radius: 1em 0 0 1em;
+	border-right: 1px solid #999;
+}
+.video-scenemenu a:before {
+	font-size: 1.4em;
+	line-height: 1.2em;
+	content:"\e602";
 }
 .video-prevscene a:before {
 	content:"\e601";
@@ -139,7 +151,6 @@ The control icons are from a custom font. Each icon corresponds to a character
 	cursor: pointer;
 	padding: 0;
 	background-color:rgba(0, 0, 0, 0.2);
-	border-radius:1em;
 }
 .vjs-story-skin .vjs-slider:focus {
 }
@@ -200,13 +211,11 @@ fonts to show/hide properly.
 	text-align: center;
 	margin: 0;
 	padding: 0;
-	height: 3.0em;
+	position:absolute;
 }
 .vjs-story-skin .vjs-control:before {
 	font-family: Story;
 	font-size: 2em;
-	line-height: 2em;
-	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -231,7 +240,7 @@ fonts to show/hide properly.
 	position:absolute;
 	width: 5em;
 	cursor: pointer;
-	bottom: 1em;
+	bottom: 0.5em;
 	left: 1em;
 }
 .vjs-story-skin .vjs-play-control:before {
@@ -245,7 +254,7 @@ fonts to show/hide properly.
  .vjs-story-skin .vjs-mute-control, .vjs-story-skin .vjs-volume-menu-button {
 	position:absolute;
 	cursor: pointer;
-	bottom: 1em;
+	bottom: 0.5em;
 	left: 44%;
 }
 .vjs-story-skin .vjs-mute-control:before, .vjs-story-skin .vjs-volume-menu-button:before {
@@ -262,15 +271,16 @@ fonts to show/hide properly.
 }
 .vjs-story-skin .vjs-volume-control {
 	position: absolute;
-	width: 5em;
+	width: 8em;
 	bottom: 0.5em;
 	left: 48%;
 }
 .vjs-story-skin .vjs-volume-bar {
-	width: 8em;
+	width: 100%;
 	height: 1em;
-	margin: 1.1em auto 0;
+	margin: 0.75em 0;
 	overflow: hidden;
+	border-radius: 1em;
 }
 .vjs-story-skin .vjs-volume-menu-button .vjs-menu-content {
 	height: 2.9em;
@@ -280,7 +290,6 @@ fonts to show/hide properly.
 	top: 0;
 	left: 0;
 	height: 1em;
-	border-radius:1em;
 	background: #333 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
 .vjs-story-skin .vjs-volume-bar .vjs-volume-handle {
@@ -300,12 +309,13 @@ fonts to show/hide properly.
 */
  .vjs-story-skin .vjs-progress-control {
 	position: absolute;
-	left: 7em;
+	left: 10em;
 	right: 7em;
 	width: auto;
 	height: 1.7em;
-	top: 0.6em;
-	border-radius: 1em;
+	top: 0.5em;
+	border-radius: 0 1em 1em 0;
+	/* Do not use overflow:hidden; it hides the scene tooltips! */
 	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4) inset;
 }
 /* Box containing play and load progresses. Also acts as seek scrubber. */
@@ -324,7 +334,6 @@ fonts to show/hide properly.
 	top: 0;
 }
 .vjs-story-skin .vjs-play-progress {
-	border-radius:1em 0 0 1em;
 	/*
     Using a data URI to create the white diagonal lines with a transparent
       background. Surprisingly works in IE8.
@@ -346,6 +355,10 @@ fonts to show/hide properly.
 	margin-left:-0.75em;
 	height: 100%;
 }
+.vjs-story-skin .vjs-progress-holder {
+	/* must match vjs-load-progress */
+	border-radius: 0 1em 1em 0;
+}
 /* Time Display
 --------------------------------------------------------------------------------
 */
@@ -354,6 +367,10 @@ fonts to show/hide properly.
 	float:left;
 	margin-top:2em;
 	padding: 0 0.1em;
+}
+/* videojs inexplicably puts vjs-control on these, so we need to override a bit: */
+ .vjs-story-skin .vjs-current-time, .vjs-story-skin .vjs-duration {
+	position:static;
 }
 .vjs-story-skin .vjs-current-time {
 	float: left;

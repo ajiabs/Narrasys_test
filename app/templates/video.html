@@ -1,8 +1,15 @@
 <div class="video">This will be the video</div>
 
 <!-- TODO ARIA controls on all clickables -->
-<div class="injectedvideocontrols .vjs-story-skin {
-">
+<div class="injectedvideocontrols vjs-story-skin">
+
+	<div class="video-scenemenu vjs-control">
+		<a x-ng-click="toggleSceneMenu()">
+			<span class="vjs-control-text">Scene list</span>
+		</a>
+	</div>
+
+
 	<div x-ng-if="curScene.$prevScene" class="video-prevscene vjs-control">
 		<a x-ng-click="gotoTime(curScene.$prevScene.startTime)">
 			<span class="vjs-control-text">Previous scene</span>
