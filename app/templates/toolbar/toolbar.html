@@ -1,8 +1,5 @@
 <div>
 	<div class="toolbar">
-		<a class="button button-showscenenav" href="javascript: void 1;" x-ng-click="showNavigationPanel()">
-			<span>Scenes</span>
-		</a>
 		<a class="button button-search" href="javascript: void 1;" x-ng-click="showSearchPanel()">
 			<span>Search</span>
 		</a>
@@ -21,7 +18,7 @@
 	</div>
 	<div class="threedee">
 		<div class="modal-backdrop" x-ng-click="hidePanels()" x-ng-show="show.navigationPanel || show.searchPanel"></div>
-		<div x-ng-show="show.navigationPanel" class="sidePanel navigationPanel colorInvert">
+		<div x-ng-show="show.navigationPanel" class="sidePanel navigationPanel">
 			<div x-ng-controller="NavigationPanelController">
 				<h2>{{episode.title}}</h2>
 				<div class="scene" x-ng-repeat="scene in scenes" x-ng-class="{currentScene: scene.isActive}" x-ng-click="gotoScene(scene)">

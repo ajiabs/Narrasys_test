@@ -4,7 +4,7 @@
 // - can only declare one of these for an episode
 // - should never be reparented or removed from the dom (use ittMagnet directives instead)
 angular.module('com.inthetelling.player')
-	.directive('ittVideo', function (cuePointScheduler, videojs, $timeout, config) {
+	.directive('ittVideo', function (cuePointScheduler, videojs, $timeout, config, $rootScope) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -91,6 +91,15 @@ angular.module('com.inthetelling.player')
 
 				scope.gotoTime = function (t) {
 					videojs.player.currentTime(t + 0.001); // fudge: add a bit to ensure that we're inside the next scene's range
+				};
+				
+				/* 
+				TODO REFACTOR  Ultimately I think the player needs to be refactored into a service.
+				Having to broadcast events from here to toolbar controller via $rootScope feels like three kinds of wrong. 
+				*/
+				scope.toggleSceneMenu = function() {
+					// send message for the toolbar controller to respond to.
+					$rootScope.$emit("toolbar.toggleSceneMenu");
 				};
 			}
 		};

@@ -1,6 +1,7 @@
 'use strict';
 
 //TODO: explore view needs to stash and remove showCurrent from scene layout if present
+// TODO most of this belongs in directive rather than controller
 
 // Controller for ittToolbar
 angular.module('com.inthetelling.player')
@@ -69,9 +70,17 @@ angular.module('com.inthetelling.player')
 			$scope.show.navigationPanel = false;
 			$scope.show.searchPanel = false;
 			videojs.player.controls(true); // TODO: do this on iPad only
-
 			// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
-			// TODO if this causes memory problems on old devices we can change this, but let's wait and see if that happens first
+			// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.
 		};
+
+		// Respond to signal sent from ittVideo.js (TODO REFACTOR see note in ittVideo.js)
+		$rootScope.$on('toolbar.toggleSceneMenu', function() {
+			$scope.show.navigationPanel
+				? $scope.hidePanels()
+				: $scope.showNavigationPanel() 
+			;
+		});
+
 
 	});

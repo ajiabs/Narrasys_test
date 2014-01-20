@@ -68,7 +68,6 @@
 
 .sidePanel {
 	position: fixed;
-	top: 0; bottom: 0;
 	box-shadow: 0 0 20px rgba(0,0,0,0.5);
 	z-index: 10;
 }
@@ -90,6 +89,7 @@
 /* Panel animations */
 
 .searchPanel {
+	top: 0; bottom: 0;
 	transition: 0.7s ease-in-out all;
 	transform-origin: 100% 50%;
 	opacity:1;
@@ -105,15 +105,16 @@
 }
 
 .navigationPanel {
+	bottom: 0; left: 7em; right: 7em;
 	transition: 0.7s ease-in-out all;
-	transform-origin: 0 50%;
+	transform-origin: 0 100% 0;
 	opacity:1;
-	transform: rotateY(0) translateX(0);
+	transform: translateY(0) rotateX(0);
 }
 
 .navigationPanel.ng-hide {
 	opacity:0;
-	transform: rotateY(-60deg) translateX(-200px);
+	transform: translateY(80%) rotateX(-45deg);
 }
 
 /*============================
@@ -203,7 +204,9 @@
 //===========================*/
 
 .navigationPanel {
-	max-width: 40%;
+	border-radius: 1em 1em 0 0;
+	background-color: #FFF;
+	padding-bottom: 3em;
 }
 
 .navigationPanel h2 {
@@ -212,11 +215,11 @@
 
 .navigationPanel .scene {
 	padding: 0.3em;
-	border-bottom: 1px solid rgba(0,0,0,0.7);
+	border-top: 1px solid rgba(0,0,0,0.2);
 }
 
 .navigationPanel .currentScene {
-	background-color: rgba(255,255,255,0.1);
+	background-color: rgba(0,0,0,0.1);
 }
 
 .navigationPanel .displayTime {
