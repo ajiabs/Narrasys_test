@@ -1,5 +1,7 @@
 'use strict';
 
+//TODO we badly need an episode directive
+
 // Episode Controller
 angular.module('com.inthetelling.player')
 	.controller('EpisodeController', function (dataSvc, modelFactory, cuePointScheduler, $scope, $rootScope, $location, $routeParams) {
@@ -39,6 +41,17 @@ angular.module('com.inthetelling.player')
 					$scope.scenes.push(sceneModel);
 				}
 			}
+
+
+			// Inject references to nextScene, prevScene values here, as long as we already have a sorted array of them.
+			// TODO this is a derived value; refactor.
+			for (i = 1; i < $scope.scenes.length; i++) {
+				$scope.scenes[i].$prevScene = $scope.scenes[i - 1];
+			}
+			for (i = 0; i < $scope.scenes.length - 1; i++) {
+				$scope.scenes[i].$nextScene = $scope.scenes[i + 1];
+			}
+
 
 			// create item/transmedia models and place them into the items collection of their respective scenes
 			for (i = 0; i < data.events.length; i++) {
