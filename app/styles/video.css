@@ -143,7 +143,7 @@ The control icons are from a custom font. Each icon corresponds to a character
 	box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
 	border-top: 1px solid #CCC;
 	color: #333;
-	display:none;
+	display:block !important;
 }
 /* Slider - used for Volume bar and Seek bar */
  .vjs-story-skin .vjs-slider {

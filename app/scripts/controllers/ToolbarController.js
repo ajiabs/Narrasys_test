@@ -51,13 +51,13 @@ angular.module('com.inthetelling.player')
 
 		$scope.showNavigationPanel = function () {
 			videojs.player.pause();
-			videojs.player.controls(false); // TODO: do this on iPad only
+//			videojs.player.controls(false); // TODO: do this on iPad only
 			$scope.show.navigationPanel = true;
 		};
 
 		$scope.showSearchPanel = function () {
 			videojs.player.pause();
-			videojs.player.controls(false); // TODO: do this on iPad only
+//			videojs.player.controls(false); // TODO: do this on iPad only
 			$scope.show.searchPanel = true;
 			// Wait a tick before building the search panel internals. (Possibly unnecessary, but just in case...)
 			$timeout(function () {
@@ -69,7 +69,7 @@ angular.module('com.inthetelling.player')
 			// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 			$scope.show.navigationPanel = false;
 			$scope.show.searchPanel = false;
-			videojs.player.controls(true); // TODO: do this on iPad only
+//			videojs.player.controls(true); // TODO: do this on iPad only
 			// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
 			// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.
 		};

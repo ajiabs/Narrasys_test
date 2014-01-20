@@ -1,3 +1,5 @@
+/* MODIFIED TO NOT FORCE NATIVE MOBILE CONTROLS */
+
 /**
  * @fileoverview YouTube Media Controller - Wrapper for YouTube Media API
  */
@@ -34,7 +36,7 @@ videojs.Youtube = videojs.MediaTechController.extend({
 
     // Mobile devices are using their own native players
     if (!!navigator.userAgent.match(/iPhone/i) || !!navigator.userAgent.match(/iPad/i) || !!navigator.userAgent.match(/iPod/i) || !!navigator.userAgent.match(/Android.*AppleWebKit/i)) {
-      player.options()['ytcontrols'] = true;
+//      player.options()['ytcontrols'] = true;
     }
 
     // Create the Quality button
@@ -133,9 +135,8 @@ videojs.Youtube = videojs.MediaTechController.extend({
       params.origin = window.location.protocol + '//' + window.location.host;
       this.el_.src = window.location.protocol + '//www.youtube.com/embed/' + this.videoId + '?' + videojs.Youtube.makeQueryString(params);
     } else {
-      //this.el_.src = 'http://youtube.com/embed/' + this.videoId + '?' + videojs.Youtube.makeQueryString(params);
+      this.el_.src = 'http://youtube.com/embed/' + this.videoId + '?' + videojs.Youtube.makeQueryString(params);
     }
-    this.el_.src = "http://m.youtube.com/embed/"+this.videoId;
    // alert(this.el_.src);
 
     var self = this;

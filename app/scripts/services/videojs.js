@@ -24,9 +24,9 @@ angular.module('com.inthetelling.player')
 					// customControlsOnMobile was removed from videoJs, but if they ever bring it back we can use it as a better fix
 					// than turning off vjs.controls() when something is going to overlap the video 
 					// (which we need to do on ipad only, because the video controls layer steals all click events within its area
-					/* "customControlsOnMobile": true, */
-					"controls": true,
-					"preload": true
+					"controls": false,
+					"preload": true,
+					"nativeControlsForTouch": false
 				};
 				if (videodata.youtube) {
 					vjsconfig.techOrder = ["youtube"];
