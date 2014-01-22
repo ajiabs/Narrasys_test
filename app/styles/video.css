@@ -90,9 +90,8 @@
 	border-right: 1px solid #999;
 }
 .video-scenemenu a:before {
-	font-size: 1.4em;
-	line-height: 1.2em;
-	content:"\e602";
+	line-height: 1.7em;
+	content:"\e605";
 }
 .video-prevscene a:before {
 	content:"\e601";
@@ -107,27 +106,18 @@
 .video-nextscene {
 	right:2em;
 }
-/* Custom Icon Font
---------------------------------------------------------------------------------
-The control icons are from a custom font. Each icon corresponds to a character
-(e.g. "\e001"). Font icons allow for easy scaling and coloring of icons.
-*/
- @font-face {
-	font-family:'Story';
-	src: url('/images/font/story.eot');
-	src: url('/images/font/story.eot?#iefix') format('embedded-opentype'), url('/images/font/story.woff') format('woff'), url('/images/font/story.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
+
+.vjs-story-skin .video-captions {
+	position:absolute;
+	width: 5em;
+	cursor: pointer;
+	bottom: 0.5em;
+	right: 1em;
 }
-/*
- @font-face {
-	font-family:'VideoJs';
-	src: url('font/vjs.eot');
-	src: url('font/vjs.eot?#iefix') format('embedded-opentype'), url('font/vjs.woff') format('woff'), url('font/vjs.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
+.vjs-story-skin .video-captions:before {
+	content:"\e008";
 }
-*/
+
 
 /* Our skin
 --------------------------------------------------------------------------------

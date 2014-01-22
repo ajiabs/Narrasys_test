@@ -22,8 +22,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
 				redirectTo: '/error'
 			} // TODO I'd rather not rewrite the url if the user makes a typo; is there a better way to handle errors than a route redirect?
 	);
-	$locationProvider.html5Mode(true);
-
+	$locationProvider.html5Mode(false); // TODO sigh, can't get the server config working for this... thought we had it but IE still choked
 })
 
 // Configure x-domain resource whitelist

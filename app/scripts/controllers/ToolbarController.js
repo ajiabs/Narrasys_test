@@ -7,6 +7,8 @@
 angular.module('com.inthetelling.player')
 	.controller('ToolbarController', function ($scope, $timeout, $rootScope, videojs) {
 
+
+
 		/* Handler for toolbar buttons to change scene templates. */
 		$scope.setSceneTemplate = function (newTemplate) {
 			console.log("setSceneTemplate " + newTemplate);
@@ -41,12 +43,21 @@ angular.module('com.inthetelling.player')
 		$scope.currentSceneTemplateIs = function (compare) {
 			return $scope.currentSceneTemplate === compare;
 		};
+		
+		/* The "view / watch" button toggles between explore and directed modes: */
+		$scope.toggleSceneTemplate = function() {
+			if ($scope.currentSceneTemplate === '') {
+				$scope.setSceneTemplate('explore');
+			} else {
+				$scope.setSceneTemplate('');
+			}
+		};
 
 		// Nav and Search:
 		$scope.show = {
 			navigationPanel: false,
 			searchPanel: false,
-			searchPanelInternals: false // 
+			searchPanelInternals: false
 		};
 
 		$scope.showNavigationPanel = function () {
@@ -81,6 +92,13 @@ angular.module('com.inthetelling.player')
 				: $scope.showNavigationPanel() 
 			;
 		});
+
+		// Respond to signal sent from ittVideo.js (TODO REFACTOR see note in ittVideo.js)
+		$rootScope.$on('toolbar.startFSView', function() {
+		console.log("start fullscreen view");
+			$scope.setSceneTemplate('video');
+		});
+
 
 
 	});

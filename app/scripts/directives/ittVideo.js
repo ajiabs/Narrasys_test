@@ -99,7 +99,13 @@ angular.module('com.inthetelling.player')
 				*/
 				scope.toggleSceneMenu = function() {
 					// send message for the toolbar controller to respond to.
+					console.log("sending toggleSceneMenu message");
 					$rootScope.$emit("toolbar.toggleSceneMenu");
+				};
+				scope.startFSView = function() {
+					console.log("sending startFSView message");
+					// send message for the toolbar controller to respond to.
+					$rootScope.$emit("toolbar.startFSView");
 				};
 			}
 		};

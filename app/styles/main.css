@@ -39,6 +39,19 @@ Note that windowFg should NOT get pointer-events:none, as it'll be used for stop
 	pointer-events: auto
 }
 
+/* Custom Icon Font
+--------------------------------------------------------------------------------
+See /images/font/story/map.png for a list of available glyphs
+*/
+ @font-face {
+	font-family:'Story';
+	src: url('/images/font/story.eot');
+	src: url('/images/font/story.eot?#iefix') format('embedded-opentype'), url('/images/font/story.woff') format('woff'), url('/images/font/story.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
 
 /*============================
  *

@@ -76,22 +76,20 @@
 
 /*============================*/
 /* fullscreen video mode */
-
+.scene-video {background-color: #000;
+position:absolute; top: 60px; left: 0; right: 0; bottom: 0;
+}
 .scene-video .videoContainer {
-	width: 90%;
-	float: right;
+	margin: auto;
 }
-.scene-video .contentAlt {
-	position:absolute;
-	top:0;
-	bottom: 0;
-	overflow-vertical: scroll;
-	background-color: #000 !important;
-}
-.scene-video .contentMain {
-	width: 100%;
-	background-color: #000 !important;
-}
+
+.scene-video .contentMain {background-color:#000}
+
+
+.scene-video .contentMain .paneBg, 
+.scene-video .contentMain .paneFg 
+
+{display:none}
 
 
 /*============================*/

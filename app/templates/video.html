@@ -3,11 +3,18 @@
 <!-- TODO ARIA controls on all clickables -->
 <div class="injectedvideocontrols vjs-story-skin">
 
-	<div class="video-scenemenu vjs-control">
-		<a x-ng-click="toggleSceneMenu()">
+	<div x-ng-click="toggleSceneMenu()" class="video-scenemenu vjs-control">
+		<a href="javascript: void 1;">
 			<span class="vjs-control-text">Scene list</span>
 		</a>
 	</div>
+
+	<div x-ng-click="startFSView()" class="video-captions vjs-control">
+		<a href="javascript: void 1;">
+			<span class="vjs-control-text">Closed Captions</span>
+		</a>
+	</div>
+
 
 
 	<div x-ng-if="curScene.$prevScene" class="video-prevscene vjs-control">
@@ -22,6 +29,4 @@
 		</a>
 
 	</div>
-	<!-- more TODO: 'fullscreen/CC' mode button -->
-	<div x-ng-click="testme()"></div>
 </div>

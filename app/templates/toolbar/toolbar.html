@@ -1,20 +1,20 @@
 <div>
 	<div class="toolbar">
+
+		
+			<a x-ng-click="toggleSceneTemplate();" class="button button-directed" href="javascript:void 1;">
+				<span x-ng-if="currentSceneTemplateIs('')">Read</span>
+				<span x-ng-if="currentSceneTemplateIs('explore')">Watch</span>
+			</a>
+
+		<a x-ng-if="isFramed" class="button button-mainframeescape" href="/episode/{{episodeID}}/{{authKey}}" target="frameEscape" onclick="window.open('','frameEscape').focus();">
+			<span>New window</span>
+		</a>
+
 		<a class="button button-search" href="javascript: void 1;" x-ng-click="showSearchPanel()">
 			<span>Search</span>
 		</a>
-		<div id="frameselections">
-			<!-- TODO: trigger view changes on click -->
-			<a x-ng-click="setSceneTemplate('video');" class="button button-video" x-ng-class="{cur: currentSceneTemplateIs('video')}" href="javascript:void 1;">
-				<span>Video view</span>
-			</a>
-			<a x-ng-click="setSceneTemplate();" class="button button-directed" x-ng-class="{cur: currentSceneTemplateIs()}" href="javascript:void 1;">
-				<span>Directed view</span>
-			</a>
-			<a x-ng-click="setSceneTemplate('explore');" class="button button-explore" x-ng-class="{cur: currentSceneTemplateIs('explore')}" href="javascript:void 1;">
-				<span>Explore view</span>
-			</a>
-		</div>
+		
 	</div>
 	<div class="threedee">
 		<div class="modal-backdrop" x-ng-click="hidePanels()" x-ng-show="show.navigationPanel || show.searchPanel"></div>

@@ -1,4 +1,4 @@
-<div class="{{episode.styles}}">
+<div class="{{episode.styles}}" x-ng-class="{isFramed: isFramed, isMobile: (isIPad || isIPhone)}">
 	<div x-itt-video x-itt-magnetized class="vjs-wrapper"></div>
 	<div x-itt-toolbar></div>
 	<div class="episode episode{{episode.layout}}">

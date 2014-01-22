@@ -9,6 +9,11 @@ angular.module('com.inthetelling.player')
 		dataSvc.get($routeParams, function (data) { // ON SUCCESS
 			var i, j;
 
+			
+			// To be used by framebreaker (see toolbar controller):
+			$scope.episodeID = $routeParams.epId;
+			$scope.authKey = $routeParams.authKey;
+			
 			// Create an episode model.
 			$scope.episode = modelFactory.createEpisodeModel(data.episode);
 
@@ -44,7 +49,7 @@ angular.module('com.inthetelling.player')
 
 
 			// Inject references to nextScene, prevScene values here, as long as we already have a sorted array of them.
-			// TODO this is a derived value; refactor.
+			// TODO these are derived values; refactor.
 			for (i = 1; i < $scope.scenes.length; i++) {
 				$scope.scenes[i].$prevScene = $scope.scenes[i - 1];
 			}
@@ -98,8 +103,18 @@ angular.module('com.inthetelling.player')
 					return a.startTime - b.startTime;
 				});
 			}
+			
+			
+			// Frame detect
+			$scope.isFramed = (window.parent !== window);
+			
+			// iPad or iPhone detect.  (TODO may not need these... so far only use would be to hide nonfunctional volume control in video, maybe better to do that there)
+			$scope.isIPad = (navigator.platform.indexOf('iPad') > -1);
+			$scope.isiPhone = (navigator.platform.indexOf('iPhone') + navigator.platform.indexOf('iPod') > -1);
+			
 
-			console.log("Created Scope:", $scope);
+//			console.log("Created episode scope:", $scope);
+			
 
 		}, function (data) { // ON ERROR
 			// TODO: Should probably be using a service instead of root scope

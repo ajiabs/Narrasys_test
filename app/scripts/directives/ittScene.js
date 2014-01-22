@@ -20,6 +20,13 @@ angular.module('com.inthetelling.player')
 				var twiddleSceneLayout = function () {
 					$timeout(function () { // wait for any DOM updates first
 						// console.log("twiddleSceneLayout");
+						
+						// special case for fsvideo view: make sure there's room for captions:
+						if (scope.scene.templateUrl === "templates/scene-video.html" && scope.scene.isActive) { //TODO WARN FRAGILE BAD YUCKO dependency on template url
+							element.find('.videoContainer').height($(window).height() - 160); // ensure there's room for captions
+						}
+
+						
 						element.find('.matchVideoHeight:visible').height(element.find('.videoContainer').height()); // TODO check if this works with multiple .matchVideoHeight elements in the scene
 						element.find('.stretchToViewportBottom:visible').each(function () {
 							$(this).css("min-height", ($(window).height() - this.offsetTop - 60));

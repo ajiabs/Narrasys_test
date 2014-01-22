@@ -1,4 +1,6 @@
 /* MODIFIED TO NOT FORCE NATIVE MOBILE CONTROLS */
+/* TODO: strip out "quality" menu */
+/* TODO: volume control not working on ipad; fix it or hide it */
 
 /**
  * @fileoverview YouTube Media Controller - Wrapper for YouTube Media API
