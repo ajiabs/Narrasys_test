@@ -6,7 +6,7 @@
    //default setting
    var default_setting = {
       markerTip: {
-         display: true,
+         display: true
       }
    };
 

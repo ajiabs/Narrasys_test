@@ -142,8 +142,10 @@ angular.module('com.inthetelling.player')
 						///////////////////
 
 						callback(data);
-					}).
-				catch (function (response) {
+
+/* This throws "unknown provider" errors in IE8 for some reason. Back to editing config.js every ten minutes oh well
+					})
+				.catch (function (response) {
 					// AJAX fail.
 					// Try falling back to localData:
 					if (!config.localData) {
@@ -153,7 +155,7 @@ angular.module('com.inthetelling.player')
 					} else {
 						$location.path('/error');
 					}
-
+*/
 				});
 
 			}

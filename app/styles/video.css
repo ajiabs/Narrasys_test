@@ -738,6 +738,11 @@ control positioning and full window mode. **
 	opacity: 1;
 	visibility: visible;
 }
-/* -----------------------------------------------------------------------------
-The original source of this file lives at
-https://github.com/Story/video.js/blob/master/src/css/video-js.less */
+
+/* Needed by eXon vjs-youtube plugin */
+/* Plugin was trying to inject this but that was buggy in IE */
+
+.vjs-youtube .vjs-poster { background-size: cover; } 
+.iframeblocker { display:none;position:absolute;top:0;left:0;width:100%;height:100%;cursor:pointer;z-index:2; } 
+.vjs-youtube.vjs-user-inactive .iframeblocker { display:block; } 
+.vjs-quality-button > div:first-child > span:first-child { position:relative;top:7px }

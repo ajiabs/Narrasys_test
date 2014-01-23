@@ -589,16 +589,3 @@ videojs.Youtube.prototype.onError = function(error){
   this.player_.trigger('error');
 };
 
-// Stretch the YouTube poster
-// Keep the iframeblocker in front of the player when the user is inactive
-// (ONLY way because the iframe is so selfish with events)
-(function() {
-  var style = document.createElement('style');
-  style.innerText = ' \
-  .vjs-youtube .vjs-poster { background-size: cover; }\
-  .iframeblocker { display:none;position:absolute;top:0;left:0;width:100%;height:100%;cursor:pointer;z-index:2; }\
-  .vjs-youtube.vjs-user-inactive .iframeblocker { display:block; } \
-  .vjs-quality-button > div:first-child > span:first-child { position:relative;top:7px }\
-  ';
-  document.getElementsByTagName('head')[0].appendChild(style);
-})();
