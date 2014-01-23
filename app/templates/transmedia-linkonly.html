@@ -1,0 +1,24 @@
+<div class="item {{item.layout}} {{item.styles}} " x-ng-class='{
+	"currentItem": item.isActive, 
+	"futureItem": !item.isActive && !item.wasActive, 
+	"pastItem": !item.isActive && item.wasActive,
+	"isRequired": item.required,
+	"isCosmetic": item.cosmetic
+}'>
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="gotoItem()">{{item.displayTime}}</div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<span x-ng-if="item.required">(Required viewing)</span>
+		</div>
+	</div>
+	<!-- <div class="icon"><img x-ng-src="{{item.thumbSrc}}"></div> -->
+	<div class="text">
+		<div class="title"><a href="javascript:void 1;" x-ng-click="toggleDetailView()">{{item.title}}</a>
+		</div>
+	</div>
+	<div class="detail" x-ng-if="item.showInlineDetail">
+		<img x-ng-src="{{item.source}}" style="width: 100%">
+		<div class="text">{{item.description}}</div>
+	</div>
+</div>
