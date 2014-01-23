@@ -49,7 +49,7 @@
 .highlightTilt .content .item.currentItem,
 .highlightTilt.item.currentItem
 {
-	transform: rotateY(-30deg) scale(1.28);
+	transform: rotateY(-20deg) scale(1.18);
 	transform-origin: 70% 50% 0;
 	transform-style: preserve-3d;
 	transition: all 1s;
