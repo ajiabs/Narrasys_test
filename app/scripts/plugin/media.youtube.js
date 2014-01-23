@@ -1,7 +1,3 @@
-/* MODIFIED TO NOT FORCE NATIVE MOBILE CONTROLS */
-/* TODO: strip out "quality" menu */
-/* TODO: volume control not working on ipad; fix it or hide it */
-
 /**
  * @fileoverview YouTube Media Controller - Wrapper for YouTube Media API
  */
@@ -38,7 +34,7 @@ videojs.Youtube = videojs.MediaTechController.extend({
 
     // Mobile devices are using their own native players
     if (!!navigator.userAgent.match(/iPhone/i) || !!navigator.userAgent.match(/iPad/i) || !!navigator.userAgent.match(/iPod/i) || !!navigator.userAgent.match(/Android.*AppleWebKit/i)) {
-//      player.options()['ytcontrols'] = true;
+      player.options()['ytcontrols'] = true;
     }
 
     // Create the Quality button
@@ -137,9 +133,8 @@ videojs.Youtube = videojs.MediaTechController.extend({
       params.origin = window.location.protocol + '//' + window.location.host;
       this.el_.src = window.location.protocol + '//www.youtube.com/embed/' + this.videoId + '?' + videojs.Youtube.makeQueryString(params);
     } else {
-      this.el_.src = 'http://youtube.com/embed/' + this.videoId + '?' + videojs.Youtube.makeQueryString(params);
+      this.el_.src = 'https://www.youtube.com/embed/' + this.videoId + '?' + videojs.Youtube.makeQueryString(params);
     }
-   // alert(this.el_.src);
 
     var self = this;
     player.ready(function(){
@@ -589,3 +584,16 @@ videojs.Youtube.prototype.onError = function(error){
   this.player_.trigger('error');
 };
 
+// Stretch the YouTube poster
+// Keep the iframeblocker in front of the player when the user is inactive
+// (ONLY way because the iframe is so selfish with events)
+(function() {
+  var style = document.createElement('style');
+  style.innerText = ' \
+  .vjs-youtube .vjs-poster { background-size: cover; }\
+  .iframeblocker { display:none;position:absolute;top:0;left:0;width:100%;height:100%;cursor:pointer;z-index:2; }\
+  .vjs-youtube.vjs-user-inactive .iframeblocker { display:block; } \
+  .vjs-quality-button > div:first-child > span:first-child { position:relative;top:7px }\
+  ';
+  document.getElementsByTagName('head')[0].appendChild(style);
+})();

@@ -474,30 +474,7 @@ easily in the skin designer. http://designer.Story.com/
 	height: 1em;
 	text-align: center;
 }
-@-moz-keyframes spin {
-	0% {
-		-moz-transform: rotate(0deg);
-	}
-	100% {
-		-moz-transform: rotate(359deg);
-	}
-}
-@-webkit-keyframes spin {
-	0% {
-		-webkit-transform: rotate(0deg);
-	}
-	100% {
-		-webkit-transform: rotate(359deg);
-	}
-}
-@-o-keyframes spin {
-	0% {
-		-o-transform: rotate(0deg);
-	}
-	100% {
-		-o-transform: rotate(359deg);
-	}
-}
+
 @keyframes spin {
 	0% {
 		transform: rotate(0deg);
