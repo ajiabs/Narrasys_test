@@ -59,7 +59,7 @@ module.exports = function (grunt) {
 					'.tmp/styles/{,*/}*.css',
 					'{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
 					'<%= yeoman.app %>/server-mock/**/*.{html,json}',
-					'<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+					'<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}'
 				]
 			}
 		},
