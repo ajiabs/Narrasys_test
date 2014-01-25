@@ -10,183 +10,201 @@
 		}
 	},
 	"events": [{
-		"type": "scene",
-		"layout_id": "",
-		"start_time": 0,
-		"end_time": 511,
-		"title": "This is a scene.",
-		"description": "Testing item templates."
-	}, {
-		"type": "annotation",
-		"start_time": 0,
-		"end_time": 3,
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "No template specified -- should be default."
-	}, {
-		"type": "annotation",
-		"start_time": 3,
-		"end_time": 6,
-		"template_id": "templates/transcript-default.html",
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "transcript-default.html."
-	}, {
-		"type": "annotation",
-		"start_time": 6,
-		"end_time": 9,
-		"template_id": "templates/transcript-withthumbnail.html",
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "transcript-withthumbnail.html."
-	}, {
-		"type": "annotation",
-		"start_time": 9,
-		"end_time": 12,
-		"template_id": "templates/transcript-withthumbnail-alt.html",
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "transcript-withthumbnail-alt.html."
-	}, {
-		"type": "annotation",
-		"start_time": 12,
-		"end_time": 15,
-		"template_id": "templates/text-pullquote.html",
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "text-pullquote.html."
-	}, {
-		"type": "annotation",
-		"start_time": 15,
-		"end_time": 18,
-		"template_id": "templates/text-pullquote-noattrib.html",
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "text-pullquote-noattrib.html."
-	}, {
-		"type": "annotation",
-		"start_time": 18,
-		"end_time": 21,
-		"template_id": "templates/text-h1.html",
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "text-h1.html"
-	}, {
-		"type": "annotation",
-		"start_time": 21,
-		"end_time": 24,
-		"template_id": "templates/text-h2.html",
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "text-h2.html."
-	},
-	
-	
-	{
-		"type": "upload",
-		"event_category_id": "category-id",
-		"start_time": 1,
-		"end_time": 5,
-		"required": true,
-		"template_id": "templates/transmedia-image-default.html",
-		"title": "transmedia-image-default",
-		"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
-		"asset_id": "http://placekitten.com/640/480"
-	},
-	{
-		"type": "upload",
-		"event_category_id": "category-id",
-		"start_time": 5,
-		"end_time": 10,
-		"required": true,
-		"template_id": "templates/transmedia-image-plain.html",
-		"title": "transmedia-image-plain",
-		"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
-		"asset_id": "http://placekitten.com/640/480"
-	},
-	{
-		"type": "upload",
-		"event_category_id": "category-id",
-		"start_time": 10,
-		"end_time": 15,
-		"required": true,
-		"template_id": "templates/transmedia-linkonly.html",
-		"title": "transmedia-linkonly",
-		"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
-		"asset_id": "http://placekitten.com/640/480"
-	},
-	{
-		"type": "upload",
-		"event_category_id": "category-id",
-		"start_time": 15,
-		"end_time": 20,
-		"required": true,
-		"template_id": "templates/transmedia-thumbnail.html",
-		"title": "transmedia-thumbnail",
-		"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
-		"asset_id": "http://placekitten.com/640/480"
-	},
-	{
-		"type": "upload",
-		"event_category_id": "category-id",
-		"start_time": 25,
-		"end_time": 30,
-		"required": true,
-		"template_id": "templates/transmedia-caption.html",
-		"title": "transmedia-image-default",
-		"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
-		"asset_id": "http://placekitten.com/640/480"
-	},
-	{
-		"type": "upload",
-		"event_category_id": "category-id",
-		"start_time": 35,
-		"end_time": 40,
-		"required": true,
-		"template_id": "templates/transmedia-slidingcaption.html",
-		"title": "transmedia-image-default",
-		"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
-		"asset_id": "http://placekitten.com/640/480"
-	},
-	
-	
-	{
-		"type": "link",
-		"event_category_id": "links",
-		"start_time": 1,
-		"end_time": 10,
-		"required": true,
-		"template_id": "templates/transmedia-link-default.html",
-		"title": "Transmedia-link-default",
-		"description": "Default link tempalte",
-		"link_image_id": "http://placekitten.com/61/61",
-		"url": "http://danielbeck.net"
-	},
-	{
-		"type": "link",
-		"event_category_id": "links",
-		"start_time": 10,
-		"end_time": 20,
-		"required": true,
-		"template_id": "templates/transmedia-link-noembed.html",
-		"title": "No-embed link template",
-		"description": "This is the no-embed link template",
-		"link_image_id": "http://placekitten.com/60/60",
-		"url": "http://danielbeck.net"
-	},
-	{
-		"type": "link",
-		"event_category_id": "links",
-		"start_time": 20,
-		"end_time": 30,
-		"required": true,
-		"template_id": "templates/transmedia-link-youtube.html",
-		"title": "Transmedia-link-youtube",
-		"description": "Embedded youtube video",
-		"link_image_id": "http://placekitten.com/90/60",
-		"url": "http://www.youtube.com/embed/0SFgUW0GqMo"
-	}
-	
-	
+			"type": "scene",
+			"template_id": "templates/scene-1col.html",
+			"layout_id": "",
+			"style_id": "",
+			"start_time": 0,
+			"end_time": 511,
+			"title": "This is a scene.",
+			"description": "Testing item templates."
+		}, {
+			"type": "annotation",
+			"start_time": 0,
+			"end_time": 3,
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "No template specified -- should be default."
+		}, {
+			"type": "annotation",
+			"start_time": 3,
+			"end_time": 6,
+			"template_id": "templates/transcript-default.html",
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "transcript-default.html."
+		}, {
+			"type": "annotation",
+			"start_time": 6,
+			"end_time": 9,
+			"template_id": "templates/transcript-withthumbnail.html",
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "transcript-withthumbnail.html."
+		}, {
+			"type": "annotation",
+			"start_time": 9,
+			"end_time": 12,
+			"template_id": "templates/transcript-withthumbnail-alt.html",
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "transcript-withthumbnail-alt.html."
+		}, {
+			"type": "annotation",
+			"start_time": 12,
+			"end_time": 15,
+			"template_id": "templates/text-pullquote.html",
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "text-pullquote.html."
+		}, {
+			"type": "annotation",
+			"start_time": 15,
+			"end_time": 18,
+			"template_id": "templates/text-pullquote-noattrib.html",
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "text-pullquote-noattrib.html."
+		}, {
+			"type": "annotation",
+			"start_time": 18,
+			"end_time": 21,
+			"template_id": "templates/text-h1.html",
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "text-h1.html"
+		}, {
+			"type": "annotation",
+			"start_time": 21,
+			"end_time": 24,
+			"template_id": "templates/text-h2.html",
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "text-h2.html."
+		},
+
+
+		{
+			"type": "upload",
+			"event_category_id": "category-id",
+			"start_time": 1,
+			"end_time": 5,
+			"required": true,
+			"template_id": "templates/transmedia-image-default.html",
+			"title": "transmedia-image-default",
+			"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
+			"asset_id": "http://placekitten.com/640/480"
+		}, {
+			"type": "upload",
+			"event_category_id": "category-id",
+			"start_time": 5,
+			"end_time": 10,
+			"required": true,
+			"template_id": "templates/transmedia-image-plain.html",
+			"title": "transmedia-image-plain",
+			"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
+			"asset_id": "http://placekitten.com/640/480"
+		}, {
+			"type": "upload",
+			"event_category_id": "category-id",
+			"start_time": 10,
+			"end_time": 15,
+			"required": true,
+			"template_id": "templates/transmedia-linkonly.html",
+			"title": "transmedia-linkonly",
+			"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
+			"asset_id": "http://placekitten.com/640/480"
+		}, {
+			"type": "upload",
+			"event_category_id": "category-id",
+			"start_time": 15,
+			"end_time": 20,
+			"required": true,
+			"template_id": "templates/transmedia-thumbnail.html",
+			"title": "transmedia-thumbnail",
+			"description": "This should just show the thumbnail of the image",
+			"asset_id": "http://placekitten.com/640/480"
+		}, {
+			"type": "upload",
+			"event_category_id": "category-id",
+			"start_time": 25,
+			"end_time": 30,
+			"required": true,
+			"template_id": "templates/transmedia-caption.html",
+			"title": "transmedia-caption",
+			"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
+			"asset_id": "http://placekitten.com/640/480"
+		}, {
+			"type": "upload",
+			"event_category_id": "category-id",
+			"start_time": 25,
+			"end_time": 30,
+			"required": true,
+			"template_id": "templates/transmedia-caption.html",
+			"style_id": "colorInvert",
+			"title": "transmedia-caption",
+			"description": "This one has colorInvert set directly on the item",
+			"asset_id": "http://placekitten.com/640/480"
+		}, {
+			"type": "upload",
+			"event_category_id": "category-id",
+			"start_time": 35,
+			"end_time": 40,
+			"required": true,
+			"template_id": "templates/transmedia-slidingcaption.html",
+			"title": "transmedia-slidingcaption",
+			"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
+			"asset_id": "http://placekitten.com/640/480"
+		},
+
+
+		{
+			"type": "link",
+			"event_category_id": "links",
+			"start_time": 1,
+			"end_time": 10,
+			"required": true,
+			"template_id": "templates/transmedia-link-default.html",
+			"title": "Transmedia-link-default",
+			"description": "Default link tempalte",
+			"link_image_id": "http://placekitten.com/61/61",
+			"url": "http://danielbeck.net"
+		}, {
+			"type": "link",
+			"event_category_id": "links",
+			"start_time": 10,
+			"end_time": 20,
+			"required": true,
+			"template_id": "templates/transmedia-link-noembed.html",
+			"title": "No-embed link template",
+			"description": "This is the no-embed link template",
+			"link_image_id": "http://placekitten.com/60/60",
+			"url": "http://danielbeck.net"
+		}, {
+			"type": "link",
+			"event_category_id": "links",
+			"start_time": 20,
+			"end_time": 30,
+			"required": true,
+			"template_id": "templates/transmedia-link-youtube.html",
+			"title": "Transmedia-link-youtube",
+			"description": "Embedded youtube video",
+			"link_image_id": "http://placekitten.com/90/60",
+			"url": "http://www.youtube.com/embed/0SFgUW0GqMo"
+		}, {
+			"type": "link",
+			"event_category_id": "links",
+			"start_time": 5,
+			"end_time": 15,
+			"required": true,
+			"template_id": "templates/transmedia-embed-youtube.html",
+			"title": "Monsters",
+			"description": "Some monsters",
+			"link_image_id": "http://placekitten.com/60/60",
+			"url": "http://www.youtube.com/embed/0SFgUW0GqMo",
+			"layout_id": "burstR"
+		}
+
+
 	]
 }

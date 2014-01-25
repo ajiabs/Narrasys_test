@@ -9,16 +9,15 @@
 		<div class="startTime displayTime" x-ng-click="gotoItem()">{{item.displayTime}}</div>
 		<div class="category">
 			<!--{{item.category}}-->
-			<span x-ng-if="item.required">(Required viewing)</span>
+			<!--<span x-ng-if="item.required">(Required viewing)</span>-->
 		</div>
 	</div>
-	<!-- <div class="icon"><img x-ng-src="{{item.thumbSrc}}"></div> -->
+	<div class="thumbnail" x-ng-class="{fullsize: item.showInlineDetail || item.isActive}" x-ng-click="toggleDetailView()">
+		<img x-ng-src="{{item.source}}">
+	</div>
 	<div class="text">
-		<div class="title"><a href="javascript:void 1;" x-ng-click="toggleDetailView()">{{item.title}}</a>
-		</div>
+		<div class="title">{{item.title}}</div>
+		{{item.description}}
 	</div>
-	<div class="detail" x-ng-if="item.showInlineDetail">
-		<img x-ng-src="{{item.source}}" style="width: 100%">
-		<div class="text">{{item.description}}</div>
-	</div>
+</div>
 </div>

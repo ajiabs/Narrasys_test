@@ -43,9 +43,9 @@ angular.module('com.inthetelling.player')
 		$scope.currentSceneTemplateIs = function (compare) {
 			return $scope.currentSceneTemplate === compare;
 		};
-		
+
 		/* The "view / watch" button toggles between explore and directed modes: */
-		$scope.toggleSceneTemplate = function() {
+		$scope.toggleSceneTemplate = function () {
 			if ($scope.currentSceneTemplate === '') {
 				$scope.setSceneTemplate('explore');
 			} else {
@@ -62,13 +62,13 @@ angular.module('com.inthetelling.player')
 
 		$scope.showNavigationPanel = function () {
 			videojs.player.pause();
-//			videojs.player.controls(false); // TODO: do this on iPad only
+			//			videojs.player.controls(false); // TODO: do this on iPad only
 			$scope.show.navigationPanel = true;
 		};
 
 		$scope.showSearchPanel = function () {
 			videojs.player.pause();
-//			videojs.player.controls(false); // TODO: do this on iPad only
+			//			videojs.player.controls(false); // TODO: do this on iPad only
 			$scope.show.searchPanel = true;
 			// Wait a tick before building the search panel internals. (Possibly unnecessary, but just in case...)
 			$timeout(function () {
@@ -80,22 +80,23 @@ angular.module('com.inthetelling.player')
 			// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 			$scope.show.navigationPanel = false;
 			$scope.show.searchPanel = false;
-//			videojs.player.controls(true); // TODO: do this on iPad only
+			//			videojs.player.controls(true); // TODO: do this on iPad only
 			// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
 			// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.
 		};
 
 		// Respond to signal sent from ittVideo.js (TODO REFACTOR see note in ittVideo.js)
-		$rootScope.$on('toolbar.toggleSceneMenu', function() {
-			$scope.show.navigationPanel
-				? $scope.hidePanels()
-				: $scope.showNavigationPanel() 
-			;
+		$rootScope.$on('toolbar.toggleSceneMenu', function () {
+			if ($scope.show.navigationPanel) {
+				$scope.hidePanels();
+			} else {
+				$scope.showNavigationPanel();
+			}
 		});
 
 		// Respond to signal sent from ittVideo.js (TODO REFACTOR see note in ittVideo.js)
-		$rootScope.$on('toolbar.startFSView', function() {
-		console.log("start fullscreen view");
+		$rootScope.$on('toolbar.startFSView', function () {
+			console.log("start fullscreen view");
 			$scope.setSceneTemplate('video');
 		});
 

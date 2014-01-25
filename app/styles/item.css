@@ -7,39 +7,75 @@
  * Overlays
  *
 //===========================*/
-
-.fillPane .item {position: absolute; max-width: 100%; max-height: 100%}
-
-.fillPane .futureItem {display:none}
-.fillPane .currentItem {display:block; position: absolute;}
-.fillPane .pastItem {display:none}
-
+ .fillPane .item {
+	position: absolute;
+	max-width: 100%;
+	max-height: 100%
+}
+.fillPane .futureItem {
+	display:none
+}
+.fillPane .currentItem {
+	display:block;
+	position: absolute;
+}
+.fillPane .pastItem {
+	display:none
+}
 /* Nope, can't explain the -3px. TODO */
-.fillPane .bl    {top: auto; right: auto; bottom: -3px; left: 0   ;}
-.fillPane .tl    {top: 0   ; right: auto; bottom: auto; left: 0   ;}
-.fillPane .tr    {top: 0   ; right: 0   ; bottom: auto; left: auto;}
-.fillPane .br    {top: auto; right: 0   ; bottom: -3px; left: auto;}
-
+ .fillPane .bl {
+	top: auto;
+	right: auto;
+	bottom: -3px;
+	left: 0;
+}
+.fillPane .tl {
+	top: 0;
+	right: auto;
+	bottom: auto;
+	left: 0;
+}
+.fillPane .tr {
+	top: 0;
+	right: 0;
+	bottom: auto;
+	left: auto;
+}
+.fillPane .br {
+	top: auto;
+	right: 0;
+	bottom: -3px;
+	left: auto;
+}
 /* TODO (also need to set image h/w to 100% for these)
 .fillPane .b     {top: auto; right: 0   ; bottom: 0   ; left: 0   ;}
 .fillPane .l     {top: 0   ; right: auto; bottom: 0   ; left: 0   ;}
 .fillPane .t     {top: 0   ; right: 0   ; bottom: auto; left: 0   ;}
 .fillPane .r     {top: 0   ; right: 0   ; bottom: 0   ; left: auto;}
 */
-
-.fillPane .fill  {top: 0   ; right: 0   ; bottom: 0   ; left: 0   ;}
-.fillPane .fill img {width:100%; height: 100%}
-
-
+ .fillPane .fill {
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+.fillPane .fill img {
+	width:100%;
+	height: 100%
+}
 /* scale images to pane size instead of clipping. */
-/* TODO (probably): overflow:hidden for non-image things in fill */
-.fillPane img {max-width: 100%; max-height: 100%;}
 
+/* TODO (probably): overflow:hidden for non-image things in fill */
+ .fillPane img {
+	max-width: 100%;
+	max-height: 100%;
+}
 /*============================
  *
  * TMP
  *
 //===========================*/
+
 /*
 .content .item {border: 1px solid #666}
 .futureItem {color: #CCC}
@@ -47,93 +83,149 @@
 .currentItem {color: #000}
 */
 
-
 /*============================
  *
  * Defaults
  *
 //===========================*/
-
-.content .item {
+ .content .item {
 	padding: 0.5em 5%;
 	padding-left: 60px;
 }
-
-.content .item .itemHead {display:inline; line-height: 1em}
-
+.content .item .itemHead {
+	display:inline;
+	line-height: 1em
+}
 .content .item .icon {
 	max-width: 55px;
+	;
 }
-
 .content .item .icon img {
-    width: 100%;
+	width: 100%;
 }
-
 .content .item .text {
 }
-
 .content .item .startTime {
-	cursor: pointer; cursor: hand;
+	cursor: pointer;
+	cursor: hand;
 	margin-left: -55px;
 	width: 50px;
 	text-align:right;
 	float:left;
 }
-
 /*============================ ============================ ============================
  *
  * timestamps
  *
 //=========================== */
-
-.timestampNone .content .item,
-.content .item.timestampNone 
-{
+ .timestampNone .content .item, .content .item.timestampNone {
 	padding-left: 5%
 }
-
-
-.timestampNone .content .item .displayTime,
-.content .item.timestampNone .displayTime
-{
+.timestampNone .content .item .displayTime, .content .item.timestampNone .displayTime {
 	display:none
 }
-
 /* =========================== */
-
-.timestampInline .content .item,
-.content .item.timestampInline 
-{
+ .timestampInline .content .item, .content .item.timestampInline {
 	padding-left: 0.5em;
 }
-
-.timestampInline .content .item .startTime,
-.content .item.timestampInline .startTime {
-	display:inline; margin-left: 0; width:auto; text-align:left; padding-right: 0.4em;
+.timestampInline .content .item .startTime, .content .item.timestampInline .startTime {
+	display:inline;
+	margin-left: 0;
+	width:auto;
+	text-align:left;
+	padding-right: 0.4em;
 }
-
 /* =========================== */
-
-.timestampSidebar .content .item,
-.content .item.timestampSidebar {
+ .timestampSidebar .content .item, .content .item.timestampSidebar {
 	padding-left: 40px;
 }
-
-.timestampSidebar .content .item .startTime,
-.content .item.timestampSidebar .startTime {
+.timestampSidebar .content .item .startTime, .content .item.timestampSidebar .startTime {
 	transform: rotate(90deg) translateX(100%);
 	transform-origin: 100% 0;
 	width: auto;
 	font-size: 20px;
 	margin-left: -45px;
 }
-
 /* =========================== */
-
-.timestampSmall .content .item .displayTime,
-.content .item.timestampSmall .displayTime
-{
+ .timestampSmall .content .item .displayTime, .content .item.timestampSmall .displayTime {
 	font-size: 0.86em;
 }
-
 /* =========================== */
+
+/*============================ ============================ ============================
+ *
+ * Template variants
+ *
+//=========================== */
+ .item .pullquote:before {
+	content:"“";
+	float: left;
+	font-size: 1.5em;
+	line-height: 1em;
+	margin-left: -0.86em;
+	opacity: 0.2;
+	width: 0;
+}
+.item .pullquote {
+	font-size: 2em;
+	border-top: 1px solid rgba(255, 255, 255, 0.8);
+	margin-left: -1em;
+	padding-left: 0.5em;
+	border-left: 1em solid rgba(255, 255, 255, 0.8);
+}
+.item .pullquoteSpeaker {
+	text-align: right;
+	font-style: italic;
+	font-size: 0.8em
+}
+.item .pullquoteSpeaker:before {
+	content:" — ";
+}
+/* - - - - - - - - - - - - - -  */
+ .item .captioncontainer {
+	position:relative;
+	overflow:hidden;
+}
+.item .caption {
+	position:absolute;
+	/* TODO why is this not zero: */
+	bottom:4px;
+	left:0;
+	right:0;
+	padding: 0.5em;
+	opacity:1;
+	transition: 0.7s all;
+	background-color: #333;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-top:1px solid #666;
+	color:#FFF;
+}
+.item.colorInvert .caption {
+	background-color: #eee;
+	background-color: rgba(255, 255, 255, 0.7);
+	color: #000;
+	border-top: 1px solid #666;
+}
+.item.currentItem .caption, .item:hover .caption {
+	opacity: 0;
+}
+.item .slidingcaption {
+	transform:translateY(0);
+}
+.item.currentItem .slidingcaption, .item:hover .slidingcaption {
+	transform:translateY(100%);
+}
+/* - - - - - - - - - - - - - -  */
+ .item .thumbnail img {
+	width:100%;
+}
+.item .thumbnail {
+	max-width:72px;
+	transition: all 0.8s;
+	float:left;
+	margin-right:1em;
+}
+.item .thumbnail.fullsize {
+	max-width:100%;
+	float:none;
+}
