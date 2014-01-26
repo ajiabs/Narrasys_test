@@ -6,10 +6,13 @@
 	"isCosmetic": item.cosmetic
 }'>
 	<div class="itemHead">
+		<div class="icon" style="float:right">
+			<img x-ng-src="{{item.authorThumbSrc}}">
+			<div class="clear"></div>
+		</div>
 		<div class="startTime displayTime" x-ng-click="gotoItem()">{{item.displayTime}}</div>
 		<div class="authorName">{{item.authorName}}</div>
 	</div>
-	<!-- <div class="icon"><img x-ng-src="{{item.authorThumbSrc}}"><div class="clear"></div></div> -->
 	<div class="text">
 		{{item.annotation}}
 	</div>

@@ -2,102 +2,79 @@
 	TODO: make sure all colors play nice when combined with colorInvert 
 	(in both directions, i.e. .colorInvert .colorFoo, and .colorFoo .colorInvert) 
 
+	TODO: explicitly limit color selections to .item and .scene, and in .scene sort out which pane gets the background colors;
+
 */
-
-
 
 /*============================
  *
  * default
  *
 //===========================*/
-
-
-.contentMain {}
-
-.contentAlt {
-	background-color: rgba(0,0,0,0.05);
+ .contentMain {
 }
-
-a {color: #00C}
-
+.contentAlt {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+a {
+	color: #00C
+}
 /*============================
  *
  * colorInvert
  *
 //===========================*/
-
-.colorInvert {
+ .colorInvert {
 	color: #CCC;
 	background-color: #333;
 }
-
-.colorInvert a {color: #FFF}
-
-
+.colorInvert a {
+	color: #FFF
+}
 /*============================
  *
  * colorSepia
  *
 //===========================*/
-
-.colorSepia {
+ .colorSepia {
 	color: #4B4235;
 	background-color: #EFE0C8;
 }
-
 .colorSepia a {
 	color: #B7521E;
 }
-
-.colorInvert .colorSepia, 
-.colorSepia .colorInvert {
+.colorInvert .colorSepia, .colorSepia .colorInvert {
 	color: #EFE0C8;
 }
-
-
 /*============================
  *
  * colorSolarized
  *
 //===========================*/
-
-.colorSolarized {
+ .colorSolarized {
 	color: #586E75;
 	background-color: #EFE0C8;
 }
-
 .colorSolarized .contentAlt {
 }
-
 .colorSolarized a {
 	color: #288CD2;
 }
-
-.colorInvert .colorSolarized,
-.colorSolarized .colorInvert {
+.colorInvert .colorSolarized, .colorSolarized .colorInvert {
 	color: #EFE0C8
 }
-
-
-
 /*============================
  *
  * colorVivid
  *
 //===========================*/
-
-
-.colorVivid {
+ .colorVivid {
 	color: #595959;
 	background-color: rgba(224, 240, 210, 0.5);
 }
-
-
 .colorVivid a {
 	color: #FF9209;
 }
-
 .colorVivid .contentAlt a {
 	color: #F30;
 }

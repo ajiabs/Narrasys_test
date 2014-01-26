@@ -1,4 +1,4 @@
-<div class="scene-video {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
+<div class="scene scene-video {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 	<div class="fillPane windowBg">
 		<div x-ng-repeat="item in scene.items | layout: 'windowBg'" x-itt-item="item"></div>
 	</div>
@@ -11,7 +11,7 @@
 			</div>
 			<div class="clear"></div>
 		</div>
-		<div class="pane contentMain colorInvert stretchToViewportBottom">
+		<div class="pane contentMain stretchToViewportBottom">
 			<div class="fillPane paneBg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>

@@ -7,10 +7,14 @@
 }'>
 	<div class="itemHead">
 		<div class="startTime displayTime" x-ng-click="gotoItem()">{{item.displayTime}}</div>
-		<div class="authorName">{{item.authorName}}</div>
 	</div>
-	<!-- <div class="icon"><img x-ng-src="{{item.authorThumbSrc}}"><div class="clear"></div></div> -->
+	<div class="icon" style="float:left; margin-right: 1em;">
+		<img x-ng-src="{{item.authorThumbSrc}}">
+		<div class="clear"></div>
+	</div>
+	<div class="authorName">{{item.authorName}}</div>
 	<div class="text">
 		{{item.annotation}}
 	</div>
+	<div class="clear"></div>
 </div>
