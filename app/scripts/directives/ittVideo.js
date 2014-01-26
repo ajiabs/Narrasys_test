@@ -36,7 +36,16 @@ angular.module('com.inthetelling.player')
 				// Initialize videojs via the videojs service
 				// (This is NOT calling videojs directly; extra layer of indirection through services/video.js!)  (TODO: why?)
 				videojs.init(scope.episode.videos, function (player) {
-
+				
+					// Catch the first play. VJS's "firstplay" event is buggy, we'll just use 'play' and catch duplicates.
+					// (would just wipe the event instead, but vjs doesn't support namespaced events either...)
+					player.on("play",function() {
+						if (!player.hasPlayed) {
+							player.hasPlayed= true;
+							$rootScope.$emit("toolbar.videoFirstPlay");
+						}
+					});
+					
 					// register a listener on the instantiated player to inform the cuePointScheduler
 					// service whenever the playhead position changes.
 					player.on("timeupdate", function () {
@@ -94,7 +103,7 @@ angular.module('com.inthetelling.player')
 				};
 				
 				/* 
-				TODO REFACTOR  Ultimately I think the player needs to be refactored into a service.
+				TODO REFACTOR  Ultimately the player needs to be refactored into a service.
 				Having to broadcast events from here to toolbar controller via $rootScope feels like three kinds of wrong. 
 				*/
 				scope.toggleSceneMenu = function() {

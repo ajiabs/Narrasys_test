@@ -57,7 +57,9 @@ angular.module('com.inthetelling.player')
 		$scope.show = {
 			navigationPanel: false,
 			searchPanel: false,
-			searchPanelInternals: false
+			searchPanelInternals: false,
+			introPanel: true,
+			playerPanel: false
 		};
 
 		$scope.showNavigationPanel = function () {
@@ -99,7 +101,14 @@ angular.module('com.inthetelling.player')
 			console.log("start fullscreen view");
 			$scope.setSceneTemplate('video');
 		});
+		
+		// When user first clicks video, show the toolbar chrome and hide the landing screen
+		$rootScope.$on('toolbar.videoFirstPlay',function() {
+			$('.sceneintro').hide(); // yeah, yeah, I know.  TODO
+			$('.vjs-control-bar').show();
 
+			$scope.show.playerPanel=true;
+		});
 
 
 	});

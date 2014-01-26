@@ -257,3 +257,19 @@
 .navigationPanel p {
 	margin-left: 45px;
 }
+
+/*============================
+ *
+ * Landing screen
+ *
+//===========================*/
+
+.sceneintro h1 {
+	margin-left: 2em; margin-top: 2em; line-height: 2em;
+}
+
+.sceneintro .videoContainer {
+	margin: 2em 4em;
+	width: 320px; height: 180px;
+}
+	

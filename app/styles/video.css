@@ -3,7 +3,6 @@
 	/* for initial load: */
 	width:320px;
 	height: 180px;
-	top: 60px;
 }
 .video, .video-js {
 	width: 100% !important;
@@ -12,6 +11,10 @@
 .aspectratiopreserver {
 	width:100%
 }
+
+/* initial load: */
+.vjs-control-bar {display:none}
+
 /* ------------------------------------------------------------------------------------------------ */
 
 /* Scene Markers */
@@ -133,7 +136,6 @@
 	box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
 	border-top: 1px solid #CCC;
 	color: #333;
-	display:block !important;
 }
 /* Slider - used for Volume bar and Seek bar */
  .vjs-story-skin .vjs-slider {

@@ -2748,7 +2748,7 @@ vjs.Player = vjs.Component.extend({
 
     // Firstplay event implimentation. Not sold on the event yet.
     // Could probably just check currentTime==0?
-    this.one('play', function(e){
+    this.on('play', function(e){
       var fpEvent = { type: 'firstplay', target: this.el_ };
       // Using vjs.trigger so we can check if default was prevented
       var keepGoing = vjs.trigger(this.el_, fpEvent);

@@ -14,10 +14,6 @@ angular.module('com.inthetelling.player')
 			scope: true,
 			link: function (scope, element, attrs, controller) {
 
-				// Throw a console error if the scope isn't a scene
-				if (!scope.scene) {
-					console.warn("PROBABLE ERROR: ittMagnet directive should have a scene on its scope. Got this instead:", scope);
-				}
 
 				// 'activate' a dom instance of the itt-magnet directive by broadcasting an event from the root scope
 				// with a reference to the itt-magnet's dom element. The itt-magnetized directive listens for these events
@@ -30,29 +26,40 @@ angular.module('com.inthetelling.player')
 					}, 0);
 				};
 
-				// call the activate method if the parent scene is active
-				var activateIfSceneIsActive = function () {
-					if (scope.scene.isActive) {
-						activate();
-					}
-				};
+				if (scope.scene) { 
+					// call the activate method if the parent scene is active
+					var activateIfSceneIsActive = function () {
+						if (scope.scene && scope.scene.isActive) {
+							activate();
+						}
+					};
 
-				// watch this directive's parent scene and if its state changes to active then activate the video magnet
-				scope.$watch('scene.isActive', function (newValue, oldValue) {
-					if (newValue && newValue !== oldValue) {
-						activate();
-					}
-				});
+					// watch this directive's parent scene and if its state changes to active then activate the video magnet
+					scope.$watch('scene.isActive', function (newValue, oldValue) {
+						if (newValue && newValue !== oldValue) {
+							activate();
+						}
+					});
 
-				// for triggering video magnets from outside the scene. Only the magnet in the active scene should respond.
-				var unsubscribe = $rootScope.$on('toolbar.changedSceneTemplate', activateIfSceneIsActive);
-				angular.element($window).bind('resize', activateIfSceneIsActive);
+					// for triggering video magnets from outside the scene. Only the magnet in the active scene should respond.
+					var unsubscribe = $rootScope.$on('toolbar.changedSceneTemplate', activateIfSceneIsActive);
+					angular.element($window).bind('resize', activateIfSceneIsActive);
+	
+					// cleanup routine on destroy
+					scope.$on('$destroy', function () {
+						unsubscribe();
+						angular.element($window).unbind('resize', activateIfSceneIsActive);
+					});
+				} else {
+					// If the scope isn't a scene, just fire immediately and only once:
+					console.log("Activating magnet which is not in a scene scope:", scope);
+					activate();
+				}
 
-				// cleanup routine on destroy
-				scope.$on('$destroy', function () {
-					unsubscribe();
-					angular.element($window).unbind('resize', activateIfSceneIsActive);
-				});
+
+
+
+
 
 			}
 		};

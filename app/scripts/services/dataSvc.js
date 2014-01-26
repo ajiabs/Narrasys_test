@@ -55,7 +55,6 @@ angular.module('com.inthetelling.player')
 		// Retrieve episode data from API:
 		svc.getRemoteData = function(data,params,callback,errback) {
 			console.log("dataSvc.get() [Mode: API Data]");
-				// TODO: Retry on api errors before rejecting a promise.
 
 				/*
 				API Flow:
@@ -155,47 +154,7 @@ angular.module('com.inthetelling.player')
 						///////////////////
 
 						callback(data);
-
-
-/* IE8 doesn't do "catch"... jeez louise 
-					}).catch(function (response) {
-					// AJAX failed.
-					// Try falling back to localData:
-					if (!config.localData) {
-						console.warn("Couldn't load episode, falling back to local data");
-						config.localData = true;
-						$route.reload();
-					} else {
-						$location.path('/error');
-					}
-*/
 				});
-
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		};
 		
 
