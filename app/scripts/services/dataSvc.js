@@ -17,7 +17,7 @@ angular.module('com.inthetelling.player')
 		// Cache all the data returned from dataSvc.get(). This data will be used for all the
 		// individual lookup methods like dataSvc.getAssetById(). Currently these individual
 		// lookup methods are synchronous and do not use the apis or write to the cache.
-		var data = {};
+		var data;
 
 		var svc = {};
 
@@ -25,24 +25,20 @@ angular.module('com.inthetelling.player')
 		// will get data either from a local .json file or from apis.
 		svc.get = function (routeParams, callback, errback) {
 
-			// the only two currently valid route parameters are episodeId (required) and authKey (optional)
-			var params = {episodeId: routeParams.epId,authKey: routeParams.authKey};
+			// the only two currently valid params are episodeId (required) and authKey (optional)
+			var episodeId = routeParams.epId;
+			var authKey = routeParams.authKey;
+
+
+			// new up an empty data object
+			data = {};
 
 			// Local Data
 			if (config.localData) {
-				svc.getLocalData(data,params,callback,errback);
-			} else {
-				svc.getRemoteData(data,params,callback,errback);
-			}
-		};
-		
-		
-		// Retrieve episode data from local JSON file:
-		svc.getLocalData = function(data,params,callback,errback) {
-			console.log("dataSvc.get() [Mode: local data]");
+				//			console.log("dataSvc.get() [Mode: Local Data]");
 				$http({
 					method: 'GET',
-					url: config.localDataBaseUrl + '/' + params.episodeId + '.json'
+					url: config.localDataBaseUrl + '/' + episodeId + '.json'
 				})
 					.success(function (data, status, headers, config) {
 						callback(data);
@@ -50,11 +46,11 @@ angular.module('com.inthetelling.player')
 					.error(function (data, status, headers, config) {
 						errback(data);
 					});
-		};
-		
-		// Retrieve episode data from API:
-		svc.getRemoteData = function(data,params,callback,errback) {
-			console.log("dataSvc.get() [Mode: API Data]");
+			}
+			// API Data
+			else {
+				//			console.log("dataSvc.get() [Mode: API Data]");
+				// TODO: Retry on api errors before rejecting a promise.
 
 				/*
 				API Flow:
@@ -71,6 +67,7 @@ angular.module('com.inthetelling.player')
 				TODO: GEt event categories also, they will eventually be used in the player
 			*/
 
+
 				// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
 				var authParam = "";
 				if (config.apiAuthToken) {
@@ -78,23 +75,14 @@ angular.module('com.inthetelling.player')
 						'Authorization': config.apiAuthToken
 					};
 				} else {
-					authParam = (params.authKey) ? "?access_token=" + params.authKey : "";
+					authParam = (authKey) ? "?access_token=" + authKey : "";
 				}
+
 
 				// TODO: group both 'call stacks' into another $q with a single then that returns the data
 
 				// first set of calls
-				var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + params.episodeId + authParam)
-					.success(function() {
-						console.log("success");
-					})
-					.error(function(data,status,headers,config) {
-						// Ajax call failed.
-						// Instead of dying right away, try falling back to local data:
-						console.log("First ajax call failed; going to try falling back to local data before dying.",config);
-						config.localData=true;
-						svc.getLocalData(data,params,callback,errback);
-					})
+				var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId + authParam)
 					.then(function (response) {
 						data.episode = response.data;
 						//console.log(response.config.url + ":", response.data);
@@ -125,7 +113,7 @@ angular.module('com.inthetelling.player')
 
 				// second set of calls
 				var secondSet = $q.all([
-					$http.get(config.apiDataBaseUrl + '/v2/episodes/' + params.episodeId + '/events' + authParam),
+					$http.get(config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events' + authParam),
 					$http.get(config.apiDataBaseUrl + '/v1/templates' + authParam),
 					$http.get(config.apiDataBaseUrl + '/v1/layouts' + authParam),
 					$http.get(config.apiDataBaseUrl + '/v1/styles' + authParam)
@@ -154,9 +142,25 @@ angular.module('com.inthetelling.player')
 						///////////////////
 
 						callback(data);
+
+/* This throws "unknown provider" errors in IE8 for some reason. Back to editing config.js every ten minutes oh well
+					})
+				.catch (function (response) {
+					// AJAX fail.
+					// Try falling back to localData:
+					if (!config.localData) {
+						console.warn("Couldn't load episode, falling back to local data");
+						config.localData = true;
+						$route.reload();
+					} else {
+						$location.path('/error');
+					}
+*/
 				});
+
+			}
+
 		};
-		
 
 		// Retrieve the data for an asset based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
