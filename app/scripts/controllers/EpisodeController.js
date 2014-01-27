@@ -47,17 +47,6 @@ angular.module('com.inthetelling.player')
 				}
 			}
 
-
-			// Inject references to nextScene, prevScene values here, as long as we already have a sorted array of them.
-			// TODO these are derived values; refactor.
-			for (i = 1; i < $scope.scenes.length; i++) {
-				$scope.scenes[i].$prevScene = $scope.scenes[i - 1];
-			}
-			for (i = 0; i < $scope.scenes.length - 1; i++) {
-				$scope.scenes[i].$nextScene = $scope.scenes[i + 1];
-			}
-
-
 			// create item/transmedia models and place them into the items collection of their respective scenes
 			for (i = 0; i < data.events.length; i++) {
 				if (data.events[i].type !== "scene") {
@@ -103,7 +92,26 @@ angular.module('com.inthetelling.player')
 					return a.startTime - b.startTime;
 				});
 			}
-			
+
+			// Inject references to nextScene, prevScene values here, as long as we already have a sorted array of them.
+			// TODO these are derived values; refactor.
+			// Skips untitled scenes; these are used for navigation only.
+			for (i = 1; i < $scope.scenes.length; i++) {
+				for (j=i-1; j>-1;j=j-1) {
+					if ($scope.scenes[j].title) {
+						$scope.scenes[i].$prevScene=$scope.scenes[j];
+						break;
+					}
+				}
+			}
+			for (i = 0; i < $scope.scenes.length - 1; i++) {
+				for (j=i+1; j<$scope.scenes.length;j++) {
+					if ($scope.scenes[j].title) {
+						$scope.scenes[i].$nextScene=$scope.scenes[j];
+						break;
+					}
+				}
+			}
 			
 			// Frame detect
 			$scope.isFramed = (window.parent !== window);

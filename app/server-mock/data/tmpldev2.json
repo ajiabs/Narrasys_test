@@ -8,14 +8,65 @@
 			"mpeg4": "https://s3.amazonaws.com/itt.uploads/demo/Sandbox/e-LiterateTV/Series%201/MOOC%20Mania/E-Lit_TV_E03_Main_Edit_FC_REV_131218.mp4"
 		}
 	},
-	"events": [{
+	"events": [
+	{
 		"type": "scene",
 		"layout_id": "",
 		"start_time": 0,
 		"end_time": 18,
 		"title": "Scene One: default scene template",
 		"description": "Cycles through the various item background styles"
-	}, {
+	}, 
+	
+	{
+		"type": "scene",
+		"template_id": "templates/scene-2colL.html",
+		"start_time": 120,
+		"end_time": 130,
+		"title": "L",
+		"description": ""
+	}, 
+	{
+		"type": "scene",
+		"template_id": "templates/scene-2colR.html",
+		"start_time": 130,
+		"end_time": 140,
+		"title": "R",
+		"description": ""
+	}, 
+	{
+		"type": "scene",
+		"template_id": "templates/scene-centered.html",
+		"start_time": 140,
+		"end_time": 150,
+		"title": "",
+		"description": ""
+	}, 
+	{
+		"type": "scene",
+		"template_id": "templates/scene-2colL.html",
+		"start_time": 150,
+		"end_time": 160,
+		"title": "",
+		"description": ""
+	}, 
+	{
+		"type": "scene",
+		"template_id": "templates/scene-2colR.html",
+		"start_time": 160,
+		"end_time": 170,
+		"title": "",
+		"description": ""
+	}, 
+	{
+		"type": "scene",
+		"template_id": "templates/scene-centered.html",
+		"start_time": 170,
+		"end_time": 180,
+		"title": "Visible",
+		"description": "a visible scene"
+	}, 	
+	{
 		"type": "annotation",
 		"start_time": 0,
 		"end_time": 3,

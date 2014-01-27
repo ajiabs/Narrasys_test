@@ -85,9 +85,12 @@ angular.module('com.inthetelling.player')
 								marker_text: []
 							};
 							for (var i = 0; i < scope.scenes.length; i++) {
-								markerData.marker_breaks.push(scope.scenes[i].startTime);
-								markerData.marker_text.push(scope.scenes[i].title);
+								if (scope.scenes[i].title) {
+									markerData.marker_breaks.push(scope.scenes[i].startTime);
+									markerData.marker_text.push(scope.scenes[i].title);
+								}
 							}
+
 							player.markers(markerData); // sets up the plugin
 							player.trigger("loadedmetadata"); //signals the plugin to do its thing (the event doesn't fire reliably on its own)
 						}
