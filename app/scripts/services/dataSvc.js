@@ -34,7 +34,7 @@ angular.module('com.inthetelling.player')
 			data = {};
 
 			// Local Data
-			if (config.localData) {
+			if (config.localData || authKey === 'local') {
 				//			console.log("dataSvc.get() [Mode: Local Data]");
 				$http({
 					method: 'GET',
