@@ -30,7 +30,7 @@ angular.module('com.inthetelling.player')
 				};
 				
 				if ($rootScope.isIPad || $rootScope.isIPhone) {
-					vjsconfig.controls=false;
+					//vjsconfig.controls=false;
 				}
 				if (videodata.youtube) {
 					vjsconfig.techOrder = ["youtube"];

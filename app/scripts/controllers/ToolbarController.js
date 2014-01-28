@@ -64,11 +64,15 @@ angular.module('com.inthetelling.player')
 
 		$scope.showNavigationPanel = function () {
 			videojs.player.pause();
+			videojs.player.controls(false); // TODO: do this on iPad only
+
 			$scope.show.navigationPanel = true;
 		};
 
 		$scope.showSearchPanel = function () {
 			videojs.player.pause();
+			videojs.player.controls(false); // TODO: do this on iPad only
+			
 			$scope.show.searchPanel = true;
 			// Wait a tick before building the search panel internals. (Possibly unnecessary, but just in case...)
 			$timeout(function () {
@@ -92,7 +96,7 @@ angular.module('com.inthetelling.player')
 			// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 			$scope.show.navigationPanel = false;
 			$scope.show.searchPanel = false;
-			//			videojs.player.controls(true); // TODO: do this on iPad only
+			videojs.player.controls(true); // TODO: do this on iPad only
 			// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
 			// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.
 		};
@@ -101,15 +105,15 @@ angular.module('com.inthetelling.player')
 			videojs.player.currentTime(t + 0.001); // fudge: add a bit to ensure that we're inside the next scene's range
 		};
 
-	$rootScope.$on('toolbar.videoReady', function() {
-		console.log("videoready");
-		// Move our custom controls into the vjs control bar.  TODO jquery hackage
-		$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
+		// When user first clicks video, show the toolbar chrome and hide the landing screen
+		$scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay',function() {
+			console.log("videoFirstPlay");
+			
+			// Move our custom controls into the vjs control bar.  TODO jquery hackage
+			$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
 		
-		// (put top toolbar in there too, to take advantage of vjs's hide/show functionality?  Or watch it somehow?)
-		
-
-			var curSceneWatcher = $scope.$watch(function () {
+			// For next/prev scene buttons:
+			$scope.curSceneWatcher = $scope.$watch(function () {
 				// step through episode.scenes, return the last one whose start time is before the current time
 				var now = videojs.player.currentTime();
 				for (var i = 0; i < $scope.scenes.length; i++) {
@@ -121,14 +125,13 @@ angular.module('com.inthetelling.player')
 			}, function (newVal, oldVal) {
 				$scope.curScene = newVal;
 			});
-	});
-
-		// When user first clicks video, show the toolbar chrome and hide the landing screen
-		$scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay',function() {
-			console.log("videoFirstPlay");
+			
+			// Hide the intro; show the regular controls
 			$scope.show.introPanel=false;
 			$scope.show.playerPanel=true;
 			$scope.firstPlayWatcher(); // stop listening for this event
+
+			
 		});
 
 
