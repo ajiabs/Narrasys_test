@@ -1,7 +1,7 @@
 /* MODIFIED: doesn't try to inject css anymore (failed in IE8; we just put it in the css ourselves instead) */
 /* MODIFIED: ripped out quality menu (buggy in IE, not that useful anyway) */
 /* TODO: addEventListener on iframeblocker is failing in IE */
-
+/* god this code is a disaster */
 
 
 /**
@@ -387,6 +387,10 @@ videojs.Youtube.prototype.onStateChange = function(state){
       case YT.PlayerState.PLAYING:
         // Make sure the big play is not there
         this.player_.bigPlayButton.hide();
+        
+        // TODO hack:  having this true during init makes the video unplayable(?!) but we want to see our toolbar.
+        // Haven't figured out a way to not have the native controls wihtout breakign the video altogether
+        this.player_.controls(true);
 
         this.player_.trigger('timeupdate');
         this.player_.trigger('durationchange');

@@ -114,11 +114,12 @@ angular.module('com.inthetelling.player')
 			}
 			
 			// Frame detect
-			$scope.isFramed = (window.parent !== window);
+			$rootScope.isFramed = (window.parent !== window);
 			
-			// iPad or iPhone detect.  (TODO may not need these... so far only use would be to hide nonfunctional volume control in video, maybe better to do that there)
-			$scope.isIPad = (navigator.platform.indexOf('iPad') > -1);
-			$scope.isiPhone = (navigator.platform.indexOf('iPhone') + navigator.platform.indexOf('iPod') > -1);
+			// iPad or iPhone detect.
+			// put in rootScope for easy access from vid
+			$rootScope.isIPad = (navigator.platform.indexOf('iPad') > -1);
+			$rootScope.isiPhone = (navigator.platform.indexOf('iPhone') + navigator.platform.indexOf('iPod') > -1);
 			
 
 //			console.log("Created episode scope:", $scope);
@@ -126,7 +127,10 @@ angular.module('com.inthetelling.player')
 
 		}, function (data) { // ON ERROR
 			// TODO: Should probably be using a service instead of root scope
-			$rootScope.uiErrorMsg = "Unable to load data for episode: " + $routeParams.epId;
+			// TODO: dataSvc is always returning a 404 even when the epId is correct...?
+			
+			$rootScope.uiErrorMsg = "Wasn't able to load episode data. Sorry!";
+			$rootScope.uiErrorDetails = JSON.stringify(data);
 			$location.path('/error');
 		});
 

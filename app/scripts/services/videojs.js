@@ -3,7 +3,7 @@
 // Service for initializting and controlling the videojs player
 // This service should always be used, as opposed to the global window.videojs reference
 angular.module('com.inthetelling.player')
-	.factory('videojs', function (config) {
+	.factory('videojs', function (config,$rootScope) {
 
 		var svc = {};
 
@@ -24,16 +24,18 @@ angular.module('com.inthetelling.player')
 					// customControlsOnMobile was removed from videoJs, but if they ever bring it back we can use it as a better fix
 					// than turning off vjs.controls() when something is going to overlap the video 
 					// (which we need to do on ipad only, because the video controls layer steals all click events within its area
-					"controls": false,
+					"controls": true,
 					"preload": true,
-					"nativeControlsForTouch": false
+					"nativeControlsForTouch": false // doesn't seem to do anything?
 				};
+				
+				// TODO Youtube plugin is buggy on iDevices and IE9.  If we cant fix and can afford the bandwidth, divert those users to S3
+				//if (videodata.youtube && !($rootScope.isIPad || $rootScope.isIPhone)) { 
 				if (videodata.youtube) {
 					vjsconfig.techOrder = ["youtube"];
 				} else {
 					vjsconfig.techOrder = ["html5", "flash"];
 				}
-
 				videojs(config.videoJSElementId, vjsconfig, function () {
 					svc.player = this;
 					if (callback) {
