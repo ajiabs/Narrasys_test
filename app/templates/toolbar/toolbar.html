@@ -5,7 +5,7 @@
 				<span x-ng-if="currentSceneTemplateIs('explore')">Watch</span>
 			</a>
 
-		<a x-ng-if="isFramed" class="button button-mainframeescape" href="/episode/{{episodeID}}/{{authKey}}" target="frameEscape" onclick="window.open('','frameEscape').focus();">
+		<a x-ng-if="isFramed" class="button button-mainframeescape" href="/#/episode/{{episodeID}}/{{authKey}}" target="frameEscape" onclick="window.open('','frameEscape').focus();">
 			<span>New window</span>
 		</a>
 
@@ -28,7 +28,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div x-ng-show="show.searchPanel" class="sidePanel searchPanel">
 			<div x-ng-if="show.searchPanelInternals" x-ng-controller="SearchPanelController">
 				<div class="filters">
@@ -98,4 +97,49 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- TODO ARIA markup on all clickables -->
+	<div class="injectedvideocontrols vjs-story-skin">
+		<div x-ng-click="showSceneMenu()" class="video-scenemenu vjs-control">
+			<a href="javascript: void 1;">
+				<span class="vjs-control-text">Scene list</span>
+			</a>
+		</div>
+
+		<div x-ng-show="!currentSceneTemplateIs('video')" x-ng-click="startFSView()" class="video-captions vjs-control">
+			<a href="javascript: void 1;">
+				<span class="vjs-control-text">Closed Captions</span>
+			</a>
+		</div>
+	
+		<div x-ng-if="curScene.$prevScene" class="video-prevscene vjs-control">
+			<a x-ng-click="gotoTime(curScene.$prevScene.startTime)">
+				<span class="vjs-control-text">Previous scene</span>
+			</a>
+		</div>
+		<div x-ng-if="curScene.$nextScene" class="video-nextscene vjs-control">
+			<a x-ng-click="gotoTime(curScene.$nextScene.startTime)">
+				<span class="vjs-control-text">Next scene</span>
+			</a>
+		</div>
+	</div>
+
+
+	<div x-ng-show="show.introPanel" class="sceneintro">
+		<h1>
+			{{episode.title}}
+		</h1>
+		<p>
+			{{episode.description}}
+		</p>
+		<div class="pane videoContainer" x-itt-magnet>
+			<div class="fillPane video">
+				<img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" /> 
+			</div>
+		</div>
+		<p>
+			TODO here: branding and pretty
+		</p>
+	</div>
+
 </div>

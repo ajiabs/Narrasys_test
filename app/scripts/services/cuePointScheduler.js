@@ -1,7 +1,5 @@
 'use strict';
 
-// TODO: Rename to CuePointScheduler
-
 /*  cuePointScheduler Service
   Manages the conceptual timeline for the episode by publishing key events
   to subscribers. A subscriber must provide a 'span' object which contains

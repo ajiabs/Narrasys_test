@@ -4,4 +4,5 @@
 angular.module('com.inthetelling.player')
 	.controller('UIErrorController', function ($scope, $rootScope) {
 		$scope.errorMsg = $rootScope.uiErrorMsg || 'The requested route does not exist.';
+		$scope.errorDetails = $rootScope.uiErrorDetails;
 	});

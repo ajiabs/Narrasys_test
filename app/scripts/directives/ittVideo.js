@@ -36,6 +36,7 @@ angular.module('com.inthetelling.player')
 				// Initialize videojs via the videojs service
 				// (This is NOT calling videojs directly; extra layer of indirection through services/video.js!)  (TODO: why?)
 				videojs.init(scope.episode.videos, function (player) {
+					$rootScope.$emit("toolbar.videoReady");
 				
 					// Catch the first play. VJS's "firstplay" event is buggy, we'll just use 'play' and catch duplicates.
 					// (would just wipe the event instead, but vjs doesn't support namespaced events either...)
@@ -53,22 +54,6 @@ angular.module('com.inthetelling.player')
 						setPlayhead(player.currentTime());
 					});
 
-					//TODO is it a Bad Thing that I'm doing these inside the player init scope?  
-
-					// Watch the current scene, so we can update the next scene / prev scene buttons
-
-					var curSceneWatcher = scope.$watch(function () {
-						// step through episode.scenes, return the last one whose start time is before the current time
-						var now = player.currentTime();
-						for (var i = 0; i < scope.scenes.length; i++) {
-							if (scope.scenes[i].startTime > now) {
-								return scope.scenes[i - 1]; //break loop on first match
-							}
-						}
-						return scope.scenes[scope.scenes.length - 1]; // no match means we are in the last scene
-					}, function (newVal, oldVal) {
-						scope.curScene = newVal;
-					});
 
 					// Wait until we know the player duration, then set the scene markers (and kill the $watch)
 					// TODO if we can get the video duration in the json we'll be able to init this directly
@@ -96,29 +81,8 @@ angular.module('com.inthetelling.player')
 						}
 					});
 					/* Done setting scene markers. */
-
-					// Now move our custom controls into the vjs control bar.  (Waiting for all other init first, to be safe)
-					element.find('.injectedvideocontrols').appendTo(element.find('.vjs-control-bar'));
 				});
 
-				scope.gotoTime = function (t) {
-					videojs.player.currentTime(t + 0.001); // fudge: add a bit to ensure that we're inside the next scene's range
-				};
-				
-				/* 
-				TODO REFACTOR  Ultimately the player needs to be refactored into a service.
-				Having to broadcast events from here to toolbar controller via $rootScope feels like three kinds of wrong. 
-				*/
-				scope.toggleSceneMenu = function() {
-					// send message for the toolbar controller to respond to.
-					console.log("sending toggleSceneMenu message");
-					$rootScope.$emit("toolbar.toggleSceneMenu");
-				};
-				scope.startFSView = function() {
-					console.log("sending startFSView message");
-					// send message for the toolbar controller to respond to.
-					$rootScope.$emit("toolbar.startFSView");
-				};
 			}
 		};
 	});

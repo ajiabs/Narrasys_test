@@ -4,26 +4,7 @@
 	<div x-itt-toolbar>
 	</div>
 	<div class="episode episode{{episode.layout}}">
-		<div class="sceneintro">
-			<h1>
-				{{episode.title}}
-			</h1>
-			<p>
-				{{episode.description}}
-			</p>
-			<div class="pane videoContainer" x-itt-magnet>
-				<div class="fillPane video">
-					<img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" /> 
-				</div>
-			</div>
-			<p>
-				TODO here: branding and pretty
-			</p>
-		</div>
-		<div x-ng-repeat="scene in scenes" x-itt-scene="scene">
-		</div>
-
-<!-- TODO <div class="scene sceneoutro"></div> -->
+		<div x-ng-repeat="scene in scenes" x-itt-scene="scene"></div>
 	</div>
 </div>
 <div id="footertrigger">

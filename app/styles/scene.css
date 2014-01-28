@@ -79,17 +79,19 @@
 .scene-video {background-color: #000;
 position:absolute; top: 60px; left: 0; right: 0; bottom: 0;
 }
+
+
 .scene-video .videoContainer {
 	margin: auto;
 }
 
-.scene-video .contentMain {background-color:#000}
 
 
 .scene-video .contentMain .paneBg, 
 .scene-video .contentMain .paneFg 
-
 {display:none}
+
+.scene-video .contentMain {color:#DDD}
 
 
 /*============================*/

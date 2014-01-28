@@ -131,6 +131,7 @@ angular.module('com.inthetelling.player')
 					secondSet
 				])
 					.then(function (responses) {
+						// success
 						//				console.log("Compiled API Data:", data);
 
 						//// DIRTY PREPROCESSING HACK ////
@@ -142,20 +143,9 @@ angular.module('com.inthetelling.player')
 						///////////////////
 
 						callback(data);
-
-/* This throws "unknown provider" errors in IE8 for some reason. Back to editing config.js every ten minutes oh well
-					})
-				.catch (function (response) {
-					// AJAX fail.
-					// Try falling back to localData:
-					if (!config.localData) {
-						console.warn("Couldn't load episode, falling back to local data");
-						config.localData = true;
-						$route.reload();
-					} else {
-						$location.path('/error');
-					}
-*/
+				}, function(responses) {
+					// error
+					errback(responses);
 				});
 
 			}

@@ -64,18 +64,28 @@ angular.module('com.inthetelling.player')
 
 		$scope.showNavigationPanel = function () {
 			videojs.player.pause();
-			//			videojs.player.controls(false); // TODO: do this on iPad only
 			$scope.show.navigationPanel = true;
 		};
 
 		$scope.showSearchPanel = function () {
 			videojs.player.pause();
-			//			videojs.player.controls(false); // TODO: do this on iPad only
 			$scope.show.searchPanel = true;
 			// Wait a tick before building the search panel internals. (Possibly unnecessary, but just in case...)
 			$timeout(function () {
 				$scope.show.searchPanelInternals = true;
 			}, 0);
+		};
+
+		$scope.showSceneMenu = function () {
+			if ($scope.show.navigationPanel) {
+				$scope.hidePanels();
+			} else {
+				$scope.showNavigationPanel();
+			}
+		};
+
+		$scope.startFSView = function () {
+			$scope.setSceneTemplate('video');
 		};
 
 		$scope.hidePanels = function () {
@@ -86,29 +96,43 @@ angular.module('com.inthetelling.player')
 			// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
 			// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.
 		};
-
-		// Respond to signal sent from ittVideo.js (TODO REFACTOR see note in ittVideo.js)
-		$rootScope.$on('toolbar.toggleSceneMenu', function () {
-			if ($scope.show.navigationPanel) {
-				$scope.hidePanels();
-			} else {
-				$scope.showNavigationPanel();
-			}
-		});
-
-		// Respond to signal sent from ittVideo.js (TODO REFACTOR see note in ittVideo.js)
-		$rootScope.$on('toolbar.startFSView', function () {
-			console.log("start fullscreen view");
-			$scope.setSceneTemplate('video');
-		});
 		
-		// When user first clicks video, show the toolbar chrome and hide the landing screen
-		$rootScope.$on('toolbar.videoFirstPlay',function() {
-			$('.sceneintro').hide(); // yeah, yeah, I know.  TODO
-			$('.vjs-control-bar').show();
+		$scope.gotoTime = function (t) {
+			videojs.player.currentTime(t + 0.001); // fudge: add a bit to ensure that we're inside the next scene's range
+		};
 
+	$rootScope.$on('toolbar.videoReady', function() {
+		console.log("videoready");
+		// Move our custom controls into the vjs control bar.  TODO jquery hackage
+		$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
+		
+		// (put top toolbar in there too, to take advantage of vjs's hide/show functionality?  Or watch it somehow?)
+		
+
+			var curSceneWatcher = $scope.$watch(function () {
+				// step through episode.scenes, return the last one whose start time is before the current time
+				var now = videojs.player.currentTime();
+				for (var i = 0; i < $scope.scenes.length; i++) {
+					if ($scope.scenes[i].startTime > now) {
+						return $scope.scenes[i - 1]; //break loop on first match
+					}
+				}
+				return $scope.scenes[$scope.scenes.length - 1]; // no match means we are in the last scene
+			}, function (newVal, oldVal) {
+				$scope.curScene = newVal;
+			});
+	});
+
+		// When user first clicks video, show the toolbar chrome and hide the landing screen
+		$scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay',function() {
+			console.log("videoFirstPlay");
+			$scope.show.introPanel=false;
 			$scope.show.playerPanel=true;
+			$scope.firstPlayWatcher(); // stop listening for this event
 		});
+
+
+		
 
 
 	});
