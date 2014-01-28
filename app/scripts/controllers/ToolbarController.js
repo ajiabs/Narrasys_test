@@ -46,10 +46,10 @@ angular.module('com.inthetelling.player')
 
 		/* The "view / watch" button toggles between explore and directed modes: */
 		$scope.toggleSceneTemplate = function () {
-			if ($scope.currentSceneTemplate === '') {
-				$scope.setSceneTemplate('explore');
-			} else {
+			if ($scope.currentSceneTemplate === 'explore') {
 				$scope.setSceneTemplate('');
+			} else {
+				$scope.setSceneTemplate('explore');
 			}
 		};
 
