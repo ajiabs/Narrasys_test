@@ -32,7 +32,7 @@ angular.module('com.inthetelling.player')
 							$(this).css("min-height", ($(window).height() - this.offsetTop - 60));
 						});
 						// TODO: add support for .stretchToSceneBottom as well (would be useful in explore template for example)
-					}, 0);
+					});
 				};
 
 				scope.$watch(function () {

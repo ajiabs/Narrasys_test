@@ -36,12 +36,12 @@ angular.module('com.inthetelling.player')
 				// Initialize videojs via the videojs service
 				// (This is NOT calling videojs directly; extra layer of indirection through services/video.js!)  (TODO: why?)
 				videojs.init(scope.episode.videos, function (player) {
-					console.log("videojs init");
-					$rootScope.$emit("toolbar.videoReady");
+//					console.log("videojs init");
 				
 					// Catch the first play. VJS's "firstplay" event is buggy, we'll just use 'play' and catch duplicates.
 					// (would just wipe the event instead, but vjs doesn't support namespaced events either...)
 					player.on("play",function() {
+//						console.log("player play");
 						if (!player.hasPlayed) {
 							player.hasPlayed= true;
 							$rootScope.$emit("toolbar.videoFirstPlay");

@@ -11,7 +11,7 @@ angular.module('com.inthetelling.player')
 
 		/* Handler for toolbar buttons to change scene templates. */
 		$scope.setSceneTemplate = function (newTemplate) {
-			console.log("setSceneTemplate " + newTemplate);
+//			console.log("setSceneTemplate " + newTemplate);
 
 			$scope.currentSceneTemplate = newTemplate;
 			// set all scenes to use newTemplate
@@ -107,11 +107,18 @@ angular.module('com.inthetelling.player')
 
 		// When user first clicks video, show the toolbar chrome and hide the landing screen
 		$scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay',function() {
-			console.log("videoFirstPlay");
-			
+
+
 			// Move our custom controls into the vjs control bar.  TODO jquery hackage
 			$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
-		
+
+			// Hide the intro; show the regular controls
+			$scope.show.introPanel=false;
+			$scope.show.playerPanel=true;
+			$rootScope.$emit('toolbar.changedSceneTemplate'); // force twiddleSceneLayout
+
+			$scope.firstPlayWatcher(); // stop listening for this event
+
 			// For next/prev scene buttons:
 			$scope.curSceneWatcher = $scope.$watch(function () {
 				// step through episode.scenes, return the last one whose start time is before the current time
@@ -125,13 +132,7 @@ angular.module('com.inthetelling.player')
 			}, function (newVal, oldVal) {
 				$scope.curScene = newVal;
 			});
-			
-			// Hide the intro; show the regular controls
-			$scope.show.introPanel=false;
-			$scope.show.playerPanel=true;
-			$scope.firstPlayWatcher(); // stop listening for this event
 
-			
 		});
 
 

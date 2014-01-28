@@ -29,15 +29,13 @@ angular.module('com.inthetelling.player')
 					"nativeControlsForTouch": false // doesn't seem to do anything?
 				};
 				
-				if ($rootScope.isIPad || $rootScope.isIPhone) {
-					//vjsconfig.controls=false;
-				}
+				// TODO Youtube plugin is buggy on iDevices and IE9.  If we cant fix and can afford the bandwidth, divert those users to S3
+				//if (videodata.youtube && !($rootScope.isIPad || $rootScope.isIPhone)) { 
 				if (videodata.youtube) {
 					vjsconfig.techOrder = ["youtube"];
 				} else {
 					vjsconfig.techOrder = ["html5", "flash"];
 				}
-console.log(vjsconfig, $rootScope);
 				videojs(config.videoJSElementId, vjsconfig, function () {
 					svc.player = this;
 					if (callback) {
