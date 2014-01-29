@@ -397,31 +397,34 @@ fonts to show/hide properly.
 }
 /* Big Play Button (play button at start)
 --------------------------------------------------------------------------------
-Positioning of the play button in the center or other corners can be done more
-easily in the skin designer. http://designer.Story.com/
 */
- .vjs-story-skin .vjs-big-play-button {
-	left: 0.5em;
-	top: 0.5em;
-	font-size: 3em;
-	display: block;
-	z-index: 2;
-	position: absolute;
-	width: 4em;
-	height: 2.6em;
-	text-align: center;
-	vertical-align: middle;
-	cursor: pointer;
-	opacity: 1;
-	/* Need a slightly gray bg so it can be seen on black backgrounds */
-	/* background-color-with-alpha */
-	background-color: #07141e;
-	background-color: rgba(7, 20, 30, 0.7);
-	border: 0.1em solid #3b4249;
-	border-radius: 0.8em;
-	box-shadow: 0px 0px 1em rgba(255, 255, 255, 0.25);
-	transition: all 0.4s;
+
+.vjs-story-skin .vjs-big-play-button:before {
+    content: "\e001";
+    font-family: Story;
+    height: 50px;
+    left: 5px;
+    line-height: 50px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
 }
+.vjs-story-skin .vjs-big-play-button {
+    cursor: pointer;
+    display: block;
+    font-size: 4em;
+    height: 30%;
+    margin: 0 25%;
+    opacity: 1;
+    position: absolute;
+    text-align: center;
+    top: 34%;
+    transition: all 0.4s ease 0s;
+    width: 50%;
+}
+
+
+
 /* Hide if controls are disabled */
  .vjs-story-skin.vjs-controls-disabled .vjs-big-play-button {
 	display: none;
@@ -430,34 +433,10 @@ easily in the skin designer. http://designer.Story.com/
  .vjs-story-skin.vjs-has-started .vjs-big-play-button {
 	display: none;
 }
-/* Hide on mobile devices. Remove when we stop using native controls
-    by default on mobile  */
- .vjs-story-skin.vjs-using-native-controls .vjs-big-play-button {
-	display: none;
-}
+
 .vjs-story-skin:hover .vjs-big-play-button, .vjs-story-skin .vjs-big-play-button:focus {
 	outline: 0;
-	border-color: #fff;
-	/* IE8 needs a non-glow hover state */
-	background-color: #505050;
-	background-color: rgba(50, 50, 50, 0.75);
-	box-shadow: 0 0 3em #ffffff;
-	transition: all 0s;
-}
-.vjs-story-skin .vjs-big-play-button:before {
-	content:"\e001";
-	font-family: Story;
-	/* In order to center the play icon vertically we need to set the line height
-     to the same as the button height */
-	line-height: 2.6em;
-	text-shadow: 0.05em 0.05em 0.1em #000;
-	text-align: center
-	/* Needed for IE8 */
-	;
-	position: absolute;
-	left: 0;
-	width: 100%;
-	height: 100%;
+color:#c44343;
 }
 /* Loading Spinner
 --------------------------------------------------------------------------------
