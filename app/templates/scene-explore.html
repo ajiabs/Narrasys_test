@@ -8,13 +8,13 @@
 			</div>
 		</div>
 		<div class="pane contentMain">
-			<div data-pane="main" data-content="{{scene.mainPaneContents}}" x-itt-content-pane></div>
+			<div data-pane="main" data-force-item-template="default" data-content="{{scene.mainPaneContents}}" x-itt-content-pane></div>
 		</div>
 		<div class="pane contentAlt">
 			<div x-ng-if="scene.startTime == 0" class="matchVideoHeight">
 				<!-- in explore view, need to pad the first scene to make room for the video -->
 			</div>
-			<div data-pane="alt" data-content="{{scene.altPaneContents}}" x-itt-content-pane></div>
+			<div data-pane="alt" data-force-item-template="default" data-content="{{scene.altPaneContents}}" x-itt-content-pane></div>
 		</div>
 	</div>
 	<div x-itt-magnetized class="fillPane videoOverlay">

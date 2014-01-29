@@ -213,6 +213,7 @@ angular.module('com.inthetelling.player')
 					model.type = "image"; // TODO: Temporary/ugly hack. We could handle subtyping better by creating a subtype or mimetype property and keying off that in the views, instead of changing the actual type on the model, because this is not CRUD friendly.
 				}
 				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-image-default.html";
+				model.itemDetailTemplateUrl = "templates/modal-image-default.html"; // hardcoded for now, not sure if we'll want to allow variations here
 				model.title = data.title;
 				model.description = data.description;
 				model.source = resolveAssetUrl(data.asset_id);

@@ -65,7 +65,7 @@ See /images/font/story/map.png for a list of available glyphs
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-color: rgba(0,0,0,0.3);
+	background-color: rgba(0,0,0,0.5);
 	animation: fadeIn 0.5s;
 }
 
@@ -76,23 +76,28 @@ See /images/font/story/map.png for a list of available glyphs
 
 .itemDetailModal {
 	position:absolute;
-	text-align:right;
-	top: 10%; left: 5%; right: 5%; bottom: 10%
+	top: 10%; left: 5%; right: 5%; bottom: 10%;
 }
 
 .itemDetailModal iframe {
 	position:absolute;
-	top: 40px;
+	top: 30px;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	border: 1px solid #444;
-}
-.itemDetailModal .escapelink {
-	float:right;
-	background-image: url('/images/escape-white.png');
+	border-top: 0px;
 }
 
+.itemDetailModal .modalmenu {text-align:right; width:100%;padding: 0 0.2em; color:#FFF; background-color:#000; height: 30px; border: 1px solid #000; line-height: 30px}
+
+.itemDetailModal .escapelink, .itemDetailModal .escapelink:before {
+	color:#FFF
+}
+
+.itemDetailModal img {
+box-shadow: 3px 3px 15px rgba(0,0,0,0.9);
+}
 
 /*============================
  *
