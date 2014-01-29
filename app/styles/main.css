@@ -124,6 +124,36 @@ box-shadow: 3px 3px 15px rgba(0,0,0,0.9);
 
 
 
+/*============================
+ *
+ * quick-and-dirty phone layout
+ *
+//===========================*/
+
+@media screen and (max-width: 501px){
+	.toolbar {position:static !important}
+	.episode {
+		margin-top: 0 !important
+	}
+	.vjs-control-bar {display:none !important}
+	.sceneintro {margin: 2em 1em !important}
+	.sceneintro p {
+		margin: 1em 0  !important;
+	}
+	
+	.scene-explore .contentMain, 
+	.scene-explore .contentAlt {
+		float:none !important;
+		width: 100% !important;
+		height: auto !important;
+	}
+	.eliterate-logo {
+		position:absolute !important;
+	}
+	.searchPanel {width: auto !important}
+}
+
+
 
 
 

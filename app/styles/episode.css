@@ -22,8 +22,6 @@
 	max-width: 42px;
 	overflow: hidden;
 	transition: all 1s;
-
-
 	background-color: #CCC;
 	color: #333;
 	background: linear-gradient(to bottom, #DDDDDD 0%, #BBBBBB 100%);
@@ -42,7 +40,7 @@
 .toolbar .button span {
 	display: inline-block;
 	line-height: 2em;
-	padding-left: 0.5em;
+	padding-left: 1em;
 }
 
 .toolbar .button-search, .toolbar .button-mainframeescape {float:right}

@@ -67,6 +67,7 @@
 
 .scene .sceneTitle {padding: 0.5em; display:none} /* TODO: add a styles option to scenes for showing the title */
 
+.scene-explore .scene .sceneTitle {display:block}
 /*
 .videoContainer {border: 2px solid #F00}
 .contentMain {border: 2px solid #0F0;}
