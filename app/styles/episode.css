@@ -318,6 +318,9 @@
 	height: 220px;
 	background-color: rgba(0, 0, 0, 0.05);
 	position:relative;
+	color:#FFF;
+	text-align:center;
+	padding-top: 3em;
 }
 
 .episode-eliterate .branding img {
@@ -336,3 +339,13 @@ bottom: 2em;
 	background: url('/images/mindwire-bg.svg') 0% 50% no-repeat;
 	background-size: 100% auto;
 }
+
+.eliterate-logo {
+	z-index:8;
+	position:fixed;
+	top: 5px;
+	width: 20%; margin: 10px 40%;
+	text-align:center;
+}
+
+.eliterate-logo img {width: 100%; max-width: 160px;}

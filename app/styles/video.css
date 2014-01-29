@@ -3,11 +3,9 @@
 	/* for initial load: */
 	width:320px;
 	height: 180px;
-	overflow:hidden;
-
 }
 .video {
-	width: 100% ;
+	width: 100%;
 	height: 100%;
 }
 
@@ -135,15 +133,13 @@
 --------------------------------------------------------------------------------
 */
 
- .vjs-story-skin .vjs-control-bar, #footertrigger {
+
+.vjs-story-skin .vjs-control-bar {
 	position:fixed;
 	bottom:0;
 	left: 0;
 	right: 0;
 	height: 6.5em;
-}
-
- .vjs-story-skin .vjs-control-bar {
 	background-color:#FFF;
 	background-color: rgba(255, 255, 255, 0.8);
 	box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
@@ -151,7 +147,7 @@
 	color: #333;
 }
 /* Slider - used for Volume bar and Seek bar */
- .vjs-story-skin .vjs-slider {
+.vjs-story-skin .vjs-slider {
 	position: relative;
 	cursor: pointer;
 	padding: 0;
@@ -738,3 +734,5 @@ control positioning and full window mode. **
 .iframeblocker { display:none;position:absolute;top:0;left:0;width:100%;height:100%;cursor:pointer;z-index:2; } 
 .vjs-youtube.vjs-user-inactive .iframeblocker { display:block; } 
 .vjs-quality-button > div:first-child > span:first-child { position:relative;top:7px }
+
+
