@@ -91,6 +91,13 @@ angular.module('com.inthetelling.player')
 		$scope.startFSView = function () {
 			$scope.setSceneTemplate('video');
 		};
+		
+		// triggers vjs footer controls to appear
+		$scope.showVideoControls = function() {
+			if (videojs.player) { // in case video hasn't inited yet
+				videojs.player.userActive(true);
+			}
+		};
 
 		$scope.hidePanels = function () {
 			// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)

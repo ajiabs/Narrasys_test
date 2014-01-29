@@ -1,6 +1,7 @@
 {
 	"episode": {
 		"title": "Episode Title",
+		"description": "Kowloon pistol dolphin rebar singularity faded stimulate man office market narrative sensory. refrigerator rebar marketing render-farm tube drugs decay soul-delay rain range-rover youtube wonton soup.",
 		"style_id": "typographyEliterate colorEliterate",
 		"template_id": "templates/episode-eliterate.html",
 		"master_asset_id": {
@@ -9,13 +10,14 @@
 			"mpeg4": "https://s3.amazonaws.com/itt.uploads/demo/Sandbox/e-LiterateTV/Series%201/MOOC%20Mania/E-Lit_TV_E03_Main_Edit_FC_REV_131218.mp4"
 		}
 	},
-	"events": [{
+	"events": [
+		{
 			"type": "scene",
-			"template_id": "templates/scene-1col.html",
+			"template_id": "templates/scene-cornerH.html",
 			"layout_id": "",
 			"style_id": "",
 			"start_time": 0,
-			"end_time": 511,
+			"end_time": 90,
 			"title": "This is a scene.",
 			"description": "Testing item templates."
 		}, {
@@ -203,7 +205,21 @@
 			"link_image_id": "http://placekitten.com/60/60",
 			"url": "http://www.youtube.com/embed/0SFgUW0GqMo",
 			"layout_id": "burstR"
-		}
+		},
+		
+		
+		
+		{
+			"type": "scene",
+			"template_id": "templates/scene-cornerV.html",
+			"layout_id": "",
+			"style_id": "",
+			"start_time": 90,
+			"end_time": 511,
+			"title": "This is a scene.",
+			"description": "Testing item templates."
+		}		
+
 
 
 	]

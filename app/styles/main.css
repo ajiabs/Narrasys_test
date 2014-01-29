@@ -16,7 +16,7 @@
 .paneBg {z-index: 3}
 .content {position: relative; z-index: 4}
 .paneFg {z-index: 5}
-
+#footertrigger {z-index:5}
 .vjs-wrapper {z-index: 6}
 .videoOverlay {z-index: 7}
 .toolbar, .vjs-control-bar {z-index: 8}
@@ -116,3 +116,25 @@ See /images/font/story/map.png for a list of available glyphs
 	margin: 1em; padding: 1em;
 	border: 2px solid #C00;
 }
+
+
+
+
+
+
+
+
+/* Testing these out: animated items */
+
+/*
+
+.driftRight {
+  animation-duration: 30s;
+  animation-fill-mode: both;
+  animation-name: driftRight;
+}
+@keyframes driftRight {
+	0% {transform: translateX(0)}
+	100% {transform: translateX(2%)}
+}
+*/

@@ -1,4 +1,4 @@
-<div>
+<span>
 	<div class="toolbar" x-ng-show="show.playerPanel">
 			<a x-ng-click="toggleSceneTemplate();" class="button button-directed" href="javascript:void 1;">
 				<span x-ng-if="currentSceneTemplateIs('')">Read</span>
@@ -137,9 +137,11 @@
 				<img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" /> 
 			</div>
 		</div>
-		<p>
-			look-and-feel TODO
-		</p>
+
+
 	</div>
 
-</div>
+
+	<div id="footertrigger" x-ng-mouseenter="showVideoControls()"></div>
+
+</span>

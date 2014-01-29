@@ -1,7 +1,8 @@
 {
 	"episode": {
 		"title": "Episode Title",
-		"style_id": "typographySerif transitionFade",
+		"description": "narrative modem physical boat jeans faded -ware refrigerator cyber- kanji pre- shanty town systema. Tokyo face forwards tiger-team post- ablative dolphin hotdog artisanal into pre- nodal point towards network.",
+		"style_id": "typographySerif transitionFade highlightTilt",
 		"master_asset_id": {
 			"NOyoutube": "http://www.youtube.com/embed/de-CzUxJ_no",
 			"webm": "http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
@@ -162,6 +163,7 @@
 		"end_time": 15,
 		"required": true,
 		"template_id": "templates/transmedia-link-youtube.html",
+		"style_id": "",
 		"title": "Monsters",
 		"description": "Some monsters",
 		"link_image_id": "http://placekitten.com/60/60",

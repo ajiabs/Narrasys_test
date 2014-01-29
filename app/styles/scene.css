@@ -111,8 +111,6 @@ position:absolute; top: 60px; left: 0; right: 0; bottom: 0;
 .scene-explore {border-top: 1px solid rgba(0,0,0,0.5)}
 
 .scene-explore.currentScene .videoContainer {
-	     box-shadow: -3px 3px 4px rgba(0,0,0,0.5);
-	border: 1px solid #000;
 	z-index:2;
 }
 

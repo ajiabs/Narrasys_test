@@ -3,8 +3,15 @@
 	/* for initial load: */
 	width:320px;
 	height: 180px;
+	overflow:hidden;
+
 }
-.video, .video-js {
+.video {
+	width: 100% ;
+	height: 100%;
+}
+
+.video-js {
 	width: 100% !important;
 	height: 100% !important
 }
@@ -79,16 +86,16 @@
 	font-size: 2em;
 	height: 2em;
 	position: absolute;
-	top: 0;
+	top: 0.5em;
 	width: 1em;
-	line-height: 1.4em;
+	line-height: 1em;
 	cursor: pointer;
 }
 .video-scenemenu {
 	left: 7em;
 	width: 3em;
 	height: 1.7em;
-	top: 0.5em;
+	top: 1em;
 	background-color: #CCC;
 	font-size: 1em;
 	border-radius: 1em 0 0 1em;
@@ -127,12 +134,16 @@
 /* Our skin
 --------------------------------------------------------------------------------
 */
- .vjs-story-skin .vjs-control-bar {
+
+ .vjs-story-skin .vjs-control-bar, #footertrigger {
 	position:fixed;
 	bottom:0;
 	left: 0;
 	right: 0;
-	height: 7em;
+	height: 6.5em;
+}
+
+ .vjs-story-skin .vjs-control-bar {
 	background-color:#FFF;
 	background-color: rgba(255, 255, 255, 0.8);
 	box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
@@ -308,7 +319,7 @@ fonts to show/hide properly.
 	right: 7em;
 	width: auto;
 	height: 1.7em;
-	top: 0.5em;
+	top: 1em;
 	border-radius: 0 1em 1em 0;
 	/* Do not use overflow:hidden; it hides the scene tooltips! */
 	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4) inset;
@@ -360,7 +371,7 @@ fonts to show/hide properly.
  .vjs-story-skin .vjs-time-controls, .vjs-story-skin .vjs-time-divider, .vjs-story-skin .vjs-current-time, .vjs-story-skin .vjs-duration, .vjs-story-skin .vjs-remaining-time {
 	font-size: 1.2em;
 	float:left;
-	margin-top:2em;
+	margin-top:3em;
 	padding: 0 0.1em;
 }
 /* videojs inexplicably puts vjs-control on these, so we need to override a bit: */
@@ -587,7 +598,6 @@ positioning, use another containing element. Otherwise you risk messing up
 control positioning and full window mode. **
 */
  .video-js {
-	background-color: #000;
 	position: relative;
 	padding: 0;
 	/* Start with 10px for base font size so other dimensions can be em based and
