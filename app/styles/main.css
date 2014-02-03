@@ -1,44 +1,68 @@
 * {
 	box-sizing: border-box;
-	margin: 0; 
+	margin: 0;
 	padding: 0
 }
-.clear:after {clear:both; content: ""; display:block;}
-
+.clear:after {
+	clear:both;
+	content:"";
+	display:block;
+}
 /*============================
  *
  * zIndex
  *
 //===========================*/
-
-.windowBg {z-index: 1}
-.scene {z-index: 2}
-.paneBg {z-index: 3}
-.content {position: relative; z-index: 4}
-.paneFg {z-index: 5}
-#footertrigger {z-index:5}
-.vjs-wrapper {z-index: 6}
-.videoOverlay {z-index: 7}
-.toolbar, .vjs-control-bar {z-index: 8}
-
-.modal-backdrop {z-index: 9}
-.modal {z-index: 10} /* including search and nav panes */
-
-.windowFg {z-index: 11}
-
+ .windowBg {
+	z-index: 1
+}
+.scene {
+	z-index: 2
+}
+.paneBg {
+	z-index: 3
+}
+.content {
+	position: relative;
+	z-index: 4
+}
+.paneFg {
+	z-index: 5
+}
+#footertrigger {
+	z-index:5
+}
+.vjs-wrapper {
+	z-index: 6
+}
+.videoOverlay {
+	z-index: 7
+}
+.toolbar, .vjs-control-bar {
+	z-index: 8
+}
+.modal-backdrop {
+	z-index: 9
+}
+.modal {
+	z-index: 10
+}
+/* including search and nav panes */
+ .windowFg {
+	z-index: 11
+}
 /* 
 Allow clicks on overlay items to fall through.	TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
 Need workaround for most IE: may need to manually capture click events and pass them through using document.getElementFromPoint? 
 Note that windowFg should NOT get pointer-events:none, as it'll be used for stop media.
 (hmm, maybe that should be true for the contentpane fg items too?)
 */
-.paneFg, .videoOverlay {
+ .paneFg, .videoOverlay {
 	pointer-events: none
 }
 .paneFg a, .videoOverlay a {
 	pointer-events: auto
 }
-
 /* Custom Icon Font
 --------------------------------------------------------------------------------
 See /images/font/story/map.png for a list of available glyphs
@@ -50,35 +74,31 @@ See /images/font/story/map.png for a list of available glyphs
 	font-weight: normal;
 	font-style: normal;
 }
-
-
-
 /*============================
  *
  * Shared Modal
  *
 //===========================*/
-
-.modal-backdrop {
+ .modal-backdrop {
 	position: fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	animation: fadeIn 0.5s;
 }
-
 .modal {
 	/* Let this be styled by the class inserted by modalMgr
 	on modal creation so it can be unique to each modal. */
 }
-
 .itemDetailModal {
 	position:fixed;
-	top: 10%; left: 5%; right: 5%; bottom: 10%;
+	top: 10%;
+	left: 5%;
+	right: 5%;
+	bottom: 10%;
 }
-
 .itemDetailModal iframe {
 	position:absolute;
 	top: 30px;
@@ -87,77 +107,79 @@ See /images/font/story/map.png for a list of available glyphs
 	right: 0;
 	border: none;
 }
-
-.itemDetailModal .modalmenu {text-align:right; width:100%;padding: 0 0.2em; color:#FFF; background-color:#000; height: 30px; border: 1px solid #000; line-height: 30px}
-
+.itemDetailModal .modalmenu {
+	text-align:right;
+	width:100%;
+	padding: 0 0.2em;
+	color:#FFF;
+	background-color:#000;
+	height: 30px;
+	border: 1px solid #000;
+	line-height: 30px
+}
 .itemDetailModal .escapelink, .itemDetailModal .escapelink:before {
 	color:#FFF
 }
-
 .itemDetailModal img {
-box-shadow: 3px 3px 15px rgba(0,0,0,0.9);
+	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
 }
-
 /*============================
  *
  * The ever-popular "misc"
  *
 //===========================*/
-
-
-.threedee {
+ .threedee {
 	perspective: 800px;
-	-webkit-perspective: none; /* Safari is choking on the 3d transforms. TODO figure out why; for now just revert to 2d */
+	-webkit-perspective: none;
+	/* Safari is choking on the 3d transforms. TODO figure out why; for now just revert to 2d */
 	transform-origin: 50% 50%;
 }
-
-
 .hidetext {
-	overflow:hidden; line-height: 100000px; font-size: 0.01em;
+	overflow:hidden;
+	line-height: 100000px;
+	font-size: 0.01em;
 }
-
 .error {
-	margin: 1em; padding: 1em;
+	margin: 1em;
+	padding: 1em;
 	border: 2px solid #C00;
 }
-
-
-
-
 /*============================
  *
  * quick-and-dirty phone layout
  *
 //===========================*/
-
-@media screen and (max-width: 501px){
-	.toolbar {position:static !important}
+ @media screen and (max-width: 501px) {
+	.toolbar {
+		position:static !important
+	}
 	.episode {
 		margin-top: 0 !important
 	}
-	.vjs-control-bar {display:none !important}
-	.sceneintro {margin: 2em 1em !important}
-	.sceneintro p {
-		margin: 1em 0  !important;
+	.vjs-control-bar {
+		display:none !important
 	}
-	
-	.scene-explore .contentMain, 
-	.scene-explore .contentAlt {
+	.sceneintro {
+		margin: 2em 1em !important
+	}
+	.sceneintro p {
+		margin: 1em 0 !important;
+	}
+	.scene-explore .contentMain, .scene-explore .contentAlt {
 		float:none !important;
 		width: 100% !important;
 		height: auto !important;
 	}
+	.scene-centered {
+		width:80% !important;
+	}
 	.eliterate-logo {
 		position:absolute !important;
 	}
-	.searchPanel {width: auto !important}
+	.searchPanel {
+		width: auto !important
+	}
 }
-
-
-
-
-
-
 /* Testing these out: animated items */
 
 /*

@@ -3,118 +3,165 @@
  * Scene structure
  *
 //===========================*/
-
-
-.scene,
-.pane {position:relative;}
-
-.videoOverlay {position:absolute}
-.paneBg, 
-.paneFg {position:absolute; top: 0; left: 0; right: 0; bottom: 0}
-.fillPane {overflow:hidden}
-
-.paneBg {opacity: 0.5}
-
+ .scene, .pane {
+	position:relative;
+}
+.videoOverlay {
+	position:absolute
+}
+.paneBg, .paneFg {
+	position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0
+}
+.fillPane {
+	overflow:hidden
+}
+.paneBg {
+	opacity: 0.5
+}
 /*============================
  *
  * Item positioning
  *
 //===========================*/
-
-.content > div {
+ .content > div {
 	perspective: 600px;
 }
-
-
 /* TODO: add breakpoints to adjust sidebar widths based on screen size */
-
-
-.content.hasLeftSidebar .item {
+ .content.hasLeftSidebar .item {
 	margin-left: 30%;
 }
 .content.hasRightSidebar .item {
 	margin-right: 30%;
 }
-
 .content.hasLeftSidebar.hasRightSidebar .item {
 	margin-left: 25%;
 	margin-right: 25%;
 }
-
-.content .item.burstL {margin-left: 0; clear:left}
-.content .item.burstR {margin-right: 0; clear:right}
-.content .item.burst {margin-left: 0; margin-right: 0; clear:both}
-.content .item.sidebarL {width: 35%; margin-right: 0; margin-left: 0; float:left; clear:left}
-.content .item.sidebarR {width: 35%; margin-right: 0; margin-left: 0; float:right; clear:right}
-.content.hasLeftSidebar.hasRightSidebar .item.sidebarL {width: 25%; margin-left: 0; margin-right: 0}
-.content.hasLeftSidebar.hasRightSidebar .item.sidebarR {width: 25%; margin-left: 0; margin-right: 0}
-.content.hasLeftSidebar.hasRightSidebar .item.burstL {margin-left: 0;}
-.content.hasLeftSidebar.hasRightSidebar .item.burstR {margin-right: 0;}
-.content.hasLeftSidebar.hasRightSidebar .item.burst {margin-left: 0; margin-right: 0;}
-
+.content .item.burstL {
+	margin-left: 0;
+	clear:left
+}
+.content .item.burstR {
+	margin-right: 0;
+	clear:right
+}
+.content .item.burst {
+	margin-left: 0;
+	margin-right: 0;
+	clear:both
+}
+.content .item.sidebarL {
+	width: 35%;
+	margin-right: 0;
+	margin-left: 0;
+	float:left;
+	clear:left
+}
+.content .item.sidebarR {
+	width: 35%;
+	margin-right: 0;
+	margin-left: 0;
+	float:right;
+	clear:right
+}
+.content.hasLeftSidebar.hasRightSidebar .item.sidebarL {
+	width: 25%;
+	margin-left: 0;
+	margin-right: 0
+}
+.content.hasLeftSidebar.hasRightSidebar .item.sidebarR {
+	width: 25%;
+	margin-left: 0;
+	margin-right: 0
+}
+.content.hasLeftSidebar.hasRightSidebar .item.burstL {
+	margin-left: 0;
+}
+.content.hasLeftSidebar.hasRightSidebar .item.burstR {
+	margin-right: 0;
+}
+.content.hasLeftSidebar.hasRightSidebar .item.burst {
+	margin-left: 0;
+	margin-right: 0;
+}
 /* Overrides for no-sidebar items. Don't need to worry about hasLeftSidebar or hasRightSidebar rules here, as noSidebars will prevent those appearing */
-.content.noSidebars .item.sidebarL {float:none; width:auto;}
-.content.noSidebars .item.sidebarR {float:none; width:auto;}
-
+ .content.noSidebars .item.sidebarL {
+	float:none;
+	width:auto;
+}
+.content.noSidebars .item.sidebarR {
+	float:none;
+	width:auto;
+}
 /*============================
  *
  * Scene layouts
  *
 //===========================*/
+
 /* default */
-
-.futureScene, .pastScene {display:none}
-
-.scene .sceneTitle {padding: 0.5em; display:none} /* TODO: add a styles option to scenes for showing the title */
-
-.scene-explore .scene .sceneTitle {display:block}
+ .futureScene, .pastScene {
+	display:none
+}
+.scene .sceneTitle {
+	padding: 0.5em;
+	display:none
+}
+/* TODO: add a styles option to scenes for showing the title */
+ .scene-explore .scene .sceneTitle {
+	display:block
+}
 /*
 .videoContainer {border: 2px solid #F00}
 .contentMain {border: 2px solid #0F0;}
 .contentAlt  {border: 2px solid #00F;}
 */
 
-
 /*============================*/
+
 /* fullscreen video mode */
-.scene-video {background-color: #000;
-position:absolute; top: 60px; left: 0; right: 0; bottom: 0;
+ .scene-video {
+	background-color: #000;
+	position:absolute;
+	top: 60px;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
-
-
 .scene-video .videoContainer {
 	margin: auto;
 }
-
-
-
-.scene-video .contentMain .paneBg, 
-.scene-video .contentMain .paneFg 
-{display:none}
-
-.scene-video .contentMain {color:#DDD}
-
-
+.scene-video .contentMain .paneBg, .scene-video .contentMain .paneFg {
+	display:none
+}
+.scene-video .contentMain {
+	color:#DDD
+}
 /*============================*/
+
 /* Explore mode */
-
-.scene-explore {clear:both}
-.scene-explore.futureScene, 
-.scene-explore.pastScene {display:block}
-
+ .scene-explore {
+	clear:both
+}
+.scene-explore.futureScene, .scene-explore.pastScene {
+	display:block
+}
 .scene-explore .videoContainer {
 	position:fixed;
 	top: 60px;
 	right: 0;
 	width: 30%;
 }
-
-.scene-explore {border-top: 1px solid rgba(0,0,0,0.5)}
-
+.scene-explore {
+	border-top: 1px solid rgba(0, 0, 0, 0.5)
+}
 .scene-explore.currentScene .videoContainer {
 	z-index:2;
 }
-
 .scene-explore .contentMain {
 	height: 100%;
 	width: 50%;
@@ -125,48 +172,31 @@ position:absolute; top: 60px; left: 0; right: 0; bottom: 0;
 	width: 50%;
 	float:right;
 }
-
 /*============================*/
-.scene-1col {margin: 0 10%;}
-
+ .scene-1col {
+	margin: 0 10%;
+}
 .scene-1col .contentMain {
 }
-
-
 /*============================*/
-.scene-centered {}
-
-.scene-centered .scene {
-}
-
-.scene-centered .videoContainer {
-	position:fixed; width: 60%;
-	margin: 10% 20% 0 20%;
-}
-
-.scene-centered .centeredVideoPad {
-	padding-top: 10%
-}
-
-.scene-centered .contentMain {
+ .scene-centered {
 	width: 60%;
-	margin: 0 20%;
+	margin: auto;
 }
-
 /*============================*/
-.scene-2col {}
-
-.scene-2col .videoContainer {
-	position:fixed; width: 50%; margin: 0 25%;
+ .scene-2col {
 }
-
+.scene-2col .videoContainer {
+	position:fixed;
+	width: 50%;
+	margin: 0 25%;
+}
 .scene-2col.videoLeft .videoContainer {
 	margin: 0 50% 0 0;
 }
 .scene-2col.videoRight .videoContainer {
 	margin: 0 0 0 50%;
 }
-
 .scene-2colL .contentMain {
 	width: 50%;
 	float:left;
@@ -183,31 +213,41 @@ position:absolute; top: 60px; left: 0; right: 0; bottom: 0;
 	width: 50%;
 	float:left;
 }
-
 /*============================*/
-.scene-cornerH {}
-
-.scene-cornerH .videoContainer {
-	width: 50%;float:left;
+ .scene-cornerH {
 }
-
+.scene-cornerH .videoContainer {
+	width: 50%;
+	float:left;
+}
 .scene-cornerH .contentMain {
-	width: 50%;float:right;
+	width: 50%;
+	float:right;
 	overflow-y: auto;
 }
-
-.scene-cornerH.videoRight .videoContainer {float:right;}
-.scene-cornerH.videoRight .contentMain {float:left;}
-
-.scene-cornerH .contentAlt {clear:both}
-
-
-/*============================*/
-.scene-cornerV {}
-.scene-cornerV .scene-cornerV-column {
-	width: 50%; float:left;
+.scene-cornerH.videoRight .videoContainer {
+	float:right;
 }
-
-.scene-cornerV .contentAlt {width: 50%; float:right;}
-.scene-cornerV.videoRight .scene-cornerV-column {float:right;}
-.scene-cornerV.videoRight .contentAlt {float:left}
+.scene-cornerH.videoRight .contentMain {
+	float:left;
+}
+.scene-cornerH .contentAlt {
+	clear:both
+}
+/*============================*/
+ .scene-cornerV {
+}
+.scene-cornerV .scene-cornerV-column {
+	width: 50%;
+	float:left;
+}
+.scene-cornerV .contentAlt {
+	width: 50%;
+	float:right;
+}
+.scene-cornerV.videoRight .scene-cornerV-column {
+	float:right;
+}
+.scene-cornerV.videoRight .contentAlt {
+	float:left
+}
