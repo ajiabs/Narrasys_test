@@ -324,6 +324,7 @@
 .episode-eliterate .branding img {
 position:absolute;
 bottom: 2em; 
+border:none;
 }
 
 .tellinglogo:before {

@@ -51,6 +51,16 @@
  .windowFg {
 	z-index: 11
 }
+
+/* 
+IE10+ has an idiosyncratic point of view regarding stacking context.
+This fixes it. TODO: understand why it fixes it
+*/
+.threedee {
+	z-index: 9
+}
+
+
 /* 
 Allow clicks on overlay items to fall through.	TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
 Need workaround for most IE: may need to manually capture click events and pass them through using document.getElementFromPoint? 
@@ -130,8 +140,8 @@ See /images/font/story/map.png for a list of available glyphs
 //===========================*/
  .threedee {
 	perspective: 800px;
-	-webkit-perspective: none;
 	/* Safari is choking on the 3d transforms. TODO figure out why; for now just revert to 2d */
+	-webkit-perspective: none;
 	transform-origin: 50% 50%;
 }
 .hidetext {
@@ -151,16 +161,16 @@ See /images/font/story/map.png for a list of available glyphs
 //===========================*/
  @media screen and (max-width: 501px) {
 	.toolbar {
-		position:static !important
+		position:static !important;
 	}
 	.episode {
-		margin-top: 0 !important
+		margin-top: 0 !important;
 	}
 	.vjs-control-bar {
-		display:none !important
+		display:none !important;
 	}
 	.sceneintro {
-		margin: 2em 1em !important
+		margin: 2em 1em !important;
 	}
 	.sceneintro p {
 		margin: 1em 0 !important;
@@ -177,20 +187,6 @@ See /images/font/story/map.png for a list of available glyphs
 		position:absolute !important;
 	}
 	.searchPanel {
-		width: auto !important
+		width: auto !important;
 	}
 }
-/* Testing these out: animated items */
-
-/*
-
-.driftRight {
-  animation-duration: 30s;
-  animation-fill-mode: both;
-  animation-name: driftRight;
-}
-@keyframes driftRight {
-	0% {transform: translateX(0)}
-	100% {transform: translateX(2%)}
-}
-*/
