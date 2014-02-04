@@ -12,7 +12,7 @@ angular.module('com.inthetelling.player')
 		// Method to show the overlay for item detail view
 		// itemScope: the scope of the ittItem directive we are creating this overlay for
 		svc.createItemDetailOverlay = function (itemScope) {
-			console.log("createItemDetailOverlay:", itemScope.item);
+			// console.log("createItemDetailOverlay:", itemScope.item);
 
 			itemScope.videoWasPlaying = !(videojs.player.paused()); // So we know whether to start it again when the modal is closed
 

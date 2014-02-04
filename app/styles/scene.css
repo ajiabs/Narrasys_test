@@ -139,7 +139,10 @@
 	display:none
 }
 .scene-video .contentMain {
-	color:#DDD
+	color:#DDD;
+	margin: 0 10%;
+	font-size: 120%;
+	
 }
 /*============================*/
 

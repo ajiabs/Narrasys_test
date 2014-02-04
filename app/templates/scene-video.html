@@ -16,7 +16,7 @@
 				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
 			</div>
 			<div class="content showCurrent noSidebars">
-				<div x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | filter:{isActive:true}" x-itt-item="item"></div>
+				<div data-force-item-template="closedcaption" x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | filter:{isActive:true, type: 'annotation'}" x-itt-item="item"></div>
 			</div>
 			<div class="fillPane paneFg">
 				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>

@@ -11,7 +11,7 @@ angular.module('com.inthetelling.player')
 				item: '=ittItem'
 			},
 			link: function (scope, element, attrs) {
-
+				// TODO this whole force-template thing is a total hack.  Should probably be handled at the scene level instead of here.
 				// check for forceTemplate attribute on the item ng-repeat.  If present, stash the real templateUrl in origTemplateUrl,
 				// and set a new templateUrl value for this scene only.
 				if (attrs.forceItemTemplate) { 
@@ -28,11 +28,17 @@ angular.module('com.inthetelling.player')
 					} else {
 						console.warn("PROBABLE ERROR: unknown item type ",scope.item);
 					}
-					// TODO: force layouts and styles too?  Ideally this won't be necessary, the layouts and styles will either be interchangeable or no-op, but will need to try it to be sure
+					// Stash and disable the styles and layout, too. (TODO: in future may want to allow some or all of these after all...)
+					scope.item.origLayout = scope.item.layout;
+					scope.item.origStyles = scope.item.styles;
+					scope.item.layout = '';
+					scope.item.styles = '';
 				} else {
 					// no forceTemplate, so revert to the original (if there is one!)
 					if (scope.item.origTemplateUrl) {
 						scope.item.templateUrl = scope.item.origTemplateUrl;
+						scope.item.layout = scope.item.origLayout;
+						scope.item.styles = scope.item.origStyles;
 					}
 				}
 
