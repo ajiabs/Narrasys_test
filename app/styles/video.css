@@ -127,6 +127,9 @@
 .vjs-story-skin .video-captions:before {
 	content:"\e008";
 }
+.vjs-story-skin .video-captions.isOpen:before {
+	content:"\e608";
+}
 
 
 /* Our skin
@@ -547,14 +550,6 @@ color:#c44343;
 	margin: 0 0 0.3em 0;
 	font-weight: bold;
 	cursor: default;
-}
-/* Subtitles Button */
- .vjs-story-skin .vjs-subtitles-button:before {
-	content:"\e00c";
-}
-/* Captions Button */
- .vjs-story-skin .vjs-captions-button:before {
-	content:"\e008";
 }
 /* Replacement for focus outline */
  .vjs-story-skin .vjs-captions-button:focus .vjs-control-content:before, .vjs-story-skin .vjs-captions-button:hover .vjs-control-content:before {

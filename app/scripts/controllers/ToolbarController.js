@@ -88,8 +88,15 @@ angular.module('com.inthetelling.player')
 			}
 		};
 
-		$scope.startFSView = function () {
-			$scope.setSceneTemplate('video');
+		$scope.toggleClosedCaptionMode = function () {
+			if ($scope.currentSceneTemplate === 'video') {
+				$scope.setSceneTemplate($scope.lastModeUsed);
+				$scope.lastModeUsed = undefined;
+			} else {
+				$scope.lastModeUsed = $scope.currentSceneTemplate;
+				$scope.setSceneTemplate('video');
+			}
+		
 		};
 		
 		// triggers vjs footer controls to appear

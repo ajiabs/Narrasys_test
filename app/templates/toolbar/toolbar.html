@@ -106,7 +106,7 @@
 			</a>
 		</div>
 
-		<div x-ng-show="!currentSceneTemplateIs('video')" x-ng-click="startFSView()" class="video-captions vjs-control">
+		<div x-ng-class="{isOpen: currentSceneTemplateIs('video')}" x-ng-click="toggleClosedCaptionMode()" class="video-captions vjs-control">
 			<a href="javascript: void 1;">
 				<span class="vjs-control-text">Closed Captions</span>
 			</a>
