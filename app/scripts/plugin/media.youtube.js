@@ -1,5 +1,7 @@
 /* MODIFIED: doesn't try to inject css anymore (failed in IE8; we just put it in the css ourselves instead) */
 /* MODIFIED: ripped out quality menu (buggy in IE, not that useful anyway) */
+/* MODIFIED: never allow native controls on mobile (plugin was forcing them always to appear) */
+
 /* TODO: addEventListener on iframeblocker is failing in IE */
 /* god this code is a disaster */
 
@@ -99,7 +101,7 @@ videojs.Youtube = videojs.MediaTechController.extend({
       playerapiid: this.id(),
       disablekb: 1,
       wmode: 'transparent',
-      controls: (this.player_.options()['ytcontrols'])?1:0,
+      controls: 0,
       showinfo: 0,
       modestbranding: 1,
       rel: 0,
@@ -425,4 +427,5 @@ videojs.Youtube.prototype.onError = function(error){
   this.player_.error = error;
   this.player_.trigger('error');
 };
+
 
