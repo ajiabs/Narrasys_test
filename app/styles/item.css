@@ -206,13 +206,13 @@
 	color: #000;
 	border-top: 1px solid #666;
 }
-.item.currentItem .caption, .item:hover .caption {
+.item:hover .caption {
 	opacity: 0;
 }
 .item .slidingcaption {
 	transform:translateY(0);
 }
-.item.currentItem .slidingcaption, .item:hover .slidingcaption {
+.item:hover .slidingcaption {
 	transform:translateY(100%);
 }
 /* - - - - - - - - - - - - - -  */

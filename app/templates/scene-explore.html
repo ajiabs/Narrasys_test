@@ -1,11 +1,12 @@
 <!-- TODO: on enter need to scroll directly to current scene if it's not scene 1 -->
 
-<div x-ng-if="scene.items.length" class="clear scene-explore {{scene.layout}} {{scene.styles}}" x-ng-class='{
+<div x-ng-if="scene.items.length" class="clear scene-explore {{scene.layout}} {{scene.styles}}" 
+x-ng-class='{
 	"currentScene": scene.isActive, 
 	"futureScene": !scene.isActive && !scene.wasActive, 
 	"pastScene": !scene.isActive && scene.wasActive,
 	"nonNavigable": scene.nonNavigable
-	}'>
+}'>
 	<div class="scene">
 		<div class="pane videoContainer" x-itt-magnet>
 			<div class="fillPane video">
@@ -25,6 +26,7 @@
 			<div class="content noSidebars">
 				<div x-ng-repeat="item in scene.items | layout: scene.altPaneContents | filter:{cosmetic: false}" class="item-animate" data-force-item-template="default" x-itt-item="item"></div>
 			</div>
+		</div>
 	</div>
 	<div x-itt-magnetized class="fillPane videoOverlay">
 		<div x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>

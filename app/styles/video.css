@@ -135,7 +135,7 @@
 	right: 1em;
 }
 .vjs-story-skin .video-captions:before {
-	content:"\e008";
+	content:"\e606";
 }
 .vjs-story-skin .video-captions.isOpen:before {
 	content:"\e608";
