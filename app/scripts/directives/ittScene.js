@@ -50,7 +50,9 @@ angular.module('com.inthetelling.player')
 				scope.$watch(function () {
 					return element.width();
 				}, twiddleSceneLayout);
-				$rootScope.$on('toolbar.changedSceneTemplate', twiddleSceneLayout);
+				$rootScope.$on('toolbar.changedSceneTemplate', function() {
+					$timeout(twiddleSceneLayout, 0); // timeout only necessary on iPad...
+				});
 				scope.$watch('scene.isActive', twiddleSceneLayout);
 
 				/*

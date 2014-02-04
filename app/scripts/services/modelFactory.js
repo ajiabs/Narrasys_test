@@ -140,6 +140,7 @@ angular.module('com.inthetelling.player')
 
 			model.type = data.type;
 			model.title = data.title;
+			if (!model.title) {model.nonNavigable=true;} // HACK
 			model.description = data.description;
 			model.startTime = data.start_time;
 			model.endTime = data.end_time;
@@ -162,7 +163,6 @@ angular.module('com.inthetelling.player')
 			if (model.layout.match(/showCurrent/)) {
 				model.showCurrent = true;
 			}
-
 			return model;
 		};
 

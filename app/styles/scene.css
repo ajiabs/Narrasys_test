@@ -111,10 +111,6 @@
 	padding: 0.5em;
 	display:none
 }
-/* TODO: add a styles option to scenes for showing the title */
- .scene-explore .scene .sceneTitle {
-	display:block
-}
 /*
 .videoContainer {border: 2px solid #F00}
 .contentMain {border: 2px solid #0F0;}
@@ -153,6 +149,9 @@
 .scene-explore.futureScene, .scene-explore.pastScene {
 	display:block
 }
+.scene-explore.currentScene .videoContainer {
+	z-index:2;
+}
 .scene-explore .videoContainer {
 	position:fixed;
 	top: 60px;
@@ -162,9 +161,16 @@
 .scene-explore {
 	border-top: 1px solid rgba(0, 0, 0, 0.5)
 }
-.scene-explore.currentScene .videoContainer {
-	z-index:2;
+.scene-explore.nonNavigable {
+	border-top: none
 }
+
+
+/* TODO: add a styles option to scenes for showing the title */
+ .scene-explore .scene .sceneTitle {
+	display:block
+}
+
 .scene-explore .contentMain {
 	height: 100%;
 	width: 50%;
