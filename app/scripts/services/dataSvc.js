@@ -50,7 +50,31 @@ angular.module('com.inthetelling.player')
 			// API Data
 			else {
 				//			console.log("dataSvc.get() [Mode: API Data]");
-				// TODO: Retry on api errors before rejecting a promise.
+
+				// Check API authentication first:
+				$http.get(config.apiDataBaseUrl + "/v1/check_signed_in")
+					.success(function(authData,authStatus) {
+					if (authData.signed_in === true) {
+						// We're authenticated, so go get all the data for realsies
+						svc.batchAPIcalls(routeParams, callback, errback);
+					} else {
+						$rootScope.uiErrorMsg = "Authentication failed.";
+						$rootScope.uiErrorDetails = JSON.stringify(authData);
+						$location.path('/error');
+					}
+				}).error(function (authData,authStatus) {
+					// If we got here, must have failed authentication
+					$rootScope.uiErrorMsg = "Couldn't make authentication check!";
+					$rootScope.uiErrorDetails = JSON.stringify(authData);
+					$location.path('/error');
+				});
+			}
+		};
+
+		// retrieves the episode data from the API. Call only through svc.get
+		svc.batchAPIcalls = function(routeParams, callback, errback) {
+			var episodeId = routeParams.epId;
+			var authKey = routeParams.authKey;
 
 				/*
 				API Flow:
@@ -67,98 +91,85 @@ angular.module('com.inthetelling.player')
 				TODO: GEt event categories also, they will eventually be used in the player
 			*/
 
-
-				// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
-				// NOTE this is not in use currently
-				var authParam = "";
-				if (config.apiAuthToken) {
-					$http.defaults.headers.get = {
-						'Authorization': config.apiAuthToken
-					};
-				} else {
-					authParam = (authKey) ? "?access_token=" + authKey : "";
-				}
-
-				// Check API authentication first:
-				$http.get(config.apiDataBaseUrl + "/v1/check_signed_in")
-					.success(function(authData,authStatus) {
-						// For now assume authentication succeeded if we got here; TODO check authData (should be  {"signed_in": true}
-
-						// first set of calls
-						var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId + authParam)
-							.then(function (response) {
-								data.episode = response.data;
-								//console.log(response.config.url + ":", response.data);
-								return $q.all([
-									$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets' + authParam),
-									$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + authParam)
-								]);
-							})
-							.then(function (responses) {
-								data.assets = responses[0].data.files;
-								//console.log(responses[0].config.url + ":", responses[0].data);
-								//console.log(responses[1].config.url + ":", responses[1].data);
-								return $q.all([
-									$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam),
-									$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + authParam)
-								]);
-							})
-							.then(function (responses) {
-								data.assets = data.assets.concat(responses[0].data.files);
-								//console.log(responses[0].config.url + ":", responses[0].data);
-								//console.log(responses[1].config.url + ":", responses[1].data);
-								return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam);
-							})
-							.then(function (response) {
-								data.assets = data.assets.concat(response.data.files);
-								//console.log(response.config.url + ":", response.data);
-							});
-		
-						// second set of calls
-						var secondSet = $q.all([
-							$http.get(config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events' + authParam),
-							$http.get(config.apiDataBaseUrl + '/v1/templates' + authParam),
-							$http.get(config.apiDataBaseUrl + '/v1/layouts' + authParam),
-							$http.get(config.apiDataBaseUrl + '/v1/styles' + authParam)
-						])
-							.then(function (responses) {
-								data.events = responses[0].data;
-								data.templates = responses[1].data;
-								data.layouts = responses[2].data;
-								data.styles = responses[3].data;
-							});
-		
-						// completion
-						$q.all([
-							firstSet,
-							secondSet
-						])
-							.then(function (responses) {
-								// success
-								//				console.log("Compiled API Data:", data);
-		
-								//// DIRTY PREPROCESSING HACK ////
-								// TODO: Remove it when api updates the type field to be lowercase
-								for (var i = 0; i < data.events.length; i++) {
-									data.events[i].type = data.events[i].type.toLowerCase();
-									data.events[i]._type = data.events[i]._type.toLowerCase();
-								}
-								///////////////////
-		
-								callback(data);
-						}, function(responses) {
-							// error
-							errback(responses);
-						});
-
-				}).error(function (authData,authStatus) {
-					// If we got here, must have failed authentication
-					$rootScope.uiErrorMsg = "Authentication check failed.";
-					$rootScope.uiErrorDetails = JSON.stringify(authData);
-					$location.path('/error');
-				});
+			// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
+			// NOTE this is not in use currently
+			var authParam = "";
+			if (config.apiAuthToken) {
+				$http.defaults.headers.get = {
+					'Authorization': config.apiAuthToken
+				};
+			} else {
+				authParam = (authKey) ? "?access_token=" + authKey : "";
 			}
+
+			// first set of calls
+			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId + authParam)
+				.then(function (response) {
+					data.episode = response.data;
+					//console.log(response.config.url + ":", response.data);
+					return $q.all([
+						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets' + authParam),
+						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + authParam)
+					]);
+				})
+				.then(function (responses) {
+					data.assets = responses[0].data.files;
+					//console.log(responses[0].config.url + ":", responses[0].data);
+					//console.log(responses[1].config.url + ":", responses[1].data);
+					return $q.all([
+						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam),
+						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + authParam)
+					]);
+				})
+				.then(function (responses) {
+					data.assets = data.assets.concat(responses[0].data.files);
+					//console.log(responses[0].config.url + ":", responses[0].data);
+					//console.log(responses[1].config.url + ":", responses[1].data);
+					return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam);
+				})
+				.then(function (response) {
+					data.assets = data.assets.concat(response.data.files);
+					//console.log(response.config.url + ":", response.data);
+				});
+
+			// second set of calls
+			var secondSet = $q.all([
+				$http.get(config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events' + authParam),
+				$http.get(config.apiDataBaseUrl + '/v1/templates' + authParam),
+				$http.get(config.apiDataBaseUrl + '/v1/layouts' + authParam),
+				$http.get(config.apiDataBaseUrl + '/v1/styles' + authParam)
+			])
+				.then(function (responses) {
+					data.events = responses[0].data;
+					data.templates = responses[1].data;
+					data.layouts = responses[2].data;
+					data.styles = responses[3].data;
+				});
+
+			// completion
+			$q.all([
+				firstSet,
+				secondSet
+			])
+				.then(function (responses) {
+					// success
+					//				console.log("Compiled API Data:", data);
+
+					//// DIRTY PREPROCESSING HACK ////
+					// TODO: Remove it when api updates the type field to be lowercase
+					for (var i = 0; i < data.events.length; i++) {
+						data.events[i].type = data.events[i].type.toLowerCase();
+						data.events[i]._type = data.events[i]._type.toLowerCase();
+					}
+					///////////////////
+
+					callback(data);
+			}, function(responses) {
+				// error
+				errback(responses);
+			});		
 		};
+
 
 		// Retrieve the data for an asset based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
