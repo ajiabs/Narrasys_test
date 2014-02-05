@@ -33,7 +33,7 @@ angular.module('com.inthetelling.player')
 
 				// Register videojs as the provider for the cuePointScheduler service.
 				// We are only using videoJSElementId as a UID here for convenience. cuePointScheduler has no DOM awareness.
-				var setPlayhead = cuePointScheduler.registerProvider(config.videoJSElementId, config.cuePointScanInterval);
+				scope.setPlayhead = cuePointScheduler.registerProvider(config.videoJSElementId, config.cuePointScanInterval);
 
 				// Initialize videojs via the videojs service
 				// (This is NOT calling videojs directly; extra layer of indirection through services/video.js!)  (TODO: why?)
@@ -47,16 +47,16 @@ angular.module('com.inthetelling.player')
 						if (!player.hasPlayed) {
 							player.hasPlayed= true;
 							$rootScope.$emit("toolbar.videoFirstPlay");
+
+							// register a listener on the instantiated player to inform the cuePointScheduler
+							// service whenever the playhead position changes.
+							player.on("timeupdate", function () {
+								//console.log("$$ timeupdate &&", player.currentTime());
+								scope.setPlayhead(player.currentTime());
+							});
 						}
 					});
 					
-					// register a listener on the instantiated player to inform the cuePointScheduler
-					// service whenever the playhead position changes.
-					player.on("timeupdate", function () {
-						//console.log("$$ timeupdate &&", player.currentTime());
-						setPlayhead(player.currentTime());
-					});
-
 
 					// Wait until we know the player duration, then set the scene markers (and kill the $watch)
 					// TODO if we can get the video duration in the json we'll be able to init this directly
