@@ -13,13 +13,11 @@ angular.module('com.inthetelling.player')
 			replace: true,
 			scope: true,
 			link: function (scope, element, attrs, controller) {
-
-
 				// 'activate' a dom instance of the itt-magnet directive by broadcasting an event from the root scope
 				// with a reference to the itt-magnet's dom element. The itt-magnetized directive listens for these events
 				// and utilizes the dom element to reposition itself appropriately.
 				var activate = function () {
-					// console.log("ittMagnet.activate()", element);
+// 					console.log("ittMagnet.activate()", scope);
 					// Need timeout because this needs to run after DOM update; so we don't wind up trying to test against a display:none node
 					$timeout(function () {
 						$rootScope.$emit('magnet.activated', element);
@@ -34,7 +32,8 @@ angular.module('com.inthetelling.player')
 						}
 					};
 
-					// watch this directive's parent scene and if its state changes to active then activate the video magnet
+//TODO  This may be redundant, but I'm leaving it in for now
+// watch this directive's parent scene and if its state changes to active then activate the video magnet
 					scope.$watch('scene.isActive', function (newValue, oldValue) {
 						if (newValue && newValue !== oldValue) {
 							activate();

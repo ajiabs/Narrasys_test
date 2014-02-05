@@ -121,9 +121,7 @@ angular.module('com.inthetelling.player')
 
 		// When user first clicks video, show the toolbar chrome and hide the landing screen
 		$scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay',function() {
-
-
-			// Move our custom controls into the vjs control bar.  TODO jquery hackage
+			// Move our custom controls into the vjs control bar.  TODO fix jquery hackage
 			$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
 
 			// Hide the intro; show the regular controls
@@ -150,7 +148,25 @@ angular.module('com.inthetelling.player')
 		});
 
 
-		
+		// HACK HACK such an ungodly HACK.
+		// iDevices combined with the youtube player need some special handling as far as event timing goes; normally the firstPlayWatcher
+		// fires immediately when the user hits "play", but on iDevices there's a potentially long delay while the video starts buffering after first
+		// user interaction. Ugly. So we're watching for a different event that on the iPad fires earlier than the 'play' event, 
+		// and use it to trigger the videoFirstPlay event instead.   
+
+		$scope.firstPlayWatcherForIDevicesWhenWeAreUsingYoutube = $scope.$watch(
+			function() {
+				if (videojs.player) {
+					return videojs.player.durationchanged;
+				}
+			},
+			function(durationchanged) {
+				if (durationchanged) {
+					$rootScope.$emit('toolbar.videoFirstPlay');
+					$scope.firstPlayWatcherForIDevicesWhenWeAreUsingYoutube(); // stop watching
+				}
+			}
+		);
 
 
 	});

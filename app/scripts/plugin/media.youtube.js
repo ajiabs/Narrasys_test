@@ -1,7 +1,6 @@
 /* MODIFIED: doesn't try to inject css anymore (failed in IE8; we just put it in the css ourselves instead) */
 /* MODIFIED: ripped out quality menu (buggy in IE, not that useful anyway) */
-/* MODIFIED: never allow native controls on mobile (plugin was forcing them always to appear) */
-
+/* MODIFIED: stop the plugin forcing native controls on mobile */
 /* TODO: addEventListener on iframeblocker is failing in IE */
 /* god this code is a disaster */
 
@@ -374,6 +373,11 @@ videojs.Youtube.prototype.onStateChange = function(state){
     switch(state){
       case -1:
         this.player_.trigger('durationchange');
+        
+        // The toolbar controller will watch for this.  On most platforms
+        // this fires right away; on iDevices it only fires when the user first
+        // interacts with the player.  Don't need to maintain state after it's set, we only care about the first time it becomes true
+        this.player_.durationchanged=true;
         break;
 
       case YT.PlayerState.ENDED:
@@ -390,8 +394,6 @@ videojs.Youtube.prototype.onStateChange = function(state){
         // Make sure the big play is not there
         this.player_.bigPlayButton.hide();
         
-        // TODO hack:  having this true during init makes the video unplayable(?!) but we want to see our toolbar.
-        // Haven't figured out a way to not have the native controls wihtout breakign the video altogether
         this.player_.controls(true);
 
         this.player_.trigger('timeupdate');
