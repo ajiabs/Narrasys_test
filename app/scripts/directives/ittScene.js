@@ -16,7 +16,7 @@ angular.module('com.inthetelling.player')
 				// TODO: (probably overoptimizing): have this function return immediately if the scene is not visible. (How do we check that without using jQuery?)
 				//       (can't use isActive, as sometimes inactive scenes are still visible)
 				// TODO: some of this is a great case for having code specific to individual scene templates instead of one big scene directive....
-				var twiddleSceneLayout = function () {
+				scope.twiddleSceneLayout = function () {
 					$timeout(function () { // wait for any DOM updates first
 						// special case for fullscreen-video and scene-centered views: make sure there's room for captions:
 						if (scope.scene.isActive) {
@@ -47,12 +47,13 @@ angular.module('com.inthetelling.player')
 				};
 				scope.$watch(function () {
 					return element.width();
-				}, twiddleSceneLayout);
+				}, scope.twiddleSceneLayout);
 
 				$rootScope.$on('toolbar.changedSceneTemplate', function() {
-					$timeout(twiddleSceneLayout, 0); // timeout only necessary on iPad...
+					scope.twiddleSceneLayout();
+					$timeout(scope.twiddleSceneLayout, 100); // Brute-force solution to tiny-video problem
 				});
-				scope.$watch('scene.isActive', twiddleSceneLayout);
+				scope.$watch('scene.isActive', scope.twiddleSceneLayout);
 
 				/*
 				// In case we need scene enter / exit events someday...
