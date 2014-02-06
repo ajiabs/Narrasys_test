@@ -9,11 +9,11 @@ angular.module('com.inthetelling.player')
 		dataSvc.get($routeParams, function (data) { // ON SUCCESS
 			var i, j;
 
-			
+
 			// To be used by framebreaker (see toolbar controller):
 			$scope.episodeID = $routeParams.epId;
 			$scope.authKey = $routeParams.authKey;
-			
+
 			// Create an episode model.
 			$scope.episode = modelFactory.createEpisodeModel(data.episode);
 
@@ -97,38 +97,38 @@ angular.module('com.inthetelling.player')
 			// TODO these are derived values; refactor.
 			// Skips untitled scenes; these are used for navigation only.
 			for (i = 1; i < $scope.scenes.length; i++) {
-				for (j=i-1; j>-1;j=j-1) {
+				for (j = i - 1; j > -1; j = j - 1) {
 					if ($scope.scenes[j].title) {
-						$scope.scenes[i].$prevScene=$scope.scenes[j];
+						$scope.scenes[i].$prevScene = $scope.scenes[j];
 						break;
 					}
 				}
 			}
 			for (i = 0; i < $scope.scenes.length - 1; i++) {
-				for (j=i+1; j<$scope.scenes.length;j++) {
+				for (j = i + 1; j < $scope.scenes.length; j++) {
 					if ($scope.scenes[j].title) {
-						$scope.scenes[i].$nextScene=$scope.scenes[j];
+						$scope.scenes[i].$nextScene = $scope.scenes[j];
 						break;
 					}
 				}
 			}
-			
+
 			// Frame detect
 			$rootScope.isFramed = (window.parent !== window);
-			
-			// iPad or iPhone detect.
-			// put in rootScope for easy access from vid
-			$rootScope.isIPad = (navigator.platform.indexOf('iPad') > -1);
-			$rootScope.isiPhone = (navigator.platform.indexOf('iPhone') + navigator.platform.indexOf('iPod') > -1);
-			
 
-//			console.log("Created episode scope:", $scope);
-			
+			// iPad or iPhone detect.
+			// HACK put in rootScope for easy access from vid
+			$rootScope.isIPad = (navigator.platform.indexOf('iPad') > -1);
+			$rootScope.isiPhone = (navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);
+
+
+			//			console.log("Created episode scope:", $scope);
+
 
 		}, function (data) { // ON ERROR
 			// TODO: Should probably be using a service instead of root scope
 			// TODO: dataSvc is always returning a 404 even when the epId is correct...?
-			
+
 			$rootScope.uiErrorMsg = "Wasn't able to load episode data. Sorry!";
 			$rootScope.uiErrorDetails = JSON.stringify(data);
 			$location.path('/error');

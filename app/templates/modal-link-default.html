@@ -1,6 +1,7 @@
-<div>
-	<div class="modalmenu"><a href="{{item.source}}" target="_blank" class="escapelink">(new window)</a></div>
-	<!--<div style="width: 100%; min-height: 900px; -webkit-overflow-scrolling: touch; overflow:auto;">-->
-	<iframe x-ng-src="{{item.source}}" width="100%" height="95%"></iframe>
-	<!--</div>-->
+<div x-ng-class="{isIDevice: item.isIDevice}">
+	<div class="modalmenu"><a href="{{item.source}}" target="_blank" class="escapelink">(new window)</a>
+	</div>
+	<div class="modalIframeContainer">
+		<iframe x-ng-src="{{item.source}}"></iframe>
+	</div>
 </div>

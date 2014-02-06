@@ -1,17 +1,23 @@
 .toolbar {
 	text-align: center;
 	position: fixed;
-	height: 85px; margin-bottom: -25px;
-	background: url('/images/toolbar-bg.png') top left repeat-x; 
-	top: 0; left: 0; right: 0;
+	height: 85px;
+	margin-bottom: -25px;
+	background: url('/images/toolbar-bg.png') top left repeat-x;
+	top: 0;
+	left: 0;
+	right: 0;
 	white-space: nowrap;
 }
-
-.toolbar {pointer-events: none}
-.toolbar a, .toolbar div {pointer-events:auto}
-
-.episode {margin-top: 60px}
-
+.toolbar {
+	pointer-events: none
+}
+.toolbar a, .toolbar div {
+	pointer-events:auto
+}
+.episode {
+	margin-top: 60px
+}
 .toolbar .button {
 	display: inline-block;
 	height: 42px;
@@ -26,155 +32,142 @@
 	color: #333;
 	background: linear-gradient(to bottom, #DDDDDD 0%, #BBBBBB 100%);
 	border-bottom: 2px solid #DDDDDD;
-
-/* for color-inverted toolbar:
+	/* for color-inverted toolbar:
 	background-color: #333;
 	color: #DDD;
 	background: linear-gradient(to bottom, #555555 0%, #333333 100%);
 	border-bottom: 2px solid #555555;
 */
-
 }
-.toolbar .button:hover {max-width:200px}
-
+.toolbar .button:hover {
+	max-width:200px
+}
 .toolbar .button span {
 	display: inline-block;
 	line-height: 2em;
 	padding-left: 1em;
 }
-
-.toolbar .button-search, .toolbar .button-mainframeescape {float:right}
-.toolbar .button-directed, .toolbar .button-explore {float:left}
-
+.toolbar .button-search, .toolbar .button-mainframeescape {
+	float:right
+}
+.toolbar .button-directed, .toolbar .button-explore {
+	float:left
+}
 .toolbar .button-explore:before {
-    font-family: Story;
-    font-size: 2em;
-    content: "\e607";
-    float:left;
+	font-family: Story;
+	font-size: 2em;
+	content:"\e607";
+	float:left;
 }
 .toolbar .button-directed:before {
-    font-family: Story;
-    font-size: 2em;
-    content: "\e607";
-    float:left;
+	font-family: Story;
+	font-size: 2em;
+	content:"\e607";
+	float:left;
 }
 .toolbar .button-search:before {
-    font-family: Story;
-    font-size: 2em;
-    content: "\e602";
-    float:left;
+	font-family: Story;
+	font-size: 2em;
+	content:"\e602";
+	float:left;
 }
 .toolbar .button-mainframeescape:before {
-    font-family: Story;
-    font-size: 2em;
-    content: "\e609";
-    float:left;
+	font-family: Story;
+	font-size: 2em;
+	content:"\e609";
+	float:left;
 }
-
-
-
 .escapelink:before {
 	font-family: Story;
-	content: "\e609";
+	content:"\e609";
 	padding-right: 0.5em;
 	font-size: 0.86em;
 	color: #333;
 }
-
-.colorInvert .escapelink:before {color: #CCC}
-
-
+.colorInvert .escapelink:before {
+	color: #CCC
+}
 /*============================
  *
  * Side Panels
  *
 //===========================*/
-
-.sidePanel {
+ .sidePanel {
 	position: fixed;
-	box-shadow: 0 0 20px rgba(0,0,0,0.5);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 	z-index: 10;
 }
-
-
 .modal-backdrop {
-  transition:1s linear all;
-  opacity:1;
+	transition:1s linear all;
+	opacity:1;
 }
-
 .modal-backdrop.ng-hide {
-  opacity:0;
+	opacity:0;
 }
-
 .modal-backdrop.ng-hide-add, .modal-backdrop.ng-hide-remove {
-  display:block!important;
+	display:block!important;
 }
-
 /* Panel animations */
-
-.searchPanel {
-	top: 0; bottom: 0;
+ .searchPanel {
+	top: 0;
+	bottom: 0;
 	transition: 0.7s ease-in-out all;
 	transform-origin: 100% 50%;
 	opacity:1;
 	transform: rotateY(0) translateX(0);
 }
-
 .searchPanel.ng-hide {
 	opacity:0;
 	transform: rotateY(60deg) translateX(200px);
 }
 .sidePanel.ng-hide-add, .sidePanel.ng-hide-remove {
-  display:block!important;
+	display:block!important;
 }
-
 .navigationPanel {
-	bottom: 0; left: 7em; right: 7em;
+	bottom: 0;
+	left: 7em;
+	right: 7em;
 	transition: 0.7s ease-in-out all;
 	transform-origin: 0 100% 0;
 	opacity:1;
 	transform: translateY(0) rotateX(0);
 }
-
 .navigationPanel.ng-hide {
 	opacity:0;
 	transform: translateY(80%) rotateX(-45deg);
 }
-
 /*============================
  *
  * Search Panel
  *
 //===========================*/
-
-.searchPanel {
+ .searchPanel {
 	right: 0;
 	width: 40%;
 	background-color: #EEE;
 }
-
-
 .searchPanel .filters {
 	background-color: #AAA;
 	padding: 0.5em;
 	height: 85px;
 }
-
 .searchPanel .scrollContainer {
 	position: absolute;
 	width:100%;
-	top: 85px; 
-	bottom: 0; 
+	top: 85px;
+	bottom: 0;
 	overflow-y: scroll;
 	margin-right: -16px;
 }
-
 .searchPanel .searchresults {
 	padding: 0.5em;
 }
-
-.searchPanel .filters {font-size: 0.86em}
-.searchPanel .filters select {font-size: 1em}
+.searchPanel .filters {
+	font-size: 0.86em
+}
+.searchPanel .filters select {
+	font-size: 1em
+}
 .searchPanel .filters dd {
 	margin: 5px 0 5px 75px;
 }
@@ -185,9 +178,7 @@
 	margin: 5px;
 	clear: left;
 }
-
-.searchPanel input[type="text"], 
-.searchPanel select {
+.searchPanel input[type="text"], .searchPanel select {
 	background-color: #888888;
 	border: 1px solid #777;
 	border-radius: 4px 4px 4px 4px;
@@ -197,57 +188,60 @@
 	width: 100%;
 	padding-left: 8px;
 }
-
-.searchPanel select {padding: 3px 3px 3px 8px}
+.searchPanel select {
+	padding: 3px 3px 3px 8px
+}
 .searchPanel option {
 	padding: 0 2em;
 }
-
-.searchResults h3 {padding: 0.5em 0.3em 0.1em 0.3em}
-
-.searchResults .item {border-bottom: 1px solid #CCC; padding: 0.1em 0.3em}
+.searchResults h3 {
+	padding: 0.5em 0.3em 0.1em 0.3em
+}
+.searchResults .item {
+	border-bottom: 1px solid #CCC;
+	padding: 0.1em 0.3em
+}
 .searchResults .item .displayTime {
-	cursor: pointer; cursor: hand; 
-	color: #C44343; 
-	float:left; 
-	display:inline; 
+	cursor: pointer;
+	cursor: hand;
+	color: #C44343;
+	float:left;
+	display:inline;
 	width: 35px;
 }
 .searchResults .description {
 	font-size: 0.86em;
 	margin-left: 35px
 }
-
-.searchResults .type {opacity: 0.4; font-size: 0.86em}
-.searchResults .sortedbytype .type {display:none}
-
+.searchResults .type {
+	opacity: 0.4;
+	font-size: 0.86em
+}
+.searchResults .sortedbytype .type {
+	display:none
+}
 /*============================
  *
  * Navigation Panel
  *
 //===========================*/
-
-.navigationPanel {
+ .navigationPanel {
 	border-radius: 1em 1em 0 0;
 	background-color: #FFF;
 	padding-bottom: 3em;
 }
-
 .navigationPanel h2 {
 	padding: 0.4em;
 }
-
 .navigationPanel .scene {
 	padding: 0.3em;
-	border-top: 1px solid rgba(0,0,0,0.2);
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
-
 .navigationPanel .currentScene {
-	background-color: rgba(0,0,0,0.1);
+	background-color: rgba(0, 0, 0, 0.1);
 }
-
 .navigationPanel .displayTime {
-	width: 45px; 
+	width: 45px;
 	float:left;
 	text-align:right;
 	padding-right: 10px;
@@ -255,96 +249,87 @@
 .navigationPanel p {
 	margin-left: 45px;
 }
-
 /*============================
  *
  * Landing screen
  *
 //===========================*/
-
-.sceneintro {
+ .sceneintro {
 	margin:15%;
-	
 	perspective: 1000px;
 	transform-style: preserve3d;
 	perspective-origin: 20% 10%;
 }
-
-
 .sceneintro .videoContainer {
-	width: 320px; height: 180px;
+	width: 320px;
+	height: 180px;
 }
-
 .sceneintro h1 {
-  animation-duration: 25s;
-  animation-name: grooblemacgoo;
-  transform-origin: 10% 0;
+	animation-duration: 25s;
+	animation-name: grooblemacgoo;
+	transform-origin: 10% 0;
 }
-
 .sceneintro p {
 	margin: 1em 0 3em 0;
-  animation-duration: 45s;
-  animation-name: grooblemacgoo;
-  transform-origin: 10% 0;
-  max-width: 640px;
+	animation-duration: 45s;
+	animation-name: grooblemacgoo;
+	transform-origin: 10% 0;
+	max-width: 640px;
 }
-	
 @keyframes grooblemacgoo {
-	0% { transform:rotateY(14deg) }
-100%{ transform: rotateY(0deg) }
+	0% {
+		transform:rotateY(14deg)
+	}
+	100% {
+		transform: rotateY(0deg)
+	}
 }
-
-
-
-
-
-
-
-
-
-
 /*============================
  *
- * eLiterate
+ * Branding
  *
 //===========================*/
-
-
-
-.episode-eliterate .branding {
+ .branding {
 	width: 100%;
 	height: 220px;
 	background-color: rgba(0, 0, 0, 0.05);
 	position:relative;
 	color:#FFF;
-	text-align:center;
-	padding-top: 3em;
 }
-
-.episode-eliterate .branding img {
-position:absolute;
-bottom: 2em; 
-border:none;
+.branding img {
+	width:100%;
+	max-height:72px;
 }
-
-.tellinglogo:before {
-    font-family: Story;
-    font-size: 172px;
-    content: "\e607";
-    color:#FFF;
+.branding a {
+	width:20%;
+	position:absolute;
+	display: block;
 }
-
+.branding a.itt {
+	right:5%;
+	bottom:40px;
+}
+/*============================
+ *
+ * eLiterate
+ *
+//===========================*/
+ .branding a.eliterate {
+	left:5%;
+	bottom:40px;
+}
 .episode-eliterate {
 	background: url('/images/mindwire-bg.svg') 0% 50% no-repeat;
 	background-size: 100% auto;
 }
-
 .eliterate-logo {
 	z-index:8;
 	position:fixed;
 	top: 5px;
-	width: 20%; margin: 10px 40%;
+	width: 20%;
+	margin: 10px 40%;
 	text-align:center;
 }
-
-.eliterate-logo img {width: 100%; max-width: 160px;}
+.eliterate-logo img {
+	width:100%;
+}

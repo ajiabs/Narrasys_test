@@ -14,6 +14,9 @@ angular.module('com.inthetelling.player')
 		svc.createItemDetailOverlay = function (itemScope) {
 			// console.log("createItemDetailOverlay:", itemScope.item);
 
+			//HACK
+			itemScope.item.isIDevice = (navigator.platform.indexOf('iPad') > -1 || navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);
+
 			itemScope.videoWasPlaying = !(videojs.player.paused()); // So we know whether to start it again when the modal is closed
 
 			videojs.player.pause();
