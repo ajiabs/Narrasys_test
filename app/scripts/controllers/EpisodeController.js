@@ -5,7 +5,6 @@
 // Episode Controller
 angular.module('com.inthetelling.player')
 	.controller('EpisodeController', function (dataSvc, modelFactory, cuePointScheduler, $scope, $rootScope, $location, $routeParams) {
-
 		dataSvc.get($routeParams, function (data) { // ON SUCCESS
 			var i, j;
 
@@ -114,8 +113,11 @@ angular.module('com.inthetelling.player')
 			}
 
 			// Frame detect.  Don't use !== as IE8 gets that wrong
-			$rootScope.isFramed = (window.parent != window);
-
+			/* jshint -W116 */ 
+			$rootScope.isFramed = (window.parent != window); 
+			/* jshint +W116 */
+			
+			
 			// iPad or iPhone detect.
 			// HACK put in rootScope for easy access from vid
 			$rootScope.isIPad = (navigator.platform.indexOf('iPad') > -1);
