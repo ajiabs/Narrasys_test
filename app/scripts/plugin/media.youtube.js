@@ -106,7 +106,7 @@ videojs.Youtube = videojs.MediaTechController.extend({
       rel: 0,
       autoplay: (this.playOnReady)?1:0,
       loop: (this.player_.options()['loop'])?1:0,
-      list: this.playlistId,
+      list: this.playlistId
     };
 
     if (typeof params.list == 'undefined') {
