@@ -4,10 +4,18 @@
 
 // Episode Controller
 angular.module('com.inthetelling.player')
-	.controller('EpisodeController', function (dataSvc, modelFactory, cuePointScheduler, $scope, $rootScope, $location, $routeParams) {
+	.controller('EpisodeController', function (dataSvc, modelFactory, cuePointScheduler, $scope, $rootScope, $location, $routeParams,videojs,$window) {
 
 
-console.log("Episode Controller");
+		// HACK HACK HACK HACKITY HACK HACK HACK
+		// videojs and cuePointScheduler (and probably others) are currently set up as singletons; both die horrible deaths on route changes (even to the same route).
+		// We'll need to fix that asap. For now, use videojs.player as a convenient way to detect if we're starting fresh, and if not do a brute-force reload of the page.
+		// It's ugly, but not as ugly as my attempts to de-singletonize greg's code...
+
+		if (videojs.player) {
+			console.log("Route change: forcing refresh"); 
+			$window.location.reload();
+		}
 
 		dataSvc.get($routeParams, function (data) { // ON SUCCESS
 			var i, j;
