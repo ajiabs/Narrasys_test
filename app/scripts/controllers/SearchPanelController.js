@@ -37,7 +37,8 @@ angular.module('com.inthetelling.player')
 					$scope.allItemsByType[$scope.scenes[i].items[j].type] = [];
 				}
 				// Using $sce here and in the highlight filter, not sure if we need both TODO check this
-				$scope.scenes[i].items[j].searchableText = $sce.trustAsHtml($scope.scenes[i].items[j].annotation || $scope.scenes[i].items[j].description);
+				$scope.scenes[i].items[j].searchableText = ($scope.scenes[i].items[j].annotation || $scope.scenes[i].items[j].description);
+				$scope.scenes[i].items[j].trustedDisplayText = $sce.trustAsHtml($scope.scenes[i].items[j].searchableText);
 				$scope.allItemsByType[$scope.scenes[i].items[j].type].push($scope.scenes[i].items[j]);
 			}
 		}

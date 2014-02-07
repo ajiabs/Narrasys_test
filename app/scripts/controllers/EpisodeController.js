@@ -5,6 +5,10 @@
 // Episode Controller
 angular.module('com.inthetelling.player')
 	.controller('EpisodeController', function (dataSvc, modelFactory, cuePointScheduler, $scope, $rootScope, $location, $routeParams) {
+
+
+console.log("Episode Controller");
+
 		dataSvc.get($routeParams, function (data) { // ON SUCCESS
 			var i, j;
 
@@ -124,7 +128,7 @@ angular.module('com.inthetelling.player')
 			$rootScope.isiPhone = (navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);
 
 
-			//			console.log("Created episode scope:", $scope);
+			console.log("Created episode scope:", $scope);
 
 
 		}, function (data) { // ON ERROR

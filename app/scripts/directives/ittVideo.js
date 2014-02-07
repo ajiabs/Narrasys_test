@@ -8,7 +8,7 @@ angular.module('com.inthetelling.player')
 		return {
 			restrict: 'A',
 			replace: false,
-			template: '<div class="video">This will be the video</div>',
+			template: '<div class="video"></div>',
 			link: function (scope, element, attrs) {
 				console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
 
