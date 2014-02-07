@@ -1,3 +1,5 @@
+'use strict';
+
 /* This is basically just the ui-utils highlight filter, except that I'm too lazy to figure out how to inject a different module into the app right now. */
 /* I'll just think of it as being frugal. */
 

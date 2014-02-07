@@ -27,7 +27,7 @@ videojs.Youtube = videojs.MediaTechController.extend({
   /** @constructor */
   init: function(player, options, ready){
     videojs.MediaTechController.call(this, player, options, ready);
-    
+
     // No event is triggering this for YouTube
     this.features['progressEvents'] = false;
     this.features['timeupdateEvents'] = false;
@@ -84,7 +84,7 @@ videojs.Youtube = videojs.MediaTechController.extend({
       if (!self.player_.userActive()) {
         self.player_.userActive(true);
       }
-      
+
       e.stopPropagation();
       e.preventDefault();
     });
@@ -169,12 +169,12 @@ videojs.Youtube = videojs.MediaTechController.extend({
         videojs.Youtube.apiLoading = true;
       }
     }
-    
+
     this.on('dispose', function() {
       // Get rid of the created DOM elements
       this.el_.parentNode.removeChild(this.el_);
       this.iframeblocker.parentNode.removeChild(this.iframeblocker);
-      
+
       this.player_.loadingSpinner.hide();
       this.player_.bigPlayButton.hide();
     });
@@ -183,22 +183,22 @@ videojs.Youtube = videojs.MediaTechController.extend({
 
 videojs.Youtube.prototype.parseSrc = function(src){
   this.srcVal = src;
-  
+
   if (src) {
     // Regex to parse the video ID
     var regId = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     var match = src.match(regId);
-    
+
     if (match && match[2].length == 11){
       this.videoId = match[2];
     } else {
       this.videoId = null;
     }
-    
+
     // Regex to parse the playlist ID
     var regPlaylist = /[?&]list=([^#\&\?]+)/;
     match = src.match(regPlaylist);
-    
+
     if (match != null && match.length > 1) {
       this.playlistId = match[1];
     } else {
@@ -244,7 +244,7 @@ videojs.Youtube.prototype.play = function(){
       // Display the spinner until the video is playing by YouTube
       this.player_.trigger('waiting');
     }
-    
+
     if (this.isReady_){
       this.ytplayer.playVideo();
     } else {
@@ -381,7 +381,7 @@ videojs.Youtube.prototype.onStateChange = function(state){
     switch(state){
       case -1:
         this.player_.trigger('durationchange');
-        
+
         // The toolbar controller will watch for this.  On most platforms
         // this fires right away; on iDevices it only fires when the user first
         // interacts with the player.  Don't need to maintain state after it's set, we only care about the first time it becomes true
@@ -401,7 +401,7 @@ videojs.Youtube.prototype.onStateChange = function(state){
       case YT.PlayerState.PLAYING:
         // Make sure the big play is not there
         this.player_.bigPlayButton.hide();
-        
+
         this.player_.controls(true);
 
         this.player_.trigger('timeupdate');
@@ -416,7 +416,7 @@ videojs.Youtube.prototype.onStateChange = function(state){
 
       case YT.PlayerState.BUFFERING:
         this.player_.trigger('timeupdate');
-        
+
         // Make sure to not display the spinner for mobile
         if (!this.player_.options()['ytcontrols']) {
           this.player_.trigger('waiting');

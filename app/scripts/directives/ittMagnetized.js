@@ -19,7 +19,7 @@ angular.module('com.inthetelling.player')
 					// TODO: Animate?
 
 					// A race condition on load can cause the height to resolve to 0; if that happens we force it to a 16:9 aspect ratio.
-					// TODO see if we can avoid this happening in the first place.  (Normally we load an invisible gif with the 
+					// TODO see if we can avoid this happening in the first place.  (Normally we load an invisible gif with the
 					// correct aspect ratio to set the node height; this condition occurs if the gif hasn't completed loading by the time
 					// this code runs.  It'd be easy enough to make it _likely_ to have loaded first, but can we _guarantee_ it?)
 					var newHeight;

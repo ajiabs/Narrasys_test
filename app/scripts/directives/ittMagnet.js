@@ -24,7 +24,7 @@ angular.module('com.inthetelling.player')
 					}, 0);
 				};
 
-				if (scope.scene) { 
+				if (scope.scene) {
 					// call the activate method if the parent scene is active
 					var activateIfSceneIsActive = function () {
 						if (scope.scene && scope.scene.isActive) {
@@ -43,7 +43,7 @@ angular.module('com.inthetelling.player')
 					// for triggering video magnets from outside the scene. Only the magnet in the active scene should respond.
 					var unsubscribe = $rootScope.$on('toolbar.changedSceneTemplate', activateIfSceneIsActive);
 					angular.element($window).bind('resize', activateIfSceneIsActive);
-	
+
 					// cleanup routine on destroy
 					scope.$on('$destroy', function () {
 						unsubscribe();

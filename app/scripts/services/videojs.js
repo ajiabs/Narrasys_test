@@ -22,17 +22,17 @@ angular.module('com.inthetelling.player')
 
 				var vjsconfig = {
 					// customControlsOnMobile was removed from videoJs, but if they ever bring it back we can use it as a better fix
-					// than turning off vjs.controls() when something is going to overlap the video 
+					// than turning off vjs.controls() when something is going to overlap the video
 					// (which we need to do on ipad only, because the video controls layer steals all click events within its area
 					"controls": true,
 					"preload": true,
 					"nativeControlsForTouch": false // doesn't seem to do anything?
 				};
-				
+
 				// TODO Youtube plugin is buggy on iDevices and IE9.  If we cant fix and can afford the bandwidth, divert those users to S3.
 				// SEE ALSO ittVideo.js which needs to perform the same test!
-//				if (videodata.youtube && !($rootScope.isIPad || $rootScope.isIPhone)) { 
-				if (videodata.youtube) { 
+//				if (videodata.youtube && !($rootScope.isIPad || $rootScope.isIPhone)) {
+				if (videodata.youtube) {
 					vjsconfig.techOrder = ["youtube"];
 				} else {
 					vjsconfig.techOrder = ["html5", "flash"];

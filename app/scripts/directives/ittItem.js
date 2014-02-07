@@ -14,7 +14,7 @@ angular.module('com.inthetelling.player')
 				// TODO this whole force-template thing is a total hack.  Should probably be handled at the scene level instead of here.
 				// check for forceTemplate attribute on the item ng-repeat.  If present, stash the real templateUrl in origTemplateUrl,
 				// and set a new templateUrl value for this scene only.
-				if (attrs.forceItemTemplate) { 
+				if (attrs.forceItemTemplate) {
 					scope.item.origTemplateUrl = scope.item.templateUrl;
 					if (scope.item.type === "annotation") {
 						scope.item.templateUrl="templates/transcript-"+attrs.forceItemTemplate+".html";

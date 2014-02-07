@@ -11,6 +11,6 @@ angular.module('com.inthetelling.player')
 		if (currentSubdomain) { // If that didn't match anything we'll just leave the existing apiData url as is.
 			// swap the user's subdomain into the apiDataBaseUrl's subdomain (which I'm trying hard not to hardcode here)
 			config.apiDataBaseUrl = config.apiDataBaseUrl.replace(/\/\/.*\.inthetelling.com/,"//"+currentSubdomain[1]+".inthetelling.com");
-		} 
+		}
 		return config;
 	});

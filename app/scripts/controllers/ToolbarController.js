@@ -72,7 +72,7 @@ angular.module('com.inthetelling.player')
 		$scope.showSearchPanel = function () {
 			videojs.player.pause();
 			videojs.player.controls(false); // TODO: do this on iPad only
-			
+
 			$scope.show.searchPanel = true;
 			// Wait a tick before building the search panel internals. (Possibly unnecessary, but just in case...)
 			$timeout(function () {
@@ -96,9 +96,9 @@ angular.module('com.inthetelling.player')
 				$scope.lastModeUsed = $scope.currentSceneTemplate;
 				$scope.setSceneTemplate('video');
 			}
-		
+
 		};
-		
+
 		// triggers vjs footer controls to appear
 		$scope.showVideoControls = function() {
 			if (videojs.player) { // in case video hasn't inited yet
@@ -114,7 +114,7 @@ angular.module('com.inthetelling.player')
 			// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
 			// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.
 		};
-		
+
 		$scope.gotoTime = function (t) {
 			videojs.player.currentTime(t + 0.001); // fudge: add a bit to ensure that we're inside the next scene's range
 		};
@@ -151,8 +151,8 @@ angular.module('com.inthetelling.player')
 		// HACK HACK such an ungodly HACK.
 		// iDevices combined with the youtube player need some special handling as far as event timing goes; normally the firstPlayWatcher
 		// fires immediately when the user hits "play", but on iDevices there's a potentially long delay while the video starts buffering after first
-		// user interaction. Ugly. So we're watching for a different event that on the iPad fires earlier than the 'play' event, 
-		// and use it to trigger the videoFirstPlay event instead.   
+		// user interaction. Ugly. So we're watching for a different event that on the iPad fires earlier than the 'play' event,
+		// and use it to trigger the videoFirstPlay event instead.
 
 		$scope.firstPlayWatcherForIDevicesWhenWeAreUsingYoutube = $scope.$watch(
 			function() {

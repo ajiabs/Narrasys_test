@@ -167,7 +167,7 @@ angular.module('com.inthetelling.player')
 			}, function(responses) {
 				// error
 				errback(responses);
-			});		
+			});
 		};
 
 

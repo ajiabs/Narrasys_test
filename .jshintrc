@@ -15,7 +15,7 @@
 	"undef": true,
 	"unused": false,
 	"strict": true,
-	"trailing": false,
+	"trailing": true,
 	"smarttabs": true,
 	"globals": {
 		"angular": false,

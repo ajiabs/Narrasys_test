@@ -60,7 +60,7 @@ angular.module('com.inthetelling.player')
 					}
 				};
 				//checkForSidebars();  // This may be redundant, as the $watch seems to fire immediately anyway, but it feels unsafe to leave it out
-				// On second thought: it's firing anyway. 
+				// On second thought: it's firing anyway.
 
 				// Responsive pane width:
 				scope.$watch(function () {

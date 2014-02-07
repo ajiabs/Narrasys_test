@@ -12,8 +12,8 @@ angular.module('com.inthetelling.player')
 			link: function (scope, element, attrs) {
 				console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
 
-				// Create the DOM node contents required by videojs.  
-				// (Injecting this manually because including it in the template causes lots of bogus warnings 
+				// Create the DOM node contents required by videojs.
+				// (Injecting this manually because including it in the template causes lots of bogus warnings
 				// and a vjs error that I don't want to track down)
 
 				element.find('.video').html(function () {
@@ -39,7 +39,7 @@ angular.module('com.inthetelling.player')
 				// (This is NOT calling videojs directly; extra layer of indirection through services/video.js!)  (TODO: why?)
 				videojs.init(scope.episode.videos, function (player) {
 					console.log("videojs init");
-				
+
 					// Catch the first play. VJS's "firstplay" event is buggy, we'll just use 'play' and catch duplicates.
 					// (would just wipe the event instead, but vjs doesn't support namespaced events either...)
 					player.on("play",function() {
@@ -56,7 +56,7 @@ angular.module('com.inthetelling.player')
 							});
 						}
 					});
-					
+
 
 					// Wait until we know the player duration, then set the scene markers (and kill the $watch)
 					// TODO if we can get the video duration in the json we'll be able to init this directly

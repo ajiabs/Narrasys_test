@@ -204,14 +204,14 @@ angular.module('com.inthetelling.player')
 				model.title = data.title;
 				model.description = data.description;
 				model.thumbSrc = resolveAssetUrl(data.link_image_id);
-				
+
 				// Force wmode=transparent onto youtube embed links, so IE doesn't look so ugly.
 				// TODO this should be handled in producer instead of here
 				if (data.url.indexOf('youtube.com/embed/') > -1) {
 					if (data.url.indexOf('?') === -1) {
 						model.source = data.url + "?wmode=transparent";
 					} else {
-						// remove existing wmode if present first. 
+						// remove existing wmode if present first.
 						model.source = (data.url.replace(/wmode=[^&]*&?/g,'') + "&wmode=transparent").replace(/&+/g,'&');
 					}
 				} else {

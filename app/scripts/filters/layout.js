@@ -1,13 +1,13 @@
 'use strict';
 
 /*
-	Filters the item list based on where they need to appear. 
-	
+	Filters the item list based on where they need to appear.
+
 	layout = any valid scene.layout, or one of the following:
 		required   (returns annotation and required transmedia)
 		optional   (returns non-required transmedia)
 		content    (returns all annotation and transmedia)
-		transcript (returns all annotation items) 
+		transcript (returns all annotation items)
 		transmedia (returns all except annotation items)
 */
 angular.module('com.inthetelling.player')

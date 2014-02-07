@@ -72,8 +72,8 @@ angular.module('com.inthetelling.player')
 
 	})
 
-/* 
-Below is the part of bootstrap.ui that we were actually using. 
+/*
+Below is the part of bootstrap.ui that we were actually using.
 
 TODO: combine modalBackdrop and modalWindow into one directive+template (we'll always have backdrop); move close() function from backdrop directive  to modal
 TODO: rip out everything to do with managing multiple modals simultaneously (instead throw an error if try to open two at once)

@@ -22,7 +22,7 @@ angular.module('com.inthetelling.player')
     // A collection of spans that have been subscribed with this service
     var subscriptions = [];
 
-    // A dictionary of existing subscription keys, used for speedy reference to 
+    // A dictionary of existing subscription keys, used for speedy reference to
     // check if a subscription exists inside the subscriptions collection
     var subscriptionKeys = {};
 

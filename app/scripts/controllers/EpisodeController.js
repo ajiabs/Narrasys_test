@@ -113,11 +113,11 @@ angular.module('com.inthetelling.player')
 			}
 
 			// Frame detect.  Don't use !== as IE8 gets that wrong
-			/* jshint -W116 */ 
-			$rootScope.isFramed = (window.parent != window); 
+			/* jshint -W116 */
+			$rootScope.isFramed = (window.parent != window);
 			/* jshint +W116 */
-			
-			
+
+
 			// iPad or iPhone detect.
 			// HACK put in rootScope for easy access from vid
 			$rootScope.isIPad = (navigator.platform.indexOf('iPad') > -1);
