@@ -2,7 +2,7 @@
 
 // Controller for the search panel overlay
 angular.module('com.inthetelling.player')
-	.controller('SearchPanelController', function ($scope, videojs) {
+	.controller('SearchPanelController', function ($scope, videojs, $sce) {
 
 		// map for the search panel checkboxes to bind to, which can also be passed to the type filter
 		$scope.searchTypes = {
@@ -36,6 +36,8 @@ angular.module('com.inthetelling.player')
 				if (!$scope.allItemsByType[$scope.scenes[i].items[j].type]) {
 					$scope.allItemsByType[$scope.scenes[i].items[j].type] = [];
 				}
+				// Using $sce here and in the highlight filter, not sure if we need both TODO check this
+				$scope.scenes[i].items[j].searchableText = $sce.trustAsHtml($scope.scenes[i].items[j].annotation || $scope.scenes[i].items[j].description);
 				$scope.allItemsByType[$scope.scenes[i].items[j].type].push($scope.scenes[i].items[j]);
 			}
 		}

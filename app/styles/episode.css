@@ -123,6 +123,13 @@
 .sidePanel.ng-hide-add, .sidePanel.ng-hide-remove {
 	display:block!important;
 }
+
+.searchPanel .ui-match {
+	background-color: #003388;	background-color: rgba(0,0,128,0.4);
+	color: #FFF;
+	margin: -4px; padding: 4px;
+	border-radius: 4px;
+}
 .navigationPanel {
 	bottom: 0;
 	left: 7em;
