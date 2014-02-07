@@ -1,8 +1,15 @@
-/* MODIFIED: doesn't try to inject css anymore (failed in IE8; we just put it in the css ourselves instead) */
-/* MODIFIED: ripped out quality menu (buggy in IE, not that useful anyway) */
-/* MODIFIED: stop the plugin forcing native controls on mobile */
-/* TODO: addEventListener on iframeblocker is failing in IE */
-/* god this code is a disaster */
+/* Heavily modified version of eXon plugin.  Upgrade with great care if at all. */
+
+/*
+* doesn't try to inject css anymore (failed in IE8; we just put it in the css ourselves instead)
+* ripped out quality menu (buggy in IE, not that useful anyway)
+* stop the plugin forcing native controls on mobile
+* Force html5 mode (to fix Safari powersaver problem)
+* Force no youtube controls.  (But still has options.ytcontrols true, because setting it false causes bugs on mobile, because the plugin authors apparently assumed nobody would ever want to do that on mobile)
+*/
+
+/* TODO: addEventListener on iframeblocker is failing in (some?) IE */
+
 
 
 /**
@@ -39,7 +46,7 @@ videojs.Youtube = videojs.MediaTechController.extend({
 
     // Mobile devices are using their own native players
     if (!!navigator.userAgent.match(/iPhone/i) || !!navigator.userAgent.match(/iPad/i) || !!navigator.userAgent.match(/iPod/i) || !!navigator.userAgent.match(/Android.*AppleWebKit/i)) {
-      player.options()['ytcontrols'] = true;
+      player.options()['ytcontrols'] = true; // we will ignore this later but other parts of the code still depend on it
     }
 
     this.id_ = this.player_.id() + '_youtube_api';
@@ -106,7 +113,8 @@ videojs.Youtube = videojs.MediaTechController.extend({
       rel: 0,
       autoplay: (this.playOnReady)?1:0,
       loop: (this.player_.options()['loop'])?1:0,
-      list: this.playlistId
+      list: this.playlistId,
+      html5: 1 // Need this, Safari is flash-hostile.  Falls back to flash on non-html5 browsers anyway so there's no reason for it not to be the default
     };
 
     if (typeof params.list == 'undefined') {
