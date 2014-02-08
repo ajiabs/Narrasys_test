@@ -11,7 +11,7 @@ angular.module('com.inthetelling.player')
 
 		/* Handler for toolbar buttons to change scene templates. */
 		$scope.setSceneTemplate = function (newTemplate) {
-//			console.log("setSceneTemplate " + newTemplate);
+			//			console.log("setSceneTemplate " + newTemplate);
 
 			$scope.currentSceneTemplate = newTemplate;
 			// set all scenes to use newTemplate
@@ -87,6 +87,7 @@ angular.module('com.inthetelling.player')
 				$scope.showNavigationPanel();
 			}
 		};
+		/*
 
 		$scope.toggleClosedCaptionMode = function () {
 			if ($scope.currentSceneTemplate === 'video') {
@@ -96,11 +97,10 @@ angular.module('com.inthetelling.player')
 				$scope.lastModeUsed = $scope.currentSceneTemplate;
 				$scope.setSceneTemplate('video');
 			}
-
 		};
-
+*/
 		// triggers vjs footer controls to appear
-		$scope.showVideoControls = function() {
+		$scope.showVideoControls = function () {
 			if (videojs.player) { // in case video hasn't inited yet
 				videojs.player.userActive(true);
 			}
@@ -120,13 +120,13 @@ angular.module('com.inthetelling.player')
 		};
 
 		// When user first clicks video, show the toolbar chrome and hide the landing screen
-		$scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay',function() {
+		$scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay', function () {
 			// Move our custom controls into the vjs control bar.  TODO fix jquery hackage
 			$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
 
 			// Hide the intro; show the regular controls
-			$scope.show.introPanel=false;
-			$scope.show.playerPanel=true;
+			$scope.show.introPanel = false;
+			$scope.show.playerPanel = true;
 			$rootScope.$emit('toolbar.changedSceneTemplate'); // force twiddleSceneLayout
 
 			$scope.firstPlayWatcher(); // stop listening for this event
@@ -155,12 +155,12 @@ angular.module('com.inthetelling.player')
 		// and use it to trigger the videoFirstPlay event instead.
 
 		$scope.firstPlayWatcherForIDevicesWhenWeAreUsingYoutube = $scope.$watch(
-			function() {
+			function () {
 				if (videojs.player) {
 					return videojs.player.durationchanged;
 				}
 			},
-			function(durationchanged) {
+			function (durationchanged) {
 				if (durationchanged) {
 					$rootScope.$emit('toolbar.videoFirstPlay');
 					$scope.firstPlayWatcherForIDevicesWhenWeAreUsingYoutube(); // stop watching

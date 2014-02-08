@@ -50,6 +50,52 @@
 .toolbar .button-search, .toolbar .button-mainframeescape {
 	float:right
 }
+.toolbar .modes {
+	float:left;
+	border: 1px solid #666;
+	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.2) inset;
+	position: relative;
+	height:1.5em;
+	border-radius:0.75em;
+	margin:0.5em;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+.toolbar .modes a {
+	display:inline-block;
+	padding: 0 1em;
+	line-height: 1.5em;
+	height: 22px;
+	cursor:pointer;
+	color:#000;
+}
+.toolbar .modes a.cur {
+	color:#FFF;
+}
+.toolbar .modes a:before {
+	font-family: Story;
+	font-size: 1em;
+	content:"\e602";
+}
+.toolbar .modes a span {
+	display:block;
+	position: absolute;
+	top: 1.8em;
+	left:0;
+	right:0;
+	text-align: center;
+	visibility:hidden;
+	color:#000;
+	font-size:0.8em;
+}
+.toolbar .modes a.cur span {
+	visibility:visible;
+}
+.toolbar .button-directed {
+	border-left:1px solid #999;
+	border-right:1px solid #999;
+}
+/*
+
 .toolbar .button-directed, .toolbar .button-explore {
 	float:left
 }
@@ -65,7 +111,9 @@
 	content:"\e607";
 	float:left;
 }
-.toolbar .button-search:before {
+
+*/
+ .toolbar .button-search:before {
 	font-family: Story;
 	font-size: 2em;
 	content:"\e602";
@@ -123,11 +171,12 @@
 .sidePanel.ng-hide-add, .sidePanel.ng-hide-remove {
 	display:block!important;
 }
-
 .searchPanel .ui-match {
-	background-color: #003388;	background-color: rgba(0,0,128,0.4);
+	background-color: #003388;
+	background-color: rgba(0, 0, 128, 0.4);
 	color: #FFF;
-	margin: -4px; padding: 4px;
+	margin: -4px;
+	padding: 4px;
 	border-radius: 4px;
 }
 .navigationPanel {
