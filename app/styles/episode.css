@@ -59,20 +59,21 @@
 	line-height: 1.5em;
 	height: 24px;
 	cursor:pointer;
-	color:#000;
+	color:#666;
 }
 .toolbar .button.cur {
-	color:#FFF;
+	color:#000;
 }
 .toolbar .button:before {
 	font-family: Story;
 	font-size: 1em;
 }
 
-.button-video:before {content: "\e604"}
-.button-directed:before {content: "\e009"}
-.button-explore:before {content: "\e605"}
+.button-video:before {content: "\e60b"}
+.button-directed:before {content: "\e60a"}
+.button-explore:before {content: "\e60c"}
 .button-search:before {content: "\e602"}
+.cur .button-search:before {content: "\e603"}
 .button-mainframeescape:before {content: "\e609"}
 
 .toolbar .button span {
@@ -91,8 +92,6 @@
 }
 
 .toolbar .button-directed {
-	border-left:1px solid #999;
-	border-right:1px solid #999;
 }
 
 .escapelink:before {
@@ -172,7 +171,7 @@
 	width: 40%;
 }
 .searchPanel .scrollContainer {
-	top: 20px;
+	top: 19px;
 	bottom: 0;
 	overflow-y: scroll;
 	right: -16px;
