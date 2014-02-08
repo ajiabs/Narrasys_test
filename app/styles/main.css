@@ -44,7 +44,7 @@
 .modal-backdrop {
 	z-index: 9
 }
-.modal {
+.modal, .sidePanel {
 	z-index: 10
 }
 /* including search and nav panes */
@@ -172,6 +172,7 @@ See /images/font/story/map.png for a list of available glyphs
 	.toolbar {
 		position:static !important;
 	}
+	
 	.episode {
 		margin-top: 0 !important;
 	}
@@ -202,6 +203,10 @@ See /images/font/story/map.png for a list of available glyphs
 		position:absolute !important;
 	}
 	.searchPanel {
-		width: auto !important;
+		width: 80% !important; position:absolute !important;
 	}
+	
+	/* TODO: yes?
+	.modal, .modal-backdrop {position:absolute !important;}
+*/
 }

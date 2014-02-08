@@ -1,6 +1,6 @@
 'use strict';
 
-// Controller for the search panel overlay
+// Controller for the search panel results
 angular.module('com.inthetelling.player')
 	.controller('SearchPanelController', function ($scope, videojs, $sce) {
 
@@ -20,11 +20,11 @@ angular.module('com.inthetelling.player')
 		// map type literals to pretty/printable version
 		$scope.prettyTypeMap = {
 			annotation: "Transcript",
-			link: "Links",
-			slide: "Slides",
+			link: "Link",
+			slide: "Slide",
 			indepth: "In Depth",
-			project: "Projects",
-			discussion: "Discussions"
+			project: "Project",
+			discussion: "Discussion"
 		};
 
 		// create a dictionary of all items keyed by their type, for easy view iteration

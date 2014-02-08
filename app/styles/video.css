@@ -331,7 +331,7 @@ fonts to show/hide properly.
 	top: 1em;
 	border-radius: 0 1em 1em 0;
 	/* Do not use overflow:hidden; it hides the scene tooltips! */
-	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4) inset;
+	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.2) inset;
 }
 /* Box containing play and load progresses. Also acts as seek scrubber. */
  .vjs-story-skin .vjs-progress-holder {

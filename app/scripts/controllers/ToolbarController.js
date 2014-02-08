@@ -80,6 +80,16 @@ angular.module('com.inthetelling.player')
 			}, 0);
 		};
 
+		$scope.toggleSearchPanel = function () {
+		console.log("toggleSearchPanel",$scope.show);
+			if ($scope.show.searchPanel) {
+				$scope.hidePanels();
+			} else {
+				$scope.showSearchPanel();
+				document.getElementById('searchtext').focus(); // TODO BUG not working in Safari
+			}
+		};
+
 		$scope.showSceneMenu = function () {
 			if ($scope.show.navigationPanel) {
 				$scope.hidePanels();
@@ -110,6 +120,7 @@ angular.module('com.inthetelling.player')
 			// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 			$scope.show.navigationPanel = false;
 			$scope.show.searchPanel = false;
+			$scope.searchText = '';
 			videojs.player.controls(true); // TODO: do this on iPad only
 			// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
 			// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.

@@ -1,29 +1,36 @@
 <span>
 	<div class="toolbar" x-ng-show="show.playerPanel">
 
-		<div class="modes">
-			<a class=" button-video" x-ng-class="{cur: currentSceneTemplateIs('video')}" x-ng-click="setSceneTemplate('video');">
+		<div class="modegroup buttongroup">
+			<a class="button button-video" x-ng-class="{cur: currentSceneTemplateIs('video')}" x-ng-click="setSceneTemplate('video');">
 				<span>Watch</span>
 			</a>
-			<a class=" button-directed" x-ng-class="{cur: currentSceneTemplateIs()}" x-ng-click="setSceneTemplate();">
+			<a class="button button-directed" x-ng-class="{cur: currentSceneTemplateIs()}" x-ng-click="setSceneTemplate();">
 				<span>Discover</span>
 			</a>
-			<a class=" button-explore" x-ng-class="{cur: currentSceneTemplateIs('explore')}" x-ng-click="setSceneTemplate('explore');">
+			<a class="button button-explore" x-ng-class="{cur: currentSceneTemplateIs('explore')}" x-ng-click="setSceneTemplate('explore');">
 				<span>Explore</span>
 			</a>
 		</div>
+		
+		<div x-ng-if="isFramed" class="buttongroup" style="float:right;">
+			<a class="button button-mainframeescape" href="/#/episode/{{episodeID}}/{{authKey}}" target="frameEscape" onclick="window.open('','frameEscape').focus();">
+				<span>New window</span>
+			</a>
+		</div>
 
-		<a x-ng-if="isFramed" class="button button-mainframeescape" href="/#/episode/{{episodeID}}/{{authKey}}" target="frameEscape" onclick="window.open('','frameEscape').focus();">
-			<span>New window</span>
-		</a>
-
-		<a class="button button-search" href="javascript: void 1;" x-ng-click="showSearchPanel()">
-			<span>Search</span>
-		</a>
+		<div class="searchgroup buttongroup" x-ng-class="{cur: show.searchPanel}" style="float:right; z-index:10">
+			<a class="button button-search" href="javascript: void 1;" x-ng-click="toggleSearchPanel()">
+				<span>Search</span>
+			</a>
+			<input id="searchtext" type="text" x-ng-model="searchText" />
+		</div>
+		
 
 	</div>
 	<div class="threedee">
-		<div class="modal-backdrop" x-ng-click="hidePanels()" x-ng-show="show.navigationPanel || show.searchPanel"></div>
+		<div class="modal-backdrop" x-ng-click="hidePanels()" x-ng-show="show.navigationPanel"></div>
+		<div class="modal-backdrop search-backdrop" x-ng-click="hidePanels()" x-ng-show="show.searchPanel"></div>
 		<div x-ng-show="show.navigationPanel" class="sidePanel navigationPanel">
 			<div x-ng-controller="NavigationPanelController">
 				<h2>{{episode.title}}</h2>
@@ -38,35 +45,10 @@
 		</div>
 		<div x-ng-show="show.searchPanel" class="sidePanel searchPanel">
 			<div x-ng-if="show.searchPanelInternals" x-ng-controller="SearchPanelController">
-				<div class="filters">
-					<dl>
-						<dt>Search:</dt>
-						<dd>
-							<input id="searchtext" type="text" x-ng-model="searchText" />
-						</dd>
-						<!--
-		TODO: bring this back when we implement categories (and use the episode's categories to build the list of options)
-					<dt>Types:</dt>
-					<dd>
-						<label><input type="checkbox" id="searchalltypes" checked="checked"><span> All transmedia types</span></label>
-						<div id="searchtypes" class="accordion">
-							<label><input type="checkbox" name="searchcategory" id="searchtype-transcript" x-ng-model="searchTypes.annotation"><span> {{prettyTypeMap['annotation']}}</span></label>
-							<label><input type="checkbox" name="searchcategory" id="searchtype-links" x-ng-model="searchTypes.link"><span> {{prettyTypeMap['link']}}</span></label>
-							<label><input type="checkbox" name="searchcategory" id="searchtype-slides" x-ng-model="searchTypes.slide"><span> {{prettyTypeMap['slide']}}</span></label>
-							<label><input type="checkbox" name="searchcategory" id="searchtype-in_depth" x-ng-model="searchTypes.indepth"><span> {{prettyTypeMap['indepth']}}</span></label>
-							<label><input type="checkbox" name="searchcategory" id="searchtype-projects" x-ng-model="searchTypes.project"><span> {{prettyTypeMap['project']}}</span></label>
-							<label><input type="checkbox" name="searchcategory" id="searchtype-discussions" x-ng-model="searchTypes.discussion"><span> {{prettyTypeMap['discussion']}}</span></label>
-						</div>
-					</dd>
-		-->
-						<dt>Sort by:</dt>
-						<dd>
-							<select id="searchsort" size="1" x-ng-model="sortBy">
-								<option value="startTime">Time</option>
-								<option value="type">Type</option>
-							</select>
-						</dd>
-					</dl>
+				
+				<div class="searchfilters">
+				<label x-ng-show="sortBy!=='startTime'"><input type="radio" name="searchsort" id="searchsort" x-ng-model="sortBy" value="startTime"> Sorted by <span class="fakelink">type</span></label>
+				<label x-ng-show="sortBy==='startTime'"><input type="radio" name="searchsort" id="searchsort" x-ng-model="sortBy" value="type"> Sorted by <span class="fakelink">time</span></label>
 				</div>
 				<div class="scrollContainer">
 					<div class="searchResults">
@@ -82,7 +64,8 @@
 								<div class="item" x-ng-repeat="item in scene.items | orderBy:'startTime' | filter:{'searchableText': searchText} | type:searchTypes">
 									<span class="displayTime"><a href="javascript:void 1" x-ng-click="gotoItem(item)">{{item.displayTime}}</a>
 									</span>
-									<span class="type">({{prettyTypeMap[item.type]}})</span>
+									<span x-ng-if="item.type==='annotation'" class="type">{{item.authorName}}</span>
+									<span x-ng-if="item.type!=='annotation'" class="type">({{prettyTypeMap[item.type]}})</span>
 									<div class="description" ng-bind-html="item.trustedDisplayText | highlight: searchText"></div>
 								</div>
 							</div>
@@ -95,7 +78,8 @@
 								<div class="item" x-ng-repeat="item in items | orderBy:'startTime' | type:searchTypes | filter:{'searchableText': searchText}">
 									<span class="displayTime"><a href="javascript:void 1" x-ng-click="gotoItem(item)">{{item.displayTime}}</a>
 									</span>
-									<span class="type">({{prettyTypeMap[item.type]}})</span>
+									<span x-ng-if="item.type==='annotation'" class="type">{{item.authorName}}</span>
+									<span x-ng-if="item.type!=='annotation'" class="type">({{prettyTypeMap[item.type]}})</span>
 									<div class="description" ng-bind-html="item.trustedDisplayText | highlight: searchText"></div>
 								</div>
 							</div>

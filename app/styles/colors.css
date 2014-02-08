@@ -16,7 +16,7 @@
 .contentAlt {
 	background-color: rgba(0, 0, 0, 0.05);
 }
-a {
+a, .fakelink {
 	color: #00C
 }
 /*============================
@@ -28,7 +28,7 @@ a {
 	color: #CCC;
 	background-color: #333;
 }
-.colorInvert a {
+.colorInvert a, .colorInvert .fakelink {
 	color: #FFF
 }
 /*============================
@@ -40,7 +40,7 @@ a {
 	color: #4B4235;
 	background-color: #EFE0C8;
 }
-.colorSepia a {
+.colorSepia a, .colorSepia .fakelink {
 	color: #B7521E;
 }
 .colorInvert .colorSepia, .colorSepia .colorInvert {
@@ -57,7 +57,7 @@ a {
 }
 .colorSolarized .contentAlt {
 }
-.colorSolarized a {
+.colorSolarized a, .colorSolarized .fakelink {
 	color: #288CD2;
 }
 .colorInvert .colorSolarized, .colorSolarized .colorInvert {
@@ -72,9 +72,9 @@ a {
 	color: #595959;
 	background-color: rgba(224, 240, 210, 0.5);
 }
-.colorVivid a {
+.colorVivid a, .colorVivid .fakelink {
 	color: #FF9209;
 }
-.colorVivid .contentAlt a {
+.colorVivid .contentAlt a, .colorVivid .contentAlt .fakelink {
 	color: #F30;
 }
