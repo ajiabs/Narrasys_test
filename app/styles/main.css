@@ -81,6 +81,10 @@ See /images/font/story/map.png for a list of available glyphs
 	font-weight: normal;
 	font-style: normal;
 }
+
+
+
+
 /*============================
  *
  * Shared Modal
@@ -147,7 +151,13 @@ See /images/font/story/map.png for a list of available glyphs
  * The ever-popular "misc"
  *
 //===========================*/
- .threedee {
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; }
+
+
+.threedee {
 	perspective: 800px;
 	/* Safari is choking on the 3d transforms. TODO figure out why; for now just revert to 2d */
 	-webkit-perspective: none;

@@ -175,6 +175,14 @@
 	width: 50%;
 	float:right;
 }
+
+.scene-explore .item .pullquote {font-size:1.4em}
+
+.scene-explore h1 { font-size: 1.5em; }
+.scene-explore h2 { font-size: 1.3em; }
+.scene-explore h3 { font-size: 1em; }
+
+
 /*============================*/
  .scene-1col {
 	margin: 0 10%;
