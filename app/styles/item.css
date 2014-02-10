@@ -92,6 +92,10 @@
 	padding: 0.5em 5%;
 	padding-left: 60px;
 }
+
+.content .item.headerItem {
+}
+
 .content .item .itemHead {
 	display:inline;
 	line-height: 1em
@@ -157,21 +161,19 @@
  * Template variants
  *
 //=========================== */
- .item .pullquote:before {
-	content:"“";
+
+
+.item .pullquote:before {
+	color: rgba(0, 0, 0, 0.05);
+	content: "“";
 	float: left;
-	font-size: 1.5em;
-	line-height: 1em;
-	margin-left: -0.86em;
-	opacity: 0.2;
-	width: 0;
+	font-size: 3em;
+	line-height: 0.8em;
+	margin-left: -0.4em;
+	width: 0.4em;
 }
 .item .pullquote {
 	font-size: 2em;
-	border-top: 1px solid rgba(255, 255, 255, 0.8);
-	margin-left: -1em;
-	padding-left: 0.5em;
-	border-left: 1em solid rgba(255, 255, 255, 0.8);
 }
 .item .pullquoteSpeaker {
 	text-align: right;

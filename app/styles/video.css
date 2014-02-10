@@ -87,7 +87,7 @@
 
 
  .video-prevscene a, .video-nextscene a, .video-scenemenu a {
-	color:#000;
+	color:#000 !important;
 }
 .video-prevscene, .video-nextscene, .video-scenemenu {
 	font-family: Story;
@@ -419,7 +419,7 @@ fonts to show/hide properly.
 .vjs-story-skin .vjs-big-play-button {
 	cursor: pointer;
 	display: block;
-	font-size: 7em;
+	font-size: 4em;
 	position: absolute;
 	top: 50%;
 	transition: all 0.4s ease 0s;
@@ -448,6 +448,9 @@ color:#c44343;
 /* Loading Spinner
 --------------------------------------------------------------------------------
 */
+
+/* TODO bring this back. For now depend on youtube to do it */
+/*
  .vjs-loading-spinner {
 	display: block;
 	position: absolute;
@@ -481,6 +484,9 @@ color:#c44343;
 		transform: rotate(359deg);
 	}
 }
+
+*/
+
 /* Menu Buttons (Captions/Subtitles/etc.)
 --------------------------------------------------------------------------------
 */
