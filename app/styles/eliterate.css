@@ -1,0 +1,54 @@
+/*============================
+ *
+ * eLiterate
+ *
+//===========================*/
+ .branding a.eliterate {
+	left:5%;
+	bottom:40px;
+}
+.episode-eliterate {
+    background-image: url("/images/mindwire-bg.svg");
+    background-size: 90%;
+    background-position: 0 30%;
+    background-repeat: no-repeat;
+}
+
+.episode-eliterate .introtext {
+	width: 45%; float:right;
+}
+.eliterate-logo {
+	z-index:8;
+	position:fixed;
+	top: 5px;
+	width: 20%;
+	margin: 10px 40%;
+	text-align:center;
+}
+.eliterate-logo img {
+	width:100%;
+}
+
+.episode-eliterate .sceneintro .videoContainer {
+    width: 50%;
+    float: left;
+}
+
+
+.typographyEliterate {
+	font-family: Arial, Helvetica, Tahoma, sans-serif;
+	font-size: 13px;
+}
+
+.colorEliterate a {color: #1376bb}
+
+
+
+.colorEliterate {color: #6F7D8B}
+.colorEliterate h1, .colorEliterate h2, .colorEliterate h3
+{color:#384d62; font-weight: normal;}
+
+	.eliterate-logo {
+		position:absolute !important;
+	}
+

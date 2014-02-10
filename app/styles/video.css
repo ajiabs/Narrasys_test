@@ -413,27 +413,21 @@ fonts to show/hide properly.
 */
 
 .vjs-story-skin .vjs-big-play-button:before {
-    content: "\e001";
-    font-family: Story;
-    height: 50px;
-    left: 5px;
-    line-height: 50px;
-    position: absolute;
-    text-align: center;
-    width: 100%;
+	content: "\e001";
+	font-family: Story;
 }
 .vjs-story-skin .vjs-big-play-button {
-    cursor: pointer;
-    display: block;
-    font-size: 4em;
-    height: 30%;
-    margin: 0 25%;
-    opacity: 1;
-    position: absolute;
-    text-align: center;
-    top: 34%;
-    transition: all 0.4s ease 0s;
-    width: 50%;
+	cursor: pointer;
+	display: block;
+	font-size: 7em;
+	position: absolute;
+	top: 50%;
+	transition: all 0.4s ease 0s;
+	line-height: 0;
+	width:100%;
+	text-align:center;
+	color:#FFF;
+	text-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 

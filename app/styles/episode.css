@@ -139,8 +139,7 @@
 	display:block!important;
 }
 .searchPanel .ui-match {
-	background-color: #003388;
-	background-color: rgba(0, 0, 128, 0.4);
+	background-color: rgba(50, 50, 50, 0.4);
 	color: #FFF;
 	margin: -4px;
 	padding: 4px;
@@ -273,8 +272,13 @@
  * Landing screen
  *
 //===========================*/
+
+.sceneintro {margin:15%}
+
+.sceneintro p {margin: 2em 0 1em 0}
+
+/* TODO use this in a template
  .sceneintro {
-	margin:15%;
 	perspective: 1000px;
 	transform-style: preserve3d;
 	perspective-origin: 20% 10%;
@@ -289,11 +293,9 @@
 	transform-origin: 10% 0;
 }
 .sceneintro p {
-	margin: 1em 0 3em 0;
 	animation-duration: 45s;
 	animation-name: grooblemacgoo;
 	transform-origin: 10% 0;
-	max-width: 640px;
 }
 @keyframes grooblemacgoo {
 	0% {
@@ -303,6 +305,8 @@
 		transform: rotateY(0deg)
 	}
 }
+*/
+
 /*============================
  *
  * Branding
@@ -327,28 +331,4 @@
 .branding a.itt {
 	right:5%;
 	bottom:40px;
-}
-/*============================
- *
- * eLiterate
- *
-//===========================*/
- .branding a.eliterate {
-	left:5%;
-	bottom:40px;
-}
-.episode-eliterate {
-	background: url('/images/mindwire-bg.svg') 0% 50% no-repeat;
-	background-size: 100% auto;
-}
-.eliterate-logo {
-	z-index:8;
-	position:fixed;
-	top: 5px;
-	width: 20%;
-	margin: 10px 40%;
-	text-align:center;
-}
-.eliterate-logo img {
-	width:100%;
 }

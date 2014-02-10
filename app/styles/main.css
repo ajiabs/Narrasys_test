@@ -201,6 +201,9 @@ h3 { font-size: 1.17em; }
 	.sceneintro .videoContainer {
 		width:100% !important;
 	}
+	.sceneintro .introtext {
+		width:auto !important;
+	}
 	
 	
 	.scene-explore .scene {display:block !important /* override flex */}
@@ -219,9 +222,6 @@ h3 { font-size: 1.17em; }
 	}
 	.scene-centered {
 		width:80% !important;
-	}
-	.eliterate-logo {
-		position:absolute !important;
 	}
 	.searchPanel {
 		width: 80% !important; position:absolute !important;
