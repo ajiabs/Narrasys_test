@@ -2,7 +2,7 @@
 	"episode": {
 		"title": "Episode Title",
 		"description": "Kowloon pistol dolphin rebar singularity faded stimulate man office market narrative sensory. refrigerator rebar marketing render-farm tube drugs decay soul-delay rain range-rover youtube wonton soup.",
-		"style_id": "typographyEliterate colorEliterate",
+		"style_id": "transitionSlideL  typographyEliterate",
 		"template_id": "templates/episode-eliterate.html",
 		"master_asset_id": {
 			"youtube": "http://www.youtube.com/embed/0SFgUW0GqMo",
@@ -20,6 +20,22 @@
 			"end_time": 90,
 			"title": "This is a scene.",
 			"description": "Testing item templates."
+		}, {
+			"type": "annotation",
+			"start_time": 0,
+			"end_time": 3,
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "nano- rain claymore mine futurity boy nano- industrial grade alcohol singularity bomb 3D-printed pen cartel decay vinyl geodesic. savant youtube jeans San Francisco concrete Tokyo disposable skyscraper nodality pre- urban BASE jump pre- engine semiotics crypto-. camera gang ablative narrative smart- vehicle bridge assault katana free-market nano- courier advert bridge receding hacker. gang convenience store rain otaku tube j-pop sensory rain into BASE jump sign tube sentient bomb sprawl towards. sign network jeans denim 3D-printed vinyl nodality digital youtube boat papier-mache systema math- wristwatch warehouse drugs."
+		}, {
+			"type": "annotation",
+			"template_id": "templates/text-h2.html",
+			"style_id": "colorInvert",
+			"start_time": 0,
+			"end_time": 3,
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "No template specified -- should be default."
 		}, {
 			"type": "annotation",
 			"start_time": 0,
