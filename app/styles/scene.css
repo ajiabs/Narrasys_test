@@ -27,9 +27,11 @@
  * Item positioning
  *
 //===========================*/
+
  .content > div {
 	perspective: 600px;
 }
+.smallPane .content {overflow:hidden}
 /* TODO: add breakpoints to adjust sidebar widths based on screen size */
  .content.hasLeftSidebar .item {
 	margin-left: 30%;
