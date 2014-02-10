@@ -127,7 +127,7 @@
  .scene-video {
 	background-color: #000;
 	position:absolute;
-	top: 60px;
+	top: 45px;/* TOOLBAR HEIGHT */
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -159,7 +159,7 @@
 }
 .scene-explore .videoContainer {
 	position:fixed;
-	top: 60px;
+	top: 45px; /* TOOLBAR HEIGHT */
 	right: 0;
 	width: 30%;
 }

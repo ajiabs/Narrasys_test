@@ -27,7 +27,7 @@
 	bottom:0;
 	left: 0;
 	right: 0;
-	height: 6.5em;
+	height: 65px;
 }
 
 /* ------------------------------------------------------------------------------------------------ */
@@ -85,25 +85,26 @@
 --------------------------------------------------------------------------------
 */
 
+.video-prevscene, .video-nextscene, .video-scenemenu,
+.vjs-story-skin .vjs-progress-control
+{top: 32px}
 
  .video-prevscene a, .video-nextscene a, .video-scenemenu a {
-	color:#000 !important;
+	color:#333 !important;
 }
 .video-prevscene, .video-nextscene, .video-scenemenu {
 	font-family: Story;
 	font-size: 2em;
 	height: 2em;
 	position: absolute;
-	top: 0.5em;
 	width: 1em;
 	line-height: 1em;
 	cursor: pointer;
 }
 .video-scenemenu {
-	left: 7em;
+	left: 9em;
 	width: 3em;
 	height: 1.7em;
-	top: 1em;
 	background-color: #CCC;
 	font-size: 1em;
 	border-radius: 1em 0 0 1em;
@@ -118,13 +119,13 @@
 	font-family: Story;
 }
 .video-prevscene {
-	left:2em;
+	left:3em;
 }
 .video-nextscene a:before {
 	content:"\e600";
 }
 .video-nextscene {
-	right:2em;
+	right:1em;
 }
 
 .vjs-story-skin .video-captions {
@@ -152,12 +153,11 @@
 	bottom:0;
 	left: 0;
 	right: 0;
-	height: 6.5em;
-	background-color:#FFF;
-	background-color: rgba(255, 255, 255, 0.8);
-	box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
-	border-top: 1px solid #CCC;
+	height: 85px;
+	margin-top: 20px;
 	color: #333;
+	background: url('/images/toolbar-bottom-bg.png') top left repeat-x;
+
 }
 /* Slider - used for Volume bar and Seek bar */
 .vjs-story-skin .vjs-slider {
@@ -253,10 +253,8 @@ fonts to show/hide properly.
 */
  .vjs-story-skin .vjs-play-control {
 	position:absolute;
-	width: 5em;
 	cursor: pointer;
-	bottom: 0.5em;
-	left: 1em;
+	font-size: 15px; left: 1em; bottom: 15px;
 }
 .vjs-story-skin .vjs-play-control:before {
 	content:"\e001";
@@ -270,7 +268,7 @@ fonts to show/hide properly.
 	position:absolute;
 	cursor: pointer;
 	bottom: 0.5em;
-	left: 44%;
+	right: 16em;
 }
 .vjs-story-skin .vjs-mute-control:before, .vjs-story-skin .vjs-volume-menu-button:before {
 	content:"\e006";
@@ -286,9 +284,9 @@ fonts to show/hide properly.
 }
 .vjs-story-skin .vjs-volume-control {
 	position: absolute;
-	width: 8em;
+	width: 10em;
 	bottom: 0.5em;
-	left: 48%;
+	right: 5em;
 }
 .vjs-story-skin .vjs-volume-bar {
 	width: 100%;
@@ -322,14 +320,17 @@ fonts to show/hide properly.
 /* Progress
 --------------------------------------------------------------------------------
 */
+
+.vjs-story-skin .vjs-progress-control,
+.vjs-story-skin .vjs-load-progress {
+	border-radius: 0 1em 1em 0;
+}
  .vjs-story-skin .vjs-progress-control {
 	position: absolute;
-	left: 10em;
-	right: 7em;
+	left: 12em;
+	right: 5em;
 	width: auto;
 	height: 1.7em;
-	top: 1em;
-	border-radius: 0 1em 1em 0;
 	/* Do not use overflow:hidden; it hides the scene tooltips! */
 	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.2) inset;
 }
@@ -380,8 +381,8 @@ fonts to show/hide properly.
  .vjs-story-skin .vjs-time-controls, .vjs-story-skin .vjs-time-divider, .vjs-story-skin .vjs-current-time, .vjs-story-skin .vjs-duration, .vjs-story-skin .vjs-remaining-time {
 	font-size: 1.2em;
 	float:left;
-	margin-top:3em;
-	padding: 0 0.1em;
+	margin-top:55px;
+	padding: 0 2px;
 }
 /* videojs inexplicably puts vjs-control on these, so we need to override a bit: */
  .vjs-story-skin .vjs-current-time, .vjs-story-skin .vjs-duration {
@@ -389,7 +390,7 @@ fonts to show/hide properly.
 }
 .vjs-story-skin .vjs-current-time {
 	float: left;
-	margin-left: 6em;
+	margin-left: 10em;
 }
 /* Remaining time is in the HTML, but not included in default design */
  .vjs-story-skin .vjs-remaining-time {

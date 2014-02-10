@@ -1,6 +1,7 @@
 /* TODO separate this out into episode-template specific stuff vs player chrome */
 
 .toolbar {
+	font-size: 16px;
 	text-align: center;
 	position: fixed;
 	height: 85px;
@@ -9,7 +10,6 @@
 	top: 0;
 	left: 0;
 	right: 0;
-	white-space: nowrap;
 }
 .toolbar {
 	pointer-events: none
@@ -18,7 +18,7 @@
 	pointer-events:auto
 }
 .episode {
-	margin-top: 60px
+	margin-top: 45px /* TOOLBAR HEIGHT */
 }
 
 .toolbar .buttongroup {
@@ -27,7 +27,7 @@
 	position: relative;
 	height:1.5em;
 	border-radius:0.75em;
-	margin:0.5em;
+	margin:0.3em 0.8em;
 	background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -41,8 +41,18 @@
 	overflow:hidden;
 }
 
+.toolbar .buttongroup.searchgroup .button span {
+	display:none
+}
+.toolbar .buttongroup.searchgroup .button {
+	float:left;
+}
+
+
 .toolbar .buttongroup.searchgroup.cur {
-	width: 35%; 
+	width: 35%;
+	font-size: 22px;
+	padding-top: 3px;
 }
 
 #searchtext {
@@ -52,13 +62,14 @@
     margin: 0;
     width: 0; 
     transition: all 1s;
+    position:absolute; left: 40px; top: 2px;
 }
-.cur #searchtext {width: 100%}
+.cur #searchtext {width: 80%}
 
 .toolbar .button {
 	display:inline-block;
 	padding: 0 0.5em;
-	line-height: 1.5em;
+	line-height: 24px;
 	height: 24px;
 	cursor:pointer;
 	color:#666;
@@ -78,16 +89,16 @@
 .cur .button-search:before {content: "\e603"}
 .button-mainframeescape:before {content: "\e609"}
 
-.toolbar .button span {
+.toolbar .buttongroup.modegroup .button span {
 	display:block;
 	position: absolute;
-	top: 1.8em;
+	top: 20px;
 	left:0;
 	right:0;
 	text-align: center;
 	opacity:0;
 	color:#000;
-	font-size:0.8em;
+	font-size:12px;
 }
 .toolbar .button.cur span {
 	animation: delayedFadeOut 7s ease-out; 
@@ -125,7 +136,7 @@
 	display:block!important;
 }
 
-.modal-backdrop.search-backdrop {top: 60px}
+.modal-backdrop.search-backdrop {top: 45px /* TOOLBAR HEIGHT */}
 /* Panel animations */
  .searchPanel {
 	transition: 1s  all;
@@ -166,19 +177,19 @@
  *
 //===========================*/
  .searchPanel {
-	top: 40px;
+	top: 45px /* TOOLBAR HEIGHT */;
 	bottom: 0;
 	right: 0;
 	width: 40%;
+	background-color:#FFF;
 }
 .searchPanel .scrollContainer {
-	top: 19px;
+	top: 20px;
 	bottom: 0;
 	overflow-y: scroll;
 	right: -16px;
 	left: 0px;
 	position:absolute;
-	background-color:#FFF;
 }
 .searchPanel .searchresults {
 	padding: 1em;
@@ -193,7 +204,7 @@
 	animation: delayedFadeIn 4s ease-out; 
 }
 
-.searchfilters {font-size: 0.86em}
+.searchfilters {font-size: 0.86em;}
 .searchfilters label {float:right; margin-right: 0.5em; cursor: pointer;}
 .searchfilters input[type="radio"] {display: none}
 
@@ -246,7 +257,7 @@
  *
 //===========================*/
  .navigationPanel {
-	border-radius: 1em 1em 0 0;
+	border-radius: 0.3em 0.3em 0 0;
 	background-color: #FFF;
 	padding-bottom: 3em;
 }
@@ -330,6 +341,8 @@
 	position:absolute;
 	display: block;
 }
+.branding a img {border:none}
+
 .branding a.itt {
 	right:5%;
 	bottom:40px;
@@ -392,7 +405,7 @@
 
 .episode-eliterate {
 	font-family: Arial, Helvetica, Tahoma, sans-serif;
-	font-size: 13px;
+	font-size: 14px;
 }
 
 .episode-eliterate {

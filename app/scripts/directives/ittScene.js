@@ -23,6 +23,8 @@ angular.module('com.inthetelling.player')
 							var videoContainer = element.find('.videoContainer');
 							if (scope.scene.templateUrl.indexOf("scene-video.html") > -1) { //TODO WARN FRAGILE BAD YUCKO dependency on template url
 								// ensure there's room for captions:
+								
+								videoContainer.width(angular.element($window).width());
 								if (videoContainer.height() > angular.element($window).height() - 200) {
 									videoContainer.height(angular.element($window).height() - 200);
 								}
