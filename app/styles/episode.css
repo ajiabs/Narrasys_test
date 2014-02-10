@@ -1,3 +1,5 @@
+/* TODO separate this out into episode-template specific stuff vs player chrome */
+
 .toolbar {
 	text-align: center;
 	position: fixed;
@@ -332,3 +334,99 @@
 	right:5%;
 	bottom:40px;
 }
+
+
+/*============================
+ *
+ * eLiterate
+ *
+//===========================*/
+ .branding a.eliterate {
+	left:5%;
+	bottom:40px;
+}
+.episode-eliterate {
+    background-image: url("/images/mindwire-bg.svg");
+    background-size: 90%;
+    background-position: 0 30%;
+    background-repeat: no-repeat;
+}
+
+.episode-eliterate .introtext {
+	width: 45%; float:right;
+}
+.eliterate-logo {
+	z-index:8;
+	position:fixed;
+	top: 0;
+	width: 20%;
+	max-width: 150px;
+	margin: 10px 40%;
+	text-align:center;
+}
+.eliterate-logo img {
+	width:100%;
+}
+
+.episode-eliterate .sceneintro .videoContainer {
+    width: 50%;
+    float: left;
+}
+
+
+.eliterate-logo {
+	position:absolute !important;
+}
+
+.episode-eliterate .startTime {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    padding: 3px;
+}
+
+
+
+
+/* TODO Redundant, because production didn't apply colorEliterate */
+/* when they do, remove this block: */
+
+.episode-eliterate {
+	font-family: Arial, Helvetica, Tahoma, sans-serif;
+	font-size: 13px;
+}
+
+.episode-eliterate {
+	color: #6F7D8B;
+}
+
+.episode-eliterate a, .colorEliterate .fakelink {color: #1376bb}
+
+.episode-eliterate h1, .episode-eliterate h2, .episode-eliterate h3
+{font-weight: normal;color:#384d62;}
+
+.episode-eliterate .colorInvert {
+	color: #FFF;
+	background-color: #6F7D8B;
+}
+
+.episode-eliterate .colorInvert h1,
+.episode-eliterate .colorInvert h2,
+.episode-eliterate .colorInvert h3 {
+	color: #FFF
+}
+
+/* End of Redundant block */
+
+.colorEliterate {
+	color: #6F7D8B;
+}
+.colorEliterate a, .colorEliterate .fakelink {
+	color: #1376bb;
+}
+.colorInvert .colorEliterate, .colorEliterate .colorInvert {
+	color: #FFF;
+	background-color: #6F7D8B;
+}
+
+.colorEliterate h1, .colorEliterate h2, .colorEliterate h3
+{font-weight: normal;color:#384d62;}
