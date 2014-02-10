@@ -112,9 +112,7 @@
 	display:none
 }
 /* TODO: add a styles option to scenes for showing the title */
- .scene-explore .scene .sceneTitle {
-	display:block
-}
+
 /*
 .videoContainer {border: 2px solid #F00}
 .contentMain {border: 2px solid #0F0;}
@@ -150,6 +148,10 @@
  .scene-explore {
 	clear:both
 }
+
+/* Causes columns to fill vertical space.  Make sure to override in small screen */
+.scene-explore .scene {display:flex}
+
 .scene-explore.futureScene, .scene-explore.pastScene {
 	display:block
 }
@@ -162,16 +164,19 @@
 .scene-explore {
 	border-top: 1px solid rgba(0, 0, 0, 0.5)
 }
+
+.scene-explore .scene .sceneTitle {
+	display:block
+}
+
 .scene-explore.currentScene .videoContainer {
 	z-index:2;
 }
 .scene-explore .contentMain {
-	height: 100%;
 	width: 50%;
 	float:left;
 }
 .scene-explore .contentAlt {
-	height: 100%;
 	width: 50%;
 	float:right;
 }

@@ -201,10 +201,21 @@ h3 { font-size: 1.17em; }
 	.sceneintro .videoContainer {
 		width:100% !important;
 	}
+	
+	
+	.scene-explore .scene {display:block !important /* override flex */}
+
+	.scene-explore .videoContainer {position:static !important;}
+	
+	.scene-explore .videoContainer {display:none}
+	.scene-explore.currentScene .videoContainer {display:block}
+	
+	.scene-explore .matchVideoHeight {display: none !important}
+	.scene-explore .currentScene .matchVideoHeight {display:block !important}
+	
 	.scene-explore .contentMain, .scene-explore .contentAlt {
 		float:none !important;
 		width: 100% !important;
-		height: auto !important;
 	}
 	.scene-centered {
 		width:80% !important;
