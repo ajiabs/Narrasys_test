@@ -20,16 +20,18 @@
 	overflow:hidden
 }
 .paneBg {
-	opacity: 0.5
+	opacity: 0.3
 }
 /*============================
  *
  * Item positioning
  *
 //===========================*/
+
  .content > div {
 	perspective: 600px;
 }
+.smallPane .content {overflow:hidden}
 /* TODO: add breakpoints to adjust sidebar widths based on screen size */
  .content.hasLeftSidebar .item {
 	margin-left: 30%;
@@ -112,9 +114,7 @@
 	display:none
 }
 /* TODO: add a styles option to scenes for showing the title */
- .scene-explore .scene .sceneTitle {
-	display:block
-}
+
 /*
 .videoContainer {border: 2px solid #F00}
 .contentMain {border: 2px solid #0F0;}
@@ -127,7 +127,7 @@
  .scene-video {
 	background-color: #000;
 	position:absolute;
-	top: 60px;
+	top: 45px;/* TOOLBAR HEIGHT */
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -150,31 +150,46 @@
  .scene-explore {
 	clear:both
 }
+
+/* Causes columns to fill vertical space.  Make sure to override in small screen */
+.scene-explore .scene {display:flex}
+
 .scene-explore.futureScene, .scene-explore.pastScene {
 	display:block
 }
 .scene-explore .videoContainer {
 	position:fixed;
-	top: 60px;
+	top: 45px; /* TOOLBAR HEIGHT */
 	right: 0;
 	width: 30%;
 }
 .scene-explore {
-	border-top: 1px solid rgba(0, 0, 0, 0.5)
+	border-top: 1px solid rgba(0, 0, 0, 0.2)
 }
+
+.scene-explore .scene .sceneTitle {
+	display:block
+}
+
 .scene-explore.currentScene .videoContainer {
 	z-index:2;
 }
 .scene-explore .contentMain {
-	height: 100%;
 	width: 50%;
 	float:left;
 }
 .scene-explore .contentAlt {
-	height: 100%;
 	width: 50%;
 	float:right;
 }
+
+.scene-explore .item .pullquote {font-size:1.4em}
+
+.scene-explore h1 { font-size: 1.5em; }
+.scene-explore h2 { font-size: 1.3em; }
+.scene-explore h3 { font-size: 1em; }
+
+
 /*============================*/
  .scene-1col {
 	margin: 0 10%;

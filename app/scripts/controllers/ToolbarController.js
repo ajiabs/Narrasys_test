@@ -11,7 +11,7 @@ angular.module('com.inthetelling.player')
 
 		/* Handler for toolbar buttons to change scene templates. */
 		$scope.setSceneTemplate = function (newTemplate) {
-//			console.log("setSceneTemplate " + newTemplate);
+			//			console.log("setSceneTemplate " + newTemplate);
 
 			$scope.currentSceneTemplate = newTemplate;
 			// set all scenes to use newTemplate
@@ -80,6 +80,16 @@ angular.module('com.inthetelling.player')
 			}, 0);
 		};
 
+		$scope.toggleSearchPanel = function () {
+		console.log("toggleSearchPanel",$scope.show);
+			if ($scope.show.searchPanel) {
+				$scope.hidePanels();
+			} else {
+				$scope.showSearchPanel();
+				document.getElementById('searchtext').focus(); // TODO BUG not working in Safari
+			}
+		};
+
 		$scope.showSceneMenu = function () {
 			if ($scope.show.navigationPanel) {
 				$scope.hidePanels();
@@ -87,6 +97,7 @@ angular.module('com.inthetelling.player')
 				$scope.showNavigationPanel();
 			}
 		};
+		/*
 
 		$scope.toggleClosedCaptionMode = function () {
 			if ($scope.currentSceneTemplate === 'video') {
@@ -96,11 +107,10 @@ angular.module('com.inthetelling.player')
 				$scope.lastModeUsed = $scope.currentSceneTemplate;
 				$scope.setSceneTemplate('video');
 			}
-
 		};
-
+*/
 		// triggers vjs footer controls to appear
-		$scope.showVideoControls = function() {
+		$scope.showVideoControls = function () {
 			if (videojs.player) { // in case video hasn't inited yet
 				videojs.player.userActive(true);
 			}
@@ -110,6 +120,7 @@ angular.module('com.inthetelling.player')
 			// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 			$scope.show.navigationPanel = false;
 			$scope.show.searchPanel = false;
+			$scope.searchText = '';
 			videojs.player.controls(true); // TODO: do this on iPad only
 			// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
 			// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.
@@ -120,13 +131,13 @@ angular.module('com.inthetelling.player')
 		};
 
 		// When user first clicks video, show the toolbar chrome and hide the landing screen
-		$scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay',function() {
+		$scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay', function () {
 			// Move our custom controls into the vjs control bar.  TODO fix jquery hackage
 			$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
 
 			// Hide the intro; show the regular controls
-			$scope.show.introPanel=false;
-			$scope.show.playerPanel=true;
+			$scope.show.introPanel = false;
+			$scope.show.playerPanel = true;
 			$rootScope.$emit('toolbar.changedSceneTemplate'); // force twiddleSceneLayout
 
 			$scope.firstPlayWatcher(); // stop listening for this event
@@ -155,12 +166,12 @@ angular.module('com.inthetelling.player')
 		// and use it to trigger the videoFirstPlay event instead.
 
 		$scope.firstPlayWatcherForIDevicesWhenWeAreUsingYoutube = $scope.$watch(
-			function() {
+			function () {
 				if (videojs.player) {
 					return videojs.player.durationchanged;
 				}
 			},
-			function(durationchanged) {
+			function (durationchanged) {
 				if (durationchanged) {
 					$rootScope.$emit('toolbar.videoFirstPlay');
 					$scope.firstPlayWatcherForIDevicesWhenWeAreUsingYoutube(); // stop watching

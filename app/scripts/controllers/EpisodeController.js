@@ -68,9 +68,22 @@ angular.module('com.inthetelling.player')
 					// subscribe the item model to the cuePoint scheduler for state awareness
 					// use a closure to preserve variable scope in each loop iteration
 					(function (itemModel) {
+
+
+		// HACK HACK HACK HACKITY HACK HACK HACK
+		// We should adjust the end time to allow for transitions ONLY in cases where showCurrent is true in the content pane, and transitions are in use on the item.
+		// For now applying it everywhere, because the episode model has no knowledge of showcurrent or transitions at this point.
+		// This will become easier when there's an explicit derived-values service...
+					
+						itemModel.adjustedEndTime = 
+							(itemModel.startTime +1 < itemModel.endTime) 
+								? itemModel.endTime -1
+								: itemMode.endTime
+							;
+					
 						cuePointScheduler.subscribe({
 							begin: itemModel.startTime,
-							end: itemModel.endTime
+							end: itemModel.adjustedEndTime
 						}, function (span, evt, playheadPos) {
 							$scope.$apply(function () {
 								if (evt === cuePointScheduler.ENTER) {

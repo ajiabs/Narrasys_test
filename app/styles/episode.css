@@ -1,4 +1,7 @@
+/* TODO separate this out into episode-template specific stuff vs player chrome */
+
 .toolbar {
+	font-size: 16px;
 	text-align: center;
 	position: fixed;
 	height: 85px;
@@ -7,7 +10,6 @@
 	top: 0;
 	left: 0;
 	right: 0;
-	white-space: nowrap;
 }
 .toolbar {
 	pointer-events: none
@@ -16,67 +18,95 @@
 	pointer-events:auto
 }
 .episode {
-	margin-top: 60px
+	margin-top: 45px /* TOOLBAR HEIGHT */
 }
+
+.toolbar .buttongroup {
+	float:left;
+	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.1) inset;
+	position: relative;
+	height:1.5em;
+	border-radius:0.75em;
+	margin:0.3em 0.8em;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.toolbar .buttongroup.modegroup {
+	padding: 0 0.5em;
+}
+
+.toolbar .buttongroup.searchgroup {
+	transition: all 1s; 
+	width: 2em; 
+	overflow:hidden;
+}
+
+.toolbar .buttongroup.searchgroup .button span {
+	display:none
+}
+.toolbar .buttongroup.searchgroup .button {
+	float:left;
+}
+
+
+.toolbar .buttongroup.searchgroup.cur {
+	width: 35%;
+	font-size: 22px;
+	padding-top: 3px;
+}
+
+#searchtext {
+    background: none;
+    border: none;
+    font-size: 1em;
+    margin: 0;
+    width: 0; 
+    transition: all 1s;
+    position:absolute; left: 40px; top: 2px;
+}
+.cur #searchtext {width: 80%}
+
 .toolbar .button {
-	display: inline-block;
-	height: 42px;
-	line-height: 42px;
-	border-radius: 0.5em;
-	padding: 0 0.25em;
-	margin: 0.5em;
-	max-width: 42px;
-	overflow: hidden;
-	transition: all 1s;
-	background-color: #CCC;
-	color: #333;
-	background: linear-gradient(to bottom, #DDDDDD 0%, #BBBBBB 100%);
-	border-bottom: 2px solid #DDDDDD;
-	/* for color-inverted toolbar:
-	background-color: #333;
-	color: #DDD;
-	background: linear-gradient(to bottom, #555555 0%, #333333 100%);
-	border-bottom: 2px solid #555555;
-*/
+	display:inline-block;
+	padding: 0 0.5em;
+	line-height: 24px;
+	height: 24px;
+	cursor:pointer;
+	color:#666;
 }
-.toolbar .button:hover {
-	max-width:200px
+.toolbar .button.cur {
+	color:#000;
 }
-.toolbar .button span {
-	display: inline-block;
-	line-height: 2em;
-	padding-left: 1em;
-}
-.toolbar .button-search, .toolbar .button-mainframeescape {
-	float:right
-}
-.toolbar .button-directed, .toolbar .button-explore {
-	float:left
-}
-.toolbar .button-explore:before {
+.toolbar .button:before {
 	font-family: Story;
-	font-size: 2em;
-	content:"\e607";
-	float:left;
+	font-size: 1em;
 }
-.toolbar .button-directed:before {
-	font-family: Story;
-	font-size: 2em;
-	content:"\e607";
-	float:left;
+
+.button-video:before {content: "\e60b"}
+.button-directed:before {content: "\e60a"}
+.button-explore:before {content: "\e60c"}
+.button-search:before {content: "\e602"}
+.cur .button-search:before {content: "\e603"}
+.button-mainframeescape:before {content: "\e609"}
+
+.toolbar .buttongroup.modegroup .button span {
+	display:block;
+	position: absolute;
+	top: 20px;
+	left:0;
+	right:0;
+	text-align: center;
+	opacity:0;
+	color:#000;
+	font-size:12px;
 }
-.toolbar .button-search:before {
-	font-family: Story;
-	font-size: 2em;
-	content:"\e602";
-	float:left;
+.toolbar .button.cur span {
+	animation: delayedFadeOut 7s ease-out; 
 }
-.toolbar .button-mainframeescape:before {
-	font-family: Story;
-	font-size: 2em;
-	content:"\e609";
-	float:left;
+
+.toolbar .button-directed {
 }
+
 .escapelink:before {
 	font-family: Story;
 	content:"\e609";
@@ -94,8 +124,6 @@
 //===========================*/
  .sidePanel {
 	position: fixed;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-	z-index: 10;
 }
 .modal-backdrop {
 	transition:1s linear all;
@@ -107,27 +135,27 @@
 .modal-backdrop.ng-hide-add, .modal-backdrop.ng-hide-remove {
 	display:block!important;
 }
+
+.modal-backdrop.search-backdrop {top: 45px /* TOOLBAR HEIGHT */}
 /* Panel animations */
  .searchPanel {
-	top: 0;
-	bottom: 0;
-	transition: 0.7s ease-in-out all;
+	transition: 1s  all;
 	transform-origin: 100% 50%;
 	opacity:1;
-	transform: rotateY(0) translateX(0);
+	transform:translateX(0);
 }
 .searchPanel.ng-hide {
 	opacity:0;
-	transform: rotateY(60deg) translateX(200px);
+	transform:translateX(200px);
 }
 .sidePanel.ng-hide-add, .sidePanel.ng-hide-remove {
 	display:block!important;
 }
-
 .searchPanel .ui-match {
-	background-color: #003388;	background-color: rgba(0,0,128,0.4);
+	background-color: rgba(50, 50, 50, 0.4);
 	color: #FFF;
-	margin: -4px; padding: 4px;
+	margin: -4px;
+	padding: 4px;
 	border-radius: 4px;
 }
 .navigationPanel {
@@ -149,27 +177,38 @@
  *
 //===========================*/
  .searchPanel {
+	top: 45px /* TOOLBAR HEIGHT */;
+	bottom: 0;
 	right: 0;
 	width: 40%;
-	background-color: #EEE;
-}
-.searchPanel .filters {
-	background-color: #AAA;
-	padding: 0.5em;
-	height: 85px;
+	background-color:#FFF;
 }
 .searchPanel .scrollContainer {
-	position: absolute;
-	width:100%;
-	top: 85px;
+	top: 20px;
 	bottom: 0;
 	overflow-y: scroll;
-	margin-right: -16px;
+	right: -16px;
+	left: 0px;
+	position:absolute;
 }
 .searchPanel .searchresults {
-	padding: 0.5em;
+	padding: 1em;
 }
-.searchPanel .filters {
+
+
+.searchPanel.ng-hide .searchfilters {
+	opacity:0;
+}
+.searchPanel .searchfilters {
+	opacity:1;
+	animation: delayedFadeIn 4s ease-out; 
+}
+
+.searchfilters {font-size: 0.86em;}
+.searchfilters label {float:right; margin-right: 0.5em; cursor: pointer;}
+.searchfilters input[type="radio"] {display: none}
+
+/*.searchPanel .filters {
 	font-size: 0.86em
 }
 .searchPanel .filters select {
@@ -184,23 +223,8 @@
 	text-align: right;
 	margin: 5px;
 	clear: left;
-}
-.searchPanel input[type="text"], .searchPanel select {
-	background-color: #888888;
-	border: 1px solid #777;
-	border-radius: 4px 4px 4px 4px;
-	color: #FFFFFF;
-	font-size: 1em;
-	height: 2em;
-	width: 100%;
-	padding-left: 8px;
-}
-.searchPanel select {
-	padding: 3px 3px 3px 8px
-}
-.searchPanel option {
-	padding: 0 2em;
-}
+}*/
+
 .searchResults h3 {
 	padding: 0.5em 0.3em 0.1em 0.3em
 }
@@ -233,7 +257,7 @@
  *
 //===========================*/
  .navigationPanel {
-	border-radius: 1em 1em 0 0;
+	border-radius: 0.3em 0.3em 0 0;
 	background-color: #FFF;
 	padding-bottom: 3em;
 }
@@ -261,8 +285,13 @@
  * Landing screen
  *
 //===========================*/
+
+.sceneintro {margin:15%}
+
+.sceneintro p {margin: 2em 0 1em 0}
+
+/* TODO use this in a template
  .sceneintro {
-	margin:15%;
 	perspective: 1000px;
 	transform-style: preserve3d;
 	perspective-origin: 20% 10%;
@@ -277,11 +306,9 @@
 	transform-origin: 10% 0;
 }
 .sceneintro p {
-	margin: 1em 0 3em 0;
 	animation-duration: 45s;
 	animation-name: grooblemacgoo;
 	transform-origin: 10% 0;
-	max-width: 640px;
 }
 @keyframes grooblemacgoo {
 	0% {
@@ -291,6 +318,8 @@
 		transform: rotateY(0deg)
 	}
 }
+*/
+
 /*============================
  *
  * Branding
@@ -312,10 +341,14 @@
 	position:absolute;
 	display: block;
 }
+.branding a img {border:none}
+
 .branding a.itt {
 	right:5%;
 	bottom:40px;
 }
+
+
 /*============================
  *
  * eLiterate
@@ -326,17 +359,87 @@
 	bottom:40px;
 }
 .episode-eliterate {
-	background: url('/images/mindwire-bg.svg') 0% 50% no-repeat;
-	background-size: 100% auto;
+    background-image: url("/images/mindwire-bg.svg");
+    background-size: 90%;
+    background-position: 0 30%;
+    background-repeat: no-repeat;
+}
+
+.episode-eliterate .introtext {
+	width: 45%; float:right;
 }
 .eliterate-logo {
 	z-index:8;
 	position:fixed;
-	top: 5px;
+	top: 0;
 	width: 20%;
+	max-width: 150px;
 	margin: 10px 40%;
 	text-align:center;
 }
 .eliterate-logo img {
 	width:100%;
 }
+
+.episode-eliterate .sceneintro .videoContainer {
+    width: 50%;
+    float: left;
+}
+
+
+.eliterate-logo {
+	position:absolute !important;
+}
+
+.episode-eliterate .startTime {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    padding: 3px;
+}
+
+
+
+
+/* TODO Redundant, because production didn't apply colorEliterate */
+/* when they do, remove this block: */
+
+.episode-eliterate {
+	font-family: Arial, Helvetica, Tahoma, sans-serif;
+	font-size: 14px;
+}
+
+.episode-eliterate {
+	color: #6F7D8B;
+}
+
+.episode-eliterate a, .colorEliterate .fakelink {color: #1376bb}
+
+.episode-eliterate h1, .episode-eliterate h2, .episode-eliterate h3
+{font-weight: normal;color:#384d62;}
+
+.episode-eliterate .colorInvert {
+	color: #FFF;
+	background-color: #6F7D8B;
+}
+
+.episode-eliterate .colorInvert h1,
+.episode-eliterate .colorInvert h2,
+.episode-eliterate .colorInvert h3 {
+	color: #FFF
+}
+
+/* End of Redundant block */
+
+.colorEliterate {
+	color: #6F7D8B;
+}
+.colorEliterate a, .colorEliterate .fakelink {
+	color: #1376bb;
+}
+.colorInvert .colorEliterate, .colorEliterate .colorInvert {
+	color: #FFF;
+	background-color: #6F7D8B;
+}
+
+.colorEliterate h1, .colorEliterate h2, .colorEliterate h3
+{font-weight: normal;color:#384d62;}

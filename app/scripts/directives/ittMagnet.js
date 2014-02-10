@@ -52,8 +52,14 @@ angular.module('com.inthetelling.player')
 				} else {
 					// If the scope isn't a scene, just fire immediately and only once:
 //					console.log("Activating magnet which is not in a scene scope:", scope);
-// TODO but now we don't have a window.resize handler to retrigger it.....
-					activate();
+					$timeout(activate,0);
+					
+					/* TODO find a way to make just one magnet active at a time
+					angular.element($window).bind('resize',function() {
+						
+					});
+					*/
+					
 				}
 			}
 		};

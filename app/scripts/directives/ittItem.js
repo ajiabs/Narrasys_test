@@ -11,14 +11,21 @@ angular.module('com.inthetelling.player')
 				item: '=ittItem'
 			},
 			link: function (scope, element, attrs) {
-				// TODO this whole force-template thing is a total hack.  Should probably be handled at the scene level instead of here.
+				// TODO this whole force-template thing is a total hack.  Should be handled at the scene level instead of here.
+				// Most of this is overriding things back to default in the explore mode; that may wind up being better as a whole different
+				// item directive.   (video mode uses it too, but much less complicated-ly)
+				
 				// check for forceTemplate attribute on the item ng-repeat.  If present, stash the real templateUrl in origTemplateUrl,
 				// and set a new templateUrl value for this scene only.
 				if (attrs.forceItemTemplate) {
 					scope.item.origTemplateUrl = scope.item.templateUrl;
 					if (scope.item.type === "annotation") {
-						scope.item.templateUrl="templates/transcript-"+attrs.forceItemTemplate+".html";
-					} else if (scope.item.type === "upload") {
+						if (attrs.forceItemTemplate === "default" && scope.item.templateUrl.indexOf("templates/text-") > -1) {
+							// leave headers and pullquotes alone in explore mode
+						} else {
+							scope.item.templateUrl="templates/transcript-"+attrs.forceItemTemplate+".html";
+						}
+					} else if (scope.item.type === "upload" || scope.item.type === "image") { // TODO "image" is probably an artifact of bad test data; need to check API to make sure that can safely be removed
 						scope.item.templateUrl="templates/transmedia-image-"+attrs.forceItemTemplate+".html";
 					} else if (scope.item.type === "link") {
 						// HACK exceptions and special cases galore
