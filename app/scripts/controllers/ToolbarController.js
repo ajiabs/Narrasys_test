@@ -81,7 +81,6 @@ angular.module('com.inthetelling.player')
 		};
 
 		$scope.toggleSearchPanel = function () {
-		console.log("toggleSearchPanel",$scope.show);
 			if ($scope.show.searchPanel) {
 				$scope.hidePanels();
 			} else {
