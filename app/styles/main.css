@@ -227,6 +227,12 @@ h3 { font-size: 1.3em; }
 		width: 80% !important; position:absolute !important;
 	}
 	
+	.eliterate-logo {
+	position:absolute !important;
+}
+
+
+	
 	/* TODO: yes?
 	.modal, .modal-backdrop {position:absolute !important;}
 */
