@@ -27,7 +27,7 @@
 	position: relative;
 	height:1.5em;
 	border-radius:0.75em;
-	margin:0.3em 0.8em;
+	margin:0.3em;
 	background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -41,7 +41,8 @@
 	overflow:hidden;
 }
 
-.toolbar .buttongroup.searchgroup .button span {
+.toolbar .buttongroup.searchgroup .button span,
+.toolbar .button-mainframeescape span {
 	display:none
 }
 .toolbar .buttongroup.searchgroup .button {

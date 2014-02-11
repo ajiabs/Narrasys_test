@@ -14,7 +14,7 @@
 		</div>
 		
 		<div x-ng-if="isFramed" class="buttongroup" style="float:right;">
-			<a class="button button-mainframeescape" href="/#/episode/{{episodeID}}/{{authKey}}" target="frameEscape" onclick="window.open('','frameEscape').focus();">
+			<a x-ng-click="mainframeescape();" class="button button-mainframeescape">
 				<span>New window</span>
 			</a>
 		</div>

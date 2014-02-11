@@ -62,6 +62,12 @@ angular.module('com.inthetelling.player')
 			playerPanel: false
 		};
 
+		$scope.mainframeescape = function() {
+			videojs.player.pause();
+			var newwindow = window.open("/#/episode/"+$scope.episodeID+"/"+$scope.authKey,"frameEscape");
+			newwindow.focus();
+		};
+		
 		$scope.showNavigationPanel = function () {
 			videojs.player.pause();
 			videojs.player.controls(false); // TODO: do this on iPad only
