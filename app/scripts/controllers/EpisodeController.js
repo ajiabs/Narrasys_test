@@ -18,8 +18,9 @@ angular.module('com.inthetelling.player')
 		}
 
 		dataSvc.get($routeParams, function (data) { // ON SUCCESS
-			var i, j;
 
+
+			var i, j;
 
 			// To be used by framebreaker (see toolbar controller):
 			$scope.episodeID = $routeParams.epId;
@@ -74,7 +75,6 @@ angular.module('com.inthetelling.player')
 		// We should adjust the end time to allow for transitions ONLY in cases where showCurrent is true in the content pane, and transitions are in use on the item, and the next item starts at the same time the current item ends.
 		// For now applying it everywhere, because the episode model has no knowledge of showcurrent or transitions at this point.
 		// This will become easier when there's an explicit derived-values service...
-					console.log(itemModel);
 						itemModel.adjustedEndTime =
 							(itemModel.type === 'annotation' && itemModel.startTime +1 < itemModel.endTime) ?
 								itemModel.endTime -1 :
