@@ -5,12 +5,22 @@
 	a complete episode in the player. Data service can run against local data or api data,
 	based on value of config.localData.
 */
-// TODO: Refactor this class to utilize $http and/or $resource level caching, and just
-// make the requests every time. This way it can be used like a real service class and nobody
-// has to worry about calling get() before getAssetById() for example. It will all be async,
-// but just implement the promise api for consumers to use the service in a familiar way.
-// Service will then be capable of full crud, and can flush appropriate caches in the underlying
-// $http/$resources when POST/PUT methods are called.
+/* 
+TODO: Refactor this class to utilize $http and/or $resource level caching, and just
+make the requests every time. This way it can be used like a real service class and nobody
+has to worry about calling get() before getAssetById() for example. It will all be async,
+but just implement the promise api for consumers to use the service in a familiar way.
+Service will then be capable of full crud, and can flush appropriate caches in the underlying
+$http/$resources when POST/PUT methods are called.
+
+TODO: tidy up the various authentication methods:
+ - local first
+ - authKey = local
+ - api key (is it working?)
+ - auth check
+*/
+
+
 angular.module('com.inthetelling.player')
 	.factory('dataSvc', function (config, $route, $location, $http, $q, _, $rootScope) {
 
@@ -92,7 +102,7 @@ angular.module('com.inthetelling.player')
 			*/
 
 			// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
-			// NOTE this is not in use currently
+			// NOTE this is not in use currently AFAIK
 			var authParam = "";
 			if (config.apiAuthToken) {
 				$http.defaults.headers.get = {
