@@ -13,7 +13,7 @@ angular.module('com.inthetelling.player')
 		// It's ugly, but not as ugly as my attempts to de-singletonize greg's code...
 
 		if (videojs.player) {
-			console.log("Route change: forcing refresh"); 
+			console.log("Route change: forcing refresh");
 			$window.location.reload();
 		}
 
@@ -71,14 +71,14 @@ angular.module('com.inthetelling.player')
 
 
 		// HACK HACK HACK HACKITY HACK HACK HACK
-		// We should adjust the end time to allow for transitions ONLY in cases where showCurrent is true in the content pane, and transitions are in use on the item.
+		// We should adjust the end time to allow for transitions ONLY in cases where showCurrent is true in the content pane, and transitions are in use on the item, and the next item starts at the same time the current item ends.
 		// For now applying it everywhere, because the episode model has no knowledge of showcurrent or transitions at this point.
 		// This will become easier when there's an explicit derived-values service...
 					
-						itemModel.adjustedEndTime = 
-							(itemModel.startTime +1 < itemModel.endTime) 
-								? itemModel.endTime -1
-								: itemMode.endTime
+						itemModel.adjustedEndTime =
+							(itemModel.startTime +1 < itemModel.endTime) ?
+								itemModel.endTime -1 :
+								itemModel.endTime
 							;
 					
 						cuePointScheduler.subscribe({
