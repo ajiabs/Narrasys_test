@@ -191,22 +191,7 @@ h3 { font-size: 1.3em; }
 	.vjs-control-bar {
 		display:none !important;
 	}
-	.sceneintro {
-		margin: 3em 0 !important;
-	}
-	.sceneintro h1 {
-		margin:15px !important
-	}
-	.sceneintro p {
-		margin: 15px !important;
-	}
-	.sceneintro .videoContainer {
-		width:100% !important;
-	}
-	.sceneintro .introtext {
-		width:auto !important;
-	}
-	
+
 	
 	.scene-explore .scene {display:block !important /* override flex */}
 
