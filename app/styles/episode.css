@@ -105,6 +105,12 @@
 	animation: delayedFadeOut 7s ease-out; 
 }
 
+.toolbar .buttongroup.modegroup:hover .button span {opacity:0 !important}
+.toolbar .buttongroup.modegroup .button:hover span {
+	opacity:1 !important;
+	transition: opacity 0.3s;
+}
+
 .toolbar .button-directed {
 }
 
@@ -287,32 +293,41 @@
  *
 //===========================*/
 
-.sceneintro {margin:15%}
+.intropanel {margin:10% 15%}
 
-.sceneintro p {margin: 2em 0 1em 0}
+.intropanel .videoContainer {
+	width: 50%;
+	float: left;
+}
+.intropanel .introtext {
+	width: 45%; float:right;
+}
+
+
+.intropanel p {margin: 2em 0 1em 0}
 
 @media screen and (max-width: 300px) {
 
-	.sceneintro {
+	.intropanel {
 		margin: 32px 0 0 0 !important;
 	}
 	
-	.sceneintro .videoContainer {
+	.intropanel .videoContainer {
 		width: 45% !important;
 	}
 	
-	.sceneintro .introtext {
+	.intropanel .introtext {
 		position: absolute !important;
 		padding: 0 0.5em !important;
 		width: 100% !important;
 	}
-	.sceneintro h1 {
+	.intropanel h1 {
 		font-size: 16px !important;
 		margin-left: 48% !important;
 		min-height: 80px !important;
 	}
 	
-	.sceneintro p {
+	.intropanel p {
 		margin: 0 !important;
 		font-size: 0.86em !important;
 	}
@@ -322,59 +337,29 @@
 
 @media screen and (min-width: 301px) and (max-width: 501px) {
 
-	.sceneintro {
+	.intropanel {
 		margin: 36px 0 0 0 !important;
 	}
-		.sceneintro .videoContainer {
+
+	.intropanel .videoContainer {
 		width: 45% !important;
 	}
 
-	.sceneintro .introtext {
+	.intropanel .introtext {
 		width: 55% !important;
 		padding: 0 1em !important;
 	}
 
-	.sceneintro h1 {
+	.intropanel h1 {
 		font-size: 24px !important;
 	}
 	
-	.sceneintro p {
+	.intropanel p {
 		margin: 1em 0 !important;
 	}
 	
 }
 
-
-
-/* TODO use this in a template
- .sceneintro {
-	perspective: 1000px;
-	transform-style: preserve3d;
-	perspective-origin: 20% 10%;
-}
-.sceneintro .videoContainer {
-	width: 320px;
-	height: 180px;
-}
-.sceneintro h1 {
-	animation-duration: 25s;
-	animation-name: grooblemacgoo;
-	transform-origin: 10% 0;
-}
-.sceneintro p {
-	animation-duration: 45s;
-	animation-name: grooblemacgoo;
-	transform-origin: 10% 0;
-}
-@keyframes grooblemacgoo {
-	0% {
-		transform:rotateY(14deg)
-	}
-	100% {
-		transform: rotateY(0deg)
-	}
-}
-*/
 
 /*============================
  *
@@ -421,9 +406,6 @@
     background-repeat: no-repeat;
 }
 
-.episode-eliterate .introtext {
-	width: 45%; float:right;
-}
 .eliterate-logo {
 	z-index:8;
 	position:fixed;
@@ -437,10 +419,6 @@
 	width:100%;
 }
 
-.episode-eliterate .sceneintro .videoContainer {
-    width: 50%;
-    float: left;
-}
 
 
 .episode-eliterate .startTime {

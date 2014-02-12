@@ -12,7 +12,7 @@
 	"events": [
 	{
 		"type": "scene",
-		"template_id": "templates/scene-1col.html",
+		"template_id": "templates/scene-centered.html",
 		"start_time": 0,
 		"end_time": 18,
 		"title": "Scene One: default scene template",

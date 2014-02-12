@@ -188,7 +188,9 @@ h3 { font-size: 1.3em; }
 	.episode {
 		margin-top: 0 !important;
 	}
-	.vjs-control-bar {
+
+	/* Make sure this doesn't affect small desktop windows: */
+	.isIPhone .vjs-control-bar {
 		display:none !important;
 	}
 

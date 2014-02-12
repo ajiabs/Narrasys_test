@@ -135,15 +135,21 @@
 .scene-video .videoContainer {
 	margin: auto;
 }
-.scene-video .contentMain .paneBg, .scene-video .contentMain .paneFg {
-	display:none
-}
 .scene-video .contentMain {
-	color:#DDD;
+	color: #DDDDDD;
+	font-size: 130%;
 	margin: 0 10%;
-	font-size: 120%;
-	
+	position: absolute;
+	bottom: 90px;
+	width: 80%;
 }
+
+.scene-video .contentMain .item {
+	background-color: rgba(0,0,0,0.7);
+	border-radius: 8px;
+	padding:1em;
+}
+
 /*============================*/
 
 /* Explore mode */
@@ -166,6 +172,8 @@
 .scene-explore {
 	border-top: 1px solid rgba(0, 0, 0, 0.2)
 }
+
+.scene-explore.nonNavigable {border-top: none}
 
 .scene-explore .scene .sceneTitle {
 	display:block

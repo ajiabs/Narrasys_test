@@ -15,7 +15,7 @@ x-ng-class='{
 		</div>
 		<div class="pane contentMain">
 			<div class="content noSidebars">
-				<h2 class="sceneTitle">{{scene.title}}</h2>
+				<h2 class="sceneTitle" x-ng-if="scene.title">{{scene.title}}</h2>
 				<div x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | filter:{cosmetic: false}" class="item-animate" data-force-item-template="default" x-itt-item="item"></div>
 			</div>
 		</div>

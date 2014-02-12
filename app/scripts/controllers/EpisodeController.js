@@ -13,7 +13,7 @@ angular.module('com.inthetelling.player')
 		// It's ugly, but not as ugly as my attempts to de-singletonize greg's code...
 
 		if (videojs.player) {
-			console.log("Route change: forcing refresh");
+//			console.log("Route change: forcing refresh");
 			$window.location.reload();
 		}
 
@@ -149,7 +149,7 @@ angular.module('com.inthetelling.player')
 			$rootScope.isiPhone = (navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);
 
 
-			console.log("Created episode scope:", $scope);
+//			console.log("Created episode scope:", $scope);
 
 
 		}, function (data) { // ON ERROR
