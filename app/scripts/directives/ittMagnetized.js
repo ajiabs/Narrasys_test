@@ -33,7 +33,7 @@ angular.module('com.inthetelling.player')
 
 					if (animate && $(element).is(':visible')) {
 						$(element).stop(true).animate({
-							top: scope.magnet.offset().top,
+							top: scope.magnet.offset().top - $(window).scrollTop(),
 							left: scope.magnet.offset().left,
 							width: scope.magnet.width(),
 							height: scope.magnet.width() / aspectRatio
