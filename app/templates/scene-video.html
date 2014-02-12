@@ -8,27 +8,10 @@
 	</div>
 	<div class="pane contentMain windowFg">
 		<div class="content showCurrent noSidebars">
-			<div class="item-animate transitionFade" data-force-item-template="closedcaption" x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | filter:{isActive:true, type: 'annotation', cosmetic: false}" x-itt-item="item"></div>
+			<!-- may not need to filter by layout here... -->
+			<div class="item-animate transitionFade" data-force-item-template="closedcaption" x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | transcript" x-itt-item="item"></div>
 		</div>
 	</div>
-
-
-<!--		<div class="pane contentMain stretchToViewportBottom">
-			<div class="fillPane paneBg">
-				<div x-ng-repeat="item in scene.items | layout: 'mainBg'" x-itt-item="item"></div>
-			</div>
-			<div class="content showCurrent noSidebars">
-				<div data-force-item-template="closedcaption" x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | filter:{isActive:true, type: 'annotation'}" x-itt-item="item"></div>
-			</div>
-			<div class="fillPane paneFg">
-				<div x-ng-repeat="item in scene.items | layout: 'mainFg'" x-itt-item="item"></div>
-			</div>
-		</div>
-	</div>
--->
-
-
-
 	<div x-itt-magnetized class="fillPane videoOverlay">
 		<div x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>
 	</div>
