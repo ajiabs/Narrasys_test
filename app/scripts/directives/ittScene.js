@@ -11,36 +11,37 @@ angular.module('com.inthetelling.player')
 				scene: '=ittScene'
 			},
 			link: function (scope, element, attrs) {
+				console.log("Scope directive link",scope);
 
 				// Make cosmetic adjustments within the scene based on viewport or video size.
 				// TODO: don't use jQuery here if possible?
-				// TODO: (probably overoptimizing): have this function return immediately if the scene is not visible. (How do we check that without using jQuery?)
-				//       (can't use isActive, as sometimes inactive scenes are still visible)
-				// TODO: some of this is a great case for having code specific to individual scene templates instead of one big scene directive....
-				scope.twiddleSceneLayout = function () {
+				// TODO: The special-cases for video and scene-centered templates ought to be tied to those templates specifically
+				//       instead of being in the main scene directive
+				// HACK: some fragile dependence on template url here, that's pretty lame.  At the very least should use magic classnames instead?
+				
+				var twiddleSceneLayout = function () {
+//				console.log("TwiddleSceneLayout called for ",scope.scene);
 					$timeout(function () { // wait for any DOM updates first
-
 						// only trigger on active scenes or on first explore-mode scene (HACK)
 						if (scope.scene.isActive || (scope.scene.startTime === 0 && scope.scene.templateUrl.indexOf('scene-explore.html') > -1)) {
 							console.log("twiddling scene ",scope.scene);
-							element.find('.matchVideoHeight:visible').height(element.find('.videoContainer').height()); // TODO check if this works with multiple .matchVideoHeight elements in the scene
-							element.find('.stretchToViewportBottom:visible').each(function () {
-								$(this).css("min-height", (angular.element($window).height() - this.offsetTop - 60));
-							});
-						}
-					},0);
-
-/*
-						// special case for fullscreen-video and scene-centered views: make sure there's room for captions:
-						if (scope.scene.isActive) {
 							var videoContainer = element.find('.videoContainer');
-							if (scope.scene.templateUrl.indexOf("scene-video.html") > -1) { //TODO WARN FRAGILE BAD YUCKO dependency on template url
-								// ensure there's room for captions:
-								videoContainer.width(angular.element($window).width());
-								if (videoContainer.height() > angular.element($window).height() - 200) {
-									videoContainer.height(angular.element($window).height() - 200);
+
+							// special case: video mode
+							if (scope.scene.templateUrl.indexOf("scene-video.html") > -1) {
+								// we want the video to be as wide as possible without overlapping the bottom control bar (so max height is viewport - 45 - 65)  TOOLBAR HEIGHT
+								// we dont' want to set the height directly, just the width. So math:
+								var aspectRatio = videoContainer.width()/videoContainer.height();
+								var maxAllowableHeight = angular.element(window).height()-110;
+								if (angular.element(window).width()/maxAllowableHeight > aspectRatio) {
+									videoContainer.width(aspectRatio * maxAllowableHeight);
+								} else {
+									videoContainer.width(angular.element(window).width());
 								}
-							} else if (scope.scene.templateUrl.indexOf("scene-centered.html") > -1) {
+							}
+							
+							// special case: scene-centered
+							if (scope.scene.templateUrl.indexOf("scene-centered.html") > -1) {
 								// We effectively want to center a square in the viewport (16:9 video plus allow 16:7 for the transmedia below it)
 								// For sanity's sake, leave the column width up to the CSS, only adjust the top padding here.
 								// So put the top of the video at (window height - video width)/2
@@ -50,30 +51,34 @@ angular.module('com.inthetelling.player')
 								}
 								element.find('.scene-centered').css("paddingTop", pad);
 							}
-						}
-						// TODO: add support for .stretchToSceneBottom as well (would be useful in explore template for example)
-					});
-					angular.element($window).trigger('resize'); // force magnet to activate now that we've twiddled the layout
 
-*/
+							element.find('.matchVideoHeight:visible').height(videoContainer.height()); // TODO check if this works with multiple .matchVideoHeight elements in the scene
+							element.find('.stretchToViewportBottom:visible').each(function () {
+								$(this).css("min-height", (angular.element($window).height() - this.offsetTop - 45)); // HACK: 45 is /* TOOLBAR HEIGHT */ 
+							});
+						}
+					},0);
+
 				};
+				
+				angular.element($window).bind('resize', twiddleSceneLayout);
 
 				scope.$watch('scene.isActive', function (newVal, oldVal) {
 					if (newVal) {
-						console.log("SCENE ENTERING", scope.scene);
-						scope.twiddleSceneLayout();
+// 						console.log("SCENE ENTERING", scope.scene);
+						twiddleSceneLayout();
 						$timeout(function() {
 							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
 						},0);
-					} else {
-						//console.log("SCENE EXIT", scope);
+					} else if (oldVal) {
+//						console.log("SCENE EXITING",scope.scene);
 					}
 				});
 
 				$rootScope.$on('toolbar.changedSceneTemplate', function() {
-					scope.twiddleSceneLayout();
+					twiddleSceneLayout();
 					$timeout(function() {
-						console.log("Changed scene template, updating magnet for scene");
+//						console.log("Changed scene template, updating magnet for scene");
 						if (scope.scene.isActive) {
 							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
 						}

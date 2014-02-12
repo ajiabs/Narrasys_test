@@ -25,15 +25,28 @@ angular.module('com.inthetelling.player')
 					playerPanel: false
 				};
 
+				// Initial magnet should be the one in the landing page
 				$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
 				
-				
 				angular.element($window).bind('resize', function() {
-					$rootScope.$emit('magnet.activated');
+					$rootScope.$emit('magnet.repositionImmediately');
 				});
-				scope.bruteForceMagnetism = $interval(function() {
-						$rootScope.$emit('magnet.activated');
-				}, 1000,0,false);
+				
+				// This doesn't seem to be necessary, but I'm going to leave it on a slow poll anyway just in case
+// 				scope.bruteForceMagnetism = $interval(function() {
+// 						$rootScope.$emit('magnet.reposition');
+// 				}, 1000,0,false);
+
+				
+				// global to allow scenes to easily watch for window resize.
+				// (Not actually a performance improvement over letting each scene bind directly, so disabling for now, but keeping it for future How Did I Do That reference)
+				/*
+				angular.element($window).bind('resize',function() {
+					$rootScope.windowWidth = $window.outerWidth; 
+					$rootScope.$apply('windowWidth');
+				});
+				*/
+				
 				
 				/* Handler for toolbar buttons to change scene templates. */
 				scope.setSceneTemplate = function (newTemplate) {
