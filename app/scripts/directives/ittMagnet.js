@@ -1,10 +1,9 @@
 'use strict';
 
-// This directive is basically a placeholder which can be removed/replaced
-// or reparented within the dom. When present in the dom all ittMagnetized directive elements
-// will automatically change their size and position to overlay the magnet directive.
-// multiple magnets may be used in the dom. A magnet will 'attract' the magnetized directive
-// when the scene which contains it becomes active. Only one magnet should be present in any scene.
+// This never worked the way it was supposed to, involved a bizarre number of events being passed around for a fairly simple action,
+// and was killing performance.
+
+// I'm putting it to bed.
 
 angular.module('com.inthetelling.player')
 	.directive('ittMagnet', function ($window, $timeout, $rootScope) {
@@ -13,6 +12,7 @@ angular.module('com.inthetelling.player')
 			replace: true,
 			scope: true,
 			link: function (scope, element, attrs, controller) {
+/*
 				// 'activate' a dom instance of the itt-magnet directive by broadcasting an event from the root scope
 				// with a reference to the itt-magnet's dom element. The itt-magnetized directive listens for these events
 				// and utilizes the dom element to reposition itself appropriately.
@@ -54,13 +54,13 @@ angular.module('com.inthetelling.player')
 //					console.log("Activating magnet which is not in a scene scope:", scope);
 					$timeout(activate,0);
 					
-					/* TODO find a way to make just one magnet active at a time
-					angular.element($window).bind('resize',function() {
-						
-					});
-					*/
+// 					TODO find a way to make just one magnet active at a time
+// 					angular.element($window).bind('resize',function() {
+// 						
+// 					});
 					
 				}
+*/
 			}
 		};
 	});

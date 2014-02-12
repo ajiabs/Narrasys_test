@@ -11,6 +11,7 @@ angular.module('com.inthetelling.player')
 				scene: '=ittScene'
 			},
 			link: function (scope, element, attrs) {
+
 				// Make cosmetic adjustments within the scene based on viewport or video size.
 				// TODO: don't use jQuery here if possible?
 				// TODO: (probably overoptimizing): have this function return immediately if the scene is not visible. (How do we check that without using jQuery?)
@@ -18,12 +19,23 @@ angular.module('com.inthetelling.player')
 				// TODO: some of this is a great case for having code specific to individual scene templates instead of one big scene directive....
 				scope.twiddleSceneLayout = function () {
 					$timeout(function () { // wait for any DOM updates first
+
+						// only trigger on active scenes or on first explore-mode scene (HACK)
+						if (scope.scene.isActive || (scope.scene.startTime === 0 && scope.scene.templateUrl.indexOf('scene-explore.html') > -1)) {
+							console.log("twiddling scene ",scope.scene);
+							element.find('.matchVideoHeight:visible').height(element.find('.videoContainer').height()); // TODO check if this works with multiple .matchVideoHeight elements in the scene
+							element.find('.stretchToViewportBottom:visible').each(function () {
+								$(this).css("min-height", (angular.element($window).height() - this.offsetTop - 60));
+							});
+						}
+					},0);
+
+/*
 						// special case for fullscreen-video and scene-centered views: make sure there's room for captions:
 						if (scope.scene.isActive) {
 							var videoContainer = element.find('.videoContainer');
 							if (scope.scene.templateUrl.indexOf("scene-video.html") > -1) { //TODO WARN FRAGILE BAD YUCKO dependency on template url
 								// ensure there's room for captions:
-								
 								videoContainer.width(angular.element($window).width());
 								if (videoContainer.height() > angular.element($window).height() - 200) {
 									videoContainer.height(angular.element($window).height() - 200);
@@ -39,34 +51,34 @@ angular.module('com.inthetelling.player')
 								element.find('.scene-centered').css("paddingTop", pad);
 							}
 						}
-						element.find('.matchVideoHeight:visible').height(element.find('.videoContainer').height()); // TODO check if this works with multiple .matchVideoHeight elements in the scene
-						element.find('.stretchToViewportBottom:visible').each(function () {
-							$(this).css("min-height", (angular.element($window).height() - this.offsetTop - 60));
-						});
 						// TODO: add support for .stretchToSceneBottom as well (would be useful in explore template for example)
 					});
 					angular.element($window).trigger('resize'); // force magnet to activate now that we've twiddled the layout
+
+*/
 				};
-				scope.$watch(function () {
-					return element.width();
-				}, scope.twiddleSceneLayout);
 
-				$rootScope.$on('toolbar.changedSceneTemplate', function() {
-					scope.twiddleSceneLayout();
-					$timeout(scope.twiddleSceneLayout, 100); // Brute-force solution to tiny-video problem
-				});
-				scope.$watch('scene.isActive', scope.twiddleSceneLayout);
-
-				/*
-				// In case we need scene enter / exit events someday...
 				scope.$watch('scene.isActive', function (newVal, oldVal) {
 					if (newVal) {
 						console.log("SCENE ENTERING", scope.scene);
+						scope.twiddleSceneLayout();
+						$timeout(function() {
+							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
+						},0);
 					} else {
 						//console.log("SCENE EXIT", scope);
 					}
 				});
-				*/
+
+				$rootScope.$on('toolbar.changedSceneTemplate', function() {
+					scope.twiddleSceneLayout();
+					$timeout(function() {
+						console.log("Changed scene template, updating magnet for scene");
+						if (scope.scene.isActive) {
+							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
+						}
+					},0);
+				});
 
 			}
 		};
