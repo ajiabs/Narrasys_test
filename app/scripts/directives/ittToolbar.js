@@ -4,7 +4,7 @@
 // This is turning into the player chrome rather than just the toolbar. TODO name change or refactor you be the judge
 
 angular.module('com.inthetelling.player')
-	.directive('ittToolbar', function ($timeout, $rootScope, videojs, $interval, $window) {
+	.directive('ittToolbar', function ($timeout, $rootScope, videojs, $window,$location) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -88,8 +88,7 @@ angular.module('com.inthetelling.player')
 				
 				scope.mainframeescape = function() {
 					videojs.player.pause();
-					var newwindow = window.open("/#/episode/"+scope.episodeID+"/"+scope.authKey,"frameEscape");
-					newwindow.focus();
+					window.open($location.absUrl()).focus();
 				};
 				
 				scope.showNavigationPanel = function () {

@@ -27,34 +27,64 @@
 	position: relative;
 	height:1.5em;
 	border-radius:0.75em;
-	margin:0.3em;
+	margin:0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.toolbar .buttongroup .button span {
+	display:block;
+	position: absolute;
+	top: 20px;
+	left:0;
+	right:0;
+	text-align: center;
+	opacity:0;
+	color:#666;
+	font-size:12px;
+}
+
+.toolbar .buttongroup:hover .button span {opacity:0 !important}
+.toolbar .buttongroup .button:hover span {
+	opacity:1 !important;
+	transition: opacity 0.3s;
 }
 
 .toolbar .buttongroup.modegroup {
 	padding: 0 0.5em;
 }
 
+.toolbar .buttongroup.modegroup .button.cur span {
+	animation: delayedFadeOut 7s ease-out; 
+}
+
 .toolbar .buttongroup.searchgroup {
 	transition: all 1s; 
 	width: 2em; 
-	overflow:hidden;
 }
 
-.toolbar .buttongroup.searchgroup .button span,
-.toolbar .button-mainframeescape span {
-	display:none
+.toolbar .buttongroup.escapegroup .button span {
+	margin-left: -120px;
+	text-align: right !important;
+	width: 150px;
 }
 .toolbar .buttongroup.searchgroup .button {
 	float:left;
 }
-
 
 .toolbar .buttongroup.searchgroup.cur {
 	width: 35%;
 	font-size: 22px;
 	padding-top: 3px;
 }
+.toolbar .buttongroup.searchgroup.cur .button span {
+	display:none
+}
+
+/* On second thought hiding the search and escape tooltips. Remove this if we wnat to bring them back */
+.toolbar .buttongroup.searchgroup .button span {visibility: hidden;}
+.toolbar .buttongroup.escapegroup .button span {visibility: hidden;}
+
+
 
 #searchtext {
     background: none;
@@ -83,6 +113,8 @@
 	font-size: 1em;
 }
 
+
+
 .button-video:before {content: "\e60b"}
 .button-directed:before {content: "\e60a"}
 .button-explore:before {content: "\e60c"}
@@ -90,29 +122,6 @@
 .cur .button-search:before {content: "\e603"}
 .button-mainframeescape:before {content: "\e609"}
 
-.toolbar .buttongroup.modegroup .button span {
-	display:block;
-	position: absolute;
-	top: 20px;
-	left:0;
-	right:0;
-	text-align: center;
-	opacity:0;
-	color:#000;
-	font-size:12px;
-}
-.toolbar .button.cur span {
-	animation: delayedFadeOut 7s ease-out; 
-}
-
-.toolbar .buttongroup.modegroup:hover .button span {opacity:0 !important}
-.toolbar .buttongroup.modegroup .button:hover span {
-	opacity:1 !important;
-	transition: opacity 0.3s;
-}
-
-.toolbar .button-directed {
-}
 
 .escapelink:before {
 	font-family: Story;

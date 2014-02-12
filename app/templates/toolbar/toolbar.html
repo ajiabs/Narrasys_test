@@ -13,7 +13,7 @@
 			</a>
 		</div>
 		
-		<div x-ng-if="isFramed" class="buttongroup" style="float:right;">
+		<div x-ng-if="isFramed" class="escapegroup buttongroup" style="float:right;">
 			<a x-ng-click="mainframeescape();" class="button button-mainframeescape">
 				<span>New window</span>
 			</a>
@@ -60,7 +60,7 @@
 						<!-- sorted by start time -->
 						<div x-ng-if="sortBy == 'startTime'">
 							<div x-ng-repeat="scene in scenes">
-								<h3>{{scene.title}}</h3>
+								<h3 x-ng-if="scene.title">{{scene.title}}</h3>
 								<div class="item" x-ng-repeat="item in scene.items | orderBy:'startTime' | filter:{'searchableText': searchText, 'cosmetic': false} | type:searchTypes">
 									<span class="displayTime"><a href="javascript:void 1" x-ng-click="gotoItem(item)">{{item.displayTime}}</a>
 									</span>
