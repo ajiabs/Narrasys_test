@@ -105,6 +105,12 @@
 	animation: delayedFadeOut 7s ease-out; 
 }
 
+.toolbar .buttongroup.modegroup:hover .button span {opacity:0 !important}
+.toolbar .buttongroup.modegroup .button:hover span {
+	opacity:1 !important;
+	transition: opacity 0.3s;
+}
+
 .toolbar .button-directed {
 }
 

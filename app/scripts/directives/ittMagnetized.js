@@ -13,15 +13,20 @@ angular.module('com.inthetelling.player')
 			replace: true,
 			scope: true,
 			link: function (scope, element) {
-				//			console.log("ittMagnetized", element);
 
 				// resize/reposition ourselves to the passed magnet's element.
 				scope.reposition = function (animate) {
+							console.log("ittMagnetized", element);
 						if (!scope.magnet) {
 							// no magnet set, so don't do anything
 							return;
 						}
-//					console.log("ittMagnetized triggered, attracting ",element," to ",scope.magnet, " animation is ",animate);
+					console.log("ittMagnetized triggered, attracting ",element," to ",scope.magnet, " animation is ",animate);
+
+
+// Safari gets the wrong height sometimes (TODO figure out why? it's not a magnet-is-not-visible problem, because the width is correct...)
+// hardcoding aspect ratio for now, therefore.  SEE ALSO ittScene
+					var aspectRatio = 16/9;
 					
 					// if videoContainer is position:fixed, video should be too
 					element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute" );
@@ -31,12 +36,12 @@ angular.module('com.inthetelling.player')
 							top: scope.magnet.offset().top,
 							left: scope.magnet.offset().left,
 							width: scope.magnet.width(),
-							height: scope.magnet.height()
+							height: scope.magnet.width() / aspectRatio
 						},500);
 					} else {
 						element.offset(scope.magnet.offset());
 						element.width(scope.magnet.width());
-						element.height(scope.magnet.height());
+						element.height(scope.magnet.width() / aspectRatio);
 					}
 				};
 				

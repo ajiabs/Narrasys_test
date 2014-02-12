@@ -32,7 +32,7 @@ angular.module('com.inthetelling.player')
 					$rootScope.$emit('magnet.repositionImmediately');
 				});
 				
-				// This doesn't seem to be necessary, but I'm going to leave it on a slow poll anyway just in case
+// Bad idea. Also not necessary.
 // 				scope.bruteForceMagnetism = $interval(function() {
 // 						$rootScope.$emit('magnet.reposition');
 // 				}, 1000,0,false);

@@ -26,12 +26,14 @@ angular.module('com.inthetelling.player')
 						if (scope.scene.isActive || (scope.scene.startTime === 0 && scope.scene.templateUrl.indexOf('scene-explore.html') > -1)) {
 							console.log("twiddling scene ",scope.scene);
 							var videoContainer = element.find('.videoContainer');
+//BUG: safari gets height very wrong sometimes, so we're hardcoding the aspect ratio for now;
+//								var aspectRatio = videoContainer.width()/videoContainer.height();
+								var aspectRatio = 16/9;
 
 							// special case: video mode
 							if (scope.scene.templateUrl.indexOf("scene-video.html") > -1) {
 								// we want the video to be as wide as possible without overlapping the bottom control bar (so max height is viewport - 45 - 65)  TOOLBAR HEIGHT
 								// we dont' want to set the height directly, just the width. So math:
-								var aspectRatio = videoContainer.width()/videoContainer.height();
 								var maxAllowableHeight = angular.element(window).height()-110;
 								if (angular.element(window).width()/maxAllowableHeight > aspectRatio) {
 									videoContainer.width(aspectRatio * maxAllowableHeight);
@@ -51,7 +53,10 @@ angular.module('com.inthetelling.player')
 								}
 								element.find('.scene-centered').css("paddingTop", pad);
 							}
-
+							
+							// Set this explicitly, for safari
+							videoContainer.height(videoContainer.width() / aspectRatio);
+							
 							element.find('.matchVideoHeight:visible').height(videoContainer.height()); // TODO check if this works with multiple .matchVideoHeight elements in the scene
 							element.find('.stretchToViewportBottom:visible').each(function () {
 								$(this).css("min-height", (angular.element($window).height() - this.offsetTop - 45)); // HACK: 45 is /* TOOLBAR HEIGHT */ 
@@ -77,12 +82,12 @@ angular.module('com.inthetelling.player')
 
 				$rootScope.$on('toolbar.changedSceneTemplate', function() {
 					twiddleSceneLayout();
-					$timeout(function() {
+					if (scope.scene.isActive) {
+						$timeout(function() {
 //						console.log("Changed scene template, updating magnet for scene");
-						if (scope.scene.isActive) {
 							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
-						}
-					},0);
+						},0);
+					}
 				});
 
 			}
