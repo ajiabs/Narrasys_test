@@ -31,8 +31,8 @@ angular.module('com.inthetelling.player')
 					// if videoContainer is position:fixed, video should be too
 					element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute" );
 
-					if (animate && jQuery(element).is(':visible')) {
-						jQuery(element).stop(true).animate({
+					if (animate && $(element).is(':visible')) {
+						$(element).stop(true).animate({
 							top: scope.magnet.offset().top,
 							left: scope.magnet.offset().left,
 							width: scope.magnet.width(),
@@ -51,8 +51,12 @@ angular.module('com.inthetelling.player')
 				});
 
 				// reposition ourselves on magnet events sent from the toolbar / player chrome
-				var watcherOne = $rootScope.$on('magnet.reposition', function() {scope.reposition(true)});
-				var watcherTwo = $rootScope.$on('magnet.repositionImmediately', function() {scope.reposition(false)});
+				var watcherOne = $rootScope.$on('magnet.reposition', function() {
+					scope.reposition(true);
+				});
+				var watcherTwo = $rootScope.$on('magnet.repositionImmediately', function() {
+					scope.reposition(false);
+				});
 
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function () {
