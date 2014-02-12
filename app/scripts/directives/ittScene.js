@@ -11,7 +11,7 @@ angular.module('com.inthetelling.player')
 				scene: '=ittScene'
 			},
 			link: function (scope, element, attrs) {
-				console.log("Scope directive link",scope);
+// 				console.log("Scope directive link",scope);
 
 				// Make cosmetic adjustments within the scene based on viewport or video size.
 				// TODO: don't use jQuery here if possible?
@@ -24,7 +24,7 @@ angular.module('com.inthetelling.player')
 					$timeout(function () { // wait for any DOM updates first
 						// only trigger on active scenes or on first explore-mode scene (HACK)
 						if (scope.scene.isActive || (scope.scene.startTime === 0 && scope.scene.templateUrl.indexOf('scene-explore.html') > -1)) {
-							console.log("twiddling scene ",scope.scene);
+// 							console.log("twiddling scene ",scope.scene);
 							var videoContainer = element.find('.videoContainer');
 //BUG: safari gets height very wrong sometimes, so we're hardcoding the aspect ratio for now;
 //								var aspectRatio = videoContainer.width()/videoContainer.height();

@@ -16,12 +16,12 @@ angular.module('com.inthetelling.player')
 
 				// resize/reposition ourselves to the passed magnet's element.
 				scope.reposition = function (animate) {
-							console.log("ittMagnetized", element);
+// 							console.log("ittMagnetized", element);
 						if (!scope.magnet) {
 							// no magnet set, so don't do anything
 							return;
 						}
-					console.log("ittMagnetized triggered, attracting ",element," to ",scope.magnet, " animation is ",animate);
+// 					console.log("ittMagnetized triggered, attracting ",element," to ",scope.magnet, " animation is ",animate);
 
 
 // Safari gets the wrong height sometimes (TODO figure out why? it's not a magnet-is-not-visible problem, because the width is correct...)
