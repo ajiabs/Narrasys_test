@@ -183,6 +183,15 @@
 	opacity:1;
 	transform: translateY(0) rotateX(0);
 }
+
+@media screen and (max-width: 500px) {
+	.navigationPanel {
+		left: 0.5em !important;
+		right: 0.5em !important;
+	}
+}
+
+
 .navigationPanel.ng-hide {
 	opacity:0;
 	transform: translateY(80%) rotateX(-45deg);
@@ -429,6 +438,11 @@
 }
 
 
+@media screen and (max-width: 400px) {
+.eliterate-logo {
+		display: none !important;
+	}
+}
 
 .episode-eliterate .startTime {
     background-color: rgba(0, 0, 0, 0.05);

@@ -32,6 +32,19 @@
 
 /* ------------------------------------------------------------------------------------------------ */
 
+/* Tiny */
+@media screen and (max-width: 401px) {
+
+	.vjs-volume-control {display: none !important}
+	.vjs-mute-control {right: 1em !important}
+
+	.vjs-story-skin .vjs-current-time {
+		margin-left: 8em !important;
+	}
+}
+
+/* ------------------------------------------------------------------------------------------------ */
+
 /* Scene Markers */
  .vjs-marker {
 	bottom: 0;
