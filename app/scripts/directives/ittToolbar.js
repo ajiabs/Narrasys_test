@@ -16,6 +16,9 @@ angular.module('com.inthetelling.player')
 				// but everything on parent scope is still accessible.
 				
 				
+				
+				
+				
 				// Nav and Search:
 				scope.show = {
 					navigationPanel: false,
@@ -30,9 +33,17 @@ angular.module('com.inthetelling.player')
 					$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
 				},0);
 				
-				angular.element($window).bind('resize', function() {
-					$rootScope.$emit('magnet.repositionImmediately');
-				});
+				
+				
+								// ipad crashes on window resize events inside an iframe.  So don't do that.
+				// Fortunately an iframe on an ipad never resizes anyway. Phew.
+				if ($rootScope.isFramed && ($rootScope.isIPad || $rootScope.isIPhone)) {
+				} else {
+					angular.element($window).bind('resize', function() {
+						$rootScope.$emit('magnet.repositionImmediately');
+					});
+				}
+
 				
 // Bad idea. Also not necessary.
 // 				scope.bruteForceMagnetism = $interval(function() {
