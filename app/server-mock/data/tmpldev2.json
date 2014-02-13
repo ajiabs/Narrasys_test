@@ -40,7 +40,7 @@
 		"template_id": "templates/scene-centered.html",
 		"start_time": 140,
 		"end_time": 150,
-		"title": "",
+		"title": "....",
 		"description": ""
 	}, 
 	{
@@ -63,7 +63,7 @@
 		"type": "scene",
 		"template_id": "templates/scene-centered.html",
 		"start_time": 170,
-		"end_time": 180,
+		"end_time": 297,
 		"title": "Visible",
 		"description": "a visible scene"
 	}, 	
