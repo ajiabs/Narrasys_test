@@ -95,6 +95,10 @@
     transition: all 1s;
     position:absolute; left: 40px; top: 2px;
 }
+
+#searchtext:focus{
+    outline: 0;
+}
 .cur #searchtext {width: 80%}
 
 .toolbar .button {
