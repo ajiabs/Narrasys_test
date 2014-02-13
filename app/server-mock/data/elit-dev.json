@@ -182,11 +182,11 @@
 			"start_time": 1,
 			"end_time": 10,
 			"required": true,
-			"template_id": "templates/transmedia-link-default.html",
-			"title": "Transmedia-link-default",
+			"template_id": "templates/transmedia-link-frameicide.html",
+			"title": "Frameicide link",
 			"description": "Default link tempalte",
 			"link_image_id": "http://placekitten.com/61/61",
-			"url": "http://danielbeck.net"
+			"url": "http://client.dev/frametest.html#foobar"
 		}, {
 			"type": "link",
 			"event_category_id": "links",
