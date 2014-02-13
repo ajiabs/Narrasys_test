@@ -68,6 +68,12 @@
 	}
 }
 
+@media screen and (max-width: 421px) {
+	.toolbar .buttongroup.modegroup {
+		display:none;
+	}
+}
+
 .toolbar .buttongroup.escapegroup .button span {
 	margin-left: -120px;
 	text-align: right !important;
