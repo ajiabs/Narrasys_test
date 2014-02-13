@@ -26,7 +26,9 @@ angular.module('com.inthetelling.player')
 				};
 
 				// Initial magnet should be the one in the landing page
-				$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
+				$timeout(function() {
+					$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
+				},0);
 				
 				angular.element($window).bind('resize', function() {
 					$rootScope.$emit('magnet.repositionImmediately');

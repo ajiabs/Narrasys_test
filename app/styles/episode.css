@@ -62,6 +62,12 @@
 	width: 2em; 
 }
 
+@media screen and (max-width: 300px) {
+	.isFramed .toolbar .buttongroup.searchgroup {
+		display:none;
+	}
+}
+
 .toolbar .buttongroup.escapegroup .button span {
 	margin-left: -120px;
 	text-align: right !important;
@@ -79,12 +85,6 @@
 .toolbar .buttongroup.searchgroup.cur .button span {
 	display:none
 }
-
-/* On second thought hiding the search and escape tooltips. Remove this if we wnat to bring them back */
-.toolbar .buttongroup.searchgroup .button span {visibility: hidden;}
-.toolbar .buttongroup.escapegroup .button span {visibility: hidden;}
-
-
 
 #searchtext {
     background: none;
@@ -107,10 +107,11 @@
 	line-height: 24px;
 	height: 24px;
 	cursor:pointer;
-	color:#666;
+	color:#777;
 }
 .toolbar .button.cur {
 	color:#000;
+	text-shadow: 0 0 2px #FFF;
 }
 .toolbar .button:before {
 	font-family: Story;
@@ -178,52 +179,7 @@
 	padding: 4px;
 	border-radius: 4px;
 }
-.navigationPanel {
-	bottom: 0;
-	left: 7em;
-	right: 7em;
-	transition: 0.7s ease-in-out all;
-	transform-origin: 0 100% 0;
-	opacity:1;
-	transform: translateY(0) rotateX(0);
-}
 
-@media screen and (max-width: 500px) {
-	.navigationPanel {
-		left: 0.5em !important;
-		right: 0.5em !important;
-	}
-}
-
-@media screen and (max-width: 300px) {
-	.navigationPanel {
-		font-size: 60%;
-	}
-}
-@media screen and  (max-width: 600px) {
-	.navigationPanel {
-		padding-bottom: 0.4em;
-	}
-}
-
-@media screen and (min-width: 301px) and (max-width: 500px) {
-	.navigationPanel {
-		font-size: 75%;
-	}
-}
-
-@media screen and (min-width: 800px)  {
-	.navigationPanel {
-		left: 30% !important;
-		right: 30% !important;
-	}
-}
-
-
-.navigationPanel.ng-hide {
-	opacity:0;
-	transform: translateY(80%) rotateX(-45deg);
-}
 /*============================
  *
  * Search Panel
@@ -309,14 +265,61 @@
  * Navigation Panel
  *
 //===========================*/
- .navigationPanel {
+
+.navigationPanel {
+	bottom: 0;
+	left: 7em;
+	right: 7em;
+	transition: 0.7s ease-in-out all;
+	transform-origin: 0 100% 0;
+	opacity:1;
+	transform: translateY(0) rotateX(0);
 	border-radius: 0.3em 0.3em 0 0;
 	background-color: #FFF;
 	padding-bottom: 3em;
 }
+
 .navigationPanel h2 {
 	padding: 0.4em;
 }
+
+
+@media screen and (max-width: 500px) {
+	.navigationPanel {
+		left: 0.5em !important;
+		right: 0.5em !important;
+	}
+}
+
+@media screen and (max-width: 300px) {
+	.navigationPanel {
+		font-size: 60%;
+	}
+}
+@media screen and  (max-width: 600px) {
+	.navigationPanel {
+		padding-bottom: 0.4em !important;
+	}
+}
+
+@media screen and (min-width: 301px) and (max-width: 500px) {
+	.navigationPanel {
+		font-size: 75%;
+	}
+}
+
+@media screen and (min-width: 700px)  {
+	.navigationPanel {
+		left: 30% !important;
+		right: 30% !important;
+	}
+}
+
+.navigationPanel.ng-hide {
+	opacity:0;
+	transform: translateY(80%) rotateX(-45deg);
+}
+
 .navigationPanel .scene {
 	padding: 0.3em;
 	border-top: 1px solid rgba(0, 0, 0, 0.2);

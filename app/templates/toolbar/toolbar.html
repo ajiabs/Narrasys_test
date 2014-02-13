@@ -1,5 +1,5 @@
 <span>
-	<div class="toolbar" x-ng-show="show.playerPanel">
+	<div class="toolbar" x-ng-show="show.playerPanel" x-ng-class="{isFramed: isFramed}">
 
 		<div class="modegroup buttongroup">
 			<a class="button button-video" x-ng-class="{cur: currentSceneTemplateIs('video')}" x-ng-click="setSceneTemplate('video');">
