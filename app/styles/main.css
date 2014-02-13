@@ -10,6 +10,16 @@
 }
 
 body {background-color:#FFF}
+
+
+/* Fix for iPad/iframe scrolling problems.  Must use JS (in episode controller) to set the height to window height (which in a frame will be the frame height) */
+#CONTAINER {
+	position:relative;
+	height: 100%;
+	width: 100%;
+	overflow:auto;
+	-webkit-overflow-scrolling:touch;
+}
 /*============================
  *
  * zIndex

@@ -7,15 +7,38 @@ angular.module('com.inthetelling.player')
 	.controller('EpisodeController', function (dataSvc, modelFactory, cuePointScheduler, $scope, $rootScope, $location, $routeParams,videojs,$window) {
 
 
+		// STUFF THAT MUST RUN FIRST:
+		
+		
 		// HACK HACK HACK HACKITY HACK HACK HACK
 		// videojs and cuePointScheduler (and probably others) are currently set up as singletons; both die horrible deaths on route changes (even to the same route).
 		// We'll need to fix that asap. For now, use videojs.player as a convenient way to detect if we're starting fresh, and if not do a brute-force reload of the page.
 		// It's ugly, but not as ugly as my attempts to de-singletonize greg's code...
-
 		if (videojs.player) {
 //			console.log("Route change: forcing refresh");
 			$window.location.reload();
 		}
+
+			// Frame detect.  Don't use !== as IE8 gets that wrong
+			/* jshint -W116 */
+			$rootScope.isFramed = (window.parent != window);
+			/* jshint +W116 */
+
+			// iPad or iPhone detect.
+			// HACK put in rootScope for easy access from vid
+			$rootScope.isIPad = (navigator.platform.indexOf('iPad') > -1);
+			$rootScope.isiPhone = (navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);
+
+
+		// patches up scrolling in iframe on ipad:
+		if ($rootScope.isIPad || $rootScope.isIPhone) {
+			angular.element('#CONTAINER').height(angular.element(window).height() - 1);
+		}
+
+
+
+		// OK, now that that's all out of the way we can actually start the app.
+
 
 		dataSvc.get($routeParams, function (data) { // ON SUCCESS
 
@@ -137,16 +160,6 @@ angular.module('com.inthetelling.player')
 				}
 			}
 
-			// Frame detect.  Don't use !== as IE8 gets that wrong
-			/* jshint -W116 */
-			$rootScope.isFramed = (window.parent != window);
-			/* jshint +W116 */
-
-
-			// iPad or iPhone detect.
-			// HACK put in rootScope for easy access from vid
-			$rootScope.isIPad = (navigator.platform.indexOf('iPad') > -1);
-			$rootScope.isiPhone = (navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);
 
 
 //			console.log("Created episode scope:", $scope);
