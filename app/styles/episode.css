@@ -69,7 +69,7 @@
 }
 
 @media screen and (max-width: 421px) {
-	.toolbar .buttongroup.modegroup {
+	.isFramed .toolbar .buttongroup.modegroup {
 		display:none;
 	}
 }
