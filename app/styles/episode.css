@@ -191,6 +191,26 @@
 	}
 }
 
+@media screen and (max-width: 300px) {
+	.navigationPanel {
+		font-size: 70%;
+	}
+}
+
+
+@media screen and (min-width: 301px) and (max-width: 500px) {
+	.navigationPanel {
+		font-size: 90%;
+	}
+}
+
+@media screen and (min-width: 800px)  {
+	.navigationPanel {
+		left: 30% !important;
+		right: 30% !important;
+	}
+}
+
 
 .navigationPanel.ng-hide {
 	opacity:0;
