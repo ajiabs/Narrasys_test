@@ -197,14 +197,18 @@
 
 @media screen and (max-width: 300px) {
 	.navigationPanel {
-		font-size: 70%;
+		font-size: 60%;
+	}
+}
+@media screen and  (max-width: 600px) {
+	.navigationPanel {
+		padding-bottom: 0.4em;
 	}
 }
 
-
 @media screen and (min-width: 301px) and (max-width: 500px) {
 	.navigationPanel {
-		font-size: 90%;
+		font-size: 75%;
 	}
 }
 
