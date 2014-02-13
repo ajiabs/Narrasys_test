@@ -27,9 +27,10 @@ angular.module('com.inthetelling.player')
 			// iPad or iPhone detect.
 			// HACK put in rootScope for easy access from vid
 			$rootScope.isIPad = (navigator.platform.indexOf('iPad') > -1);
-			$rootScope.isiPhone = (navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);
+			$rootScope.isIPhone = (navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);
 
-
+console.log($rootScope.isIPhone);
+console.log($rootScope.isIPad);
 		// patches up scrolling in iframe on ipad:
 		if (($rootScope.isIPad || $rootScope.isIPhone) && $rootScope.isFramed) {
 			console.log("iosfix");
