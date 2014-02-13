@@ -1,19 +1,19 @@
 <div class="scene-video {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
-	<div class="scene">
+	<div x-itt-magnetized class="fillPane videoOverlay">
+		<div x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>
+	</div>
+	<div class="scene stretchToViewportBottom">
 		<div class="pane videoContainer" x-itt-magnet>
 			<div class="fillPane video">
 				<img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" />
 			</div>
 		</div>
 	</div>
-	<div class="pane contentMain windowFg">
+	<div class="pane contentMain videoOverlay">
 		<div class="content showCurrent noSidebars">
 			<!-- may not need to filter by layout here... -->
 			<div class="item-animate transitionFade" data-force-item-template="closedcaption" x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | transcript" x-itt-item="item"></div>
 		</div>
-	</div>
-	<div x-itt-magnetized class="fillPane videoOverlay">
-		<div x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>
 	</div>
 	<div class="fillPane windowFg">
 		<div x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>

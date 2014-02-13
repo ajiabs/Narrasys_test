@@ -124,13 +124,12 @@
 /*============================*/
 
 /* fullscreen video mode */
- .scene-video {
+
+.scene-video {position:relative}
+
+ .scene-video .scene {
 	background-color: #000;
-	position:absolute;
-	top: 45px;/* TOOLBAR HEIGHT */
-	left: 0;
-	right: 0;
-	bottom: 0;
+
 }
 .scene-video .videoContainer {
 	margin: auto;
@@ -196,9 +195,6 @@
 	display:block
 }
 
-.scene-explore.currentScene .videoContainer {
-	z-index:2;
-}
 .scene-explore .contentMain {
 	width: 50%;
 	float:left;
