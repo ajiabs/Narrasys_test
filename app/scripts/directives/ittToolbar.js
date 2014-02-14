@@ -36,8 +36,10 @@ angular.module('com.inthetelling.player')
 				
 				
 								// ipad crashes on window resize events inside an iframe.  So don't do that.
-				// Fortunately an iframe on an ipad never resizes anyway. Phew.
 				if ($rootScope.isFramed && ($rootScope.isIPad || $rootScope.isIPhone)) {
+					scope.$watch(function() {return scope.IOSFramewidth},function() {
+						$rootScope.$emit('magnet.repositionImmediately');
+					});
 				} else {
 					angular.element($window).bind('resize', function() {
 						$rootScope.$emit('magnet.repositionImmediately');

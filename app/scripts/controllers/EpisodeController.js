@@ -4,11 +4,10 @@
 
 // Episode Controller
 angular.module('com.inthetelling.player')
-	.controller('EpisodeController', function (dataSvc, modelFactory, cuePointScheduler, $scope, $rootScope, $location, $routeParams,videojs,$window) {
+	.controller('EpisodeController', function ($interval, dataSvc, modelFactory, cuePointScheduler, $scope, $rootScope, $location, $routeParams,videojs,$window) {
 
 
 		// STUFF THAT MUST RUN FIRST:
-		
 		
 		// HACK HACK HACK HACKITY HACK HACK HACK
 		// videojs and cuePointScheduler (and probably others) are currently set up as singletons; both die horrible deaths on route changes (even to the same route).
@@ -30,9 +29,27 @@ angular.module('com.inthetelling.player')
 			$rootScope.isIPhone = (navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);
 
 		// patches up scrolling in iframe on ipad:
-		if (($rootScope.isIPad || $rootScope.isIPhone) && $rootScope.isFramed) {
+		if (($rootScope.isIPad || $rootScope.isIPod || $rootScope.isIPhone) && $rootScope.isFramed) {
 			console.log("iosfix");
-			angular.element('#CONTAINER').height(angular.element(window).height() - 1).addClass('iosScrollFix');
+			var w = angular.element(window);
+			angular.element('#CONTAINER')
+				.height(w.height())
+				.width(w.width())
+				.addClass('iosScrollFix');
+				
+			// can't bind to window resize events, that's a crasher in ios safari. So we make our own.
+			$interval( function(){
+					$scope.IOSFrameheight = angular.element(window).height();
+					$scope.IOSFramewidth = angular.element(window).width();
+			},0,0,false);
+
+			// This works immediately when making the frame bigger, but when shrinking the frame creeps down one pixel at a time (hence the -1 on each dimension.)
+			// Setting it to very small and then trying to expand gives Safari time to say hey the contents have shrunk, let's shrink the frame to match!
+			// So we'll let it creep down a pixel per loop until it reaches the size the parent actually declared, at which point Safari and our script stop fighting and make friends
+			$scope.$watch(function() {return $scope.IOSFramewidth},function(newV,oldV) {
+				angular.element('#CONTAINER').height($scope.IOSFrameheight-1).width($scope.IOSFramewidth-1);
+			});
+
 		}
 
 
