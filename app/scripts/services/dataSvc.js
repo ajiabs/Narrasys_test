@@ -29,13 +29,15 @@ angular.module('com.inthetelling.player')
 		// lookup methods are synchronous and do not use the apis or write to the cache.
 		var data;
 
+
 		var svc = {};
 
 		// Retrieve and cache the full set of data required to display an episode. Method is async and
 		// will get data either from a local .json file or from apis.
 		svc.get = function (routeParams, callback, errback) {
 
-			// the only two currently valid params are episodeId (required) and authKey (optional)
+			console.log(routeParams);
+
 			var episodeId = routeParams.epId;
 			var authKey = routeParams.authKey;
 
@@ -70,13 +72,19 @@ angular.module('com.inthetelling.player')
 						// But safari mayt have blocked it if we're in an iframe, so we have do make a second call to check _that_.
 						// Yes, this is silly. TODO jsut use a header token instead of a cookie so this isn't necessary
 						
-						$http.get(config.apiDataBaseUrl + "/v1/is_cookie_set").success(function(authData) {
+						$http.get(config.apiDataBaseUrl + "/v1/is_authenticated").success(function(authData) {
 							if (authData.has_cookie === true) {
 								// All good, go get the real data
 								svc.batchAPIcalls(routeParams, callback, errback);
 							} else {
 								// cookie was blocked so we have to bounce into window.top (which will bounce immediately back to history(-1)
-								window.top.location.href = config.apiDataBaseUrl+"/v1/get_cookie";
+								if (routeParams.return_to) {
+									window.top.location.href = config.apiDataBaseUrl+"/v1/get_authenticated?return_to=" + routeParams.return_to;
+								} else {
+									// Parent frame isn't telling us their location and we can't get it directly... all we can do is ask them to launch the player in a new window:
+									
+									// TODO
+								}
 							}
 						}).error(function(authData) {
 							$rootScope.uiErrorMsg = "Authentication failed (is_cookie_set didn't return, or returned something other than true or false)";
