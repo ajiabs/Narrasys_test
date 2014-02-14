@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script src="http://etvdev.wpengine.com/wp-includes/js/jquery/jquery.js?ver=1.10.2" type="text/javascript"></script>
 <script src="http://client.dev/iosFrameHack.js"></script>
 <style>
@@ -9,7 +11,7 @@
 	margin: 1em; float:left;
 }
 
-iframe {border: 0}
+iframe {border: 1px solid #F0F}
 </style>
 </head>
 
@@ -23,11 +25,25 @@ iframe {border: 0}
 <div class="container"><iframe src="http://client.dev/#/episode/52e68d5ac9b71523ee000002" width="570" height="321" seamless='seamless' frameBorder="0"></iframe></div>
 -->
 <p>This is before the iframe.</p>
-<iframe src="https://e-literate-tv.inthetelling.com/#/episode/52e68d5ac9b71523ee000002/?wmode=transparent" seamless="seamless" style="width: 670px; height: 377px"></iframe>
+<iframe id="frame" src="http://10.0.1.254/#/episode/elit-dev/local" seamless="seamless" style="width: 80%; height: 377px"></iframe>
 <p>This is after the iframe.</p>
-
+<a href="#" onclick="bigger()">bigger frame</a>
+<a href="#" onclick="smaller()">smaller frame</a>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <a name="foobar">This is an inpage link</a>
+
+<script>
+<!--
+function bigger() {
+	jQuery('#frame').width(jQuery('#frame').width()+50);
+	jQuery('#frame').height(jQuery('#frame').height()+50);
+}
+function smaller() {
+	jQuery('#frame').width(jQuery('#frame').width()-45);
+	jQuery('#frame').height(jQuery('#frame').height()-45);
+}
+
+// --></script>
 
 </h1></body></html>
