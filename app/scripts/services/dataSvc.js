@@ -36,8 +36,6 @@ angular.module('com.inthetelling.player')
 		// will get data either from a local .json file or from apis.
 		svc.get = function (routeParams, callback, errback) {
 
-			console.log(routeParams);
-
 			var episodeId = routeParams.epId;
 			var authKey = routeParams.authKey;
 

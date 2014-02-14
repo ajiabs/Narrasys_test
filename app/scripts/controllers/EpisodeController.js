@@ -30,7 +30,6 @@ angular.module('com.inthetelling.player')
 
 		// patches up scrolling in iframe on ipad:
 		if (($rootScope.isIPad || $rootScope.isIPod || $rootScope.isIPhone) && $rootScope.isFramed) {
-			console.log("iosfix");
 			var w = angular.element(window);
 			angular.element('#CONTAINER')
 				.height(w.height())
