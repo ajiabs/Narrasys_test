@@ -68,9 +68,9 @@ angular.module('com.inthetelling.player')
 						// We're authenticated, so go get all the data for realsies
 						svc.batchAPIcalls(routeParams, callback, errback);
 					} else {
-						$rootScope.uiErrorMsg = "Authentication failed.";
-						$rootScope.uiErrorDetails = JSON.stringify(authData);
-						$location.path('/error');
+						// Cookie may have been blocked if we're inside an iframe, so hit a different endpoint in the parent frame 
+						// which will (if it works) bounce back to the same url after it gets the auth cookie.
+						window.top.location.href = config.apiDataBaseUrl+"/v1/get_cookie";
 					}
 				}).error(function (authData,authStatus) {
 					// If we got here, must have failed authentication
