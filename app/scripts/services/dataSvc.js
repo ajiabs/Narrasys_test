@@ -61,20 +61,35 @@ angular.module('com.inthetelling.player')
 			else {
 				//			console.log("dataSvc.get() [Mode: API Data]");
 
-				// Check API authentication first:
+				// Check API authentication first.
+				// TODO de-nest this code
 				$http.get(config.apiDataBaseUrl + "/v1/check_signed_in")
 					.success(function(authData,authStatus) {
 					if (authData.signed_in === true) {
-						// We're authenticated, so go get all the data for realsies
-						svc.batchAPIcalls(routeParams, callback, errback);
+						// The server is happy with us, and we might ahve the auth cookie at this point.
+						// But safari mayt have blocked it if we're in an iframe, so we have do make a second call to check _that_.
+						// Yes, this is silly. TODO jsut use a header token instead of a cookie so this isn't necessary
+						
+						$http.get(config.apiDataBaseUrl + "/v1/is_cookie_set").success(function(authData) {
+							if (authData.has_cookie === true) {
+								// All good, go get the real data
+								svc.batchAPIcalls(routeParams, callback, errback);
+							} else {
+								// cookie was blocked so we have to bounce into window.top (which will bounce immediately back to history(-1)
+								window.top.location.href = config.apiDataBaseUrl+"/v1/get_cookie";
+							}
+						}).error(function(authData) {
+							$rootScope.uiErrorMsg = "Authentication failed (is_cookie_set didn't return, or returned something other than true or false)";
+							$rootScope.uiErrorDetails = JSON.stringify(authData);
+							$location.path('/error');
+						});
 					} else {
-						// Cookie may have been blocked if we're inside an iframe, so hit a different endpoint in the parent frame 
-						// which will (if it works) bounce back to the same url after it gets the auth cookie.
-						window.top.location.href = config.apiDataBaseUrl+"/v1/get_cookie";
+						$rootScope.uiErrorMsg = "Authentication failed (check_signed_in returned false)";
+						$rootScope.uiErrorDetails = JSON.stringify(authData);
+						$location.path('/error');
 					}
 				}).error(function (authData,authStatus) {
-					// If we got here, must have failed authentication
-					$rootScope.uiErrorMsg = "Couldn't make authentication check!";
+					$rootScope.uiErrorMsg = "Authentication failed (check_signed_in didn't return, or returned something other than true or false)";
 					$rootScope.uiErrorDetails = JSON.stringify(authData);
 					$location.path('/error');
 				});
