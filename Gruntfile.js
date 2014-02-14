@@ -220,7 +220,8 @@ module.exports = function (grunt) {
 						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}',
 						'styles/font/*',
 						'config.js',
-						'version.txt'
+						'version.txt',
+						'iosFrameHack.js'
 					]
 				}, {
 					expand: true,
