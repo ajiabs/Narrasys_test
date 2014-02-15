@@ -31,7 +31,8 @@ angular.module('com.inthetelling.player')
 					// if videoContainer is position:fixed, video should be too
 					element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute" );
 
-					if (animate && $(element).is(':visible')) {
+// TODO temporarily disabling this animation to see if it lets us run acceptably on older devices (iPad2 was freaking out)
+					if (false && animate && $(element).is(':visible')) {
 						$(element).stop(true).animate({
 							top: scope.magnet.offset().top - $(window).scrollTop(),
 							left: scope.magnet.offset().left,
