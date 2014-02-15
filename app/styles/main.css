@@ -9,8 +9,7 @@
 	display:block;
 }
 
-/* To be friendlier to pages framing us, don't set this on body, only on content. */
-#CONTAINER {background-color:#FFF}
+body {background-color:#FFF}
 
 
 /* Fix for iPad/iframe scrolling problems.  Must use JS (in episode controller) to set the height to window height (which in a frame will be the frame height) */
