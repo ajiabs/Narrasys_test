@@ -40,18 +40,27 @@ angular.module('com.inthetelling.player')
 			$interval( function(){
 					$scope.IOSFrameheight = angular.element(window).height();
 					$scope.IOSFramewidth = angular.element(window).width();
-			},0,0,false);
+			},100,0,false);
 
-			// This works immediately when making the frame bigger, but when shrinking the frame creeps down one pixel at a time (hence the -1 on each dimension.)
-			// Setting it to very small and then trying to expand gives Safari time to say hey the contents have shrunk, let's shrink the frame to match!
-			// So we'll let it creep down a pixel per loop until it reaches the size the parent actually declared, at which point Safari and our script stop fighting and make friends
+			// Safari helpfully tries to resize the iframe to match our contents, so we have to beat it to the punch by first
+			// resizing our contents to match the iframe.  This takes some doing, because it's a moving target:
+			
 			$scope.$watch(function() {return $scope.IOSFramewidth},function(newV,oldV) {
-				angular.element('#CONTAINER').height($scope.IOSFrameheight-1).width($scope.IOSFramewidth-1);
+				if (oldV === undefined) {return}
+				if (newV > oldV) {
+					// We still need to set this slightly smaller than the actual window size, or else we won't be able to shrink later
+					angular.element('#CONTAINER').height($scope.IOSFrameheight-1).width($scope.IOSFramewidth-1);
+				} else {
+					// Shrinking.  THis is harder.  Make it too small first:
+					angular.element('#CONTAINER').height(1).width(1);
+					// update the scope vals before the next digest, and before Safari has time to change it on us:
+					$scope.IOSFrameheight = angular.element(window).height();
+					$scope.IOSFramewidth = angular.element(window).width();
+					// and then immediately change the container to match before our interval setter has time to change that on us:
+					angular.element('#CONTAINER').height($scope.IOSFrameheight-1).width($scope.IOSFramewidth-1);
+				}
 			});
-
 		}
-
-
 
 		// OK, now that that's all out of the way we can actually start the app.
 
