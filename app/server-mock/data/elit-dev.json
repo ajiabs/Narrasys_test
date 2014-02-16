@@ -5,9 +5,8 @@
 		"style_id": "transitionSlideL  typographyEliterate",
 		"template_id": "templates/episode-eliterate.html",
 		"master_asset_id": {
-			"youtube": "http://www.youtube.com/embed/0SFgUW0GqMo",
-			"webm": "http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
-			"mpeg4": "https://s3.amazonaws.com/itt.uploads/demo/Sandbox/e-LiterateTV/Series%201/MOOC%20Mania/E-Lit_TV_E03_Main_Edit_FC_REV_131218.mp4"
+			"youtube": "http://youtu.be/YfPmBR8PUyE",
+			"mpeg4": "https://s3.amazonaws.com/itt.uploads/production/e-Literate TV/Round 1/Pilot/E02/E-Lit_TV_E02_2-9_FINAL.mp4"
 		}
 	},
 	"events": [

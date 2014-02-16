@@ -18,9 +18,6 @@ angular.module('com.inthetelling.player')
 
 				element.find('.video').html(function () {
 					var node = '<video id="' + config.videoJSElementId + '" class="video-js vjs-story-skin" poster="' + scope.episode.coverUrl + '">';
-					// For now, youtube overrides others if present.
-					// Except for iDevices, for which the youtube plugin is buggy. TODO fix the plugin. For now divert to mp4 version
-//					if (scope.episode.videos.youtube && !($rootScope.isIPad || $rootScope.isIPhone)) {
 					if (scope.episode.videos.youtube) {
 						node += '<source type="video/youtube" src="' + scope.episode.videos.youtube + '" />';
 					} else {

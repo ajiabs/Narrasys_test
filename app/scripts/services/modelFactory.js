@@ -74,13 +74,18 @@ angular.module('com.inthetelling.player')
 				var masterAsset = dataSvc.getAssetById(masterAssetId);
 				if (masterAsset) {
 					// TODO The webm regexp is a bit of a hack, since current API only has one asset url
-					// TODO the you_tube_url is a complete and total hack, only because it's not worth going back and modifying existing authoring to support youtube
 
-					return {
+					var videoObject = {
 						mpeg4: masterAsset.url,
 						webm: masterAsset.url.replace(".mp4", ".webm"),
 						youtube: masterAsset.you_tube_url
 					};
+					// HACK some platform detection here.  Old iPads don't cope well with the youtube plugin,
+					// so we divert them to the mp4 version instead. If there is one.
+					if ((navigator.platform.indexOf('iPad') > -1) && window.devicePixelRatio < 2 &&videoObject.mpeg4) {
+						videoObject.youtube = undefined;
+					}
+					return videoObject;
 				} else {
 					console.error("Master Asset lookup failed for:", masterAssetId);
 				}
