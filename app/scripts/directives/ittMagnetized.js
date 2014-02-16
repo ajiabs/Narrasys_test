@@ -14,7 +14,6 @@ angular.module('com.inthetelling.player')
 			scope: true,
 			link: function (scope, element) {
 			
-/*			
 				// resize/reposition ourselves to the passed magnet's element.
 				scope.reposition = function (animate) {
 // 							console.log("ittMagnetized", element);
@@ -65,8 +64,6 @@ angular.module('com.inthetelling.player')
 					watcherOne();
 					watcherTwo();
 				});
-				
-*/				
 				
 			}
 			
