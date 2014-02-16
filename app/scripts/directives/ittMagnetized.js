@@ -13,7 +13,7 @@ angular.module('com.inthetelling.player')
 			replace: true,
 			scope: true,
 			link: function (scope, element) {
-
+/*
 				// resize/reposition ourselves to the passed magnet's element.
 				scope.reposition = function (animate) {
 // 							console.log("ittMagnetized", element);
@@ -37,12 +37,12 @@ angular.module('com.inthetelling.player')
 							top: scope.magnet.offset().top - $(window).scrollTop(),
 							left: scope.magnet.offset().left,
 							width: scope.magnet.width(),
-							height: scope.magnet.width() / aspectRatio
+							height: Math.ceil(scope.magnet.width() / aspectRatio)
 						},500);
 					} else {
 						element.offset(scope.magnet.offset());
 						element.width(scope.magnet.width());
-						element.height(scope.magnet.width() / aspectRatio);
+						element.height(Math.ceil(scope.magnet.width() / aspectRatio));
 					}
 				};
 				
@@ -65,5 +65,7 @@ angular.module('com.inthetelling.player')
 					watcherTwo();
 				});
 			}
+*/			
+			
 		};
 	});
