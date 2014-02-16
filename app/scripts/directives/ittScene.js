@@ -78,7 +78,7 @@ angular.module('com.inthetelling.player')
 // 						console.log("SCENE ENTERING", scope.scene);
 						twiddleSceneLayout();
 						$timeout(function() {
-							$rootScope.$emit('magnet.activated',element.find('.videoContainer'));
+							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
 						},0);
 					} else if (oldVal) {
 //						console.log("SCENE EXITING",scope.scene);
@@ -90,7 +90,7 @@ angular.module('com.inthetelling.player')
 					if (scope.scene.isActive) {
 						$timeout(function() {
 //						console.log("Changed scene template, updating magnet for scene");
-							$rootScope.$emit('magnet.activated',element.find('.videoContainer'));
+							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
 						},0);
 					}
 				});
