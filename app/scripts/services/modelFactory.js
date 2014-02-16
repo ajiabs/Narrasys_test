@@ -82,7 +82,7 @@ angular.module('com.inthetelling.player')
 					};
 					// HACK some platform detection here.  Old iPads don't cope well with the youtube plugin,
 					// so we divert them to the mp4 version instead. If there is one.
-					if ((navigator.platform.indexOf('iPad') > -1) && window.devicePixelRatio < 2 &&videoObject.mpeg4) {
+					if ((navigator.platform.indexOf('iPad') > -1) &&videoObject.mpeg4) {
 						videoObject.youtube = undefined;
 					}
 					return videoObject;
