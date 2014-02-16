@@ -10,7 +10,17 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 
 	<base href="/">
-	<link rel="stylesheet" href="styles/5af00a20.app-combined.css">
+	<!-- build:css(.tmp) styles/app-combined.css -->
+	<link rel="stylesheet" href="styles/main.css">
+	<link rel="stylesheet" href="styles/video.css">
+	<link rel="stylesheet" href="styles/episode.css">
+	<link rel="stylesheet" href="styles/scene.css">
+	<link rel="stylesheet" href="styles/item.css">
+	<link rel="stylesheet" href="styles/transitions.css">
+	<link rel="stylesheet" href="styles/typography.css">
+	<link rel="stylesheet" href="styles/colors.css">
+	<link rel="stylesheet" href="styles/highlights.css">
+	<!-- endbuild -->
 	<!-- DISABLED-BECAUSE-EMPTYbuild:css(.tmp) styles/vendor-combined.css -->
 	<!-- DISABLEDendbuild -->
 	<!-- TODO: use js to build only the fonts needed for this episode -->
@@ -39,8 +49,40 @@
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-route.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-animate.min.js"></script>
 	<!-- end CDN -->
-	<script src="scripts/c020236f.vendor-combined.js"></script>
-	<script src="scripts/ef67a566.app-combined.js"></script>
+	<!-- build:js({.tmp,app}) scripts/vendor-combined.js -->
+	<script src="bower_components/underscore/underscore.js"></script>
+	<script src="bower_components/video.js/video.dev.js"></script>
+	<script src="scripts/plugin/media.youtube.js"></script>
+	<script src="scripts/plugin/videojs.markers.js"></script>
+	<!-- endbuild -->
+	<!-- build:js({.tmp,app}) scripts/app-combined.js -->
+	<script src="scripts/app.js"></script>
+	<script src="scripts/templates.js"></script>
+	<script src="scripts/controllers/UIErrorController.js"></script>
+	<script src="scripts/controllers/EpisodeController.js"></script>
+	<script src="scripts/controllers/ItemController.js"></script>
+	<script src="scripts/controllers/ToolbarController.js"></script>
+	<script src="scripts/controllers/NavigationPanelController.js"></script>
+	<script src="scripts/controllers/SearchPanelController.js"></script>
+	<script src="scripts/services/dataSvc.js"></script>
+	<script src="scripts/services/modelFactory.js"></script>
+	<script src="scripts/services/modalMgr.js"></script>
+	<script src="scripts/services/cuePointScheduler.js"></script>
+	<script src="scripts/services/underscore.js"></script>
+	<script src="scripts/services/videojs.js"></script>
+	<script src="scripts/services/config.js"></script>
+	<script src="scripts/directives/ittScene.js"></script>
+	<script src="scripts/directives/ittItem.js"></script>
+	<script src="scripts/directives/ittVideo.js"></script>
+	<script src="scripts/directives/ittMagnetized.js"></script>
+	<script src="scripts/directives/ittToolbar.js"></script>
+	<script src="scripts/directives/ittContentPane.js"></script>
+	<script src="scripts/filters/type.js"></script>
+	<script src="scripts/filters/layout.js"></script>
+	<script src="scripts/filters/itemList.js"></script>
+	<script src="scripts/filters/highlight.js"></script>
+	<script src="scripts/filters/transcript.js"></script>
+	<!-- endbuild -->
 </body>
 
 </html>
