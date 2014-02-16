@@ -117,6 +117,11 @@
 	text-align:right;
 	float:left;
 }
+
+.content .item iframe {
+	background-color:#FFF;
+}
+
 /*============================ ============================ ============================
  *
  * timestamps
