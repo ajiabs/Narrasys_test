@@ -2,7 +2,7 @@
 
 // Scene Directive
 angular.module('com.inthetelling.player')
-	.directive('ittScene', function ($rootScope, $timeout, $window,videojs) {
+	.directive('ittScene', function ($rootScope, $timeout, $window) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -72,40 +72,27 @@ angular.module('com.inthetelling.player')
 				} else {
 					angular.element($window).bind('resize', twiddleSceneLayout);
 				}
-				
-				
-				// Youtube sometimes freaks out and drops back to t=0 if we move its frame around while it's playing.
-				// (Mostly seems to happen when we're framed too.)
-				// For now, bruteforce solution is to pause the video before redrawing the scene, that seems to settle things down
-				// TODO have cuepointscheduler detect when we've dropped back to t=0 without the user doing it intentionally and ignore it?
-				var redraw = function() {
-					var isPlaying = !(videojs.player.paused());
-					var currentTime = videojs.player.currentTime(); // Youtube may report t=0 in the next digest, so store the t we want
-					if (isPlaying && $rootScope.isFramed) {
-						videojs.player.pause();
-					}
-					twiddleSceneLayout();
-					$timeout(function() {
-						if (scope.scene.isActive) {
-							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
-						}
-						if (isPlaying) {
-							videojs.player.currentTime(currentTime).play();
-						}
-					},0);
-				};
 
 				scope.$watch('scene.isActive', function (newVal, oldVal) {
 					if (newVal) {
 // 						console.log("SCENE ENTERING", scope.scene);
-						redraw();
+						twiddleSceneLayout();
+						$timeout(function() {
+							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
+						},0);
 					} else if (oldVal) {
 //						console.log("SCENE EXITING",scope.scene);
 					}
 				});
 
 				$rootScope.$on('toolbar.changedSceneTemplate', function() {
-					redraw();
+					twiddleSceneLayout();
+					if (scope.scene.isActive) {
+						$timeout(function() {
+//						console.log("Changed scene template, updating magnet for scene");
+							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
+						},0);
+					}
 				});
 
 			}
