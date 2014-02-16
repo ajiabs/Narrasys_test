@@ -60,6 +60,12 @@ angular.module('com.inthetelling.player')
 					angular.element('#CONTAINER').height($scope.IOSFrameheight-1).width($scope.IOSFramewidth-1);
 				}
 			});
+			
+			// For now we're not going to support iPad1 or iPad2 inside an iframe.  iPad3 is ok
+			if (window.devicePixelRatio < 2) {
+				// This will place a giant escape button on top of the video
+				$scope.forcedEscape=true;
+			}
 		}
 
 		// OK, now that that's all out of the way we can actually start the app.

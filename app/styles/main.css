@@ -194,6 +194,19 @@ h3 { font-size: 1.3em; }
 	padding: 1em;
 	border: 2px solid #C00;
 }
+
+/* Blocks iPad1/2 users from using the site inside a frame */
+.forcedEscape {
+width:100%;height:100%; cursor: pointer;
+}
+
+.forcedEscape:before {
+	color: #FFF !important;
+	text-shadow: 1px 1px 1px #000;
+	line-height: 1.5em;
+	margin-left: 0.5em;
+}
+
 /*============================
  *
  * quick-and-dirty phone layout
