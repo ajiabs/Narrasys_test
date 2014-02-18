@@ -461,7 +461,7 @@
     background-repeat: no-repeat;
 }
 
-.eliterate-logo {
+.banner-logo {
 	z-index:8;
 	position:fixed;
 	top: 0;
@@ -470,13 +470,13 @@
 	margin: 10px 40%;
 	text-align:center;
 }
-.eliterate-logo img {
+.banner-logo img {
 	width:100%;
 }
 
 
 @media screen and (max-width: 400px) {
-.eliterate-logo {
+.banner-logo {
 		display: none !important;
 	}
 }

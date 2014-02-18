@@ -3,6 +3,7 @@
 		"title": "Episode Title",
 		"description": "narrative modem physical boat jeans faded -ware refrigerator cyber- kanji pre- shanty town systema. Tokyo face forwards tiger-team post- ablative dolphin hotdog artisanal into pre- nodal point towards network.",
 		"style_id": "typographySerif transitionFade highlightSide",
+		"template_id": "templates/episode-tellingstory.html",
 		"master_asset_id": {
 			"NOyoutube": "http://www.youtube.com/embed/de-CzUxJ_no",
 			"webm": "http://danielbeck.net/demo/tellingplayer/media/Importance_of_Geography/Importance_of_Geography.webm",
