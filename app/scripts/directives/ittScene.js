@@ -63,8 +63,8 @@ angular.module('com.inthetelling.player')
 							});
 						}
 						
-						if ($('.currentScene .scene').length) {
-							var sceneTop = $('.currentScene .scene').position().top - 45; /* Hack: 45px is TOOLBAR HEIGHT */
+						if ($('.episode .currentScene').length) {
+							var sceneTop = $('.episode .currentScene').position().top - 45; /* Hack: 45px is TOOLBAR HEIGHT */
 							$("body,html").stop().animate({"scrollTop": sceneTop}, 750);
 						}
 					},0);
