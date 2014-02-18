@@ -65,7 +65,6 @@ angular.module('com.inthetelling.player')
 						
 						if ($('.currentScene .scene').length) {
 							var sceneTop = $('.currentScene .scene').position().top - 45; /* Hack: 45px is TOOLBAR HEIGHT */
-							console.log(sceneTop);
 							$("body,html").stop().animate({"scrollTop": sceneTop}, 750);
 						}
 					},0);
