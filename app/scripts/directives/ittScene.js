@@ -62,6 +62,12 @@ angular.module('com.inthetelling.player')
 								$(this).css("min-height", (angular.element($window).height() - this.offsetTop - 45)); // HACK: 45 is /* TOOLBAR HEIGHT */ 
 							});
 						}
+						
+						if ($('.currentScene .scene').length) {
+							var sceneTop = $('.currentScene .scene').position().top - 45; /* Hack: 45px is TOOLBAR HEIGHT */
+							console.log(sceneTop);
+							$("body,html").stop().animate({"scrollTop": sceneTop}, 750);
+						}
 					},0);
 
 				};
