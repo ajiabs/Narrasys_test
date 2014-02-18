@@ -37,9 +37,14 @@ angular.module('com.inthetelling.player')
 					}
 					// Stash and disable the styles and layout, too. (TODO: in future may want to allow some or all of these after all...)
 					scope.item.origLayout = scope.item.layout;
-					scope.item.origStyles = scope.item.styles;
 					scope.item.layout = '';
-					scope.item.styles = '';
+					// HACK: forcing borderLeft in explore mode. TODO: producer should allow specifying a highlight for explore mode
+					scope.item.origStyles = scope.item.styles;
+					if (attrs.forceItemTemplate === "default") {
+						scope.item.styles="highlightSide";
+					} else {
+						scope.item.styles = '';
+					}
 				} else {
 					// no forceTemplate, so revert to the original (if there is one!)
 					if (scope.item.origTemplateUrl) {
