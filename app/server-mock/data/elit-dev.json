@@ -232,9 +232,30 @@
 			"end_time": 511,
 			"title": "This is a scene.",
 			"description": "Testing item templates."
-		}		
+		},		
 
-
-
+		{
+			"type": "scene",
+			"template_id": "templates/scene-cornerH.html",
+			"layout_id": "",
+			"style_id": "",
+			"start_time": 511,
+			"end_time": 681,
+			"title": "Last scene.",
+			"description": "Testing item templates."
+		},	
+{
+			"type": "link",
+			"event_category_id": "links",
+			"start_time": 511,
+			"end_time": 68000,
+			"required": true,
+			"template_id": "templates/transmedia-embed-youtube.html",
+			"title": "Monsters",
+			"description": "Some monsters",
+			"link_image_id": "http://placekitten.com/60/60",
+			"url": "http://www.youtube.com/embed/0SFgUW0GqMo?box=frog&wmode=incorrect&foo=bargle&bar=baz",
+			"layout_id": "burstR"
+		}
 	]
 }

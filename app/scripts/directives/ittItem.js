@@ -29,7 +29,7 @@ angular.module('com.inthetelling.player')
 						scope.item.templateUrl="templates/transmedia-image-"+attrs.forceItemTemplate+".html";
 					} else if (scope.item.type === "link") {
 						// HACK exceptions and special cases galore
-						if (scope.item.templateUrl !== "templates/transmedia-link-noembed.html") {
+						if (scope.item.templateUrl !== "templates/transmedia-link-noembed.html" && scope.item.templateUrl !== "templates/transmedia-link-frameicide.html") {
 							scope.item.templateUrl="templates/transmedia-link-"+attrs.forceItemTemplate+".html";
 						}
 					} else {
