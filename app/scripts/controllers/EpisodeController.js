@@ -73,7 +73,6 @@ angular.module('com.inthetelling.player')
 
 		dataSvc.get($routeParams, function (data) { // ON SUCCESS
 
-
 			var i, j;
 
 			// To be used by framebreaker (see toolbar controller):
@@ -85,6 +84,12 @@ angular.module('com.inthetelling.player')
 
 			// Create a collection of scene models
 			$scope.scenes = [];
+			
+			// sort all events first:
+			data.events.sort(function (a, b) {
+				return a.start_time - b.start_time;
+			});
+
 			for (i = 0; i < data.events.length; i++) {
 				if (data.events[i].type === "scene") {
 
@@ -159,16 +164,6 @@ angular.module('com.inthetelling.player')
 						}
 					}
 				}
-			}
-
-			//Sort scenes and items within scenes
-			$scope.scenes.sort(function (a, b) {
-				return a.startTime - b.startTime;
-			});
-			for (i = 0; i < $scope.scenes.length; i++) {
-				$scope.scenes[i].items.sort(function (a, b) {
-					return a.startTime - b.startTime;
-				});
 			}
 
 			// Inject references to nextScene, prevScene values here, as long as we already have a sorted array of them.

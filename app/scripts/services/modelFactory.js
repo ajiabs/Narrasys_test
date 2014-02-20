@@ -77,12 +77,16 @@ angular.module('com.inthetelling.player')
 
 					var videoObject = {
 						mpeg4: masterAsset.url,
-						webm: masterAsset.url.replace(".mp4", ".webm"),
+//						webm: masterAsset.url.replace(".mp4", ".webm"),
 						youtube: masterAsset.you_tube_url
 					};
 					// HACK some platform detection here.  Old iPads don't cope well with the youtube plugin,
 					// so we divert them to the mp4 version instead. If there is one.
-					if ((navigator.platform.indexOf('iPad') > -1) &&videoObject.mpeg4) {
+					// safari too, just for now:
+					
+					var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+					
+					if ((isSafari || navigator.platform.indexOf('iPad') > -1) &&videoObject.mpeg4) {
 						videoObject.youtube = undefined;
 					}
 					return videoObject;

@@ -64,8 +64,11 @@ angular.module('com.inthetelling.player')
 						}
 						
 						if ($('.episode .currentScene').length) {
-							var sceneTop = $('.episode .currentScene').position().top - 45; /* Hack: 45px is TOOLBAR HEIGHT */
-							$("body,html").stop().animate({"scrollTop": sceneTop}, 750);
+							// TODO: in explore mode this should be the most recent *navigable* scene.
+							// Also need a way for the user to override that behavior.
+							// Disabling for now.
+							//var sceneTop = $('.episode .currentScene').position().top - 45; /* Hack: 45px is TOOLBAR HEIGHT */
+							// $("body,html").stop().animate({"scrollTop": sceneTop}, 750);
 						}
 					},0);
 
