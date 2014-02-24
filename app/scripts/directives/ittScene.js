@@ -69,6 +69,12 @@ angular.module('com.inthetelling.player')
 							// Disabling for now.
 							//var sceneTop = $('.episode .currentScene').position().top - 45; /* Hack: 45px is TOOLBAR HEIGHT */
 							// $("body,html").stop().animate({"scrollTop": sceneTop}, 750);
+							
+							// instead force scroll to window top when not in explore mode:
+							if (scope.scene.templateUrl.indexOf("scene-explore") === -1) {
+								$("body,html").stop().animate({"scrollTop": 0},500);
+							}
+							
 						}
 					},0);
 

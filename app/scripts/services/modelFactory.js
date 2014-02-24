@@ -74,9 +74,9 @@ angular.module('com.inthetelling.player')
 				var masterAsset = dataSvc.getAssetById(masterAssetId);
 				if (masterAsset) {
 					// TODO The webm regexp is a bit of a hack, since current API only has one asset url
-
+					// HACK For now mp4s are overridden by the corresponding m3u8; browsers that don't support m3u8 are getting youtube anyway.
 					var videoObject = {
-						mpeg4: masterAsset.url,
+						mpeg4: masterAsset.url.replace('.mp4','.m3u8'),
 //						webm: masterAsset.url.replace(".mp4", ".webm"),
 						youtube: masterAsset.you_tube_url
 					};
