@@ -1,0 +1,9 @@
+------------------------------------------------
+Changes in v1.3.27:
+apiDataBaseUrl now optional
+use m3u8 files instead of mp4
+clicking an inline item detail now pauses the video
+uncorrected a not-typo in vjs
+removed pointer events from video poster to allow the safari powersaver plugin warning to appear
+EWP episode template
+Removed window autoscroll from explore mode (for now)
