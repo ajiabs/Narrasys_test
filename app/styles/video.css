@@ -668,6 +668,7 @@ control positioning and full window mode. **
 	padding: 0;
 	position: relative;
 	width: 100%;
+	pointer-events: none;
 }
 .vjs-poster img {
 	display: block;
@@ -728,7 +729,7 @@ control positioning and full window mode. **
 /* Needed by eXon vjs-youtube plugin */
 /* Plugin was trying to inject this but that was buggy in IE */
 
-.vjs-youtube .vjs-poster { background-size: cover; } 
+.vjs-youtube .vjs-poster { background-size: cover; pointer-events: none} 
 .iframeblocker { display:none;position:absolute;top:0;left:0;width:100%;height:100%;cursor:pointer;z-index:2; } 
 .vjs-youtube.vjs-user-inactive .iframeblocker { display:block; } 
 .vjs-quality-button > div:first-child > span:first-child { position:relative;top:7px }
