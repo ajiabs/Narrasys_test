@@ -10,3 +10,6 @@ Removed window autoscroll from explore mode (for now)
 ------------------------------------------------
 Changes in v1.3.28:
 Fixed missing protocol in apiDataBaseUrl
+------------------------------------------------
+Changes in v1.3.29:
+nothing (I screwed up the tag in the last version)
