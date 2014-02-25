@@ -13,3 +13,9 @@ Fixed missing protocol in apiDataBaseUrl
 ------------------------------------------------
 Changes in v1.3.29:
 nothing (I screwed up the tag in the last version)
+------------------------------------------------
+Changes in v1.3.30:
+more background/foreground fill options
+External links need to pause video too
+Added control to toggle closed captions on and off in "watch" mode
+
