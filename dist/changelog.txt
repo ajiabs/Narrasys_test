@@ -7,3 +7,6 @@ uncorrected a not-typo in vjs
 removed pointer events from video poster to allow the safari powersaver plugin warning to appear
 EWP episode template
 Removed window autoscroll from explore mode (for now)
+------------------------------------------------
+Changes in v1.3.28:
+Fixed missing protocol in apiDataBaseUrl
