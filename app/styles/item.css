@@ -12,6 +12,8 @@
 	max-width: 100%;
 	max-height: 100%
 }
+
+
 .fillPane .futureItem {
 	display:none
 }
@@ -70,6 +72,21 @@
 	max-width: 100%;
 	max-height: 100%;
 }
+
+.backgroundImage {background-repeat: no-repeat;}
+
+.fillPane .backgroundImage {
+	width: 100%; height: 100%;
+}
+.backgroundImage.fill {background-size: 100% 100%}
+.backgroundImage.center {background-position: 50% 50%}
+.backgroundImage.tl {background-position: 0 0}
+.backgroundImage.tr {background-position:100% 0}
+.backgroundImage.bl {background-position:0 100%}
+.backgroundImage.br {background-position:100% 100%}
+.backgroundImage.cover {background-size:cover}
+.backgroundImage.contain {background-size:contain}
+
 /*============================
  *
  * TMP
