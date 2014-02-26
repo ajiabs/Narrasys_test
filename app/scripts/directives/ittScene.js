@@ -82,7 +82,7 @@ angular.module('com.inthetelling.player')
 				
 				// iframes on ipads plus window.resize watchers == crash.
 				if ($rootScope.isFramed && ($rootScope.isIPad || $rootScope.isIPhone)) {
-					scope.$watch(function() {return scope.IOSFramewidth},twiddleSceneLayout);
+					scope.$watch(function() {return scope.IOSFramewidth;},twiddleSceneLayout);
 				} else {
 					angular.element($window).bind('resize', twiddleSceneLayout);
 				}
