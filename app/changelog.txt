@@ -21,4 +21,8 @@ Added control to toggle closed captions on and off in "watch" mode
 ------------------------------------------------
 Changes in v1.3.31:
 (possibly) reducing memory footprint in scene model
-
+------------------------------------------------
+Changes in v1.3.32:
+Throttling cuepoint scan interval
+misc performance improvements
+Using bindonce on items to reduce number of variable watchers
