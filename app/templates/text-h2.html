@@ -1,11 +1,9 @@
-<div class="item headerItem {{item.layout}} {{item.styles}} " x-ng-class='{
+<div bindonce="item" class="item headerItem {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive,
 	"isRequired": item.required,
 	"isCosmetic": item.cosmetic
 }'>
-	<h2>
-		{{item.annotation}}
-	</h2>
+	<h2 bo-text="item.annotation"></h2>
 </div>
