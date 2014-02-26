@@ -18,4 +18,7 @@ Changes in v1.3.30:
 more background/foreground fill options
 External links need to pause video too
 Added control to toggle closed captions on and off in "watch" mode
+------------------------------------------------
+Changes in v1.3.31:
+(possibly) reducing memory footprint in scene model
 
