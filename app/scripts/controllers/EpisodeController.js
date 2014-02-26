@@ -45,8 +45,8 @@ angular.module('com.inthetelling.player')
 			// Safari helpfully tries to resize the iframe to match our contents, so we have to beat it to the punch by first
 			// resizing our contents to match the iframe.  This takes some doing, because it's a moving target:
 			
-			$scope.$watch(function() {return $scope.IOSFramewidth},function(newV,oldV) {
-				if (oldV === undefined) {return}
+			$scope.$watch(function() {return $scope.IOSFramewidth;},function(newV,oldV) {
+				if (oldV === undefined) {return;}
 				if (newV > oldV) {
 					// We still need to set this slightly smaller than the actual window size, or else we won't be able to shrink later
 					angular.element('#CONTAINER').height($scope.IOSFrameheight-1).width($scope.IOSFramewidth-1);
@@ -172,7 +172,7 @@ angular.module('com.inthetelling.player')
 			for (i = 1; i < $scope.scenes.length; i++) {
 				for (j = i - 1; j > -1; j = j - 1) {
 					if ($scope.scenes[j].title) {
-						$scope.scenes[i].$prevScene = $scope.scenes[j];
+						$scope.scenes[i].prevSceneStart = $scope.scenes[j].startTime;
 						break;
 					}
 				}
@@ -180,7 +180,7 @@ angular.module('com.inthetelling.player')
 			for (i = 0; i < $scope.scenes.length - 1; i++) {
 				for (j = i + 1; j < $scope.scenes.length; j++) {
 					if ($scope.scenes[j].title) {
-						$scope.scenes[i].$nextScene = $scope.scenes[j];
+						$scope.scenes[i].nextSceneStart = $scope.scenes[j].startTime;
 						break;
 					}
 				}

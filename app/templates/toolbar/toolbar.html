@@ -99,13 +99,13 @@
 		</div>
 
 
-		<div x-ng-if="curScene.$prevScene" class="video-prevscene vjs-control">
-			<a x-ng-click="gotoTime(curScene.$prevScene.startTime + 0.1)">
+		<div x-ng-if="curScene.prevSceneStart" class="video-prevscene vjs-control">
+			<a x-ng-click="gotoTime(curScene.prevSceneStart + 0.1)">
 				<span class="vjs-control-text">Previous scene</span>
 			</a>
 		</div>
-		<div x-ng-if="curScene.$nextScene" class="video-nextscene vjs-control">
-			<a x-ng-click="gotoTime(curScene.$nextScene.startTime)">
+		<div x-ng-if="curScene.nextSceneStart" class="video-nextscene vjs-control">
+			<a x-ng-click="gotoTime(curScene.nextSceneStart)">
 				<span class="vjs-control-text">Next scene</span>
 			</a>
 		</div>
