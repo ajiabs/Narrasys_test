@@ -7,7 +7,7 @@
 		"master_asset_id": {
 			"NOyoutube": "http://www.youtube.com/embed/YfPmBR8PUyE",
 
-			"mpeg4": "https://s3.amazonaws.com/itt.uploads/production/e-Literate TV/Round 1/Pilot/E02/e-Literate_TV_E02_Online_Learning_-_What_is_it_Good_for__640x360.mp4"
+			"mpeg4": "https://s3.amazonaws.com/itt.uploads/demo/Sandbox/e-LiterateTV/Series%201/MOOC%20Mania/E-Lit_TV_E03_Main_Edit_FC_REV_131218.mp4"
 		}
 	},
 	"events": [
@@ -67,15 +67,6 @@
 		"end_time": 297,
 		"title": "Visible",
 		"description": "a visible scene"
-	}, 	
-	{
-		"type": "annotation",
-		"template_id": "templates/scene-centered.html",
-		"start_time": 161,
-		"end_time": 165,
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "An annotation in a non-navigable scene"
 	}, 
 	{
 		"type": "annotation",
@@ -89,6 +80,8 @@
 		"type": "annotation",
 		"start_time": 0,
 		"end_time": 3,
+		"layout_id": "burstL",
+		"style_id": "transitionFade typographySwiss",
 		"annotator": "Mr. Universe",
 		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
 		"annotation": "All panes should now have kittens in the top left corner background."

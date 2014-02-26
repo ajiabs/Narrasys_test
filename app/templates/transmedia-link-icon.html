@@ -1,4 +1,4 @@
-<div class="item {{item.layout}} {{item.styles}} " x-ng-class='{
+<div bindonce="item" class="item {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive,
@@ -6,8 +6,8 @@
 	"isCosmetic": item.cosmetic
 }'>
 	<div class="icon">
-		<a x-ng-click="pause()" href="{{item.source}}" target="_blank">
-			<img x-ng-src="{{item.thumbSrc}}">
+		<a x-ng-click="pause()" bo-href="item.source" target="_blank">
+			<img bo-src="item.thumbSrc">
 		</a>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare the top level application module and its dependencies
-angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
+angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindonce'])
 
 // Configure routing
 .config(function ($routeProvider, $locationProvider) {

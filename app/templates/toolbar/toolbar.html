@@ -34,7 +34,7 @@
 		<div x-ng-show="show.navigationPanel" class="sidePanel navigationPanel">
 			<div x-ng-controller="NavigationPanelController">
 				<h2>{{episode.title}}</h2>
-				<div class="scene" x-ng-if="scene.title" x-ng-repeat="scene in scenes" x-ng-class="{currentScene: scene.isActive}" x-ng-click="gotoScene(scene)">
+				<div class="scene" x-ng-if="scene.title" x-ng-repeat="scene in scenes" x-ng-class="{currentScene: scene.isActive}" x-ng-click="gotoScene(scene.startTime)">
 					<span class="displayTime">{{scene.displayTime}}</span>
 					<p>
 						<a href="javascript:void 1;">{{scene.title}}</a>

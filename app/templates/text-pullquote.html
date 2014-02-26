@@ -1,12 +1,10 @@
-<div class="item headerItem {{item.layout}} {{item.styles}} " x-ng-class='{
+<div bindonce="item" class="item headerItem {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive,
 	"isRequired": item.required,
 	"isCosmetic": item.cosmetic
 }'>
-	<div class="pullquote">
-		{{item.annotation}}
-	</div>
-	<div class="pullquoteSpeaker">{{item.authorName}}</div>
+	<div class="pullquote" bo-text="item.annotation"></div>
+	<div class="pullquoteSpeaker" bo-text="item.authorName"></div>
 </div>

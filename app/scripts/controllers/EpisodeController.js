@@ -40,7 +40,7 @@ angular.module('com.inthetelling.player')
 			$interval( function(){
 					$scope.IOSFrameheight = angular.element(window).height();
 					$scope.IOSFramewidth = angular.element(window).width();
-			},100,0,false);
+			},250,0,false);
 
 			// Safari helpfully tries to resize the iframe to match our contents, so we have to beat it to the punch by first
 			// resizing our contents to match the iframe.  This takes some doing, because it's a moving target:

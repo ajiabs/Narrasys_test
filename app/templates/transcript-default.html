@@ -1,4 +1,4 @@
-<div class="item {{item.layout}} {{item.styles}} " x-ng-class='{
+<div bindonce="item" class="item {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive,
@@ -6,11 +6,9 @@
 	"isCosmetic": item.cosmetic
 }'>
 	<div class="itemHead">
-		<div class="startTime displayTime" x-ng-click="gotoItem()">{{item.displayTime}}</div>
-		<div class="authorName">{{item.authorName}}</div>
+		<div class="startTime displayTime" x-ng-click="gotoItem()" bo-text="item.displayTime"></div>
+		<div class="authorName" bo-text="item.authorName"></div>
 	</div>
-	<!-- <div class="icon"><img x-ng-src="{{item.authorThumbSrc}}"><div class="clear"></div></div> -->
-	<div class="text">
-		{{item.annotation}}
-	</div>
+	<!-- <div class="icon"><img bo-src="item.authorThumbSrc"><div class="clear"></div></div> -->
+	<div class="text" bo-text="item.annotation"></div>
 </div>
