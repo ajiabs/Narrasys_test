@@ -1,0 +1,28 @@
+------------------------------------------------
+Changes in v1.3.27:
+apiDataBaseUrl now optional
+use m3u8 files instead of mp4
+clicking an inline item detail now pauses the video
+uncorrected a not-typo in vjs
+removed pointer events from video poster to allow the safari powersaver plugin warning to appear
+EWP episode template
+Removed window autoscroll from explore mode (for now)
+------------------------------------------------
+Changes in v1.3.28:
+Fixed missing protocol in apiDataBaseUrl
+------------------------------------------------
+Changes in v1.3.29:
+nothing (I screwed up the tag in the last version)
+------------------------------------------------
+Changes in v1.3.30:
+more background/foreground fill options
+External links need to pause video too
+Added control to toggle closed captions on and off in "watch" mode
+------------------------------------------------
+Changes in v1.3.31:
+(possibly) reducing memory footprint in scene model
+------------------------------------------------
+Changes in v1.3.32:
+Throttling cuepoint scan interval
+misc performance improvements
+Using bindonce on items to reduce number of variable watchers

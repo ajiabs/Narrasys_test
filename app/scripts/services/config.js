@@ -7,7 +7,7 @@ angular.module('com.inthetelling.player')
 
 		// Find out the API data url, if not specified:
 		if (!config.apiDataBaseUrl) {
-			config.apiDataBaseUrl = window.location.host;
+			config.apiDataBaseUrl = "//" + window.location.host;
 		}
 		return config;
 	});

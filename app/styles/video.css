@@ -37,7 +37,7 @@
 
 	.vjs-volume-control {display: none !important}
 	.vjs-mute-control {right: 1em !important}
-
+	.video-captions {right: 7em !important}
 	.vjs-story-skin .vjs-current-time {
 		margin-left: 8em !important;
 	}
@@ -105,7 +105,7 @@
  .video-prevscene a, .video-nextscene a, .video-scenemenu a {
 	color:#333 !important;
 }
-.video-prevscene, .video-nextscene, .video-scenemenu {
+.video-prevscene, .video-nextscene, .video-scenemenu, .video-captions {
 	font-family: Story;
 	font-size: 2em;
 	height: 2em;
@@ -142,17 +142,17 @@
 }
 
 .vjs-story-skin .video-captions {
-	position:absolute;
-	width: 5em;
-	cursor: pointer;
 	bottom: 0.5em;
-	right: 1em;
+	font-size: 0.8em;
+	right: 26em;
+}
+.vjs-story-skin .video-captions.active:before {
+	content:"\e008";
+	color:#000;
 }
 .vjs-story-skin .video-captions:before {
-	content:"\e606";
-}
-.vjs-story-skin .video-captions.isOpen:before {
-	content:"\e608";
+	content:"\e008";
+	color:#CCC;
 }
 
 

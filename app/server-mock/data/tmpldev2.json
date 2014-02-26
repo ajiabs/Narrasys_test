@@ -67,7 +67,7 @@
 		"end_time": 297,
 		"title": "Visible",
 		"description": "a visible scene"
-	}, 	
+	}, 
 	{
 		"type": "annotation",
 		"start_time": 161,
@@ -80,6 +80,8 @@
 		"type": "annotation",
 		"start_time": 0,
 		"end_time": 3,
+		"layout_id": "burstL",
+		"style_id": "transitionFade typographySwiss",
 		"annotator": "Mr. Universe",
 		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
 		"annotation": "All panes should now have kittens in the top left corner background."
@@ -99,7 +101,7 @@
 		"type": "upload",
 		"mimeType": "image",
 		"layout_id": "videoOverlay",
-		"style_id": "tl",
+		"style_id": "center",
 		"start_time": 0,
 		"end_time": 3,
 		"template_id": "templates/transmedia-image-plain.html",
@@ -111,7 +113,7 @@
 		"style_id": "tl",
 		"start_time": 0,
 		"end_time": 3,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/660/261"
 	}, {
 		"type": "upload",
@@ -120,7 +122,7 @@
 		"style_id": "tl",
 		"start_time": 0,
 		"end_time": 3,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/260/261"
 	}, {
 		"type": "link",
@@ -147,7 +149,7 @@
 		"style_id": "tr",
 		"start_time": 3,
 		"end_time": 6,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/120/121"
 	}, {
 		"type": "upload",
@@ -156,7 +158,7 @@
 		"style_id": "tr",
 		"start_time": 3,
 		"end_time": 6,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/270/261"
 	}, {
 		"type": "upload",
@@ -165,7 +167,7 @@
 		"style_id": "tr",
 		"start_time": 3,
 		"end_time": 6,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/271/261"
 	}, {
 		"type": "link",
@@ -193,7 +195,7 @@
 		"style_id": "br",
 		"start_time": 6,
 		"end_time": 9,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/120/111"
 	}, {
 		"type": "upload",
@@ -202,7 +204,7 @@
 		"style_id": "br",
 		"start_time": 6,
 		"end_time": 9,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/181/62"
 	}, {
 		"type": "upload",
@@ -211,7 +213,7 @@
 		"style_id": "br",
 		"start_time": 6,
 		"end_time": 9,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/480/461"
 	}, {
 		"type": "link",
@@ -237,7 +239,7 @@
 		"style_id": "bl",
 		"start_time": 9,
 		"end_time": 12,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/110/111"
 	}, {
 		"type": "upload",
@@ -246,7 +248,7 @@
 		"style_id": "bl",
 		"start_time": 9,
 		"end_time": 12,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/290/161"
 	}, {
 		"type": "upload",
@@ -255,7 +257,7 @@
 		"style_id": "bl",
 		"start_time": 9,
 		"end_time": 12,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/290/121"
 	}, {
 		"type": "annotation",
@@ -271,7 +273,7 @@
 		"style_id": "fill",
 		"start_time": 12,
 		"end_time": 15,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/200/151"
 	}, {
 		"type": "upload",
@@ -280,7 +282,7 @@
 		"style_id": "fill",
 		"start_time": 12,
 		"end_time": 15,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/200/141"
 	}, {
 		"type": "upload",
@@ -289,7 +291,7 @@
 		"style_id": "fill",
 		"start_time": 12,
 		"end_time": 15,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/400/151"
 	}, {
 		"type": "annotation",
@@ -305,7 +307,7 @@
 		"style_id": "fill",
 		"start_time": 16,
 		"end_time": 18,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/400/400"
 	}, {
 		"type": "upload",
@@ -314,7 +316,7 @@
 		"style_id": "fill",
 		"start_time": 16,
 		"end_time": 18,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://placekitten.com/400/401"
 	}, {
 		"type": "upload",
@@ -323,7 +325,7 @@
 		"style_id": "fill",
 		"start_time": 16,
 		"end_time": 18,
-		"template_id": "templates/transmedia-image-plain.html",
+		"template_id": "templates/transmedia-image-fill.html",
 		"asset_id": "http://blogs.discovermagazine.com/badastronomy/files/2006/cthulhu_kitty.jpg"
 	}, {
 		"type": "scene",

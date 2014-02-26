@@ -15,10 +15,6 @@ angular.module('com.inthetelling.player')
 				// thus anything that is added to this scope here is private to the directive,
 				// but everything on parent scope is still accessible.
 				
-				
-				
-				
-				
 				// Nav and Search:
 				scope.show = {
 					navigationPanel: false,
@@ -33,9 +29,7 @@ angular.module('com.inthetelling.player')
 					$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
 				},0);
 				
-				
-				
-								// ipad crashes on window resize events inside an iframe.  So don't do that.
+				// ipad crashes on window resize events inside an iframe.  So don't do that.
 				if ($rootScope.isFramed && ($rootScope.isIPad || $rootScope.isIPhone)) {
 					scope.$watch(function() {return scope.IOSFramewidth;},function() {
 						$rootScope.$emit('magnet.repositionImmediately');
@@ -92,15 +86,6 @@ angular.module('com.inthetelling.player')
 					return scope.currentSceneTemplate === compare;
 				};
 				
-				/* The "view / watch" button toggles between explore and directed modes: */
-				scope.toggleSceneTemplate = function () {
-					if (scope.currentSceneTemplate === 'explore') {
-						scope.setSceneTemplate('');
-					} else {
-						scope.setSceneTemplate('explore');
-					}
-				};
-				
 				scope.mainframeescape = function() {
 					videojs.player.pause();
 					window.open($location.absUrl()).focus();
@@ -145,6 +130,14 @@ angular.module('com.inthetelling.player')
 					if (videojs.player) { // in case video hasn't inited yet
 						videojs.player.userActive(true);
 					}
+				};
+				
+				scope.toggleCaptions = function() {
+					scope.hideCaptions = !scope.hideCaptions;
+					for (var i = 0; i < scope.scenes.length; i++) {
+						scope.scenes[i].hideCaptions = scope.hideCaptions;
+					}
+					console.log(scope.scenes[1]);
 				};
 				
 				scope.hidePanels = function () {

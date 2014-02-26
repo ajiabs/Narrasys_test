@@ -52,7 +52,11 @@ angular.module('com.inthetelling.player')
 						scope.item.layout = scope.item.origLayout;
 						scope.item.styles = scope.item.origStyles;
 					}
-				}
+				};
+
+				scope.pause = function() {
+					videojs.player.pause();
+				};
 
 				scope.toggleDetailView = function () {
 					if (scope.item.showInlineDetail) {

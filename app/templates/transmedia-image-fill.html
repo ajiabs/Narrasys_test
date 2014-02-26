@@ -1,0 +1,6 @@
+<div class="item {{item.layout}} {{item.styles}} backgroundImage" x-ng-class='{
+	"currentItem": item.isActive, 
+	"futureItem": !item.isActive && !item.wasActive, 
+	"pastItem": !item.isActive && item.wasActive
+}' x-background-image="{{item.source}}">
+</div>

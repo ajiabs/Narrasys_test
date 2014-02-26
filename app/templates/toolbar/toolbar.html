@@ -109,6 +109,13 @@
 				<span class="vjs-control-text">Next scene</span>
 			</a>
 		</div>
+		<div x-ng-click="toggleCaptions()" x-ng-if="currentSceneTemplateIs('video')" x-ng-class="{active: !hideCaptions}" class="video-captions vjs-control">
+			<a>
+				<span class="vjs-control-text">Captions</span>
+			</a>
+		</div>
+		
+		
 	</div>
 
 
