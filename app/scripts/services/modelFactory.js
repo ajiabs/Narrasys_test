@@ -230,7 +230,7 @@ angular.module('com.inthetelling.player')
 
 			case "upload":
 				var mimeType = data.mimeType || resolveAssetMimeType(data.asset_id); // TODO: data.mimeType will only be truthy in local data. Hopefully this hack can go away with better handling of subtyping. See TODO below.
-				if (mimeType.match(/image/)) {
+				if (mimeType && mimeType.match(/image/)) {
 					model.type = "image"; // TODO: Temporary/ugly hack. We could handle subtyping better by creating a subtype or mimetype property and keying off that in the views, instead of changing the actual type on the model, because this is not CRUD friendly.
 				}
 				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-image-default.html";
