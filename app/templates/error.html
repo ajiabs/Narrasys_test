@@ -1,7 +1,7 @@
-<div class="error">
+<div x-ng-if="error" class="error">
 	<h2>Error</h2>
-	<p>Something went wrong: {{errorMsg}}</p>
+	<p>Sorry, but something went wrong and we weren't able to continue:<br>{{error.message}}</p>
 	<span style="color:#FFF">
-		<pre>{{errorDetails}}</pre>
+		<pre>{{error.details}}</pre>
 	</span>
 </div>

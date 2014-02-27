@@ -80,27 +80,29 @@ angular.module('com.inthetelling.player')
 									window.top.location.href = config.apiDataBaseUrl+"/v1/get_authenticated?return_to=" + routeParams.return_to;
 								} else {
 									// Parent frame isn't telling us their location and we can't get it directly... all we can do is ask them to launch the player in a new window:
-									
-									// TODO
-									$rootScope.uiErrorMsg = "Authentication failed (couldn't set authentication cookie; no return_to url)";
-									$rootScope.uiErrorDetails = JSON.stringify(authData);
-									$location.path('/error');
+									$rootScope.$emit("error",{
+										"message": "Authentication failed (couldn't set authentication cookie; no return_to url)",
+										"details": JSON.stringify(authData)
+									});
 								}
 							}
 						}).error(function(authData) {
-							$rootScope.uiErrorMsg = "Authentication failed (is_cookie_set didn't return, or returned something other than true or false)";
-							$rootScope.uiErrorDetails = JSON.stringify(authData);
-							$location.path('/error');
+							$rootScope.$emit("error",{
+								"message": "Authentication failed (is_cookie_set didn't return, or returned something other than true or false)",
+								"details": JSON.stringify(authData)
+							});
 						});
 					} else {
-						$rootScope.uiErrorMsg = "Authentication failed (check_signed_in returned false)";
-						$rootScope.uiErrorDetails = JSON.stringify(authData);
-						$location.path('/error');
+						$rootScope.$emit("error",{
+							"message": "Authentication failed (check_signed_in returned false)",
+							"details": JSON.stringify(authData)
+						});
 					}
 				}).error(function (authData,authStatus) {
-					$rootScope.uiErrorMsg = "Authentication failed (check_signed_in didn't return, or returned something other than true or false)";
-					$rootScope.uiErrorDetails = JSON.stringify(authData);
-					$location.path('/error');
+					$rootScope.$emit("error",{
+						"message": "Authentication failed (check_signed_in didn't return, or returned something other than true or false)",
+						"details": JSON.stringify(authData)
+					});
 				});
 			}
 		};

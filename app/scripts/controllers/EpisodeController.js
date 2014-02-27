@@ -195,19 +195,11 @@ angular.module('com.inthetelling.player')
 					}
 				}
 			}
-
-
-//			console.log("Created episode scope:", $scope);
-
-
 		}, function (data) { // ON ERROR
-			// TODO: Should probably be using a service instead of root scope
-			// TODO: dataSvc is always returning a 404 even when the epId is correct...?
-
-			$rootScope.uiErrorMsg = "Wasn't able to load episode data. Sorry!";
-			$rootScope.uiErrorDetails = JSON.stringify(data);
-			$location.path('/error');
-			//console.error($rootScope.uiErrorDetails);
+			$rootScope.$emit("error",{
+				"uiErrorMsg": "Wasn't able to load episode data.",
+				"uiErrorDetails": JSON.stringify(data)
+			});
 		});
 
 	});
