@@ -17,6 +17,7 @@ angular.module('com.inthetelling.player')
 				
 				// check for forceTemplate attribute on the item ng-repeat.  If present, stash the real templateUrl in origTemplateUrl,
 				// and set a new templateUrl value for this scene only.
+
 				if (attrs.forceItemTemplate) {
 					scope.item.origTemplateUrl = scope.item.templateUrl;
 					if (scope.item.type === "annotation") {
@@ -52,7 +53,14 @@ angular.module('com.inthetelling.player')
 						scope.item.layout = scope.item.origLayout;
 						scope.item.styles = scope.item.origStyles;
 					}
-				};
+				}
+
+				// last-resort sanity check. Should catch this in authoring, but just in case,
+				// as this causes a crashing memory leak in iOS:
+				if (scope.item.templateUrl.indexOf('transmedia-image')>-1 && scope.item.source && scope.item.source.match(/\.[mp4|mpeg4|webm|m3u8]$/i)) {
+					console.error("Somebody put a video in an image template... blanking it out");
+					scope.item.source="";
+				}
 
 				scope.pause = function() {
 					videojs.player.pause();
