@@ -90,6 +90,16 @@ angular.module('com.inthetelling.player')
 				return a.start_time - b.start_time;
 			});
 
+			// HACK find the last scene and ensure that its endpoint is after the end of the video.
+			// Have to do this before registering the scenes with the cuePointScheduler.
+			// (Some of the video encodings are coming out at different lengths, so the declared video duration can't be trusted here)
+			for (i=data.events.length-1; i>0;i--) {
+				if (data.events[i].type === "scene") {
+					data.events[i].end_time = Infinity;
+					break;
+				}
+			}
+
 			for (i = 0; i < data.events.length; i++) {
 				if (data.events[i].type === "scene") {
 
@@ -187,7 +197,6 @@ angular.module('com.inthetelling.player')
 			}
 
 
-
 //			console.log("Created episode scope:", $scope);
 
 
@@ -198,6 +207,7 @@ angular.module('com.inthetelling.player')
 			$rootScope.uiErrorMsg = "Wasn't able to load episode data. Sorry!";
 			$rootScope.uiErrorDetails = JSON.stringify(data);
 			$location.path('/error');
+			//console.error($rootScope.uiErrorDetails);
 		});
 
 	});
