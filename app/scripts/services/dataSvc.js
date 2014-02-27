@@ -45,7 +45,7 @@ angular.module('com.inthetelling.player')
 
 			// Local Data
 			if (config.localData || authKey === 'local') {
-				//			console.log("dataSvc.get() [Mode: Local Data]");
+//				console.log("dataSvc.get() [Mode: Local Data]");
 				$http({
 					method: 'GET',
 					url: config.localDataBaseUrl + '/' + episodeId + '.json'
@@ -59,7 +59,7 @@ angular.module('com.inthetelling.player')
 			}
 			// API Data
 			else {
-				//			console.log("dataSvc.get() [Mode: API Data]");
+//				console.log("dataSvc.get() [Mode: API Data]");
 
 				// Check API authentication first.
 				// TODO de-nest this code
@@ -82,6 +82,9 @@ angular.module('com.inthetelling.player')
 									// Parent frame isn't telling us their location and we can't get it directly... all we can do is ask them to launch the player in a new window:
 									
 									// TODO
+									$rootScope.uiErrorMsg = "Authentication failed (couldn't set authentication cookie; no return_to url)";
+									$rootScope.uiErrorDetails = JSON.stringify(authData);
+									$location.path('/error');
 								}
 							}
 						}).error(function(authData) {
@@ -123,9 +126,10 @@ angular.module('com.inthetelling.player')
 			*/
 
 			// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
-			// NOTE this is not in use currently AFAIK
+			// NOTE this is not in use currently AFAIK; needs to be moved earlier in the process anyway
 			var authParam = "";
 			if (config.apiAuthToken) {
+//				console.log("auth token");
 				$http.defaults.headers.get = {
 					'Authorization': config.apiAuthToken
 				};
@@ -184,7 +188,7 @@ angular.module('com.inthetelling.player')
 			])
 				.then(function (responses) {
 					// success
-					//				console.log("Compiled API Data:", data);
+			//				console.log("Compiled API Data:", data);
 
 					//// DIRTY PREPROCESSING HACK ////
 					// TODO: Remove it when api updates the type field to be lowercase
@@ -193,7 +197,6 @@ angular.module('com.inthetelling.player')
 						data.events[i]._type = data.events[i]._type.toLowerCase();
 					}
 					///////////////////
-
 					callback(data);
 			}, function(responses) {
 				// error
