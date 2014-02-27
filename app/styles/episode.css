@@ -487,9 +487,6 @@
     padding: 3px;
 }
 
-
-
-
 /* TODO Redundant, because production didn't apply colorEliterate */
 /* when they do, remove this block: */
 
@@ -533,3 +530,17 @@
 
 .colorEliterate h1, .colorEliterate h2, .colorEliterate h3
 {font-weight: normal;color:#384d62;}
+
+
+/*============================
+ *
+ * Engineers Without Borders
+ *
+//===========================*/
+
+.episode-ewb .banner-logo {
+	width: 30%;
+	max-width: 300px;
+	margin: 2px 40%;
+	text-align:center;
+}

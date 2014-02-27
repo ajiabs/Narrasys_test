@@ -12,15 +12,15 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindo
 		})
 		.when('/episode/:epId', {
 			controller: 'EpisodeController',
-			template: '<div ng-include="episode.templateUrl">Loading Episode...</div>'
+			templateUrl: 'templates/player.html'
 		})
 		.when('/episode/:epId/:authKey', {
 			controller: 'EpisodeController',
-			template: '<div ng-include="episode.templateUrl">Loading Episode...</div>'
+			templateUrl: 'templates/player.html'
 		})
 		.otherwise({
-				redirectTo: '/error'
-			} // TODO I'd rather not rewrite the url if the user makes a typo; is there a better way to handle errors than a route redirect?
+			redirectTo: '/error' // only for 404s
+		} 
 	);
 	$locationProvider.html5Mode(false); // TODO sigh, can't get the server config working for this... thought we had it but IE still choked
 })
