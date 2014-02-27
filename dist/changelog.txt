@@ -26,3 +26,12 @@ Changes in v1.3.32:
 Throttling cuepoint scan interval
 misc performance improvements
 Using bindonce on items to reduce number of variable watchers
+------------------------------------------------
+Changes in v1.3.33:
+Error handling no longer overwrites the URL, has a proper controller now
+Made logo bigger in EWB episode template (note that it scales based on window size, though....)
+Added error message when authentication cookie fails and no return_to url is set
+Force last scene to persist to end of video (Actual video duration doesn't always match what videojs.duration() claims, and different formats (mp4 vs m3u8 vs youtube) aren't always the same anyway)
+Prevent error when items have no mime type in data (probably only occurs in local data, so harmless, but as long as I'm in here...)
+Added sanity check to item directive, to catch crash-inducing authoring error
+
