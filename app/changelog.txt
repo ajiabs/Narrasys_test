@@ -35,3 +35,12 @@ Force last scene to persist to end of video (Actual video duration doesn't alway
 Prevent error when items have no mime type in data (probably only occurs in local data, so harmless, but as long as I'm in here...)
 Added sanity check to item directive, to catch crash-inducing authoring error
 
+------------------------------------------------
+Changes in v1.3.34:
+Improving transmedia-image-fill template
+Coercing existing instances of transmedia-image-plain in bg/fg/overlay to transmedia-image-fill instead
+Added template inventory module for dev testing, and a superseekrit backdoor route to reach it
+On second thought moved superseekrit back door into a separate code branch, it doesn't need to go live
+transmedia-image-plain images are now clickable when in content pane; pops a modal automatically
+Improved handling of item modals to make them easier to dismiss
+
