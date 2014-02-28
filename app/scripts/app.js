@@ -18,6 +18,12 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindo
 			controller: 'EpisodeController',
 			templateUrl: 'templates/player.html'
 		})
+/*
+		.when('/seekritbackdoor/inventory',{
+			controller: 'Inventory',
+			templateUrl: 'templates/inventory.html'
+		})
+*/
 		.otherwise({
 			redirectTo: '/error' // only for 404s
 		}

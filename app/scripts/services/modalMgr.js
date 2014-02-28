@@ -3,10 +3,6 @@
 angular.module('com.inthetelling.player')
 	.factory('modalMgr', function (videojs, $modal, _) {
 
-		// hold on to a reference of the init overlay so the consumer can
-		// create/destroy it asynchronously without needing to keep its own reference
-		var initOverlay;
-
 		var svc = {};
 
 		// Method to show the overlay for item detail view
@@ -43,30 +39,6 @@ angular.module('com.inthetelling.player')
 				resumeVideo();
 			});
 		};
-
-		/*
-	// Method to show the global initialization overlay
-	// Does not require a scope or a model
-	svc.createInitOverlay = function() {
-		console.log("createInitOverlay");
-		if (!initOverlay) {
-			initOverlay = $modal.open({
-				keyboard: false,
-				backdrop: 'static',
-				templateUrl: 'templates/overlays/init.html'
-			});
-		}
-	};
-
-	// Method to hide the initialization overlay
-	svc.destroyInitOverlay = function() {
-		console.log("destroyInitOverlay");
-		if (initOverlay) {
-			initOverlay.close();
-			initOverlay = null;
-		}
-	};
-	*/
 
 		return svc;
 
@@ -160,7 +132,7 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 	};
 })
 
-.directive('modalWindow', function ($timeout) {
+.directive('modalWindow', function ($modalStack, $timeout) {
 	return {
 		restrict: 'EA',
 		scope: {
@@ -168,13 +140,21 @@ TODO: (possibly) For items, inject modal into scene node instead of document roo
 		},
 		replace: true,
 		transclude: true,
-		template: '<div class="modal {{windowClass}}" x-ng-transclude></div>',
+		template: '<div class="modal {{windowClass}}" x-ng-click="close($event)" x-ng-transclude></div>',
 		link: function (scope, element, attrs) {
 			scope.windowClass = attrs.windowClass || '';
 			//trigger CSS transitions
 			$timeout(function () {
 				scope.animate = true;
 			});
+
+			// HACK(ish): Close modal on click unless otherwise specified
+			scope.close = function (evt) {
+				var modal = $modalStack.getTop();
+				if (modal && $(evt.target).closest('.dontCloseModal').length === 0) {
+					$modalStack.dismiss(modal.key, 'foreground click');
+				}
+			};
 		}
 	};
 })

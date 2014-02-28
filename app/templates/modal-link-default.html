@@ -1,7 +1,7 @@
 <div x-ng-class="{isIDevice: item.isIDevice}">
-	<div class="modalmenu"><a href="{{item.source}}" target="_blank" class="escapelink">(new window)</a>
+	<div class="modalmenu dontCloseModal"><a href="{{item.source}}" target="_blank" class="escapelink">(new window)</a>
 	</div>
-	<div class="modalIframeContainer">
+	<div class="modalIframeContainer dontCloseModal">
 		<iframe x-ng-src="{{item.source}}"></iframe>
 	</div>
 </div>

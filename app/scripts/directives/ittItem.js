@@ -82,6 +82,11 @@ angular.module('com.inthetelling.player')
 					}
 				};
 
+				scope.showModal = function() {
+					videojs.player.pause();
+					modalMgr.createItemDetailOverlay(scope);
+				};
+
 			},
 			controller: "ItemController"
 		};
