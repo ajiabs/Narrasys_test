@@ -1,0 +1,60 @@
+<style>
+table {
+	width:100%;
+}
+.sub {
+	font-size: smaller;
+	color: #666
+}
+</style>
+<div style="margin:2em">
+	<h2>Templates in use</h2>
+	<div ng-repeat="(key, val) in sum">
+		{{key}} {{val.count}}
+		<br>
+		<div class="sub">
+			<span ng-repeat="l in val.layout track by $index">"{{l}}",</span>
+			<br>
+			<span ng-repeat="s in val.styles track by $index">"{{s}}",</span>
+		</div>
+		<hr>
+	</div>
+
+	<hr>
+
+	<div ng-repeat="ep in episodes track by $index">
+		<h3>{{ep.episode.title}}</h3>
+		<p>({{ep.episode._id}})</p>
+		<h4>Scenes</h4>
+		<table>
+			<thead>
+				<th>Type</th>
+				<th>templateUrl</th>
+				<th>styles</th>
+				<th>layout</th>
+			</thead>
+			<tr ng-repeat="scene in ep.scenes track by $index">
+				<td>{{scene.type}}</td>
+				<td>{{scene.templateUrl}}</td>
+				<td>{{scene.styles}}</td>
+				<td>{{scene.layout}}</td>
+			</tr>
+		</table>
+		<h4>Items</h4>
+		<table>
+			<thead>
+				<th>Type</th>
+				<th>templateUrl</th>
+				<th>styles</th>
+				<th>layout</th>
+			</thead>
+			<tr ng-repeat="item in ep.items track by $index">
+				<td>{{item.type}}</td>
+				<td>{{item.templateUrl}}</td>
+				<td>{{item.styles}}</td>
+				<td>{{item.layout}}</td>
+			</tr>
+		</table>
+	</div>
+
+</div>

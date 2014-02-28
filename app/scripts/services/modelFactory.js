@@ -140,7 +140,7 @@ angular.module('com.inthetelling.player')
 			model.layout = resolveLayoutCSS(data.layout_id) || "";
 			model.styles = resolveStyleCSS(data.style_id) || "";
 			model.videos = resolveMasterAssetVideo(data.master_asset_id);
-
+			model._id = data._id;
 			return model;
 		};
 
@@ -172,6 +172,7 @@ angular.module('com.inthetelling.player')
 			if (model.layout.match(/showCurrent/)) {
 				model.showCurrent = true;
 			}
+			model._id = data._id;
 			return model;
 		};
 
@@ -191,8 +192,7 @@ angular.module('com.inthetelling.player')
 			model.displayTime = Math.floor(data.start_time / 60) + ":" + ("0" + Math.floor(data.start_time) % 60).slice(-2);
 
 			// Precalculate whether the item will be inline in a content pane or an overlay/underlay.
-			// NOTE/TODO: in producer need to recalculate this if item layout changes!  Does modelFactory handle that for us or do
-			// we need to keep track of it ourselves?
+			// NOTE/TODO: in producer need to recalculate this if item layout changes!
 			if (model.layout === 'inline' || model.layout.match(/sidebar/) || model.layout.match(/burst/)) {
 				model.inContentPane = true;
 			}
@@ -234,13 +234,18 @@ angular.module('com.inthetelling.player')
 					model.type = "image"; // TODO: Temporary/ugly hack. We could handle subtyping better by creating a subtype or mimetype property and keying off that in the views, instead of changing the actual type on the model, because this is not CRUD friendly.
 				}
 				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-image-default.html";
+				// special case to cope with some existing episodes:
+				if (!model.inContentPane && model.templateUrl === "templates/transmedia-image-default.html") {
+					model.templateUrl = "templates/transmedia-image-fill";
+				}
+
 				model.itemDetailTemplateUrl = "templates/modal-image-default.html"; // hardcoded for now, not sure if we'll want to allow variations here
 				model.title = data.title;
 				model.description = data.description;
 				model.source = resolveAssetUrl(data.asset_id);
 				break;
 			}
-
+			model._id = data._id;
 			return model;
 		};
 
