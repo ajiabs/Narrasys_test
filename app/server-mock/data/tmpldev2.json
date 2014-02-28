@@ -131,7 +131,7 @@
 		"style_id": "tl",
 		"start_time": 0,
 		"end_time": 3,
-		"template_id": "templates/transmedia-image-fill.html",
+		"template_id": "templates/transmedia-image-plain.html",
 		"asset_id": "http://placekitten.com/260/261"
 	}, {
 		"type": "link",
