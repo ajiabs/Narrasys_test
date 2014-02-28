@@ -13,7 +13,7 @@
 	"events": [
 	{
 		"type": "scene",
-		"template_id": "templates/scene-centered.html",
+		"template_id": "templates/scene-1col.html",
 		"start_time": 0,
 		"end_time": 18,
 		"title": "Scene One: default scene template",
@@ -113,8 +113,17 @@
 		"style_id": "tl",
 		"start_time": 0,
 		"end_time": 3,
-		"template_id": "templates/transmedia-image-fill.html",
+		"template_id": "templates/transmedia-image-plain.html",
 		"asset_id": "http://placekitten.com/660/261"
+	}, {
+		"type": "upload",
+		"mimeType": "image",
+		"layout_id": "inline",
+		"style_id": "",
+		"start_time": 0,
+		"end_time": 3,
+		"template_id": "templates/transmedia-image-plain.html",
+		"asset_id": "http://placehold.it/350x350"
 	}, {
 		"type": "upload",
 		"mimeType": "image",
