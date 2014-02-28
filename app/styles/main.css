@@ -11,6 +11,7 @@
 
 body {background-color:#FFF}
 
+.touchable {cursor: pointer;}
 
 /* Fix for iPad/iframe scrolling problems.  Must use JS (in episode controller) to set the height to window height (which in a frame will be the frame height) */
 /* DO NOT apply this globally to all devices.  Assign it only as the top-level wrapper on ipad/iphone */
@@ -118,11 +119,10 @@ See /images/font/story/map.png for a list of available glyphs
 	left: 0;
 	right: 0;
 	background-color: rgba(0, 0, 0, 0.5);
-	animation: fadeIn 0.5s;
+	animation: fadeIn 1s;
 }
 .modal {
-	/* Let this be styled by the class inserted by modalMgr
-	on modal creation so it can be unique to each modal. */
+	animation: fadeIn 0.5s;
 }
 .itemDetailModal {
 	position:fixed;
