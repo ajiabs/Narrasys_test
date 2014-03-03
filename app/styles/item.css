@@ -10,19 +10,36 @@
  .fillPane .item {
 	position: absolute;
 	max-width: 100%;
-	max-height: 100%
+	max-height: 100%;
 }
 
 
-.fillPane .futureItem {
-	display:none
+.pane.windowFg .item {
+    position: fixed;
+    top: 45px; /* TOOLBAR HEIGHT */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow:scroll;
 }
-.fillPane .currentItem {
+
+.pane.windowFg .item.isStop {
+	background-color:#FFF;
+	padding-top: 1em;
+	bottom: 65px; /* FOOTER HEIGHT. */
+}
+
+
+.nopadding {padding: 0 !important;}
+
+.fillPane .futureItem, .pane.windowFg .futureItem {
+	display:none;
+}
+.fillPane .currentItem,  .pane.windowFg .currentItem {
 	display:block;
-	position: absolute;
 }
-.fillPane .pastItem {
-	display:none
+.fillPane .pastItem, .pane.windowFg .pastItem {
+	display:none;
 }
 /* Nope, can't explain the -3px. TODO */
  .fillPane .bl {
@@ -73,19 +90,18 @@
 	max-height: 100%;
 }
 
-.backgroundImage {background-repeat: no-repeat;}
-
-.fillPane .backgroundImage {
+.backgroundImage {
+	background-repeat: no-repeat;
 	width: 100%; height: 100%;
 }
-.backgroundImage.fill {background-size: 100% 100%}
-.backgroundImage.center {background-position: 50% 50%}
-.backgroundImage.tl {background-position: 0 0}
-.backgroundImage.tr {background-position:100% 0}
-.backgroundImage.bl {background-position:0 100%}
-.backgroundImage.br {background-position:100% 100%}
-.backgroundImage.cover {background-size:cover}
-.backgroundImage.contain {background-size:contain}
+.fill .backgroundImage {background-size: 100% 100%}
+.center .backgroundImage {background-position: 50% 50%}
+.tl .backgroundImage {background-position: 0 0}
+.tr .backgroundImage {background-position:100% 0}
+.bl .backgroundImage {background-position:0 100%}
+.br .backgroundImage {background-position:100% 100%}
+.cover .backgroundImage {background-size:cover}
+.contain .backgroundImage {background-size:contain}
 
 /*============================
  *
@@ -106,27 +122,26 @@
  *
 //===========================*/
  .content .item {
-	padding: 0.5em 5%;
-	padding-left: 60px;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 }
 
-.content .item.headerItem {
-}
+.item {padding-left:60px;}
 
-.content .item .itemHead {
+.item .itemHead {
 	display:inline;
 	line-height: 1em
 }
-.content .item .icon {
+.item .icon {
 	max-width: 55px;
 	;
 }
-.content .item .icon img {
+.item .icon img {
 	width: 100%;
 }
-.content .item .text {
+.item .text {
 }
-.content .item .startTime {
+.item .startTime {
 	cursor: pointer;
 	cursor: hand;
 	margin-left: -55px;
@@ -135,18 +150,16 @@
 	float:left;
 }
 
-.content .item iframe {
+.item iframe {
 	background-color:#FFF;
 }
 
-.content .item .touchable {
+.item .touchable {
 	cursor:pointer;
 	position:relative;
 }
 
-
-
-.content .item .touchableIndicator {
+.item .touchableIndicator {
 	opacity:0; transition: opacity 1.5s;
 	position:absolute;bottom:7px;right:5px;
 	font-family: Story;
@@ -157,7 +170,7 @@
 	content: "\e602";
 	text-shadow: 1px 1px 1px #FFF;
 }
-.content .item .touchable:hover .touchableIndicator {opacity:0.8;}
+.item .touchable:hover .touchableIndicator {opacity:0.8;}
 
 /*============================ ============================ ============================
  *

@@ -75,6 +75,18 @@ angular.module('com.inthetelling.player')
 					}
 				}
 
+				scope.$watch('item.isActive', function (newVal, oldVal) {
+					if (newVal) {
+ 						console.log("ITEM ENTERING", scope.item);
+ 						if (scope.item.stop) {
+ 							videojs.player.pause();
+ 						}
+					} else if (oldVal) {
+//						console.log("ITEM EXITING",scope.item);
+					}
+				});
+
+
 
 				scope.pause = function() {
 					videojs.player.pause();
