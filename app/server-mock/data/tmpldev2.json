@@ -96,7 +96,7 @@
 		"template_id": "templates/transmedia-image-default.html",
 		"title": "COSMETIC A picture of a kitten",
 		"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
-		"asset_id": "http://placekitten.com/70/70"
+		"asset_id": "http://placekitten.com/700/700"
 	}, {
 		"type": "upload",
 		"mimeType": "image",
