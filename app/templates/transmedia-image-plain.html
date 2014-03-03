@@ -5,5 +5,8 @@
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive
 }'>
-	<img class="touchable" x-ng-click="showModal()" bo-src="item.source">
+	<div class="touchable" style="position:relative">
+		<img x-ng-click="showModal()" bo-src="item.source">
+		<div class="touchableIndicator" ></div>
+	</div>
 </div>

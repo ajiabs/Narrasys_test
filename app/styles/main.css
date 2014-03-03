@@ -11,8 +11,6 @@
 
 body {background-color:#FFF}
 
-.touchable {cursor: pointer;}
-
 /* Fix for iPad/iframe scrolling problems.  Must use JS (in episode controller) to set the height to window height (which in a frame will be the frame height) */
 /* DO NOT apply this globally to all devices.  Assign it only as the top-level wrapper on ipad/iphone */
 

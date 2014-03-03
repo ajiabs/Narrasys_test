@@ -139,6 +139,26 @@
 	background-color:#FFF;
 }
 
+.content .item .touchable {
+	cursor:pointer;
+	position:relative;
+}
+
+
+
+.content .item .touchableIndicator {
+	opacity:0; transition: opacity 1.5s;
+	position:absolute;bottom:7px;right:5px;
+	font-family: Story;
+	font-size: 1em;
+}
+
+.touchableIndicator:before {
+	content: "\e602";
+	text-shadow: 1px 1px 1px #FFF;
+}
+.content .item .touchable:hover .touchableIndicator {opacity:0.8;}
+
 /*============================ ============================ ============================
  *
  * timestamps
