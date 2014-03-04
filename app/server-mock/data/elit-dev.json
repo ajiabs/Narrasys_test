@@ -177,8 +177,10 @@
 		{
 			"type": "link",
 			"event_category_id": "links",
-			"start_time": 1,
-			"end_time": 10,
+			"start_time": 2,
+			"end_time": 2,
+			"stop": true,
+			"layout_id": "windowFg",
 			"required": true,
 			"template_id": "templates/transmedia-link-frameicide.html",
 			"title": "Frameicide link",

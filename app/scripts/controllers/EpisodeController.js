@@ -149,6 +149,14 @@ angular.module('com.inthetelling.player')
 								itemModel.endTime -1 :
 								itemModel.endTime
 							;
+						
+						// Ensure that items with very short duration won't get skipped by the cuePointScheduler
+						// SHould be able to use a minimum duration of config.cuePointScanInterval/500 but in practice 
+						// anything less than half a second sometimes fails to appear.  Close enough.
+						if (itemModel.adjustedEndTime - 0.5 < itemModel.startTime) {
+							itemModel.adjustedEndTime = itemModel.startTime + 0.5; // Less than half a second still sometimes fails to appear... close enough
+						}
+						
 					
 						cuePointScheduler.subscribe({
 							begin: itemModel.startTime,
