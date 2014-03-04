@@ -21,8 +21,8 @@
 	</div>
 	<div class="detail" x-ng-if="item.showInlineDetail">
 		<a bo-href="item.source" target="_blank" class="escapelink">(new window)</a>
-		<div style="-webkit-overflow-scrolling:touch; overflow: auto; width: 100%; height: 320px">
-			<iframe bo-src="item.source" width="100%" height="300px"></iframe>
+		<div class="iframeContainer">
+			<iframe bo-src="item.source"></iframe>
 		</div>
 	</div>
 </div>

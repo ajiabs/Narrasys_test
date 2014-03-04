@@ -1,6 +1,3 @@
-<!-- TODO: clean up the YT url, add our own params, probably use their player API so we can hook into play/pause events -->
-
-
 <div bindonce="item" class="item {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
@@ -18,13 +15,11 @@
 	</div>
 	<!-- <div class="icon"><img bo-src="item.thumbSrc"></div> -->
 	<div class="text">
-		<div class="title"><a href="javascript:void 1;" x-ng-click="toggleDetailView()" bo-text="item.title"></a>
-		</div>
+		<div class="title" bo-text="item.title"></div>
 		<div bo-text="item.description"></div>
 	</div>
-	<div class="detail" x-ng-if="item.showInlineDetail">
 		<div class="iframeContainer">
-			<iframe bo-src="item.source"></iframe>
+			<iframe bo-src="item.source" width="100%"></iframe>
 		</div>
 	</div>
 </div>

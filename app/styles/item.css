@@ -150,8 +150,21 @@
 	float:left;
 }
 
+.item .iframeContainer {
+	-webkit-overflow-scrolling: touch;
+	 overflow: auto; 
+	 width: 100%; 
+	 height: 320px;
+}
+
+.windowFg .item .iframeContainer {
+	height:80%;
+}
+
 .item iframe {
 	background-color:#FFF;
+	width: 100%;height:100%;
+	border: none;
 }
 
 .item .touchable {
@@ -177,17 +190,17 @@
  * timestamps
  *
 //=========================== */
- .timestampNone .content .item, .content .item.timestampNone {
+ .timestampNone .item, .item.timestampNone {
 	padding-left: 5%
 }
-.timestampNone .content .item .displayTime, .content .item.timestampNone .displayTime {
+.timestampNone .item .displayTime, .item.timestampNone .displayTime {
 	display:none
 }
 /* =========================== */
- .timestampInline .content .item, .content .item.timestampInline {
+ .timestampInline .item, .item.timestampInline {
 	padding-left: 0.5em;
 }
-.timestampInline .content .item .startTime, .content .item.timestampInline .startTime {
+.timestampInline .item .startTime, .item.timestampInline .startTime {
 	display:inline;
 	margin-left: 0;
 	width:auto;
@@ -195,10 +208,10 @@
 	padding-right: 0.4em;
 }
 /* =========================== */
- .timestampSidebar .content .item, .content .item.timestampSidebar {
+ .timestampSidebar .item, .item.timestampSidebar {
 	padding-left: 40px;
 }
-.timestampSidebar .content .item .startTime, .content .item.timestampSidebar .startTime {
+.timestampSidebar .item .startTime, .item.timestampSidebar .startTime {
 	transform: rotate(90deg) translateX(100%);
 	transform-origin: 100% 0;
 	width: auto;
@@ -206,7 +219,7 @@
 	margin-left: -45px;
 }
 /* =========================== */
- .timestampSmall .content .item .displayTime, .content .item.timestampSmall .displayTime {
+ .timestampSmall .item .displayTime, .item.timestampSmall .displayTime {
 	font-size: 0.86em;
 }
 /* =========================== */
