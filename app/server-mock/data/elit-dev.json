@@ -177,14 +177,17 @@
 		{
 			"type": "link",
 			"event_category_id": "links",
-			"start_time": 1,
-			"end_time": 10,
+			"start_time": 2,
+			"end_time": 2,
+			"stop": true,
+			"layout_id": "windowFg",
 			"required": true,
-			"template_id": "templates/transmedia-link-frameicide.html",
+			"template_id": "templates/transmedia-link-embed.html",
+			"style_id": "timestampNone",
 			"title": "Frameicide link",
 			"description": "Default link tempalte",
 			"link_image_id": "http://placekitten.com/61/61",
-			"url": "http://client.dev/frametest.html#foobar"
+			"url": "http://danielbeck.net"
 		}, {
 			"type": "link",
 			"event_category_id": "links",

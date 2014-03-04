@@ -238,7 +238,6 @@ angular.module('com.inthetelling.player')
 				// special case to cope with some existing episodes:
 				if (!model.inContentPane && model.templateUrl === "templates/transmedia-image-plain.html") {
 					model.templateUrl = "templates/transmedia-image-fill.html";
-					console.log(model);
 				}
 
 				model.itemDetailTemplateUrl = "templates/modal-image-default.html"; // hardcoded for now, not sure if we'll want to allow variations here

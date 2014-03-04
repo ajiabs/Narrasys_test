@@ -10,14 +10,16 @@
 		<div class="startTime displayTime" x-ng-click="gotoItem()" bo-text="item.displayTime"></div>
 		<div class="category">
 			<!--{{item.category}}-->
-			<!--<span bo-if="item.required">(Required viewing)</span>-->
+			<span bo-if="item.required">(Required viewing)</span>
 		</div>
 	</div>
-
-	<div class="captioncontainer">
-		<img bo-src="item.source" style="width:100%">
-		<div class="caption">
-			<div class="title" bo-text="item.title"></div>
-			<div class="text" bo-text="item.description"></div>
+	<!-- <div class="icon"><img bo-src="item.thumbSrc"></div> -->
+	<div class="text">
+		<div class="title" bo-text="item.title"></div>
+		<div bo-text="item.description"></div>
+	</div>
+		<div class="iframeContainer">
+			<iframe bo-src="item.source" width="100%"></iframe>
 		</div>
 	</div>
+</div>

@@ -8,7 +8,7 @@ angular.module('com.inthetelling.player')
 		// Method to show the overlay for item detail view
 		// itemScope: the scope of the ittItem directive we are creating this overlay for
 		svc.createItemDetailOverlay = function (itemScope) {
-			// console.log("createItemDetailOverlay:", itemScope.item);
+// console.log("createItemDetailOverlay:", itemScope.item);
 
 			//HACK
 			itemScope.item.isIDevice = (navigator.platform.indexOf('iPad') > -1 || navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1);

@@ -3,7 +3,11 @@
 <div bindonce="item" class="item {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
-	"pastItem": !item.isActive && item.wasActive
+	"pastItem": !item.isActive && item.wasActive,
+	"isStop": item.stop
 }'>
-	<img class="touchable" x-ng-click="showModal()" bo-src="item.source">
+	<div class="touchable" style="position:relative">
+		<img x-ng-click="showModal()" bo-src="item.source">
+		<div class="touchableIndicator" ></div>
+	</div>
 </div>

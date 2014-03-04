@@ -6,7 +6,8 @@
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive,
 	"isRequired": item.required,
-	"isCosmetic": item.cosmetic
+	"isCosmetic": item.cosmetic,
+	"isStop": item.stop
 }'>
 	<div class="itemHead">
 		<div class="startTime displayTime" x-ng-click="gotoItem()" bo-text="item.displayTime"></div>
@@ -21,7 +22,9 @@
 		</div>
 		<div bo-text="item.description"></div>
 	</div>
-	<div class="detail" x-ng-if="item.showInlineDetail" style="width: 100%;position: relative;padding-bottom: 56.25%;height: 0;">
-		<iframe bo-src="item.source" style="position:absolute; width: 100%; height: 100%; "></iframe>
+	<div class="detail" x-ng-if="item.showInlineDetail">
+		<div class="iframeContainer">
+			<iframe bo-src="item.source"></iframe>
+		</div>
 	</div>
 </div>

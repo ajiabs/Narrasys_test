@@ -62,6 +62,32 @@ angular.module('com.inthetelling.player')
 					scope.item.source="";
 				}
 
+				//transmedia-image-fill needs some particular handling for different styles; contain, conver, center or fill 
+				// need to be done as background images (so we can use the corresponding css to control the image size), all
+				// others need to be done as regular images (so we can prevent clipping by setting max-width and max-height instead.)
+				// TODO: styles and layouts should've been left as arrays all along
+				if (scope.item.templateUrl.indexOf('transmedia-image-fill')>-1) {
+					var stylesArr = scope.item.styles.split(/ /);
+					for (var i=0; i<stylesArr.length; i++) {
+						if (stylesArr[i] === "center" || stylesArr[i] === "contain" || stylesArr[i] === "cover" || stylesArr[i] === "fill") {
+							scope.item.asBackgroundImage = true;
+						}
+					}
+				}
+
+				scope.$watch('item.isActive', function (newVal, oldVal) {
+					if (newVal) {
+// console.log("ITEM ENTERING", scope.item);
+						if (scope.item.stop) {
+							videojs.player.pause();
+						}
+					} else if (oldVal) {
+// console.log("ITEM EXITING",scope.item);
+					}
+				});
+
+
+
 				scope.pause = function() {
 					videojs.player.pause();
 				};

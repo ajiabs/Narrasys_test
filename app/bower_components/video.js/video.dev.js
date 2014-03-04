@@ -1312,7 +1312,7 @@ vjs.findPosition = function(el) {
  * Components are also event emitters.
  *
  *     button.on('click', function(){
- *       console.log('Button Clicked!');
+ *console.log('Button Clicked!');
  *     });
  *
  *     button.trigger('customevent');

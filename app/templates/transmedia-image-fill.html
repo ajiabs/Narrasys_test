@@ -1,6 +1,9 @@
-<div class="item {{item.layout}} {{item.styles}} backgroundImage" x-ng-class='{
+<div bindonce="item" class="nopadding item {{item.layout}} {{item.styles}}" x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
-	"pastItem": !item.isActive && item.wasActive
-}' style="background-image: url('{{item.source}}');">
+	"pastItem": !item.isActive && item.wasActive,
+	"isStop": item.stop
+}'>
+	<div x-ng-if="item.asBackgroundImage"  class="backgroundImage" style="background-image: url('{{item.source}}');"></div>
+	<img x-ng-if="!item.asBackgroundImage" bo-src="item.source">
 </div>

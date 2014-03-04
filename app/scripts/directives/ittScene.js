@@ -11,7 +11,7 @@ angular.module('com.inthetelling.player')
 				scene: '=ittScene'
 			},
 			link: function (scope, element, attrs) {
-// 				console.log("Scope directive link",scope);
+// console.log("Scope directive link",scope);
 
 				// Make cosmetic adjustments within the scene based on viewport or video size.
 				// TODO: don't use jQuery here if possible?
@@ -20,11 +20,11 @@ angular.module('com.inthetelling.player')
 				// HACK: some fragile dependence on template url here, that's pretty lame.  At the very least should use magic classnames instead?
 				
 				var twiddleSceneLayout = function () {
-//				console.log("TwiddleSceneLayout called for ",scope.scene);
+// console.log("TwiddleSceneLayout called for ",scope.scene);
 					$timeout(function () { // wait for any DOM updates first
 						// only trigger on active scenes or on first explore-mode scene (HACK)
 						if (scope.scene.isActive || (scope.scene.startTime === 0 && scope.scene.templateUrl.indexOf('scene-explore.html') > -1)) {
-// 							console.log("twiddling scene ",scope.scene);
+// console.log("twiddling scene ",scope.scene);
 							var videoContainer = element.find('.videoContainer');
 //BUG: safari gets height very wrong sometimes, so we're hardcoding the aspect ratio for now;
 //								var aspectRatio = videoContainer.width()/videoContainer.height();
@@ -89,13 +89,13 @@ angular.module('com.inthetelling.player')
 
 				scope.$watch('scene.isActive', function (newVal, oldVal) {
 					if (newVal) {
-// 						console.log("SCENE ENTERING", scope.scene);
+// console.log("SCENE ENTERING", scope.scene);
 						twiddleSceneLayout();
 						$timeout(function() {
 							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
 						},0);
 					} else if (oldVal) {
-//						console.log("SCENE EXITING",scope.scene);
+// console.log("SCENE EXITING",scope.scene);
 					}
 				});
 
@@ -103,7 +103,7 @@ angular.module('com.inthetelling.player')
 					twiddleSceneLayout();
 					if (scope.scene.isActive) {
 						$timeout(function() {
-//						console.log("Changed scene template, updating magnet for scene");
+// console.log("Changed scene template, updating magnet for scene");
 							$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
 						},0);
 					}

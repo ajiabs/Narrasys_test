@@ -8,5 +8,5 @@ var config = {
 
 	videoJSElementId: 'vjs', // id to use for the main videojs element
 
-	cuePointScanInterval: 25 // interval in ms when the cuePointScheduler service will perform a scan when dirty (see the service for more details).
+	cuePointScanInterval: 10 // interval in ms when the cuePointScheduler service will perform a scan when dirty (see the service for more details).
 };
