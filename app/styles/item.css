@@ -170,6 +170,7 @@
 .item .touchable {
 	cursor:pointer;
 	position:relative;
+	display:inline-block;
 }
 
 .item .touchableIndicator {
