@@ -24,7 +24,7 @@
       function createMarkers() {
          // create the markers
          var duration, m, pos, text;
-        // console.log("[videojs-markers] creating markers");
+// console.log("[videojs-markers] creating markers");
          duration = player.duration();
          $.each(options.marker_breaks, function (key, time) {
             pos = (time / duration) * 100;
@@ -47,7 +47,7 @@
 
       function displayMarkerTip() {
          var marker_tip;
-         //console.log("[videojs-markers] creating marker tip");
+// console.log("[videojs-markers] creating marker tip");
          marker_tip = $("<div class='vjs-tip'><div class='vjs-tip-arrow'></div><div class='vjs-tip-inner'></div></div>");
          video_wrapper.find('.vjs-progress-control').append(marker_tip);
 

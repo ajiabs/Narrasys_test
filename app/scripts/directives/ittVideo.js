@@ -10,7 +10,7 @@ angular.module('com.inthetelling.player')
 			replace: false,
 			template: '<div class="video"></div>',
 			link: function (scope, element, attrs) {
-//				console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
+// console.log("ITT-VIDEO LINKING FUNCTION: [scope:", scope, "]");
 
 				// Create the DOM node contents required by videojs.
 				// (Injecting this manually because including it in the template causes lots of bogus warnings
@@ -35,12 +35,12 @@ angular.module('com.inthetelling.player')
 				// Initialize videojs via the videojs service
 				// (This is NOT calling videojs directly; extra layer of indirection through services/video.js!)  (TODO: why?)
 				videojs.init(scope.episode.videos, function (player) {
-//					console.log("videojs init");
+// console.log("videojs init");
 
 					// Catch the first play. VJS's "firstplay" event is buggy, we'll just use 'play' and catch duplicates.
 					// (would just wipe the event instead, but vjs doesn't support namespaced events either...)
 					player.on("play",function() {
-//						console.log("player play");
+// console.log("player play");
 						if (!player.hasPlayed) {
 							player.hasPlayed= true;
 							$rootScope.$emit("toolbar.videoFirstPlay");
@@ -48,7 +48,7 @@ angular.module('com.inthetelling.player')
 							// register a listener on the instantiated player to inform the cuePointScheduler
 							// service whenever the playhead position changes.
 							player.on("timeupdate", function () {
-								//console.log("$$ timeupdate &&", player.currentTime());
+// console.log("$$ timeupdate &&", player.currentTime());
 								scope.setPlayhead(player.currentTime());
 							});
 						}

@@ -14,7 +14,7 @@ angular.module('com.inthetelling.player')
 		// We'll need to fix that asap. For now, use videojs.player as a convenient way to detect if we're starting fresh, and if not do a brute-force reload of the page.
 		// It's ugly, but not as ugly as my attempts to de-singletonize greg's code...
 		if (videojs.player) {
-//			console.log("Route change: forcing refresh");
+// console.log("Route change: forcing refresh");
 			$window.location.reload();
 		}
 
@@ -134,30 +134,25 @@ angular.module('com.inthetelling.player')
 
 					// base item model
 					var itemModel = modelFactory.createItemModel(data.events[i]);
-
 					// subscribe the item model to the cuePoint scheduler for state awareness
 					// use a closure to preserve variable scope in each loop iteration
 					(function (itemModel) {
-
-
-		// HACK HACK HACK HACKITY HACK HACK HACK
-		// We should adjust the end time to allow for transitions ONLY in cases where showCurrent is true in the content pane, and transitions are in use on the item, and the next item starts at the same time the current item ends.
-		// For now applying it everywhere, because the episode model has no knowledge of showcurrent or transitions at this point.
-		// This will become easier when there's an explicit derived-values service...
+						// HACK HACK HACK HACKITY HACK HACK HACK
+						// We should adjust the end time to allow for transitions ONLY in cases where showCurrent is true in the content pane, and transitions are in use on the item, and the next item starts at the same time the current item ends.
+						// For now applying it everywhere, because the episode model has no knowledge of showcurrent or transitions at this point.
+						// This will become easier when there's an explicit derived-values service...
 						itemModel.adjustedEndTime =
 							(itemModel.type === 'annotation' && itemModel.startTime +1 < itemModel.endTime) ?
 								itemModel.endTime -1 :
 								itemModel.endTime
 							;
-						
 						// Ensure that items with very short duration won't get skipped by the cuePointScheduler
 						// SHould be able to use a minimum duration of config.cuePointScanInterval/500 but in practice 
 						// anything less than half a second sometimes fails to appear.  Close enough.
 						if (itemModel.adjustedEndTime - 0.5 < itemModel.startTime) {
 							itemModel.adjustedEndTime = itemModel.startTime + 0.5; // Less than half a second still sometimes fails to appear... close enough
 						}
-						
-					
+
 						cuePointScheduler.subscribe({
 							begin: itemModel.startTime,
 							end: itemModel.adjustedEndTime

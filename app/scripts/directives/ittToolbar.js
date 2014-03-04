@@ -59,7 +59,7 @@ angular.module('com.inthetelling.player')
 				
 				/* Handler for toolbar buttons to change scene templates. */
 				scope.setSceneTemplate = function (newTemplate) {
-					//			console.log("setSceneTemplate " + newTemplate);
+// console.log("setSceneTemplate " + newTemplate);
 				
 					scope.currentSceneTemplate = newTemplate;
 					// set all scenes to use newTemplate
@@ -136,8 +136,7 @@ angular.module('com.inthetelling.player')
 					scope.hideCaptions = !scope.hideCaptions;
 					for (var i = 0; i < scope.scenes.length; i++) {
 						scope.scenes[i].hideCaptions = scope.hideCaptions;
-					}
-					console.log(scope.scenes[1]);
+					}console.log(scope.scenes[1]);
 				};
 				
 				scope.hidePanels = function () {

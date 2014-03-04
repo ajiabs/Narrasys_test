@@ -41,7 +41,7 @@ angular.module('com.inthetelling.player')
 
 				// Sidebars:
 				var checkForSidebars = function () {
-					//				console.log("contentpane checkForSidebars");
+// console.log("contentpane checkForSidebars");
 					if (attrs.noSidebars) {
 						scope.noSidebars = true;
 						return;

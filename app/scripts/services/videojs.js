@@ -15,8 +15,7 @@ angular.module('com.inthetelling.player')
 		// Can only initialize once. Will return false if videoJS has already initialized and true if the attempt is successful.
 		// Can optionally be passed a callback which will be given a reference to the instantiated player.
 		svc.init = function (videodata, callback) {
-
-			// console.log("video service init");
+// console.log("video service init");
 			if (!svc.player) {
 				// Instantiate a new videojs player against the provided element id
 

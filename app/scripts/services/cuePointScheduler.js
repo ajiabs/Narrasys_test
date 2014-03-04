@@ -47,7 +47,7 @@ angular.module('com.inthetelling.player')
     timeline provider and they are expected to call it whenever the playhead position changes.
   */
     var setPlayhead = function (position) {
-      //    console.log("setPlayhead("+position+")");
+// console.log("setPlayhead("+position+")");
       playhead = position;
       needScan = true;
     };

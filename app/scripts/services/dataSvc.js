@@ -45,7 +45,7 @@ angular.module('com.inthetelling.player')
 
 			// Local Data
 			if (config.localData || authKey === 'local') {
-//				console.log("dataSvc.get() [Mode: Local Data]");
+// console.log("dataSvc.get() [Mode: Local Data]");
 				$http({
 					method: 'GET',
 					url: config.localDataBaseUrl + '/' + episodeId + '.json'
@@ -59,7 +59,7 @@ angular.module('com.inthetelling.player')
 			}
 			// API Data
 			else {
-//				console.log("dataSvc.get() [Mode: API Data]");
+// console.log("dataSvc.get() [Mode: API Data]");
 
 				// Check API authentication first.
 				// TODO de-nest this code
@@ -131,7 +131,7 @@ angular.module('com.inthetelling.player')
 			// NOTE this is not in use currently AFAIK; needs to be moved earlier in the process anyway
 			var authParam = "";
 			if (config.apiAuthToken) {
-//				console.log("auth token");
+// console.log("auth token");
 				$http.defaults.headers.get = {
 					'Authorization': config.apiAuthToken
 				};
@@ -143,7 +143,7 @@ angular.module('com.inthetelling.player')
 			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId + authParam)
 				.then(function (response) {
 					data.episode = response.data;
-					//console.log(response.config.url + ":", response.data);
+// console.log(response.config.url + ":", response.data);
 					return $q.all([
 						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets' + authParam),
 						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + authParam)
@@ -151,8 +151,8 @@ angular.module('com.inthetelling.player')
 				})
 				.then(function (responses) {
 					data.assets = responses[0].data.files;
-					//console.log(responses[0].config.url + ":", responses[0].data);
-					//console.log(responses[1].config.url + ":", responses[1].data);
+// console.log(responses[0].config.url + ":", responses[0].data);
+// console.log(responses[1].config.url + ":", responses[1].data);
 					return $q.all([
 						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam),
 						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + authParam)
@@ -160,13 +160,13 @@ angular.module('com.inthetelling.player')
 				})
 				.then(function (responses) {
 					data.assets = data.assets.concat(responses[0].data.files);
-					//console.log(responses[0].config.url + ":", responses[0].data);
-					//console.log(responses[1].config.url + ":", responses[1].data);
+// console.log(responses[0].config.url + ":", responses[0].data);
+// console.log(responses[1].config.url + ":", responses[1].data);
 					return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam);
 				})
 				.then(function (response) {
 					data.assets = data.assets.concat(response.data.files);
-					//console.log(response.config.url + ":", response.data);
+// console.log(response.config.url + ":", response.data);
 				});
 
 			// second set of calls
@@ -190,7 +190,7 @@ angular.module('com.inthetelling.player')
 			])
 				.then(function (responses) {
 					// success
-			//				console.log("Compiled API Data:", data);
+// console.log("Compiled API Data:", data);
 
 					//// DIRTY PREPROCESSING HACK ////
 					// TODO: Remove it when api updates the type field to be lowercase
