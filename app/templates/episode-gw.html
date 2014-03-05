@@ -1,0 +1,18 @@
+<div class="{{episode.styles}} episode-ewb" x-ng-class="{isFramed: isFramed}">
+	<div x-itt-video x-itt-magnetized class="vjs-wrapper">
+	</div>
+	<div x-itt-toolbar>
+	</div>
+	<div class="banner-logo">
+		<img src="images/gw-logo.svg">
+	</div>
+	<div class="episode episode{{episode.layout}}">
+		<div x-ng-repeat="scene in scenes" x-itt-scene="scene"></div>
+		<div class="clear"></div>
+	</div>
+	<div class="branding">
+		<a class="itt" href="http://inthetelling.com">
+			<img src="images/itt.svg" alt="In The Telling logo">
+		</a>
+	</div>
+</div>
