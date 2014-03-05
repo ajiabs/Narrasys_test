@@ -58,3 +58,7 @@ Fixed clipping of large images in transmedia-image-fill template
 Changes in v1.3.36:
 fixed bug where "touchable" indicator for inline images was at width:100% instead of width:the image
 
+------------------------------------------------
+Changes in v1.3.37:
+added GW episode template
+
