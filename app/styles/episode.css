@@ -74,6 +74,12 @@
 	}
 }
 
+@media screen and (max-width: 480px) {
+	.button-directed {
+		display:none !important;
+	}
+}
+
 .toolbar .buttongroup.escapegroup .button span {
 	margin-left: -120px;
 	text-align: right !important;
