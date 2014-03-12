@@ -68,6 +68,8 @@ angular.module('com.inthetelling.player')
 			}
 		}
 
+		$scope.now = new Date();
+
 		// OK, now that that's all out of the way we can actually start the app.
 
 
