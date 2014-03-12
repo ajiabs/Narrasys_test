@@ -162,6 +162,7 @@ See /images/font/story/map.png for a list of available glyphs
 }
 .itemDetailModal img {
 	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
+	background-color:#FFF;
 }
 /*============================
  *
