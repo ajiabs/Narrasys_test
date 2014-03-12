@@ -115,11 +115,16 @@
 	line-height: 24px;
 	height: 24px;
 	cursor:pointer;
-	color:#777;
+	color:#555;
+}
+
+.modegroup .button {
+	color:#999;
+	text-shadow: -1px -1px 1px #FFF;
 }
 .toolbar .button.cur {
 	color:#000;
-	text-shadow: 0 0 2px #FFF;
+	text-shadow: 1px 1px 1px #FFF;
 }
 .toolbar .button:before {
 	font-family: Story;
