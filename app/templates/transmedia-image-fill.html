@@ -4,6 +4,6 @@
 	"pastItem": !item.isActive && item.wasActive,
 	"isStop": item.stop
 }'>
-	<div x-ng-if="item.asBackgroundImage"  class="backgroundImage" style="background-image: url('{{item.source}}');"></div>
+	<div x-ng-if="item.asBackgroundImage"  class="backgroundImage" x-ng-style="{'background-image': 'url(' + item.source + ')'}"></div>
 	<img x-ng-if="!item.asBackgroundImage" bo-src="item.source">
 </div>
