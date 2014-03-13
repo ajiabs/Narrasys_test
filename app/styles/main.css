@@ -121,7 +121,7 @@ See /images/font/story/map.png for a list of available glyphs
 	animation: fadeIn 0.5s;
 }
 .itemDetailModal {
-	position:fixed;
+	position:absolute;
 	top: 10%;
 	left: 5%;
 	right: 5%;

@@ -16,6 +16,7 @@ angular.module('com.inthetelling.player')
 			itemScope.videoWasPlaying = !(videojs.player.paused()); // So we know whether to start it again when the modal is closed
 
 			videojs.player.pause();
+			$("body,html").stop().animate({"scrollTop": 0},500);
 
 			var resumeVideo = function () {
 				if (itemScope.videoWasPlaying) {
