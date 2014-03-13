@@ -1,6 +1,5 @@
 /* TODO separate this out into episode-template specific stuff vs player chrome */
-
-.toolbar {
+ .toolbar {
 	font-size: 16px;
 	text-align: center;
 	position: fixed;
@@ -20,9 +19,9 @@
 	pointer-events:auto
 }
 .episode {
-	margin-top: 45px /* TOOLBAR HEIGHT */
+	margin-top: 45px
+	/* TOOLBAR HEIGHT */
 }
-
 .toolbar .buttongroup {
 	float:left;
 	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.1) inset;
@@ -32,7 +31,6 @@
 	margin:0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
 }
-
 .toolbar .buttongroup .button span {
 	display:block;
 	position: absolute;
@@ -44,38 +42,33 @@
 	color:#666;
 	font-size:12px;
 }
-
-.toolbar .buttongroup:hover .button span {opacity:0 !important}
+.toolbar .buttongroup:hover .button span {
+	opacity:0 !important
+}
 .toolbar .buttongroup .button:hover span {
 	opacity:1 !important;
 	transition: opacity 0.3s;
 }
-
 .toolbar .buttongroup.modegroup {
 	padding: 0 0.5em;
 }
-
 .toolbar .buttongroup.modegroup .button.cur span {
-	animation: delayedFadeOut 7s ease-out; 
+	animation: delayedFadeOut 7s ease-out;
 }
-
 .toolbar .buttongroup.searchgroup {
-	transition: all 1s; 
-	width: 2em; 
+	transition: all 1s;
+	width: 2em;
 }
-
 @media screen and (max-width: 300px) {
 	.isFramed .toolbar .buttongroup.searchgroup {
 		display:none;
 	}
 }
-
 @media screen and (max-width: 421px) {
 	.isFramed .toolbar .buttongroup.modegroup {
 		display:none;
 	}
 }
-
 .toolbar .buttongroup.escapegroup .button span {
 	margin-left: -120px;
 	text-align: right !important;
@@ -84,7 +77,6 @@
 .toolbar .buttongroup.searchgroup .button {
 	float:left;
 }
-
 .toolbar .buttongroup.searchgroup.cur {
 	width: 35%;
 	font-size: 22px;
@@ -93,22 +85,23 @@
 .toolbar .buttongroup.searchgroup.cur .button span {
 	display:none
 }
-
 #searchtext {
-    background: none;
-    border: none;
-    font-size: 1em;
-    margin: 0;
-    width: 0; 
-    transition: all 1s;
-    position:absolute; left: 40px; top: 2px;
+	background: none;
+	border: none;
+	font-size: 1em;
+	margin: 0;
+	width: 0;
+	transition: all 1s;
+	position:absolute;
+	left: 40px;
+	top: 2px;
 }
-
-#searchtext:focus{
-    outline: 0;
+#searchtext:focus {
+	outline: 0;
 }
-.cur #searchtext {width: 80%}
-
+.cur #searchtext {
+	width: 80%
+}
 .toolbar .button {
 	display:inline-block;
 	padding: 0 0.5em;
@@ -117,7 +110,6 @@
 	cursor:pointer;
 	color:#555;
 }
-
 .modegroup .button {
 	color:#999;
 	text-shadow: -1px -1px 1px #FFF;
@@ -130,17 +122,24 @@
 	font-family: Story;
 	font-size: 1em;
 }
-
-
-
-.button-video:before {content: "\e60b"}
-.button-directed:before {content: "\e60a"}
-.button-explore:before {content: "\e60c"}
-.button-search:before {content: "\e602"}
-.cur .button-search:before {content: "\e603"}
-.button-mainframeescape:before {content: "\e609"}
-
-
+.button-video:before {
+	content:"\e60b"
+}
+.button-directed:before {
+	content:"\e60a"
+}
+.button-explore:before {
+	content:"\e60c"
+}
+.button-search:before {
+	content:"\e602"
+}
+.cur .button-search:before {
+	content:"\e603"
+}
+.button-mainframeescape:before {
+	content:"\e609"
+}
 .escapelink:before {
 	font-family: Story;
 	content:"\e609";
@@ -169,11 +168,13 @@
 .modal-backdrop.ng-hide-add, .modal-backdrop.ng-hide-remove {
 	display:block!important;
 }
-
-.modal-backdrop.search-backdrop {top: 45px /* TOOLBAR HEIGHT */}
+.modal-backdrop.search-backdrop {
+	top: 45px
+	/* TOOLBAR HEIGHT */
+}
 /* Panel animations */
  .searchPanel {
-	transition: 1s  all;
+	transition: 1s all;
 	transform-origin: 100% 50%;
 	opacity:1;
 	transform:translateX(0);
@@ -192,14 +193,15 @@
 	padding: 4px;
 	border-radius: 4px;
 }
-
 /*============================
  *
  * Search Panel
  *
 //===========================*/
  .searchPanel {
-	top: 45px /* TOOLBAR HEIGHT */;
+	top: 45px
+	/* TOOLBAR HEIGHT */
+	;
 	bottom: 0;
 	right: 0;
 	width: 40%;
@@ -216,20 +218,24 @@
 .searchPanel .searchresults {
 	padding: 1em;
 }
-
-
 .searchPanel.ng-hide .searchfilters {
 	opacity:0;
 }
 .searchPanel .searchfilters {
 	opacity:1;
-	animation: delayedFadeIn 4s ease-out; 
+	animation: delayedFadeIn 4s ease-out;
 }
-
-.searchfilters {font-size: 0.86em;}
-.searchfilters label {float:right; margin-right: 0.5em; cursor: pointer;}
-.searchfilters input[type="radio"] {display: none}
-
+.searchfilters {
+	font-size: 0.86em;
+}
+.searchfilters label {
+	float:right;
+	margin-right: 0.5em;
+	cursor: pointer;
+}
+.searchfilters input[type="radio"] {
+	display: none
+}
 /*.searchPanel .filters {
 	font-size: 0.86em
 }
@@ -246,8 +252,7 @@
 	margin: 5px;
 	clear: left;
 }*/
-
-.searchResults h3 {
+ .searchResults h3 {
 	padding: 0.5em 0.3em 0.1em 0.3em
 }
 .searchResults .item {
@@ -278,8 +283,7 @@
  * Navigation Panel
  *
 //===========================*/
-
-.navigationPanel {
+ .navigationPanel {
 	bottom: 0;
 	left: 7em;
 	right: 7em;
@@ -291,48 +295,40 @@
 	background-color: #FFF;
 	padding-bottom: 3em;
 }
-
 .navigationPanel h2 {
 	padding: 0.4em;
 }
-
-
 @media screen and (max-width: 500px) {
 	.navigationPanel {
 		left: 0.5em !important;
 		right: 0.5em !important;
 	}
 }
-
 @media screen and (max-width: 300px) {
 	.navigationPanel {
 		font-size: 60%;
 	}
 }
-@media screen and  (max-width: 600px) {
+@media screen and (max-width: 600px) {
 	.navigationPanel {
 		padding-bottom: 0.4em !important;
 	}
 }
-
 @media screen and (min-width: 301px) and (max-width: 500px) {
 	.navigationPanel {
 		font-size: 75%;
 	}
 }
-
-@media screen and (min-width: 700px)  {
+@media screen and (min-width: 700px) {
 	.navigationPanel {
 		left: 30% !important;
 		right: 30% !important;
 	}
 }
-
 .navigationPanel.ng-hide {
 	opacity:0;
 	transform: translateY(80%) rotateX(-45deg);
 }
-
 .navigationPanel .scene {
 	padding: 0.3em;
 	border-top: 1px solid rgba(0, 0, 0, 0.2);
@@ -354,30 +350,27 @@
  * Landing screen
  *
 //===========================*/
-
-.intropanel {margin:10% 15%}
-
+ .intropanel {
+	margin:10% 15%
+}
 .intropanel .videoContainer {
 	width: 50%;
 	float: left;
 }
 .intropanel .introtext {
-	width: 45%; float:right;
+	width: 45%;
+	float:right;
 }
-
-
-.intropanel p {margin: 2em 0 1em 0}
-
+.intropanel p {
+	margin: 2em 0 1em 0
+}
 @media screen and (max-width: 300px) {
-
 	.intropanel {
 		margin: 32px 0 0 0 !important;
 	}
-	
 	.intropanel .videoContainer {
 		width: 45% !important;
 	}
-	
 	.intropanel .introtext {
 		position: absolute !important;
 		padding: 0 0.5em !important;
@@ -388,41 +381,29 @@
 		margin-left: 48% !important;
 		min-height: 80px !important;
 	}
-	
 	.intropanel p {
 		margin: 0 !important;
 		font-size: 0.86em !important;
 	}
-
 }
-
-
 @media screen and (min-width: 301px) and (max-width: 501px) {
-
 	.intropanel {
 		margin: 36px 0 0 0 !important;
 	}
-
 	.intropanel .videoContainer {
 		width: 45% !important;
 	}
-
 	.intropanel .introtext {
 		width: 55% !important;
 		padding: 0 1em !important;
 	}
-
 	.intropanel h1 {
 		font-size: 24px !important;
 	}
-	
 	.intropanel p {
 		margin: 1em 0 !important;
 	}
-	
 }
-
-
 /*============================
  *
  * Branding
@@ -430,8 +411,8 @@
 //===========================*/
  .branding {
 	width: 100%;
-	height: 250px;
-	background: linear-gradient(rgba(0,0,0,0.05),rgba(0,0,0,0.25));
+	height: 150px;
+	background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
 	position:relative;
 	color:#FFF;
 }
@@ -444,17 +425,24 @@
 	position:absolute;
 	display: block;
 }
-
-.branding a.logo img {border:none}
-
+.branding a.logo img {
+	border:none
+}
 .branding a.itt {
 	right:5%;
 	bottom:60px;
 }
-
-.copyright {position:absolute; bottom: 10px; left: 10px; font-size: 0.8em;}
-.copyright a {color:#FFF !important; text-decoration: underline;}
-
+.copyright {
+	position:absolute;
+	bottom: 10px;
+	left: 10px;
+	font-size: 0.76em;
+	text-shadow: 1px 1px 0 #BBB;
+}
+.copyright a {
+	color:#FFF !important;
+	text-decoration: underline;
+}
 /*============================
  *
  * eLiterate
@@ -465,12 +453,11 @@
 	bottom:60px;
 }
 .episode-eliterate {
-    background-image: url("/images/mindwire-bg.svg");
-    background-size: 90%;
-    background-position: 0 30%;
-    background-repeat: no-repeat;
+	background-image: url("/images/mindwire-bg.svg");
+	background-size: 90%;
+	background-position: 0 30%;
+	background-repeat: no-repeat;
 }
-
 .banner-logo {
 	position:fixed;
 	top: 0;
@@ -482,51 +469,42 @@
 .banner-logo img {
 	width:100%;
 }
-
-
 @media screen and (max-width: 400px) {
-.banner-logo {
+	.banner-logo {
 		display: none !important;
 	}
 }
-
 .episode-eliterate .startTime {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 3px;
-    padding: 3px;
+	background-color: rgba(0, 0, 0, 0.05);
+	border-radius: 3px;
+	padding: 3px;
 }
-
 /* TODO Redundant, because production didn't apply colorEliterate */
-/* when they do, remove this block: */
 
-.episode-eliterate {
+/* when they do, remove this block: */
+ .episode-eliterate {
 	font-family: Arial, Helvetica, Tahoma, sans-serif;
 	font-size: 15px;
 }
-
 .episode-eliterate {
 	color: #6F7D8B;
 }
-
-.episode-eliterate a, .colorEliterate .fakelink {color: #1376bb}
-
-.episode-eliterate h1, .episode-eliterate h2, .episode-eliterate h3
-{font-weight: normal;color:#384d62;}
-
+.episode-eliterate a, .colorEliterate .fakelink {
+	color: #1376bb
+}
+.episode-eliterate h1, .episode-eliterate h2, .episode-eliterate h3 {
+	font-weight: normal;
+	color:#384d62;
+}
 .episode-eliterate .colorInvert {
 	color: #FFF;
 	background-color: #6F7D8B;
 }
-
-.episode-eliterate .colorInvert h1,
-.episode-eliterate .colorInvert h2,
-.episode-eliterate .colorInvert h3 {
+.episode-eliterate .colorInvert h1, .episode-eliterate .colorInvert h2, .episode-eliterate .colorInvert h3 {
 	color: #FFF
 }
-
 /* End of Redundant block */
-
-.colorEliterate {
+ .colorEliterate {
 	color: #6F7D8B;
 }
 .colorEliterate a, .colorEliterate .fakelink {
@@ -536,18 +514,16 @@
 	color: #FFF;
 	background-color: #6F7D8B;
 }
-
-.colorEliterate h1, .colorEliterate h2, .colorEliterate h3
-{font-weight: normal;color:#384d62;}
-
-
+.colorEliterate h1, .colorEliterate h2, .colorEliterate h3 {
+	font-weight: normal;
+	color:#384d62;
+}
 /*============================
  *
  * Engineers Without Borders
  *
 //===========================*/
-
-.episode-ewb .banner-logo {
+ .episode-ewb .banner-logo {
 	width: 30%;
 	max-width: 300px;
 	margin: 2px 40%;
