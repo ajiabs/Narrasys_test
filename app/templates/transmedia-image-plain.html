@@ -1,6 +1,6 @@
 <!-- only in content panes.  Fg/Bg/Overlay items will be coerced to transmedia-image-fill -->
 
-<div bindonce="item" class="item {{item.layout}} {{item.styles}} " x-ng-class='{
+<div bindonce="item" class="item timestampNone {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive,
