@@ -80,10 +80,10 @@ This fixes it. TODO: understand why it fixes it
 Allow clicks on overlay items to fall through.	TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
 Need workaround for most IE: may need to manually capture click events and pass them through using document.getElementFromPoint? 
 */
-.windowFg, .paneFg, .videoOverlay {
+.windowBg, .windowFg, .paneFg, .videoOverlay {
 	pointer-events: none
 }
-.windowFg .item, .paneFg a, .videoOverlay a {
+.windowBg .item, .windowFg .item, .paneFg a, .videoOverlay a {
 	pointer-events: auto
 }
 

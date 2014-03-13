@@ -31,7 +31,7 @@ angular.module('com.inthetelling.player')
 				
 				// ipad crashes on window resize events inside an iframe.  So don't do that.
 				if ($rootScope.isFramed && ($rootScope.isIPad || $rootScope.isIPhone)) {
-					scope.$watch(function() {return scope.IOSFramewidth;},function() {
+					scope.$watch(function() {return $rootScope.windowWidth;},function() {
 						$rootScope.$emit('magnet.repositionImmediately');
 					});
 				} else {
@@ -40,23 +40,6 @@ angular.module('com.inthetelling.player')
 					});
 				}
 
-				
-// Bad idea. Also not necessary.
-// 				scope.bruteForceMagnetism = $interval(function() {
-// 						$rootScope.$emit('magnet.reposition');
-// 				}, 1000,0,false);
-
-				
-				// global to allow scenes to easily watch for window resize.
-				// (Not actually a performance improvement over letting each scene bind directly, so disabling for now, but keeping it for future How Did I Do That reference)
-				/*
-				angular.element($window).bind('resize',function() {
-					$rootScope.windowWidth = $window.outerWidth; 
-					$rootScope.$apply('windowWidth');
-				});
-				*/
-				
-				
 				/* Handler for toolbar buttons to change scene templates. */
 				scope.setSceneTemplate = function (newTemplate) {
 // console.log("setSceneTemplate " + newTemplate);
@@ -158,6 +141,15 @@ angular.module('com.inthetelling.player')
 					// Move our custom controls into the vjs control bar.  TODO fix jquery hackage
 					$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
 				
+				// default to 'explore' mode on small screens:
+				console.log("Checking window size: ",angular.element(window).width());
+				if (angular.element(window).width() < 481) {
+					console.log("Small screen");
+					scope.setSceneTemplate('explore');
+				}
+
+
+
 					// Hide the intro; show the regular controls
 					scope.show.introPanel = false;
 					scope.show.playerPanel = true;

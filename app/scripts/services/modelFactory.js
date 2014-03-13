@@ -73,20 +73,40 @@ angular.module('com.inthetelling.player')
 			if (isUid(masterAssetId)) {
 				var masterAsset = dataSvc.getAssetById(masterAssetId);
 				if (masterAsset) {
-					// TODO The webm regexp is a bit of a hack, since current API only has one asset url
-					// HACK For now mp4s are overridden by the corresponding m3u8; browsers that don't support m3u8 are getting youtube anyway.
-					var videoObject = {
-						mpeg4: masterAsset.url.replace('.mp4','.m3u8'),
-//						webm: masterAsset.url.replace(".mp4", ".webm"),
-						youtube: masterAsset.you_tube_url
-					};
+					var videoObject = {};
+					if (masterAsset.alternate_urls) {
+						// This will eventually replace the old method below.
+						// In future there may be multiple versions with the same file extension;
+						// this method will have to parse the width and height out of the url as well to decide which to use:
+						//   /(\d+)x(\d+)\.(\w+)$/   [1]=w, [2]=h, [3]=ext
+						var extensionMatch = /\.(\w+)$/;
+						for (var i=0; i<masterAsset.alternate_urls.length;i++) {
+							switch(masterAsset.alternate_urls[i].match(extensionMatch)[1]) {
+								case "mp4": break; // HACK For now mp4s are overridden by the corresponding m3u8; browsers that don't support m3u8 are getting youtube anyway.
+								case "m3u8": videoObject.mpeg4 = masterAsset.alternate_urls[i]; break;
+								case "webm": videoObject.webm = masterAsset.alternate_urls[i]; break;
+							}
+						}
+						if (masterAsset.you_tube_url) {
+							videoObject.youtube = masterAsset.you_tube_url;
+						}
+
+					} else {
+						// THis is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes
+						videoObject = {
+							mpeg4: masterAsset.url.replace('.mp4','.m3u8'),
+							webm: masterAsset.url.replace(".mp4", ".webm"),
+							youtube: masterAsset.you_tube_url
+						};
+					}
+
 					// HACK some platform detection here.  Old iPads don't cope well with the youtube plugin,
 					// so we divert them to the mp4 version instead. If there is one.
 					// safari too, just for now:
 					
 					var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 					
-					if ((isSafari || navigator.platform.indexOf('iPad') > -1) &&videoObject.mpeg4) {
+					if ((isSafari || navigator.platform.indexOf('iPad') > -1) && videoObject.mpeg4) {
 						videoObject.youtube = undefined;
 					}
 					return videoObject;
