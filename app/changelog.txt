@@ -62,3 +62,14 @@ fixed bug where "touchable" indicator for inline images was at width:100% instea
 Changes in v1.3.37:
 added GW episode template
 
+------------------------------------------------
+Changes in v1.4:
+cosmetic tweaks
+Added copyright notice
+better differentiation between active and inactive modes in toolbar
+no more 404 {{item.source}} calls; fixed problem where some background images were winding up at zero width and height
+toolbar backgrounds now scale to window width
+Adding background color to image modals (for partially transparent images)
+New API data for master asset
+iPhone and other small screens now default to explore mode, hide button for discover mode
+
