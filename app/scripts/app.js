@@ -26,7 +26,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindo
 */
 		.otherwise({
 			redirectTo: '/error' // only for 404s
-		} 
+		}
 	);
 	$locationProvider.html5Mode(false); // TODO sigh, can't get the server config working for this... thought we had it but IE still choked
 })

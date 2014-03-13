@@ -73,7 +73,9 @@ angular.module('com.inthetelling.player')
       }
     }
 
-    // OK, now that that's all out of the way we can actually start the app.
+		$scope.now = new Date();
+
+		// OK, now that that's all out of the way we can actually start the app.
 
 
     dataSvc.get($routeParams, function (data) { // ON SUCCESS

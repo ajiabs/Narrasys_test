@@ -169,7 +169,9 @@
 	height: 85px;
 	margin-top: 20px;
 	color: #333;
-	background: url('/images/toolbar-bottom-bg.png') top left repeat-x;
+	background-image: url('/images/toolbar-bottom.png');
+	background-repeat: repeat-x;
+	background-size: 100% 100%;
 
 }
 /* Slider - used for Volume bar and Seek bar */
