@@ -99,7 +99,6 @@ angular.module('com.inthetelling.player')
 							youtube: masterAsset.you_tube_url
 						};
 					}
-
 					// HACK some platform detection here.  Old iPads don't cope well with the youtube plugin,
 					// so we divert them to the mp4 version instead. If there is one.
 					// safari too, just for now:
@@ -109,6 +108,7 @@ angular.module('com.inthetelling.player')
 					if ((isSafari || navigator.platform.indexOf('iPad') > -1) && videoObject.mpeg4) {
 						videoObject.youtube = undefined;
 					}
+					videoObject.duration = masterAsset.duration;
 					return videoObject;
 				} else {
 					console.error("Master Asset lookup failed for:", masterAssetId);

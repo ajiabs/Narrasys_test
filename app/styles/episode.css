@@ -119,11 +119,10 @@
 }
 .modegroup .button {
 	color:#999;
-	text-shadow: -1px -1px 1px #FFF;
 }
 .toolbar .button.cur {
 	color:#000;
-	text-shadow: 1px 1px 1px #FFF;
+	text-shadow: -1px -1px 2px #FFF;
 }
 .toolbar .button:before {
 	font-family: Story;

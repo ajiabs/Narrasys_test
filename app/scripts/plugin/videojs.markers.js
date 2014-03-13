@@ -1,6 +1,7 @@
 'use strict';
 
 /* stripped-down version of videojs.markers plugin */
+/* Added duration option (so we can instantiate the markers before the video is fully operational) */
 
 (function ($, undefined) {
    //default setting
@@ -20,12 +21,13 @@
          player = this;
       options.marker_text = options.marker_text || [];
       options.marker_breaks = options.marker_breaks || [];
+      options.duration = options.duration || false;
 
       function createMarkers() {
          // create the markers
          var duration, m, pos, text;
 // console.log("[videojs-markers] creating markers");
-         duration = player.duration();
+         duration = options.duration || player.duration();
          $.each(options.marker_breaks, function (key, time) {
             pos = (time / duration) * 100;
             m = $("<div class='vjs-marker'  id='" + key + "'></div>");
