@@ -85,3 +85,6 @@ Added explicit timestampNone class to item templates which never have timestamps
 Changed some item padding to item margin instead (to make highlightSolid look better on image-plain items)
 Modals now can scroll vertically if too large for window
 
+------------------------------------------------
+Changes in v1.4.3:
+Don't try to use .webm when not available (fixing bug introduced in v1.4.1. Sigh)
