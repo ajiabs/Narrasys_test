@@ -22,7 +22,7 @@ angular.module('com.inthetelling.player')
 						node += '<source type="video/youtube" src="' + scope.episode.videos.youtube + '" />';
 					} else {
 						node += '<source type="video/mp4" src="' + scope.episode.videos.mpeg4 + '" />';
-//						node += '<source type="video/webm" src="' + scope.episode.videos.webm + '" />';
+						node += '<source type="video/webm" src="' + scope.episode.videos.webm + '" />';
 					}
 					node += ' </video>';
 					return node;
@@ -54,32 +54,21 @@ angular.module('com.inthetelling.player')
 						}
 					});
 
-
-					// Wait until we know the player duration, then set the scene markers (and kill the $watch)
-					// TODO if we can get the video duration in the json we'll be able to init this directly
-					var durationWatcher = scope.$watch(function () {
-						return player.duration();
-					}, function (newVal, oldVal) {
-						if (newVal !== 0) {
-							// We now know the video duration, so can position the markers:
-							durationWatcher(); // removes the watcher
-							//Feed data into videojs.markers plugin:
-							var markerData = {
-								setting: {},
-								marker_breaks: [],
-								marker_text: []
-							};
-							for (var i = 0; i < scope.scenes.length; i++) {
-								if (scope.scenes[i].title) {
-									markerData.marker_breaks.push(scope.scenes[i].startTime);
-									markerData.marker_text.push(scope.scenes[i].title);
-								}
-							}
-
-							player.markers(markerData); // sets up the plugin
-							player.trigger("loadedmetadata"); //signals the plugin to do its thing (the event doesn't fire reliably on its own)
+					/* Set up scene markers */
+					var markerData = {
+						duration: scope.episode.videos.duration,
+						setting: {},
+						marker_breaks: [],
+						marker_text: []
+					};
+					for (var i = 0; i < scope.scenes.length; i++) {
+						if (scope.scenes[i].title) {
+							markerData.marker_breaks.push(scope.scenes[i].startTime);
+							markerData.marker_text.push(scope.scenes[i].title);
 						}
-					});
+					}
+					player.markers(markerData); // sets up the plugin
+					player.trigger("loadedmetadata"); //signals the plugin to do its thing (the event doesn't fire reliably on its own)
 					/* Done setting scene markers. */
 				});
 
