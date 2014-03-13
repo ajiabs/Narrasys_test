@@ -73,3 +73,8 @@ Adding background color to image modals (for partially transparent images)
 New API data for master asset
 iPhone and other small screens now default to explore mode, hide button for discover mode
 
+------------------------------------------------
+Changes in v1.4.1:
+No longer need to wait for video to start playing before we render the playhead scene markers (get duration from API instead of directly from video)
+fixed positioning bug in background-image items using the image-plain template
+Use .webm when available (in firefox only)
