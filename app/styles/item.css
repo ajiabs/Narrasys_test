@@ -12,30 +12,28 @@
 	width: 100%;
 	height: 100%;
 }
-
-
 .pane.windowFg .item {
-    position: fixed;
-    top: 45px; /* TOOLBAR HEIGHT */
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow:auto;
+	position: fixed;
+	top: 45px;
+	/* TOOLBAR HEIGHT */
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow:auto;
 }
-
 .pane.windowFg .item.isStop {
 	background-color:#FFF;
 	padding-top: 1em;
-	bottom: 65px; /* FOOTER HEIGHT. */
+	bottom: 65px;
+	/* FOOTER HEIGHT. */
 }
-
-
-.nopadding {padding: 0 !important;}
-
+.nopadding {
+	padding: 0 !important;
+}
 .fillPane .futureItem, .pane.windowFg .futureItem {
 	display:none;
 }
-.fillPane .currentItem,  .pane.windowFg .currentItem {
+.fillPane .currentItem, .pane.windowFg .currentItem {
 	display:block;
 }
 .fillPane .pastItem, .pane.windowFg .pastItem {
@@ -43,24 +41,40 @@
 }
 /* Nope, can't explain the -3px. TODO */
  .fillPane .bl {
+	width:auto;
+	max-width:100%;
+	height:auto;
+	max-height:100%;
 	top: auto;
 	right: auto;
 	bottom: -3px;
 	left: 0;
 }
 .fillPane .tl {
+	width:auto;
+	max-width:100%;
+	height:auto;
+	max-height:100%;
 	top: 0;
 	right: auto;
 	bottom: auto;
 	left: 0;
 }
 .fillPane .tr {
+	width:auto;
+	max-width:100%;
+	height:auto;
+	max-height:100%;
 	top: 0;
 	right: 0;
 	bottom: auto;
 	left: auto;
 }
 .fillPane .br {
+	width:auto;
+	max-width:100%;
+	height:auto;
+	max-height:100%;
 	top: auto;
 	right: 0;
 	bottom: -3px;
@@ -80,29 +94,44 @@
 }
 .fillPane .fill img {
 	width:100%;
-	height: 100%
+	height: 100%;
 }
-
 /* scale images to pane size instead of clipping. */
+
 /* TODO (probably): overflow:hidden for non-image things in fill */
  .item img {
 	max-width: 100%;
 	max-height: 100%;
 }
-
 .backgroundImage {
 	background-repeat: no-repeat;
-	width: 100%; height: 100%;
+	width: 100%;
+	height: 100%;
 }
-.fill .backgroundImage {background-size: 100% 100%}
-.center .backgroundImage {background-position: 50% 50%}
-.tl .backgroundImage {background-position: 0 0}
-.tr .backgroundImage {background-position:100% 0}
-.bl .backgroundImage {background-position:0 100%}
-.br .backgroundImage {background-position:100% 100%}
-.cover .backgroundImage {background-size:cover}
-.contain .backgroundImage {background-size:contain}
-
+.fill .backgroundImage {
+	background-size: 100% 100%
+}
+.center .backgroundImage {
+	background-position: 50% 50%
+}
+.tl .backgroundImage {
+	background-position: 0 0
+}
+.tr .backgroundImage {
+	background-position:100% 0
+}
+.bl .backgroundImage {
+	background-position:0 100%
+}
+.br .backgroundImage {
+	background-position:100% 100%
+}
+.cover .backgroundImage {
+	background-size:cover
+}
+.contain .backgroundImage {
+	background-size:contain
+}
 /*============================
  *
  * TMP
@@ -125,9 +154,9 @@
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 }
-
-.item {padding-left:60px;}
-
+.item {
+	padding-left:60px;
+}
 .item .itemHead {
 	display:inline;
 	line-height: 1em
@@ -149,43 +178,42 @@
 	text-align:right;
 	float:left;
 }
-
 .item .iframeContainer {
 	-webkit-overflow-scrolling: touch;
-	 overflow: auto; 
-	 width: 100%; 
-	 height: 320px;
+	overflow: auto;
+	width: 100%;
+	height: 320px;
 }
-
 .windowFg .item .iframeContainer {
 	height:80%;
 }
-
 .item iframe {
 	background-color:#FFF;
-	width: 100%;height:98%;
+	width: 100%;
+	height:98%;
 	border: none;
 }
-
 .item .touchable {
 	cursor:pointer;
 	position:relative;
 	display:inline-block;
 }
-
 .item .touchableIndicator {
-	opacity:0; transition: opacity 1.5s;
-	position:absolute;bottom:7px;right:5px;
+	opacity:0;
+	transition: opacity 1.5s;
+	position:absolute;
+	bottom:7px;
+	right:5px;
 	font-family: Story;
 	font-size: 1em;
 }
-
 .touchableIndicator:before {
-	content: "\e602";
+	content:"\e602";
 	text-shadow: 1px 1px 1px #FFF;
 }
-.item .touchable:hover .touchableIndicator {opacity:0.8;}
-
+.item .touchable:hover .touchableIndicator {
+	opacity:0.8;
+}
 /*============================ ============================ ============================
  *
  * timestamps
@@ -230,11 +258,9 @@
  * Template variants
  *
 //=========================== */
-
-
-.item .pullquote:before {
+ .item .pullquote:before {
 	color: rgba(0, 0, 0, 0.05);
-	content: "“";
+	content:"“";
 	float: left;
 	font-size: 3em;
 	line-height: 0.8em;
