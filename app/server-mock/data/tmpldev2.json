@@ -2,7 +2,7 @@
 	"episode": {
 		"title": "Episode Title",
 		"description": "narrative modem physical boat jeans faded -ware refrigerator cyber- kanji pre- shanty town systema. Tokyo face forwards tiger-team post- ablative dolphin hotdog artisanal into pre- nodal point towards network.",
-		"style_id": "typographySerif transitionFade highlightSide",
+		"style_id": "typographySerif transitionFade highlightBorder",
 		"template_id": "templates/episode-ewb.html",
 		"master_asset_id": {
 			"NOyoutube": "http://www.youtube.com/embed/YfPmBR8PUyE",
@@ -84,7 +84,7 @@
 		"style_id": "transitionFade typographySwiss",
 		"annotator": "Mr. Universe",
 		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "All panes should now have kittens in the top left corner background."
+		"annotation": "All <b>panes</b> should now have kittens in the top left corner background."
 	}, 
 	{
 		"type": "upload",
@@ -95,7 +95,7 @@
 		"cosmetic": true,
 		"template_id": "templates/transmedia-image-default.html",
 		"title": "COSMETIC A picture of a kitten",
-		"description": "Look at the widdle kitten who's a kitty who's a kitty YOU ARE",
+		"description": "Look at the <i>widdle</i> kitten who's a kitty who's a kitty YOU ARE",
 		"asset_id": "http://placekitten.com/700/700"
 	}, {
 		"type": "upload",
@@ -150,7 +150,7 @@
 		"end_time": 6,
 		"annotator": "Mr. Universe",
 		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "Here are kittens in the top right corner background."
+		"annotation": "<h2>Here are kittens in the top right corner background</h2>."
 	}, {
 		"type": "upload",
 		"mimeType": "image",
@@ -196,7 +196,7 @@
 		"end_time": 9,
 		"annotator": "Mr. Universe",
 		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "Now all panes should now have kittens in the bottom right corner background."
+		"annotation": "<sup>Now all<sub> panes<b> should now have kittens in the bottom right corner background."
 	}, {
 		"type": "upload",
 		"mimeType": "image",

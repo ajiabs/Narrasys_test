@@ -1,4 +1,4 @@
-<div bindonce="item" class="item headerItem {{item.layout}} {{item.styles}} " x-ng-class='{
+<div bindonce="item" class="item timestampNone headerItem {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive,
@@ -6,6 +6,6 @@
 	"isCosmetic": item.cosmetic,
 	"isStop": item.stop
 }'>
-	<div class="pullquote" bo-text="item.annotation"></div>
-	<div class="pullquoteSpeaker" bo-text="item.authorName"></div>
+	<div class="pullquote" bo-html="item.annotation"></div>
+	<div class="pullquoteSpeaker" bo-html="item.authorName"></div>
 </div>

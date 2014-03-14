@@ -18,9 +18,9 @@
 	</div>
 	<!-- <div class="icon"><img bo-src="item.thumbSrc"></div> -->
 	<div class="text">
-		<div class="title"><a href="javascript:void 1;" x-ng-click="toggleDetailView()" bo-text="item.title"></a>
+		<div class="title"><a href="javascript:void 1;" x-ng-click="toggleDetailView()" bo-html="item.title"></a>
 		</div>
-		<div bo-text="item.description"></div>
+		<div bo-html="item.description"></div>
 	</div>
 	<div class="detail" x-ng-if="item.showInlineDetail">
 		<div class="iframeContainer">
