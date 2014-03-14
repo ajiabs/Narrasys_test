@@ -1,4 +1,4 @@
-<div bindonce="item" class="item headerItem {{item.layout}} {{item.styles}} " x-ng-class='{
+<div bindonce="item" class="item timestampNone headerItem {{item.layout}} {{item.styles}} " x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive,
@@ -6,5 +6,5 @@
 	"isCosmetic": item.cosmetic,
 	"isStop": item.stop
 }'>
-	<h1 bo-text="item.annotation"></h1>
+	<h1 bo-html="item.annotation"></h1>
 </div>
