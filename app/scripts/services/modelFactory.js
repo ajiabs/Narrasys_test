@@ -76,15 +76,13 @@ angular.module('com.inthetelling.player')
 					var videoObject = {};
 					if (masterAsset.alternate_urls) {
 						// This will eventually replace the old method below.
-						// In future there may be multiple versions with the same file extension;
-						// this method will have to parse the width and height out of the url as well to decide which to use:
-						//   /(\d+)x(\d+)\.(\w+)$/   [1]=w, [2]=h, [3]=ext
+						// Sort them out by file extension first, then use _chooseBiggestMasterAsset to keep the largest one of each type.
 						var extensionMatch = /\.(\w+)$/;
 						for (var i=0; i<masterAsset.alternate_urls.length;i++) {
 							switch(masterAsset.alternate_urls[i].match(extensionMatch)[1]) {
-								case "mp4": break; // HACK For now mp4s are overridden by the corresponding m3u8; browsers that don't support m3u8 are getting youtube anyway.
-								case "m3u8": videoObject.mpeg4 = masterAsset.alternate_urls[i]; break;
-								case "webm": videoObject.webm = masterAsset.alternate_urls[i]; break;
+								case "mp4":  videoObject.mpeg4 = _chooseBiggestMasterAsset(videoObject.mpeg4,masterAsset.alternate_urls[i]); break;
+								case "m3u8": videoObject.m3u8  = _chooseBiggestMasterAsset(videoObject.m3u8, masterAsset.alternate_urls[i]); break;
+								case "webm": videoObject.webm  = _chooseBiggestMasterAsset(videoObject.webm, masterAsset.alternate_urls[i]); break;
 							}
 						}
 						if (masterAsset.you_tube_url) {
@@ -92,22 +90,28 @@ angular.module('com.inthetelling.player')
 						}
 
 					} else {
-						// THis is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes
+						// This is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes.
 						videoObject = {
 							mpeg4: masterAsset.url.replace('.mp4','.m3u8'),
 							webm: masterAsset.url.replace(".mp4", ".webm"),
 							youtube: masterAsset.you_tube_url
 						};
 					}
-					// HACK some platform detection here.  Old iPads don't cope well with the youtube plugin,
-					// so we divert them to the mp4 version instead. If there is one.
-					// safari too, just for now:
-					
+
+					// HACK some platform detection here.
 					var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-					
+
+					// Safari should prefer m3u8 to mpeg4.  TODO add other browsers to this when they support m3u8
+					if (isSafari && videoObject.m3u8) {
+						videoObject.mpeg4 = videoObject.m3u8;
+					}
+
+					// Old iPads don't cope well with the youtube plugin, so we divert them to the mp4 version instead. If there is one.
+					// For now do this for all Safari, to avoid the "power-saver plugin" issue
 					if ((isSafari || navigator.platform.indexOf('iPad') > -1) && videoObject.mpeg4) {
 						videoObject.youtube = undefined;
 					}
+
 					videoObject.duration = masterAsset.duration;
 					return videoObject;
 				} else {
@@ -115,6 +119,22 @@ angular.module('com.inthetelling.player')
 				}
 			}
 			return masterAssetId;
+		};
+
+		// Private convenience function called only from within resolveMasterAssetVideo. Pass in two filenames.
+		// If one is empty, return the other; otherwise checks for a WxH portion in two
+		// filenames; returns whichever is bigger.  
+		var _chooseBiggestMasterAsset = function(a,b) {
+			if (!a && b) {return b;}
+			if (!b) {return a;}
+			if (!a && !b) {return "";}
+
+			var regexp = /(\d+)x(\d+)\.\w+$/;   // [1]=w, [2]=h
+			// There shouldn't ever be cases where we're comparing two non-null filenames, neither of which have a
+			// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out 
+			var aTest = a.match(regexp) || [0,0];
+			var bTest = b.match(regexp) || [0,0];
+			return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a ;
 		};
 
 		// Takes an id for an asset, looks it up, and returns the asset url
