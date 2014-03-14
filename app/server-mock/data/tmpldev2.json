@@ -101,11 +101,11 @@
 		"type": "upload",
 		"mimeType": "image",
 		"layout_id": "videoOverlay",
-		"style_id": "center",
+		"style_id": "fill",
 		"start_time": 0,
 		"end_time": 3,
 		"template_id": "templates/transmedia-image-plain.html",
-		"asset_id": "http://placekitten.com/70/70"
+		"asset_id": "/server-mock/filename with spaces.png"
 	}, {
 		"type": "upload",
 		"mimeType": "image",

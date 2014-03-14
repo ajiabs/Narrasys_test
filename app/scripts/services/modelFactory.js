@@ -120,15 +120,16 @@ angular.module('com.inthetelling.player')
 		// Takes an id for an asset, looks it up, and returns the asset url
 		// Will return (reflect) the passed property if not a valid id
 		var resolveAssetUrl = function (assetId) {
+			console.log("resolveAssetUrl");
 			if (isUid(assetId)) {
 				var asset = dataSvc.getAssetById(assetId);
 				if (asset) {
-					return asset.url;
+					return asset.url.replace(/ /g,"%20"); // TODO do we need to do more url escaping here?  encodeURIComponent() is too aggressive, escapes / and : which we don't want
 				} else {
 					console.error("Asset lookup failed for:", assetId);
 				}
 			}
-			return assetId;
+			return assetId.replace(/ /g,"%20"); // TODO as above (this is used in  local data)
 		};
 
 		// Takes an id for an asset, looks it up, and returns the mime type
