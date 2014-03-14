@@ -120,7 +120,6 @@ angular.module('com.inthetelling.player')
 		// Takes an id for an asset, looks it up, and returns the asset url
 		// Will return (reflect) the passed property if not a valid id
 		var resolveAssetUrl = function (assetId) {
-			console.log("resolveAssetUrl");
 			if (isUid(assetId)) {
 				var asset = dataSvc.getAssetById(assetId);
 				if (asset) {
