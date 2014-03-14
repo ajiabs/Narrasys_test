@@ -21,10 +21,10 @@ angular.module('com.inthetelling.player')
 					if (scope.episode.videos.youtube) {
 						node += '<source type="video/youtube" src="' + scope.episode.videos.youtube + '" />';
 					} else {
-						node += '<source type="video/mp4" src="' + scope.episode.videos.mpeg4 + '" />';
 						if (scope.episode.videos.webm) {
 							node += '<source type="video/webm" src="' + scope.episode.videos.webm + '" />';
 						}
+						node += '<source type="video/mp4" src="' + scope.episode.videos.mpeg4 + '" />';
 					}
 					node += ' </video>';
 					return node;
