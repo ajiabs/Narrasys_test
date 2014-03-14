@@ -88,3 +88,8 @@ Modals now can scroll vertically if too large for window
 ------------------------------------------------
 Changes in v1.4.3:
 Don't try to use .webm when not available (fixing bug introduced in v1.4.1. Sigh)
+------------------------------------------------
+Changes in v1.4.4:
+(attempting to) change video format priority: when browser supports both, try webm before m3u8 or mp4 (this may or may not work, videojs techOrder control doesn’t get this granular, but it can’t hurt)
+ModelFactory now escapes spaces in asset urls
+
