@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare the top level application module and its dependencies
-angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindonce'])
+angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindonce', 'flow'])
 
 // Configure routing
 .config(function ($routeProvider, $locationProvider) {
@@ -24,6 +24,10 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindo
 			templateUrl: 'templates/inventory.html'
 		})
 */
+		.when('/seekritbackdoor/test', {
+			controller: '',
+			templateUrl: 'templates/modal-upload-demo.html'
+		})
 		.otherwise({
 			redirectTo: '/error' // only for 404s
 		}

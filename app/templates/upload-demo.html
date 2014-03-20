@@ -1,0 +1,14 @@
+<div bindonce="item" class="item demo-floater" x-ng-class='{
+	"currentItem": item.isActive, 
+	"futureItem": !item.isActive && !item.wasActive, 
+	"pastItem": !item.isActive && item.wasActive,
+	"isRequired": item.required,
+	"isCosmetic": item.cosmetic,
+	"isStop": item.stop
+}'>
+	<div ng-click="showModal()" style="cursor:pointer">
+	<b>Instructors:</b>
+	<p>Add your own custom introduction to this scene</p>
+	</div>
+
+</div>
