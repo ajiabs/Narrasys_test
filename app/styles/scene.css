@@ -31,7 +31,7 @@
 //===========================*/
 
 .content {
-	padding: 15px;
+	padding: 15px 0;
 }
  .content > div {
 	perspective: 600px;

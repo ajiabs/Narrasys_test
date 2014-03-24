@@ -535,3 +535,111 @@
 	margin: 2px 40%;
 	text-align:center;
 }
+
+/*============================
+ *
+ * GW
+ *
+//===========================*/
+
+/* 
+This (and all the customer-specific css) should really be split up 
+into separate typography, color, highlight, etc styles so that 
+portions of it could be reused in other episodes.  
+
+For now just using the episode-level .episode-gw class as a modifier
+for all sub styles:
+
+*/
+
+
+.episode-gw .banner-logo {
+	width: 30%;
+	max-width: 300px;
+	margin: 2px 40%;
+	text-align:center;
+}
+
+.episode-gw {
+	font-family: "Helvetica", "Arial", sans-serif;
+	font-weight: 300;
+}
+
+.episode-gw h1,
+.episode-gw h2,
+.episode-gw h3,
+.episode-gw h4,
+.episode-gw h5,
+.episode-gw .item a,
+.episode-gw .navigationPanel a {
+	font-family: "Montserrat", sans-serif;
+	color: #003A5C;
+}
+.episode-gw h1,
+.episode-gw h2,
+.episode-gw h3,
+.episode-gw h4,
+.episode-gw h5 {font-weight: 700}
+
+.episode-gw .item .title,
+.episode-gw .navigationPanel a {
+	font-family: "Montserrat", sans-serif;
+	font-weight: 400;
+	font-size: 1em;
+	line-height: 1.2em;
+}
+
+.episode-gw .colorInvert {
+	background-color: #003A5C;
+}
+
+.episode-gw .colorInvert * {color:#FFF}
+
+.episode-gw .item .pullquote,
+.episode-gw .item .pullquoteSpeaker {
+	font-family: "Cardo",serif;
+}
+
+.episode-gw .item .pullquote:before {
+	font-family: "Cardo",serif;
+	color: rgba(0,58,92,0.5);
+	font-size: 1.7em;
+	margin-left: -0.5em;
+}
+
+.episode-gw .escapelink:before {
+	color: #AB9767;
+}
+.episode-gw.highlightSolid .content .item.currentItem,
+.episode-gw .highlightSolid .content .item.currentItem,
+.episode-gw .highlightSolid.item.currentItem
+{
+	background-color: rgba(171,151,103,0.3);
+}
+
+.episode-gw .contentAlt {
+	background-color: rgba(0,58,92,0.05);
+}
+
+.episode-gw .navigationPanel {
+	border-radius: 30px 30px 0 0 /* must be bigger than h2 below */
+}
+
+.episode-gw .navigationPanel h2 {
+	border-radius: 20px 20px 0 0
+}
+
+.episode-gw .navigationPanel h2 {
+	background-color: #AB9767;
+	color:#FFF;
+}
+
+.episode-gw .navigationPanel .scene {
+	border-top: 1px solid #AB9767;
+	font-size: 0.9em;
+	padding: 0.7em 0.3em;	
+}
+
+.episode-gw .navigationPanel .currentScene {
+	background-color: rgba(171,151,103,0.3);
+}
