@@ -151,15 +151,14 @@
  *
 //===========================*/
  .content .item {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 }
 .item {
 	padding-left:60px;
 }
 .item .itemHead {
 	display:inline;
-	line-height: 1em
 }
 .item .icon {
 	max-width: 55px;
@@ -222,7 +221,7 @@
  *
 //=========================== */
  .timestampNone .item, .item.timestampNone {
-	padding-left: 0;
+	/* padding-left: 0; */
 }
 .timestampNone .item .displayTime, .item.timestampNone .displayTime {
 	display:none
@@ -275,7 +274,8 @@
 .item .pullquoteSpeaker {
 	text-align: right;
 	font-style: italic;
-	font-size: 0.8em
+	font-size: 0.8em;
+	margin-right: 15px;
 }
 .item .pullquoteSpeaker:before {
 	content:" — ";

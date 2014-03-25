@@ -2,8 +2,8 @@
 	"episode": {
 		"title": "Episode Title",
 		"description": "Kowloon pistol dolphin rebar singularity faded stimulate man office market narrative sensory. refrigerator rebar marketing render-farm tube drugs decay soul-delay rain range-rover youtube wonton soup.",
-		"style_id": "transitionSlideL  typographyEliterate",
-		"template_id": "templates/episode-eliterate.html",
+		"style_id": "transitionFade highlightSolid typographyEliterate",
+		"template_id": "templates/episode-gw.html",
 		"master_asset_id": {
 			"mpeg4": "https://s3.amazonaws.com/itt.uploads/demo/Sandbox/e-LiterateTV/Series%201/MOOC%20Mania/E-Lit_TV_E03_Main_Edit_FC_REV_131218.mp4"
 		}
@@ -28,12 +28,39 @@
 		}, {
 			"type": "annotation",
 			"template_id": "templates/text-h2.html",
-			"style_id": "colorInvert",
+			"style_id": "",
 			"start_time": 0,
 			"end_time": 3,
 			"annotator": "Mr. Universe",
 			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
 			"annotation": "H2 template."
+		}, {
+			"type": "annotation",
+			"template_id": "templates/text-h2.html",
+			"style_id": "colorInvert",
+			"start_time": 0,
+			"end_time": 3,
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "color-inverted H2 template."
+		}, {
+			"type": "annotation",
+			"template_id": "templates/text-pullquote.html",
+			"style_id": "",
+			"start_time": 0,
+			"end_time": 3,
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "This is a pullquote."
+		}, {
+			"type": "annotation",
+			"template_id": "templates/text-pullquote-noattrib.html",
+			"style_id": "",
+			"start_time": 0,
+			"end_time": 3,
+			"annotator": "Mr. Universe",
+			"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
+			"annotation": "Pullquote-noattrib."
 		}, {
 			"type": "annotation",
 			"start_time": 0,
@@ -174,21 +201,7 @@
 		},
 
 
-		{
-			"type": "link",
-			"event_category_id": "links",
-			"start_time": 2,
-			"end_time": 2,
-			"stop": true,
-			"layout_id": "windowFg",
-			"required": true,
-			"template_id": "templates/transmedia-link-embed.html",
-			"style_id": "timestampNone",
-			"title": "Frameicide link",
-			"description": "Default link tempalte",
-			"link_image_id": "http://placekitten.com/61/61",
-			"url": "http://danielbeck.net"
-		}, {
+ {
 			"type": "link",
 			"event_category_id": "links",
 			"start_time": 10,
