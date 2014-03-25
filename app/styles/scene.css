@@ -31,7 +31,8 @@
 //===========================*/
 
 .content {
-	padding: 15px 0;
+	padding-top: 15px;
+	padding-bottom: 15px;
 }
  .content > div {
 	perspective: 600px;

@@ -151,8 +151,8 @@
  *
 //===========================*/
  .content .item {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 }
 .item {
 	padding-left:60px;
@@ -221,7 +221,7 @@
  *
 //=========================== */
  .timestampNone .item, .item.timestampNone {
-	padding-left: 0;
+	/* padding-left: 0; */
 }
 .timestampNone .item .displayTime, .item.timestampNone .displayTime {
 	display:none

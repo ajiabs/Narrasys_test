@@ -643,3 +643,48 @@ for all sub styles:
 .episode-gw .navigationPanel .currentScene {
 	background-color: rgba(171,151,103,0.3);
 }
+
+.episode-gw .intropanel {
+	margin: 0 !important;
+}
+
+.episode-gw .introtext h1 {
+position:absolute;
+top: 0; left: 0; right: 0; bottom: 0;
+border-top: 50px solid #FFF; /* sleazy way to cover up toolbar logo */
+width: 400px;
+z-index:10;
+padding-top: 120px; /* leave room for logo */
+font-weight: 400;
+font-size: 24px; line-height: 25px;
+}
+
+.episode-gw .introtext {
+	float:none;
+	width: 400px;
+	margin:auto;
+	background-image: url('/images/gw-logo-big.svg');
+	background-size: 60%;
+	background-position: 50% 50px;
+	background-repeat: no-repeat;
+	padding-top: 200px !important;
+}
+
+.episode-gw .intropanel .videoContainer {
+	float:none;
+	width: 400px;
+	margin:auto;
+}
+@media screen and (max-width: 300px) {
+	.episode-gw .intropanel {
+		margin: auto !important;
+	}
+	.episode-gw .intropanel .introtext {
+		position: static !important;
+		padding-top: 0 !important;
+	}
+	.episode-gw .intropanel h1 {
+		position:static !important;
+		margin-left: 0 !important;
+	}
+}
