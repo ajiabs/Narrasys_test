@@ -104,3 +104,8 @@ The current tech order for the master video is:
 highlightSide and highlightBorder will no longer reposition the item
 Embedded HTML is now supported in all title, description, and annotation fields.  Please to be using with care :)
 
+------------------------------------------------
+Changes in v1.4.6:
+GW template
+
+
