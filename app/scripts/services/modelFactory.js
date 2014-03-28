@@ -181,6 +181,7 @@ angular.module('com.inthetelling.player')
 			model.styles = resolveStyleCSS(data.style_id) || "";
 			model.videos = resolveMasterAssetVideo(data.master_asset_id);
 			model._id = data._id;
+			model.containerId = data.container_id; // HACK for demo
 			return model;
 		};
 
@@ -248,7 +249,11 @@ angular.module('com.inthetelling.player')
 
 			case "link":
 				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-link-default.html";
+				if (model.templateUrl === 'templates/upload-demo.html') { // HACK FOR DEMO
+					model.itemDetailTemplateUrl = "templates/modal-upload-demo.html";
+				} else {
 				model.itemDetailTemplateUrl = "templates/modal-link-default.html"; // hardcoded for now, not sure if we'll want to allow variations here
+				}
 				model.category = "links"; // TODO: Hardcoded for now. This can go once we implement dynamic categories in the base model construction.
 				model.title = data.title;
 				model.description = data.description;

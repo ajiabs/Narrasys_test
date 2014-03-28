@@ -85,3 +85,34 @@ Added explicit timestampNone class to item templates which never have timestamps
 Changed some item padding to item margin instead (to make highlightSolid look better on image-plain items)
 Modals now can scroll vertically if too large for window
 
+------------------------------------------------
+Changes in SxS0.001:
+Flow.js experimental, partial
+
+Removing unnecessary comment
+
+masterAsset selection now handles multiple sizes of each filetype (and chooses the largest one.)  Also explicitly restricts m3u8 to Safari only.
+
+The current tech order is
+youtube (if present, and not safari, and not iPad)
+webm (if supported by browser)
+m3u8 (if safari)
+mp4
+
+highlightSide and highlightBorder will no longer reposition the item
+
+Removing stray comment
+
+Embedded HTML is now supported in all title, description, and annotation fields.  Please to be using with care :)
+
+(attempting to) change video format priority: when browser supports both, try webm before m3u8 or mp4
+
+(this may or may not work, videojs techOrder control doesn’t get this
+granular, but it can’t hurt)
+
+ModelFactory now escaping spaces in asset urls
+
+Don't try to use .webm when not available.
+
+Merge branch 'master' into Dev-master
+

@@ -238,6 +238,19 @@
 		},		
 
 		{
+			"type": "link",
+			"event_category_id": "links",
+			"start_time": 90,
+			"end_time": 511,
+			"template_id": "templates/upload-demo.html",
+			"style_id": "",
+			"title": "Demo",
+			"description": "Demo",
+			"link_image_id": "http://placekitten.com/61/61",
+			"url": "http://danielbeck.net"
+		},
+
+		{
 			"type": "scene",
 			"template_id": "templates/scene-cornerH.html",
 			"layout_id": "",
