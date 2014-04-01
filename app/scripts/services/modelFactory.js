@@ -79,10 +79,14 @@ angular.module('com.inthetelling.player')
 						// Sort them out by file extension first, then use _chooseBiggestMasterAsset to keep the largest one of each type.
 						var extensionMatch = /\.(\w+)$/;
 						for (var i=0; i<masterAsset.alternate_urls.length;i++) {
-							switch(masterAsset.alternate_urls[i].match(extensionMatch)[1]) {
-								case "mp4":  videoObject.mpeg4 = _chooseBiggestMasterAsset(videoObject.mpeg4,masterAsset.alternate_urls[i]); break;
-								case "m3u8": videoObject.m3u8  = _chooseBiggestMasterAsset(videoObject.m3u8, masterAsset.alternate_urls[i]); break;
-								case "webm": videoObject.webm  = _chooseBiggestMasterAsset(videoObject.webm, masterAsset.alternate_urls[i]); break;
+							if (masterAsset.alternate_urls[i].match(/youtube/)) {
+								videoObject.youtube = masterAsset.alternate_urls[i];
+							} else {
+								switch(masterAsset.alternate_urls[i].match(extensionMatch)[1]) {
+									case "mp4":  videoObject.mpeg4 = _chooseBiggestMasterAsset(videoObject.mpeg4,masterAsset.alternate_urls[i]); break;
+									case "m3u8": videoObject.m3u8  = _chooseBiggestMasterAsset(videoObject.m3u8, masterAsset.alternate_urls[i]); break;
+									case "webm": videoObject.webm  = _chooseBiggestMasterAsset(videoObject.webm, masterAsset.alternate_urls[i]); break;
+								}
 							}
 						}
 						if (masterAsset.you_tube_url) {
