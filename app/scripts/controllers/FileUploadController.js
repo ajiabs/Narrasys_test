@@ -13,7 +13,7 @@ angular.module('com.inthetelling.player')
 
 
 angular.module('com.inthetelling.player')
-	.controller('FileUploadController', function ($scope, $http, config, formDataObject) {
+	.controller('FileUploadController', function ($scope, $http, $httpProvider, config, formDataObject) {
 
 		console.log("fileuploadcontroller", $scope);
 
@@ -32,16 +32,20 @@ angular.module('com.inthetelling.player')
 				containerId = "528fa688ba4f654bbe000005";
 			//}
 
+
+console.log("Provider",$httpProvider);
+/*
 			$http({
 				method: 'POST',
+				headers: {
+					//'Content-Type': 'multipart/form-data'
+					'Content-Type': 'application/json'
+				},
 				url: config.apiDataBaseUrl + '/v1/containers/'+containerId+'/assets',
 				data: {
 					"asset[attachment]": $scope.fileToUpload,
-				},
-				transformRequest: formDataObject, // this sends your data to the formDataObject provider that we are defining below.
-				headers: {
-					'Content-Type': 'multipart/form-data'
 				}
+				//transformRequest: formDataObject, // this sends your data to the formDataObject provider that we are defining below.
 			}).
 			success(function (data, status, headers, config) {
 				console.log(data,status,headers,config);
@@ -49,7 +53,7 @@ angular.module('com.inthetelling.player')
 			error(function (data, status, headers, config) {
 				console.log("ERROR",data,status,headers,config);
 			});
-
+*/
 
 
 		};
