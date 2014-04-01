@@ -108,4 +108,8 @@ Embedded HTML is now supported in all title, description, and annotation fields.
 Changes in v1.4.6:
 GW template
 
+------------------------------------------------
+Changes in v1.4.7:
+Handle youtube urls inside of alternate_urls array
+Updated to work with Capistrano 3.1
 
