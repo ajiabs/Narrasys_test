@@ -120,3 +120,6 @@ Merge branch 'master' into Dev-master
 Changes in SxS0.1:
 IT LIVES
 
+------------------------------------------------
+Changes in SxS0.2:
+fixed bad template path
