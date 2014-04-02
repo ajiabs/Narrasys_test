@@ -44,8 +44,14 @@
 			<div ng-include="'templates/modal-upload-demo.html'"></div>
 		</div>
 		<div class="demo-floater" x-ng-show="floaterMessage">
+			<button ng-click="hideFloater()">X</button>
 			{{floaterMessage}}
-			<button ng-click="hideFloater()">Hide</button>
+			<div x-ng-show="floaterVariant == 'progress'" class="progress-bar stripes">
+				<span style="width: 100%"></span>
+			</div>
+			<div x-ng-show="floaterVariant == 'reload'">
+				<a ng-click="forceWindowReload()" href="javascript: void 1;">Click here to reload</a>
+			</div>
 		</div>
 
 

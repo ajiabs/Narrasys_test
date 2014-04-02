@@ -8,26 +8,24 @@
 	content:"";
 	display:block;
 }
-
-body {background-color:#FFF}
-
+body {
+	background-color:#FFF
+}
 /* Fix for iPad/iframe scrolling problems.  Must use JS (in episode controller) to set the height to window height (which in a frame will be the frame height) */
-/* DO NOT apply this globally to all devices.  Assign it only as the top-level wrapper on ipad/iphone */
 
-.iosScrollFix {
+/* DO NOT apply this globally to all devices.  Assign it only as the top-level wrapper on ipad/iphone */
+ .iosScrollFix {
 	position:relative;
 	height: 100%;
 	width: 100%;
 	overflow:auto;
 	-webkit-overflow-scrolling:touch;
 }
-
 .iosScrollFix .vjs-control-bar, .iosScrollFix .toolbar {
--webkit-transform: translate3d(0, 0, 0);
--webkit-backface-visibility: hidden;
+	-webkit-transform: translate3d(0, 0, 0);
+	-webkit-backface-visibility: hidden;
 	-webkit-perspective: 1000;
 }
-
 /*============================
  *
  * zIndex
@@ -58,7 +56,6 @@ body {background-color:#FFF}
 .videoOverlay, .windowFg {
 	z-index: 8
 }
-
 .toolbar, .banner-logo {
 	z-index: 9
 }
@@ -68,7 +65,6 @@ body {background-color:#FFF}
 .modal, .sidePanel {
 	z-index: 11
 }
-
 /* 
 IE10+ has an idiosyncratic point of view regarding stacking context.
 This fixes it. TODO: understand why it fixes it
@@ -80,14 +76,12 @@ This fixes it. TODO: understand why it fixes it
 Allow clicks on overlay items to fall through.	TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
 Need workaround for most IE: may need to manually capture click events and pass them through using document.getElementFromPoint? 
 */
-.windowBg, .windowFg, .paneFg, .videoOverlay {
+ .windowBg, .windowFg, .paneFg, .videoOverlay {
 	pointer-events: none
 }
 .windowBg .item, .windowFg .item, .paneFg a, .videoOverlay a {
 	pointer-events: auto
 }
-
-
 /* Custom Icon Font
 --------------------------------------------------------------------------------
 See /images/font/story/map.png for a list of available glyphs
@@ -99,10 +93,6 @@ See /images/font/story/map.png for a list of available glyphs
 	font-weight: normal;
 	font-style: normal;
 }
-
-
-
-
 /*============================
  *
  * Shared Modal
@@ -169,12 +159,15 @@ See /images/font/story/map.png for a list of available glyphs
  * The ever-popular "misc"
  *
 //===========================*/
-
-h1 { font-size: 2.2em; }
-h2 { font-size: 1.8em; }
-h3 { font-size: 1.3em; }
-
-
+ h1 {
+	font-size: 2.2em;
+}
+h2 {
+	font-size: 1.8em;
+}
+h3 {
+	font-size: 1.3em;
+}
 .threedee {
 	perspective: 800px;
 	/* Safari is choking on the 3d transforms. TODO figure out why; for now just revert to 2d */
@@ -187,30 +180,29 @@ h3 { font-size: 1.3em; }
 	font-size: 0.01em;
 }
 .error {
-    border: 2px solid #CC0000;
-    padding: 1em;
-    background-color: #FFF;
-    position: absolute;
-    top: 1em;
-    left: 1em;
-    right: 1em;
-    bottom: 1em;
-    z-index: 9999;
-    box-shadow: 3px 3px 6px #200;
+	border: 2px solid #CC0000;
+	padding: 1em;
+	background-color: #FFF;
+	position: absolute;
+	top: 1em;
+	left: 1em;
+	right: 1em;
+	bottom: 1em;
+	z-index: 9999;
+	box-shadow: 3px 3px 6px #200;
 }
-
 /* Blocks iPad1/2 users from using the site inside a frame */
-.forcedEscape {
-width:100%;height:100%; cursor: pointer;
+ .forcedEscape {
+	width:100%;
+	height:100%;
+	cursor: pointer;
 }
-
 .forcedEscape:before {
 	color: #000 !important;
 	text-shadow: 0px 0px 1px #FFF;
 	line-height: 1.5em;
 	margin-left: 0.5em;
 }
-
 /*============================
  *
  * quick-and-dirty phone layout
@@ -220,27 +212,32 @@ width:100%;height:100%; cursor: pointer;
 	.toolbar {
 		position:static !important;
 	}
-	
 	.episode {
 		margin-top: 0 !important;
 	}
-
 	/* Make sure this doesn't affect small desktop windows: */
 	.isIPhone .vjs-control-bar {
 		display:none !important;
 	}
-
-	
-	.scene-explore .scene {display:block !important /* override flex */}
-
-	.scene-explore .videoContainer {position:static !important;}
-	
-	.scene-explore .videoContainer {display:none}
-	.scene-explore.currentScene .videoContainer {display:block}
-	
-	.scene-explore .matchVideoHeight {display: none !important}
-	.scene-explore .currentScene .matchVideoHeight {display:block !important}
-	
+	.scene-explore .scene {
+		display:block !important
+		/* override flex */
+	}
+	.scene-explore .videoContainer {
+		position:static !important;
+	}
+	.scene-explore .videoContainer {
+		display:none
+	}
+	.scene-explore.currentScene .videoContainer {
+		display:block
+	}
+	.scene-explore .matchVideoHeight {
+		display: none !important
+	}
+	.scene-explore .currentScene .matchVideoHeight {
+		display:block !important
+	}
 	.scene-explore .contentMain, .scene-explore .contentAlt {
 		float:none !important;
 		width: 100% !important;
@@ -249,64 +246,104 @@ width:100%;height:100%; cursor: pointer;
 		width:80% !important;
 	}
 	.searchPanel {
-		width: 80% !important; position:absolute !important;
+		width: 80% !important;
+		position:absolute !important;
 	}
-	
 	.banner-logo {
-	position:absolute !important;
-}
-
+		position:absolute !important;
+	}
 	/* TODO: yes?
 	.modal, .modal-backdrop {position:absolute !important;}
 */
 }
-
 /* SxS demo */
-.demo-modal-upload {
+ .demo-modal-upload {
 	background-color:#FFF;
 	padding: 1em;
+}
+
+ .sxsgroup a span {
+	width: 300px !important;
+	text-align:left !important;
+}
+.sxsPanel {
+	min-height: 300px;
+	background-color:#FFF;
+	padding: 1em;
+	box-shadow: 3px 3px 6px #000;
+}
+.sxsPanel p {
+	margin: 1em 0;
+}
+.demo-modal-upload label {
+	width: 100%;
+	display: block;
+	margin: 1.3em 0;
+}
+.demo-modal-upload textarea, .demo-modal-upload input {
+	width: 70%;
+	font-family: sans-serif;
+	font-size: 1em;
+	float: right;
+}
+.demo-modal-upload button {
+	font-size:1em;
+}
+.demo-modal-upload label span {
+	width: 29%;
+	text-align: right;
+	display: inline-block;
+	font-size: 0.8em;
+	color: #999;
+}
+.demo-modal-upload .menu button {
+	float: left;
+	height: 4em;
+	margin: 0 1.5%;
+	width: 30%;
 }
 
 .demo-floater {
 	background-color:#FFF;
 	position:fixed;
-	bottom: 90px; right: 15px; width: 40%;
-	border: 1px solid #666; box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+	bottom: 90px;
+	right: 15px;
+	width: 40%;
+	border: 1px solid #666;
+	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
 	padding: 10px !important;
 	z-index:11;
+	font-size: 12px;
 }
 
-
-/* DEMO */
-.sxsgroup a span {
-	width: 300px !important;
-	text-align:left !important;
+.demo-floater button {
+	left: -3em;
+	max-width: 3em;
+	position: absolute;
+	top: 0;
 }
-
-.sxsPanel {
-	min-height: 300px;
-	background-color:#FFF;
-	padding: 1em;
-	box-shadow: 3px 3px 3px #000;
+.demo-floater .progress-bar {
+	width: 100%;
+	margin-top: 0.5em;
+	height: 10px;
+	border: 1px solid #7777FF;
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
-
-.demo-modal-upload label {
-    width: 100%;
-    display: block;
-    margin: 1.3em 0;
+.demo-floater .progress-bar span {
+	height: 100%;
+	background-color: #66A8CC;
+	display: block;
 }
-.demo-modal-upload textarea, .demo-modal-upload input {
-    width: 70%;
-    font-family: sans-serif;
-    font-size: 1em;
-    float: right;
+.demo-floater .stripes span {
+	background-size: 30px 30px;
+	background-image: linear-gradient(135deg, rgba(255, 255, 255, .25) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .25) 50%, rgba(255, 255, 255, .25) 75%, transparent 75%, transparent);
+	animation: animate-stripes 3s linear infinite;
 }
-
-.demo-modal-upload button {font-size:1em;}
-.demo-modal-upload label span {
-    width: 29%;
-    text-align: right;
-    display: inline-block;
-    font-size: 0.8em;
-    color: #999;
+@keyframes animate-stripes {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 60px 0;
+	}
 }

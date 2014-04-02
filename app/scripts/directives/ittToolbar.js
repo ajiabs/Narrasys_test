@@ -4,7 +4,7 @@
 // This is turning into the player chrome rather than just the toolbar. TODO name change or refactor you be the judge
 
 angular.module('com.inthetelling.player')
-	.directive('ittToolbar', function ($timeout, $rootScope, videojs, $window,$location) {
+	.directive('ittToolbar', function ($timeout, $rootScope, videojs, $window, $location) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -132,15 +132,20 @@ angular.module('com.inthetelling.player')
 					scope.hidePanels();
 				});
 
-				$rootScope.$on("SxS.message", function(event, message) {
+				$rootScope.$on("SxS.message", function(event, message, variant) {
 					console.log("got message",message);
 					scope.floaterMessage = message;
+					scope.floaterVariant = variant;
 				});
 
 				scope.hideFloater = function() {
 					scope.floaterMessage = false;
-				}
+				};
 
+				scope.forceWindowReload = function() {
+					$window.location.reload();
+				};
+				
 				scope.hidePanels = function () {
 					// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 					scope.show.navigationPanel = false;

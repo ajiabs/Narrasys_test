@@ -3,43 +3,63 @@
 
 	<div class="demo-modal-upload">
 
-		<h3 ng-if="curScene.title">Introduce {{curScene.title}}</h3>
+		<h3 ng-if="curScene.title">Introduce "{{curScene.title}}"</h3>
 		<h3 ng-if="!curScene.title">Introduce this scene</h3>
 
 		<p>Upload a video and some introductory text for your students here. This will be included in the episode at the beginning of the scene.</p>
 
-		<p>TODO add stubs for linking to existing video, recording direct from webcam</p>
-		<p>TODO allow choosing whether the itnro will be a stop-media item or inline</p>
+		<div class="menu" ng-show="!doUpload && !doLink && !doRecord">
+			<button ng-click="doUpload=true">Upload a video file</button>
+			<button ng-click="doLink=true">Link to a video</button>
+			<button ng-click="doRecord=true">Record from your webcam</button>
+		</div>
+		<div ng-show="doUpload">
+			<small>TODO: allow drag-and-drop upload of files</small>
 
-		<label>
-			<span>File:</span>
-			<input type="file" file-upload>
-		</label>
+			<label>
+				<span>File:</span>
+				<input type="file" file-upload>
+			</label>
 
-		<label>
-			<span>Title:</span>
-			<input type="text" ng-model="titleToUpload">
-		</label>
+			<label>
+				<span>Title:</span>
+				<input type="text" ng-model="titleToUpload">
+			</label>
 
-		<label>
-			<span>Description:</span>
-			<textarea name="text" ng-model="textToUpload">
-				This is where we enter text
-			</textarea>
-		</label>
+			<label>
+				<span>Description:</span>
+				<textarea name="text" style="min-height: 5em;" ng-model="textToUpload"></textarea>
+			</label>
+			<div class="clear"></div>
+			<div>
+				<button ng-click="doUpload = false" style="float:left">Cancel</button>
+				<button ng-click="handleUpload()" style="float:right">Save</button>
+			</div>
+		</div>
 
-		<label><button ng-click="handleUpload()" style="float:right">Save</button></label>
+		<div ng-show="doLink">
+			<p>TODO: this will allow users to link to existing youtube videos rather than uploading new ones.</p>
+			<label>
+				<button ng-click="doLink = false" style="float:left">Cancel</button>
+			</label>
+		</div>
+		<div ng-show="doRecord">
+			<p>TODO: this will allow users to record videos directly from their webcam.</p>
+			<label>
+				<button ng-click="doRecord = false" style="float:left">Cancel</button>
+			</label>
+		</div>
 	</div>
 
-<br><br><br>
-	<button ng-click="resetDemo()" style="background-color:#C00; color:#FFF">Reset: delete all instructor uploads</button>
+<div class="clear"></div>
+<br><br>
+	<button ng-click="resetDemo()" style="position:absolute; bottom: 1em; left: 1em;background-color:#C00; color:#FFF">Reset: delete all instructor uploads</button>
 
 	<!--
-
-	<button ng-click="hideModal()">Hide modal</button>
 	<button ng-click="floatMessage('this is a message')">Floater 1</button>
-	<button ng-click="floatMessage('this is a second message')">Floater 2</button>
-	<button ng-click="floatMessage('this is the thihrd')">Floater 3</button>
+	<button ng-click="floatMessage('this is a long message which will have a progress bar. This is along message that will have a progress bar.','progress')">Floater 2</button>
+	<button ng-click="floatMessage('THis one tells you to reload the page','reload')">Floater 3</button>
+
 -->
 
 </div>

@@ -31,14 +31,13 @@ angular.module('com.inthetelling.player')
 	};
 })
 
-
-.controller('FileUploadController', function (dataSvc, $scope, $rootScope, $http, config, formDataObject, $timeout, $q) {
+.controller('FileUploadController', function (dataSvc, $scope, $rootScope, $http, config, formDataObject, $timeout, $q, $window) {
 
 	console.log("fileuploadcontroller", $scope);
 
 	$scope.fileToUpload = "";
-	$scope.textToUpload = "Text";
-	$scope.titleToUpload = "Title";
+	$scope.textToUpload = "";
+	$scope.titleToUpload = "";
 	$scope.episode = $('#CONTAINER > div').scope().episode;
 	$scope.scenes = $('#CONTAINER > div').scope().scenes;
 
@@ -58,8 +57,8 @@ angular.module('com.inthetelling.player')
 		$rootScope.$emit("SxS.hide");
 	};
 
-	$scope.floatMessage = function (message) {
-		$rootScope.$emit("SxS.message", message);
+	$scope.floatMessage = function (message, variant) {
+		$rootScope.$emit("SxS.message", message, variant);
 	};
 
 	$scope.handleUpload = function () {
@@ -79,7 +78,7 @@ angular.module('com.inthetelling.player')
 		// First delete SxS items in this scene
 		$scope.deleteSxSItems(curScene);
 
-		$scope.floatMessage("Your file is now being uploaded.");
+		$scope.floatMessage("Your video is now being uploaded.", "progress");
 		$rootScope.$emit("SxS.hide");
 
 		$http({
@@ -122,7 +121,7 @@ angular.module('com.inthetelling.player')
 
 
 				// Update floater with "transcoding" message
-				$scope.floatMessage("Upload complete! Now transcoding...");
+				$scope.floatMessage("Upload complete! Now transcoding...", "progress");
 
 				// start polling server to see when the event has an alternate_urls array
 				$scope.pollEvent(data);
@@ -144,6 +143,10 @@ angular.module('com.inthetelling.player')
 	$scope.resetDemo = function () {
 		var curScene = $('.thisisthetoolbar').scope().curScene;
 		if (confirm("This will delete ALL instructor assets and events from this episode. Are you sure?")) {
+			$scope.floatMessage("Please wait, deleting items. The episode will reload automatically when this is complete.", "progress");
+			$timeout(function () {
+				$window.location.reload();
+			}, 7000);
 			angular.forEach($scope.scenes, function (scene) {
 				$scope.deleteSxSItems(scene);
 			});
@@ -184,6 +187,7 @@ angular.module('com.inthetelling.player')
 		error(function (data, status, headers) {
 			console.log("ERROR, delete failed: ", data, status, headers);
 		});
+
 		return defer.promise;
 
 	};
@@ -199,20 +203,16 @@ angular.module('com.inthetelling.player')
 
 				console.log("poll", assetData);
 				if (assetData.alternate_urls) {
-					$scope.floatMessage("All done! In a real episode we would be able to show the new item to you immediately; for now you'll need to reload the browser window.");
+					$scope.floatMessage("All done! In a real episode we would be able to show the new item to you immediately; for now you'll need to reload the browser window.", "reload");
 
 					// TODO: inject the new event into the episode data...  this is why I am rewriting modelFactory
 					// because doing this here will be difficult-ish
 					console.log("Got new event:", eventData, assetData);
-
-
 				} else {
 					if (assetData._type === "Asset::Video") {
 						$scope.pollEvent(eventData);
 					} else {
-						$scope.floatMessage("All done! In a real episode we would be able to show the new item to you immediately; for now you'll need to reload the browser window.");
-
-
+						$scope.floatMessage("All done! In a real episode we would be able to show the new item to you immediately; for now you'll need to reload the browser window.", "reload");
 					}
 				}
 			}).error(function (data) {
