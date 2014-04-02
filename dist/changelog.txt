@@ -123,3 +123,7 @@ IT LIVES
 ------------------------------------------------
 Changes in SxS0.2:
 fixed bad template path
+------------------------------------------------
+Changes in SxS0.3:
+cosmetics
+
