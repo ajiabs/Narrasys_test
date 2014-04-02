@@ -1,7 +1,7 @@
 <div class="{{episode.styles}}" x-ng-class="{isFramed: isFramed, isIPhone: isIPhone}">
 	<div x-itt-video x-itt-magnetized class="vjs-wrapper">
 	</div>
-	<div x-itt-toolbar>
+	<div x-itt-toolbar class="thisisthetoolbar">
 	</div>
 	<div class="episode episode{{episode.layout}}">
 		<div x-ng-repeat="scene in scenes" x-itt-scene="scene"></div>

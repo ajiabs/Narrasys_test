@@ -73,35 +73,7 @@ angular.module('com.inthetelling.player')
 			if (isUid(masterAssetId)) {
 				var masterAsset = dataSvc.getAssetById(masterAssetId);
 				if (masterAsset) {
-					var videoObject = {};
-					if (masterAsset.alternate_urls) {
-						// This will eventually replace the old method below.
-						// Sort them out by file extension first, then use _chooseBiggestMasterAsset to keep the largest one of each type.
-						var extensionMatch = /\.(\w+)$/;
-						for (var i=0; i<masterAsset.alternate_urls.length;i++) {
-							console.log(masterAsset.alternate_urls[i]);
-							if (masterAsset.alternate_urls[i].match(/youtube/)) {
-								videoObject.youtube = masterAsset.alternate_urls[i];
-							} else {
-								switch(masterAsset.alternate_urls[i].match(extensionMatch)[1]) {
-									case "mp4":  videoObject.mpeg4 = _chooseBiggestMasterAsset(videoObject.mpeg4,masterAsset.alternate_urls[i]); break;
-									case "m3u8": videoObject.m3u8  = _chooseBiggestMasterAsset(videoObject.m3u8, masterAsset.alternate_urls[i]); break;
-									case "webm": videoObject.webm  = _chooseBiggestMasterAsset(videoObject.webm, masterAsset.alternate_urls[i]); break;
-								}
-							}
-						}
-						if (masterAsset.you_tube_url) {
-							videoObject.youtube = masterAsset.you_tube_url;
-						}
-
-					} else {
-						// This is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes.
-						videoObject = {
-							mpeg4: masterAsset.url.replace('.mp4','.m3u8'),
-							webm: masterAsset.url.replace(".mp4", ".webm"),
-							youtube: masterAsset.you_tube_url
-						};
-					}
+					var videoObject = resolveVideoUrls(masterAsset);
 
 					// HACK some platform detection here.
 					var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
@@ -126,20 +98,65 @@ angular.module('com.inthetelling.player')
 			return masterAssetId;
 		};
 
+
+		var resolveVideoUrls = function (videoAsset) {
+			var videoObject = {};
+
+			if (videoAsset.alternate_urls) {
+				// This will eventually replace the old method below.
+				// Sort them out by file extension first, then use _chooseBiggestVideoAsset to keep the largest one of each type.
+				var extensionMatch = /\.(\w+)$/;
+				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
+					if (videoAsset.alternate_urls[i].match(/youtube/)) {
+						videoObject.youtube = videoAsset.alternate_urls[i];
+					} else {
+						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
+						case "mp4":
+							videoObject.mpeg4 = _chooseBiggestVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
+							break;
+						case "m3u8":
+							videoObject.m3u8 = _chooseBiggestVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
+							break;
+						case "webm":
+							videoObject.webm = _chooseBiggestVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
+							break;
+						}
+					}
+				}
+				if (videoAsset.you_tube_url) {
+					videoObject.youtube = videoAsset.you_tube_url;
+				}
+			} else {
+				// This is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes.
+				videoObject = {
+					mpeg4: videoAsset.url.replace('.mp4', '.m3u8'),
+					webm: videoAsset.url.replace(".mp4", ".webm"),
+					youtube: videoAsset.you_tube_url
+				};
+			}
+			return videoObject;
+		};
+
 		// Private convenience function called only from within resolveMasterAssetVideo. Pass in two filenames.
 		// If one is empty, return the other; otherwise checks for a WxH portion in two
 		// filenames; returns whichever is bigger.  
-		var _chooseBiggestMasterAsset = function(a,b) {
-			if (!a && b) {return b;}
-			if (!b) {return a;}
-			if (!a && !b) {return "";}
+		var _chooseBiggestVideoAsset = function (a, b) {
+			if (!a && b) {
+				return b;
+			}
+			if (!b) {
+				return a;
+			}
+			if (!a && !b) {
+				return "";
+			}
 
-			var regexp = /(\d+)x(\d+)\.\w+$/;   // [1]=w, [2]=h
+			var regexp = /(\d+)x(\d+)\.\w+$/; // [1]=w, [2]=h
 			// There shouldn't ever be cases where we're comparing two non-null filenames, neither of which have a
 			// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out 
-			var aTest = a.match(regexp) || [0,0];
-			var bTest = b.match(regexp) || [0,0];
-			return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a ;
+			var aTest = a.match(regexp) || [0, 0];
+			var bTest = b.match(regexp) || [0, 0];
+			return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a;
 		};
 
 		// Takes an id for an asset, looks it up, and returns the asset url
@@ -148,12 +165,28 @@ angular.module('com.inthetelling.player')
 			if (isUid(assetId)) {
 				var asset = dataSvc.getAssetById(assetId);
 				if (asset) {
-					return asset.url.replace(/ /g,"%20"); // TODO do we need to do more url escaping here?  encodeURIComponent() is too aggressive, escapes / and : which we don't want
+					// if video, resolve an alternate url...
+					if (asset.alternate_urls) {
+						var videoUrls = resolveVideoUrls(asset);
+						// TODO in real life, would want to return a different video depending on platform
+						// For now, return youtube if present, mp4 otherwise
+						if (videoUrls.youtube) {
+							return videoUrls.youtube;
+						} else {
+							return videoUrls.mpeg4;
+						}
+					} else {
+						return asset.url.replace(/ /g, "%20"); // TODO do we need to do more url escaping here?  encodeURIComponent() is too aggressive, escapes / and : which we don't want
+					}
 				} else {
 					console.error("Asset lookup failed for:", assetId);
 				}
 			}
-			return assetId.replace(/ /g,"%20"); // TODO as above (this is used in  local data)
+			if (assetId === undefined) {
+				console.warn("asset Id is undefined");
+				return undefined;
+			}
+			return assetId.replace(/ /g, "%20"); // TODO as above (this is used in  local data)
 		};
 
 		// Takes an id for an asset, looks it up, and returns the mime type
@@ -187,6 +220,9 @@ angular.module('com.inthetelling.player')
 			model.videos = resolveMasterAssetVideo(data.master_asset_id);
 			model._id = data._id;
 			model.containerId = data.container_id; // HACK for demo
+			if (model._id === "528fa688ba4f654bbe000006" || model._id === "533aec182442bdd34c000003") {
+				model.SxS = true;
+			}
 			return model;
 		};
 
@@ -195,7 +231,9 @@ angular.module('com.inthetelling.player')
 
 			model.type = data.type;
 			model.title = data.title;
-			if (!model.title) {model.nonNavigable=true;} // HACK
+			if (!model.title) {
+				model.nonNavigable = true;
+			} // HACK
 			model.description = data.description;
 			model.startTime = data.start_time;
 			model.endTime = data.end_time;
@@ -224,9 +262,10 @@ angular.module('com.inthetelling.player')
 
 		svc.createItemModel = function (data) {
 			var model = {};
-
+			model.keywords = data.keywords;
 			// base model
 			model.type = data.type;
+			model.assetId = data.asset_id;
 			//model.category = data.category; //TODO: Implement dynamic categories
 			model.startTime = data.start_time;
 			model.endTime = data.end_time;
@@ -254,11 +293,7 @@ angular.module('com.inthetelling.player')
 
 			case "link":
 				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-link-default.html";
-				if (model.templateUrl === 'templates/upload-demo.html') { // HACK FOR DEMO
-					model.itemDetailTemplateUrl = "templates/modal-upload-demo.html";
-				} else {
 				model.itemDetailTemplateUrl = "templates/modal-link-default.html"; // hardcoded for now, not sure if we'll want to allow variations here
-				}
 				model.category = "links"; // TODO: Hardcoded for now. This can go once we implement dynamic categories in the base model construction.
 				model.title = data.title;
 				model.description = data.description;
@@ -271,7 +306,7 @@ angular.module('com.inthetelling.player')
 						model.source = data.url + "?wmode=transparent";
 					} else {
 						// remove existing wmode if present first.
-						model.source = (data.url.replace(/wmode=[^&]*&?/g,'') + "&wmode=transparent").replace(/&+/g,'&');
+						model.source = (data.url.replace(/wmode=[^&]*&?/g, '') + "&wmode=transparent").replace(/&+/g, '&');
 					}
 				} else {
 					model.source = data.url;
@@ -284,12 +319,11 @@ angular.module('com.inthetelling.player')
 					model.type = "image"; // TODO: Temporary/ugly hack. We could handle subtyping better by creating a subtype or mimetype property and keying off that in the views, instead of changing the actual type on the model, because this is not CRUD friendly.
 				}
 				model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/transmedia-image-default.html";
-				
+
 				// special case to cope with some existing episodes:
 				if (!model.inContentPane && model.templateUrl === "templates/transmedia-image-plain.html") {
 					model.templateUrl = "templates/transmedia-image-fill.html";
 				}
-
 				model.itemDetailTemplateUrl = "templates/modal-image-default.html"; // hardcoded for now, not sure if we'll want to allow variations here
 				model.title = data.title;
 				model.description = data.description;

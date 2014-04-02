@@ -273,4 +273,40 @@ width:100%;height:100%; cursor: pointer;
 	bottom: 90px; right: 15px; width: 40%;
 	border: 1px solid #666; box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
 	padding: 10px !important;
+	z-index:11;
+}
+
+
+/* DEMO */
+.sxsgroup a span {
+	width: 300px !important;
+	text-align:left !important;
+}
+
+.sxsPanel {
+	min-height: 300px;
+	background-color:#FFF;
+	padding: 1em;
+	box-shadow: 3px 3px 3px #000;
+}
+
+.demo-modal-upload label {
+    width: 100%;
+    display: block;
+    margin: 1.3em 0;
+}
+.demo-modal-upload textarea, .demo-modal-upload input {
+    width: 70%;
+    font-family: sans-serif;
+    font-size: 1em;
+    float: right;
+}
+
+.demo-modal-upload button {font-size:1em;}
+.demo-modal-upload label span {
+    width: 29%;
+    text-align: right;
+    display: inline-block;
+    font-size: 0.8em;
+    color: #999;
 }

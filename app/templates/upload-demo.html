@@ -1,4 +1,4 @@
-<div bindonce="item" class="item demo-floater" x-ng-class='{
+<div bindonce="item" class="item" x-ng-class='{
 	"currentItem": item.isActive, 
 	"futureItem": !item.isActive && !item.wasActive, 
 	"pastItem": !item.isActive && item.wasActive,
@@ -6,9 +6,13 @@
 	"isCosmetic": item.cosmetic,
 	"isStop": item.stop
 }'>
-	<div ng-click="showModal()" style="cursor:pointer">
-	<b>Instructors:</b>
-	<p>Add your own custom introduction to this scene</p>
+
+
+	<h3>{{item.title}}</h3>
+	<div class="iframeContainer" style="width:90%; margin: 1em 0">
+		<iframe bo-src="item.source+'?modestbranding=1&showinfo=0'"></iframe>
 	</div>
+
+	<div>{{item.description}}</div>
 
 </div>

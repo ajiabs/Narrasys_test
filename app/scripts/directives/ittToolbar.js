@@ -90,6 +90,12 @@ angular.module('com.inthetelling.player')
 						scope.show.searchPanelInternals = true;
 					}, 0);
 				};
+
+				scope.showSxSForm = function() {
+					videojs.player.pause();
+					videojs.player.controls(false);
+					scope.show.sxsPanel = true;
+				};
 				
 				scope.toggleSearchPanel = function () {
 					if (scope.show.searchPanel) {
@@ -122,10 +128,24 @@ angular.module('com.inthetelling.player')
 					}
 				};
 				
+				$rootScope.$on("SxS.hide", function() {
+					scope.hidePanels();
+				});
+
+				$rootScope.$on("SxS.message", function(event, message) {
+					console.log("got message",message);
+					scope.floaterMessage = message;
+				});
+
+				scope.hideFloater = function() {
+					scope.floaterMessage = false;
+				}
+
 				scope.hidePanels = function () {
 					// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 					scope.show.navigationPanel = false;
 					scope.show.searchPanel = false;
+					scope.show.sxsPanel=false;
 					scope.searchText = '';
 					videojs.player.controls(true); // TODO: do this on iPad only
 					// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
