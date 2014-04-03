@@ -338,6 +338,11 @@ angular.module('com.inthetelling.player')
 				break;
 			}
 			model._id = data._id;
+
+if (model.templateUrl.indexOf('demo') > -1) {
+	model.inContentPane = true;
+}
+
 			return model;
 		};
 

@@ -29,16 +29,24 @@ angular.module('com.inthetelling.player')
 					} else if (scope.item.type === "upload" || scope.item.type === "image") { // TODO "image" is probably an artifact of bad test data; need to check API to make sure that can safely be removed
 
 						console.log(scope.item.templateUrl);
-						if (scope.item.templateUrl.indexOf('upload-demo') > -1) {
+						if (scope.item.templateUrl.indexOf('demo') > -1) {
 							scope.item.templateUrl = "templates/upload-demo-inline.html";
 						} else {
 							scope.item.templateUrl = "templates/transmedia-image-" + attrs.forceItemTemplate + ".html";
 						}
 					} else if (scope.item.type === "link") {
+
 						// HACK exceptions and special cases galore
 						if (scope.item.templateUrl !== "templates/transmedia-link-noembed.html" && scope.item.templateUrl !== "templates/transmedia-link-frameicide.html") {
 							scope.item.templateUrl = "templates/transmedia-link-" + attrs.forceItemTemplate + ".html";
 						}
+
+						if (scope.item.origTemplateUrl.indexOf('demo') > -1) {
+							scope.item.templateUrl = "templates/upload-demo-inline.html";
+						} else {
+							scope.item.templateUrl = "templates/transmedia-image-" + attrs.forceItemTemplate + ".html";
+						}
+
 					} else {
 						console.warn("PROBABLE ERROR: unknown item type ", scope.item);
 					}
