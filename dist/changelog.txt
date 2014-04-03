@@ -125,3 +125,7 @@ cosmetics
 Changes in SxS0.5:
 can link to videos as well as upload
 
+------------------------------------------------
+Changes in SxS0.6:
+explore mode now has correct templates, shows demo elements too
+
