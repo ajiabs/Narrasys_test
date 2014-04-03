@@ -9,8 +9,7 @@
 		<p>Upload a video and some introductory text for your students here. This will be included in the episode at the beginning of the scene
 			<span ng-if="curScene.displayTime">(at {{curScene.displayTime}} in the main video.)</span>
 		</p>
-		<br>
-		<br>
+
 		<div class="menu" ng-show="!doUpload && !doLink && !doRecord">
 			<button ng-click="doUpload=true">Upload a video file</button>
 			<button ng-click="doLink=true">Link to a video</button>
