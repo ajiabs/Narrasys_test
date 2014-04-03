@@ -18,13 +18,15 @@
 	</div>
 	<!-- <div class="icon"><img bo-src="item.thumbSrc"></div> -->
 	<div class="text">
-		<div class="title"><a href="javascript:void 1;" x-ng-click="toggleDetailView()" bo-html="item.title"></a>
+		<div class="title">
+			<a href="javascript:void 1;" x-ng-click="toggleDetailView()" bo-html="item.title"></a>
 		</div>
 		<div bo-html="item.description"></div>
 	</div>
 	<div class="detail" x-ng-if="item.showInlineDetail">
 		<div class="iframeContainer">
-			<iframe bo-src="item.source"></iframe>
+			<iframe ng-if="item.source" bo-src="item.source+'?modestbranding=1&showinfo=0'"></iframe>
+			<iframe ng-if="item.url" bo-src="item.url+'?modestbranding=1&showinfo=0'"></iframe>
 		</div>
 	</div>
 </div>

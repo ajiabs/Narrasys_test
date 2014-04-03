@@ -6,9 +6,10 @@
 	"isCosmetic": item.cosmetic,
 	"isStop": item.stop
 }'>
-	<h3>{{item.title}}</h3>
+	<h3 bo-text="item.title"></h3>
 	<div class="iframeContainer" style="width:90%; margin: 1em 0; height: 400px;">
-		<iframe bo-src="item.source+'?modestbranding=1&showinfo=0'"></iframe>
+		<iframe ng-if="item.source" bo-src="item.source+'?modestbranding=1&showinfo=0'"></iframe>
+		<iframe ng-if="item.url" bo-src="item.url+'?modestbranding=1&showinfo=0'"></iframe>
 	</div>
-	<div>{{item.description}}</div>
+	<div bo-html="item.description"></div>
 </div>

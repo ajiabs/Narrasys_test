@@ -38,6 +38,7 @@ angular.module('com.inthetelling.player')
 	$scope.fileToUpload = "";
 	$scope.textToUpload = "";
 	$scope.titleToUpload = "";
+	$scope.youtubeLinkToUpload = "";
 	$scope.displayAs = "fullscreen";
 	$scope.episode = $('#CONTAINER > div').scope().episode;
 	$scope.scenes = $('#CONTAINER > div').scope().scenes;
@@ -62,13 +63,80 @@ angular.module('com.inthetelling.player')
 		$rootScope.$emit("SxS.message", message, variant);
 	};
 
+
+	$scope.handleLink = function () {
+		var getYTId = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+		var curScene = $('.thisisthetoolbar').scope().curScene;
+
+		if ($scope.youtubeLinkToUpload === "") {
+			alert("For now, you must choose a video file to upload. (In real life this will be optional)");
+			return;
+		}
+
+		var ytId = $scope.youtubeLinkToUpload.match(getYTId)[1];
+		// First delete SxS items in this scene
+		$scope.deleteSxSItems(curScene);
+
+		$scope.floatMessage("Your link is now being added to the episode.", "progress");
+		$rootScope.$emit("SxS.hide");
+
+
+		var eventData = {};
+		if ($scope.displayAs === 'fullscreen') {
+			eventData = {
+				"event": {
+					"type": "Link",
+					"start_time": $scope.curScene.startTime,
+					"description": $scope.textToUpload,
+					"title": $scope.titleToUpload,
+					"keywords": ["SxS"],
+					"style_id": [null],
+					"url": 'https://www.youtube.com/embed/' + ytId,
+
+					"end_time": ($scope.curScene.startTime + 2),
+					"stop": true,
+					"layout_id": ["528d17eeba4f65e57800001e"], // windowFg
+					"template_id": "5339deddba4f65a45e00000b" // upload-demo.html
+				}
+			};
+		} else {
+			eventData = {
+				"event": {
+					"type": "Link",
+					"start_time": $scope.curScene.startTime,
+					"description": $scope.textToUpload,
+					"title": $scope.titleToUpload,
+					"keywords": ["SxS"],
+					"style_id": [null],
+					"url": 'https://www.youtube.com/embed/' + ytId,
+
+					"end_time": ($scope.curScene.startTime + 20),
+					"stop": false,
+					"layout_id": ["528d17edba4f65e578000017"], // inline
+					"template_id": "533d72752442bdbd81000001" // upload-demo-inline.html
+				}
+			};
+		}
+		$http({
+			method: 'POST',
+			url: config.apiDataBaseUrl + '/v2/episodes/' + $scope.episode._id + '/events/',
+			data: eventData
+		}).success(function (data, status, headers) {
+			console.log("Created event:", data, status, headers);
+			$scope.floatMessage("All done! In a real episode we would be able to show the new item to you immediately; for now you'll need to reload the browser window.", "reload");
+
+
+		}).error(function (data, status, headers) {
+			console.log("Failed to create event", data, status, headers);
+			$scope.floatMessage("Error: failed to create event, sorry!");
+		});
+
+
+	};
+
 	$scope.handleUpload = function () {
 
 		var curScene = $('.thisisthetoolbar').scope().curScene;
-		console.log($scope.fileToUpload);
-		console.log($scope.textToUpload);
-		console.log($scope.episode);
-		console.log(curScene);
 
 		if ($scope.fileToUpload === "") {
 			alert("For now, you must choose a video file to upload. (In real life this will be optional)");
