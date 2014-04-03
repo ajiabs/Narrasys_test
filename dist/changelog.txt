@@ -121,3 +121,7 @@ inline instructor uploads now work, explore mode now works
 more cosmetics
 cosmetics
 
+------------------------------------------------
+Changes in SxS0.5:
+can link to videos as well as upload
+
