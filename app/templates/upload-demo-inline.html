@@ -1,0 +1,30 @@
+<!-- TODO: clean up the YT url, add our own params, probably use their player API so we can hook into play/pause events -->
+
+
+<div bindonce="item" class="item {{item.layout}} {{item.styles}} uploadDemoInline" x-ng-class='{
+	"currentItem": item.isActive, 
+	"futureItem": !item.isActive && !item.wasActive, 
+	"pastItem": !item.isActive && item.wasActive,
+	"isRequired": item.required,
+	"isCosmetic": item.cosmetic,
+	"isStop": item.stop
+}'>
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="gotoItem()" bo-text="item.displayTime"></div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<b>From your instructor</b>
+		</div>
+	</div>
+	<!-- <div class="icon"><img bo-src="item.thumbSrc"></div> -->
+	<div class="text">
+		<div class="title"><a href="javascript:void 1;" x-ng-click="toggleDetailView()" bo-html="item.title"></a>
+		</div>
+		<div bo-html="item.description"></div>
+	</div>
+	<div class="detail" x-ng-if="item.showInlineDetail">
+		<div class="iframeContainer">
+			<iframe bo-src="item.source"></iframe>
+		</div>
+	</div>
+</div>

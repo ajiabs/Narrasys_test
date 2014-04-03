@@ -6,7 +6,7 @@
 		<h3 ng-if="curScene.title">Introduce "{{curScene.title}}"</h3>
 		<h3 ng-if="!curScene.title">Introduce this scene</h3>
 
-		<p>Upload a video and some introductory text for your students here. This will be included in the episode at the beginning of the scene
+		<p>You can add a video and some introductory text for your students here. This will be included in the episode at the beginning of the scene
 			<span ng-if="curScene.displayTime">(at {{curScene.displayTime}} in the main video.)</span>
 		</p>
 
@@ -16,9 +16,46 @@
 			<button ng-click="doRecord=true">Record from your webcam</button>
 		</div>
 		<div ng-show="doUpload">
+			<div class="item">
+				<span class="label">File:</span>
+				<span class="field"><input type="file" file-upload></span>
+			</div>
+
+			<div class="item">
+				<span class="label">Title:</span>
+				<span class="field"><input type="text" ng-model="titleToUpload"></span>
+			</div>
+
+			<div class="item">
+				<span class="label">Description:</span>
+				<span class="field"><textarea name="text" style="min-height: 6em;" ng-model="textToUpload"></textarea></span>
+				<div class="clear"></div>
+			</div>
+
+			<div class="item">
+				<span class="label">Display:</span>
+				<span class="field">
+					<label><input type="radio" name="displayAs" ng-model="displayAs" value="fullscreen">Required
+					<div class="details">This introduction is required viewing for your students.  It will pause the main video and appear fullscreen.</div>
+
+					</label>
+					<label><input type="radio" name="displayAs" ng-model="displayAs" value="inline">Optional
+<div class="details">This introduction is optional for your students.  It will appear as a link within the scene.</div>
+					</label>
+				</span>
+			</div>
+			<div style="margin-top: 1em; clear:both;">
+				<button ng-click="doUpload = false" style="float:left">Cancel</button>
+				<button ng-click="handleUpload()" style="float:right">Save</button>
+			</div>
+		</div>
+
+		<div ng-show="doLink">
+			<p>TODO (this will allow linking to existing youtube videos instead of uploading a new one</p>
+			<!--
 			<label>
-				<span>File:</span>
-				<input type="file" file-upload>
+				<span>YouTube URL:</span>
+				<input type="text" ng-model="youtubeToLink">
 			</label>
 
 			<label>
@@ -31,17 +68,13 @@
 				<textarea name="text" style="min-height: 10em;" ng-model="textToUpload"></textarea>
 				<div class="clear"></div>
 			</label>
+ -->
 			<div style="margin-top: 1em; clear:both;">
-				<button ng-click="doUpload = false" style="float:left">Cancel</button>
-				<button ng-click="handleUpload()" style="float:right">Save</button>
-			</div>
-		</div>
-
-		<div ng-show="doLink">
-			<p>TODO: this will allow users to link to existing youtube videos rather than uploading new ones.</p>
-			<label>
 				<button ng-click="doLink = false" style="float:left">Cancel</button>
-			</label>
+				<!--
+				<button ng-click="handleLink()" style="float:right">Save</button>
+ -->
+			</div>
 		</div>
 		<div ng-show="doRecord">
 			<p>TODO: this will allow users to record videos directly from their webcam.</p>

@@ -38,6 +38,7 @@ angular.module('com.inthetelling.player')
 	$scope.fileToUpload = "";
 	$scope.textToUpload = "";
 	$scope.titleToUpload = "";
+	$scope.displayAs = "fullscreen";
 	$scope.episode = $('#CONTAINER > div').scope().episode;
 	$scope.scenes = $('#CONTAINER > div').scope().scenes;
 
@@ -73,7 +74,6 @@ angular.module('com.inthetelling.player')
 			alert("For now, you must choose a video file to upload. (In real life this will be optional)");
 			return;
 		}
-		// TODO: validate fields (file is required)
 
 		// First delete SxS items in this scene
 		$scope.deleteSxSItems(curScene);
@@ -95,26 +95,49 @@ angular.module('com.inthetelling.player')
 		success(function (data) {
 			console.log("Created asset", data);
 			// assetid is data.file._id
-			$http({
-				method: 'POST',
-				url: config.apiDataBaseUrl + '/v2/episodes/' + $scope.episode._id + '/events/',
-				data: {
+
+			var eventData = {};
+			if ($scope.displayAs === 'fullscreen') {
+				eventData = {
 					"event": {
 						"type": "Upload",
 						"asset_id": data.file._id,
 						"start_time": $scope.curScene.startTime,
-						"end_time": ($scope.curScene.startTime + 2),
 						"description": $scope.textToUpload,
 						"title": $scope.titleToUpload,
 						"keywords": ["SxS"],
+						"style_id": [null],
+
+						"end_time": ($scope.curScene.startTime + 2),
 						"stop": true,
 						"layout_id": ["528d17eeba4f65e57800001e"], // windowFg
-						"style_id": [null],
 						"template_id": "5339deddba4f65a45e00000b" // upload-demo.html
 					}
-				}
-			}).
-			success(function (data, status, headers) {
+				};
+			} else {
+				eventData = {
+					"event": {
+						"type": "Upload",
+						"asset_id": data.file._id,
+						"start_time": $scope.curScene.startTime,
+						"description": $scope.textToUpload,
+						"title": $scope.titleToUpload,
+						"keywords": ["SxS"],
+						"style_id": [null],
+
+						"end_time": ($scope.curScene.startTime + 20),
+						"stop": false,
+						"layout_id": ["528d17edba4f65e578000017"], // inline
+						"template_id": "533d72752442bdbd81000001" // upload-demo-inline.html
+					}
+				};
+			}
+
+			$http({
+				method: 'POST',
+				url: config.apiDataBaseUrl + '/v2/episodes/' + $scope.episode._id + '/events/',
+				data: eventData
+			}).success(function (data, status, headers) {
 				console.log("Created event:", data, status, headers);
 
 				// TODO: check if it's an image or a video here; only do the transcode poll for videos
@@ -127,8 +150,7 @@ angular.module('com.inthetelling.player')
 				$scope.pollEvent(data);
 
 
-			}).
-			error(function (data, status, headers) {
+			}).error(function (data, status, headers) {
 				console.log("Failed to create event", data, status, headers);
 				$scope.floatMessage("Error: failed to create event, sorry!");
 			});
