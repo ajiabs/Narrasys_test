@@ -6,16 +6,17 @@
 		<h3 ng-if="curScene.title">Introduce "{{curScene.title}}"</h3>
 		<h3 ng-if="!curScene.title">Introduce this scene</h3>
 
-		<p>Upload a video and some introductory text for your students here. This will be included in the episode at the beginning of the scene.</p>
-
+		<p>Upload a video and some introductory text for your students here. This will be included in the episode at the beginning of the scene
+			<span ng-if="curScene.displayTime">(at {{curScene.displayTime}} in the main video.)</span>
+		</p>
+		<br>
+		<br>
 		<div class="menu" ng-show="!doUpload && !doLink && !doRecord">
 			<button ng-click="doUpload=true">Upload a video file</button>
 			<button ng-click="doLink=true">Link to a video</button>
 			<button ng-click="doRecord=true">Record from your webcam</button>
 		</div>
 		<div ng-show="doUpload">
-			<small>TODO: allow drag-and-drop upload of files</small>
-
 			<label>
 				<span>File:</span>
 				<input type="file" file-upload>
@@ -28,10 +29,10 @@
 
 			<label>
 				<span>Description:</span>
-				<textarea name="text" style="min-height: 5em;" ng-model="textToUpload"></textarea>
+				<textarea name="text" style="min-height: 10em;" ng-model="textToUpload"></textarea>
+				<div class="clear"></div>
 			</label>
-			<div class="clear"></div>
-			<div>
+			<div style="margin-top: 1em; clear:both;">
 				<button ng-click="doUpload = false" style="float:left">Cancel</button>
 				<button ng-click="handleUpload()" style="float:right">Save</button>
 			</div>
@@ -51,8 +52,9 @@
 		</div>
 	</div>
 
-<div class="clear"></div>
-<br><br>
+	<div class="clear"></div>
+	<br>
+	<br>
 	<button ng-click="resetDemo()" style="position:absolute; bottom: 1em; left: 1em;background-color:#C00; color:#FFF">Reset: delete all instructor uploads</button>
 
 	<!--
