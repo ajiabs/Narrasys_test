@@ -19,39 +19,52 @@ angular.module('com.inthetelling.player')
 			}
 			var filteredItems = [],
 				i;
-			if (layout === 'required' || layout === 'optional' || layout === 'transcript' || layout === 'transmedia' || layout === 'content') {
-				// return items for one of the five types of content pane.
-				// We can ignore any items here for which item.inContentPane is false.
-				for (i = 0; i < items.length; i++) {
-					if (items[i].inContentPane) {
-						if (layout === 'transcript') {
-							if (items[i].type === 'annotation') {
-								filteredItems.push(items[i]);
-							}
-						} else if (layout === 'transmedia') {
-							if (items[i].type !== 'annotation') {
-								filteredItems.push(items[i]);
-							}
-						} else if (layout === 'required') {
-							if (items[i].type === 'annotation' || items[i].required) {
-								filteredItems.push(items[i]);
-							}
-						} else if (layout === 'optional') {
-							if (items[i].type !== 'annotation' && !(items[i].required)) {
-								filteredItems.push(items[i]);
-							}
-						} else { // "content", so return everything:
-							filteredItems.push(items[i]);
-						}
+			// item.type === 'annotation' is a bit off as a method for matching transcript nodes specifically...
+			
+			for (i = 0; i < items.length; i++) {
+				switch (layout) {
+				case "transcript":
+					if (items[i].inContentPane && items[i].type === 'annotation') {
+						filteredItems.push(items[i]);
 					}
-				}
-			} else {
-				// match only the specific layout input
-				for (i = 0; i < items.length; i++) {
+					break;
+				case "transmedia":
+					if (items[i].inContentPane && items[i].type !== 'annotation') {
+						filteredItems.push(items[i]);
+					}
+					break;
+				case "required":
+					if (items[i].inContentPane && items[i].required && items[i].type !== 'annotation') {
+						filteredItems.push(items[i]);
+					}
+					break;
+				case "optional":
+					if (items[i].inContentPane && !(items[i].required) && items[i].type !== 'annotation') {
+						filteredItems.push(items[i]);
+					}
+					break;
+				case "transcript+required":
+					if (items[i].inContentPane && items[i].required || items[i].type === 'annotation') {
+						filteredItems.push(items[i]);
+					}
+					break;
+				case "transcript+optional":
+					if (items[i].inContentPane && !(items[i].required) || items[i].type === 'annotation') {
+						filteredItems.push(items[i]);
+					}
+					break;
+				case "content":
+					if (items[i].inContentPane) {
+						filteredItems.push(items[i]);
+					}
+					break;
+				default:
+					// Non-content-pane items match only the specific layout input:
 					if (items[i].layout === layout) {
 						filteredItems.push(items[i]);
 					}
 				}
+
 			}
 			return filteredItems;
 		};

@@ -206,8 +206,11 @@ angular.module('com.inthetelling.player')
 			model.items = [];
 
 			if (model.layout.match(/splitOptional/)) {
-				model.mainPaneContents = 'required';
+				model.mainPaneContents = 'transcript+required';
 				model.altPaneContents = 'optional';
+			} else if (model.layout.match(/splitRequired/)) {
+				model.mainPaneContents = 'transcript+optional';
+				model.altPaneContents = 'required';
 			} else {
 				// Default:
 				model.mainPaneContents = 'transcript';
