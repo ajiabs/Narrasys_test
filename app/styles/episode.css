@@ -12,6 +12,11 @@
 	left: 0;
 	right: 0;
 }
+
+.toolbar.nobg {
+	background-image:none;
+}
+
 .toolbar {
 	pointer-events: none
 }
@@ -651,7 +656,7 @@ for all sub styles:
 .episode-gw .introtext h1 {
 position:absolute;
 top: 0; left: 0; right: 0; bottom: 0;
-border-top: 50px solid #FFF; /* sleazy way to cover up toolbar logo */
+border-top: 45px solid #FFF; /* sleazy way to cover up toolbar logo */
 width: 400px;
 z-index:10;
 padding-top: 120px; /* leave room for logo */

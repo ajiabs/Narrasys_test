@@ -1,7 +1,7 @@
 <span>
-	<div class="toolbar" x-ng-show="show.playerPanel" x-ng-class="{isFramed: isFramed}">
+	<div class="toolbar" x-ng-class="{isFramed: isFramed, nobg: !show.playerPanel}">
 
-		<div class="modegroup buttongroup">
+		<div x-ng-show="show.playerPanel" class="modegroup buttongroup">
 			<a class="button button-video" x-ng-class="{cur: currentSceneTemplateIs('video')}" x-ng-click="setSceneTemplate('video');">
 				<span>Watch</span>
 			</a>
@@ -19,7 +19,7 @@
 			</a>
 		</div>
 
-		<div class="searchgroup buttongroup" x-ng-class="{cur: show.searchPanel}" style="float:right; z-index:10">
+		<div x-ng-show="show.playerPanel" class="searchgroup buttongroup" x-ng-class="{cur: show.searchPanel}" style="float:right; z-index:10">
 			<a class="button button-search" href="javascript: void 1;" x-ng-click="toggleSearchPanel()">
 				<span>Search</span>
 			</a>
