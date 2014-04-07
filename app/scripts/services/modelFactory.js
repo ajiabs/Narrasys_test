@@ -179,8 +179,11 @@ angular.module('com.inthetelling.player')
 			model.title = data.title;
 			model.description = data.description;
 			model.category = "Fnord"; // TODO: Implement categories.  Hey I can't see this. How strange.
-			model.coverUrl = "/images/coverlogo.png"; // TODO: Implement cover
 			model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/episode-default.html";
+			model.coverUrl = "/images/coverlogo.png"; // TODO: Implement cover
+			if (model.templateUrl === 'templates/episode-gw.html') { // HACK
+				model.coverUrl = "/images/aspectratiopreserver-16x9.gif";
+			}
 			model.layout = resolveLayoutCSS(data.layout_id) || "";
 			model.styles = resolveStyleCSS(data.style_id) || "";
 			model.videos = resolveMasterAssetVideo(data.master_asset_id);
