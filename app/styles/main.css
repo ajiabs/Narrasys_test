@@ -59,7 +59,7 @@ body {background-color:#FFF}
 	z-index: 8
 }
 
-.toolbar, .banner-logo {
+.toolbar, .banner-logo, .autoscroll {
 	z-index: 9
 }
 .modal-backdrop {

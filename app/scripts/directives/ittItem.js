@@ -2,7 +2,7 @@
 
 // "Transmedia" Item Directive
 angular.module('com.inthetelling.player')
-	.directive('ittItem', function (modalMgr, videojs) {
+	.directive('ittItem', function (modalMgr, videojs, $rootScope, $timeout) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -80,6 +80,9 @@ angular.module('com.inthetelling.player')
 // console.log("ITEM ENTERING", scope.item);
 						if (scope.item.stop) {
 							videojs.player.pause();
+						}
+						if (attrs.autoscroll) {
+							$timeout(function() {$rootScope.$emit('item.autoscroll');});
 						}
 					} else if (oldVal) {
 // console.log("ITEM EXITING",scope.item);

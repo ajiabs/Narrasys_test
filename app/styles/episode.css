@@ -12,11 +12,9 @@
 	left: 0;
 	right: 0;
 }
-
 .toolbar.nobg {
 	background-image:none;
 }
-
 .toolbar {
 	pointer-events: none
 }
@@ -74,13 +72,11 @@
 		display:none;
 	}
 }
-
 @media screen and (max-width: 480px) {
 	.button-directed {
 		display:none !important;
 	}
 }
-
 .toolbar .buttongroup.escapegroup .button span {
 	margin-left: -120px;
 	text-align: right !important;
@@ -160,6 +156,15 @@
 }
 .colorInvert .escapelink:before {
 	color: #CCC
+}
+.autoscroll {
+	position:fixed;
+	right: 16px;
+	bottom: 86px;
+	width: 32px;
+	height: 32px;
+	opacity: 0.7;
+	cursor: pointer; cursor: hand;
 }
 /*============================
  *
@@ -540,7 +545,6 @@
 	margin: 2px 40%;
 	text-align:center;
 }
-
 /*============================
  *
  * GW
@@ -556,114 +560,91 @@ For now just using the episode-level .episode-gw class as a modifier
 for all sub styles:
 
 */
-
-
-.episode-gw .banner-logo {
+ .episode-gw .banner-logo {
 	width: 30%;
 	max-width: 300px;
 	margin: 2px 40%;
 	text-align:center;
 }
-
 .episode-gw {
-	font-family: "Helvetica", "Arial", sans-serif;
+	font-family:"Helvetica", "Arial", sans-serif;
 	font-weight: 300;
 }
-
-.episode-gw h1,
-.episode-gw h2,
-.episode-gw h3,
-.episode-gw h4,
-.episode-gw h5,
-.episode-gw .item a,
-.episode-gw .navigationPanel a {
-	font-family: "Montserrat", sans-serif;
+.episode-gw h1, .episode-gw h2, .episode-gw h3, .episode-gw h4, .episode-gw h5, .episode-gw .item a, .episode-gw .navigationPanel a {
+	font-family:"Montserrat", sans-serif;
 	color: #003A5C;
 }
-.episode-gw h1,
-.episode-gw h2,
-.episode-gw h3,
-.episode-gw h4,
-.episode-gw h5 {font-weight: 700}
-
-.episode-gw .item .title,
-.episode-gw .navigationPanel a {
-	font-family: "Montserrat", sans-serif;
+.episode-gw h1, .episode-gw h2, .episode-gw h3, .episode-gw h4, .episode-gw h5 {
+	font-weight: 700
+}
+.episode-gw .item .title, .episode-gw .navigationPanel a {
+	font-family:"Montserrat", sans-serif;
 	font-weight: 400;
 	font-size: 1em;
 	line-height: 1.2em;
 }
-
 .episode-gw .colorInvert {
 	background-color: #003A5C;
 }
-
-.episode-gw .colorInvert * {color:#FFF}
-
-.episode-gw .item .pullquote,
-.episode-gw .item .pullquoteSpeaker {
-	font-family: "Cardo",serif;
+.episode-gw .colorInvert * {
+	color:#FFF
 }
-
+.episode-gw .item .pullquote, .episode-gw .item .pullquoteSpeaker {
+	font-family:"Cardo", serif;
+}
 .episode-gw .item .pullquote:before {
-	font-family: "Cardo",serif;
-	color: rgba(0,58,92,0.5);
+	font-family:"Cardo", serif;
+	color: rgba(0, 58, 92, 0.5);
 	font-size: 1.7em;
 	margin-left: -0.5em;
 }
-
 .episode-gw .escapelink:before {
 	color: #AB9767;
 }
-.episode-gw.highlightSolid .content .item.currentItem,
-.episode-gw .highlightSolid .content .item.currentItem,
-.episode-gw .highlightSolid.item.currentItem
-{
-	background-color: rgba(171,151,103,0.3);
+.episode-gw.highlightSolid .content .item.currentItem, .episode-gw .highlightSolid .content .item.currentItem, .episode-gw .highlightSolid.item.currentItem {
+	background-color: rgba(171, 151, 103, 0.3);
 }
-
 .episode-gw .contentAlt {
-	background-color: rgba(0,58,92,0.05);
+	background-color: rgba(0, 58, 92, 0.05);
 }
-
 .episode-gw .navigationPanel {
-	border-radius: 30px 30px 0 0 /* must be bigger than h2 below */
+	border-radius: 30px 30px 0 0
+	/* must be bigger than h2 below */
 }
-
 .episode-gw .navigationPanel h2 {
 	border-radius: 20px 20px 0 0
 }
-
 .episode-gw .navigationPanel h2 {
 	background-color: #AB9767;
 	color:#FFF;
 }
-
 .episode-gw .navigationPanel .scene {
 	border-top: 1px solid #AB9767;
 	font-size: 0.9em;
-	padding: 0.7em 0.3em;	
+	padding: 0.7em 0.3em;
 }
-
 .episode-gw .navigationPanel .currentScene {
-	background-color: rgba(171,151,103,0.3);
+	background-color: rgba(171, 151, 103, 0.3);
 }
-
 .episode-gw .intropanel {
 	margin: 0 !important;
 }
-
 .episode-gw .introtext h1 {
-position:absolute;
-top: 0; left: 0; right: 0; bottom: 0;
-border-top: 45px solid #FFF; /* sleazy way to cover up toolbar logo */
-width: 400px;
-z-index:10;
-padding-top: 120px; /* leave room for logo */
-font-weight: 400;
-font-size: 24px; line-height: 25px;
+	position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border-top: 45px solid #FFF;
+	/* sleazy way to cover up toolbar logo */
+	width: 400px;
+	z-index:10;
+	padding-top: 120px;
+	/* leave room for logo */
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 25px;
 }
-
 .episode-gw .introtext {
 	float:none;
 	width: 400px;
@@ -674,7 +655,6 @@ font-size: 24px; line-height: 25px;
 	background-repeat: no-repeat;
 	padding-top: 200px !important;
 }
-
 .episode-gw .intropanel .videoContainer {
 	float:none;
 	width: 400px;
