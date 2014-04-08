@@ -244,7 +244,6 @@
 		right: 25%;
 	}
 }
-
 @media screen and (max-height: 700px) {
 	.scene-1col {
 		margin: 0 10%;
@@ -255,7 +254,6 @@
 		right: 10%;
 	}
 }
-
 /*============================*/
  .scene-centered {
 	width: 60%;
@@ -274,6 +272,12 @@
 }
 .scene-2col.videoRight .videoContainer {
 	margin: 0 0 0 50%;
+}
+.scene-2col.videoLeft .padRightColumn {
+	display:none;
+}
+.scene-2col.videoRight .padLeftColumn {
+	display:none;
 }
 .scene-2colL .contentMain {
 	width: 50%;

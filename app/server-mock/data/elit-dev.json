@@ -11,8 +11,8 @@
 	"events": [
 		{
 			"type": "scene",
-			"template_id": "templates/scene-1col.html",
-			"layout_id": "",
+			"template_id": "templates/scene-2colR.html",
+			"layout_id": "videoRight",
 			"style_id": "",
 			"start_time": 0,
 			"end_time": 90,
