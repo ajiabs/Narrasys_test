@@ -227,10 +227,35 @@
 }
 /*============================*/
  .scene-1col {
-	margin: 0 10%;
+	margin: 0 20%;
 }
-.scene-1col .contentMain {
+.scene-1col .videoContainer {
+	position:fixed;
+	left: 20%;
+	right: 20%;
 }
+@media screen and (min-width: 1000px) {
+	.scene-1col {
+		margin: 0 25%;
+	}
+	.scene-1col .videoContainer {
+		position:fixed;
+		left: 25%;
+		right: 25%;
+	}
+}
+
+@media screen and (max-height: 700px) {
+	.scene-1col {
+		margin: 0 10%;
+	}
+	.scene-1col .videoContainer {
+		position:absolute;
+		left: 10%;
+		right: 10%;
+	}
+}
+
 /*============================*/
  .scene-centered {
 	width: 60%;
