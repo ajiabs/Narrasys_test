@@ -113,3 +113,19 @@ Changes in v1.4.7:
 Handle youtube urls inside of alternate_urls array
 Updated to work with Capistrano 3.1
 
+------------------------------------------------
+Changes in v1.5:
+autoscroll bugfix for iPad
+iosFrameHack no longer jQuery dependent
+search results cosmetics
+Smaller search field, to prevent branding overlap
+scene-2col template improvements: When videoLeft or videoRight is set, opposite column now flows to top of screen
+scene-1col more responsive to screen size: Tall screens get position:fixed video; wide screens get bigger margins;skinny screens get smaller margins
+Reverting earlier change to highlightSide: (it was causing the highlight to appear offscreen in some circumstances)
+autoscroll to current items in explore mode: User can override the autoscrolling by scrolling manually; then re-enable it by clicking a button
+iframe escape button appears on landing screen
+Remove ITT branding from GW episode template
+support splitRequired and splitOptional
+explore mode goes to three-column layout on wide screens
+handle youtube urls inside alternate_urls array
+
