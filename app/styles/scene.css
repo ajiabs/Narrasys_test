@@ -16,8 +16,6 @@
 	right: 0;
 	bottom: 0;
 }
-
-
 .fillPane {
 	overflow:hidden
 }
@@ -29,15 +27,16 @@
  * Item positioning
  *
 //===========================*/
-
-.content {
+ .content {
 	padding-top: 15px;
 	padding-bottom: 15px;
 }
- .content > div {
+.content > div {
 	perspective: 600px;
 }
-.smallPane .content {overflow:hidden}
+.smallPane .content {
+	overflow:hidden
+}
 /* TODO: add breakpoints to adjust sidebar widths based on screen size */
  .content.hasLeftSidebar .item {
 	margin-left: 30%;
@@ -130,12 +129,11 @@
 /*============================*/
 
 /* fullscreen video mode */
-
-.scene-video {position:relative}
-
- .scene-video .scene {
+ .scene-video {
+	position:relative
+}
+.scene-video .scene {
 	background-color: #000;
-
 }
 .scene-video .videoContainer {
 	margin: auto;
@@ -148,59 +146,52 @@
 	bottom: 90px;
 	width: 80%;
 }
-
 .scene-video .contentMain .item {
-	background-color: rgba(0,0,0,0.7);
+	background-color: rgba(0, 0, 0, 0.7);
 	border-radius: 8px;
 	padding:1em;
 }
-
 @media screen and (min-width: 401px) and (max-width: 700px) {
 	.scene-video .contentMain {
 		font-size: 90% !important;
 		bottom: 60px !important;
 	}
 }
-
 @media screen and (max-width: 400px) {
-	
-.scene-video .contentMain {
-	font-size: 70% !important;
-	bottom: 60px !important;
+	.scene-video .contentMain {
+		font-size: 70% !important;
+		bottom: 60px !important;
+	}
 }
-	
-}
-
-
 /*============================*/
 
 /* Explore mode */
  .scene-explore {
 	clear:both
 }
-
 /* Causes columns to fill vertical space.  Make sure to override in small screen */
-.scene-explore .scene {display:flex}
-
+ .scene-explore .scene {
+	display:flex
+}
 .scene-explore.futureScene, .scene-explore.pastScene {
 	display:block
 }
 .scene-explore .videoContainer {
 	position:fixed;
-	top: 45px; /* TOOLBAR HEIGHT */
+	top: 45px;
+	/* TOOLBAR HEIGHT */
 	right: 0;
 	width: 30%;
 }
 .scene-explore {
 	border-top: 1px solid rgba(0, 0, 0, 0.2)
 }
-
-.scene-explore.nonNavigable {border-top: none}
-
+.scene-explore.nonNavigable {
+	border-top: none
+}
 .scene-explore .scene .sceneTitle {
 	display:block
 }
-
 .scene-explore .contentMain {
 	width: 50%;
 	float:left;
@@ -209,19 +200,59 @@
 	width: 50%;
 	float:right;
 }
-
-.scene-explore .item .pullquote {font-size:1.4em}
-
-.scene-explore h1 { font-size: 1.5em; }
-.scene-explore h2 { font-size: 1.3em; }
-.scene-explore h3 { font-size: 1em; }
-
-
+.scene-explore .item .pullquote {
+	font-size:1.4em
+}
+.scene-explore h1 {
+	font-size: 1.5em;
+}
+.scene-explore h2 {
+	font-size: 1.3em;
+}
+.scene-explore h3 {
+	font-size: 1em;
+}
+@media screen and (min-width: 1000px) {
+	/* three-col layout on wide screens */
+	.scene-explore .contentMain {
+		width:40%;
+	}
+	.scene-explore .contentAlt {
+		width: 60%;
+		padding-right: 240px;
+	}
+	.scene-explore .videoContainer {
+		width: 240px;
+	}
+}
 /*============================*/
  .scene-1col {
-	margin: 0 10%;
+	margin: 0 20%;
 }
-.scene-1col .contentMain {
+.scene-1col .videoContainer {
+	position:fixed;
+	left: 20%;
+	right: 20%;
+}
+@media screen and (min-width: 1000px) {
+	.scene-1col {
+		margin: 0 25%;
+	}
+	.scene-1col .videoContainer {
+		position:fixed;
+		left: 25%;
+		right: 25%;
+	}
+}
+@media screen and (max-height: 700px) {
+	.scene-1col {
+		margin: 0 10%;
+	}
+	.scene-1col .videoContainer {
+		position:absolute;
+		left: 10%;
+		right: 10%;
+	}
 }
 /*============================*/
  .scene-centered {
@@ -241,6 +272,12 @@
 }
 .scene-2col.videoRight .videoContainer {
 	margin: 0 0 0 50%;
+}
+.scene-2col.videoLeft .padRightColumn {
+	display:none;
+}
+.scene-2col.videoRight .padLeftColumn {
+	display:none;
 }
 .scene-2colL .contentMain {
 	width: 50%;

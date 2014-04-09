@@ -16,7 +16,7 @@ x-ng-class='{
 		<div class="pane contentMain">
 			<div class="content noSidebars">
 				<h2 class="sceneTitle" x-ng-if="scene.title">{{scene.title}}</h2>
-				<div x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | filter:{cosmetic: false}" class="item-animate" data-force-item-template="default" x-itt-item="item"></div>
+				<div x-ng-repeat="item in scene.items | layout: scene.mainPaneContents | filter:{cosmetic: false}" class="item-animate" data-autoscroll="true" data-force-item-template="default" x-itt-item="item"></div>
 			</div>
 		</div>
 		<div class="pane contentAlt">
@@ -24,7 +24,7 @@ x-ng-class='{
 				<!-- in explore view, need to pad the first scene to make room for the video -->
 			</div>
 			<div class="content noSidebars">
-				<div x-ng-repeat="item in scene.items | layout: scene.altPaneContents | filter:{cosmetic: false}" class="item-animate" data-force-item-template="default" x-itt-item="item"></div>
+				<div x-ng-repeat="item in scene.items | layout: scene.altPaneContents | filter:{cosmetic: false}" class="item-animate" data-force-item-template="default" data-autoscroll="true" x-itt-item="item"></div>
 			</div>
 		</div>
 	</div>

@@ -4,7 +4,7 @@
 // This is turning into the player chrome rather than just the toolbar. TODO name change or refactor you be the judge
 
 angular.module('com.inthetelling.player')
-	.directive('ittToolbar', function ($timeout, $rootScope, videojs, $window,$location) {
+	.directive('ittToolbar', function ($timeout, $rootScope, videojs, $window, $location) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -14,7 +14,7 @@ angular.module('com.inthetelling.player')
 				// scope is a child scope that inherits from EpisodeController scope
 				// thus anything that is added to this scope here is private to the directive,
 				// but everything on parent scope is still accessible.
-				
+
 				// Nav and Search:
 				scope.show = {
 					navigationPanel: false,
@@ -25,26 +25,33 @@ angular.module('com.inthetelling.player')
 				};
 
 				// Initial magnet should be the one in the landing page
-				$timeout(function() {
-					$rootScope.$emit('magnet.changeMagnet',element.find('.videoContainer'));
-				},0);
-				
+				$timeout(function () {
+					$rootScope.$emit('magnet.changeMagnet', element.find('.videoContainer'));
+				}, 0);
+
 				// ipad crashes on window resize events inside an iframe.  So don't do that.
 				if ($rootScope.isFramed && ($rootScope.isIPad || $rootScope.isIPhone)) {
-					scope.$watch(function() {return $rootScope.windowWidth;},function() {
+					scope.$watch(function () {
+						return $rootScope.windowWidth;
+					}, function () {
 						$rootScope.$emit('magnet.repositionImmediately');
 					});
 				} else {
-					angular.element($window).bind('resize', function() {
+					angular.element($window).bind('resize', function () {
 						$rootScope.$emit('magnet.repositionImmediately');
 					});
 				}
 
 				/* Handler for toolbar buttons to change scene templates. */
 				scope.setSceneTemplate = function (newTemplate) {
-// console.log("setSceneTemplate " + newTemplate);
-				
+					// console.log("setSceneTemplate " + newTemplate);
+
 					scope.currentSceneTemplate = newTemplate;
+
+					// for autoscroll:
+					scope.autoscrollEnabled = (newTemplate === 'explore');
+					scope.exploreMode = scope.autoscrollEnabled;
+
 					// set all scenes to use newTemplate
 					for (var i = 0; i < scope.scenes.length; i++) {
 						var thisScene = scope.scenes[i];
@@ -62,35 +69,39 @@ angular.module('com.inthetelling.player')
 					// TODO: set button states immediately since scene redraw takes a while; need to give users feedback that it's working
 					$rootScope.$emit('toolbar.changedSceneTemplate');
 				};
-				
+
 				/* detect which view we're in */
 				/* this is a bizarre syntax but seems to be how it's supposed to work... */
 				scope.currentSceneTemplateIs = function (compare) {
 					return scope.currentSceneTemplate === compare;
 				};
-				
-				scope.mainframeescape = function() {
+
+				scope.mainframeescape = function () {
 					videojs.player.pause();
 					window.open($location.absUrl()).focus();
 				};
-				
+
 				scope.showNavigationPanel = function () {
 					videojs.player.pause();
 					videojs.player.controls(false); // TODO: do this on iPad only
 					scope.show.navigationPanel = true;
 				};
-				
+
 				scope.showSearchPanel = function () {
 					videojs.player.pause();
 					videojs.player.controls(false); // TODO: do this on iPad only
-				
+
 					scope.show.searchPanel = true;
+					if (scope.currentSceneTemplateIs('explore')) {
+						scope.enableAutoscroll();
+					}
+
 					// Wait a tick before building the search panel internals. (Possibly unnecessary, but just in case...)
 					$timeout(function () {
 						scope.show.searchPanelInternals = true;
 					}, 0);
 				};
-				
+
 				scope.toggleSearchPanel = function () {
 					if (scope.show.searchPanel) {
 						scope.hidePanels();
@@ -99,7 +110,7 @@ angular.module('com.inthetelling.player')
 						document.getElementById('searchtext').focus(); // TODO BUG not working in Safari
 					}
 				};
-				
+
 				scope.showSceneMenu = function () {
 					if (scope.show.navigationPanel) {
 						scope.hidePanels();
@@ -114,14 +125,14 @@ angular.module('com.inthetelling.player')
 						videojs.player.userActive(true);
 					}
 				};
-				
-				scope.toggleCaptions = function() {
+
+				scope.toggleCaptions = function () {
 					scope.hideCaptions = !scope.hideCaptions;
 					for (var i = 0; i < scope.scenes.length; i++) {
 						scope.scenes[i].hideCaptions = scope.hideCaptions;
 					}
 				};
-				
+
 				scope.hidePanels = function () {
 					// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 					scope.show.navigationPanel = false;
@@ -131,30 +142,29 @@ angular.module('com.inthetelling.player')
 					// For now, don't set searchPanelInternals to false here; once it's built leave it in place to maintain state.
 					// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.
 				};
-				
+
 				scope.gotoTime = function (t) {
-					videojs.player.currentTime(t + 0.001); // fudge: add a bit to ensure that we're inside the next scene's range
+					videojs.player.currentTime(t);
 				};
-				
+
 				// When user first clicks video, show the toolbar chrome and hide the landing screen
 				scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay', function () {
 					// Move our custom controls into the vjs control bar.  TODO fix jquery hackage
 					$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
-				
-				// default to 'explore' mode on small screens:
-				if (angular.element(window).width() < 481) {
-					scope.setSceneTemplate('explore');
-				}
 
+					// default to 'explore' mode on small screens:
+					if (angular.element(window).width() < 481) {
+						scope.setSceneTemplate('explore');
+					}
 
 
 					// Hide the intro; show the regular controls
 					scope.show.introPanel = false;
 					scope.show.playerPanel = true;
-					$rootScope.$emit('toolbar.changedSceneTemplate'); // force twiddleSceneLayout
-				
+					$rootScope.$emit('toolbar.changedSceneTemplate'); // force twiddleScene
+
 					scope.firstPlayWatcher(); // stop listening for this event
-				
+
 					// For next/prev scene buttons:
 					scope.curSceneWatcher = scope.$watch(function () {
 						// step through episode.scenes, return the last one whose start time is before the current time
@@ -168,10 +178,10 @@ angular.module('com.inthetelling.player')
 					}, function (newVal, oldVal) {
 						scope.curScene = newVal;
 					});
-				
+
 				});
-				
-				
+
+
 				// HACK HACK such an ungodly HACK.
 				// iDevices combined with the youtube player need some special handling as far as event timing goes; normally the firstPlayWatcher
 				// fires immediately when the user hits "play", but on iDevices there's a potentially long delay while the video starts buffering after first
@@ -192,7 +202,47 @@ angular.module('com.inthetelling.player')
 					}
 				);
 				*/
-						
+
+				// Autoscroll handler.  Items in explore mode will emit item.autoscroll events on enter.
+				// when we get one, autoscroll to the topmost current item unless scrolling is disabled.
+				scope.captureScrollEvents = true;
+				$rootScope.$on('item.autoscroll', function () {
+					if (!scope.captureScrollEvents || !scope.autoscrollEnabled) {
+						return;
+					}
+
+					var top = Infinity;
+					// There will always be at least one currentItem, since this is triggered by item enter.
+					angular.forEach($('.content .item.currentItem'), function (item) {
+						var t = $(item).offset().top;
+						if (t < top) {
+							top = t;
+						}
+					});
+					var offset = 45 + $('.videoContainer:visible').height(); /* TOOLBAR HEIGHT */
+					if (top < Infinity) {
+						scope.captureScrollEvents = false;
+						$("body,html").stop().animate({
+							"scrollTop": top - offset
+						}, 1000, "swing", function () {
+							$timeout(function () {
+								scope.captureScrollEvents = true;
+							}, 50); // allow extra time; iPad was still capturing the tail end of the animated scroll
+						});
+					}
+				});
+
+				angular.element($window).bind("scroll", function () {
+					if (scope.captureScrollEvents && scope.autoscrollEnabled) {
+						scope.autoscrollEnabled = false;
+					}
+				});
+				scope.enableAutoscroll = function() {
+					scope.autoscrollEnabled = true;
+					$rootScope.$emit('item.autoscroll');
+				};
+
+
 			},
 			controller: "ToolbarController"
 		};

@@ -1,7 +1,7 @@
 <span>
-	<div class="toolbar" x-ng-show="show.playerPanel" x-ng-class="{isFramed: isFramed}">
+	<div class="toolbar" x-ng-class="{isFramed: isFramed, nobg: !show.playerPanel}">
 
-		<div class="modegroup buttongroup">
+		<div x-ng-show="show.playerPanel" class="modegroup buttongroup">
 			<a class="button button-video" x-ng-class="{cur: currentSceneTemplateIs('video')}" x-ng-click="setSceneTemplate('video');">
 				<span>Watch</span>
 			</a>
@@ -12,20 +12,23 @@
 				<span>Explore</span>
 			</a>
 		</div>
-		
+
 		<div x-ng-if="isFramed" class="escapegroup buttongroup" style="float:right;">
 			<a x-ng-click="mainframeescape();" class="button button-mainframeescape">
 				<span>New window</span>
 			</a>
 		</div>
 
-		<div class="searchgroup buttongroup" x-ng-class="{cur: show.searchPanel}" style="float:right; z-index:10">
+		<div x-ng-show="show.playerPanel" class="searchgroup buttongroup" x-ng-class="{cur: show.searchPanel}" style="float:right; z-index:10">
 			<a class="button button-search" href="javascript: void 1;" x-ng-click="toggleSearchPanel()">
 				<span>Search</span>
 			</a>
 			<input id="searchtext" type="text" x-ng-model="searchText" />
 		</div>
-		
+
+		<div class="autoscroll" x-ng-show="exploreMode && !autoscrollEnabled" x-ng-click="enableAutoscroll()">
+			<img src="/images/autoscroll.svg" width="32" height="32">
+		</div>
 
 	</div>
 	<div class="threedee">
@@ -45,10 +48,16 @@
 		</div>
 		<div x-ng-show="show.searchPanel" class="sidePanel searchPanel">
 			<div x-ng-if="show.searchPanelInternals" x-ng-controller="SearchPanelController">
-				
+
 				<div class="searchfilters">
-				<label x-ng-show="sortBy!=='startTime'"><input type="radio" name="searchsort" id="searchsort" x-ng-model="sortBy" value="startTime"> Sorted by <span class="fakelink">type</span></label>
-				<label x-ng-show="sortBy==='startTime'"><input type="radio" name="searchsort" id="searchsort" x-ng-model="sortBy" value="type"> Sorted by <span class="fakelink">time</span></label>
+					<label x-ng-show="sortBy!=='startTime'">
+						<input type="radio" name="searchsort" id="searchsort" x-ng-model="sortBy" value="startTime">Sorted by
+						<span class="fakelink">type</span>
+					</label>
+					<label x-ng-show="sortBy==='startTime'">
+						<input type="radio" name="searchsort" id="searchsort" x-ng-model="sortBy" value="type">Sorted by
+						<span class="fakelink">time</span>
+					</label>
 				</div>
 				<div class="scrollContainer">
 					<div class="searchResults">
@@ -98,9 +107,13 @@
 			</a>
 		</div>
 
-
-		<div x-ng-if="curScene.prevSceneStart" class="video-prevscene vjs-control">
+		<div x-ng-if="curScene.prevSceneStart || curScene.prevSceneStart === 0" class="video-prevscene vjs-control">
 			<a x-ng-click="gotoTime(curScene.prevSceneStart + 0.1)">
+				<span class="vjs-control-text">Previous scene</span>
+			</a>
+		</div>
+		<div x-ng-if="curScene.startTime == 0" class="video-prevscene vjs-control">
+			<a x-ng-click="gotoTime(0)">
 				<span class="vjs-control-text">Previous scene</span>
 			</a>
 		</div>
@@ -114,25 +127,25 @@
 				<span class="vjs-control-text">Captions</span>
 			</a>
 		</div>
-		
-		
+
+
 	</div>
 
 
 	<div x-ng-show="show.introPanel" class="intropanel">
 		<div class="pane introtext">
-		<h1>
-			{{episode.title}}
-		</h1>
-		<p>
-			{{episode.description}}
-		</p>
+			<h1>
+				{{episode.title}}
+			</h1>
+			<p>
+				{{episode.description}}
+			</p>
 		</div>
-			<div class="pane videoContainer">
-				<div class="fillPane video">
-					<img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" />
-				</div>
+		<div class="pane videoContainer">
+			<div class="fillPane video">
+				<img class="aspectratiopreserver" src="/images/aspectratiopreserver-16x9.gif" />
 			</div>
+		</div>
 	</div>
 
 	<div x-ng-if="forcedEscape" x-itt-magnetized class="videoOverlay" style="pointer-events: auto;">
