@@ -129,3 +129,7 @@ support splitRequired and splitOptional
 explore mode goes to three-column layout on wide screens
 handle youtube urls inside alternate_urls array
 
+------------------------------------------------
+Changes in v1.5.1:
+Added delay before displaying error message
+
