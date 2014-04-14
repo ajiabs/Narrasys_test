@@ -129,3 +129,7 @@ can link to videos as well as upload
 Changes in SxS0.6:
 explore mode now has correct templates, shows demo elements too
 
+------------------------------------------------
+Changes in SxS0.6.1:
+explore mode was overriding links with an image template
+
