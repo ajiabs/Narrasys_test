@@ -43,8 +43,8 @@ angular.module('com.inthetelling.player')
 
 						if (scope.item.origTemplateUrl.indexOf('demo') > -1) {
 							scope.item.templateUrl = "templates/upload-demo-inline.html";
-						} else {
-							scope.item.templateUrl = "templates/transmedia-image-" + attrs.forceItemTemplate + ".html";
+//						} else {
+//							scope.item.templateUrl = "templates/transmedia-image-" + attrs.forceItemTemplate + ".html";
 						}
 
 					} else {
