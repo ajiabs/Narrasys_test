@@ -4,7 +4,9 @@
 angular.module('com.inthetelling.player')
 	.controller('UIErrorController', function ($scope, $rootScope,$location) {
 		$rootScope.$on("error", function(event, errorData) {
-			$scope.error = errorData;
+			if (errorData) {
+				$scope.error = errorData;
+			}
 		});
 
 // Would prefer not to have app.js redirect to /error in the first place, but as long as we are for missing routes:
