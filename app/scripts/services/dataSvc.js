@@ -150,7 +150,7 @@ angular.module('com.inthetelling.player')
           ]);
         })
         .then(function (responses) {
-          data.assets = responses[0].data.files;
+          data.assets = (responses[0].data.files) ? responses[0].data.files : [];
           // console.log(responses[0].config.url + ":", responses[0].data);
           // console.log(responses[1].config.url + ":", responses[1].data);
           return $q.all([
