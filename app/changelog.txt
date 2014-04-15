@@ -133,3 +133,8 @@ handle youtube urls inside alternate_urls array
 Changes in v1.5.1:
 Added delay before displaying error message
 
+------------------------------------------------
+Changes in v1.5.2:
+init data.assets with an empty array when necessary
+Prevent bogus error messages (Only displays error panel if there is a message to display)
+
