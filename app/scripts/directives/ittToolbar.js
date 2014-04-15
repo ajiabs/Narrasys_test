@@ -227,7 +227,7 @@ angular.module('com.inthetelling.player')
 						}, 1000, "swing", function () {
 							$timeout(function () {
 								scope.captureScrollEvents = true;
-							});
+							}, 50); // allow extra time; iPad was still capturing the tail end of the animated scroll
 						});
 					}
 				});

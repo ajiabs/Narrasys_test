@@ -86,7 +86,7 @@
 	float:left;
 }
 .toolbar .buttongroup.searchgroup.cur {
-	width: 35%;
+	width: 27%;
 	font-size: 22px;
 	padding-top: 3px;
 }
@@ -228,6 +228,7 @@
 	bottom: 0;
 	overflow-y: scroll;
 	right: -16px;
+	padding-right: 16px;
 	left: 0px;
 	position:absolute;
 }
@@ -273,7 +274,8 @@
 }
 .searchResults .item {
 	border-bottom: 1px solid #CCC;
-	padding: 0.1em 0.3em
+	padding: 0.1em 0.3em;
+	clear:both;
 }
 .searchResults .item .displayTime {
 	cursor: pointer;
@@ -281,11 +283,11 @@
 	color: #C44343;
 	float:left;
 	display:inline;
-	width: 35px;
+	width: 45px;
 }
 .searchResults .description {
 	font-size: 0.86em;
-	margin-left: 35px
+	margin-left: 45px
 }
 .searchResults .type {
 	opacity: 0.4;
