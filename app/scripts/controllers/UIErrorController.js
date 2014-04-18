@@ -4,7 +4,7 @@
 angular.module('com.inthetelling.player')
 	.controller('UIErrorController', function ($scope, $rootScope, $location, $timeout) {
 		$rootScope.$on("error", function(event, errorData) {
-			if (errorData) {
+			if (errorData && errorData.message) {  // blocking "unknown error", as those tend to turn out to not be errors
 				// delay to prevent displaying transient errors on page refresh
 				$timeout(function () {
 					$scope.error = errorData;

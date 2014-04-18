@@ -1,9 +1,9 @@
 'use strict';
 
 /*
-	Data service handles the retrieval and aggregation of all the data required to show
-	a complete episode in the player. Data service can run against local data or api data,
-	based on value of config.localData.
+  Data service handles the retrieval and aggregation of all the data required to show
+  a complete episode in the player. Data service can run against local data or api data,
+  based on value of config.localData.
 */
 /* 
 TODO: Refactor this class to utilize $http and/or $resource level caching, and just
@@ -42,6 +42,7 @@ angular.module('com.inthetelling.player')
 
       // new up an empty data object
       data = {};
+      data.assets = []; // we keep getting bogus concat errors
 
       // Local Data
       if (config.localData || authKey === 'local') {
@@ -113,19 +114,19 @@ angular.module('com.inthetelling.player')
       var authKey = routeParams.authKey;
 
       /*
-				API Flow:
-				/v1/episodes/<episode_id>
-					/v1/containers/<resp.container_id>/assets
-					/v1/containers/<resp.container_id>
-						/v1/containers/<resp.parent_id>/assets
-						/v1/containers/<resp.parent_id>
-							/v1/containers/<resp.parent_id>/assets
-				/v2/episodes/<episode_id>/events
-				/v1/templates
-				/v1/layouts
-				/v1/styles
-				TODO: GEt event categories also, they will eventually be used in the player
-			*/
+        API Flow:
+        /v1/episodes/<episode_id>
+          /v1/containers/<resp.container_id>/assets
+          /v1/containers/<resp.container_id>
+            /v1/containers/<resp.parent_id>/assets
+            /v1/containers/<resp.parent_id>
+              /v1/containers/<resp.parent_id>/assets
+        /v2/episodes/<episode_id>/events
+        /v1/templates
+        /v1/layouts
+        /v1/styles
+        TODO: GEt event categories also, they will eventually be used in the player
+      */
 
       // if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
       // NOTE this is not in use currently AFAIK; needs to be moved earlier in the process anyway
@@ -143,30 +144,36 @@ angular.module('com.inthetelling.player')
       var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId + authParam)
         .then(function (response) {
           data.episode = response.data;
-          // console.log(response.config.url + ":", response.data);
+          console.log(response.config.url + ":", response.data);
           return $q.all([
             $http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets' + authParam),
             $http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + authParam)
           ]);
         })
         .then(function (responses) {
-          data.assets = (responses[0].data.files) ? responses[0].data.files : [];
-          // console.log(responses[0].config.url + ":", responses[0].data);
-          // console.log(responses[1].config.url + ":", responses[1].data);
+          console.log(responses[0].config.url + ":", responses[0].data);
+          console.log(responses[1].config.url + ":", responses[1].data);
+          if (responses[0].data && responses[0].data.files) {
+            data.assets = responses[0].data.files;
+          }
           return $q.all([
             $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam),
             $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + authParam)
           ]);
         })
         .then(function (responses) {
-          data.assets = data.assets.concat(responses[0].data.files);
-          // console.log(responses[0].config.url + ":", responses[0].data);
-          // console.log(responses[1].config.url + ":", responses[1].data);
+          console.log(responses[0].config.url + ":", responses[0].data);
+          console.log(responses[1].config.url + ":", responses[1].data);
+          if (responses[0].data && responses[0].data.files) {
+            data.assets = data.assets.concat(responses[0].data.files);
+          }
           return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam);
         })
         .then(function (response) {
-          data.assets = data.assets.concat(response.data.files);
-          // console.log(response.config.url + ":", response.data);
+          console.log(response.config.url + ":", response.data);
+          if (response.data && response.data.files) {
+            data.assets = data.assets.concat(response.data.files);
+          }
         });
 
       // second set of calls
