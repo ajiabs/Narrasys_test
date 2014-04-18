@@ -138,3 +138,7 @@ Changes in v1.5.2:
 init data.assets with an empty array when necessary
 Prevent bogus error messages (Only displays error panel if there is a message to display)
 
+------------------------------------------------
+Changes in v1.5.3:
+still trying to prevent bogus "unknown error"
+
