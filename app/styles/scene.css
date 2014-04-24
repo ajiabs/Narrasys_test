@@ -171,7 +171,8 @@
 }
 /* Causes columns to fill vertical space.  Make sure to override in small screen */
  .scene-explore .scene {
-	display:flex
+	display:flex;
+	position: static;
 }
 .scene-explore.futureScene, .scene-explore.pastScene {
 	display:block
