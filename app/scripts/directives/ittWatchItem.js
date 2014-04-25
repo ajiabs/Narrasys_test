@@ -2,13 +2,13 @@
 
 // "Transmedia" Item Directive
 angular.module('com.inthetelling.player')
-	.directive('ittItem', function(modalMgr, videojs, $rootScope, $timeout) {
+	.directive('ittWatchItem', function(modalMgr, videojs, $rootScope, $timeout) {
 		return {
 			restrict: 'A',
 			replace: false,
-			template: '<div ng-include="item.templateUrl">Loading Item...</div>',
+			template: '<div ng-include="item.watchTemplateUrl">Loading Item...</div>',
 			scope: {
-				item: '=ittItem'
+				item: '=ittWatchItem'
 			},
 			link: function(scope, element, attrs) {
 
@@ -27,8 +27,6 @@ angular.module('com.inthetelling.player')
 						// console.log("ITEM EXITING",scope.item);
 					}
 				});
-
-
 
 				scope.pause = function() {
 					videojs.player.pause();
