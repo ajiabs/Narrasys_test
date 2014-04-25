@@ -1,11 +1,10 @@
 <!-- only in content panes.  Fg/Bg/Overlay items will be coerced to transmedia-image-fill -->
-
-<div bindonce="item" class="item timestampNone {{item.layout}} {{item.styles}} " x-ng-class='{
-	"currentItem": item.isActive, 
-	"futureItem": !item.isActive && !item.wasActive, 
-	"pastItem": !item.isActive && item.wasActive,
-	"isStop": item.stop
-}'>
+<div 
+	bindonce="item" 
+	class="item timestampNone" 
+	x-ng-class='{"currentItem": item.isActive}' 
+	x-bo-class='item.boCSS'
+>
 	<div class="touchable" style="position:relative">
 		<img x-ng-click="showModal()" bo-src="item.source">
 		<div class="touchableIndicator" ></div>

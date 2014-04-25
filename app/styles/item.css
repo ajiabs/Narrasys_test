@@ -30,15 +30,13 @@
 .nopadding {
 	padding: 0 !important;
 }
-.fillPane .futureItem, .pane.windowFg .futureItem {
+.fillPane .item, .pane.windowFg .item {
 	display:none;
 }
-.fillPane .currentItem, .pane.windowFg .currentItem {
+.fillPane .item.currentItem, .pane.windowFg .item.currentItem {
 	display:block;
 }
-.fillPane .pastItem, .pane.windowFg .pastItem {
-	display:none;
-}
+
 /* Nope, can't explain the -3px. TODO */
  .fillPane .bl {
 	width:auto;

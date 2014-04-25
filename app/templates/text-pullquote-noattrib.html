@@ -1,10 +1,8 @@
-<div bindonce="item" class="item timestampNone headerItem {{item.layout}} {{item.styles}} " x-ng-class='{
-	"currentItem": item.isActive, 
-	"futureItem": !item.isActive && !item.wasActive, 
-	"pastItem": !item.isActive && item.wasActive,
-	"isRequired": item.required,
-	"isCosmetic": item.cosmetic,
-	"isStop": item.stop
-}'>
+<div 
+	bindonce="item" 
+	class="item timestampNone headerItem" 
+	x-ng-class='{"currentItem": item.isActive}' 
+	x-bo-class='item.boCSS'
+>
 	<div class="pullquote" bo-html="item.annotation"></div>
 </div>

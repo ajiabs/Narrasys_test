@@ -11,6 +11,7 @@ angular.module('com.inthetelling.player')
 				item: '=ittWatchItem'
 			},
 			link: function(scope, element, attrs) {
+				scope.item.boCSS = scope.item.essentialCSS;
 
 				scope.$watch('item.isActive', function(newVal, oldVal) {
 					if (newVal) {

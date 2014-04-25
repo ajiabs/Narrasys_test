@@ -318,7 +318,6 @@ angular.module('com.inthetelling.player')
 				model.source = "";
 			}
 
-
 			// Precalculate templates for explore mode
 			model.exploreTemplateUrl = model.templateUrl;
 			if (model.type === 'annotation') {
@@ -359,14 +358,14 @@ angular.module('com.inthetelling.player')
 			if (model.cosmetic) {
 				cssPrebuild.push("isCosmetic");
 			}
+			model.essentialCSS = cssPrebuild.join(" ");
 			if (model.layout) {
 				cssPrebuild.push(model.layout);
 			}
 			if (model.styles) {
 				cssPrebuild.push(model.styles);
 			}
-			model.boCSS = cssPrebuild.join(" ");
-
+			model.styleCSS = cssPrebuild.join(" ");
 
 
 

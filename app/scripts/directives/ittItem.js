@@ -12,6 +12,8 @@ angular.module('com.inthetelling.player')
 			},
 			link: function(scope, element, attrs) {
 
+				scope.item.boCSS = scope.item.essentialCSS + " " + scope.item.styleCSS;
+
 				scope.$watch('item.isActive', function(newVal, oldVal) {
 					if (newVal) {
 						// console.log("ITEM ENTERING", scope.item);
