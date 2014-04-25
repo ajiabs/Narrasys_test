@@ -299,6 +299,13 @@
 	width: 50%;
 	float:left;
 }
+
+@media screen and (max-height: 700px) {
+	.scene-2col .videoContainer {
+		position:absolute;
+	}
+}
+
 /*============================*/
  .scene-cornerH {
 }
