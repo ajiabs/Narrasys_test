@@ -111,8 +111,12 @@
 //===========================*/
 
 /* default */
- .futureScene, .pastScene {
+ .sceneContainer {
 	display:none
+}
+
+.sceneContainer.currentScene {
+	display:block;
 }
 .scene .sceneTitle {
 	padding: 0.5em;
@@ -167,14 +171,15 @@
 
 /* Explore mode */
  .scene-explore {
-	clear:both
+	clear:both;
+	border-top: 1px solid rgba(0, 0, 0, 0.2)
 }
 /* Causes columns to fill vertical space.  Make sure to override in small screen */
  .scene-explore .scene {
 	display:flex;
 	position: static;
 }
-.scene-explore.futureScene, .scene-explore.pastScene {
+.sceneContainer.scene-explore {
 	display:block
 }
 .scene-explore .videoContainer {
@@ -184,9 +189,7 @@
 	right: 0;
 	width: 30%;
 }
-.scene-explore {
-	border-top: 1px solid rgba(0, 0, 0, 0.2)
-}
+
 .scene-explore.nonNavigable {
 	border-top: none
 }
@@ -296,6 +299,13 @@
 	width: 50%;
 	float:left;
 }
+
+@media screen and (max-height: 700px) {
+	.scene-2col .videoContainer {
+		position:absolute;
+	}
+}
+
 /*============================*/
  .scene-cornerH {
 }
