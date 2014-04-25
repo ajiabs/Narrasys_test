@@ -74,6 +74,7 @@
 }
 @media screen and (max-width: 480px) {
 	.button-directed {
+		/* See also helpPanel below */
 		display:none !important;
 	}
 }
@@ -119,7 +120,10 @@
 	color:#555;
 }
 .modegroup .button {
-	color:#999;
+	color:#AAA;
+}
+.modegroup .button.cur {
+	background-color: rgba(255, 255, 255, 0.6);
 }
 .toolbar .button.cur {
 	color:#000;
@@ -164,7 +168,8 @@
 	width: 32px;
 	height: 32px;
 	opacity: 0.7;
-	cursor: pointer; cursor: hand;
+	cursor: pointer;
+	cursor: hand;
 }
 /*============================
  *
@@ -362,6 +367,74 @@
 }
 .navigationPanel p {
 	margin-left: 45px;
+}
+/*============================
+ *
+ * Help Panel
+ *
+//===========================*/
+ .helpPanel {
+	background-color: #EEE;
+	border-radius: 15px;
+	font-size: 0.86em;
+	left: 2em;
+	padding: 15px;
+	position: absolute;
+	width:60%;
+	max-width: 500px;
+	min-width: 290px;
+	top: 55px;
+	/* TOOLBAR HEIGHT */
+	z-index: 99;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+.helpPanel ul {
+	list-style: none;
+	margin: 0.5em 1em;
+}
+.helpPanel li:before, .helpPanel h3 {
+	height: 30px;
+}
+.helpPanel li {
+	clear: both;
+	border-top: 1px solid #EEE;
+	padding: 0.5em 0;
+}
+.helpPanel li:before {
+	float: left;
+	font-family: Story;
+	font-size: 1.7em;
+	padding-right: 0.5em;
+}
+.helpPanel li.video:before {
+	content:"\e60b"
+}
+.helpPanel li.directed:before {
+	content:"\e60a"
+}
+
+@media screen and (max-width: 480px) {
+	.helpPanel li.directed {
+		display:none !important;
+	}
+}
+
+.helpPanel li.explore:before {
+	content:"\e60c"
+}
+.helpPanel .goAway {
+	float:right;
+}
+.helpPanel .arrow-up {
+	width: 20px;
+	height: 20px;
+	background-color: #EEE;
+	position: absolute;
+	top: -10px;
+	left: 30px;
+	box-shadow: -5px -3px 3px rgba(0, 0, 0, 0.2);
+	z-index: 5;
+	transform: rotate(45deg);
 }
 /*============================
  *
