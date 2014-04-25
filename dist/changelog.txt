@@ -142,3 +142,12 @@ Prevent bogus error messages (Only displays error panel if there is a message to
 Changes in v1.5.3:
 still trying to prevent bogus "unknown error"
 
+------------------------------------------------
+Changes in v1.6:
+scene-2col handles smaller screens better
+precalculate scene styles and layouts
+Moved some logic from item directives into controller
+move item class bindings to model factory
+split item directive per mode
+Fixed invisible scenes in chrome explore mode
+
