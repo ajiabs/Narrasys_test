@@ -237,6 +237,10 @@ angular.module('com.inthetelling.player')
 				model.showCurrent = true;
 			}
 			model._id = data._id;
+
+			// precalc
+			model.boCSS = model.layout + " " + model.styles;
+
 			return model;
 		};
 
