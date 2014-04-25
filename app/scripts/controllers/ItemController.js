@@ -2,7 +2,7 @@
 
 // Controller for ittItem
 angular.module('com.inthetelling.player')
-	.controller('ItemController', function ($scope, videojs) {
+	.controller('ItemController', function ($scope, videojs, modalMgr) {
 
 
 
@@ -10,5 +10,15 @@ angular.module('com.inthetelling.player')
 		$scope.gotoItem = function () {
 			videojs.player.currentTime($scope.item.startTime);
 		};
+
+
+				$scope.pause = function() {
+					videojs.player.pause();
+				};
+
+				$scope.showModal = function() {
+					videojs.player.pause();
+					modalMgr.createItemDetailOverlay($scope);
+				};
 
 	});

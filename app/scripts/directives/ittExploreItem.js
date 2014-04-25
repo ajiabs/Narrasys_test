@@ -2,7 +2,7 @@
 
 // "Transmedia" Item Directive
 angular.module('com.inthetelling.player')
-	.directive('ittExploreItem', function(modalMgr, videojs, $rootScope, $timeout) {
+	.directive('ittExploreItem', function(videojs, $rootScope, $timeout) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -29,10 +29,6 @@ angular.module('com.inthetelling.player')
 					}
 				});
 
-				scope.pause = function() {
-					videojs.player.pause();
-				};
-
 				scope.toggleDetailView = function() {
 					if (scope.item.showInlineDetail) {
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
@@ -43,15 +39,9 @@ angular.module('com.inthetelling.player')
 							// otherwise show detail inline if there's room for it:
 							scope.item.showInlineDetail = !scope.item.showInlineDetail;
 						} else {
-							// otherwise pop a modal
-							modalMgr.createItemDetailOverlay(scope);
+							scope.showModal();
 						}
 					}
-				};
-
-				scope.showModal = function() {
-					videojs.player.pause();
-					modalMgr.createItemDetailOverlay(scope);
 				};
 
 			},
