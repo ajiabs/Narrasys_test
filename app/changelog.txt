@@ -160,3 +160,7 @@ Changes in v1.6.2:
 Allow for longer episode titles in GW template
 delete youtube key in safari instead of setting it to undefined
 
+------------------------------------------------
+Changes in v1.6.3:
+force chrome to reflow explore mode after an itemDetail is collapsed
+
