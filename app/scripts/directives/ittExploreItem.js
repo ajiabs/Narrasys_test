@@ -33,6 +33,11 @@ angular.module('com.inthetelling.player')
 					if (scope.item.showInlineDetail) {
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
 						scope.item.showInlineDetail = false;
+						
+						// HACK Force chrome to recalculate the scene height
+						var chromehack = $(element).closest('.scene');
+						chromehack.hide();
+						$timeout(function() {chromehack.show();});
 					} else {
 						videojs.player.pause();
 						if (element.closest('.content').width() > 500) {
