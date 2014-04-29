@@ -123,6 +123,17 @@ angular.module('com.inthetelling.player')
 					}
 
 					videoObject.duration = masterAsset.duration;
+
+					// URL-encode master assets.
+					// WARN currently have bad data in the database -- urls are being generated with unencoded spaces
+					// and question marks.  No way to know if the url needs to keep the '?' unencoded, if that happens
+					// things will break!
+
+					for (var key in videoObject) {
+						videoObject[key] = videoObject[key].replace(/ /g, "%20").replace(/\?/g, "%3F").replace(/\&/g, "%26");
+					}
+
+
 					return videoObject;
 				} else {
 					console.error("Master Asset lookup failed for:", masterAssetId);
@@ -159,7 +170,7 @@ angular.module('com.inthetelling.player')
 			if (isUid(assetId)) {
 				var asset = dataSvc.getAssetById(assetId);
 				if (asset) {
-					return asset.url.replace(/ /g, "%20"); // TODO do we need to do more url escaping here?  encodeURIComponent() is too aggressive, escapes / and : which we don't want
+					return asset.url.replace(/ /g, "%20"); // TODO this should be handled in database
 				} else {
 					console.error("Asset lookup failed for:", assetId);
 				}
@@ -312,6 +323,13 @@ angular.module('com.inthetelling.player')
 					model.title = data.title;
 					model.description = data.description;
 					model.source = resolveAssetUrl(data.asset_id);
+
+					// WARN some bad data in db; uploads aren't always properly url-encoded.  Assuming
+					// for now that no uploads will have url parameters, so we can safely encode '?' and ' '
+					// DO NOT DO THIS IN resolveAssetUrl, because links frequently have legit params
+					model.source = model.source.replace(/\?/,'%3F').replace(/\&/g, "%26");
+					console.log(model.source);
+
 					break;
 			}
 			model._id = data._id;
