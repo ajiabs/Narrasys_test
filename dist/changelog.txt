@@ -155,3 +155,8 @@ Fixed invisible scenes in chrome explore mode
 Changes in v1.6.1:
 URL-encode "?" and "&" in upload and master asset urls
 
+------------------------------------------------
+Changes in v1.6.2:
+Allow for longer episode titles in GW template
+delete youtube key in safari instead of setting it to undefined
+
