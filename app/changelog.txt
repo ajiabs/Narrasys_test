@@ -151,3 +151,7 @@ move item class bindings to model factory
 split item directive per mode
 Fixed invisible scenes in chrome explore mode
 
+------------------------------------------------
+Changes in v1.6.1:
+URL-encode "?" and "&" in upload and master asset urls
+
