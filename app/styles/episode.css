@@ -705,20 +705,17 @@ for all sub styles:
 	margin: 0 !important;
 }
 .episode-gw .introtext h1 {
-	position:absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	border-top: 45px solid #FFF;
-	/* sleazy way to cover up toolbar logo */
-	width: 400px;
-	z-index:10;
-	padding-top: 120px;
-	/* leave room for logo */
 	font-weight: 400;
 	font-size: 24px;
 	line-height: 25px;
+}
+
+.episode-gw .gwlogohack {
+	position: fixed;
+	background-color:#FFF;
+	z-index:10;
+	top:0; left: 0;right: 100px;
+	height: 45px;
 }
 .episode-gw .introtext {
 	float:none;
@@ -741,7 +738,7 @@ for all sub styles:
 	}
 	.episode-gw .intropanel .introtext {
 		position: static !important;
-		padding-top: 0 !important;
+		padding-top: 140px !important;
 	}
 	.episode-gw .intropanel h1 {
 		position:static !important;
