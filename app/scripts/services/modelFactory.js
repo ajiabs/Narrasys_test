@@ -119,7 +119,7 @@ angular.module('com.inthetelling.player')
 					// Old iPads don't cope well with the youtube plugin, so we divert them to the mp4 version instead. If there is one.
 					// For now do this for all Safari, to avoid the "power-saver plugin" issue
 					if ((isSafari || navigator.platform.indexOf('iPad') > -1) && videoObject.mpeg4) {
-						videoObject.youtube = undefined;
+						delete videoObject.youtube;
 					}
 
 					videoObject.duration = masterAsset.duration;
@@ -130,7 +130,9 @@ angular.module('com.inthetelling.player')
 					// things will break!
 
 					for (var key in videoObject) {
-						videoObject[key] = videoObject[key].replace(/ /g, "%20").replace(/\?/g, "%3F").replace(/\&/g, "%26");
+						if (videoObject[key]) {
+							videoObject[key] = videoObject[key].replace(/ /g, "%20").replace(/\?/g, "%3F").replace(/\&/g, "%26");
+						}
 					}
 
 
@@ -322,14 +324,12 @@ angular.module('com.inthetelling.player')
 					model.itemDetailTemplateUrl = "templates/modal-image-default.html"; // hardcoded for now, not sure if we'll want to allow variations here
 					model.title = data.title;
 					model.description = data.description;
-					model.source = resolveAssetUrl(data.asset_id);
+					model.source = resolveAssetUrl(data.asset_id) || '';
 
 					// WARN some bad data in db; uploads aren't always properly url-encoded.  Assuming
 					// for now that no uploads will have url parameters, so we can safely encode '?' and ' '
 					// DO NOT DO THIS IN resolveAssetUrl, because links frequently have legit params
 					model.source = model.source.replace(/\?/,'%3F').replace(/\&/g, "%26");
-					console.log(model.source);
-
 					break;
 			}
 			model._id = data._id;
