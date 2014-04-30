@@ -150,6 +150,7 @@ Moved some logic from item directives into controller
 move item class bindings to model factory
 split item directive per mode
 Fixed invisible scenes in chrome explore mode
+Added a help overlay to irritate and/or educate new users
 
 ------------------------------------------------
 Changes in v1.6.1:
@@ -163,4 +164,9 @@ delete youtube key in safari instead of setting it to undefined
 ------------------------------------------------
 Changes in v1.6.3:
 force chrome to reflow explore mode after an itemDetail is collapsed
+
+------------------------------------------------
+Changes in v1.6.4:
+Make overlay-blocking cookie cross-subdomain
+Force masterAsset youtube urls into the correct embed format if authored incorrectly
 
