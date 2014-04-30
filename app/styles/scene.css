@@ -177,7 +177,7 @@
 /* Causes columns to fill vertical space.  Make sure to override in small screen */
  .scene-explore .scene {
 	display:flex;
-	position: static;
+	position:static;
 }
 .sceneContainer.scene-explore {
 	display:block
