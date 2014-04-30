@@ -170,3 +170,8 @@ Changes in v1.6.4:
 Make overlay-blocking cookie cross-subdomain
 Force masterAsset youtube urls into the correct embed format if authored incorrectly
 
+------------------------------------------------
+Changes in v1.6.5:
+check if you_tube_url exists before trying to modify it
+check for missing assetId before trying to resolve it
+
