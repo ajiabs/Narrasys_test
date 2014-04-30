@@ -129,3 +129,38 @@ support splitRequired and splitOptional
 explore mode goes to three-column layout on wide screens
 handle youtube urls inside alternate_urls array
 
+------------------------------------------------
+Changes in v1.5.1:
+Added delay before displaying error message
+
+------------------------------------------------
+Changes in v1.5.2:
+init data.assets with an empty array when necessary
+Prevent bogus error messages (Only displays error panel if there is a message to display)
+
+------------------------------------------------
+Changes in v1.5.3:
+still trying to prevent bogus "unknown error"
+
+------------------------------------------------
+Changes in v1.6:
+scene-2col handles smaller screens better
+precalculate scene styles and layouts
+Moved some logic from item directives into controller
+move item class bindings to model factory
+split item directive per mode
+Fixed invisible scenes in chrome explore mode
+
+------------------------------------------------
+Changes in v1.6.1:
+URL-encode "?" and "&" in upload and master asset urls
+
+------------------------------------------------
+Changes in v1.6.2:
+Allow for longer episode titles in GW template
+delete youtube key in safari instead of setting it to undefined
+
+------------------------------------------------
+Changes in v1.6.3:
+force chrome to reflow explore mode after an itemDetail is collapsed
+

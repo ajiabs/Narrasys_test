@@ -9,8 +9,12 @@ TODO: decide whether to support that transtion (only)?
 TODO: does filter:{isActive:true} mean a performance hit?
 
 -->
+<div 
+	bindonce="scene" 
+	class="sceneContainer scene-1col" 
+	x-bo-class='scene.boCSS'
+	x-ng-class='{"currentScene": scene.isActive}'>
 
-<div class="scene-1col {{scene.layout}} {{scene.styles}}" x-ng-class='{"currentScene": scene.isActive, "futureScene": !scene.isActive && !scene.wasActive, "pastScene": !scene.isActive && scene.wasActive}'>
 	<div class="fillPane windowBg">
 		<div x-ng-repeat="item in scene.items | layout: 'windowBg' | filter:{isActive:true}" x-itt-item="item"></div>
 	</div>

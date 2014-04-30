@@ -33,7 +33,6 @@ angular.module('com.inthetelling.player')
 				};
 
 				var twiddleSceneLayout = function () {
-					console.log("twiddling scene ", scope.scene);
 					var videoContainer = element.find('.videoContainer');
 					//BUG: safari gets height very wrong sometimes, so we're hardcoding the aspect ratio for now;
 					// var aspectRatio = videoContainer.width()/videoContainer.height();
