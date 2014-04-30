@@ -70,6 +70,7 @@ angular.module('com.inthetelling.player')
 		// Takes an id for a master asset (video), looks it up, and returns a video definition object
 		// Will return (reflect) the passed property if not a valid id
 		var resolveMasterAssetVideo = function(masterAssetId) {
+			var getYouTubeId = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 			if (isUid(masterAssetId)) {
 				var masterAsset = dataSvc.getAssetById(masterAssetId);
 				if (masterAsset) {
@@ -80,7 +81,9 @@ angular.module('com.inthetelling.player')
 						var extensionMatch = /\.(\w+)$/;
 						for (var i = 0; i < masterAsset.alternate_urls.length; i++) {
 							if (masterAsset.alternate_urls[i].match(/youtube/)) {
-								videoObject.youtube = masterAsset.alternate_urls[i];
+								// force the correct embed url:
+								var ytId = masterAsset.alternate_urls[i].match(getYouTubeId)[1];
+								videoObject.youtube = "//youtube.com/embed/"+ytId;
 							} else {
 								switch (masterAsset.alternate_urls[i].match(extensionMatch)[1]) {
 									case "mp4":
@@ -95,8 +98,10 @@ angular.module('com.inthetelling.player')
 								}
 							}
 						}
+						
 						if (masterAsset.you_tube_url) {
-							videoObject.youtube = masterAsset.you_tube_url;
+								var ytId = masterAsset.you_tube_url.match(getYouTubeId)[1];
+								videoObject.youtube = "//youtube.com/embed/"+ytId;
 						}
 
 					} else {
@@ -104,8 +109,9 @@ angular.module('com.inthetelling.player')
 						videoObject = {
 							mpeg4: masterAsset.url.replace('.mp4', '.m3u8'),
 							webm: masterAsset.url.replace(".mp4", ".webm"),
-							youtube: masterAsset.you_tube_url
 						};
+						var ytId = masterAsset.you_tube_url.match(getYouTubeId)[1];
+						videoObject.youtube = "//youtube.com/embed/"+ytId;
 					}
 
 					// HACK some platform detection here.
@@ -134,8 +140,6 @@ angular.module('com.inthetelling.player')
 							videoObject[key] = videoObject[key].replace(/ /g, "%20").replace(/\?/g, "%3F").replace(/\&/g, "%26");
 						}
 					}
-
-
 					return videoObject;
 				} else {
 					console.error("Master Asset lookup failed for:", masterAssetId);
