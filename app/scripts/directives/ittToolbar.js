@@ -52,7 +52,8 @@ angular.module('com.inthetelling.player')
 						date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
 						expires = "; expires=" + date.toGMTString();
 					}
-					document.cookie = name + "=" + value + expires + "; path=/";
+					var domain = "." + document.location.host.match(/[^\.]*\.\w*$/)[0];
+					document.cookie = name + "=" + value + expires + ";domain="+domain+";path=/";
 				};
 
 				var readCookie = function(name) {
