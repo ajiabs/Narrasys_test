@@ -98,20 +98,21 @@ angular.module('com.inthetelling.player')
 								}
 							}
 						}
-						
+						// this should be removed
 						if (masterAsset.you_tube_url) {
 								var ytId = masterAsset.you_tube_url.match(getYouTubeId)[1];
 								videoObject.youtube = "//youtube.com/embed/"+ytId;
 						}
-
 					} else {
 						// This is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes.
 						videoObject = {
 							mpeg4: masterAsset.url.replace('.mp4', '.m3u8'),
 							webm: masterAsset.url.replace(".mp4", ".webm"),
 						};
-						var ytId = masterAsset.you_tube_url.match(getYouTubeId)[1];
-						videoObject.youtube = "//youtube.com/embed/"+ytId;
+						if (masterAsset.you_tube_url) {
+							var ytId = masterAsset.you_tube_url.match(getYouTubeId)[1];
+							videoObject.youtube = "//youtube.com/embed/"+ytId;
+						}
 					}
 
 					// HACK some platform detection here.
@@ -181,7 +182,11 @@ angular.module('com.inthetelling.player')
 					console.error("Asset lookup failed for:", assetId);
 				}
 			}
-			return assetId.replace(/ /g, "%20"); // TODO as above (this is used in  local data)
+			if (assetId) {
+				return assetId.replace(/ /g, "%20");
+			} else {
+					console.error("Asset lookup failed (undefined assetId)");
+			}
 		};
 
 		// Takes an id for an asset, looks it up, and returns the mime type
