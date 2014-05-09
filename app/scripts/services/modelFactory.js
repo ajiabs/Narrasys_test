@@ -338,7 +338,7 @@ angular.module('com.inthetelling.player')
 					// WARN some bad data in db; uploads aren't always properly url-encoded.  Assuming
 					// for now that no uploads will have url parameters, so we can safely encode '?' and ' '
 					// DO NOT DO THIS IN resolveAssetUrl, because links frequently have legit params
-					model.source = model.source.replace(/\?/,'%3F').replace(/\&/g, "%26");
+					model.source = model.source.replace(/ /g,'%20').replace(/\?/g,'%3F').replace(/\&/g, "%26");
 					break;
 			}
 			model._id = data._id;
