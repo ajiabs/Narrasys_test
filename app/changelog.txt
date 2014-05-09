@@ -175,3 +175,7 @@ Changes in v1.6.5:
 check if you_tube_url exists before trying to modify it
 check for missing assetId before trying to resolve it
 
+------------------------------------------------
+Changes in v1.6.6:
+correct upload urls with multiple unencoded '?'
+
