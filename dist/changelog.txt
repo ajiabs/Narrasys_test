@@ -179,3 +179,8 @@ check for missing assetId before trying to resolve it
 Changes in v1.6.6:
 correct upload urls with multiple unencoded '?'
 
+------------------------------------------------
+Changes in v1.6.7:
+Include auth param and token header in check_signed_in and is_authenticated
+Position modals at item top instead of page top (slightly hacky fix for #107)
+
