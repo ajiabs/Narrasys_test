@@ -62,16 +62,30 @@ angular.module('com.inthetelling.player')
       else {
         // console.log("dataSvc.get() [Mode: API Data]");
 
+        // if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
+        var authParam = "";
+        if (config.apiAuthToken) {
+          // console.log("auth token");
+          $http.defaults.headers.get = {
+            'Authorization': config.apiAuthToken
+          };
+        } else {
+          authParam = (authKey) ? "?access_token=" + authKey : "";
+        }
+
+
+
+
         // Check API authentication first.
         // TODO de-nest this code
-        $http.get(config.apiDataBaseUrl + "/v1/check_signed_in")
+        $http.get(config.apiDataBaseUrl + "/v1/check_signed_in" + authParam)
           .success(function (authData, authStatus) {
             if (authData.signed_in === true) {
               // The server is happy with us, and we might ahve the auth cookie at this point.
               // But safari mayt have blocked it if we're in an iframe, so we have do make a second call to check _that_.
               // Yes, this is silly. TODO jsut use a header token instead of a cookie so this isn't necessary
 
-              $http.get(config.apiDataBaseUrl + "/v1/is_authenticated").success(function (authData) {
+              $http.get(config.apiDataBaseUrl + "/v1/is_authenticated" + authParam).success(function (authData) {
                 if (authData.has_cookie === true) {
                   // All good, go get the real data
                   svc.batchAPIcalls(routeParams, callback, errback);
@@ -129,7 +143,6 @@ angular.module('com.inthetelling.player')
       */
 
       // if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
-      // NOTE this is not in use currently AFAIK; needs to be moved earlier in the process anyway
       var authParam = "";
       if (config.apiAuthToken) {
         // console.log("auth token");
