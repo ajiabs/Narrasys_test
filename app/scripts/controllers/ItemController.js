@@ -2,7 +2,7 @@
 
 // Controller for ittItem
 angular.module('com.inthetelling.player')
-	.controller('ItemController', function ($scope, videojs, modalMgr) {
+	.controller('ItemController', function ($scope, $timeout, videojs, modalMgr) {
 
 		// convenience method to set video time
 		$scope.gotoItem = function () {
@@ -14,9 +14,14 @@ angular.module('com.inthetelling.player')
 					videojs.player.pause();
 				};
 
-				$scope.showModal = function() {
+				$scope.showModal = function(t) {
 					videojs.player.pause();
 					modalMgr.createItemDetailOverlay($scope);
+					if (t) {
+						$timeout(function() {
+							$('.modal').css("top",t); // HACK
+						});
+					}
 				};
 
 	});

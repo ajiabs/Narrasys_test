@@ -44,7 +44,9 @@ angular.module('com.inthetelling.player')
 							// otherwise show detail inline if there's room for it:
 							scope.item.showInlineDetail = !scope.item.showInlineDetail;
 						} else {
-							scope.showModal();
+							//console.log("element",element);
+							var t = $(element).offset().top;
+							scope.showModal(t);
 						}
 					}
 				};

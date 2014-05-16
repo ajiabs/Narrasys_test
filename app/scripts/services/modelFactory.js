@@ -70,6 +70,7 @@ angular.module('com.inthetelling.player')
 		// Takes an id for a master asset (video), looks it up, and returns a video definition object
 		// Will return (reflect) the passed property if not a valid id
 		var resolveMasterAssetVideo = function(masterAssetId) {
+//			console.log("resolveMasterAssetVideo");
 			var getYouTubeId = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 			if (isUid(masterAssetId)) {
 				var masterAsset = dataSvc.getAssetById(masterAssetId);
@@ -129,6 +130,19 @@ angular.module('com.inthetelling.player')
 						delete videoObject.youtube;
 					}
 
+					// Chrome doesn't want you to have the same video in two tabs at once, which means that
+					// the "get me out of here" button leads to what appears to be a broken video in the new window.
+					// (Doesn't affect youtube, only real video streams.)
+					// Stupid fix: use a different video format when framed vs unframed in Chrome.
+					// Arbitrarily using mp4 when framed, webm when not, but could just as well be the other way around.
+					var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+					if (isChrome && ! videoObject.youtube && (videoObject.webm && videoObject.mpeg4)) {
+						if (window.parent !== window) {
+							delete videoObject.mpeg4;
+						} else {
+							delete videoObject.webm;
+						}
+					}
 					videoObject.duration = masterAsset.duration;
 
 					// URL-encode master assets.
