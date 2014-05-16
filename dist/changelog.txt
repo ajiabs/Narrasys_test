@@ -184,3 +184,7 @@ Changes in v1.6.7:
 Include auth param and token header in check_signed_in and is_authenticated
 Position modals at item top instead of page top (slightly hacky fix for #107)
 
+------------------------------------------------
+Changes in v1.6.8:
+stupid fix for chrome not allowing same video in two tabs
+
