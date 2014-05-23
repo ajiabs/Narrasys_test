@@ -133,3 +133,6 @@ explore mode now has correct templates, shows demo elements too
 Changes in SxS0.6.1:
 explore mode was overriding links with an image template
 
+------------------------------------------------
+Changes in SxS0.7:
+Changed authentication to not depend on cookies
