@@ -12,22 +12,23 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindo
 		})
 		.when('/episode/:epId', {
 			controller: 'EpisodeController',
-			templateUrl: 'templates/player.html'
+			templateUrl: 'templates/player.html',
+			reloadOnSearch: false
 		})
 		.when('/episode/:epId/:authKey', {
 			controller: 'EpisodeController',
-			templateUrl: 'templates/player.html'
+			templateUrl: 'templates/player.html',
+			reloadOnSearch: false
 		})
-/*
+	/*
 		.when('/seekritbackdoor/inventory',{
 			controller: 'Inventory',
 			templateUrl: 'templates/inventory.html'
 		})
 */
-		.otherwise({
-			redirectTo: '/error' // only for 404s
-		}
-	);
+	.otherwise({
+		redirectTo: '/error' // only for 404s
+	});
 	$locationProvider.html5Mode(false); // TODO sigh, can't get the server config working for this... thought we had it but IE still choked
 })
 
@@ -42,7 +43,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindo
 })
 
 // Configure http headers
-.config(function($httpProvider) {
+.config(function ($httpProvider) {
 	/*
 	$httpProvider.defaults.headers.get = {
 		'Authorization': 'Token token="c7624368e407355eb587500862322413"',
