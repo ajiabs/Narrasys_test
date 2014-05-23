@@ -86,7 +86,7 @@ angular.module('com.inthetelling.player')
 				.error(function (data, status) {
 					console.error("get_nonce failed:", data, status);
 					$rootScope.$emit("error", {
-						"message": "Authentication failed (get_nonce: " + data.error + ")"
+						"message": "Authentication failed (get_nonce: " + (data.error || data) + ")"
 					});
 					defer.reject();
 				});
@@ -99,8 +99,8 @@ angular.module('com.inthetelling.player')
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
 				.success(function (data, status) {
 					var authToken = data.acess_token;
-					var roles = data.roles; // TODO: do something useful with roles
-					console.log("Roles received:", roles);
+					svc.roles = data.roles; // TODO: do something useful with roles
+					console.log("Roles received:", svc.roles);
 					// Set auth header.  TODO: same for put? delete?
 					$http.defaults.headers.get = {
 						'Authorization': 'Token token="' + authToken + '"'
@@ -110,7 +110,7 @@ angular.module('com.inthetelling.player')
 				.error(function (data, status) {
 					console.error("get_access_token failed:", data, status);
 					$rootScope.$emit("error", {
-						"message": "Authentication failed (get_access_token: " + data.error + ")"
+						"message": "Authentication failed (get_access_token: " + data.error || data + ")"
 					});
 					defer.reject();
 				});
@@ -265,6 +265,6 @@ angular.module('com.inthetelling.player')
 				}
 			}
 		};
-
+		console.log("datasvc", svc);
 		return svc;
 	});

@@ -127,7 +127,7 @@ angular.module('com.inthetelling.player')
 				scope.mainframeescape = function () {
 					videojs.player.pause();
 					// TODO: this needs to call get_nonce first so it can add it to the url in the popped window!!!
-
+					// or maybe it doesn't, I seem to be keeping the same role in the new window... needs testing
 					window.open($location.absUrl()).focus();
 				};
 
