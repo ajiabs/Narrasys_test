@@ -12,7 +12,6 @@ has to worry about calling get() before getAssetById() for example. It will all 
 but just implement the promise api for consumers to use the service in a familiar way.
 Service will then be capable of full crud, and can flush appropriate caches in the underlying
 $http/$resources when POST/PUT methods are called.
-
 */
 
 angular.module('com.inthetelling.player')
