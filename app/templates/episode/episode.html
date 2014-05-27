@@ -1,0 +1,46 @@
+<div>
+	Episode template
+	<div ng-show="appState.viewMode == 'discover'">
+		WindowBg
+		<div itt-item="item" ng-show="appState.viewMode == 'discover'" class="animate" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowBg'"></div>
+	</div>
+
+
+	<div itt-scene="scene" class="animate" ng-repeat="scene in episode.scenes | isCurrent" ng-show="appState.viewMode == 'discover'"></div>
+
+	<div ng-show="appState.viewMode == 'review'">
+		Review mode
+		<div class="animate" ng-repeat="scene in episode.scenes">
+			<b>{{scene.title}}</b> {{scene.state}} ({{scene.start_time}} - {{scene.end_time}})
+			<div ng-class="contentMain">
+				contentMain
+				<div class="animate" ng-repeat="item in scene.items | annotation | filter:{cosmetic:false}" itt-item="item"></div>
+			</div>
+			<div ng-class="contentAlt">
+				contentAlt
+				<div class="animate" ng-repeat="item in scene.items | transmedia | filter:{cosmetic:false}" itt-item="item"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="videoContainer">
+		Video Container
+		<div itt-video="episode.masterAsset.video"></div>
+
+		<div>Video Overlays
+			<div itt-item="item" class="animate" ng-repeat="item in episode.items | itemLayout:'videoOverlay' | isCurrent"></div>
+		</div>
+	</div>
+
+	<div ng-show="appState.viewMode == 'watch'">
+		Captions
+		<div class="animate" ng-repeat="item in episode.items | transcript | isCurrent" itt-item="item"></div>
+	</div>
+
+	<div ng-show="appState.viewMode == 'discover'">
+		WindowFg
+		<div itt-item="item" ng-show="appState.viewMode == 'discover'" class="animate" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowFg'"></div>
+	</div>
+
+
+</div>

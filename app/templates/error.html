@@ -1,12 +1,7 @@
 <div x-ng-if="error" class="error">
 	<h2>Error</h2>
-	<p>Sorry, but something went wrong and we weren't able to continue:</p>
-
-	<p ng-if"error.message">{{error.message}}</p>
-	<p ng-if="!error.message">(Unknown error)</p>
-<!--
+	<p>Sorry, but something went wrong and we weren't able to continue:<br>{{error.message}}</p>
 	<span style="color:#FFF">
 		<pre>{{error.details}}</pre>
 	</span>
--->
 </div>

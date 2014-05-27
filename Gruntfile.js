@@ -17,12 +17,32 @@ module.exports = function (grunt) {
 			app: require('./bower.json').appPath || 'app',
 			dist: 'dist'
 		},
-		ngtemplates:	{
+		ngtemplates: {
 			"com.inthetelling.player": { // this subtask name becomes the module name that is created
 				cwd: '<%= yeoman.app %>',
 				src: 'templates/**/*.html',
 				dest: '<%= yeoman.app %>/scripts/templates.js',
 				options: {
+
+					/* 
+
+collapseWhitespace does save some space, and works corretly here (though not as part of the base htmlmin rule)
+but it has visible side effects, making server and server:dist appear different.
+May re-enable this after the styling is done
+
+					htmlmin:  {
+						collapseBooleanAttributes: true,
+						removeAttributeQuotes: true,
+						removeRedundantAttributes: true,
+						useShortDoctype: true,
+						removeEmptyAttributes: true,
+						removeOptionalTags: true,
+						collapseWhitespace: false
+					}
+*/
+
+					/* we are not using bootstrap
+					,
 					url: function(url) {
 						// modify the template id/url for any bootstrap
 						// templates so that angular-bootstrap can find them
@@ -38,6 +58,8 @@ module.exports = function (grunt) {
 						output += "angular.module('" + module + "').run(['$templateCache', function($templateCache) {\n\n" + script + "\n\n}]);";
 						return output;
 					}
+*/
+
 				}
 			}
 		},
@@ -55,7 +77,7 @@ module.exports = function (grunt) {
 					livereload: '<%= connect.options.livereload %>'
 				},
 				files: [
-					'<%= yeoman.app %>/{,*/}*.html',
+					'<%= yeoman.app %>/**/*.html',
 					'.tmp/styles/{,*/}*.css',
 					'{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
 					'<%= yeoman.app %>/server-mock/**/*.{html,json}',
@@ -133,7 +155,7 @@ module.exports = function (grunt) {
 				files: {
 					src: [
 						'<%= yeoman.dist %>/scripts/{,*/}*.js',
-						'<%= yeoman.dist %>/styles/{,*/}*.css'//,
+						'<%= yeoman.dist %>/styles/{,*/}*.css' //,
 						//'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
 						//'<%= yeoman.dist %>/styles/font/*'
 					]
@@ -189,15 +211,14 @@ module.exports = function (grunt) {
 		htmlmin: {
 			dist: {
 				options: {
-					/*removeCommentsFromCDATA: true,
-					// https://github.com/yeoman/grunt-usemin/issues/44
-					//collapseWhitespace: true,
+					removeCommentsFromCDATA: true,
+					//collapseWhitespace: true, // https://github.com/yeoman/grunt-usemin/issues/44
 					collapseBooleanAttributes: true,
 					removeAttributeQuotes: true,
 					removeRedundantAttributes: true,
 					useShortDoctype: true,
 					removeEmptyAttributes: true,
-					removeOptionalTags: true*/
+					removeOptionalTags: true
 				},
 				files: [{
 					expand: true,
@@ -275,7 +296,26 @@ module.exports = function (grunt) {
 					dest: '<%= yeoman.dist %>/scripts'
 				}]
 			}
+		},
+		uglify: {
+			options: {
+				compress: {
+					unsafe: true,
+					drop_console: true
+				}
+
+			},
+			build: {
+				files: [{
+					expand: true,
+					src: '**/*.js',
+					dest: '<%= yeoman.dist %>/scripts',
+					cwd: '<%= yeoman.dist %>/scripts',
+					ext: '.min.js'
+				}]
+			}
 		}
+
 	});
 
 	grunt.registerTask('server', function (target) {
@@ -322,5 +362,5 @@ module.exports = function (grunt) {
 		'rev',
 		'usemin'
 	]);
-	
+
 };

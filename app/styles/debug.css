@@ -1,0 +1,40 @@
+div {
+	border: 1px solid #000;
+	margin: 5px;
+	padding: 5px;
+}
+.cur {
+	font-weight: bold;
+}
+a {
+	color: #00A;
+}
+.isFuture {
+	border: 1px solid #F00;
+}
+.isPast {
+	border: 1px solid #00F;
+}
+.isCurrent {
+	border: 2px solid #0F0;
+}
+.animate.ng-enter, .animate.ng-leave, .animate.ng-move {
+	transition: 1s linear all;
+	position:relative;
+}
+.animate.ng-enter {
+	left:-50px;
+	opacity:0;
+}
+.animate.ng-enter.ng-enter-active {
+	left:0;
+	opacity:1;
+}
+.animate.ng-leave {
+	left:0;
+	opacity:1;
+}
+.animate.ng-leave.ng-leave-active {
+	left:50px;
+	opacity:0;
+}

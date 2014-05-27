@@ -1,2 +1,23 @@
-<div ng-include="episode.templateUrl">Loading episode...</div>
-<div x-ng-controller="UIErrorController" x-ng-include="'templates/error.html'"></div>
+<a href="#episodes">All episodes</a>
+<h2>{{episode.title}}</h2>
+
+<div itt-timeline></div>
+<div>
+	<a ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')">Watch</a>
+	<a ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')">Discover</a>
+	<a ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')">Review</a>
+</div>
+
+<div itt-episode></div>
+
+<div itt-item-editor="appState.editing"></div>
+
+<hr>
+
+
+<a href="javascript:void 1;" ng-click="showDebug=!showDebug">DEBUG:</a>
+<pre ng-if="showDebug === true">{{appState | pretty }}</pre>
+<pre ng-if="showDebug === true">{{episode | pretty}}</pre>
+
+
+<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>

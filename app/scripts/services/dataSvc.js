@@ -1,312 +1,247 @@
 'use strict';
 
-/*
-  Data service handles the retrieval and aggregation of all the data required to show
-  a complete episode in the player. Data service can run against local data or api data,
-  based on value of config.localData.
-*/
-/* 
-TODO: Refactor this class to utilize $http and/or $resource level caching, and just
-make the requests every time. This way it can be used like a real service class and nobody
-has to worry about calling get() before getAssetById() for example. It will all be async,
-but just implement the promise api for consumers to use the service in a familiar way.
-Service will then be capable of full crud, and can flush appropriate caches in the underlying
-$http/$resources when POST/PUT methods are called.
+// TODO: load and resolve categories
 
-TODO: tidy up the various authentication methods:
- - local first
- - authKey = local
- - api key (is it working?)
- - auth check
-*/
+// Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
+// the rest gets passed to modelSvc
 
 angular.module('com.inthetelling.player')
-	.factory('dataSvc', function (config, $route, $location, $http, $q, _, $rootScope) {
-
-		// Cache all the data returned from dataSvc.get(). This data will be used for all the
-		// individual lookup methods like dataSvc.getAssetById(). Currently these individual
-		// lookup methods are synchronous and do not use the apis or write to the cache.
-		var data;
-
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, modelSvc) {
 		var svc = {};
 
-		svc.roles = []; // HACK FOR NOW
-		var userHasRole = function (role) {
-			for (var i = 0; i < svc.roles.length; i++) {
-				if (svc.roles[i] === role) {
-					return true;
-				}
-			}
-			return false;
-		};
-
-		// Retrieve and cache the full set of data required to display an episode. Method is async and
-		// will get data either from a local .json file or from apis.
-		svc.get = function (routeParams, callback, errback) {
-
-			var episodeId = routeParams.epId;
-			var authKey = routeParams.authKey;
-
-			// new up an empty data object
-			data = {};
-			data.assets = []; // we keep getting bogus concat errors
-
-			// Local Data
-			if (config.localData || authKey === 'local') {
-				// console.log("dataSvc.get() [Mode: Local Data]");
-				$http({
-					method: 'GET',
-					url: config.localDataBaseUrl + '/' + episodeId + '.json'
-				})
-					.success(function (data, status, headers, config) {
-						callback(data);
-					})
-					.error(function (data, status, headers, config) {
-						errback(data);
-					});
-			}
-			// API Data
-			else {
-				// console.log("dataSvc.get() [Mode: API Data]");
-
-				// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
-				var authParam = "";
-				if (config.apiAuthToken) {
-					// console.log("auth token");
-					$http.defaults.headers.get = {
-						'Authorization': config.apiAuthToken
-					};
-				} else {
-					authParam = (authKey) ? "?access_token=" + authKey : "";
-				}
-
-				// Check API authentication first.
-				// TODO de-nest this code
-				$http.get(config.apiDataBaseUrl + "/v1/check_signed_in" + authParam)
-					.success(function (authData, authStatus) {
-						if (authData.signed_in === true) {
-							// The server is happy with us, and we might ahve the auth cookie at this point.
-							// But safari mayt have blocked it if we're in an iframe, so we have do make a second call to check _that_.
-							// Yes, this is silly. TODO jsut use a header token instead of a cookie so this isn't necessary
-
-							$http.get(config.apiDataBaseUrl + "/v1/is_authenticated" + authParam).success(function (authData) {
-
-								// Get roles
-								$http.get(config.apiDataBaseUrl + "/v1/get_user" + authParam)
-									.success(function (roleData, roleStatus) {
-										console.log("ROLE", roleData);
-										svc.roles = roleData.roles;
-									})
-									.error(function (roleData, roleStatus) {
-										console.error("Failed to load roles:", roleData);
-										$rootScope.$emit("error", {
-											"message": "Authentication failed at /v1/get_user",
-											"details": JSON.stringify(roleData)
-										});
-									});
-
-								if (authData.has_cookie === true) {
-									// All good, go get the real data
-									svc.batchAPIcalls(routeParams, callback, errback);
-								} else {
-									// cookie was blocked so we have to bounce into window.top (which will bounce immediately back to history(-1)
-									if (routeParams.return_to) {
-										window.top.location.href = config.apiDataBaseUrl + "/v1/get_authenticated?return_to=" + routeParams.return_to;
-									} else {
-										// Parent frame isn't telling us their location and we can't get it directly... all we can do is ask them to launch the player in a new window:
-										$rootScope.$emit("error", {
-											"message": "Authentication failed (couldn't set authentication cookie; no return_to url)",
-											"details": JSON.stringify(authData)
-										});
-									}
-								}
-							}).error(function (authData) {
-								$rootScope.$emit("error", {
-									"message": "Authentication failed (is_cookie_set didn't return, or returned something other than true or false)",
-									"details": JSON.stringify(authData)
-								});
-							});
-						} else {
-							$rootScope.$emit("error", {
-								"message": "Authentication failed (check_signed_in returned false)",
-								"details": JSON.stringify(authData)
-							});
-						}
-					}).error(function (authData, authStatus) {
-						$rootScope.$emit("error", {
-							"message": "Authentication failed (check_signed_in didn't return, or returned something other than true or false)",
-							"details": JSON.stringify(authData)
+		// TODO cache this and don't re-request from API if we already have it 
+		svc.getEpisodeList = function () {
+			var getEpisodeListDefer = $q.defer();
+			authSvc.authenticate()
+				.then(function () {
+					$http.get(config.apiDataBaseUrl + "/v1/episodes")
+						.success(function (data) {
+							getEpisodeListDefer.resolve(data);
+						})
+						.error(function (a, b, c, d) {
+							//console.log(a,b,c,d);
 						});
-					});
-			}
+				});
+			return getEpisodeListDefer.promise;
 		};
 
-		// retrieves the episode data from the API. Call only through svc.get
-		svc.batchAPIcalls = function (routeParams, callback, errback) {
-			var episodeId = routeParams.epId;
-			var authKey = routeParams.authKey;
+		// getEpisode just needs to retrieve all episode data from the API, and pass it on
+		// to modelSvc.  No promises needed, let the $digest do the work
+		svc.getEpisode = function (epId) {
+			if (modelSvc.episodes[epId]) {
+				return; // already requested
+			}
+			modelSvc.cache("episode", {
+				_id: epId
+			}); // init with empty object to be filled by asynch process
+			authSvc.authenticate()
+				.then(function () {
+					// console.log("auth succeeded");
+					getCommon().then(function () {
+						// console.log("getCommon succeeded");
+						getEpisode(epId);
+					}, function (err) {
+						console.error("getCommon failed: ", err);
+					});
+				}, function (err) {
+					console.error("Authentication error: ", err);
+				});
+		};
 
-			/*
-        API Flow:
-        /v1/episodes/<episode_id>
-          /v1/containers/<resp.container_id>/assets
-          /v1/containers/<resp.container_id>
-            /v1/containers/<resp.parent_id>/assets
-            /v1/containers/<resp.parent_id>
-              /v1/containers/<resp.parent_id>/assets
-        /v2/episodes/<episode_id>/events
-        /v1/templates
-        /v1/layouts
-        /v1/styles
-        TODO: GEt event categories also, they will eventually be used in the player
-      */
+		var dataCache = {
+			template: {},
+			layout: {},
+			style: {}
+		};
 
-			// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
-			var authParam = "";
-			if (config.apiAuthToken) {
-				// console.log("auth token");
-				$http.defaults.headers.get = {
-					'Authorization': config.apiAuthToken
-				};
+		// Gets all layouts, styles, and templates
+		var haveCommon = false;
+		var getCommonDefer = $q.defer();
+		var getCommon = function () {
+			// console.log("dataSvc.getCommon");
+			if (haveCommon === true) {
+				getCommonDefer.resolve();
+			} else
+			if (haveCommon === 'in progress') {
+				return getCommonDefer.promise;
 			} else {
-				authParam = (authKey) ? "?access_token=" + authKey : "";
+				haveCommon = 'in progress';
+				$q.all([
+					$http.get(config.apiDataBaseUrl + '/v1/templates'),
+					$http.get(config.apiDataBaseUrl + '/v1/layouts'),
+					$http.get(config.apiDataBaseUrl + '/v1/styles')
+				]).then(function (responses) {
+					cache("templates", responses[0].data);
+					cache("layouts", responses[1].data);
+					cache("styles", responses[2].data);
+					haveCommon = true;
+					getCommonDefer.resolve();
+				}, function (failure) {
+					console.error("getCommon failed", failure);
+					haveCommon = false;
+					getCommonDefer.reject();
+				});
 			}
+			return getCommonDefer.promise;
+		};
 
-			// first set of calls
-			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId + authParam)
-				.then(function (response) {
-					data.episode = response.data;
-					console.log(response.config.url + ":", response.data);
+		var cache = function (cacheType, dataList) {
+			angular.forEach(dataList, function (item) {
+				if (cacheType === "templates") {
+					/* API format: 
+					_id									"528d17ebba4f65e578000007"
+					applies_to_episodes	false  (if true, event_types is empty)
+					created_at					"2013-11-20T20:13:31Z"
+					event_types					["Scene"]    (or Annotation, Link, Upload)
+					name								"Scene 2 columns right"
+					updated_at					"2013-11-20T20:13:31Z"
+					url									"templates/scene-centered.html"
+				*/
+					dataCache.template[item._id] = {
+						id: item._id,
+						url: item.url,
+						type: (item.applies_to_episodes ? "Episode" : item.event_types[0]),
+						displayName: item.name
+					};
 
-					if (response.data.status !== "Published" && !userHasRole("admin")) {
-						$rootScope.$emit("error", {
-							"message": "This episode has not yet been published.",
-							"details": ""
-						});
-						return false;
-					}
-					return $q.all([
-						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets' + authParam),
-						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + authParam)
-					]);
-				})
-				.then(function (responses) {
-					console.log(responses[0].config.url + ":", responses[0].data);
-					console.log(responses[1].config.url + ":", responses[1].data);
-					if (responses[0].data && responses[0].data.files) {
-						data.assets = responses[0].data.files;
-					}
-					return $q.all([
-						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam),
-						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + authParam)
-					]);
-				})
-				.then(function (responses) {
-					console.log(responses[0].config.url + ":", responses[0].data);
-					console.log(responses[1].config.url + ":", responses[1].data);
-					if (responses[0].data && responses[0].data.files) {
-						data.assets = data.assets.concat(responses[0].data.files);
-					}
-					return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam);
-				})
-				.then(function (response) {
-					console.log(response.config.url + ":", response.data);
-					if (response.data && response.data.files) {
-						data.assets = data.assets.concat(response.data.files);
+				} else if (cacheType === "layouts") {
+					/* API format:
+					_id									"528d17ebba4f65e57800000a"
+					created_at					"2013-11-20T20:13:31Z"
+					css_name						"videoLeft"
+					description					"The video is on the left"
+					display_name				"Video Left"
+					updated_at					"2013-11-20T20:13:31Z"
+				*/
+					dataCache.layout[item._id] = {
+						id: item._id,
+						css: item.css_name,
+						displayName: item.display_name
+					};
+
+				} else if (cacheType === "styles") {
+					/* API format:
+					_id						"528d17f1ba4f65e578000036"
+					created_at		"2013-11-20T20:13:37Z"
+					css_name			"typographySerif"
+					description		"Controls the fonts and relative text sizes"
+					display_name	"Typography Serif"
+					updated_at		"2013-11-20T20:13:37Z"
+				*/
+					dataCache.style[item._id] = {
+						id: item._id,
+						css: item.css_name,
+						displayName: item.display_name
+					};
+				}
+			});
+		};
+
+		// transform API common IDs into real values
+		var resolveIDs = function (obj) {
+			// console.log("resolving IDs", obj);
+			if (obj.template_id) {
+				if (dataCache.template[obj.template_id]) {
+					obj.templateUrl = dataCache.template[obj.template_id].url;
+					delete obj.template_id;
+				} else {
+					console.error("Couldn't get templateUrl for id " + obj.template_id);
+				}
+			}
+			if (obj.layout_id) {
+				var layouts = [];
+				angular.forEach(obj.layout_id, function (id) {
+					if (dataCache.layout[id]) {
+						layouts.push(dataCache.layout[id].css);
+					} else {
+						console.error("Couldn't get layout for id " + id);
 					}
 				});
-
-			// second set of calls
-			var secondSet = $q.all([
-				$http.get(config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events' + authParam),
-				$http.get(config.apiDataBaseUrl + '/v1/templates' + authParam),
-				$http.get(config.apiDataBaseUrl + '/v1/layouts' + authParam),
-				$http.get(config.apiDataBaseUrl + '/v1/styles' + authParam)
-			])
-				.then(function (responses) {
-					data.events = responses[0].data;
-					data.templates = responses[1].data;
-					data.layouts = responses[2].data;
-					data.styles = responses[3].data;
-				});
-
-			// completion
-			$q.all([
-				firstSet,
-				secondSet
-			])
-				.then(function (responses) {
-					// success
-					// console.log("Compiled API Data:", data);
-
-					//// DIRTY PREPROCESSING HACK ////
-					// TODO: Remove it when api updates the type field to be lowercase
-					for (var i = 0; i < data.events.length; i++) {
-						data.events[i].type = data.events[i].type.toLowerCase();
-						data.events[i]._type = data.events[i]._type.toLowerCase();
+				if (layouts.length > 0) {
+					obj.layouts = layouts;
+				}
+				delete obj.layout_id;
+			}
+			if (obj.style_id) {
+				var styles = [];
+				angular.forEach(obj.style_id, function (id) {
+					if (dataCache.style[id]) {
+						styles.push(dataCache.style[id].css);
+					} else {
+						console.error("Couldn't get style for id " + id);
 					}
-					///////////////////
-					callback(data);
-				}, function (responses) {
-					// error
-					errback(responses);
+				});
+				if (styles.length > 0) {
+					obj.styles = styles;
+				}
+				delete obj.style_id;
+			}
+			return obj;
+		};
+
+		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
+		var getEpisode = function (epId) {
+			$http.get(config.apiDataBaseUrl + "/v1/episodes/" + epId)
+				.success(function (episodeData) {
+
+					console.log("episode: ", episodeData);
+					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
+
+						modelSvc.cache("episode", resolveIDs(episodeData));
+						// Get episode events
+						getEpisodeEvents(epId);
+
+						// this will get the episode container and its assets, then iterate up the chain to all parent containers
+						getContainer(episodeData.container_id, epId);
+					} else {
+						console.error("Episode not published, and user doesn't have admin role.");
+					}
+				})
+				.error(function (data, status, headers, config) {
+					console.error("API call to /v1/episodes/" + epId + " failed (bad episode ID?)");
 				});
 		};
 
-		// Retrieve the data for an asset based on its id. Method is synchronous and will scan the data cache,
-		// returning undefined if the item is not found.
-		svc.getAssetById = function (id) {
-			if (!_.isArray(data.assets)) {
-				return;
-			}
-			var i;
-			for (i = 0; i < data.assets.length; i++) {
-				if (data.assets[i]._id === id) {
-					return data.assets[i];
-				}
-			}
+		var getEpisodeEvents = function (epId) {
+			$http.get(config.apiDataBaseUrl + "/v2/episodes/" + epId + "/events")
+				.success(function (events) {
+					angular.forEach(events, function (eventData) {
+						modelSvc.cache("event", resolveIDs(eventData));
+					});
+					// Tell modelSvc it can build episode->scene->item child arrays
+					modelSvc.resolveEpisodeEvents(epId);
+				})
+				.error(function (err) {
+					console.error("getEpisodeEvents failed", err);
+				});
 		};
 
-		// Retrieve the data for a template based on its id. Method is synchronous and will scan the data cache,
-		// returning undefined if the item is not found.
-		svc.getTemplateById = function (id) {
-			if (!_.isArray(data.templates)) {
-				return;
-			}
-			var i;
-			for (i = 0; i < data.templates.length; i++) {
-				if (data.templates[i]._id === id) {
-					return data.templates[i];
-				}
-			}
-		};
+		// gets container and container assets, then iterates to parent container
+		var getContainer = function (containerId, episodeId) {
+			// console.log("getContainer", containerId, episodeId);
+			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId)
+				.success(function (container) {
+					modelSvc.cache("container", container[0]);
+					// iterate to parent container
+					if (container[0].parent_id) {
+						getContainer(container[0].parent_id, episodeId);
+					}
+				})
+				.error(function (err) {
+					console.error("getContainer failed", err);
+				});
 
-		// Retrieve the data for a layout based on its id. Method is synchronous and will scan the data cache,
-		// returning undefined if the item is not found.
-		svc.getLayoutById = function (id) {
-			if (!_.isArray(data.layouts)) {
-				return;
-			}
-			var i;
-			for (i = 0; i < data.layouts.length; i++) {
-				if (data.layouts[i]._id === id) {
-					return data.layouts[i];
-				}
-			}
-		};
-
-		// Retrieve the data for a style based on its id. Method is synchronous and will scan the data cache,
-		// returning undefined if the item is not found.
-		svc.getStyleById = function (id) {
-			if (!_.isArray(data.styles)) {
-				return;
-			}
-			var i;
-			for (i = 0; i < data.styles.length; i++) {
-				if (data.styles[i]._id === id) {
-					return data.styles[i];
-				}
-			}
+			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
+				.success(function (containerAssets) {
+					// console.log("container assets", containerAssets);
+					angular.forEach(containerAssets.files, function (asset) {
+						modelSvc.cache("asset", asset);
+					});
+					modelSvc.resolveEpisodeAssets(episodeId);
+				})
+				.error(function (err) {
+					console.error("getContainerAssets failed", err);
+				});
 		};
 
 		return svc;

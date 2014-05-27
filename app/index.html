@@ -11,7 +11,9 @@
 
 	<base href="/" />
 	<!-- build:css(.tmp) styles/app-combined.css -->
-	<link rel="stylesheet" href="styles/main.css" />
+	<link rel="stylesheet" href="styles/debug.css">
+
+	<!-- 	<link rel="stylesheet" href="styles/main.css" />
 	<link rel="stylesheet" href="styles/video.css" />
 	<link rel="stylesheet" href="styles/episode.css" />
 	<link rel="stylesheet" href="styles/scene.css" />
@@ -20,71 +22,67 @@
 	<link rel="stylesheet" href="styles/typography.css" />
 	<link rel="stylesheet" href="styles/colors.css" />
 	<link rel="stylesheet" href="styles/highlights.css" />
+ -->
+
 	<!-- endbuild -->
 	<!-- DISABLED-BECAUSE-EMPTYbuild:css(.tmp) styles/vendor-combined.css -->
 	<!-- DISABLEDendbuild -->
 	<!-- TODO: use js to build only the fonts needed for this episode -->
-	<link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700|EB+Garamond%7cDroid+Serif|Roboto:400,300,700,400italic|Montserrat:400,700|Cardo' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700%7cEB+Garamond%7cDroid+Serif%7cRoboto:400,300,700,400italic' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
 	<!--[if lt IE 9]>
 			<p class="browsehappy">We're sorry, Internet Explorer versions 8 and earlier are not currently supported.</p>
-		<![endif]-->
-
-	<!--[if lt IE 9]>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.1.0/es5-shim.min.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/json3/3.2.5/json3.min.js"></script>
 		<![endif]-->
 
-	
-	<div id="CONTAINER">
-		<div data-ng-view=""></div>
+
+	<div id="CONTAINER" x-ng-view="">
 	</div>
+
+
 	<script src="config.js"></script>
 	<!-- CDN -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-resource.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-route.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-animate.min.js"></script>
+	<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-animate.min.js"></script>
+	<!-- <script src="//www.youtube.com/iframe_api"></script> -->
 	<!-- end CDN -->
-	<!-- build:js({.tmp,app}) scripts/vendor-combined.js -->
-	<script src="bower_components/underscore/underscore.js"></script>
+
+	<!-- build:js({.tmp,app}) scripts/vendor-combined.min.js -->
 	<script src="bower_components/video.js/video.dev.js"></script>
-	<script src="bower_components/angular-bindonce/bindonce.js"></script>
+	<!-- <script src="bower_components/angular-bindonce/bindonce.js"></script> -->
 	<script src="scripts/plugin/media.youtube.js"></script>
-	<script src="scripts/plugin/videojs.markers.js"></script>
+	<!-- <script src="scripts/plugin/videojs.markers.js"></script> -->
 	<!-- endbuild -->
-	<!-- build:js({.tmp,app}) scripts/app-combined.js -->
+	<!-- build:js({.tmp,app}) scripts/app-combined.min.js -->
 	<script src="scripts/app.js"></script>
 	<script src="scripts/templates.js"></script>
-	<script src="scripts/controllers/UIErrorController.js"></script>
-	<script src="scripts/controllers/EpisodeController.js"></script>
-	<script src="scripts/controllers/ItemController.js"></script>
-	<script src="scripts/controllers/ToolbarController.js"></script>
-	<script src="scripts/controllers/NavigationPanelController.js"></script>
-	<script src="scripts/controllers/SearchPanelController.js"></script>
-	<script src="scripts/services/dataSvc.js"></script>
-	<script src="scripts/services/modelFactory.js"></script>
-	<script src="scripts/services/modalMgr.js"></script>
-	<script src="scripts/services/cuePointScheduler.js"></script>
-	<script src="scripts/services/underscore.js"></script>
-	<script src="scripts/services/videojs.js"></script>
 	<script src="scripts/services/config.js"></script>
+	<script src="scripts/services/authSvc.js"></script>
+	<script src="scripts/services/dataSvc.js"></script>
+	<script src="scripts/services/modelSvc.js"></script>
+	<script src="scripts/services/timelineSvc.js"></script>
+	<script src="scripts/services/youtubeSvc.js"></script>
+	<script src="scripts/filters/filters.js"></script>
+	<script src="scripts/controllers/ErrorController.js"></script>
+	<script src="scripts/controllers/EpisodeListController.js"></script>
+	<script src="scripts/controllers/TimelineController.js"></script>
+	<script src="scripts/controllers/PlayerController.js"></script>
+	<script src="scripts/controllers/EpisodeController.js"></script>
+	<script src="scripts/controllers/SceneController.js"></script>
+	<script src="scripts/controllers/ItemController.js"></script>
+	<script src="scripts/controllers/VideoController.js"></script>
+	<script src="scripts/directives/ittTimeline.js"></script>
+	<script src="scripts/directives/ittEpisode.js"></script>
 	<script src="scripts/directives/ittScene.js"></script>
 	<script src="scripts/directives/ittItem.js"></script>
-	<script src="scripts/directives/ittExploreItem.js"></script>
-	<script src="scripts/directives/ittWatchItem.js"></script>
+	<script src="scripts/directives/ittItemEditor.js"></script>
 	<script src="scripts/directives/ittVideo.js"></script>
-	<script src="scripts/directives/ittMagnetized.js"></script>
-	<script src="scripts/directives/ittToolbar.js"></script>
-	<script src="scripts/directives/ittContentPane.js"></script>
-	<script src="scripts/filters/type.js"></script>
-	<script src="scripts/filters/layout.js"></script>
-	<script src="scripts/filters/itemList.js"></script>
-	<script src="scripts/filters/highlight.js"></script>
-	<script src="scripts/filters/transcript.js"></script>
+
 	<!-- endbuild -->
 </body>
 

@@ -3,3 +3,5 @@
 .sass-cache
 /app/scripts/templates.js
 *.bbprojectd
+*.sublime-project
+*.sublime-workspace

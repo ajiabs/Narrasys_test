@@ -1,0 +1,9 @@
+Episode list
+<div ng-controller="EpisodeListController">
+	<div ng-repeat="episode in episodes">
+		({{episode._id}}) <a href="#episode/{{episode._id}}">{{episode.title}}</a>
+		<br>
+	</div>
+</div>
+
+<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>

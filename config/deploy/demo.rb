@@ -8,7 +8,7 @@ set :stage, :demo
 #role :app, %w{deploy@example.com}
 #role :web, %w{deploy@example.com}
 #role :db,  %w{deploy@example.com}
-role :app,  %w{deploy@story-demo.inthetelling.com}
+role :all,  %w{deploy@story-demo.inthetelling.com}
 
 # Extended Server Syntax
 # ======================

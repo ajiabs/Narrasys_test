@@ -1,9 +1,9 @@
 {
 	"episode": {
-		"title": "Episode Title super duper long title Episode Title super duper long title Episode Title super duper long title Episode Title super duper long title Episode Title super duper long title Episode Title super duper long title ",
+		"title": "Episode Title",
 		"description": "narrative modem physical boat jeans faded -ware refrigerator cyber- kanji pre- shanty town systema. Tokyo face forwards tiger-team post- ablative dolphin hotdog artisanal into pre- nodal point towards network.",
 		"style_id": "typographySerif transitionFade highlightBorder",
-		"template_id": "templates/episode-gw.html",
+		"template_id": "templates/episode-ewb.html",
 		"master_asset_id": {
 			"NOyoutube": "http://www.youtube.com/embed/YfPmBR8PUyE",
 
@@ -16,8 +16,6 @@
 		"template_id": "templates/scene-1col.html",
 		"start_time": 0,
 		"end_time": 18,
-		"style_id": "transitionSlideL",
-		"layout_id": "showCurrent",
 		"title": "Scene One: default scene template",
 		"description": "Cycles through the various item background styles"
 	}, 
@@ -27,32 +25,16 @@
 		"template_id": "templates/scene-2colL.html",
 		"start_time": 120,
 		"end_time": 130,
-		"title": "",
+		"title": "L",
 		"description": ""
-	}, 
-	{
-		"type": "annotation",
-		"start_time": 121,
-		"end_time": 122,
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "An annotation in a non-navigable scene"
 	}, 
 	{
 		"type": "scene",
 		"template_id": "templates/scene-2colR.html",
 		"start_time": 130,
 		"end_time": 140,
-		"title": "",
+		"title": "R",
 		"description": ""
-	}, 
-	{
-		"type": "annotation",
-		"start_time": 131,
-		"end_time": 132,
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "An annotation in a non-navigable scene"
 	}, 
 	{
 		"type": "scene",
@@ -61,14 +43,6 @@
 		"end_time": 150,
 		"title": "....",
 		"description": ""
-	}, 
-	{
-		"type": "annotation",
-		"start_time": 141,
-		"end_time": 142,
-		"annotator": "Mr. Universe",
-		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
-		"annotation": "An annotation in a navigable scene"
 	}, 
 	{
 		"type": "scene",
@@ -107,7 +81,7 @@
 		"start_time": 0,
 		"end_time": 3,
 		"layout_id": "burstL",
-		"style_id": "transitionNone",
+		"style_id": "transitionFade typographySwiss",
 		"annotator": "Mr. Universe",
 		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
 		"annotation": "All <b>panes</b> should now have kittens in the top left corner background."
@@ -120,7 +94,6 @@
 		"required": true,
 		"cosmetic": true,
 		"template_id": "templates/transmedia-image-default.html",
-		"style_id": "transitionNone",
 		"title": "COSMETIC A picture of a kitten",
 		"description": "Look at the <i>widdle</i> kitten who's a kitty who's a kitty YOU ARE",
 		"asset_id": "http://placekitten.com/700/700"
@@ -166,7 +139,6 @@
 		"start_time": 1,
 		"end_time": 10,
 		"required": true,
-		"style_id": "transitionNone",
 		"template_id": "templates/transmedia-link-noembed.html",
 		"title": "Burkina Faso - Solar",
 		"description": "EWB-USA University of Maryland solar lighting project.",
@@ -176,7 +148,6 @@
 		"type": "annotation",
 		"start_time": 3,
 		"end_time": 6,
-		"style_id": "transitionNone",
 		"annotator": "Mr. Universe",
 		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
 		"annotation": "<h2>Here are kittens in the top right corner background</h2>."
@@ -223,7 +194,6 @@
 		"type": "annotation",
 		"start_time": 6,
 		"end_time": 9,
-		"style_id": "transitionNone",
 		"annotator": "Mr. Universe",
 		"annotation_image_id": "http://theplatform-static.edgesuite.net/In_The_Telling/Frank_Bergh.png",
 		"annotation": "<sup>Now all<sub> panes<b> should now have kittens in the bottom right corner background."

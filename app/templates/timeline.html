@@ -1,0 +1,16 @@
+<div>
+	Timeline: {{appState.time}} (duration is {{appState.duration}})
+
+	<br>
+
+	<a ng-click="play()">Play</a>
+	<a ng-click="pause()">Pause</a>
+
+	<div>Playback speed is {{appState.timeMultiplier}}. Set to:
+		<a ng-click="setSpeed(0.5)">0.5x</a>
+		<a ng-click="setSpeed(1)">1x</a>
+		<a ng-click="setSpeed(1.5)">1.5x</a>
+		<a ng-click="setSpeed(2)">2x</a>
+		<a ng-click="setSpeed(5)">5x</a>
+
+	</div>
