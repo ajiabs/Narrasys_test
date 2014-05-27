@@ -188,3 +188,8 @@ Position modals at item top instead of page top (slightly hacky fix for #107)
 Changes in v1.6.8:
 stupid fix for chrome not allowing same video in two tabs
 
+------------------------------------------------
+Changes in v1.6.9:
+Added support for episode.status, block episode if not "Published"
+Allow viewing unpublished episode if user has role "admin"
+
