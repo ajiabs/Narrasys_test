@@ -30,6 +30,16 @@ angular.module('com.inthetelling.player')
 
 		var svc = {};
 
+		svc.roles = []; // HACK FOR NOW
+		var userHasRole = function (role) {
+			for (var i = 0; i < svc.roles.length; i++) {
+				if (svc.roles[i] === role) {
+					return true;
+				}
+			}
+			return false;
+		};
+
 		// Retrieve and cache the full set of data required to display an episode. Method is async and
 		// will get data either from a local .json file or from apis.
 		svc.get = function (routeParams, callback, errback) {
@@ -80,6 +90,21 @@ angular.module('com.inthetelling.player')
 							// Yes, this is silly. TODO jsut use a header token instead of a cookie so this isn't necessary
 
 							$http.get(config.apiDataBaseUrl + "/v1/is_authenticated" + authParam).success(function (authData) {
+
+								// Get roles
+								$http.get(config.apiDataBaseUrl + "/v1/get_user" + authParam)
+									.success(function (roleData, roleStatus) {
+										console.log("ROLE", roleData);
+										svc.roles = roleData.roles;
+									})
+									.error(function (roleData, roleStatus) {
+										console.error("Failed to load roles:", roleData);
+										$rootScope.$emit("error", {
+											"message": "Authentication failed at /v1/get_user",
+											"details": JSON.stringify(roleData)
+										});
+									});
+
 								if (authData.has_cookie === true) {
 									// All good, go get the real data
 									svc.batchAPIcalls(routeParams, callback, errback);
@@ -153,7 +178,7 @@ angular.module('com.inthetelling.player')
 					data.episode = response.data;
 					console.log(response.config.url + ":", response.data);
 
-					if (response.data.status !== "Published") {
+					if (response.data.status !== "Published" && !userHasRole("admin")) {
 						$rootScope.$emit("error", {
 							"message": "This episode has not yet been published.",
 							"details": ""
