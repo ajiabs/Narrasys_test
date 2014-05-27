@@ -24,6 +24,16 @@ angular.module('com.inthetelling.player')
 
 		var svc = {};
 
+		svc.roles = []; // HACK FOR NOW
+		var userHasRole = function (role) {
+			for (var i = 0; i < svc.roles.length; i++) {
+				if (svc.roles[i] === role) {
+					return true;
+				}
+			}
+			return false;
+		};
+
 		// Retrieve and cache the full set of data required to display an episode. Method is async and
 		// will get data either from a local .json file or from apis.
 		svc.get = function (routeParams, callback, errback) {
@@ -142,7 +152,7 @@ angular.module('com.inthetelling.player')
 				.then(function (response) {
 					data.episode = response.data;
 					console.log(response.config.url + ":", response.data);
-					if (response.data.status !== "Published") {
+					if (response.data.status !== "Published" && !userHasRole("admin")) {
 						$rootScope.$emit("error", {
 							"message": "This episode has not yet been published.",
 							"details": ""
