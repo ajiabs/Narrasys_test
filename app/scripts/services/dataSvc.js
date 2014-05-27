@@ -142,6 +142,13 @@ angular.module('com.inthetelling.player')
 				.then(function (response) {
 					data.episode = response.data;
 					console.log(response.config.url + ":", response.data);
+					if (response.data.status !== "Published") {
+						$rootScope.$emit("error", {
+							"message": "This episode has not yet been published.",
+							"details": ""
+						});
+						return false;
+					}
 					return $q.all([
 						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets'),
 						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id)
