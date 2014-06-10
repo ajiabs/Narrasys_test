@@ -15,7 +15,7 @@ $http/$resources when POST/PUT methods are called.
 */
 
 angular.module('com.inthetelling.player')
-	.factory('dataSvc', function (config, $route, $location, $http, $q, _, $rootScope) {
+	.factory('dataSvc', function(config, $route, $location, $http, $q, _, $rootScope) {
 
 		// Cache all the data returned from dataSvc.get(). This data will be used for all the
 		// individual lookup methods like dataSvc.getAssetById(). Currently these individual
@@ -25,7 +25,7 @@ angular.module('com.inthetelling.player')
 		var svc = {};
 
 		svc.roles = []; // HACK FOR NOW
-		var userHasRole = function (role) {
+		var userHasRole = function(role) {
 			for (var i = 0; i < svc.roles.length; i++) {
 				if (svc.roles[i] === role) {
 					return true;
@@ -36,7 +36,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve and cache the full set of data required to display an episode. Method is async and
 		// will get data either from a local .json file or from apis.
-		svc.get = function (routeParams, callback, errback) {
+		svc.get = function(routeParams, callback, errback) {
 
 			var episodeId = routeParams.epId;
 			var authKey = routeParams.authKey;
@@ -52,33 +52,33 @@ angular.module('com.inthetelling.player')
 					method: 'GET',
 					url: config.localDataBaseUrl + '/' + episodeId + '.json'
 				})
-					.success(function (data, status, headers, config) {
+					.success(function(data, status, headers, config) {
 						callback(data);
 					})
-					.error(function (data, status, headers, config) {
+					.error(function(data, status, headers, config) {
 						errback(data);
 					});
 			}
 			// API Data
 			else {
-				authenticate(routeParams).then(function () {
+				authenticate(routeParams).then(function() {
 					console.log("Authenticate succeeded!");
 					svc.batchAPIcalls(routeParams, callback, errback);
 				});
 			}
 		};
 
-		var authenticate = function (routeParams) {
+		var authenticate = function(routeParams) {
 			var defer = $q.defer();
 			if (routeParams.key) {
 				var nonce = routeParams.key;
 				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
-				getAccessToken(nonce).then(function () {
+				getAccessToken(nonce).then(function() {
 					defer.resolve();
 				});
 			} else {
-				getNonce().then(function (nonce) {
-					getAccessToken(nonce).then(function () {
+				getNonce().then(function(nonce) {
+					getAccessToken(nonce).then(function() {
 						defer.resolve();
 					});
 				});
@@ -86,14 +86,14 @@ angular.module('com.inthetelling.player')
 			return defer.promise;
 		};
 
-		var getNonce = function () {
+		var getNonce = function() {
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_nonce")
-				.success(function (data, status) {
+				.success(function(data, status) {
 					console.log("get_nonce succeeded: ", data.nonce, status);
 					defer.resolve(data.nonce);
 				})
-				.error(function (data, status) {
+				.error(function(data, status) {
 					console.error("get_nonce failed:", data, status);
 					$rootScope.$emit("error", {
 						"message": "Authentication failed (get_nonce: " + (data.error || data) + ")"
@@ -103,21 +103,19 @@ angular.module('com.inthetelling.player')
 			return defer.promise;
 		};
 
-		var getAccessToken = function (nonce) {
+		var getAccessToken = function(nonce) {
 			console.log("trying getAccessToken with nonce ", nonce);
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
-				.success(function (data, status) {
-					var authToken = data.acess_token;
+				.success(function(data, status) {
+					var authToken = data.access_token;
 					svc.roles = data.roles; // TODO: do something useful with roles
 					console.log("Roles received:", svc.roles);
 					// Set auth header.  TODO: same for put? delete?
-					$http.defaults.headers.get = {
-						'Authorization': 'Token token="' + authToken + '"'
-					};
+					$http.defaults.headers.common.Authorization = 'Token token="' + authToken + '"';
 					defer.resolve(data);
 				})
-				.error(function (data, status) {
+				.error(function(data, status) {
 					console.error("get_access_token failed:", data, status);
 					$rootScope.$emit("error", {
 						"message": "Authentication failed (get_access_token: " + data.error || data + ")"
@@ -128,7 +126,7 @@ angular.module('com.inthetelling.player')
 		};
 
 		// retrieves the episode data from the API. Call only through svc.get
-		svc.batchAPIcalls = function (routeParams, callback, errback) {
+		svc.batchAPIcalls = function(routeParams, callback, errback) {
 			var episodeId = routeParams.epId;
 			var authKey = routeParams.authKey;
 
@@ -149,7 +147,7 @@ angular.module('com.inthetelling.player')
 
 			// first set of calls
 			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId)
-				.then(function (response) {
+				.then(function(response) {
 					data.episode = response.data;
 					console.log(response.config.url + ":", response.data);
 					if (response.data.status !== "Published" && !userHasRole("admin")) {
@@ -164,7 +162,7 @@ angular.module('com.inthetelling.player')
 						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id)
 					]);
 				})
-				.then(function (responses) {
+				.then(function(responses) {
 					console.log(responses[0].config.url + ":", responses[0].data);
 					console.log(responses[1].config.url + ":", responses[1].data);
 					if (responses[0].data && responses[0].data.files) {
@@ -175,7 +173,7 @@ angular.module('com.inthetelling.player')
 						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id)
 					]);
 				})
-				.then(function (responses) {
+				.then(function(responses) {
 					console.log(responses[0].config.url + ":", responses[0].data);
 					console.log(responses[1].config.url + ":", responses[1].data);
 					if (responses[0].data && responses[0].data.files) {
@@ -183,7 +181,7 @@ angular.module('com.inthetelling.player')
 					}
 					return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets');
 				})
-				.then(function (response) {
+				.then(function(response) {
 					console.log(response.config.url + ":", response.data);
 					if (response.data && response.data.files) {
 						data.assets = data.assets.concat(response.data.files);
@@ -197,7 +195,7 @@ angular.module('com.inthetelling.player')
 				$http.get(config.apiDataBaseUrl + '/v1/layouts'),
 				$http.get(config.apiDataBaseUrl + '/v1/styles')
 			])
-				.then(function (responses) {
+				.then(function(responses) {
 					data.events = responses[0].data;
 					data.templates = responses[1].data;
 					data.layouts = responses[2].data;
@@ -209,7 +207,7 @@ angular.module('com.inthetelling.player')
 				firstSet,
 				secondSet
 			])
-				.then(function (responses) {
+				.then(function(responses) {
 					// success
 					// console.log("Compiled API Data:", data);
 
@@ -221,7 +219,7 @@ angular.module('com.inthetelling.player')
 					}
 					///////////////////
 					callback(data);
-				}, function (responses) {
+				}, function(responses) {
 					// error
 					errback(responses);
 				});
@@ -229,7 +227,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve the data for an asset based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
-		svc.getAssetById = function (id) {
+		svc.getAssetById = function(id) {
 			if (!_.isArray(data.assets)) {
 				return;
 			}
@@ -243,7 +241,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve the data for a template based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
-		svc.getTemplateById = function (id) {
+		svc.getTemplateById = function(id) {
 			if (!_.isArray(data.templates)) {
 				return;
 			}
@@ -257,7 +255,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve the data for a layout based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
-		svc.getLayoutById = function (id) {
+		svc.getLayoutById = function(id) {
 			if (!_.isArray(data.layouts)) {
 				return;
 			}
@@ -271,7 +269,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve the data for a style based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
-		svc.getStyleById = function (id) {
+		svc.getStyleById = function(id) {
 			if (!_.isArray(data.styles)) {
 				return;
 			}
