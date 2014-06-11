@@ -4,7 +4,7 @@
 angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindonce'])
 
 // Configure routing
-.config(function ($routeProvider, $locationProvider) {
+.config(function($routeProvider, $locationProvider) {
 	$routeProvider
 		.when('/error', {
 			controller: 'UIErrorController',
@@ -33,7 +33,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindo
 })
 
 // Configure x-domain resource whitelist
-.config(function ($sceDelegateProvider) {
+.config(function($sceDelegateProvider) {
 	$sceDelegateProvider.resourceUrlWhitelist([
 		'self',
 		/.*/,
@@ -43,7 +43,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindo
 })
 
 // Configure http headers
-.config(function ($httpProvider) {
+.config(function($httpProvider) {
 	/*
 	$httpProvider.defaults.headers.get = {
 		'Authorization': 'Token token="c7624368e407355eb587500862322413"',
@@ -53,6 +53,42 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindo
 	$httpProvider.defaults.useXDomain = true;
 	$httpProvider.defaults.withCredentials = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
+	// Add an interceptor to globally catch 401 errors and do something with them:
+	$httpProvider.responseInterceptors.push(['$q',
+		function(scope, $q) {
+			function success(response) {
+				return response;
+			}
+
+			function error(response) {
+				var status = response.status;
+				if (status === 401) {
+					console.log("INTERCEPTOR GOT 401");
+					if (localStorage.storyAuth) {
+						// read the login url, if there is one, and redirect to it:
+						var storedData = angular.fromJson(localStorage.storyAuth);
+						localStorage.removeItem("storyAuth");
+						if (storedData.login_url) {
+							if (storedData.login_via_top_window_only) {
+								window.top.location.href = storedData.login_url;
+							} else {
+								window.location.href = storedData.login_url;
+							}
+						}
+					}
+					// if all else fails, force a reload as guest
+					window.location.reload();
+					return false;
+				}
+				console.log("INTERCEPTOR REJECT:", response);
+				return $q.reject(response);
+			}
+			return function(promise) {
+				return promise.then(success, error);
+			};
+		}
+	]);
 });
 
 /*

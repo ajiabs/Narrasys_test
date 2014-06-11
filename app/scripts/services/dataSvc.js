@@ -70,6 +70,8 @@ angular.module('com.inthetelling.player')
 
 		var authenticate = function(routeParams) {
 			var defer = $q.defer();
+
+			console.log("Existing headers: ", $http.defaults.headers.common.Authorization);
 			if (routeParams.key) {
 				// explicit key in route:
 				var nonce = routeParams.key;
@@ -77,29 +79,16 @@ angular.module('com.inthetelling.player')
 				getAccessToken(nonce).then(function() {
 					defer.resolve();
 				});
+			} else if ($http.defaults.headers.common.Authorization) {
+				// already logged in!
+				defer.resolve();
 			} else {
-				// check for token in localStorage first, try it to see if it's still valid.
-				if (localStorage && localStorage["story-episode-" + routeParams.epId]) {
-					var storedData = angular.fromJson(localStorage["story-episode-" + routeParams.epId]);
+				// check for token in localStorage, try it to see if it's still valid.
+				if (localStorage && localStorage.storyAuth) {
+					var storedData = angular.fromJson(localStorage.storyAuth);
 					console.log("Getting access from stored token", storedData);
-					// Check if valid, if so use it, otherwise start from scratch
 					$http.defaults.headers.common.Authorization = 'Token token="' + storedData.access_token + '"';
-					$http.get(config.apiDataBaseUrl + "/v1/check_signed_in")
-						.success(function() {
-							svc.roles = storedData.roles; // TODO: do something useful with roles
-							defer.resolve();
-						})
-						.error(function(errData, errStatus) {
-							// Expired. Delete bad token
-							delete $http.defaults.headers.common.Authorization;
-							localStorage.removeItem("story-episode-" + routeParams.epId);
-							// ...and start again:
-							getNonce().then(function(nonce) {
-								getAccessToken(nonce).then(function() {
-									defer.resolve();
-								});
-							});
-						});
+					defer.resolve();
 				} else {
 					// start from scratch
 					getNonce().then(function(nonce) {
@@ -110,19 +99,30 @@ angular.module('com.inthetelling.player')
 				}
 			}
 			return defer.promise;
+
 		};
 
 		var getNonce = function() {
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_nonce")
 				.success(function(data, status) {
-					console.log("get_nonce succeeded: ", data.nonce, status);
-					defer.resolve(data.nonce);
+					if (data.nonce) {
+						defer.resolve(data.nonce);
+					} else {
+						// Guest acess is not allowed
+						if (data.login_url) {
+							if (data.login_via_top_window_only) {
+								window.top.location.href = data.login_url;
+							} else {
+								window.location.href = data.login_url;
+							}
+						}
+					}
 				})
 				.error(function(data, status) {
 					console.error("get_nonce failed:", data, status);
 					$rootScope.$emit("error", {
-						"message": "Authentication failed (get_nonce: " + (data.error || data) + ")"
+						"message": "Authentication failed (get_nonce: " + data || data.error + ")"
 					});
 					defer.reject();
 				});
