@@ -193,3 +193,11 @@ Changes in v1.6.9:
 Added support for episode.status, block episode if not "Published"
 Allow viewing unpublished episode if user has role "admin"
 
+------------------------------------------------
+Changes in v1.7.0:
+merged in cookie-less authentication (using get_nonce, get_access_token and localStorage)
+
+------------------------------------------------
+Changes in v1.7.1:
+added http interceptor to catch 401 errors, and handler for no-guest-access episodes
+fixed typo in auth token loop
