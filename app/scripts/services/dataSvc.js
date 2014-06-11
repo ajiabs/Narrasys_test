@@ -12,16 +12,10 @@ has to worry about calling get() before getAssetById() for example. It will all 
 but just implement the promise api for consumers to use the service in a familiar way.
 Service will then be capable of full crud, and can flush appropriate caches in the underlying
 $http/$resources when POST/PUT methods are called.
-
-TODO: tidy up the various authentication methods:
- - local first
- - authKey = local
- - api key (is it working?)
- - auth check
 */
 
 angular.module('com.inthetelling.player')
-	.factory('dataSvc', function (config, $route, $location, $http, $q, _, $rootScope) {
+	.factory('dataSvc', function(config, $route, $location, $http, $q, _, $rootScope) {
 
 		// Cache all the data returned from dataSvc.get(). This data will be used for all the
 		// individual lookup methods like dataSvc.getAssetById(). Currently these individual
@@ -31,7 +25,7 @@ angular.module('com.inthetelling.player')
 		var svc = {};
 
 		svc.roles = []; // HACK FOR NOW
-		var userHasRole = function (role) {
+		var userHasRole = function(role) {
 			for (var i = 0; i < svc.roles.length; i++) {
 				if (svc.roles[i] === role) {
 					return true;
@@ -42,7 +36,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve and cache the full set of data required to display an episode. Method is async and
 		// will get data either from a local .json file or from apis.
-		svc.get = function (routeParams, callback, errback) {
+		svc.get = function(routeParams, callback, errback) {
 
 			var episodeId = routeParams.epId;
 			var authKey = routeParams.authKey;
@@ -58,91 +52,95 @@ angular.module('com.inthetelling.player')
 					method: 'GET',
 					url: config.localDataBaseUrl + '/' + episodeId + '.json'
 				})
-					.success(function (data, status, headers, config) {
+					.success(function(data, status, headers, config) {
 						callback(data);
 					})
-					.error(function (data, status, headers, config) {
+					.error(function(data, status, headers, config) {
 						errback(data);
 					});
 			}
 			// API Data
 			else {
-				// console.log("dataSvc.get() [Mode: API Data]");
-
-				// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
-				var authParam = "";
-				if (config.apiAuthToken) {
-					// console.log("auth token");
-					$http.defaults.headers.get = {
-						'Authorization': config.apiAuthToken
-					};
-				} else {
-					authParam = (authKey) ? "?access_token=" + authKey : "";
-				}
-
-				// Check API authentication first.
-				// TODO de-nest this code
-				$http.get(config.apiDataBaseUrl + "/v1/check_signed_in" + authParam)
-					.success(function (authData, authStatus) {
-						if (authData.signed_in === true) {
-							// The server is happy with us, and we might ahve the auth cookie at this point.
-							// But safari mayt have blocked it if we're in an iframe, so we have do make a second call to check _that_.
-							// Yes, this is silly. TODO jsut use a header token instead of a cookie so this isn't necessary
-
-							$http.get(config.apiDataBaseUrl + "/v1/is_authenticated" + authParam).success(function (authData) {
-
-								// Get roles
-								$http.get(config.apiDataBaseUrl + "/v1/get_user" + authParam)
-									.success(function (roleData, roleStatus) {
-										console.log("ROLE", roleData);
-										svc.roles = roleData.roles;
-									})
-									.error(function (roleData, roleStatus) {
-										console.error("Failed to load roles:", roleData);
-										$rootScope.$emit("error", {
-											"message": "Authentication failed at /v1/get_user",
-											"details": JSON.stringify(roleData)
-										});
-									});
-
-								if (authData.has_cookie === true) {
-									// All good, go get the real data
-									svc.batchAPIcalls(routeParams, callback, errback);
-								} else {
-									// cookie was blocked so we have to bounce into window.top (which will bounce immediately back to history(-1)
-									if (routeParams.return_to) {
-										window.top.location.href = config.apiDataBaseUrl + "/v1/get_authenticated?return_to=" + routeParams.return_to;
-									} else {
-										// Parent frame isn't telling us their location and we can't get it directly... all we can do is ask them to launch the player in a new window:
-										$rootScope.$emit("error", {
-											"message": "Authentication failed (couldn't set authentication cookie; no return_to url)",
-											"details": JSON.stringify(authData)
-										});
-									}
-								}
-							}).error(function (authData) {
-								$rootScope.$emit("error", {
-									"message": "Authentication failed (is_cookie_set didn't return, or returned something other than true or false)",
-									"details": JSON.stringify(authData)
-								});
-							});
-						} else {
-							$rootScope.$emit("error", {
-								"message": "Authentication failed (check_signed_in returned false)",
-								"details": JSON.stringify(authData)
-							});
-						}
-					}).error(function (authData, authStatus) {
-						$rootScope.$emit("error", {
-							"message": "Authentication failed (check_signed_in didn't return, or returned something other than true or false)",
-							"details": JSON.stringify(authData)
-						});
-					});
+				authenticate(routeParams).then(function() {
+					console.log("Authenticate succeeded!");
+					svc.batchAPIcalls(routeParams, callback, errback);
+				});
 			}
 		};
 
+		var authenticate = function(routeParams) {
+			var defer = $q.defer();
+
+			if (routeParams.key) {
+				// explicit key in route:
+				var nonce = routeParams.key;
+				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
+				getAccessToken(nonce).then(function() {
+					defer.resolve();
+				});
+			} else if ($http.defaults.headers.common.Authorization) {
+				// already logged in!
+				defer.resolve();
+			} else {
+				// check for token in localStorage, try it to see if it's still valid.
+				if (localStorage && localStorage.storyAuth) {
+					var storedData = angular.fromJson(localStorage.storyAuth);
+					console.log("Getting access from stored token", storedData);
+					$http.defaults.headers.common.Authorization = 'Token token="' + storedData.access_token + '"';
+					defer.resolve();
+				} else {
+					// start from scratch
+					getNonce().then(function(nonce) {
+						getAccessToken(nonce).then(function() {
+							defer.resolve();
+						});
+					});
+				}
+			}
+			return defer.promise;
+		};
+
+		var getNonce = function() {
+			var defer = $q.defer();
+			$http.get(config.apiDataBaseUrl + "/v1/get_nonce")
+				.success(function(data, status) {
+					console.log("get_nonce succeeded: ", data.nonce, status);
+					defer.resolve(data.nonce);
+				})
+				.error(function(data, status) {
+					console.error("get_nonce failed:", data, status);
+					$rootScope.$emit("error", {
+						"message": "Authentication failed (get_nonce: " + (data.error || data) + ")"
+					});
+					defer.reject();
+				});
+			return defer.promise;
+		};
+
+		var getAccessToken = function(nonce) {
+			console.log("trying getAccessToken with nonce ", nonce);
+			var defer = $q.defer();
+			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
+				.success(function(data, status) {
+					var authToken = data.access_token;
+					svc.roles = data.roles; // TODO: do something useful with roles
+					console.log("Roles received:", svc.roles);
+					// Set auth header.  TODO: same for put? delete?
+					$http.defaults.headers.common.Authorization = 'Token token="' + authToken + '"';
+					defer.resolve(data);
+				})
+				.error(function(data, status) {
+					console.error("get_access_token failed:", data, status);
+					$rootScope.$emit("error", {
+						"message": "Authentication failed (get_access_token: " + data.error || data + ")"
+					});
+					defer.reject();
+				});
+			return defer.promise;
+		};
+
 		// retrieves the episode data from the API. Call only through svc.get
-		svc.batchAPIcalls = function (routeParams, callback, errback) {
+		svc.batchAPIcalls = function(routeParams, callback, errback) {
 			var episodeId = routeParams.epId;
 			var authKey = routeParams.authKey;
 
@@ -161,23 +159,11 @@ angular.module('com.inthetelling.player')
         TODO: GEt event categories also, they will eventually be used in the player
       */
 
-			// if there's an API token in the config, use it in a header; otherwise pass access_token as a url param.
-			var authParam = "";
-			if (config.apiAuthToken) {
-				// console.log("auth token");
-				$http.defaults.headers.get = {
-					'Authorization': config.apiAuthToken
-				};
-			} else {
-				authParam = (authKey) ? "?access_token=" + authKey : "";
-			}
-
 			// first set of calls
-			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId + authParam)
-				.then(function (response) {
+			var firstSet = $http.get(config.apiDataBaseUrl + '/v1/episodes/' + episodeId)
+				.then(function(response) {
 					data.episode = response.data;
 					console.log(response.config.url + ":", response.data);
-
 					if (response.data.status !== "Published" && !userHasRole("admin")) {
 						$rootScope.$emit("error", {
 							"message": "This episode has not yet been published.",
@@ -186,30 +172,30 @@ angular.module('com.inthetelling.player')
 						return false;
 					}
 					return $q.all([
-						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets' + authParam),
-						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + authParam)
+						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id + '/assets'),
+						$http.get(config.apiDataBaseUrl + '/v1/containers/' + response.data.container_id)
 					]);
 				})
-				.then(function (responses) {
+				.then(function(responses) {
 					console.log(responses[0].config.url + ":", responses[0].data);
 					console.log(responses[1].config.url + ":", responses[1].data);
 					if (responses[0].data && responses[0].data.files) {
 						data.assets = responses[0].data.files;
 					}
 					return $q.all([
-						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam),
-						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + authParam)
+						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets'),
+						$http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id)
 					]);
 				})
-				.then(function (responses) {
+				.then(function(responses) {
 					console.log(responses[0].config.url + ":", responses[0].data);
 					console.log(responses[1].config.url + ":", responses[1].data);
 					if (responses[0].data && responses[0].data.files) {
 						data.assets = data.assets.concat(responses[0].data.files);
 					}
-					return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets' + authParam);
+					return $http.get(config.apiDataBaseUrl + '/v1/containers/' + responses[1].data[0].parent_id + '/assets');
 				})
-				.then(function (response) {
+				.then(function(response) {
 					console.log(response.config.url + ":", response.data);
 					if (response.data && response.data.files) {
 						data.assets = data.assets.concat(response.data.files);
@@ -218,12 +204,12 @@ angular.module('com.inthetelling.player')
 
 			// second set of calls
 			var secondSet = $q.all([
-				$http.get(config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events' + authParam),
-				$http.get(config.apiDataBaseUrl + '/v1/templates' + authParam),
-				$http.get(config.apiDataBaseUrl + '/v1/layouts' + authParam),
-				$http.get(config.apiDataBaseUrl + '/v1/styles' + authParam)
+				$http.get(config.apiDataBaseUrl + '/v2/episodes/' + episodeId + '/events'),
+				$http.get(config.apiDataBaseUrl + '/v1/templates'),
+				$http.get(config.apiDataBaseUrl + '/v1/layouts'),
+				$http.get(config.apiDataBaseUrl + '/v1/styles')
 			])
-				.then(function (responses) {
+				.then(function(responses) {
 					data.events = responses[0].data;
 					data.templates = responses[1].data;
 					data.layouts = responses[2].data;
@@ -235,7 +221,7 @@ angular.module('com.inthetelling.player')
 				firstSet,
 				secondSet
 			])
-				.then(function (responses) {
+				.then(function(responses) {
 					// success
 					// console.log("Compiled API Data:", data);
 
@@ -247,7 +233,7 @@ angular.module('com.inthetelling.player')
 					}
 					///////////////////
 					callback(data);
-				}, function (responses) {
+				}, function(responses) {
 					// error
 					errback(responses);
 				});
@@ -255,7 +241,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve the data for an asset based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
-		svc.getAssetById = function (id) {
+		svc.getAssetById = function(id) {
 			if (!_.isArray(data.assets)) {
 				return;
 			}
@@ -269,7 +255,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve the data for a template based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
-		svc.getTemplateById = function (id) {
+		svc.getTemplateById = function(id) {
 			if (!_.isArray(data.templates)) {
 				return;
 			}
@@ -283,7 +269,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve the data for a layout based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
-		svc.getLayoutById = function (id) {
+		svc.getLayoutById = function(id) {
 			if (!_.isArray(data.layouts)) {
 				return;
 			}
@@ -297,7 +283,7 @@ angular.module('com.inthetelling.player')
 
 		// Retrieve the data for a style based on its id. Method is synchronous and will scan the data cache,
 		// returning undefined if the item is not found.
-		svc.getStyleById = function (id) {
+		svc.getStyleById = function(id) {
 			if (!_.isArray(data.styles)) {
 				return;
 			}
@@ -308,6 +294,6 @@ angular.module('com.inthetelling.player')
 				}
 			}
 		};
-
+		console.log("datasvc", svc);
 		return svc;
 	});
