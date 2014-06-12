@@ -1,0 +1,141 @@
+/* 
+	transitionFade
+	transitionSlideL
+	transitionSlideR
+	transitionPop
+*/
+
+/* Misc useful keyframes */
+ @keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes delayedFadeOut {
+	0% {
+		opacity: 1;
+	}
+	33% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes delayedFadeIn {
+	0% {
+		opacity: 0;
+	}
+	33% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+body {
+	/* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
+	-webkit-backface-visibility: hidden;
+}
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/* 
+Defaults.  Always include a bit of height animation, to make it look less jumpy when items are removed from
+the middle of a list
+ */
+ .item-animate.ng-enter, .item-animate.ng-leave, .item-animate.ng-move {
+	transition: 0.5s linear all;
+	position:relative;
+}
+.item-animate.ng-enter {
+	max-height: 1px;
+}
+.item-animate.ng-enter.ng-enter-active {
+	max-height: 300px;
+}
+.item-animate.ng-leave {
+	max-height:100px;
+	display:block !important;
+}
+.item-animate.ng-leave.ng-leave-active {
+	max-height:0;
+}
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionFade */
+ .item-animate.ng-enter .item.transitionFade {
+	opacity: 0;
+}
+.item-animate.ng-enter-active .item.transitionFade {
+	opacity: 1;
+}
+.item-animate.ng-leave .item.transitionFade {
+	opacity: 1;
+}
+.item-animate.ng-leave.ng-leave-active .item.transitionFade {
+	opacity: 0;
+}
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionSlideL */
+ .item-animate.ng-enter .item.transitionSlideL {
+	transform: translateX(50px);
+	opacity: 0;
+}
+.item-animate.ng-enter-active .item.transitionSlideL {
+	transform: translateX(0);
+	opacity: 1;
+}
+.item-animate.ng-leave .item.transitionSlideL {
+	transform: translateX(0);
+	opacity: 1;
+}
+.item-animate.ng-leave.ng-leave-active .item.transitionSlideL {
+	transform: translateX(-50px);
+	opacity: 0;
+}
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionSlideR */
+ .item-animate.ng-enter .item.transitionSlideR {
+	transform: translateX(-50px);
+	opacity: 0;
+}
+.item-animate.ng-enter-active .item.transitionSlideR {
+	transform: translateX(0);
+	opacity: 1;
+}
+.item-animate.ng-leave .item.transitionSlideR {
+	transform: translateX(0);
+	opacity: 1;
+}
+.item-animate.ng-leave.ng-leave-active .item.transitionSlideR {
+	transform: translateX(50px);
+	opacity: 0;
+}
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionPop */
+ .item-animate.ng-enter .item.transitionPop {
+	transform: scale(0.9);
+	opacity: 0;
+}
+.item-animate.ng-enter-active .item.transitionPop {
+	transform: scale(1);
+	opacity: 1;
+}
+.item-animate.ng-leave .item.transitionPop {
+	transform: scale(1);
+	opacity: 1;
+}
+.item-animate.ng-leave.ng-leave-active .item.transitionPop {
+	transform: scale(0.9);
+	opacity: 0;
+}

@@ -4,6 +4,10 @@
 	(Once we have a solidified set of options in colors.css, may add matching variants for each of them here instead.)
 
 */
+ .reviewMode .item.isCurrent {
+	background-color:#rgba(0, 0, 0, 0.2);
+}
+/* - - - - - - */
  .content.allowHighlights .highlightSolid.item.isCurrent {
 	background-color: rgba(0, 0, 0, 0.2);
 }

@@ -14,28 +14,3 @@
 	overflow:scroll;
 	background-color:#FFF;
 }
-.item-animate.ng-enter, .item-animate.ng-leave, .item-animate.ng-move {
-	transition: 0.5s linear all;
-	position:relative;
-}
-.item-animate.ng-enter {
-	left:50px;
-	opacity:0;
-	max-height: 1px;
-}
-.item-animate.ng-enter.ng-enter-active {
-	left:0;
-	opacity:1;
-	max-height: 300px;
-}
-.item-animate.ng-leave {
-	left:0;
-	opacity:1;
-	max-height:100px;
-	display:block !important;
-}
-.item-animate.ng-leave.ng-leave-active {
-	left:-50px;
-	opacity:0;
-	max-height:0;
-}

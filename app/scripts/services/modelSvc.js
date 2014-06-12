@@ -138,6 +138,9 @@ angular.module('com.inthetelling.player')
 			"templates/transmedia-slidingcaption.html": "templates/item/item.html", // TODO
 			"templates/transmedia-thumbnail.html": "templates/item/item.html", // TODO
 
+			"templates/upload-demo-inline.html": "templates/item/item.html", // TODO
+			"templates/upload-demo.html": "templates/item/item.html", // TODO
+
 			//link
 			"templates/transmedia-link-default.html": "templates/item/link.html",
 			"templates/transmedia-link-embed.html": "templates/item/link.html", // TODO
