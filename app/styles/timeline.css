@@ -1,0 +1,209 @@
+.control-text {
+	clip: rect(0px, 0px, 0px, 0px);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+.timeline {
+	position: relative;
+	padding-bottom: 1em;
+}
+.timeline a {
+	color:#000;
+	cursor: pointer;
+	cursor: hand;
+}
+.progressbarBox {
+	margin: 0 1em 1em 3em;
+	position: relative;
+}
+.auxControls, .auxInfo {
+	margin: 0 2em 0 4em;
+	height: 1.4em;
+	line-height: 1.4em;
+	clear:both;
+	text-align:right;
+}
+.progressbarBox .middlerow {
+	height:1em;
+}
+.progressbar {
+	position:absolute;
+	left: 4em;
+	right: 2em;
+	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.2) inset;
+	border-radius: 0 0.5em 0.5em 0;
+	width: auto;
+	height: 1em;
+	background-color: rgba(0, 0, 0, 0.2);
+	user-select:none;
+}
+.progressbar .mask {
+	height: 1em;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+}
+.progressbarContainer {
+	position: absolute;
+	height: 1em;
+	width: 100%;
+	border-radius: 0 0.5em 0.5em 0;
+}
+.progressbar .played, .progressbar .buffered, .progressbar .handle, .progressbar .marker {
+	position: absolute;
+	height: 1em;
+}
+.progressbar .played {
+	background: #66a8cc url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
+	border-radius: 0 0.5em 0.5em 0;
+}
+.progressbar .buffered {
+	background: rgba(255, 255, 255, 0.6);
+	border-radius: 0 0.5em 0.5em 0;
+}
+.progressbar .handle {
+	border-left: 2px solid #000;
+	height: 1.2em;
+	margin-top: -0.1em;
+	margin-bottom: 0.1em;
+	width: 1px;
+}
+.progressbar .marker {
+	font-size: 0.7em;
+	line-height: 1.4em;
+	width: 1em;
+	margin-left: -0.5em;
+}
+.progressbar .marker:before {
+	content:"\e007";
+	font-family: Story;
+	position: absolute;
+}
+.progressbar .tooltip {
+	position: absolute;
+	width: 250px;
+	margin-left: -125px;
+	bottom: 1.5em;
+	text-align: center;
+}
+.progressbar .tooltip .content {
+	background-color: rgba(0, 0, 0, 0.70);
+	padding: 0.2em 1em;
+	display: inline-block;
+	width: auto;
+	color: #FFF;
+	border: 3px solid #000;
+	border-radius: 0.5em;
+}
+.progressbar .tooltip-arrow {
+	background: url("data:image/gif;base64,R0lGODlhCQAJAIABAAAAAAAAACH5BAEAAAEALAAAAAAJAAkAAAIRjAOnwIrcDJxvwkplPtchVQAAOw==") no-repeat scroll left bottom rgba(0, 0, 0, 0);
+	bottom: -5px;
+	height: 5px;
+	position: absolute;
+	width: 9px;
+	left: 50%;
+	margin-left:-5px;
+}
+.progressbar .handle .tip {
+	font-size: smaller;
+	top: -1em;
+	position:absolute;
+	width: 50px;
+	margin-left: -25px;
+	text-align: center;
+}
+.button-prev, .button-next {
+	width: 1.5em;
+	font-size: 1.3em;
+	margin-top:-0.15em;
+	height: 1em;
+}
+.button-scenemenu {
+	background-color: #CCCCCC;
+	border-radius: 0.5em 0 0 0.5em;
+	height: 1em;
+	width: 2em;
+}
+.button-prev {
+	position:absolute;
+	left:0;
+}
+.button-next {
+	position:absolute;
+	right:0;
+}
+.button-scenemenu {
+	position:absolute;
+	left:2em;
+}
+.button-prev:before {
+	content:"\e601";
+	font-family: Story;
+}
+.button-next:before {
+	font-family: Story;
+	content:"\e600";
+}
+.button-scenemenu:before {
+	content:"\e605";
+	font-family: Story;
+	font-size: 0.6em;
+	padding-left: 1em;
+	padding-top: 0.3em;
+	position: absolute;
+}
+.button-play, .button-pause {
+	position:absolute;
+	cursor: pointer;
+	font-size: 2em;
+	height: 1em;
+	left: 0.5em;
+	bottom: 0.25em;
+}
+.button-play:before {
+	font-family: Story;
+	content:"\e001";
+}
+.button-pause:before {
+	font-family: Story;
+	content:"\e002";
+}
+.button-mute {
+}
+.button-mute.muted:before {
+	font-family:Story;
+	content:"\e003";
+}
+.button-mute.vol0:before {
+	font-family:Story;
+	content:"\e004";
+}
+.button-mute.vol1:before {
+	font-family:Story;
+	content:"\e005";
+}
+.button-mute.vol2:before {
+	font-family:Story;
+	content:"\e006";
+}
+.volumebar {
+	position:relative;
+	display:inline-block;
+	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.2) inset;
+	border-radius: 0.5em;
+	width: 4em;
+	height: 0.5em;
+	margin: 0.25em 0 0.25em 0.5em;
+	background-color: rgba(0, 0, 0, 0.2);
+	user-select:none;
+	overflow:hidden;
+}
+.volumebar .volume {
+	position:absolute;
+	height: 1em;
+	background: #555 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
+}

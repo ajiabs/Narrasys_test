@@ -1,0 +1,30 @@
+/* 
+	Extra styling for 'current' items. 
+	For now, avoid adding colors here, instead add images or rgba colors to modify existing background.
+	(Once we have a solidified set of options in colors.css, may add matching variants for each of them here instead.)
+
+*/
+ .content.allowHighlights .highlightSolid.item.isCurrent {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+.content.allowHighlights .highlightBorder.item.isCurrent {
+	outline: 3px solid rgba(0, 0, 0, 0.3);
+}
+.content.allowHighlights .highlightSide.item.isCurrent {
+	border-left: 10px solid rgba(0, 0, 0, 0.3);
+	/*box-shadow: -10px 0 0 rgba(0, 0, 0, 0.3);*/
+}
+.content.allowHighlights .highlightBloom.item.isCurrent {
+	background-color: rgba(255, 255, 200, 0.4);
+	box-shadow: 0 0 8px rgba(255, 255, 200, 0.9);
+}
+.content.allowHighlights .highlightHighlighter.item.isCurrent {
+	background: url('/images/highlighter.png');
+	background-size: 100% 100%;
+}
+.content.allowHighlights .highlightTilt.item.isCurrent {
+	transform: rotateY(-20deg) scale(1.18);
+	transform-origin: 70% 50% 0;
+	transform-style: preserve-3d;
+	transition: all 1s;
+}

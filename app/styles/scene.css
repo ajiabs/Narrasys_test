@@ -1,0 +1,240 @@
+/* ------------------------------------------- */
+ .pane {
+	position:relative;
+}
+.fill, .fill .item {
+	position:absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.content {
+	position:relative;
+}
+.content:after {
+	clear:both;
+	content:"";
+	display:block;
+}
+.altPane {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+/* ------------------------------------------- */
+ .watchMode {
+	position: fixed;
+	background-color: #000;
+	top: 45px;
+	/* VIEWPORT HEIGHT */
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+#watchModeVideoMagnet {
+	/* TODO put a max height on this */
+}
+.watchModeCaption {
+	text-align:center;
+	position: fixed;
+	bottom:110px;
+	color: #DDDDDD;
+	font-size: 130%;
+	margin: 0 10%;
+	bottom: 90px;
+	width: 80%;
+}
+.watchModeCaption .item {
+	display:inline-block;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 8px;
+	padding:1em;
+}
+.scene-video .contentMain .item {
+}
+@media screen and (min-width: 401px) and (max-width: 700px) {
+	.watchModeCaption {
+		font-size: 90% !important;
+	}
+}
+@media screen and (max-width: 400px) {
+	.watchModeCaption {
+		font-size: 70% !important;
+	}
+}
+/* ------------------------------------------- */
+ .reviewMode .videoMagnet {
+	position:fixed;
+	top: 45px;
+	right: 0;
+	width: 30%;
+}
+.reviewMode .videoPadding {
+	/* double the width of videoMagnet, because it's in a column half the size */
+	width:60%;
+}
+.reviewMode .scene {
+	clear:both;
+	display:flex;
+	/* causes columns to stretch to full scene height */
+}
+.reviewMode .scene.navigable {
+	border-top: 1px solid rgba(0, 0, 0, 0.2)
+}
+.reviewMode .mainPane {
+	width:50%;
+	float:left;
+}
+.reviewMode .altPane {
+	width:50%;
+	float:right;
+}
+.reviewMode .item .pullquote {
+	font-size:1.4em
+}
+.reviewMode h1 {
+	font-size: 1.5em;
+}
+.reviewMode h2 {
+	font-size: 1.3em;
+}
+.reviewMode h3 {
+	font-size: 1em;
+}
+@media screen and (min-width: 1000px) {
+	/* three-col layout on wide screens */
+	.reviewMode .videoPadding {
+		display:none;
+	}
+	.reviewMode .mainPane {
+		width:40%;
+	}
+	.reviewMode .altPane {
+		width: 60%;
+		padding-right: 240px;
+	}
+	.reviewMode .videoMagnet {
+		width: 240px;
+	}
+}
+/* ------------------------------------------- */
+ .scene.cornerV {
+	display:flex;
+}
+.scene.cornerV .col {
+	width:50%;
+}
+.scene.cornerV.videoLeft {
+	flex-direction: row;
+}
+.scene.cornerV.videoRight {
+	flex-direction: row-reverse;
+}
+/* ------------------------------------------- */
+ .scene.cornerH {
+}
+.scene.cornerH .row {
+	display:flex;
+}
+.scene.cornerH .videoMagnet, .scene.cornerH .mainPane {
+	width:50%;
+}
+.scene.cornerH .mainPane {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.scene.cornerH .altPane {
+	width:100%;
+}
+.scene.cornerH.videoLeft .row {
+	flex-direction:row;
+}
+.scene.cornerH.videoRight .row {
+	flex-direction:row-reverse;
+}
+/* ------------------------------------------- */
+ .scene.twocol {
+	display:flex;
+}
+.scene.twocol .videoPositioner {
+	width:100%;
+	position: absolute;
+}
+.scene.twocol .videoMagnet {
+	width:50%;
+	margin: 0 25%;
+}
+.scene.twocol .col {
+	width:50%;
+}
+.scene.twocol.videoLeft .videoMagnet {
+	margin: 0 50% 0 0;
+}
+.scene.twocol.videoLeft .col2 .matchVideoHeight {
+	display:none;
+}
+.scene.twocol.videoRight .videoMagnet {
+	margin: 0 0 0 50%;
+}
+.scene.twocol.videoRight .col1 .matchVideoHeight {
+	display:none;
+}
+/* ------------------------------------------- */
+ .scene.onecol .videoPositioner {
+	width:100%;
+	position: absolute;
+	left:0;
+	right:0;
+}
+.scene.onecol .col, .scene.onecol .videoMagnet {
+	margin: 0 20%;
+}
+.scene.onecol.videoRight .videoMagnet {
+	margin-right: 0;
+}
+.scene.onecol.videoLeft .videoMagnet {
+	margin-left: 0;
+}
+@media screen and (min-width: 1000px) and (min-height:700px) {
+	.scene.onecol .col {
+		margin: 0 25%;
+	}
+	.scene.onecol .videoPositioner {
+		width:100%;
+	}
+	.scene.onecol .videoMagnet {
+		position:fixed;
+		margin: 0;
+		left: 25%;
+		right: 25%;
+	}
+	.scene.onecol.videoRight .videoMagnet {
+		margin-top: 5%;
+		margin-right: 0;
+		right: 0;
+		left: 45%;
+	}
+	.scene.onecol.videoRight .col {
+		margin: 0 50% 0 5%;
+	}
+	.scene.onecol.videoLeft .videoMagnet {
+		margin-top: 5%;
+		margin-left: 0;
+		left: 0;
+		right: 55%;
+	}
+	.scene.onecol.videoLeft .col {
+		margin: 0 5% 0 50%;
+	}
+	.scene.onecol.videoRight img.matchVideoHeight, .scene.onecol.videoLeft img.matchVideoHeight {
+		display:none;
+	}
+}
+/* ------------------------------------------- */
+ .scene.centered .col {
+	margin: 10% 20% 0 20%;
+}
+@media screen and (min-width: 1000px) {
+	.scene.centered .col {
+		margin: 10% 25% 0 25%;
+	}
+}

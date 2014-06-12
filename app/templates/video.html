@@ -1,0 +1,9 @@
+<div class="video">
+	<iframe id="ytplayer{{uid}}" ng-if="video.youtube" ng-src="{{video.youtube + '?enablejsapi=1&controls=0&modestbranding=1&showinfo=0'}}"></iframe>
+	<video ng-if="!video.youtube">
+		<source class="mpeg4" ng-if="video.mpeg4" ng-src="{{video.mpeg4}}" type="video/mp4" />
+		<source class="webm" ng-if="video.webm" ng-src="{{video.webm}}" type="video/webm" />
+		<p>Oh no! Your browser does not support the HTML5 Video element.</p>
+	</video>
+	<img ng-click="videoClick()" class="videoMask" src="images/aspectratiopreserver-16x9.gif">
+</div>

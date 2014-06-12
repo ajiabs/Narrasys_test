@@ -1,0 +1,15 @@
+.editScene .fgLayer, .editScene .bgLayer, .editScene .contentLayer {
+	display:none !important;
+}
+.editFgLayer .bgLayer, .editFgLayer .contentLayer {
+	display:none !important;
+}
+.editBgLayer .fgLayer, .editBgLayer .contentLayer {
+	display:none !important;
+}
+.editContentLayer .fgLayer, .editContentLayer .bgLayer {
+	display:none !important;
+}
+.editFgLayer .fgLayer, .editBgLayer .bgLayer, .editContentLayer .contentLayer {
+	border: 4px dotted #3C3;
+}

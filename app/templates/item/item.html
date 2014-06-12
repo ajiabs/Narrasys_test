@@ -1,0 +1,10 @@
+<div class="item" ng-class="item.styleCss + ' ' + item.state">
+	{{item._id}} {{item.start_time | asTime}}-{{item.end_time | asTime}}: {{item.title}}
+	<br>{{item.annotation}} {{item.description}}
+	<br>
+
+	<a ng-click="edit()">Edit</a>
+
+	<a ng-click="itemDebug=!itemDebug">Debug</a>
+	<pre ng-if="itemDebug">{{item | pretty}}</pre>
+</div>

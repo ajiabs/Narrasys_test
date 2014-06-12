@@ -1,0 +1,120 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0
+}
+.clear:after {
+	clear:both;
+	content:"";
+	display:block;
+}
+.overlay {
+	pointer-events:none;
+}
+.overlay .item {
+	pointer-events: auto;
+}
+.videoMagnet img {
+	/* aspect ratio preserver */
+	width:100%;
+}
+.small {
+	font-size: smaller;
+}
+.invisible {
+	visibility:hidden;
+}
+a {
+	text-decoration:none;
+	color: #00C;
+	cursor: pointer;
+	cursor:hand;
+}
+/* Z-indexes 
+--------------------------------------------------------------------------------
+*/
+ .modal-backdrop {
+	z-index:8;
+}
+.modal {
+	z-index:9;
+}
+.navPanel {
+	z-index:9;
+}
+.toolbar, .toolbar-bottom {
+	z-index:10;
+}
+.searchPanel {
+	z-index:11;
+}
+/* Custom Icon Font
+--------------------------------------------------------------------------------
+See /images/font/story/map.png for a list of available glyphs
+*/
+ @font-face {
+	font-family:'Story';
+	src: url('/images/font/story.eot');
+	src: url('/images/font/story.eot?#iefix') format('embedded-opentype'), url('/images/font/story.woff') format('woff'), url('/images/font/story.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+.modal-backdrop {
+	position: fixed;
+	top: 0;
+	left:0;
+	right:0;
+	bottom:0;
+	background-color:rgba(0, 0, 0, 0.6);
+}
+/* 
+Video fill
+--------------------------------------------------------------------------------
+*/
+ .video iframe, .video video, .video .videoMask {
+	position: absolute;
+	width:100%;
+	height:100%;
+}
+/* 
+Misc useful keyframes 
+--------------------------------------------------------------------------------
+*/
+ @keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes delayedFadeOut {
+	0% {
+		opacity: 1;
+	}
+	33% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes delayedFadeIn {
+	0% {
+		opacity: 0;
+	}
+	33% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

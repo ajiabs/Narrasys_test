@@ -1,0 +1,87 @@
+<div class="player" ng-class="{
+	isFramed: appState.isFramed,
+	producer: appState.producer,
+	editBgLayer: editLayer.bgLayer,
+	editFgLayer: editLayer.fgLayer,
+	editContentLayer: editLayer.contentLayer,
+	editScene: editLayer.scene
+	}">
+	<div class="toolbar">
+		<div class="modegroup buttongroup">
+			<a class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')">
+				<span>Watch</span>
+			</a>
+			<a class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')">
+				<span>Discover</span>
+			</a>
+			<a class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')">
+				<span>Review</span>
+			</a>
+		</div>
+
+		<div ng-if="appState.producer && appState.viewMode == 'discover'" class="buttongroup">
+			<a class="button" ng-click="editLayer('scene');">Scene<span>Edit the scene layout (TODO)</span></a>
+			<a class="button" ng-click="editLayer('bgLayer');">BG<span>Edit the background layer</span></a>
+			<a class="button" ng-click="editLayer('contentLayer');">C<span>Edit the content layer</span></a>
+			<a class="button" ng-click="editLayer('fgLayer');">FG<span>Edit the foreground layer</span></a>
+			<a class="button" ng-click="editLayer('');">All<span>Show everything</span></a>
+		</div>
+
+
+		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
+			<a ng-click="mainframeescape();" class="button button-mainframeescape">
+				<span>New window</span>
+			</a>
+		</div>
+		<div class="searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
+			<a class="button button-search" ng-click="toggleSearchPanel()">
+				<span>Search</span>
+			</a>
+			<input id="searchtext" type="text" ng-model="searchText" />
+		</div>
+	</div>
+	<div itt-episode></div>
+	<div ng-if="appState.viewMode != 'watch'" class="branding">
+		<a class="itt logo" href="http://inthetelling.com">
+			<img src="images/itt.svg" alt="In The Telling logo">
+		</a>
+		<span class="copyright">TELLING STORY player &#169; {{now | date:'yyyy'}} <a href="http://inthetelling.com">IN THE TELLING</a>. All rights reserved</span>
+	</div>
+
+	<div ng-show="show.searchPanel" class="modal-backdrop searchPanel-backdrop" ng-click="toggleSearchPanel()"></div>
+	<div ng-show="show.searchPanel" class="searchPanel">
+		<div ng-show="show.searchPanel" itt-search-panel>This will be the search panel</div>
+	</div>
+
+	<!-- scene navbar -->
+	<div ng-show="show.navPanel" class="modal-backdrop" ng-click="toggleNavPanel()"></div>
+	<div class="toolbar-bottom">
+		<div class="toolbar-bottom-fill">
+			<div ng-show="show.navPanel" class="navPanel">
+				<h2>{{episode.title}}</h2>
+				<div class="scene" x-ng-if="scene.title" x-ng-repeat="scene in episode.scenes" x-ng-class="{currentScene: scene.isCurrent}" x-ng-click="seek(scene.start_time)">
+					<span class="displayTime">{{scene.displayTime}}</span>
+					<p>
+						<a href="javascript:void 1;">{{scene.title}}</a>
+						<br>{{scene.description}}
+					</p>
+				</div>
+			</div>
+
+			<div itt-item-editor="appState.editing"></div>
+			<div itt-timeline></div>
+		</div>
+	</div>
+</div>
+
+<div ng-show="appState.itemDetail" class="modal-backdrop" ng-click="appState.itemDetail=false"></div>
+<div ng-if="appState.itemDetail" itt-item-detail-modal="appState.itemDetail"></div>
+
+<!--  -->
+
+<!-- <div ng-controller="ErrorController" ng-include="'templates/error.html'"></div> -->
+<!-- 
+<a href="javascript:void 1;" ng-click="showDebug=!showDebug">DEBUG:</a>
+<pre ng-if="showDebug === true">{{appState | pretty }}</pre>
+<pre ng-if="showDebug === true">{{episode | pretty}}</pre>
+ -->

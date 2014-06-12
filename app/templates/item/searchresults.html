@@ -1,0 +1,8 @@
+<div class="item">
+	<span class="displayTime">
+		<a href="javascript:void 1" x-ng-click="seek(item.start_time, item._id)">{{item.start_time | asTime}}</a>
+	</span>
+	<span class="type" ng-bind-html="item.trustedDisplayTitle | highlightSubstring: searchText"></span>
+	<div class="description" ng-bind-html="item.trustedDisplayText | highlightSubstring: searchText"></div>
+
+</div>

@@ -1,0 +1,44 @@
+<div class="item" ng-class="item.styleCss + ' ' + item.state">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.start_time | asTime}}</div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<span ng-if="item.required">(Required viewing)</span>
+		</div>
+	</div>
+	<div class="text">
+		<div class="title">
+			<a ng-click="toggleDetailView()">{{item.title || '(Untitled)'}}</a>
+		</div>
+		<div>{{item.description}}</div>
+	</div>
+	<div class="itemDetail" x-ng-if="item.showInlineDetail">
+		<a ng-href="{{item.url}}" target="_blank" class="escapelink">(new window)</a>
+		<div class="iframeContainer">
+			<iframe ng-src="{{item.url}}"></iframe>
+		</div>
+	</div>
+</div>
+<!--
+
+<div class="itemHead">
+	<div class="startTime displayTime" x-ng-click="gotoItem()" bo-text="item.displayTime"></div>
+	<div class="category">
+		<span bo-if="item.required">(Required viewing)</span>
+	</div>
+</div>
+ <div class="icon"><img bo-src="item.thumbSrc"></div> 
+<div class="text">
+	<div class="title">
+		<a href="javascript:void 1;" x-ng-click="toggleDetailView()" bo-html="item.title || '(no title)'"></a>
+	</div>
+	<div bo-html="item.description"></div>
+</div>
+<div class="detail" x-ng-if="item.showInlineDetail">
+	<a bo-href="item.source" target="_blank" class="escapelink">(new window)</a>
+	<div class="iframeContainer">
+		<iframe bo-src="item.source"></iframe>
+	</div>
+</div>
+</div>
+-->

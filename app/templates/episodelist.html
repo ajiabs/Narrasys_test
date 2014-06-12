@@ -1,0 +1,12 @@
+Episode list
+
+<div ng-controller="EpisodeListController">
+	<div ng-repeat="episode in episodes">
+		({{episode._id}}) {{episode.title}} -
+		<a href="#episode/{{episode._id}}">as guest</a> -
+		<!-- <a ng-click="authenticate(episode._id)">Log in first</a> -->
+		<br>
+	</div>
+</div>
+
+<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>

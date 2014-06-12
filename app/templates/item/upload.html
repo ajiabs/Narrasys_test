@@ -1,0 +1,22 @@
+<div class="item" ng-class="item.styleCss + ' ' + item.state">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.start_time | asTime}}</div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<span ng-if="item.required">(Required viewing)</span>
+		</div>
+	</div>
+	<div class="text">
+		<div class="title">
+			<a ng-click="toggleDetailView()">{{item.title || '(Untitled)'}}</a>
+		</div>
+		<div>{{item.description}}</div>
+	</div>
+	<div class="itemDetail" x-ng-if="item.showInlineDetail">
+		<!-- TODO handle videos here by checking item.asset._type -->
+		<div class="touchable" style="position:relative">
+			<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
+			<div class="touchableIndicator"></div>
+		</div>
+	</div>
+</div>

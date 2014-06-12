@@ -1,0 +1,329 @@
+/*============================
+ *
+ * Defaults
+ *
+//===========================*/
+ .content .item {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	padding-left:60px;
+}
+.item {
+	transition:all 0.5s;
+}
+.item .itemHead {
+	display:inline;
+	line-height: 1em
+}
+.item .icon {
+	max-width: 55px;
+	;
+}
+.item .icon img {
+	width: 100%;
+}
+.item .text {
+}
+.item .startTime {
+	cursor: pointer;
+	cursor: hand;
+	margin-left: -55px;
+	width: 50px;
+	text-align:right;
+	float:left;
+}
+.item .iframeContainer {
+	-webkit-overflow-scrolling: touch;
+	overflow: auto;
+	width: 100%;
+	height: 320px;
+}
+.windowFg .item .iframeContainer {
+	height:80%;
+}
+.item iframe {
+	background-color:#FFF;
+	width: 100%;
+	height:98%;
+	border: none;
+}
+/*============================ ============================ ============================ 
+image-fill items */
+
+/* 
+	contain, cover should use background-image.  Others should use the img, and resize to fit the img. 
+*/
+ .fill .item {
+	overflow:hidden;
+	background-position:50% 50%;
+	background-repeat: no-repeat;
+}
+.fill .item .fillImg {
+	display:none;
+}
+.fill .item.tl .fillImg, .fill .item.tr .fillImg, .fill .item.bl .fillImg, .fill .item.br .fillImg, .fill .item.center .fillImg {
+	display:block;
+}
+.fill .item.contain {
+	background-size:contain;
+}
+.fill .item.cover {
+	background-size:cover;
+}
+.fill .item.tl, .fill .item.bl, .fill .item.tr, .fill .item.br, .fill .item.center {
+	background-image: none !important;
+}
+.fill .item .fillImg {
+	width:auto;
+	max-width:100%;
+	height:auto;
+	max-height:100%;
+	position:absolute;
+}
+.fill .item.center .fillImg {
+	position:static;
+}
+.fill .item.tr img, .fill .item.br .fillImg {
+	right:0;
+}
+.fill .item.bl img, .fill .item.br .fillImg {
+	bottom: 0;
+}
+.fill .item.center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+/* this background-image only needed for contain or cover styles; never in content: */
+ .content .item.imageFill {
+	background-image: none !important;
+	padding-left:0;
+}
+/*============================ ============================ ============================ 
+Inline images (TODO show these only when image is larger than available space) */
+ .content img {
+	max-width:100%;
+}
+.item .touchable {
+	cursor:pointer;
+	position:relative;
+	display:inline-block;
+	max-width:100%;
+	max-height:100%;
+}
+.item .touchableIndicator {
+	opacity:0;
+	transition: opacity 1.5s;
+	position:absolute;
+	bottom:7px;
+	right:5px;
+	font-family: Story;
+	font-size: 1em;
+}
+.touchableIndicator:before {
+	content:"\e602";
+	text-shadow: 1px 1px 1px #FFF;
+}
+.item .touchable:hover .touchableIndicator {
+	opacity:0.8;
+}
+/*============================ ============================ ============================
+  inline item detail */
+ .itemDetail img, .itemDetail iframe {
+	width: 100%;
+	background-color:#FFF;
+}
+.itemDetail.ng-enter, .itemDetail.ng-leave {
+	transition:1s all;
+	overflow:hidden;
+}
+.itemDetail.ng-enter {
+	height:1px;
+	opacity:0;
+}
+.itemDetail.ng-enter-active {
+	height: 300px;
+	opacity:1;
+}
+.itemDetail.ng-leave {
+	height:300px;
+	opacity:1;
+}
+.itemDetail.ng-leave-active {
+	height: 1px;
+	opacity:0;
+}
+/*============================ ============================ ============================
+  Modal overlay */
+ .modal {
+	position: fixed;
+	left: 5%;
+	right: 5%;
+	top: 10%;
+	transition:1s all;
+}
+.modal.ng-enter, .modal.ng-leave.ng-leave-active {
+	left:49%;
+	right:49%;
+	top:33%;
+}
+.modal.ng-enter-active, .modal.ng-leave {
+	left: 5%;
+	right: 5%;
+	top: 10%;
+	display:block !important;
+}
+.modal .iframeContainer {
+	width: 100%;
+	min-height: 500px;
+	overflow:hidden;
+	background-color:#FFF;
+}
+.modal iframe {
+	position:absolute;
+	top: 30px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border: none;
+	overflow:scroll;
+	width:100%;
+	height:100%;
+}
+.isIDevice .modal .iframeContainer {
+	/* TODO make sure this class is being applied */
+	-webkit-overflow-scrolling:touch;
+	overflow: auto;
+}
+.modalmenu {
+	border-radius: 1em 1em 0 0;
+	text-align:right;
+	padding: 0 1em;
+	color:#FFF;
+	background-color:#000;
+	height: 30px;
+	line-height: 30px
+}
+.modalmenu a, .modalmenu a:before {
+	color:#FFF;
+}
+.modalimage {
+	text-align:center;
+}
+.modalimage img {
+	max-width:100%;
+	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
+	background-color:#FFF;
+}
+/*============================ ============================ ============================
+ *
+ * timestamps
+ *
+//=========================== */
+ .item.timestampNone {
+	padding-left: 0;
+}
+.item.timestampNone .displayTime {
+	display:none
+}
+/* =========================== */
+ .item.timestampInline {
+	padding-left: 0.5em;
+}
+.item.timestampInline .startTime {
+	display:inline;
+	margin-left: 0;
+	width:auto;
+	text-align:left;
+	padding-right: 0.4em;
+}
+/* =========================== */
+ .item.timestampSidebar {
+	padding-left: 40px;
+}
+.item.timestampSidebar .startTime {
+	transform: rotate(90deg) translateX(100%);
+	transform-origin: 100% 0;
+	width: auto;
+	font-size: 20px;
+	margin-left: -45px;
+}
+/* =========================== */
+ .item.timestampSmall .displayTime {
+	font-size: 0.86em;
+}
+/* =========================== */
+
+/*============================ ============================ ============================
+ *
+ * Template variants
+ *
+//=========================== */
+ .item .pullquote:before {
+	color: rgba(0, 0, 0, 0.05);
+	content:"“";
+	float: left;
+	font-size: 3em;
+	line-height: 0.8em;
+	margin-left: -0.4em;
+	width: 0.4em;
+}
+.item .pullquote {
+	font-size: 2em;
+}
+.item .pullquoteSpeaker {
+	text-align: right;
+	font-style: italic;
+	font-size: 0.8em
+}
+.item .pullquoteSpeaker:before {
+	content:" — ";
+}
+/* - - - - - - - - - - - - - -  */
+ .item .captioncontainer {
+	position:relative;
+	overflow:hidden;
+}
+.item .caption {
+	position:absolute;
+	/* TODO why is this not zero: */
+	bottom:4px;
+	left:0;
+	right:0;
+	padding: 0.5em;
+	opacity:1;
+	transition: 0.7s all;
+	background-color: #333;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-top:1px solid #666;
+	color:#FFF;
+}
+.item.colorInvert .caption {
+	background-color: #eee;
+	background-color: rgba(255, 255, 255, 0.7);
+	color: #000;
+	border-top: 1px solid #666;
+}
+.item:hover .caption {
+	opacity: 0;
+}
+.item .slidingcaption {
+	transform:translateY(0);
+}
+.item:hover .slidingcaption {
+	transform:translateY(100%);
+}
+/* - - - - - - - - - - - - - -  */
+ .item .thumbnail img {
+	width:100%;
+}
+.item .thumbnail {
+	max-width:72px;
+	transition: all 0.8s;
+	float:left;
+	margin-right:1em;
+}
+.item .thumbnail.fullsize {
+	max-width:100%;
+	float:none;
+}

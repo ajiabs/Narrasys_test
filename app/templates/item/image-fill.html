@@ -1,0 +1,4 @@
+<!-- one or the other of .item background-image and fillImg will be made invisible, depending on fill type -->
+<div class="item imageFill" ng-class="item.styleCss + ' ' + item.state" ng-style="{'background-image': 'url(' + item.asset.url + ')'}">
+	<img class="fillImg" ng-src="{{item.asset.url}}">
+</div>

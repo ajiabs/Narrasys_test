@@ -1,0 +1,11 @@
+<div class="modal">
+	<div ng-if="item._type == 'Link'" class="modalmenu">
+		<a href="{{item.url}}" target="_blank" class="escapelink">(new window)</a>
+	</div>
+	<div ng-if="item._type == 'Link'" class="iframeContainer">
+		<iframe x-ng-src="{{item.url}}"></iframe>
+	</div>
+	<div ng-click="dismiss();" class="modalimage" ng-if="item._type == 'Upload'">
+		<img ng-src="{{item.asset.url}}">
+	</div>
+</div>

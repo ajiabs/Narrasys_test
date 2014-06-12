@@ -1,0 +1,56 @@
+<div class="episode">
+	<div class="fill bgLayer" ng-show="appState.viewMode == 'discover'">
+		<!-- windowBg -->
+		<div itt-item="item" class="animate" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowBg'"></div>
+	</div>
+
+	<div class="discoverMode">
+		<div itt-scene="scene" episode="episode" class="animate" ng-repeat="scene in episode.scenes | isCurrent" ng-show="appState.viewMode == 'discover'">
+		</div>
+	</div>
+
+	<div class="reviewMode" ng-show="appState.viewMode == 'review'">
+		<div itt-magnet id="reviewModeVideoMagnet" class="videoMagnet">
+			<img src="images/aspectratiopreserver-16x9.gif">
+		</div>
+		<div class="scene" ng-class="{navigable: scene.title}" ng-repeat="scene in episode.scenes">
+			<div class="pane mainPane">
+				<div class="content allowHighlights">
+					<!-- contentMain -->
+					<h2 ng-if="scene.title">{{scene.title}}</h2>
+					<div class="itemanimate" ng-repeat="item in scene.items | isContent | annotation | filter:{cosmetic:false} | orderBy:'start_time'" itt-item="item">
+					</div>
+				</div>
+			</div>
+			<div class="pane altPane">
+				<div class="content allowHighlights">
+					<img ng-if="$index == 1" src="images/aspectratiopreserver-16x9.gif" class="videoPadding">
+					<!-- contentAlt -->
+					<div class="itemanimate" ng-repeat="item in scene.items | isContent | transmedia | filter:{cosmetic:false}" itt-item="item">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="watchMode" ng-show="appState.viewMode == 'watch'">
+		<div itt-magnet id="watchModeVideoMagnet" class="videoMagnet">
+			<img src="images/aspectratiopreserver-16x9.gif">
+		</div>
+	</div>
+
+	<div itt-magnetized class="pane videoContainer">
+		<div class="video contentLayer" itt-video="episode.masterAsset.video"></div>
+		<div class="pane fill overlay fgLayer">
+			<!-- Video Overlays -->
+			<div itt-item="item" class="animate" ng-repeat="item in episode.items | itemLayout:'videoOverlay' | isCurrent"></div>
+		</div>
+	</div>
+
+	<div ng-show="appState.viewMode == 'watch'" class="watchModeCaption itemanimate" ng-repeat="item in episode.items  | transcript | isCurrent" itt-item="item"></div>
+
+	<div class="fill overlay fgLayer" ng-show="appState.viewMode == 'discover'">
+		<!-- WindowFg -->
+		<div itt-item="item" class="animate" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowFg'"></div>
+	</div>
+</div>
