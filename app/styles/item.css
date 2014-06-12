@@ -1,3 +1,7 @@
+/* tmp */
+ .reviewMode .item.isCurrent {
+	background-color:#DDD;
+}
 /*============================
  *
  * Defaults
@@ -46,6 +50,16 @@
 	width: 100%;
 	height:98%;
 	border: none;
+}
+/* For cleaner transitions between items: */
+ .singleitem .item {
+	position:absolute;
+	width:100%;
+}
+.singleitem .item:after {
+	clear:both;
+	content:"";
+	display:block;
 }
 /*============================ ============================ ============================ 
 image-fill items */

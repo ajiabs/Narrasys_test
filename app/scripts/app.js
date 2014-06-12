@@ -88,7 +88,8 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
 					return false;
 				}
 				console.log("INTERCEPTOR REJECT:", response);
-				return $q.reject(response);
+				window.alert("API error (and no proper error handler yet)! See console for details");
+				//return $q.reject(response);
 			}
 			return function(promise) {
 				return promise.then(success, error);

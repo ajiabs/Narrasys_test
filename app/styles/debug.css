@@ -39,13 +39,3 @@
 	opacity:0;
 	max-height:0;
 }
-/* For cleaner transitions between items: */
- .singleitem .item {
-	position:absolute;
-	width:100%;
-}
-.singleitem .item:after {
-	clear:both;
-	content:"";
-	display:block;
-}

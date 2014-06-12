@@ -411,11 +411,13 @@ angular.module('com.inthetelling.player')
 			delete videoObject.m3u8;
 */
 
-
 			// Safari is currently throwing permissions errors on youtube... TODO figure out why, and remove this!
 			if ((isSafari || navigator.platform.indexOf('iPad') > -1) && videoObject.mpeg4) {
 				videoObject.youtube = undefined;
 			}
+
+			// TEMPORARILY DISABLING YOUTUBE
+			videoObject.youtube = undefined;
 
 			videoAsset.video = videoObject;
 

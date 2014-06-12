@@ -86,6 +86,9 @@ ended
 webkitbeginfullscreen
 webkitendfullscreen */
 			}
+
+
+			modelSvc.appState.videoType = $scope.videoType;
 		};
 
 		$scope.initYoutube = function() {
