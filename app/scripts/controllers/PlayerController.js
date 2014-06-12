@@ -61,6 +61,9 @@ angular.module('com.inthetelling.player')
 		// Misc toolbars too small to rate their own controllers
 		$scope.toggleSearchPanel = function() {
 			modelSvc.appState.show.searchPanel = !modelSvc.appState.show.searchPanel;
+			if (modelSvc.appState.show.searchPanel) {
+				$scope.$broadcast('search.indexEvents');
+			}
 		};
 		$scope.toggleNavPanel = function() {
 			modelSvc.appState.show.navPanel = !modelSvc.appState.show.navPanel;
