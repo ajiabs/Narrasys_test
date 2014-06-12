@@ -3,8 +3,8 @@ Episode list
 <div ng-controller="EpisodeListController">
 	<div ng-repeat="episode in episodes">
 		({{episode._id}}) {{episode.title}} -
-		<a href="#episode/{{episode._id}}">as guest</a> -
-		<!-- <a ng-click="authenticate(episode._id)">Log in first</a> -->
+		<a href="#episode/{{episode._id}}">Episode</a> -
+		<a ng-click="authenticate(episode._id)">OAuth</a>
 		<br>
 	</div>
 </div>

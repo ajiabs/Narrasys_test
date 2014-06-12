@@ -40,7 +40,12 @@
 			<a ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
 				<span class="control-text">Previous</span>
 			</a>
-			<a class="button-scenemenu" ng-click="toggleNavPanel()">
+			<div class="tooltip sceneMenuTooltip" ng-if="tooltip.sceneMenu">
+				<span class="content">Scene-by-scene navigation</span>
+				<div class="tooltip-arrow"></div>
+			</div>
+
+			<a class="button-scenemenu" ng-click="toggleNavPanel()" ng-mouseover="tooltip.sceneMenu=true" ng-mouseout="tooltip.sceneMenu=false">
 				<span class="control-text">Scenes</span>
 			</a>
 			<a ng-class="{invisible: appState.time == appState.duration}" class="button-next" ng-click="nextScene()">

@@ -83,14 +83,14 @@
 	font-family: Story;
 	position: absolute;
 }
-.progressbar .tooltip {
+.timeline .tooltip {
 	position: absolute;
 	width: 250px;
 	margin-left: -125px;
 	bottom: 1.5em;
 	text-align: center;
 }
-.progressbar .tooltip .content {
+.timeline .tooltip .content {
 	background-color: rgba(0, 0, 0, 0.70);
 	padding: 0.2em 1em;
 	display: inline-block;
@@ -99,7 +99,7 @@
 	border: 3px solid #000;
 	border-radius: 0.5em;
 }
-.progressbar .tooltip-arrow {
+.timeline .tooltip-arrow {
 	background: url("data:image/gif;base64,R0lGODlhCQAJAIABAAAAAAAAACH5BAEAAAEALAAAAAAJAAkAAAIRjAOnwIrcDJxvwkplPtchVQAAOw==") no-repeat scroll left bottom rgba(0, 0, 0, 0);
 	bottom: -5px;
 	height: 5px;
@@ -108,7 +108,7 @@
 	left: 50%;
 	margin-left:-5px;
 }
-.progressbar .handle .tip {
+.timeline .handle .tip {
 	font-size: smaller;
 	top: -1em;
 	position:absolute;
@@ -206,4 +206,12 @@
 	position:absolute;
 	height: 1em;
 	background: #555 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
+}
+.sceneMenuTooltip {
+	left:6em;
+	top:-1em;
+}
+.sceneMenuTooltip .tooltip-arrow {
+	left:33%;
+	bottom:1em;
 }
