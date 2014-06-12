@@ -203,4 +203,10 @@ added http interceptor to catch 401 errors, and handler for no-guest-access epis
 fixed typo in auth token loop
 ------------------------------------------------
 Changes in v4.alpha.001:
-FIX ALL THE THINGS
+FIX ALL THE THINGS (refactor of player codebase)
+
+------------------------------------------------
+Changes in v4.alpha.002:
+Search panel now indexes events asynchronously
+Transitions, highlights, typography, and some cosmetic fixes
+
