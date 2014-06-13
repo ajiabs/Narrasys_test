@@ -122,24 +122,21 @@ angular.module('com.inthetelling.player')
 
 			//annotation:
 			"templates/transcript-default.html": "templates/item/transcript.html",
-			"templates/transcript-withthumbnail.html": "templates/item/item.html", // TODO
-			"templates/transcript-withthumbnail-alt.html": "templates/item/item.html", // TODO
-			"templates/text-h1.html": "templates/item/item.html", // TODO
-			"templates/text-h2.html": "templates/item/item.html", // TODO
-			"templates/text-pullquote-noattrib.html": "templates/item/item.html", // TODO
-			"templates/text-pullquote.html": "templates/item/item.html", // TODO
+			"templates/transcript-withthumbnail.html": "templates/item/transcript-withthumbnail.html",
+			"templates/transcript-withthumbnail-alt.html": "templates/item/transcript-withthumbnail-alt.html",
+			"templates/text-h1.html": "templates/item/text-h1.html",
+			"templates/text-h2.html": "templates/item/text-h2.html",
+			"templates/text-pullquote-noattrib.html": "templates/item/pullquote-noattrib.html",
+			"templates/text-pullquote.html": "templates/item/pullquote.html",
 
 			// upload
-			"templates/transmedia-caption.html": "templates/item/item.html", // TODO
-			"templates/transmedia-image-default.html": "templates/item/item.html", // TODO
+			"templates/transmedia-caption.html": "templates/item/upload-caption.html",
+			"templates/transmedia-image-default.html": "templates/item/upload.html",
+			"templates/transmedia-slidingcaption.html": "templates/item/upload-caption-sliding.html",
 			"templates/transmedia-image-fill.html": "templates/item/image-fill.html",
 			"templates/transmedia-image-plain.html": "templates/item/image-fill.html", // (maybe not.....)
-			"templates/transmedia-linkonly.html": "templates/item/item.html", // TODO
-			"templates/transmedia-slidingcaption.html": "templates/item/item.html", // TODO
+			"templates/transmedia-linkonly.html": "templates/item/upload-linkonly.html",
 			"templates/transmedia-thumbnail.html": "templates/item/item.html", // TODO
-
-			"templates/upload-demo-inline.html": "templates/item/item.html", // TODO
-			"templates/upload-demo.html": "templates/item/item.html", // TODO
 
 			//link
 			"templates/transmedia-link-default.html": "templates/item/link.html",
@@ -149,6 +146,11 @@ angular.module('com.inthetelling.player')
 			"templates/transmedia-link-noembed.html": "templates/item/link.html", // TODO
 			"templates/transmedia-link-youtube.html": "templates/item/link.html", // TODO
 			"templates/transmedia-embed-youtube.html": "templates/item/link.html", // TODO
+
+			// (from old sxs demo; can delete later)
+			"templates/upload-demo-inline.html": "templates/item/item.html", // TODO
+			"templates/upload-demo.html": "templates/item/item.html", // TODO
+
 		};
 
 		svc.deriveEvent = function(event) {

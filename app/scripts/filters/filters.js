@@ -122,15 +122,20 @@ angular.module('com.inthetelling.player')
 	})
 /* Single filters */
 
-.filter('highlightSubstring', function($sce) {
-	return function(text, search) {
-		if (search || angular.isNumber(search)) {
-			return $sce.trustAsHtml(text.toString().replace(new RegExp(search.toString(), 'gi'), '<span class="ui-match">$&</span>'));
-		} else {
-			return text;
-		}
+.filter('trustAsHtml', function($sce) {
+	return function(val) {
+		return $sce.trustAsHtml(val);
 	};
 })
+	.filter('highlightSubstring', function($sce) {
+		return function(text, search) {
+			if (search || angular.isNumber(search)) {
+				return $sce.trustAsHtml(text.toString().replace(new RegExp(search.toString(), 'gi'), '<span class="ui-match">$&</span>'));
+			} else {
+				return text;
+			}
+		};
+	})
 	.filter('pretty', function() {
 		return function(json) {
 			return JSON.stringify(json, undefined, 2);
@@ -138,12 +143,17 @@ angular.module('com.inthetelling.player')
 	})
 	.filter('asPercent', function() {
 		return function(n) {
-			return (Math.floor(n * 100)) + "%";
+
+			return angular.isNumber(n) ? (Math.floor(n * 100)) + "%" : '';
 		};
 	})
 	.filter('asTime', function() {
 		return function(t) {
-			return Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
+			if (angular.isNumber(t)) {
+				return Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
+			} else {
+				return '';
+			}
 		};
 	});
 /*

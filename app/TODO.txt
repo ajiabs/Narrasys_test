@@ -13,7 +13,7 @@ Remaining CSS
 Episode templates
 
 
-
+Compare all item templates to existing episodes for backwards compatibility....
 
 
 Ask Bill to add fields:
@@ -39,7 +39,7 @@ Autoscroll in explore mode (and add to other scenes)
 
 Hide/reveal toolbar(s)
 
-Video: youtube/safari is having 
+Video: youtube/safari is having some issues...
 
 
 Write an error handler

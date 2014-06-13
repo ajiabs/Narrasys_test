@@ -4,26 +4,26 @@
 		<div class="authorName">{{item.annotator}}</div>
 	</div>
 
+	<div class="multipleChoiceQuestion">
+		<!-- begin plugin.  TODO make this its own directive -->
+		<p>{{plugin.question}}</p>
 
-	<!-- begin plugin.  TODO make this its own directive -->
-	<p>{{plugin.question}}</p>
 
-	<div ng-repeat="distractor in plugin.distractors">
-		<label>
+		<label ng-repeat="distractor in plugin.distractors" ng-class="{
+				correct: plugin.hasBeenAnswered && distractor.correct,
+				incorrect: plugin.hasBeenAnswered && !distractor.correct
+			}">
 			<input type="radio" name="fnord" ng-disabled="plugin.hasBeenAnswered" ng-model="$parent.plugin.selectedDistractor" value="{{$index}}">
 			<!-- <input type="text" ng-model="distractor.text"> -->
 			{{distractor.text}}
 		</label>
+
+
+		<input type="button" ng-disabled="plugin.hasBeenAnswered" value="Check your answer" ng-click="scoreQuiz()">
+		<!-- end plugin -->
+
+		<p ng-repeat="distractor in plugin.distractors" ng-if="distractor.selected">{{distractor.feedback}}</p>
+
 	</div>
 
-	<input type="button" ng-disabled="plugin.hasBeenAnswered" value="Check your answer" ng-click="scoreQuiz()">
-	<!-- end plugin -->
-
-	<p ng-repeat="distractor in plugin.distractors" ng-if="distractor.selected">{{distractor.feedback}}</p>
-
-
-	<br>
-	<br>
-	<a ng-click="itemDebug=!itemDebug">Debug</a>
-	<pre ng-if="itemDebug">{{item | pretty}}</pre>
 </div>

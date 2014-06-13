@@ -1,0 +1,10 @@
+<div class="item" ng-class="item.styleCss + ' ' + item.state">
+	<div class="icon" style="float:right; margin-right: 0.5em;">
+		<img ng-src="{{item.asset.url}}">
+	</div>
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.start_time | asTime}}</div>
+	</div>
+	<div class="authorName">{{item.annotator}}</div>
+	<div class="text">{{item.annotation}}</div>
+</div>

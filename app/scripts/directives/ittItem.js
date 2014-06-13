@@ -41,7 +41,7 @@ angular.module('com.inthetelling.player')
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
 						scope.item.showInlineDetail = false;
 					} else {
-						analyticsSvc.captureEventActivity("clicked", scope.item._id);
+						scope.captureInteraction();
 						if (element.closest('.content').width() > 500) {
 							// show detail inline if there's room for it:
 							scope.item.showInlineDetail = true;
@@ -54,7 +54,18 @@ angular.module('com.inthetelling.player')
 				};
 
 				scope.forceModal = function() {
+					timelineSvc.pause();
 					modelSvc.appState.itemDetail = scope.item;
+				};
+
+				scope.outgoingLink = function(url) {
+					timelineSvc.pause();
+					scope.captureInteraction();
+					window.open(url);
+				};
+
+				scope.captureInteraction = function() {
+					analyticsSvc.captureEventActivity("clicked", scope.item._id);
 				};
 
 			}

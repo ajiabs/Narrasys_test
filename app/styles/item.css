@@ -7,6 +7,7 @@
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 	padding-left:60px;
+	clear:both;
 }
 .item {
 	transition:all 0.5s;
@@ -270,13 +271,15 @@ Inline images (TODO show these only when image is larger than available space) *
  * Template variants
  *
 //=========================== */
- .item .pullquote:before {
+ .item.headerItem {
+	padding-left:0;
+}
+.item .pullquote:before {
 	color: rgba(0, 0, 0, 0.05);
 	content:"“";
 	float: left;
 	font-size: 3em;
 	line-height: 0.8em;
-	margin-left: -0.4em;
 	width: 0.4em;
 }
 .item .pullquote {
@@ -291,7 +294,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	content:" — ";
 }
 /* - - - - - - - - - - - - - -  */
- .item .captioncontainer {
+ .item .captionContainer {
 	position:relative;
 	overflow:hidden;
 }
@@ -308,6 +311,9 @@ Inline images (TODO show these only when image is larger than available space) *
 	background-color: rgba(0, 0, 0, 0.7);
 	border-top:1px solid #666;
 	color:#FFF;
+}
+.item .captionContainer img {
+	width:100%;
 }
 .item.colorInvert .caption {
 	background-color: #eee;
@@ -337,4 +343,15 @@ Inline images (TODO show these only when image is larger than available space) *
 .item .thumbnail.fullsize {
 	max-width:100%;
 	float:none;
+}
+/* - - - - - - - - - - - - - -  */
+ .multipleChoiceQuestion label {
+	display:block;
+	padding: 0.3em;
+}
+.multipleChoiceQuestion label.correct {
+	border-left: 5px solid #0C0;
+}
+.multipleChoiceQuestion label.incorrect {
+	border-left: 5px solid #C00;
 }

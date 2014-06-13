@@ -12,7 +12,7 @@
 	background-color: rgba(0, 0, 0, 0.2);
 }
 .content.allowHighlights .highlightBorder.item.isCurrent {
-	outline: 3px solid rgba(0, 0, 0, 0.3);
+	border: 3px solid rgba(0, 0, 0, 0.3);
 }
 .content.allowHighlights .highlightSide.item.isCurrent {
 	border-left: 10px solid rgba(0, 0, 0, 0.3);

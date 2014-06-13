@@ -5,9 +5,136 @@
 // Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
 // the rest gets passed to modelSvc
 
+//  use PUT to update, POST to create new   
+// for assets, DELETE then POST
+// Wrap events in event: {}   same for other things?  template didn't seem to need it
+
+
 angular.module('com.inthetelling.player')
 	.factory('dataSvc', function($q, $http, $routeParams, $timeout, config, authSvc, modelSvc) {
 		var svc = {};
+
+
+		svc.templateTmp = function() {
+			// $http({
+			// 	method: 'POST',
+			// 	url: config.apiDataBaseUrl + '/v1/templates',
+			// 	data: {name: "Multiple choice question",url: "templates/item/multiplechoice.html"}
+			// 			}).success(function(data, status, headers) {
+			// 				console.log("Created template:", data, status, headers);
+
+			// 			}).error(function(data, status, headers) {
+			// 				console.log("Failed to create template", data, status, headers);
+			// 			});
+
+
+		};
+
+
+		// svc.deleteEvent = function() {
+		// 	$http({
+		// 		method: 'DELETE',
+		// 		url: config.apiDataBaseUrl + '/v2/events/(event id)', // note different from docs!
+		// 	}).success(function(data, status, headers) {
+		// 		console.log("deleted event:", data, status, headers);
+
+		// 	}).error(function(data, status, headers) {
+		// 		console.log("Failed ", data, status, headers);
+		// 	});
+		// };
+
+		svc.updateTemplate = function() {
+			$http({
+				method: 'PUT',
+				url: config.apiDataBaseUrl + '/v1/templates/539a07ee2442bd20bf000006',
+				data: {
+					name: "Multiple choice question",
+					url: "templates/item/multiplechoice.html",
+					event_types: ["Plugin"]
+				}
+			}).success(function(data, status, headers) {
+				console.log("Created template:", data, status, headers);
+
+			}).error(function(data, status, headers) {
+				console.log("Failed to create template", data, status, headers);
+			});
+
+
+		};
+
+		svc.createPluginEvent = function() {
+
+			var newEvent = {
+				episode_id: "533aec182442bdd34c000003",
+				type: "Plugin",
+				start_time: 386,
+				data: {
+					"foo": "bar"
+				},
+				template_id: "539a07ee2442bd20bf000006"
+			};
+
+
+			$http({
+				method: 'POST',
+				url: config.apiDataBaseUrl + '/v2/episodes/533aec182442bdd34c000003/events/',
+				data: {
+					event: newEvent
+				}
+			}).success(function(data, status, headers) {
+				console.log("Created event:", data, status, headers);
+
+			}).error(function(data, status, headers) {
+				console.log("Failed to create event", data, status, headers);
+			});
+		};
+
+		svc.updateEvent = function() {
+
+			var pluginData = {
+				"_pluginType": "multiplechoice",
+				"_version": 1,
+				"_plugin": {
+					"question": "This is the question text. Here's an umlaut: ü",
+					"distractors": [{
+						"text": "This is the first distractor",
+						"feedback": "The text to be shown if the first answer was selected."
+					}, {
+						"text": "This is the second distractor",
+						"feedback": "If the second distractor is chosen, show this text."
+					}, {
+						"text": "This is the third distractor",
+						"feedback": "The text to be shown if you answer correctly by selecting this.",
+						"correct": true
+					}]
+				}
+			};
+
+
+			var eventData = {
+				episode_id: "533aec182442bdd34c000003",
+				type: "Plugin",
+				start_time: 386,
+				data: pluginData,
+				template_id: "539a07ee2442bd20bf000006"
+			};
+
+
+			$http({
+				method: 'PUT',
+				url: config.apiDataBaseUrl + '/v2/events/539a0d182442bd86f1000004',
+				data: {
+					event: eventData
+				}
+			}).success(function(data, status, headers) {
+				console.log("Updated event:", data, status, headers);
+
+			}).error(function(data, status, headers) {
+				console.log("Failed:", data, status, headers);
+			});
+
+
+		};
 
 
 		svc.storeEvent = function(eventData) {
@@ -121,10 +248,9 @@ angular.module('com.inthetelling.player')
 					dataCache.template[item._id] = {
 						id: item._id,
 						url: item.url,
-						type: (item.applies_to_episodes ? "Episode" : item.event_types[0]),
+						type: (item.applies_to_episodes ? "Episode" : item.event_types ? item.event_types[0] : undefined),
 						displayName: item.name
 					};
-
 				} else if (cacheType === "layouts") {
 					/* API format:
 					_id									"528d17ebba4f65e57800000a"
@@ -347,14 +473,14 @@ angular.module('com.inthetelling.player')
 				"_id": "",
 				"_type": "Annotation",
 				"annotation": "Transcript text",
-				"annotation_image_id": "",
+				"annotation_image_id": "asset3",
 				"annotator": "Speaker Name",
 				"cosmetic": false,
 				"episode_id": epId,
 				"required": false,
 				"stop": false,
 				"type": "Annotation",
-				"templateUrl": "templates/item/transcript.html",
+				"templateUrl": "templates/item/transcript-withthumbnail.html",
 				"styles": []
 			};
 
@@ -431,7 +557,7 @@ angular.module('com.inthetelling.player')
 				"stop": false,
 				"type": "Upload",
 				"episode_id": epId,
-				"templateUrl": "templates/item/upload.html",
+				"templateUrl": "templates/item/upload-linkonly.html",
 				"layouts": [
 					"inline"
 				]

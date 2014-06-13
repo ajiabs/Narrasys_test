@@ -1,0 +1,16 @@
+<div class="item" ng-class="item.styleCss + ' ' + item.state">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.start_time | asTime}}</div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<span ng-if="item.required">(Required viewing)</span>
+		</div>
+	</div>
+	<div class="captionContainer">
+		<img ng-src="{{item.asset.url}}">
+		<div class="caption slidingcaption">
+			<div class="title">{{item.title}}</div>
+			<div class="text">{{item.description}}</div>
+		</div>
+	</div>
+</div>
