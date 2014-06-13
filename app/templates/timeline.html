@@ -65,6 +65,11 @@
 				</span>
 			</span>
 
+
+			<a class="button-captions" ng-click="appState.hideCaptions=!appState.hideCaptions" ng-class="{active: !appState.hideCaptions}">
+				<span class="control-text">Captions</span>
+			</a>
+
 			<a class="button-mute {{audioIcon()}}" ng-click="toggleMute()">
 				<span class="control-text">Mute</span>
 			</a>
@@ -82,12 +87,4 @@
 	</a>
 
 
-	<!-- 
-	<div>Playback speed is {{appState.timeMultiplier}}.
-		<a ng-click="setSpeed(0.5) ">0.5x</a>
-		<a ng-click="setSpeed(1) ">1x</a>
-		<a ng-click="setSpeed(1.5) ">1.5x</a>
-		<a ng-click="setSpeed(2) ">2x</a>
-		<a ng-click="setSpeed(5) ">5x</a>
-	</div> -->
 </div>

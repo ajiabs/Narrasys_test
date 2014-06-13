@@ -190,6 +190,17 @@
 	font-family:Story;
 	content:"\e006";
 }
+.button-captions {
+	padding-right: 0.5em;
+}
+.button-captions:before {
+	font-family:Story;
+	content:"\e008";
+	color:#CCC;
+}
+.button-captions.active:before {
+	color:#000;
+}
 .volumebar {
 	position:relative;
 	display:inline-block;

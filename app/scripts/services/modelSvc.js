@@ -28,6 +28,7 @@ angular.module('com.inthetelling.player')
 			timelineState: 'paused', // "playing" or "paused" (set by timelineSvc). Future: "locked" (by stop question or etc)
 			volume: 100, // Audio for main video
 			muted: false, // audio for main video
+			hideCaptions: false, // visibility of "closed captions" in watch mode
 			show: {
 				searchPanel: false,
 				helpPanel: false,
@@ -172,7 +173,6 @@ angular.module('com.inthetelling.player')
 				// Transcript (TODO: don't depend on templateUrl to identify these!)
 				if (event._type === 'Annotation' && event.templateUrl.match(/transcript/)) {
 					event.isTranscript = true;
-					console.log("trancsript", event);
 				}
 			}
 

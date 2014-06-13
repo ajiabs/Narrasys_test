@@ -17,6 +17,9 @@
 	content:"";
 	display:block;
 }
+.windowBg .item, .mainBg .item, .altBg .item {
+	opacity:0.25;
+}
 /* ------------------------------------------- */
  .watchMode {
 	position: fixed;

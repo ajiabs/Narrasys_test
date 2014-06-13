@@ -271,7 +271,7 @@ Inline images (TODO show these only when image is larger than available space) *
  *
 //=========================== */
  .item.headerItem {
-	padding-left:0;
+	padding-left:10px;
 }
 .item .pullquote:before {
 	color: rgba(0, 0, 0, 0.05);
