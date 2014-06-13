@@ -67,6 +67,7 @@ image-fill items */
 	overflow:hidden;
 	background-position:50% 50%;
 	background-repeat: no-repeat;
+	background-size:100% 100%;
 }
 .fill .item .fillImg {
 	display:none;
@@ -104,7 +105,7 @@ image-fill items */
 	justify-content: center;
 	align-items: center;
 }
-/* this background-image only needed for contain or cover styles; never in content: */
+/* this background-image is only used for contain or cover styles; never in content: */
  .content .item.imageFill {
 	background-image: none !important;
 	padding-left:0;
