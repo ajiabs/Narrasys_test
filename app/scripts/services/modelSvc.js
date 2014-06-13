@@ -134,9 +134,9 @@ angular.module('com.inthetelling.player')
 			"templates/transmedia-image-default.html": "templates/item/upload.html",
 			"templates/transmedia-slidingcaption.html": "templates/item/upload-caption-sliding.html",
 			"templates/transmedia-image-fill.html": "templates/item/image-fill.html",
-			"templates/transmedia-image-plain.html": "templates/item/image-fill.html", // (maybe not.....)
+			"templates/transmedia-image-plain.html": "templates/item/upload-inline.html",
 			"templates/transmedia-linkonly.html": "templates/item/upload-linkonly.html",
-			"templates/transmedia-thumbnail.html": "templates/item/item.html", // TODO
+			"templates/transmedia-thumbnail.html": "templates/item/upload-thumbnail.html",
 
 			//link
 			"templates/transmedia-link-default.html": "templates/item/link.html",
@@ -172,6 +172,7 @@ angular.module('com.inthetelling.player')
 				// Transcript (TODO: don't depend on templateUrl to identify these!)
 				if (event._type === 'Annotation' && event.templateUrl.match(/transcript/)) {
 					event.isTranscript = true;
+					console.log("trancsript", event);
 				}
 			}
 

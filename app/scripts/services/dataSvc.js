@@ -557,7 +557,7 @@ angular.module('com.inthetelling.player')
 				"stop": false,
 				"type": "Upload",
 				"episode_id": epId,
-				"templateUrl": "templates/item/upload-linkonly.html",
+				"templateUrl": "templates/item/upload-thumbnail.html",
 				"layouts": [
 					"inline"
 				]

@@ -6,12 +6,15 @@
 			<span ng-if="item.required">(Required viewing)</span>
 		</div>
 	</div>
-	<div class="captionContainer touchable">
-		<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
+
+
+	<div class="thumbnail touchable" x-ng-class="{fullsize: item.showInlineDetail || item.isActive}" x-ng-click="toggleDetailView()">
+		<img ng-src="{{item.asset.url}}">
 		<div class="touchableIndicator"></div>
-		<div class="caption slidingcaption">
-			<div class="title">{{item.title}}</div>
-			<div class="text">{{item.description}}</div>
-		</div>
+
+	</div>
+	<div class="text">
+		<div class="title">{{item.title}}</div>
+		<div class="text">{{item.description}}</div>
 	</div>
 </div>

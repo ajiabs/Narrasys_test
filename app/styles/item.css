@@ -4,13 +4,12 @@
  *
 //===========================*/
  .content .item {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-	padding-left:60px;
+	margin: 0 0 1em 0;
+	padding: 5px 5px 5px 60px;
 	clear:both;
 }
 .item {
-	transition:all 0.5s;
+	transition:all 1s;
 }
 .item .itemHead {
 	display:inline;
@@ -109,7 +108,7 @@ image-fill items */
 /* this background-image is only used for contain or cover styles; never in content: */
  .content .item.imageFill {
 	background-image: none !important;
-	padding-left:0;
+	padding-left: 5px;
 }
 /*============================ ============================ ============================ 
 Inline images (TODO show these only when image is larger than available space) */
@@ -354,4 +353,7 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 .multipleChoiceQuestion label.incorrect {
 	border-left: 5px solid #C00;
+}
+.multipleChoiceQuestion input[type="button"]:disabled {
+	display: none;
 }

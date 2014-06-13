@@ -7,13 +7,13 @@ Plugin event type (quiz) try out a sample or two
 first do:
 Landing screen template
 Remaining item templates
-(esp. test stop items)
+
 Remaining CSS
 
 Episode templates
 
-
 Compare all item templates to existing episodes for backwards compatibility....
+
 
 
 Ask Bill to add fields:
