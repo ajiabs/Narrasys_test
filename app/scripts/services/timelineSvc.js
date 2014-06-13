@@ -125,7 +125,7 @@ angular.module('com.inthetelling.player')
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function(t, method, eventID) {
 			console.log("timelineSvc.seek ", t);
-			if (modelSvc.appState.duration === 0) {
+			if (!videoScope || modelSvc.appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
 				//console.log('duration 0; poll');
