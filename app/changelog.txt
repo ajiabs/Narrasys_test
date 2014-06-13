@@ -184,20 +184,3 @@ Changes in v1.6.7:
 Include auth param and token header in check_signed_in and is_authenticated
 Position modals at item top instead of page top (slightly hacky fix for #107)
 
-------------------------------------------------
-Changes in v1.6.8:
-stupid fix for chrome not allowing same video in two tabs
-
-------------------------------------------------
-Changes in v1.6.9:
-Added support for episode.status, block episode if not "Published"
-Allow viewing unpublished episode if user has role "admin"
-
-------------------------------------------------
-Changes in v1.7.0:
-merged in cookie-less authentication (using get_nonce, get_access_token and localStorage)
-
-------------------------------------------------
-Changes in v1.7.1:
-added http interceptor to catch 401 errors, and handler for no-guest-access episodes
-fixed typo in auth token loop

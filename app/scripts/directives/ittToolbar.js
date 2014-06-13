@@ -1,15 +1,16 @@
 'use strict';
 
+
 // This is turning into the player chrome rather than just the toolbar. TODO name change or refactor you be the judge
 
 angular.module('com.inthetelling.player')
-	.directive('ittToolbar', function ($timeout, $rootScope, videojs, $window, $location) {
+	.directive('ittToolbar', function($timeout, $rootScope, videojs, $window, $location) {
 		return {
 			restrict: 'A',
 			replace: true,
 			scope: true,
 			templateUrl: 'templates/toolbar/toolbar.html',
-			link: function (scope, element, attrs, controller) {
+			link: function(scope, element, attrs, controller) {
 				// scope is a child scope that inherits from EpisodeController scope
 				// thus anything that is added to this scope here is private to the directive,
 				// but everything on parent scope is still accessible.
@@ -25,25 +26,26 @@ angular.module('com.inthetelling.player')
 				};
 
 				// Initial magnet should be the one in the landing page
-				$timeout(function () {
+				$timeout(function() {
 					$rootScope.$emit('magnet.changeMagnet', element.find('.videoContainer'));
 				}, 0);
 
 				// ipad crashes on window resize events inside an iframe.  So don't do that.
 				if ($rootScope.isFramed && ($rootScope.isIPad || $rootScope.isIPhone)) {
-					scope.$watch(function () {
+					scope.$watch(function() {
 						return $rootScope.windowWidth;
-					}, function () {
+					}, function() {
 						$rootScope.$emit('magnet.repositionImmediately');
 					});
 				} else {
-					angular.element($window).bind('resize', function () {
+					angular.element($window).bind('resize', function() {
 						$rootScope.$emit('magnet.repositionImmediately');
 					});
 				}
 
+
 				// Quick cookie functions for help overlay
-				var createCookie = function (name, value, days) {
+				var createCookie = function(name, value, days) {
 					var expires = "";
 					if (days) {
 						var date = new Date();
@@ -51,10 +53,10 @@ angular.module('com.inthetelling.player')
 						expires = "; expires=" + date.toGMTString();
 					}
 					var domain = "." + document.location.host.match(/[^\.]*\.\w*$/)[0];
-					document.cookie = name + "=" + value + expires + ";domain=" + domain + ";path=/";
+					document.cookie = name + "=" + value + expires + ";domain="+domain+";path=/";
 				};
 
-				var readCookie = function (name) {
+				var readCookie = function(name) {
 					var cookies = document.cookie.split('; ');
 					for (var i = 0; i < cookies.length; i++) {
 						if (cookies[i].indexOf(name + "=") === 0) {
@@ -66,15 +68,15 @@ angular.module('com.inthetelling.player')
 
 				// show the help pane, only if cookies are settable and there isn't one already.
 				// (If cookies are blocked, default to not showing the overlay to avoid annoying them with repeats.)
-				createCookie("canSetCookie", true, 1);
+				createCookie("canSetCookie", true,1);
 				if (readCookie("canSetCookie")) {
 					document.cookie = 'canSetCookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 					if (!readCookie("noMoreHelp")) {
 						scope.show.helpPanel = true;
 						// pause the video for the help panel:
-						var unwatch = scope.$watch(function () {
+						var unwatch = scope.$watch(function() {
 							return scope.show.playerPanel;
-						}, function (isvis) {
+						}, function(isvis) {
 							console.log("plyaerpanel cahnged", isvis);
 							if (isvis) {
 								videojs.player.pause();
@@ -84,14 +86,15 @@ angular.module('com.inthetelling.player')
 					}
 				}
 
-				scope.noMoreHelp = function () {
+				scope.noMoreHelp = function() {
 					scope.show.helpPanel = false;
 					createCookie("noMoreHelp", "1", 3650);
 					videojs.player.play();
 				};
 
+
 				/* Handler for toolbar buttons to change scene templates. */
-				scope.setSceneTemplate = function (newTemplate) {
+				scope.setSceneTemplate = function(newTemplate) {
 					// console.log("setSceneTemplate " + newTemplate);
 
 					scope.currentSceneTemplate = newTemplate;
@@ -120,24 +123,22 @@ angular.module('com.inthetelling.player')
 
 				/* detect which view we're in */
 				/* this is a bizarre syntax but seems to be how it's supposed to work... */
-				scope.currentSceneTemplateIs = function (compare) {
+				scope.currentSceneTemplateIs = function(compare) {
 					return scope.currentSceneTemplate === compare;
 				};
 
-				scope.mainframeescape = function () {
+				scope.mainframeescape = function() {
 					videojs.player.pause();
-					// TODO: this needs to call get_nonce first so it can add it to the url in the popped window!!!
-					// or maybe it doesn't, I seem to be keeping the same role in the new window... needs testing
 					window.open($location.absUrl()).focus();
 				};
 
-				scope.showNavigationPanel = function () {
+				scope.showNavigationPanel = function() {
 					videojs.player.pause();
 					videojs.player.controls(false); // TODO: do this on iPad only
 					scope.show.navigationPanel = true;
 				};
 
-				scope.showSearchPanel = function () {
+				scope.showSearchPanel = function() {
 					videojs.player.pause();
 					videojs.player.controls(false); // TODO: do this on iPad only
 
@@ -147,12 +148,12 @@ angular.module('com.inthetelling.player')
 					}
 
 					// Wait a tick before building the search panel internals. (Possibly unnecessary, but just in case...)
-					$timeout(function () {
+					$timeout(function() {
 						scope.show.searchPanelInternals = true;
 					}, 0);
 				};
 
-				scope.toggleSearchPanel = function () {
+				scope.toggleSearchPanel = function() {
 					if (scope.show.searchPanel) {
 						scope.hidePanels();
 					} else {
@@ -161,7 +162,7 @@ angular.module('com.inthetelling.player')
 					}
 				};
 
-				scope.showSceneMenu = function () {
+				scope.showSceneMenu = function() {
 					if (scope.show.navigationPanel) {
 						scope.hidePanels();
 					} else {
@@ -170,20 +171,20 @@ angular.module('com.inthetelling.player')
 				};
 
 				// triggers vjs footer controls to appear
-				scope.showVideoControls = function () {
+				scope.showVideoControls = function() {
 					if (videojs.player) { // in case video hasn't inited yet
 						videojs.player.userActive(true);
 					}
 				};
 
-				scope.toggleCaptions = function () {
+				scope.toggleCaptions = function() {
 					scope.hideCaptions = !scope.hideCaptions;
 					for (var i = 0; i < scope.scenes.length; i++) {
 						scope.scenes[i].hideCaptions = scope.hideCaptions;
 					}
 				};
 
-				scope.hidePanels = function () {
+				scope.hidePanels = function() {
 					// (Same trigger to dismiss either panel; fine since only one can be visible at a time anyway)
 					scope.show.navigationPanel = false;
 					scope.show.searchPanel = false;
@@ -194,12 +195,14 @@ angular.module('com.inthetelling.player')
 					// TODO if this causes memory problems on old devices we can change this, but I think rendering time is more our bottleneck than low memory conditions.
 				};
 
-				scope.gotoTime = function (t) {
+				scope.gotoTime = function(t) {
 					videojs.player.currentTime(t);
 				};
 
+
+
 				// When user first clicks video, show the toolbar chrome and hide the landing screen
-				scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay', function () {
+				scope.firstPlayWatcher = $rootScope.$on('toolbar.videoFirstPlay', function() {
 					// Move our custom controls into the vjs control bar.  TODO fix jquery hackage
 					$('.injectedvideocontrols').appendTo($('.vjs-control-bar')).show();
 
@@ -207,6 +210,7 @@ angular.module('com.inthetelling.player')
 					if (angular.element(window).width() < 481) {
 						scope.setSceneTemplate('explore');
 					}
+
 
 					// Hide the intro; show the regular controls
 					scope.show.introPanel = false;
@@ -216,7 +220,7 @@ angular.module('com.inthetelling.player')
 					scope.firstPlayWatcher(); // stop listening for this event
 
 					// For next/prev scene buttons:
-					scope.curSceneWatcher = scope.$watch(function () {
+					scope.curSceneWatcher = scope.$watch(function() {
 						// step through episode.scenes, return the last one whose start time is before the current time
 						var now = videojs.player.currentTime();
 						for (var i = 0; i < scope.scenes.length; i++) {
@@ -225,11 +229,12 @@ angular.module('com.inthetelling.player')
 							}
 						}
 						return scope.scenes[scope.scenes.length - 1]; // no match means we are in the last scene
-					}, function (newVal, oldVal) {
+					}, function(newVal, oldVal) {
 						scope.curScene = newVal;
 					});
 
 				});
+
 
 				// HACK HACK such an ungodly HACK.
 				// iDevices combined with the youtube player need some special handling as far as event timing goes; normally the firstPlayWatcher
@@ -255,14 +260,14 @@ angular.module('com.inthetelling.player')
 				// Autoscroll handler.  Items in explore mode will emit item.autoscroll events on enter.
 				// when we get one, autoscroll to the topmost current item unless scrolling is disabled.
 				scope.captureScrollEvents = true;
-				$rootScope.$on('item.autoscroll', function () {
+				$rootScope.$on('item.autoscroll', function() {
 					if (!scope.captureScrollEvents || !scope.autoscrollEnabled) {
 						return;
 					}
 
 					var top = Infinity;
 					// There will always be at least one currentItem, since this is triggered by item enter.
-					angular.forEach($('.content .item.currentItem'), function (item) {
+					angular.forEach($('.content .item.currentItem'), function(item) {
 						var t = $(item).offset().top;
 						if (t < top) {
 							top = t;
@@ -273,23 +278,24 @@ angular.module('com.inthetelling.player')
 						scope.captureScrollEvents = false;
 						$("body,html").stop().animate({
 							"scrollTop": top - offset
-						}, 1000, "swing", function () {
-							$timeout(function () {
+						}, 1000, "swing", function() {
+							$timeout(function() {
 								scope.captureScrollEvents = true;
 							}, 50); // allow extra time; iPad was still capturing the tail end of the animated scroll
 						});
 					}
 				});
 
-				angular.element($window).bind("scroll", function () {
+				angular.element($window).bind("scroll", function() {
 					if (scope.captureScrollEvents && scope.autoscrollEnabled) {
 						scope.autoscrollEnabled = false;
 					}
 				});
-				scope.enableAutoscroll = function () {
+				scope.enableAutoscroll = function() {
 					scope.autoscrollEnabled = true;
 					$rootScope.$emit('item.autoscroll');
 				};
+
 
 			},
 			controller: "ToolbarController"
