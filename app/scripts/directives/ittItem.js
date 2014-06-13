@@ -19,6 +19,22 @@ angular.module('com.inthetelling.player')
 			link: function(scope, element, attrs) {
 				// console.log('ittItem', scope, element, attrs);
 
+
+				// TODO plugins should each be their own directive!
+				if (scope.item.data) {
+					scope.plugin = scope.item.data._plugin;
+					scope.plugin._type = scope.item.data._pluginType;
+
+					scope.scoreQuiz = function() {
+						scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
+
+						scope.plugin.hasBeenAnswered = true;
+						// TODO send whatever credly-ish "achievement unlocked" message to API here
+					};
+
+				}
+				// end plugin
+
 				scope.toggleDetailView = function() {
 					console.log("Item toggleDetailView");
 					if (scope.item.showInlineDetail) {
