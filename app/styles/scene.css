@@ -17,7 +17,7 @@
 	content:"";
 	display:block;
 }
-.windowBg .item, .mainBg .item, .altBg .item {
+.bgLayer {
 	opacity:0.25;
 }
 /* ------------------------------------------- */
