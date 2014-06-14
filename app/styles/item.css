@@ -36,7 +36,6 @@
 .fillPane .item.currentItem, .pane.windowFg .item.currentItem {
 	display:block;
 }
-
 /* Nope, can't explain the -3px. TODO */
  .fillPane .bl {
 	width:auto;
@@ -219,7 +218,7 @@
  *
 //=========================== */
  .timestampNone .item, .item.timestampNone {
-	/* padding-left: 0; */
+	padding-left: 0.5em;
 }
 .timestampNone .item .displayTime, .item.timestampNone .displayTime {
 	display:none
