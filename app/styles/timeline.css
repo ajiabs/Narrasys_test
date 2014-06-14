@@ -196,7 +196,7 @@
 .button-captions:before {
 	font-family:Story;
 	content:"\e008";
-	color:#CCC;
+	color:#666;
 }
 .button-captions.active:before {
 	color:#000;

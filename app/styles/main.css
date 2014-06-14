@@ -14,6 +14,10 @@
 .overlay .item {
 	pointer-events: auto;
 }
+.videoMagnet {
+	/* No idea */
+	margin-bottom:-5px;
+}
 .videoMagnet img {
 	/* aspect ratio preserver */
 	width:100%;
@@ -32,6 +36,18 @@ a {
 }
 h1, h2, h3, h4 {
 	margin: 0.5em 0;
+}
+/* Needed for fullscreen.   TODO test if this screws up any other browsers...
+--------------------------------------------------------------------------------
+*/
+ #CONTAINER {
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	overflow-y:scroll;
+	background-color:#FFF;
 }
 /* Z-indexes 
 --------------------------------------------------------------------------------

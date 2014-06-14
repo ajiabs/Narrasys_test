@@ -23,6 +23,43 @@ angular.module('com.inthetelling.player')
 			timelineSvc.setVolume(volume);
 		};
 
+		// And this is just plain the wrong place for this.
+		/* TODO make this a fullscreenbutton directive -------------------------------- */
+		$scope.toggleFullscreen = function() {
+			if (isInFullscreenMode()) {
+				exitFullscreen();
+			} else {
+				enterFullscreen();
+			}
+		};
+
+		var isInFullscreenMode = function() {
+			return ((document.fullScreenElement && document.fullScreenElement !== null) || // alternative standard methods
+				document.mozFullScreen || document.webkitIsFullScreen); // current working methods
+		};
+
+		var exitFullscreen = function() {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if (document.mozCancelFullScreen) {
+				document.mozCancelFullScreen();
+			} else if (document.webkitExitFullscreen) {
+				document.webkitExitFullscreen();
+			}
+		};
+
+		var enterFullscreen = function() {
+			var element = document.getElementById('CONTAINER');
+			if (element.requestFullScreen) {
+				element.requestFullScreen();
+			} else if (element.mozRequestFullScreen) {
+				element.mozRequestFullScreen();
+			} else if (element.webkitRequestFullScreen) {
+				element.webkitRequestFullScreen();
+			}
+		};
+
+		/* END TODO -------------------------------------------------------- */
 
 		$scope.$on('$destroy', function() {
 			// Make sure that the clock and event timers are destroyed too

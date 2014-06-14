@@ -55,7 +55,7 @@
 
 	<!-- scene navbar -->
 	<div ng-show="show.navPanel" class="modal-backdrop" ng-click="toggleNavPanel()"></div>
-	<div class="toolbar-bottom">
+	<div class="toolbar-bottom" ng-mouseenter="showControls();keepControls()" ng-mouseleave="allowControlsExit()" ng-class="{hidden: !appState.videoControlsActive}">
 		<div class="toolbar-bottom-fill">
 			<div ng-show="show.navPanel" class="navPanel">
 				<h2>{{episode.title}}</h2>
@@ -72,6 +72,7 @@
 			<div itt-timeline></div>
 		</div>
 	</div>
+	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();keepControls()"></div>
 </div>
 
 <div ng-show="appState.itemDetail" class="modal-backdrop" ng-click="appState.itemDetail=false"></div>

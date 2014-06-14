@@ -3,7 +3,7 @@
 //TODO move much of this to a toolbarController
 
 angular.module('com.inthetelling.player')
-	.controller('PlayerController', function($scope, $rootScope, $routeParams, $timeout, dataSvc, modelSvc, timelineSvc, analyticsSvc) {
+	.controller('PlayerController', function($scope, $rootScope, $routeParams, $timeout, $interval, dataSvc, modelSvc, timelineSvc, analyticsSvc) {
 		console.log("playerController", $scope);
 		$scope.viewMode = function(newMode) {
 			modelSvc.appState.viewMode = newMode;
@@ -56,6 +56,50 @@ angular.module('com.inthetelling.player')
 		$scope.now = new Date();
 
 		/* END CREATE EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+		// Hide toolbars
+
+		// TODO put this in own controller? - - - - - - -
+		/* Bottom toolbar starts out visible.  5s after using a control or leaving the pane, fade out controls.
+		   If mouse re-enters pane, keep the controls visible. TODO check on touchscreen! */
+		// TODO: fade toolbars when tap outside, or when hit esc key
+
+		modelSvc.appState.videoControlsActive = false;
+		var keepControls;
+		var controlTimer;
+		$scope.$watch(function() {
+			return modelSvc.appState.videoControlsActive;
+		}, function(isActive, wasActive) {
+			if (isActive) {
+				controlTimer = $timeout(function() {
+					if (!keepControls) {
+						modelSvc.appState.videoControlsActive = false;
+					}
+				}, 3000);
+			}
+		});
+
+		$scope.showControls = function() {
+			console.log("showControls");
+			$timeout.cancel(controlTimer);
+			modelSvc.appState.videoControlsActive = true;
+		};
+
+		$scope.keepControls = function() {
+			console.log("keepControls");
+			keepControls = true;
+		};
+
+		$scope.allowControlsExit = function() {
+			console.log("allowControlsExit");
+			keepControls = false;
+			$timeout.cancel(controlTimer);
+			controlTimer = $timeout(function() {
+				modelSvc.appState.videoControlsActive = false;
+			}, 3000);
+		};
+
+		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
 
 		// Misc toolbars too small to rate their own controllers

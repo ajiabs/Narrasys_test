@@ -166,11 +166,14 @@
 	cursor: pointer;
 	cursor: hand;
 }
-.toolbar-bottom {
+.toolbar-bottom, .toolbar-bottom-controltrigger {
 	position:fixed;
 	bottom:0;
 	left: 0;
 	right: 0;
+	min-height: 60px;
+}
+.toolbar-bottom {
 	padding-top: 30px;
 	color: #333;
 	background-image: url('/images/toolbar-bottom.png');
@@ -180,6 +183,14 @@
 }
 .toolbar-bottom-fill {
 	background-color: rgba(255, 255, 255, 0.9);
+}
+.toolbar-bottom {
+	transition:opacity 0.25s;
+	opacity: 1;
+}
+.toolbar-bottom.hidden {
+	opacity:0;
+	transition: opacity 3s;
 }
 /*============================
 *

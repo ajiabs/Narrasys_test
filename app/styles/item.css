@@ -9,7 +9,7 @@
 	clear:both;
 }
 .item {
-	transition:all 1s;
+	transition: all 1s;
 }
 .item .itemHead {
 	display:inline;

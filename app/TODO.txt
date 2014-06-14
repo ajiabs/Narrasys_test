@@ -1,60 +1,61 @@
 
-For USC:
-Plugin event type (quiz) try out a sample or two
 
 
-
-first do:
-Landing screen template
-Remaining item templates
-
-Remaining CSS
-
-Episode templates
-
-Compare all item templates to existing episodes for backwards compatibility....
-
-
-
-Ask Bill to add fields:
-"friendly ID" for episodes
-landingScreen template for episode?  (Or instead should Producer automatically add a landing screen scene at the beginning of an ep?)
 
 explore (and watch?) modes should be using their own item directive (which ignores templateUrl)
 
 
-Producer stuff: put an "add" button with ng-if="producer" in every fg, content, and bg pane
+Landing screen template
+
+Remaining link item templates
+
+Episode templates
+
+item layouts in content panes (sidebar, burst margins)
+
+
+Compare all item templates to existing episodes for backwards compatibility....
+
+Autoscroll in explore mode (and add to other scenes)
 
 Help panel (and related cookie)
-
-Consider eliminating fg panes (check existing episodes, are any using them?)
-
 
 Bottom toolbar:
 	icons for speed control, zoom controls
 	finetune layout
-	CC buttons
 
-Autoscroll in explore mode (and add to other scenes)
 
-Hide/reveal toolbar(s)
+Ask Bill to add fields:
+"friendly ID" for episodes (for use in url)
+landingScreen template for episode?  (no, instead  Producer should automatically add a landing screen scene at the beginning of an episode)
+
+
+Producer stuff: put an "add" button with ng-if="producer" in every fg, content, and bg pane
+
+
+Consider eliminating fg panes other than windowFg (check existing episodes, are any using them?)
+
+
+
+
+test hide/reveal events on bottom toolbar on touchscreens
 
 Video: youtube/safari is having some issues...
 
 
-Write an error handler
+error display handler
 
 
-BUG Search panel needs to update searchfields when panel is opened
-
-BUG Rewrite timelineSvc to better handle multiple episodes (easiest way is probably to write timelineStart and End into each event.)
+BUG Rewrite timelineSvc to better handle multiple episodes (easiest way is probably to write timelineStart and End into each event...?)
 
 Will also need to be able to capture analytics for episode time instead of timeline time...
-
+timelineSvc needs functions to translate episode->timeline time and vice versa
 
 Also for multiple eps: multiple video nodes? or change the src of existing video node? or a playlist?
 
+
 Add a "skip" type of event to allow skipping scenes
+
 
 Scenes: handle showTimeline layouts
 

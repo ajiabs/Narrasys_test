@@ -29,6 +29,7 @@ angular.module('com.inthetelling.player')
 			volume: 100, // Audio for main video
 			muted: false, // audio for main video
 			hideCaptions: false, // visibility of "closed captions" in watch mode
+			videoControlsActive: false, // Whether bottom toolbar is visible. MUST START FALSE
 			show: {
 				searchPanel: false,
 				helpPanel: false,

@@ -45,7 +45,8 @@ angular.module('com.inthetelling.player')
 					} else {
 						timelineSvc.pause();
 					}
-					console.log("user clicked on video");
+
+					modelSvc.appState.videoControlsActive = true;
 				};
 			},
 
