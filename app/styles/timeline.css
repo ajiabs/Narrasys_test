@@ -20,15 +20,27 @@
 	margin: 0 1em 1em 3em;
 	position: relative;
 }
-.auxControls, .auxInfo {
+.pbarTop, .pbarBottom {
 	margin: 0 2em 0 4em;
 	height: 1.4em;
 	line-height: 1.4em;
 	clear:both;
 	text-align:right;
 }
-.progressbarBox .middlerow {
+.pbarMain {
 	height:1em;
+}
+.progressbarBox .button {
+	display: inline-block;
+	height: 1.2em;
+	min-width: 1em;
+	overflow: hidden;
+}
+.pbarTop .button {
+	padding-left:1em;
+}
+.pbarBottom .button {
+	padding-right:1em;
 }
 .progressbar {
 	position:absolute;
@@ -173,6 +185,7 @@
 	content:"\e002";
 }
 .button-mute {
+	padding-right:0 !important;
 }
 .button-mute.muted:before {
 	font-family:Story;
@@ -196,10 +209,40 @@
 .button-captions:before {
 	font-family:Story;
 	content:"\e008";
-	color:#666;
+	color:#CCC;
 }
 .button-captions.active:before {
 	color:#000;
+}
+.button-fullscreen {
+	padding-right: 0.5em;
+}
+.button-fullscreen:before {
+	font-family:Story;
+	content:"\e606";
+}
+.button-fullscreen.active:before {
+	content:"\e608";
+}
+.button-speedcontrol {
+	margin-left:1.5em;
+}
+.button-speedcontrol:after {
+	font-family:Story;
+	content:"\e009";
+}
+.button-zoomout, .button-zoomin {
+	height:1em;
+	overflow:hidden;
+	display:inline-block;
+}
+.button-zoomout:before {
+	font-family:Story;
+	content:"\e60e";
+}
+.button-zoomin:before {
+	font-family:Story;
+	content:"\e60d";
 }
 .volumebar {
 	position:relative;

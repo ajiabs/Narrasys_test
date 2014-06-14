@@ -1,18 +1,15 @@
 <div class="timeline">
 
-	<!-- 
-	<br>TODO: add [CC] button
- -->
 	<div class="progressbarBox">
-		<div class="auxControls">TODO zoom icons:
-			<a class="button-zoomout" ng-if="zoomLevel != 1" ng-click="zoomOut()">[-]
+		<div class="pbarTop">
+			<a class="button button-zoomout" ng-if="zoomLevel != 1" ng-click="zoomOut()">
 				<span class="control-text">Zoom out</span>
 			</a>
-			<a class="button-zoomin" ng-click="zoomIn()">[+]
+			<a class="button button-zoomin" ng-click="zoomIn()">
 				<span class="control-text">Zoom in</span>
 			</a>
 		</div>
-		<div class="middlerow">
+		<div class="pbarMain">
 			<div class="progressbar">
 				<div class="mask">
 					<div class="progressbarContainer" style="width: {{zoomLevel}}00%">
@@ -37,7 +34,7 @@
 					</div>
 				</div>
 			</div>
-			<a ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
+			<a ng-class="{invisible: appState.time == 0}" class="button button-prev" ng-click="prevScene()">
 				<span class="control-text">Previous</span>
 			</a>
 			<div class="tooltip sceneMenuTooltip" ng-if="tooltip.sceneMenu">
@@ -48,30 +45,31 @@
 			<a class="button-scenemenu" ng-click="toggleNavPanel()" ng-mouseover="tooltip.sceneMenu=true" ng-mouseout="tooltip.sceneMenu=false">
 				<span class="control-text">Scenes</span>
 			</a>
-			<a ng-class="{invisible: appState.time == appState.duration}" class="button-next" ng-click="nextScene()">
+			<a ng-class="{invisible: appState.time == appState.duration}" class="button button-next" ng-click="nextScene()">
 				<span class="control-text">Next</span>
 			</a>
 		</div>
-		<div class="auxInfo">
+		<div class="pbarBottom">
 			<span class="small" style="float:left;">
 				{{appState.time | asTime}} / {{appState.duration | asTime}}
 				<span ng-if="appState.videoType == 'video'">
-					<a ng-if="appState.timeMultiplier == 1" ng-click="setSpeed(1.25)">ICON TODO x1</a>
-					<a ng-if="appState.timeMultiplier == 1.25" ng-click="setSpeed(1.5)">ICON TODO x1.25</a>
-					<a ng-if="appState.timeMultiplier == 1.5" ng-click="setSpeed(2)">ICON TODO x1.5</a>
-					<a ng-if="appState.timeMultiplier == 2" ng-click="setSpeed(0.75)">ICON TODO x2</a>
-					<a ng-if="appState.timeMultiplier == 0.75" ng-click="setSpeed(1)">ICON TODO x0.75</a>
-
+					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 1" ng-click="setSpeed(1.25)">&nbsp;</a>
+					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 1.25" ng-click="setSpeed(1.5)">x1.25</a>
+					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 1.5" ng-click="setSpeed(2)">x1.5</a>
+					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 2" ng-click="setSpeed(0.75)">x2</a>
+					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 0.75" ng-click="setSpeed(1)">x0.75</a>
 				</span>
 			</span>
 
-			<a class="button-fullscreen" ng-click="toggleFullscreen()">ICON TODO: Fullscreen</a>
-
-			<a class="button-captions" ng-click="appState.hideCaptions=!appState.hideCaptions" ng-class="{active: !appState.hideCaptions}">
+			<a ng-if="appState.viewMode == 'watch'" class="button button-captions" ng-click="appState.hideCaptions=!appState.hideCaptions" ng-class="{active: !appState.hideCaptions}">
 				<span class="control-text">Captions</span>
 			</a>
 
-			<a class="button-mute {{audioIcon()}}" ng-click="toggleMute()">
+			<a class="button button-fullscreen" ng-class="{active: appState.isInFullscreenMode}" ng-click="toggleFullscreen()">
+				<span class="control-text">Fullscreen</span>
+			</a>
+
+			<a class="button button-mute {{audioIcon()}}" ng-click="toggleMute()">
 				<span class="control-text">Mute</span>
 			</a>
 			<div class="volumebar" ng-mousedown="userChangingVolume($event);">
@@ -80,10 +78,10 @@
 		</div>
 	</div>
 
-	<a class="button-play" ng-if="appState.timelineState == 'paused'" ng-click="play()">
+	<a class="button button-play" ng-if="appState.timelineState == 'paused'" ng-click="play()">
 		<span class="control-text">Play</span>
 	</a>
-	<a class="button-pause" ng-if="appState.timelineState != 'paused'" ng-click="pause()">
+	<a class="button button-pause" ng-if="appState.timelineState != 'paused'" ng-click="pause()">
 		<span class="control-text">Pause</span>
 	</a>
 

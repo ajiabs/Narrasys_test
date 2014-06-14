@@ -73,8 +73,8 @@ See /images/font/story/map.png for a list of available glyphs
 */
  @font-face {
 	font-family:'Story';
-	src: url('/images/font/story.eot');
-	src: url('/images/font/story.eot?#iefix') format('embedded-opentype'), url('/images/font/story.woff') format('woff'), url('/images/font/story.ttf') format('truetype');
+	src: url('/images/font/story-v2.eot');
+	src: url('/images/font/story-v2.eot?#iefix') format('embedded-opentype'), url('/images/font/story-v2.woff') format('woff'), url('/images/font/story-v2.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }

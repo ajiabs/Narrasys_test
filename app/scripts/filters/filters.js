@@ -143,8 +143,7 @@ angular.module('com.inthetelling.player')
 	})
 	.filter('asPercent', function() {
 		return function(n) {
-
-			return angular.isNumber(n) ? (Math.floor(n * 100)) + "%" : '';
+			return angular.isNumber(n) ? (Math.floor(n * 100)) + "%" : '0%';
 		};
 	})
 	.filter('asTime', function() {
@@ -152,7 +151,7 @@ angular.module('com.inthetelling.player')
 			if (angular.isNumber(t)) {
 				return Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
 			} else {
-				return '';
+				return 0;
 			}
 		};
 	});

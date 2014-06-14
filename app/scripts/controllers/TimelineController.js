@@ -38,6 +38,13 @@ angular.module('com.inthetelling.player')
 				document.mozFullScreen || document.webkitIsFullScreen); // current working methods
 		};
 
+		$scope.$watch(function() {
+			return isInFullscreenMode();
+		}, function(newVal) {
+			modelSvc.appState.isInFullscreenMode = newVal;
+		});
+
+
 		var exitFullscreen = function() {
 			if (document.exitFullscreen) {
 				document.exitFullscreen();
@@ -58,6 +65,7 @@ angular.module('com.inthetelling.player')
 				element.webkitRequestFullScreen();
 			}
 		};
+
 
 		/* END TODO -------------------------------------------------------- */
 
