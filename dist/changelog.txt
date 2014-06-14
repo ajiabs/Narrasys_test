@@ -188,3 +188,8 @@ Position modals at item top instead of page top (slightly hacky fix for #107)
 Changes in v1.7.2:
 Rolled back not-ready-for-live deploy authentication code
 Purdue episode template
+------------------------------------------------
+
+Changes in v1.7.3:
+bugfix: timestampNone items shouldn't have extra padding on left
+
