@@ -210,3 +210,18 @@ Changes in v4.alpha.002:
 Search panel now indexes events asynchronously
 Transitions, highlights, typography, and some cosmetic fixes
 
+------------------------------------------------
+Changes in v4.alpha.003:
+First cut at item editor
+Icons for new timeline features
+hide/reveal toolbar (need to test on touchscreen!)
+semitransparent background layers
+closed captions, some more item templates
+more item templates
+many item templates (still need testing for analytics, backwards compatibility)
+timelineSvc waits for videoScope before trying seek
+background images more consistent with old player
+Quiz question template
+added tooltip for scene menu
+moved some search directive code to controller
+
