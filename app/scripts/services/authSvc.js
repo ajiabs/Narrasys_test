@@ -87,7 +87,7 @@ angular.module('com.inthetelling.player')
 					// Cache this token in localStorage for later reuse.
 
 					if (localStorage) {
-						localStorage.storyAuth = JSON.stringify(data);
+						localStorage.setItem("storyAuth", JSON.stringify(data));
 					}
 
 					svc.roles = data.roles; // TODO: do something useful with roles
