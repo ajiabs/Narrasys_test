@@ -225,3 +225,7 @@ Quiz question template
 added tooltip for scene menu
 moved some search directive code to controller
 
+------------------------------------------------
+Changes in v4.alpha.004:
+So it turns out that case-sensitivity is a thing
+
