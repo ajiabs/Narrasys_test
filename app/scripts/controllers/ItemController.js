@@ -8,10 +8,12 @@ angular.module('com.inthetelling.player')
 		};
 
 
-		$scope.editItem = function() {
+		$scope.editItem = function($event) {
 			if (modelSvc.appState.producer) {
-				modelSvc.appState.editing = $scope.item; // to change this to  live preview, don't use angular.copy.  But need to stash a copy of the original in case the user wants to undo...
+				modelSvc.appState.videoControlsActive = true;
+				modelSvc.appState.editing = angular.copy($scope.item); // to change this to  live preview, don't use angular.copy.  But need to stash a copy of the original in case the user wants to undo...
 			}
+			$event.preventDefault();
 		};
 
 

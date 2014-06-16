@@ -8,22 +8,25 @@
 		<!-- begin plugin.  TODO make this its own directive -->
 		<p>{{plugin.question}}</p>
 
-
-		<label ng-repeat="distractor in plugin.distractors" ng-class="{
+		<div ng-repeat="distractor in plugin.distractors">
+			<label ng-click="setChoice($index)" ng-class="{
 				correct: plugin.hasBeenAnswered && distractor.correct,
 				incorrect: plugin.hasBeenAnswered && !distractor.correct
 			}">
-			<input type="radio" name="fnord" ng-disabled="plugin.hasBeenAnswered" ng-model="$parent.plugin.selectedDistractor" value="{{$index}}">
-			<!-- <input type="text" ng-model="distractor.text"> -->
-			{{distractor.text}}
-		</label>
-
+				<input type="radio" name="fnord" ng-disabled="plugin.hasBeenAnswered" ng-model="$parent.plugin.selectedDistractor" value="{{$index}}">{{distractor.text}}
+			</label>
+		</div>
 
 		<input type="button" ng-disabled="plugin.hasBeenAnswered" value="Check your answer" ng-click="scoreQuiz()">
 		<!-- end plugin -->
 
 		<p ng-repeat="distractor in plugin.distractors" ng-if="distractor.selected">{{distractor.feedback}}</p>
-
 	</div>
 
+	<br>
+	<br>
+
+	<a ng-click="itemDebug=!itemDebug">Debug</a>
+	<a ng-if="itemDebug" ng-click="resetQuestion()">(Reset question)</a>
+	<pre ng-if="itemDebug">{{item | pretty}}</pre>
 </div>

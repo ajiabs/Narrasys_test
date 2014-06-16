@@ -59,10 +59,13 @@ angular.module('com.inthetelling.player')
 
 		// Hide toolbars
 
-		// TODO put this in own controller? - - - - - - -
+		// TODO put this in own controller - - - - - - -
 		/* Bottom toolbar starts out visible.  5s after using a control or leaving the pane, fade out controls.
 		   If mouse re-enters pane, keep the controls visible. TODO check on touchscreen! */
 		// TODO: fade toolbars when tap outside, or when hit esc key
+
+
+		modelSvc.appState.videoControlsActive = true;
 
 		modelSvc.appState.videoControlsActive = false;
 		var keepControls;

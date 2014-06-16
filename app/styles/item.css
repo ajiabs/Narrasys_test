@@ -38,6 +38,12 @@
 	width: 100%;
 	height: 320px;
 }
+.windowFg .item {
+	width: 100%;
+	height: 100%;
+	background-color: #FFF;
+	padding: 70px 2em 2em 70px;
+}
 .windowFg .item .iframeContainer {
 	height:80%;
 }
@@ -296,6 +302,7 @@ Inline images (TODO show these only when image is larger than available space) *
  .item .captionContainer {
 	position:relative;
 	overflow:hidden;
+	width:100%;
 }
 .item .caption {
 	position:absolute;
@@ -348,10 +355,10 @@ Inline images (TODO show these only when image is larger than available space) *
 	display:block;
 	padding: 0.3em;
 }
-.multipleChoiceQuestion label.correct {
+.multipleChoiceQuestion .correct {
 	border-left: 5px solid #0C0;
 }
-.multipleChoiceQuestion label.incorrect {
+.multipleChoiceQuestion .incorrect {
 	border-left: 5px solid #C00;
 }
 .multipleChoiceQuestion input[type="button"]:disabled {

@@ -14,7 +14,7 @@ angular.module('com.inthetelling.player')
 			scope: {
 				item: '=ittItem'
 			},
-			template: '<div ng-click="editItem()" ng-include="item.templateUrl">Loading Item...</div>',
+			template: '<div ng-click="editItem($event)" ng-include="item.templateUrl">Loading Item...</div>',
 			controller: 'ItemController',
 			link: function(scope, element, attrs) {
 				// console.log('ittItem', scope, element, attrs);
@@ -25,6 +25,13 @@ angular.module('com.inthetelling.player')
 					scope.plugin = scope.item.data._plugin;
 					scope.plugin._type = scope.item.data._pluginType;
 
+					// ng-model was handling this before, but now broken somehow. Forcing it for demo:
+					scope.setChoice = function(i) {
+						if (!scope.plugin.hasBeenAnswered) {
+							scope.plugin.selectedDistractor = i;
+						}
+					};
+
 					scope.scoreQuiz = function() {
 						scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
 
@@ -32,6 +39,14 @@ angular.module('com.inthetelling.player')
 						// TODO send whatever credly-ish "achievement unlocked" message to API here
 					};
 
+					scope.resetQuestion = function() {
+						console.log("RESET");
+						scope.plugin.selectedDistractor = undefined;
+						scope.plugin.hasBeenAnswered = false;
+						for (var i = 0; i < scope.plugin.distractors.length; i++) {
+							scope.plugin.distractors[i].selected = false;
+						}
+					};
 				}
 				// end plugin
 

@@ -6,22 +6,16 @@
 	</div>
 	<div class="col col1">
 		<div class="pane mainPane stretchToViewport">
-			<div class="fill bgLayer" ng-if="mainBgItems.length>0">
-				<div class="animate" ng-repeat="item in mainBgItems = (scene.items | isCurrent | itemLayout:'mainBg')" itt-item="item"></div>
+			<div class="fill bgLayer">
+				<div class="animate" ng-repeat="item in mainBgItems=( scene.items | isCurrent | itemLayout: 'mainBg') " itt-item="item "></div>
 			</div>
-			<div class="content contentLayer" ng-class="
-			{singleitem: 
-				(showCurrent 
-					? (mainContentItems() | isCurrent).length==1 
-					: mainContentItems().length == 1
-				), allowHighlights: !showCurrent
-			}">
-				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight">
-				<div ng-if="!showCurrent" class="item-animate" ng-repeat="item in mainContentItems()" itt-item="item"></div>
-				<div ng-if="showCurrent" class="item-animate" ng-repeat="item in (mainContentItems() | isCurrent)" itt-item="item"></div>
-				<div class="clear"></div>
+			<div class="content contentLayer" ng-class=" {singleitem: (showCurrent ? (mainContentItems() | isCurrent).length==1 : mainContentItems().length==1 ), allowHighlights: !showCurrent } ">
+				<img src="images/aspectratiopreserver-16x9.gif " class="matchVideoHeight ">
+				<div ng-if="!showCurrent " class="item-animate " ng-repeat="item in mainContentItems() " itt-item="item "></div>
+				<div ng-if="showCurrent " class="item-animate " ng-repeat="item in (mainContentItems() | isCurrent) " itt-item="item "></div>
+				<div class="clear "></div>
 			</div>
-			<div class="fill fgLayer overlay" ng-if="mainFgItems.length>0">
+			<div class="fill fgLayer overlay">
 				<div class="animate" ng-repeat="item in mainFgItems=(scene.items | isCurrent | itemLayout:'mainFg')" itt-item="item"></div>
 			</div>
 		</div>

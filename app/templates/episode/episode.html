@@ -51,7 +51,7 @@
 		<div class="watchModeCaption itemanimate" ng-repeat="item in episode.items  | transcript | isCurrent" itt-item="item"></div>
 	</span>
 
-	<div class="fill overlay fgLayer" ng-show="appState.viewMode == 'discover'">
+	<div class="fill overlay windowFg fgLayer" ng-show="appState.viewMode == 'discover'">
 		<!-- WindowFg -->
 		<div itt-item="item" class="animate" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowFg'"></div>
 	</div>
