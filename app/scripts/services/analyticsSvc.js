@@ -29,7 +29,7 @@ Different types of event can define their own interactions, but the core ones wi
 */
 
 angular.module('com.inthetelling.player')
-	.factory('analyticsSvc', function($http, $routeParams, $interval, config, modelSvc) {
+	.factory('analyticsSvc', function($q, $http, $routeParams, $interval, config, modelSvc) {
 		console.log('analyticsSvc factory');
 		var svc = {};
 
@@ -46,7 +46,7 @@ angular.module('com.inthetelling.player')
 		}
 
 		// for episode-related activity
-		svc.captureActivity = function(name, data) {
+		svc.captureEpisodeActivity = function(name, data) {
 			var userActivity = {
 				"name": name,
 				"walltime": new Date(),
@@ -65,6 +65,51 @@ angular.module('com.inthetelling.player')
 				"event_id": eventID,
 				"walltime": new Date()
 			});
+		};
+
+		// read from API:
+		svc.readEpisodeActivity = function(epId) {
+			var defer = $q.defer();
+			$http({
+				method: 'GET',
+				url: config.apiDataBaseUrl + '/v2/episodes/' + epId + '/episode_user_metrics'
+			}).success(function(respData, respStatus, respHeaders) {
+				console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
+				defer.resolve(respData);
+			}).error(function(respData, respStatus, respHeaders) {
+				console.log("read episode activity ERROR", respData, respStatus, respHeaders);
+				defer.reject();
+			});
+			return defer.promise;
+		};
+
+		// if activityType is omitted, returns all user data for that event id
+		// if it's included, returns true if the user has at least once triggered that activityType, false if not
+		svc.readEventActivity = function(eventId, activityType) {
+			var defer = $q.defer();
+			$http({
+				method: 'GET',
+				url: config.apiDataBaseUrl + '/v2/events/' + eventId + '/event_user_actions'
+			}).success(function(respData, respStatus, respHeaders) {
+				console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
+				if (activityType) {
+					var matchedType = false;
+					for (var i = 0; i < respData.length; i++) {
+						var activity = respData[i];
+						if (activity.name === activityType) {
+							matchedType = true;
+						}
+					}
+					defer.resolve(matchedType);
+				} else {
+					// no activityType specified so return everything:
+					defer.resolve(respData);
+				}
+			}).error(function(respData, respStatus, respHeaders) {
+				console.log("read event activity ERROR", respData, respStatus, respHeaders);
+				defer.reject();
+			});
+			return defer.promise;
 		};
 
 

@@ -102,7 +102,7 @@ angular.module('com.inthetelling.player')
 				_tick();
 				clock = $interval(_tick, 20);
 				stepEvent();
-				analyticsSvc.captureActivity("play");
+				analyticsSvc.captureEpisodeActivity("play");
 			});
 		};
 
@@ -119,7 +119,7 @@ angular.module('com.inthetelling.player')
 			if (n) {
 				$timeout(svc.play, (n * 1000 * Math.abs(timeMultiplier)));
 			}
-			analyticsSvc.captureActivity("pause");
+			analyticsSvc.captureEpisodeActivity("pause");
 		};
 
 		// "method" and "eventID" are for analytics purposes
@@ -161,7 +161,7 @@ angular.module('com.inthetelling.player')
 				if (eventID) {
 					captureData.event_id = eventID;
 				}
-				analyticsSvc.captureActivity("seek", captureData);
+				analyticsSvc.captureEpisodeActivity("seek", captureData);
 			} else {
 				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
 			}

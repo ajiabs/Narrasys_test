@@ -7,7 +7,7 @@ angular.module('com.inthetelling.player')
 		console.log("playerController", $scope);
 		$scope.viewMode = function(newMode) {
 			modelSvc.appState.viewMode = newMode;
-			analyticsSvc.captureActivity("modeChange", {
+			analyticsSvc.captureEpisodeActivity("modeChange", {
 				"mode": newMode
 			});
 		};
@@ -25,7 +25,7 @@ angular.module('com.inthetelling.player')
 			modelSvc.appState.producer = true;
 		}
 
-		/* CREATE EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 		modelSvc.addLandingScreen($routeParams.epId);
 		dataSvc.getEpisode($routeParams.epId);
@@ -55,7 +55,23 @@ angular.module('com.inthetelling.player')
 		$scope.show = modelSvc.appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
 
-		/* END CREATE EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+		//test
+		$scope.testEpAnalytics = function() {
+			analyticsSvc.readEpisodeActivity($routeParams.epId);
+		};
+		$scope.testEventAnalytics = function() {
+			analyticsSvc.readEventActivity("539a0d182442bd86f1000004");
+		};
+
+		$scope.updateEvent = function() {
+			dataSvc.deleteEvent();
+		};
+		$scope.createTemplate = function() {
+			dataSvc.createTemplate();
+		};
+
 
 		// Hide toolbars
 

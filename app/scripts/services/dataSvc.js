@@ -1,5 +1,14 @@
 'use strict';
 
+
+// TESTING:
+// badge event is 53a1d2162442bd24f9000004
+// m/c event is 539a0d182442bd86f1000004
+
+// badge template ID is 53a1d0672442bd95b1000002
+// m/c template id is 539a07ee2442bd20bf000006
+
+
 // TODO: load and resolve categories
 
 // Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
@@ -14,34 +23,36 @@ angular.module('com.inthetelling.player')
 	.factory('dataSvc', function($q, $http, $routeParams, $timeout, config, authSvc, modelSvc) {
 		var svc = {};
 
+		svc.createTemplate = function() {
+			$http({
+				method: 'POST',
+				url: config.apiDataBaseUrl + '/v1/templates',
+				data: {
+					name: "USC Credly Badge",
+					url: "templates/item/usc-badges.html"
+				}
+			}).success(function(data, status, headers) {
+				console.log("Created template:", data, status, headers);
 
-		svc.templateTmp = function() {
-			// $http({
-			// 	method: 'POST',
-			// 	url: config.apiDataBaseUrl + '/v1/templates',
-			// 	data: {name: "Multiple choice question",url: "templates/item/multiplechoice.html"}
-			// 			}).success(function(data, status, headers) {
-			// 				console.log("Created template:", data, status, headers);
-
-			// 			}).error(function(data, status, headers) {
-			// 				console.log("Failed to create template", data, status, headers);
-			// 			});
+			}).error(function(data, status, headers) {
+				console.log("Failed to create template", data, status, headers);
+			});
 
 
 		};
 
 
-		// svc.deleteEvent = function() {
-		// 	$http({
-		// 		method: 'DELETE',
-		// 		url: config.apiDataBaseUrl + '/v2/events/(event id)', // note different from docs!
-		// 	}).success(function(data, status, headers) {
-		// 		console.log("deleted event:", data, status, headers);
+		svc.deleteEvent = function() {
+			$http({
+				method: 'DELETE',
+				url: config.apiDataBaseUrl + '/v2/events/53874f002442bd7726000001', // note different from docs!
+			}).success(function(data, status, headers) {
+				console.log("deleted event:", data, status, headers);
 
-		// 	}).error(function(data, status, headers) {
-		// 		console.log("Failed ", data, status, headers);
-		// 	});
-		// };
+			}).error(function(data, status, headers) {
+				console.log("Failed ", data, status, headers);
+			});
+		};
 
 		svc.updateTemplate = function() {
 			$http({
@@ -62,79 +73,117 @@ angular.module('com.inthetelling.player')
 
 		};
 
-		svc.createPluginEvent = function() {
+		// svc.createEvent = function() {
 
-			var newEvent = {
-				episode_id: "533aec182442bdd34c000003",
-				type: "Plugin",
-				start_time: 386,
-				data: {
-					"foo": "bar"
-				},
-				template_id: "539a07ee2442bd20bf000006"
-			};
+		// 	var newEvent = {
+		// 		episode_id: "533aec182442bdd34c000003",
+		// 		type: "Plugin",
+		// 		start_time: 386,
+		// 		data: {
+		// 			"foo": "bar"
+		// 		},
+		// 		template_id: "539a07ee2442bd20bf000006"
+		// 	};
 
 
-			$http({
-				method: 'POST',
-				url: config.apiDataBaseUrl + '/v2/episodes/533aec182442bdd34c000003/events/',
-				data: {
-					event: newEvent
-				}
-			}).success(function(data, status, headers) {
-				console.log("Created event:", data, status, headers);
+		// 	$http({
+		// 		method: 'POST',
+		// 		url: config.apiDataBaseUrl + '/v2/episodes/533aec182442bdd34c000003/events/',
+		// 		data: {
+		// 			event: newEvent
+		// 		}
+		// 	}).success(function(data, status, headers) {
+		// 		console.log("Created event:", data, status, headers);
 
-			}).error(function(data, status, headers) {
-				console.log("Failed to create event", data, status, headers);
-			});
-		};
+		// 	}).error(function(data, status, headers) {
+		// 		console.log("Failed to create event", data, status, headers);
+		// 	});
+		// };
 
 		svc.updateEvent = function() {
-
 			var pluginData = {
-				"_pluginType": "multiplechoice",
+				"_pluginType": "credlyBadge",
 				"_version": 1,
 				"_plugin": {
-					"question": "This is the question text. Here's an umlaut: ü",
-					"distractors": [{
-						"text": "This is the first distractor",
-						"feedback": "The text to be shown if the first answer was selected."
+					"achievement": "Friend of USC Scholar John Wilson",
+					"requirements": [{
+						name: "Answered the multiple choice question at the end of this episode",
+						eventId: "539a0d182442bd86f1000004",
+						activity: "question-answered"
 					}, {
-						"text": "This is the second distractor",
-						"feedback": "If the second distractor is chosen, show this text."
-					}, {
-						"text": "This is the third distractor",
-						"feedback": "The text to be shown if you answer correctly by selecting this.",
-						"correct": true
-					}]
+						name: "Clicked the UNEP Green Economy link at 0:01 in this episode",
+						eventId: "533b01dd2442bdd7f6000003",
+						activity: "clicked"
+					}],
+					"credlyBadgeId": 19578
 				}
 			};
-
-
 			var eventData = {
 				episode_id: "533aec182442bdd34c000003",
 				type: "Plugin",
-				start_time: 386,
+				start_time: 1,
+				end_time: 10,
 				data: pluginData,
-				template_id: "539a07ee2442bd20bf000006"
+				stop: true,
+				layout_id: ["528d17eeba4f65e57800001e"], // windowFg
+				template_id: "53a1d0672442bd95b1000002"
 			};
 
 
 			$http({
 				method: 'PUT',
-				url: config.apiDataBaseUrl + '/v2/events/539a0d182442bd86f1000004',
+				url: config.apiDataBaseUrl + '/v2/events/53a1d2162442bd24f9000004',
 				data: {
 					event: eventData
 				}
 			}).success(function(data, status, headers) {
-				console.log("Updated event:", data, status, headers);
+				console.log("Created event:", data, status, headers);
 
 			}).error(function(data, status, headers) {
 				console.log("Failed:", data, status, headers);
 			});
-
-
 		};
+
+		// svc.updateEvent = function() {
+		// 	var pluginData = {
+		// 		"_pluginType": "multiplechoice",
+		// 		"_version": 1,
+		// 		"_plugin": {
+		// 			"question": "This is the question text. Here's an umlaut, to test utf-8: ü",
+		// 			"distractors": [{
+		// 				"text": "This is the first distractor",
+		// 				"feedback": "The text to be shown if the first answer was selected."
+		// 			}, {
+		// 				"text": "This is the second distractor",
+		// 				"feedback": "If the second distractor is chosen, show this text."
+		// 			}, {
+		// 				"text": "This is the third distractor",
+		// 				"feedback": "The text to be shown if you answer correctly by selecting this.",
+		// 				"correct": true
+		// 			}]
+		// 		}
+		// 	};
+		// 	var eventData = {
+		// 		episode_id: "533aec182442bdd34c000003",
+		// 		type: "Plugin",
+		// 		start_time: 386,
+		// 		data: pluginData,
+		// 		stop: true,
+		// 		template_id: "539a07ee2442bd20bf000006"
+		// 	};
+		// 	$http({
+		// 		method: 'PUT',
+		// 		url: config.apiDataBaseUrl + '/v2/events/539a0d182442bd86f1000004', // event ID
+		// 		data: {
+		// 			event: eventData
+		// 		}
+		// 	}).success(function(data, status, headers) {
+		// 		console.log("Updated event:", data, status, headers);
+
+		// 	}).error(function(data, status, headers) {
+		// 		console.log("Failed:", data, status, headers);
+		// 	});
+		// };
 
 
 		svc.storeEvent = function(eventData) {
@@ -201,6 +250,7 @@ angular.module('com.inthetelling.player')
 			layout: {},
 			style: {}
 		};
+		console.log("datasvc cache: ", dataCache);
 
 		// Gets all layouts, styles, and templates
 		var haveCommon = false;

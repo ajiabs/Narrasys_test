@@ -30,6 +30,13 @@
 			<a class="button" ng-click="appState.producer = !appState.producer">P<span>Producer!</span></a>
 		</div>
 
+		<div class="buttongroup">
+			<a class="button" ng-click="createTemplate()">t</a>
+			<a class="button" ng-click="updateEvent()">q</a>
+			<a class="button" ng-click="testEpAnalytics()">episode</a>
+			<a class="button" ng-click="testEventAnalytics()">event</a>
+		</div>
+
 
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 			<a ng-click="mainframeescape();" class="button button-mainframeescape">
