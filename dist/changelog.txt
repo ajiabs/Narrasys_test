@@ -237,3 +237,7 @@ So it turns out that git really doesn't cope well with case-insensitive file nam
 Changes in v4.alpha.006:
 Friendlier-to-Safari method of writing to localStorage
 
+------------------------------------------------
+Changes in v4.alpha.007:
+steenkin' baaaadges
+

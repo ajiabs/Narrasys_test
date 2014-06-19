@@ -1,4 +1,18 @@
 
+Add to v4 and then backport:
+* usc-badges events should record that the user reached them (so other achievements can look for that as a requirement)
+* should it try to handle multiple, separate achievements in one event? or make them sequential
+
+Backport from v4:
+* authentication
+* analytics
+* multiplechoice template, usc-badges template, and "plugin" stuff from ittItem
+
+
+
+
+
+
 
 
 
