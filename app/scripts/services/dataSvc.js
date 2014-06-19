@@ -121,14 +121,13 @@ angular.module('com.inthetelling.player')
 			var eventData = {
 				episode_id: "533aec182442bdd34c000003",
 				type: "Plugin",
-				start_time: 1,
-				end_time: 10,
+				start_time: 386,
+				end_time: 387,
 				data: pluginData,
 				stop: true,
 				layout_id: ["528d17eeba4f65e57800001e"], // windowFg
 				template_id: "53a1d0672442bd95b1000002"
 			};
-
 
 			$http({
 				method: 'PUT',
@@ -166,7 +165,8 @@ angular.module('com.inthetelling.player')
 		// 	var eventData = {
 		// 		episode_id: "533aec182442bdd34c000003",
 		// 		type: "Plugin",
-		// 		start_time: 386,
+		// 		start_time: 385,
+		// 		end_time: 386,
 		// 		data: pluginData,
 		// 		stop: true,
 		// 		template_id: "539a07ee2442bd20bf000006"

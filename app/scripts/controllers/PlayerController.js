@@ -58,19 +58,19 @@ angular.module('com.inthetelling.player')
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 		//test
-		$scope.testEpAnalytics = function() {
-			analyticsSvc.readEpisodeActivity($routeParams.epId);
-		};
-		$scope.testEventAnalytics = function() {
-			analyticsSvc.readEventActivity("539a0d182442bd86f1000004");
-		};
+		// $scope.testEpAnalytics = function() {
+		// 	analyticsSvc.readEpisodeActivity($routeParams.epId);
+		// };
+		// $scope.testEventAnalytics = function() {
+		// 	analyticsSvc.readEventActivity("539a0d182442bd86f1000004");
+		// };
 
-		$scope.updateEvent = function() {
-			dataSvc.deleteEvent();
-		};
-		$scope.createTemplate = function() {
-			dataSvc.createTemplate();
-		};
+		// $scope.updateEvent = function() {
+		// 	dataSvc.updateEvent();
+		// };
+		// $scope.createTemplate = function() {
+		// 	dataSvc.createTemplate();
+		// };
 
 
 		// Hide toolbars
