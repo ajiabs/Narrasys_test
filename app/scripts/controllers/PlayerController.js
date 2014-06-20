@@ -57,22 +57,6 @@ angular.module('com.inthetelling.player')
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		//test
-		// $scope.testEpAnalytics = function() {
-		// 	analyticsSvc.readEpisodeActivity($routeParams.epId);
-		// };
-		// $scope.testEventAnalytics = function() {
-		// 	analyticsSvc.readEventActivity("539a0d182442bd86f1000004");
-		// };
-
-		// $scope.updateEvent = function() {
-		// 	dataSvc.updateEvent();
-		// };
-		// $scope.createTemplate = function() {
-		// 	dataSvc.createTemplate();
-		// };
-
-
 		// Hide toolbars
 
 		// TODO put this in own controller - - - - - - -
@@ -139,16 +123,15 @@ angular.module('com.inthetelling.player')
 		// TEMPORARY: Producer code below this line
 		// If this turns out to be any good move it into a producer directive.
 		// will likely want other components to be able to read which layer we're editing -- timeline, at least
-		$scope.editLayer = function(layer) {
-			console.log("TODO: whichever of fgLayer, contentLayer, and bgLayer this isn't: ", layer);
+		// $scope.editLayer = function(layer) {
+		// 	console.log("TODO: whichever of fgLayer, contentLayer, and bgLayer this isn't: ", layer);
+		// 	$scope.editLayer.scene = false;
+		// 	$scope.editLayer.bgLayer = false;
+		// 	$scope.editLayer.contentLayer = false;
+		// 	$scope.editLayer.fgLayer = false;
+		// 	if (layer !== '') {
+		// 		$scope.editLayer[layer] = true;
+		// 	}
+		// };
 
-			$scope.editLayer.scene = false;
-			$scope.editLayer.bgLayer = false;
-			$scope.editLayer.contentLayer = false;
-			$scope.editLayer.fgLayer = false;
-			if (layer !== '') {
-				$scope.editLayer[layer] = true;
-			}
-
-		};
 	});

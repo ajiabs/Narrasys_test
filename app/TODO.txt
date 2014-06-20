@@ -16,7 +16,7 @@ Backport from v4:
 
 
 
-explore (and watch?) modes should be using their own item directive (which ignores templateUrl)
+explore and watch modes should be using their own item directive (which ignores templateUrl)
 
 
 Landing screen template
@@ -30,13 +30,15 @@ item layouts in content panes (sidebar, burst margins)
 
 Compare all item templates to existing episodes for backwards compatibility....
 
+
 Autoscroll in explore mode (and add to other scenes)
 
 Help panel (and related cookie)
 
-Bottom toolbar:
-	icons for speed control, zoom controls
-	finetune layout
+Bottom toolbar:  finetune layout
+
+
+
 
 
 Ask Bill to add fields:
@@ -54,7 +56,7 @@ Consider eliminating fg panes other than windowFg (check existing episodes, are 
 
 test hide/reveal events on bottom toolbar on touchscreens
 
-Video: youtube/safari is having some issues...
+Video: youtube/safari is having some permissions issues...
 
 
 error display handler

@@ -44,7 +44,6 @@ angular.module('com.inthetelling.player')
 			modelSvc.appState.isInFullscreenMode = newVal;
 		});
 
-
 		var exitFullscreen = function() {
 			if (document.exitFullscreen) {
 				document.exitFullscreen();
@@ -65,8 +64,6 @@ angular.module('com.inthetelling.player')
 				element.webkitRequestFullScreen();
 			}
 		};
-
-
 		/* END TODO -------------------------------------------------------- */
 
 		$scope.$on('$destroy', function() {

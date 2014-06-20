@@ -96,7 +96,7 @@ angular.module('com.inthetelling.player')
 			}
 			console.log("user requested 'play'");
 			videoScope.play().then(function() {
-				console.log("play occurred");
+				console.log("play begins");
 				modelSvc.appState.timelineState = "playing";
 				videoSynchronizer = $interval(synchronize, 1000); // if you change this interval you must also change the target adjustment rate inside synchronise()
 				_tick();

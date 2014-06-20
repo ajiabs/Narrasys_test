@@ -18,26 +18,15 @@
 				<span>Review</span>
 			</a>
 		</div>
-
-		<div ng-if="appState.producer && appState.viewMode == 'discover'" class="buttongroup">
-			<!-- <a class="button" ng-click="editLayer('scene');">Scene<span>Edit the scene layout (TODO)</span></a> -->
-			<a class="button" ng-click="editLayer('bgLayer');">BG<span>Edit the background layer</span></a>
-			<a class="button" ng-click="editLayer('contentLayer');">C<span>Edit the content layer</span></a>
-			<a class="button" ng-click="editLayer('fgLayer');">FG<span>Edit the foreground layer</span></a>
-			<a class="button" ng-click="editLayer('');">All<span>Show everything</span></a>
-		</div>
-		<div class="buttongroup">
-			<a class="button" ng-click="appState.producer = !appState.producer">P<span>Producer!</span></a>
-		</div>
 		<!-- 
-		<div class="buttongroup">
-			<a class="button" ng-click="createTemplate()">t</a>
-			<a class="button" ng-click="updateEvent()">q</a>
-			<a class="button" ng-click="testEpAnalytics()">episode</a>
-			<a class="button" ng-click="testEventAnalytics()">event</a>
-		</div>
- -->
-
+		<div ng-if="appState.producer && appState.viewMode == 'discover'" class="buttongroup">
+			<a class="button" ng-click="editLayer('scene');">Scene<span>Edit the scene layout (TODO)</span></a>
+		<a class="button" ng-click="editLayer('bgLayer');">BG<span>Edit the background layer</span></a>
+		<a class="button" ng-click="editLayer('contentLayer');">C<span>Edit the content layer</span></a>
+		<a class="button" ng-click="editLayer('fgLayer');">FG<span>Edit the foreground layer</span></a>
+		<a class="button" ng-click="editLayer('');">All<span>Show everything</span></a>
+	</div>
+	-->
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 			<a ng-click="mainframeescape();" class="button button-mainframeescape">
 				<span>New window</span>

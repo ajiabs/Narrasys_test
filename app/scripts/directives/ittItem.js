@@ -14,7 +14,7 @@ angular.module('com.inthetelling.player')
 			scope: {
 				item: '=ittItem'
 			},
-			template: '<div ng-click="editItem($event)" ng-include="item.templateUrl">Loading Item...</div>',
+			template: '<div ng-include="item.templateUrl">Loading Item...</div>',
 			controller: 'ItemController',
 			link: function(scope, element, attrs) {
 				// console.log('ittItem', scope, element, attrs);
@@ -55,8 +55,6 @@ angular.module('com.inthetelling.player')
 					// END m/c question
 					// BEGIN credly badge
 					if (scope.plugin._type === 'credlyBadge') {
-
-
 						// TODO: have analytics record that this event has been reached, so it can be used as a trigger for 
 						// other achievements
 
