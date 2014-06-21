@@ -1,0 +1,13 @@
+<div class="item" ng-class="item.styleCss + ' ' + item.state">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.start_time | asTime}}</div>
+		<div class="authorName">{{item.annotator}}</div>
+	</div>
+
+	<div class="text">{{item.annotation}} {{item.description}}</div>
+
+
+
+	<a ng-click="itemDebug=!itemDebug">Debug</a>
+	<pre ng-if="itemDebug">{{item | pretty}}</pre>
+</div>

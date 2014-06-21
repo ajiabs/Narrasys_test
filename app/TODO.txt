@@ -1,22 +1,12 @@
 
-Add to v4 and then backport:
-* usc-badges events should record that the user reached them (so other achievements can look for that as a requirement)
-* should it try to handle multiple, separate achievements in one event? or make them sequential
+For USC:
+credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
+credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
 
-Backport from v4:
-* authentication
-* analytics
-* multiplechoice template, usc-badges template, and "plugin" stuff from ittItem
+Test badge event's use of localStorage data in cases where localStorage isn't present but user has legit login (if that even exists.  Safari in privacy mode?)
 
 
-
-
-
-
-
-
-
-explore and watch modes should be using their own item directive (which ignores templateUrl)
+Improve reviewMode templates (review-annotation and review-transmedia)
 
 Landing screen template
 
@@ -26,11 +16,10 @@ Episode templates
 
 item layouts in content panes (sidebar, burst margins)
 
+timelineSvc is not recognizing all stop items...  debug!
 
 Compare all item templates to existing episodes for backwards compatibility....
 
-
-Autoscroll in explore mode (and add to other scenes)
 
 Help panel (and related cookie)
 
@@ -61,13 +50,12 @@ Video: youtube/safari is having some permissions issues...
 error display handler
 
 
-BUG Rewrite timelineSvc to better handle multiple episodes (easiest way is probably to write timelineStart and End into each event...?)
+Rewrite timelineSvc to better handle multiple episodes (easiest way is probably to write timelineStart and End into each event...?)
 
 Will also need to be able to capture analytics for episode time instead of timeline time...
 timelineSvc needs functions to translate episode->timeline time and vice versa
 
 Also for multiple eps: multiple video nodes? or change the src of existing video node? or a playlist?
-
 
 Add a "skip" type of event to allow skipping scenes
 

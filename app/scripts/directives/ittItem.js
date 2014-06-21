@@ -14,7 +14,14 @@ angular.module('com.inthetelling.player')
 			scope: {
 				item: '=ittItem'
 			},
-			template: '<div ng-include="item.templateUrl">Loading Item...</div>',
+			template: function(el, attrs) {
+				console.log("item template", attrs.forcetemplate);
+				if (attrs.forcetemplate) {
+					return '<div ng-include="\'templates/item/' + attrs.forcetemplate + '.html\'"></div>';
+				} else {
+					return '<div ng-include="item.templateUrl"></div>';
+				}
+			},
 			controller: 'ItemController',
 			link: function(scope, element, attrs) {
 				// console.log('ittItem', scope, element, attrs);
