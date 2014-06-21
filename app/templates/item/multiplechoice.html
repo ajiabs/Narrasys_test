@@ -23,8 +23,8 @@
 		<p ng-repeat="distractor in plugin.distractors" ng-if="distractor.selected">{{distractor.feedback}}</p>
 	</div>
 
-	<br>
-	<br>
+	<div class="clear"></div>
+
 
 	<a ng-click="itemDebug=!itemDebug">Debug</a>
 	<a ng-if="itemDebug" ng-click="resetQuestion()">(Reset question)</a>

@@ -18,7 +18,6 @@ Backport from v4:
 
 explore and watch modes should be using their own item directive (which ignores templateUrl)
 
-
 Landing screen template
 
 Remaining link item templates

@@ -47,6 +47,7 @@ h1, h2, h3, h4 {
 	right:0;
 	bottom:0;
 	overflow-y:scroll;
+	-webkit-overflow-scrolling: touch;
 	background-color:#FFF;
 }
 /* Z-indexes 
@@ -64,8 +65,11 @@ h1, h2, h3, h4 {
 .toolbar, .toolbar-bottom {
 	z-index:10;
 }
-.searchPanel {
+.autoscroll {
 	z-index:11;
+}
+.searchPanel {
+	z-index:12;
 }
 /* Custom Icon Font
 --------------------------------------------------------------------------------

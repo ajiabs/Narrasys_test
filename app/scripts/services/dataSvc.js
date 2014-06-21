@@ -317,29 +317,30 @@ angular.module('com.inthetelling.player')
 				"description": "Scene Description",
 				"keywords": [],
 				"start_time": 0,
-				"end_time": 10,
+				"end_time": 20,
 				"type": "Scene",
 				"episode_id": epId,
 				//"templateUrl": "templates/scene/centered.html",
-				"layouts": ["", "splitTransmedia", "showCurrent"]
+				"layouts": ["", "splitTransmedia", ""]
 			};
 
 			var scenetemplateurls = [
+				"templates/scene/cornerV.html",
 				"templates/scene/1col.html",
 				"templates/scene/2colL.html",
 				"templates/scene/2colR.html",
 				"templates/scene/centered.html",
-				"templates/scene/cornerH.html",
-				"templates/scene/cornerV.html"
+				"templates/scene/cornerH.html"
 			];
 
 
 			for (var i = 0; i < 20; i++) {
 				var scene = angular.copy(sceneStub);
 				scene._id = "scene-" + i;
-				scene.title = (i / 2 === Math.floor(i / 2)) ? "Scene " + (i + 1) + " Title" : "";
-				scene.start_time = (i * 10);
-				scene.end_time = (i * 10) + 10;
+				// scene.title = (i / 2 === Math.floor(i / 2)) ? "Scene " + (i + 1) + " Title" : "";
+				scene.title = "Scene " + (i + 1) + " Title";
+				scene.start_time = (i * 20);
+				scene.end_time = (i * 20) + 20;
 				scene.templateUrl = scenetemplateurls[i % scenetemplateurls.length];
 				modelSvc.cache("event", scene);
 			}
@@ -363,8 +364,8 @@ angular.module('com.inthetelling.player')
 				var transcript = angular.copy(annotationStub);
 				transcript._id = "transcript-" + i;
 				transcript.annotation = "Transcript block number " + (i + 1);
-				transcript.start_time = (i);
-				transcript.end_time = (i + 1);
+				transcript.start_time = (i * 2);
+				transcript.end_time = (i * 2 + 2);
 				modelSvc.cache("event", transcript);
 			}
 
@@ -418,8 +419,8 @@ angular.module('com.inthetelling.player')
 				var link = angular.copy(linkStub);
 				link._id = "link-" + i;
 				link.required = (Math.random() > 0.5);
-				link.start_time = i;
-				link.end_time = i + 1;
+				link.start_time = i * 3;
+				link.end_time = i * 3 + 3;
 				modelSvc.cache("event", link);
 			}
 
@@ -442,8 +443,8 @@ angular.module('com.inthetelling.player')
 				upload._id = "upload-" + i;
 				upload.asset_id = "asset" + (i % 3 + 2);
 				upload.title = "Upload number " + (i % 3 + 1);
-				upload.start_time = i * 2;
-				upload.end_time = i * 2 + 2;
+				upload.start_time = i * 4;
+				upload.end_time = i * 4 + 4;
 				modelSvc.cache("event", upload);
 			}
 
@@ -454,7 +455,7 @@ angular.module('com.inthetelling.player')
 				filltest._id = "filltest-" + i;
 				filltest.asset_id = "asset2";
 				filltest.start_time = i * 5;
-				filltest.end_time = i * 5 + 4;
+				filltest.end_time = i * 5 + 5;
 				filltest.templateUrl = "templates/item/image-fill.html";
 				modelSvc.cache("event", filltest);
 

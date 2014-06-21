@@ -53,6 +53,11 @@
 
 	<div class="fill overlay windowFg fgLayer" ng-show="appState.viewMode == 'discover'">
 		<!-- WindowFg -->
-		<div itt-item="item" class="animate" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowFg'"></div>
+		<div itt-item="item" class="animate" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowFg'">
+		</div>
+	</div>
+
+	<div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
+		<img src="/images/autoscroll.svg" width="32" height="32">
 	</div>
 </div>

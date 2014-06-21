@@ -1,15 +1,24 @@
 'use strict';
 
-//TODO move much of this to a toolbarController
+//TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.player')
 	.controller('PlayerController', function($scope, $rootScope, $routeParams, $timeout, $interval, dataSvc, modelSvc, timelineSvc, analyticsSvc) {
 		console.log("playerController", $scope);
+
 		$scope.viewMode = function(newMode) {
 			modelSvc.appState.viewMode = newMode;
 			analyticsSvc.captureEpisodeActivity("modeChange", {
 				"mode": newMode
 			});
+
+			//Autoscroll only in explore mode for now
+			if (newMode === 'review') {
+				modelSvc.appState.autoscroll = true;
+				handleAutoscroll();
+			} else {
+				modelSvc.appState.autoscroll = false;
+			}
 		};
 
 		if ($routeParams.viewMode) {
@@ -17,13 +26,14 @@ angular.module('com.inthetelling.player')
 		}
 
 		if ($routeParams.t) {
-			timelineSvc.seek($routeParams.t, "URLParam");
+			timelineSvc.seek($routeParams.t, "URLParameter");
 		}
 
 		// TEMPORARY
 		if ($routeParams.producer) {
 			modelSvc.appState.producer = true;
 		}
+
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -61,9 +71,9 @@ angular.module('com.inthetelling.player')
 
 		// TODO put this in own controller - - - - - - -
 		/* Bottom toolbar starts out visible.  5s after using a control or leaving the pane, fade out controls.
-		   If mouse re-enters pane, keep the controls visible. TODO check on touchscreen! */
+		   If mouse re-enters pane, keep the controls visible. */
 		// TODO: fade toolbars when tap outside, or when hit esc key
-
+		// TODO: never fades on touchscreen... fix that
 
 		modelSvc.appState.videoControlsActive = true;
 
@@ -119,6 +129,57 @@ angular.module('com.inthetelling.player')
 			timelineSvc.seek(t, "sceneMenu");
 		};
 
+		// - - - - - - - - -  - - - - - - - - - - - - - - -
+		// Autoscroll
+		// Some jQuery dependencies here (namespaced bindings, animated scroll)
+
+		// appstate.autoscroll = we are in a mode which wants autoscroll
+		// appstate.autoscrollBlocked = user has disabled autoscroll (by scrolling manually)
+		// Those are in modelSvc instead of $scope becuase in future we'll want scenes to be able to autoscroll too
+
+		var bindScrollWatcher = function() {
+			// THis watches for manual scrolling of the window, which cancels autoscroll:
+			angular.element('#CONTAINER').bind("scroll.autoscroll", function() {
+				unbindScrollWatcher();
+				modelSvc.appState.autoscrollBlocked = true;
+			});
+		};
+		var unbindScrollWatcher = function() {
+			angular.element('#CONTAINER').unbind("scroll.autoscroll");
+		};
+		$scope.enableAutoscroll = function() {
+			modelSvc.appState.autoscrollBlocked = false;
+			bindScrollWatcher();
+			handleAutoscroll();
+		};
+		var handleAutoscroll = function() {
+			// if autoscroll is true and autoscrollBlocked is false,
+			// find the topmost visible current item and scroll #CONTAINER to make it visible.
+			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
+			if (modelSvc.appState.autoscroll && !modelSvc.appState.autoscrollBlocked) {
+				var top = Infinity;
+				var curScroll = $('#CONTAINER').scrollTop();
+				angular.forEach($('.content .item.isCurrent:visible'), function(item) {
+					var t = item.getBoundingClientRect().top + curScroll;
+					if (t < top) {
+						top = t;
+					}
+				});
+				unbindScrollWatcher(); // don't want scrollwatcher competing with this animation
+				var scrollOffset = 45 + ($(window).height() / 5); // put item top at TOOLBAR HEIGHT plus 20% of viewport
+				$('#CONTAINER').stop().animate({
+					"scrollTop": top - scrollOffset
+				}, 1000, "swing", function() {
+					$timeout(bindScrollWatcher, 100); // allow extra time; iPad was still capturing the tail end of the animated scroll
+				});
+			}
+		};
+
+		bindScrollWatcher();
+		$interval(handleAutoscroll, 2000);
+
+
+		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
 		// TEMPORARY: Producer code below this line
 		// If this turns out to be any good move it into a producer directive.
