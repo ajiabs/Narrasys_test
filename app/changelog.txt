@@ -193,3 +193,7 @@ Purdue episode template
 Changes in v1.7.3:
 bugfix: timestampNone items shouldn't have extra padding on left
 
+------------------------------------------------
+Changes in v1.7.4:
+bugfix: restoring lost dataSvc code from 78ae52c
+
