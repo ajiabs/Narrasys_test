@@ -412,13 +412,11 @@
 .helpPanel li.directed:before {
 	content:"\e60a"
 }
-
 @media screen and (max-width: 480px) {
 	.helpPanel li.directed {
 		display:none !important;
 	}
 }
-
 .helpPanel li.explore:before {
 	content:"\e60c"
 }
@@ -671,7 +669,7 @@ for all sub styles:
 	font-family:"Cardo", serif;
 	color: rgba(0, 58, 92, 0.5);
 	font-size: 1.7em;
-	margin-left: -0.5em;
+	/*margin-left: -0.5em;*/
 }
 .episode-gw .escapelink:before {
 	color: #AB9767;
@@ -709,12 +707,13 @@ for all sub styles:
 	font-size: 24px;
 	line-height: 25px;
 }
-
 .episode-gw .gwlogohack {
 	position: fixed;
 	background-color:#FFF;
 	z-index:10;
-	top:0; left: 0;right: 100px;
+	top:0;
+	left: 0;
+	right: 100px;
 	height: 45px;
 }
 .episode-gw .introtext {
