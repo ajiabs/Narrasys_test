@@ -1,8 +1,4 @@
-<div 
-	bindonce="scene" 
-	class="sceneContainer scene-cornerH" 
-	x-bo-class='scene.boCSS'
-	x-ng-class='{"currentScene": scene.isActive}'>
+<div bindonce="scene" class="sceneContainer scene-cornerH" x-bo-class='scene.boCSS' x-ng-class='{"currentScene": scene.isActive}'>
 
 
 	<div class="fillPane windowBg">
@@ -40,4 +36,5 @@
 	<div class="pane windowFg">
 		<div x-ng-repeat="item in scene.items | layout: 'windowFg'" x-itt-item="item"></div>
 	</div>
+	<div class="clear"></div>
 </div>

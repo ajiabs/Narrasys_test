@@ -1,10 +1,4 @@
-<!-- TODO: on enter need to scroll directly to current scene if it's not scene 1 -->
-
-<div 
-	bindonce="scene" 
-	class="clear sceneContainer scene-explore" 
-	x-bo-class='scene.boCSS'
-	x-ng-class='{"currentScene": scene.isActive, "nonNavigable": scene.nonNavigable}'>
+<div bindonce="scene" class="clear sceneContainer scene-explore" x-bo-class='scene.boCSS' x-ng-class='{"currentScene": scene.isActive, "nonNavigable": scene.nonNavigable}'>
 	<div class="scene">
 		<div class="pane videoContainer">
 			<div class="fillPane video">
@@ -29,4 +23,5 @@
 	<div x-itt-magnetized class="fillPane videoOverlay">
 		<div x-ng-repeat="item in scene.items | layout: 'videoOverlay'" x-itt-item="item"></div>
 	</div>
+	<div class="clear"></div>
 </div>

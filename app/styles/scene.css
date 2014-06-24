@@ -114,7 +114,6 @@
  .sceneContainer {
 	display:none
 }
-
 .sceneContainer.currentScene {
 	display:block;
 }
@@ -172,7 +171,8 @@
 /* Explore mode */
  .scene-explore {
 	clear:both;
-	border-top: 1px solid rgba(0, 0, 0, 0.2)
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
+	background-color:#FFF !important;
 }
 /* Causes columns to fill vertical space.  Make sure to override in small screen */
  .scene-explore .scene {
@@ -189,7 +189,6 @@
 	right: 0;
 	width: 30%;
 }
-
 .scene-explore.nonNavigable {
 	border-top: none
 }
@@ -299,13 +298,11 @@
 	width: 50%;
 	float:left;
 }
-
 @media screen and (max-height: 700px) {
 	.scene-2col .videoContainer {
 		position:absolute;
 	}
 }
-
 /*============================*/
  .scene-cornerH {
 }

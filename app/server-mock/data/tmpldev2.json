@@ -2,7 +2,7 @@
 	"episode": {
 		"title": "Episode Title super duper long title Episode Title super duper long title Episode Title super duper long title Episode Title super duper long title Episode Title super duper long title Episode Title super duper long title ",
 		"description": "narrative modem physical boat jeans faded -ware refrigerator cyber- kanji pre- shanty town systema. Tokyo face forwards tiger-team post- ablative dolphin hotdog artisanal into pre- nodal point towards network.",
-		"style_id": "typographySerif transitionFade highlightBorder",
+		"style_id": "typographySerif transitionFade highlightBorder colorVivid",
 		"template_id": "templates/episode-purdue.html",
 		"master_asset_id": {
 			"NOyoutube": "http://www.youtube.com/embed/YfPmBR8PUyE",
@@ -361,7 +361,8 @@
 			"title": "Scene Two: content layouts",
 			"description": "SplitTransmedia, showList; uses various item layouts inside content panes ",
 			"template_id": "templates/scene-2colR.html",
-			"layout_id": "splitTransmedia showList"
+			"layout_id": "splitTransmedia showList",
+			"style_id": "colorSepia"
 		}, {
 			"type": "annotation",
 			"style_id": "timestampInline",
