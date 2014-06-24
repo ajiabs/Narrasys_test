@@ -197,3 +197,9 @@ bugfix: timestampNone items shouldn't have extra padding on left
 Changes in v1.7.4:
 bugfix: restoring lost dataSvc code from 78ae52c
 
+------------------------------------------------
+Changes in v1.7.5:
+Forced scene-explore to white background; fixed layout issue in other scenes that prevented background color from appearing
+corrected pull quote margins
+Fixed screwy behavior in FF30.0 related to 3d transforms
+
