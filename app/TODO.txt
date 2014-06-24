@@ -1,14 +1,8 @@
 
-For USC:
-credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
-credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
-
-Test badge event's use of localStorage data in cases where localStorage isn't present but user has legit login (if that even exists.  Safari in privacy mode?)
-
 
 Improve reviewMode templates (review-annotation and review-transmedia)
 
-Landing screen template
+Landing screen template(s)
 
 Remaining link item templates
 
@@ -25,6 +19,14 @@ Help panel (and related cookie)
 
 Bottom toolbar:  finetune layout
 
+Analytics: new fields from user data to control whetehr metrics are stored
+
+
+For USC:
+credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
+credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
+
+Test badge event's use of localStorage data in cases where localStorage isn't present but user has legit login (if that even exists.  Safari in privacy mode?)
 
 
 
@@ -36,18 +38,17 @@ landingScreen template for episode?  (no, instead  Producer should automatically
 
 Producer stuff: put an "add" button with ng-if="producer" in every fg, content, and bg pane
 
-
 Consider eliminating fg panes other than windowFg (check existing episodes, are any using them?)
 
 
 
 
-test hide/reveal events on bottom toolbar on touchscreens
+fix hide/reveal events on bottom toolbar on touchscreens (currently it's never hiding)
 
-Video: youtube/safari is having some permissions issues...
+Video: youtube/safari is having some http vs https permissions issues when testing locally; may be fine on live server (since that is https too) but need to test...
 
 
-error display handler
+build error display handler
 
 
 Rewrite timelineSvc to better handle multiple episodes (easiest way is probably to write timelineStart and End into each event...?)

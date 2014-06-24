@@ -37,12 +37,13 @@ angular.module('com.inthetelling.player')
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		modelSvc.addLandingScreen($routeParams.epId);
-		dataSvc.getEpisode($routeParams.epId);
+		modelSvc.appState.episodeId = $routeParams.epId;
+		modelSvc.addLandingScreen(modelSvc.appState.episodeId);
+		dataSvc.getEpisode(modelSvc.appState.episodeId);
 
 		// Watch for the first load of the episode data; init the master asset and page title when found
 		var episodeWatcher = $scope.$watch(function() {
-			return modelSvc.episodes[$routeParams.epId].title;
+			return modelSvc.episodes[modelSvc.appState.episodeId].title;
 		}, function(a, b) {
 			if (a !== b) {
 				document.title = "STORY: " + a;
@@ -52,15 +53,15 @@ angular.module('com.inthetelling.player')
 
 		// Watch for the first load of the episode items; update the timeline when found
 		var eventsWatcher = $scope.$watch(function() {
-			return modelSvc.episodes[$routeParams.epId].items;
+			return modelSvc.episodes[modelSvc.appState.episodeId].items;
 		}, function(a, b) {
 			if (a) {
-				timelineSvc.init($routeParams.epId);
+				timelineSvc.init(modelSvc.appState.episodeId);
 				eventsWatcher(); // stop watching
 			}
 		});
 
-		$scope.episode = modelSvc.episode($routeParams.epId);
+		$scope.episode = modelSvc.episode(modelSvc.appState.episodeId);
 		$scope.appState = modelSvc.appState;
 		$scope.show = modelSvc.appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();

@@ -1,6 +1,13 @@
 'use strict';
 
 /* 
+
+TODO:
+		There are 2 new fields that get returned with the get_access_token call.  They are as follows:  "track_event_actions":true  and "track_episode_metrics":true
+		Please use those to determine whether or not we should be tracking data about users.  They default to true but will give us the ability to override this behavior at the customer or user level.  User level takes precedence.
+
+
+
 There are two separate types of user activity to capture, which go to separate API endpoints.
 Some types must contain additional info in a "data" object:
 
@@ -154,7 +161,7 @@ angular.module('com.inthetelling.player')
 		var post = function(endpoint, endpointData) {
 			$http({
 				method: 'POST',
-				url: config.apiDataBaseUrl + '/v2/episodes/' + $routeParams.epId + '/' + endpoint,
+				url: config.apiDataBaseUrl + '/v2/episodes/' + modelSvc.appState.episodeId + '/' + endpoint,
 				data: endpointData
 			}).success(function(respData, respStatus, respHeaders) {
 				console.log("SUCCESS", respData, respStatus, respHeaders);
