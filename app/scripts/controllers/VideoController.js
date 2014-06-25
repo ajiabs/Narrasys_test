@@ -192,7 +192,7 @@ webkitendfullscreen */
 				if ($scope.YTPlayer.isMuted()) {
 					$scope.YTPlayer.unMute();
 				} else {
-					$scope.YTPlyer.mute();
+					$scope.YTPlayer.mute();
 				}
 			} else {
 				$scope.videoNode.muted = !($scope.videoNode.muted);
