@@ -63,28 +63,26 @@ angular.module('com.inthetelling.player')
 						// TODO: have analytics record that this event has been reached, so it can be used as a trigger for 
 						// other achievements
 
-						// Don't show this to guest users!   TODO: handle case where no localStorage?
+						// Don't show this to guest users
+						var userData = modelSvc.appState.user;
 
-						if (localStorage && localStorage.storyAuth) {
-							var userData = angular.fromJson(localStorage.storyAuth);
-							if (userData.roles.length && userData.roles[0] !== 'guest') {
-								scope.plugin.eligibleForBadges = true;
-								scope.plugin.userEmail = userData.emails[0];
-								scope.plugin.totalAchieved = 0;
+						if (userData.roles.length && userData.roles[0] !== 'guest') {
+							scope.plugin.eligibleForBadges = true;
+							scope.plugin.userEmail = userData.emails[0];
+							scope.plugin.totalAchieved = 0;
 
-								angular.forEach(scope.plugin.requirements, function(req) {
-									analyticsSvc.readEventActivity(req.eventId, req.activity)
-										.then(function(achieved) {
-											req.achieved = achieved;
-											if (achieved) {
-												scope.plugin.totalAchieved++;
-											}
-										});
-								});
-							} else {
-								// not badge-eligible, move on(?)  TODO
-								//timelineSvc.play();
-							}
+							angular.forEach(scope.plugin.requirements, function(req) {
+								analyticsSvc.readEventActivity(req.eventId, req.activity)
+									.then(function(achieved) {
+										req.achieved = achieved;
+										if (achieved) {
+											scope.plugin.totalAchieved++;
+										}
+									});
+							});
+						} else {
+							// not badge-eligible, move on
+							//timelineSvc.play();
 						}
 
 						scope.badger = function() {

@@ -1,4 +1,4 @@
-<div class="item" ng-class="item.styleCss + ' ' + item.state">
+<div ng-if="true || plugin.eligibleForBadges" class="item" ng-class="item.styleCss + ' ' + item.state">
 	<div class="itemHead">
 		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.start_time | asTime}}</div>
 		This is for testing the credly badge.
@@ -14,28 +14,23 @@
 	</div>
 
 
-	<div ng-if="plugin.eligibleForBadges">
-		<p ng-if="plugin.totalAchieved != plugin.requirements.length">
-			You have completed {{plugin.totalAchieved}} of {{plugin.requirements.length}} parts of this achievement
-		</p>
+	<p ng-if="plugin.totalAchieved != plugin.requirements.length">
+		You have completed {{plugin.totalAchieved}} of {{plugin.requirements.length}} parts of this achievement
+	</p>
 
-		<div ng-if="plugin.totalAchieved == plugin.requirements.length && ! plugin.gotBadge">
-			<p>YOU WIN THE INTERNETS</p>
+	<div ng-if="plugin.totalAchieved == plugin.requirements.length && ! plugin.gotBadge">
+		<p>YOU WIN THE INTERNETS</p>
 
-			You're eligible for a badge from credly.com. Enter your email address to claim it:
-			<input type="text" ng-model="plugin.userEmail">
-			<input type="button" value="Go" ng-click="badger()">
+		You're eligible for a badge from credly.com. Enter your email address to claim it:
+		<input type="text" ng-model="plugin.userEmail">
+		<input type="button" value="Go" ng-click="badger()">
 
-			<span ng-if="plugin.gettingBadge">Getting your badge...</span>
+		<span ng-if="plugin.gettingBadge">Getting your badge...</span>
 
-		</div>
-		<div ng-if="plugin.gotBadge">
-			Your badge is in the mail.
-			<span ng-if="plugin.alreadyHadBadge">(It looks like you've already acquired this badge; you might want to check your spam folder for an email from credly.com.)</span>
-		</div>
 	</div>
-	<div ng-if="!plugin.eligibleForBadges">
-		[Text to be shown to non-logged-in users]
+	<div ng-if="plugin.gotBadge">
+		Your badge is in the mail.
+		<span ng-if="plugin.alreadyHadBadge">(It looks like you've already acquired this badge; you might want to check your spam folder for an email from credly.com.)</span>
 	</div>
 
 

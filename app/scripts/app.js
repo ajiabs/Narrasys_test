@@ -70,7 +70,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
 			function error(response) {
 				var status = response.status;
 				if (status === 401) {
-					console.log("INTERCEPTOR GOT 401");
+					console.warn("INTERCEPTOR GOT 401");
 					if (localStorage.storyAuth) {
 						// read the login url, if there is one, and redirect to it:
 						var storedData = angular.fromJson(localStorage.storyAuth);
@@ -87,7 +87,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
 					window.location.reload();
 					return false;
 				}
-				console.log("INTERCEPTOR REJECT:", response);
+				console.warn("INTERCEPTOR GOT NON-401 ERROR:", response);
 				//return $q.reject(response);
 			}
 			return function(promise) {

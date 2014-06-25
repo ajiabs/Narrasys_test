@@ -1,4 +1,5 @@
 
+Add a 'play' icon to the video (esp when no poster is available)
 
 Improve reviewMode templates (review-annotation and review-transmedia)
 
@@ -21,13 +22,14 @@ Bottom toolbar:  finetune layout
 
 Analytics: new fields from user data to control whetehr metrics are stored
 
+Add keyboard commands (ESC to dismiss modals, SPACE to toggle play/pause, others?)
 
 For USC:
 credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
 credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
 
-Test badge event's use of localStorage data in cases where localStorage isn't present but user has legit login (if that even exists.  Safari in privacy mode?)
 
+app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (if that ever happens?)
 
 
 
