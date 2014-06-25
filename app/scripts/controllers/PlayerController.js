@@ -138,7 +138,6 @@ angular.module('com.inthetelling.player')
 		} catch (e) {
 			localStorageAllowed = false;
 		}
-
 		if (localStorageAllowed) {
 			localStorage.removeItem("iCanHazStorage");
 			if (!(localStorage.getItem("noMoreHelp"))) {
@@ -155,8 +154,10 @@ angular.module('com.inthetelling.player')
 			}
 		}
 
-		$scope.hideHelpPanel = function() {
+		$scope.hidePanels = function() {
 			modelSvc.appState.show.helpPanel = false;
+			modelSvc.appState.show.navPanel = false;
+			modelSvc.appState.show.searchPanel = false;
 		};
 
 		$scope.noMoreHelp = function() {
