@@ -378,7 +378,8 @@ angular.module('com.inthetelling.player')
 				}
 			});
 
-			//keep events sorted by time
+			//keep events sorted by time.
+			// TODO when times are the same, put the stop event last
 			svc.timelineEvents = svc.timelineEvents.sort(function(a, b) {
 				return a.t - b.t;
 			});
