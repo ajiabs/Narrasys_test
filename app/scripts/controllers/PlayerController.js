@@ -130,6 +130,35 @@ angular.module('com.inthetelling.player')
 			timelineSvc.seek(t, "sceneMenu");
 		};
 
+		// show the help pane, only if localStorage is settable and there isn't one already.
+		// (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
+		localStorage.setItem("iCanHazStorage", 1);
+		if (localStorage.getItem("iCanHazStorage")) {
+			localStorage.removeItem("iCanHazStorage");
+			if (!(localStorage.getItem("noMoreHelp"))) {
+				// show the help panel only when the timeline is past the landing screen:
+				var helpWatcher = $scope.$watch(function() {
+					return modelSvc.appState.time;
+				}, function(newVal) {
+					if (newVal > 0) {
+						helpWatcher();
+						timelineSvc.pause();
+						modelSvc.appState.show.helpPanel = true;
+					}
+				});
+			}
+		}
+
+		$scope.hideHelpPanel = function() {
+			modelSvc.appState.show.helpPanel = false;
+		};
+
+		$scope.noMoreHelp = function() {
+			modelSvc.appState.show.helpPanel = false;
+			localStorage.setItem("noMoreHelp", "1");
+		};
+
+
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 		// Autoscroll
 		// Some jQuery dependencies here (namespaced bindings, animated scroll)

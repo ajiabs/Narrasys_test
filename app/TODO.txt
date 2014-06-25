@@ -11,25 +11,27 @@ Episode templates
 
 item layouts in content panes (sidebar, burst margins)
 
-timelineSvc is not recognizing all stop items...  debug!
+
 
 Compare all item templates to existing episodes for backwards compatibility....
 
 
-Help panel (and related cookie)
-
 Bottom toolbar:  finetune layout
 
-Analytics: new fields from user data to control whetehr metrics are stored
+
+Add 'loading' UI to (at least) episode
 
 Add keyboard commands (ESC to dismiss modals, SPACE to toggle play/pause, others?)
+
+timeline seek should trigger autoscroll immediately
+
 
 For USC:
 credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
 credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
 
 
-app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (if that ever happens?)
+app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (check Safari in "private browsing" mode for example)
 
 
 
@@ -64,6 +66,8 @@ Add a "skip" type of event to allow skipping scenes
 
 
 Scenes: handle showTimeline layouts
+
+"text" scenes:  hide video and video controls altogether, have a button at the end to start the next scene (landing screen could be a special case of this)
 
 
 Build a demo analytics dashboard

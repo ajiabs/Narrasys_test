@@ -18,15 +18,13 @@
 				<span>Review</span>
 			</a>
 		</div>
-		<!-- 
-		<div ng-if="appState.producer && appState.viewMode == 'discover'" class="buttongroup">
+		<!-- <div ng-if="appState.producer && appState.viewMode == 'discover'" class="buttongroup">
 			<a class="button" ng-click="editLayer('scene');">Scene<span>Edit the scene layout (TODO)</span></a>
-		<a class="button" ng-click="editLayer('bgLayer');">BG<span>Edit the background layer</span></a>
-		<a class="button" ng-click="editLayer('contentLayer');">C<span>Edit the content layer</span></a>
-		<a class="button" ng-click="editLayer('fgLayer');">FG<span>Edit the foreground layer</span></a>
-		<a class="button" ng-click="editLayer('');">All<span>Show everything</span></a>
-	</div>
-	-->
+			<a class="button" ng-click="editLayer('bgLayer');">BG<span>Edit the background layer</span></a>
+			<a class="button" ng-click="editLayer('contentLayer');">C<span>Edit the content layer</span></a>
+			<a class="button" ng-click="editLayer('fgLayer');">FG<span>Edit the foreground layer</span></a>
+			<a class="button" ng-click="editLayer('');">All<span>Show everything</span></a>
+		</div> -->
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 			<a ng-click="mainframeescape();" class="button button-mainframeescape">
 				<span>New window</span>
@@ -50,6 +48,27 @@
 	<div ng-show="show.searchPanel" class="modal-backdrop searchPanel-backdrop" ng-click="toggleSearchPanel()"></div>
 	<div ng-show="show.searchPanel" class="searchPanel">
 		<div ng-show="show.searchPanel" itt-search-panel>This will be the search panel</div>
+	</div>
+
+	<div class="modal-backdrop help-backdrop" ng-click="hideHelpPanel()" ng-show="show.helpPanel"></div>
+	<div ng-if="show.helpPanel" class="helpPanel">
+		<div class="arrow-up"></div>
+		<p>Welcome to TELLING STORY! You can switch at any time between these views &#8212; don't worry, you won't lose your place:</p>
+		<ul>
+			<li class="video">
+				<h3>Watch</h3>
+				<p>Just the video, no frills.</p>
+			</li>
+			<li class="directed">
+				<h3>Discover</h3>
+				<p>The guided, synchronized view of the video and related content.</p>
+			</li>
+			<li class="explore">
+				<h3>Review</h3>
+				<p>Read the full transcript and all the related transmedia in one convenient list.</p>
+			</li>
+		</ul>
+		<a class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;">Don't show this again</a>
 	</div>
 
 	<!-- scene navbar -->
