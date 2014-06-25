@@ -37,7 +37,7 @@ Different types of event can define their own interactions, but the core ones wi
 
 angular.module('com.inthetelling.player')
 	.factory('analyticsSvc', function($q, $http, $routeParams, $interval, config, modelSvc) {
-		console.log('analyticsSvc factory');
+		// console.log('analyticsSvc factory');
 		var svc = {};
 
 		svc.activityQueue = []; // contains events not yet sent to the server.
@@ -48,7 +48,7 @@ angular.module('com.inthetelling.player')
 
 		// don't try to capture when running from local data:
 		if ($routeParams.local) {
-			console.log("No analytics for local data; cancelling activity queue");
+			// console.log("No analytics for local data; cancelling activity queue");
 			$interval.cancel(flusher);
 		}
 
@@ -121,7 +121,7 @@ angular.module('com.inthetelling.player')
 
 
 		svc.flushActivityQueue = function() {
-			console.log("flush interval");
+			// console.log("flush interval");
 			if (svc.activityQueue.length === 0) {
 				return;
 			}
@@ -143,7 +143,7 @@ angular.module('com.inthetelling.player')
 			});
 
 			if (eventUserActions.length) {
-				console.log("Event actions to log:", eventUserActions);
+				// console.log("Event actions to log:", eventUserActions);
 				// /v2/episodes/<episode id>/event_user_actions
 				post("event_user_actions", {
 					"event_user_actions": eventUserActions
@@ -151,7 +151,7 @@ angular.module('com.inthetelling.player')
 
 			}
 			if (episodeUserMetrics.length) {
-				console.log("Episode metrics to log:", episodeUserMetrics);
+				// console.log("Episode metrics to log:", episodeUserMetrics);
 				post("episode_user_metrics", {
 					"episode_user_metrics": episodeUserMetrics
 				});

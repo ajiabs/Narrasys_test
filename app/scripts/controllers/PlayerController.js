@@ -94,18 +94,18 @@ angular.module('com.inthetelling.player')
 		});
 
 		$scope.showControls = function() {
-			console.log("showControls");
+			// console.log("showControls");
 			$timeout.cancel(controlTimer);
 			modelSvc.appState.videoControlsActive = true;
 		};
 
 		$scope.keepControls = function() {
-			console.log("keepControls");
+			// console.log("keepControls");
 			keepControls = true;
 		};
 
 		$scope.allowControlsExit = function() {
-			console.log("allowControlsExit");
+			// console.log("allowControlsExit");
 			keepControls = false;
 			$timeout.cancel(controlTimer);
 			controlTimer = $timeout(function() {

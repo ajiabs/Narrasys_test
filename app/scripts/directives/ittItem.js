@@ -15,7 +15,6 @@ angular.module('com.inthetelling.player')
 				item: '=ittItem'
 			},
 			template: function(el, attrs) {
-				console.log("item template", attrs.forcetemplate);
 				if (attrs.forcetemplate) {
 					return '<div ng-include="\'templates/item/' + attrs.forcetemplate + '.html\'"></div>';
 				} else {
@@ -31,7 +30,6 @@ angular.module('com.inthetelling.player')
 				if (scope.item.data) {
 					scope.plugin = scope.item.data._plugin;
 					scope.plugin._type = scope.item.data._pluginType;
-					console.log("Plugin:", scope.plugin._type);
 
 					// BEGIN multiple choice question
 					if (scope.plugin._type === 'multiplechoice') {
@@ -51,7 +49,7 @@ angular.module('com.inthetelling.player')
 						};
 
 						scope.resetQuestion = function() {
-							console.log("RESET");
+							// console.log("RESET");
 							scope.plugin.selectedDistractor = undefined;
 							scope.plugin.hasBeenAnswered = false;
 							for (var i = 0; i < scope.plugin.distractors.length; i++) {
@@ -84,8 +82,8 @@ angular.module('com.inthetelling.player')
 										});
 								});
 							} else {
-								// not badge-eligible, move on
-								timelineSvc.play();
+								// not badge-eligible, move on(?)  TODO
+								//timelineSvc.play();
 							}
 						}
 
@@ -97,7 +95,7 @@ angular.module('com.inthetelling.player')
 							}).
 							success(function(data, status, headers, config) {
 								// TODO check the data to make sure it's not status: "Badge previously sent."
-								console.log("SUCCESS", data);
+								// console.log("SUCCESS", data);
 								if (data.status === 'Badge previously sent.') {
 									scope.plugin.alreadyHadBadge = true;
 								}
@@ -115,7 +113,7 @@ angular.module('com.inthetelling.player')
 				// end plugin
 
 				scope.toggleDetailView = function() {
-					console.log("Item toggleDetailView");
+					// console.log("Item toggleDetailView");
 					if (scope.item.showInlineDetail) {
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
 						scope.item.showInlineDetail = false;
