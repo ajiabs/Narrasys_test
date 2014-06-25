@@ -426,7 +426,7 @@ angular.module('com.inthetelling.player')
 			}
 
 			// TEMPORARILY DISABLING YOUTUBE
-			videoObject.youtube = undefined;
+			//videoObject.youtube = undefined;
 
 			videoAsset.video = videoObject;
 

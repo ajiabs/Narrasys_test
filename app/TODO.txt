@@ -24,6 +24,7 @@ Add 'loading' UI to (at least) episode
 Add keyboard commands (ESC to dismiss modals, SPACE to toggle play/pause, others?)
 
 timeline seek should trigger autoscroll immediately
+timeline seek should wait for video to buffer before starting timeline clock
 
 
 For USC:

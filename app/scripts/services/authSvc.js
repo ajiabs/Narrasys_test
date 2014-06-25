@@ -85,9 +85,9 @@ angular.module('com.inthetelling.player')
 
 					// Got user data.  Cache it in localStorage and appState
 					modelSvc.appState.user = data;
-					if (localStorage) {
+					try {
 						localStorage.setItem("storyAuth", JSON.stringify(data));
-					}
+					} catch (e) {}
 
 					svc.roles = data.roles; // TODO: do something useful with roles
 					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';

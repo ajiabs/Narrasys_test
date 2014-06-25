@@ -132,8 +132,14 @@ angular.module('com.inthetelling.player')
 
 		// show the help pane, only if localStorage is settable and there isn't one already.
 		// (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
-		localStorage.setItem("iCanHazStorage", 1);
-		if (localStorage.getItem("iCanHazStorage")) {
+		var localStorageAllowed = true;
+		try {
+			localStorage.setItem("iCanHazStorage", 1);
+		} catch (e) {
+			localStorageAllowed = false;
+		}
+
+		if (localStorageAllowed) {
 			localStorage.removeItem("iCanHazStorage");
 			if (!(localStorage.getItem("noMoreHelp"))) {
 				// show the help panel only when the timeline is past the landing screen:
