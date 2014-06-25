@@ -93,7 +93,7 @@ angular.module('com.inthetelling.player')
 			}
 			console.log("user requested 'play'");
 			videoScope.play().then(function() {
-				console.log("play begins");
+				console.log("play begins at time ", modelSvc.appState.time);
 				modelSvc.appState.timelineState = "playing";
 				// videoSynchronizer = $interval(synchronize, 1000); // if you change this interval you must also change the target adjustment rate inside synchronise()
 				_tick();
@@ -207,7 +207,6 @@ angular.module('com.inthetelling.player')
 		resetEventClock();
 
 		var startEventClock = function() {
-			//			resetEventClock(); (should it?)
 			eventClockData.lastTimelineTime = modelSvc.appState.time;
 			eventClockData.lastVideoTime = modelSvc.appState.time; // TODO this should be relative to episode, not timeline
 			stepEvent();
@@ -225,8 +224,10 @@ angular.module('com.inthetelling.player')
 			}
 			var vidTime = videoScope.currentTime();
 			var ourTime = modelSvc.appState.time;
+			console.log("stepEvent handling events from ", eventClockData.lastTimelineTime, " to ", ourTime);
 
-			// TODO check video time delta, adjust ourTime as needed
+			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
+			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
 
 			// find timeline events since last time stepEvent ran, handle them in order until one is a stop or a seek
 			for (var i = 0; i < svc.timelineEvents.length; i++) {
@@ -235,11 +236,16 @@ angular.module('com.inthetelling.player')
 					if (evt.t > ourTime) {
 						break; // NOTE! next event should be this one; let i fall through as is
 					}
-					console.log("Handling event ", evt);
-					handleEvent(evt);
-					if (evt.action === "pause") {
-						i++;
-						break; //NOTE! next event should be the one AFTER the stop event, so let i++ fall through
+					// Don't let stop events stop us before we even start.
+					// (if the stop event and lastTimelineTime match, that stop event is what stopped us in the first place)
+					if (evt.action === "pause" && evt.t === eventClockData.lastTimelineTime) {
+						console.log("Skipping pause event");
+					} else {
+						handleEvent(evt);
+						if (evt.action === "pause") {
+							i++;
+							break; //NOTE! next event should be the one AFTER the stop event, so let i++ fall through
+						}
 					}
 				}
 			}
@@ -264,10 +270,11 @@ angular.module('com.inthetelling.player')
 
 
 		var handleEvent = function(event) {
-			// console.log("handle event: ", event);
+			console.log("handle event: ", event);
 			if (event.id === 'timeline') {
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
+					modelSvc.appState.time = event.t;
 					svc.pause(); // TODO handle pause with duration too
 				} else {
 					svc.play();
@@ -322,6 +329,7 @@ angular.module('com.inthetelling.player')
 		// TODO: ensure scenes are contiguous and non-overlapping
 
 		svc.injectEvents = function(events, injectionTime) {
+			console.log("timelineSvc.injectEvents");
 			if (events.length === 0) {
 				return;
 			}
@@ -351,7 +359,7 @@ angular.module('com.inthetelling.player')
 					// For now, ignore end_time on stop events; they always end immediately after user hits play again.
 					// TODO: In future we'll allow durations on stop events so the video will start automatically after that elapses.
 					svc.timelineEvents.push({
-						t: (event.start_time + 0.01 + injectionTime),
+						t: (event.start_time + injectionTime + 0.01),
 						id: event._id,
 						action: "exit"
 					});
@@ -379,10 +387,26 @@ angular.module('com.inthetelling.player')
 			});
 
 			//keep events sorted by time.
-			// TODO when times are the same, put the stop event last
+			// Simultaneous events should be sorted as enter, then stop, then exit
+
 			svc.timelineEvents = svc.timelineEvents.sort(function(a, b) {
-				return a.t - b.t;
+				if (a.t === b.t) {
+
+					if (b.action === "enter") {
+						return 1;
+					}
+					if (b.action === "exit") {
+						return -1;
+					}
+					return 0;
+				} else {
+					return a.t - b.t;
+				}
 			});
+
+			// for (var i = 0; i < svc.timelineEvents.length; i++) {
+			// 	console.log(svc.timelineEvents[i].t, svc.timelineEvents[i].action);
+			// }
 
 			// Timeline duration is t of the last timelineEvent
 			modelSvc.appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
@@ -392,7 +416,7 @@ angular.module('com.inthetelling.player')
 		};
 
 		svc.updateEventStates = function() {
-			// console.log("timelineSvc.updateEventStates");
+			console.log("timelineSvc.updateEventStates");
 			// Sets past/present/future state of every event in the timeline.  
 			// TODO performance check (though this isn't done often, only on seek and inject.)
 
@@ -407,6 +431,7 @@ angular.module('com.inthetelling.player')
 					event.isCurrent = false;
 				}
 			});
+
 			// 2nd pass, step through all events before now:
 			angular.forEach(svc.timelineEvents, function(tE) {
 				if (tE.t <= now) {
