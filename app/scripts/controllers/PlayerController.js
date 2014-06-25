@@ -52,11 +52,13 @@ angular.module('com.inthetelling.player')
 		});
 
 		// Watch for the first load of the episode items; update the timeline when found
+		$scope.loading = true;
 		var eventsWatcher = $scope.$watch(function() {
 			return modelSvc.episodes[modelSvc.appState.episodeId].items;
 		}, function(a, b) {
 			if (a) {
 				timelineSvc.init(modelSvc.appState.episodeId);
+				$scope.loading = false;
 				eventsWatcher(); // stop watching
 			}
 		});
@@ -147,8 +149,10 @@ angular.module('com.inthetelling.player')
 				}, function(newVal) {
 					if (newVal > 0) {
 						helpWatcher();
-						timelineSvc.pause();
-						modelSvc.appState.show.helpPanel = true;
+						$timeout(function() {
+							timelineSvc.pause();
+							modelSvc.appState.show.helpPanel = true;
+						});
 					}
 				});
 			}
@@ -163,8 +167,8 @@ angular.module('com.inthetelling.player')
 		$scope.noMoreHelp = function() {
 			modelSvc.appState.show.helpPanel = false;
 			localStorage.setItem("noMoreHelp", "1");
+			timelineSvc.play();
 		};
-
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 		// Autoscroll

@@ -42,7 +42,6 @@
 	<div itt-magnetized class="pane videoContainer">
 		<div class="video contentLayer" itt-video="episode.masterAsset.video"></div>
 		<div class="pane fill overlay fgLayer">
-			<!-- Video Overlays -->
 			<div itt-item="item" class="animate" ng-repeat="item in episode.items | itemLayout:'videoOverlay' | isCurrent"></div>
 		</div>
 	</div>
@@ -52,9 +51,17 @@
 	</span>
 
 	<div class="fill overlay windowFg fgLayer" ng-show="appState.viewMode == 'discover'">
-		<!-- WindowFg -->
 		<div itt-item="item" class="animate" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowFg'">
 		</div>
+	</div>
+
+	<div ng-if="loading" class="loading">
+		<div class="spinner">
+			<div class="rotating pie"></div>
+			<div class="filler pie"></div>
+			<div class="mask"></div>
+		</div>
+		Loading
 	</div>
 
 	<div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
