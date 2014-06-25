@@ -143,6 +143,7 @@ webkitendfullscreen */
 			}
 		};
 
+
 		$scope.seek = function(t) {
 			// console.log("VIDEO seek to ", t);
 			try {

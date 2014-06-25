@@ -4,8 +4,10 @@
 Son of cuePointScheduler, with a smattering of video controls.    
 
 
-This needs a bit of a rewrite before it can safely handle more than one episode at a time.
-
+This needs a bit of a rewrite before it can safely handle more than one episode at a time:
+stepEvent (and probably other things too) currently depends on video time matching timeline time;
+we'll need to have a way to calculate one from the other (which will get especially complicated when 
+we allow skipping scenes in SxS...)
 
 
 
@@ -15,7 +17,11 @@ keeps an sorted-by-time array of timed events.
 
 There are two separate loops here:
 clock() just updates appState.time on a tight interval, purely for time display.
-stepEvent() sets a timeout to trigger the next event in svc.timelineEvents and handles the actual event.
+stepEvent() runs on a slower interval, watches the current video's reported current time,
+            and handles the events since it was last called.  If one of them is
+            a stop event, it may 'rewind' the timeline to that time.
+
+
 
 modelSvc.appState.time is the current playhead position
 timeMultiplier is the playback speed. No negative values or zero.
@@ -34,14 +40,6 @@ pause(n)
 
 seek(t) 
 	moves to time t and immediately updates past/current/future for all events (in future, just those between oldT and newT)
-
-
-stepEvent(): 
-	find the next event in the event list, set a timeout to (its start - now) -- allowing for the multiplier -- to:
-		handle that event (make an item enter, exit)
-		handle any simultaneous 
-		(future?) handle events that are within some fraction of a second later (so we don't lose events between $digests)
-		iterate
 
 
 init resets everything
@@ -64,8 +62,8 @@ angular.module('com.inthetelling.player')
 		svc.markedEvents = []; // time, title of marked events (scenes, currently)
 
 		var clock;
+		var eventTimeout;
 		var videoScope;
-		var videoSynchronizer;
 
 		var timeMultiplier;
 
@@ -85,7 +83,6 @@ angular.module('com.inthetelling.player')
 			timeMultiplier = speed;
 			modelSvc.appState.timeMultiplier = timeMultiplier; // here, and only here, make this public (this is the untweaked, user-selected speed.)
 			videoScope.setSpeed(speed);
-			stepEvent();
 		};
 
 		//TODO video should return a promise and callback only when the video actually starts playing
@@ -98,10 +95,12 @@ angular.module('com.inthetelling.player')
 			videoScope.play().then(function() {
 				console.log("play begins");
 				modelSvc.appState.timelineState = "playing";
-				videoSynchronizer = $interval(synchronize, 1000); // if you change this interval you must also change the target adjustment rate inside synchronise()
+				// videoSynchronizer = $interval(synchronize, 1000); // if you change this interval you must also change the target adjustment rate inside synchronise()
 				_tick();
 				clock = $interval(_tick, 20);
-				stepEvent();
+
+				startEventClock();
+
 				analyticsSvc.captureEpisodeActivity("play");
 			});
 		};
@@ -109,11 +108,11 @@ angular.module('com.inthetelling.player')
 		svc.pause = function(n) {
 			// console.log("timelineSvc.pause");
 			$interval.cancel(clock);
-			$interval.cancel(videoSynchronizer);
-			$timeout.cancel(eventTimeout);
+			stopEventClock();
+			// $interval.cancel(videoSynchronizer);
 			clock = undefined;
 			lastTick = undefined;
-			videoSynchronizer = undefined;
+			// videoSynchronizer = undefined;
 			modelSvc.appState.timelineState = "paused";
 			videoScope.pause();
 			if (n) {
@@ -134,7 +133,8 @@ angular.module('com.inthetelling.player')
 				}, 300);
 				return;
 			}
-			$timeout.cancel(eventTimeout);
+
+			stopEventClock();
 			var oldT = modelSvc.appState.time;
 			t = parseTime(t);
 			if (t < 0) {
@@ -143,15 +143,14 @@ angular.module('com.inthetelling.player')
 			if (t > modelSvc.appState.duration) {
 				t = modelSvc.appState.duration;
 			}
-			modelSvc.appState.time = t;
-			if (t > oldT) {
-				svc.updateEventStates(oldT, t);
-			} else {
-				svc.updateEventStates(t, oldT);
-			}
-			videoScope.seek(t);
-			stepEvent(); // sets timeout for next event, if we're playing. (Clock just keeps running uninterrupted by seek.)
 
+			modelSvc.appState.time = t;
+			svc.updateEventStates();
+			videoScope.seek(t);
+			if (modelSvc.appState.timelineState === 'playing') {
+				// TODO handle lag between seeking to new point and the video actually playing?
+				startEventClock();
+			}
 			// capture analytics data:
 			if (method) {
 				var captureData = {
@@ -167,10 +166,12 @@ angular.module('com.inthetelling.player')
 			}
 		};
 
+		// - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		// WHY IS THIS AUDIO CHOCOLATE IN MY TIMELINE PEANUT BUTTER?
 		// to make it easier to maintain state for these across multiple videos, when there are multiple videos.
-		// Possibly this is a dumb idea. If so, TODO: be less dumb
+		// Also because there isn't an obviously better place for it.  If this is dumb, TODO: be less dumb
+
 		svc.toggleMute = function() {
 			modelSvc.appState.muted = !modelSvc.appState.muted;
 			videoScope.toggleMute();
@@ -180,41 +181,87 @@ angular.module('com.inthetelling.player')
 			videoScope.setVolume(vol);
 		};
 
-		var eventTimeout;
-		var stepEvent = function(nextEventIndex) {
-			// console.log("stepEvent ", nextEventIndex, svc.timelineEvents[nextEventIndex]);
+		// - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// Event clock
+
+		/* 
+		So here's the plan: if timeline is playing, 
+			(TODO 1. find out how long since last checked, compare videotime delta to timeline delta, adjust timeline if necessary)
+
+			2. check for timeline events since the last time stepEvent ran, handle them in order
+			3. if any were stop events, 
+				rewind the timeline and the video to that time (and stop handling events)
+			otherwise
+				set a timeout for a bit after the next event in the queue, up to some maximum amount of time, to run again
+				(the 'up to some maximum' bit is for 1., so the timeline and video time don't fall out of synch)
+		*/
+
+		var eventClock, eventClockData;
+
+		var resetEventClock = function() {
+			eventClockData = {
+				lastTimelineTime: 0,
+				lastVideoTime: 0
+			};
+		};
+		resetEventClock();
+
+		var startEventClock = function() {
+			//			resetEventClock(); (should it?)
+			eventClockData.lastTimelineTime = modelSvc.appState.time;
+			eventClockData.lastVideoTime = modelSvc.appState.time; // TODO this should be relative to episode, not timeline
+			stepEvent();
+		};
+
+		var stopEventClock = function() {
+			$timeout.cancel(eventTimeout);
+			resetEventClock();
+		};
+
+		var stepEvent = function() {
 			$timeout.cancel(eventTimeout);
 			if (modelSvc.appState.timelineState !== 'playing') {
 				return;
 			}
-			var now = modelSvc.appState.time;
-			if (!nextEventIndex) {
-				// scan timelineEvents for the next event
-				var i;
-				for (i = 0; i < svc.timelineEvents.length; i++) {
-					if (svc.timelineEvents[i].t > now) {
-						nextEventIndex = i;
-						break;
+			var vidTime = videoScope.currentTime();
+			var ourTime = modelSvc.appState.time;
+
+			// TODO check video time delta, adjust ourTime as needed
+
+			// find timeline events since last time stepEvent ran, handle them in order until one is a stop or a seek
+			for (var i = 0; i < svc.timelineEvents.length; i++) {
+				var evt = svc.timelineEvents[i];
+				if (evt.t >= eventClockData.lastTimelineTime) {
+					if (evt.t > ourTime) {
+						break; // NOTE! next event should be this one; let i fall through as is
+					}
+					console.log("Handling event ", evt);
+					handleEvent(evt);
+					if (evt.action === "pause") {
+						i++;
+						break; //NOTE! next event should be the one AFTER the stop event, so let i++ fall through
 					}
 				}
 			}
-			if (nextEventIndex === undefined || nextEventIndex < 0 || nextEventIndex > svc.timelineEvents.length) {
-				return; // no more events
-			}
-			var delta = Math.abs(svc.timelineEvents[nextEventIndex].t - now) / Math.abs(timeMultiplier) * 1000;
-			// console.log("Next event in ", delta, "ms");
-			eventTimeout = $timeout(function() {
-				var t = svc.timelineEvents[nextEventIndex].t;
-				// console.log("handle events at time", t);
-				modelSvc.appState.time = t; // prevent drift
-				// Handle all events with the same t:
-				while (svc.timelineEvents[nextEventIndex].t === t) {
-					handleEvent(svc.timelineEvents[nextEventIndex]);
-					nextEventIndex = nextEventIndex + 1;
+			var nextEvent = svc.timelineEvents[i]; // i falls through from the break statements above
+
+			console.log("Next event is  ", svc.timelineEvents[i]);
+
+			eventClockData.lastVideoTime = vidTime;
+			eventClockData.lastTimelineTime = ourTime;
+
+			if (nextEvent && modelSvc.appState.timelineState === "playing") { // need to check timelineState in case there were stop events above
+				// Find out how long until the next event, and aim for just a bit after itL
+				var timeToNextEvent = (svc.timelineEvents[i].t - ourTime) * 1000;
+				/* don't need this until we start adjusting the timeline time to match video time
+				if (timeToNextEvent > 1000) {
+					timeToNextEvent = 1000;
 				}
-				stepEvent(nextEventIndex);
-			}, delta);
+				*/
+				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
+			}
 		};
+
 
 		var handleEvent = function(event) {
 			// console.log("handle event: ", event);
@@ -226,16 +273,16 @@ angular.module('com.inthetelling.player')
 					svc.play();
 				}
 			} else {
-				// if (event.action === "enter") {
-				// 	modelSvc.events[event.id].state = "isCurrent";
-				// 	modelSvc.events[event.id].isCurrent = true;
-				// } else {
-				// 	modelSvc.events[event.id].state = "isPast";
-				// 	modelSvc.events[event.id].isCurrent = false;
-				// }
-				svc.updateEventStates(); // TODO some events were getting skipped; bruteforcing until I can track that down
+				if (event.action === "enter") {
+					modelSvc.events[event.id].state = "isCurrent";
+					modelSvc.events[event.id].isCurrent = true;
+				} else {
+					modelSvc.events[event.id].state = "isPast";
+					modelSvc.events[event.id].isCurrent = false;
+				}
 			}
 		};
+
 
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
 		var lastTick;
@@ -256,21 +303,6 @@ angular.module('com.inthetelling.player')
 			lastTick = thisTick;
 		};
 
-		/*
-		svc.debugClockDrift = function() {
-		// There is indeed some clock drift -- it's slow by a fraction of a millisecond per second on my laptop.
-		// stepEvent also updates appState.time, so this small drift shouldn't be noticeable.
-			var start = new Date();
-			svc.play();
-			$timeout(function() {
-				var end = new Date();
-				console.log("Actual: "+(end-start)/1000);
-				console.log("Calculated: " + modelSvc.appState.time);
-				console.log("Drift is "+(( (modelSvc.appState.time)-((end-start)/1000) )/50)+" per second");
-				svc.pause();
-			},50000);
-		};
-		*/
 
 		svc.init = function(episodeId) {
 			// console.log("timelineSvc.init", episodeId);
@@ -278,11 +310,11 @@ angular.module('com.inthetelling.player')
 			timeMultiplier = 1;
 			modelSvc.appState.duration = 0;
 			modelSvc.appState.timelineState = 'paused';
-			stepEvent();
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
 		};
 
-		// for now only supports a single episode starting at injectionTime=0
+
+		// for now this only supports a single episode starting at injectionTime=0
 		// in future will be able to inject episode events at injectionTime=whatever, shifting any later events
 		// to their new time (based on the total duration of the injected group)
 		// (which we'll need to get probably by passing in episode.duration along with the events?)
@@ -340,7 +372,7 @@ angular.module('com.inthetelling.player')
 						// TODO: handle missing end times.  For transcript items, create an end time matching the start of the next transcript or the end of the scene or the duration (whichever comes first)
 						// For other items, create an end time matching the next scene start or the duration, whichever comes first
 						// For scenes, create an end time matching the start of the next scene or the duration, whichever comes first.
-						// That's complex logic, may be better handled in a second pass....
+						// That's complex logic, may be better handled in a second pass.... or, duh,  during authoring
 						console.warn("Missing end_time on event ", event);
 					}
 				}
@@ -354,20 +386,19 @@ angular.module('com.inthetelling.player')
 			// Timeline duration is t of the last timelineEvent
 			modelSvc.appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
 
-			svc.updateEventStates(0, modelSvc.appState.duration);
+			svc.updateEventStates();
 
 		};
 
-		svc.updateEventStates = function(startT, endT) {
+		svc.updateEventStates = function() {
 			// console.log("timelineSvc.updateEventStates");
-			// for now just bruteforcing the state of every event in the timeline.  
-			// Possible future optimization if necessary: only update those between startT and endT
-			// But this isn't run very often (only on seek, resynch, or injecting new events) so that's probably unnecessary
-
+			// Sets past/present/future state of every event in the timeline.  
+			// TODO performance check (though this isn't done often, only on seek and inject.)
 
 			// DO NOT check event start and end times directly; they're relative to the episode, not the timeline!
 			// instead preset everything to the future, then scan the timeline events up to now and set state based on enter/exit events per the timeline
 			var now = modelSvc.appState.time;
+			// put everything in the future state:
 			angular.forEach(svc.timelineEvents, function(tE) {
 				if (tE.id !== "timeline") {
 					var event = modelSvc.events[tE.id];
@@ -375,6 +406,7 @@ angular.module('com.inthetelling.player')
 					event.isCurrent = false;
 				}
 			});
+			// 2nd pass, step through all events before now:
 			angular.forEach(svc.timelineEvents, function(tE) {
 				if (tE.t <= now) {
 					var event = modelSvc.events[tE.id];
@@ -407,36 +439,6 @@ angular.module('com.inthetelling.player')
 				return parseFloat(parse[1] * 60);
 			}
 			console.error("Tried to parse invalid time string: ", t);
-		};
-
-		// called on slowish interval to keep the video and timeline in synch.
-		// (Video sometimes lags, is slow to respond to clicks, etc.) We still want our UI to respond immediately, 
-		// but if they have drifted a bit apart, adjust the timeline to match the video.
-
-		var synchronize = function() {
-			var vidTime = videoScope.currentTime();
-			var ourTime = modelSvc.appState.time;
-			var delta = vidTime - ourTime;
-			if (Math.abs(delta) > 1) {
-				//console.log("Video more than one second off synch");
-				// We're way off, so force it.  This will cause a video stutter, but if we're this far off already
-				// that's probably already happening
-
-				// TODO: This works ok with <video> but when youtube is having a bad hair day it stutters a lot. 
-				// Need a way to reset the local timeline w/out sending a seek signal to the video
-				svc.seek(vidTime);
-			} else if (Math.abs(delta) > 0.1) {
-				// console.log("Video is ", delta, " seconds ahead of timeline; correcting");
-				timeMultiplier = (delta / modelSvc.appState.timeMultiplier) + modelSvc.appState.timeMultiplier;
-				if (timeMultiplier < 0) {
-					timeMultiplier = 0;
-				}
-				//console.log("Adjusted speed is ", timeMultiplier);
-				stepEvent();
-			} else {
-				timeMultiplier = modelSvc.appState.timeMultiplier;
-			}
-
 		};
 
 		console.log("timelineSvc: ", svc);

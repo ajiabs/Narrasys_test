@@ -364,8 +364,8 @@ angular.module('com.inthetelling.player')
 				"templateUrl": "templates/scene/landingscreen.html",
 				"episode_id": episodeId,
 				"start_time": 0,
-				"end_time": 0,
-				"stop": true
+				"end_time": 0.001
+
 			};
 		};
 
