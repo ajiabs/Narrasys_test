@@ -54,6 +54,9 @@ angular.module('com.inthetelling.player')
 
 		// for episode-related activity
 		svc.captureEpisodeActivity = function(name, data) {
+			if (!modelSvc.appState.user.track_episode_metrics) {
+				return;
+			}
 			var userActivity = {
 				"name": name,
 				"walltime": new Date(),
@@ -67,6 +70,9 @@ angular.module('com.inthetelling.player')
 
 		// for transmedia-related activity
 		svc.captureEventActivity = function(name, eventID, data) {
+			if (!modelSvc.appState.user.track_event_actions) {
+				return;
+			}
 			svc.activityQueue.push({
 				"name": name,
 				"event_id": eventID,
