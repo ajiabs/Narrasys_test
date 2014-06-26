@@ -19,6 +19,15 @@ Compare all item templates to existing episodes for backwards compatibility....
 Bottom toolbar:  finetune layout
 
 
+iOS bug: matchVideoHeight isn't working on scene enter
+bug: landing screen isn't always getting dismissed when help pane is dismissed
+iOS bug: 'play' button isn't getting switched to 'pause' if user clicks on video to start
+iOS: laggy on older devices -- needs a performance pass, check $watch, bring back bind-once, etc
+iOS: toolbars and window scroll not playing nicely together (position:fixed inside scrollable element...)
+iOS: hide fullscreen button (and remove the css that supports it...)
+iOS: playhead needs to be draggable
+
+
 Add keyboard commands (ESC to dismiss modals, SPACE to toggle play/pause, others?)
 
 timeline seek should trigger autoscroll immediately

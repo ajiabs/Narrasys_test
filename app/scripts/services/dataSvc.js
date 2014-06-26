@@ -364,8 +364,8 @@ angular.module('com.inthetelling.player')
 				var transcript = angular.copy(annotationStub);
 				transcript._id = "transcript-" + i;
 				transcript.annotation = "Transcript block number " + (i + 1);
-				transcript.start_time = (i * 2);
-				transcript.end_time = (i * 2 + 2);
+				transcript.start_time = (i * 5);
+				transcript.end_time = (i * 5 + 5);
 				modelSvc.cache("event", transcript);
 			}
 
