@@ -12,6 +12,7 @@ angular.module('com.inthetelling.player')
 
 				console.log("ittSearchPanel", scope);
 
+				scope.indexEvents();
 
 			}
 
