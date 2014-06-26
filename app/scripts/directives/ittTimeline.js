@@ -1,7 +1,8 @@
 'use strict';
 
 // jQuery dependencies: offset(), animate(), namespaced .bind and .unbind 
-
+// TODO some events need to be unbound on destroy, which I'll get around to implementing if this ever needs to be destroyed
+// TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
 angular.module('com.inthetelling.player')
 	.directive('ittTimeline', function(modelSvc, timelineSvc) {
@@ -22,7 +23,7 @@ angular.module('com.inthetelling.player')
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');
 
-				// TODO: buffered video
+				// TODO: display buffered portion of video?
 
 				scope.prevScene = function() {
 					for (var i = timelineSvc.markedEvents.length - 1; i >= 0; i--) {
@@ -113,6 +114,8 @@ angular.module('com.inthetelling.player')
 					}
 					zoom();
 				};
+
+				// adjust the position of the playhead after a scale change:
 				var zoom = function() {
 					scope.zoomOffset = -((scope.zoomLevel - 1) * (modelSvc.appState.time / modelSvc.appState.duration));
 					timelineNode.animate({
@@ -139,40 +142,75 @@ angular.module('com.inthetelling.player')
 					}
 				}, true);
 
-				// triggered on mousedown:
-				scope.startSeek = function(evt) {
-					// console.log("SEEK");
+
+				// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+				// BEGIN handling of seek: mouse/touch interactions with the playhead
+				// startSeek when they mousedown or touchdown (binds the finish and cancel events)
+				// seeking on mousemove or touchmove (sets the time they will be seeking to)
+				// finishSeek when they mouseup or touchend inside the playhead (triggers the actual seek)
+				// cancelSeek when they mouseup or touchend outside the playhead (cancels)
+
+				var startSeek = function(evt) {
 					scope.isSeeking = true;
-					timelineContainer.bind('mouseup.timeline', function() {
-						//  trigger timeline change only on mouseup within progress bar.
-						// console.log("timeline mouseup");
-						scope.stopWatching = true;
-						timelineSvc.seek(scope.willSeekTo, "scrubTimeline");
-						zoom();
+
+					var userEventName = (modelSvc.appState.isTouchDevice) ? 'touchend.timeline' : 'mouseup.timeline';
+					timelineContainer.bind(userEventName, function() {
+						finishSeek();
 					});
-					angular.element(document).bind('mouseup.timeline', function() {
-						// console.log("doc mouseup");
-						// kill all events on  mouse up (anywhere).
-						angular.element(document).unbind('mouseup.timeline');
-						timelineContainer.unbind('mouseup.timeline');
-						scope.$apply(function() {
-							scope.isSeeking = false;
-						});
+					angular.element(document).bind(userEventName, function() {
+						cancelSeek();
 					});
-					scope.seeking(evt);
+					seeking(evt);
 				};
 
 				// triggered on mousemove:
-				scope.seeking = function(evt) {
+				var seeking = function(evt) {
 					if (!scope.isSeeking) {
 						return;
 					}
 					scope.willSeekTo = (evt.clientX - timelineNode.offset().left) / timelineNode.width() * modelSvc.appState.duration;
 				};
 
+				var finishSeek = function() {
+					console.log("timeline mouseup or touchend");
+					scope.stopWatching = true;
+					timelineSvc.seek(scope.willSeekTo, "scrubTimeline");
+					zoom();
+				};
 
+				var cancelSeek = function() {
+					console.log("doc mouseup or touchend");
+					// kill all events on  mouse up (anywhere).
+					angular.element(document).unbind('mouseup.timeline');
+					angular.element(document).unbind('touchend.timeline');
+					timelineContainer.unbind('mouseup.timeline');
+					timelineContainer.unbind('touchend.timeline');
+					scope.$apply(function() {
+						scope.isSeeking = false;
+					});
+				};
+
+				// bind playhead events:
+				var playhead = angular.element('#playhead');
+				if (modelSvc.appState.isTouchDevice) {
+					playhead.bind('touchstart.timeline', function(e) {
+						startSeek(e.originalEvent.targetTouches[0]);
+						e.preventDefault();
+					});
+					playhead.bind('touchmove.timeline', function(e) {
+						seeking(e.originalEvent.targetTouches[0]);
+						e.preventDefault();
+					});
+				} else {
+					playhead.bind('mousedown.timeline', function(e) {
+						startSeek(e);
+						e.preventDefault();
+					});
+					playhead.bind('mousemove.timeline', function(e) {
+						seeking(e);
+						e.preventDefault();
+					});
+				}
 			}
-
-
 		};
 	});

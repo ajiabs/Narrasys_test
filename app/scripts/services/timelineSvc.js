@@ -68,7 +68,7 @@ angular.module('com.inthetelling.player')
 		var timeMultiplier;
 
 		svc.registerVideo = function(newVideoScope) {
-			console.log("timelineSvc.registerVideo", newVideoScope);
+			// console.log("timelineSvc.registerVideo", newVideoScope);
 			if (videoScope !== undefined) {
 				// Route changes weren't always seeking to the correct time; this forces it on next $digest:
 				$timeout(function() {
@@ -91,9 +91,9 @@ angular.module('com.inthetelling.player')
 			if (angular.isDefined(clock)) {
 				return; // we're already playing
 			}
-			console.log("user requested 'play'");
+			// console.log("user requested 'play'");
 			videoScope.play().then(function() {
-				console.log("play begins at time ", modelSvc.appState.time);
+				// console.log("play begins at time ", modelSvc.appState.time);
 				modelSvc.appState.timelineState = "playing";
 				// videoSynchronizer = $interval(synchronize, 1000); // if you change this interval you must also change the target adjustment rate inside synchronise()
 				_tick();
@@ -123,7 +123,7 @@ angular.module('com.inthetelling.player')
 
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function(t, method, eventID) {
-			console.log("timelineSvc.seek ", t);
+			// console.log("timelineSvc.seek ", t);
 			if (!videoScope || modelSvc.appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
@@ -224,7 +224,7 @@ angular.module('com.inthetelling.player')
 			}
 			var vidTime = videoScope.currentTime();
 			var ourTime = modelSvc.appState.time;
-			console.log("stepEvent handling events from ", eventClockData.lastTimelineTime, " to ", ourTime);
+			// console.log("stepEvent handling events from ", eventClockData.lastTimelineTime, " to ", ourTime);
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
@@ -239,7 +239,7 @@ angular.module('com.inthetelling.player')
 					// Don't let stop events stop us before we even start.
 					// (if the stop event and lastTimelineTime match, that stop event is what stopped us in the first place)
 					if (evt.action === "pause" && evt.t === eventClockData.lastTimelineTime) {
-						console.log("Skipping pause event");
+						// console.log("Skipping pause event");
 					} else {
 						handleEvent(evt);
 						if (evt.action === "pause") {
@@ -251,7 +251,7 @@ angular.module('com.inthetelling.player')
 			}
 			var nextEvent = svc.timelineEvents[i]; // i falls through from the break statements above
 
-			console.log("Next event is  ", svc.timelineEvents[i]);
+			// console.log("Next event is  ", svc.timelineEvents[i]);
 
 			eventClockData.lastVideoTime = vidTime;
 			eventClockData.lastTimelineTime = ourTime;
@@ -270,7 +270,7 @@ angular.module('com.inthetelling.player')
 
 
 		var handleEvent = function(event) {
-			console.log("handle event: ", event);
+			// console.log("handle event: ", event);
 			if (event.id === 'timeline') {
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
@@ -329,7 +329,7 @@ angular.module('com.inthetelling.player')
 		// TODO: ensure scenes are contiguous and non-overlapping
 
 		svc.injectEvents = function(events, injectionTime) {
-			console.log("timelineSvc.injectEvents");
+			// console.log("timelineSvc.injectEvents");
 			if (events.length === 0) {
 				return;
 			}

@@ -27,7 +27,7 @@
 						<div class="tooltip-arrow"></div>
 					</div>
 				</div>
-				<div class="mask" ng-mousedown="startSeek($event)" ng-mousemove="seeking($event)">
+				<div id="playhead" class="mask">
 					<!-- interactive parts of timeline -->
 					<div class="progressbarContainer " style="width: {{zoomLevel}}00%">
 						<div class="marker" ng-mouseover="showTooltip(event);" ng-mouseout="hideTooltip(event)" ng-repeat="event in timeline.markedEvents" style="left: {{markerPercent(event.start_time)}}% "></div>
@@ -65,16 +65,18 @@
 				<span class="control-text">Captions</span>
 			</a>
 
-			<a class="button button-fullscreen" ng-class="{active: appState.isInFullscreenMode}" ng-click="toggleFullscreen()">
+			<a ng-if="!appState.isTouchDevice" class="button button-fullscreen" ng-class="{active: appState.isInFullscreenMode}" ng-click="toggleFullscreen()">
 				<span class="control-text">Fullscreen</span>
 			</a>
 
-			<a class="button button-mute {{audioIcon()}}" ng-click="toggleMute()">
-				<span class="control-text">Mute</span>
-			</a>
-			<div class="volumebar" ng-mousedown="userChangingVolume($event);">
-				<div class="volume" style="width: {{currentVolume()}}%"></div>
-			</div>
+			<span ng-if="!appState.isTouchDevice">
+				<a class="button button-mute {{audioIcon()}}" ng-click="toggleMute()">
+					<span class="control-text">Mute</span>
+				</a>
+				<div class="volumebar">
+					<div class="volume" style="width: {{currentVolume()}}%"></div>
+				</div>
+			</span>
 		</div>
 	</div>
 
