@@ -8,7 +8,7 @@ TODO: separate appState from modelSvc, just for tidiness sake?
 */
 
 angular.module('com.inthetelling.player')
-	.factory('modelSvc', function($interval) {
+	.factory('modelSvc', function($interval, $filter) {
 
 		var svc = {};
 
@@ -187,6 +187,8 @@ angular.module('com.inthetelling.player')
 			} else {
 				// console.error("Couldn't match event templateUrl: ", event.templateUrl);
 			}
+
+			event.displayStartTime = $filter("asTime")(event.start_time);
 
 			return event;
 		};
