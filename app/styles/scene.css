@@ -9,6 +9,11 @@
 	right: 0;
 	bottom: 0;
 }
+.windowFg {
+	position:fixed;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
 .content {
 	position:relative;
 }

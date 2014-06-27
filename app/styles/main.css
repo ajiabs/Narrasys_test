@@ -109,7 +109,7 @@ h1, h2, h3, h4 {
 	}
 }
 /* --------------------------------------------------------------------------------
- position:fixed needed for fullscreen.   TODO test if this screws up any other browsers...
+ position:fixed needed for fullscreen.   TODO This messes with iPad (at least); disable on iDevices... others?
 */
  #CONTAINER {
 	position:fixed;
@@ -124,7 +124,13 @@ h1, h2, h3, h4 {
 /* Z-indexes 
 --------------------------------------------------------------------------------
 */
- .modal-backdrop {
+ .watchModeCaption {
+	z-index:6;
+}
+.windowFg {
+	z-index:7;
+}
+.modal-backdrop {
 	z-index:8;
 }
 .modal {
