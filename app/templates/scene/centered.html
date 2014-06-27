@@ -8,13 +8,10 @@
 				<div class="animate" ng-repeat="item in mainBgItems| isCurrent" itt-item="item"></div>
 			</div>
 			<div class="content contentLayer" ng-class="{
-				singleitem: showCurrent
-					? (contentItems | isCurrent).length == 1
-					: (contentItems).length == 1, 
+				singleitem: (contentItems | isCurrent).length == 1,
 				allowHighlights: !showCurrent
 			}">
-				<div ng-if="showCurrent" class="item-animate" ng-repeat="item in (contentItems | isCurrent)" itt-item="item"></div>
-				<div ng-if="!showCurrent" class="item-animate" ng-repeat="item in (contentItems)" itt-item="item"></div>
+				<div class="item-animate" ng-repeat="item in (contentItems | isCurrent)" itt-item="item"></div>
 				<div class="clear"></div>
 			</div>
 			<div class="fill fgLayer overlay">

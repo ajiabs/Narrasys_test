@@ -139,7 +139,7 @@ angular.module('com.inthetelling.player')
 			"templates/transmedia-image-default.html": "templates/item/upload.html",
 			"templates/transmedia-slidingcaption.html": "templates/item/upload-caption-sliding.html",
 			"templates/transmedia-image-fill.html": "templates/item/image-fill.html",
-			"templates/transmedia-image-plain.html": "templates/item/upload-inline.html",
+			"templates/transmedia-image-plain.html": "templates/item/image-plain.html",
 			"templates/transmedia-linkonly.html": "templates/item/upload-linkonly.html",
 			"templates/transmedia-thumbnail.html": "templates/item/upload-thumbnail.html",
 
@@ -184,6 +184,11 @@ angular.module('com.inthetelling.player')
 			if (updateTemplates[event.templateUrl]) {
 				event.origTemplateUrl = event.templateUrl; // TEMPORARY
 				event.templateUrl = updateTemplates[event.templateUrl];
+
+				// coerce old image-plain background images into image-fill:
+				if (!event.isContent && event.templateUrl === "templates/item/image-plain.html") {
+					event.templateUrl = "templates/item/image-fill.html";
+				}
 			} else {
 				// console.error("Couldn't match event templateUrl: ", event.templateUrl);
 			}

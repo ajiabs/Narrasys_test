@@ -65,7 +65,8 @@
 image-fill items */
 
 /* 
-	contain, cover should use background-image.  Others should use the img, and resize to fit the img. 
+	contain, cover, and item.fill should use background-image.  Others should use the img, and resize to fit the img. 
+	(item.fill doesn't need special handling as it's the default.)
 */
  .fill .item {
 	overflow:hidden;
@@ -123,6 +124,10 @@ Inline images (TODO show these only when image is larger than available space) *
 	cursor:pointer;
 	position:relative;
 	display:inline-block;
+	max-width:100%;
+	max-height:100%;
+}
+.item .touchable img {
 	max-width:100%;
 	max-height:100%;
 }
