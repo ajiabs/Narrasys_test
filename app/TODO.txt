@@ -17,10 +17,10 @@ credly item needs to notify event analytics on item enter; we can use that to ca
 credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
 
 
-Needs a performance pass: laggy on mobile, esp iPad 1:
-	* mostly caused by ng-repeats.  Precalculate scene panels, reduce use of filters in ng-repeat, make windowFg and windowBg per-scene instead of per episode
-	* precalculate more filters (esp. asTime)
-	* bring back bind-once(?)
+Performance: bring back bind-once(?)
+Performance: .item-animate and .item both have transition times, which causes laggy behavior on (at least) iPad.  Trouble is we need it on both due to the way ng-animate works.  v3 didn't have this problem, figure out why
+
+
 
 
 iOS bug: matchVideoHeight isn't (always) working on scene enter -- may simply be performance related

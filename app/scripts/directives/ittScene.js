@@ -36,34 +36,37 @@ main=annotation, alt=not annotation
 					scope.showCurrent = true;
 				}
 
+				// Precalculate each fg, bg, and content pane on scene creation for performance.  
+				// NOTE this means producer will need to redraw the scene if
+				// edits to a content item would move it to a different pane; it's not calculated on the fly anymore:
+
 				scope.contentItems = $filter("isContent")(scope.scene.items);
-				scope.mainContentItems = function() {
-					if ($.inArray("splitRequired", scope.scene.layouts) > -1) {
-						return $filter("transcriptandoptional")(scope.contentItems);
-					} else if ($.inArray("splitOptional", scope.scene.layouts) > -1) {
-						return $filter("transcriptandrequired")(scope.contentItems);
-					} else {
-						return $filter("annotation")(scope.contentItems);
-					}
-				};
+				scope.mainFgItems = $filter("itemLayout")(scope.scene.items, "mainFg");
+				scope.mainBgItems = $filter("itemLayout")(scope.scene.items, "mainBg");
+				scope.altFgItems = $filter("itemLayout")(scope.scene.items, "altFg");
+				scope.altBgItems = $filter("itemLayout")(scope.scene.items, "altBg");
 
-				scope.altContentItems = function() {
-					var ret = scope.contentItems;
-					// Inverse of main, but also needs to take into account showList or showCurrent:
-					if ($.inArray("showCurrent", scope.scene.layouts) > -1) {
-						ret = $filter("isCurrent")(scope.contentItems);
-					}
-					if ($.inArray("splitRequired", scope.scene.layouts) > -1) {
-						ret = $filter("required")(ret);
-					} else if ($.inArray("splitOptional", scope.scene.layouts) > -1) {
-						ret = $filter("optional")(ret);
-					} else {
-						ret = $filter("transmedia")(ret);
-					}
-					return ret;
-				};
 
-				// (also add pane classes to control sidebars/margins, and for showTimeline?
+				// Main content pane:
+				if ($.inArray("splitRequired", scope.scene.layouts) > -1) {
+					scope.mainContentItems = $filter("transcriptandoptional")(scope.contentItems);
+				} else if ($.inArray("splitOptional", scope.scene.layouts) > -1) {
+					scope.mainContentItems = $filter("transcriptandrequired")(scope.contentItems);
+				} else {
+					scope.mainContentItems = $filter("annotation")(scope.contentItems);
+				}
+
+				// alt content pane is inverse of main:
+				if ($.inArray("splitRequired", scope.scene.layouts) > -1) {
+					scope.altContentItems = $filter("required")(scope.contentItems);
+				} else if ($.inArray("splitOptional", scope.scene.layouts) > -1) {
+					scope.altContentItems = $filter("optional")(scope.contentItems);
+				} else {
+					scope.altContentItems = $filter("transmedia")(scope.contentItems);
+				}
+
+
+				// (TODO: add pane classes to control sidebars/margins, and for showTimeline
 
 
 				var twiddleScene = function() {

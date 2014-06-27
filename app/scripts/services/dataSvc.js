@@ -321,7 +321,8 @@ angular.module('com.inthetelling.player')
 				"type": "Scene",
 				"episode_id": epId,
 				//"templateUrl": "templates/scene/centered.html",
-				"layouts": ["", "splitTransmedia", ""]
+				"layouts": ["", "splitTransmedia"],
+				"styles": ["transitionSlideL"]
 			};
 
 			var scenetemplateurls = [

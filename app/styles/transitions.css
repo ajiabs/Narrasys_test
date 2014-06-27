@@ -55,7 +55,7 @@ Defaults.  Always include a bit of height animation, to make it look less jumpy 
 the middle of a list
  */
  .item-animate.ng-enter, .item-animate.ng-leave, .item-animate.ng-move {
-	/* transition: 0.5s linear all; */
+	transition: 1s linear all;
 	position:relative;
 }
 .item-animate.ng-enter {
