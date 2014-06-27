@@ -1,6 +1,6 @@
 'use strict';
 
-// Minor jquery dependency (inArray)
+// Minor jquery dependency ($.inArray)
 
 angular.module('com.inthetelling.player')
 	.directive('ittScene', function($timeout, $filter, modelSvc) {
@@ -46,7 +46,6 @@ main=annotation, alt=not annotation
 				scope.altFgItems = $filter("itemLayout")(scope.scene.items, "altFg");
 				scope.altBgItems = $filter("itemLayout")(scope.scene.items, "altBg");
 
-
 				// Main content pane:
 				if ($.inArray("splitRequired", scope.scene.layouts) > -1) {
 					scope.mainContentItems = $filter("transcriptandoptional")(scope.contentItems);
@@ -65,8 +64,39 @@ main=annotation, alt=not annotation
 					scope.altContentItems = $filter("transmedia")(scope.contentItems);
 				}
 
-
-				// (TODO: add pane classes to control sidebars/margins, and for showTimeline
+				// Check for left and right sidebars
+				for (var i = 0; i < scope.mainContentItems.length; i++) {
+					if ($.inArray("burstL", scope.mainContentItems[i].layouts) ||
+						$.inArray("sidebarL", scope.mainContentItems[i].layouts) ||
+						$.inArray("burst", scope.mainContentItems[i].layouts)) {
+						scope.mainContentHasLeftSidebar = true;
+					}
+					if ($.inArray("burstR", scope.mainContentItems[i].layouts) ||
+						$.inArray("sidebarR", scope.mainContentItems[i].layouts) ||
+						$.inArray("burst", scope.mainContentItems[i].layouts)) {
+						scope.mainContentHasRightSidebar = true;
+					}
+					if (scope.mainContentHasLeftSidebar && scope.mainContentHasRightSidebar) {
+						scope.mainContentHasBothSidebars = true;
+						break; // no need to keep checking the rest
+					}
+				}
+				for (i = 0; i < scope.altContentItems.length; i++) {
+					if ($.inArray("burstL", scope.altContentItems[i].layouts) ||
+						$.inArray("sidebarL", scope.altContentItems[i].layouts) ||
+						$.inArray("burst", scope.altContentItems[i].layouts)) {
+						scope.altContentHasLeftSidebar = true;
+					}
+					if ($.inArray("burstR", scope.altContentItems[i].layouts) ||
+						$.inArray("sidebarR", scope.altContentItems[i].layouts) ||
+						$.inArray("burst", scope.altContentItems[i].layouts)) {
+						scope.altContentHasRightSidebar = true;
+					}
+					if (scope.altContentHasLeftSidebar && scope.altContentHasRightSidebar) {
+						scope.altContentHasBothSidebars = true;
+						break; // no need to keep checking the rest
+					}
+				}
 
 
 				var twiddleScene = function() {

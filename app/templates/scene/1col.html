@@ -1,21 +1,16 @@
 <div class="scene onecol" ng-class="scene.styleCss + ' '+ scene.state">
-	<div class="videoPositioner">
-		<div itt-magnet class="videoMagnet">
-			<img src="images/aspectratiopreserver-16x9.gif">
-		</div>
+
+	<div itt-magnet class="videoMagnet" ng-class="{hasLeftSidebar: mainContentHasLeftSidebar, hasRightSidebar: mainContentHasRightSidebar}">
+		<img src=" images/aspectratiopreserver-16x9.gif">
 	</div>
-	<div class="col">
+
+	<div class="col" ng-class="{hasLeftSidebar: mainContentHasLeftSidebar, hasRightSidebar: mainContentHasRightSidebar}">
 		<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight">
 		<div class="pane mainPane stretchToViewport">
 			<div class="fill bgLayer">
 				<div class="animate" ng-repeat="item in mainBgItems | isCurrent" itt-item="item"></div>
 			</div>
-			<div class="content contentLayer" ng-class="{
-				singleitem: showCurrent
-					? (contentItems | isCurrent).length == 1
-					: (contentItems).length == 1, 
-				allowHighlights: !showCurrent
-			}">
+			<div class="content contentLayer" ng-class="{ singleitem: showCurrent ? (contentItems | isCurrent).length==1 : (contentItems).length==1 , allowHighlights: !showCurrent }">
 				<div ng-if="showCurrent" class="item-animate" ng-repeat="item in (contentItems | isCurrent)" itt-item="item"></div>
 				<div ng-if="!showCurrent" class="item-animate" ng-repeat="item in (contentItems)" itt-item="item"></div>
 				<div class="clear"></div>
