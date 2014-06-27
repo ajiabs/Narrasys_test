@@ -14,7 +14,7 @@
 	border: 4px dotted #3C3;
 }
 .itemEdit {
-	transition: 1s all;
+	/* transition: 1s all; */
 	overflow-y: scroll;
 }
 .itemEdit.ng-enter {

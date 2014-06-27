@@ -150,7 +150,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	background-color:#FFF;
 }
 .itemDetail.ng-enter, .itemDetail.ng-leave {
-	transition:1s all;
+	transition: 1s all;
 	overflow:hidden;
 }
 .itemDetail.ng-enter {
@@ -176,7 +176,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	left: 5%;
 	right: 5%;
 	top: 10%;
-	transition:1s all;
+	transition: 1s all;
 }
 .modal.ng-enter, .modal.ng-leave.ng-leave-active {
 	left:49%;
@@ -341,7 +341,7 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 .item .thumbnail {
 	max-width:72px;
-	transition: all 0.8s;
+	transition: all 0.7s;
 	float:left;
 	margin-right:1em;
 }
