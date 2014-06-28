@@ -16,29 +16,44 @@ angular.module('com.inthetelling.player')
 			link: function(scope, element, attrs) {
 				console.log('ittScene', scope, element, attrs);
 
-				// apply isContent, then splitTransmedia or splitRequired to scene.items
-				// PERFORMANCE TODO: maybe handle mainContentItems() and altContentItems() in modelSvc.resolveEpisodeEvents instead?
-				// Items have much more of a performance hit than scenes, though; there's only ever one scene active at a time.
-
-
 				scope.precalculateSceneValues();
 
-
 				var twiddleScene = function() {
-					element.find('.matchVideoHeight:visible').each(function() {
-						$(this).css("height", element.find('.videoMagnet img').height());
-					});
-					element.find('.stretchToViewport:visible').each(function() {
-						$(this).css("min-height", (angular.element(window).height() - $(this).offset().top));
-					});
+					var magnetNode = element.find('.videoMagnet img');
+					if (magnetNode.height() === null) {
+						console.warn("twiddleScene called with no visible video magnet; waiting ");
+						var unwatchMagnet = scope.$watch(function() {
+							// Don't try to optimize and use magnetNode from above; if we got here in the first place magnetNode is undefined.
+							// This is an expensive $watch but will only run for a tick or two while the scene is being drawn...
+							return element.find('.videoMagnet img').height();
+						}, function(newH) {
+							if (newH > 0) {
+								unwatchMagnet();
+								twiddleScene();
+							}
+						});
+					} else {
+						element.find('.matchVideoHeight:visible').each(function() {
+							$(this).css("height", element.find('.videoMagnet img').height());
+						});
+						element.find('.stretchToViewport:visible').each(function() {
+							$(this).css("min-height", (angular.element(window).height() - $(this).offset().top));
+						});
+					}
 				};
-				$timeout(twiddleScene);
+
+				// Trigger twiddleScene when the window changes size, the scene becomes current, or the viewMode changes:
 				scope.unwatch = scope.$watch(function() {
 					return {
 						winWidth: modelSvc.appState.windowWidth,
-						winHeight: modelSvc.appState.windowHeight
+						winHeight: modelSvc.appState.windowHeight,
+						newMode: modelSvc.appState.viewMode
 					};
-				}, twiddleScene, true);
+				}, function(the) {
+					if (the.newMode === 'discover' && scope.scene.isCurrent) {
+						twiddleScene();
+					}
+				}, true);
 
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function() {
