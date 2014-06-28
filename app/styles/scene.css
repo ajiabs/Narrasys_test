@@ -191,77 +191,8 @@
 }
 /* ------------------------------------------- 
 		1col scene
-		tiny screen:   3% margins, ignore sidebar and burst
-		medium screen: 20% margin with no sidebar, 30% with
-		large screen:  30% margin with no sidebar, 40% with
-
-		(Only have medium screen so far.  Need to decide what to do with videoLeft and videoRight on largescreen)
-		(also would be nice to treat has-one-sidebar differenty from has-both-sidebars)
 */
- .scene.onecol .videoMagnet {
-	position: absolute;
-}
-@media screen and (max-width: 599px) {
-	.scene.onecol .videoMagnet {
-		left: 5%;
-		right: 5%;
-	}
-	.scene.onecol .col {
-		margin-left: 5%;
-		margin-right: 5%;
-	}
-}
-@media screen and (min-width: 600px) and (max-width: 999px) {
-	.scene.onecol .col {
-		margin-left: 20%;
-		margin-right: 20%;
-	}
-	.scene.onecol .videoMagnet {
-		left: 20%;
-		right: 20%;
-	}
-	.scene.onecol .col.hasLeftSidebar {
-		margin-left: 30%;
-	}
-	.scene.onecol .videoMagnet.hasLeftSidebar {
-		left: 30%;
-	}
-	.scene.onecol .col.hasRightSidebar {
-		margin-right: 30%;
-	}
-	.scene.onecol .videoMagnet.hasLeftSidebar {
-		right: 30%;
-	}
-	.scene.onecol.videoLeft .videoMagnet {
-		left: 0 !important;
-	}
-	.scene.onecol.videoRight .videoMagnet {
-		right: 0!important;
-	}
-	.scene.onecol .sidebarL {
-		width: 70%;
-		float:left;
-		margin-left: -70%;
-	}
-	.scene.onecol .sidebarR {
-		width: 70%;
-		float:right;
-		margin-right: -70%;
-	}
-	.scene.onecol .burstL {
-		margin-left: -70%;
-	}
-	.scene.onecol .burstR {
-		margin-right: -70%;
-	}
-	.scene.onecol .burst {
-		margin-left: -70%;
-		margin-right: -70%;
-	}
-}
-/*
-
-.scene.onecol .col, .scene.onecol .videoMagnet {
+ .scene.onecol .col, .scene.onecol .videoMagnet {
 	margin: 0 20%;
 }
 .scene.onecol.videoRight .videoMagnet {
@@ -270,8 +201,6 @@
 .scene.onecol.videoLeft .videoMagnet {
 	margin-left: 0;
 }
-
-
 @media screen and (min-width: 1000px) and (min-height:700px) {
 	.scene.onecol .col {
 		margin: 0 25%;
@@ -307,8 +236,6 @@
 		display:none;
 	}
 }
-*/
-
 /* ------------------------------------------- */
  .scene.centered .col {
 	margin: 10% 20% 0 20%;

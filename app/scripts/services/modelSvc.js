@@ -49,12 +49,11 @@ angular.module('com.inthetelling.player')
 			svc.appState.windowHeight = angular.element(window).height();
 			svc.appState.windowWidth = angular.element(window).width();
 		}, 50, 0, false);
-		
+
 		// another iOS workaround:
 		if (svc.appState.isIDevice) {
 			document.getElementById('CONTAINER').className = "iDevice";
 		}
-		
 
 
 		/* episode data parsing */
@@ -434,16 +433,21 @@ angular.module('com.inthetelling.player')
 			delete videoObject.m3u8;
 */
 
-			// Safari is currently throwing permissions errors on youtube... TODO figure out why, and remove this!
-			if ((isSafari || navigator.platform.indexOf('iPad') > -1) && videoObject.mpeg4) {
-				videoObject.youtube = undefined;
-			}
+			// WARN if you're seeing mixed-protocol errors in Safari:  youtube API is always on https.
+			// Fortunately, so are our episodes.  But if loading an episode from http, like, say, my dev environment,
+			// it breaks (in safari only).   Work around this by not using YT in safari during dev only
+			// if ((isSafari || navigator.platform.indexOf('iPad') > -1) && videoObject.mpeg4) {
+			// 	videoObject.youtube = undefined;
+			// }
+
+			videoObject.youtube = videoObject.youtube.replace(/https?:\/\//, "//");
+
 
 			// TEMPORARILY DISABLING YOUTUBE
 			//videoObject.youtube = undefined;
 
 			videoAsset.video = videoObject;
-
+			console.log("VIDEOASSET IS", videoAsset.video);
 			return videoAsset;
 		};
 
@@ -467,7 +471,6 @@ angular.module('com.inthetelling.player')
 			var bTest = b.match(regexp) || [0, 0];
 			return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a;
 		};
-
 
 		console.log("EVENTCACHE:", svc.events);
 		console.log("EPISODECACHE:", svc.episodes);
