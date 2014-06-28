@@ -49,6 +49,12 @@ angular.module('com.inthetelling.player')
 			svc.appState.windowHeight = angular.element(window).height();
 			svc.appState.windowWidth = angular.element(window).width();
 		}, 50, 0, false);
+		
+		// another iOS workaround:
+		if (svc.appState.isIDevice) {
+			document.getElementById('CONTAINER').className = "iDevice";
+		}
+		
 
 
 		/* episode data parsing */

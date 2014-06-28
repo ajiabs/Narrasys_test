@@ -20,18 +20,11 @@ credly item needs to notify event analytics on item enter; we can use that to ca
 credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
 
 
-Performance: bring back bind-once(?)
-Performance: .item-animate and .item both have transition times, which causes laggy behavior on (at least) iPad.  Trouble is we need it on both due to the way ng-animate works.  v3 didn't have this problem, figure out why
-
 bug: landing screen isn't always getting dismissed when help pane is dismissed
 iOS bug: 'play' button isn't getting switched to 'pause' if user clicks on video to start
 
-iOS: toolbars and window scroll not playing nicely together (position:fixed inside scrollable element...)
-iOS: hide fullscreen button (and remove the #CONTAINER css that supports it, which will take care of the above...)
-iOS: playhead and volume controls need to respond to touchstart, touchmove, touchend
-CHROME: autoscroll not working 
 iOS: fix hide/reveal events on bottom toolbar on touchscreens (currently it's never hiding)
-iOS: scene nav menu can't be dismissed
+
 
 
 Bottom toolbar:  finetune layout

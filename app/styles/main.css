@@ -121,6 +121,10 @@ h1, h2, h3, h4 {
 	-webkit-overflow-scrolling: touch;
 	background-color:#FFF;
 }
+#CONTAINER.iDevice {
+	position:static;
+}
+
 /* Z-indexes 
 --------------------------------------------------------------------------------
 */
