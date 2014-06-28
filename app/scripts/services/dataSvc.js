@@ -325,24 +325,24 @@ angular.module('com.inthetelling.player')
 				"styles": ["transitionSlideL"]
 			};
 
-			// var scenetemplateurls = [
-			// 	"templates/scene/cornerV.html",
-			// 	"templates/scene/1col.html",
-			// 	"templates/scene/2colL.html",
-			// 	"templates/scene/2colR.html",
-			// 	"templates/scene/centered.html",
-			// 	"templates/scene/cornerH.html"
-			// ];
+			var scenetemplateurls = [
+				"templates/scene/cornerV.html",
+				"templates/scene/1col.html",
+				"templates/scene/2colL.html",
+				"templates/scene/2colR.html",
+				"templates/scene/centered.html",
+				"templates/scene/cornerH.html"
+			];
 
 
-			for (var i = 0; i < 1; i++) {
+			for (var i = 0; i < 10; i++) {
 				var scene = angular.copy(sceneStub);
 				scene._id = "scene-" + i;
-				// scene.title = (i / 2 === Math.floor(i / 2)) ? "Scene " + (i + 1) + " Title" : "";
+				scene.title = (i / 2 === Math.floor(i / 2)) ? "Scene " + (i + 1) + " Title" : "";
 				scene.title = "Scene " + (i + 1) + " Title";
-				scene.start_time = (i);
-				scene.end_time = (i + 200);
-				scene.templateUrl = "templates/scene/1col.html"; //scenetemplateurls[i % scenetemplateurls.length];
+				scene.start_time = (i * 20);
+				scene.end_time = (i * 20 + 20);
+				scene.templateUrl = scenetemplateurls[i % scenetemplateurls.length];
 				modelSvc.cache("event", scene);
 			}
 
