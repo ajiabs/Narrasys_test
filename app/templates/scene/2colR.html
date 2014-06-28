@@ -16,8 +16,11 @@
 				allowHighlights: !showCurrent
 			}">
 				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
-				<div ng-if="!showCurrent" class="item-animate" ng-repeat="item in (altContentItems)" itt-item="item"></div>
-				<div ng-if="showCurrent" class="item-animate" ng-repeat="item in (altContentItems | isCurrent)" itt-item="item"></div>
+				<div 
+					class="item-animate" 
+					ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" 
+					itt-item="item">
+				</div>
 				<div class="clear "></div>
 			</div>
 			<div class="fill fgLayer overlay">
@@ -37,9 +40,10 @@
 				allowHighlights: !showCurrent
 			}">
 				<img src="images/aspectratiopreserver-16x9.gif " class="matchVideoHeight ">
-				<div ng-if="!showCurrent " class="item-animate " ng-repeat="item in (mainContentItems)" itt-item="item ">
-				</div>
-				<div ng-if="showCurrent " class="item-animate " ng-repeat="item in (mainContentItems | isCurrent)" itt-item="item ">
+				<div 
+					class="item-animate" 
+					ng-repeat="item in showCurrent ? (mainContentItems | isCurrent) : mainContentItems" 
+					itt-item="item">
 				</div>
 				<div class="clear "></div>
 			</div>

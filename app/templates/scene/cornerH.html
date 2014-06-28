@@ -39,9 +39,10 @@ showCurrent is forced in Main.
 					: (altContentItems).length == 1, 
 				allowHighlights: !showCurrent
 			}">
-				<div ng-if="!showCurrent" class="item-animate" ng-repeat="item in altContentItems" itt-item="item">
-				</div>
-				<div ng-if="showCurrent" class="item-animate" ng-repeat="item in (altContentItems | isCurrent)" itt-item="item">
+				<div 
+					class="item-animate" 
+					ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" 
+					itt-item="item">
 				</div>
 				<div class="clear"></div>
 			</div>
