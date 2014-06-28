@@ -9,7 +9,7 @@
 			<div class="pane mainPane">
 				<div class="content allowHighlights">
 					<h2 ng-if="scene.title">{{scene.title}}</h2>
-					<div class="itemanimate" ng-repeat="item in scene.items | isContent | annotation | filter:{cosmetic:false} | orderBy:'start_time'" itt-item="item" forceTemplate="review-annotation">
+					<div class="item animate" ng-repeat="item in scene.items | isContent | annotation | filter:{cosmetic:false} | orderBy:'start_time'" ng-class="item.styleCss + ' ' + item.state" itt-item="item" forceTemplate="review-annotation">
 					</div>
 				</div>
 			</div>
@@ -17,10 +17,10 @@
 				<div class="content allowHighlights">
 					<img ng-if="$index == 1" src="images/aspectratiopreserver-16x9.gif" class="videoPadding">
 					<!-- contentAlt -->
-					<div class="itemanimate" ng-repeat="item in scene.items | 
+					<div class="item animate" ng-repeat="item in scene.items | 
 					                                  isContent | 
 					                                  transmedia | 
-					                                  filter:{cosmetic:false}" itt-item="item" forceTemplate="review-transmedia">
+					                                  filter:{cosmetic:false}" ng-class="item.styleCss + ' ' + item.state" itt-item="item" forceTemplate="review-transmedia">
 					</div>
 				</div>
 			</div>
@@ -40,7 +40,7 @@
 
 		<div class="discoverMode" ng-show="appState.viewMode == 'discover'">
 			<div class="fill bgLayer">
-				<div itt-item="item" class="animate" ng-repeat="item in scene.items |
+				<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate" ng-repeat="item in scene.items |
 				                                                isCurrent | 
 				                                                itemLayout:'windowBg'">
 				</div>
@@ -49,13 +49,13 @@
 		</div>
 
 		<span ng-if="appState.viewMode == 'watch' && !appState.hideCaptions">
-			<div class="watchModeCaption itemanimate" ng-repeat="item in scene.items  | 
-			                                                     transcript | isCurrent" itt-item="item" forceTemplate="caption">
+			<div class="item watchModeCaption animate" ng-repeat="item in scene.items  | 
+			                                                     transcript | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item" forceTemplate="caption">
 			</div>
 		</span>
 
 		<div class="fill overlay windowFg fgLayer" ng-show="appState.viewMode == 'discover'">
-			<div itt-item="item" class="animate" ng-repeat="item in scene.items | isCurrent | itemLayout:'windowFg'">
+			<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate" ng-repeat="item in scene.items | isCurrent | itemLayout:'windowFg'">
 			</div>
 		</div>
 	</span>
@@ -63,7 +63,7 @@
 	<div itt-magnetized class="pane videoContainer">
 		<div class="video contentLayer" itt-video="episode.masterAsset.video"></div>
 		<div class="pane fill overlay fgLayer">
-			<div itt-item="item" class="animate" ng-repeat="item in episode.items | 
+			<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate" ng-repeat="item in episode.items | 
 				                                                itemLayout:'videoOverlay' | 
 				                                                isCurrent">
 			</div>

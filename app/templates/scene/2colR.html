@@ -7,7 +7,7 @@
 	<div class="col col1">
 		<div class="pane altPane stretchToViewport">
 			<div class="fill bgLayer">
-				<div class="animate" ng-repeat="item in (altBgItems | isCurrent)" itt-item="item"></div>
+				<div class="item animate" ng-repeat="item in (altBgItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
 			<div class="content contentLayer" ng-class="{
 				singleitem: showCurrent
@@ -17,21 +17,21 @@
 			}">
 				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
 				<div 
-					class="item-animate" 
+					class="item animate" 
 					ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" 
-					itt-item="item">
+					ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
 				<div class="clear "></div>
 			</div>
 			<div class="fill fgLayer overlay">
-				<div class="animate" ng-repeat="item in (altFgItems | isCurrent)" itt-item="item"></div>
+				<div class="item animate" ng-repeat="item in (altFgItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
 		</div>
 	</div>
 	<div class="col col2">
 		<div class="pane mainPane stretchToViewport">
 			<div class="fill bgLayer">
-				<div class="animate" ng-repeat="item in (mainBgItems | isCurrent)" itt-item="item"></div>
+				<div class="item animate" ng-repeat="item in (mainBgItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
 			<div class="content contentLayer" ng-class="{
 				singleitem: showCurrent
@@ -41,14 +41,14 @@
 			}">
 				<img src="images/aspectratiopreserver-16x9.gif " class="matchVideoHeight ">
 				<div 
-					class="item-animate" 
+					class="item animate" 
 					ng-repeat="item in showCurrent ? (mainContentItems | isCurrent) : mainContentItems" 
-					itt-item="item">
+					ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
 				<div class="clear "></div>
 			</div>
 			<div class="fill fgLayer overlay">
-				<div class="animate" ng-repeat="item in mainFgItems | isCurrent" itt-item="item"></div>
+				<div class="item animate" ng-repeat="item in mainFgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
 		</div>
 	</div>

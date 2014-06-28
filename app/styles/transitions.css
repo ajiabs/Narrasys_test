@@ -53,89 +53,91 @@ body {
 /* 
 Defaults.  Always include a bit of height animation, to make it look less jumpy when items are removed from
 the middle of a list
+
+Transition time should be set for the specific object type
  */
- .item-animate.ng-enter, .item-animate.ng-leave, .item-animate.ng-move {
-	transition: 1s linear all;
-	position:relative;
+
+.animate.ng-enter, .animate.ng-leave, .animate.ng-move {
+	transition: all ease-in-out 0.5s;
 }
-.item-animate.ng-enter {
+.animate.ng-enter {
 	max-height: 1px;
 }
-.item-animate.ng-enter.ng-enter-active {
+.animate.ng-enter.ng-enter-active {
 	max-height: 300px;
 }
-.item-animate.ng-leave {
+.animate.ng-leave {
 	max-height:100px;
 	display:block !important;
 }
-.item-animate.ng-leave.ng-leave-active {
+.animate.ng-leave.ng-leave-active {
 	max-height:0;
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionFade */
- .item-animate.ng-enter .item.transitionFade {
+ .animate.ng-enter.transitionFade {
 	opacity: 0;
 }
-.item-animate.ng-enter-active .item.transitionFade {
+.animate.ng-enter-active.transitionFade {
 	opacity: 1;
 }
-.item-animate.ng-leave .item.transitionFade {
+.animate.ng-leave.transitionFade {
 	opacity: 1;
 }
-.item-animate.ng-leave.ng-leave-active .item.transitionFade {
+.animate.ng-leave.ng-leave-active.transitionFade {
 	opacity: 0;
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionSlideL */
- .item-animate.ng-enter .item.transitionSlideL {
+ .animate.ng-enter.transitionSlideL {
 	transform: translateX(50px);
 	opacity: 0;
 }
-.item-animate.ng-enter-active .item.transitionSlideL {
+.animate.ng-enter-active.transitionSlideL {
 	transform: translateX(0);
 	opacity: 1;
 }
-.item-animate.ng-leave .item.transitionSlideL {
+.animate.ng-leave.transitionSlideL {
 	transform: translateX(0);
 	opacity: 1;
 }
-.item-animate.ng-leave.ng-leave-active .item.transitionSlideL {
+.animate.ng-leave.ng-leave-active.transitionSlideL {
 	transform: translateX(-50px);
 	opacity: 0;
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionSlideR */
- .item-animate.ng-enter .item.transitionSlideR {
+ .animate.ng-enter.transitionSlideR {
 	transform: translateX(-50px);
 	opacity: 0;
 }
-.item-animate.ng-enter-active .item.transitionSlideR {
+.animate.ng-enter-active.transitionSlideR {
 	transform: translateX(0);
 	opacity: 1;
 }
-.item-animate.ng-leave .item.transitionSlideR {
+.animate.ng-leave.transitionSlideR {
 	transform: translateX(0);
 	opacity: 1;
 }
-.item-animate.ng-leave.ng-leave-active .item.transitionSlideR {
+.animate.ng-leave.ng-leave-active.transitionSlideR {
 	transform: translateX(50px);
 	opacity: 0;
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionPop */
- .item-animate.ng-enter .item.transitionPop {
+ .animate.ng-enter.transitionPop {
 	transform: scale(0.9);
 	opacity: 0;
 }
-.item-animate.ng-enter-active .item.transitionPop {
+.animate.ng-enter-active.transitionPop {
 	transform: scale(1);
 	opacity: 1;
 }
-.item-animate.ng-leave .item.transitionPop {
+.animate.ng-leave.transitionPop {
 	transform: scale(1);
 	opacity: 1;
 }
-.item-animate.ng-leave.ng-leave-active .item.transitionPop {
+.animate.ng-leave.ng-leave-active.transitionPop {
 	transform: scale(0.9);
 	opacity: 0;
 }
