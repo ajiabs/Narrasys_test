@@ -20,7 +20,7 @@ angular.module('com.inthetelling.player')
 			user: {}, // whatever authSvc gets back from getAccessToken
 			episodeId: false, // ID of current episode
 			isFramed: (window.parent != window), // are we inside an iframe?  Don't use !== because IE8 gets it wrong
-			isIDevice: (navigator.platform.indexOf('iPad') > -1 || navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1),
+			isIDevice:  (navigator.platform.indexOf('iPad') > -1 || navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1),
 			isTouchDevice: ('ontouchstart' in window || 'onmsgesturechange' in window),
 			windowWidth: 0,
 			windowHeight: 0,

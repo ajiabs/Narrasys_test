@@ -37,51 +37,38 @@ build error display handler
 Better handling for end of episode
 
 
----- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 
+
+app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (check Safari in "private browsing" mode for example)
+
+
+---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 
 Add keyboard commands (ESC to dismiss modals, SPACE to toggle play/pause, others?)
 
 timeline seek should trigger autoscroll immediately
 timeline seek should wait for video to buffer before starting timeline clock
 
-
-
-app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (check Safari in "private browsing" mode for example)
-
-
-
-Ask Bill to add fields:
-"friendly ID" for episodes (for use in url)
-landingScreen template for episode?  (no, instead  Producer should automatically add a landing screen scene at the beginning of an episode)
-
-
-
-
+Ask Bill to add fields: "friendly ID" for episodes (for use in url)
 
 Producer stuff: put an "add" button with ng-if="producer" in every fg, content, and bg pane
 
 Consider eliminating fg panes other than windowFg (check existing episodes, are any using them?)
 
-
-
-
-
-Rewrite timelineSvc to better handle multiple episodes (easiest way is probably to write timelineStart and End into each event...?)
-
-Will also need to be able to capture analytics for episode time instead of timeline time...
-timelineSvc needs functions to translate episode->timeline time and vice versa
-
-Also for multiple eps: multiple video nodes? or change the src of existing video node? or a playlist?
-
-Add a "skip" type of event to allow skipping scenes
-
+Build a demo analytics dashboard
 
 Scenes: handle showTimeline layouts
+
+
+Rewrite timelineSvc to better handle multiple episodes:
+	Needs to be able to change the video source to a new episode (different video node? change source of single node? playlist?)
+	Will also need to be able to capture analytics for episode time instead of timeline time...
+	timelineSvc needs functions to translate episode->timeline time and vice versa
+
+Add a "skip" type of event to allow skipping scenes
 
 "text" scenes:  hide video and video controls altogether, have a button at the end to start the next scene (landing screen could be a special case of this)
 
 
-Build a demo analytics dashboard
 
 sceneModifier events (as plugin)

@@ -173,48 +173,79 @@ angular.module('com.inthetelling.player')
 
 		// appstate.autoscroll = we are in a mode which wants autoscroll
 		// appstate.autoscrollBlocked = user has disabled autoscroll (by scrolling manually)
-		// Those are in modelSvc instead of $scope becuase in future we'll want scenes to be able to autoscroll too
+		// (Those are in modelSvc instead of $scope becuase in future we'll want scenes to be able to autoscroll too)
 
-		var bindScrollWatcher = function() {
-			// THis watches for manual scrolling of the window, which cancels autoscroll:
-			angular.element('#CONTAINER').bind("scroll.autoscroll", function() {
-				unbindScrollWatcher();
+		// isn't it weird how we read the scrollTop from (window), but have to animate it on (body,html)?
+		// But that only applies on iDevices; elsewhere #CONTAINER is what's scrolling 
+		// (because we need it that way for fullscreen mode)
+		var autoscrollableNode = (modelSvc.appState.isIDevice) ? $(window) : $('#CONTAINER');
+		var animatableScrollNode = (modelSvc.appState.isIDevice) ? $('html') : $('#CONTAINER');
+
+		var startScrollWatcher = function() {
+			console.log("startScrollWatcher");
+			autoscrollTimer = $interval(handleAutoscroll, 400);
+			autoscrollableNode.bind("scroll", function() {
+				// User-initiated scrolling should block autoscroll.
+				animatableScrollNode.stop();
+				stopScrollWatcher();
 				modelSvc.appState.autoscrollBlocked = true;
 			});
-		};
-		var unbindScrollWatcher = function() {
-			angular.element('#CONTAINER').unbind("scroll.autoscroll");
-		};
-		$scope.enableAutoscroll = function() {
-			modelSvc.appState.autoscrollBlocked = false;
-			bindScrollWatcher();
 			handleAutoscroll();
 		};
-		var handleAutoscroll = function() {
-			// if autoscroll is true and autoscrollBlocked is false,
-			// find the topmost visible current item and scroll #CONTAINER to make it visible.
-			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
-			if (modelSvc.appState.autoscroll && !modelSvc.appState.autoscrollBlocked) {
-				var top = Infinity;
-				var curScroll = $('#CONTAINER').scrollTop();
-				angular.forEach($('.content .item.isCurrent:visible'), function(item) {
-					var t = item.getBoundingClientRect().top + curScroll;
-					if (t < top) {
-						top = t;
-					}
-				});
-				unbindScrollWatcher(); // don't want scrollwatcher competing with this animation
-				var scrollOffset = 45 + ($(window).height() / 5); // put item top at TOOLBAR HEIGHT plus 20% of viewport
-				$('#CONTAINER').stop().animate({
-					"scrollTop": top - scrollOffset
-				}, 1000, "swing", function() {
-					$timeout(bindScrollWatcher, 100); // allow extra time; iPad was still capturing the tail end of the animated scroll
-				});
-			}
+		var autoscrollTimer;
+
+		var stopScrollWatcher = function() {
+			console.log("stopScrollWatcher");
+			autoscrollableNode.unbind("scroll");
+			$interval.cancel(autoscrollTimer);
+			
 		};
 
-		bindScrollWatcher();
-		$interval(handleAutoscroll, 2000);
+		$scope.enableAutoscroll = function() {
+			modelSvc.appState.autoscrollBlocked = false;
+			startScrollWatcher();
+		};
+
+		// TODO this is a relatively expensive $watch.  Could greatly increase its $interval if we
+		// support directly triggering it from timeline on seek()... 
+		var handleAutoscroll = function() {
+			// if autoscroll is true and autoscrollBlocked is false,
+			// find the topmost visible current item and scroll to put it in the viewport.
+			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
+			if (modelSvc.appState.autoscrollBlocked || !modelSvc.appState.autoscroll) {
+				return;
+			}
+
+			// find topmost visible current items:
+			var top = Infinity;
+			var curScroll = autoscrollableNode.scrollTop();
+			angular.forEach($('.content .item.isCurrent:visible'), function(item) {
+				var t = item.getBoundingClientRect().top + curScroll;
+				if (t < top) {
+					top = t;
+				}
+			});
+			if (top === Infinity) {
+				return;
+			}
+
+			// There's a visible current item; is it within the viewport?
+			var slop = $(window).height() / 5;
+			if (top > curScroll + slop && top < (curScroll + slop + slop + slop)) {
+				return;
+			}
+
+			// Okay, we got past all those returns; it must be time to scroll
+			stopScrollWatcher();
+			animatableScrollNode.animate({"scrollTop": top - slop}, 1500, "swing", function() {
+				// console.log("Scrolling complete");
+				$timeout(function() {
+					startScrollWatcher();
+				}, 100); // allow extra time; iPad was still capturing the tail end of the animated scroll
+			});
+		};
+
+		startScrollWatcher();
 
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
