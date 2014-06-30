@@ -3,7 +3,7 @@
 // use only for master asset!
 
 angular.module('com.inthetelling.player')
-	.directive('ittVideo', function($timeout, modelSvc, timelineSvc) {
+	.directive('ittVideo', function($timeout, $rootScope, modelSvc, timelineSvc) {
 
 		var uniqueDirectiveID = 0; // Youtube wants to work via DOM IDs; this is a cheap way of getting unique ones
 
@@ -13,11 +13,11 @@ angular.module('com.inthetelling.player')
 			templateUrl: 'templates/video.html',
 			controller: 'VideoController',
 			scope: {
-				video: "=ittVideo"
+				video: "=ittVideo",
 			},
 			link: function(scope, element, attrs) {
 				console.log('ittVideo', scope);
-
+				scope.appState = modelSvc.appState;
 				scope.uid = ++uniqueDirectiveID;
 
 				$timeout(function() {
@@ -45,7 +45,6 @@ angular.module('com.inthetelling.player')
 					} else {
 						timelineSvc.pause();
 					}
-
 					modelSvc.appState.videoControlsActive = true;
 				};
 			},

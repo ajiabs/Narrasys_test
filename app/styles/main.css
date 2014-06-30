@@ -124,7 +124,6 @@ h1, h2, h3, h4 {
 #CONTAINER.iDevice {
 	position:static;
 }
-
 /* Z-indexes 
 --------------------------------------------------------------------------------
 */
@@ -172,7 +171,7 @@ See /images/font/story/map.png for a list of available glyphs
 	background-color:rgba(0, 0, 0, 0.6);
 }
 /* 
-Video fill
+Video
 --------------------------------------------------------------------------------
 */
  .video iframe, .video video, .video .videoMask {
@@ -181,6 +180,18 @@ Video fill
 	height:100%;
 	border:none;
 }
+.videoMask {
+	cursor: pointer;
+}
+.videoMask.firstplay {
+	background-image: url('/images/coverlogo.png');
+	background-size: contain;
+	background-position: 50% 50%;
+}
+.videoMask.play {
+	/* TODO css for inside-the-video-frame play button */
+}
+
 /* 
 Misc useful keyframes 
 --------------------------------------------------------------------------------

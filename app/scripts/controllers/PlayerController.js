@@ -129,8 +129,10 @@ angular.module('com.inthetelling.player')
 			timelineSvc.seek(t, "sceneMenu");
 		};
 
+
 		// show the help pane, only if localStorage is settable and there isn't one already.
 		// (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
+
 		var localStorageAllowed = true;
 		try {
 			localStorage.setItem("iCanHazStorage", 1);
@@ -139,21 +141,17 @@ angular.module('com.inthetelling.player')
 		}
 		if (localStorageAllowed) {
 			localStorage.removeItem("iCanHazStorage");
-			if (!(localStorage.getItem("noMoreHelp"))) {
-				// show the help panel only when the timeline is past the landing screen:
-				var helpWatcher = $scope.$watch(function() {
-					return modelSvc.appState.time;
-				}, function(newVal) {
-					if (newVal > 0) {
-						helpWatcher();
-						$timeout(function() {
-							timelineSvc.pause();
-							modelSvc.appState.show.helpPanel = true;
-						});
-					}
-				});
-			}
 		}
+
+		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
+		$rootScope.$on("video.firstPlay", function() {
+			if (localStorageAllowed && !(localStorage.getItem("noMoreHelp"))) {
+				modelSvc.appState.show.helpPanel = true;
+			} else {
+				timelineSvc.play();
+			}
+		});
+
 
 		$scope.hidePanels = function() {
 			modelSvc.appState.show.helpPanel = false;
@@ -198,7 +196,7 @@ angular.module('com.inthetelling.player')
 			console.log("stopScrollWatcher");
 			autoscrollableNode.unbind("scroll");
 			$interval.cancel(autoscrollTimer);
-			
+
 		};
 
 		$scope.enableAutoscroll = function() {
@@ -237,7 +235,9 @@ angular.module('com.inthetelling.player')
 
 			// Okay, we got past all those returns; it must be time to scroll
 			stopScrollWatcher();
-			animatableScrollNode.animate({"scrollTop": top - slop}, 1500, "swing", function() {
+			animatableScrollNode.animate({
+				"scrollTop": top - slop
+			}, 1500, "swing", function() {
 				// console.log("Scrolling complete");
 				$timeout(function() {
 					startScrollWatcher();

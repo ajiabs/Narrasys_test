@@ -5,5 +5,8 @@
 		<source class="webm" ng-if="video.webm" ng-src="{{video.webm}}" type="video/webm" />
 		<p>Oh no! Your browser does not support the HTML5 Video element.</p>
 	</video>
-	<img ng-click="videoClick()" class="videoMask" src="images/aspectratiopreserver-16x9.gif">
+	<div ng-click="videoClick()" class="videoMask" ng-class="{
+		play: appState.timelineState == 'paused',
+		firstplay: !appState.hasBeenPlayed
+	}">
 </div>

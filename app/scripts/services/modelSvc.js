@@ -20,7 +20,7 @@ angular.module('com.inthetelling.player')
 			user: {}, // whatever authSvc gets back from getAccessToken
 			episodeId: false, // ID of current episode
 			isFramed: (window.parent != window), // are we inside an iframe?  Don't use !== because IE8 gets it wrong
-			isIDevice:  (navigator.platform.indexOf('iPad') > -1 || navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1),
+			isIDevice: (navigator.platform.indexOf('iPad') > -1 || navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1),
 			isTouchDevice: ('ontouchstart' in window || 'onmsgesturechange' in window),
 			windowWidth: 0,
 			windowHeight: 0,
@@ -29,6 +29,7 @@ angular.module('com.inthetelling.player')
 			timeMultiplier: 1, // sets player speed (0.5 = half speed, 2=double,etc)
 			duration: 0, // duration of timeline (in seconds)
 			timelineState: 'paused', // "playing" or "paused" (set by timelineSvc). Future: "locked" (by stop question or etc)
+			hasBeenPlayed: false, // set to true after first time the video plays (used so we can interrupt that first play with a helpful help)
 			volume: 100, // Audio for main video
 			muted: false, // audio for main video
 			hideCaptions: false, // visibility of "closed captions" in watch mode
@@ -193,6 +194,14 @@ angular.module('com.inthetelling.player')
 				// coerce old image-plain background images into image-fill:
 				if (!event.isContent && event.templateUrl === "templates/item/image-plain.html") {
 					event.templateUrl = "templates/item/image-fill.html";
+				}
+				// hack for old authoring tool quirk:
+				if (event.templateUrl === "templates/item/image-plain.html") {
+					if (event.styles) {
+						event.styles.push("timestampNone");
+					} else {
+						event.styles = ["timestampNone"];
+					}
 				}
 			} else {
 				// console.error("Couldn't match event templateUrl: ", event.templateUrl);

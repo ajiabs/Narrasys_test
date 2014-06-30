@@ -1,17 +1,16 @@
 
-Add a 'play' icon to the video (esp when no poster is available)
+Add a 'play' icon to the video (when no poster is available)
 
 Templates: Compare all scene and item templates to existing episodes for backwards compatibility....
 	Improve reviewMode templates (review-annotation and review-transmedia)
 	Landing screen template(s)
 	Remaining link item templates
 	Episode templates
+	(doublecheck image-plain template, make sure I haven't messed up the touchable indicator)
 
 sidebar, burst margin layouts need to be built into all scene templates
 
 BUG: video is starting without timeline in iOS
-
-(doublecheck image-plain template, make sure I haven't messed up the touchable indicator)
 
 
 For USC:

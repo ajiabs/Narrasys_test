@@ -37,3 +37,10 @@
 	color:#FFF !important;
 	text-decoration: underline;
 }
+.videoFirstPlay {
+	position: absolute;
+	cursor:pointer;cursor:hand;
+}
+.videoFirstPlay img {
+	width: 100%; height:100%;
+}

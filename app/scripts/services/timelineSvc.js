@@ -54,7 +54,7 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 */
 
 angular.module('com.inthetelling.player')
-	.factory('timelineSvc', function($timeout, $interval, modelSvc, analyticsSvc) {
+	.factory('timelineSvc', function($timeout, $interval, $rootScope, modelSvc, analyticsSvc) {
 
 		var svc = {};
 
@@ -87,6 +87,16 @@ angular.module('com.inthetelling.player')
 
 		//TODO video should return a promise and callback only when the video actually starts playing
 		svc.play = function() {
+
+			// WARN this is a bit of a sloppy mixture of concerns.  Interrupt the first play of the video 
+			// so playerController can decide whether it needs to show a help file first:
+			if (!modelSvc.appState.hasBeenPlayed) {
+				modelSvc.appState.hasBeenPlayed = true; // do this before the $emit, or endless loop
+				$rootScope.$emit("video.firstPlay");
+				return; // playerController needs to  catch this and either show the help pane or trigger play again 
+			}
+
+
 			// console.log("timelineSvc.play");
 			if (angular.isDefined(clock)) {
 				return; // we're already playing
