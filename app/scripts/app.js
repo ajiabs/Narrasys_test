@@ -43,22 +43,20 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
 	// set page titles on route changes:
 	$rootScope.$on("$routeChangeSuccess", function(event, currentRoute, previousRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
+	});
 
-		// emit rootscope event for certain keypresses:
-		$(document).on("keypress", function(e) {
-			if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-				if (e.which === 0) {
-					$rootScope.$emit("userKeypress.ESC");
-					e.preventDefault();
-				}
-				if (e.which === 32) {
-					$rootScope.$emit("userKeypress.SPACE");
-					e.preventDefault();
-				}
+	// globally emit rootscope event for certain keypresses:
+	$(document).on("keypress", function(e) {
+		if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+			if (e.which === 0) {
+				$rootScope.$emit("userKeypress.ESC");
+				e.preventDefault();
 			}
-		});
-
-
+			if (e.which === 32) {
+				$rootScope.$emit("userKeypress.SPACE");
+				e.preventDefault();
+			}
+		}
 	});
 })
 

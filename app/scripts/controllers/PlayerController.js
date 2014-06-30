@@ -256,6 +256,16 @@ angular.module('com.inthetelling.player')
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
+		$rootScope.$on("userKeypress.ESC", function() {
+			// dismiss ALL THE THINGS
+			modelSvc.appState.show.searchPanel = false;
+			modelSvc.appState.show.helpPanel = false;
+			modelSvc.appState.show.navPanel = false;
+			modelSvc.appState.itemDetail = false;
+		});
+
+
+
 		// TEMPORARY: Producer code below this line
 		// If this turns out to be any good move it into a producer directive.
 		// will likely want other components to be able to read which layer we're editing -- timeline, at least
