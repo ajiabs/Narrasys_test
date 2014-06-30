@@ -276,3 +276,7 @@ forced templates in watch and review modes
 Autoscroll in explore mode, plus misc cosmetics
 pulling out producer functionality for now
 
+------------------------------------------------
+Changes in v4.alpha.009:
+previous build had broken config, oops
+
