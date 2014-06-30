@@ -47,6 +47,9 @@ angular.module('com.inthetelling.player')
 					}
 					modelSvc.appState.videoControlsActive = true;
 				};
+
+				$rootScope.$on('userKeypress.SPACE', scope.videoClick);
+
 			},
 
 		};

@@ -38,10 +38,27 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
 	//$locationProvider.html5Mode(false); // TODO sigh, can't get the server config working for this... thought we had it but IE still choked
 })
 
-// set page titles on route changes:
+
 .run(function($rootScope) {
+	// set page titles on route changes:
 	$rootScope.$on("$routeChangeSuccess", function(event, currentRoute, previousRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
+
+		// emit rootscope event for certain keypresses:
+		$(document).on("keypress", function(e) {
+			if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+				if (e.which === 0) {
+					$rootScope.$emit("userKeypress.ESC");
+					e.preventDefault();
+				}
+				if (e.which === 32) {
+					$rootScope.$emit("userKeypress.SPACE");
+					e.preventDefault();
+				}
+			}
+		});
+
+
 	});
 })
 

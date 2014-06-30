@@ -180,10 +180,11 @@ angular.module('com.inthetelling.player')
 		var animatableScrollNode = (modelSvc.appState.isIDevice) ? $('html') : $('#CONTAINER');
 
 		var startScrollWatcher = function() {
-			console.log("startScrollWatcher");
+			// console.log("startScrollWatcher");
 			autoscrollTimer = $interval(handleAutoscroll, 400);
 			autoscrollableNode.bind("scroll", function() {
 				// User-initiated scrolling should block autoscroll.
+				// console.log("user scrolled");
 				animatableScrollNode.stop();
 				stopScrollWatcher();
 				modelSvc.appState.autoscrollBlocked = true;
@@ -193,7 +194,7 @@ angular.module('com.inthetelling.player')
 		var autoscrollTimer;
 
 		var stopScrollWatcher = function() {
-			console.log("stopScrollWatcher");
+			// console.log("stopScrollWatcher");
 			autoscrollableNode.unbind("scroll");
 			$interval.cancel(autoscrollTimer);
 
@@ -233,7 +234,12 @@ angular.module('com.inthetelling.player')
 				return;
 			}
 
+			if (top < slop && curScroll < slop) {
+				return; // too close to top of window to bother
+			}
+
 			// Okay, we got past all those returns; it must be time to scroll
+			// console.log("handleAutoscroll triggering a scroll");
 			stopScrollWatcher();
 			animatableScrollNode.animate({
 				"scrollTop": top - slop

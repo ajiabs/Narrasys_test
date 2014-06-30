@@ -182,14 +182,15 @@ Video
 }
 .videoMask {
 	cursor: pointer;
-}
-.videoMask.firstplay {
-	background-image: url('/images/coverlogo.png');
 	background-size: contain;
 	background-position: 50% 50%;
+	background-repeat:none;
 }
 .videoMask.play {
-	/* TODO css for inside-the-video-frame play button */
+	background-image: url('/images/play-overlay.png');
+}
+.videoMask.firstplay {
+	background-image: url('/images/logo-overlay.png');
 }
 
 /* 
