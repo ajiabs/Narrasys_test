@@ -184,7 +184,7 @@ Video
 	cursor: pointer;
 	background-size: contain;
 	background-position: 50% 50%;
-	background-repeat:none;
+	background-repeat: no-repeat;
 }
 .videoMask.play {
 	background-image: url('/images/play-overlay.png');

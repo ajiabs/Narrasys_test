@@ -40,7 +40,6 @@
 	/* TODO put a max height on this */
 }
 .watchModeCaption {
-	text-align:center;
 	position: fixed;
 	bottom:110px;
 	color: #DDDDDD;

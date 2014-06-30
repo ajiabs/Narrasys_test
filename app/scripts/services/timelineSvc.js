@@ -158,8 +158,9 @@ angular.module('com.inthetelling.player')
 			svc.updateEventStates();
 			videoScope.seek(t);
 			if (modelSvc.appState.timelineState === 'playing') {
-				// TODO handle lag between seeking to new point and the video actually playing?
-				startEventClock();
+				// let svc.play take care of the lag before video starts the clock
+				svc.pause();
+				svc.play();
 			}
 			// capture analytics data:
 			if (method) {

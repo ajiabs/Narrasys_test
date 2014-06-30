@@ -15,7 +15,7 @@ angular.module('com.inthetelling.player')
 			//Autoscroll only in explore mode for now
 			if (newMode === 'review') {
 				modelSvc.appState.autoscroll = true;
-				handleAutoscroll();
+				$timeout(handleAutoscroll); // timeout is for edge case where user loads review mode first, before handleAutoscroll is defined below...
 			} else {
 				modelSvc.appState.autoscroll = false;
 			}

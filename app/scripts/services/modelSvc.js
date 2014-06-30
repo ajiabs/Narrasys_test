@@ -384,6 +384,7 @@ angular.module('com.inthetelling.player')
 			svc.events["internal:landingscreen:" + episodeId] = {
 				"_id": "internal:landingscreen:" + episodeId,
 				"_type": "Scene",
+				"_internal": true,
 				"templateUrl": "templates/scene/landingscreen.html",
 				"episode_id": episodeId,
 				"start_time": 0,

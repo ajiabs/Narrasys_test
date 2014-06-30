@@ -5,7 +5,7 @@
 		<div itt-magnet id="reviewModeVideoMagnet" class="videoMagnet">
 			<img src="images/aspectratiopreserver-16x9.gif">
 		</div>
-		<div class="scene" ng-class="{navigable: scene.title}" ng-repeat="scene in episode.scenes">
+		<div class="scene" ng-class="{navigable: scene.title}" ng-repeat="scene in episode.scenes" ng-if="!scene._internal">
 			<div class="pane mainPane">
 				<div class="content allowHighlights">
 					<h2 ng-if="scene.title">{{scene.title}}</h2>
