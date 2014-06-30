@@ -8,7 +8,7 @@ TODO: separate appState from modelSvc, just for tidiness sake?
 */
 
 angular.module('com.inthetelling.player')
-	.factory('modelSvc', function($interval, $filter) {
+	.factory('modelSvc', function($interval, $filter, config) {
 
 		var svc = {};
 
@@ -449,15 +449,12 @@ angular.module('com.inthetelling.player')
 			// if ((isSafari || navigator.platform.indexOf('iPad') > -1) && videoObject.mpeg4) {
 			// 	videoObject.youtube = undefined;
 			// }
-
 			videoObject.youtube = videoObject.youtube.replace(/https?:\/\//, "//");
 
-
-			// TEMPORARILY DISABLING YOUTUBE
-			//videoObject.youtube = undefined;
-
+			if (config.disableYoutube) {
+				videoObject.youtube = undefined;
+			}
 			videoAsset.video = videoObject;
-			console.log("VIDEOASSET IS", videoAsset.video);
 			return videoAsset;
 		};
 

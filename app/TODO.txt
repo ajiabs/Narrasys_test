@@ -17,7 +17,6 @@ For USC:
 credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
 credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
 
-bug: landing screen isn't always getting dismissed when help pane is dismissed
 
 iOS: fix hide/reveal events on bottom toolbar on touchscreens (currently it's never hiding)
 
