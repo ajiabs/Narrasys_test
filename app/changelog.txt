@@ -241,3 +241,38 @@ Friendlier-to-Safari method of writing to localStorage
 Changes in v4.alpha.007:
 steenkin' baaaadges
 
+------------------------------------------------
+Changes in v4.alpha.008:
+Made disabling youtube configurable
+handle ESC to close modals etc
+play icon, cover logo, handle spacebar to stop/start video, bug fix autoscroll
+fixed firstPlay events, some css
+cleaned up autoscroll
+reverting 1col, removing yt/safari hack
+iOS bugfixes
+fixing scene init bug
+fixing item animations
+misc changes for template backwards-compatibility
+sidebar and burst in scene controller
+2colL
+performance: precalculate lots of scene stuff
+removing redundant transitions from css
+Performance: reducing number of ng-repeats
+Precalculating displayStartTime
+Touchscreens and playhead now play nice together
+performance improvement for search panel
+fancy-dancy loading spinner
+tidying up modal backdrops
+handle localStorage errors
+help panel
+analyticsSvc respects per-user tracking preferences
+less direct dependence on local storage
+Better handling of stop events
+making credly badge events visible to non-logged-in users (for now)
+asPercent and asTime filters more forgiving
+Simplified timelineSvc, stop events now prioritized
+depend less on routeParam for episode ID
+forced templates in watch and review modes
+Autoscroll in explore mode, plus misc cosmetics
+pulling out producer functionality for now
+

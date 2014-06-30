@@ -1,5 +1,4 @@
 
-Add a 'play' icon to the video (when no poster is available)
 
 Templates: Compare all scene and item templates to existing episodes for backwards compatibility....
 	Improve reviewMode templates (review-annotation and review-transmedia)
