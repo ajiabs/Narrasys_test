@@ -207,3 +207,7 @@ Fixed screwy behavior in FF30.0 related to 3d transforms
 Changes in v1.7.6:
 GW hotfix: play button was white-on-white
 
+------------------------------------------------
+Changes in v1.7.7:
+hacking in loading screen
+
