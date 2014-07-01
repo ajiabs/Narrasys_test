@@ -1,0 +1,18 @@
+<div class="episode">
+
+	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
+	<span ng-repeat="scene in episode.scenes | isCurrent">
+		<span ng-include="'templates/episode/components/watchmode.html'"></span>
+		<span ng-include="'templates/episode/components/discovermode.html'"></span>
+	</span>
+
+	<span ng-include="'templates/episode/components/video.html'"></span>
+
+	<div ng-if="appState.viewMode != 'watch'" class="branding">
+		<a class="itt logo" href="http://inthetelling.com">
+			<img src="images/itt.svg" alt="In The Telling logo">
+		</a>
+		<span class="copyright">TELLING STORY player &#169; {{now | date:'yyyy'}} <a href="http://inthetelling.com">IN THE TELLING</a>. All rights reserved</span>
+	</div>
+
+</div>
