@@ -203,3 +203,7 @@ Forced scene-explore to white background; fixed layout issue in other scenes tha
 corrected pull quote margins
 Fixed screwy behavior in FF30.0 related to 3d transforms
 
+------------------------------------------------
+Changes in v1.7.6:
+GW hotfix: play button was white-on-white
+
