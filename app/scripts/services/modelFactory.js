@@ -230,7 +230,7 @@ angular.module('com.inthetelling.player')
 			model.templateUrl = resolveTemplateUrl(data.template_id) || "templates/episode-default.html";
 			model.coverUrl = "/images/coverlogo.png"; // TODO: Implement cover
 			if (model.templateUrl === 'templates/episode-gw.html') { // HACK
-				model.coverUrl = "/images/plaingray.gif";
+				model.coverUrl = "/images/coverplain.png";
 			}
 			model.layout = resolveLayoutCSS(data.layout_id) || "";
 			model.styles = resolveStyleCSS(data.style_id) || "";
