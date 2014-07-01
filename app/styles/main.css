@@ -257,3 +257,74 @@ h3 {
 	.modal, .modal-backdrop {position:absolute !important;}
 */
 }
+
+
+
+.loading {
+	text-align: center;
+	font-size: small;
+	min-height:400px;
+	line-height:0;
+}
+.loading .spinner {
+	width: 60px;
+	height: 60px;
+	margin:100px auto -30px auto;
+	position: relative;
+	background-color: #FFF;
+	opacity:0.5;
+}
+.loading .pie {
+	width: 50%;
+	height: 100%;
+	position: absolute;
+	background-color: #DDD;
+}
+.loading .rotating {
+	border-radius: 60px 0 0 60px;
+	z-index: 2;
+	border-right: none;
+	animation: rotate 2s ease-in-out infinite;
+	transform-origin: 100% 50%;
+}
+.loading .filler {
+	border-radius: 0 60px 60px 0;
+	z-index: 1;
+	border-left: none;
+	animation: pieFill 2s steps(1, end) infinite;
+	left: 50%;
+	opacity: 0;
+}
+.loading .mask {
+	width: 50%;
+	height: 100%;
+	position: absolute;
+	z-index: 3;
+	opacity: 1;
+	background: inherit;
+	animation: pieMask 2s steps(1, end) infinite;
+}
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+@keyframes pieFill {
+	0% {
+		opacity: 0;
+	}
+	50%, 100% {
+		opacity: 1;
+	}
+}
+@keyframes pieMask {
+	0% {
+		opacity: 1;
+	}
+	50%, 100% {
+		opacity: 0;
+	}
+}
