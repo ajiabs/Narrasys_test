@@ -38,12 +38,6 @@
 		</div>
 	</div>
 	<div itt-episode></div>
-	<div ng-if="appState.viewMode != 'watch'" class="branding">
-		<a class="itt logo" href="http://inthetelling.com">
-			<img src="images/itt.svg" alt="In The Telling logo">
-		</a>
-		<span class="copyright">TELLING STORY player &#169; {{now | date:'yyyy'}} <a href="http://inthetelling.com">IN THE TELLING</a>. All rights reserved</span>
-	</div>
 
 	<div class="toolbar-bottom" ng-mouseenter="showControls();keepControls()" ng-mouseleave="allowControlsExit()" ng-class="{hidden: !appState.videoControlsActive}">
 		<div class="toolbar-bottom-fill">
@@ -65,6 +59,9 @@
 	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();keepControls()"></div>
 </div>
 
+<div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
+	<img src="/images/autoscroll.svg" width="32" height="32">
+</div>
 
 <div ng-show="show.navPanel || show.searchPanel || show.helpPanel" class="modal-backdrop" ng-click="hidePanels()"></div>
 
@@ -98,6 +95,14 @@
 	<a class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;">Don't show this again</a>
 </div>
 
+<div ng-if="loading" class="loading">
+	<div class="spinner">
+		<div class="rotating pie"></div>
+		<div class="filler pie"></div>
+		<div class="mask"></div>
+	</div>
+	Loading
+</div>
 
 
 <!-- <div ng-controller="ErrorController" ng-include="'templates/error.html'"></div> -->

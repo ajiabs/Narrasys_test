@@ -60,17 +60,17 @@ Transition time should be set for the specific object type
 .animate.ng-enter, .animate.ng-leave, .animate.ng-move {
 	transition: all ease-in-out 0.5s;
 }
-.animate.ng-enter {
+.content .animate.ng-enter {
 	max-height: 1px;
 }
-.animate.ng-enter.ng-enter-active {
+.content .animate.ng-enter.ng-enter-active {
 	max-height: 300px;
 }
-.animate.ng-leave {
+.content .animate.ng-leave {
 	max-height:100px;
 	display:block !important;
 }
-.animate.ng-leave.ng-leave-active {
+.content .animate.ng-leave.ng-leave-active {
 	max-height:0;
 }
 /* ------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,12 @@
+<div class="discoverMode" ng-show="appState.viewMode == 'discover'">
+	<div class="fill windowBg bgLayer">
+		<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate" ng-repeat="item in scene.items | isCurrent | itemLayout:'windowBg'">
+		</div>
+	</div>
+	<div itt-scene="scene" episode="episode"></div>
+	<div class="fill overlay windowFg fgLayer">
+		<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate" ng-repeat="item in scene.items | isCurrent | itemLayout:'windowFg'">
+		</div>
+	</div>
+</div>
+

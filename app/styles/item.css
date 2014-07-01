@@ -35,7 +35,7 @@
 	width: 100%;
 	height: 320px;
 }
-.windowFg .item {
+.windowFg .itemTemplate {
 	width: 100%;
 	height: 100%;
 	background-color: #FFF;
@@ -67,11 +67,12 @@ image-fill items */
 	contain, cover, and item.fill should use background-image.  Others should use the img, and resize to fit the img. 
 	(item.fill doesn't need special handling as it's the default.)
 */
- .fill .item {
+ .fill .itemTemplate {
 	overflow:hidden;
 	background-position:50% 50%;
 	background-repeat: no-repeat;
 	background-size:100% 100%;
+	width: 100%; height: 100%;
 }
 .fill .item .fillImg {
 	display:none;
@@ -79,13 +80,17 @@ image-fill items */
 .fill .item.tl .fillImg, .fill .item.tr .fillImg, .fill .item.bl .fillImg, .fill .item.br .fillImg, .fill .item.center .fillImg {
 	display:block;
 }
-.fill .item.contain {
+.fill .item.contain .itemTemplate {
 	background-size:contain;
 }
-.fill .item.cover {
+.fill .item.cover .itemTemplate {
 	background-size:cover;
 }
-.fill .item.tl, .fill .item.bl, .fill .item.tr, .fill .item.br, .fill .item.center {
+.fill .item.tl .itemTemplate, 
+.fill .item.bl .itemTemplate, 
+.fill .item.tr .itemTemplate, 
+.fill .item.br .itemTemplate, 
+.fill .item.center .itemTemplate {
 	background-image: none !important;
 }
 .fill .item .fillImg {
@@ -104,13 +109,13 @@ image-fill items */
 .fill .item.bl img, .fill .item.br .fillImg {
 	bottom: 0;
 }
-.fill .item.center {
+.fill .item.center .itemTemplate {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 /* this background-image is only used for contain or cover styles; never in content: */
- .content .item.imageFill {
+ .content .itemTemplate.imageFill {
 	background-image: none !important;
 	padding-left: 5px;
 }

@@ -1,0 +1,7 @@
+<div itt-magnetized class="pane videoContainer">
+	<div class="video contentLayer" itt-video="episode.masterAsset.video"></div>
+	<div class="pane fill overlay fgLayer">
+		<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate" ng-repeat="item in episode.items | itemLayout:'videoOverlay' | isCurrent">
+		</div>
+	</div>
+</div>

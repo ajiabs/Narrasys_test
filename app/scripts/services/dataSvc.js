@@ -379,97 +379,100 @@ angular.module('com.inthetelling.player')
 				modelSvc.cache("event", transcript);
 			}
 
-			// modelSvc.cache("asset", {
-			// 	"_id": "asset1",
-			// 	"_type": "Asset::Image",
-			// 	"url": "https://s3.amazonaws.com/itt.uploads/development/Test%20Customer/SLIC/The%20Business%20Case/Sustainability%20Pays/Sustainability_Scorecard_1.jpg",
-			// 	"extension": "jpg",
-			// 	"name": "Sustainability Scorecard 1",
-			// });
-			// modelSvc.cache("asset", {
-			// 	"_id": "asset2",
-			// 	"_type": "Asset::Image",
-			// 	"url": "http://placehold.it/350x350",
-			// 	"extension": "jpg",
-			// 	"name": "350x350 placeholder",
-			// });
-			// modelSvc.cache("asset", {
-			// 	"_id": "asset3",
-			// 	"_type": "Asset::Image",
-			// 	"url": "http://placehold.it/64x64",
-			// 	"extension": "jpg",
-			// 	"name": "64x64 placeholder",
-			// });
-			// modelSvc.cache("asset", {
-			// 	"_id": "asset4",
-			// 	"_type": "Asset::Image",
-			// 	"url": "http://placehold.it/900x900",
-			// 	"extension": "jpg",
-			// 	"name": "900x900 placeholder",
-			// });
+			modelSvc.cache("asset", {
+				"_id": "asset1",
+				"_type": "Asset::Image",
+				"url": "https://s3.amazonaws.com/itt.uploads/development/Test%20Customer/SLIC/The%20Business%20Case/Sustainability%20Pays/Sustainability_Scorecard_1.jpg",
+				"extension": "jpg",
+				"name": "Sustainability Scorecard 1",
+			});
+			modelSvc.cache("asset", {
+				"_id": "asset2",
+				"_type": "Asset::Image",
+				"url": "http://placehold.it/350x350",
+				"extension": "jpg",
+				"name": "350x350 placeholder",
+			});
+			modelSvc.cache("asset", {
+				"_id": "asset3",
+				"_type": "Asset::Image",
+				"url": "http://placehold.it/64x64",
+				"extension": "jpg",
+				"name": "64x64 placeholder",
+			});
+			modelSvc.cache("asset", {
+				"_id": "asset4",
+				"_type": "Asset::Image",
+				"url": "http://placehold.it/900x900",
+				"extension": "jpg",
+				"name": "900x900 placeholder",
+			});
 
 
-			// var linkStub = {
-			// 	"_id": "",
-			// 	"_type": "Link",
-			// 	"link_image_id": "asset1",
-			// 	"url": "http://www.inthetelling.com",
-			// 	"title": "Link Title",
-			// 	"description": "Link Description",
-			// 	"cosmetic": false,
-			// 	"stop": false,
-			// 	"type": "Link",
-			// 	"episode_id": epId,
-			// 	"templateUrl": "templates/item/link.html",
-			// 	"layouts": ["inline"],
-			// 	"layoutCss": "inline",
-			// 	"isContent": true,
-			// };
-			// for (i = 0; i < 30; i++) {
-			// 	var link = angular.copy(linkStub);
-			// 	link._id = "link-" + i;
-			// 	link.required = (Math.random() > 0.5);
-			// 	link.start_time = i * 3;
-			// 	link.end_time = i * 3 + 3;
-			// 	modelSvc.cache("event", link);
-			// }
+			var linkStub = {
+				"_id": "",
+				"_type": "Link",
+				"link_image_id": "asset1",
+				"url": "http://www.inthetelling.com",
+				"title": "Link Title",
+				"description": "Link Description",
+				"cosmetic": false,
+				"stop": false,
+				"type": "Link",
+				"episode_id": epId,
+				"templateUrl": "templates/item/link.html",
+				"layouts": ["inline"],
+				"layoutCss": "inline",
+				"isContent": true,
+			};
+			for (i = 0; i < 30; i++) {
+				var link = angular.copy(linkStub);
+				link._id = "link-" + i;
+				link.required = (Math.random() > 0.5);
+				link.start_time = i * 3;
+				link.end_time = i * 3 + 3;
+				modelSvc.cache("event", link);
+			}
 
-			// var uploadStub = {
-			// 	"_type": "Upload",
+			var uploadStub = {
+				"_type": "Upload",
 
-			// 	"description": "Description of an upload item",
-			// 	"required": false,
-			// 	"cosmetic": false,
-			// 	"stop": false,
-			// 	"type": "Upload",
-			// 	"episode_id": epId,
-			// 	"templateUrl": "templates/item/upload-thumbnail.html",
-			// 	"layouts": [
-			// 		"inline"
-			// 	]
-			// };
-			// for (i = 0; i < 30; i++) {
-			// 	var upload = angular.copy(uploadStub);
-			// 	upload._id = "upload-" + i;
-			// 	upload.asset_id = "asset" + (i % 3 + 2);
-			// 	upload.title = "Upload number " + (i % 3 + 1);
-			// 	upload.start_time = i * 4;
-			// 	upload.end_time = i * 4 + 4;
-			// 	modelSvc.cache("event", upload);
-			// }
+				"description": "Description of an upload item",
+				"required": false,
+				"cosmetic": false,
+				"stop": false,
+				"type": "Upload",
+				"episode_id": epId,
+				"templateUrl": "templates/item/upload-thumbnail.html",
+				"styles": [
+					"transitionFade"
+				],
+				"layouts": [
+					"inline"
+				]
+			};
+			for (i = 0; i < 30; i++) {
+				var upload = angular.copy(uploadStub);
+				upload._id = "upload-" + i;
+				upload.asset_id = "asset" + (i % 3 + 2);
+				upload.title = "Upload number " + (i % 3 + 1);
+				upload.start_time = i * 4;
+				upload.end_time = i * 4 + 4;
+				modelSvc.cache("event", upload);
+			}
 
-			// var layouts = ["windowBg", "mainBg", "altBg", "videoOverlay", "mainFg", "altFg", "windowFg"];
-			// for (i = 0; i < 7; i++) {
-			// 	var filltest = angular.copy(uploadStub);
-			// 	filltest.layouts = [layouts[i]];
-			// 	filltest._id = "filltest-" + i;
-			// 	filltest.asset_id = "asset2";
-			// 	filltest.start_time = i * 5;
-			// 	filltest.end_time = i * 5 + 5;
-			// 	filltest.templateUrl = "templates/item/image-fill.html";
-			// 	modelSvc.cache("event", filltest);
+			var layouts = ["windowBg", "mainBg", "altBg", "videoOverlay", "mainFg", "altFg", "windowFg"];
+			for (i = 0; i < 7; i++) {
+				var filltest = angular.copy(uploadStub);
+				filltest.layouts = [layouts[i]];
+				filltest._id = "filltest-" + i;
+				filltest.asset_id = "asset2";
+				filltest.start_time = i * 5;
+				filltest.end_time = i * 5 + 5;
+				filltest.templateUrl = "templates/item/image-fill.html";
+				modelSvc.cache("event", filltest);
 
-			// }
+			}
 
 			modelSvc.resolveEpisodeEvents(epId);
 			modelSvc.resolveEpisodeAssets(epId);

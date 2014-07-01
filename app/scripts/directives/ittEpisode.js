@@ -5,7 +5,7 @@ angular.module('com.inthetelling.player')
 		return {
 			restrict: 'A',
 			replace: true,
-			templateUrl: "templates/episode/episode.html", // TODO use episode.templateUrl instead
+			template: '<span ng-include="episode.templateUrl">Loading Item...</span>',
 			controller: 'EpisodeController',
 			link: function(scope, element, attrs) {
 				//				console.log('ittEpisode', scope, element, attrs);

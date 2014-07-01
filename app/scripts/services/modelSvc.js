@@ -119,10 +119,10 @@ angular.module('com.inthetelling.player')
 		// and have figured out which can be merged or etc; then we can update the values in the database
 		var updateTemplates = {
 			"templates/episode-default.html": "templates/episode/episode.html",
+			"templates/episode-tellingstory.html": "templates/episode/story.html",
 			"templates/episode-eliterate.html": "templates/episode/episode.html", // TODO
 			"templates/episode-ewb.html": "templates/episode/episode.html", // TODO
 			"templates/episode-gw.html": "templates/episode/episode.html", // TODO
-			"templates/episode-tellingstory.html": "templates/episode/episode.html", //TODO
 
 			"templates/scene-1col.html": "templates/scene/1col.html",
 			"templates/scene-2colL.html": "templates/scene/2colL.html",
