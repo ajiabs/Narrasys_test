@@ -211,3 +211,7 @@ GW hotfix: play button was white-on-white
 Changes in v1.7.7:
 hacking in loading screen
 
+------------------------------------------------
+Changes in v1.7.8:
+more landing screen tweak
+
