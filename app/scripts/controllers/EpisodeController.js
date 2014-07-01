@@ -80,6 +80,7 @@ angular.module('com.inthetelling.player')
 
     dataSvc.get($routeParams, function (data) { // ON SUCCESS
 
+      $('.loading').hide();
       var i, j;
 
       // To be used by framebreaker (see toolbar controller):
