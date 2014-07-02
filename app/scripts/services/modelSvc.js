@@ -396,9 +396,9 @@ angular.module('com.inthetelling.player')
 				"episode_id": episodeId,
 				"start_time": 0,
 				"end_time": 0.001
-
 			};
 		};
+
 
 		var resolveVideo = function(videoAsset) {
 			var videoObject = {};
@@ -411,8 +411,7 @@ angular.module('com.inthetelling.player')
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
 
-						videoObject.youtube = videoAsset.alternate_urls[i];
-						
+						videoObject.youtube = embeddableYoutubeUrl(videoAsset.alternate_urls[i]);
 					} else {
 						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
 							case "mp4":
@@ -428,14 +427,14 @@ angular.module('com.inthetelling.player')
 					}
 				}
 				if (videoAsset.you_tube_url) {
-					videoObject.youtube = videoAsset.you_tube_url;
+					videoObject.youtube = embeddableYoutubeUrl(videoAsset.you_tube_url);
 				}
 			} else {
 				// This is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes.
 				videoObject = {
 					mpeg4: videoAsset.url.replace('.mp4', '.m3u8'),
 					webm: videoAsset.url.replace(".mp4", ".webm"),
-					youtube: videoAsset.you_tube_url
+					youtube: embeddableYoutubeUrl(videoAsset.you_tube_url)
 				};
 			}
 
@@ -465,6 +464,14 @@ angular.module('com.inthetelling.player')
 			videoAsset.video = videoObject;
 			return videoAsset;
 		};
+
+		var embeddableYoutubeUrl = function(origUrl) {
+			// regexp to extract the ID from a youtube
+			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+			var ytId = origUrl.match(getYoutubeID)[1];
+			return "//www.youtube.com/embed/"+ytId;
+		};
+
 
 		// Private convenience function called only from within resolveMasterAssetVideo. Pass in two filenames.
 		// If one is empty, return the other; otherwise checks for a WxH portion in two
