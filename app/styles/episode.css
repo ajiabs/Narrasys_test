@@ -34,7 +34,7 @@
 	text-shadow: 1px 1px 0 #BBB;
 }
 .copyright a {
-	color:#FFF;
+	color:#FFF !important;
 	text-decoration: underline;
 }
 .videoFirstPlay {

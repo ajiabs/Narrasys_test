@@ -7,13 +7,13 @@ Templates:
 
 make windowBg and windowFg position:fixed
 
-BUG: video is starting without timeline in iOS
+Clicking on search results should turn on autoscroll
 
-For USC:
-credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
-credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
-
+iOS bug: timeline isn't waiting for video to finish buffering on first play in iOS
 iOS: fix hide/reveal events on bottom toolbar on touchscreens (currently it's never hiding)
+iOS: playhead is draggable past boundaries of timeline
+iOS: watch mode isn't displaying at all(!)
+
 
 ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes)
 
@@ -38,7 +38,14 @@ Compare all scene and item templates to existing episodes for backwards compatib
 Better handling for end of episode
  
 
+For USC:
+credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
+credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
 
+correct youtube urls into embeddable format
+
+
+Find out why m3u8 was causing problems, fix it
 
 Scenes should detect when content panes (including Fg and Bg) are empty, and adjust the layout to make up for it 
 (better still, do this only if they're empty for more than n seconds...)

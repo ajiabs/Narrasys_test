@@ -107,10 +107,12 @@ angular.module('com.inthetelling.player')
 		// and have figured out which can be merged or etc; then we can update the values in the database
 		var updateTemplates = {
 			"templates/episode-default.html": "templates/episode/episode.html",
+			"templates/episode-eliterate.html": "templates/episode/eliterate.html",
+			"templates/episode-ewb.html": "templates/episode/ewb.html",
+			"templates/episode-gw.html": "templates/episode/gw.html",
+			"templates/episode-purdue.html": "templates/episode/purdue.html",
 			"templates/episode-tellingstory.html": "templates/episode/story.html",
-			"templates/episode-eliterate.html": "templates/episode/episode.html", // TODO
-			"templates/episode-ewb.html": "templates/episode/episode.html", // TODO
-			"templates/episode-gw.html": "templates/episode/episode.html", // TODO
+
 
 			"templates/scene-1col.html": "templates/scene/1col.html",
 			"templates/scene-2colL.html": "templates/scene/2colL.html",
@@ -129,13 +131,13 @@ angular.module('com.inthetelling.player')
 			"templates/text-pullquote.html": "templates/item/pullquote.html",
 
 			// upload
-			"templates/transmedia-caption.html": "templates/item/upload-caption.html",
-			"templates/transmedia-image-default.html": "templates/item/upload.html",
-			"templates/transmedia-slidingcaption.html": "templates/item/upload-caption-sliding.html",
+			"templates/transmedia-caption.html": "templates/item/image-caption.html",
+			"templates/transmedia-image-default.html": "templates/item/image.html",
+			"templates/transmedia-slidingcaption.html": "templates/item/image-caption-sliding.html",
 			"templates/transmedia-image-fill.html": "templates/item/image-fill.html",
 			"templates/transmedia-image-plain.html": "templates/item/image-plain.html",
-			"templates/transmedia-linkonly.html": "templates/item/upload-linkonly.html",
-			"templates/transmedia-thumbnail.html": "templates/item/upload-thumbnail.html",
+			"templates/transmedia-linkonly.html": "templates/item/image-linkonly.html",
+			"templates/transmedia-thumbnail.html": "templates/item/image-thumbnail.html",
 
 			//link
 			"templates/transmedia-link-default.html": "templates/item/link.html",
@@ -410,6 +412,7 @@ angular.module('com.inthetelling.player')
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
 
 						videoObject.youtube = videoAsset.alternate_urls[i];
+						
 					} else {
 						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
 							case "mp4":
