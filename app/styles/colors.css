@@ -23,11 +23,19 @@ a {
  *
 //===========================*/
  .colorInvert {
-	color: #CCC;
-	background-color: #333;
+	color: #DDD;
+	background-color: #000;
 }
-.colorInvert a, .colorInvert .fakelink {
+.colorInvert a {
 	color: #FFF
+}
+/* invert-color items in an invert-color scene or episode */
+ .colorInvert .item.colorInvert {
+	color: #333;
+	background-color:#FFF;
+}
+.colorInvert .item.colorInvert a {
+	color: #333;
 }
 /*============================
  *

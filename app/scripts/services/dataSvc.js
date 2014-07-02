@@ -277,7 +277,7 @@ angular.module('com.inthetelling.player')
 				"status": "Published",
 				"templateUrl": "templates/episode/story.html",
 				"styles": [
-					"transitionPop", "highlightBorder", ""
+					"colorVivid", "highlightSide", ""
 				]
 			});
 			modelSvc.cache("asset", {
@@ -422,7 +422,7 @@ angular.module('com.inthetelling.player')
 				"episode_id": epId,
 				"templateUrl": "templates/item/link.html",
 				"layouts": ["inline"],
-				"layoutCss": "inline",
+				"styles": ["colorInvert"],
 				"isContent": true,
 			};
 			for (i = 0; i < 30; i++) {

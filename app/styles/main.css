@@ -36,6 +36,7 @@ a {
 }
 h1, h2, h3, h4 {
 	margin: 0.5em 0;
+	padding: 0 0.5em;
 }
 /* --------------------------------------------------------------------------------
  loading indicator
@@ -192,7 +193,6 @@ Video
 .videoMask.firstplay {
 	background-image: url('/images/logo-overlay.png');
 }
-
 /* 
 Misc useful keyframes 
 --------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 'use strict';
 
 /* 
-NOTE: when authoring templates make sure that outgoing links call the link() function, 
+NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function, 
 so they get logged properly: don't draw plain hrefs
 */
 

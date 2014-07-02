@@ -1,9 +1,12 @@
-<div class="itemTemplate reviewAnnotation">
-	<div class="itemHead">
-		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
-		<div class="authorName">{{item.annotator}}</div>
+<div>
+	<div ng-if="item.isTranscript" class="itemTemplate">
+		<div class="itemHead">
+			<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+			<div class="authorName">{{item.annotator}}</div>
+		</div>
+		<div class="text">{{item.annotation}}</div>
 	</div>
-	<div class="text">{{item.annotation}}</div>
-	<!-- {{item.templateUrl}} -->
+	<div ng-if="!item.isTranscript" ng-include="item.templateUrl"></div>
+
 	<div class="clear"></div>
 </div>

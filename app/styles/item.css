@@ -7,6 +7,7 @@
 	padding: 5px 5px 5px 60px;
 }
 .item {
+	transition: all ease-in-out 1s;
 }
 .item .itemHead {
 	display:inline;
@@ -300,6 +301,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	font-size: 3em;
 	line-height: 0.8em;
 	width: 0.5em;
+	height: 5px;
 }
 .item .pullquote {
 	font-size: 2em;

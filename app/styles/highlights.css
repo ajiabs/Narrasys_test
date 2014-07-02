@@ -7,6 +7,10 @@
  .reviewMode .item.isCurrent {
 	background-color:rgba(0, 0, 0, 0.2);
 }
+.colorInvert .reviewMode .item.isCurrent{
+	background-color: rgba(255,255,255,0.3);
+}
+
 /* - - - - - - */
  .content.allowHighlights .highlightSolid.item.isCurrent {
 	background-color: rgba(0, 0, 0, 0.2);

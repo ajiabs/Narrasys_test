@@ -11,3 +11,15 @@
 	<a ng-click="itemDebug=!itemDebug">Debug</a>
 	<pre ng-if="itemDebug">{{item | pretty}}</pre>
 </div>
+
+
+<!-- needs to follow these rules:
+ if (model.type === "upload" || model.type === "image") {
+				model.exploreTemplateUrl = "templates/transmedia-image-default.html";
+			} else if (model.type === "link") {
+				if (model.templateUrl !== "templates/transmedia-link-noembed.html" &&
+					model.templateUrl !== "templates/transmedia-link-frameicide.html") {
+					model.exploreTemplateUrl = "templates/transmedia-link-default.html";
+				}
+			}
+-->

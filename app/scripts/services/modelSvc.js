@@ -103,18 +103,6 @@ angular.module('com.inthetelling.player')
 		// Input API data, output API data plus clientside-only convenience variables.
 		// Should call this after making any changes to the underlying data.
 
-		svc.deriveEpisode = function(episode) {
-			// console.log("deriveEpisode:", episode);
-			return episode;
-		};
-		svc.deriveAsset = function(asset) {
-			// console.log("deriveAsset:", asset);
-			if (asset._type === "Asset::Video") {
-				asset = resolveVideo(asset);
-			}
-			return asset;
-		};
-
 		// update template paths from v1.  This is temporary until I have the set of new templates nailed down
 		// and have figured out which can be merged or etc; then we can update the values in the database
 		var updateTemplates = {
@@ -161,8 +149,25 @@ angular.module('com.inthetelling.player')
 			// (from old sxs demo; can delete later)
 			"templates/upload-demo-inline.html": "templates/item/item.html", // TODO
 			"templates/upload-demo.html": "templates/item/item.html", // TODO
-
 		};
+
+		svc.deriveEpisode = function(episode) {
+			// console.log("deriveEpisode:", episode);
+			if (updateTemplates[episode.templateUrl]) {
+				episode.origTemplateUrl = episode.templateUrl; // TEMPORARY
+				episode.templateUrl = updateTemplates[episode.templateUrl];
+			}
+			return episode;
+		};
+
+		svc.deriveAsset = function(asset) {
+			// console.log("deriveAsset:", asset);
+			if (asset._type === "Asset::Video") {
+				asset = resolveVideo(asset);
+			}
+			return asset;
+		};
+
 
 		svc.deriveEvent = function(event) {
 			if (event._type !== 'Scene') {
