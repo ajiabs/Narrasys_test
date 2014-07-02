@@ -1,18 +1,18 @@
 <div>
 	<div class="searchfilters">
-		<label x-ng-show="sortBy!=='startTime'">
-			<input type="radio" name="searchsort" id="searchsort" x-ng-model="sortBy" value="startTime">Sorted by type
+		<label ng-show="sortBy!=='startTime'">
+			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="startTime">Sorted by type
 		</label>
-		<label x-ng-show="sortBy==='startTime'">
-			<input type="radio" name="searchsort" id="searchsort" x-ng-model="sortBy" value="type">Sorted by time
+		<label ng-show="sortBy==='startTime'">
+			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="type">Sorted by time
 		</label>
 	</div>
 	<div class="scrollContainer">
 		<div class="searchResults">
-			<div x-ng-if="sortBy == 'startTime'">
-				<div x-ng-repeat="scene in episode.scenes">
-					<h3 x-ng-if="sceneItems.length > 0 && scene.title">{{scene.title}}</h3>
-					<div x-ng-repeat="item in sceneItems=
+			<div ng-if="sortBy == 'startTime'">
+				<div ng-repeat="scene in episode.scenes">
+					<h3 ng-if="sceneItems.length > 0 && scene.title">{{scene.title}}</h3>
+					<div  class="item" ng-repeat="item in sceneItems=
 						(scene.items 
 						| orderBy:'startTime' 
 						| filter:{'searchableText': searchText, 'cosmetic': false}
@@ -22,10 +22,10 @@
 			</div>
 
 			<!-- sorted by type -->
-			<div x-ng-if="sortBy == 'type'">
-				<div x-ng-repeat="(typeID,showType) in searchTypes" x-ng-if="showType">
-					<h3 x-ng-if="typeItems.length > 0">{{searchTypeNames[typeID]}}</h3>
-					<div x-ng-repeat="item in typeItems=
+			<div ng-if="sortBy == 'type'">
+				<div ng-repeat="(typeID,showType) in searchTypes" ng-if="showType">
+					<h3 ng-if="typeItems.length > 0">{{searchTypeNames[typeID]}}</h3>
+					<div class="item" ng-repeat="item in typeItems=
 						(episode.items 
 						| orderBy:'startTime' 
 						| filter:{'type': typeID, 'searchableText': searchText, 'cosmetic': false}
@@ -33,7 +33,7 @@
 					</div>
 				</div>
 			</div>
-			<div x-ng-if="(episode.items | filter:{'searchableText': searchText, 'cosmetic': false}).length == 0">
+			<div ng-if="(episode.items | filter:{'searchableText': searchText, 'cosmetic': false}).length == 0">
 				(Nothing matched your search.)
 			</div>
 		</div>

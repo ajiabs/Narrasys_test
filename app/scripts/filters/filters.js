@@ -129,6 +129,10 @@ angular.module('com.inthetelling.player')
 })
 	.filter('highlightSubstring', function($sce) {
 		return function(text, search) {
+			// console.log("Search highlight",text,search);
+			if (!text) {
+				return;
+			}
 			if (search || angular.isNumber(search)) {
 				return $sce.trustAsHtml(text.toString().replace(new RegExp(search.toString(), 'gi'), '<span class="ui-match">$&</span>'));
 			} else {

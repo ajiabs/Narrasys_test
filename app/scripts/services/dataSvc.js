@@ -275,9 +275,9 @@ angular.module('com.inthetelling.player')
 				"master_asset_id": "masterasset",
 				"title": "Test Episode",
 				"status": "Published",
-				"templateUrl": "templates/episode/episode.html",
+				"templateUrl": "templates/episode/story.html",
 				"styles": [
-					"transitionPop", "highlightBorder"
+					"transitionPop", "highlightBorder", ""
 				]
 			});
 			modelSvc.cache("asset", {

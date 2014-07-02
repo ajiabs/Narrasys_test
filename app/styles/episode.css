@@ -34,21 +34,35 @@
 	text-shadow: 1px 1px 0 #BBB;
 }
 .copyright a {
-	color:#FFF !important;
+	color:#FFF;
 	text-decoration: underline;
 }
 .videoFirstPlay {
 	position: absolute;
-	cursor:pointer;cursor:hand;
+	cursor:pointer;
+	cursor:hand;
 }
 .videoFirstPlay img {
-	width: 100%; height:100%;
+	width: 100%;
+	height:100%;
 }
-
+.banner-logo {
+	left: 40%;
+	margin: 0 auto;
+	max-width: 170p;
+	position: fixed;
+	right: 33%;
+	text-align: center;
+	top: 5px;
+}
+.banner-logo img {
+	margin: auto;
+	max-height: 35px;
+	width: 100%;
+}
 /* -------------------------------------------  
    Landing screen 
 */
-
  .landingscreen {
 	margin:10% 15%;
 }
@@ -63,44 +77,127 @@
 .landingscreen p {
 	margin: 2em 0 1em 0
 }
-@media screen and (max-width: 300px) {
-	.landingscreen {
-		margin: 32px 0 0 0 !important;
-	}
+@media screen and (max-width: 501px) {
 	.landingscreen .videoMagnet {
-		width: 45% !important;
+		width: 100%;
+		float:none;
 	}
 	.landingscreen .introtext {
-		position: absolute !important;
-		padding: 0 0.5em !important;
-		width: 100% !important;
+		width: 100%;
+		float:none;
 	}
 	.landingscreen h1 {
-		font-size: 16px !important;
-		margin-left: 48% !important;
-		min-height: 80px !important;
+		font-size: 24px;
 	}
 	.landingscreen p {
-		margin: 0 !important;
-		font-size: 0.86em !important;
+		margin: 1em 0;
 	}
 }
-@media screen and (min-width: 301px) and (max-width: 501px) {
-	.landingscreen {
-		margin: 36px 0 0 0 !important;
-	}
-	.landingscreen .videoMagnet {
-		width: 45% !important;
-	}
-	.landingscreen .introtext {
-		width: 55% !important;
-		padding: 0 1em !important;
-	}
-	.landingscreen h1 {
-		font-size: 24px !important;
-	}
-	.landingscreen p {
-		margin: 1em 0 !important;
-	}
-}
+/* -------------------------------------------  
+   Customer-specific.
 
+   A lot of this ought to be broken up into separate color / typography / etc rules
+   so they can be reused more broadly, but for now we're making things easier for production:
+
+*/
+ .episode-eliterate .branding a.eliterate {
+	left:5%;
+	bottom:60px;
+}
+.episode-eliterate {
+	background-image: url("/images/customer/eliterate-bg.svg");
+	background-size: 90%;
+	background-position: 0 30%;
+	background-repeat: no-repeat;
+}
+.episode-eliterate .startTime {
+	background-color: rgba(0, 0, 0, 0.05);
+	border-radius: 3px;
+	padding: 3px;
+}
+.episode-eliterate {
+	font-family: Arial, Helvetica, Tahoma, sans-serif;
+	font-size: 15px;
+}
+.episode-eliterate {
+	color: #6F7D8B;
+}
+.episode-eliterate a, .colorEliterate .fakelink {
+	color: #1376bb
+}
+.episode-eliterate h1, .episode-eliterate h2, .episode-eliterate h3 {
+	font-weight: normal;
+	color:#384d62;
+}
+.episode-eliterate .colorInvert {
+	color: #FFF;
+	background-color: #6F7D8B;
+}
+.episode-eliterate .colorInvert h1, .episode-eliterate .colorInvert h2, .episode-eliterate .colorInvert h3 {
+	color: #FFF
+}
+.episode-gw {
+	font-family:"Helvetica", "Arial", sans-serif;
+	font-weight: 300;
+}
+.episode-gw h1, .episode-gw h2, .episode-gw h3, .episode-gw h4, .episode-gw h5, .episode-gw .item a, .episode-gw .navigationPanel a {
+	font-family:"Montserrat", sans-serif;
+	color: #003A5C;
+}
+.episode-gw h1, .episode-gw h2, .episode-gw h3, .episode-gw h4, .episode-gw h5 {
+	font-weight: 700
+}
+.episode-gw .item .title {
+	font-family:"Montserrat", sans-serif;
+	font-weight: 400;
+	font-size: 1em;
+	line-height: 1.2em;
+}
+.episode-gw .colorInvert {
+	background-color: #003A5C;
+}
+.episode-gw .colorInvert * {
+	color:#FFF
+}
+.episode-gw .item .pullquote, .episode-gw .item .pullquoteSpeaker {
+	font-family:"Cardo", serif;
+}
+.episode-gw .item .pullquote:before {
+	font-family:"Cardo", serif;
+	color: rgba(0, 58, 92, 0.5);
+	font-size: 1.7em;
+}
+.episode-gw .escapelink:before {
+	color: #AB9767;
+}
+.episode-gw.content.allowHighlights .highlightSolid.item.isCurrent {
+	background-color: rgba(171, 151, 103, 0.3);
+}
+.episode-gw .altPane {
+	background-color: rgba(0, 58, 92, 0.05);
+}
+.episode-gw .landingscreen {
+	width: 400px;
+	margin: 0 auto 50px auto;
+	background-image: url('/images/customer/gw-logo-big.svg');
+	background-size: 60%;
+	background-position: 50% 40px;
+	background-repeat: no-repeat;
+	padding-top: 150px;
+}
+.episode-gw .introtext, .episode-gw .videoMagnet {
+	float:none;
+	width: 100%;
+	clear:both;
+}
+.episode-gw .introtext h1 {
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 25px;
+}
+@media screen and (max-width: 500px) {
+	.episode-gw .landingscreen {
+		width: 90%;
+		padding-top: 45%;
+	}
+}

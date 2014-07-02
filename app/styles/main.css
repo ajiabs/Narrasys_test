@@ -142,7 +142,7 @@ h1, h2, h3, h4 {
 .navPanel {
 	z-index:9;
 }
-.toolbar, .toolbar-bottom {
+.toolbar, .toolbar-bottom, .banner-logo {
 	z-index:10;
 }
 .autoscroll {

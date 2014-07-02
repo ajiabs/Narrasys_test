@@ -1,4 +1,5 @@
-<div class="episode episode-story" ng-class="episode.styleCss">
+<div class="episode episode-eliterate" ng-class="episode.styleCss">
+
 	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
 	<span ng-repeat="scene in episode.scenes | isCurrent">
 		<span ng-include="'templates/episode/components/watchmode.html'"></span>
@@ -8,14 +9,17 @@
 	<span ng-include="'templates/episode/components/video.html'"></span>
 
 	<div ng-if="appState.viewMode != 'watch'" class="branding">
+		<a class="eliterate logo" href="http://www.mindwires.com">
+			<img src="images/customer/eliterate-mindwires.svg" alt="Mindwires logo">
+		</a>
+
 		<a class="itt logo" href="http://inthetelling.com">
 			<img src="images/itt.svg" alt="In The Telling logo">
 		</a>
 		<span class="copyright">TELLING STORY player &#169; {{now | date:'yyyy'}} <a href="http://inthetelling.com">IN THE TELLING</a>. All rights reserved</span>
 	</div>
-
 	<div class="banner-logo">
-		<img src="images/customer/tellingstory-logo.svg" alt="Telling STORY">
+		<img src="images/customer/eliterate-logo.svg" alt="E-Literate">
 	</div>
 
 </div>

@@ -1,10 +1,10 @@
 
 
 Templates: Compare all scene and item templates to existing episodes for backwards compatibility....
-	Improve reviewMode templates (review-annotation and review-transmedia)
-	Landing screen template(s)
-	Remaining link item templates
 	Episode templates
+	Landing screen template(s)
+	Improve reviewMode templates (review-annotation and review-transmedia)
+	Remaining link item templates
 	(doublecheck image-plain template, make sure I haven't messed up the touchable indicator)
 
 sidebar, burst margin layouts need to be built into all scene templates
@@ -24,21 +24,22 @@ ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overl
 Video: youtube/safari is having some http vs https permissions issues when testing locally; may be fine on live server (since that is https too) but need to test...
 
 
-
+add episode styles to navpanel, search, etc? (typography and color, most importantly)
 
 Bottom toolbar:  finetune layout
 
 build error display handler
 
 
+app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (check Safari in "private browsing" mode for example)
+
+bring back tiny-screen layout
+
+---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
 Better handling for end of episode
  
 
-
-app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (check Safari in "private browsing" mode for example)
-
-
----- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 
 
 Scenes should detect when content panes (including Fg and Bg) are empty, and adjust the layout to make up for it 
