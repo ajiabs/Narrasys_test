@@ -201,8 +201,11 @@ angular.module('com.inthetelling.player')
 		};
 
 		$scope.enableAutoscroll = function() {
-			modelSvc.appState.autoscrollBlocked = false;
-			startScrollWatcher();
+			console.log("Enabling autoscroll");
+			if (modelSvc.appState.autoscrollBlocked) {
+				modelSvc.appState.autoscrollBlocked = false;
+				startScrollWatcher();
+			}
 		};
 
 		// TODO this is a relatively expensive $watch.  Could greatly increase its $interval if we
@@ -263,7 +266,6 @@ angular.module('com.inthetelling.player')
 			modelSvc.appState.show.navPanel = false;
 			modelSvc.appState.itemDetail = false;
 		});
-
 
 
 		// TEMPORARY: Producer code below this line

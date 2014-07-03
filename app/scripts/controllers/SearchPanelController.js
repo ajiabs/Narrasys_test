@@ -23,6 +23,7 @@ angular.module('com.inthetelling.player')
 		$scope.sortBy = "startTime";
 
 		$scope.seek = function(t, eventID) {
+			$scope.enableAutoscroll(); // in playerController
 			timelineSvc.seek(t, "clickedOnEventInSearch", eventID);
 		};
 

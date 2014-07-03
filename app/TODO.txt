@@ -17,8 +17,14 @@ iOS: watch mode isn't displaying at all(!)
 
 ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes)
 
-Video: youtube/safari is having some http vs https permissions issues when testing locally; may be fine on live server (since that is https too) but need to test...
 
+
+
+player needs to watch for error states coming from youtube, if possible.
+
+item transitions bug: animating the height of items causes problems in Safari
+
+for now: force all bg transitions to fade
 
 add episode styles to navpanel, search, etc? (typography and color, most importantly)
 
@@ -31,6 +37,16 @@ app.js uses localStorage to find the login url if it gets 401 errors from the AP
 bring back tiny-screen layout
 
 Compare all scene and item templates to existing episodes for backwards compatibility....
+
+Chrome has autoscroll turned off when you enter review mode
+Chrome is fighting manualscroll vs autoscroll
+
+
+Have timeline run a very slow interval update of all item states, in case anythign gets stuck
+
+youtube is failing to play some videos on firefox when  flash is not installed.  Niche problem, but needs an error message with a link to flash installer at least.   
+
+More importantly, report youtube (or html5 video) errors as errors to the error handler. Which you will write.
 
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----

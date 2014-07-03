@@ -40,6 +40,8 @@ angular.module('com.inthetelling.player')
 				navPanel: false
 			},
 			itemDetail: false, // Put item data here to show it as a modal overlay
+			autoscroll: true,	//scroll window to make current items visible (in relevant modes)
+			autoscrollBlocked: false, // User has disabled autoscroll
 			editing: false, // Object currently being edited by user (TODO)
 			blerg: 'fnord' // Can't see this
 		};
