@@ -40,7 +40,7 @@ angular.module('com.inthetelling.player')
 				navPanel: false
 			},
 			itemDetail: false, // Put item data here to show it as a modal overlay
-			autoscroll: true, //scroll window to make current items visible (in relevant modes)
+			autoscroll: false, //scroll window to make current items visible (in relevant modes)
 			autoscrollBlocked: false, // User has disabled autoscroll
 			editing: false, // Object currently being edited by user (TODO)
 			blerg: 'fnord' // Can't see this
@@ -421,7 +421,7 @@ angular.module('com.inthetelling.player')
 			svc.episodes[episodeId].masterAsset = svc.assets[svc.episodes[episodeId].master_asset_id];
 		};
 
-		// TODO: remove this, handle it as part of the player template instead
+		// TODO: Future episodes should have this as an available scene template instead 
 		svc.addLandingScreen = function(episodeId) {
 			// console.log("add landing screen", episodeId);
 			// create a new scene event for this episode
@@ -436,7 +436,6 @@ angular.module('com.inthetelling.player')
 			};
 		};
 
-
 		var resolveVideo = function(videoAsset) {
 			var videoObject = {};
 			if (videoAsset.alternate_urls) {
@@ -447,7 +446,6 @@ angular.module('com.inthetelling.player')
 				var extensionMatch = /\.(\w+)$/;
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
-
 						videoObject.youtube = embeddableYoutubeUrl(videoAsset.alternate_urls[i]);
 					} else {
 						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
@@ -478,22 +476,15 @@ angular.module('com.inthetelling.player')
 			// HACK some platform detection here.
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 			// Safari should prefer m3u8 to mpeg4.  TODO add other browsers to this when they support m3u8
+			// TODO BUG: disabling this for now; m3u8 is causing problems
 
-			// BUG: disabling this; m3u8 is causing problems in safari.
-			/*
-			if (isSafari && videoObject.m3u8) {
-				videoObject.mpeg4 = videoObject.m3u8;
-			}
-			delete videoObject.m3u8;
-*/
-
-			// WARN if you're seeing mixed-protocol errors in Safari:  youtube API is always on https.
-			// Fortunately, so are our episodes.  But if loading an episode from http, like, say, my dev environment,
-			// it breaks (in safari only).   Work around this by not using YT in safari during dev only
-			// if ((isSafari || navigator.platform.indexOf('iPad') > -1) && videoObject.mpeg4) {
-			// 	videoObject.youtube = undefined;
+			// if (isSafari && videoObject.m3u8) {
+			// 	videoObject.mpeg4 = videoObject.m3u8;
 			// }
-			videoObject.youtube = videoObject.youtube.replace(/https?:\/\//, "//");
+			// delete videoObject.m3u8;
+
+
+	console.log("video asset:",videoObject);
 
 			if (config.disableYoutube) {
 				videoObject.youtube = undefined;
@@ -504,6 +495,9 @@ angular.module('com.inthetelling.player')
 
 		var embeddableYoutubeUrl = function(origUrl) {
 			// regexp to extract the ID from a youtube
+			if (!origUrl) {
+				return undefined;
+			}
 			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 			var ytId = origUrl.match(getYoutubeID)[1];
 			return "//www.youtube.com/embed/" + ytId;
