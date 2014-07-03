@@ -323,8 +323,9 @@ angular.module('com.inthetelling.player')
 
 
 		svc.init = function(episodeId) {
-			// console.log("timelineSvc.init", episodeId);
+			console.log("timelineSvc.init", episodeId);
 			svc.timelineEvents = [];
+			svc.markedEvents = [];
 			timeMultiplier = 1;
 			modelSvc.appState.duration = 0;
 			modelSvc.appState.timelineState = 'paused';

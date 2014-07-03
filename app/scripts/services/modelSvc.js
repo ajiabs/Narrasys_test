@@ -40,7 +40,7 @@ angular.module('com.inthetelling.player')
 				navPanel: false
 			},
 			itemDetail: false, // Put item data here to show it as a modal overlay
-			autoscroll: true,	//scroll window to make current items visible (in relevant modes)
+			autoscroll: true, //scroll window to make current items visible (in relevant modes)
 			autoscrollBlocked: false, // User has disabled autoscroll
 			editing: false, // Object currently being edited by user (TODO)
 			blerg: 'fnord' // Can't see this
@@ -143,12 +143,13 @@ angular.module('com.inthetelling.player')
 
 			//link
 			"templates/transmedia-link-default.html": "templates/item/link.html",
-			"templates/transmedia-link-embed.html": "templates/item/link.html", // TODO
-			"templates/transmedia-link-frameicide.html": "templates/item/link.html", // TODO
+			"templates/transmedia-link-frameicide.html": "templates/item/link.html",
+			"templates/transmedia-link-noembed.html": "templates/item/link.html",
+			"templates/transmedia-link-embed.html": "templates/item/link-embed.html",
+			"templates/transmedia-link-youtube.html": "templates/item/link.html",
+			"templates/transmedia-embed-youtube.html": "templates/item/link-embed.html",
+
 			"templates/transmedia-link-icon.html": "templates/item/link.html", // TODO
-			"templates/transmedia-link-noembed.html": "templates/item/link.html", // TODO
-			"templates/transmedia-link-youtube.html": "templates/item/link.html", // TODO
-			"templates/transmedia-embed-youtube.html": "templates/item/link.html", // TODO
 
 			// (from old sxs demo; can delete later)
 			"templates/upload-demo-inline.html": "templates/item/item.html", // TODO
@@ -173,10 +174,35 @@ angular.module('com.inthetelling.player')
 		};
 
 
+		// TODO there are some hacky dependencies on existing templateUrls which really ought to become
+		// separate data fields in their own right:  
+		//      isTranscript (for Annotations)
+		//      allowEmbed, noExternalLink, and targetTop (for Links)
+
+		/* TODO also we should merge the Link and Upload types, split those templates by file type instead of source,
+		   and make all these data fields consistent:
+
+				Upload/link
+					title: Link text
+					(category)
+					required
+					description: Description
+					displayTime: Timestamp
+					allowEmbed: is/isn't frameable
+					targetTop: link should point to window.top (for end-of-episode links back to LTI host)
+					url: primary URL
+					url_type: file type
+					(?) secondary image URL (icon, thumbnail, etc)
+					
+				Annotation
+					Speaker
+					text
+					secondary image URL (speaker icon)
+*/
+
 		svc.deriveEvent = function(event) {
 			if (event._type !== 'Scene') {
 				//items
-
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)
 				if (event.layouts) {
@@ -189,9 +215,18 @@ angular.module('com.inthetelling.player')
 					event.isContent = true;
 				}
 
-				// Transcript (TODO: don't depend on templateUrl to identify these!)
+				// Old templates which (TODO) should have been database fields instead:
 				if (event._type === 'Annotation' && event.templateUrl.match(/transcript/)) {
 					event.isTranscript = true;
+				}
+				if (event.templateUrl.match(/noembed/)) {
+					event.noEmbed = true;
+				}
+				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
+					event.noExternalLink = true;
+				}
+				if (event.templateUrl.match(/frameicide/)) {
+					event.targetTop = true;
 				}
 			}
 
@@ -471,7 +506,7 @@ angular.module('com.inthetelling.player')
 			// regexp to extract the ID from a youtube
 			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 			var ytId = origUrl.match(getYoutubeID)[1];
-			return "//www.youtube.com/embed/"+ytId;
+			return "//www.youtube.com/embed/" + ytId;
 		};
 
 

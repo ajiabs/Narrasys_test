@@ -1,4 +1,4 @@
-<div class="itemTemplate link">
+<div class="itemTemplate">
 	<div class="itemHead">
 		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
 		<div class="category">
@@ -8,12 +8,13 @@
 	</div>
 	<div class="text">
 		<div class="title">
-			<a ng-click="toggleDetailView()">{{item.title || '(Untitled)'}}</a>
+			<a ng-if="item.noEmbed" class="escapelink" ng-click="outgoingLink(item.url)">{{item.title ||'(Untitled)'}}</a>
+			<a ng-if="!item.noEmbed" ng-click="toggleDetailView()">{{item.title || '(Untitled)'}}</a>
 		</div>
 		<div>{{item.description}}</div>
 	</div>
-	<div class="itemDetail" x-ng-if="item.showInlineDetail">
-		<a ng-href="{{item.url}}" target="_blank" class="escapelink">(new window)</a>
+	<div class="itemDetail" ng-if="item.showInlineDetail">
+		<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 		<div class="iframeContainer">
 			<iframe ng-src="{{item.url}}"></iframe>
 		</div>

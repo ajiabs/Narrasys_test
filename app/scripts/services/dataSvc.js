@@ -275,7 +275,7 @@ angular.module('com.inthetelling.player')
 				"master_asset_id": "masterasset",
 				"title": "Test Episode",
 				"status": "Published",
-				"templateUrl": "templates/episode/story.html",
+				"templateUrl": "templates/episode/episode.html",
 				"styles": [
 					"colorVivid", "highlightSide", ""
 				]
@@ -431,6 +431,14 @@ angular.module('com.inthetelling.player')
 				link.required = (Math.random() > 0.5);
 				link.start_time = i * 3;
 				link.end_time = i * 3 + 3;
+
+				if (Math.random() > 0.5) {
+					link.title = "NO EMBED link";
+					link.templateUrl = "templates/transmedia-link-noembed.html";
+				} else if (Math.random() < 0.7) {
+					link.title = "FRAMEICIDE link";
+					link.templateUrl = "templates/transmedia-link-frameicide.html";
+				}
 				modelSvc.cache("event", link);
 			}
 

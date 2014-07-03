@@ -1,25 +1,29 @@
-<div class="itemTemplate reviewTransmedia">
+<div class="itemTemplate">
 	<div class="itemHead">
 		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
-		<div class="authorName">{{item.annotator}}</div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<span ng-if="item.required">(Required viewing)</span>
+		</div>
 	</div>
-
-	<div class="text">{{item.annotation}} {{item.description}}</div>
-
-
-
-	<a ng-click="itemDebug=!itemDebug">Debug</a>
-	<pre ng-if="itemDebug">{{item | pretty}}</pre>
+	<div class="text">
+		<div class="title">
+			<a ng-if="item.noEmbed" class="escapelink" ng-click="outgoingLink(item.url)">{{item.title ||'(Untitled)'}}</a>
+			<a ng-if="!item.noEmbed" ng-click="toggleDetailView()">{{item.title || '(Untitled)'}}</a>
+		</div>
+		<div>{{item.description}}</div>
+	</div>
+	<div class="itemDetail" ng-if="item.showInlineDetail && item._type == 'Link'">
+		<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
+		<div class="iframeContainer">
+			<iframe ng-src="{{item.url}}"></iframe>
+		</div>
+	</div>
+	<div class="itemDetail" ng-if="item.showInlineDetail && item._type != 'Link'">
+		<div class="touchable" style="position:relative">
+			<img ng-click="forceModal()" ng-src="{{item.asset.url}}">
+			<div class="touchableIndicator"></div>
+		</div>
+	</div>
+	<div class="clear"></div>
 </div>
-
-
-<!-- needs to follow these rules:
- if (model.type === "upload" || model.type === "image") {
-				model.exploreTemplateUrl = "templates/transmedia-image-default.html";
-			} else if (model.type === "link") {
-				if (model.templateUrl !== "templates/transmedia-link-noembed.html" &&
-					model.templateUrl !== "templates/transmedia-link-frameicide.html") {
-					model.exploreTemplateUrl = "templates/transmedia-link-default.html";
-				}
-			}
--->

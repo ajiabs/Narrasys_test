@@ -7,7 +7,7 @@ so they get logged properly: don't draw plain hrefs
 
 
 angular.module('com.inthetelling.player')
-	.directive('ittItem', function($http, config, modelSvc, analyticsSvc, timelineSvc) {
+	.directive('ittItem', function($http, config, modelSvc, analyticsSvc, timelineSvc,$timeout) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -24,7 +24,6 @@ angular.module('com.inthetelling.player')
 			controller: 'ItemController',
 			link: function(scope, element, attrs) {
 				// console.log('ittItem', scope, element, attrs);
-
 
 				// TODO plugins should each be their own directive!
 				if (scope.item.data) {
@@ -117,7 +116,7 @@ angular.module('com.inthetelling.player')
 						scope.item.showInlineDetail = false;
 					} else {
 						scope.captureInteraction();
-						if (element.closest('.content').width() > 500) {
+						if (element.closest('.content').width() > 400) {
 							// show detail inline if there's room for it:
 							scope.item.showInlineDetail = true;
 						} else {
@@ -136,7 +135,13 @@ angular.module('com.inthetelling.player')
 				scope.outgoingLink = function(url) {
 					timelineSvc.pause();
 					scope.captureInteraction();
-					window.open(url);
+					if (scope.item.targetTop) {
+						$timeout(function() {
+							window.location.href=url;
+						});
+					} else {
+						window.open(url);
+					}
 				};
 
 				scope.captureInteraction = function() {

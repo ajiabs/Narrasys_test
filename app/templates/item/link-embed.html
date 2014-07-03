@@ -1,0 +1,17 @@
+<div class="itemTemplate">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<span ng-if="item.required">(Required viewing)</span>
+		</div>
+	</div>
+	<div class="text">
+		<div class="title">{{item.title}}</div>
+		<div>{{item.description}}</div>
+	</div>
+	<div class="iframeContainer">
+		<iframe ng-src="{{item.url}}"></iframe>
+	</div>
+	<div class="clear"></div>
+</div>

@@ -1,13 +1,11 @@
 
 
 Templates: 
-	Improve reviewMode templates (review-annotation and review-transmedia)
-	Remaining link item templates
 	sidebar, burst margin layouts need to be built into all scene templates
 
 make windowBg and windowFg position:fixed
 
-Clicking on search results should turn on autoscroll
+
 
 iOS bug: timeline isn't waiting for video to finish buffering on first play in iOS
 iOS: fix hide/reveal events on bottom toolbar on touchscreens (currently it's never hiding)
@@ -48,6 +46,7 @@ youtube is failing to play some videos on firefox when  flash is not installed. 
 
 More importantly, report youtube (or html5 video) errors as errors to the error handler. Which you will write.
 
+TODO: test all old link templates, especially link-youtube, embed-youtube, and link-embed
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 
@@ -67,8 +66,10 @@ Scenes should detect when content panes (including Fg and Bg) are empty, and adj
 (better still, do this only if they're empty for more than n seconds...)
 
 
-Ask Bill to add fields: "friendly ID" for episodes (for use in url)
-
+Ask Bill to add fields: 
+* "friendly ID" for episodes (for use in url)
+* noEmbed (for links with framebreakers)
+* targetTop (for end-of-episode links to LTI host)
 
 Producer stuff: put an "add" button with ng-if="producer" in every fg, content, and bg pane
 
