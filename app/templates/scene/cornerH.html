@@ -37,7 +37,9 @@ showCurrent is forced in Main.
 				singleitem: showCurrent
 					? (altContentItems | isCurrent).length == 1
 					: (altContentItems).length == 1, 
-				allowHighlights: !showCurrent
+				allowHighlights: !showCurrent,
+				hasLeftSidebar: altContentHasLeftSidebar, 
+				hasRightSidebar: altContentHasRightSidebar
 			}">
 				<div 
 					class="item animate" 

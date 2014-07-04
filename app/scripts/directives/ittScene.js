@@ -40,6 +40,15 @@ angular.module('com.inthetelling.player')
 							$(this).css("min-height", (angular.element(window).height() - $(this).offset().top));
 						});
 					}
+
+					element.find('.content').each(function() {
+						var contentpane = $(this);
+						if (contentpane.outerWidth() > 550) {
+							contentpane.addClass('allowSidebars');
+						} else {
+							contentpane.removeClass('allowSidebars');
+						}
+					});
 				};
 
 				// Trigger twiddleScene when the window changes size, the scene becomes current, or the viewMode changes:

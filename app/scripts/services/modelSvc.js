@@ -215,6 +215,7 @@ angular.module('com.inthetelling.player')
 					event.isContent = true;
 				}
 
+
 				// Old templates which (TODO) should have been database fields instead:
 				if (event._type === 'Annotation' && event.templateUrl.match(/transcript/)) {
 					event.isTranscript = true;

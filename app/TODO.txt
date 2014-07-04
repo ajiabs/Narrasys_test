@@ -1,7 +1,9 @@
 
 
 Templates: 
-	sidebar, burst margin layouts need to be built into all scene templates
+	
+	Items:  need "narrow" content column version of sidebars, bursts
+	remove div=clear from end of items; they interfere with sidebars
 
 CSS: need a default highlight style, make sure we have all of them 
 

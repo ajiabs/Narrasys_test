@@ -13,7 +13,9 @@
 				singleitem: showCurrent
 					? (altContentItems | isCurrent).length == 1
 					: (altContentItems).length == 1, 
-				allowHighlights: !showCurrent
+				allowHighlights: !showCurrent,
+				hasLeftSidebar: altContentHasLeftSidebar, 
+				hasRightSidebar: altContentHasRightSidebar
 			}">
 				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
 				<div 
@@ -37,7 +39,9 @@
 				singleitem: showCurrent
 					? (mainContentItems | isCurrent).length == 1
 					: (mainContentItems).length == 1, 
-				allowHighlights: !showCurrent
+				allowHighlights: !showCurrent,
+				hasLeftSidebar: mainContentHasLeftSidebar, 
+				hasRightSidebar: mainContentHasRightSidebar
 			}">
 				<img src="images/aspectratiopreserver-16x9.gif " class="matchVideoHeight ">
 				<div 

@@ -321,17 +321,17 @@ angular.module('com.inthetelling.player')
 				"type": "Scene",
 				"episode_id": epId,
 				//"templateUrl": "templates/scene/centered.html",
-				"layouts": ["videoLeft", ""],
+				"layouts": ["", ""],
 				"styles": ["transitionSlideL"]
 			};
 
 			var scenetemplateurls = [
 				"templates/scene/cornerV.html",
-				// "templates/scene/1col.html",
-				// "templates/scene/2colL.html",
-				// "templates/scene/2colR.html",
-				// "templates/scene/centered.html",
-				// "templates/scene/cornerH.html"
+				"templates/scene/1col.html",
+				"templates/scene/2colL.html",
+				"templates/scene/2colR.html",
+				"templates/scene/centered.html",
+				"templates/scene/cornerH.html"
 			];
 
 
@@ -361,11 +361,12 @@ angular.module('com.inthetelling.player')
 				"styles": []
 			};
 
-			var testLayouts = ["inline", "inline", "burstL",
-				"inline", "inline", "burstR",
-				"inline", "inline", "burst",
-				"inline", "inline", "sidebarL",
-				"inline", "inline", "sidebarR",
+			var testLayouts = [
+			 "sidebarL",
+				"burstR",  "burstR",
+				"inline",  "burst",
+				"burstL", "sidebarR",
+				"inline",  "sidebarR",
 				"inline", "inline"
 			];
 
@@ -415,7 +416,7 @@ angular.module('com.inthetelling.player')
 				"link_image_id": "asset1",
 				"url": "http://www.inthetelling.com",
 				"title": "Link Title",
-				"description": "Link Description",
+				"description": "Link Description lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy",
 				"cosmetic": false,
 				"stop": false,
 				"type": "Link",
@@ -454,7 +455,7 @@ angular.module('com.inthetelling.player')
 				"stop": false,
 				"type": "Upload",
 				"episode_id": epId,
-				"templateUrl": "templates/item/upload-thumbnail.html",
+				"templateUrl": "templates/item/image-thumbnail.html",
 				"styles": [
 					"transitionFade"
 				],

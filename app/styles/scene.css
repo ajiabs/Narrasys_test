@@ -26,6 +26,56 @@
 .bgLayer {
 	opacity:0.25;
 }
+/* ------------------------------------------- */
+
+/* Sidebars and margins.
+
+.sidebar items float to one margin or the other when sidebars are allowed
+.burst items burst into those margins when sidebars are allowed
+.sidebar items always appear smaller than usual
+
+TODO give panes with both sidebars narrower margins than those with only one or the other
+*/
+ .allowSidebars.hasLeftSidebar {
+	padding-left: 30%;
+}
+.allowSidebars.hasRightSidebar {
+	padding-right: 30%;
+}
+
+.hasLeftSidebar .item.sidebarL, .hasRightSidebar .item.sidebarR {
+	font-size: smaller;
+	padding-left:5px;
+}
+.hasLeftSidebar .sidebarL .displayTime, 
+.hasRightSidebar .sidebarR .displayTime {
+	display:none
+}
+/* - */
+.allowSidebars.hasLeftSidebar .burstL, 
+.allowSidebars.hasLeftSidebar .burst {
+	clear:left;
+	margin-left: -70%;
+}
+.allowSidebars.hasRightSidebar .burstR, 
+.allowSidebars.hasRightSidebar .burst {
+	clear:right;
+	margin-right: -70%;
+}
+/* - */
+.allowSidebars.hasLeftSidebar .sidebarL {
+	float: left;
+	clear:left;
+	margin-left: -70%;
+	width: 70%;
+}
+.allowSidebars.hasRightSidebar .sidebarR {
+	float: right;
+	clear:right;
+	margin-right: -70%;
+	width: 70%;
+}
+
 
 /* ------------------------------------------- */
  .watchMode {
@@ -218,7 +268,7 @@
 		margin-top: 5%;
 		margin-right: 0;
 		right: 0;
-		left: 45%;
+		left: 55%;
 	}
 	.scene.onecol.videoRight .col {
 		margin: 0 50% 0 5%;
@@ -240,8 +290,13 @@
  .scene.centered .col {
 	margin: 10% 20% 0 20%;
 }
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 900px) {
 	.scene.centered .col {
 		margin: 7% 25% 0 25%;
+	}
+}
+@media screen and (min-width: 1200px) {
+	.scene.centered .col {
+		margin: 7% 30% 0 30%;
 	}
 }
