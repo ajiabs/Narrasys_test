@@ -9,7 +9,7 @@
 	right: 0;
 	bottom: 0;
 }
-.windowFg {
+.windowFg, .windowBg {
 	position:fixed;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;

@@ -277,7 +277,7 @@ angular.module('com.inthetelling.player')
 				"status": "Published",
 				"templateUrl": "templates/episode/episode.html",
 				"styles": [
-					"colorVivid", "highlightSide", ""
+					"", "", ""
 				]
 			});
 			modelSvc.cache("asset", {
@@ -327,11 +327,11 @@ angular.module('com.inthetelling.player')
 
 			var scenetemplateurls = [
 				"templates/scene/cornerV.html",
-				"templates/scene/1col.html",
-				"templates/scene/2colL.html",
-				"templates/scene/2colR.html",
-				"templates/scene/centered.html",
-				"templates/scene/cornerH.html"
+				// "templates/scene/1col.html",
+				// "templates/scene/2colL.html",
+				// "templates/scene/2colR.html",
+				// "templates/scene/centered.html",
+				// "templates/scene/cornerH.html"
 			];
 
 
@@ -422,15 +422,18 @@ angular.module('com.inthetelling.player')
 				"episode_id": epId,
 				"templateUrl": "templates/item/link.html",
 				"layouts": ["inline"],
-				"styles": ["colorInvert"],
+				"styles": [""],
 				"isContent": true,
 			};
+
 			for (i = 0; i < 30; i++) {
 				var link = angular.copy(linkStub);
 				link._id = "link-" + i;
 				link.required = (Math.random() > 0.5);
 				link.start_time = i * 3;
 				link.end_time = i * 3 + 3;
+
+				link.layouts = [testLayouts[i % testLayouts.length]];
 
 				if (Math.random() > 0.5) {
 					link.title = "NO EMBED link";

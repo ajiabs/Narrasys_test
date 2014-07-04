@@ -57,21 +57,22 @@ the middle of a list
 Transition time should be set for the specific object type
  */
 
+/* disabling the height animation for now; looks bad in Safari. TODO fix in safari */
 .animate.ng-enter, .animate.ng-leave, .animate.ng-move {
 	transition: all ease-in-out 0.5s;
 }
 .content .animate.ng-enter {
-	max-height: 1px;
+	/*max-height: 1px;*/
 }
 .content .animate.ng-enter.ng-enter-active {
-	max-height: 300px;
+	/*max-height: 300px;*/
 }
 .content .animate.ng-leave {
-	max-height:100px;
+	/*max-height:100px;*/
 	display:block !important;
 }
 .content .animate.ng-leave.ng-leave-active {
-	max-height:0;
+	/*max-height:0;*/
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionFade */

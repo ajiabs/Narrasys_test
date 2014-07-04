@@ -3,8 +3,7 @@
 Templates: 
 	sidebar, burst margin layouts need to be built into all scene templates
 
-make windowBg and windowFg position:fixed
-
+CSS: need a default highlight style, make sure we have all of them 
 
 
 iOS bug: timeline isn't waiting for video to finish buffering on first play in iOS
@@ -19,8 +18,6 @@ ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overl
 
 
 player needs to watch for error states coming from youtube, if possible.
-
-item transitions bug: animating the height of items causes problems in Safari
 
 for now: force all bg transitions to fade
 
@@ -49,6 +46,9 @@ More importantly, report youtube (or html5 video) errors as errors to the error 
 TODO: test all old link templates, especially link-youtube, embed-youtube, and link-embed
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
+
+item transitions: animating the height of items causes problems in Safari - decide if we need that effect anyway
 
 Better handling for end of episode
  
