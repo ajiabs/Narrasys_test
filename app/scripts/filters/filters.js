@@ -122,19 +122,21 @@ angular.module('com.inthetelling.player')
 	})
 /* Single filters */
 
+/*
 .filter('trustAsHtml', function($sce) {
 	return function(val) {
 		return $sce.trustAsHtml(val);
 	};
 })
-	.filter('highlightSubstring', function($sce) {
+*/
+	.filter('highlightSubstring', function() {
 		return function(text, search) {
 			// console.log("Search highlight",text,search);
 			if (!text) {
 				return;
 			}
 			if (search || angular.isNumber(search)) {
-				return $sce.trustAsHtml(text.toString().replace(new RegExp(search.toString(), 'gi'), '<span class="ui-match">$&</span>'));
+				return text.toString().replace(new RegExp(search.toString(), 'gi'), '<span class="ui-match">$&</span>');
 			} else {
 				return text;
 			}
@@ -155,66 +157,3 @@ angular.module('com.inthetelling.player')
 			return isNaN(t) ? "0:00" : Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
 		};
 	});
-/*
-	.filter('XXX', function() {
-		return function(items) {
-			var ret = [];
-			angular.forEach(items, function(item) {
-				if (XXX) {
-					ret.push(item);
-				}
-			});
-			return ret;
-		};
-	})
-*/
-
-// Not needed anymore:
-/*
-	.filter('scenes', function() {
-		return function(arr, filters) {
-//			console.log("scenes filter", filters);
-			// currently supported filters: episodeId
-			var ret = [];
-			angular.forEach(arr, function(item) {
-				if (item._type !== 'Scene') {
-					return;
-				}
-				if (filters.episodeId && item.episode_id !== filters.episodeId) {
-					return;
-				}
-				ret.push(item);
-			});
-			return ret.sort(function(a, b) {
-				return a.start_time - b.start_time;
-			});
-		};
-
-	})
-	.filter('items', function(modelSvc) {
-		return function(arr, filters) {
-//			console.log("items filter", filters);
-			// currently supported filters: episodeId, sceneId
-			var ret = [];
-			angular.forEach(arr, function(item) {
-				if (item._type === 'Scene') {
-					return;
-				}
-				if (filters.episodeId && item.episode_id !== filters.episodeId) {
-					return;
-				}
-				if (filters.sceneId) {
-					var scene = modelSvc.scene(filters.sceneId);
-					if (item.start_time < scene.start_time || item.start_time >= scene.end_time) {
-						return;
-					}
-				}
-				ret.push(item);
-			});
-			return ret.sort(function(a, b) {
-				return a.start_time - b.start_time;
-			});
-		};
-
-	});
-		*/
