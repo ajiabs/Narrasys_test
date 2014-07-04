@@ -23,7 +23,7 @@
 						<div class="tip">{{willSeekTo | asTime}}</div>
 					</div>
 					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents " style="left: {{markerPercent(event.start_time)}}% ">
-						<span class="content">{{event.title}}</span>
+						<span class="content" ng-bind-html="event.title"></span>
 						<div class="tooltip-arrow"></div>
 					</div>
 				</div>

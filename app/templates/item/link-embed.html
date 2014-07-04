@@ -7,8 +7,8 @@
 		</div>
 	</div>
 	<div class="text">
-		<div class="title">{{item.title}}</div>
-		<div>{{item.description}}</div>
+		<div class="title" ng-bind-html="item.title"></div>
+		<div ng-bind-html="item.description"></div>
 	</div>
 	<div class="iframeContainer">
 		<iframe ng-src="{{item.url}}"></iframe>

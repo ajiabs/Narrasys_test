@@ -1,56 +1,46 @@
 
+for now: force all bg transitions to fade
 
-Templates: 
-	
-	Items:  need "narrow" content column version of sidebars, bursts
-	remove div=clear from end of items; they interfere with sidebars
+
+bring back tiny-screen layout
+
+build error display handler
+
+player needs to watch for error states coming from youtube or the <video>, if possible.
 
 CSS: need a default highlight style, make sure we have all of them 
-
 
 iOS bug: timeline isn't waiting for video to finish buffering on first play in iOS
 iOS: fix hide/reveal events on bottom toolbar on touchscreens (currently it's never hiding)
 iOS: playhead is draggable past boundaries of timeline
 iOS: watch mode isn't displaying at all(!)
 
-
 ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes)
-
-
-
-
-player needs to watch for error states coming from youtube, if possible.
-
-for now: force all bg transitions to fade
-
-add episode styles to navpanel, search, etc? (typography and color, most importantly)
 
 Bottom toolbar:  finetune layout
 
-build error display handler
+Bug: Chrome has autoscroll turned off when you enter review mode
+Bug: Chrome is fighting manualscroll vs autoscroll
+
+Bug: item transitions: animating the height of items causes problems in Safari - decide if we need that effect anyway
+
+add episode styles to navpanel, search, etc? (typography and color, most importantly)
 
 app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (check Safari in "private browsing" mode for example)
 
-bring back tiny-screen layout
-
 Compare all scene and item templates to existing episodes for backwards compatibility....
-
-Chrome has autoscroll turned off when you enter review mode
-Chrome is fighting manualscroll vs autoscroll
-
+in particular test link-youtube, embed-youtube, and link-embed
 
 Have timeline run a very slow interval update of all item states, in case anythign gets stuck
 
 youtube is failing to play some videos on firefox when  flash is not installed.  Niche problem, but needs an error message with a link to flash installer at least.   
 
-More importantly, report youtube (or html5 video) errors as errors to the error handler. Which you will write.
-
-TODO: test all old link templates, especially link-youtube, embed-youtube, and link-embed
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 
+remove div=clear from end of items; they interfere with sidebars
 
-item transitions: animating the height of items causes problems in Safari - decide if we need that effect anyway
+preload images ahead of playhead? 
 
 Better handling for end of episode
  
@@ -66,7 +56,6 @@ Find out why m3u8 was causing problems, fix it
 
 Scenes should detect when content panes (including Fg and Bg) are empty, and adjust the layout to make up for it 
 (better still, do this only if they're empty for more than n seconds...)
-
 
 Ask Bill to add fields: 
 * "friendly ID" for episodes (for use in url)

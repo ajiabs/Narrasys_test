@@ -7,7 +7,7 @@ so they get logged properly: don't draw plain hrefs
 
 
 angular.module('com.inthetelling.player')
-	.directive('ittItem', function($http, config, modelSvc, analyticsSvc, timelineSvc,$timeout) {
+	.directive('ittItem', function($http, $timeout, config, modelSvc, analyticsSvc, timelineSvc) {
 		return {
 			restrict: 'A',
 			replace: true,

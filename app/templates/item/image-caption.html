@@ -10,8 +10,8 @@
 		<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
 		<div class="touchableIndicator"></div>
 		<div class="caption">
-			<div class="title">{{item.title}}</div>
-			<div class="text">{{item.description}}</div>
+			<div class="title" ng-bind-html="item.title"></div>
+			<div class="text" ng-bind-html="item.description"></div>
 		</div>
 	</div>
 	<div class="clear"></div>

@@ -349,7 +349,7 @@ angular.module('com.inthetelling.player')
 			var annotationStub = {
 				"_id": "",
 				"_type": "Annotation",
-				"annotation": "Transcript text",
+				"annotation": "Transcript text: <b>html</b> included!",
 				"annotation_image_id": "asset3",
 				"annotator": "Speaker Name",
 				"cosmetic": false,
@@ -416,7 +416,7 @@ angular.module('com.inthetelling.player')
 				"link_image_id": "asset1",
 				"url": "http://www.inthetelling.com",
 				"title": "Link Title",
-				"description": "Link Description lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy",
+				"description": "Link Description <i>lorem</i> ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy",
 				"cosmetic": false,
 				"stop": false,
 				"type": "Link",

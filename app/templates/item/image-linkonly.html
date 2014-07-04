@@ -8,9 +8,9 @@
 	</div>
 	<div class="text">
 		<div class="title">
-			<a ng-click="outgoingLink(item.asset.url)">{{item.title || '(Untitled)'}}</a>
+			<a ng-click="outgoingLink(item.asset.url)" ng-bind-html="item.title || '(Untitled)'"></a>
 		</div>
-		<div>{{item.description}}</div>
+		<div class="text" ng-bind-html="item.description"></div>
 	</div>
 	<div class="clear"></div>
 </div>

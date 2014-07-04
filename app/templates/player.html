@@ -42,12 +42,13 @@
 	<div class="toolbar-bottom" ng-mouseenter="showControls();keepControls()" ng-mouseleave="allowControlsExit()" ng-class="{hidden: !appState.videoControlsActive}">
 		<div class="toolbar-bottom-fill">
 			<div ng-show="show.navPanel" class="navPanel">
-				<h2>{{episode.title}}</h2>
+				<h2 ng-bind-html="episode.title"></h2>
 				<div class="scene" x-ng-if="scene.title" x-ng-repeat="scene in episode.scenes" x-ng-class="{currentScene: scene.isCurrent}" x-ng-click="seek(scene.start_time)">
 					<span class="displayTime">{{scene.displayTime}}</span>
 					<p>
-						<a href="javascript:void 1;">{{scene.title}}</a>
-						<br>{{scene.description}}
+						<a ng-bind-html="scene.title"></a>
+						<br>
+						<span ng-bind-html="scene.description"></span>
 					</p>
 				</div>
 			</div>

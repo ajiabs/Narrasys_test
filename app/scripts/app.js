@@ -2,7 +2,7 @@
 
 // Declare the top level application module and its dependencies
 //angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindonce'])
-angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate'])
+angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 
 // Configure routing
 .config(function($routeProvider) {
