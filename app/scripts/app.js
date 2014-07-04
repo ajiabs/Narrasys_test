@@ -75,42 +75,42 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize']
 	$httpProvider.defaults.withCredentials = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
-	// Add an interceptor to globally catch 401 errors and do something with them:
 	$httpProvider.responseInterceptors.push(['$q',
-		function(scope, $q) {
+		function(scope) {
 			function success(response) {
 				return response;
 			}
 
 			function error(response) {
-				var status = response.status;
-				if (status === 401) {
-					console.warn("INTERCEPTOR GOT 401");
-					if (localStorage.storyAuth) {
-						// read the login url, if there is one, and redirect to it:
-						var storedData = angular.fromJson(localStorage.storyAuth);
-						localStorage.removeItem("storyAuth");
-						if (storedData.login_url) {
-							if (storedData.login_via_top_window_only) {
-								window.top.location.href = storedData.login_url;
-							} else {
-								window.location.href = storedData.login_url;
-							}
-						}
-					}
-					// if all else fails, force a reload as guest
-					window.location.reload();
-					return false;
-				}
-				console.warn("INTERCEPTOR GOT NON-401 ERROR:", response);
-				//return $q.reject(response);
+				throw response;
 			}
+
 			return function(promise) {
 				return promise.then(success, error);
 			};
 		}
 	]);
+})
+
+// global exception handler pushes error messages into appState
+// Totally cargo-culting this, no idea if this is a reasonable way to do this 
+.config(function($provide) {
+	$provide.decorator("$exceptionHandler", function($delegate, $injector) {
+		return function(exception, cause) {
+			var $rootScope = $injector.get("$rootScope");
+			var errorSvc = $injector.get("errorSvc");
+			console.warn("exceptionhandler", cause);
+			errorSvc.errors.push({
+				"exception": exception,
+				"stack": exception.stack,
+				"cause": cause
+			});
+			console.log("DONE");
+			$delegate(exception, cause);
+		};
+	});
 
 })
+
 
 ;

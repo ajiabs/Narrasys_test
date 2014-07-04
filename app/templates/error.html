@@ -1,7 +1,11 @@
-<div x-ng-if="error" class="error">
+
+<div ng-if="errors.length" class="errors">
+	<div ng-repeat="error in errors">
 	<h2>Error</h2>
-	<p>Sorry, but something went wrong and we weren't able to continue:<br>{{error.message}}</p>
-	<span style="color:#FFF">
-		<pre>{{error.details}}</pre>
-	</span>
+	<p>Sorry, but something went wrong and we weren't able to continue:<br>{{error.cause || '(unknown reason)'}}</p>
+	
+		<pre>{{error | pretty}}</pre>
+	
+
+	</div>
 </div>

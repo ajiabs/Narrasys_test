@@ -51,6 +51,7 @@ credly item needs to be able to handle multiple separate badges in one event (or
 
 correct youtube urls into embeddable format
 
+episodeMetrics (or a new endpoint) should log Story application errors, too -- with browser version, platform, etc if possible
 
 Find out why m3u8 was causing problems, fix it
 

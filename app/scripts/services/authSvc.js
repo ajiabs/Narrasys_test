@@ -4,7 +4,6 @@ angular.module('com.inthetelling.player')
 	.factory('authSvc', function(config, $routeParams, $http, $q, $location, modelSvc) {
 		console.log('authSvc factory');
 		var svc = {};
-
 		svc.roles = [];
 
 		svc.userHasRole = function(role) {
@@ -18,7 +17,6 @@ angular.module('com.inthetelling.player')
 
 		svc.authenticate = function() {
 			var defer = $q.defer();
-
 			if ($routeParams.key) {
 				// explicit key in route:
 				var nonce = $routeParams.key;
