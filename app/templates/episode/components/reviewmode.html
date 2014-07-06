@@ -5,12 +5,17 @@
 	<div class="scene" ng-class="{navigable: scene.title}" ng-repeat="scene in episode.scenes" ng-if="!scene._internal">
 		<div class="pane mainPane">
 			<div class="content allowHighlights">
-				<h2 ng-if="scene.title">{{scene.title}}</h2>
-				<div class="item animate" ng-repeat="item in scene.items | isContent | annotation | filter:{cosmetic:false} | orderBy:'start_time'" ng-class="item.state" itt-item="item" forceTemplate="review-annotation">
+				<h2 ng-if="scene.title">{{scene.title}} - {{scene.smallScreen}}</h2>
+
+				<div ng-if="appState.windowWidth < 480" class="item animate" ng-repeat="item in scene.items | isContent | filter:{cosmetic:false} | orderBy:'start_time'" ng-class="item.state" itt-item="item" forceTemplate="review-annotation">
 				</div>
+
+				<div ng-if="appState.windowWidth >= 480" class="item animate" ng-repeat="item in scene.items | isContent | annotation | filter:{cosmetic:false} | orderBy:'start_time'" ng-class="item.state" itt-item="item" forceTemplate="review-annotation">
+				</div>
+
 			</div>
 		</div>
-		<div class="pane altPane">
+		<div ng-if="appState.windowWidth >= 480" class="pane altPane">
 			<div class="content allowHighlights">
 				<img ng-if="$index == 1" src="images/aspectratiopreserver-16x9.gif" class="videoPadding">
 				<!-- contentAlt -->

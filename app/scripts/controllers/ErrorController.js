@@ -12,50 +12,68 @@ angular.module('com.inthetelling.player')
 		svc.errors = [];
 
 		svc.error = function(exception, cause) {
+
+console.warn("ERROR");
+			console.log(exception.stack);
 			svc.errors.push({
 				"exception": exception,
+				"stack": exception.stack.replace(/\n/g, "<br>"),
 				"cause": cause
 			});
+
+
 		};
 
 		return svc;
 	})
 
-	.controller('ErrorController', function ($scope, $rootScope, errorSvc) {
+.controller('ErrorController', function($scope, $rootScope, errorSvc) {
 
-		$scope.errors = errorSvc.errors;
-		
-//todo this functionality needs to come back!
-				// var status = response.status;
-				// if (status === 401) {
-				// 	console.warn("INTERCEPTOR GOT 401");
-				// 	if (localStorage.storyAuth) {
-				// 		// read the login url, if there is one, and redirect to it:
-				// 		var storedData = angular.fromJson(localStorage.storyAuth);
-				// 		localStorage.removeItem("storyAuth");
-				// 		if (storedData.login_url) {
-				// 			if (storedData.login_via_top_window_only) {
-				// 				window.top.location.href = storedData.login_url;
-				// 			} else {
-				// 				window.location.href = storedData.login_url;
-				// 			}
-				// 		}
-				// 	}
-				// 	// if all else fails, force a reload as guest
-				// 	window.location.reload();
-				// 	return false;
+	$scope.errors = errorSvc.errors;
 
-				// }
-				// console.warn("INTERCEPTOR GOT NON-401 ERROR:", response);
-				//return $q.reject(response);
+	//todo this functionality needs to come back!
+	// var status = response.status;
+	// if (status === 401) {
+	// 	console.warn("INTERCEPTOR GOT 401");
+	// 	if (localStorage.storyAuth) {
+	// 		// read the login url, if there is one, and redirect to it:
+	// 		var storedData = angular.fromJson(localStorage.storyAuth);
+	// 		localStorage.removeItem("storyAuth");
+	// 		if (storedData.login_url) {
+	// 			if (storedData.login_via_top_window_only) {
+	// 				window.top.location.href = storedData.login_url;
+	// 			} else {
+	// 				window.location.href = storedData.login_url;
+	// 			}
+	// 		}
+	// 	}
+	// 	// if all else fails, force a reload as guest
+	// 	window.location.reload();
+	// 	return false;
 
-
+	// }
+	// console.warn("INTERCEPTOR GOT NON-401 ERROR:", response);
+	//return $q.reject(response);
 
 
-/* TODO: handle bad routes without redirecting to /error
+	$scope.dismiss = function(error) {
+		console.log(error, $scope.errors);
+
+		var ret = [];
+		for (var i=0; i<$scope.errors.length;i++) {
+			if ($scope.errors[i] !== error) {
+				ret.push($scope.errors[i]);
+			}
+		}
+		$scope.errors = ret;
+
+	};
+
+
+	/* TODO: handle bad routes without redirecting to /error
 			$rootScope.$emit("error",{
 				"message": "404: that route doesn't exist."
 			});
 */
 
-	});
+});

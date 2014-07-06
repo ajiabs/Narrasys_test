@@ -176,6 +176,23 @@ TODO give panes with both sidebars narrower margins than those with only one or 
 		width: 240px;
 	}
 }
+@media screen and (max-width: 480px) {
+	/* Smallscreen layout */
+	.reviewMode .scene {
+		display: auto ;
+	}
+	.reviewMode .pane {
+		width:100%;
+	}
+/*	
+	.reviewMode .mainPane {
+		width:100%;
+	}*/
+	.reviewMode .videoMagnet {
+		width: 130px;
+	}
+}
+
 /* ------------------------------------------- */
  .scene.cornerV {
 	display:flex;

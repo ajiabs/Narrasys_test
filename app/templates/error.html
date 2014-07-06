@@ -1,10 +1,8 @@
 
 <div ng-if="errors.length" class="errors">
-	<div ng-repeat="error in errors">
-	<h2>Error</h2>
-	<p>Sorry, but something went wrong and we weren't able to continue:<br>{{error.cause || '(unknown reason)'}}</p>
-	
-		<pre>{{error | pretty}}</pre>
+	<div ng-repeat="error in errors" ng-click="dismiss(error)">
+	<p>{{error.cause || '(unknown reason)'}}</p>
+	<pre ng-bind="error | pretty"></pre>
 	
 
 	</div>
