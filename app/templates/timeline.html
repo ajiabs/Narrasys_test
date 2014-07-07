@@ -13,24 +13,24 @@
 			<div class="progressbar">
 				<div class="mask">
 					<div class="progressbarContainer" style="width: {{zoomLevel}}00%">
-						<div class="played" style="width: {{markerPercent(appState.time)}}%"></div>
-						<div class="buffered" style="width: {{0}}%"></div>
+						<div class="played" ng-style="{width: markerPercent(appState.time)+'%'}"></div>
+						<!-- <div class="buffered" style="width: TODO%"></div> -->
 					</div>
 				</div>
 				<!-- unmasked parts of timeline -->
 				<div class="progressbarContainer" style="width: {{zoomLevel}}00%;">
-					<div class="handle" ng-show="isSeeking " style="left: {{markerPercent(willSeekTo)}}% ">
+					<div class="handle" ng-show="isSeeking " ng-style="{left: markerPercent(willSeekTo)+'%'}">
 						<div class="tip">{{willSeekTo | asTime}}</div>
 					</div>
-					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents " style="left: {{markerPercent(event.start_time)}}% ">
+					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents " ng-style="{left: markerPercent(event.start_time)+'%'}">
 						<span class="content" ng-bind-html="event.title"></span>
 						<div class="tooltip-arrow"></div>
 					</div>
 				</div>
 				<div id="playhead" class="mask">
 					<!-- interactive parts of timeline -->
-					<div class="progressbarContainer " style="width: {{zoomLevel}}00%">
-						<div class="marker" ng-mouseover="showTooltip(event);" ng-mouseout="hideTooltip(event)" ng-repeat="event in timeline.markedEvents" style="left: {{markerPercent(event.start_time)}}% "></div>
+					<div class="progressbarContainer " ng-style="{width: zoomLevel+'00%'}">
+						<div class="marker" ng-mouseover="showTooltip(event);" ng-mouseout="hideTooltip(event)" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}"></div>
 					</div>
 				</div>
 			</div>
@@ -74,7 +74,7 @@
 					<span class="control-text">Mute</span>
 				</a>
 				<div class="volumebar">
-					<div class="volume" style="width: {{currentVolume()}}%"></div>
+					<div class="volume" ng-style="{width: currentVolume()+'%'}"></div>
 				</div>
 			</span>
 		</div>

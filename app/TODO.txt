@@ -1,10 +1,9 @@
 
-for now: force all bg transitions to fade
 
 
-bring back tiny-screen layout
+Tiny screens need to force review mode as the default
 
-build error display handler
+Error handler needs to distinguish between blockers and recoverable errors
 
 player needs to watch for error states coming from youtube or the <video>, if possible.
 
@@ -22,6 +21,12 @@ Bottom toolbar:  finetune layout
 Bug: Chrome has autoscroll turned off when you enter review mode
 Bug: Chrome is fighting manualscroll vs autoscroll
 
+BUG: IE doesn't like timeline.html's "style='left:{{markerPercent(foo)}}'" stuff
+BUG: IE: footer logo is wrong shape 
+BUG: IE: direct clicks on the YT video are going to YT instead of our timeline....
+
+
+
 Bug: item transitions: animating the height of items causes problems in Safari - decide if we need that effect anyway
 
 add episode styles to navpanel, search, etc? (typography and color, most importantly)
@@ -37,6 +42,8 @@ youtube is failing to play some videos on firefox when  flash is not installed. 
 
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
+for now: force all bg transitions to fade
 
 remove div=clear from end of items; they interfere with sidebars
 
