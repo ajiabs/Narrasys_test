@@ -1,5 +1,5 @@
 
-Tiny screens need to force review mode as the default
+
 
 Error handler needs to distinguish between blockers and recoverable errors
 
@@ -9,7 +9,6 @@ CSS: need a default highlight style, make sure we have all of them
 
 ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes)
 
-Bottom toolbar:  finetune layout
 
 Bugs:
 iOS: on first play, timeline starts immediately instead of waiting for video to finish buffering; can wind up out of synch 
