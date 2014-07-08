@@ -9,7 +9,6 @@
 }
 .timeline {
 	position: relative;
-	padding-bottom: 1em;
 }
 .timeline a {
 	color:#000;
@@ -17,15 +16,16 @@
 	cursor: hand;
 }
 .progressbarBox {
-	margin: 0 1em 1em 3em;
+	margin-left: 3em;
 	position: relative;
 }
 .pbarTop, .pbarBottom {
-	margin: 0 2em 0 4em;
-	height: 1.4em;
-	line-height: 1.4em;
+	margin: 0.2em 2em 0.2em 4em;
+	height: 1.5em;
+	line-height: 1.5em;
 	clear:both;
 	text-align:right;
+
 }
 .pbarMain {
 	height:1em;
@@ -41,6 +41,12 @@
 }
 .pbarBottom .button {
 	padding-right:1em;
+}
+
+.timedisplay {
+	float:left;
+	font-size: 0.8em;
+	margin-top:-0.4em;
 }
 .progressbar {
 	position:absolute;
@@ -172,9 +178,10 @@
 	position:absolute;
 	cursor: pointer;
 	font-size: 2em;
-	height: 1em;
+	height: 2.2em;
+	line-height:2.2em;
 	left: 0.5em;
-	bottom: 0.25em;
+	bottom: 0;
 }
 .button-play:before {
 	font-family: Story;
@@ -267,5 +274,5 @@
 }
 .sceneMenuTooltip .tooltip-arrow {
 	left:33%;
-	bottom:1em;
+	bottom:1.6em;
 }

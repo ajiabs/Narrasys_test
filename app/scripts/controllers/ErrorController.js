@@ -31,7 +31,7 @@ console.warn("ERROR");
 
 	$scope.errors = errorSvc.errors;
 
-	//todo this functionality needs to come back!
+	//todo this functionality needs to come back!  (don't use localStorage, get lgin_url from appState instead)
 	// var status = response.status;
 	// if (status === 401) {
 	// 	console.warn("INTERCEPTOR GOT 401");

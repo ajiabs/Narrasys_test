@@ -50,14 +50,14 @@
 			</a>
 		</div>
 		<div class="pbarBottom">
-			<span class="small" style="float:left;">
+			<span class="timedisplay">
 				{{appState.time | asTime}} / {{appState.duration | asTime}}
 				<span ng-if="appState.videoType == 'video'">
-					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 1" ng-click="setSpeed(1.25)">&nbsp;</a>
-					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 1.25" ng-click="setSpeed(1.5)">x1.25</a>
-					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 1.5" ng-click="setSpeed(2)">x1.5</a>
-					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 2" ng-click="setSpeed(0.75)">x2</a>
-					<a class="button button-speedcontrol" ng-if="appState.timeMultiplier == 0.75" ng-click="setSpeed(1)">x0.75</a>
+					<a class="button-speedcontrol" ng-if="appState.timeMultiplier == 1" ng-click="setSpeed(1.25)">&nbsp;</a>
+					<a class="button-speedcontrol" ng-if="appState.timeMultiplier == 1.25" ng-click="setSpeed(1.5)">x1.25</a>
+					<a class="button-speedcontrol" ng-if="appState.timeMultiplier == 1.5" ng-click="setSpeed(2)">x1.5</a>
+					<a class="button-speedcontrol" ng-if="appState.timeMultiplier == 2" ng-click="setSpeed(0.75)">x2</a>
+					<a class="button-speedcontrol" ng-if="appState.timeMultiplier == 0.75" ng-click="setSpeed(1)">x0.75</a>
 				</span>
 			</span>
 
