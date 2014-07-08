@@ -26,7 +26,7 @@ angular.module('com.inthetelling.player')
 			isTouchDevice: (navigator.platform.indexOf('iPad') > -1 || navigator.platform.indexOf('iPhone') > -1 || navigator.platform.indexOf('iPod') > -1),
 			windowWidth: 0,
 			windowHeight: 0,
-			viewMode: 'discover', // default
+			viewMode: (angular.element(window).width() > 480) ? 'discover' : 'review', // default view mode
 			time: 0, // current playhead position (in seconds) relative to timeline NOT TO EPISODE!
 			timeMultiplier: 1, // sets player speed (0.5 = half speed, 2=double,etc)
 			duration: 0, // duration of timeline (in seconds)

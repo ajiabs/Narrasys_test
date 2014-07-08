@@ -72,6 +72,12 @@
 		/* See also helpPanel below */
 		display:none !important;
 	}
+	.volumebar {
+		display:none;
+	}
+	.button-fullscreen {
+		display:none !important;
+	}
 }
 .toolbar .buttongroup.escapegroup .button span {
 	margin-left: -120px;

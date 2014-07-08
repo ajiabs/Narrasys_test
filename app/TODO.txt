@@ -1,6 +1,4 @@
 
-volume slider isn't working.....
-
 Tiny screens need to force review mode as the default
 
 Error handler needs to distinguish between blockers and recoverable errors

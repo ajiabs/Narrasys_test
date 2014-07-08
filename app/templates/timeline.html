@@ -73,7 +73,7 @@
 				<a class="button button-mute {{audioIcon()}}" ng-click="toggleMute()">
 					<span class="control-text">Mute</span>
 				</a>
-				<div class="volumebar">
+				<div class="volumebar" ng-mousedown="userChangingVolume($event)">
 					<div class="volume" ng-style="{width: currentVolume()+'%'}"></div>
 				</div>
 			</span>
