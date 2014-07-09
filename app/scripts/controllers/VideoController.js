@@ -44,6 +44,7 @@ angular.module('com.inthetelling.player')
 					});
 				}
 			} else {
+				// TODO: notify timelineSvc of (at least) 'stalled' and 'waiting' so it doesn't wind up out of synch
 				$scope.videoType = "video";
 				$scope.videoNode = el.find('video')[0];
 				timelineSvc.registerVideo($scope);
@@ -113,22 +114,22 @@ webkitendfullscreen */
 		// play doesn't start immediately! Need to return a promise so timelineSvc can wait until the video is actually playing
 		$scope.play = function() {
 			var playDefer = $q.defer();
+
 			if ($scope.videoType === 'youtube') {
 				$scope.YTPlayer.playVideo();
-				var unwatch = $scope.$watch(function() {
-					return $scope.playerState;
-				}, function(newPlayerState) {
-					if (newPlayerState === 'playing') {
-						unwatch();
-						playDefer.resolve();
-					}
-				});
 			} else {
-				console.log($scope.videoNode);
 				$scope.videoNode.play();
-				// TODO add a watcher here as with youtube
-				playDefer.resolve();
 			}
+
+			var unwatch = $scope.$watch(function() {
+				return $scope.playerState;
+			}, function(newPlayerState) {
+				if (newPlayerState === 'playing') {
+					unwatch();
+					playDefer.resolve();
+				}
+			});
+
 			return playDefer.promise;
 		};
 

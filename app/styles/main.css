@@ -222,6 +222,9 @@ Video
 .videoMask.firstplay {
 	background-image: url('/images/logo-overlay.png');
 }
+.videoMask.buffering {
+	background-image: url('/images/buffering-overlay.png');
+}
 /* 
 Misc useful keyframes 
 --------------------------------------------------------------------------------

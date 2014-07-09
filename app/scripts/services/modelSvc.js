@@ -453,13 +453,13 @@ angular.module('com.inthetelling.player')
 					} else {
 						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
 							case "mp4":
-								videoObject.mpeg4 = _chooseBiggestVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
+								videoObject.mpeg4 = _chooseVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
 								break;
 							case "m3u8":
-								videoObject.m3u8 = _chooseBiggestVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
+								videoObject.m3u8 = _chooseVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
 								break;
 							case "webm":
-								videoObject.webm = _chooseBiggestVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
+								videoObject.webm = _chooseVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
 								break;
 						}
 					}
@@ -486,8 +486,14 @@ angular.module('com.inthetelling.player')
 			// }
 			// delete videoObject.m3u8;
 
+			// TODO: youtube ought to work on ipad.  Fairly certain the "user has to explicityl initiate the video"
+			// thing is biting us here.
+			if (svc.appState.isIDevice) {
+				videoObject.youtube = undefined;
+			}
 
-	console.log("video asset:",videoObject);
+
+			console.log("video asset:", videoObject);
 
 			if (config.disableYoutube) {
 				videoObject.youtube = undefined;
@@ -509,8 +515,8 @@ angular.module('com.inthetelling.player')
 
 		// Private convenience function called only from within resolveMasterAssetVideo. Pass in two filenames.
 		// If one is empty, return the other; otherwise checks for a WxH portion in two
-		// filenames; returns whichever is bigger.  
-		var _chooseBiggestVideoAsset = function(a, b) {
+		// filenames; returns whichever is bigger (on desktop) or smaller (on mobile).  
+		var _chooseVideoAsset = function(a, b) {
 			if (!a && b) {
 				return b;
 			}
@@ -525,7 +531,12 @@ angular.module('com.inthetelling.player')
 			// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out 
 			var aTest = a.match(regexp) || [0, 0];
 			var bTest = b.match(regexp) || [0, 0];
-			return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a;
+
+			if (svc.appState.isIDevice) {
+				return (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
+			} else {
+				return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
+			}
 		};
 
 		console.log("EVENTCACHE:", svc.events);

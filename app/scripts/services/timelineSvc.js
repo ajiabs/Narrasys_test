@@ -97,15 +97,17 @@ angular.module('com.inthetelling.player')
 			}
 
 
-			// console.log("timelineSvc.play");
+			console.log("timelineSvc.play");
 			if (angular.isDefined(clock)) {
+
 				return; // we're already playing
 			}
-			// console.log("user requested 'play'");
+			console.log("user requested 'play'");
+			modelSvc.appState.timelineState = "buffering";
 			videoScope.play().then(function() {
-				// console.log("play begins at time ", modelSvc.appState.time);
+				console.log("play begins at time ", modelSvc.appState.time);
 				modelSvc.appState.timelineState = "playing";
-				// videoSynchronizer = $interval(synchronize, 1000); // if you change this interval you must also change the target adjustment rate inside synchronise()
+
 				_tick();
 				clock = $interval(_tick, 20);
 
@@ -119,10 +121,10 @@ angular.module('com.inthetelling.player')
 			// console.log("timelineSvc.pause");
 			$interval.cancel(clock);
 			stopEventClock();
-			// $interval.cancel(videoSynchronizer);
+
 			clock = undefined;
 			lastTick = undefined;
-			// videoSynchronizer = undefined;
+
 			modelSvc.appState.timelineState = "paused";
 			videoScope.pause();
 			if (n) {
