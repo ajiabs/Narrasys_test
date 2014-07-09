@@ -92,18 +92,19 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize']
 	]);
 })
 
-// global exception handler pushes error messages into appState
-// Totally cargo-culting this, no idea if this is a reasonable way to do this 
-.config(function($provide) {
-	$provide.decorator("$exceptionHandler", function($delegate, $injector) {
-		return function(exception, cause) {
-			var errorSvc = $injector.get("errorSvc");
-			errorSvc.error(exception, cause);
-			$delegate(exception, cause);
-		};
-	});
-
-})
-
+// global exception handler.  Pretty much just cargo-culting this, there may be a Better Way
+.config(['$provide',
+	function($provide) {
+		$provide.decorator('$exceptionHandler', ['$delegate', '$injector',
+			function($delegate, $injector) {
+				return function(exception, cause) {
+					var errorSvc = $injector.get("errorSvc"); // have to use injector to avoid circular refs
+					errorSvc.error(exception, cause); // this is the only non-boilerplate code in this whole thing
+					$delegate(exception, cause); // Calls the original $exceptionHandler.
+				};
+			}
+		]);
+	}
+])
 
 ;
