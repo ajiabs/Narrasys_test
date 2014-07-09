@@ -98,19 +98,16 @@ TODO give panes with both sidebars narrower margins than those with only one or 
 	margin: 0 10%;
 	bottom: 90px;
 	width: 80%;
-}
-.watchModeCaption .item {
-	display:inline-block;
 	background-color: rgba(0, 0, 0, 0.7);
 	border-radius: 8px;
-	padding:1em;
+	padding: 0.5em 1em;
 	text-align:left;
 }
+
 .watchModeCaption .startTime {
 	display:none;
 }
-.scene-video .contentMain .item {
-}
+
 @media screen and (min-width: 401px) and (max-width: 700px) {
 	.watchModeCaption {
 		font-size: 90% !important;

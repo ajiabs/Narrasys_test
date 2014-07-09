@@ -126,7 +126,8 @@ h1, h2, h3, h4 {
 	}
 }
 /* --------------------------------------------------------------------------------
- position:fixed needed for fullscreen.   TODO This messes with iPad (at least); disable on iDevices... others?
+ position:fixed needed for fullscreen (in some browsers). 
+ Unfortunately this messes with iPad (at least); disable on iDevices... TODO: any others?
 */
  #CONTAINER {
 	position:fixed;
@@ -140,6 +141,7 @@ h1, h2, h3, h4 {
 }
 #CONTAINER.iDevice {
 	position:static;
+	-webkit-overflow-scrolling: auto;
 }
 /* Z-indexes 
 --------------------------------------------------------------------------------
