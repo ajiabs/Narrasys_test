@@ -16,7 +16,7 @@ angular.module('com.inthetelling.player')
 			// TODO
 			// For now we're not going to display errors caught by the $exceptionHandler
 			// 
-			if (exception.data.error) {
+			if (exception && exception.data && exception.data.error) {
 
 
 				svc.errors.push({
