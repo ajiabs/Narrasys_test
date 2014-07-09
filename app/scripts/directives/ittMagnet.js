@@ -12,7 +12,7 @@ angular.module('com.inthetelling.player')
 			scope: true,
 			link: function(scope, element) {
 				// console.log("Magnet", element);
-				scope.$watch(function() {
+				scope.unwatch = scope.$watch(function() {
 					return element.is(':visible');
 				}, function(newV, oldV) {
 					if (newV) {

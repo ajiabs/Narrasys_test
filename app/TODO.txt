@@ -1,9 +1,6 @@
 
 
 
-Error handler needs to distinguish between blockers and recoverable errors
-
-player needs to watch for error states coming from youtube or the <video>, if possible.
 
 CSS: need a default highlight style, make sure we have all of them 
 
@@ -13,8 +10,9 @@ ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overl
 Bugs:
 iOS: on first play, timeline starts immediately instead of waiting for video to finish buffering; can wind up out of synch 
 iOS: need to fix hide/reveal events on bottom toolbar on touchscreens (sometimes stays stuck in the 'on' position)
+
 iOS: playhead is draggable past boundaries of timeline
-iOS: layout problem in watch mode; video isn't visible
+
 iOS: (intermittent) matchVideoHeight is occasionally failing in some scene transitions, leaving video overlapping text
 Chrome has autoscroll turned off when you first enter review mode
 Chrome: If user tries to scroll during an autoscroll animation, the autoscroll isn't relinquishing control until after the animation is done
@@ -37,6 +35,10 @@ youtube is failing to play some videos on firefox when  flash is not installed. 
 
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
+player needs to watch for error states coming from youtube or the <video>, if possible.
+
+Improve generic error handler 
 
 for now: force all bg transitions to fade
 

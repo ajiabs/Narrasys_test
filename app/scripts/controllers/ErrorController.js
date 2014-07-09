@@ -13,14 +13,20 @@ angular.module('com.inthetelling.player')
 
 		svc.error = function(exception, cause) {
 
-console.warn("ERROR");
-			console.log(exception.stack);
-			svc.errors.push({
-				"exception": exception,
-				"stack": exception.stack.replace(/\n/g, "<br>"),
-				"cause": cause
-			});
+			// TODO
+			// For now we're not going to display errors caught by the $exceptionHandler
+			// 
+			if (exception.data.error) {
 
+
+				svc.errors.push({
+					"exception": exception,
+					"cause": exception.data.error
+					//"stack": exception.stack
+				});
+			} else {
+				console.log(exception);
+			}
 
 		};
 
@@ -60,7 +66,7 @@ console.warn("ERROR");
 		console.log(error, $scope.errors);
 
 		var ret = [];
-		for (var i=0; i<$scope.errors.length;i++) {
+		for (var i = 0; i < $scope.errors.length; i++) {
 			if ($scope.errors[i] !== error) {
 				ret.push($scope.errors[i]);
 			}

@@ -97,15 +97,8 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize']
 .config(function($provide) {
 	$provide.decorator("$exceptionHandler", function($delegate, $injector) {
 		return function(exception, cause) {
-			var $rootScope = $injector.get("$rootScope");
 			var errorSvc = $injector.get("errorSvc");
-			console.warn("exceptionhandler", cause);
-			errorSvc.errors.push({
-				"exception": exception,
-				"stack": exception.stack,
-				"cause": cause
-			});
-			console.log("DONE");
+			errorSvc.error(exception, cause);
 			$delegate(exception, cause);
 		};
 	});

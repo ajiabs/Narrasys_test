@@ -477,7 +477,7 @@ angular.module('com.inthetelling.player')
 			}
 
 			// HACK some platform detection here.
-			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+			// var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 			// Safari should prefer m3u8 to mpeg4.  TODO add other browsers to this when they support m3u8
 			// TODO BUG: disabling this for now; m3u8 is causing problems
 

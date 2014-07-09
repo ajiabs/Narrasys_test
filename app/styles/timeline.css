@@ -16,7 +16,7 @@
 	cursor: hand;
 }
 .progressbarBox {
-	margin-left: 3em;
+	margin-left: 4em;
 	position: relative;
 }
 .pbarTop, .pbarBottom {
@@ -274,5 +274,5 @@
 }
 .sceneMenuTooltip .tooltip-arrow {
 	left:33%;
-	bottom:1.6em;
+	bottom:27px;
 }

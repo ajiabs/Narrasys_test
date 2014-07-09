@@ -1,9 +1,8 @@
 
 <div ng-if="errors.length" class="errors">
-	<div ng-repeat="error in errors" ng-click="dismiss(error)">
-	<p>{{error.cause || '(unknown reason)'}}</p>
-	<pre ng-bind="error | pretty"></pre>
-	
-
+	<div class="error" ng-repeat="error in errors" ng-click="dismiss(error)">
+	<p>Error: {{error.cause || '(unknown reason)'}}</p>
+	<p>{{error.exception.status}} {{error.exception.config.url}}</p>
+	<!-- <pre ng-bind="error | pretty"></pre> -->
 	</div>
 </div>

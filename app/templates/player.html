@@ -39,7 +39,7 @@
 	</div>
 	<div itt-episode></div>
 
-	<div class="toolbar-bottom" ng-mouseenter="showControls();keepControls()" ng-mouseleave="allowControlsExit()" ng-class="{hidden: !appState.videoControlsActive}">
+	<div class="toolbar-bottom" ng-mouseenter="showControls();keepControls()" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-class="{hidden: !appState.videoControlsActive}">
 		<div class="toolbar-bottom-fill">
 			<div ng-show="show.navPanel" class="navPanel">
 				<h2 ng-bind-html="episode.title"></h2>

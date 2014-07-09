@@ -1,19 +1,24 @@
-.errors {
-	background-color: #ffffff;
-	border: 3px solid #FFFF00;
+.errors{
 	left: 20%;
 	position: fixed;
 	right: 10px;
 	bottom: 10px;
 	z-index: 99;
-	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-	border-radius: .7em;
-	padding: 1em;
-	font-size: smaller;
-	overflow:scroll;
 	/*animation: 5s ease-out 0s normal none 1 delayedFadeOut;*/
 	 /*opacity: 0;*/
 }
+.errors .error {
+	font-size: smaller;
+	background-color: #ffffff;
+	border: 3px solid #FFFF00;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+	border-radius: .7em;
+	padding: 1em;
+	overflow:scroll;
+	margin-top: 1em;
+
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;
