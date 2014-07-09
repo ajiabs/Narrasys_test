@@ -168,7 +168,20 @@ angular.module('com.inthetelling.player')
 					if (!scope.isSeeking) {
 						return;
 					}
+
+					// timelineNode is the full timeline, including offscreen portions if zoomed in.
+					// So this math gives how far the pointer is in the full timeline as a percentage, 
+					// multiplied by the real duration, which gives the real time.
 					scope.willSeekTo = (evt.clientX - timelineNode.offset().left) / timelineNode.width() * modelSvc.appState.duration;
+
+					// ios is still registering drags outside the visible boundaries of the timeline, 
+					// so need to do some sanity checking here:
+					if (scope.willSeekTo < 0) {
+						scope.willSeekTo = 0;
+					}
+					if (scope.willSeekTo > modelSvc.appState.duration) {
+						scope.willSeekTo = modelSvc.appState.duration;
+					}
 				};
 
 				var finishSeek = function() {

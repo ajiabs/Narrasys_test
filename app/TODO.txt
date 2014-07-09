@@ -11,8 +11,6 @@ ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overl
 
 Bugs:
 
-iOS: playhead is draggable past boundaries of timeline
-
 iOS: (intermittent) matchVideoHeight is occasionally failing in some scene transitions, leaving video overlapping text
 Chrome has autoscroll turned off when you first enter review mode
 Chrome: If user tries to scroll during an autoscroll animation, the autoscroll isn't relinquishing control until after the animation is done
@@ -35,6 +33,9 @@ youtube is failing to play some videos on firefox when  flash is not installed. 
 
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
+iOS is still letting you drag the timeline outside teh visible boundaries when the timeline is zoomed in.
+
 
 player needs to watch for error states coming from youtube or the <video>, if possible.
 
