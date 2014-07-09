@@ -280,3 +280,28 @@ pulling out producer functionality for now
 Changes in v4.alpha.009:
 previous build had broken config, oops
 
+------------------------------------------------
+Changes in v4.alpha.010:
+fixing iOS watch mode
+bug fix in review mode
+fixing volume, default view mode
+bottom toolbar
+more IE bug fixes
+bugfixes for IE
+tiny screen, error controller
+error handler in rough shape
+removing misused $sce
+sanitize and html bindings
+scene bugfix
+Bursts and sidebars
+deferring tasks
+autoscroll should be false on page load
+review mode and link templates
+search clicks now unblock autoscroll; overlay tweaks
+transform master asset youtube urls into consistent format
+cosmetics
+colors and transitions improved, review mode templates
+episode and landing screen templates
+episode template
+Simplifying episode template, fixing lots of item css
+
