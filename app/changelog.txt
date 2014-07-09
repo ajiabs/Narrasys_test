@@ -307,3 +307,5 @@ Simplifying episode template, fixing lots of item css
 
 ------------------------------------------------
 Changes in v4.alpha.011:
+exceptionHandler was breaking when minimized
+
