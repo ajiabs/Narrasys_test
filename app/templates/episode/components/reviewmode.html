@@ -5,7 +5,7 @@
 	<div class="scene" ng-class="{navigable: scene.title}" ng-repeat="scene in episode.scenes" ng-if="!scene._internal">
 		<div class="pane mainPane">
 			<div class="content allowHighlights">
-				<h2 ng-if="scene.title">{{scene.title}}</h2>
+				<h1 class="sceneTitle" ng-if="scene.title">{{scene.title}}</h2>
 
 				<div ng-if="appState.windowWidth < 480" class="item animate" ng-repeat="item in scene.items | isContent | filter:{cosmetic:false} | orderBy:'start_time'" ng-class="item.state" itt-item="item" forceTemplate="review-annotation">
 				</div>

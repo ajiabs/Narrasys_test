@@ -3,8 +3,11 @@
  * Defaults
  *
 //===========================*/
- .content .item {
-	padding: 5px 5px 5px 60px;
+ .content .item:first-child {
+	padding-top: 1.5em;
+}
+.content .item {
+	padding: 0.3em 0.5em 0.3em 60px;
 }
 .item {
 	transition: all ease-in-out 1s;
@@ -73,7 +76,8 @@ image-fill items */
 	background-position:50% 50%;
 	background-repeat: no-repeat;
 	background-size:100% 100%;
-	width: 100%; height: 100%;
+	width: 100%;
+	height: 100%;
 }
 .fill .item .fillImg {
 	display:none;
@@ -87,11 +91,7 @@ image-fill items */
 .fill .item.cover .itemTemplate {
 	background-size:cover;
 }
-.fill .item.tl .itemTemplate, 
-.fill .item.bl .itemTemplate, 
-.fill .item.tr .itemTemplate, 
-.fill .item.br .itemTemplate, 
-.fill .item.center .itemTemplate {
+.fill .item.tl .itemTemplate, .fill .item.bl .itemTemplate, .fill .item.tr .itemTemplate, .fill .item.br .itemTemplate, .fill .item.center .itemTemplate {
 	background-image: none !important;
 }
 .fill .item .fillImg {
@@ -295,13 +295,15 @@ Inline images (TODO show these only when image is larger than available space) *
 	margin-left:-60px;
 }
 .item .pullquote:before {
-	color: rgba(0, 0, 0, 0.05);
+	color: rgba(0, 0, 0, 0.1);
 	content:"“";
 	float: left;
 	font-size: 3em;
-	line-height: 0.8em;
-	width: 0.5em;
 	height: 5px;
+	line-height: 0.8em;
+	padding-right: 10px;
+	text-align: right;
+	width: 40px;
 }
 .item .pullquote {
 	font-size: 2em;

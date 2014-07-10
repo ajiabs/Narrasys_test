@@ -16,7 +16,6 @@
 }
 .content {
 	position:relative;
-	padding: 1em 0;
 }
 .content:after {
 	clear:both;
@@ -25,6 +24,10 @@
 }
 .bgLayer {
 	opacity:0.25;
+}
+
+.sceneTitle {
+	margin-left: 0.5em;
 }
 /* ------------------------------------------- */
 

@@ -277,7 +277,7 @@ angular.module('com.inthetelling.player')
 				"status": "Published",
 				"templateUrl": "templates/episode/episode.html",
 				"styles": [
-					"", "", ""
+					"typographySwiss", "colorSepia", ""
 				]
 			});
 			modelSvc.cache("asset", {
@@ -358,16 +358,22 @@ angular.module('com.inthetelling.player')
 				"stop": false,
 				"type": "Annotation",
 				"templateUrl": "templates/item/transcript-withthumbnail.html",
-				"styles": []
+				"styles": ["colorInvert"]
 			};
 
 			var testLayouts = [
-			 "sidebarL",
-				"burstR",  "burstR",
-				"inline",  "burst",
+				"sidebarL",
+				"burstR", "burstR",
+				"inline", "burst",
 				"burstL", "sidebarR",
-				"inline",  "sidebarR",
+				"inline", "sidebarR",
 				"inline", "inline"
+			];
+
+			var annotationTemplates = [
+				"templates/item/text-h1.html",
+				"templates/item/pullquote.html",
+				"templates/item/text-h2.html"
 			];
 
 			for (i = 0; i < 30; i++) {
@@ -378,6 +384,14 @@ angular.module('com.inthetelling.player')
 				transcript.end_time = (i * 5 + 5);
 				transcript.layouts = [testLayouts[i % testLayouts.length]];
 				modelSvc.cache("event", transcript);
+			}
+			for (i = 0; i < 10; i++) {
+				var annotation = angular.copy(annotationStub);
+				annotation._id = "annotation-" + i;
+				annotation.start_time = i * 3;
+				annotation.end_time = i * 3 + 3;
+				annotation.templateUrl = annotationTemplates[i % annotationTemplates.length];
+				modelSvc.cache("event", annotation);
 			}
 
 			modelSvc.cache("asset", {

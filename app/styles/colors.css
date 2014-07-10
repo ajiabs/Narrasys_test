@@ -29,14 +29,10 @@ a {
 .colorInvert a {
 	color: #FFF
 }
-/* invert-color items in an invert-color scene or episode */
- .colorInvert .item.colorInvert {
-	color: #333;
-	background-color:#FFF;
+.colorInvert .pullquote:before {
+	color: rgba(255, 255, 255, 0.35);
 }
-.colorInvert .item.colorInvert a {
-	color: #333;
-}
+/* TODO treat colorInvert separately from the other colors; should be able to invert any other color style
 /*============================
  *
  * colorSepia
