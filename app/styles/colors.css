@@ -40,6 +40,8 @@ a {
 //===========================*/
  .colorSepia {
 	color: #4B4235;
+}
+.episode.colorSepia, .scene.colorSepia {
 	background-color: #EFE0C8;
 }
 .colorSepia a {
@@ -55,6 +57,8 @@ a {
 //===========================*/
  .colorSolarized {
 	color: #586E75;
+}
+.episode.colorSolarized, .scene.colorSolarized {
 	background-color: #EFE0C8;
 }
 .colorSolarized .altPane {
@@ -72,6 +76,8 @@ a {
 //===========================*/
  .colorVivid {
 	color: #595959;
+}
+.episode.colorVivid, .scene.colorVivid {
 	background-color: rgba(224, 240, 210, 0.5);
 }
 .colorVivid a {

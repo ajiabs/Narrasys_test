@@ -277,7 +277,7 @@ angular.module('com.inthetelling.player')
 				"status": "Published",
 				"templateUrl": "templates/episode/episode.html",
 				"styles": [
-					"typographySwiss", "colorSepia", ""
+					"typographyBook", "colorSepia", ""
 				]
 			});
 			modelSvc.cache("asset", {
