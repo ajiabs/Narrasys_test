@@ -3,7 +3,7 @@
 // Minor jquery dependency ($.inArray)
 
 angular.module('com.inthetelling.player')
-	.directive('ittScene', function($timeout, modelSvc) {
+	.directive('ittScene', function($timeout, $interval, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -23,7 +23,7 @@ angular.module('com.inthetelling.player')
 					if (magnetNode.height() === null) {
 						console.warn("twiddleScene called with no visible video magnet; waiting ");
 						var unwatchMagnet = scope.$watch(function() {
-							// Don't try to optimize and use magnetNode from above; if we got here in the first place magnetNode is undefined.
+							// Don't try to optimize by using magnetNode from above; if we got here in the first place magnetNode is undefined.
 							// This is an expensive $watch but will only run for a tick or two while the scene is being drawn...
 							return element.find('.videoMagnet img').height();
 						}, function(newH) {
@@ -64,9 +64,14 @@ angular.module('com.inthetelling.player')
 					}
 				}, true);
 
+				// HACK to catch cases (mostly on ios) where matchvideoheight isn't matching.
+				// slow interval
+				scope.safetyBelt = $interval(twiddleScene,1300);
+
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function() {
 					scope.unwatch();
+					$interval.cancel(scope.safetyBelt);
 				});
 
 

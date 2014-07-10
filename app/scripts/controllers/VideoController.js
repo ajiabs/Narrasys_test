@@ -44,51 +44,11 @@ angular.module('com.inthetelling.player')
 					});
 				}
 			} else {
-				// TODO: notify timelineSvc of (at least) 'stalled' and 'waiting' so it doesn't wind up out of synch
-				$scope.videoType = "video";
+				$scope.videoType = "video"; // as in html5 <video> tagx
 				$scope.videoNode = el.find('video')[0];
-				timelineSvc.registerVideo($scope);
-				$scope.videoNode.addEventListener('playing', function(evt) {
-					$scope.playerState = 'playing';
-				}, false);
-				$scope.videoNode.addEventListener('waiting', function(evt) {
-					$scope.playerState = 'waiting';
-				}, false);
-				$scope.videoNode.addEventListener('stalled', function(evt) {
-					$scope.playerState = 'stalled';
-				}, false);
-				$scope.videoNode.addEventListener('pause', function(evt) {
-					$scope.playerState = 'pause';
-				}, false);
-
-				/* All html5 events:
-loadstart
-canplaythrough
-canplay
-loadeddata
-loadedmetadata
-abort
-emptied
-error
-stalled
-suspend
-waiting
-pause
-play
-volumechange
-playing
-seeked
-seeking
-durationchange
-progress
-ratechange
-timeupdate
-ended
-webkitbeginfullscreen
-webkitendfullscreen */
+				$scope.initHTML5Video();
 			}
-
-
+			timelineSvc.registerVideo($scope);
 			modelSvc.appState.videoType = $scope.videoType;
 		};
 
@@ -99,12 +59,54 @@ webkitendfullscreen */
 				events: {
 					'onStateChange': function(x) {
 						$scope.playerState = playerStates[x.data];
-						console.log("Player state change: ", $scope.playerState);
+						// console.log("Player state change: ", $scope.playerState);
 					}
 				}
 			});
-			console.log("YT player is ", $scope.YTPlayer, $scope.videoNode.id);
-			timelineSvc.registerVideo($scope);
+			// console.log("YT player is ", $scope.YTPlayer, $scope.videoNode.id);
+		};
+
+		$scope.initHTML5Video = function() {
+			// TODO: notify timelineSvc of (at least) 'stalled' and 'waiting' so it doesn't wind up out of synch
+			$scope.videoNode.addEventListener('playing', function(evt) {
+				$scope.playerState = 'playing';
+			}, false);
+			$scope.videoNode.addEventListener('waiting', function(evt) {
+				$scope.playerState = 'waiting';
+			}, false);
+			$scope.videoNode.addEventListener('stalled', function(evt) {
+				$scope.playerState = 'stalled';
+			}, false);
+			$scope.videoNode.addEventListener('pause', function(evt) {
+				$scope.playerState = 'pause';
+			}, false);
+
+			/* For future reference, all html5 events:
+				loadstart
+				canplaythrough
+				canplay
+				loadeddata
+				loadedmetadata
+				abort
+				emptied
+				error
+				stalled
+				suspend
+				waiting
+				pause
+				play
+				volumechange
+				playing
+				seeked
+				seeking
+				durationchange
+				progress
+				ratechange
+				timeupdate
+				ended
+				webkitbeginfullscreen
+				webkitendfullscreen
+			*/
 		};
 
 		// DO NOT CALL ANY OF THE BELOW DIRECTLY!
@@ -139,8 +141,13 @@ webkitendfullscreen */
 				$scope.YTPlayer.seekTo(modelSvc.appState.time, true);
 				$scope.YTPlayer.pauseVideo();
 			} else {
-				$scope.videoNode.currentTime = modelSvc.appState.time; // in case t has drifted
 				$scope.videoNode.pause();
+
+				try {
+					$scope.videoNode.currentTime = modelSvc.appState.time; // in case t has drifted
+				} catch(e) {
+					// this is harmless when it fails; because it can't be out of synch if it doesn't yet exist
+				}
 			}
 		};
 
@@ -173,7 +180,7 @@ webkitendfullscreen */
 
 			if ($scope.videoType === 'youtube') {
 				// TODO
-				console.log("Available speeds from youtube: ", $scope.YTPlayer.getAvailablePlaybackRates());
+				// console.log("Available speeds from youtube: ", $scope.YTPlayer.getAvailablePlaybackRates());
 			} else {
 				$scope.videoNode.playbackRate = speed;
 			}

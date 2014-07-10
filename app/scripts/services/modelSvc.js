@@ -35,12 +35,12 @@ angular.module('com.inthetelling.player')
 			volume: 100, // Audio for main video
 			muted: false, // audio for main video
 			hideCaptions: false, // visibility of "closed captions" in watch mode
-			videoControlsActive: false, // Whether bottom toolbar is visible. MUST START FALSE
 			show: {
 				searchPanel: false,
 				helpPanel: false,
 				navPanel: false
 			},
+			videoControlsActive: false, // whether bottom toolbar is visible
 			itemDetail: false, // Put item data here to show it as a modal overlay
 			autoscroll: false, //scroll window to make current items visible (in relevant modes)
 			autoscrollBlocked: false, // User has disabled autoscroll

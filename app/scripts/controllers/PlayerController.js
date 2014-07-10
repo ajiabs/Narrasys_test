@@ -70,19 +70,17 @@ angular.module('com.inthetelling.player')
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		// Hide toolbars
+		// TODO put this in own controller (or service?)
 
-		// TODO put this in own controller - - - - - - -
-		/* Bottom toolbar starts out visible.  5s after using a control or leaving the pane, fade out controls.
-		   If mouse re-enters pane, keep the controls visible. */
+		// Bottom toolbar starts out hidden.  5s after using a control or leaving the pane, fade out controls.
+		//   If mouse re-enters pane, keep the controls visible. 
 		// TODO: fade toolbars when tap outside, or when hit esc key
 		// TODO: never fades on touchscreen... fix that
-
-		modelSvc.appState.videoControlsActive = true;
 
 		modelSvc.appState.videoControlsActive = false;
 		var keepControls;
 		var controlTimer;
+
 		$scope.$watch(function() {
 			return modelSvc.appState.videoControlsActive;
 		}, function(isActive, wasActive) {
@@ -91,28 +89,33 @@ angular.module('com.inthetelling.player')
 					if (!keepControls) {
 						modelSvc.appState.videoControlsActive = false;
 					}
-				}, 3000);
+				}, 5000);
 			}
 		});
 
 		$scope.showControls = function() {
-			// console.log("showControls");
+			console.log("showControls");
 			$timeout.cancel(controlTimer);
 			modelSvc.appState.videoControlsActive = true;
+			if (modelSvc.appState.isIDevice) {
+				$scope.allowControlsExit(); // otherwise it sticks permanently on touchscreens. TODO find a better way
+			}
 		};
 
 		$scope.keepControls = function() {
-			// console.log("keepControls");
+			console.log("keepControls");
 			keepControls = true;
 		};
 
 		$scope.allowControlsExit = function() {
-			// console.log("allowControlsExit");
+			console.log("allowControlsExit");
 			keepControls = false;
 			$timeout.cancel(controlTimer);
 			controlTimer = $timeout(function() {
-				modelSvc.appState.videoControlsActive = false;
-			}, 3000);
+				if (!modelSvc.appState.show.navPanel) {
+					modelSvc.appState.videoControlsActive = false;
+				}
+			}, 5000);
 		};
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
@@ -123,6 +126,8 @@ angular.module('com.inthetelling.player')
 			modelSvc.appState.show.searchPanel = !modelSvc.appState.show.searchPanel;
 		};
 		$scope.toggleNavPanel = function() {
+			// console.log("toggleNavPanel");
+			timelineSvc.pause();
 			modelSvc.appState.show.navPanel = !modelSvc.appState.show.navPanel;
 		};
 		$scope.seek = function(t) {

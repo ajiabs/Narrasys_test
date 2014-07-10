@@ -10,8 +10,8 @@
 .errors .error {
 	font-size: smaller;
 	background-color: #ffffff;
-	border: 3px solid #FFFF00;
-	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+	border: 4px solid #c00;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
 	border-radius: .7em;
 	padding: 1em;
 	overflow:scroll;

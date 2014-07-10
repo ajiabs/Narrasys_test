@@ -29,11 +29,11 @@ angular.module('com.inthetelling.player')
 							return scope.video;
 						}, function(a, b) {
 							if (a) {
-								console.log("Registering video", a);
+								// console.log("Registering video", a);
 								scope.initVideo(element);
 								episodeWatcher(); // stop watching;
 							} else {
-								console.log("waiting", scope);
+								// console.log("waiting", scope);
 							}
 						});
 					}
@@ -45,7 +45,6 @@ angular.module('com.inthetelling.player')
 					} else {
 						timelineSvc.pause();
 					}
-					modelSvc.appState.videoControlsActive = true;
 				};
 
 				$rootScope.$on('userKeypress.SPACE', scope.videoClick);

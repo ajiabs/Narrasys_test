@@ -39,7 +39,7 @@
 	</div>
 	<div itt-episode></div>
 
-	<div class="toolbar-bottom" ng-mouseenter="showControls();keepControls()" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-class="{hidden: !appState.videoControlsActive}">
+	<div class="toolbar-bottom" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-show="appState.videoControlsActive">
 		<div class="toolbar-bottom-fill">
 			<div ng-show="show.navPanel" class="navPanel" ng-class="episode.styleCss">
 				<h2 ng-bind-html="episode.title"></h2>
@@ -57,7 +57,7 @@
 			<div itt-timeline></div>
 		</div>
 	</div>
-	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();keepControls()"></div>
+	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"></div>
 </div>
 
 <div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">

@@ -191,13 +191,19 @@
 .toolbar-bottom-fill {
 	background-color: rgba(255, 255, 255, 0.9);
 }
-.toolbar-bottom {
-	transition: opacity 0.25s;
-	opacity: 1;
-}
-.toolbar-bottom.hidden {
+.toolbar-bottom.ng-hide-remove {
+	transition:opacity 0.25s;
 	opacity:0;
+}
+.toolbar-bottom.ng-hide-remove.ng-hide-remove-active {
+	opacity:1;
+}
+.toolbar-bottom.ng-hide-add {
 	transition: opacity 3s;
+	opacity:1;
+}
+.toolbar-bottom.ng-hide-add.ng-hide-add-active {
+	opacity:0;
 }
 /*============================
 *

@@ -25,6 +25,14 @@ angular.module('com.inthetelling.player')
 
 				// TODO: display buffered portion of video?
 
+				scope.showSceneMenuTooltip = function(makeVisible) {
+					if (makeVisible && !(modelSvc.appState.isIDevice)) {
+						scope.sceneMenuToolTip = true;
+					} else {
+						scope.sceneMenuToolTip = false;
+					}
+				};
+
 				scope.prevScene = function() {
 					for (var i = timelineSvc.markedEvents.length - 1; i >= 0; i--) {
 						if (timelineSvc.markedEvents[i].start_time < modelSvc.appState.time) {
@@ -185,14 +193,14 @@ angular.module('com.inthetelling.player')
 				};
 
 				var finishSeek = function() {
-					console.log("timeline mouseup or touchend");
+					// console.log("timeline mouseup or touchend");
 					scope.stopWatching = true;
 					timelineSvc.seek(scope.willSeekTo, "scrubTimeline");
 					zoom();
 				};
 
 				var cancelSeek = function() {
-					console.log("doc mouseup or touchend");
+					// console.log("doc mouseup or touchend");
 					// kill all events on  mouse up (anywhere).
 					angular.element(document).unbind('mouseup.timeline');
 					angular.element(document).unbind('touchend.timeline');

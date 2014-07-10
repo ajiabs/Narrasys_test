@@ -7,11 +7,7 @@ ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overl
 
 
 Bugs:
-
-
-iOS: (intermittent) matchVideoHeight is occasionally failing in some scene transitions, leaving video overlapping text
-iOS: (intermittent) sometimes losing the ability to tap on video to pause, or to tap on bottom toolbar to show it
-iOS (and android?): need to fix hide/reveal of bottom toolbar; replace the desktop methods altogether?
+Need to re-test Android to make sure the new iOS touchscreen methods haven't broken it
 
 
 Chrome has autoscroll turned off when you first enter review mode
@@ -27,9 +23,6 @@ app.js uses localStorage to find the login url if it gets 401 errors from the AP
 Compare all scene and item templates to existing episodes for backwards compatibility....
 in particular test link-youtube, embed-youtube, and link-embed
 
-
-
-Have timeline run a very slow interval update of all item states, in case anythign gets stuck
 
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----

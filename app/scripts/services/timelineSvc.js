@@ -3,13 +3,10 @@
 /*
 Son of cuePointScheduler, with a smattering of video controls.    
 
-
 This needs a bit of a rewrite before it can safely handle more than one episode at a time:
 stepEvent (and probably other things too) currently depends on video time matching timeline time;
 we'll need to have a way to calculate one from the other (which will get especially complicated when 
 we allow skipping scenes in SxS...)
-
-
 
 
 keeps an sorted-by-time array of timed events.
@@ -18,37 +15,18 @@ keeps an sorted-by-time array of timed events.
 There are two separate loops here:
 clock() just updates appState.time on a tight interval, purely for time display.
 stepEvent() runs on a slower interval, watches the current video's reported current time,
-            and handles the events since it was last called.  If one of them is
-            a stop event, it may 'rewind' the timeline to that time.
-
-
+            and handles any events since it was last called.  If one of them is
+            a stop event, it will 'rewind' the timeline to that time (and stop handling events past it.)
 
 modelSvc.appState.time is the current playhead position
 timeMultiplier is the playback speed. No negative values or zero.
 
 
-registerVideo() called by videoController to identify which <video> tag the timeline is controlling.
-
-play() 
-	starts clock()
-	stepEvent()
-
-pause(n) 
-	stop clock()
-	cancel stepEvent timer
-	Future: if n > 0, Set timer for n seconds to trigger play() again
-
-seek(t) 
-	moves to time t and immediately updates past/current/future for all events (in future, just those between oldT and newT)
-
-
-init resets everything
-
 injectEvents(events, t) receives a list of timed events (i.e. an episode) to be injected into the timeline at a given point.
 For now that point has to be zero. In future this will support injecting episodes inside of other episodes.
 
-deleteEvent(...) TODO
-
+TODO: support sequential episodes
+TODO: support injecting into the middle of an episode
 TODO: have a way to delete a portion of the timeline (so sXs users can skip scenes)
 
 */
@@ -81,36 +59,30 @@ angular.module('com.inthetelling.player')
 		svc.setSpeed = function(speed) {
 			// console.log("timelineSvc.setSpeed");
 			timeMultiplier = speed;
-			modelSvc.appState.timeMultiplier = timeMultiplier; // here, and only here, make this public (this is the untweaked, user-selected speed.)
+			modelSvc.appState.timeMultiplier = timeMultiplier; // here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
 			videoScope.setSpeed(speed);
 		};
 
-		//TODO video should return a promise and callback only when the video actually starts playing
 		svc.play = function() {
-
-			// WARN this is a bit of a sloppy mixture of concerns.  Interrupt the first play of the video 
-			// so playerController can decide whether it needs to show a help file first:
+			// check if we need to show help menu instead; if so, don't play the video:
+			// (WARN this is a bit of a sloppy mixture of concerns.)
 			if (!modelSvc.appState.hasBeenPlayed) {
-				modelSvc.appState.hasBeenPlayed = true; // do this before the $emit, or endless loop
+				modelSvc.appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
 				$rootScope.$emit("video.firstPlay");
-				return; // playerController needs to  catch this and either show the help pane or trigger play again 
+				return; // playerController needs to catch this and either show the help pane or trigger play again 
 			}
 
-
-			console.log("timelineSvc.play");
 			if (angular.isDefined(clock)) {
-
 				return; // we're already playing
 			}
-			console.log("user requested 'play'");
+			// console.log("timelineSvc.play");
+			modelSvc.appState.videoControlsActive = true;
+			modelSvc.appState.show.navPanel = false;
 			modelSvc.appState.timelineState = "buffering";
 			videoScope.play().then(function() {
-				console.log("play begins at time ", modelSvc.appState.time);
 				modelSvc.appState.timelineState = "playing";
-
 				_tick();
 				clock = $interval(_tick, 20);
-
 				startEventClock();
 
 				analyticsSvc.captureEpisodeActivity("play");
@@ -119,6 +91,7 @@ angular.module('com.inthetelling.player')
 
 		svc.pause = function(n) {
 			// console.log("timelineSvc.pause");
+			modelSvc.appState.videoControlsActive = true;
 			$interval.cancel(clock);
 			stopEventClock();
 
@@ -198,9 +171,8 @@ angular.module('com.inthetelling.player')
 		// Event clock
 
 		/* 
-		So here's the plan: if timeline is playing, 
+		  If timeline is playing, 
 			(TODO 1. find out how long since last checked, compare videotime delta to timeline delta, adjust timeline if necessary)
-
 			2. check for timeline events since the last time stepEvent ran, handle them in order
 			3. if any were stop events, 
 				rewind the timeline and the video to that time (and stop handling events)
@@ -270,17 +242,11 @@ angular.module('com.inthetelling.player')
 			eventClockData.lastTimelineTime = ourTime;
 
 			if (nextEvent && modelSvc.appState.timelineState === "playing") { // need to check timelineState in case there were stop events above
-				// Find out how long until the next event, and aim for just a bit after itL
+				// Find out how long until the next event, and aim for just a bit after it.
 				var timeToNextEvent = (svc.timelineEvents[i].t - ourTime) * 1000;
-				/* don't need this until we start adjusting the timeline time to match video time
-				if (timeToNextEvent > 1000) {
-					timeToNextEvent = 1000;
-				}
-				*/
 				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
 			}
 		};
-
 
 		var handleEvent = function(event) {
 			// console.log("handle event: ", event);
@@ -302,7 +268,6 @@ angular.module('com.inthetelling.player')
 				}
 			}
 		};
-
 
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
 		var lastTick;
