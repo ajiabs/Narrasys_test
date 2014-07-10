@@ -8,10 +8,15 @@ CSS: need a default highlight style, make sure we have all of them
 
 ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes)
 
+Review mode: make sure scene titles are differentaited from text-h1 and text-h2 items; too similar now
 
 Bugs:
 
 iOS: (intermittent) matchVideoHeight is occasionally failing in some scene transitions, leaving video overlapping text
+iOS: (intermittent) sometimes losing the ability to tap on video to pause, or to tap on bottom toolbar to show it
+iOS (and android?): need to fix hide/reveal of bottom toolbar; replace the desktop methods altogether?
+
+
 Chrome has autoscroll turned off when you first enter review mode
 Chrome: If user tries to scroll during an autoscroll animation, the autoscroll isn't relinquishing control until after the animation is done
 IE: isn't recognizing when user hits "ESC" key to close a modal

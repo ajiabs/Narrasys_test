@@ -46,36 +46,37 @@ angular.module('com.inthetelling.player')
 			}
 
 			// Check for left and right sidebars
+
 			for (var i = 0; i < $scope.mainContentItems.length; i++) {
-				if ($.inArray("burstL", $scope.mainContentItems[i].layouts) ||
-					$.inArray("sidebarL", $scope.mainContentItems[i].layouts) ||
-					$.inArray("burst", $scope.mainContentItems[i].layouts)) {
+				if ($.inArray("burstL", $scope.mainContentItems[i].layouts) > -1 ||
+					$.inArray("sidebarL", $scope.mainContentItems[i].layouts) > -1 ||
+					$.inArray("burst", $scope.mainContentItems[i].layouts) > -1) {
 					$scope.mainContentHasLeftSidebar = true;
 				}
-				if ($.inArray("burstR", $scope.mainContentItems[i].layouts) ||
-					$.inArray("sidebarR", $scope.mainContentItems[i].layouts) ||
-					$.inArray("burst", $scope.mainContentItems[i].layouts)) {
+				if ($.inArray("burstR", $scope.mainContentItems[i].layouts) > -1 ||
+					$.inArray("sidebarR", $scope.mainContentItems[i].layouts) > -1 ||
+					$.inArray("burst", $scope.mainContentItems[i].layouts) > -1) {
 					$scope.mainContentHasRightSidebar = true;
 				}
 				if ($scope.mainContentHasLeftSidebar && $scope.mainContentHasRightSidebar) {
 					$scope.mainContentHasBothSidebars = true;
-					break; // no need to keep checking the rest
+					i = $scope.mainContentItems.length; // no need to keep checking the rest
 				}
 			}
 			for (i = 0; i < $scope.altContentItems.length; i++) {
-				if ($.inArray("burstL", $scope.altContentItems[i].layouts) ||
-					$.inArray("sidebarL", $scope.altContentItems[i].layouts) ||
-					$.inArray("burst", $scope.altContentItems[i].layouts)) {
+				if ($.inArray("burstL", $scope.altContentItems[i].layouts) > -1 ||
+					$.inArray("sidebarL", $scope.altContentItems[i].layouts) > -1 ||
+					$.inArray("burst", $scope.altContentItems[i].layouts) > -1) {
 					$scope.altContentHasLeftSidebar = true;
 				}
-				if ($.inArray("burstR", $scope.altContentItems[i].layouts) ||
-					$.inArray("sidebarR", $scope.altContentItems[i].layouts) ||
-					$.inArray("burst", $scope.altContentItems[i].layouts)) {
+				if ($.inArray("burstR", $scope.altContentItems[i].layouts) > -1 ||
+					$.inArray("sidebarR", $scope.altContentItems[i].layouts) > -1 ||
+					$.inArray("burst", $scope.altContentItems[i].layouts) > -1) {
 					$scope.altContentHasRightSidebar = true;
 				}
 				if ($scope.altContentHasLeftSidebar && $scope.altContentHasRightSidebar) {
 					$scope.altContentHasBothSidebars = true;
-					break; // no need to keep checking the rest
+					i = $scope.altContentItems.length; // no need to keep checking the rest
 				}
 			}
 
