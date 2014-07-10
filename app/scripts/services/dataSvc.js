@@ -267,7 +267,7 @@ angular.module('com.inthetelling.player')
 		};
 
 		var mockEpisode = function(epId) {
-			// IN PROGRESS
+			// FOR DEV TESTING
 			modelSvc.cache("episode", {
 				"_id": epId,
 				"created_at": "2014-04-10T02:02:15Z",
@@ -277,7 +277,7 @@ angular.module('com.inthetelling.player')
 				"status": "Published",
 				"templateUrl": "templates/episode/episode.html",
 				"styles": [
-					"typographyBook", "colorSepia", ""
+					"typographySwiss", "highlightTilt", ""
 				]
 			});
 			modelSvc.cache("asset", {
@@ -364,8 +364,8 @@ angular.module('com.inthetelling.player')
 			var testLayouts = [
 				"sidebarL",
 				"burstR", "burstR",
-				"inline", "burst",
-				"burstL", "sidebarR",
+				"inline",
+				"burstR", "sidebarR",
 				"inline", "sidebarR",
 				"inline", "inline"
 			];

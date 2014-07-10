@@ -3,8 +3,6 @@
 iOS devices are getting the smallest video now; test on android to do the same thing
 
 
-CSS: need a default highlight style, make sure we have all of them 
-
 ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes)
 
 
