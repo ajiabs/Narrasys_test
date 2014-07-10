@@ -1,5 +1,4 @@
 
-Which customer was it that wanted no ITT logos anywhere?  Make that happen for that customer again
 
 iOS devices are getting the smallest video now; test on android to do the same thing
 
@@ -25,12 +24,12 @@ Android chrome: Youtube throwing error on video play
 
 
 
-add episode styles to navpanel, search, etc? (typography and color, most importantly)
-
 app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (check Safari in "private browsing" mode for example)
 
 Compare all scene and item templates to existing episodes for backwards compatibility....
 in particular test link-youtube, embed-youtube, and link-embed
+
+
 
 Have timeline run a very slow interval update of all item states, in case anythign gets stuck
 

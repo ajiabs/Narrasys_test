@@ -97,7 +97,8 @@
    Customer-specific.
 
    A lot of this ought to be broken up into separate color / typography / etc rules
-   so they can be reused more broadly, but for now we're making things easier for production:
+   so they can be reused more broadly, but for now we're making things easier for production.
+   TODO producer should set the default episode styles along with the episode template
 
 */
  .episode-eliterate .branding a.eliterate {
@@ -135,6 +136,10 @@
 }
 .episode-eliterate .colorInvert h1, .episode-eliterate .colorInvert h2, .episode-eliterate .colorInvert h3 {
 	color: #FFF
+}
+.episode-gw .videoMask.firstplay {
+	/* GW doesn't want our logo here */
+	background-image: url('/images/play-overlay.png');
 }
 .episode-gw {
 	font-family:"Helvetica", "Arial", sans-serif;
