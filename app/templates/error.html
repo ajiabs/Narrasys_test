@@ -1,8 +1,11 @@
-
 <div ng-if="errors.length" class="errors">
 	<div class="error" ng-repeat="error in errors" ng-click="dismiss(error)">
-	<p>Error: {{error.cause || '(unknown reason)'}}</p>
-	<p>{{error.exception.status}} {{error.exception.config.url}}</p>
-	<!-- <pre ng-bind="error | pretty"></pre> -->
+		<h3>Error: {{error.cause || '(unknown reason)'}}</h3>
+		<p><i>(Trying to load {{error.exception.config.url}})</i></p>
+		<!-- <pre ng-bind="error | pretty"></pre> -->
+		<p ng-if="error.exception.status == 401 && user.login_url">
+			Please <a ng-href="{{user.login_url}}" target="_top">click here</a> to log back in.
+		</p>
+
 	</div>
 </div>

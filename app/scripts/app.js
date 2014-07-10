@@ -32,7 +32,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize']
 		.otherwise({
 			title: "Telling STORY: Error",
 			controller: 'ErrorController',
-			templateUrl: 'templates/error.html'
+			templateUrl: 'templates/error-404.html'
 			//			redirectTo: '/error' // only for 404s
 		});
 	//$locationProvider.html5Mode(false); // TODO sigh, can't get the server config working for this... thought we had it but IE still choked

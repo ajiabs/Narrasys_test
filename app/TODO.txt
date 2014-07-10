@@ -1,24 +1,16 @@
 
-
 iOS devices are getting the smallest video now; test on android to do the same thing
-
 
 ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes)
 
-
 Bugs:
 Need to re-test Android to make sure the new iOS touchscreen methods haven't broken it
-
-
 Chrome has autoscroll turned off when you first enter review mode
 Chrome: If user tries to scroll during an autoscroll animation, the autoscroll isn't relinquishing control until after the animation is done
 IE: isn't recognizing when user hits "ESC" key to close a modal
 IE: footer logo has wrong aspect ratio 
 Android chrome: Youtube throwing error on video play
 
-
-
-app.js uses localStorage to find the login url if it gets 401 errors from the API.  TODO: handle cases where user data exists but localStorage doesn't (check Safari in "private browsing" mode for example)
 
 Compare all scene and item templates to existing episodes for backwards compatibility....
 in particular test link-youtube, embed-youtube, and link-embed
