@@ -1,23 +1,18 @@
 
-iOS devices are getting the smallest video now; test on android to do the same thing
-
 ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes)
 
 Bugs:
-Need to re-test Android to make sure the new iOS touchscreen methods haven't broken it
 Chrome has autoscroll turned off when you first enter review mode
 Chrome: If user tries to scroll during an autoscroll animation, the autoscroll isn't relinquishing control until after the animation is done
 IE: isn't recognizing when user hits "ESC" key to close a modal
 IE: footer logo has wrong aspect ratio 
-Android chrome: Youtube throwing error on video play
-
 
 Compare all scene and item templates to existing episodes for backwards compatibility....
 in particular test link-youtube, embed-youtube, and link-embed
 
-
-
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
+for now: force all bg transitions to fade
 
 
 youtube is failing to play some videos on firefox when  flash is not installed.  Niche problem, but needs an error message with a link to flash installer at least.   
@@ -25,12 +20,11 @@ youtube is failing to play some videos on firefox when  flash is not installed. 
 
 iOS is still letting you drag the timeline outside the visible boundaries when the timeline is zoomed in (no longer can set values outside the playable range, though, so we've got that going for us which is nice)
 
-
 player needs to watch for error states coming from youtube or the <video>, if possible.
 
-Improve generic error handler 
 
-for now: force all bg transitions to fade
+Improve generic error handler
+
 
 remove div=clear from end of items; they interfere with sidebars
 
@@ -38,7 +32,10 @@ preload images ahead of playhead?
 
 Better handling for end of episode
  
+Find out why m3u8 was causing problems, fix it
 
+
+--------------------------------------------------------------------------------------------------------------------------------
 For USC:
 credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
 credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
@@ -47,27 +44,37 @@ correct youtube urls into embeddable format
 
 episodeMetrics (or a new endpoint) should log Story application errors, too -- with browser version, platform, etc if possible
 
-Find out why m3u8 was causing problems, fix it
 
-Scenes should detect when content panes (including Fg and Bg) are empty, and adjust the layout to make up for it 
-(better still, do this only if they're empty for more than n seconds...)
+--------------------------------------------------------------------------------------------------------------------------------
+Future:
+
+Youtube should work on iDevices and android. Doesn't. Fix that.
+
 
 Ask Bill to add fields: 
-* "friendly ID" for episodes (for use in url)
-* noEmbed (for links with framebreakers)
-* targetTop (for end-of-episode links to LTI host)
-
-Producer stuff: put an "add" button with ng-if="producer" in every fg, content, and bg pane
+* episode: "friendly ID"  (for use in url).  Needs a lookup endpoint. Ideally per customer(?)
+* Link events: noEmbed (for links with framebreakers)
+* Link events: targetTop (for end-of-episode links to LTI host)
 
 
 Consider eliminating fg panes other than windowFg (check existing episodes, are any using them?)
+Treat windowFg items as content by default,  not cosmetic.
 
-
-Build a demo analytics dashboard
-
+Instead maybe have fg panes for specific layouts with built-in styles? (modal)
 
 Scenes: handle showTimeline layouts
 
+sceneModifier events (as event plugin)
+
+Scenes should detect when content panes (including Fg and Bg) are empty, and adjust the layout to make up for it 
+(better still, do this only if they're empty for more than n seconds...)  (maybe overkill; if we offer more scene template choices and make them easier to choose in authoring, we wont need to automate it)
+
+"text" scenes:  no video; have a button at the end to start the next scene (landing screen could be a special case of this). Timeline shows this as a 'duration' proportional to the length of the page, and autoscrolls the page if you "play"
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+SXS:
+Build a demo analytics dashboard
 
 
 Rewrite timelineSvc to better handle multiple episodes:
@@ -79,8 +86,45 @@ Rewrite timelineSvc to better handle multiple episodes:
 Add a "skip" type of event to allow skipping scenes
 
 
-"text" scenes:  hide video and video controls altogether, have a button at the end to start the next scene (landing screen could be a special case of this)
+---------------------------------------------------------------------------------------------------------------------------------------
+Producer UI:  
+
+clicking on a scene or item should highlight its duration in the timeline, with draggable handlebars
 
 
+Producer nav:
+Expand player's [watch]            | [discover] | [review]
+					 into [transcribe] | [scene | content] | [review]
 
-sceneModifier events (as plugin)
+[transcribe] looks like watch mode, with text input where the captions field is, and a pulldown for speaker
+
+			 extra controls above for adjusting the current transcript block's start / end times
+					(moving the start time handle automatically skips the video to the new start time and plays a snippet)
+					(moving the end time handle automatically plays the same length snippet *ending at* the new end time)
+					display times of preceding and next transcript items too, if they exist, and an 'add' button:
+
+					 {prev item } [this item starttime .... this item endtime] [add new item]   {next item }
+					 (curlies just display previous item's start time (and end time if specified), next item's start time; click on a curly switches to that as the current item)
+					 (square brackets are time input fields for editing the current item start and end times:  text plus slider)
+
+				may have a side column to allow easier switching from one transcript node to another (not for direct editing though)
+
+("scene" and "content" are unnamed-to-the-user toggles inside discover mode.)
+
+[scene] edits the layout (scene template) and backgrounds for each pane and for the whole scene.
+
+				Control panel above bottom toolbar -- right where the captions were again! Consistent! -- for scene template changes
+				(before user can change anything here, prompt "edit the current layout or add a layout change here?") also a 'remove this layout')
+
+
+				Clicking on a content pane brings up a list of all items in the pane in that scene, lets you set start/end times individually. 
+
+[content] layer reveals the content items in the scene layout
+					with an "add" button as the last item in each pane. 
+					Click individual items to change their styling and content (in a modal)
+
+
+[review] is just review mode where you can click on anything to edit it in a modal.  
+					Add a 3rd column for cosmetic items if you want. Make that user toggleable if you want to get fancy.
+
+

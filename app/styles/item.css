@@ -215,7 +215,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	width:100%;
 	height:100%;
 }
-.isIDevice .modal .iframeContainer {
+.touchDevice .modal .iframeContainer {
 	/* TODO make sure this class is being applied */
 	-webkit-overflow-scrolling:touch;
 	overflow: auto;

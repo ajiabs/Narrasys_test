@@ -142,7 +142,7 @@ h1, h2, h3, h4 {
 	-webkit-overflow-scrolling: touch;
 	background-color:#FFF;
 }
-#CONTAINER.iDevice {
+#CONTAINER.touchDevice {
 	position:static;
 	-webkit-overflow-scrolling: auto;
 }

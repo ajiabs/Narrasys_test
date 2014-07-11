@@ -97,7 +97,7 @@ angular.module('com.inthetelling.player')
 			console.log("showControls");
 			$timeout.cancel(controlTimer);
 			modelSvc.appState.videoControlsActive = true;
-			if (modelSvc.appState.isIDevice) {
+			if (modelSvc.appState.isTouchDevice) {
 				$scope.allowControlsExit(); // otherwise it sticks permanently on touchscreens. TODO find a better way
 			}
 		};
@@ -181,8 +181,8 @@ angular.module('com.inthetelling.player')
 		// isn't it weird how we read the scrollTop from (window), but have to animate it on (body,html)?
 		// But that only applies on iDevices; elsewhere #CONTAINER is what's scrolling 
 		// (because we need it that way for fullscreen mode)
-		var autoscrollableNode = (modelSvc.appState.isIDevice) ? $(window) : $('#CONTAINER');
-		var animatableScrollNode = (modelSvc.appState.isIDevice) ? $('html') : $('#CONTAINER');
+		var autoscrollableNode = (modelSvc.appState.isTouchDevice) ? $(window) : $('#CONTAINER');
+		var animatableScrollNode = (modelSvc.appState.isTouchDevice) ? $('html') : $('#CONTAINER');
 
 		var startScrollWatcher = function() {
 			// console.log("startScrollWatcher");

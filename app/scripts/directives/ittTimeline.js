@@ -26,7 +26,7 @@ angular.module('com.inthetelling.player')
 				// TODO: display buffered portion of video?
 
 				scope.showSceneMenuTooltip = function(makeVisible) {
-					if (makeVisible && !(modelSvc.appState.isIDevice)) {
+					if (makeVisible && !(modelSvc.appState.isTouchDevice)) {
 						scope.sceneMenuToolTip = true;
 					} else {
 						scope.sceneMenuToolTip = false;
