@@ -1,6 +1,4 @@
 
-ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes)
-
 
 BUG for bill: episode_user_metrics is sometimes throwing permissions errors, which then kills the user's permission for everything else
 
@@ -40,6 +38,8 @@ Better handling for end of episode
 Find out why m3u8 was causing problems, fix it
 
 
+ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes) (or just do this inside producer.)
+
 --------------------------------------------------------------------------------------------------------------------------------
 For USC:
 credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
@@ -55,8 +55,10 @@ Future:
 
 Youtube should work on iDevices and android. Doesn't. Fix that.
 
+zooming timeline should reveal untitled scenes and (if zoomed far enough) items: don't have a separate MarkedEvents array
 
-Ask Bill to add fields: 
+
+Ask Bill to add data fields: 
 * episode: "friendly ID"  (for use in url).  Needs a lookup endpoint. Ideally per customer(?)
 * Link events: noEmbed (for links with framebreakers)
 * Link events: targetTop (for end-of-episode links to LTI host)
@@ -71,8 +73,7 @@ Scenes: handle showTimeline layouts
 
 sceneModifier events (as event plugin)
 
-Scenes should detect when content panes (including Fg and Bg) are empty, and adjust the layout to make up for it 
-(better still, do this only if they're empty for more than n seconds...)  (maybe overkill; if we offer more scene template choices and make them easier to choose in authoring, we wont need to automate it)
+Scenes should detect when content panes (including their Fg and Bg) are empty, and adjust the layout to make up for it (better still, do this only if they're empty for more than n seconds...)  (maybe overkill; if we offer more scene template choices and make them easier to choose in authoring, we wont need to automate it)
 
 "text" scenes:  no video; have a button at the end to start the next scene (landing screen could be a special case of this). Timeline shows this as a 'duration' proportional to the length of the page, and autoscrolls the page if you "play"
 

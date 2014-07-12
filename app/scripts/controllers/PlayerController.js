@@ -4,7 +4,7 @@
 
 angular.module('com.inthetelling.player')
 	.controller('PlayerController', function($scope, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc) {
-		console.log("playerController", $scope);
+		// console.log("playerController", $scope);
 
 		$scope.viewMode = function(newMode) {
 			appState.viewMode = newMode;
@@ -94,7 +94,7 @@ angular.module('com.inthetelling.player')
 		});
 
 		$scope.showControls = function() {
-			console.log("showControls");
+			// console.log("showControls");
 			$timeout.cancel(controlTimer);
 			appState.videoControlsActive = true;
 			if (appState.isTouchDevice) {
@@ -103,12 +103,12 @@ angular.module('com.inthetelling.player')
 		};
 
 		$scope.keepControls = function() {
-			console.log("keepControls");
+			// console.log("keepControls");
 			keepControls = true;
 		};
 
 		$scope.allowControlsExit = function() {
-			console.log("allowControlsExit");
+			// console.log("allowControlsExit");
 			keepControls = false;
 			$timeout.cancel(controlTimer);
 			controlTimer = $timeout(function() {
@@ -206,7 +206,7 @@ angular.module('com.inthetelling.player')
 		};
 
 		$scope.enableAutoscroll = function() {
-			console.log("Enabling autoscroll");
+			// console.log("Enabling autoscroll");
 			if (appState.autoscrollBlocked) {
 				appState.autoscrollBlocked = false;
 				startScrollWatcher();

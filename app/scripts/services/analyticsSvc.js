@@ -87,10 +87,10 @@ angular.module('com.inthetelling.player')
 				method: 'GET',
 				url: config.apiDataBaseUrl + '/v2/episodes/' + epId + '/episode_user_metrics'
 			}).success(function(respData, respStatus, respHeaders) {
-				console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
+				// console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
 				defer.resolve(respData);
 			}).error(function(respData, respStatus, respHeaders) {
-				console.log("read episode activity ERROR", respData, respStatus, respHeaders);
+				// console.log("read episode activity ERROR", respData, respStatus, respHeaders);
 				defer.reject();
 			});
 			return defer.promise;
@@ -104,7 +104,7 @@ angular.module('com.inthetelling.player')
 				method: 'GET',
 				url: config.apiDataBaseUrl + '/v2/events/' + eventId + '/event_user_actions'
 			}).success(function(respData, respStatus, respHeaders) {
-				console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
+				// console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
 				if (activityType) {
 					var matchedType = false;
 					for (var i = 0; i < respData.length; i++) {
@@ -119,7 +119,7 @@ angular.module('com.inthetelling.player')
 					defer.resolve(respData);
 				}
 			}).error(function(respData, respStatus, respHeaders) {
-				console.log("read event activity ERROR", respData, respStatus, respHeaders);
+				// console.log("read event activity ERROR", respData, respStatus, respHeaders);
 				defer.reject();
 			});
 			return defer.promise;
@@ -164,16 +164,17 @@ angular.module('com.inthetelling.player')
 			}
 		};
 
+		// This is not a general-purpose function, it's only for the analytics endpoints
 		var post = function(endpoint, endpointData) {
 			$http({
 				method: 'POST',
 				url: config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + endpoint,
 				data: endpointData
 			}).success(function(respData, respStatus, respHeaders) {
-				console.log("SUCCESS", respData, respStatus, respHeaders);
+				// console.log("SUCCESS", respData, respStatus, respHeaders);
 
 			}).error(function(respData, respStatus, respHeaders) {
-				console.log("ERROR", respData, respStatus, respHeaders);
+				// console.log("ERROR", respData, respStatus, respHeaders);
 			});
 		};
 

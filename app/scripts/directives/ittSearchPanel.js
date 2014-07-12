@@ -9,12 +9,8 @@ angular.module('com.inthetelling.player')
 			templateUrl: 'templates/searchpanel.html',
 			controller: 'SearchPanelController',
 			link: function(scope, element, attrs) {
-
-				console.log("ittSearchPanel", scope);
-
+				// console.log("ittSearchPanel", scope);
 				scope.indexEvents();
-
 			}
-
 		};
 	});

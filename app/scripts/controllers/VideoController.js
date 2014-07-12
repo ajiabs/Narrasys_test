@@ -9,7 +9,7 @@
 angular.module('com.inthetelling.player')
 	.controller('VideoController', function($q, $scope, $timeout, $window, $document, appState, timelineSvc) {
 
-		console.log("videoController instantiate");
+		// console.log("videoController instantiate");
 
 		// init youtube
 		var apiTag = document.createElement('script');
@@ -17,7 +17,7 @@ angular.module('com.inthetelling.player')
 		angular.element($document[0].head).append(apiTag);
 		$window.onYouTubeIframeAPIReady = function() {
 			$scope.youtubeIsReady = true;
-			console.log("Youtube Service is ready");
+			// console.log("Youtube Service is ready");
 		};
 
 
@@ -53,7 +53,7 @@ angular.module('com.inthetelling.player')
 		};
 
 		$scope.initYoutube = function() {
-			console.log("videoController initYoutube");
+			// console.log("videoController initYoutube");
 			var playerStates = ["ended", "playing", "paused", "buffering", "", "cued"];
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {

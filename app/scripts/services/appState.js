@@ -63,7 +63,7 @@ angular.module('com.inthetelling.player')
 		}
 
 
-		console.log("APPSTATE:", svc);
+		console.log("appState:", svc);
 
 		return svc;
 

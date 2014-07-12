@@ -290,7 +290,7 @@ angular.module('com.inthetelling.player')
 
 
 		svc.init = function(episodeId) {
-			console.log("timelineSvc.init", episodeId);
+			// console.log("timelineSvc.init", episodeId);
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
 			timeMultiplier = 1;
@@ -395,7 +395,7 @@ angular.module('com.inthetelling.player')
 		};
 
 		svc.updateEventStates = function() {
-			console.log("timelineSvc.updateEventStates");
+			// console.log("timelineSvc.updateEventStates");
 			// Sets past/present/future state of every event in the timeline.  
 			// TODO performance check (though this isn't done often, only on seek and inject.)
 

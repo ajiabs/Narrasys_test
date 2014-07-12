@@ -1,32 +1,23 @@
 'use strict';
 
-/* TODO API CHANGES 
-
-
-TODO: separate appState from modelSvc, just for tidiness sake?
-
-*/
+/* Parses API data into player-acceptable format, 
+and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.player')
 	.factory('modelSvc', function($interval, $filter, config, appState) {
 
 		var svc = {};
 
-
-
-
-		/* episode data parsing */
-
 		svc.episodes = {};
 		svc.assets = {};
-		svc.events = {}; // svc.events contains scenes and items.
+		svc.events = {}; // NOTE svc.events contains scenes and items -- anything that happens during the episode timeline
 		svc.containers = {};
 
 		// receives cacheTypes of episode, event, asset, and container.
 		// splits event into scenes and items.  Not sure yet whether we care about containers, discarding them for now.
 
-		// TODO? normalize items before cacheing: (annotation_image_id, link_image_id -> asset_id, etc)
-		// TODO discard unused fields
+		// TODO? normalize items before cacheing: (annotation_image_id and link_image_id -> asset_id, etc)
+		// TODO discard unused fields before cacheing
 
 		// use angular.extend if an object already exists, so we don't lose existing bindings
 		svc.cache = function(cacheType, item) {
@@ -57,9 +48,6 @@ angular.module('com.inthetelling.player')
 			}
 		};
 
-		// svc.deriveFoo() are for efficiency precalculations. 
-		// Input API data, output API data plus clientside-only convenience variables.
-		// Should call this after making any changes to the underlying data.
 
 		// update template paths from v1.  This is temporary until I have the set of new templates nailed down
 		// and have figured out which can be merged or etc; then we can update the values in the database
@@ -111,6 +99,10 @@ angular.module('com.inthetelling.player')
 			"templates/upload-demo-inline.html": "templates/item/item.html", // TODO
 			"templates/upload-demo.html": "templates/item/item.html", // TODO
 		};
+
+		// svc.deriveFoo() are for efficiency precalculations. 
+		// Input API data, output API data plus clientside-only convenience variables.
+		// Should call this after making any changes to the underlying data.
 
 		svc.deriveEpisode = function(episode) {
 			// console.log("deriveEpisode:", episode);
@@ -170,7 +162,6 @@ angular.module('com.inthetelling.player')
 					// default is content
 					event.isContent = true;
 				}
-
 
 				// Old templates which (TODO) should have been database fields instead:
 				if (event._type === 'Annotation' && event.templateUrl.match(/transcript/)) {
@@ -281,7 +272,7 @@ angular.module('com.inthetelling.player')
 
 		svc.episode = function(epId) {
 			if (!svc.episodes[epId]) {
-				console.error("called modelSvc.episode for a nonexistent ID", epId);
+				console.warn("called modelSvc.episode for a nonexistent ID", epId);
 			}
 			return svc.episodes[epId];
 		};
@@ -300,9 +291,9 @@ angular.module('com.inthetelling.player')
 		};
 
 		svc.scene = function(sceneId) {
-			//			console.log("modelsvc.scene: ",sceneId);
+			// console.log("modelsvc.scene: ", sceneId);
 			if (!svc.events[sceneId]) {
-				console.error("called modelSvc.scene for a nonexistent ID", sceneId);
+				console.warn("called modelSvc.scene for a nonexistent ID", sceneId);
 			}
 			return svc.events[sceneId];
 		};
@@ -355,7 +346,6 @@ angular.module('com.inthetelling.player')
 					});
 				});
 			}
-
 
 			return cssArr.join(' ');
 		};
@@ -446,12 +436,12 @@ angular.module('com.inthetelling.player')
 				videoObject.youtube = undefined;
 			}
 
-
-			console.log("video asset:", videoObject);
-
 			if (config.disableYoutube) {
 				videoObject.youtube = undefined;
 			}
+
+			// console.log("video asset:", videoObject);
+
 			videoAsset.video = videoObject;
 			return videoAsset;
 		};
@@ -466,7 +456,6 @@ angular.module('com.inthetelling.player')
 			return "//www.youtube.com/embed/" + ytId;
 		};
 
-
 		// Private convenience function called only from within resolveMasterAssetVideo. Pass in two filenames.
 		// If one is empty, return the other; otherwise checks for a WxH portion in two
 		// filenames; returns whichever is bigger (on desktop) or smaller (on mobile).  
@@ -480,6 +469,7 @@ angular.module('com.inthetelling.player')
 			if (!a && !b) {
 				return "";
 			}
+			// most video files come from the API wiht their width and height in the URL as blahblah123x456.foo:
 			var regexp = /(\d+)x(\d+)\.\w+$/; // [1]=w, [2]=h
 			// There shouldn't ever be cases where we're comparing two non-null filenames, neither of which have a
 			// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out 
@@ -494,8 +484,8 @@ angular.module('com.inthetelling.player')
 			}
 		};
 
-		console.log("EVENTCACHE:", svc.events);
-		console.log("EPISODECACHE:", svc.episodes);
+		console.log("Event cache:", svc.events);
+		console.log("Episode cache:", svc.episodes);
 
 		return svc;
 

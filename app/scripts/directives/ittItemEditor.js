@@ -14,7 +14,7 @@ angular.module('com.inthetelling.player')
 			templateUrl: 'templates/item/edit.html',
 			controller: 'ItemController',
 			link: function(scope, element, attrs) {
-				console.log('ittEditor', scope, element, attrs);
+				// console.log('ittEditor', scope, element, attrs);
 
 				if (!scope.item.layouts) {
 					scope.item.layouts = [];

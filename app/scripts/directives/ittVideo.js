@@ -16,7 +16,7 @@ angular.module('com.inthetelling.player')
 				video: "=ittVideo",
 			},
 			link: function(scope, element, attrs) {
-				console.log('ittVideo', scope);
+				// console.log('ittVideo', scope);
 				scope.appState = appState;
 				scope.uid = ++uniqueDirectiveID;
 

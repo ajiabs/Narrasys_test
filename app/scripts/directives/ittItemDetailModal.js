@@ -10,7 +10,7 @@ angular.module('com.inthetelling.player')
 			},
 			templateUrl: 'templates/item/modal.html',
 			link: function(scope, element, attrs) {
-				console.log('ittItemDetailModal', scope, element, attrs);
+				// console.log('ittItemDetailModal', scope, element, attrs);
 
 				scope.dismiss = function() {
 					appState.itemDetail = false;

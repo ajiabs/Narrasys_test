@@ -2,7 +2,7 @@
 
 angular.module('com.inthetelling.player')
 	.factory('authSvc', function(config, $routeParams, $http, $q, $location, appState) {
-		console.log('authSvc factory');
+		// console.log('authSvc factory');
 		var svc = {};
 		svc.roles = [];
 
@@ -30,7 +30,7 @@ angular.module('com.inthetelling.player')
 			} else {
 				// check for token in localStorage, try it to see if it's still valid.
 				if (localStorage && localStorage.storyAuth) {
-					console.log("Getting access from stored token");
+					// console.log("Getting access from stored token");
 					var storedData = angular.fromJson(localStorage.storyAuth);
 					appState.user = storedData;
 					$http.defaults.headers.common.Authorization = 'Token token="' + storedData.access_token + '"';
@@ -65,18 +65,13 @@ angular.module('com.inthetelling.player')
 					}
 				})
 				.error(function(data, status) {
-					console.error("get_nonce failed:", data, status);
-					//TODO throw a proper error message here
-					//$rootScope.$emit("error", {
-					//	"message": "Authentication failed (get_nonce: " + data || data.error + ")"
-					//});
 					defer.reject();
 				});
 			return defer.promise;
 		};
 
 		var getAccessToken = function(nonce) {
-			console.log("trying getAccessToken with nonce ", nonce);
+			// console.log("trying getAccessToken with nonce ", nonce);
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
 				.success(function(data, status) {
@@ -92,11 +87,7 @@ angular.module('com.inthetelling.player')
 					defer.resolve(data);
 				})
 				.error(function(data, status) {
-					console.error("get_access_token failed:", data, status);
-					// TODO throw a proper error message here
-					//$rootScope.$emit("error", {
-					//	"message": "Authentication failed (get_access_token: " + data || data.error + ")"
-					//});
+					// console.error("get_access_token failed:", data, status);
 					defer.reject();
 				});
 			return defer.promise;

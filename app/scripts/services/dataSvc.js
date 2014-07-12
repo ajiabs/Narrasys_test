@@ -52,7 +52,7 @@ angular.module('com.inthetelling.player')
 			}); // init with empty object to be filled by asynch process
 
 			if ($routeParams.local) {
-				console.log("LOCAL DATA");
+				// console.log("LOCAL DATA");
 				mockEpisode(epId);
 			} else {
 				authSvc.authenticate()
@@ -62,10 +62,10 @@ angular.module('com.inthetelling.player')
 							// console.log("getCommon succeeded");
 							getEpisode(epId);
 						}, function(err) {
-							console.error("getCommon failed: ", err);
+							// console.error("getCommon failed: ", err);
 						});
 					}, function(err) {
-						console.error("Authentication error: ", err);
+						// console.error("Authentication error: ", err);
 					});
 			}
 		};
@@ -75,7 +75,7 @@ angular.module('com.inthetelling.player')
 			layout: {},
 			style: {}
 		};
-		console.log("datasvc cache: ", dataCache);
+		console.log("dataSvc cache: ", dataCache);
 
 		// Gets all layouts, styles, and templates
 		var haveCommon = false;
@@ -100,7 +100,7 @@ angular.module('com.inthetelling.player')
 					haveCommon = true;
 					getCommonDefer.resolve();
 				}, function(failure) {
-					console.error("getCommon failed", failure);
+					// console.error("getCommon failed", failure);
 					haveCommon = false;
 					getCommonDefer.reject();
 				});
@@ -206,7 +206,7 @@ angular.module('com.inthetelling.player')
 			$http.get(config.apiDataBaseUrl + "/v1/episodes/" + epId)
 				.success(function(episodeData) {
 
-					console.log("episode: ", episodeData);
+					// console.log("episode: ", episodeData);
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 
 						modelSvc.cache("episode", resolveIDs(episodeData));

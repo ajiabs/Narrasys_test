@@ -14,14 +14,14 @@ angular.module('com.inthetelling.player')
 			template: '<span ng-include="scene.templateUrl">Loading Item...</span>',
 			controller: 'SceneController',
 			link: function(scope, element, attrs) {
-				console.log('ittScene', scope, element, attrs);
+				// console.log('ittScene', scope, element, attrs);
 
 				scope.precalculateSceneValues();
 
 				var twiddleScene = function() {
 					var magnetNode = element.find('.videoMagnet img');
 					if (magnetNode.height() === null) {
-						console.warn("twiddleScene called with no visible video magnet; waiting ");
+						// console.warn("twiddleScene called with no visible video magnet; waiting.");
 						var unwatchMagnet = scope.$watch(function() {
 							// Don't try to optimize by using magnetNode from above; if we got here in the first place magnetNode is undefined.
 							// This is an expensive $watch but will only run for a tick or two while the scene is being drawn...
