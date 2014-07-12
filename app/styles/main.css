@@ -129,9 +129,10 @@ h1, h2, h3, h4 {
 	}
 }
 /* --------------------------------------------------------------------------------
- position:fixed needed for fullscreen (in some browsers). 
- Unfortunately this messes with iPad (at least); disable on iDevices... TODO: any others?
+ position:fixed causes Safari to act less weird in fullscreen mode, but interferes with
+ scrolling.  Disabling for now, let safari do what safari does.
 */
+/*
  #CONTAINER {
 	position:fixed;
 	top:0;
@@ -146,6 +147,8 @@ h1, h2, h3, h4 {
 	position:static;
 	-webkit-overflow-scrolling: auto;
 }
+*/
+
 /* Z-indexes 
 --------------------------------------------------------------------------------
 */

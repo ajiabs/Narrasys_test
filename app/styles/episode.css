@@ -14,12 +14,12 @@
 	width:100%;
 	max-height:72px;
 }
-.branding a.logo {
+.branding .logo {
 	width:20%;
 	position:absolute;
 	display: block;
 }
-.branding a.logo img {
+.branding .logo img {
 	border:none
 }
 .branding a.itt {
@@ -31,7 +31,7 @@
 	bottom: 10px;
 	left: 10px;
 	font-size: 0.76em;
-	text-shadow: 1px 1px 0 #BBB;
+	text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
 .copyright a {
 	color:#FFF !important;
@@ -98,7 +98,8 @@
 
    A lot of this ought to be broken up into separate color / typography / etc rules
    so they can be reused more broadly, but for now we're making things easier for production.
-   TODO producer should set the default episode styles along with the episode template
+   TODO producer should set the default episode styles along with the episode template, then we 
+   can remove these
 
 */
  .episode-eliterate .branding a.eliterate {
@@ -205,4 +206,31 @@
 		width: 90%;
 		padding-top: 45%;
 	}
+}
+/* approved USC colors are #900 red and #FC0 yellow */
+ .episode-usc a, .episode-usc a:visited {
+	color: #900;
+	font-weight:bold;
+}
+.episode-usc {
+	font-family: National, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color: #F7F9ED;
+}
+.episode-usc .altPane {
+	background-color:#FFF;
+}
+.episode-usc h1, .episode-usc h2, .episode-usc h3, .episode-usc h4, .episode-usc .headerItem {
+	font-family:"Adobe Caslon", "Crimson Text", serif;
+	line-height:1em;
+}
+.episode-usc .colorInvert {
+	background-color: #900;
+	color: #FC0;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+.episode-usc .item .pullquote:before {
+	line-height: 0.5em;
+}
+.episode-usc .footer {
+	background-color:#900;
 }

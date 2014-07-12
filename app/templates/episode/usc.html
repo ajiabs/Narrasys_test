@@ -1,4 +1,4 @@
-<div class="episode episode-purdue" ng-class="episode.styleCss">
+<div class="episode episode-usc" ng-class="episode.styleCss">
 	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
 	<span ng-repeat="scene in episode.scenes | isCurrent">
 		<span ng-include="'templates/episode/components/watchmode.html'"></span>
@@ -8,6 +8,9 @@
 	<span ng-include="'templates/episode/components/video.html'"></span>
 
 	<div ng-if="appState.viewMode != 'watch'" class="branding footer">
+		
+			<img class="logo" src="images/customer/usc-footer.svg" alt="USC logo" style="margin-top:1em">
+		
 		<a class="itt logo" href="http://inthetelling.com">
 			<img src="images/itt.svg" alt="In The Telling logo">
 		</a>
@@ -15,7 +18,7 @@
 	</div>
 
 	<div class="banner-logo">
-		<img src="images/customer/purdue-logo.svg" alt="Purdue">
+		<img src="images/customer/usc-logo.svg" alt="USC">
 	</div>
 
 </div>

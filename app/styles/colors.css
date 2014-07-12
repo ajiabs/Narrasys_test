@@ -14,7 +14,7 @@
  .altPane {
 	background-color: rgba(0, 0, 0, 0.05);
 }
-a {
+a, a:visited {
 	color: #00C
 }
 /*============================

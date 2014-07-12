@@ -54,8 +54,13 @@
 	height:98%;
 	border: none;
 }
-/* For cleaner transitions between items: */
- .singleitem .item {
+/* 
+	.singleitem panes are intended for cleaner transitions when there's only one content item in the pane at a time. 
+	TODO: this works fine when moving from single item to single item, but transitioning between
+	single and multiple is not so hot.  try again 
+ */
+
+/* .singleitem .item {
 	position:absolute;
 	width:100%;
 }
@@ -64,6 +69,8 @@
 	content:"";
 	display:block;
 }
+*/
+
 /*============================ ============================ ============================ 
 image-fill items */
 
@@ -304,9 +311,11 @@ Inline images (TODO show these only when image is larger than available space) *
 	padding-right: 10px;
 	text-align: right;
 	width: 40px;
+	text-shadow:none !important;
 }
 .item .pullquote {
 	font-size: 2em;
+	padding-top: 0.3em;
 }
 .item .pullquoteSpeaker {
 	text-align: right;
