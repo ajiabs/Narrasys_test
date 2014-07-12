@@ -5,7 +5,7 @@
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
 angular.module('com.inthetelling.player')
-	.directive('ittTimeline', function(modelSvc, timelineSvc) {
+	.directive('ittTimeline', function(appState, timelineSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -15,7 +15,7 @@ angular.module('com.inthetelling.player')
 			link: function(scope, element, attrs) {
 				// console.log('ittTimeline', scope, element, attrs);
 
-				scope.appState = modelSvc.appState;
+				scope.appState = appState;
 				scope.timeline = timelineSvc;
 				scope.handlePosition = 0; // position of draghandle (as a fraction of full timeline)
 				scope.zoomLevel = 1; // multiples by which the timeline is zoomed in
@@ -26,7 +26,7 @@ angular.module('com.inthetelling.player')
 				// TODO: display buffered portion of video?
 
 				scope.showSceneMenuTooltip = function(makeVisible) {
-					if (makeVisible && !(modelSvc.appState.isTouchDevice)) {
+					if (makeVisible && !(appState.isTouchDevice)) {
 						scope.sceneMenuToolTip = true;
 					} else {
 						scope.sceneMenuToolTip = false;
@@ -35,7 +35,7 @@ angular.module('com.inthetelling.player')
 
 				scope.prevScene = function() {
 					for (var i = timelineSvc.markedEvents.length - 1; i >= 0; i--) {
-						if (timelineSvc.markedEvents[i].start_time < modelSvc.appState.time) {
+						if (timelineSvc.markedEvents[i].start_time < appState.time) {
 							// console.log("Seeking to ", timelineSvc.markedEvents[i].start_time);
 							timelineSvc.seek(timelineSvc.markedEvents[i].start_time, "prevScene");
 							break;
@@ -45,7 +45,7 @@ angular.module('com.inthetelling.player')
 				scope.nextScene = function() {
 					var found = false;
 					for (var i = 0; i < timelineSvc.markedEvents.length; i++) {
-						if (timelineSvc.markedEvents[i].start_time > modelSvc.appState.time) {
+						if (timelineSvc.markedEvents[i].start_time > appState.time) {
 							// console.log("Seeking to ", timelineSvc.markedEvents[i].start_time);
 							timelineSvc.seek(timelineSvc.markedEvents[i].start_time, "nextScene");
 							found = true;
@@ -53,12 +53,12 @@ angular.module('com.inthetelling.player')
 						}
 					}
 					if (!found) {
-						timelineSvc.seek(modelSvc.appState.duration, "nextScene");
+						timelineSvc.seek(appState.duration, "nextScene");
 					}
 				};
 
 				scope.userChangingVolume = function(evt) {
-					if (modelSvc.appState.muted) {
+					if (appState.muted) {
 						scope.toggleMute();
 					}
 					var volumeNode = angular.element(evt.currentTarget);
@@ -85,18 +85,18 @@ angular.module('com.inthetelling.player')
 				};
 
 				scope.currentVolume = function() {
-					if (modelSvc.appState.muted) {
+					if (appState.muted) {
 						return 0;
 					} else {
-						return modelSvc.appState.volume;
+						return appState.volume;
 					}
 				};
 
 				scope.audioIcon = function() {
-					if (modelSvc.appState.muted) {
+					if (appState.muted) {
 						return "muted";
 					} else {
-						return "vol" + Math.floor(modelSvc.appState.volume / 34);
+						return "vol" + Math.floor(appState.volume / 34);
 					}
 				};
 
@@ -125,7 +125,7 @@ angular.module('com.inthetelling.player')
 
 				// adjust the position of the playhead after a scale change:
 				var zoom = function() {
-					scope.zoomOffset = -((scope.zoomLevel - 1) * (modelSvc.appState.time / modelSvc.appState.duration));
+					scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
 					timelineNode.animate({
 						"left": (scope.zoomOffset * 100) + "%",
 						"width": (scope.zoomLevel * 100) + "%"
@@ -138,12 +138,12 @@ angular.module('com.inthetelling.player')
 				// TODO: (cosmetic) stop watching while zoom-animation is in progress
 				scope.$watch(function() {
 					return {
-						t: modelSvc.appState.time,
-						d: modelSvc.appState.duration,
+						t: appState.time,
+						d: appState.duration,
 					};
 				}, function() {
 					if (!scope.stopWatching) {
-						scope.zoomOffset = -((scope.zoomLevel - 1) * (modelSvc.appState.time / modelSvc.appState.duration));
+						scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
 						timelineNode.css({
 							"left": (scope.zoomOffset * 100) + '%'
 						});
@@ -161,7 +161,7 @@ angular.module('com.inthetelling.player')
 				var startSeek = function(evt) {
 					scope.isSeeking = true;
 
-					var userEventName = (modelSvc.appState.isTouchDevice) ? 'touchend.timeline' : 'mouseup.timeline';
+					var userEventName = (appState.isTouchDevice) ? 'touchend.timeline' : 'mouseup.timeline';
 					timelineContainer.bind(userEventName, function() {
 						finishSeek();
 					});
@@ -180,15 +180,15 @@ angular.module('com.inthetelling.player')
 					// timelineNode is the full timeline, including offscreen portions if zoomed in.
 					// So this math gives how far the pointer is in the full timeline as a percentage, 
 					// multiplied by the real duration, which gives the real time.
-					scope.willSeekTo = (evt.clientX - timelineNode.offset().left) / timelineNode.width() * modelSvc.appState.duration;
+					scope.willSeekTo = (evt.clientX - timelineNode.offset().left) / timelineNode.width() * appState.duration;
 
 					// ios is still registering drags outside the visible boundaries of the timeline, 
 					// so need to do some sanity checking here:
 					if (scope.willSeekTo < 0) {
 						scope.willSeekTo = 0;
 					}
-					if (scope.willSeekTo > modelSvc.appState.duration) {
-						scope.willSeekTo = modelSvc.appState.duration;
+					if (scope.willSeekTo > appState.duration) {
+						scope.willSeekTo = appState.duration;
 					}
 				};
 
@@ -213,7 +213,7 @@ angular.module('com.inthetelling.player')
 
 				// bind playhead events:
 				var playhead = angular.element('#playhead');
-				if (modelSvc.appState.isTouchDevice) {
+				if (appState.isTouchDevice) {
 					playhead.bind('touchstart.timeline', function(e) {
 						startSeek(e.originalEvent.targetTouches[0]);
 						e.preventDefault();

@@ -36,7 +36,7 @@ Different types of event can define their own interactions, but the core ones wi
 */
 
 angular.module('com.inthetelling.player')
-	.factory('analyticsSvc', function($q, $http, $routeParams, $interval, config, modelSvc) {
+	.factory('analyticsSvc', function($q, $http, $routeParams, $interval, config, appState) {
 		// console.log('analyticsSvc factory');
 		var svc = {};
 
@@ -54,13 +54,13 @@ angular.module('com.inthetelling.player')
 
 		// for episode-related activity
 		svc.captureEpisodeActivity = function(name, data) {
-			if (!modelSvc.appState.user.track_episode_metrics) {
+			if (!appState.user.track_episode_metrics) {
 				return;
 			}
 			var userActivity = {
 				"name": name,
 				"walltime": new Date(),
-				"timestamp": modelSvc.appState.time, // TODO this is timeline time, we want episode time!
+				"timestamp": appState.time, // TODO this is timeline time, we want episode time!
 			};
 			if (data) {
 				userActivity.data = data;
@@ -70,7 +70,7 @@ angular.module('com.inthetelling.player')
 
 		// for transmedia-related activity
 		svc.captureEventActivity = function(name, eventID, data) {
-			if (!modelSvc.appState.user.track_event_actions) {
+			if (!appState.user.track_event_actions) {
 				return;
 			}
 			svc.activityQueue.push({
@@ -167,7 +167,7 @@ angular.module('com.inthetelling.player')
 		var post = function(endpoint, endpointData) {
 			$http({
 				method: 'POST',
-				url: config.apiDataBaseUrl + '/v2/episodes/' + modelSvc.appState.episodeId + '/' + endpoint,
+				url: config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + endpoint,
 				data: endpointData
 			}).success(function(respData, respStatus, respHeaders) {
 				console.log("SUCCESS", respData, respStatus, respHeaders);

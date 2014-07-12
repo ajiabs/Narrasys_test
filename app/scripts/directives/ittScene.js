@@ -3,7 +3,7 @@
 // Minor jquery dependency ($.inArray)
 
 angular.module('com.inthetelling.player')
-	.directive('ittScene', function($timeout, $interval, modelSvc) {
+	.directive('ittScene', function($timeout, $interval, appState) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -55,9 +55,9 @@ angular.module('com.inthetelling.player')
 				// Trigger twiddleScene when the window changes size, the scene becomes current, or the viewMode changes:
 				scope.unwatch = scope.$watch(function() {
 					return {
-						winWidth: modelSvc.appState.windowWidth,
-						winHeight: modelSvc.appState.windowHeight,
-						newMode: modelSvc.appState.viewMode
+						winWidth: appState.windowWidth,
+						winHeight: appState.windowHeight,
+						newMode: appState.viewMode
 					};
 				}, function(the) {
 					if (the.newMode === 'discover' && scope.scene.isCurrent) {
@@ -67,7 +67,7 @@ angular.module('com.inthetelling.player')
 
 				// HACK to catch cases (mostly on ios) where matchvideoheight isn't matching.
 				// slow interval
-				scope.safetyBelt = $interval(twiddleScene,1300);
+				scope.safetyBelt = $interval(twiddleScene, 1300);
 
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function() {

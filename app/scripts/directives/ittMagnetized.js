@@ -3,7 +3,7 @@
 // TODO: remove dependence on jQuery? (lots of it here)
 
 angular.module('com.inthetelling.player')
-	.directive('ittMagnetized', function($rootScope, $timeout, modelSvc) {
+	.directive('ittMagnetized', function($rootScope, $timeout, appState) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -25,8 +25,8 @@ angular.module('com.inthetelling.player')
 							top: scope.magnet.offset().top - element.offset().top,
 							left: scope.magnet.offset().left - element.offset().left,
 							width: scope.magnet.width() - element.width(),
-							winWidth: modelSvc.appState.windowWidth,
-							winHeight: modelSvc.appState.windowHeight
+							winWidth: appState.windowWidth,
+							winHeight: appState.windowHeight
 						};
 					}, moveToMagnet, true);
 				};

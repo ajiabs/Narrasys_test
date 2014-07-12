@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.player')
-	.directive('ittItemDetailModal', function(modelSvc, timelineSvc) {
+	.directive('ittItemDetailModal', function(appState, timelineSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -13,7 +13,7 @@ angular.module('com.inthetelling.player')
 				console.log('ittItemDetailModal', scope, element, attrs);
 
 				scope.dismiss = function() {
-					modelSvc.appState.itemDetail = false;
+					appState.itemDetail = false;
 				};
 			}
 

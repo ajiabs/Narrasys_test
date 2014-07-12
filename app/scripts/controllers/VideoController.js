@@ -7,7 +7,7 @@
 // TODO watch for stall/buffering events and tell timeline to wait until video is ready again?
 
 angular.module('com.inthetelling.player')
-	.controller('VideoController', function($q, $scope, $timeout, $window, $document, modelSvc, timelineSvc) {
+	.controller('VideoController', function($q, $scope, $timeout, $window, $document, appState, timelineSvc) {
 
 		console.log("videoController instantiate");
 
@@ -49,7 +49,7 @@ angular.module('com.inthetelling.player')
 				$scope.initHTML5Video();
 			}
 			timelineSvc.registerVideo($scope);
-			modelSvc.appState.videoType = $scope.videoType;
+			appState.videoType = $scope.videoType;
 		};
 
 		$scope.initYoutube = function() {
@@ -138,13 +138,13 @@ angular.module('com.inthetelling.player')
 		$scope.pause = function() {
 			// console.log("VIDEO PAUSE");
 			if ($scope.videoType === 'youtube') {
-				$scope.YTPlayer.seekTo(modelSvc.appState.time, true);
+				$scope.YTPlayer.seekTo(appState.time, true);
 				$scope.YTPlayer.pauseVideo();
 			} else {
 				$scope.videoNode.pause();
 
 				try {
-					$scope.videoNode.currentTime = modelSvc.appState.time; // in case t has drifted
+					$scope.videoNode.currentTime = appState.time; // in case t has drifted
 				} catch(e) {
 					// this is harmless when it fails; because it can't be out of synch if it doesn't yet exist
 				}
@@ -157,7 +157,7 @@ angular.module('com.inthetelling.player')
 			try {
 				if ($scope.videoType === 'youtube') {
 					$scope.YTPlayer.seekTo(t, true);
-					if (modelSvc.appState.timelineState === 'paused') {
+					if (appState.timelineState === 'paused') {
 						$scope.pause(); // youtube autoplays on seek.
 					}
 				} else {

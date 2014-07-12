@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.player')
-	.directive('ittEpisode', function(modelSvc, analyticsSvc) {
+	.directive('ittEpisode', function(analyticsSvc) {
 		return {
 			restrict: 'A',
 			replace: true,

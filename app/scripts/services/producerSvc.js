@@ -1,6 +1,5 @@
 'use strict';
 
-
 // TODO for writing to API
 
 // TESTING:
@@ -17,7 +16,7 @@
 
 
 angular.module('com.inthetelling.player')
-	.factory('producerSvc', function($q, $http, $routeParams, $timeout, config, authSvc, modelSvc) { // may not need all of those
+	.factory('producerSvc', function($q, $http, $routeParams, $timeout, config) {
 		var svc = {};
 
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.player')
-	.controller('TimelineController', function($scope, timelineSvc, modelSvc) {
+	.controller('TimelineController', function($scope, timelineSvc, modelSvc, appState) {
 
 		$scope.play = timelineSvc.play;
 		$scope.pause = timelineSvc.pause;
@@ -11,7 +11,7 @@ angular.module('com.inthetelling.player')
 		};
 
 		$scope.markerPercent = function(t) {
-			return t / modelSvc.appState.duration * 100;
+			return t / appState.duration * 100;
 		};
 
 		// Yeah, this is a little odd.  Letting timelineSvc manage all video-related functions,
@@ -41,7 +41,7 @@ angular.module('com.inthetelling.player')
 		$scope.$watch(function() {
 			return isInFullscreenMode();
 		}, function(newVal) {
-			modelSvc.appState.isInFullscreenMode = newVal;
+			appState.isInFullscreenMode = newVal;
 		});
 
 		var exitFullscreen = function() {

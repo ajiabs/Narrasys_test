@@ -1,7 +1,9 @@
 'use strict';
 
+/* WIP for Producer */
+
 angular.module('com.inthetelling.player')
-	.directive('ittItemEditor', function(modelSvc) {
+	.directive('ittItemEditor', function(modelSvc, appState) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -39,7 +41,7 @@ angular.module('com.inthetelling.player')
 					//TODO need to update timeline if event start/end times have changed
 
 
-					modelSvc.appState.editing = false;
+					appState.editing = false;
 					// console.log("TODO: send item data to API for storage", scope.item);
 					// TODO: also update timeline for start/end time changes
 					//modelSvc
@@ -50,13 +52,13 @@ angular.module('com.inthetelling.player')
 					angular.forEach([scope.item.customTransition, scope.item.customTypography, scope.item.customColor, scope.item.customTimestamp], function(style) {
 						if (style) {
 							scope.item.styles.push(style);
-						};
+						}
 					});
 					scope.item.styleCss = scope.item.styles.join(" ");
 				};
 
 				scope.cancelEdit = function() {
-					modelSvc.appState.editing = false;
+					appState.editing = false;
 				};
 
 			},

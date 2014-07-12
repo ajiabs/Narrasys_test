@@ -1,7 +1,7 @@
 'use strict';
 
 /* 
-to throw errors:
+to throw explicit errors:
 		errorSvc.error({exception data structure:"TO BE DEFINED"},"Cause: ALL MESSED UP");
 */
 
@@ -32,9 +32,9 @@ angular.module('com.inthetelling.player')
 		return svc;
 	})
 
-.controller('ErrorController', function($scope, $rootScope, errorSvc, modelSvc) {
+.controller('ErrorController', function($scope, $rootScope, errorSvc, appState) {
 	$scope.errors = errorSvc.errors;
-	$scope.user = modelSvc.appState.user;
+	$scope.user = appState.user;
 
 	$scope.dismiss = function(error) {
 		console.log(error, $scope.errors);

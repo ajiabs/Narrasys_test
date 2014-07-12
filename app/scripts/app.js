@@ -100,7 +100,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize']
 				return function(exception, cause) {
 					$delegate(exception, cause); // Calls the original $exceptionHandler.
 					var errorSvc = $injector.get("errorSvc"); // have to use injector to avoid circular refs
-					errorSvc.error(exception, cause); // this is the only non-boilerplate code in this whole thing
+					errorSvc.error(exception, cause); // <-- this is the only non-boilerplate code in this whole thing
 				};
 			}
 		]);

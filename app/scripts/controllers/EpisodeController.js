@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('com.inthetelling.player')
-	.controller('EpisodeController', function($scope, modelSvc, $routeParams) {
+	.controller('EpisodeController', function($scope, $routeParams, modelSvc, appState) {
 		console.log('EpisodeController');
 
-		$scope.episode = modelSvc.episode(modelSvc.appState.episodeId);
-		$scope.appState = modelSvc.appState;
+		$scope.episode = modelSvc.episode(appState.episodeId);
+		$scope.appState = appState;
 
 
 	});

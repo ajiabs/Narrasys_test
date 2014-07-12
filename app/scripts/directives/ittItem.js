@@ -7,7 +7,7 @@ so they get logged properly: don't draw plain hrefs
 
 
 angular.module('com.inthetelling.player')
-	.directive('ittItem', function($http, $timeout, config, modelSvc, analyticsSvc, timelineSvc) {
+	.directive('ittItem', function($http, $timeout, config, appState, analyticsSvc, timelineSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -63,7 +63,7 @@ angular.module('com.inthetelling.player')
 						// other achievements
 
 						// Don't show this to guest users
-						var userData = modelSvc.appState.user;
+						var userData = appState.user;
 
 						if (userData.roles.length && userData.roles[0] !== 'guest') {
 							scope.plugin.eligibleForBadges = true;
@@ -122,14 +122,14 @@ angular.module('com.inthetelling.player')
 						} else {
 							// otherwise pop a modal:
 							timelineSvc.pause();
-							modelSvc.appState.itemDetail = scope.item;
+							appState.itemDetail = scope.item;
 						}
 					}
 				};
 
 				scope.forceModal = function() {
 					timelineSvc.pause();
-					modelSvc.appState.itemDetail = scope.item;
+					appState.itemDetail = scope.item;
 				};
 
 				scope.outgoingLink = function(url) {

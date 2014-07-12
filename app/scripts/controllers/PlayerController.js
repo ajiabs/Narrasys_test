@@ -3,21 +3,21 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.player')
-	.controller('PlayerController', function($scope, $rootScope, $routeParams, $timeout, $interval, dataSvc, modelSvc, timelineSvc, analyticsSvc) {
+	.controller('PlayerController', function($scope, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc) {
 		console.log("playerController", $scope);
 
 		$scope.viewMode = function(newMode) {
-			modelSvc.appState.viewMode = newMode;
+			appState.viewMode = newMode;
 			analyticsSvc.captureEpisodeActivity("modeChange", {
 				"mode": newMode
 			});
 
 			//Autoscroll only in explore mode for now
 			if (newMode === 'review') {
-				modelSvc.appState.autoscroll = true;
+				appState.autoscroll = true;
 				$timeout(handleAutoscroll); // timeout is for edge case where user loads review mode first, before handleAutoscroll is defined below...
 			} else {
-				modelSvc.appState.autoscroll = false;
+				appState.autoscroll = false;
 			}
 		};
 
@@ -31,19 +31,19 @@ angular.module('com.inthetelling.player')
 
 		// TEMPORARY
 		if ($routeParams.producer) {
-			modelSvc.appState.producer = true;
+			appState.producer = true;
 		}
 
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		modelSvc.appState.episodeId = $routeParams.epId;
-		modelSvc.addLandingScreen(modelSvc.appState.episodeId);
-		dataSvc.getEpisode(modelSvc.appState.episodeId);
+		appState.episodeId = $routeParams.epId;
+		modelSvc.addLandingScreen(appState.episodeId);
+		dataSvc.getEpisode(appState.episodeId);
 
 		// Watch for the first load of the episode data; init the master asset and page title when found
 		var episodeWatcher = $scope.$watch(function() {
-			return modelSvc.episodes[modelSvc.appState.episodeId].title;
+			return modelSvc.episodes[appState.episodeId].title;
 		}, function(a, b) {
 			if (a !== b) {
 				document.title = "STORY: " + a;
@@ -54,18 +54,18 @@ angular.module('com.inthetelling.player')
 		// Watch for the first load of the episode items; update the timeline when found
 		$scope.loading = true;
 		var eventsWatcher = $scope.$watch(function() {
-			return modelSvc.episodes[modelSvc.appState.episodeId].items;
+			return modelSvc.episodes[appState.episodeId].items;
 		}, function(a, b) {
 			if (a) {
-				timelineSvc.init(modelSvc.appState.episodeId);
+				timelineSvc.init(appState.episodeId);
 				$scope.loading = false;
 				eventsWatcher(); // stop watching
 			}
 		});
 
-		$scope.episode = modelSvc.episode(modelSvc.appState.episodeId);
-		$scope.appState = modelSvc.appState;
-		$scope.show = modelSvc.appState.show; // yes, slightly redundant, but makes templates a bit easier to read
+		$scope.episode = modelSvc.episode(appState.episodeId);
+		$scope.appState = appState;
+		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -77,17 +77,17 @@ angular.module('com.inthetelling.player')
 		// TODO: fade toolbars when tap outside, or when hit esc key
 		// TODO: never fades on touchscreen... fix that
 
-		modelSvc.appState.videoControlsActive = false;
+		appState.videoControlsActive = false;
 		var keepControls;
 		var controlTimer;
 
 		$scope.$watch(function() {
-			return modelSvc.appState.videoControlsActive;
+			return appState.videoControlsActive;
 		}, function(isActive, wasActive) {
 			if (isActive) {
 				controlTimer = $timeout(function() {
 					if (!keepControls) {
-						modelSvc.appState.videoControlsActive = false;
+						appState.videoControlsActive = false;
 					}
 				}, 5000);
 			}
@@ -96,8 +96,8 @@ angular.module('com.inthetelling.player')
 		$scope.showControls = function() {
 			console.log("showControls");
 			$timeout.cancel(controlTimer);
-			modelSvc.appState.videoControlsActive = true;
-			if (modelSvc.appState.isTouchDevice) {
+			appState.videoControlsActive = true;
+			if (appState.isTouchDevice) {
 				$scope.allowControlsExit(); // otherwise it sticks permanently on touchscreens. TODO find a better way
 			}
 		};
@@ -112,8 +112,8 @@ angular.module('com.inthetelling.player')
 			keepControls = false;
 			$timeout.cancel(controlTimer);
 			controlTimer = $timeout(function() {
-				if (!modelSvc.appState.show.navPanel) {
-					modelSvc.appState.videoControlsActive = false;
+				if (!appState.show.navPanel) {
+					appState.videoControlsActive = false;
 				}
 			}, 5000);
 		};
@@ -123,12 +123,12 @@ angular.module('com.inthetelling.player')
 
 		// Misc toolbars too small to rate their own controllers
 		$scope.toggleSearchPanel = function() {
-			modelSvc.appState.show.searchPanel = !modelSvc.appState.show.searchPanel;
+			appState.show.searchPanel = !appState.show.searchPanel;
 		};
 		$scope.toggleNavPanel = function() {
 			// console.log("toggleNavPanel");
 			timelineSvc.pause();
-			modelSvc.appState.show.navPanel = !modelSvc.appState.show.navPanel;
+			appState.show.navPanel = !appState.show.navPanel;
 		};
 		$scope.seek = function(t) {
 			timelineSvc.seek(t, "sceneMenu");
@@ -151,7 +151,7 @@ angular.module('com.inthetelling.player')
 		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
 		$rootScope.$on("video.firstPlay", function() {
 			if (localStorageAllowed && !(localStorage.getItem("noMoreHelp"))) {
-				modelSvc.appState.show.helpPanel = true;
+				appState.show.helpPanel = true;
 			} else {
 				timelineSvc.play();
 			}
@@ -159,13 +159,13 @@ angular.module('com.inthetelling.player')
 
 
 		$scope.hidePanels = function() {
-			modelSvc.appState.show.helpPanel = false;
-			modelSvc.appState.show.navPanel = false;
-			modelSvc.appState.show.searchPanel = false;
+			appState.show.helpPanel = false;
+			appState.show.navPanel = false;
+			appState.show.searchPanel = false;
 		};
 
 		$scope.noMoreHelp = function() {
-			modelSvc.appState.show.helpPanel = false;
+			appState.show.helpPanel = false;
 			localStorage.setItem("noMoreHelp", "1");
 			timelineSvc.play();
 		};
@@ -181,8 +181,8 @@ angular.module('com.inthetelling.player')
 		// isn't it weird how we read the scrollTop from (window), but have to animate it on (body,html)?
 		// But that only applies on iDevices; elsewhere #CONTAINER is what's scrolling 
 		// (because we need it that way for fullscreen mode)
-		var autoscrollableNode = (modelSvc.appState.isTouchDevice) ? $(window) : $('#CONTAINER');
-		var animatableScrollNode = (modelSvc.appState.isTouchDevice) ? $('html') : $('#CONTAINER');
+		var autoscrollableNode = (appState.isTouchDevice) ? $(window) : $('#CONTAINER');
+		var animatableScrollNode = (appState.isTouchDevice) ? $('html') : $('#CONTAINER');
 
 		var startScrollWatcher = function() {
 			// console.log("startScrollWatcher");
@@ -192,7 +192,7 @@ angular.module('com.inthetelling.player')
 				// console.log("user scrolled");
 				animatableScrollNode.stop();
 				stopScrollWatcher();
-				modelSvc.appState.autoscrollBlocked = true;
+				appState.autoscrollBlocked = true;
 			});
 			handleAutoscroll();
 		};
@@ -207,8 +207,8 @@ angular.module('com.inthetelling.player')
 
 		$scope.enableAutoscroll = function() {
 			console.log("Enabling autoscroll");
-			if (modelSvc.appState.autoscrollBlocked) {
-				modelSvc.appState.autoscrollBlocked = false;
+			if (appState.autoscrollBlocked) {
+				appState.autoscrollBlocked = false;
 				startScrollWatcher();
 			}
 		};
@@ -219,7 +219,7 @@ angular.module('com.inthetelling.player')
 			// if autoscroll is true and autoscrollBlocked is false,
 			// find the topmost visible current item and scroll to put it in the viewport.
 			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
-			if (modelSvc.appState.autoscrollBlocked || !modelSvc.appState.autoscroll) {
+			if (appState.autoscrollBlocked || !appState.autoscroll) {
 				return;
 			}
 
@@ -266,10 +266,10 @@ angular.module('com.inthetelling.player')
 
 		$rootScope.$on("userKeypress.ESC", function() {
 			// dismiss ALL THE THINGS
-			modelSvc.appState.show.searchPanel = false;
-			modelSvc.appState.show.helpPanel = false;
-			modelSvc.appState.show.navPanel = false;
-			modelSvc.appState.itemDetail = false;
+			appState.show.searchPanel = false;
+			appState.show.helpPanel = false;
+			appState.show.navPanel = false;
+			appState.itemDetail = false;
 		});
 
 

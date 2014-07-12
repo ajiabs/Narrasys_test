@@ -18,7 +18,7 @@ stepEvent() runs on a slower interval, watches the current video's reported curr
             and handles any events since it was last called.  If one of them is
             a stop event, it will 'rewind' the timeline to that time (and stop handling events past it.)
 
-modelSvc.appState.time is the current playhead position
+appState.time is the current playhead position
 timeMultiplier is the playback speed. No negative values or zero.
 
 
@@ -32,7 +32,7 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 */
 
 angular.module('com.inthetelling.player')
-	.factory('timelineSvc', function($timeout, $interval, $rootScope, modelSvc, analyticsSvc) {
+	.factory('timelineSvc', function($timeout, $interval, $rootScope, modelSvc, appState, analyticsSvc) {
 
 		var svc = {};
 
@@ -50,7 +50,7 @@ angular.module('com.inthetelling.player')
 			if (videoScope !== undefined) {
 				// Route changes weren't always seeking to the correct time; this forces it on next $digest:
 				$timeout(function() {
-					svc.seek(modelSvc.appState.time);
+					svc.seek(appState.time);
 				});
 			}
 			videoScope = newVideoScope;
@@ -59,15 +59,15 @@ angular.module('com.inthetelling.player')
 		svc.setSpeed = function(speed) {
 			// console.log("timelineSvc.setSpeed");
 			timeMultiplier = speed;
-			modelSvc.appState.timeMultiplier = timeMultiplier; // here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
+			appState.timeMultiplier = timeMultiplier; // here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
 			videoScope.setSpeed(speed);
 		};
 
 		svc.play = function() {
 			// check if we need to show help menu instead; if so, don't play the video:
 			// (WARN this is a bit of a sloppy mixture of concerns.)
-			if (!modelSvc.appState.hasBeenPlayed) {
-				modelSvc.appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
+			if (!appState.hasBeenPlayed) {
+				appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
 				$rootScope.$emit("video.firstPlay");
 				return; // playerController needs to catch this and either show the help pane or trigger play again 
 			}
@@ -76,11 +76,11 @@ angular.module('com.inthetelling.player')
 				return; // we're already playing
 			}
 			// console.log("timelineSvc.play");
-			modelSvc.appState.videoControlsActive = true;
-			modelSvc.appState.show.navPanel = false;
-			modelSvc.appState.timelineState = "buffering";
+			appState.videoControlsActive = true;
+			appState.show.navPanel = false;
+			appState.timelineState = "buffering";
 			videoScope.play().then(function() {
-				modelSvc.appState.timelineState = "playing";
+				appState.timelineState = "playing";
 				_tick();
 				clock = $interval(_tick, 20);
 				startEventClock();
@@ -91,14 +91,14 @@ angular.module('com.inthetelling.player')
 
 		svc.pause = function(n) {
 			// console.log("timelineSvc.pause");
-			modelSvc.appState.videoControlsActive = true;
+			appState.videoControlsActive = true;
 			$interval.cancel(clock);
 			stopEventClock();
 
 			clock = undefined;
 			lastTick = undefined;
 
-			modelSvc.appState.timelineState = "paused";
+			appState.timelineState = "paused";
 			videoScope.pause();
 			if (n) {
 				$timeout(svc.play, (n * 1000 * Math.abs(timeMultiplier)));
@@ -109,7 +109,7 @@ angular.module('com.inthetelling.player')
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function(t, method, eventID) {
 			// console.log("timelineSvc.seek ", t);
-			if (!videoScope || modelSvc.appState.duration === 0) {
+			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
 				//console.log('duration 0; poll');
@@ -120,19 +120,19 @@ angular.module('com.inthetelling.player')
 			}
 
 			stopEventClock();
-			var oldT = modelSvc.appState.time;
+			var oldT = appState.time;
 			t = parseTime(t);
 			if (t < 0) {
 				t = 0;
 			}
-			if (t > modelSvc.appState.duration) {
-				t = modelSvc.appState.duration;
+			if (t > appState.duration) {
+				t = appState.duration;
 			}
 
-			modelSvc.appState.time = t;
+			appState.time = t;
 			svc.updateEventStates();
 			videoScope.seek(t);
-			if (modelSvc.appState.timelineState === 'playing') {
+			if (appState.timelineState === 'playing') {
 				// let svc.play take care of the lag before video starts the clock
 				svc.pause();
 				svc.play();
@@ -159,11 +159,11 @@ angular.module('com.inthetelling.player')
 		// Also because there isn't an obviously better place for it.  If this is dumb, TODO: be less dumb
 
 		svc.toggleMute = function() {
-			modelSvc.appState.muted = !modelSvc.appState.muted;
+			appState.muted = !appState.muted;
 			videoScope.toggleMute();
 		};
 		svc.setVolume = function(vol) { // 0..100
-			modelSvc.appState.volume = vol;
+			appState.volume = vol;
 			videoScope.setVolume(vol);
 		};
 
@@ -192,8 +192,8 @@ angular.module('com.inthetelling.player')
 		resetEventClock();
 
 		var startEventClock = function() {
-			eventClockData.lastTimelineTime = modelSvc.appState.time;
-			eventClockData.lastVideoTime = modelSvc.appState.time; // TODO this should be relative to episode, not timeline
+			eventClockData.lastTimelineTime = appState.time;
+			eventClockData.lastVideoTime = appState.time; // TODO this should be relative to episode, not timeline
 			stepEvent();
 		};
 
@@ -204,11 +204,11 @@ angular.module('com.inthetelling.player')
 
 		var stepEvent = function() {
 			$timeout.cancel(eventTimeout);
-			if (modelSvc.appState.timelineState !== 'playing') {
+			if (appState.timelineState !== 'playing') {
 				return;
 			}
 			var vidTime = videoScope.currentTime();
-			var ourTime = modelSvc.appState.time;
+			var ourTime = appState.time;
 			// console.log("stepEvent handling events from ", eventClockData.lastTimelineTime, " to ", ourTime);
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
@@ -241,7 +241,7 @@ angular.module('com.inthetelling.player')
 			eventClockData.lastVideoTime = vidTime;
 			eventClockData.lastTimelineTime = ourTime;
 
-			if (nextEvent && modelSvc.appState.timelineState === "playing") { // need to check timelineState in case there were stop events above
+			if (nextEvent && appState.timelineState === "playing") { // need to check timelineState in case there were stop events above
 				// Find out how long until the next event, and aim for just a bit after it.
 				var timeToNextEvent = (svc.timelineEvents[i].t - ourTime) * 1000;
 				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
@@ -253,7 +253,7 @@ angular.module('com.inthetelling.player')
 			if (event.id === 'timeline') {
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
-					modelSvc.appState.time = event.t;
+					appState.time = event.t;
 					svc.pause(); // TODO handle pause with duration too
 				} else {
 					svc.play();
@@ -274,17 +274,17 @@ angular.module('com.inthetelling.player')
 		var _tick = function() {
 			var thisTick = new Date();
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
-			var newTime = parseFloat(modelSvc.appState.time) + (delta / 1000 * timeMultiplier);
+			var newTime = parseFloat(appState.time) + (delta / 1000 * timeMultiplier);
 			// check for out of bounds:
 			if (newTime < 0) {
 				newTime = 0;
 				svc.pause();
 			}
-			if (newTime > modelSvc.appState.duration) {
-				newTime = modelSvc.appState.duration;
+			if (newTime > appState.duration) {
+				newTime = appState.duration;
 				svc.pause();
 			}
-			modelSvc.appState.time = newTime;
+			appState.time = newTime;
 			lastTick = thisTick;
 		};
 
@@ -294,8 +294,8 @@ angular.module('com.inthetelling.player')
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
 			timeMultiplier = 1;
-			modelSvc.appState.duration = 0;
-			modelSvc.appState.timelineState = 'paused';
+			appState.duration = 0;
+			appState.timelineState = 'paused';
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
 		};
 
@@ -388,7 +388,7 @@ angular.module('com.inthetelling.player')
 			// }
 
 			// Timeline duration is t of the last timelineEvent
-			modelSvc.appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
+			appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
 
 			svc.updateEventStates();
 
@@ -401,7 +401,7 @@ angular.module('com.inthetelling.player')
 
 			// DO NOT check event start and end times directly; they're relative to the episode, not the timeline!
 			// instead preset everything to the future, then scan the timeline events up to now and set state based on enter/exit events per the timeline
-			var now = modelSvc.appState.time;
+			var now = appState.time;
 			// put everything in the future state:
 			angular.forEach(svc.timelineEvents, function(tE) {
 				if (tE.id !== "timeline") {

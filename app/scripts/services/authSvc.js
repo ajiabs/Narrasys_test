@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.player')
-	.factory('authSvc', function(config, $routeParams, $http, $q, $location, modelSvc) {
+	.factory('authSvc', function(config, $routeParams, $http, $q, $location, appState) {
 		console.log('authSvc factory');
 		var svc = {};
 		svc.roles = [];
@@ -32,7 +32,7 @@ angular.module('com.inthetelling.player')
 				if (localStorage && localStorage.storyAuth) {
 					console.log("Getting access from stored token");
 					var storedData = angular.fromJson(localStorage.storyAuth);
-					modelSvc.appState.user = storedData;
+					appState.user = storedData;
 					$http.defaults.headers.common.Authorization = 'Token token="' + storedData.access_token + '"';
 					defer.resolve();
 				} else {
@@ -82,7 +82,7 @@ angular.module('com.inthetelling.player')
 				.success(function(data, status) {
 
 					// Got user data.  Cache it in localStorage and appState
-					modelSvc.appState.user = data;
+					appState.user = data;
 					try {
 						localStorage.setItem("storyAuth", JSON.stringify(data));
 					} catch (e) {}
