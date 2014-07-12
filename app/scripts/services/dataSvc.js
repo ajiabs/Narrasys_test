@@ -275,9 +275,9 @@ angular.module('com.inthetelling.player')
 				"master_asset_id": "masterasset",
 				"title": "Test Episode",
 				"status": "Published",
-				"templateUrl": "templates/episode/episode.html",
+				"templateUrl": "templates/episode/eliterate.html",
 				"styles": [
-					"typographySwiss", "", ""
+					"", "", ""
 				]
 			});
 			modelSvc.cache("asset", {
@@ -388,8 +388,8 @@ angular.module('com.inthetelling.player')
 			for (i = 0; i < 10; i++) {
 				var annotation = angular.copy(annotationStub);
 				annotation._id = "annotation-" + i;
-				annotation.start_time = i * 3;
-				annotation.end_time = i * 3 + 3;
+				annotation.start_time = i * 6;
+				annotation.end_time = i * 6 + 3;
 				annotation.templateUrl = annotationTemplates[i % annotationTemplates.length];
 				modelSvc.cache("event", annotation);
 			}

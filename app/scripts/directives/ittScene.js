@@ -36,8 +36,9 @@ angular.module('com.inthetelling.player')
 						element.find('.matchVideoHeight:visible').each(function() {
 							$(this).css("height", element.find('.videoMagnet img').height());
 						});
+						var availableViewportHeight = angular.element(window).height() - $('.footer').height() - $('#CONTAINER').scrollTop() - 45; /* TOOLBAR HEIGHT */
 						element.find('.stretchToViewport:visible').each(function() {
-							$(this).css("min-height", (angular.element(window).height() - $(this).offset().top));
+							$(this).css("min-height", (availableViewportHeight - $(this).offset().top));
 						});
 					}
 

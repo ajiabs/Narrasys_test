@@ -480,7 +480,7 @@ angular.module('com.inthetelling.player')
 			}
 
 			// HACK some platform detection here.
-			// var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 			// Safari should prefer m3u8 to mpeg4.  TODO add other browsers to this when they support m3u8
 			// TODO BUG: disabling this for now; m3u8 is causing problems
 
@@ -489,9 +489,9 @@ angular.module('com.inthetelling.player')
 			// }
 			// delete videoObject.m3u8;
 
-			// TODO: youtube ought to work on ipad.  Fairly certain the "user has to explicityl initiate the video"
-			// thing is biting us here.
-			if (svc.appState.isTouchDevice) {
+			// TODO: youtube is still throwing errors in desktop safari and in ipad.  Disable for now
+
+			if (svc.appState.isTouchDevice || isSafari) {
 				videoObject.youtube = undefined;
 			}
 
