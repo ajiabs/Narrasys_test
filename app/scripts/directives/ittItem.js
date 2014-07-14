@@ -25,6 +25,12 @@ angular.module('com.inthetelling.player')
 			link: function(scope, element, attrs) {
 				// console.log('ittItem', scope, element, attrs);
 
+
+				// Slight hack to simplify css for image-fill:
+				if (scope.item.styleCss.match(/fill|contain|cover/)) {
+					scope.item.backgroundImage = "background-image: url('" + scope.item.asset.url + "');";
+				}
+
 				// TODO plugins should each be their own directive!
 				if (scope.item.data) {
 					scope.plugin = scope.item.data._plugin;
