@@ -328,3 +328,8 @@ Can no longer try to seek to negative times in iOS
 error handler tweak
 video now displays 'buffering' icon when necessary
 
+------------------------------------------------
+Changes in v4.alpha.013:
+tweaked footer height to make it possible to click the footer links without the toolbar getting in the way
+Added Privacy Policy
+
