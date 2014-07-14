@@ -3,8 +3,7 @@
 BUG for bill: episode_user_metrics is sometimes throwing permissions errors, which then kills the user's permission for everything else
 
 
-
-
+Disabling fullscreen mode.  Too much weird behavior for too little payoff.
 
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----

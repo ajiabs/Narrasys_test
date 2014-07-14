@@ -333,3 +333,11 @@ Changes in v4.alpha.013:
 tweaked footer height to make it possible to click the footer links without the toolbar getting in the way
 Added Privacy Policy
 
+------------------------------------------------
+Changes in v4.alpha.014:
+fill images now default to tl rather than "fill"
+Disabling fullscreen mode.  Too much weird browser-specific behavior, too little payoff
+correcting sidebar and burst margins for panes with only one side bursting
+improved error handler
+bug fix for next/prev scene buttons (they're not always sorted by time in the database)
+
