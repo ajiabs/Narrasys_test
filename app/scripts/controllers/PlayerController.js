@@ -14,7 +14,9 @@ angular.module('com.inthetelling.player')
 
 			//Autoscroll only in explore mode for now
 			if (newMode === 'review') {
+				// console.log("unblocking autoscroll");
 				appState.autoscroll = true;
+				appState.autoscrollBlocked = false;
 				$timeout(handleAutoscroll); // timeout is for edge case where user loads review mode first, before handleAutoscroll is defined below...
 			} else {
 				appState.autoscroll = false;
@@ -29,10 +31,9 @@ angular.module('com.inthetelling.player')
 			timelineSvc.seek($routeParams.t, "URLParameter");
 		}
 
-		// TEMPORARY
-		if ($routeParams.producer) {
-			appState.producer = true;
-		}
+		// if ($routeParams.producer) {
+		// 	appState.producer = true;
+		// }
 
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -179,10 +180,11 @@ angular.module('com.inthetelling.player')
 		// (Those are in modelSvc instead of $scope becuase in future we'll want scenes to be able to autoscroll too)
 
 		// isn't it weird how we read the scrollTop from (window), but have to animate it on (body,html)?
-		// But that only applies on iDevices; elsewhere #CONTAINER is what's scrolling 
-		// (because we need it that way for fullscreen mode)
-		var autoscrollableNode = (appState.isTouchDevice) ? $(window) : $('#CONTAINER');
-		var animatableScrollNode = (appState.isTouchDevice) ? $('html') : $('#CONTAINER');
+
+		// NOTE: When we had the #CONTAINER position:fixed hack for fullscreen safari, this needed to be configurable to point to
+		// #CONTAINER instead of window.  Have removed that, but leaving this here in case we bring it back:
+		var autoscrollableNode = $(window);
+		var animatableScrollNode = $('html,body');
 
 		var startScrollWatcher = function() {
 			// console.log("startScrollWatcher");
@@ -194,7 +196,7 @@ angular.module('com.inthetelling.player')
 				stopScrollWatcher();
 				appState.autoscrollBlocked = true;
 			});
-			handleAutoscroll();
+			// handleAutoscroll();
 		};
 		var autoscrollTimer;
 
@@ -251,12 +253,13 @@ angular.module('com.inthetelling.player')
 			stopScrollWatcher();
 			animatableScrollNode.animate({
 				"scrollTop": top - slop
-			}, 1500, "swing", function() {
-				// console.log("Scrolling complete");
-				$timeout(function() {
-					startScrollWatcher();
-				}, 100); // allow extra time; iPad was still capturing the tail end of the animated scroll
-			});
+			}, 1500);
+
+			// Don't use jQuery's animation callback; this would get called twice because animatableScrollNode is two nodes...
+			$timeout(function() {
+				startScrollWatcher();
+			}, 1750); // allow extra time; iPad was still capturing the tail end of the animated scroll
+
 		};
 
 		startScrollWatcher();

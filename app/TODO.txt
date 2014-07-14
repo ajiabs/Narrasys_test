@@ -2,14 +2,10 @@
 
 BUG for bill: episode_user_metrics is sometimes throwing permissions errors, which then kills the user's permission for everything else
 
-Bugs:
-Chrome has autoscroll turned off when you first enter review mode
-Chrome: If user tries to scroll during an autoscroll animation, the autoscroll isn't relinquishing control until after the animation is done
-IE: isn't recognizing when user hits "ESC" key to close a modal
-IE: footer logo has wrong aspect ratio 
 
-Compare all scene and item templates to existing episodes for backwards compatibility....
-in particular test link-youtube, embed-youtube, and link-embed
+
+
+
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 

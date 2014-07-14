@@ -212,7 +212,7 @@ May re-enable this after the styling is done
 			dist: {
 				options: {
 					removeCommentsFromCDATA: true,
-					//collapseWhitespace: true, // https://github.com/yeoman/grunt-usemin/issues/44
+					//]collapseWhitespace: true, // https://github.com/yeoman/grunt-usemin/issues/44
 					collapseBooleanAttributes: true,
 					removeAttributeQuotes: true,
 					removeRedundantAttributes: true,

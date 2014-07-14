@@ -48,7 +48,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize']
 	// globally emit rootscope event for certain keypresses:
 	$(document).on("keypress", function(e) {
 		if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-			if (e.which === 0) {
+			if (e.keyCode === 27) {
 				$rootScope.$emit("userKeypress.ESC");
 				e.preventDefault();
 			}
@@ -58,7 +58,9 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize']
 			}
 		}
 	});
+
 })
+
 
 // Configure x-domain resource whitelist
 .config(function($sceDelegateProvider) {

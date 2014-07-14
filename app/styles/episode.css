@@ -10,9 +10,15 @@
 	position:relative;
 	color:#FFF;
 }
+/* IE9-specific hack: */
+@media all and (min-width:0\0) and (min-resolution: .001dpcm) {
+	.branding {
+		background-color:#EEE;
+	}
+	.video .fgLayer {display:none;}
+}
 .branding img {
-	width:100%;
-	max-height:72px;
+	height:72px;
 }
 .branding .logo {
 	width:20%;
@@ -25,13 +31,14 @@
 .branding a.itt {
 	right:5%;
 	bottom:60px;
+	text-align: right;
 }
 .copyright {
 	position:absolute;
 	bottom: 10px;
 	left: 10px;
 	font-size: 0.76em;
-	text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
 }
 .copyright a {
 	color:#FFF !important;
