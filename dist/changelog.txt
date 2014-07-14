@@ -345,3 +345,8 @@ bug fix for next/prev scene buttons (they're not always sorted by time in the da
 Changes in v4.alpha.015:
 fixed rounding error in video magnet
 
+------------------------------------------------
+Changes in v4.alpha.016:
+better re-init of timeline and appstate when switching episodes
+item.backgroundImage was embedded incorrectly
+
