@@ -38,6 +38,7 @@
 .sidebar items always appear smaller than usual
 
 TODO give panes with both sidebars narrower margins than those with only one or the other
+TODO there's probably a less counterintuitive way of handling sidebar widths than the weird math on these negative margins
 */
  .allowSidebars.hasLeftSidebar {
 	padding-left: 30%;
@@ -54,25 +55,51 @@ TODO give panes with both sidebars narrower margins than those with only one or 
 .hasRightSidebar .sidebarR .displayTime {
 	display:none
 }
-/* - */
+
+/* has only one sidebar: */
 .allowSidebars.hasLeftSidebar .burstL, 
 .allowSidebars.hasLeftSidebar .burst {
 	clear:left;
-	margin-left: -70%;
+	margin-left: -45%;
 }
 .allowSidebars.hasRightSidebar .burstR, 
 .allowSidebars.hasRightSidebar .burst {
 	clear:right;
-	margin-right: -70%;
+	margin-right: -45%;
 }
 /* - */
 .allowSidebars.hasLeftSidebar .sidebarL {
 	float: left;
 	clear:left;
+	margin-left: -45%;
+	width: 45%;
+}
+.allowSidebars.hasRightSidebar .sidebarR {
+	float: right;
+	clear:right;
+	margin-right: -45%;
+	width: 45%;
+}
+
+/* - has both sidebars: */
+.allowSidebars.hasLeftSidebar.hasRightSidebar .burstL, 
+.allowSidebars.hasLeftSidebar.hasRightSidebar .burst {
+	clear:left;
+	margin-left: -70%;
+}
+.allowSidebars.hasRightSidebar.hasLeftSidebar .burstR, 
+.allowSidebars.hasRightSidebar.hasLeftSidebar .burst {
+	clear:right;
+	margin-right: -70%;
+}
+/* - */
+.allowSidebars.hasLeftSidebar.hasRightSidebar .sidebarL {
+	float: left;
+	clear:left;
 	margin-left: -70%;
 	width: 70%;
 }
-.allowSidebars.hasRightSidebar .sidebarR {
+.allowSidebars.hasRightSidebar.hasLeftsidebar .sidebarR {
 	float: right;
 	clear:right;
 	margin-right: -70%;

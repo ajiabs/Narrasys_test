@@ -3,9 +3,6 @@
 BUG for bill: episode_user_metrics is sometimes throwing permissions errors, which then kills the user's permission for everything else
 
 
-52e2f891c9b71559a3000002, review mode item at 2:03 is not working
-
-
 
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
