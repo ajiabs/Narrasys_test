@@ -383,6 +383,10 @@ angular.module('com.inthetelling.player')
 				}
 			});
 
+			svc.markedEvents = svc.markedEvents.sort(function(a,b) {
+				return a.start_time - b.start_time;
+			});
+
 			// for (var i = 0; i < svc.timelineEvents.length; i++) {
 			// 	console.log(svc.timelineEvents[i].t, svc.timelineEvents[i].action);
 			// }
