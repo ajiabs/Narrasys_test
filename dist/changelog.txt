@@ -341,3 +341,7 @@ correcting sidebar and burst margins for panes with only one side bursting
 improved error handler
 bug fix for next/prev scene buttons (they're not always sorted by time in the database)
 
+------------------------------------------------
+Changes in v4.alpha.015:
+fixed rounding error in video magnet
+
