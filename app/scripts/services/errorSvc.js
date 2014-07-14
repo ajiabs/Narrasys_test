@@ -12,7 +12,7 @@ angular.module('com.inthetelling.player')
 		svc.errors = [];
 
 		svc.error = function(exception, cause) {
-			if (exception && exception.data && exception.data.error) {
+			if (exception && exception.data) {
 				// API errors go here:
 				svc.errors.push({
 					"exception": exception,

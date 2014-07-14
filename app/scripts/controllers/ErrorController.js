@@ -16,4 +16,10 @@ angular.module('com.inthetelling.player')
 		$scope.errors = ret;
 	};
 
+	/* TODO HACK this should be in authSvc */
+	$scope.resetAuth = function() {
+		localStorage.removeItem('storyAuth');
+		window.location.reload(true);
+	}
+
 });

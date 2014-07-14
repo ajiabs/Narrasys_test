@@ -44,7 +44,7 @@ angular.module('com.inthetelling.player')
 
 		var flusher = $interval(function() {
 			svc.flushActivityQueue();
-		}, 5000);
+		}, 10000);
 
 		// don't try to capture when running from local data:
 		if ($routeParams.local) {
