@@ -32,7 +32,6 @@ angular.module('com.inthetelling.player')
 				};
 
 				var moveToMagnet = function() {
-					// console.log("moveToMagnet");
 					$timeout(function() { // needs the timeout, otherwise endless digest loop
 						element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute");
 
@@ -49,12 +48,14 @@ angular.module('com.inthetelling.player')
 							element.offset(scope.magnet.offset());
 						}
 
-						if (Math.abs(diffW) > 2) {
+						if (Math.abs(diffW) > 4) {
 							element.width(element.width() + (diffW / 4));
 						} else {
 							element.width(scope.magnet.width());
 						}
 						element.height(scope.magnet.width() / aspectRatio);
+
+						
 					});
 				};
 
