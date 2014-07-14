@@ -72,8 +72,8 @@ angular.module('com.inthetelling.player')
 				return; // playerController needs to catch this and either show the help pane or trigger play again 
 			}
 
-			if (angular.isDefined(clock)) {
-				return; // we're already playing
+			if (appState.timelineState === 'playing') {
+				return;
 			}
 			// console.log("timelineSvc.play");
 			appState.videoControlsActive = true;
@@ -297,6 +297,8 @@ angular.module('com.inthetelling.player')
 			appState.duration = 0;
 			appState.timelineState = 'paused';
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
+			$interval.cancel(clock);
+			stopEventClock();
 		};
 
 

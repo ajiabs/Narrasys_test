@@ -38,6 +38,7 @@ angular.module('com.inthetelling.player')
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+		appState.init();
 		appState.episodeId = $routeParams.epId;
 		modelSvc.addLandingScreen(appState.episodeId);
 		dataSvc.getEpisode(appState.episodeId);

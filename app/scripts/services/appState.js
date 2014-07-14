@@ -1,54 +1,52 @@
 'use strict';
 
-/*  Stash for shared information, to save us a lot of $watching and $emitting. 
-    It's convenient.  Maybe -too- convenient.
+/*
+	Stash for shared information, to save us a lot of $watching and $emitting. 
+	It's convenient.  Maybe -too- convenient.
 */
 
 angular.module('com.inthetelling.player')
 	.factory('appState', function($interval, $filter, config) {
 
 
-		// Simplify inter-controller communicatio thusly:
-		var svc = {
+		// Simplify inter-controller communication thusly:
 
-			user: {}, // whatever authSvc gets back from getAccessToken
+		var svc = {};
 
-			episodeId: false, // ID of current episode
+		svc.init = function() {
+			svc.user = {};// whatever authSvc gets back from getAccessToken
+			svc.episodeId = false; // ID of current episode
+
 			/* jshint -W116 */
-			isFramed: (window.parent != window), // are we inside an iframe?  Don't use !== because IE8 gets it wrong
+			svc.isFramed = (window.parent != window); // are we inside an iframe?  Don't use !== because IE8 gets it wrong
 			/* jshint +W116 */
-			// TODO: The "correct" method below has too many false positives (IE I'm looking at you):
-			// isTouchDevice:  ('ontouchstart' in window),
-			isTouchDevice: (
-				navigator.platform.indexOf('iPad') > -1 ||
-				navigator.platform.indexOf('iPhone') > -1 ||
-				navigator.platform.indexOf('iPod') > -1 ||
-				navigator.userAgent.indexOf('Android') > -1),
-			windowWidth: 0,
-			windowHeight: 0,
 
-			viewMode: (angular.element(window).width() > 480) ? 'discover' : 'review', // default view mode
+			svc.isTouchDevice = (navigator.platform.match(/iPad|iPod|iPhone/) || navigator.userAgent.match(/Android/));
 
-			time: 0, // current playhead position (in seconds) relative to timeline NOT TO EPISODE!
-			timeMultiplier: 1, // sets player speed (0.5 = half speed, 2=double,etc)
-			duration: 0, // duration of timeline (in seconds)
-			timelineState: 'paused', // "playing" or "paused" (set by timelineSvc). Future: "locked" (by stop question or etc)
-			hasBeenPlayed: false, // set to true after first time the video plays (used so we can interrupt that first play with a helpful help)
-			volume: 100, // Audio for main video
-			muted: false, // audio for main video
-			hideCaptions: false, // visibility of "closed captions" in watch mode
-			show: {
+			svc.windowWidth = 0;
+			svc.windowHeight = 0;
+
+			svc.viewMode = (angular.element(window).width() > 480) ? 'discover' : 'review'; // default view mode
+
+			svc.time = 0; // current playhead position (in seconds) relative to timeline NOT TO EPISODE!
+			svc.timeMultiplier = 1; // sets player speed (0.5 = half speed; 2=double;etc)
+			svc.duration = 0; // duration of timeline (in seconds)
+			svc.timelineState = 'paused'; // "playing" or "paused" (set by timelineSvc). Future = "locked" (by stop question or etc)
+			svc.hasBeenPlayed = false; // set to true after first time the video plays (used so we can interrupt that first play with a helpful help)
+			svc.volume = 100; // Audio for main video
+			svc.muted = false; // audio for main video
+			svc.hideCaptions = false; // visibility of "closed captions" in watch mode
+			svc.show = {
 				searchPanel: false,
 				helpPanel: false,
 				navPanel: false
-			},
-			videoControlsActive: false, // whether bottom toolbar is visible
+			};
+			svc.videoControlsActive = false; // whether bottom toolbar is visible
+			svc.itemDetail = false; // Put item data here to show it as a modal overlay
+			svc.autoscroll = false; //scroll window to make current items visible (in relevant modes)
+			svc.autoscrollBlocked = false; // User has disabled autoscroll
+			svc.editing = false; // Object currently being edited by user (TODO)
 
-			itemDetail: false, // Put item data here to show it as a modal overlay
-			autoscroll: false, //scroll window to make current items visible (in relevant modes)
-			autoscrollBlocked: false, // User has disabled autoscroll
-			editing: false, // Object currently being edited by user (TODO)
-			blerg: 'fnord' // Can't see this
 		};
 
 		// workaround for iOS crasher (can't bind to window.resize when inside an iframe)
