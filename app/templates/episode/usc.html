@@ -8,13 +8,11 @@
 	<span ng-include="'templates/episode/components/video.html'"></span>
 
 	<div ng-if="appState.viewMode != 'watch'" class="branding footer">
-		
-			<img class="logo" src="images/customer/usc-footer.svg" alt="USC logo" style="margin-top:1em">
-		
+		<!-- <img class="logo" src="images/customer/usc-footer.svg" alt="USC logo" style="margin-top:1em"> -->
 		<a class="itt logo" href="http://inthetelling.com">
 			<img src="images/itt.svg" alt="In The Telling logo">
 		</a>
-		<span class="copyright">TELLING STORY player &#169; {{now | date:'yyyy'}} <a href="http://inthetelling.com">IN THE TELLING</a>. All rights reserved</span>
+		<span class="copyright" ng-include="'templates/copyright.html'"></span>
 	</div>
 
 	<div class="banner-logo">
