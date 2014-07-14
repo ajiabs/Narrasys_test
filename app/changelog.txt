@@ -309,3 +309,22 @@ Simplifying episode template, fixing lots of item css
 Changes in v4.alpha.011:
 exceptionHandler was breaking when minimized
 
+------------------------------------------------
+Changes in v4.alpha.012:
+browser-specific fixes
+separated errorSvc from errorController; squelched a bunch of console.logs
+separated appState from modelSvc
+USC template and styles
+treat Android more like iDevices
+improved error handler
+many touchscreen improvements
+better image for highlighter style
+removing ITT logo from GW templates
+applying episode styles to support panels; no bgcolor on items
+bugfix in item template
+cosmetics
+calculation of sidebar presence was sooo broken
+Can no longer try to seek to negative times in iOS
+error handler tweak
+video now displays 'buffering' icon when necessary
+
