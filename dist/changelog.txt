@@ -373,3 +373,12 @@ disabling admin-only routes; errors no longer go away when clicked
 Changes in v4.0.2:
 oh yeah frames and background colors
 
+------------------------------------------------
+Changes in v4.0.3:
+hiding timeline zoom. No play icon at end of video.
+playhead events bind properly on route changes
+better error messages
+make landing screen accessible via timeline "prev" button (also affects nav panel)
+More useful error messages; "log back in" link now respects framing
+stricter about getting a nonce for new window instead of depending on localStorage
+
