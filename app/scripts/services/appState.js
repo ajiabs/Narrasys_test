@@ -3,12 +3,14 @@
 /*
 	Stash for shared information, to save us a lot of $watching and $emitting. 
 	It's convenient.  Maybe -too- convenient.
+
+	I have a sinking feeling this is probably an elaborate wheel-reinvention of $scope or 
+	something, but hey, it works
+
 */
 
 angular.module('com.inthetelling.player')
 	.factory('appState', function ($interval, $filter, config) {
-
-		// Simplify inter-controller communication thusly:
 
 		var svc = {};
 

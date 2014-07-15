@@ -75,7 +75,7 @@ angular.module('com.inthetelling.player')
 			if (appState.timelineState === 'playing') {
 				return;
 			}
-			// console.log("timelineSvc.play");
+			console.log("timelineSvc.play");
 			appState.videoControlsActive = true;
 			appState.show.navPanel = false;
 			appState.timelineState = "buffering";
@@ -90,7 +90,8 @@ angular.module('com.inthetelling.player')
 		};
 
 		svc.pause = function(n) {
-			// console.log("timelineSvc.pause");
+			console.log("timelineSvc.pause");
+			console.log(appState.time, videoScope.currentTime());
 			appState.videoControlsActive = true;
 			$interval.cancel(clock);
 			stopEventClock();
