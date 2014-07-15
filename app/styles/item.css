@@ -186,6 +186,8 @@ Inline images (TODO show these only when image is larger than available space) *
 	left: 5%;
 	right: 5%;
 	top: 10%;
+	bottom: 10%;
+	overflow: scroll;
 	transition: 1s all;
 }
 .modal.ng-enter, .modal.ng-leave.ng-leave-active {
