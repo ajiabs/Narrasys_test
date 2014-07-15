@@ -7,10 +7,10 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize']
 // Configure routing
 .config(function($routeProvider) {
 	$routeProvider
-		.when('/episodes', {
-			title: "Telling STORY: All episodes",
-			templateUrl: 'templates/episodelist.html'
-		})
+		// .when('/episodes', {
+		// 	title: "Telling STORY: All episodes",
+		// 	templateUrl: 'templates/episodelist.html'
+		// })
 		.when('/episode/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
