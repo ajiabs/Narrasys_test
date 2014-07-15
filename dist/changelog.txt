@@ -382,3 +382,13 @@ make landing screen accessible via timeline "prev" button (also affects nav pane
 More useful error messages; "log back in" link now respects framing
 stricter about getting a nonce for new window instead of depending on localStorage
 
+------------------------------------------------
+Changes in v4.0.4:
+framed and unframed player now get different size videos (this also works around problem where chrome refuses to play same video in two windows
+delay appearance of 'buffering' icon on video
+fixed 'escape from iframe' button
+improvements to modal popups
+dismiss when clicking on ‘invisible’ portion of modal; hide scrollbars during animation (to the extent that it’s possible), fixed ‘new window’ link color
+better handling of prevScene button while video is playing
+removing "related videos" from end of youtube playback
+
