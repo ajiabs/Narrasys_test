@@ -5,7 +5,7 @@
 	height: 85px;
 	margin-bottom: -40px;
 	background-image: url('/images/toolbar.png');
-	background-repeat:repeat-x;
+	background-repeat: repeat-x;
 	background-size: 100% 100%;
 	top: 0;
 	left: 0;
@@ -14,34 +14,35 @@
 .toolbar {
 	pointer-events: none
 }
-.toolbar a, .toolbar div {
-	pointer-events:auto
+.toolbar a,
+.toolbar div {
+	pointer-events: auto
 }
 .toolbar .buttongroup {
-	float:left;
+	float: left;
 	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.1) inset;
 	position: relative;
-	height:1.5em;
-	border-radius:0.75em;
-	margin:0.3em 0.5em;
+	height: 1.5em;
+	border-radius: 0.75em;
+	margin: 0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
 }
 .toolbar .buttongroup .button span {
-	display:block;
+	display: block;
 	position: absolute;
 	top: 20px;
-	left:0;
-	right:0;
+	left: 0;
+	right: 0;
 	text-align: center;
-	opacity:0;
-	color:#666;
-	font-size:12px;
+	opacity: 0;
+	color: #666;
+	font-size: 12px;
 }
 .toolbar .buttongroup:hover .button span {
-	opacity:0 !important
+	opacity: 0 !important
 }
 .toolbar .buttongroup .button:hover span {
-	opacity:1 !important;
+	opacity: 1 !important;
 	transition: opacity 0.3s;
 }
 .toolbar .buttongroup.modegroup {
@@ -50,8 +51,9 @@
 .toolbar .buttongroup.modegroup .button.cur span {
 	animation: delayedFadeOut 7s ease-out;
 }
-.toolbar .searchgroup, .toolbar .escapegroup {
-	float:right;
+.toolbar .searchgroup,
+.toolbar .escapegroup {
+	float: right;
 }
 .toolbar .buttongroup.searchgroup {
 	transition: all 1s;
@@ -59,24 +61,24 @@
 }
 @media screen and (max-width: 300px) {
 	.isFramed .toolbar .buttongroup.searchgroup {
-		display:none;
+		display: none;
 	}
 }
 @media screen and (max-width: 421px) {
 	.isFramed .toolbar .buttongroup.modegroup {
-		display:none;
+		display: none;
 	}
 }
 @media screen and (max-width: 480px) {
 	.button-discover {
 		/* See also helpPanel below */
-		display:none !important;
+		display: none !important;
 	}
 	.volumebar {
-		display:none;
+		display: none;
 	}
 	.button-fullscreen {
-		display:none !important;
+		display: none !important;
 	}
 }
 .toolbar .buttongroup.escapegroup .button span {
@@ -85,7 +87,7 @@
 	width: 150px;
 }
 .toolbar .buttongroup.searchgroup .button {
-	float:left;
+	float: left;
 }
 .toolbar .buttongroup.searchgroup.cur {
 	width: 27%;
@@ -93,7 +95,7 @@
 	padding-top: 3px;
 }
 .toolbar .buttongroup.searchgroup.cur .button span {
-	display:none
+	display: none
 }
 #searchtext {
 	background: none;
@@ -102,7 +104,7 @@
 	margin: 0;
 	width: 0;
 	transition: all 1s;
-	position:absolute;
+	position: absolute;
 	left: 40px;
 	top: 2px;
 }
@@ -113,21 +115,21 @@
 	width: 80%
 }
 .toolbar .button {
-	display:inline-block;
+	display: inline-block;
 	padding: 0 0.5em;
 	line-height: 24px;
 	height: 24px;
-	cursor:pointer;
-	color:#555;
+	cursor: pointer;
+	color: #555;
 }
 .modegroup .button {
-	color:#AAA;
+	color: #AAA;
 }
 .modegroup .button.cur {
 	background-color: rgba(255, 255, 255, 0.6);
 }
 .toolbar .button.cur {
-	color:#000;
+	color: #000;
 	text-shadow: -1px -1px 2px #FFF;
 }
 .toolbar .button:before {
@@ -135,26 +137,26 @@
 	font-size: 1em;
 }
 .button-watch:before {
-	content:"\e60b"
+	content: "\e60b"
 }
 .button-discover:before {
-	content:"\e60a"
+	content: "\e60a"
 }
 .button-review:before {
-	content:"\e60c"
+	content: "\e60c"
 }
 .button-search:before {
-	content:"\e602"
+	content: "\e602"
 }
 .cur .button-search:before {
-	content:"\e603"
+	content: "\e603"
 }
 .button-mainframeescape:before {
-	content:"\e609"
+	content: "\e609"
 }
 .escapelink:before {
 	font-family: Story;
-	content:"\e609";
+	content: "\e609";
 	padding-right: 0.5em;
 	font-size: 0.86em;
 	color: #333;
@@ -163,7 +165,7 @@
 	color: #CCC
 }
 .autoscroll {
-	position:fixed;
+	position: fixed;
 	right: 16px;
 	bottom: 106px;
 	width: 32px;
@@ -172,13 +174,14 @@
 	cursor: pointer;
 	cursor: hand;
 }
-.toolbar-bottom, .toolbar-bottom-controltrigger {
-	position:fixed;
-	bottom:0;
+.toolbar-bottom,
+.toolbar-bottom-controltrigger {
+	position: fixed;
+	bottom: 0;
 	left: 0;
 	right: 0;
 	min-height: 60px;
-	margin-bottom:-3px;
+	margin-bottom: -3px;
 }
 .toolbar-bottom {
 	padding-top: 27px;
@@ -192,40 +195,44 @@
 	background-color: rgba(255, 255, 255, 0.9);
 }
 .toolbar-bottom.ng-hide-remove {
-	transition:opacity 0.25s;
-	opacity:0;
+	transition: opacity 0.25s;
+	opacity: 0;
 }
 .toolbar-bottom.ng-hide-remove.ng-hide-remove-active {
-	opacity:1;
+	opacity: 1;
 }
 .toolbar-bottom.ng-hide-add {
 	transition: opacity 3s;
-	opacity:1;
+	opacity: 1;
 }
 .toolbar-bottom.ng-hide-add.ng-hide-add-active {
-	opacity:0;
+	opacity: 0;
 }
 /*============================
 *
 * Side Panels
 *
 //===========================*/
- .modal-backdrop {
-	transition:1s linear all;
-	opacity:1;
+
+.modal-backdrop {
+	transition: 1s linear all;
+	opacity: 1;
 }
 .modal-backdrop.ng-hide {
-	opacity:0;
+	opacity: 0;
 }
-.modal-backdrop.ng-hide-add, .modal-backdrop.ng-hide-remove {
-	display:block!important;
+.modal-backdrop.ng-hide-add,
+.modal-backdrop.ng-hide-remove {
+	display: block!important;
 }
 /*============================
  *
  * Search Panel
  *
 //===========================*/
- .searchPanel, .searchPanel-backdrop {
+
+.searchPanel,
+.searchPanel-backdrop {
 	top: 45px;
 	/* TOOLBAR HEIGHT */
 }
@@ -233,7 +240,7 @@
 	bottom: 0;
 	right: 0;
 	width: 40%;
-	background-color:#FFF;
+	background-color: #FFF;
 }
 .searchPanel .scrollContainer {
 	top: 20px;
@@ -243,23 +250,23 @@
 	right: -16px;
 	padding: 0 24px 80px 8px;
 	left: 0px;
-	position:absolute;
+	position: absolute;
 }
 .searchPanel .searchresults {
 	padding: 1em;
 }
 .searchPanel.ng-hide .searchfilters {
-	opacity:0;
+	opacity: 0;
 }
 .searchPanel .searchfilters {
-	opacity:1;
+	opacity: 1;
 	animation: delayedFadeIn 4s ease-out;
 }
 .searchfilters {
 	font-size: 0.86em;
 }
 .searchfilters label {
-	float:right;
+	float: right;
 	margin-right: 0.5em;
 	cursor: pointer;
 }
@@ -272,14 +279,14 @@
 .searchResults .item {
 	border-bottom: 1px solid #CCC;
 	padding: 0.1em 0.3em;
-	clear:both;
+	clear: both;
 }
 .searchResults .item .displayTime {
 	cursor: pointer;
 	cursor: hand;
 	color: #C44343;
-	float:left;
-	display:inline;
+	float: left;
+	display: inline;
 	width: 45px;
 }
 .searchResults .description {
@@ -291,22 +298,24 @@
 	font-size: 0.86em
 }
 .searchResults .sortedbytype .type {
-	display:none
+	display: none
 }
 /* Panel animations */
- .searchPanel {
-	position:fixed;
+
+.searchPanel {
+	position: fixed;
 	transition: 1s all;
 	transform-origin: 100% 50%;
-	opacity:1;
-	transform:translateX(0);
+	opacity: 1;
+	transform: translateX(0);
 }
 .searchPanel.ng-hide {
-	opacity:0;
-	transform:translateX(200px);
+	opacity: 0;
+	transform: translateX(200px);
 }
-.searchPanel.ng-hide-add, .searchPanel.ng-hide-remove {
-	display:block!important;
+.searchPanel.ng-hide-add,
+.searchPanel.ng-hide-remove {
+	display: block!important;
 }
 .searchPanel .ui-match {
 	background-color: rgba(50, 50, 50, 0.4);
@@ -320,28 +329,27 @@
  * Nav Panel
  *
 //===========================*/
- .navPanel {
-	height:400px;
+
+.navPanel {
+	height: 400px;
 	transition: 1s all;
 	overflow-y: scroll;
 }
-.navPanel.ng-hide-add, .navPanel.ng-hide-remove {
-	display:block!important;
+.navPanel.ng-hide-add,
+.navPanel.ng-hide-remove {
+	display: block!important;
 }
 .navPanel.ng-hide-add {
-	height:400px;
+	height: 400px;
 }
 .navPanel.ng-hide-add-active {
-	height:0;
+	height: 0;
 }
 .navPanel.ng-hide-remove {
-	height:0;
+	height: 0;
 }
 .navPanel.ng-hide-remove-active {
-	height:400px;
-}
-.navPanel h2 {
-	padding: 0.4em;
+	height: 400px;
 }
 @media screen and (max-width: 500px) {
 	.navPanel {
@@ -368,39 +376,52 @@
 		margin: 0 20%;
 	}
 }
+.navPanel .scene:first-child {
+	margin-top: 1em;
+	font-size: 120%;
+	font-weight: bold;
+	padding-bottom: 0.5em;
+	padding-left: 1em;
+}
+
+.navPanel .scene:first-child a{
+	color:#000;
+}
+
 .navPanel .scene {
+	cursor: pointer;
+	cursor: hand;
 	padding: 0.3em;
 	border-top: 1px solid rgba(0, 0, 0, 0.2);
+	padding-left: 45px;
 }
 .navPanel .currentScene {
 	background-color: rgba(0, 0, 0, 0.1);
 }
 .navPanel .displayTime {
 	width: 45px;
-	float:left;
-	text-align:right;
+	float: left;
+	text-align: right;
 	padding-right: 10px;
-}
-.navPanel p {
-	margin-left: 45px;
 }
 /*============================
  *
  * Help Panel
  *
 //===========================*/
- .helpPanel {
+
+.helpPanel {
 	background-color: #EEE;
 	border-radius: 15px;
 	font-size: 0.86em;
 	left: 2em;
 	padding: 15px;
 	position: absolute;
-	width:60%;
+	width: 60%;
 	max-width: 500px;
 	min-width: 290px;
-	top: 55px;
 	/* TOOLBAR HEIGHT */
+	top: 55px;
 	z-index: 99;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
@@ -408,7 +429,8 @@
 	list-style: none;
 	margin: 0.5em 1em;
 }
-.helpPanel li:before, .helpPanel h3 {
+.helpPanel li:before,
+.helpPanel h3 {
 	height: 30px;
 	margin: 0;
 }
@@ -424,21 +446,21 @@
 	padding-right: 0.5em;
 }
 .helpPanel li.video:before {
-	content:"\e60b"
+	content: "\e60b"
 }
 .helpPanel li.directed:before {
-	content:"\e60a"
+	content: "\e60a"
 }
 @media screen and (max-width: 480px) {
 	.helpPanel li.directed {
-		display:none !important;
+		display: none !important;
 	}
 }
 .helpPanel li.explore:before {
-	content:"\e60c"
+	content: "\e60c"
 }
 .helpPanel .goAway {
-	float:right;
+	float: right;
 }
 .helpPanel .arrow-up {
 	width: 20px;

@@ -111,6 +111,9 @@ angular.module('com.inthetelling.player')
 				episode.origTemplateUrl = episode.templateUrl; // TEMPORARY
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
+			// Attach episode title and description to the landing screen event:
+			svc.events["internal:landingscreen:"+episode._id].title = episode.title;
+
 			return episode;
 		};
 

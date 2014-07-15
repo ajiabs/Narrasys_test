@@ -42,7 +42,6 @@
 	<div class="toolbar-bottom" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-show="appState.videoControlsActive">
 		<div class="toolbar-bottom-fill">
 			<div ng-show="show.navPanel" class="navPanel" ng-class="episode.styleCss">
-				<h2 ng-bind-html="episode.title"></h2>
 				<div class="scene" x-ng-if="scene.title" x-ng-repeat="scene in episode.scenes" x-ng-class="{currentScene: scene.isCurrent}" x-ng-click="seek(scene.start_time)">
 					<span class="displayTime">{{scene.displayTime}}</span>
 					<p>
