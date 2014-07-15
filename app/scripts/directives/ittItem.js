@@ -7,7 +7,7 @@ so they get logged properly: don't draw plain hrefs
 
 
 angular.module('com.inthetelling.player')
-	.directive('ittItem', function($http, $timeout, config, appState, analyticsSvc, timelineSvc) {
+	.directive('ittItem', function($http, $timeout, config, appState, analyticsSvc, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -25,6 +25,12 @@ angular.module('com.inthetelling.player')
 			link: function(scope, element, attrs) {
 				// console.log('ittItem', scope, element, attrs);
 
+				
+				// HACK not sure why but modelSvc.resolveEpisodeAssets isn't always doing the job.
+				// (Possibly a race condition?)  Quick fix here to resolve it:
+				if (scope.item.asset_id && !scope.item.asset) {
+					scope.item.asset = modelSvc.assets[scope.item.asset_id];
+				}
 
 				// Slight hack to simplify css for image-fill:
 				if (scope.item.styleCss.match(/fill|contain|cover/)) {
