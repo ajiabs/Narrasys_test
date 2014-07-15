@@ -35,23 +35,6 @@ angular.module('com.inthetelling.player')
 		// 	appState.producer = true;
 		// }
 
-		$scope.mainframeescape = function () {
-			// First fet a new token for the new window
-			authSvc.getNonce().then(function (nonce) {
-				console.log($location);
-				var url = $location.absUrl().toString();
-
-				url = url + (url.match(/\?/) ? "&" : "?") + "key=" + nonce;
-
-				try {
-					window.open(url).focus();
-				} catch(e) {
-					throw(e);
-				}
-				timelineSvc.pause();
-			});
-		};
-
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 		appState.init();
@@ -59,6 +42,22 @@ angular.module('com.inthetelling.player')
 		appState.episodeId = $routeParams.epId;
 		modelSvc.addLandingScreen(appState.episodeId);
 		dataSvc.getEpisode(appState.episodeId);
+
+		// framebreaker
+		$scope.framebreaker = function (event) {
+			authSvc.getNonce().then(function (nonce) {
+				console.log($location);
+				var url = $location.absUrl().toString();
+				url = url + (url.match(/\?/) ? "&" : "?") + "key=" + nonce;
+				$scope.framebreakerUrl = url;
+				try {
+					window.open(url).focus();
+				} catch(e) {
+					$scope.framebreaker = function() {}; // no endless loops
+					errorSvc.notify("Your web browser has a popup blocker enabled, which has prevented us from opening this episode in a new window automatically.  Please click the 'new window' again; it will work this time. (Sorry for the inconvenience!)   If you wish, you can change your browser settings to allow popup windows for this website.");
+				}
+			});
+		};
 
 		// Watch for the first load of the episode data; init the master asset and page title when found
 		var episodeWatcher = $scope.$watch(function () {

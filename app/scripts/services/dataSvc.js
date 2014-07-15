@@ -249,7 +249,7 @@ angular.module('com.inthetelling.player')
 
 			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
 				.success(function(containerAssets) {
-					console.log("container assets", containerAssets);
+					// console.log("container assets", containerAssets);
 					angular.forEach(containerAssets.files, function(asset) {
 						modelSvc.cache("asset", asset);
 					});

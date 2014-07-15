@@ -1,4 +1,4 @@
-<div ng-if="errors.length" class="errors">
+<span ng-if="errors.length || notifications.length" class="errors">
 	<div class="error" ng-repeat="error in errors">
 		<a style="float: right;" ng-click="dismiss(error)">[x]</a>
 		<h3>Error: {{error.cause || error.exception.data || '(unknown reason)'}}</h3>
@@ -19,4 +19,8 @@
 		<a style="font-size: small" ng-click="showDetails= !showDetails">(show details)</a>
 		<pre ng-if="showDetails" style="font-size: small" ng-bind="error | pretty"></pre>
 	</div>
-</div>
+	<div class="notification" ng-repeat="notification in notifications">
+		<a style="float: right;" ng-click="dismiss(notification)">[x]</a>
+		<p>{{notification}}</p>
+	</div>
+</span>

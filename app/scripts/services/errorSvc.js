@@ -3,6 +3,8 @@
 /* 
 to throw explicit errors:
 		errorSvc.error({data: "This episode has not yet been published."});
+		errorSvc.notify({data: "This hovercraft is full of Monty Python quotes."});
+
 */
 
 angular.module('com.inthetelling.player')
@@ -10,6 +12,7 @@ angular.module('com.inthetelling.player')
 		var svc = {};
 
 		svc.errors = [];
+		svc.notifications = [];
 
 		svc.init = function() {
 			svc.errors = [];
@@ -26,6 +29,10 @@ angular.module('com.inthetelling.player')
 				// generic error.  TODO show these too, but only in dev environment
 				console.log(exception);
 			}
+		};
+		svc.notify = function(note) {
+			svc.notifications.push(note);
+			console.log(svc);
 		};
 		return svc;
 	});
