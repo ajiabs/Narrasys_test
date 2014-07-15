@@ -38,10 +38,16 @@ angular.module('com.inthetelling.player')
 		$scope.mainframeescape = function () {
 			// First fet a new token for the new window
 			authSvc.getNonce().then(function (nonce) {
+				console.log($location);
 				var url = $location.absUrl().toString();
 
 				url = url + (url.match(/\?/) ? "&" : "?") + "key=" + nonce;
-				window.open(url).focus();
+
+				try {
+					window.open(url).focus();
+				} catch(e) {
+					throw(e);
+				}
 				timelineSvc.pause();
 			});
 		};
