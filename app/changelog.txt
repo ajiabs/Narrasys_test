@@ -369,3 +369,7 @@ restoring get_nonce redirect
 Changes in v4.0.1:
 disabling admin-only routes; errors no longer go away when clicked
 
+------------------------------------------------
+Changes in v4.0.2:
+oh yeah frames and background colors
+
