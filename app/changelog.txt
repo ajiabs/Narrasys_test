@@ -392,3 +392,7 @@ dismiss when clicking on ‘invisible’ portion of modal; hide scrollbars durin
 better handling of prevScene button while video is playing
 removing "related videos" from end of youtube playback
 
+------------------------------------------------
+Changes in v4.0.5:
+frame breaker now copes with popup blockers (and errorSvc now supports notifications)
+
