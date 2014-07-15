@@ -8,6 +8,7 @@
 	<div ng-click="videoClick()" class="videoMask" ng-class="{
 		play: appState.timelineState == 'paused',
 		buffering: appState.timelineState == 'buffering',
-		firstplay: !appState.hasBeenPlayed
+		firstplay: !appState.hasBeenPlayed,
+		endofvideo: appState.time == video.duration
 	}">
 </div>
