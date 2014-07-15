@@ -222,12 +222,14 @@ Video
 }
 .videoMask.play {
 	background-image: url('/images/play-overlay.png');
+	animation: fadeIn 2s;
 }
 .videoMask.firstplay {
 	background-image: url('/images/logo-overlay.png');
 }
 .videoMask.buffering {
 	background-image: url('/images/buffering-overlay.png');
+	animation: delayedFadeIn 3s;
 }
 .videoMask.endofvideo {
 	background-image: none;
