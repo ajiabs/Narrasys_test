@@ -365,3 +365,7 @@ no extra top padding for imagePlain items which are the first in their content p
 allow too-large modals to scroll
 restoring get_nonce redirect
 
+------------------------------------------------
+Changes in v4.0.1:
+disabling admin-only routes; errors no longer go away when clicked
+
