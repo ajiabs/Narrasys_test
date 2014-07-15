@@ -199,12 +199,14 @@ Inline images (TODO show these only when image is larger than available space) *
 	left:49%;
 	right:49%;
 	top:33%;
+	overflow:hidden;
 }
 .modal.ng-enter-active, .modal.ng-leave {
 	left: 5%;
 	right: 5%;
 	top: 10%;
 	display:block !important;
+	overflow:hidden;
 }
 .modal .iframeContainer {
 	width: 100%;
@@ -238,7 +240,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	line-height: 30px
 }
 .modalmenu a, .modalmenu a:before {
-	color:#FFF;
+	color:#FFF !important;
 }
 .modalimage {
 	text-align:center;
