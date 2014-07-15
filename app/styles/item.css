@@ -123,7 +123,12 @@ image-fill items */
 }
 /*============================ ============================ ============================ 
 Inline images (TODO show these only when image is larger than available space) */
- .content img {
+
+.content .item:first-child .imagePlain {
+ /* override first-child padding for plain images: */	
+	margin-top: -1.5em;
+}
+.content img {
 	max-width:100%;
 }
 .item .touchable {
