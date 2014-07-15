@@ -1,13 +1,19 @@
 <div ng-if="errors.length" class="errors">
-	<div class="error" ng-repeat="error in errors" ng-click="dismiss(error)">
+	<div class="error" ng-repeat="error in errors">
+		<a style="float: right;" ng-click="dismiss(error)">[x]</a>
 		<h3>Error: {{error.cause || error.exception.data || '(unknown reason)'}}</h3>
-		<p ng-if="error.exception.config.url"><i>(Trying to load {{error.exception.config.url}})</i></p>
-		<!-- <pre ng-bind="error | pretty"></pre> -->
+		<p ng-if="error.exception.config.url">
+			<i>(While trying to load {{error.exception.config.url}})</i>
+		</p>
 		<p ng-if="error.exception.status == 401">
-			Please 
-			<span ng-if="user.login_url"><a ng-href="{{user.login_url}}" target="_top">click here</a> to log back in, or</span>
+			Please
+			<span ng-if="user.login_url">
+				<a ng-if="user.login_via_top_window_only" ng-href="{{user.login_url}}" target="_top">click here</a>
+				<a ng-if="!user.login_via_top_window_only" ng-href="{{user.login_url}}">click here</a>
+				to log back in, or</span>
 			<a ng-click="resetAuth()">reset your session</a> and start over.
 		</p>
-
+		<a style="font-size: small" ng-click="showDetails= !showDetails">(show details)</a>
+		<pre ng-if="showDetails" style="font-size: small" ng-bind="error | pretty"></pre>
 	</div>
 </div>

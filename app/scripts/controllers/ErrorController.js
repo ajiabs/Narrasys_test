@@ -13,7 +13,7 @@ angular.module('com.inthetelling.player')
 				ret.push($scope.errors[i]);
 			}
 		}
-//		$scope.errors = ret;
+		$scope.errors = ret;
 	};
 
 	/* TODO HACK this should be in authSvc */
