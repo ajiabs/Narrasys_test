@@ -23,6 +23,9 @@
 	margin: 0;
 	padding: 0
 }
+body {
+	background-color:#FFF;
+}
 .clear:after {
 	clear:both;
 	content:"";

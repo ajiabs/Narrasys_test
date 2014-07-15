@@ -3,7 +3,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.player')
-	.controller('PlayerController', function($scope, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc) {
+	.controller('PlayerController', function($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc) {
 		// console.log("playerController", $scope);
 
 		$scope.viewMode = function(newMode) {
@@ -35,6 +35,10 @@ angular.module('com.inthetelling.player')
 		// 	appState.producer = true;
 		// }
 
+				$scope.mainframeescape = function() {
+					window.open($location.absUrl()).focus();
+					timelineSvc.pause();
+				};
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
