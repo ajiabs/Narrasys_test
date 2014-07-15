@@ -35,7 +35,11 @@ angular.module('com.inthetelling.player')
 
 				scope.prevScene = function () {
 					for (var i = timelineSvc.markedEvents.length - 1; i >= 0; i--) {
-						if (timelineSvc.markedEvents[i].start_time < appState.time) {
+						var now = appState.time;
+						if (appState.timelineState === 'playing') {
+							now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
+						};
+						if (timelineSvc.markedEvents[i].start_time < now) {
 							// console.log("Seeking to ", timelineSvc.markedEvents[i].start_time);
 							timelineSvc.seek(timelineSvc.markedEvents[i].start_time, "prevScene");
 							break;
