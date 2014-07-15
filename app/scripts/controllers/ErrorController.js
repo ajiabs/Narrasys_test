@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.player')
-.controller('ErrorController', function($scope, $rootScope, errorSvc, appState) {
+.controller('ErrorController', function($scope, errorSvc, appState) {
 	$scope.errors = errorSvc.errors;
 	$scope.user = appState.user;
 
@@ -19,6 +19,8 @@ angular.module('com.inthetelling.player')
 	/* TODO HACK this should be in authSvc */
 	$scope.resetAuth = function() {
 		localStorage.removeItem('storyAuth');
+	};
+	$scope.reload = function() {
 		window.location.reload(true);
 	};
 
