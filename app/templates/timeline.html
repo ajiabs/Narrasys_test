@@ -27,7 +27,7 @@
 						<div class="tooltip-arrow"></div>
 					</div>
 				</div>
-				<div id="playhead" class="mask">
+				<div class="playhead mask">
 					<!-- interactive parts of timeline -->
 					<div class="progressbarContainer " ng-style="{width: zoomLevel+'00%'}">
 						<div class="marker" ng-mouseover="showTooltip(event);" ng-mouseout="hideTooltip(event)" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}"></div>
