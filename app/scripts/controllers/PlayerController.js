@@ -3,7 +3,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.player')
-	.controller('PlayerController', function($scope, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc) {
+	.controller('PlayerController', function($scope, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc) {
 		// console.log("playerController", $scope);
 
 		$scope.viewMode = function(newMode) {
@@ -39,9 +39,11 @@ angular.module('com.inthetelling.player')
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 		appState.init();
+		errorSvc.init();
 		appState.episodeId = $routeParams.epId;
 		modelSvc.addLandingScreen(appState.episodeId);
 		dataSvc.getEpisode(appState.episodeId);
+
 
 		// Watch for the first load of the episode data; init the master asset and page title when found
 		var episodeWatcher = $scope.$watch(function() {

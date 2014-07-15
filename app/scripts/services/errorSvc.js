@@ -2,7 +2,7 @@
 
 /* 
 to throw explicit errors:
-		errorSvc.error({exception data structure:"TO BE DEFINED"},"Cause: ALL MESSED UP");
+		errorSvc.error({data: "This episode has not yet been published."});
 */
 
 angular.module('com.inthetelling.player')
@@ -11,6 +11,9 @@ angular.module('com.inthetelling.player')
 
 		svc.errors = [];
 
+		svc.init = function() {
+			svc.errors = [];
+		};
 		svc.error = function(exception, cause) {
 			if (exception && exception.data) {
 				// API errors go here:

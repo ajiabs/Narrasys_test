@@ -485,6 +485,7 @@ angular.module('com.inthetelling.player')
 		};
 
 		console.log("Event cache:", svc.events);
+		console.log("Asset cache:", svc.assets);
 		console.log("Episode cache:", svc.episodes);
 
 		return svc;

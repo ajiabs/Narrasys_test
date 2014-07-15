@@ -20,7 +20,7 @@
 
 
 angular.module('com.inthetelling.player')
-	.factory('dataSvc', function($q, $http, $routeParams, $timeout, config, authSvc, modelSvc) {
+	.factory('dataSvc', function($q, $http, $routeParams, $timeout, config, authSvc, modelSvc, errorSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -167,7 +167,7 @@ angular.module('com.inthetelling.player')
 					obj.templateUrl = dataCache.template[obj.template_id].url;
 					delete obj.template_id;
 				} else {
-					console.error("Couldn't get templateUrl for id " + obj.template_id);
+					errorSvc.error({data: "Couldn't get templateUrl for id " + obj.template_id});
 				}
 			}
 			if (obj.layout_id) {
@@ -176,7 +176,7 @@ angular.module('com.inthetelling.player')
 					if (dataCache.layout[id]) {
 						layouts.push(dataCache.layout[id].css);
 					} else {
-						console.error("Couldn't get layout for id " + id);
+						errorSvc.error({data: "Couldn't get layout for id " + id});
 					}
 				});
 				if (layouts.length > 0) {
@@ -190,7 +190,7 @@ angular.module('com.inthetelling.player')
 					if (dataCache.style[id]) {
 						styles.push(dataCache.style[id].css);
 					} else {
-						console.error("Couldn't get style for id " + id);
+						errorSvc.error({data: "Couldn't get style for id " + id});
 					}
 				});
 				if (styles.length > 0) {
@@ -216,11 +216,11 @@ angular.module('com.inthetelling.player')
 						// this will get the episode container and its assets, then iterate up the chain to all parent containers
 						getContainer(episodeData.container_id, epId);
 					} else {
-						console.error("Episode not published, and user doesn't have admin role.");
+						errorSvc.error({data: "This episode has not yet been published."});
 					}
 				})
 				.error(function(data, status, headers, config) {
-					console.error("API call to /v1/episodes/" + epId + " failed (bad episode ID?)");
+					errorSvc.error({data: "API call to /v1/episodes/" + epId + " failed (bad episode ID?)"});
 				});
 		};
 
@@ -232,9 +232,6 @@ angular.module('com.inthetelling.player')
 					});
 					// Tell modelSvc it can build episode->scene->item child arrays
 					modelSvc.resolveEpisodeEvents(epId);
-				})
-				.error(function(err) {
-					console.error("getEpisodeEvents failed", err);
 				});
 		};
 
@@ -248,21 +245,15 @@ angular.module('com.inthetelling.player')
 					if (container[0].parent_id) {
 						getContainer(container[0].parent_id, episodeId);
 					}
-				})
-				.error(function(err) {
-					console.error("getContainer failed", err);
 				});
 
 			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
 				.success(function(containerAssets) {
-					// console.log("container assets", containerAssets);
+					console.log("container assets", containerAssets);
 					angular.forEach(containerAssets.files, function(asset) {
 						modelSvc.cache("asset", asset);
 					});
 					modelSvc.resolveEpisodeAssets(episodeId);
-				})
-				.error(function(err) {
-					console.error("getContainerAssets failed", err);
 				});
 		};
 

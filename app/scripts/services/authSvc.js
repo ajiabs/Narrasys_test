@@ -54,13 +54,15 @@ angular.module('com.inthetelling.player')
 					if (data.nonce) {
 						defer.resolve(data.nonce);
 					} else {
-						// Guest acess is not allowed
+						// Guest access is not allowed
 						if (data.login_url) {
 							if (data.login_via_top_window_only) {
 								window.top.location.href = data.login_url;
 							} else {
 								window.location.href = data.login_url;
 							}
+						} else {
+							defer.reject();
 						}
 					}
 				})
