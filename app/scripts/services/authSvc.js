@@ -21,7 +21,7 @@ angular.module('com.inthetelling.player')
 				// explicit key in route:
 				var nonce = $routeParams.key;
 				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
-				getAccessToken(nonce).then(function() {
+				svc.getAccessToken(nonce).then(function() {
 					defer.resolve();
 				});
 			} else if ($http.defaults.headers.common.Authorization) {
@@ -37,8 +37,8 @@ angular.module('com.inthetelling.player')
 					defer.resolve();
 				} else {
 					// start from scratch
-					getNonce().then(function(nonce) {
-						getAccessToken(nonce).then(function() {
+					svc.getNonce().then(function(nonce) {
+						svc.getAccessToken(nonce).then(function() {
 							defer.resolve();
 						});
 					});
@@ -47,7 +47,7 @@ angular.module('com.inthetelling.player')
 			return defer.promise;
 		};
 
-		var getNonce = function() {
+		svc.getNonce = function() {
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_nonce")
 				.success(function(data, status) {
@@ -72,7 +72,7 @@ angular.module('com.inthetelling.player')
 			return defer.promise;
 		};
 
-		var getAccessToken = function(nonce) {
+		svc.getAccessToken = function(nonce) {
 			// console.log("trying getAccessToken with nonce ", nonce);
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)

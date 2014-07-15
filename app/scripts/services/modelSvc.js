@@ -93,11 +93,12 @@ angular.module('com.inthetelling.player')
 			"templates/transmedia-link-youtube.html": "templates/item/link.html",
 			"templates/transmedia-embed-youtube.html": "templates/item/link-embed.html",
 
-			"templates/transmedia-link-icon.html": "templates/item/link.html", // TODO
+			// was used internally in v3 player, never exposed to authors so shouldn't appear BUT YOU NEVER KNOW:
+			"templates/transmedia-link-icon.html": "templates/item/link.html",
 
 			// (from old sxs demo; can delete later)
-			"templates/upload-demo-inline.html": "templates/item/item.html", // TODO
-			"templates/upload-demo.html": "templates/item/item.html", // TODO
+			"templates/upload-demo-inline.html": "templates/item/debug.html",
+			"templates/upload-demo.html": "templates/item/debug.html"
 		};
 
 		// svc.deriveFoo() are for efficiency precalculations. 

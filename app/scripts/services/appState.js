@@ -6,15 +6,14 @@
 */
 
 angular.module('com.inthetelling.player')
-	.factory('appState', function($interval, $filter, config) {
-
+	.factory('appState', function ($interval, $filter, config) {
 
 		// Simplify inter-controller communication thusly:
 
 		var svc = {};
 
-		svc.init = function() {
-			svc.user = {};// whatever authSvc gets back from getAccessToken
+		svc.init = function () {
+			svc.user = {}; // whatever authSvc gets back from getAccessToken
 			svc.episodeId = false; // ID of current episode
 
 			/* jshint -W116 */
@@ -46,11 +45,11 @@ angular.module('com.inthetelling.player')
 			svc.autoscroll = false; //scroll window to make current items visible (in relevant modes)
 			svc.autoscrollBlocked = false; // User has disabled autoscroll
 			svc.editing = false; // Object currently being edited by user (TODO)
-
 		};
+		svc.init();
 
 		// workaround for iOS crasher (can't bind to window.resize when inside an iframe)
-		$interval(function() {
+		$interval(function () {
 			svc.windowHeight = angular.element(window).height();
 			svc.windowWidth = angular.element(window).width();
 		}, 50, 0, false);
@@ -59,7 +58,6 @@ angular.module('com.inthetelling.player')
 		if (svc.isTouchDevice) {
 			document.getElementById('CONTAINER').className = "touchDevice";
 		}
-
 
 		console.log("appState:", svc);
 

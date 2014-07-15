@@ -3,10 +3,10 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.player')
-	.controller('PlayerController', function($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc) {
+	.controller('PlayerController', function ($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc) {
 		// console.log("playerController", $scope);
 
-		$scope.viewMode = function(newMode) {
+		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
 			analyticsSvc.captureEpisodeActivity("modeChange", {
 				"mode": newMode
@@ -35,10 +35,16 @@ angular.module('com.inthetelling.player')
 		// 	appState.producer = true;
 		// }
 
-				$scope.mainframeescape = function() {
-					window.open($location.absUrl()).focus();
-					timelineSvc.pause();
-				};
+		$scope.mainframeescape = function () {
+			// First fet a new token for the new window
+			authSvc.getNonce().then(function (nonce) {
+				var url = $location.absUrl().toString();
+
+				url = url + (url.match(/\?/) ? "&" : "?") + "key=" + nonce;
+				window.open(url).focus();
+				timelineSvc.pause();
+			});
+		};
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -48,11 +54,10 @@ angular.module('com.inthetelling.player')
 		modelSvc.addLandingScreen(appState.episodeId);
 		dataSvc.getEpisode(appState.episodeId);
 
-
 		// Watch for the first load of the episode data; init the master asset and page title when found
-		var episodeWatcher = $scope.$watch(function() {
+		var episodeWatcher = $scope.$watch(function () {
 			return modelSvc.episodes[appState.episodeId].title;
-		}, function(a, b) {
+		}, function (a, b) {
 			if (a !== b) {
 				document.title = "STORY: " + a;
 				episodeWatcher(); // stop watching;
@@ -61,9 +66,9 @@ angular.module('com.inthetelling.player')
 
 		// Watch for the first load of the episode items; update the timeline when found
 		$scope.loading = true;
-		var eventsWatcher = $scope.$watch(function() {
+		var eventsWatcher = $scope.$watch(function () {
 			return modelSvc.episodes[appState.episodeId].items;
-		}, function(a, b) {
+		}, function (a, b) {
 			if (a) {
 				timelineSvc.init(appState.episodeId);
 				$scope.loading = false;
@@ -89,11 +94,11 @@ angular.module('com.inthetelling.player')
 		var keepControls;
 		var controlTimer;
 
-		$scope.$watch(function() {
+		$scope.$watch(function () {
 			return appState.videoControlsActive;
-		}, function(isActive, wasActive) {
+		}, function (isActive, wasActive) {
 			if (isActive) {
-				controlTimer = $timeout(function() {
+				controlTimer = $timeout(function () {
 					if (!keepControls) {
 						appState.videoControlsActive = false;
 					}
@@ -101,7 +106,7 @@ angular.module('com.inthetelling.player')
 			}
 		});
 
-		$scope.showControls = function() {
+		$scope.showControls = function () {
 			// console.log("showControls");
 			$timeout.cancel(controlTimer);
 			appState.videoControlsActive = true;
@@ -110,16 +115,16 @@ angular.module('com.inthetelling.player')
 			}
 		};
 
-		$scope.keepControls = function() {
+		$scope.keepControls = function () {
 			// console.log("keepControls");
 			keepControls = true;
 		};
 
-		$scope.allowControlsExit = function() {
+		$scope.allowControlsExit = function () {
 			// console.log("allowControlsExit");
 			keepControls = false;
 			$timeout.cancel(controlTimer);
-			controlTimer = $timeout(function() {
+			controlTimer = $timeout(function () {
 				if (!appState.show.navPanel) {
 					appState.videoControlsActive = false;
 				}
@@ -128,20 +133,18 @@ angular.module('com.inthetelling.player')
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
-
 		// Misc toolbars too small to rate their own controllers
-		$scope.toggleSearchPanel = function() {
+		$scope.toggleSearchPanel = function () {
 			appState.show.searchPanel = !appState.show.searchPanel;
 		};
-		$scope.toggleNavPanel = function() {
+		$scope.toggleNavPanel = function () {
 			// console.log("toggleNavPanel");
 			timelineSvc.pause();
 			appState.show.navPanel = !appState.show.navPanel;
 		};
-		$scope.seek = function(t) {
+		$scope.seek = function (t) {
 			timelineSvc.seek(t, "sceneMenu");
 		};
-
 
 		// show the help pane, only if localStorage is settable and there isn't one already.
 		// (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
@@ -157,7 +160,7 @@ angular.module('com.inthetelling.player')
 		}
 
 		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
-		$rootScope.$on("video.firstPlay", function() {
+		$rootScope.$on("video.firstPlay", function () {
 			if (localStorageAllowed && !(localStorage.getItem("noMoreHelp"))) {
 				appState.show.helpPanel = true;
 			} else {
@@ -165,14 +168,13 @@ angular.module('com.inthetelling.player')
 			}
 		});
 
-
-		$scope.hidePanels = function() {
+		$scope.hidePanels = function () {
 			appState.show.helpPanel = false;
 			appState.show.navPanel = false;
 			appState.show.searchPanel = false;
 		};
 
-		$scope.noMoreHelp = function() {
+		$scope.noMoreHelp = function () {
 			appState.show.helpPanel = false;
 			localStorage.setItem("noMoreHelp", "1");
 			timelineSvc.play();
@@ -193,10 +195,10 @@ angular.module('com.inthetelling.player')
 		var autoscrollableNode = $(window);
 		var animatableScrollNode = $('html,body');
 
-		var startScrollWatcher = function() {
+		var startScrollWatcher = function () {
 			// console.log("startScrollWatcher");
 			autoscrollTimer = $interval(handleAutoscroll, 400);
-			autoscrollableNode.bind("scroll", function() {
+			autoscrollableNode.bind("scroll", function () {
 				// User-initiated scrolling should block autoscroll.
 				// console.log("user scrolled");
 				animatableScrollNode.stop();
@@ -207,14 +209,14 @@ angular.module('com.inthetelling.player')
 		};
 		var autoscrollTimer;
 
-		var stopScrollWatcher = function() {
+		var stopScrollWatcher = function () {
 			// console.log("stopScrollWatcher");
 			autoscrollableNode.unbind("scroll");
 			$interval.cancel(autoscrollTimer);
 
 		};
 
-		$scope.enableAutoscroll = function() {
+		$scope.enableAutoscroll = function () {
 			// console.log("Enabling autoscroll");
 			if (appState.autoscrollBlocked) {
 				appState.autoscrollBlocked = false;
@@ -224,7 +226,7 @@ angular.module('com.inthetelling.player')
 
 		// TODO this is a relatively expensive $watch.  Could greatly increase its $interval if we
 		// support directly triggering it from timeline on seek()... 
-		var handleAutoscroll = function() {
+		var handleAutoscroll = function () {
 			// if autoscroll is true and autoscrollBlocked is false,
 			// find the topmost visible current item and scroll to put it in the viewport.
 			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
@@ -235,7 +237,7 @@ angular.module('com.inthetelling.player')
 			// find topmost visible current items:
 			var top = Infinity;
 			var curScroll = autoscrollableNode.scrollTop();
-			angular.forEach($('.content .item.isCurrent:visible'), function(item) {
+			angular.forEach($('.content .item.isCurrent:visible'), function (item) {
 				var t = item.getBoundingClientRect().top + curScroll;
 				if (t < top) {
 					top = t;
@@ -263,7 +265,7 @@ angular.module('com.inthetelling.player')
 			}, 1500);
 
 			// Don't use jQuery's animation callback; this would get called twice because animatableScrollNode is two nodes...
-			$timeout(function() {
+			$timeout(function () {
 				startScrollWatcher();
 			}, 1750); // allow extra time; iPad was still capturing the tail end of the animated scroll
 
@@ -271,17 +273,15 @@ angular.module('com.inthetelling.player')
 
 		startScrollWatcher();
 
-
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
-		$rootScope.$on("userKeypress.ESC", function() {
+		$rootScope.$on("userKeypress.ESC", function () {
 			// dismiss ALL THE THINGS
 			appState.show.searchPanel = false;
 			appState.show.helpPanel = false;
 			appState.show.navPanel = false;
 			appState.itemDetail = false;
 		});
-
 
 		// TEMPORARY: Producer code below this line
 		// If this turns out to be any good move it into a producer directive.
