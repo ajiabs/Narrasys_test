@@ -350,3 +350,11 @@ Changes in v4.alpha.016:
 better re-init of timeline and appstate when switching episodes
 item.backgroundImage was embedded incorrectly
 
+------------------------------------------------
+Changes in v4.alpha.017:
+disabling redirect on getNonce failure
+error service improvements
+workaround for cases where event assets aren't properly associated with events
+safari doesn't catch keypress events; using keyup instead
+No, better make that keydown instead
+
