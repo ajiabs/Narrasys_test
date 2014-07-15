@@ -55,15 +55,16 @@ angular.module('com.inthetelling.player')
 						defer.resolve(data.nonce);
 					} else {
 						// Guest access is not allowed
-						if (data.login_url) {
-							if (data.login_via_top_window_only) {
-								window.top.location.href = data.login_url;
-							} else {
-								window.location.href = data.login_url;
-							}
-						} else {
-							defer.reject();
-						}
+						console.error("getNonce succeeded but didn't return a nonce: ",data);
+						// if (data.login_url) {
+						// 	if (data.login_via_top_window_only) {
+						// 		window.top.location.href = data.login_url;
+						// 	} else {
+						// 		window.location.href = data.login_url;
+						// 	}
+						// } else {
+						// 	defer.reject();
+						// }
 					}
 				})
 				.error(function(data, status) {
