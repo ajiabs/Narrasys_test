@@ -46,7 +46,7 @@ angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize']
 	});
 
 	// globally emit rootscope event for certain keypresses:
-	$(document).on("keyup", function(e) {
+	$(document).on("keydown", function(e) {
 		if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
 			if (e.keyCode === 27) {
 				$rootScope.$emit("userKeypress.ESC");
