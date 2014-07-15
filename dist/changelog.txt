@@ -358,3 +358,10 @@ workaround for cases where event assets aren't properly associated with events
 safari doesn't catch keypress events; using keyup instead
 No, better make that keydown instead
 
+------------------------------------------------
+Changes in v4.0.0:
+no extra top padding for imagePlain items which are the first in their content pane
+(yes, this is getting ridiculously nitpicky)
+allow too-large modals to scroll
+restoring get_nonce redirect
+
