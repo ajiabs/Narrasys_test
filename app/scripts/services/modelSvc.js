@@ -391,7 +391,7 @@ angular.module('com.inthetelling.player')
 			var videoObject = {};
 			if (videoAsset.alternate_urls) {
 				// This will eventually replace the old method below.
-				// Sort them out by file extension first, then use _chooseBiggestVideoAsset to keep the largest one of each type.
+				// Sort them out by file extension first, then use _chooseVideoAsset to keep the largest one of each type.
 				// TODO: don't always select the biggest; choose based on screen size
 
 				var extensionMatch = /\.(\w+)$/;
@@ -462,7 +462,8 @@ angular.module('com.inthetelling.player')
 
 		// Private convenience function called only from within resolveMasterAssetVideo. Pass in two filenames.
 		// If one is empty, return the other; otherwise checks for a WxH portion in two
-		// filenames; returns whichever is bigger (on desktop) or smaller (on mobile).  
+		// filenames; returns whichever is bigger (on desktop) or smaller (on mobile or when in an iframe).
+
 		var _chooseVideoAsset = function(a, b) {
 			if (!a && b) {
 				return b;
@@ -481,7 +482,9 @@ angular.module('com.inthetelling.player')
 			var bTest = b.match(regexp) || [0, 0];
 
 			// assume touchscreen means mobile, so we want the smaller video. TODO be less arbitrary about that
-			if (appState.isTouchDevice) {
+			// The isFramed part is important though: Chrome won't allow the same video to play in two tabs at once,
+			// so this forces the 'popup' version and the 'iframed' version of the player to have different videos
+			if (appState.isTouchDevice || appState.isFramed) {
 				return (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
 			} else {
 				return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
@@ -490,6 +493,7 @@ angular.module('com.inthetelling.player')
 
 		console.log("Event cache:", svc.events);
 		console.log("Asset cache:", svc.assets);
+		console.log("Container cache:", svc.containers);
 		console.log("Episode cache:", svc.episodes);
 
 		return svc;
