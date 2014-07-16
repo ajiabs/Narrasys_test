@@ -396,3 +396,10 @@ removing "related videos" from end of youtube playback
 Changes in v4.0.5:
 frame breaker now copes with popup blockers (and errorSvc now supports notifications)
 
+------------------------------------------------
+Changes in v4.0.6:
+changed build script to exclude some dev-only files
+framebreaker now works on repeated use 
+errorSvc supports notifications
+image-plain template is now margin-less
+all item detail links pause the main video

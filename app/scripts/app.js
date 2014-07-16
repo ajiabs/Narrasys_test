@@ -8,7 +8,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 .config(function($routeProvider) {
 	$routeProvider
 		.when('/episodes', {
-			title: "Telling STORY: All episodes",
+			title: "Telling STORY: All available episodes",
 			templateUrl: 'templates/episodelist.html'
 		})
 		.when('/episode/:epId', {
