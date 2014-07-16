@@ -8,31 +8,36 @@ to throw explicit errors:
 */
 
 angular.module('com.inthetelling.player')
-	.factory('errorSvc', function() {
+	.factory('errorSvc', function () {
 		var svc = {};
 
-		svc.errors = [];
-		svc.notifications = [];
+		// TODO make the field names less ridiculously inconsistent.  
 
-		svc.init = function() {
+		svc.init = function () {
 			svc.errors = [];
+			svc.notifications = [];
 		};
-		svc.error = function(exception, cause) {
+		svc.init();
+
+		svc.error = function (exception, cause) {
 			if (exception && exception.data) {
 				// API errors go here:
 				svc.errors.push({
 					"exception": exception,
 					"cause": exception.data.error
-					//"stack": exception.stack.toString()
+						//"stack": exception.stack.toString()
 				});
 			} else {
-				// generic error.  TODO show these too, but only in dev environment
+				// generic thrown javascript error.  TODO show these too, but only in dev environment (they're often not meaningful)
 				console.log(exception);
 			}
 		};
-		svc.notify = function(note) {
-			svc.notifications.push(note);
-			console.log(svc);
+
+		svc.notify = function (note) {
+			svc.notifications.push({
+				'text': note
+			});
 		};
+
 		return svc;
 	});
