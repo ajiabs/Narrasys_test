@@ -154,7 +154,6 @@ h4 {
 	bottom:0;
 	overflow-y:scroll;
 	-webkit-overflow-scrolling: touch;
-	background-color:#FFF;
 }
 #CONTAINER.touchDevice {
 	position:static;
@@ -246,7 +245,7 @@ Video
 	background-image: url('/images/buffering-overlay.png');
 	animation: delayedFadeIn 3s;
 }
-.videoMask.endofvideo {
+.videoMask.noicon {
 	background-image: none;
 }
 /* 

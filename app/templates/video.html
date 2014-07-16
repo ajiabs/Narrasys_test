@@ -1,14 +1,14 @@
 <div class="video">
-	<iframe id="ytplayer{{uid}}" ng-if="video.youtube" ng-src="{{video.youtube + '?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0'}}"></iframe>
-	<video ng-if="!video.youtube">
-		<source class="mpeg4" ng-if="video.mpeg4" ng-src="{{video.mpeg4}}" type="video/mp4" />
-		<source class="webm" ng-if="video.webm" ng-src="{{video.webm}}" type="video/webm" />
+	<iframe id="ytplayer{{uid}}" ng-if="video.urls.youtube" ng-src="{{video.urls.youtube + '?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0'}}"></iframe>
+	<video ng-if="!video.urls.youtube">
+		<source class="mpeg4" ng-if="video.urls.mpeg4" ng-src="{{video.urls.mpeg4}}" type="video/mp4" />
+		<source class="webm" ng-if="video.urls.webm" ng-src="{{video.urls.webm}}" type="video/webm" />
 		<p>Oh no! Your browser does not support the HTML5 Video element.</p>
 	</video>
 	<div ng-click="videoClick()" class="videoMask" ng-class="{
 		play: appState.timelineState == 'paused',
 		buffering: appState.timelineState == 'buffering',
 		firstplay: !appState.hasBeenPlayed,
-		endofvideo: appState.time == video.duration
-	}">
+		noicon: appState.time > video.urls.duration - 1
+	}"></div>
 </div>

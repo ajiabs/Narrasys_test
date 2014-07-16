@@ -7,7 +7,6 @@
 
 angular.module('com.inthetelling.story')
 	.controller('VideoController', function ($q, $scope, $timeout, $window, $document, appState, timelineSvc) {
-
 		// console.log("videoController instantiate");
 
 		// init youtube
@@ -26,7 +25,7 @@ angular.module('com.inthetelling.story')
 		});
 
 		$scope.initVideo = function (el) {
-			if ($scope.video.youtube) {
+			if ($scope.video.urls.youtube) {
 				$scope.videoType = 'youtube';
 				appState.videoType = $scope.videoType;
 				$scope.videoNode = el.find('iframe')[0];
@@ -119,7 +118,7 @@ angular.module('com.inthetelling.story')
 		// DO NOT CALL ANY OF THE BELOW DIRECTLY!
 		// Instead call via timelineSvc; otherwise the timeline won't know the video is playing 
 
-		// play doesn't start immediately! Need to return a promise so timelineSvc can wait until the video is actually playing
+		// play doesn't start immediately -- need to return a promise so timelineSvc can wait until the video is actually playing
 		$scope.play = function () {
 			var playDefer = $q.defer();
 
@@ -137,7 +136,6 @@ angular.module('com.inthetelling.story')
 					playDefer.resolve();
 				}
 			});
-
 			return playDefer.promise;
 		};
 

@@ -443,7 +443,7 @@ angular.module('com.inthetelling.story')
 
 			// console.log("video asset:", videoObject);
 
-			videoAsset.video = videoObject;
+			videoAsset.urls = videoObject;
 			return videoAsset;
 		};
 

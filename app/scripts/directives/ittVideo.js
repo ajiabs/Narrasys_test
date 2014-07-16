@@ -19,21 +19,17 @@ angular.module('com.inthetelling.story')
 				// console.log('ittVideo', scope);
 				scope.appState = appState;
 				scope.uid = ++uniqueDirectiveID;
-
 				$timeout(function () {
 					if (scope.video) {
 						scope.initVideo(element);
 					} else {
-						// episode data not here yet...
-						var episodeWatcher = scope.$watch(function () {
+						// episode data is not here yet...
+						var unwatch = scope.$watch(function () {
 							return scope.video;
-						}, function (a, b) {
-							if (a) {
-								// console.log("Registering video", a);
+						}, function (isReady) {
+							if (isReady) {
+								unwatch();
 								scope.initVideo(element);
-								episodeWatcher(); // stop watching;
-							} else {
-								// console.log("waiting", scope);
 							}
 						});
 					}

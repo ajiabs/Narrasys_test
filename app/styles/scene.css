@@ -341,8 +341,3 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		margin: 7% 25% 0 25%;
 	}
 }
-@media screen and (min-width: 1200px) {
-	.scene.centered .col {
-		margin: 7% 30% 0 30%;
-	}
-}

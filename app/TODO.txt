@@ -1,8 +1,7 @@
 
 
-Find out why videos are ending early
+video seek events should wait for buffering before timeline starts playing
 
-better handling of end of episode in general
 
 
 
@@ -37,7 +36,7 @@ Better handling for end of episode
 Find out why m3u8 was causing problems, fix it
 
 
-ModelSvc needs to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes) (or just do this inside producer.)
+ModelSvc may need to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes) (or just do this inside producer.)
 
 --------------------------------------------------------------------------------------------------------------------------------
 For USC:

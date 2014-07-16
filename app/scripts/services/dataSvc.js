@@ -326,7 +326,7 @@ angular.module('com.inthetelling.story')
 			};
 
 			var scenetemplateurls = [
-				"templates/scene/cornerV.html",
+				"templates/scene/centered.html",
 				"templates/scene/1col.html",
 				"templates/scene/2colL.html",
 				"templates/scene/2colR.html",
@@ -494,6 +494,7 @@ angular.module('com.inthetelling.story')
 				filltest.start_time = i * 5;
 				filltest.end_time = i * 5 + 5;
 				filltest.templateUrl = "templates/item/image-fill.html";
+				filltest.styles.push("fill");
 				modelSvc.cache("event", filltest);
 
 			}

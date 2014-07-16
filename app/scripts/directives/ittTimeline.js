@@ -13,8 +13,7 @@ angular.module('com.inthetelling.story')
 			templateUrl: "templates/timeline.html",
 			controller: "TimelineController",
 			link: function (scope, element, attrs) {
-				console.log('ittTimeline', scope, element, attrs);
-
+				// console.log('ittTimeline', scope, element, attrs);
 				scope.appState = appState;
 				scope.timeline = timelineSvc;
 				scope.handlePosition = 0; // position of draghandle (as a fraction of full timeline)
@@ -216,9 +215,8 @@ angular.module('com.inthetelling.story')
 
 				var initPlayheadEvents = function () {
 					// bind playhead events:
-					console.log("ittTimeline initPlayheadEvents");
+					// console.log("ittTimeline initPlayheadEvents");
 					var playhead = $(element.find('.playhead'));
-					console.log(playhead);
 					if (appState.isTouchDevice) {
 						playhead.on('touchstart.timeline', function (e) {
 							startSeek(e.originalEvent.targetTouches[0]);
