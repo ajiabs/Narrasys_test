@@ -62,7 +62,5 @@ angular.module('com.inthetelling.story')
 		}
 
 		console.log("appState:", svc);
-
 		return svc;
-
 	});

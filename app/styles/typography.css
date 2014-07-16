@@ -3,18 +3,21 @@
  * Default
  *
 //===========================*/
- body {
-	font-family:'Droid Sans', sans-serif
+
+body {
+	font-family: 'Droid Sans', sans-serif
 }
 a {
 	text-decoration: none;
 }
 /* TODO see what these were in pre-4.0 */
- .title {
+
+.title {
 	font-size: 1.2em;
 	line-height: 1em;
 }
-.authorName, .category {
+.authorName,
+.category {
 	font-size: 0.8em;
 	font-weight: 700
 }
@@ -23,11 +26,13 @@ a {
  * typographySerif
  *
 //===========================*/
- .typographySerif {
-	font-family:'Droid Serif', serif
+
+.typographySerif {
+	font-family: 'Droid Serif', serif
 }
-.typographySerif .category, .typographySerif .displayTime {
-	font-family:'Droid Sans', sans-serif
+.typographySerif .category,
+.typographySerif .displayTime {
+	font-family: 'Droid Sans', sans-serif
 }
 /*============================
  *
@@ -42,19 +47,20 @@ a {
  * typographyBook
  *
 //===========================*/
- .typographyBook {
-	font-family:'EB Garamond', Garamond, serif;
-	
-	
+
+.typographyBook {
+	font-family: 'EB Garamond', Garamond, serif;
 }
 /*============================
  *
  * typographySwiss
  *
 //===========================*/
- .typographySwiss {
-	font-family:'Roboto', sans-serif;
+
+.typographySwiss {
+	font-family: 'Roboto', sans-serif;
 }
-.typographySwiss .authorName, .typographySwiss .title {
+.typographySwiss .authorName,
+.typographySwiss .title {
 	font-weight: 300
 }

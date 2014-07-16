@@ -53,7 +53,7 @@ angular.module('com.inthetelling.story')
 					$scope.framebreakerUrl = url;
 					try {
 						window.open(url).focus();
-					} catch(e) {
+					} catch (e) {
 						errorSvc.notify("Your web browser has a popup blocker enabled, which has prevented us from opening this episode in a new window automatically.  Please click the 'new window' again; it will work this time. (Sorry for the inconvenience!)   If you wish, you can change your browser settings to allow popup windows for this website.");
 					}
 				});

@@ -11,10 +11,12 @@
  * default
  *
 //===========================*/
- .altPane {
+
+.altPane {
 	background-color: rgba(0, 0, 0, 0.05);
 }
-a, a:visited {
+a,
+a:visited {
 	color: #00C
 }
 /*============================
@@ -22,7 +24,8 @@ a, a:visited {
  * colorInvert
  *
 //===========================*/
- .colorInvert {
+
+.colorInvert {
 	color: #DDD;
 	background-color: #000;
 }
@@ -38,16 +41,19 @@ a, a:visited {
  * colorSepia
  *
 //===========================*/
- .colorSepia {
+
+.colorSepia {
 	color: #4B4235;
 }
-.episode.colorSepia, .scene.colorSepia {
+.episode.colorSepia,
+.scene.colorSepia {
 	background-color: #EFE0C8;
 }
 .colorSepia a {
 	color: #B7521E;
 }
-.colorInvert .colorSepia, .colorSepia .colorInvert {
+.colorInvert .colorSepia,
+.colorSepia .colorInvert {
 	color: #EFE0C8;
 }
 /*============================
@@ -55,18 +61,19 @@ a, a:visited {
  * colorSolarized
  *
 //===========================*/
- .colorSolarized {
+
+.colorSolarized {
 	color: #586E75;
 }
-.episode.colorSolarized, .scene.colorSolarized {
+.episode.colorSolarized,
+.scene.colorSolarized {
 	background-color: #EFE0C8;
 }
-.colorSolarized .altPane {
-}
-.colorSolarized a {
+.colorSolarized .altPane {} .colorSolarized a {
 	color: #288CD2;
 }
-.colorInvert .colorSolarized, .colorSolarized .colorInvert {
+.colorInvert .colorSolarized,
+.colorSolarized .colorInvert {
 	color: #EFE0C8
 }
 /*============================
@@ -74,10 +81,12 @@ a, a:visited {
  * colorVivid
  *
 //===========================*/
- .colorVivid {
+
+.colorVivid {
 	color: #595959;
 }
-.episode.colorVivid, .scene.colorVivid {
+.episode.colorVivid,
+.scene.colorVivid {
 	background-color: rgba(224, 240, 210, 0.5);
 }
 .colorVivid a {

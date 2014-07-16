@@ -6,7 +6,8 @@
 */
 
 /* Misc useful keyframes */
- @keyframes fadeOut {
+
+@keyframes fadeOut {
 	0% {
 		opacity: 1;
 	}
@@ -58,7 +59,10 @@ Transition time should be set for the specific object type
  */
 
 /* disabling the height animation for now; looks bad in Safari. TODO fix in safari */
-.animate.ng-enter, .animate.ng-leave, .animate.ng-move {
+
+.animate.ng-enter,
+.animate.ng-leave,
+.animate.ng-move {
 	transition: all ease-in-out 0.5s;
 }
 .content .animate.ng-enter {
@@ -69,14 +73,15 @@ Transition time should be set for the specific object type
 }
 .content .animate.ng-leave {
 	/*max-height:100px;*/
-	display:block !important;
+	display: block !important;
 }
 .content .animate.ng-leave.ng-leave-active {
 	/*max-height:0;*/
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionFade */
- .animate.ng-enter.transitionFade {
+
+.animate.ng-enter.transitionFade {
 	opacity: 0;
 }
 .animate.ng-enter-active.transitionFade {
@@ -90,7 +95,8 @@ Transition time should be set for the specific object type
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionSlideL */
- .animate.ng-enter.transitionSlideL {
+
+.animate.ng-enter.transitionSlideL {
 	transform: translateX(50px);
 	opacity: 0;
 }
@@ -108,7 +114,8 @@ Transition time should be set for the specific object type
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionSlideR */
- .animate.ng-enter.transitionSlideR {
+
+.animate.ng-enter.transitionSlideR {
 	transform: translateX(-50px);
 	opacity: 0;
 }
@@ -126,7 +133,8 @@ Transition time should be set for the specific object type
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionPop */
- .animate.ng-enter.transitionPop {
+
+.animate.ng-enter.transitionPop {
 	transform: scale(0.9);
 	opacity: 0;
 }

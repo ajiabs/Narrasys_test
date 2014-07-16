@@ -4,7 +4,7 @@
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function($interval, $filter, config, appState) {
+	.factory('modelSvc', function ($interval, $filter, config, appState) {
 
 		var svc = {};
 
@@ -20,7 +20,7 @@ angular.module('com.inthetelling.story')
 		// TODO discard unused fields before cacheing
 
 		// use angular.extend if an object already exists, so we don't lose existing bindings
-		svc.cache = function(cacheType, item) {
+		svc.cache = function (cacheType, item) {
 			if (cacheType === 'episode') {
 				if (svc.episodes[item._id]) {
 					angular.extend(svc.episodes[item._id], svc.deriveEpisode(angular.copy(item)));
@@ -48,7 +48,6 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-
 		// update template paths from v1.  This is temporary until I have the set of new templates nailed down
 		// and have figured out which can be merged or etc; then we can update the values in the database
 		var updateTemplates = {
@@ -58,7 +57,6 @@ angular.module('com.inthetelling.story')
 			"templates/episode-gw.html": "templates/episode/gw.html",
 			"templates/episode-purdue.html": "templates/episode/purdue.html",
 			"templates/episode-tellingstory.html": "templates/episode/story.html",
-
 
 			"templates/scene-1col.html": "templates/scene/1col.html",
 			"templates/scene-2colL.html": "templates/scene/2colL.html",
@@ -105,26 +103,25 @@ angular.module('com.inthetelling.story')
 		// Input API data, output API data plus clientside-only convenience variables.
 		// Should call this after making any changes to the underlying data.
 
-		svc.deriveEpisode = function(episode) {
+		svc.deriveEpisode = function (episode) {
 			// console.log("deriveEpisode:", episode);
 			if (updateTemplates[episode.templateUrl]) {
 				episode.origTemplateUrl = episode.templateUrl; // TEMPORARY
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
 			// Attach episode title and description to the landing screen event:
-			svc.events["internal:landingscreen:"+episode._id].title = episode.title;
+			svc.events["internal:landingscreen:" + episode._id].title = episode.title;
 
 			return episode;
 		};
 
-		svc.deriveAsset = function(asset) {
+		svc.deriveAsset = function (asset) {
 			// console.log("deriveAsset:", asset);
 			if (asset._type === "Asset::Video") {
 				asset = resolveVideo(asset);
 			}
 			return asset;
 		};
-
 
 		// TODO there are some hacky dependencies on existing templateUrls which really ought to become
 		// separate data fields in their own right:  
@@ -152,7 +149,7 @@ angular.module('com.inthetelling.story')
 					secondary image URL (speaker icon)
 */
 
-		svc.deriveEvent = function(event) {
+		svc.deriveEvent = function (event) {
 			if (event._type !== 'Scene') {
 				//items
 				// determine whether the item is in a regular content pane.
@@ -218,12 +215,12 @@ angular.module('com.inthetelling.story')
 		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but 
 		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them:
 		*/
-		svc.resolveEpisodeEvents = function(epId) {
+		svc.resolveEpisodeEvents = function (epId) {
 			// console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
-			angular.forEach(svc.events, function(event) {
+			angular.forEach(svc.events, function (event) {
 				if (event.episode_id !== epId) {
 					return;
 				}
@@ -235,20 +232,20 @@ angular.module('com.inthetelling.story')
 			});
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
-			svc.episodes[epId].scenes = scenes.sort(function(a, b) {
+			svc.episodes[epId].scenes = scenes.sort(function (a, b) {
 				return a.start_time - b.start_time;
 			});
 			// and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
-			svc.episodes[epId].items = items.sort(function(a, b) {
+			svc.episodes[epId].items = items.sort(function (a, b) {
 				return a.start_time - b.start_time;
 			});
 
 			// give items their scene_id:
-			angular.forEach(scenes, function(scene) {
+			angular.forEach(scenes, function (scene) {
 				// for each item, if start time is between scene start and end, give it its sceneId
 
 				var sceneItems = [];
-				angular.forEach(items, function(event) {
+				angular.forEach(items, function (event) {
 					if (event.start_time >= scene.start_time && event.start_time < scene.end_time) {
 						svc.events[event._id].scene_id = scene._id;
 						sceneItems.push(event);
@@ -256,14 +253,14 @@ angular.module('com.inthetelling.story')
 				});
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
-				svc.events[scene._id].items = sceneItems.sort(function(a, b) {
+				svc.events[scene._id].items = sceneItems.sort(function (a, b) {
 					return a.start_time - b.start_time;
 				});
 			});
 
 			// Now that we have the structure, calculate event styles (for scenes and items:)
 			svc.episodes[epId].styleCss = cascadeStyles(svc.episodes[epId]);
-			angular.forEach(svc.events, function(event) {
+			angular.forEach(svc.events, function (event) {
 				if (event.episode_id !== epId) {
 					return;
 				}
@@ -274,7 +271,7 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
-		svc.episode = function(epId) {
+		svc.episode = function (epId) {
 			if (!svc.episodes[epId]) {
 				console.warn("called modelSvc.episode for a nonexistent ID", epId);
 			}
@@ -282,10 +279,10 @@ angular.module('com.inthetelling.story')
 		};
 
 		// returns all scenes and items for a given episode
-		svc.episodeEvents = function(epId) {
+		svc.episodeEvents = function (epId) {
 			// console.log("modelSvc.episodeEvents");
 			var ret = [];
-			angular.forEach(svc.events, function(event) {
+			angular.forEach(svc.events, function (event) {
 				if (event.episode_id !== epId) {
 					return;
 				}
@@ -294,7 +291,7 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 
-		svc.scene = function(sceneId) {
+		svc.scene = function (sceneId) {
 			// console.log("modelsvc.scene: ", sceneId);
 			if (!svc.events[sceneId]) {
 				console.warn("called modelSvc.scene for a nonexistent ID", sceneId);
@@ -306,7 +303,7 @@ angular.module('com.inthetelling.story')
 		// Styles with these prefixes are the only ones that get passed down to children, and only if there isn't
 		// one with the same prefix on the child.
 		// typography, color, highlight, timestamp, transition
-		var cascadeStyles = function(thing) {
+		var cascadeStyles = function (thing) {
 			var styleCategories = { // used to keep track of what categories the thing is already using:
 				"typography": false,
 				"color": false,
@@ -317,9 +314,9 @@ angular.module('com.inthetelling.story')
 			var cssArr = [];
 
 			// start with the thing's own styles
-			angular.forEach(thing.styles, function(style) {
+			angular.forEach(thing.styles, function (style) {
 				cssArr.push(style); // keep all styles; not just the ones in a styleCategory
-				angular.forEach(styleCategories, function(categoryValue, categoryName) {
+				angular.forEach(styleCategories, function (categoryValue, categoryName) {
 					if (style.indexOf(categoryName) === 0) {
 						styleCategories[categoryName] = style;
 					}
@@ -329,8 +326,8 @@ angular.module('com.inthetelling.story')
 			// add each sceneStyle, only if it is in a styleCategory the thing isn't already using
 			if (thing.scene_id) {
 				var sceneStyles = svc.events[thing.scene_id].styles;
-				angular.forEach(sceneStyles, function(style) {
-					angular.forEach(styleCategories, function(categoryValue, categoryName) {
+				angular.forEach(sceneStyles, function (style) {
+					angular.forEach(styleCategories, function (categoryValue, categoryName) {
 						if (!styleCategories[categoryName] && style.indexOf(categoryName) === 0) {
 							cssArr.push(style);
 							styleCategories[categoryName] = style;
@@ -342,8 +339,8 @@ angular.module('com.inthetelling.story')
 			// add each episodeStyle, only if it is in a styleCategory the thing isn't already using
 			if (thing.episode_id) {
 				var episodeStyles = svc.episodes[thing.episode_id].styles;
-				angular.forEach(episodeStyles, function(style) {
-					angular.forEach(styleCategories, function(categoryValue, categoryName) {
+				angular.forEach(episodeStyles, function (style) {
+					angular.forEach(styleCategories, function (categoryValue, categoryName) {
 						if (!styleCategories[categoryName] && style.indexOf(categoryName) === 0) {
 							cssArr.push(style);
 						}
@@ -354,9 +351,9 @@ angular.module('com.inthetelling.story')
 			return cssArr.join(' ');
 		};
 
-		svc.resolveEpisodeAssets = function(episodeId) {
+		svc.resolveEpisodeAssets = function (episodeId) {
 			// console.log("resolveEpisodeAssets", episodeId);
-			angular.forEach(svc.events, function(item) {
+			angular.forEach(svc.events, function (item) {
 				if (item.episode_id !== episodeId) {
 					return;
 				}
@@ -373,7 +370,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		// TODO: Future episodes should have this as an available scene template instead 
-		svc.addLandingScreen = function(episodeId) {
+		svc.addLandingScreen = function (episodeId) {
 			// console.log("add landing screen", episodeId);
 			// create a new scene event for this episode
 			svc.events["internal:landingscreen:" + episodeId] = {
@@ -387,7 +384,7 @@ angular.module('com.inthetelling.story')
 			};
 		};
 
-		var resolveVideo = function(videoAsset) {
+		var resolveVideo = function (videoAsset) {
 			var videoObject = {};
 			if (videoAsset.alternate_urls) {
 				// This will eventually replace the old method below.
@@ -400,15 +397,15 @@ angular.module('com.inthetelling.story')
 						videoObject.youtube = embeddableYoutubeUrl(videoAsset.alternate_urls[i]);
 					} else {
 						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
-							case "mp4":
-								videoObject.mpeg4 = _chooseVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
-								break;
-							case "m3u8":
-								videoObject.m3u8 = _chooseVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
-								break;
-							case "webm":
-								videoObject.webm = _chooseVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
-								break;
+						case "mp4":
+							videoObject.mpeg4 = _chooseVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
+							break;
+						case "m3u8":
+							videoObject.m3u8 = _chooseVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
+							break;
+						case "webm":
+							videoObject.webm = _chooseVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
+							break;
 						}
 					}
 				}
@@ -450,7 +447,7 @@ angular.module('com.inthetelling.story')
 			return videoAsset;
 		};
 
-		var embeddableYoutubeUrl = function(origUrl) {
+		var embeddableYoutubeUrl = function (origUrl) {
 			// regexp to extract the ID from a youtube
 			if (!origUrl) {
 				return undefined;
@@ -464,7 +461,7 @@ angular.module('com.inthetelling.story')
 		// If one is empty, return the other; otherwise checks for a WxH portion in two
 		// filenames; returns whichever is bigger (on desktop) or smaller (on mobile or when in an iframe).
 
-		var _chooseVideoAsset = function(a, b) {
+		var _chooseVideoAsset = function (a, b) {
 			if (!a && b) {
 				return b;
 			}

@@ -11,7 +11,7 @@
 	position: relative;
 }
 .timeline a {
-	color:#000;
+	color: #000;
 	cursor: pointer;
 	cursor: hand;
 }
@@ -19,16 +19,16 @@
 	margin-left: 4em;
 	position: relative;
 }
-.pbarTop, .pbarBottom {
+.pbarTop,
+.pbarBottom {
 	margin: 0.2em 2em 0.2em 4em;
 	height: 1.5em;
 	line-height: 1.5em;
-	clear:both;
-	text-align:right;
-
+	clear: both;
+	text-align: right;
 }
 .pbarMain {
-	height:1em;
+	height: 1em;
 }
 .progressbarBox .button {
 	display: inline-block;
@@ -37,19 +37,18 @@
 	overflow: hidden;
 }
 .pbarTop .button {
-	padding-left:1em;
+	padding-left: 1em;
 }
 .pbarBottom .button {
-	padding-right:1em;
+	padding-right: 1em;
 }
-
 .timedisplay {
-	float:left;
+	float: left;
 	font-size: 0.8em;
-	margin-top:-0.4em;
+	margin-top: -0.4em;
 }
 .progressbar {
-	position:absolute;
+	position: absolute;
 	left: 4em;
 	right: 2em;
 	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.2) inset;
@@ -57,7 +56,7 @@
 	width: auto;
 	height: 1em;
 	background-color: rgba(0, 0, 0, 0.2);
-	user-select:none;
+	user-select: none;
 }
 .progressbar .mask {
 	height: 1em;
@@ -71,7 +70,10 @@
 	width: 100%;
 	border-radius: 0 0.5em 0.5em 0;
 }
-.progressbar .played, .progressbar .buffered, .progressbar .handle, .progressbar .marker {
+.progressbar .played,
+.progressbar .buffered,
+.progressbar .handle,
+.progressbar .marker {
 	position: absolute;
 	height: 1em;
 }
@@ -97,7 +99,7 @@
 	margin-left: -0.5em;
 }
 .progressbar .marker:before {
-	content:"\e007";
+	content: "\e007";
 	font-family: Story;
 	position: absolute;
 }
@@ -124,20 +126,21 @@
 	position: absolute;
 	width: 9px;
 	left: 50%;
-	margin-left:-5px;
+	margin-left: -5px;
 }
 .timeline .handle .tip {
 	font-size: smaller;
 	top: -1em;
-	position:absolute;
+	position: absolute;
 	width: 50px;
 	margin-left: -25px;
 	text-align: center;
 }
-.button-prev, .button-next {
+.button-prev,
+.button-next {
 	width: 1.5em;
 	font-size: 1.3em;
-	margin-top:-0.15em;
+	margin-top: -0.15em;
 	height: 1em;
 }
 .button-scenemenu {
@@ -147,132 +150,134 @@
 	width: 2em;
 }
 .button-prev {
-	position:absolute;
-	left:0;
+	position: absolute;
+	left: 0;
 }
 .button-next {
-	position:absolute;
-	right:0;
+	position: absolute;
+	right: 0;
 }
 .button-scenemenu {
-	position:absolute;
-	left:2em;
+	position: absolute;
+	left: 2em;
 }
 .button-prev:before {
-	content:"\e601";
+	content: "\e601";
 	font-family: Story;
 }
 .button-next:before {
 	font-family: Story;
-	content:"\e600";
+	content: "\e600";
 }
 .button-scenemenu:before {
-	content:"\e605";
+	content: "\e605";
 	font-family: Story;
 	font-size: 0.6em;
 	padding-left: 1em;
 	padding-top: 0.3em;
 	position: absolute;
 }
-.button-play, .button-pause {
-	position:absolute;
+.button-play,
+.button-pause {
+	position: absolute;
 	cursor: pointer;
 	font-size: 2em;
 	height: 2.2em;
-	line-height:2.2em;
+	line-height: 2.2em;
 	left: 0.5em;
 	bottom: 0;
 }
 .button-play:before {
 	font-family: Story;
-	content:"\e001";
+	content: "\e001";
 }
 .button-pause:before {
 	font-family: Story;
-	content:"\e002";
+	content: "\e002";
 }
 .button-mute {
-	padding-right:0 !important;
+	padding-right: 0 !important;
 }
 .button-mute.muted:before {
-	font-family:Story;
-	content:"\e003";
+	font-family: Story;
+	content: "\e003";
 }
 .button-mute.vol0:before {
-	font-family:Story;
-	content:"\e004";
+	font-family: Story;
+	content: "\e004";
 }
 .button-mute.vol1:before {
-	font-family:Story;
-	content:"\e005";
+	font-family: Story;
+	content: "\e005";
 }
 .button-mute.vol2:before {
-	font-family:Story;
-	content:"\e006";
+	font-family: Story;
+	content: "\e006";
 }
 .button-captions {
 	padding-right: 0.5em;
 }
 .button-captions:before {
-	font-family:Story;
-	content:"\e008";
-	color:#CCC;
+	font-family: Story;
+	content: "\e008";
+	color: #CCC;
 }
 .button-captions.active:before {
-	color:#000;
+	color: #000;
 }
 .button-fullscreen {
 	padding-right: 0.5em;
 }
 .button-fullscreen:before {
-	font-family:Story;
-	content:"\e606";
+	font-family: Story;
+	content: "\e606";
 }
 .button-fullscreen.active:before {
-	content:"\e608";
+	content: "\e608";
 }
 .button-speedcontrol {
-	margin-left:1.5em;
+	margin-left: 1.5em;
 }
 .button-speedcontrol:after {
-	font-family:Story;
-	content:"\e009";
+	font-family: Story;
+	content: "\e009";
 }
-.button-zoomout, .button-zoomin {
-	height:1em;
-	overflow:hidden;
-	display:inline-block;
+.button-zoomout,
+.button-zoomin {
+	height: 1em;
+	overflow: hidden;
+	display: inline-block;
 }
 .button-zoomout:before {
-	font-family:Story;
-	content:"\e60e";
+	font-family: Story;
+	content: "\e60e";
 }
 .button-zoomin:before {
-	font-family:Story;
-	content:"\e60d";
+	font-family: Story;
+	content: "\e60d";
 }
 .volumebar {
-	position:relative;
-	display:inline-block;
+	position: relative;
+	display: inline-block;
 	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.2) inset;
 	border-radius: 0.5em;
 	width: 4em;
 	height: 0.5em;
 	margin: 0.25em 0 0.25em 0.5em;
 	background-color: rgba(0, 0, 0, 0.2);
-	user-select:none;
-	overflow:hidden;
+	user-select: none;
+	overflow: hidden;
 }
 .volumebar .volume {
-	position:absolute;
+	position: absolute;
 	height: 1em;
 	background: #555 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
 .sceneMenuTooltip {
-	left:6em;
-	top:-1em;
+	left: 6em;
+	top: -1em;
 }
 .sceneMenuTooltip .tooltip-arrow {
-	left:33%;
-	bottom:27px;
+	left: 33%;
+	bottom: 27px;
 }

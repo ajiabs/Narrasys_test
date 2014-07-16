@@ -1,26 +1,25 @@
 'use strict';
 
-// Some of these filters are unnecessary, and need to make up my mind about 'foo' versus 'isFoo'
-
+// TODO make up my mind about 'foo' versus 'isFoo'
 
 angular.module('com.inthetelling.story')
 
 /* List filters */
-.filter('itemLayout', function() {
-	return function(items, layout) {
-		var ret = [];
-		angular.forEach(items, function(item) {
-			if (item.layouts && item.layouts[0] === layout) {
-				ret.push(item);
-			}
-		});
-		return ret;
-	};
-})
-	.filter('annotation', function() {
-		return function(items) {
+.filter('itemLayout', function () {
+		return function (items, layout) {
 			var ret = [];
-			angular.forEach(items, function(item) {
+			angular.forEach(items, function (item) {
+				if (item.layouts && item.layouts[0] === layout) {
+					ret.push(item);
+				}
+			});
+			return ret;
+		};
+	})
+	.filter('annotation', function () {
+		return function (items) {
+			var ret = [];
+			angular.forEach(items, function (item) {
 				if (item._type === 'Annotation') {
 					ret.push(item);
 				}
@@ -28,10 +27,10 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('transmedia', function() {
-		return function(items) {
+	.filter('transmedia', function () {
+		return function (items) {
 			var ret = [];
-			angular.forEach(items, function(item) {
+			angular.forEach(items, function (item) {
 				if (item._type !== 'Annotation') {
 					ret.push(item);
 				}
@@ -39,10 +38,10 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('transcript', function() {
-		return function(items) {
+	.filter('transcript', function () {
+		return function (items) {
 			var ret = [];
-			angular.forEach(items, function(item) {
+			angular.forEach(items, function (item) {
 				if (item.isTranscript) {
 					ret.push(item);
 				}
@@ -50,10 +49,10 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('isCurrent', function() {
-		return function(items) {
+	.filter('isCurrent', function () {
+		return function (items) {
 			var ret = [];
-			angular.forEach(items, function(item) {
+			angular.forEach(items, function (item) {
 				if (item.isCurrent) {
 					ret.push(item);
 				}
@@ -61,10 +60,10 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('isContent', function() {
-		return function(items) {
+	.filter('isContent', function () {
+		return function (items) {
 			var ret = [];
-			angular.forEach(items, function(item) {
+			angular.forEach(items, function (item) {
 				if (item.isContent) {
 					ret.push(item);
 				}
@@ -72,11 +71,11 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('transcriptandrequired', function() {
+	.filter('transcriptandrequired', function () {
 		// returns transcript AND required transmedia:
-		return function(items) {
+		return function (items) {
 			var ret = [];
-			angular.forEach(items, function(item) {
+			angular.forEach(items, function (item) {
 				if (item.isTranscript || item.required) {
 					ret.push(item);
 				}
@@ -84,11 +83,11 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('transcriptandoptional', function() {
+	.filter('transcriptandoptional', function () {
 		// returns transcript AND optional transmedia
-		return function(items) {
+		return function (items) {
 			var ret = [];
-			angular.forEach(items, function(item) {
+			angular.forEach(items, function (item) {
 				if (item.isTranscript || (!item.isTranscript && !item.required)) {
 					ret.push(item);
 				}
@@ -96,11 +95,11 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('required', function() {
+	.filter('required', function () {
 		// returns only required transmedia (no transcript):
-		return function(items) {
+		return function (items) {
 			var ret = [];
-			angular.forEach(items, function(item) {
+			angular.forEach(items, function (item) {
 				if (!item.isTranscript && item.required) {
 					ret.push(item);
 				}
@@ -108,11 +107,11 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('optional', function() {
+	.filter('optional', function () {
 		// returns only optional transmedia (no transcript)
-		return function(items) {
+		return function (items) {
 			var ret = [];
-			angular.forEach(items, function(item) {
+			angular.forEach(items, function (item) {
 				if (!item.isTranscript && !item.required) {
 					ret.push(item);
 				}
@@ -120,7 +119,7 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-/* Single filters */
+	/* Single filters */
 
 /*
 .filter('trustAsHtml', function($sce) {
@@ -129,8 +128,8 @@ angular.module('com.inthetelling.story')
 	};
 })
 */
-	.filter('highlightSubstring', function() {
-		return function(text, search) {
+.filter('highlightSubstring', function () {
+		return function (text, search) {
 			// console.log("Search highlight",text,search);
 			if (!text) {
 				return;
@@ -142,18 +141,18 @@ angular.module('com.inthetelling.story')
 			}
 		};
 	})
-	.filter('pretty', function() {
-		return function(json) {
+	.filter('pretty', function () {
+		return function (json) {
 			return JSON.stringify(json, undefined, 2);
 		};
 	})
-	.filter('asPercent', function() {
-		return function(n) {
+	.filter('asPercent', function () {
+		return function (n) {
 			return isNaN(n) ? (Math.floor(n * 100)) + "%" : '0%';
 		};
 	})
-	.filter('asTime', function() {
-		return function(t) {
+	.filter('asTime', function () {
+		return function (t) {
 			return isNaN(t) ? "0:00" : Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
 		};
 	});

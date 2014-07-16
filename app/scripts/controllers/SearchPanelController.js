@@ -2,7 +2,7 @@
 
 // Controller for the search panel results
 angular.module('com.inthetelling.story')
-	.controller('SearchPanelController', function($scope, timelineSvc) {
+	.controller('SearchPanelController', function ($scope, timelineSvc) {
 
 		// map which we could in future also bind to user selection of types.
 		// TODO should use categories instead of item "type".  But to do that we need to define categories
@@ -22,15 +22,15 @@ angular.module('com.inthetelling.story')
 		// default sort order
 		$scope.sortBy = "startTime";
 
-		$scope.seek = function(t, eventID) {
+		$scope.seek = function (t, eventID) {
 			$scope.enableAutoscroll(); // in playerController
 			timelineSvc.seek(t, "clickedOnEventInSearch", eventID);
 		};
 
 		// generate searchable text for the episode (on demand).
 		// TODO handle more than one episode.....
-		$scope.indexEvents = function() {
-			angular.forEach($scope.episode.items, function(item) {
+		$scope.indexEvents = function () {
+			angular.forEach($scope.episode.items, function (item) {
 				item.searchableText = (item.annotation || item.description) + " " + (item.title || item.annotator);
 			});
 		};

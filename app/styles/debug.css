@@ -1,16 +1,17 @@
 /* Temporary, just for testing transitions: */
- .debug {
-	position:fixed;
-	z-index:99;
+
+.debug {
+	position: fixed;
+	z-index: 99;
 	top: 5px;
 	left: 40%
 }
 .debugPane {
-	position:fixed;
+	position: fixed;
 	top: 50px;
 	left: 50px;
 	width: 50%;
 	height: 50%;
-	overflow:scroll;
-	background-color:#FFF;
+	overflow: scroll;
+	background-color: #FFF;
 }

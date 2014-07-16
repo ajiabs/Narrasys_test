@@ -9,16 +9,13 @@
 // badge template ID is 53a1d0672442bd95b1000002
 // m/c template id is 539a07ee2442bd20bf000006
 
-
 //  use PUT to update, POST to create new   
 // for assets, DELETE then POST
 // Wrap events in event: {}   same for other things?  template didn't seem to need it
 
-
 angular.module('com.inthetelling.story')
-	.factory('producerSvc', function($q, $http, $routeParams, $timeout, config) {
+	.factory('producerSvc', function ($q, $http, $routeParams, $timeout, config) {
 		var svc = {};
-
 
 		// svc.createTemplate = function() {
 		// 	$http({
@@ -35,7 +32,6 @@ angular.module('com.inthetelling.story')
 		// 		console.log("Failed to create template", data, status, headers);
 		// 	});
 		// };
-
 
 		// svc.deleteEvent = function() {
 		// 	$http({
@@ -77,7 +73,6 @@ angular.module('com.inthetelling.story')
 		// 		},
 		// 		template_id: "539a07ee2442bd20bf000006"
 		// 	};
-
 
 		// 	$http({
 		// 		method: 'POST',
@@ -178,19 +173,17 @@ angular.module('com.inthetelling.story')
 		// 	});
 		// };
 
-
-		svc.storeEvent = function(eventData) {
+		svc.storeEvent = function (eventData) {
 			console.log("TODO");
 		};
 
-		svc.storeEpisode = function(episodeData) {
+		svc.storeEpisode = function (episodeData) {
 			console.log("TODO");
 		};
 
-		svc.storeAsset = function(assetData) {
+		svc.storeAsset = function (assetData) {
 			console.log("TODO");
 		};
-
 
 		return svc;
 	});

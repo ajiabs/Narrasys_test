@@ -1,13 +1,6 @@
 'use strict';
 
 /* 
-
-TODO:
-		There are 2 new fields that get returned with the get_access_token call.  They are as follows:  "track_event_actions":true  and "track_episode_metrics":true
-		Please use those to determine whether or not we should be tracking data about users.  They default to true but will give us the ability to override this behavior at the customer or user level.  User level takes precedence.
-
-
-
 There are two separate types of user activity to capture, which go to separate API endpoints.
 Some types must contain additional info in a "data" object:
 
@@ -26,23 +19,21 @@ episode activity:
 												playbackRate: 1
 	search (TODO)				(search is incremental, so will have to think about how/when to capture this)
 
-
 event activity: captures interaction with specific transmedia items ("events").
 Different types of event can define their own interactions, but the core ones will be
 	viewed						player reached the event's start_time by any method
 	interacted				user clicked a transmedia link, for example
 	completed					up to the transmedia item to define what constitutes "completion"
-
 */
 
 angular.module('com.inthetelling.story')
-	.factory('analyticsSvc', function($q, $http, $routeParams, $interval, config, appState) {
+	.factory('analyticsSvc', function ($q, $http, $routeParams, $interval, config, appState) {
 		// console.log('analyticsSvc factory');
 		var svc = {};
 
 		svc.activityQueue = []; // contains events not yet sent to the server.
 
-		var flusher = $interval(function() {
+		var flusher = $interval(function () {
 			svc.flushActivityQueue();
 		}, 10000);
 
@@ -53,7 +44,7 @@ angular.module('com.inthetelling.story')
 		}
 
 		// for episode-related activity
-		svc.captureEpisodeActivity = function(name, data) {
+		svc.captureEpisodeActivity = function (name, data) {
 			if (!appState.user.track_episode_metrics) {
 				return;
 			}
@@ -69,7 +60,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		// for transmedia-related activity
-		svc.captureEventActivity = function(name, eventID, data) {
+		svc.captureEventActivity = function (name, eventID, data) {
 			if (!appState.user.track_event_actions) {
 				return;
 			}
@@ -81,15 +72,15 @@ angular.module('com.inthetelling.story')
 		};
 
 		// read from API:
-		svc.readEpisodeActivity = function(epId) {
+		svc.readEpisodeActivity = function (epId) {
 			var defer = $q.defer();
 			$http({
 				method: 'GET',
 				url: config.apiDataBaseUrl + '/v2/episodes/' + epId + '/episode_user_metrics'
-			}).success(function(respData, respStatus, respHeaders) {
+			}).success(function (respData, respStatus, respHeaders) {
 				// console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
 				defer.resolve(respData);
-			}).error(function(respData, respStatus, respHeaders) {
+			}).error(function (respData, respStatus, respHeaders) {
 				// console.log("read episode activity ERROR", respData, respStatus, respHeaders);
 				defer.reject();
 			});
@@ -98,12 +89,12 @@ angular.module('com.inthetelling.story')
 
 		// if activityType is omitted, returns all user data for that event id
 		// if it's included, returns true if the user has at least once triggered that activityType, false if not
-		svc.readEventActivity = function(eventId, activityType) {
+		svc.readEventActivity = function (eventId, activityType) {
 			var defer = $q.defer();
 			$http({
 				method: 'GET',
 				url: config.apiDataBaseUrl + '/v2/events/' + eventId + '/event_user_actions'
-			}).success(function(respData, respStatus, respHeaders) {
+			}).success(function (respData, respStatus, respHeaders) {
 				// console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
 				if (activityType) {
 					var matchedType = false;
@@ -118,15 +109,14 @@ angular.module('com.inthetelling.story')
 					// no activityType specified so return everything:
 					defer.resolve(respData);
 				}
-			}).error(function(respData, respStatus, respHeaders) {
+			}).error(function (respData, respStatus, respHeaders) {
 				// console.log("read event activity ERROR", respData, respStatus, respHeaders);
 				defer.reject();
 			});
 			return defer.promise;
 		};
 
-
-		svc.flushActivityQueue = function() {
+		svc.flushActivityQueue = function () {
 			// console.log("flush interval");
 			if (svc.activityQueue.length === 0) {
 				return;
@@ -138,7 +128,7 @@ angular.module('com.inthetelling.story')
 			var episodeUserMetrics = [];
 			var eventUserActions = [];
 
-			angular.forEach(actions, function(action) {
+			angular.forEach(actions, function (action) {
 				action.age = (now - action.walltime) / 1000;
 				delete action.walltime;
 				if (action.event_id) {
@@ -165,16 +155,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		// This is not a general-purpose function, it's only for the analytics endpoints
-		var post = function(endpoint, endpointData) {
+		var post = function (endpoint, endpointData) {
 			$http({
 				method: 'POST',
 				url: config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + endpoint,
 				data: endpointData
-			}).success(function(respData, respStatus, respHeaders) {
-				// console.log("SUCCESS", respData, respStatus, respHeaders);
-
-			}).error(function(respData, respStatus, respHeaders) {
-				// console.log("ERROR", respData, respStatus, respHeaders);
 			});
 		};
 

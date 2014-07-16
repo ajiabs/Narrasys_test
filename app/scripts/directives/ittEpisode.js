@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisode', function(analyticsSvc) {
+	.directive('ittEpisode', function (analyticsSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
 			template: '<span ng-include="episode.templateUrl"></span>',
 			controller: 'EpisodeController',
-			link: function(scope, element, attrs) {
+			link: function (scope, element, attrs) {
 				// console.log('ittEpisode', scope, element, attrs);
 
 				// TODO: this will break if the timeline and the episode timeline don't match.

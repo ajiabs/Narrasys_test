@@ -383,11 +383,9 @@
 	padding-bottom: 0.5em;
 	padding-left: 1em;
 }
-
-.navPanel .scene:first-child a{
-	color:#000;
+.navPanel .scene:first-child a {
+	color: #000;
 }
-
 .navPanel .scene {
 	cursor: pointer;
 	cursor: hand;

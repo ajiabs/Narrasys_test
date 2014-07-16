@@ -5,6 +5,7 @@ to throw explicit errors:
 		errorSvc.error({data: "This episode has not yet been published."});
 		errorSvc.notify({data: "This hovercraft is full of Monty Python quotes."});
 
+throw() or other js errors also get sent here by $exceptionHandler (though we're ignoring them for now)
 */
 
 angular.module('com.inthetelling.story')

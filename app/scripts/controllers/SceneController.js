@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('SceneController', function($scope, $filter) {
+	.controller('SceneController', function ($scope, $filter) {
 
-		$scope.precalculateSceneValues = function() {
+		$scope.precalculateSceneValues = function () {
 
 			// some scene templates let you specify this for one or more columns; others do it automatically (that will be in the template)
 			if ($.inArray("showCurrent", $scope.scene.layouts) > -1) {

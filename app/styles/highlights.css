@@ -4,15 +4,16 @@
 	(Once we have a solidified set of options in colors.css, may add matching variants for each of them here instead.)
 
 */
- .reviewMode .item.isCurrent {
-	background-color:rgba(0, 0, 0, 0.2);
-}
-.colorInvert .reviewMode .item.isCurrent{
-	background-color: rgba(255,255,255,0.3);
-}
 
+.reviewMode .item.isCurrent {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+.colorInvert .reviewMode .item.isCurrent {
+	background-color: rgba(255, 255, 255, 0.3);
+}
 /* - - - - - - */
- .content.allowHighlights .highlightSolid.item.isCurrent {
+
+.content.allowHighlights .highlightSolid.item.isCurrent {
 	background-color: rgba(0, 0, 0, 0.2);
 }
 .content.allowHighlights .highlightBorder.item.isCurrent {

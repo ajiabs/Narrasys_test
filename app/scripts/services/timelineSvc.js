@@ -32,7 +32,7 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 */
 
 angular.module('com.inthetelling.story')
-	.factory('timelineSvc', function($timeout, $interval, $rootScope, modelSvc, appState, analyticsSvc) {
+	.factory('timelineSvc', function ($timeout, $interval, $rootScope, modelSvc, appState, analyticsSvc) {
 
 		var svc = {};
 
@@ -45,25 +45,25 @@ angular.module('com.inthetelling.story')
 
 		var timeMultiplier;
 
-		svc.registerVideo = function(newVideoScope) {
+		svc.registerVideo = function (newVideoScope) {
 			// console.log("timelineSvc.registerVideo", newVideoScope);
 			if (videoScope !== undefined) {
 				// Route changes weren't always seeking to the correct time; this forces it on next $digest:
-				$timeout(function() {
+				$timeout(function () {
 					svc.seek(appState.time);
 				});
 			}
 			videoScope = newVideoScope;
 		};
 
-		svc.setSpeed = function(speed) {
+		svc.setSpeed = function (speed) {
 			// console.log("timelineSvc.setSpeed");
 			timeMultiplier = speed;
 			appState.timeMultiplier = timeMultiplier; // here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
 			videoScope.setSpeed(speed);
 		};
 
-		svc.play = function() {
+		svc.play = function () {
 			// check if we need to show help menu instead; if so, don't play the video:
 			// (WARN this is a bit of a sloppy mixture of concerns.)
 			if (!appState.hasBeenPlayed) {
@@ -79,7 +79,7 @@ angular.module('com.inthetelling.story')
 			appState.videoControlsActive = true;
 			appState.show.navPanel = false;
 			appState.timelineState = "buffering";
-			videoScope.play().then(function() {
+			videoScope.play().then(function () {
 				appState.timelineState = "playing";
 				_tick();
 				clock = $interval(_tick, 20);
@@ -89,7 +89,7 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
-		svc.pause = function(n) {
+		svc.pause = function (n) {
 			console.log("timelineSvc.pause");
 			console.log(appState.time, videoScope.currentTime());
 			appState.videoControlsActive = true;
@@ -108,13 +108,13 @@ angular.module('com.inthetelling.story')
 		};
 
 		// "method" and "eventID" are for analytics purposes
-		svc.seek = function(t, method, eventID) {
+		svc.seek = function (t, method, eventID) {
 			// console.log("timelineSvc.seek ", t);
 			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
 				//console.log('duration 0; poll');
-				$timeout(function() {
+				$timeout(function () {
 					svc.seek(t);
 				}, 300);
 				return;
@@ -159,11 +159,11 @@ angular.module('com.inthetelling.story')
 		// to make it easier to maintain state for these across multiple videos, when there are multiple videos.
 		// Also because there isn't an obviously better place for it.  If this is dumb, TODO: be less dumb
 
-		svc.toggleMute = function() {
+		svc.toggleMute = function () {
 			appState.muted = !appState.muted;
 			videoScope.toggleMute();
 		};
-		svc.setVolume = function(vol) { // 0..100
+		svc.setVolume = function (vol) { // 0..100
 			appState.volume = vol;
 			videoScope.setVolume(vol);
 		};
@@ -184,7 +184,7 @@ angular.module('com.inthetelling.story')
 
 		var eventClock, eventClockData;
 
-		var resetEventClock = function() {
+		var resetEventClock = function () {
 			eventClockData = {
 				lastTimelineTime: 0,
 				lastVideoTime: 0
@@ -192,18 +192,18 @@ angular.module('com.inthetelling.story')
 		};
 		resetEventClock();
 
-		var startEventClock = function() {
+		var startEventClock = function () {
 			eventClockData.lastTimelineTime = appState.time;
 			eventClockData.lastVideoTime = appState.time; // TODO this should be relative to episode, not timeline
 			stepEvent();
 		};
 
-		var stopEventClock = function() {
+		var stopEventClock = function () {
 			$timeout.cancel(eventTimeout);
 			resetEventClock();
 		};
 
-		var stepEvent = function() {
+		var stepEvent = function () {
 			$timeout.cancel(eventTimeout);
 			if (appState.timelineState !== 'playing') {
 				return;
@@ -249,7 +249,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		var handleEvent = function(event) {
+		var handleEvent = function (event) {
 			// console.log("handle event: ", event);
 			if (event.id === 'timeline') {
 				//console.log("TIMELINE EVENT");
@@ -272,7 +272,7 @@ angular.module('com.inthetelling.story')
 
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
 		var lastTick;
-		var _tick = function() {
+		var _tick = function () {
 			var thisTick = new Date();
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
 			var newTime = parseFloat(appState.time) + (delta / 1000 * timeMultiplier);
@@ -289,8 +289,7 @@ angular.module('com.inthetelling.story')
 			lastTick = thisTick;
 		};
 
-
-		svc.init = function(episodeId) {
+		svc.init = function (episodeId) {
 			// console.log("timelineSvc.init", episodeId);
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
@@ -302,7 +301,6 @@ angular.module('com.inthetelling.story')
 			stopEventClock();
 		};
 
-
 		// for now this only supports a single episode starting at injectionTime=0
 		// in future will be able to inject episode events at injectionTime=whatever, shifting any later events
 		// to their new time (based on the total duration of the injected group)
@@ -310,13 +308,13 @@ angular.module('com.inthetelling.story')
 
 		// TODO: ensure scenes are contiguous and non-overlapping
 
-		svc.injectEvents = function(events, injectionTime) {
+		svc.injectEvents = function (events, injectionTime) {
 			// console.log("timelineSvc.injectEvents");
 			if (events.length === 0) {
 				return;
 			}
 			// console.log("timelineSvc.injectEvents");
-			angular.forEach(events, function(event) {
+			angular.forEach(events, function (event) {
 				// add scenes to markedEvents[]:
 				if (event._type === "Scene" && event.title) {
 					svc.markedEvents.push(event);
@@ -371,7 +369,7 @@ angular.module('com.inthetelling.story')
 			//keep events sorted by time.
 			// Simultaneous events should be sorted as enter, then stop, then exit
 
-			svc.timelineEvents = svc.timelineEvents.sort(function(a, b) {
+			svc.timelineEvents = svc.timelineEvents.sort(function (a, b) {
 				if (a.t === b.t) {
 
 					if (b.action === "enter") {
@@ -386,7 +384,7 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
-			svc.markedEvents = svc.markedEvents.sort(function(a,b) {
+			svc.markedEvents = svc.markedEvents.sort(function (a, b) {
 				return a.start_time - b.start_time;
 			});
 
@@ -401,7 +399,7 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		svc.updateEventStates = function() {
+		svc.updateEventStates = function () {
 			// console.log("timelineSvc.updateEventStates");
 			// Sets past/present/future state of every event in the timeline.  
 			// TODO performance check (though this isn't done often, only on seek and inject.)
@@ -410,7 +408,7 @@ angular.module('com.inthetelling.story')
 			// instead preset everything to the future, then scan the timeline events up to now and set state based on enter/exit events per the timeline
 			var now = appState.time;
 			// put everything in the future state:
-			angular.forEach(svc.timelineEvents, function(tE) {
+			angular.forEach(svc.timelineEvents, function (tE) {
 				if (tE.id !== "timeline") {
 					var event = modelSvc.events[tE.id];
 					event.state = "isFuture";
@@ -419,7 +417,7 @@ angular.module('com.inthetelling.story')
 			});
 
 			// 2nd pass, step through all events before now:
-			angular.forEach(svc.timelineEvents, function(tE) {
+			angular.forEach(svc.timelineEvents, function (tE) {
 				if (tE.t <= now) {
 					var event = modelSvc.events[tE.id];
 					if (tE.action === 'enter') {
@@ -434,7 +432,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		// supports these formats: "1:10", 1m10s", "1m", "10s", or a plain number (in seconds)
-		var parseTime = function(t) {
+		var parseTime = function (t) {
 			if (!isNaN(parseFloat(t)) && isFinite(t)) {
 				return t;
 			}
