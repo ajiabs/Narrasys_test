@@ -16,7 +16,7 @@
 	cursor: hand;
 }
 .progressbarBox {
-	margin-left: 4em;
+	margin: 0 1em 0 4em;
 	position: relative;
 }
 .pbarTop,
@@ -156,6 +156,7 @@
 .button-next {
 	position: absolute;
 	right: 0;
+	text-align:right;
 }
 .button-scenemenu {
 	position: absolute;

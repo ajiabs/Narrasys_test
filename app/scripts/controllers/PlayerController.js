@@ -151,8 +151,10 @@ angular.module('com.inthetelling.story')
 			timelineSvc.pause();
 			appState.show.navPanel = !appState.show.navPanel;
 		};
+
 		$scope.seek = function (t) {
 			timelineSvc.seek(t, "sceneMenu");
+			appState.show.navPanel = false;
 		};
 
 		// show the help pane, only if localStorage is settable and there isn't one already.
