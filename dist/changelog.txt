@@ -203,7 +203,7 @@ added http interceptor to catch 401 errors, and handler for no-guest-access epis
 fixed typo in auth token loop
 ------------------------------------------------
 Changes in v4.alpha.001:
-FIX ALL THE THINGS (refactor of player codebase)
+FIX ALL THE THINGS (refactor of player codebase, bump version number so it's no longer different from the public version)
 
 ------------------------------------------------
 Changes in v4.alpha.002:
@@ -403,3 +403,14 @@ framebreaker now works on repeated use
 errorSvc supports notifications
 image-plain template is now margin-less
 all item detail links pause the main video
+------------------------------------------------
+
+Changes in v4.0.7:
+no 'play' icon at end of video, scene-centered is bigger
+putting local mock code back in temporarily
+No longer spams analytics with pause events while waiting for youtube
+Now copes with use hitting play before video is ready, hitting play twice before buffering is finished, etc
+Now copes with user falling asleep with their forehead on the spacebar (or the like)
+scene nav menu now auto-dismisses on scene selection
+tweaked bottom toolbar layout to give more padding on right side (was interfering with browser scrollbar in some browsers)
+
