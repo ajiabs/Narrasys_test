@@ -18,29 +18,26 @@ module.exports = function (grunt) {
 			dist: 'dist'
 		},
 		ngtemplates: {
-			"com.inthetelling.player": { // this subtask name becomes the module name that is created
+			"com.inthetelling.story": { // this subtask name becomes the module name that is created
 				cwd: '<%= yeoman.app %>',
 				src: 'templates/**/*.html',
 				dest: '<%= yeoman.app %>/scripts/templates.js',
 				options: {
-
 					/* 
-
-collapseWhitespace does save some space, and works corretly here (though not as part of the base htmlmin rule)
-but it has visible side effects, making server and server:dist appear different.
-May re-enable this after the styling is done
-
-					htmlmin:  {
+					collapseWhitespace does save some space, and works corretly here (though not as part of the base htmlmin rule)
+					but it has visible side effects, making server and server:dist appear different.
+					*/
+					htmlmin: {
 						collapseBooleanAttributes: true,
+						collapseWhitespace: true, // Safe in templates, not in base html
 						removeAttributeQuotes: true,
-						removeRedundantAttributes: true,
-						useShortDoctype: true,
+						removeCommentsFromCDATA: true,
+						removeComments: true,
 						removeEmptyAttributes: true,
 						removeOptionalTags: true,
-						collapseWhitespace: false
+						removeRedundantAttributes: true,
+						useShortDoctype: true,
 					}
-*/
-
 					/* we are not using bootstrap
 					,
 					url: function(url) {
@@ -58,8 +55,7 @@ May re-enable this after the styling is done
 						output += "angular.module('" + module + "').run(['$templateCache', function($templateCache) {\n\n" + script + "\n\n}]);";
 						return output;
 					}
-*/
-
+					*/
 				}
 			}
 		},
@@ -212,7 +208,7 @@ May re-enable this after the styling is done
 			dist: {
 				options: {
 					removeCommentsFromCDATA: true,
-					//]collapseWhitespace: true, // https://github.com/yeoman/grunt-usemin/issues/44
+					//collapseWhitespace: true, // https://github.com/yeoman/grunt-usemin/issues/44
 					collapseBooleanAttributes: true,
 					removeAttributeQuotes: true,
 					removeRedundantAttributes: true,
@@ -223,7 +219,8 @@ May re-enable this after the styling is done
 				files: [{
 					expand: true,
 					cwd: '<%= yeoman.app %>',
-					src: ['*.html', 'views/*.html'],
+					// src: ['*.html', 'views/*.html'],
+					src: ['[^_]*.html'],
 					dest: '<%= yeoman.dist %>'
 				}]
 			}
@@ -241,8 +238,7 @@ May re-enable this after the styling is done
 						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}',
 						'styles/font/*',
 						'config.js',
-						'version.txt',
-						'iosFrameHack.js'
+						'version.txt'
 					]
 				}, {
 					expand: true,

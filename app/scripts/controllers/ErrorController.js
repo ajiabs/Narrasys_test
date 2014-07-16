@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.controller('ErrorController', function ($scope, errorSvc, appState) {
 		$scope.errorSvc = errorSvc;
 

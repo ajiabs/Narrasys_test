@@ -31,7 +31,7 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 
 */
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.factory('timelineSvc', function($timeout, $interval, $rootScope, modelSvc, appState, analyticsSvc) {
 
 		var svc = {};

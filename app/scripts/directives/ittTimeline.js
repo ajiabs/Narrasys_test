@@ -4,7 +4,7 @@
 // TODO some events need to be unbound on destroy, which I'll get around to implementing if this ever needs to be destroyed
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.directive('ittTimeline', function (appState, timelineSvc) {
 		return {
 			restrict: 'A',

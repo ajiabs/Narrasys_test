@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.controller('ItemController', function($scope, timelineSvc) {
 
 		$scope.seek = function(t) {

@@ -2,7 +2,7 @@
 
 // Minor jquery dependency ($.inArray)
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.directive('ittScene', function($timeout, $interval, appState) {
 		return {
 			restrict: 'A',

@@ -5,16 +5,15 @@ NOTE: when authoring templates make sure that outgoing links call the outgoingLi
 so they get logged properly: don't draw plain hrefs
 */
 
-
-angular.module('com.inthetelling.player')
-	.directive('ittItem', function($http, $timeout, config, appState, analyticsSvc, timelineSvc, modelSvc) {
+angular.module('com.inthetelling.story')
+	.directive('ittItem', function ($http, $timeout, config, appState, analyticsSvc, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
 			scope: {
 				item: '=ittItem'
 			},
-			template: function(el, attrs) {
+			template: function (el, attrs) {
 				if (attrs.forcetemplate) {
 					return '<div ng-include="\'templates/item/' + attrs.forcetemplate + '.html\'"></div>';
 				} else {
@@ -22,10 +21,9 @@ angular.module('com.inthetelling.player')
 				}
 			},
 			controller: 'ItemController',
-			link: function(scope, element, attrs) {
+			link: function (scope, element, attrs) {
 				// console.log('ittItem', scope, element, attrs);
 
-				
 				// HACK not sure why but modelSvc.resolveEpisodeAssets isn't always doing the job.
 				// (Possibly a race condition?)  Quick fix here to resolve it:
 				if (scope.item.asset_id && !scope.item.asset) {
@@ -45,13 +43,13 @@ angular.module('com.inthetelling.player')
 					// BEGIN multiple choice question
 					if (scope.plugin._type === 'multiplechoice') {
 						// ng-model was handling this before, but now broken somehow. Forcing it for demo:
-						scope.setChoice = function(i) {
+						scope.setChoice = function (i) {
 							if (!scope.plugin.hasBeenAnswered) {
 								scope.plugin.selectedDistractor = i;
 							}
 						};
 
-						scope.scoreQuiz = function() {
+						scope.scoreQuiz = function () {
 							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
 
 							scope.plugin.hasBeenAnswered = true;
@@ -59,7 +57,7 @@ angular.module('com.inthetelling.player')
 							analyticsSvc.captureEventActivity("question-answered", scope.item._id);
 						};
 
-						scope.resetQuestion = function() {
+						scope.resetQuestion = function () {
 							// console.log("RESET");
 							scope.plugin.selectedDistractor = undefined;
 							scope.plugin.hasBeenAnswered = false;
@@ -82,9 +80,9 @@ angular.module('com.inthetelling.player')
 							scope.plugin.userEmail = userData.emails[0];
 							scope.plugin.totalAchieved = 0;
 
-							angular.forEach(scope.plugin.requirements, function(req) {
+							angular.forEach(scope.plugin.requirements, function (req) {
 								analyticsSvc.readEventActivity(req.eventId, req.activity)
-									.then(function(achieved) {
+									.then(function (achieved) {
 										req.achieved = achieved;
 										if (achieved) {
 											scope.plugin.totalAchieved++;
@@ -96,13 +94,13 @@ angular.module('com.inthetelling.player')
 							//timelineSvc.play();
 						}
 
-						scope.badger = function() {
+						scope.badger = function () {
 							scope.plugin.gettingBadge = true;
 							$http({
 								method: 'GET',
 								url: config.apiDataBaseUrl + '/v1/send_credly_badge?badge_id=' + scope.plugin.credlyBadgeId + '&email=' + scope.plugin.userEmail
 							}).
-							success(function(data, status, headers, config) {
+							success(function (data, status, headers, config) {
 								// TODO check the data to make sure it's not status: "Badge previously sent."
 								// console.log("SUCCESS", data);
 								if (data.status === 'Badge previously sent.') {
@@ -111,7 +109,7 @@ angular.module('com.inthetelling.player')
 								scope.plugin.gotBadge = true;
 
 							}).
-							error(function(data, status, headers, config) {
+							error(function (data, status, headers, config) {
 								// called asynchronously if an error occurs
 								// or server returns response with an error status.
 							});
@@ -121,42 +119,43 @@ angular.module('com.inthetelling.player')
 				}
 				// end plugin
 
-				scope.toggleDetailView = function() {
+				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
+
 					if (scope.item.showInlineDetail) {
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
 						scope.item.showInlineDetail = false;
 					} else {
+						timelineSvc.pause();
 						scope.captureInteraction();
 						if (element.closest('.content').width() > 400) {
 							// show detail inline if there's room for it:
 							scope.item.showInlineDetail = true;
 						} else {
 							// otherwise pop a modal:
-							timelineSvc.pause();
 							appState.itemDetail = scope.item;
 						}
 					}
 				};
 
-				scope.forceModal = function() {
+				scope.forceModal = function () {
 					timelineSvc.pause();
 					appState.itemDetail = scope.item;
 				};
 
-				scope.outgoingLink = function(url) {
+				scope.outgoingLink = function (url) {
 					timelineSvc.pause();
 					scope.captureInteraction();
 					if (scope.item.targetTop) {
-						$timeout(function() {
-							window.location.href=url;
+						$timeout(function () {
+							window.location.href = url;
 						});
 					} else {
 						window.open(url);
 					}
 				};
 
-				scope.captureInteraction = function() {
+				scope.captureInteraction = function () {
 					analyticsSvc.captureEventActivity("clicked", scope.item._id);
 				};
 

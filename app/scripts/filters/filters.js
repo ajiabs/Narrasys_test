@@ -3,7 +3,7 @@
 // Some of these filters are unnecessary, and need to make up my mind about 'foo' versus 'isFoo'
 
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 
 /* List filters */
 .filter('itemLayout', function() {

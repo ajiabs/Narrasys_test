@@ -1,16 +1,16 @@
 'use strict';
 
 // Declare the top level application module and its dependencies
-//angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'pasvaz.bindonce'])
-angular.module('com.inthetelling.player', ['ngRoute', 'ngAnimate', 'ngSanitize'])
+//angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'pasvaz.bindonce'])
+angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 
 // Configure routing
 .config(function($routeProvider) {
 	$routeProvider
-		// .when('/episodes', {
-		// 	title: "Telling STORY: All episodes",
-		// 	templateUrl: 'templates/episodelist.html'
-		// })
+		.when('/episodes', {
+			title: "Telling STORY: All episodes",
+			templateUrl: 'templates/episodelist.html'
+		})
 		.when('/episode/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',

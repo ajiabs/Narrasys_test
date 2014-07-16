@@ -3,7 +3,7 @@
 /* Parses API data into player-acceptable format, 
 and derives secondary data where necessary for performance/convenience/fun */
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.factory('modelSvc', function($interval, $filter, config, appState) {
 
 		var svc = {};

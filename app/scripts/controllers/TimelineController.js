@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.controller('TimelineController', function($scope, timelineSvc, modelSvc, appState) {
 
 		$scope.play = timelineSvc.play;

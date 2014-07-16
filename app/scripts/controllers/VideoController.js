@@ -6,7 +6,7 @@
 
 // TODO watch for stall/buffering events and tell timeline to wait until video is ready again?
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.controller('VideoController', function($q, $scope, $timeout, $window, $document, appState, timelineSvc) {
 
 		// console.log("videoController instantiate");

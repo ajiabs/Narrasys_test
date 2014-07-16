@@ -2,7 +2,7 @@
 
 /* WIP for Producer */
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.directive('ittItemEditor', function(modelSvc, appState) {
 		return {
 			restrict: 'A',

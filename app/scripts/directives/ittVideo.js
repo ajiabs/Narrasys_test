@@ -2,7 +2,7 @@
 
 // use only for master asset!
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.directive('ittVideo', function($timeout, $rootScope, appState, timelineSvc) {
 
 		var uniqueDirectiveID = 0; // Youtube wants to work via DOM IDs; this is a cheap way of getting unique ones

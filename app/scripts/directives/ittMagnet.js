@@ -4,7 +4,7 @@
 
 // TODO: remove dependence on jQuery?  (.is(:visible))
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.directive('ittMagnet', function($rootScope, $timeout) {
 		return {
 			restrict: 'A',

@@ -7,7 +7,7 @@ to throw explicit errors:
 
 */
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.factory('errorSvc', function () {
 		var svc = {};
 

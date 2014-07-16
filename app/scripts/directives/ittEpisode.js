@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.directive('ittEpisode', function(analyticsSvc) {
 		return {
 			restrict: 'A',

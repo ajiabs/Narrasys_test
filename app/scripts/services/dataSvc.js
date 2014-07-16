@@ -19,7 +19,7 @@
 // Wrap events in event: {}   same for other things?  template didn't seem to need it
 
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.factory('dataSvc', function($q, $http, $routeParams, $timeout, config, authSvc, modelSvc, errorSvc) {
 		var svc = {};
 

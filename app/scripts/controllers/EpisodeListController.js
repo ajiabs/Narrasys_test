@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.controller('EpisodeListController', function($scope, config, dataSvc, appState) {
 
 		dataSvc.getEpisodeList().then(function(data) {

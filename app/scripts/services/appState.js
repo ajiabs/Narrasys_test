@@ -9,7 +9,7 @@
 
 */
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.factory('appState', function ($interval, $filter, config) {
 
 		var svc = {};

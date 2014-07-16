@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.factory('authSvc', function(config, $routeParams, $http, $q, $location, appState) {
 		// console.log('authSvc factory');
 		var svc = {};

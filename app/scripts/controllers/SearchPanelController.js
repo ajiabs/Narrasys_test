@@ -1,7 +1,7 @@
 'use strict';
 
 // Controller for the search panel results
-angular.module('com.inthetelling.player')
+angular.module('com.inthetelling.story')
 	.controller('SearchPanelController', function($scope, timelineSvc) {
 
 		// map which we could in future also bind to user selection of types.
