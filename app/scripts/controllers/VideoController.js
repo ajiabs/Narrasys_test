@@ -28,14 +28,15 @@ angular.module('com.inthetelling.story')
 		$scope.initVideo = function (el) {
 			if ($scope.video.youtube) {
 				$scope.videoType = 'youtube';
+				appState.videoType = $scope.videoType;
 				$scope.videoNode = el.find('iframe')[0];
 				if ($scope.youtubeIsReady) {
 					$scope.initYoutube($scope.videoNode.id);
 				} else {
 					var unwatch = $scope.$watch(function () {
 						return $scope.youtubeIsReady;
-					}, function (itis) {
-						if (itis) {
+					}, function (itIsReady) {
+						if (itIsReady) {
 							$scope.initYoutube($scope.videoNode.id);
 							unwatch();
 						}
@@ -43,25 +44,32 @@ angular.module('com.inthetelling.story')
 				}
 			} else {
 				$scope.videoType = "video"; // as in html5 <video> tagx
+				appState.videoType = $scope.videoType;
 				$scope.videoNode = el.find('video')[0];
 				$scope.initHTML5Video();
 			}
-			timelineSvc.registerVideo($scope);
-			appState.videoType = $scope.videoType;
 		};
 
 		$scope.initYoutube = function () {
 			// console.log("videoController initYoutube");
-			var playerStates = ["ended", "playing", "paused", "buffering", "", "cued"];
+			var playerStates = ["ended", "playing", "paused", "buffering", "", "cued"]; // convert YT codes to html5 state names
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
 					'onStateChange': function (x) {
 						$scope.playerState = playerStates[x.data];
-						// console.log("Player state change: ", $scope.playerState);
 					}
 				}
 			});
-			// console.log("YT player is ", $scope.YTPlayer, $scope.videoNode.id);
+
+			// but we still need to wait for youtube to Do More Stuff, apparently:
+			var unwatch = $scope.$watch(function () {
+				return $scope.YTPlayer.playVideo !== undefined;
+			}, function (isReady) {
+				if (isReady) {
+					unwatch();
+					timelineSvc.registerVideo($scope);
+				}
+			});
 		};
 
 		$scope.initHTML5Video = function () {
@@ -78,6 +86,7 @@ angular.module('com.inthetelling.story')
 			$scope.videoNode.addEventListener('pause', function (evt) {
 				$scope.playerState = 'pause';
 			}, false);
+			timelineSvc.registerVideo($scope);
 
 			/* For future reference, all html5 events:
 				loadstart
@@ -139,12 +148,11 @@ angular.module('com.inthetelling.story')
 				$scope.YTPlayer.pauseVideo();
 			} else {
 				$scope.videoNode.pause();
-
-				try {
-					$scope.videoNode.currentTime = appState.time; // in case t has drifted
-				} catch (e) {
-					// this is harmless when it fails; because it can't be out of synch if it doesn't yet exist
-				}
+			}
+			try {
+				$scope.videoNode.currentTime = appState.time; // in case t has drifted
+			} catch (e) {
+				// this is harmless when it fails; because it can't be out of synch if it doesn't yet exist
 			}
 		};
 
@@ -153,14 +161,12 @@ angular.module('com.inthetelling.story')
 			try {
 				if ($scope.videoType === 'youtube') {
 					$scope.YTPlayer.seekTo(t, true);
-					if (appState.timelineState === 'paused') {
-						$scope.pause(); // youtube autoplays on seek.
-					}
+					$scope.YTPlayer.pauseVideo(); // youtube always autoplays on seek.  We want timelineSvc to control that instead
 				} else {
 					$scope.videoNode.currentTime = t;
 				}
 			} catch (e) {
-				// video not ready yet // TODO: watch for endless loops!
+				// video not ready yet // TODO: throw error and stop looping if this goes on too long
 				$timeout(function () {
 					$scope.seek(t);
 				}, 100);
@@ -175,7 +181,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			if ($scope.videoType === 'youtube') {
-				// TODO
+				// TODO (youtube doesn't seem to support this yet, or else we're not encoding the videos properly for it)
 				// console.log("Available speeds from youtube: ", $scope.YTPlayer.getAvailablePlaybackRates());
 			} else {
 				$scope.videoNode.playbackRate = speed;

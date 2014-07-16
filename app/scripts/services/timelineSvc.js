@@ -46,7 +46,7 @@ angular.module('com.inthetelling.story')
 		var timeMultiplier;
 
 		svc.registerVideo = function (newVideoScope) {
-			// console.log("timelineSvc.registerVideo", newVideoScope);
+			console.log("timelineSvc.registerVideo", newVideoScope);
 			if (videoScope !== undefined) {
 				// Route changes weren't always seeking to the correct time; this forces it on next $digest:
 				$timeout(function () {
@@ -63,8 +63,9 @@ angular.module('com.inthetelling.story')
 			videoScope.setSpeed(speed);
 		};
 
-		svc.play = function () {
-			// check if we need to show help menu instead; if so, don't play the video:
+		svc.play = function (nocapture) {
+			// console.log("timelineSvc.play", videoScope);
+			// On first play, we need to check if we need to show help menu instead; if so, don't play the video:
 			// (WARN this is a bit of a sloppy mixture of concerns.)
 			if (!appState.hasBeenPlayed) {
 				appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
@@ -72,48 +73,64 @@ angular.module('com.inthetelling.story')
 				return; // playerController needs to catch this and either show the help pane or trigger play again 
 			}
 
-			if (appState.timelineState === 'playing') {
+			// wait until the video is ready:
+			if (videoScope === undefined) {
+				var unwatch = $rootScope.$watch(function () {
+					return videoScope !== undefined;
+				}, function (itIsReady) {
+					if (itIsReady) {
+						unwatch();
+						svc.play();
+					}
+				});
 				return;
 			}
-			console.log("timelineSvc.play");
+
+			// console.log("timelineSvc.play (passed preflight)");
 			appState.videoControlsActive = true;
 			appState.show.navPanel = false;
 			appState.timelineState = "buffering";
+
 			videoScope.play().then(function () {
 				appState.timelineState = "playing";
 				_tick();
+				$interval.cancel(clock); // safety belt, in case we're out of synch
 				clock = $interval(_tick, 20);
 				startEventClock();
-
-				analyticsSvc.captureEpisodeActivity("play");
+				if (!nocapture) {
+					analyticsSvc.captureEpisodeActivity("play");
+				}
 			});
 		};
 
-		svc.pause = function (n) {
+		svc.pause = function (nocapture) {
 			console.log("timelineSvc.pause");
-			console.log(appState.time, videoScope.currentTime());
 			appState.videoControlsActive = true;
 			$interval.cancel(clock);
 			stopEventClock();
-
 			clock = undefined;
 			lastTick = undefined;
 
 			appState.timelineState = "paused";
 			videoScope.pause();
-			if (n) {
-				$timeout(svc.play, (n * 1000 * Math.abs(timeMultiplier)));
+
+			// TODO we're not using timed pauses yet...
+			// if (n) {
+			// 	$timeout(svc.play, (n * 1000 * Math.abs(timeMultiplier)));
+			// }
+
+			if (!nocapture) {
+				analyticsSvc.captureEpisodeActivity("pause");
 			}
-			analyticsSvc.captureEpisodeActivity("pause");
 		};
 
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function (t, method, eventID) {
-			// console.log("timelineSvc.seek ", t);
+			console.log("timelineSvc.seek ", t);
 			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
-				//console.log('duration 0; poll');
+				// TODO throw error and stop looping if this goes on too long
 				$timeout(function () {
 					svc.seek(t);
 				}, 300);
@@ -132,12 +149,15 @@ angular.module('com.inthetelling.story')
 
 			appState.time = t;
 			svc.updateEventStates();
+
+			// Youtube 
+			var wasPlaying = (appState.timelineState === 'playing');
+			svc.pause(true);
 			videoScope.seek(t);
-			if (appState.timelineState === 'playing') {
-				// let svc.play take care of the lag before video starts the clock
-				svc.pause();
-				svc.play();
+			if (wasPlaying) {
+				svc.play(true);
 			}
+
 			// capture analytics data:
 			if (method) {
 				var captureData = {

@@ -1,8 +1,16 @@
 
-Disabling fullscreen mode.  Too much weird behavior for too little payoff.
+
+Find out why videos are ending early
+
+better handling of end of episode in general
+
+
+
 
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
+Bring back fullscreen mode (needs browser testing muchly)
 
 Safari is still not working with youtube, either in desktop or ipad/phone. argh.  Diabled for now, reverting to mp4 version
 
