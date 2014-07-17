@@ -3,6 +3,9 @@
 video seek events should wait for buffering before timeline starts playing
 
 
+modal style should be an episode-level template choice
+
+
 
 
 

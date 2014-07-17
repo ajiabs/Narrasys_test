@@ -63,51 +63,51 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .allowSidebars.hasLeftSidebar .burstL,
 .allowSidebars.hasLeftSidebar .burst {
 	clear: left;
-	margin-left: -45%;
+	margin-left: -43%;
 }
 .allowSidebars.hasRightSidebar .burstR,
 .allowSidebars.hasRightSidebar .burst {
 	clear: right;
-	margin-right: -45%;
+	margin-right: -43%;
 }
 /* - */
 
 .allowSidebars.hasLeftSidebar .sidebarL {
 	float: left;
 	clear: left;
-	margin-left: -45%;
-	width: 45%;
+	margin-left: -43%;
+	width: 43%;
 }
 .allowSidebars.hasRightSidebar .sidebarR {
 	float: right;
 	clear: right;
-	margin-right: -45%;
-	width: 45%;
+	margin-right: -43%;
+	width: 43%;
 }
 /* - has both sidebars: */
 
 .allowSidebars.hasLeftSidebar.hasRightSidebar .burstL,
 .allowSidebars.hasLeftSidebar.hasRightSidebar .burst {
 	clear: left;
-	margin-left: -70%;
+	margin-left: -75%;
 }
 .allowSidebars.hasRightSidebar.hasLeftSidebar .burstR,
 .allowSidebars.hasRightSidebar.hasLeftSidebar .burst {
 	clear: right;
-	margin-right: -70%;
+	margin-right: -75%;
 }
 /* - */
 
 .allowSidebars.hasLeftSidebar.hasRightSidebar .sidebarL {
 	float: left;
 	clear: left;
-	margin-left: -70%;
+	margin-left: -75%;
 	width: 70%;
 }
 .allowSidebars.hasRightSidebar.hasLeftsidebar .sidebarR {
 	float: right;
 	clear: right;
-	margin-right: -70%;
+	margin-right: -75%;
 	width: 70%;
 }
 /* ------------------------------------------- */

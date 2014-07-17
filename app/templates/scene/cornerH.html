@@ -18,7 +18,7 @@ showCurrent is forced in Main.
 			<div class="fill bgLayer">
 				<div class="item animate" ng-repeat="item in mainBgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
-			<div class="content contentLayer" ng-class="{singleitem: mainItems.length==1}">
+			<div class="content contentLayer" ng-class="{singleitem: mainItems.length==1, isNarrow: isNarrow}" itt-width-watch>
 				<div class="item animate" ng-repeat="item in mainItems = (mainContentItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
 				<div class="clear"></div>
@@ -39,12 +39,10 @@ showCurrent is forced in Main.
 					: (altContentItems).length == 1, 
 				allowHighlights: !showCurrent,
 				hasLeftSidebar: altContentHasLeftSidebar, 
-				hasRightSidebar: altContentHasRightSidebar
-			}">
-				<div 
-					class="item animate" 
-					ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" 
-					ng-class="item.styleCss + ' ' + item.state" itt-item="item">
+				hasRightSidebar: altContentHasRightSidebar,
+				isNarrow: isNarrow
+			}" itt-width-watch>
+				<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
 				<div class="clear"></div>
 			</div>

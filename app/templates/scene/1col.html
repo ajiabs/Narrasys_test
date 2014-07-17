@@ -13,13 +13,10 @@
 					: (mainContentItems).length == 1, 
 				allowHighlights: !showCurrent,
 				hasLeftSidebar: mainContentHasLeftSidebar, 
-				hasRightSidebar: mainContentHasRightSidebar
-			}">
-				<div 
-					class="item animate" 
-					ng-repeat="item in showCurrent ? (contentItems | isCurrent) : contentItems" 
-					ng-class="item.styleCss + ' ' + item.state" itt-item="item"
-				></div>
+				hasRightSidebar: mainContentHasRightSidebar,
+				isNarrow: isNarrow
+			}" itt-width-watch>
+				<div class="item animate" ng-repeat="item in showCurrent ? (contentItems | isCurrent) : contentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 				<div class="clear"></div>
 			</div>
 			<div class="fill fgLayer overlay">

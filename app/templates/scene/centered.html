@@ -9,8 +9,9 @@
 			</div>
 			<div class="content contentLayer" ng-class="{
 				singleitem: (contentItems | isCurrent).length == 1,
-				allowHighlights: !showCurrent
-			}">
+				allowHighlights: !showCurrent,
+				isNarrow: isNarrow
+			}" itt-width-watch>
 				<div class="item animate" ng-repeat="item in (contentItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 				<div class="clear"></div>
 			</div>
