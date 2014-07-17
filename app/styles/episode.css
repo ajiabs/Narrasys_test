@@ -273,8 +273,19 @@
 .episode-purdue {
 	font-family: "Myriad Pro", "Arial";
 }
+.episode-purdue a,
+.episode-purdue a:visited {
+	color: #e3ae24;
+	font-weight: bold;
+	text-shadow: -1px -1px 0 #fff;
+}
 .episode-purdue .footer {
 	background-color: #a3792c;
+}
+.episode-purdue .footer a,
+.episode-purdue .footer a:visited {
+	color: #FFF;
+	text-shadow: none;
 }
 .episode-purdue .altPane {
 	background-color: #FAFAFA;
@@ -298,7 +309,7 @@
 	background-color: #e3ae24;
 	color: #fff;
 }
-.episode-purdue .content a,
+.episode-purdue a,
 .episode-purdue a:visited {
 	color: #e3ae24;
 	font-weight: bold;
