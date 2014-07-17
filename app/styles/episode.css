@@ -1,55 +1,57 @@
 /* TODO separate this out into episode-template specific stuff vs player chrome */
- .toolbar {
+
+.toolbar {
 	font-size: 16px;
 	text-align: center;
 	position: fixed;
 	height: 85px;
 	margin-bottom: -40px;
 	background-image: url('/images/toolbar.png');
-	background-repeat:repeat-x;
+	background-repeat: repeat-x;
 	background-size: 100% 100%;
 	top: 0;
 	left: 0;
 	right: 0;
 }
 .toolbar.nobg {
-	background-image:none;
+	background-image: none;
 }
 .toolbar {
 	pointer-events: none
 }
-.toolbar a, .toolbar div {
-	pointer-events:auto
+.toolbar a,
+.toolbar div {
+	pointer-events: auto
 }
 .episode {
 	margin-top: 45px
 	/* TOOLBAR HEIGHT */
 }
 .toolbar .buttongroup {
-	float:left;
+	float: left;
 	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.1) inset;
 	position: relative;
-	height:1.5em;
-	border-radius:0.75em;
-	margin:0.3em 0.5em;
+	height: 1.5em;
+	border-radius: 0.75em;
+	margin: 0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
 }
 .toolbar .buttongroup .button span {
-	display:block;
+	display: block;
 	position: absolute;
 	top: 20px;
-	left:0;
-	right:0;
+	left: 0;
+	right: 0;
 	text-align: center;
-	opacity:0;
-	color:#666;
-	font-size:12px;
+	opacity: 0;
+	color: #666;
+	font-size: 12px;
 }
 .toolbar .buttongroup:hover .button span {
-	opacity:0 !important
+	opacity: 0 !important
 }
 .toolbar .buttongroup .button:hover span {
-	opacity:1 !important;
+	opacity: 1 !important;
 	transition: opacity 0.3s;
 }
 .toolbar .buttongroup.modegroup {
@@ -64,18 +66,18 @@
 }
 @media screen and (max-width: 300px) {
 	.isFramed .toolbar .buttongroup.searchgroup {
-		display:none;
+		display: none;
 	}
 }
 @media screen and (max-width: 421px) {
 	.isFramed .toolbar .buttongroup.modegroup {
-		display:none;
+		display: none;
 	}
 }
 @media screen and (max-width: 480px) {
 	.button-directed {
 		/* See also helpPanel below */
-		display:none !important;
+		display: none !important;
 	}
 }
 .toolbar .buttongroup.escapegroup .button span {
@@ -84,7 +86,7 @@
 	width: 150px;
 }
 .toolbar .buttongroup.searchgroup .button {
-	float:left;
+	float: left;
 }
 .toolbar .buttongroup.searchgroup.cur {
 	width: 27%;
@@ -92,7 +94,7 @@
 	padding-top: 3px;
 }
 .toolbar .buttongroup.searchgroup.cur .button span {
-	display:none
+	display: none
 }
 #searchtext {
 	background: none;
@@ -101,7 +103,7 @@
 	margin: 0;
 	width: 0;
 	transition: all 1s;
-	position:absolute;
+	position: absolute;
 	left: 40px;
 	top: 2px;
 }
@@ -112,21 +114,21 @@
 	width: 80%
 }
 .toolbar .button {
-	display:inline-block;
+	display: inline-block;
 	padding: 0 0.5em;
 	line-height: 24px;
 	height: 24px;
-	cursor:pointer;
-	color:#555;
+	cursor: pointer;
+	color: #555;
 }
 .modegroup .button {
-	color:#AAA;
+	color: #AAA;
 }
 .modegroup .button.cur {
 	background-color: rgba(255, 255, 255, 0.6);
 }
 .toolbar .button.cur {
-	color:#000;
+	color: #000;
 	text-shadow: -1px -1px 2px #FFF;
 }
 .toolbar .button:before {
@@ -134,26 +136,26 @@
 	font-size: 1em;
 }
 .button-video:before {
-	content:"\e60b"
+	content: "\e60b"
 }
 .button-directed:before {
-	content:"\e60a"
+	content: "\e60a"
 }
 .button-explore:before {
-	content:"\e60c"
+	content: "\e60c"
 }
 .button-search:before {
-	content:"\e602"
+	content: "\e602"
 }
 .cur .button-search:before {
-	content:"\e603"
+	content: "\e603"
 }
 .button-mainframeescape:before {
-	content:"\e609"
+	content: "\e609"
 }
 .escapelink:before {
 	font-family: Story;
-	content:"\e609";
+	content: "\e609";
 	padding-right: 0.5em;
 	font-size: 0.86em;
 	color: #333;
@@ -162,7 +164,7 @@
 	color: #CCC
 }
 .autoscroll {
-	position:fixed;
+	position: fixed;
 	right: 16px;
 	bottom: 86px;
 	width: 32px;
@@ -176,36 +178,40 @@
  * Side Panels
  *
 //===========================*/
- .sidePanel {
+
+.sidePanel {
 	position: fixed;
 }
 .modal-backdrop {
-	transition:1s linear all;
-	opacity:1;
+	transition: 1s linear all;
+	opacity: 1;
 }
 .modal-backdrop.ng-hide {
-	opacity:0;
+	opacity: 0;
 }
-.modal-backdrop.ng-hide-add, .modal-backdrop.ng-hide-remove {
-	display:block!important;
+.modal-backdrop.ng-hide-add,
+.modal-backdrop.ng-hide-remove {
+	display: block!important;
 }
 .modal-backdrop.search-backdrop {
 	top: 45px
 	/* TOOLBAR HEIGHT */
 }
 /* Panel animations */
- .searchPanel {
+
+.searchPanel {
 	transition: 1s all;
 	transform-origin: 100% 50%;
-	opacity:1;
-	transform:translateX(0);
+	opacity: 1;
+	transform: translateX(0);
 }
 .searchPanel.ng-hide {
-	opacity:0;
-	transform:translateX(200px);
+	opacity: 0;
+	transform: translateX(200px);
 }
-.sidePanel.ng-hide-add, .sidePanel.ng-hide-remove {
-	display:block!important;
+.sidePanel.ng-hide-add,
+.sidePanel.ng-hide-remove {
+	display: block!important;
 }
 .searchPanel .ui-match {
 	background-color: rgba(50, 50, 50, 0.4);
@@ -219,14 +225,15 @@
  * Search Panel
  *
 //===========================*/
- .searchPanel {
+
+.searchPanel {
 	top: 45px
 	/* TOOLBAR HEIGHT */
 	;
 	bottom: 0;
 	right: 0;
 	width: 40%;
-	background-color:#FFF;
+	background-color: #FFF;
 }
 .searchPanel .scrollContainer {
 	top: 20px;
@@ -235,23 +242,23 @@
 	right: -16px;
 	padding-right: 16px;
 	left: 0px;
-	position:absolute;
+	position: absolute;
 }
 .searchPanel .searchresults {
 	padding: 1em;
 }
 .searchPanel.ng-hide .searchfilters {
-	opacity:0;
+	opacity: 0;
 }
 .searchPanel .searchfilters {
-	opacity:1;
+	opacity: 1;
 	animation: delayedFadeIn 4s ease-out;
 }
 .searchfilters {
 	font-size: 0.86em;
 }
 .searchfilters label {
-	float:right;
+	float: right;
 	margin-right: 0.5em;
 	cursor: pointer;
 }
@@ -274,20 +281,21 @@
 	margin: 5px;
 	clear: left;
 }*/
- .searchResults h3 {
+
+.searchResults h3 {
 	padding: 0.5em 0.3em 0.1em 0.3em
 }
 .searchResults .item {
 	border-bottom: 1px solid #CCC;
 	padding: 0.1em 0.3em;
-	clear:both;
+	clear: both;
 }
 .searchResults .item .displayTime {
 	cursor: pointer;
 	cursor: hand;
 	color: #C44343;
-	float:left;
-	display:inline;
+	float: left;
+	display: inline;
 	width: 45px;
 }
 .searchResults .description {
@@ -299,20 +307,21 @@
 	font-size: 0.86em
 }
 .searchResults .sortedbytype .type {
-	display:none
+	display: none
 }
 /*============================
  *
  * Navigation Panel
  *
 //===========================*/
- .navigationPanel {
+
+.navigationPanel {
 	bottom: 0;
 	left: 7em;
 	right: 7em;
 	transition: 0.7s ease-in-out all;
 	transform-origin: 0 100% 0;
-	opacity:1;
+	opacity: 1;
 	transform: translateY(0) rotateX(0);
 	border-radius: 0.3em 0.3em 0 0;
 	background-color: #FFF;
@@ -349,7 +358,7 @@
 	}
 }
 .navigationPanel.ng-hide {
-	opacity:0;
+	opacity: 0;
 	transform: translateY(80%) rotateX(-45deg);
 }
 .navigationPanel .scene {
@@ -361,8 +370,8 @@
 }
 .navigationPanel .displayTime {
 	width: 45px;
-	float:left;
-	text-align:right;
+	float: left;
+	text-align: right;
 	padding-right: 10px;
 }
 .navigationPanel p {
@@ -373,14 +382,15 @@
  * Help Panel
  *
 //===========================*/
- .helpPanel {
+
+.helpPanel {
 	background-color: #EEE;
 	border-radius: 15px;
 	font-size: 0.86em;
 	left: 2em;
 	padding: 15px;
 	position: absolute;
-	width:60%;
+	width: 60%;
 	max-width: 500px;
 	min-width: 290px;
 	top: 55px;
@@ -392,7 +402,8 @@
 	list-style: none;
 	margin: 0.5em 1em;
 }
-.helpPanel li:before, .helpPanel h3 {
+.helpPanel li:before,
+.helpPanel h3 {
 	height: 30px;
 }
 .helpPanel li {
@@ -407,21 +418,21 @@
 	padding-right: 0.5em;
 }
 .helpPanel li.video:before {
-	content:"\e60b"
+	content: "\e60b"
 }
 .helpPanel li.directed:before {
-	content:"\e60a"
+	content: "\e60a"
 }
 @media screen and (max-width: 480px) {
 	.helpPanel li.directed {
-		display:none !important;
+		display: none !important;
 	}
 }
 .helpPanel li.explore:before {
-	content:"\e60c"
+	content: "\e60c"
 }
 .helpPanel .goAway {
-	float:right;
+	float: right;
 }
 .helpPanel .arrow-up {
 	width: 20px;
@@ -439,8 +450,9 @@
  * Landing screen
  *
 //===========================*/
- .intropanel {
-	margin:10% 15%
+
+.intropanel {
+	margin: 10% 15%
 }
 .intropanel .videoContainer {
 	width: 50%;
@@ -448,7 +460,7 @@
 }
 .intropanel .introtext {
 	width: 45%;
-	float:right;
+	float: right;
 }
 .intropanel p {
 	margin: 2em 0 1em 0
@@ -498,38 +510,39 @@
  * Branding
  *
 //===========================*/
- .branding {
+
+.branding {
 	width: 100%;
 	height: 150px;
 	background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
-	position:relative;
-	color:#FFF;
+	position: relative;
+	color: #FFF;
 }
 .branding img {
-	width:100%;
-	max-height:72px;
+	width: 100%;
+	max-height: 72px;
 }
 .branding a.logo {
-	width:20%;
-	position:absolute;
+	width: 20%;
+	position: absolute;
 	display: block;
 }
 .branding a.logo img {
-	border:none
+	border: none
 }
 .branding a.itt {
-	right:5%;
-	bottom:60px;
+	right: 5%;
+	bottom: 60px;
 }
 .copyright {
-	position:absolute;
+	position: absolute;
 	bottom: 10px;
 	left: 10px;
 	font-size: 0.76em;
 	text-shadow: 1px 1px 0 #BBB;
 }
 .copyright a {
-	color:#FFF !important;
+	color: #FFF !important;
 	text-decoration: underline;
 }
 /*============================
@@ -537,9 +550,10 @@
  * eLiterate
  *
 //===========================*/
- .branding a.eliterate {
-	left:5%;
-	bottom:60px;
+
+.branding a.eliterate {
+	left: 5%;
+	bottom: 60px;
 }
 .episode-eliterate {
 	background-image: url("/images/mindwire-bg.svg");
@@ -548,15 +562,15 @@
 	background-repeat: no-repeat;
 }
 .banner-logo {
-	position:fixed;
+	position: fixed;
 	top: 0;
 	width: 20%;
 	max-width: 150px;
 	margin: 10px 40%;
-	text-align:center;
+	text-align: center;
 }
 .banner-logo img {
-	width:100%;
+	width: 100%;
 }
 @media screen and (max-width: 400px) {
 	.banner-logo {
@@ -571,52 +585,64 @@
 /* TODO Redundant, because production didn't apply colorEliterate */
 
 /* when they do, remove this block: */
- .episode-eliterate {
+
+.episode-eliterate {
 	font-family: Arial, Helvetica, Tahoma, sans-serif;
 	font-size: 15px;
 }
 .episode-eliterate {
 	color: #6F7D8B;
 }
-.episode-eliterate a, .colorEliterate .fakelink {
+.episode-eliterate a,
+.colorEliterate .fakelink {
 	color: #1376bb
 }
-.episode-eliterate h1, .episode-eliterate h2, .episode-eliterate h3 {
+.episode-eliterate h1,
+.episode-eliterate h2,
+.episode-eliterate h3 {
 	font-weight: normal;
-	color:#384d62;
+	color: #384d62;
 }
 .episode-eliterate .colorInvert {
 	color: #FFF;
 	background-color: #6F7D8B;
 }
-.episode-eliterate .colorInvert h1, .episode-eliterate .colorInvert h2, .episode-eliterate .colorInvert h3 {
+.episode-eliterate .colorInvert h1,
+.episode-eliterate .colorInvert h2,
+.episode-eliterate .colorInvert h3 {
 	color: #FFF
 }
 /* End of Redundant block */
- .colorEliterate {
+
+.colorEliterate {
 	color: #6F7D8B;
 }
-.colorEliterate a, .colorEliterate .fakelink {
+.colorEliterate a,
+.colorEliterate .fakelink {
 	color: #1376bb;
 }
-.colorInvert .colorEliterate, .colorEliterate .colorInvert {
+.colorInvert .colorEliterate,
+.colorEliterate .colorInvert {
 	color: #FFF;
 	background-color: #6F7D8B;
 }
-.colorEliterate h1, .colorEliterate h2, .colorEliterate h3 {
+.colorEliterate h1,
+.colorEliterate h2,
+.colorEliterate h3 {
 	font-weight: normal;
-	color:#384d62;
+	color: #384d62;
 }
 /*============================
  *
  * Engineers Without Borders
  *
 //===========================*/
- .episode-ewb .banner-logo {
+
+.episode-ewb .banner-logo {
 	width: 30%;
 	max-width: 300px;
 	margin: 2px 40%;
-	text-align:center;
+	text-align: center;
 }
 /*============================
  *
@@ -633,25 +659,37 @@ For now just using the episode-level .episode-gw class as a modifier
 for all sub styles:
 
 */
- .episode-gw .banner-logo {
+
+.episode-gw .banner-logo {
 	width: 30%;
 	max-width: 300px;
 	margin: 2px 40%;
-	text-align:center;
+	text-align: center;
 }
 .episode-gw {
-	font-family:"Helvetica", "Arial", sans-serif;
+	font-family: "Helvetica", "Arial", sans-serif;
 	font-weight: 300;
 }
-.episode-gw h1, .episode-gw h2, .episode-gw h3, .episode-gw h4, .episode-gw h5, .episode-gw .item a, .episode-gw .navigationPanel a {
-	font-family:"Montserrat", sans-serif;
+.episode-gw h1,
+.episode-gw h2,
+.episode-gw h3,
+.episode-gw h4,
+.episode-gw h5,
+.episode-gw .item a,
+.episode-gw .navigationPanel a {
+	font-family: "Montserrat", sans-serif;
 	color: #003A5C;
 }
-.episode-gw h1, .episode-gw h2, .episode-gw h3, .episode-gw h4, .episode-gw h5 {
+.episode-gw h1,
+.episode-gw h2,
+.episode-gw h3,
+.episode-gw h4,
+.episode-gw h5 {
 	font-weight: 700
 }
-.episode-gw .item .title, .episode-gw .navigationPanel a {
-	font-family:"Montserrat", sans-serif;
+.episode-gw .item .title,
+.episode-gw .navigationPanel a {
+	font-family: "Montserrat", sans-serif;
 	font-weight: 400;
 	font-size: 1em;
 	line-height: 1.2em;
@@ -660,13 +698,14 @@ for all sub styles:
 	background-color: #003A5C;
 }
 .episode-gw .colorInvert * {
-	color:#FFF
+	color: #FFF
 }
-.episode-gw .item .pullquote, .episode-gw .item .pullquoteSpeaker {
-	font-family:"Cardo", serif;
+.episode-gw .item .pullquote,
+.episode-gw .item .pullquoteSpeaker {
+	font-family: "Cardo", serif;
 }
 .episode-gw .item .pullquote:before {
-	font-family:"Cardo", serif;
+	font-family: "Cardo", serif;
 	color: rgba(0, 58, 92, 0.5);
 	font-size: 1.7em;
 	/*margin-left: -0.5em;*/
@@ -674,7 +713,9 @@ for all sub styles:
 .episode-gw .escapelink:before {
 	color: #AB9767;
 }
-.episode-gw.highlightSolid .content .item.currentItem, .episode-gw .highlightSolid .content .item.currentItem, .episode-gw .highlightSolid.item.currentItem {
+.episode-gw.highlightSolid .content .item.currentItem,
+.episode-gw .highlightSolid .content .item.currentItem,
+.episode-gw .highlightSolid.item.currentItem {
 	background-color: rgba(171, 151, 103, 0.3);
 }
 .episode-gw .contentAlt {
@@ -689,7 +730,7 @@ for all sub styles:
 }
 .episode-gw .navigationPanel h2 {
 	background-color: #AB9767;
-	color:#FFF;
+	color: #FFF;
 }
 .episode-gw .navigationPanel .scene {
 	border-top: 1px solid #AB9767;
@@ -709,17 +750,17 @@ for all sub styles:
 }
 .episode-gw .gwlogohack {
 	position: fixed;
-	background-color:#FFF;
-	z-index:10;
-	top:0;
+	background-color: #FFF;
+	z-index: 10;
+	top: 0;
 	left: 0;
 	right: 100px;
 	height: 45px;
 }
 .episode-gw .introtext {
-	float:none;
+	float: none;
 	width: 400px;
-	margin:auto;
+	margin: auto;
 	background-image: url('/images/gw-logo-big.svg');
 	background-size: 60%;
 	background-position: 50% 50px;
@@ -727,9 +768,9 @@ for all sub styles:
 	padding-top: 200px !important;
 }
 .episode-gw .intropanel .videoContainer {
-	float:none;
+	float: none;
 	width: 400px;
-	margin:auto;
+	margin: auto;
 }
 @media screen and (max-width: 300px) {
 	.episode-gw .intropanel {
@@ -740,7 +781,47 @@ for all sub styles:
 		padding-top: 140px !important;
 	}
 	.episode-gw .intropanel h1 {
-		position:static !important;
+		position: static !important;
 		margin-left: 0 !important;
 	}
+}
+.episode-purdue {
+	font-family: "Myriad Pro", "Arial";
+}
+.episode-purdue .footer {
+	background-color: #a3792c;
+}
+.episode-purdue .altPane {
+	background-color: #FAFAFA;
+	border-left: 1px solid #746c66;
+	border-right: 1px solid #746c66;
+}
+.episode-purdue h1,
+.episode-purdue h2,
+.episode-purdue h3,
+.episode-purdue h4,
+.episode-purdue .headerItem {
+	color: #a3792c;
+	font-family: "Champion", "Impact", "Charcoal", sans-serif;
+}
+.episode-purdue .colorInvert,
+.episode-purdue .colorInvert h1,
+.episode-purdue .colorInvert h2,
+.episode-purdue .colorInvert h3,
+.episode-purdue .colorInvert h4,
+.episode-purdue .colorInvert .headerItem {
+	background-color: #e3ae24;
+	color: #fff;
+}
+.episode-purdue .content a,
+.episode-purdue a:visited {
+	color: #e3ae24;
+	font-weight: bold;
+	text-shadow: -1px -1px 0 #fff;
+}
+.episode-purdue .landingscreen {
+	background-image: url("/images/customer/purdue-bg.svg");
+	background-position: 0 100%;
+	background-repeat: no-repeat;
+	background-size: 110%;
 }
