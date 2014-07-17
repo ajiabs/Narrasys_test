@@ -37,8 +37,8 @@ angular.module('com.inthetelling.story')
 			svc.flushActivityQueue();
 		}, 10000);
 
-		// don't try to capture when running from local data:
-		if ($routeParams.local) {
+		// don't try to capture when running from local data or if it's disabled in config:
+		if ($routeParams.local || config.disableAnalytics) {
 			// console.log("No analytics for local data; cancelling activity queue");
 			$interval.cancel(flusher);
 		}
