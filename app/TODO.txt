@@ -6,7 +6,11 @@ video seek events should wait for buffering before timeline starts playing
 modal style should be an episode-level template choice
 
 
+scene nav and search aren't picking up episode styles -- split them into color sets etc?
 
+remove unneeded popup blocker stuff
+
+Bill: Now that you have an LTI account, you should be able to see it.  I'm still seeing it.  Go into watch mode, let the timeline fade away completely.  Then, try to get it to come back without clicking the video (which pauses it and brings the timeline back).  I also notice that the video is being scaled to fit the width of the iframe in watch mode so the top and bottom get cropped and do a weird bouncy thing if you try to scroll them.  I would expect the video to scale without cropping, leaving space on the sides or top and bottom as appropriate.  Maybe the 2 things are related?
 
 
 
