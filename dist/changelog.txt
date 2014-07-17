@@ -414,3 +414,8 @@ Now copes with user falling asleep with their forehead on the spacebar (or the l
 scene nav menu now auto-dismisses on scene selection
 tweaked bottom toolbar layout to give more padding on right side (was interfering with browser scrollbar in some browsers)
 
+------------------------------------------------
+Changes in v4.0.8:
+Testing simpler framebreaker endpoint
+collapse timestamp margins on narrow content panes, changed pullquote layout to match
+
