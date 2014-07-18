@@ -333,6 +333,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	width: auto;
 	text-align: left;
 	height: 1px;
+	padding-right: 5px;
 }
 /* =========================== */
 

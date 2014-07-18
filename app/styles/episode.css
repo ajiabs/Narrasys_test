@@ -306,8 +306,9 @@
 .episode-purdue .colorInvert h3,
 .episode-purdue .colorInvert h4,
 .episode-purdue .colorInvert .headerItem {
-	background-color: #e3ae24;
+	background-color: #a3792c;
 	color: #fff;
+	letter-spacing: 1px;
 }
 .episode-purdue a,
 .episode-purdue a:visited {

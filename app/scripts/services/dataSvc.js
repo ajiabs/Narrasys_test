@@ -275,7 +275,7 @@ angular.module('com.inthetelling.story')
 				"master_asset_id": "masterasset",
 				"title": "Test Episode",
 				"status": "Published",
-				"templateUrl": "templates/episode/eliterate.html",
+				"templateUrl": "templates/episode/purdue.html",
 				"styles": [
 					"", "", ""
 				]
