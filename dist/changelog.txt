@@ -218,3 +218,8 @@ more landing screen tweak
 ------------------------------------------------
 Changes in v1.7.9:
 Purdue
+
+------------------------------------------------
+Changes in v1.7.10:
+purdue tweaks
+
