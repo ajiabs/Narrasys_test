@@ -7,9 +7,6 @@ video seek events should wait for buffering before timeline starts playing
 scene nav and search aren't picking up episode styles -- split them into color sets etc?
 
 
-Watch mode: if window is wide but short, the video needs to scale down to prevent the video extending past screen boundaries at top or bottom.
-
-
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 
 

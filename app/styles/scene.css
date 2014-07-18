@@ -125,14 +125,19 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 #watchModeVideoMagnet {
 	margin: auto;
 }
-.watchModeCaption {
+.watchModeCaptions {
 	position: fixed;
-	bottom: 110px;
-	color: #DDDDDD;
+	bottom: 20px;
 	font-size: 130%;
 	margin: 0 10%;
-	bottom: 90px;
 	width: 80%;
+	transition: all 1.5s;
+}
+.watchModeCaptions.padForBottomToolbar {
+	bottom: 110px;
+}
+.watchModeCaption {
+	color: #DDDDDD;
 	background-color: rgba(0, 0, 0, 0.7);
 	border-radius: 8px;
 	padding: 0.5em 1em;
