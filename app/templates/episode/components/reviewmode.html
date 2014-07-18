@@ -6,13 +6,8 @@
 		<div class="pane mainPane">
 			<div class="content allowHighlights" ng-class="{isNarrow: isNarrow}" itt-width-watch>
 				<h1 class="sceneTitle" ng-if="scene.title">{{scene.title}}</h1>
-
-				<div ng-if="appState.windowWidth < 480" class="item animate" ng-repeat="item in scene.items | isContent | filter:{cosmetic:false} | orderBy:'start_time'" ng-class="item.state" itt-item="item" forceTemplate="review-annotation">
-				</div>
-
-				<div ng-if="appState.windowWidth >= 480" class="item animate" ng-repeat="item in scene.items | isContent | annotation | filter:{cosmetic:false} | orderBy:'start_time'" ng-class="item.state" itt-item="item" forceTemplate="review-annotation">
-				</div>
-
+				<div ng-if="appState.windowWidth < 480" class="item animate" ng-repeat="item in scene.items | isContent | filter:{cosmetic:false} | orderBy:'start_time'" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
+				<div ng-if="appState.windowWidth >= 480" class="item animate" ng-repeat="item in scene.items | isContent | annotation | filter:{cosmetic:false} | orderBy:'start_time'" ng-class="item.state" itt-item="item" forceTemplate="review-annotation"></div>
 			</div>
 		</div>
 		<div ng-if="appState.windowWidth >= 480" class="pane altPane">
