@@ -29,11 +29,23 @@ angular.module('com.inthetelling.story')
 				defer.resolve();
 			} else {
 				// check for token in localStorage, try it to see if it's still valid.
-				if (localStorage && localStorage.storyAuth) {
-					// console.log("Getting access from stored token");
-					var storedData = angular.fromJson(localStorage.storyAuth);
-					appState.user = storedData;
-					$http.defaults.headers.common.Authorization = 'Token token="' + storedData.access_token + '"';
+				var validStoredData;
+
+				if (localStorage && localStorage.getItem(config.localStorageKey)) {
+					var storedData = localStorage.getItem(config.localStorageKey);
+					var currentCustomer = config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1];
+					if (storedData.customer === currentCustomer) {
+						validStoredData = storedData;
+					} else {
+						// this token must be invalid, so remove it
+						console.log("deleting wrong-customer token");
+						localStorage.removeItem(config.localStorageKey);
+					}
+				}
+
+				if (validStoredData) {
+					appState.user = validStoredData;
+					$http.defaults.headers.common.Authorization = 'Token token="' + validStoredData.access_token + '"';
 					defer.resolve();
 				} else {
 					// start from scratch
@@ -77,11 +89,15 @@ angular.module('com.inthetelling.story')
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
 				.success(function (data, status) {
-
+					// Access tokens are per-customer, which is based on subdomain. 
+					// Logging in with one customer invalidates the key for any others for the same user, 
+					// otherwise we'd just store separate ones per customer
+					data.customer = config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1];
+					console.log("localStorage about to store: ", data);
 					// Got user data.  Cache it in localStorage and appState
 					appState.user = data;
 					try {
-						localStorage.setItem("storyAuth", JSON.stringify(data));
+						localStorage.setItem(config.localStorageKey, JSON.stringify(data));
 					} catch (e) {}
 
 					svc.roles = data.roles; // TODO: do something useful with roles

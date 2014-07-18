@@ -12,8 +12,6 @@ angular.module('com.inthetelling.story')
 			replace: true,
 			scope: true,
 			link: function (scope, element) {
-				console.log("Magnet", element);
-				console.log(element.attr("id"));
 				scope.unwatchVisibility = scope.$watch(function () {
 					return element.is(':visible');
 				}, function (newV, oldV) {
