@@ -2,15 +2,17 @@
 
 video seek events should wait for buffering before timeline starts playing
 
+windowFg stop events should be visible in watch mode too
+other stop events should not stop the video(?)
 
-modal style should be an episode-level template choice
-
-
-
-
+scene nav and search aren't picking up episode styles -- split them into color sets etc?
 
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
+
+modal style should be an episode-level template choice
+
 
 Bring back fullscreen mode (needs browser testing muchly)
 

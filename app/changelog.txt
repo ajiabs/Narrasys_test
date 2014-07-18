@@ -423,3 +423,18 @@ collapse timestamp margins on narrow content panes, changed pullquote layout to 
 Changes in v4.0.9:
 api endpoints are not hash based
 
+------------------------------------------------
+Changes in v4.0.10:
+sandbox localStorage per customer
+brought back video overlays which I broke yesterday
+improved video magnet
+cosmetic tweaks
+fade transition when turning CC on and off
+Watch mode captions now reposition depending on whether bottom toolbar is visible
+Watch mode no longer allows video to overflow window bounds
+more purdue tweaks
+added width watcher to review mode
+removed no-longer-needed popup blocker code
+build a better Purdue
+more options for not analytics-izing the analytics
+
