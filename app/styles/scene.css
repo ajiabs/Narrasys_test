@@ -120,9 +120,10 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	bottom: 0;
 	left: 0;
 	right: 0;
+	text-align: center;
 }
 #watchModeVideoMagnet {
-	/* TODO put a max height on this */
+	margin: auto;
 }
 .watchModeCaption {
 	position: fixed;

@@ -24,7 +24,9 @@ angular.module('com.inthetelling.story')
 		};
 
 		if ($routeParams.viewMode) {
-			$scope.viewMode($routeParams.viewMode);
+			$timeout(function () {
+				$scope.viewMode($routeParams.viewMode);
+			});
 		}
 
 		if ($routeParams.t) {
