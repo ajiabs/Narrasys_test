@@ -438,3 +438,7 @@ removed no-longer-needed popup blocker code
 build a better Purdue
 more options for not analytics-izing the analytics
 
+------------------------------------------------
+Changes in v4.0.11:
+review mode in tiny windows was picking up wrong templates for transmedia
+
