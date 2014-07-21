@@ -420,7 +420,6 @@
 	min-width: 290px;
 	/* TOOLBAR HEIGHT */
 	top: 55px;
-	z-index: 99;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
 .helpPanel ul {

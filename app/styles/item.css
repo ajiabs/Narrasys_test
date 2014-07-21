@@ -56,7 +56,7 @@
 /* 
 	.singleitem panes are intended for cleaner transitions when there's only one content item in the pane at a time. 
 	TODO: this works fine when moving from single item to single item, but transitioning between
-	single and multiple is not so hot.  try again 
+	single and multiple is not so hot.  try again later
  */
 
 /* .singleitem .item {

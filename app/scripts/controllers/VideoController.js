@@ -1,9 +1,6 @@
 'use strict';
 
-// TODO youtube doesn't (always?) support mutiple playback rates; need to hide those controls when not available
-// TODO wrap try/catch around all controls in case player isn't ready yet
-
-// TODO watch for stall/buffering events and tell timeline to wait until video is ready again?
+// TODO youtube support for multiple playback speeds?
 
 angular.module('com.inthetelling.story')
 	.controller('VideoController', function ($q, $scope, $timeout, $window, $document, appState, timelineSvc) {
@@ -56,6 +53,9 @@ angular.module('com.inthetelling.story')
 				events: {
 					'onStateChange': function (x) {
 						$scope.playerState = playerStates[x.data];
+						if ($scope.playerState === 'buffering') {
+							$scope.stall();
+						}
 					}
 				}
 			});
@@ -78,9 +78,11 @@ angular.module('com.inthetelling.story')
 			}, false);
 			$scope.videoNode.addEventListener('waiting', function (evt) {
 				$scope.playerState = 'waiting';
+				// $scope.stall();   TODO: Should this be treated as a stall?
 			}, false);
 			$scope.videoNode.addEventListener('stalled', function (evt) {
 				$scope.playerState = 'stalled';
+				$scope.stall();
 			}, false);
 			$scope.videoNode.addEventListener('pause', function (evt) {
 				$scope.playerState = 'pause';
@@ -118,10 +120,26 @@ angular.module('com.inthetelling.story')
 		// DO NOT CALL ANY OF THE BELOW DIRECTLY!
 		// Instead call via timelineSvc; otherwise the timeline won't know the video is playing 
 
+		$scope.stall = function () {
+			// notify timelineSvc if the video stalls during playback
+			if (appState.timelineState !== 'playing') {
+				return;
+			}
+			// console.warn("Video stalled");
+			timelineSvc.stall();
+			var unwatch = $scope.$watch(function () {
+				return $scope.playerState;
+			}, function (newState) {
+				if (newState !== 'buffering') {
+					unwatch();
+					timelineSvc.unstall();
+				}
+			});
+		};
+
 		// play doesn't start immediately -- need to return a promise so timelineSvc can wait until the video is actually playing
 		$scope.play = function () {
 			var playDefer = $q.defer();
-
 			if ($scope.videoType === 'youtube') {
 				$scope.YTPlayer.playVideo();
 			} else {
@@ -174,7 +192,7 @@ angular.module('com.inthetelling.story')
 		$scope.setSpeed = function (speed) {
 			// console.log("VIDEO SPEED=", speed);
 			if (speed <= 0) {
-				// console.error("TODO: videoController doesn't handle reverse speeds...");
+				// console.error("videoController doesn't handle reverse speeds...");
 				return;
 			}
 

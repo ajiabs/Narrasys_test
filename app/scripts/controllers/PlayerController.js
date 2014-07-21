@@ -99,8 +99,6 @@ angular.module('com.inthetelling.story')
 
 		// Bottom toolbar starts out hidden.  5s after using a control or leaving the pane, fade out controls.
 		//   If mouse re-enters pane, keep the controls visible. 
-		// TODO: fade toolbars when tap outside, or when hit esc key
-		// TODO: never fades on touchscreen... fix that
 
 		appState.videoControlsActive = false;
 		var keepControls;

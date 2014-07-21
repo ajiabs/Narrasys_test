@@ -27,14 +27,12 @@ angular.module('com.inthetelling.story')
 			var getEpisodeListDefer = $q.defer();
 			authSvc.authenticate()
 				.then(function () {
-					$http.get(config.apiDataBaseUrl + "/v1/episodes")
-						.success(function (data) {
-							getEpisodeListDefer.resolve(data);
-						})
-						.error(function (a, b, c, d) {
-							//console.log(a,b,c,d);
-						});
+					return $http.get(config.apiDataBaseUrl + "/v1/episodes");
+				})
+				.then(function (response) {
+					return getEpisodeListDefer.resolve(response.data);
 				});
+
 			return getEpisodeListDefer.promise;
 		};
 

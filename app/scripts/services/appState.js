@@ -32,7 +32,7 @@ angular.module('com.inthetelling.story')
 			svc.time = 0; // current playhead position (in seconds) relative to timeline NOT TO EPISODE!
 			svc.timeMultiplier = 1; // sets player speed (0.5 = half speed; 2=double;etc)
 			svc.duration = 0; // duration of timeline (in seconds)
-			svc.timelineState = 'paused'; // "playing" or "paused" (set by timelineSvc). Future = "locked" (by stop question or etc)
+			svc.timelineState = 'paused'; // "playing", "paused", or "buffering" (set by timelineSvc). Future = "locked" (by stop question or etc)
 			svc.hasBeenPlayed = false; // set to true after first time the video plays (used so we can interrupt that first play with a helpful help)
 			svc.volume = 100; // Audio for main video
 			svc.muted = false; // audio for main video
