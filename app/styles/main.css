@@ -162,31 +162,32 @@ h4 {
 --------------------------------------------------------------------------------
 */
 
-.videoMask {
+.videoMagnet {
 	z-index: 2;
 }
-.watchModeCaptions {
+.videoMask {
 	z-index: 3;
 }
-.windowFg {
+.watchModeCaptions {
 	z-index: 4;
 }
-.modal-backdrop {
+.windowFg {
 	z-index: 5;
+}
+.modal-backdrop {
+	z-index: 6;
 }
 .modal,
 .helpPanel {
-	z-index: 6;
+	z-index: 7;
 }
 .navPanel,
 .toolbar-bottom-controltrigger {
-	z-index: 7;
+	z-index: 8;
 }
 .toolbar,
 .toolbar-bottom,
-.banner-logo {
-	z-index: 8;
-}
+.banner-logo,
 .autoscroll {
 	z-index: 9;
 }
