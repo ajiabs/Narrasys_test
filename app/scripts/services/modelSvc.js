@@ -110,8 +110,9 @@ angular.module('com.inthetelling.story')
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
 			// Attach episode title and description to the landing screen event:
-			svc.events["internal:landingscreen:" + episode._id].title = episode.title;
-
+			if (episode.title && svc.events["internal:landingscreen:" + episode._id]) {
+				svc.events["internal:landingscreen:" + episode._id].title = episode.title;
+			}
 			return episode;
 		};
 

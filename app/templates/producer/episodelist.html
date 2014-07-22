@@ -1,12 +1,9 @@
-Episode list
-<!-- TODO move to producer folder -->
-
 <div ng-controller="EpisodeListController" style="margin:1em">
 
 	<div ng-repeat="customer in containers">
-		<h2>{{customer.name}}</h2>
+		<h2 ng-click="customer.hidden = !customer.hidden" style="cursor: pointer; width:100%; background-color:#EEE">{{customer.name}}</h2>
 
-		<div ng-repeat="course in customer.children">
+		<div ng-if="!customer.hidden" ng-repeat="course in customer.children">
 			<h3 style="cursor:pointer;" ng-click="course.visible=!course.visible">{{course.name}}</h3>
 
 			<div ng-if="course.visible" style="margin-left:2em" ng-repeat="session in course.children">
@@ -14,7 +11,8 @@ Episode list
 				<ul>
 					<li ng-repeat="episodecontainer in session.children">
 
-						<a href="#episode/{{episodecontainer.episodes[0]}}">{{episodecontainer.name}}</a>
+						[<a href="#episode/{{episodecontainer.episodes[0]}}">View</a>] [
+						<a href="#producer/{{episodecontainer.episodes[0]}}">Edit</a>] {{episodecontainer.name}}
 						<small style="opacity:0.2">{{episodecontainer.episodes[0]}} - <a ng-click="authenticate(episode._id)">OAuth</a>
 						</small>
 

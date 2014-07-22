@@ -7,22 +7,22 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 // Configure routing
 .config(function ($routeProvider) {
 	$routeProvider
-		.when('/episodes', {
-			title: "Telling STORY: All available episodes",
-			templateUrl: 'templates/episodelist.html'
-		})
 		.when('/episode/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			reloadOnSearch: false
 		})
-		// .when('/producer/:epId', {
-		// 	title: "Producer",
-		// 	controller: 'EpisodeEditorController',
-		// 	templateUrl: 'templates/producer/episode.html',
-		// 	reloadOnSearch: false
-		// })
+		.when('/producer', {
+			title: "Available episodes",
+			templateUrl: 'templates/producer/episodelist.html'
+		})
+		.when('/producer/:epId', {
+			title: "Producer",
+			controller: 'EpisodeEditorController',
+			templateUrl: 'templates/producer/episode.html',
+			reloadOnSearch: false
+		})
 		.when('/episode/:epId/:viewMode', {
 			title: "Telling STORY",
 			controller: 'PlayerController',

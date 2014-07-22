@@ -57,6 +57,9 @@ angular.module('com.inthetelling.story')
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
 		svc.getEpisode = function (epId) {
+			if (!epId) {
+				throw ("no episode ID supplied to dataSvc.getEpisode");
+			}
 			if (modelSvc.episodes[epId]) {
 				return; // already requested
 			}
