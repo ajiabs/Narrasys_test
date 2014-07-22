@@ -14,7 +14,7 @@
 
 //  use PUT to update, POST to create new   
 // for assets, DELETE then POST
-// Wrap events in event: {}   same for other things?  template didn't seem to need it
+// to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 angular.module('com.inthetelling.story')
 	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, modelSvc, errorSvc) {
@@ -22,23 +22,37 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
-		// TODO cache this and don't re-request from API if we already have it 
+		// PRODUCER
+		// a different idiom here, let's see if this is easier to conceptualize
 		svc.getEpisodeList = function () {
-			var defer = $q.defer();
-			authSvc.authenticate()
-				.then(function () {
-					return $http.get(config.apiDataBaseUrl + "/v1/episodes");
-				})
-				.then(function (response) {
-					return defer.resolve(response.data);
-				});
-
-			return defer.promise;
+			return GET("/v1/episodes");
 		};
 
 		svc.getAllContainers = function () {
+			return GET("/v1/containers", function (containers) {
+				// TODO climb through the tree customer->course->session->episode and cache everything 
 
-		}
+				return containers;
+			});
+		};
+
+		var GET = function (path, postprocessCallback) {
+			var defer = $q.defer();
+			authSvc.authenticate()
+				.then(function () {
+					return $http.get(config.apiDataBaseUrl + path);
+				})
+				.then(function (response) {
+					var ret = response.data;
+					if (postprocessCallback) {
+						ret = postprocessCallback(ret);
+					}
+					return defer.resolve(ret);
+				});
+			return defer.promise;
+		};
+
+		/* ------------------------------------------------------------------------------ */
 
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
@@ -72,17 +86,15 @@ angular.module('com.inthetelling.story')
 		console.log("dataSvc cache: ", dataCache);
 
 		// Gets all layouts, styles, and templates
-		var haveCommon = false;
-		var defer = $q.defer();
+		var gettingCommon = false;
+		var getCommonDefer = $q.defer();
 		var getCommon = function () {
 			// console.log("dataSvc.getCommon");
-			if (haveCommon === true) {
-				defer.resolve();
-			} else
-			if (haveCommon === 'in progress') {
-				return defer.promise;
+			if (gettingCommon) {
+				return getCommonDefer.promise;
+
 			} else {
-				haveCommon = 'in progress';
+				gettingCommon = true;
 				$q.all([
 					$http.get(config.apiDataBaseUrl + '/v1/templates'),
 					$http.get(config.apiDataBaseUrl + '/v1/layouts'),
@@ -91,15 +103,16 @@ angular.module('com.inthetelling.story')
 					cache("templates", responses[0].data);
 					cache("layouts", responses[1].data);
 					cache("styles", responses[2].data);
-					haveCommon = true;
-					defer.resolve();
+
+					gettingCommon = true;
+					getCommonDefer.resolve();
 				}, function (failure) {
 					// console.error("getCommon failed", failure);
-					haveCommon = false;
-					defer.reject();
+					gettingCommon = false;
+					getCommonDefer.reject();
 				});
 			}
-			return defer.promise;
+			return getCommonDefer.promise;
 		};
 
 		var cache = function (cacheType, dataList) {

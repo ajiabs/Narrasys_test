@@ -1,10 +1,13 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EpisodeListController', function ($scope, config, dataSvc, appState) {
+	.controller('EpisodeListController', function ($scope, config, dataSvc, modelSvc, appState) {
 
-		dataSvc.getEpisodeList().then(function (data) {
-			$scope.episodes = data;
+		// dataSvc.getEpisodeList().then(function (data) {
+		// 	$scope.episodes = data;
+		// });
+		dataSvc.getAllContainers().then(function (data) {
+			$scope.containers = data;
 		});
 
 		$scope.authenticate = function (episodeID) {

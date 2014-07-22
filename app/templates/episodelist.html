@@ -1,12 +1,37 @@
 Episode list
+<!-- TODO move to producer folder -->
 
-<div ng-controller="EpisodeListController">
+<div ng-controller="EpisodeListController" style="margin:1em">
+
+	<div ng-repeat="customer in containers">
+		<h2>{{customer.name}}</h2>
+
+		<div ng-repeat="course in customer.children">
+			<h3 style="cursor:pointer;" ng-click="course.visible=!course.visible">{{course.name}}</h3>
+
+			<div ng-if="course.visible" style="margin-left:2em" ng-repeat="session in course.children">
+				<h4>{{session.name}}</h4>
+				<ul>
+					<li ng-repeat="episodecontainer in session.children">
+
+						<a href="#episode/{{episodecontainer.episodes[0]}}">{{episodecontainer.name}}</a>
+						<small style="opacity:0.2">{{episodecontainer.episodes[0]}} - <a ng-click="authenticate(episode._id)">OAuth</a>
+						</small>
+
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- 
 	<div ng-repeat="episode in episodes">
 		({{episode._id}}) {{episode.title}} -
 		<a href="#episode/{{episode._id}}">Episode</a> -
 		<a ng-click="authenticate(episode._id)">OAuth</a>
 		<br>
 	</div>
+ -->
+
 </div>
 
 <div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>

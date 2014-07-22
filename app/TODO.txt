@@ -48,6 +48,8 @@ Find out why m3u8 was causing problems, fix it
 
 ModelSvc may need to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes) (or just do this inside producer.)
 
+Bill may change API to return all parent containers for an episode instead of us having to walk up the tree
+
 --------------------------------------------------------------------------------------------------------------------------------
 For USC:
 credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
