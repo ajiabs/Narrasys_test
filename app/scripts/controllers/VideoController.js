@@ -139,7 +139,7 @@ angular.module('com.inthetelling.story')
 
 		// play doesn't start immediately -- need to return a promise so timelineSvc can wait until the video is actually playing
 		$scope.play = function () {
-			var playDefer = $q.defer();
+			var defer = $q.defer();
 			if ($scope.videoType === 'youtube') {
 				$scope.YTPlayer.playVideo();
 			} else {
@@ -151,10 +151,10 @@ angular.module('com.inthetelling.story')
 			}, function (newPlayerState) {
 				if (newPlayerState === 'playing') {
 					unwatch();
-					playDefer.resolve();
+					defer.resolve();
 				}
 			});
-			return playDefer.promise;
+			return defer.promise;
 		};
 
 		$scope.pause = function () {

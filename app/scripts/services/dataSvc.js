@@ -24,17 +24,21 @@ angular.module('com.inthetelling.story')
 
 		// TODO cache this and don't re-request from API if we already have it 
 		svc.getEpisodeList = function () {
-			var getEpisodeListDefer = $q.defer();
+			var defer = $q.defer();
 			authSvc.authenticate()
 				.then(function () {
 					return $http.get(config.apiDataBaseUrl + "/v1/episodes");
 				})
 				.then(function (response) {
-					return getEpisodeListDefer.resolve(response.data);
+					return defer.resolve(response.data);
 				});
 
-			return getEpisodeListDefer.promise;
+			return defer.promise;
 		};
+
+		svc.getAllContainers = function () {
+
+		}
 
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
@@ -52,15 +56,10 @@ angular.module('com.inthetelling.story')
 			} else {
 				authSvc.authenticate()
 					.then(function () {
-						// console.log("auth succeeded");
-						getCommon().then(function () {
-							// console.log("getCommon succeeded");
-							getEpisode(epId);
-						}, function (err) {
-							// console.error("getCommon failed: ", err);
-						});
-					}, function (err) {
-						// console.error("Authentication error: ", err);
+						return getCommon();
+					})
+					.then(function () {
+						return getEpisode(epId);
 					});
 			}
 		};
@@ -74,14 +73,14 @@ angular.module('com.inthetelling.story')
 
 		// Gets all layouts, styles, and templates
 		var haveCommon = false;
-		var getCommonDefer = $q.defer();
+		var defer = $q.defer();
 		var getCommon = function () {
 			// console.log("dataSvc.getCommon");
 			if (haveCommon === true) {
-				getCommonDefer.resolve();
+				defer.resolve();
 			} else
 			if (haveCommon === 'in progress') {
-				return getCommonDefer.promise;
+				return defer.promise;
 			} else {
 				haveCommon = 'in progress';
 				$q.all([
@@ -93,14 +92,14 @@ angular.module('com.inthetelling.story')
 					cache("layouts", responses[1].data);
 					cache("styles", responses[2].data);
 					haveCommon = true;
-					getCommonDefer.resolve();
+					defer.resolve();
 				}, function (failure) {
 					// console.error("getCommon failed", failure);
 					haveCommon = false;
-					getCommonDefer.reject();
+					defer.reject();
 				});
 			}
-			return getCommonDefer.promise;
+			return defer.promise;
 		};
 
 		var cache = function (cacheType, dataList) {
@@ -215,6 +214,8 @@ angular.module('com.inthetelling.story')
 						getEpisodeEvents(epId);
 
 						// this will get the episode container and its assets, then iterate up the chain to all parent containers
+						// (In retrospect, would have been easier to just get all containers at once, but maybe someday we will have soooo many containers
+						// that this will be worthwhile)
 						getContainer(episodeData.container_id, epId);
 					} else {
 						errorSvc.error({
