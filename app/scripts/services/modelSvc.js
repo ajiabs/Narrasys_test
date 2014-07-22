@@ -366,7 +366,9 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			// Do episode's master asset, too
-			svc.episodes[episodeId].masterAsset = svc.assets[svc.episodes[episodeId].master_asset_id];
+			if (svc.episodes[episodeId]) {
+				svc.episodes[episodeId].masterAsset = svc.assets[svc.episodes[episodeId].master_asset_id];
+			}
 		};
 
 		// TODO: Future episodes should have this as an available scene template instead 
