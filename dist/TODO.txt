@@ -7,11 +7,16 @@ other stop events should not stop the video(?)
 
 scene nav and search aren't picking up episode styles -- split them into color sets etc?
 
+include non-cosmetic windowFg items in review mode (new filter)
+
+make sure modelSvc is still doing this:
+Currently player is url-encoding " ", "&" and "?" for uploads url and alternate_url fields, and for master asset urls.  For other urls only encoding spaces.
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 
+New scene template: picture-in-picture  (video is a position:fixed thumbnail in one lower corner, transcript floating next to it as pseudo-CC, full canvas is the transmedia pane)
 
-modal style should be an episode-level template choice
+modal style should be an (episode-level) template choice
 
 
 Bring back fullscreen mode (needs browser testing muchly)
@@ -43,6 +48,8 @@ Find out why m3u8 was causing problems, fix it
 
 ModelSvc may need to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes) (or just do this inside producer.)
 
+Bill may change API to return all parent containers for an episode instead of us having to walk up the tree
+
 --------------------------------------------------------------------------------------------------------------------------------
 For USC:
 credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
@@ -62,9 +69,10 @@ zooming timeline should reveal untitled scenes and (if zoomed far enough) items:
 
 
 Ask Bill to add data fields: 
-* episode: "friendly ID"  (for use in url).  Needs a lookup endpoint. Ideally per customer(?)
+* episode: "friendly ID"  (for use in url).  Needs a lookup endpoint. Ideally separate lists per customer so each could have its own e.g. "s3-e1"
 * Link events: noEmbed (for links with framebreakers)
 * Link events: targetTop (for end-of-episode links to LTI host)
+* (maybe) Add an unauthenticated endpoint to look up the correct customer for a given episode ID, so if users start out at the wrong subdomain they won't get bogus auth errors?  (possibly overkill)
 
 
 Consider eliminating fg panes other than windowFg (check existing episodes, are any using them?)
@@ -76,7 +84,6 @@ Scenes: handle showTimeline layouts
 
 sceneModifier events (as event plugin)
 
-Scenes should detect when content panes (including their Fg and Bg) are empty, and adjust the layout to make up for it (better still, do this only if they're empty for more than n seconds...)  (maybe overkill; if we offer more scene template choices and make them easier to choose in authoring, we wont need to automate it)
 
 "text" scenes:  no video; have a button at the end to start the next scene (landing screen could be a special case of this). Timeline shows this as a 'duration' proportional to the length of the page, and autoscrolls the page if you "play"
 

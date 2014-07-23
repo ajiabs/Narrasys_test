@@ -442,3 +442,11 @@ more options for not analytics-izing the analytics
 Changes in v4.0.11:
 review mode in tiny windows was picking up wrong templates for transmedia
 
+------------------------------------------------
+Changes in v4.0.12:
+better handling of customer-specific colors and typography
+fixed race condition on authentication
+modelSvc no longer freaks out if you load containers before episodes
+better z-indexes
+timeline now copes with video stalls
+
