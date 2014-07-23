@@ -123,91 +123,9 @@
 	background-position: 0 30%;
 	background-repeat: no-repeat;
 }
-.episode-eliterate .startTime {
-	background-color: rgba(0, 0, 0, 0.05);
-	border-radius: 3px;
-	padding: 3px;
-}
-.episode-eliterate {
-	font-family: Arial, Helvetica, Tahoma, sans-serif;
-	font-size: 15px;
-}
-.episode-eliterate {
-	color: #6F7D8B;
-}
-.episode-eliterate a,
-.colorEliterate .fakelink {
-	color: #1376bb
-}
-.episode-eliterate h1,
-.episode-eliterate h2,
-.episode-eliterate h3 {
-	font-weight: normal;
-	color: #384d62;
-}
-.episode-eliterate .colorInvert {
-	color: #FFF;
-	background-color: #6F7D8B;
-}
-.episode-eliterate .colorInvert h1,
-.episode-eliterate .colorInvert h2,
-.episode-eliterate .colorInvert h3 {
-	color: #FFF
-}
 .episode-gw .videoMask.firstplay {
 	/* GW doesn't want our logo here */
 	background-image: url('/images/play-overlay.png');
-}
-.episode-gw {
-	font-family: "Helvetica", "Arial", sans-serif;
-	font-weight: 300;
-}
-.episode-gw h1,
-.episode-gw h2,
-.episode-gw h3,
-.episode-gw h4,
-.episode-gw h5,
-.episode-gw .item a,
-.episode-gw .navigationPanel a {
-	font-family: "Montserrat", sans-serif;
-	color: #003A5C;
-}
-.episode-gw h1,
-.episode-gw h2,
-.episode-gw h3,
-.episode-gw h4,
-.episode-gw h5 {
-	font-weight: 700
-}
-.episode-gw .item .title {
-	font-family: "Montserrat", sans-serif;
-	font-weight: 400;
-	font-size: 1em;
-	line-height: 1.2em;
-}
-.episode-gw .colorInvert {
-	background-color: #003A5C;
-}
-.episode-gw .colorInvert * {
-	color: #FFF
-}
-.episode-gw .item .pullquote,
-.episode-gw .item .pullquoteSpeaker {
-	font-family: "Cardo", serif;
-}
-.episode-gw .item .pullquote:before {
-	font-family: "Cardo", serif;
-	color: rgba(0, 58, 92, 0.5);
-	font-size: 1.7em;
-}
-.episode-gw .escapelink:before {
-	color: #AB9767;
-}
-.episode-gw.content.allowHighlights .highlightSolid.item.isCurrent {
-	background-color: rgba(171, 151, 103, 0.3);
-}
-.episode-gw .altPane {
-	background-color: rgba(0, 58, 92, 0.05);
 }
 .episode-gw .landingscreen {
 	width: 400px;
@@ -235,87 +153,8 @@
 		padding-top: 45%;
 	}
 }
-/* approved USC colors are #900 red and #FC0 yellow */
-
-.episode-usc a,
-.episode-usc a:visited {
-	color: #900;
-	font-weight: bold;
-}
-.episode-usc {
-	font-family: National, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	background-color: #F7F9ED;
-}
-.episode-usc .altPane {
-	background-color: #FFF;
-}
-.episode-usc h1,
-.episode-usc h2,
-.episode-usc h3,
-.episode-usc h4,
-.episode-usc .headerItem {
-	font-family: "Adobe Caslon", "Crimson Text", serif;
-	line-height: 1.6em;
-}
-.episode-usc .colorInvert {
-	background-color: #900;
-	color: #FC0;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-}
-.episode-usc .item .pullquote:before {
-	line-height: 0.5em;
-}
-.episode-usc .footer {
-	background-color: #900;
-}
 /* Purdue */
 
-.episode-purdue {
-	font-family: "Myriad Pro", "Arial";
-}
-.episode-purdue a,
-.episode-purdue a:visited {
-	color: #e3ae24;
-	font-weight: bold;
-	text-shadow: -1px -1px 0 #fff;
-}
-.episode-purdue .footer {
-	background-color: #a3792c;
-}
-.episode-purdue .footer a,
-.episode-purdue .footer a:visited {
-	color: #FFF;
-	text-shadow: none;
-}
-.episode-purdue .altPane {
-	background-color: #FAFAFA;
-	border-left: 1px solid #746c66;
-	border-right: 1px solid #746c66;
-}
-.episode-purdue h1,
-.episode-purdue h2,
-.episode-purdue h3,
-.episode-purdue h4,
-.episode-purdue .headerItem {
-	color: #a3792c;
-	font-family: "Champion", "Impact", "Charcoal", sans-serif;
-}
-.episode-purdue .colorInvert,
-.episode-purdue .colorInvert h1,
-.episode-purdue .colorInvert h2,
-.episode-purdue .colorInvert h3,
-.episode-purdue .colorInvert h4,
-.episode-purdue .colorInvert .headerItem {
-	background-color: #a3792c;
-	color: #fff;
-	letter-spacing: 1px;
-}
-.episode-purdue a,
-.episode-purdue a:visited {
-	color: #e3ae24;
-	font-weight: bold;
-	text-shadow: -1px -1px 0 #fff;
-}
 .episode-purdue .landingscreen {
 	background-image: url("/images/customer/purdue-bg.svg");
 	background-position: 0 100%;

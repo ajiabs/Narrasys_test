@@ -106,9 +106,32 @@ angular.module('com.inthetelling.story')
 		svc.deriveEpisode = function (episode) {
 			// console.log("deriveEpisode:", episode);
 			if (updateTemplates[episode.templateUrl]) {
-				episode.origTemplateUrl = episode.templateUrl; // TEMPORARY
+				episode.origTemplateUrl = episode.templateUrl;
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
+
+			// For now, automatically add customer-specific styles to episode if there aren't other selections.
+			// (TODO Producer should do this automatically; this is for legacy episodes):
+			if (!episode.styles) {
+				episode.styles = [];
+			}
+			angular.forEach(["eliterate", "gw", "purdue", "usc"], function (customer) {
+				if (episode.templateUrl === "templates/episode/" + customer + ".html") {
+					angular.forEach(["color", "typography"], function (styleType) {
+						// if the episode doesn't already have styletypeFoo, add styletypeCustomer 
+						var found = false;
+						angular.forEach(episode.styles, function (style) {
+							if (style.match(styleType)) {
+								found = true;
+							}
+						});
+						if (!found) {
+							episode.styles.push(styleType + customer[0].toUpperCase() + customer.substring(1));
+						}
+					});
+				}
+			});
+
 			// Attach episode title and description to the landing screen event:
 			if (episode.title && svc.events["internal:landingscreen:" + episode._id]) {
 				svc.events["internal:landingscreen:" + episode._id].title = episode.title;
