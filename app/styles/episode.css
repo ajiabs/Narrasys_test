@@ -810,10 +810,13 @@ for all sub styles:
 .episode-purdue h1,
 .episode-purdue h2,
 .episode-purdue h3,
-.episode-purdue h4,
-.episode-purdue .headerItem {
+.episode-purdue h4 {
 	color: #a3792c;
 	font-family: "Champion", "Impact", "Charcoal", sans-serif;
+}
+.episode-purdue .headerItem {
+	color: #a3792c;
+	font-family: "Chaparral Pro", "Times New Roman", "Times", serif;
 }
 .episode-purdue .colorInvert,
 .episode-purdue .colorInvert h1,
