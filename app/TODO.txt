@@ -1,5 +1,8 @@
 
-Video needs to reinit on episode change
+
+coerce events to fit within one scene or another — some events start a fraction of a second before the scene start
+
+
 
 windowFg stop events should be visible in watch mode too
 other stop events should not stop the video(?)
@@ -10,6 +13,9 @@ make sure modelSvc is still doing this:
 Currently player is url-encoding " ", "&" and "?" for uploads url and alternate_url fields, and for master asset urls.  For other urls only encoding spaces.
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
+possible to extract video information (size, duration) from a video file when the user is uploading it?  — espeically duration, framerate  (e.g. 24000/1001), duration are most important
+
 
 New scene template: picture-in-picture  (video is a position:fixed thumbnail in one lower corner, transcript floating next to it as pseudo-CC, full canvas is the transmedia pane)
 
@@ -70,6 +76,7 @@ Ask Bill to add data fields:
 * episode: "friendly ID"  (for use in url).  Needs a lookup endpoint. Ideally separate lists per customer so each could have its own e.g. "s3-e1"
 * Link events: noEmbed (for links with framebreakers)
 * Link events: targetTop (for end-of-episode links to LTI host)
+* All events + episode: app version number (to make it easier to distinguish between legacy and new episodes)
 
 end of episode scene
 
