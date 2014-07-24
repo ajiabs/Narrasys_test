@@ -104,7 +104,7 @@ angular.module('com.inthetelling.story')
 		var keepControls;
 		var controlTimer;
 
-		$scope.$watch(function () {
+		var videoControlsWatcher = $scope.$watch(function () {
 			return appState.videoControlsActive;
 		}, function (isActive, wasActive) {
 			if (isActive) {
@@ -114,6 +114,9 @@ angular.module('com.inthetelling.story')
 					}
 				}, 5000);
 			}
+		});
+		$scope.$on('$destroy', function () {
+			videoControlsWatcher();
 		});
 
 		$scope.showControls = function () {
@@ -236,7 +239,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		// TODO this is a relatively expensive $watch.  Could greatly increase its $interval if we
+		// TODO this is a relatively expensive watch.  Could greatly increase its $interval if we
 		// support directly triggering it from timeline on seek()... 
 		var handleAutoscroll = function () {
 			// if autoscroll is true and autoscrollBlocked is false,

@@ -38,10 +38,13 @@ angular.module('com.inthetelling.story')
 				document.mozFullScreen || document.webkitIsFullScreen); // current working methods
 		};
 
-		$scope.$watch(function () {
+		var fullscreenWatcher = $scope.$watch(function () {
 			return isInFullscreenMode();
 		}, function (newVal) {
 			appState.isInFullscreenMode = newVal;
+		});
+		$scope.$on('$destroy', function () {
+			fullscreenWatcher();
 		});
 
 		var exitFullscreen = function () {

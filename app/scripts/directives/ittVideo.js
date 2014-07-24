@@ -43,8 +43,10 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-				$rootScope.$on('userKeypress.SPACE', scope.videoClick);
-
+				scope.spaceWatcher = $rootScope.$on('userKeypress.SPACE', scope.videoClick);
+				scope.$on('$destroy', function () {
+					scope.spaceWatcher();
+				});
 			},
 
 		};
