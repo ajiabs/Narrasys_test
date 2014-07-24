@@ -39,6 +39,7 @@ angular.module('com.inthetelling.story')
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+		console.log("playerController init");
 		appState.init();
 		errorSvc.init();
 		appState.episodeId = $routeParams.epId;
@@ -48,8 +49,8 @@ angular.module('com.inthetelling.story')
 		// Watch for the first load of the episode data; init the master asset and page title when found
 		var episodeWatcher = $scope.$watch(function () {
 			return modelSvc.episodes[appState.episodeId].title;
-		}, function (a, b) {
-			if (a !== b) {
+		}, function (a) {
+			if (a) {
 				document.title = "STORY: " + a;
 				episodeWatcher(); // stop watching;
 			}
@@ -59,7 +60,7 @@ angular.module('com.inthetelling.story')
 		$scope.loading = true;
 		var eventsWatcher = $scope.$watch(function () {
 			return modelSvc.episodes[appState.episodeId].items;
-		}, function (a, b) {
+		}, function (a) {
 			if (a) {
 				modelSvc.addEndingScreen(appState.episodeId);
 				timelineSvc.init(appState.episodeId);

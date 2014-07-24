@@ -252,6 +252,7 @@ Video
 }
 .videoMask.rewind {
 	background-image: url('/images/rewind-overlay.png');
+	animation: delayedFadeIn 3s;
 }
 /* 
 Misc useful keyframes 

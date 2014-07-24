@@ -56,6 +56,7 @@ angular.module('com.inthetelling.story')
 						}
 					}
 					if (!found) {
+						timelineSvc.pause();
 						timelineSvc.seek(appState.duration - 0.01, "nextScene");
 					}
 				};

@@ -46,7 +46,7 @@ angular.module('com.inthetelling.story')
 		var timeMultiplier;
 
 		svc.registerVideo = function (newVideoScope) {
-			// console.log("timelineSvc.registerVideo", newVideoScope);
+			console.log("timelineSvc.registerVideo", newVideoScope);
 			if (videoScope !== undefined) {
 				// Route changes weren't always seeking to the correct time; this forces it on next $digest:
 				$timeout(function () {
@@ -74,7 +74,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			if (appState.time > appState.duration - 0.1) {
-				svc.seek(0);
+				svc.seek(0.1); // fudge the time a bit to skip the landing scene
 				svc.play();
 			}
 
@@ -361,7 +361,6 @@ angular.module('com.inthetelling.story')
 			if (events.length === 0) {
 				return;
 			}
-			console.log("timelineSvc.injectEvents", events);
 			angular.forEach(events, function (event) {
 				// add scenes to markedEvents[]:
 				if (event._type === "Scene" && event.title) {
@@ -443,9 +442,6 @@ angular.module('com.inthetelling.story')
 			// Find the latest end_time in the timeline, set that as the duration.
 			// TODO this will need to change when we support multiple episodes in one timeline
 			var lastEndTime = 0;
-			angular.forEach(svc.timelineEvents, function (evt) {
-				console.log(evt);
-			});
 			appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
 
 			svc.updateEventStates();

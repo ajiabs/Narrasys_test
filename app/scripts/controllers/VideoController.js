@@ -11,26 +11,27 @@ angular.module('com.inthetelling.story')
 		apiTag.src = "//www.youtube.com/iframe_api";
 		angular.element($document[0].head).append(apiTag);
 		$window.onYouTubeIframeAPIReady = function () {
-			$scope.youtubeIsReady = true;
+			appState.youtubeIsReady = true;
 			// console.log("Youtube Service is ready");
 		};
 
 		$scope.$on("$destroy", function () {
-			// console.log("Destroying videoController and youtube player", $scope.YTPlayer);
+			console.log("Destroying videoController and youtube player", $scope.YTPlayer);
 			$scope.YTPlayer = undefined;
 			// TODO tell youtubeSvc to destroy its instance as well? Also timelineSvc?  
 		});
 
 		$scope.initVideo = function (el) {
+			console.log("videoController.initVideo");
 			if ($scope.video.urls.youtube) {
 				$scope.videoType = 'youtube';
 				appState.videoType = $scope.videoType;
 				$scope.videoNode = el.find('iframe')[0];
-				if ($scope.youtubeIsReady) {
+				if (appState.youtubeIsReady) {
 					$scope.initYoutube($scope.videoNode.id);
 				} else {
 					var unwatch = $scope.$watch(function () {
-						return $scope.youtubeIsReady;
+						return appState.youtubeIsReady;
 					}, function (itIsReady) {
 						if (itIsReady) {
 							$scope.initYoutube($scope.videoNode.id);
@@ -47,7 +48,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.initYoutube = function () {
-			// console.log("videoController initYoutube");
+			console.log("videoController initYoutube");
 			var playerStates = ["ended", "playing", "paused", "buffering", "", "cued"]; // convert YT codes to html5 state names
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
@@ -59,7 +60,7 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
-
+			console.log("YTPlayer", $scope.YTPlayer.playVideo);
 			// but we still need to wait for youtube to Do More Stuff, apparently:
 			var unwatch = $scope.$watch(function () {
 				return $scope.YTPlayer.playVideo !== undefined;

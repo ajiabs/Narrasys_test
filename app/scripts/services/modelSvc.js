@@ -417,8 +417,15 @@ angular.module('com.inthetelling.story')
 			}
 
 			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration);
-			//coerce end of last scene to match video duration:
-			svc.episodes[episodeId].scenes[svc.episodes[episodeId].scenes.length - 1].end_time = duration;
+
+			//coerce end of last scene (and its items) to match video duration:
+			var lastScene = svc.episodes[episodeId].scenes[svc.episodes[episodeId].scenes.length - 1];
+			lastScene.end_time = duration;
+			angular.forEach(lastScene.items, function (item) {
+				if (item.end_time > duration) {
+					item.end_time = duration;
+				}
+			});
 
 			// create a new scene event for this episode
 			svc.events["internal:endingscreen:" + episodeId] = {
