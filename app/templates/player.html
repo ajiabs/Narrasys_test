@@ -39,6 +39,14 @@
 			<input id="searchtext" type="text" ng-model="searchText" />
 		</div>
 	</div>
+	<div ng-if="loading" class="loading">
+		<div class="spinner">
+			<div class="rotating pie"></div>
+			<div class="filler pie"></div>
+			<div class="mask"></div>
+		</div>
+		Loading
+	</div>
 	<div itt-episode></div>
 
 	<div class="toolbar-bottom" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-show="appState.videoControlsActive">
@@ -96,16 +104,6 @@
 	</ul>
 	<a class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;">Don't show this again</a>
 </div>
-
-<div ng-if="loading" class="loading">
-	<div class="spinner">
-		<div class="rotating pie"></div>
-		<div class="filler pie"></div>
-		<div class="mask"></div>
-	</div>
-	Loading
-</div>
-
 
 <div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
 <!-- 
