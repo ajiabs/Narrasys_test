@@ -236,6 +236,43 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		width: 130px;
 	}
 }
+/* -------------------------------------------  
+   Landing screen 
+*/
+
+.landingscreen {
+	margin: 10% 15%;
+}
+.landingscreen .videoMagnet {
+	width: 50%;
+	float: left;
+}
+.landingscreen .introtext {
+	width: 45%;
+	float: right;
+}
+.landingscreen p {
+	margin: 2em 0 1em 0
+}
+@media screen and (max-width: 501px) {
+	.landingscreen .videoMagnet {
+		width: 100%;
+		float: none;
+	}
+	.landingscreen .introtext {
+		width: 100%;
+		float: none;
+	}
+	.landingscreen h1 {
+		font-size: 24px;
+	}
+	.landingscreen p {
+		margin: 1em 0;
+	}
+}
+.endingscreen {
+	margin: 5% 10%;
+}
 /* ------------------------------------------- */
 
 .scene.cornerV {

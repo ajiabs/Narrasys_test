@@ -410,6 +410,30 @@ angular.module('com.inthetelling.story')
 			};
 		};
 
+		// TODO: Future episodes should have this as an available scene template instead 
+		svc.addEndingScreen = function (episodeId) {
+			if (!svc.episodes[episodeId].masterAsset) {
+				return;
+			}
+
+			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration);
+			//coerce end of last scene to match video duration:
+			svc.episodes[episodeId].scenes[svc.episodes[episodeId].scenes.length - 1].end_time = duration;
+
+			// create a new scene event for this episode
+			svc.events["internal:endingscreen:" + episodeId] = {
+				"_id": "internal:endingscreen:" + episodeId,
+				"_type": "Scene",
+				"_internal": true,
+				"templateUrl": "templates/scene/endingscreen.html",
+				"episode_id": episodeId,
+				"start_time": duration,
+				"end_time": duration + 0.1
+			};
+			svc.resolveEpisodeEvents(appState.episodeId);
+
+		};
+
 		var resolveVideo = function (videoAsset) {
 			var videoObject = {};
 			if (videoAsset.alternate_urls) {

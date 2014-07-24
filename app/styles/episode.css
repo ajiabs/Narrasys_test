@@ -71,46 +71,7 @@
 	width: 100%;
 }
 /* -------------------------------------------  
-   Landing screen 
-*/
-
-.landingscreen {
-	margin: 10% 15%;
-}
-.landingscreen .videoMagnet {
-	width: 50%;
-	float: left;
-}
-.landingscreen .introtext {
-	width: 45%;
-	float: right;
-}
-.landingscreen p {
-	margin: 2em 0 1em 0
-}
-@media screen and (max-width: 501px) {
-	.landingscreen .videoMagnet {
-		width: 100%;
-		float: none;
-	}
-	.landingscreen .introtext {
-		width: 100%;
-		float: none;
-	}
-	.landingscreen h1 {
-		font-size: 24px;
-	}
-	.landingscreen p {
-		margin: 1em 0;
-	}
-}
-/* -------------------------------------------  
-   Customer-specific.
-
-   A lot of this ought to be broken up into separate color / typography / etc rules
-   so they can be reused more broadly, but for now we're making things easier for production.
-   TODO producer should set the default episode styles along with the episode template, then we 
-   can remove these
+   Customer-specific tweaks
 
 */
 
@@ -127,6 +88,9 @@
 	/* GW doesn't want our logo here */
 	background-image: url('/images/play-overlay.png');
 }
+.episode-gw .videoMask.rewind {
+	background-image: url('/images/rewind-nologo-overlay.png');
+}
 .episode-gw .landingscreen {
 	width: 400px;
 	margin: 0 auto 50px auto;
@@ -136,13 +100,13 @@
 	background-repeat: no-repeat;
 	padding-top: 150px;
 }
-.episode-gw .introtext,
-.episode-gw .videoMagnet {
+.episode-gw .landingscreen .introtext,
+.episode-gw .landingscreen .videoMagnet {
 	float: none;
 	width: 100%;
 	clear: both;
 }
-.episode-gw .introtext h1 {
+.episode-gw .landingscreen .introtext h1 {
 	font-weight: 400;
 	font-size: 24px;
 	line-height: 25px;

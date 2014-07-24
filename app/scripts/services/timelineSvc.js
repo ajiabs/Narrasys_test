@@ -46,7 +46,7 @@ angular.module('com.inthetelling.story')
 		var timeMultiplier;
 
 		svc.registerVideo = function (newVideoScope) {
-			console.log("timelineSvc.registerVideo", newVideoScope);
+			// console.log("timelineSvc.registerVideo", newVideoScope);
 			if (videoScope !== undefined) {
 				// Route changes weren't always seeking to the correct time; this forces it on next $digest:
 				$timeout(function () {
@@ -71,6 +71,11 @@ angular.module('com.inthetelling.story')
 				appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
 				$rootScope.$emit("video.firstPlay");
 				return; // playerController needs to catch this and either show the help pane or trigger play again 
+			}
+
+			if (appState.time > appState.duration - 0.1) {
+				svc.seek(0);
+				svc.play();
 			}
 
 			// wait until the video is ready:
@@ -104,7 +109,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.pause = function (nocapture) {
-			console.log("timelineSvc.pause");
+			// console.log("timelineSvc.pause");
 			appState.videoControlsActive = true;
 			$interval.cancel(clock);
 			stopEventClock();
@@ -125,7 +130,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.stall = function () {
-			// console.warn("timelineSvc.stall");
+			console.warn("timelineSvc.stall");
 			// called by videoController when video stalls.  Essentially similar to pause() but sets different states
 			// (and doesn't tell the video to pause)
 			$interval.cancel(clock);
@@ -149,7 +154,7 @@ angular.module('com.inthetelling.story')
 
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function (t, method, eventID) {
-			console.log("timelineSvc.seek ", t);
+			// console.log("timelineSvc.seek ", t);
 			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
@@ -339,6 +344,7 @@ angular.module('com.inthetelling.story')
 			timeMultiplier = 1;
 			appState.duration = 0;
 			appState.timelineState = 'paused';
+
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
 			$interval.cancel(clock);
 			stopEventClock();
@@ -352,11 +358,10 @@ angular.module('com.inthetelling.story')
 		// TODO: ensure scenes are contiguous and non-overlapping
 
 		svc.injectEvents = function (events, injectionTime) {
-			// console.log("timelineSvc.injectEvents");
 			if (events.length === 0) {
 				return;
 			}
-			// console.log("timelineSvc.injectEvents");
+			console.log("timelineSvc.injectEvents", events);
 			angular.forEach(events, function (event) {
 				// add scenes to markedEvents[]:
 				if (event._type === "Scene" && event.title) {
@@ -435,7 +440,12 @@ angular.module('com.inthetelling.story')
 			// 	console.log(svc.timelineEvents[i].t, svc.timelineEvents[i].action);
 			// }
 
-			// Timeline duration is t of the last timelineEvent
+			// Find the latest end_time in the timeline, set that as the duration.
+			// TODO this will need to change when we support multiple episodes in one timeline
+			var lastEndTime = 0;
+			angular.forEach(svc.timelineEvents, function (evt) {
+				console.log(evt);
+			});
 			appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
 
 			svc.updateEventStates();

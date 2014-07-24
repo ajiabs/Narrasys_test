@@ -9,6 +9,6 @@
 		play: appState.timelineState == 'paused',
 		buffering: appState.timelineState == 'buffering',
 		firstplay: !appState.hasBeenPlayed,
-		noicon: appState.time > video.duration - 1
+		rewind: appState.time >= video.duration - 0.3
 	}"></div>
 </div>
