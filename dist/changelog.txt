@@ -450,3 +450,12 @@ modelSvc no longer freaks out if you load containers before episodes
 better z-indexes
 timeline now copes with video stalls
 
+------------------------------------------------
+Changes in v4.0.13:
+fixed bug where youtube failed to init when navigating from one episode to another in the same window
+episode list improvements
+Added end-of-episode scene, coerce last scene and items to match video duration
+better positioning of loading spinner
+safety: clean up watches on destroy
+bugfix: deserialize localStorage when retrieving it
+
