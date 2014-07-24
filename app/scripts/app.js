@@ -7,6 +7,9 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 // Configure routing
 .config(function ($routeProvider) {
 	$routeProvider
+		.when('/', {
+			templateUrl: 'templates/root.html'
+		})
 		.when('/episode/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
