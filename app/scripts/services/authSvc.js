@@ -38,13 +38,13 @@ angular.module('com.inthetelling.story')
 				var validStoredData;
 
 				if (localStorage && localStorage.getItem(config.localStorageKey)) {
-					var storedData = localStorage.getItem(config.localStorageKey);
+					var storedData = angular.fromJson(localStorage.getItem(config.localStorageKey));
 					var currentCustomer = config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1];
 					if (storedData.customer === currentCustomer) {
 						validStoredData = storedData;
 					} else {
 						// this token must be invalid, so remove it
-						console.log("deleting wrong-customer token");
+						console.log("deleting wrong-customer token: was ", storedData.customer, " should be ", currentCustomer);
 						localStorage.removeItem(config.localStorageKey);
 					}
 				}
