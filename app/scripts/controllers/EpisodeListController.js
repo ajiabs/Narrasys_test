@@ -6,8 +6,10 @@ angular.module('com.inthetelling.story')
 		// dataSvc.getEpisodeList().then(function (data) {
 		// 	$scope.episodes = data;
 		// });
+		$scope.loading = true;
 		dataSvc.getAllContainers().then(function (data) {
 			$scope.containers = data;
+			$scope.loading = false;
 		});
 
 		$scope.authenticate = function (episodeID) {

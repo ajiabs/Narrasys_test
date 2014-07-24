@@ -1,4 +1,12 @@
 <div ng-controller="EpisodeListController" style="margin:1em">
+	<div ng-if="loading" class="loading">
+		<div class="spinner">
+			<div class="rotating pie"></div>
+			<div class="filler pie"></div>
+			<div class="mask"></div>
+		</div>
+		Loading
+	</div>
 
 	<div ng-repeat="customer in containers">
 		<h2 ng-click="customer.hidden = !customer.hidden" style="cursor: pointer; width:100%; background-color:#EEE">{{customer.name}}</h2>
