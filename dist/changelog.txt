@@ -459,3 +459,10 @@ better positioning of loading spinner
 safety: clean up watches on destroy
 bugfix: deserialize localStorage when retrieving it
 
+------------------------------------------------
+Changes in v4.0.14:
+hiding some unfinished stuff in episode list
+temporarily pointing config to gw server
+bugfix: "rewind" icon was showing up before video loaded in some situations
+Added root-level "page", so it doesn't look like an error
+
