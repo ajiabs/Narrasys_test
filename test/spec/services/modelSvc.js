@@ -71,19 +71,8 @@ describe('Service: modelSvc', function () {
 			"templateUrl": "templates/item/default.html",
 			"episode_id": "EP1"
 		});
-
-		modelSvc.cache("event", {
-			"_id": "annotation2",
-			"_type": "Annotation",
-			"start_time": 29.75,
-			"end_time": 35,
-			"templateUrl": "templates/item/default.html",
-			"episode_id": "EP1"
-		});
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(modelSvc.events.annotation1.start_time).toEqual(30);
-		expect(modelSvc.events.annotation1.end_time).toEqual(35);
-		expect(modelSvc.events.annotation2.start_time).toEqual(29.75);
 		expect(modelSvc.events.annotation1.end_time).toEqual(35);
 	});
 
