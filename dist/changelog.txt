@@ -466,3 +466,15 @@ temporarily pointing config to gw server
 bugfix: "rewind" icon was showing up before video loaded in some situations
 Added root-level "page", so it doesn't look like an error
 
+------------------------------------------------
+Changes in v4.0.15:
+Reinstating karma unit tests(!)
+Updated all bower packages
+Removed unnecessary dependency injections
+Removed stupid tautological tests
+Added useful tests
+Added ‘grunt dev’ for continuous testing
+added jslint and tests back into the build process
+Massage episode data
+DWIM for timing of items that span across two scenes
+
