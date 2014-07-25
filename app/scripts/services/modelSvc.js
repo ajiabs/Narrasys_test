@@ -4,7 +4,7 @@
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState) {
+	.factory('modelSvc', function ($interval, $filter, config, appState, errorSvc) {
 
 		var svc = {};
 
@@ -237,13 +237,19 @@ angular.module('com.inthetelling.story')
 
 		NOTE: this currently calls cascadeStyles on episodes and events as a side effect.  
 		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but 
-		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them:
+		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them.
+
+
+		TODO this needs to ensure that scenes are contiguous and that items don't overlap scenes
+		(there are authoring issues in existing episodes where items start a fraction of a second before their intended scene does)
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
 			// console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
+			var episode = svc.episodes[epId];
+
 			angular.forEach(svc.events, function (event) {
 				if (event.episode_id !== epId) {
 					return;
@@ -256,24 +262,62 @@ angular.module('com.inthetelling.story')
 			});
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
-			svc.episodes[epId].scenes = scenes.sort(function (a, b) {
+			episode.scenes = scenes.sort(function (a, b) {
 				return a.start_time - b.start_time;
 			});
+
 			// and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
-			svc.episodes[epId].items = items.sort(function (a, b) {
+			episode.items = items.sort(function (a, b) {
 				return a.start_time - b.start_time;
 			});
 
-			// give items their scene_id:
-			angular.forEach(scenes, function (scene) {
-				// for each item, if start time is between scene start and end, give it its sceneId
+			// ensure scenes are contigouous. Skip the landing scene and the last scene:
+			for (var i = 1; i < episode.scenes.length - 2; i++) {
+				console.log(episode.scenes[i].end_time, episode.scenes[i + 1].start_time);
+				episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
+			}
 
+			// assign items to scenes (give them a scene_id and attach references to the scene's items[]:
+			angular.forEach(scenes, function (scene) {
 				var sceneItems = [];
 				angular.forEach(items, function (event) {
-					if (event.start_time >= scene.start_time && event.start_time < scene.end_time) {
-						svc.events[event._id].scene_id = scene._id;
-						sceneItems.push(event);
+
+					/* possible cases: 
+							start and end are within the scene: put it in this scene
+							start is within this scene, end is after this scene: 
+								if item start is close to the scene end, change item start to next scene start time. The next loop will assign it to that scene
+								if item start is not close to the scene end, change item end to scene end, assign it to this scene.
+							start is before this scene, end is within this scene: will have already been fixed by a previous loop
+							start is after this scene: let the next loop take care of it
+					*/
+					if (event.start_time >= scene.start_time && event.start_time <= scene.end_time) {
+						if (event.end_time <= scene.end_time) {
+							// entirely within scene
+							svc.events[event._id].scene_id = scene._id;
+							sceneItems.push(event);
+						} else {
+							console.log("INteresting");
+							console.log("Scene:", scene.start_time, scene.end_time);
+							console.log("Event:", event.start_time, event.end_time);
+							// end time is in next scene.  Check if start time is close to scene end, if so bump to next scene, otherwise truncate the item to fit in this one
+
+							if (scene.end_time - 0.25 < event.start_time) {
+								// bump to next scene
+								event.start_time = scene.end_time;
+							} else {
+								// truncate and add to this one
+								event.end_time = scene.end_time;
+								sceneItems.push(event);
+							}
+
+							console.log("RESULT");
+							console.log("Scene:", scene.start_time, scene.end_time);
+							console.log("Event:", event.start_time, event.end_time);
+
+						}
+
 					}
+
 				});
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
@@ -283,7 +327,7 @@ angular.module('com.inthetelling.story')
 			});
 
 			// Now that we have the structure, calculate event styles (for scenes and items:)
-			svc.episodes[epId].styleCss = cascadeStyles(svc.episodes[epId]);
+			episode.styleCss = cascadeStyles(episode);
 			angular.forEach(svc.events, function (event) {
 				if (event.episode_id !== epId) {
 					return;
@@ -391,7 +435,13 @@ angular.module('com.inthetelling.story')
 			});
 			// Do episode's master asset, too
 			if (svc.episodes[episodeId]) {
-				svc.episodes[episodeId].masterAsset = svc.assets[svc.episodes[episodeId].master_asset_id];
+				if (svc.episodes[episodeId].master_asset_id) {
+					svc.episodes[episodeId].masterAsset = svc.assets[svc.episodes[episodeId].master_asset_id];
+				} else {
+					errorSvc.error({
+						data: "This episode has no master_asset_id (authoring error?)"
+					});
+				}
 			}
 		};
 
