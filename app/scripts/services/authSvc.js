@@ -68,7 +68,7 @@ angular.module('com.inthetelling.story')
 		svc.getNonce = function () {
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_nonce")
-				.success(function (data, status) {
+				.success(function (data) {
 					if (data.nonce) {
 						defer.resolve(data.nonce);
 					} else {
@@ -84,7 +84,7 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				})
-				.error(function (data, status) {
+				.error(function () {
 					defer.reject();
 				});
 			return defer.promise;
@@ -94,7 +94,7 @@ angular.module('com.inthetelling.story')
 			// console.log("trying getAccessToken with nonce ", nonce);
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
-				.success(function (data, status) {
+				.success(function (data) {
 					// Access tokens are per-customer, which is based on subdomain. 
 					// Logging in with one customer invalidates the key for any others for the same user, 
 					// otherwise we'd just store separate ones per customer
@@ -110,7 +110,7 @@ angular.module('com.inthetelling.story')
 					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
 					defer.resolve(data);
 				})
-				.error(function (data, status) {
+				.error(function () {
 					// console.error("get_access_token failed:", data, status);
 					defer.reject();
 				});

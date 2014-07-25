@@ -3,7 +3,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function ($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc) {
+	.controller('PlayerController', function ($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc) {
 		// console.log("playerController", $scope);
 
 		$scope.viewMode = function (newMode) {
@@ -87,7 +87,7 @@ angular.module('com.inthetelling.story')
 
 		var videoControlsWatcher = $scope.$watch(function () {
 			return appState.videoControlsActive;
-		}, function (isActive, wasActive) {
+		}, function (isActive) {
 			if (isActive) {
 				controlTimer = $timeout(function () {
 					if (!keepControls) {

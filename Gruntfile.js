@@ -280,7 +280,12 @@ module.exports = function (grunt) {
 		karma: {
 			unit: {
 				configFile: 'karma.conf.js',
-				singleRun: true
+				singleRun: true,
+			},
+			continuous: {
+				configFile: 'karma.conf.js',
+				singleRun: false,
+				reporters: ['dots', 'growler']
 			}
 		},
 		ngmin: {
@@ -339,12 +344,22 @@ module.exports = function (grunt) {
 		'concurrent:test',
 		'autoprefixer',
 		'connect:test',
-		'karma'
+		'karma:unit'
+	]);
+
+	grunt.registerTask('dev', [
+		'clean:server',
+		'ngtemplates',
+		'concurrent:server',
+		'autoprefixer',
+		'connect:livereload',
+		'karma:continuous',
+		'watch'
 	]);
 
 	grunt.registerTask('build', [
-		//'jshint',
-		//'test',
+		'jshint',
+		'test',
 		'clean:dist',
 		'ngtemplates',
 		'useminPrepare',

@@ -42,7 +42,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 
 .run(function ($rootScope) {
 	// set page titles on route changes:
-	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute, previousRoute) {
+	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
 	});
 
@@ -61,7 +61,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			}
 		}
 	});
-	$(document).on("keyup", function (e) {
+	$(document).on("keyup", function () {
 		fhotkb = false; // oh good they've woken up
 	});
 })
@@ -82,7 +82,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
 	$httpProvider.responseInterceptors.push(['$q',
-		function (scope) {
+		function () {
 			return function (promise) {
 				return promise.then(
 					function (response) {

@@ -230,7 +230,7 @@ angular.module('com.inthetelling.story')
 				(the 'up to some maximum' bit is for 1., so the timeline and video time don't fall out of synch)
 		*/
 
-		var eventClock, eventClockData;
+		var eventClockData;
 
 		var resetEventClock = function () {
 			eventClockData = {
@@ -441,7 +441,7 @@ angular.module('com.inthetelling.story')
 
 			// Find the latest end_time in the timeline, set that as the duration.
 			// TODO this will need to change when we support multiple episodes in one timeline
-			var lastEndTime = 0;
+
 			appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
 
 			svc.updateEventStates();

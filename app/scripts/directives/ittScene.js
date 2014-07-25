@@ -13,7 +13,7 @@ angular.module('com.inthetelling.story')
 			},
 			template: '<span ng-include="scene.templateUrl">Loading Item...</span>',
 			controller: 'SceneController',
-			link: function (scope, element, attrs) {
+			link: function (scope, element) {
 				// console.log('ittScene', scope, element, attrs);
 
 				scope.precalculateSceneValues();
@@ -66,8 +66,8 @@ angular.module('com.inthetelling.story')
 				}, true);
 
 				// HACK to catch cases (mostly on ios) where matchvideoheight isn't matching.
-				// slow interval
-				scope.safetyBelt = $interval(twiddleScene, 1300);
+				// slow, odd interval
+				scope.safetyBelt = $interval(twiddleScene, 1321);
 
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function () {

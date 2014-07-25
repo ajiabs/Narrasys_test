@@ -10,7 +10,7 @@
 */
 
 angular.module('com.inthetelling.story')
-	.factory('appState', function ($interval, $filter, config) {
+	.factory('appState', function ($interval) {
 
 		var svc = {};
 
@@ -27,7 +27,7 @@ angular.module('com.inthetelling.story')
 			svc.windowWidth = 0;
 			svc.windowHeight = 0;
 
-			svc.viewMode = (angular.element(window).width() > 480) ? 'discover' : 'review'; // default view mode
+			svc.viewMode = ($(window).width() > 480) ? 'discover' : 'review'; // default view mode
 
 			svc.time = 0; // current playhead position (in seconds) relative to timeline NOT TO EPISODE!
 			svc.timeMultiplier = 1; // sets player speed (0.5 = half speed; 2=double;etc)

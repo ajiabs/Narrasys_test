@@ -1,11 +1,8 @@
 
 
-coerce events to fit within one scene or another — some events start a fraction of a second before the scene start
-
-
-
 windowFg stop events should be visible in watch mode too
-other stop events should not stop the video(?)
+other stop events should not stop the video(?)   
+(or maybe we just need to go ahead and admit that stop should === windowFg...?)  
 
 include non-cosmetic windowFg items in review mode (new filter)
 

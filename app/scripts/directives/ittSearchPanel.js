@@ -8,7 +8,7 @@ angular.module('com.inthetelling.story')
 			scope: true,
 			templateUrl: 'templates/searchpanel.html',
 			controller: 'SearchPanelController',
-			link: function (scope, element, attrs) {
+			link: function (scope) {
 				// console.log("ittSearchPanel", scope);
 				scope.indexEvents();
 			}

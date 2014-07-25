@@ -244,7 +244,7 @@ angular.module('com.inthetelling.story')
 		(there are authoring issues in existing episodes where items start a fraction of a second before their intended scene does)
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
-			// console.log("resolveEpisodeEvents");
+			console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
@@ -273,7 +273,6 @@ angular.module('com.inthetelling.story')
 
 			// ensure scenes are contigouous. Skip the landing scene and the last scene:
 			for (var i = 1; i < episode.scenes.length - 2; i++) {
-				console.log(episode.scenes[i].end_time, episode.scenes[i + 1].start_time);
 				episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
 			}
 
@@ -296,11 +295,7 @@ angular.module('com.inthetelling.story')
 							svc.events[event._id].scene_id = scene._id;
 							sceneItems.push(event);
 						} else {
-							console.log("INteresting");
-							console.log("Scene:", scene.start_time, scene.end_time);
-							console.log("Event:", event.start_time, event.end_time);
 							// end time is in next scene.  Check if start time is close to scene end, if so bump to next scene, otherwise truncate the item to fit in this one
-
 							if (scene.end_time - 0.25 < event.start_time) {
 								// bump to next scene
 								event.start_time = scene.end_time;
@@ -309,11 +304,6 @@ angular.module('com.inthetelling.story')
 								event.end_time = scene.end_time;
 								sceneItems.push(event);
 							}
-
-							console.log("RESULT");
-							console.log("Scene:", scene.start_time, scene.end_time);
-							console.log("Event:", event.start_time, event.end_time);
-
 						}
 
 					}

@@ -109,7 +109,7 @@ angular.module('com.inthetelling.story')
 
 					gettingCommon = true;
 					getCommonDefer.resolve();
-				}, function (failure) {
+				}, function () {
 					// console.error("getCommon failed", failure);
 					gettingCommon = false;
 					getCommonDefer.reject();
@@ -239,7 +239,7 @@ angular.module('com.inthetelling.story')
 						});
 					}
 				})
-				.error(function (data, status, headers, config) {
+				.error(function () {
 					errorSvc.error({
 						data: "API call to /v1/episodes/" + epId + " failed (bad episode ID?)"
 					});
@@ -279,7 +279,7 @@ angular.module('com.inthetelling.story')
 				});
 		};
 
-		/* BEGIN DEV TESTING CODE someday I should really take the time to reinstate jasmine testing */
+		/* BEGIN DEV TESTING CODE  */
 
 		var mockEpisode = function (epId) {
 			// FOR DEV TESTING

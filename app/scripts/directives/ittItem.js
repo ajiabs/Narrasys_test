@@ -21,7 +21,7 @@ angular.module('com.inthetelling.story')
 				}
 			},
 			controller: 'ItemController',
-			link: function (scope, element, attrs) {
+			link: function (scope, element) {
 				// console.log('ittItem', scope, element, attrs);
 
 				// HACK not sure why but modelSvc.resolveEpisodeAssets isn't always doing the job.
@@ -100,18 +100,13 @@ angular.module('com.inthetelling.story')
 								method: 'GET',
 								url: config.apiDataBaseUrl + '/v1/send_credly_badge?badge_id=' + scope.plugin.credlyBadgeId + '&email=' + scope.plugin.userEmail
 							}).
-							success(function (data, status, headers, config) {
+							success(function (data) {
 								// TODO check the data to make sure it's not status: "Badge previously sent."
 								// console.log("SUCCESS", data);
 								if (data.status === 'Badge previously sent.') {
 									scope.plugin.alreadyHadBadge = true;
 								}
 								scope.plugin.gotBadge = true;
-
-							}).
-							error(function (data, status, headers, config) {
-								// called asynchronously if an error occurs
-								// or server returns response with an error status.
 							});
 						};
 					}

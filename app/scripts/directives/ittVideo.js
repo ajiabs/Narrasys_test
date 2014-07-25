@@ -15,7 +15,7 @@ angular.module('com.inthetelling.story')
 			scope: {
 				video: "=ittVideo",
 			},
-			link: function (scope, element, attrs) {
+			link: function (scope, element) {
 				// console.log('ittVideo', scope);
 				scope.appState = appState;
 				scope.uid = ++uniqueDirectiveID;

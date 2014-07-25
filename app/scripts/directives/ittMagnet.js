@@ -6,7 +6,7 @@
 // TODO: remove dependence on jQuery?  (.is(:visible))
 
 angular.module('com.inthetelling.story')
-	.directive('ittMagnet', function ($rootScope, $timeout) {
+	.directive('ittMagnet', function ($rootScope) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -14,7 +14,7 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element) {
 				scope.unwatchVisibility = scope.$watch(function () {
 					return element.is(':visible');
-				}, function (newV, oldV) {
+				}, function (newV) {
 					if (newV) {
 						$rootScope.$emit('magnet.changeMagnet', element);
 					}

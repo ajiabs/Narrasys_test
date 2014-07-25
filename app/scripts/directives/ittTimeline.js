@@ -12,7 +12,7 @@ angular.module('com.inthetelling.story')
 			scope: true,
 			templateUrl: "templates/timeline.html",
 			controller: "TimelineController",
-			link: function (scope, element, attrs) {
+			link: function (scope, element) {
 				// console.log('ittTimeline', scope, element, attrs);
 				scope.appState = appState;
 				scope.timeline = timelineSvc;

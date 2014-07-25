@@ -13,7 +13,7 @@ angular.module('com.inthetelling.story')
 			//template: '<div ng-include="item.templateUrl">Loading Item...</div>',
 			templateUrl: 'templates/item/edit.html',
 			controller: 'ItemController',
-			link: function (scope, element, attrs) {
+			link: function (scope) {
 				// console.log('ittEditor', scope, element, attrs);
 
 				if (!scope.item.layouts) {

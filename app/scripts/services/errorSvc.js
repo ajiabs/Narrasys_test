@@ -26,11 +26,11 @@ angular.module('com.inthetelling.story')
 				svc.errors.push({
 					"exception": exception,
 					"cause": exception.data.error
-						//"stack": exception.stack.toString()
+					//"stack": exception.stack.toString()
 				});
 			} else {
 				// generic thrown javascript error.  TODO show these too, but only in dev environment (they're often not meaningful)
-				console.log(exception);
+				console.log(exception, cause);
 			}
 		};
 

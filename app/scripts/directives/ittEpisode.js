@@ -7,7 +7,7 @@ angular.module('com.inthetelling.story')
 			replace: true,
 			template: '<span ng-include="episode.templateUrl"></span>',
 			controller: 'EpisodeController',
-			link: function (scope, element, attrs) {
+			link: function () {
 				// console.log('ittEpisode', scope, element, attrs);
 
 				// TODO: this will break if the timeline and the episode timeline don't match.

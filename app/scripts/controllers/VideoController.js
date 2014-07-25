@@ -74,18 +74,18 @@ angular.module('com.inthetelling.story')
 
 		$scope.initHTML5Video = function () {
 			// TODO: notify timelineSvc of (at least) 'stalled' and 'waiting' so it doesn't wind up out of synch
-			$scope.videoNode.addEventListener('playing', function (evt) {
+			$scope.videoNode.addEventListener('playing', function () {
 				$scope.playerState = 'playing';
 			}, false);
-			$scope.videoNode.addEventListener('waiting', function (evt) {
+			$scope.videoNode.addEventListener('waiting', function () {
 				$scope.playerState = 'waiting';
 				// $scope.stall();   TODO: Should this be treated as a stall?
 			}, false);
-			$scope.videoNode.addEventListener('stalled', function (evt) {
+			$scope.videoNode.addEventListener('stalled', function () {
 				$scope.playerState = 'stalled';
 				$scope.stall();
 			}, false);
-			$scope.videoNode.addEventListener('pause', function (evt) {
+			$scope.videoNode.addEventListener('pause', function () {
 				$scope.playerState = 'pause';
 			}, false);
 			timelineSvc.registerVideo($scope);

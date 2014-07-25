@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittItemDetailModal', function (appState, timelineSvc) {
+	.directive('ittItemDetailModal', function (appState) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -9,7 +9,7 @@ angular.module('com.inthetelling.story')
 				item: '=ittItemDetailModal'
 			},
 			templateUrl: 'templates/item/modal.html',
-			link: function (scope, element, attrs) {
+			link: function (scope) {
 				// console.log('ittItemDetailModal', scope, element, attrs);
 
 				scope.dismiss = function () {

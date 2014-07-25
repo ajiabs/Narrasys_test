@@ -67,7 +67,8 @@ angular.module('com.inthetelling.story')
 			svc.activityQueue.push({
 				"name": name,
 				"event_id": eventID,
-				"walltime": new Date()
+				"walltime": new Date(),
+				"data": data
 			});
 		};
 
@@ -77,10 +78,10 @@ angular.module('com.inthetelling.story')
 			$http({
 				method: 'GET',
 				url: config.apiDataBaseUrl + '/v2/episodes/' + epId + '/episode_user_metrics'
-			}).success(function (respData, respStatus, respHeaders) {
+			}).success(function (respData) {
 				// console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
 				defer.resolve(respData);
-			}).error(function (respData, respStatus, respHeaders) {
+			}).error(function () {
 				// console.log("read episode activity ERROR", respData, respStatus, respHeaders);
 				defer.reject();
 			});
@@ -94,7 +95,7 @@ angular.module('com.inthetelling.story')
 			$http({
 				method: 'GET',
 				url: config.apiDataBaseUrl + '/v2/events/' + eventId + '/event_user_actions'
-			}).success(function (respData, respStatus, respHeaders) {
+			}).success(function (respData) {
 				// console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
 				if (activityType) {
 					var matchedType = false;
@@ -109,7 +110,7 @@ angular.module('com.inthetelling.story')
 					// no activityType specified so return everything:
 					defer.resolve(respData);
 				}
-			}).error(function (respData, respStatus, respHeaders) {
+			}).error(function () {
 				// console.log("read event activity ERROR", respData, respStatus, respHeaders);
 				defer.reject();
 			});
