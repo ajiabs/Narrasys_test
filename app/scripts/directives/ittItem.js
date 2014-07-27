@@ -75,7 +75,7 @@ angular.module('com.inthetelling.story')
 						// Don't show this to guest users
 						var userData = appState.user;
 
-						if (userData.roles.length && userData.roles[0] !== 'guest') {
+						if (userData.roles && userData.roles.length && userData.roles[0] !== 'guest') {
 							scope.plugin.eligibleForBadges = true;
 							scope.plugin.userEmail = userData.emails[0];
 							scope.plugin.totalAchieved = 0;

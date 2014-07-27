@@ -11,7 +11,11 @@ Currently player is url-encoding " ", "&" and "?" for uploads url and alternate_
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 
-possible to extract video information (size, duration) from a video file when the user is uploading it?  — espeically duration, framerate  (e.g. 24000/1001), duration are most important
+More key controls:  up/down for prev/next transmedia item, left/right for prev/next scene
+(WSAD too just for yucks?)
+
+
+For bill: is it possible to extract video information (size, duration) from a video file when the user is uploading it?  — espeically duration, framerate  (e.g. 24000/1001), duration are most important
 
 
 New scene template: picture-in-picture  (video is a position:fixed thumbnail in one lower corner, transcript floating next to it as pseudo-CC, full canvas is the transmedia pane)
@@ -71,7 +75,8 @@ zooming timeline should reveal untitled scenes and (if zoomed far enough) items:
 
 Ask Bill to add data fields: 
 * episode: "friendly ID"  (for use in url).  Needs a lookup endpoint. Ideally separate lists per customer so each could have its own e.g. "s3-e1"
-* Link events: noEmbed (for links with framebreakers)
+* Annotation events: isTranscript true/false (maybe.  transcript does get a lot of special handling, but backwards compatibility would be annoying here)
+* Link events: noEmbed (for links with framebreakers), forceEmbed (for links that must be embedded, no link)
 * Link events: targetTop (for end-of-episode links to LTI host)
 * All events + episode: app version number (to make it easier to distinguish between legacy and new episodes)
 

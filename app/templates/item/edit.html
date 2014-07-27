@@ -1,5 +1,10 @@
-<!-- <div ng-if="item" class="itemEdit">
+<div ng-if="item" class="itemEdit">
 
+	<textarea ng-class="{'editwarning': item.editwarning}" ng-model="item.asjson" style="width: 100%; height: 400px"></textarea>
+	<input type="button" ng-click="save(item)" value="Save" ng-disabled="item.editwarning">
+	<input type="button" ng-click="reset(item)" value="Reset">
+	<input type="button" style="background-color:#F00" ng-click="delete(item)" value="Delete">
+	<!-- 
 	<ul class="tabs">
 		<li><a ng-class="{active: !visibleTab || visibleTab == 0}" ng-click="visibleTab=0">Edit item content</a>
 		</li>
@@ -202,22 +207,16 @@
 
 				</div>
 
+</div>
+</div>
 
-				<!-- 
-		<br>styleCss:
-		<input type="text" ng-model="item.styleCss">
-		<br>layoutCss: -->
-			</div>
-		</div>
-
-
-	</div>
-
-
-	<input type="button" ng-click="save()" value="Save">
-	<input type="button" ng-click="cancelEdit()" value="Cancel">
-	<a ng-click="itemEditDebug=!itemEditDebug">Debug</a>
-	<pre style="max-height: 200px; overflow-y: scroll" ng-if="itemEditDebug">{{item | pretty}}</pre>
 
 </div>
- -->
+
+
+<input type="button" ng-click="save()" value="Save">
+<input type="button" ng-click="cancelEdit()" value="Cancel">
+<a ng-click="itemEditDebug=!itemEditDebug">Debug</a>
+<pre style="max-height: 200px; overflow-y: scroll" ng-if="itemEditDebug">{{item | pretty}}</pre>
+-->
+</div>

@@ -22,38 +22,6 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
-		// PRODUCER
-		// a different idiom here, let's see if this is easier to conceptualize
-		svc.getEpisodeList = function () {
-			return GET("/v1/episodes");
-		};
-
-		svc.getAllContainers = function () {
-			return GET("/v1/containers", function (containers) {
-				// TODO climb through the tree customer->course->session->episode and cache everything 
-
-				return containers;
-			});
-		};
-
-		var GET = function (path, postprocessCallback) {
-			var defer = $q.defer();
-			authSvc.authenticate()
-				.then(function () {
-					return $http.get(config.apiDataBaseUrl + path);
-				})
-				.then(function (response) {
-					var ret = response.data;
-					if (postprocessCallback) {
-						ret = postprocessCallback(ret);
-					}
-					return defer.resolve(ret);
-				});
-			return defer.promise;
-		};
-
-		/* ------------------------------------------------------------------------------ */
-
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
 		svc.getEpisode = function (epId) {
@@ -86,13 +54,12 @@ angular.module('com.inthetelling.story')
 			layout: {},
 			style: {}
 		};
-		console.log("dataSvc cache: ", dataCache);
 
 		// Gets all layouts, styles, and templates
 		var gettingCommon = false;
 		var getCommonDefer = $q.defer();
 		var getCommon = function () {
-			// console.log("dataSvc.getCommon");
+			console.log("dataSvc.getCommon");
 			if (gettingCommon) {
 				return getCommonDefer.promise;
 
@@ -103,9 +70,9 @@ angular.module('com.inthetelling.story')
 					$http.get(config.apiDataBaseUrl + '/v1/layouts'),
 					$http.get(config.apiDataBaseUrl + '/v1/styles')
 				]).then(function (responses) {
-					cache("templates", responses[0].data);
-					cache("layouts", responses[1].data);
-					cache("styles", responses[2].data);
+					svc.cache("templates", responses[0].data);
+					svc.cache("layouts", responses[1].data);
+					svc.cache("styles", responses[2].data);
 
 					gettingCommon = true;
 					getCommonDefer.resolve();
@@ -118,7 +85,8 @@ angular.module('com.inthetelling.story')
 			return getCommonDefer.promise;
 		};
 
-		var cache = function (cacheType, dataList) {
+		svc.cache = function (cacheType, dataList) {
+			// console.log("dataSvc.cache", cacheType, dataList);
 			angular.forEach(dataList, function (item) {
 				if (cacheType === "templates") {
 					/* API format: 
@@ -147,7 +115,7 @@ angular.module('com.inthetelling.story')
 				*/
 					dataCache.layout[item._id] = {
 						id: item._id,
-						css: item.css_name,
+						css_name: item.css_name,
 						displayName: item.display_name
 					};
 
@@ -162,7 +130,7 @@ angular.module('com.inthetelling.story')
 				*/
 					dataCache.style[item._id] = {
 						id: item._id,
-						css: item.css_name,
+						css_name: item.css_name,
 						displayName: item.display_name
 					};
 				}
@@ -186,7 +154,7 @@ angular.module('com.inthetelling.story')
 				var layouts = [];
 				angular.forEach(obj.layout_id, function (id) {
 					if (dataCache.layout[id]) {
-						layouts.push(dataCache.layout[id].css);
+						layouts.push(dataCache.layout[id].css_name);
 					} else {
 						errorSvc.error({
 							data: "Couldn't get layout for id " + id
@@ -196,13 +164,13 @@ angular.module('com.inthetelling.story')
 				if (layouts.length > 0) {
 					obj.layouts = layouts;
 				}
-				delete obj.layout_id;
+				//delete obj.layout_id;
 			}
 			if (obj.style_id) {
 				var styles = [];
 				angular.forEach(obj.style_id, function (id) {
 					if (dataCache.style[id]) {
-						styles.push(dataCache.style[id].css);
+						styles.push(dataCache.style[id].css_name);
 					} else {
 						errorSvc.error({
 							data: "Couldn't get style for id " + id
@@ -212,7 +180,7 @@ angular.module('com.inthetelling.story')
 				if (styles.length > 0) {
 					obj.styles = styles;
 				}
-				delete obj.style_id;
+				//delete obj.style_id;
 			}
 			return obj;
 		};
@@ -279,6 +247,115 @@ angular.module('com.inthetelling.story')
 				});
 		};
 
+		/* ------------------------------------------------------------------------------ */
+
+		// PRODUCER
+		// a different idiom here, let's see if this is easier to conceptualize.
+		// TODO These may belong in modelSvc rather than dataSvc...
+
+		// to use GET(), pass in the API endpoint, and an optional callback for post-processing of the results
+		var GETcache = {}; // WARNING this is almost certainly not safe.  If server data changes, this will never find out about it because it will always read from cache instead. 
+		var GET = function (path, postprocessCallback) {
+			var defer = $q.defer();
+			if (GETcache[path]) {
+				defer.resolve(GETcache[path]);
+			}
+			authSvc.authenticate()
+				.then(function () {
+					return $http.get(config.apiDataBaseUrl + path);
+				})
+				.then(function (response) {
+					var ret = response.data;
+					if (postprocessCallback) {
+						ret = postprocessCallback(ret);
+					}
+					GETcache[path] = ret;
+					return defer.resolve(ret);
+				});
+			return defer.promise;
+		};
+
+		svc.getEpisodeList = function () {
+			return GET("/v1/episodes");
+		};
+
+		svc.getAllContainers = function () {
+			return GET("/v1/containers", function (containers) {
+				// TODO climb through the tree customer->course->session->episode and cache each separately
+
+				return containers;
+			});
+		};
+
+		svc.storeItem = function (evt) {
+			evt = svc.prepItemForStorage(evt);
+			// TODO PUT or POST evt depending on whether it has an ID
+		};
+		svc.prepItemForStorage = function (evt) {
+			// console.log("prepItemForStorage", evt);
+			// throw away the obvious stuff
+			delete evt.asjson;
+
+			// delete derived and temporary fields
+			// may not need to do this, check server roundtrip to see if the APIs throw out unexpected fields
+			delete evt.styleCss;
+			delete evt.layoutCss;
+			delete evt.isContent;
+			delete evt.isTranscript;
+			delete evt.isFuture;
+			delete evt.isPast;
+			delete evt.isCurrent;
+			delete evt.edit;
+			delete evt.$$hashKey;
+			delete evt.noEmbed;
+			delete evt.noExternalLink;
+			delete evt.targetTop;
+
+			// convert style/layout selections back into their IDs.
+			// trust evt.styles[] and evt.layouts[], DO NOT use styleCss (it contains the scene and episode data too!)
+			evt.style_id = [];
+			angular.forEach(evt.styles, function (styleName) {
+				var style = svc.readCache("style", "css_name", styleName);
+				if (style) {
+					evt.style_id.push(style.id);
+				} else {
+					errorSvc.error({
+						data: "Tried to store a style with no ID: " + styleName
+					});
+				}
+			});
+			angular.forEach(evt.layouts, function (layoutName) {
+				var layout = svc.readCache("layout", "css_name", layoutName);
+				if (layout) {
+					evt.layout_id.push(layout.id);
+				} else {
+					errorSvc.error({
+						data: "Tried to store a layout with no ID: " + layoutName
+					});
+				}
+			});
+
+			// TODO: what else needs to be done before we can safely store this event?
+			// Asset, for sure...
+
+			return evt;
+		};
+
+		// careful to only use this for guaranteed unique fields (style and layout names, basically)
+		svc.readCache = function (cache, field, val) {
+			var found = false;
+			angular.forEach(dataCache[cache], function (item) {
+				if (item[field] === val) {
+					found = item;
+				}
+			});
+			if (found) {
+				return found;
+			}
+			return false;
+		};
+
+		/* ------------------------------------------------------------------------------ */
 		/* BEGIN DEV TESTING CODE  */
 
 		var mockEpisode = function (epId) {

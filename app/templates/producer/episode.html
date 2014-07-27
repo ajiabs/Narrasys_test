@@ -11,12 +11,12 @@
 
 			<div ng-if="item.edit">
 
-				<div class="content">
+				<div class="content" style="border: 1px solid;padding:1em">
 					<div class="item preview" itt-item="item" ng-class="item.styleCss"></div>
 				</div>
 
 
-				<div class="item editor">[ITEM EDIT CONTROlS HERE]</div>
+				<div class="editor" itt-item-editor="item"></div>
 			</div>
 
 		</div>
@@ -25,4 +25,4 @@
 <!-- <pre>{{episode | pretty}}</pre>
  -->
 
-<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
+<div ng-controller=" ErrorController " ng-include=" 'templates/error.html' "></div>

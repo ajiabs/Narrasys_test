@@ -285,7 +285,7 @@ module.exports = function (grunt) {
 			continuous: {
 				configFile: 'karma.conf.js',
 				singleRun: false,
-				reporters: ['dots', 'growler']
+				reporters: ['progress', 'growler']
 			}
 		},
 		ngmin: {
@@ -348,13 +348,7 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('dev', [
-		'clean:server',
-		'ngtemplates',
-		'concurrent:server',
-		'autoprefixer',
-		'connect:livereload',
-		'karma:continuous',
-		'watch'
+		'karma:continuous'
 	]);
 
 	grunt.registerTask('build', [

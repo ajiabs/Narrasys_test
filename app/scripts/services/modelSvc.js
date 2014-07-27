@@ -184,7 +184,7 @@ angular.module('com.inthetelling.story')
 						event.isContent = true;
 					}
 				} else {
-					// default is content
+					// no layout, therefore inline content
 					event.isContent = true;
 				}
 
