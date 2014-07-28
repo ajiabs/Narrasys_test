@@ -1,0 +1,22 @@
+<div ng-controller="UploadController" style="margin:1em">
+
+        <div ng-if="loading" class="loading">
+		<div class="spinner">
+			<div class="rotating pie"></div>
+			<div class="filler pie"></div>
+			<div class="mask"></div>
+		</div>
+		Loading
+	</div>
+
+	<div ng-repeat="credential in credentials">
+		{{credentials.bucket}}<br>
+		{{credentials.key_base}}<br>
+		{{credentials.access_key_id}}<br>
+		{{credentials.secret_access_key}}<br>
+		{{credentials.session_token:}}<br>
+	</div>
+
+</div>
+
+<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>
