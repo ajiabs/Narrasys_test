@@ -1,5 +1,8 @@
 
 
+
+
+
 windowFg stop events should be visible in watch mode too
 other stop events should not stop the video(?)   
 (or maybe we just need to go ahead and admit that stop should === windowFg...?)  
@@ -10,6 +13,10 @@ make sure modelSvc is still doing this:
 Currently player is url-encoding " ", "&" and "?" for uploads url and alternate_url fields, and for master asset urls.  For other urls only encoding spaces.
 
 ---- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
+
+
+Make a list for Bill of which templateUrls should map to which new fields
+
 
 More key controls:  up/down for prev/next transmedia item, left/right for prev/next scene
 (WSAD too just for yucks?)
@@ -73,7 +80,7 @@ Youtube should work on iDevices and android. Doesn't. Fix that.
 zooming timeline should reveal untitled scenes and (if zoomed far enough) items: don't have a separate MarkedEvents array
 
 
-Ask Bill to add data fields: 
+Asked Bill to add data fields: 
 * episode: "friendly ID"  (for use in url).  Needs a lookup endpoint. Ideally separate lists per customer so each could have its own e.g. "s3-e1"
 * Annotation events: isTranscript true/false (maybe.  transcript does get a lot of special handling, but backwards compatibility would be annoying here)
 * Link events: noEmbed (for links with framebreakers), forceEmbed (for links that must be embedded, no link)

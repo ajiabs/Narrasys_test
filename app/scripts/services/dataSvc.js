@@ -275,6 +275,10 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
+		var POST = function (path, data) {
+
+		};
+
 		svc.getEpisodeList = function () {
 			return GET("/v1/episodes");
 		};
@@ -287,9 +291,22 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+		// TODO need safety checking here
 		svc.storeItem = function (evt) {
 			evt = svc.prepItemForStorage(evt);
-			// TODO PUT or POST evt depending on whether it has an ID
+
+			console.log(evt);
+			// if (evt._id) {
+			// 	// update
+			// 	return PUT("/v2/events/" + evt._id, {
+			// 		event: evt
+			// 	});
+			// } else {
+			// 	// create
+			// 	return POST("/v2/episodes/" + evt.episode_id + "/event", {
+			// 		event: evt
+			// 	});
+			// }
 		};
 		svc.prepItemForStorage = function (evt) {
 			// console.log("prepItemForStorage", evt);
@@ -310,6 +327,7 @@ angular.module('com.inthetelling.story')
 			delete evt.noEmbed;
 			delete evt.noExternalLink;
 			delete evt.targetTop;
+			delete evt.asset;
 
 			// convert style/layout selections back into their IDs.
 			// trust evt.styles[] and evt.layouts[], DO NOT use styleCss (it contains the scene and episode data too!)
@@ -324,6 +342,7 @@ angular.module('com.inthetelling.story')
 					});
 				}
 			});
+			evt.layout_id = [];
 			angular.forEach(evt.layouts, function (layoutName) {
 				var layout = svc.readCache("layout", "css_name", layoutName);
 				if (layout) {
@@ -336,7 +355,6 @@ angular.module('com.inthetelling.story')
 			});
 
 			// TODO: what else needs to be done before we can safely store this event?
-			// Asset, for sure...
 
 			return evt;
 		};
