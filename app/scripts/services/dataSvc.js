@@ -275,8 +275,21 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-		var POST = function (path, data) {
+		var PUT = function (path, putData) {
+			var defer = $q.defer();
 
+			$http({
+				method: 'PUT',
+				url: config.apiDataBaseUrl + path,
+				data: putData
+			}).success(function (data) {
+				console.log("Updated event:", data);
+				return defer.resolve(data);
+			}).error(function (data, status, headers) {
+				console.log("Failed:", data, status, headers);
+				return defer.reject();
+			});
+			return defer.promise;
 		};
 
 		svc.getEpisodeList = function () {
@@ -294,19 +307,18 @@ angular.module('com.inthetelling.story')
 		// TODO need safety checking here
 		svc.storeItem = function (evt) {
 			evt = svc.prepItemForStorage(evt);
-
 			console.log(evt);
-			// if (evt._id) {
-			// 	// update
-			// 	return PUT("/v2/events/" + evt._id, {
-			// 		event: evt
-			// 	});
-			// } else {
-			// 	// create
-			// 	return POST("/v2/episodes/" + evt.episode_id + "/event", {
-			// 		event: evt
-			// 	});
-			// }
+			if (evt._id) {
+				// update
+				return PUT("/v2/events/" + evt._id, {
+					event: evt
+				});
+			} else {
+				// create
+				return POST("/v2/episodes/" + evt.episode_id + "/event", {
+					event: evt
+				});
+			}
 		};
 		svc.prepItemForStorage = function (evt) {
 			// console.log("prepItemForStorage", evt);
@@ -342,6 +354,7 @@ angular.module('com.inthetelling.story')
 					});
 				}
 			});
+			delete evt.styles;
 			evt.layout_id = [];
 			angular.forEach(evt.layouts, function (layoutName) {
 				var layout = svc.readCache("layout", "css_name", layoutName);
@@ -353,6 +366,7 @@ angular.module('com.inthetelling.story')
 					});
 				}
 			});
+			delete evt.layouts;
 
 			// TODO: what else needs to be done before we can safely store this event?
 
