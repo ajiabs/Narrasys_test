@@ -90,4 +90,69 @@ describe('Service: modelSvc', function () {
 		expect(modelSvc.events.annotation1.end_time).toEqual(30);
 	});
 
+	it('items should land in the correct scene array', function () {
+		modelSvc.cache("event", {
+			"_id": "annotation1",
+			"_type": "Annotation",
+			"start_time": 10,
+			"end_time": 12,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1"
+		});
+		modelSvc.resolveEpisodeEvents("EP1");
+		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(0);
+		expect(modelSvc.episodes.EP1.scenes[2].items.length).toEqual(1);
+		expect(modelSvc.episodes.EP1.scenes[3].items.length).toEqual(0);
+	});
+
+	it('items with the same start and end time, which match a scene boundary, should not wind up in two scenes', function () {
+		modelSvc.cache("event", {
+			"_id": "annotation1",
+			"_type": "Annotation",
+			"start_time": 10,
+			"end_time": 10,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1"
+		});
+		modelSvc.resolveEpisodeEvents("EP1");
+		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(0);
+		expect(modelSvc.episodes.EP1.scenes[2].items.length).toEqual(1);
+		expect(modelSvc.episodes.EP1.scenes[3].items.length).toEqual(0);
+		expect(modelSvc.events.annotation1.start_time).toEqual(10);
+		expect(modelSvc.events.annotation1.end_time).toEqual(10);
+	});
+
+	it('Items bumped to next scene should not end up in both scenes', function () {
+		modelSvc.cache("event", {
+			"_id": "annotation1",
+			"_type": "Annotation",
+			"start_time": 9.9,
+			"end_time": 11,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1"
+		});
+		modelSvc.resolveEpisodeEvents("EP1");
+		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(0);
+		expect(modelSvc.episodes.EP1.scenes[2].items.length).toEqual(1);
+		expect(modelSvc.episodes.EP1.scenes[3].items.length).toEqual(0);
+		expect(modelSvc.events.annotation1.start_time).toEqual(10);
+		expect(modelSvc.events.annotation1.end_time).toEqual(11);
+	});
+	it('truncated items should not end up in both scenes', function () {
+		modelSvc.cache("event", {
+			"_id": "annotation1",
+			"_type": "Annotation",
+			"start_time": 9,
+			"end_time": 10.5,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1"
+		});
+		modelSvc.resolveEpisodeEvents("EP1");
+		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(1);
+		expect(modelSvc.episodes.EP1.scenes[2].items.length).toEqual(0);
+		expect(modelSvc.episodes.EP1.scenes[3].items.length).toEqual(0);
+		expect(modelSvc.events.annotation1.start_time).toEqual(9);
+		expect(modelSvc.events.annotation1.end_time).toEqual(10);
+	});
+
 });

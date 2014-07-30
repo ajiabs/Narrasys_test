@@ -289,7 +289,7 @@ angular.module('com.inthetelling.story')
 							start is before this scene, end is within this scene: will have already been fixed by a previous loop
 							start is after this scene: let the next loop take care of it
 					*/
-					if (event.start_time >= scene.start_time && event.start_time <= scene.end_time) {
+					if (event.start_time >= scene.start_time && event.start_time < scene.end_time) {
 						if (event.end_time <= scene.end_time) {
 							// entirely within scene
 							svc.events[event._id].scene_id = scene._id;
