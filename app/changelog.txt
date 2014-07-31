@@ -483,3 +483,5 @@ Changes in v4.0.16:
 Demo build for USC
 bug fix for items with same start and end times
 Producer (WIP)
+------------------------------------------------
+Changes in v4.0.17:

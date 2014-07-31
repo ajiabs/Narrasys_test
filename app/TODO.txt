@@ -10,7 +10,7 @@ https://docs.google.com/a/inthetelling.com/spreadsheet/ccc?key=0AvxCs2hMdLZndE5j
 
 
 
-
+review mode:force-transmedia template is too limited + strict
 
 
 httpInteceptor isn't catching 500 errors from API ?

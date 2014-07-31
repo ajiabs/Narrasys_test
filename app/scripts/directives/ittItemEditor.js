@@ -42,7 +42,6 @@ angular.module('com.inthetelling.story')
 					dataSvc.storeItem(angular.copy(scope.item)).then(function (ret) {
 						console.log(ret);
 					});
-
 				};
 
 				scope.reset = function () {
