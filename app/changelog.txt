@@ -478,3 +478,8 @@ added jslint and tests back into the build process
 Massage episode data
 DWIM for timing of items that span across two scenes
 
+------------------------------------------------
+Changes in v4.0.16:
+Demo build for USC
+bug fix for items with same start and end times
+Producer (WIP)

@@ -177,7 +177,7 @@ angular.module('com.inthetelling.story')
 									scope.plugin.alreadyHadBadge = true;
 								}
 								scope.plugin.gotBadge = true;
-							}).error(function (data) {
+							}).error(function () {
 								scope.plugin.gettingBadge = false;
 								scope.plugin.error = true; // TEMP HACK
 							});

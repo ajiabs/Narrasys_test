@@ -314,10 +314,10 @@ angular.module('com.inthetelling.story')
 					event: evt
 				});
 			} else {
-				// create
-				return POST("/v2/episodes/" + evt.episode_id + "/event", {
-					event: evt
-				});
+				// create TODO
+				// return POST("/v2/episodes/" + evt.episode_id + "/event", {
+				// 	event: evt
+				// });
 			}
 		};
 		svc.prepItemForStorage = function (evt) {
