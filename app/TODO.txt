@@ -2,6 +2,23 @@
 
 
 
+USC demo:
+Bio episode: ID 53a45fb6bf31cdf411000005
+Lesson episode ID 53a45ea8bf31cdf411000002
+
+https://docs.google.com/a/inthetelling.com/spreadsheet/ccc?key=0AvxCs2hMdLZndE5jcUFOWkhEbTg5UnVUekRtX21GUWc&usp=drive_web#gid=3
+
+
+
+
+
+
+httpInteceptor isn't catching 500 errors from API ?
+
+
+
+
+-----------------------------------------------------------------------------
 
 windowFg stop events should be visible in watch mode too
 other stop events should not stop the video(?)   
@@ -62,10 +79,6 @@ ModelSvc may need to tweak episode data (ensure scenes are contiguous and non-ov
 
 Bill may change API to return all parent containers for an episode instead of us having to walk up the tree
 
---------------------------------------------------------------------------------------------------------------------------------
-For USC:
-credly item needs to notify event analytics on item enter; we can use that to capture "user reached end of ep" requirement
-credly item needs to be able to handle multiple separate badges in one event (or should we just do sequential events?)
 
 correct youtube urls into embeddable format
 
@@ -86,6 +99,9 @@ Asked Bill to add data fields:
 * Link events: noEmbed (for links with framebreakers), forceEmbed (for links that must be embedded, no link)
 * Link events: targetTop (for end-of-episode links to LTI host)
 * All events + episode: app version number (to make it easier to distinguish between legacy and new episodes)
+
+TODO give him a list of template urls that should map to the various flags (isTranscript, noEmbed, forceEmbed, targetTop, etc)
+
 
 end of episode scene
 

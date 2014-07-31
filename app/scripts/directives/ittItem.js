@@ -24,6 +24,51 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element) {
 				// console.log('ittItem', scope, element, attrs);
 
+				scope.toggleDetailView = function () {
+					// console.log("Item toggleDetailView");
+
+					if (scope.item.showInlineDetail) {
+						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
+						scope.item.showInlineDetail = false;
+					} else {
+						timelineSvc.pause();
+						scope.captureInteraction();
+						if (element.closest('.content').width() > 400) {
+							// show detail inline if there's room for it:
+							scope.item.showInlineDetail = true;
+						} else {
+							// otherwise pop a modal:
+							appState.itemDetail = scope.item;
+						}
+					}
+				};
+
+				scope.forceModal = function () {
+					timelineSvc.pause();
+					appState.itemDetail = scope.item;
+				};
+
+				scope.outgoingLink = function (url) {
+					timelineSvc.pause();
+					scope.captureInteraction();
+					if (scope.item.targetTop) {
+						$timeout(function () {
+							window.location.href = url;
+						});
+					} else {
+						window.open(url);
+					}
+				};
+
+				scope.captureInteraction = function () {
+					analyticsSvc.captureEventActivity("clicked", scope.item._id);
+				};
+
+				// HACK: need to capture embedded links on item enter, since they're automatically 'clicked'
+				if (scope.item.templateUrl === 'templates/item/link-embed.html') {
+					scope.captureInteraction();
+				}
+
 				// HACK not sure why but modelSvc.resolveEpisodeAssets isn't always doing the job.
 				// (Possibly a race condition?)  Quick fix here to resolve it:
 				if (scope.item.asset_id && !scope.item.asset) {
@@ -68,14 +113,14 @@ angular.module('com.inthetelling.story')
 					}
 					// END m/c question
 					// BEGIN credly badge
+
 					if (scope.plugin._type === 'credlyBadge') {
-						// TODO: have analytics record that this event has been reached, so it can be used as a trigger for 
-						// other achievements
+						console.log("credly");
+						// have analytics record that this event has been reached, so it can be used as a trigger for other achievements
 
-						// Don't show this to guest users
-						var userData = appState.user;
+						analyticsSvc.captureEventActivity("viewed", scope.item._id);
 
-						if (userData.roles && userData.roles.length && userData.roles[0] !== 'guest') {
+						scope.checkBadgeEligibility = function () {
 							scope.plugin.eligibleForBadges = true;
 							scope.plugin.userEmail = userData.emails[0];
 							scope.plugin.totalAchieved = 0;
@@ -84,15 +129,39 @@ angular.module('com.inthetelling.story')
 								analyticsSvc.readEventActivity(req.eventId, req.activity)
 									.then(function (achieved) {
 										req.achieved = achieved;
-										if (achieved) {
-											scope.plugin.totalAchieved++;
-										}
+										scope.countAchievements(); // can't just do totalAchieved++ here: .then() happens asynch to the forEach, so scoping problems
 									});
 							});
+						};
+
+						// Don't show this to guest users
+						var userData = appState.user;
+						if (userData.roles && userData.roles.length) { //&& userData.roles[0] !== 'guest') {
+							scope.checkBadgeEligibility();
+
+							// update credly state every time the item becomes current, too, to catch backtracking within the same episode to pick up requirements
+							scope.$watch(function () {
+								return scope.item.isCurrent;
+							}, function (itIs) {
+								if (itIs) {
+									scope.checkBadgeEligibility();
+								}
+							});
+
 						} else {
 							// not badge-eligible, move on
 							//timelineSvc.play();
 						}
+
+						scope.countAchievements = function () {
+							var count = 0;
+							angular.forEach(scope.plugin.requirements, function (req) {
+								if (req.achieved) {
+									count = count + 1;
+								}
+							});
+							scope.plugin.totalAchieved = count;
+						};
 
 						scope.badger = function () {
 							scope.plugin.gettingBadge = true;
@@ -102,57 +171,21 @@ angular.module('com.inthetelling.story')
 							}).
 							success(function (data) {
 								// TODO check the data to make sure it's not status: "Badge previously sent."
+								scope.checkBadgeEligibility();
 								// console.log("SUCCESS", data);
 								if (data.status === 'Badge previously sent.') {
 									scope.plugin.alreadyHadBadge = true;
 								}
 								scope.plugin.gotBadge = true;
+							}).error(function (data) {
+								scope.plugin.gettingBadge = false;
+								scope.plugin.error = true; // TEMP HACK
 							});
 						};
 					}
 					// END credly badge
 				}
 				// end plugin
-
-				scope.toggleDetailView = function () {
-					// console.log("Item toggleDetailView");
-
-					if (scope.item.showInlineDetail) {
-						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
-						scope.item.showInlineDetail = false;
-					} else {
-						timelineSvc.pause();
-						scope.captureInteraction();
-						if (element.closest('.content').width() > 400) {
-							// show detail inline if there's room for it:
-							scope.item.showInlineDetail = true;
-						} else {
-							// otherwise pop a modal:
-							appState.itemDetail = scope.item;
-						}
-					}
-				};
-
-				scope.forceModal = function () {
-					timelineSvc.pause();
-					appState.itemDetail = scope.item;
-				};
-
-				scope.outgoingLink = function (url) {
-					timelineSvc.pause();
-					scope.captureInteraction();
-					if (scope.item.targetTop) {
-						$timeout(function () {
-							window.location.href = url;
-						});
-					} else {
-						window.open(url);
-					}
-				};
-
-				scope.captureInteraction = function () {
-					analyticsSvc.captureEventActivity("clicked", scope.item._id);
-				};
 
 			}
 		};

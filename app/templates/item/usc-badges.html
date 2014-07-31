@@ -3,31 +3,37 @@
 <div class="itemTemplate uscBadges" ng-if="true || plugin.eligibleForBadges">
 	<div class="itemHead">
 		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
-		This is for testing the credly badge.
+
 	</div>
 
+	<img style="max-width: 5em; float:left; margin-right: 0.5em" ng-src="{{plugin.credlyImageUrl}}">
+	<b>{{plugin.achievement}}</b>
 
-	<h3>{{plugin.achievement}}</h3>
-
-	<div ng-repeat="req in plugin.requirements">
-		{{req.name}}:
-		<i ng-if="req.achieved">Complete</i>
-		<i ng-if="!req.achieved">Incomplete</i>
+	<p>Complete the following requirements to earn a <a ng-href="https://credly.com/recipients/{{plugin.credlyBadgeId}}" target="_new">USC Scholar's Badge</a>:</p>
+	<div style="clear:both; margin-left: 1.2em;">
+		<div ng-repeat="req in plugin.requirements">
+			<img ng-if="req.achieved" style="width: 1em; height: 1em; margin-left: -1.2em" src="/images/checkmark.png">
+			<img ng-if="!req.achieved" style="width: 1em; height: 1em; margin-left: -1.2em" src="/images/checkmark-empty.png">
+			<span style="">{{req.name}}</span>
+		</div>
 	</div>
-
 
 	<p ng-if="plugin.totalAchieved != plugin.requirements.length">
-		You have completed {{plugin.totalAchieved}} of {{plugin.requirements.length}} parts of this achievement
+		You have completed {{plugin.totalAchieved}} of {{plugin.requirements.length}} parts of this achievement.
 	</p>
+	<br>
+	<div ng-if="plugin.totalAchieved == plugin.requirements.length && !plugin.gotBadge">
+		<p>Congratulations! You are eligible for a USC Scholar’s Badge. Enter your email address to claim it:</p>
 
-	<div ng-if="plugin.totalAchieved == plugin.requirements.length && ! plugin.gotBadge">
-		<p>YOU WIN THE INTERNETS</p>
-
-		You're eligible for a badge from credly.com. Enter your email address to claim it:
 		<input type="text" ng-model="plugin.userEmail">
 		<input type="button" value="Go" ng-click="badger()">
 
-		<span ng-if="plugin.gettingBadge">Getting your badge...</span>
+		<span ng-if="plugin.gettingBadge">
+			<small>Getting your badge...</small>
+		</span>
+		<div ng-if="plugin.error">
+			<small>We're sorry, there was an error retrieving your badge. Please try again later.</small>
+		</div>
 
 	</div>
 	<div ng-if="plugin.gotBadge">
@@ -35,7 +41,4 @@
 		<span ng-if="plugin.alreadyHadBadge">(It looks like you've already acquired this badge; you might want to check your spam folder for an email from credly.com.)</span>
 	</div>
 
-
-	<a ng-click="itemDebug=!itemDebug">Debug</a>
-	<pre ng-if="itemDebug">{{item | pretty}}</pre>
 </div>

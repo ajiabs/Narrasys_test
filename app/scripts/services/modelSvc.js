@@ -110,6 +110,12 @@ angular.module('com.inthetelling.story')
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
 
+			// TEMPORARY HACK hardcode for USC demo
+			if (episode._id === '53a45ea8bf31cdf411000002' ||
+				episode._id === '53a45fb6bf31cdf411000005') {
+				episode.templateUrl = 'templates/episode/usc.html';
+			}
+
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):
 			if (!episode.styles) {
@@ -175,6 +181,13 @@ angular.module('com.inthetelling.story')
 
 		svc.deriveEvent = function (event) {
 			if (event._type !== 'Scene') {
+
+				if (!event.templateUrl) {
+					// TEMPORARY WORKAROUND FOR USC DEMO
+					console.log("No template url: ", event);
+					event.templateUrl = 'templates/item/usc-badges.html';
+				}
+
 				//items
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)
