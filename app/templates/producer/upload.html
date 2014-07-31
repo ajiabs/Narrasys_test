@@ -9,13 +9,22 @@
 		Loading
 	</div>
 
-	<div ng-repeat="credential in credentials">
-		{{credentials.bucket}}<br>
-		{{credentials.key_base}}<br>
-		{{credentials.access_key_id}}<br>
-		{{credentials.secret_access_key}}<br>
-		{{credentials.session_token:}}<br>
+	<div class="credentials_data">
+		{{credentials}}<br>
 	</div>
+
+	<div class="bucket_data">
+		{{bucket_name}}<br>
+	</div>
+
+	<div ng-repeat="bucket_object in bucket_objects">
+	  {{bucket_object.Key}}<br>
+	</div>
+
+	<form ng-submit="save()">
+	  <input type="file" ng-file-select="onFileSelect($files)" />
+	  <input type="submit" />
+	</form>
 
 </div>
 

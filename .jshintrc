@@ -20,6 +20,7 @@
 	"globals": {
 		"angular": false,
 		"videojs": false,
-		"$": false
+		"$": false,
+		"AWS": false
 	}
 }
