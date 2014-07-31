@@ -485,3 +485,5 @@ bug fix for items with same start and end times
 Producer (WIP)
 ------------------------------------------------
 Changes in v4.0.17:
+badge items now show properly in review mode
+
