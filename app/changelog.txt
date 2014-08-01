@@ -498,3 +498,12 @@ USC cosmetics
 whitelisted fonts in sceDelegateProvider
 made copyright and privacy links easier to read in default templates
 
+------------------------------------------------
+Changes in v4.0.19:
+keep footer onscreen on landing page
+z-index bugfix
+bugfix: can now click video in review mode
+typography improvements
+item styles will now override customer styles
+navPanel now animates to auto height instead of fixed
+

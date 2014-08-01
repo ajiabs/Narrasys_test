@@ -16,8 +16,7 @@ review mode:force-transmedia template is too limited + strict
 httpInteceptor isn't catching 500 errors from API ?
 
 
-scene nav is too tall when there are few items
-
+landing screen: needs work -- force height to window - footer
 
 
 -----------------------------------------------------------------------------
