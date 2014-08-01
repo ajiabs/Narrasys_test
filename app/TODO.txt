@@ -16,6 +16,7 @@ review mode:force-transmedia template is too limited + strict
 httpInteceptor isn't catching 500 errors from API ?
 
 
+landing screen: needs work -- force height to window - footer
 
 
 -----------------------------------------------------------------------------

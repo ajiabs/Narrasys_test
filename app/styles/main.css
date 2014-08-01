@@ -171,37 +171,40 @@ h4 {
 .content {
 	z-index: 2;
 }
-.videoMask {
+.videoContainer {
 	z-index: 3;
 }
-.watchModeCaptions {
+.videoMask {
 	z-index: 4;
 }
-.windowFg.fgLayer {
+.watchModeCaptions {
 	z-index: 5;
 }
-.modal-backdrop {
+.windowFg.fgLayer {
 	z-index: 6;
+}
+.modal-backdrop {
+	z-index: 7;
 }
 .modal,
 .helpPanel {
-	z-index: 7;
+	z-index: 8;
 }
 .navPanel,
 .toolbar-bottom-controltrigger {
-	z-index: 8;
+	z-index: 9;
 }
 .toolbar,
 .toolbar-bottom,
 .banner-logo,
 .autoscroll {
-	z-index: 9;
-}
-.searchPanel {
 	z-index: 10;
 }
-.errors {
+.searchPanel {
 	z-index: 11;
+}
+.errors {
+	z-index: 12;
 }
 /* Custom Icon Font
 --------------------------------------------------------------------------------
