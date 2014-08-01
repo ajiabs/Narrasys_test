@@ -163,12 +163,12 @@ h4 {
 --------------------------------------------------------------------------------
 */
 
-.bgLayer {
+.bgLayer,
+.videoMagnet {
 	z-index: 1;
 	pointer-events: none;
 }
-.content,
-.videoMagnet {
+.content {
 	z-index: 2;
 }
 .videoMask {

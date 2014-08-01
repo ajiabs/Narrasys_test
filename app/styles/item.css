@@ -369,6 +369,7 @@ Inline images (TODO show these only when image is larger than available space) *
 .item .pullquote {
 	font-size: 2em;
 	padding-top: 0.3em;
+	line-height: 1.1em;
 }
 .item .pullquoteSpeaker {
 	text-align: right;
