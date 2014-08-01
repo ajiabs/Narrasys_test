@@ -141,10 +141,13 @@ a:visited {
 	background-color: #003A5C;
 }
 .colorGw .colorInvert * {
-	color: #FFF
+	color: #FFF;
 }
 .colorGw .item .pullquote:before {
 	color: rgba(0, 58, 92, 0.5);
+}
+.colorGw .colorInvert.item .pullquote:before {
+	color: rgba(255, 255, 255, 0.4);
 }
 .colorGw .escapelink:before {
 	color: #AB9767;

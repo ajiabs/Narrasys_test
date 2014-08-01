@@ -268,7 +268,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	normal:                     item: pad 60px, timestamp -60px
 	normal, timestampInline:    item: pad 0,    timestamp 0 inline;
 	normal, timestampNone:      item: pad 0,    timestamp display none
-  normal, headerItem:         item: pad 0,    timestamp display none;
+  normal, headerItem:         item: -60px,    timestamp display none;
   normal, sidebar:            item: pad 0,    timestamp display none;
 
 	narrow:                     item: pad 0,    timestamp 0 inline;
@@ -282,13 +282,14 @@ Inline images (TODO show these only when image is larger than available space) *
 .content .item {
 	padding-left: 60px;
 }
-.content .item .startTime,
-.content .item .pullquote:before {
+.content .item .startTime {
 	margin-left: -60px;
+}
+.content .item .headerItem {
+	margin-left: -55px;
 }
 .content .item.timestampInline,
 .content .item.timestampNone,
-.content .item.headerItem,
 .content .item.sidebarL,
 .content .item.sidebarR {
 	padding-left: 0.5em;
@@ -313,6 +314,9 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 /* =========================== */
 
+.content.isNarrow .item .headerItem {
+	margin-left: 0;
+}
 .content.isNarrow .item .startTime,
 .item.timestampInline .startTime {
 	display: inline;
@@ -360,6 +364,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	text-align: right;
 	width: 55px;
 	text-shadow: none !important;
+	height: 1px;
 }
 .item .pullquote {
 	font-size: 2em;

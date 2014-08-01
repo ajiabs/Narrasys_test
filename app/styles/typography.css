@@ -23,6 +23,22 @@ a {
 }
 /*============================
  *
+ * typographySans
+ *
+//===========================*/
+
+.typographySans {
+	font-family: 'Droid Sans', sans-serif
+}
+.item.typographySans,
+.item.typographySans h1,
+.item.typographySans h2,
+.item.typographySans h3,
+.item.typographySans a {
+	font-family: 'Droid Sans', sans-serif !important;
+}
+/*============================
+ *
  * typographySerif
  *
 //===========================*/
@@ -30,18 +46,13 @@ a {
 .typographySerif {
 	font-family: 'Droid Serif', serif
 }
-.typographySerif .category,
-.typographySerif .displayTime {
-	font-family: 'Droid Sans', sans-serif
+.item.typographySerif,
+.item.typographySerif h1,
+.item.typographySerif h2,
+.item.typographySerif h3,
+.item.typographySerif a {
+	font-family: 'Droid Serif', serif !important;
 }
-/*============================
- *
- * typographySans
- *
-//===========================*/
-
-/* (is default) */
-
 /*============================
  *
  * typographyBook
@@ -51,6 +62,13 @@ a {
 .typographyBook {
 	font-family: 'EB Garamond', Garamond, serif;
 }
+.item.typographyBook,
+.item.typographyBook h1,
+.item.typographyBook h2,
+.item.typographyBook h3,
+.item.typographyBook a {
+	font-family: 'EB Garamond', Garamond, serif !important;
+}
 /*============================
  *
  * typographySwiss
@@ -59,6 +77,13 @@ a {
 
 .typographySwiss {
 	font-family: 'Roboto', sans-serif;
+}
+.item.typographySwiss,
+.item.typographySwiss h1,
+.item.typographySwiss h2,
+.item.typographySwiss h3,
+.item.typographySwiss a {
+	font-family: 'Roboto', sans-serif !important;
 }
 .typographySwiss .authorName,
 .typographySwiss .title {
@@ -83,17 +108,13 @@ a {
 .typographyGw h1,
 .typographyGw h2,
 .typographyGw h3,
-.typographyGw h4,
-.typographyGw h5,
 .typographyGw .item a,
 .typographyGw .navigationPanel a {
 	font-family: "Montserrat", sans-serif;
 }
 .typographyGw h1,
 .typographyGw h2,
-.typographyGw h3,
-.typographyGw h4,
-.typographyGw h5 {
+.typographyGw h3 {
 	font-weight: 700
 }
 .typographyGw .item .title {
@@ -108,7 +129,7 @@ a {
 }
 .typographyGw .item .pullquote:before {
 	font-family: "Cardo", serif;
-	font-size: 1.7em;
+	font-size: 2.5em;
 }
 .typographyUsc {
 	font-family: National, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -116,21 +137,19 @@ a {
 .typographyUsc h1,
 .typographyUsc h2,
 .typographyUsc h3,
-.typographyUsc h4,
 .typographyUsc .headerItem {
 	font-family: "Adobe Caslon", "Crimson Text", serif;
-	line-height: 1.6em;
+	/*line-height: 1.6em;*/
 }
 .typographyUsc .item .pullquote:before {
-	line-height: 0.5em;
+	line-height: 0.7em;
 }
 .typographyPurdue {
 	font-family: "Myriad Pro", "Arial";
 }
 .typographyPurdue h1,
 .typographyPurdue h2,
-.typographyPurdue h3,
-.typographyPurdue h4 {
+.typographyPurdue h3 {
 	font-family: "Champion", "Impact", "Charcoal", sans-serif;
 	letter-spacing: 1px;
 }
