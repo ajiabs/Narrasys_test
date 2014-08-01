@@ -11,11 +11,25 @@
 	right: 0;
 	bottom: 0;
 }
-.windowFg,
-.windowBg {
-	position: fixed;
+.fgLayer,
+.bgLayer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	overflow-y: scroll;
 	-webkit-overflow-scrolling: touch;
+}
+.windowFg.fgLayer,
+.windowBg.bgLayer {
+	position: fixed;
+}
+.windowFg.fgLayer {
+	background-color: #FFF;
+}
+.windowFg.fgLayer .overflowY {
+	margin: 70px 2em 200px 2em;
 }
 .content {
 	position: relative;

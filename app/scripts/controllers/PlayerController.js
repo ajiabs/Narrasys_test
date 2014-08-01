@@ -76,7 +76,8 @@ angular.module('com.inthetelling.story')
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		// TODO put this in own controller (or service?)
+		/* BEGIN TOOLBAR HIDE/REVEAL- - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+		// TODO put this in own controller
 
 		// Bottom toolbar starts out hidden.  5s after using a control or leaving the pane, fade out controls.
 		//   If mouse re-enters pane, keep the controls visible. 
@@ -125,7 +126,7 @@ angular.module('com.inthetelling.story')
 			}, 5000);
 		};
 
-		// - - - - - - - - -  - - - - - - - - - - - - - - -
+		/* END TOOLBAR HIDE/REVEAL- - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 		// Misc toolbars too small to rate their own controllers
 		$scope.toggleSearchPanel = function () {
@@ -173,6 +174,10 @@ angular.module('com.inthetelling.story')
 		$scope.noMoreHelp = function () {
 			appState.show.helpPanel = false;
 			localStorage.setItem("noMoreHelp", "1");
+			timelineSvc.play();
+		};
+
+		$scope.play = function () {
 			timelineSvc.play();
 		};
 

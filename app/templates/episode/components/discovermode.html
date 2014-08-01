@@ -4,9 +4,4 @@
 		</div>
 	</div>
 	<div itt-scene="scene" episode="episode"></div>
-	<div ng-if="(scene.items | isCurrent | itemLayout:'windowFg').length > 0" class="fill overlay windowFg fgLayer">
-		<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate" ng-repeat="item in scene.items | isCurrent | itemLayout:'windowFg'">
-		</div>
-	</div>
 </div>
-

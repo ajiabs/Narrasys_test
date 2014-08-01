@@ -472,3 +472,17 @@
 	z-index: 5;
 	transform: rotate(45deg);
 }
+/* .button-continue appears in windowFg: */
+
+.button-continue:after {
+	font-family: Story;
+	content: "\e001";
+	color: #000 !important;
+	font-size: 3em;
+	float: right
+}
+.button-continue {
+	line-height: 3.4em;
+	float: right;
+	margin-top: 3em;
+}
