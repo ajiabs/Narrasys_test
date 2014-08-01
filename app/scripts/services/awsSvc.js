@@ -55,6 +55,29 @@ angular.module('com.inthetelling.story')
 	    
         };
 
+	svc.uploadFile = function(file) {
+	    var defer = $q.defer();
+	    svc.getUploadSession().then(function putObject() {
+		var params = {
+		    Key: awsCache.s3.config.params.Prefix+file.name,
+		    ContentType: file.type,
+		    Body: file
+		};
+		awsCache.s3.putObject(params, function(err, data) {
+		    if (err) {
+			console.log(err, err.stack); // an error occurred
+			defer.reject();
+		    } else {
+			console.log('awsSvc, got mulipart upload listing!', data);
+			defer.resolve(data);           // successful response
+		    }
+		});
+	    });
+            
+	    return defer.promise;
+	    
+        };
+
 	svc.getMultipartUploads  = function() {
 	    var defer = $q.defer();
 	    svc.getUploadSession().then(function listMultipartUploads() {

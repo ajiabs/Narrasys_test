@@ -22,4 +22,12 @@ angular.module('com.inthetelling.story')
 	    $scope.loading = false;
 	});
 
+	$scope.loading = true;
+	$scope.uploadFile = function(){
+	    awsSvc.uploadFile(document.getElementById('file').files[0]).then(function (data) {
+		$scope.upload_result = data;
+		$scope.loading = false;
+	    });
+	};
+	
     });

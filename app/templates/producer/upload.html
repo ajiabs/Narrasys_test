@@ -21,10 +21,9 @@
 	  {{upload_in_progress.Key}}<br>
 	</div>
 
-	<form ng-submit="save()">
-	  <input type="file" ng-file-select="onFileSelect($files)" />
-	  <input type="submit" />
-	</form>
+	<input type="file" id="file" name="file"/>
+	<button ng-click="uploadFile()">Upload</button>
+	<div id="results"></div>
 
 </div>
 
