@@ -487,3 +487,14 @@ Producer (WIP)
 Changes in v4.0.17:
 badge items now show properly in review mode
 
+------------------------------------------------
+Changes in v4.0.18:
+correcting timeline sort order bug in safari
+updated grunt
+stop-item and windowFg fixes
+windowFg now includes a ‘continue’ button
+windowFg now overflows screen properly
+USC cosmetics
+whitelisted fonts in sceDelegateProvider
+made copyright and privacy links easier to read in default templates
+

@@ -16,13 +16,11 @@ review mode:force-transmedia template is too limited + strict
 httpInteceptor isn't catching 500 errors from API ?
 
 
+scene nav is too tall when there are few items
+
 
 
 -----------------------------------------------------------------------------
-
-windowFg stop events should be visible in watch mode too
-other stop events should not stop the video(?)   
-(or maybe we just need to go ahead and admit that stop should === windowFg...?)  
 
 include non-cosmetic windowFg items in review mode (new filter)
 
