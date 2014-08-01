@@ -16,8 +16,8 @@
 		</div>
 		<div class="pbarMain">
 			<div class="progressbar">
-				<div class="mask">
-					<div class="progressbarContainer" style="width: {{zoomLevel}}00%">
+				<div class="mask" style="overflow:hidden;">
+					<div class="progressbarContainer" style="width: {{zoomLevel}}00%;">
 						<div class="played" ng-style="{width: markerPercent(appState.time)+'%'}"></div>
 						<!-- <div class="buffered" style="width: TODO%"></div> -->
 					</div>

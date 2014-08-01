@@ -61,6 +61,7 @@
 .progressbar .mask {
 	height: 1em;
 	overflow: hidden;
+	border-radius: 0 0.5em 0.5em 0;
 	position: absolute;
 	width: 100%;
 }
@@ -78,8 +79,12 @@
 	height: 1em;
 }
 .progressbar .played {
-	background: #66a8cc url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
-	border-radius: 0 0.5em 0.5em 0;
+	background-color: #8DB9D4;
+	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.2) inset;
+	border-right: 2px solid #527890;
+	/*background: #66a8cc url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;*/
+	/*background-color: #b0cee2;*/
+	/*border-right: 2px solid #66a8cc;*/
 }
 .progressbar .buffered {
 	background: rgba(255, 255, 255, 0.6);
@@ -156,7 +161,7 @@
 .button-next {
 	position: absolute;
 	right: 0;
-	text-align:right;
+	text-align: right;
 }
 .button-scenemenu {
 	position: absolute;
