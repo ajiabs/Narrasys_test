@@ -9,6 +9,17 @@ angular.module('com.inthetelling.story')
 	    $scope.bucket_objects = data.Contents;
 	    $scope.loading = false;
 	});
+
+	//$scope.loading = true;
+	//awsSvc.createMultipartUpload().then(function (data) {
+	//    $scope.new_upload = data.Contents;
+	//    $scope.loading = false;
+	//});
 	
-	
+	$scope.loading = true;
+	awsSvc.getMultipartUploads().then(function (data) {
+	    $scope.uploads_in_progress = data;
+	    $scope.loading = false;
+	});
+
     });

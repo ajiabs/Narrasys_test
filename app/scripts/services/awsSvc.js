@@ -25,6 +25,7 @@ angular.module('com.inthetelling.story')
 			    }
 			};
                         awsCache.s3 = new AWS.S3(params);
+			console.log('S3: ',awsCache.s3);
 			awsCache.sessionDeferred.resolve(data);
 		    } else {
 			awsCache.sessionDeferred.reject();
@@ -53,11 +54,32 @@ angular.module('com.inthetelling.story')
 	    return defer.promise;
 	    
         };
+
+	svc.getMultipartUploads  = function() {
+	    var defer = $q.defer();
+	    svc.getUploadSession().then(function listMultipartUploads() {
+		awsCache.s3.listMultipartUploads(function(err, data) {
+		    if (err) {
+			console.log(err, err.stack); // an error occurred
+			defer.reject();
+		    } else {
+			console.log('awsSvc, got mulipart upload listing!', data);
+			defer.resolve(data);           // successful response
+		    }
+		});
+	    });
+            
+	    return defer.promise;
+	    
+        };
 	
 	svc.createMultipartUpload = function() {
 	    var defer = $q.defer();
 	    svc.getUploadSession().then(function createMultipartUpload() {
-		awsCache.s3.listObjects(function(err, data) {
+		var params = {
+		    Key: awsCache.s3.config.params.Prefix+"HelloWorld2.txt"
+		};
+		awsCache.s3.createMultipartUpload(params, function(err, data) {
 		    if (err) {
 			console.log(err, err.stack); // an error occurred
 			defer.reject();
