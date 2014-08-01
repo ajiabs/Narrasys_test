@@ -17,6 +17,13 @@ httpInteceptor isn't catching 500 errors from API ?
 
 
 
+Stop items stopping before stop item is visible in Safari only
+
+windowfg stop items should have a visible 'continue' button
+
+scene nav is too tall when there are few items
+
+
 
 -----------------------------------------------------------------------------
 

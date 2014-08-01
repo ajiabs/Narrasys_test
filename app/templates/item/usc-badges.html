@@ -10,7 +10,7 @@
 	<b>{{plugin.achievement}}</b>
 
 	<p>Complete the following requirements to earn a <a ng-href="https://credly.com/recipients/{{plugin.credlyBadgeId}}" target="_new">USC Scholar's Badge</a>:</p>
-	<div style="clear:both; margin-left: 1.2em;">
+	<div style="clear:both; margin: 1em 1.2em; font-size:90%">
 		<div ng-repeat="req in plugin.requirements">
 			<img ng-if="req.achieved" style="width: 1em; height: 1em; margin-left: -1.2em" src="/images/checkmark.png">
 			<img ng-if="!req.achieved" style="width: 1em; height: 1em; margin-left: -1.2em" src="/images/checkmark-empty.png">
@@ -21,7 +21,7 @@
 	<p ng-if="plugin.totalAchieved != plugin.requirements.length">
 		You have completed {{plugin.totalAchieved}} of {{plugin.requirements.length}} parts of this achievement.
 	</p>
-	<br>
+
 	<div ng-if="plugin.totalAchieved == plugin.requirements.length && !plugin.gotBadge">
 		<p>Congratulations! You are eligible for a USC Scholar’s Badge. Enter your email address to claim it:</p>
 
