@@ -71,7 +71,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 	$sceDelegateProvider.resourceUrlWhitelist([
 		'self',
 		/.*/,
-		/^https?:\/\/platformuniv-p.edgesuite.net/
+		/^http(s)?:\/\/platformuniv-p.edgesuite.net/,
+		/^http(s)?:\/\/themes.googleusercontent.com/
 	]);
 })
 
