@@ -40,6 +40,10 @@ angular.module('com.inthetelling.story')
 						element.find('.stretchToViewport:visible').each(function () {
 							$(this).css("min-height", (availableViewportHeight - $(this).offset().top));
 						});
+						// landing screen: keep the bottom toolbar onscreen
+						element.find('.stretchToViewportShort:visible').each(function () {
+							$(this).css("min-height", (availableViewportHeight - $(this).offset().top - 210));
+						});
 					}
 
 					element.find('.content').each(function () {
