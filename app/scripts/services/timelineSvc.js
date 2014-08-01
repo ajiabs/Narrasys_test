@@ -366,7 +366,6 @@ angular.module('com.inthetelling.story')
 				if (event._type === "Scene" && event.title) {
 					svc.markedEvents.push(event);
 				}
-
 				if (event.start_time === 0 && !event._id.match('internal')) {
 					event.start_time = 0.01;
 					modelSvc.events[event._id].start_time = 0.01;
@@ -414,16 +413,31 @@ angular.module('com.inthetelling.story')
 			});
 
 			//keep events sorted by time.
-			// Simultaneous events should be sorted as enter, then stop, then exit
-
+			// Simultaneous events should be sorted as exit, then enter, then stop
 			svc.timelineEvents = svc.timelineEvents.sort(function (a, b) {
 				if (a.t === b.t) {
-
-					if (b.action === "enter") {
+					if (a.action === b.action) {
+						return 0;
+					}
+					// This is overly verbose, but I keep running into differences in 
+					// how Safari and FF sort when I try to simplify it:
+					if (a.action === 'enter' && b.action === 'pause') {
+						return -1;
+					}
+					if (a.action === 'enter' && b.action === 'exit') {
 						return 1;
 					}
-					if (b.action === "exit") {
+					if (a.action === 'exit' && b.action === 'enter') {
 						return -1;
+					}
+					if (a.action === 'exit' && b.action === 'pause') {
+						return -1;
+					}
+					if (a.action === 'pause' && b.action === 'enter') {
+						return 1;
+					}
+					if (a.action === 'pause' && b.action === 'exit') {
+						return 1;
 					}
 					return 0;
 				} else {
@@ -442,10 +456,10 @@ angular.module('com.inthetelling.story')
 			// Find the latest end_time in the timeline, set that as the duration.
 			// TODO this will need to change when we support multiple episodes in one timeline
 
-			appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
-
+			if (svc.timelineEvents.length > 0) {
+				appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
+			}
 			svc.updateEventStates();
-
 		};
 
 		svc.updateEventStates = function () {
