@@ -6,7 +6,7 @@
 .branding {
 	width: 100%;
 	height: 210px;
-	background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
+	background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
 	position: relative;
 	color: #FFF;
 }
@@ -38,9 +38,9 @@
 }
 .copyright {
 	position: absolute;
-	bottom: 90px;
+	bottom: 75px;
 	left: 10px;
-	font-size: 0.76em;
+	font-size: 0.85em;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
 }
 .copyright a {
