@@ -84,6 +84,8 @@
 	background-position: 0 30%;
 	background-repeat: no-repeat;
 }
+/* -- */
+
 .episode-gw .videoMask.firstplay {
 	/* GW doesn't want our logo here */
 	background-image: url('/images/play-overlay.png');

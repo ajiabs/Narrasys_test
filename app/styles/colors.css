@@ -128,6 +128,8 @@ a:visited {
 .colorEliterate .colorInvert h3 {
 	color: #FFF
 }
+/* -- */
+
 .colorGw h1,
 .colorGw h2,
 .colorGw h3,
@@ -158,6 +160,8 @@ a:visited {
 .colorGw .altPane {
 	background-color: rgba(0, 58, 92, 0.05);
 }
+/* -- */
+
 .colorUsc a,
 .colorUsc a:visited {
 	color: #900;
@@ -177,6 +181,8 @@ a:visited {
 .colorUsc .footer {
 	background-color: #900;
 }
+/* -- */
+
 .colorPurdue a,
 .colorPurdue a:visited {
 	color: #e3ae24;
