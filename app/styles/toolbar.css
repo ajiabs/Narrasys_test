@@ -333,7 +333,7 @@
 //===========================*/
 
 .navPanel {
-	height: 400px;
+	max-height: 400px;
 	transition: 1s all;
 	overflow-y: scroll;
 }
@@ -342,16 +342,16 @@
 	display: block!important;
 }
 .navPanel.ng-hide-add {
-	height: 400px;
+	max-height: 400px;
 }
 .navPanel.ng-hide-add-active {
-	height: 0;
+	max-height: 0;
 }
 .navPanel.ng-hide-remove {
-	height: 0;
+	max-height: 0;
 }
 .navPanel.ng-hide-remove-active {
-	height: 400px;
+	max-height: 400px;
 }
 @media screen and (max-width: 500px) {
 	.navPanel {
@@ -384,6 +384,7 @@
 	font-weight: bold;
 	padding-bottom: 0.5em;
 	padding-left: 1em;
+	border-top: none;
 }
 .navPanel .scene:first-child a {
 	color: #000;
