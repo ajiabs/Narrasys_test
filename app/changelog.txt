@@ -517,3 +517,6 @@ fix for IE-specific background-image interpolation problem
 cosmetics, especially for IE
 more obvious marker for current time
 
+------------------------------------------------
+Changes in v4.0.21:
+fixing broken build (oops)
