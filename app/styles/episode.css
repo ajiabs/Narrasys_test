@@ -59,7 +59,7 @@
 .banner-logo {
 	left: 40%;
 	margin: 0 auto;
-	max-width: 170p;
+	max-width: 170px;
 	position: fixed;
 	right: 33%;
 	text-align: center;
@@ -68,7 +68,7 @@
 .banner-logo img {
 	margin: auto;
 	max-height: 35px;
-	width: 100%;
+	max-width: 100%;
 }
 /* -------------------------------------------  
    Customer-specific tweaks

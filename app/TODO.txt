@@ -1,10 +1,18 @@
 
+sometimes getting stuck in buffered state in html5 video
+
 review mode:force-transmedia template is too limited + strict
 
 
 httpInteceptor isn't catching 500 errors from API ?
 
 add episode colors to bottom toolbar (.progressbar .played in particular)
+
+black bars on edges of video sometimes, due to rounding errors in frame size. Try making the video a tiny bit larger than its container, with overflow:hidden?
+
+iPhone: hide captions and CC button; possibly hide bottom toolbar
+
+Deal with simultaneous captions in watch mode (either only display the latest one, or else coerce the data to prevent overlaps in the first place)
 
 
 include non-cosmetic windowFg items in review mode (new filter)
