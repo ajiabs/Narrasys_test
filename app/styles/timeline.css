@@ -78,8 +78,12 @@
 	position: absolute;
 	height: 1em;
 }
+.progressbar .buffered {
+	background-color: #FFF;
+	opacity: 0.4;
+}
 .progressbar .played {
-	background-color: #8DB9D4;
+	background: #8DB9D4 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAALklEQVQYGWP4//+/DwMU4GKDpXFJIosTVoisGhebsClQ9xJWiMsKZHHCphBrHQDRYVi0zUYEIwAAAABJRU5ErkJggg==) repeat;
 	box-shadow: 4px 2px 4px rgba(0, 0, 0, 0.15) inset;
 	border-right: 2px solid #527890;
 	/*background: #66a8cc url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;*/

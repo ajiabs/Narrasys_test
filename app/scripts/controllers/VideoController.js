@@ -1,6 +1,8 @@
 'use strict';
 
 // TODO youtube support for multiple playback speeds?
+// TODO: $destroy is never called for this controller, therefore videoNode lingers.  
+// Move that to the directive
 
 angular.module('com.inthetelling.story')
 	.controller('VideoController', function ($q, $scope, $timeout, $window, $document, appState, timelineSvc) {
@@ -14,12 +16,6 @@ angular.module('com.inthetelling.story')
 			appState.youtubeIsReady = true;
 			// console.log("Youtube Service is ready");
 		};
-
-		$scope.$on("$destroy", function () {
-			console.log("Destroying videoController and youtube player", $scope.YTPlayer);
-			$scope.YTPlayer = undefined;
-			// TODO tell youtubeSvc to destroy its instance as well? Also timelineSvc?  
-		});
 
 		$scope.initVideo = function (el) {
 			console.log("videoController.initVideo");
@@ -67,6 +63,12 @@ angular.module('com.inthetelling.story')
 			}, function (isReady) {
 				if (isReady) {
 					unwatch();
+
+					$scope.getBufferPercent = function () {
+						appState.bufferedPercent = $scope.YTPlayer.getVideoLoadedFraction() * 100;
+						return appState.bufferedPercent;
+					};
+
 					timelineSvc.registerVideo($scope);
 				}
 			});
@@ -89,6 +91,25 @@ angular.module('com.inthetelling.story')
 			$scope.videoNode.addEventListener('pause', function () {
 				$scope.playerState = 'pause';
 			}, false);
+
+			$scope.getBufferPercent = function () {
+				// console.log("getBufferPercent");
+				if ($scope.videoNode.buffered.length > 0) {
+					var bufStart = $scope.videoNode.buffered.start($scope.videoNode.buffered.length - 1);
+					var bufEnd = $scope.videoNode.buffered.end($scope.videoNode.buffered.length - 1);
+
+					if (bufEnd < 0) {
+						bufEnd = bufEnd - bufStart;
+						bufStart = 0;
+					}
+					console.log(bufStart, bufEnd, appState.duration);
+					appState.bufferedPercent = bufEnd / appState.duration * 100;
+					return appState.bufferedPercent;
+				} else {
+					return 0;
+				}
+			};
+
 			timelineSvc.registerVideo($scope);
 
 			/* For future reference, all html5 events:

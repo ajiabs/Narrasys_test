@@ -3,7 +3,7 @@
 // use only for master asset!
 
 angular.module('com.inthetelling.story')
-	.directive('ittVideo', function ($timeout, $rootScope, appState, timelineSvc) {
+	.directive('ittVideo', function ($timeout, $interval, $rootScope, appState, timelineSvc) {
 
 		var uniqueDirectiveID = 0; // Youtube wants to work via DOM IDs; this is a cheap way of getting unique ones
 
@@ -44,8 +44,22 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.spaceWatcher = $rootScope.$on('userKeypress.SPACE', scope.videoClick);
+
+				// watch buffered amount on an interval
+				scope.bufferInterval = $interval(function () {
+					if (!scope.getBufferPercent) {
+						return;
+					}
+					var pct = scope.getBufferPercent();
+					if (pct > 98) {
+						$interval.cancel(scope.bufferInterval);
+					}
+				}, 200);
+
 				scope.$on('$destroy', function () {
 					scope.spaceWatcher();
+					$interval.cancel(scope.bufferInterval);
+
 				});
 			},
 

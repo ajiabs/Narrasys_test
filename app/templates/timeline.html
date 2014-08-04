@@ -18,8 +18,8 @@
 			<div class="progressbar">
 				<div class="mask" style="overflow:hidden;">
 					<div class="progressbarContainer" style="width: {{zoomLevel}}00%;">
+						<div class="buffered" ng-style="{width: appState.bufferedPercent+'%'}"></div>
 						<div class="played" ng-style="{width: markerPercent(appState.time)+'%'}"></div>
-						<!-- <div class="buffered" style="width: TODO%"></div> -->
 					</div>
 				</div>
 				<!-- unmasked parts of timeline -->
