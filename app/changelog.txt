@@ -507,3 +507,13 @@ typography improvements
 item styles will now override customer styles
 navPanel now animates to auto height instead of fixed
 
+------------------------------------------------
+Changes in v4.0.20:
+include progress bar for video buffering, refined progress bar design
+fix for native video stalling incorrectly
+windowFg improvements: contain, cover, and fill items are fullscreen; others show inline with a “continue” button if they are stop items
+Fix for magnet rounding error that caused black lines on edges of video
+fix for IE-specific background-image interpolation problem
+cosmetics, especially for IE
+more obvious marker for current time
+

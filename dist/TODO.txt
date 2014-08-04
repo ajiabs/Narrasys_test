@@ -1,32 +1,20 @@
 
-
-
-
-USC demo:
-Bio episode: ID 53a45fb6bf31cdf411000005
-Lesson episode ID 53a45ea8bf31cdf411000002
-
-https://docs.google.com/a/inthetelling.com/spreadsheet/ccc?key=0AvxCs2hMdLZndE5jcUFOWkhEbTg5UnVUekRtX21GUWc&usp=drive_web#gid=3
-
-
-
 review mode:force-transmedia template is too limited + strict
 
 
 httpInteceptor isn't catching 500 errors from API ?
 
+add episode colors to bottom toolbar (.progressbar .played in particular)
 
-landing screen: needs work -- force height to window - footer
+iPhone: hide captions and CC button; possibly hide bottom toolbar
 
+Deal with simultaneous captions in watch mode (either only display the latest one, or else coerce the data to prevent overlaps in the first place)
 
------------------------------------------------------------------------------
 
 include non-cosmetic windowFg items in review mode (new filter)
 
 make sure modelSvc is still doing this:
 Currently player is url-encoding " ", "&" and "?" for uploads url and alternate_url fields, and for master asset urls.  For other urls only encoding spaces.
-
----- ABOVE IS NEED FOR 4.0 LAUNCH; BELOW IS FUTURE OR NICE TO HAVE ----
 
 
 Make a list for Bill of which templateUrls should map to which new fields
