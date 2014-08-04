@@ -77,7 +77,10 @@ angular.module('com.inthetelling.story')
 
 				// Slight hack to simplify css for image-fill:
 				if (scope.item.styleCss.match(/fill|contain|cover/)) {
-					scope.item.backgroundImage = "background-image: url('" + scope.item.asset.url + "');";
+					// TODO: figure out why item.asset.cssUrl works in IE, and item.backgroundImageStyle works in everything else.
+					// Probably just an escaped-quote issue or something dumb like that
+					scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
+					scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
 				}
 
 				// TODO plugins should each be their own directive!

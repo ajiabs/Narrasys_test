@@ -82,7 +82,10 @@ image-fill items */
 }
 .fill .item.contain .fillImg,
 .fill .item.cover .fillImg,
-.fill .item.fill .fillImg {
+.fill .item.fill .fillImg,
+.windowFg .item.contain .fillImg,
+.windowFg .item.cover .fillImg,
+.windowFg .item.fill .fillImg {
 	display: none;
 }
 .fill .item.contain .itemTemplate {
