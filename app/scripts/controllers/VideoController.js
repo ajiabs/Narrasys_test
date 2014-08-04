@@ -78,12 +78,13 @@ angular.module('com.inthetelling.story')
 				$scope.playerState = 'playing';
 			}, false);
 			$scope.videoNode.addEventListener('waiting', function () {
+				// triggered when buffering is stalled and there is no more buffered data
 				$scope.playerState = 'waiting';
-				// $scope.stall();   TODO: Should this be treated as a stall?
+				$scope.stall();
 			}, false);
 			$scope.videoNode.addEventListener('stalled', function () {
+				// triggered when buffering is stalled -- playback may be continuing if there's buffered data
 				$scope.playerState = 'stalled';
-				$scope.stall();
 			}, false);
 			$scope.videoNode.addEventListener('pause', function () {
 				$scope.playerState = 'pause';
@@ -131,7 +132,7 @@ angular.module('com.inthetelling.story')
 			var unwatch = $scope.$watch(function () {
 				return $scope.playerState;
 			}, function (newState) {
-				if (newState !== 'buffering') {
+				if (newState !== 'buffering' && newState !== 'waiting') {
 					unwatch();
 					timelineSvc.unstall();
 				}
