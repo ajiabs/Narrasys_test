@@ -520,3 +520,7 @@ more obvious marker for current time
 ------------------------------------------------
 Changes in v4.0.22:
 fixing broken build (oops)
+------------------------------------------------
+Changes in v4.0.23:
+bugfix: transcript nodes in watch mode had unintended animation
+
