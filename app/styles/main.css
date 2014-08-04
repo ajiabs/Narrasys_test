@@ -172,7 +172,8 @@ h4 {
 .content {
 	z-index: 2;
 }
-.videoContainer {
+.videoContainer,
+.overlay {
 	z-index: 3;
 }
 .videoMask {

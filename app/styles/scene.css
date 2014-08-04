@@ -4,7 +4,10 @@
 	position: relative;
 }
 .fill,
-.fill .item {
+.fill .item,
+.fgLayer .item.contain,
+.fgLayer .item.cover,
+.fgLayer .item.fill {
 	position: absolute;
 	top: 0;
 	left: 0;

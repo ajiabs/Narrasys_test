@@ -593,7 +593,7 @@ angular.module('com.inthetelling.story')
 				"episode_id": epId,
 				"templateUrl": "templates/item/image-thumbnail.html",
 				"styles": [
-					"transitionFade"
+					"transitionFade", "tl"
 				],
 				"layouts": [
 					"inline"
@@ -609,16 +609,16 @@ angular.module('com.inthetelling.story')
 				modelSvc.cache("event", upload);
 			}
 
-			var layouts = ["windowBg", "mainBg", "altBg", "videoOverlay", "mainFg", "altFg", "windowFg"];
-			for (i = 0; i < 7; i++) {
+			var layouts = ["windowFg", "mainFg", "altFg", "videoOverlay"];
+			for (i = 0; i < 8; i++) {
 				var filltest = angular.copy(uploadStub);
-				filltest.layouts = [layouts[i]];
+				filltest.layouts = [layouts[i % layouts.length]];
 				filltest._id = "filltest-" + i;
 				filltest.asset_id = "asset2";
-				filltest.start_time = i * 5;
-				filltest.end_time = i * 5 + 5;
+				filltest.start_time = i * 2;
+				filltest.end_time = i * 2 + 2;
 				filltest.templateUrl = "templates/item/image-fill.html";
-				filltest.styles.push("fill");
+				filltest.styles.push("cover");
 				modelSvc.cache("event", filltest);
 
 			}

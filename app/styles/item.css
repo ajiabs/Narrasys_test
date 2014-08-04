@@ -72,11 +72,12 @@ image-fill items */
 	
 */
 
-.fill .itemTemplate {
+.item.fill .itemTemplate,
+.item.contain .itemTemplate,
+.item.cover .itemTemplate {
 	overflow: hidden;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	background-size: 100% 100%;
 	width: 100%;
 	height: 100%;
 }
@@ -88,10 +89,13 @@ image-fill items */
 .windowFg .item.fill .fillImg {
 	display: none;
 }
-.fill .item.contain .itemTemplate {
+.item.fill .itemTemplate {
+	background-size: 100% 100%;
+}
+.item.contain .itemTemplate {
 	background-size: contain;
 }
-.fill .item.cover .itemTemplate {
+.item.cover .itemTemplate {
 	background-size: cover;
 }
 .fill .item .fillImg {
