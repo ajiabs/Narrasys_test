@@ -49,11 +49,11 @@ angular.module('com.inthetelling.story')
 						}
 
 						if (Math.abs(diffW) > 4) {
-							element.width(element.width() + (diffW / 4));
+							element.width(Math.ceil(element.width() + (diffW / 4)));
 						} else {
-							element.width(scope.magnet.width());
+							element.width(Math.ceil(scope.magnet.width()));
 						}
-						element.height(scope.magnet.width() / aspectRatio);
+						element.height(Math.ceil(scope.magnet.width() / aspectRatio));
 
 					});
 				};

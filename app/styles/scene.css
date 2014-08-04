@@ -31,7 +31,8 @@
 .windowFg.fgLayer .overflowY {
 	margin: 70px 2em 200px 2em;
 }
-.videoContainer .fill {
+.videoContainer {
+	overflow: hidden;
 	/*overflow-y: hidden;*/
 }
 .content {
