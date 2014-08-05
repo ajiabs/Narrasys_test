@@ -51,8 +51,9 @@ angular.module('com.inthetelling.story')
 						return;
 					}
 					var pct = scope.getBufferPercent();
-					if (pct > 98) {
+					if (pct > 98) { // close enough
 						$interval.cancel(scope.bufferInterval);
+						appState.bufferedPercent = 100;
 					}
 				}, 200);
 
