@@ -157,7 +157,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .watchModeCaptions.padForBottomToolbar {
 	bottom: 80px;
 }
-/* TODO bring back real animations here:; */
+/* TODO this is a bit of a hack.  Need to restrict ng-animate to .animate class items */
 
 .watchModeCaption.ng-enter,
 .watchModeCaption.ng-leave {

@@ -12,13 +12,15 @@ angular.module('com.inthetelling.story')
 			$scope.loading = false;
 		});
 
-		$scope.authenticate = function (episodeID) {
-			console.warn("clearing localStorage for reauthentication");
-			if (localStorage) {
-				localStorage.removeItem(config.localStorageKey);
-			}
-			appState.user = {};
-			window.location = (config.apiDataBaseUrl + "/pages/launch_oauth2?episode=" + episodeID);
+		// $scope.user = appState.user;
 
-		};
+		// $scope.authenticate = function (episodeID) {
+		// 	console.warn("clearing localStorage for reauthentication");
+		// 	if (localStorage) {
+		// 		localStorage.removeItem(config.localStorageKey);
+		// 	}
+		// 	appState.user = {};
+		// 	window.location = (config.apiDataBaseUrl + "/pages/launch_oauth2?episode=" + episodeID);
+
+		// };
 	});
