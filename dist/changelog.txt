@@ -529,3 +529,6 @@ bugfix: transcript nodes in watch mode had unintended animation
 Changes in v4.0.24:
 font/color fix for GW nav panel
 
+------------------------------------------------
+Changes in v4.0.25:
+no really this time for sure
