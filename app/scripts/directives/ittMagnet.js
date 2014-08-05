@@ -31,7 +31,7 @@ angular.module('com.inthetelling.story')
 						// we want the video to be as wide as possible without overflowing the window.
 						// And dont' want to set the height directly, just the width. So math:
 						var win = angular.element(window);
-						var maxAllowableHeight = win.height() - 45; // TOOLBAR HEIGHT 
+						var maxAllowableHeight = win.height() - 46; // TOOLBAR HEIGHT (plus some slop)
 						if (win.width() / maxAllowableHeight > (16 / 9)) {
 							element.width(16 / 9 * maxAllowableHeight);
 						} else {
