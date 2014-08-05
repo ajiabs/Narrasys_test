@@ -293,7 +293,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	margin-left: -60px;
 }
 .content .item .headerItem {
-	margin-left: -55px;
+	margin-left: -50px;
 }
 .content .item.timestampInline,
 .content .item.timestampNone,
@@ -369,7 +369,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	font-size: 2.5em;
 	line-height: 0.8em;
 	text-align: right;
-	width: 55px;
+	width: 50px;
 	text-shadow: none !important;
 	height: 1px;
 }
