@@ -19,13 +19,11 @@ angular.module('com.inthetelling.story')
 		var isAuthenticating;
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function () {
-			console.log("authSvc.authenticate");
 			if (isAuthenticating) {
 				return authenticateDefer.promise;
 			}
 			isAuthenticating = true;
 			if ($routeParams.key) {
-				console.log("Using key param from url as nonce");
 				// explicit key in route:
 				var nonce = $routeParams.key;
 				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
@@ -33,11 +31,9 @@ angular.module('com.inthetelling.story')
 					authenticateDefer.resolve();
 				});
 			} else if ($http.defaults.headers.common.Authorization) {
-				console.log("already authorized via header.common.Authorization");
 				// already logged in!
 				authenticateDefer.resolve();
 			} else {
-				console.log("trying localStorage");
 				// check for token in localStorage, try it to see if it's still valid.
 				var validStoredData;
 
@@ -45,7 +41,6 @@ angular.module('com.inthetelling.story')
 					var storedData = angular.fromJson(localStorage.getItem(config.localStorageKey));
 					var currentCustomer = config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1];
 					if (storedData.customer === currentCustomer) {
-						console.log("localStorage customer matched: ", currentCustomer);
 						validStoredData = storedData;
 					} else {
 						// this token must be invalid, so remove it
@@ -55,12 +50,10 @@ angular.module('com.inthetelling.story')
 				}
 
 				if (validStoredData) {
-					console.log("using localStorage data");
 					appState.user = validStoredData;
 					$http.defaults.headers.common.Authorization = 'Token token="' + validStoredData.access_token + '"';
 					authenticateDefer.resolve();
 				} else {
-					console.log("No localStorage, starting from scratch");
 					// start from scratch
 					svc.getNonce().then(function (nonce) {
 						svc.getAccessToken(nonce).then(function () {
@@ -73,26 +66,20 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getNonce = function () {
-			console.log("authSvc.getNonce");
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_nonce")
 				.success(function (data) {
-					console.log("authSvc.getNonce succeeded:", data);
 					if (data.nonce) {
-						console.log("found data.nonce");
 						defer.resolve(data.nonce);
 					} else {
-						console.log("got no nonce; redirect?");
 						// Guest access is not allowed
 						if (data.login_url) {
-							console.log("redirect to ", data.login_url);
 							if (data.login_via_top_window_only) {
 								window.top.location.href = data.login_url;
 							} else {
 								window.location.href = data.login_url;
 							}
 						} else {
-							console.log("no nonce and no login_url, rejecting promise");
 							defer.reject();
 						}
 					}
@@ -104,11 +91,10 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getAccessToken = function (nonce) {
-			console.log("trying getAccessToken with nonce ", nonce);
+			// console.log("trying getAccessToken with nonce ", nonce);
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
 				.success(function (data) {
-					console.log("get_access_token returned ", data);
 					// Access tokens are per-customer, which is based on subdomain. 
 					// Logging in with one customer invalidates the key for any others for the same user, 
 					// otherwise we'd just store separate ones per customer
@@ -124,8 +110,8 @@ angular.module('com.inthetelling.story')
 					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
 					defer.resolve(data);
 				})
-				.error(function (data) {
-					console.error("get_access_token failed:", data);
+				.error(function () {
+					// console.error("get_access_token failed:", data, status);
 					defer.reject();
 				});
 			return defer.promise;
