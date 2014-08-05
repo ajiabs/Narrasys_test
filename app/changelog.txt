@@ -551,3 +551,11 @@ removed hardcoded database url from config
 Changes in v4.0.28:
 log everything in authSvc for debugging
 
+------------------------------------------------
+Changes in v4.0.29:
+fixed rounding error that caused scrollbars to flicker in watch mode in some screen sizes
+disabling speed control for now
+main frame breaker button pauses video
+removing logging from dist again
+'reset session' link now clears authorization header token as well as localStorage
+
