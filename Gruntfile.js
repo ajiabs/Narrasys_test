@@ -302,7 +302,7 @@ module.exports = function (grunt) {
 			options: {
 				compress: {
 					unsafe: true,
-					drop_console: false
+					drop_console: true
 				}
 
 			},
