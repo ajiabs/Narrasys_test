@@ -532,3 +532,14 @@ font/color fix for GW nav panel
 ------------------------------------------------
 Changes in v4.0.25:
 no really this time for sure
+
+------------------------------------------------
+Changes in v4.0.26:
+made "IE8 not supported" message legible
+launch prep
+slightly smaller font size for watch mode captions
+tidier display of buffered video when near 100%
+removed unwanted scrollbars in modals (IE)
+smaller quote in pull quotes (IE)
+no text-selection cursor on scene markers (IE)
+
