@@ -207,7 +207,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	right: 5%;
 	top: 10%;
 	bottom: 10%;
-	overflow: scroll;
+	overflow: auto;
 	transition: 1s all;
 }
 .modal.ng-enter,
@@ -366,7 +366,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	color: rgba(0, 0, 0, 0.1);
 	content: "“";
 	float: left;
-	font-size: 3em;
+	font-size: 2.5em;
 	line-height: 0.8em;
 	text-align: right;
 	width: 55px;

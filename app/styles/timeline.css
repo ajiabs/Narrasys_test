@@ -77,6 +77,7 @@
 .progressbar .marker {
 	position: absolute;
 	height: 1em;
+	cursor: default;
 }
 .progressbar .buffered {
 	background-color: #FFF;
