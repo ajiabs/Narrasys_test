@@ -154,7 +154,8 @@ a:visited {
 .colorGw .escapelink:before {
 	color: #AB9767;
 }
-.colorGw .content.allowHighlights .item.isCurrent.highlightSolid {
+.colorGw .content.allowHighlights .item.isCurrent.highlightSolid,
+.colorGw .reviewMode .content.allowHighlights .item.isCurrent {
 	background-color: rgba(171, 151, 103, 0.3);
 }
 .colorGw .altPane {
