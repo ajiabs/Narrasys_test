@@ -109,7 +109,7 @@ a {
 .typographyGw h2,
 .typographyGw h3,
 .typographyGw .item a,
-.typographyGw .navigationPanel a {
+.typographyGw.navPanel a {
 	font-family: "Montserrat", sans-serif;
 }
 .typographyGw h1,

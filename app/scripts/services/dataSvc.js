@@ -399,7 +399,7 @@ angular.module('com.inthetelling.story')
 				"master_asset_id": "masterasset",
 				"title": "Test Episode",
 				"status": "Published",
-				"templateUrl": "templates/episode/purdue.html",
+				"templateUrl": "templates/episode/gw.html",
 				"styles": [
 					"", "", ""
 				]
