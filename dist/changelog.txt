@@ -543,3 +543,8 @@ removed unwanted scrollbars in modals (IE)
 smaller quote in pull quotes (IE)
 no text-selection cursor on scene markers (IE)
 
+------------------------------------------------
+Changes in v4.0.27: 
+removed hardcoded database url from config
+First 4.0.x version to be released to public(!)
+
