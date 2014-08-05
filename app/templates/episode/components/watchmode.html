@@ -4,8 +4,8 @@
 			<img src="images/aspectratiopreserver-16x9.gif">
 		</div>
 	</div>
-	<span ng-if="!appState.hideCaptions" class="watchModeCaptions" ng-class="{padForBottomToolbar: appState.videoControlsActive}">
-		<div class="item watchModeCaption" ng-if="item.isCurrent" ng-repeat="item in episode.items | transcript" ng-class="item.state" itt-item="item" forceTemplate="caption">
+	<span class="watchModeCaptions" ng-class="{padForBottomToolbar: appState.videoControlsActive}">
+		<div class="item watchModeCaption" ng-if="item.isCurrent && !appState.hideCaptions" ng-repeat="item in episode.items | transcript" ng-class="item.state" itt-item="item" forceTemplate="caption">
 		</div>
 	</span>
 </span>

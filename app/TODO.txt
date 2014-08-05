@@ -1,7 +1,7 @@
 
 timelineSvc speed multiplier is not working
 
-
+Should the framebreaker link point to the current time in the new window?
 
 review mode:force-transmedia template is too limited + strict
 
