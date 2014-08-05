@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ErrorController', function ($scope, config, errorSvc, appState) {
+	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState) {
 		$scope.errorSvc = errorSvc;
 
 		$scope.user = appState.user;
@@ -26,6 +26,8 @@ angular.module('com.inthetelling.story')
 
 		/* TODO HACK this doesn't belong here at all; should be in authSvc (or possibly removed altogether) */
 		$scope.resetAuth = function () {
+			console.log(config.localStorageKey);
+			$http.defaults.headers.common.Authorization = undefined;
 			localStorage.removeItem(config.localStorageKey);
 		};
 
