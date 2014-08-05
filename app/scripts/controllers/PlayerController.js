@@ -143,6 +143,10 @@ angular.module('com.inthetelling.story')
 			appState.show.navPanel = false;
 		};
 
+		$scope.pause = function () {
+			timelineSvc.pause();
+		};
+
 		// show the help pane, only if localStorage is settable and there isn't one already.
 		// (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
 
