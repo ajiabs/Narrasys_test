@@ -236,6 +236,11 @@ Video
 --------------------------------------------------------------------------------
 */
 
+/* 
+TODO: native video seems to perform better when not position:absolute, but iframe doesn't size properly without it.
+Check to see if there's a consistent way to do without absolute positioning, or if it's safe to just do it to native and not youtube.
+ */
+
 .video iframe,
 .video video,
 .video .videoMask {

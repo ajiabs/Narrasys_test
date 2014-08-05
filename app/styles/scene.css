@@ -149,13 +149,13 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .watchModeCaptions {
 	position: fixed;
 	bottom: 20px;
-	font-size: 130%;
+	font-size: 120%;
 	margin: 0 10%;
 	width: 80%;
 	transition: all 1.5s;
 }
 .watchModeCaptions.padForBottomToolbar {
-	bottom: 110px;
+	bottom: 80px;
 }
 /* TODO bring back real animations here:; */
 
