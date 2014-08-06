@@ -374,4 +374,4 @@ CC button now removes captions immediately
 Changes in v4.0.31:
 removed unneeded css
 help panel had wrong z-index
-
+corrected overflow problems in modals and errors
