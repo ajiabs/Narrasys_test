@@ -139,6 +139,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.seek = function (t) {
+			$scope.enableAutoscroll();
 			timelineSvc.seek(t, "sceneMenu");
 			appState.show.navPanel = false;
 		};

@@ -40,7 +40,9 @@ angular.module('com.inthetelling.story')
 						}
 						if (timelineSvc.markedEvents[i].start_time < now) {
 							// console.log("Seeking to ", timelineSvc.markedEvents[i].start_time);
+							scope.enableAutoscroll(); // in playerController
 							timelineSvc.seek(timelineSvc.markedEvents[i].start_time, "prevScene");
+
 							break;
 						}
 					}
@@ -50,6 +52,7 @@ angular.module('com.inthetelling.story')
 					for (var i = 0; i < timelineSvc.markedEvents.length; i++) {
 						if (timelineSvc.markedEvents[i].start_time > appState.time) {
 							// console.log("Seeking to ", timelineSvc.markedEvents[i].start_time);
+							scope.enableAutoscroll(); // in playerController
 							timelineSvc.seek(timelineSvc.markedEvents[i].start_time, "nextScene");
 							found = true;
 							break;
@@ -58,6 +61,7 @@ angular.module('com.inthetelling.story')
 					if (!found) {
 						timelineSvc.pause();
 						timelineSvc.seek(appState.duration - 0.01, "nextScene");
+						scope.enableAutoscroll(); // in playerController
 					}
 				};
 
@@ -202,6 +206,7 @@ angular.module('com.inthetelling.story')
 				var finishSeek = function () {
 					// console.log("timeline mouseup or touchend");
 					scope.stopWatching = true;
+					scope.enableAutoscroll(); // in playerController
 					timelineSvc.seek(scope.willSeekTo, "scrubTimeline");
 					zoom();
 				};
