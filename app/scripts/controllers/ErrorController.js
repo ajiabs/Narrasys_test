@@ -29,6 +29,7 @@ angular.module('com.inthetelling.story')
 			console.log(config.localStorageKey);
 			$http.defaults.headers.common.Authorization = undefined;
 			localStorage.removeItem(config.localStorageKey);
+			appState.user = {};
 		};
 
 		$scope.reload = function () {
