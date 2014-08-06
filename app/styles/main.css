@@ -188,8 +188,7 @@ h4 {
 .modal-backdrop {
 	z-index: 7;
 }
-.modal,
-.helpPanel {
+.modal {
 	z-index: 8;
 }
 .navPanel,
@@ -199,7 +198,8 @@ h4 {
 .toolbar,
 .toolbar-bottom,
 .banner-logo,
-.autoscroll {
+.autoscroll,
+.helpPanel {
 	z-index: 10;
 }
 .searchPanel {
