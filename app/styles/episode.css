@@ -57,11 +57,10 @@
 	height: 100%;
 }
 .banner-logo {
-	left: 40%;
+	left: 38%;
 	margin: 0 auto;
-	max-width: 170px;
 	position: fixed;
-	right: 33%;
+	right: 38%;
 	text-align: center;
 	top: 5px;
 }

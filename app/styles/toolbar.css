@@ -244,6 +244,16 @@
 	width: 40%;
 	background-color: #FFF;
 }
+@media screen and (max-width: 421px) {
+	.searchPanel {
+		width: 90%;
+	}
+}
+@media screen and (min-width: 422px) and (max-width: 601px) {
+	.searchPanel {
+		width: 60%;
+	}
+}
 .searchPanel .scrollContainer {
 	top: 20px;
 	bottom: 0;
@@ -263,6 +273,7 @@
 .searchPanel .searchfilters {
 	opacity: 1;
 	animation: delayedFadeIn 4s ease-out;
+	margin-top: 0.3em;
 }
 .searchfilters {
 	font-size: 0.86em;
