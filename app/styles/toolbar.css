@@ -80,6 +80,9 @@
 	.button-fullscreen {
 		display: none !important;
 	}
+	.watchModeCaption {
+		display: none;
+	}
 }
 .toolbar .buttongroup.escapegroup .button span {
 	margin-left: -120px;
