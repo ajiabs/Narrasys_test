@@ -216,8 +216,8 @@ a:visited {
 .colorPurdue .colorInvert h3,
 .colorPurdue .colorInvert h4,
 .colorPurdue .colorInvert .headerItem {
-	background-color: #a3792c;
-	color: #fff;
+	background-color: #a3792c !important;
+	color: #fff !important;
 }
 .colorPurdue a,
 .colorPurdue a:visited {
