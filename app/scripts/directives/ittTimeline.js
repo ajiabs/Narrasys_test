@@ -5,7 +5,7 @@
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
 angular.module('com.inthetelling.story')
-	.directive('ittTimeline', function (appState, timelineSvc) {
+	.directive('ittTimeline', function ($timeout, appState, timelineSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -162,6 +162,10 @@ angular.module('com.inthetelling.story')
 				// cancelSeek when they mouseup or touchend outside the playhead (cancels)
 
 				var startSeek = function (evt) {
+					$timeout(function () {
+						// short delay for visibility of handle (don't want it when just clicking)
+						scope.seekHandleVisible = true;
+					}, 250);
 					scope.isSeeking = true;
 
 					var userEventName = (appState.isTouchDevice) ? 'touchend.timeline' : 'mouseup.timeline';
@@ -211,6 +215,7 @@ angular.module('com.inthetelling.story')
 					timelineContainer.off('touchend.timeline');
 					scope.$apply(function () {
 						scope.isSeeking = false;
+						scope.seekHandleVisible = false;
 					});
 				};
 
