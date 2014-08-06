@@ -213,6 +213,7 @@ angular.module('com.inthetelling.story')
 				}
 				if (event.templateUrl.match(/frameicide/)) {
 					event.targetTop = true;
+					event.noEmbed = true;
 				}
 			}
 
