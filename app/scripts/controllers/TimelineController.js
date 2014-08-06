@@ -6,8 +6,20 @@ angular.module('com.inthetelling.story')
 		$scope.play = timelineSvc.play;
 		$scope.pause = timelineSvc.pause;
 
-		$scope.setSpeed = function (n) {
-			timelineSvc.setSpeed(n);
+		$scope.changeSpeed = function (n) {
+			console.log("timelineController.changeSpeed");
+			// Limit speed to between 0.5 and 2 inclusive
+			var newSpeed = appState.timeMultiplier + n;
+			if (newSpeed < 0.5) {
+				newSpeed = 0.5;
+			}
+			if (newSpeed > 2) {
+				newSpeed = 2;
+			}
+			timelineSvc.setSpeed(newSpeed);
+		};
+		$scope.resetSpeed = function () {
+			timelineSvc.setSpeed(1);
 		};
 
 		$scope.markerPercent = function (t) {

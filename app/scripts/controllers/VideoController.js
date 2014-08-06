@@ -102,7 +102,6 @@ angular.module('com.inthetelling.story')
 						bufEnd = bufEnd - bufStart;
 						bufStart = 0;
 					}
-					console.log(bufStart, bufEnd, appState.duration);
 					appState.bufferedPercent = bufEnd / appState.duration * 100;
 					return appState.bufferedPercent;
 				} else {

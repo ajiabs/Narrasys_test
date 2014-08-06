@@ -46,7 +46,7 @@ angular.module('com.inthetelling.story')
 		var timeMultiplier;
 
 		svc.registerVideo = function (newVideoScope) {
-			console.log("timelineSvc.registerVideo", newVideoScope);
+			// console.log("timelineSvc.registerVideo", newVideoScope);
 			if (videoScope !== undefined) {
 				// Route changes weren't always seeking to the correct time; this forces it on next $digest:
 				$timeout(function () {
@@ -57,7 +57,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.setSpeed = function (speed) {
-			// console.log("timelineSvc.setSpeed");
+			// console.log("timelineSvc.setSpeed", speed);
 			timeMultiplier = speed;
 			appState.timeMultiplier = timeMultiplier; // here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
 			videoScope.setSpeed(speed);
@@ -292,7 +292,8 @@ angular.module('com.inthetelling.story')
 
 			if (nextEvent && appState.timelineState === "playing") { // need to check timelineState in case there were stop events above
 				// Find out how long until the next event, and aim for just a bit after it.
-				var timeToNextEvent = (svc.timelineEvents[i].t - ourTime) * 1000;
+				var timeToNextEvent = (svc.timelineEvents[i].t - ourTime) * 1000 / timeMultiplier;
+				// console.log("next event in ", timeToNextEvent);
 				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
 			}
 		};
@@ -329,6 +330,8 @@ angular.module('com.inthetelling.story')
 				newTime = 0;
 				svc.pause();
 			}
+
+			// console.log(newTime, appState.time);
 			if (newTime > appState.duration) {
 				newTime = appState.duration;
 				svc.pause();

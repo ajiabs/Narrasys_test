@@ -119,24 +119,38 @@
 	margin-left: -125px;
 	bottom: 1.5em;
 	text-align: center;
-}
-.timeline .tooltip .content {
-	background-color: rgba(0, 0, 0, 0.70);
-	padding: 0.2em 1em;
-	display: inline-block;
-	width: auto;
+	background: #404040;
+	border: 2px solid #000;
 	color: #FFF;
-	border: 3px solid #000;
 	border-radius: 0.5em;
 }
-.timeline .tooltip-arrow {
-	background: url("data:image/gif;base64,R0lGODlhCQAJAIABAAAAAAAAACH5BAEAAAEALAAAAAAJAAkAAAIRjAOnwIrcDJxvwkplPtchVQAAOw==") no-repeat scroll left bottom rgba(0, 0, 0, 0);
-	bottom: -5px;
-	height: 5px;
-	position: absolute;
-	width: 9px;
+.timeline .tooltip:after,
+.timeline .tooltip:before {
+	top: 100%;
 	left: 50%;
-	margin-left: -5px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+.timeline .tooltip:after {
+	border-color: rgba(64, 64, 64, 0);
+	border-top-color: #404040;
+	border-width: 6px;
+	margin-left: -6px;
+}
+.timeline .tooltip:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-top-color: #000;
+	border-width: 9px;
+	margin-left: -9px;
+}
+.timeline .sceneMenuTooltip.tooltip {
+	left: 85px;
+	bottom: 53px;
+	width: 175px;
 }
 .timeline .handle .tip {
 	font-size: smaller;
@@ -246,13 +260,6 @@
 .button-fullscreen.active:before {
 	content: "\e608";
 }
-.button-speedcontrol {
-	margin-left: 1.5em;
-}
-.button-speedcontrol:after {
-	font-family: Story;
-	content: "\e009";
-}
 .button-zoomout,
 .button-zoomin {
 	height: 1em;
@@ -284,11 +291,32 @@
 	height: 1em;
 	background: #555 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
-.sceneMenuTooltip {
-	left: 6em;
-	top: -1em;
+.speedcontrol {
+	margin-left: 1em;
+	display: inline;
 }
-.sceneMenuTooltip .tooltip-arrow {
-	left: 33%;
-	bottom: 27px;
+.button-speedcontrol {
+	width: 1em;
+	display: inline-block;
+}
+.button-speedcontrol div {
+	display: inline-block;
+}
+.speeddisplay {
+	width: 1.75em;
+	display: inline-block;
+	cursor: pointer;
+}
+.arrowLeft,
+.arrowRight {
+	width: 0;
+	height: 0;
+	border-top: 0.4em solid transparent;
+	border-bottom: 0.4em solid transparent;
+}
+.arrowLeft {
+	border-right: 0.4em solid #000;
+}
+.arrowRight {
+	border-left: 0.4em solid #000;
 }
