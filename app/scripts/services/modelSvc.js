@@ -208,6 +208,12 @@ angular.module('com.inthetelling.story')
 				if (event.templateUrl.match(/noembed/)) {
 					event.noEmbed = true;
 				}
+
+				if (event._type === "Link" && event.url.match(/^http:\/\//)) {
+					console.warn("Can't embed http:// link type:", event.url);
+					event.noEmbed = true;
+				}
+
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
 					event.noExternalLink = true;
 				}
