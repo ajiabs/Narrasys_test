@@ -1,7 +1,5 @@
 
-timelineSvc speed multiplier is not working
-
-
+Should the framebreaker link point to the current time in the new window?  (need to ask bill to accept and pass through a time parameter in /v1/new_window endpoint)
 
 review mode:force-transmedia template is too limited + strict
 
@@ -11,9 +9,6 @@ httpInteceptor isn't catching 500 errors from API ?
 add episode colors to bottom toolbar (.progressbar .played in particular)
 
 iPhone: hide captions and CC button; possibly hide bottom toolbar
-
-Deal with simultaneous captions in watch mode (either only display the latest one, or else coerce the data to prevent overlaps in the first place)
-
 
 include non-cosmetic windowFg items in review mode (new filter)
 
@@ -40,9 +35,6 @@ modal style should be an (episode-level) template choice
 Bring back fullscreen mode (needs browser testing muchly)
 
 Safari is still not working with youtube, either in desktop or ipad/phone. argh.  Diabled for now, reverting to mp4 version
-
-for now: force all bg transitions to fade
-
 
 youtube is failing to play some videos on firefox when  flash is not installed.  Niche problem, but needs an error message with a link to flash installer at least.   
 
@@ -113,13 +105,13 @@ SXS:
 Build a demo analytics dashboard
 
 
-Rewrite timelineSvc to better handle multiple episodes:
+update timelineSvc to better handle multiple episodes:
 	Needs to be able to change the video source to a new episode (different video node? change source of single node? playlist?)
 	Will also need to be able to capture analytics for episode time instead of timeline time...
 	timelineSvc needs functions to translate episode->timeline time and vice versa
 
 
-Add a "skip" type of event to allow skipping scenes
+Add a "skip" type of event to allow skipping scenes (unless we decide to do sxs episodes as standalone copies of the original instead of edits to the original)
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -129,7 +121,7 @@ clicking on a scene or item should highlight its duration in the timeline, with 
 
 
 Producer nav:
-Expand player's [watch]            | [discover] | [review]
+Expand player's    [watch]   |    [discover]     | [review]
 					 into [transcribe] | [scene | content] | [review]
 
 [transcribe] looks like watch mode, with text input where the captions field is, and a pulldown for speaker
@@ -149,18 +141,18 @@ Expand player's [watch]            | [discover] | [review]
 
 [scene] edits the layout (scene template) and backgrounds for each pane and for the whole scene.
 
-				Control panel above bottom toolbar -- right where the captions were again! Consistent! -- for scene template changes
-				(before user can change anything here, prompt "edit the current layout or add a layout change here?") also a 'remove this layout')
+				Control panel above bottom toolbar --  where the captions were again! Consistent! -- for scene template changes
 
+				prompt "edit the current layout or add a layout change here?" <-- this is workable but could do better
+				also a 'remove this layout') 
 
-				Clicking on a content pane brings up a list of all items in the pane in that scene, lets you set start/end times individually. 
+				Clicking on a pane brings up a list of all (Bg/Fg) items in the pane in that scene, lets you set start/end times individually.   (Or for a first version, only have one Bg per pane per scene, set to duration of scene?)
 
 [content] layer reveals the content items in the scene layout
 					with an "add" button as the last item in each pane. 
-					Click individual items to change their styling and content (in a modal)
+					Click individual items to change their styling and content (in a modal, with preview)
 
-
-[review] is just review mode where you can click on anything to edit it in a modal.  
+[review] is just like review mode, but you can click on anything to edit it in a modal.  
 					Add a 3rd column for cosmetic items if you want. Make that user toggleable if you want to get fancy.
 
 

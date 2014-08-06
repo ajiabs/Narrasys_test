@@ -559,3 +559,16 @@ main frame breaker button pauses video
 removing logging from dist again
 'reset session' link now clears authorization header token as well as localStorage
 
+------------------------------------------------
+Changes in v4.0.30:
+enable autoscroll before all seek events
+improved search on small screens; banner logo fixes
+Added short delay before seek handle appears
+fixed speed control; improved UI
+color bug in Purdue templates
+hide scene menu tooltip on click
+force background items to transitionFade or transitionNone
+'reset session' also clears user data from appState
+GW highlight color corrected in review mode
+corrected indenting of banners and scene titles in review mode
+CC button now removes captions immediately
