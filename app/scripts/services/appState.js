@@ -30,6 +30,7 @@ angular.module('com.inthetelling.story')
 			svc.viewMode = ($(window).width() > 480) ? 'discover' : 'review'; // default view mode
 
 			svc.time = 0; // current playhead position (in seconds) relative to timeline NOT TO EPISODE!
+			svc.bufferedPercent = 0; // portion of video that has been buffered (as pct instead of time because that's how youtube reports it, and that's what we end up displaying anyway)
 			svc.timeMultiplier = 1; // sets player speed (0.5 = half speed; 2=double;etc)
 			svc.duration = 0; // duration of timeline (in seconds)
 			svc.timelineState = 'paused'; // "playing", "paused", or "buffering" (set by timelineSvc). Future = "locked" (by stop question or etc)

@@ -385,6 +385,7 @@ angular.module('com.inthetelling.story')
 			var cssArr = [];
 
 			// start with the thing's own styles
+
 			angular.forEach(thing.styles, function (style) {
 				cssArr.push(style); // keep all styles; not just the ones in a styleCategory
 				angular.forEach(styleCategories, function (categoryValue, categoryName) {
@@ -419,6 +420,14 @@ angular.module('com.inthetelling.story')
 				});
 			}
 
+			// TEMPORARY: force bg items to transitionFade
+			if ((thing._type !== 'Scene') && !thing.isContent && thing.layouts && thing.layouts[0].match(/Bg/)) {
+				for (var i = 0; i < cssArr.length; i++) {
+					if (cssArr[i].match(/transition/) && cssArr[i] !== 'transitionNone') {
+						cssArr[i] = "transitionFade";
+					}
+				}
+			}
 			return cssArr.join(' ');
 		};
 

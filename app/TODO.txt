@@ -1,7 +1,7 @@
 
 timelineSvc speed multiplier is not working
 
-Should the framebreaker link point to the current time in the new window?
+Should the framebreaker link point to the current time in the new window?  (need to ask bill to accept and pass through a time parameter in /v1/new_window endpoint)
 
 review mode:force-transmedia template is too limited + strict
 
@@ -11,9 +11,6 @@ httpInteceptor isn't catching 500 errors from API ?
 add episode colors to bottom toolbar (.progressbar .played in particular)
 
 iPhone: hide captions and CC button; possibly hide bottom toolbar
-
-Deal with simultaneous captions in watch mode (either only display the latest one, or else coerce the data to prevent overlaps in the first place)
-
 
 include non-cosmetic windowFg items in review mode (new filter)
 
@@ -40,9 +37,6 @@ modal style should be an (episode-level) template choice
 Bring back fullscreen mode (needs browser testing muchly)
 
 Safari is still not working with youtube, either in desktop or ipad/phone. argh.  Diabled for now, reverting to mp4 version
-
-for now: force all bg transitions to fade
-
 
 youtube is failing to play some videos on firefox when  flash is not installed.  Niche problem, but needs an error message with a link to flash installer at least.   
 
