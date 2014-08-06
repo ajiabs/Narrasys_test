@@ -47,7 +47,7 @@
 				<div class="tooltip-arrow"></div>
 			</div>
 
-			<a class="button-scenemenu" ng-click="toggleNavPanel();" ng-mouseover="showSceneMenuTooltip(true)" ng-mouseout="showSceneMenuTooltip(false)">
+			<a class="button-scenemenu" ng-click="showSceneMenuTooltip(false);toggleNavPanel();" ng-mouseover="showSceneMenuTooltip(true)" ng-mouseout="showSceneMenuTooltip(false)">
 				<span class="control-text">Scenes</span>
 			</a>
 			<a ng-class="{invisible: appState.time >= appState.duration-0.1}" class="button button-next" ng-click="nextScene()">
