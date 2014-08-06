@@ -13,7 +13,7 @@
 	border-radius: 15px;
 	padding: 1em;
 	margin: 1em;
-	overflow: scroll;
+	overflow: auto;
 }
 .errors .notification {
 	border-color: #EE0;
