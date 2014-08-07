@@ -11,7 +11,7 @@ angular.module('com.inthetelling.story')
 				scene: '=ittScene',
 				episode: '=episode'
 			},
-			template: '<span ng-include="scene.templateUrl">Loading Item...</span>',
+			template: '<span ng-include="scene.templateUrl"></span>',
 			controller: 'SceneController',
 			link: function (scope, element) {
 				// console.log('ittScene', scope, element, attrs);

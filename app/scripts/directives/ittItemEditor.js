@@ -10,7 +10,7 @@ angular.module('com.inthetelling.story')
 			scope: {
 				item: '=ittItemEditor'
 			},
-			//template: '<div ng-include="item.templateUrl">Loading Item...</div>',
+			//template: '<div ng-include="item.templateUrl"></div>',
 			templateUrl: 'templates/item/edit.html',
 			controller: 'ItemController',
 			link: function (scope) {

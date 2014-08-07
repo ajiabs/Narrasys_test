@@ -17,6 +17,7 @@
 	<div class="itemDetail" ng-if="item.showInlineDetail">
 		<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 		<div class="iframeContainer">
+			<div ng-include="'templates/loading.html'"></div>
 			<iframe ng-src="{{item.url}}"></iframe>
 		</div>
 	</div>

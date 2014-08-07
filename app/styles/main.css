@@ -74,6 +74,7 @@ h4 {
 	font-size: small;
 	min-height: 400px;
 	line-height: 0;
+	background-color: #FFF;
 }
 .loading .spinner {
 	width: 60px;

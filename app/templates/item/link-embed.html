@@ -11,6 +11,7 @@
 		<div ng-bind-html="item.description"></div>
 	</div>
 	<div class="iframeContainer">
+		<div ng-include="'templates/loading.html'"></div>
 		<iframe ng-src="{{item.url}}"></iframe>
 	</div>
 	<div class="clear"></div>

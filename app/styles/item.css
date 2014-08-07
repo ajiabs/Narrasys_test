@@ -32,20 +32,37 @@
 	text-align: right;
 	float: left;
 }
-.item .iframeContainer {
-	-webkit-overflow-scrolling: touch;
-	overflow: auto;
+.iframeContainer {
 	width: 100%;
+	position: relative;
+	background-color: #FFF;
+	overflow: hidden;
+}
+.item .iframeContainer {
 	height: 320px;
 }
-.windowFg .item .iframeContainer {
+.windowFg .item .iframeContainer,
+.modal .iframeContainer {
 	min-height: 500px;
 }
-.item iframe {
-	background-color: #FFF;
+.touchDevice .iframeContainer {
+	/* TODO make sure this class is being applied */
+	-webkit-overflow-scrolling: touch;
+	overflow: auto;
+}
+.iframeContainer .loading,
+.iframeContainer iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.iframeContainer iframe {
+	background-color: transparent;
+	border: none;
 	width: 100%;
 	height: 98%;
-	border: none;
 }
 /* 
 	.singleitem panes are intended for cleaner transitions when there's only one content item in the pane at a time. 
@@ -206,7 +223,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	left: 5%;
 	right: 5%;
 	top: 10%;
-	bottom: 10%;
+	bottom: 5%;
 	overflow: auto;
 	transition: 1s all;
 }
@@ -224,28 +241,6 @@ Inline images (TODO show these only when image is larger than available space) *
 	top: 10%;
 	display: block !important;
 	overflow: hidden;
-}
-.modal .iframeContainer {
-	width: 100%;
-	min-height: 500px;
-	overflow: hidden;
-	background-color: #FFF;
-}
-.modal iframe {
-	position: absolute;
-	top: 30px;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	border: none;
-	overflow: auto;
-	width: 100%;
-	height: 96%;
-}
-.touchDevice .modal .iframeContainer {
-	/* TODO make sure this class is being applied */
-	-webkit-overflow-scrolling: touch;
-	overflow: auto;
 }
 .modalmenu {
 	border-radius: 1em 1em 0 0;

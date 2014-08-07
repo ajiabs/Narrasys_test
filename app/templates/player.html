@@ -39,14 +39,7 @@
 			<input id="searchtext" type="text" ng-model="searchText" />
 		</div>
 	</div>
-	<div ng-if="loading" class="loading">
-		<div class="spinner">
-			<div class="rotating pie"></div>
-			<div class="filler pie"></div>
-			<div class="mask"></div>
-		</div>
-		Loading
-	</div>
+	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 	<div itt-episode></div>
 
 	<div class="toolbar-bottom" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-show="appState.videoControlsActive">
