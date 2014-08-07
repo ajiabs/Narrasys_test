@@ -21,6 +21,9 @@ angular.module('com.inthetelling.story')
 			} else {
 				appState.autoscroll = false;
 			}
+			$timeout(function () {
+				$(window).trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
+			});
 		};
 
 		if ($routeParams.viewMode) {
