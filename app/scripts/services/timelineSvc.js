@@ -61,6 +61,7 @@ angular.module('com.inthetelling.story')
 			timeMultiplier = speed;
 			appState.timeMultiplier = timeMultiplier; // here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
 			videoScope.setSpeed(speed);
+			stepEvent();
 		};
 
 		svc.play = function (nocapture) {
