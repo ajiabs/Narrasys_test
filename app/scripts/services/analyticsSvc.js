@@ -142,13 +142,14 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
+			episodeUserMetrics = svc.dejitter(episodeUserMetrics);
+
 			if (eventUserActions.length) {
 				// console.log("Event actions to log:", eventUserActions);
 				// /v2/episodes/<episode id>/event_user_actions
 				post("event_user_actions", {
 					"event_user_actions": eventUserActions
 				});
-
 			}
 			if (episodeUserMetrics.length) {
 				// console.log("Episode metrics to log:", episodeUserMetrics);
@@ -156,6 +157,27 @@ angular.module('com.inthetelling.story')
 					"episode_user_metrics": episodeUserMetrics
 				});
 			}
+		};
+
+		svc.dejitter = function (events) {
+			// Consolidate repeated seek events into one single seek event before sending to API.
+			// TODO prevent this happening in the first place :)
+			var ret = [];
+			for (var i = 0; i < events.length - 1; i++) {
+				// if this event and the next one are both seek events, and this event's timestamp matches
+				// the next event's seekStart, skip this event and set the next event's seekStart to this one's.
+				// otherwise just put it into the queue.
+				var a = events[i];
+				var b = events[i + 1];
+				if (a.name === "seek" && b.name === "seek" &&
+					(a.timestamp === b.data.seekStart)) {
+					b.data.seekStart = a.data.seekStart;
+				} else {
+					ret.push(events[i]);
+				}
+			}
+			ret.push(events[events.length - 1]);
+			return ret;
 		};
 
 		// This is not a general-purpose function, it's only for the analytics endpoints
