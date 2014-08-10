@@ -184,7 +184,7 @@ angular.module('com.inthetelling.story')
 
 				if (!event.templateUrl) {
 					// TEMPORARY WORKAROUND FOR USC DEMO
-					console.log("No template url: ", event);
+					// console.log("No template url: ", event);
 					event.templateUrl = 'templates/item/usc-badges.html';
 				}
 
@@ -264,7 +264,7 @@ angular.module('com.inthetelling.story')
 		(there are authoring issues in existing episodes where items start a fraction of a second before their intended scene does)
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
-			console.log("resolveEpisodeEvents");
+			// console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
@@ -614,11 +614,12 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		console.log("Event cache:", svc.events);
-		console.log("Asset cache:", svc.assets);
-		console.log("Container cache:", svc.containers);
-		console.log("Episode cache:", svc.episodes);
-
+		if (config.debugInBrowser) {
+			console.log("Event cache:", svc.events);
+			console.log("Asset cache:", svc.assets);
+			console.log("Container cache:", svc.containers);
+			console.log("Episode cache:", svc.episodes);
+		}
 		return svc;
 
 	});

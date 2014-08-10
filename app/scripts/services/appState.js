@@ -63,6 +63,9 @@ angular.module('com.inthetelling.story')
 			document.getElementById('CONTAINER').className = "touchDevice";
 		}
 
-		console.log("appState:", svc);
+		if (config.debugInBrowser) {
+			console.log("appState:", svc);
+		}
+
 		return svc;
 	});

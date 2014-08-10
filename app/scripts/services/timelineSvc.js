@@ -32,7 +32,7 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 */
 
 angular.module('com.inthetelling.story')
-	.factory('timelineSvc', function ($timeout, $interval, $rootScope, modelSvc, appState, analyticsSvc) {
+	.factory('timelineSvc', function ($timeout, $interval, $rootScope, config, modelSvc, appState, analyticsSvc) {
 
 		var svc = {};
 
@@ -196,6 +196,7 @@ angular.module('com.inthetelling.story')
 				if (eventID) {
 					captureData.event_id = eventID;
 				}
+				console.log("capture", captureData);
 				analyticsSvc.captureEpisodeActivity("seek", captureData);
 			} else {
 				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
@@ -518,6 +519,9 @@ angular.module('com.inthetelling.story')
 			console.error("Tried to parse invalid time string: ", t);
 		};
 
-		console.log("timelineSvc: ", svc);
+		if (config.debugInBrowser) {
+			console.log("timelineSvc: ", svc);
+		}
+
 		return svc;
 	});
