@@ -1,12 +1,15 @@
 var config = {
-	localData: false, // player runs against local data if true, otherwise it runs against api data
-
 	// Fill this in only if you need to load data from something other than the current server
-	//apiDataBaseUrl: 'https://api-dev-sub.inthetelling.com', // base url for the apis when running against api data
+	// apiDataBaseUrl: 'https://e-literate-tv.inthetelling.com',
+	// apiDataBaseUrl: 'https://api-dev-sub.inthetelling.com',
+	// apiDataBaseUrl: 'https://gwsb.inthetelling.com',
+	// apiDataBaseUrl: 'https://ewb-usa.inthetelling.com',
+	// apiDataBaseUrl: 'https://story.inthetelling.com',
+	// apiDataBaseUrl: 'https://purdue.inthetelling.com',
+	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
+	localStorageKey: "storyKey",
+	disableYoutube: false,
+	disableAnalytics: false,
+	debugInBrowser: true
 
-	localDataBaseUrl: '/server-mock/data', // base url for the local data json files when running against local data
-
-	videoJSElementId: 'vjs', // id to use for the main videojs element
-
-	cuePointScanInterval: 10 // interval in ms when the cuePointScheduler service will perform a scan when dirty (see the service for more details).
 };

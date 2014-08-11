@@ -1,56 +1,48 @@
-<!doctype html>
-<html lang="en" data-ng-app="com.inthetelling.player">
+<!DOCTYPE html>
+<html lang=en data-ng-app=com.inthetelling.story>
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset=utf-8>
+	<meta http-equiv=X-UA-Compatible content="IE=edge">
 	<title>TELLING STORY</title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1">
-	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name=description content="">
+	<meta name=viewport content="width=device-width, initial-scale=1, user-scalable=1">
+	<meta name=apple-mobile-web-app-capable content=yes>
 
 	<base href="/">
-	<link rel="stylesheet" href="styles/8edeb9d8.app-combined.css">
+	<link rel="stylesheet" href="styles/4ca618dd.app-combined.css">
 	<!-- DISABLED-BECAUSE-EMPTYbuild:css(.tmp) styles/vendor-combined.css -->
 	<!-- DISABLEDendbuild -->
-	<!-- TODO: use js to build only the fonts needed for this episode -->
-	<link href="//fonts.googleapis.com/css?family=Droid+Sans:400,700|EB+Garamond%7cDroid+Serif|Roboto:400,300,700,400italic|Montserrat:400,700|Cardo" rel="stylesheet" type="text/css">
-</head>
+
+	<!-- TODO: build only the fonts needed for the current episode -->
+	<link href="//fonts.googleapis.com/css?family=Droid+Sans:400,700|EB+Garamond|Droid+Serif|Roboto:400,300,700,400italic|Montserrat:400,700|Cardo|Crimson+Text:400,700" rel=stylesheet type=text/css>
+
 
 <body>
 	<!--[if lt IE 9]>
-			<p class="browsehappy">We're sorry, Internet Explorer versions 8 and earlier are not currently supported.</p>
-		<![endif]-->
+	<p style="position:fixed; top: 0; left: 0; right: 0; bottom:0; background-color:#FFF; z-index:99">We're sorry, Internet Explorer versions 8 and earlier are not currently supported.</p>
+	<![endif]-->
 
-	<!--[if lt IE 9]>
-			<script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.1.0/es5-shim.min.js"></script>
-			<script src="//cdnjs.cloudflare.com/ajax/libs/json3/3.2.5/json3.min.js"></script>
-		<![endif]-->
-
-	
-	<div id="CONTAINER">
-		<div data-ng-view=""></div>
+	<div id=CONTAINER x-ng-view="">
 	</div>
-	<div class="loading">
-	<div class="spinner">
-		<div class="rotating pie"></div>
-		<div class="filler pie"></div>
-		<div class="mask"></div>
-	</div>
-	Loading
-</div>
 
-
-	<script src="config.js"></script>
-	<!-- CDN -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-resource.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-route.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-animate.min.js"></script>
+	<script src=config.js></script>
+	<!-- CDN links-->
+	<script src=//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js></script>
+	<script src=//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js></script>
+	<script src=//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.min.js></script>
+	<script src=//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.min.js></script>
+	<script src=//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-sanitize.min.js></script>
 	<!-- end CDN -->
-	<script src="scripts/fee0467d.vendor-combined.js"></script>
-	<script src="scripts/906f511d.app-combined.js"></script>
-</body>
+	<!-- 
+	<script src="server-mock/jquery.min.js"></script>
+	<script src="server-mock/angular.min.js"></script>
+	<script src="server-mock/angular-route.min.js"></script>
+	<script src="server-mock/angular-animate.min.js"></script>
+	<script src="server-mock/angular-sanitize.min.js"></script>
+ -->
+	<!-- DISABLEDBECAUSEEMPTYbuild:js({.tmp,app}) scripts/vendor-combined.min.js -->
+	<!-- endbuild -->
+	<script src="scripts/b0b96b1e.app-combined.min.js"></script>
 
-</html>
+
