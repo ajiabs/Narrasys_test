@@ -60,14 +60,12 @@ a {
 //===========================*/
 
 .typographyBook {
-	font-family: 'EB Garamond', Garamond, serif;
+	font-family: 'EB Garamond', 'Adobe Garamond', Garamond, serif;
 }
-.item.typographyBook,
 .item.typographyBook h1,
 .item.typographyBook h2,
-.item.typographyBook h3,
-.item.typographyBook a {
-	font-family: 'EB Garamond', Garamond, serif !important;
+.item.typographyBook h3 {
+	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }
 /*============================
  *
@@ -130,6 +128,8 @@ a {
 .typographyGw .item .pullquote:before {
 	font-family: "Cardo", serif;
 }
+/* ------ */
+
 .typographyUsc {
 	font-family: National, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -143,6 +143,8 @@ a {
 .typographyUsc .item .pullquote:before {
 	line-height: 0.7em;
 }
+/* ----- */
+
 .typographyPurdue {
 	font-family: "Myriad Pro", "Arial";
 }
@@ -154,4 +156,16 @@ a {
 }
 .typographyPurdue .headerItem {
 	font-family: "Chaparral Pro", "Times New Roman", "Times", serif;
+}
+/* ----- */
+
+/* (Columbia is same as typographyBook: ) */
+
+.typographyColumbia {
+	font-family: 'EB Garamond', 'Adobe Garamond', Garamond, serif;
+}
+.typographyColumbia h1,
+.typographyColumbia h2,
+.typographyColumbia h3 {
+	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }

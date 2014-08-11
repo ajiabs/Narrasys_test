@@ -224,3 +224,31 @@ a:visited {
 	color: #e3ae24;
 	text-shadow: -1px -1px 0 #fff;
 }
+/* -- */
+
+/* Columbia:  #0F4082 (dark blue), #5892C1 (light blue) */
+
+.colorColumbia .startTime {
+	border-radius: 3px;
+	padding: 3px;
+	margin-left: 3px;
+}
+.colorColumbia a,
+.colorColumbia .fakelink {
+	color: #0F4082
+}
+.colorColumbia h1,
+.colorColumbia h2,
+.colorColumbia h3 {
+	font-weight: normal;
+	color: #5892C1;
+}
+.colorColumbia .colorInvert {
+	color: #FFF;
+	background-color: #0F4082;
+}
+.colorColumbia .colorInvert h1,
+.colorColumbia .colorInvert h2,
+.colorColumbia .colorInvert h3 {
+	color: #5892C1
+}
