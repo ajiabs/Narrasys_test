@@ -19,7 +19,7 @@
 			<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 			<div class="iframeContainer">
 				<div ng-include="'templates/loading.html'"></div>
-				<iframe ng-src="{{item.url}}"></iframe>
+				<iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe>
 			</div>
 		</div>
 		<div class="itemDetail" ng-if="item.showInlineDetail && item._type != 'Link'">

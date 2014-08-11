@@ -550,7 +550,7 @@ angular.module('com.inthetelling.story')
 				"_id": "",
 				"_type": "Link",
 				"link_image_id": "asset1",
-				"url": "http://www.inthetelling.com",
+				"url": "https://luminarydigitalmedia.com",
 				"title": "Link Title",
 				"description": "Link Description <i>lorem</i> ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy",
 				"cosmetic": false,
@@ -572,13 +572,13 @@ angular.module('com.inthetelling.story')
 
 				link.layouts = [testLayouts[i % testLayouts.length]];
 
-				if (Math.random() > 0.5) {
-					link.title = "NO EMBED link";
-					link.templateUrl = "templates/transmedia-link-noembed.html";
-				} else if (Math.random() < 0.7) {
-					link.title = "FRAMEICIDE link";
-					link.templateUrl = "templates/transmedia-link-frameicide.html";
-				}
+				// if (Math.random() > 0.1) {
+				// 	link.title = "NO EMBED link";
+				// 	link.templateUrl = "templates/transmedia-link-noembed.html";
+				// } else if (Math.random() < 0.1) {
+				// 	link.title = "FRAMEICIDE link";
+				// 	link.templateUrl = "templates/transmedia-link-frameicide.html";
+				// }
 				modelSvc.cache("event", link);
 			}
 
