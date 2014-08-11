@@ -1,0 +1,33 @@
+<!-- WIP -->
+<div class="itemTemplate multipleChoice">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+		<div class="authorName" ng-bind-html="item.annotator"></div>
+	</div>
+
+	<div class="multipleChoiceQuestion">
+		<!-- begin plugin.  TODO make this its own directive -->
+		<p>{{plugin.question}}</p>
+
+		<div ng-repeat="distractor in plugin.distractors">
+			<label ng-click="setChoice($index)" ng-class="{
+				correct: plugin.hasBeenAnswered && distractor.correct,
+				incorrect: plugin.hasBeenAnswered && !distractor.correct
+			}">
+				<input type="radio" name="fnord" ng-disabled="plugin.hasBeenAnswered" ng-model="$parent.plugin.selectedDistractor" value="{{$index}}">{{distractor.text}}
+			</label>
+		</div>
+
+		<input type="button" ng-disabled="plugin.hasBeenAnswered" value="Check your answer" ng-click="scoreQuiz()">
+		<!-- end plugin -->
+
+		<p ng-repeat="distractor in plugin.distractors" ng-if="distractor.selected">{{distractor.feedback}}</p>
+	</div>
+
+	<div class="clear"></div>
+
+
+	<a ng-click="itemDebug=!itemDebug">Debug</a>
+	<a ng-if="itemDebug" ng-click="resetQuestion()">(Reset question)</a>
+	<pre ng-if="itemDebug">{{item | pretty}}</pre>
+</div>

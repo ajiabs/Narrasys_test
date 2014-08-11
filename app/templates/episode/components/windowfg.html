@@ -1,0 +1,10 @@
+<div ng-if="(episode.items | isCurrent | itemLayout:'windowFg').length > 0" class="overlay windowFg fgLayer">
+	<div class="overflowY">
+		<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowFg'">
+		</div>
+
+		<a ng-if="appState.timelineState == 'paused'" class="button-continue" ng-click="play()">
+			<span class="">Continue</span>
+		</a>
+	</div>
+</div>

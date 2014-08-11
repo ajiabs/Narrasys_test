@@ -1,0 +1,44 @@
+<!-- WIP -->
+
+<div class="itemTemplate uscBadges" ng-if="true || plugin.eligibleForBadges">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+
+	</div>
+
+	<img style="max-width: 5em; float:left; margin-right: 0.5em" ng-src="{{plugin.credlyImageUrl}}">
+	<b>{{plugin.achievement}}</b>
+
+	<p>Complete the following requirements to earn a <a ng-href="https://credly.com/recipients/{{plugin.credlyBadgeId}}" target="_new">USC Scholar's Badge</a>:</p>
+	<div style="clear:both; margin: 1em 1.2em; font-size:90%">
+		<div ng-repeat="req in plugin.requirements">
+			<img ng-if="req.achieved" style="width: 1em; height: 1em; margin-left: -1.2em" src="/images/checkmark.png">
+			<img ng-if="!req.achieved" style="width: 1em; height: 1em; margin-left: -1.2em" src="/images/checkmark-empty.png">
+			<span style="">{{req.name}}</span>
+		</div>
+	</div>
+
+	<p ng-if="plugin.totalAchieved != plugin.requirements.length">
+		You have completed {{plugin.totalAchieved}} of {{plugin.requirements.length}} parts of this achievement.
+	</p>
+
+	<div ng-if="plugin.totalAchieved == plugin.requirements.length && !plugin.gotBadge">
+		<p>Congratulations! You are eligible for a USC Scholar’s Badge. Enter your email address to claim it:</p>
+
+		<input type="text" ng-model="plugin.userEmail">
+		<input type="button" value="Go" ng-click="badger()">
+
+		<span ng-if="plugin.gettingBadge">
+			<small>Getting your badge...</small>
+		</span>
+		<div ng-if="plugin.error">
+			<small>We're sorry, there was an error retrieving your badge. Please try again later.</small>
+		</div>
+
+	</div>
+	<div ng-if="plugin.gotBadge">
+		Your badge is in the mail.
+		<span ng-if="plugin.alreadyHadBadge">(It looks like you've already acquired this badge; you might want to check your spam folder for an email from credly.com.)</span>
+	</div>
+
+</div>

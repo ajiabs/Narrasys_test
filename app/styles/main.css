@@ -1,278 +1,88 @@
+.errors {
+	left: 20%;
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
+}
+.errors .error,
+.errors .notification {
+	background-color: #ffffff;
+	border: 4px solid #c00;
+	border-left: 12px solid #C00;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+	border-radius: 15px;
+	padding: 1em;
+	margin: 1em;
+	overflow: auto;
+}
+.errors .notification {
+	border-color: #EE0;
+}
 * {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0
 }
-.clear:after {
-	clear:both;
-	content:"";
-	display:block;
-}
 body {
-	background-color:#FFF
-}
-/* Fix for iPad/iframe scrolling problems.  Must use JS (in episode controller) to set the height to window height (which in a frame will be the frame height) */
-
-/* DO NOT apply this globally to all devices.  Assign it only as the top-level wrapper on ipad/iphone */
- .iosScrollFix {
-	position:relative;
-	height: 100%;
-	width: 100%;
-	overflow:auto;
-	-webkit-overflow-scrolling:touch;
-}
-.iosScrollFix .vjs-control-bar, .iosScrollFix .toolbar {
-	-webkit-transform: translate3d(0, 0, 0);
-	-webkit-backface-visibility: hidden;
-	-webkit-perspective: 1000;
-}
-/*============================
- *
- * zIndex
- *
-//===========================*/
- .windowBg {
-	z-index: 1
-}
-.scene {
-	z-index: 2
-}
-.paneBg {
-	z-index: 3
-}
-.content {
-	position: relative;
-	z-index: 4
-}
-.paneFg {
-	z-index: 5
-}
-#footertrigger {
-	z-index:6
-}
-.vjs-wrapper {
-	z-index: 7
-}
-.videoOverlay, .windowFg {
-	z-index: 8
-}
-.toolbar, .banner-logo, .autoscroll {
-	z-index: 9
-}
-.modal-backdrop {
-	z-index: 10
-}
-.modal, .sidePanel {
-	z-index: 11
-}
-/* 
-IE10+ has an idiosyncratic point of view regarding stacking context.
-This fixes it. TODO: understand why it fixes it
-*/
- .threedee {
-	z-index: 10
-}
-/* 
-Allow clicks on overlay items to fall through.	TODO: pointer-events not supported in IE<11 or windows mobile or opera mobile.
-Need workaround for most IE: may need to manually capture click events and pass them through using document.getElementFromPoint? 
-*/
- .windowBg, .windowFg, .paneFg, .videoOverlay {
-	pointer-events: none
-}
-.windowBg .item, .windowFg .item, .paneFg a, .videoOverlay a {
-	pointer-events: auto
-}
-/* Custom Icon Font
---------------------------------------------------------------------------------
-See /images/font/story/map.png for a list of available glyphs
-*/
- @font-face {
-	font-family:'Story';
-	src: url('/images/font/story.eot');
-	src: url('/images/font/story.eot?#iefix') format('embedded-opentype'), url('/images/font/story.woff') format('woff'), url('/images/font/story.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
-/*============================
- *
- * Shared Modal
- *
-//===========================*/
- .modal-backdrop {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background-color: rgba(0, 0, 0, 0.5);
-	animation: fadeIn 1s;
-}
-.modal {
-	animation: fadeIn 0.5s;
-}
-.itemDetailModal {
-	position:absolute;
-	top: 10%;
-	left: 5%;
-	right: 5%;
-}
-.itemDetailModal .modalIframeContainer {
-	width: 100%;
-	min-height: 500px;
-	overflow:hidden;
-}
-.itemDetailModal iframe {
-	position:absolute;
-	top: 30px;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	border: none;
-	overflow:scroll;
-	width:100%;
-	height:100%;
-}
-.isIDevice .modalIframeContainer {
-	/* should work. Doesn't in iOS7.  TODO figure out why */
-	-webkit-overflow-scrolling:touch;
-	overflow: auto;
-}
-.itemDetailModal .modalmenu {
-	text-align:right;
-	width:100%;
-	padding: 0 0.2em;
-	color:#FFF;
-	background-color:#000;
-	height: 30px;
-	border: 1px solid #000;
-	line-height: 30px
-}
-.itemDetailModal .escapelink, .itemDetailModal .escapelink:before {
-	color:#FFF
-}
-.itemDetailModal img {
-	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
-	background-color:#FFF;
-}
-/*============================
- *
- * The ever-popular "misc"
- *
-//===========================*/
- h1 {
-	font-size: 2.2em;
-}
-h2 {
-	font-size: 1.8em;
-}
-h3 {
-	font-size: 1.3em;
-}
-.threedee {
-	/*
-	perspective: 800px;
-	-webkit-perspective: none;
-	transform-origin: 50% 50%;
-	*/
-}
-.hidetext {
-	overflow:hidden;
-	line-height: 100000px;
-	font-size: 0.01em;
-}
-.error {
-	border: 2px solid #CC0000;
-	padding: 1em;
 	background-color: #FFF;
-	position: absolute;
-	top: 1em;
-	left: 1em;
-	right: 1em;
-	bottom: 1em;
-	z-index: 9999;
-	box-shadow: 3px 3px 6px #200;
 }
-/* Blocks iPad1/2 users from using the site inside a frame */
- .forcedEscape {
-	width:100%;
-	height:100%;
+.clear:after {
+	clear: both;
+	content: "";
+	display: block;
+}
+.overlay {
+	pointer-events: none;
+}
+.overlay .item,
+.overlay.windowFg {
+	pointer-events: auto;
+}
+.videoMagnet {
+	/* No idea */
+	margin-bottom: -5px;
+}
+.videoMagnet img {
+	/* aspect ratio preserver */
+	width: 100%;
+}
+.small {
+	font-size: smaller;
+}
+.invisible {
+	visibility: hidden;
+}
+a {
+	text-decoration: none;
+	color: #00C;
 	cursor: pointer;
+	cursor: hand;
 }
-.forcedEscape:before {
-	color: #000 !important;
-	text-shadow: 0px 0px 1px #FFF;
-	line-height: 1.5em;
-	margin-left: 0.5em;
+h1,
+h2,
+h3,
+h4 {
+	margin: 0.5em 0;
+	line-height: 1em;
 }
-/*============================
- *
- * quick-and-dirty phone layout
- *
-//===========================*/
- @media screen and (max-width: 501px) {
-	.toolbar {
-		position:static !important;
-	}
-	.episode {
-		margin-top: 0 !important;
-	}
-	/* Make sure this doesn't affect small desktop windows: */
-	.isIPhone .vjs-control-bar {
-		display:none !important;
-	}
-	.scene-explore .scene {
-		display:block !important
-		/* override flex */
-	}
-	.scene-explore .videoContainer {
-		position:static !important;
-	}
-	.scene-explore .videoContainer {
-		display:none
-	}
-	.scene-explore.currentScene .videoContainer {
-		display:block
-	}
-	.scene-explore .matchVideoHeight {
-		display: none !important
-	}
-	.scene-explore .currentScene .matchVideoHeight {
-		display:block !important
-	}
-	.scene-explore .contentMain, .scene-explore .contentAlt {
-		float:none !important;
-		width: 100% !important;
-	}
-	.scene-centered {
-		width:80% !important;
-	}
-	.searchPanel {
-		width: 80% !important;
-		position:absolute !important;
-	}
-	.banner-logo {
-		position:absolute !important;
-	}
-	/* TODO: yes?
-	.modal, .modal-backdrop {position:absolute !important;}
+/* --------------------------------------------------------------------------------
+ loading indicator
 */
-}
-
-
 
 .loading {
 	text-align: center;
 	font-size: small;
-	min-height:400px;
-	line-height:0;
+	min-height: 400px;
+	line-height: 0;
+	background-color: #FFF;
 }
 .loading .spinner {
 	width: 60px;
 	height: 60px;
-	margin:100px auto -30px auto;
+	margin: 100px auto -30px auto;
 	position: relative;
 	background-color: #FFF;
-	opacity:0.5;
+	opacity: 0.5;
 }
 .loading .pie {
 	width: 50%;
@@ -316,7 +126,8 @@ h3 {
 	0% {
 		opacity: 0;
 	}
-	50%, 100% {
+	50%,
+	100% {
 		opacity: 1;
 	}
 }
@@ -324,7 +135,182 @@ h3 {
 	0% {
 		opacity: 1;
 	}
-	50%, 100% {
+	50%,
+	100% {
 		opacity: 0;
+	}
+}
+/* --------------------------------------------------------------------------------
+ position:fixed causes Safari to act less weird in fullscreen mode, but interferes with
+ scrolling.  Disabling for now, let safari do what safari does.
+*/
+
+/*
+ #CONTAINER {
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	overflow-y:scroll;
+	-webkit-overflow-scrolling: touch;
+}
+#CONTAINER.touchDevice {
+	position:static;
+	-webkit-overflow-scrolling: auto;
+}
+*/
+
+/* Z-indexes 
+--------------------------------------------------------------------------------
+*/
+
+.bgLayer,
+.videoMagnet {
+	z-index: 1;
+	pointer-events: none;
+}
+.content {
+	z-index: 2;
+}
+.videoContainer,
+.overlay {
+	z-index: 3;
+}
+.videoMask {
+	z-index: 4;
+}
+.watchModeCaptions {
+	z-index: 5;
+}
+.windowFg.fgLayer {
+	z-index: 6;
+}
+.modal-backdrop {
+	z-index: 7;
+}
+.modal {
+	z-index: 8;
+}
+.navPanel,
+.toolbar-bottom-controltrigger {
+	z-index: 9;
+}
+.toolbar,
+.toolbar-bottom,
+.banner-logo,
+.autoscroll,
+.helpPanel {
+	z-index: 10;
+}
+.searchPanel {
+	z-index: 11;
+}
+.errors {
+	z-index: 12;
+}
+/* Custom Icon Font
+--------------------------------------------------------------------------------
+See /images/font/story/map.png for a list of available glyphs
+*/
+
+@font-face {
+	font-family: 'Story';
+	src: url('/images/font/storyfont-v2.eot');
+}
+@font-face {
+	font-family: 'Story';
+	src: url(data:application/x-font-ttf;charset=utf-8;base64,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) format('truetype'), url(data:application/font-woff;charset=utf-8;base64,d09GRk9UVE8AABH8AAoAAAAAEbQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAABDRkYgAAAA9AAADUUAAA1FR6MJ1E9TLzIAAA48AAAAYAAAAGAIIvzEY21hcAAADpwAAABcAAAAXAZpppVnYXNwAAAO+AAAAAgAAAAIAAAAEGhlYWQAAA8AAAAANgAAADYaL2BHaGhlYQAADzgAAAAkAAAAJB0t52hobXR4AAAPXAAAAGwAAABsL9AAkW1heHAAAA/IAAAABgAAAAYAG1AAbmFtZQAAD9AAAAIMAAACDHjIo4xwb3N0AAAR3AAAACAAAAAgAAMAAAEABAQAAQEBDXN0b3J5Zm9udC12MgABAgABAD34HAL4GwP4GAQeCgAZU/+Lix4KABlT/4uLDAf8jGocHUMcHNMFHQAAAQwPHQAAARERHQAAAAkdAAANPBIAHAEBDRkbHSAlKi80OT5DSE1SV1xhZmtwdXp/hImOk3N0b3J5Zm9udC12MnN0b3J5Zm9udC12MnUwdTF1MjB1RTAwMXVFMDAydUUwMDN1RTAwNHVFMDA1dUUwMDZ1RTAwN3VFMDA4dUUwMDl1RTYwMHVFNjAxdUU2MDJ1RTYwM3VFNjA1dUU2MDZ1RTYwN3VFNjA4dUU2MDl1RTYwQXVFNjBCdUU2MEN1RTYwRHVFNjBFAAACAYkAGQAbAgABAAQABwAKAA0AGwA5AMsBIgGsAnIChQOGA6gD9wRHBKYFcAXNBoAHRAebCLkJKQlsCoMLFQvx/JQO/JQO/JQO+5QO6/g0FffU+1T71PtUBQ7L+DQV9zSLi/wU+zSLBfd0+BQV9zSLi/wU+zSLBQ73XfhNFZiYlYaLeQiL/DIFi3mBh36XCPsN9w07i4v3VNuL9w33DQX3GfufFYeGgoyFkoSRipSQkJCQoqKioqKioaGPj4+PlImRhZGFjYOHh4iHdHV0c3NzdHSGhwjsjhWFhIKKhpCHj3SidKJ0onSih4+Hj4yUkpGRkZONkIePhqJ1onOidKJ0j4eQh4mChYUIDven9wEVhIuFjoeQgZSLmpWUs7SLzWO0gZSLmpWUlJWai5SBx1CLK09Qh4aFiIWLCEH34BWYmJWGi3kIi/wyBYt5gYd+lwj7DfcNO4uL91Tbi/cN9w0FDvf8yxWFi4SOh4+BlYualZTMzYv1Ss2BlIualZWUlJqLlYK0YqFVi1GLUXVVYmKGh4WIhYsINrgVhIuFjoeQgZSLmpWUs7SLzWO0gZSLmpWUlJWai5SBx1CLK09Qh4aFiIWLCEH34BWYmJWGi3kIi/wyBYt5gYd+lwj7DfcNO4uL91Tbi/cN9w0FDqv4UZ4VhYuFjYaQgpSLm5SUt7ejxYvJi8lzxV+3gpSLm5SUlJSbi5SCwFaoRYtAi0BuRVZWCIaGhYmFiwg2uBWFi4SOh4+BlYualZTMzYv1Ss2BlIualZWUlJqLlYK0YqFVi1GLUXVVYmKGh4WIhYsINrgVhIuFjoeQgZSLmpWUs7SLzWO0gZSLmpWUlJWai5SBx1CLK09Qh4aFiIWLCEH34BWYmJWGi3kIi/wyBYt5gYd+lwj7DfcNO4uL91Tbi/cN9w0FDveU+HQV+zT7lPc0+5T3NPeUBQ73Q/d39x4VZouEr4uyi8CbpqSLoouZe41uCM+LBYXRZrVIi06LW1SLMosytlPUi8WLs7aS0ghGiwWIcIB3dIsI94OLFWaLhK+LsovAm6aki6GLmnuNbgjPiwWF0Wa1SItOi1pUizKLMrdT1IvFi7O2ktIIRYsFiXCAd3SLCPwW+z8V+KOLBbeLr6+LtwiL9/cFi7Zor2CMCPyniwVgimloimAIi/v6BYxgrmi3iwiV+DQVj5GTj5GPoJrykfcGi/cHi+2FoHyRh5KHj4WgcI9jjDGKMYdkdm+HhYSIhYd2eymG+weKCPsGjCSQdpuFj4OOh5F2p4iyiuWM5Y6zoKYIDvez9/QV9077BPtO+wOL93MF+22LFfdO+wT7TvsDi/dzBQ73y7QV9zT3NAWXmIuff5gI+zT3NAV+l3eLfn9/fot3l34I9SL7i4sFeYt9fYt5i3mZfZ2LCPeLiyEiBYWEiIOLg4uDjoORhJh/n4uYlwgO9134KxX7NPs0BX9+i3eXfgj3NPs0BZh/n4uYl5eYi59/mAgh9PeViwWdi5mZi52LnX2ZeYsI+5WL9fQFkZKOk4uTi5OIk4WSfpd3i35/CA6wxRX15gWWlZePlYtxqHyxi7WL6dfW6Ivpi9ZAiy2LLkA/LYthi2WabqWLgYd/gYAIMCEFe3lyinuafJuMpJ2bCPef8RXKi729i8mLylm9TItNi1lZi0yLTb1ZyYsIDpu3FfcN8gWYl5iQlopurXq2i7uL9eHh9Yv1i+E1iyGLITU1IYtbi2CcaaiMgIZ+f34IJPsNBXp3bop5nHqdjKifnAj3xPcIFdKLxMSL0ovSUsREi0SLUlKLRItExFLSiwiyzhWQhpSNkZGRkYyUhpCHkHSidKJ0onShh4+Hj4OJhYWEhYmDj4ePh6F1o3Ojc6J0j4cIK44VkYWUiY+QkI+hoqOioqOioY+Pj4+JlIWRhZGCjYeHh4Z0dXRzc3R1dIaHh4eMgpKFCA73VPhUFffUi4tL+9SLi8sFi/tUFffUi4tL+9SLi8sFi/tUFffUi4tL+9SLi8sF+1T4ExX3EYuLS/sRi4vLBYv7UxX3EYuLS/sRi4vLBYv7VBX3EYuLS/sRi4vLBQ73BPcFFcnKsmRNTclN+zeLi/c3yUwF90/3zBX3N4uL+zdNyU1OZbHIyU3JBYv7tBWysslMycqL+zf7N4vJyU3JBfuN97QV9zeLTU3ITWVlTchNTYv3N4uLBRwb0xwZxBVLS2Ozy8tLy/c8i4v7PEvLBffS91IV+zyLi/c8y0vLy7NjS0vLSwWL+2oVY2NLy0tLi/c89zyLS0vLSwX7kvdqFfs8i8vLS8uzs8tLy8uL+zwFDvfT948Vi7BtqWaLZottbYtmi2epbbCLi4uMi4uLaoxzpouui62lpK6LroulcotpCPc+9xEVTXmms/wmi6ZjTZ2L+4TJm3Bf9xmL9xBXZL/3TItwt8l7i/eEBfud+2kV+xeLi/dN9x2LBYOJg4iEiAgli4v7Pe6LBZGHkomRiQiMiwWokhVci2Wxi7mLurGxuou5i7Fli1yLXWVlXYsI9zSEFfsUiwWSjZGNkY8I74uL9z0kiwWEjoSOg40I9xqLi/tNBQ73/9gVy0uzs0vLy8v7PIuL+zzLywX70vdSFfc8i4v3PEtLS8tjY8tLS0sFi/tqFbNjy8vLS4v3PPs8i8tLS0sF95L3ahX3PItLy8vLY7NLS0vLi/s8BQ74VOsV+5SLBXmLfJF/mH6XhZqLnQiL95QFi52RmpiXl5iakZ2LCPeUiwWdi5qFl36Yf5F8i3kIi/uUBYt5hXx+f39+fIV5iwiL97QVi5SIk4WRhZGDjoKLCPtUiwWCi4OIhYWFhYiDi4KLgo6EkYWRhJOIlIsI9wiL+x/7HwWFhYiDi4OLgo6EkYWRhZKIk4uUi5KOkZEI9yD3IIv7CQWLgo6DkoWRhZKIlIuUi5OOkZGRkY6Ti5QIi/dUBWv8FBWLgoiDhYWFhYOIgosI+9SLBXmLfJF/mH6XhZqLnQiL99QFi5SOk5GRkZGTjpSLlIuSiJKFkYWOg4uCCIv7tAWLgo6DkYWRhZOIlIsI97SLBZSLkoiShZGEjoSLgggO+JSGFYt+gIB+iwj8ZIsFfouAlouYCIurBYuYlpaYiwj4ZIsFmIuWgIt+CItrBSv4eRX71IsFVotgYItWCIv7VAWLVrZgwIsI99SLBcCLtraLwAiL91QFi8BgtlaLCPt0+9QVi/eU9zT7FPs0+xQFDvg0+EQV+9SLBVaLYGCLVgiL+1QFi1a2YMCLCPfUiwXAi7a2i8AIi/dUBYvAYLZWiwj7dPvUFYv3lPc0+xT7NPsUBQ73dPfzFYt+gIB+iwj7RIsFfouAlouYCIurBYuYlpaYiwj3RIsFmIuWgIt+CItrBYv7IxWLfoCAfosI+0SLBX6LgJaLmAiLqwWLmJaWmIsI90SLBZiLloCLfgiLawWL+yMVi36AgH6LCPtEiwV+i4CWi5gIi6sFi5iWlpiLCPdEiwWYi5aAi34Ii2sF97T3shWLfoCAfosI+0SLBX6LgJaLmAiLqwWLmJaWmIsI90SLBZiLloCLfgiLawWL+yMVi36AgH6LCPtEiwV+i4CWi5gIi6sFi5iWlpiLCPdEiwWYi5aAi34Ii2sFi/sjFYt+gIB+iwj7RIsFfouAlouYCIurBYuYlpaYiwj3RIsFmIuWgIt+CItrBQ73CfcRFTjeBYKUi5qUlQje3AWUlZuLlIGUgot8goEIYWPriwWYi5aAi36LfYCBfosIK4u1YQWQho2Fi4WLhImFhoeCgXuLgpUI96qLFd7eBZSUi5qClQg43AWClXuLgoGCgot8lIEItWMriwV+i4CAi36LfZaBmIsI64thYQWGhomFi4WLhI2FkIeUgZuLlJUIDvcf9xEV3t4FlJSLmoKVCDjcBYGVfIuCgYGCi3yVgQi1YyuLBX6LgICLfot9loGYiwjri2FhBYaGiYWLhYuEjYWQh5SBmouVlQj8p/jEFd7eBZSVi5qClAg43QWBlHyLgoKBgYt8lYIItWIriwV+i4CAi36LfpaAmIsI64thYQWGhomFi4WLhY2FkIaUgpqLlZQI+ZP7/RU3OQWBgot7lIII3TgFlIGai5WUlJWMmoGUCGK164kFmIuWlouYi5iBln2LCCyNtbQFkJCOkYuRi5GJkYaQgpV7i4KCCA74lBT4lBWLDAoAAAAAAwIAAZAABQAAAUwBZgAAAEcBTAFmAAAA9QAZAIQAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADmDgHg/+D/4AHgACAAAAABAAAAAAAAAAAAAAAgAAAAAAACAAAAAwAAABQAAwABAAAAFAAEAEgAAAAOAAgAAgAGAAEAIOAJ5gPmDv/9//8AAAAAACDgAeYA5gX//f//AAH/4yADGg0aDAADAAEAAAAAAAAAAAAAAAAAAAABAAH//wAPAAEAAAACAAAS8RAEXw889QALAgAAAAAAz+ICTAAAAADP4gJM/gj/3x1DHNMAAAAIAAIAAAAAAAAAAQAAAeD/4AAAAq/+COS9HUMAAQAAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAAABAAAAAgAAYAIAAEACAAAAAgAAAAIAAAACIAAAAgAAYAKvAAACAABGAgAAXAIAACkCAAAhAgAADAIAAAACAAAyAgAAEAIAAC0CAAAAAgAAAAIAAAACAAAAAgAAIgIA/ggAAFAAABsAAAAAABIA3gABAAAAAAABABgAAAABAAAAAAACAA4A1AABAAAAAAADAD4AcgABAAAAAAAEABgA4gABAAAAAAAFABYAXAABAAAAAAAGAAwAsAABAAAAAAAJABYARgABAAAAAAAKADQA+gABAAAAAAALAC4AGAADAAEECQABABgAAAADAAEECQACAA4A1AADAAEECQADAD4AcgADAAEECQAEABgA4gADAAEECQAFABYAXAADAAEECQAGABgAvAADAAEECQAJABYARgADAAEECQAKADQA+gADAAEECQALAC4AGABzAHQAbwByAHkAZgBvAG4AdAAtAHYAMgBoAHQAdABwADoALwAvAGkAbgB0AGgAZQB0AGUAbABsAGkAbgBnAC4AYwBvAG0ARABhAG4AaQBlAGwAIABCAGUAYwBrAFYAZQByAHMAaQBvAG4AIAAyAC4AMABEAGEAbgBpAGUAbAAgAEIAZQBjAGsAOgAgAHMAdABvAHIAeQBmAG8AbgB0AC0AdgAyADoAIAAyADAAMQA0c3Rvcnlmb250LXYyAHMAdABvAHIAeQBmAG8AbgB0AC0AdgAyAFIAZQBnAHUAbABhAHIAcwB0AG8AcgB5AGYAbwBuAHQALQB2ADIARgBvAG4AdAAgAGcAZQBuAGUAcgBhAHQAZQBkACAAYgB5ACAASQBjAG8ATQBvAG8AbgAuAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=) format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+.modal-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+/* 
+Video
+--------------------------------------------------------------------------------
+*/
+
+/* 
+TODO: native video seems to perform better when not position:absolute, but iframe doesn't size properly without it.
+Check to see if there's a consistent way to do without absolute positioning, or if it's safe to just do it to native and not youtube.
+ */
+
+.video iframe,
+.video video,
+.video .videoMask {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+.videoMask {
+	cursor: pointer;
+	background-size: contain;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+}
+.videoMask.play {
+	background-image: url('/images/play-overlay.png');
+	animation: fadeIn 2s;
+}
+.videoMask.firstplay {
+	background-image: url('/images/logo-overlay.png');
+}
+.videoMask.buffering {
+	background-image: url('/images/buffering-overlay.png');
+	animation: delayedFadeIn 3s;
+}
+.videoMask.rewind {
+	background-image: url('/images/rewind-overlay.png');
+	animation: delayedFadeIn 3s;
+}
+/* 
+Misc useful keyframes 
+--------------------------------------------------------------------------------
+*/
+
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes delayedFadeOut {
+	0% {
+		opacity: 1;
+	}
+	33% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes delayedFadeIn {
+	0% {
+		opacity: 0;
+	}
+	33% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
 	}
 }

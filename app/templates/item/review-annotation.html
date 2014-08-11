@@ -1,0 +1,11 @@
+<div>
+	<div ng-if="item.isTranscript" class="itemTemplate">
+		<div class="itemHead">
+			<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+			<div class="authorName" ng-bind-html="item.annotator"></div>
+		</div>
+		<div class="text" ng-bind-html="item.annotation"></div>
+	</div>
+	<div ng-if="!item.isTranscript" ng-include="item.templateUrl"></div>
+	<div class="clear"></div>
+</div>

@@ -2,4 +2,3 @@
 .tmp
 .sass-cache
 /app/scripts/templates.js
-*.bbprojectd

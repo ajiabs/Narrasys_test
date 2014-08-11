@@ -41,6 +41,8 @@ Grunt is a task runner system that is used for everything from running the proje
 	* Before checking changes into the repo or building, make sure this task is passing.
 * `grunt build`: Build the project to the /dist folder
 	* This task will fail the build if jshint or unit tests fail
+* `grunt dev`: Run project in local browser, and also runs a continuous PhantomJS test in the background with growler notification.
+	* This will probably fail on your machine unless you fiddle around installing growler and etcetera, which I didn't keep track of how I did. Sorry about that.
 
 ## Bower
 

@@ -1,0 +1,11 @@
+<div class="itemTemplate transcriptWithThumbnail">
+	<div class="icon" style="float:right; margin-right: 0.5em;">
+		<img ng-src="{{item.asset.url}}">
+	</div>
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+	</div>
+	<div class="authorName" ng-bind-html="item.annotator"></div>
+	<div class="text" ng-bind-html="item.annotation"></div>
+	<div class="clear"></div>
+</div>

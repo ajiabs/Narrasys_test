@@ -1,27 +1,17 @@
 'use strict';
 
-// Controller for ittItem
-angular.module('com.inthetelling.player')
-	.controller('ItemController', function ($scope, $timeout, videojs, modalMgr) {
+angular.module('com.inthetelling.story')
+	.controller('ItemController', function ($scope, timelineSvc) {
 
-		// convenience method to set video time
-		$scope.gotoItem = function () {
-			videojs.player.currentTime($scope.item.startTime);
+		$scope.seek = function (t) {
+			timelineSvc.seek(t, "clickedOnItem", $scope.item._id);
 		};
 
-
-				$scope.pause = function() {
-					videojs.player.pause();
-				};
-
-				$scope.showModal = function(t) {
-					videojs.player.pause();
-					modalMgr.createItemDetailOverlay($scope);
-					if (t) {
-						$timeout(function() {
-							$('.modal').css("top",t); // HACK
-						});
-					}
-				};
+		// $scope.editItem = function($event) {
+		// 	if (appState.producer) {
+		// 		appState.editing = angular.copy($scope.item); // to change this to  live preview, don't use angular.copy.  But need to stash a copy of the original in case the user wants to undo...
+		// 	}
+		// 	$event.preventDefault();
+		// };
 
 	});

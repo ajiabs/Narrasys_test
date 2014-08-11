@@ -5,54 +5,34 @@
 
 */
 
-/* Prevent highlighting when only current items are visible */
-.showCurrent .content .item.currentItem,
-.showCurrent.content .item.currentItem {
-	background-image: none !important;
-	background-color: none !important;
+.reviewMode .item.isCurrent {
+	background-color: rgba(0, 0, 0, 0.2);
 }
-
-
-
-
-.highlightSolid .content .item.currentItem,
-.highlightSolid.item.currentItem
-{
-	background-color: rgba(0,0,0,0.2);
+.colorInvert .reviewMode .item.isCurrent {
+	background-color: rgba(255, 255, 255, 0.3);
 }
-.highlightBorder .content .item.currentItem,
-.highlightBorder.item.currentItem
-{
-	/* border: 3px solid rgba(0,0,0,0.3); */
-	outline: 3px solid rgba(0,0,0,0.3); 
-}
-.highlightSide .content .item.currentItem,
-.highlightSide.item.currentItem
-{
-	border-left: 10px solid rgba(0,0,0,0.3);
-	/* box-shadow: -10px 0 0 rgba(0,0,0,0.3); */
-}
+/* - - - - - - */
 
-.highlightBloom .content .item.currentItem,
-.highlightBloom.item.currentItem
-{
-	background-color: rgba(255,255,200, 0.4);
-	box-shadow: 0 0 8px rgba(255,255,200,0.9);
+.content.allowHighlights .highlightSolid.item.isCurrent {
+	background-color: rgba(0, 0, 0, 0.2);
 }
-
-.highlightHighlighter .content .item.currentItem,
-.highlightHighlighter.item.currentItem
-{
-	background: url('/images/highlighter.png');
+.content.allowHighlights .highlightBorder.item.isCurrent {
+	border: 3px solid rgba(0, 0, 0, 0.3);
+}
+.content.allowHighlights .highlightSide.item.isCurrent {
+	border-left: 10px solid rgba(0, 0, 0, 0.3);
+	/*box-shadow: -10px 0 0 rgba(0, 0, 0, 0.3);*/
+}
+.content.allowHighlights .highlightBloom.item.isCurrent {
+	background-color: rgba(255, 255, 200, 0.4);
+	box-shadow: 0 0 8px rgba(255, 255, 200, 0.9);
+}
+.content.allowHighlights .highlightHighlighter.item.isCurrent {
+	background-image: url('/images/highlighter.png');
 	background-size: 100% 100%;
 }
-
-
-.highlightTilt .content .item.currentItem,
-.highlightTilt.item.currentItem
-{
+.content.allowHighlights .highlightTilt.item.isCurrent {
 	transform: rotateY(-20deg) scale(1.18);
 	transform-origin: 70% 50% 0;
 	transform-style: preserve-3d;
-	transition: all 1s;
 }

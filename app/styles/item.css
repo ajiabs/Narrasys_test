@@ -1,161 +1,21 @@
-/*  Valid styles for items:
-	tl, bl, tr, br, t, l, b, r (for positioning anything other than regular content) 
-*/
-
-/*============================
- *
- * Overlays
- *
-//===========================*/
- .fillPane .item {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-}
-.pane.windowFg .item {
-	position: fixed;
-	top: 45px;
-	/* TOOLBAR HEIGHT */
-	bottom: 0;
-	left: 0;
-	right: 0;
-	overflow:auto;
-}
-.pane.windowFg .item.isStop {
-	background-color:#FFF;
-	padding-top: 1em;
-	bottom: 65px;
-	/* FOOTER HEIGHT. */
-}
-.nopadding {
-	padding: 0 !important;
-}
-.fillPane .item, .pane.windowFg .item {
-	display:none;
-}
-.fillPane .item.currentItem, .pane.windowFg .item.currentItem {
-	display:block;
-}
-/* Nope, can't explain the -3px. TODO */
- .fillPane .bl {
-	width:auto;
-	max-width:100%;
-	height:auto;
-	max-height:100%;
-	top: auto;
-	right: auto;
-	bottom: -3px;
-	left: 0;
-}
-.fillPane .tl {
-	width:auto;
-	max-width:100%;
-	height:auto;
-	max-height:100%;
-	top: 0;
-	right: auto;
-	bottom: auto;
-	left: 0;
-}
-.fillPane .tr {
-	width:auto;
-	max-width:100%;
-	height:auto;
-	max-height:100%;
-	top: 0;
-	right: 0;
-	bottom: auto;
-	left: auto;
-}
-.fillPane .br {
-	width:auto;
-	max-width:100%;
-	height:auto;
-	max-height:100%;
-	top: auto;
-	right: 0;
-	bottom: -3px;
-	left: auto;
-}
-/* TODO (also need to set image h/w to 100% for these)
-.fillPane .b     {top: auto; right: 0   ; bottom: 0   ; left: 0   ;}
-.fillPane .l     {top: 0   ; right: auto; bottom: 0   ; left: 0   ;}
-.fillPane .t     {top: 0   ; right: 0   ; bottom: auto; left: 0   ;}
-.fillPane .r     {top: 0   ; right: 0   ; bottom: 0   ; left: auto;}
-*/
- .fillPane .fill {
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-}
-.fillPane .fill img {
-	width:100%;
-	height: 100%;
-}
-/* scale images to pane size instead of clipping. */
-
-/* TODO (probably): overflow:hidden for non-image things in fill */
- .item img {
-	max-width: 100%;
-	max-height: 100%;
-}
-.backgroundImage {
-	background-repeat: no-repeat;
-	width: 100%;
-	height: 100%;
-}
-.fill .backgroundImage {
-	background-size: 100% 100%
-}
-.center .backgroundImage {
-	background-position: 50% 50%
-}
-.tl .backgroundImage {
-	background-position: 0 0
-}
-.tr .backgroundImage {
-	background-position:100% 0
-}
-.bl .backgroundImage {
-	background-position:0 100%
-}
-.br .backgroundImage {
-	background-position:100% 100%
-}
-.cover .backgroundImage {
-	background-size:cover
-}
-.contain .backgroundImage {
-	background-size:contain
-}
-/*============================
- *
- * TMP
- *
-//===========================*/
-
-/*
-.content .item {border: 1px solid #666}
-.futureItem {color: #CCC}
-.pastItem {color: #EEE}
-.currentItem {color: #000}
-*/
-
 /*============================
  *
  * Defaults
  *
 //===========================*/
- .content .item {
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
+
+.content .item:first-child {
+	padding-top: 1.5em;
+}
+.content .item {
+	padding: 0.3em 0.5em 0.3em 60px;
 }
 .item {
-	padding-left:60px;
+	transition: all ease-in-out 1s;
 }
 .item .itemHead {
-	display:inline;
+	display: inline;
+	line-height: 1em
 }
 .item .icon {
 	max-width: 55px;
@@ -164,81 +24,322 @@
 .item .icon img {
 	width: 100%;
 }
-.item .text {
-}
-.item .startTime {
+.item .text {} .item .startTime {
 	cursor: pointer;
 	cursor: hand;
 	margin-left: -55px;
 	width: 50px;
-	text-align:right;
-	float:left;
+	text-align: right;
+	float: left;
+}
+/* iframes */
+
+.iframeContainer {
+	width: 100%;
+	position: relative;
+	background-color: #FFF;
+	overflow: hidden;
 }
 .item .iframeContainer {
-	-webkit-overflow-scrolling: touch;
-	overflow: auto;
-	width: 100%;
 	height: 320px;
 }
-.windowFg .item .iframeContainer {
-	height:80%;
+.windowFg .item .iframeContainer,
+.modal .iframeContainer {
+	min-height: 500px;
 }
-.item iframe {
-	background-color:#FFF;
-	width: 100%;
-	height:98%;
+.touchDevice .iframeContainer {
+	/* TODO make sure this class is being applied */
+	-webkit-overflow-scrolling: touch;
+	overflow: auto;
+}
+.iframeContainer .loading,
+.iframeContainer iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.iframeContainer iframe {
+	background-color: transparent;
 	border: none;
+	width: 100%;
+	height: 98%;
+}
+/* 
+	.singleitem panes are intended for cleaner transitions when there's only one content item in the pane at a time. 
+	TODO: this works fine when moving from single item to single item, but transitioning between
+	single and multiple is not so hot.  try again later
+ */
+
+/* .singleitem .item {
+	position:absolute;
+	width:100%;
+}
+.singleitem .item:after {
+	clear:both;
+	content:"";
+	display:block;
+}
+*/
+
+/*============================ ============================ ============================ 
+image-fill items */
+
+/* 
+	item.contain, item.cover, and item.fill should use background-image.  Others should use the img, and resize to fit the img. 
+	
+*/
+
+.item.fill .itemTemplate,
+.item.contain .itemTemplate,
+.item.cover .itemTemplate {
+	overflow: hidden;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
+}
+.fill .item.contain .fillImg,
+.fill .item.cover .fillImg,
+.fill .item.fill .fillImg,
+.windowFg .item.contain .fillImg,
+.windowFg .item.cover .fillImg,
+.windowFg .item.fill .fillImg {
+	display: none;
+}
+.item.fill .itemTemplate {
+	background-size: 100% 100%;
+}
+.item.contain .itemTemplate {
+	background-size: contain;
+}
+.item.cover .itemTemplate {
+	background-size: cover;
+}
+.fill .item .fillImg {
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 100%;
+	position: absolute;
+}
+.fill .item.center .fillImg {
+	position: static;
+}
+.fill .item.tr img,
+.fill .item.br .fillImg {
+	right: 0;
+}
+.fill .item.bl img,
+.fill .item.br .fillImg {
+	bottom: 0;
+}
+.fill .item.center .itemTemplate {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+/* this background-image is only used for contain or cover styles; never in content: */
+
+.content .itemTemplate.imageFill {
+	background-image: none !important;
+	padding-left: 5px;
+}
+/*============================ ============================ ============================ 
+Inline images (TODO show these only when image is larger than available space) */
+
+.content .item:first-child .imagePlain {
+	/* override first-child padding for plain images: */
+	margin-top: -1.5em;
+}
+.content .item .imagePlain {
+	/* and override content pane's margin always: */
+	margin-right: -0.5em;
+	margin-left: -0.5em;
+}
+.content img {
+	max-width: 100%;
 }
 .item .touchable {
-	cursor:pointer;
-	position:relative;
-	display:inline-block;
-	max-width:100%;
-	max-height:100%;
+	cursor: pointer;
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+	max-height: 100%;
+}
+.item .touchable img {
+	max-width: 100%;
+	max-height: 100%;
 }
 .item .touchableIndicator {
-	opacity:0;
+	opacity: 0;
 	transition: opacity 1.5s;
-	position:absolute;
-	bottom:7px;
-	right:5px;
+	position: absolute;
+	bottom: 7px;
+	right: 5px;
 	font-family: Story;
 	font-size: 1em;
 }
 .touchableIndicator:before {
-	content:"\e602";
+	content: "\e602";
 	text-shadow: 1px 1px 1px #FFF;
 }
 .item .touchable:hover .touchableIndicator {
-	opacity:0.8;
+	opacity: 0.8;
+}
+/*============================ ============================ ============================
+  inline item detail */
+
+.itemDetail img,
+.itemDetail iframe {
+	width: 100%;
+	background-color: #FFF;
+}
+.itemDetail.ng-enter,
+.itemDetail.ng-leave {
+	transition: 1s all;
+	overflow: hidden;
+}
+.itemDetail.ng-enter {
+	height: 1px;
+	opacity: 0;
+}
+.itemDetail.ng-enter-active {
+	height: 300px;
+	opacity: 1;
+}
+.itemDetail.ng-leave {
+	height: 300px;
+	opacity: 1;
+}
+.itemDetail.ng-leave-active {
+	height: 1px;
+	opacity: 0;
+}
+/*============================ ============================ ============================
+  Modal overlay */
+
+.modal {
+	position: fixed;
+	left: 5%;
+	right: 5%;
+	top: 10%;
+	bottom: 5%;
+	overflow: auto;
+	transition: 1s all;
+}
+.modal.ng-enter,
+.modal.ng-leave.ng-leave-active {
+	left: 49%;
+	right: 49%;
+	top: 33%;
+	overflow: hidden;
+}
+.modal.ng-enter-active,
+.modal.ng-leave {
+	left: 5%;
+	right: 5%;
+	top: 10%;
+	display: block !important;
+	overflow: hidden;
+}
+.modalmenu {
+	border-radius: 1em 1em 0 0;
+	text-align: right;
+	padding: 0 1em;
+	color: #FFF;
+	background-color: #000;
+	height: 30px;
+	line-height: 30px
+}
+.modalmenu a,
+.modalmenu a:before {
+	color: #FFF !important;
+}
+.modalimage {
+	text-align: center;
+}
+.modalimage img {
+	max-width: 100%;
+	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
+	background-color: #FFF;
 }
 /*============================ ============================ ============================
  *
  * timestamps
- *
-//=========================== */
- .timestampNone .item, .item.timestampNone {
+ 
+	normal:                     item: pad 60px, timestamp -60px
+	normal, timestampInline:    item: pad 0,    timestamp 0 inline;
+	normal, timestampNone:      item: pad 0,    timestamp display none
+  normal, headerItem:         item: -60px,    timestamp display none;
+  normal, sidebar:            item: pad 0,    timestamp display none;
+
+	narrow:                     item: pad 0,    timestamp 0 inline;
+	narrow, timestampInline:    item: pad 0,    timestamp 0 inline;
+	narrow, timestampNone:      item: pad 0,    timestamp display none;
+  normal, headerItem:         item: pad 0,    timestamp display none;
+  narrow, sidebar:            item: pad 0,    timestamp display none;
+
+=========================== */
+
+.content .item {
+	padding-left: 60px;
+}
+.content .item .startTime {
+	margin-left: -60px;
+}
+.content .item .headerItem {
+	margin-left: -50px;
+}
+.content .item.timestampInline,
+.content .item.timestampNone,
+.content .item.sidebarL,
+.content .item.sidebarR {
 	padding-left: 0.5em;
 }
-.timestampNone .item .displayTime, .item.timestampNone .displayTime {
-	display:none
+.content.isNarrow .item,
+.content.isNarrow .item.timestampInline,
+.content.isNarrow .item.timestampNone,
+.content.isNarrow .item.sidebarL,
+.content.isNarrow .item.sidebarR {
+	padding-left: 0.5em;
+}
+.content.isNarrow .item.timestampNone .startTime,
+.content.isNarrow .item.headerItem .startTime,
+.content.isNarrow .item.sidebarL .startTime,
+.content.isNarrow .item.sidebarR .startTime {
+	display: none;
 }
 /* =========================== */
- .timestampInline .item, .item.timestampInline {
-	padding-left: 0.5em;
+
+.item.timestampNone .startTime {
+	display: none
 }
-.timestampInline .item .startTime, .item.timestampInline .startTime {
-	display:inline;
+/* =========================== */
+
+.content.isNarrow .item .headerItem {
 	margin-left: 0;
-	width:auto;
-	text-align:left;
-	padding-right: 0.4em;
+}
+.content.isNarrow .item .startTime,
+.item.timestampInline .startTime {
+	display: inline;
+	margin-left: 0;
+	width: auto;
+	text-align: left;
+	margin-right: 0.4em;
+}
+.content.isNarrow .item .pullquote:before {
+	display: inline;
+	margin-left: 0;
+	width: auto;
+	text-align: left;
+	height: 1px;
+	padding-right: 5px;
 }
 /* =========================== */
- .timestampSidebar .item, .item.timestampSidebar {
-	padding-left: 40px;
-}
-.timestampSidebar .item .startTime, .item.timestampSidebar .startTime {
+
+.item.timestampSidebar .startTime {
 	transform: rotate(90deg) translateX(100%);
 	transform-origin: 100% 0;
 	width: auto;
@@ -246,7 +347,8 @@
 	margin-left: -45px;
 }
 /* =========================== */
- .timestampSmall .item .displayTime, .item.timestampSmall .displayTime {
+
+.item.timestampSmall .displayTime {
 	font-size: 0.86em;
 }
 /* =========================== */
@@ -256,45 +358,54 @@
  * Template variants
  *
 //=========================== */
- .item .pullquote:before {
-	color: rgba(0, 0, 0, 0.05);
-	content:"“";
+
+.item .pullquote:before {
+	color: rgba(0, 0, 0, 0.1);
+	content: "“";
 	float: left;
-	font-size: 3em;
+	font-size: 2.5em;
 	line-height: 0.8em;
-	/*margin-left: -0.4em;*/
-	width: 0.4em;
+	text-align: right;
+	width: 50px;
+	text-shadow: none !important;
+	height: 1px;
 }
 .item .pullquote {
 	font-size: 2em;
+	padding-top: 0.3em;
+	line-height: 1.1em;
 }
 .item .pullquoteSpeaker {
 	text-align: right;
 	font-style: italic;
-	font-size: 0.8em;
-	margin-right: 15px;
+	font-size: 0.8em
 }
 .item .pullquoteSpeaker:before {
-	content:" — ";
+	content: " — ";
 }
 /* - - - - - - - - - - - - - -  */
- .item .captioncontainer {
-	position:relative;
-	overflow:hidden;
+
+.item .captionContainer {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
 }
 .item .caption {
-	position:absolute;
+	position: absolute;
 	/* TODO why is this not zero: */
-	bottom:4px;
-	left:0;
-	right:0;
+	bottom: 4px;
+	left: 0;
+	right: 0;
 	padding: 0.5em;
-	opacity:1;
+	opacity: 1;
 	transition: 0.7s all;
 	background-color: #333;
 	background-color: rgba(0, 0, 0, 0.7);
-	border-top:1px solid #666;
-	color:#FFF;
+	border-top: 1px solid #666;
+	color: #FFF;
+}
+.item .captionContainer img {
+	width: 100%;
 }
 .item.colorInvert .caption {
 	background-color: #eee;
@@ -306,22 +417,38 @@
 	opacity: 0;
 }
 .item .slidingcaption {
-	transform:translateY(0);
+	transform: translateY(0);
 }
 .item:hover .slidingcaption {
-	transform:translateY(100%);
+	transform: translateY(100%);
 }
 /* - - - - - - - - - - - - - -  */
- .item .thumbnail img {
-	width:100%;
+
+.item .thumbnail img {
+	width: 100%;
 }
 .item .thumbnail {
-	max-width:72px;
-	transition: all 0.8s;
-	float:left;
-	margin-right:1em;
+	max-width: 72px;
+	transition: all 0.7s;
+	float: left;
+	margin-right: 1em;
 }
 .item .thumbnail.fullsize {
-	max-width:100%;
-	float:none;
+	max-width: 100%;
+	float: none;
+}
+/* - - - - - - - - - - - - - -  */
+
+.multipleChoiceQuestion label {
+	display: block;
+	padding: 0.3em;
+}
+.multipleChoiceQuestion .correct {
+	border-left: 5px solid #0C0;
+}
+.multipleChoiceQuestion .incorrect {
+	border-left: 5px solid #C00;
+}
+.multipleChoiceQuestion input[type="button"]:disabled {
+	display: none;
 }

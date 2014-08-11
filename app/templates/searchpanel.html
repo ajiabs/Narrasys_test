@@ -1,0 +1,41 @@
+<div ng-class="episode.styleCss">
+	<div class="searchfilters">
+		<label ng-show="sortBy!=='startTime'">
+			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="startTime">Sorted by type
+		</label>
+		<label ng-show="sortBy==='startTime'">
+			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="type">Sorted by time
+		</label>
+	</div>
+	<div class="scrollContainer">
+		<div class="searchResults">
+			<div ng-if="sortBy == 'startTime'">
+				<div ng-repeat="scene in episode.scenes">
+					<h3 ng-if="sceneItems.length > 0 && scene.title" ng-bind-html="scene.title"></h3>
+					<div  class="item" ng-repeat="item in sceneItems=
+						(scene.items 
+						| orderBy:'startTime' 
+						| filter:{'searchableText': searchText, 'cosmetic': false}
+						)" ng-include="'templates/item/searchresults.html'">
+					</div>
+				</div>
+			</div>
+
+			<!-- sorted by type -->
+			<div ng-if="sortBy == 'type'">
+				<div ng-repeat="(typeID,showType) in searchTypes" ng-if="showType">
+					<h3 ng-if="typeItems.length > 0">{{searchTypeNames[typeID]}}</h3>
+					<div class="item" ng-repeat="item in typeItems=
+						(episode.items 
+						| orderBy:'startTime' 
+						| filter:{'type': typeID, 'searchableText': searchText, 'cosmetic': false}
+						)" ng-include="'templates/item/searchresults.html'">
+					</div>
+				</div>
+			</div>
+			<div ng-if="(episode.items | filter:{'searchableText': searchText, 'cosmetic': false}).length == 0">
+				(Nothing matched your search.)
+			</div>
+		</div>
+	</div>
+</div>

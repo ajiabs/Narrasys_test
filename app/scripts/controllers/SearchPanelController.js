@@ -1,52 +1,38 @@
 'use strict';
 
 // Controller for the search panel results
-angular.module('com.inthetelling.player')
-	.controller('SearchPanelController', function ($scope, videojs, $sce) {
+angular.module('com.inthetelling.story')
+	.controller('SearchPanelController', function ($scope, timelineSvc) {
 
-		// map for the search panel checkboxes to bind to, which can also be passed to the type filter
+		// map which we could in future also bind to user selection of types.
+		// TODO should use categories instead of item "type".  But to do that we need to define categories
 		$scope.searchTypes = {
-			annotation: true,
-			link: true,
-			slide: true,
-			indepth: true,
-			project: true,
-			discussion: true
+			Annotation: true,
+			Link: true,
+			Upload: true
 		};
-
-		// for the sort control to bind to
-		$scope.sortBy = "startTime";
 
 		// map type literals to pretty/printable version
-		$scope.prettyTypeMap = {
-			annotation: "Transcript",
-			link: "Link",
-			slide: "Slide",
-			indepth: "In Depth",
-			project: "Project",
-			discussion: "Discussion"
+		$scope.searchTypeNames = {
+			Annotation: "Transcript",
+			Link: "Link",
+			Upload: "Image"
 		};
 
-		// create a dictionary of all items keyed by their type, for easy view iteration
-		// TODO: JSPerfTest this to see how expensive it is and move it to main controller if necessary
-		$scope.allItemsByType = {};
-		var i, j;
-		for (i = 0; i < $scope.scenes.length; i++) {
-			for (j = 0; j < $scope.scenes[i].items.length; j++) {
-				if (!$scope.allItemsByType[$scope.scenes[i].items[j].type]) {
-					$scope.allItemsByType[$scope.scenes[i].items[j].type] = [];
-				}
-				// Using $sce here and in the highlight filter, not sure if we need both TODO check this
-				$scope.scenes[i].items[j].searchableText = ($scope.scenes[i].items[j].annotation || $scope.scenes[i].items[j].description);
-				$scope.scenes[i].items[j].trustedDisplayText = $sce.trustAsHtml($scope.scenes[i].items[j].searchableText);
-				$scope.allItemsByType[$scope.scenes[i].items[j].type].push($scope.scenes[i].items[j]);
-			}
-		}
+		// default sort order
+		$scope.sortBy = "startTime";
 
-		// convenience method for the template to change playhead position
-		$scope.gotoItem = function (item) {
-			// set the video playhead to the item's start time
-			videojs.player.currentTime(item.startTime);
+		$scope.seek = function (t, eventID) {
+			$scope.enableAutoscroll(); // in playerController
+			timelineSvc.seek(t, "clickedOnEventInSearch", eventID);
+		};
+
+		// generate searchable text for the episode (on demand).
+		// TODO handle more than one episode.....
+		$scope.indexEvents = function () {
+			angular.forEach($scope.episode.items, function (item) {
+				item.searchableText = (item.annotation || item.description) + " " + (item.title || item.annotator);
+			});
 		};
 
 	});

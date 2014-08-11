@@ -1,0 +1,11 @@
+<span ng-if="appState.viewMode == 'watch'">
+	<div class="watchMode">
+		<div itt-magnet id="watchModeVideoMagnet" class="videoMagnet">
+			<img src="images/aspectratiopreserver-16x9.gif">
+		</div>
+	</div>
+	<span class="watchModeCaptions" ng-class="{padForBottomToolbar: appState.videoControlsActive}">
+		<div class="item watchModeCaption" ng-if="item.isCurrent && !appState.hideCaptions" ng-repeat="item in episode.items | transcript" ng-class="item.state" itt-item="item" forceTemplate="caption">
+		</div>
+	</span>
+</span>

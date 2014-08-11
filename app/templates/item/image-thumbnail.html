@@ -1,0 +1,18 @@
+<div class="itemTemplate">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<span ng-if="item.required">(Required viewing)</span>
+		</div>
+	</div>
+	<div class="thumbnail touchable" x-ng-class="{fullsize: item.showInlineDetail || item.isActive}" x-ng-click="toggleDetailView()">
+		<img ng-src="{{item.asset.url}}">
+		<div class="touchableIndicator"></div>
+	</div>
+	<div class="text">
+		<div class="title" ng-bind-html="item.title"></div>
+		<div class="text" ng-bind-html="item.description"></div>
+	</div>
+	<div class="clear"></div>
+</div>

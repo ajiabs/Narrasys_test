@@ -1,9 +1,0 @@
-<div 
-	bindonce="item" 
-	class="item nopadding" 
-	x-ng-class='{"currentItem": item.isActive}' 
-	x-bo-class='item.boCSS'
->
-	<div x-ng-if="item.asBackgroundImage"  class="backgroundImage" x-ng-style="{'background-image': 'url(' + item.source + ')'}"></div>
-	<img x-ng-if="!item.asBackgroundImage" bo-src="item.source">
-</div>

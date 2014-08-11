@@ -1,343 +1,414 @@
-/*============================
- *
- * Scene structure
- *
-//===========================*/
- .scene, .pane {
-	position:relative;
+/* ------------------------------------------- */
+
+.pane {
+	position: relative;
 }
-.videoOverlay {
-	position:absolute
-}
-.paneBg, .paneFg, .windowBg, .pane.windowFg {
-	position:absolute;
+.fill,
+.fill .item,
+.fgLayer .item.contain,
+.fgLayer .item.cover,
+.fgLayer .item.fill {
+	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
 }
-.fillPane {
-	overflow:hidden
+.fgLayer,
+.bgLayer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	/*	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;*/
 }
-.paneBg {
-	opacity: 0.3
+.windowFg.fgLayer,
+.windowBg.bgLayer {
+	position: fixed;
 }
-/*============================
- *
- * Item positioning
- *
-//===========================*/
- .content {
-	padding-top: 15px;
-	padding-bottom: 15px;
+.windowFg.fgLayer {
+	background-color: #FFF;
 }
-.content > div {
-	perspective: 600px;
+.windowFg.fgLayer .overflowY {
+	margin: 70px 2em 200px 2em;
 }
-.smallPane .content {
-	overflow:hidden
+.videoContainer {
+	overflow: hidden;
+	/*overflow-y: hidden;*/
 }
-/* TODO: add breakpoints to adjust sidebar widths based on screen size */
- .content.hasLeftSidebar .item {
-	margin-left: 30%;
+.content {
+	position: relative;
 }
-.content.hasRightSidebar .item {
-	margin-right: 30%;
+.content:after {
+	clear: both;
+	content: "";
+	display: block;
 }
-.content.hasLeftSidebar.hasRightSidebar .item {
-	margin-left: 25%;
-	margin-right: 25%;
+.bgLayer {
+	opacity: 0.25;
 }
-.content .item.burstL {
-	margin-left: 0;
-	clear:left
+.sceneTitle {
+	margin-left: 0.5em;
 }
-.content .item.burstR {
-	margin-right: 0;
-	clear:right
-}
-.content .item.burst {
-	margin-left: 0;
-	margin-right: 0;
-	clear:both
-}
-.content .item.sidebarL {
-	width: 35%;
-	margin-right: 0;
-	margin-left: 0;
-	float:left;
-	clear:left
-}
-.content .item.sidebarR {
-	width: 35%;
-	margin-right: 0;
-	margin-left: 0;
-	float:right;
-	clear:right
-}
-.content.hasLeftSidebar.hasRightSidebar .item.sidebarL {
-	width: 25%;
-	margin-left: 0;
-	margin-right: 0
-}
-.content.hasLeftSidebar.hasRightSidebar .item.sidebarR {
-	width: 25%;
-	margin-left: 0;
-	margin-right: 0
-}
-.content.hasLeftSidebar.hasRightSidebar .item.burstL {
-	margin-left: 0;
-}
-.content.hasLeftSidebar.hasRightSidebar .item.burstR {
-	margin-right: 0;
-}
-.content.hasLeftSidebar.hasRightSidebar .item.burst {
-	margin-left: 0;
-	margin-right: 0;
-}
-/* Overrides for no-sidebar items. Don't need to worry about hasLeftSidebar or hasRightSidebar rules here, as noSidebars will prevent those appearing */
- .content.noSidebars .item.sidebarL {
-	float:none;
-	width:auto;
-}
-.content.noSidebars .item.sidebarR {
-	float:none;
-	width:auto;
-}
-/*============================
- *
- * Scene layouts
- *
-//===========================*/
+/* ------------------------------------------- */
 
-/* default */
- .sceneContainer {
-	display:none
-}
-.sceneContainer.currentScene {
-	display:block;
-}
-.scene .sceneTitle {
-	padding: 0.5em;
-	display:none
-}
-/* TODO: add a styles option to scenes for showing the title */
+/* Sidebars and margins.
 
-/*
-.videoContainer {border: 2px solid #F00}
-.contentMain {border: 2px solid #0F0;}
-.contentAlt  {border: 2px solid #00F;}
+.sidebar items float to one margin or the other when sidebars are allowed
+.burst items burst into those margins when sidebars are allowed
+.sidebar items always appear smaller than usual
+
+TODO give panes with both sidebars narrower margins than those with only one or the other
+TODO there's probably a less counterintuitive way of handling sidebar widths than the weird math on these negative margins
 */
 
-/*============================*/
+.allowSidebars.hasLeftSidebar {
+	padding-left: 30%;
+}
+.allowSidebars.hasRightSidebar {
+	padding-right: 30%;
+}
+.hasLeftSidebar .item.sidebarL,
+.hasRightSidebar .item.sidebarR {
+	font-size: smaller;
+	padding-left: 5px;
+}
+.hasLeftSidebar .sidebarL .displayTime,
+.hasRightSidebar .sidebarR .displayTime {
+	display: none
+}
+/* has only one sidebar: */
 
-/* fullscreen video mode */
- .scene-video {
-	position:relative
+.allowSidebars.hasLeftSidebar .burstL,
+.allowSidebars.hasLeftSidebar .burst {
+	clear: left;
+	margin-left: -43%;
 }
-.scene-video .scene {
+.allowSidebars.hasRightSidebar .burstR,
+.allowSidebars.hasRightSidebar .burst {
+	clear: right;
+	margin-right: -43%;
+}
+/* - */
+
+.allowSidebars.hasLeftSidebar .sidebarL {
+	float: left;
+	clear: left;
+	margin-left: -43%;
+	width: 43%;
+}
+.allowSidebars.hasRightSidebar .sidebarR {
+	float: right;
+	clear: right;
+	margin-right: -43%;
+	width: 43%;
+}
+/* - has both sidebars: */
+
+.allowSidebars.hasLeftSidebar.hasRightSidebar .burstL,
+.allowSidebars.hasLeftSidebar.hasRightSidebar .burst {
+	clear: left;
+	margin-left: -75%;
+}
+.allowSidebars.hasRightSidebar.hasLeftSidebar .burstR,
+.allowSidebars.hasRightSidebar.hasLeftSidebar .burst {
+	clear: right;
+	margin-right: -75%;
+}
+/* - */
+
+.allowSidebars.hasLeftSidebar.hasRightSidebar .sidebarL {
+	float: left;
+	clear: left;
+	margin-left: -75%;
+	width: 70%;
+}
+.allowSidebars.hasRightSidebar.hasLeftsidebar .sidebarR {
+	float: right;
+	clear: right;
+	margin-right: -75%;
+	width: 70%;
+}
+/* ------------------------------------------- */
+
+.watchMode {
+	position: fixed;
 	background-color: #000;
+	top: 45px;
+	/* VIEWPORT HEIGHT */
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
 }
-.scene-video .videoContainer {
+#watchModeVideoMagnet {
 	margin: auto;
 }
-.scene-video .contentMain {
-	color: #DDDDDD;
-	font-size: 130%;
+.watchModeCaptions {
+	position: fixed;
+	bottom: 20px;
+	font-size: 120%;
 	margin: 0 10%;
-	position: absolute;
-	bottom: 90px;
 	width: 80%;
+	transition: all 1.5s;
 }
-.scene-video .contentMain .item {
+.watchModeCaptions.padForBottomToolbar {
+	bottom: 80px;
+}
+/* TODO this is a bit of a hack.  Need to restrict ng-animate to .animate class items */
+
+.watchModeCaption.ng-enter,
+.watchModeCaption.ng-leave {
+	transition: none;
+	display: none !important;
+}
+.watchModeCaption {
+	color: #DDDDDD;
 	background-color: rgba(0, 0, 0, 0.7);
 	border-radius: 8px;
-	padding:1em;
+	padding: 0.5em 1em;
+	text-align: left;
+}
+.watchModeCaption .startTime {
+	display: none;
 }
 @media screen and (min-width: 401px) and (max-width: 700px) {
-	.scene-video .contentMain {
+	.watchModeCaption {
 		font-size: 90% !important;
-		bottom: 60px !important;
 	}
 }
 @media screen and (max-width: 400px) {
-	.scene-video .contentMain {
+	.watchModeCaption {
 		font-size: 70% !important;
-		bottom: 60px !important;
 	}
 }
-/*============================*/
+/* ------------------------------------------- */
 
-/* Explore mode */
- .scene-explore {
-	clear:both;
-	border-top: 1px solid rgba(0, 0, 0, 0.2);
-	background-color:#FFF !important;
-}
-/* Causes columns to fill vertical space.  Make sure to override in small screen */
- .scene-explore .scene {
-	display:flex;
-	position:static;
-}
-.sceneContainer.scene-explore {
-	display:block
-}
-.scene-explore .videoContainer {
-	position:fixed;
+.reviewMode .videoMagnet {
+	position: fixed;
 	top: 45px;
-	/* TOOLBAR HEIGHT */
 	right: 0;
 	width: 30%;
 }
-.scene-explore.nonNavigable {
-	border-top: none
+.reviewMode .videoPadding {
+	/* double the width of videoMagnet, because it's in a column half the size */
+	width: 60%;
 }
-.scene-explore .scene .sceneTitle {
-	display:block
+.reviewMode .scene {
+	clear: both;
+	display: flex;
+	/* causes columns to stretch to full scene height */
 }
-.scene-explore .contentMain {
+.reviewMode .scene.navigable {
+	border-top: 1px solid rgba(0, 0, 0, 0.2)
+}
+.reviewMode .mainPane {
 	width: 50%;
-	float:left;
+	float: left;
 }
-.scene-explore .contentAlt {
+.reviewMode .altPane {
 	width: 50%;
-	float:right;
+	float: right;
 }
-.scene-explore .item .pullquote {
-	font-size:1.4em
+.reviewMode .item .pullquote {
+	font-size: 1.4em
 }
-.scene-explore h1 {
+.reviewMode h1 {
 	font-size: 1.5em;
 }
-.scene-explore h2 {
+.reviewMode h2 {
 	font-size: 1.3em;
 }
-.scene-explore h3 {
+.reviewMode h3 {
 	font-size: 1em;
 }
 @media screen and (min-width: 1000px) {
 	/* three-col layout on wide screens */
-	.scene-explore .contentMain {
-		width:40%;
+	.reviewMode .videoPadding {
+		display: none;
 	}
-	.scene-explore .contentAlt {
+	.reviewMode .mainPane {
+		width: 40%;
+	}
+	.reviewMode .altPane {
 		width: 60%;
 		padding-right: 240px;
 	}
-	.scene-explore .videoContainer {
+	.reviewMode .videoMagnet {
 		width: 240px;
 	}
 }
-/*============================*/
- .scene-1col {
-	margin: 0 20%;
-}
-.scene-1col .videoContainer {
-	position:fixed;
-	left: 20%;
-	right: 20%;
-}
-@media screen and (min-width: 1000px) {
-	.scene-1col {
-		margin: 0 25%;
+@media screen and (max-width: 480px) {
+	/* Smallscreen layout */
+	.reviewMode .scene {
+		display: auto;
 	}
-	.scene-1col .videoContainer {
-		position:fixed;
-		left: 25%;
-		right: 25%;
+	.reviewMode .pane {
+		width: 100%;
+	}
+	/*	
+	.reviewMode .mainPane {
+		width:100%;
+	}*/
+	.reviewMode .videoMagnet {
+		width: 130px;
 	}
 }
-@media screen and (max-height: 700px) {
-	.scene-1col {
-		margin: 0 10%;
+/* -------------------------------------------  
+   Landing screen 
+*/
+
+.landingscreen {
+	margin: 10% 15%;
+}
+.landingscreen .videoMagnet {
+	width: 50%;
+	float: left;
+}
+.landingscreen .introtext {
+	width: 45%;
+	float: right;
+}
+.landingscreen p {
+	margin: 2em 0 1em 0
+}
+@media screen and (max-width: 501px) {
+	.landingscreen .videoMagnet {
+		width: 100%;
+		float: none;
 	}
-	.scene-1col .videoContainer {
-		position:absolute;
-		left: 10%;
-		right: 10%;
+	.landingscreen .introtext {
+		width: 100%;
+		float: none;
+	}
+	.landingscreen h1 {
+		font-size: 24px;
+	}
+	.landingscreen p {
+		margin: 1em 0;
 	}
 }
-/*============================*/
- .scene-centered {
-	width: 60%;
-	margin: auto;
+.endingscreen {
+	margin: 5% 10%;
 }
-/*============================*/
- .scene-2col {
+/* ------------------------------------------- */
+
+.scene.cornerV {
+	display: flex;
 }
-.scene-2col .videoContainer {
-	position:fixed;
+.scene.cornerV .col {
+	width: 50%;
+}
+.scene.cornerV.videoLeft {
+	flex-direction: row;
+}
+.scene.cornerV.videoRight {
+	flex-direction: row-reverse;
+}
+/* ------------------------------------------- */
+
+.scene.cornerH {} .scene.cornerH .row {
+	display: flex;
+}
+.scene.cornerH .videoMagnet,
+.scene.cornerH .mainPane {
+	width: 50%;
+}
+.scene.cornerH .mainPane {
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	overflow-x: hidden;
+}
+.scene.cornerH .altPane {
+	width: 100%;
+}
+.scene.cornerH.videoLeft .row {
+	flex-direction: row;
+}
+.scene.cornerH.videoRight .row {
+	flex-direction: row-reverse;
+}
+/* ------------------------------------------- */
+
+.scene.twocol {
+	display: flex;
+}
+.scene.twocol .videoPositioner {
+	width: 100%;
+	position: absolute;
+}
+.scene.twocol .videoMagnet {
 	width: 50%;
 	margin: 0 25%;
 }
-.scene-2col.videoLeft .videoContainer {
+.scene.twocol .col {
+	width: 50%;
+}
+.scene.twocol.videoLeft .videoMagnet {
 	margin: 0 50% 0 0;
 }
-.scene-2col.videoRight .videoContainer {
+.scene.twocol.videoLeft .col2 .matchVideoHeight {
+	display: none;
+}
+.scene.twocol.videoRight .videoMagnet {
 	margin: 0 0 0 50%;
 }
-.scene-2col.videoLeft .padRightColumn {
-	display:none;
+.scene.twocol.videoRight .col1 .matchVideoHeight {
+	display: none;
 }
-.scene-2col.videoRight .padLeftColumn {
-	display:none;
+/* ------------------------------------------- 
+		1col scene
+*/
+
+.scene.onecol .col,
+.scene.onecol .videoMagnet {
+	margin: 0 20%;
+	width: 60%;
 }
-.scene-2colL .contentMain {
-	width: 50%;
-	float:left;
+.scene.onecol.videoRight .videoMagnet {
+	margin-right: 0;
+	width: 80%;
 }
-.scene-2colL .contentAlt {
-	width: 50%;
-	float:right;
+.scene.onecol.videoLeft .videoMagnet {
+	margin-left: 0;
+	width: 80%;
 }
-.scene-2colR .contentMain {
-	width: 50%;
-	float:right;
-}
-.scene-2colR .contentAlt {
-	width: 50%;
-	float:left;
-}
-@media screen and (max-height: 700px) {
-	.scene-2col .videoContainer {
-		position:absolute;
+@media screen and (min-width: 1000px) and (min-height: 700px) {
+	.scene.onecol .col,
+	.scene.onecol .videoMagnet {
+		margin: 0 25%;
+	}
+	.scene.onecol .videoPositioner {
+		width: 100%;
+	}
+	.scene.onecol.videoRight .videoMagnet {
+		margin-top: 5%;
+		margin-right: 0;
+		right: 0;
+		left: 55%;
+	}
+	.scene.onecol.videoRight .col {
+		margin: 0 50% 0 5%;
+	}
+	.scene.onecol.videoLeft .videoMagnet {
+		margin-top: 5%;
+		margin-left: 0;
+		left: 0;
+		right: 55%;
+	}
+	.scene.onecol.videoLeft .col {
+		margin: 0 5% 0 50%;
 	}
 }
-/*============================*/
- .scene-cornerH {
+/* ------------------------------------------- */
+
+.scene.centered .col {
+	margin: 10% 20% 0 20%;
 }
-.scene-cornerH .videoContainer {
-	width: 50%;
-	float:left;
-}
-.scene-cornerH .contentMain {
-	width: 50%;
-	float:right;
-	overflow-y: auto;
-}
-.scene-cornerH.videoRight .videoContainer {
-	float:right;
-}
-.scene-cornerH.videoRight .contentMain {
-	float:left;
-}
-.scene-cornerH .contentAlt {
-	clear:both
-}
-/*============================*/
- .scene-cornerV {
-}
-.scene-cornerV .scene-cornerV-column {
-	width: 50%;
-	float:left;
-}
-.scene-cornerV .contentAlt {
-	width: 50%;
-	float:right;
-}
-.scene-cornerV.videoRight .scene-cornerV-column {
-	float:right;
-}
-.scene-cornerV.videoRight .contentAlt {
-	float:left
+@media screen and (min-width: 900px) {
+	.scene.centered .col {
+		margin: 7% 25% 0 25%;
+	}
 }

@@ -1,0 +1,18 @@
+<div class="itemTemplate">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<span ng-if="item.required">(Required viewing)</span>
+		</div>
+	</div>
+	<div class="text">
+		<div class="title" ng-bind-html="item.title"></div>
+		<div ng-bind-html="item.description"></div>
+	</div>
+	<div class="iframeContainer">
+		<div ng-include="'templates/loading.html'"></div>
+		<iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe>
+	</div>
+	<div class="clear"></div>
+</div>

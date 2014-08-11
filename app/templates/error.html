@@ -1,12 +1,26 @@
-<div x-ng-if="error" class="error">
-	<h2>Error</h2>
-	<p>Sorry, but something went wrong and we weren't able to continue:</p>
-
-	<p ng-if"error.message">{{error.message}}</p>
-	<p ng-if="!error.message">(Unknown error)</p>
-<!--
-	<span style="color:#FFF">
-		<pre>{{error.details}}</pre>
-	</span>
--->
-</div>
+<span ng-if="errorSvc.errors.length || errorSvc.notifications.length" class="errors">
+	<div class="error" ng-repeat="error in errorSvc.errors">
+		<a style="float: right;" ng-click="dismiss(error)">[x]</a>
+		<h3>Error: {{error.cause || error.exception.data || '(unknown reason)'}}</h3>
+		<p ng-if="error.exception.config.url">
+			<i>(While trying to load {{error.exception.config.url}})</i>
+		</p>
+		<p ng-if="error.exception.status == 401">
+			Please
+			<span ng-if="user.login_url">
+				<a ng-if="user.login_via_top_window_only" ng-click="resetAuth();" ng-href="{{user.login_url}}" target="_top">click here</a>
+				<a ng-if="!user.login_via_top_window_only" ng-click="resetAuth();" ng-href="{{user.login_url}}">click here</a>
+				to log back in.
+			</span>
+			<span ng-if="!user.login_url">
+				<a ng-click="resetAuth(); reload();">reset your session</a> and start over.
+			</span>
+		</p>
+		<a style="font-size: small" ng-click="showDetails= !showDetails">(show details)</a>
+		<pre ng-if="showDetails" style="font-size: small" ng-bind="error | pretty"></pre>
+	</div>
+	<div class="notification" ng-repeat="notification in errorSvc.notifications">
+		<a style="float: right;" ng-click="dismiss(notification)">[x]</a>
+		<p>{{notification.text}}</p>
+	</div>
+</span>

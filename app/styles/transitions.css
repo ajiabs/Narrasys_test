@@ -1,13 +1,3 @@
-/* TODO: alternatives for IE 8 and below */
-/* TODO: check if these can safely be used on scenes too */
-/* TODO: try to use angular ng-class animations for non showCurrent lists instead of looking directly at pastItem and futureItem; animating from futureItem to currentItem is buggy currently) */
-
-/* 
-Will need separate rules for item-animate (which will use ng-enter and ng-leave) versus other lists 
-(item-no-animate, where non-current items are not removed; there we use pastItem and futureItem classes instead.)
-*/
-
-/* removed futureItem and pastItem for performance reasons (they were inaccurate anyway, user seek broke them) */
 /* 
 	transitionFade
 	transitionSlideL
@@ -15,188 +5,148 @@ Will need separate rules for item-animate (which will use ng-enter and ng-leave)
 	transitionPop
 */
 
-
 /* Misc useful keyframes */
+
 @keyframes fadeOut {
-	0% { opacity: 1; }
-	100% { opacity: 0; }
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 @keyframes fadeIn {
-	0% { opacity: 0; }
-	100% { opacity: 1; }
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 @keyframes delayedFadeOut {
-	0% { opacity: 1; }
-	33% { opacity: 1; }
-	100% { opacity: 0; }
+	0% {
+		opacity: 1;
+	}
+	33% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 @keyframes delayedFadeIn {
-	0% { opacity: 0; }
-	33% { opacity: 0; }
-	100% { opacity: 1; }
+	0% {
+		opacity: 0;
+	}
+	33% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
-
-
-
-
-
-
-body { /* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
+body {
+	/* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
 	-webkit-backface-visibility: hidden;
 }
 /* ------------------------------------------------------------------------------------------------------------------ */
 
+/* 
+Defaults.  Always include a bit of height animation, to make it look less jumpy when items are removed from
+the middle of a list
 
-.item-animate.ng-enter,
-.item-animate.ng-leave,
-.item-animate.ng-move {
-	transition: 1s ease-in-out all;
+Transition time should be set for the specific object type
+ */
+
+/* disabling the height animation for now; looks bad in Safari. TODO fix in safari */
+
+.animate.ng-enter,
+.animate.ng-leave,
+.animate.ng-move {
+	transition: all ease-in-out 0.5s;
 }
-
-.item-animate.ng-leave {
-	max-height: 500px;
+.content .animate.ng-enter {
+	/*max-height: 1px;*/
 }
-.item-animate.ng-leave-active {
-	max-height: 0;
-	display: none; /* NOTE this is a fix for ng-animate failing to clean up animated items when scene is out of scope; make sure display:block is set on all legitimate animations */
+.content .animate.ng-enter.ng-enter-active {
+	/*max-height: 300px;*/
 }
-
-.item-no-animate .item {
-	transition: all 1s;
+.content .animate.ng-leave {
+	/*max-height:100px;*/
+	display: block !important;
 }
+.content .animate.ng-leave.ng-leave-active {
+	/*max-height:0;*/
+}
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionFade */
 
-/* ------------------------------------------------------------------------------------------------------------------ */
-/* transitionFade */
-
-.transitionFade .item-animate.ng-enter,
-.transitionFade.item-animate.ng-enter
-{
+.animate.ng-enter.transitionFade {
 	opacity: 0;
 }
-
-.transitionFade .item-animate.ng-enter-active,
-.transitionFade.item-animate.ng-enter-active,
-.transitionFade .item-animate.ng-leave,
-.transitionFade.item-animate.ng-leave
-{
+.animate.ng-enter-active.transitionFade {
 	opacity: 1;
 }
-
-.transitionFade .item-animate.ng-leave-active,
-.transitionFade.item-animate.ng-leave-active
-{
+.animate.ng-leave.transitionFade {
+	opacity: 1;
+}
+.animate.ng-leave.ng-leave-active.transitionFade {
 	opacity: 0;
-	display:block;
 }
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionSlideL */
 
-.transitionFade .item-no-animate .item,
-.transitionFade.item-no-animate .item 
-{
-	opacity: 0.5;
-}
-
-.transitionFade .item-no-animate .item.currentItem,
-.transitionFade.item-no-animate .item.currentItem 
-{
-	opacity: 1
-}
-
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/* transitionSlideL */
-
-
-.transitionSlideL .item-animate.ng-enter,
-.transitionSlideL.item-animate.ng-enter
-{
+.animate.ng-enter.transitionSlideL {
 	transform: translateX(50px);
 	opacity: 0;
 }
-
-.transitionSlideL .item-animate.ng-enter-active,
-.transitionSlideL.item-animate.ng-enter-active,
-.transitionSlideL .item-animate.ng-leave,
-.transitionSlideL.item-animate.ng-leave
-{
+.animate.ng-enter-active.transitionSlideL {
 	transform: translateX(0);
 	opacity: 1;
 }
-
-.transitionSlideL .item-animate.ng-leave-active,
-.transitionSlideL.item-animate.ng-leave-active
-{
-	transform: translateX(-50px);
-	opacity: 0;
-	display:block;
-}
-
-/* (do nothing in non-showCurrent lists) */
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/* transitionSlideR */
-
-.transitionSlideR .item-animate.ng-enter,
-.transitionSlideR.item-animate.ng-enter
-{
-	transform: translateX(-50px);
-	opacity: 0;
-}
-
-.transitionSlideR .item-animate.ng-enter-active,
-.transitionSlideR.item-animate.ng-enter-active,
-.transitionSlideR .item-animate.ng-leave,
-.transitionSlideR.item-animate.ng-leave
-{
+.animate.ng-leave.transitionSlideL {
 	transform: translateX(0);
 	opacity: 1;
 }
+.animate.ng-leave.ng-leave-active.transitionSlideL {
+	transform: translateX(-50px);
+	opacity: 0;
+}
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionSlideR */
 
-.transitionSlideR .item-animate.ng-leave-active,
-.transitionSlideR.item-animate.ng-leave-active
-{
+.animate.ng-enter.transitionSlideR {
+	transform: translateX(-50px);
+	opacity: 0;
+}
+.animate.ng-enter-active.transitionSlideR {
+	transform: translateX(0);
+	opacity: 1;
+}
+.animate.ng-leave.transitionSlideR {
+	transform: translateX(0);
+	opacity: 1;
+}
+.animate.ng-leave.ng-leave-active.transitionSlideR {
 	transform: translateX(50px);
 	opacity: 0;
-	display:block;
 }
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionPop */
 
-/* (do nothing in non-showCurrent lists) */
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/* transitionPop */
-
-.transitionPop .item-animate.ng-enter,
-.transitionPop.item-animate.ng-enter
-{
+.animate.ng-enter.transitionPop {
 	transform: scale(0.9);
 	opacity: 0;
 }
-
-.transitionPop .item-animate.ng-enter-active,
-.transitionPop.item-animate.ng-enter-active,
-.transitionPop .item-animate.ng-leave,
-.transitionPop.item-animate.ng-leave
-{
+.animate.ng-enter-active.transitionPop {
 	transform: scale(1);
 	opacity: 1;
 }
-
-.transitionPop .item-animate.ng-leave-active,
-.transitionPop.item-animate.ng-leave-active
-{
+.animate.ng-leave.transitionPop {
+	transform: scale(1);
+	opacity: 1;
+}
+.animate.ng-leave.ng-leave-active.transitionPop {
 	transform: scale(0.9);
 	opacity: 0;
-	display:block;
 }
-
-.transitionPop .item-no-animate .item,
-.transitionPop.item-no-animate .item 
-{
-	transform: scale(0.95);
-}
-
-.transitionPop .item-no-animate .item.currentItem,
-.transitionPop.item-no-animate .item.currentItem 
-{
-	transform: scale(1);
-}
-

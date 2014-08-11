@@ -1,68 +1,70 @@
 'use strict';
 
-// ittMagnetized elements respond to ittMagnet events and reposition themselves to match
-// the $rootScope.activeMagnet node.
+// TODO: remove dependence on jQuery? (lots of it here)
 
-// (Was using a directive for magnets, but that was overcomplicated. A global makes sense here
-// because we really do only ever want one magnet active at a time.)
-
-angular.module('com.inthetelling.player')
-	.directive('ittMagnetized', function ($rootScope, $timeout) {
+angular.module('com.inthetelling.story')
+	.directive('ittMagnetized', function ($rootScope, $timeout, appState) {
 		return {
 			restrict: 'A',
 			replace: true,
 			scope: true,
 			link: function (scope, element) {
+				var aspectRatio = 16 / 9;
 
-				// resize/reposition ourselves to the passed magnet's element.
-				scope.reposition = function (animate) {
-// console.log("ittMagnetized", element);
-						if (!scope.magnet) {
-							// no magnet set, so don't do anything
-							return;
-						}
-// console.log("ittMagnetized triggered, attracting ",element," to ",scope.magnet, " animation is ",animate);
-
-
-// Safari gets the wrong height sometimes (TODO figure out why? it's not a magnet-is-not-visible problem, because the width is correct...)
-// hardcoding aspect ratio for now, therefore.  SEE ALSO ittScene
-					var aspectRatio = 16/9;
-					
-					// if videoContainer is position:fixed, video should be too
-					element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute" );
-
-// TODO temporarily disabling this animation to see if it lets us run acceptably on older devices (iPad2 was freaking out)
-					if (false && animate && $(element).is(':visible')) {
-						$(element).stop(true).animate({
-							top: scope.magnet.offset().top - $(window).scrollTop(),
-							left: scope.magnet.offset().left,
-							width: scope.magnet.width(),
-							height: scope.magnet.width() / aspectRatio
-						},500);
-					} else {
-						element.offset(scope.magnet.offset());
-						element.width(scope.magnet.width());
-						element.height(scope.magnet.width() / aspectRatio);
+				var watchMagnet = function (magnet) {
+					// console.log("Changing magnet to ", magnet);
+					if (scope.unwatch) {
+						scope.unwatch();
 					}
-				};
-				
-				$rootScope.$on('magnet.changeMagnet', function(evt,magnet) {
-					scope.magnet = magnet;
-					scope.reposition(true);
-				});
+					scope.magnet = $(magnet);
 
-				// reposition ourselves on magnet events sent from the toolbar / player chrome
-				var watcherOne = $rootScope.$on('magnet.reposition', function() {
-					scope.reposition(true);
-				});
-				var watcherTwo = $rootScope.$on('magnet.repositionImmediately', function() {
-					scope.reposition(false);
+					// Magnetized needs to respond when the magnet moves or the window resizes.
+					// Can't bind to window size directly (iOS crashes in iframe); we track it in $rootScope instead
+					scope.unwatch = scope.$watch(function () {
+						return {
+							top: scope.magnet.offset().top - element.offset().top,
+							left: scope.magnet.offset().left - element.offset().left,
+							width: scope.magnet.width() - element.width(),
+							winWidth: appState.windowWidth,
+							winHeight: appState.windowHeight
+						};
+					}, moveToMagnet, true);
+				};
+
+				var moveToMagnet = function () {
+					$timeout(function () { // needs the timeout, otherwise endless digest loop
+						element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute");
+
+						var diffT = scope.magnet.offset().top - element.offset().top;
+						var diffL = scope.magnet.offset().left - element.offset().left;
+						var diffW = scope.magnet.width() - element.width();
+
+						if (Math.abs(diffT) > 1 || Math.abs(diffL) > 1) {
+							element.offset({
+								top: element.offset().top + (diffT / 4),
+								left: element.offset().left + (diffL / 4)
+							});
+						} else {
+							element.offset(scope.magnet.offset());
+						}
+
+						if (Math.abs(diffW) > 4) {
+							element.width(Math.ceil(element.width() + (diffW / 4)));
+						} else {
+							element.width(Math.ceil(scope.magnet.width()));
+						}
+						element.height(Math.ceil(scope.magnet.width() / aspectRatio));
+
+					});
+				};
+
+				$rootScope.$on('magnet.changeMagnet', function (evt, magnet) {
+					watchMagnet(magnet);
 				});
 
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function () {
-					watcherOne();
-					watcherTwo();
+					scope.unwatch();
 				});
 			}
 		};

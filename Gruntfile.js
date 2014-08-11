@@ -17,12 +17,29 @@ module.exports = function (grunt) {
 			app: require('./bower.json').appPath || 'app',
 			dist: 'dist'
 		},
-		ngtemplates:	{
-			"com.inthetelling.player": { // this subtask name becomes the module name that is created
+		ngtemplates: {
+			"com.inthetelling.story": { // this subtask name becomes the module name that is created
 				cwd: '<%= yeoman.app %>',
 				src: 'templates/**/*.html',
 				dest: '<%= yeoman.app %>/scripts/templates.js',
 				options: {
+					/* 
+					collapseWhitespace does save some space, and works corretly here (though not as part of the base htmlmin rule)
+					but it has visible side effects, making server and server:dist appear different.
+					*/
+					htmlmin: {
+						collapseBooleanAttributes: true,
+						collapseWhitespace: true, // Safe in templates, not in base html
+						removeAttributeQuotes: true,
+						removeCommentsFromCDATA: true,
+						removeComments: true,
+						removeEmptyAttributes: true,
+						removeOptionalTags: true,
+						removeRedundantAttributes: true,
+						useShortDoctype: true,
+					}
+					/* we are not using bootstrap
+					,
 					url: function(url) {
 						// modify the template id/url for any bootstrap
 						// templates so that angular-bootstrap can find them
@@ -38,6 +55,7 @@ module.exports = function (grunt) {
 						output += "angular.module('" + module + "').run(['$templateCache', function($templateCache) {\n\n" + script + "\n\n}]);";
 						return output;
 					}
+					*/
 				}
 			}
 		},
@@ -55,7 +73,7 @@ module.exports = function (grunt) {
 					livereload: '<%= connect.options.livereload %>'
 				},
 				files: [
-					'<%= yeoman.app %>/{,*/}*.html',
+					'<%= yeoman.app %>/**/*.html',
 					'.tmp/styles/{,*/}*.css',
 					'{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
 					'<%= yeoman.app %>/server-mock/**/*.{html,json}',
@@ -133,7 +151,7 @@ module.exports = function (grunt) {
 				files: {
 					src: [
 						'<%= yeoman.dist %>/scripts/{,*/}*.js',
-						'<%= yeoman.dist %>/styles/{,*/}*.css'//,
+						'<%= yeoman.dist %>/styles/{,*/}*.css' //,
 						//'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
 						//'<%= yeoman.dist %>/styles/font/*'
 					]
@@ -189,20 +207,20 @@ module.exports = function (grunt) {
 		htmlmin: {
 			dist: {
 				options: {
-					/*removeCommentsFromCDATA: true,
-					// https://github.com/yeoman/grunt-usemin/issues/44
-					//collapseWhitespace: true,
+					removeCommentsFromCDATA: true,
+					//collapseWhitespace: true, // https://github.com/yeoman/grunt-usemin/issues/44
 					collapseBooleanAttributes: true,
 					removeAttributeQuotes: true,
 					removeRedundantAttributes: true,
 					useShortDoctype: true,
 					removeEmptyAttributes: true,
-					removeOptionalTags: true*/
+					removeOptionalTags: true
 				},
 				files: [{
 					expand: true,
 					cwd: '<%= yeoman.app %>',
-					src: ['*.html', 'views/*.html'],
+					// src: ['*.html', 'views/*.html'],
+					src: ['[^_]*.html'],
 					dest: '<%= yeoman.dist %>'
 				}]
 			}
@@ -220,8 +238,7 @@ module.exports = function (grunt) {
 						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}',
 						'styles/font/*',
 						'config.js',
-						'version.txt',
-						'iosFrameHack.js'
+						'version.txt'
 					]
 				}, {
 					expand: true,
@@ -263,7 +280,12 @@ module.exports = function (grunt) {
 		karma: {
 			unit: {
 				configFile: 'karma.conf.js',
-				singleRun: true
+				singleRun: true,
+			},
+			continuous: {
+				configFile: 'karma.conf.js',
+				singleRun: false,
+				reporters: ['progress', 'growler']
 			}
 		},
 		ngmin: {
@@ -275,7 +297,26 @@ module.exports = function (grunt) {
 					dest: '<%= yeoman.dist %>/scripts'
 				}]
 			}
+		},
+		uglify: {
+			options: {
+				compress: {
+					unsafe: true,
+					drop_console: true
+				}
+
+			},
+			build: {
+				files: [{
+					expand: true,
+					src: '**/*.js',
+					dest: '<%= yeoman.dist %>/scripts',
+					cwd: '<%= yeoman.dist %>/scripts',
+					ext: '.min.js'
+				}]
+			}
 		}
+
 	});
 
 	grunt.registerTask('server', function (target) {
@@ -303,12 +344,16 @@ module.exports = function (grunt) {
 		'concurrent:test',
 		'autoprefixer',
 		'connect:test',
-		'karma'
+		'karma:unit'
+	]);
+
+	grunt.registerTask('dev', [
+		'karma:continuous'
 	]);
 
 	grunt.registerTask('build', [
-		//'jshint',
-		//'test',
+		'jshint',
+		'test',
 		'clean:dist',
 		'ngtemplates',
 		'useminPrepare',
@@ -322,5 +367,5 @@ module.exports = function (grunt) {
 		'rev',
 		'usemin'
 	]);
-	
+
 };

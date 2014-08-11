@@ -1,0 +1,11 @@
+.producer {
+	margin: 1em;
+}
+.producer .scene {
+	border: 1px solid;
+	padding: 1em;
+	margin: 1em;
+}
+.editwarning {
+	background-color: #FFE;
+}

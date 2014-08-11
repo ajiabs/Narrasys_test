@@ -1,18 +1,16 @@
 {
-  "name": "com.inthetelling.player",
+  "name": "com.inthetelling.story",
   "version": "0.0.0",
   "dependencies": {
     "jquery": "1.10.2",
-    "angular": "1.2.9",
-    "angular-resource": "1.2.9",
-    "angular-route": "1.2.9",
-    "angular-animate": "1.2.9",
-    "angular-bindonce": "0.3.1",
-    "video.js": "4.3.0",
-    "underscore": "1.5.2"
+    "angular": "1.2.20",
+    "angular-resource": "1.2.20",
+    "angular-route": "1.2.20",
+    "angular-animate": "1.2.20",
+    "angular-bindonce": "0.3.1"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.9",
-    "angular-scenario": "1.2.9"
+    "angular-mocks": "1.2.20",
+    "angular-scenario": "1.2.20"
   }
 }
