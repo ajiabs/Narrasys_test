@@ -1,14 +1,21 @@
+Add 80x80 and 120x120 versions of logo to main itt website
+(make a "branding guidelines" page while we're at it?)
+
+
+Sort out why the USC badges aren't registering achievements immediateley
+
 
 Should the framebreaker link point to the current time in the new window?  (need to ask bill to accept and pass through a time parameter in /v1/new_window endpoint)
 
-review mode:force-transmedia template is too limited + strict
+
+review mode: force-transmedia template is too strict; should override link, upload and annotation, not plugins
 
 
-httpInteceptor isn't catching 500 errors from API ?
+httpInteceptor isn't catching 500 errors from API (?)
+
 
 add episode colors to bottom toolbar (.progressbar .played in particular)
 
-iPhone: hide captions and CC button; possibly hide bottom toolbar
 
 include non-cosmetic windowFg items in review mode (new filter)
 

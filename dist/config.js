@@ -9,6 +9,7 @@ var config = {
 	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
 	localStorageKey: "storyKey",
 	disableYoutube: false,
-	disableAnalytics: false
+	disableAnalytics: false,
+	debugInBrowser: true
 
 };

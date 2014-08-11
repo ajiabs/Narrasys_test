@@ -375,3 +375,16 @@ Changes in v4.0.31:
 removed unneeded css
 help panel had wrong z-index
 corrected overflow problems in modals and errors
+
+------------------------------------------------
+Changes in v4.0.32:
+Better 'loading' icon on iframes
+Columbia and GW Law episode templates
+added browser debug to config
+dejitter analyticsSvc
+timelineSvc speed control improvement
+call stepEvent whenever user changes speed, to reset the timer to the next event
+possible fix for (old?) safari layout issue in review mode
+removed closed captions in tiny screens
+Coerce http:// link events to noEmbed templates (because we can't embed http)
+

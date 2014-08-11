@@ -10,7 +10,7 @@
 */
 
 angular.module('com.inthetelling.story')
-	.factory('appState', function ($interval) {
+	.factory('appState', function ($interval, config) {
 
 		var svc = {};
 
