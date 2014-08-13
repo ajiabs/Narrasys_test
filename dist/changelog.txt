@@ -391,3 +391,6 @@ Coerce http:// link events to noEmbed templates (because we can't embed http)
 ------------------------------------------------
 Changes in v4.0.33:
 hotfix: backing out iframe loading icons  (Chrome doesn’t fire iframe onload event for pdfs?)
+------------------------------------------------
+Changes in v4.0.34:
+corrected config
