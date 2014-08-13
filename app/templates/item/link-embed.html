@@ -12,7 +12,8 @@
 	</div>
 	<div class="iframeContainer">
 		<div ng-include="'templates/loading.html'"></div>
-		<iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe>
+		<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
+		<iframe ng-src="{{item.url}}"></iframe>
 	</div>
 	<div class="clear"></div>
 </div>
