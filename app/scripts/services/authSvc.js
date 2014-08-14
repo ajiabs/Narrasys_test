@@ -4,11 +4,14 @@ angular.module('com.inthetelling.story')
 	.factory('authSvc', function (config, $routeParams, $http, $q, $location, appState) {
 		// console.log('authSvc factory');
 		var svc = {};
-		svc.roles = [];
 
 		svc.userHasRole = function (role) {
-			for (var i = 0; i < svc.roles.length; i++) {
-				if (svc.roles[i] === role) {
+			if (appState.user === {}) {
+				console.warn("No user data found in appState!");
+				return false;
+			}
+			for (var i = 0; i < appState.user.roles.length; i++) {
+				if (appState.user.roles[i] === role) {
 					return true;
 				}
 			}
@@ -105,8 +108,6 @@ angular.module('com.inthetelling.story')
 					try {
 						localStorage.setItem(config.localStorageKey, JSON.stringify(data));
 					} catch (e) {}
-
-					svc.roles = data.roles; // TODO: do something useful with roles
 					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
 					defer.resolve(data);
 				})

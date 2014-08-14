@@ -144,14 +144,14 @@ angular.module('com.inthetelling.story')
 
 			episodeUserMetrics = svc.dejitter(episodeUserMetrics);
 
-			if (eventUserActions.length) {
+			if (eventUserActions.length > 0) {
 				// console.log("Event actions to log:", eventUserActions);
 				// /v2/episodes/<episode id>/event_user_actions
 				post("event_user_actions", {
 					"event_user_actions": eventUserActions
 				});
 			}
-			if (episodeUserMetrics.length) {
+			if (episodeUserMetrics.length > 0) {
 				// console.log("Episode metrics to log:", episodeUserMetrics);
 				post("episode_user_metrics", {
 					"episode_user_metrics": episodeUserMetrics
@@ -162,6 +162,9 @@ angular.module('com.inthetelling.story')
 		svc.dejitter = function (events) {
 			// Consolidate repeated seek events into one single seek event before sending to API.
 			// TODO prevent this happening in the first place :)
+			if (events.length === 0) {
+				return [];
+			}
 			var ret = [];
 			for (var i = 0; i < events.length - 1; i++) {
 				// if this event and the next one are both seek events, and this event's timestamp matches
