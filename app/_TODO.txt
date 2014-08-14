@@ -1,3 +1,6 @@
+Bring back the loading icon for iframes
+
+
 Add 80x80 and 120x120 versions of logo to main itt website
 (make a "branding guidelines" page while we're at it?)
 
