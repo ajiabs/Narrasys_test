@@ -22,7 +22,6 @@ angular.module('com.inthetelling.story')
 			},
 			controller: 'ItemController',
 			link: function (scope, element) {
-				// console.log('ittItem', scope, element, attrs);
 
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
@@ -118,43 +117,44 @@ angular.module('com.inthetelling.story')
 					// BEGIN credly badge
 
 					if (scope.plugin._type === 'credlyBadge') {
-						console.log("credly");
+						// console.log("credly");
 						// have analytics record that this event has been reached, so it can be used as a trigger for other achievements
 
 						analyticsSvc.captureEventActivity("viewed", scope.item._id);
+						if (appState.user.roles && appState.user.roles.length === 1 && appState.user.roles[0] === "guest") {
+							scope.plugin.eligibleForBadges = false;
+						} else {
+							scope.plugin.eligibleForBadges = true;
+							scope.plugin.userEmail = appState.user.emails[0];
+							scope.plugin.totalAchieved = 0;
+						}
 
 						scope.checkBadgeEligibility = function () {
-							scope.plugin.eligibleForBadges = true;
-							scope.plugin.userEmail = userData.emails[0];
-							scope.plugin.totalAchieved = 0;
+							// console.log('checkBadgeEligibility');
+							if (!scope.plugin.eligibleForBadges) {
+								return;
+							}
 
 							angular.forEach(scope.plugin.requirements, function (req) {
-								analyticsSvc.readEventActivity(req.eventId, req.activity)
-									.then(function (achieved) {
-										req.achieved = achieved;
-										scope.countAchievements(); // can't just do totalAchieved++ here: .then() happens asynch to the forEach, so scoping problems
-									});
+								if (!req.achieved) {
+									analyticsSvc.readEventActivity(req.eventId, req.activity)
+										.then(function (achieved) {
+											req.achieved = achieved;
+											scope.countAchievements(); // can't just do totalAchieved++ here: .then() happens asynch to the forEach, so scoping problems
+										});
+								}
+								scope.countAchievements(); // catch the case where all were already marked
 							});
 						};
 
-						// Don't show this to guest users
-						var userData = appState.user;
-						if (userData.roles && userData.roles.length) { //&& userData.roles[0] !== 'guest') {
-							scope.checkBadgeEligibility();
-
-							// update credly state every time the item becomes current, too, to catch backtracking within the same episode to pick up requirements
-							scope.$watch(function () {
-								return scope.item.isCurrent;
-							}, function (itIs) {
-								if (itIs) {
-									scope.checkBadgeEligibility();
-								}
-							});
-
-						} else {
-							// not badge-eligible, move on
-							//timelineSvc.play();
-						}
+						// update credly state every time the item becomes current or visible (i.e. in review mode)
+						scope.$watch(function () {
+							return scope.item.isCurrent || appState.viewMode === 'review';
+						}, function (itIs, itWas) {
+							if (itIs && !itWas) {
+								scope.checkBadgeEligibility();
+							}
+						});
 
 						scope.countAchievements = function () {
 							var count = 0;
