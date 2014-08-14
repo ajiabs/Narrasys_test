@@ -412,3 +412,7 @@ better handling of no-user-data case
 usc badge template tweak
 roles bugfix -- appState and authSvc were falling out of sync
 
+------------------------------------------------
+Changes in v4.0.38:
+include non-cosmetic windowFg items in review mode
+
