@@ -6,6 +6,10 @@ angular.module('com.inthetelling.story')
 		var svc = {};
 
 		svc.userHasRole = function (role) {
+			if (appState.user === {}) {
+				console.warn("No user data found in appState!");
+				return false;
+			}
 			for (var i = 0; i < appState.user.roles.length; i++) {
 				if (appState.user.roles[i] === role) {
 					return true;
