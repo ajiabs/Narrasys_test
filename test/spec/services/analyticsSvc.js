@@ -109,4 +109,9 @@ describe('Service: analyticsSvc', function () {
 		expect(dejittered[2].timestamp).toEqual(20);
 	});
 
+	it('should cope with empty event arrays', function () {
+		var dejittered = analyticsSvc.dejitter(analyticsSvc.activityQueue);
+		expect(dejittered.length).toEqual(0);
+	});
+
 });
