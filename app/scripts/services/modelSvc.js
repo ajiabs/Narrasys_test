@@ -201,6 +201,12 @@ angular.module('com.inthetelling.story')
 					event.isContent = true;
 				}
 
+				// TODO: if we could trust authors to choose 'cosmetic' for cosmetic items, or if we set it in producer based on the item layout
+				// (HEY THERES AN IDEA) we wouldn't need to do this:
+				if (!event.cosmetic && (event.isContent || event.layouts.indexOf('windowFg') > -1)) {
+					event.showInReviewMode = true;
+				}
+
 				// Old templates which (TODO) should have been database fields instead:
 				if (event._type === 'Annotation' && event.templateUrl.match(/transcript/)) {
 					event.isTranscript = true;

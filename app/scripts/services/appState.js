@@ -4,8 +4,7 @@
 	Stash for shared information, to save us a lot of $watching and $emitting. 
 	It's convenient.  Maybe -too- convenient.
 
-	I have a sinking feeling this is probably an elaborate wheel-reinvention of $scope or 
-	something, but hey, it works
+	I have a sinking feeling this is probably an elaborate wheel-reinvention of $rootScope, but hey, it works
 
 */
 
@@ -48,7 +47,7 @@ angular.module('com.inthetelling.story')
 			svc.autoscroll = false; //scroll window to make current items visible (in relevant modes)
 			svc.autoscrollBlocked = false; // User has disabled autoscroll
 			svc.editing = false; // Object currently being edited by user (TODO)
-			// svc.youtubeIsReady = false; // Youtube APIs have not finished loading.  Don't set this to false on init, otherwise navigating from episode to episode breaks (we reinit on new episode but that won't trigger youtube's ready event)
+			// svc.youtubeIsReady = false; // Set to true when youtube API finishes loading.  DO NOT set this to false on init, otherwise navigating from episode to episode breaks (we reinit on new episode but that won't trigger youtube's ready event)
 		};
 		svc.init();
 
