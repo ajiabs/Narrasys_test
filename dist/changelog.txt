@@ -404,3 +404,11 @@ Added description-first link template
 Changes in v4.0.36:
 correcting deploy roles
 
+------------------------------------------------
+Changes in v4.0.37:
+Disallow USC badges for guest users
+bugfix: analyticsSvc was sending [null] to episodeUserMetrics endpoint
+better handling of no-user-data case
+usc badge template tweak
+roles bugfix -- appState and authSvc were falling out of sync
+
