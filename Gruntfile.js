@@ -234,11 +234,11 @@ module.exports = function (grunt) {
 					cwd: '<%= yeoman.app %>',
 					dest: '<%= yeoman.dist %>',
 					src: [
-						'*.{ico,png,txt}',
+						'[^_]*.{ico,png,txt}',
 						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}',
 						'styles/font/*',
 						'config.js',
-						'version.txt'
+						'iosFrameHack.js'
 					]
 				}, {
 					expand: true,
