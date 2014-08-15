@@ -437,8 +437,7 @@ angular.module('com.inthetelling.story')
 			var sceneStub = {
 				"_id": "-",
 				"_type": "Scene",
-				"title": "Scene title",
-				"description": "Scene Description",
+				"description": "Scene <b>description</b> Description",
 				"keywords": [],
 				"start_time": 0,
 				"end_time": 200,
@@ -462,7 +461,7 @@ angular.module('com.inthetelling.story')
 				var scene = angular.copy(sceneStub);
 				scene._id = "scene-" + i;
 				scene.title = (i / 2 === Math.floor(i / 2)) ? "Scene " + (i + 1) + " Title" : "";
-				scene.title = "Scene " + (i + 1) + " Title";
+				scene.title = "Scene " + (i + 1) + " Title <b>html<sup>included</sup></b>";
 				scene.start_time = (i * 20);
 				scene.end_time = (i * 20 + 20);
 				scene.templateUrl = scenetemplateurls[i % scenetemplateurls.length];
