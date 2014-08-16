@@ -412,3 +412,15 @@ better handling of no-user-data case
 usc badge template tweak
 roles bugfix -- appState and authSvc were falling out of sync
 
+------------------------------------------------
+Changes in v4.0.38:
+include non-cosmetic windowFg items in review mode
+
+------------------------------------------------
+Changes in v4.0.39:
+Gruntfile edits: include iosFrameHack stub in build, exclude _TODO
+
+------------------------------------------------
+Changes in v4.0.40:
+hotfix: support html in scene titles
+
