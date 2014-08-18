@@ -1,7 +1,22 @@
+Bring back closed captions in small screens
+
+autoscroll: 
+* hide the button when there is no scroll-to target (no current item) or when the current item is already onscreen
+* change icon into an arrow pointing in the direction the window will be scrolling
+
+
+For USC: control visibility of links based on achievements(?)
+
+
 Bring back the loading icon for iframes  (disabled because wasn't working with PDFs in chrome)
 
 
+include a sample iframe page with instructions for customers on how best to embed our player
+
+
 Add appState.time param to framebreaker link (/v1/new_window/{epId}?t=foo
+
+
 
 
 

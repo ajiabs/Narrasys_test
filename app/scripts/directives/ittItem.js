@@ -119,13 +119,16 @@ angular.module('com.inthetelling.story')
 					if (scope.plugin._type === 'credlyBadge') {
 						// console.log("credly");
 						// have analytics record that this event has been reached, so it can be used as a trigger for other achievements
-
 						analyticsSvc.captureEventActivity("viewed", scope.item._id);
 						if (appState.user.roles && appState.user.roles.length === 1 && appState.user.roles[0] === "guest") {
 							scope.plugin.eligibleForBadges = false;
 						} else {
 							scope.plugin.eligibleForBadges = true;
-							scope.plugin.userEmail = appState.user.emails[0];
+							if (appState.user.emails) {
+								scope.plugin.userEmail = appState.user.emails[0];
+							} else {
+								scope.plugin.userEmail = '';
+							}
 							scope.plugin.totalAchieved = 0;
 						}
 

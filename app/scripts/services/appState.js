@@ -14,7 +14,7 @@ angular.module('com.inthetelling.story')
 		var svc = {};
 
 		svc.init = function () {
-			svc.user = {}; // whatever authSvc gets back from getAccessToken
+			svc.user = svc.user || {}; // whatever authSvc gets back from getAccessToken
 			svc.episodeId = false; // ID of current episode
 
 			/* jshint -W116 */
