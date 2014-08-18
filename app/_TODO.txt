@@ -1,3 +1,8 @@
+
+Plugin events need to support template URLs just as other items do.  For now
+they're hardcoded to usc-badges.html
+
+
 Bring back closed captions in small screens
 
 autoscroll: 
