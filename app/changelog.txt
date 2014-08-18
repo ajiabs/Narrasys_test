@@ -424,3 +424,6 @@ Gruntfile edits: include iosFrameHack stub in build, exclude _TODO
 Changes in v4.0.40:
 hotfix: support html in scene titles
 
+------------------------------------------------
+Changes in v4.0.41:
+Changes to USC content
