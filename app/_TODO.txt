@@ -1,26 +1,37 @@
-Bring back the loading icon for iframes
+
+Plugin events need to support template URLs just as other items do.  For now
+they're hardcoded to usc-badges.html
 
 
-Add 80x80 and 120x120 versions of logo to main itt website
-(make a "branding guidelines" page while we're at it?)
+Bring back closed captions in small screens
+
+autoscroll: 
+* hide the button when there is no scroll-to target (no current item) or when the current item is already onscreen
+* change icon into an arrow pointing in the direction the window will be scrolling
 
 
-Sort out why the USC badges aren't registering achievements immediateley
+For USC: control visibility of links based on achievements(?)
 
 
-Should the framebreaker link point to the current time in the new window?  (need to ask bill to accept and pass through a time parameter in /v1/new_window endpoint)
+Bring back the loading icon for iframes  (disabled because wasn't working with PDFs in chrome)
+
+
+include a sample iframe page with instructions for customers on how best to embed our player
+
+
+Add appState.time param to framebreaker link (/v1/new_window/{epId}?t=foo
+
+
+
 
 
 review mode: force-transmedia template is too strict; should override link, upload and annotation, not plugins
 
-
-httpInteceptor isn't catching 500 errors from API (?)
+Change handling of 500 errors: don't display returned html, just a generic error message
 
 
 add episode colors to bottom toolbar (.progressbar .played in particular)
 
-
-include non-cosmetic windowFg items in review mode (new filter)
 
 make sure modelSvc is still doing this:
 Currently player is url-encoding " ", "&" and "?" for uploads url and alternate_url fields, and for master asset urls.  For other urls only encoding spaces.
@@ -28,10 +39,8 @@ Currently player is url-encoding " ", "&" and "?" for uploads url and alternate_
 
 Make a list for Bill of which templateUrls should map to which new fields
 
-
 More key controls:  up/down for prev/next transmedia item, left/right for prev/next scene
 (WSAD too just for yucks?)
-
 
 For bill: is it possible to extract video information (size, duration) from a video file when the user is uploading it?  — espeically duration, framerate  (e.g. 24000/1001), duration are most important
 

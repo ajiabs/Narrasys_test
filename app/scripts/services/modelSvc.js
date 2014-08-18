@@ -110,12 +110,6 @@ angular.module('com.inthetelling.story')
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
 
-			// TEMPORARY HACK hardcode for USC demo
-			if (episode._id === '53a45ea8bf31cdf411000002' ||
-				episode._id === '53a45fb6bf31cdf411000005') {
-				episode.templateUrl = 'templates/episode/usc.html';
-			}
-
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):
 			if (!episode.styles) {
@@ -183,9 +177,30 @@ angular.module('com.inthetelling.story')
 			if (event._type !== 'Scene') {
 
 				if (!event.templateUrl) {
-					// TEMPORARY WORKAROUND FOR USC DEMO
-					// console.log("No template url: ", event);
+					// TODO add support for other plugin types here, or have a single plugin template that routes to subdirectives based on plugin type
 					event.templateUrl = 'templates/item/usc-badges.html';
+				}
+
+				if (svc.episodes[event.episode_id].templateUrl === 'templates/episode/usc.html') {
+					// HACKS AHOY
+					if (event._type === "Link") {
+						if (event.templateUrl === 'templates/transmedia-link-default.html') {
+							// they don't want any embedded links (shrug)
+							event.templateUrl = 'templates/transmedia-link-noembed.html';
+						}
+
+						if (event.title.match(/ACTIVITY/)) {
+							// Unnecessary explanatory text which they are insisting on including
+							event.description = event.description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
+						}
+
+						if (event.title.match(/Haven't Registered/)) {
+							// TODO: hide this event for non-guest users
+						}
+						if (event.title.match(/Connect with/)) {
+							// TODO: hide this event unless episode badge is achieved
+						}
+					}
 				}
 
 				//items

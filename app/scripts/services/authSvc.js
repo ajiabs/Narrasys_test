@@ -35,22 +35,15 @@ angular.module('com.inthetelling.story')
 				});
 			} else if ($http.defaults.headers.common.Authorization) {
 				// already logged in!
+				console.log("already logged in, assigning localStorage to user data");
+				// TODO need to check how this is affected by customer switching ()
+				if (appState.user === {}) {
+					appState.user = svc.getStoredUserData();
+				}
 				authenticateDefer.resolve();
 			} else {
 				// check for token in localStorage, try it to see if it's still valid.
-				var validStoredData;
-
-				if (localStorage && localStorage.getItem(config.localStorageKey)) {
-					var storedData = angular.fromJson(localStorage.getItem(config.localStorageKey));
-					var currentCustomer = config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1];
-					if (storedData.customer === currentCustomer) {
-						validStoredData = storedData;
-					} else {
-						// this token must be invalid, so remove it
-						console.log("deleting wrong-customer token: was ", storedData.customer, " should be ", currentCustomer);
-						localStorage.removeItem(config.localStorageKey);
-					}
-				}
+				var validStoredData = svc.getStoredUserData();
 
 				if (validStoredData) {
 					appState.user = validStoredData;
@@ -66,6 +59,24 @@ angular.module('com.inthetelling.story')
 				}
 			}
 			return authenticateDefer.promise;
+		};
+
+		svc.getStoredUserData = function () {
+			var validStoredData;
+			if (localStorage && localStorage.getItem(config.localStorageKey)) {
+				var storedData = angular.fromJson(localStorage.getItem(config.localStorageKey));
+				var currentCustomer = config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1];
+				if (storedData.customer === currentCustomer) {
+					validStoredData = storedData;
+				} else {
+					// this token must be invalid, so remove it
+					console.log("deleting wrong-customer token: was ", storedData.customer, " should be ", currentCustomer);
+					localStorage.removeItem(config.localStorageKey);
+					validStoredData = false;
+				}
+			}
+			return validStoredData;
+
 		};
 
 		svc.getNonce = function () {
