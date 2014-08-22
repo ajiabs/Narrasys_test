@@ -180,7 +180,7 @@ angular.module('com.inthetelling.story')
 					event.templateUrl = 'templates/item/usc-badges.html';
 				}
 
-				if (svc.episodes[event.episode_id].templateUrl === 'templates/episode/usc.html') {
+				if (svc.episodes[event.episode_id] && svc.episodes[event.episode_id].templateUrl === 'templates/episode/usc.html') {
 					// HACKS AHOY
 					// USC made a bunch of change requests post-release; this was the most expedient way
 					// to deal with them. Sorry!
