@@ -68,6 +68,9 @@ angular.module('com.inthetelling.story')
 				var currentCustomer = config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1];
 				if (storedData.customer === currentCustomer) {
 					validStoredData = storedData;
+					if (storedData.roles && storedData.roles.length === 1 && storedData.roles[0] === "guest") {
+						validStoredData.isGuestUser = true;
+					}
 				} else {
 					// this token must be invalid, so remove it
 					console.log("deleting wrong-customer token: was ", storedData.customer, " should be ", currentCustomer);

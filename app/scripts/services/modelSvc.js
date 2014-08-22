@@ -175,7 +175,6 @@ angular.module('com.inthetelling.story')
 
 		svc.deriveEvent = function (event) {
 			if (event._type !== 'Scene') {
-
 				if (!event.templateUrl) {
 					// TODO add support for other plugin types here, or have a single plugin template that routes to subdirectives based on plugin type
 					event.templateUrl = 'templates/item/usc-badges.html';
@@ -183,6 +182,8 @@ angular.module('com.inthetelling.story')
 
 				if (svc.episodes[event.episode_id] && svc.episodes[event.episode_id].templateUrl === 'templates/episode/usc.html') {
 					// HACKS AHOY
+					// USC made a bunch of change requests post-release; this was the most expedient way
+					// to deal with them. Sorry!
 					if (event._type === "Link") {
 						if (event.templateUrl === 'templates/transmedia-link-default.html') {
 							// they don't want any embedded links (shrug)
@@ -190,17 +191,23 @@ angular.module('com.inthetelling.story')
 						}
 
 						if (event.title.match(/ACTIVITY/)) {
-							// Unnecessary explanatory text which they are insisting on including
+							// Unnecessary explanatory text
 							event.description = event.description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
 						}
-
 						if (event.title.match(/Haven't Registered/)) {
-							// TODO: hide this event for non-guest users
+							// hide this event for non-guest users
+							event.styles = event.styles ? event.styles : [];
+							event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
+							event.uscReviewModeHack="uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
 						}
 						if (event.title.match(/Connect with/)) {
-							// TODO: hide this event unless episode badge is achieved
+							// hide this event unless episode badge is achieved
+							event.styles = event.styles ? event.styles : [];
+							event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
+							event.uscReviewModeHack="uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
 						}
 					}
+					// END of USC hacks
 				}
 
 				//items
