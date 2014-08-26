@@ -4,6 +4,7 @@ angular.module('com.inthetelling.story')
     .factory('awsSvc', function (config, $routeParams, $http, $q, appState) {
 	console.log('awsSvc, user: ', appState.user);
 	var MAX_CHUNKS = 1000;
+	var PUBLIC_READ = "public-read";
 	var svc = {};
 	var awsCache = {
             s3: {}
@@ -170,7 +171,8 @@ angular.module('com.inthetelling.story')
 		var params = {
 		    Key: awsCache.s3.config.params.Prefix+file.name,
 		    ContentType: file.type,
-		    Body: file
+		    Body: file,
+		    ACL: PUBLIC_READ
 		};
 		awsCache.s3.putObject(params, function(err, data) {
 		    if (err) {
@@ -292,8 +294,23 @@ angular.module('com.inthetelling.story')
 			defer.reject();
 		    } else {
 			console.log('awsSvc, uploadedComplete! data:', data);
+			params = {
+			    Bucket: multipartUpload.Bucket,
+			    Key: multipartUpload.Key,
+			    ACL: PUBLIC_READ
+			};
+			awsCache.s3.putObjectAcl(params, function(err, data) {
+			    if (err) {
+				console.log(err, err.stack); // an error occurred
+				defer.reject();
+			    } else {
+				console.log('awsSvc, set file permissions:', data);
+			    }
+			});
+			defer.resolve(data);
 		    }
 		});
+		
 	    }
 	    return defer.promise;
 	};
