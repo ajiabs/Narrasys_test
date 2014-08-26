@@ -15,6 +15,7 @@ angular.module('com.inthetelling.story')
 	var chunksUploaded = 0;
 	var chunks = [];
 	var fileBeingUploaded;
+	var bytesUploaded = 0;
 	var multipartUpload;
 
 	svc.awsCache = function() {
@@ -174,7 +175,8 @@ angular.module('com.inthetelling.story')
 		    Body: file,
 		    ACL: PUBLIC_READ
 		};
-		awsCache.s3.putObject(params, function(err, data) {
+
+		var req = awsCache.s3.putObject(params, function(err, data) {
 		    if (err) {
 			console.log(err, err.stack); // an error occurred
 			defer.reject();
@@ -182,6 +184,10 @@ angular.module('com.inthetelling.story')
 			console.log('awsSvc, uploaded file!', data);
 			defer.resolve(data);           // successful response
 		    }
+		});
+		req.on('httpUploadProgress', function (progress) {
+		    defer.notify({bytesSent: progress.loaded, bytesTotal: progress.total});
+		    //console.log("Uploaded", progress.loaded, "of", progress.total, "bytes");
 		});
 	    });
             
@@ -191,7 +197,16 @@ angular.module('com.inthetelling.story')
 	var uploadBigFile = function(file) {
 	    console.log('awsSvc uploading big file');
 	    var defer = $q.defer();
-	    createMultipartUpload(file).then( prepareUploadParts );
+	    createMultipartUpload(file).then(prepareUploadParts)
+		.then(
+		    function(data) {
+			return data;
+		    }, function(reason) {
+			console.log('Upload Failed: ', reason);
+		    }, function(update) {
+			defer.notify(update);
+		    }
+		);
 	    return defer.promise;
 	};
 
@@ -232,7 +247,14 @@ angular.module('com.inthetelling.story')
 		var blob = fileBeingUploaded.slice(chunk.start, chunk.end);
 		$q.all({
 		    partNumber: $q.when(i+1),
-		    eTag: uploadPart(awsMultipartUpload, i+1, blob)
+		    eTag: uploadPart(awsMultipartUpload, i+1, blob).then(
+			function(data) {
+			    return data;
+			}, function(reason) {
+			    console.log('Upload Failed: ', reason);
+			}, function(update) {
+			    defer.notify(update);
+			})
 		}).then(completePart);
 		//uploadPart(awsMultipartUpload, i+1, blob).then(function updatePart(data) {
 		//    console.log('UPLOADED PART DATA(',i,'): ', data);
@@ -259,7 +281,12 @@ angular.module('com.inthetelling.story')
 			defer.reject();
 		    } else {
 			console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
-			chunksUploaded++;
+			bytesUploaded += chunks[partNumber-1].end - chunks[partNumber-1].start;
+			var notification = {
+			    bytesSent: bytesUploaded,
+			    bytesTotal: fileBeingUploaded.size
+			};
+			defer.notify(notification);
 			defer.resolve(data.ETag);           // successful response
 		    }
 		});
@@ -273,6 +300,7 @@ angular.module('com.inthetelling.story')
 		ETag: data.eTag,
 		PartNumber: data.partNumber
 	    };
+	    chunksUploaded++;
 	    if (chunksUploaded === chunkCount) {
 		console.log('UPLOAD: ', multipartUpload);
 		console.log('ALL CHUNKS: ', chunks);
@@ -312,6 +340,7 @@ angular.module('com.inthetelling.story')
 		});
 		
 	    }
+	    
 	    return defer.promise;
 	};
 	

@@ -33,6 +33,10 @@ angular.module('com.inthetelling.story')
 	    awsSvc.uploadFile(document.getElementById('file').files[0]).then(function (data) {
 		$scope.upload_result = data;
 		$scope.loading = false;
+	    }, function(reason) {
+		console.log('Upload Failed: ', reason);
+	    }, function(update) {
+		$scope.upload_status = update;
 	    });
 	};
 
