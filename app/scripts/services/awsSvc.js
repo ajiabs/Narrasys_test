@@ -9,9 +9,16 @@ angular.module('com.inthetelling.story')
             s3: {}
 	};
 	var fiveMB = 1024*1024*5;
+	var chunkSize = 0;
 	var chunkCount = 0;
+	var chunksUploaded = 0;
 	var chunks = [];
 	var fileBeingUploaded;
+	var multipartUpload;
+
+	svc.awsCache = function() {
+	    return awsCache;
+	};
 
 	svc.getBucketListing = function() {
 	    var defer = $q.defer();
@@ -41,6 +48,27 @@ angular.module('com.inthetelling.story')
 	    }
         };
 
+	svc.deleteObject = function(bucketObject) {
+	    var defer = $q.defer();
+	    getUploadSession().then(function deleteObject() {
+		var params = {
+		    Bucket: bucketObject.bucket,
+		    Key: bucketObject.Key
+		};
+		awsCache.s3.deleteObject(params, function(err, data) {
+		    if (err) {
+			console.log(err, err.stack); // an error occurred
+			defer.reject();
+		    } else {
+			console.log('awsSvc, deleted object!', data);
+			defer.resolve(data);           // successful response
+		    }
+		});
+	    });
+            
+	    return defer.promise;
+	};
+
 	svc.getMultipartUploads  = function() {
 	    var defer = $q.defer();
 	    getUploadSession().then(function listMultipartUploads() {
@@ -58,6 +86,51 @@ angular.module('com.inthetelling.story')
 	    return defer.promise;
 	    
         };
+
+	svc.getMultipartUploadParts  = function(index, multipartUpload) {
+	    var defer = $q.defer();
+	    getUploadSession().then(function listParts() {
+		var params = {
+		    Bucket: multipartUpload.bucket,
+		    Key: multipartUpload.Key,
+		    UploadId: multipartUpload.UploadId
+		};
+		awsCache.s3.listParts(params, function(err, data) {
+		    if (err) {
+			console.log(err, err.stack); // an error occurred
+			defer.reject();
+		    } else {
+			console.log('awsSvc, got mulipart upload listing!', data);
+			defer.resolve({i: index, parts: data});           // successful response
+		    }
+		});
+	    });
+            
+	    return defer.promise;
+	    
+        };
+
+	svc.cancelMultipartUpload = function(multipartUpload) {
+	    var defer = $q.defer();
+	    getUploadSession().then(function abortMultipartUpload() {
+		var params = {
+		    Bucket: multipartUpload.bucket,
+		    Key: multipartUpload.Key,
+		    UploadId: multipartUpload.UploadId
+		};
+		awsCache.s3.abortMultipartUpload(params, function(err, data) {
+		    if (err) {
+			console.log(err, err.stack); // an error occurred
+			defer.reject();
+		    } else {
+			console.log('awsSvc, deleted mulipart upload!', data);
+			defer.resolve(data);           // successful response
+		    }
+		});
+	    });
+            
+	    return defer.promise;
+	};
 
 	//Internal functions
 
@@ -141,7 +214,8 @@ angular.module('com.inthetelling.story')
 
 	var prepareUploadParts = function(awsMultipartUpload) {
 	    var defer = $q.defer();
-	    var chunkSize = fiveMB;
+	    multipartUpload = awsMultipartUpload;
+	    chunkSize = fiveMB;
 	    if(fileBeingUploaded.size > chunkSize*MAX_CHUNKS) {
 		chunkSize = Math.ceil(fileBeingUploaded.size/MAX_CHUNKS);
 	    }
@@ -154,36 +228,74 @@ angular.module('com.inthetelling.story')
 		    chunk.end = fileBeingUploaded.size;
 		}
 		var blob = fileBeingUploaded.slice(chunk.start, chunk.end);
-		chunk.promise = uploadPart(awsMultipartUpload, i+1, blob);
+		$q.all({
+		    partNumber: $q.when(i+1),
+		    eTag: uploadPart(awsMultipartUpload, i+1, blob)
+		}).then(completePart);
+		//uploadPart(awsMultipartUpload, i+1, blob).then(function updatePart(data) {
+		//    console.log('UPLOADED PART DATA(',i,'): ', data);
+		//    chunk.etag = data.ETag;
+		//}).then( checkIfUploadComplete );
 		chunks.push(chunk);
 	    }
 	    return defer.promise;
 	};
 
-	var uploadPart = function(awsMultipartUpload, partNumber, data) {
+	var uploadPart = function(awsMultipartUpload, partNumber, blob) {
 	    var defer = $q.defer();
 	    getUploadSession().then(function uploadPart() {
 		var params = {
+		    Bucket: awsMultipartUpload.Bucket,
 		    Key: awsMultipartUpload.Key,
 		    UploadId: awsMultipartUpload.UploadId,
 		    PartNumber: partNumber,
-		    Body: data
+		    Body: blob
 		};
 		awsCache.s3.uploadPart(params, function(err, data) {
 		    if (err) {
 			console.log(err, err.stack); // an error occurred
 			defer.reject();
 		    } else {
-			console.log('awsSvc, uploadedPart!', data);
-			defer.resolve(data);           // successful response
+			console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
+			chunksUploaded++;
+			defer.resolve(data.ETag);           // successful response
 		    }
 		});
 	    });
 	    return defer.promise;
 	};
 
-	svc.awsCache = function() {
-	    return awsCache;
+	var completePart = function(data) {
+	    var defer = $q.defer();
+	    chunks[data.partNumber-1].part = {
+		ETag: data.eTag,
+		PartNumber: data.partNumber
+	    };
+	    if (chunksUploaded === chunkCount) {
+		console.log('UPLOAD: ', multipartUpload);
+		console.log('ALL CHUNKS: ', chunks);
+		var parts = [];
+		for(var i = 0; i < chunkCount; i++) {
+		    parts.push(chunks[i].part);
+		}
+		var params = {
+		    Bucket: multipartUpload.Bucket,
+		    Key: multipartUpload.Key,
+		    UploadId: multipartUpload.UploadId,
+		    MultipartUpload: {
+			Parts: parts
+		    }
+		};
+		awsCache.s3.completeMultipartUpload(params, function(err, data) {
+		    if (err) {
+			console.log(err, err.stack); // an error occurred
+			defer.reject();
+		    } else {
+			console.log('awsSvc, uploadedComplete! data:', data);
+		    }
+		});
+	    }
+	    return defer.promise;
 	};
 	
 	return svc;

@@ -19,7 +19,13 @@ angular.module('com.inthetelling.story')
 	$scope.loading = true;
 	awsSvc.getMultipartUploads().then(function (data) {
 	    $scope.uploads_in_progress = data;
-	    $scope.loading = false;
+	    $scope.upload_parts = [];
+	    for(var i=0; i<data.Uploads.length; i++) {
+		awsSvc.getMultipartUploadParts(i, data.Uploads[i]).then(function (data) {
+		    $scope.upload_parts[data.i] = data.parts;
+		    $scope.loading = false;
+		});
+	    }
 	});
 
 	$scope.loading = true;
@@ -28,6 +34,14 @@ angular.module('com.inthetelling.story')
 		$scope.upload_result = data;
 		$scope.loading = false;
 	    });
+	};
+
+	$scope.deleteObject = function(bucketObject) {
+	    awsSvc.deleteObject(bucketObject);
+	};
+
+	$scope.cancelMultipartUpload = function(multipartUpload) {
+	    awsSvc.cancelMultipartUpload(multipartUpload);
 	};
 	
     });

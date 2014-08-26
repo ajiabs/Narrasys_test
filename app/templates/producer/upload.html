@@ -12,14 +12,24 @@
 	<h2>Bucket Listing</h2>
 
 	<div ng-repeat="bucket_object in bucket_objects">
-	  {{bucket_object.Key}}<br>
+	  {{bucket_object.Key}}<button ng-click="deleteObject(bucket_object)">Delete</button><br>
 	</div>
 
 	<h2>Uploads in progress</h2>
 
-	<div ng-repeat="upload_in_progress in uploads_in_progress.Uploads">
-	  {{upload_in_progress.Key}}<br>
-	</div>
+	<ul>
+	  <div ng-repeat="upload_in_progress in uploads_in_progress.Uploads">
+	    <li>
+	      {{upload_in_progress.Key}}
+	      <button ng-click="cancelMultipartUpload(upload_in_progress)">Cancel</button>
+	      <ul>
+		<div ng-repeat="part in upload_parts[$index].Parts">
+		  <li>{{part}}</li>
+		</div>
+	      </ul>
+	    </li>
+	  </div>
+	</ul>
 
 	<input type="file" id="file" name="file"/>
 	<button ng-click="uploadFile()">Upload</button>
