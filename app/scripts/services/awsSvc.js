@@ -4,7 +4,11 @@ angular.module('com.inthetelling.story')
     .factory('awsSvc', function (config, $routeParams, $http, $q, appState) {
 	console.log('awsSvc, user: ', appState.user);
 	var MAX_CHUNKS = 1000;
+	var MAX_SIMUL_PARTS_UPLOADING = 3;
 	var PUBLIC_READ = "public-read";
+	var PENDING = "pending";
+	var UPLOADING = "uploading";
+	var COMPLETE = "complete";
 	var svc = {};
 	var awsCache = {
             s3: {}
@@ -14,9 +18,12 @@ angular.module('com.inthetelling.story')
 	var chunkCount = 0;
 	var chunksUploaded = 0;
 	var chunks = [];
+	var chunkSearchIndex = 0;
 	var fileBeingUploaded;
 	var bytesUploaded = 0;
 	var multipartUpload;
+	var deferredUpload;
+	var uploadPaused = false;
 
 	svc.awsCache = function() {
 	    return awsCache;
@@ -187,7 +194,6 @@ angular.module('com.inthetelling.story')
 		});
 		req.on('httpUploadProgress', function (progress) {
 		    defer.notify({bytesSent: progress.loaded, bytesTotal: progress.total});
-		    //console.log("Uploaded", progress.loaded, "of", progress.total, "bytes");
 		});
 	    });
             
@@ -196,18 +202,13 @@ angular.module('com.inthetelling.story')
 
 	var uploadBigFile = function(file) {
 	    console.log('awsSvc uploading big file');
-	    var defer = $q.defer();
-	    createMultipartUpload(file).then(prepareUploadParts)
-		.then(
-		    function(data) {
-			return data;
-		    }, function(reason) {
-			console.log('Upload Failed: ', reason);
-		    }, function(update) {
-			defer.notify(update);
-		    }
-		);
-	    return defer.promise;
+	    deferredUpload = $q.defer();
+	    createMultipartUpload(file).then(prepareUploadParts).then(function startUpload() {
+		for(var i=0; i<MAX_SIMUL_PARTS_UPLOADING; i++) {
+		    startNextUploadPart();
+		}
+	    });
+	    return deferredUpload.promise;
 	};
 
 	var createMultipartUpload = function(file) {
@@ -241,54 +242,78 @@ angular.module('com.inthetelling.story')
 		var chunk = {};
 		chunk.start = i*chunkSize;
 		chunk.end = chunk.start+chunkSize;
+		chunk.uploaded = 0;
 		if(chunk.end > fileBeingUploaded.size) {
 		    chunk.end = fileBeingUploaded.size;
 		}
-		var blob = fileBeingUploaded.slice(chunk.start, chunk.end);
-		$q.all({
-		    partNumber: $q.when(i+1),
-		    eTag: uploadPart(awsMultipartUpload, i+1, blob).then(
-			function(data) {
-			    return data;
-			}, function(reason) {
-			    console.log('Upload Failed: ', reason);
-			}, function(update) {
-			    defer.notify(update);
-			})
-		}).then(completePart);
-		//uploadPart(awsMultipartUpload, i+1, blob).then(function updatePart(data) {
-		//    console.log('UPLOADED PART DATA(',i,'): ', data);
-		//    chunk.etag = data.ETag;
-		//}).then( checkIfUploadComplete );
+		chunk.status = PENDING;
+		
 		chunks.push(chunk);
+	    }
+	    defer.resolve();
+	    return defer.promise;
+	};
+
+	var startNextUploadPart = function() {
+	    console.log("STARITNG AN UPLOAD PART");
+	    var defer = $q.defer();
+	    var chunkIndex = chunkSearchIndex;
+	    var foundNextChunk = false;
+	    if(!uploadPaused) {
+		while(!foundNextChunk && chunkIndex < chunkCount) {
+		    var chunk = chunks[chunkIndex];
+		    if(chunk.status === PENDING) {
+			foundNextChunk = true;
+			chunk.status = UPLOADING;
+			console.log('UPLOADING CHUNK: '+chunkIndex);
+			var blob = fileBeingUploaded.slice(chunk.start, chunk.end);
+			// use $q.all to pass along the part number parameter
+			$q.all({
+			    partNumber: $q.when(chunkIndex+1),
+			    eTag: uploadPart(chunkIndex+1, blob)
+			}).then(completePart);
+		    } else if(chunk.status === COMPLETE && chunkIndex === chunkSearchIndex) {
+			chunkSearchIndex++;
+			console.log('INCREMENTED THE CHUNK SEARCH INDEX TO: ', chunkSearchIndex);
+		    } else {
+			console.log('SKIPPING CHUNK WITH STATUS: ', chunk.status);
+		    }
+		    chunkIndex++;
+		}
+		if(!foundNextChunk) {
+		    defer.reject("All chunks uploaded");
+		}
+	    } else {
+		defer.reject("Upload paused");
 	    }
 	    return defer.promise;
 	};
 
-	var uploadPart = function(awsMultipartUpload, partNumber, blob) {
+	var uploadPart = function(partNumber, blob) {
+	    console.log('UPLOADING PART: ', partNumber);
 	    var defer = $q.defer();
 	    getUploadSession().then(function uploadPart() {
 		var params = {
-		    Bucket: awsMultipartUpload.Bucket,
-		    Key: awsMultipartUpload.Key,
-		    UploadId: awsMultipartUpload.UploadId,
+		    Bucket: multipartUpload.Bucket,
+		    Key: multipartUpload.Key,
+		    UploadId: multipartUpload.UploadId,
 		    PartNumber: partNumber,
 		    Body: blob
 		};
-		awsCache.s3.uploadPart(params, function(err, data) {
+		var req = awsCache.s3.uploadPart(params, function(err, data) {
 		    if (err) {
 			console.log(err, err.stack); // an error occurred
 			defer.reject();
 		    } else {
 			console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
-			bytesUploaded += chunks[partNumber-1].end - chunks[partNumber-1].start;
-			var notification = {
-			    bytesSent: bytesUploaded,
-			    bytesTotal: fileBeingUploaded.size
-			};
-			defer.notify(notification);
+			//bytesUploaded += chunks[partNumber-1].end - chunks[partNumber-1].start;
 			defer.resolve(data.ETag);           // successful response
 		    }
+		});
+		req.on('httpUploadProgress', function (progress) {
+		    bytesUploaded += progress.loaded - chunks[partNumber-1].uploaded;
+		    chunks[partNumber-1].uploaded = progress.loaded;
+		    deferredUpload.notify({bytesSent: bytesUploaded, bytesTotal: fileBeingUploaded.size});
 		});
 	    });
 	    return defer.promise;
@@ -296,6 +321,7 @@ angular.module('com.inthetelling.story')
 
 	var completePart = function(data) {
 	    var defer = $q.defer();
+	    chunks[data.partNumber-1].status = COMPLETE;
 	    chunks[data.partNumber-1].part = {
 		ETag: data.eTag,
 		PartNumber: data.partNumber
@@ -339,6 +365,8 @@ angular.module('com.inthetelling.story')
 		    }
 		});
 		
+	    } else {
+		startNextUploadPart();
 	    }
 	    
 	    return defer.promise;
