@@ -57,6 +57,44 @@ angular.module('com.inthetelling.story')
 	    }
         };
 
+	svc.pauseUpload = function() {
+	    if(!uploadPaused) {
+		uploadPaused = true;
+		var chunkIndex = chunkSearchIndex;
+		var foundAllUploadingChunks = false;
+		var chunk;
+		while(!foundAllUploadingChunks && chunkIndex < chunkCount) {
+		    chunk = chunks[chunkIndex];
+		    if(chunk.status === UPLOADING) {
+			console.log('awsSvc, Cancelling upload of chunk: ', chunkIndex);
+			chunk.cancel();
+		    } else if(chunk.status === PENDING) {
+			foundAllUploadingChunks = true;
+		    }
+		    chunkIndex++;
+		}
+		chunkIndex = 0;
+		bytesUploaded = 0;
+		while(chunkIndex < chunkCount) {
+		    chunk = chunks[chunkIndex];
+		    if(chunk.status === COMPLETE) {
+			bytesUploaded += chunk.uploaded;
+		    }
+		    chunkIndex++;
+		}
+		deferredUpload.notify({bytesSent: bytesUploaded, bytesTotal: fileBeingUploaded.size});
+	    }
+	};
+
+	svc.resumeUpload = function() {
+	    if(uploadPaused) {
+		uploadPaused = false;
+		for(var i=0; i<MAX_SIMUL_PARTS_UPLOADING; i++) {
+		    startNextUploadPart();
+		}
+	    }
+	};
+
 	svc.deleteObject = function(bucketObject) {
 	    var defer = $q.defer();
 	    getUploadSession().then(function deleteObject() {
@@ -160,7 +198,6 @@ angular.module('com.inthetelling.story')
 			    }
 			};
                         awsCache.s3 = new AWS.S3(params);
-			console.log('S3: ',awsCache.s3);
 			awsCache.sessionDeferred.resolve(data);
 		    } else {
 			awsCache.sessionDeferred.reject();
@@ -255,7 +292,6 @@ angular.module('com.inthetelling.story')
 	};
 
 	var startNextUploadPart = function() {
-	    console.log("STARITNG AN UPLOAD PART");
 	    var defer = $q.defer();
 	    var chunkIndex = chunkSearchIndex;
 	    var foundNextChunk = false;
@@ -265,8 +301,12 @@ angular.module('com.inthetelling.story')
 		    if(chunk.status === PENDING) {
 			foundNextChunk = true;
 			chunk.status = UPLOADING;
-			console.log('UPLOADING CHUNK: '+chunkIndex);
 			var blob = fileBeingUploaded.slice(chunk.start, chunk.end);
+			chunk.cancel = function() {
+			    chunk.request.abort();
+			    chunk.status = PENDING;
+			    chunk.uploaded = 0;
+			};
 			// use $q.all to pass along the part number parameter
 			$q.all({
 			    partNumber: $q.when(chunkIndex+1),
@@ -274,9 +314,6 @@ angular.module('com.inthetelling.story')
 			}).then(completePart);
 		    } else if(chunk.status === COMPLETE && chunkIndex === chunkSearchIndex) {
 			chunkSearchIndex++;
-			console.log('INCREMENTED THE CHUNK SEARCH INDEX TO: ', chunkSearchIndex);
-		    } else {
-			console.log('SKIPPING CHUNK WITH STATUS: ', chunk.status);
 		    }
 		    chunkIndex++;
 		}
@@ -286,11 +323,12 @@ angular.module('com.inthetelling.story')
 	    } else {
 		defer.reject("Upload paused");
 	    }
+
 	    return defer.promise;
 	};
 
 	var uploadPart = function(partNumber, blob) {
-	    console.log('UPLOADING PART: ', partNumber);
+	    console.log('awsSvc, Uploading part: ', partNumber);
 	    var defer = $q.defer();
 	    getUploadSession().then(function uploadPart() {
 		var params = {
@@ -300,17 +338,16 @@ angular.module('com.inthetelling.story')
 		    PartNumber: partNumber,
 		    Body: blob
 		};
-		var req = awsCache.s3.uploadPart(params, function(err, data) {
+		chunks[partNumber-1].request = awsCache.s3.uploadPart(params, function(err, data) {
 		    if (err) {
 			console.log(err, err.stack); // an error occurred
 			defer.reject();
 		    } else {
 			console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
-			//bytesUploaded += chunks[partNumber-1].end - chunks[partNumber-1].start;
 			defer.resolve(data.ETag);           // successful response
 		    }
 		});
-		req.on('httpUploadProgress', function (progress) {
+		chunks[partNumber-1].request.on('httpUploadProgress', function (progress) {
 		    bytesUploaded += progress.loaded - chunks[partNumber-1].uploaded;
 		    chunks[partNumber-1].uploaded = progress.loaded;
 		    deferredUpload.notify({bytesSent: bytesUploaded, bytesTotal: fileBeingUploaded.size});
@@ -328,8 +365,6 @@ angular.module('com.inthetelling.story')
 	    };
 	    chunksUploaded++;
 	    if (chunksUploaded === chunkCount) {
-		console.log('UPLOAD: ', multipartUpload);
-		console.log('ALL CHUNKS: ', chunks);
 		var parts = [];
 		for(var i = 0; i < chunkCount; i++) {
 		    parts.push(chunks[i].part);

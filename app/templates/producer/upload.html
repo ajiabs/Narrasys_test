@@ -33,7 +33,11 @@
 
 	<input type="file" id="file" name="file"/>
 	<button ng-click="uploadFile()">Upload</button>
-	<div id="results"><progress ng-attr-max="{{upload_status.bytesTotal}}" ng-attr-value="{{upload_status.bytesSent}}"></div>
+	<div id="results"><progress
+			      ng-attr-max="{{upload_status.bytesTotal}}"
+			      ng-attr-value="{{upload_status.bytesSent}}"></div>
+	<button ng-click="pauseUpload()">Pause</button>
+	<button ng-click="resumeUpload()">Resume</button>
 
 </div>
 

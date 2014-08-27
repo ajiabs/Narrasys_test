@@ -40,6 +40,14 @@ angular.module('com.inthetelling.story')
 	    });
 	};
 
+	$scope.pauseUpload = function(){
+	    awsSvc.pauseUpload();
+	};
+
+	$scope.resumeUpload = function(){
+	    awsSvc.resumeUpload();
+	};
+
 	$scope.deleteObject = function(bucketObject) {
 	    awsSvc.deleteObject(bucketObject);
 	};
