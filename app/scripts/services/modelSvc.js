@@ -198,13 +198,13 @@ angular.module('com.inthetelling.story')
 							// hide this event for non-guest users
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-							event.uscReviewModeHack="uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
+							event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
 						}
 						if (event.title.match(/Connect with/)) {
 							// hide this event unless episode badge is achieved
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-							event.uscReviewModeHack="uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
+							event.uscReviewModeHack = "uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
 						}
 					}
 					// END of USC hacks
@@ -542,8 +542,7 @@ angular.module('com.inthetelling.story')
 			var videoObject = {};
 			if (videoAsset.alternate_urls) {
 				// This will eventually replace the old method below.
-				// Sort them out by file extension first, then use _chooseVideoAsset to keep the largest one of each type.
-				// TODO: don't always select the biggest; choose based on screen size
+				// Sort them out by file extension first, then use _chooseVideoAsset to keep one of each type.
 
 				var extensionMatch = /\.(\w+)$/;
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
@@ -577,22 +576,32 @@ angular.module('com.inthetelling.story')
 
 			// HACK some platform detection here.
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
 			// Safari should prefer m3u8 to mpeg4.  TODO add other browsers to this when they support m3u8
 			// TODO BUG: disabling this for now; m3u8 is causing problems
-
 			// if (isSafari && videoObject.m3u8) {
 			// 	videoObject.mpeg4 = videoObject.m3u8;
 			// }
 			// delete videoObject.m3u8;
 
-			// TODO: youtube is still throwing errors in desktop safari and in ipad.  Disable for now
-
+			// youtube is still throwing errors in desktop safari and in ipad.  Disable for now
+			// TODO fix this so we can use youtube on these devices
 			if (appState.isTouchDevice || isSafari) {
 				videoObject.youtube = undefined;
 			}
-
 			if (config.disableYoutube) {
 				videoObject.youtube = undefined;
+			}
+
+			// Chrome won't allow the same video to play in two windows, which interferes with our 'escape the iframe' button.
+			// Therefore we force different video streams in chrome depending on whether we're framed or not:
+			if (isChrome) {
+				if (appState.isFramed) {
+					videoObject.mpeg4 = undefined;
+				} else {
+					videoObject.webm = undefined;
+				}
 			}
 
 			// console.log("video asset:", videoObject);
@@ -613,7 +622,7 @@ angular.module('com.inthetelling.story')
 
 		// Private convenience function called only from within resolveMasterAssetVideo. Pass in two filenames.
 		// If one is empty, return the other; otherwise checks for a WxH portion in two
-		// filenames; returns whichever is bigger (on desktop) or smaller (on mobile or when in an iframe).
+		// filenames; returns whichever is bigger (on desktop) or smaller (on mobile).
 
 		var _chooseVideoAsset = function (a, b) {
 			if (!a && b) {
@@ -625,7 +634,7 @@ angular.module('com.inthetelling.story')
 			if (!a && !b) {
 				return "";
 			}
-			// most video files come from the API wiht their width and height in the URL as blahblah123x456.foo:
+			// most video files come from the API with their width and height in the URL as blahblah123x456.foo:
 			var regexp = /(\d+)x(\d+)\.\w+$/; // [1]=w, [2]=h
 			// There shouldn't ever be cases where we're comparing two non-null filenames, neither of which have a
 			// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out 
@@ -633,9 +642,7 @@ angular.module('com.inthetelling.story')
 			var bTest = b.match(regexp) || [0, 0];
 
 			// assume touchscreen means mobile, so we want the smaller video. TODO be less arbitrary about that
-			// The isFramed part is important though: Chrome won't allow the same video to play in two tabs at once,
-			// so this forces the 'popup' version and the 'iframed' version of the player to have different videos
-			if (appState.isTouchDevice || appState.isFramed) {
+			if (appState.isTouchDevice) {
 				return (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
 			} else {
 				return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
