@@ -48,6 +48,10 @@ angular.module('com.inthetelling.story')
 	    awsSvc.resumeUpload();
 	};
 
+	$scope.cancelUpload = function(){
+	    awsSvc.cancelUpload();
+	};
+
 	$scope.deleteObject = function(bucketObject) {
 	    awsSvc.deleteObject(bucketObject);
 	};

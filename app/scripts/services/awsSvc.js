@@ -59,29 +59,16 @@ angular.module('com.inthetelling.story')
         };
 
 	svc.pauseUpload = function() {
-	    if(!uploadPaused) {
+	    if(fileBeingUploaded && !uploadPaused) {
 		uploadPaused = true;
+		cancelCurrentUploadRequests();
 		if(isSmallUpload()) {
-		    currentRequest.abort();
 		    bytesUploaded = 0;
 		} else {
-		    var chunkIndex = chunkSearchIndex;
-		    var foundAllUploadingChunks = false;
-		    var chunk;
-		    while(!foundAllUploadingChunks && chunkIndex < chunkCount) {
-			chunk = chunks[chunkIndex];
-			if(chunk.status === UPLOADING) {
-			    console.log('awsSvc, Cancelling upload of chunk: ', chunkIndex);
-			    chunk.cancel();
-			} else if(chunk.status === PENDING) {
-			    foundAllUploadingChunks = true;
-			}
-			chunkIndex++;
-		    }
-		    chunkIndex = 0;
+		    var chunkIndex = 0;
 		    bytesUploaded = 0;
 		    while(chunkIndex < chunkCount) {
-			chunk = chunks[chunkIndex];
+			var chunk = chunks[chunkIndex];
 			if(chunk.status === COMPLETE) {
 			    bytesUploaded += chunk.uploaded;
 			}
@@ -93,7 +80,7 @@ angular.module('com.inthetelling.story')
 	};
 
 	svc.resumeUpload = function() {
-	    if(uploadPaused) {
+	    if(fileBeingUploaded && uploadPaused) {
 		uploadPaused = false;
 		if(isSmallUpload()) {
 		    putObject();
@@ -102,6 +89,23 @@ angular.module('com.inthetelling.story')
 			startNextUploadPart();
 		    }
 		}
+	    }
+	};
+
+	svc.cancelUpload = function() {
+	    if(fileBeingUploaded) {
+		uploadPaused = false;
+		bytesUploaded = 0;
+		cancelCurrentUploadRequests();
+		if(!isSmallUpload()) {
+		    svc.cancelMultipartUpload(multipartUpload);
+		    multipartUpload = null;
+		}
+		fileBeingUploaded = null;
+		deferredUpload.notify({bytesSent: 0, bytesTotal: 0});
+		deferredUpload.reject("Canceled by user");
+	    } else {
+		console.log("NOTHING TO CANCEL");
 	    }
 	};
 
@@ -291,6 +295,10 @@ angular.module('com.inthetelling.story')
 	var prepareUploadParts = function(awsMultipartUpload) {
 	    var defer = $q.defer();
 	    multipartUpload = awsMultipartUpload;
+	    chunks = [];
+	    chunkCount = 0;
+	    chunksUploaded = 0;
+	    chunkSearchIndex = 0;
 	    chunkSize = fiveMB;
 	    if(fileBeingUploaded.size > chunkSize*MAX_CHUNKS) {
 		chunkSize = Math.ceil(fileBeingUploaded.size/MAX_CHUNKS);
@@ -427,7 +435,26 @@ angular.module('com.inthetelling.story')
 	    
 	    return defer.promise;
 	};
-	
+
+	var cancelCurrentUploadRequests = function() {
+	    if(isSmallUpload()) {
+		currentRequest.abort();
+	    } else {
+		var chunkIndex = chunkSearchIndex;
+		var foundAllUploadingChunks = false;
+		while(!foundAllUploadingChunks && chunkIndex < chunkCount) {
+		    var chunk = chunks[chunkIndex];
+		    if(chunk.status === UPLOADING) {
+			console.log('awsSvc, Cancelling upload of chunk: ', chunkIndex);
+			chunk.cancel();
+		    } else if(chunk.status === PENDING) {
+		    foundAllUploadingChunks = true;
+		}
+		    chunkIndex++;
+		}
+	    }
+	};
+	    
 	return svc;
         
     });
