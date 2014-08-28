@@ -23,6 +23,7 @@ angular.module('com.inthetelling.story')
 	var bytesUploaded = 0;
 	var multipartUpload;
 	var deferredUpload;
+	var currentRequest;
 	var uploadPaused = false;
 
 	svc.awsCache = function() {
@@ -50,37 +51,42 @@ angular.module('com.inthetelling.story')
 	svc.uploadFile = function(file) {
 	    console.log('awsSvc uploading file', file);
 	    fileBeingUploaded = file;
-	    if(file.size < fiveMB) {
-		return uploadSmallFile(file);
+	    if(isSmallUpload()) {
+		return uploadSmallFile();
 	    } else {
-		return uploadBigFile(file);
+		return uploadBigFile();
 	    }
         };
 
 	svc.pauseUpload = function() {
 	    if(!uploadPaused) {
 		uploadPaused = true;
-		var chunkIndex = chunkSearchIndex;
-		var foundAllUploadingChunks = false;
-		var chunk;
-		while(!foundAllUploadingChunks && chunkIndex < chunkCount) {
-		    chunk = chunks[chunkIndex];
-		    if(chunk.status === UPLOADING) {
-			console.log('awsSvc, Cancelling upload of chunk: ', chunkIndex);
-			chunk.cancel();
-		    } else if(chunk.status === PENDING) {
-			foundAllUploadingChunks = true;
+		if(isSmallUpload()) {
+		    currentRequest.abort();
+		    bytesUploaded = 0;
+		} else {
+		    var chunkIndex = chunkSearchIndex;
+		    var foundAllUploadingChunks = false;
+		    var chunk;
+		    while(!foundAllUploadingChunks && chunkIndex < chunkCount) {
+			chunk = chunks[chunkIndex];
+			if(chunk.status === UPLOADING) {
+			    console.log('awsSvc, Cancelling upload of chunk: ', chunkIndex);
+			    chunk.cancel();
+			} else if(chunk.status === PENDING) {
+			    foundAllUploadingChunks = true;
+			}
+			chunkIndex++;
 		    }
-		    chunkIndex++;
-		}
-		chunkIndex = 0;
-		bytesUploaded = 0;
-		while(chunkIndex < chunkCount) {
-		    chunk = chunks[chunkIndex];
-		    if(chunk.status === COMPLETE) {
-			bytesUploaded += chunk.uploaded;
+		    chunkIndex = 0;
+		    bytesUploaded = 0;
+		    while(chunkIndex < chunkCount) {
+			chunk = chunks[chunkIndex];
+			if(chunk.status === COMPLETE) {
+			    bytesUploaded += chunk.uploaded;
+			}
+			chunkIndex++;
 		    }
-		    chunkIndex++;
 		}
 		deferredUpload.notify({bytesSent: bytesUploaded, bytesTotal: fileBeingUploaded.size});
 	    }
@@ -89,8 +95,12 @@ angular.module('com.inthetelling.story')
 	svc.resumeUpload = function() {
 	    if(uploadPaused) {
 		uploadPaused = false;
-		for(var i=0; i<MAX_SIMUL_PARTS_UPLOADING; i++) {
-		    startNextUploadPart();
+		if(isSmallUpload()) {
+		    putObject();
+		} else {
+		    for(var i=0; i<MAX_SIMUL_PARTS_UPLOADING; i++) {
+			startNextUploadPart();
+		    }
 		}
 	    }
 	};
@@ -209,38 +219,49 @@ angular.module('com.inthetelling.story')
 	    return awsCache.sessionDeferred.promise;
 	};
 
-	var uploadSmallFile = function(file) {
+	var isSmallUpload = function() {
+	    if(fileBeingUploaded.size <= fiveMB) {
+		return true;
+	    } else {
+		return false;
+	    }
+	};
+
+	var uploadSmallFile = function() {
 	    console.log('awsSvc uploading small file');
-	    var defer = $q.defer();
+	    deferredUpload = $q.defer();
+	    putObject();
+	    return deferredUpload.promise;
+	};
+
+	var putObject = function() {
 	    getUploadSession().then(function putObject() {
 		var params = {
-		    Key: awsCache.s3.config.params.Prefix+file.name,
-		    ContentType: file.type,
-		    Body: file,
+		    Key: awsCache.s3.config.params.Prefix+fileBeingUploaded.name,
+		    ContentType: fileBeingUploaded.type,
+		    Body: fileBeingUploaded,
 		    ACL: PUBLIC_READ
 		};
 
-		var req = awsCache.s3.putObject(params, function(err, data) {
+		currentRequest = awsCache.s3.putObject(params, function(err, data) {
 		    if (err) {
 			console.log(err, err.stack); // an error occurred
-			defer.reject();
+			deferredUpload.reject();
 		    } else {
 			console.log('awsSvc, uploaded file!', data);
-			defer.resolve(data);           // successful response
+			deferredUpload.resolve(data);           // successful response
 		    }
 		});
-		req.on('httpUploadProgress', function (progress) {
-		    defer.notify({bytesSent: progress.loaded, bytesTotal: progress.total});
+		currentRequest.on('httpUploadProgress', function (progress) {
+		    deferredUpload.notify({bytesSent: progress.loaded, bytesTotal: progress.total});
 		});
 	    });
-            
-	    return defer.promise;
 	};
 
-	var uploadBigFile = function(file) {
+	var uploadBigFile = function() {
 	    console.log('awsSvc uploading big file');
 	    deferredUpload = $q.defer();
-	    createMultipartUpload(file).then(prepareUploadParts).then(function startUpload() {
+	    createMultipartUpload().then(prepareUploadParts).then(function startUpload() {
 		for(var i=0; i<MAX_SIMUL_PARTS_UPLOADING; i++) {
 		    startNextUploadPart();
 		}
@@ -248,11 +269,11 @@ angular.module('com.inthetelling.story')
 	    return deferredUpload.promise;
 	};
 
-	var createMultipartUpload = function(file) {
+	var createMultipartUpload = function() {
 	    var defer = $q.defer();
 	    getUploadSession().then(function createMultipartUpload() {
 		var params = {
-		    Key: awsCache.s3.config.params.Prefix+file.name
+		    Key: awsCache.s3.config.params.Prefix+fileBeingUploaded.name
 		};
 		awsCache.s3.createMultipartUpload(params, function(err, data) {
 		    if (err) {
