@@ -1,6 +1,16 @@
 
-Plugin events need to support template URLs just as other items do.  For now
+
+
+(In authoring tool) Plugin events need to support template URLs just as other items do.  For now
 they're hardcoded to usc-badges.html
+
+Code tidiness:
+Extract item plugins from ittItem into separate directives
+Extract autscroll and maybe toolbar hide/reveal behavior from PlayerController into  own directives
+
+
+add keyboard accessibility (at minimum put a tabindex and ARIA roles on mode and other buttons)
+
 
 
 Bring back closed captions in small screens
@@ -10,8 +20,6 @@ autoscroll:
 * change icon into an arrow pointing in the direction the window will be scrolling
 
 
-For USC: control visibility of links based on achievements(?)
-
 
 Bring back the loading icon for iframes  (disabled because wasn't working with PDFs in chrome)
 
@@ -19,9 +27,7 @@ Bring back the loading icon for iframes  (disabled because wasn't working with P
 include a sample iframe page with instructions for customers on how best to embed our player
 
 
-Add appState.time param to framebreaker link (/v1/new_window/{epId}?t=foo
-
-
+Periodically update appState.time param to framebreaker link (/v1/new_window/{epId}?t=foo  (test to make sure it will still work with popup blockers)
 
 
 
