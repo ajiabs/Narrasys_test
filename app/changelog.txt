@@ -433,3 +433,7 @@ Changes in v4.0.42:
 make sure episode exists before trying to read its template url
 hacky USC workaround: control visibility of certain links depending on badges or login status
 
+------------------------------------------------
+Changes in v4.0.43:
+hotfix to allow higher quality video stream when in iframe
+
