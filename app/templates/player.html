@@ -22,7 +22,7 @@
 			<a class="button" ng-click="editLayer('');">All<span>Show everything</span></a>
 		</div> -->
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
-			<a class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}" target="_new">
+			<a class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
 
 
 				<span>New window</span>
