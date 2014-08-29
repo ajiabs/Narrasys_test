@@ -9,12 +9,6 @@ angular.module('com.inthetelling.story')
 	    $scope.bucket_objects = data.Contents;
 	    $scope.loading = false;
 	});
-
-	//$scope.loading = true;
-	//awsSvc.createMultipartUpload().then(function (data) {
-	//    $scope.new_upload = data.Contents;
-	//    $scope.loading = false;
-	//});
 	
 	$scope.loading = true;
 	awsSvc.getMultipartUploads().then(function (data) {
@@ -28,16 +22,24 @@ angular.module('com.inthetelling.story')
 	    }
 	});
 
-	$scope.loading = true;
-	$scope.uploadFile = function(){
-	    awsSvc.uploadFile(document.getElementById('file').files[0]).then(function (data) {
-		$scope.upload_result = data;
-		$scope.loading = false;
-	    }, function(reason) {
-		console.log('Upload Failed: ', reason);
-	    }, function(update) {
-		$scope.upload_status = update;
-	    });
+	$scope.uploadFiles = function(){
+	    $scope.upload_status = [];
+	    $scope.uploads = awsSvc.uploadFiles(document.getElementById('file').files);
+	    for(var i in $scope.uploads) {
+		//Pass i in a closure so it is unique for each promise
+		(function(i) {
+		    var uploadPromise = $scope.uploads[i];
+		    uploadPromise.then(function (data) {
+			console.log('Upload succeeded!', data);
+			$scope.upload_result = data;
+		    }, function(reason) {
+			console.log('Upload Failed: ', reason);
+		    }, function(update) {
+			$scope.upload_status[i] = update;
+		    });
+		})(i);
+	    }
+	    console.log('$scope.uploads: ', $scope.uploads);
 	};
 
 	$scope.pauseUpload = function(){
@@ -50,6 +52,10 @@ angular.module('com.inthetelling.story')
 
 	$scope.cancelUpload = function(){
 	    awsSvc.cancelUpload();
+	};
+
+	$scope.networkError = function(){
+	    awsSvc.networkError();
 	};
 
 	$scope.deleteObject = function(bucketObject) {
