@@ -216,7 +216,7 @@ angular.module('com.inthetelling.story')
 	    } else {
 		awsCache.sessionDeferred = $q.defer();
 	    }
-	    $http.get(config.apiDataBaseUrl + "/v1/get_s3_upload_session")
+	    $http.get(config.apiDataBaseUrl + "/v1/aws/s3/upload_session")
 		.success(function (data) {
 		    if (data.access_key_id) {
 			AWS.config.update({accessKeyId: data.access_key_id, secretAccessKey: data.secret_access_key, sessionToken: data.session_token, region: config.awsRegion});
