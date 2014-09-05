@@ -250,16 +250,12 @@ angular.module('com.inthetelling.story')
 		} else {
 		    fileUploadPromise = uploadBigFile();
 		}
-		fileUploadPromise.then(function(data) {
-		    deferredUploads[fileIndex].resolve(data);
-		    fileBeingUploaded = null;
-		    fileIndex++;
-		    startNextUpload();
-		}, function(reason) {
-		    deferredUploads[fileIndex].reject(reason);
-		}, function(update) {
-		    deferredUploads[fileIndex].notify(update);
-		});
+		fileUploadPromise.then(createAsset,
+				       function(reason) {
+					   deferredUploads[fileIndex].reject(reason);
+				       }, function(update) {
+					   deferredUploads[fileIndex].notify(update);
+				       });
 	    }
 	};
 
@@ -522,7 +518,28 @@ angular.module('com.inthetelling.story')
 		}
 	    }
 	};
-	    
+	
+	var createAsset = function() {
+	    var deferred = $q.defer();
+	    var assetData = {
+		'url': 'https://s3.amazonaws.com/'+awsCache.s3.config.params.Bucket+'/'+awsCache.s3.config.params.Prefix+fileBeingUploaded.name,
+		'type': fileBeingUploaded.type,
+		'size': fileBeingUploaded.size
+	    };
+	    $http.post(config.apiDataBaseUrl + "/v1/containers/537b7695d72cc39b61000006/assets", assetData)
+		.success(function (data) {
+		    console.log('CREATED ASSET:', data);
+		    deferredUploads[fileIndex].resolve(data);
+		    fileBeingUploaded = null;
+		    fileIndex++;
+		    startNextUpload();
+		})
+		.error(function () {
+		    deferredUploads[fileIndex].reject();
+		});
+	    return deferred.promise;
+	};
+
 	return svc;
         
     });
