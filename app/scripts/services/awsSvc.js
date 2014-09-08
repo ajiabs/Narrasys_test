@@ -242,6 +242,14 @@ angular.module('com.inthetelling.story')
 	    console.log('START NEXT UPLOAD: ', files.length, ', ', fileIndex, ', ', fileBeingUploaded);
 	    if(files.length > fileIndex && !fileBeingUploaded) {
 		fileBeingUploaded = files[fileIndex];
+		if(fileBeingUploaded.type === "") {
+		    console.log('ABORTING UPLOAD, COULD NOT DETERMINE FILE TYPE FOR FILE:', fileBeingUploaded);
+		    deferredUploads[fileIndex].resolve('Could not determine file type for file \''+fileBeingUploaded.name+'\'');
+		    fileBeingUploaded = null;
+		    fileIndex++;
+		    startNextUpload();
+		    return;
+		}
 		console.log('files: ', files);
 		console.log('awsSvc uploading file', fileBeingUploaded);
 		ensureUniqueFilename().then(function() {
