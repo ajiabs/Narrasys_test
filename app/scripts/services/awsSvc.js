@@ -313,11 +313,11 @@ angular.module('com.inthetelling.story')
 	    var parts = filename.split('.');
 	    var fileExt = "";
 	    if(parts.length > 1) {
-		fileExt = parts.pop();
+		fileExt = "."+parts.pop();
 	    }
 	    var basename = parts.join('.');
 	    var date = new Date();
-	    return basename+"_"+date.getTime()+"."+fileExt;
+	    return basename+"_"+date.getTime()+fileExt;
 	};
 
 	var isSmallUpload = function() {
