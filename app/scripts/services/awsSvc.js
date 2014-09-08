@@ -244,19 +244,80 @@ angular.module('com.inthetelling.story')
 		fileBeingUploaded = files[fileIndex];
 		console.log('files: ', files);
 		console.log('awsSvc uploading file', fileBeingUploaded);
-		var fileUploadPromise;
-		if(isSmallUpload()) {
-		    fileUploadPromise = uploadSmallFile();
-		} else {
-		    fileUploadPromise = uploadBigFile();
-		}
-		fileUploadPromise.then(createAsset,
-				       function(reason) {
-					   deferredUploads[fileIndex].reject(reason);
-				       }, function(update) {
-					   deferredUploads[fileIndex].notify(update);
-				       });
+		ensureUniqueFilename().then(function() {
+		    var fileUploadPromise;
+		    if(isSmallUpload()) {
+			fileUploadPromise = uploadSmallFile();
+		    } else {
+			fileUploadPromise = uploadBigFile();
+		    }
+		    fileUploadPromise.then(createAsset,
+					   function(reason) {
+					       deferredUploads[fileIndex].reject(reason);
+					   }, function(update) {
+					       deferredUploads[fileIndex].notify(update);
+					   });
+		});
 	    }
+	};
+
+	var ensureUniqueFilename = function(deferred) {
+	    deferred = deferred || $q.defer();
+	    if(!fileBeingUploaded.hasOwnProperty('uniqueName')) {
+		fileBeingUploaded.uniqueName = fileBeingUploaded.name;
+	    }
+	    getUploadSession().then(function () {
+		console.log('awsSvc, ensureUniqueFilename: ', fileBeingUploaded.uniqueName);
+		//First check for an object with the same name
+		var params = {
+		    Key: awsCache.s3.config.params.Prefix+fileBeingUploaded.uniqueName
+		};
+		awsCache.s3.headObject(params, function(err) {
+		    if (err) {
+			if(err.statusCode !== 404) {
+			    console.log(err, err.stack); // an error occurred
+			    deferred.reject(err);
+			} else {
+			    // Then, if this is going to be a multipart upload, make sure there isn't already a multipart upload with the same name
+			    if(!isSmallUpload()) {
+				svc.getMultipartUploads().then(function (data) {
+				    var mpuExists = true;
+				    while(mpuExists) {
+					var uniqueKey = awsCache.s3.config.params.Prefix+fileBeingUploaded.uniqueName;
+					for(var mpu=0; mpu < data.Uploads.length; mpu++) {
+					    if(data.Uploads[mpu].Key === uniqueKey) {
+						console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, ' already exists!');
+						fileBeingUploaded.uniqueName = generateUniqueFilename(fileBeingUploaded.name);
+						break;
+					    } else if(mpu === data.Uploads.length - 1) {
+						console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, '  is unique!');
+						mpuExists = false;
+					    }
+					}
+				    }
+				});
+			    }
+			    deferred.resolve();
+			}
+		    } else {
+			fileBeingUploaded.uniqueName = generateUniqueFilename(fileBeingUploaded.name);
+			ensureUniqueFilename(deferred);
+		    }
+		});
+	    });
+	    
+	    return deferred.promise;
+	};
+
+	var generateUniqueFilename = function(filename) {
+	    var parts = filename.split('.');
+	    var fileExt = "";
+	    if(parts.length > 1) {
+		fileExt = parts.pop();
+	    }
+	    var basename = parts.join('.');
+	    var date = new Date();
+	    return basename+"_"+date.getTime()+"."+fileExt;
 	};
 
 	var isSmallUpload = function() {
@@ -283,8 +344,9 @@ angular.module('com.inthetelling.story')
 	var putObject = function() {
 	    var defer = $q.defer();
 	    getUploadSession().then(function putObject() {
+		console.log('awsSvc, putting object with key: ', awsCache.s3.config.params.Prefix+fileBeingUploaded.uniqueName);
 		var params = {
-		    Key: awsCache.s3.config.params.Prefix+fileBeingUploaded.name,
+		    Key: awsCache.s3.config.params.Prefix+fileBeingUploaded.uniqueName,
 		    ContentType: fileBeingUploaded.type,
 		    Body: fileBeingUploaded,
 		    ACL: PUBLIC_READ
@@ -328,7 +390,7 @@ angular.module('com.inthetelling.story')
 	    var defer = $q.defer();
 	    getUploadSession().then(function createMultipartUpload() {
 		var params = {
-		    Key: awsCache.s3.config.params.Prefix+fileBeingUploaded.name
+		    Key: awsCache.s3.config.params.Prefix+fileBeingUploaded.uniqueName
 		};
 		awsCache.s3.createMultipartUpload(params, function(err, data) {
 		    if (err) {
@@ -522,9 +584,10 @@ angular.module('com.inthetelling.story')
 	var createAsset = function() {
 	    var deferred = $q.defer();
 	    var assetData = {
-		'url': 'https://s3.amazonaws.com/'+awsCache.s3.config.params.Bucket+'/'+awsCache.s3.config.params.Prefix+fileBeingUploaded.name,
+		'url': 'https://s3.amazonaws.com/'+awsCache.s3.config.params.Bucket+'/'+awsCache.s3.config.params.Prefix+fileBeingUploaded.uniqueName,
 		'type': fileBeingUploaded.type,
-		'size': fileBeingUploaded.size
+		'size': fileBeingUploaded.size,
+		'original_filename': fileBeingUploaded.name
 	    };
 	    $http.post(config.apiDataBaseUrl + "/v1/containers/537b7695d72cc39b61000006/assets", assetData)
 		.success(function (data) {
