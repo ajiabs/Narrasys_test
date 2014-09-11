@@ -1,10 +1,12 @@
 <div ng-class="episode.styleCss">
 	<div class="searchfilters">
 		<label ng-show="sortBy!=='startTime'">
-			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="startTime">Sorted by type
+			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="startTime">Sorted by
+			<span class="fakelink">type</span>
 		</label>
 		<label ng-show="sortBy==='startTime'">
-			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="type">Sorted by time
+			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="type">Sorted by
+			<span class="fakelink">time</span>
 		</label>
 	</div>
 	<div class="scrollContainer">
@@ -12,7 +14,7 @@
 			<div ng-if="sortBy == 'startTime'">
 				<div ng-repeat="scene in episode.scenes">
 					<h3 ng-if="sceneItems.length > 0 && scene.title" ng-bind-html="scene.title"></h3>
-					<div  class="item" ng-repeat="item in sceneItems=
+					<div class="item" ng-repeat="item in sceneItems=
 						(scene.items 
 						| orderBy:'startTime' 
 						| filter:{'searchableText': searchText, 'cosmetic': false}
