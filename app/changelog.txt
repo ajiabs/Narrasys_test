@@ -445,3 +445,8 @@ revert to showing CC on tiny screens instead of hiding them
 framebreaker now launches episode to current time
 improved autoscroll
 autoscroll button indicates direction; hides when it won’t do anything useful
+
+------------------------------------------------
+Changes in v4.0.45:
+Reverting autoscroll improvements (Not actually an improvement)
+
