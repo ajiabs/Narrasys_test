@@ -1,4 +1,5 @@
 
+Paramaterize top toolbar height as a function of the episode template, position content relative to a container instead of hardcoding, then we can fade out top toolbar (except for the modes button) along with the bottom toolbar
 
 
 (In authoring tool) Plugin events need to support template URLs just as other items do.  For now

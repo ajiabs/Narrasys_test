@@ -392,9 +392,9 @@ angular.module('com.inthetelling.story')
 				"master_asset_id": "masterasset",
 				"title": "Test Episode",
 				"status": "Published",
-				"templateUrl": "templates/episode/columbia.html",
+				"templateUrl": "templates/episode/episode.html",
 				"styles": [
-					"", "", ""
+					"typographySwiss", "", ""
 				]
 			});
 			modelSvc.cache("asset", {
