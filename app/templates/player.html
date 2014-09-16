@@ -58,9 +58,8 @@
 	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"></div>
 </div>
 
-<div class="autoscroll" ng-if="autoscrollTarget && appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
-	<img ng-if="autoscrollTarget > curScroll" src="/images/autoscroll-down.svg" width="32" height="32">
-	<img ng-if="autoscrollTarget < curScroll" src="/images/autoscroll-up.svg" width="32" height="32">
+<div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
+	<img src="/images/autoscroll.svg" width="32" height="32">
 </div>
 
 <div ng-show="show.navPanel || show.searchPanel || show.helpPanel" class="modal-backdrop" ng-click="hidePanels()"></div>

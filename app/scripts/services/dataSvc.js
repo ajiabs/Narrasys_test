@@ -1,5 +1,12 @@
 'use strict';
 
+// TESTING:
+// badge event is 53a1d2162442bd24f9000004
+// m/c event is 539a0d182442bd86f1000004
+
+// badge template ID is 53a1d0672442bd95b1000002
+// m/c template id is 539a07ee2442bd20bf000006
+
 // TODO: load and resolve categories
 
 // Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
@@ -242,7 +249,7 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
-		// PRODUCER   WIP
+		// PRODUCER
 		// a different idiom here, let's see if this is easier to conceptualize.
 		// TODO These may belong in modelSvc rather than dataSvc...
 
@@ -319,7 +326,7 @@ angular.module('com.inthetelling.story')
 			delete evt.asjson;
 
 			// delete derived and temporary fields
-			// TODO instead of this should store only those fields we explicitly want to keep; extraneous data gets stored in the DB
+			// may not need to do this, check server roundtrip to see if the APIs throw out unexpected fields
 			delete evt.styleCss;
 			delete evt.layoutCss;
 			delete evt.isContent;

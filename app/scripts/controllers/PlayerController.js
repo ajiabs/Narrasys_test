@@ -14,12 +14,11 @@ angular.module('com.inthetelling.story')
 
 			//Autoscroll only in explore mode for now
 			if (newMode === 'review') {
-				// console.log("enable autoscroll");
+				// console.log("unblocking autoscroll");
 				appState.autoscroll = true;
 				appState.autoscrollBlocked = false;
-				$timeout(startScrollWatcher); // timeout is for edge case where user loads review mode first, before handleAutoscroll is defined below...
+				$timeout(handleAutoscroll); // timeout is for edge case where user loads review mode first, before handleAutoscroll is defined below...
 			} else {
-				// console.log("disable autoscroll");
 				appState.autoscroll = false;
 			}
 			$timeout(function () {
@@ -43,7 +42,7 @@ angular.module('com.inthetelling.story')
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		// console.log("playerController init");
+		console.log("playerController init");
 		appState.init();
 		errorSvc.init();
 		appState.episodeId = $routeParams.epId;
@@ -100,6 +99,9 @@ angular.module('com.inthetelling.story')
 					}
 				}, 5000);
 			}
+		});
+		$scope.$on('$destroy', function () {
+			videoControlsWatcher();
 		});
 
 		$scope.showControls = function () {
@@ -191,10 +193,9 @@ angular.module('com.inthetelling.story')
 		// Autoscroll
 		// Some jQuery dependencies here (namespaced bindings, animated scroll)
 
-		// appState.autoscroll = we are in a mode which wants autoscroll
-		// appState.autoscrollBlocked = user has disabled autoscroll (by scrolling manually)
-		// appState.autoscrollTarget = position to which autoscroll wants to aim
-		// (Those are in appState instead of $scope becuase in future we'll want scenes to be able to autoscroll too)
+		// appstate.autoscroll = we are in a mode which wants autoscroll
+		// appstate.autoscrollBlocked = user has disabled autoscroll (by scrolling manually)
+		// (Those are in modelSvc instead of $scope becuase in future we'll want scenes to be able to autoscroll too)
 
 		// isn't it weird how we read the scrollTop from (window), but have to animate it on (body,html)?
 
@@ -202,7 +203,6 @@ angular.module('com.inthetelling.story')
 		// #CONTAINER instead of window.  Have removed that, but leaving this here in case we bring it back:
 		var autoscrollableNode = $(window);
 		var animatableScrollNode = $('html,body');
-		var autoscrollTimer;
 
 		var startScrollWatcher = function () {
 			// console.log("startScrollWatcher");
@@ -211,15 +211,18 @@ angular.module('com.inthetelling.story')
 				// User-initiated scrolling should block autoscroll.
 				// console.log("user scrolled");
 				animatableScrollNode.stop();
-				appState.autoscrollBlocked = true;
 				stopScrollWatcher();
+				appState.autoscrollBlocked = true;
 			});
+			// handleAutoscroll();
 		};
+		var autoscrollTimer;
 
 		var stopScrollWatcher = function () {
 			// console.log("stopScrollWatcher");
 			autoscrollableNode.unbind("scroll");
 			$interval.cancel(autoscrollTimer);
+
 		};
 
 		$scope.enableAutoscroll = function () {
@@ -230,67 +233,52 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		// TODO this is a relatively expensive watch.  Could greatly increase its $interval if we
+		// support directly triggering it from timeline on seek()... 
 		var handleAutoscroll = function () {
-			// console.log("handleAutoscroll");
-			// if autoscroll is allowed and not blocked by user activity,
+			// if autoscroll is true and autoscrollBlocked is false,
 			// find the topmost visible current item and scroll to put it in the viewport.
 			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
 			if (appState.autoscrollBlocked || !appState.autoscroll) {
 				return;
 			}
 
-			if ($scope.autoscrollTarget) {
-				// console.log("handleAutoscroll triggering a scroll");
-				stopScrollWatcher();
-				animatableScrollNode.animate({
-					"scrollTop": $scope.autoscrollTarget
-				}, 1500);
-				// Don't use jQuery's animation callback; this would get called twice because animatableScrollNode is two nodes...
-				$timeout(function () {
-					startScrollWatcher();
-				}, 1750); // allow extra time; iPad was still capturing the tail end of the animated scroll
-			}
-		};
-
-		var findAutoscrollTarget = function () {
-			if (!appState.autoscroll) {
-				return;
-			}
-			// returns the scroll position of the topmost current item, if there is one, and it is not already in view.
+			// find topmost visible current items:
 			var top = Infinity;
-			$scope.curScroll = autoscrollableNode.scrollTop();
-
+			var curScroll = autoscrollableNode.scrollTop();
 			angular.forEach($('.content .item.isCurrent:visible'), function (item) {
-				var t = item.getBoundingClientRect().top + $scope.curScroll;
+				var t = item.getBoundingClientRect().top + curScroll;
 				if (t < top) {
 					top = t;
 				}
 			});
-
 			if (top === Infinity) {
-				// no current item found
-				$scope.autoscrollTarget = false;
 				return;
 			}
 
+			// There's a visible current item; is it within the viewport?
 			var slop = $(window).height() / 5;
-			if (top > $scope.curScroll + slop && top < ($scope.curScroll + slop + slop + slop + slop)) {
-				// topmost item is already inside the viewport
-				$scope.autoscrollTarget = false;
+			if (top > curScroll + slop && top < (curScroll + slop + slop + slop)) {
 				return;
 			}
 
-			if (top < slop && $scope.curScroll < slop) {
-				// too close to top of window to bother
-				$scope.autoscrollTarget = false;
-				return;
+			if (top < slop && curScroll < slop) {
+				return; // too close to top of window to bother
 			}
 
-			$scope.autoscrollTarget = top - slop;
+			// Okay, we got past all those returns; it must be time to scroll
+			// console.log("handleAutoscroll triggering a scroll");
+			stopScrollWatcher();
+			animatableScrollNode.animate({
+				"scrollTop": top - slop
+			}, 1500);
+
+			// Don't use jQuery's animation callback; this would get called twice because animatableScrollNode is two nodes...
+			$timeout(function () {
+				startScrollWatcher();
+			}, 1750); // allow extra time; iPad was still capturing the tail end of the animated scroll
+
 		};
-
-		// keep this updated as the user scrolls the window
-		var autoscrollTargetTimer = $interval(findAutoscrollTarget, 403);
 
 		startScrollWatcher();
 
@@ -302,13 +290,6 @@ angular.module('com.inthetelling.story')
 			appState.show.helpPanel = false;
 			appState.show.navPanel = false;
 			appState.itemDetail = false;
-		});
-
-		$scope.$on('$destroy', function () {
-			console.log("destroying playerController");
-			videoControlsWatcher();
-			stopScrollWatcher();
-			$interval.cancel(autoscrollTargetTimer);
 		});
 
 		// TEMPORARY: Producer code below this line
