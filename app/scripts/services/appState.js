@@ -52,6 +52,7 @@ angular.module('com.inthetelling.story')
 		svc.init();
 
 		// workaround for iOS crasher (can't bind to window.resize when inside an iframe)
+		// TODO this is a potential memory leak, this interval never gets destroyed
 		$interval(function () {
 			svc.windowHeight = angular.element(window).height();
 			svc.windowWidth = angular.element(window).width();

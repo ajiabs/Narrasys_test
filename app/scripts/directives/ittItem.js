@@ -75,7 +75,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				// Slight hack to simplify css for image-fill:
-				if (scope.item.styleCss.match(/fill|contain|cover/)) {
+				if (scope.item.styleCss && scope.item.styleCss.match(/fill|contain|cover/)) {
 					// TODO: figure out why item.asset.cssUrl works in IE, and item.backgroundImageStyle works in everything else.
 					// Probably just an escaped-quote issue or something dumb like that
 					scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
@@ -84,24 +84,25 @@ angular.module('com.inthetelling.story')
 
 				// TODO plugins should each be their own directive!
 				if (scope.item.data) {
+
 					scope.plugin = scope.item.data._plugin;
 					scope.plugin._type = scope.item.data._pluginType;
 
 					// BEGIN multiple choice question
-					if (scope.plugin._type === 'multiplechoice') {
-						// ng-model was handling this before, but now broken somehow. Forcing it for demo:
-						scope.setChoice = function (i) {
-							if (!scope.plugin.hasBeenAnswered) {
-								scope.plugin.selectedDistractor = i;
-							}
-						};
+					if (scope.plugin._type === 'question') {
 
 						scope.scoreQuiz = function () {
 							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
+							scope.plugin.hasBeenAnswered = true;
+							analyticsSvc.captureEventActivity("question-answered", scope.item._id);
+						};
 
+						scope.scorePoll = function () {
+							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
 							scope.plugin.hasBeenAnswered = true;
 
-							analyticsSvc.captureEventActivity("question-answered", scope.item._id);
+							// TODO: store user question data, get back list of all users' responses 
+							// and add it to the item
 						};
 
 						scope.resetQuestion = function () {
@@ -112,6 +113,7 @@ angular.module('com.inthetelling.story')
 								scope.plugin.distractors[i].selected = false;
 							}
 						};
+
 					}
 					// END m/c question
 					// BEGIN credly badge

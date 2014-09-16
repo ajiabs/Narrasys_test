@@ -287,9 +287,6 @@ angular.module('com.inthetelling.story')
 		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but 
 		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them.
 
-
-		TODO this needs to ensure that scenes are contiguous and that items don't overlap scenes
-		(there are authoring issues in existing episodes where items start a fraction of a second before their intended scene does)
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
 			// console.log("resolveEpisodeEvents");
@@ -332,7 +329,7 @@ angular.module('com.inthetelling.story')
 					/* possible cases: 
 							start and end are within the scene: put it in this scene
 							start is within this scene, end is after this scene: 
-								if item start is close to the scene end, change item start to next scene start time. The next loop will assign it to that scene
+								if item start is close to the scene end, change item start to next scene start time. The next scene loop will assign it to that scene
 								if item start is not close to the scene end, change item end to scene end, assign it to this scene.
 							start is before this scene, end is within this scene: will have already been fixed by a previous loop
 							start is after this scene: let the next loop take care of it

@@ -1,31 +1,32 @@
 
-Plugin events need to support template URLs just as other items do.  For now
+Paramaterize top toolbar height as a function of the episode template, position content relative to a container instead of hardcoding, then we can fade out top toolbar (except for the modes button) along with the bottom toolbar
+
+
+(In authoring tool) Plugin events need to support template URLs just as other items do.  For now
 they're hardcoded to usc-badges.html
 
-
-Bring back closed captions in small screens
-
-autoscroll: 
-* hide the button when there is no scroll-to target (no current item) or when the current item is already onscreen
-* change icon into an arrow pointing in the direction the window will be scrolling
+Code tidiness:
+Extract item plugins from ittItem into separate directives
+Extract autscroll and maybe toolbar hide/reveal behavior from PlayerController into  own directives
 
 
-For USC: control visibility of links based on achievements(?)
+add keyboard accessibility (at minimum put a tabindex and ARIA roles on mode and other buttons)
+
+More key controls:  up/down for prev/next transmedia item, left/right for prev/next scene
+(WSAD too just for yucks?)
+
+Other 508 compliance: alt tags on images, etc
 
 
-Bring back the loading icon for iframes  (disabled because wasn't working with PDFs in chrome)
+Bring back the loading icon for iframes attempted in v4.0.32 (disabled because wasn't working with PDFs in chrome)
+
 
 
 include a sample iframe page with instructions for customers on how best to embed our player
 
 
-Add appState.time param to framebreaker link (/v1/new_window/{epId}?t=foo
-
-
-
-
-
 review mode: force-transmedia template is too strict; should override link, upload and annotation, not plugins
+
 
 Change handling of 500 errors: don't display returned html, just a generic error message
 
@@ -39,8 +40,6 @@ Currently player is url-encoding " ", "&" and "?" for uploads url and alternate_
 
 Make a list for Bill of which templateUrls should map to which new fields
 
-More key controls:  up/down for prev/next transmedia item, left/right for prev/next scene
-(WSAD too just for yucks?)
 
 For bill: is it possible to extract video information (size, duration) from a video file when the user is uploading it?  — espeically duration, framerate  (e.g. 24000/1001), duration are most important
 
@@ -57,6 +56,8 @@ Safari is still not working with youtube, either in desktop or ipad/phone. argh.
 
 youtube is failing to play some videos on firefox when  flash is not installed.  Niche problem, but needs an error message with a link to flash installer at least.   
 
+
+Longer-term suggestion from Abi: a way to show important transmedia in watch mode (allow flagging items as 'essential' so they'll show up in all modes?)
 
 iOS is still letting you drag the timeline outside the visible boundaries when the timeline is zoomed in (no longer can set values outside the playable range, though, so we've got that going for us which is nice)
 
@@ -79,8 +80,6 @@ ModelSvc may need to tweak episode data (ensure scenes are contiguous and non-ov
 
 Bill may change API to return all parent containers for an episode instead of us having to walk up the tree
 
-
-correct youtube urls into embeddable format
 
 episodeMetrics (or a new endpoint) should log Story application errors, too -- with browser version, platform, etc if possible
 

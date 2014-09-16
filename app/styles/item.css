@@ -439,16 +439,16 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 /* - - - - - - - - - - - - - -  */
 
-.multipleChoiceQuestion label {
+.item .question label {
 	display: block;
 	padding: 0.3em;
 }
-.multipleChoiceQuestion .correct {
+.item .question .correct {
 	border-left: 5px solid #0C0;
 }
-.multipleChoiceQuestion .incorrect {
+.item .question .incorrect {
 	border-left: 5px solid #C00;
 }
-.multipleChoiceQuestion input[type="button"]:disabled {
-	display: none;
+.item .question input[type="radio"] {
+	margin-right: 0.5em;
 }
