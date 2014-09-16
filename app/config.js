@@ -10,6 +10,6 @@ var config = {
 	localStorageKey: "storyKey",
 	disableYoutube: false,
 	disableAnalytics: false,
-	debugInBrowser: false // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
+	debugInBrowser: true // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
 
 };
