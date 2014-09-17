@@ -1,3 +1,4 @@
+/*jshint bitwise: false*/
 'use strict';
 
 angular.module('com.inthetelling.story')
@@ -271,9 +272,7 @@ angular.module('com.inthetelling.story')
 
 	var ensureUniqueFilename = function(deferred) {
 	    deferred = deferred || $q.defer();
-	    if(!fileBeingUploaded.hasOwnProperty('uniqueName')) {
-		fileBeingUploaded.uniqueName = fileBeingUploaded.name;
-	    }
+	    fileBeingUploaded.uniqueName = generateUUID();
 	    getUploadSession().then(function () {
 		console.log('awsSvc, ensureUniqueFilename: ', fileBeingUploaded.uniqueName);
 		//First check for an object with the same name
@@ -295,7 +294,7 @@ angular.module('com.inthetelling.story')
 					for(var mpu=0; mpu < data.Uploads.length; mpu++) {
 					    if(data.Uploads[mpu].Key === uniqueKey) {
 						console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, ' already exists!');
-						fileBeingUploaded.uniqueName = generateUniqueFilename(fileBeingUploaded.name);
+						fileBeingUploaded.uniqueName = generateUUID();
 						break;
 					    } else if(mpu === data.Uploads.length - 1) {
 						console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, '  is unique!');
@@ -308,7 +307,8 @@ angular.module('com.inthetelling.story')
 			    deferred.resolve();
 			}
 		    } else {
-			fileBeingUploaded.uniqueName = generateUniqueFilename(fileBeingUploaded.name);
+			//Had a filename collision, try again
+			fileBeingUploaded.uniqueName = generateUUID();
 			ensureUniqueFilename(deferred);
 		    }
 		});
@@ -317,16 +317,26 @@ angular.module('com.inthetelling.story')
 	    return deferred.promise;
 	};
 
-	var generateUniqueFilename = function(filename) {
-	    var parts = filename.split('.');
-	    var fileExt = "";
-	    if(parts.length > 1) {
-		fileExt = "."+parts.pop();
-	    }
-	    var basename = parts.join('.');
-	    var date = new Date();
-	    return basename+"_"+date.getTime()+fileExt;
+	var generateUUID = function() {
+	    var d = new Date().getTime();
+	    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		var r = (d + Math.random()*16)%16 | 0;
+		d = Math.floor(d/16);
+		return (c==='x' ? r : (r&0x7|0x8)).toString(16);
+	    });
+	    return uuid;
 	};
+
+	//var generateUniqueFilename = function(filename) {
+	//    var parts = filename.split('.');
+	//    var fileExt = "";
+	//    if(parts.length > 1) {
+	//	fileExt = "."+parts.pop();
+	//    }
+	//    var basename = parts.join('.');
+	//    var date = new Date();
+	//    return basename+"_"+date.getTime()+fileExt;
+	//};
 
 	var isSmallUpload = function() {
 	    if(fileBeingUploaded.size <= fiveMB) {
