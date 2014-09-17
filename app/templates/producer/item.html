@@ -1,10 +1,28 @@
 <div class="itemEdit">
-	Item edit
 
 
-	<input type="button" ng-click="save(item)" value="Save" ng-disabled="item.editwarning">
-	<input type="button" ng-click="reset(item)" value="Reset">
-	<input type="button" style="background-color:#F00" ng-click="delete(item)" value="Delete">
+	<table class="authoringForm">
+		<tr>
+			<td class="label">Start time</td>
+			<td>
+				<input type="text">
+			</td>
+		</tr>
+		<!-- TODO timeline slider to control time also -->
+
+		<span ng-include="itemTemplateUrl"></span>
+
+		<tr>
+			<td colspan="2" class="label">
+				<a ng-click="appState.editing = false">Cancel</a>
+
+				<input type="button" value="delete" ng-if="TODO=DONE">
+
+				<input type="button" value="Save">
+			</td>
+		</tr>
+	</table>
+
 	<!-- 
 	<ul class="tabs">
 		<li><a ng-class="{active: !visibleTab || visibleTab == 0}" ng-click="visibleTab=0">Edit item content</a>

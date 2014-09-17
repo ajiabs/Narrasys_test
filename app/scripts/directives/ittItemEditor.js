@@ -3,7 +3,7 @@
 /* WIP for Producer */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function (modelSvc, appState, $filter, dataSvc) {
+	.directive('ittItemEditor', function (appState) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -11,10 +11,16 @@ angular.module('com.inthetelling.story')
 				item: '=ittItemEditor'
 			},
 			//template: '<div ng-include="item.templateUrl"></div>',
-			templateUrl: 'templates/item/edit.html',
+			templateUrl: 'templates/producer/item.html',
 			controller: 'ItemController',
 			link: function (scope) {
 				console.log('ittEditor', scope);
+
+				if (scope.item.type) {
+					scope.itemTemplateUrl = 'templates/producer/item/' + scope.item.type + '.html';
+				}
+
+				scope.appState = appState;
 
 				// delete scope.item.asjson;
 				// scope.originalItem = angular.copy(scope.item);

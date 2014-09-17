@@ -52,8 +52,7 @@
 			</div>
 
 			<div ng-show="appState.editing" class="navPanel" ng-class="episode.styleCss">
-				TODO EDIT PANEL HERE
-				<div itt-item-editor="appState.editing"></div>
+				<div ng-if="appState.editing" itt-item-editor="appState.editing"></div>
 			</div>
 			<div itt-timeline></div>
 		</div>
