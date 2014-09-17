@@ -187,15 +187,15 @@
 	left: 2em;
 }
 .button-prev:before {
-	content: "\e601";
+	content: "\e608";
 	font-family: Story;
 }
 .button-next:before {
 	font-family: Story;
-	content: "\e600";
+	content: "\e607";
 }
 .button-scenemenu:before {
-	content: "\e605";
+	content: "\e60b";
 	font-family: Story;
 	font-size: 0.6em;
 	padding-left: 1em;
@@ -255,10 +255,10 @@
 }
 .button-fullscreen:before {
 	font-family: Story;
-	content: "\e606";
+	content: "\e60c";
 }
 .button-fullscreen.active:before {
-	content: "\e608";
+	content: "\e60d";
 }
 .button-zoomout,
 .button-zoomin {
@@ -268,11 +268,11 @@
 }
 .button-zoomout:before {
 	font-family: Story;
-	content: "\e60e";
+	content: "\e613";
 }
 .button-zoomin:before {
 	font-family: Story;
-	content: "\e60d";
+	content: "\e612";
 }
 .volumebar {
 	position: relative;

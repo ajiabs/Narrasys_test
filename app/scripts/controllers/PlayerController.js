@@ -177,6 +177,7 @@ angular.module('com.inthetelling.story')
 			appState.show.helpPanel = false;
 			appState.show.navPanel = false;
 			appState.show.searchPanel = false;
+			appState.editing = false;
 		};
 
 		$scope.noMoreHelp = function () {
@@ -290,6 +291,7 @@ angular.module('com.inthetelling.story')
 			appState.show.helpPanel = false;
 			appState.show.navPanel = false;
 			appState.itemDetail = false;
+			appState.editing = false;
 		});
 
 		// TEMPORARY: Producer code below this line

@@ -132,6 +132,29 @@ Transition time should be set for the specific object type
 	opacity: 0;
 }
 /* ------------------------------------------------------------------------------------------------------------------
+   transitionExpandW */
+
+.animate.transitionExpandW {
+	overflow: hidden;
+	display: block;
+}
+.animate.ng-enter.transitionExpandW {
+	max-width: 1px;
+	opacity: 0;
+}
+.animate.ng-enter-active.transitionExpandW {
+	max-width: 1200px;
+	opacity: 1;
+}
+.animate.ng-leave.transitionExpandW {
+	max-width: 1200px;
+	opacity: 1;
+}
+.animate.ng-leave.ng-leave-active.transitionExpandW {
+	max-width: 1px;
+	opacity: 0;
+}
+/* ------------------------------------------------------------------------------------------------------------------
    transitionPop */
 
 .animate.ng-enter.transitionPop {

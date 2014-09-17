@@ -182,7 +182,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	font-size: 1em;
 }
 .touchableIndicator:before {
-	content: "\e602";
+	content: "\e609";
 	text-shadow: 1px 1px 1px #FFF;
 }
 .item .touchable:hover .touchableIndicator {

@@ -51,7 +51,10 @@
 				</div>
 			</div>
 
-			<!-- <div ng-if="appState.editing" itt-item-editor="appState.editing"></div> -->
+			<div ng-show="appState.editing" class="navPanel" ng-class="episode.styleCss">
+				TODO EDIT PANEL HERE
+				<div itt-item-editor="appState.editing"></div>
+			</div>
 			<div itt-timeline></div>
 		</div>
 	</div>
@@ -62,7 +65,7 @@
 	<img src="/images/autoscroll.svg" width="32" height="32">
 </div>
 
-<div ng-show="show.navPanel || show.searchPanel || show.helpPanel" class="modal-backdrop" ng-click="hidePanels()"></div>
+<div ng-show="show.navPanel || show.searchPanel || show.helpPanel || appState.editing" class="modal-backdrop" ng-click="hidePanels()"></div>
 
 <!-- ITEM DETAIL -->
 <div ng-show="appState.itemDetail" class="modal-backdrop" ng-click="appState.itemDetail=false"></div>

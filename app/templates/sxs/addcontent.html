@@ -1,0 +1,14 @@
+<div class="sxs addcontent" ng-show="!appState.editing">
+	<span ng-if="expanded" style="padding: 0 1em" class="animate transitionExpandW">
+		<a class="button-comment" ng-click="addItem('comment')">Comment</a>
+		<a class="button-link" ng-click="addItem('link')">Link</a>
+		<a class="button-question" ng-click="addItem('question')">Question</a>
+		<a class="button-image" ng-click="addItem('image')">Image</a>
+		<a class="button-file" ng-click="addItem('file')">File</a>
+		<a class="button-video" ng-click="addItem('video')">Video</a>
+	</span>
+
+	<span ng-if="!expanded">
+		<a class="button-add" ng-click="expand()">Add</a>
+	</span>
+</div>

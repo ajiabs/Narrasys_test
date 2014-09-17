@@ -137,26 +137,26 @@
 	font-size: 1em;
 }
 .button-watch:before {
-	content: "\e60b"
+	content: "\e610"
 }
 .button-discover:before {
-	content: "\e60a"
+	content: "\e60f"
 }
 .button-review:before {
-	content: "\e60c"
+	content: "\e611"
 }
 .button-search:before {
-	content: "\e602"
+	content: "\e609"
 }
 .cur .button-search:before {
-	content: "\e603"
+	content: "\e60a"
 }
 .button-mainframeescape:before {
-	content: "\e609"
+	content: "\e60e"
 }
 .escapelink:before {
 	font-family: Story;
-	content: "\e609";
+	content: "\e60e";
 	padding-right: 0.5em;
 	font-size: 0.86em;
 	color: #333;
@@ -170,7 +170,7 @@
 .autoscroll {
 	position: fixed;
 	right: 16px;
-	bottom: 106px;
+	bottom: 156px;
 	width: 32px;
 	height: 32px;
 	opacity: 0.7;
@@ -460,10 +460,10 @@
 	padding-right: 0.5em;
 }
 .helpPanel li.video:before {
-	content: "\e60b"
+	content: "\e610"
 }
 .helpPanel li.directed:before {
-	content: "\e60a"
+	content: "\e60f"
 }
 @media screen and (max-width: 480px) {
 	.helpPanel li.directed {
@@ -471,7 +471,7 @@
 	}
 }
 .helpPanel li.explore:before {
-	content: "\e60c"
+	content: "\e611"
 }
 .helpPanel .goAway {
 	float: right;

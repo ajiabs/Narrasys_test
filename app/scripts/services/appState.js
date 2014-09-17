@@ -46,6 +46,9 @@ angular.module('com.inthetelling.story')
 			svc.itemDetail = false; // Put item data here to show it as a modal overlay
 			svc.autoscroll = false; //scroll window to make current items visible (in relevant modes)
 			svc.autoscrollBlocked = false; // User has disabled autoscroll
+
+			svc.sxs = config.sxs; // include controls for side-by-side editing.  For now (educause) we're pretending all users are instructors
+
 			svc.editing = false; // Object currently being edited by user (TODO)
 			// svc.youtubeIsReady = false; // Set to true when youtube API finishes loading.  DO NOT set this to false on init, otherwise navigating from episode to episode breaks (we reinit on new episode but that won't trigger youtube's ready event)
 		};

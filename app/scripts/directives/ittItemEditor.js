@@ -14,41 +14,43 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/item/edit.html',
 			controller: 'ItemController',
 			link: function (scope) {
-				// console.log('ittEditor', scope, element, attrs);
+				console.log('ittEditor', scope);
 
-				delete scope.item.asjson;
-				scope.originalItem = angular.copy(scope.item);
-				scope.item.asjson = $filter("pretty")(scope.item);
+				// delete scope.item.asjson;
+				// scope.originalItem = angular.copy(scope.item);
+				// scope.item.asjson = $filter("pretty")(scope.item);
 
-				var unwatch = scope.$watch(function () {
-					return scope.item.asjson;
-				}, function (updated) {
+				// var unwatch = scope.$watch(function () {
+				// 	return scope.item.asjson;
+				// }, function (updated) {
 
-					try {
-						scope.item = JSON.parse(updated);
-						scope.item.asjson = $filter("pretty")(scope.item);
-						scope.item.editwarning = false;
-					} catch (e) {
-						scope.item.editwarning = true;
-					}
+				// 	try {
+				// 		scope.item = JSON.parse(updated);
+				// 		scope.item.asjson = $filter("pretty")(scope.item);
+				// 		scope.item.editwarning = false;
+				// 	} catch (e) {
+				// 		scope.item.editwarning = true;
+				// 	}
 
-				});
+				// });
 
-				scope.$on('$destroy', function () {
-					unwatch();
-				});
+				// scope.$on('$destroy', function () {
+				// 	unwatch();
+				// });
 
-				scope.save = function () {
-					dataSvc.storeItem(angular.copy(scope.item)).then(function (ret) {
-						console.log(ret);
-					});
-				};
+				// scope.save = function () {
+				// 	dataSvc.storeItem(angular.copy(scope.item)).then(function (ret) {
+				// 		console.log(ret);
+				// 	});
+				// };
 
-				scope.reset = function () {
-					console.log("reset");
-					scope.item = angular.copy(scope.originalItem);
-					scope.item.asjson = $filter("pretty")(scope.item);
-				};
+				// scope.reset = function () {
+				// 	console.log("reset");
+				// 	scope.item = angular.copy(scope.originalItem);
+				// 	scope.item.asjson = $filter("pretty")(scope.item);
+				// };
+
+				///////
 
 				// if (!scope.item.layouts) {
 				// 	scope.item.layouts = [];
