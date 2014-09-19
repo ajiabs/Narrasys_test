@@ -32,7 +32,7 @@ angular.module('com.inthetelling.story')
 					} else {
 						timelineSvc.pause();
 						scope.captureInteraction();
-						if (element.closest('.content').width() > 400) {
+						if (!(scope.item.styleCss.match(/sidebar/).length) && element.closest('.content').width() > 400) {
 							// show detail inline if there's room for it:
 							scope.item.showInlineDetail = true;
 						} else {
