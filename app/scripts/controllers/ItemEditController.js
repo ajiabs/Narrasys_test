@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ItemEditController', function ($scope, appState, modelSvc) {
+	.controller('ItemEditController', function ($scope, $rootScope, appState, modelSvc) {
 
 		$scope.addItem = function (type) {
 			console.log("adding item of type ", type);
@@ -114,5 +114,7 @@ angular.module('com.inthetelling.story')
 				modelSvc.resolveEpisodeEvents(appState.episodeId);
 			}
 		};
+
+		$rootScope.$on("player.dismissAllPanels", $scope.cancelEdit);
 
 	});

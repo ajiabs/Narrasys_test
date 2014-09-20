@@ -179,12 +179,7 @@ angular.module('com.inthetelling.story')
 			appState.show.helpPanel = false;
 			appState.show.navPanel = false;
 			appState.itemDetail = false;
-			if (appState.editing) {
-				// HACK functionality leakage from ItemEditController:
-				appState.editing = false;
-				delete(modelSvc.events["internal:editing"]);
-				modelSvc.resolveEpisodeEvents(appState.episodeId);
-			}
+			$rootScope.$emit("player.dismissAllPanels");
 		};
 
 		$scope.noMoreHelp = function () {
