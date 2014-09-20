@@ -174,10 +174,17 @@ angular.module('com.inthetelling.story')
 		});
 
 		$scope.hidePanels = function () {
+			// dismiss ALL THE THINGS
+			appState.show.searchPanel = false;
 			appState.show.helpPanel = false;
 			appState.show.navPanel = false;
-			appState.show.searchPanel = false;
-			appState.editing = false;
+			appState.itemDetail = false;
+			if (appState.editing) {
+				// HACK functionality leakage from ItemEditController:
+				appState.editing = false;
+				delete(modelSvc.events["internal:editing"]);
+				modelSvc.resolveEpisodeEvents(appState.episodeId);
+			}
 		};
 
 		$scope.noMoreHelp = function () {
@@ -285,14 +292,7 @@ angular.module('com.inthetelling.story')
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
-		$rootScope.$on("userKeypress.ESC", function () {
-			// dismiss ALL THE THINGS
-			appState.show.searchPanel = false;
-			appState.show.helpPanel = false;
-			appState.show.navPanel = false;
-			appState.itemDetail = false;
-			appState.editing = false;
-		});
+		$rootScope.$on("userKeypress.ESC", $scope.hidePanels);
 
 		// TEMPORARY: Producer code below this line
 		// If this turns out to be any good move it into a producer directive.

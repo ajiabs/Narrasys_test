@@ -15,6 +15,14 @@
 		<textarea ng-model="appState.editing.data._plugin.questiontext" rows="4"></textarea>
 	</div>
 </div>
+<div class="field">
+	<div class="label">Image (optional)
+	</div>
+	<div class="input">
+		<input type="file" ng-model="TODO">
+	</div>
+</div>
+
 <div class="field" ng-repeat="distractor in appState.editing.data._plugin.distractors">
 	<div class="label">
 		{{$index | alpha}} &nbsp;

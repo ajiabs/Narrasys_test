@@ -93,15 +93,26 @@ angular.module('com.inthetelling.story')
 
 			//TODO watch start time, if it changes, update it in timelineSvc
 
+			modelSvc.cache("event", appState.editing);
+			modelSvc.resolveEpisodeEvents(appState.episodeId);
+
 			$scope.$watch(function () {
 				return appState.editing;
 			}, function () {
 				console.log("updtaed appState.editing");
 				modelSvc.cache("event", appState.editing);
-				modelSvc.resolveEpisodeEvents(appState.episodeId);
 
 			}, true);
 
+		};
+
+		$scope.cancelEdit = function () {
+			console.log("Cancel edit");
+			if (appState.editing) {
+				appState.editing = false;
+				delete(modelSvc.events["internal:editing"]);
+				modelSvc.resolveEpisodeEvents(appState.episodeId);
+			}
 		};
 
 	});

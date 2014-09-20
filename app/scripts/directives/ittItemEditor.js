@@ -12,7 +12,7 @@ angular.module('com.inthetelling.story')
 			},
 			//template: '<div ng-include="item.templateUrl"></div>',
 			templateUrl: 'templates/producer/item.html',
-			controller: 'ItemController',
+			controller: 'ItemEditController',
 			link: function (scope) {
 				console.log('ittEditor', scope);
 
