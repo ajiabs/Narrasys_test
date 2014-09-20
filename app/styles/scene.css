@@ -29,10 +29,12 @@
 	position: fixed;
 }
 .windowFg.fgLayer {
-	background-color: #FFF;
+	background-color: rgba(0, 0, 0, 0.5);
 }
-.windowFg.fgLayer .overflowY {
-	margin: 70px 2em 200px 2em;
+.windowFg.fgLayer .content {
+	margin: 20% 4em 200px 4em;
+	background-color: #FFF;
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 }
 .videoContainer {
 	overflow: hidden;

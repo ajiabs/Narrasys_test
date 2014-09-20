@@ -4,7 +4,6 @@ DONE cancel / esc needs to clear appState.editing
 
 item templates for sxs items 
 
-(put sxs items in front of modal backdrop (use a different backdrop for sxs edit drawer, behind the 'stop' layer, and change the stop layer to have a margin rather than going full bleed)
 
 sxs items need to be added to timeline, timeline updated when sxs item time changes
 
