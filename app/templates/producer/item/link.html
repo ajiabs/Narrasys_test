@@ -1,15 +1,21 @@
-<span>
-
-	<tr>
-		<td class="label">TODO LINK fields</td>
-		<td>
-			<input type="text" value="TODO LINK FIELDS">
-		</td>
-	</tr>
-	<tr>
-		<td class="label">TODO LINK fields</td>
-		<td>
-			<input type="text" value="TODO LINK FIELDS">
-		</td>
-	</tr>
-</span>
+<div class="field">
+	<div class="label">Title
+	</div>
+	<div class="input">
+		<input type="text" ng-model="appState.editing.title">
+	</div>
+</div>
+<div class="field">
+	<div class="label">URL
+	</div>
+	<div class="input">
+		<input type="text" ng-model="appState.editing.url">
+	</div>
+</div>
+<div class="field">
+	<div class="label">Description
+	</div>
+	<div class="input">
+		<textarea ng-model="appState.editing.description" rows="4"></textarea>
+	</div>
+</div>

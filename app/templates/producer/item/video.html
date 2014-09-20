@@ -1,15 +1,34 @@
-<span>
+<div class="field">
+	<small>
+		<div style="width:20%; display:inline-block"></div>
+		<div style="width:48%; display:inline-block">Link to a video on YouTube...</div>
+		<div style="width:32%; display:inline-block">...or make your own</div>
+	</small>
+</div>
+</div>
+<div class="field">
+	<div class="label">Video</div>
+	<div class="input">
+		<div style="width:60%; display:inline-block; padding-right: 5%">
+			<input type="text" ng-model="TODO">
+		</div>
+		<div style="width:40%; display:inline-block">
+			<input type="button" value="Upload">
+		</div>
+	</div>
+</div>
 
-	<tr>
-		<td class="label">TODO video fields</td>
-		<td>
-			<input type="text" value="TODO video FIELDS">
-		</td>
-	</tr>
-	<tr>
-		<td class="label">TODO video fields</td>
-		<td>
-			<input type="text" value="TODO video FIELDS">
-		</td>
-	</tr>
-</span>
+<div class="field">
+	<div class="label">Title
+	</div>
+	<div class="input">
+		<input type="text" ng-model="appState.editing.title">
+	</div>
+</div>
+<div class="field">
+	<div class="label">Description
+	</div>
+	<div class="input">
+		<textarea ng-model="appState.editing.description" rows="4"></textarea>
+	</div>
+</div>

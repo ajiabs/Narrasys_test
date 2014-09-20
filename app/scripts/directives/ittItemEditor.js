@@ -20,6 +20,12 @@ angular.module('com.inthetelling.story')
 					scope.itemTemplateUrl = 'templates/producer/item/' + scope.item.type + '.html';
 				}
 
+				if (scope.item.start_time) {
+					// TODO do we need to call timeline seek instead of setting appState.time here?
+
+					//					appState.time=scope.item.start_time;
+				}
+
 				scope.appState = appState;
 
 				// delete scope.item.asjson;

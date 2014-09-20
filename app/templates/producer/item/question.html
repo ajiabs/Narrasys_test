@@ -1,15 +1,40 @@
-<span>
-
-	<tr>
-		<td class="label">TODO question fields</td>
-		<td>
-			<input type="text" value="TODO question FIELDS">
-		</td>
-	</tr>
-	<tr>
-		<td class="label">TODO question fields</td>
-		<td>
-			<input type="text" value="TODO question FIELDS">
-		</td>
-	</tr>
-</span>
+<div class="field">
+	<div class="label">Question type
+	</div>
+	<div class="input">
+		<select ng-model="appState.editing.data._plugin.questiontype">
+			<option value="mc-poll">Poll</option>
+			<option value="mc-formative">Formative</option>
+		</select>
+	</div>
+</div>
+<div class="field">
+	<div class="label">Question text
+	</div>
+	<div class="input">
+		<textarea ng-model="appState.editing.data._plugin.questiontext" rows="4"></textarea>
+	</div>
+</div>
+<div class="field" ng-repeat="distractor in appState.editing.data._plugin.distractors">
+	<div class="label">
+		{{$index | alpha}} &nbsp;
+		<input type="checkbox" ng-model="distractor.correct" ng-if="appState.editing.data._plugin.questiontype == 'mc-formative'">
+	</div>
+	<div class="input">
+		<input type="text" ng-model="distractor.text">
+	</div>
+</div>
+<div class="field" ng-if="appState.editing.data._plugin.questiontype == 'mc-formative'">
+	<div class="label">Feedback when correct
+	</div>
+	<div class="input">
+		<input type="text" ng-model="appState.editing.data._plugin.correctfeedback">
+	</div>
+</div>
+<div class="field" ng-if="appState.editing.data._plugin.questiontype == 'mc-formative'">
+	<div class="label">Feedback when incorrect
+	</div>
+	<div class="input">
+		<input type="text" ng-model="appState.editing.data._plugin.incorrectfeedback">
+	</div>
+</div>

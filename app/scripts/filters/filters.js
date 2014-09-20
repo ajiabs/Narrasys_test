@@ -167,4 +167,10 @@ angular.module('com.inthetelling.story')
 		return function (t) {
 			return isNaN(t) ? "0:00" : Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
 		};
+	})
+	.filter('alpha', function () {
+		// To label ng-repeats by letter, use {{$index | alpha}}
+		return function (n) {
+			return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n % 26];
+		};
 	});

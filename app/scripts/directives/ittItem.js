@@ -9,7 +9,7 @@ angular.module('com.inthetelling.story')
 	.directive('ittItem', function ($http, $timeout, config, appState, analyticsSvc, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
-			replace: true,
+			replace: false,
 			scope: {
 				item: '=ittItem'
 			},
@@ -25,14 +25,13 @@ angular.module('com.inthetelling.story')
 
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
-
 					if (scope.item.showInlineDetail) {
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
 						scope.item.showInlineDetail = false;
 					} else {
 						timelineSvc.pause();
 						scope.captureInteraction();
-						if (element.closest('.content').width() > 400) {
+						if (element.width() > 400) {
 							// show detail inline if there's room for it:
 							scope.item.showInlineDetail = true;
 						} else {

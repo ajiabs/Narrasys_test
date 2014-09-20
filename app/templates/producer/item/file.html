@@ -1,15 +1,21 @@
-<span>
-
-	<tr>
-		<td class="label">TODO FILE fields</td>
-		<td>
-			<input type="text" value="TODO FILE FIELDS">
-		</td>
-	</tr>
-	<tr>
-		<td class="label">TODO FILE fields</td>
-		<td>
-			<input type="text" value="TODO FILE FIELDS">
-		</td>
-	</tr>
-</span>
+<div class="field">
+	<div class="label">Title
+	</div>
+	<div class="input">
+		<input type="text" ng-model="appState.editing.title">
+	</div>
+</div>
+<div class="field">
+	<div class="label">File
+	</div>
+	<div class="input">
+		<input type="file" ng-model="TODO">
+	</div>
+</div>
+<div class="field">
+	<div class="label">Description
+	</div>
+	<div class="input">
+		<textarea ng-model="appState.editing.description" rows="4"></textarea>
+	</div>
+</div>
