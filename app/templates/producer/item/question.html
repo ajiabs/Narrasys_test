@@ -29,20 +29,20 @@
 		<input type="checkbox" ng-model="distractor.correct" ng-if="appState.editing.data._plugin.questiontype == 'mc-formative'">
 	</div>
 	<div class="input">
-		<input type="text" ng-model="distractor.text">
+		<textarea ng-model="distractor.text" rows="4"></textarea>
 	</div>
 </div>
 <div class="field" ng-if="appState.editing.data._plugin.questiontype == 'mc-formative'">
 	<div class="label">Feedback when correct
 	</div>
 	<div class="input">
-		<input type="text" ng-model="appState.editing.data._plugin.correctfeedback">
+		<textarea rows="4" ng-model="appState.editing.data._plugin.correctfeedback"></textarea>
 	</div>
 </div>
 <div class="field" ng-if="appState.editing.data._plugin.questiontype == 'mc-formative'">
 	<div class="label">Feedback when incorrect
 	</div>
 	<div class="input">
-		<input type="text" ng-model="appState.editing.data._plugin.incorrectfeedback">
+		<textarea rows="4" ng-model="appState.editing.data._plugin.incorrectfeedback"></textarea>
 	</div>
 </div>

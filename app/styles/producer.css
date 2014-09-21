@@ -41,6 +41,19 @@
 	font-family: sans-serif;
 	font-size: 13px;
 }
+.authoringForm textarea {
+	max-height: 2em;
+	transition: max-height 1s;
+}
+.authoringForm textarea:focus {
+	max-height: 8em;
+}
+.authoringForm .input input:focus,
+.authoringForm .input textarea:focus,
+.authoringForm .input select:focus {
+	border-color: #666;
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+}
 .authoringForm .input input[type="checkbox"],
 .authoringForm .input input[type="radio"] {
 	width: 3em;
