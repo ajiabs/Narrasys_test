@@ -355,23 +355,29 @@ angular.module('com.inthetelling.story')
 			stopEventClock();
 		};
 
-		// for now this only supports a single episode starting at injectionTime=0
-		// in future will be able to inject episode events at injectionTime=whatever, shifting any later events
-		// to their new time (based on the total duration of the injected group)
-		// (which we'll need to get probably by passing in episode.duration along with the events?)
-
-		// TODO: ensure scenes are contiguous and non-overlapping
-
 		svc.injectEvents = function (events, injectionTime) {
+
+			console.log("timelineSvc.injectEvents: has ", svc.timelineEvents.length, " adding ", events.length);
+			// events should be an array of items in modelSvc.events
+			// for now this only supports adding events starting at injectionTime=0,
+			// which does not shift existing events later in time.
+
+			// in future will be able to inject episode events at injectionTime=whatever, shifting any later events
+			// to their new time (based on the total duration of the injected group)
+			// (which we'll need to get probably by passing in episode.duration along with the events?)
+
 			if (events.length === 0) {
 				return;
+			}
+			if (!injectionTime) {
+				injectionTime = 0;
 			}
 			angular.forEach(events, function (event) {
 				// add scenes to markedEvents[]:
 				if (event._type === "Scene" && event.title) {
 					svc.markedEvents.push(event);
 				}
-				if (event.start_time === 0 && !event._id.match('internal')) {
+				if (event.start_time === 0 && !event._id.match('internal:landingscreen')) {
 					event.start_time = 0.01;
 					modelSvc.events[event._id].start_time = 0.01;
 				}
@@ -379,11 +385,11 @@ angular.module('com.inthetelling.story')
 				if (event.stop) {
 					svc.timelineEvents.push({
 						t: event.start_time + injectionTime,
-						id: "timeline",
+						id: "timeline", // need to use the event id here so it can be moved if necessary
 						action: "pause"
 					});
 					svc.timelineEvents.push({
-						t: event.start_time,
+						t: event.start_time + injectionTime,
 						id: event._id,
 						action: "enter"
 					});
@@ -416,6 +422,11 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
+
+			svc.sortTimeline();
+		};
+
+		svc.sortTimeline = function () {
 
 			//keep events sorted by time.
 			// Simultaneous events should be sorted as exit, then enter, then stop
@@ -455,7 +466,7 @@ angular.module('com.inthetelling.story')
 			});
 
 			// for (var i = 0; i < svc.timelineEvents.length; i++) {
-			// 	console.log(svc.timelineEvents[i].t, svc.timelineEvents[i].action);
+			// 	console.log(svc.timelineEvents[i].t, svc.timelineEvents[i]);
 			// }
 
 			// Find the latest end_time in the timeline, set that as the duration.

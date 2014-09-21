@@ -1,18 +1,51 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ItemEditController', function ($scope, $rootScope, appState, modelSvc) {
+	.controller('ItemEditController', function ($scope, $rootScope, appState, modelSvc, timelineSvc) {
 
 		$scope.addItem = function (type) {
-			console.log("adding item of type ", type);
+			console.log("ItemEditController.addItem, ", type);
 
 			// TODO pause the video
 
-			// TODO get username (and profile photo) from 
+			appState.editing = generateEmptyItem(type);
 
-			appState.editing = {
+			modelSvc.cache("event", appState.editing);
+			modelSvc.resolveEpisodeEvents(appState.episodeId);
+			timelineSvc.injectEvents([modelSvc.events["internal:editing"]]);
+
+		};
+
+		$scope.editItem = function (TODO) {
+			// TODO (copy existing item id into appState.editing), keep a  copy of the item's 
+			// original state so it can be brought back on cancel
+		};
+
+		$scope.cancelEdit = function () {
+			console.log("Cancel edit", appState.editing);
+			if (appState.editing) {
+
+				// TODO if appState.editing._id != internal:editing, restore the original version of the item
+				// TODO if its id is internal:editing, remove the event from  timelineSvc
+				delete(appState.editing);
+				delete(modelSvc.events["internal:editing"]);
+				modelSvc.resolveEpisodeEvents(appState.episodeId);
+
+			}
+		};
+
+		$scope.saveEdit = function () {
+			console.log("TODO");
+			// TODO store item in api, get its id, update modelSvc and timelineSvc with a clean copy (not just a reference to appState.editing)
+
+			delete(appState.editing);
+			delete(modelSvc.events["internal:editing"]);
+			modelSvc.resolveEpisodeEvents(appState.episodeId);
+		};
+
+		var generateEmptyItem = function (type) {
+			var base = {
 				"_id": "internal:editing",
-
 				"start_time": appState.time,
 				"end_time": appState.time,
 				"episode_id": appState.episodeId,
@@ -23,7 +56,6 @@ angular.module('com.inthetelling.story')
 				"type": type,
 				"isCurrent": true,
 				"sxs": true // TEMPORARY
-
 			};
 
 			var stub;
@@ -87,34 +119,7 @@ angular.module('com.inthetelling.story')
 				};
 			}
 
-			angular.extend(appState.editing, stub);
-
-			//TODO insert new item into timelineSvc
-
-			//TODO watch start time, if it changes, update it in timelineSvc
-
-			modelSvc.cache("event", appState.editing);
-			modelSvc.resolveEpisodeEvents(appState.episodeId);
-
-			$scope.$watch(function () {
-				return appState.editing;
-			}, function () {
-				console.log("updtaed appState.editing");
-				modelSvc.cache("event", appState.editing);
-
-			}, true);
-
+			angular.extend(base, stub);
+			return base;
 		};
-
-		$scope.cancelEdit = function () {
-			console.log("Cancel edit");
-			if (appState.editing) {
-				appState.editing = false;
-				delete(modelSvc.events["internal:editing"]);
-				modelSvc.resolveEpisodeEvents(appState.episodeId);
-			}
-		};
-
-		$rootScope.$on("player.dismissAllPanels", $scope.cancelEdit);
-
 	});

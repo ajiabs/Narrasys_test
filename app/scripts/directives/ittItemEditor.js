@@ -3,7 +3,7 @@
 /* WIP for Producer */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function (appState, timelineSvc) {
+	.directive('ittItemEditor', function ($rootScope, appState, modelSvc, timelineSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -34,7 +34,7 @@ angular.module('com.inthetelling.story')
 
 				// watch for user seeking manually:
 				scope.unwatch = scope.$watch(function () {
-					return appState.time
+					return appState.time;
 				}, function () {
 					console.log("time changed!");
 					if (scope.item) {
@@ -42,6 +42,32 @@ angular.module('com.inthetelling.story')
 						scope.item.end_time = appState.time;
 					}
 				});
+
+				scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
+
+				scope.watchEdits = scope.$watch(function () {
+					return appState.editing;
+				}, function (newV) {
+					console.log("updated appState.editing", newV);
+					modelSvc.cache("event", appState.editing);
+				}, true);
+
+				scope.watchTimeEdits = scope.$watch(function () {
+					return appState.editing.start_time;
+				}, function (newT, oldT) {
+					if (newT !== oldT) {
+						console.log("Changed start time from ", oldT, " to ", newT);
+						// TODO: update timelineSvc
+					}
+				});
+
+				scope.$on('$destroy', function () {
+					scope.watchEdits();
+					scope.watchTimeEdits();
+					scope.dismissalWatcher();
+				});
+
+				// below is old, probably should be removed
 
 				// delete scope.item.asjson;
 				// scope.originalItem = angular.copy(scope.item);
