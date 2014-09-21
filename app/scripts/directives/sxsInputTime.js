@@ -11,7 +11,6 @@ angular.module('com.inthetelling.story')
 					//convert data from view format to model format
 					if (isNaN(data)) {
 						var mss = data.split(':');
-						console.log(mss.length);
 						if (mss.length === 2) {
 							return (Number(mss[0]) * 60 + Number(mss[1]));
 						} else {

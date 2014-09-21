@@ -3,7 +3,7 @@
 /* WIP for Producer */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function (appState) {
+	.directive('ittItemEditor', function (appState, timelineSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -20,13 +20,28 @@ angular.module('com.inthetelling.story')
 					scope.itemTemplateUrl = 'templates/producer/item/' + scope.item.type + '.html';
 				}
 
-				if (scope.item.start_time) {
-					// TODO do we need to call timeline seek instead of setting appState.time here?
-
-					//					appState.time=scope.item.start_time;
-				}
-
 				scope.appState = appState;
+
+				scope.setItemTime = function () {
+					// triggered when user changes start time in the input field
+					if (scope.item) {
+						scope.item.start_time = appState.time;
+						scope.item.end_time = appState.time;
+					}
+					// Since we've manipulated the timeline directly, need to let timelineSvc keep up with us:
+					timelineSvc.seek(appState.time);
+				};
+
+				// watch for user seeking manually:
+				scope.unwatch = scope.$watch(function () {
+					return appState.time
+				}, function () {
+					console.log("time changed!");
+					if (scope.item) {
+						scope.item.start_time = appState.time;
+						scope.item.end_time = appState.time;
+					}
+				});
 
 				// delete scope.item.asjson;
 				// scope.originalItem = angular.copy(scope.item);

@@ -1,11 +1,10 @@
 EDUCAUSE TODO:
 
-DONE cancel / esc needs to clear appState.editing
-
 item templates for sxs items 
 
 
-sxs items need to be added to timeline, timeline updated when sxs item time changes
+sxs items need to be added to timeline
+
 
 (templates for non-sxs: horizontal layout links and images, links with thumbnail)
 
