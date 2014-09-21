@@ -9,9 +9,18 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element, attrs, ngModelController) {
 				ngModelController.$parsers.push(function (data) {
 					//convert data from view format to model format
+					if (data === undefined || data === '') {
+						return appState.time;
+					}
 					if (isNaN(data)) {
 						var mss = data.split(':');
 						if (mss.length === 2) {
+							if (isNaN(mss[0])) {
+								mss[0] = 0;
+							}
+							if (isNaN(mss[1])) {
+								mss[1] = 0;
+							}
 							return (Number(mss[0]) * 60 + Number(mss[1]));
 						} else {
 							return appState.time;
