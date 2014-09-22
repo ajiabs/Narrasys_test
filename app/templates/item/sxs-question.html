@@ -1,8 +1,26 @@
-<div class="itemTemplate transcript">
+<div class="itemTemplate sxs-item">
 	<div class="itemHead">
-		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
 		<div class="authorName" ng-bind-html="item.annotator"></div>
 	</div>
-	<div class="text" ng-bind-html="item.annotation"></div>
-	<div class="clear"></div>
+	<div class="question">
+		<!-- begin plugin.  TODO make this its own directive -->
+		<p ng-bind-html="item.data._plugin.questiontext"></p>
+
+		<div ng-repeat="distractor in item.data._plugin.distractors">
+			<label ng-if="distractor.text" ng-class="{
+				correct: item.data._plugin.hasBeenAnswered && distractor.correct,
+				incorrect: item.data._plugin.hasBeenAnswered && !distractor.correct
+			}">
+				<input ng-change="scoreQuiz($index)" type="radio" name="fnord" ng-disabled="item.data._plugin.hasBeenAnswered" ng-model="$parent.item.data._plugin.selectedDistractor" value="{{$index}}">
+				<span ng-bind-html="distractor.text"></span>
+			</label>
+		</div>
+
+		<div ng-if="item.data._plugin.hasBeenAnswered">
+			<div ng-if="item.data._plugin.distractors[item.data._plugin.selectedDistractor].correct" ng-bind-html="item.data._plugin.correctfeedback"></div>
+			<div ng-if="!item.data._plugin.distractors[item.data._plugin.selectedDistractor].correct" ng-bind-html="item.data._plugin.incorrectfeedback"></div>
+
+		</div>
+		<div class="clear"></div>
+	</div>
 </div>

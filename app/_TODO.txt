@@ -1,3 +1,7 @@
+
+newly introduced bug:  decorative windowFg items no longer show properly
+
+
 EDUCAUSE TODO:
 
 item templates for sxs items 

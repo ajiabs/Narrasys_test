@@ -32,7 +32,7 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 */
 
 angular.module('com.inthetelling.story')
-	.factory('timelineSvc', function ($timeout, $interval, $rootScope, config, modelSvc, appState, analyticsSvc) {
+	.factory('timelineSvc', function ($timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc) {
 
 		var svc = {};
 
@@ -279,6 +279,7 @@ angular.module('com.inthetelling.story')
 					} else {
 						handleEvent(evt);
 						if (evt.action === "pause") {
+							// TODO: check for multiple simultaneous pause actions, skip to the last one
 							i++;
 							break; //NOTE! next event should be the one AFTER the stop event, so let i++ fall through
 						}
@@ -302,23 +303,21 @@ angular.module('com.inthetelling.story')
 
 		var handleEvent = function (event) {
 			// console.log("handle event: ", event);
-			if (event.id === 'timeline') {
-				//console.log("TIMELINE EVENT");
-				if (event.action === 'pause') {
-					appState.time = event.t;
-					svc.pause(); // TODO handle pause with duration too
-				} else {
-					svc.play();
-				}
+			if (event.action === "pause") {
+				appState.time = event.t;
+				svc.pause(); // TODO handle pause with duration too
+			} else if (event.action === "play") {
+				svc.play();
+			} else if (event.action === "enter") {
+				modelSvc.events[event.id].state = "isCurrent";
+				modelSvc.events[event.id].isCurrent = true;
+			} else if (event.action === "exit") {
+				modelSvc.events[event.id].state = "isPast";
+				modelSvc.events[event.id].isCurrent = false;
 			} else {
-				if (event.action === "enter") {
-					modelSvc.events[event.id].state = "isCurrent";
-					modelSvc.events[event.id].isCurrent = true;
-				} else {
-					modelSvc.events[event.id].state = "isPast";
-					modelSvc.events[event.id].isCurrent = false;
-				}
+				console.warn("Unknown event action: ", event, event.action);
 			}
+
 		};
 
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
@@ -373,6 +372,8 @@ angular.module('com.inthetelling.story')
 				injectionTime = 0;
 			}
 			angular.forEach(events, function (event) {
+				event.start_time = Number(event.start_time);
+				event.end_time = Number(event.end_time);
 				// add scenes to markedEvents[]:
 				if (event._type === "Scene" && event.title) {
 					svc.markedEvents.push(event);
@@ -385,7 +386,7 @@ angular.module('com.inthetelling.story')
 				if (event.stop) {
 					svc.timelineEvents.push({
 						t: event.start_time + injectionTime,
-						id: "timeline", // need to use the event id here so it can be moved if necessary
+						id: event._id,
 						action: "pause"
 					});
 					svc.timelineEvents.push({
@@ -424,6 +425,23 @@ angular.module('com.inthetelling.story')
 			});
 
 			svc.sortTimeline();
+		};
+
+		svc.removeEvent = function (removeId) {
+			// delete anything corresponding to this id from the timeline:
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, {
+				id: '!' + removeId
+			});
+			svc.updateEventStates();
+		};
+
+		svc.updateEventTimes = function (event) {
+			// remove old references, as in removeEvent, then re-add it with new times 
+			// (not calling removeEvent here since it would do a redundant updateEventStates)
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, {
+				id: '!' + event._id
+			});
+			svc.injectEvents([event], 0);
 		};
 
 		svc.sortTimeline = function () {
@@ -479,7 +497,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.updateEventStates = function () {
-			// console.log("timelineSvc.updateEventStates");
+			console.log("timelineSvc.updateEventStates");
 			// Sets past/present/future state of every event in the timeline.  
 			// TODO performance check (though this isn't done often, only on seek and inject.)
 
@@ -508,6 +526,8 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
+
+			stepEvent();
 		};
 
 		// supports these formats: "1:10", 1m10s", "1m", "10s", or a plain number (in seconds)

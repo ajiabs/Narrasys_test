@@ -389,7 +389,7 @@
 }
 @media screen and (min-width: 700px) {
 	.navPanel {
-		margin: 0 20%;
+		margin: 0 15%;
 	}
 }
 .navPanel .scene:first-child {

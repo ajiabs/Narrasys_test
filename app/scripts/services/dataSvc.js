@@ -608,7 +608,7 @@ angular.module('com.inthetelling.story')
 				modelSvc.cache("event", upload);
 			}
 
-			var layouts = ["windowFg", "mainFg", "altFg", "videoOverlay"];
+			var layouts = ["mainFg", "altFg", "videoOverlay"];
 			for (i = 0; i < 8; i++) {
 				var filltest = angular.copy(uploadStub);
 				filltest.layouts = [layouts[i % layouts.length]];

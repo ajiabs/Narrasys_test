@@ -25,8 +25,13 @@ angular.module('com.inthetelling.story')
 			console.log("Cancel edit", appState.editing);
 			if (appState.editing) {
 
-				// TODO if appState.editing._id != internal:editing, restore the original version of the item
-				// TODO if its id is internal:editing, remove the event from  timelineSvc
+				if (appState.editing._id === 'internal:editing') {
+					timelineSvc.removeEvent('internal:editing');
+				} else {
+					// TODO: restore the original unedited version of the item, update timelineSvc
+					// (may need to change the event time)
+				}
+
 				delete(appState.editing);
 				delete(modelSvc.events["internal:editing"]);
 				modelSvc.resolveEpisodeEvents(appState.episodeId);
@@ -50,7 +55,7 @@ angular.module('com.inthetelling.story')
 				"end_time": appState.time,
 				"episode_id": appState.episodeId,
 				"annotator": 'Professor Smith', // TODO get real name from somewhere
-				"templateUrl": 'templates/item/sxs-comment.html',
+				"templateUrl": 'templates/item/sxs-' + type + '.html',
 				"layouts": ["windowFg"],
 				"stop": true,
 				"type": type,
@@ -108,6 +113,7 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				};
+				stub.plugin = stub.data._plugin;
 			}
 
 			if (type === 'video') {

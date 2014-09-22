@@ -3,6 +3,13 @@
 /* WIP for Producer */
 
 angular.module('com.inthetelling.story')
+	.directive('autofocus', function () {
+		return {
+			link: function (scope, element) {
+				element[0].focus();
+			}
+		};
+	})
 	.directive('ittItemEditor', function ($rootScope, appState, modelSvc, timelineSvc) {
 		return {
 			restrict: 'A',
@@ -58,6 +65,8 @@ angular.module('com.inthetelling.story')
 					if (newT !== oldT) {
 						console.log("Changed start time from ", oldT, " to ", newT);
 						// TODO: update timelineSvc
+
+						timelineSvc.updateEventTimes(appState.editing);
 					}
 				});
 
