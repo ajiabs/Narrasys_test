@@ -464,3 +464,6 @@ item edit forms
 template stubs for edit panels
 'add' buttons and edit drawer
 
+------------------------------------------------
+Changes in SxS0.8.1:
+fixing broken build
