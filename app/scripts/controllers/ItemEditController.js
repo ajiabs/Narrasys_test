@@ -16,7 +16,7 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		$scope.editItem = function (TODO) {
+		$scope.editItem = function () {
 			// TODO (copy existing item id into appState.editing), keep a  copy of the item's 
 			// original state so it can be brought back on cancel
 		};

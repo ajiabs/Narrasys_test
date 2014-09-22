@@ -450,3 +450,17 @@ autoscroll button indicates direction; hides when it won’t do anything useful
 Changes in v4.0.45:
 Reverting autoscroll improvements (Not actually an improvement)
 
+------------------------------------------------
+Changes in SxS0.8:
+rough item templates, autofocus, timeline injection
+fixed memory leak in item editor, prepping for timeline insert
+better handling of invalid time values
+tied sxs item start time to current timeline time
+cosmetics
+fixed itemEditController leakage
+better appearance for stop items
+clear edits on cancel
+item edit forms
+template stubs for edit panels
+'add' buttons and edit drawer
+

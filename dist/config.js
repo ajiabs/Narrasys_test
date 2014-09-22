@@ -7,9 +7,10 @@ var config = {
 	// apiDataBaseUrl: 'https://story.inthetelling.com',
 	// apiDataBaseUrl: 'https://purdue.inthetelling.com',
 	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
+	sxs: true,
 	localStorageKey: "storyKey",
-	disableYoutube: false,
-	disableAnalytics: false,
-	debugInBrowser: false // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
+	disableYoutube: true,
+	disableAnalytics: true,
+	debugInBrowser: true // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
 
 };
