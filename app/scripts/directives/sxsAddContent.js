@@ -9,7 +9,7 @@ angular.module('com.inthetelling.story')
 			replace: true,
 			scope: {},
 			//template: '<div ng-include="item.templateUrl"></div>',
-			templateUrl: 'templates/sxs/addcontent.html',
+			templateUrl: 'templates/producer/addcontent.html',
 			controller: 'ItemEditController',
 			link: function (scope) {
 				/* 
