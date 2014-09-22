@@ -26,6 +26,10 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			templateUrl: 'templates/producer/questionauthoring.html',
 			reloadOnSearch: false
 		})
+		.when('/upload', {
+			title: "Uploading",
+			templateUrl: 'templates/producer/upload.html'
+		})
 		.when('/producer/:epId', {
 			title: "Producer",
 			controller: 'EpisodeEditorController',

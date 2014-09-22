@@ -29,7 +29,12 @@
 	<!-- DISABLEDendbuild -->
 
 	<!-- TODO: build only the fonts needed for the current episode -->
-	<link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700|EB+Garamond|Droid+Serif|Roboto:400,300,700,400italic|Montserrat:400,700|Cardo|Crimson+Text:400,700' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700|EB+Garamond|Droid+Serif|Roboto:400,300,700,400italic|Montserrat:400,700|Cardo|Crimson+Text:400,700' rel='stylesheet' type='text/css' />
+
+        <!-- aws sdk -->
+        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.0.15.min.js"></script>
+        <!-- end aws sdk -->
+
 </head>
 
 <body>
@@ -64,6 +69,7 @@
 	<script src="scripts/services/config.js"></script>
 	<script src="scripts/services/appState.js"></script>
 	<script src="scripts/services/authSvc.js"></script>
+	<script src="scripts/services/awsSvc.js"></script>
 	<script src="scripts/services/dataSvc.js"></script>
 	<script src="scripts/services/errorSvc.js"></script>
 	<script src="scripts/services/modelSvc.js"></script>
@@ -97,8 +103,11 @@
 	<script src="scripts/directives/ittMagnet.js"></script>
 	<script src="scripts/directives/ittSearchPanel.js"></script>
 
+	<!-- producer: -->
 	<script src="scripts/controllers/EpisodeListController.js"></script>
 	<script src="scripts/controllers/EpisodeEditorController.js"></script>
+	<script src="scripts/controllers/UploadController.js"></script>
+	<!-- end producer -->
 
 
 	<script src="scripts/directives/sxsAddContent.js"></script>
