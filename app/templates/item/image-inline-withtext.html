@@ -1,0 +1,19 @@
+<div class="itemTemplate">
+	<div class="itemHead">
+		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+		<div class="category">
+			<!--{{item.category}}-->
+			<span ng-if="item.required">(Required viewing)</span>
+		</div>
+	</div>
+	<div class="text">
+		<div class="title" ng-if="item.title" ng-bind-html="item.title"></div>
+
+		<div class="touchable">
+			<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
+			<div class="touchableIndicator"></div>
+		</div>
+		<div ng-bind-html="item.description"></div>
+		<div class="clear"></div>
+	</div>
+</div>

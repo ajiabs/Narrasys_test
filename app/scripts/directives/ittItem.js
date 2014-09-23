@@ -9,7 +9,7 @@ angular.module('com.inthetelling.story')
 	.directive('ittItem', function ($http, $timeout, config, appState, analyticsSvc, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
-			replace: true,
+			replace: false,
 			scope: {
 				item: '=ittItem'
 			},
@@ -32,7 +32,7 @@ angular.module('com.inthetelling.story')
 					} else {
 						timelineSvc.pause();
 						scope.captureInteraction();
-						if (element.closest('.content').width() > 400) {
+						if (element.width() > 400) {
 							// show detail inline if there's room for it:
 							scope.item.showInlineDetail = true;
 						} else {
