@@ -540,7 +540,7 @@ angular.module('com.inthetelling.story')
 				"extension": "jpg",
 				"name": "900x900 placeholder",
 			});
-
+			/*
 			var linkStub = {
 				"_id": "",
 				"_type": "Link",
@@ -557,7 +557,7 @@ angular.module('com.inthetelling.story')
 				"styles": ["timestampNone"],
 				"isContent": true,
 			};
-			/*
+			
 			for (i = 0; i < 30; i++) {
 				var link = angular.copy(linkStub);
 				link._id = "link-" + i;
