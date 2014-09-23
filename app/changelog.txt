@@ -437,3 +437,23 @@ hacky USC workaround: control visibility of certain links depending on badges or
 Changes in v4.0.43:
 hotfix to allow higher quality video stream when in iframe
 
+------------------------------------------------
+Changes in v4.0.44:
+standalone question authoring
+search panel tweak: make 'sort by' link more visible
+revert to showing CC on tiny screens instead of hiding them
+framebreaker now launches episode to current time
+improved autoscroll
+autoscroll button indicates direction; hides when it won’t do anything useful
+
+------------------------------------------------
+Changes in v4.0.45:
+Reverting autoscroll improvements (Not actually an improvement)
+
+------------------------------------------------
+Changes in v4.0.46:
+new item templates
+better way to handle sidebar inline-vs-modal sizes
+sidebar items should never try to expand inline
+Updated the demo deploy configuration
+
