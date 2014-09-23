@@ -4,31 +4,29 @@ newly introduced bug:  decorative windowFg items no longer show properly
 
 EDUCAUSE TODO:
 
-item templates for sxs items 
+sxs "question" interactivity
+Support images in question template
+Support link-image-id in link (and video) items
+
+sxs poll questions (fake the results)
+
+video item:  treat as Link type
 
 
-sxs items need to be added to timeline
+(also need to do templates for non-sxs: horizontal layout links and images, links with thumbnail)
 
-
-(templates for non-sxs: horizontal layout links and images, links with thumbnail)
-
---- monday
 
 Store saved sxs items in episode
 
 add 'edit' button to sxs items in all modes
+
 add 'delete' button when editing an existing item
 
-tie in file uploads
+'delete' for uploaded assets
 
-Support images in question template
 
--- tuesday
 
-Poll question: send selected answer to analytics, tell bill, get poll results
-Poll results display: pick a charting engine
 
--- wednesday
 
 Display sxs items with instructor thumbnail in search results, explore mode
 

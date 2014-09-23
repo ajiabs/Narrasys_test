@@ -32,7 +32,7 @@
 	background-color: rgba(0, 0, 0, 0.5);
 }
 .windowFg.fgLayer .content {
-	margin: 20% 4em 200px 4em;
+	margin: 4em;
 	background-color: #FFF;
 	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 }

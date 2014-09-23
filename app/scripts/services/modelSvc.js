@@ -211,6 +211,15 @@ angular.module('com.inthetelling.story')
 				}
 
 				//items
+
+				// clear derived flags before re-setting them (in case we're editing an existing item):
+				delete event.isContent;
+				delete event.showInReviewMode;
+				delete event.isTranscript;
+				delete event.noEmbed;
+				delete event.noExternalLink;
+				delete event.targetTop;
+
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)
 				if (event.layouts) {

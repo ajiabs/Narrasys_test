@@ -122,3 +122,7 @@
 	font-family: Story;
 	content: "\e606";
 }
+.sxs-item .sxs-profile {
+	float: right;
+	margin-top: -1em;
+}
