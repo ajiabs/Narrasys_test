@@ -457,3 +457,7 @@ better way to handle sidebar inline-vs-modal sizes
 sidebar items should never try to expand inline
 Updated the demo deploy configuration
 
+------------------------------------------------
+Changes in v4.0.47:
+hotfix for item.contain not sizing properly
+
