@@ -21,7 +21,6 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/producer/item.html',
 			controller: 'ItemEditController',
 			link: function (scope) {
-				console.log('ittEditor', scope);
 
 				scope.uploadStatus = [];
 
@@ -45,7 +44,6 @@ angular.module('com.inthetelling.story')
 				scope.unwatch = scope.$watch(function () {
 					return appState.time;
 				}, function () {
-					console.log("time changed!");
 					if (scope.item) {
 						scope.item.start_time = appState.time;
 						scope.item.end_time = appState.time;
@@ -56,10 +54,9 @@ angular.module('com.inthetelling.story')
 
 				scope.watchEdits = scope.$watch(function () {
 					return appState.editing;
-				}, function (newV) {
-					console.log("updated appState.editing", newV);
+				}, function () {
+					// console.log("updated appState.editing");
 
-					console.log(appState.editing, modelSvc.events["internal:editing"]);
 					modelSvc.cache("event", appState.editing);
 				}, true);
 
@@ -67,28 +64,22 @@ angular.module('com.inthetelling.story')
 					return appState.editing.start_time;
 				}, function (newT, oldT) {
 					if (newT !== oldT) {
-						console.log("Changed start time from ", oldT, " to ", newT);
-						// TODO: update timelineSvc
-
+						// console.log("Changed start time from ", oldT, " to ", newT);
 						timelineSvc.updateEventTimes(appState.editing);
 					}
 				});
 
 				scope.uploadAsset = function (files) {
-					console.log(files);
 					scope.uploads = awsSvc.uploadFiles(files);
 
 					scope.uploads[0].then(function (data) {
-						console.log("SUCCESS", data);
-
 						modelSvc.cache("asset", data.file);
 
 						scope.item.asset = data.file;
 						scope.item.asset_id = data.file._id; // TODO need to check the item type, this may need to be annotation_image_id or link_image_id instead
-						console.log(scope.item);
 						delete scope.uploads;
 					}, function (data) {
-						console.log("FAIL", data);
+						// console.log("FAIL", data);
 					}, function (update) {
 						scope.uploadStatus[0] = update;
 					});

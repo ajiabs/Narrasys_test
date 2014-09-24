@@ -1,7 +1,6 @@
 <div class="itemEdit authoringForm">
 
 	<!-- TODO timeline slider to control time also -->
-	<a ng-click="tmpCreateTemplates()">Make a template</a>
 	<div class="field">
 		<div class="label">Time
 		</div>
@@ -17,7 +16,7 @@
 		</small>
 		&nbsp; &nbsp;
 
-		<input type="button" value="delete" ng-if="TODO=DONE">
+		<input type="button" value="Delete" ng-if="appState.editing._id != 'internal:editing'" ng-click="deleteItem()">
 		<input type="button" value="Save" ng-click="saveEdit()">
 	</div>
 

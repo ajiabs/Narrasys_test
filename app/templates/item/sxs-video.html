@@ -1,4 +1,5 @@
 <div class="itemTemplate transcript">
+	<a class="sxs-edit" ng-click="editItem('video')" ng-if="item._id != 'internal:editing'">[Edit]</a>
 	<img class="sxs-profile" src="/images/customer/tmp-userprofile.png">
 	<div class="itemHead">
 		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>

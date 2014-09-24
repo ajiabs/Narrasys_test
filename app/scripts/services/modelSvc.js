@@ -174,7 +174,6 @@ angular.module('com.inthetelling.story')
 */
 
 		svc.deriveEvent = function (event) {
-			console.log('deriveEvent');
 			if (event._type !== 'Scene') {
 				if (svc.episodes[event.episode_id] && svc.episodes[event.episode_id].templateUrl === 'templates/episode/usc.html') {
 					// HACKS AHOY

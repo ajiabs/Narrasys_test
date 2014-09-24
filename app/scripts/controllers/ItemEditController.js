@@ -16,20 +16,18 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		$scope.editItem = function () {
-			// TODO (copy existing item id into appState.editing), keep a  copy of the item's 
-			// original state so it can be brought back on cancel
-		};
-
 		$scope.cancelEdit = function () {
 			console.log("Cancel edit", appState.editing);
 			if (appState.editing) {
-
 				if (appState.editing._id === 'internal:editing') {
 					timelineSvc.removeEvent('internal:editing');
 				} else {
 					// TODO: restore the original unedited version of the item, update timelineSvc
-					// (may need to change the event time)
+
+					modelSvc.events[appState.editing._id] = angular.copy(appState.uneditedItem);
+					delete(appState.uneditedItem);
+					modelSvc.resolveEpisodeEvents(appState.episodeId);
+					// TODO may need to update the timeline as well, if they changed the item start time...
 				}
 
 				delete(appState.editing);
@@ -40,8 +38,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.saveEdit = function () {
-			console.log("TODO");
-
 			var toSave = angular.copy(appState.editing);
 			toSave.type = toSave._type;
 
@@ -58,16 +54,27 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeEvents(appState.episodeId);
 					timelineSvc.injectEvents([modelSvc.events[data._id]]);
 
-					// TODO: resolve event layout IDs
-					// TODO: force scene to redraw
-
 				} else {
-					// TODO: don't delete the old event, just update it
+					// nothing to do here, it's already in the cache!
+					// (TODO test this to make sure I've not missed something stupid here.....)
 				}
 			}, function (data) {
 				console.log("failed", data);
 			});
+		};
 
+		$scope.deleteItem = function () {
+			if (window.confirm("Are you sure you wish to delete this item?")) {
+				dataSvc.deleteItem(appState.editing._id).then(function (data) {
+					console.log("success deleting:", data);
+					timelineSvc.removeEvent(appState.editing._id);
+					delete(modelSvc.events[appState.editing._id]);
+					modelSvc.resolveEpisodeEvents(appState.episodeId);
+					delete(appState.editing);
+				}, function (data) {
+					console.log("failed to delete:", data);
+				});
+			}
 		};
 
 		var generateEmptyItem = function (type) {

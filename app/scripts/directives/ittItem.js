@@ -58,6 +58,14 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
+				scope.editItem = function (itemType) {
+					appState.editing = modelSvc.events[scope.item._id];
+					appState.uneditedItem = angular.copy(appState.editing); // HACK
+					appState.editing.type = itemType;
+					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+
+				};
+
 				scope.captureInteraction = function () {
 					analyticsSvc.captureEventActivity("clicked", scope.item._id);
 				};
