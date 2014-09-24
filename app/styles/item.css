@@ -7,6 +7,10 @@
 .content .item:first-child {
 	padding-top: 1.5em;
 }
+.content .item.sidebarL:first-child,
+.content .item.sidebarR:first-child {
+	padding-top: 0.5em;
+}
 .content .item {
 	padding: 0.3em 0.5em 0.3em 60px;
 }
@@ -31,6 +35,9 @@
 	width: 50px;
 	text-align: right;
 	float: left;
+}
+.item .title {
+	margin-bottom: 0.5em;
 }
 /* iframes */
 

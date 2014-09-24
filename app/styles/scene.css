@@ -124,14 +124,14 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .allowSidebars.hasLeftSidebar.hasRightSidebar .sidebarL {
 	float: left;
 	clear: left;
-	margin-left: -75%;
+	margin-left: -70%;
 	width: 70%;
 }
-.allowSidebars.hasRightSidebar.hasLeftsidebar .sidebarR {
+.allowSidebars.hasLeftSidebar.hasRightSidebar .sidebarR {
 	float: right;
 	clear: right;
-	margin-right: -75%;
-	width: 70%;
+	margin-right: -70% !important;
+	width: 70% !important;
 }
 /* ------------------------------------------- */
 

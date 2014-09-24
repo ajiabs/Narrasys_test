@@ -449,12 +449,12 @@ angular.module('com.inthetelling.story')
 			};
 
 			var scenetemplateurls = [
-				"templates/scene/1col.html",
-				"templates/scene/1col.html",
+				"templates/scene/cornerH.html",
+				"templates/scene/cornerV.html",
 				"templates/scene/2colL.html",
 				"templates/scene/2colR.html",
 				"templates/scene/centered.html",
-				"templates/scene/cornerH.html"
+				"templates/scene/1col.html"
 			];
 
 			for (var i = 0; i < 10; i++) {
@@ -484,12 +484,8 @@ angular.module('com.inthetelling.story')
 			};
 
 			var testLayouts = [
-				"sidebarR",
-				"burstR", "burstR",
-				"inline",
-				"burstR", "sidebarR",
-				"inline", "sidebarR",
-				"inline", "inline"
+				"sidebarL",
+				"sidebarR", "inline"
 			];
 
 			var annotationTemplates = [
@@ -544,7 +540,7 @@ angular.module('com.inthetelling.story')
 				"extension": "jpg",
 				"name": "900x900 placeholder",
 			});
-
+			/*
 			var linkStub = {
 				"_id": "",
 				"_type": "Link",
@@ -556,12 +552,12 @@ angular.module('com.inthetelling.story')
 				"stop": false,
 				"type": "Link",
 				"episode_id": epId,
-				"templateUrl": "templates/item/link.html",
+				"templateUrl": "templates/item/link-withimage.html",
 				"layouts": ["inline"],
-				"styles": [""],
+				"styles": ["timestampNone"],
 				"isContent": true,
 			};
-
+			
 			for (i = 0; i < 30; i++) {
 				var link = angular.copy(linkStub);
 				link._id = "link-" + i;
@@ -580,7 +576,7 @@ angular.module('com.inthetelling.story')
 				// }
 				modelSvc.cache("event", link);
 			}
-
+			*/
 			var uploadStub = {
 				"_type": "Upload",
 
@@ -590,7 +586,7 @@ angular.module('com.inthetelling.story')
 				"stop": false,
 				"type": "Upload",
 				"episode_id": epId,
-				"templateUrl": "templates/item/image-thumbnail.html",
+				"templateUrl": "templates/item/image-caption.html",
 				"styles": [
 					"transitionFade", "tl"
 				],
@@ -601,10 +597,12 @@ angular.module('com.inthetelling.story')
 			for (i = 0; i < 30; i++) {
 				var upload = angular.copy(uploadStub);
 				upload._id = "upload-" + i;
-				upload.asset_id = "asset" + (i % 3 + 2);
+				upload.asset_id = "asset2"; // + (i % 3 + 2);
 				upload.title = "Upload number " + (i % 3 + 1);
 				upload.start_time = i * 4;
 				upload.end_time = i * 4 + 4;
+				upload.layouts = [testLayouts[i % testLayouts.length]];
+
 				modelSvc.cache("event", upload);
 			}
 
