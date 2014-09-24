@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('awsSvc', function (config, $routeParams, $http, $q, appState) {
+	.factory('awsSvc', function (config, $routeParams, $http, $q, appState, modelSvc) {
 		console.log('awsSvc, user: ', appState.user);
 		var MAX_CHUNKS = 1000;
 		var MAX_SIMUL_PARTS_UPLOADING = 3;
@@ -627,7 +627,8 @@ angular.module('com.inthetelling.story')
 				'size': fileBeingUploaded.size,
 				'original_filename': fileBeingUploaded.name
 			};
-			$http.post(config.apiDataBaseUrl + "/v1/containers/537b7695d72cc39b61000006/assets", assetData)
+			var containerId = modelSvc.episodes[appState.episodeId].container_id;
+			$http.post(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets", assetData)
 				.success(function (data) {
 					console.log('CREATED ASSET:', data);
 					deferredUploads[fileIndex].resolve(data);

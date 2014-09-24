@@ -174,12 +174,8 @@ angular.module('com.inthetelling.story')
 */
 
 		svc.deriveEvent = function (event) {
+			console.log('deriveEvent');
 			if (event._type !== 'Scene') {
-				if (!event.templateUrl) {
-					// TODO add support for other plugin types here, or have a single plugin template that routes to subdirectives based on plugin type
-					event.templateUrl = 'templates/item/usc-badges.html';
-				}
-
 				if (svc.episodes[event.episode_id] && svc.episodes[event.episode_id].templateUrl === 'templates/episode/usc.html') {
 					// HACKS AHOY
 					// USC made a bunch of change requests post-release; this was the most expedient way
@@ -213,12 +209,12 @@ angular.module('com.inthetelling.story')
 				//items
 
 				// clear derived flags before re-setting them (in case we're editing an existing item):
-				delete event.isContent;
-				delete event.showInReviewMode;
-				delete event.isTranscript;
-				delete event.noEmbed;
-				delete event.noExternalLink;
-				delete event.targetTop;
+				event.isContent = false;
+				event.showInReviewMode = false;
+				event.isTranscript = false;
+				event.noEmbed = false;
+				event.noExternalLink = false;
+				event.targetTop = false;
 
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ItemEditController', function ($scope, $rootScope, appState, modelSvc, timelineSvc) {
+	.controller('ItemEditController', function ($scope, $rootScope, appState, dataSvc, modelSvc, timelineSvc) {
 
 		$scope.addItem = function (type) {
 			console.log("ItemEditController.addItem, ", type);
@@ -41,11 +41,33 @@ angular.module('com.inthetelling.story')
 
 		$scope.saveEdit = function () {
 			console.log("TODO");
-			// TODO store item in api, get its id, update modelSvc and timelineSvc with a clean copy (not just a reference to appState.editing)
 
-			delete(appState.editing);
-			delete(modelSvc.events["internal:editing"]);
-			modelSvc.resolveEpisodeEvents(appState.episodeId);
+			var toSave = angular.copy(appState.editing);
+			toSave.type = toSave._type;
+
+			// TODO: if we're editing an existing item (its id won't be internal:editing) then don't delete internal:editing
+			dataSvc.storeItem(toSave).then(function (data) {
+				console.log("success", data);
+				delete(appState.editing);
+
+				if (toSave._id === 'internal:editing') {
+					console.log("Saved:", data);
+					timelineSvc.removeEvent("internal:editing");
+					delete(modelSvc.events["internal:editing"]);
+					modelSvc.cache("event", dataSvc.resolveIDs(data));
+					modelSvc.resolveEpisodeEvents(appState.episodeId);
+					timelineSvc.injectEvents([modelSvc.events[data._id]]);
+
+					// TODO: resolve event layout IDs
+					// TODO: force scene to redraw
+
+				} else {
+					// TODO: don't delete the old event, just update it
+				}
+			}, function (data) {
+				console.log("failed", data);
+			});
+
 		};
 
 		var generateEmptyItem = function (type) {

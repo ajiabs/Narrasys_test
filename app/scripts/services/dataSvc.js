@@ -138,7 +138,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		// transform API common IDs into real values
-		var resolveIDs = function (obj) {
+		svc.resolveIDs = function (obj) {
 			// console.log("resolving IDs", obj);
 			if (obj.template_id) {
 				if (dataCache.template[obj.template_id]) {
@@ -193,7 +193,7 @@ angular.module('com.inthetelling.story')
 					// console.log("episode: ", episodeData);
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 
-						modelSvc.cache("episode", resolveIDs(episodeData));
+						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
 						getEpisodeEvents(epId);
 
@@ -218,7 +218,7 @@ angular.module('com.inthetelling.story')
 			$http.get(config.apiDataBaseUrl + "/v2/episodes/" + epId + "/events")
 				.success(function (events) {
 					angular.forEach(events, function (eventData) {
-						modelSvc.cache("event", resolveIDs(eventData));
+						modelSvc.cache("event", svc.resolveIDs(eventData));
 					});
 					// Tell modelSvc it can build episode->scene->item child arrays
 					modelSvc.resolveEpisodeEvents(epId);
@@ -292,6 +292,38 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
+		var POST = function (path, postData) {
+			var defer = $q.defer();
+			$http({
+				method: 'POST',
+				url: config.apiDataBaseUrl + path,
+				data: postData
+			}).success(function (data) {
+				console.log("Updated event:", data);
+				return defer.resolve(data);
+			}).error(function (data, status, headers) {
+				console.log("Failed:", data, status, headers);
+				return defer.reject();
+			});
+			return defer.promise;
+		};
+
+		var DELETE = function (path) {
+			var defer = $q.defer();
+			$http({
+				method: 'DELETE',
+				url: config.apiDataBaseUrl + path,
+			}).success(function (data) {
+				console.log("Deleted:", data);
+				return defer.resolve(data);
+			}).error(function (data, status, headers) {
+				console.log("Failed to delete:", data, status, headers);
+				return defer.reject();
+			});
+			return defer.promise;
+
+		};
+
 		svc.getEpisodeList = function () {
 			return GET("/v1/episodes");
 		};
@@ -304,20 +336,24 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+		svc.deleteItem = function (evtId) {
+			return DELETE("/v2/events/" + evtId);
+		};
+
 		// TODO need safety checking here
 		svc.storeItem = function (evt) {
 			evt = svc.prepItemForStorage(evt);
 			console.log(evt);
-			if (evt._id) {
+			if (evt._id && !evt._id.match(/internal/)) {
 				// update
 				return PUT("/v2/events/" + evt._id, {
 					event: evt
 				});
 			} else {
-				// create TODO
-				// return POST("/v2/episodes/" + evt.episode_id + "/event", {
-				// 	event: evt
-				// });
+				// create
+				return POST("/v2/episodes/" + evt.episode_id + "/events", {
+					event: evt
+				});
 			}
 		};
 		svc.prepItemForStorage = function (evt) {
