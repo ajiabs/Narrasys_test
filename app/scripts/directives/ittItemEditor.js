@@ -78,8 +78,8 @@ angular.module('com.inthetelling.story')
 						scope.item.asset = data.file;
 						scope.item.asset_id = data.file._id; // TODO need to check the item type, this may need to be annotation_image_id or link_image_id instead
 						delete scope.uploads;
-					}, function (data) {
-						// console.log("FAIL", data);
+					}, function () {
+						// console.log("FAIL", );
 					}, function (update) {
 						scope.uploadStatus[0] = update;
 					});

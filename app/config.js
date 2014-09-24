@@ -7,7 +7,7 @@ var config = {
 	// apiDataBaseUrl: 'https://story.inthetelling.com',
 	// apiDataBaseUrl: 'https://purdue.inthetelling.com',
 	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
-	apiDataBaseUrl: 'https://demo.inthetelling.com',
+	// apiDataBaseUrl: 'https://demo.inthetelling.com',
 	sxs: true,
 	localStorageKey: "storyKey",
 	disableYoutube: true,

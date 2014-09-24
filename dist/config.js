@@ -7,10 +7,11 @@ var config = {
 	// apiDataBaseUrl: 'https://story.inthetelling.com',
 	// apiDataBaseUrl: 'https://purdue.inthetelling.com',
 	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
+	// apiDataBaseUrl: 'https://demo.inthetelling.com',
 	sxs: true,
 	localStorageKey: "storyKey",
 	disableYoutube: true,
 	disableAnalytics: true,
 	debugInBrowser: true, // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
- awsRegion: 'us-east-1'
+	awsRegion: 'us-east-1'
 };

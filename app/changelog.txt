@@ -467,3 +467,18 @@ template stubs for edit panels
 ------------------------------------------------
 Changes in SxS0.8.1:
 fixing broken build
+
+------------------------------------------------
+Changes in SxS0.9:
+edit and delete now working
+can save events now
+item.contain bugfix
+sidebar tweaks
+fix for item.contain not sizing properly
+new item templates
+asset uploads in progress
+Merge branch 'upload-service-testing' into sxs-dev
+better way to handle sidebar inline-vs-modal sizes
+sidebar items should never try to expand inline
+Merged file upload functionality
+
