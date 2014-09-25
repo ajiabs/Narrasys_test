@@ -177,15 +177,8 @@ angular.module('com.inthetelling.story')
 			}
 
 			appState.time = t;
-			svc.updateEventStates();
-
-			// Youtube 
-			var wasPlaying = (appState.timelineState === 'playing');
-			svc.pause(true);
 			videoScope.seek(t);
-			if (wasPlaying) {
-				svc.play(true);
-			}
+			svc.updateEventStates();
 
 			// capture analytics data:
 			if (method) {
