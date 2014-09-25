@@ -198,8 +198,11 @@ angular.module('com.inthetelling.story')
 			// console.log("VIDEO seek to ", t);
 			try {
 				if ($scope.videoType === 'youtube') {
+					var wasPlaying = (appState.timelineState === 'playing');
 					$scope.YTPlayer.seekTo(t, true);
-					$scope.YTPlayer.pauseVideo(); // youtube always autoplays on seek.  We want timelineSvc to control that instead
+					if (!wasPlaying) {
+						$scope.YTPlayer.pauseVideo(); // youtube always autoplays on seek.
+					}
 				} else {
 					$scope.videoNode.currentTime = t;
 				}

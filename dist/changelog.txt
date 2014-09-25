@@ -482,3 +482,6 @@ better way to handle sidebar inline-vs-modal sizes
 sidebar items should never try to expand inline
 Merged file upload functionality
 
+------------------------------------------------
+Changes in v4.0.48:
+hotfix for Safari 7.1 failing to 'seek' video
