@@ -464,3 +464,9 @@ hotfix for item.contain not sizing properly
 ------------------------------------------------
 Changes in v4.0.48:
 hotfix for Safari 7.1 failing to 'seek' video
+
+------------------------------------------------
+Changes in v4.0.49:
+safari hotfix
+Columbia Business
+
