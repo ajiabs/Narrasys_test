@@ -461,3 +461,6 @@ Updated the demo deploy configuration
 Changes in v4.0.47:
 hotfix for item.contain not sizing properly
 
+------------------------------------------------
+Changes in v4.0.48:
+hotfix for Safari 7.1 failing to 'seek' video

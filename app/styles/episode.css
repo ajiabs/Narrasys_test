@@ -126,7 +126,7 @@
 	background-repeat: no-repeat;
 	background-size: 110%;
 }
-/* -- */
+/* USC */
 
 .uscWindowFgOnly {
 	display: none;
@@ -135,8 +135,30 @@
 	display: block;
 	margin: 1em 0 1em 0;
 }
+.uscHackOnlyGuests {
+	display: none;
+}
+.guestUser .uscHackOnlyGuests {
+	display: block;
+}
+.uscHackOnlyBadge {
+	display: none;
+}
+.uscHackUserHasBadge .uscHackOnlyBadge {
+	display: block;
+}
+/* CBS */
 
-.uscHackOnlyGuests {display:none;}
-.guestUser .uscHackOnlyGuests {display:block;}
-.uscHackOnlyBadge {display:none;}
-.uscHackUserHasBadge .uscHackOnlyBadge {display:block;}
+.episode-columbiabusiness {
+	background: linear-gradient(#A9B8D3, #FEFCFC);
+	bakground-image: url("/images/customer/cbs-trident-white.svg");
+}
+.episode-columbiabusiness .trident {
+	background: url("/images/customer/cbs-trident-white.svg") 50% 50%;
+	background-size: 250%;
+	position: fixed !important;
+	opacity: 0.3;
+}
+.episode-columbiabusiness .item {
+	background-color: rgba(221, 224, 234, 0.5);
+}
