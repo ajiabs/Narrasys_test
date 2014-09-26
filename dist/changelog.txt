@@ -470,3 +470,7 @@ Changes in v4.0.49:
 safari hotfix
 Columbia Business
 
+------------------------------------------------
+Changes in v4.0.50:
+hot fix again
+
