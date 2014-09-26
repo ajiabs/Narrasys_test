@@ -3,7 +3,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function ($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc) {
+	.controller('PlayerController', function ($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc) {
 		// console.log("playerController", $scope);
 
 		$scope.viewMode = function (newMode) {
@@ -178,6 +178,7 @@ angular.module('com.inthetelling.story')
 			appState.show.searchPanel = false;
 			appState.show.helpPanel = false;
 			appState.show.navPanel = false;
+			appState.show.profilePanel = false;
 			appState.itemDetail = false;
 			$rootScope.$emit("player.dismissAllPanels");
 		};
@@ -190,6 +191,14 @@ angular.module('com.inthetelling.story')
 
 		$scope.play = function () {
 			timelineSvc.play();
+		};
+
+		$scope.userHasRole = function (role) {
+			return authSvc.userHasRole(role);
+		};
+
+		$scope.logout = function () {
+			return authSvc.logout();
 		};
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -

@@ -52,8 +52,16 @@
 	animation: delayedFadeOut 7s ease-out;
 }
 .toolbar .searchgroup,
-.toolbar .escapegroup {
+.toolbar .escapegroup,
+.toolbar .profilegroup {
 	float: right;
+}
+.button-profile {
+	background: url('/images/tmp-user.png');
+	background-size: 16px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	width: 30px;
 }
 .toolbar .buttongroup.searchgroup {
 	transition: all 1s;
@@ -476,16 +484,27 @@
 .helpPanel .goAway {
 	float: right;
 }
-.helpPanel .arrow-up {
+.arrow-up {
 	width: 20px;
 	height: 20px;
 	background-color: #EEE;
 	position: absolute;
 	top: -10px;
-	left: 30px;
 	box-shadow: -5px -3px 3px rgba(0, 0, 0, 0.2);
 	z-index: 5;
 	transform: rotate(45deg);
+}
+.helpPanel .arrow-up {
+	left: 30px;
+}
+.profilePanel .arrow-up {
+	right: 35px;
+}
+.profilePanel .authoringForm {
+	position: absolute;
+	left: 85px;
+	right: 0;
+	top: 0;
 }
 /* .button-continue appears in windowFg: */
 
@@ -500,4 +519,18 @@
 	line-height: 3.4em;
 	float: right;
 	margin-top: 5em;
+}
+.profilePanel {
+	background-color: #EEE;
+	border-radius: 15px;
+	font-size: 0.86em;
+	right: 2em;
+	padding: 15px;
+	position: absolute;
+	width: 60%;
+	max-width: 500px;
+	min-width: 290px;
+	/* TOOLBAR HEIGHT */
+	top: 55px;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }

@@ -23,8 +23,6 @@
 		</div> -->
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 			<a class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
-
-
 				<span>New window</span>
 			</a>
 		</div>
@@ -33,6 +31,11 @@
 				<span>Search</span>
 			</a>
 			<input id="searchtext" type="text" ng-model="searchText" />
+		</div>
+		<div class="profilegroup buttongroup">
+			<a class="button button-profile" ng-click="appState.show.profilePanel = true">
+				<span>Profile</span>
+			</a>
 		</div>
 	</div>
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
@@ -64,7 +67,7 @@
 	<img src="/images/autoscroll.svg" width="32" height="32">
 </div>
 
-<div ng-show="show.navPanel || show.searchPanel || show.helpPanel" class="modal-backdrop" ng-click="hidePanels()"></div>
+<div ng-show="show.navPanel || show.searchPanel || show.helpPanel || show.profilePanel" class="modal-backdrop" ng-click="hidePanels()"></div>
 
 <!-- ITEM DETAIL -->
 <div ng-show="appState.itemDetail" class="modal-backdrop" ng-click="appState.itemDetail=false"></div>
@@ -96,8 +99,48 @@
 	<a class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;">Don't show this again</a>
 </div>
 
-<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
-<!-- 
+<!-- PROFILE (mostly faked for now) -->
+<div ng-if="show.profilePanel" class="profilePanel">
+	<div class="arrow-up"></div>
+	<div ng-if="userHasRole('admin')">
+
+		<img src="/images/customer/tmp-userprofile.png" style="float:left; border: 5px solid #FFF">
+
+		<div class="authoringForm">
+			<div class="field">
+				<div class="label">Name
+				</div>
+				<div class="input">
+					<input type="text" value="Professor Smith">
+				</div>
+			</div>
+
+			<div class="field">
+				<div class="label">Email
+				</div>
+				<div class="input">
+					<input type="text" value="example@this-is-todo.com">
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="field">
+				<div style="text-align:right;">
+					<a ng-click="logout()">Log out</a>
+				</div>
+			</div>
+		</div>
+
+		<div ng-if="!userHasRole('admin')">
+
+			<a ng-href="/pages/launch_oauth2?episode={{appState.episodeId}}" target="_new">Log in</a>
+
+		</div>
+	</div>
+
+
+	<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
+	<!-- 
 <a href="javascript:void 1;" ng-click="showDebug=!showDebug">DEBUG:</a>
 <pre ng-if="showDebug === true">{{appState | pretty }}</pre>
 <pre ng-if="showDebug === true">{{episode | pretty}}</pre>

@@ -18,6 +18,11 @@ angular.module('com.inthetelling.story')
 			return false;
 		};
 
+		svc.logout = function () {
+			//TODO
+			console.log("TODO: authSvc.logout");
+		};
+
 		// This defer pattern I'm using is clumsy, there's got to be a simpler way to divert repeated calls to the original promise
 		var isAuthenticating;
 		var authenticateDefer = $q.defer();
