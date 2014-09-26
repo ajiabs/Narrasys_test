@@ -109,7 +109,6 @@ angular.module('com.inthetelling.story')
 				episode.origTemplateUrl = episode.templateUrl;
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
-			episode.templateUrl = 'templates/episode/columbiabusiness.html'; // TEMP TEST
 
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):
