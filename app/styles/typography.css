@@ -169,3 +169,30 @@ a {
 .typographyColumbia h3 {
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }
+/* ----- */
+
+/* (Columbia Business: ) */
+
+.typographyColumbiabusiness {
+	/* They specify Galaxie Sans, we don't have a license. */
+	font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
+}
+.typographyColumbiabusiness .startTime,
+.typographyColumbiabusiness .title,
+.typographyColumbiabusiness .authorName {
+	font-size: 22px !important;
+	line-height: 26px !important;
+	font-weight: 300 !important;
+}
+.typographyColumbiabusiness .pullquote {
+	min-height: 60px;
+	font-size: 30px;
+	line-height: 35px;
+	font-weight: 300;
+	color: #205F9C;
+	padding-left: 60px;
+	background: url('/images/quote-white.svg') top left no-repeat;
+}
+.typographyColumbiabusiness .pullquote:before {
+	display: none !important;
+}

@@ -253,3 +253,21 @@ a:visited,
 .colorColumbia .colorInvert h3 {
 	color: #5892C1
 }
+/* Columbia business school */
+
+.colorColumbiabusiness a,
+.colorColumbiabusiness .fakelink {
+	color: #205F9C;
+}
+.colorColumbiabusiness .colorInvert {
+	color: #000;
+	background-color: none;
+}
+.colorColumbiabusiness .category span {
+	color: #FFF;
+	font-weight: 400 !important;
+	background-color: #205F9C;
+	padding: 2px;
+	text-transform: uppercase;
+	margin-left: -0.5em;
+}
