@@ -109,13 +109,14 @@ angular.module('com.inthetelling.story')
 				episode.origTemplateUrl = episode.templateUrl;
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
+			episode.templateUrl = 'templates/episode/columbiabusiness.html'; // TEMP TEST
 
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):
 			if (!episode.styles) {
 				episode.styles = [];
 			}
-			angular.forEach(["eliterate", "gw", "purdue", "usc", "columbia"], function (customer) {
+			angular.forEach(["eliterate", "gw", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
 				if (episode.templateUrl === "templates/episode/" + customer + ".html") {
 					angular.forEach(["color", "typography"], function (styleType) {
 						// if the episode doesn't already have styletypeFoo, add styletypeCustomer 
@@ -198,13 +199,13 @@ angular.module('com.inthetelling.story')
 							// hide this event for non-guest users
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-							event.uscReviewModeHack="uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
+							event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
 						}
 						if (event.title.match(/Connect with/)) {
 							// hide this event unless episode badge is achieved
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-							event.uscReviewModeHack="uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
+							event.uscReviewModeHack = "uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
 						}
 					}
 					// END of USC hacks
