@@ -179,7 +179,7 @@ angular.module('com.inthetelling.story')
 			appState.time = t;
 			videoScope.seek(t);
 			svc.updateEventStates();
-			svc.stepEvent();
+			stepEvent();
 
 			// capture analytics data:
 			if (method) {
