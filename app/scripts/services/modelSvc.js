@@ -599,16 +599,24 @@ angular.module('com.inthetelling.story')
 			}
 
 			// Chrome won't allow the same video to play in two windows, which interferes with our 'escape the iframe' button.
-			// Therefore we force different video streams in chrome depending on whether we're framed or not:
+			// Therefore we trick Chrome into thinking it is not the same video:
+
 			if (isChrome) {
-				if (appState.isFramed) {
-					videoObject.mpeg4 = undefined;
-				} else {
-					videoObject.webm = undefined;
+
+				var tDelimit;
+				var tParam = "t=" + new Date().getTime();
+
+				if (videoObject.mpeg4) {
+					tDelimit = videoObject.mpeg4.match(/\?/) ? "&" : "?";
+					videoObject.mpeg4 = videoObject.mpeg4 + tDelimit + tParam;
+				}
+				if (videoObject.webm) {
+					tDelimit = videoObject.webm.match(/\?/) ? "&" : "?";
+					videoObject.webm = videoObject.webm + tDelimit + tParam;
 				}
 			}
 
-			// console.log("video asset:", videoObject);
+			console.log("video asset:", videoObject);
 
 			videoAsset.urls = videoObject;
 			return videoAsset;
