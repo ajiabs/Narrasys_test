@@ -6,8 +6,9 @@
 	</div>
 	<div>
 		<b ng-bind-html="item.title"></b>
-		<br>
-		<img ng-if="item.asset.url" ng-src="{{item.asset.url}}">
+		<p style="text-align:center">
+			<img ng-if="item.asset.url" ng-src="{{item.asset.url}}">
+		</p>
 	</div>
 	<div class="text" ng-bind-html="item.description"></div>
 	<div class="clear"></div>
