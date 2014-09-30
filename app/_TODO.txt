@@ -4,7 +4,6 @@ newly introduced bug:  decorative windowFg items no longer show properly
 
 EDUCAUSE TODO:
 
-sxs "question" interactivity
 Support images in question template
 Support link-image-id in link (and video) items
 
