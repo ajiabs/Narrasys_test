@@ -497,3 +497,7 @@ draggable marker on timeline when editing
 fixed error handler
 SxS search results w/icon
 Hide 'continue' button during editing
+------------------------------------------------
+Changes in SxS0.12:
+icons in edit panels
+
