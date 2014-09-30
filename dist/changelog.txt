@@ -488,3 +488,12 @@ applying timeline hotfix
 profile panel (partial)
 Columbia business school episode template
 
+------------------------------------------------
+Changes in SxS0.11:
+can now edit items immediately after creating them
+"file" sxs template now actually links to file
+Images in questions
+draggable marker on timeline when editing
+fixed error handler
+SxS search results w/icon
+Hide 'continue' button during editing
