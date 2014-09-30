@@ -9,7 +9,7 @@ throw() or other js errors also get sent here by $exceptionHandler (though we're
 */
 
 angular.module('com.inthetelling.story')
-	.factory('errorSvc', function () {
+	.factory('errorSvc', function (authSvc) {
 		var svc = {};
 
 		// TODO make the field names less ridiculously inconsistent.  
@@ -21,6 +21,12 @@ angular.module('com.inthetelling.story')
 		svc.init();
 
 		svc.error = function (exception, cause) {
+			if (exception && exception.status === 401) {
+				// "unauthorized" errors will clear login state for now.
+				// TODO in future there may be cases where this isn't desirable (i.e. when we support more roles,
+				// it may make sense to keep an existing role in place even if the user attempts to do something they're not allowed to?)
+				authSvc.logout();
+			}
 			if (exception && exception.data) {
 				// API errors go here:
 				svc.errors.push({

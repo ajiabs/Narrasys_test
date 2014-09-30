@@ -6,21 +6,21 @@ angular.module('com.inthetelling.story')
 		var svc = {};
 
 		svc.userHasRole = function (role) {
-			if (appState.user === {}) {
-				console.warn("No user data found in appState!");
-				return false;
-			}
-			for (var i = 0; i < appState.user.roles.length; i++) {
-				if (appState.user.roles[i] === role) {
-					return true;
+			if (appState.user && appState.user.roles) {
+				for (var i = 0; i < appState.user.roles.length; i++) {
+					if (appState.user.roles[i] === role) {
+						return true;
+					}
 				}
 			}
 			return false;
 		};
 
 		svc.logout = function () {
-			//TODO
-			console.log("TODO: authSvc.logout");
+			//
+			appState.user = {};
+			delete($http.defaults.headers.common.Authorization);
+
 		};
 
 		// This defer pattern I'm using is clumsy, there's got to be a simpler way to divert repeated calls to the original promise

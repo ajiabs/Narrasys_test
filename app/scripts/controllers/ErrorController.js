@@ -2,6 +2,8 @@
 
 angular.module('com.inthetelling.story')
 	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState) {
+		console.log("errorController", $scope);
+
 		$scope.errorSvc = errorSvc;
 
 		$scope.user = appState.user;

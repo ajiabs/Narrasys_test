@@ -63,6 +63,8 @@
 	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"></div>
 </div>
 
+<div ng-controller="ErrorController" ng-include="'/templates/error.html'"></div>
+
 <div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
 	<img src="/images/autoscroll.svg" width="32" height="32">
 </div>
@@ -131,16 +133,16 @@
 			</div>
 		</div>
 
-		<div ng-if="!userHasRole('admin')">
+		<div ng-if="!(userHasRole('admin'))">
 
 			<a ng-href="/pages/launch_oauth2?episode={{appState.episodeId}}" target="_new">Log in</a>
 
 		</div>
 	</div>
+</div>
 
 
-	<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
-	<!-- 
+<!-- 
 <a href="javascript:void 1;" ng-click="showDebug=!showDebug">DEBUG:</a>
 <pre ng-if="showDebug === true">{{appState | pretty }}</pre>
 <pre ng-if="showDebug === true">{{episode | pretty}}</pre>
