@@ -1,42 +1,23 @@
 
+Another new one?  scrubbing timeline while video is playing doesn't work so well. (Probably just should pause at seek start)
+
 newly introduced bug:  decorative windowFg items no longer show properly
 
 
 EDUCAUSE TODO:
 
-Support images in question template
 Support link-image-id in link (and video) items
 
 sxs poll questions (fake the results)
 
-video item:  treat as Link type
-
-
-(also need to do templates for non-sxs: horizontal layout links and images, links with thumbnail)
-
-
-Store saved sxs items in episode
-
-add 'edit' button to sxs items in all modes
-
-add 'delete' button when editing an existing item
+video item:  treat as Link type?  (treat as real )
 
 'delete' for uploaded assets
 
 
-
-
-
-Display sxs items with instructor thumbnail in search results, explore mode
-
-
-
-timeline slider for changing sxs item start times
-
-
-
 insert video duration into timeline
 
+explore mode isn't always updating after edits (intermittent)
 
 
 

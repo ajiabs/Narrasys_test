@@ -186,7 +186,9 @@ angular.module('com.inthetelling.story')
 				scope.$watch(function () {
 					return appState.time;
 				}, function () {
-					scope.willSeekTo = appState.time;
+					if (appState.editing) {
+						scope.willSeekTo = appState.time;
+					}
 				});
 
 				/* end SxS */
