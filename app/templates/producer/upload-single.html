@@ -5,7 +5,8 @@
 		</div>
 	</span>
 	<span ng-if="!uploads && item.asset">
-		{{item.asset.original_filename}} [DELETE]
+		{{item.asset.original_filename}}
+		<button ng-click="deleteAsset(item.asset._id)">Delete</button>
 	</span>
 
 	<span ng-if="!uploads && !item.asset">

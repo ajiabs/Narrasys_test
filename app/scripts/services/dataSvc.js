@@ -1,12 +1,5 @@
 'use strict';
 
-// TESTING:
-// badge event is 53a1d2162442bd24f9000004
-// m/c event is 539a0d182442bd86f1000004
-
-// badge template ID is 53a1d0672442bd95b1000002
-// m/c template id is 539a07ee2442bd20bf000006
-
 // TODO: load and resolve categories
 
 // Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
@@ -338,6 +331,10 @@ angular.module('com.inthetelling.story')
 
 		svc.deleteItem = function (evtId) {
 			return DELETE("/v2/events/" + evtId);
+		};
+
+		svc.deleteAsset = function (assetId) {
+			return DELETE("/v1/assets/" + assetId);
 		};
 
 		// TODO need safety checking here

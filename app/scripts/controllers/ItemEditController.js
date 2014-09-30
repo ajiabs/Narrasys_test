@@ -1,5 +1,9 @@
 'use strict';
+/*
+TODO: This is too tightly bound to ittItemEditor; need to make better decisions about 
+which functions go here vs there 
 
+*/
 angular.module('com.inthetelling.story')
 	.controller('ItemEditController', function ($scope, $rootScope, appState, dataSvc, modelSvc, timelineSvc) {
 
@@ -70,6 +74,9 @@ angular.module('com.inthetelling.story')
 					timelineSvc.removeEvent(appState.editing._id);
 					delete(modelSvc.events[appState.editing._id]);
 					modelSvc.resolveEpisodeEvents(appState.episodeId);
+					if (appState.editing.asset) {
+						dataSvc.deleteAsset(appState.editing.asset._id);
+					}
 					delete(appState.editing);
 				}, function (data) {
 					console.log("failed to delete:", data);

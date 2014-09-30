@@ -1,6 +1,18 @@
 'use strict';
 
-/* WIP for Producer */
+/* 
+
+WIP for Producer 
+TODO: This is too tightly bound to itemEditController; need to make better decisions about 
+which functions go here vs there
+
+TODO: appState.editing was a mistake.  It should just contain the ID of the item being edited,
+and all actions performed on the event inside modelSvc.events.  (It was supposed to be just a pointer
+to the cached event in modelSvc, but see deleteAsset below: somewhere along the way I let them fall out of synch
+so had to delete the asset from both copies...)
+
+TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
+*/
 
 angular.module('com.inthetelling.story')
 	.directive('autofocus', function () {
@@ -10,7 +22,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 	})
-	.directive('ittItemEditor', function ($rootScope, appState, modelSvc, timelineSvc, awsSvc) {
+	.directive('ittItemEditor', function ($rootScope, appState, modelSvc, timelineSvc, awsSvc, dataSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -83,6 +95,16 @@ angular.module('com.inthetelling.story')
 					}, function (update) {
 						scope.uploadStatus[0] = update;
 					});
+				};
+
+				scope.deleteAsset = function (assetId) {
+					if (window.confirm("Are you sure you wish to delete this asset?")) {
+						delete modelSvc.events[appState.editing._id].asset;
+						delete modelSvc.events[appState.editing._id].asset_id;
+						delete appState.editing.asset;
+						delete appState.editing.asset_id;
+						dataSvc.deleteAsset(assetId);
+					}
 				};
 
 				scope.$on('$destroy', function () {
