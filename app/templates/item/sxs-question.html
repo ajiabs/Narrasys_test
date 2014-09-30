@@ -7,7 +7,9 @@
 	<div class="question">
 		<!-- begin plugin.  TODO make this its own directive -->
 		<p ng-bind-html="item.data._plugin.questiontext"></p>
-
+		<p ng-if="item.asset.url" style="text-align:center; margin: 0.5em">
+			<img ng-src="{{item.asset.url}}">
+		</p>
 		<div ng-repeat="distractor in item.data._plugin.distractors">
 			<label ng-if="distractor.text" ng-class="{
 				correct: item.data._plugin.hasBeenAnswered && distractor.correct,
