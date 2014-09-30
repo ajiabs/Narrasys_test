@@ -102,6 +102,22 @@
 	margin-bottom: 0.1em;
 	width: 1px;
 }
+.progressbar .handle.sxsHandle {
+	margin-left: -2px;
+	height: 1.3em;
+	margin-top: -0.2em;
+	border: 2px solid #333;
+}
+.progressbar .sxsHandle .tip {
+	border: 2px solid #333;
+	padding: 1px;
+	border-radius: 6px;
+	background-color: rgba(255, 255, 255, 0.5);
+	margin-top: -1em;
+	font-size: 11px !important;
+	background: url('/images/draggable.png') 50% 50% no-repeat;
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
 .progressbar .marker {
 	font-size: 0.7em;
 	line-height: 1.4em;

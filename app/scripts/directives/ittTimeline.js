@@ -182,6 +182,15 @@ angular.module('com.inthetelling.story')
 					seeking(evt);
 				};
 
+				/* SxS. Needed to position the edit handle when not actively dragging timeline */
+				scope.$watch(function () {
+					return appState.time;
+				}, function () {
+					scope.willSeekTo = appState.time;
+				});
+
+				/* end SxS */
+
 				// triggered on mousemove:
 				var seeking = function (evt) {
 					if (!scope.isSeeking) {
