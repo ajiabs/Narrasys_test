@@ -509,3 +509,7 @@ mark video more clearly as TODO
 bugfix: allow timeline scrub while playing video
 Trick Chrome into playing the same video in two windows
 
+------------------------------------------------
+Changes in SxS0.14:
+Can delete item assets now
+
