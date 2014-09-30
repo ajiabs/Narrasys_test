@@ -357,25 +357,38 @@ angular.module('com.inthetelling.story')
 			}
 		};
 		svc.prepItemForStorage = function (evt) {
-			// console.log("prepItemForStorage", evt);
-			// throw away the obvious stuff
-			delete evt.asjson;
 
-			// delete derived and temporary fields
-			// may not need to do this, check server roundtrip to see if the APIs throw out unexpected fields
-			delete evt.styleCss;
-			delete evt.layoutCss;
-			delete evt.isContent;
-			delete evt.isTranscript;
-			delete evt.isFuture;
-			delete evt.isPast;
-			delete evt.isCurrent;
-			delete evt.edit;
-			delete evt.$$hashKey;
-			delete evt.noEmbed;
-			delete evt.noExternalLink;
-			delete evt.targetTop;
-			delete evt.asset;
+			var prepped = {};
+
+			// this is a conservative list for SXS only, so far. More fields will need to be added here
+			var fields = [
+				"_id",
+				"_type",
+				"start_time",
+				"end_time",
+				"episode_id",
+				"templateUrl",
+				"stop",
+				"type",
+				"isCurrent",
+				"sxs",
+				"title",
+				"url",
+				"annotator",
+				"annotation",
+				"data",
+				"asset_id",
+				"link_image_id",
+				"annotation_image_id"
+			];
+			for (var i = 0; i < fields.length; i++) {
+				if (evt[fields[i]] || evt[fields[i]] === 0) {
+					prepped[fields[i]] = angular.copy(evt[fields[i]]);
+				}
+			}
+
+			prepped.style_id = [];
+			prepped.layout_id = [];
 
 			// convert style/layout selections back into their IDs.
 			// trust evt.styles[] and evt.layouts[], DO NOT use styleCss (it contains the scene and episode data too!)
@@ -383,30 +396,29 @@ angular.module('com.inthetelling.story')
 			angular.forEach(evt.styles, function (styleName) {
 				var style = svc.readCache("style", "css_name", styleName);
 				if (style) {
-					evt.style_id.push(style.id);
+					prepped.style_id.push(style.id);
 				} else {
 					errorSvc.error({
 						data: "Tried to store a style with no ID: " + styleName
 					});
 				}
 			});
-			delete evt.styles;
+
 			evt.layout_id = [];
 			angular.forEach(evt.layouts, function (layoutName) {
 				var layout = svc.readCache("layout", "css_name", layoutName);
 				if (layout) {
-					evt.layout_id.push(layout.id);
+					prepped.layout_id.push(layout.id);
 				} else {
 					errorSvc.error({
 						data: "Tried to store a layout with no ID: " + layoutName
 					});
 				}
 			});
-			delete evt.layouts;
 
 			// TODO: what else needs to be done before we can safely store this event?
-
-			return evt;
+			console.log(prepped);
+			return prepped;
 		};
 
 		// careful to only use this for guaranteed unique fields (style and layout names, basically)
