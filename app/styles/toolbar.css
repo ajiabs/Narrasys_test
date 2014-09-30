@@ -305,6 +305,14 @@
 	padding: 0.1em 0.3em;
 	clear: both;
 }
+.searchResults .item .isSxS {
+	background: url('/images/customer/tmp-userprofile.png') top right no-repeat;
+	background-size: 24px;
+	margin-right: -4px;
+	margin-top: -2px;
+	padding-right: 24px;
+	;
+}
 .searchResults .item .displayTime {
 	cursor: pointer;
 	cursor: hand;

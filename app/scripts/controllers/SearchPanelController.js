@@ -31,7 +31,11 @@ angular.module('com.inthetelling.story')
 		// TODO handle more than one episode.....
 		$scope.indexEvents = function () {
 			angular.forEach($scope.episode.items, function (item) {
+				console.log(item.sxs);
 				item.searchableText = (item.annotation || item.description) + " " + (item.title || item.annotator);
+				if (item.sxs) {
+					item.cosmetic = false;
+				}
 			});
 		};
 
