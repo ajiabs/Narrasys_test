@@ -1,12 +1,12 @@
 .authoringForm {
-	margin: 1em;
+	margin-top: 1em;
 }
 .authoringForm .field {
 	clear: both;
 }
 .authoringForm .field .input,
 .authoringForm .field .label {
-	margin-bottom: 0.25em;
+	margin-bottom: 0.2em;
 }
 .authoringForm .label {
 	width: 25%;

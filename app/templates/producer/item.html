@@ -1,21 +1,21 @@
 <div class="itemEdit authoringForm">
-
-	<!-- TODO timeline slider to control time also -->
-	<div class="field">
-		<div class="label">Time
+	<div style="max-height: 350px; overflow-y:scroll; padding-right: 20px">
+		<!-- TODO timeline slider to control time also -->
+		<div class="field">
+			<div class="label">Time
+			</div>
+			<div class="input">
+				<input ng-change="setItemTime()" type="text" ng-model="appState.time" sxs-input-time style="max-width:100px">
+			</div>
 		</div>
-		<div class="input">
-			<input ng-change="setItemTime()" type="text" ng-model="appState.time" sxs-input-time style="max-width:100px">
-		</div>
+		<div ng-include="itemTemplateUrl"></div>
 	</div>
-	<div ng-include="itemTemplateUrl"></div>
 
 	<div style="clear:both; width: 100%; text-align:right">
 		<small>
 			<a ng-click="cancelEdit()">Cancel</a>
 		</small>
 		&nbsp; &nbsp;
-
 		<input type="button" value="Delete" ng-if="appState.editing._id != 'internal:editing'" ng-click="deleteItem()">
 		<input type="button" value="Save" ng-click="saveEdit()">
 	</div>
