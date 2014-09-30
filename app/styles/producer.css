@@ -95,37 +95,52 @@
 .sxs-edit {
 	color: #FFF;
 }
-.button-comment:before {
+.sxsicon {
+	position: absolute;
+	top: 2em;
+	left: 1em;
+	opacity: 0.2;
+	height: 72px;
+	width: 72px;
+	font-size: 1.2em;
+}
+.button-comment:before,
+.sxsicon.icon-comment:before {
 	font-size: 2.5em;
 	display: block;
 	font-family: Story;
 	content: "\e600";
 }
-.button-link:before {
+.button-link:before,
+.sxsicon.icon-link:before {
 	font-size: 2.5em;
 	display: block;
 	font-family: Story;
 	content: "\e604";
 }
-.button-question:before {
+.button-question:before,
+.sxsicon.icon-question:before {
 	font-size: 2.5em;
 	display: block;
 	font-family: Story;
 	content: "\e605";
 }
-.button-image:before {
+.button-image:before,
+.sxsicon.icon-image:before {
 	font-size: 2.5em;
 	display: block;
 	font-family: Story;
 	content: "\e603";
 }
-.button-file:before {
+.button-file:before,
+.sxsicon.icon-file:before {
 	font-size: 2.5em;
 	display: block;
 	font-family: Story;
 	content: "\e602";
 }
-.button-video:before {
+.button-video:before,
+.sxsicon.icon-video:before {
 	font-size: 2.5em;
 	display: block;
 	font-family: Story;
