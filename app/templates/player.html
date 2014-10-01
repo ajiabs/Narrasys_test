@@ -32,7 +32,7 @@
 			</a>
 			<input id="searchtext" type="text" ng-model="searchText" />
 		</div>
-		<div class="profilegroup buttongroup">
+		<div class="profilegroup buttongroup" ng-if="appState.product == 'sxs'">
 			<a class="button button-profile" ng-click="appState.show.profilePanel = true">
 				<span>Profile</span>
 			</a>

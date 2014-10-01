@@ -10,13 +10,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 		.when('/', {
 			templateUrl: 'templates/root.html'
 		})
-		.when('/episode/:epId', {
-			title: "Telling STORY",
-			controller: 'PlayerController',
-			templateUrl: 'templates/player.html',
-			reloadOnSearch: false
-		})
-		.when('/producer', {
+		.when('/episodes', {
 			title: "Available episodes",
 			templateUrl: 'templates/producer/episodelist.html'
 		})
@@ -24,29 +18,63 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Plugin authoring for standalone questions",
 			controller: 'QuestionAuthoringController',
 			templateUrl: 'templates/producer/questionauthoring.html',
-			reloadOnSearch: false
 		})
 		.when('/upload', {
 			title: "Uploading",
 			templateUrl: 'templates/producer/upload.html'
 		})
-		.when('/producer/:epId', {
-			title: "Producer",
-			controller: 'EpisodeEditorController',
-			templateUrl: 'templates/producer/episode.html',
+		.when('/episode/:epId', {
+			title: "Telling STORY",
+			controller: 'PlayerController',
+			templateUrl: 'templates/player.html',
 			reloadOnSearch: false
 		})
+		.when('/episode/:epId', {
+			title: "Telling STORY",
+			controller: 'PlayerController',
+			templateUrl: 'templates/player.html',
+			reloadOnSearch: false,
+			resolve: {
+				product: function (appState) {
+					appState.product = "player";
+				}
+			}
+		})
+		.when('/sxs/:epId', {
+			title: "Telling STORY",
+			controller: 'PlayerController',
+			templateUrl: 'templates/player.html',
+			reloadOnSearch: false,
+			resolve: {
+				product: function (appState) {
+					appState.product = "sxs";
+				}
+			}
+		})
+		.when('/producer/:epId', {
+			title: "Telling STORY",
+			controller: 'PlayerController',
+			templateUrl: 'templates/player.html',
+			reloadOnSearch: false,
+			resolve: {
+				product: function (appState) {
+					appState.product = "producer";
+				}
+			}
+		})
+	/*
 		.when('/episode/:epId/:viewMode', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			reloadOnSearch: false
 		})
-		.otherwise({
-			title: "Telling STORY: Error",
-			controller: 'ErrorController',
-			templateUrl: 'templates/error-404.html'
-		});
+*/
+	.otherwise({
+		title: "Telling STORY: Error",
+		controller: 'ErrorController',
+		templateUrl: 'templates/error-404.html'
+	});
 	//$locationProvider.html5Mode(false); // TODO bill had trouble getting the server config working for this... thought we had it but IE still choked
 })
 

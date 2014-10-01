@@ -36,10 +36,6 @@ angular.module('com.inthetelling.story')
 			timelineSvc.seek($routeParams.t, "URLParameter");
 		}
 
-		// if ($routeParams.producer) {
-		// 	appState.producer = true;
-		// }
-
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 		console.log("playerController init");
