@@ -154,10 +154,7 @@ angular.module('com.inthetelling.story')
 
 			if (type === 'video') {
 				stub = {
-					"_type": "Upload",
-					//"link_image_id": "",
-					"title": "",
-					"description": ""
+					// This should be an injected episode with the linked/uploaded video as its master asset
 				};
 			}
 
