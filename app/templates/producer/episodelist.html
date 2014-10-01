@@ -11,7 +11,9 @@
 				<ul>
 					<li ng-repeat="episodecontainer in session.children">
 
-						<a href="#episode/{{episodecontainer.episodes[0]}}">[View]</a>
+						<a href="#/episode/{{episodecontainer.episodes[0]}}">[View]</a>
+						<a href="#/sxs/{{episodecontainer.episodes[0]}}">[SxS]</a>
+						<a href="#/producer/{{episodecontainer.episodes[0]}}">[Producer]</a>
 						{{episodecontainer.name}}
 						<small style="opacity:0.2">{{episodecontainer.episodes[0]}}
 							<!-- <a ng-click="authenticate(episode._id)">OAuth</a> -->
