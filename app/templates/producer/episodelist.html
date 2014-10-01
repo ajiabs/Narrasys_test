@@ -1,6 +1,6 @@
 <div ng-controller="EpisodeListController" style="margin:1em">
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
-	{{user}}
+
 	<div ng-repeat="customer in containers">
 		<h2 ng-click="customer.hidden = !customer.hidden" style="cursor: pointer; width:100%; background-color:#EEE">{{customer.name}}</h2>
 
@@ -13,10 +13,8 @@
 					<li ng-repeat="episodecontainer in session.children">
 
 						<a href="#episode/{{episodecontainer.episodes[0]}}">[View]</a>
-						<a href="#producer/{{episodecontainer.episodes[0]}}">[Edit]</a>
 						{{episodecontainer.name}}
 						<small style="opacity:0.2">{{episodecontainer.episodes[0]}}
-							<!-- <a ng-click="authenticate(episode._id)">OAuth</a> -->
 						</small>
 
 					</li>
@@ -24,14 +22,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- 
-	<div ng-repeat="episode in episodes">
-		({{episode._id}}) {{episode.title}} -
-		<a href="#episode/{{episode._id}}">Episode</a> -
-		<a ng-click="authenticate(episode._id)">OAuth</a>
-		<br>
-	</div>
- -->
 
 </div>
 
