@@ -483,3 +483,7 @@ SCS episode template
 cleanup of obsolete code
 no mock data in master
 
+------------------------------------------------
+Changes in v4.0.53:
+update to scs templte
+
