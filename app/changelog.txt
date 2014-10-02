@@ -476,3 +476,10 @@ hotfix for Safari not showing some events after timeline seek
 ------------------------------------------------
 Changes in v4.0.51:
 Trick Chrome into playing the same video in two windows
+
+------------------------------------------------
+Changes in v4.0.52:
+SCS episode template
+cleanup of obsolete code
+no mock data in master
+
