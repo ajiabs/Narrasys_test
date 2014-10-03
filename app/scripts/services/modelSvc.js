@@ -132,10 +132,7 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
-			// Attach episode title and description to the landing screen event:
-			if (episode.title && svc.events["internal:landingscreen:" + episode._id]) {
-				svc.events["internal:landingscreen:" + episode._id].title = episode.title;
-			}
+			episode = setLang(episode);
 			return episode;
 		};
 
@@ -175,6 +172,8 @@ angular.module('com.inthetelling.story')
 
 		svc.deriveEvent = function (event) {
 
+			event = setLang(event);
+
 			if (event._type !== 'Scene') {
 				if (!event.templateUrl) {
 					// TODO add support for other plugin types here, or have a single plugin template that routes to subdirectives based on plugin type
@@ -190,40 +189,21 @@ angular.module('com.inthetelling.story')
 							// they don't want any embedded links (shrug)
 							event.templateUrl = 'templates/transmedia-link-noembed.html';
 						}
-						if (typeof (event.title) === 'string') { // can remove this block when i18n fully deployed
-							if (event.title.match(/ACTIVITY/)) {
-								// Unnecessary explanatory text
-								event.description = event.description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
-							}
-							if (event.title.match(/Haven't Registered/)) {
-								// hide this event for non-guest users
-								event.styles = event.styles ? event.styles : [];
-								event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-								event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
-							}
-							if (event.title.match(/Connect with/)) {
-								// hide this event unless episode badge is achieved
-								event.styles = event.styles ? event.styles : [];
-								event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-								event.uscReviewModeHack = "uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
-							}
-						} else {
-							if (event.title.en.match(/ACTIVITY/)) {
-								// Unnecessary explanatory text
-								event.description.en = event.description.en + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
-							}
-							if (event.title.en.match(/Haven't Registered/)) {
-								// hide this event for non-guest users
-								event.styles = event.styles ? event.styles : [];
-								event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-								event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
-							}
-							if (event.title.en.match(/Connect with/)) {
-								// hide this event unless episode badge is achieved
-								event.styles = event.styles ? event.styles : [];
-								event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-								event.uscReviewModeHack = "uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
-							}
+						if (event.display_title.match(/ACTIVITY/)) {
+							// Unnecessary explanatory text
+							event.display_description = event.display_description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
+						}
+						if (event.display_title.match(/Haven't Registered/)) {
+							// hide this event for non-guest users
+							event.styles = event.styles ? event.styles : [];
+							event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
+							event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
+						}
+						if (event.display_title.match(/Connect with/)) {
+							// hide this event unless episode badge is achieved
+							event.styles = event.styles ? event.styles : [];
+							event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
+							event.uscReviewModeHack = "uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
 						}
 					}
 					// END of USC hacks
@@ -293,18 +273,38 @@ angular.module('com.inthetelling.story')
 
 			event.displayStartTime = $filter("asTime")(event.start_time);
 
-			// test language:
-			if (event.title && typeof (event.title) !== 'string') {
-				event.title.es = "Spanish language title (this is fake data injected by player)";
-			}
-			if (event.description && typeof (event.description) !== 'string') {
-				event.description.es = "Spanish language description (this is fake data injected by player)";
-			}
-			if (event.annotation && typeof (event.annotation) !== 'string') {
-				event.annotation.es = "Spanish language annotation (this is fake data injected by player)";
-			}
-
 			return event;
+		};
+
+		var setLang = function (obj) {
+			// TODO: categories, containers
+			angular.forEach(["title", "annotation", "description"], function (field) {
+				if (obj[field]) {
+					if (typeof (obj[field]) === 'string') {
+						obj["display_" + field] = obj[field];
+					} else {
+
+						// for debugging
+						obj[field].es = "This is a fake spanish-language string for testing";
+
+						if (obj[field][appState.lang]) {
+							obj["display_" + field] = obj[field][appState.lang];
+						} else {
+							obj["display_" + field] = obj[field].en;
+						}
+					}
+				}
+			});
+			return obj;
+		};
+		svc.setLanguageStrings = function () {
+			angular.forEach(svc.events, function (evt) {
+				evt = setLang(evt);
+			});
+			angular.forEach(svc.episodes, function (ep) {
+				ep = setLang(ep);
+			});
+			// todo:  containers
 		};
 
 		/*  Any changes to any scene or item data must call svc.resolveEpisodeEvents afterwards. It sets:

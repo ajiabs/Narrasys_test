@@ -28,7 +28,7 @@
 						<div class="tip" ng-show="seekHandleVisible">{{willSeekTo | asTime}}</div>
 					</div>
 					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents " ng-style="{left: markerPercent(event.start_time)+'%'}">
-						<span class="content" ng-bind-html="event.title | lang"></span>
+						<span class="content" ng-bind-html="event.display_title"></span>
 						<!-- <div class="tooltip-arrow"></div> -->
 					</div>
 				</div>
@@ -69,9 +69,9 @@
 				</span>
 			</span>
 			<span style="display:inline-block;height:1em;position:relative">
-				<select size="1" ng-model="appState.lang" class="languageSelector">
-					<option value="en">English</option>
-					<option value="es">Spanish</option>
+				<select size="1" ng-model="appState.lang" class="languageSelector" ng-change="setNewLanguage()">
+					<option value="en">[EN]</option>
+					<option value="es">[ES]</option>
 				</select>
 			</span>
 			<a ng-if="appState.viewMode == 'watch'" class="button button-captions" ng-click="appState.hideCaptions=!appState.hideCaptions" ng-class="{active: !appState.hideCaptions}">

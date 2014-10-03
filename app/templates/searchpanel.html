@@ -13,7 +13,7 @@
 		<div class="searchResults">
 			<div ng-if="sortBy == 'startTime'">
 				<div ng-repeat="scene in episode.scenes">
-					<h3 ng-if="sceneItems.length > 0 && scene.title" ng-bind-html="scene.title | lang"></h3>
+					<h3 ng-if="sceneItems.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h3>
 					<div class="item" ng-repeat="item in sceneItems=
 						(scene.items 
 						| orderBy:'startTime' 

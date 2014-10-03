@@ -2,7 +2,7 @@
 	<span class="displayTime">
 		<a ng-click="seek(item.start_time, item._id)">{{item.displayStartTime}}</a>
 	</span>
-	<span class="type" ng-bind-html="(item.title || item.annotator) | lang | highlightSubstring: searchText"></span>
-	<div class="description" ng-bind-html="(item.description || item.annotation) | lang | highlightSubstring: searchText"></div>
+	<span class="type" ng-bind-html="(item.display_title || item.annotator) | highlightSubstring: searchText"></span>
+	<div class="description" ng-bind-html="(item.display_description || item.display_annotation) | highlightSubstring: searchText"></div>
 
 </div>
