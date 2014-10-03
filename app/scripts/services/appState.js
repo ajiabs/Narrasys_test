@@ -47,7 +47,7 @@ angular.module('com.inthetelling.story')
 			svc.autoscroll = false; //scroll window to make current items visible (in relevant modes)
 			svc.autoscrollBlocked = false; // User has disabled autoscroll
 
-			svc.product = "sxs"; // "player", "sxs", or "producer" (currently overriding to force to sxs for now)
+			svc.product = svc.product || "sxs"; // "player", "sxs", or "producer" (currently overriding to force to sxs for now)
 
 			svc.editing = false; // Object currently being edited by user (TODO)
 			// svc.youtubeIsReady = false; // Set to true when youtube API finishes loading.  DO NOT set this to false on init, otherwise navigating from episode to episode breaks (we reinit on new episode but that won't trigger youtube's ready event)

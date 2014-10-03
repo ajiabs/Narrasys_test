@@ -33,12 +33,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
-			reloadOnSearch: false,
-			resolve: {
-				product: function (appState) {
-					appState.product = "player";
-				}
-			}
+			reloadOnSearch: false
+			// resolve: {
+			// 	product: function (appState) {
+			// 		appState.product = "player";
+			// 	}
+			// }
 		})
 		.when('/sxs/:epId', {
 			title: "Telling STORY",
