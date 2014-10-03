@@ -467,3 +467,8 @@ hotfix for Safari 7.1 failing to 'seek' video
 ------------------------------------------------
 Changes in i18n.0.1:
 test i18n
+
+------------------------------------------------
+Changes in i18n.0.2:
+better i18n (no filters)
+
