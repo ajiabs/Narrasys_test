@@ -167,4 +167,21 @@ angular.module('com.inthetelling.story')
 		return function (t) {
 			return isNaN(t) ? "0:00" : Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
 		};
+	})
+	.filter('lang', function (appState) {
+		return function (str) {
+			if (str) {
+				if (typeof (str) === 'string') {
+					return str;
+				}
+				if (str[appState.lang]) {
+					return str[appState.lang];
+				}
+				if (str.en) {
+					return str.en;
+				}
+				console.error("filter:lang got object with no language-specific or english-language option available: ", str);
+			}
+			return false;
+		};
 	});

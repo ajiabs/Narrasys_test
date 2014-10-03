@@ -7,8 +7,8 @@
 		</div>
 	</div>
 	<div class="text">
-		<div class="title" ng-bind-html="item.title"></div>
-		<div ng-bind-html="item.description"></div>
+		<div class="title" ng-bind-html="item.title | lang"></div>
+		<div ng-bind-html="item.description | lang"></div>
 	</div>
 	<div class="iframeContainer">
 		<div ng-include="'templates/loading.html'"></div>

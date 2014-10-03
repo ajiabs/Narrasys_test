@@ -320,3 +320,9 @@
 .arrowRight {
 	border-left: 0.4em solid #000;
 }
+.languageSelector {
+	border: 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+}

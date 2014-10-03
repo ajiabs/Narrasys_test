@@ -2,7 +2,7 @@
 
 // Controller for the search panel results
 angular.module('com.inthetelling.story')
-	.controller('SearchPanelController', function ($scope, timelineSvc) {
+	.controller('SearchPanelController', function ($scope, $filter, timelineSvc, appState) {
 
 		// map which we could in future also bind to user selection of types.
 		// TODO should use categories instead of item "type".  But to do that we need to define categories
@@ -31,7 +31,8 @@ angular.module('com.inthetelling.story')
 		// TODO handle more than one episode.....
 		$scope.indexEvents = function () {
 			angular.forEach($scope.episode.items, function (item) {
-				item.searchableText = (item.annotation || item.description) + " " + (item.title || item.annotator);
+
+				item.searchableText = $filter("lang")((item.annotation || item.description), appState.lang) + " " + $filter("lang")((item.title || item.annotator), appState.lang);
 			});
 		};
 

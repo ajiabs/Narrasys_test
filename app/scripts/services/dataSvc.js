@@ -208,7 +208,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var getEpisodeEvents = function (epId) {
-			$http.get(config.apiDataBaseUrl + "/v2/episodes/" + epId + "/events")
+			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId + "/events")
 				.success(function (events) {
 					angular.forEach(events, function (eventData) {
 						modelSvc.cache("event", resolveIDs(eventData));

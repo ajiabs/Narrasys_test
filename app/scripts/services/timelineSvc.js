@@ -363,7 +363,9 @@ angular.module('com.inthetelling.story')
 			angular.forEach(events, function (event) {
 				// add scenes to markedEvents[]:
 				if (event._type === "Scene" && event.title) {
-					svc.markedEvents.push(event);
+					if (typeof (event.title) === "string" || event.title.en) {
+						svc.markedEvents.push(event);
+					}
 				}
 				if (event.start_time === 0 && !event._id.match('internal')) {
 					event.start_time = 0.01;
