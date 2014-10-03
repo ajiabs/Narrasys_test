@@ -101,15 +101,22 @@ angular.module('com.inthetelling.story')
 						scope.scoreQuiz = function () {
 							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
 							scope.plugin.hasBeenAnswered = true;
-							analyticsSvc.captureEventActivity("question-answered", scope.item._id);
+							analyticsSvc.captureEventActivity("question-answered", scope.item._id, {
+								'answer': scope.plugin.distractors[scope.plugin.selectedDistractor].text,
+								'correct': !!(scope.plugin.distractors[scope.plugin.selectedDistractor].correct)
+							});
 						};
 
 						scope.scorePoll = function () {
 							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
 							scope.plugin.hasBeenAnswered = true;
 
-							// TODO: store user question data, get back list of all users' responses 
-							// and add it to the item
+							analyticsSvc.captureEventActivity("question-answered", scope.item._id, {
+								'answer': scope.plugin.distractors[scope.plugin.selectedDistractor].text,
+								'correct': !!(scope.plugin.distractors[scope.plugin.selectedDistractor].correct)
+							});
+							// TODO: get back list of all users' responses (need a new api endpoint for this)
+							// and display results
 						};
 
 						scope.resetQuestion = function () {

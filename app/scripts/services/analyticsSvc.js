@@ -21,9 +21,10 @@ episode activity:
 
 event activity: captures interaction with specific transmedia items ("events").
 Different types of event can define their own interactions, but the core ones will be
-	viewed						player reached the event's start_time by any method
-	interacted				user clicked a transmedia link, for example
-	completed					up to the transmedia item to define what constitutes "completion"
+	viewed							player reached the event's start_time by any method
+	interacted					user clicked a transmedia link, for example
+	completed						up to the transmedia item to define what constitutes "completion"
+	question-answered		for quiz questions.  Data field should be {answer: 'answer text', correct: t/f}
 */
 
 angular.module('com.inthetelling.story')
@@ -65,6 +66,8 @@ angular.module('com.inthetelling.story')
 			if (!appState.user.track_event_actions) {
 				return;
 			}
+
+			console.log(data);
 			svc.activityQueue.push({
 				"name": name,
 				"event_id": eventID,
