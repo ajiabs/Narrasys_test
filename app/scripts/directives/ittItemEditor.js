@@ -3,13 +3,7 @@
 /* 
 
 WIP for Producer 
-TODO: This is too tightly bound to itemEditController; need to make better decisions about 
-which functions go here vs there
 
-TODO: appState.editing was a mistake.  It should just contain the ID of the item being edited,
-and all actions performed on the event inside modelSvc.events.  (It was supposed to be just a pointer
-to the cached event in modelSvc, but see deleteAsset below: somewhere along the way I let them fall out of synch
-so had to delete the asset from both copies...)
 
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 */
@@ -33,53 +27,132 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/producer/item.html',
 			controller: 'ItemEditController',
 			link: function (scope) {
-
+				// console.log("itemEditController", scope.item);
 				scope.uploadStatus = [];
+				scope.uneditedItem = angular.copy(scope.item); // in case of cancel
 
-				if (scope.item.type) {
-					scope.itemTemplateUrl = 'templates/producer/item/' + scope.item.type + '.html';
+				scope.itemForm = {
+					"transition": "",
+					"highlight": "",
+					"color": "",
+					"typography": "",
+					"timestamp": ""
+				};
+
+				if (!scope.item.layouts) {
+					scope.item.layouts = ["inline"];
 				}
+
+				// extract current event styles for the form
+				if (scope.item.styles) {
+					for (var styleType in scope.itemForm) {
+						// TODO
+						console.log("extracting", styleType);
+						for (var i = 0; i < scope.item.styles.length; i++) {
+
+							console.log(scope.item.styles[i].substr(0, styleType.length) === styleType, scope.item.styles[i].substr(0, styleType.length));
+							if (scope.item.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
+								scope.itemForm[styleType] = scope.item.styles[i].substr(styleType.length); // Remainder of scope.item.styles[i]
+							}
+						}
+					}
+
+					console.log("Done:", scope.itemForm);
+				}
+
+				// TODO:this breaks when editing sxs items within producer!
+				scope.itemEditor = 'templates/producer/item/' + appState.product + '-' + scope.item.producerItemType + '.html';
 
 				scope.appState = appState;
 
+				scope.watchEdits = scope.$watch(function () {
+					return appState.editing;
+				}, function () {
+
+					// TODO Combine styles data into styles array, (throwing away those that match scene or episode defaults?)
+
+					modelSvc.resolveEpisodeEvents(appState.episodeId); // Only needed for layout changes, strictly speaking; would it be more performant to put that in its own watch?
+					modelSvc.cache("event", appState.editing);
+				}, true);
+
+				// Transform changes to form fields for styles into item.styles[]:
+				scope.watchStyleEdits = scope.$watch(function () {
+					return scope.itemForm;
+				}, function () {
+					console.log("itemForm:", scope.itemForm);
+					var styles = [];
+					for (var styleType in scope.itemForm) {
+						if (scope.itemForm[styleType]) {
+							styles.push(styleType + scope.itemForm[styleType]);
+						}
+					}
+					scope.item.styles = styles;
+					console.log(scope.item.styles);
+				}, true);
+
+				scope.watchTimeEdits = scope.$watch(function () {
+					return scope.item.start_time + scope.item.end_time; // lazy way to check for change to either one
+				}, function (newV, oldV) {
+					if (newV === oldV) {
+						return;
+					}
+					if (scope.item.stop) {
+						scope.item.end_time = scope.item.start_time;
+					} else {
+						// TODO
+						// if end time is "auto"
+						// 	if transcript set end time to start of next transcript
+						// 	if scene set end time to start of next scene or duration of episode
+						// 	else set end time to end of scene
+						// else
+						// 	sanity-check end time (make sure within scene duration)
+
+						// for now, just use end of scene
+						console.log(scope.item);
+					}
+
+					modelSvc.resolveEpisodeEvents(appState.episodeId); // in case the item has changed scenes
+					timelineSvc.updateEventTimes(scope.item);
+
+				});
+
 				scope.setItemTime = function () {
-					// triggered when user changes start time in the input field
+					// triggered when user changes start time in the input field (which is ng-model'ed to appState.time)
+
+					// TODO ensure within episode duration. If too close to a scene start, match to scene start. If end time not in same scene, change end time to end of scene / beginning of next transcript
 					if (scope.item) {
 						scope.item.start_time = appState.time;
-						scope.item.end_time = appState.time;
 					}
 					// Since we've manipulated the timeline directly, need to let timelineSvc keep up with us:
 					timelineSvc.seek(appState.time);
+
 				};
 
+				scope.setItemEndTime = function () {
+					console.log("END TIME", scope);
+					// TODO ensure within same scene, not before start
+
+				};
 				// watch for user seeking manually:
-				scope.unwatch = scope.$watch(function () {
+				scope.watchSeek = scope.$watch(function () {
 					return appState.time;
-				}, function () {
+				}, function (newV, oldV) {
+					if (newV === oldV) {
+						return;
+					}
 					if (scope.item) {
 						scope.item.start_time = appState.time;
-						scope.item.end_time = appState.time;
 					}
 				});
 
 				scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
 
-				scope.watchEdits = scope.$watch(function () {
-					return appState.editing;
-				}, function () {
-					// console.log("updated appState.editing");
+				scope.cancelEdit = function () {
+					// hand off to itemEditController (with the original to be restored)
+					scope.cancelEventEdit(scope.uneditedItem);
+				};
 
-					modelSvc.cache("event", appState.editing);
-				}, true);
-
-				scope.watchTimeEdits = scope.$watch(function () {
-					return appState.editing.start_time;
-				}, function (newT, oldT) {
-					if (newT !== oldT) {
-						// console.log("Changed start time from ", oldT, " to ", newT);
-						timelineSvc.updateEventTimes(appState.editing);
-					}
-				});
+				// TODO eventually move uploadAsset and deleteAsset into controller but they're fine here for now
 
 				scope.uploadAsset = function (files) {
 					scope.uploads = awsSvc.uploadFiles(files);
@@ -110,6 +183,7 @@ angular.module('com.inthetelling.story')
 				scope.$on('$destroy', function () {
 					scope.watchEdits();
 					scope.watchTimeEdits();
+					scope.watchSeek();
 					scope.dismissalWatcher();
 				});
 

@@ -1,4 +1,4 @@
-<a class="sxs-edit" ng-click="editItem('link')">
+<a class="sxs-edit" ng-click="editItem('file')">
 	<span>Edit item</span>
 </a>
 <div class="itemTemplate">
@@ -15,6 +15,7 @@
 			<a ng-if="item.noEmbed && item.targetTop" target="_top" ng-click="outgoingLink(item.url)" ng-bind-html="item.title ||'(Untitled)'"></a>
 			<a ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.title ||'(Untitled)'"></a>
 		</div>
+		<img ng-if="item.asset.url" ng-click="toggleDetailView()" ng-src="{{item.asset.url}}" style="cursor:pointer;cursor:hand; margin: 0.25em 0">
 		<div ng-bind-html="item.description"></div>
 	</div>
 	<div class="itemDetail" ng-if="item.showInlineDetail">

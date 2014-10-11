@@ -1,11 +1,22 @@
-<div class="sxs addcontent" ng-show="!appState.editing">
+<div class="producer addcontent" ng-show="!appState.editing && appState.time > 0">
 	<span ng-if="expanded" style="padding: 0 1em" class="animate transitionExpandW">
-		<a class="button-comment" ng-click="addItem('comment')">Comment</a>
-		<a class="button-link" ng-click="addItem('link')">Link</a>
-		<a class="button-question" ng-click="addItem('question')">Question</a>
-		<a class="button-image" ng-click="addItem('image')">Image</a>
-		<a class="button-file" ng-click="addItem('file')">File</a>
-		<a class="button-video" ng-click="addItem('video')">Video</a>
+		<span ng-if="appState.product == 'sxs'">
+			<a class="button-comment" ng-click="addEvent('comment')">Comment</a>
+			<a class="button-link" ng-click="addEvent('link')">Link</a>
+			<a class="button-question" ng-click="addEvent('question')">Question</a>
+			<a class="button-image" ng-click="addEvent('image')">Image</a>
+			<a class="button-file" ng-click="addEvent('file')">File</a>
+			<a class="button-video" ng-click="addEvent('video')">Video</a>
+		</span>
+		<span ng-if="appState.product == 'producer'">
+			<a class="button-scene" ng-click="addEvent('scene')">Scene</a>
+			<a class="button-comment" ng-click="addEvent('transcript')">Transcript</a>
+			<a class="button-comment" ng-click="addEvent('annotation')">Annotation</a>
+			<a class="button-link" ng-click="addEvent('link')">Link</a>
+			<a class="button-image" ng-click="addEvent('image')">Image</a>
+			<a class="button-file" ng-click="addEvent('file')">Upload</a>
+			<a class="button-question" ng-click="addEvent('question')">Question</a>
+		</span>
 	</span>
 
 	<span ng-if="!expanded">

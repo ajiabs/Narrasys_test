@@ -1,14 +1,194 @@
 <div class="itemEdit authoringForm">
 	<div style="max-height: 350px; overflow-y:scroll; padding-right: 20px">
-		<!-- TODO timeline slider to control time also -->
 		<div class="field">
 			<div class="label">Time
 			</div>
 			<div class="input">
+
 				<input ng-change="setItemTime()" type="text" ng-model="appState.time" sxs-input-time style="max-width:100px">
+				<span ng-if="appState.product == 'producer'">
+					(end times TODO)
+				</span>
 			</div>
 		</div>
-		<div ng-include="itemTemplateUrl"></div>
+		<div class="field">
+			<div class="label">Flags</div>
+			<div class="input">
+				<label>
+					<input type="checkbox" ng-model="item.required">Required
+				</label>
+				<label>
+					<input type="checkbox" ng-model="item.stop">Stop item
+				</label>
+				<label>
+					<input type="checkbox" ng-model="item.cosmetic">Cosmetic
+				</label>
+			</div>
+		</div>
+
+		<div ng-include="itemEditor"></div>
+		<div ng-if="appState.product == 'producer'">
+			<div class="field">
+				<div class="label">
+					Template
+				</div>
+				<div class="input">
+					<select ng-if="item.producerItemType == 'scene'" ng-model="item.templateUrl">
+					</select>
+
+					<select ng-if="item.producerItemType == 'transcript'" ng-model="item.templateUrl">
+						<option value="templates/item/transcript.html">Transcript</option>
+						<option value="templates/item/transcript-withthumbnail.html">Transcript with thumbnail</option>
+						<option value="templates/item/transcript-withthumbnail-alt.html">Transcript with thumbnail B</option>
+					</select>
+					<select ng-if="item.producerItemType == 'annotation'" ng-model="item.templateUrl">
+						<option value="templates/item/pullquote.html">Pullquote with attribution</option>
+						<option value="templates/item/pullquote-noattrib.html">Pullquote</option>
+						<option value="templates/item/text-h1.html">Header 1</option>
+						<option value="templates/item/text-h2.html">Header 2</option>
+					</select>
+					<select ng-if="item.producerItemType == 'link'" ng-model="item.templateUrl">
+						<option value="templates/item/link.html">Link</option>
+						<option value="templates/item/link-withimage.html">Link with image</option>
+						<option value="templates/item/link-descriptionfirst.html">Link: description first</option>
+						<option value="templates/item/link-embed.html">Embedded link</option>
+					</select>
+					<select ng-if="item.producerItemType == 'image'" ng-model="item.templateUrl">
+						<option value="templates/item/image.html">Linked image</option>
+						<option value="templates/item/image-inline.html">Inline image</option>
+						<option value="templates/item/image-inline-withtext.html">Inline image with text</option>
+						<option value="templates/item/image-caption.html">Image with caption</option>
+						<option value="templates/item/image-caption-sliding.html">Image with sliding caption</option>
+						<option value="templates/item/image-thumbnail.html">Image thumbnail</option>
+						<option value="templates/item/image-plain.html">Plain image</option>
+					</select>
+					<span ng-if="item.producerItemType == 'image'">(also TODO: overlay/underlay images)</span>
+
+					<select ng-if="item.producerItemType == 'file'" ng-model="item.templateUrl">
+						<option value="templates/item/file.html">Linked file (TODO: force noembed?)</option>
+						<option value="templates/item/file-withimage.html">Linked file with image</option>
+					</select>
+					<select ng-if="item.producerItemType == 'question'" ng-model="item.templateUrl">
+						<option value="templates/item/question-mc-formative.html">Formative question</option>
+						<option value="templates/item/question-mc-poll.html">Poll question</option>
+					</select>
+
+
+				</div>
+			</div>
+
+			<div class="field">
+				<div class="label">Layout</div>
+				<div class="input">
+					<span ng-if="item._type === 'Scene'">
+						[TODO scene layouts: videoLeft/videoRight, showCurrent/showList/showTimeline, splitTransmedia/splitRequired]
+					</span>
+					<span ng-if="item._type !== 'Scene'">
+						<select size="1" ng-model="item.layouts[0]">
+							<option value="inline">Inline</option>
+							<option value="sidebarL">Sidebar: left</option>
+							<option value="sidebarR">Sidebar: right</option>
+							<option value="burstL">Burst left margin</option>
+							<option value="burstR">Burst right margin</option>
+							<option value="burst">Burst both margins</option>
+						</select>
+					</span>
+
+				</div>
+			</div>
+
+			<div class="field">
+				<div class="label">Styles</div>
+				<div class="input">
+					<label class="fakelink" ng-click="useCustomStyles = !useCustomStyles">
+						<span ng-if="useCustomStyles">Custom styles</span>
+						<span ng-if="!useCustomStyles">Default styles</span>
+					</label>
+				</div>
+			</div>
+
+			<div ng-if="useCustomStyles">
+
+				<div class="field">
+					<div class="label">Typography</div>
+					<div class="input">
+						<select size="1" ng-model="itemForm.typography">
+							<option value="">(Default)</option>
+							<option value="Sans">Sans</option>
+							<option value="Serif">Serif</option>
+							<option value="Book">Book</option>
+							<option value="Swiss">Swiss</option>
+							<option value="Eliterate">Eliterate</option>
+							<option value="Gw">Gw</option>
+							<option value="Usc">Usc</option>
+							<option value="Purdue">Purdue</option>
+							<option value="Columbia">Columbia</option>
+							<option value="Columbiabusiness">Columbiabusiness</option>
+
+						</select>
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">Color</div>
+					<div class="input">
+						<select size="1" ng-model="itemForm.color">
+							<option value="">(Default)</option>
+							<option value="Invert">Invert</option>
+							<option value="Sepia">Sepia</option>
+							<option value="Solarized">Solarized</option>
+							<option value="Vivid">Vivid</option>
+							<option value="Eliterate">Eliterate</option>
+							<option value="Gw">Gw</option>
+							<option value="Usc">Usc</option>
+							<option value="Purdue">Purdue</option>
+							<option value="Columbia">Columbia</option>
+							<option value="Columbiabusiness">Columbiabusiness</option>
+						</select>
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">Timestamp</div>
+					<div class="input">
+						<select size="1" ng-model="itemForm.timestamp">
+							<option value="">(Default)</option>
+							<option value="None">No timestamp</option>
+							<option value="Inline">Inline timestamp</option>
+						</select>
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">Highlight</div>
+					<div class="input">
+						<select size="1" ng-model="itemForm.highlight">
+							<option value="">(Default)</option>
+
+							<option value="Solid">Solid</option>
+							<option value="Border">Border</option>
+							<option value="Side">Side</option>
+							<option value="Bloom">Bloom</option>
+							<option value="Highlighter">Highlighter</option>
+							<option value="Tilt">Tilt</option>
+
+						</select>
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">Transition</div>
+					<div class="input">
+						<select size="1" ng-model="itemForm.transition">
+							<option value="">(Default)</option>
+							<option value="Fade">Fade</option>
+							<option value="SlideL">Slide left</option>
+							<option value="SlideR">Slide right</option>
+							<option value="ExpandW">Expand</option>
+							<option value="Pop">Pop</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
 	</div>
 
 	<div style="clear:both; width: 100%; text-align:right">
@@ -16,7 +196,7 @@
 			<a ng-click="cancelEdit()">Cancel</a>
 		</small>
 		&nbsp; &nbsp;
-		<input type="button" value="Delete" ng-if="appState.editing._id != 'internal:editing'" ng-click="deleteItem()">
+		<input type="button" value="Delete" ng-if="item._id != 'internal:editing'" ng-click="deleteItem()">
 		<input type="button" value="Save" ng-click="saveEdit()">
 	</div>
 

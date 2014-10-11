@@ -1,0 +1,22 @@
+<span class="sxsicon icon-image"></span>
+<div class="field">TODO separate content images from overlay/background images</div>
+<div class="field">
+	<div class="label">Title
+	</div>
+	<div class="input">
+		<input type="text" ng-model="appState.editing.title" autofocus>
+	</div>
+</div>
+<div class="field">
+	<div class="label">Image
+	</div>
+	<div class="input" ng-include="'templates/producer/upload-single.html'">
+	</div>
+</div>
+<div class="field">
+	<div class="label">Description
+	</div>
+	<div class="input">
+		<textarea ng-model="appState.editing.description" rows="4"></textarea>
+	</div>
+</div>

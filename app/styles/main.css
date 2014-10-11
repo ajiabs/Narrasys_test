@@ -40,10 +40,12 @@ body {
 }
 .videoMagnet {
 	/* No idea */
+	
 	margin-bottom: -5px;
 }
 .videoMagnet img {
 	/* aspect ratio preserver */
+	
 	width: 100%;
 }
 .small {
@@ -144,7 +146,6 @@ h4 {
  position:fixed causes Safari to act less weird in fullscreen mode, but interferes with
  scrolling.  Disabling for now, let safari do what safari does.
 */
-
 /*
  #CONTAINER {
 	position:fixed;
@@ -160,7 +161,6 @@ h4 {
 	-webkit-overflow-scrolling: auto;
 }
 */
-
 /* Z-indexes 
 --------------------------------------------------------------------------------
 */
@@ -193,7 +193,8 @@ h4 {
 	z-index: 8;
 }
 .autoscroll,
-.sxs.addcontent {
+.sxs.addcontent,
+.item .sxs-edit {
 	z-index: 9;
 }
 .navPanel,
@@ -240,7 +241,6 @@ See /images/font/story/map.png for a list of available glyphs
 Video
 --------------------------------------------------------------------------------
 */
-
 /* 
 TODO: native video seems to perform better when not position:absolute, but iframe doesn't size properly without it.
 Check to see if there's a consistent way to do without absolute positioning, or if it's safe to just do it to native and not youtube.
