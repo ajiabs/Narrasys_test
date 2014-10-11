@@ -1,3 +1,6 @@
+.padForEditing .episode {
+	padding-bottom: 180px;
+}
 .authoringForm {
 	margin-top: 1em;
 }
@@ -60,7 +63,7 @@
 }
 /* ------ */
 
-.sxs.addcontent {
+.producer.addcontent {
 	position: fixed;
 	right: 16px;
 	bottom: 86px;
@@ -74,7 +77,7 @@
 	padding: 0 0.6em;
 	font-size: 11px;
 }
-.sxs.addcontent a {
+.producer.addcontent a {
 	display: inline-block;
 	text-align: center;
 	color: #000;
@@ -146,6 +149,13 @@
 	font-family: Story;
 	content: "\e606";
 }
+.button-scene:before,
+.sxsicon.icon-scene:before {
+	font-size: 2.5em;
+	display: block;
+	font-family: Story;
+	content: "\e60f";
+}
 .sxs-item {
 	background-color: #FFF;
 	padding: 0.5em;
@@ -160,4 +170,29 @@
 }
 .reviewMode .sxs-item .sxs-profile {
 	width: 40px;
+}
+/* edit button on items */
+
+.item {
+	/* TODO: This may mess with some layouts; test me! */
+	
+	position: relative;
+}
+.item .sxs-edit {
+	display: none;
+	background-color: #fff;
+	border: 4px solid #555;
+	border-radius: 2em;
+	padding: 5px;
+	position: absolute;
+	right: 0.6em;
+	top: 0.5em;
+}
+.canEditContent .item:hover .sxs-edit {
+	/* TODO: touchscreens! */
+	
+	display: block;
+}
+.item .sxs-edit span {
+	font-size: 0;
 }

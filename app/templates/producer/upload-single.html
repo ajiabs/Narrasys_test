@@ -1,4 +1,5 @@
 <div>
+	<span ng-if="appState.product == 'producer'">TODO allow selecting asset from episode container here instead</span>
 	<span ng-if="uploads">
 		<div ng-repeat="upload in uploads">
 			<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}">

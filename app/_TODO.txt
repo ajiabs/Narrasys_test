@@ -1,21 +1,19 @@
 
-Another new one?  scrubbing timeline while video is playing doesn't work so well. (Probably just should pause at seek start)
+Scenes aren't updating margins properly after layout changes
 
-newly introduced bug:  decorative windowFg items no longer show properly
+Need to set producerItemType in modelSvc instead of hardcoding in templates
 
+Allow editing items from explore mode 
 
-EDUCAUSE TODO:
-
-Support link-image-id in link (and video) items
-
-sxs poll questions (fake the results)
-
-video item:  treat as Link type?  (treat as real )
-
-'delete' for uploaded assets
+Allow editing transcript from watch mode
 
 
-insert video duration into timeline
+
+
+Support link-image-id in link items
+
+
+video item:  insert video duration into timeline
 
 explore mode isn't always updating after edits (intermittent)
 
@@ -27,6 +25,7 @@ explore mode isn't always updating after edits (intermittent)
 
 
 
+newly introduced bug:  decorative windowFg items no longer show properly
 
 
 
@@ -51,11 +50,6 @@ Bring back the loading icon for iframes attempted in v4.0.32 (disabled because w
 
 
 include a sample iframe page with instructions for customers on how best to embed our player
-
-
-include a sample iframe page with instructions for customers on how best to embed our player
-
-
 
 
 

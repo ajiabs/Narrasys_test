@@ -69,6 +69,11 @@ angular.module('com.inthetelling.story')
 					}
 				}, true);
 
+				// trigger init when the user edits content:
+				scope.unwatchEdits = scope.$watch(function () {
+					return appState.editing;
+				}, scope.precalculateSceneValues, true);
+
 				// HACK to catch cases (mostly on ios) where matchvideoheight isn't matching.
 				// slow, odd interval
 				scope.safetyBelt = $interval(twiddleScene, 1321);
@@ -76,6 +81,7 @@ angular.module('com.inthetelling.story')
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function () {
 					scope.unwatch();
+					scope.unwatchEdits();
 					$interval.cancel(scope.safetyBelt);
 				});
 
