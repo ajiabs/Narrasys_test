@@ -80,6 +80,7 @@
 @media screen and (max-width: 480px) {
 	.button-discover {
 		/* See also helpPanel below */
+		
 		display: none !important;
 	}
 	.volumebar {
@@ -363,7 +364,7 @@
 //===========================*/
 
 .navPanel {
-	max-height: 400px;
+	max-height: 300px;
 	transition: 1s all;
 	overflow-y: scroll;
 }
@@ -372,7 +373,7 @@
 	display: block!important;
 }
 .navPanel.ng-hide-add {
-	max-height: 400px;
+	max-height: 300px;
 }
 .navPanel.ng-hide-add-active {
 	max-height: 0;
@@ -381,7 +382,7 @@
 	max-height: 0;
 }
 .navPanel.ng-hide-remove-active {
-	max-height: 400px;
+	max-height: 300px;
 }
 @media screen and (max-width: 500px) {
 	.navPanel {
@@ -405,7 +406,7 @@
 }
 @media screen and (min-width: 700px) {
 	.navPanel {
-		margin: 0 15%;
+		margin: 0 72px;
 	}
 }
 .navPanel .scene:first-child {
@@ -452,6 +453,7 @@
 	max-width: 500px;
 	min-width: 290px;
 	/* TOOLBAR HEIGHT */
+	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
@@ -539,6 +541,7 @@
 	max-width: 500px;
 	min-width: 290px;
 	/* TOOLBAR HEIGHT */
+	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }

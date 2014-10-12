@@ -1,8 +1,5 @@
 .padForEditing .episode {
-	padding-bottom: 180px;
-}
-.authoringForm {
-	margin-top: 1em;
+	border-bottom: 180px solid #BBB;
 }
 .authoringForm .field {
 	clear: both;

@@ -8,6 +8,7 @@ Allow editing items from explore mode
 Allow editing transcript from watch mode
 
 
+Edit panels should read from scene info to determine whether to show content layouts, highlights etc as options
 
 
 Support link-image-id in link items
