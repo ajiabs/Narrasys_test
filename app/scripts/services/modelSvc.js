@@ -286,6 +286,7 @@ angular.module('com.inthetelling.story')
 				- episode.items
 				- scene.items
 				- item.scene_id
+				- episode.annotators (for use in producer)
 
 		NOTE: this currently calls cascadeStyles on episodes and events as a side effect.  
 		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but 
@@ -312,6 +313,20 @@ angular.module('com.inthetelling.story')
 					items.push(event);
 				}
 			});
+
+			// collect a list of all the speakers/annotators in the episode.
+			var annotators = {};
+			angular.forEach(items, function (event) {
+				if (event._type === 'Annotation' && event.annotator) {
+					annotators[event.annotator] = {
+						"name": event.annotator,
+						"annotation_image_id": event.annotation_image_id
+					};
+				}
+			});
+			episode.annotators = annotators;
+			// console.log(episode.annotators);
+
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 			episode.scenes = scenes.sort(function (a, b) {

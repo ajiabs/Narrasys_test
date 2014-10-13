@@ -193,3 +193,40 @@
 .item .sxs-edit span {
 	font-size: 0;
 }
+.autocompleteList {
+	z-index: 99;
+	position: absolute;
+	background-color: #FFF;
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+}
+.autocompleteItem {
+	cursor: pointer;
+	cursor: hand;
+	height: 30px;
+	line-height: 30px;
+	padding-right: 100px;
+}
+.autocompleteItem:hover,
+.autocompleteItem.selected {
+	background-color: #336666;
+	color: #FFF;
+}
+.autocompleteItem img {
+	max-width: 30px;
+	max-height: 30px;
+	float: left;
+	margin-right: 0.5em;
+}
+.inputOnly {
+	position: absolute;
+	left: 0;
+	background-color: transparent;
+	color: #000;
+}
+.addNewAnnotator {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 24px;
+	z-index: 10;
+}

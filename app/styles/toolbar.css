@@ -350,7 +350,7 @@
 .searchPanel.ng-hide-remove {
 	display: block!important;
 }
-.searchPanel .ui-match {
+.ui-match {
 	background-color: rgba(50, 50, 50, 0.4);
 	color: #FFF;
 	margin: -4px;
