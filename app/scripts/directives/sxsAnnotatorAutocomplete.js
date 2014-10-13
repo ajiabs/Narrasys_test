@@ -3,9 +3,6 @@
 /* 
 
 	TODO:
-	keyboard controls: 
-		arrows to move selection up and down
-		"return" to choose preselected item
 
 	Allow adding new annotator name
 	Allow uploading annotator asset
@@ -35,39 +32,65 @@ angular.module('com.inthetelling.story')
 				scope.annotator = {
 					name: scope.item.annotator
 				};
-				console.log(">", scope.item);
+
 				scope.searchText = scope.item.annotator;
 				scope.filteredAnnotators = angular.copy(scope.annotators);
+				scope.preselectedItem = -1;
 
+				element.find('.inputOnly').bind("keydown", function (event) {
+					switch (event.which) {
+					case 40: // down arrow
+						scope.preselectedItem = (scope.preselectedItem + 1) % Object.keys(scope.filteredAnnotators).length;
+						break;
+					case 38: // up arrow
+						scope.preselectedItem = (scope.preselectedItem - 1) % Object.keys(scope.filteredAnnotators).length;
+						break;
+					case 13: // enter
+						event.preventDefault();
+						if (scope.preselectedItem > -1) {
+							scope.selectByIndex(scope.preselectedItem);
+						}
+						break;
+					default:
+					}
+				});
 				scope.$watch(function () {
 					return scope.searchText;
 				}, function (newVal) {
 					if (newVal) {
 						scope.annotator.name = '';
-						var newFilter = [];
+						scope.preselectedItem = -1;
+						var newFilter = {};
 						angular.forEach(scope.annotators, function (annotator) {
-							delete(annotator.isPreSelected);
 							if (annotator.name.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1) {
-								newFilter.push(annotator);
+								newFilter[annotator.name] = annotator;
 							}
 						});
 
 						scope.filteredAnnotators = newFilter;
 						// if only one left, select it automatically
-						if (scope.filteredAnnotators.length === 1) {
-							scope.filteredAnnotators[0].isPreSelected = true;
+						if (Object.keys(scope.filteredAnnotators).length === 1) {
+							scope.preselectedItem = 0;
 						}
 
 						// if none left, show an "add new" button
-						scope.allowAddNew = (scope.filteredAnnotators.length === 0);
-
+						scope.allowAddNew = (Object.keys(scope.filteredAnnotators).length === 0);
 					} else {
 						// empty searchText, show all autocomplete options
 						scope.filteredAnnotators = angular.copy(scope.annotators);
 						scope.allowAddNew = false;
+						scope.preselectedItem = -1;
 					}
 
 				});
+
+				scope.selectByIndex = function (index) {
+					if (index < 0) {
+						return;
+					}
+					var names = Object.keys(scope.filteredAnnotators).sort();
+					scope.select(scope.filteredAnnotators[names[index]]);
+				};
 
 				scope.select = function (annotator) {
 					scope.annotator.name = annotator.name;
@@ -85,8 +108,13 @@ angular.module('com.inthetelling.story')
 
 				scope.hideAutocomplete = function () {
 					$timeout(function () {
+						if (scope.preselectedItem > -1) {
+							scope.selectByIndex(scope.preselectedItem);
+						} else {
+							// TODO: reset fields?
+						}
 						scope.autoCompleting = false;
-					}, 300);
+					}, 100);
 				};
 
 				scope.addNewAnnotator = function () {

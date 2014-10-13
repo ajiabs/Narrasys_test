@@ -31,6 +31,8 @@ angular.module('com.inthetelling.story')
 				scope.uploadStatus = [];
 				scope.uneditedItem = angular.copy(scope.item); // in case of cancel
 
+				scope.annotators = modelSvc.episodes[appState.episodeId].annotators;
+
 				scope.itemForm = {
 					"transition": "",
 					"highlight": "",
