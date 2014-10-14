@@ -22,6 +22,7 @@ angular.module('com.inthetelling.story')
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');
 
+				scope.appState = appState;
 				// TODO: display buffered portion of video?
 
 				scope.showSceneMenuTooltip = function (makeVisible) {

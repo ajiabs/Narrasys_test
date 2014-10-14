@@ -36,6 +36,7 @@
 						<span class="content" ng-bind-html="event.title"></span>
 						<!-- <div class="tooltip-arrow"></div> -->
 					</div>
+					<div ng-if="appState.editing" class="editingItem" ng-style="{left: markerPercent(appState.editing.start_time)+'%', right: markerPercent(appState.duration - appState.editing.end_time)+'%'}"></div>
 				</div>
 				<div class="playhead mask">
 					<!-- interactive parts of timeline -->
