@@ -41,9 +41,9 @@ angular.module('com.inthetelling.story')
 				}
 			} else if (cacheType === 'container') {
 				if (svc.containers[item._id]) {
-					angular.extend(svc.containers[item._id], angular.copy(item));
+					angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(item)));
 				} else {
-					svc.containers[item._id] = angular.copy(item);
+					svc.containers[item._id] = svc.deriveContainer(angular.copy(item));
 				}
 			}
 		};
@@ -131,6 +131,10 @@ angular.module('com.inthetelling.story')
 					});
 				}
 			});
+			// FOR TESTING
+			if (episode.languages) {
+				// episode.languages.push("es");
+			}
 
 			episode = setLang(episode);
 			return episode;
@@ -169,6 +173,10 @@ angular.module('com.inthetelling.story')
 					text
 					secondary image URL (speaker icon)
 */
+
+		svc.deriveContainer = function (container) {
+			return setLang(container);
+		};
 
 		svc.deriveEvent = function (event) {
 
@@ -277,15 +285,15 @@ angular.module('com.inthetelling.story')
 		};
 
 		var setLang = function (obj) {
-			// TODO: categories, containers
-			angular.forEach(["title", "annotation", "description"], function (field) {
+			// TODO: keywords, customers/oauth2_message
+			angular.forEach(["title", "annotation", "description", "name"], function (field) {
 				if (obj[field]) {
 					if (typeof (obj[field]) === 'string') {
 						obj["display_" + field] = obj[field];
 					} else {
 
 						// for debugging
-						obj[field].es = "This is a fake spanish-language string for testing";
+						//						obj[field].es = "This is a fake spanish-language string for testing";
 
 						if (obj[field][appState.lang]) {
 							obj["display_" + field] = obj[field][appState.lang];
@@ -303,6 +311,9 @@ angular.module('com.inthetelling.story')
 			});
 			angular.forEach(svc.episodes, function (ep) {
 				ep = setLang(ep);
+			});
+			angular.forEach(svc.containers, function (container) {
+				container = setLang(container);
 			});
 			// todo:  containers
 		};
