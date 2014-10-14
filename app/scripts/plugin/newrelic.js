@@ -531,7 +531,7 @@ NREUM.info = {
 	beacon: "bam.nr-data.net",
 	errorBeacon: "bam.nr-data.net",
 	licenseKey: "3eaaf05c55",
-	applicationID: "4006617",
+	applicationID: "3997255",
 	sa: 1,
 	agent: "js-agent.newrelic.com/nr-476.min.js"
 }
