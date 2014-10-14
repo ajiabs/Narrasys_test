@@ -494,3 +494,8 @@ tweak scs template
 ------------------------------------------------
 Changes in v4.1.0:
 Added relic
+
+------------------------------------------------
+Changes in v4.1.1:
+updated relic application ID
+
