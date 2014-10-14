@@ -110,7 +110,8 @@ angular.module('com.inthetelling.story')
 						// 	sanity-check end time (make sure within scene duration)
 
 						// for now, just use end of scene
-						console.log(scope.item);
+						console.log("SET END TIME:", scope.item);
+						scope.item.end_time = modelSvc.events[scope.item.scene_id].end_time;
 					}
 
 					modelSvc.resolveEpisodeEvents(appState.episodeId); // in case the item has changed scenes

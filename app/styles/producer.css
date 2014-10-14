@@ -231,7 +231,10 @@
 	z-index: 10;
 }
 .editingItem {
-	background-color: #FFC;
+	background-color: #66C;
 	position: absolute;
 	height: 1em;
+	border: 1px solid #555;
+	border-left: 1px solid #000;
+	border-right: none;
 }
