@@ -33,12 +33,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
-			reloadOnSearch: false
-			// resolve: {
-			// 	product: function (appState) {
-			// 		appState.product = "player";
-			// 	}
-			// }
+			reloadOnSearch: false,
+			resolve: {
+				product: function (appState) {
+					appState.product = "player";
+				}
+			}
 		})
 		.when('/sxs/:epId', {
 			title: "Telling STORY",
@@ -62,20 +62,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 				}
 			}
 		})
-	/*
-		.when('/episode/:epId/:viewMode', {
-			title: "Telling STORY",
-			controller: 'PlayerController',
-			templateUrl: 'templates/player.html',
-			reloadOnSearch: false
-		})
-*/
-	.otherwise({
-		title: "Telling STORY: Error",
-		controller: 'ErrorController',
-		templateUrl: 'templates/error-404.html'
-	});
-	//$locationProvider.html5Mode(false); // TODO bill had trouble getting the server config working for this... thought we had it but IE still choked
+		.otherwise({
+			title: "Telling STORY: Error",
+			controller: 'ErrorController',
+			templateUrl: 'templates/error-404.html'
+		});
+	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
 })
 
 .run(function ($rootScope) {
@@ -126,7 +118,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 				return promise.then(
 					function (response) {
 						return response;
-					}, function (response) {
+					},
+					function (response) {
 						throw response;
 					}
 				);
