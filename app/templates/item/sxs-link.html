@@ -5,9 +5,9 @@
 		<div class="authorName" ng-bind-html="item.annotator"></div>
 	</div>
 
-	<a ng-if="item.noEmbed" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.title ||'(Untitled)'"></a>
-	<a ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.title ||'(Untitled)'"></a>
-	<div class="text" ng-bind-html="item.description"></div>
+	<a ng-if="item.noEmbed" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.title.en ||'(Untitled)'"></a>
+	<a ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.title.en ||'(Untitled)'"></a>
+	<div class="text" ng-bind-html="item.description.en"></div>
 	<div class="itemDetail" ng-if="item.showInlineDetail">
 		<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 		<div class="iframeContainer">

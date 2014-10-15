@@ -2,14 +2,11 @@
 <div class="field">
 	<div class="label">Speaker
 	</div>
-	<div class="input" sxs-annotator-autocomplete="annotators" item="appState.editing" ng-model="appState.editing.annotator">
+	<div class="input" sxs-annotator-autocomplete="annotators" item="item" ng-model="item.annotator">
 	</div>
 </div>
 
 <div class="field">
-	<div class="label">Transcript
-	</div>
-	<div class="input">
-		<textarea ng-model="appState.editing.annotation" rows="4" autofocus></textarea>
-	</div>
+	<div class="label">Transcript [{{appState.lang}}]</div>
+	<div class="input" sxs-input-i18n="item.annotation" x-inputtype="'textarea'"></div>
 </div>

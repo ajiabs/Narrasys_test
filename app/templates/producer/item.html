@@ -1,5 +1,20 @@
 <div class="itemEdit authoringForm">
 	<div style="max-height: 280px; overflow-y:scroll; padding: 1em 20px 0 0">
+		<div class="field" ng-if="appState.product == 'producer'">
+			<div class="label">Language
+			</div>
+			<div class="input">
+				<select size="1" ng-model="appState.lang">
+					<option value="en">English</option>
+					<option value="es">Spanish</option>
+					<option value="pt">Portuguese</option>
+					<option value="de">German</option>
+					<option value="fr">French</option>
+				</select>TODO: allow "add new". TODO: trigger preview rerender on change
+			</div>
+		</div>
+
+
 		<div class="field">
 			<div class="label">Time
 			</div>
@@ -11,7 +26,7 @@
 				</span>
 			</div>
 		</div>
-		<div class="field">
+		<div class="field" ng-if="appState.product == 'producer'">
 			<div class="label">Flags</div>
 			<div class="input">
 				<label>

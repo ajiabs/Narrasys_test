@@ -106,7 +106,9 @@ angular.module('com.inthetelling.story')
 				// TODO 
 				stub = {
 					"_type": "Scene",
-					"title": "",
+					"title": {
+						en: ""
+					},
 				};
 			}
 			if (type === 'video') {
@@ -116,7 +118,9 @@ angular.module('com.inthetelling.story')
 			if (type === 'comment' || type === 'transcript' || type === 'annotation') {
 				stub = {
 					"_type": "Annotation",
-					"annotation": "",
+					"annotation": {
+						en: ""
+					},
 					"annotation_image_id": ""
 				};
 			}
@@ -125,8 +129,12 @@ angular.module('com.inthetelling.story')
 				stub = {
 					"_type": "Upload",
 					"asset_id": "",
-					"title": "",
-					"description": ""
+					"title": {
+						en: ""
+					},
+					"description": {
+						en: ""
+					}
 				};
 			}
 
@@ -135,8 +143,12 @@ angular.module('com.inthetelling.story')
 					"_type": "Link",
 					"link_image_id": "asset1",
 					"url": "https://",
-					"title": "",
-					"description": ""
+					"title": {
+						en: ""
+					},
+					"description": {
+						en: ""
+					}
 				};
 			}
 
@@ -195,83 +207,4 @@ angular.module('com.inthetelling.story')
 			return base;
 		};
 
-		/* OLD CODE BELOW */
-		/*
-				$scope.addItem = function (type) {
-					console.log("ItemEditController.addItem, ", type);
-
-					// TODO pause the video
-
-					appState.editing = generateEmptyItem(type);
-
-					modelSvc.cache("event", appState.editing);
-					modelSvc.resolveEpisodeEvents(appState.episodeId);
-					timelineSvc.injectEvents([modelSvc.events["internal:editing"]]);
-
-				};
-
-				$scope.cancelEdit = function () {
-					console.log("Cancel edit", appState.editing);
-					if (appState.editing) {
-						if (appState.editing._id === 'internal:editing') {
-							timelineSvc.removeEvent('internal:editing');
-						} else {
-							// TODO: restore the original unedited version of the item, update timelineSvc
-
-							modelSvc.events[appState.editing._id] = angular.copy(appState.uneditedItem);
-							delete(appState.uneditedItem);
-							modelSvc.resolveEpisodeEvents(appState.episodeId);
-							// TODO may need to update the timeline as well, if they changed the item start time...
-						}
-
-						delete(appState.editing);
-						delete(modelSvc.events["internal:editing"]);
-						modelSvc.resolveEpisodeEvents(appState.episodeId);
-
-					}
-				};
-
-				$scope.saveEdit = function () {
-					var toSave = angular.copy(appState.editing);
-					toSave.type = toSave._type;
-
-					// TODO: if we're editing an existing item (its id won't be internal:editing) then don't delete internal:editing
-					dataSvc.storeItem(toSave).then(function (data) {
-						console.log("success", data);
-						delete(appState.editing);
-
-						if (toSave._id === 'internal:editing') {
-							console.log("Saved:", data);
-							timelineSvc.removeEvent("internal:editing");
-							delete(modelSvc.events["internal:editing"]);
-							modelSvc.cache("event", dataSvc.resolveIDs(data));
-							modelSvc.resolveEpisodeEvents(appState.episodeId);
-							timelineSvc.injectEvents([modelSvc.events[data._id]]);
-
-						} else {
-							// nothing to do here, it's already in the cache!
-							// (TODO test this to make sure I've not missed something stupid here.....)
-						}
-					}, function (data) {
-						console.log("failed", data);
-					});
-				};
-
-				$scope.deleteItem = function () {
-					if (window.confirm("Are you sure you wish to delete this item?")) {
-						dataSvc.deleteItem(appState.editing._id).then(function (data) {
-							console.log("success deleting:", data);
-							timelineSvc.removeEvent(appState.editing._id);
-							delete(modelSvc.events[appState.editing._id]);
-							modelSvc.resolveEpisodeEvents(appState.episodeId);
-							if (appState.editing.asset) {
-								dataSvc.deleteAsset(appState.editing.asset._id);
-							}
-							delete(appState.editing);
-						}, function (data) {
-							console.log("failed to delete:", data);
-						});
-					}
-				};
-		*/
 	});

@@ -1,11 +1,8 @@
 <span class="sxsicon icon-image"></span>
 <div class="field">TODO separate content images from overlay/background images</div>
 <div class="field">
-	<div class="label">Title
-	</div>
-	<div class="input">
-		<input type="text" ng-model="appState.editing.title" autofocus>
-	</div>
+	<div class="label">Title [{{appState.lang}}]</div>
+	<div class="input" sxs-input-i18n="item.title" x-inputtype="'input'"></div>
 </div>
 <div class="field">
 	<div class="label">Image
@@ -14,9 +11,6 @@
 	</div>
 </div>
 <div class="field">
-	<div class="label">Description
-	</div>
-	<div class="input">
-		<textarea ng-model="appState.editing.description" rows="4"></textarea>
-	</div>
+	<div class="label">Description [{{appState.lang}}]</div>
+	<div class="input" sxs-input-i18n="item.description" x-inputtype="'textarea'"></div>
 </div>
