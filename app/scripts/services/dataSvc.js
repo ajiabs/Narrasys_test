@@ -180,7 +180,7 @@ angular.module('com.inthetelling.story')
 
 		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
 		var getEpisode = function (epId) {
-			$http.get(config.apiDataBaseUrl + "/v1/episodes/" + epId)
+			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId)
 				.success(function (episodeData) {
 
 					// console.log("episode: ", episodeData);
@@ -202,13 +202,13 @@ angular.module('com.inthetelling.story')
 				})
 				.error(function () {
 					errorSvc.error({
-						data: "API call to /v1/episodes/" + epId + " failed (bad episode ID?)"
+						data: "API call to /v3/episodes/" + epId + " failed (bad episode ID?)"
 					});
 				});
 		};
 
 		var getEpisodeEvents = function (epId) {
-			$http.get(config.apiDataBaseUrl + "/v2/episodes/" + epId + "/events")
+			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId + "/events")
 				.success(function (events) {
 					angular.forEach(events, function (eventData) {
 						modelSvc.cache("event", svc.resolveIDs(eventData));
@@ -221,7 +221,7 @@ angular.module('com.inthetelling.story')
 		// gets container and container assets, then iterates to parent container
 		var getContainer = function (containerId, episodeId) {
 			// console.log("getContainer", containerId, episodeId);
-			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId)
+			$http.get(config.apiDataBaseUrl + "/v3/containers/" + containerId)
 				.success(function (container) {
 					modelSvc.cache("container", container[0]);
 					// iterate to parent container
@@ -322,8 +322,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getAllContainers = function () {
-			return GET("/v1/containers", function (containers) {
+			return GET("/v3/containers", function (containers) {
+
 				// TODO climb through the tree customer->course->session->episode and cache each separately
+				// (right now we're ignoring localization of the container strings for this call,
+				// as it's only used internally for now)
 
 				return containers;
 			});

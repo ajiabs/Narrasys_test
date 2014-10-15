@@ -1,4 +1,28 @@
 
+i18n fields: make sure we support language fields from the /v3 endpoints for each of these:
+
+Containers:
+        name
+        keywords
+Customers:
+        oauth2_message
+Episodes:
+        title
+        description
+EventCategories:
+        title
+Events:
+        title
+        description
+        keywords 
+        annotation (on for annotation type events)
+
+(arrays, such as keywords and categories, have this structure:
+ "keywords": { 
+    "en": ["One","Two","Three"],
+    "es": ["Dos","Quatro"] // no correlation of items across arrays....
+})
+
 Scenes aren't updating margins properly after layout changes
 
 Need to set producerItemType in modelSvc instead of hardcoding in templates
@@ -51,6 +75,11 @@ Bring back the loading icon for iframes attempted in v4.0.32 (disabled because w
 
 
 include a sample iframe page with instructions for customers on how best to embed our player
+
+
+include a sample iframe page with instructions for customers on how best to embed our player
+
+
 
 
 

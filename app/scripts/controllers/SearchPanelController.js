@@ -33,6 +33,7 @@ angular.module('com.inthetelling.story')
 			angular.forEach($scope.episode.items, function (item) {
 				console.log(item.sxs);
 				item.searchableText = (item.annotation || item.description) + " " + (item.title || item.annotator);
+// TODO set this for producer items as well?
 				if (item.sxs) {
 					item.cosmetic = false;
 				}

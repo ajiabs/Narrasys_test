@@ -11,9 +11,9 @@
 	</div>
 	<div class="text">
 		<div class="title">
-			<a ng-click="toggleDetailView()" ng-bind-html="item.title || '(Untitled)'"></a>
+			<a ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
 		</div>
-		<div ng-bind-html="item.description"></div>
+		<div ng-bind-html="item.display_description"></div>
 	</div>
 	<div class="itemDetail" x-ng-if="item.showInlineDetail">
 		<div class="touchable" style="position:relative">

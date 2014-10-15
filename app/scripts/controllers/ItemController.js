@@ -5,4 +5,5 @@ angular.module('com.inthetelling.story')
 		$scope.seek = function (t) {
 			timelineSvc.seek(t, "clickedOnItem", $scope.item._id);
 		};
+
 	});

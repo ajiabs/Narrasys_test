@@ -1,38 +1,39 @@
 <span>
 	<div ng-if="item.sxs" ng-include="item.templateUrl"></div>
 	<div ng-if="!item.sxs">
-		<div ng-if="item.data._pluginType == 'credlyBadge'" ng-include="'templates/item/usc-badges.html'"></div>
-		<div ng-if="item.data._pluginType != 'credlyBadge'" class="itemTemplate">
-			<div class="itemHead">
-				<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
-				<div class="category">
-					<!--{{item.category}}-->
-					<span ng-if="item.required">(Required viewing)</span>
-				</div>
-			</div>
-			<div class="text">
-				<div class="title">
-					<a ng-if="item.noEmbed" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.title || '(Untitled)'"></a>
-					<a ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.title || '(Untitled)'"></a>
-				</div>
-				<div ng-bind-html="item.description"></div>
-			</div>
-			<div class="itemDetail" ng-if="item.showInlineDetail && item._type == 'Link'">
-				<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
-				<div class="iframeContainer">
-					<div ng-include="'templates/loading.html'"></div>
-					<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
-					<iframe ng-src="{{item.url}}"></iframe>
-				</div>
-			</div>
-			<div class="itemDetail" ng-if="item.showInlineDetail && item._type != 'Link'">
-				<div class="touchable" style="position:relative">
-					<img ng-click="forceModal()" ng-src="{{item.asset.url}}">
-					<div class="touchableIndicator"></div>
-				</div>
 
+	<div ng-if="item.data._pluginType == 'credlyBadge'" ng-include="'templates/item/usc-badges.html'"></div>
+	<div ng-if="item.data._pluginType != 'credlyBadge'" class="itemTemplate">
+		<div class="itemHead">
+			<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+			<div class="category">
+				<!--{{item.category}}-->
+				<span ng-if="item.required">(Required viewing)</span>
 			</div>
-			<div class="clear"></div>
 		</div>
+		<div class="text">
+			<div class="title">
+				<a ng-if="item.noEmbed" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+				<a ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
+			</div>
+			<div ng-bind-html="item.display_description"></div>
+		</div>
+		<div class="itemDetail" ng-if="item.showInlineDetail && item._type == 'Link'">
+			<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
+			<div class="iframeContainer">
+				<div ng-include="'templates/loading.html'"></div>
+				<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
+				<iframe ng-src="{{item.url}}"></iframe>
+			</div>
+		</div>
+		<div class="itemDetail" ng-if="item.showInlineDetail && item._type != 'Link'">
+			<div class="touchable" style="position:relative">
+				<img ng-click="forceModal()" ng-src="{{item.asset.url}}">
+				<div class="touchableIndicator"></div>
+			</div>
+
+		</div>
+		<div class="clear"></div>
 	</div>
+
 </span>

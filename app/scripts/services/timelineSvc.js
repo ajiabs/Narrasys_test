@@ -370,9 +370,11 @@ angular.module('com.inthetelling.story')
 				event.end_time = Number(event.end_time);
 				// add scenes to markedEvents[]:
 				if (event._type === "Scene" && event.title) {
-					svc.markedEvents.push(event);
+					if (typeof (event.title) === "string" || event.title.en) {
+						svc.markedEvents.push(event);
+					}
 				}
-				if (event.start_time === 0 && !event._id.match('internal:landingscreen')) {
+				if (event.start_time === 0 && !event._id.match('internal')) {
 					event.start_time = 0.01;
 					modelSvc.events[event._id].start_time = 0.01;
 				}
@@ -491,7 +493,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.updateEventStates = function () {
-			console.log("timelineSvc.updateEventStates");
+			// console.log("timelineSvc.updateEventStates", appState.time);
 			// Sets past/present/future state of every event in the timeline.  
 			// TODO performance check (though this isn't done often, only on seek and inject.)
 

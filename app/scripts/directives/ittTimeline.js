@@ -5,7 +5,7 @@
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
 angular.module('com.inthetelling.story')
-	.directive('ittTimeline', function ($timeout, appState, timelineSvc) {
+	.directive('ittTimeline', function ($timeout, appState, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -22,8 +22,9 @@ angular.module('com.inthetelling.story')
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');
 
-				scope.appState = appState;
-				// TODO: display buffered portion of video?
+				scope.setNewLanguage = function () {
+					modelSvc.setLanguageStrings();
+				};
 
 				scope.showSceneMenuTooltip = function (makeVisible) {
 					if (makeVisible && !(appState.isTouchDevice)) {
