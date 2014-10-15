@@ -46,8 +46,10 @@ angular.module('com.inthetelling.story')
 		dataSvc.getEpisode(appState.episodeId);
 
 		// Watch for the first load of the episode data; init the master asset and page title when found
+
+		// TODO: update this on language change
 		var episodeWatcher = $scope.$watch(function () {
-			return modelSvc.episodes[appState.episodeId].title;
+			return modelSvc.episodes[appState.episodeId].display_title;
 		}, function (a) {
 			if (a) {
 				document.title = "STORY: " + a;
