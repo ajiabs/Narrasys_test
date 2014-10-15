@@ -317,9 +317,9 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		svc.getEpisodeList = function () {
-			return GET("/v1/episodes");
-		};
+		// svc.getEpisodeList = function () {
+		// 	return GET("/v3/episodes");
+		// };
 
 		svc.getAllContainers = function () {
 			return GET("/v3/containers", function (containers) {
