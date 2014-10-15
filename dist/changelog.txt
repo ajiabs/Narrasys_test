@@ -513,3 +513,7 @@ Trick Chrome into playing the same video in two windows
 Changes in SxS0.14:
 Can delete item assets now
 
+------------------------------------------------
+Changes in SxS0.15:
+hacked-in support for youtube videos as Link items
+
