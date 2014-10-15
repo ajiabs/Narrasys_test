@@ -472,3 +472,7 @@ test i18n
 Changes in i18n.0.2:
 better i18n (no filters)
 
+------------------------------------------------
+Changes in i18n.0.3:
+detect episode languages dynamically; i18 for containers
+
