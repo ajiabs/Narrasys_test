@@ -4,7 +4,13 @@
 	<div class="itemHead">
 		<div class="authorName" ng-bind-html="item.annotator"></div>
 	</div>
-	<p>(Video items are not working yet, sorry!)</p>
-
+	<div class="text">
+		<div class="title" ng-bind-html="item.title"></div>
+		<div ng-bind-html="item.description"></div>
+	</div>
+	<div class="iframeContainer" ng-if="item.url && item.url != 'https://www.youtube.com/embed/'">
+		<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
+		<iframe ng-src="{{item.url}}"></iframe>
+	</div>
 	<div class="clear"></div>
 </div>

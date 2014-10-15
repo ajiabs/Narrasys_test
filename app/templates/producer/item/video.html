@@ -11,7 +11,8 @@
 	<div class="label">Video</div>
 	<div class="input">
 		<div style="width:60%; display:inline-block; padding-right: 5%">
-			<input type="text" ng-model="">
+			<input type="text" ng-model="appState.editing.yturl">
+
 		</div>
 		<div style="width:40%; display:inline-block">
 			<input type="button" value="Upload" style="width: 48%; margin-right: 4%">
@@ -19,7 +20,13 @@
 		</div>
 	</div>
 </div>
-
+<div class="field" ng-if="appState.editing.url || appState.editing.yturl">
+	<div class="label">&nbsp;</div>
+	<div class="input">
+		<small ng-if="appState.editing.url">Using {{appState.editing.url}}</small>
+		<small ng-if="appState.editing.yturl && !appState.editing.url">(No youtube video found)</small>
+	</div>
+</div>
 <div class="field">
 	<div class="label">Title
 	</div>

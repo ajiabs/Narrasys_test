@@ -68,9 +68,22 @@ angular.module('com.inthetelling.story')
 					return appState.editing;
 				}, function () {
 					// console.log("updated appState.editing");
+					if (appState.editing.yturl) {
+						appState.editing.url = embeddableYTUrl(appState.editing.yturl);
+					}
 
 					modelSvc.cache("event", appState.editing);
 				}, true);
+
+				var embeddableYTUrl = function (origUrl) {
+					var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+					var ytId = origUrl.match(getYoutubeID);
+					if (ytId) {
+						return "//www.youtube.com/embed/" + ytId[1];
+					} else {
+						return "";
+					}
+				};
 
 				scope.watchTimeEdits = scope.$watch(function () {
 					return appState.editing.start_time;

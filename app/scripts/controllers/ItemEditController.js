@@ -154,10 +154,12 @@ angular.module('com.inthetelling.story')
 
 			if (type === 'video') {
 				stub = {
-					"_type": "Upload",
+					"_type": "Link",
 					//"link_image_id": "",
 					"title": "",
-					"description": ""
+					"description": "",
+					"url": "",
+					"yturl": ""
 				};
 			}
 
