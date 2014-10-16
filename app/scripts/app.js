@@ -112,7 +112,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 	$httpProvider.defaults.withCredentials = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
-	$httpProvider.responseInterceptors.push(['$q',
+	$httpProvider.interceptors.push(['$q',
 		function () {
 			return function (promise) {
 				return promise.then(
