@@ -141,7 +141,7 @@ angular.module('com.inthetelling.story')
 			if (type === 'link') {
 				stub = {
 					"_type": "Link",
-					"link_image_id": "asset1",
+					"link_image_id": "",
 					"url": "https://",
 					"title": {
 						en: ""

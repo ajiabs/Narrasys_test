@@ -48,8 +48,7 @@ angular.module('com.inthetelling.story')
 				// extract current event styles for the form
 				if (scope.item.styles) {
 					for (var styleType in scope.itemForm) {
-						// TODO
-						console.log("extracting", styleType);
+
 						for (var i = 0; i < scope.item.styles.length; i++) {
 
 							console.log(scope.item.styles[i].substr(0, styleType.length) === styleType, scope.item.styles[i].substr(0, styleType.length));
@@ -68,13 +67,13 @@ angular.module('com.inthetelling.story')
 				scope.appState = appState;
 
 				scope.watchEdits = scope.$watch(function () {
-					return appState.editing;
+					return scope.item;
 				}, function () {
 
 					// TODO Combine styles data into styles array, (throwing away those that match scene or episode defaults?)
 
 					modelSvc.resolveEpisodeEvents(appState.episodeId); // Only needed for layout changes, strictly speaking; would it be more performant to put that in its own watch?
-					modelSvc.cache("event", appState.editing);
+					modelSvc.cache("event", scope.item);
 				}, true);
 
 				// Transform changes to form fields for styles into item.styles[]:
@@ -92,6 +91,11 @@ angular.module('com.inthetelling.story')
 					console.log(scope.item.styles);
 				}, true);
 
+				scope.forcePreview = function () {
+					// this is silly but it works.
+					appState.editing.fnord = (appState.editing.fnord) ? "" : "fnord";
+				};
+
 				scope.watchTimeEdits = scope.$watch(function () {
 					return scope.item.start_time + scope.item.end_time; // lazy way to check for change to either one
 				}, function (newV, oldV) {
@@ -107,9 +111,9 @@ angular.module('com.inthetelling.story')
 						// 	if scene set end time to start of next scene or duration of episode
 						// 	else set end time to end of scene
 						// else
-						// 	sanity-check end time (make sure within scene duration)
+						// 	sanity-check end time (make sure within scene duration, and after start time.)
 
-						// for now, just use end of scene
+						// for now, just using end of scene
 						console.log("SET END TIME:", scope.item);
 						scope.item.end_time = modelSvc.events[scope.item.scene_id].end_time;
 					}
@@ -182,10 +186,10 @@ angular.module('com.inthetelling.story')
 
 				scope.deleteAsset = function (assetId) {
 					if (window.confirm("Are you sure you wish to delete this asset?")) {
-						delete modelSvc.events[appState.editing._id].asset;
-						delete modelSvc.events[appState.editing._id].asset_id;
-						delete appState.editing.asset;
-						delete appState.editing.asset_id;
+						delete modelSvc.events[scope.item._id].asset;
+						delete modelSvc.events[scope.item._id].asset_id;
+						delete scope.item.asset;
+						delete scope.item.asset_id;
 						dataSvc.deleteAsset(assetId);
 					}
 				};

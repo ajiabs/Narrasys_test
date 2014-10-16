@@ -4,7 +4,7 @@
 			<div class="label">Language
 			</div>
 			<div class="input">
-				<select size="1" ng-model="appState.lang">
+				<select size="1" ng-model="appState.lang" ng-change="forcePreview()">
 					<option value="en">English</option>
 					<option value="es">Spanish</option>
 					<option value="pt">Portuguese</option>

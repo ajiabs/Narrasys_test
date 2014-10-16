@@ -35,8 +35,6 @@ Allow editing transcript from watch mode
 Edit panels should read from scene info to determine whether to show content layouts, highlights etc as options
 
 
-Support link-image-id in link items
-
 
 video item:  insert video duration into timeline
 
@@ -72,9 +70,6 @@ Other 508 compliance: alt tags on images, etc
 
 
 Bring back the loading icon for iframes attempted in v4.0.32 (disabled because wasn't working with PDFs in chrome)
-
-
-include a sample iframe page with instructions for customers on how best to embed our player
 
 
 include a sample iframe page with instructions for customers on how best to embed our player
