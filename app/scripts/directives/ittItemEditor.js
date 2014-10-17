@@ -9,10 +9,13 @@ TODO: right now we're re-building the episode structure on every keystroke.  Tha
 */
 
 angular.module('com.inthetelling.story')
-	.directive('autofocus', function () {
+	.directive('autofocus', function ($timeout) {
 		return {
 			link: function (scope, element) {
-				element[0].focus();
+				$timeout(function () { // give any child directives time to render themselves...
+
+					element.find('input,textarea')[0].focus();
+				});
 			}
 		};
 	})
