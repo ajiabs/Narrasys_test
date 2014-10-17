@@ -333,7 +333,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.deleteItem = function (evtId) {
-			return DELETE("/v2/events/" + evtId);
+			return DELETE("/v3/events/" + evtId);
 		};
 
 		svc.deleteAsset = function (assetId) {
@@ -343,15 +343,15 @@ angular.module('com.inthetelling.story')
 		// TODO need safety checking here
 		svc.storeItem = function (evt) {
 			evt = svc.prepItemForStorage(evt);
-			console.log(evt);
+
 			if (evt._id && !evt._id.match(/internal/)) {
 				// update
-				return PUT("/v2/events/" + evt._id, {
+				return PUT("/v3/events/" + evt._id, {
 					event: evt
 				});
 			} else {
 				// create
-				return POST("/v2/episodes/" + evt.episode_id + "/events", {
+				return POST("/v3/episodes/" + evt.episode_id + "/events", {
 					event: evt
 				});
 			}
@@ -417,7 +417,7 @@ angular.module('com.inthetelling.story')
 			});
 
 			// TODO: what else needs to be done before we can safely store this event?
-			console.log(prepped);
+			console.log("Prepped item for storage: ", prepped);
 			return prepped;
 		};
 

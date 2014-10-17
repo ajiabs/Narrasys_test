@@ -20,31 +20,40 @@ angular.module('com.inthetelling.story')
 
 		$scope.saveEvent = function () {
 
-			if (appState.editing._id === 'internal:editing') {
-				// store it to API, then
-				// ... modelSvc.cache returned item (with new ID)
-				// ... timelineSvc.injectEvents([modelSvc.events["internal:editing"]]);
+			var toSave = angular.copy(appState.editing);
+			dataSvc.storeItem(toSave).then(function (data) {
 
-				// ... delete(modelSvc.events['internal:editing']);
-				// ... timelineSvc.removeEvent('internal:editing');
+				if (appState.editing._id === 'internal:editing') {
+					// update the new item with its real ID (and remove the temp version)
+					timelineSvc.removeEvent("internal:editing");
+					delete(modelSvc.events["internal:editing"]);
+					modelSvc.cache("event", dataSvc.resolveIDs(data));
+					modelSvc.resolveEpisodeEvents(appState.episodeId);
+					timelineSvc.injectEvents([modelSvc.events[data._id]]);
+				}
 
-				modelSvc.resolveEpisodeEvents(appState.episodeId);
-				timelineSvc.injectEvents([modelSvc.events["internal:editing"]]);
-			} else {
-				// just store it to API and ignore the return, since it's already correct in the browser
-			}
+				appState.editing = false;
+			}, function (data) {
+				console.error("FAILED TO STORE EVENT", data);
+			});
 
-			// cancel watchers
-			appState.editing = false;
 		};
 
 		$scope.deleteEvent = function (eventId) {
-
-			// if sxs, delete event's asset from API async
-
-			// if id !== internal:editing, delete event from API async
-
-			// delete event from modelSvc.events
+			if (window.confirm("Are you sure you wish to delete this item?")) {
+				dataSvc.deleteItem(appState.editing._id).then(function (data) {
+					console.log("success deleting:", data);
+					timelineSvc.removeEvent(appState.editing._id);
+					delete modelSvc.events[appState.editing._id];
+					modelSvc.resolveEpisodeEvents(appState.episodeId);
+					if (appState.product === 'sxs' && appState.editing.asset) {
+						dataSvc.deleteAsset(appState.editing.asset._id);
+					}
+					appState.editing = false;
+				}, function (data) {
+					console.log("failed to delete:", data);
+				});
+			}
 
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			timelineSvc.removeEvents([modelSvc.events[eventId]]);
