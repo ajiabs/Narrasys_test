@@ -217,7 +217,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				var finishSeek = function () {
-					console.log("timeline mouseup or touchend");
+					// console.log("timeline mouseup or touchend");
 					scope.stopWatching = true;
 					scope.enableAutoscroll(); // in playerController
 					timelineSvc.seek(scope.willSeekTo, "scrubTimeline");

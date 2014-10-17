@@ -190,7 +190,7 @@ angular.module('com.inthetelling.story')
 				if (eventID) {
 					captureData.event_id = eventID;
 				}
-				console.log("capture", captureData);
+				// console.log("capture", captureData);
 				analyticsSvc.captureEpisodeActivity("seek", captureData);
 			} else {
 				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
@@ -369,10 +369,8 @@ angular.module('com.inthetelling.story')
 				event.start_time = Number(event.start_time);
 				event.end_time = Number(event.end_time);
 				// add scenes to markedEvents[]:
-				if (event._type === "Scene" && event.title) {
-					if (typeof (event.title) === "string" || event.title.en) {
-						svc.markedEvents.push(event);
-					}
+				if (event._type === "Scene") {
+					svc.markedEvents.push(event);
 				}
 				if (event.start_time === 0 && !event._id.match('internal')) {
 					event.start_time = 0.01;

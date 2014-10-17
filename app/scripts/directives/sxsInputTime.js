@@ -6,13 +6,13 @@ angular.module('com.inthetelling.story')
 	.directive('sxsInputTime', function (appState) {
 		return {
 			require: 'ngModel',
-			link: function (scope, element, attrs, ngModelController) {
-				ngModelController.$parsers.push(function (data) {
-					//convert data from view format to model format
+			link: function (scope, elem, attrs, ngModel) {
+				ngModel.$parsers.push(function toModel(data) {
+					// console.log("Converting ", data, " to model");
+					var ret;
 					if (data === undefined || data === '') {
-						return appState.time;
-					}
-					if (isNaN(data)) {
+						ret = appState.time;
+					} else if (isNaN(data)) {
 						var mss = data.split(':');
 						if (mss.length === 2) {
 							if (isNaN(mss[0])) {
@@ -21,20 +21,26 @@ angular.module('com.inthetelling.story')
 							if (isNaN(mss[1])) {
 								mss[1] = 0;
 							}
-							return (Number(mss[0]) * 60 + Number(mss[1]));
+							ret = (Number(mss[0]) * 60 + Number(mss[1]));
 						} else {
-							return appState.time;
+							ret = appState.time;
 						}
 					} else {
-						return data;
+						ret = data;
 					}
+					//  TODO I want this to trigger the formatter again, but there doesn't seem to be an easy way to do that: ngModel.$render() doesn't
+					return ret;
 
 				});
 
-				ngModelController.$formatters.push(function (data) {
-					//convert data from model format to view format
-					// TODO allow fractions of seconds here
-					return Math.floor(data / 60) + ":" + ("0" + Math.floor(data) % 60).slice(-2);
+				ngModel.$formatters.push(function toView(data) {
+					// convert model value to view value
+					var ret = Math.floor(data / 60) + ":" + ("0" + Math.floor(data) % 60).slice(-2);
+					var fraction = (data + "").slice(4, 7);
+					if (fraction !== "") {
+						ret = ret + "." + fraction;
+					}
+					return ret;
 
 				});
 			}

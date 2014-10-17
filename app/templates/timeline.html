@@ -32,16 +32,16 @@
 						<div class="tip">{{willSeekTo | asTime}}</div>
 					</div>
 
-					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents " ng-style="{left: markerPercent(event.start_time)+'%'}">
-						<span class="content" ng-bind-html="event.display_title"></span>
-						<!-- <div class="tooltip-arrow"></div> -->
+					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}">
+						<span class="content" ng-bind-html="event.display_title || '(&quot;Hidden&quot; scene)'"></span>
 					</div>
 					<div ng-if="appState.editing" class="editingItem" ng-style="{left: markerPercent(appState.editing.start_time)+'%', right: markerPercent(appState.duration - appState.editing.end_time)+'%'}"></div>
 				</div>
 				<div class="playhead mask">
 					<!-- interactive parts of timeline -->
 					<div class="progressbarContainer " ng-style="{width: zoomLevel+'00%'}">
-						<div class="marker" ng-mouseover="showTooltip(event);" ng-mouseout="hideTooltip(event)" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}"></div>
+						<!-- scene markers -->
+						<div class="marker" ng-mouseover="showTooltip(event);" ng-mouseout="hideTooltip(event)" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}" ng-if="event.display_title || appState.product == 'producer'" ng-class="{mini: (!event.display_title)}"></div>
 					</div>
 				</div>
 			</div>

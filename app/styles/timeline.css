@@ -124,6 +124,11 @@
 	width: 1em;
 	margin-left: -0.5em;
 }
+.progressbar .marker.mini {
+	font-size: 0.5em;
+	line-height: 2em;
+	opacity: 0.5;
+}
 .progressbar .marker:before {
 	content: "\e007";
 	font-family: Story;

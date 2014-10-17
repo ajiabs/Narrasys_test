@@ -1,18 +1,5 @@
 <div class="itemEdit authoringForm">
 	<div style="max-height: 280px; overflow-y:scroll; padding: 1em 20px 0 0">
-		<div class="field" ng-if="appState.product == 'producer'">
-			<div class="label">Language
-			</div>
-			<div class="input">
-				<select size="1" ng-model="appState.lang" ng-change="forcePreview()">
-					<option value="en">English</option>
-					<option value="es">Spanish</option>
-					<option value="pt">Portuguese</option>
-					<option value="de">German</option>
-					<option value="fr">French</option>
-				</select>TODO: allow "add new". TODO: trigger preview rerender on change
-			</div>
-		</div>
 
 
 		<div class="field">
@@ -20,9 +7,18 @@
 			</div>
 			<div class="input">
 
-				<input ng-change="setItemTime()" type="text" ng-model="appState.time" sxs-input-time style="max-width:100px">
+				<input type="text" ng-model="appState.time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
 				<span ng-if="appState.product == 'producer'">
-					(end times TODO)
+					-
+					<input ng-change="setItemEndTime()" type="text" ng-model="item.end_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
+
+					<select size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right;">
+						<option value="en">English</option>
+						<option value="es">Spanish</option>
+						<option value="pt">Portuguese</option>
+						<option value="de">German</option>
+						<option value="fr">French</option>
+					</select>
 				</span>
 			</div>
 		</div>
