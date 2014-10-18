@@ -126,11 +126,20 @@ angular.module('com.inthetelling.story')
 				};
 				scope.zoomOut = function () {
 					scope.stopWatching = true;
-					scope.zoomLevel = scope.zoomLevel - 1;
-					if (scope.zoomLevel < 1) {
+					// scope.zoomLevel = scope.zoomLevel - 1;
+					// if (scope.zoomLevel < 1) {
+					// 	scope.zoomLevel = 1;
+					// }
+					if (scope.zoomLevel <= 2) {
 						scope.zoomLevel = 1;
+					} else if (scope.zoomLevel <= 3) {
+						scope.zoomLevel = 1.5;
+					} else {
+						scope.zoomLevel = scope.zoomLevel / 2;
+
 					}
 					zoom();
+
 				};
 
 				// adjust the position of the playhead after a scale change:
