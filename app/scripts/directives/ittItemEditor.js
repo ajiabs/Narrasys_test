@@ -185,14 +185,29 @@ angular.module('com.inthetelling.story')
 					});
 				};
 
+				// in SxS, event assets are only ever used in one event, so we can safely delete them.
+				// TODO determine which of asset_id, link_image_id, annotation_image_id we're really trying to delete.
+				// being lazy for now, since events only ever have one of them
 				scope.deleteAsset = function (assetId) {
 					if (window.confirm("Are you sure you wish to delete this asset?")) {
 						delete modelSvc.events[scope.item._id].asset;
 						delete modelSvc.events[scope.item._id].asset_id;
+						delete modelSvc.events[scope.item._id].link_image_id;
+						delete modelSvc.events[scope.item._id].annotation_image_id;
 						delete scope.item.asset;
 						delete scope.item.asset_id;
+						delete scope.item.link_image_id;
+						delete scope.item.annotation_image_id;
 						dataSvc.deleteAsset(assetId);
 					}
+				};
+				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event:
+				scope.detachAsset = function (assetId) {
+					delete modelSvc.events[scope.item._id].asset;
+					delete scope.item.asset;
+					delete scope.item.asset_id;
+					delete scope.item.link_image_id;
+					delete scope.item.annotation_image_id;
 				};
 
 				scope.$on('$destroy', function () {
