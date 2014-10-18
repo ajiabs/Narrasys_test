@@ -36,9 +36,6 @@
 	min-width: 1em;
 	overflow: hidden;
 }
-.pbarTop .button {
-	padding-left: 1em;
-}
 .pbarBottom .button {
 	padding-right: 1em;
 }
