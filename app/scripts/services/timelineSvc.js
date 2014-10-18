@@ -197,6 +197,41 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		svc.prevScene = function () {
+			for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
+				var now = appState.time;
+				if (appState.timelineState === 'playing') {
+					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
+				}
+				if (svc.markedEvents[i].start_time < now) {
+					// console.log("Seeking to ", svc.markedEvents[i].start_time);
+					//scope.enableAutoscroll(); // TODO in playerController
+					svc.seek(svc.markedEvents[i].start_time, "prevScene");
+
+					break;
+				}
+			}
+
+		};
+
+		svc.nextScene = function () {
+			var found = false;
+			for (var i = 0; i < svc.markedEvents.length; i++) {
+				if (svc.markedEvents[i].start_time > appState.time) {
+					// console.log("Seeking to ", svc.markedEvents[i].start_time);
+					//scope.enableAutoscroll(); // TODO in playerController
+					svc.seek(svc.markedEvents[i].start_time, "nextScene");
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				svc.pause();
+				svc.seek(appState.duration - 0.01, "nextScene");
+				//scope.enableAutoscroll(); // in playerController
+			}
+		};
+
 		// - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		// WHY IS THIS AUDIO CHOCOLATE IN MY TIMELINE PEANUT BUTTER?

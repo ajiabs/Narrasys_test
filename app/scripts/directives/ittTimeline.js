@@ -35,36 +35,10 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.prevScene = function () {
-					for (var i = timelineSvc.markedEvents.length - 1; i >= 0; i--) {
-						var now = appState.time;
-						if (appState.timelineState === 'playing') {
-							now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
-						}
-						if (timelineSvc.markedEvents[i].start_time < now) {
-							// console.log("Seeking to ", timelineSvc.markedEvents[i].start_time);
-							scope.enableAutoscroll(); // in playerController
-							timelineSvc.seek(timelineSvc.markedEvents[i].start_time, "prevScene");
-
-							break;
-						}
-					}
+					timelineSvc.prevScene();
 				};
 				scope.nextScene = function () {
-					var found = false;
-					for (var i = 0; i < timelineSvc.markedEvents.length; i++) {
-						if (timelineSvc.markedEvents[i].start_time > appState.time) {
-							// console.log("Seeking to ", timelineSvc.markedEvents[i].start_time);
-							scope.enableAutoscroll(); // in playerController
-							timelineSvc.seek(timelineSvc.markedEvents[i].start_time, "nextScene");
-							found = true;
-							break;
-						}
-					}
-					if (!found) {
-						timelineSvc.pause();
-						timelineSvc.seek(appState.duration - 0.01, "nextScene");
-						scope.enableAutoscroll(); // in playerController
-					}
+					timelineSvc.nextScene();
 				};
 
 				scope.userChangingVolume = function (evt) {
@@ -145,16 +119,16 @@ angular.module('com.inthetelling.story')
 				// adjust the position of the playhead after a scale change:
 				var zoom = function () {
 					scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
-					timelineNode.animate({
+					timelineNode.stop().animate({
 						"left": (scope.zoomOffset * 100) + "%",
 						"width": (scope.zoomLevel * 100) + "%"
 					}, 1000, function () {
-						scope.stopWatching = false;
+						scope.stopWatching = false; // so we don't try to update the playhead during a zoom animation
 					});
 				};
 
 				// at all times keep playhead position at the same % of the visible progress bar as the time is to the duration
-				// TODO: (cosmetic) stop watching while zoom-animation is in progress
+				// cosmetic: stop watching while zoom-animation is in progress
 				scope.$watch(function () {
 					return {
 						t: appState.time,

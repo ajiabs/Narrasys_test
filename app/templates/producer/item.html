@@ -7,10 +7,19 @@
 			</div>
 			<div class="input">
 
+				<a ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
+					<span class="control-text">Beginning of scene</span>
+				</a>
 				<input type="text" ng-model="appState.time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
 				<span ng-if="appState.product == 'producer'">
-					-
-					<input ng-change="setItemEndTime()" type="text" ng-model="item.end_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
+					<span class="label">End</span>
+					<input ng-if="customEndTime" ng-change="setItemEndTime()" type="text" ng-model="item.end_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
+					<a class="fakelink" ng-click="customEndTime = !customEndTime; item.end_time=100000">
+						<span ng-if="customEndTime">(x)</span>
+						<span ng-if="!customEndTime">(auto)</span>
+
+
+					</a>
 
 					<select size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right;">
 						<option value="en">English</option>

@@ -8,27 +8,22 @@
 .authoringForm .field .label {
 	margin-bottom: 0.2em;
 }
-.authoringForm .label {
+.authoringForm .field > .label {
 	width: 25%;
 	text-align: right;
 	float: left;
+}
+.authoringForm .label {
 	font-size: smaller;
 	color: #666;
 	padding: 3px 0.25em;
 }
+.authoringForm .label:after {
+	content: ":";
+}
 .authoringForm .input {
 	width: 75%;
 	float: right;
-}
-.authoringForm td {
-	vertical-align: top;
-}
-.authoringForm td.label {
-	font-size: smaller;
-	color: #666;
-	width: 20%;
-	text-align: right;
-	padding-right: 0.2.5em;
 }
 /* Angular removes the type=text attribute when you use ng-model (grr) so can't use [type="text"] */
 
@@ -56,7 +51,13 @@
 }
 .authoringForm .input input[type="checkbox"],
 .authoringForm .input input[type="radio"] {
-	width: 3em;
+	width: 2em;
+}
+.authoringForm label {
+	padding-right: 2em;
+}
+.authoringForm .button-prev {
+	font-size: 0.7em;
 }
 /* ------ */
 

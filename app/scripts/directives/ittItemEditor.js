@@ -44,6 +44,8 @@ angular.module('com.inthetelling.story')
 					"timestamp": ""
 				};
 
+				scope.prevScene = timelineSvc.prevScene;
+
 				if (!scope.item.layouts) {
 					scope.item.layouts = ["inline"];
 				}
@@ -73,9 +75,12 @@ angular.module('com.inthetelling.story')
 					return scope.item;
 				}, function () {
 
-					// TODO Combine styles data into styles array, (throwing away those that match scene or episode defaults?)
+					// TODO throw away parts of scope.item.styles that match scene or episode defaults
 
-					modelSvc.resolveEpisodeEvents(appState.episodeId); // Only needed for layout changes, strictly speaking; would it be more performant to put that in its own watch?
+					// trigger scene to rerender
+					console.log(modelSvc.events[scope.item.scene_id]);
+
+					modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
 					modelSvc.cache("event", scope.item);
 				}, true);
 
@@ -91,7 +96,6 @@ angular.module('com.inthetelling.story')
 						}
 					}
 					scope.item.styles = styles;
-					console.log(scope.item.styles);
 				}, true);
 
 				scope.forcePreview = function () {
@@ -187,17 +191,18 @@ angular.module('com.inthetelling.story')
 
 				// in SxS, event assets are only ever used in one event, so we can safely delete them.
 				// TODO determine which of asset_id, link_image_id, annotation_image_id we're really trying to delete.
-				// being lazy for now, since events only ever have one of them
+				// being lazy for now, since events only have one of them
 				scope.deleteAsset = function (assetId) {
 					if (window.confirm("Are you sure you wish to delete this asset?")) {
 						delete modelSvc.events[scope.item._id].asset;
+						//TODO for whichever of these matches assetId, delete it
+						delete scope.item.asset_id;
 						delete modelSvc.events[scope.item._id].asset_id;
+						delete scope.item.link_image_id;
 						delete modelSvc.events[scope.item._id].link_image_id;
+						delete scope.item.annotation_image_id;
 						delete modelSvc.events[scope.item._id].annotation_image_id;
 						delete scope.item.asset;
-						delete scope.item.asset_id;
-						delete scope.item.link_image_id;
-						delete scope.item.annotation_image_id;
 						dataSvc.deleteAsset(assetId);
 					}
 				};
@@ -205,6 +210,8 @@ angular.module('com.inthetelling.story')
 				scope.detachAsset = function (assetId) {
 					delete modelSvc.events[scope.item._id].asset;
 					delete scope.item.asset;
+
+					//TODO for whichever of these matches assetId, delete it
 					delete scope.item.asset_id;
 					delete scope.item.link_image_id;
 					delete scope.item.annotation_image_id;
@@ -214,6 +221,7 @@ angular.module('com.inthetelling.story')
 					scope.watchEdits();
 					scope.watchSeek();
 					scope.dismissalWatcher();
+					scope.watchStyleEdits();
 				});
 
 			},

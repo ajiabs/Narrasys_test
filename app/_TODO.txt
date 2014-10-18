@@ -1,3 +1,18 @@
+Any event end time matching its scene end time, or a transcript end time matching the next transcript start, should be considered the same as end time = auto.
+null or empty end time should mean the same.  Determine it in modelSvc and set an isAutoEndtime flag
+
+
+
+BUG: while editing, occasionally the timeline will truncate when you seek to a previous scene.
+Is triggered by scrubbing timeline, hitting prevScene() or by text entry into the start_time field. But not always.
+Once it happens a first time, it keeps happening until reload.  Haven't yet spotted what causes it to happen that first time 
+
+
+
+
+
+
+
 
 i18n fields: make sure we support language fields from the /v3 endpoints for each of these:
 
