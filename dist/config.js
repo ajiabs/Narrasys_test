@@ -7,7 +7,10 @@ var config = {
 	// apiDataBaseUrl: 'https://story.inthetelling.com',
 	// apiDataBaseUrl: 'https://purdue.inthetelling.com',
 	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
+
+	// NOTE this build uses v3 endpoints which currently are only on the dev server:
 	apiDataBaseUrl: 'https://api-dev-sub.inthetelling.com',
+	// apiDataBaseUrl: 'https://demo.inthetelling.com',
 	localStorageKey: "storyKey",
 	disableYoutube: true,
 	disableAnalytics: true,

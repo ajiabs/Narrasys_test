@@ -451,7 +451,7 @@ Changes in v4.0.45:
 Reverting autoscroll improvements (Not actually an improvement)
 
 ------------------------------------------------
-Changes in SxS0.8:
+Changes in v4.2.0
 rough item templates, autofocus, timeline injection
 fixed memory leak in item editor, prepping for timeline insert
 better handling of invalid time values
@@ -463,13 +463,6 @@ clear edits on cancel
 item edit forms
 template stubs for edit panels
 'add' buttons and edit drawer
-
-------------------------------------------------
-Changes in SxS0.8.1:
-fixing broken build
-
-------------------------------------------------
-Changes in SxS0.9:
 edit and delete now working
 can save events now
 item.contain bugfix
@@ -481,65 +474,4 @@ Merge branch 'upload-service-testing' into sxs-dev
 better way to handle sidebar inline-vs-modal sizes
 sidebar items should never try to expand inline
 Merged file upload functionality
-
-------------------------------------------------
-Changes in SxS0.10:
-applying timeline hotfix
-profile panel (partial)
-Columbia business school episode template
-
-------------------------------------------------
-Changes in SxS0.11:
-can now edit items immediately after creating them
-"file" sxs template now actually links to file
-Images in questions
-draggable marker on timeline when editing
-fixed error handler
-SxS search results w/icon
-Hide 'continue' button during editing
-------------------------------------------------
-Changes in SxS0.12:
-icons in edit panels
-
-------------------------------------------------
-Changes in SxS0.13:
-improved image template
-make sure save/cancel buttons are always visible
-mark video more clearly as TODO
-bugfix: allow timeline scrub while playing video
-Trick Chrome into playing the same video in two windows
-
-------------------------------------------------
-Changes in SxS0.14:
-Can delete item assets now
-
-------------------------------------------------
-Changes in v4.0.48:
-hotfix for Safari 7.1 failing to 'seek' video
-------------------------------------------------
-Changes in i18n.0.1:
-test i18n
-
-------------------------------------------------
-Changes in i18n.0.2:
-better i18n (no filters)
-
-------------------------------------------------
-Changes in i18n.0.3:
-detect episode languages dynamically; i18 for containers
-
-------------------------------------------------
-Changes in v4.0.48:
-hotfix for Safari 7.1 failing to 'seek' video
-------------------------------------------------
-Changes in i18n.0.1:
-test i18n
-
-------------------------------------------------
-Changes in i18n.0.2:
-better i18n (no filters)
-
-------------------------------------------------
-Changes in i18n.0.3:
-detect episode languages dynamically; i18 for containers
-
+Added i18n support

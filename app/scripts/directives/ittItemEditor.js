@@ -208,13 +208,15 @@ angular.module('com.inthetelling.story')
 				};
 				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event:
 				scope.detachAsset = function (assetId) {
-					delete modelSvc.events[scope.item._id].asset;
-					delete scope.item.asset;
+					if (assetId) {
+						delete modelSvc.events[scope.item._id].asset;
+						delete scope.item.asset;
 
-					//TODO for whichever of these matches assetId, delete it
-					delete scope.item.asset_id;
-					delete scope.item.link_image_id;
-					delete scope.item.annotation_image_id;
+						//TODO for whichever of these matches assetId, delete it
+						delete scope.item.asset_id;
+						delete scope.item.link_image_id;
+						delete scope.item.annotation_image_id;
+					}
 				};
 
 				scope.$on('$destroy', function () {
