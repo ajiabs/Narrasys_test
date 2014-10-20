@@ -475,3 +475,7 @@ better way to handle sidebar inline-vs-modal sizes
 sidebar items should never try to expand inline
 Merged file upload functionality
 Added i18n support
+------------------------------------------------
+Changes in v4.2.1:
+fixing minification error by updating from ngmin to ngAnnotate
+
