@@ -226,7 +226,7 @@ angular.module('com.inthetelling.story')
 					scope.watchStyleEdits();
 				});
 
-			},
+			}
 
 		};
 	});
