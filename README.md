@@ -1,4 +1,11 @@
-# In The Telling Player 3
+# In The Telling Story
+
+## UPGRADE NOTICE 20 Oct 2014
+As of v4.2.1 this uses ngAnnotate instead of ngmin. Grunt.js and package.json have been changed, but you may need to update your local build environment:
+* cd to root project directory
+* `npm install`
+* `npm prune`
+* `grunt build`
 
 Stack:
 
