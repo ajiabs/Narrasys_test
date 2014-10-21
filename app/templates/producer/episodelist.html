@@ -1,27 +1,45 @@
-<div ng-controller="EpisodeListController" style="margin:1em">
+<div ng-controller="EpisodeListController" style="margin:1em" class="admin">
 	<!-- TODO proper i18n -->
-
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 
-	<div ng-repeat="customer in containers">
-		<h2 ng-click="customer.hidden = !customer.hidden" style="cursor: pointer; width:100%; background-color:#EEE">{{customer.name.en}}</h2>
 
-		<div ng-if="!customer.hidden" ng-repeat="course in customer.children">
-			<h3 style="cursor:pointer;" ng-click="course.visible=!course.visible">{{course.name.en}}</h3>
+	<div ng-repeat="customer in containers" class="customer">
+		<h2><a ng-click="customer.hidden = !customer.hidden">{{customer.name.en}}</a>
+		</h2>
 
-			<div ng-if="course.visible" style="margin-left:2em" ng-repeat="session in course.children">
-				<h4>{{session.name.en}}</h4>
-				<ul>
-					<li ng-repeat="episodecontainer in session.children">
+		<div ng-if="!customer.hidden">
+			<!-- <h3>Courses:</h3> -->
+			<ul>
+				<li ng-repeat="course in customer.children" class="course" ng-class="{isOpen: course.visible, isClosed: !course.visible}">
 
-						<a href="#/episode/{{episodecontainer.episodes[0]}}">[Player]</a>
-						<a href="#/sxs/{{episodecontainer.episodes[0]}}">[SxS]</a>
-						<a href="#/producer/{{episodecontainer.episodes[0]}}">[Producer]</a>
-						{{episodecontainer.name.en}}
-						<small style="opacity:0.2">{{episodecontainer.episodes[0]}}</small>
-					</li>
-				</ul>
-			</div>
+					<a ng-click="course.visible =!course.visible">{{course.name.en}}</a>
+					<small>{{course._id}}</small>
+
+
+					<div ng-if="course.visible" style="margin-left:2em">
+						<!-- <h4>Sessions:</h4> -->
+						<ul>
+							<li ng-repeat="session in course.children" class="session" ng-class="{isOpen: session.visible, isClosed: !session.visible}">
+
+								<b><a ng-click="session.visible =!session.visible">{{session.name.en}}</a></b>
+								<small>{{session._id}}</small>
+
+								<ul ng-if="session.visible">
+									<li ng-repeat="episodecontainer in session.children" class="noChildren">
+										<a href="#/episode/{{episodecontainer.episodes[0]}}">[Player]</a>
+										<a href="#/sxs/{{episodecontainer.episodes[0]}}">[SxS]</a>
+										<a href="#/producer/{{episodecontainer.episodes[0]}}">[Producer]</a>
+										{{episodecontainer.name.en}}
+										<small>{{episodecontainer.episodes[0]}}</small>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+
+				</li>
+
+			</ul>
 		</div>
 	</div>
 

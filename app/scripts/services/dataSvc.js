@@ -314,22 +314,59 @@ angular.module('com.inthetelling.story')
 				return defer.reject();
 			});
 			return defer.promise;
-
 		};
-
-		// svc.getEpisodeList = function () {
-		// 	return GET("/v3/episodes");
-		// };
 
 		svc.getAllContainers = function () {
 			return GET("/v3/containers", function (containers) {
-
-				// TODO climb through the tree customer->course->session->episode and cache each separately
-				// (right now we're ignoring localization of the container strings for this call,
-				// as it's only used internally for now)
-
+				// step through the tree customer->course->session->episode and cache each separately
+				angular.forEach(containers, function (customer) {
+					// console.log("Customer", customer.name.en, customer);
+					modelSvc.cache("container", {
+						_id: customer._id,
+						type: "Customer",
+						name: angular.copy(customer.name),
+						child_ids: extract_id_list(customer.children)
+					});
+					angular.forEach(customer.children, function (course) {
+						// console.log("Course", course.name.en, course);
+						modelSvc.cache("container", {
+							_id: course._id,
+							parent_id: course.parent_id,
+							type: "Course",
+							name: angular.copy(course.name),
+							child_ids: extract_id_list(course.children)
+						});
+						angular.forEach(course.children, function (session) {
+							// console.log("Session", session, session.name.en);
+							modelSvc.cache("container", {
+								_id: session._id,
+								parent_id: session.parent_id,
+								type: "Session",
+								name: angular.copy(session.name),
+								child_ids: extract_id_list(session.children)
+							});
+							angular.forEach(session.children, function (episode) {
+								// console.log("Episode", episode, episode.name.en);
+								modelSvc.cache("container", {
+									_id: episode._id,
+									parent_id: episode.parent_id,
+									type: "Episode",
+									name: angular.copy(episode.name)
+								});
+							});
+						});
+					});
+				});
 				return containers;
 			});
+		};
+
+		var extract_id_list = function (children) {
+			var ids = [];
+			angular.forEach(children, function (child) {
+				ids.push(child._id);
+			});
+			return ids;
 		};
 
 		svc.deleteItem = function (evtId) {

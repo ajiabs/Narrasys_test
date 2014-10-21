@@ -1,3 +1,48 @@
+.admin small {
+	opacity: 0.3;
+}
+.admin li {
+	list-style: none;
+	padding: 0.1em;
+}
+.admin h2 {
+	width: 100%;
+	background-color: #EEE;
+	padding: 0.4em;
+}
+.admin small {
+	float: right;
+	text-align: right;
+}
+.admin .isOpen ul {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	margin-bottom: 0.5em;
+	padding-bottom: 0.5em;
+}
+.admin .isOpen:before {
+	content: "-";
+	display: inline-block;
+	width: 1em;
+	opacity: 0.5;
+}
+.admin .isClosed:before {
+	content: "+";
+	display: inline-block;
+	width: 1em;
+	opacity: 0.5;
+}
+.admin li.isClosed:hover,
+.admin li.noChildren:hover {
+	background-color: #EEE;
+}
+.admin li.isClosed:hover small {
+	opacity: 0.8;
+}
+.admin .session > ul {
+	margin-left: 1em;
+}
+/* -- */
+
 .padForEditing .episode {
 	border-bottom: 180px solid #BBB;
 }

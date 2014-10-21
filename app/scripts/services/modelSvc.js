@@ -40,6 +40,7 @@ angular.module('com.inthetelling.story')
 					svc.assets[item._id] = svc.deriveAsset(angular.copy(item));
 				}
 			} else if (cacheType === 'container') {
+				console.log("Caching container:", item);
 				if (svc.containers[item._id]) {
 					angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(item)));
 				} else {
@@ -109,6 +110,9 @@ angular.module('com.inthetelling.story')
 				episode.origTemplateUrl = episode.templateUrl;
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
+
+			// TEMPORARY, FOR LANGUAGES DEMO
+			episode.languages = ["en", "es"];
 
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):

@@ -24,9 +24,6 @@
 					<select size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right;">
 						<option value="en">English</option>
 						<option value="es">Spanish</option>
-						<option value="pt">Portuguese</option>
-						<option value="de">German</option>
-						<option value="fr">French</option>
 					</select>
 				</span>
 			</div>
@@ -138,13 +135,13 @@
 							<option value="Serif">Serif</option>
 							<option value="Book">Book</option>
 							<option value="Swiss">Swiss</option>
-							<option value="Eliterate">Eliterate</option>
+							<!-- 							<option value="Eliterate">Eliterate</option>
 							<option value="Gw">Gw</option>
 							<option value="Usc">Usc</option>
 							<option value="Purdue">Purdue</option>
 							<option value="Columbia">Columbia</option>
 							<option value="Columbiabusiness">Columbiabusiness</option>
-
+ -->
 						</select>
 					</div>
 				</div>
@@ -157,12 +154,13 @@
 							<option value="Sepia">Sepia</option>
 							<option value="Solarized">Solarized</option>
 							<option value="Vivid">Vivid</option>
-							<option value="Eliterate">Eliterate</option>
+							<!-- 							<option value="Eliterate">Eliterate</option>
 							<option value="Gw">Gw</option>
 							<option value="Usc">Usc</option>
 							<option value="Purdue">Purdue</option>
 							<option value="Columbia">Columbia</option>
 							<option value="Columbiabusiness">Columbiabusiness</option>
+ -->
 						</select>
 					</div>
 				</div>
@@ -197,6 +195,7 @@
 					<div class="input">
 						<select size="1" ng-model="itemForm.transition">
 							<option value="">(Default)</option>
+							<option value="None">No transition</option>
 							<option value="Fade">Fade</option>
 							<option value="SlideL">Slide left</option>
 							<option value="SlideR">Slide right</option>
