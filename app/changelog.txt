@@ -490,3 +490,7 @@ Added build notes
 Changes in v4.2.3:
 corrected config
 
+------------------------------------------------
+Changes in v4.2.4:
+reverse template translation on save
+
