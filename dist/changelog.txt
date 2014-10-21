@@ -479,3 +479,10 @@ Added i18n support
 Changes in v4.2.1:
 fixing minification error by updating from ngmin to ngAnnotate
 
+------------------------------------------------
+Changes in v4.2.2:
+Hiding work-in-progress functionality for demo release
+i18n for demo
+Updated build notes to something that is actually correct
+Added build notes
+
