@@ -409,7 +409,8 @@ angular.module('com.inthetelling.story')
 				"start_time",
 				"end_time",
 				"episode_id",
-				"templateUrl",
+				"template_id",
+				// "templateUrl",
 				"stop",
 				"type",
 				"isCurrent",
@@ -460,14 +461,44 @@ angular.module('com.inthetelling.story')
 
 			var template = svc.readCache("template", "url", evt.templateUrl);
 			if (template) {
-				evt.template_id = template.id;
+				prepped.template_id = template.id;
 			} else {
-				errorSvc.error({
-					data: "Tried to store a template with no ID: " + evt.templateUrl
-				});
 
 				// TODO: create the template on the fly, cache it, get its ID, then continue?
 				// Or can I just talk bill into letting me store templateUrls directly and skip the whole ID business?
+
+				//For now, reverse the template update done in modelSvc:
+				var reverseTemplateUpdate = {
+					"templates/item/transcript.html": "templates/transcript-default.html",
+					"templates/item/transcript-withthumbnail.html": "templates/transcript-withthumbnail.html",
+					"templates/item/transcript-withthumbnail-alt.html": "templates/transcript-withthumbnail-alt.html",
+					"templates/item/text-h1.html": "templates/text-h1.html",
+					"templates/item/text-h2.html": "templates/text-h2.html",
+					"templates/item/pullquote-noattrib.html": "templates/text-pullquote-noattrib.html",
+					"templates/item/pullquote.html": "templates/text-pullquote.html",
+
+					// upload
+					"templates/item/image.html": "templates/transmedia-image-default.html",
+					"templates/item/image-caption.html": "templates/transmedia-caption.html",
+					"templates/item/image-caption-sliding.html": "templates/transmedia-slidingcaption.html",
+					"templates/item/image-fill.html": "templates/transmedia-image-fill.html",
+					"templates/item/image-plain.html": "templates/transmedia-image-plain.html",
+					"templates/item/image-linkonly.html": "templates/transmedia-linkonly.html",
+					"templates/item/image-thumbnail.html": "templates/transmedia-thumbnail.html",
+
+					//link
+					"templates/item/link.html": "templates/transmedia-link-default.html",
+					"templates/item/link-embed.html": "templates/transmedia-link-embed.html",
+
+				};
+				if (reverseTemplateUpdate[evt.templateUrl]) {
+					template = svc.readCache("template", "url", reverseTemplateUpdate[evt.templateUrl]);
+					prepped.template_id = template.id;
+				} else {
+					errorSvc.error({
+						data: "Tried to store a template with no ID: " + evt.templateUrl
+					});
+				}
 			}
 
 			// TODO: what else needs to be done before we can safely store this event?

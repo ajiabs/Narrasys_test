@@ -28,6 +28,10 @@ angular.module('com.inthetelling.story')
 					} else {
 						ret = data;
 					}
+					// First scene is bumped a bit after the landing screen...
+					if (ret < 0.01) {
+						ret = 0.01;
+					}
 					//  TODO I want this to trigger the formatter again, but there doesn't seem to be an easy way to do that: ngModel.$render() doesn't
 					return ret;
 
