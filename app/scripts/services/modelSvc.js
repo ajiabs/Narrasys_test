@@ -268,7 +268,7 @@ angular.module('com.inthetelling.story')
 
 			// both scenes and items.  Do this last for now, since we're doing some ugly string matching against the old templateUrl:
 			if (updateTemplates[event.templateUrl]) {
-				event.origTemplateUrl = event.templateUrl; // TEMPORARY
+				event.origTemplateUrl = event.templateUrl;
 				event.templateUrl = updateTemplates[event.templateUrl];
 
 				// coerce old image-plain background images into image-fill:
@@ -284,7 +284,8 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			} else {
-				// console.error("Couldn't match event templateUrl: ", event.templateUrl);
+				// console.log("Keeping same templateUrl:", event.templateUrl);
+				event.origTemplateUrl = event.templateUrl;
 			}
 
 			event.displayStartTime = $filter("asTime")(event.start_time);

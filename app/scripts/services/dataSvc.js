@@ -133,6 +133,7 @@ angular.module('com.inthetelling.story')
 		// transform API common IDs into real values
 		svc.resolveIDs = function (obj) {
 			// console.log("resolving IDs", obj);
+
 			if (obj.template_id) {
 				if (dataCache.template[obj.template_id]) {
 					obj.templateUrl = dataCache.template[obj.template_id].url;
@@ -278,8 +279,13 @@ angular.module('com.inthetelling.story')
 			}).success(function (data) {
 				console.log("Updated event:", data);
 				return defer.resolve(data);
-			}).error(function (data, status, headers) {
-				console.log("Failed:", data, status, headers);
+			}).error(function (errData, status) {
+				// console.log("Failed:", errData, status, headers);
+				errorSvc.error({
+					data: errData,
+					status: status
+				});
+
 				return defer.reject();
 			});
 			return defer.promise;
@@ -380,7 +386,6 @@ angular.module('com.inthetelling.story')
 		// TODO need safety checking here
 		svc.storeItem = function (evt) {
 			evt = svc.prepItemForStorage(evt);
-
 			if (evt._id && !evt._id.match(/internal/)) {
 				// update
 				return PUT("/v3/events/" + evt._id, {
@@ -453,6 +458,18 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
+			var template = svc.readCache("template", "url", evt.templateUrl);
+			if (template) {
+				evt.template_id = template.id;
+			} else {
+				errorSvc.error({
+					data: "Tried to store a template with no ID: " + evt.templateUrl
+				});
+
+				// TODO: create the template on the fly, cache it, get its ID, then continue?
+				// Or can I just talk bill into letting me store templateUrls directly and skip the whole ID business?
+			}
+
 			// TODO: what else needs to be done before we can safely store this event?
 			console.log("Prepped item for storage: ", prepped);
 			return prepped;
@@ -471,6 +488,10 @@ angular.module('com.inthetelling.story')
 			}
 			return false;
 		};
+		if (config.debugInBrowser) {
+			console.log("DataSvc:", svc);
+			console.log("DataSvc cache:", dataCache);
+		}
 
 		return svc;
 	});
