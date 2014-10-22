@@ -52,8 +52,24 @@
 					Template
 				</div>
 				<div class="input">
-					<select ng-if="item.producerItemType == 'scene'" ng-model="item.templateUrl">
-					</select>
+					<span ng-if="item.producerItemType == 'scene'">
+						<select ng-model="item.templateUrl">
+							<option value="templates/scene/centered.html">Centered video</option>
+							<option value="templates/scene/1col.html">One column</option>
+
+							<option value="templates/scene/2colL.html">Two columns</option>
+							<option value="templates/scene/2colR.html">Two columns (mirrored)</option>
+
+							<option value="templates/scene/cornerH.html">Corner video, horizontal</option>
+							<option value="templates/scene/cornerV.html">Corner video, vertical</option>
+						</select>
+						<select ng-model="item.layouts[0]" ng-if="item.templateUrl !='templates/scene/centered.html'">
+							<option value="" ng-if="item.templateUrl != 'templates/scene/cornerH.html' && item.templateUrl != 'templates/scene/cornerV.html'">Centered</option>
+							<option value="videoLeft">Video on left</option>
+							<option value="videoRight">Video on right</option>
+						</select>
+					</span>
+
 
 					<select ng-if="item.producerItemType == 'transcript'" ng-model="item.templateUrl">
 						<option value="templates/item/transcript.html">Transcript</option>
@@ -96,11 +112,17 @@
 				</div>
 			</div>
 
-			<div class="field">
+			<div class="field" ng-if="item._type !== 'Scene'">
 				<div class="label">Layout</div>
 				<div class="input">
 					<span ng-if="item._type === 'Scene'">
-						[TODO scene layouts: videoLeft/videoRight, showCurrent/showList/showTimeline, splitTransmedia/splitRequired]
+						<!-- 
+						<select ng-model="item.layouts[1]" ng-if="item.templateUrl !='templates/scene/centered.html'">
+							<option value="">Show all content items, highlight current ones</option>
+							<option value="showCurrent">Show only current items</option>
+						</select> -->
+
+						<!-- TODO splitTransmedia/splitRequired. Are those actually useful? -->
 					</span>
 					<span ng-if="item._type !== 'Scene'">
 						<select size="1" ng-model="item.layouts[0]">

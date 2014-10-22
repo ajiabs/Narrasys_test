@@ -16,13 +16,6 @@
 				<span>Review</span>
 			</a>
 		</div>
-		<!-- <div ng-if="appState.producer && appState.viewMode == 'discover'" class="buttongroup">
-			<a class="button" ng-click="editLayer('scene');">Scene<span>Edit the scene layout (TODO)</span></a>
-			<a class="button" ng-click="editLayer('bgLayer');">BG<span>Edit the background layer</span></a>
-			<a class="button" ng-click="editLayer('contentLayer');">C<span>Edit the content layer</span></a>
-			<a class="button" ng-click="editLayer('fgLayer');">FG<span>Edit the foreground layer</span></a>
-			<a class="button" ng-click="editLayer('');">All<span>Show everything</span></a>
-		</div> -->
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 			<a class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
 				<span>New window</span>

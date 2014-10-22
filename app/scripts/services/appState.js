@@ -43,6 +43,7 @@ angular.module('com.inthetelling.story')
 				navPanel: false
 			};
 			svc.videoControlsActive = false; // whether bottom toolbar is visible
+			svc.videoControlsLocked = false; // force bottom toolbar to stay in its current visible/hidden state
 			svc.itemDetail = false; // Put item data here to show it as a modal overlay
 			svc.autoscroll = false; //scroll window to make current items visible (in relevant modes)
 			svc.autoscrollBlocked = false; // User has disabled autoscroll

@@ -1,21 +1,27 @@
 'use strict';
 /*
-TODO: This is too tightly bound to ittItemEditor; need to make better decisions about 
-which functions go here vs there 
+
+
+TODO: creating new scenes needs to affect end times of other scenes.
+Force all scenes to end-time=auto, always recalculate scene end times from scratch.
+
+
 
 */
 angular.module('com.inthetelling.story')
 	.controller('ItemEditController', function ($scope, $rootScope, appState, dataSvc, modelSvc, timelineSvc) {
 
 		$scope.addEvent = function (producerItemType) {
-			console.log("itemEditController.addEvent");
+			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
 			modelSvc.cache("event", newEvent);
 
 			appState.editing = modelSvc.events["internal:editing"];
+			appState.videoControlsLocked = true;
 
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			timelineSvc.injectEvents([modelSvc.events["internal:editing"]]);
+
 		};
 
 		$scope.saveEvent = function () {
@@ -39,6 +45,20 @@ angular.module('com.inthetelling.story')
 
 		};
 
+		$scope.editCurrentScene = function () {
+			var episode = modelSvc.episodes[appState.episodeId];
+			angular.forEach(episode.scenes, function (scene) {
+				if (scene.isCurrent) {
+					// TODO This is redundant with ittItem editItem...
+					timelineSvc.seek(scene.start_time);
+					appState.editing = modelSvc.events[scene._id];
+					appState.editing.producerItemType = 'scene';
+					appState.videoControlsActive = true;
+					appState.videoControlsLocked = true;
+				}
+			});
+		};
+
 		$scope.deleteEvent = function (eventId) {
 			if (window.confirm("Are you sure you wish to delete this item?")) {
 				dataSvc.deleteItem(appState.editing._id).then(function (data) {
@@ -50,6 +70,7 @@ angular.module('com.inthetelling.story')
 						dataSvc.deleteAsset(appState.editing.asset._id);
 					}
 					appState.editing = false;
+					appState.videoControlsLocked = false;
 				}, function (data) {
 					console.log("failed to delete:", data);
 				});
@@ -58,6 +79,7 @@ angular.module('com.inthetelling.story')
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			timelineSvc.removeEvents([modelSvc.events[eventId]]);
 			appState.editing = false;
+			appState.videoControlsLocked = false;
 		};
 
 		$scope.cancelEventEdit = function (originalEvent) {
@@ -75,6 +97,7 @@ angular.module('com.inthetelling.story')
 
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			appState.editing = false;
+			appState.videoControlsLocked = false;
 		};
 
 		var generateEmptyItem = function (type) {
@@ -118,6 +141,9 @@ angular.module('com.inthetelling.story')
 					"title": {
 						en: ""
 					},
+					"description": {
+						en: ""
+					}
 				};
 			}
 			if (type === 'video') {

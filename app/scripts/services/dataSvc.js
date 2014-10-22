@@ -363,6 +363,10 @@ angular.module('com.inthetelling.story')
 						});
 					});
 				});
+
+				// TODO having elaborately cached each individual container, do something useful (convert the IDs into cross-cache references for starters)
+
+				//episodeList interface just uses the raw returned json for now. 
 				return containers;
 			});
 		};

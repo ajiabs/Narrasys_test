@@ -38,7 +38,7 @@ angular.module('com.inthetelling.story')
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		console.log("playerController init");
+		// console.log("playerController init");
 		appState.init();
 		errorSvc.init();
 		appState.episodeId = $routeParams.epId;
@@ -84,7 +84,6 @@ angular.module('com.inthetelling.story')
 		//   If mouse re-enters pane, keep the controls visible. 
 
 		appState.videoControlsActive = false;
-		var keepControls;
 		var controlTimer;
 
 		var videoControlsWatcher = $scope.$watch(function () {
@@ -92,7 +91,7 @@ angular.module('com.inthetelling.story')
 		}, function (isActive) {
 			if (isActive) {
 				controlTimer = $timeout(function () {
-					if (!keepControls) {
+					if (!appState.videoControlsLocked) {
 						appState.videoControlsActive = false;
 					}
 				}, 5000);
@@ -111,17 +110,17 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		$scope.keepControls = function () {
-			// console.log("keepControls");
-			keepControls = true;
-		};
+		// $scope.keepControls = function () {
+		// 	console.log("keepControls");
+		// 	appState.videoControlsLocked = true;
+		// };
 
 		$scope.allowControlsExit = function () {
-			// console.log("allowControlsExit");
-			keepControls = false;
+			// console.log("allowControlsExit. Locked state is ", appState.videoControlsLocked);
+			// appState.videoControlsLocked = false;
 			$timeout.cancel(controlTimer);
 			controlTimer = $timeout(function () {
-				if (!appState.show.navPanel) {
+				if (!appState.videoControlsLocked) {
 					appState.videoControlsActive = false;
 				}
 			}, 5000);
@@ -295,19 +294,5 @@ angular.module('com.inthetelling.story')
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
 		$rootScope.$on("userKeypress.ESC", $scope.hidePanels);
-
-		// TEMPORARY: Producer code below this line
-		// If this turns out to be any good move it into a producer directive.
-		// will likely want other components to be able to read which layer we're editing -- timeline, at least
-		// $scope.editLayer = function(layer) {
-		// 	console.log("TODO: whichever of fgLayer, contentLayer, and bgLayer this isn't: ", layer);
-		// 	$scope.editLayer.scene = false;
-		// 	$scope.editLayer.bgLayer = false;
-		// 	$scope.editLayer.contentLayer = false;
-		// 	$scope.editLayer.fgLayer = false;
-		// 	if (layer !== '') {
-		// 		$scope.editLayer[layer] = true;
-		// 	}
-		// };
 
 	});
