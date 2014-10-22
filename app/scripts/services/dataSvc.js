@@ -494,6 +494,14 @@ angular.module('com.inthetelling.story')
 					"templates/item/link.html": "templates/transmedia-link-default.html",
 					"templates/item/link-embed.html": "templates/transmedia-link-embed.html",
 
+					//scene
+					"templates/scene/1col.html": "templates/scene-1col.html",
+					"templates/scene/2colL.html": "templates/scene-2colL.html",
+					"templates/scene/2colR.html": "templates/scene-2colR.html",
+					"templates/scene/centered.html": "templates/scene-centered.html",
+					"templates/scene/cornerH.html": "templates/scene-cornerH.html",
+					"templates/scene/cornerV.html": "templates/scene-cornerV.html",
+
 				};
 				if (reverseTemplateUpdate[evt.templateUrl]) {
 					template = svc.readCache("template", "url", reverseTemplateUpdate[evt.templateUrl]);
