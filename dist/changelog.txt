@@ -499,3 +499,7 @@ Added relic
 Changes in v4.1.1:
 updated relic application ID
 
+------------------------------------------------
+Changes in v4.1.2:
+new Picture-in-picture scene template
+
