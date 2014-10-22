@@ -55,7 +55,6 @@
 	margin-left: 0.5em;
 }
 /* ------------------------------------------- */
-
 /* Sidebars and margins.
 
 .sidebar items float to one margin or the other when sidebars are allowed
@@ -140,6 +139,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	background-color: #000;
 	top: 45px;
 	/* VIEWPORT HEIGHT */
+	
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -196,6 +196,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 .reviewMode .videoPadding {
 	/* double the width of videoMagnet, because it's in a column half the size */
+	
 	width: 60%;
 }
 .reviewMode .scene {
@@ -228,6 +229,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 @media screen and (min-width: 1000px) {
 	/* three-col layout on wide screens */
+	
 	.reviewMode .videoPadding {
 		display: none;
 	}
@@ -244,6 +246,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 @media screen and (max-width: 480px) {
 	/* Smallscreen layout */
+	
 	.reviewMode .scene {
 		display: auto;
 	}
@@ -254,6 +257,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	.reviewMode .mainPane {
 		width:100%;
 	}*/
+	
 	.reviewMode .videoMagnet {
 		width: 130px;
 	}
@@ -413,4 +417,30 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	.scene.centered .col {
 		margin: 7% 25% 0 25%;
 	}
+}
+/* ------------------------------------------- */
+
+.scene.pip .mainPane {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	width: 60%;
+}
+.scene.pip .videoMagnet {
+	width: 30%;
+	position: fixed;
+	bottom: 30px;
+	left: 30px;
+}
+.scene.pip .padForBottomToolbar .videoMagnet,
+.scene.pip .padForBottomToolbar .mainPane {
+	bottom: 80px
+}
+.scene.pip.videoRight .videoMagnet {
+	left: auto;
+	right: 30px;
+}
+.scene.pip.videoRight .mainPane {
+	right: auto;
+	left: 30px;
 }
