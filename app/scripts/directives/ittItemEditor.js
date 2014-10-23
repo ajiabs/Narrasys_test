@@ -13,8 +13,12 @@ angular.module('com.inthetelling.story')
 		return {
 			link: function (scope, element) {
 				$timeout(function () { // give any child directives time to render themselves...
-
-					element.find('input,textarea')[0].focus();
+					console.log(element);
+					if (element[0].tagName === 'TEXTAREA' || element[0].tagName === 'INPUT') {
+						element[0].focus();
+					} else {
+						element.find('input,textarea')[0].focus();
+					}
 				});
 			}
 		};

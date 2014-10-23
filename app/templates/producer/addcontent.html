@@ -1,5 +1,5 @@
 <div ng-show="!appState.editing && appState.time > 0">
-	<div ng-if="appState.viewMode == 'discover'" style="left:10px;width:2em" class="producer addcontent">
+	<div ng-if="appState.product == 'producer' && appState.viewMode == 'discover'" style="left:10px;width:2em" class="producer addcontent">
 		<a class="button-scene" ng-click="editCurrentScene()">Edit</a>
 	</div>
 

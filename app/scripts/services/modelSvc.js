@@ -677,7 +677,7 @@ angular.module('com.inthetelling.story')
 				}
 			}
 
-			console.log("video asset:", videoObject);
+			// console.log("video asset:", videoObject);
 
 			videoAsset.urls = videoObject;
 			return videoAsset;

@@ -406,6 +406,10 @@ angular.module('com.inthetelling.story')
 
 			var prepped = {};
 
+			if (evt._id.match(/internal/)) {
+				delete evt._id;
+			}
+
 			// this is a conservative list for SXS only, so far. More fields will need to be added here
 			var fields = [
 				"_id",

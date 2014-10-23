@@ -44,9 +44,8 @@
 		</div>
 
 		<div ng-include="itemEditor"></div>
-		<!-- TODO: need to sort out the whole tempalte ID thing before letting users mess with this -->
-		<div ng-if="appState.product == 'producer'">
 
+		<div ng-if="appState.product == 'producer'">
 			<div class="field">
 				<div class="label">
 					Template
@@ -62,9 +61,11 @@
 
 							<option value="templates/scene/cornerH.html">Corner video, horizontal</option>
 							<option value="templates/scene/cornerV.html">Corner video, vertical</option>
+
+							<option value="templates/scene/pip.html">Picture-in-picture</option>
 						</select>
 						<select ng-model="item.layouts[0]" ng-if="item.templateUrl !='templates/scene/centered.html'">
-							<option value="" ng-if="item.templateUrl != 'templates/scene/cornerH.html' && item.templateUrl != 'templates/scene/cornerV.html'">Centered</option>
+							<option value="" ng-if="item.templateUrl != 'templates/scene/cornerH.html' && item.templateUrl != 'templates/scene/cornerV.html' && item.templateUrl != 'templates/scene/pip.html'">Centered</option>
 							<option value="videoLeft">Video on left</option>
 							<option value="videoRight">Video on right</option>
 						</select>
