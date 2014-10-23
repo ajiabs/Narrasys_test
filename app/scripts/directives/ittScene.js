@@ -17,7 +17,6 @@ angular.module('com.inthetelling.story')
 				// console.log('ittScene', scope, element, attrs);
 
 				scope.precalculateSceneValues();
-				scope.appState = appState;
 
 				var twiddleScene = function () {
 					var magnetNode = element.find('.videoMagnet img');
