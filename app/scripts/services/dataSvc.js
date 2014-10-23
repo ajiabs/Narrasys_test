@@ -406,7 +406,7 @@ angular.module('com.inthetelling.story')
 
 			var prepped = {};
 
-			if (evt._id.match(/internal/)) {
+			if (evt._id && evt._id.match(/internal/)) {
 				delete evt._id;
 			}
 
