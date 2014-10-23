@@ -77,7 +77,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
-			timelineSvc.removeEvents([modelSvc.events[eventId]]);
+			timelineSvc.removeEvent([modelSvc.events[eventId]]);
 			appState.editing = false;
 			appState.videoControlsLocked = false;
 		};

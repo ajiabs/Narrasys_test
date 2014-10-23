@@ -1,7 +1,7 @@
 <div class="player" ng-class="{
 	isFramed: appState.isFramed,
 	guestUser: appState.user.isGuestUser,
-	canEditContent: (appState.product == 'producer' && !appState.editing)
+	canEditContent: !appState.editing && (appState.product == 'producer' || appState.product == 'sxs')
 	}">
 	<!-- TODO: make sure user has admin role for canEditContent -->
 	<div class="toolbar">
