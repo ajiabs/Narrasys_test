@@ -50,7 +50,6 @@ angular.module('com.inthetelling.story')
 			angular.forEach(episode.scenes, function (scene) {
 				if (scene.isCurrent) {
 					// TODO This is redundant with ittItem editItem...
-					timelineSvc.seek(scene.start_time);
 					appState.editing = modelSvc.events[scene._id];
 					appState.editing.producerItemType = 'scene';
 					appState.videoControlsActive = true;
@@ -95,7 +94,7 @@ angular.module('com.inthetelling.story')
 				timelineSvc.updateEventTimes(originalEvent);
 				if (originalEvent.start_time) {
 					// make sure they can see the unedited event come back, if they changed its start time:
-					timelineSvc.seek(originalEvent.start_time);
+					// timelineSvc.seek(originalEvent.start_time);
 				}
 			}
 

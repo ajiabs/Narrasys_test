@@ -57,10 +57,7 @@ angular.module('com.inthetelling.story')
 				// extract current event styles for the form
 				if (scope.item.styles) {
 					for (var styleType in scope.itemForm) {
-
 						for (var i = 0; i < scope.item.styles.length; i++) {
-
-							console.log(scope.item.styles[i].substr(0, styleType.length) === styleType, scope.item.styles[i].substr(0, styleType.length));
 							if (scope.item.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
 								scope.itemForm[styleType] = scope.item.styles[i].substr(styleType.length); // Remainder of scope.item.styles[i]
 							}
@@ -81,8 +78,8 @@ angular.module('com.inthetelling.story')
 
 					// TODO throw away parts of scope.item.styles that match scene or episode defaults
 
-					// trigger scene to rerender
-					console.log(modelSvc.events[scope.item.scene_id]);
+					// TODO trigger scene rerender (or see if just triggering its  precalculateSceneValues() would be sufficient instead)
+					// modelSvc.events[scope.item.scene_id]
 
 					modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
 					modelSvc.cache("event", scope.item);
