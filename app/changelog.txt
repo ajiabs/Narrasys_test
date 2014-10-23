@@ -494,3 +494,16 @@ corrected config
 Changes in v4.2.4:
 reverse template translation on save
 
+------------------------------------------------
+Changes in v4.2.5:
+show edit button on items in sxs
+send correct item type (not _type)
+check for existence of  event id before trying to match against event id
+autofocus works with plain non-i18n fields again
+no ‘edit scene’ button in sxs
+strip internal IDs before storing to API
+no ‘centered video’ for PIP scene
+new Picture-in-picture scene template
+set correct scene template IDs on store
+Edit scene; lock toolbar visibility while editing
+
