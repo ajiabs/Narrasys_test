@@ -507,3 +507,11 @@ new Picture-in-picture scene template
 set correct scene template IDs on store
 Edit scene; lock toolbar visibility while editing
 
+------------------------------------------------
+Changes in v4.2.6:
+Don't automatically seek to beginning of event time when editing
+Don't save event edits if a template/style/layout id is missing
+Fixed STORY-85
+deleteEvent less dependent on appState.editing, receives id from item template
+Hide Producer edit buttons when in SxS
+

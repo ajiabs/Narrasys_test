@@ -8,12 +8,12 @@ var config = {
 	// apiDataBaseUrl: 'https://purdue.inthetelling.com',
 	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
 
-	// NOTE this build uses v3 endpoints which currently are only on the dev server:
+	// NOTE this build uses v3 endpoints which currently are only on the dev and demo servers:
 	// apiDataBaseUrl: 'https://api-dev-sub.inthetelling.com',
 	// apiDataBaseUrl: 'https://demo.inthetelling.com',
 	localStorageKey: "storyKey",
-	disableYoutube: true,
-	disableAnalytics: true,
-	debugInBrowser: true, // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
+	disableYoutube: false,
+	disableAnalytics: false,
+	debugInBrowser: false, // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
 	awsRegion: 'us-east-1'
 };
