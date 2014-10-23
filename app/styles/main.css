@@ -194,7 +194,7 @@ h4 {
 }
 .autoscroll,
 .sxs.addcontent,
-.item .sxs-edit {
+.item .edit-event {
 	z-index: 9;
 }
 .navPanel,

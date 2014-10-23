@@ -1,6 +1,8 @@
 <div class="player" ng-class="{
 	isFramed: appState.isFramed,
 	guestUser: appState.user.isGuestUser,
+	isProducer: (appState.product == 'producer'),
+	isSxS: (appState.product == 'sxs'),
 	canEditContent: !appState.editing && (appState.product == 'producer' || appState.product == 'sxs')
 	}">
 	<!-- TODO: make sure user has admin role for canEditContent -->

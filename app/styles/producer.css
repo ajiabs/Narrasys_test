@@ -127,18 +127,18 @@
 	padding: 0.5em;
 }
 .button-add:before,
-.sxs-edit:before {
+.edit-event:before {
 	font-size: 2.5em;
 	display: block;
 	font-family: Story;
 	content: "\e601";
 }
-.sxs-edit:before {
+.edit-event:before {
 	color: #000;
 	font-size: 1.25em;
 	float: left;
 }
-.sxs-edit {
+.edit-event {
 	color: #FFF;
 }
 .sxsicon {
@@ -221,7 +221,7 @@
 	
 	position: relative;
 }
-.item .sxs-edit {
+.item .edit-event {
 	display: none;
 	background-color: #fff;
 	border: 4px solid #555;
@@ -234,12 +234,19 @@
 	right: 0.6em;
 	top: 0.5em;
 }
-.canEditContent .item:hover .sxs-edit {
+.canEditContent.isProducer .item:hover .edit-event {
+	/* producer sees all edit buttons */
 	/* TODO: touchscreens! */
 	
 	display: block;
 }
-.item .sxs-edit span {
+.canEditContent.isSxS .item:hover .sxs-item .edit-event {
+	/* SxS only gets sxs edit buttons */
+	/* TODO: touchscreens! */
+	
+	display: block;
+}
+.item .edit-event span {
 	font-size: 0;
 }
 .autocompleteList {
