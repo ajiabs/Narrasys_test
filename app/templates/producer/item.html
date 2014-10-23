@@ -240,7 +240,7 @@
 			<a ng-click="cancelEdit()">Cancel</a>
 		</small>
 		&nbsp; &nbsp;
-		<input type="button" value="Delete" ng-if="item._id != 'internal:editing'" ng-click="deleteEvent()">
+		<input type="button" value="Delete" ng-if="item._id != 'internal:editing'" ng-click="deleteEvent(item._id)">
 		<input type="button" value="Save" ng-click="saveEvent()">
 	</div>
 

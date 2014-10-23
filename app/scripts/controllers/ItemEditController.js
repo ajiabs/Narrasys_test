@@ -61,14 +61,18 @@ angular.module('com.inthetelling.story')
 
 		$scope.deleteEvent = function (eventId) {
 			if (window.confirm("Are you sure you wish to delete this item?")) {
-				dataSvc.deleteItem(appState.editing._id).then(function (data) {
+
+				console.log("About to delete ", eventId);
+				console.log(modelSvc.events[eventId]);
+
+				dataSvc.deleteItem(eventId).then(function (data) {
 					console.log("success deleting:", data);
-					timelineSvc.removeEvent(appState.editing._id);
-					delete modelSvc.events[appState.editing._id];
-					modelSvc.resolveEpisodeEvents(appState.episodeId);
-					if (appState.product === 'sxs' && appState.editing.asset) {
-						dataSvc.deleteAsset(appState.editing.asset._id);
+					if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
+						dataSvc.deleteAsset(modelSvc.events[eventId].asset._id);
 					}
+					timelineSvc.removeEvent(eventId);
+					delete modelSvc.events[eventId];
+					modelSvc.resolveEpisodeEvents(appState.episodeId);
 					appState.editing = false;
 					appState.videoControlsLocked = false;
 				}, function (data) {
