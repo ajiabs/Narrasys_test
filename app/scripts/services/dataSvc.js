@@ -390,7 +390,7 @@ angular.module('com.inthetelling.story')
 		// TODO need safety checking here
 		svc.storeItem = function (evt) {
 			evt = svc.prepItemForStorage(evt);
-			if (evt._id && !evt._id.match(/internal/)) {
+			if (evt && evt._id && !evt._id.match(/internal/)) {
 				// update
 				return PUT("/v3/events/" + evt._id, {
 					event: evt
@@ -455,6 +455,7 @@ angular.module('com.inthetelling.story')
 					errorSvc.error({
 						data: "Tried to store a style with no ID: " + styleName
 					});
+					return false;
 				}
 			});
 
@@ -467,6 +468,7 @@ angular.module('com.inthetelling.story')
 					errorSvc.error({
 						data: "Tried to store a layout with no ID: " + layoutName
 					});
+					return false;
 				}
 			});
 
@@ -517,6 +519,7 @@ angular.module('com.inthetelling.story')
 					errorSvc.error({
 						data: "Tried to store a template with no ID: " + evt.templateUrl
 					});
+					return false;
 				}
 			}
 
