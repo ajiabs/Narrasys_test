@@ -1,30 +1,38 @@
-<div ng-show="!appState.editing && appState.time > 0">
-	<div ng-if="appState.product == 'producer' && appState.viewMode == 'discover'" style="left:10px;width:2em" class="producer addcontent">
-		<a class="button-scene" ng-click="editCurrentScene()">Edit</a>
+<div ng-show="!appState.editing">
+
+	<div ng-if="appState.product == 'producer' && appState.time == 0" style="left:10px;width:2em" class="producer addcontent">
+		<a class="button-episode" ng-click="editEpisode()">Edit</a>
 	</div>
 
-	<div class="producer addcontent" ng-show="!appState.editing && appState.time > 0">
-		<span ng-if="expanded" style="padding: 0 1em" class="animate transitionExpandW">
-			<span ng-if="appState.product == 'sxs'">
-				<a class="button-comment" ng-click="addEvent('comment')">Comment</a>
-				<a class="button-link" ng-click="addEvent('link')">Link</a>
-				<a class="button-question" ng-click="addEvent('question')">Question</a>
-				<a class="button-image" ng-click="addEvent('image')">Image</a>
-				<a class="button-file" ng-click="addEvent('file')">File</a>
-				<a class="button-video" ng-click="addEvent('video')">Video</a>
+
+	<div ng-if="appState.time > 0">
+		<div ng-if="appState.product == 'producer' && appState.viewMode == 'discover'" style="left:10px;width:2em" class="producer addcontent">
+			<a class="button-scene" ng-click="editCurrentScene()">Edit</a>
+		</div>
+
+		<div class="producer addcontent" ng-show="!appState.editing && appState.time > 0">
+			<span ng-if="expanded" style="padding: 0 1em" class="animate transitionExpandW">
+				<span ng-if="appState.product == 'sxs'">
+					<a class="button-comment" ng-click="addEvent('comment')">Comment</a>
+					<a class="button-link" ng-click="addEvent('link')">Link</a>
+					<a class="button-question" ng-click="addEvent('question')">Question</a>
+					<a class="button-image" ng-click="addEvent('image')">Image</a>
+					<a class="button-file" ng-click="addEvent('file')">File</a>
+					<a class="button-video" ng-click="addEvent('video')">Video</a>
+				</span>
+				<span ng-if="appState.product == 'producer'">
+					<a class="button-scene" ng-click="addEvent('scene')">Add Scene</a>
+					<a class="button-comment" ng-click="addEvent('transcript')">Transcript</a>
+					<a class="button-comment" ng-click="addEvent('annotation')">Annotation</a>
+					<a class="button-link" ng-click="addEvent('link')">Link</a>
+					<a class="button-image" ng-click="addEvent('image')">Image</a>
+					<a class="button-file" ng-click="addEvent('file')">Upload</a>
+					<a class="button-question" ng-click="addEvent('question')">Question</a>
+				</span>
 			</span>
-			<span ng-if="appState.product == 'producer'">
-				<a class="button-scene" ng-click="addEvent('scene')">Add Scene</a>
-				<a class="button-comment" ng-click="addEvent('transcript')">Transcript</a>
-				<a class="button-comment" ng-click="addEvent('annotation')">Annotation</a>
-				<a class="button-link" ng-click="addEvent('link')">Link</a>
-				<a class="button-image" ng-click="addEvent('image')">Image</a>
-				<a class="button-file" ng-click="addEvent('file')">Upload</a>
-				<a class="button-question" ng-click="addEvent('question')">Question</a>
+			<span ng-if="!expanded">
+				<a class="button-add" ng-click="expand()">Add</a>
 			</span>
-		</span>
-		<span ng-if="!expanded">
-			<a class="button-add" ng-click="expand()">Add</a>
-		</span>
+		</div>
 	</div>
 </div>

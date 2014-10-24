@@ -58,6 +58,10 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+		$scope.editEpisode = function () {
+			window.alert("TODO: This will let you edit episode title, description, templates, and default styles");
+		};
+
 		$scope.deleteEvent = function (eventId) {
 			if (window.confirm("Are you sure you wish to delete this item?")) {
 

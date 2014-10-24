@@ -199,6 +199,13 @@
 	font-family: Story;
 	content: "\e60f";
 }
+.button-episode:before,
+.sxsicon.icon-episode:before {
+	font-size: 2.5em;
+	display: block;
+	font-family: Story;
+	content: "\e610";
+}
 .sxs-item {
 	background-color: #FFF;
 	padding: 0.5em;
@@ -268,8 +275,8 @@
 	color: #FFF;
 }
 .autocompleteItem img {
-	max-width: 30px;
-	max-height: 30px;
+	width: 30px;
+	height: 30px;
 	float: left;
 	margin-right: 0.5em;
 }
