@@ -448,27 +448,31 @@ angular.module('com.inthetelling.story')
 			// trust evt.styles[] and evt.layouts[], DO NOT use styleCss (it contains the scene and episode data too!)
 			evt.style_id = [];
 			angular.forEach(evt.styles, function (styleName) {
-				var style = svc.readCache("style", "css_name", styleName);
-				if (style) {
-					prepped.style_id.push(style.id);
-				} else {
-					errorSvc.error({
-						data: "Tried to store a style with no ID: " + styleName
-					});
-					return false;
+				if (styleName) {
+					var style = svc.readCache("style", "css_name", styleName);
+					if (style) {
+						prepped.style_id.push(style.id);
+					} else {
+						errorSvc.error({
+							data: "Tried to store a style with no ID: " + styleName
+						});
+						return false;
+					}
 				}
 			});
 
 			evt.layout_id = [];
 			angular.forEach(evt.layouts, function (layoutName) {
-				var layout = svc.readCache("layout", "css_name", layoutName);
-				if (layout) {
-					prepped.layout_id.push(layout.id);
-				} else {
-					errorSvc.error({
-						data: "Tried to store a layout with no ID: " + layoutName
-					});
-					return false;
+				if (layoutName) {
+					var layout = svc.readCache("layout", "css_name", layoutName);
+					if (layout) {
+						prepped.layout_id.push(layout.id);
+					} else {
+						errorSvc.error({
+							data: "Tried to store a layout with no ID: " + layoutName
+						});
+						return false;
+					}
 				}
 			});
 
