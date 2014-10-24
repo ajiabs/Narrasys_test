@@ -4,14 +4,9 @@
 
 	TODO:
 
-	Allow adding new annotator name
 	Allow uploading annotator asset
 
 	Allow replacing annotator asset
-
-	select contents of searchText on focus
-
-
 
 */
 
@@ -27,12 +22,20 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element, attrs, ngModelController) {
 
 				angular.forEach(scope.annotators, function (annotator) {
-					annotator.imageUrl = modelSvc.assets[annotator.annotation_image_id].url;
+					if (annotator.annotation_image_id) {
+						annotator.imageUrl = modelSvc.assets[annotator.annotation_image_id].url;
+					}
 				});
+				// TODO prefill current annotator image
 				scope.annotator = {
 					name: scope.item.annotator
-				};
 
+				};
+				if (scope.annotators[scope.item.annotator] && scope.annotators[scope.item.annotator].annotation_image_id) {
+					scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
+				}
+
+				console.log("scope.annotator.name is ", scope.annotator.name);
 				scope.searchText = scope.item.annotator;
 				scope.filteredAnnotators = angular.copy(scope.annotators);
 				scope.preselectedItem = -1;
@@ -54,11 +57,11 @@ angular.module('com.inthetelling.story')
 					default:
 					}
 				});
-				scope.$watch(function () {
-					return scope.searchText;
-				}, function (newVal) {
-					if (newVal) {
-						scope.annotator.name = '';
+
+				scope.handleAutocomplete = function () {
+					scope.annotator.name = '';
+					if (scope.searchText) {
+
 						scope.preselectedItem = -1;
 						var newFilter = {};
 						angular.forEach(scope.annotators, function (annotator) {
@@ -82,7 +85,7 @@ angular.module('com.inthetelling.story')
 						scope.preselectedItem = -1;
 					}
 
-				});
+				};
 
 				scope.selectByIndex = function (index) {
 					if (index < 0) {
@@ -93,16 +96,28 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.select = function (annotator) {
+					console.log("selecting ", annotator);
 					scope.annotator.name = annotator.name;
-					scope.item.annotation_image_id = annotator.annotation_image_id;
-					scope.item.asset = modelSvc.assets[annotator.annotation_image_id];
+					if (annotator.annotation_image_id) {
+						scope.item.annotation_image_id = annotator.annotation_image_id;
+						scope.item.asset = modelSvc.assets[annotator.annotation_image_id];
+						scope.annotator.imageUrl = scope.item.asset.url;
+					} else {
+						// TODO allow adding new image
+						delete scope.annotator.imageUrl;
+						delete scope.item.asset;
+					}
 					ngModelController.$setViewValue(annotator.name);
 					scope.searchText = annotator.name;
+
+					//TODO  allow upload to replace image
 				};
 
 				scope.autoCompleting = false;
 				scope.showAutocomplete = function () {
-
+					// console.log(element);
+					var inputField = element.find('.inputOnly')[0];
+					inputField.setSelectionRange(0, inputField.value.length);
 					scope.autoCompleting = true;
 				};
 
@@ -118,9 +133,29 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.addNewAnnotator = function () {
-					window.alert("TODO: add annotator " + scope.searchText + " and allow uploading an asset for it");
+					console.log(scope.annotators);
+
+					var annotatorName = scope.searchText; // TODO sanitize me!!!
+					var newAnnotator = {
+						"name": annotatorName,
+						"imageUrl": "",
+						"annotation_image_id": false
+					};
+					scope.annotators.annotatorName = newAnnotator; // make available in future transcript edits
+					scope.annotator.name = annotatorName;
+					delete scope.annotator.imageUrl;
+					ngModelController.$setViewValue(annotatorName);
+
+					// trigger autocomplete to match the newly added annotator
+					scope.handleAutocomplete();
+
 				};
 
+				scope.uploadAnnotatorImage = function () {
+					window.alert("TODO");
+					// For replacing existing annotator thumbnails, do we need to go through every transcript node with that speaker and replace its annotator ID? TODO check with Bill how he ahndles that in old authoring
+
+				};
 			}
 		};
 	});
