@@ -3,7 +3,7 @@
 // Minor jquery dependency ($.inArray)
 
 angular.module('com.inthetelling.story')
-	.directive('ittScene', function ($timeout, $interval, appState) {
+	.directive('ittScene', function ($timeout, $interval, appState, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -18,6 +18,17 @@ angular.module('com.inthetelling.story')
 
 				scope.precalculateSceneValues();
 				scope.appState = appState;
+
+				if (scope.scene._id.match(/internal/)) {
+
+					// landing and ending screens get inter-episode nav:
+					scope.containers = modelSvc.containers;
+					if (appState.product === 'sxs' || appState.product === 'producer') {
+						scope.crossEpisodePath = appState.product;
+					} else {
+						scope.crossEpisodePath = "episode";
+					}
+				}
 
 				var twiddleScene = function () {
 					var magnetNode = element.find('.videoMagnet img');

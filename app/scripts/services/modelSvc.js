@@ -21,6 +21,7 @@ angular.module('com.inthetelling.story')
 
 		// use angular.extend if an object already exists, so we don't lose existing bindings
 		svc.cache = function (cacheType, item) {
+			console.log("modelSvc.cache ", cacheType, item);
 			if (cacheType === 'episode') {
 				if (svc.episodes[item._id]) {
 					angular.extend(svc.episodes[item._id], svc.deriveEpisode(angular.copy(item)));
@@ -40,12 +41,19 @@ angular.module('com.inthetelling.story')
 					svc.assets[item._id] = svc.deriveAsset(angular.copy(item));
 				}
 			} else if (cacheType === 'container') {
-				console.log("Caching container:", item);
 				if (svc.containers[item._id]) {
 					angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(item)));
 				} else {
 					svc.containers[item._id] = svc.deriveContainer(angular.copy(item));
 				}
+				if (item.children) {
+					angular.forEach(item.children, function (child) {
+						svc.cache("container", child);
+					});
+				}
+				// if (!svc.containers[item.parent_id]) {
+				// 	svc.containers[item.parent_id] = {};
+				// }
 			}
 		};
 
@@ -179,6 +187,7 @@ angular.module('com.inthetelling.story')
 */
 
 		svc.deriveContainer = function (container) {
+			console.log("deriving container", container);
 			return setLang(container);
 		};
 
@@ -295,6 +304,9 @@ angular.module('com.inthetelling.story')
 
 		var setLang = function (obj) {
 			// TODO: keywords, customers/oauth2_message
+			if (!appState.lang) {
+				appState.lang = "en";
+			}
 			angular.forEach(["title", "annotation", "description", "name"], function (field) {
 				if (obj[field]) {
 					if (typeof (obj[field]) === 'string') {
