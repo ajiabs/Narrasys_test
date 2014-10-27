@@ -221,6 +221,8 @@ angular.module('com.inthetelling.story')
 
 		// gets container and container assets, then iterates to parent container
 		var getContainer = function (containerId, episodeId) {
+
+			// TODO check cache first to see if we already have this container!
 			// console.log("getContainer", containerId, episodeId);
 			$http.get(config.apiDataBaseUrl + "/v3/containers/" + containerId)
 				.success(function (container) {
@@ -245,7 +247,6 @@ angular.module('com.inthetelling.story')
 
 		// PRODUCER
 		// a different idiom here, let's see if this is easier to conceptualize.
-		// TODO These may belong in modelSvc rather than dataSvc...
 
 		// to use GET(), pass in the API endpoint, and an optional callback for post-processing of the results
 		var GETcache = {}; // WARNING this is almost certainly not safe.  If server data changes, this will never find out about it because it will always read from cache instead. 
@@ -323,15 +324,22 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getAllContainers = function () {
+			// This is only used by episodelist; single episodes load containers as needed
 			return GET("/v3/containers", function (containers) {
+
+				/* 
+				This properly extracts that container data into the cache.  
+				We're not really doing much with that cache data yet, though, so disabling it for now.
+				TODO episodelist currently works from the raw data instead of the cache; changing that to use the cache
+				would let us get proper sorting and i18n
+
 				// step through the tree customer->course->session->episode and cache each separately
 				angular.forEach(containers, function (customer) {
 					// console.log("Customer", customer.name.en, customer);
 					modelSvc.cache("container", {
 						_id: customer._id,
 						type: "Customer",
-						name: angular.copy(customer.name),
-						child_ids: extract_id_list(customer.children)
+						name: angular.copy(customer.name)
 					});
 					angular.forEach(customer.children, function (course) {
 						// console.log("Course", course.name.en, course);
@@ -339,8 +347,7 @@ angular.module('com.inthetelling.story')
 							_id: course._id,
 							parent_id: course.parent_id,
 							type: "Course",
-							name: angular.copy(course.name),
-							child_ids: extract_id_list(course.children)
+							name: angular.copy(course.name)
 						});
 						angular.forEach(course.children, function (session) {
 							// console.log("Session", session, session.name.en);
@@ -348,8 +355,7 @@ angular.module('com.inthetelling.story')
 								_id: session._id,
 								parent_id: session.parent_id,
 								type: "Session",
-								name: angular.copy(session.name),
-								child_ids: extract_id_list(session.children)
+								name: angular.copy(session.name)
 							});
 							angular.forEach(session.children, function (episode) {
 								// console.log("Episode", episode, episode.name.en);
@@ -363,20 +369,12 @@ angular.module('com.inthetelling.story')
 						});
 					});
 				});
-
-				// TODO having elaborately cached each individual container, do something useful (convert the IDs into cross-cache references for starters)
-
+				// TODO having elaborately cached each individual container, do something useful with it (convert the IDs into cross-cache references for starters)
 				//episodeList interface just uses the raw returned json for now. 
+
+				*/
 				return containers;
 			});
-		};
-
-		var extract_id_list = function (children) {
-			var ids = [];
-			angular.forEach(children, function (child) {
-				ids.push(child._id);
-			});
-			return ids;
 		};
 
 		svc.deleteItem = function (evtId) {
@@ -389,7 +387,7 @@ angular.module('com.inthetelling.story')
 
 		// TODO need safety checking here
 		svc.storeItem = function (evt) {
-			evt = svc.prepItemForStorage(evt);
+			evt = prepItemForStorage(evt);
 			if (evt && evt._id && !evt._id.match(/internal/)) {
 				// update
 				return PUT("/v3/events/" + evt._id, {
@@ -402,7 +400,7 @@ angular.module('com.inthetelling.story')
 				});
 			}
 		};
-		svc.prepItemForStorage = function (evt) {
+		var prepItemForStorage = function (evt) {
 
 			var prepped = {};
 
@@ -446,35 +444,8 @@ angular.module('com.inthetelling.story')
 
 			// convert style/layout selections back into their IDs.
 			// trust evt.styles[] and evt.layouts[], DO NOT use styleCss (it contains the scene and episode data too!)
-			evt.style_id = [];
-			angular.forEach(evt.styles, function (styleName) {
-				if (styleName) {
-					var style = svc.readCache("style", "css_name", styleName);
-					if (style) {
-						prepped.style_id.push(style.id);
-					} else {
-						errorSvc.error({
-							data: "Tried to store a style with no ID: " + styleName
-						});
-						return false;
-					}
-				}
-			});
-
-			evt.layout_id = [];
-			angular.forEach(evt.layouts, function (layoutName) {
-				if (layoutName) {
-					var layout = svc.readCache("layout", "css_name", layoutName);
-					if (layout) {
-						prepped.layout_id.push(layout.id);
-					} else {
-						errorSvc.error({
-							data: "Tried to store a layout with no ID: " + layoutName
-						});
-						return false;
-					}
-				}
-			});
+			prepped.style_id = get_id_values("style", evt.styles);
+			prepped.layout_id = get_id_values("layout", evt.layouts);
 
 			var template = svc.readCache("template", "url", evt.templateUrl);
 			if (template) {
@@ -532,6 +503,57 @@ angular.module('com.inthetelling.story')
 			return prepped;
 		};
 
+		svc.storeEpisode = function (epData) {
+			epData = prepEpisodeForStorage(epData);
+			console.log("If this were implemented yet, we would be storing ", epData);
+			// if (epData && epData._id && !epData._id.match(/internal/)) {
+			// 	// update
+			// 	return PUT("/v3/episodes/" + epData.episode_id, epData);
+			// } else {
+			// 	// create
+			// TODO need to determine (at least) the container ID before creating episodes here....
+			// 	return POST("/v3/episodes", epData);
+			// }
+		};
+
+		var prepEpisodeForStorage = function (epData) {
+
+			var prepped = {};
+
+			if (epData._id && epData._id.match(/internal/)) {
+				delete epData._id;
+			}
+
+			// this is a conservative list for SXS only, so far. More fields will need to be added here
+			var fields = [
+				"_id",
+				"title",
+				"container_id",
+				"master_asset_id",
+				"status",
+				"languages",
+				"cross_episode_navigation"
+
+				// style_id (array) An array of style IDs that apply to this episode.
+				// layout_id (String) A layout ID that applies to this episode.
+				// template_id (String) A template ID that applies to this episode.
+				// status
+
+			];
+
+			for (var i = 0; i < fields.length; i++) {
+				if (epData[fields[i]] || epData[fields[i]] === 0) {
+					prepped[fields[i]] = angular.copy(epData[fields[i]]);
+				}
+			}
+
+			prepped.style_id = get_id_values("style", epData.styles);
+			prepped.layout_id = get_id_values("layout", epData.layouts);
+
+			// TODO: styles, layout, template id
+			return prepped;
+		};
+
 		// careful to only use this for guaranteed unique fields (style and layout names, basically)
 		svc.readCache = function (cache, field, val) {
 			var found = false;
@@ -549,6 +571,26 @@ angular.module('com.inthetelling.story')
 			console.log("DataSvc:", svc);
 			console.log("DataSvc cache:", dataCache);
 		}
+
+		var get_id_values = function (cache, realNames) {
+			// convert real styles and layouts back into id arrays. Not for templateUrls!
+			var ids = [];
+
+			angular.forEach(realNames, function (realName) {
+				if (realName) {
+					var cachedValue = svc.readCache(cache, "css_name", realName);
+					if (cachedValue) {
+						ids.push(cachedValue.id);
+					} else {
+						errorSvc.error({
+							data: "Tried to store a " + cache + " with no ID: " + realName
+						});
+						return false;
+					}
+				}
+			});
+			return ids;
+		};
 
 		return svc;
 	});
