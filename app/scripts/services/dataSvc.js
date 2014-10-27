@@ -504,8 +504,8 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.storeEpisode = function (epData) {
-			epData = prepEpisodeForStorage(epData);
-			console.log("If this were implemented yet, we would be storing ", epData);
+			var preppedData = prepEpisodeForStorage(epData);
+			console.log("If this were implemented yet, we would be storing this data:", preppedData);
 			// if (epData && epData._id && !epData._id.match(/internal/)) {
 			// 	// update
 			// 	return PUT("/v3/episodes/" + epData.episode_id, epData);
@@ -517,9 +517,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var prepEpisodeForStorage = function (epData) {
-
 			var prepped = {};
-
 			if (epData._id && epData._id.match(/internal/)) {
 				delete epData._id;
 			}
@@ -533,12 +531,6 @@ angular.module('com.inthetelling.story')
 				"status",
 				"languages",
 				"cross_episode_navigation"
-
-				// style_id (array) An array of style IDs that apply to this episode.
-				// layout_id (String) A layout ID that applies to this episode.
-				// template_id (String) A template ID that applies to this episode.
-				// status
-
 			];
 
 			for (var i = 0; i < fields.length; i++) {
@@ -550,7 +542,14 @@ angular.module('com.inthetelling.story')
 			prepped.style_id = get_id_values("style", epData.styles);
 			prepped.layout_id = get_id_values("layout", epData.layouts);
 
-			// TODO: styles, layout, template id
+			var template = svc.readCache("template", "url", epData.templateUrl);
+			if (template) {
+				prepped.template_id = template.id;
+			} else {
+				errorSvc.error({
+					data: "Tried to store an episode template with no ID: " + epData.templateUrl
+				});
+			}
 			return prepped;
 		};
 
