@@ -280,12 +280,6 @@
 	float: left;
 	margin-right: 0.5em;
 }
-.inputOnly {
-	position: absolute;
-	left: 0;
-	background-color: transparent;
-	color: #000;
-}
 .annotatorSubButton {
 	position: absolute;
 	right: 0;

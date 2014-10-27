@@ -2,7 +2,7 @@
 	<button ng-if="allowAddNew" class="annotatorSubButton" ng-click="addNewAnnotator()">Add New</button>
 	<button ng-if="!allowAddNew && annotator.imageUrl" class="annotatorSubButton" ng-click="uploadAnnotatorImage()">Replace image</button>
 	<button ng-if="!allowAddNew && !annotator.imageUrl" class="annotatorSubButton" ng-click="uploadAnnotatorImage()">Upload image</button>
-	<input type="text" ng-model="annotator.name" tabindex="false">
+	<!-- <input type="text" ng-model="annotator.name" tabindex="false"> -->
 	<input class="inputOnly" type="text" ng-model="searchText" ng-focus="showAutocomplete()" ng-blur="hideAutocomplete()" ng-change="handleAutocomplete()">
 	<div class="autocompleteList animate transitionFade" ng-if="autoCompleting">
 		<div class="autocompleteItem" ng-repeat="annotator in filteredAnnotators | orderBy:'name'" ng-click="select(annotator)" ng-class="{selected: ($index == preselectedItem)}" style="white-space: nowrap">
