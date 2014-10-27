@@ -21,7 +21,6 @@ angular.module('com.inthetelling.story')
 
 		// use angular.extend if an object already exists, so we don't lose existing bindings
 		svc.cache = function (cacheType, item) {
-			console.log("modelSvc.cache ", cacheType, item);
 			if (cacheType === 'episode') {
 				if (svc.episodes[item._id]) {
 					angular.extend(svc.episodes[item._id], svc.deriveEpisode(angular.copy(item)));
@@ -46,14 +45,14 @@ angular.module('com.inthetelling.story')
 				} else {
 					svc.containers[item._id] = svc.deriveContainer(angular.copy(item));
 				}
+				// This generally results in us re-deriving the same containers a few times, but that's mostly harmless.
+				// Need to do this in order for sibling containers to get into the cache.
+				// If the container tree starts to get very very large maybe revisit how we're doing this.
 				if (item.children) {
 					angular.forEach(item.children, function (child) {
-						svc.cache("container", child);
+						svc.cache("container", svc.deriveContainer(angular.copy(child)));
 					});
 				}
-				// if (!svc.containers[item.parent_id]) {
-				// 	svc.containers[item.parent_id] = {};
-				// }
 			}
 		};
 
@@ -113,7 +112,8 @@ angular.module('com.inthetelling.story')
 		// Should call this after making any changes to the underlying data.
 
 		svc.deriveEpisode = function (episode) {
-			// console.log("deriveEpisode:", episode);
+			console.log("deriveEpisode:", episode);
+
 			if (updateTemplates[episode.templateUrl]) {
 				episode.origTemplateUrl = episode.templateUrl;
 				episode.templateUrl = updateTemplates[episode.templateUrl];
@@ -187,7 +187,17 @@ angular.module('com.inthetelling.story')
 */
 
 		svc.deriveContainer = function (container) {
-			console.log("deriving container", container);
+			//			console.log("deriving container", container);
+			if (container.children && container.children.length > 1) {
+				// When we populate sort_order, we can remove this:
+				container.children = container.children.sort(function (a, b) {
+					return (a.name.en > b.name.en) ? 1 : -1; // WARN we are assuming i18n here!
+				});
+				// This is the real one (for now sort_order always is zero, so this sort will have no effect):
+				container.children = container.children.sort(function (a, b) {
+					return a.sort_order - b.sort_order;
+				});
+			}
 			return setLang(container);
 		};
 

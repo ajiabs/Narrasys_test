@@ -1,17 +1,20 @@
+<!--
+WARN: never use a container's children[] array directly. Instead always refer to containers[_id] which has derived, sorted, i18n'ed etc data
+-->
 <div ng-if="course = containers[containers[containers[episode.container_id].parent_id].parent_id]">
 	Other episodes in {{course.display_name}}:
 	<ul class="crossEpisodeNav">
-		<li ng-repeat="session in containers[containers[containers[episode.container_id].parent_id].parent_id].children | orderBy:name">
+		<li ng-repeat="session in containers[containers[containers[episode.container_id].parent_id].parent_id].children">
 			{{containers[session._id].display_name}}
 			<ul class="crossEpisodeNav">
-				<li ng-repeat="otherEpisode in session.children | orderBy:name">
+				<li ng-repeat="otherEpisode in containers[session._id].children">
 					<span ng-if="otherEpisode.episodes[0] == episode._id">
 						<b>{{containers[otherEpisode._id].display_name}}</b>
 					</span>
 					<span ng-if="otherEpisode.episodes[0] != episode._id">
 						<a ng-href="/#/{{crossEpisodePath}}/{{otherEpisode.episodes[0]}}">
-									{{containers[otherEpisode._id].display_name}}
-								</a>
+							{{containers[otherEpisode._id].display_name}}
+						</a>
 					</span>
 				</li>
 			</ul>
