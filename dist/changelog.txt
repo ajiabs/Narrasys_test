@@ -492,14 +492,8 @@ Changes in v4.0.54:
 tweak scs template
 
 ------------------------------------------------
-Changes in v4.1.0:
-Added relic
-
-------------------------------------------------
-Changes in v4.1.1:
-updated relic application ID
-
-------------------------------------------------
-Changes in v4.1.2:
+Changes in v4.0.55:
 new Picture-in-picture scene template
-
+------------------------------------------------
+Changes in v4.0.56:
+Bugfixes for picture-in-picture template

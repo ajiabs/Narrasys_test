@@ -67,15 +67,11 @@ The following steps are required to release a new version:
 
 ### Checkout master branch
 
-You should be working out of the master branch when generating new builds. Be sure that you have merged in any feature branches and that master is current.  (You can use the generic "dev" branch for work in progress, or use separate branches for each feature, your preference.)
+You should be working out of the master branch when generating new builds. Be sure that you have merged in any feature branches and that master is current.
 
 ### Version.txt
 
 Update the app/version.txt file to reflect whatever version we are going to build. Grunt will copy this file to /dist along with the generated build. The file is only for convenience, to make it easy to check which version of the player is currently deployed like this: `http://example.com/version.txt`
-
-### changelog.txt
-
-Update the app/changelog.txt file with a brief description of what has changed.
 
 ### Build to /dist
 
@@ -99,45 +95,10 @@ Create an annotated version tag and push it to the remote. Commands for doing th
 - `git tag -a v1.2.3 -m "Commit notes"`
 - `git push origin v1.2.3`
 
-
-### A sample build script which I'm sure you could improve upon
-
-```
-#!/bin/bash
-cd /Users/daniel/Sites/client;
-lastversion=`cat app/version.txt`;
-echo "Last version was ${lastversion}.  New version number:";
-read newversion;
-echo "New version will be ${newversion}";
-
-echo "------------------------------------------------" >> app/changelog.txt;
-echo "Changes in ${newversion}:" >> app/changelog.txt;
-git log ${lastversion}..HEAD --pretty=%B >> app/changelog.txt;
-bbedit app/changelog.txt;
-
-echo "############################################################";
-echo "#  Edit changelog, then press a key"; 
-echo "############################################################";
-read -n 1 -s;
-
-echo "Building...";
-echo "${newversion}" > app/version.txt;
-
-grunt build;
-echo "############################################################";
-echo "#  Now commit the build. Press a key when that's done";
-echo "############################################################";
-read -n 1 -s;
-git tag ${newversion};
-git push --tags;
-```
-
-### Versions
+Note that once a tag has been pushed, it is generally considered bad practice to squash it. Some teams adhere to a strict no-squash policy and others allow it up to the point of deployment.
 
 The following standard incremental version numbering system is being used by convention: **v[major].[minor].[revision]**
 
 - Major: Major refactors, features, and breaking changes (increments reset minor and revision)
 - Minor: Changes that ensure backwards compatibility, or minor contract changes (increments reset revision)
 - Revision: Bug fixes and changes are always backards compatible and no contract changes (increments reset nothing)
-
-Tagged branches (for demos or pre-release code) may use different standards (side by side uses SxS[major].[minor] for example.)
