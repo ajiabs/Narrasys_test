@@ -283,7 +283,7 @@
 .annotatorSubButton {
 	position: absolute;
 	right: 0;
-	top: 0;
+	top: 2px;
 	height: 24px;
 	z-index: 10;
 }

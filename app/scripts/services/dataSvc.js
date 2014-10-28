@@ -530,7 +530,7 @@ angular.module('com.inthetelling.story')
 				"master_asset_id",
 				"status",
 				"languages",
-				"cross_episode_navigation"
+				"navigation_depth" // TODO (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, etc)
 			];
 
 			for (var i = 0; i < fields.length; i++) {

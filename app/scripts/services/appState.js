@@ -50,6 +50,12 @@ angular.module('com.inthetelling.story')
 
 			svc.product = svc.product; // "player", "sxs", or "producer" (currently overriding to force to sxs for now)
 
+			if (svc.product === 'sxs' || svc.product === 'producer') {
+				svc.crossEpisodePath = svc.product;
+			} else {
+				svc.crossEpisodePath = "episode"; // yeah, that was kind of a dumb decision to switch from episode to "player"
+			}
+
 			svc.editing = false; // Object currently being edited by user (TODO)
 			// svc.youtubeIsReady = false; // Set to true when youtube API finishes loading.  DO NOT set this to false on init, otherwise navigating from episode to episode breaks (we reinit on new episode but that won't trigger youtube's ready event)
 			svc.lang = "en";

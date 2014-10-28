@@ -20,14 +20,9 @@ angular.module('com.inthetelling.story')
 				scope.appState = appState;
 
 				if (scope.scene._id.match(/internal/)) {
-
 					// landing and ending screens get inter-episode nav:
 					scope.containers = modelSvc.containers;
-					if (appState.product === 'sxs' || appState.product === 'producer') {
-						scope.crossEpisodePath = appState.product;
-					} else {
-						scope.crossEpisodePath = "episode";
-					}
+					scope.crossEpisodePath = appState.crossEpisodePath;
 				}
 
 				var twiddleScene = function () {
