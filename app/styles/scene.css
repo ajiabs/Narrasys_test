@@ -426,7 +426,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	z-index: 3;
 }
 .scene.pip .altPane {
-	margin-bottom: 200px;
+	padding-bottom: 200px;
 }
 .scene.pip .videoMagnet {
 	width: 30%;
