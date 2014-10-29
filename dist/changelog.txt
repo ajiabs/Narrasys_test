@@ -497,3 +497,10 @@ new Picture-in-picture scene template
 ------------------------------------------------
 Changes in v4.0.56:
 Bugfixes for picture-in-picture template
+
+------------------------------------------------
+Changes in v4.0.57:
+Fix for STORY-99: window content needs to be taller than viewport or Chrome goes insane
+fixing minor inefficiency in episode templates
+bugfix to PIP template
+
