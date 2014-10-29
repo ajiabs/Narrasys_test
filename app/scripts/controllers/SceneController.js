@@ -18,8 +18,6 @@ angular.module('com.inthetelling.story')
 			$scope.showCurrent = ($.inArray("showCurrent", $scope.scene.layouts) > -1);
 
 			// Precalculate each fg, bg, and content pane on scene creation for performance.  
-			// NOTE this means producer will need to redraw the scene if
-			// edits to a content item would move it to a different pane; it's not calculated on the fly anymore:
 			$scope.contentItems = $filter("isContent")($scope.scene.items);
 			$scope.mainFgItems = $filter("itemLayout")($scope.scene.items, "mainFg");
 			$scope.mainBgItems = $filter("itemLayout")($scope.scene.items, "mainBg");
