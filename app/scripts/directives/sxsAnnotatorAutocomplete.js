@@ -34,8 +34,6 @@ angular.module('com.inthetelling.story')
 				if (scope.annotators[scope.item.annotator] && scope.annotators[scope.item.annotator].annotation_image_id) {
 					scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
 				}
-
-				console.log("scope.annotator.name is ", scope.annotator.name);
 				scope.searchText = scope.item.annotator;
 				scope.filteredAnnotators = angular.copy(scope.annotators);
 				scope.preselectedItem = -1;
@@ -96,7 +94,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.select = function (annotator) {
-					console.log("selecting ", annotator);
+					scope.preselectedItem = -1;
 					scope.annotator.name = annotator.name;
 					if (annotator.annotation_image_id) {
 						scope.item.annotation_image_id = annotator.annotation_image_id;
@@ -115,7 +113,6 @@ angular.module('com.inthetelling.story')
 
 				scope.autoCompleting = false;
 				scope.showAutocomplete = function () {
-					// console.log(element);
 					var inputField = element.find('.inputOnly')[0];
 					inputField.setSelectionRange(0, inputField.value.length);
 					scope.autoCompleting = true;
@@ -125,16 +122,12 @@ angular.module('com.inthetelling.story')
 					$timeout(function () {
 						if (scope.preselectedItem > -1) {
 							scope.selectByIndex(scope.preselectedItem);
-						} else {
-							// TODO: reset fields?
 						}
 						scope.autoCompleting = false;
-					}, 100);
+					}, 300);
 				};
 
 				scope.addNewAnnotator = function () {
-					console.log(scope.annotators);
-
 					var annotatorName = scope.searchText; // TODO sanitize me!!!
 					var newAnnotator = {
 						"name": annotatorName,
