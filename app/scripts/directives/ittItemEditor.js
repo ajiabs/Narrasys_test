@@ -1,10 +1,6 @@
 'use strict';
 
 /* 
-
-WIP for Producer 
-
-
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 */
 
@@ -30,16 +26,13 @@ angular.module('com.inthetelling.story')
 			scope: {
 				item: '=ittItemEditor'
 			},
-			//template: '<div ng-include="item.templateUrl"></div>',
 			templateUrl: 'templates/producer/item.html',
 			controller: 'ItemEditController',
 			link: function (scope) {
 				// console.log("itemEditController", scope.item);
 				scope.uploadStatus = [];
 				scope.uneditedItem = angular.copy(scope.item); // in case of cancel
-
 				scope.annotators = modelSvc.episodes[appState.episodeId].annotators;
-
 				scope.itemForm = {
 					"transition": "",
 					"highlight": "",
@@ -63,8 +56,6 @@ angular.module('com.inthetelling.story')
 							}
 						}
 					}
-
-					console.log("Done:", scope.itemForm);
 				}
 
 				// TODO:this breaks when editing sxs items within producer!
@@ -226,8 +217,6 @@ angular.module('com.inthetelling.story')
 					scope.dismissalWatcher();
 					scope.watchStyleEdits();
 				});
-
 			}
-
 		};
 	});

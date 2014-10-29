@@ -2,12 +2,8 @@
 angular.module('com.inthetelling.story')
 	.factory('RecursionHelper', function ($compile) {
 		return {
-			/**
-			 * Manually compiles the element, fixing the recursion loop.
-			 * @param element
-			 * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-			 * @returns An object containing the linking functions.
-			 */
+			// snarfed this from a SO answer.  Allows a directive to include itself without endless loops
+
 			compile: function (element, link) {
 				// Normalize the link parameter
 				if (angular.isFunction(link)) {

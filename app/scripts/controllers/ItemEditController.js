@@ -1,13 +1,5 @@
 'use strict';
-/*
 
-
-TODO: creating new scenes needs to affect end times of other scenes.
-Force all scenes to end-time=auto, always recalculate scene end times from scratch.
-
-
-
-*/
 angular.module('com.inthetelling.story')
 	.controller('ItemEditController', function ($scope, $rootScope, appState, dataSvc, modelSvc, timelineSvc) {
 
@@ -21,14 +13,11 @@ angular.module('com.inthetelling.story')
 
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			timelineSvc.injectEvents([modelSvc.events["internal:editing"]]);
-
 		};
 
 		$scope.saveEvent = function () {
-
 			var toSave = angular.copy(appState.editing);
 			dataSvc.storeItem(toSave).then(function (data) {
-
 				if (appState.editing._id === 'internal:editing') {
 					// update the new item with its real ID (and remove the temp version)
 					timelineSvc.removeEvent("internal:editing");
@@ -244,8 +233,6 @@ angular.module('com.inthetelling.story')
 				stub.templateUrl = defaultTemplateUrls[type];
 			}
 			angular.extend(base, stub);
-
-			console.log("EMPTY: ", base);
 			return base;
 		};
 
