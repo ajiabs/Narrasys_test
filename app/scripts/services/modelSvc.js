@@ -308,6 +308,32 @@ angular.module('com.inthetelling.story')
 				event.origTemplateUrl = event.templateUrl;
 			}
 
+			// Finally one more super-fragile HACK for producer:
+			if (!event.producerItemType) {
+				if (event.templateUrl.match(/file/)) {
+					event.producerItemType = 'file';
+				} else if (event.templateUrl.match(/image/)) {
+					event.producerItemType = 'image';
+				} else if (event.templateUrl.match(/link/)) {
+					event.producerItemType = 'link';
+				} else if (event.templateUrl.match(/question/)) {
+					event.producerItemType = 'question';
+				} else if (event.templateUrl.match(/transcript/)) {
+					event.producerItemType = 'transcript';
+				} else if (event.templateUrl.match(/text/)) {
+					event.producerItemType = 'annotation';
+				} else if (event.templateUrl.match(/pullquote/)) {
+					event.producerItemType = 'annotation';
+				} else if (event.templateUrl.match(/scene/)) {
+					event.producerItemType = 'scene';
+				} else if (event.templateUrl.match(/comment/)) {
+					event.producerItemType = 'comment';
+				} else {
+					console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
+				}
+
+			}
+
 			event.displayStartTime = $filter("asTime")(event.start_time);
 
 			return event;

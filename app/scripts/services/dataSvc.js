@@ -406,14 +406,13 @@ angular.module('com.inthetelling.story')
 			// this is a conservative list for SXS only, so far. More fields will need to be added here
 			var fields = [
 				"_id",
-				// "_type",
+				// "producerItemType",
 				"start_time",
 				"end_time",
 				"episode_id",
 				"template_id",
-				// "templateUrl",
+				"templateUrl",
 				"stop",
-				// "type",
 				"isCurrent",
 				"sxs",
 				"title",
@@ -423,7 +422,7 @@ angular.module('com.inthetelling.story')
 				"data",
 				"asset_id",
 				"link_image_id",
-				"annotation_image_id"
+				"annotation_image_id",
 			];
 
 			prepped.type = evt._type;

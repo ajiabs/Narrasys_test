@@ -126,12 +126,14 @@ angular.module('com.inthetelling.story')
 				file
 				link
 				question
-				video (injected episode)
+				video (injected episode) TODO
+
+TODO merge 'comment' with 'annotation'?
+
 
 			*/
 
 			if (type === 'scene') {
-				// TODO 
 				stub = {
 					"_type": "Scene",
 					"title": {
@@ -184,6 +186,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			if (type === 'question') {
+				// TODO i18n
 				stub = {
 					"_type": "Plugin",
 					"data": {
@@ -221,7 +224,7 @@ angular.module('com.inthetelling.story')
 				stub.templateUrl = 'templates/item/sxs-' + type + '.html';
 			} else {
 				var defaultTemplateUrls = {
-					"scene": "templates/item/TODO-DEFAULTSCENETEMPLATE.html",
+					"scene": "templates/scene/1col.html",
 					"transcript": "templates/item/transcript.html",
 					"annotation": "templates/item/pullquote.html",
 					"link": "templates/item/link.html",
