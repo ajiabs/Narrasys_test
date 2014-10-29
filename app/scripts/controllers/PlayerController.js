@@ -133,7 +133,7 @@ angular.module('com.inthetelling.story')
 							// embed directly from container cache, do not use an entry in children[] (they don't get derived!)
 							$scope.episode.previousEpisodeContainer = modelSvc.containers[modelSvc.containers[container_id].children[i - 1]._id];
 						}
-						if (i < modelSvc.containers[container_id].children.length) {
+						if (i < modelSvc.containers[container_id].children.length - 1) {
 							$scope.episode.nextEpisodeContainer = modelSvc.containers[modelSvc.containers[container_id].children[i + 1]._id];
 						}
 					}

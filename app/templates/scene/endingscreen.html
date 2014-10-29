@@ -14,7 +14,11 @@
 			<img src="images/aspectratiopreserver-16x9.gif">
 		</div>
 		<br>
-		<div ng-include="'templates/crossnav.html'"></div>
+
+		<div ng-if="episode.navigation_depth">
+			Other episodes:
+			<ul class="crossEpisodeNav" itt-container-episodes="episode.parents[0]"></ul>
+		</div>
 
 	</div>
 </div>
