@@ -112,35 +112,13 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 	$httpProvider.defaults.withCredentials = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
-	$httpProvider.interceptors.push(['$q',
-		function () {
-			return function (promise) {
-				return promise.then(
-					function (response) {
-						return response;
-					},
-					function (response) {
-						throw response;
-					}
-				);
-			};
-		}
-	]);
-})
-
-// global exception handler.  Pretty much just cargo-culting this, there may be a Better Way
-.config(['$provide',
-	function ($provide) {
-		$provide.decorator('$exceptionHandler', ['$delegate', '$injector',
-			function ($delegate, $injector) {
-				return function (exception, cause) {
-					$delegate(exception, cause); // Calls the original $exceptionHandler.
-					var errorSvc = $injector.get("errorSvc"); // have to use injector to avoid circular refs
-					errorSvc.error(exception, cause); // <-- this is the only non-boilerplate code in this whole thing
-				};
+	$httpProvider.interceptors.push(function ($q, errorSvc) {
+		return {
+			'responseError': function (rejection) {
+				// console.log("RESPONSEERROR", rejection);
+				errorSvc.error(rejection);
+				return $q.reject(rejection);
 			}
-		]);
-	}
-])
-
-;
+		};
+	});
+});
