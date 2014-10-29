@@ -15,6 +15,22 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
+		// for debugging error handler:
+		// svc.forceAPIError = function () {
+		// 	$http({
+		// 			method: 'POST',
+		// 			url: config.apiDataBaseUrl + "/v1/styles",
+		// 			data: {
+		// 				"malformed": true
+		// 			}
+		// 		})
+		// 		.then(function () {
+		// 			console.log("SUCCESS somehow");
+		// 		}, function () {
+		// 			console.log("Succeeded at failing!");
+		// 		});
+		// };
+
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
 		svc.getEpisode = function (epId) {
