@@ -1,4 +1,5 @@
-<span ng-if="appState.viewMode == 'watch'">
+<!-- the padding is necessary to work around a Chrome bug, see STORY-99 -->
+<div ng-if="appState.viewMode == 'watch'" style="padding-bottom: 100%;">
 	<div class="watchMode">
 		<div itt-magnet id="watchModeVideoMagnet" class="videoMagnet">
 			<img src="images/aspectratiopreserver-16x9.gif">
@@ -8,4 +9,4 @@
 		<div class="item watchModeCaption" ng-if="item.isCurrent && !appState.hideCaptions" ng-repeat="item in episode.items | transcript" ng-class="item.state" itt-item="item" forceTemplate="caption">
 		</div>
 	</span>
-</span>
+</div>
