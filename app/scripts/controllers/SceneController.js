@@ -4,11 +4,18 @@ angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
 
 		$scope.precalculateSceneValues = function () {
+			console.log("precalcSceneValues");
 
-			// some scene templates let you specify this for one or more columns; others do it automatically (that will be in the template)
-			if ($.inArray("showCurrent", $scope.scene.layouts) > -1) {
-				$scope.showCurrent = true;
-			}
+			// clear out old calculations in case we're re-precalculating
+			delete $scope.mainContentHasLeftSidebar;
+			delete $scope.mainContentHasRightSidebar;
+			delete $scope.mainContentHasBothSidebars;
+			delete $scope.altContentHasLeftSidebar;
+			delete $scope.altContentHasRightSidebar;
+			delete $scope.altContentHasBothSidebars;
+
+			// some scene templates let you specify showCurrent for one or more columns; others do it automatically (that will be in the template)
+			$scope.showCurrent = ($.inArray("showCurrent", $scope.scene.layouts) > -1);
 
 			// Precalculate each fg, bg, and content pane on scene creation for performance.  
 			// NOTE this means producer will need to redraw the scene if
@@ -26,6 +33,7 @@ angular.module('com.inthetelling.story')
 			//   main=transcript+required / alt=optional-transcript
 			// * splitTransmedia (default):
 			//   main=annotation, alt=not annotation
+			// TODO some of those are not so useful, perhaps should be removed
 
 			// Main content pane:
 			if ($.inArray("splitRequired", $scope.scene.layouts) > -1) {
