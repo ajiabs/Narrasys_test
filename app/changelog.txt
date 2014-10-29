@@ -480,3 +480,24 @@ detect episode languages dynamically; i18 for containers
 Changes in i18n.0.4:
 Merge branch 'newrelic' into i18n
 
+------------------------------------------------
+Changes in v4.0.53:
+update to scs templte
+
+------------------------------------------------
+Changes in v4.0.54:
+tweak scs template
+
+------------------------------------------------
+Changes in v4.0.55:
+new Picture-in-picture scene template
+------------------------------------------------
+Changes in v4.0.56:
+Bugfixes for picture-in-picture template
+
+------------------------------------------------
+Changes in v4.0.57:
+Fix for STORY-99: window content needs to be taller than viewport or Chrome goes insane
+fixing minor inefficiency in episode templates
+bugfix to PIP template
+

@@ -44,11 +44,6 @@ Bring back the loading icon for iframes attempted in v4.0.32 (disabled because w
 include a sample iframe page with instructions for customers on how best to embed our player
 
 
-include a sample iframe page with instructions for customers on how best to embed our player
-
-
-
-
 
 review mode: force-transmedia template is too strict; should override link, upload and annotation, not plugins
 
