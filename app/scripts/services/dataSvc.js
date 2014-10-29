@@ -281,12 +281,7 @@ angular.module('com.inthetelling.story')
 				console.log("Updated event:", data);
 				return defer.resolve(data);
 			}).error(function (errData, status) {
-				// console.log("Failed:", errData, status, headers);
-				errorSvc.error({
-					data: errData,
-					status: status
-				});
-
+				console.log("Failed:", errData, status);
 				return defer.reject();
 			});
 			return defer.promise;

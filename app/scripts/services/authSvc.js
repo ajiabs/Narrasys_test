@@ -19,7 +19,7 @@ angular.module('com.inthetelling.story')
 		svc.logout = function () {
 			//
 			appState.user = {};
-			delete($http.defaults.headers.common.Authorization);
+			delete $http.defaults.headers.common.Authorization;
 
 		};
 
