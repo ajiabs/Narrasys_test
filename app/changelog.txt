@@ -515,3 +515,23 @@ Fixed STORY-85
 deleteEvent less dependent on appState.editing, receives id from item template
 Hide Producer edit buttons when in SxS
 
+------------------------------------------------
+Changes in v4.2.7:
+allow editing items in review mode
+precalculateSceneValues now allows re-precalculating
+episode template cleanup
+annotator autocomplete wasn't always selecting on click
+Fixing circular dependency in errorSvc
+replaced responseInterceptor which didn't work with interceptor which does
+Fix for STORY-99
+Cross episode navigation
+next/previous episode links, configurable navigation depth (partial)
+fixing text overlap in annotator autocomplete
+episode templateUrl to ID conversion
+stub for editing episode data
+Don't try to save falsy styles or layouts
+Progress on annotator autocomplete
+stub 'edit episode' control
+no flags for scenes
+bugfix to PIP template
+

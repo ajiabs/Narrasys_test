@@ -329,7 +329,7 @@ angular.module('com.inthetelling.story')
 				} else if (event.templateUrl.match(/comment/)) {
 					event.producerItemType = 'comment';
 				} else {
-					console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
+					// console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
 				}
 
 			}

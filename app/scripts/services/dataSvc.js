@@ -395,6 +395,7 @@ angular.module('com.inthetelling.story')
 				});
 			}
 		};
+
 		var prepItemForStorage = function (evt) {
 
 			var prepped = {};
@@ -406,7 +407,7 @@ angular.module('com.inthetelling.story')
 			// this is a conservative list for SXS only, so far. More fields will need to be added here
 			var fields = [
 				"_id",
-				// "producerItemType",
+				"producerItemType",
 				"start_time",
 				"end_time",
 				"episode_id",
@@ -496,6 +497,7 @@ angular.module('com.inthetelling.story')
 			console.log("Prepped item for storage: ", prepped);
 			return prepped;
 		};
+		svc.prepItemForStorage = prepItemForStorage;
 
 		svc.storeEpisode = function (epData) {
 			var preppedData = prepEpisodeForStorage(epData);
