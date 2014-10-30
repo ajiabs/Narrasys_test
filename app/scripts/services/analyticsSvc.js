@@ -62,12 +62,15 @@ angular.module('com.inthetelling.story')
 
 		// for transmedia-related activity
 		svc.captureEventActivity = function (name, eventID, data) {
-			console.log("analyticsSvc.captureEventActivity", eventID, data);
+			// console.log("analyticsSvc.captureEventActivity", eventID, data);
 			if (!appState.user.track_event_actions) {
 				return;
 			}
 
-			console.log(data);
+			if (data === undefined) {
+				console.warn("captureEventActivity called with no data for event ", eventID);
+			}
+			// console.log(data);
 			svc.activityQueue.push({
 				"name": name,
 				"event_id": eventID,
@@ -78,7 +81,7 @@ angular.module('com.inthetelling.story')
 
 		// read from API:
 		svc.readEpisodeActivity = function (epId) {
-			console.log("analyticsSvc readEpisodeActivity");
+			// console.log("analyticsSvc readEpisodeActivity");
 			var defer = $q.defer();
 			$http({
 				method: 'GET',
@@ -96,7 +99,7 @@ angular.module('com.inthetelling.story')
 		// if activityType is omitted, returns all user data for that event id
 		// if it's included, returns true if the user has at least once triggered that activityType, false if not
 		svc.readEventActivity = function (eventId, activityType) {
-			console.log("analyticsSvc.readEventActivity", "eventId", "activityType");
+			// console.log("analyticsSvc.readEventActivity", "eventId", "activityType");
 			var defer = $q.defer();
 			$http({
 				method: 'GET',

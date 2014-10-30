@@ -1,11 +1,6 @@
-Any event end time matching its scene end time, or a transcript end time matching the next transcript start, should be considered the same as end time = auto.
-null or empty end time should mean the same.  Determine it in modelSvc and set an isAutoEndtime flag
 
 
 
-BUG: while editing, occasionally the timeline will truncate when you seek to a previous scene.
-Is triggered by scrubbing timeline, hitting prevScene() or by text entry into the start_time field. But not always.
-Once it happens a first time, it keeps happening until reload.  Haven't yet spotted what causes it to happen that first time 
 
 
 
@@ -38,11 +33,6 @@ Events:
     "es": ["Dos","Quatro"] // no correlation of items across arrays....
 })
 
-Scenes aren't updating margins properly after layout changes
-
-Need to set producerItemType in modelSvc instead of hardcoding in templates
-
-Allow editing items from explore mode 
 
 Allow editing transcript from watch mode
 
@@ -63,7 +53,6 @@ explore mode isn't always updating after edits (intermittent)
 
 
 
-newly introduced bug:  decorative windowFg items no longer show properly
 
 
 
@@ -78,10 +67,6 @@ Extract item plugins from ittItem into separate directives
 Extract autscroll and maybe toolbar hide/reveal behavior from PlayerController into  own directives
 
 
-add keyboard accessibility (at minimum put a tabindex and ARIA roles on mode and other buttons)
-
-
-Other 508 compliance: alt tags on images, etc
 
 
 Bring back the loading icon for iframes attempted in v4.0.32 (disabled because wasn't working with PDFs in chrome)
@@ -114,7 +99,6 @@ More key controls:  up/down for prev/next transmedia item, left/right for prev/n
 For bill: is it possible to extract video information (size, duration) from a video file when the user is uploading it?  — espeically duration, framerate  (e.g. 24000/1001), duration are most important
 
 
-New scene template: picture-in-picture  (video is a position:fixed thumbnail in one lower corner, transcript floating next to it as pseudo-CC, full canvas is the transmedia pane)
 
 modal style should be an (episode-level) template choice
 
@@ -136,20 +120,13 @@ player needs to watch for error states coming from youtube or the <video>, if po
 
 Improve generic error handler
 
-
 remove div=clear from end of items; they interfere with sidebars
 
 preload images ahead of playhead? 
-
-Add links to other episodes in the session to the ending screen
  
 Find out why m3u8 was causing problems, fix it
 
-
-ModelSvc may need to tweak episode data (ensure scenes are contiguous and non-overlapping, make sure items are all within scenes) (or just do this inside producer.)
-
 Bill may change API to return all parent containers for an episode instead of us having to walk up the tree
-
 
 episodeMetrics (or a new endpoint) should log Story application errors, too -- with browser version, platform, etc if possible
 
@@ -170,9 +147,6 @@ Asked Bill to add data fields:
 * All events + episode: app version number (to make it easier to distinguish between legacy and new episodes)
 
 TODO give him a list of template urls that should map to the various flags (isTranscript, noEmbed, forceEmbed, targetTop, etc)
-
-
-end of episode scene
 
 
 Consider eliminating fg panes other than windowFg (check existing episodes, are any using them?)

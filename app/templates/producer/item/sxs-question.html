@@ -3,7 +3,7 @@
 	<div class="label">Question type
 	</div>
 	<div class="input">
-		<select ng-model="appState.editing.data._plugin.questiontype">
+		<select ng-model="item.data._plugin.questiontype">
 			<option value="mc-poll">Poll</option>
 			<option value="mc-formative">Formative</option>
 		</select>
@@ -13,7 +13,7 @@
 	<div class="label">Question text
 	</div>
 	<div class="input">
-		<textarea ng-model="appState.editing.data._plugin.questiontext" rows="4" autofocus></textarea>
+		<textarea ng-model="item.data._plugin.questiontext" rows="4" autofocus></textarea>
 	</div>
 </div>
 <div class="field">
@@ -23,26 +23,26 @@
 	</div>
 </div>
 
-<div class="field" ng-repeat="distractor in appState.editing.data._plugin.distractors">
+<div class="field" ng-repeat="distractor in item.data._plugin.distractors">
 	<div class="label">
 		{{$index | alpha}} &nbsp;
-		<input type="checkbox" ng-model="distractor.correct" ng-if="appState.editing.data._plugin.questiontype == 'mc-formative'">
+		<input type="checkbox" ng-model="distractor.correct" ng-if="item.data._plugin.questiontype == 'mc-formative'">
 	</div>
 	<div class="input">
 		<textarea ng-model="distractor.text" rows="4"></textarea>
 	</div>
 </div>
-<div class="field" ng-if="appState.editing.data._plugin.questiontype == 'mc-formative'">
+<div class="field" ng-if="item.data._plugin.questiontype == 'mc-formative'">
 	<div class="label">Feedback when correct
 	</div>
 	<div class="input">
-		<textarea rows="4" ng-model="appState.editing.data._plugin.correctfeedback"></textarea>
+		<textarea rows="4" ng-model="item.data._plugin.correctfeedback"></textarea>
 	</div>
 </div>
-<div class="field" ng-if="appState.editing.data._plugin.questiontype == 'mc-formative'">
+<div class="field" ng-if="item.data._plugin.questiontype == 'mc-formative'">
 	<div class="label">Feedback when incorrect
 	</div>
 	<div class="input">
-		<textarea rows="4" ng-model="appState.editing.data._plugin.incorrectfeedback"></textarea>
+		<textarea rows="4" ng-model="item.data._plugin.incorrectfeedback"></textarea>
 	</div>
 </div>

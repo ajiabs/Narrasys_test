@@ -112,7 +112,7 @@ angular.module('com.inthetelling.story')
 		// Should call this after making any changes to the underlying data.
 
 		svc.deriveEpisode = function (episode) {
-			console.log("deriveEpisode:", episode);
+			// console.log("deriveEpisode:", episode);
 
 			if (updateTemplates[episode.templateUrl]) {
 				episode.origTemplateUrl = episode.templateUrl;
@@ -273,7 +273,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				if (event._type === "Link" && event.url.match(/^http:\/\//)) {
-					console.warn("Can't embed http:// link type:", event.url);
+					//console.warn("Can't embed http:// link type:", event.url);
 					event.noEmbed = true;
 				}
 

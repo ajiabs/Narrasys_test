@@ -123,7 +123,7 @@ angular.module('com.inthetelling.story')
 				// as long as we're here, get the next and previous episodes (only within the session.
 				// This won't let us find e.g. the previous episode from S4E1; 
 				// we're not guaranteed to have loaded data for other sessions...  TODO fancy tree traversal)
-				console.log("Siblings will be here: ", modelSvc.containers[container_id]);
+				// console.log("Siblings will be here: ", modelSvc.containers[container_id]);
 				$scope.crossEpisodePath = appState.crossEpisodePath;
 				for (var i = 0; i < modelSvc.containers[container_id].children.length; i++) {
 					var c = modelSvc.containers[container_id].children[i];

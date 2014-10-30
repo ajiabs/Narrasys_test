@@ -4,7 +4,7 @@ angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
 
 		$scope.precalculateSceneValues = function () {
-			console.log("precalcSceneValues");
+			// console.log("precalcSceneValues");
 
 			// clear out old calculations in case we're re-precalculating
 			delete $scope.mainContentHasLeftSidebar;

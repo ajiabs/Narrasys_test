@@ -1,4 +1,4 @@
-<div ng-show="!appState.editing">
+<div ng-show="!item">
 
 	<div ng-if="appState.product == 'producer' && appState.time == 0" style="left:10px;width:2em" class="producer addcontent">
 		<a class="button-episode" ng-click="editEpisode()">Edit</a>
@@ -10,7 +10,7 @@
 			<a class="button-scene" ng-click="editCurrentScene()">Edit</a>
 		</div>
 
-		<div class="producer addcontent" ng-show="!appState.editing && appState.time > 0">
+		<div class="producer addcontent" ng-show="!item && appState.time > 0">
 			<span ng-if="expanded" style="padding: 0 1em" class="animate transitionExpandW">
 				<span ng-if="appState.product == 'sxs'">
 					<a class="button-comment" ng-click="addEvent('comment')">Comment</a>
