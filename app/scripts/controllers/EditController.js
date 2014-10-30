@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ItemEditController', function ($scope, $rootScope, appState, dataSvc, modelSvc, timelineSvc) {
+	.controller('EditController', function ($scope, $rootScope, appState, dataSvc, modelSvc, timelineSvc) {
 
 		$scope.addEvent = function (producerItemType) {
 			// console.log("itemEditController.addEvent");

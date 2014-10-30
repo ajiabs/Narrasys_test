@@ -544,3 +544,6 @@ Changes in v4.2.9:
 renaming ItemEditController to EditController
 producer item templates no longer need refer to appState.editing
 tweaked PIP
+------------------------------------------------
+Changes in v4.2.10:
+typo
