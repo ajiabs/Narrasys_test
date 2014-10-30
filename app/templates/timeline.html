@@ -1,6 +1,4 @@
 <div class="timeline">
-	<div ng-if="appState.product == 'sxs' || appState.product == 'producer'" sxs-add-content></div>
-
 	<div class="progressbarBox">
 		<div class="pbarTop">
 			<span ng-if="appState.product == 'producer'">
@@ -48,7 +46,6 @@
 			</a>
 			<div class="tooltip sceneMenuTooltip" ng-if="sceneMenuToolTip">
 				<span class="content">Scene-by-scene navigation</span>
-				<!-- <div class="tooltip-arrow"></div> -->
 			</div>
 
 			<a class="button-scenemenu" ng-click="showSceneMenuTooltip(false);toggleNavPanel();" ng-mouseover="showSceneMenuTooltip(true)" ng-mouseout="showSceneMenuTooltip(false)">

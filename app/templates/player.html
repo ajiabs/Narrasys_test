@@ -64,11 +64,15 @@
 				<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
 				<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>
 			</div>
+
 			<div itt-timeline></div>
 		</div>
 	</div>
 	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"></div>
 </div>
+
+<div ng-if="appState.product == 'sxs' || appState.product == 'producer'" sxs-add-content></div>
+
 
 <div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
 
