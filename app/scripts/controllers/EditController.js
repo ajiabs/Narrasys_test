@@ -9,6 +9,7 @@ angular.module('com.inthetelling.story')
 			modelSvc.cache("event", newEvent);
 
 			appState.editEvent = modelSvc.events["internal:editing"];
+			appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 			appState.videoControlsLocked = true;
 
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
@@ -34,6 +35,11 @@ angular.module('com.inthetelling.story')
 
 		};
 
+		$scope.saveEpisode = function () {
+			window.alert("TODO");
+			// TODO
+		};
+
 		$scope.editCurrentScene = function () {
 			var episode = modelSvc.episodes[appState.episodeId];
 			angular.forEach(episode.scenes, function (scene) {
@@ -41,14 +47,17 @@ angular.module('com.inthetelling.story')
 					// TODO This is redundant with ittItem editItem...
 					appState.editEvent = modelSvc.events[scene._id];
 					appState.editEvent.producerItemType = 'scene';
-					appState.videoControlsActive = true;
+					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
 				}
 			});
 		};
 
 		$scope.editEpisode = function () {
-			window.alert("TODO: This will let you edit episode title, description, templates, and default styles");
+			console.log("editController editEpisode");
+			appState.editEpisode = modelSvc.episodes[appState.episodeId];
+			appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+			appState.videoControlsLocked = true;
 		};
 
 		$scope.deleteEvent = function (eventId) {
@@ -85,15 +94,17 @@ angular.module('com.inthetelling.story')
 			} else {
 				modelSvc.events[appState.editEvent._id] = originalEvent;
 				timelineSvc.updateEventTimes(originalEvent);
-				if (originalEvent.start_time) {
-					// make sure they can see the unedited event come back, if they changed its start time:
-					// timelineSvc.seek(originalEvent.start_time);
-				}
 			}
 
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			appState.editEvent = false;
 			appState.videoControlsLocked = false;
+		};
+
+		$scope.cancelEpisodeEdit = function (originalEvent) {
+			// TODO
+			window.alert("TODO");
+
 		};
 
 		var generateEmptyItem = function (type) {

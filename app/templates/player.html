@@ -3,7 +3,7 @@
 	guestUser: appState.user.isGuestUser,
 	isProducer: (appState.product == 'producer'),
 	isSxS: (appState.product == 'sxs'),
-	canEditContent: !appState.editEvent && (appState.product == 'producer' || appState.product == 'sxs')
+	canEditContent: (!appState.editEvent && !appState.editEpisode) && (appState.product == 'producer' || appState.product == 'sxs')
 	}">
 	<!-- TODO: make sure user has admin role for canEditContent -->
 	<div class="toolbar">
@@ -36,7 +36,7 @@
 		</div>
 	</div>
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
-	<div itt-episode ng-class="{padForEditing: appState.editEvent}"></div>
+	<div itt-episode ng-class="{padForEditing: appState.editEvent || appState.editEpisode}"></div>
 
 
 	<div class="toolbar-bottom" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-show="appState.videoControlsActive">
@@ -60,8 +60,9 @@
 
 			</div>
 
-			<div ng-show="appState.editEvent" class="navPanel" ng-class="episode.styleCss">
+			<div ng-show="appState.editEvent || appState.editEpisode" class="navPanel" ng-class="episode.styleCss">
 				<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
+				<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>
 			</div>
 			<div itt-timeline></div>
 		</div>

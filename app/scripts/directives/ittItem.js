@@ -59,13 +59,10 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.editItem = function () {
-					// timelineSvc.seek(scope.item.start_time);
 					appState.editEvent = scope.item;
-					//scope.item.producerItemType = itemType;
 
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
-					// console.log("appState.videoControlsLocked is ", appState.videoControlsLocked);
 				};
 
 				scope.captureInteraction = function () {

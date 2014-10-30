@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('com.inthetelling.story')
 	.factory('recursionHelper', function ($compile) {
 		return {

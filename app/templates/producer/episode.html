@@ -1,0 +1,33 @@
+<div class="itemEdit authoringForm">
+	<div style="max-height: 280px; overflow-y:scroll; padding: 1em 20px 0 0">
+
+		<div class="field">
+			<div class="input">
+				<select size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right;">
+					<option value="en">English</option>
+					<option value="es">Spanish</option>
+				</select>
+				</span>
+			</div>
+		</div>
+
+		<div class="field">
+			<div class="label">Title [{{appState.lang}}]</div>
+			<div class="input" sxs-input-i18n="episode.title" x-inputtype="'input'" autofocus></div>
+		</div>
+		<div class="field">
+			<div class="label">Description [{{appState.lang}}]</div>
+			<div class="input" sxs-input-i18n="episode.description" x-inputtype="'textarea'"></div>
+		</div>
+
+
+	</div>
+	<div style="clear:both; width: 100%; text-align:right">
+		<small>
+			<a ng-click="cancelEdit()">Cancel</a>
+		</small>
+		&nbsp; &nbsp;
+		<input type="button" value="Save" ng-click="saveEpisode()">
+	</div>
+
+</div>

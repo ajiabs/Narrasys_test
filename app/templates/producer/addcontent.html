@@ -1,4 +1,4 @@
-<div ng-show="!item">
+<div ng-show="!appState.editEvent && !appState.editEpisode">
 
 	<div ng-if="appState.product == 'producer' && appState.time == 0" style="left:10px;width:2em" class="producer addcontent">
 		<a class="button-episode" ng-click="editEpisode()">Edit</a>
