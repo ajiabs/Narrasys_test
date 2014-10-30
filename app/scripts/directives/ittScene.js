@@ -78,7 +78,7 @@ angular.module('com.inthetelling.story')
 
 				// trigger init when the user edits content:
 				scope.unwatchEdits = scope.$watch(function () {
-					return appState.editing;
+					return appState.editEvent;
 				}, scope.precalculateSceneValues, true);
 
 				// HACK to catch cases (mostly on ios) where matchvideoheight isn't matching.

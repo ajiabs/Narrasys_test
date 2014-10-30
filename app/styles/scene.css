@@ -438,6 +438,9 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .scene.pip .altPane {
 	padding-bottom: 300px;
 }
+.scene.pip .altPane .item {
+	text-align: center;
+}
 .scene.pip .videoMagnet {
 	width: 30%;
 	position: fixed;

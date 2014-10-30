@@ -10,7 +10,7 @@ angular.module('com.inthetelling.story')
 			scope: {},
 			//template: '<div ng-include="item.templateUrl"></div>',
 			templateUrl: 'templates/producer/addcontent.html',
-			controller: 'ItemEditController',
+			controller: 'EditController',
 			link: function (scope) {
 				/* 
 				TODO: hide buttons for items that can't be added at this timepoint 

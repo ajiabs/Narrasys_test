@@ -23,17 +23,17 @@
 				</div>
 				<!-- unmasked parts of timeline -->
 				<div class="progressbarContainer" style="width: {{zoomLevel}}00%;">
-					<div class="handle" ng-show="isSeeking && !appState.editing" ng-style="{left: markerPercent(willSeekTo)+'%'}">
+					<div class="handle" ng-show="isSeeking && !appState.editEvent" ng-style="{left: markerPercent(willSeekTo)+'%'}">
 						<div class="tip" ng-show="seekHandleVisible">{{willSeekTo | asTime}}</div>
 					</div>
-					<div class="handle sxsHandle playhead" ng-show="appState.editing" ng-style="{left: markerPercent(willSeekTo)+'%'}">
+					<div class="handle sxsHandle playhead" ng-show="appState.editEvent" ng-style="{left: markerPercent(willSeekTo)+'%'}">
 						<div class="tip">{{willSeekTo | asTime}}</div>
 					</div>
 
 					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}">
 						<span class="content" ng-bind-html="event.display_title || '(&quot;Hidden&quot; scene)'"></span>
 					</div>
-					<div ng-if="appState.editing" class="editingItem" ng-style="{left: markerPercent(appState.editing.start_time)+'%', right: markerPercent(appState.duration - appState.editing.end_time)+'%'}"></div>
+					<div ng-if="appState.editEvent" class="editingItem" ng-style="{left: markerPercent(appState.editEvent.start_time)+'%', right: markerPercent(appState.duration - appState.editEvent.end_time)+'%'}"></div>
 				</div>
 				<div class="playhead mask">
 					<!-- interactive parts of timeline -->

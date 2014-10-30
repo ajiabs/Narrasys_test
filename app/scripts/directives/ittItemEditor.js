@@ -27,9 +27,9 @@ angular.module('com.inthetelling.story')
 				item: '=ittItemEditor'
 			},
 			templateUrl: 'templates/producer/item.html',
-			controller: 'ItemEditController',
+			controller: 'EditController',
 			link: function (scope) {
-				// console.log("itemEditController", scope.item);
+				// console.log("EditController", scope.item);
 				scope.uploadStatus = [];
 				scope.uneditedItem = angular.copy(scope.item); // in case of cancel
 				scope.annotators = modelSvc.episodes[appState.episodeId].annotators;
@@ -92,7 +92,7 @@ angular.module('com.inthetelling.story')
 
 				scope.forcePreview = function () {
 					// this is silly but it works.
-					appState.editing.fnord = (appState.editing.fnord) ? "" : "fnord";
+					appState.editEvent.fnord = (appState.editEvent.fnord) ? "" : "fnord";
 				};
 
 				scope.setItemTime = function () {
@@ -152,7 +152,7 @@ angular.module('com.inthetelling.story')
 				scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
 
 				scope.cancelEdit = function () {
-					// hand off to itemEditController (with the original to be restored)
+					// hand off to EditController (with the original to be restored)
 					scope.cancelEventEdit(scope.uneditedItem);
 				};
 
