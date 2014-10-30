@@ -538,3 +538,9 @@ bugfix to PIP template
 ------------------------------------------------
 Changes in v4.2.8:
 Fixed broken config
+
+------------------------------------------------
+Changes in v4.2.9:
+renaming ItemEditController to EditController
+producer item templates no longer need refer to appState.editing
+tweaked PIP
