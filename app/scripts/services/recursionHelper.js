@@ -1,6 +1,5 @@
-'use strict';
 angular.module('com.inthetelling.story')
-	.factory('RecursionHelper', function ($compile) {
+	.factory('recursionHelper', function ($compile) {
 		return {
 			// snarfed this from a SO answer.  Allows a directive to include itself without endless loops
 
@@ -39,25 +38,3 @@ angular.module('com.inthetelling.story')
 			}
 		};
 	})
-	.directive('ittContainerEpisodes', function (modelSvc, RecursionHelper, appState) {
-		return {
-			restrict: 'A',
-			replace: false,
-			scope: {
-				container: '=ittContainerEpisodes'
-			},
-			templateUrl: "templates/containerepisodes.html",
-
-			compile: function (element) {
-				// Use the compile function from the RecursionHelper,
-				// And return the linking function(s) which it returns
-				return RecursionHelper.compile(element, function (scope) {
-					scope.containers = modelSvc.containers;
-					scope.crossEpisodePath = appState.crossEpisodePath;
-					scope.episodeId = appState.episodeId;
-
-				});
-			}
-		};
-
-	});
