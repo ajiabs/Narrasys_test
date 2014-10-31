@@ -80,17 +80,12 @@ angular.module('com.inthetelling.story')
 					console.log("failed to delete:", data);
 				});
 			}
-
-			modelSvc.resolveEpisodeEvents(appState.episodeId);
-			timelineSvc.removeEvent([modelSvc.events[eventId]]);
-			appState.editEvent = false;
-			appState.videoControlsLocked = false;
 		};
 
 		$scope.cancelEventEdit = function (originalEvent) {
 			if (appState.editEvent._id === 'internal:editing') {
 				delete(modelSvc.events['internal:editing']);
-				timelineSvc.removeEvent([modelSvc.events["internal:editing"]]);
+				timelineSvc.removeEvent("internal:editing");
 			} else {
 				modelSvc.events[appState.editEvent._id] = originalEvent;
 				timelineSvc.updateEventTimes(originalEvent);

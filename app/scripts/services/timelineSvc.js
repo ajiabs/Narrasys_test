@@ -458,9 +458,15 @@ angular.module('com.inthetelling.story')
 
 		svc.removeEvent = function (removeId) {
 			// delete anything corresponding to this id from the timeline:
+			// console.log("timelineSvc.removeEvent");
 			svc.timelineEvents = $filter('filter')(svc.timelineEvents, {
 				id: '!' + removeId
 			});
+			// and from the markedEvents, with its inexplicably inconsistent ID naming:
+			svc.markedEvents = $filter('filter')(svc.markedEvents, {
+				_id: '!' + removeId
+			});
+
 			svc.updateEventStates();
 		};
 
