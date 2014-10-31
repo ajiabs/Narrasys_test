@@ -18,7 +18,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.initVideo = function (el) {
-			console.log("videoController.initVideo");
+			// console.log("videoController.initVideo");
 			if ($scope.video.urls.youtube) {
 				$scope.videoType = 'youtube';
 				appState.videoType = $scope.videoType;
@@ -44,7 +44,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.initYoutube = function () {
-			console.log("videoController initYoutube");
+			// console.log("videoController initYoutube");
 			var playerStates = ["ended", "playing", "paused", "buffering", "", "cued"]; // convert YT codes to html5 state names
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
@@ -56,7 +56,7 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
-			console.log("YTPlayer", $scope.YTPlayer.playVideo);
+			// console.log("YTPlayer", $scope.YTPlayer.playVideo);
 			// but we still need to wait for youtube to Do More Stuff, apparently:
 			var unwatch = $scope.$watch(function () {
 				return $scope.YTPlayer.playVideo !== undefined;

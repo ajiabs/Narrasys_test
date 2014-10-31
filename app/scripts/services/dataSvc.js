@@ -52,7 +52,7 @@ angular.module('com.inthetelling.story')
 		var gettingCommon = false;
 		var getCommonDefer = $q.defer();
 		var getCommon = function () {
-			console.log("dataSvc.getCommon");
+			// console.log("dataSvc.getCommon");
 			if (gettingCommon) {
 				return getCommonDefer.promise;
 
@@ -278,10 +278,10 @@ angular.module('com.inthetelling.story')
 				url: config.apiDataBaseUrl + path,
 				data: putData
 			}).success(function (data) {
-				console.log("Updated event:", data);
+				// console.log("Updated event:", data);
 				return defer.resolve(data);
 			}).error(function (errData, status) {
-				console.log("Failed:", errData, status);
+				// console.log("Failed:", errData, status);
 				return defer.reject();
 			});
 			return defer.promise;
@@ -294,10 +294,10 @@ angular.module('com.inthetelling.story')
 				url: config.apiDataBaseUrl + path,
 				data: postData
 			}).success(function (data) {
-				console.log("Updated event:", data);
+				// console.log("Updated event:", data);
 				return defer.resolve(data);
 			}).error(function (data, status, headers) {
-				console.log("Failed:", data, status, headers);
+				// console.log("Failed:", data, status, headers);
 				return defer.reject();
 			});
 			return defer.promise;
@@ -309,10 +309,10 @@ angular.module('com.inthetelling.story')
 				method: 'DELETE',
 				url: config.apiDataBaseUrl + path,
 			}).success(function (data) {
-				console.log("Deleted:", data);
+				// console.log("Deleted:", data);
 				return defer.resolve(data);
 			}).error(function (data, status, headers) {
-				console.log("Failed to delete:", data, status, headers);
+				// console.log("Failed to delete:", data, status, headers);
 				return defer.reject();
 			});
 			return defer.promise;
@@ -494,7 +494,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			// TODO: what else needs to be done before we can safely store this event?
-			console.log("Prepped item for storage: ", prepped);
+			// console.log("Prepped item for storage: ", prepped);
 			return prepped;
 		};
 		svc.prepItemForStorage = prepItemForStorage;
@@ -563,7 +563,7 @@ angular.module('com.inthetelling.story')
 			return false;
 		};
 		if (config.debugInBrowser) {
-			console.log("DataSvc:", svc);
+			// console.log("DataSvc:", svc);
 			console.log("DataSvc cache:", dataCache);
 		}
 
