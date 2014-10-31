@@ -46,7 +46,7 @@ angular.module('com.inthetelling.story')
 
 		// for episode-related activity
 		svc.captureEpisodeActivity = function (name, data) {
-			if (!appState.user.track_episode_metrics) {
+			if (config.disableAnalytics || !appState.user.track_episode_metrics) {
 				return;
 			}
 			var userActivity = {
@@ -63,7 +63,7 @@ angular.module('com.inthetelling.story')
 		// for transmedia-related activity
 		svc.captureEventActivity = function (name, eventID, data) {
 			// console.log("analyticsSvc.captureEventActivity", eventID, data);
-			if (!appState.user.track_event_actions) {
+			if (config.disableAnalytics || !appState.user.track_event_actions) {
 				return;
 			}
 
