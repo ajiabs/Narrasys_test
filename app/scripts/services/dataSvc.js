@@ -420,6 +420,7 @@ angular.module('com.inthetelling.story')
 				"url",
 				"annotator",
 				"annotation",
+				"description",
 				"data",
 				"asset_id",
 				"link_image_id",
@@ -518,11 +519,12 @@ angular.module('com.inthetelling.story')
 				delete epData._id;
 			}
 
-			// this is a conservative list for SXS only, so far. More fields will need to be added here
 			var fields = [
 				"_id",
 				"title",
+				"description",
 				"container_id",
+				// TODO: "customer_id",
 				"master_asset_id",
 				"status",
 				"languages",

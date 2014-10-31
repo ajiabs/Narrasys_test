@@ -121,7 +121,7 @@ angular.module('com.inthetelling.story')
 
 			// TEMPORARY, UNTIL THESE VALUES CAN BE SET IN THE DATABASE
 			episode.languages = ["en", "es"];
-			episode.navigation_depth = 2; // 0 for no cross-episode nav
+			//episode.navigation_depth = 2; // 0 for no cross-episode nav
 
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):
@@ -144,10 +144,6 @@ angular.module('com.inthetelling.story')
 					});
 				}
 			});
-			// FOR TESTING
-			if (episode.languages) {
-				// episode.languages.push("es");
-			}
 
 			episode = setLang(episode);
 			return episode;

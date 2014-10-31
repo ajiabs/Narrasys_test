@@ -40,7 +40,7 @@ angular.module('com.inthetelling.story')
 				ngModel.$formatters.push(function toView(data) {
 					// convert model value to view value
 					var ret = Math.floor(data / 60) + ":" + ("0" + Math.floor(data) % 60).slice(-2);
-					var fraction = (data + "").slice(4, 7);
+					var fraction = (data + "").slice(4, 6);
 					if (fraction !== "") {
 						ret = ret + "." + fraction;
 					}

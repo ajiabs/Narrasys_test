@@ -55,37 +55,27 @@ angular.module('com.inthetelling.story')
 					[
 						'episode.title[appState.lang]',
 						'episode.description[appState.lang]',
-						'episode.templateUrl'
+						'episode.templateUrl',
+						'episode.navigation_depth'
 					],
 					function () {
-						console.log("DETECTED CHANGE");
+						//						console.log("DETECTED CHANGE");
+
 						modelSvc.deriveEpisode(scope.episode);
 
 					});
-
-				// 	return scope.episode;
-				// }, function () {
-				// 	console.log("Editing episode...");
-				// 	// // TODO throw away parts of scope.episode.styles that match scene or episode defaults
-
-				// 	// // TODO trigger scene rerender (or see if just triggering its  precalculateSceneValues() would be sufficient instead)
-				// 	// // modelSvc.events[scope.episode.scene_id]
-
-				// 	// modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
-				// 	modelSvc.cache("episode", scope.episode);
-				// });
 
 				scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
 
 				scope.cancelEdit = function () {
 					// hand off to EditController (with the original to be restored)
-					scope.cancelEpisodeEdit(scope.uneditedItem);
+					scope.cancelEpisodeEdit(scope.uneditedEpisode);
 				};
 
 				scope.$on('$destroy', function () {
 					scope.watchEdits();
 					scope.dismissalWatcher();
-					scope.watchStyleEdits();
+					// scope.watchStyleEdits();
 				});
 			}
 		};

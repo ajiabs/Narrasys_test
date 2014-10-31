@@ -102,8 +102,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.cancelEpisodeEdit = function (originalEvent) {
-			// TODO
-			window.alert("TODO");
+
+			modelSvc.episodes[appState.episodeId] = angular.copy(originalEvent);
+			modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
+			appState.editEpisode = false;
+			appState.videoControlsLocked = false;
 
 		};
 

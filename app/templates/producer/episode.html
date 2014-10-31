@@ -13,11 +13,45 @@
 
 		<div class="field">
 			<div class="label">Title [{{appState.lang}}]</div>
-			<div class="input" sxs-input-i18n="episode.title" x-inputtype="'input'" autofocus></div>
+			<div class="input" ng-model-options="{ debounce: 500 }" sxs-input-i18n="episode.title" x-inputtype="'input'" autofocus></div>
 		</div>
 		<div class="field">
 			<div class="label">Description [{{appState.lang}}]</div>
-			<div class="input" sxs-input-i18n="episode.description" x-inputtype="'textarea'"></div>
+			<div class="input" ng-model-options="{ debounce: 50 }" sxs-input-i18n="episode.description" x-inputtype="'textarea'"></div>
+		</div>
+
+
+		<div class="field">
+			<div class="label">Inter-episode navigation</div>
+			<div class="input">TODO
+				<select ng-model="episode.navigation_depth">
+					<option value="0">None</option>
+					<option value="1">1 level (sibling episodes only)</option>
+					<option value="2">2 levels (course and session)</option>
+					<option value="3">3 levels (customer, course, and session)</option>
+
+				</select>
+			</div>
+		</div>
+		<div class="field">
+			<div class="label">
+				Template
+			</div>
+			<div class="input">TODO
+				<select ng-model="episode.templateUrl">
+					<option value="templates/episode/story.html">(Default)</option>
+					<option value="templates/episode/episode.html">(Unbranded)</option>
+					<option value="templates/episode/columbia.html">Columbia University</option>
+					<option value="templates/episode/columbiabusiness.html">Columbia Business School</option>
+					<option value="templates/episode/eliterate.html">e-Literate TV</option>
+					<option value="templates/episode/ewb.html">Engineers Without Borders</option>
+					<option value="templates/episode/gw.html">George Washington</option>
+					<option value="templates/episode/gwlaw.html">George Washington Law</option>
+					<option value="templates/episode/purdue.html">Purdue</option>
+					<option value="templates/episode/schoolclimatesolutions.html">School Climate Solutions</option>
+					<option value="templates/episode/usc.html">University of Southern California</option>
+				</select>
+			</div>
 		</div>
 
 
