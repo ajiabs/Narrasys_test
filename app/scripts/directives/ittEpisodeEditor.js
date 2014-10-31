@@ -9,7 +9,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, appState) {
+	.directive('ittEpisodeEditor', function ($rootScope, appState, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -45,18 +45,35 @@ angular.module('com.inthetelling.story')
 
 				scope.appState = appState;
 
-				scope.watchEdits = scope.$watch(function () {
-					return scope.episode;
-				}, function () {
-					console.log("Editing episode...");
-					// // TODO throw away parts of scope.episode.styles that match scene or episode defaults
+				// Angular1.3 dependency: watchGroup
+				// Deep-watching the entire episode is not so much with the good performance characteristics
+				// so we instead only watch the editable fields 
 
-					// // TODO trigger scene rerender (or see if just triggering its  precalculateSceneValues() would be sufficient instead)
-					// // modelSvc.events[scope.episode.scene_id]
+				// TODO worth doing this in itemEdit as well?
+				scope.watchEdits = scope.$watchGroup(
+					// I am kind of amazed that using appState.lang works here, these strings must get recalculated every tick
+					[
+						'episode.title[appState.lang]',
+						'episode.description[appState.lang]',
+						'episode.templateUrl'
+					],
+					function () {
+						console.log("DETECTED CHANGE");
+						modelSvc.deriveEpisode(scope.episode);
 
-					// modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
-					// modelSvc.cache("event", scope.episode);
-				}, true);
+					});
+
+				// 	return scope.episode;
+				// }, function () {
+				// 	console.log("Editing episode...");
+				// 	// // TODO throw away parts of scope.episode.styles that match scene or episode defaults
+
+				// 	// // TODO trigger scene rerender (or see if just triggering its  precalculateSceneValues() would be sufficient instead)
+				// 	// // modelSvc.events[scope.episode.scene_id]
+
+				// 	// modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
+				// 	modelSvc.cache("episode", scope.episode);
+				// });
 
 				scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
 
