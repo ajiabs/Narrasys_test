@@ -7,21 +7,43 @@
 		</div>
 	</div>
 	<div class="text">
-		<div class="title">
-			<a ng-if="item.noEmbed && !item.targetTop" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
-			<a ng-if="item.noEmbed && item.targetTop" target="_top" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
-			<a ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
-		</div>
-		<img ng-if="item.asset.url" ng-click="toggleDetailView()" ng-src="{{item.asset.url}}" style="cursor:pointer;cursor:hand; margin: 0.25em 0">
-		<div ng-bind-html="item.display_description"></div>
+		<span ng-if="item.noEmbed">
+			<span ng-if="item.targetTop">
+				<div class="title">
+
+					<a class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+				</div>
+				<a ng-if="item.asset.url" class="escapelink" ng-click="outgoingLink(item.url)">
+					<img ng-src="{{item.asset.url}}">
+				</a>
+			</span>
+			<span ng-if="!item.targetTop">
+				<div class="title">
+					<a target="_top" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+				</div>
+				<a target="_top" ng-click="outgoingLink(item.url)">
+					<img ng-src="{{item.asset.url}}">
+				</a>
+			</span>
+
+		</span>
+		<span ng-if="!item.noEmbed">
+			<div class="title">
+				<a ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
+			</div>
+			<img ng-click="toggleDetailView()" ng-src="{{item.asset.url}}">
+		</span>
+
 	</div>
-	<div class="itemDetail" ng-if="item.showInlineDetail">
-		<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
-		<div class="iframeContainer">
-			<div ng-include="'templates/loading.html'"></div>
-			<!-- <iframe style="display:none;" onload="console.log('load',this.src);if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
-			<iframe ng-src="{{item.url}}"></iframe>
-		</div>
-	</div>
-	<div class="clear "></div>
+	<div ng-bind-html="item.display_description"></div>
 </div>
+
+<div class="itemDetail" ng-if="item.showInlineDetail">
+	<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
+	<div class="iframeContainer">
+		<div ng-include="'templates/loading.html'"></div>
+		<!-- <iframe style="display:none;" onload="console.log('load',this.src);if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
+		<iframe ng-src="{{item.url}}"></iframe>
+	</div>
+</div>
+<div class="clear "></div>
