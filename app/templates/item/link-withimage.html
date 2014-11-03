@@ -13,22 +13,20 @@
 		<span ng-if="item.noEmbed">
 			<span ng-if="item.targetTop">
 				<div class="title">
-
-					<a class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
-				</div>
-				<a ng-if="item.asset.url" class="escapelink" ng-click="outgoingLink(item.url)">
-					<img ng-src="{{item.asset.url}}">
-				</a>
-			</span>
-			<span ng-if="!item.targetTop">
-				<div class="title">
 					<a target="_top" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
 				</div>
 				<a target="_top" ng-click="outgoingLink(item.url)">
 					<img ng-src="{{item.asset.url}}">
 				</a>
 			</span>
-
+			<span ng-if="!item.targetTop">
+				<div class="title">
+					<a class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+				</div>
+				<a ng-if="item.asset.url" ng-click="outgoingLink(item.url)">
+					<img ng-src="{{item.asset.url}}">
+				</a>
+			</span>
 		</span>
 		<span ng-if="!item.noEmbed">
 			<div class="title">
