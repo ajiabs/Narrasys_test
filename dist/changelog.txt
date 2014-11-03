@@ -504,3 +504,6 @@ Fix for STORY-99: window content needs to be taller than viewport or Chrome goes
 fixing minor inefficiency in episode templates
 bugfix to PIP template
 
+------------------------------------------------
+Changes in v4.0.58:
+fixes to link-withimage template
