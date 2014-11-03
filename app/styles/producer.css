@@ -73,13 +73,18 @@
 /* Angular removes the type=text attribute when you use ng-model (grr) so can't use [type="text"] */
 
 .authoringForm .input input,
-.authoringForm .input textarea {
+.authoringForm .input textarea,
+.authoringForm .input select {
 	width: 100%;
-	padding: 0.3em;
 	border: 1px solid #CCC;
 	border-radius: 0.3em;
 	font-family: sans-serif;
 	font-size: 13px;
+}
+.authoringForm .input input,
+.authoringForm .input textarea,
+.authoringForm .input option {
+	padding: 0.3em;
 }
 .authoringForm textarea {
 	max-height: 2em;
@@ -103,6 +108,9 @@
 }
 .authoringForm .button-prev {
 	font-size: 0.7em;
+}
+.authoringForm option {
+	padding: 0.2em 0;
 }
 /* ------ */
 

@@ -121,7 +121,7 @@ angular.module('com.inthetelling.story')
 
 			// TEMPORARY, UNTIL THESE VALUES CAN BE SET IN THE DATABASE
 			episode.languages = ["en", "es"];
-			//episode.navigation_depth = 2; // 0 for no cross-episode nav
+			// episode.navigation_depth = 2; // 0 for no cross-episode nav
 
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):
@@ -485,6 +485,56 @@ angular.module('com.inthetelling.story')
 					event.styleCss = event.styleCss + " " + event.layouts.join(' ');
 				}
 			});
+		};
+
+		svc.resolveEpisodeContainers = function (epId) {
+			// Constructs the episode's parents[] array, up to its navigation depth plus (skipping the episode container itself)
+			// Also sets the episode's nextEpisodeContainer and prevEpisodeContainer
+
+			// all parent containers should have been loaded by the time this is called, so we don't need to worry about asynch at each step
+			console.log("resolveEpisodeContainers", epId);
+			var episode = svc.episodes[epId];
+			episode.parents = [];
+			delete episode.previousEpisodeContainer;
+			delete episode.nextEpisodeContainer;
+			if (episode.navigation_depth > 0) {
+				setParents(Number(episode.navigation_depth) + 1, epId, episode.container_id);
+			} else {
+				episode.navigation_depth = 0;
+			}
+		};
+
+		var setParents = function (depth, epId, containerId) {
+
+			console.log("setParents", depth, epId, containerId);
+			var episode = svc.episodes[epId];
+
+			// THis will build up the parents array backwards, starting at the end
+			if (depth <= episode.navigation_depth) { // skip the episode container
+				episode.parents[depth - 1] = svc.containers[containerId];
+			}
+
+			if (depth === episode.navigation_depth) {
+				// as long as we're at the sibling level, get the next and previous episodes 
+				// (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
+				for (var i = 0; i < svc.containers[containerId].children.length; i++) {
+					var c = svc.containers[containerId].children[i];
+					if (c.episodes[0] === epId) {
+						if (i > 0) {
+							// must embed directly from container cache, do not use an entry in children[] (they don't get derived!)
+							episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[i - 1]._id];
+						}
+						if (i < svc.containers[containerId].children.length - 1) {
+							episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[i + 1]._id];
+						}
+					}
+				}
+			}
+
+			// iterate
+			if (depth > 1) {
+				setParents(depth - 1, epId, svc.containers[containerId].parent_id);
+			}
 		};
 
 		svc.episode = function (epId) {

@@ -62,6 +62,7 @@ angular.module('com.inthetelling.story')
 						//						console.log("DETECTED CHANGE");
 
 						modelSvc.deriveEpisode(scope.episode);
+						modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 
 					});
 

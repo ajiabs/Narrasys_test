@@ -53,8 +53,8 @@
 					</p>
 				</div>
 				<div class="crossEpisode">
-					<a class="prevEpisode" ng-if="episode.previousEpisodeContainer" ng-href="/#/{{crossEpisodePath}}/{{episode.previousEpisodeContainer.episodes[0]}}" title="{{episode.previousEpisodeContainer.display_name}}">Previous episode</a>
-					<a class="nextEpisode" ng-if="episode.nextEpisodeContainer" ng-href="/#/{{crossEpisodePath}}/{{episode.nextEpisodeContainer.episodes[0]}}" title="{{episode.nextEpisodeContainer.display_name}}">Next Episode</a>
+					<a class="prevEpisode" ng-if="episode.previousEpisodeContainer" ng-href="/#/{{appState.crossEpisodePath}}/{{episode.previousEpisodeContainer.episodes[0]}}" title="{{episode.previousEpisodeContainer.display_name}}">Previous episode</a>
+					<a class="nextEpisode" ng-if="episode.nextEpisodeContainer" ng-href="/#/{{appState.crossEpisodePath}}/{{episode.nextEpisodeContainer.episodes[0]}}" title="{{episode.nextEpisodeContainer.display_name}}">Next Episode</a>
 				</div>
 
 

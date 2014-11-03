@@ -62,7 +62,6 @@ angular.module('com.inthetelling.story')
 		}, function (a) {
 			if (a) {
 				document.title = "STORY: " + a;
-				initCrossnav();
 				episodeWatcher(); // stop watching;
 			}
 		});
@@ -87,67 +86,6 @@ angular.module('com.inthetelling.story')
 		$scope.now = new Date();
 		$scope.currentdate = new Date();
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-		/* BEGIN CROSS-EPISODE NAVIGATION */
-		/* This probably belongs in modelSvc. sigh */
-
-		var initCrossnav = function () {
-			if ($scope.episode.navigation_depth > 0) {
-				$scope.episode.parents = [];
-				// add 1 to the depth, because we're going to skip the episode container later
-				getParent($scope.episode.navigation_depth + 1, $scope.episode.container_id);
-			}
-
-		};
-		var getParent = function (depth, container_id) {
-			if (modelSvc.containers[container_id]) {
-				setParent(depth, container_id);
-			} else {
-				var parentWatcher = $scope.$watch(function () {
-					return modelSvc.containers[container_id];
-				}, function (a) {
-					if (a) {
-						parentWatcher(); // stop watching
-						setParent(depth, container_id);
-					}
-				});
-			}
-		};
-
-		var setParent = function (depth, container_id) {
-			if (depth <= $scope.episode.navigation_depth) { // skip the episode container
-				$scope.episode.parents[depth - 1] = modelSvc.containers[container_id];
-			}
-
-			if (depth === $scope.episode.navigation_depth) {
-				// as long as we're here, get the next and previous episodes (only within the session.
-				// This won't let us find e.g. the previous episode from S4E1; 
-				// we're not guaranteed to have loaded data for other sessions...  TODO fancy tree traversal)
-				// console.log("Siblings will be here: ", modelSvc.containers[container_id]);
-				$scope.crossEpisodePath = appState.crossEpisodePath;
-				for (var i = 0; i < modelSvc.containers[container_id].children.length; i++) {
-					var c = modelSvc.containers[container_id].children[i];
-					if (c.episodes[0] === appState.episodeId) {
-
-						if (i > 0) {
-							// embed directly from container cache, do not use an entry in children[] (they don't get derived!)
-							$scope.episode.previousEpisodeContainer = modelSvc.containers[modelSvc.containers[container_id].children[i - 1]._id];
-						}
-						if (i < modelSvc.containers[container_id].children.length - 1) {
-							$scope.episode.nextEpisodeContainer = modelSvc.containers[modelSvc.containers[container_id].children[i + 1]._id];
-						}
-					}
-
-				}
-
-			}
-			// iterate
-			if (depth > 1) {
-				getParent(depth - 1, modelSvc.containers[container_id].parent_id);
-			}
-		};
-
-		/* END CROSS-EPISODE NAVIGATION */
 
 		/* BEGIN TOOLBAR HIDE/REVEAL- - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 		// TODO put this in own controller

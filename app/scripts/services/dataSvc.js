@@ -230,6 +230,9 @@ angular.module('com.inthetelling.story')
 					// iterate to parent container
 					if (container[0].parent_id) {
 						getContainer(container[0].parent_id, episodeId);
+					} else {
+						// all parent containers now loaded:
+						modelSvc.resolveEpisodeContainers(episodeId);
 					}
 				});
 
@@ -280,9 +283,6 @@ angular.module('com.inthetelling.story')
 			}).success(function (data) {
 				// console.log("Updated event:", data);
 				return defer.resolve(data);
-			}).error(function (errData, status) {
-				// console.log("Failed:", errData, status);
-				return defer.reject();
 			});
 			return defer.promise;
 		};
@@ -296,9 +296,6 @@ angular.module('com.inthetelling.story')
 			}).success(function (data) {
 				// console.log("Updated event:", data);
 				return defer.resolve(data);
-			}).error(function (data, status, headers) {
-				// console.log("Failed:", data, status, headers);
-				return defer.reject();
 			});
 			return defer.promise;
 		};
@@ -311,9 +308,6 @@ angular.module('com.inthetelling.story')
 			}).success(function (data) {
 				// console.log("Deleted:", data);
 				return defer.resolve(data);
-			}).error(function (data, status, headers) {
-				// console.log("Failed to delete:", data, status, headers);
-				return defer.reject();
 			});
 			return defer.promise;
 		};
@@ -324,16 +318,15 @@ angular.module('com.inthetelling.story')
 
 				/* 
 				This properly extracts that container data into the cache.  
-				We're not really doing much with that cache data yet, though, so disabling it for now.
 				TODO episodelist currently works from the raw data instead of the cache; changing that to use the cache
 				would let us get proper sorting and i18n
-
+				*/
 				// step through the tree customer->course->session->episode and cache each separately
 				angular.forEach(containers, function (customer) {
 					// console.log("Customer", customer.name.en, customer);
 					modelSvc.cache("container", {
 						_id: customer._id,
-						type: "Customer",
+						// type: "Customer",
 						name: angular.copy(customer.name)
 					});
 					angular.forEach(customer.children, function (course) {
@@ -341,7 +334,7 @@ angular.module('com.inthetelling.story')
 						modelSvc.cache("container", {
 							_id: course._id,
 							parent_id: course.parent_id,
-							type: "Course",
+							// type: "Course",
 							name: angular.copy(course.name)
 						});
 						angular.forEach(course.children, function (session) {
@@ -349,7 +342,7 @@ angular.module('com.inthetelling.story')
 							modelSvc.cache("container", {
 								_id: session._id,
 								parent_id: session.parent_id,
-								type: "Session",
+								// type: "Session",
 								name: angular.copy(session.name)
 							});
 							angular.forEach(session.children, function (episode) {
@@ -357,7 +350,7 @@ angular.module('com.inthetelling.story')
 								modelSvc.cache("container", {
 									_id: episode._id,
 									parent_id: episode.parent_id,
-									type: "Episode",
+									// type: "Episode",
 									name: angular.copy(episode.name)
 								});
 							});
@@ -365,9 +358,7 @@ angular.module('com.inthetelling.story')
 					});
 				});
 				// TODO having elaborately cached each individual container, do something useful with it (convert the IDs into cross-cache references for starters)
-				//episodeList interface just uses the raw returned json for now. 
 
-				*/
 				return containers;
 			});
 		};
