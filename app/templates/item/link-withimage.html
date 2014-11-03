@@ -8,7 +8,7 @@
 	</div>
 	<div class="text">
 		<span ng-if="item.noEmbed">
-			<span ng-if="item.targetTop">
+			<span ng-if="!item.targetTop">
 				<div class="title">
 					<a class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.title || '(Untitled)'"></a>
 				</div>
@@ -16,7 +16,7 @@
 					<img ng-src="{{item.asset.url}}">
 				</a>
 			</span>
-			<span ng-if="!item.targetTop">
+			<span ng-if="item.targetTop">
 				<div class="title">
 					<a target="_top" ng-click="outgoingLink(item.url)" ng-bind-html="item.title || '(Untitled)'"></a>
 				</div>
