@@ -1,6 +1,3 @@
-<a class="edit-event" ng-click="editItem()">
-	<span>Edit item</span>
-</a>
 <div class="itemTemplate">
 	<div class="itemHead">
 		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
@@ -13,8 +10,7 @@
 		<span ng-if="item.noEmbed">
 			<span ng-if="item.targetTop">
 				<div class="title">
-
-					<a class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+					<a class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.title || '(Untitled)'"></a>
 				</div>
 				<a ng-if="item.asset.url" class="escapelink" ng-click="outgoingLink(item.url)">
 					<img ng-src="{{item.asset.url}}">
@@ -22,7 +18,7 @@
 			</span>
 			<span ng-if="!item.targetTop">
 				<div class="title">
-					<a target="_top" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+					<a target="_top" ng-click="outgoingLink(item.url)" ng-bind-html="item.title || '(Untitled)'"></a>
 				</div>
 				<a target="_top" ng-click="outgoingLink(item.url)">
 					<img ng-src="{{item.asset.url}}">
@@ -32,7 +28,7 @@
 		</span>
 		<span ng-if="!item.noEmbed">
 			<div class="title">
-				<a ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
+				<a ng-click="toggleDetailView()" ng-bind-html="item.title || '(Untitled)'"></a>
 			</div>
 			<img ng-click="toggleDetailView()" ng-src="{{item.asset.url}}">
 		</span>
