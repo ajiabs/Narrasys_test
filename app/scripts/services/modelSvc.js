@@ -120,8 +120,18 @@ angular.module('com.inthetelling.story')
 			}
 
 			// TEMPORARY, UNTIL THESE VALUES CAN BE SET IN THE DATABASE
-			episode.languages = ["en", "es"];
-			// episode.navigation_depth = 2; // 0 for no cross-episode nav
+			episode.languages = [{
+				"code": "en"
+			}, {
+				"code": "es",
+				"default": true
+			}];
+			angular.forEach(episode.languages, function (lang) {
+				if (lang.default) {
+					episode.defaultLanguage = lang.code;
+					appState.lang = lang.code;
+				}
+			});
 
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):
@@ -340,7 +350,7 @@ angular.module('com.inthetelling.story')
 			if (!appState.lang) {
 				appState.lang = "en";
 			}
-			angular.forEach(["title", "annotation", "description", "name"], function (field) {
+			angular.forEach(["title", "annotator", "annotation", "description", "name"], function (field) {
 				if (obj[field]) {
 					if (typeof (obj[field]) === 'string') {
 						obj["display_" + field] = obj[field];
@@ -409,14 +419,16 @@ angular.module('com.inthetelling.story')
 			var annotators = {};
 			angular.forEach(items, function (event) {
 				if (event._type === 'Annotation' && event.annotator) {
-					annotators[event.annotator] = {
+					// key annotators by the default-language version of the name
+					// WARN this will fail if no english version exists! TODO
+					annotators[event.annotator[episode.defaultLanguage]] = {
 						"name": event.annotator,
 						"annotation_image_id": event.annotation_image_id
 					};
 				}
 			});
 			episode.annotators = annotators;
-			// console.log(episode.annotators);
+			console.log(episode.annotators);
 
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.

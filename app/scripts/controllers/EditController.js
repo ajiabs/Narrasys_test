@@ -224,7 +224,9 @@ TODO merge 'comment' with 'annotation'?
 			if (appState.product === 'sxs') {
 				// SxS overrides a lot of the item options:
 				stub.sxs = true; // temporary?
-				stub.annotator = 'Professor Smith'; // TODO get real name from somewhere
+				stub.annotator = {
+					en: 'Professor Smith' // TODO get real name from somewhere
+				};
 				stub.layouts = ["windowFg"];
 				stub.end_time = appState.time;
 				stub.stop = true;

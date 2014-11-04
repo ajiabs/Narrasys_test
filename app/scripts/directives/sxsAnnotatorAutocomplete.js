@@ -11,7 +11,7 @@
 */
 
 angular.module('com.inthetelling.story')
-	.directive('sxsAnnotatorAutocomplete', function (modelSvc, $timeout) {
+	.directive('sxsAnnotatorAutocomplete', function (modelSvc, $timeout, appState) {
 		return {
 			require: 'ngModel',
 			templateUrl: "templates/producer/annotator-autocomplete.html",
@@ -21,6 +21,7 @@ angular.module('com.inthetelling.story')
 			},
 			link: function (scope, element, attrs, ngModelController) {
 
+				scope.appState = appState;
 				angular.forEach(scope.annotators, function (annotator) {
 					if (annotator.annotation_image_id) {
 						annotator.imageUrl = modelSvc.assets[annotator.annotation_image_id].url;
@@ -34,7 +35,7 @@ angular.module('com.inthetelling.story')
 				if (scope.annotators[scope.item.annotator] && scope.annotators[scope.item.annotator].annotation_image_id) {
 					scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
 				}
-				scope.searchText = scope.item.annotator;
+				scope.searchText = scope.item.annotator[appState.lang];
 				scope.filteredAnnotators = angular.copy(scope.annotators);
 				scope.preselectedItem = -1;
 
@@ -63,8 +64,11 @@ angular.module('com.inthetelling.story')
 						scope.preselectedItem = -1;
 						var newFilter = {};
 						angular.forEach(scope.annotators, function (annotator) {
-							if (annotator.name.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1) {
-								newFilter[annotator.name] = annotator;
+
+							var name = annotator.name[appState.lang] ? annotator.name[appState.lang] : annotator.name.en;
+
+							if (name.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1) {
+								newFilter[annotator.name[appState.lang]] = annotator;
 							}
 						});
 
@@ -94,6 +98,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.select = function (annotator) {
+					console.log("Selected ", annotator);
 					scope.preselectedItem = -1;
 					scope.annotator.name = annotator.name;
 					if (annotator.annotation_image_id) {
@@ -105,8 +110,8 @@ angular.module('com.inthetelling.story')
 						delete scope.annotator.imageUrl;
 						delete scope.item.asset;
 					}
-					ngModelController.$setViewValue(annotator.name);
-					scope.searchText = annotator.name;
+					ngModelController.$setViewValue(annotator.name[appState.lang] || annotator.name.en);
+					scope.searchText = annotator.name[appState.lang] || annotator.name.en;
 
 					//TODO  allow upload to replace image
 				};
@@ -130,14 +135,23 @@ angular.module('com.inthetelling.story')
 				scope.addNewAnnotator = function () {
 					var annotatorName = scope.searchText; // TODO sanitize me!!!
 					var newAnnotator = {
-						"name": annotatorName,
+						"name": {
+							"en": annotatorName // make sure we have something consistent to key against
+						},
 						"imageUrl": "",
 						"annotation_image_id": false
 					};
-					scope.annotators.annotatorName = newAnnotator; // make available in future transcript edits
-					scope.annotator.name = annotatorName;
+					if (appState.lang !== 'en') {
+						newAnnotator.name[appState.lang] = annotatorName;
+					}
+					console.log(newAnnotator);
+					// make available in future transcript edits
+					scope.annotators[annotatorName] = angular.copy(newAnnotator);
+					console.log(scope.annotators);
+
+					scope.annotator = angular.copy(newAnnotator);
 					delete scope.annotator.imageUrl;
-					ngModelController.$setViewValue(annotatorName);
+					ngModelController.$setViewValue(annotatorName[appState.lang]);
 
 					// trigger autocomplete to match the newly added annotator
 					scope.handleAutocomplete();

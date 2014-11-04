@@ -7,7 +7,7 @@
 	<div class="autocompleteList animate transitionFade" ng-if="autoCompleting">
 		<div class="autocompleteItem" ng-repeat="annotator in filteredAnnotators | orderBy:'name'" ng-click="select(annotator)" ng-class="{selected: ($index == preselectedItem)}" style="white-space: nowrap">
 			<img ng-src="{{annotator.imageUrl}}">
-			<span ng-bind-html="annotator.name| highlightSubstring: searchText"></span>
+			<span ng-bind-html="annotator.name.en| highlightSubstring: searchText"></span>
 		</div>
 	</div>
 </div>
