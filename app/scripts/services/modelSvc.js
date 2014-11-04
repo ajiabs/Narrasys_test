@@ -354,6 +354,7 @@ angular.module('com.inthetelling.story')
 			angular.forEach(["title", "annotator", "annotation", "description", "name"], function (field) {
 				if (obj[field]) {
 					if (typeof (obj[field]) === 'string') {
+						// TODO can delete this after all data has been migrated to object form
 						obj["display_" + field] = obj[field];
 					} else {
 

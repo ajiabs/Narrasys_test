@@ -43,6 +43,38 @@ angular.module('com.inthetelling.story')
 					}
 				}
 
+				// extract episode languages for the form
+				scope.langForm = {};
+				for (var j = 0; j < scope.episode.languages.length; j++) {
+					scope.langForm[scope.episode.languages[j].code] = true;
+				}
+				scope.langForm[scope.episode.defaultLanguage] = true;
+
+				scope.languageWatcher = scope.$watch(function () {
+					return scope.langForm;
+				}, function () {
+					console.log("Scope langForm changed", scope.langForm);
+					// TODO ensure a default language is selected
+					var languageCount = 0;
+					var lastSelectedLanguage = "";
+					for (var lang in scope.langForm) {
+						console.log("L", lang, scope.langForm[lang]);
+						if (scope.langForm[lang]) {
+							languageCount++;
+							lastSelectedLanguage = lang;
+						} else {
+							if (scope.episode.defaultLanguage === lang) {
+								scope.episode.defaultLanguage = false;
+							}
+						}
+					}
+					scope.languageCount = languageCount;
+					if (scope.episode.defaultLanguage === false) {
+						scope.episode.defaultLanguage = lastSelectedLanguage; // ensure a valid selection
+					}
+
+				}, true);
+
 				scope.appState = appState;
 
 				// Angular1.3 dependency: watchGroup
@@ -76,6 +108,7 @@ angular.module('com.inthetelling.story')
 				scope.$on('$destroy', function () {
 					scope.watchEdits();
 					scope.dismissalWatcher();
+					scope.languageWatcher();
 					// scope.watchStyleEdits();
 				});
 			}

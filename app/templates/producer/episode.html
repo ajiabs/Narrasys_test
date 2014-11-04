@@ -20,7 +20,6 @@
 			<div class="input" ng-model-options="{ debounce: 50 }" sxs-input-i18n="episode.description" x-inputtype="'textarea'"></div>
 		</div>
 
-
 		<div class="field">
 			<div class="label">Inter-episode navigation</div>
 			<div class="input">
@@ -29,7 +28,43 @@
 					<option value="1">1 level (sibling episodes only)</option>
 					<option value="2">2 levels (course and session)</option>
 					<option value="3">3 levels (customer, course, and session)</option>
+				</select>
+			</div>
+		</div>
 
+		<div class="field">
+			<div class="label">Languages</div>
+			<div class="input">
+				<label>
+					<input type="checkbox" ng-model="langForm.en">English
+				</label>
+				<label>
+					<input type="checkbox" ng-model="langForm.fr">French
+				</label>
+				<label>
+					<input type="checkbox" ng-model="langForm.es">Spanish
+				</label>
+				<label>
+					<input type="checkbox" ng-model="langForm.pt">Portuguese
+				</label>
+				<label>
+					<input type="checkbox" ng-model="langForm.de">German
+				</label>
+				<label>
+					<input type="checkbox" ng-model="langForm.it">Italian
+				</label>
+			</div>
+		</div>
+		<div class="field" ng-if="languageCount>1">
+			<div class="label">Default language</div>
+			<div class="input">
+				<select size="1" ng-model="episode.defaultLanguage">
+					<option ng-disabled="!langForm.en" value="en">English</option>
+					<option ng-disabled="!langForm.fr" value="fr">French</option>
+					<option ng-disabled="!langForm.es" value="es">Spanish</option>
+					<option ng-disabled="!langForm.pt" value="pt">Portuguese</option>
+					<option ng-disabled="!langForm.de" value="pt">German</option>
+					<option ng-disabled="!langForm.de" value="it">Italian</option>
 				</select>
 			</div>
 		</div>
