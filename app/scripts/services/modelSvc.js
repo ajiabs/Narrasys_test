@@ -121,11 +121,14 @@ angular.module('com.inthetelling.story')
 
 			// TEMPORARY, UNTIL THESE VALUES CAN BE SET IN THE DATABASE
 			episode.languages = [{
-				"code": "en"
-			}, {
-				"code": "es",
-				"default": true
-			}];
+					"code": "en",
+					"default": true
+				}
+				// , {
+				// 	"code": "es",
+				// 	
+				// }
+			];
 			angular.forEach(episode.languages, function (lang) {
 				if (lang.default) {
 					episode.defaultLanguage = lang.code;
