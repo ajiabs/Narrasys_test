@@ -183,7 +183,7 @@
 	padding-bottom: 3px;
 	display: block;
 }
-.sxsicon:before {
+.eventIcon:before {
 	font-size: 2.5em;
 	font-family: Story;
 	display: block;
@@ -191,7 +191,7 @@
 .edit-event {
 	color: #FFF;
 }
-.sxsicon {
+.eventIcon {
 	position: absolute;
 	top: 2em;
 	left: 1em;
@@ -207,35 +207,35 @@
 	color: #000;
 }
 .button-comment:before,
-.sxsicon.icon-comment:before {
+.eventIcon.icon-comment:before {
 	content: "\e600";
 }
 .button-link:before,
-.sxsicon.icon-link:before {
+.eventIcon.icon-link:before {
 	content: "\e604";
 }
 .button-question:before,
-.sxsicon.icon-question:before {
+.eventIcon.icon-question:before {
 	content: "\e605";
 }
 .button-image:before,
-.sxsicon.icon-image:before {
+.eventIcon.icon-image:before {
 	content: "\e603";
 }
 .button-file:before,
-.sxsicon.icon-file:before {
+.eventIcon.icon-file:before {
 	content: "\e602";
 }
 .button-video:before,
-.sxsicon.icon-videos:before {
+.eventIcon.icon-videos:before {
 	content: "\e606";
 }
 .button-scene:before,
-.sxsicon.icon-scene:before {
+.eventIcon.icon-scene:before {
 	content: "\e60f";
 }
 .button-episode:before,
-.sxsicon.icon-episode:before {
+.eventIcon.icon-episode:before {
 	content: "\e610";
 }
 .sxs-item {
