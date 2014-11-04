@@ -71,7 +71,7 @@
 	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"></div>
 </div>
 
-<div ng-if="appState.product == 'sxs' || appState.product == 'producer'" sxs-add-content></div>
+<div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" sxs-add-content></div>
 
 
 <div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>

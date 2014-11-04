@@ -193,7 +193,7 @@ h4 {
 	z-index: 8;
 }
 .autoscroll,
-.addcontent,
+.controlPanel > div,
 .item .edit-event {
 	z-index: 9;
 }
