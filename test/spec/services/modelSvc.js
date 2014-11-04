@@ -172,4 +172,68 @@ describe('Service: modelSvc', function () {
 		expect(modelSvc.events.annotation1.end_time).toEqual(10);
 	});
 
+	it('Episode annotators should generate consistent keys', function () {
+		modelSvc.cache("event", {
+			"_id": "an1",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html", // TODO this shouldn't be required
+			"annotator": {
+				en: "Mister Smith",
+				es: "BB",
+				aa: "AA",
+				et: "CC"
+			}
+		});
+
+		modelSvc.resolveEpisodeEvents("EP1");
+
+		// key should be english followed by other available languages 
+		expect(modelSvc.episodes.EP1.annotators["Mister Smith / AA / BB / CC"].key).toEqual("Mister Smith / AA / BB / CC");
+	});
+
+	it('Episode annotators should combine annotators correctly', function () {
+		// // This would be nice but is complicated and  we can survive without it. TODO
+
+		// modelSvc.cache("event", {
+		// 	"_id": "an1",
+		// 	"_type": "Annotation",
+		// 	"start_time": 1,
+		// 	"episode_id": "EP1",
+		// 	"templateUrl": "templates/item/default.html", // TODO this shouldn't be required
+		// 	"annotator": {
+		// 		en: "Mister Smith",
+		// 	}
+		// });
+		// modelSvc.cache("event", {
+		// 	"_id": "an2",
+		// 	"_type": "Annotation",
+		// 	"start_time": 1,
+		// 	"episode_id": "EP1",
+		// 	"templateUrl": "templates/item/default.html", // TODO this shouldn't be required
+		// 	"annotator": {
+		// 		en: "Mister Smith",
+		// 		aa: "AA",
+		// 	}
+		// });
+		// modelSvc.cache("event", {
+		// 	"_id": "an3",
+		// 	"_type": "Annotation",
+		// 	"start_time": 1,
+		// 	"episode_id": "EP1",
+		// 	"templateUrl": "templates/item/default.html", // TODO this shouldn't be required
+		// 	"annotator": {
+		// 		en: "Mister Smith",
+		// 		bb: "BB"
+		// 	}
+		// });
+
+		// modelSvc.resolveEpisodeEvents("EP1");
+
+		// // Those translations should be merged into a single key
+		// expect(Object.keys(modelSvc.episodes.EP1.annotators)).toEqual(["Mister Smith / AA / BB"]);
+
+	});
+
 });

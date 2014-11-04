@@ -357,7 +357,7 @@ angular.module('com.inthetelling.story')
 					} else {
 
 						// for debugging
-						//						obj[field].es = "This is a fake spanish-language string for testing";
+						// obj[field].es = "test: ES";
 
 						if (obj[field][appState.lang]) {
 							obj["display_" + field] = obj[field][appState.lang];
@@ -419,16 +419,27 @@ angular.module('com.inthetelling.story')
 			var annotators = {};
 			angular.forEach(items, function (event) {
 				if (event._type === 'Annotation' && event.annotator) {
-					// key annotators by the default-language version of the name
-					// WARN this will fail if no english version exists! TODO
-					annotators[event.annotator[episode.defaultLanguage]] = {
+					// Some overkill here, but what the heck.  Construct a key: english followed by other keys .
+					var langs = Object.keys(event.annotator).sort();
+					var key = event.annotator.en;
+					for (var i = 0; i < langs.length; i++) {
+						if (langs[i] !== 'en') {
+
+							if (annotators[key]) {
+								// a similar entry with fewer translations exists; TODO grab it and merge it into this one
+							}
+
+							key = key + " / " + event.annotator[langs[i]];
+						}
+					}
+					annotators[key] = {
+						"key": key,
 						"name": event.annotator,
 						"annotation_image_id": event.annotation_image_id
 					};
 				}
 			});
 			episode.annotators = annotators;
-			console.log(episode.annotators);
 
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.

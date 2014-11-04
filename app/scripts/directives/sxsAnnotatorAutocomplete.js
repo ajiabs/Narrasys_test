@@ -30,16 +30,17 @@ angular.module('com.inthetelling.story')
 				// TODO prefill current annotator image
 				scope.annotator = {
 					name: scope.item.annotator
-
 				};
+
 				if (scope.annotators[scope.item.annotator] && scope.annotators[scope.item.annotator].annotation_image_id) {
 					scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
 				}
+
 				scope.searchText = scope.item.annotator[appState.lang];
 				scope.filteredAnnotators = angular.copy(scope.annotators);
 				scope.preselectedItem = -1;
 
-				element.find('.inputOnly').bind("keydown", function (event) {
+				element.find('.annotatorChooser').bind("keydown", function (event) {
 					switch (event.which) {
 					case 40: // down arrow
 						scope.preselectedItem = (scope.preselectedItem + 1) % Object.keys(scope.filteredAnnotators).length;
@@ -57,6 +58,8 @@ angular.module('com.inthetelling.story')
 					}
 				});
 
+				// TODO destroy langWatcher when unlinking
+
 				scope.handleAutocomplete = function () {
 					scope.annotator.name = '';
 					if (scope.searchText) {
@@ -64,11 +67,9 @@ angular.module('com.inthetelling.story')
 						scope.preselectedItem = -1;
 						var newFilter = {};
 						angular.forEach(scope.annotators, function (annotator) {
-
-							var name = annotator.name[appState.lang] ? annotator.name[appState.lang] : annotator.name.en;
-
-							if (name.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1) {
-								newFilter[annotator.name[appState.lang]] = annotator;
+							console.log(annotator.key.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1, annotator.key.toLowerCase(), scope.searchText.toLowerCase());
+							if (annotator.key.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1) {
+								newFilter[annotator.key] = annotator;
 							}
 						});
 
@@ -100,7 +101,7 @@ angular.module('com.inthetelling.story')
 				scope.select = function (annotator) {
 					console.log("Selected ", annotator);
 					scope.preselectedItem = -1;
-					scope.annotator.name = annotator.name;
+
 					if (annotator.annotation_image_id) {
 						scope.item.annotation_image_id = annotator.annotation_image_id;
 						scope.item.asset = modelSvc.assets[annotator.annotation_image_id];
@@ -110,15 +111,16 @@ angular.module('com.inthetelling.story')
 						delete scope.annotator.imageUrl;
 						delete scope.item.asset;
 					}
-					ngModelController.$setViewValue(annotator.name[appState.lang] || annotator.name.en);
-					scope.searchText = annotator.name[appState.lang] || annotator.name.en;
+
+					ngModelController.$setViewValue(annotator.name); // passes annotator name back to item
+					scope.searchText = annotator.key;
 
 					//TODO  allow upload to replace image
 				};
 
 				scope.autoCompleting = false;
 				scope.showAutocomplete = function () {
-					var inputField = element.find('.inputOnly')[0];
+					var inputField = element.find('.annotatorChooser')[0];
 					inputField.setSelectionRange(0, inputField.value.length);
 					scope.autoCompleting = true;
 				};

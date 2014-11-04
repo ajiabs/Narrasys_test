@@ -112,6 +112,15 @@
 .authoringForm option {
 	padding: 0.2em 0;
 }
+.annotatorChooser {
+	border-color: transparent !important;
+	box-shadow: none !important;
+}
+.annotatorChooser:focus {
+	border-color: #666 !important;
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3) !important;
+	color: #000 !important;
+}
 /* ------ */
 
 .producer.addcontent {
