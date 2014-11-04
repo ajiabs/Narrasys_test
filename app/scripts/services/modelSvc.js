@@ -125,12 +125,14 @@ angular.module('com.inthetelling.story')
 				"default": true
 			}, {
 				"code": "es",
-
 			}];
+
 			angular.forEach(episode.languages, function (lang) {
 				if (lang.default) {
 					episode.defaultLanguage = lang.code;
-					appState.lang = lang.code;
+					if (!appState.lang) {
+						appState.lang = lang.code;
+					}
 				}
 			});
 

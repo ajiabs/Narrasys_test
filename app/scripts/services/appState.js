@@ -59,7 +59,7 @@ angular.module('com.inthetelling.story')
 			svc.editEvent = false; // Scene or item currently being edited by user
 			svc.editEpisode = false; // Episode currently being edited by user. yes I did kind of paint myself into a corner here
 			// svc.youtubeIsReady = false; // Set to true when youtube API finishes loading.  DO NOT set this to false on init, otherwise navigating from episode to episode breaks (we reinit on new episode but that won't trigger youtube's ready event)
-			svc.lang = "en";
+			svc.lang = false;
 		};
 		svc.init();
 
