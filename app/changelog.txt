@@ -547,3 +547,19 @@ tweaked PIP
 ------------------------------------------------
 Changes in v4.2.10:
 typo
+------------------------------------------------
+Changes in v4.2.11:
+switching default back to english
+i18n annotators is... working? can it be?
+i18n for annotator and languages, annotator-autocomplete still WIP
+bug fix in link-withimage
+revised episode container loading
+fixes to link-withimage template
+Removing or canceling scenes no longer leaves a ghost marker in the timeline
+more episode editing wip
+more performant watch in episodeEditor — WARNING angular1.3 dependency
+quieter analyticsSvc
+fixed z-index problem with add-content buttons
+first step at editing episode
+moved recursionHelper and autofocus to their own files
+
