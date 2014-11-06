@@ -163,6 +163,9 @@ TODO merge 'comment' with 'annotation'?
 					"annotation": {
 						en: ""
 					},
+					"annotator": {
+						en: ""
+					},
 					"annotation_image_id": ""
 				};
 			}
