@@ -36,8 +36,14 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.saveEpisode = function () {
-			window.alert("TODO");
-			// TODO
+			var toSave = angular.copy(appState.editEpisode);
+			dataSvc.storeEpisode(toSave).then(function (data) {
+				console.log("Stored episode", data);
+				appState.editEpisode = false;
+				appState.videoControlsLocked = false;
+			}, function (data) {
+				console.error("FAILED TO STORE EPISODE", data);
+			});
 		};
 
 		$scope.editCurrentScene = function () {
@@ -62,10 +68,8 @@ angular.module('com.inthetelling.story')
 
 		$scope.deleteEvent = function (eventId) {
 			if (window.confirm("Are you sure you wish to delete this item?")) {
-
 				console.log("About to delete ", eventId);
 				console.log(modelSvc.events[eventId]);
-
 				dataSvc.deleteItem(eventId).then(function (data) {
 					console.log("success deleting:", data);
 					if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
@@ -90,19 +94,16 @@ angular.module('com.inthetelling.story')
 				modelSvc.events[appState.editEvent._id] = originalEvent;
 				timelineSvc.updateEventTimes(originalEvent);
 			}
-
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			appState.editEvent = false;
 			appState.videoControlsLocked = false;
 		};
 
 		$scope.cancelEpisodeEdit = function (originalEvent) {
-
 			modelSvc.episodes[appState.episodeId] = angular.copy(originalEvent);
 			modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
 			appState.editEpisode = false;
 			appState.videoControlsLocked = false;
-
 		};
 
 		var generateEmptyItem = function (type) {

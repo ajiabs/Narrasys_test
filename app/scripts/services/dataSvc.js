@@ -275,7 +275,6 @@ angular.module('com.inthetelling.story')
 
 		var PUT = function (path, putData) {
 			var defer = $q.defer();
-
 			$http({
 				method: 'PUT',
 				url: config.apiDataBaseUrl + path,
@@ -374,6 +373,9 @@ angular.module('com.inthetelling.story')
 		// TODO need safety checking here
 		svc.storeItem = function (evt) {
 			evt = prepItemForStorage(evt);
+			if (!evt) {
+				return false;
+			}
 			if (evt && evt._id && !evt._id.match(/internal/)) {
 				// update
 				return PUT("/v3/events/" + evt._id, {
@@ -388,14 +390,13 @@ angular.module('com.inthetelling.story')
 		};
 
 		var prepItemForStorage = function (evt) {
-
+			// Events, that is
 			var prepped = {};
-
 			if (evt._id && evt._id.match(/internal/)) {
 				delete evt._id;
 			}
 
-			// this is a conservative list for SXS only, so far. More fields will need to be added here
+			//  The data we want to store:
 			var fields = [
 				"_id",
 				"producerItemType",
@@ -405,7 +406,6 @@ angular.module('com.inthetelling.story')
 				"template_id",
 				"templateUrl",
 				"stop",
-				"isCurrent",
 				"sxs",
 				"title",
 				"url",
@@ -419,7 +419,6 @@ angular.module('com.inthetelling.story')
 			];
 
 			prepped.type = evt._type;
-
 			for (var i = 0; i < fields.length; i++) {
 				if (evt[fields[i]] || evt[fields[i]] === 0) {
 					prepped[fields[i]] = angular.copy(evt[fields[i]]);
@@ -438,65 +437,29 @@ angular.module('com.inthetelling.story')
 			if (template) {
 				prepped.template_id = template.id;
 			} else {
-
-				// TODO: create the template on the fly, cache it, get its ID, then continue?
-				// Or can I just talk bill into letting me store templateUrls directly and skip the whole ID business?
-
-				//For now, reverse the template update done in modelSvc:
-				var reverseTemplateUpdate = {
-					"templates/item/transcript.html": "templates/transcript-default.html",
-					"templates/item/transcript-withthumbnail.html": "templates/transcript-withthumbnail.html",
-					"templates/item/transcript-withthumbnail-alt.html": "templates/transcript-withthumbnail-alt.html",
-					"templates/item/text-h1.html": "templates/text-h1.html",
-					"templates/item/text-h2.html": "templates/text-h2.html",
-					"templates/item/pullquote-noattrib.html": "templates/text-pullquote-noattrib.html",
-					"templates/item/pullquote.html": "templates/text-pullquote.html",
-
-					// upload
-					"templates/item/image.html": "templates/transmedia-image-default.html",
-					"templates/item/image-caption.html": "templates/transmedia-caption.html",
-					"templates/item/image-caption-sliding.html": "templates/transmedia-slidingcaption.html",
-					"templates/item/image-fill.html": "templates/transmedia-image-fill.html",
-					"templates/item/image-plain.html": "templates/transmedia-image-plain.html",
-					"templates/item/image-linkonly.html": "templates/transmedia-linkonly.html",
-					"templates/item/image-thumbnail.html": "templates/transmedia-thumbnail.html",
-
-					//link
-					"templates/item/link.html": "templates/transmedia-link-default.html",
-					"templates/item/link-embed.html": "templates/transmedia-link-embed.html",
-
-					//scene
-					"templates/scene/1col.html": "templates/scene-1col.html",
-					"templates/scene/2colL.html": "templates/scene-2colL.html",
-					"templates/scene/2colR.html": "templates/scene-2colR.html",
-					"templates/scene/centered.html": "templates/scene-centered.html",
-					"templates/scene/cornerH.html": "templates/scene-cornerH.html",
-					"templates/scene/cornerV.html": "templates/scene-cornerV.html",
-
-				};
-				if (reverseTemplateUpdate[evt.templateUrl]) {
-					template = svc.readCache("template", "url", reverseTemplateUpdate[evt.templateUrl]);
-					prepped.template_id = template.id;
-				} else {
-					errorSvc.error({
-						data: "Tried to store a template with no ID: " + evt.templateUrl
-					});
-					return false;
-				}
+				prepped.template_id = reverseTemplateUpdate(evt.templateUrl);
 			}
-
-			// TODO: what else needs to be done before we can safely store this event?
-			// console.log("Prepped item for storage: ", prepped);
-			return prepped;
+			if (prepped.template_id) {
+				return prepped;
+			} else {
+				errorSvc.error({
+					data: "Tried to store a template with no ID: " + evt.templateUrl
+				});
+				return false;
+			}
 		};
 		svc.prepItemForStorage = prepItemForStorage;
 
 		svc.storeEpisode = function (epData) {
+			// For now only update, no create... create needs a customer_id and probably other data as well
 			var preppedData = prepEpisodeForStorage(epData);
-			console.log("If this were implemented yet, we would be storing this data:", preppedData);
-			// if (epData && epData._id && !epData._id.match(/internal/)) {
+			console.log("prepped for storage:", preppedData);
+			if (preppedData) {
+				return PUT("/v3/episodes/" + preppedData._id, preppedData);
+			} else {
+				return false;
+			}
 			// 	// update
-			// 	return PUT("/v3/episodes/" + epData.episode_id, epData);
 			// } else {
 			// 	// create
 			// TODO need to determine (at least) the container ID before creating episodes here....
@@ -515,11 +478,11 @@ angular.module('com.inthetelling.story')
 				"title",
 				"description",
 				"container_id",
-				// TODO: "customer_id",
+				"customer_id",
 				"master_asset_id",
 				"status",
 				"languages",
-				"navigation_depth" // TODO (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, etc)
+				"navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
 			];
 
 			for (var i = 0; i < fields.length; i++) {
@@ -529,17 +492,72 @@ angular.module('com.inthetelling.story')
 			}
 
 			prepped.style_id = get_id_values("style", epData.styles);
-			prepped.layout_id = get_id_values("layout", epData.layouts);
 
 			var template = svc.readCache("template", "url", epData.templateUrl);
 			if (template) {
 				prepped.template_id = template.id;
 			} else {
-				errorSvc.error({
-					data: "Tried to store an episode template with no ID: " + epData.templateUrl
-				});
+				prepped.template_id = reverseTemplateUpdate(epData.templateUrl);
 			}
-			return prepped;
+			if (prepped.template_id) {
+				return prepped;
+			} else {
+				errorSvc.error({
+					data: "Tried to store a template with no ID: " + epData.templateUrl
+				});
+				return false;
+			}
+		};
+
+		var reverseTemplateUpdate = function (templateUrl) {
+			// HACK: this reverses the template versioning done in modelSvc
+			// TODO: can I just talk bill into letting me store templateUrls directly and skip the whole ID business?
+			var reverseTemplates = {
+				// episodes
+				"templates/episode/episode.html": "templates/episode-default.html",
+				"templates/episode/eliterate.html": "templates/episode-eliterate.html",
+				"templates/episode/ewb.html": "templates/episode-ewb.html",
+				"templates/episode/gw.html": "templates/episode-gw.html",
+				"templates/episode/purdue.html": "templates/episode-purdue.html",
+				"templates/episode/story.html": "templates/episode-tellingstory.html",
+
+				// annotation
+				"templates/item/transcript.html": "templates/transcript-default.html",
+				"templates/item/transcript-withthumbnail.html": "templates/transcript-withthumbnail.html",
+				"templates/item/transcript-withthumbnail-alt.html": "templates/transcript-withthumbnail-alt.html",
+				"templates/item/text-h1.html": "templates/text-h1.html",
+				"templates/item/text-h2.html": "templates/text-h2.html",
+				"templates/item/pullquote-noattrib.html": "templates/text-pullquote-noattrib.html",
+				"templates/item/pullquote.html": "templates/text-pullquote.html",
+
+				// upload
+				"templates/item/image.html": "templates/transmedia-image-default.html",
+				"templates/item/image-caption.html": "templates/transmedia-caption.html",
+				"templates/item/image-caption-sliding.html": "templates/transmedia-slidingcaption.html",
+				"templates/item/image-fill.html": "templates/transmedia-image-fill.html",
+				"templates/item/image-plain.html": "templates/transmedia-image-plain.html",
+				"templates/item/image-linkonly.html": "templates/transmedia-linkonly.html",
+				"templates/item/image-thumbnail.html": "templates/transmedia-thumbnail.html",
+
+				//link
+				"templates/item/link.html": "templates/transmedia-link-default.html",
+				"templates/item/link-embed.html": "templates/transmedia-link-embed.html",
+
+				//scene
+				"templates/scene/1col.html": "templates/scene-1col.html",
+				"templates/scene/2colL.html": "templates/scene-2colL.html",
+				"templates/scene/2colR.html": "templates/scene-2colR.html",
+				"templates/scene/centered.html": "templates/scene-centered.html",
+				"templates/scene/cornerH.html": "templates/scene-cornerH.html",
+				"templates/scene/cornerV.html": "templates/scene-cornerV.html",
+
+			};
+			if (reverseTemplates[templateUrl]) {
+				var template = svc.readCache("template", "url", reverseTemplates[templateUrl]);
+				return template.id;
+			} else {
+				return false;
+			}
 		};
 
 		// careful to only use this for guaranteed unique fields (style and layout names, basically)

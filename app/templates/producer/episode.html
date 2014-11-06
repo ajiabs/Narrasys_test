@@ -1,5 +1,5 @@
 <div class="itemEdit authoringForm">
-	<div style="max-height: 260px; overflow-y:scroll; padding: 1em 20px 0 0">
+	<div class="authoringFormScrollContainer">
 		<span class="eventIcon icon-episode"></span>
 		<div class="field">
 			<div class="input">
@@ -64,7 +64,7 @@
 					<option ng-disabled="!langForm.es" value="es">Spanish</option>
 					<option ng-disabled="!langForm.pt" value="pt">Portuguese</option>
 					<option ng-disabled="!langForm.de" value="pt">German</option>
-					<option ng-disabled="!langForm.de" value="it">Italian</option>
+					<option ng-disabled="!langForm.it" value="it">Italian</option>
 				</select>
 			</div>
 		</div>
@@ -86,13 +86,13 @@
 					<option value="templates/episode/schoolclimatesolutions.html">School Climate Solutions</option>
 					<option value="templates/episode/usc.html">University of Southern California</option>
 				</select>
-				(TODO some templates aren't coming in complete... test USC)
+
 			</div>
 		</div>
 
 
 	</div>
-	<div style="clear:both; width: 100%; text-align:right">
+	<div style="clear:both; width: 100%; text-align:right; padding-right: 24px">
 		<small>
 			<a ng-click="cancelEdit()">Cancel</a>
 		</small>
