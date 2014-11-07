@@ -1,5 +1,78 @@
+.containerAssets {
+	padding: 1em;
+}
+.goUp {
+	font-size: 11px;
+}
+.goUp:before {
+	content: '\2191';
+	padding-right: 5px;
+}
+.containerAssets .controls {
+	font-size: 16px;
+}
+.containerAssets .controls {
+	text-align: right;
+}
+.containerAssets .title {
+	font-size: 1.5em;
+}
+.containerAssets table .thumbnail {
+	height: 50px;
+	width: 50px;
+	display: block;
+	background: #000;
+}
+.containerAssets table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.containerAssets tr {
+	height: 50px;
+}
+.containerAssets td {
+	padding: 4px;
+}
+.containerAssets tr:nth-child(2n) {
+	background-color: #fdfdfd;
+}
+.containerAssets .grid {
+	display: inline-block;
+	padding: 1em;
+	width: 33%;
+	max-height: 180px;
+	text-align: center;
+	vertical-align: top;
+}
+.containerAssets .grid .thumbnail {
+	border: 1px solid #CCC;
+	display: block;
+	max-height: 125px;
+	max-width: 100%;
+	margin: auto;
+}
+.containerAssets .grid div.thumbnail {
+	background-color: #CCC;
+	color: #FFF;
+	height: 125px;
+	line-height: 125px;
+}
+.containerAssets .scrollPane {
+	max-height: 450px;
+	overflow-y: auto;
+	border: 1px solid #CCC;
+}
+.containerAssets .grid:hover,
+.containerAssets tr:hover {
+	background-color: #EEE;
+	cursor: pointer;
+}
+/* -- */
+
 .admin small {
 	opacity: 0.3;
+	float: right;
+	text-align: right;
 }
 .admin li {
 	list-style: none;
@@ -9,10 +82,6 @@
 	width: 100%;
 	background-color: #EEE;
 	padding: 0.4em;
-}
-.admin small {
-	float: right;
-	text-align: right;
 }
 .admin .isOpen ul {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -40,42 +109,6 @@
 }
 .admin .session > ul {
 	margin-left: 1em;
-}
-.admin .goUp {
-	font-size: 11px;
-}
-.admin .goUp:before {
-	content: '\2191';
-	padding-right: 5px;
-}
-.admin table .thumbnail {
-	height: 50px;
-	width: 50px;
-	display: block;
-	background: #000;
-}
-.admin table {
-	width: 100%;
-}
-.admin tr {
-	height: 50px;
-}
-.admin td {
-	padding: 4px;
-	border-bottom: 1px solid #CCC;
-}
-.admin .grid {
-	display: inline-block;
-	padding: 1em;
-	width: 33%;
-	height: 125px;
-	text-align: center;
-}
-.admin .grid .thumbnail {
-	border: 1px solid #CCC;
-	display: block;
-	max-height: 125px;
-	width: 100%;
 }
 /* -- */
 

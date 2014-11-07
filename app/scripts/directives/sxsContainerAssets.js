@@ -4,7 +4,7 @@ angular.module('com.inthetelling.story')
 	.controller("ContainerAssetsTestController", function ($scope, $routeParams) {
 		$scope.containerId = $routeParams.containerId;
 	})
-	.directive('sxsContainerAssets', function ($routeParams, recursionHelper, dataSvc, modelSvc) {
+	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -33,8 +33,20 @@ angular.module('com.inthetelling.story')
 					scope.up = function () {
 						scope.showParent = true;
 					};
-				});
 
+					scope.toggleImages = function () {
+						scope.onlyImages = !scope.onlyImages;
+					};
+					scope.toggleGrid = function () {
+						scope.gridView = !scope.gridView;
+					};
+
+					scope.assetClick = function (assetId) {
+						console.log("User clicked on asset ", assetId);
+						$rootScope.$emit("UserSelectedAsset", assetId);
+					};
+
+				});
 			}
 		};
 	});

@@ -161,6 +161,9 @@ angular.module('com.inthetelling.story')
 	.filter('asBytes', function () {
 		// quick + sloppy
 		return function (b) {
+			if (!b) {
+				return "";
+			}
 			var kb = Math.floor(b / 1024);
 			if (kb < 1024) {
 				return kb + "Kb";
