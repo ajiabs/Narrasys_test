@@ -194,7 +194,7 @@ angular.module('com.inthetelling.story')
 						// this will get the episode container and its assets, then iterate up the chain to all parent containers
 						// (In retrospect, would have been easier to just get all containers at once, but maybe someday we will have soooo many containers
 						// that this will be worthwhile)
-						getContainer(episodeData.container_id, epId);
+						svc.getContainer(episodeData.container_id, epId);
 					} else {
 						errorSvc.error({
 							data: "This episode has not yet been published."
@@ -219,30 +219,45 @@ angular.module('com.inthetelling.story')
 				});
 		};
 
-		// gets container and container assets, then iterates to parent container
-		var getContainer = function (containerId, episodeId) {
+		svc.getContainer = function (containerId, episodeId) {
+			// iterates to all parent containers
+			// episode ID is included so we can trigger it to resolve when this is all complete
 
 			// TODO check cache first to see if we already have this container!
 			// console.log("getContainer", containerId, episodeId);
+			if (!modelSvc.containers[containerId]) {
+				modelSvc.cache("container", {
+					"_id": containerId
+				});
+			}
+
 			$http.get(config.apiDataBaseUrl + "/v3/containers/" + containerId)
 				.success(function (container) {
 					modelSvc.cache("container", container[0]);
 					// iterate to parent container
 					if (container[0].parent_id) {
-						getContainer(container[0].parent_id, episodeId);
+						svc.getContainer(container[0].parent_id, episodeId);
 					} else {
 						// all parent containers now loaded:
-						modelSvc.resolveEpisodeContainers(episodeId);
+						if (episodeId) {
+							modelSvc.resolveEpisodeContainers(episodeId);
+						}
 					}
 				});
-
+			svc.getContainerAssets(containerId, episodeId);
+		};
+		svc.getContainerAssets = function (containerId, episodeId) {
 			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
 				.success(function (containerAssets) {
 					// console.log("container assets", containerAssets);
+					modelSvc.containers[containerId].assetsHaveLoaded = true;
 					angular.forEach(containerAssets.files, function (asset) {
 						modelSvc.cache("asset", asset);
 					});
-					modelSvc.resolveEpisodeAssets(episodeId);
+					// this might be better as an $emit:
+					if (episodeId) {
+						modelSvc.resolveEpisodeAssets(episodeId);
+					}
 				});
 		};
 

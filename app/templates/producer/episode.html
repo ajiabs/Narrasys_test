@@ -3,9 +3,7 @@
 		<span class="eventIcon icon-episode"></span>
 		<div class="field">
 			<div class="input">
-				<select size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px">
-					<option value="en">English</option>
-					<option value="es">Spanish</option>
+				<select size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
 				</select>
 				</span>
 			</div>
@@ -27,7 +25,7 @@
 					<option value="0">None</option>
 					<option value="1">1 level (sibling episodes only)</option>
 					<option value="2">2 levels (course and session)</option>
-					<option value="3">3 levels (customer, course, and session)</option>
+					<!-- <option value="3">HULK TOO DEEP HULK SMASH DATABASE</option> -->
 				</select>
 			</div>
 		</div>

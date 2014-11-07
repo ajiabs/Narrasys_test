@@ -119,19 +119,15 @@ angular.module('com.inthetelling.story')
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
 
-			// TEMPORARY, UNTIL THESE VALUES CAN BE SET IN THE DATABASE
-			episode.languages = [{
-				"code": "en",
-				"default": true
-			}, {
-				"code": "es",
-			}];
-
+			// unpack languages
 			angular.forEach(episode.languages, function (lang) {
 				if (lang.default) {
+					// console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
 					episode.defaultLanguage = lang.code;
 					if (!appState.lang) {
 						appState.lang = lang.code;
+						// console.log("Setting appState:", appState.lang);
+						svc.setLanguageStrings();
 					}
 				}
 			});
@@ -350,23 +346,18 @@ angular.module('com.inthetelling.story')
 
 		var setLang = function (obj) {
 			// TODO: keywords, customers/oauth2_message
-			if (!appState.lang) {
-				appState.lang = "en";
-			}
+			// TODO use episode default language instead of 'en' 
+			var langToSet = (appState.lang) ? appState.lang : "en";
 			angular.forEach(["title", "annotator", "annotation", "description", "name"], function (field) {
 				if (obj[field]) {
 					if (typeof (obj[field]) === 'string') {
 						// TODO can delete this after all data has been migrated to object form
 						obj["display_" + field] = obj[field];
 					} else {
-
-						// for debugging
-						// obj[field].es = "test: ES";
-
-						if (obj[field][appState.lang]) {
-							obj["display_" + field] = obj[field][appState.lang];
+						if (obj[field][langToSet]) {
+							obj["display_" + field] = obj[field][langToSet];
 						} else {
-							obj["display_" + field] = obj[field].en;
+							obj["display_" + field] = obj[field].en; // TODO use episode default language instead of 'en' 
 						}
 					}
 				}
@@ -519,7 +510,7 @@ angular.module('com.inthetelling.story')
 			// Also sets the episode's nextEpisodeContainer and prevEpisodeContainer
 
 			// all parent containers should have been loaded by the time this is called, so we don't need to worry about asynch at each step
-			console.log("resolveEpisodeContainers", epId);
+			// console.log("resolveEpisodeContainers", epId);
 			var episode = svc.episodes[epId];
 			episode.parents = [];
 			delete episode.previousEpisodeContainer;
@@ -533,7 +524,7 @@ angular.module('com.inthetelling.story')
 
 		var setParents = function (depth, epId, containerId) {
 
-			console.log("setParents", depth, epId, containerId);
+			// console.log("setParents", depth, epId, containerId);
 			var episode = svc.episodes[epId];
 
 			// THis will build up the parents array backwards, starting at the end

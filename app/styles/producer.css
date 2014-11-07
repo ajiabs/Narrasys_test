@@ -41,6 +41,42 @@
 .admin .session > ul {
 	margin-left: 1em;
 }
+.admin .goUp {
+	font-size: 11px;
+}
+.admin .goUp:before {
+	content: '\2191';
+	padding-right: 5px;
+}
+.admin table .thumbnail {
+	height: 50px;
+	width: 50px;
+	display: block;
+	background: #000;
+}
+.admin table {
+	width: 100%;
+}
+.admin tr {
+	height: 50px;
+}
+.admin td {
+	padding: 4px;
+	border-bottom: 1px solid #CCC;
+}
+.admin .grid {
+	display: inline-block;
+	padding: 1em;
+	width: 33%;
+	height: 125px;
+	text-align: center;
+}
+.admin .grid .thumbnail {
+	border: 1px solid #CCC;
+	display: block;
+	max-height: 125px;
+	width: 100%;
+}
 /* -- */
 
 .padForEditing .episode {
@@ -281,12 +317,12 @@
 .item .edit-event {
 	display: none;
 	background-color: #fff;
-	border: 4px solid #555;
+	border: 2px solid #555;
 	border-radius: 2.5em;
-	width: 2.5em;
-	height: 2.5em;
+	width: 2em;
+	height: 2em;
 	overflow: hidden;
-	padding: 5px;
+	padding: 4px 6px;
 	position: absolute;
 	right: 0.6em;
 	top: 0.5em;

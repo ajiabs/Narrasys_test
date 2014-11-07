@@ -6,16 +6,16 @@ angular.module('com.inthetelling.story')
 
 /* List filters */
 .filter('itemLayout', function () {
-	return function (items, layout) {
-		var ret = [];
-		angular.forEach(items, function (item) {
-			if (item.layouts && item.layouts[0] === layout) {
-				ret.push(item);
-			}
-		});
-		return ret;
-	};
-})
+		return function (items, layout) {
+			var ret = [];
+			angular.forEach(items, function (item) {
+				if (item.layouts && item.layouts[0] === layout) {
+					ret.push(item);
+				}
+			});
+			return ret;
+		};
+	})
 	.filter('annotation', function () {
 		return function (items) {
 			var ret = [];
@@ -131,7 +131,7 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-/* Single filters */
+	/* Single filters */
 
 /*
 .filter('trustAsHtml', function($sce) {
@@ -141,21 +141,32 @@ angular.module('com.inthetelling.story')
 })
 */
 .filter('highlightSubstring', function () {
-	return function (text, search) {
-		// console.log("Search highlight",text,search);
-		if (!text) {
-			return;
-		}
-		if (search || angular.isNumber(search)) {
-			return text.toString().replace(new RegExp(search.toString(), 'gi'), '<span class="ui-match">$&</span>');
-		} else {
-			return text;
-		}
-	};
-})
+		return function (text, search) {
+			// console.log("Search highlight",text,search);
+			if (!text) {
+				return;
+			}
+			if (search || angular.isNumber(search)) {
+				return text.toString().replace(new RegExp(search.toString(), 'gi'), '<span class="ui-match">$&</span>');
+			} else {
+				return text;
+			}
+		};
+	})
 	.filter('pretty', function () {
 		return function (json) {
 			return JSON.stringify(json, undefined, 2);
+		};
+	})
+	.filter('asBytes', function () {
+		// quick + sloppy
+		return function (b) {
+			var kb = Math.floor(b / 1024);
+			if (kb < 1024) {
+				return kb + "Kb";
+			}
+			var mb = Math.floor(kb / 10.24) / 100;
+			return mb + "Mb";
 		};
 	})
 	.filter('asPercent', function () {

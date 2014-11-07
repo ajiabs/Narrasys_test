@@ -13,16 +13,15 @@
 				<li ng-repeat="course in customer.children" class="course" ng-class="{isOpen: course.visible, isClosed: !course.visible}">
 
 					<a ng-click="course.visible =!course.visible">{{course.name.en}}</a>
-					<small>{{course._id}}</small>
-
-
+					<small><a ng-href="#/assets/{{course._id}}">[Assets]</a>
+					</small>
 					<div ng-if="course.visible" style="margin-left:2em">
 						<!-- <h4>Sessions:</h4> -->
 						<ul>
 							<li ng-repeat="session in course.children" class="session" ng-class="{isOpen: session.visible, isClosed: !session.visible}">
-
 								<b><a ng-click="session.visible =!session.visible">{{session.name.en}}</a></b>
-								<small>{{session._id}}</small>
+								<small><a ng-href="#/assets/{{session._id}}">[Assets]</a>
+								</small>
 
 								<ul ng-if="session.visible">
 									<li ng-repeat="episodecontainer in session.children" class="noChildren">
@@ -30,15 +29,14 @@
 										<a href="#/sxs/{{episodecontainer.episodes[0]}}">[SxS]</a>
 										<a href="#/producer/{{episodecontainer.episodes[0]}}">[Producer]</a>
 										{{episodecontainer.name.en}}
-										<small>{{episodecontainer.episodes[0]}}</small>
+										<small> <a ng-href="#/assets/{{episodecontainer._id}}">[Assets]</a>
+										</small>
 									</li>
 								</ul>
 							</li>
 						</ul>
 					</div>
-
 				</li>
-
 			</ul>
 		</div>
 	</div>
