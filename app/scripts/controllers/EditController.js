@@ -3,6 +3,37 @@
 angular.module('com.inthetelling.story')
 	.controller('EditController', function ($scope, $rootScope, appState, dataSvc, modelSvc, timelineSvc) {
 
+		$scope.chooseAsset = function () {
+			$scope.showAssetPicker = true;
+			$scope.w1 = $rootScope.$on('UserSelectedAsset', function (e, id) {
+				$scope.selectedAsset(id);
+			});
+			$scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
+		};
+		$scope.selectedAsset = function (asset_id) {
+			console.log("SELECTED: ", asset_id);
+
+			$scope.item.asset = modelSvc.assets[asset_id];
+			if ($scope.item.type === 'image') {
+				$scope.item.asset_id = asset_id;
+			} else if ($scope.item.type === 'link') {
+				$scope.item.link_image_id = asset_id;
+			} else if ($scope.item.type === 'annotation') {
+				$scope.item.annotation_image_id = asset_id;
+			} else {
+				console.error("Tried to select asset for unknown item type", $scope.item);
+			}
+			$scope.endChooseAsset();
+		};
+		$scope.toggleUpload = function () {
+			$scope.showUpload = !$scope.showUpload;
+		};
+		$scope.endChooseAsset = function () {
+			$scope.w1();
+			$scope.w2();
+			$scope.showAssetPicker = false;
+		};
+
 		$scope.addEvent = function (producerItemType) {
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);

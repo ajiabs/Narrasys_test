@@ -19,6 +19,10 @@ angular.module('com.inthetelling.story')
 				scope.uploadStatus = [];
 				scope.uneditedItem = angular.copy(scope.item); // in case of cancel
 				scope.annotators = modelSvc.episodes[appState.episodeId].annotators;
+				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
+
+				scope.languages = modelSvc.episodes[appState.episodeId].languages;
+
 				scope.itemForm = {
 					"transition": "",
 					"highlight": "",
@@ -26,8 +30,6 @@ angular.module('com.inthetelling.story')
 					"typography": "",
 					"timestamp": ""
 				};
-
-				scope.prevScene = timelineSvc.prevScene;
 
 				if (!scope.item.layouts) {
 					scope.item.layouts = ["inline"];

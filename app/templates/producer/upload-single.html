@@ -1,20 +1,30 @@
+<div ng-if="showAssetPicker" class="floatAssetPicker">
+	<div class="scrollContainer">
+		<div sxs-container-assets="episodeContainerId"></div>
+	</div>
+	<div class="controlsContainer">
+		<button ng-click="endChooseAsset();">Cancel</button>
+	</div>
+</div>
 <div>
-	<span ng-if="appState.product == 'producer'">TODO allow selecting asset from episode container here instead</span>
+	<span ng-if="appState.product == 'producer'">
+	</span>
 	<span ng-if="uploads">
 		<div ng-repeat="upload in uploads">
 			<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}">
 		</div>
 	</span>
 	<span ng-if="!uploads && item.asset">
-		<span ng-if="item.asset._type == 'Asset::Image'">
-			<img ng-src="{{item.asset.url}}" style="max-width: 60px; max-height: 60px;">
-		</span>
 		{{item.asset.original_filename}}
 		<button ng-if="appState.product == 'sxs'" ng-click="deleteAsset(item.asset._id)">Delete</button>
 		<button ng-if="appState.product == 'producer'" ng-click="detachAsset(item.asset._id)">Detach</button>
 	</span>
 
 	<span ng-if="!uploads && !item.asset">
-		<input type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
+		<button ng-if="!showUpload" ng-click="chooseAsset()">Select</button>
+		<button ng-if="!showUpload" ng-click="toggleUpload()">Upload</button>
+		<input ng-if="showUpload" type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
 	</span>
+
+
 </div>
