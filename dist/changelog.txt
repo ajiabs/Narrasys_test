@@ -572,3 +572,8 @@ fixed STORY-115
 renamed sxsIcon to eventIcon
 cosmetics
 author episode languages
+
+------------------------------------------------
+Changes in v4.2.13:
+fixing bad templateUrl
+
