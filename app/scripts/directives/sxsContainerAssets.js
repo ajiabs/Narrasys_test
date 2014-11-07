@@ -11,7 +11,7 @@ angular.module('com.inthetelling.story')
 			scope: {
 				containerId: "=sxsContainerAssets"
 			},
-			templateUrl: '/templates/producer/container-assets.html',
+			templateUrl: 'templates/producer/container-assets.html',
 
 			compile: function (element) {
 				// Use the compile function from the recursionHelper,
