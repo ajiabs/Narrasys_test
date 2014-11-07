@@ -563,3 +563,12 @@ fixed z-index problem with add-content buttons
 first step at editing episode
 moved recursionHelper and autofocus to their own files
 
+------------------------------------------------
+Changes in v4.2.12:
+Can browse container assets
+Can save episode changes now
+annotator autocomplete bug fix (can add new annotators now)
+fixed STORY-115
+renamed sxsIcon to eventIcon
+cosmetics
+author episode languages
