@@ -68,7 +68,7 @@ angular.module('com.inthetelling.story')
 				scope.watchStyleEdits = scope.$watch(function () {
 					return scope.itemForm;
 				}, function () {
-					console.log("itemForm:", scope.itemForm);
+					// console.log("itemForm:", scope.itemForm);
 					var styles = [];
 					for (var styleType in scope.itemForm) {
 						if (scope.itemForm[styleType]) {

@@ -411,27 +411,46 @@ angular.module('com.inthetelling.story')
 			});
 
 			// collect a list of all the speakers/annotators in the episode.
+			// Try to merge partially-translated annotator names into the more fully-translated versions.
+			// This is imperfect -- a few will slip through if there is a missing translation in the default language -- but good enough for now
+			// TODO replace all of this, have the API keep track of each annotator as a real, separate entity
 			var annotators = {};
 			angular.forEach(items, function (event) {
 				if (event._type === 'Annotation' && event.annotator) {
-					// Some overkill here, but what the heck.  Construct a key: english followed by other keys .
-					var langs = Object.keys(event.annotator).sort();
-					var key = event.annotator.en;
+					// This is kind of a mess 
+					// Use the default language as the key; merge any other languages into that key
+					var defaultLanguage = episode.defaultLanguage || 'en';
+					var key = event.annotator[defaultLanguage];
+
+					if (key === undefined) {
+						// this annotator doesn't have a translation in the default language, so use its first language instead
+						key = event.annotator[Object.keys(event.annotator).sort()[0]];
+					}
+
+					if (annotators[key]) {
+						// merge other translations of the same name into this one
+						annotators[key].name = angular.extend(annotators[key].name, event.annotator);
+						if (!annotators[key].annotation_image_id) {
+							annotators[key].annotation_image_id = event.annotation_image_id;
+						}
+					} else {
+						annotators[key] = {
+							"name": event.annotator,
+							"annotation_image_id": event.annotation_image_id
+						};
+					}
+
+					// construct a description containing all languages, starting with the default
+					var langs = Object.keys(annotators[key].name).sort();
+					var longKey = annotators[key].name[defaultLanguage] || '(untranslated)';
 					for (var i = 0; i < langs.length; i++) {
-						if (langs[i] !== 'en') {
-
-							if (annotators[key]) {
-								// a similar entry with fewer translations exists; TODO grab it and merge it into this one
-							}
-
-							key = key + " / " + event.annotator[langs[i]];
+						if (langs[i] !== defaultLanguage) {
+							longKey = longKey + " / " + annotators[key].name[langs[i]];
 						}
 					}
-					annotators[key] = {
-						"key": key,
-						"name": event.annotator,
-						"annotation_image_id": event.annotation_image_id
-					};
+
+					annotators[key].key = longKey;
+
 				}
 			});
 			episode.annotators = annotators;

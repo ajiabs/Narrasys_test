@@ -101,7 +101,7 @@ angular.module('com.inthetelling.story')
 						'episode.navigation_depth'
 					],
 					function (newVal, oldVal) {
-						console.log("DETECTED CHANGE", newVal, oldVal);
+						// console.log("DETECTED CHANGE", newVal, oldVal);
 						if (newVal[0] !== oldVal[0]) { // templateUrl
 							// Some templates have built-in color and typography selections; need to update them along with the template.
 							// TODO This would be a lot simpler if I hadn't chosen such a dumb structure for style info...
