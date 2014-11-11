@@ -577,3 +577,10 @@ author episode languages
 Changes in v4.2.13:
 fixing bad templateUrl
 
+------------------------------------------------
+Changes in v4.2.14:
+search panel: hide scenes, show annotators properly
+improved annotators selection
+can now select assets from containers in producer
+containerAssets
+
