@@ -31,11 +31,11 @@ angular.module('com.inthetelling.story')
 		// TODO handle more than one episode.....
 		$scope.indexEvents = function () {
 			angular.forEach($scope.episode.items, function (item) {
-				console.log(item.sxs);
-				item.searchableText = (item.display_annotation || item.display_description) + " " + (item.display_title || item.display_annotator);
-// TODO set this for producer items as well?
-				if (item.sxs) {
-					item.cosmetic = false;
+				if (item._type !== 'Scene') {
+					item.searchableText = (item.display_annotation || item.display_description) + " " + (item.display_title || item.display_annotator);
+					if (item.sxs) { // HACK
+						item.cosmetic = false;
+					}
 				}
 			});
 		};
