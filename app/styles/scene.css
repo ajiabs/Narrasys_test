@@ -267,7 +267,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 */
 
 .landingscreen {
-	margin: 10% 15%;
+	padding: 10% 15%;
 }
 .landingscreen .videoMagnet {
 	width: 50%;
@@ -297,7 +297,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	}
 }
 .endingscreen {
-	margin: 5% 10%;
+	padding: 5% 10%;
 }
 .endingscreen .videoMagnet {
 	margin: 0 30%;
