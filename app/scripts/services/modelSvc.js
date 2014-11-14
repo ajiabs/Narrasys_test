@@ -286,19 +286,18 @@ angular.module('com.inthetelling.story')
 
 		var setLang = function (obj) {
 			// TODO: keywords, customers/oauth2_message
-			angular.forEach(["title", "annotation", "description", "name"], function (field) {
+			// TODO use episode default language instead of 'en' 
+			var langToSet = (appState.lang) ? appState.lang : "en";
+			angular.forEach(["title", "annotator", "annotation", "description", "name"], function (field) {
 				if (obj[field]) {
 					if (typeof (obj[field]) === 'string') {
+						// TODO can delete this after all data has been migrated to object form
 						obj["display_" + field] = obj[field];
 					} else {
-
-						// for debugging
-						//						obj[field].es = "This is a fake spanish-language string for testing";
-
-						if (obj[field][appState.lang]) {
-							obj["display_" + field] = obj[field][appState.lang];
+						if (obj[field][langToSet]) {
+							obj["display_" + field] = obj[field][langToSet];
 						} else {
-							obj["display_" + field] = obj[field].en;
+							obj["display_" + field] = obj[field].en; // TODO use episode default language instead of 'en' 
 						}
 					}
 				}
@@ -653,7 +652,7 @@ angular.module('com.inthetelling.story')
 				}
 			}
 
-			console.log("video asset:", videoObject);
+			// console.log("video asset:", videoObject);
 
 			videoAsset.urls = videoObject;
 			return videoAsset;

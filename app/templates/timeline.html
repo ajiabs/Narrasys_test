@@ -69,9 +69,10 @@
 				</span>
 			</span>
 			<span style="display:inline-block;height:1em;position:relative" ng-if="episode.languages.length > 1">
-				<select size="1" ng-model="appState.lang" class="languageSelector" ng-change="setNewLanguage()" ng-options="('['+language.toUpperCase()+']') for language in episode.languages">
+				<select size="1" ng-model="appState.lang" class="languageSelector" ng-change="setNewLanguage()" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
 				</select>
 			</span>
+
 			<a ng-if="appState.viewMode == 'watch'" class="button button-captions" ng-click="appState.hideCaptions=!appState.hideCaptions" ng-class="{active: !appState.hideCaptions}">
 				<span class="control-text">Captions</span>
 			</a>
