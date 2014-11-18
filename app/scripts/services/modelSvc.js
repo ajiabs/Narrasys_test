@@ -127,10 +127,10 @@ angular.module('com.inthetelling.story')
 					if (!appState.lang) {
 						appState.lang = lang.code;
 						// console.log("Setting appState:", appState.lang);
-						svc.setLanguageStrings();
 					}
 				}
 			});
+			svc.setLanguageStrings();
 
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):

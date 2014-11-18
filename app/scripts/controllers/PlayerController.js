@@ -49,6 +49,12 @@ angular.module('com.inthetelling.story')
 
 		// console.log("playerController init");
 		appState.init();
+
+		// this must be after appState.init:
+		if ($routeParams.lang) {
+			appState.lang = $routeParams.lang.toLowerCase();
+		}
+
 		errorSvc.init();
 		appState.episodeId = $routeParams.epId;
 		modelSvc.addLandingScreen(appState.episodeId);
@@ -62,6 +68,7 @@ angular.module('com.inthetelling.story')
 		}, function (a) {
 			if (a) {
 				document.title = "STORY: " + a;
+
 				episodeWatcher(); // stop watching;
 			}
 		});
