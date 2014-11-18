@@ -86,8 +86,6 @@ angular.module('com.inthetelling.story')
 			}
 		});
 
-		$scope.episode = modelSvc.episode(appState.episodeId);
-
 		$scope.appState = appState;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
