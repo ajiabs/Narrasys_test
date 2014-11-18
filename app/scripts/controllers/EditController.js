@@ -126,13 +126,22 @@ angular.module('com.inthetelling.story')
 				timelineSvc.updateEventTimes(originalEvent);
 			}
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
+
+			// TODO the episode is not rerendering here, even though the modelSvc.episodes[episodeId] now has the correct data....
+
 			appState.editEvent = false;
 			appState.videoControlsLocked = false;
 		};
 
 		$scope.cancelEpisodeEdit = function (originalEvent) {
-			modelSvc.episodes[appState.episodeId] = angular.copy(originalEvent);
-			modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
+			console.log("cancelEpisodeEdit", originalEvent);
+
+			modelSvc.episodes[appState.episodeId] = originalEvent;
+
+			modelSvc.deriveEpisode(modelSvc.episodes[originalEvent._id]);
+			modelSvc.resolveEpisodeContainers(originalEvent._id); // only needed for navigation_depth changes
+			modelSvc.resolveEpisodeEvents(originalEvent._id); // needed for template or style changes
+			console.log("Episode StyleCss is now ", modelSvc.episodes[originalEvent._id].styleCss);
 			appState.editEpisode = false;
 			appState.videoControlsLocked = false;
 		};

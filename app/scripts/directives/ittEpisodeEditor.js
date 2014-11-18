@@ -23,8 +23,8 @@ angular.module('com.inthetelling.story')
 				// console.log("ittEpisodeEditor");
 
 				scope.uploadStatus = [];
-				scope.uneditedEpisode = angular.copy(scope.episode); // in case of cancel
-				scope.episodeForm = {
+				scope.uneditedEpisode = angular.copy(scope.episode); // in case of cancel.   Must be a copy, not the original!
+				scope.itemForm = {
 					"transition": "",
 					"highlight": "",
 					"color": "",
@@ -34,10 +34,10 @@ angular.module('com.inthetelling.story')
 
 				// extract current event styles for the form
 				if (scope.episode.styles) {
-					for (var styleType in scope.episodeForm) {
+					for (var styleType in scope.itemForm) {
 						for (var i = 0; i < scope.episode.styles.length; i++) {
 							if (scope.episode.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
-								scope.episodeForm[styleType] = scope.episode.styles[i].substr(styleType.length); // Remainder of scope.episode.styles[i]
+								scope.itemForm[styleType] = scope.episode.styles[i].substr(styleType.length); // Remainder of scope.episode.styles[i]
 							}
 						}
 					}
@@ -85,6 +85,23 @@ angular.module('com.inthetelling.story')
 					});
 
 					scope.episode.languages = angular.copy(newLanguages);
+
+				}, true);
+
+				// Transform changes to form fields for styles into item.styles[]:
+				scope.watchStyleEdits = scope.$watch(function () {
+					return scope.itemForm;
+				}, function () {
+					console.log("itemForm:", scope.itemForm);
+					var styles = [];
+					for (var styleType in scope.itemForm) {
+						if (scope.itemForm[styleType]) {
+							styles.push(styleType + scope.itemForm[styleType]);
+						}
+					}
+					scope.episode.styles = styles;
+					modelSvc.deriveEpisode(scope.episode);
+					modelSvc.resolveEpisodeEvents(scope.episode._id); // needed for template or style changes
 				}, true);
 
 				scope.appState = appState;
@@ -147,7 +164,7 @@ angular.module('com.inthetelling.story')
 					scope.watchEdits();
 					scope.dismissalWatcher();
 					scope.languageWatcher();
-					// scope.watchStyleEdits();
+					scope.watchStyleEdits();
 				});
 			}
 		};

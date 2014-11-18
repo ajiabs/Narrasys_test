@@ -3,6 +3,7 @@
 // for quick debugging of templates.
 
 // TODO: figure out how to get grunt to omit this from the build
+// TODO i18n broke this
 
 angular.module('com.inthetelling.story')
 	.factory('mockSvc', function (modelSvc) {

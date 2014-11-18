@@ -17,7 +17,7 @@
 						<span ng-if="!customEndTime">(auto)</span>
 					</a>
 
-					<select size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
+					<select ng-if="episode.languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
 					</select>
 
 

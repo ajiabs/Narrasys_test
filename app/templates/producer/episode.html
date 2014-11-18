@@ -3,7 +3,7 @@
 		<span class="eventIcon icon-episode"></span>
 		<div class="field">
 			<div class="input">
-				<select size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
+				<select ng-if="episode.languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
 				</select>
 				</span>
 			</div>
@@ -91,6 +91,98 @@
 				</select>
 
 			</div>
+		</div>
+		<div class="field">
+			<div class="label">Styles</div>
+			<div class="input">
+				<label class="fakelink" ng-click="useCustomStyles = !useCustomStyles">
+					<span ng-if="useCustomStyles">Custom styles</span>
+					<span ng-if="!useCustomStyles">Default styles</span>
+				</label>
+			</div>
+		</div>
+
+		<div ng-if="useCustomStyles">
+
+			<div class="field">
+				<div class="label">Typography</div>
+				<div class="input">
+					<select size="1" ng-model="itemForm.typography">
+						<option value="">(Default)</option>
+						<option value="Sans">Sans</option>
+						<option value="Serif">Serif</option>
+						<option value="Book">Book</option>
+						<option value="Swiss">Swiss</option>
+						<!-- 							<option value="Eliterate">Eliterate</option>
+							<option value="Gw">Gw</option>
+							<option value="Usc">Usc</option>
+							<option value="Purdue">Purdue</option>
+							<option value="Columbia">Columbia</option>
+							<option value="Columbiabusiness">Columbiabusiness</option>
+ -->
+					</select>
+				</div>
+			</div>
+			<div class="field">
+				<div class="label">Color</div>
+				<div class="input">
+					<select size="1" ng-model="itemForm.color">
+						<option value="">(Default)</option>
+						<option value="Invert">Invert</option>
+						<option value="Sepia">Sepia</option>
+						<option value="Solarized">Solarized</option>
+						<option value="Vivid">Vivid</option>
+						<!-- 							<option value="Eliterate">Eliterate</option>
+							<option value="Gw">Gw</option>
+							<option value="Usc">Usc</option>
+							<option value="Purdue">Purdue</option>
+							<option value="Columbia">Columbia</option>
+							<option value="Columbiabusiness">Columbiabusiness</option>
+ -->
+					</select>
+				</div>
+			</div>
+			<div class="field">
+				<div class="label">Timestamp</div>
+				<div class="input">
+					<select size="1" ng-model="itemForm.timestamp">
+						<option value="">(Default)</option>
+						<option value="None">No timestamp</option>
+						<option value="Inline">Inline timestamp</option>
+					</select>
+				</div>
+			</div>
+			<div class="field">
+				<div class="label">Highlight</div>
+				<div class="input">
+					<select size="1" ng-model="itemForm.highlight">
+						<option value="">(Default)</option>
+
+						<option value="Solid">Solid</option>
+						<option value="Border">Border</option>
+						<option value="Side">Side</option>
+						<option value="Bloom">Bloom</option>
+						<option value="Highlighter">Highlighter</option>
+						<option value="Tilt">Tilt</option>
+
+					</select>
+				</div>
+			</div>
+			<div class="field">
+				<div class="label">Transition</div>
+				<div class="input">
+					<select size="1" ng-model="itemForm.transition">
+						<option value="">(Default)</option>
+						<option value="None">No transition</option>
+						<option value="Fade">Fade</option>
+						<option value="SlideL">Slide left</option>
+						<option value="SlideR">Slide right</option>
+						<option value="ExpandW">Expand</option>
+						<option value="Pop">Pop</option>
+					</select>
+				</div>
+			</div>
+
 		</div>
 
 
