@@ -27,6 +27,16 @@
 	margin: 0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
 }
+
+button {
+  margin      : 0;
+  padding     : 0;
+  border      : 0;
+  background  : transparent;
+  font-family : inherit;
+  font-size   : 1em;
+  cursor      : pointer;
+}
 .toolbar .buttongroup .button span {
 	display: block;
 	position: absolute;
@@ -37,6 +47,10 @@
 	opacity: 0;
 	color: #666;
 	font-size: 12px;
+	padding: 0;
+	border: none;
+	background: none;
+	margin: 0;
 }
 .toolbar .buttongroup:hover .button span {
 	opacity: 0 !important
@@ -213,6 +227,26 @@
 .toolbar-bottom.ng-hide-add.ng-hide-add-active {
 	opacity: 0;
 }
+
+.offscreen {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+	padding:0 !important;
+	border:0 !important;
+	height: 1px !important; 
+	width: 1px !important; 
+	overflow: hidden;
+	-webkit-transition:all linear 5s;
+  transition:all linear 5s;
+ 
+}
+
+.offscreen-animate {
+	transition: opacity 3s;
+	opacity: .3;
+}
+
 /*============================
 *
 * Side Panels
@@ -501,3 +535,4 @@
 	float: right;
 	margin-top: 5em;
 }
+

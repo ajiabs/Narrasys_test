@@ -4,6 +4,7 @@
 	}">
 	<div class="toolbar">
 		<div class="modegroup buttongroup">
+
 			<a class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')">
 				<span>Watch</span>
 			</a>
@@ -38,7 +39,7 @@
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 	<div itt-episode></div>
 
-	<div class="toolbar-bottom" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-show="appState.videoControlsActive">
+	<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
 		<div class="toolbar-bottom-fill">
 			<div ng-show="show.navPanel" class="navPanel" ng-class="episode.styleCss">
 
@@ -61,7 +62,7 @@
 			<div itt-timeline></div>
 		</div>
 	</div>
-	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"></div>
+	<div class="toolbar-bottom-controltrigger" ng-focus="showControls();" ng-mouseenter="showControls();" ng-click="showControls();"></div>
 </div>
 
 <div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
