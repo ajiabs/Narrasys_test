@@ -521,3 +521,7 @@ replaced responseInterceptor which didn't work with interceptor which does
 partial i18n for document.title
 
 
+------------------------------------------------
+Changes in v4.1.3:
+Merge branch 'i18n'
+
