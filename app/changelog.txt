@@ -512,3 +512,12 @@ fixes to link-withimage template
 Changes in v4.0.59:
 no i18n yet
 
+------------------------------------------------
+Changes in v4.0.60:
+brought language picker up to date
+bug fix in link-withimage
+fixes to link-withimage template
+replaced responseInterceptor which didn't work with interceptor which does
+partial i18n for document.title
+
+

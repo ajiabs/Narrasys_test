@@ -41,9 +41,9 @@ angular.module('com.inthetelling.story')
 				}
 			} else if (cacheType === 'container') {
 				if (svc.containers[item._id]) {
-					angular.extend(svc.containers[item._id], angular.copy(item));
+					angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(item)));
 				} else {
-					svc.containers[item._id] = angular.copy(item);
+					svc.containers[item._id] = svc.deriveContainer(angular.copy(item));
 				}
 			}
 		};
@@ -131,11 +131,12 @@ angular.module('com.inthetelling.story')
 					});
 				}
 			});
-
-			// Attach episode title and description to the landing screen event:
-			if (episode.title && svc.events["internal:landingscreen:" + episode._id]) {
-				svc.events["internal:landingscreen:" + episode._id].title = episode.title;
+			// FOR TESTING
+			if (episode.languages) {
+				// episode.languages.push("es");
 			}
+
+			episode = setLang(episode);
 			return episode;
 		};
 
@@ -173,7 +174,14 @@ angular.module('com.inthetelling.story')
 					secondary image URL (speaker icon)
 */
 
+		svc.deriveContainer = function (container) {
+			return setLang(container);
+		};
+
 		svc.deriveEvent = function (event) {
+
+			event = setLang(event);
+
 			if (event._type !== 'Scene') {
 				if (!event.templateUrl) {
 					// TODO add support for other plugin types here, or have a single plugin template that routes to subdirectives based on plugin type
@@ -189,18 +197,17 @@ angular.module('com.inthetelling.story')
 							// they don't want any embedded links (shrug)
 							event.templateUrl = 'templates/transmedia-link-noembed.html';
 						}
-
-						if (event.title.match(/ACTIVITY/)) {
+						if (event.display_title.match(/ACTIVITY/)) {
 							// Unnecessary explanatory text
-							event.description = event.description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
+							event.display_description = event.display_description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
 						}
-						if (event.title.match(/Haven't Registered/)) {
+						if (event.display_title.match(/Haven't Registered/)) {
 							// hide this event for non-guest users
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
 							event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
 						}
-						if (event.title.match(/Connect with/)) {
+						if (event.display_title.match(/Connect with/)) {
 							// hide this event unless episode badge is achieved
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
@@ -275,6 +282,39 @@ angular.module('com.inthetelling.story')
 			event.displayStartTime = $filter("asTime")(event.start_time);
 
 			return event;
+		};
+
+		var setLang = function (obj) {
+			// TODO: keywords, customers/oauth2_message
+			// TODO use episode default language instead of 'en' 
+			var langToSet = (appState.lang) ? appState.lang : "en";
+			angular.forEach(["title", "annotator", "annotation", "description", "name"], function (field) {
+				if (obj[field]) {
+					if (typeof (obj[field]) === 'string') {
+						// TODO can delete this after all data has been migrated to object form
+						obj["display_" + field] = obj[field];
+					} else {
+						if (obj[field][langToSet]) {
+							obj["display_" + field] = obj[field][langToSet];
+						} else {
+							obj["display_" + field] = obj[field].en; // TODO use episode default language instead of 'en' 
+						}
+					}
+				}
+			});
+			return obj;
+		};
+		svc.setLanguageStrings = function () {
+			angular.forEach(svc.events, function (evt) {
+				evt = setLang(evt);
+			});
+			angular.forEach(svc.episodes, function (ep) {
+				ep = setLang(ep);
+			});
+			angular.forEach(svc.containers, function (container) {
+				container = setLang(container);
+			});
+			// todo:  containers
 		};
 
 		/*  Any changes to any scene or item data must call svc.resolveEpisodeEvents afterwards. It sets:
@@ -612,7 +652,7 @@ angular.module('com.inthetelling.story')
 				}
 			}
 
-			console.log("video asset:", videoObject);
+			// console.log("video asset:", videoObject);
 
 			videoAsset.urls = videoObject;
 			return videoAsset;

@@ -15,6 +15,22 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
+		// for debugging error handler:
+		// svc.forceAPIError = function () {
+		// 	$http({
+		// 			method: 'POST',
+		// 			url: config.apiDataBaseUrl + "/v1/styles",
+		// 			data: {
+		// 				"malformed": true
+		// 			}
+		// 		})
+		// 		.then(function () {
+		// 			console.log("SUCCESS somehow");
+		// 		}, function () {
+		// 			console.log("Succeeded at failing!");
+		// 		});
+		// };
+
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
 		svc.getEpisode = function (epId) {
@@ -180,7 +196,7 @@ angular.module('com.inthetelling.story')
 
 		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
 		var getEpisode = function (epId) {
-			$http.get(config.apiDataBaseUrl + "/v1/episodes/" + epId)
+			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId)
 				.success(function (episodeData) {
 
 					// console.log("episode: ", episodeData);
@@ -202,13 +218,13 @@ angular.module('com.inthetelling.story')
 				})
 				.error(function () {
 					errorSvc.error({
-						data: "API call to /v1/episodes/" + epId + " failed (bad episode ID?)"
+						data: "API call to /v3/episodes/" + epId + " failed (bad episode ID?)"
 					});
 				});
 		};
 
 		var getEpisodeEvents = function (epId) {
-			$http.get(config.apiDataBaseUrl + "/v2/episodes/" + epId + "/events")
+			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId + "/events")
 				.success(function (events) {
 					angular.forEach(events, function (eventData) {
 						modelSvc.cache("event", resolveIDs(eventData));
@@ -221,7 +237,7 @@ angular.module('com.inthetelling.story')
 		// gets container and container assets, then iterates to parent container
 		var getContainer = function (containerId, episodeId) {
 			// console.log("getContainer", containerId, episodeId);
-			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId)
+			$http.get(config.apiDataBaseUrl + "/v3/containers/" + containerId)
 				.success(function (container) {
 					modelSvc.cache("container", container[0]);
 					// iterate to parent container
@@ -285,13 +301,16 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-		svc.getEpisodeList = function () {
-			return GET("/v1/episodes");
-		};
+		// svc.getEpisodeList = function () {
+		// 	return GET("/v3/episodes");
+		// };
 
 		svc.getAllContainers = function () {
-			return GET("/v1/containers", function (containers) {
+			return GET("/v3/containers", function (containers) {
+
 				// TODO climb through the tree customer->course->session->episode and cache each separately
+				// (right now we're ignoring localization of the container strings for this call,
+				// as it's only used internally for now)
 
 				return containers;
 			});

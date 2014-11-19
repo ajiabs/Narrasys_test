@@ -16,8 +16,9 @@
 				<a ng-click="resetAuth(); reload();">reset your session</a> and start over.
 			</span>
 		</p>
-		<a style="font-size: small" ng-click="showDetails= !showDetails">(show details)</a>
+		<!-- 		<a style="font-size: small" ng-click="showDetails= !showDetails">(show details)</a>
 		<pre ng-if="showDetails" style="font-size: small" ng-bind="error | pretty"></pre>
+ -->
 	</div>
 	<div class="notification" ng-repeat="notification in errorSvc.notifications">
 		<a style="float: right;" ng-click="dismiss(notification)">[x]</a>

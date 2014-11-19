@@ -54,7 +54,11 @@ angular.module('com.inthetelling.story')
 			return modelSvc.episodes[appState.episodeId].title;
 		}, function (a) {
 			if (a) {
-				document.title = "STORY: " + a;
+				if (typeof (a) === "string") {
+					document.title = "STORY: " + a;
+				} else {
+					document.title = "STORY: " + a.en; // HACK TODO make this respond to i18n properly
+				}
 				episodeWatcher(); // stop watching;
 			}
 		});

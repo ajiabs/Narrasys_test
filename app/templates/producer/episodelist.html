@@ -1,19 +1,21 @@
 <div ng-controller="EpisodeListController" style="margin:1em">
+	<!-- TODO proper i18n -->
+
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 
 	<div ng-repeat="customer in containers">
-		<h2 ng-click="customer.hidden = !customer.hidden" style="cursor: pointer; width:100%; background-color:#EEE">{{customer.name}}</h2>
+		<h2 ng-click="customer.hidden = !customer.hidden" style="cursor: pointer; width:100%; background-color:#EEE">{{customer.name.en}}</h2>
 
 		<div ng-if="!customer.hidden" ng-repeat="course in customer.children">
-			<h3 style="cursor:pointer;" ng-click="course.visible=!course.visible">{{course.name}}</h3>
+			<h3 style="cursor:pointer;" ng-click="course.visible=!course.visible">{{course.name.en}}</h3>
 
 			<div ng-if="course.visible" style="margin-left:2em" ng-repeat="session in course.children">
-				<h4>{{session.name}}</h4>
+				<h4>{{session.name.en}}</h4>
 				<ul>
 					<li ng-repeat="episodecontainer in session.children">
 
 						<a href="#episode/{{episodecontainer.episodes[0]}}">[View]</a>
-						{{episodecontainer.name}}
+						{{episodecontainer.name.en}}
 						<small style="opacity:0.2">{{episodecontainer.episodes[0]}}
 						</small>
 

@@ -1,4 +1,27 @@
 
+i18n fields: make sure we support language fields from the /v3 endpoints for each of these:
+
+Containers:
+        name
+        keywords
+Customers:
+        oauth2_message
+Episodes:
+        title
+        description
+EventCategories:
+        title
+Events:
+        title
+        description
+        keywords 
+        annotation (on for annotation type events)
+
+(arrays, such as keywords and categories, have this structure:
+ "keywords": { 
+    "en": ["One","Two","Three"],
+    "es": ["Dos","Quatro"] // no correlation of items across arrays....
+})
 
 
 (In authoring tool) Plugin events need to support template URLs just as other items do.  For now
