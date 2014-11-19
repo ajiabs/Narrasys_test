@@ -13,12 +13,12 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			'app/server-mock/angular.min.js',
+			'app/bower_components/angular/angular.min.js',
 			'app/bower_components/angular-mocks/angular-mocks.js',
-			'app/server-mock/jquery.min.js',
-			'app/server-mock/angular-animate.min.js',
-			'app/server-mock/angular-route.min.js',
-			'app/server-mock/angular-sanitize.min.js',
+			'app/bower_components/jquery/jquery.min.js',
+			'app/bower_components/angular-animate/angular-animate.min.js',
+			'app/bower_components/angular-route/angular-route.min.js',
+			'app/bower_components/angular-sanitize/angular-sanitize.min.js',
 			'app/config.js',
 			'app/scripts/*.js',
 			'app/scripts/**/*.js',
