@@ -529,3 +529,8 @@ Merge branch 'i18n'
 Changes in v4.1.4:
 fix usc hacks
 
+------------------------------------------------
+Changes in v4.1.5:
+switch from ng-min to ng-annotate
+updated new relic ID
+
