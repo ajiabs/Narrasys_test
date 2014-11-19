@@ -2,7 +2,6 @@
 	<!-- TODO proper i18n -->
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 
-
 	<div ng-repeat="customer in containers" class="customer">
 		<h2><a ng-click="customer.hidden = !customer.hidden">{{customer.name.en}}</a>
 		</h2>
@@ -13,23 +12,30 @@
 				<li ng-repeat="course in customer.children" class="course" ng-class="{isOpen: course.visible, isClosed: !course.visible}">
 
 					<a ng-click="course.visible =!course.visible">{{course.name.en}}</a>
-					<small><a ng-href="#/assets/{{course._id}}">[Assets]</a>
+					<small ng-if="userHasRole('admin')"><a ng-href="#/assets/{{course._id}}">[Assets]</a>
 					</small>
 					<div ng-if="course.visible" style="margin-left:2em">
 						<!-- <h4>Sessions:</h4> -->
 						<ul>
 							<li ng-repeat="session in course.children" class="session" ng-class="{isOpen: session.visible, isClosed: !session.visible}">
 								<b><a ng-click="session.visible =!session.visible">{{session.name.en}}</a></b>
-								<small><a ng-href="#/assets/{{session._id}}">[Assets]</a>
+								<small ng-if="userHasRole('admin')"><a ng-href="#/assets/{{session._id}}">[Assets]</a>
 								</small>
 
 								<ul ng-if="session.visible">
 									<li ng-repeat="episodecontainer in session.children" class="noChildren">
-										<a href="#/episode/{{episodecontainer.episodes[0]}}">[Player]</a>
-										<a href="#/sxs/{{episodecontainer.episodes[0]}}">[SxS]</a>
-										<a href="#/producer/{{episodecontainer.episodes[0]}}">[Producer]</a>
+
+										<span ng-if="userHasRole('admin')">
+											<a href="#/episode/{{episodecontainer.episodes[0]}}">[Player]</a>
+											<a href="#/sxs/{{episodecontainer.episodes[0]}}">[SxS]</a>
+											<a href="#/producer/{{episodecontainer.episodes[0]}}">[Producer]</a>
+										</span>
+										<span ng-if="!userHasRole('admin')">
+											<a ng-click="loginTo(episodecontainer.episodes[0])">[Login]</a>
+										</span>
 										{{episodecontainer.name.en}}
-										<small> <a ng-href="#/assets/{{episodecontainer._id}}">[Assets]</a>
+										<small ng-if="userHasRole('admin')">
+											<a ng-href="#/assets/{{episodecontainer._id}}">[Assets]</a>
 										</small>
 									</li>
 								</ul>
