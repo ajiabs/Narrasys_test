@@ -197,17 +197,17 @@ angular.module('com.inthetelling.story')
 							// they don't want any embedded links (shrug)
 							event.templateUrl = 'templates/transmedia-link-noembed.html';
 						}
-						if (event.title.en.match(/ACTIVITY/)) {
+						if (event.title.en && event.title.en.match(/ACTIVITY/)) {
 							// Unnecessary explanatory text
 							event.display_description = event.display_description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
 						}
-						if (event.title.en.match(/Haven't Registered/)) {
+						if (event.title.en && event.title.en.match(/Haven't Registered/)) {
 							// hide this event for non-guest users
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
 							event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
 						}
-						if (event.title.en.match(/Connect with/)) {
+						if (event.title.en && event.title.en.match(/Connect with/)) {
 							// hide this event unless episode badge is achieved
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
