@@ -15,7 +15,7 @@ module.exports = function (config) {
 		files: [
 			'app/bower_components/angular/angular.min.js',
 			'app/bower_components/angular-mocks/angular-mocks.js',
-			'app/bower_components/jquery/jquery.min.js',
+			'app/bower_components/jquery/dist/jquery.min.js',
 			'app/bower_components/angular-animate/angular-animate.min.js',
 			'app/bower_components/angular-route/angular-route.min.js',
 			'app/bower_components/angular-sanitize/angular-sanitize.min.js',
