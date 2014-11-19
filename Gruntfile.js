@@ -288,7 +288,7 @@ module.exports = function (grunt) {
 				reporters: ['progress', 'growler']
 			}
 		},
-		ngmin: {
+		ngAnnotate: {
 			dist: {
 				files: [{
 					expand: true,
@@ -361,7 +361,7 @@ module.exports = function (grunt) {
 		'autoprefixer',
 		'concat',
 		'copy:dist',
-		'ngmin',
+		'ngAnnotate',
 		'cssmin',
 		'uglify',
 		'rev',
