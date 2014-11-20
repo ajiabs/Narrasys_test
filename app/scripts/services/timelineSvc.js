@@ -405,7 +405,16 @@ angular.module('com.inthetelling.story')
 				event.end_time = Number(event.end_time);
 				// add scenes to markedEvents[]:
 				if (event._type === "Scene") {
-					svc.markedEvents.push(event);
+
+					if (appState.product === 'producer') {
+						// producer gets all scenes, even 'hidden' ones
+						svc.markedEvents.push(event);
+					} else {
+						// sxs and player just get scenes with titles
+						if (event.display_title) {
+							svc.markedEvents.push(event);
+						}
+					}
 				}
 				if (event.start_time === 0 && !event._id.match('internal')) {
 					event.start_time = 0.01;
