@@ -154,6 +154,11 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
+			if (episode.title && svc.events["internal:landingscreen:" + episode._id]) {
+				svc.events["internal:landingscreen:" + episode._id].title = episode.title;
+				svc.events["internal:landingscreen:" + episode._id] = setLang(svc.events["internal:landingscreen:" + episode._id]);
+			}
+
 			episode = setLang(episode);
 			return episode;
 		};
@@ -729,8 +734,10 @@ angular.module('com.inthetelling.story')
 				"templateUrl": "templates/scene/endingscreen.html",
 				"episode_id": episodeId,
 				"start_time": duration,
-				"end_time": duration + 0.1
+				"end_time": duration + 0.1,
+				"title": svc.episodes[episodeId].title
 			};
+			svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
 			svc.resolveEpisodeEvents(appState.episodeId);
 
 		};
