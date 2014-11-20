@@ -20,6 +20,10 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Available episodes",
 			templateUrl: 'templates/producer/episodelist.html'
 		})
+		.when('/episodes', {
+			title: "Available episodes",
+			templateUrl: 'templates/producer/episodelist.html'
+		})
 		.when('/producer/questioneditor', {
 			title: "Plugin authoring for standalone questions",
 			controller: 'QuestionAuthoringController',
