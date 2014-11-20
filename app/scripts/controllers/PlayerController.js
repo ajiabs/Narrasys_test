@@ -21,8 +21,12 @@ angular.module('com.inthetelling.story')
 				"mode": newMode
 			});
 
-			//Autoscroll only in explore mode for now
 			if (newMode === 'review') {
+				// magnet animation looks too choppy when loading review mode; skip it:
+				$timeout(function () {
+					$rootScope.$emit('magnet.jumpToMagnet');
+				}, 1);
+
 				// console.log("unblocking autoscroll");
 				appState.autoscroll = true;
 				appState.autoscrollBlocked = false;

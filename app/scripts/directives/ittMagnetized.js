@@ -54,13 +54,19 @@ angular.module('com.inthetelling.story')
 							element.width(Math.ceil(scope.magnet.width()));
 						}
 						element.height(Math.ceil(scope.magnet.width() / aspectRatio));
-
 					});
 				};
-
 				$rootScope.$on('magnet.changeMagnet', function (evt, magnet) {
 					watchMagnet(magnet);
 				});
+
+				var jumpToMagnet = function () {
+					element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute");
+					element.offset(scope.magnet.offset());
+					element.width(Math.ceil(scope.magnet.width()));
+					element.height(Math.ceil(scope.magnet.width() / aspectRatio));
+				};
+				$rootScope.$on('magnet.jumpToMagnet', jumpToMagnet);
 
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function () {
