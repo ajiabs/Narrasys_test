@@ -534,3 +534,12 @@ Changes in v4.1.5:
 switch from ng-min to ng-annotate
 updated new relic ID
 
+------------------------------------------------
+Changes in v4.1.6:
+added /#/episodes route so I don't have to remember which server I'm on
+scene nav fixes
+show times in navpanel, hide timeline tooltips for landing and ending scenes
+set titles on landing and ending scene so timeline markers will appear
+lost the annotator localization somehow
+corrected padding in GW landing screen
+updated sanitize
