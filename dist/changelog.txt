@@ -543,3 +543,7 @@ set titles on landing and ending scene so timeline markers will appear
 lost the annotator localization somehow
 corrected padding in GW landing screen
 updated sanitize
+------------------------------------------------
+Changes in v4.1.7:
+Fixing scene-centered to work on dark background colors
+
