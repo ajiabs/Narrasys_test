@@ -548,6 +548,7 @@ angular.module('com.inthetelling.story')
 				"episode_id": episodeId,
 				"start_time": 0,
 				"end_time": 0.001
+					// title may not be known at this point; deriveEpisode will fill it in later.
 			};
 		};
 
@@ -576,7 +577,8 @@ angular.module('com.inthetelling.story')
 				"templateUrl": "templates/scene/endingscreen.html",
 				"episode_id": episodeId,
 				"start_time": duration,
-				"end_time": duration + 0.1
+				"end_time": duration + 0.1,
+				"title": svc.episodes[episodeId].title // unlike in landingscreen, we know for certain that this has loaded by now
 			};
 			svc.resolveEpisodeEvents(appState.episodeId);
 
