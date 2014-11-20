@@ -1,13 +1,8 @@
 'use strict';
 
 /* 
-
-	TODO:
-
-	Allow uploading annotator asset
-
-	Allow replacing annotator asset
-
+TODO: make sure newly added annotators wind up in hte episode.annotators list
+TODO: disentangle annotator_image_id from this, move it into parent template
 */
 
 angular.module('com.inthetelling.story')
@@ -22,12 +17,18 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element, attrs, ngModelController) {
 
 				scope.appState = appState;
+				scope.hasAnnotator = function () {
+					return Object.keys(scope.item.annotator).length > 0;
+				};
+
+				// look up the annotator images
 				angular.forEach(scope.annotators, function (annotator) {
 					if (annotator.annotation_image_id) {
 						annotator.imageUrl = modelSvc.assets[annotator.annotation_image_id].url;
 					}
 				});
-				// TODO prefill current annotator image
+
+				// the form value we'll ultimately want to return
 				scope.annotator = {
 					name: scope.item.annotator
 				};
@@ -36,7 +37,6 @@ angular.module('com.inthetelling.story')
 					scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
 				}
 
-				scope.searchText = scope.item.annotator[appState.lang];
 				scope.filteredAnnotators = angular.copy(scope.annotators);
 				scope.preselectedItem = -1;
 
@@ -78,13 +78,9 @@ angular.module('com.inthetelling.story')
 						if (Object.keys(scope.filteredAnnotators).length === 1) {
 							scope.preselectedItem = 0;
 						}
-
-						// if none left, show an "add new" button
-						scope.allowAddNew = (Object.keys(scope.filteredAnnotators).length === 0);
 					} else {
 						// empty searchText, show all autocomplete options
 						scope.filteredAnnotators = angular.copy(scope.annotators);
-						scope.allowAddNew = false;
 						scope.preselectedItem = -1;
 					}
 
@@ -113,7 +109,7 @@ angular.module('com.inthetelling.story')
 					}
 
 					ngModelController.$setViewValue(annotator.name); // passes annotator name back to item
-					scope.searchText = annotator.key;
+					scope.searchText = '';
 
 					//TODO  allow upload to replace image
 				};
@@ -129,6 +125,11 @@ angular.module('com.inthetelling.story')
 					$timeout(function () {
 						if (scope.preselectedItem > -1) {
 							scope.selectByIndex(scope.preselectedItem);
+						} else {
+							// doesn't match an existing name, so...
+							if (scope.searchText !== '') {
+								scope.addNewAnnotator();
+							}
 						}
 						scope.autoCompleting = false;
 					}, 300);
@@ -136,27 +137,33 @@ angular.module('com.inthetelling.story')
 
 				scope.addNewAnnotator = function () {
 					var annotatorName = scope.searchText; // TODO sanitize me!!!
-					var newAnnotator = {
-						"name": {
-							"en": annotatorName // make sure we have something consistent to key against
-						},
-						"imageUrl": "",
-						"annotation_image_id": false
-					};
-					if (appState.lang !== 'en') {
-						newAnnotator.name[appState.lang] = annotatorName;
-					}
-					console.log(newAnnotator);
-					// make available in future transcript edits
-					scope.annotators[annotatorName] = angular.copy(newAnnotator);
-					console.log(scope.annotators);
+					scope.item.annotator = {};
+					scope.item.annotator[appState.lang] = annotatorName;
+					scope.searchText = "";
 
-					scope.annotator = angular.copy(newAnnotator);
-					delete scope.annotator.imageUrl;
-					ngModelController.$setViewValue(annotatorName[appState.lang]);
-
-					// trigger autocomplete to match the newly added annotator
 					scope.handleAutocomplete();
+
+					// var newAnnotator = {
+					// 	"name": {
+					// 		"en": annotatorName // make sure we have something consistent to key against
+					// 	},
+					// 	"imageUrl": "",
+					// 	"annotation_image_id": false
+					// };
+					// if (appState.lang !== 'en') {
+					// 	newAnnotator.name[appState.lang] = annotatorName;
+					// }
+					// console.log(newAnnotator);
+
+					// // make available in future transcript edits
+					// // TODO shoudl this happen now? or wait until save?
+					// scope.annotators[annotatorName] = angular.copy(newAnnotator);
+					// console.log(scope.annotators);
+
+					// scope.annotator = angular.copy(newAnnotator);
+					// delete scope.annotator.imageUrl;
+
+					// ngModelController.$setViewValue(newAnnotator);
 
 				};
 

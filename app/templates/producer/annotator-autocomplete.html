@@ -1,11 +1,6 @@
-<div style="position:relative;">
-	<!-- 	<button ng-if="allowAddNew" class="annotatorSubButton" ng-click="addNewAnnotator()">Add New</button>
- -->
-	<button ng-if="!allowAddNew && annotator.imageUrl" class="annotatorSubButton" ng-click="uploadAnnotatorImage()">Replace image</button>
-	<button ng-if="!annotator.imageUrl" class="annotatorSubButton" ng-click="uploadAnnotatorImage()">Upload image</button>
+<div style="position:relative;" ng-show="!hasAnnotator()">
 
-	<span class="fakelink annotatorEmptyCue" ng-if="!searchText && !autoCompleting">Choose one...</span>
-	<input class="annotatorChooser fakelink" type="text" ng-model="searchText" ng-focus="showAutocomplete()" ng-blur="hideAutocomplete()" ng-change="handleAutocomplete()">
+	<input class="annotatorChooser" type="text" ng-model="searchText" ng-focus="showAutocomplete()" ng-blur="hideAutocomplete()" ng-change="handleAutocomplete()">
 
 	<div class="autocompleteList animate transitionFade" ng-if="autoCompleting">
 		<div class="autocompleteItem" ng-repeat="annotator in filteredAnnotators | orderBy:'name'" ng-click="select(annotator)" ng-class="{selected: ($index == preselectedItem)}" style="white-space: nowrap">
@@ -13,4 +8,8 @@
 			<span ng-bind-html="(annotator.key | highlightSubstring: searchText) || '(New speaker)'"></span>
 		</div>
 	</div>
+</div>
+<div style="position:relative;" ng-show="hasAnnotator()">
+	<div sxs-input-i18n="item.annotator" x-inputtype="'input'"></div>
+	<a style="position: absolute; top: 3px; right: 10px" ng-click="item.annotator={}">(x)</a>
 </div>

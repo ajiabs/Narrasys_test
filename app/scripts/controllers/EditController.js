@@ -147,7 +147,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		var generateEmptyItem = function (type) {
-			console.log("generateEmptyItem", type);
 			var base = {
 				"_id": "internal:editing",
 				"start_time": appState.time,
@@ -186,12 +185,8 @@ TODO merge 'comment' with 'annotation'?
 			if (type === 'scene') {
 				stub = {
 					"_type": "Scene",
-					"title": {
-						en: ""
-					},
-					"description": {
-						en: ""
-					}
+					"title": {},
+					"description": {}
 				};
 			}
 			if (type === 'video') {
@@ -201,12 +196,8 @@ TODO merge 'comment' with 'annotation'?
 			if (type === 'comment' || type === 'transcript' || type === 'annotation') {
 				stub = {
 					"_type": "Annotation",
-					"annotation": {
-						en: ""
-					},
-					"annotator": {
-						en: ""
-					},
+					"annotation": {},
+					"annotator": {},
 					"annotation_image_id": ""
 				};
 			}
@@ -215,12 +206,8 @@ TODO merge 'comment' with 'annotation'?
 				stub = {
 					"_type": "Upload",
 					"asset_id": "",
-					"title": {
-						en: ""
-					},
-					"description": {
-						en: ""
-					}
+					"title": {},
+					"description": {}
 				};
 			}
 
@@ -229,12 +216,8 @@ TODO merge 'comment' with 'annotation'?
 					"_type": "Link",
 					"link_image_id": "",
 					"url": "https://",
-					"title": {
-						en: ""
-					},
-					"description": {
-						en: ""
-					}
+					"title": {},
+					"description": {}
 				};
 			}
 

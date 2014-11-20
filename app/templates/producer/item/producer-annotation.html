@@ -1,17 +1,17 @@
 <span class="eventIcon icon-comment"></span>
 <div class="field">
-	<div class="label">Speaker
+	<div class="label">Speaker [{{appState.lang}}]
 	</div>
-	<div class="input" sxs-annotator-autocomplete="annotators" item="item" ng-model="item.annotator">
+	<div class="input">
+		<div sxs-annotator-autocomplete="annotators" item="item" ng-model="item.annotator"></div>
 	</div>
 </div>
 <div class="field">
-	<div class="label">Speaker [{{appState.lang}}]
+	<div class="label">Speaker thumbnail
 	</div>
-	<div class="input" sxs-input-i18n="item.annotator" x-inputtype="'input'">
+	<div class="input" ng-include="'templates/producer/upload-single.html'">
 	</div>
 </div>
-
 <div class="field">
 	<div class="label">Annotation [{{appState.lang}}]</div>
 	<div class="input" sxs-input-i18n="item.annotation" x-inputtype="'textarea'" autofocus></div>

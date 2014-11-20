@@ -215,14 +215,6 @@
 .authoringForm option {
 	padding: 0.2em 0;
 }
-.annotatorChooser {
-	border-color: transparent !important;
-	box-shadow: none !important;
-	background: transparent;
-}
-.annotatorChooser:focus {
-	color: #000 !important;
-}
 .annotatorEmptyCue {
 	font-size: 13px;
 	position: absolute;
