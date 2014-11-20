@@ -100,7 +100,7 @@
 	background-size: 60%;
 	background-position: 50% 40px;
 	background-repeat: no-repeat;
-	padding-top: 150px;
+	padding: 150px 0 0 0;
 }
 .episode-gw .landingscreen .introtext,
 .episode-gw .landingscreen .videoMagnet {
