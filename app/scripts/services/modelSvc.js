@@ -131,6 +131,10 @@ angular.module('com.inthetelling.story')
 					});
 				}
 			});
+
+			if (episode.title && svc.events["internal:landingscreen:" + episode._id]) {
+				svc.events["internal:landingscreen:" + episode._id].title = episode.title;
+			}
 			// FOR TESTING
 			if (episode.languages) {
 				// episode.languages.push("es");
