@@ -254,13 +254,8 @@ angular.module('com.inthetelling.story')
 
 				//items
 
-				if (!event.templateUrl) {
-					console.log(">>>", event);
-				}
-
 				// clear derived flags before re-setting them (in case we're editing an existing item):
 				event.isContent = false;
-				event.showInReviewMode = false;
 				event.isTranscript = false;
 				event.noEmbed = false;
 				event.noExternalLink = false;
@@ -276,12 +271,6 @@ angular.module('com.inthetelling.story')
 				} else {
 					// no layout, therefore inline content
 					event.isContent = true;
-				}
-
-				// TODO: if we could trust authors to choose 'cosmetic' for cosmetic items, or if we set it in producer based on the item layout
-				// (HEY THERES AN IDEA) we wouldn't need to do this:
-				if (!event.cosmetic && (event.isContent || event.layouts.indexOf('windowFg') > -1)) {
-					event.showInReviewMode = true;
 				}
 
 				// Old templates which (TODO) should have been database fields instead:
@@ -675,6 +664,7 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			}
+
 			return cssArr.join(' ');
 		};
 

@@ -1,7 +1,7 @@
 <a class="edit-event" ng-click="editItem()">
 	<span>Edit item</span>
 </a>
-<div>
+<div ng-class="{isCosmetic: item.cosmetic}">
 	<div ng-if="item.isTranscript" class="itemTemplate">
 		<div class="itemHead">
 			<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>

@@ -71,12 +71,19 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('reviewMode', function () {
-		// TODO obsolete this; producer should set the 'cosmetic' field correctly (right now authors can't be trusted to set it)
+	.filter('reviewMode', function (appState) {
 		return function (items) {
 			var ret = [];
+			var isProducer = (appState.product === 'producer');
+			// player, sxs: non-cosmetic, and isContent or windowFg.
+			// producer: everything.
 			angular.forEach(items, function (item) {
-				if (item.showInReviewMode) {
+				if (
+					isProducer ||
+					(!item.cosmetic &&
+						(item.isContent || item.layouts.indexOf('windowFg') > -1)
+					)
+				) {
 					ret.push(item);
 				}
 			});

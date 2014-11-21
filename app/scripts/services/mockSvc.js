@@ -21,6 +21,11 @@ angular.module('com.inthetelling.story')
 				"title": {
 					en: "Test Episode"
 				},
+				"languages": [{
+					code: 'en',
+					default: true
+				}],
+
 				"status": "Published",
 				"templateUrl": "templates/episode/episode.html",
 				"styles": [
@@ -174,14 +179,18 @@ angular.module('com.inthetelling.story')
 				"extension": "jpg",
 				"name": "900x900 placeholder",
 			});
-			/*
+
 			var linkStub = {
 				"_id": "",
 				"_type": "Link",
 				"link_image_id": "asset1",
 				"url": "https://luminarydigitalmedia.com",
-				"title": {en: "Link Title"},
-				"description": {en: "Link Description <i>lorem</i> ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy"},
+				"title": {
+					en: "Link Title"
+				},
+				"description": {
+					en: "Link Description <i>lorem</i> ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy"
+				},
 				"cosmetic": false,
 				"stop": false,
 				"type": "Link",
@@ -191,7 +200,7 @@ angular.module('com.inthetelling.story')
 				"styles": ["timestampNone"],
 				"isContent": true,
 			};
-			
+
 			for (i = 0; i < 30; i++) {
 				var link = angular.copy(linkStub);
 				link._id = "link-" + i;
@@ -210,7 +219,7 @@ angular.module('com.inthetelling.story')
 				// }
 				modelSvc.cache("event", link);
 			}
-			*/
+
 			var uploadStub = {
 				"_type": "Upload",
 
@@ -218,7 +227,7 @@ angular.module('com.inthetelling.story')
 					en: "Description of an upload item"
 				},
 				"required": false,
-				"cosmetic": false,
+				"cosmetic": true,
 				"stop": false,
 				"type": "Upload",
 				"episode_id": epId,

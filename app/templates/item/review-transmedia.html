@@ -1,5 +1,5 @@
-<div ng-if="item.sxs" ng-include="item.templateUrl"></div>
-<div ng-if="!item.sxs">
+<div ng-if="item.sxs" ng-include="item.templateUrl" ng-class="{isCosmetic: item.cosmetic}"></div>
+<div ng-if="!item.sxs" ng-class="{isCosmetic: item.cosmetic}">
 	<a class="edit-event" ng-click="editItem()">
 		<span>Edit item</span>
 	</a>
