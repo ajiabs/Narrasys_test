@@ -221,6 +221,12 @@ angular.module('com.inthetelling.story')
 					// HACKS AHOY
 					// USC made a bunch of change requests post-release; this was the most expedient way
 					// to deal with them. Sorry!
+
+					// I don't know why this situation occurs, but it does:
+					if (!event.templateUrl) {
+						event.templateUrl = 'templates/item/usc-badges.html';
+					}
+
 					if (event._type === "Link") {
 						if (event.templateUrl === 'templates/transmedia-link-default.html') {
 							// they don't want any embedded links (shrug)
@@ -247,6 +253,10 @@ angular.module('com.inthetelling.story')
 				}
 
 				//items
+
+				if (!event.templateUrl) {
+					console.log(">>>", event);
+				}
 
 				// clear derived flags before re-setting them (in case we're editing an existing item):
 				event.isContent = false;
