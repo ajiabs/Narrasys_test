@@ -14,9 +14,13 @@ angular.module('com.inthetelling.story')
 			modelSvc.cache("episode", {
 				"_id": epId,
 				"created_at": "2014-04-10T02:02:15Z",
-				"description": "The Business Case for Sustainability",
+				"description": {
+					en: "The Business Case for Sustainability"
+				},
 				"master_asset_id": "masterasset",
-				"title": "Test Episode",
+				"title": {
+					en: "Test Episode"
+				},
 				"status": "Published",
 				"templateUrl": "templates/episode/episode.html",
 				"styles": [
@@ -56,7 +60,9 @@ angular.module('com.inthetelling.story')
 			var sceneStub = {
 				"_id": "-",
 				"_type": "Scene",
-				"description": "Scene <b>description</b> Description",
+				"description": {
+					en: "Scene <b>description</b> Description"
+				},
 				"keywords": [],
 				"start_time": 0,
 				"end_time": 200,
@@ -79,8 +85,11 @@ angular.module('com.inthetelling.story')
 			for (var i = 0; i < 10; i++) {
 				var scene = angular.copy(sceneStub);
 				scene._id = "scene-" + i;
-				scene.title = (i / 2 === Math.floor(i / 2)) ? "Scene " + (i + 1) + " Title" : "";
-				scene.title = "Scene " + (i + 1) + " Title <b>html<sup>included</sup></b>";
+				scene.title = (i / 2 === Math.floor(i / 2)) ? {
+					en: "Scene " + (i + 1) + " Title"
+				} : {
+					en: ""
+				};
 				scene.start_time = (i * 20);
 				scene.end_time = (i * 20 + 20);
 				scene.templateUrl = scenetemplateurls[i % scenetemplateurls.length];
@@ -90,9 +99,13 @@ angular.module('com.inthetelling.story')
 			var annotationStub = {
 				"_id": "",
 				"_type": "Annotation",
-				"annotation": "Transcript text: <b>html</b> included!",
+				"annotation": {
+					en: "Transcript text: <b>html</b> included!"
+				},
 				"annotation_image_id": "asset3",
-				"annotator": "Speaker Name",
+				"annotator": {
+					en: "Speaker Name"
+				},
 				"cosmetic": false,
 				"episode_id": epId,
 				"required": false,
@@ -116,7 +129,9 @@ angular.module('com.inthetelling.story')
 			for (i = 0; i < 30; i++) {
 				var transcript = angular.copy(annotationStub);
 				transcript._id = "transcript-" + i;
-				transcript.annotation = "Transcript block number " + (i + 1);
+				transcript.annotation = {
+					en: "Transcript block number " + (i + 1)
+				};
 				transcript.start_time = (i * 5);
 				transcript.end_time = (i * 5 + 5);
 				transcript.layouts = [testLayouts[i % testLayouts.length]];
@@ -165,8 +180,8 @@ angular.module('com.inthetelling.story')
 				"_type": "Link",
 				"link_image_id": "asset1",
 				"url": "https://luminarydigitalmedia.com",
-				"title": "Link Title",
-				"description": "Link Description <i>lorem</i> ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy",
+				"title": {en: "Link Title"},
+				"description": {en: "Link Description <i>lorem</i> ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy lorem ipsum dolor frog a frog oh lord it's amet lorem ipsum buddy"},
 				"cosmetic": false,
 				"stop": false,
 				"type": "Link",
@@ -187,10 +202,10 @@ angular.module('com.inthetelling.story')
 				link.layouts = [testLayouts[i % testLayouts.length]];
 
 				// if (Math.random() > 0.1) {
-				// 	link.title = "NO EMBED link";
+				// 	link.title = {en: "NO EMBED link"};
 				// 	link.templateUrl = "templates/transmedia-link-noembed.html";
 				// } else if (Math.random() < 0.1) {
-				// 	link.title = "FRAMEICIDE link";
+				// 	link.title = {en: "FRAMEICIDE link"};
 				// 	link.templateUrl = "templates/transmedia-link-frameicide.html";
 				// }
 				modelSvc.cache("event", link);
@@ -199,7 +214,9 @@ angular.module('com.inthetelling.story')
 			var uploadStub = {
 				"_type": "Upload",
 
-				"description": "Description of an upload item",
+				"description": {
+					en: "Description of an upload item"
+				},
 				"required": false,
 				"cosmetic": false,
 				"stop": false,
@@ -217,7 +234,9 @@ angular.module('com.inthetelling.story')
 				var upload = angular.copy(uploadStub);
 				upload._id = "upload-" + i;
 				upload.asset_id = "asset2"; // + (i % 3 + 2);
-				upload.title = "Upload number " + (i % 3 + 1);
+				upload.title = {
+					en: "Upload number " + (i % 3 + 1)
+				};
 				upload.start_time = i * 4;
 				upload.end_time = i * 4 + 4;
 				upload.layouts = [testLayouts[i % testLayouts.length]];
