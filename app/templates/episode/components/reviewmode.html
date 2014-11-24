@@ -2,5 +2,5 @@
 	<div itt-magnet id="reviewModeVideoMagnet" class="videoMagnet">
 		<img src="images/aspectratiopreserver-16x9.gif">
 	</div>
-	<div itt-review-mode="episode.scenes"></div>
+	<div ng-if="appState.viewMode == 'review'" itt-review-mode="episode.scenes"></div>
 </div>

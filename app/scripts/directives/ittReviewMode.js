@@ -26,16 +26,21 @@ angular.module('com.inthetelling.story')
 				var cur = 0;
 				scope.isLoading = true;
 
+				// Was just rendering one scene at a time, but with a lot scenes that can be a different kind of slow.
+				// So we'll ramp up gradually rendering more and more each iteration:
+				var fib = [1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,Infinity];
+
 				scope.addOne = function () {
 					cur++;
 					if (scope.allScenes) {
-						scope.scenes = scope.allScenes.slice(0, cur);
+						scope.scenes = scope.allScenes.slice(0, fib[cur]);
+						// console.log("scope.scenes length is ",scope.scenes.length);
 						if (cur < scope.allScenes.length) {
 							$timeout(scope.addOne, delay);
 						} else {
 							scope.isLoading = false;
 							scope.scenes = scope.allScenes; // swap in the original data reference once we think we're done loading, so in case users start adding new scenes later we're not stuck with a partial slice
-							console.log("stopping");
+							// console.log("stopping");
 						}
 					} else {
 						// No scenes loaded yet, so wait for them and try again.  (TODO see if this still works ok if users are editing or adding scenes while in review mode)
