@@ -58,6 +58,9 @@ a {
 	cursor: pointer;
 	cursor: hand;
 }
+.fakeLink {
+	color: #00C;
+}
 h1,
 h2,
 h3,

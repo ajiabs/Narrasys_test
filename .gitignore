@@ -2,3 +2,5 @@
 .tmp
 .sass-cache
 /app/scripts/templates.js
+*.swp
+*.swo

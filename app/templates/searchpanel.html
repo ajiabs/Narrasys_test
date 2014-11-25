@@ -1,16 +1,9 @@
 <div ng-class="episode.styleCss">
-	<div class="searchfilters">
-		<label ng-show="sortBy!=='startTime'">
-			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="startTime">Sorted by
-			<span class="fakelink">type</span>
-		</label>
-		<label ng-show="sortBy==='startTime'">
-			<input type="radio" name="searchsort" id="searchsort" ng-model="sortBy" value="type">Sorted by
-			<span class="fakelink">time</span>
-		</label>
+	<div aria-label="sort toggle" class="searchfilters" aria-controls="sortableSearch">
+		Sorted by <button tabindex="0" class="fakelink" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
 	</div>
 	<div class="scrollContainer">
-		<div class="searchResults">
+		<div class="searchResults" id="sortableSearch">
 			<div ng-if="sortBy == 'startTime'">
 				<div ng-repeat="scene in episode.scenes">
 					<h3 ng-if="sceneItems.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h3>

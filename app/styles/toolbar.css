@@ -27,16 +27,30 @@
 	margin: 0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
 }
-.toolbar .buttongroup .button span {
+
+button {
+  margin      : 0;
+  padding     : 0;
+  border      : 0;
+  background  : transparent;
+  font-family : inherit;
+  font-size   : 1em;
+  cursor      : pointer;
+}
+.toolbar .buttongroup span {
 	display: block;
 	position: absolute;
 	top: 20px;
 	left: 0;
 	right: 0;
 	text-align: center;
-	opacity: 0;
+	opacity: 1;
 	color: #666;
 	font-size: 12px;
+	padding: 0;
+	border: none;
+	background: none;
+	margin: 0;
 }
 .toolbar .buttongroup:hover .button span {
 	opacity: 0 !important
@@ -54,6 +68,14 @@
 .toolbar .searchgroup,
 .toolbar .escapegroup {
 	float: right;
+}
+.toolbar .searchgroup .hidden {
+	position:absolute; 
+	left:0;
+	top:-500px;
+	width:1px;
+	height:1px;
+	overflow:hidden;
 }
 .toolbar .buttongroup.searchgroup {
 	transition: all 1s;
@@ -213,6 +235,26 @@
 .toolbar-bottom.ng-hide-add.ng-hide-add-active {
 	opacity: 0;
 }
+
+.offscreen {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+	padding:0 !important;
+	border:0 !important;
+	height: 1px !important; 
+	width: 1px !important; 
+	overflow: hidden;
+	-webkit-transition:all linear 5s;
+  transition:all linear 5s;
+ 
+}
+
+.offscreen-animate {
+	transition: opacity 3s;
+	opacity: .3;
+}
+
 /*============================
 *
 * Side Panels
@@ -280,7 +322,11 @@
 }
 .searchfilters {
 	font-size: 0.86em;
+	float: right;
+	margin-right: 0.5em;
+	cursor: pointer;
 }
+
 .searchfilters label {
 	float: right;
 	margin-right: 0.5em;
@@ -297,10 +343,10 @@
 	padding: 0.1em 0.3em;
 	clear: both;
 }
-.searchResults .item .displayTime {
+.searchResults .item .displayTime button {
 	cursor: pointer;
 	cursor: hand;
-	color: #C44343;
+	color: #00C;
 	float: left;
 	display: inline;
 	width: 45px;
@@ -419,6 +465,10 @@
 	text-align: right;
 	padding-right: 10px;
 }
+
+.navPanel .sceneLink {
+	color: blue;
+}
 /*============================
  *
  * Help Panel
@@ -475,6 +525,14 @@
 }
 .helpPanel .goAway {
 	float: right;
+	color:#069;
+  margin      : 0;
+  padding     : 0;
+  border      : 0;
+  background  : transparent;
+  font-family : inherit;
+  font-size   : 1em;
+  cursor      : pointer;
 }
 .helpPanel .arrow-up {
 	width: 20px;
@@ -487,6 +545,15 @@
 	z-index: 5;
 	transform: rotate(45deg);
 }
+
+.helpPanel .screen-reader-offscreen {
+	position:absolute;
+	left:-999px;
+	width:1px;
+	height:1px;
+	top:auto;
+}
+
 /* .button-continue appears in windowFg: */
 
 .button-continue:after {
@@ -501,3 +568,4 @@
 	float: right;
 	margin-top: 5em;
 }
+

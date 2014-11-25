@@ -23,7 +23,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.markerPercent = function (t) {
-			return t / appState.duration * 100;
+			return (t == undefined ? 0 : t / appState.duration * 100)
 		};
 
 		// Yeah, this is a little odd.  Letting timelineSvc manage all video-related functions,

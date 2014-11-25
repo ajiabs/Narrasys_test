@@ -1,6 +1,6 @@
 <div class="itemTemplate itemCaption">
 	<div class="itemHead">
-		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+		<button tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
 		<div class="authorName" ng-bind-html="item.display_annotator"></div>
 	</div>
 	<div class="text" ng-bind-html="item.display_annotation"></div>

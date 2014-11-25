@@ -1,6 +1,6 @@
 <div class="itemTemplate">
 	<div class="itemHead">
-		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+		<button tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
 		<div class="category">
 			<!--{{item.category}}-->
 			<span ng-if="item.required">(Required viewing)</span>
@@ -11,17 +11,17 @@
 			<span ng-if="!item.targetTop">
 				<div class="title">
 
-					<a class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+					<a tabindex="0" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
 				</div>
-				<a ng-if="item.asset.url" ng-click="outgoingLink(item.url)">
+				<a tabindex="0" ng-if="item.asset.url" ng-click="outgoingLink(item.url)">
 					<img ng-src="{{item.asset.url}}">
 				</a>
 			</span>
 			<span ng-if="item.targetTop">
 				<div class="title">
-					<a target="_top" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+					<a tabindex="0" target="_top" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
 				</div>
-				<a target="_top" ng-click="outgoingLink(item.url)">
+				<a tabindex="0" target="_top" ng-click="outgoingLink(item.url)">
 					<img ng-src="{{item.asset.url}}">
 				</a>
 			</span>
@@ -29,7 +29,7 @@
 		</span>
 		<span ng-if="!item.noEmbed">
 			<div class="title">
-				<a ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
+				<button class="fakeLink" tabindex="0" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></button>
 			</div>
 			<img ng-click="toggleDetailView()" ng-src="{{item.asset.url}}">
 		</span>
@@ -39,7 +39,7 @@
 </div>
 
 <div class="itemDetail" ng-if="item.showInlineDetail">
-	<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
+	<a tabindex="0" ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 	<div class="iframeContainer">
 		<div ng-include="'templates/loading.html'"></div>
 		<!-- <iframe style="display:none;" onload="console.log('load',this.src);if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
