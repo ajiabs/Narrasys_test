@@ -85,9 +85,9 @@
 				<button tabindex="0" class="button button-mute {{audioIcon()}}" ng-click="toggleMute()">
 					<span class="control-text">Mute</span>
 				</button>
-				<div role="slider" aria-label="volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{currentVolume()}}" aria-valuetext="{{currentVolume()}}" tabindex="0" class="volumebar" ng-mousedown="userChangingVolume($event)">
+				<div role="slider" aria-label="volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{currentVolume()}}" aria-valuetext="{{currentVolume()}}" tabindex="0" class="volumebar" ng-mousedown="userChangingVolume($event)" ng-keydown="onVolumeKeyDown($event)" aria-labelledby="volumeControlDescription">
 					<div class="volume" ng-style="{width: currentVolume()+'%'}"></div>
-				</div>
+					<div id="volumeControlDescription" class="screen-reader-offscreen"> Use left and right arrows to increase or decrease the volume by 1. Use page up and page down to increase or decrease the volume by 10. Use home and end to move to the volume to the lowest and highest setting.  </div>
 			</span>
 		</div>
 	</div>

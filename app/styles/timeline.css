@@ -288,6 +288,13 @@
 	height: 1em;
 	background: #555 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
+.pbarBottom .screen-reader-offscreen {
+	position:absolute;
+	left:-999px;
+	width:1px;
+	height:1px;
+	top:auto;
+}
 .speedcontrol {
 	margin-left: 1em;
 	display: inline;
