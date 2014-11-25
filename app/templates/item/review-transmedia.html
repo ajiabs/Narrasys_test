@@ -10,13 +10,13 @@
 		</div>
 		<div class="text">
 			<div class="title">
-				<a ng-if="item.noEmbed" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
-				<a ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
+				<button tabindex="0" ng-if="item.noEmbed" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></button>
+				<button tabindex="0" class="fakeLink" ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></button>
 			</div>
 			<div ng-bind-html="item.display_description"></div>
 		</div>
 		<div class="itemDetail" ng-if="item.showInlineDetail && item._type == 'Link'">
-			<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
+			<button tabindex="0" ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="fakeLink escapelink">(new window)</button>
 			<div class="iframeContainer">
 				<div ng-include="'templates/loading.html'"></div>
 				<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->

@@ -1,6 +1,6 @@
 <div class="itemTemplate transcriptWithThumbnail">
 	<div class="itemHead">
-		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+		<button tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
 	</div>
 	<div class="icon" style="float:left; margin-right: 0.5em;">
 		<img ng-src="{{item.asset.url}}">

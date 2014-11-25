@@ -1,6 +1,6 @@
 <div class="itemTemplate">
 	<div class="itemHead">
-		<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+		<button tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
 		<div class="category">
 			<!--{{item.category}}-->
 			<span ng-if="item.required">(Required viewing)</span>
@@ -8,7 +8,7 @@
 	</div>
 	<div class="text">
 		<div class="title">
-			<a ng-click="outgoingLink(item.asset.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+			<a tabindex="0" ng-click="outgoingLink(item.asset.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
 		</div>
 		<div class="text" ng-bind-html="item.display_description"></div>
 	</div>
