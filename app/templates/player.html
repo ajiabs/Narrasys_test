@@ -4,16 +4,15 @@
 	}">
 	<div class="toolbar">
 		<div class="modegroup buttongroup">
-
-			<a class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')">
-				<span>Watch</span>
-			</a>
-			<a class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')">
-				<span>Discover</span>
-			</a>
-			<a class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')">
-				<span>Review</span>
-			</a>
+			<nav role="navigation">
+			<button tabindex="0" class="button button-watch" ng-mouseleave="tiptext = appState.viewMode" ng-mouseover="tiptext = 'watch'" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')" aria-label="watch">
+			</button>
+			<button tabindex="0" class="button button-discover" ng-mouseleave="tiptext = appState.viewMode" ng-mouseover="tiptext = 'discover'" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')" aria-label="discover" >
+			</button>
+			<button tabindex="0" class="button button-review" ng-mouseleave="tiptext = appState.viewMode" ng-mouseover="tiptext = 'review'" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="review">
+			</button>
+			<span>{{tiptext}}</span>
+			</navigation>
 		</div>
 		<!-- <div ng-if="appState.producer && appState.viewMode == 'discover'" class="buttongroup">
 			<a class="button" ng-click="editLayer('scene');">Scene<span>Edit the scene layout (TODO)</span></a>
@@ -23,17 +22,18 @@
 			<a class="button" ng-click="editLayer('');">All<span>Show everything</span></a>
 		</div> -->
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
-			<a class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
+			<button tabindex="0" class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
 
 
 				<span>New window</span>
-			</a>
+			</button>
 		</div>
 		<div class="searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
-			<a class="button button-search" ng-click="toggleSearchPanel()">
+			<button tabindex="0" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
 				<span>Search</span>
-			</a>
-			<input id="searchtext" type="text" ng-model="searchText" />
+			</button>
+			<label for="searchtext" class="hidden">Search Text</label>
+			<input name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
 		</div>
 	</div>
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
@@ -42,13 +42,14 @@
 	<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
 		<div class="toolbar-bottom-fill">
 			<div ng-show="show.navPanel" class="navPanel" ng-class="episode.styleCss">
+<<<<<<< Updated upstream
 
 				<div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
 				<h2 ng-bind-html="episode.display_title"></h2>
 				<div class="scene" x-ng-if="scene.display_title" x-ng-repeat="scene in episode.scenes" x-ng-class="{currentScene: scene.isCurrent}" x-ng-click="seek(scene.start_time)">
 					<span class="displayTime">{{scene.displayStartTime}}</span>
 					<p>
-						<a ng-bind-html="scene.display_title"></a>
+					<button tabindex="0" ng-bind-html="scene.display_title"></button>
 						<br>
 						<span ng-bind-html="scene.display_description"></span>
 					</p>
@@ -62,7 +63,7 @@
 			<div itt-timeline></div>
 		</div>
 	</div>
-	<div class="toolbar-bottom-controltrigger" ng-focus="showControls();" ng-mouseenter="showControls();" ng-click="showControls();"></div>
+	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"></div>
 </div>
 
 <div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
@@ -81,9 +82,12 @@
 </div>
 
 <!-- HELP -->
-<div ng-if="show.helpPanel" class="helpPanel">
+<div id="helpModal" tabindex="-1" aria-hidden="{{!show.helpPanel}}" ng-show="show.helpPanel" itt-show-focus="show.helpPanel" class="helpPanel" aria-labelledby="modalHelpTitle modalHelpDescription" role="dialog">
 	<div class="arrow-up"></div>
-	<p>Welcome to TELLING STORY! You can switch at any time between these views &#8212; don't worry, you won't lose your place:</p>
+	
+	<div id="modalHelpDescription" class="screen-reader-offscreen">Help dialog window. Don't show this again link will close the window and prevent it from returning. Escape will cancel and close the window.</div>
+
+	<h1 id="modalHelpTitle">Welcome to TELLING STORY! You can switch at any time between these views &#8212; don't worry, you won't lose your place:</h1>
 	<ul>
 		<li class="video">
 			<h3>Watch</h3>
@@ -98,7 +102,7 @@
 			<p>Read the full transcript and all the related transmedia in one convenient list.</p>
 		</li>
 	</ul>
-	<a class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;">Don't show this again</a>
+	<input type="button" value="Don't show this again" class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;"></input>
 </div>
 
 <div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>

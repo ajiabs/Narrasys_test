@@ -7,13 +7,10 @@ angular.module('com.inthetelling.story')
 				scope.$watch(attr.ittShowHideVisualOnly, function ngShowWatchAction(value) {
 					if (element.hasClass('offscreen')) {
 						$animate.removeClass(element, 'offscreen');
-						$animate.removeClass(element, 'offscreen-animate');
 					} else {
-						$animate.addClass(element, 'offscreen-animate', function () {
-							$animate.addClass(element, 'offscreen');
-						});
+						$animate.addClass(element, 'offscreen');
 					}
 				});
 			}
 		}
-	}]); 
+	}]);
