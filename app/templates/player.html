@@ -48,7 +48,7 @@
 				<div class="scene" x-ng-if="scene.display_title" x-ng-repeat="scene in episode.scenes" x-ng-class="{currentScene: scene.isCurrent}" x-ng-click="seek(scene.start_time)">
 					<span class="displayTime">{{scene.displayStartTime}}</span>
 					<p>
-					<button tabindex="0" ng-bind-html="scene.display_title" x-ng-class="{sceneLink: !scene.isCurrent}"></button>
+					<button tabindex="0" ng-bind-html="scene.display_title" x-ng-class="{sceneLink: !scene.isCurrent}" ng-focus="showControls()"></button>
 						<br>
 						<span ng-bind-html="scene.display_description"></span>
 					</p>
@@ -62,7 +62,7 @@
 			<div itt-timeline></div>
 		</div>
 	</div>
-	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"></div>
+	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()"></div>
 </div>
 
 <div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">

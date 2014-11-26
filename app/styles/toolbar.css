@@ -247,7 +247,10 @@ button {
 	overflow: hidden;
 	-webkit-transition:all linear 5s;
   transition:all linear 5s;
- 
+}
+
+.visual-hide {
+	opacity: 0;
 }
 
 .offscreen-animate {
