@@ -11,6 +11,8 @@ var config = {
 	// apiDataBaseUrl: 'https://story.inthetelling.com',
 	// apiDataBaseUrl: 'https://purdue.inthetelling.com',
 	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
+	// apiDataBaseUrl: 'https://sustainablebizeducation.inthetelling.com',
+
 	localStorageKey: "storyKey",
 	disableYoutube: false,
 	disableAnalytics: false,
