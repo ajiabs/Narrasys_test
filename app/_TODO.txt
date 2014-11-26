@@ -1,12 +1,55 @@
+TODO topline tasks
+
+finish producer (matt(?) + daniel)
+	edit background layer events (mostly done)
+	set default transcript times (so that by default each ends where next begins; adding a new one truncates previous)
+	(all other events should default to the full scene duration, add a 'start at current time' shortcut to switch item start from scene start to wherever the current playhead is)
+	Episodes should support upload of banner and footer logo images (as should episode templates) (no, save this for later, when we revamp templates)
+	create new episode 
+		as-simple-as-possible interface attached to /#/episodes/
+		(probably also need to support create/edit/delete containers there as well?)
+		upload / attach master asset 
+			(stretch: including new master asset types: audio, image sequence. 
+			(Super-stretch: convert .ppt or .keynote to image sequence)
 
 
+Angular support for narratives (matt): 
+	 Handle switching between multiple master assets, and of different file types (video, image sequence, audio, none)
+	 Timeline needs to handle switching between episodes within one timeline
+		convert from episode time to timeline time and back, 
+		trigger start and end events, switching between episodes and scenes as needed
+		stay synched with video when one is present
+		(stretch: preload next episode's video ahead of its start time)
+		(stretch: fade audio at beginning and end of playback of each segment to smooth over any badly-timed edits)
+		(super-stretch: for image sequences, allow user to set duration for the sequence as a whole (splitting the duration of each image equally), and to adjust timing of individual images -- think about how best to handle this: as a series of videoOverlay events? Or treat it as a special case?)
+
+UI design for Wiley integration (daniel)
+	TBD
+
+Player templates (daniel)
+	standardize classnames and structure across event types, 
+	add more styles, more templates
+	Producer interface for selecting these templates and styles
+	more scenes, more specific layouts per scene type
+	stretch: more event types
+	stretch: set default templates per event type across an episode (stashed on untimed events with an internal keyname?)
+
+UI design for narratives (daniel)
+	Landing scene, timeline menu, navigation between timelines.  Should templatize this so we can have different styles.
+	(Remove landing and ending scenes from episodes. Turn that over to the narrative.)
+
+UI design for narrative owner / instructor dashboard (daniel)
+	manage groups (roster)
+	select / organize narratives (episode playlist)
+	grades / scores / any LTI / configurable-api stuff
+
+UI design for asset / transmedia curation (daniel)
+	OER database search
+	Pre-author transmedia items, tag, categorize, place in episodes(?)
+	manage assets
 
 
-
-
-
-
-
+---  archeological layers of old TODOs below this line ---
 
 
 i18n fields: make sure we support language fields from the /v3 endpoints for each of these:
@@ -33,8 +76,6 @@ Events:
     "es": ["Dos","Quatro"] // no correlation of items across arrays....
 })
 
-
-Allow editing transcript from watch mode
 
 
 Edit panels should read from scene info to determine whether to show content layouts, highlights etc as options

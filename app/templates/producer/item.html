@@ -4,7 +4,6 @@
 			<div class="label">Time
 			</div>
 			<div class="input">
-
 				<a ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
 					<span class="control-text">Beginning of scene</span>
 				</a>
@@ -18,8 +17,6 @@
 					</a>
 					<select ng-if="languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
 					</select>
-
-
 				</span>
 			</div>
 		</div>
@@ -85,6 +82,7 @@
 						<option value="templates/item/link-embed.html">Embedded link</option>
 					</select>
 					<select ng-if="item.producerItemType == 'image'" ng-model="item.templateUrl">
+						<option value="templates/item/image-fill.html">Overlay or background fill</option>
 						<option value="templates/item/image.html">Linked image</option>
 						<option value="templates/item/image-inline.html">Inline image</option>
 						<option value="templates/item/image-inline-withtext.html">Inline image with text</option>
@@ -93,7 +91,6 @@
 						<option value="templates/item/image-thumbnail.html">Image thumbnail</option>
 						<option value="templates/item/image-plain.html">Plain image</option>
 					</select>
-					<span ng-if="item.producerItemType == 'image'">(also TODO: overlay/underlay images)</span>
 
 					<select ng-if="item.producerItemType == 'file'" ng-model="item.templateUrl">
 						<option value="templates/item/file.html">Linked file (TODO: force noembed?)</option>
@@ -108,20 +105,43 @@
 				</div>
 			</div>
 
-			<div class="field" ng-if="item._type !== 'Scene'">
+			<div class="field">
 				<div class="label">Layout</div>
 				<div class="input">
 					<span ng-if="item._type === 'Scene'">
-						<!-- 
+
 						<select ng-model="item.layouts[1]" ng-if="item.templateUrl !='templates/scene/centered.html'">
 							<option value="">Show all content items, highlight current ones</option>
 							<option value="showCurrent">Show only current items</option>
-						</select> -->
+						</select>
 
 						<!-- TODO splitTransmedia/splitRequired. Are those actually useful? -->
 					</span>
 					<span ng-if="item._type !== 'Scene'">
-						<select size="1" ng-model="item.layouts[0]">
+						<span ng-if="item.templateUrl == 'templates/item/image-fill.html'">
+
+							<select size="1" ng-model="item.layouts[0]">
+								<option value="windowBg">Window background</option>
+								<option value="mainBg">Main content pane background</option>
+								<option value="altBg">Secondary content pane background</option>
+								<option value="videoOverlay">Video overlay</option>
+							</select>
+							<select size="1" ng-model="itemForm.position">
+								<!-- TODO some of these are behaving oddly; naming them according to their actual behavior at the moment.  Will need to fix this -->
+								<option value="">Fit</option>
+								<option value="center">Contain</option>
+								<option value="cover">Cover</option>
+								<!-- <option value="contain">(Not currently working as intended)</option> -->
+								<option value="fill">Stretch</option>
+							</select>
+							<select size="1" ng-model="itemForm.pin" ng-if="itemForm.position != 'center' && itemForm.position != 'fill'">
+								<option value="tl">Top left</option>
+								<option value="tr">Top right</option>
+								<option value="bl">Bottom left</option>
+								<option value="br">Bottom right</option>
+							</select>
+						</span>
+						<select ng-if="item.templateUrl != 'templates/item/image-fill.html'" size="1" ng-model="item.layouts[0]">
 							<option value="inline">Inline</option>
 							<option value="sidebarL">Sidebar: left</option>
 							<option value="sidebarR">Sidebar: right</option>

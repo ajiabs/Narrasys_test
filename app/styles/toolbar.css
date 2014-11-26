@@ -124,12 +124,26 @@
 	width: 80%
 }
 .toolbar .button {
-	display: inline-block;
 	padding: 0 0.5em;
 	line-height: 24px;
 	height: 24px;
 	cursor: pointer;
 	color: #555;
+	display: inline-block;
+}
+.producerEditLayers {
+	background: url("/images/producer-edit.png") top center transparent;
+	background-size: contain;
+	width: 60px;
+	height: 24px;
+	line-height: 24px;
+	display: inline-block;
+}
+.producerEditLayers.bg {
+	background-image: url("/images/producer-edit-bg.png");
+}
+.producerEditLayers.fg {
+	background-image: url("/images/producer-edit-fg.png");
 }
 .modegroup .button {
 	color: #AAA;

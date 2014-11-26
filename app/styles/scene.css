@@ -55,6 +55,30 @@
 .sceneTitle {
 	margin-left: 0.5em;
 }
+.showBackgroundOnly .content,
+.showBackgroundOnly .fgLayer,
+.showBackgroundOnly .videoMask {
+	opacity: 0;
+	pointer-events: none;
+}
+.showBackgroundOnly .videoContainer .fgLayer {
+	opacity: 1;
+}
+.showBackgroundOnly .bgLayer {
+	opacity: 1;
+}
+.showBackgroundOnly .videoContainer .fgLayer .item,
+.showBackgroundOnly .bgLayer .item {
+	pointer-events: auto;
+}
+.showBackgroundOnly .windowBg .item .edit-event {
+	/* TOP TOOLBAR */
+	
+	margin-top: 55px;
+}
+.showForegroundOnly .bgLayer {
+	display: none;
+}
 /* ------------------------------------------- */
 /* Sidebars and margins.
 

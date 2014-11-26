@@ -21,6 +21,8 @@ angular.module('com.inthetelling.story')
 				"mode": newMode
 			});
 
+			appState.producerEditLayer = 0;
+
 			if (newMode === 'review') {
 				// magnet animation looks too choppy when loading review mode; skip it:
 				$timeout(function () {
@@ -48,6 +50,17 @@ angular.module('com.inthetelling.story')
 		if ($routeParams.t) {
 			timelineSvc.seek($routeParams.t, "URLParameter");
 		}
+
+		$scope.changeProducerEditLayer = function (newLayer) {
+			appState.producerEditLayer = appState.producerEditLayer + newLayer;
+			// I'm sure there's a fancier way to do this but
+			if (appState.producerEditLayer === 2) {
+				appState.producerEditLayer = 1;
+			}
+			if (appState.producerEditLayer === -2) {
+				appState.producerEditLayer = -1;
+			}
+		};
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 

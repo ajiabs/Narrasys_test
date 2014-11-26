@@ -11,9 +11,19 @@
 			<a class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')">
 				<span>Watch</span>
 			</a>
-			<a class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')">
-				<span>Discover</span>
-			</a>
+			<!-- producer has different controls in discover mode: -->
+			<span ng-switch="appState.product != 'producer' || appState.viewMode != 'discover' || appState.time == 0">
+				<a ng-switch-when="true" class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')">
+					<span>Discover</span>
+				</a>
+				<span ng-switch-when="false" class="producerEditLayers" ng-class="{
+				bg: appState.producerEditLayer < 0,
+				fg: appState.producerEditLayer > 0
+			}">
+					<a ng-click="changeProducerEditLayer(-1)" class="button">&nbsp;&nbsp;<span>Discover</span></a>
+					<a ng-click="changeProducerEditLayer(+1)" class="button">&nbsp;&nbsp;<span>Discover</span></a>
+				</span>
+			</span>
 			<a class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')">
 				<span>Review</span>
 			</a>
@@ -36,7 +46,11 @@
 		</div>
 	</div>
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
-	<div itt-episode ng-class="{padForEditing: appState.editEvent || appState.editEpisode}"></div>
+	<div itt-episode ng-class="{
+		padForEditing: appState.editEvent || appState.editEpisode,
+		showBackgroundOnly: appState.producerEditLayer < 0,
+		showForegroundOnly: appState.producerEditLayer > 0,
+	}"></div>
 
 
 	<div class="toolbar-bottom" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-show="appState.videoControlsActive">

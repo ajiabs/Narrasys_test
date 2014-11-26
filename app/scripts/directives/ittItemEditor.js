@@ -28,7 +28,9 @@ angular.module('com.inthetelling.story')
 					"highlight": "",
 					"color": "",
 					"typography": "",
-					"timestamp": ""
+					"timestamp": "",
+					"position": "", // for image fills only
+					"pin": "" // for image fills only
 				};
 
 				if (!scope.item.layouts) {
@@ -44,6 +46,16 @@ angular.module('com.inthetelling.story')
 							}
 						}
 					}
+					// position and pin don't have a prefix because I was dumb when I planned this
+					for (var j = 0; j < scope.item.styles.length; j++) {
+						if (scope.item.styles[j] === 'contain' || scope.item.styles[j] === 'cover' || scope.item.styles[j] === 'center' || scope.item.styles[j] === 'fill') {
+							scope.itemForm.position = scope.item.styles[j];
+						}
+						if (scope.item.styles[j] === 'tl' || scope.item.styles[j] === 'tr' || scope.item.styles[j] === 'bl' || scope.item.styles[j] === 'br') {
+							scope.itemForm.pin = scope.item.styles[j];
+						}
+					}
+
 				}
 
 				// TODO:this breaks when editing sxs items within producer!
@@ -57,25 +69,35 @@ angular.module('com.inthetelling.story')
 
 					// TODO throw away parts of scope.item.styles that match scene or episode defaults
 
-					// TODO trigger scene rerender (or see if just triggering its  precalculateSceneValues() would be sufficient instead)
-					// modelSvc.events[scope.item.scene_id]
-
 					modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
 					modelSvc.cache("event", scope.item);
+					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
+					scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
+					scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
+
 				}, true);
 
 				// Transform changes to form fields for styles into item.styles[]:
 				scope.watchStyleEdits = scope.$watch(function () {
 					return scope.itemForm;
 				}, function () {
-					// console.log("itemForm:", scope.itemForm);
+
 					var styles = [];
 					for (var styleType in scope.itemForm) {
 						if (scope.itemForm[styleType]) {
-							styles.push(styleType + scope.itemForm[styleType]);
+							if (styleType === 'position' || styleType === 'pin') { // reason #2,142,683 why I should've specced these styles in some more structured way than a simple array
+								styles.push(scope.itemForm[styleType]);
+							} else {
+								styles.push(styleType + scope.itemForm[styleType]);
+							}
 						}
 					}
 					scope.item.styles = styles;
+
+					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
+					scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
+					scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
+
 				}, true);
 
 				scope.forcePreview = function () {

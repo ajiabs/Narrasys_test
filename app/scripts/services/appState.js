@@ -27,6 +27,7 @@ angular.module('com.inthetelling.story')
 			svc.windowHeight = 0;
 
 			svc.viewMode = ($(window).width() > 480) ? 'discover' : 'review'; // default view mode
+			svc.producerEditLayer = 0; // a bit hacky, this.  Only has an effect in producer in discover mode; 0 is default, -1 is background layers only, 1 is foreground layers only
 
 			svc.time = 0; // current playhead position (in seconds) relative to timeline NOT TO EPISODE!
 			svc.bufferedPercent = 0; // portion of video that has been buffered (as pct instead of time because that's how youtube reports it, and that's what we end up displaying anyway)
