@@ -5,12 +5,30 @@ angular.module('com.inthetelling.story')
 			multiElement: true,
 			link: function (scope, element, attr) {
 				scope.$watch(attr.ittShowHideVisualOnly, function ngShowWatchAction(value) {
-					if (element.hasClass('offscreen')) {
-						$animate.removeClass(element, 'offscreen');
+					if (value) {
+						$animate.removeClass(element, 'visual-hide');
 					} else {
-						$animate.addClass(element, 'offscreen');
+						$animate.addClass(element, 'visual-hide');
 					}
 				});
 			}
 		}
 	}]);
+
+
+angular.module('com.inthetelling.story')
+	.animation(".visual-hide", function () {
+		return {
+			addClass: function(element, className) {
+				//we'll use opacity, so we aren't hidden from screen readers, just hidden from eyes.
+				element.fadeTo("slow", 0, function() {
+				});
+			},
+			removeClass: function (element, className) {
+				element.fadeTo("slow", 1, function() {
+				});
+			}
+		}
+	});
+
+
