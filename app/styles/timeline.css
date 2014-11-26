@@ -198,6 +198,8 @@
 	content: "\e605";
 	font-family: Story;
 	font-size: 0.6em;
+	position: absolute;
+	top: 30%;
 }
 .button-play,
 .button-pause {
