@@ -8,6 +8,8 @@ angular.module('com.inthetelling.story')
 
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
+			appState.viewModeText = newMode.substring(0,1).toUpperCase()+newMode.substring(1);
+			
 			analyticsSvc.captureEpisodeActivity("modeChange", {
 				"mode": newMode
 			});
@@ -42,7 +44,6 @@ angular.module('com.inthetelling.story')
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		console.log("playerController init");
 		appState.init();
 		errorSvc.init();
 		appState.episodeId = $routeParams.epId;

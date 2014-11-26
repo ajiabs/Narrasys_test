@@ -5,11 +5,11 @@
 	<div class="toolbar">
 		<div class="modegroup buttongroup">
 			<nav role="navigation">
-			<button tabindex="0" class="button button-watch" ng-mouseleave="tiptext = appState.viewMode" ng-mouseover="tiptext = 'watch'" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')" aria-label="watch">
+			<button tabindex="0" class="button button-watch" ng-mouseleave="tiptext = appState.viewModeText" ng-mouseover="tiptext = 'Watch'" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')" aria-label="watch">
 			</button>
-			<button tabindex="0" class="button button-discover" ng-mouseleave="tiptext = appState.viewMode" ng-mouseover="tiptext = 'discover'" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')" aria-label="discover" >
+			<button tabindex="0" class="button button-discover" ng-mouseleave="tiptext = appState.viewModeText" ng-mouseover="tiptext = 'Discover'" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')" aria-label="discover" >
 			</button>
-			<button tabindex="0" class="button button-review" ng-mouseleave="tiptext = appState.viewMode" ng-mouseover="tiptext = 'review'" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="review">
+			<button tabindex="0" class="button button-review" ng-mouseleave="tiptext = appState.viewModeText" ng-mouseover="tiptext = 'Review'" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="review">
 			</button>
 			<span>{{tiptext}}</span>
 			</navigation>
