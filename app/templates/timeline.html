@@ -1,5 +1,13 @@
 <div class="timeline">
 
+	<button tabindex="0" ng-focus="showControls()" class="button button-play" ng-if="appState.timelineState == 'paused'" ng-click="play()">
+		<span class="control-text">Play</span>
+	</button>
+	<button tabindex="0" ng-focus="showControls()" class="button button-pause" ng-if="appState.timelineState != 'paused'" ng-click="pause()">
+		<span class="control-text">Pause</span>
+	</button>
+
+
 	<div class="progressbarBox">
 		<div class="pbarTop">
 			<!-- 
@@ -90,13 +98,5 @@
 					</span>
 		</div>
 	</div>
-
-	<button tabindex="0" ng-focus="showControls()" class="button button-play" ng-if="appState.timelineState == 'paused'" ng-click="play()">
-		<span class="control-text">Play</span>
-	</button>
-	<button tabindex="0" ng-focus="showControls()" class="button button-pause" ng-if="appState.timelineState != 'paused'" ng-click="pause()">
-		<span class="control-text">Pause</span>
-	</button>
-
 
 </div>

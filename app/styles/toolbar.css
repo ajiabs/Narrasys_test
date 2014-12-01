@@ -166,6 +166,10 @@ button {
 .button-review:before {
 	content: "\e60c"
 }
+.button-search {
+	display: block;
+	width: 2em;
+}
 .button-search:before {
 	content: "\e602"
 }
