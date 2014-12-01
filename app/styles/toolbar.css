@@ -533,8 +533,8 @@
 .profilePanel .authoringForm {
 	position: absolute;
 	left: 85px;
-	right: 0;
-	top: 0;
+	right: 1.5em;
+	top: 1.5em;
 }
 /* .button-continue appears in windowFg: */
 
