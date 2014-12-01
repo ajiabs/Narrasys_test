@@ -69,6 +69,10 @@ angular.module('com.inthetelling.story')
 
 					// TODO throw away parts of scope.item.styles that match scene or episode defaults
 
+					if (scope.item.yturl) {
+						scope.item.url = embeddableYTUrl(scope.item.yturl);
+					}
+
 					modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
 					modelSvc.cache("event", scope.item);
 					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
@@ -168,7 +172,25 @@ angular.module('com.inthetelling.story')
 					scope.cancelEventEdit(scope.uneditedItem);
 				};
 
-				// TODO eventually move uploadAsset and deleteAsset into controller but they're fine here for now
+				var embeddableYTUrl = function (origUrl) {
+					var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+					var ytId = origUrl.match(getYoutubeID);
+					console.log(origUrl, ytId);
+					if (ytId) {
+						return "//www.youtube.com/embed/" + ytId[1];
+					} else {
+						return "";
+					}
+				};
+
+				scope.watchTimeEdits = scope.$watch(function () {
+					return appState.editEvent.start_time;
+				}, function (newT, oldT) {
+					if (newT !== oldT) {
+						// console.log("Changed start time from ", oldT, " to ", newT);
+						timelineSvc.updateEventTimes(appState.editEvent);
+					}
+				});
 
 				scope.uploadAsset = function (files) {
 					scope.uploads = awsSvc.uploadFiles(files);
