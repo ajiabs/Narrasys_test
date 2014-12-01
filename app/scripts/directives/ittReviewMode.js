@@ -12,7 +12,7 @@ angular.module('com.inthetelling.story')
 			scope: {
 				allScenes: '=ittReviewMode'
 			},
-			templateUrl: '/templates/episode/components/reviewmode-scenes.html',
+			templateUrl: 'templates/episode/components/reviewmode-scenes.html',
 			link: function (scope) {
 				// console.log('ittReviewMode', scope);
 
@@ -28,7 +28,7 @@ angular.module('com.inthetelling.story')
 
 				// Was just rendering one scene at a time, but with a lot scenes that can be a different kind of slow.
 				// So we'll ramp up gradually rendering more and more each iteration:
-				var fib = [1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,Infinity];
+				var fib = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, Infinity];
 
 				scope.addOne = function () {
 					cur++;
