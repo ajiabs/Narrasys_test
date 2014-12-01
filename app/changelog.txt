@@ -584,3 +584,35 @@ improved annotators selection
 can now select assets from containers in producer
 containerAssets
 
+------------------------------------------------
+Changes in v4.2.15:
+questions were displaying with a selected distractor on load
+fixed bad template path
+cleaning up asset upload workflow
+misc. last-minute pre-demo bugfixes
+edit of background-layer mostly working (Some of the layout options are still behaving oddly)
+review mode shows cosmetic items in producer
+updated mockSvc to use i18n data
+usc bugfix
+scene-centered works on dark background
+fixed missing review mode file
+Better performance overall
+Keep review mode unrendered except when it’s current; incrementally render review mode when it becomes current so it appears faster
+scene nav fixes
+corrected padding in GW landing screen
+fixed all the annotator-autocomplete madness
+fix STORY-153
+new relic changed ID
+some role-based rules on /#/episodes route
+accidentally removed language selector from item editor
+jquery path changed
+Merge branch 'gruntfix' into producer
+bower cleanup, update libraries
+removed static server_mock files; depend on bower instead
+hacky workaround for STORY-151
+added support for language as URL param e.g. “?lang=zh”
+working on episode editor
+quick fix for STORY-146
+can select middlebury in editor
+middlebury episode template
+
