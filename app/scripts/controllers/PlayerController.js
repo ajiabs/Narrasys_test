@@ -227,7 +227,8 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.logout = function () {
-			return authSvc.logout();
+			//return authSvc.logout();
+			window.alert('TODO');
 		};
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
