@@ -616,3 +616,13 @@ quick fix for STORY-146
 can select middlebury in editor
 middlebury episode template
 
+------------------------------------------------
+Changes in v4.2.16:
+cosmetic tweak to item-edit icon
+“Editor” now Link event type for videos
+temporary fix for three-dots issue in safari + chrome (simply removed the ‘buffering’ icon)
+added 'editor' route -- removing sxs brand
+fix for "defaultLanguage = false" error
+blocking nonfunctional 'logout' link
+STORY-173 fix
+
