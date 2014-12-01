@@ -130,6 +130,9 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
+			if (episode.defaultLanguage === false) {
+				episode.defaultLanguage = "en"; // last resort
+			}
 			svc.setLanguageStrings();
 
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
