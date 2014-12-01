@@ -328,6 +328,8 @@ angular.module('com.inthetelling.story')
 					event.producerItemType = 'image';
 				} else if (event.templateUrl.match(/link/)) {
 					event.producerItemType = 'link';
+				} else if (event.templateUrl.match(/video/)) {
+					event.producerItemType = 'link'; // HACK for now
 				} else if (event.templateUrl.match(/question/)) {
 					event.producerItemType = 'question';
 				} else if (event.templateUrl.match(/transcript/)) {

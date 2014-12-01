@@ -175,22 +175,12 @@ angular.module('com.inthetelling.story')
 				var embeddableYTUrl = function (origUrl) {
 					var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 					var ytId = origUrl.match(getYoutubeID);
-					console.log(origUrl, ytId);
 					if (ytId) {
 						return "//www.youtube.com/embed/" + ytId[1];
 					} else {
 						return "";
 					}
 				};
-
-				scope.watchTimeEdits = scope.$watch(function () {
-					return appState.editEvent.start_time;
-				}, function (newT, oldT) {
-					if (newT !== oldT) {
-						// console.log("Changed start time from ", oldT, " to ", newT);
-						timelineSvc.updateEventTimes(appState.editEvent);
-					}
-				});
 
 				scope.uploadAsset = function (files) {
 					scope.uploads = awsSvc.uploadFiles(files);

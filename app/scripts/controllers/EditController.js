@@ -191,7 +191,15 @@ TODO merge 'comment' with 'annotation'?
 				};
 			}
 			if (type === 'video') {
-				// TODO: this should be an injected episode with the linked/uploaded video as its master asset
+				// TODO: this should be an injected episode with the linked/uploaded video as its master asset.
+				// For now we're faking it as a link item.
+				stub = {
+					"_type": "Link",
+					"link_image_id": "",
+					"url": "",
+					"title": {},
+					"description": {}
+				};
 			}
 
 			if (type === 'comment' || type === 'transcript' || type === 'annotation') {
