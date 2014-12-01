@@ -1,7 +1,6 @@
 'use strict';
 
 // Declare the top level application module and its dependencies
-//angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'pasvaz.bindonce'])
 angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 
 // Configure routing
@@ -42,6 +41,18 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 	})
 
 	.when('/sxs/:epId', {
+		title: "Telling STORY",
+		controller: 'PlayerController',
+		templateUrl: 'templates/player.html',
+		reloadOnSearch: false,
+		resolve: {
+			product: function (appState) {
+				appState.product = "sxs";
+			}
+		}
+	})
+
+	.when('/editor/:epId', {
 		title: "Telling STORY",
 		controller: 'PlayerController',
 		templateUrl: 'templates/player.html',
