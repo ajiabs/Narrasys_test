@@ -365,6 +365,7 @@
 .item .edit-event {
 	display: none;
 	background-color: #fff;
+	color: #FFF;
 	border: 2px solid #555;
 	border-radius: 2.5em;
 	width: 2em;
