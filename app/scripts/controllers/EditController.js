@@ -27,6 +27,7 @@ angular.module('com.inthetelling.story')
 		};
 		$scope.toggleUpload = function () {
 			$scope.showUpload = !$scope.showUpload;
+			// TODO: trigger 'click' event on the file upload field if showUpload=true.  Or come up with a less hacky way to do the same thing
 		};
 		$scope.endChooseAsset = function () {
 			$scope.w1();

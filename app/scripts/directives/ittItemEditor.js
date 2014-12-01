@@ -220,6 +220,8 @@ angular.module('com.inthetelling.story')
 						delete scope.item.asset_id;
 						delete scope.item.link_image_id;
 						delete scope.item.annotation_image_id;
+
+						scope.showUpload = false;
 					}
 				};
 
