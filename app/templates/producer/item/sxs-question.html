@@ -23,7 +23,7 @@
 	</div>
 </div>
 
-<div class="field" ng-repeat="distractor in item.data._plugin.distractors">
+<div class="field" ng-repeat="distractor in item.data._plugin.distractors track by $index">
 	<div class="label">
 		{{$index | alpha}} &nbsp;
 		<input type="checkbox" ng-model="distractor.correct" ng-if="item.data._plugin.questiontype == 'mc-formative'">

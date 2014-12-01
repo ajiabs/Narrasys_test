@@ -21,7 +21,7 @@
 	</span>
 
 	<span ng-if="!uploads && !item.asset">
-		<button ng-if="!showUpload" ng-click="chooseAsset()">Select</button>
+		<button ng-if="!showUpload && appState.product == 'producer'" ng-click="chooseAsset()">Select</button>
 		<button ng-if="!showUpload" ng-click="toggleUpload()">Upload</button>
 		<input ng-if="showUpload" type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
 	</span>

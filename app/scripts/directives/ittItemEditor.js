@@ -72,9 +72,10 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
 					modelSvc.cache("event", scope.item);
 					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
-					scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
-					scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
-
+					if (scope.item.asset) {
+						scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
+						scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
+					}
 				}, true);
 
 				// Transform changes to form fields for styles into item.styles[]:
@@ -95,9 +96,10 @@ angular.module('com.inthetelling.story')
 					scope.item.styles = styles;
 
 					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
-					scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
-					scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
-
+					if (scope.item.asset) {
+						scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
+						scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
+					}
 				}, true);
 
 				scope.forcePreview = function () {

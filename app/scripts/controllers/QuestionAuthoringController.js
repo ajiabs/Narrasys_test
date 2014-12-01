@@ -7,6 +7,9 @@ standalone controller to convert question form fields into plugin JSON and vice 
 We'll link to this from existing authoring tool for now, tie it into real producer when there is one
 
 */
+
+/*
+
 angular.module('com.inthetelling.story')
 	.controller('QuestionAuthoringController', function ($scope, $timeout) {
 
@@ -131,3 +134,4 @@ angular.module('com.inthetelling.story')
 		};
 
 	});
+*/

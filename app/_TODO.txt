@@ -13,7 +13,7 @@ finish producer (matt(?) + daniel)
 			(Super-stretch: convert .ppt or .keynote to image sequence)
 
 
-Angular support for narratives (matt): 
+Angular support for narratives (matt?): 
 	 Handle switching between multiple master assets, and of different file types (video, image sequence, audio, none)
 	 Timeline needs to handle switching between episodes within one timeline
 		convert from episode time to timeline time and back, 
