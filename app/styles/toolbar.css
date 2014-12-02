@@ -27,15 +27,14 @@
 	margin: 0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
 }
-
 button {
-  margin      : 0;
-  padding     : 0;
-  border      : 0;
-  background  : transparent;
-  font-family : inherit;
-  font-size   : 1em;
-  cursor      : pointer;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-family: inherit;
+	font-size: 1em;
+	cursor: pointer;
 }
 .toolbar .buttongroup span {
 	display: block;
@@ -69,12 +68,12 @@ button {
 	float: right;
 }
 .toolbar .searchgroup .hidden {
-	position:absolute; 
-	left:0;
-	top:-500px;
-	width:1px;
-	height:1px;
-	overflow:hidden;
+	position: absolute;
+	left: 0;
+	top: -500px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
 }
 .toolbar .buttongroup.searchgroup {
 	transition: all 1s;
@@ -93,6 +92,7 @@ button {
 @media screen and (max-width: 480px) {
 	.button-discover {
 		/* See also helpPanel below */
+		
 		display: none !important;
 	}
 	.volumebar {
@@ -170,6 +170,9 @@ button {
 	display: block;
 	width: 2em;
 }
+.button-search span {
+	line-height: 1em;
+}
 .button-search:before {
 	content: "\e602"
 }
@@ -238,29 +241,27 @@ button {
 .toolbar-bottom.ng-hide-add.ng-hide-add-active {
 	opacity: 0;
 }
-
 .offscreen {
 	position: absolute !important;
-	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px 1px 1px 1px);
+	/* IE6, IE7 */
+	
 	clip: rect(1px, 1px, 1px, 1px);
-	padding:0 !important;
-	border:0 !important;
-	height: 1px !important; 
-	width: 1px !important; 
+	padding: 0 !important;
+	border: 0 !important;
+	height: 1px !important;
+	width: 1px !important;
 	overflow: hidden;
-	-webkit-transition:all linear 5s;
-  transition:all linear 5s;
+	-webkit-transition: all linear 5s;
+	transition: all linear 5s;
 }
-
 .visual-hide {
 	opacity: 0;
 }
-
 .offscreen-animate {
 	transition: opacity 3s;
 	opacity: .3;
 }
-
 /*============================
 *
 * Side Panels
@@ -332,7 +333,6 @@ button {
 	margin-right: 0.5em;
 	cursor: pointer;
 }
-
 .searchfilters label {
 	float: right;
 	margin-right: 0.5em;
@@ -471,7 +471,6 @@ button {
 	text-align: right;
 	padding-right: 10px;
 }
-
 .navPanel .sceneLink {
 	color: blue;
 }
@@ -492,6 +491,7 @@ button {
 	max-width: 500px;
 	min-width: 290px;
 	/* TOOLBAR HEIGHT */
+	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
@@ -531,14 +531,14 @@ button {
 }
 .helpPanel .goAway {
 	float: right;
-	color:#069;
-  margin      : 0;
-  padding     : 0;
-  border      : 0;
-  background  : transparent;
-  font-family : inherit;
-  font-size   : 1em;
-  cursor      : pointer;
+	color: #069;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-family: inherit;
+	font-size: 1em;
+	cursor: pointer;
 }
 .helpPanel .arrow-up {
 	width: 20px;
@@ -551,15 +551,13 @@ button {
 	z-index: 5;
 	transform: rotate(45deg);
 }
-
 .helpPanel .screen-reader-offscreen {
-	position:absolute;
-	left:-999px;
-	width:1px;
-	height:1px;
-	top:auto;
+	position: absolute;
+	left: -999px;
+	width: 1px;
+	height: 1px;
+	top: auto;
 }
-
 /* .button-continue appears in windowFg: */
 
 .button-continue:after {
@@ -574,4 +572,3 @@ button {
 	float: right;
 	margin-top: 5em;
 }
-
