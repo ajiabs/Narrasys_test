@@ -20,7 +20,7 @@ angular.module('com.inthetelling.story')
 		return function (items) {
 			var ret = [];
 			angular.forEach(items, function (item) {
-				if (item._type === 'Annotation') {
+				if (item._type === 'Annotation' && !item.templateUrl.match(/transmedia/)) {
 					ret.push(item);
 				}
 			});
@@ -31,7 +31,7 @@ angular.module('com.inthetelling.story')
 		return function (items) {
 			var ret = [];
 			angular.forEach(items, function (item) {
-				if (item._type !== 'Annotation') {
+				if (item._type !== 'Annotation' || item.templateUrl.match(/transmedia/)) {
 					ret.push(item);
 				}
 			});

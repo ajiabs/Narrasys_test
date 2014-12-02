@@ -1,0 +1,10 @@
+<div>
+	<div class="itemTemplate">
+		<div class="itemHead">
+			<div class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</div>
+			<h2 ng-if="item.display_title" ng-bind-html="item.display_title"></h2>
+		</div>
+		<div class="text" ng-bind-html="item.display_annotation"></div>
+	</div>
+	<div class="clear"></div>
+</div>

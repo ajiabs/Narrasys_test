@@ -3,14 +3,17 @@
 // for quick debugging of templates.
 
 // TODO: figure out how to get grunt to omit this from the build
-// TODO i18n broke this
 
 angular.module('com.inthetelling.story')
 	.factory('mockSvc', function (modelSvc) {
 		var svc = {};
-
+		svc.keepJsLintHappy = function () {
+			var noop = modelSvc.episodes.noop;
+			noop = undefined;
+		};
 		svc.mockEpisode = function (epId) {
 			// FOR DEV TESTING
+
 			modelSvc.cache("episode", {
 				"_id": epId,
 				"created_at": "2014-04-10T02:02:15Z",
@@ -27,9 +30,9 @@ angular.module('com.inthetelling.story')
 				}],
 
 				"status": "Published",
-				"templateUrl": "templates/episode/episode.html",
+				"templateUrl": "templates/episode/middlebury.html",
 				"styles": [
-					"typographySwiss", "", ""
+					"", "", ""
 				]
 			});
 			modelSvc.cache("asset", {
@@ -151,6 +154,20 @@ angular.module('com.inthetelling.story')
 				modelSvc.cache("event", annotation);
 			}
 
+			for (i = 0; i < 10; i++) {
+				var longtext = angular.copy(annotationStub);
+				longtext._id = "longtext-" + i;
+				longtext.start_time = i * 7;
+				longtext.end_time = i * 7 + 7;
+				longtext.styles = ["timestampNone"];
+				longtext.annotation = {
+					en: "A way a long a last a loved along the riverrun, past Eve and Adam's, from swerve of shore to bend of bay, brings us by a commodius vicus of recirculation back to Howth Castle and Environs. Sir Tristram, <i>violer d'amores</i>, fr'over the short sea, had passencore rearrived from North Armorica on this side the scraggy isthmus of Europe Minor to wielderfight his penisolate war"
+				};
+				longtext.templateUrl = "templates/item/text-transmedia.html";
+
+				modelSvc.cache("event", longtext);
+			}
+
 			modelSvc.cache("asset", {
 				"_id": "asset1",
 				"_type": "Asset::Image",
@@ -269,7 +286,7 @@ angular.module('com.inthetelling.story')
 
 			modelSvc.resolveEpisodeEvents(epId);
 			modelSvc.resolveEpisodeAssets(epId);
-		};
 
+		};
 		return svc;
 	});
