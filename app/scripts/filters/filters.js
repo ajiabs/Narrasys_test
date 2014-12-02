@@ -6,21 +6,21 @@ angular.module('com.inthetelling.story')
 
 /* List filters */
 .filter('itemLayout', function () {
-	return function (items, layout) {
-		var ret = [];
-		angular.forEach(items, function (item) {
-			if (item.layouts && item.layouts[0] === layout) {
-				ret.push(item);
-			}
-		});
-		return ret;
-	};
-})
+		return function (items, layout) {
+			var ret = [];
+			angular.forEach(items, function (item) {
+				if (item.layouts && item.layouts[0] === layout) {
+					ret.push(item);
+				}
+			});
+			return ret;
+		};
+	})
 	.filter('annotation', function () {
 		return function (items) {
 			var ret = [];
 			angular.forEach(items, function (item) {
-				if (item._type === 'Annotation') {
+				if (item._type === 'Annotation' && !item.templateUrl.match(/transmedia/)) {
 					ret.push(item);
 				}
 			});
@@ -31,7 +31,7 @@ angular.module('com.inthetelling.story')
 		return function (items) {
 			var ret = [];
 			angular.forEach(items, function (item) {
-				if (item._type !== 'Annotation') {
+				if (item._type !== 'Annotation' || item.templateUrl.match(/transmedia/)) {
 					ret.push(item);
 				}
 			});
@@ -131,7 +131,7 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-/* Single filters */
+	/* Single filters */
 
 /*
 .filter('trustAsHtml', function($sce) {
@@ -141,18 +141,18 @@ angular.module('com.inthetelling.story')
 })
 */
 .filter('highlightSubstring', function () {
-	return function (text, search) {
-		// console.log("Search highlight",text,search);
-		if (!text) {
-			return;
-		}
-		if (search || angular.isNumber(search)) {
-			return text.toString().replace(new RegExp(search.toString(), 'gi'), '<span class="ui-match">$&</span>');
-		} else {
-			return text;
-		}
-	};
-})
+		return function (text, search) {
+			// console.log("Search highlight",text,search);
+			if (!text) {
+				return;
+			}
+			if (search || angular.isNumber(search)) {
+				return text.toString().replace(new RegExp(search.toString(), 'gi'), '<span class="ui-match">$&</span>');
+			} else {
+				return text;
+			}
+		};
+	})
 	.filter('pretty', function () {
 		return function (json) {
 			return JSON.stringify(json, undefined, 2);

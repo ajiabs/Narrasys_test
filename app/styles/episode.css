@@ -172,6 +172,9 @@
 	background-color: #06132D;
 	display: block;
 }
+.episode-middlebury .DiscoverModeOnly .startTime {
+	color: #FFF;
+}
 .episode-middlebury .branding {
 	background: url("/images/customer/middlebury-footer.svg") repeat-x 50% 0;
 	color: #5e5e5e;
@@ -211,4 +214,5 @@
 }
 .episode-middlebury {
 	font-family: Garamond, 'Droid Serif', serif;
+	font-size: 110%;
 }
