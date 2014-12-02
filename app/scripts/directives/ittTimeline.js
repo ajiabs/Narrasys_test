@@ -67,8 +67,6 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-
-
 				scope.userChangingVolume = function (evt) {
 					if (appState.muted) {
 						scope.toggleMute();
@@ -111,8 +109,8 @@ angular.module('com.inthetelling.story')
 
 				scope.onVolumeKeyDown = function ($event) {
 					var e = $event;
-					var $target = $(e.target);
-					var nextTab;
+					// var $target = $(e.target);
+					// var nextTab;
 					var passThrough = true;
 					switch (e.keyCode) {
 					case KeyCodes.LEFTARROW:
@@ -156,14 +154,14 @@ angular.module('com.inthetelling.story')
 						$event.stopPropagation();
 						$event.preventDefault();
 					}
-				}
+				};
 
 				function adjustHigh(volume) {
-					return volume > 98 ? 100 : volume
+					return volume > 98 ? 100 : volume;
 				}
 
 				function adjustLow(volume) {
-					return volume < 3 ? 0 : volume
+					return volume < 3 ? 0 : volume;
 				}
 
 				function incrementVolume(chunk) {
