@@ -5,7 +5,6 @@
 	TODO: explicitly limit color selections to .item and .scene, and in .scene sort out which pane gets the background colors;
 
 */
-
 /*============================
  *
  * default
@@ -17,7 +16,7 @@
 }
 a,
 a:visited,
-.fakelink {
+.fakeLink {
 	color: #00C
 }
 /*============================
@@ -111,7 +110,7 @@ a:visited,
 	color: #6F7D8B;
 }
 .colorEliterate a,
-.colorEliterate .fakelink {
+.colorEliterate .fakeLink {
 	color: #1376bb
 }
 .colorEliterate h1,
@@ -226,7 +225,6 @@ a:visited,
 	text-shadow: -1px -1px 0 #fff;
 }
 /* -- */
-
 /* Columbia:  #0F4082 (dark blue), #5892C1 (light blue) */
 
 .colorColumbia .startTime {
@@ -235,7 +233,7 @@ a:visited,
 	margin-left: 3px;
 }
 .colorColumbia a,
-.colorColumbia .fakelink {
+.colorColumbia .fakeLink {
 	color: #0F4082
 }
 .colorColumbia h1,
@@ -256,7 +254,7 @@ a:visited,
 /* Columbia business school */
 
 .colorColumbiabusiness a,
-.colorColumbiabusiness .fakelink {
+.colorColumbiabusiness .fakeLink {
 	color: #205F9C;
 }
 .colorColumbiabusiness .colorInvert {

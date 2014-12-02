@@ -56,6 +56,7 @@
 }
 .touchDevice .iframeContainer {
 	/* TODO make sure this class is being applied */
+	
 	-webkit-overflow-scrolling: touch;
 	overflow: auto;
 }
@@ -78,7 +79,6 @@
 	TODO: this works fine when moving from single item to single item, but transitioning between
 	single and multiple is not so hot.  try again later
  */
-
 /* .singleitem .item {
 	position:absolute;
 	width:100%;
@@ -89,10 +89,8 @@
 	display:block;
 }
 */
-
 /*============================ ============================ ============================ 
 image-fill items */
-
 /* 
 	item.contain, item.cover, and item.fill should use background-image.  Others should use the img, and resize to fit the img. 
 	
@@ -161,10 +159,12 @@ Inline images (TODO show these only when image is larger than available space) *
 
 .content .item:first-child .imagePlain {
 	/* override first-child padding for plain images: */
+	
 	margin-top: -1.5em;
 }
 .content .item .imagePlain {
 	/* and override content pane's margin always: */
+	
 	margin-right: -0.5em;
 	margin-left: -0.5em;
 }
@@ -362,7 +362,6 @@ Inline images (TODO show these only when image is larger than available space) *
 	font-size: 0.86em;
 }
 /* =========================== */
-
 /*============================ ============================ ============================
  *
  * Template variants
@@ -403,6 +402,7 @@ Inline images (TODO show these only when image is larger than available space) *
 .item .caption {
 	position: absolute;
 	/* TODO why is this not zero: */
+	
 	bottom: 4px;
 	left: 0;
 	right: 0;
