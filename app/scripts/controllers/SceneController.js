@@ -21,11 +21,11 @@ angular.module('com.inthetelling.story')
 
 			// Content is a little trickier:
 			// * splitRequired:   
-			//   main = transcript+optional   / alt=required-transcript
+			//   main = transcript + optional   / alt=required - transcript
 			// * splitOptional:
-			//   main=transcript+required / alt=optional-transcript
+			//   main=transcript + required / alt=optional - transcript
 			// * splitTransmedia (default):
-			//   main=annotation, alt=not annotation
+			//   main=annotation except text-transmedia, alt=not annotation or text-transmedia
 
 			// Main content pane:
 			if ($.inArray("splitRequired", $scope.scene.layouts) > -1) {
