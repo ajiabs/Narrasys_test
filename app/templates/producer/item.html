@@ -11,7 +11,7 @@
 				<span ng-if="appState.product == 'producer'">
 					<span class="label">End</span>
 					<input ng-if="customEndTime" ng-change="setItemEndTime()" type="text" ng-model="item.end_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
-					<a class="fakelink" ng-click="customEndTime = !customEndTime; item.end_time=100000">
+					<a class="fakeLink" ng-click="customEndTime = !customEndTime; item.end_time=100000">
 						<span ng-if="customEndTime">(x)</span>
 						<span ng-if="!customEndTime">(auto)</span>
 					</a>
@@ -158,7 +158,7 @@
 			<div class="field">
 				<div class="label">Styles</div>
 				<div class="input">
-					<label class="fakelink" ng-click="useCustomStyles = !useCustomStyles">
+					<label class="fakeLink" ng-click="useCustomStyles = !useCustomStyles">
 						<span ng-if="useCustomStyles">Custom styles</span>
 						<span ng-if="!useCustomStyles">Default styles</span>
 					</label>

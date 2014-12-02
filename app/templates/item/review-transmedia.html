@@ -16,8 +16,8 @@
 			</div>
 			<div class="text">
 				<div class="title">
-					<a ng-if="item.noEmbed" class="fakelink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
-					<a class="fakelink" ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
+					<a ng-if="item.noEmbed" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+					<a class="fakeLink" ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
 				</div>
 				<div ng-bind-html="item.display_description"></div>
 			</div>

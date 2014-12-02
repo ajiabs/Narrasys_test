@@ -200,7 +200,7 @@
 	border-bottom: 130px solid #06132D;
 }
 .episode-middlebury a,
-.episode-middlebury .fakelink {
+.episode-middlebury .fakeLink {
 	color: #73A3E7;
 	text-shadow: 1px 1px 0px #06132d;
 }
@@ -211,6 +211,9 @@
 .episode-middlebury .colorInvert .colorInvert a {
 	color: #06132D;
 	text-decoration: underline;
+}
+.episode-middlebury .colorInvert .colorInvert .startTime {
+	color: #06132D;
 }
 .episode-middlebury {
 	font-family: Garamond, 'Droid Serif', serif;
