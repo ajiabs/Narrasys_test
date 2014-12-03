@@ -49,7 +49,7 @@ angular.module('com.inthetelling.story')
 			svc.autoscroll = false; //scroll window to make current items visible (in relevant modes)
 			svc.autoscrollBlocked = false; // User has disabled autoscroll
 
-			svc.product = svc.product; // "player", "sxs", or "producer" (currently overriding to force to sxs for now)
+			svc.product = svc.product; // "player", "sxs", or "producer"
 
 			if (svc.product === 'sxs' || svc.product === 'producer') {
 				svc.crossEpisodePath = svc.product;

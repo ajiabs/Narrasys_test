@@ -159,7 +159,7 @@ angular.module('com.inthetelling.story')
 				longtext._id = "longtext-" + i;
 				longtext.start_time = i * 7;
 				longtext.end_time = i * 7 + 7;
-				longtext.styles = [""];
+				longtext.styles = ["timestampNone"];
 				longtext.annotation = {
 					en: "A way a long a last a loved along the riverrun, past Eve and Adam's, from swerve of shore to bend of bay, brings us by a commodius vicus of recirculation back to Howth Castle and Environs. Sir Tristram, <i>violer d'amores</i>, fr'over the short sea, had passencore rearrived from North Armorica on this side the scraggy isthmus of Europe Minor to wielderfight his penisolate war"
 				};
@@ -214,7 +214,7 @@ angular.module('com.inthetelling.story')
 				"episode_id": epId,
 				"templateUrl": "templates/item/link-withimage.html",
 				"layouts": ["inline"],
-				"styles": [""],
+				"styles": ["timestampNone"],
 				"isContent": true,
 			};
 
