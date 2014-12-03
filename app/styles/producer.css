@@ -148,7 +148,7 @@
 }
 .authoringForm .field .input,
 .authoringForm .field .label {
-	margin-bottom: 0.2em;
+	margin-bottom: 0.4em;
 }
 .authoringForm .field > .label {
 	width: 25%;
@@ -430,3 +430,33 @@
 	border-left: 1px solid #000;
 	border-right: none;
 }
+/* TODO reconcile tabs and drawer height / scroll */
+
+.ittTabs {
+	clear: both;
+	height: 240px;
+	position: relative;
+}
+.ittTabLabel {
+	float: left;
+	padding: 0 10px;
+	border-bottom: 1px solid #CCC;
+}
+.ittTabLabel.cur {
+	border: 1px solid #CCC;
+	border-bottom: none;
+}
+.ittTabLabel a {
+	color: #767676;
+}
+.ittTabLabel.cur a {
+	color: #000;
+}
+.ittTabContents {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	max-height: 216px;
+}
+

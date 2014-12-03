@@ -64,12 +64,12 @@ angular.module('com.inthetelling.story')
 	.directive('ittTab', function () {
 		return {
 			restrict: 'A',
-			replace: true,
+			replace: false,
 			transclude: true,
 			scope: {
 				isCur: "=ittTab"
 			},
-			template: '<div class="ittTab" ng-class="{cur: isCur}""><a class="ittTabLabel" ng-click="$parent.tab(tabindex)">{{tablabel}}</a><div class="ittTabContents" ng-show="isCur" ng-transclude></div></div>',
+			template: '<div><div class="ittTabLabel" ng-class="{cur: isCur}"><a ng-click="$parent.tab(tabindex)">{{tablabel}}</a></div><div class="ittTabContents" ng-show="isCur" ng-transclude></div></div>',
 			link: function (scope, element, attrs) {
 				scope.tablabel = attrs.tablabel;
 				scope.tabindex = attrs.tabindex;
