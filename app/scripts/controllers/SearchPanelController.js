@@ -23,20 +23,20 @@ angular.module('com.inthetelling.story')
 		$scope.sortBy = "startTime";
 		$scope.setSortBy = function (sortedBy) {
 			$scope.sortBy = sortedBy;
-		}
+		};
 		$scope.toggleSortBy = function (sortedBy) {
 			$scope.sortBy = getFlippedSortValue(sortedBy);
-		}
-		$scope.getToggledValue = function(currentSortBy) {
+		};
+		$scope.getToggledValue = function (currentSortBy) {
 			return getFlippedSortValue(currentSortBy);
-		}
+		};
 		var getFlippedSortValue = function (current) {
 			if (current === "startTime") {
 				return "type";
 			} else {
 				return "startTime";
 			}
-		}
+		};
 
 		$scope.getFriendlySortText = function (sortBy) {
 			if (sortBy === "startTime") {
@@ -44,7 +44,7 @@ angular.module('com.inthetelling.story')
 			} else {
 				return "type";
 			}
-		}
+		};
 		$scope.seek = function (t, eventID) {
 			$scope.enableAutoscroll(); // in playerController
 			timelineSvc.seek(t, "clickedOnEventInSearch", eventID);

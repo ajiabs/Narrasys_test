@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('com.inthetelling.story')
 	.directive('ittVolumeSlider', function (appState) {
 		return {
@@ -5,7 +7,7 @@ angular.module('com.inthetelling.story')
 			scope: true,
 			template: '<div ng-focus="showControls()" role="slider" aria-label="volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{currentVolume()}}" aria-valuetext="{{currentVolume()}}" tabindex="0" class="volumebar" ng-mousedown="userChangingVolume($event)" ng-keydown="onVolumeKeyDown($event)" aria-labelledby="volumeControlDescription"> <div class="volume" ng-style="{width: currentVolume()+\'%\'}"></div> <div id="volumeControlDescription" class="screen-reader-offscreen"> Use left and right arrows to increase or decrease the volume by 1. Use page up and page down to increase or decrease the volume by 10. Use home and end to move to the volume to the lowest and highest setting.  </div> ',
 			multiElement: false,
-			link: function (scope, element, attr) {
+			link: function (scope) {
 
 				scope.appState = appState;
 
@@ -51,8 +53,8 @@ angular.module('com.inthetelling.story')
 
 				scope.onVolumeKeyDown = function ($event) {
 					var e = $event;
-					var $target = $(e.target);
-					var nextTab;
+					// var $target = $(e.target);
+					// var nextTab;
 					var passThrough = true;
 					switch (e.keyCode) {
 					case KeyCodes.LEFTARROW:
@@ -95,14 +97,14 @@ angular.module('com.inthetelling.story')
 						$event.stopPropagation();
 						$event.preventDefault();
 					}
-				}
+				};
 
 				function adjustHigh(volume) {
-					return volume > 98 ? 100 : volume
+					return volume > 98 ? 100 : volume;
 				}
 
 				function adjustLow(volume) {
-					return volume < 3 ? 0 : volume
+					return volume < 3 ? 0 : volume;
 				}
 
 				function incrementVolume(chunk) {
@@ -128,8 +130,6 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-
-
 			}
-		}
+		};
 	});

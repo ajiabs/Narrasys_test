@@ -1,5 +1,8 @@
+'use strict';
+
 angular.module('com.inthetelling.story')
-	.directive('ittShowHideVisualOnly', ['$animate', function ($animate) {
+	.directive('ittShowHideVisualOnly', function ($animate) {
+
 		return {
 			restrict: 'A',
 			multiElement: true,
@@ -12,23 +15,18 @@ angular.module('com.inthetelling.story')
 					}
 				});
 			}
-		}
-	}]);
-
+		};
+	});
 
 angular.module('com.inthetelling.story')
 	.animation(".visual-hide", function () {
 		return {
-			addClass: function(element, className) {
+			addClass: function (element) {
 				//we'll use opacity, so we aren't hidden from screen readers, just hidden from eyes.
-				element.fadeTo("slow", 0, function() {
-				});
+				element.fadeTo("slow", 0, function () {});
 			},
-			removeClass: function (element, className) {
-				element.fadeTo("slow", 1, function() {
-				});
+			removeClass: function (element) {
+				element.fadeTo("slow", 1, function () {});
 			}
-		}
+		};
 	});
-
-
