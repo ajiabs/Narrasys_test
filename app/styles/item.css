@@ -36,11 +36,6 @@
 	text-align: right;
 	float: left;
 }
-
-button.startTime.displayTime {
-	height: 15px;
-}
-
 .item .title {
 	margin-bottom: 0.5em;
 }
