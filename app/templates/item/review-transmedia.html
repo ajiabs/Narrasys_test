@@ -5,7 +5,7 @@
 		<div ng-if="item.data._pluginType == 'credlyBadge'" ng-include="'templates/item/usc-badges.html'"></div>
 		<div ng-if="item.data._pluginType != 'credlyBadge'" class="itemTemplate">
 			<div class="itemHead">
-				<button tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
+				<button tabindex="0" class="startTime displayTime" aria-label="Seek video to {{item.displayStartTime}}" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
 				<div class="category">
 					<!--{{item.category}}-->
 					<span ng-if="item.required">(Required viewing)</span>
@@ -13,8 +13,8 @@
 			</div>
 			<div class="text">
 				<div class="title">
-					<button tabindex="0" ng-if="item.noEmbed" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></button>
-					<button tabindex="0" class="fakeLink" ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></button>
+					<a tabindex="0" ng-if="item.noEmbed" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+					<a tabindex="0" class="fakeLink" ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'" aria-label="Seek to {{item.display_title}}"></a>
 				</div>
 				<div ng-bind-html="item.display_description"></div>
 			</div>
