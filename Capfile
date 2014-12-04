@@ -1,3 +1,6 @@
+# Include NewRelic deployment notification
+require 'new_relic/recipes'
+
 # Load DSL and Setup Up Stages
 require 'capistrano/setup'
 
