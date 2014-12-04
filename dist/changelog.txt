@@ -547,3 +547,7 @@ updated sanitize
 Changes in v4.1.7:
 Fixing scene-centered to work on dark background colors
 
+------------------------------------------------
+Changes in v4.1.8:
+cherry-picking middlebury changes for release ahead of 508 stuff
+
