@@ -785,6 +785,7 @@ angular.module('com.inthetelling.story')
 
 			// HACK some platform detection here.
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+			var isNewSafari = /Version\/[891]/.test(navigator.appVersion); // HACKs upon HACKs.  presumably we'll fix this before safari 10 so that 1 will be unnecessary FAMOUS LAST WORDS amirite  (If anyone uses Safari 1 they're on their own)
 			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
 			// Safari should prefer m3u8 to mpeg4.  TODO add other browsers to this when they support m3u8
@@ -794,9 +795,9 @@ angular.module('com.inthetelling.story')
 			// }
 			// delete videoObject.m3u8;
 
-			// youtube is still throwing errors in desktop safari and in ipad.  Disable for now
+			// youtube is still throwing errors in desktop safari (pre Yosemite) and in ipad.  Disable for now.
 			// TODO fix this so we can use youtube on these devices
-			if (appState.isTouchDevice || isSafari) {
+			if (appState.isTouchDevice || (isSafari && !isNewSafari)) {
 				videoObject.youtube = undefined;
 			}
 			if (config.disableYoutube) {
