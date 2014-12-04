@@ -181,10 +181,15 @@
 }
 .episode-middlebury .branding .logo {
 	top: 120px;
+	right: 100px;
+	width: 100px;
+}
+.episode-middlebury .branding .logo.itt {
+	right: 20px;
 }
 .episode-middlebury .copyright {
 	text-shadow: none !important;
-	margin-right: 110px;
+	margin-right: 210px;
 	bottom: auto;
 	top: 120px;
 }
@@ -216,3 +221,4 @@
 	font-family: Garamond, 'Droid Serif', serif;
 	font-size: 110%;
 }
+
