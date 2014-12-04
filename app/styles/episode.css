@@ -201,6 +201,9 @@
 	background-color: #73A3E7;
 	color: #06132D;
 }
+.episode-middlebury .colorInvert .colorInvert .startTime {
+	color: #000;
+}
 .episode-middlebury .reviewMode {
 	border-bottom: 130px solid #06132D;
 }
