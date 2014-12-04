@@ -172,16 +172,24 @@
 	background-color: #06132D;
 	display: block;
 }
+.episode-middlebury .DiscoverModeOnly .startTime {
+	color: #FFF;
+}
 .episode-middlebury .branding {
 	background: url("/images/customer/middlebury-footer.svg") repeat-x 50% 0;
 	color: #5e5e5e;
 }
 .episode-middlebury .branding .logo {
 	top: 120px;
+	right: 100px;
+	width: 100px;
+}
+.episode-middlebury .branding .logo.itt {
+	right: 20px;
 }
 .episode-middlebury .copyright {
 	text-shadow: none !important;
-	margin-right: 110px;
+	margin-right: 210px;
 	bottom: auto;
 	top: 120px;
 }
@@ -211,4 +219,6 @@
 }
 .episode-middlebury {
 	font-family: Garamond, 'Droid Serif', serif;
+	font-size: 110%;
 }
+

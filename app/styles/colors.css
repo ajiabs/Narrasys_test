@@ -5,7 +5,6 @@
 	TODO: explicitly limit color selections to .item and .scene, and in .scene sort out which pane gets the background colors;
 
 */
-
 /*============================
  *
  * default
@@ -18,7 +17,9 @@
 a,
 a:visited,
 .fakelink {
-	color: #00C
+	color: #00C;
+	cursor: pointer;
+	cursor: hand;
 }
 /*============================
  *
@@ -226,7 +227,6 @@ a:visited,
 	text-shadow: -1px -1px 0 #fff;
 }
 /* -- */
-
 /* Columbia:  #0F4082 (dark blue), #5892C1 (light blue) */
 
 .colorColumbia .startTime {
@@ -271,3 +271,4 @@ a:visited,
 	text-transform: uppercase;
 	margin-left: -0.5em;
 }
+
