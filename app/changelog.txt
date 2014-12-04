@@ -551,3 +551,7 @@ Fixing scene-centered to work on dark background colors
 Changes in v4.1.8:
 cherry-picking middlebury changes for release ahead of 508 stuff
 
+------------------------------------------------
+Changes in v4.1.9:
+fix for colorInverted colorInvert in middlebury template
+
