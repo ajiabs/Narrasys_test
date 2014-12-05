@@ -1,6 +1,6 @@
 <div class="itemTemplate itemCaption">
 	<div class="itemHead">
-		<button tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
+		<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
 		<div class="authorName" ng-bind-html="item.display_annotator"></div>
 	</div>
 	<div class="text" ng-bind-html="item.display_annotation"></div>

@@ -23,6 +23,9 @@ angular.module('com.inthetelling.story')
 			controller: 'ItemController',
 			link: function (scope, element) {
 
+
+
+
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
 
@@ -41,11 +44,59 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				};
+				var KeyCodes = {
+					ENTER: 13,
+					SPACE: 32
+				};
+
+				scope.toggleDetailOnKeyPress = function ($event) {
+					var e = $event;
+					var passThrough = true;
+					switch (e.keyCode) {
+					case KeyCodes.ENTER:
+						scope.toggleDetailView();
+						passThrough = false;
+						break;
+					case KeyCodes.SPACE:
+						scope.toggleDetailView();
+						passThrough = false;
+						break;
+					default:
+						passThrough = true;
+						break;
+					}
+					if (!passThrough) {
+						$event.stopPropagation();
+						$event.preventDefault();
+					}
+				};
 
 				scope.forceModal = function () {
 					timelineSvc.pause();
 					appState.itemDetail = scope.item;
 				};
+				scope.outgoingLinkOnKeyPress = function (url, $event) {
+					var e = $event;
+					var passThrough = true;
+					switch (e.keyCode) {
+					case KeyCodes.ENTER:
+						scope.outgoingLink(url);
+						passThrough = false;
+						break;
+					case KeyCodes.SPACE:
+						scope.outgoingLink(url);
+						passThrough = false;
+						break;
+					default:
+						passThrough = true;
+						break;
+					}
+					if (!passThrough) {
+						$event.stopPropagation();
+						$event.preventDefault();
+					}
+				};
+
 
 				scope.outgoingLink = function (url) {
 					timelineSvc.pause();
@@ -179,21 +230,23 @@ angular.module('com.inthetelling.story')
 						scope.badger = function () {
 							scope.plugin.gettingBadge = true;
 							$http({
-								method: 'GET',
-								url: config.apiDataBaseUrl + '/v1/send_credly_badge?badge_id=' + scope.plugin.credlyBadgeId + '&email=' + scope.plugin.userEmail
-							}).
+									method: 'GET',
+									url: config.apiDataBaseUrl + '/v1/send_credly_badge?badge_id=' + scope.plugin.credlyBadgeId + '&email=' + scope.plugin.userEmail
+								})
+								.
 							success(function (data) {
-								// TODO check the data to make sure it's not status: "Badge previously sent."
-								scope.checkBadgeEligibility();
-								// console.log("SUCCESS", data);
-								if (data.status === 'Badge previously sent.') {
-									scope.plugin.alreadyHadBadge = true;
-								}
-								scope.plugin.gotBadge = true;
-							}).error(function () {
-								scope.plugin.gettingBadge = false;
-								scope.plugin.error = true; // TEMP HACK
-							});
+									// TODO check the data to make sure it's not status: "Badge previously sent."
+									scope.checkBadgeEligibility();
+									// console.log("SUCCESS", data);
+									if (data.status === 'Badge previously sent.') {
+										scope.plugin.alreadyHadBadge = true;
+									}
+									scope.plugin.gotBadge = true;
+								})
+								.error(function () {
+									scope.plugin.gettingBadge = false;
+									scope.plugin.error = true; // TEMP HACK
+								});
 						};
 					}
 					// END credly badge
