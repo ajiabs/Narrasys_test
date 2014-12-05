@@ -5,7 +5,8 @@
 		<div ng-if="item.data._pluginType == 'credlyBadge'" ng-include="'templates/item/usc-badges.html'"></div>
 		<div ng-if="item.data._pluginType != 'credlyBadge'" class="itemTemplate">
 			<div class="itemHead">
-				<button tabindex="0" class="startTime displayTime" aria-label="Seek video to {{item.displayStartTime}}" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
+				
+				<a role="button" tabindex="0" class="startTime displayTime" aria-label="Seek video to {{item.displayStartTime}}" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
 				<div class="category">
 					<!--{{item.category}}-->
 					<span ng-if="item.required">(Required viewing)</span>
@@ -14,12 +15,12 @@
 			<div class="text">
 				<div class="title">
 					<a tabindex="0" ng-if="item.noEmbed" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
-					<a tabindex="0" class="fakeLink" ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'" aria-label="Seek to {{item.display_title}}"></a>
+					<a tabindex="0" role="button" class="fakeLink" ng-if="!item.noEmbed" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'" aria-label="Toggle detail display of {{item.display_title}}"></a>
 				</div>
 				<div ng-bind-html="item.display_description"></div>
 			</div>
 			<div class="itemDetail" ng-if="item.showInlineDetail && item._type == 'Link'">
-				<button tabindex="0" ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="fakeLink escapelink">(new window)</button>
+				<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 				<div class="iframeContainer">
 					<div ng-include="'templates/loading.html'"></div>
 					<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->

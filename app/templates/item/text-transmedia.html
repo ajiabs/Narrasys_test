@@ -1,7 +1,8 @@
 <div>
 	<div class="itemTemplate">
 		<div class="itemHead">
-			<button tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
+		
+			<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
 			<h2 ng-if="item.display_title" ng-bind-html="item.display_title"></h2>
 		</div>
 		<div class="text" ng-bind-html="item.display_annotation"></div>

@@ -1,6 +1,6 @@
 <div class="itemTemplate transcriptWithThumbnail">
 	<div class="itemHead">
-		<button tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)">{{item.displayStartTime}}</button>
+		<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
 	</div>
 	<div class="icon" style="float:left; margin-right: 0.5em;">
 		<img ng-src="{{item.asset.url}}">

@@ -39,6 +39,14 @@
 .item .title {
 	margin-bottom: 0.5em;
 }
+
+a.startTime.displayTime {
+
+text-decoration: none;
+color: black;
+text-shadow: none;
+}
+
 /* iframes */
 
 .iframeContainer {
