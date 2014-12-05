@@ -25,7 +25,7 @@
 
 			<div class="ittTabs" itt-tabs>
 				<!-- begin tabset -->
-				<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="Data">
+				<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="{{item._type == 'Scene' ? 'Scene' : 'Item'}}">
 					<!-- begin data tab -->
 					<div class="field">
 						<div class="label">Time
@@ -52,26 +52,8 @@
 
 					<!-- end data tab -->
 				</div>
-				<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Metadata">
+				<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Style">
 					<!-- begin metadata  tab -->
-					<div class="field" ng-if="item.producerItemType != 'scene'">
-						<div class="label">Flags</div>
-						<div class="input">
-							<label>
-								<input type="checkbox" ng-model="item.required">Required
-							</label>
-							<label>
-								<input type="checkbox" ng-model="item.stop">Stop item
-							</label>
-							<label>
-								<input type="checkbox" ng-model="item.cosmetic">Cosmetic
-							</label>
-						</div>
-					</div>
-					<!-- end metadata  tab -->
-				</div>
-				<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" x-tablabel="Style">
-					<!-- begin styles tab -->
 					<div class="field">
 						<div class="label">
 							Template
@@ -185,6 +167,24 @@
 						</div>
 
 					</div>
+					<div class="field" ng-if="item.producerItemType != 'scene'">
+						<div class="label">Flags</div>
+						<div class="input">
+							<label>
+								<input type="checkbox" ng-model="item.required">Required
+							</label>
+							<label>
+								<input type="checkbox" ng-model="item.stop">Stop item
+							</label>
+							<label>
+								<input type="checkbox" ng-model="item.cosmetic">Cosmetic
+							</label>
+						</div>
+					</div>
+					<!-- end metadata  tab -->
+				</div>
+				<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" x-tablabel="Customize">
+					<!-- begin styles tab -->
 
 
 					<div class="field">

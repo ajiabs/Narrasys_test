@@ -383,6 +383,12 @@
 	overflow-y: scroll;
 	padding-top: 1em;
 }
+.navPanel.editPanel {
+	padding-top: 0;
+	max-height: 240px;
+	transition: none
+	/* Kill the transition for now */
+}
 .navPanel.ng-hide-add,
 .navPanel.ng-hide-remove {
 	display: block!important;
@@ -395,9 +401,6 @@
 }
 .navPanel.ng-hide-remove {
 	max-height: 0;
-}
-.navPanel.ng-hide-remove-active {
-	max-height: 300px;
 }
 @media screen and (max-width: 500px) {
 	.navPanel {
@@ -565,3 +568,4 @@
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
+

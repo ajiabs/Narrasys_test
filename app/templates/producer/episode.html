@@ -67,9 +67,21 @@
 					</div>
 				</div>
 
+				<div class="field">
+					<div class="label">Inter-episode navigation</div>
+					<div class="input">
+						<select ng-model="episode.navigation_depth">
+							<option value="0">None</option>
+							<option value="1">1 level (sibling episodes only)</option>
+							<option value="2">2 levels (course and session)</option>
+							<!-- <option value="3">HULK TOO DEEP HULK SMASH DATABASE</option> -->
+						</select>
+					</div>
+				</div>
+
 				<!-- end episode content tab -->
 			</div>
-			<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Metadata">
+			<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Master Asset">
 				<!-- begin metadata tab -->
 
 				<div class="field">
@@ -98,18 +110,6 @@
 				<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
 					<div class="label">Duration</div>
 					<div clas="input">TODO set an explicit duration for episodes with no master asset
-					</div>
-				</div>
-
-				<div class="field">
-					<div class="label">Inter-episode navigation</div>
-					<div class="input">
-						<select ng-model="episode.navigation_depth">
-							<option value="0">None</option>
-							<option value="1">1 level (sibling episodes only)</option>
-							<option value="2">2 levels (course and session)</option>
-							<!-- <option value="3">HULK TOO DEEP HULK SMASH DATABASE</option> -->
-						</select>
 					</div>
 				</div>
 

@@ -475,6 +475,10 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .scene.pip .altPane {
 	padding-bottom: 300px;
 }
+.scene.pip .mainPane {
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 2em;
+}
 .scene.pip .altPane .item {
 	text-align: center;
 }
@@ -496,3 +500,4 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	right: auto;
 	left: 30px;
 }
+

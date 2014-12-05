@@ -139,7 +139,7 @@
 	border-bottom: 180px solid #BBB;
 }
 .authoringFormScrollContainer {
-	max-height: 260px;
+	max-height: 200px;
 	overflow-y: scroll;
 	padding-right: 24px;
 }
@@ -223,8 +223,8 @@
 }
 /* ------ */
 
-.editPanel,
-.addPanel {
+.editButtonPanel,
+.addButtonPanel {
 	background-color: #fff;
 	bottom: 71px;
 	cursor: pointer;
@@ -234,21 +234,21 @@
 	position: fixed;
 	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
-.isProducer .editPanel {
+.isProducer .editButtonPanel {
 	border-radius: 0 1em 0 0;
 	border-right: 2px solid #999;
 	border-top: 2px solid #999;
 	left: 0;
 	min-height: 45px;
 }
-.isProducer .addPanel {
+.isProducer .addButtonPanel {
 	border-left: 2px solid #999;
 	border-radius: 1em 0 0;
 	border-top: 2px solid #999;
 	right: 0;
 	min-height: 45px;
 }
-.isSxS .addPanel {
+.isSxS .addButtonPanel {
 	border: 5px solid #666666;
 	border-radius: 30px;
 	bottom: 80px;
@@ -265,7 +265,7 @@
 	padding: 0.5em;
 }
 @media screen and (max-width: 825px) {
-	.isProducer.controlPanel .addPanel a {
+	.isProducer.controlPanel .addButtonPanel a {
 		display: block;
 	}
 }
@@ -436,6 +436,7 @@
 	clear: both;
 	height: 240px;
 	position: relative;
+	margin-top: 1em;
 }
 .ittTabLabel {
 	float: left;
@@ -456,7 +457,6 @@
 	position: absolute;
 	left: 0;
 	right: 0;
-	bottom: 0;
-	max-height: 216px;
+	top: 24px;
 }
 
