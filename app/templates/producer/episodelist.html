@@ -38,15 +38,28 @@
 											<a ng-href="#/assets/{{episodecontainer._id}}">[Assets]</a>
 										</small>
 									</li>
+									<li>
+										<button>TODO add episode to {{session.name.en}}</button>
+									</li>
 								</ul>
+							</li>
+							<li>
+								<button>TODO add session to {{course.name.en}}</button>
 							</li>
 						</ul>
 					</div>
 				</li>
+				<li>
+					<button>TODO add course to {{customer.name.en}}</button>
+				</li>
 			</ul>
+			<!-- end courses ng-repeat ->
 		</div>
+		<!-- end customers ng-repeat -->
+
+		</div>
+
 	</div>
+	<button>TODO add customer</button>
 
-</div>
-
-<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>
+	<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>
