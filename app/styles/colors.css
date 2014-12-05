@@ -258,8 +258,8 @@ a:visited,
 	color: #205F9C;
 }
 .colorColumbiabusiness .colorInvert {
-	color: #000;
-	background-color: none;
+	color: #FFF;
+	background-color: #0F4082;
 }
 .colorColumbiabusiness .category span {
 	color: #FFF;
@@ -269,3 +269,4 @@ a:visited,
 	text-transform: uppercase;
 	margin-left: -0.5em;
 }
+

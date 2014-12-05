@@ -424,6 +424,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	right: 30px;
 	width: 60%;
 	z-index: 3;
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 2em;
 }
 .scene.pip .altPane {
 	padding-bottom: 200px;
@@ -446,3 +448,4 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	right: auto;
 	left: 30px;
 }
+
