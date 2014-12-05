@@ -10,7 +10,7 @@ Possibly boneheaded parts of this:
 	- depends on magic classNames 'cur' and 'ittTab'  
 	- depends on the directive user to keep track of tabindex :P
 
-TODO: a forceTemplate sort of deal for different tab layouts
+TODO: allow different html layouts in ittTab (right now this is just for the producer edit pane)
 
 How to use:
 
@@ -55,9 +55,7 @@ angular.module('com.inthetelling.story')
 						scope.tabs[i] = false;
 					}
 					scope.tabs[tab] = true;
-					console.log(scope.tabs);
 				};
-				console.log(scope.tabs);
 			}
 		};
 	})
