@@ -466,20 +466,28 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 /* ------------------------------------------- */
 
 .scene.pip .mainPane {
-	position: fixed;
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 2em;
 	bottom: 30px;
+	overflow: hidden;
+	position: fixed;
 	right: 30px;
 	width: 60%;
 	z-index: 3;
-	background-color: rgba(255, 255, 255, 0.9);
-	border-radius: 2em;
+	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+	padding: 0.5em;
+}
+.scene.pip .mainPane .content {
+	border-radius: 1.5em;
+	overflow: hidden;
+}
+.scene.pip .mainPane .content .item:first-child {
+	/* override extra padding for first item */
+	
+	padding-top: 0.7em;
 }
 .scene.pip .altPane {
 	padding-bottom: 300px;
-}
-.scene.pip .mainPane {
-	background-color: rgba(255, 255, 255, 0.9);
-	border-radius: 2em;
 }
 .scene.pip .altPane .item {
 	text-align: center;
