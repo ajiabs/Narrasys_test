@@ -20,5 +20,42 @@ angular.module('com.inthetelling.story')
 
 			};
 
+			$scope.addEpisode = function (session) {
+				console.log("Add episode ", session);
+
+				var newEpisodeContainer = {
+					"customer_id": session.customer_id,
+					"parent_id": session._id,
+					"name": {
+						en: session.newEpisodeTitle
+					}
+				};
+
+				dataSvc.createContainer(newEpisodeContainer).then(function (container) {
+					console.log("Created container:", container);
+					dataSvc.createEpisode().then(function (episode) {
+						console.log("Created episode: ", episode);
+						// add both to $scope.containers
+						container.episodes = [episode._id];
+						session.children.push(container);
+						// reset form for next
+						session.newEpisodeTitle = undefined;
+						session.addingEpisode = undefined;
+
+					});
+
+				});
+			};
+
+			$scope.deleteContainer = function (c) {
+				// TODO
+				// confirm with user, then delete episode, then delete container
+
+				// Unsafe, just for testing convenience fow now so I don't clutter database
+
+				// Eventually should block this if there are events in the episode, or child containers,
+				// make sure they delete the epsiode first, etc
+				console.log("TODO deleteContainer", c);
+			};
 		});
 	});

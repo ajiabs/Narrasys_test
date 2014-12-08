@@ -133,6 +133,12 @@
 .admin .session > ul {
 	margin-left: 1em;
 }
+.admin .controls {
+	background-color: #FDFDFD;
+	height: 26px;
+	padding: 0 1em;
+	text-align: right;
+}
 /* -- */
 
 .padForEditing .episode {

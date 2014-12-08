@@ -377,6 +377,40 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+		svc.createContainer = function (container) {
+			var createContainerDefer = $q.defer();
+
+			// TODO sanitize
+			var newContainer = {
+				container: {
+					customer_id: container.customer_id,
+					name: container.name,
+					parent_id: container.parent_id
+						// keywords: [] // for now
+				}
+			};
+			// store in API and resolve with results instead of container
+			// TODO THis is working! but gets a 500 error response anyway?!
+			POST("/v1/containers", newContainer).then(function (data) {
+				console.log("CREATED CONTAINER", data);
+				createContainerDefer.resolve(data);
+			});
+			return createContainerDefer.promise;
+		};
+
+		svc.createEpisode = function (episode) {
+			var createEpisodeDefer = $q.defer();
+			// TODO store in API and resolve with results instead of episode
+
+			episode = {
+				_id: "xXXXx"
+			};
+
+			console.log("TODO dataSvc.createEpisode", episode);
+			createEpisodeDefer.resolve(episode);
+			return createEpisodeDefer.promise;
+		};
+
 		svc.deleteItem = function (evtId) {
 			return DELETE("/v3/events/" + evtId);
 		};
