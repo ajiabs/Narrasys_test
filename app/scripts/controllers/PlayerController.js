@@ -122,11 +122,7 @@ angular.module('com.inthetelling.story')
 			return appState.videoControlsActive;
 		}, function (isActive) {
 			if (isActive) {
-				controlTimer = $timeout(function () {
-					if (!appState.videoControlsLocked) {
-						appState.videoControlsActive = false;
-					}
-				}, 5000);
+				$scope.allowControlsExit();
 			}
 		});
 		$scope.$on('$destroy', function () {
@@ -155,7 +151,7 @@ angular.module('com.inthetelling.story')
 				if (!appState.videoControlsLocked) {
 					appState.videoControlsActive = false;
 				}
-			}, 5000);
+			}, 1000);
 		};
 
 		/* END TOOLBAR HIDE/REVEAL- - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
