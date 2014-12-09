@@ -122,13 +122,17 @@ angular.module('com.inthetelling.story')
 			return appState.videoControlsActive;
 		}, function (isActive) {
 			if (isActive) {
-				$scope.allowControlsExit();
+				$timeout.cancel(controlTimer);
+				controlTimer = $timeout(function () {
+					if (!keepControls) { // <-- this is why we're not just calling allowControlsExit here
+						appState.videoControlsActive = false;
+					}
+				}, 1000);
 			}
 		});
 		$scope.$on('$destroy', function () {
 			videoControlsWatcher();
 		});
-
 		$scope.showControls = function () {
 			// console.log("showControls");
 			$timeout.cancel(controlTimer);
