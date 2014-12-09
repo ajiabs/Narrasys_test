@@ -24,12 +24,11 @@
 			<a class="button" ng-click="editLayer('fgLayer');">FG<span>Edit the foreground layer</span></a>
 			<a class="button" ng-click="editLayer('');">All<span>Show everything</span></a>
 		</div> -->
-		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
-			<button tabindex="0" class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
-
-
+		<div ng-if="!appState.isFramed" class="escapegroup buttongroup">
+			<!-- this needs to be an <a> or it trips popup blockers. also <button> doesn't have a href -->
+			<a tabindex="0" class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
 				<span>New window</span>
-			</button>
+			</a>
 		</div>
 		<div class="searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
 			<button tabindex="0" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
