@@ -562,3 +562,7 @@ much faster toolbar fade
 Changes in v4.1.12:
 reverting toolbar fade change -- made it worse on touchscreen
 
+------------------------------------------------
+Changes in v4.1.13:
+reverting bad test code
+
