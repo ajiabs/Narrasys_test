@@ -102,7 +102,7 @@ angular.module('com.inthetelling.story')
 					if (!keepControls) { // <-- this is why we're not just calling allowControlsExit here
 						appState.videoControlsActive = false;
 					}
-				}, 1000);
+				}, 5000);
 			}
 		});
 		$scope.$on('$destroy', function () {
@@ -131,7 +131,7 @@ angular.module('com.inthetelling.story')
 				if (!appState.show.navPanel) {
 					appState.videoControlsActive = false;
 				}
-			}, 1000);
+			}, 5000);
 		};
 
 		/* END TOOLBAR HIDE/REVEAL- - - - - - - - - - - - - - - - - - - - - - - - - - - - - */

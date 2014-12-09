@@ -543,6 +543,7 @@ set titles on landing and ending scene so timeline markers will appear
 lost the annotator localization somehow
 corrected padding in GW landing screen
 updated sanitize
+
 ------------------------------------------------
 Changes in v4.1.7:
 Fixing scene-centered to work on dark background colors
@@ -550,3 +551,14 @@ Fixing scene-centered to work on dark background colors
 ------------------------------------------------
 Changes in v4.1.10:
 Accessibility changes
+
+------------------------------------------------
+Changes in v4.1.11:
+bugfix: 'escape' button doesn't work as a <button>, changed back to <a>
+cbs styling was leaking into watch mode
+much faster toolbar fade
+
+------------------------------------------------
+Changes in v4.1.12:
+reverting toolbar fade change -- made it worse on touchscreen
+
