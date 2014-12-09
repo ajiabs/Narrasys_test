@@ -160,7 +160,7 @@
 	position: fixed !important;
 	opacity: 0.3;
 }
-.episode-columbiabusiness .item {
+.episode-columbiabusiness .discoverModeOnly .item {
 	background-color: rgba(221, 224, 234, 0.5);
 }
 .episode-schoolclimatesolutions {
