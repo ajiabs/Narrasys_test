@@ -330,23 +330,30 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		// "event" here refers to a timelineEvents event, not the modelSvc.event:
 		var handleEvent = function (event) {
 			// console.log("handle event: ", event);
-			if (event.action === "pause") {
-				appState.time = event.t;
-				svc.pause(); // TODO handle pause with duration too
-			} else if (event.action === "play") {
-				svc.play();
-			} else if (event.action === "enter") {
-				modelSvc.events[event.id].state = "isCurrent";
-				modelSvc.events[event.id].isCurrent = true;
-			} else if (event.action === "exit") {
-				modelSvc.events[event.id].state = "isPast";
-				modelSvc.events[event.id].isCurrent = false;
+			if (event.id === 'timeline') {
+				//console.log("TIMELINE EVENT");
+				if (event.action === 'pause') {
+					appState.time = event.t;
+					svc.pause(); // TODO handle pause with duration too
+				} else {
+					svc.play();
+				}
 			} else {
-				console.warn("Unknown event action: ", event, event.action);
+				if (event.action === "enter") {
+					modelSvc.events[event.id].state = "isCurrent";
+					modelSvc.events[event.id].isCurrent = true;
+				} else if (event.action === "exit") {
+					modelSvc.events[event.id].state = "isPast";
+					modelSvc.events[event.id].isCurrent = false;
+				} else if (event.action === "preload") {
+					preloadImageAsset(modelSvc.events[event.id]);
+				} else {
+					console.warn("Unknown event action: ", event, event.action);
+				}
 			}
-
 		};
 
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
@@ -460,6 +467,16 @@ angular.module('com.inthetelling.story')
 						console.warn("Missing end_time on event ", event);
 					}
 				}
+
+				// allow preload of event assets:
+				if (event.asset_id || event.annotation_image_id || event.link_image_id) {
+					svc.timelineEvents.push({
+						t: (event.start_time < 3) ? 0 : event.start_time - 3, // 3 seconds early
+						id: event._id,
+						action: "preload"
+					});
+				}
+
 			});
 
 			svc.sortTimeline();
@@ -491,7 +508,8 @@ angular.module('com.inthetelling.story')
 		svc.sortTimeline = function () {
 
 			//keep events sorted by time.
-			// Simultaneous events should be sorted as exit, then enter, then stop
+			// Simultaneous events should be sorted as exit, then enter, then stop.
+			// (sort order of 'preload' events doesn't matter.)
 			svc.timelineEvents = svc.timelineEvents.sort(function (a, b) {
 				if (a.t === b.t) {
 					if (a.action === b.action) {
@@ -528,7 +546,7 @@ angular.module('com.inthetelling.story')
 			});
 
 			// for (var i = 0; i < svc.timelineEvents.length; i++) {
-			// 	console.log(svc.timelineEvents[i].t, svc.timelineEvents[i]);
+			// 	console.log(svc.timelineEvents[i].t, svc.timelineEvents[i].action);
 			// }
 
 			// Find the latest end_time in the timeline, set that as the duration.
@@ -570,8 +588,18 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
-
 			stepEvent();
+		};
+
+		var alreadyPreloadedImages = {};
+		var preloadImageAsset = function (event) {
+			if (event.asset && event.asset._type === 'Asset::Image') {
+				if (!alreadyPreloadedImages[event.asset.url]) {
+					console.log("Preloading ", event.asset.url);
+					alreadyPreloadedImages[event.asset.url] = new Image();
+					alreadyPreloadedImages[event.asset.url].src = event.asset.url;
+				}
+			}
 		};
 
 		// supports these formats: "1:10", 1m10s", "1m", "10s", or a plain number (in seconds)
