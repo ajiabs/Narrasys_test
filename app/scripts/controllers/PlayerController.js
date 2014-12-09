@@ -8,8 +8,8 @@ angular.module('com.inthetelling.story')
 
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
-			appState.viewModeText = newMode.substring(0,1).toUpperCase()+newMode.substring(1);
-			
+			appState.viewModeText = newMode.substring(0, 1).toUpperCase() + newMode.substring(1);
+
 			analyticsSvc.captureEpisodeActivity("modeChange", {
 				"mode": newMode
 			});
@@ -99,10 +99,10 @@ angular.module('com.inthetelling.story')
 		}, function (isActive) {
 			if (isActive) {
 				controlTimer = $timeout(function () {
-					if (!keepControls) {
+					if (!keepControls) { // <-- this is why we're not just calling allowControlsExit here
 						appState.videoControlsActive = false;
 					}
-				}, 5000);
+				}, 1000);
 			}
 		});
 		$scope.$on('$destroy', function () {
@@ -131,7 +131,7 @@ angular.module('com.inthetelling.story')
 				if (!appState.show.navPanel) {
 					appState.videoControlsActive = false;
 				}
-			}, 5000);
+			}, 1000);
 		};
 
 		/* END TOOLBAR HIDE/REVEAL- - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
