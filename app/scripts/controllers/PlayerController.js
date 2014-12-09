@@ -117,6 +117,7 @@ angular.module('com.inthetelling.story')
 
 		appState.videoControlsActive = false;
 		var controlTimer;
+		var keepControls;
 
 		var videoControlsWatcher = $scope.$watch(function () {
 			return appState.videoControlsActive;
@@ -124,10 +125,11 @@ angular.module('com.inthetelling.story')
 			if (isActive) {
 				$timeout.cancel(controlTimer);
 				controlTimer = $timeout(function () {
-					if (!keepControls) { // <-- this is why we're not just calling allowControlsExit here
+					// <-- this is why we're not just calling allowControlsExit here
+					if (!keepControls) {
 						appState.videoControlsActive = false;
 					}
-				}, 1000);
+				}, 5000);
 			}
 		});
 		$scope.$on('$destroy', function () {
@@ -155,7 +157,7 @@ angular.module('com.inthetelling.story')
 				if (!appState.videoControlsLocked) {
 					appState.videoControlsActive = false;
 				}
-			}, 1000);
+			}, 5000);
 		};
 
 		/* END TOOLBAR HIDE/REVEAL- - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
