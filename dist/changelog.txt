@@ -558,3 +558,7 @@ bugfix: 'escape' button doesn't work as a <button>, changed back to <a>
 cbs styling was leaking into watch mode
 much faster toolbar fade
 
+------------------------------------------------
+Changes in v4.1.12:
+reverting toolbar fade change -- made it worse on touchscreen
+
