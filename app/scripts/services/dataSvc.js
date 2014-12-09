@@ -390,8 +390,8 @@ angular.module('com.inthetelling.story')
 				}
 			};
 			// store in API and resolve with results instead of container
-			// TODO THis is working! but gets a 500 error response anyway?!
-			POST("/v1/containers", newContainer).then(function (data) {
+
+			POST("/v3/containers", newContainer).then(function (data) {
 				console.log("CREATED CONTAINER", data);
 				createContainerDefer.resolve(data);
 			});
