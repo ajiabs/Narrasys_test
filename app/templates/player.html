@@ -14,8 +14,7 @@
 				<button tabindex="0" class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="Review">
 					<span>Review</span>
 				</button>
-
-				</navigation>
+			</nav>
 		</div>
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 			<!-- this needs to be an <a> or it trips popup blockers. also <button> doesn't have a href -->
@@ -24,11 +23,11 @@
 			</a>
 		</div>
 		<div class="searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
-			<button tabindex="0" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
+			<button tabindex="2" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
 				<span>Search</span>
 			</button>
 			<label for="searchtext" class="hidden">Search Text</label>
-			<input name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
+			<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
 		</div>
 	</div>
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
