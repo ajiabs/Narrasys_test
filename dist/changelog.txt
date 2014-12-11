@@ -566,3 +566,8 @@ reverting toolbar fade change -- made it worse on touchscreen
 Changes in v4.1.13:
 reverting bad test code
 
+------------------------------------------------
+Changes in v4.1.14:
+fixes STORY-202 tab issues in search
+preload image assets during playback
+
