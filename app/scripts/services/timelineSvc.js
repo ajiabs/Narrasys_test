@@ -68,6 +68,12 @@ angular.module('com.inthetelling.story')
 			// console.log("timelineSvc.play", videoScope);
 			// On first play, we need to check if we need to show help menu instead; if so, don't play the video:
 			// (WARN this is a bit of a sloppy mixture of concerns.)
+
+			if (!appState.duration || appState.duration < 0.1) {
+				console.error("This episode has no duration");
+				return;
+			}
+
 			if (!appState.hasBeenPlayed) {
 				appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
 				$rootScope.$emit("video.firstPlay");
