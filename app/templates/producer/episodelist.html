@@ -2,10 +2,15 @@
 	<!-- TODO proper i18n -->
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 
-	<div class="controls">
+	<!-- 
+Not for public consumption yet
+	<div class="controls" ng-if="userHasRole('admin')">
 		<label>
-			<input type="checkbox" ng-model="DangerousButtons"> - Enable danger</label>
+			<input type="checkbox" ng-model="$parent.DangerousButtons">&nbsp;Enable danger</label>
+		<div ng-if="$parent.DangerousButtons" STYLE="COLOR:#C00">THERE IS NO UNDO. YOU HAVE BEEN WARNED.</div>
 	</div>
+ -->
+
 	<div ng-repeat="customer in containers" class="customer">
 		<h2><a ng-click="customer.hidden = !customer.hidden">{{customer.name.en}}</a>
 		</h2>
@@ -33,7 +38,7 @@
 											<a href="#/editor/{{episodecontainer.episodes[0]}}">[Editor]</a>
 											<a href="#/producer/{{episodecontainer.episodes[0]}}">[Producer]</a>
 											<span ng-if="DangerousButtons">
-												<button ng-click="deleteContainer(episodecontainer)">Delete</button>
+												<button ng-click="deleteEpisodeAndContainer(episodecontainer)">Delete</button>
 											</span>
 										</span>
 										<span ng-if="!userHasRole('admin')">

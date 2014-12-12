@@ -393,22 +393,58 @@ angular.module('com.inthetelling.story')
 
 			POST("/v3/containers", newContainer).then(function (data) {
 				console.log("CREATED CONTAINER", data);
+
+				// we seem to be switching over from parent_id to 'ancestry'. For now:
+				data.parent_id = data.ancestry.replace(/.*\//, ''); // WARN not sure if this will work for deleting root-level containers (customers).......
 				createContainerDefer.resolve(data);
 			});
 			return createContainerDefer.promise;
+		};
+
+		svc.deleteContainer = function (containerId) {
+			// DANGER WILL ROBINSON incomplete and unsafe.  only for deleting test data for now, don't expose this to the production team.
+
+			// TODO  this will error out if there are assets or child containers attached to the container...
+			// definitely it will if there's a child episode. 
+			return DELETE("/v3/containers/" + containerId);
 		};
 
 		svc.createEpisode = function (episode) {
 			var createEpisodeDefer = $q.defer();
 			// TODO store in API and resolve with results instead of episode
 
-			episode = {
-				_id: "xXXXx"
-			};
-
-			console.log("TODO dataSvc.createEpisode", episode);
-			createEpisodeDefer.resolve(episode);
+			POST("/v3/episodes", episode).then(function (data) {
+				console.log("Created episode: ", data);
+				createEpisodeDefer.resolve(data);
+			});
 			return createEpisodeDefer.promise;
+		};
+
+		svc.deleteEpisode = function (episodeId) {
+			// DANGER WILL ROBINSON this is both incomplete and unsafe; I've built just enough to remove some of my own test data. Do not include this in any UI that is available to the production team 
+			// First remove episode_user_metrics
+
+			// probably first need to remove events etc if there are any
+			var deleteEpisodeDefer = $q.defer();
+			// delete episode_user_metrics
+			GET("/v2/episodes/" + episodeId + "/episode_user_metrics").then(function (metrics) {
+				console.log("GOT METRICS: ", metrics);
+				if (metrics.length) {
+					var deleteMetricsActions = [];
+
+					for (var i = 0; i < metrics.length; i++) {
+						deleteMetricsActions.push(DELETE("/v2/episode_user_metrics/" + metrics[i]._id));
+					}
+					$q.all(deleteMetricsActions).then(function () {
+						DELETE("/v3/episodes/" + episodeId);
+						deleteEpisodeDefer.resolve();
+					});
+				} else {
+					DELETE("/v3/episodes/" + episodeId);
+					deleteEpisodeDefer.resolve();
+				}
+			});
+			return deleteEpisodeDefer.promise;
 		};
 
 		svc.deleteItem = function (evtId) {
