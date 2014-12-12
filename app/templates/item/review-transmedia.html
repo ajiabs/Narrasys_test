@@ -29,7 +29,7 @@
 			</div>
 			<div class="itemDetail" ng-if="item.showInlineDetail && item._type != 'Link'">
 				<div class="touchable" style="position:relative">
-					<img ng-click="forceModal()" ng-src="{{item.asset.url}}">
+					<img ng-click="forceModal()" ng-src="{{item.asset.url}}" alt="{{item.asset.description}}">
 					<div class="touchableIndicator"></div>
 				</div>
 

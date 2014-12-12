@@ -5,7 +5,7 @@
 		<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
 	</div>
 
-	<img style="max-width: 5em; float:left; margin-right: 0.5em" ng-src="{{plugin.credlyImageUrl}}">
+	<img style="max-width: 5em; float:left; margin-right: 0.5em" ng-src="{{plugin.credlyImageUrl}}" alt="{{item.asset.description}}">
 	<b>{{plugin.achievement}}</b>
 	<span ng-if="plugin.eligibleForBadges">
 		<p>Complete the following requirements to earn a <a ng-href="https://credly.com/recipients/{{plugin.credlyBadgeId}}" target="_new">USC Scholar's Badge</a>:</p>

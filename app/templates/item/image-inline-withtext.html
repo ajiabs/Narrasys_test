@@ -11,7 +11,7 @@
 		<div class="title" ng-if="item.display_title" ng-bind-html="item.display_title"></div>
 
 		<div class="touchable">
-			<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
+			<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}" alt="{{item.asset.description}}">
 			<div class="touchableIndicator"></div>
 		</div>
 		<div ng-bind-html="item.display_description"></div>
