@@ -1,7 +1,7 @@
 <div class="scene twocol" ng-class="scene.styleCss + ' '+ scene.state">
 	<div class="videoPositioner">
 		<div itt-magnet class="videoMagnet">
-			<img src="images/aspectratiopreserver-16x9.gif">
+			<img src="images/aspectratiopreserver-16x9.gif" alt="" aria-hidden="true">
 		</div>
 	</div>
 	<div class="col col1">
@@ -18,7 +18,7 @@
 				hasRightSidebar: altContentHasRightSidebar,
 				isNarrow: isNarrow
 			}" itt-width-watch>
-				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
+				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight " alt="" aria-hidden="true">
 				<div class="clear"></div>
 				<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
@@ -43,7 +43,7 @@
 				hasRightSidebar: mainContentHasRightSidebar,
 				isNarrow: isNarrow
 			}" itt-width-watch>
-				<img src="images/aspectratiopreserver-16x9.gif " class="matchVideoHeight ">
+				<img src="images/aspectratiopreserver-16x9.gif " class="matchVideoHeight " alt="" aria-hidden="true">
 				<div class="item animate" ng-repeat="item in showCurrent ? (mainContentItems | isCurrent) : mainContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
 				<div class="clear "></div>
