@@ -22,6 +22,8 @@ angular.module('com.inthetelling.story')
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');
 
+				scope.appState = appState;
+
 				scope.setNewLanguage = function () {
 					modelSvc.setLanguageStrings();
 				};
@@ -47,7 +49,8 @@ angular.module('com.inthetelling.story')
 					}
 					var volumeNode = angular.element(evt.currentTarget);
 					var updateVolume = function (movement, noApplyNeeded) {
-						var newVolume = (movement.clientX - volumeNode.offset().left) / volumeNode.width() * 100;
+						var newVolume = (movement.clientX - volumeNode.offset()
+							.left) / volumeNode.width() * 100;
 						if (newVolume > 98) {
 							newVolume = 100;
 						}
@@ -62,12 +65,96 @@ angular.module('com.inthetelling.story')
 					};
 					updateVolume(evt, true); //mousedown
 					volumeNode.bind('mousemove.volume', updateVolume); // mousemove
-					angular.element(document).bind('mouseup.volume', function () {
-						angular.element(document).unbind('mouseup.volume');
-						volumeNode.unbind('mousemove.volume');
-					});
+					angular.element(document)
+						.bind('mouseup.volume', function () {
+							angular.element(document)
+								.unbind('mouseup.volume');
+							volumeNode.unbind('mousemove.volume');
+						});
+				};
+				var KeyCodes = {
+					PAGEUP: 33,
+					PAGEDOWN: 34,
+					END: 35,
+					HOME: 36,
+					LEFTARROW: 37,
+					UPARROW: 38,
+					RIGHTARROW: 39,
+					DOWNARROW: 40
 				};
 
+				scope.onVolumeKeyDown = function ($event) {
+					var e = $event;
+					// var $target = $(e.target);
+					// var nextTab;
+					var passThrough = true;
+					switch (e.keyCode) {
+					case KeyCodes.LEFTARROW:
+						decrementVolume(1);
+						passThrough = false;
+						break;
+					case KeyCodes.RIGHTARROW:
+						incrementVolume(1);
+						passThrough = false;
+						break;
+					case KeyCodes.UPARROW:
+						incrementVolume(1);
+						passThrough = false;
+						break;
+					case KeyCodes.DOWNARROW:
+						decrementVolume(1);
+						passThrough = false;
+						break;
+					case KeyCodes.PAGEUP:
+						incrementVolume(10);
+						passThrough = false;
+						break;
+					case KeyCodes.PAGEDOWN:
+						decrementVolume(10);
+						passThrough = false;
+						break;
+					case KeyCodes.HOME:
+						decrementVolume(100);
+						passThrough = false;
+						break;
+					case KeyCodes.END:
+						incrementVolume(100);
+						passThrough = false;
+						break;
+					default:
+						passThrough = true;
+						break;
+					}
+					if (!passThrough) {
+						console.log("stop propagation");
+						$event.stopPropagation();
+						$event.preventDefault();
+					}
+				};
+
+				function adjustHigh(volume) {
+					return volume > 98 ? 100 : volume;
+				}
+
+				function adjustLow(volume) {
+					return volume < 3 ? 0 : volume;
+				}
+
+				function incrementVolume(chunk) {
+					var volume = scope.currentVolume() + chunk;
+					volume = adjustHigh(volume);
+					if (typeof scope.setVolume === "function") {
+						scope.setVolume(volume);
+					}
+				}
+
+				function decrementVolume(chunk) {
+					var volume = scope.currentVolume() - chunk;
+					volume = adjustLow(volume);
+					if (typeof scope.setVolume === "function") {
+						scope.setVolume(volume);
+					}
+				}
 				scope.currentVolume = function () {
 					if (appState.muted) {
 						return 0;
@@ -161,9 +248,10 @@ angular.module('com.inthetelling.story')
 					timelineContainer.bind(userEventName, function () {
 						finishSeek();
 					});
-					angular.element(document).bind(userEventName, function () {
-						cancelSeek();
-					});
+					angular.element(document)
+						.bind(userEventName, function () {
+							cancelSeek();
+						});
 					seeking(evt);
 				};
 
@@ -187,7 +275,8 @@ angular.module('com.inthetelling.story')
 					// timelineNode is the full timeline, including offscreen portions if zoomed in.
 					// So this math gives how far the pointer is in the full timeline as a percentage, 
 					// multiplied by the real duration, which gives the real time.
-					scope.willSeekTo = (evt.clientX - timelineNode.offset().left) / timelineNode.width() * appState.duration;
+					scope.willSeekTo = (evt.clientX - timelineNode.offset()
+						.left) / timelineNode.width() * appState.duration;
 
 					// ios is still registering drags outside the visible boundaries of the timeline, 
 					// so need to do some sanity checking here:
@@ -210,8 +299,10 @@ angular.module('com.inthetelling.story')
 				var cancelSeek = function () {
 					// console.log("doc mouseup or touchend");
 					// kill all events on  mouse up (anywhere).
-					angular.element(document).off('mouseup.timeline');
-					angular.element(document).off('touchend.timeline');
+					angular.element(document)
+						.off('mouseup.timeline');
+					angular.element(document)
+						.off('touchend.timeline');
 					timelineContainer.off('mouseup.timeline');
 					timelineContainer.off('touchend.timeline');
 					scope.$apply(function () {

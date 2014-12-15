@@ -739,8 +739,8 @@ angular.module('com.inthetelling.story')
 				"templateUrl": "templates/scene/endingscreen.html",
 				"episode_id": episodeId,
 				"start_time": duration,
-				"end_time": duration + 0.1,
-				"title": svc.episodes[episodeId].title
+				"end_time": duration + 0.1
+
 			};
 			svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
 			svc.resolveEpisodeEvents(appState.episodeId);

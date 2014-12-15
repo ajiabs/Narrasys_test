@@ -67,6 +67,7 @@
 	height: 1em;
 	width: 100%;
 	border-radius: 0 0.5em 0.5em 0;
+	pointer-events: none;
 }
 .progressbar .played,
 .progressbar .buffered,
@@ -120,6 +121,7 @@
 	line-height: 1.4em;
 	width: 1em;
 	margin-left: -0.5em;
+	pointer-events: auto;
 }
 .progressbar .marker.mini {
 	font-size: 0.5em;
@@ -216,9 +218,8 @@
 	content: "\e60b";
 	font-family: Story;
 	font-size: 0.6em;
-	padding-left: 1em;
-	padding-top: 0.3em;
 	position: absolute;
+	top: 30%;
 }
 .button-play,
 .button-pause {
@@ -309,6 +310,13 @@
 	height: 1em;
 	background: #555 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
+.pbarBottom .screen-reader-offscreen {
+	position: absolute;
+	left: -999px;
+	width: 1px;
+	height: 1px;
+	top: auto;
+}
 .speedcontrol {
 	margin-left: 1em;
 	display: inline;
@@ -344,3 +352,4 @@
 	top: 0;
 	right: 0;
 }
+

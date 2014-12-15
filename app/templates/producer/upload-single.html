@@ -7,37 +7,24 @@
 	</div>
 </div>
 <div>
-
+	<span ng-if="appState.product == 'producer'">
+	</span>
 	<span ng-if="uploads">
-		<!-- upload in progress -->
 		<div ng-repeat="upload in uploads">
 			<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}">
 		</div>
 	</span>
-	<span ng-if="!uploads">
-
-		<span ng-if="item.asset">
-			{{item.asset.original_filename}}
-			<button ng-if="appState.product == 'sxs'" ng-click="deleteAsset(item.asset._id)">Delete</button>
-			<button ng-if="appState.product == 'producer'" ng-click="detachAsset(item.asset._id)">Detach</button>
-			<!-- TODO: producer currently doesn't allow you to delete assets, because it can't tell if the asset is already in use... -->
-		</span>
-
-		<span ng-if="!item.asset">
-
-			<span ng-if="appState.product == 'sxs'">
-				<input type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
-			</span>
-			<span ng-if="appState.product == 'producer'">
-				<button ng-if="!showUpload" ng-click="chooseAsset()">Select</button>
-				<button ng-if="!showUpload" ng-click="toggleUpload()">Upload</button>
-				<input class="uploadField" ng-if="showUpload" type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
-			</span>
-
-
-		</span>
-
-
+	<span ng-if="!uploads && item.asset">
+		{{item.asset.original_filename}}
+		<button ng-if="appState.product == 'sxs'" ng-click="deleteAsset(item.asset._id)">Delete</button>
+		<button ng-if="appState.product == 'producer'" ng-click="detachAsset(item.asset._id)">Detach</button>
 	</span>
+
+	<span ng-if="!uploads && !item.asset">
+		<button ng-if="!showUpload" ng-click="chooseAsset()">Select</button>
+		<button ng-if="!showUpload" ng-click="toggleUpload()">Upload</button>
+		<input ng-if="showUpload" type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
+	</span>
+
 
 </div>

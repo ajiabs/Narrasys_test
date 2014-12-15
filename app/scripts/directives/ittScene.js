@@ -16,6 +16,10 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element) {
 				// console.log('ittScene', scope, element, attrs);
 
+				// force discover and watch modes to not start out scrolled halfway out of view (STORY-161)
+				if (appState.viewMode !== 'review') {
+					window.scrollTo(0, 0);
+				}
 				scope.precalculateSceneValues();
 				scope.appState = appState;
 

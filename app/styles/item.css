@@ -42,6 +42,14 @@
 .item .title {
 	margin-bottom: 0.5em;
 }
+
+a.startTime.displayTime {
+
+text-decoration: none;
+color: black;
+text-shadow: none;
+}
+
 /* iframes */
 
 .iframeContainer {
@@ -59,6 +67,7 @@
 }
 .touchDevice .iframeContainer {
 	/* TODO make sure this class is being applied */
+	
 	-webkit-overflow-scrolling: touch;
 	overflow: auto;
 }

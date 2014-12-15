@@ -8,36 +8,46 @@
 	<!-- TODO: make sure user has admin role for canEditContent -->
 	<div class="toolbar">
 		<div class="modegroup buttongroup">
-			<a class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')">
-				<span>Watch</span>
-			</a>
-			<!-- producer has different controls in discover mode: -->
-			<span ng-switch="appState.product != 'producer' || appState.viewMode != 'discover' || appState.time == 0">
-				<a ng-switch-when="true" class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')">
-					<span>Discover</span>
-				</a>
-				<span ng-switch-when="false" class="producerEditLayers" ng-class="{
+			<nav role="navigation">
+				<button tabindex="0" class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')" aria-label="Watch">
+					<span>Watch</span>
+				</button>
+
+
+				<span ng-switch="appState.product != 'producer' || appState.viewMode != 'discover' || appState.time == 0">
+					<button ng-switch-when="true" tabindex="0" class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')" aria-label="Discover">
+						<span>Discover</span>
+					</button>
+					<span ng-switch-when="false" class="producerEditLayers" ng-class="{
 				bg: appState.producerEditLayer < 0,
 				fg: appState.producerEditLayer > 0
 			}">
-					<a ng-click="changeProducerEditLayer(-1)" class="button">&nbsp;&nbsp;<span>Discover</span></a>
-					<a ng-click="changeProducerEditLayer(+1)" class="button">&nbsp;&nbsp;<span>Discover</span></a>
+						<!-- HACK for now. This needs better 508 -->
+						<a ng-click="changeProducerEditLayer(-1)" class="button">&nbsp;&nbsp;
+							<span>Discover</span>
+						</a>
+						<a ng-click="changeProducerEditLayer(+1)" class="button">&nbsp;&nbsp;
+							<span>Discover</span>
+						</a>
+					</span>
+					<button tabindex="0" class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="Review">
+						<span>Review</span>
+					</button>
 				</span>
-			</span>
-			<a class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')">
-				<span>Review</span>
-			</a>
+			</nav>
 		</div>
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
+			<!-- this needs to be an <a> or it trips popup blockers. also <button> doesn't have a href -->
 			<a class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
 				<span>New window</span>
 			</a>
 		</div>
 		<div class="searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
-			<a class="button button-search" ng-click="toggleSearchPanel()">
+			<button tabindex="2" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
 				<span>Search</span>
-			</a>
-			<input id="searchtext" type="text" ng-model="searchText" />
+			</button>
+			<label for="searchtext" class="hidden">Search Text</label>
+			<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
 		</div>
 		<div class="profilegroup buttongroup" ng-if="appState.product == 'sxs'">
 			<a class="button button-profile" ng-click="appState.show.profilePanel = true">
@@ -52,16 +62,16 @@
 		showForegroundOnly: appState.producerEditLayer > 0,
 	}"></div>
 
-
-	<div class="toolbar-bottom" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()" ng-show="appState.videoControlsActive">
+	<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
 		<div class="toolbar-bottom-fill">
 			<div ng-show="show.navPanel" class="navPanel" ng-class="episode.styleCss">
+
 				<div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
 				<!-- <h2 ng-bind-html="episode.display_title"></h2> -->
 				<div class="scene" x-ng-if="scene.display_title" x-ng-repeat="scene in episode.scenes" x-ng-class="{currentScene: scene.isCurrent}" x-ng-click="seek(scene.start_time)">
 					<span class="displayTime">{{scene.displayStartTime}}</span>
 					<p>
-						<a ng-bind-html="scene.display_title"></a>
+						<button class="fakeLink" tabindex="0" ng-bind-html="scene.display_title" x-ng-class="{sceneLink: !scene.isCurrent}" ng-focus="showControls()"></button>
 						<br>
 						<span ng-bind-html="scene.display_description"></span>
 					</p>
@@ -82,10 +92,10 @@
 			<div itt-timeline></div>
 		</div>
 	</div>
-	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"></div>
+	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()"></div>
 </div>
 
-<div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()" sxs-add-content></div>
+<div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()" sxs-add-content></div>
 
 
 <div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>

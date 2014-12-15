@@ -1,4 +1,12 @@
 <div class="timeline">
+
+	<button tabindex="0" ng-focus="showControls()" class="button button-play" ng-if="appState.timelineState == 'paused'" ng-click="play()">
+		<span class="control-text">Play</span>
+	</button>
+	<button tabindex="0" ng-focus="showControls()" class="button button-pause" ng-if="appState.timelineState != 'paused'" ng-click="pause()">
+		<span class="control-text">Pause</span>
+	</button>
+
 	<div class="progressbarBox">
 		<div class="pbarTop">
 			<span ng-if="appState.product == 'producer'">
@@ -12,8 +20,23 @@
 			</span>
 		</div>
 		<div class="pbarMain">
+			<button ng-focus="showControls()" ng-class="{invisible: appState.time == 0}" class="button button-prev" ng-click="prevScene()">
+				<span class="control-text">Previous</span>
+			</button>
+			<div class="tooltip sceneMenuTooltip" ng-if="sceneMenuToolTip">
+				<span class="content">Scene-by-scene navigation</span>
+			</div>
+
+			<button ng-focus="showControls()" tabindex="0" class="button-scenemenu" ng-click="showSceneMenuTooltip(false);toggleNavPanel();" ng-mouseover="showSceneMenuTooltip(true)" ng-mouseout="showSceneMenuTooltip(false)">
+				<span class="control-text">Scenes</span>
+			</button>
+			<button ng-focus="showControls()" tabindex="0" ng-class="{invisible: appState.time >= appState.duration-0.1}" class="button button-next" ng-click="nextScene()">
+				<span class="control-text">Next</span>
+			</button>
+
+
 			<div class="progressbar">
-				<div class="mask" style="overflow:hidden;">
+				<div class="mask">
 					<div class="progressbarContainer" style="width: {{zoomLevel}}00%;">
 						<div class="buffered" ng-style="{width: appState.bufferedPercent+'%'}"></div>
 						<div class="played" ng-style="{width: markerPercent(appState.time)+'%'}"></div>
@@ -41,63 +64,41 @@
 					</div>
 				</div>
 			</div>
-			<a ng-class="{invisible: appState.time == 0}" class="button button-prev" ng-click="prevScene()">
-				<span class="control-text">Previous</span>
-			</a>
-			<div class="tooltip sceneMenuTooltip" ng-if="sceneMenuToolTip">
-				<span class="content">Scene-by-scene navigation</span>
-			</div>
-
-			<a class="button-scenemenu" ng-click="showSceneMenuTooltip(false);toggleNavPanel();" ng-mouseover="showSceneMenuTooltip(true)" ng-mouseout="showSceneMenuTooltip(false)">
-				<span class="control-text">Scenes</span>
-			</a>
-			<a ng-class="{invisible: appState.time >= appState.duration-0.1}" class="button button-next" ng-click="nextScene()">
-				<span class="control-text">Next</span>
-			</a>
 		</div>
 		<div class="pbarBottom">
 			<span class="timedisplay">
 				{{appState.time | asTime}} / {{appState.duration | asTime}}
 				<!-- playback rate not currently supported in youtube or on iOS -->
 				<span class="speedcontrol" ng-if="appState.videoType == 'video' && !(appState.isTouchDevice)">
-					<a class="button-speedcontrol" ng-click="changeSpeed(-0.25)">
-						 <div ng-class="{arrowLeft: appState.timeMultiplier > 0.5}"></div>
-					</a>
+					<button ng-focus="showControls()" class="button-speedcontrol" ng-click="changeSpeed(-0.25)">
+						<div ng-class="{arrowLeft: appState.timeMultiplier > 0.5}"></div>
+					</button>
 					<span class="speeddisplay" ng-click="resetSpeed()">{{appState.timeMultiplier}}x</span>
-					<a class="button-speedcontrol" ng-click="changeSpeed(0.25)">
+					<button ng-focus="showControls()" class="button-speedcontrol" ng-click="changeSpeed(0.25)">
 						<div ng-class="{arrowRight: appState.timeMultiplier < 2}"></div>
-					</a>
+					</button>
 				</span>
 			</span>
 			<span style="display:inline-block;height:1em;position:relative" ng-if="episode.languages.length > 1">
 				<select size="1" ng-model="appState.lang" class="languageSelector" ng-change="setNewLanguage()" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
 				</select>
 			</span>
-			<a ng-if="appState.viewMode == 'watch'" class="button button-captions" ng-click="appState.hideCaptions=!appState.hideCaptions" ng-class="{active: !appState.hideCaptions}">
+
+			<button ng-focus="showControls()" tabindex="0" ng-if="appState.viewMode == 'watch'" class="button button-captions" ng-click="appState.hideCaptions=!appState.hideCaptions" ng-class="{active: !appState.hideCaptions}">
 				<span class="control-text">Captions</span>
-			</a>
+			</button>
 
 			<!-- <a ng-if="!appState.isTouchDevice" class="button button-fullscreen" ng-class="{active: appState.isInFullscreenMode}" ng-click="toggleFullscreen()">
     <span class="control-text">Fullscreen</span>
 </a>
  -->
 			<span ng-if="!appState.isTouchDevice">
-				<a class="button button-mute {{audioIcon()}}" ng-click="toggleMute()">
+				<button ng-focus="showControls()" tabindex="0" class="button button-mute {{audioIcon()}}" ng-click="toggleMute()">
 					<span class="control-text">Mute</span>
-				</a>
-				<div class="volumebar" ng-mousedown="userChangingVolume($event)">
-					<div class="volume" ng-style="{width: currentVolume()+'%'}"></div>
-				</div>
+				</button>
+
+				<itt-volume-slider></itt-volume-slider>
 			</span>
 		</div>
 	</div>
-
-	<a class="button button-play" ng-if="appState.timelineState == 'paused'" ng-click="play()">
-		<span class="control-text">Play</span>
-	</a>
-	<a class="button button-pause" ng-if="appState.timelineState != 'paused'" ng-click="pause()">
-		<span class="control-text">Pause</span>
-	</a>
-
-
 </div>

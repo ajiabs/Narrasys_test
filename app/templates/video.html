@@ -1,5 +1,5 @@
 <div class="video">
-	<iframe id="ytplayer{{uid}}" ng-if="video.urls.youtube" ng-src="{{video.urls.youtube + '?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0'}}"></iframe>
+	<iframe tabindex="-1" id="ytplayer{{uid}}" ng-if="video.urls.youtube" ng-src="{{video.urls.youtube + '?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0'}}"></iframe>
 	<video ng-if="!video.urls.youtube">
 		<source class="mpeg4" ng-if="video.urls.mpeg4" ng-src="{{video.urls.mpeg4}}" type="video/mp4" />
 		<source class="webm" ng-if="video.urls.webm" ng-src="{{video.urls.webm}}" type="video/webm" />
