@@ -19,6 +19,9 @@ a:visited,
 .fakeLink {
 	color: #00C
 }
+a.startTime.displayTime {
+	color: #000;
+}
 /*============================
  *
  * colorInvert
@@ -29,7 +32,8 @@ a:visited,
 	color: #DDD;
 	background-color: #000;
 }
-.colorInvert a {
+.colorInvert a,
+.colorInvert a.startTime.displayTime {
 	color: #FFF
 }
 .colorInvert .pullquote:before {
