@@ -571,3 +571,10 @@ Changes in v4.1.14:
 fixes STORY-202 tab issues in search
 preload image assets during playback
 
+------------------------------------------------
+Changes in v4.1.15:
+start times need to respond to colorInvert
+fixes for 210 and 211
+adding alt tags for image content
+missed hiding aspect ratio preserver images. hiding them with empty alt (for old screen readers) and aria-hidden
+
