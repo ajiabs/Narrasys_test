@@ -39,14 +39,11 @@
 .item .title {
 	margin-bottom: 0.5em;
 }
-
 a.startTime.displayTime {
-
-text-decoration: none;
-color: black;
-text-shadow: none;
+	text-decoration: none;
+	color: black;
+	text-shadow: none;
 }
-
 /* iframes */
 
 .iframeContainer {
@@ -151,6 +148,14 @@ image-fill items */
 .fill .item.br .fillImg {
 	bottom: 0;
 }
+.fill .item.tl img,
+.fill .item.tr .fillImg {
+	top: 0;
+}
+.fill .item.bl img,
+.fill .item.tl .fillImg {
+	left: 0;
+}
 .fill .item.center .itemTemplate {
 	display: flex;
 	justify-content: center;
@@ -164,12 +169,12 @@ image-fill items */
 }
 /*============================ ============================ ============================ 
 Inline images (TODO show these only when image is larger than available space) */
-
+/*  Intent here was to eliminate the  top margin if the first item was an image -- causes more trouble than it's worth in sidebars though
 .content .item:first-child .imagePlain {
-	/* override first-child padding for plain images: */
-	
-	margin-top: -1.5em;
+	margin-top: -1.5em; 
 }
+*/
+
 .content .item .imagePlain {
 	/* and override content pane's margin always: */
 	
@@ -470,3 +475,4 @@ Inline images (TODO show these only when image is larger than available space) *
 .item .question input[type="radio"] {
 	margin-right: 0.5em;
 }
+
