@@ -1,5 +1,6 @@
-<div ng-controller="EpisodeListController" style="margin:1em" class="admin">
+<div ng-controller="EpisodeListController" class="admin">
 	<!-- TODO proper i18n -->
+	<!-- TODO set a parent class once instead of all these repeated ng-if="userHasRole('admin')" -->
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 
 	<!-- 
@@ -50,24 +51,24 @@ Not for public consumption yet
 											<a ng-href="#/assets/{{episodecontainer._id}}">[Assets]</a>
 										</small>
 									</li>
-									<li class="controls">
+									<li class="controls" ng-if="userHasRole('admin')">
 										<button ng-if="!session.addingEpisode" ng-click="session.addingEpisode = true">add episode to {{session.name.en}}</button>
 										<div ng-if="session.addingEpisode">
-											Name:
-											<input ng-model="session.newEpisodeTitle" type="text" ng-focus="">
-
+											<label>Name:
+												<input ng-model="session.newEpisodeTitle" type="text" ng-focus="">
+											</label>
 											<button ng-click="session.addingEpisode = false">Cancel</button>
 											<button ng-disabled="!session.newEpisodeTitle" ng-click="addEpisode(session)">Add</button>
 									</li>
 								</ul>
 							</li>
-							<li class="controls">
+							<li class="controls" ng-if="userHasRole('admin')">
 								<button ng-disabled="true">TODO add session to {{course.name.en}}</button>
 							</li>
 						</ul>
 						</div>
 				</li>
-				<li class="controls">
+				<li class="controls" ng-if="userHasRole('admin')">
 					<button ng-disabled="true">TODO add course to {{customer.name.en}}</button>
 				</li>
 			</ul>
@@ -78,6 +79,6 @@ Not for public consumption yet
 			</div>
 
 		</div>
-		<button ng-disabled="true">TODO add customer</button>
+		<button ng-disabled="true" ng-if="userHasRole('admin')">TODO add customer</button>
 
 		<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>

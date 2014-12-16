@@ -138,15 +138,17 @@
 										<option value="windowBg">Window background</option>
 										<option value="mainBg">Main content pane background</option>
 										<option value="altBg">Secondary content pane background</option>
+										<option value="mainFg">Main content pane foreground</option>
+										<option value="altFg">Secondary content pane foreground</option>
 										<option value="videoOverlay">Video overlay</option>
 									</select>
 									<select size="1" ng-model="itemForm.position">
 										<!-- TODO some of these are behaving oddly; naming them according to their actual behavior at the moment.  Will need to fix this -->
 										<option value="">Fit</option>
-										<option value="center">Contain</option>
+										<option value="center">Center</option>
 										<option value="cover">Cover</option>
-										<!-- <option value="contain">(Not currently working as intended)</option> -->
-										<option value="fill">Stretch</option>
+										<option value="contain">Contain</option>
+										<option value="fill">Fill and stretch</option>
 									</select>
 									<select size="1" ng-model="itemForm.pin" ng-if="itemForm.position != 'center' && itemForm.position != 'fill'">
 										<option value="tl">Top left</option>
