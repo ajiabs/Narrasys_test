@@ -626,3 +626,21 @@ fix for "defaultLanguage = false" error
 blocking nonfunctional 'logout' link
 STORY-173 fix
 
+------------------------------------------------
+Changes in v4.2.17:
+Added (temporary) login form for admins
+start times need to respond to colorInvert
+admin cosmetics
+Allow add/delete of episodes
+Prevent endless loop when attempting to play a zero-duration episode
+preload image assets
+reverting quick fade of toolbar (which broke touchscreens)
+fixing toolbar bug introduced a couple of versions ago
+use  v3 endpoint for containers
+Toolbar fades much more quickly, CBS cosmetic fix
+pip fixes
+adding middlebury 'shield'
+youtube works in Safari 8, so allow it (need to test iOS8, it may be fine too)
+added ittTabs directive
+text-transmedia template support
+
