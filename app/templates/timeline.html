@@ -67,11 +67,11 @@
 				{{appState.time | asTime}} / {{appState.duration | asTime}}
 				<!-- playback rate not currently supported in youtube or on iOS -->
 				<span class="speedcontrol" ng-if="appState.videoType == 'video' && !(appState.isTouchDevice)">
-					<button ng-focus="showControls()" class="button-speedcontrol" ng-click="changeSpeed(-0.25)">
+					<button ng-focus="showControls()" class="button-speedcontrol" ng-click="changeSpeed(-0.25)" aria-label="Slow down video">
 						 <div ng-class="{arrowLeft: appState.timeMultiplier > 0.5}"></div>
 					</button>
 					<span class="speeddisplay" ng-click="resetSpeed()">{{appState.timeMultiplier}}x</span>
-					<button ng-focus="showControls()" class="button-speedcontrol" ng-click="changeSpeed(0.25)">
+					<button ng-focus="showControls()" class="button-speedcontrol" ng-click="changeSpeed(0.25)" aria-label="Speed up video">
 						<div ng-class="{arrowRight: appState.timeMultiplier < 2}"></div>
 					</button>
 				</span>
