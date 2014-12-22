@@ -1,20 +1,19 @@
-<div style="background-color: #333; position:fixed; top:0;left:0;right:0;bottom:0; padding: 5% 30%">
-	<div style="color:#FFF; width:100%; height:100%;background: url('images/itt.svg') 50% 50% no-repeat; background-size:contain">
-		<div class="admin">
+<div class="rootLogin">
+	<div class="inner">
+		<form ng-submit="adminLogin()">
+			<h1>Administrator login</h1>
+			<label>
+				<span>Username</span>
+				<input type="text" name="auth_key" ng-model="auth_key">
+			</label>
 
-			<form ng-submit="adminLogin()">
-				<label>Username:
-					<input type="text" name="auth_key" ng-model="auth_key">
-				</label>
-				<br>
-				<label>Password:
-					<input type="password" name="password" ng-model="password">
-				</label>
-				<br>
-				<button type="submit">Log in</button>
-			</form>
-			<span ng-if="badlogin">Sorry, try again?</span>
-		</div>
+			<label>
+				<span>Password</span>
+				<input type="password" name="password" ng-model="password">
+			</label>
 
+			<input class="submit" type="submit" value="Log in">
+			<span class="error" ng-if="badlogin">Sorry, try again?</span>
+		</form>
 	</div>
 </div>

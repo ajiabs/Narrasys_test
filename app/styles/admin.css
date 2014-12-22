@@ -1,0 +1,135 @@
+.rootLogin {
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 5% 30%;
+}
+
+.rootLogin .inner {
+  color: #FFF;
+  width: 100%;
+  height: 100%;
+  background: url('/images/itt.svg') 50% 50% no-repeat;
+  background-size: contain;
+  font-size: 1em;
+}
+
+.rootLogin h1 {
+  font-size: 1em;
+}
+
+.rootLogin form {
+  background-color: #333;
+  padding-bottom: 1em
+}
+.rootLogin .error {color:#F00}
+
+.rootLogin label {
+  display: block;
+  width: 100%;
+  margin: 0.2em 0;
+}
+
+.rootLogin label span {
+  width: 30%;
+  display: inline-block;
+}
+
+.rootLogin label input {
+  width: 70%;
+  background-color: #000;
+  border: none;
+  color: #FFF;
+  font-size: 1em;
+  padding: 0.1em;
+}
+
+.rootLogin .submit {
+  float: right;
+}
+
+/* - */
+
+.admin {
+  margin: 1em;
+}
+
+.admin small {
+  opacity: 0.3;
+  float: right;
+  text-align: right;
+}
+
+.admin button {
+  background-color: #fff;
+  border: 1px solid;
+  border-color: #ccc #999 #999 #ccc;
+  border-radius: 0.3em;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 0.76em;
+  margin: 0.2em;
+  padding: 0 0.4em;
+}
+
+.admin button:disabled {
+  border-color: #EEE;
+  color: #EEE;
+}
+
+.admin li {
+  list-style: none;
+  padding: 0.1em;
+}
+
+.admin h2 {
+  width: 100%;
+  background-color: #EEE;
+  padding: 0.4em;
+}
+
+.admin .isOpen ul {
+  margin-bottom: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.admin .isOpen:before {
+  content: "-";
+  display: inline-block;
+  width: 1em;
+  opacity: 0.5;
+}
+
+.admin .isClosed:before {
+  content: "+";
+  display: inline-block;
+  width: 1em;
+  opacity: 0.5;
+}
+
+.admin li.isClosed:hover,
+.admin li.noChildren:hover {
+  background-color: #EEE;
+}
+
+.admin li.isClosed:hover small {
+  opacity: 0.8;
+}
+
+.admin .session > ul {
+  margin-left: 1em;
+}
+
+.admin .controls {
+  background-color: #FDFDFD;
+  padding: 0 1em;
+  text-align: right;
+  font-size: 0.76em;
+}
+
+.admin .controls input,
+.admin .controls button {
+  margin: 0 0.3em;
+}
