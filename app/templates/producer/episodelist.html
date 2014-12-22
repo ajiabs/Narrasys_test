@@ -1,4 +1,4 @@
-<div ng-controller="EpisodeListController" class="admin">
+<div itt-episode-list class="admin">
 	<!-- TODO proper i18n -->
 	<!-- TODO set a parent class once instead of all these repeated ng-if="userHasRole('admin')" -->
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
@@ -12,12 +12,30 @@ Not for public consumption yet
 	</div>
  -->
 
+
+	<div ng-repeat="child in root.children" itt-container="containers[child._id]" depth="0"></div>
+	OLD STUFF BELOW
+	<hr>
+	<div ng-repeat="customer in customers" class="customer">
+		<h2>
+			<a ng-click="customer.hidden = !customer.hidden">{{customer.name.en}}</a>
+		</h2>
+
+		<ul>
+			<li ng-repeat="child in customer.children" itt-container-episodes="containers[child._id]"></li>
+		</ul>
+
+
+	</div>
+
+
+	<pre>{{customers | pretty}}</pre>
+
 	<div ng-repeat="customer in containers" class="customer">
 		<h2><a ng-click="customer.hidden = !customer.hidden">{{customer.name.en}}</a>
 		</h2>
 
 		<div ng-if="!customer.hidden">
-			<!-- <h3>Courses:</h3> -->
 			<ul>
 				<li ng-repeat="course in customer.children" class="course" ng-class="{isOpen: course.visible, isClosed: !course.visible}">
 
@@ -72,13 +90,13 @@ Not for public consumption yet
 					<button ng-disabled="true">TODO add course to {{customer.name.en}}</button>
 				</li>
 			</ul>
-			<!-- end courses ng-repeat ->
-		</div>
-		<!-- end customers ng-repeat -->
-
+			<!-- end courses ng-repeat -->
 			</div>
+			<!-- end customers ng-repeat -->
 
 		</div>
-		<button ng-disabled="true" ng-if="userHasRole('admin')">TODO add customer</button>
 
-		<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>
+	</div>
+	<button ng-disabled="true" ng-if="userHasRole('admin')">TODO add customer</button>
+
+	<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>

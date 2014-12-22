@@ -40,19 +40,18 @@ angular.module('com.inthetelling.story')
 					svc.assets[item._id] = svc.deriveAsset(angular.copy(item));
 				}
 			} else if (cacheType === 'container') {
+
+				// item will have children data. deriveContainer will also create (childless) stubs
+				// for each child of this container, and replace container.children with an array of references to each stub
+
+				// parent first:
 				if (svc.containers[item._id]) {
 					angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(item)));
 				} else {
 					svc.containers[item._id] = svc.deriveContainer(angular.copy(item));
 				}
-				// This generally results in us re-deriving the same containers a few times, but that's mostly harmless.
-				// Need to do this in order for sibling containers to get into the cache.
-				// If the container tree starts to get very very large maybe revisit how we're doing this.
-				if (item.children) {
-					angular.forEach(item.children, function (child) {
-						svc.cache("container", svc.deriveContainer(angular.copy(child)));
-					});
-				}
+
+				console.log("CACHED PARENT: ", item, svc.containers[item._id]);
 			}
 		};
 
@@ -201,16 +200,39 @@ angular.module('com.inthetelling.story')
 */
 
 		svc.deriveContainer = function (container) {
-			//			console.log("deriving container", container);
-			if (container.children && container.children.length > 1) {
+
+			console.log("deriving container", container);
+
+			container.haveNotLoadedChildData = false; // not sure yet if this is necessary
+			// first sort the children:
+			if (container.children && container.children.length > 0) {
 				// When we populate sort_order, we can remove this:
 				container.children = container.children.sort(function (a, b) {
-					return (a.name.en > b.name.en) ? 1 : -1; // WARN we are assuming i18n here!
+					return (a.name.en > b.name.en) ? 1 : -1; // WARN always sorted by english
 				});
 				// This is the real one (for now sort_order always is zero, so this sort will have no effect):
 				container.children = container.children.sort(function (a, b) {
 					return a.sort_order - b.sort_order;
 				});
+
+				var childRefs = [];
+
+				angular.forEach(container.children, function (child) {
+
+					if (svc.containers[child._id]) {
+						console.log("already have ", svc.containers[child._id]);
+						childRefs.push(svc.containers[child._id]);
+
+					} else {
+						child.haveNotLoadedChildData = true; // not sure yet if this is necessary
+						svc.containers[child._id] = angular.copy(setLang(child));
+						console.log("adding", svc.containers[child._id]);
+
+					}
+
+				});
+
+				container.loadedChildData = true;
 			}
 			return setLang(container);
 		};
@@ -691,10 +713,6 @@ angular.module('com.inthetelling.story')
 			if (svc.episodes[episodeId]) {
 				if (svc.episodes[episodeId].master_asset_id) {
 					svc.episodes[episodeId].masterAsset = svc.assets[svc.episodes[episodeId].master_asset_id];
-				} else {
-					errorSvc.error({
-						data: "This episode has no master_asset_id (authoring error?)"
-					});
 				}
 			}
 		};
