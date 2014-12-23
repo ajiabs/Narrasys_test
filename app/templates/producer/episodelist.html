@@ -3,7 +3,7 @@
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 
 
-	<div class="controls">
+	<div ng-if="!loading" class="controls">
 		<label>
 			<input type="checkbox" ng-model="appState.dangerousButtons">&nbsp;Enable danger</label>
 		<div ng-if="appState.dangerousButtons" STYLE="COLOR:#C00">THERE IS NO UNDO. YOU HAVE BEEN WARNED.</div>
