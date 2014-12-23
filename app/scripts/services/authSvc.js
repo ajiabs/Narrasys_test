@@ -26,6 +26,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.adminLogin = function (authKey, password) {
+			console.log("Admin login:", authKey, password);
 			var loginDefer = $q.defer();
 			svc.logout();
 			$http({
@@ -66,7 +67,6 @@ angular.module('com.inthetelling.story')
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function () {
 			console.log("authSvc.authenticate");
-			console.log($http.defaults.headers.common.Authorization);
 			if (isAuthenticating) {
 				return authenticateDefer.promise;
 			}
@@ -146,6 +146,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getNonce = function () {
+			console.log("authSvc.getNonce");
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_nonce")
 				.success(function (data) {

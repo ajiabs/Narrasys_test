@@ -22,6 +22,10 @@ angular.module('com.inthetelling.story')
 				}
 
 				scope.appState = appState;
+				scope.loginForm = {
+					auth_key: '',
+					password: ''
+				};
 
 				scope.apiDataBaseUrl = config.apiDataBaseUrl;
 
@@ -31,8 +35,8 @@ angular.module('com.inthetelling.story')
 
 				// for admin logins only, for now. In future maybe oauth-based login will route through here too
 				scope.adminLogin = function () {
-
-					authSvc.adminLogin(scope.auth_key, scope.password).then(function () {
+					console.log(scope.loginForm.auth_key, scope.loginForm.password);
+					authSvc.adminLogin(scope.loginForm.auth_key, scope.loginForm.password).then(function () {
 						$location.path('episodes');
 					}, function () {
 						scope.badlogin = true;
