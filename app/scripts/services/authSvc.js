@@ -18,14 +18,16 @@ angular.module('com.inthetelling.story')
 
 		svc.logout = function () {
 			//
+			console.log("authSvc.logout");
 			appState.user = {};
 			delete $http.defaults.headers.common.Authorization;
-
+			localStorage.removeItem(config.localStorageKey);
+			console.log($http.defaults.headers.common);
 		};
 
 		svc.adminLogin = function (authKey, password) {
 			var loginDefer = $q.defer();
-
+			svc.logout();
 			$http({
 				method: 'POST',
 				url: config.apiDataBaseUrl + "/auth/identity/callback",
@@ -63,6 +65,8 @@ angular.module('com.inthetelling.story')
 		var isAuthenticating;
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function () {
+			console.log("authSvc.authenticate");
+			console.log($http.defaults.headers.common.Authorization);
 			if (isAuthenticating) {
 				return authenticateDefer.promise;
 			}

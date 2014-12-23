@@ -8,11 +8,9 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 	$routeProvider
 		.when('/', {
 			templateUrl: 'templates/root.html',
-			controller: 'LoginController'
 		})
 		.when('/auth', {
 			templateUrl: 'templates/root.html',
-			controller: 'LoginController'
 		})
 		.when('/episodes', {
 			title: "Available episodes",

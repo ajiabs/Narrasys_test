@@ -1,4 +1,4 @@
-<div class="rootLogin">
+<div class="rootLogin" itt-login>
 	<div class="inner">
 		<form ng-submit="adminLogin()">
 			<h1>Administrator login</h1>
@@ -15,5 +15,15 @@
 			<input class="submit" type="submit" value="Log in">
 			<span class="error" ng-if="badlogin">Sorry, try again?</span>
 		</form>
+
+		<p>
+			Or login <a href="{{apiDataBaseUrl}}/oauth2">via OAuth</a>
+		</p>
+		<hr>
+		<div ng-if="appState.user.roles">
+			You're currently logged in as '{{appState.user.roles}}'
+			<br>
+			<a ng-click="logout()">Log out</a>
+		</div>
 	</div>
 </div>

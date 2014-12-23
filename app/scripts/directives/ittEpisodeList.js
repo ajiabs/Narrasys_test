@@ -1,21 +1,25 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeList', function ($location, appState, authSvc, dataSvc, modelSvc) {
+	.directive('ittEpisodeList', function ($location, $timeout, appState, authSvc, dataSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
-			// controller: 'EpisodeListController',
 
 			link: function (scope) {
-
 				if (!authSvc.userHasRole('admin')) {
-					$location.path('/');
+					// $location.path('/');
+					console.log(appState.user, authSvc.userHasRole('admin'));
+
 				}
+
+				scope.logout = function () {
+					authSvc.logout();
+					$location.path('/');
+				};
 
 				scope.appState = appState;
 
-				console.log("ittEpisodeList");
 				scope.loading = true;
 				scope.containers = modelSvc.containers;
 
@@ -33,21 +37,3 @@ angular.module('com.inthetelling.story')
 			}
 		};
 	});
-
-/*
-				scope.getContainerData = function (container) {
-					console.log("GET CONTAINER: ", container);
-					if (container.children) {
-						container.visible = !container.visible;
-					} else {
-						dataSvc.getSingleContainer(container._id).then(function (id) {
-							container = modelSvc.containers[id];
-							container.visible = true;
-							console.log("...", container);
-						});
-					}
-				};
-			}
-		};
-	});
-*/

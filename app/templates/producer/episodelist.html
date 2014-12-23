@@ -12,4 +12,6 @@
 
 	<div ng-repeat="child in root.children" itt-container="containers[child._id]" depth="0"></div>
 
+	<div ng-if="!loading && root.children.length == 0">Looks like you have a non-admin session -- <a ng-click="logout()">try again</a>.</div>
+
 	<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>
