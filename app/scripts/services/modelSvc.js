@@ -51,7 +51,6 @@ angular.module('com.inthetelling.story')
 					svc.containers[item._id] = svc.deriveContainer(angular.copy(item));
 				}
 
-				console.log("CACHED PARENT: ", item, svc.containers[item._id]);
 			}
 		};
 
@@ -201,7 +200,7 @@ angular.module('com.inthetelling.story')
 
 		svc.deriveContainer = function (container) {
 
-			console.log("deriving container", container);
+			// console.log("deriving container", container);
 
 			container.haveNotLoadedChildData = false; // not sure yet if this is necessary
 			// first sort the children:
@@ -216,18 +215,12 @@ angular.module('com.inthetelling.story')
 				});
 
 				var childRefs = [];
-
 				angular.forEach(container.children, function (child) {
-
 					if (svc.containers[child._id]) {
-						console.log("already have ", svc.containers[child._id]);
 						childRefs.push(svc.containers[child._id]);
-
 					} else {
 						child.haveNotLoadedChildData = true; // not sure yet if this is necessary
 						svc.containers[child._id] = angular.copy(setLang(child));
-						console.log("adding", svc.containers[child._id]);
-
 					}
 
 				});

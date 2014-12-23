@@ -7,7 +7,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 .config(function ($routeProvider) {
 	$routeProvider
 		.when('/', {
-			templateUrl: 'templates/root.html'
+			templateUrl: 'templates/root.html',
+			controller: 'LoginController'
 		})
 
 	.when('/episodes', {

@@ -385,9 +385,18 @@ angular.module('com.inthetelling.story')
 
 			POST("/v3/containers", newContainer).then(function (data) {
 				console.log("CREATED CONTAINER", data);
+				modelSvc.cache("container", data);
 
-				// we seem to be switching over from parent_id to 'ancestry'. For now:
-				data.parent_id = data.ancestry.replace(/.*\//, ''); // WARN not sure if this will work for deleting root-level containers (customers).......
+				var parentId;
+				if (data.parent_id) {
+					parentId = data.parent_id;
+				} else {
+					parentId = data.ancestry.replace(/.*\//, '');
+				}
+
+				// add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
+				modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
+
 				createContainerDefer.resolve(data);
 			});
 			return createContainerDefer.promise;
@@ -398,6 +407,9 @@ angular.module('com.inthetelling.story')
 
 			// TODO  this will error out if there are assets or child containers attached to the container...
 			// definitely it will if there's a child episode. 
+
+			delete modelSvc.containers[containerId]; // WARN this assumes success......
+
 			return DELETE("/v3/containers/" + containerId);
 		};
 
@@ -405,8 +417,12 @@ angular.module('com.inthetelling.story')
 			var createEpisodeDefer = $q.defer();
 			// TODO store in API and resolve with results instead of episode
 
+			console.log("Attempting to create ", episode);
 			POST("/v3/episodes", episode).then(function (data) {
 				console.log("Created episode: ", data);
+
+				// muck around in modelSvc.containers again:
+				modelSvc.containers[data.container_id].episodes = [data._id];
 				createEpisodeDefer.resolve(data);
 			});
 			return createEpisodeDefer.promise;

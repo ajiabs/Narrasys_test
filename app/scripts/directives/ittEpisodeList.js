@@ -1,13 +1,19 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeList', function (dataSvc, modelSvc) {
+	.directive('ittEpisodeList', function ($location, appState, authSvc, dataSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
-			controller: 'EpisodeListController',
+			// controller: 'EpisodeListController',
 
 			link: function (scope) {
+
+				if (!authSvc.userHasRole('admin')) {
+					$location.path('/');
+				}
+
+				scope.appState = appState;
 
 				console.log("ittEpisodeList");
 				scope.loading = true;
