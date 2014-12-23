@@ -326,55 +326,47 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-		svc.getAllContainers = function () {
-			// This is only used by episodelist; single episodes load containers as needed
+		/*
+		Circumstances in which we need containers:
+		- start at root, climb down on demand
+		- start at episode, need all ancestors
+
+
+		loading any container should
+		- cache its own (complete) data
+		- cache its (incomplete) children
+		load all of its ancestors if not already present (datasvc will need to keep a list of container_ids it's already requested, to avoid circular refs to modelSvc)
+
+
+
+
+
+
+
+
+		*/
+
+		svc.getContainerRoot = function () {
+			// This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
 			return GET("/v3/containers", function (containers) {
 
-				/* 
-				This properly extracts that container data into the cache.  
-				TODO episodelist currently works from the raw data instead of the cache; changing that to use the cache
-				would let us get proper sorting and i18n
-				*/
-				// step through the tree customer->course->session->episode and cache each separately
+				var customerIDs = [];
 				angular.forEach(containers, function (customer) {
-					// console.log("Customer", customer.name.en, customer);
-					modelSvc.cache("container", {
-						_id: customer._id,
-						// type: "Customer",
-						name: angular.copy(customer.name)
-					});
-					angular.forEach(customer.children, function (course) {
-						// console.log("Course", course.name.en, course);
-						modelSvc.cache("container", {
-							_id: course._id,
-							parent_id: course.parent_id,
-							// type: "Course",
-							name: angular.copy(course.name)
-						});
-						angular.forEach(course.children, function (session) {
-							// console.log("Session", session, session.name.en);
-							modelSvc.cache("container", {
-								_id: session._id,
-								parent_id: session.parent_id,
-								// type: "Session",
-								name: angular.copy(session.name)
-							});
-							angular.forEach(session.children, function (episode) {
-								// console.log("Episode", episode, episode.name.en);
-								modelSvc.cache("container", {
-									_id: episode._id,
-									parent_id: episode.parent_id,
-									// type: "Episode",
-									name: angular.copy(episode.name)
-								});
-							});
-						});
-					});
+					// cache the customer data:
+					modelSvc.cache("container", customer);
+					customerIDs.push(customer._id);
 				});
-				// TODO having elaborately cached each individual container, do something useful with it (convert the IDs into cross-cache references for starters)
 
-				return containers;
+				return customerIDs;
 			});
+		};
+		svc.getSingleContainer = function (id) {
+			return GET("/v3/containers/" + id, function (containers) {
+				console.log("CHILD: ", containers);
+				modelSvc.cache("container", containers[0]);
+				return containers[0]._id;
+			});
+
 		};
 
 		svc.createContainer = function (container) {
@@ -393,9 +385,18 @@ angular.module('com.inthetelling.story')
 
 			POST("/v3/containers", newContainer).then(function (data) {
 				console.log("CREATED CONTAINER", data);
+				modelSvc.cache("container", data);
 
-				// we seem to be switching over from parent_id to 'ancestry'. For now:
-				data.parent_id = data.ancestry.replace(/.*\//, ''); // WARN not sure if this will work for deleting root-level containers (customers).......
+				var parentId;
+				if (data.parent_id) {
+					parentId = data.parent_id;
+				} else {
+					parentId = data.ancestry.replace(/.*\//, '');
+				}
+
+				// add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
+				modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
+
 				createContainerDefer.resolve(data);
 			});
 			return createContainerDefer.promise;
@@ -406,6 +407,9 @@ angular.module('com.inthetelling.story')
 
 			// TODO  this will error out if there are assets or child containers attached to the container...
 			// definitely it will if there's a child episode. 
+
+			delete modelSvc.containers[containerId]; // WARN this assumes success......
+
 			return DELETE("/v3/containers/" + containerId);
 		};
 
@@ -413,8 +417,12 @@ angular.module('com.inthetelling.story')
 			var createEpisodeDefer = $q.defer();
 			// TODO store in API and resolve with results instead of episode
 
+			console.log("Attempting to create ", episode);
 			POST("/v3/episodes", episode).then(function (data) {
 				console.log("Created episode: ", data);
+
+				// muck around in modelSvc.containers again:
+				modelSvc.containers[data.container_id].episodes = [data._id];
 				createEpisodeDefer.resolve(data);
 			});
 			return createEpisodeDefer.promise;

@@ -102,6 +102,24 @@ angular.module('com.inthetelling.story')
 			return authenticateDefer.promise;
 		};
 
+		// messy duplication of concerns with svc.authenticate here...
+		svc.isAuthenticated = function () {
+			if ($http.defaults.headers.common.Authorization) {
+				if (appState.user === {}) {
+					appState.user = svc.getStoredUserData();
+				}
+				return true;
+			}
+			var validStoredData = svc.getStoredUserData();
+
+			if (validStoredData) {
+				appState.user = validStoredData;
+				$http.defaults.headers.common.Authorization = 'Token token="' + validStoredData.access_token + '"';
+				return true;
+			}
+			return false;
+		};
+
 		svc.getStoredUserData = function () {
 			var validStoredData;
 			if (localStorage && localStorage.getItem(config.localStorageKey)) {

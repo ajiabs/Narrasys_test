@@ -1,84 +1,15 @@
-<div ng-controller="EpisodeListController" class="admin">
+<div itt-episode-list class="admin">
 	<!-- TODO proper i18n -->
-	<!-- TODO set a parent class once instead of all these repeated ng-if="userHasRole('admin')" -->
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 
-	<!-- 
-Not for public consumption yet
-	<div class="controls" ng-if="userHasRole('admin')">
+
+	<div class="controls">
 		<label>
-			<input type="checkbox" ng-model="$parent.DangerousButtons">&nbsp;Enable danger</label>
-		<div ng-if="$parent.DangerousButtons" STYLE="COLOR:#C00">THERE IS NO UNDO. YOU HAVE BEEN WARNED.</div>
+			<input type="checkbox" ng-model="appState.dangerousButtons">&nbsp;Enable danger</label>
+		<div ng-if="appState.dangerousButtons" STYLE="COLOR:#C00">THERE IS NO UNDO. YOU HAVE BEEN WARNED.</div>
 	</div>
- -->
 
-	<div ng-repeat="customer in containers" class="customer">
-		<h2><a ng-click="customer.hidden = !customer.hidden">{{customer.name.en}}</a>
-		</h2>
 
-		<div ng-if="!customer.hidden">
-			<!-- <h3>Courses:</h3> -->
-			<ul>
-				<li ng-repeat="course in customer.children" class="course" ng-class="{isOpen: course.visible, isClosed: !course.visible}">
+	<div ng-repeat="child in root.children" itt-container="containers[child._id]" depth="0"></div>
 
-					<a ng-click="course.visible =!course.visible">{{course.name.en}}</a>
-					<small ng-if="userHasRole('admin')"><a ng-href="#/assets/{{course._id}}">[Assets]</a>
-					</small>
-					<div ng-if="course.visible" style="margin-left:2em">
-						<!-- <h4>Sessions:</h4> -->
-						<ul>
-							<li ng-repeat="session in course.children" class="session" ng-class="{isOpen: session.visible, isClosed: !session.visible}">
-								<b><a ng-click="session.visible =!session.visible">{{session.name.en}}</a></b>
-								<small ng-if="userHasRole('admin')"><a ng-href="#/assets/{{session._id}}">[Assets]</a>
-								</small>
-
-								<ul ng-if="session.visible">
-									<li ng-repeat="episodecontainer in session.children" class="noChildren">
-										<span ng-if="userHasRole('admin')">
-											<a href="#/episode/{{episodecontainer.episodes[0]}}">[Player]</a>
-											<a href="#/editor/{{episodecontainer.episodes[0]}}">[Editor]</a>
-											<a href="#/producer/{{episodecontainer.episodes[0]}}">[Producer]</a>
-											<span ng-if="DangerousButtons">
-												<button ng-click="deleteEpisodeAndContainer(episodecontainer)">Delete</button>
-											</span>
-										</span>
-										<span ng-if="!userHasRole('admin')">
-											<a ng-click="loginTo(episodecontainer.episodes[0])">[Login]</a>
-										</span>
-										{{episodecontainer.name.en}}
-
-										<small ng-if="userHasRole('admin')">
-											<a ng-href="#/assets/{{episodecontainer._id}}">[Assets]</a>
-										</small>
-									</li>
-									<li class="controls" ng-if="userHasRole('admin')">
-										<button ng-if="!session.addingEpisode" ng-click="session.addingEpisode = true">add episode to {{session.name.en}}</button>
-										<div ng-if="session.addingEpisode">
-											<label>Name:
-												<input ng-model="session.newEpisodeTitle" type="text" ng-focus="">
-											</label>
-											<button ng-click="session.addingEpisode = false">Cancel</button>
-											<button ng-disabled="!session.newEpisodeTitle" ng-click="addEpisode(session)">Add</button>
-									</li>
-								</ul>
-							</li>
-							<li class="controls" ng-if="userHasRole('admin')">
-								<button ng-disabled="true">TODO add session to {{course.name.en}}</button>
-							</li>
-						</ul>
-						</div>
-				</li>
-				<li class="controls" ng-if="userHasRole('admin')">
-					<button ng-disabled="true">TODO add course to {{customer.name.en}}</button>
-				</li>
-			</ul>
-			<!-- end courses ng-repeat ->
-		</div>
-		<!-- end customers ng-repeat -->
-
-			</div>
-
-		</div>
-		<button ng-disabled="true" ng-if="userHasRole('admin')">TODO add customer</button>
-
-		<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>
+	<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>
