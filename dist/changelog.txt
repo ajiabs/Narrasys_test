@@ -655,3 +655,7 @@ Changes in v4.2.19:
 debugging login
 #217 fix: /v1/new_window now uses apiDataBaseUrl
 
+------------------------------------------------
+Changes in v4.2.20:
+login form passes username/pwd correctly now (I am stepping away from the computer after this)
+
