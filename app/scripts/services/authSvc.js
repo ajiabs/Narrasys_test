@@ -23,6 +23,42 @@ angular.module('com.inthetelling.story')
 
 		};
 
+		svc.adminLogin = function (authKey, password) {
+			var loginDefer = $q.defer();
+
+			$http({
+				method: 'POST',
+				url: config.apiDataBaseUrl + "/auth/identity/callback",
+				data: $.param({
+					"auth_key": authKey,
+					"password": password
+				}),
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				}
+			}).success(function (data) {
+
+				// TODO this overlaps with the oauth login path, and leaves some (unnecessary?) info out of localStorage which we usually get from get_nonce. Should consolidate
+				// Should consolidate these, and only localStore data we really care about anyway
+				var localStorageData = {
+					"customer": config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1],
+					"access_token": data.access_token,
+					"roles": ["admin"]
+				};
+				appState.user = localStorageData;
+				try {
+					localStorage.setItem(config.localStorageKey, JSON.stringify(localStorageData));
+				} catch (e) {}
+				$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
+
+				loginDefer.resolve(data);
+			}).error(function (data) {
+				console.log("fail", data);
+				loginDefer.reject(data);
+			});
+			return loginDefer.promise;
+		};
+
 		// This defer pattern I'm using is clumsy, there's got to be a simpler way to divert repeated calls to the original promise
 		var isAuthenticating;
 		var authenticateDefer = $q.defer();
@@ -64,6 +100,24 @@ angular.module('com.inthetelling.story')
 				}
 			}
 			return authenticateDefer.promise;
+		};
+
+		// messy duplication of concerns with svc.authenticate here...
+		svc.isAuthenticated = function () {
+			if ($http.defaults.headers.common.Authorization) {
+				if (appState.user === {}) {
+					appState.user = svc.getStoredUserData();
+				}
+				return true;
+			}
+			var validStoredData = svc.getStoredUserData();
+
+			if (validStoredData) {
+				appState.user = validStoredData;
+				$http.defaults.headers.common.Authorization = 'Token token="' + validStoredData.access_token + '"';
+				return true;
+			}
+			return false;
 		};
 
 		svc.getStoredUserData = function () {
