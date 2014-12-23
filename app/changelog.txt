@@ -644,3 +644,9 @@ youtube works in Safari 8, so allow it (need to test iOS8, it may be fine too)
 added ittTabs directive
 text-transmedia template support
 
+------------------------------------------------
+Changes in v4.2.18:
+/#/auth route (for episodes only)
+Containers working with latest api changes (Includes some workarounds for container.ancestry vs container.parent_id. )
+Admin login
+

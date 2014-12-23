@@ -4,7 +4,7 @@
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState, errorSvc) {
+	.factory('modelSvc', function ($interval, $filter, config, appState) {
 
 		var svc = {};
 
