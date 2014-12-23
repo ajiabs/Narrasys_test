@@ -650,3 +650,8 @@ Changes in v4.2.18:
 Containers working with latest api changes (Includes some workarounds for container.ancestry vs container.parent_id. )
 Admin login
 
+------------------------------------------------
+Changes in v4.2.19:
+debugging login
+#217 fix: /v1/new_window now uses apiDataBaseUrl
+
