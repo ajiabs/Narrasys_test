@@ -24,7 +24,10 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element) {
 
 
-
+				scope.save = function (distractor) {
+					console.log('SAVE');
+					console.log("saved", distractor); 
+				};
 
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
@@ -148,14 +151,6 @@ angular.module('com.inthetelling.story')
 					// BEGIN multiple choice question
 					if (scope.plugin._type === 'question') {
 						scope.plugin.selectedDistractor = undefined;
-						scope.scoreQuiz = function () {
-							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
-							scope.plugin.hasBeenAnswered = true;
-							analyticsSvc.captureEventActivity("question-answered", scope.item._id, {
-								'answer': scope.plugin.distractors[scope.plugin.selectedDistractor].text,
-								'correct': !!(scope.plugin.distractors[scope.plugin.selectedDistractor].correct)
-							});
-						};
 
 						scope.scorePoll = function () {
 							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;

@@ -7,26 +7,6 @@
 		<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
 		<div class="authorName" ng-bind-html="item.display_annotator"></div>
 	</div>
+  <itt-question choices="plugin.distractors" on-choice="save" data="plugin" qid="item._id"></itt-question>
 
-	<div class="question">
-		<!-- begin plugin.  TODO make this its own directive -->
-		<p ng-bind-html="plugin.questiontext"></p>
-
-		<div ng-repeat="distractor in plugin.distractors">
-			<label ng-class="{
-				correct: plugin.hasBeenAnswered && distractor.correct,
-				incorrect: plugin.hasBeenAnswered && !distractor.correct
-			}">
-				<input ng-change="scoreQuiz($index)" type="radio" name="fnord" ng-disabled="plugin.hasBeenAnswered" ng-model="$parent.plugin.selectedDistractor" value="{{$index}}">
-				<span ng-bind-html="distractor.text"></span>
-			</label>
-		</div>
-
-		<div ng-if="plugin.hasBeenAnswered">
-			<div ng-if="plugin.distractors[plugin.selectedDistractor].correct" ng-bind-html="plugin.correctfeedback"></div>
-			<div ng-if="!plugin.distractors[plugin.selectedDistractor].correct" ng-bind-html="plugin.incorrectfeedback"></div>
-
-		</div>
-		<!-- end plugin -->
-	</div>
 </div>

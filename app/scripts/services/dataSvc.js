@@ -475,6 +475,8 @@ angular.module('com.inthetelling.story')
 		};
 
 		var prepItemForStorage = function (evt) {
+
+			console.log("event", evt)
 			// Events, that is
 			var prepped = {};
 			if (evt._id && evt._id.match(/internal/)) {
@@ -636,6 +638,10 @@ angular.module('com.inthetelling.story')
 				"templates/scene/cornerH.html": "templates/scene-cornerH.html",
 				"templates/scene/cornerV.html": "templates/scene-cornerV.html",
 
+
+				//question
+				"templates/item/question-mc-formative.html": "templates/question-mc-formative.html",
+				"templates/item/question-mc-poll.html": "templates/question-mc-poll.html"
 			};
 			if (reverseTemplates[templateUrl]) {
 				var template = svc.readCache("template", "url", reverseTemplates[templateUrl]);
@@ -648,6 +654,7 @@ angular.module('com.inthetelling.story')
 		// careful to only use this for guaranteed unique fields (style and layout names, basically)
 		svc.readCache = function (cache, field, val) {
 			var found = false;
+			console.log(dataCache)
 			angular.forEach(dataCache[cache], function (item) {
 				if (item[field] === val) {
 					found = item;
