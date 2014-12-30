@@ -578,3 +578,9 @@ fixes for 210 and 211
 adding alt tags for image content
 missed hiding aspect ratio preserver images. hiding them with empty alt (for old screen readers) and aria-hidden
 
+------------------------------------------------
+Changes in v4.1.16:
+Fix for #259 stop events interfering with seek
+Updated how git determines the latest tag
+fixes #216. add missing labels to speed up/down and video elements
+
