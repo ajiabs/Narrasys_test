@@ -179,7 +179,7 @@ angular.module('com.inthetelling.story')
 			appState.time = t;
 			videoScope.seek(t);
 			svc.updateEventStates();
-			stepEvent();
+			stepEvent(true);
 
 			// capture analytics data:
 			if (method) {
@@ -269,7 +269,7 @@ angular.module('com.inthetelling.story')
 					// Don't let stop events stop us before we even start.
 					// (if the stop event and lastTimelineTime match, that stop event is what stopped us in the first place)
 					if (evt.action === "pause" && (ignoreStopEvents || evt.t === eventClockData.lastTimelineTime)) {
-						console.log("Skipping pause event");
+						// console.log("Skipping pause event");
 					} else {
 						handleEvent(evt);
 						if (evt.action === "pause") {
