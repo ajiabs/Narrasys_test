@@ -584,3 +584,8 @@ Fix for #259 stop events interfering with seek
 Updated how git determines the latest tag
 fixes #216. add missing labels to speed up/down and video elements
 
+------------------------------------------------
+Changes in v4.1.17:
+So it turns out that if you have a two-line bug fix, you need to commit *both* lines. 
+Updated for new web server redundancy
+
