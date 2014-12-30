@@ -224,4 +224,18 @@
 	font-family: Garamond, 'Droid Serif', serif;
 	font-size: 110%;
 }
+.episode-prolotherapy {
+	font-family: 'Open Sans', sans-serif;
+}
+.episode-prolotherapy .colorInvert {
+	background-color: #3f58a7;
+	color: #FFF;
+}
+.episode-prolotherapy .colorInvert .colorInvert {
+	background-color: #FFF;
+	color: #3f58a7;
+}
+.episode-prolotherapy .content.allowHighlights .highlightSolid.item.isCurrent {
+	background-color: rgba(63, 88, 167, 0.2);
+}
 
