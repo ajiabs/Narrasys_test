@@ -589,3 +589,7 @@ Changes in v4.1.17:
 So it turns out that if you have a two-line bug fix, you need to commit *both* lines. 
 Updated for new web server redundancy
 
+------------------------------------------------
+Changes in v4.1.18:
+Prolotherapy episode template
+
