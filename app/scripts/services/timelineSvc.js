@@ -288,7 +288,7 @@ angular.module('com.inthetelling.story')
 			resetEventClock();
 		};
 
-		var stepEvent = function () {
+		var stepEvent = function (ignoreStopEvents) {
 			$timeout.cancel(eventTimeout);
 			if (appState.timelineState !== 'playing') {
 				return;
@@ -309,8 +309,8 @@ angular.module('com.inthetelling.story')
 					}
 					// Don't let stop events stop us before we even start.
 					// (if the stop event and lastTimelineTime match, that stop event is what stopped us in the first place)
-					if (evt.action === "pause" && evt.t === eventClockData.lastTimelineTime) {
-						// console.log("Skipping pause event");
+					if (evt.action === "pause" && (ignoreStopEvents || evt.t === eventClockData.lastTimelineTime)) {
+						console.log("Skipping pause event");
 					} else {
 						handleEvent(evt);
 						if (evt.action === "pause") {
