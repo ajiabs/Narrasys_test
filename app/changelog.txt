@@ -668,3 +668,7 @@ Prolotherapy episode template
 last commit only contained half of the fix, oops
 Fix for stop events interfering with seek
 
+------------------------------------------------
+Changes in v4.2.22:
+
+
