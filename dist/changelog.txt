@@ -659,3 +659,12 @@ debugging login
 Changes in v4.2.20:
 login form passes username/pwd correctly now (I am stepping away from the computer after this)
 
+------------------------------------------------
+Changes in v4.2.21:
+sxsHandle wasn't responding to mouse clicks (is pointer-events:none needed on progressbarContainer?)
+episode language no longer inits to false on route changes
+Possible fix for TS-220
+Prolotherapy episode template
+last commit only contained half of the fix, oops
+Fix for stop events interfering with seek
+
