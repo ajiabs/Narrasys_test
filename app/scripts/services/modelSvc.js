@@ -122,10 +122,6 @@ angular.module('com.inthetelling.story')
 				if (lang.default) {
 					// console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
 					episode.defaultLanguage = lang.code;
-					if (!appState.lang) {
-						appState.lang = lang.code;
-						// console.log("Setting appState:", appState.lang);
-					}
 				}
 			});
 			if (episode.defaultLanguage === false) {

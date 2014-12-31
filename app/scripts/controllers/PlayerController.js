@@ -58,11 +58,6 @@ angular.module('com.inthetelling.story')
 		// console.log("playerController init");
 		appState.init();
 
-		// this must be after appState.init:
-		if ($routeParams.lang) {
-			appState.lang = $routeParams.lang.toLowerCase();
-		}
-
 		errorSvc.init();
 		appState.episodeId = $routeParams.epId;
 		modelSvc.addLandingScreen(appState.episodeId);
@@ -75,23 +70,24 @@ angular.module('com.inthetelling.story')
 			return modelSvc.episodes[appState.episodeId].display_title;
 		}, function (a) {
 			if (a) {
-				if (typeof (a) === "string") {
-					document.title = "STORY: " + a;
-				} else {
-					document.title = "STORY: " + a.en; // HACK TODO make this respond to i18n properly
-				}
+				document.title = "STORY: " + a;
 				episodeWatcher(); // stop watching;
 			}
 		});
 
-		// Watch for the first load of the episode items; update the timeline when found
+		// Watch for the first load of the episode items; update the timeline and current language when found
 		$scope.loading = true;
 		var eventsWatcher = $scope.$watch(function () {
 			return modelSvc.episodes[appState.episodeId].items;
 		}, function (a) {
 			if (a) {
+
 				modelSvc.addEndingScreen(appState.episodeId);
 				timelineSvc.init(appState.episodeId);
+
+				appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
+				modelSvc.setLanguageStrings();
+
 				$scope.loading = false;
 				eventsWatcher(); // stop watching
 			}
