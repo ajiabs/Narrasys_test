@@ -99,9 +99,7 @@ angular.module('com.inthetelling.story')
 
 			videoScope.play().then(function () {
 				appState.timelineState = "playing";
-				_tick();
-				$interval.cancel(clock); // safety belt, in case we're out of synch
-				clock = $interval(_tick, 20);
+				startTimelineClock();
 				startEventClock();
 				if (!nocapture) {
 					analyticsSvc.captureEpisodeActivity("play");
@@ -320,6 +318,12 @@ angular.module('com.inthetelling.story')
 
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
 		var lastTick;
+		var startTimelineClock = function () {
+			lastTick = undefined;
+			$interval.cancel(clock); // safety belt, in case we're out of synch
+			clock = $interval(_tick, 20);
+		};
+
 		var _tick = function () {
 			var thisTick = new Date();
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
