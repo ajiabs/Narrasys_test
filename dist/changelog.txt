@@ -593,3 +593,7 @@ Updated for new web server redundancy
 Changes in v4.1.18:
 Prolotherapy episode template
 
+------------------------------------------------
+Changes in v4.1.19:
+Possible fix for TS-220
+
