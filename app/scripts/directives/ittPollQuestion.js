@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittPollQuestion', function (analyticsSvc, _) {
+	.directive('ittPollQuestion', function (questionAnswersSvc, analyticsSvc, appState, _) {
 		return {
 			restrict: 'E',
 			//require: "ngModel",
@@ -16,56 +16,59 @@ angular.module('com.inthetelling.story')
 			},
 			templateUrl: "templates/item/poll-question.html",
 			link: function (scope, element, attrs) {
-
+				//TODO: check if already answered?
+				//
+				//TODO: add labels to pie chart
+				//
 				//console.log(scope.onChoice);
+				//
+				//
+
+				scope.chartType = "pie";
+				scope.chartOptions = {
+					pie: {
+						show: true
+					},
+					yaxis: {
+						showLabels: false
+					},
+					xaxis: {
+						showLabels: false
+					},
+					grid: {
+						horizontalLines: false,
+						verticalLines: false
+					}
+				};
+				if (scope.plugin.hasBeenAnswered === true) {
+
+							var grouped = scope.plugin.answer_counts;
+							var chartData = questionAnswersSvc.calculatePercentages(grouped);
+							scope.chartData = chartData;
+	
+				}
+
+
 				scope.scorePoll = function (i) {
-					console.log('text', scope.plugin.distractors[i].text);
-					console.log("answerrr", i);
-					//	ngModel.$setViewValue(ngModel.$viewValue);
-					//	scope.$apply();
-					console.log("qid:", scope.qid);
-					scope.plugin.distractors[i].selected = true;
-					scope.plugin.hasBeenAnswered = true;
-					scope.plugin.selectedDistractor = i;
-					analyticsSvc.captureEventActivity("question-answered", scope.qid, {
+
+
+					questionAnswersSvc.saveAnswer("question-answered", scope.qid, {
 							'answer': scope.plugin.distractors[i].text,
 							'correct': !!(scope.plugin.distractors[i].correct)
 						})
-						//	.then(function (data) {
-					analyticsSvc.readEventActivity(scope.qid)
 						.then(function (data) {
-							console.log(data);
-							var grouped;
-							grouped = _.countBy(data, function (data) {
-								return data.data.answer;
-							});
-							console.log("grouped", grouped);
-							var totalAnswers = 0;
-							for (var answertext in grouped) {
-								if (grouped.hasOwnProperty(answertext)) {
-									console.log(answertext);
-									totalAnswers += grouped[answertext];
-								}
-							}
-							var chartData = [];
-							var i = 0;
-							for (var answertext in grouped) {
-								if (grouped.hasOwnProperty(answertext)) {
-									chartData.push({
-										data: [
-											[i, ((grouped[answertext] / totalAnswers) * 100)]
-										]
-									});
-
-								}
-								i++;
-							}
-							console.log("chartData", chartData);
+							//		questionAnswersSvc.getAnswers(scope.qid)
+							//		.then(function (data) {
+							//var grouped = questionAnswersSvc.calculateCounts(data);
+							questionAnswersSvc.incrementAnswerCount(scope.plugin.answer_counts, scope.plugin.distractors[i].text);
+							var grouped = scope.plugin.answer_counts;
+							var chartData = questionAnswersSvc.calculatePercentages(grouped);
 							scope.chartData = chartData;
-							scope.chartType = "pie";
-							scope.chartOptions = {};
+							scope.plugin.distractors[i].selected = true;
+							scope.plugin.hasBeenAnswered = true;
+							scope.plugin.selectedDistractor = i;
+							//});
 						});
-					//	});
 
 				};
 

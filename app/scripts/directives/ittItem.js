@@ -150,8 +150,12 @@ angular.module('com.inthetelling.story')
 
 					// BEGIN multiple choice question
 					if (scope.plugin._type === 'question') {
-						scope.plugin.selectedDistractor = undefined;
-
+						console.log("QUESTION type ---------------");
+						
+					console.log("ITEM DATA:", scope.plugin);
+						
+						//scope.plugin.selectedDistractor = undefined;
+						
 						scope.scorePoll = function () {
 							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
 							scope.plugin.hasBeenAnswered = true;

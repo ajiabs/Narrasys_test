@@ -10,7 +10,7 @@
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, modelSvc, errorSvc, mockSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, userSvc, questionAnswersSvc, modelSvc, errorSvc, mockSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -59,21 +59,22 @@ angular.module('com.inthetelling.story')
 			} else {
 				gettingCommon = true;
 				$q.all([
-					$http.get(config.apiDataBaseUrl + '/v1/templates'),
-					$http.get(config.apiDataBaseUrl + '/v1/layouts'),
-					$http.get(config.apiDataBaseUrl + '/v1/styles')
-				]).then(function (responses) {
-					svc.cache("templates", responses[0].data);
-					svc.cache("layouts", responses[1].data);
-					svc.cache("styles", responses[2].data);
+						$http.get(config.apiDataBaseUrl + '/v1/templates'),
+						$http.get(config.apiDataBaseUrl + '/v1/layouts'),
+						$http.get(config.apiDataBaseUrl + '/v1/styles')
+					])
+					.then(function (responses) {
+						svc.cache("templates", responses[0].data);
+						svc.cache("layouts", responses[1].data);
+						svc.cache("styles", responses[2].data);
 
-					gettingCommon = true;
-					getCommonDefer.resolve();
-				}, function () {
-					// console.error("getCommon failed", failure);
-					gettingCommon = false;
-					getCommonDefer.reject();
-				});
+						gettingCommon = true;
+						getCommonDefer.resolve();
+					}, function () {
+						// console.error("getCommon failed", failure);
+						gettingCommon = false;
+						getCommonDefer.reject();
+					});
 			}
 			return getCommonDefer.promise;
 		};
@@ -211,12 +212,58 @@ angular.module('com.inthetelling.story')
 		var getEpisodeEvents = function (epId) {
 			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId + "/events")
 				.success(function (events) {
+
+					getEventActivityDataForUser(events, "Plugin", epId);
+
 					angular.forEach(events, function (eventData) {
 						modelSvc.cache("event", svc.resolveIDs(eventData));
 					});
 					// Tell modelSvc it can build episode->scene->item child arrays
 					modelSvc.resolveEpisodeEvents(epId);
 				});
+		};
+
+
+		var getEventActivityDataForUser = function (events, activityType, epId) {
+
+			userSvc.getCurrentUser()
+				.then(function (userData) {
+					angular.forEach(events, function (eventData) {
+
+						if (eventData.type === "Plugin") {
+							questionAnswersSvc.getUserAnswer(eventData._id, userData._id)
+								.then(function (userAnswer) {
+									//FAKE this for now, while waiting on api change to add this to event data
+									//questionAnswersSvc.getAnswers(eventData._id)
+									//	.then(function (events) {
+									//		var counts = questionAnswersSvc.calculateCounts(events);
+									//			eventData.data._plugin.answer_counts = counts;
+									eventData.data._plugin.hasBeenAnswered = true;
+									//update the cache w/ the user's answer...
+									var i = 0;
+									var angularContinue = true;
+									angular.forEach(eventData.data._plugin.distractors, function (distractor) {
+										if (angularContinue) {
+											if (distractor.text === userAnswer.data.answer) {
+												distractor.selected = true;
+												eventData.data._plugin.selectedDistractor = i;
+												angularContinue = false;												
+											}
+										i++;
+										}
+									});
+
+
+									modelSvc.cache("event", svc.resolveIDs(eventData));
+
+									//	});
+								});
+						}
+
+					});
+					modelSvc.resolveEpisodeEvents(epId);
+				});
+
 		};
 
 		svc.getContainer = function (containerId, episodeId) {
@@ -291,38 +338,41 @@ angular.module('com.inthetelling.story')
 		var PUT = function (path, putData) {
 			var defer = $q.defer();
 			$http({
-				method: 'PUT',
-				url: config.apiDataBaseUrl + path,
-				data: putData
-			}).success(function (data) {
-				// console.log("Updated event:", data);
-				return defer.resolve(data);
-			});
+					method: 'PUT',
+					url: config.apiDataBaseUrl + path,
+					data: putData
+				})
+				.success(function (data) {
+					// console.log("Updated event:", data);
+					return defer.resolve(data);
+				});
 			return defer.promise;
 		};
 
 		var POST = function (path, postData) {
 			var defer = $q.defer();
 			$http({
-				method: 'POST',
-				url: config.apiDataBaseUrl + path,
-				data: postData
-			}).success(function (data) {
-				// console.log("Updated event:", data);
-				return defer.resolve(data);
-			});
+					method: 'POST',
+					url: config.apiDataBaseUrl + path,
+					data: postData
+				})
+				.success(function (data) {
+					// console.log("Updated event:", data);
+					return defer.resolve(data);
+				});
 			return defer.promise;
 		};
 
 		var DELETE = function (path) {
 			var defer = $q.defer();
 			$http({
-				method: 'DELETE',
-				url: config.apiDataBaseUrl + path,
-			}).success(function (data) {
-				// console.log("Deleted:", data);
-				return defer.resolve(data);
-			});
+					method: 'DELETE',
+					url: config.apiDataBaseUrl + path,
+				})
+				.success(function (data) {
+					// console.log("Deleted:", data);
+					return defer.resolve(data);
+				});
 			return defer.promise;
 		};
 
@@ -391,13 +441,14 @@ angular.module('com.inthetelling.story')
 			};
 			// store in API and resolve with results instead of container
 
-			POST("/v3/containers", newContainer).then(function (data) {
-				console.log("CREATED CONTAINER", data);
+			POST("/v3/containers", newContainer)
+				.then(function (data) {
+					console.log("CREATED CONTAINER", data);
 
-				// we seem to be switching over from parent_id to 'ancestry'. For now:
-				data.parent_id = data.ancestry.replace(/.*\//, ''); // WARN not sure if this will work for deleting root-level containers (customers).......
-				createContainerDefer.resolve(data);
-			});
+					// we seem to be switching over from parent_id to 'ancestry'. For now:
+					data.parent_id = data.ancestry.replace(/.*\//, ''); // WARN not sure if this will work for deleting root-level containers (customers).......
+					createContainerDefer.resolve(data);
+				});
 			return createContainerDefer.promise;
 		};
 
@@ -413,10 +464,11 @@ angular.module('com.inthetelling.story')
 			var createEpisodeDefer = $q.defer();
 			// TODO store in API and resolve with results instead of episode
 
-			POST("/v3/episodes", episode).then(function (data) {
-				console.log("Created episode: ", data);
-				createEpisodeDefer.resolve(data);
-			});
+			POST("/v3/episodes", episode)
+				.then(function (data) {
+					console.log("Created episode: ", data);
+					createEpisodeDefer.resolve(data);
+				});
 			return createEpisodeDefer.promise;
 		};
 
@@ -427,23 +479,25 @@ angular.module('com.inthetelling.story')
 			// probably first need to remove events etc if there are any
 			var deleteEpisodeDefer = $q.defer();
 			// delete episode_user_metrics
-			GET("/v2/episodes/" + episodeId + "/episode_user_metrics").then(function (metrics) {
-				console.log("GOT METRICS: ", metrics);
-				if (metrics.length) {
-					var deleteMetricsActions = [];
+			GET("/v2/episodes/" + episodeId + "/episode_user_metrics")
+				.then(function (metrics) {
+					console.log("GOT METRICS: ", metrics);
+					if (metrics.length) {
+						var deleteMetricsActions = [];
 
-					for (var i = 0; i < metrics.length; i++) {
-						deleteMetricsActions.push(DELETE("/v2/episode_user_metrics/" + metrics[i]._id));
-					}
-					$q.all(deleteMetricsActions).then(function () {
+						for (var i = 0; i < metrics.length; i++) {
+							deleteMetricsActions.push(DELETE("/v2/episode_user_metrics/" + metrics[i]._id));
+						}
+						$q.all(deleteMetricsActions)
+							.then(function () {
+								DELETE("/v3/episodes/" + episodeId);
+								deleteEpisodeDefer.resolve();
+							});
+					} else {
 						DELETE("/v3/episodes/" + episodeId);
 						deleteEpisodeDefer.resolve();
-					});
-				} else {
-					DELETE("/v3/episodes/" + episodeId);
-					deleteEpisodeDefer.resolve();
-				}
-			});
+					}
+				});
 			return deleteEpisodeDefer.promise;
 		};
 
@@ -477,7 +531,7 @@ angular.module('com.inthetelling.story')
 		var prepItemForStorage = function (evt) {
 
 			console.log("event", evt)
-			// Events, that is
+				// Events, that is
 			var prepped = {};
 			if (evt._id && evt._id.match(/internal/)) {
 				delete evt._id;

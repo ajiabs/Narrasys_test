@@ -79,20 +79,29 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+
+		svc.captureEventActivityWithPromise = function (name, eventID, data) {
+			//we know this is syncronous
+			svc.captureEventActivity(name, eventID, data);
+			return svc.flushActivityQueue() //this is async, and returns a promise.	
+		};
+
 		// read from API:
 		svc.readEpisodeActivity = function (epId) {
 			// console.log("analyticsSvc readEpisodeActivity");
 			var defer = $q.defer();
 			$http({
-				method: 'GET',
-				url: config.apiDataBaseUrl + '/v2/episodes/' + epId + '/episode_user_metrics'
-			}).success(function (respData) {
-				// console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
-				defer.resolve(respData);
-			}).error(function () {
-				// console.log("read episode activity ERROR", respData, respStatus, respHeaders);
-				defer.reject();
-			});
+					method: 'GET',
+					url: config.apiDataBaseUrl + '/v2/episodes/' + epId + '/episode_user_metrics'
+				})
+				.success(function (respData) {
+					// console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
+					defer.resolve(respData);
+				})
+				.error(function () {
+					// console.log("read episode activity ERROR", respData, respStatus, respHeaders);
+					defer.reject();
+				});
 			return defer.promise;
 		};
 
@@ -102,27 +111,29 @@ angular.module('com.inthetelling.story')
 			// console.log("analyticsSvc.readEventActivity", "eventId", "activityType");
 			var defer = $q.defer();
 			$http({
-				method: 'GET',
-				url: config.apiDataBaseUrl + '/v2/events/' + eventId + '/event_user_actions'
-			}).success(function (respData) {
-				// console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
-				if (activityType) {
-					var matchedType = false;
-					for (var i = 0; i < respData.length; i++) {
-						var activity = respData[i];
-						if (activity.name === activityType) {
-							matchedType = true;
+					method: 'GET',
+					url: config.apiDataBaseUrl + '/v2/events/' + eventId + '/event_user_actions'
+				})
+				.success(function (respData) {
+					// console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
+					if (activityType) {
+						var matchedType = false;
+						for (var i = 0; i < respData.length; i++) {
+							var activity = respData[i];
+							if (activity.name === activityType) {
+								matchedType = true;
+							}
 						}
+						defer.resolve(matchedType);
+					} else {
+						// no activityType specified so return everything:
+						defer.resolve(respData);
 					}
-					defer.resolve(matchedType);
-				} else {
-					// no activityType specified so return everything:
-					defer.resolve(respData);
-				}
-			}).error(function () {
-				// console.log("read event activity ERROR", respData, respStatus, respHeaders);
-				defer.reject();
-			});
+				})
+				.error(function () {
+					// console.log("read event activity ERROR", respData, respStatus, respHeaders);
+					defer.reject();
+				});
 			return defer.promise;
 		};
 
@@ -153,13 +164,13 @@ angular.module('com.inthetelling.story')
 			if (eventUserActions.length > 0) {
 				// console.log("Event actions to log:", eventUserActions);
 				// /v2/episodes/<episode id>/event_user_actions
-				post("event_user_actions", {
+				return post("event_user_actions", {
 					"event_user_actions": eventUserActions
 				});
 			}
 			if (episodeUserMetrics.length > 0) {
 				// console.log("Episode metrics to log:", episodeUserMetrics);
-				post("episode_user_metrics", {
+				return post("episode_user_metrics", {
 					"episode_user_metrics": episodeUserMetrics
 				});
 			}
@@ -191,11 +202,20 @@ angular.module('com.inthetelling.story')
 
 		// This is not a general-purpose function, it's only for the analytics endpoints
 		var post = function (endpoint, endpointData) {
+
+			var defer = $q.defer();
 			$http({
-				method: 'POST',
-				url: config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + endpoint,
-				data: endpointData
-			});
+					method: 'POST',
+					url: config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + endpoint,
+					data: endpointData
+				})
+				.success(function (respData) {
+					defer.resolve(respData);
+				})
+				.error(function () {
+					defer.reject();
+				});
+			return defer.promise;
 		};
 
 		return svc;
