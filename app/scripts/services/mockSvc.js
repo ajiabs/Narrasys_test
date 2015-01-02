@@ -143,7 +143,7 @@ angular.module('com.inthetelling.story')
 				transcript.start_time = (i * 5);
 				transcript.end_time = (i * 5 + 5);
 				transcript.layouts = [testLayouts[i % testLayouts.length]];
-				modelSvc.cache("event", transcript);
+				//				modelSvc.cache("event", transcript);
 			}
 			for (i = 0; i < 10; i++) {
 				var annotation = angular.copy(annotationStub);
@@ -235,6 +235,92 @@ angular.module('com.inthetelling.story')
 				// 	link.templateUrl = "templates/transmedia-link-frameicide.html";
 				// }
 				modelSvc.cache("event", link);
+			}
+
+
+			var questionFormativeStub = {
+				"_id": "",
+				"_type": "Plugin",
+				"type": "Plugin",
+				"producerItemType": "question",
+				"episode_id": epId,
+				"templateUrl": "templates/item/question-mc-formative.html",
+				"style_id": [],
+				"layout_id": [],
+				"data": {
+					"_id": "",
+					"_pluginType": "question",
+					"_version": 1,
+					"_plugin": {
+						"questiontext": "Some question text?",
+						"questiontype": "mc-formative",
+						"distractors": [{
+							"text": "a"
+						}, {
+							"text": "b"
+						}, {
+							"text": "c",
+							"correct": true
+						}, {
+							"text": ""
+						}],
+						"correctfeedback": "Great!",
+						"incorrectfeedback": "Doh!",
+						"_type": "question"
+					}
+				}
+			};
+
+			for (i = 0; i < 10; i++) {
+				var question = angular.copy(questionFormativeStub);
+				question._id = "question-" + i;
+				question.required = (Math.random() > 0.5);
+				question.start_time = i * 5;
+				question.end_time = i * 5 + 5;
+
+				question.layouts = [testLayouts[i % testLayouts.length]];
+				modelSvc.cache("event", question);
+			}
+
+			var questionPollStub = {
+				"_id": "",
+				"_type": "Plugin",
+				"type": "Plugin",
+				"producerItemType": "question",
+				"episode_id": epId,
+				"templateUrl": "templates/item/question-mc-poll.html",
+				"style_id": [],
+				"layout_id": [],
+				"data": {
+					"_id": "",
+					"_pluginType": "question",
+					"_version": 1,
+					"_plugin": {
+						"questiontext": "Some question text?",
+						"questiontype": "mc-poll",
+						"distractors": [{
+							"text": "a"
+						}, {
+							"text": "b"
+						}, {
+							"text": "c"
+						}, {
+							"text": ""
+						}],
+						"_type": "question"
+					}
+				}
+			};
+
+			for (i = 0; i < 10; i++) {
+				var question = angular.copy(questionPollStub);
+				question._id = "question-" + i;
+				question.required = (Math.random() > 0.5);
+				question.start_time = i * 6;
+				question.end_time = i * 6 + 6;
+
+				question.layouts = [testLayouts[i % testLayouts.length]];
+				modelSvc.cache("event", question);
 			}
 
 			var uploadStub = {

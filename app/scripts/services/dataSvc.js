@@ -211,12 +211,47 @@ angular.module('com.inthetelling.story')
 		var getEpisodeEvents = function (epId) {
 			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId + "/events")
 				.success(function (events) {
+
+					getEventActivityDataForUser(events, "Plugin", epId);
+
 					angular.forEach(events, function (eventData) {
 						modelSvc.cache("event", svc.resolveIDs(eventData));
 					});
 					// Tell modelSvc it can build episode->scene->item child arrays
 					modelSvc.resolveEpisodeEvents(epId);
 				});
+		};
+
+
+		var getEventActivityDataForUser = function (events, activityType, epId) {
+			userSvc.getCurrentUser()
+				.then(function (userData) {
+					angular.forEach(events, function (eventData) {
+
+						if (eventData.type === "Plugin") {
+							questionAnswersSvc.getUserAnswer(eventData._id, userData._id)
+								.then(function (userAnswer) {
+									eventData.data._plugin.hasBeenAnswered = true;
+									var i = 0;
+									var angularContinue = true;
+									angular.forEach(eventData.data._plugin.distractors, function (distractor) {
+										if (angularContinue) {
+											if (distractor.text === userAnswer.data.answer) {
+												distractor.selected = true;
+												eventData.data._plugin.selectedDistractor = i;
+												angularContinue = false;												
+											}
+										i++;
+										}
+									});
+									modelSvc.cache("event", svc.resolveIDs(eventData));
+								});
+						}
+
+					});
+					modelSvc.resolveEpisodeEvents(epId);
+				});
+
 		};
 
 		svc.getContainer = function (containerId, episodeId) {
@@ -356,6 +391,7 @@ angular.module('com.inthetelling.story')
 					modelSvc.cache("container", customer);
 					customerIDs.push(customer._id);
 				});
+				// TODO having elaborately cached each individual container, do something useful with it (convert the IDs into cross-cache references for starters)
 
 				return customerIDs;
 			});
@@ -644,6 +680,10 @@ angular.module('com.inthetelling.story')
 				"templates/scene/cornerH.html": "templates/scene-cornerH.html",
 				"templates/scene/cornerV.html": "templates/scene-cornerV.html",
 
+
+				//question
+				"templates/item/question-mc-formative.html": "templates/question-mc-formative.html",
+				"templates/item/question-mc-poll.html": "templates/question-mc-poll.html"
 			};
 			if (reverseTemplates[templateUrl]) {
 				var template = svc.readCache("template", "url", reverseTemplates[templateUrl]);

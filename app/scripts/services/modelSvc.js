@@ -102,7 +102,11 @@ angular.module('com.inthetelling.story')
 
 			// (from old sxs demo; can delete later)
 			"templates/upload-demo-inline.html": "templates/item/debug.html",
-			"templates/upload-demo.html": "templates/item/debug.html"
+			"templates/upload-demo.html": "templates/item/debug.html",
+
+			//questions
+			"templates/question-mc-formative.html": "templates/item/question-mc-formative.html",
+			"templates/question-mc-poll.html": "templates/item/question-mc-poll.html"
 		};
 
 		// svc.deriveFoo() are for efficiency precalculations. 
@@ -613,6 +617,7 @@ angular.module('com.inthetelling.story')
 			});
 			return ret;
 		};
+
 
 		svc.scene = function (sceneId) {
 			// console.log("modelsvc.scene: ", sceneId);

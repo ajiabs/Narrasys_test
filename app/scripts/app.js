@@ -1,7 +1,11 @@
 'use strict';
 
+var underscore = angular.module('underscore', []);
+underscore.factory('_', function() {
+  return window._; // assumes underscore has already been loaded on the page
+});
 // Declare the top level application module and its dependencies
-angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
+angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'underscore'])
 
 // Configure routing
 .config(function ($routeProvider) {

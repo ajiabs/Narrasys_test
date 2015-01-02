@@ -50,12 +50,15 @@ TODO hide these when not in use?
 	</div>
 
 	<script src="config.js"></script>
+
+	<script src="bower_components/flotr2/flotr2.min.js"></script>
 	<!-- CDN links-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-animate.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-sanitize.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
 	<!-- end CDN -->
 	<!-- build:js({.tmp,app}) scripts/vendor-combined.min.js -->
 	<script src="scripts/plugin/newrelic.js"></script>
@@ -63,7 +66,6 @@ TODO hide these when not in use?
 	<!-- build:js({.tmp,app}) scripts/app-combined.min.js -->
 	<script src="scripts/app.js"></script>
 	<script src="scripts/templates.js"></script>
-
 	<script src="scripts/services/config.js"></script>
 	<script src="scripts/services/appState.js"></script>
 	<script src="scripts/services/authSvc.js"></script>
@@ -73,6 +75,8 @@ TODO hide these when not in use?
 	<script src="scripts/services/modelSvc.js"></script>
 	<script src="scripts/services/timelineSvc.js"></script>
 	<script src="scripts/services/analyticsSvc.js"></script>
+	<script src="scripts/services/questionAnswersSvc.js"></script>
+	<script src="scripts/services/userSvc.js"></script>
 	<script src="scripts/services/recursionHelper.js"></script>
 	<script src="scripts/services/mockSvc.js"></script>
 
@@ -93,6 +97,13 @@ TODO hide these when not in use?
 
 	<script src="scripts/directives/ittLogin.js"></script>
 	<script src="scripts/directives/autofocus.js"></script>
+	
+	<script src="scripts/directives/ittMcFormativeQuestion.js"></script>
+	<script src="scripts/directives/ittMcPollQuestion.js"></script>
+	<script src="scripts/directives/ittFlotr2Chart.js"></script>
+
+	
+
 	<script src="scripts/directives/ittTimeline.js"></script>
 	<script src="scripts/directives/ittEpisode.js"></script>
 	<script src="scripts/directives/ittScene.js"></script>

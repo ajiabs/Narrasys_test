@@ -336,7 +336,7 @@ angular.module('com.inthetelling.story')
 
 		// "event" here refers to a timelineEvents event, not the modelSvc.event:
 		var handleEvent = function (event) {
-			// console.log("handle event: ", event);
+			//console.log("handle event: ", event);
 			if (event.id === 'timeline') {
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {

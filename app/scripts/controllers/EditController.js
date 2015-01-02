@@ -50,6 +50,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.saveEvent = function () {
 			var toSave = angular.copy(appState.editEvent);
+			console.log("toSave", toSave);
 			dataSvc.storeItem(toSave).then(function (data) {
 				if (appState.editEvent._id === 'internal:editing') {
 					// update the new item with its real ID (and remove the temp version)
