@@ -18,7 +18,6 @@ angular.module('com.inthetelling.story')
 		};
 		svc.getUserAnswer = function (eventId, userId) {
 			var defer = $q.defer();
-
 			svc.getAnswers(eventId)
 				.then(function (data) {
 					if (data) {
@@ -38,25 +37,19 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.calculateCounts = function (events) {
-			console.log(events);
 			var grouped;
 			grouped = _.countBy(events, function (event) {
 				return event.data.answer;
 			});
-			console.log("grouped", grouped);
 			return grouped;
 		};
 		svc.incrementAnswerCount = function (answerCounts, answerText) {
-			console.log(answerCounts);
 			answerCounts[answerText] = (answerCounts[answerText] || 0) + 1;
-			console.log(answerCounts);
-
 		};
 		svc.calculatePercentages = function (grouped) {
 			var totalAnswers = 0;
 			for (var answertext in grouped) {
 				if (grouped.hasOwnProperty(answertext)) {
-					console.log(answertext);
 					totalAnswers += grouped[answertext];
 				}
 			}
@@ -73,7 +66,6 @@ angular.module('com.inthetelling.story')
 				}
 				x++;
 			}
-			console.log("chartData", chartData);
 			return chartData;
 		};
 		return svc;

@@ -225,7 +225,6 @@ angular.module('com.inthetelling.story')
 
 
 		var getEventActivityDataForUser = function (events, activityType, epId) {
-
 			userSvc.getCurrentUser()
 				.then(function (userData) {
 					angular.forEach(events, function (eventData) {
@@ -233,13 +232,7 @@ angular.module('com.inthetelling.story')
 						if (eventData.type === "Plugin") {
 							questionAnswersSvc.getUserAnswer(eventData._id, userData._id)
 								.then(function (userAnswer) {
-									//FAKE this for now, while waiting on api change to add this to event data
-									//questionAnswersSvc.getAnswers(eventData._id)
-									//	.then(function (events) {
-									//		var counts = questionAnswersSvc.calculateCounts(events);
-									//			eventData.data._plugin.answer_counts = counts;
 									eventData.data._plugin.hasBeenAnswered = true;
-									//update the cache w/ the user's answer...
 									var i = 0;
 									var angularContinue = true;
 									angular.forEach(eventData.data._plugin.distractors, function (distractor) {
@@ -252,11 +245,7 @@ angular.module('com.inthetelling.story')
 										i++;
 										}
 									});
-
-
 									modelSvc.cache("event", svc.resolveIDs(eventData));
-
-									//	});
 								});
 						}
 
