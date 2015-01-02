@@ -36,7 +36,7 @@
 				</span>
 			</nav>
 		</div>
-		<div ng-if="!appState.isFramed" class="escapegroup buttongroup">
+		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 			<!-- this needs to be an <a> or it trips popup blockers. also <button> doesn't have a href -->
 			<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{apiDataBaseUrl}}/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
 				<span>New window</span>
