@@ -238,4 +238,13 @@
 .episode-prolotherapy .content.allowHighlights .highlightSolid.item.isCurrent {
 	background-color: rgba(63, 88, 167, 0.2);
 }
+.episode-prolotherapy .landingscreen {
+	background: url("/images/customer/prolotherapy-image.png") no-repeat left bottom;
+}
+.episode-prolotherapy .landingscreen .videoMagnet {
+	float: right;
+}
+.episode-prolotherapy .landingscreen .introtext {
+	float: left;
+}
 
