@@ -27,7 +27,7 @@ angular.module('com.inthetelling.story')
 				scope.chartType = "pie";
 				scope.chartOptions = {
 					pie: {
-						show: true
+						show: true,
 					},
 					yaxis: {
 						showLabels: false
@@ -38,6 +38,9 @@ angular.module('com.inthetelling.story')
 					grid: {
 						horizontalLines: false,
 						verticalLines: false
+					},
+					legend: {
+						show: false
 					}
 				};
 				if (scope.plugin.hasBeenAnswered === true) {

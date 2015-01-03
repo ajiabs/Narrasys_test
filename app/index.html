@@ -50,8 +50,6 @@ TODO hide these when not in use?
 	</div>
 
 	<script src="config.js"></script>
-
-	<script src="bower_components/flotr2/flotr2.min.js"></script>
 	<!-- CDN links-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
@@ -59,8 +57,12 @@ TODO hide these when not in use?
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-animate.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-sanitize.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+
 	<!-- end CDN -->
-	<!-- build:js({.tmp,app}) scripts/vendor-combined.min.js -->
+	
+	<script src="bower_components/flot/jquery.flot.js"></script>
+	<script src="bower_components/flot/jquery.flot.pie.js"></script>
+<!-- build:js({.tmp,app}) scripts/vendor-combined.min.js -->
 	<script src="scripts/plugin/newrelic.js"></script>
 	<!-- endbuild -->
 	<!-- build:js({.tmp,app}) scripts/app-combined.min.js -->
@@ -100,7 +102,7 @@ TODO hide these when not in use?
 	
 	<script src="scripts/directives/ittMcFormativeQuestion.js"></script>
 	<script src="scripts/directives/ittMcPollQuestion.js"></script>
-	<script src="scripts/directives/ittFlotr2Chart.js"></script>
+	<script src="scripts/directives/ittFlotChart.js"></script>
 
 	
 

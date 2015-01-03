@@ -25,27 +25,41 @@ angular.module('com.inthetelling.story')
 				//
 
 				scope.chartType = "pie";
+
 				scope.chartOptions = {
-					pie: {
+					series: {
+						pie: {
+							show: true,
+							label: {
+								show: true
+							}
+						}
+					},
+					legend: {
 						show: true
-					},
-					yaxis: {
-						showLabels: false
-					},
-					xaxis: {
-						showLabels: false
-					},
-					grid: {
-						horizontalLines: false,
-						verticalLines: false
 					}
 				};
+//				scope.chartOptions = {
+//					pie: {
+//						show: true
+//					},
+//					yaxis: {
+//						showLabels: false
+//					},
+//					xaxis: {
+//						showLabels: false
+//					},
+//					grid: {
+//						horizontalLines: false,
+//						verticalLines: false
+//					}
+//				};
 				if (scope.plugin.hasBeenAnswered === true) {
 
-							var grouped = scope.plugin.answer_counts;
-							var chartData = questionAnswersSvc.calculatePercentages(grouped);
-							scope.chartData = chartData;
-	
+					var grouped = scope.plugin.answer_counts;
+					var chartData = questionAnswersSvc.calculatePercentages(grouped);
+					scope.chartData = chartData;
+
 				}
 
 
