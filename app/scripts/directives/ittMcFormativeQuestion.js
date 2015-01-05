@@ -4,21 +4,15 @@ angular.module('com.inthetelling.story')
 	.directive('ittQuestion', function (analyticsSvc) {
 		return {
 			restrict: 'E',
-			//require: "ngModel",
 			scope: {
-				//questionText: '=questionText',
-				//distractors: '=distractors',
 				plugin: '=data',
 				qid: '=',
 				choices: '=',
 				correct: '=',
 				onChoice: '='
-
 			},
 			templateUrl: "templates/item/question-mc-formative-inner.html",
 			link: function (scope, element, attrs) {
-
-				//console.log(scope.onChoice);
 				scope.scoreQuiz = function (i) {
 					scope.plugin.distractors[i].selected = true;
 					scope.plugin.hasBeenAnswered = true;
@@ -28,9 +22,6 @@ angular.module('com.inthetelling.story')
 						'correct': !!(scope.plugin.distractors[i].correct)
 					});
 				};
-
-
-
 			}
 		};
 	});

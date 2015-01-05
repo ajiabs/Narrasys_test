@@ -138,9 +138,12 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.flushActivityQueue = function () {
+			
+			var defer = $q.defer();
 			// console.log("flush interval");
 			if (svc.activityQueue.length === 0) {
-				return;
+				defer.resolve("");
+				return defer.promise;
 			}
 			var actions = angular.copy(svc.activityQueue);
 			svc.activityQueue = [];
