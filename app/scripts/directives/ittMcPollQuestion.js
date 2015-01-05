@@ -24,36 +24,42 @@ angular.module('com.inthetelling.story')
 				//
 				//
 
-				scope.chartType = "pie";
+				//scope.chartType = "pie";
 
+
+//TRY setting formatter after it has passed through the observe and json.parse
 				scope.chartOptions = {
 					series: {
 						pie: {
 							show: true,
 							label: {
-								show: true
+								show: true,
+								formatter: function (label, series) {
+									return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.data[0][1]) + '%</div>';
+								},
+								background: { opacity: 0.3 } 
 							}
 						}
 					},
 					legend: {
-						show: true
+						show: false
 					}
 				};
-//				scope.chartOptions = {
-//					pie: {
-//						show: true
-//					},
-//					yaxis: {
-//						showLabels: false
-//					},
-//					xaxis: {
-//						showLabels: false
-//					},
-//					grid: {
-//						horizontalLines: false,
-//						verticalLines: false
-//					}
-//				};
+				//				scope.chartOptions = {
+				//					pie: {
+				//						show: true
+				//					},
+				//					yaxis: {
+				//						showLabels: false
+				//					},
+				//					xaxis: {
+				//						showLabels: false
+				//					},
+				//					grid: {
+				//						horizontalLines: false,
+				//						verticalLines: false
+				//					}
+				//				};
 				if (scope.plugin.hasBeenAnswered === true) {
 
 					var grouped = scope.plugin.answer_counts;
