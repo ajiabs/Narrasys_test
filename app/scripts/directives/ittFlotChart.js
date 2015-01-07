@@ -1,6 +1,6 @@
 // an angular.js wrapper for flot charting library -http://www.flotcharts.org/ but using flot.pie.js
 
- angular.module('com.inthetelling.story')
+angular.module('com.inthetelling.story')
 	.directive('ittFlotr2Chart', function () {
 		return {
 			restrict: 'E',
@@ -13,7 +13,7 @@
 				data: '@',
 				chartLabel: '@'
 			},
-template: ' <div id="chartContainer" aria-label="{{chartLabel}}"><table><caption>Others answered this question as follows:</caption> <tbody><tr ng-repeat="x in data.series"> <th scope="col">Choice</th> <th scope="col">Percent</th> </tr> <tr> <th scope="row">Jackie {{x}}</th> <td>5</td> </tr> </tbody></table></div>', 
+			template: ' <div id="chartContainer" aria-label="{{chartLabel}}"></div>',
 			link: function (scope, element, attrs) {
 				var chartContainer;
 				var width = 500;
@@ -47,9 +47,9 @@ template: ' <div id="chartContainer" aria-label="{{chartLabel}}"><table><caption
 					scope['options'] = JSON.parse(value);
 					draw(chartContainer, scope.data, scope.options);
 				});
-				var createLabel = function(data) {
-					var labelText = "";	
-					for (var i=0; i < data.length; i++) {
+				var createLabel = function (data) {
+					var labelText = "";
+					for (var i = 0; i < data.length; i++) {
 						labelText += Math.round(data[i].data) + "% of users choose \'" + data[i].label + "\'. ";
 					}
 					return labelText;
