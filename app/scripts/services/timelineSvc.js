@@ -441,7 +441,7 @@ angular.module('com.inthetelling.story')
 				if (event.stop) {
 					svc.timelineEvents.push({
 						t: event.start_time + injectionTime,
-						id: event._id,
+						id: "timeline",
 						action: "pause"
 					});
 					svc.timelineEvents.push({
