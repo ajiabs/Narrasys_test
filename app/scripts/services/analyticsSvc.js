@@ -61,12 +61,13 @@ angular.module('com.inthetelling.story')
 		};
 
 		// for transmedia-related activity
-		svc.captureEventActivity = function (name, eventID, data) {
+		svc.captureEventActivity = function (name, eventID, data, force) {
 			// console.log("analyticsSvc.captureEventActivity", eventID, data);
-			if (config.disableAnalytics || !appState.user.track_event_actions) {
-				return;
+			if (!force) {
+				if (config.disableAnalytics || !appState.user.track_event_actions) {
+					return;
+				}
 			}
-
 			if (data === undefined) {
 				console.warn("captureEventActivity called with no data for event ", eventID);
 			}
@@ -80,6 +81,11 @@ angular.module('com.inthetelling.story')
 		};
 
 
+		svc.forceCaptureEventActivityWithPromise = function (name, eventID, data) {
+			//we know this is syncronous
+			svc.captureEventActivity(name, eventID, data, true);
+			return svc.flushActivityQueue() //this is async, and returns a promise.	
+		};
 		svc.captureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
 			svc.captureEventActivity(name, eventID, data);
@@ -138,7 +144,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.flushActivityQueue = function () {
-			
+
 			var defer = $q.defer();
 			// console.log("flush interval");
 			if (svc.activityQueue.length === 0) {

@@ -3,7 +3,7 @@ angular.module('com.inthetelling.story')
 	.factory('questionAnswersSvc', function ($q, $http, $routeParams, $interval, analyticsSvc, config, appState, _) {
 		var svc = {};
 		svc.saveAnswer = function (name, eventID, data) {
-			return analyticsSvc.captureEventActivityWithPromise(name, eventID, data);
+			return analyticsSvc.forceCaptureEventActivityWithPromise(name, eventID, data);
 		};
 		svc.getAnswers = function (eventId) {
 			var defer = $q.defer();
