@@ -42,6 +42,15 @@ angular.module('com.inthetelling.story')
 			timelineSvc.seek($routeParams.t, "URLParameter");
 		}
 
+		$scope.$on('$routeUpdate', function () {
+			if ($routeParams.viewMode) {
+				$scope.viewMode($routeParams.viewMode);
+			}
+			if ($routeParams.t) {
+				timelineSvc.seek($routeParams.t, "URLParameter");
+			}
+		});
+
 		$scope.changeProducerEditLayer = function (newLayer) {
 			appState.producerEditLayer = appState.producerEditLayer + newLayer;
 			// I'm sure there's a fancier way to do this but
