@@ -24,11 +24,6 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element) {
 
 
-				scope.save = function (distractor) {
-					console.log('SAVE');
-					console.log("saved", distractor); 
-				};
-
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
 					if (scope.item.showInlineDetail) {
@@ -98,9 +93,7 @@ angular.module('com.inthetelling.story')
 						$event.preventDefault();
 					}
 				};
-
-
-				scope.outgoingLink = function (url) {
+			scope.outgoingLink = function (url) {
 					timelineSvc.pause();
 					scope.captureInteraction();
 					if (scope.item.targetTop) {
@@ -150,9 +143,7 @@ angular.module('com.inthetelling.story')
 
 					// BEGIN multiple choice question
 					if (scope.plugin._type === 'question') {
-						console.log("QUESTION type ---------------");
 						
-					console.log("ITEM DATA:", scope.plugin);
 						
 						//scope.plugin.selectedDistractor = undefined;
 						
