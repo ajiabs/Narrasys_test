@@ -35,6 +35,10 @@ angular.module('com.inthetelling.story')
 			$scope.showAssetPicker = false;
 		};
 
+		$scope.addDistractor = function () {
+			$scope.item.data._plugin.distractors.push({text:""});
+		};
+	
 		$scope.addEvent = function (producerItemType) {
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);

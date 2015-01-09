@@ -32,6 +32,12 @@
 		<textarea ng-model="distractor.text" rows="4"></textarea>
 	</div>
 </div>
+<div class="field">
+	<div class="input">
+		<button ng-click="addDistractor($event)">Add distractor</button>
+	</div>
+</div>
+
 <div class="field" ng-if="item.data._plugin.questiontype == 'mc-formative'">
 	<div class="label">Feedback when correct
 	</div>
