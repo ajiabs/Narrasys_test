@@ -7,6 +7,8 @@ angular.module('com.inthetelling.story')
 			replace: false,
 
 			link: function (scope) {
+				
+				scope.userHasRole = authSvc.userHasRole;
 
 				if ($routeParams.episode) {
 					authSvc.authenticate()
@@ -41,12 +43,12 @@ angular.module('com.inthetelling.story')
 					}, function () {
 						scope.badlogin = true;
 					});
-
 				};
 
 				scope.logout = function () {
 					authSvc.logout();
 				};
+
 			}
 		};
 
