@@ -3,15 +3,16 @@
 		<p ng-bind-html="plugin.questiontext"></p>
 
 		<div ng-repeat="distractor in choices">
-			<label ng-class="{
-				correct: plugin.hasBeenAnswered && distractor.correct,
-				incorrect: plugin.hasBeenAnswered && !distractor.correct
-			}">
-				<input ng-change="scoreQuiz($index)" type="radio" name="fnord" ng-model="index" ng-disabled="plugin.hasBeenAnswered" value="{{$index}}">
-				<span ng-bind-html="distractor.text"></span>
-			</label>
+			<div ng-if="distractor.text != ''">
+				<label ng-class="{
+					correct: plugin.hasBeenAnswered && distractor.correct,
+					incorrect: plugin.hasBeenAnswered && !distractor.correct
+				}">
+					<input ng-change="scoreQuiz($index)" type="radio" name="fnord" ng-model="index" ng-disabled="plugin.hasBeenAnswered" value="{{$index}}">
+					<span ng-bind-html="distractor.text"></span>
+				</label>
+			</div>
 		</div>
-
 		<div ng-if="plugin.hasBeenAnswered">
 			<div ng-if="plugin.distractors[plugin.selectedDistractor].correct" ng-bind-html="plugin.correctfeedback"></div>
 			<div ng-if="!plugin.distractors[plugin.selectedDistractor].correct" ng-bind-html="plugin.incorrectfeedback"></div>
