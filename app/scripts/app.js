@@ -1,8 +1,8 @@
 'use strict';
 
 var underscore = angular.module('underscore', []);
-underscore.factory('_', function() {
-  return window._; // assumes underscore has already been loaded on the page
+underscore.factory('_', function () {
+	return window._; // assumes underscore has already been loaded on the page
 });
 // Declare the top level application module and its dependencies
 angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'underscore'])
@@ -31,7 +31,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		// 	title: "Upload test",
 		// 	templateUrl: 'templates/producer/upload.html'
 		// })
-		.when('/episode/:epId', {
+
+	.when('/episode/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
@@ -42,7 +43,19 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				}
 			}
 		})
-		.when('/sxs/:epId', {
+		.when('/episode/:epId/:viewMode', {
+			title: "Telling STORY",
+			controller: 'PlayerController',
+			templateUrl: 'templates/player.html',
+			reloadOnSearch: false,
+			resolve: {
+				product: function (appState) {
+					appState.product = "player";
+				}
+			}
+		})
+
+	.when('/sxs/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',

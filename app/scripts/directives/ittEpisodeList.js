@@ -8,9 +8,8 @@ angular.module('com.inthetelling.story')
 
 			link: function (scope) {
 				if (!authSvc.userHasRole('admin')) {
-					// $location.path('/');
 					console.log(appState.user, authSvc.userHasRole('admin'));
-
+					$location.path('/');
 				}
 
 				scope.logout = function () {
