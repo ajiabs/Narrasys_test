@@ -1,7 +1,8 @@
 	<div class="question">
 		<!-- begin plugin.  TODO make this its own directive -->
 		<p ng-bind-html="plugin.questiontext"></p>
-
+		<div ng-if="questionType == 'mc-formative'">
+		
 		<div ng-repeat="distractor in choices">
 			<div ng-if="distractor.text != ''">
 				<label ng-class="{
@@ -18,6 +19,25 @@
 			<div ng-if="!plugin.distractors[plugin.selectedDistractor].correct" ng-bind-html="plugin.incorrectfeedback"></div>
 
 		</div>
+	</div>
+		<div ng-if="questionType == 'mc-poll'">
+				<div ng-if="!plugin.hasBeenAnswered" ng-repeat="distractor in plugin.distractors">
+			<div ng-if="distractor.text != ''">
+				<label>
+					<input ng-change="scorePoll($index)" type="radio" name="fnord" ng-disabled="plugin.hasBeenAnswered" ng-model="$parent.plugin.selectedDistractor" value="{{$index}}">
+					<span ng-bind-html="distractor.text"></span>
+				</label>
+			</div>
+		</div>
+		<br>
+		<div ng-if="plugin.hasBeenAnswered">
+			<p>Here's how others answered this question: (your choice was <b ng-bind-html="plugin.distractors[plugin.selectedDistractor].text"></b>)</p>
+			<itt-flotr2-chart type="{{chartType}}" title="" data="{{chartData}}" options="{{chartOptions}}"></itt-flotr2-chart>
+		</div>
+
+		</div>
+		
+	</div>
 		<!-- end plugin -->
 	</div>
 

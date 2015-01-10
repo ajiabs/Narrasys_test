@@ -106,7 +106,8 @@ angular.module('com.inthetelling.story')
 
 			//questions
 			"templates/question-mc-formative.html": "templates/item/question-mc-formative.html",
-			"templates/question-mc-poll.html": "templates/item/question-mc-poll.html"
+			"templates/question-mc-poll.html": "templates/item/question-mc-poll.html",
+			"templates/sxs-question.html": "templates/item/sxs-question.html"
 		};
 
 		// svc.deriveFoo() are for efficiency precalculations. 

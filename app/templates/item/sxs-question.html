@@ -4,27 +4,6 @@
 	<div class="itemHead">
 		<div class="authorName" ng-bind-html="item.display_annotator"></div>
 	</div>
-	<div class="question">
-		<!-- begin plugin.  TODO make this its own directive -->
-		<p ng-bind-html="item.data._plugin.questiontext"></p>
-		<p ng-if="item.asset.url" style="text-align:center; margin: 0.5em">
-			<img ng-src="{{item.asset.url}}">
-		</p>
-		<div ng-repeat="distractor in item.data._plugin.distractors">
-			<label ng-if="distractor.text" ng-class="{
-				correct: item.data._plugin.hasBeenAnswered && distractor.correct,
-				incorrect: item.data._plugin.hasBeenAnswered && !distractor.correct
-			}">
-				<input ng-change="scoreQuiz($index)" type="radio" name="fnord" ng-disabled="item.data._plugin.hasBeenAnswered" ng-model="$parent.item.data._plugin.selectedDistractor" value="{{$index}}">
-				<span ng-bind-html="distractor.text"></span>
-			</label>
-		</div>
 
-		<div ng-if="item.data._plugin.hasBeenAnswered">
-			<div ng-if="item.data._plugin.distractors[item.data._plugin.selectedDistractor].correct" ng-bind-html="item.data._plugin.correctfeedback"></div>
-			<div ng-if="!item.data._plugin.distractors[item.data._plugin.selectedDistractor].correct" ng-bind-html="item.data._plugin.incorrectfeedback"></div>
-
-		</div>
-		<div class="clear"></div>
-	</div>
+  <itt-mc-question choices="item.data._plugin.distractors" data="item.data._plugin" qid="item._id"></itt-question>
 </div>
