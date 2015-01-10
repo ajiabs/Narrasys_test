@@ -25,7 +25,7 @@ angular.module('com.inthetelling.story')
 							return func.apply(this, arguments);
 						}
 					};
-				}
+				};
 				var draw = after(2, function (el, d, o) {
 					scope.chartLabel = createLabel(d);
 					o.series.pie.label.formatter = function (label, series) {
