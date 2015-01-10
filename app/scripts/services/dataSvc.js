@@ -59,21 +59,22 @@ angular.module('com.inthetelling.story')
 			} else {
 				gettingCommon = true;
 				$q.all([
-					$http.get(config.apiDataBaseUrl + '/v1/templates'),
-					$http.get(config.apiDataBaseUrl + '/v1/layouts'),
-					$http.get(config.apiDataBaseUrl + '/v1/styles')
-				]).then(function (responses) {
-					svc.cache("templates", responses[0].data);
-					svc.cache("layouts", responses[1].data);
-					svc.cache("styles", responses[2].data);
+						$http.get(config.apiDataBaseUrl + '/v1/templates'),
+						$http.get(config.apiDataBaseUrl + '/v1/layouts'),
+						$http.get(config.apiDataBaseUrl + '/v1/styles')
+					])
+					.then(function (responses) {
+						svc.cache("templates", responses[0].data);
+						svc.cache("layouts", responses[1].data);
+						svc.cache("styles", responses[2].data);
 
-					gettingCommon = true;
-					getCommonDefer.resolve();
-				}, function () {
-					// console.error("getCommon failed", failure);
-					gettingCommon = false;
-					getCommonDefer.reject();
-				});
+						gettingCommon = true;
+						getCommonDefer.resolve();
+					}, function () {
+						// console.error("getCommon failed", failure);
+						gettingCommon = false;
+						getCommonDefer.reject();
+					});
 			}
 			return getCommonDefer.promise;
 		};
@@ -229,23 +230,25 @@ angular.module('com.inthetelling.story')
 					angular.forEach(events, function (eventData) {
 
 						if (eventData.type === "Plugin") {
-							questionAnswersSvc.getUserAnswer(eventData._id, userData._id)
-								.then(function (userAnswer) {
-									eventData.data._plugin.hasBeenAnswered = true;
-									var i = 0;
-									var angularContinue = true;
-									angular.forEach(eventData.data._plugin.distractors, function (distractor) {
-										if (angularContinue) {
-											if (distractor.text === userAnswer.data.answer) {
-												distractor.selected = true;
-												eventData.data._plugin.selectedDistractor = i;
-												angularContinue = false;												
+							(function (evData) {
+								questionAnswersSvc.getUserAnswer(evData._id, userData._id)
+									.then(function (userAnswer) {
+										evData.data._plugin.hasBeenAnswered = true;
+										var i = 0;
+										var angularContinue = true;
+										angular.forEach(evData.data._plugin.distractors, function (distractor) {
+											if (angularContinue) {
+												if (distractor.text === userAnswer.data.answer) {
+													distractor.selected = true;
+													evData.data._plugin.selectedDistractor = i;
+													angularContinue = false;
+												}
+												i++;
 											}
-										i++;
-										}
+										});
+										modelSvc.cache("event", svc.resolveIDs(evData));
 									});
-									modelSvc.cache("event", svc.resolveIDs(eventData));
-								});
+							}(eventData));
 						}
 
 					});
@@ -253,7 +256,6 @@ angular.module('com.inthetelling.story')
 				});
 
 		};
-
 		svc.getContainer = function (containerId, episodeId) {
 			// iterates to all parent containers
 			// episode ID is included so we can trigger it to resolve when this is all complete
@@ -326,38 +328,41 @@ angular.module('com.inthetelling.story')
 		var PUT = function (path, putData) {
 			var defer = $q.defer();
 			$http({
-				method: 'PUT',
-				url: config.apiDataBaseUrl + path,
-				data: putData
-			}).success(function (data) {
-				// console.log("Updated event:", data);
-				return defer.resolve(data);
-			});
+					method: 'PUT',
+					url: config.apiDataBaseUrl + path,
+					data: putData
+				})
+				.success(function (data) {
+					// console.log("Updated event:", data);
+					return defer.resolve(data);
+				});
 			return defer.promise;
 		};
 
 		var POST = function (path, postData) {
 			var defer = $q.defer();
 			$http({
-				method: 'POST',
-				url: config.apiDataBaseUrl + path,
-				data: postData
-			}).success(function (data) {
-				// console.log("Updated event:", data);
-				return defer.resolve(data);
-			});
+					method: 'POST',
+					url: config.apiDataBaseUrl + path,
+					data: postData
+				})
+				.success(function (data) {
+					// console.log("Updated event:", data);
+					return defer.resolve(data);
+				});
 			return defer.promise;
 		};
 
 		var DELETE = function (path) {
 			var defer = $q.defer();
 			$http({
-				method: 'DELETE',
-				url: config.apiDataBaseUrl + path,
-			}).success(function (data) {
-				// console.log("Deleted:", data);
-				return defer.resolve(data);
-			});
+					method: 'DELETE',
+					url: config.apiDataBaseUrl + path,
+				})
+				.success(function (data) {
+					// console.log("Deleted:", data);
+					return defer.resolve(data);
+				});
 			return defer.promise;
 		};
 
@@ -419,22 +424,23 @@ angular.module('com.inthetelling.story')
 			};
 			// store in API and resolve with results instead of container
 
-			POST("/v3/containers", newContainer).then(function (data) {
-				console.log("CREATED CONTAINER", data);
-				modelSvc.cache("container", data);
+			POST("/v3/containers", newContainer)
+				.then(function (data) {
+					console.log("CREATED CONTAINER", data);
+					modelSvc.cache("container", data);
 
-				var parentId;
-				if (data.parent_id) {
-					parentId = data.parent_id;
-				} else {
-					parentId = data.ancestry.replace(/.*\//, '');
-				}
+					var parentId;
+					if (data.parent_id) {
+						parentId = data.parent_id;
+					} else {
+						parentId = data.ancestry.replace(/.*\//, '');
+					}
 
-				// add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
-				modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
+					// add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
+					modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
 
-				createContainerDefer.resolve(data);
-			});
+					createContainerDefer.resolve(data);
+				});
 			return createContainerDefer.promise;
 		};
 
@@ -454,13 +460,14 @@ angular.module('com.inthetelling.story')
 			// TODO store in API and resolve with results instead of episode
 
 			console.log("Attempting to create ", episode);
-			POST("/v3/episodes", episode).then(function (data) {
-				console.log("Created episode: ", data);
+			POST("/v3/episodes", episode)
+				.then(function (data) {
+					console.log("Created episode: ", data);
 
-				// muck around in modelSvc.containers again:
-				modelSvc.containers[data.container_id].episodes = [data._id];
-				createEpisodeDefer.resolve(data);
-			});
+					// muck around in modelSvc.containers again:
+					modelSvc.containers[data.container_id].episodes = [data._id];
+					createEpisodeDefer.resolve(data);
+				});
 			return createEpisodeDefer.promise;
 		};
 
@@ -471,23 +478,25 @@ angular.module('com.inthetelling.story')
 			// probably first need to remove events etc if there are any
 			var deleteEpisodeDefer = $q.defer();
 			// delete episode_user_metrics
-			GET("/v2/episodes/" + episodeId + "/episode_user_metrics").then(function (metrics) {
-				console.log("GOT METRICS: ", metrics);
-				if (metrics.length) {
-					var deleteMetricsActions = [];
+			GET("/v2/episodes/" + episodeId + "/episode_user_metrics")
+				.then(function (metrics) {
+					console.log("GOT METRICS: ", metrics);
+					if (metrics.length) {
+						var deleteMetricsActions = [];
 
-					for (var i = 0; i < metrics.length; i++) {
-						deleteMetricsActions.push(DELETE("/v2/episode_user_metrics/" + metrics[i]._id));
-					}
-					$q.all(deleteMetricsActions).then(function () {
+						for (var i = 0; i < metrics.length; i++) {
+							deleteMetricsActions.push(DELETE("/v2/episode_user_metrics/" + metrics[i]._id));
+						}
+						$q.all(deleteMetricsActions)
+							.then(function () {
+								DELETE("/v3/episodes/" + episodeId);
+								deleteEpisodeDefer.resolve();
+							});
+					} else {
 						DELETE("/v3/episodes/" + episodeId);
 						deleteEpisodeDefer.resolve();
-					});
-				} else {
-					DELETE("/v3/episodes/" + episodeId);
-					deleteEpisodeDefer.resolve();
-				}
-			});
+					}
+				});
 			return deleteEpisodeDefer.promise;
 		};
 
@@ -683,7 +692,8 @@ angular.module('com.inthetelling.story')
 
 				//question
 				"templates/item/question-mc-formative.html": "templates/question-mc-formative.html",
-				"templates/item/question-mc-poll.html": "templates/question-mc-poll.html"
+				"templates/item/question-mc-poll.html": "templates/question-mc-poll.html",
+				"templates/item/sxs-question.html": "templates/sxs-question.html"
 			};
 			if (reverseTemplates[templateUrl]) {
 				var template = svc.readCache("template", "url", reverseTemplates[templateUrl]);
