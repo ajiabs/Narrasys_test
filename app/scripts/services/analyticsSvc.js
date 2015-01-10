@@ -84,12 +84,12 @@ angular.module('com.inthetelling.story')
 		svc.forceCaptureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
 			svc.captureEventActivity(name, eventID, data, true);
-			return svc.flushActivityQueue() //this is async, and returns a promise.	
+			return svc.flushActivityQueue(); //this is async, and returns a promise.	
 		};
 		svc.captureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
 			svc.captureEventActivity(name, eventID, data);
-			return svc.flushActivityQueue() //this is async, and returns a promise.	
+			return svc.flushActivityQueue(); //this is async, and returns a promise.	
 		};
 
 		// read from API:

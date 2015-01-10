@@ -1,7 +1,8 @@
-// an angular.js wrapper for flot charting library -http://www.flotcharts.org/ but using flot.pie.js
+'use strict';
 
+// an angular.js wrapper for flot charting library -http://www.flotcharts.org/ but using flot.pie.js
 angular.module('com.inthetelling.story')
-	.directive('ittFlotr2Chart', function () {
+	.directive('ittFlotr2Chart', function (_) {
 		return {
 			restrict: 'E',
 			scope: {
@@ -31,20 +32,23 @@ angular.module('com.inthetelling.story')
 
 				chartContainer = $("#chartContainer");
 
-				if (scope.width)
+				if (scope.width) {
 					width = scope.width;
-				if (scope.height)
+				}
+				if (scope.height) {
 					height = scope.height;
+				}
+
 				chartContainer.css({
 					width: width,
 					height: height
 				});
 				attrs.$observe('data', function (value) {
-					scope['data'] = JSON.parse(value);
+					scope.data = JSON.parse(value);
 					draw(chartContainer, scope.data, scope.options);
 				});
 				attrs.$observe('options', function (value) {
-					scope['options'] = JSON.parse(value);
+					scope.options = JSON.parse(value);
 					draw(chartContainer, scope.data, scope.options);
 				});
 				var createLabel = function (data) {

@@ -14,7 +14,7 @@ angular.module('com.inthetelling.story')
 				questionType: '@'
 			},
 			templateUrl: "templates/item/question-mc-inner.html",
-			link: function (scope, element, attrs) {
+			link: function (scope) {
 				scope.scoreQuiz = function (i) {
 					scope.plugin.distractors[i].selected = true;
 					scope.plugin.hasBeenAnswered = true;
@@ -26,7 +26,7 @@ angular.module('com.inthetelling.story')
 				};
 				var getQuestionType = function(item) {
 					return item.questiontype;
-				}
+				};
 				scope.questionType = getQuestionType(scope.plugin);
 				scope.chartOptions = {
 					series: {
@@ -64,7 +64,7 @@ angular.module('com.inthetelling.story')
 							'answer': scope.plugin.distractors[i].text,
 							'correct': !!(scope.plugin.distractors[i].correct)
 						})
-						.then(function (data) {
+						.then(function () {
 							scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
 							questionAnswersSvc.incrementAnswerCount(scope.plugin.answer_counts, scope.plugin.distractors[i].text);
 							var grouped = scope.plugin.answer_counts;

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('com.inthetelling.story')
-	.factory('userSvc', function ($q, $http, $routeParams, $interval, config, appState) {
+	.factory('userSvc', function ($q, $http, $routeParams, $interval, config) {
 		var svc = {};
 		svc.getCurrentUser = function () {
 			var defer = $q.defer();

@@ -313,14 +313,14 @@ angular.module('com.inthetelling.story')
 			};
 
 			for (i = 0; i < 10; i++) {
-				var question = angular.copy(questionPollStub);
-				question._id = "question-" + i;
-				question.required = (Math.random() > 0.5);
-				question.start_time = i * 6;
-				question.end_time = i * 6 + 6;
+				var questionTemp = angular.copy(questionPollStub);
+				questionTemp._id = "question-" + i;
+				questionTemp.required = (Math.random() > 0.5);
+				questionTemp.start_time = i * 6;
+				questionTemp.end_time = i * 6 + 6;
 
-				question.layouts = [testLayouts[i % testLayouts.length]];
-				modelSvc.cache("event", question);
+				questionTemp.layouts = [testLayouts[i % testLayouts.length]];
+				modelSvc.cache("event", questionTemp);
 			}
 
 			var uploadStub = {

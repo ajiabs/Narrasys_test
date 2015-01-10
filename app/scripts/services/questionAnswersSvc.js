@@ -55,7 +55,7 @@ angular.module('com.inthetelling.story')
 			}
 			var chartData = [];
 			var x = 0;
-			for (var answertext in grouped) {
+			for (answertext in grouped) {
 				if (grouped.hasOwnProperty(answertext)) {
 					chartData.push({
 						data: ((grouped[answertext] / totalAnswers) * 100),
