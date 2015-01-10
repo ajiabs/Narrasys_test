@@ -2,7 +2,7 @@
 
 // an angular.js wrapper for flot charting library -http://www.flotcharts.org/ but using flot.pie.js
 angular.module('com.inthetelling.story')
-	.directive('ittFlotr2Chart', function (_) {
+	.directive('ittFlotr2Chart', function () {
 		return {
 			restrict: 'E',
 			scope: {
@@ -19,8 +19,14 @@ angular.module('com.inthetelling.story')
 				var chartContainer;
 				var width = 500;
 				var height = 500;
-
-				var draw = _.after(2, function (el, d, o) {
+				var after = function (times, func) {
+					return function () {
+						if (--times < 1) {
+							return func.apply(this, arguments);
+						}
+					};
+				}
+				var draw = after(2, function (el, d, o) {
 					scope.chartLabel = createLabel(d);
 					o.series.pie.label.formatter = function (label, series) {
 						return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.data[0][1]) + '%</div>';
@@ -58,6 +64,9 @@ angular.module('com.inthetelling.story')
 					}
 					return labelText;
 				};
+
+				
+
 			}
 		};
 	});
