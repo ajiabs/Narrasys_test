@@ -4,7 +4,6 @@
 	transitionSlideR
 	transitionPop
 */
-
 /* Misc useful keyframes */
 
 @keyframes fadeOut {
@@ -47,17 +46,16 @@
 }
 body {
 	/* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
+	
 	-webkit-backface-visibility: hidden;
 }
 /* ------------------------------------------------------------------------------------------------------------------ */
-
 /* 
 Defaults.  Always include a bit of height animation, to make it look less jumpy when items are removed from
 the middle of a list
 
 Transition time should be set for the specific object type
  */
-
 /* disabling the height animation for now; looks bad in Safari. TODO fix in safari */
 
 .animate.ng-enter,
@@ -73,6 +71,7 @@ Transition time should be set for the specific object type
 }
 .content .animate.ng-leave {
 	/*max-height:100px;*/
+	
 	display: block !important;
 }
 .content .animate.ng-leave.ng-leave-active {
@@ -173,3 +172,9 @@ Transition time should be set for the specific object type
 	transform: scale(0.9);
 	opacity: 0;
 }
+.animate.ng-enter.transitionNone,
+.animate.ng-leave.transitionNone,
+.animate.ng-move.transitionNone {
+	transition: all ease-in-out 0s;
+}
+

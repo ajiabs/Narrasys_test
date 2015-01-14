@@ -31,8 +31,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		// 	title: "Upload test",
 		// 	templateUrl: 'templates/producer/upload.html'
 		// })
-
-	.when('/episode/:epId', {
+		.when('/episode/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
@@ -54,8 +53,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				}
 			}
 		})
-
-	.when('/sxs/:epId', {
+		.when('/sxs/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
@@ -92,6 +90,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			title: "Container Assets test",
 			controller: 'ContainerAssetsTestController',
 			template: '<div style="margin:1em" class="admin"><a class="goUp" href="#episodes">Episodes</a><div sxs-container-assets="containerId"></div></div>',
+		})
+		.when('/event/:eventId', {
+			title: "Event test",
+			controller: 'EventTestController',
+			templateUrl: 'templates/testbed-event.html',
 		})
 		.otherwise({
 			title: "Telling STORY: Error",
