@@ -1,6 +1,6 @@
 'use strict';
 angular.module('com.inthetelling.story')
-	.factory('questionAnswersSvc', function ($q, $http, $routeParams, $interval, analyticsSvc, config, appState, _) {
+	.factory('questionAnswersSvc', function ($q, analyticsSvc) {
 		var svc = {};
 		svc.saveAnswer = function (name, eventID, data) {
 			return analyticsSvc.forceCaptureEventActivityWithPromise(name, eventID, data);
@@ -9,7 +9,7 @@ angular.module('com.inthetelling.story')
 			var defer = $q.defer();
 			analyticsSvc.readEventActivity(eventId)
 				.then(function (activityData) {
-					var answers = _.filter(activityData, function (activity) {
+					var answers = activityData.filter(function (activity) {
 						return (activity.name === "question-answered" || activity.name === "question-answered-updated");
 					});
 					defer.resolve(answers);
@@ -21,7 +21,7 @@ angular.module('com.inthetelling.story')
 			svc.getAnswers(eventId)
 				.then(function (data) {
 					if (data) {
-						var userAnswer = _.filter(data, function (item) {
+						var userAnswer = data.filter(function (item) {
 							return item.user_id === userId;
 						});
 						if (userAnswer.length > 0) {
@@ -38,8 +38,8 @@ angular.module('com.inthetelling.story')
 
 		svc.calculateCounts = function (events) {
 			var grouped;
-			grouped = _.countBy(events, function (event) {
-				return event.data.answer;
+			angular.forEach(events, function (event) {
+				grouped[event.data.answer] ++;
 			});
 			return grouped;
 		};
@@ -59,9 +59,9 @@ angular.module('com.inthetelling.story')
 				if (grouped.hasOwnProperty(answertext)) {
 					chartData.push({
 						data: ((grouped[answertext] / totalAnswers) * 100),
-//						data: [
-//							[x, ((grouped[answertext] / totalAnswers) * 100)]
-//						],
+						//						data: [
+						//							[x, ((grouped[answertext] / totalAnswers) * 100)]
+						//						],
 						label: answertext
 					});
 
