@@ -10,7 +10,7 @@
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, userSvc, modelSvc, questionAnswersSvc, errorSvc, mockSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, userSvc, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -222,7 +222,6 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeEvents(epId);
 				});
 		};
-
 
 		var getEventActivityDataForUser = function (events, activityType, epId) {
 			userSvc.getCurrentUser()
@@ -688,7 +687,6 @@ angular.module('com.inthetelling.story')
 				"templates/scene/centered.html": "templates/scene-centered.html",
 				"templates/scene/cornerH.html": "templates/scene-cornerH.html",
 				"templates/scene/cornerV.html": "templates/scene-cornerV.html",
-
 
 				//question
 				"templates/item/question-mc-formative.html": "templates/question-mc-formative.html",

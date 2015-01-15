@@ -39,6 +39,10 @@ describe('Service: dataSvc', function () {
 
 	}));
 
+	it('dataSvc should exist', function () {
+		expect(dataSvc).toNotEqual(undefined);
+	});
+
 	it('readCache should read the right thing from the cache', function () {
 		var style = dataSvc.readCache("style", "css_name", "one");
 		expect(style.id).toEqual('1');

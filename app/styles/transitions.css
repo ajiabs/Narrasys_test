@@ -172,6 +172,9 @@ Transition time should be set for the specific object type
 	transform: scale(0.9);
 	opacity: 0;
 }
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionNone */
+
 .animate.ng-enter.transitionNone,
 .animate.ng-leave.transitionNone,
 .animate.ng-move.transitionNone {
