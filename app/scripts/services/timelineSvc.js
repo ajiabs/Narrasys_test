@@ -422,14 +422,13 @@ angular.module('com.inthetelling.story')
 				event.end_time = Number(event.end_time);
 				// add scenes to markedEvents[]:
 				if (event._type === "Scene") {
-
 					if (appState.product === 'producer') {
 						// producer gets all scenes, even 'hidden' ones
-						svc.markedEvents.push(event);
+						addMarkedEvent(event);
 					} else {
 						// sxs and player just get scenes with titles
 						if (event.display_title) {
-							svc.markedEvents.push(event);
+							addMarkedEvent(event);
 						}
 					}
 				}
@@ -450,7 +449,7 @@ angular.module('com.inthetelling.story')
 						action: "enter"
 					});
 					// For now, ignore end_time on stop events; they always end immediately after user hits play again.
-					// TODO: In future we'll allow durations on stop events so the video will start automatically after that elapses.
+					// TODO: In future we may allow durations on stop events so the video will start automatically after that elapses.
 					svc.timelineEvents.push({
 						t: (event.start_time + injectionTime + 0.01),
 						id: event._id,
@@ -492,6 +491,24 @@ angular.module('com.inthetelling.story')
 			svc.sortTimeline();
 		};
 
+		var addMarkedEvent = function (newEvent) {
+			// scan through existing markedEvents; if the new event is already there, replace it; otherwise add it
+			var wasFound = false;
+			for (var i = 0; i < svc.markedEvents.length; i++) {
+				if (svc.markedEvents[i]._id === newEvent._id) {
+					// replace existing event
+					svc.markedEvents[i] = angular.copy(newEvent);
+					wasFound = true;
+				}
+			}
+
+			// wasn't found, so add it:
+			if (!wasFound) {
+				svc.markedEvents.push(newEvent);
+			}
+			//console.log(svc.markedEvents);
+		};
+
 		svc.removeEvent = function (removeId) {
 			// delete anything corresponding to this id from the timeline:
 			// console.log("timelineSvc.removeEvent");
@@ -513,6 +530,13 @@ angular.module('com.inthetelling.story')
 				id: '!' + event._id
 			});
 			svc.injectEvents([event], 0);
+		};
+
+		svc.updateSceneTimes = function (episodeId) {
+			// HACK(ish): since editing a scene's timing has side effects on other scenes, need to updateEventTimes for each scene in the episode when one changes
+			angular.forEach(modelSvc.episodes[episodeId].scenes, function (scene) {
+				svc.updateEventTimes(scene);
+			});
 		};
 
 		svc.sortTimeline = function () {

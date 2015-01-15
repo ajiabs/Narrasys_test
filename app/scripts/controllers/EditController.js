@@ -36,9 +36,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.addDistractor = function () {
-			$scope.item.data._plugin.distractors.push({text:""});
+			$scope.item.data._plugin.distractors.push({
+				text: ""
+			});
 		};
-	
+
 		$scope.addEvent = function (producerItemType) {
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
@@ -50,11 +52,20 @@ angular.module('com.inthetelling.story')
 
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			timelineSvc.injectEvents([modelSvc.events["internal:editing"]]);
+			if (producerItemType === 'scene') {
+				timelineSvc.updateSceneTimes(appState.episodeId);
+			}
 		};
 
 		$scope.saveEvent = function () {
 			var toSave = angular.copy(appState.editEvent);
-			console.log("toSave", toSave);
+
+			// TODO if we are saving a scene, we need to update other scenes as well to get the end times correct.
+			// THough we are ignoring the scene end times anyway, so maybe don't bother?
+			if (toSave._type === 'Scene') {
+				console.warn("TODO need to update other scenes' end times.");
+			}
+
 			dataSvc.storeItem(toSave).then(function (data) {
 				if (appState.editEvent._id === 'internal:editing') {
 					// update the new item with its real ID (and remove the temp version)
@@ -106,7 +117,8 @@ angular.module('com.inthetelling.story')
 		$scope.deleteEvent = function (eventId) {
 			if (window.confirm("Are you sure you wish to delete this item?")) {
 				console.log("About to delete ", eventId);
-				console.log(modelSvc.events[eventId]);
+
+				var eventType = modelSvc.events[eventId]._type;
 				dataSvc.deleteItem(eventId).then(function (data) {
 					console.log("success deleting:", data);
 					if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
@@ -115,6 +127,11 @@ angular.module('com.inthetelling.story')
 					timelineSvc.removeEvent(eventId);
 					delete modelSvc.events[eventId];
 					modelSvc.resolveEpisodeEvents(appState.episodeId);
+
+					if (eventType === 'Scene') {
+						timelineSvc.updateSceneTimes(appState.episodeId);
+					}
+
 					appState.editEvent = false;
 					appState.videoControlsLocked = false;
 				}, function (data) {
@@ -124,16 +141,20 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.cancelEventEdit = function (originalEvent) {
+			console.log("cancelEventEdit");
 			if (appState.editEvent._id === 'internal:editing') {
 				delete(modelSvc.events['internal:editing']);
 				timelineSvc.removeEvent("internal:editing");
 			} else {
 				modelSvc.events[appState.editEvent._id] = originalEvent;
+			}
+			modelSvc.resolveEpisodeEvents(originalEvent.episode_id);
+
+			if (originalEvent._type === 'Scene') {
+				timelineSvc.updateSceneTimes(originalEvent.episode_id);
+			} else {
 				timelineSvc.updateEventTimes(originalEvent);
 			}
-			modelSvc.resolveEpisodeEvents(appState.episodeId);
-
-			// TODO the episode is not rerendering here, even though the modelSvc.episodes[episodeId] now has the correct data....
 
 			appState.editEvent = false;
 			appState.videoControlsLocked = false;

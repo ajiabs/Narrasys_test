@@ -112,35 +112,36 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.setItemTime = function () {
-					// triggered when user changes start time in the input field (which is ng-model'ed to appState.time)
+					// triggered when user changes start time in the input field
 
-					// // TODO ensure within episode duration. If too close to a scene start, match to scene start. If end time not in same scene, change end time to end of scene / beginning of next transcript
-					if (scope.item) {
-						scope.item.start_time = appState.time;
-						// set end time:
+					// TODO ensure within episode duration. If too close to a scene start, match to scene start. If end time not in same scene, change end time to end of scene / beginning of next transcript
+					console.log("setItemTime");
+					console.log(scope.item._id, scope.item.start_time);
 
-						if (scope.item.stop) {
-							scope.item.end_time = scope.item.start_time;
-						} else {
-							// TODO
-							// if end time is "auto"
-							// 	if transcript set end time to start of next transcript
-							// 	if scene set end time to start of next scene or duration of episode
-							// 	else set end time to end of scene
-							// else
-							// 	sanity-check end time (make sure within scene duration, and after start time.)
+					if (scope.item._type === 'Scene') {
+						modelSvc.resolveEpisodeEvents(appState.episodeId); // reparent events to new scene times if necessary
 
-							// for now, just using end of scene if the currently set end time is invalid.
-							modelSvc.resolveEpisodeEvents(appState.episodeId); // in case the item has changed scenes
-							if (scope.item.end_time <= scope.item.start_time || scope.item.end_time > modelSvc.events[scope.item.scene_id].end_time) {
-								scope.item.end_time = modelSvc.events[scope.item.scene_id].end_time;
-							}
+						// need to update timeline enter/exit for *all* scenes here, since changing one can modify others ...
+						timelineSvc.updateSceneTimes(scope.item.episode_id);
+
+					} else if (scope.item.stop) {
+						scope.item.end_time = scope.item.start_time;
+						modelSvc.resolveEpisodeEvents(appState.episodeId); // redundant but necessary
+						timelineSvc.updateEventTimes(scope.item);
+					} else {
+						// TODO
+						// if end time is "auto"
+						// 	if transcript, set end time to start of next transcript
+						// 	else set end time to end of scene
+
+						modelSvc.resolveEpisodeEvents(appState.episodeId); // in case the item has changed scenes
+
+						// for now, just using end of scene if the currently set end time is invalid.
+						if (scope.item.end_time <= scope.item.start_time || scope.item.end_time > modelSvc.events[scope.item.scene_id].end_time) {
+							scope.item.end_time = modelSvc.events[scope.item.scene_id].end_time;
 						}
+						timelineSvc.updateEventTimes(scope.item);
 					}
-					timelineSvc.updateEventTimes(scope.item);
-
-					// Since we've manipulated the timeline directly, need to let timelineSvc keep up with us:
-					timelineSvc.seek(appState.time);
 
 				};
 
@@ -152,18 +153,6 @@ angular.module('com.inthetelling.story')
 					}
 					timelineSvc.updateEventTimes(scope.item);
 				};
-
-				// watch for user seeking manually:
-				scope.watchSeek = scope.$watch(function () {
-					return appState.time;
-				}, function (newV, oldV) {
-					if (newV === oldV) {
-						return;
-					}
-					if (scope.item) {
-						scope.setItemTime();
-					}
-				});
 
 				scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
 
@@ -239,7 +228,6 @@ angular.module('com.inthetelling.story')
 
 				scope.$on('$destroy', function () {
 					scope.watchEdits();
-					scope.watchSeek();
 					scope.dismissalWatcher();
 					scope.watchStyleEdits();
 				});

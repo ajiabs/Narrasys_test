@@ -413,9 +413,6 @@ angular.module('com.inthetelling.story')
 		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but 
 		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them.
 
-
-		TODO this needs to ensure that scenes are contiguous and that items don't overlap scenes
-		(there are authoring issues in existing episodes where items start a fraction of a second before their intended scene does)
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
 			// console.log("resolveEpisodeEvents");
@@ -491,8 +488,9 @@ angular.module('com.inthetelling.story')
 				return a.start_time - b.start_time;
 			});
 
-			// ensure scenes are contigouous. Skip the landing scene and the last scene:
-			for (var i = 1; i < episode.scenes.length - 2; i++) {
+			// ensure scenes are contiguous. Skip the landing scene and the ending scene.
+			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
+			for (var i = 1; i < episode.scenes.length - 1; i++) {
 				episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
 			}
 
@@ -618,7 +616,6 @@ angular.module('com.inthetelling.story')
 			});
 			return ret;
 		};
-
 
 		svc.scene = function (sceneId) {
 			// console.log("modelsvc.scene: ", sceneId);

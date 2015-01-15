@@ -12,7 +12,7 @@
 					<a ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
 						<span class="control-text">Beginning of scene</span>
 					</a>
-					<input type="text" ng-model="item.start_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
+					<input type="text" ng-model="item.start_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }" ng-change="setItemTime()">
 				</div>
 			</div>
 			<div ng-include="itemEditor"></div>
@@ -25,22 +25,25 @@
 
 			<div class="ittTabs" itt-tabs>
 				<!-- begin tabset -->
-				<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="{{item._type == 'Scene' ? 'Scene' : 'Item'}}">
+				<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="{{item._type === 'Scene' ? 'Scene' : 'Item'}}">
 					<!-- begin data tab -->
-					<div class="field">
+					<div class="field" ng-if="!(item._type==='Scene' && item.start_time <= 0.1)">
 						<div class="label">Time
 						</div>
 						<div class="input">
-							<a ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
+							<a ng-if="item._type !== 'Scene'" ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
 								<span class="control-text">Beginning of scene</span>
 							</a>
-							<input type="text" ng-model="item.start_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
-							<span class="label">End</span>
-							<input ng-if="customEndTime" ng-change="setItemEndTime()" type="text" ng-model="item.end_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
-							<a class="fakeLink" ng-click="customEndTime = !customEndTime; item.end_time=100000">
-								<span ng-if="customEndTime">(x)</span>
-								<span ng-if="!customEndTime">(auto)</span>
-							</a>
+							<input type="text" ng-model="item.start_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }" ng-change="setItemTime()">
+
+							<span ng-if="!(item.stop || item._type === 'Scene')">
+								<span class="label">End</span>
+								<input ng-if="customEndTime" ng-change="setItemEndTime()" type="text" ng-model="item.end_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
+								<a class="fakeLink" ng-click="customEndTime = !customEndTime; item.end_time=100000">
+									<span ng-if="customEndTime">(x)</span>
+									<span ng-if="!customEndTime">(auto)</span>
+								</a>
+							</span>
 							<select ng-if="languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
 							</select>
 
