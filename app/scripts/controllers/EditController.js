@@ -11,17 +11,28 @@ angular.module('com.inthetelling.story')
 			$scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
 		};
 		$scope.selectedAsset = function (asset_id) {
-			console.log("SELECTED: ", asset_id);
-
-			$scope.item.asset = modelSvc.assets[asset_id];
-			if ($scope.item.type === 'image') {
-				$scope.item.asset_id = asset_id;
-			} else if ($scope.item.type === 'link') {
-				$scope.item.link_image_id = asset_id;
-			} else if ($scope.item.type === 'annotation') {
-				$scope.item.annotation_image_id = asset_id;
-			} else {
-				console.error("Tried to select asset for unknown item type", $scope.item);
+			var asset = modelSvc.assets[asset_id];
+			$scope.masterAsset = asset;
+			if ($scope.item) {
+				$scope.item.asset = asset;
+				if ($scope.item.type === 'image') {
+					$scope.item.asset_id = asset_id;
+				} else if ($scope.item.type === 'link') {
+					$scope.item.link_image_id = asset_id;
+				} else if ($scope.item.type === 'annotation') {
+					$scope.item.annotation_image_id = asset_id;
+				} else {
+					console.error("Tried to select asset for unknown item type", $scope.item);
+				}
+			}
+			if ($scope.episode) {
+				console.log("asset", asset);
+				//BUGBUG? - could episode be truthy and the asset be video during "item" edition (and not episode editing) 
+				// causing us to inadvertently change the master asset to the item video asset?  Due to using editcontroller for both item and episode
+				if (asset._type === 'Asset::Video') {
+					console.log("setting master episode asset");
+					$scope.episode.master_asset_id = asset_id;
+				}
 			}
 			$scope.endChooseAsset();
 		};
@@ -40,7 +51,7 @@ angular.module('com.inthetelling.story')
 				text: ""
 			});
 		};
-
+	
 		$scope.addEvent = function (producerItemType) {
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
@@ -85,13 +96,20 @@ angular.module('com.inthetelling.story')
 
 		$scope.saveEpisode = function () {
 			var toSave = angular.copy(appState.editEpisode);
-			dataSvc.storeEpisode(toSave).then(function (data) {
-				console.log("Stored episode", data);
-				appState.editEpisode = false;
-				appState.videoControlsLocked = false;
-			}, function (data) {
-				console.error("FAILED TO STORE EPISODE", data);
-			});
+
+			dataSvc.storeEpisode(toSave)
+				.then(function (data) {
+					modelSvc.cache("episode", dataSvc.resolveIDs(data));
+					modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
+					modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
+					modelSvc.resolveEpisodeAssets(appState.episodeId);
+					appState.duration = modelSvc.assets[data.master_asset_id].duration;
+					appState.editEpisode = false;
+					appState.videoControlsLocked = false;
+
+				}, function (data) {
+					console.error("FAILED TO STORE EPISODE", data);
+				});
 		};
 
 		$scope.editCurrentScene = function () {

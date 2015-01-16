@@ -14,8 +14,8 @@
 			<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}">
 		</div>
 	</span>
-	<span ng-if="!uploads && item.asset">
-		{{item.asset.original_filename}}
+	<span ng-if="!uploads && (item.asset || masterAsset.original_filename)">
+		{{item.asset.original_filename || masterAsset.original_filename}}
 		<button ng-if="appState.product == 'sxs'" ng-click="deleteAsset(item.asset._id)">Delete</button>
 		<button ng-if="appState.product == 'producer'" ng-click="detachAsset(item.asset._id)">Detach</button>
 	</span>
@@ -25,6 +25,5 @@
 		<button ng-if="!showUpload" ng-click="toggleUpload()">Upload</button>
 		<input ng-if="showUpload" type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
 	</span>
-
 
 </div>

@@ -9,7 +9,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, appState, modelSvc) {
+	.directive('ittEpisodeEditor', function ($rootScope, appState, modelSvc, dataSvc, awsSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -18,10 +18,13 @@ angular.module('com.inthetelling.story')
 			},
 			templateUrl: 'templates/producer/episode.html',
 			controller: 'EditController',
-			link: function (scope) {
+			link: function (scope, element) {
+				console.log("element", element);
+				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
-				// console.log("ittEpisodeEditor");
-
+				if (scope.episode.master_asset_id && scope.episode.master_asset_id !== "") {
+					scope.masterAsset = modelSvc.assets[scope.episode.master_asset_id];
+				}
 				scope.uploadStatus = [];
 				scope.uneditedEpisode = angular.copy(scope.episode); // in case of cancel.   Must be a copy, not the original!
 				scope.itemForm = {
@@ -125,15 +128,19 @@ angular.module('com.inthetelling.story')
 							console.log("Template changed from ", oldVal[0], " to ", newVal[0]);
 							console.log(scope.episode.styles);
 							var fixStyles = [];
-							var oldCustomer = oldVal[0].match('templates/episode/(.*).html')[1];
-							var newCustomer = newVal[0].match('templates/episode/(.*).html')[1];
 
-							// remove color-oldVal and typography-oldVal.
-							angular.forEach(scope.episode.styles, function (style) {
-								if (style.toLowerCase() !== "color" + oldCustomer && style.toLowerCase() !== "typography" + oldCustomer) {
-									fixStyles.push(style);
-								}
-							});
+							//oldVal may be empty if newly created episode
+							if (oldVal[0]) {
+								var oldCustomer = oldVal[0].match('templates/episode/(.*).html')[1];
+								// remove color-oldVal and typography-oldVal.
+								angular.forEach(scope.episode.styles, function (style) {
+									if (style.toLowerCase() !== "color" + oldCustomer && style.toLowerCase() !== "typography" + oldCustomer) {
+										fixStyles.push(style);
+									}
+								});
+							}
+
+							var newCustomer = newVal[0].match('templates/episode/(.*).html')[1];
 							// add color-newVal and typography-newVal (only for ep templates that use this:)
 							angular.forEach(["eliterate", "gw", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
 								if (newCustomer === customer) {
@@ -158,6 +165,63 @@ angular.module('com.inthetelling.story')
 				scope.cancelEdit = function () {
 					// hand off to EditController (with the original to be restored)
 					scope.cancelEpisodeEdit(scope.uneditedEpisode);
+				};
+				scope.detachMasterAsset = function () {
+					//TODO: removing a property on json object during PUT doesn't delete the property. let's set it to an empty string.
+					scope.episode.master_asset_id = null;
+					//delete scope.episode.master_asset_id;
+					scope.masterAsset = {};
+
+					appState.duration = 0;
+					dataSvc.detachMasterAsset(scope.episode);
+
+					modelSvc.deriveEpisode(scope.episode);
+					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+					modelSvc.resolveEpisodeAssets(scope.episode._id);
+				};
+
+
+				scope.setMasterAsset = function (asset) {
+					console.log("asset:", asset);
+
+					if (!scope.episode.template_id) {
+						//set the default template url...
+						scope.episode.templateUrl = "templates/episode/episode.html";
+					}
+					scope.episode.master_asset_id = asset._id;
+					scope.masterAsset = asset;
+
+					appState.duration = modelSvc.assets[scope.episode.master_asset_id].duration;
+					dataSvc.storeEpisode(scope.episode);
+
+					modelSvc.deriveEpisode(scope.episode);
+					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+					modelSvc.resolveEpisodeAssets(scope.episode._id);
+				};
+				scope.uploadAsset = function (files) {
+					scope.uploads = awsSvc.uploadFiles(files);
+
+					scope.uploads[0].then(function (data) {
+						modelSvc.cache("asset", data.file);
+
+						var asset = modelSvc.assets[data.file._id];
+						scope.setMasterAsset(asset);
+						delete scope.uploads;
+					}, function () {
+						console.log("fail");
+						//console.log("FAIL", );
+					}, function (update) {
+						scope.uploadStatus[0] = update;
+					});
+			};
+
+				scope.deleteAsset = function (assetId) {
+					console.log("deleteAsset", assetId);
+				};
+				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event/episode:
+				scope.detachAsset = function () {
+					scope.detachMasterAsset();
+					scope.showUpload = false;
 				};
 
 				scope.$on('$destroy', function () {

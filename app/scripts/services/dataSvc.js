@@ -586,7 +586,16 @@ angular.module('com.inthetelling.story')
 			}
 		};
 		svc.prepItemForStorage = prepItemForStorage;
-
+		svc.detachMasterAsset = function(epData) {
+			var preppedData = prepEpisodeForStorage(epData);
+			preppedData.master_asset_id = null;
+			console.log("prepped sans master_asset_id for storage:", preppedData);
+			if (preppedData) {
+				return PUT("/v3/episodes/" + preppedData._id, preppedData);
+			} else {
+				return false;
+			}
+		};
 		svc.storeEpisode = function (epData) {
 			// For now only update, no create... create needs a customer_id and probably other data as well
 			var preppedData = prepEpisodeForStorage(epData);
