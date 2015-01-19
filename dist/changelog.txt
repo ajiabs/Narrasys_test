@@ -450,6 +450,154 @@ autoscroll button indicates direction; hides when it won’t do anything useful
 Changes in v4.0.45:
 Reverting autoscroll improvements (Not actually an improvement)
 
+
+------------------------------------------------
+Changes in v4.0.46:
+new item templates
+better way to handle sidebar inline-vs-modal sizes
+sidebar items should never try to expand inline
+Updated the demo deploy configuration
+
+------------------------------------------------
+Changes in v4.0.47:
+hotfix for item.contain not sizing properly
+
+------------------------------------------------
+Changes in v4.0.48:
+hotfix for Safari 7.1 failing to 'seek' video
+
+------------------------------------------------
+Changes in v4.0.49:
+Columbia Business
+
+------------------------------------------------
+Changes in v4.0.50:
+hotfix for Safari not showing some events after timeline seek
+
+------------------------------------------------
+Changes in v4.0.51:
+Trick Chrome into playing the same video in two windows
+
+------------------------------------------------
+Changes in v4.0.52:
+SCS episode template
+cleanup of obsolete code
+no mock data in master
+
+------------------------------------------------
+Changes in v4.0.53:
+update to scs templte
+
+------------------------------------------------
+Changes in v4.0.54:
+tweak scs template
+
+------------------------------------------------
+Changes in v4.0.55:
+new Picture-in-picture scene template
+------------------------------------------------
+Changes in v4.0.56:
+Bugfixes for picture-in-picture template
+
+------------------------------------------------
+Changes in v4.0.57:
+Fix for STORY-99: window content needs to be taller than viewport or Chrome goes insane
+fixing minor inefficiency in episode templates
+bugfix to PIP template
+
+------------------------------------------------
+Changes in v4.0.58:
+fixes to link-withimage template
+------------------------------------------------
+
+Changes in v4.0.59:
+no i18n yet
+
+------------------------------------------------
+Changes in v4.0.60:
+brought language picker up to date
+bug fix in link-withimage
+fixes to link-withimage template
+replaced responseInterceptor which didn't work with interceptor which does
+partial i18n for document.title
+
+
+------------------------------------------------
+Changes in v4.1.3:
+Merge branch 'i18n'
+
+------------------------------------------------
+Changes in v4.1.4:
+fix usc hacks
+
+------------------------------------------------
+Changes in v4.1.5:
+switch from ng-min to ng-annotate
+updated new relic ID
+
+------------------------------------------------
+Changes in v4.1.6:
+added /#/episodes route so I don't have to remember which server I'm on
+scene nav fixes
+show times in navpanel, hide timeline tooltips for landing and ending scenes
+set titles on landing and ending scene so timeline markers will appear
+lost the annotator localization somehow
+corrected padding in GW landing screen
+updated sanitize
+
+------------------------------------------------
+Changes in v4.1.7:
+Fixing scene-centered to work on dark background colors
+
+------------------------------------------------
+Changes in v4.1.10:
+Accessibility changes
+
+------------------------------------------------
+Changes in v4.1.11:
+bugfix: 'escape' button doesn't work as a <button>, changed back to <a>
+cbs styling was leaking into watch mode
+much faster toolbar fade
+
+------------------------------------------------
+Changes in v4.1.12:
+reverting toolbar fade change -- made it worse on touchscreen
+
+------------------------------------------------
+Changes in v4.1.13:
+reverting bad test code
+
+------------------------------------------------
+Changes in v4.1.14:
+fixes STORY-202 tab issues in search
+preload image assets during playback
+
+------------------------------------------------
+Changes in v4.1.15:
+start times need to respond to colorInvert
+fixes for 210 and 211
+adding alt tags for image content
+missed hiding aspect ratio preserver images. hiding them with empty alt (for old screen readers) and aria-hidden
+
+------------------------------------------------
+Changes in v4.1.16:
+Fix for #259 stop events interfering with seek
+Updated how git determines the latest tag
+fixes #216. add missing labels to speed up/down and video elements
+
+------------------------------------------------
+Changes in v4.1.17:
+So it turns out that if you have a two-line bug fix, you need to commit *both* lines. 
+Updated for new web server redundancy
+
+------------------------------------------------
+Changes in v4.1.18:
+Prolotherapy episode template
+
+------------------------------------------------
+Changes in v4.1.19:
+Possible fix for TS-220
+
 ------------------------------------------------
 Changes in v4.2.0
 rough item templates, autofocus, timeline injection
@@ -669,6 +817,5 @@ last commit only contained half of the fix, oops
 Fix for stop events interfering with seek
 
 ------------------------------------------------
-Changes in v4.2.22:
-
-
+Changes in v4.3.0:
+First production release of the producer/editor codebase. FIX ALL THE THINGS
