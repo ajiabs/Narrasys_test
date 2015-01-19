@@ -604,8 +604,10 @@ angular.module('com.inthetelling.story')
 			angular.forEach(svc.timelineEvents, function (tE) {
 				if (tE.id !== "timeline") {
 					var event = modelSvc.events[tE.id];
-					event.state = "isFuture";
-					event.isCurrent = false;
+					if (event) { // cancelling adding an event can leave "internal:editing" in the event list; TODO keep that from happening but for now just ignore it if it doesn't exist
+						event.state = "isFuture";
+						event.isCurrent = false;
+					}
 				}
 			});
 
@@ -613,12 +615,14 @@ angular.module('com.inthetelling.story')
 			angular.forEach(svc.timelineEvents, function (tE) {
 				if (tE.t <= now) {
 					var event = modelSvc.events[tE.id];
-					if (tE.action === 'enter') {
-						event.state = "isCurrent";
-						event.isCurrent = true;
-					} else if (tE.action === 'exit') {
-						event.state = "isPast";
-						event.isCurrent = false;
+					if (event) {
+						if (tE.action === 'enter') {
+							event.state = "isCurrent";
+							event.isCurrent = true;
+						} else if (tE.action === 'exit') {
+							event.state = "isPast";
+							event.isCurrent = false;
+						}
 					}
 				}
 			});
