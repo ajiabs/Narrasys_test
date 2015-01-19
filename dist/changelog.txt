@@ -824,3 +824,7 @@ First production release of the producer/editor codebase. FIX ALL THE THINGS
 Changes in v4.3.1:
 Fixing bug which prevented cancel of 'add event'
 
+------------------------------------------------
+Changes in v4.3.2:
+hide "you are logged in" stuff from root page
+
