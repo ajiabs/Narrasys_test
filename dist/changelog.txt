@@ -832,3 +832,7 @@ hide "you are logged in" stuff from root page
 Changes in v4.3.3:
 root-page tweak
 
+------------------------------------------------
+Changes in v4.3.4:
+itemDetail was duplicated in a template
+
