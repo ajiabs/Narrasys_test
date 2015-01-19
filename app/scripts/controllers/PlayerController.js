@@ -72,6 +72,14 @@ angular.module('com.inthetelling.story')
 		modelSvc.addLandingScreen(appState.episodeId);
 		dataSvc.getEpisode(appState.episodeId);
 
+		console.log("USER:", appState.user, appState.product);
+
+		// TEMPORARY SAFETY VALVE: redirect non-admin users from editor or producer to player:
+		if (!authSvc.userHasRole('admin') && appState.product !== 'player') {
+			//			appState.product = 'player';
+			$location.path('/episode/' + appState.episodeId);
+		}
+
 		// Watch for the first load of the episode data; init page title and crossnav when found
 
 		// TODO: update this on language change
