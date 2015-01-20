@@ -165,11 +165,11 @@ angular.module('com.inthetelling.story')
 				// have loaded.  Just poll until events load, that's good enough for now.
 				// TODO throw error and stop looping if this goes on too long
 				$timeout(function () {
-					svc.seek(t);
+					// console.log("waiting for video to be ready");
+					svc.seek(t, method, eventID);
 				}, 300);
 				return;
 			}
-
 			stopEventClock();
 			var oldT = appState.time;
 			t = parseTime(t);

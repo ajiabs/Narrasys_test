@@ -75,7 +75,10 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.initHTML5Video = function () {
-			// TODO: notify timelineSvc of (at least) 'stalled' and 'waiting' so it doesn't wind up out of synch
+			// console.log("initHTML5Video");
+			// $scope.videoNode.addEventListener("loadedmetadata", function () {
+			// 	console.log("video metadata has loaded");
+			// }, false);
 			$scope.videoNode.addEventListener('playing', function () {
 				$scope.playerState = 'playing';
 			}, false);
@@ -196,6 +199,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.seek = function (t) {
 			// console.log("VIDEO seek to ", t);
+			var videoNotReady = false;
 			try {
 				if ($scope.videoType === 'youtube') {
 					var wasPlaying = (appState.timelineState === 'playing');
@@ -204,10 +208,19 @@ angular.module('com.inthetelling.story')
 						$scope.YTPlayer.pauseVideo(); // youtube always autoplays on seek.
 					}
 				} else {
-					$scope.videoNode.currentTime = t;
+					if ($scope.videoNode.readyState === 4) {
+						$scope.videoNode.currentTime = t;
+					} else {
+						// video is partially loaded but still not seek-ready
+						videoNotReady = true;
+					}
 				}
 			} catch (e) {
-				// video not ready yet // TODO: throw error and stop looping if this goes on too long
+				videoNotReady = true;
+			}
+			if (videoNotReady) {
+				// TODO: throw error and stop looping if this goes on too long.
+				// Or be less lazy and watch the loadedmetadata or youtube equivalent event
 				$timeout(function () {
 					$scope.seek(t);
 				}, 100);
@@ -220,7 +233,6 @@ angular.module('com.inthetelling.story')
 				// console.error("videoController doesn't handle reverse speeds...");
 				return;
 			}
-
 			if ($scope.videoType === 'youtube') {
 				// TODO (youtube doesn't seem to support this yet, or else we're not encoding the videos properly for it)
 				// console.log("Available speeds from youtube: ", $scope.YTPlayer.getAvailablePlaybackRates());
