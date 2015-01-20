@@ -6,7 +6,7 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, config, appState, analyticsSvc, timelineSvc, modelSvc) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, appState, analyticsSvc, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -22,7 +22,6 @@ angular.module('com.inthetelling.story')
 			},
 			controller: 'ItemController',
 			link: function (scope, element) {
-
 
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
@@ -93,7 +92,7 @@ angular.module('com.inthetelling.story')
 						$event.preventDefault();
 					}
 				};
-			scope.outgoingLink = function (url) {
+				scope.outgoingLink = function (url) {
 					timelineSvc.pause();
 					scope.captureInteraction();
 					if (scope.item.targetTop) {
@@ -143,10 +142,9 @@ angular.module('com.inthetelling.story')
 
 					// BEGIN multiple choice question
 					if (scope.plugin._type === 'question') {
-						
-						
+
 						//scope.plugin.selectedDistractor = undefined;
-						
+
 						scope.scorePoll = function () {
 							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
 							scope.plugin.hasBeenAnswered = true;
@@ -206,15 +204,6 @@ angular.module('com.inthetelling.story')
 							});
 						};
 
-						// update credly state every time the item becomes current or visible (i.e. in review mode)
-						scope.$watch(function () {
-							return scope.item.isCurrent || appState.viewMode === 'review';
-						}, function (itIs, itWas) {
-							if (itIs && !itWas) {
-								scope.checkBadgeEligibility();
-							}
-						});
-
 						scope.countAchievements = function () {
 							var count = 0;
 							angular.forEach(scope.plugin.requirements, function (req) {
@@ -229,6 +218,27 @@ angular.module('com.inthetelling.story')
 								scope.$parent.episode.styleCss = scope.$parent.episode.styleCss + " uscHackUserHasBadge";
 							}
 						};
+
+						// on link:
+						scope.checkBadgeEligibility();
+
+						// slow poll after that, up to some reasonable time limit
+						var pollLimit = 0;
+						scope.badgePoll = $interval(function () {
+							console.log('poll', pollLimit);
+							pollLimit++;
+							if (scope.item.isCurrent || appState.viewMode === 'review') {
+								scope.checkBadgeEligibility();
+							}
+							if (pollLimit > 60) {
+								$interval.cancel(scope.badgePoll);
+							}
+						}, 10000);
+
+						scope.$on('$destroy', function () {
+							console.log('destroy');
+							$interval.cancel(scope.badgePoll);
+						});
 
 						scope.badger = function () {
 							scope.plugin.gettingBadge = true;
@@ -252,6 +262,7 @@ angular.module('com.inthetelling.story')
 								});
 						};
 					}
+
 					// END credly badge
 				}
 				// end plugin
