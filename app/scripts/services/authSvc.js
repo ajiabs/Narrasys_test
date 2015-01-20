@@ -17,8 +17,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.logout = function () {
-			//
-			console.log("authSvc.logout");
 			appState.user = {};
 			delete $http.defaults.headers.common.Authorization;
 			localStorage.removeItem(config.localStorageKey);
@@ -26,7 +24,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.adminLogin = function (authKey, password) {
-			console.log("Admin login:", authKey, password);
 			var loginDefer = $q.defer();
 			svc.logout();
 			$http({
@@ -40,8 +37,7 @@ angular.module('com.inthetelling.story')
 					'Content-Type': 'application/x-www-form-urlencoded'
 				}
 			}).success(function (data) {
-
-				// TODO this overlaps with the oauth login path, and leaves some (unnecessary?) info out of localStorage which we usually get from get_nonce. Should consolidate
+				// TODO this overlaps with the oauth login path, and leaves some (unnecessary?) info out of localStorage which we usually get from get_nonce.
 				// Should consolidate these, and only localStore data we really care about anyway
 				var localStorageData = {
 					"customer": config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1],
@@ -67,15 +63,17 @@ angular.module('com.inthetelling.story')
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function () {
 			console.log("authSvc.authenticate");
-			if (isAuthenticating) {
-				return authenticateDefer.promise;
-			}
+			// if (isAuthenticating) {
+			// 	console.log("isAuthenticating");
+			// 	return authenticateDefer.promise;
+			// }
 			isAuthenticating = true;
 			if ($routeParams.key) {
 				// explicit key in route:
 				var nonce = $routeParams.key;
 				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
 				svc.getAccessToken(nonce).then(function () {
+					isAuthenticating = false;
 					authenticateDefer.resolve();
 				});
 			} else if ($http.defaults.headers.common.Authorization) {
@@ -85,19 +83,22 @@ angular.module('com.inthetelling.story')
 				if (appState.user === {}) {
 					appState.user = svc.getStoredUserData();
 				}
+				isAuthenticating = false;
 				authenticateDefer.resolve();
 			} else {
 				// check for token in localStorage, try it to see if it's still valid.
 				var validStoredData = svc.getStoredUserData();
-
+				console.log("checking for token", validStoredData);
 				if (validStoredData) {
 					appState.user = validStoredData;
 					$http.defaults.headers.common.Authorization = 'Token token="' + validStoredData.access_token + '"';
+					isAuthenticating = false;
 					authenticateDefer.resolve();
 				} else {
 					// start from scratch
 					svc.getNonce().then(function (nonce) {
 						svc.getAccessToken(nonce).then(function () {
+							isAuthenticating = false;
 							authenticateDefer.resolve();
 						});
 					});

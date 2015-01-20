@@ -10,7 +10,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			templateUrl: 'templates/root.html',
 		})
 		.when('/auth', {
-			templateUrl: 'templates/root.html',
+			template: '<div itt-login></div>',
 		})
 		.when('/episodes', {
 			title: "Available episodes",
