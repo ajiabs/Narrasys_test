@@ -841,3 +841,7 @@ Changes in v4.3.5:
 fixed bug where safari was trying to seek video before it was ready
 fixed display of achievement progress for USC
 
+------------------------------------------------
+Changes in v4.3.6:
+bringing deploy config up to date
+
