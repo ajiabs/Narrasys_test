@@ -836,3 +836,8 @@ root-page tweak
 Changes in v4.3.4:
 itemDetail was duplicated in a template
 
+------------------------------------------------
+Changes in v4.3.5:
+fixed bug where safari was trying to seek video before it was ready
+fixed display of achievement progress for USC
+
