@@ -215,7 +215,9 @@ angular.module('com.inthetelling.story')
 							if (scope.plugin.totalAchieved === scope.plugin.requirements.length) {
 								// HACK TODO we need to implement a real way for items to control the visibility of other items or scenes.
 								// The silly workaround here only works (for some poorly-defined version of 'works') because USC episodes only have one badge
-								scope.$parent.episode.styleCss = scope.$parent.episode.styleCss + " uscHackUserHasBadge";
+
+								modelSvc.episodes[appState.episodeId].styleCss = modelSvc.episodes[appState.episodeId].styleCss + " uscHackUserHasBadge";
+
 							}
 						};
 
@@ -236,7 +238,6 @@ angular.module('com.inthetelling.story')
 						}, 10000);
 
 						scope.$on('$destroy', function () {
-							console.log('destroy');
 							$interval.cancel(scope.badgePoll);
 						});
 
