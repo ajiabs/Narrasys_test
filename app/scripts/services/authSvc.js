@@ -58,22 +58,14 @@ angular.module('com.inthetelling.story')
 			return loginDefer.promise;
 		};
 
-		// This defer pattern I'm using is clumsy, there's got to be a simpler way to divert repeated calls to the original promise
-		var isAuthenticating;
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function () {
 			console.log("authSvc.authenticate");
-			// if (isAuthenticating) {
-			// 	console.log("isAuthenticating");
-			// 	return authenticateDefer.promise;
-			// }
-			isAuthenticating = true;
 			if ($routeParams.key) {
 				// explicit key in route:
 				var nonce = $routeParams.key;
 				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
 				svc.getAccessToken(nonce).then(function () {
-					isAuthenticating = false;
 					authenticateDefer.resolve();
 				});
 			} else if ($http.defaults.headers.common.Authorization) {
@@ -83,22 +75,19 @@ angular.module('com.inthetelling.story')
 				if (appState.user === {}) {
 					appState.user = svc.getStoredUserData();
 				}
-				isAuthenticating = false;
 				authenticateDefer.resolve();
 			} else {
 				// check for token in localStorage, try it to see if it's still valid.
 				var validStoredData = svc.getStoredUserData();
-				console.log("checking for token", validStoredData);
+
 				if (validStoredData) {
 					appState.user = validStoredData;
 					$http.defaults.headers.common.Authorization = 'Token token="' + validStoredData.access_token + '"';
-					isAuthenticating = false;
 					authenticateDefer.resolve();
 				} else {
 					// start from scratch
 					svc.getNonce().then(function (nonce) {
 						svc.getAccessToken(nonce).then(function () {
-							isAuthenticating = false;
 							authenticateDefer.resolve();
 						});
 					});

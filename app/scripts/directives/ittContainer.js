@@ -19,6 +19,9 @@ angular.module('com.inthetelling.story')
 					scope.appState = appState;
 					scope.containers = modelSvc.containers;
 
+					// TEMP obviously
+					scope.isDemoServer = ($location.host().match(/demo.inthetelling|localhost.inthetelling|client.dev/));
+
 					scope.containerTypes = ["customer", "course", "session", "episode"];
 
 					scope.toggleChildren = function () {

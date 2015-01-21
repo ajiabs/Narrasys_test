@@ -17,11 +17,9 @@
 	<div ng-if="container.showChildren" ng-repeat="child in container.children">
 		<span ng-if="depth == 2" class="container hoverIndicator">
 			<a href="#/episode/{{child.episodes[0]}}">[Player]</a>
-<!-- 
-Hidden for now, so we don't accidentally let production use these before they're ready
-			<a href="#/editor/{{child.episodes[0]}}">[Editor]</a>
+			<a ng-if="isDemoServer" href="#/editor/{{child.episodes[0]}}">[Editor]</a>
 			<a href="#/producer/{{child.episodes[0]}}">[Producer]</a>
- -->
+
 			<button class="danger" ng-if="appState.dangerousButtons" ng-click="deleteEpisodeAndContainer(child._id)">Delete</button>
 
 			{{child.name.en}}

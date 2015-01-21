@@ -1,14 +1,19 @@
 <div itt-episode-list class="admin">
 	<!-- TODO proper i18n -->
+	<div style="color:#C00">
+		<p>PLEASE NOTE Producer is in alpha. There are bugs. It is generally safe to edit individual events and scenes, but please do not depend on producer for episode creation or for routine episode production yet. </p>
+
+	</div>
+
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 
 
-	<div ng-if="!loading" class="controls">
+	<!-- 	<div ng-if="!loading" class="controls">
 		<label>
 			<input type="checkbox" ng-model="appState.dangerousButtons">&nbsp;Enable danger</label>
 		<div ng-if="appState.dangerousButtons" STYLE="COLOR:#C00">THERE IS NO UNDO. YOU HAVE BEEN WARNED.</div>
 	</div>
-
+ -->
 
 	<div ng-repeat="child in root.children" itt-container="containers[child._id]" depth="0"></div>
 
