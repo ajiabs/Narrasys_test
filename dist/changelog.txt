@@ -845,3 +845,9 @@ fixed display of achievement progress for USC
 Changes in v4.3.6:
 bringing deploy config up to date
 
+------------------------------------------------
+Changes in v4.3.7:
+make Editor visible on the dev server too, because why not
+removing bogus login error, hiding 'delete episode' for now
+Separated root route from auth route for better route routing of routes.  
+
