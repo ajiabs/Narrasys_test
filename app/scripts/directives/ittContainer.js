@@ -20,7 +20,7 @@ angular.module('com.inthetelling.story')
 					scope.containers = modelSvc.containers;
 
 					// TEMP obviously
-					scope.isDemoServer = ($location.host().match(/demo.inthetelling|localhost.inthetelling|client.dev/));
+					scope.isDemoServer = ($location.host().match(/demo|localhost|api-dev|client.dev/));
 
 					scope.containerTypes = ["customer", "course", "session", "episode"];
 
