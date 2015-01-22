@@ -870,7 +870,10 @@ angular.module('com.inthetelling.story')
 			var bTest = b.match(regexp) || [0, 0];
 
 			// assume touchscreen means mobile, so we want the smaller video. TODO be less arbitrary about that
-			if (appState.isTouchDevice) {
+			// TEMPORARY: chrome is not firing stall events. As a stopgap, picking the smaller video on chrome to minimize how often it stlalls...
+			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
+			if (appState.isTouchDevice || isChrome) {
 				return (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
 			} else {
 				return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
