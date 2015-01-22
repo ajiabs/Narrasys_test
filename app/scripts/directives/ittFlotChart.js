@@ -14,7 +14,7 @@ angular.module('com.inthetelling.story')
 				options: '@',
 				data: '@'
 			},
-			template: ' <div id="chartContainer" aria-label="{{chartLabel}}"></div><div id="pieHover"></div>',
+			template: ' <div id="chartContainer" aria-label="{{chartLabel}}"></div>',
 			link: function (scope, element, attrs) {
 				var chartContainer;
 				var width = 500;

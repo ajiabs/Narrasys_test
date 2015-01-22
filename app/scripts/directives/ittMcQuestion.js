@@ -37,9 +37,6 @@ angular.module('com.inthetelling.story')
 							show: true,
 							label: {
 								show: true,
-								formatter: function (label, series) {
-									return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>-' + series.percent + '<br/>' + Math.round(series.data[0][1]) + '%</div>';
-								},
 								background: {
 									opacity: 0.3
 								}
@@ -89,7 +86,7 @@ angular.module('com.inthetelling.story')
 					scope.chartData = chartData;
 				}
 
-								scope.scorePoll = function (i) {
+				scope.scorePoll = function (i) {
 					questionAnswersSvc.saveAnswer("question-answered", scope.qid, {
 							'answer': scope.plugin.distractors[i].text,
 							'correct': !!(scope.plugin.distractors[i].correct)
