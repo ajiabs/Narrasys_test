@@ -150,6 +150,7 @@ angular.module('com.inthetelling.story')
 			// videoController will call this when ready
 			// console.warn("timelineSvc.unstall");
 			if (svc.wasPlaying) {
+				appState.timelineState = "playing";
 				svc.play();
 			} else {
 				appState.timelineState = "paused";
