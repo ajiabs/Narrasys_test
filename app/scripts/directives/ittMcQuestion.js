@@ -49,7 +49,7 @@ angular.module('com.inthetelling.story')
 					legend: {
 						show: false
 					},
-					grid : {
+					grid: {
 						hoverable: true
 					},
 					tooltip: true,
@@ -62,6 +62,21 @@ angular.module('com.inthetelling.story')
 						defaultTheme: false
 					}
 				};
+
+				var formatAnswersForFlotPieChart = function (grouped) {
+					var chartData = [];
+					for (var answertext in grouped) {
+						if (grouped.hasOwnProperty(answertext)) {
+							chartData.push({
+								data: grouped[answertext],
+								label: answertext
+							});
+						}
+					}
+					return chartData;
+				};
+
+
 				if (scope.plugin.hasBeenAnswered === true) {
 					if (typeof scope.plugin.answer_counts === 'undefined') {
 						scope.plugin.answer_counts = {};
@@ -70,10 +85,11 @@ angular.module('com.inthetelling.story')
 					//TODO: this is a -bad- edge case. it means that we stored the user answer in the analytics svc
 					//scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
 					var grouped = scope.plugin.answer_counts;
-					var chartData = questionAnswersSvc.calculatePercentages(grouped);
+					var chartData = formatAnswersForFlotPieChart(grouped);
 					scope.chartData = chartData;
 				}
-				scope.scorePoll = function (i) {
+
+								scope.scorePoll = function (i) {
 					questionAnswersSvc.saveAnswer("question-answered", scope.qid, {
 							'answer': scope.plugin.distractors[i].text,
 							'correct': !!(scope.plugin.distractors[i].correct)

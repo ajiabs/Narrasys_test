@@ -3,6 +3,7 @@
 // an angular.js wrapper for flot charting library -http://www.flotcharts.org/ but using flot.pie.js
 angular.module('com.inthetelling.story')
 	.directive('ittFlotr2Chart', function () {
+		var uniqueId = 1;
 		return {
 			restrict: 'E',
 			scope: {
@@ -11,10 +12,9 @@ angular.module('com.inthetelling.story')
 				width: '@',
 				title: '=title', //title is separate from options, but we may not want this as i'm not sure ALL charts have a title (or just one)
 				options: '@',
-				data: '@',
-				chartLabel: '@'
+				data: '@'
 			},
-			template: ' <div id="chartContainer" aria-label="{{chartLabel}}"></div>',
+			template: ' <div id="{{::uniqueId}}" aria-label="{{chartLabel}}"></div><div id="pieHover"></div>',
 			link: function (scope, element, attrs) {
 				var chartContainer;
 				var width = 500;
@@ -29,14 +29,14 @@ angular.module('com.inthetelling.story')
 				var draw = after(2, function (el, d, o) {
 					scope.chartLabel = createLabel(d);
 					o.series.pie.label.formatter = function (label, series) {
-						return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.data[0][1]) + '%</div>';
+						return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.percent) + '%' + ' (' + series.data[0][1] + ')</div>';
 					};
 					$.plot(el, d, o);
 
 					el.show();
 				});
-
-				chartContainer = $("#chartContainer");
+				scope.uniqueId = "chartContainer" + uniqueId++;
+				chartContainer = $(scope.uniqueId);
 
 				if (scope.width) {
 					width = scope.width;
@@ -57,10 +57,21 @@ angular.module('com.inthetelling.story')
 					scope.options = JSON.parse(value);
 					draw(chartContainer, scope.data, scope.options);
 				});
+				var addPercent = function (data) {
+					var total = 0;
+					for (var i = 0; i < data.length; i++) {
+						total += data[i].data;		
+					}
+					for (var i = 0; i < data.length; i++) {
+						data[i].percent = (data[i].data / total) * 100;
+					}
+					return data;
+				};
 				var createLabel = function (data) {
 					var labelText = "";
+					data = addPercent(data);
 					for (var i = 0; i < data.length; i++) {
-						labelText += Math.round(data[i].data) + "% of users choose \'" + data[i].label + "\'. ";
+						labelText += Math.round(data[i].percent) + "% of users totaling " + data[i].data + " choose \'" + data[i].label + "\'. ";
 					}
 					return labelText;
 				};
