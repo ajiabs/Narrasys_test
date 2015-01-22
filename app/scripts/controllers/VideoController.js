@@ -5,7 +5,7 @@
 // Move that to the directive
 
 angular.module('com.inthetelling.story')
-	.controller('VideoController', function ($q, $scope, $timeout, $window, $document, appState, timelineSvc) {
+	.controller('VideoController', function ($q, $scope, $timeout, $interval, $window, $document, appState, timelineSvc) {
 		// console.log("videoController instantiate");
 
 		// init youtube
@@ -82,18 +82,22 @@ angular.module('com.inthetelling.story')
 			$scope.videoNode.addEventListener('playing', function () {
 				$scope.playerState = 'playing';
 			}, false);
-			$scope.videoNode.addEventListener('waiting', function () {
-				// triggered when buffering is stalled and there is no more buffered data
-				$scope.playerState = 'waiting';
-				$scope.stall();
-			}, false);
-			$scope.videoNode.addEventListener('stalled', function () {
-				// triggered when buffering is stalled -- playback may be continuing if there's buffered data
-				$scope.playerState = 'stalled';
-			}, false);
+
+			// Chrome is failing to send these events, so screw it, we'll do it ourselves
+			// $scope.videoNode.addEventListener('waiting', function () {
+			// 	// triggered when buffering is stalled and there is no more buffered data
+			// 	$scope.playerState = 'waiting';
+			// 	$scope.stall();
+			// }, false);
+			// $scope.videoNode.addEventListener('stalled', function () {
+			// 	// triggered when buffering is stalled -- playback may be continuing if there's buffered data
+			// 	$scope.playerState = 'stalled';
+			// }, false);
 			$scope.videoNode.addEventListener('pause', function () {
 				$scope.playerState = 'pause';
 			}, false);
+
+			$scope.babysitHTML5Video();
 
 			$scope.getBufferPercent = function () {
 				// console.log("getBufferPercent");
@@ -145,7 +149,30 @@ angular.module('com.inthetelling.story')
 		// DO NOT CALL ANY OF THE BELOW DIRECTLY!
 		// Instead call via timelineSvc; otherwise the timeline won't know the video is playing 
 
+		$scope.babysitHTML5Video = function () {
+			// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
+			$scope.babysitter = $interval(function () {
+				// console.log($scope.videoNode.currentTime, appState.timelineState);
+				if (appState.timelineState === 'playing') {
+					if ($scope.lastPlayheadTime === $scope.videoNode.currentTime) {
+						timelineSvc.stall();
+					}
+					$scope.lastPlayheadTime = $scope.videoNode.currentTime;
+				} else if (appState.timelineState === 'buffering') {
+					if ($scope.lastPlayheadTime !== $scope.videoNode.currentTime) {
+						timelineSvc.unstall();
+					}
+				}
+			}, 333);
+		};
+
+		$scope.$on("$destroy", function () {
+			// console.log("killing the babysitter (ew)");
+			$interval.cancel($scope.babysitter);
+		});
+
 		$scope.stall = function () {
+			console.log("stall");
 			// notify timelineSvc if the video stalls during playback
 			if (appState.timelineState !== 'playing') {
 				return;
