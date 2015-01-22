@@ -14,7 +14,10 @@ angular.module('com.inthetelling.story')
 				questionType: '@'
 			},
 			templateUrl: "templates/item/question-mc-inner.html",
-			link: function (scope) {
+			link: function (scope, element, attrs) {
+				attrs.$observe('showChart', function (data) {
+					scope.showChart = (data === 'true');
+				});
 				scope.scoreQuiz = function (i) {
 					scope.plugin.distractors[i].selected = true;
 					scope.plugin.hasBeenAnswered = true;
@@ -24,7 +27,7 @@ angular.module('com.inthetelling.story')
 						'correct': !!(scope.plugin.distractors[i].correct)
 					});
 				};
-				var getQuestionType = function(item) {
+				var getQuestionType = function (item) {
 					return item.questiontype;
 				};
 				scope.questionType = getQuestionType(scope.plugin);
@@ -35,7 +38,7 @@ angular.module('com.inthetelling.story')
 							label: {
 								show: true,
 								formatter: function (label, series) {
-									return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.data[0][1]) + '%</div>';
+									return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>-' + series.percent + '<br/>' + Math.round(series.data[0][1]) + '%</div>';
 								},
 								background: {
 									opacity: 0.3
@@ -45,10 +48,21 @@ angular.module('com.inthetelling.story')
 					},
 					legend: {
 						show: false
+					},
+					grid : {
+						hoverable: true
+					},
+					tooltip: true,
+					tooltipOpts: {
+						content: "%y.0, %s", // show percentages, rounding to 2 decimal places
+						shifts: {
+							x: 20,
+							y: 0
+						},
+						defaultTheme: false
 					}
 				};
 				if (scope.plugin.hasBeenAnswered === true) {
-					console.log("answer", scope.plugin);
 					if (typeof scope.plugin.answer_counts === 'undefined') {
 						scope.plugin.answer_counts = {};
 						scope.plugin.answer_counts[scope.plugin.distractors[scope.plugin.selectedDistractor].text] = 1;
@@ -77,7 +91,7 @@ angular.module('com.inthetelling.story')
 						});
 
 				};
-				
+
 
 
 			}
