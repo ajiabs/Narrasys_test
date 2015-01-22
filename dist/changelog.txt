@@ -854,5 +854,10 @@ Separated root route from auth route for better route routing of routes.
 ------------------------------------------------
 Changes in v4.3.8:
 temporary stopgap for Chrome stall issues (always use smaller stream on chrome)
-
 late 508 changes missed during merge. 
+
+------------------------------------------------
+Changes in v4.3.9:
+Revert "temporary stopgap for Chrome stall issues (always use smaller stream on chrome)"
+handle stall and unstall events ourselves, since Chrome isn't doing it for us
+
