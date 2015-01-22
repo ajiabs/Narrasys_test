@@ -62,10 +62,10 @@ angular.module('com.inthetelling.story')
 				var addPercent = function (data) {
 					var total = 0;
 					for (var i = 0; i < data.length; i++) {
-						total += data[i].data;		
+						total += data[i].data;
 					}
-					for (var i = 0; i < data.length; i++) {
-						data[i].percent = (data[i].data / total) * 100;
+					for (var y = 0; y < data.length; y++) {
+						data[y].percent = (data[y].data / total) * 100;
 					}
 					return data;
 				};
