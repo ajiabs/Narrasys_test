@@ -14,7 +14,7 @@ angular.module('com.inthetelling.story')
 				options: '@',
 				data: '@'
 			},
-			template: ' <div id="{{::uniqueId}}" aria-label="{{chartLabel}}"></div><div id="pieHover"></div>',
+			template: ' <div id="chartContainer" aria-label="{{chartLabel}}"></div><div id="pieHover"></div>',
 			link: function (scope, element, attrs) {
 				var chartContainer;
 				var width = 500;
@@ -35,9 +35,11 @@ angular.module('com.inthetelling.story')
 
 					el.show();
 				});
-				scope.uniqueId = "chartContainer" + uniqueId++;
-				chartContainer = $(scope.uniqueId);
-
+				chartContainer = $("#chartContainer");
+				
+				var chartId = "chartContainer" + uniqueId++;
+				chartContainer.attr("id", chartId);
+				
 				if (scope.width) {
 					width = scope.width;
 				}
