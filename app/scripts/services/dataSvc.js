@@ -15,9 +15,19 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
+		svc.getNarrative = function (narrativeId) {
+			return GET("/v3/narratives/" + narrativeId + "/resolve", function (data) {
+				modelSvc.cache("narrative", data);
+			});
+		};
+
+		svc.getNarrativeOverview = function (narrativeId) {
+			return GET("/v3/narratives/" + narrativeId);
+		};
+
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
-		svc.getEpisode = function (epId) {
+		svc.getEpisode = function (epId, segmentId) {
 			if (!epId) {
 				throw ("no episode ID supplied to dataSvc.getEpisode");
 			}
@@ -37,9 +47,81 @@ angular.module('com.inthetelling.story')
 						return getCommon();
 					})
 					.then(function () {
-						return getEpisode(epId);
+						return getEpisode(epId, segmentId);
 					});
 			}
+		};
+
+		svc.getEpisodeOverview = function (epId) {
+			return GET("/v3/episodes/" + epId);
+		};
+		svc.getNarrativeList = function () {
+			return GET("/v3/narratives/");
+		};
+
+		svc.createUserGroup = function (groupName) {
+			return POST("/v3/groups", {
+				"group": {
+					"name": groupName
+				}
+			});
+		};
+
+		svc.createNarrative = function (narrativeData) {
+			return POST("/v3/narratives", narrativeData);
+		};
+		svc.updateNarrative = function (narrativeData) {
+			return PUT("/v3/narratives/" + narrativeData._id, narrativeData);
+		};
+
+		svc.createChildEpisode = function (childData) {
+			console.log("about to create child epsiode", childData);
+			return POST("/v3/episodes", {
+				"episode": childData
+			});
+		};
+
+		svc.createEpisodeSegment = function (narrativeId, segmentData) {
+			return POST("/v3/timelines/" + narrativeId + "/episode_segments", segmentData);
+		};
+
+		svc.storeTimeline = function (narrativeId, timeline) {
+			console.log("About to store timeline", timeline);
+			if (timeline._id) {
+				return PUT("/v3/timelines/" + timeline._id, timeline, function (ret) {
+					// TEMPORARY until api stops doing this
+					if (typeof ret.name === 'string') {
+						ret.name = {
+							en: ret.name
+						};
+					}
+					if (typeof ret.description === 'string') {
+						ret.description = {
+							en: ret.description
+						};
+					}
+					return ret;
+				});
+			} else {
+				return POST("/v3/narratives/" + narrativeId + "/timelines", timeline, function (ret) {
+					// TEMPORARY until api stops doing this
+					if (typeof ret.name === 'string') {
+						ret.name = {
+							en: ret.name
+						};
+					}
+					if (typeof ret.description === 'string') {
+						ret.description = {
+							en: ret.description
+						};
+					}
+					return ret;
+				});
+			}
+		};
+
+		svc.getSingleAsset = function (assetId) {
+			return GET("/v1/assets/" + assetId);
 		};
 
 		var dataCache = {
@@ -181,7 +263,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
-		var getEpisode = function (epId) {
+		var getEpisode = function (epId, segmentId) {
 			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId)
 				.success(function (episodeData) {
 
@@ -190,7 +272,7 @@ angular.module('com.inthetelling.story')
 
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
-						getEpisodeEvents(epId);
+						getEpisodeEvents(epId, segmentId);
 
 						// this will get the episode container and its assets, then iterate up the chain to all parent containers
 						// (In retrospect, would have been easier to just get all containers at once, but maybe someday we will have soooo many containers
@@ -209,13 +291,15 @@ angular.module('com.inthetelling.story')
 				});
 		};
 
-		var getEpisodeEvents = function (epId) {
-			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId + "/events")
+		var getEpisodeEvents = function (epId, segmentId) {
+			var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
+			$http.get(config.apiDataBaseUrl + endpoint)
 				.success(function (events) {
 
 					getEventActivityDataForUser(events, "Plugin", epId);
 
 					angular.forEach(events, function (eventData) {
+						eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
 						modelSvc.cache("event", svc.resolveIDs(eventData));
 					});
 					// Tell modelSvc it can build episode->scene->item child arrays
@@ -303,51 +387,54 @@ angular.module('com.inthetelling.story')
 		// a different idiom here, let's see if this is easier to conceptualize.
 
 		// to use GET(), pass in the API endpoint, and an optional callback for post-processing of the results
-		var GETcache = {}; // WARNING this is almost certainly not safe.  If server data changes, this will never find out about it because it will always read from cache instead. 
 		var GET = function (path, postprocessCallback) {
 			var defer = $q.defer();
-			if (GETcache[path]) {
-				defer.resolve(GETcache[path]);
-			}
 			authSvc.authenticate()
 				.then(function () {
-					return $http.get(config.apiDataBaseUrl + path);
-				})
-				.then(function (response) {
-					var ret = response.data;
-					if (postprocessCallback) {
-						ret = postprocessCallback(ret);
-					}
-					GETcache[path] = ret;
-					return defer.resolve(ret);
+					$http.get(config.apiDataBaseUrl + path).success(function (response) {
+						var ret = response;
+						if (postprocessCallback) {
+							ret = postprocessCallback(ret);
+						}
+						defer.resolve(ret);
+					}).error(function () {
+						console.log("ERROR");
+						defer.reject();
+					});
 				});
 			return defer.promise;
 		};
 
-		var PUT = function (path, putData) {
+		var PUT = function (path, putData, postprocessCallback) {
 			var defer = $q.defer();
 			$http({
 					method: 'PUT',
 					url: config.apiDataBaseUrl + path,
 					data: putData
 				})
-				.success(function (data) {
-					// console.log("Updated event:", data);
-					return defer.resolve(data);
+				.success(function (response) {
+					var ret = response;
+					if (postprocessCallback) {
+						ret = postprocessCallback(ret);
+					}
+					defer.resolve(ret);
 				});
 			return defer.promise;
 		};
 
-		var POST = function (path, postData) {
+		var POST = function (path, postData, postprocessCallback) {
 			var defer = $q.defer();
 			$http({
 					method: 'POST',
 					url: config.apiDataBaseUrl + path,
 					data: postData
 				})
-				.success(function (data) {
-					// console.log("Updated event:", data);
-					return defer.resolve(data);
+				.success(function (response) {
+					var ret = response;
+					if (postprocessCallback) {
+						ret = postprocessCallback(ret);
+					}
+					defer.resolve(ret);
 				});
 			return defer.promise;
 		};
@@ -364,26 +451,6 @@ angular.module('com.inthetelling.story')
 				});
 			return defer.promise;
 		};
-
-		/*
-		Circumstances in which we need containers:
-		- start at root, climb down on demand
-		- start at episode, need all ancestors
-
-
-		loading any container should
-		- cache its own (complete) data
-		- cache its (incomplete) children
-		load all of its ancestors if not already present (datasvc will need to keep a list of container_ids it's already requested, to avoid circular refs to modelSvc)
-
-
-
-
-
-
-
-
-		*/
 
 		svc.getContainerRoot = function () {
 			// This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
@@ -402,7 +469,7 @@ angular.module('com.inthetelling.story')
 		};
 		svc.getSingleContainer = function (id) {
 			return GET("/v3/containers/" + id, function (containers) {
-				console.log("CHILD: ", containers);
+				// console.log("CHILD: ", containers);
 				modelSvc.cache("container", containers[0]);
 				return containers[0]._id;
 			});
@@ -425,7 +492,7 @@ angular.module('com.inthetelling.story')
 
 			POST("/v3/containers", newContainer)
 				.then(function (data) {
-					console.log("CREATED CONTAINER", data);
+					// console.log("CREATED CONTAINER", data);
 					modelSvc.cache("container", data);
 
 					var parentId;
@@ -586,7 +653,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 		svc.prepItemForStorage = prepItemForStorage;
-		svc.detachMasterAsset = function(epData) {
+		svc.detachMasterAsset = function (epData) {
 			var preppedData = prepEpisodeForStorage(epData);
 			preppedData.master_asset_id = null;
 			console.log("prepped sans master_asset_id for storage:", preppedData);

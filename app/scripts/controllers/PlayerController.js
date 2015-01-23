@@ -64,13 +64,20 @@ angular.module('com.inthetelling.story')
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		// console.log("playerController init");
-		appState.init();
+		console.log("playerController init");
 
 		errorSvc.init();
-		appState.episodeId = $routeParams.epId;
+		console.log($routeParams, appState);
+
+		if ($routeParams.epId) { // if this is missing we're in a narrative, which will init appstate and episodeID for us
+			appState.init();
+			appState.episodeId = $routeParams.epId;
+		} else {
+			$scope.narrativeId = $routeParams.narrativeId;
+		}
+
 		modelSvc.addLandingScreen(appState.episodeId);
-		dataSvc.getEpisode(appState.episodeId);
+		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
 
 		console.log("USER:", appState.user, appState.product);
 

@@ -7,6 +7,11 @@
 	}">
 	<!-- TODO: make sure user has admin role for canEditContent -->
 	<div class="toolbar">
+		<div ng-if="narrativeId" class="buttongroup">
+			<a class="button button-exitEpisode" href="/#/story/{{narrativeId}}">
+				<span>Exit</span>
+			</a>
+		</div>
 		<div class="modegroup buttongroup">
 			<nav role="navigation">
 				<button tabindex="0" class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')" aria-label="Watch">
@@ -175,10 +180,3 @@
 		</div>
 	</div>
 </div>
-
-
-<!-- 
-<a href="javascript:void 1;" ng-click="showDebug=!showDebug">DEBUG:</a>
-<pre ng-if="showDebug === true">{{appState | pretty }}</pre>
-<pre ng-if="showDebug === true">{{episode | pretty}}</pre>
- -->

@@ -179,6 +179,10 @@ button {
 .button-watch:before {
 	content: "\e610"
 }
+.button-exitEpisode:before {
+	font-family: sans-serif;
+	content: "⌫";
+}
 .button-discover:before {
 	content: "\e60f"
 }

@@ -1,0 +1,127 @@
+<div class="narrative">
+
+	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
+	<div ng-if="!loading">
+
+		<div ng-if="userIsAdmin">
+			Temporary edit toggle for admin users:
+			<input type="checkbox" ng-model="blarg" ng-change="toggleOwnership(blarg)">
+		</div>
+
+		<div class="authoringForm" ng-if="isOwner">
+			<!-- begin edit -->
+
+			<h2>Narrative</h2>
+			<div class="field">
+				<div class="label">Name</div>
+				<div class="input">
+					<input ng-model="narrative.name.en">
+				</div>
+			</div>
+
+			<div class="field">
+				<div class="label">Description</div>
+				<div class="input">
+					<textarea ng-model="narrative.description.en"></textarea>
+				</div>
+			</div>
+
+			<div class="field">
+				<div class="label">Access</div>
+				<div class="input">
+					<label>
+						<input type="checkbox" ng-model="narrative.guest_access_allowed"> Guest access allowed
+					</label>
+				</div>
+			</div>
+
+			<div class="field controls">
+				<button ng-if="narrative._id" ng-click="updateNarrative()">
+
+					<span ng-if="narrative.saveInProgress">Saving...</span>
+					<span ng-if="!narrative.saveInProgress">Save changes</span>
+
+				</button>
+				<button ng-if="!narrative._id" ng-click="createNarrative()">Create narrative</button>
+			</div>
+
+			<h3>Timelines</h3>
+			<div class="storyTimeline" ng-repeat="timeline in narrative.timelines">
+
+				<div class="field">
+					<div class="label">Sort order</div>
+					<div class="input">
+						<input ng-model="timeline.sort_order">
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">Timeline name</div>
+					<div class="input">
+						<input ng-model="timeline.name.en">
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">Description</div>
+					<div class="input">
+						<textarea ng-model="timeline.description.en"></textarea>
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">Path</div>
+					<div class="input">
+						<input ng-model="timeline.path">
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">Access</div>
+					<div class="input">
+						<label>
+							<input type="checkbox" ng-model="timeline.hidden"> Hidden from users
+						</label>
+					</div>
+				</div>
+
+				<div class="field controls">
+					<button ng-click="saveTimeline(timeline)">
+						<span ng-if="timeline.saveInProgress">Saving...</span>
+						<span ng-if="!timeline.saveInProgress">Save timeline</span>
+					</button>
+				</div>
+
+			</div>
+
+			<div style="padding: 0.5em">
+				<button ng-if="narrative._id && !isAddingTimeline" ng-click="toggleEpisodeList()">
+					<span ng-if="showEpisodeList">Cancel</span>
+					<span ng-if="!showEpisodeList">Add timeline</span>
+				</button>
+			</div>
+
+			<div itt-episode-list x-forNavigation="true" class="admin episodePicker" ng-if="showEpisodeList">
+				Choose an episode:
+				<ul ng-repeat="child in root.children" itt-container-episodes="containers[child._id]" depth="0"></ul>
+			</div>
+
+
+			<!-- end edit-->
+		</div>
+
+		<div class="narrative" ng-if="!isOwner">
+			<!-- begin display -->
+			<h2 ng-bind-html="narrative.name.en"></h2>
+			<p ng-bind-html="narrative.description.en"></p>
+
+			<div class="storyTimeline" ng-repeat="timeline in narrative.timelines | filter:{hidden:!true} | orderBy:'sort_order'">
+				<h3>
+					<a href="/#/story/{{narrative._id}}/{{timeline.path}}">{{timeline.name.en}}</a>
+				</h3>
+				<p>{{timeline.description.en}}</p>
+				{{timeline.episode_segments[0].end_time | asTime}}
+			</div>
+			<!-- end display -->
+		</div>
+
+		<pre style="font-size: 0.8em;">{{narrative|pretty}}</pre>
+	</div>
+	<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
+</div>

@@ -75,21 +75,36 @@
 }
 .admin .container {
   margin-left: 1em;
+  cursor: pointer;
+  cursor: hand;
+  list-style: none;
+}
+.episodePicker {
+  background: none repeat scroll 0 0 #fff;
+  border: 1px solid;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
+  padding: 0.5em;
+  position: absolute;
 }
 .admin .container.customer {
   margin-left: 0;
 }
-.admin .isOpen:before {
+.admin .container.isOpen:before {
   content: "-";
   display: inline-block;
   width: 1em;
   opacity: 0.5;
+  float: left;
 }
-.admin .isClosed:before {
+.admin .container.isClosed:before {
   content: "+";
   display: inline-block;
   width: 1em;
   opacity: 0.5;
+  float: left;
 }
 .admin .hoverIndicator:hover {
   background-color: #EEE;

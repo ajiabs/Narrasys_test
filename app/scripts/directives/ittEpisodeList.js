@@ -7,10 +7,11 @@ angular.module('com.inthetelling.story')
 			replace: true,
 
 			link: function (scope) {
-				if (!authSvc.userHasRole('admin')) {
-					console.log(appState.user, authSvc.userHasRole('admin'));
-					$location.path('/');
-				}
+				authSvc.authenticate().then(function () {
+					if (!authSvc.userHasRole('admin')) {
+						$location.path('/');
+					}
+				});
 
 				scope.logout = function () {
 					authSvc.logout();

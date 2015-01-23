@@ -1,0 +1,17 @@
+.narrative {
+	padding: 1em;
+}
+.storyTimeline {
+	border: 1px solid #CCC;
+	padding: 0.5em;
+}
+.narrative button {
+	background-color: #DDD;
+	border-radius: 8px;
+	font-size: 86%;
+	padding: 0.3em;
+}
+.narrative .controls {
+	text-align: right;
+}
+

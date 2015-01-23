@@ -12,7 +12,7 @@ angular.module('com.inthetelling.story')
 	.factory('errorSvc', function () {
 		var svc = {};
 
-		// TODO make the field names less ridiculously inconsistent.  
+		// TODO This is a mess.  make the field names less ridiculously inconsistent.  
 
 		svc.init = function () {
 			svc.errors = [];
@@ -28,12 +28,19 @@ angular.module('com.inthetelling.story')
 				console.warn("401 detected");
 			}
 			if (exception && exception.data) {
-				// API errors go here:
-				svc.errors.push({
-					"exception": exception,
-					"cause": exception.data.error
-						//"stack": exception.stack.toString()
-				});
+				// API errors go here.
+
+				if (typeof exception.data === "string") {
+					// hide ruby stack trace:
+					exception.data = exception.data.replace(/\n/g, '').replace(/==/g, '').replace(/-----.*/g, '');
+					svc.errors.push({
+						"exception": exception
+					});
+				} else {
+					svc.errors.push({
+						"exception": exception
+					});
+				}
 			} else {
 				// generic thrown javascript error.  TODO show these too, but only in dev environment (they're often not meaningful)
 				console.warn("ErrorSvc caught error: ", exception, cause);

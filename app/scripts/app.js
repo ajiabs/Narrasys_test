@@ -12,23 +12,30 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 		.when('/auth', {
 			template: '<div itt-login></div>',
 		})
+		.when('/stories', {
+			title: "Existing narratives",
+			template: '<div itt-narrative-list></div>',
+		})
+		.when('/story', {
+			template: '<div itt-narrative></div>',
+		})
+		.when('/story/:narrativeId', {
+			template: '<div itt-narrative></div>',
+		})
+		.when('/story/:narrativeId/:timelinePath', {
+			template: '<div itt-narrative-timeline></div>',
+			reloadOnSearch: false
+		})
 		.when('/episodes', {
 			title: "Available episodes",
 			templateUrl: 'templates/producer/episodelist.html'
 		})
-		// Was temporary.  TODO remove this controller when we're certain it's dead
-		// .when('/producer/questioneditor', {
-		// 	title: "Plugin authoring for standalone questions",
-		// 	controller: 'QuestionAuthoringController',
-		// 	templateUrl: 'templates/producer/questionauthoring.html',
-		// })
 		// Was for testing uploads
 		// .when('/upload', {
 		// 	title: "Upload test",
 		// 	templateUrl: 'templates/producer/upload.html'
 		// })
-
-	.when('/episode/:epId', {
+		.when('/episode/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
@@ -50,8 +57,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 				}
 			}
 		})
-
-	.when('/sxs/:epId', {
+		.when('/sxs/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
@@ -98,10 +104,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
 })
 
-.run(function ($rootScope) {
+.run(function ($rootScope, errorSvc) {
 	// set page titles on route changes:
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
+		errorSvc.init(); // clear display of any errors from the previous route
 	});
 
 	// globally emit rootscope event for certain keypresses:
