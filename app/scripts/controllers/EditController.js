@@ -321,7 +321,7 @@ TODO merge 'comment' with 'annotation'?
 					"link": "templates/item/link.html",
 					"image": "templates/item/image.html",
 					"file": "templates/item/link.html",
-					"question": "templates/item/question-mc-formative.html",
+					"question": "templates/item/question-mc.html",
 					"video": "TODO:VIDEO"
 				};
 				stub.templateUrl = defaultTemplateUrls[type];
