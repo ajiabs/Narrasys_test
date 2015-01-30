@@ -15,11 +15,8 @@ angular.module('com.inthetelling.story')
 				showChart: '='
 			},
 			templateUrl: "templates/item/question-mc-inner.html",
-			link: function (scope, element, attrs) {
-				//attrs.$observe('showChart', function (data) {
-			//		scope.showChart = (data === 'true');
-			//	});
-				console.log("scope.showChart", scope.showChart);
+			link: function (scope) {
+				
 				scope.scoreQuiz = function (i) {
 					scope.plugin.distractors[i].selected = true;
 					scope.plugin.hasBeenAnswered = true;
