@@ -2,6 +2,7 @@
 
 angular.module('com.inthetelling.story')
 	.controller('EditController', function ($scope, $rootScope, appState, dataSvc, modelSvc, timelineSvc) {
+		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		$scope.chooseAsset = function () {
 			$scope.showAssetPicker = true;
@@ -51,8 +52,9 @@ angular.module('com.inthetelling.story')
 				text: ""
 			});
 		};
-	
+
 		$scope.addEvent = function (producerItemType) {
+			//captureCurrentScenes();
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
 			modelSvc.cache("event", newEvent);
@@ -70,27 +72,33 @@ angular.module('com.inthetelling.story')
 
 		$scope.saveEvent = function () {
 			var toSave = angular.copy(appState.editEvent);
-
-			// TODO if we are saving a scene, we need to update other scenes as well to get the end times correct.
-			// THough we are ignoring the scene end times anyway, so maybe don't bother?
 			if (toSave._type === 'Scene') {
-				console.warn("TODO need to update other scenes' end times.");
+				var adjusted = adjustScenes(toSave);
+				angular.forEach(adjusted, function (scene) {
+					dataSvc.storeItem(scene)
+						.then(function (data) {
+							console.log("scene end_time updated");
+						}, function (data) {
+							console.error("FAILED TO STORE EVENT", data);
+						});
+				});
 			}
 
-			dataSvc.storeItem(toSave).then(function (data) {
-				if (appState.editEvent._id === 'internal:editing') {
-					// update the new item with its real ID (and remove the temp version)
-					timelineSvc.removeEvent("internal:editing");
-					delete(modelSvc.events["internal:editing"]);
-					modelSvc.cache("event", dataSvc.resolveIDs(data));
-					modelSvc.resolveEpisodeEvents(appState.episodeId);
-					timelineSvc.injectEvents([modelSvc.events[data._id]]);
-				}
+			dataSvc.storeItem(toSave)
+				.then(function (data) {
+					if (appState.editEvent._id === 'internal:editing') {
+						// update the new item with its real ID (and remove the temp version)
+						timelineSvc.removeEvent("internal:editing");
+						delete(modelSvc.events["internal:editing"]);
+						modelSvc.cache("event", dataSvc.resolveIDs(data));
+						modelSvc.resolveEpisodeEvents(appState.episodeId);
+						timelineSvc.injectEvents([modelSvc.events[data._id]]);
+					}
 
-				appState.editEvent = false;
-			}, function (data) {
-				console.error("FAILED TO STORE EVENT", data);
-			});
+					appState.editEvent = false;
+				}, function (data) {
+					console.error("FAILED TO STORE EVENT", data);
+				});
 
 		};
 
@@ -111,10 +119,91 @@ angular.module('com.inthetelling.story')
 					console.error("FAILED TO STORE EPISODE", data);
 				});
 		};
-
-		$scope.editCurrentScene = function () {
+		var getScenes = function () {
 			var episode = modelSvc.episodes[appState.episodeId];
-			angular.forEach(episode.scenes, function (scene) {
+			return episode.scenes;
+		};
+		var getScenesSnapshot = function () {
+			//var episode = modelSvc.episodes[appState.episodeId];
+			return angular.copy(getScenes());
+		};
+
+		var resetScenes = function (updatedScenes, originalScene) {
+			for (var i = 0; i < updatedScenes.length; i++) {
+				if (typeof (updatedScenes[i]._id) == 'undefined' || updatedScenes[i]._id == 'internal:editing') {
+					updatedScenes.splice(i, 1);
+					break;
+				}
+				if (originalScene) {
+					if (updatedScenes[i]._id == originalScene._id) {
+						updatedScenes[i] = originalScene;
+						break;
+					}
+				}
+			}
+			return updatedScenes;
+		};
+
+		var fixEndTimes = function (scenes) {
+			for (var i = 1, len = scenes.length; i < len - 1; i++) {
+				if (scenes[i].end_time != scenes[i + 1].start_time) {
+					scenes[i].end_time = scenes[i + 1].start_time;
+				}
+			}
+		};
+		var pushScene = function (scenes, scene) {
+			var exists = false;
+			for (var i = 0, len = scenes.length; i < len; i++) {
+				if (scenes[i]._id == scene._id) {
+					exists = true;
+					//do nothing, as already exists	
+					break;
+				}
+			}
+			if (!exists) {
+				scenes.push(scene);
+			}
+		}
+		var removeScene = function (scenes, id) {
+			for (var i = 0, len = scenes.length; i < len; i++) {
+				if (scenes[i]._id == id) {
+					scenes.splice(i, 1);
+					break;
+				}
+			}
+		};
+		var adjustScenes = function (modifiedScene, isDelete) {
+			var scenes = getScenesSnapshot();
+			var adjusted = [];
+			var sortScenes = function (a, b) {
+				return a.start_time - b.start_time;
+			};
+
+			// get scenes back into original state (before editing,adding,deleting)
+			if (isDelete) {
+				pushScene(scenes, $scope.uneditedScene);
+			} else {
+				resetScenes(scenes, $scope.uneditedScene);
+			}
+			scenes = scenes.sort(sortScenes);
+			fixEndTimes(scenes);
+
+			// now scenes is back to pre edit state.  let's drop in our new scene and then see what is impacted (and needs updating)
+			removeScene(scenes, modifiedScene._id);
+			if (!isDelete) {
+				scenes.push(modifiedScene);
+			}
+			scenes = scenes.sort(sortScenes);
+			for (var i = 1; i < scenes.length - 1; i++) {
+				if (scenes[i].end_time != scenes[i + 1].start_time) {
+					scenes[i].end_time = scenes[i + 1].start_time;
+					adjusted.push(scenes[i]);
+				}
+			}
+			return adjusted;
+		};
+		$scope.editCurrentScene = function () {
+			angular.forEach(getScenes(), function (scene) {
 				if (scene.isCurrent) {
 					// TODO This is redundant with ittItem editItem...
 					appState.editEvent = modelSvc.events[scene._id];
@@ -135,26 +224,39 @@ angular.module('com.inthetelling.story')
 		$scope.deleteEvent = function (eventId) {
 			if (window.confirm("Are you sure you wish to delete this item?")) {
 				console.log("About to delete ", eventId);
-
-				var eventType = modelSvc.events[eventId]._type;
-				dataSvc.deleteItem(eventId).then(function (data) {
-					console.log("success deleting:", data);
-					if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
-						dataSvc.deleteAsset(modelSvc.events[eventId].asset._id);
-					}
-					timelineSvc.removeEvent(eventId);
-					delete modelSvc.events[eventId];
-					modelSvc.resolveEpisodeEvents(appState.episodeId);
-
-					if (eventType === 'Scene') {
-						timelineSvc.updateSceneTimes(appState.episodeId);
-					}
-
-					appState.editEvent = false;
-					appState.videoControlsLocked = false;
-				}, function (data) {
-					console.log("failed to delete:", data);
+				//fabricate scene event
+				var event = {};
+				event._id = eventId;
+				var adjusted = adjustScenes(event, true);
+				angular.forEach(adjusted, function (scene) {
+					dataSvc.storeItem(scene)
+						.then(function (data) {
+							console.log("scene end_time updated");
+						}, function (data) {
+							console.error("FAILED TO STORE EVENT", data);
+						});
 				});
+				
+				var eventType = modelSvc.events[eventId]._type;
+				dataSvc.deleteItem(eventId)
+					.then(function (data) {
+						console.log("success deleting:", data);
+						if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
+							dataSvc.deleteAsset(modelSvc.events[eventId].asset._id);
+						}
+						timelineSvc.removeEvent(eventId);
+						delete modelSvc.events[eventId];
+						modelSvc.resolveEpisodeEvents(appState.episodeId);
+
+						if (eventType === 'Scene') {
+							timelineSvc.updateSceneTimes(appState.episodeId);
+						}
+
+						appState.editEvent = false;
+						appState.videoControlsLocked = false;
+					}, function (data) {
+						console.log("failed to delete:", data);
+					});
 			}
 		};
 
