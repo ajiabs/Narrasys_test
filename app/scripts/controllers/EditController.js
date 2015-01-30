@@ -76,7 +76,7 @@ angular.module('com.inthetelling.story')
 				var adjusted = adjustScenes(toSave);
 				angular.forEach(adjusted, function (scene) {
 					dataSvc.storeItem(scene)
-						.then(function (data) {
+						.then(function () {
 							console.log("scene end_time updated");
 						}, function (data) {
 							console.error("FAILED TO STORE EVENT", data);
@@ -130,12 +130,12 @@ angular.module('com.inthetelling.story')
 
 		var resetScenes = function (updatedScenes, originalScene) {
 			for (var i = 0; i < updatedScenes.length; i++) {
-				if (typeof (updatedScenes[i]._id) == 'undefined' || updatedScenes[i]._id == 'internal:editing') {
+				if (typeof (updatedScenes[i]._id) === 'undefined' || updatedScenes[i]._id === 'internal:editing') {
 					updatedScenes.splice(i, 1);
 					break;
 				}
 				if (originalScene) {
-					if (updatedScenes[i]._id == originalScene._id) {
+					if (updatedScenes[i]._id === originalScene._id) {
 						updatedScenes[i] = originalScene;
 						break;
 					}
@@ -146,7 +146,7 @@ angular.module('com.inthetelling.story')
 
 		var fixEndTimes = function (scenes) {
 			for (var i = 1, len = scenes.length; i < len - 1; i++) {
-				if (scenes[i].end_time != scenes[i + 1].start_time) {
+				if (scenes[i].end_time !== scenes[i + 1].start_time) {
 					scenes[i].end_time = scenes[i + 1].start_time;
 				}
 			}
@@ -154,7 +154,7 @@ angular.module('com.inthetelling.story')
 		var pushScene = function (scenes, scene) {
 			var exists = false;
 			for (var i = 0, len = scenes.length; i < len; i++) {
-				if (scenes[i]._id == scene._id) {
+				if (scenes[i]._id === scene._id) {
 					exists = true;
 					//do nothing, as already exists	
 					break;
@@ -163,10 +163,10 @@ angular.module('com.inthetelling.story')
 			if (!exists) {
 				scenes.push(scene);
 			}
-		}
+		};
 		var removeScene = function (scenes, id) {
 			for (var i = 0, len = scenes.length; i < len; i++) {
-				if (scenes[i]._id == id) {
+				if (scenes[i]._id === id) {
 					scenes.splice(i, 1);
 					break;
 				}
@@ -195,7 +195,7 @@ angular.module('com.inthetelling.story')
 			}
 			scenes = scenes.sort(sortScenes);
 			for (var i = 1; i < scenes.length - 1; i++) {
-				if (scenes[i].end_time != scenes[i + 1].start_time) {
+				if (scenes[i].end_time !== scenes[i + 1].start_time) {
 					scenes[i].end_time = scenes[i + 1].start_time;
 					adjusted.push(scenes[i]);
 				}
@@ -230,7 +230,7 @@ angular.module('com.inthetelling.story')
 				var adjusted = adjustScenes(event, true);
 				angular.forEach(adjusted, function (scene) {
 					dataSvc.storeItem(scene)
-						.then(function (data) {
+						.then(function () {
 							console.log("scene end_time updated");
 						}, function (data) {
 							console.error("FAILED TO STORE EVENT", data);
