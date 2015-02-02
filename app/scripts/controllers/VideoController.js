@@ -97,6 +97,20 @@ angular.module('com.inthetelling.story')
 				$scope.playerState = 'pause';
 			}, false);
 
+			$scope.changeVideoBandwidth = function () {
+				console.log("changeVideoBandwidth");
+				var currentTime = $scope.videoNode.currentTime;
+				$scope.videoNode.pause();
+				/*$scope.video.urls.mpeg4 = "https://s3.amazonaws.com/itt.uploads/development/API%20Development/Course%201/Session%201/Episode%201/v_7abjCKYdnezGGXoX7neg_960x540.mp4";
+				$scope.video.urls.webm = "https://s3.amazonaws.com/itt.uploads/development/API%20Development/Course%201/Session%201/Episode%201/v_7abjCKYdnezGGXoX7neg_960x540.webm";*/
+				// if there are lower res versions, switch to them
+				if($scope.video.urls.lowRes.mpeg4) $scope.video.urls.mpeg4 = $scope.video.urls.lowRes.mpeg4;
+				if($scope.video.urls.lowRes.webm) $scope.video.urls.webm = $scope.video.urls.lowRes.webm;
+				$scope.videoNode.load();
+				$scope.seek(currentTime);
+				$scope.videoNode.play();
+			};
+
 			$scope.babysitHTML5Video();
 
 			$scope.getBufferPercent = function () {
@@ -147,18 +161,25 @@ angular.module('com.inthetelling.story')
 		};
 
 		// DO NOT CALL ANY OF THE BELOW DIRECTLY!
-		// Instead call via timelineSvc; otherwise the timeline won't know the video is playing 
-
+		// Instead call via timelineSvc; otherwise the timeline won't know the video is playing
+		var numberOfStalls = 0;
 		$scope.babysitHTML5Video = function () {
+			numberOfStalls = 0;
 			// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
 			$scope.babysitter = $interval(function () {
 				// console.log($scope.videoNode.currentTime, appState.timelineState);
 				if (appState.timelineState === 'playing') {
 					if ($scope.lastPlayheadTime === $scope.videoNode.currentTime) {
 						timelineSvc.stall();
+						// for some reason, this has to be called twice
+						if(numberOfStalls++ < 2) {
+							$scope.changeVideoBandwidth();
+						}
+						console.log("numberOfStalls = ", numberOfStalls);
 					}
 					$scope.lastPlayheadTime = $scope.videoNode.currentTime;
 				} else if (appState.timelineState === 'buffering') {
+					console.log("buffering");
 					if ($scope.lastPlayheadTime !== $scope.videoNode.currentTime) {
 						timelineSvc.unstall();
 					}

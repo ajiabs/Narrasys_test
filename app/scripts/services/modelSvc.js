@@ -760,6 +760,7 @@ angular.module('com.inthetelling.story')
 		var resolveVideo = function (videoAsset) {
 			var videoObject = {};
 			if (videoAsset.alternate_urls) {
+				videoObject.lowRes = {};
 				// This will eventually replace the old method below.
 				// Sort them out by file extension first, then use _chooseVideoAsset to keep one of each type.
 
@@ -770,13 +771,19 @@ angular.module('com.inthetelling.story')
 					} else {
 						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
 						case "mp4":
-							videoObject.mpeg4 = _chooseVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
+							var videoAssetObject = _chooseVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
+							videoObject.mpeg4 = videoAssetObject.larger;
+							videoObject.lowRes.mpeg4 = videoAssetObject.smaller;
 							break;
 						case "m3u8":
-							videoObject.m3u8 = _chooseVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
+							var videoAssetObject = _chooseVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
+							videoObject.m3u8 = videoAssetObject.larger;
+							videoObject.lowRes.m3u8 = videoAssetObject.smaller;
 							break;
 						case "webm":
-							videoObject.webm = _chooseVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
+							var videoAssetObject = _chooseVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
+							videoObject.webm = videoAssetObject.larger;
+							videoObject.lowRes.webm = videoAssetObject.smaller;
 							break;
 						}
 					}
@@ -854,12 +861,15 @@ angular.module('com.inthetelling.story')
 
 		var _chooseVideoAsset = function (a, b) {
 			if (!a && b) {
+				return { larger : b, smaller : null };
 				return b;
 			}
 			if (!b) {
+				return { larger : a, smaller : null };
 				return a;
 			}
 			if (!a && !b) {
+				return { larger : null, smaller : null };
 				return "";
 			}
 			// most video files come from the API with their width and height in the URL as blahblah123x456.foo:
@@ -868,6 +878,12 @@ angular.module('com.inthetelling.story')
 			// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out 
 			var aTest = a.match(regexp) || [0, 0];
 			var bTest = b.match(regexp) || [0, 0];
+
+			var smaller =  (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
+			var larger = (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
+			console.log("smaller = ", smaller);
+			console.log("larger = ", larger);
+			return { larger : larger, smaller : smaller };
 
 			// assume touchscreen means mobile, so we want the smaller video. TODO be less arbitrary about that
 			if (appState.isTouchDevice) {
