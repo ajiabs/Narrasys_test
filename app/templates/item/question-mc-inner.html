@@ -1,7 +1,7 @@
 	<div class="question">
 		<!-- begin plugin.  TODO make this its own directive -->
 		<p ng-bind-html="plugin.questiontext"></p>
-		<div ng-if="questionType == 'mc-formative'">
+		<div ng-if="!showChart">
 		
 		<div ng-repeat="distractor in choices">
 			<div ng-if="distractor.text != ''">
@@ -20,7 +20,7 @@
 
 		</div>
 	</div>
-		<div ng-if="questionType == 'mc-poll'">
+		<div ng-if="showChart">
 				<div ng-if="!plugin.hasBeenAnswered" ng-repeat="distractor in plugin.distractors">
 			<div ng-if="distractor.text != ''">
 				<label>
