@@ -1,8 +1,10 @@
 'use strict';
 
 // TODO youtube support for multiple playback speeds?
-// TODO: $destroy is never called for this controller, therefore videoNode lingers.  
-// Move that to the directive
+// TODO some scoping untidiness here; some of htis should have been done in a directive
+
+// TODO: counting stalls works ok-ish, but look into watching buffer % directly instead 
+// so we can preemptively switch streams and not have to do all the intentionalStall nonsense
 
 angular.module('com.inthetelling.story')
 	.controller('VideoController', function ($q, $scope, $timeout, $interval, $window, $document, appState, timelineSvc) {
@@ -63,12 +65,10 @@ angular.module('com.inthetelling.story')
 			}, function (isReady) {
 				if (isReady) {
 					unwatch();
-
 					$scope.getBufferPercent = function () {
 						appState.bufferedPercent = $scope.YTPlayer.getVideoLoadedFraction() * 100;
 						return appState.bufferedPercent;
 					};
-
 					timelineSvc.registerVideo($scope);
 				}
 			});
@@ -96,6 +96,31 @@ angular.module('com.inthetelling.story')
 			$scope.videoNode.addEventListener('pause', function () {
 				$scope.playerState = 'pause';
 			}, false);
+
+			$scope.changeVideoBandwidth = function () {
+				console.log("changeVideoBandwidth");
+				var currentTime = $scope.videoNode.currentTime;
+				$scope.videoNode.pause();
+
+				// TEST URLs:
+				// $scope.video.urls.mpeg4 = "https://s3.amazonaws.com/itt.uploads/development/API%20Development/Course%201/Session%201/Episode%201/v_7abjCKYdnezGGXoX7neg_960x540.mp4";
+				// $scope.video.urls.webm = "https://s3.amazonaws.com/itt.uploads/development/API%20Development/Course%201/Session%201/Episode%201/v_7abjCKYdnezGGXoX7neg_960x540.webm";
+
+				// if there are lower res versions, switch to them
+				if ($scope.video.urls.lowRes.mpeg4) {
+					$scope.video.urls.mpeg4 = $scope.video.urls.lowRes.mpeg4;
+				}
+				if ($scope.video.urls.lowRes.webm) {
+					$scope.video.urls.webm = $scope.video.urls.lowRes.webm;
+				}
+
+				// Need to wait a tick for the DOM to have updated before callign videoNode.load():
+				$timeout(function () {
+					$scope.videoNode.load();
+					$scope.seek(currentTime);
+					$scope.videoNode.play();
+				});
+			};
 
 			$scope.babysitHTML5Video();
 
@@ -147,15 +172,22 @@ angular.module('com.inthetelling.story')
 		};
 
 		// DO NOT CALL ANY OF THE BELOW DIRECTLY!
-		// Instead call via timelineSvc; otherwise the timeline won't know the video is playing 
+		// Instead call via timelineSvc; otherwise the timeline won't know the video is playing
+		var numberOfStalls = 0;
+		$scope.intentionalStall = false;
 
 		$scope.babysitHTML5Video = function () {
+			numberOfStalls = 0;
 			// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
 			$scope.babysitter = $interval(function () {
 				// console.log($scope.videoNode.currentTime, appState.timelineState);
 				if (appState.timelineState === 'playing') {
 					if ($scope.lastPlayheadTime === $scope.videoNode.currentTime) {
 						timelineSvc.stall();
+						if (!$scope.intentionalStall && numberOfStalls++ === 1) {
+							$scope.changeVideoBandwidth();
+						}
+						// console.log("numberOfStalls = ", numberOfStalls);
 					}
 					$scope.lastPlayheadTime = $scope.videoNode.currentTime;
 				} else if (appState.timelineState === 'buffering') {
@@ -167,8 +199,9 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.$on("$destroy", function () {
-			// console.log("killing the babysitter (ew)");
 			$interval.cancel($scope.babysitter);
+			$timeout.cancel($scope.stallGracePeriod);
+			delete $scope.videoNode; // possibly unnecessary, but just for safety's sake
 		});
 
 		$scope.stall = function () {
@@ -224,10 +257,11 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		$scope.seek = function (t) {
+		$scope.seek = function (t, intentionalStall) {
 			// console.log("VIDEO seek to ", t);
 			var videoNotReady = false;
 			try {
+				$scope.intentionalStall = true;
 				if ($scope.videoType === 'youtube') {
 					var wasPlaying = (appState.timelineState === 'playing');
 					$scope.YTPlayer.seekTo(t, true);
@@ -237,12 +271,19 @@ angular.module('com.inthetelling.story')
 				} else {
 					if ($scope.videoNode.readyState === 4) {
 						$scope.videoNode.currentTime = t;
+						$scope.stallGracePeriod = $timeout(function () {
+							$scope.intentionalStall = false;
+						}, 1000); // So we won't interpret user-triggered seeks as poor bandwidth
 					} else {
 						// video is partially loaded but still not seek-ready
+						$scope.intentionalStall = false;
+						$timeout.cancel($scope.stallGracePeriod);
 						videoNotReady = true;
 					}
 				}
 			} catch (e) {
+				$scope.intentionalStall = false;
+				$timeout.cancel($scope.stallGracePeriod);
 				videoNotReady = true;
 			}
 			if (videoNotReady) {
