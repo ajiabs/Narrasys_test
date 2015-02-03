@@ -881,3 +881,7 @@ support any question template, regardless of question type.
 Changes in v4.3.11:
 test deleting session cookies on logout
 
+------------------------------------------------
+Changes in v4.3.12:
+logout now calls server API instead of just dumping tokens
+
