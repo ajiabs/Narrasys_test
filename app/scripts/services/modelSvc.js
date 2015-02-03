@@ -772,17 +772,17 @@ angular.module('com.inthetelling.story')
 						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
 						case "mp4":
 							var videoAssetObject = _chooseVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
-							videoObject.mpeg4 = videoAssetObject.larger;
+							videoObject.mpeg4 = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
 							videoObject.lowRes.mpeg4 = videoAssetObject.smaller;
 							break;
 						case "m3u8":
 							var videoAssetObject = _chooseVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
-							videoObject.m3u8 = videoAssetObject.larger;
+							videoObject.m3u8 = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
 							videoObject.lowRes.m3u8 = videoAssetObject.smaller;
 							break;
 						case "webm":
 							var videoAssetObject = _chooseVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
-							videoObject.webm = videoAssetObject.larger;
+							videoObject.webm = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
 							videoObject.lowRes.webm = videoAssetObject.smaller;
 							break;
 						}
