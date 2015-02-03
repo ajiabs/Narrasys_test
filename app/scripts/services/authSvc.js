@@ -20,7 +20,10 @@ angular.module('com.inthetelling.story')
 			appState.user = {};
 			delete $http.defaults.headers.common.Authorization;
 			localStorage.removeItem(config.localStorageKey);
-			console.log($http.defaults.headers.common);
+			document.cookie = 'XSRF-TOKEN=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			document.cookie = '_tellit-api_session=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+			console.log(appState.user);
 		};
 
 		svc.adminLogin = function (authKey, password) {
@@ -86,6 +89,9 @@ angular.module('com.inthetelling.story')
 					authenticateDefer.resolve();
 				} else {
 					// start from scratch
+					console.log("Getting nonce");
+					console.log("headers:", $http.defaults.headers.common.Authorization);
+					console.log("localStorage:", localStorage.storyKey);
 					svc.getNonce().then(function (nonce) {
 						svc.getAccessToken(nonce).then(function () {
 							authenticateDefer.resolve();
