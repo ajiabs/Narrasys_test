@@ -35,7 +35,6 @@ angular.module('com.inthetelling.story')
 
 				// for admin logins only, for now. In future maybe oauth-based login will route through here too
 				scope.adminLogin = function () {
-					console.log(scope.loginForm.auth_key, scope.loginForm.password);
 					authSvc.adminLogin(scope.loginForm.auth_key, scope.loginForm.password).then(function () {
 						//$location.path('episodes');
 					}, function () {

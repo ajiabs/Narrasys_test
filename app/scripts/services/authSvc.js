@@ -17,18 +17,23 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.logout = function () {
-			appState.user = {};
-			delete $http.defaults.headers.common.Authorization;
-			localStorage.removeItem(config.localStorageKey);
-			document.cookie = 'XSRF-TOKEN=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			document.cookie = '_tellit-api_session=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-
-			console.log(appState.user);
+			$http({
+				method: 'GET',
+				url: config.apiDataBaseUrl + "/logout"
+			}).success(function (data) {
+				console.log("Logged out:", data);
+				appState.user = {};
+				delete $http.defaults.headers.common.Authorization;
+				localStorage.removeItem(config.localStorageKey);
+				// document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+				// document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			}).error(function (data) {
+				console.log("Failed to log out:", data);
+			});
 		};
 
 		svc.adminLogin = function (authKey, password) {
 			var loginDefer = $q.defer();
-			svc.logout();
 			$http({
 				method: 'POST',
 				url: config.apiDataBaseUrl + "/auth/identity/callback",
