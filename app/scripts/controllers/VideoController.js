@@ -261,7 +261,7 @@ angular.module('com.inthetelling.story')
 			// console.log("VIDEO seek to ", t);
 			var videoNotReady = false;
 			try {
-				$scope.intentionalStall = true;
+				$scope.intentionalStall = !!intentionalStall;
 				if ($scope.videoType === 'youtube') {
 					var wasPlaying = (appState.timelineState === 'playing');
 					$scope.YTPlayer.seekTo(t, true);
