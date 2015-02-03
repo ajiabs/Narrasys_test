@@ -762,26 +762,28 @@ angular.module('com.inthetelling.story')
 			if (videoAsset.alternate_urls) {
 				videoObject.lowRes = {};
 				// This will eventually replace the old method below.
-				// Sort them out by file extension first, then use _chooseVideoAsset to keep one of each type.
+				// Sort them out by file extension first, then size
+				// TODO we should really be making an array of stream sizes for each type, instead of 'larger' + 'smaller
 
 				var extensionMatch = /\.(\w+)$/;
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
 						videoObject.youtube = embeddableYoutubeUrl(videoAsset.alternate_urls[i]);
 					} else {
+						var videoAssetObject;
 						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
 						case "mp4":
-							var videoAssetObject = _chooseVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
+							videoAssetObject = _sortVideoAssets(videoObject.mpeg4, videoAsset.alternate_urls[i]);
 							videoObject.mpeg4 = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
 							videoObject.lowRes.mpeg4 = videoAssetObject.smaller;
 							break;
 						case "m3u8":
-							var videoAssetObject = _chooseVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
+							videoAssetObject = _sortVideoAssets(videoObject.m3u8, videoAsset.alternate_urls[i]);
 							videoObject.m3u8 = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
 							videoObject.lowRes.m3u8 = videoAssetObject.smaller;
 							break;
 						case "webm":
-							var videoAssetObject = _chooseVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
+							videoAssetObject = _sortVideoAssets(videoObject.webm, videoAsset.alternate_urls[i]);
 							videoObject.webm = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
 							videoObject.lowRes.webm = videoAssetObject.smaller;
 							break;
@@ -819,10 +821,8 @@ angular.module('com.inthetelling.story')
 			// Therefore we trick Chrome into thinking it is not the same video:
 
 			if (isChrome) {
-
 				var tDelimit;
 				var tParam = "t=" + new Date().getTime();
-
 				if (videoObject.mpeg4) {
 					tDelimit = videoObject.mpeg4.match(/\?/) ? "&" : "?";
 					videoObject.mpeg4 = videoObject.mpeg4 + tDelimit + tParam;
@@ -832,9 +832,7 @@ angular.module('com.inthetelling.story')
 					videoObject.webm = videoObject.webm + tDelimit + tParam;
 				}
 			}
-
 			// console.log("video asset:", videoObject);
-
 			videoAsset.urls = videoObject;
 			return videoAsset;
 		};
@@ -849,11 +847,9 @@ angular.module('com.inthetelling.story')
 			return "//www.youtube.com/embed/" + ytId;
 		};
 
-		// Private convenience function called only from within resolveMasterAssetVideo. Pass in two filenames.
-		// If one is empty, return the other; otherwise checks for a WxH portion in two
-		// filenames; returns whichever is bigger (on desktop) or smaller (on mobile).
-
-		var _chooseVideoAsset = function (a, b) {
+		// Private convenience function called only from within resolveMasterAssetVideo. Pass in up to two filenames,
+		// returns a sorted object of {larger: , smaller: } based on a WxH portion of the filenames
+		var _sortVideoAssets = function (a, b) {
 			if (!a && b) {
 				return {
 					larger: b,
@@ -881,8 +877,6 @@ angular.module('com.inthetelling.story')
 
 			var smaller = (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
 			var larger = (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
-			console.log("smaller = ", smaller);
-			console.log("larger = ", larger);
 			return {
 				larger: larger,
 				smaller: smaller

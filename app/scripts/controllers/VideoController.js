@@ -107,8 +107,12 @@ angular.module('com.inthetelling.story')
 				// $scope.video.urls.webm = "https://s3.amazonaws.com/itt.uploads/development/API%20Development/Course%201/Session%201/Episode%201/v_7abjCKYdnezGGXoX7neg_960x540.webm";
 
 				// if there are lower res versions, switch to them
-				if ($scope.video.urls.lowRes.mpeg4) $scope.video.urls.mpeg4 = $scope.video.urls.lowRes.mpeg4;
-				if ($scope.video.urls.lowRes.webm) $scope.video.urls.webm = $scope.video.urls.lowRes.webm;
+				if ($scope.video.urls.lowRes.mpeg4) {
+					$scope.video.urls.mpeg4 = $scope.video.urls.lowRes.mpeg4;
+				}
+				if ($scope.video.urls.lowRes.webm) {
+					$scope.video.urls.webm = $scope.video.urls.lowRes.webm;
+				}
 
 				// Need to wait a tick for the DOM to have updated before callign videoNode.load():
 				$timeout(function () {

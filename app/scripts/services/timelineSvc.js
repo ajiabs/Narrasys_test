@@ -634,7 +634,7 @@ angular.module('com.inthetelling.story')
 		var preloadImageAsset = function (event) {
 			if (event.asset && event.asset._type === 'Asset::Image') {
 				if (!alreadyPreloadedImages[event.asset.url]) {
-					console.log("Preloading ", event.asset.url);
+					// console.log("Preloading ", event.asset.url);
 					alreadyPreloadedImages[event.asset.url] = new Image();
 					alreadyPreloadedImages[event.asset.url].src = event.asset.url;
 				}
