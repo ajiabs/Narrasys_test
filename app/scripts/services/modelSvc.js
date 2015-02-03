@@ -861,16 +861,22 @@ angular.module('com.inthetelling.story')
 
 		var _chooseVideoAsset = function (a, b) {
 			if (!a && b) {
-				return { larger : b, smaller : null };
-				return b;
+				return {
+					larger: b,
+					smaller: null
+				};
 			}
 			if (!b) {
-				return { larger : a, smaller : null };
-				return a;
+				return {
+					larger: a,
+					smaller: null
+				};
 			}
 			if (!a && !b) {
-				return { larger : null, smaller : null };
-				return "";
+				return {
+					larger: null,
+					smaller: null
+				};
 			}
 			// most video files come from the API with their width and height in the URL as blahblah123x456.foo:
 			var regexp = /(\d+)x(\d+)\.\w+$/; // [1]=w, [2]=h
@@ -879,18 +885,15 @@ angular.module('com.inthetelling.story')
 			var aTest = a.match(regexp) || [0, 0];
 			var bTest = b.match(regexp) || [0, 0];
 
-			var smaller =  (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
+			var smaller = (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
 			var larger = (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
 			console.log("smaller = ", smaller);
 			console.log("larger = ", larger);
-			return { larger : larger, smaller : smaller };
+			return {
+				larger: larger,
+				smaller: smaller
+			};
 
-			// assume touchscreen means mobile, so we want the smaller video. TODO be less arbitrary about that
-			if (appState.isTouchDevice) {
-				return (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
-			} else {
-				return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
-			}
 		};
 
 		if (config.debugInBrowser) {
