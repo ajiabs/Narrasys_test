@@ -3,7 +3,6 @@ var config = {
 
 	// apiDataBaseUrl: 'https://demo.inthetelling.com',
 	// apiDataBaseUrl: 'https://api-dev-sub.inthetelling.com',
-
 	// apiDataBaseUrl: 'https://e-literate-tv.inthetelling.com',
 	// apiDataBaseUrl: 'https://gwsb.inthetelling.com',
 	// apiDataBaseUrl: 'https://ewb-usa.inthetelling.com',
@@ -12,8 +11,8 @@ var config = {
 	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
 	// apiDataBaseUrl: 'https://sustainablebizeducation.inthetelling.com',
 	// apiDataBaseUrl: 'https://columbiabusinessschool.inthetelling.com',
-
 	//apiDataBaseUrl: 'https://middlebury.inthetelling.com',
+
 	localStorageKey: "storyKey",
 	disableYoutube: false,
 	disableAnalytics: false,

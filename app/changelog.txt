@@ -861,3 +861,19 @@ Changes in v4.3.9:
 Revert "temporary stopgap for Chrome stall issues (always use smaller stream on chrome)"
 handle stall and unstall events ourselves, since Chrome isn't doing it for us
 
+------------------------------------------------
+Changes in v4.3.10:
+user-initiated seeks no longer trigger the stall counter
+bring back m3u8, since it seems to be working fine
+bring back defaulting to smaller video on touchscreen
+removing inaccessible code (we had some mid-function returns that would’ve broken my brain six months from now)
+wait for DOM to update before calling videoNode.load() with new src
+TS-293 fix (adaptive streaming)
+Merge pull request #22 from InTheTelling/chartFix
+question template refactor, chart fixes, scene end_time fixes, and a bit more clean up / remove unused templates
+fixes #ts-316. adjust impacted scene end_times on edit, create, delete of other scenes
+template refactoring.  image asset for questions.
+added the count w/ the percentage and added support for multiple independent flot charts
+add values to charts, and support multiple flot charts per page.
+support any question template, regardless of question type.
+
