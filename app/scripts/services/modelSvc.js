@@ -793,6 +793,7 @@ angular.module('com.inthetelling.story')
 				}
 			} else {
 				// This is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes.
+				console.warn("No alternate_urls array found; faking it!");
 				videoObject = {
 					mpeg4: videoAsset.url.replace('.mp4', '.m3u8'),
 					webm: videoAsset.url.replace(".mp4", ".webm"),
@@ -804,13 +805,6 @@ angular.module('com.inthetelling.story')
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 			var isNewSafari = /Version\/[891]/.test(navigator.appVersion); // HACKs upon HACKs.  presumably we'll fix this before safari 10 so that 1 will be unnecessary FAMOUS LAST WORDS amirite  (If anyone uses Safari 1 they're on their own)
 			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-			// Safari should prefer m3u8 to mpeg4.  TODO add other browsers to this when they support m3u8
-			// TODO BUG: disabling this for now; m3u8 is causing problems
-			// if (isSafari && videoObject.m3u8) {
-			// 	videoObject.mpeg4 = videoObject.m3u8;
-			// }
-			// delete videoObject.m3u8;
 
 			// youtube is still throwing errors in desktop safari (pre Yosemite) and in ipad.  Disable for now.
 			// TODO fix this so we can use youtube on these devices
