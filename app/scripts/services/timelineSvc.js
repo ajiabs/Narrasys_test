@@ -182,7 +182,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			appState.time = t;
-			videoScope.seek(t);
+			videoScope.seek(t, true);
 			svc.updateEventStates();
 			stepEvent(true);
 
