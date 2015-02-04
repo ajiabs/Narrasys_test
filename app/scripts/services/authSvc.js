@@ -17,15 +17,24 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.logout = function () {
-			appState.user = {};
-			delete $http.defaults.headers.common.Authorization;
-			localStorage.removeItem(config.localStorageKey);
-			console.log($http.defaults.headers.common);
+			$http({
+				method: 'GET',
+				url: config.apiDataBaseUrl + "/logout"
+			}).success(function (data) {
+				console.log("Logged out:", data);
+				appState.user = {};
+				delete $http.defaults.headers.common.Authorization;
+				localStorage.removeItem(config.localStorageKey);
+				// document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+				// document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			}).error(function (data) {
+				console.log("Failed to log out:", data);
+				window.location.href = "/";
+			});
 		};
 
 		svc.adminLogin = function (authKey, password) {
 			var loginDefer = $q.defer();
-			svc.logout();
 			$http({
 				method: 'POST',
 				url: config.apiDataBaseUrl + "/auth/identity/callback",
@@ -86,6 +95,9 @@ angular.module('com.inthetelling.story')
 					authenticateDefer.resolve();
 				} else {
 					// start from scratch
+					console.log("Getting nonce");
+					console.log("headers:", $http.defaults.headers.common.Authorization);
+					console.log("localStorage:", localStorage.storyKey);
 					svc.getNonce().then(function (nonce) {
 						svc.getAccessToken(nonce).then(function () {
 							authenticateDefer.resolve();
