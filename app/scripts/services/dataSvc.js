@@ -10,7 +10,7 @@
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, userSvc, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, modelSvc, errorSvc, mockSvc, questionAnswersSvc, appState) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -18,10 +18,12 @@ angular.module('com.inthetelling.story')
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
 		svc.getEpisode = function (epId) {
+			console.log("dataSvc.getEpisode");
 			if (!epId) {
 				throw ("no episode ID supplied to dataSvc.getEpisode");
 			}
 			if (modelSvc.episodes[epId]) {
+				console.log("have episode: ", modelSvc.episodes[epId]);
 				return; // already requested
 			}
 			modelSvc.cache("episode", {
@@ -224,37 +226,32 @@ angular.module('com.inthetelling.story')
 		};
 
 		var getEventActivityDataForUser = function (events, activityType, epId) {
-			userSvc.getCurrentUser()
-				.then(function (userData) {
-					angular.forEach(events, function (eventData) {
-
-						if (eventData.type === "Plugin") {
-							(function (evData) {
-								questionAnswersSvc.getUserAnswer(evData._id, userData._id)
-									.then(function (userAnswer) {
-										evData.data._plugin.hasBeenAnswered = true;
-										var i = 0;
-										var angularContinue = true;
-										angular.forEach(evData.data._plugin.distractors, function (distractor) {
-											if (angularContinue) {
-												if (distractor.text === userAnswer.data.answer) {
-													distractor.selected = true;
-													evData.data._plugin.selectedDistractor = i;
-													angularContinue = false;
-												}
-												i++;
-											}
-										});
-										modelSvc.cache("event", svc.resolveIDs(evData));
-									});
-							}(eventData));
-						}
-
-					});
-					modelSvc.resolveEpisodeEvents(epId);
-				});
-
+			angular.forEach(events, function (eventData) {
+				if (eventData.type === "Plugin") {
+					(function (evData) {
+						questionAnswersSvc.getUserAnswer(evData._id, appState.user._id)
+							.then(function (userAnswer) {
+								evData.data._plugin.hasBeenAnswered = true;
+								var i = 0;
+								var angularContinue = true;
+								angular.forEach(evData.data._plugin.distractors, function (distractor) {
+									if (angularContinue) {
+										if (distractor.text === userAnswer.data.answer) {
+											distractor.selected = true;
+											evData.data._plugin.selectedDistractor = i;
+											angularContinue = false;
+										}
+										i++;
+									}
+								});
+								modelSvc.cache("event", svc.resolveIDs(evData));
+							});
+					}(eventData));
+				}
+			});
+			modelSvc.resolveEpisodeEvents(epId);
 		};
+
 		svc.getContainer = function (containerId, episodeId) {
 			// iterates to all parent containers
 			// episode ID is included so we can trigger it to resolve when this is all complete
@@ -303,24 +300,16 @@ angular.module('com.inthetelling.story')
 		// a different idiom here, let's see if this is easier to conceptualize.
 
 		// to use GET(), pass in the API endpoint, and an optional callback for post-processing of the results
-		var GETcache = {}; // WARNING this is almost certainly not safe.  If server data changes, this will never find out about it because it will always read from cache instead. 
 		var GET = function (path, postprocessCallback) {
+			console.log("GET", path);
 			var defer = $q.defer();
-			if (GETcache[path]) {
-				defer.resolve(GETcache[path]);
-			}
-			authSvc.authenticate()
-				.then(function () {
-					return $http.get(config.apiDataBaseUrl + path);
-				})
-				.then(function (response) {
-					var ret = response.data;
-					if (postprocessCallback) {
-						ret = postprocessCallback(ret);
-					}
-					GETcache[path] = ret;
-					return defer.resolve(ret);
-				});
+			$http.get(config.apiDataBaseUrl + path).then(function (response) {
+				var ret = response.data;
+				if (postprocessCallback) {
+					ret = postprocessCallback(ret);
+				}
+				return defer.resolve(ret);
+			});
 			return defer.promise;
 		};
 
@@ -370,33 +359,22 @@ angular.module('com.inthetelling.story')
 		- start at root, climb down on demand
 		- start at episode, need all ancestors
 
-
 		loading any container should
 		- cache its own (complete) data
 		- cache its (incomplete) children
 		load all of its ancestors if not already present (datasvc will need to keep a list of container_ids it's already requested, to avoid circular refs to modelSvc)
-
-
-
-
-
-
-
 
 		*/
 
 		svc.getContainerRoot = function () {
 			// This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
 			return GET("/v3/containers", function (containers) {
-
 				var customerIDs = [];
 				angular.forEach(containers, function (customer) {
 					// cache the customer data:
 					modelSvc.cache("container", customer);
 					customerIDs.push(customer._id);
 				});
-				// TODO having elaborately cached each individual container, do something useful with it (convert the IDs into cross-cache references for starters)
-
 				return customerIDs;
 			});
 		};
@@ -586,7 +564,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 		svc.prepItemForStorage = prepItemForStorage;
-		svc.detachMasterAsset = function(epData) {
+		svc.detachMasterAsset = function (epData) {
 			var preppedData = prepEpisodeForStorage(epData);
 			preppedData.master_asset_id = null;
 			console.log("prepped sans master_asset_id for storage:", preppedData);
@@ -700,11 +678,11 @@ angular.module('com.inthetelling.story')
 				//question
 				"templates/item/question-mc-formative.html": "templates/question-mc-formative.html",
 				"templates/item/question-mc-poll.html": "templates/question-mc-poll.html",
-				
+
 				"templates/item/question-mc.html": "templates/question-mc.html",
 				"templates/item/question-mc-image-left.html": "templates/question-mc-image-left.html",
 				"templates/item/question-mc-image-right.html": "templates/question-mc-image-right.html",
-				
+
 				"templates/item/sxs-question.html": "templates/sxs-question.html"
 			};
 			if (reverseTemplates[templateUrl]) {

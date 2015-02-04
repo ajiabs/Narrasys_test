@@ -7,10 +7,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 .config(function ($routeProvider) {
 	$routeProvider
 		.when('/', {
-			templateUrl: 'templates/root.html',
+			title: "Telling STORY",
+			templateUrl: 'templates/root.html'
 		})
 		.when('/auth', {
-			template: '<div itt-login></div>',
+			template: '<div itt-login></div>'
 		})
 		.when('/episodes', {
 			title: "Available episodes",
@@ -98,9 +99,10 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
 })
 
-.run(function ($rootScope) {
-	// set page titles on route changes:
+.run(function ($rootScope, errorSvc) {
+
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
+		errorSvc.init(); // clear pending errors on path changes
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
 	});
 
