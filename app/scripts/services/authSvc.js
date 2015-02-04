@@ -29,6 +29,7 @@ angular.module('com.inthetelling.story')
 				// document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 			}).error(function (data) {
 				console.log("Failed to log out:", data);
+				window.location.href = "/";
 			});
 		};
 

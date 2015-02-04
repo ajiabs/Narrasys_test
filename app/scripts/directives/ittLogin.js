@@ -1,5 +1,9 @@
 'use strict';
 
+/* 
+No UI for this directive. This originally showed a login form but that led to a flash-of-content when authenticating via lti
+
+*/
 angular.module('com.inthetelling.story')
 	.directive('ittLogin', function ($location, $routeParams, config, authSvc, appState, errorSvc) {
 		return {
@@ -25,10 +29,8 @@ angular.module('com.inthetelling.story')
 						$location.search('episode', null);
 						$location.search('nonce', null);
 						$location.path('/episode/' + epId);
-						// } else if (authSvc.userHasRole('admin')) {
-						// $location.path('/episodes');
 					} else {
-						// TODO user homepage. For now:
+						// TODO user homepage, narrative homepage. For now:
 						$location.path('/');
 					}
 				});
@@ -37,7 +39,8 @@ angular.module('com.inthetelling.story')
 				scope.adminLogin = function () {
 					authSvc.adminLogin(scope.loginForm.auth_key, scope.loginForm.password).then(function () {
 						//$location.path('episodes');
-					}, function () {
+					}, function (data) {
+						console.warn("FAILED ADMIN LOGIN(?)", data);
 						scope.badlogin = true;
 					});
 				};
