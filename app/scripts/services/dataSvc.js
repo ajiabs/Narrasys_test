@@ -292,9 +292,7 @@ angular.module('com.inthetelling.story')
 			var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
 			$http.get(config.apiDataBaseUrl + endpoint)
 				.success(function (events) {
-
 					getEventActivityDataForUser(events, "Plugin", epId);
-
 					angular.forEach(events, function (eventData) {
 						eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
 						modelSvc.cache("event", svc.resolveIDs(eventData));
@@ -764,6 +762,11 @@ angular.module('com.inthetelling.story')
 				//question
 				"templates/item/question-mc-formative.html": "templates/question-mc-formative.html",
 				"templates/item/question-mc-poll.html": "templates/question-mc-poll.html",
+
+				"templates/item/question-mc.html": "templates/question-mc.html",
+				"templates/item/question-mc-image-left.html": "templates/question-mc-image-left.html",
+				"templates/item/question-mc-image-right.html": "templates/question-mc-image-right.html",
+
 				"templates/item/sxs-question.html": "templates/sxs-question.html"
 			};
 			if (reverseTemplates[templateUrl]) {

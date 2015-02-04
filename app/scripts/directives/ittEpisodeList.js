@@ -15,11 +15,9 @@ angular.module('com.inthetelling.story')
 
 				scope.logout = function () {
 					authSvc.logout();
-					$location.path('/');
 				};
 
 				scope.appState = appState;
-
 				scope.loading = true;
 				scope.containers = modelSvc.containers;
 
