@@ -10,7 +10,7 @@
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, userSvc, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, modelSvc, errorSvc, mockSvc, questionAnswersSvc, appState) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -32,6 +32,7 @@ angular.module('com.inthetelling.story')
 				throw ("no episode ID supplied to dataSvc.getEpisode");
 			}
 			if (modelSvc.episodes[epId]) {
+				console.log("have episode: ", modelSvc.episodes[epId]);
 				return; // already requested
 			}
 			modelSvc.cache("episode", {
@@ -303,37 +304,32 @@ angular.module('com.inthetelling.story')
 		};
 
 		var getEventActivityDataForUser = function (events, activityType, epId) {
-			userSvc.getCurrentUser()
-				.then(function (userData) {
-					angular.forEach(events, function (eventData) {
-
-						if (eventData.type === "Plugin") {
-							(function (evData) {
-								questionAnswersSvc.getUserAnswer(evData._id, userData._id)
-									.then(function (userAnswer) {
-										evData.data._plugin.hasBeenAnswered = true;
-										var i = 0;
-										var angularContinue = true;
-										angular.forEach(evData.data._plugin.distractors, function (distractor) {
-											if (angularContinue) {
-												if (distractor.text === userAnswer.data.answer) {
-													distractor.selected = true;
-													evData.data._plugin.selectedDistractor = i;
-													angularContinue = false;
-												}
-												i++;
-											}
-										});
-										modelSvc.cache("event", svc.resolveIDs(evData));
-									});
-							}(eventData));
-						}
-
-					});
-					modelSvc.resolveEpisodeEvents(epId);
-				});
-
+			angular.forEach(events, function (eventData) {
+				if (eventData.type === "Plugin") {
+					(function (evData) {
+						questionAnswersSvc.getUserAnswer(evData._id, appState.user._id)
+							.then(function (userAnswer) {
+								evData.data._plugin.hasBeenAnswered = true;
+								var i = 0;
+								var angularContinue = true;
+								angular.forEach(evData.data._plugin.distractors, function (distractor) {
+									if (angularContinue) {
+										if (distractor.text === userAnswer.data.answer) {
+											distractor.selected = true;
+											evData.data._plugin.selectedDistractor = i;
+											angularContinue = false;
+										}
+										i++;
+									}
+								});
+								modelSvc.cache("event", svc.resolveIDs(evData));
+							});
+					}(eventData));
+				}
+			});
+			modelSvc.resolveEpisodeEvents(epId);
 		};
+
 		svc.getContainer = function (containerId, episodeId) {
 			// iterates to all parent containers
 			// episode ID is included so we can trigger it to resolve when this is all complete
@@ -383,20 +379,15 @@ angular.module('com.inthetelling.story')
 
 		// to use GET(), pass in the API endpoint, and an optional callback for post-processing of the results
 		var GET = function (path, postprocessCallback) {
+			console.log("GET", path);
 			var defer = $q.defer();
-			authSvc.authenticate()
-				.then(function () {
-					$http.get(config.apiDataBaseUrl + path).success(function (response) {
-						var ret = response;
-						if (postprocessCallback) {
-							ret = postprocessCallback(ret);
-						}
-						defer.resolve(ret);
-					}).error(function () {
-						console.log("ERROR");
-						defer.reject();
-					});
-				});
+			$http.get(config.apiDataBaseUrl + path).then(function (response) {
+				var ret = response.data;
+				if (postprocessCallback) {
+					ret = postprocessCallback(ret);
+				}
+				return defer.resolve(ret);
+			});
 			return defer.promise;
 		};
 
@@ -447,18 +438,27 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
+		/*
+		Circumstances in which we need containers:
+		- start at root, climb down on demand
+		- start at episode, need all ancestors
+
+		loading any container should
+		- cache its own (complete) data
+		- cache its (incomplete) children
+		load all of its ancestors if not already present (datasvc will need to keep a list of container_ids it's already requested, to avoid circular refs to modelSvc)
+
+		*/
+
 		svc.getContainerRoot = function () {
 			// This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
 			return GET("/v3/containers", function (containers) {
-
 				var customerIDs = [];
 				angular.forEach(containers, function (customer) {
 					// cache the customer data:
 					modelSvc.cache("container", customer);
 					customerIDs.push(customer._id);
 				});
-				// TODO having elaborately cached each individual container, do something useful with it (convert the IDs into cross-cache references for starters)
-
 				return customerIDs;
 			});
 		};

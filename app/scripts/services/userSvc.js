@@ -1,3 +1,6 @@
+/*
+user_id is now retrieved during login, making this unnecessary. I think.  Keeping the file around for the time being just in case
+
 'use strict';
 angular.module('com.inthetelling.story')
 	.factory('userSvc', function ($q, $http, $routeParams, $interval, config) {
@@ -9,6 +12,7 @@ angular.module('com.inthetelling.story')
 					url: config.apiDataBaseUrl + '/show_user'
 				})
 				.success(function (respData) {
+					console.log(respData);
 					defer.resolve(respData);
 				})
 				.error(function () {
@@ -21,7 +25,7 @@ angular.module('com.inthetelling.story')
 			var defer = $q.defer();
 			$http({
 					method: 'GET',
-					url: config.apiDataBaseUrl + 'v1/users/' + userid
+					url: config.apiDataBaseUrl + '/v1/users/' + userid
 				})
 				.success(function (respData) {
 					defer.resolve(respData);
@@ -33,3 +37,5 @@ angular.module('com.inthetelling.story')
 		};
 		return svc;
 	});
+
+*/

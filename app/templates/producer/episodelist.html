@@ -1,8 +1,7 @@
 <div itt-episode-list class="admin">
 	<!-- TODO proper i18n -->
 	<!-- TODO display links to child episodes here too(?) -->
-
-	<div style="color:#C00">
+	<div ng-if="root.children.length" style="color:#C00">
 		<p>PLEASE NOTE Producer is in alpha. There are bugs. It is generally safe to edit individual events and scenes, but please do not depend on producer for episode creation or for routine episode production yet. </p>
 
 	</div>
@@ -19,6 +18,6 @@
 
 	<div ng-repeat="child in root.children" itt-container="containers[child._id]" depth="0"></div>
 
-	<div ng-if="!loading && root.children.length == 0">Looks like you have a non-admin session -- <a ng-click="logout();">try again</a>.</div>
+	<div ng-if="!loading && (failedLogin || root.children.length == 0)">Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.</div>
 
 	<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>

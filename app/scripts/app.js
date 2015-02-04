@@ -7,10 +7,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 .config(function ($routeProvider) {
 	$routeProvider
 		.when('/', {
-			templateUrl: 'templates/root.html',
+			title: "Telling STORY",
+			templateUrl: 'templates/root.html'
 		})
 		.when('/auth', {
-			template: '<div itt-login></div>',
+			template: '<div itt-login></div>'
 		})
 		.when('/stories', {
 			title: "Existing narratives",
@@ -105,7 +106,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 })
 
 .run(function ($rootScope, errorSvc) {
-	// set page titles on route changes:
+
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
 		errorSvc.init(); // clear display of any errors from the previous route

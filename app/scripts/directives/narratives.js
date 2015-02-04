@@ -96,7 +96,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 	})
-	.directive('ittNarrative', function (authSvc, $location, $routeParams, userSvc, modelSvc, dataSvc, errorSvc) {
+	.directive('ittNarrative', function (authSvc, $location, $routeParams, modelSvc, dataSvc, errorSvc) {
 		return {
 			scope: {
 				_id: '=ittNarrative',
@@ -156,23 +156,20 @@ angular.module('com.inthetelling.story')
 					// add the user to the group
 					// redirect
 					authSvc.authenticate().then(function () {
-						userSvc.getCurrentUser().then(function (userData) {
-							console.log("USER:", userData);
 
-							dataSvc.createUserGroup("All users").then(function (groupData) {
-								console.log("Group:", groupData);
-								scope.narrative.everyone_group_id = groupData._id;
-								scope.narrative.sub_groups_id = [];
+						dataSvc.createUserGroup("All users").then(function (groupData) {
+							console.log("Group:", groupData);
+							scope.narrative.everyone_group_id = groupData._id;
+							scope.narrative.sub_groups_id = [];
 
-								console.log("about to create narrative: ", scope.narrative);
-								dataSvc.createNarrative(
-									scope.narrative
-								).then(function (narrativeData) {
-									console.log("created narrative", narrativeData);
-									$location.path('/story/' + narrativeData._id);
-								});
-
+							console.log("about to create narrative: ", scope.narrative);
+							dataSvc.createNarrative(
+								scope.narrative
+							).then(function (narrativeData) {
+								console.log("created narrative", narrativeData);
+								$location.path('/story/' + narrativeData._id);
 							});
+
 						});
 					});
 

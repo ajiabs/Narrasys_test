@@ -7,20 +7,12 @@ angular.module('com.inthetelling.story')
 			replace: true,
 
 			link: function (scope) {
-				authSvc.authenticate().then(function () {
-					if (!authSvc.userHasRole('admin')) {
-						$location.path('/');
-					}
-				});
-
 				scope.logout = function () {
 					authSvc.logout();
 				};
-
 				scope.appState = appState;
 				scope.loading = true;
 				scope.containers = modelSvc.containers;
-
 				dataSvc.getContainerRoot().then(function (rootIDs) {
 					scope.root = {
 						children: []
@@ -30,6 +22,10 @@ angular.module('com.inthetelling.story')
 						scope.root.children.push(modelSvc.containers[id]);
 					});
 					scope.loading = false;
+				}, function () {
+					scope.failedLogin = true;
+					scope.loading = false;
+
 				});
 
 			}
