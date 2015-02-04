@@ -2,7 +2,11 @@
 
 /*
 
-TODO: i18n
+TODO: 
+
+split this file up into separate directive files
+when displaying a narrative, compare its user_id to the current user's id to set isOwner
+i18n
 
 
 To create a narrative:

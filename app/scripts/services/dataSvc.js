@@ -274,9 +274,6 @@ angular.module('com.inthetelling.story')
 						// Get episode events
 						getEpisodeEvents(epId, segmentId);
 
-						// this will get the episode container and its assets, then iterate up the chain to all parent containers
-						// (In retrospect, would have been easier to just get all containers at once, but maybe someday we will have soooo many containers
-						// that this will be worthwhile)
 						svc.getContainer(episodeData.container_id, epId);
 					} else {
 						errorSvc.error({
