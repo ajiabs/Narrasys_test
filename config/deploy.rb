@@ -2,7 +2,8 @@ set :application, 'story'
 set :repo_url, 'git@github.com:InTheTelling/client.git'
 set :scm, :git
 
-ask :branch, `git tag`.split("\n").last
+set :last_commit, `git rev-list --tags --max-count=1`
+ask :branch, proc { `git describe --tags #{fetch(:last_commit)}`.chomp }
 
 set :user, 'deploy'
 set :deploy_to, "/home/deploy/#{fetch(:application)}"

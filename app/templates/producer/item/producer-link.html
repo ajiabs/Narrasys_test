@@ -1,0 +1,22 @@
+<!-- <span class="eventIcon icon-link"></span> -->
+<div class="field">
+	<div class="label">Title [{{appState.lang}}]</div>
+	<div class="input" sxs-input-i18n="item.title" x-inputtype="'input'" autofocus></div>
+</div>
+<div class="field">
+	<div class="label">URL
+	</div>
+	<div class="input">
+		<input type="text" ng-model="item.url">
+	</div>
+</div>
+<div class="field">
+	<div class="label">Image
+	</div>
+	<div class="input" ng-include="'templates/producer/upload-single.html'">
+	</div>
+</div>
+<div class="field">
+	<div class="label">Description [{{appState.lang}}]</div>
+	<div class="input" sxs-input-i18n="item.description" x-inputtype="'textarea'"></div>
+</div>

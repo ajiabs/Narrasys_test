@@ -27,6 +27,7 @@ angular.module('com.inthetelling.story')
 			svc.windowHeight = 0;
 
 			svc.viewMode = ($(window).width() > 480) ? 'discover' : 'review'; // default view mode
+			svc.producerEditLayer = 0; // a bit hacky, this.  Only has an effect in producer in discover mode; 0 is default, -1 is background layers only, 1 is foreground layers only
 
 			svc.time = 0; // current playhead position (in seconds) relative to timeline NOT TO EPISODE!
 			svc.bufferedPercent = 0; // portion of video that has been buffered (as pct instead of time because that's how youtube reports it, and that's what we end up displaying anyway)
@@ -43,12 +44,23 @@ angular.module('com.inthetelling.story')
 				navPanel: false
 			};
 			svc.videoControlsActive = false; // whether bottom toolbar is visible
+			svc.videoControlsLocked = false; // force bottom toolbar to stay in its current visible/hidden state
 			svc.itemDetail = false; // Put item data here to show it as a modal overlay
 			svc.autoscroll = false; //scroll window to make current items visible (in relevant modes)
 			svc.autoscrollBlocked = false; // User has disabled autoscroll
-			svc.editing = false; // Object currently being edited by user (TODO)
+
+			svc.product = svc.product; // "player", "sxs", or "producer"
+
+			if (svc.product === 'sxs' || svc.product === 'producer') {
+				svc.crossEpisodePath = svc.product;
+			} else {
+				svc.crossEpisodePath = "episode"; // yeah, that was kind of a dumb decision to switch from episode to "player"
+			}
+
+			svc.editEvent = false; // Scene or item currently being edited by user
+			svc.editEpisode = false; // Episode currently being edited by user. yes I did kind of paint myself into a corner here
 			// svc.youtubeIsReady = false; // Set to true when youtube API finishes loading.  DO NOT set this to false on init, otherwise navigating from episode to episode breaks (we reinit on new episode but that won't trigger youtube's ready event)
-			svc.lang = "en";
+			svc.lang = false; // set to false so the episode default knows when to override it
 		};
 		svc.init();
 

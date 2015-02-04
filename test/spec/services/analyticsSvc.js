@@ -14,11 +14,14 @@ describe('Service: analyticsSvc', function () {
 	// instantiate services
 	var analyticsSvc;
 	var appState;
+	var config;
 
-	beforeEach(inject(function (_analyticsSvc_, _appState_) {
+	beforeEach(inject(function (_analyticsSvc_, _appState_, _config_) {
 		analyticsSvc = _analyticsSvc_;
 		appState = _appState_;
+		config = _config_;
 		appState.user.track_episode_metrics = true;
+		config.disableAnalytics = false;
 	}));
 
 	it('should combine scrubTimeline jitter into a single event', function () {

@@ -3,12 +3,22 @@
 		<p>Thanks for watching
 			<span ng-bind-html="episode.display_title"></span>.
 		</p>
+
+		<p ng-if="episode.nextEpisodeContainer">
+			The next episode is
+			<a class="nextEpisode" ng-href="/#/{{crossEpisodePath}}/{{episode.nextEpisodeContainer.episodes[0]}}" ng-bind-html="episode.nextEpisodeContainer.display_name"></a>.</p>
+
 		<br>
 
 		<div itt-magnet class="videoMagnet">
 			<img src="images/aspectratiopreserver-16x9.gif">
 		</div>
+		<br>
 
-		<!-- TODO: display list of other episodes in this session via the episode's parent container -->
+		<div ng-if="episode.navigation_depth > 0">
+			Other episodes:
+			<ul class="crossEpisodeNav" itt-container-episodes="episode.parents[0]"></ul>
+		</div>
+
 	</div>
 </div>

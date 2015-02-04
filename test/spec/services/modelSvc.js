@@ -172,4 +172,141 @@ describe('Service: modelSvc', function () {
 		expect(modelSvc.events.annotation1.end_time).toEqual(10);
 	});
 
+	it('Episode annotators should generate consistent keys', function () {
+		modelSvc.cache("event", {
+			"_id": "an1",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html",
+			"annotator": {
+				en: "Mister Smith",
+				es: "BB",
+				aa: "AA",
+				et: "CC"
+			}
+		});
+
+		modelSvc.resolveEpisodeEvents("EP1");
+
+		// key should be the default language, or english,  followed by other available languages 
+		expect(modelSvc.episodes.EP1.annotators["Mister Smith"].key).toEqual("Mister Smith / AA / BB / CC");
+	});
+
+	it('Episode annotators should combine annotators correctly', function () {
+		modelSvc.cache("event", {
+			"_id": "an1",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html",
+			"annotator": {
+				en: "Mister Smith",
+			}
+		});
+		modelSvc.cache("event", {
+			"_id": "an2",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html",
+			"annotator": {
+				en: "Mister Smith",
+				aa: "AA",
+			}
+		});
+		modelSvc.cache("event", {
+			"_id": "an3",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html",
+			"annotator": {
+				en: "Mister Smith",
+				bb: "BB"
+			}
+		});
+
+		modelSvc.resolveEpisodeEvents("EP1");
+
+		// Those translations should be merged into a single key
+		expect(Object.keys(modelSvc.episodes.EP1.annotators)).toEqual(["Mister Smith"]);
+		expect(modelSvc.episodes.EP1.annotators["Mister Smith"].key).toEqual("Mister Smith / AA / BB");
+
+	});
+
+	it('Episode annotators should not try to combine "undefined" keys', function () {
+		modelSvc.cache("event", {
+			"_id": "an1",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html",
+			"annotator": {
+				es: "AA",
+			}
+		});
+		modelSvc.cache("event", {
+			"_id": "an2",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html",
+			"annotator": {
+				zh: "BB",
+			}
+		});
+		modelSvc.cache("event", {
+			"_id": "an3",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html",
+			"annotator": {
+				pt: "CC",
+			}
+		});
+
+		modelSvc.resolveEpisodeEvents("EP1");
+		expect(Object.keys(modelSvc.episodes.EP1.annotators)).toEqual(["AA", "BB", "CC"]);
+
+	});
+
+	it('Episode annotators should replace old keys as translations are added', function () {
+		modelSvc.cache("event", {
+			"_id": "an1",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html",
+			"annotator": {
+				en: "Mister Smith",
+			}
+		});
+
+		modelSvc.resolveEpisodeEvents("EP1");
+
+		modelSvc.cache("event", {
+			"_id": "an2",
+			"_type": "Annotation",
+			"start_time": 1,
+			"episode_id": "EP1",
+			"templateUrl": "templates/item/default.html",
+			"annotator": {
+				en: "Mister Smith",
+				zh: "BB"
+			}
+		});
+		modelSvc.resolveEpisodeEvents("EP1");
+		expect(Object.keys(modelSvc.episodes.EP1.annotators)).toEqual(["Mister Smith"]);
+		expect(modelSvc.episodes.EP1.annotators["Mister Smith"]).toEqual({
+			name: {
+				en: 'Mister Smith',
+				zh: 'BB'
+			},
+			annotation_image_id: undefined,
+			key: 'Mister Smith / BB'
+		});
+	});
+
 });

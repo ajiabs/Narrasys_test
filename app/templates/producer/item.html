@@ -1,0 +1,281 @@
+<div class="itemEdit authoringForm">
+	<div class="authoringFormScrollContainer">
+
+
+		<div ng-if="appState.product == 'sxs'">
+			<!-- begin sxs -->
+
+			<div class="field">
+				<div class="label">Time
+				</div>
+				<div class="input">
+					<a ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
+						<span class="control-text">Beginning of scene</span>
+					</a>
+					<input type="text" ng-model="item.start_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }" ng-change="setItemTime()">
+				</div>
+			</div>
+			<div ng-include="itemEditor"></div>
+
+			<!-- end sxs -->
+		</div>
+
+		<div ng-if="appState.product == 'producer'">
+			<!-- begin producer -->
+
+			<div class="ittTabs" itt-tabs>
+				<!-- begin tabset -->
+				<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="{{item._type === 'Scene' ? 'Scene' : 'Item'}}">
+					<!-- begin data tab -->
+					<div class="field" ng-if="!(item._type==='Scene' && item.start_time <= 0.1)">
+						<div class="label">Time
+						</div>
+						<div class="input">
+							<a ng-if="item._type !== 'Scene'" ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
+								<span class="control-text">Beginning of scene</span>
+							</a>
+							<input type="text" ng-model="item.start_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }" ng-change="setItemTime()">
+
+							<span ng-if="!(item.stop || item._type === 'Scene')">
+								<span class="label">End</span>
+								<input ng-if="customEndTime" ng-change="setItemEndTime()" type="text" ng-model="item.end_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
+								<a class="fakeLink" ng-click="customEndTime = !customEndTime; item.end_time=100000">
+									<span ng-if="customEndTime">(x)</span>
+									<span ng-if="!customEndTime">(auto)</span>
+								</a>
+							</span>
+							<select ng-if="languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
+							</select>
+
+						</div>
+					</div>
+
+
+					<div ng-include="itemEditor"></div>
+
+					<!-- end data tab -->
+				</div>
+				<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Style">
+					<!-- begin metadata  tab -->
+					<div class="field">
+						<div class="label">
+							Template
+						</div>
+						<div class="input">
+							<span ng-if="item.producerItemType == 'scene'">
+								<select ng-model="item.templateUrl">
+									<option value="templates/scene/centered.html">Centered video</option>
+									<option value="templates/scene/1col.html">One column</option>
+
+									<option value="templates/scene/2colL.html">Two columns</option>
+									<option value="templates/scene/2colR.html">Two columns (mirrored)</option>
+
+									<option value="templates/scene/cornerH.html">Corner video, horizontal</option>
+									<option value="templates/scene/cornerV.html">Corner video, vertical</option>
+
+									<option value="templates/scene/pip.html">Picture-in-picture</option>
+								</select>
+								<select ng-model="item.layouts[0]" ng-if="item.templateUrl !='templates/scene/centered.html'">
+									<option value="" ng-if="item.templateUrl != 'templates/scene/cornerH.html' && item.templateUrl != 'templates/scene/cornerV.html' && item.templateUrl != 'templates/scene/pip.html'">Centered</option>
+									<option value="videoLeft">Video on left</option>
+									<option value="videoRight">Video on right</option>
+								</select>
+							</span>
+
+
+							<select ng-if="item.producerItemType == 'transcript'" ng-model="item.templateUrl">
+								<option value="templates/item/transcript.html">Transcript</option>
+								<option value="templates/item/transcript-withthumbnail.html">Transcript with thumbnail</option>
+								<option value="templates/item/transcript-withthumbnail-alt.html">Transcript with thumbnail B</option>
+							</select>
+							<select ng-if="item.producerItemType == 'annotation'" ng-model="item.templateUrl">
+								<option value="templates/item/pullquote.html">Pullquote with attribution</option>
+								<option value="templates/item/pullquote-noattrib.html">Pullquote</option>
+								<option value="templates/item/text-h1.html">Header 1</option>
+								<option value="templates/item/text-h2.html">Header 2</option>
+								<option value="templates/item/text-transmedia.html">Long text (as transmedia)</option>
+							</select>
+							<select ng-if="item.producerItemType == 'link'" ng-model="item.templateUrl">
+								<option value="templates/item/link.html">Link</option>
+								<option value="templates/item/link-withimage.html">Link with image</option>
+								<option value="templates/item/link-descriptionfirst.html">Link: description first</option>
+								<option value="templates/item/link-embed.html">Embedded link</option>
+							</select>
+							<select ng-if="item.producerItemType == 'image'" ng-model="item.templateUrl">
+								<option value="templates/item/image-fill.html">Overlay or background fill</option>
+								<option value="templates/item/image.html">Linked image</option>
+								<option value="templates/item/image-inline.html">Inline image</option>
+								<option value="templates/item/image-inline-withtext.html">Inline image with text</option>
+								<option value="templates/item/image-caption.html">Image with caption</option>
+								<option value="templates/item/image-caption-sliding.html">Image with sliding caption</option>
+								<option value="templates/item/image-thumbnail.html">Image thumbnail</option>
+								<option value="templates/item/image-plain.html">Plain image</option>
+							</select>
+
+							<select ng-if="item.producerItemType == 'file'" ng-model="item.templateUrl">
+								<option value="templates/item/file.html">Linked file (TODO: force noembed?)</option>
+								<option value="templates/item/file-withimage.html">Linked file with image</option>
+							</select>
+							<select ng-if="item.producerItemType == 'question'" ng-model="item.templateUrl">
+								<option value="templates/item/question-mc.html">Question with image top</option>
+								<option value="templates/item/question-mc-image-right.html">Question with image right</option>
+								<option value="templates/item/question-mc-image-left.html">Question with image left</option>
+							</select>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">Layout</div>
+						<div class="input">
+							<span ng-if="item._type === 'Scene'">
+
+								<select ng-model="item.layouts[1]" ng-if="item.templateUrl !='templates/scene/centered.html'">
+									<option value="">Show all content items, highlight current ones</option>
+									<option value="showCurrent">Show only current items</option>
+								</select>
+
+								<!-- TODO splitTransmedia/splitRequired. Are those actually useful? -->
+							</span>
+							<span ng-if="item._type !== 'Scene'">
+								<span ng-if="item.templateUrl == 'templates/item/image-fill.html'">
+
+									<select size="1" ng-model="item.layouts[0]">
+										<option value="windowBg">Window background</option>
+										<option value="mainBg">Main content pane background</option>
+										<option value="altBg">Secondary content pane background</option>
+										<option value="mainFg">Main content pane foreground</option>
+										<option value="altFg">Secondary content pane foreground</option>
+										<option value="videoOverlay">Video overlay</option>
+									</select>
+									<select size="1" ng-model="itemForm.position">
+										<!-- TODO some of these are behaving oddly; naming them according to their actual behavior at the moment.  Will need to fix this -->
+										<option value="">Fit</option>
+										<option value="center">Center</option>
+										<option value="cover">Cover</option>
+										<option value="contain">Contain</option>
+										<option value="fill">Fill and stretch</option>
+									</select>
+									<select size="1" ng-model="itemForm.pin" ng-if="itemForm.position != 'center' && itemForm.position != 'fill'">
+										<option value="tl">Top left</option>
+										<option value="tr">Top right</option>
+										<option value="bl">Bottom left</option>
+										<option value="br">Bottom right</option>
+									</select>
+								</span>
+								<select ng-if="item.templateUrl != 'templates/item/image-fill.html'" size="1" ng-model="item.layouts[0]">
+									<option value="windowFg">Modal</option>
+									<option value="inline">Inline</option>
+									<option value="sidebarL">Sidebar: left</option>
+									<option value="sidebarR">Sidebar: right</option>
+									<option value="burstL">Burst left margin</option>
+									<option value="burstR">Burst right margin</option>
+									<option value="burst">Burst both margins</option>
+								</select>
+							</span>
+						</div>
+
+					</div>
+					<div class="field" ng-if="item.producerItemType != 'scene'">
+						<div class="label">Flags</div>
+						<div class="input">
+							<label>
+								<input type="checkbox" ng-model="item.required">Required
+							</label>
+							<label>
+								<input type="checkbox" ng-model="item.stop">Stop item
+							</label>
+							<label>
+								<input type="checkbox" ng-model="item.cosmetic">Cosmetic
+							</label>
+						</div>
+					</div>
+					<!-- end metadata  tab -->
+				</div>
+				<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" x-tablabel="Customize">
+					<!-- begin styles tab -->
+
+
+					<div class="field">
+						<div class="label">Typography</div>
+						<div class="input">
+							<select size="1" ng-model="itemForm.typography">
+								<option value="">(Default)</option>
+								<option value="Sans">Sans</option>
+								<option value="Serif">Serif</option>
+								<option value="Book">Book</option>
+								<option value="Swiss">Swiss</option>
+							</select>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">Color</div>
+						<div class="input">
+							<select size="1" ng-model="itemForm.color">
+								<option value="">(Default)</option>
+								<option value="Invert">Invert</option>
+								<option value="Sepia">Sepia</option>
+								<option value="Solarized">Solarized</option>
+								<option value="Vivid">Vivid</option>
+							</select>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">Timestamp</div>
+						<div class="input">
+							<select size="1" ng-model="itemForm.timestamp">
+								<option value="">(Default)</option>
+								<option value="None">No timestamp</option>
+								<option value="Inline">Inline timestamp</option>
+							</select>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">Highlight</div>
+						<div class="input">
+							<select size="1" ng-model="itemForm.highlight">
+								<option value="">(Default)</option>
+
+								<option value="Solid">Solid</option>
+								<option value="Border">Border</option>
+								<option value="Side">Side</option>
+								<option value="Bloom">Bloom</option>
+								<option value="Highlighter">Highlighter</option>
+								<option value="Tilt">Tilt</option>
+
+							</select>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">Transition</div>
+						<div class="input">
+							<select size="1" ng-model="itemForm.transition">
+								<option value="">(Default)</option>
+								<option value="None">No transition</option>
+								<option value="Fade">Fade</option>
+								<option value="SlideL">Slide left</option>
+								<option value="SlideR">Slide right</option>
+								<option value="ExpandW">Expand</option>
+								<option value="Pop">Pop</option>
+							</select>
+						</div>
+					</div>
+					<!-- end styles tab -->
+				</div>
+				<!-- end of tabset -->
+			</div>
+
+			<!-- end producer -->
+		</div>
+
+
+	</div>
+
+	<div style="clear:both; width: 100%; text-align:right;  padding-right: 24px">
+		<small>
+			<a ng-click="cancelEdit()">Cancel</a>
+		</small>
+		&nbsp; &nbsp;
+		<input type="button" value="Delete" ng-if="item._id != 'internal:editing'" ng-click="deleteEvent(item._id)">
+		<input type="button" value="Save" ng-click="saveEvent()">
+	</div>
+
+</div>

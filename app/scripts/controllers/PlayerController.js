@@ -3,19 +3,23 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function ($scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc) {
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc) {
 		// console.log("playerController", $scope);
 
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
-			appState.viewModeText = newMode.substring(0, 1).toUpperCase() + newMode.substring(1);
-
 			analyticsSvc.captureEpisodeActivity("modeChange", {
 				"mode": newMode
 			});
 
-			//Autoscroll only in explore mode for now
+			appState.producerEditLayer = 0;
+
 			if (newMode === 'review') {
+				// magnet animation looks too choppy when loading review mode; skip it:
+				$timeout(function () {
+					$rootScope.$emit('magnet.jumpToMagnet');
+				}, 1);
+
 				// console.log("unblocking autoscroll");
 				appState.autoscroll = true;
 				appState.autoscrollBlocked = false;
@@ -38,50 +42,79 @@ angular.module('com.inthetelling.story')
 			timelineSvc.seek($routeParams.t, "URLParameter");
 		}
 
-		// if ($routeParams.producer) {
-		// 	appState.producer = true;
-		// }
+		$scope.$on('$routeUpdate', function () {
+			if ($routeParams.viewMode) {
+				$scope.viewMode($routeParams.viewMode);
+			}
+			if ($routeParams.t) {
+				timelineSvc.seek($routeParams.t, "URLParameter");
+			}
+		});
+
+		$scope.changeProducerEditLayer = function (newLayer) {
+			appState.producerEditLayer = appState.producerEditLayer + newLayer;
+			// I'm sure there's a fancier way to do this but
+			if (appState.producerEditLayer === 2) {
+				appState.producerEditLayer = 1;
+			}
+			if (appState.producerEditLayer === -2) {
+				appState.producerEditLayer = -1;
+			}
+		};
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+		// console.log("playerController init");
 		appState.init();
+
 		errorSvc.init();
 		appState.episodeId = $routeParams.epId;
 		modelSvc.addLandingScreen(appState.episodeId);
 		dataSvc.getEpisode(appState.episodeId);
 
-		// Watch for the first load of the episode data; init the master asset and page title when found
+		console.log("USER:", appState.user, appState.product);
+
+		// TEMPORARY SAFETY VALVE: redirect non-admin users from editor or producer to player:
+		if (!authSvc.userHasRole('admin') && appState.product !== 'player') {
+			//			appState.product = 'player';
+			$location.path('/episode/' + appState.episodeId);
+		}
+
+		// Watch for the first load of the episode data; init page title and crossnav when found
+
+		// TODO: update this on language change
 		var episodeWatcher = $scope.$watch(function () {
-			return modelSvc.episodes[appState.episodeId].title;
+			return modelSvc.episodes[appState.episodeId].display_title;
 		}, function (a) {
 			if (a) {
-				if (typeof (a) === "string") {
-					document.title = "STORY: " + a;
-				} else {
-					document.title = "STORY: " + a.en; // HACK TODO make this respond to i18n properly
-				}
+				document.title = "STORY: " + a;
 				episodeWatcher(); // stop watching;
 			}
 		});
 
-		// Watch for the first load of the episode items; update the timeline when found
+		// Watch for the first load of the episode items; update the timeline and current language when found
 		$scope.loading = true;
 		var eventsWatcher = $scope.$watch(function () {
 			return modelSvc.episodes[appState.episodeId].items;
 		}, function (a) {
 			if (a) {
+
 				modelSvc.addEndingScreen(appState.episodeId);
 				timelineSvc.init(appState.episodeId);
+
+				appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
+				modelSvc.setLanguageStrings();
+
 				$scope.loading = false;
 				eventsWatcher(); // stop watching
 			}
 		});
 
-		$scope.episode = modelSvc.episode(appState.episodeId);
 		$scope.appState = appState;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
-		$scope.currentdate = new Date();
+		$scope.apiDataBaseUrl = config.apiDataBaseUrl;
+
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 		/* BEGIN TOOLBAR HIDE/REVEAL- - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -91,13 +124,14 @@ angular.module('com.inthetelling.story')
 		//   If mouse re-enters pane, keep the controls visible. 
 
 		appState.videoControlsActive = false;
-		var keepControls;
 		var controlTimer;
+		var keepControls;
 
 		var videoControlsWatcher = $scope.$watch(function () {
 			return appState.videoControlsActive;
 		}, function (isActive) {
 			if (isActive) {
+				$timeout.cancel(controlTimer);
 				controlTimer = $timeout(function () {
 					if (!keepControls) { // <-- this is why we're not just calling allowControlsExit here
 						appState.videoControlsActive = false;
@@ -108,7 +142,6 @@ angular.module('com.inthetelling.story')
 		$scope.$on('$destroy', function () {
 			videoControlsWatcher();
 		});
-
 		$scope.showControls = function () {
 			// console.log("showControls");
 			$timeout.cancel(controlTimer);
@@ -118,17 +151,17 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		$scope.keepControls = function () {
-			// console.log("keepControls");
-			keepControls = true;
-		};
+		// $scope.keepControls = function () {
+		// 	console.log("keepControls");
+		// 	appState.videoControlsLocked = true;
+		// };
 
 		$scope.allowControlsExit = function () {
-			// console.log("allowControlsExit");
-			keepControls = false;
+			// console.log("allowControlsExit. Locked state is ", appState.videoControlsLocked);
+			// appState.videoControlsLocked = false;
 			$timeout.cancel(controlTimer);
 			controlTimer = $timeout(function () {
-				if (!appState.show.navPanel) {
+				if (!appState.videoControlsLocked) {
 					appState.videoControlsActive = false;
 				}
 			}, 5000);
@@ -179,9 +212,13 @@ angular.module('com.inthetelling.story')
 		});
 
 		$scope.hidePanels = function () {
+			// dismiss ALL THE THINGS
+			appState.show.searchPanel = false;
 			appState.show.helpPanel = false;
 			appState.show.navPanel = false;
-			appState.show.searchPanel = false;
+			appState.show.profilePanel = false;
+			appState.itemDetail = false;
+			$rootScope.$emit("player.dismissAllPanels");
 		};
 
 		$scope.noMoreHelp = function () {
@@ -192,6 +229,14 @@ angular.module('com.inthetelling.story')
 
 		$scope.play = function () {
 			timelineSvc.play();
+		};
+
+		$scope.userHasRole = function (role) {
+			return authSvc.userHasRole(role);
+		};
+
+		$scope.logout = function () {
+			return authSvc.logout();
 		};
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
@@ -289,26 +334,6 @@ angular.module('com.inthetelling.story')
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
-		$rootScope.$on("userKeypress.ESC", function () {
-			// dismiss ALL THE THINGS
-			appState.show.searchPanel = false;
-			appState.show.helpPanel = false;
-			appState.show.navPanel = false;
-			appState.itemDetail = false;
-		});
-
-		// TEMPORARY: Producer code below this line
-		// If this turns out to be any good move it into a producer directive.
-		// will likely want other components to be able to read which layer we're editing -- timeline, at least
-		// $scope.editLayer = function(layer) {
-		// 	console.log("TODO: whichever of fgLayer, contentLayer, and bgLayer this isn't: ", layer);
-		// 	$scope.editLayer.scene = false;
-		// 	$scope.editLayer.bgLayer = false;
-		// 	$scope.editLayer.contentLayer = false;
-		// 	$scope.editLayer.fgLayer = false;
-		// 	if (layer !== '') {
-		// 		$scope.editLayer[layer] = true;
-		// 	}
-		// };
+		$rootScope.$on("userKeypress.ESC", $scope.hidePanels);
 
 	});

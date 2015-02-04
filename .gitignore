@@ -4,3 +4,4 @@
 /app/scripts/templates.js
 *.swp
 *.swo
+*.orig

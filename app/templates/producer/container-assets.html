@@ -1,0 +1,58 @@
+<div ng-if="showParent">
+	<div sxs-container-assets="container.parent_id"></div>
+</div>
+<div class="containerAssets">
+	<div ng-if="container.parent_id && !showParent">
+		<a class="goUp" ng-click="up()">Parent container</a>
+	</div>
+	<div class="title">{{container.display_name}}
+	</div>
+
+	<div class="controls">
+		<!-- 		<span style="float:left;">
+			<a ng-click="hideItems = !hideItems">(x)</a>
+		</span>
+ -->
+		<span ng-if="!hideItems">
+			<a ng-click="toggleImages()">
+				<span ng-if="onlyImages">Images</span>
+				<span ng-if="!onlyImages">All</span>
+			</a>
+			&nbsp;
+			<a ng-click="toggleGrid()">
+				<span ng-if="gridView">▦</span>
+				<span ng-if="!gridView">☰</span>
+			</a>
+		</span>
+	</div>
+
+	<div class="scrollPane" ng-if="!hideItems">
+		<div ng-if="gridView">
+			<div class="grid" ng-repeat="asset in assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
+				<div ng-if="asset._type == 'Asset::Image'">
+					<img class="thumbnail" ng-src="{{asset.url}}">
+				</div>
+				<div ng-if="asset._type != 'Asset::Image'">
+					<div class="thumbnail">(video)</div>
+				</div>
+				{{asset.name}}
+			</div>
+		</div>
+		<table ng-if="!gridView">
+			<tr ng-repeat="asset in assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
+				<td>
+					<div ng-if="asset._type == 'Asset::Image'">
+						<img class="thumbnail" ng-src="{{asset.url}}">
+					</div>
+				</td>
+				<td>{{asset.size |asBytes}}</td>
+				<td>{{asset.content_type}}</td>
+				<td>
+					{{asset.name}}
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
+</div>

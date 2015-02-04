@@ -14,6 +14,9 @@
 .content .item {
 	padding: 0.3em 0.5em 0.3em 60px;
 }
+.windowFg .content .item {
+	padding: 0;
+}
 .item {
 	transition: all ease-in-out 1s;
 }
@@ -21,6 +24,35 @@
 	display: inline;
 	line-height: 1em
 }
+.item .itemQuestionLeft {
+	display: inline-block;
+	vertical-align: top;
+	padding-left: 2%;
+	width:60%;
+}
+.item .itemQuestionImageRight {
+	display: inline-block;
+	text-align: right;
+	vertical-align: top;
+	padding-left: 2%;
+}
+
+.item .itemQuestionWrapper {
+	width:90%;
+}
+
+
+.item .itemQuestionRight {
+	display: inline-block;
+	text-align: left;
+	vertical-align: top;
+	padding-left: 2%;
+	width:60%;
+}
+.item .itemQuestionWrapper {
+	width:90%;
+}
+
 .item .icon {
 	max-width: 55px;
 	;
@@ -39,14 +71,10 @@
 .item .title {
 	margin-bottom: 0.5em;
 }
-
 a.startTime.displayTime {
-
-text-decoration: none;
-color: black;
-text-shadow: none;
+	text-decoration: none;
+	text-shadow: none;
 }
-
 /* iframes */
 
 .iframeContainer {
@@ -151,6 +179,14 @@ image-fill items */
 .fill .item.br .fillImg {
 	bottom: 0;
 }
+.fill .item.tl img,
+.fill .item.tr .fillImg {
+	top: 0;
+}
+.fill .item.bl img,
+.fill .item.tl .fillImg {
+	left: 0;
+}
 .fill .item.center .itemTemplate {
 	display: flex;
 	justify-content: center;
@@ -200,7 +236,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	font-size: 1em;
 }
 .touchableIndicator:before {
-	content: "\e602";
+	content: "\e609";
 	text-shadow: 1px 1px 1px #FFF;
 }
 .item .touchable:hover .touchableIndicator {
@@ -470,3 +506,4 @@ Inline images (TODO show these only when image is larger than available space) *
 .item .question input[type="radio"] {
 	margin-right: 0.5em;
 }
+

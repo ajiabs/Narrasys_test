@@ -1,0 +1,9 @@
+<div class="itemTemplate sxs-item">
+	<a class="edit-event" ng-click="editItem()" ng-if="item._id != 'internal:editing'">[Edit]</a>
+	<img class="sxs-profile" src="/images/customer/tmp-userprofile.png">
+	<div class="itemHead">
+		<div class="authorName" ng-bind-html="item.display_annotator"></div>
+	</div>
+
+  <itt-mc-question choices="item.data._plugin.distractors" data="item.data._plugin" qid="item._id"></itt-question>
+</div>

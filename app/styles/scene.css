@@ -29,10 +29,14 @@
 	position: fixed;
 }
 .windowFg.fgLayer {
-	background-color: #FFF;
+	background-color: rgba(0, 0, 0, 0.5);
 }
-.windowFg.fgLayer .overflowY {
-	margin: 70px 2em 200px 2em;
+.windowFg.fgLayer .content {
+	margin: 4em;
+	padding: 1em;
+	background-color: #FFF;
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	height: 80%; overflow-y:scroll;
 }
 .videoContainer {
 	overflow: hidden;
@@ -51,6 +55,30 @@
 }
 .sceneTitle {
 	margin-left: 0.5em;
+}
+.showBackgroundOnly .content,
+.showBackgroundOnly .fgLayer,
+.showBackgroundOnly .videoMask {
+	opacity: 0;
+	pointer-events: none;
+}
+.showBackgroundOnly .videoContainer .fgLayer {
+	opacity: 1;
+}
+.showBackgroundOnly .bgLayer {
+	opacity: 1;
+}
+.showBackgroundOnly .videoContainer .fgLayer .item,
+.showBackgroundOnly .bgLayer .item {
+	pointer-events: auto;
+}
+.showBackgroundOnly .windowBg .item .edit-event {
+	/* TOP TOOLBAR */
+	
+	margin-top: 55px;
+}
+.showForegroundOnly .bgLayer {
+	display: none;
 }
 /* ------------------------------------------- */
 /* Sidebars and margins.
@@ -225,6 +253,18 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .reviewMode h3 {
 	font-size: 1em;
 }
+.reviewMode .isCosmetic {
+	opacity: 0.5;
+}
+.reviewMode .isCosmetic .category:before {
+	background-color: #999;
+	border-radius: 0.5em;
+	color: #fff;
+	content: "COSMETIC";
+	font-size: 0.8em;
+	font-weight: bold;
+	padding: 0.2em;
+}
 @media screen and (min-width: 1000px) {
 	/* three-col layout on wide screens */
 	
@@ -296,6 +336,14 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 .endingscreen {
 	padding: 5% 10%;
+}
+.endingscreen .videoMagnet {
+	margin: 0 30%;
+}
+.crossEpisodeNav {
+	list-style: none;
+	margin-left: 1em;
+	font-size: 0.95em;
 }
 /* ------------------------------------------- */
 

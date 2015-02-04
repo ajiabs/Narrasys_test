@@ -61,7 +61,8 @@ button {
 	animation: delayedFadeOut 7s ease-out;
 }
 .toolbar .searchgroup,
-.toolbar .escapegroup {
+.toolbar .escapegroup,
+.toolbar .profilegroup {
 	float: right;
 }
 .toolbar .searchgroup .hidden {
@@ -71,6 +72,13 @@ button {
 	width: 1px;
 	height: 1px;
 	overflow: hidden;
+}
+.button-profile {
+	background: url('/images/tmp-user.png');
+	background-size: 16px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	width: 30px;
 }
 .toolbar .buttongroup.searchgroup {
 	transition: all 1s;
@@ -133,12 +141,26 @@ button {
 	width: 80%
 }
 .toolbar .button {
-	display: inline-block;
 	padding: 0 0.5em;
 	line-height: 24px;
 	height: 24px;
 	cursor: pointer;
 	color: #555;
+	display: inline-block;
+}
+.producerEditLayers {
+	background: url("/images/producer-edit.png") top center transparent;
+	background-size: contain;
+	width: 60px;
+	height: 24px;
+	line-height: 24px;
+	display: inline-block;
+}
+.producerEditLayers.bg {
+	background-image: url("/images/producer-edit-bg.png");
+}
+.producerEditLayers.fg {
+	background-image: url("/images/producer-edit-fg.png");
 }
 .modegroup .button {
 	color: #AAA;
@@ -155,30 +177,30 @@ button {
 	font-size: 1em;
 }
 .button-watch:before {
-	content: "\e60b"
+	content: "\e610"
 }
 .button-discover:before {
-	content: "\e60a"
+	content: "\e60f"
 }
 .button-review:before {
-	content: "\e60c"
+	content: "\e611"
 }
 .button-search {
 	display: block;
 	width: 2em;
 }
 .button-search:before {
-	content: "\e602"
+	content: "\e609"
 }
 .cur .button-search:before {
-	content: "\e603"
+	content: "\e60a"
 }
 .button-mainframeescape:before {
-	content: "\e609"
+	content: "\e60e"
 }
 .escapelink:before {
 	font-family: Story;
-	content: "\e609";
+	content: "\e60e";
 	padding-right: 0.5em;
 	font-size: 0.86em;
 	color: #333;
@@ -192,7 +214,7 @@ button {
 .autoscroll {
 	position: fixed;
 	right: 16px;
-	bottom: 106px;
+	bottom: 156px;
 	width: 32px;
 	height: 32px;
 	opacity: 0.7;
@@ -320,14 +342,10 @@ button {
 	opacity: 1;
 	animation: delayedFadeIn 4s ease-out;
 	margin-top: 0.3em;
-}
-.searchfilters {
 	font-size: 0.86em;
-	float: right;
-	margin-right: 0.5em;
-	cursor: pointer;
+	text-align: right;
 }
-.searchfilters label {
+/*.searchfilters label {
 	float: right;
 	margin-right: 0.5em;
 	cursor: pointer;
@@ -335,6 +353,8 @@ button {
 .searchfilters input[type="radio"] {
 	display: none
 }
+*/
+
 .searchResults h3 {
 	padding: 0.5em 0.3em 0.1em 0.3em
 }
@@ -343,10 +363,17 @@ button {
 	padding: 0.1em 0.3em;
 	clear: both;
 }
+.searchResults .item .isSxS {
+	background: url('/images/customer/tmp-userprofile.png') top right no-repeat;
+	background-size: 24px;
+	margin-right: -4px;
+	margin-top: -2px;
+	padding-right: 24px;
+	;
+}
 .searchResults .item .displayTime button {
 	cursor: pointer;
 	cursor: hand;
-	color: #00C;
 	float: left;
 	display: inline;
 	width: 45px;
@@ -379,7 +406,7 @@ button {
 .searchPanel.ng-hide-remove {
 	display: block!important;
 }
-.searchPanel .ui-match {
+.ui-match {
 	background-color: rgba(50, 50, 50, 0.4);
 	color: #FFF;
 	margin: -4px;
@@ -393,16 +420,17 @@ button {
 //===========================*/
 
 .navPanel {
-	max-height: 400px;
+	max-height: 300px;
 	transition: 1s all;
 	overflow-y: scroll;
+	padding-top: 1em;
 }
 .navPanel.ng-hide-add,
 .navPanel.ng-hide-remove {
 	display: block!important;
 }
 .navPanel.ng-hide-add {
-	max-height: 400px;
+	max-height: 300px;
 }
 .navPanel.ng-hide-add-active {
 	max-height: 0;
@@ -411,7 +439,7 @@ button {
 	max-height: 0;
 }
 .navPanel.ng-hide-remove-active {
-	max-height: 400px;
+	max-height: 300px;
 }
 @media screen and (max-width: 500px) {
 	.navPanel {
@@ -435,19 +463,15 @@ button {
 }
 @media screen and (min-width: 700px) {
 	.navPanel {
-		margin: 0 20%;
+		margin: 0 72px;
 	}
 }
-.navPanel .scene:first-child {
-	margin-top: 1em;
+.navPanel h2 {
 	font-size: 120%;
 	font-weight: bold;
 	padding-bottom: 0.5em;
 	padding-left: 1em;
 	border-top: none;
-}
-.navPanel .scene:first-child a {
-	color: #000;
 }
 .navPanel .scene {
 	cursor: pointer;
@@ -465,8 +489,14 @@ button {
 	text-align: right;
 	padding-right: 10px;
 }
-.navPanel .sceneLink {
-	color: blue;
+.navPanel .parent {
+	font-size: 0.8em;
+}
+.navPanel .crossEpisode {
+	font-size: 0.8em;
+}
+.navPanel .nextEpisode {
+	float: right;
 }
 /*============================
  *
@@ -510,10 +540,10 @@ button {
 	padding-right: 0.5em;
 }
 .helpPanel li.video:before {
-	content: "\e60b"
+	content: "\e610"
 }
 .helpPanel li.directed:before {
-	content: "\e60a"
+	content: "\e60f"
 }
 @media screen and (max-width: 480px) {
 	.helpPanel li.directed {
@@ -521,7 +551,7 @@ button {
 	}
 }
 .helpPanel li.explore:before {
-	content: "\e60c"
+	content: "\e611"
 }
 .helpPanel .goAway {
 	float: right;
@@ -534,16 +564,27 @@ button {
 	font-size: 1em;
 	cursor: pointer;
 }
-.helpPanel .arrow-up {
+.arrow-up {
 	width: 20px;
 	height: 20px;
 	background-color: #EEE;
 	position: absolute;
 	top: -10px;
-	left: 30px;
 	box-shadow: -5px -3px 3px rgba(0, 0, 0, 0.2);
 	z-index: 5;
 	transform: rotate(45deg);
+}
+.helpPanel .arrow-up {
+	left: 30px;
+}
+.profilePanel .arrow-up {
+	right: 35px;
+}
+.profilePanel .authoringForm {
+	position: absolute;
+	left: 85px;
+	right: 0;
+	top: 0;
 }
 .helpPanel .screen-reader-offscreen {
 	position: absolute;
@@ -565,5 +606,20 @@ button {
 	line-height: 3.4em;
 	float: right;
 	margin-top: 5em;
+}
+.profilePanel {
+	background-color: #EEE;
+	border-radius: 15px;
+	font-size: 0.86em;
+	right: 2em;
+	padding: 15px;
+	position: absolute;
+	width: 60%;
+	max-width: 500px;
+	min-width: 290px;
+	/* TOOLBAR HEIGHT */
+	
+	top: 55px;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
 

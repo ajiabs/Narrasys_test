@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState) {
-		$scope.errorSvc = errorSvc;
+	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState, authSvc) {
+		console.log("errorController", $scope);
 
+		$scope.errorSvc = errorSvc;
+		$scope.logout = authSvc.logout;
 		$scope.user = appState.user;
 
 		// probably should split this into separate functions for errors and notifications, but good enough for now
@@ -22,18 +24,6 @@ angular.module('com.inthetelling.story')
 					i = errorSvc.notifications.length;
 				}
 			}
-		};
-
-		/* TODO HACK this doesn't belong here at all; should be in authSvc (or possibly removed altogether) */
-		$scope.resetAuth = function () {
-			console.log(config.localStorageKey);
-			$http.defaults.headers.common.Authorization = undefined;
-			localStorage.removeItem(config.localStorageKey);
-			appState.user = {};
-		};
-
-		$scope.reload = function () {
-			window.location.reload(true);
 		};
 
 	});

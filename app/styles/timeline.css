@@ -36,9 +36,6 @@
 	min-width: 1em;
 	overflow: hidden;
 }
-.pbarTop .button {
-	padding-left: 1em;
-}
 .pbarBottom .button {
 	padding-right: 1em;
 }
@@ -70,6 +67,7 @@
 	height: 1em;
 	width: 100%;
 	border-radius: 0 0.5em 0.5em 0;
+	pointer-events: none;
 }
 .progressbar .played,
 .progressbar .buffered,
@@ -101,12 +99,35 @@
 	margin-top: -0.1em;
 	margin-bottom: 0.1em;
 	width: 1px;
+	pointer-events: auto;
+}
+.progressbar .handle.sxsHandle {
+	margin-left: -2px;
+	height: 1.3em;
+	margin-top: -0.2em;
+	border: 2px solid #333;
+}
+.progressbar .sxsHandle .tip {
+	border: 2px solid #333;
+	padding: 1px;
+	border-radius: 6px;
+	background-color: rgba(255, 255, 255, 0.5);
+	margin-top: -1em;
+	font-size: 11px !important;
+	background: url('/images/draggable.png') 50% 50% no-repeat;
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 .progressbar .marker {
 	font-size: 0.7em;
 	line-height: 1.4em;
 	width: 1em;
 	margin-left: -0.5em;
+	pointer-events: auto;
+}
+.progressbar .marker.mini {
+	font-size: 0.5em;
+	line-height: 2em;
+	opacity: 0.5;
 }
 .progressbar .marker:before {
 	content: "\e007";
@@ -160,8 +181,8 @@
 	margin-left: -25px;
 	text-align: center;
 }
-.button-prev,
-.button-next {
+.timeline .button-prev,
+.timeline .button-next {
 	width: 1.5em;
 	font-size: 1.3em;
 	margin-top: -0.15em;
@@ -173,11 +194,11 @@
 	height: 1em;
 	width: 2em;
 }
-.button-prev {
+.timeline .button-prev {
 	position: absolute;
 	left: 0;
 }
-.button-next {
+.timeline .button-next {
 	position: absolute;
 	right: 0;
 	text-align: right;
@@ -187,15 +208,15 @@
 	left: 2em;
 }
 .button-prev:before {
-	content: "\e601";
+	content: "\e608";
 	font-family: Story;
 }
 .button-next:before {
 	font-family: Story;
-	content: "\e600";
+	content: "\e607";
 }
 .button-scenemenu:before {
-	content: "\e605";
+	content: "\e60b";
 	font-family: Story;
 	font-size: 0.6em;
 	position: absolute;
@@ -254,10 +275,10 @@
 }
 .button-fullscreen:before {
 	font-family: Story;
-	content: "\e606";
+	content: "\e60c";
 }
 .button-fullscreen.active:before {
-	content: "\e608";
+	content: "\e60d";
 }
 .button-zoomout,
 .button-zoomin {
@@ -267,11 +288,11 @@
 }
 .button-zoomout:before {
 	font-family: Story;
-	content: "\e60e";
+	content: "\e613";
 }
 .button-zoomin:before {
 	font-family: Story;
-	content: "\e60d";
+	content: "\e612";
 }
 .volumebar {
 	position: relative;
@@ -291,11 +312,11 @@
 	background: #555 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
 .pbarBottom .screen-reader-offscreen {
-	position:absolute;
-	left:-999px;
-	width:1px;
-	height:1px;
-	top:auto;
+	position: absolute;
+	left: -999px;
+	width: 1px;
+	height: 1px;
+	top: auto;
 }
 .speedcontrol {
 	margin-left: 1em;

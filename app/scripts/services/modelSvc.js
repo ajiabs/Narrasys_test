@@ -4,7 +4,7 @@
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState, errorSvc) {
+	.factory('modelSvc', function ($interval, $filter, config, appState) {
 
 		var svc = {};
 
@@ -40,11 +40,17 @@ angular.module('com.inthetelling.story')
 					svc.assets[item._id] = svc.deriveAsset(angular.copy(item));
 				}
 			} else if (cacheType === 'container') {
+
+				// item will have children data. deriveContainer will also create (childless) stubs
+				// for each child of this container, and replace container.children with an array of references to each stub
+
+				// parent first:
 				if (svc.containers[item._id]) {
 					angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(item)));
 				} else {
 					svc.containers[item._id] = svc.deriveContainer(angular.copy(item));
 				}
+
 			}
 		};
 
@@ -96,7 +102,17 @@ angular.module('com.inthetelling.story')
 
 			// (from old sxs demo; can delete later)
 			"templates/upload-demo-inline.html": "templates/item/debug.html",
-			"templates/upload-demo.html": "templates/item/debug.html"
+			"templates/upload-demo.html": "templates/item/debug.html",
+
+			//questions
+			"templates/question-mc-formative.html": "templates/item/question-mc-formative.html",
+			"templates/question-mc-poll.html": "templates/item/question-mc-poll.html",
+			
+			"templates/question-mc.html": "templates/item/question-mc.html",
+			"templates/question-mc-image-left.html": "templates/item/question-mc-image-left.html",
+			"templates/question-mc-image-right.html": "templates/item/question-mc-image-right.html",
+			
+			"templates/sxs-question.html": "templates/item/sxs-question.html"
 		};
 
 		// svc.deriveFoo() are for efficiency precalculations. 
@@ -105,10 +121,23 @@ angular.module('com.inthetelling.story')
 
 		svc.deriveEpisode = function (episode) {
 			// console.log("deriveEpisode:", episode);
+
 			if (updateTemplates[episode.templateUrl]) {
 				episode.origTemplateUrl = episode.templateUrl;
 				episode.templateUrl = updateTemplates[episode.templateUrl];
 			}
+
+			// unpack languages
+			angular.forEach(episode.languages, function (lang) {
+				if (lang.default) {
+					// console.log("FOUND DEFAULT LANGUAGE", lang.code, appState.lang);
+					episode.defaultLanguage = lang.code;
+				}
+			});
+			if (episode.defaultLanguage === false) {
+				episode.defaultLanguage = "en"; // last resort
+			}
+			svc.setLanguageStrings();
 
 			// For now, automatically add customer-specific styles to episode if there aren't other selections.
 			// (TODO Producer should do this automatically; this is for legacy episodes):
@@ -134,10 +163,7 @@ angular.module('com.inthetelling.story')
 
 			if (episode.title && svc.events["internal:landingscreen:" + episode._id]) {
 				svc.events["internal:landingscreen:" + episode._id].title = episode.title;
-			}
-			// FOR TESTING
-			if (episode.languages) {
-				// episode.languages.push("es");
+				svc.events["internal:landingscreen:" + episode._id] = setLang(svc.events["internal:landingscreen:" + episode._id]);
 			}
 
 			episode = setLang(episode);
@@ -179,6 +205,34 @@ angular.module('com.inthetelling.story')
 */
 
 		svc.deriveContainer = function (container) {
+
+			// console.log("deriving container", container);
+
+			container.haveNotLoadedChildData = false; // not sure yet if this is necessary
+			// first sort the children:
+			if (container.children && container.children.length > 0) {
+				// When we populate sort_order, we can remove this:
+				container.children = container.children.sort(function (a, b) {
+					return (a.name.en > b.name.en) ? 1 : -1; // WARN always sorted by english
+				});
+				// This is the real one (for now sort_order always is zero, so this sort will have no effect):
+				container.children = container.children.sort(function (a, b) {
+					return a.sort_order - b.sort_order;
+				});
+
+				var childRefs = [];
+				angular.forEach(container.children, function (child) {
+					if (svc.containers[child._id]) {
+						childRefs.push(svc.containers[child._id]);
+					} else {
+						child.haveNotLoadedChildData = true; // not sure yet if this is necessary
+						svc.containers[child._id] = angular.copy(setLang(child));
+					}
+
+				});
+
+				container.loadedChildData = true;
+			}
 			return setLang(container);
 		};
 
@@ -187,31 +241,32 @@ angular.module('com.inthetelling.story')
 			event = setLang(event);
 
 			if (event._type !== 'Scene') {
-				if (!event.templateUrl) {
-					// TODO add support for other plugin types here, or have a single plugin template that routes to subdirectives based on plugin type
-					event.templateUrl = 'templates/item/usc-badges.html';
-				}
-
 				if (svc.episodes[event.episode_id] && svc.episodes[event.episode_id].templateUrl === 'templates/episode/usc.html') {
 					// HACKS AHOY
 					// USC made a bunch of change requests post-release; this was the most expedient way
 					// to deal with them. Sorry!
+
+					// I don't know why this situation occurs, but it does:
+					if (!event.templateUrl) {
+						event.templateUrl = 'templates/item/usc-badges.html';
+					}
+
 					if (event._type === "Link") {
 						if (event.templateUrl === 'templates/transmedia-link-default.html') {
 							// they don't want any embedded links (shrug)
 							event.templateUrl = 'templates/transmedia-link-noembed.html';
 						}
-						if (event.title.en && event.title.en.match(/ACTIVITY/)) {
+						if (event.display_title.match(/ACTIVITY/)) {
 							// Unnecessary explanatory text
 							event.display_description = event.display_description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
 						}
-						if (event.title.en && event.title.en.match(/Haven't Registered/)) {
+						if (event.display_title.match(/Haven't Registered/)) {
 							// hide this event for non-guest users
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
 							event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
 						}
-						if (event.title.en && event.title.en.match(/Connect with/)) {
+						if (event.display_title.match(/Connect with/)) {
 							// hide this event unless episode badge is achieved
 							event.styles = event.styles ? event.styles : [];
 							event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
@@ -222,6 +277,14 @@ angular.module('com.inthetelling.story')
 				}
 
 				//items
+
+				// clear derived flags before re-setting them (in case we're editing an existing item):
+				event.isContent = false;
+				event.isTranscript = false;
+				event.noEmbed = false;
+				event.noExternalLink = false;
+				event.targetTop = false;
+
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)
 				if (event.layouts) {
@@ -234,12 +297,6 @@ angular.module('com.inthetelling.story')
 					event.isContent = true;
 				}
 
-				// TODO: if we could trust authors to choose 'cosmetic' for cosmetic items, or if we set it in producer based on the item layout
-				// (HEY THERES AN IDEA) we wouldn't need to do this:
-				if (!event.cosmetic && (event.isContent || event.layouts.indexOf('windowFg') > -1)) {
-					event.showInReviewMode = true;
-				}
-
 				// Old templates which (TODO) should have been database fields instead:
 				if (event._type === 'Annotation' && event.templateUrl.match(/transcript/)) {
 					event.isTranscript = true;
@@ -249,7 +306,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				if (event._type === "Link" && event.url.match(/^http:\/\//)) {
-					console.warn("Can't embed http:// link type:", event.url);
+					//console.warn("Can't embed http:// link type:", event.url);
 					event.noEmbed = true;
 				}
 
@@ -264,7 +321,7 @@ angular.module('com.inthetelling.story')
 
 			// both scenes and items.  Do this last for now, since we're doing some ugly string matching against the old templateUrl:
 			if (updateTemplates[event.templateUrl]) {
-				event.origTemplateUrl = event.templateUrl; // TEMPORARY
+				event.origTemplateUrl = event.templateUrl;
 				event.templateUrl = updateTemplates[event.templateUrl];
 
 				// coerce old image-plain background images into image-fill:
@@ -280,7 +337,36 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			} else {
-				// console.error("Couldn't match event templateUrl: ", event.templateUrl);
+				// console.log("Keeping same templateUrl:", event.templateUrl);
+				event.origTemplateUrl = event.templateUrl;
+			}
+
+			// Finally one more super-fragile HACK for producer:
+			if (!event.producerItemType) {
+				if (event.templateUrl.match(/file/)) {
+					event.producerItemType = 'file';
+				} else if (event.templateUrl.match(/image/)) {
+					event.producerItemType = 'image';
+				} else if (event.templateUrl.match(/link/)) {
+					event.producerItemType = 'link';
+				} else if (event.templateUrl.match(/video/)) {
+					event.producerItemType = 'link'; // HACK for now
+				} else if (event.templateUrl.match(/question/)) {
+					event.producerItemType = 'question';
+				} else if (event.templateUrl.match(/transcript/)) {
+					event.producerItemType = 'transcript';
+				} else if (event.templateUrl.match(/text/)) {
+					event.producerItemType = 'annotation';
+				} else if (event.templateUrl.match(/pullquote/)) {
+					event.producerItemType = 'annotation';
+				} else if (event.templateUrl.match(/scene/)) {
+					event.producerItemType = 'scene';
+				} else if (event.templateUrl.match(/comment/)) {
+					event.producerItemType = 'comment';
+				} else {
+					// console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
+				}
+
 			}
 
 			event.displayStartTime = $filter("asTime")(event.start_time);
@@ -326,14 +412,12 @@ angular.module('com.inthetelling.story')
 				- episode.items
 				- scene.items
 				- item.scene_id
+				- episode.annotators (for use in producer)
 
 		NOTE: this currently calls cascadeStyles on episodes and events as a side effect.  
 		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but 
 		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them.
 
-
-		TODO this needs to ensure that scenes are contiguous and that items don't overlap scenes
-		(there are authoring issues in existing episodes where items start a fraction of a second before their intended scene does)
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
 			// console.log("resolveEpisodeEvents");
@@ -352,6 +436,52 @@ angular.module('com.inthetelling.story')
 					items.push(event);
 				}
 			});
+
+			// collect a list of all the speakers/annotators in the episode.
+			// Try to merge partially-translated annotator names into the more fully-translated versions.
+			// This is imperfect -- a few will slip through if there is a missing translation in the default language -- but good enough for now
+			// TODO replace all of this, have the API keep track of each annotator as a real, separate entity
+			var annotators = {};
+			angular.forEach(items, function (event) {
+				if (event._type === 'Annotation' && event.annotator) {
+					// This is kind of a mess 
+					// Use the default language as the key; merge any other languages into that key
+					var defaultLanguage = episode.defaultLanguage || 'en';
+					var key = event.annotator[defaultLanguage];
+
+					if (key === undefined) {
+						// this annotator doesn't have a translation in the default language, so use its first language instead
+						key = event.annotator[Object.keys(event.annotator).sort()[0]];
+					}
+
+					if (annotators[key]) {
+						// merge other translations of the same name into this one
+						annotators[key].name = angular.extend(annotators[key].name, event.annotator);
+						if (!annotators[key].annotation_image_id) {
+							annotators[key].annotation_image_id = event.annotation_image_id;
+						}
+					} else {
+						annotators[key] = {
+							"name": event.annotator,
+							"annotation_image_id": event.annotation_image_id
+						};
+					}
+
+					// construct a description containing all languages, starting with the default
+					var langs = Object.keys(annotators[key].name).sort();
+					var longKey = annotators[key].name[defaultLanguage] || '(untranslated)';
+					for (var i = 0; i < langs.length; i++) {
+						if (langs[i] !== defaultLanguage) {
+							longKey = longKey + " / " + annotators[key].name[langs[i]];
+						}
+					}
+
+					annotators[key].key = longKey;
+
+				}
+			});
+			episode.annotators = annotators;
+
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 			episode.scenes = scenes.sort(function (a, b) {
@@ -363,8 +493,9 @@ angular.module('com.inthetelling.story')
 				return a.start_time - b.start_time;
 			});
 
-			// ensure scenes are contigouous. Skip the landing scene and the last scene:
-			for (var i = 1; i < episode.scenes.length - 2; i++) {
+			// ensure scenes are contiguous. Skip the landing scene and the ending scene.
+			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
+			for (var i = 1; i < episode.scenes.length - 1; i++) {
 				episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
 			}
 
@@ -419,6 +550,56 @@ angular.module('com.inthetelling.story')
 					event.styleCss = event.styleCss + " " + event.layouts.join(' ');
 				}
 			});
+		};
+
+		svc.resolveEpisodeContainers = function (epId) {
+			// Constructs the episode's parents[] array, up to its navigation depth plus (skipping the episode container itself)
+			// Also sets the episode's nextEpisodeContainer and prevEpisodeContainer
+
+			// all parent containers should have been loaded by the time this is called, so we don't need to worry about asynch at each step
+			// console.log("resolveEpisodeContainers", epId);
+			var episode = svc.episodes[epId];
+			episode.parents = [];
+			delete episode.previousEpisodeContainer;
+			delete episode.nextEpisodeContainer;
+			if (episode.navigation_depth > 0) {
+				setParents(Number(episode.navigation_depth) + 1, epId, episode.container_id);
+			} else {
+				episode.navigation_depth = 0;
+			}
+		};
+
+		var setParents = function (depth, epId, containerId) {
+
+			// console.log("setParents", depth, epId, containerId);
+			var episode = svc.episodes[epId];
+
+			// THis will build up the parents array backwards, starting at the end
+			if (depth <= episode.navigation_depth) { // skip the episode container
+				episode.parents[depth - 1] = svc.containers[containerId];
+			}
+
+			if (depth === episode.navigation_depth) {
+				// as long as we're at the sibling level, get the next and previous episodes 
+				// (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
+				for (var i = 0; i < svc.containers[containerId].children.length; i++) {
+					var c = svc.containers[containerId].children[i];
+					if (c.episodes[0] === epId) {
+						if (i > 0) {
+							// must embed directly from container cache, do not use an entry in children[] (they don't get derived!)
+							episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[i - 1]._id];
+						}
+						if (i < svc.containers[containerId].children.length - 1) {
+							episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[i + 1]._id];
+						}
+					}
+				}
+			}
+
+			// iterate
+			if (depth > 1) {
+				setParents(depth - 1, epId, svc.containers[containerId].parent_id);
+			}
 		};
 
 		svc.episode = function (epId) {
@@ -507,6 +688,7 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			}
+
 			return cssArr.join(' ');
 		};
 
@@ -528,10 +710,6 @@ angular.module('com.inthetelling.story')
 			if (svc.episodes[episodeId]) {
 				if (svc.episodes[episodeId].master_asset_id) {
 					svc.episodes[episodeId].masterAsset = svc.assets[svc.episodes[episodeId].master_asset_id];
-				} else {
-					errorSvc.error({
-						data: "This episode has no master_asset_id (authoring error?)"
-					});
 				}
 			}
 		};
@@ -548,7 +726,6 @@ angular.module('com.inthetelling.story')
 				"episode_id": episodeId,
 				"start_time": 0,
 				"end_time": 0.001
-					// title may not be known at this point; deriveEpisode will fill it in later.
 			};
 		};
 
@@ -577,9 +754,10 @@ angular.module('com.inthetelling.story')
 				"templateUrl": "templates/scene/endingscreen.html",
 				"episode_id": episodeId,
 				"start_time": duration,
-				"end_time": duration + 0.1,
-				"title": svc.episodes[episodeId].title // unlike in landingscreen, we know for certain that this has loaded by now
+				"end_time": duration + 0.1
+
 			};
+			svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
 			svc.resolveEpisodeEvents(appState.episodeId);
 
 		};
@@ -587,23 +765,32 @@ angular.module('com.inthetelling.story')
 		var resolveVideo = function (videoAsset) {
 			var videoObject = {};
 			if (videoAsset.alternate_urls) {
+				videoObject.lowRes = {};
 				// This will eventually replace the old method below.
-				// Sort them out by file extension first, then use _chooseVideoAsset to keep one of each type.
+				// Sort them out by file extension first, then size
+				// TODO we should really be making an array of stream sizes for each type, instead of 'larger' + 'smaller
 
 				var extensionMatch = /\.(\w+)$/;
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
 						videoObject.youtube = embeddableYoutubeUrl(videoAsset.alternate_urls[i]);
 					} else {
+						var videoAssetObject;
 						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
 						case "mp4":
-							videoObject.mpeg4 = _chooseVideoAsset(videoObject.mpeg4, videoAsset.alternate_urls[i]);
+							videoAssetObject = _sortVideoAssets(videoObject.mpeg4, videoAsset.alternate_urls[i]);
+							videoObject.mpeg4 = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
+							videoObject.lowRes.mpeg4 = videoAssetObject.smaller;
 							break;
 						case "m3u8":
-							videoObject.m3u8 = _chooseVideoAsset(videoObject.m3u8, videoAsset.alternate_urls[i]);
+							videoAssetObject = _sortVideoAssets(videoObject.m3u8, videoAsset.alternate_urls[i]);
+							videoObject.m3u8 = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
+							videoObject.lowRes.m3u8 = videoAssetObject.smaller;
 							break;
 						case "webm":
-							videoObject.webm = _chooseVideoAsset(videoObject.webm, videoAsset.alternate_urls[i]);
+							videoAssetObject = _sortVideoAssets(videoObject.webm, videoAsset.alternate_urls[i]);
+							videoObject.webm = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
+							videoObject.lowRes.webm = videoAssetObject.smaller;
 							break;
 						}
 					}
@@ -613,6 +800,7 @@ angular.module('com.inthetelling.story')
 				}
 			} else {
 				// This is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes.
+				console.warn("No alternate_urls array found; faking it!");
 				videoObject = {
 					mpeg4: videoAsset.url.replace('.mp4', '.m3u8'),
 					webm: videoAsset.url.replace(".mp4", ".webm"),
@@ -624,13 +812,6 @@ angular.module('com.inthetelling.story')
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 			var isNewSafari = /Version\/[891]/.test(navigator.appVersion); // HACKs upon HACKs.  presumably we'll fix this before safari 10 so that 1 will be unnecessary FAMOUS LAST WORDS amirite  (If anyone uses Safari 1 they're on their own)
 			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-			// Safari should prefer m3u8 to mpeg4.  TODO add other browsers to this when they support m3u8
-			// TODO BUG: disabling this for now; m3u8 is causing problems
-			// if (isSafari && videoObject.m3u8) {
-			// 	videoObject.mpeg4 = videoObject.m3u8;
-			// }
-			// delete videoObject.m3u8;
 
 			// youtube is still throwing errors in desktop safari (pre Yosemite) and in ipad.  Disable for now.
 			// TODO fix this so we can use youtube on these devices
@@ -645,10 +826,8 @@ angular.module('com.inthetelling.story')
 			// Therefore we trick Chrome into thinking it is not the same video:
 
 			if (isChrome) {
-
 				var tDelimit;
 				var tParam = "t=" + new Date().getTime();
-
 				if (videoObject.mpeg4) {
 					tDelimit = videoObject.mpeg4.match(/\?/) ? "&" : "?";
 					videoObject.mpeg4 = videoObject.mpeg4 + tDelimit + tParam;
@@ -658,9 +837,7 @@ angular.module('com.inthetelling.story')
 					videoObject.webm = videoObject.webm + tDelimit + tParam;
 				}
 			}
-
 			// console.log("video asset:", videoObject);
-
 			videoAsset.urls = videoObject;
 			return videoAsset;
 		};
@@ -675,19 +852,26 @@ angular.module('com.inthetelling.story')
 			return "//www.youtube.com/embed/" + ytId;
 		};
 
-		// Private convenience function called only from within resolveMasterAssetVideo. Pass in two filenames.
-		// If one is empty, return the other; otherwise checks for a WxH portion in two
-		// filenames; returns whichever is bigger (on desktop) or smaller (on mobile).
-
-		var _chooseVideoAsset = function (a, b) {
+		// Private convenience function called only from within resolveMasterAssetVideo. Pass in up to two filenames,
+		// returns a sorted object of {larger: , smaller: } based on a WxH portion of the filenames
+		var _sortVideoAssets = function (a, b) {
 			if (!a && b) {
-				return b;
+				return {
+					larger: b,
+					smaller: null
+				};
 			}
 			if (!b) {
-				return a;
+				return {
+					larger: a,
+					smaller: null
+				};
 			}
 			if (!a && !b) {
-				return "";
+				return {
+					larger: null,
+					smaller: null
+				};
 			}
 			// most video files come from the API with their width and height in the URL as blahblah123x456.foo:
 			var regexp = /(\d+)x(\d+)\.\w+$/; // [1]=w, [2]=h
@@ -696,12 +880,13 @@ angular.module('com.inthetelling.story')
 			var aTest = a.match(regexp) || [0, 0];
 			var bTest = b.match(regexp) || [0, 0];
 
-			// assume touchscreen means mobile, so we want the smaller video. TODO be less arbitrary about that
-			if (appState.isTouchDevice) {
-				return (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
-			} else {
-				return (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
-			}
+			var smaller = (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
+			var larger = (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
+			return {
+				larger: larger,
+				smaller: smaller
+			};
+
 		};
 
 		if (config.debugInBrowser) {

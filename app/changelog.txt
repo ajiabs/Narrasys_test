@@ -450,6 +450,7 @@ autoscroll button indicates direction; hides when it won’t do anything useful
 Changes in v4.0.45:
 Reverting autoscroll improvements (Not actually an improvement)
 
+
 ------------------------------------------------
 Changes in v4.0.46:
 new item templates
@@ -561,4 +562,326 @@ much faster toolbar fade
 ------------------------------------------------
 Changes in v4.1.12:
 reverting toolbar fade change -- made it worse on touchscreen
+
+------------------------------------------------
+Changes in v4.1.13:
+reverting bad test code
+
+------------------------------------------------
+Changes in v4.1.14:
+fixes STORY-202 tab issues in search
+preload image assets during playback
+
+------------------------------------------------
+Changes in v4.1.15:
+start times need to respond to colorInvert
+fixes for 210 and 211
+adding alt tags for image content
+missed hiding aspect ratio preserver images. hiding them with empty alt (for old screen readers) and aria-hidden
+
+------------------------------------------------
+Changes in v4.1.16:
+Fix for #259 stop events interfering with seek
+Updated how git determines the latest tag
+fixes #216. add missing labels to speed up/down and video elements
+
+------------------------------------------------
+Changes in v4.1.17:
+So it turns out that if you have a two-line bug fix, you need to commit *both* lines. 
+Updated for new web server redundancy
+
+------------------------------------------------
+Changes in v4.1.18:
+Prolotherapy episode template
+
+------------------------------------------------
+Changes in v4.1.19:
+Possible fix for TS-220
+
+------------------------------------------------
+Changes in v4.2.0
+rough item templates, autofocus, timeline injection
+fixed memory leak in item editor, prepping for timeline insert
+better handling of invalid time values
+tied sxs item start time to current timeline time
+cosmetics
+fixed itemEditController leakage
+better appearance for stop items
+clear edits on cancel
+item edit forms
+template stubs for edit panels
+'add' buttons and edit drawer
+edit and delete now working
+can save events now
+item.contain bugfix
+sidebar tweaks
+fix for item.contain not sizing properly
+new item templates
+asset uploads in progress
+Merge branch 'upload-service-testing' into sxs-dev
+better way to handle sidebar inline-vs-modal sizes
+sidebar items should never try to expand inline
+Merged file upload functionality
+Added i18n support
+------------------------------------------------
+Changes in v4.2.1:
+fixing minification error by updating from ngmin to ngAnnotate
+
+------------------------------------------------
+Changes in v4.2.2:
+Hiding work-in-progress functionality for demo release
+i18n for demo
+Updated build notes to something that is actually correct
+Added build notes
+
+------------------------------------------------
+Changes in v4.2.3:
+corrected config
+
+------------------------------------------------
+Changes in v4.2.4:
+reverse template translation on save
+
+------------------------------------------------
+Changes in v4.2.5:
+show edit button on items in sxs
+send correct item type (not _type)
+check for existence of  event id before trying to match against event id
+autofocus works with plain non-i18n fields again
+no ‘edit scene’ button in sxs
+strip internal IDs before storing to API
+no ‘centered video’ for PIP scene
+new Picture-in-picture scene template
+set correct scene template IDs on store
+Edit scene; lock toolbar visibility while editing
+
+------------------------------------------------
+Changes in v4.2.6:
+Don't automatically seek to beginning of event time when editing
+Don't save event edits if a template/style/layout id is missing
+Fixed STORY-85
+deleteEvent less dependent on appState.editing, receives id from item template
+Hide Producer edit buttons when in SxS
+
+------------------------------------------------
+Changes in v4.2.7:
+allow editing items in review mode
+precalculateSceneValues now allows re-precalculating
+episode template cleanup
+annotator autocomplete wasn't always selecting on click
+Fixing circular dependency in errorSvc
+replaced responseInterceptor which didn't work with interceptor which does
+Fix for STORY-99
+Cross episode navigation
+next/previous episode links, configurable navigation depth (partial)
+fixing text overlap in annotator autocomplete
+episode templateUrl to ID conversion
+stub for editing episode data
+Don't try to save falsy styles or layouts
+Progress on annotator autocomplete
+stub 'edit episode' control
+no flags for scenes
+bugfix to PIP template
+
+------------------------------------------------
+Changes in v4.2.8:
+Fixed broken config
+
+------------------------------------------------
+Changes in v4.2.9:
+renaming ItemEditController to EditController
+producer item templates no longer need refer to appState.editing
+tweaked PIP
+------------------------------------------------
+Changes in v4.2.10:
+typo
+------------------------------------------------
+Changes in v4.2.11:
+switching default back to english
+i18n annotators is... working? can it be?
+i18n for annotator and languages, annotator-autocomplete still WIP
+bug fix in link-withimage
+revised episode container loading
+fixes to link-withimage template
+Removing or canceling scenes no longer leaves a ghost marker in the timeline
+more episode editing wip
+more performant watch in episodeEditor — WARNING angular1.3 dependency
+quieter analyticsSvc
+fixed z-index problem with add-content buttons
+first step at editing episode
+moved recursionHelper and autofocus to their own files
+
+------------------------------------------------
+Changes in v4.2.12:
+Can browse container assets
+Can save episode changes now
+annotator autocomplete bug fix (can add new annotators now)
+fixed STORY-115
+renamed sxsIcon to eventIcon
+cosmetics
+author episode languages
+
+------------------------------------------------
+Changes in v4.2.13:
+fixing bad templateUrl
+
+------------------------------------------------
+Changes in v4.2.14:
+search panel: hide scenes, show annotators properly
+improved annotators selection
+can now select assets from containers in producer
+containerAssets
+
+------------------------------------------------
+Changes in v4.2.15:
+questions were displaying with a selected distractor on load
+fixed bad template path
+cleaning up asset upload workflow
+misc. last-minute pre-demo bugfixes
+edit of background-layer mostly working (Some of the layout options are still behaving oddly)
+review mode shows cosmetic items in producer
+updated mockSvc to use i18n data
+usc bugfix
+scene-centered works on dark background
+fixed missing review mode file
+Better performance overall
+Keep review mode unrendered except when it’s current; incrementally render review mode when it becomes current so it appears faster
+scene nav fixes
+corrected padding in GW landing screen
+fixed all the annotator-autocomplete madness
+fix STORY-153
+new relic changed ID
+some role-based rules on /#/episodes route
+accidentally removed language selector from item editor
+jquery path changed
+Merge branch 'gruntfix' into producer
+bower cleanup, update libraries
+removed static server_mock files; depend on bower instead
+hacky workaround for STORY-151
+added support for language as URL param e.g. “?lang=zh”
+working on episode editor
+quick fix for STORY-146
+can select middlebury in editor
+middlebury episode template
+
+------------------------------------------------
+Changes in v4.2.16:
+cosmetic tweak to item-edit icon
+“Editor” now Link event type for videos
+temporary fix for three-dots issue in safari + chrome (simply removed the ‘buffering’ icon)
+added 'editor' route -- removing sxs brand
+fix for "defaultLanguage = false" error
+blocking nonfunctional 'logout' link
+STORY-173 fix
+
+------------------------------------------------
+Changes in v4.2.17:
+Added (temporary) login form for admins
+start times need to respond to colorInvert
+admin cosmetics
+Allow add/delete of episodes
+Prevent endless loop when attempting to play a zero-duration episode
+preload image assets
+reverting quick fade of toolbar (which broke touchscreens)
+fixing toolbar bug introduced a couple of versions ago
+use  v3 endpoint for containers
+Toolbar fades much more quickly, CBS cosmetic fix
+pip fixes
+adding middlebury 'shield'
+youtube works in Safari 8, so allow it (need to test iOS8, it may be fine too)
+added ittTabs directive
+text-transmedia template support
+
+------------------------------------------------
+Changes in v4.2.18:
+/#/auth route (for episodes only)
+Containers working with latest api changes (Includes some workarounds for container.ancestry vs container.parent_id. )
+Admin login
+
+------------------------------------------------
+Changes in v4.2.19:
+debugging login
+#217 fix: /v1/new_window now uses apiDataBaseUrl
+
+------------------------------------------------
+Changes in v4.2.20:
+login form passes username/pwd correctly now (I am stepping away from the computer after this)
+
+------------------------------------------------
+Changes in v4.2.21:
+sxsHandle wasn't responding to mouse clicks (is pointer-events:none needed on progressbarContainer?)
+episode language no longer inits to false on route changes
+Possible fix for TS-220
+Prolotherapy episode template
+last commit only contained half of the fix, oops
+Fix for stop events interfering with seek
+
+------------------------------------------------
+Changes in v4.3.0:
+First production release of the producer/editor codebase. FIX ALL THE THINGS
+
+------------------------------------------------
+Changes in v4.3.1:
+Fixing bug which prevented cancel of 'add event'
+
+------------------------------------------------
+Changes in v4.3.2:
+hide "you are logged in" stuff from root page
+
+------------------------------------------------
+Changes in v4.3.3:
+root-page tweak
+
+------------------------------------------------
+Changes in v4.3.4:
+itemDetail was duplicated in a template
+
+------------------------------------------------
+Changes in v4.3.5:
+fixed bug where safari was trying to seek video before it was ready
+fixed display of achievement progress for USC
+
+------------------------------------------------
+Changes in v4.3.6:
+bringing deploy config up to date
+
+------------------------------------------------
+Changes in v4.3.7:
+make Editor visible on the dev server too, because why not
+removing bogus login error, hiding 'delete episode' for now
+Separated root route from auth route for better route routing of routes.  
+
+------------------------------------------------
+Changes in v4.3.8:
+temporary stopgap for Chrome stall issues (always use smaller stream on chrome)
+late 508 changes missed during merge. 
+
+------------------------------------------------
+Changes in v4.3.9:
+Revert "temporary stopgap for Chrome stall issues (always use smaller stream on chrome)"
+handle stall and unstall events ourselves, since Chrome isn't doing it for us
+
+------------------------------------------------
+Changes in v4.3.10:
+user-initiated seeks no longer trigger the stall counter
+bring back m3u8, since it seems to be working fine
+bring back defaulting to smaller video on touchscreen
+removing inaccessible code (we had some mid-function returns that would’ve broken my brain six months from now)
+wait for DOM to update before calling videoNode.load() with new src
+TS-293 fix (adaptive streaming)
+Merge pull request #22 from InTheTelling/chartFix
+question template refactor, chart fixes, scene end_time fixes, and a bit more clean up / remove unused templates
+fixes #ts-316. adjust impacted scene end_times on edit, create, delete of other scenes
+template refactoring.  image asset for questions.
+added the count w/ the percentage and added support for multiple independent flot charts
+add values to charts, and support multiple flot charts per page.
+support any question template, regardless of question type.
+
+------------------------------------------------
+Changes in v4.3.11:
+test deleting session cookies on logout
+
+------------------------------------------------
+Changes in v4.3.12:
+logout now calls server API instead of just dumping tokens
 

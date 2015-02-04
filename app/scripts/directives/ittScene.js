@@ -3,7 +3,7 @@
 // Minor jquery dependency ($.inArray)
 
 angular.module('com.inthetelling.story')
-	.directive('ittScene', function ($timeout, $interval, appState) {
+	.directive('ittScene', function ($timeout, $interval, appState, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -22,6 +22,12 @@ angular.module('com.inthetelling.story')
 				}
 				scope.precalculateSceneValues();
 				scope.appState = appState;
+
+				if (scope.scene._id.match(/internal/)) {
+					// landing and ending screens get inter-episode nav:
+					scope.containers = modelSvc.containers;
+					scope.crossEpisodePath = appState.crossEpisodePath;
+				}
 
 				var twiddleScene = function () {
 					var magnetNode = element.find('.videoMagnet img');
@@ -74,6 +80,11 @@ angular.module('com.inthetelling.story')
 					}
 				}, true);
 
+				// trigger init when the user edits content:
+				scope.unwatchEdits = scope.$watch(function () {
+					return appState.editEvent;
+				}, scope.precalculateSceneValues, true);
+
 				// HACK to catch cases (mostly on ios) where matchvideoheight isn't matching.
 				// slow, odd interval
 				scope.safetyBelt = $interval(twiddleScene, 1321);
@@ -81,6 +92,7 @@ angular.module('com.inthetelling.story')
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function () {
 					scope.unwatch();
+					scope.unwatchEdits();
 					$interval.cancel(scope.safetyBelt);
 				});
 

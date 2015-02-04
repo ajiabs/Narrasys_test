@@ -10,26 +10,10 @@
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, modelSvc, errorSvc, mockSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, userSvc, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
-
-		// for debugging error handler:
-		// svc.forceAPIError = function () {
-		// 	$http({
-		// 			method: 'POST',
-		// 			url: config.apiDataBaseUrl + "/v1/styles",
-		// 			data: {
-		// 				"malformed": true
-		// 			}
-		// 		})
-		// 		.then(function () {
-		// 			console.log("SUCCESS somehow");
-		// 		}, function () {
-		// 			console.log("Succeeded at failing!");
-		// 		});
-		// };
 
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
@@ -68,28 +52,29 @@ angular.module('com.inthetelling.story')
 		var gettingCommon = false;
 		var getCommonDefer = $q.defer();
 		var getCommon = function () {
-			console.log("dataSvc.getCommon");
+			// console.log("dataSvc.getCommon");
 			if (gettingCommon) {
 				return getCommonDefer.promise;
 
 			} else {
 				gettingCommon = true;
 				$q.all([
-					$http.get(config.apiDataBaseUrl + '/v1/templates'),
-					$http.get(config.apiDataBaseUrl + '/v1/layouts'),
-					$http.get(config.apiDataBaseUrl + '/v1/styles')
-				]).then(function (responses) {
-					svc.cache("templates", responses[0].data);
-					svc.cache("layouts", responses[1].data);
-					svc.cache("styles", responses[2].data);
+						$http.get(config.apiDataBaseUrl + '/v1/templates'),
+						$http.get(config.apiDataBaseUrl + '/v1/layouts'),
+						$http.get(config.apiDataBaseUrl + '/v1/styles')
+					])
+					.then(function (responses) {
+						svc.cache("templates", responses[0].data);
+						svc.cache("layouts", responses[1].data);
+						svc.cache("styles", responses[2].data);
 
-					gettingCommon = true;
-					getCommonDefer.resolve();
-				}, function () {
-					// console.error("getCommon failed", failure);
-					gettingCommon = false;
-					getCommonDefer.reject();
-				});
+						gettingCommon = true;
+						getCommonDefer.resolve();
+					}, function () {
+						// console.error("getCommon failed", failure);
+						gettingCommon = false;
+						getCommonDefer.reject();
+					});
 			}
 			return getCommonDefer.promise;
 		};
@@ -147,8 +132,9 @@ angular.module('com.inthetelling.story')
 		};
 
 		// transform API common IDs into real values
-		var resolveIDs = function (obj) {
+		svc.resolveIDs = function (obj) {
 			// console.log("resolving IDs", obj);
+
 			if (obj.template_id) {
 				if (dataCache.template[obj.template_id]) {
 					obj.templateUrl = dataCache.template[obj.template_id].url;
@@ -202,14 +188,14 @@ angular.module('com.inthetelling.story')
 					// console.log("episode: ", episodeData);
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 
-						modelSvc.cache("episode", resolveIDs(episodeData));
+						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
 						getEpisodeEvents(epId);
 
 						// this will get the episode container and its assets, then iterate up the chain to all parent containers
 						// (In retrospect, would have been easier to just get all containers at once, but maybe someday we will have soooo many containers
 						// that this will be worthwhile)
-						getContainer(episodeData.container_id, epId);
+						svc.getContainer(episodeData.container_id, epId);
 					} else {
 						errorSvc.error({
 							data: "This episode has not yet been published."
@@ -226,33 +212,88 @@ angular.module('com.inthetelling.story')
 		var getEpisodeEvents = function (epId) {
 			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId + "/events")
 				.success(function (events) {
+
+					getEventActivityDataForUser(events, "Plugin", epId);
+
 					angular.forEach(events, function (eventData) {
-						modelSvc.cache("event", resolveIDs(eventData));
+						modelSvc.cache("event", svc.resolveIDs(eventData));
 					});
 					// Tell modelSvc it can build episode->scene->item child arrays
 					modelSvc.resolveEpisodeEvents(epId);
 				});
 		};
 
-		// gets container and container assets, then iterates to parent container
-		var getContainer = function (containerId, episodeId) {
+		var getEventActivityDataForUser = function (events, activityType, epId) {
+			userSvc.getCurrentUser()
+				.then(function (userData) {
+					angular.forEach(events, function (eventData) {
+
+						if (eventData.type === "Plugin") {
+							(function (evData) {
+								questionAnswersSvc.getUserAnswer(evData._id, userData._id)
+									.then(function (userAnswer) {
+										evData.data._plugin.hasBeenAnswered = true;
+										var i = 0;
+										var angularContinue = true;
+										angular.forEach(evData.data._plugin.distractors, function (distractor) {
+											if (angularContinue) {
+												if (distractor.text === userAnswer.data.answer) {
+													distractor.selected = true;
+													evData.data._plugin.selectedDistractor = i;
+													angularContinue = false;
+												}
+												i++;
+											}
+										});
+										modelSvc.cache("event", svc.resolveIDs(evData));
+									});
+							}(eventData));
+						}
+
+					});
+					modelSvc.resolveEpisodeEvents(epId);
+				});
+
+		};
+		svc.getContainer = function (containerId, episodeId) {
+			// iterates to all parent containers
+			// episode ID is included so we can trigger it to resolve when this is all complete
+
+			// TODO check cache first to see if we already have this container!
 			// console.log("getContainer", containerId, episodeId);
+			if (!modelSvc.containers[containerId]) {
+				modelSvc.cache("container", {
+					"_id": containerId
+				});
+			}
+
 			$http.get(config.apiDataBaseUrl + "/v3/containers/" + containerId)
 				.success(function (container) {
 					modelSvc.cache("container", container[0]);
 					// iterate to parent container
 					if (container[0].parent_id) {
-						getContainer(container[0].parent_id, episodeId);
+						svc.getContainer(container[0].parent_id, episodeId);
+					} else {
+						// all parent containers now loaded:
+						if (episodeId) {
+							modelSvc.resolveEpisodeContainers(episodeId);
+						}
 					}
 				});
-
+			svc.getContainerAssets(containerId, episodeId);
+		};
+		svc.getContainerAssets = function (containerId, episodeId) {
 			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
 				.success(function (containerAssets) {
 					// console.log("container assets", containerAssets);
+					modelSvc.containers[containerId].assetsHaveLoaded = true;
 					angular.forEach(containerAssets.files, function (asset) {
 						modelSvc.cache("asset", asset);
 					});
-					modelSvc.resolveEpisodeAssets(episodeId);
+					// this might be better as an $emit:
+					if (episodeId) {
+						modelSvc.resolveEpisodeAssets(episodeId);
+					}
 				});
 		};
 
@@ -260,7 +301,6 @@ angular.module('com.inthetelling.story')
 
 		// PRODUCER
 		// a different idiom here, let's see if this is easier to conceptualize.
-		// TODO These may belong in modelSvc rather than dataSvc...
 
 		// to use GET(), pass in the API endpoint, and an optional callback for post-processing of the results
 		var GETcache = {}; // WARNING this is almost certainly not safe.  If server data changes, this will never find out about it because it will always read from cache instead. 
@@ -286,103 +326,393 @@ angular.module('com.inthetelling.story')
 
 		var PUT = function (path, putData) {
 			var defer = $q.defer();
-
 			$http({
-				method: 'PUT',
-				url: config.apiDataBaseUrl + path,
-				data: putData
-			}).success(function (data) {
-				console.log("Updated event:", data);
-				return defer.resolve(data);
-			}).error(function (data, status, headers) {
-				console.log("Failed:", data, status, headers);
-				return defer.reject();
-			});
+					method: 'PUT',
+					url: config.apiDataBaseUrl + path,
+					data: putData
+				})
+				.success(function (data) {
+					// console.log("Updated event:", data);
+					return defer.resolve(data);
+				});
 			return defer.promise;
 		};
 
-		// svc.getEpisodeList = function () {
-		// 	return GET("/v3/episodes");
-		// };
+		var POST = function (path, postData) {
+			var defer = $q.defer();
+			$http({
+					method: 'POST',
+					url: config.apiDataBaseUrl + path,
+					data: postData
+				})
+				.success(function (data) {
+					// console.log("Updated event:", data);
+					return defer.resolve(data);
+				});
+			return defer.promise;
+		};
 
-		svc.getAllContainers = function () {
+		var DELETE = function (path) {
+			var defer = $q.defer();
+			$http({
+					method: 'DELETE',
+					url: config.apiDataBaseUrl + path,
+				})
+				.success(function (data) {
+					// console.log("Deleted:", data);
+					return defer.resolve(data);
+				});
+			return defer.promise;
+		};
+
+		/*
+		Circumstances in which we need containers:
+		- start at root, climb down on demand
+		- start at episode, need all ancestors
+
+
+		loading any container should
+		- cache its own (complete) data
+		- cache its (incomplete) children
+		load all of its ancestors if not already present (datasvc will need to keep a list of container_ids it's already requested, to avoid circular refs to modelSvc)
+
+
+
+
+
+
+
+
+		*/
+
+		svc.getContainerRoot = function () {
+			// This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
 			return GET("/v3/containers", function (containers) {
 
-				// TODO climb through the tree customer->course->session->episode and cache each separately
-				// (right now we're ignoring localization of the container strings for this call,
-				// as it's only used internally for now)
+				var customerIDs = [];
+				angular.forEach(containers, function (customer) {
+					// cache the customer data:
+					modelSvc.cache("container", customer);
+					customerIDs.push(customer._id);
+				});
+				// TODO having elaborately cached each individual container, do something useful with it (convert the IDs into cross-cache references for starters)
 
-				return containers;
+				return customerIDs;
 			});
+		};
+		svc.getSingleContainer = function (id) {
+			return GET("/v3/containers/" + id, function (containers) {
+				console.log("CHILD: ", containers);
+				modelSvc.cache("container", containers[0]);
+				return containers[0]._id;
+			});
+
+		};
+
+		svc.createContainer = function (container) {
+			var createContainerDefer = $q.defer();
+
+			// TODO sanitize
+			var newContainer = {
+				container: {
+					customer_id: container.customer_id,
+					name: container.name,
+					parent_id: container.parent_id
+						// keywords: [] // for now
+				}
+			};
+			// store in API and resolve with results instead of container
+
+			POST("/v3/containers", newContainer)
+				.then(function (data) {
+					console.log("CREATED CONTAINER", data);
+					modelSvc.cache("container", data);
+
+					var parentId;
+					if (data.parent_id) {
+						parentId = data.parent_id;
+					} else {
+						parentId = data.ancestry.replace(/.*\//, '');
+					}
+
+					// add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
+					modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
+
+					createContainerDefer.resolve(data);
+				});
+			return createContainerDefer.promise;
+		};
+
+		svc.deleteContainer = function (containerId) {
+			// DANGER WILL ROBINSON incomplete and unsafe.  only for deleting test data for now, don't expose this to the production team.
+
+			// TODO  this will error out if there are assets or child containers attached to the container...
+			// definitely it will if there's a child episode. 
+
+			delete modelSvc.containers[containerId]; // WARN this assumes success......
+
+			return DELETE("/v3/containers/" + containerId);
+		};
+
+		svc.createEpisode = function (episode) {
+			var createEpisodeDefer = $q.defer();
+			// TODO store in API and resolve with results instead of episode
+
+			console.log("Attempting to create ", episode);
+			POST("/v3/episodes", episode)
+				.then(function (data) {
+					console.log("Created episode: ", data);
+
+					// muck around in modelSvc.containers again:
+					modelSvc.containers[data.container_id].episodes = [data._id];
+					createEpisodeDefer.resolve(data);
+				});
+			return createEpisodeDefer.promise;
+		};
+
+		svc.deleteEpisode = function (episodeId) {
+			// DANGER WILL ROBINSON this is both incomplete and unsafe; I've built just enough to remove some of my own test data. Do not include this in any UI that is available to the production team 
+			// First remove episode_user_metrics
+
+			// probably first need to remove events etc if there are any
+			var deleteEpisodeDefer = $q.defer();
+			// delete episode_user_metrics
+			GET("/v2/episodes/" + episodeId + "/episode_user_metrics")
+				.then(function (metrics) {
+					console.log("GOT METRICS: ", metrics);
+					if (metrics.length) {
+						var deleteMetricsActions = [];
+
+						for (var i = 0; i < metrics.length; i++) {
+							deleteMetricsActions.push(DELETE("/v2/episode_user_metrics/" + metrics[i]._id));
+						}
+						$q.all(deleteMetricsActions)
+							.then(function () {
+								DELETE("/v3/episodes/" + episodeId);
+								deleteEpisodeDefer.resolve();
+							});
+					} else {
+						DELETE("/v3/episodes/" + episodeId);
+						deleteEpisodeDefer.resolve();
+					}
+				});
+			return deleteEpisodeDefer.promise;
+		};
+
+		svc.deleteItem = function (evtId) {
+			return DELETE("/v3/events/" + evtId);
+		};
+
+		svc.deleteAsset = function (assetId) {
+			return DELETE("/v1/assets/" + assetId);
 		};
 
 		// TODO need safety checking here
 		svc.storeItem = function (evt) {
-			evt = svc.prepItemForStorage(evt);
-			console.log(evt);
-			if (evt._id) {
+			evt = prepItemForStorage(evt);
+			if (!evt) {
+				return false;
+			}
+			if (evt && evt._id && !evt._id.match(/internal/)) {
 				// update
-				return PUT("/v2/events/" + evt._id, {
+				return PUT("/v3/events/" + evt._id, {
 					event: evt
 				});
 			} else {
-				// create TODO
-				// return POST("/v2/episodes/" + evt.episode_id + "/event", {
-				// 	event: evt
-				// });
+				// create
+				return POST("/v3/episodes/" + evt.episode_id + "/events", {
+					event: evt
+				});
 			}
 		};
-		svc.prepItemForStorage = function (evt) {
-			// console.log("prepItemForStorage", evt);
-			// throw away the obvious stuff
-			delete evt.asjson;
 
-			// delete derived and temporary fields
-			// may not need to do this, check server roundtrip to see if the APIs throw out unexpected fields
-			delete evt.styleCss;
-			delete evt.layoutCss;
-			delete evt.isContent;
-			delete evt.isTranscript;
-			delete evt.isFuture;
-			delete evt.isPast;
-			delete evt.isCurrent;
-			delete evt.edit;
-			delete evt.$$hashKey;
-			delete evt.noEmbed;
-			delete evt.noExternalLink;
-			delete evt.targetTop;
-			delete evt.asset;
+		var prepItemForStorage = function (evt) {
+			// Events, that is
+			var prepped = {};
+			if (evt._id && evt._id.match(/internal/)) {
+				delete evt._id;
+			}
+
+			//  The data we want to store:
+			var fields = [
+				"_id",
+				"producerItemType",
+				"start_time",
+				"end_time",
+				"episode_id",
+				"template_id",
+				"templateUrl",
+				"stop",
+				"sxs",
+				"title",
+				"url",
+				"annotator",
+				"annotation",
+				"description",
+				"data",
+				"asset_id",
+				"link_image_id",
+				"annotation_image_id",
+			];
+
+			prepped.type = evt._type;
+			for (var i = 0; i < fields.length; i++) {
+				if (evt[fields[i]] || evt[fields[i]] === 0) {
+					prepped[fields[i]] = angular.copy(evt[fields[i]]);
+				}
+			}
+
+			prepped.style_id = [];
+			prepped.layout_id = [];
 
 			// convert style/layout selections back into their IDs.
 			// trust evt.styles[] and evt.layouts[], DO NOT use styleCss (it contains the scene and episode data too!)
-			evt.style_id = [];
-			angular.forEach(evt.styles, function (styleName) {
-				var style = svc.readCache("style", "css_name", styleName);
-				if (style) {
-					evt.style_id.push(style.id);
-				} else {
-					errorSvc.error({
-						data: "Tried to store a style with no ID: " + styleName
-					});
-				}
-			});
-			delete evt.styles;
-			evt.layout_id = [];
-			angular.forEach(evt.layouts, function (layoutName) {
-				var layout = svc.readCache("layout", "css_name", layoutName);
-				if (layout) {
-					evt.layout_id.push(layout.id);
-				} else {
-					errorSvc.error({
-						data: "Tried to store a layout with no ID: " + layoutName
-					});
-				}
-			});
-			delete evt.layouts;
+			prepped.style_id = get_id_values("style", evt.styles);
+			prepped.layout_id = get_id_values("layout", evt.layouts);
 
-			// TODO: what else needs to be done before we can safely store this event?
+			var template = svc.readCache("template", "url", evt.templateUrl);
+			if (template) {
+				prepped.template_id = template.id;
+			} else {
+				prepped.template_id = reverseTemplateUpdate(evt.templateUrl);
+			}
+			if (prepped.template_id) {
+				return prepped;
+			} else {
+				errorSvc.error({
+					data: "Tried to store a template with no ID: " + evt.templateUrl
+				});
+				return false;
+			}
+		};
+		svc.prepItemForStorage = prepItemForStorage;
+		svc.detachMasterAsset = function(epData) {
+			var preppedData = prepEpisodeForStorage(epData);
+			preppedData.master_asset_id = null;
+			console.log("prepped sans master_asset_id for storage:", preppedData);
+			if (preppedData) {
+				return PUT("/v3/episodes/" + preppedData._id, preppedData);
+			} else {
+				return false;
+			}
+		};
+		svc.storeEpisode = function (epData) {
+			// For now only update, no create... create needs a customer_id and probably other data as well
+			var preppedData = prepEpisodeForStorage(epData);
+			console.log("prepped for storage:", preppedData);
+			if (preppedData) {
+				return PUT("/v3/episodes/" + preppedData._id, preppedData);
+			} else {
+				return false;
+			}
+			// 	// update
+			// } else {
+			// 	// create
+			// TODO need to determine (at least) the container ID before creating episodes here....
+			// 	return POST("/v3/episodes", epData);
+			// }
+		};
 
-			return evt;
+		var prepEpisodeForStorage = function (epData) {
+			var prepped = {};
+			if (epData._id && epData._id.match(/internal/)) {
+				delete epData._id;
+			}
+
+			var fields = [
+				"_id",
+				"title",
+				"description",
+				"container_id",
+				"customer_id",
+				"master_asset_id",
+				"status",
+				"languages",
+				"navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
+			];
+
+			for (var i = 0; i < fields.length; i++) {
+				if (epData[fields[i]] || epData[fields[i]] === 0) {
+					prepped[fields[i]] = angular.copy(epData[fields[i]]);
+				}
+			}
+
+			prepped.style_id = get_id_values("style", epData.styles);
+
+			var template = svc.readCache("template", "url", epData.templateUrl);
+			if (template) {
+				prepped.template_id = template.id;
+			} else {
+				prepped.template_id = reverseTemplateUpdate(epData.templateUrl);
+			}
+			if (prepped.template_id) {
+				return prepped;
+			} else {
+				errorSvc.error({
+					data: "Tried to store a template with no ID: " + epData.templateUrl
+				});
+				return false;
+			}
+		};
+
+		var reverseTemplateUpdate = function (templateUrl) {
+			// HACK: this reverses the template versioning done in modelSvc
+			// TODO: can I just talk bill into letting me store templateUrls directly and skip the whole ID business?
+			var reverseTemplates = {
+				// episodes
+				"templates/episode/episode.html": "templates/episode-default.html",
+				"templates/episode/eliterate.html": "templates/episode-eliterate.html",
+				"templates/episode/ewb.html": "templates/episode-ewb.html",
+				"templates/episode/gw.html": "templates/episode-gw.html",
+				"templates/episode/purdue.html": "templates/episode-purdue.html",
+				"templates/episode/story.html": "templates/episode-tellingstory.html",
+
+				// annotation
+				"templates/item/transcript.html": "templates/transcript-default.html",
+				"templates/item/transcript-withthumbnail.html": "templates/transcript-withthumbnail.html",
+				"templates/item/transcript-withthumbnail-alt.html": "templates/transcript-withthumbnail-alt.html",
+				"templates/item/text-h1.html": "templates/text-h1.html",
+				"templates/item/text-h2.html": "templates/text-h2.html",
+				"templates/item/pullquote-noattrib.html": "templates/text-pullquote-noattrib.html",
+				"templates/item/pullquote.html": "templates/text-pullquote.html",
+
+				// upload
+				"templates/item/image.html": "templates/transmedia-image-default.html",
+				"templates/item/image-caption.html": "templates/transmedia-caption.html",
+				"templates/item/image-caption-sliding.html": "templates/transmedia-slidingcaption.html",
+				"templates/item/image-fill.html": "templates/transmedia-image-fill.html",
+				"templates/item/image-plain.html": "templates/transmedia-image-plain.html",
+				"templates/item/image-linkonly.html": "templates/transmedia-linkonly.html",
+				"templates/item/image-thumbnail.html": "templates/transmedia-thumbnail.html",
+
+				//link
+				"templates/item/link.html": "templates/transmedia-link-default.html",
+				"templates/item/link-embed.html": "templates/transmedia-link-embed.html",
+
+				//scene
+				"templates/scene/1col.html": "templates/scene-1col.html",
+				"templates/scene/2colL.html": "templates/scene-2colL.html",
+				"templates/scene/2colR.html": "templates/scene-2colR.html",
+				"templates/scene/centered.html": "templates/scene-centered.html",
+				"templates/scene/cornerH.html": "templates/scene-cornerH.html",
+				"templates/scene/cornerV.html": "templates/scene-cornerV.html",
+
+				//question
+				"templates/item/question-mc-formative.html": "templates/question-mc-formative.html",
+				"templates/item/question-mc-poll.html": "templates/question-mc-poll.html",
+				
+				"templates/item/question-mc.html": "templates/question-mc.html",
+				"templates/item/question-mc-image-left.html": "templates/question-mc-image-left.html",
+				"templates/item/question-mc-image-right.html": "templates/question-mc-image-right.html",
+				
+				"templates/item/sxs-question.html": "templates/sxs-question.html"
+			};
+			if (reverseTemplates[templateUrl]) {
+				var template = svc.readCache("template", "url", reverseTemplates[templateUrl]);
+				return template.id;
+			} else {
+				return false;
+			}
 		};
 
 		// careful to only use this for guaranteed unique fields (style and layout names, basically)
@@ -397,6 +727,30 @@ angular.module('com.inthetelling.story')
 				return found;
 			}
 			return false;
+		};
+		if (config.debugInBrowser) {
+			// console.log("DataSvc:", svc);
+			console.log("DataSvc cache:", dataCache);
+		}
+
+		var get_id_values = function (cache, realNames) {
+			// convert real styles and layouts back into id arrays. Not for templateUrls!
+			var ids = [];
+
+			angular.forEach(realNames, function (realName) {
+				if (realName) {
+					var cachedValue = svc.readCache(cache, "css_name", realName);
+					if (cachedValue) {
+						ids.push(cachedValue.id);
+					} else {
+						errorSvc.error({
+							data: "Tried to store a " + cache + " with no ID: " + realName
+						});
+						return false;
+					}
+				}
+			});
+			return ids;
 		};
 
 		return svc;

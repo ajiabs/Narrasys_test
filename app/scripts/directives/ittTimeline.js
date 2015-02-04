@@ -22,6 +22,8 @@ angular.module('com.inthetelling.story')
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');
 
+				scope.appState = appState;
+
 				scope.setNewLanguage = function () {
 					modelSvc.setLanguageStrings();
 				};
@@ -35,36 +37,10 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.prevScene = function () {
-					for (var i = timelineSvc.markedEvents.length - 1; i >= 0; i--) {
-						var now = appState.time;
-						if (appState.timelineState === 'playing') {
-							now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
-						}
-						if (timelineSvc.markedEvents[i].start_time < now) {
-							// console.log("Seeking to ", timelineSvc.markedEvents[i].start_time);
-							scope.enableAutoscroll(); // in playerController
-							timelineSvc.seek(timelineSvc.markedEvents[i].start_time, "prevScene");
-
-							break;
-						}
-					}
+					timelineSvc.prevScene();
 				};
 				scope.nextScene = function () {
-					var found = false;
-					for (var i = 0; i < timelineSvc.markedEvents.length; i++) {
-						if (timelineSvc.markedEvents[i].start_time > appState.time) {
-							// console.log("Seeking to ", timelineSvc.markedEvents[i].start_time);
-							scope.enableAutoscroll(); // in playerController
-							timelineSvc.seek(timelineSvc.markedEvents[i].start_time, "nextScene");
-							found = true;
-							break;
-						}
-					}
-					if (!found) {
-						timelineSvc.pause();
-						timelineSvc.seek(appState.duration - 0.01, "nextScene");
-						scope.enableAutoscroll(); // in playerController
-					}
+					timelineSvc.nextScene();
 				};
 
 				scope.userChangingVolume = function (evt) {
@@ -211,26 +187,35 @@ angular.module('com.inthetelling.story')
 				};
 				scope.zoomOut = function () {
 					scope.stopWatching = true;
-					scope.zoomLevel = scope.zoomLevel - 1;
-					if (scope.zoomLevel < 1) {
+					// scope.zoomLevel = scope.zoomLevel - 1;
+					// if (scope.zoomLevel < 1) {
+					// 	scope.zoomLevel = 1;
+					// }
+					if (scope.zoomLevel <= 2) {
 						scope.zoomLevel = 1;
+					} else if (scope.zoomLevel <= 3) {
+						scope.zoomLevel = 1.5;
+					} else {
+						scope.zoomLevel = scope.zoomLevel / 2;
+
 					}
 					zoom();
+
 				};
 
 				// adjust the position of the playhead after a scale change:
 				var zoom = function () {
 					scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
-					timelineNode.animate({
+					timelineNode.stop().animate({
 						"left": (scope.zoomOffset * 100) + "%",
 						"width": (scope.zoomLevel * 100) + "%"
 					}, 1000, function () {
-						scope.stopWatching = false;
+						scope.stopWatching = false; // so we don't try to update the playhead during a zoom animation
 					});
 				};
 
 				// at all times keep playhead position at the same % of the visible progress bar as the time is to the duration
-				// TODO: (cosmetic) stop watching while zoom-animation is in progress
+				// cosmetic: stop watching while zoom-animation is in progress
 				scope.$watch(function () {
 					return {
 						t: appState.time,
@@ -270,6 +255,17 @@ angular.module('com.inthetelling.story')
 					seeking(evt);
 				};
 
+				/* SxS. Needed to position the edit handle when not actively dragging timeline */
+				scope.$watch(function () {
+					return appState.time;
+				}, function () {
+					if (appState.editEvent) {
+						scope.willSeekTo = appState.time;
+					}
+				});
+
+				/* end SxS */
+
 				// triggered on mousemove:
 				var seeking = function (evt) {
 					if (!scope.isSeeking) {
@@ -293,7 +289,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				var finishSeek = function () {
-					console.log("timeline mouseup or touchend");
+					// console.log("timeline mouseup or touchend");
 					scope.stopWatching = true;
 					scope.enableAutoscroll(); // in playerController
 					timelineSvc.seek(scope.willSeekTo, "scrubTimeline");

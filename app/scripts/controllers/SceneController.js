@@ -4,15 +4,20 @@ angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
 
 		$scope.precalculateSceneValues = function () {
+			// console.log("precalcSceneValues");
 
-			// some scene templates let you specify this for one or more columns; others do it automatically (that will be in the template)
-			if ($.inArray("showCurrent", $scope.scene.layouts) > -1) {
-				$scope.showCurrent = true;
-			}
+			// clear out old calculations in case we're re-precalculating
+			delete $scope.mainContentHasLeftSidebar;
+			delete $scope.mainContentHasRightSidebar;
+			delete $scope.mainContentHasBothSidebars;
+			delete $scope.altContentHasLeftSidebar;
+			delete $scope.altContentHasRightSidebar;
+			delete $scope.altContentHasBothSidebars;
+
+			// some scene templates let you specify showCurrent for one or more columns; others do it automatically (that will be in the template)
+			$scope.showCurrent = ($.inArray("showCurrent", $scope.scene.layouts) > -1);
 
 			// Precalculate each fg, bg, and content pane on scene creation for performance.  
-			// NOTE this means producer will need to redraw the scene if
-			// edits to a content item would move it to a different pane; it's not calculated on the fly anymore:
 			$scope.contentItems = $filter("isContent")($scope.scene.items);
 			$scope.mainFgItems = $filter("itemLayout")($scope.scene.items, "mainFg");
 			$scope.mainBgItems = $filter("itemLayout")($scope.scene.items, "mainBg");

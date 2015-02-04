@@ -2,15 +2,16 @@
   "name": "com.inthetelling.story",
   "version": "0.0.0",
   "dependencies": {
-    "jquery": "1.10.2",
-    "angular": "1.2.20",
-    "angular-resource": "1.2.20",
-    "angular-route": "1.2.20",
-    "angular-animate": "1.2.20",
-    "angular-bindonce": "0.3.1"
+    "jquery": "2.1.1",
+    "angular": "1.3.3",
+    "angular-resource": "1.3.3",
+    "angular-route": "1.3.3",
+    "angular-animate": "1.3.3",
+    "angular-sanitize": "1.3.3",
+    "flot": "~0.8.3"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.20",
-    "angular-scenario": "1.2.20"
+    "angular-mocks": "1.3.3",
+    "angular-scenario": "1.3.3"
   }
 }

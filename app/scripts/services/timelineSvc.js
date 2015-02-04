@@ -32,7 +32,7 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 */
 
 angular.module('com.inthetelling.story')
-	.factory('timelineSvc', function ($timeout, $interval, $rootScope, config, modelSvc, appState, analyticsSvc) {
+	.factory('timelineSvc', function ($timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc) {
 
 		var svc = {};
 
@@ -68,6 +68,12 @@ angular.module('com.inthetelling.story')
 			// console.log("timelineSvc.play", videoScope);
 			// On first play, we need to check if we need to show help menu instead; if so, don't play the video:
 			// (WARN this is a bit of a sloppy mixture of concerns.)
+
+			if (!appState.duration || appState.duration < 0.1) {
+				console.error("This episode has no duration");
+				return;
+			}
+
 			if (!appState.hasBeenPlayed) {
 				appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
 				$rootScope.$emit("video.firstPlay");
@@ -99,9 +105,7 @@ angular.module('com.inthetelling.story')
 
 			videoScope.play().then(function () {
 				appState.timelineState = "playing";
-				_tick();
-				$interval.cancel(clock); // safety belt, in case we're out of synch
-				clock = $interval(_tick, 20);
+				startTimelineClock();
 				startEventClock();
 				if (!nocapture) {
 					analyticsSvc.captureEpisodeActivity("play");
@@ -146,6 +150,7 @@ angular.module('com.inthetelling.story')
 			// videoController will call this when ready
 			// console.warn("timelineSvc.unstall");
 			if (svc.wasPlaying) {
+				appState.timelineState = "playing";
 				svc.play();
 			} else {
 				appState.timelineState = "paused";
@@ -161,11 +166,11 @@ angular.module('com.inthetelling.story')
 				// have loaded.  Just poll until events load, that's good enough for now.
 				// TODO throw error and stop looping if this goes on too long
 				$timeout(function () {
-					svc.seek(t);
+					// console.log("waiting for video to be ready");
+					svc.seek(t, method, eventID);
 				}, 300);
 				return;
 			}
-
 			stopEventClock();
 			var oldT = appState.time;
 			t = parseTime(t);
@@ -177,9 +182,9 @@ angular.module('com.inthetelling.story')
 			}
 
 			appState.time = t;
-			videoScope.seek(t);
+			videoScope.seek(t, true);
 			svc.updateEventStates();
-			stepEvent();
+			stepEvent(true);
 
 			// capture analytics data:
 			if (method) {
@@ -190,10 +195,45 @@ angular.module('com.inthetelling.story')
 				if (eventID) {
 					captureData.event_id = eventID;
 				}
-				console.log("capture", captureData);
+				// console.log("capture", captureData);
 				analyticsSvc.captureEpisodeActivity("seek", captureData);
 			} else {
 				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
+			}
+		};
+
+		svc.prevScene = function () {
+			for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
+				var now = appState.time;
+				if (appState.timelineState === 'playing') {
+					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
+				}
+				if (svc.markedEvents[i].start_time < now) {
+					// console.log("Seeking to ", svc.markedEvents[i].start_time);
+					//scope.enableAutoscroll(); // TODO in playerController
+					svc.seek(svc.markedEvents[i].start_time, "prevScene");
+
+					break;
+				}
+			}
+
+		};
+
+		svc.nextScene = function () {
+			var found = false;
+			for (var i = 0; i < svc.markedEvents.length; i++) {
+				if (svc.markedEvents[i].start_time > appState.time) {
+					// console.log("Seeking to ", svc.markedEvents[i].start_time);
+					//scope.enableAutoscroll(); // TODO in playerController
+					svc.seek(svc.markedEvents[i].start_time, "nextScene");
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				svc.pause();
+				svc.seek(appState.duration - 0.01, "nextScene");
+				//scope.enableAutoscroll(); // in playerController
 			}
 		};
 
@@ -247,7 +287,7 @@ angular.module('com.inthetelling.story')
 			resetEventClock();
 		};
 
-		var stepEvent = function () {
+		var stepEvent = function (ignoreStopEvents) {
 			$timeout.cancel(eventTimeout);
 			if (appState.timelineState !== 'playing') {
 				return;
@@ -268,11 +308,12 @@ angular.module('com.inthetelling.story')
 					}
 					// Don't let stop events stop us before we even start.
 					// (if the stop event and lastTimelineTime match, that stop event is what stopped us in the first place)
-					if (evt.action === "pause" && evt.t === eventClockData.lastTimelineTime) {
-						// console.log("Skipping pause event");
+					if (evt.action === "pause" && (ignoreStopEvents || evt.t === eventClockData.lastTimelineTime)) {
+						console.log("Skipping pause event");
 					} else {
 						handleEvent(evt);
 						if (evt.action === "pause") {
+							// TODO: check for multiple simultaneous pause actions, skip to the last one
 							i++;
 							break; //NOTE! next event should be the one AFTER the stop event, so let i++ fall through
 						}
@@ -296,7 +337,7 @@ angular.module('com.inthetelling.story')
 
 		// "event" here refers to a timelineEvents event, not the modelSvc.event:
 		var handleEvent = function (event) {
-			// console.log("handle event: ", event);
+			//console.log("handle event: ", event);
 			if (event.id === 'timeline') {
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
@@ -314,12 +355,20 @@ angular.module('com.inthetelling.story')
 					modelSvc.events[event.id].isCurrent = false;
 				} else if (event.action === "preload") {
 					preloadImageAsset(modelSvc.events[event.id]);
+				} else {
+					console.warn("Unknown event action: ", event, event.action);
 				}
 			}
 		};
 
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
 		var lastTick;
+		var startTimelineClock = function () {
+			lastTick = undefined;
+			$interval.cancel(clock); // safety belt, in case we're out of synch
+			clock = $interval(_tick, 20);
+		};
+
 		var _tick = function () {
 			var thisTick = new Date();
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
@@ -352,22 +401,36 @@ angular.module('com.inthetelling.story')
 			stopEventClock();
 		};
 
-		// for now this only supports a single episode starting at injectionTime=0
-		// in future will be able to inject episode events at injectionTime=whatever, shifting any later events
-		// to their new time (based on the total duration of the injected group)
-		// (which we'll need to get probably by passing in episode.duration along with the events?)
-
-		// TODO: ensure scenes are contiguous and non-overlapping
-
 		svc.injectEvents = function (events, injectionTime) {
+
+			console.log("timelineSvc.injectEvents: has ", svc.timelineEvents.length, " adding ", events.length);
+			// events should be an array of items in modelSvc.events
+			// for now this only supports adding events starting at injectionTime=0,
+			// which does not shift existing events later in time.
+
+			// in future will be able to inject episode events at injectionTime=whatever, shifting any later events
+			// to their new time (based on the total duration of the injected group)
+			// (which we'll need to get probably by passing in episode.duration along with the events?)
+
 			if (events.length === 0) {
 				return;
 			}
+			if (!injectionTime) {
+				injectionTime = 0;
+			}
 			angular.forEach(events, function (event) {
+				event.start_time = Number(event.start_time);
+				event.end_time = Number(event.end_time);
 				// add scenes to markedEvents[]:
-				if (event._type === "Scene" && event.title) {
-					if (typeof (event.title) === "string" || event.title.en) {
-						svc.markedEvents.push(event);
+				if (event._type === "Scene") {
+					if (appState.product === 'producer') {
+						// producer gets all scenes, even 'hidden' ones
+						addMarkedEvent(event);
+					} else {
+						// sxs and player just get scenes with titles
+						if (event.display_title) {
+							addMarkedEvent(event);
+						}
 					}
 				}
 				if (event.start_time === 0 && !event._id.match('internal')) {
@@ -382,12 +445,12 @@ angular.module('com.inthetelling.story')
 						action: "pause"
 					});
 					svc.timelineEvents.push({
-						t: event.start_time,
+						t: event.start_time + injectionTime,
 						id: event._id,
 						action: "enter"
 					});
 					// For now, ignore end_time on stop events; they always end immediately after user hits play again.
-					// TODO: In future we'll allow durations on stop events so the video will start automatically after that elapses.
+					// TODO: In future we may allow durations on stop events so the video will start automatically after that elapses.
 					svc.timelineEvents.push({
 						t: (event.start_time + injectionTime + 0.01),
 						id: event._id,
@@ -425,6 +488,59 @@ angular.module('com.inthetelling.story')
 				}
 
 			});
+
+			svc.sortTimeline();
+		};
+
+		var addMarkedEvent = function (newEvent) {
+			// scan through existing markedEvents; if the new event is already there, replace it; otherwise add it
+			var wasFound = false;
+			for (var i = 0; i < svc.markedEvents.length; i++) {
+				if (svc.markedEvents[i]._id === newEvent._id) {
+					// replace existing event
+					svc.markedEvents[i] = angular.copy(newEvent);
+					wasFound = true;
+				}
+			}
+
+			// wasn't found, so add it:
+			if (!wasFound) {
+				svc.markedEvents.push(newEvent);
+			}
+			//console.log(svc.markedEvents);
+		};
+
+		svc.removeEvent = function (removeId) {
+			// delete anything corresponding to this id from the timeline:
+			// console.log("timelineSvc.removeEvent");
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, {
+				id: '!' + removeId
+			});
+			// and from the markedEvents, with its inexplicably inconsistent ID naming:
+			svc.markedEvents = $filter('filter')(svc.markedEvents, {
+				_id: '!' + removeId
+			});
+
+			svc.updateEventStates();
+		};
+
+		svc.updateEventTimes = function (event) {
+			// remove old references, as in removeEvent, then re-add it with new times 
+			// (not calling removeEvent here since it would do a redundant updateEventStates)
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, {
+				id: '!' + event._id
+			});
+			svc.injectEvents([event], 0);
+		};
+
+		svc.updateSceneTimes = function (episodeId) {
+			// HACK(ish): since editing a scene's timing has side effects on other scenes, need to updateEventTimes for each scene in the episode when one changes
+			angular.forEach(modelSvc.episodes[episodeId].scenes, function (scene) {
+				svc.updateEventTimes(scene);
+			});
+		};
+
+		svc.sortTimeline = function () {
 
 			//keep events sorted by time.
 			// Simultaneous events should be sorted as exit, then enter, then stop.
@@ -465,7 +581,7 @@ angular.module('com.inthetelling.story')
 			});
 
 			// for (var i = 0; i < svc.timelineEvents.length; i++) {
-			// 	console.log(svc.timelineEvents[i].t, svc.timelineEvents[i].action, svc.timelineEvents[i].id);
+			// 	console.log(svc.timelineEvents[i].t, svc.timelineEvents[i].action);
 			// }
 
 			// Find the latest end_time in the timeline, set that as the duration.
@@ -489,8 +605,10 @@ angular.module('com.inthetelling.story')
 			angular.forEach(svc.timelineEvents, function (tE) {
 				if (tE.id !== "timeline") {
 					var event = modelSvc.events[tE.id];
-					event.state = "isFuture";
-					event.isCurrent = false;
+					if (event) { // cancelling adding an event can leave "internal:editing" in the event list; TODO keep that from happening but for now just ignore it if it doesn't exist
+						event.state = "isFuture";
+						event.isCurrent = false;
+					}
 				}
 			});
 
@@ -498,22 +616,25 @@ angular.module('com.inthetelling.story')
 			angular.forEach(svc.timelineEvents, function (tE) {
 				if (tE.t <= now) {
 					var event = modelSvc.events[tE.id];
-					if (tE.action === 'enter') {
-						event.state = "isCurrent";
-						event.isCurrent = true;
-					} else if (tE.action === 'exit') {
-						event.state = "isPast";
-						event.isCurrent = false;
+					if (event) {
+						if (tE.action === 'enter') {
+							event.state = "isCurrent";
+							event.isCurrent = true;
+						} else if (tE.action === 'exit') {
+							event.state = "isPast";
+							event.isCurrent = false;
+						}
 					}
 				}
 			});
+			stepEvent();
 		};
 
 		var alreadyPreloadedImages = {};
 		var preloadImageAsset = function (event) {
 			if (event.asset && event.asset._type === 'Asset::Image') {
 				if (!alreadyPreloadedImages[event.asset.url]) {
-					console.log("Preloading ", event.asset.url);
+					// console.log("Preloading ", event.asset.url);
 					alreadyPreloadedImages[event.asset.url] = new Image();
 					alreadyPreloadedImages[event.asset.url].src = event.asset.url;
 				}

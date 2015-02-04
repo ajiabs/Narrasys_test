@@ -1,49 +1,77 @@
 <div class="player" ng-class="{
 	isFramed: appState.isFramed,
-	guestUser: appState.user.isGuestUser
+	guestUser: appState.user.isGuestUser,
+	isProducer: (appState.product == 'producer'),
+	isSxS: (appState.product == 'sxs'),
+	canEditContent: (!appState.editEvent && !appState.editEpisode) && (appState.product == 'producer' || appState.product == 'sxs')
 	}">
+	<!-- TODO: make sure user has admin role for canEditContent -->
 	<div class="toolbar">
 		<div class="modegroup buttongroup">
 			<nav role="navigation">
 				<button tabindex="0" class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')" aria-label="Watch">
 					<span>Watch</span>
 				</button>
-				<button tabindex="0" class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')" aria-label="Discover">
-					<span>Discover</span>
-				</button>
-				<button tabindex="0" class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="Review">
-					<span>Review</span>
-				</button>
 
-				</navigation>
+
+				<span ng-switch="appState.product != 'producer' || appState.viewMode != 'discover' || appState.time == 0">
+					<button ng-switch-when="true" tabindex="0" class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')" aria-label="Discover">
+						<span>Discover</span>
+					</button>
+					<span ng-switch-when="false" class="producerEditLayers" ng-class="{
+				bg: appState.producerEditLayer < 0,
+				fg: appState.producerEditLayer > 0
+			}">
+						<!-- HACK for now. This needs better 508 -->
+						<a ng-click="changeProducerEditLayer(-1)" class="button">&nbsp;&nbsp;
+							<span>Discover</span>
+						</a>
+						<a ng-click="changeProducerEditLayer(+1)" class="button">&nbsp;&nbsp;
+							<span>Discover</span>
+						</a>
+					</span>
+					<button tabindex="0" class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="Review">
+						<span>Review</span>
+					</button>
+				</span>
+			</nav>
 		</div>
 		<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 			<!-- this needs to be an <a> or it trips popup blockers. also <button> doesn't have a href -->
-			<a class="button button-mainframeescape" ng-click="pause()" ng-href="/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
+			<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{apiDataBaseUrl}}/v1/new_window/{{appState.episodeId}}?t={{appState.time}}" target="_new">
 				<span>New window</span>
 			</a>
 		</div>
 		<div class="searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
-			<button tabindex="0" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
+			<button tabindex="2" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
 				<span>Search</span>
 			</button>
 			<label for="searchtext" class="hidden">Search Text</label>
-			<input name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
+			<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
+		</div>
+		<div class="profilegroup buttongroup" ng-if="appState.product == 'sxs'">
+			<a class="button button-profile" ng-click="appState.show.profilePanel = true">
+				<span>Profile</span>
+			</a>
 		</div>
 	</div>
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
-	<div itt-episode></div>
+	<div itt-episode ng-class="{
+		padForEditing: appState.editEvent || appState.editEpisode,
+		showBackgroundOnly: appState.producerEditLayer < 0,
+		showForegroundOnly: appState.producerEditLayer > 0,
+	}"></div>
 
 	<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
 		<div class="toolbar-bottom-fill">
 			<div ng-show="show.navPanel" class="navPanel" ng-class="episode.styleCss">
 
 				<div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
-				<h2 ng-bind-html="episode.display_title"></h2>
+				<!-- <h2 ng-bind-html="episode.display_title"></h2> -->
 				<div class="scene" x-ng-if="scene.display_title" x-ng-repeat="scene in episode.scenes" x-ng-class="{currentScene: scene.isCurrent}" x-ng-click="seek(scene.start_time)">
 					<span class="displayTime">{{scene.displayStartTime}}</span>
 					<p>
-						<button tabindex="0" ng-bind-html="scene.display_title" x-ng-class="{sceneLink: !scene.isCurrent}" ng-focus="showControls()"></button>
+						<button class="fakeLink" tabindex="0" ng-bind-html="scene.display_title" x-ng-class="{sceneLink: !scene.isCurrent}" ng-focus="showControls()"></button>
 						<br>
 						<span ng-bind-html="scene.display_description"></span>
 					</p>
@@ -53,18 +81,30 @@
 					<a class="nextEpisode" ng-if="episode.nextEpisodeContainer" ng-href="/#/{{appState.crossEpisodePath}}/{{episode.nextEpisodeContainer.episodes[0]}}" title="{{episode.nextEpisodeContainer.display_name}}">Next Episode</a>
 				</div>
 
+
 			</div>
+
+			<div ng-show="appState.editEvent || appState.editEpisode" class="navPanel editPanel">
+				<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
+				<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>
+			</div>
+
 			<div itt-timeline></div>
 		</div>
 	</div>
 	<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()"></div>
 </div>
 
+<div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()" sxs-add-content></div>
+
+
+<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
+
 <div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
 	<img src="/images/autoscroll.svg" width="32" height="32">
 </div>
 
-<div ng-show="show.navPanel || show.searchPanel || show.helpPanel" class="modal-backdrop" ng-click="hidePanels()"></div>
+<div ng-show="show.navPanel || show.searchPanel || show.helpPanel || show.profilePanel" class="modal-backdrop" ng-click="hidePanels()"></div>
 
 <!-- ITEM DETAIL -->
 <div ng-show="appState.itemDetail" class="modal-backdrop" ng-click="appState.itemDetail=false"></div>
@@ -76,12 +116,9 @@
 </div>
 
 <!-- HELP -->
-<div id="helpModal" tabindex="-1" aria-hidden="{{!show.helpPanel}}" ng-show="show.helpPanel" itt-show-focus="show.helpPanel" class="helpPanel" aria-labelledby="modalHelpTitle modalHelpDescription" role="dialog">
+<div ng-if="show.helpPanel" class="helpPanel">
 	<div class="arrow-up"></div>
-
-	<div id="modalHelpDescription" class="screen-reader-offscreen">Help dialog window. Don't show this again link will close the window and prevent it from returning. Escape will cancel and close the window.</div>
-
-	<h1 id="modalHelpTitle">Welcome to TELLING STORY! You can switch at any time between these views &#8212; don't worry, you won't lose your place:</h1>
+	<p>Welcome to TELLING STORY! You can switch at any time between these views &#8212; don't worry, you won't lose your place:</p>
 	<ul>
 		<li class="video">
 			<h3>Watch</h3>
@@ -96,10 +133,50 @@
 			<p>Read the full transcript and all the related transmedia in one convenient list.</p>
 		</li>
 	</ul>
-	<input type="button" value="Don't show this again" class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;"></input>
+	<a class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;">Don't show this again</a>
 </div>
 
-<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
+<!-- PROFILE (mostly faked for now) -->
+<div ng-if="show.profilePanel" class="profilePanel">
+	<div class="arrow-up"></div>
+	<div ng-if="userHasRole('admin')">
+
+		<img src="/images/customer/tmp-userprofile.png" style="float:left; border: 5px solid #FFF">
+
+		<div class="authoringForm">
+			<div class="field">
+				<div class="label">Name
+				</div>
+				<div class="input">
+					<input type="text" value="Professor Smith">
+				</div>
+			</div>
+
+			<div class="field">
+				<div class="label">Email
+				</div>
+				<div class="input">
+					<input type="text" value="example@this-is-todo.com">
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="field">
+				<div style="text-align:right;">
+					<a ng-click="logout()">Log out</a>
+				</div>
+			</div>
+		</div>
+
+		<div ng-if="!(userHasRole('admin'))">
+
+			<a ng-href="/pages/launch_oauth2?episode={{appState.episodeId}}" target="_new">Log in</a>
+
+		</div>
+	</div>
+</div>
+
+
 <!-- 
 <a href="javascript:void 1;" ng-click="showDebug=!showDebug">DEBUG:</a>
 <pre ng-if="showDebug === true">{{appState | pretty }}</pre>

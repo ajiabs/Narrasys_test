@@ -54,7 +54,12 @@ angular.module('com.inthetelling.story')
 		// TODO handle more than one episode.....
 		$scope.indexEvents = function () {
 			angular.forEach($scope.episode.items, function (item) {
-				item.searchableText = (item.display_annotation || item.display_description) + " " + (item.display_title || item.display_annotator);
+				if (item._type !== 'Scene') {
+					item.searchableText = (item.display_annotation || item.display_description) + " " + (item.display_title || item.display_annotator);
+					if (item.sxs) { // HACK
+						item.cosmetic = false;
+					}
+				}
 			});
 		};
 

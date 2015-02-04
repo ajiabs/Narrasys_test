@@ -6,7 +6,7 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, config, appState, analyticsSvc, timelineSvc, modelSvc) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, appState, analyticsSvc, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -23,12 +23,8 @@ angular.module('com.inthetelling.story')
 			controller: 'ItemController',
 			link: function (scope, element) {
 
-
-
-
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
-
 					if (scope.item.showInlineDetail) {
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
 						scope.item.showInlineDetail = false;
@@ -96,8 +92,6 @@ angular.module('com.inthetelling.story')
 						$event.preventDefault();
 					}
 				};
-
-
 				scope.outgoingLink = function (url) {
 					timelineSvc.pause();
 					scope.captureInteraction();
@@ -108,6 +102,13 @@ angular.module('com.inthetelling.story')
 					} else {
 						window.open(url);
 					}
+				};
+
+				scope.editItem = function () {
+					appState.editEvent = scope.item;
+
+					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+					appState.videoControlsLocked = true;
 				};
 
 				scope.captureInteraction = function () {
@@ -142,18 +143,18 @@ angular.module('com.inthetelling.story')
 					// BEGIN multiple choice question
 					if (scope.plugin._type === 'question') {
 
-						scope.scoreQuiz = function () {
-							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
-							scope.plugin.hasBeenAnswered = true;
-							analyticsSvc.captureEventActivity("question-answered", scope.item._id);
-						};
+						//scope.plugin.selectedDistractor = undefined;
 
 						scope.scorePoll = function () {
 							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
 							scope.plugin.hasBeenAnswered = true;
 
-							// TODO: store user question data, get back list of all users' responses 
-							// and add it to the item
+							analyticsSvc.captureEventActivity("question-answered", scope.item._id, {
+								'answer': scope.plugin.distractors[scope.plugin.selectedDistractor].text,
+								'correct': !!(scope.plugin.distractors[scope.plugin.selectedDistractor].correct)
+							});
+							// TODO: get back list of all users' responses (need a new api endpoint for this)
+							// and display results
 						};
 
 						scope.resetQuestion = function () {
@@ -203,15 +204,6 @@ angular.module('com.inthetelling.story')
 							});
 						};
 
-						// update credly state every time the item becomes current or visible (i.e. in review mode)
-						scope.$watch(function () {
-							return scope.item.isCurrent || appState.viewMode === 'review';
-						}, function (itIs, itWas) {
-							if (itIs && !itWas) {
-								scope.checkBadgeEligibility();
-							}
-						});
-
 						scope.countAchievements = function () {
 							var count = 0;
 							angular.forEach(scope.plugin.requirements, function (req) {
@@ -223,9 +215,31 @@ angular.module('com.inthetelling.story')
 							if (scope.plugin.totalAchieved === scope.plugin.requirements.length) {
 								// HACK TODO we need to implement a real way for items to control the visibility of other items or scenes.
 								// The silly workaround here only works (for some poorly-defined version of 'works') because USC episodes only have one badge
-								scope.$parent.episode.styleCss = scope.$parent.episode.styleCss + " uscHackUserHasBadge";
+
+								modelSvc.episodes[appState.episodeId].styleCss = modelSvc.episodes[appState.episodeId].styleCss + " uscHackUserHasBadge";
+
 							}
 						};
+
+						// on link:
+						scope.checkBadgeEligibility();
+
+						// slow poll after that, up to some reasonable time limit
+						var pollLimit = 0;
+						scope.badgePoll = $interval(function () {
+							console.log('poll', pollLimit);
+							pollLimit++;
+							if (scope.item.isCurrent || appState.viewMode === 'review') {
+								scope.checkBadgeEligibility();
+							}
+							if (pollLimit > 60) {
+								$interval.cancel(scope.badgePoll);
+							}
+						}, 10000);
+
+						scope.$on('$destroy', function () {
+							$interval.cancel(scope.badgePoll);
+						});
 
 						scope.badger = function () {
 							scope.plugin.gettingBadge = true;
@@ -249,6 +263,7 @@ angular.module('com.inthetelling.story')
 								});
 						};
 					}
+
 					// END credly badge
 				}
 				// end plugin

@@ -21,9 +21,10 @@ episode activity:
 
 event activity: captures interaction with specific transmedia items ("events").
 Different types of event can define their own interactions, but the core ones will be
-	viewed						player reached the event's start_time by any method
-	interacted				user clicked a transmedia link, for example
-	completed					up to the transmedia item to define what constitutes "completion"
+	viewed							player reached the event's start_time by any method
+	interacted					user clicked a transmedia link, for example
+	completed						up to the transmedia item to define what constitutes "completion"
+	question-answered		for quiz questions.  Data field should be {answer: 'answer text', correct: t/f}
 */
 
 angular.module('com.inthetelling.story')
@@ -45,7 +46,7 @@ angular.module('com.inthetelling.story')
 
 		// for episode-related activity
 		svc.captureEpisodeActivity = function (name, data) {
-			if (!appState.user.track_episode_metrics) {
+			if (config.disableAnalytics || !appState.user.track_episode_metrics) {
 				return;
 			}
 			var userActivity = {
@@ -60,11 +61,17 @@ angular.module('com.inthetelling.story')
 		};
 
 		// for transmedia-related activity
-		svc.captureEventActivity = function (name, eventID, data) {
-			console.log("analyticsSvc.captureEventActivity", eventID, data);
-			if (!appState.user.track_event_actions) {
-				return;
+		svc.captureEventActivity = function (name, eventID, data, force) {
+			// console.log("analyticsSvc.captureEventActivity", eventID, data);
+			if (!force) {
+				if (config.disableAnalytics || !appState.user.track_event_actions) {
+					return;
+				}
 			}
+			if (data === undefined) {
+				console.warn("captureEventActivity called with no data for event ", eventID);
+			}
+			// console.log(data);
 			svc.activityQueue.push({
 				"name": name,
 				"event_id": eventID,
@@ -73,57 +80,76 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+
+		svc.forceCaptureEventActivityWithPromise = function (name, eventID, data) {
+			//we know this is syncronous
+			svc.captureEventActivity(name, eventID, data, true);
+			return svc.flushActivityQueue(); //this is async, and returns a promise.	
+		};
+		svc.captureEventActivityWithPromise = function (name, eventID, data) {
+			//we know this is syncronous
+			svc.captureEventActivity(name, eventID, data);
+			return svc.flushActivityQueue(); //this is async, and returns a promise.	
+		};
+
 		// read from API:
 		svc.readEpisodeActivity = function (epId) {
-			console.log("analyticsSvc readEpisodeActivity");
+			// console.log("analyticsSvc readEpisodeActivity");
 			var defer = $q.defer();
 			$http({
-				method: 'GET',
-				url: config.apiDataBaseUrl + '/v2/episodes/' + epId + '/episode_user_metrics'
-			}).success(function (respData) {
-				// console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
-				defer.resolve(respData);
-			}).error(function () {
-				// console.log("read episode activity ERROR", respData, respStatus, respHeaders);
-				defer.reject();
-			});
+					method: 'GET',
+					url: config.apiDataBaseUrl + '/v2/episodes/' + epId + '/episode_user_metrics'
+				})
+				.success(function (respData) {
+					// console.log("read episode activity SUCCESS", respData, respStatus, respHeaders);
+					defer.resolve(respData);
+				})
+				.error(function () {
+					// console.log("read episode activity ERROR", respData, respStatus, respHeaders);
+					defer.reject();
+				});
 			return defer.promise;
 		};
 
 		// if activityType is omitted, returns all user data for that event id
 		// if it's included, returns true if the user has at least once triggered that activityType, false if not
 		svc.readEventActivity = function (eventId, activityType) {
-			console.log("analyticsSvc.readEventActivity", "eventId", "activityType");
+			// console.log("analyticsSvc.readEventActivity", "eventId", "activityType");
 			var defer = $q.defer();
 			$http({
-				method: 'GET',
-				url: config.apiDataBaseUrl + '/v2/events/' + eventId + '/event_user_actions'
-			}).success(function (respData) {
-				// console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
-				if (activityType) {
-					var matchedType = false;
-					for (var i = 0; i < respData.length; i++) {
-						var activity = respData[i];
-						if (activity.name === activityType) {
-							matchedType = true;
+					method: 'GET',
+					url: config.apiDataBaseUrl + '/v2/events/' + eventId + '/event_user_actions'
+				})
+				.success(function (respData) {
+					// console.log("read event activity SUCCESS", respData, respStatus, respHeaders);
+					if (activityType) {
+						var matchedType = false;
+						for (var i = 0; i < respData.length; i++) {
+							var activity = respData[i];
+							if (activity.name === activityType) {
+								matchedType = true;
+							}
 						}
+						defer.resolve(matchedType);
+					} else {
+						// no activityType specified so return everything:
+						defer.resolve(respData);
 					}
-					defer.resolve(matchedType);
-				} else {
-					// no activityType specified so return everything:
-					defer.resolve(respData);
-				}
-			}).error(function () {
-				// console.log("read event activity ERROR", respData, respStatus, respHeaders);
-				defer.reject();
-			});
+				})
+				.error(function () {
+					// console.log("read event activity ERROR", respData, respStatus, respHeaders);
+					defer.reject();
+				});
 			return defer.promise;
 		};
 
 		svc.flushActivityQueue = function () {
+
+			var defer = $q.defer();
 			// console.log("flush interval");
 			if (svc.activityQueue.length === 0) {
-				return;
+				defer.resolve("");
+				return defer.promise;
 			}
 			var actions = angular.copy(svc.activityQueue);
 			svc.activityQueue = [];
@@ -147,13 +173,13 @@ angular.module('com.inthetelling.story')
 			if (eventUserActions.length > 0) {
 				// console.log("Event actions to log:", eventUserActions);
 				// /v2/episodes/<episode id>/event_user_actions
-				post("event_user_actions", {
+				return post("event_user_actions", {
 					"event_user_actions": eventUserActions
 				});
 			}
 			if (episodeUserMetrics.length > 0) {
 				// console.log("Episode metrics to log:", episodeUserMetrics);
-				post("episode_user_metrics", {
+				return post("episode_user_metrics", {
 					"episode_user_metrics": episodeUserMetrics
 				});
 			}
@@ -185,11 +211,20 @@ angular.module('com.inthetelling.story')
 
 		// This is not a general-purpose function, it's only for the analytics endpoints
 		var post = function (endpoint, endpointData) {
+
+			var defer = $q.defer();
 			$http({
-				method: 'POST',
-				url: config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + endpoint,
-				data: endpointData
-			});
+					method: 'POST',
+					url: config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + endpoint,
+					data: endpointData
+				})
+				.success(function (respData) {
+					defer.resolve(respData);
+				})
+				.error(function () {
+					defer.reject();
+				});
+			return defer.promise;
 		};
 
 		return svc;

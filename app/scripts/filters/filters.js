@@ -71,12 +71,19 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('reviewMode', function () {
-		// TODO obsolete this; producer should set the 'cosmetic' field correctly (right now authors can't be trusted to set it)
+	.filter('reviewMode', function (appState) {
 		return function (items) {
 			var ret = [];
+			var isProducer = (appState.product === 'producer');
+			// player, sxs: non-cosmetic, and isContent or windowFg.
+			// producer: everything.
 			angular.forEach(items, function (item) {
-				if (item.showInReviewMode) {
+				if (
+					isProducer ||
+					(!item.cosmetic &&
+						(item.isContent || item.layouts.indexOf('windowFg') > -1)
+					)
+				) {
 					ret.push(item);
 				}
 			});
@@ -158,6 +165,20 @@ angular.module('com.inthetelling.story')
 			return JSON.stringify(json, undefined, 2);
 		};
 	})
+	.filter('asBytes', function () {
+		// quick + sloppy
+		return function (b) {
+			if (!b) {
+				return "";
+			}
+			var kb = Math.floor(b / 1024);
+			if (kb < 1024) {
+				return kb + "Kb";
+			}
+			var mb = Math.floor(kb / 10.24) / 100;
+			return mb + "Mb";
+		};
+	})
 	.filter('asPercent', function () {
 		return function (n) {
 			return isNaN(n) ? (Math.floor(n * 100)) + "%" : '0%';
@@ -166,5 +187,11 @@ angular.module('com.inthetelling.story')
 	.filter('asTime', function () {
 		return function (t) {
 			return isNaN(t) ? "0:00" : Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
+		};
+	})
+	.filter('alpha', function () {
+		// To label ng-repeats by letter, use {{$index | alpha}}
+		return function (n) {
+			return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n % 26];
 		};
 	});

@@ -1,4 +1,7 @@
-<div>
+<a class="edit-event" ng-click="editItem()">
+	<span>Edit item</span>
+</a>
+<div ng-class="{isCosmetic: item.cosmetic}">
 	<div ng-if="item.isTranscript" class="itemTemplate">
 		<div class="itemHead">
 			<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
