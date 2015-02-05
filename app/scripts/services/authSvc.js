@@ -17,24 +17,22 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.logout = function () {
+			// Clear these even if the logout call fails (which it will if the token in localStorage has expired).
+			// DO NOT clear the Authorization header yet (it's needed for the logout server call)
+			localStorage.removeItem(config.localStorageKey);
+			document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			appState.user = {};
+
 			$http({
 				method: 'GET',
 				url: config.apiDataBaseUrl + "/logout"
-			}).success(function (data) {
-				appState.user = {};
-				delete $http.defaults.headers.common.Authorization; // need to have this header for the logout server call, don't delete it ahead of time!
-				localStorage.removeItem(config.localStorageKey);
-				// not strictly necessary, but just for giggles:
-				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			}).error(function (data) {
-				// try to clear out the session anyway:
-				appState.user = {};
-				delete $http.defaults.headers.common.Authorization; // need to have this header for the logout server call, don't delete it ahead of time!
-				localStorage.removeItem(config.localStorageKey);
-				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-				window.location.href = "/";
+			}).success(function () {
+				delete $http.defaults.headers.common.Authorization; // now it's safe
+				$location.path('/');
+			}).error(function () {
+				delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
+				$location.path('/');
 			});
 		};
 
@@ -86,12 +84,26 @@ angular.module('com.inthetelling.story')
 				var validStoredData = svc.getStoredUserData();
 				if (validStoredData) {
 					appState.user = validStoredData;
+					// assume good until proven otherwise.
 					$http.defaults.headers.common.Authorization = 'Token token="' + validStoredData.access_token + '"';
-					if (!appState.user._id) {
-						// This should only be necessary for a short while here, until everyone's localStorage has been updated to include the ID:
-						svc.getCurrentUser();
-					}
-					defer.resolve();
+					svc.getCurrentUser().then(function () {
+						console.log("Using token from localStorage");
+						defer.resolve();
+					}, function () {
+						// token in localStorage must have expired. RESET ALL THE THINGS
+						delete $http.defaults.headers.common.Authorization;
+						localStorage.removeItem(config.localStorageKey);
+						document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+						document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+						appState.user = {};
+						// and start again:
+						console.log("Discarding expired localStorage, starting again");
+						svc.getNonce().then(function (nonce) {
+							svc.getAccessToken(nonce).then(function () {
+								defer.resolve();
+							});
+						});
+					});
 				} else {
 					// start from scratch
 					svc.getNonce().then(function (nonce) {
