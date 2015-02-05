@@ -885,3 +885,20 @@ test deleting session cookies on logout
 Changes in v4.3.12:
 logout now calls server API instead of just dumping tokens
 
+------------------------------------------------
+Changes in v4.3.13:
+Authentication fixes (mostly to 'logout')
+
+------------------------------------------------
+Changes in v4.3.14:
+hide /#/episodes from non-admin users
+authSvc handles expired localStorage tokens properly again
+
+------------------------------------------------
+Changes in v4.3.15:
+remove redirect on /#/auth
+
+------------------------------------------------
+Changes in v4.3.16:
+temporary fix for admin OAuth login
+
