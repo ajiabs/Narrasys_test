@@ -13,6 +13,7 @@ angular.module('com.inthetelling.story')
 				scope.appState = appState;
 				scope.loading = true;
 				scope.containers = modelSvc.containers;
+				scope.isAdmin = authSvc.userHasRole('admin');
 				dataSvc.getContainerRoot().then(function (rootIDs) {
 					scope.root = {
 						children: []
