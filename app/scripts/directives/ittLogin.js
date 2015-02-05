@@ -30,8 +30,10 @@ angular.module('com.inthetelling.story')
 						$location.search('nonce', null);
 						$location.path('/episode/' + epId);
 					} else {
+
 						// TODO user homepage, narrative homepage. For now:
-						$location.path('/');
+						//$location.path('/');						// DOn't redirect, this is breaking LTI
+
 					}
 				});
 
