@@ -889,3 +889,8 @@ logout now calls server API instead of just dumping tokens
 Changes in v4.3.13:
 Authentication fixes (mostly to 'logout')
 
+------------------------------------------------
+Changes in v4.3.14:
+hide /#/episodes from non-admin users
+authSvc handles expired localStorage tokens properly again
+
