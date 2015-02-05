@@ -7,15 +7,13 @@ angular.module('com.inthetelling.story')
 			replace: true,
 
 			link: function (scope) {
-
 				scope.logout = function () {
 					authSvc.logout();
 				};
-
 				scope.appState = appState;
 				scope.loading = true;
 				scope.containers = modelSvc.containers;
-
+				scope.isAdmin = authSvc.userHasRole('admin');
 				dataSvc.getContainerRoot().then(function (rootIDs) {
 					scope.root = {
 						children: []
@@ -25,6 +23,10 @@ angular.module('com.inthetelling.story')
 						scope.root.children.push(modelSvc.containers[id]);
 					});
 					scope.loading = false;
+				}, function () {
+					scope.failedLogin = true;
+					scope.loading = false;
+
 				});
 
 			}
