@@ -902,3 +902,13 @@ remove redirect on /#/auth
 Changes in v4.3.16:
 temporary fix for admin OAuth login
 
+------------------------------------------------
+Changes in v4.3.16-authtest:
+adding access token to new window
+
+for the benefit of users who have disabled third party cookies
+
+Fixing out-of-synch iframe logins
+
+Merge branch 'master' into dev
+
