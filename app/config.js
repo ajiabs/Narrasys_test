@@ -12,7 +12,7 @@ var config = {
 	// apiDataBaseUrl: 'https://columbiabusinessschool.inthetelling.com',
 	// apiDataBaseUrl: 'https://middlebury.inthetelling.com',
 
-	localStorageKey: "storyKey",
+	localStorageKey: "storyToken",
 	disableYoutube: false,
 	disableAnalytics: false,
 	debugInBrowser: true // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 

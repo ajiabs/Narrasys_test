@@ -11,7 +11,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			templateUrl: 'templates/root.html'
 		})
 		.when('/auth', {
-			template: '<div itt-login></div>'
+			templateUrl: 'templates/auth.html',
+			reloadOnSearch: false
+		})
+		.when('/user/:userId', {
+			templateUrl: 'templates/userhome.html',
 		})
 		.when('/stories', {
 			title: "Existing narratives",
@@ -40,7 +44,6 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
-			reloadOnSearch: false,
 			resolve: {
 				product: function (appState) {
 					appState.product = "player";
@@ -51,7 +54,6 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
-			reloadOnSearch: false,
 			resolve: {
 				product: function (appState) {
 					appState.product = "player";
@@ -62,7 +64,6 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
-			reloadOnSearch: false,
 			resolve: {
 				product: function (appState) {
 					appState.product = "sxs";
@@ -73,7 +74,6 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
-			reloadOnSearch: false,
 			resolve: {
 				product: function (appState) {
 					appState.product = "sxs";
@@ -84,7 +84,6 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
-			reloadOnSearch: false,
 			resolve: {
 				product: function (appState) {
 					appState.product = "producer";

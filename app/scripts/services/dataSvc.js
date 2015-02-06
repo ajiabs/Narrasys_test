@@ -381,12 +381,14 @@ angular.module('com.inthetelling.story')
 		var GET = function (path, postprocessCallback) {
 			console.log("GET", path);
 			var defer = $q.defer();
-			$http.get(config.apiDataBaseUrl + path).then(function (response) {
-				var ret = response.data;
-				if (postprocessCallback) {
-					ret = postprocessCallback(ret);
-				}
-				return defer.resolve(ret);
+			authSvc.authenticate().then(function () {
+				$http.get(config.apiDataBaseUrl + path).then(function (response) {
+					var ret = response.data;
+					if (postprocessCallback) {
+						ret = postprocessCallback(ret);
+					}
+					return defer.resolve(ret);
+				});
 			});
 			return defer.promise;
 		};
