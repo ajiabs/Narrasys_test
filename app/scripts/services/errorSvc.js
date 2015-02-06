@@ -25,7 +25,7 @@ angular.module('com.inthetelling.story')
 				// "unauthorized" errors will clear login state for now.
 				// TODO in future there may be cases where this isn't desirable (i.e. when we support more roles,
 				// it may make sense to keep an existing role in place even if the user attempts to do something they're not allowed to?)
-				console.warn("401 detected");
+				//				console.warn("401 detected");
 			}
 			if (exception && exception.data) {
 				// API errors go here:
