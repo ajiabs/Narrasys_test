@@ -54,7 +54,7 @@
 			<label for="searchtext" class="hidden">Search Text</label>
 			<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
 		</div>
-		<div class="profilegroup buttongroup" ng-if="appState.product == 'sxs'">
+		<div class="profilegroup buttongroup" ng-if="narrativeId || appState.product == 'sxs'">
 			<a class="button button-profile" ng-click="appState.show.profilePanel = true">
 				<span>Profile</span>
 			</a>
@@ -142,39 +142,5 @@
 <!-- PROFILE (mostly faked for now) -->
 <div ng-if="show.profilePanel" class="profilePanel">
 	<div class="arrow-up"></div>
-	<div ng-if="userHasRole('admin')">
-
-		<img src="/images/customer/tmp-userprofile.png" style="float:left; border: 5px solid #FFF">
-
-		<div class="authoringForm">
-			<div class="field">
-				<div class="label">Name
-				</div>
-				<div class="input">
-					<input type="text" value="Professor Smith">
-				</div>
-			</div>
-
-			<div class="field">
-				<div class="label">Email
-				</div>
-				<div class="input">
-					<input type="text" value="example@this-is-todo.com">
-				</div>
-			</div>
-			<br>
-			<br>
-			<div class="field">
-				<div style="text-align:right;">
-					<a ng-click="logout()">Log out</a>
-				</div>
-			</div>
-		</div>
-
-		<div ng-if="!(userHasRole('admin'))">
-
-			<a ng-href="/pages/launch_oauth2?episode={{appState.episodeId}}" target="_new">Log in</a>
-
-		</div>
-	</div>
+	<div itt-user></div>
 </div>

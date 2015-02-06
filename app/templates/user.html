@@ -1,6 +1,18 @@
 <div>
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
-	<div ng-if="!loading">
-		<pre>{{user | pretty}}</pre>
+	<div ng-if="!loading" style="margin:1em">
+		<h2>{{user.name}}</h2>
+
+		<p>
+			<i>{{user.email}} {{user.role_description}}</i>
+		</p>
+		<a ng-click="logout()">Log out</a>
+
+		<h3>Your purchased stories</h3>
+		<div ng-repeat="narrative in myNarratives">
+			<a ng-href="/#/story/{{narrative._id}}">{{narrative.name.en}}</a>
+		</div>
+		<div ng-if="myNarratives.length == 0">You have not purchased any stories.</div>
+
 	</div>
 </div>

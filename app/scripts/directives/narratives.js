@@ -45,7 +45,7 @@ angular.module('com.inthetelling.story')
 
 				dataSvc.getNarrativeList().then(function (narratives) {
 					scope.narratives = narratives;
-					console.log("XXXXXX", scope.narratives);
+					// console.log("XXXXXX", scope.narratives);
 				});
 			}
 		};

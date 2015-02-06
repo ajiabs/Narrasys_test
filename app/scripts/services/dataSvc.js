@@ -25,6 +25,10 @@ angular.module('com.inthetelling.story')
 			return GET("/v3/narratives/" + narrativeId);
 		};
 
+		svc.getUserNarratives = function (userId) {
+			return GET("/v3/users/" + userId + "/narrative_purchases");
+		};
+
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
 		svc.getEpisode = function (epId, segmentId) {
