@@ -912,3 +912,5 @@ Fixing out-of-synch iframe logins
 
 Merge branch 'master' into dev
 
+------------------------------------------------
+Changes in v4.3.16-auth2:
