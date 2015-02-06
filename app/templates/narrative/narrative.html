@@ -1,10 +1,13 @@
 <div class="narrative">
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 	<div ng-if="!loading">
+
 		<div ng-if="userIsAdmin">
 			Temporary edit toggle for admin users:
 			<input type="checkbox" ng-model="blarg" ng-change="toggleOwnership(blarg)">
 		</div>
+
+		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
 
 		<div class="authoringForm" ng-if="isOwner">
 			<!-- begin edit -->

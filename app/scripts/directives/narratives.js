@@ -96,7 +96,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 	})
-	.directive('ittNarrative', function (authSvc, $location, $routeParams, modelSvc, dataSvc, errorSvc) {
+	.directive('ittNarrative', function (authSvc, appState, $location, $routeParams, modelSvc, dataSvc, errorSvc) {
 		return {
 			scope: {
 				_id: '=ittNarrative',
@@ -106,13 +106,17 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element) {
 				scope.loading = true;
 				authSvc.authenticate().then(function () {
-					scope.userIsAdmin = authSvc.userHasRole('admin');
+					scope.userIsAdmin = authSvc.userHasRole('admin'); // TODO this won't update if role changes
+
+					scope.user = appState.user;
+
 				});
 
 				scope.isOwner = false;
-				scope.toggleOwnership = function (x) {
-					console.log(x);
-					scope.isOwner = x;
+
+				scope.toggleOwnership = function () {
+
+					scope.isOwner = !scope.isOwner;
 				};
 
 				var narrativeId = (scope._id) ? scope.id : $routeParams.narrativeId;

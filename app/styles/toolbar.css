@@ -617,7 +617,7 @@ button {
 	font-size: 0.86em;
 	right: 2em;
 	padding: 15px;
-	position: absolute;
+	position: fixed;
 	width: 60%;
 	max-width: 500px;
 	min-width: 290px;

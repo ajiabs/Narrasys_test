@@ -179,7 +179,9 @@ angular.module('com.inthetelling.story')
 			});
 
 			appState.user = user;
-			appState.user.role_description = getRoleDescription(user.roles[0]);
+			if (user.roles) {
+				appState.user.role_description = getRoleDescription(user.roles[0]);
+			}
 			try {
 				localStorage.setItem(config.localStorageKey, JSON.stringify({
 					token: user.access_token,
