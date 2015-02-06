@@ -103,8 +103,6 @@
 <div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()" sxs-add-content></div>
 
 
-<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
-
 <div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
 	<img src="/images/autoscroll.svg" width="32" height="32">
 </div>

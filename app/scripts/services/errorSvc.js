@@ -9,7 +9,7 @@ throw() or other js errors also get sent here by $exceptionHandler (though we're
 */
 
 angular.module('com.inthetelling.story')
-	.factory('errorSvc', function () {
+	.factory('errorSvc', function ($location) {
 		var svc = {};
 
 		// TODO This is a mess.  make the field names less ridiculously inconsistent.  
@@ -26,6 +26,11 @@ angular.module('com.inthetelling.story')
 				// TODO in future there may be cases where this isn't desirable (i.e. when we support more roles,
 				// it may make sense to keep an existing role in place even if the user attempts to do something they're not allowed to?)
 				console.warn("401 detected");
+
+				// hacky special case for login page
+				if ($location.path() === '/') {
+					exception = undefined;
+				}
 			}
 			if (exception && exception.data) {
 				// API errors go here.

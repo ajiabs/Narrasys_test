@@ -49,7 +49,11 @@ TODO hide these when not in use?
 	<![endif]-->
 
 	<div id="CONTAINER" x-ng-view="">
+
+
 	</div>
+	<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
+
 
 	<script src="config.js"></script>
 	<!-- CDN links-->
@@ -133,7 +137,9 @@ TODO hide these when not in use?
 	<script src="scripts/directives/ittTabs.js"></script>
 	<script src="scripts/directives/sxsContainerAssets.js"></script>
 
+	<!-- TODO split these up once dev work is stabilized -->
 	<script src="scripts/directives/narratives.js"></script>
+	<script src="scripts/directives/users.js"></script>
 
 	<!-- endbuild -->
 </body>

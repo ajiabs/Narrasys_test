@@ -14,8 +14,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			templateUrl: 'templates/auth.html',
 			reloadOnSearch: false
 		})
-		.when('/user/:userId', {
-			templateUrl: 'templates/userhome.html',
+		.when('/user', {
+			template: '<div itt-user></div>'
 		})
 		.when('/stories', {
 			title: "Existing narratives",

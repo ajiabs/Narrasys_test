@@ -14,6 +14,8 @@
 	padding: 1em;
 	margin: 1em;
 	overflow: auto;
+	animation: delayedFadeOut 10s;
+	animation-fill-mode: forwards;
 }
 .errors .notification {
 	border-color: #EE0;
@@ -318,3 +320,4 @@ Misc useful keyframes
 		opacity: 1;
 	}
 }
+

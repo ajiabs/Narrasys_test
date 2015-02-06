@@ -1,0 +1,6 @@
+<div>
+	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
+	<div ng-if="!loading">
+		<pre>{{user | pretty}}</pre>
+	</div>
+</div>
