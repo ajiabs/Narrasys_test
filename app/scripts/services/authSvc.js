@@ -6,6 +6,7 @@ angular.module('com.inthetelling.story')
 		var svc = {};
 
 		svc.userHasRole = function (role) {
+
 			if (appState.user && appState.user.roles) {
 				for (var i = 0; i < appState.user.roles.length; i++) {
 					if (appState.user.roles[i] === role) {
@@ -49,91 +50,100 @@ angular.module('com.inthetelling.story')
 					'Content-Type': 'application/x-www-form-urlencoded'
 				}
 			}).success(function (data) {
-				// TODO this overlaps with the oauth login path, and leaves some (unnecessary?) info out of localStorage which we usually get from get_nonce.
-				// Should consolidate these, and only localStore data we really care about anyway
-
 				$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
-				data.roles = ["admin"];
 				storeUserData(data);
-				svc.getCurrentUser(); // get the user id and name async
-				defer.resolve(data);
+				svc.getCurrentUser().then(function () {
+					defer.resolve(data);
+				});
+
 			}).error(function (data) {
 				defer.reject(data);
 			});
 			return defer.promise;
 		};
 
+		/*
+
+			authentication paths:
+				header + user data: resolve immediately
+				header + no user data: call show_user (this shouldn't be possible, but I coded it in at some point for some reason...)
+				key in url param: call get_nonce
+				token in localStorage: set header, call show_user
+				nothing: get_nonce
+
+		*/
+
 		svc.authenticate = function () {
 			var defer = $q.defer();
-			if ($routeParams.key) {
-				// explicit key in route:
-				var nonce = $routeParams.key;
-				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
-				svc.getAccessToken(nonce).then(function () {
+			if ($http.defaults.headers.common.Authorization) {
+				if (appState.user) {
+					// Have header and user; all done.
 					defer.resolve();
-				});
-			} else if ($http.defaults.headers.common.Authorization) {
-				// already logged in
-				if (appState.user === {}) {
+				} else {
+					// begin dubious code block
 					console.warn("Have auth header but no appState.user data. Not sure this should ever happen, TODO delete this from authSvc if it continues to not happen");
-					appState.user = svc.getStoredUserData();
-				}
-				defer.resolve();
-			} else {
-				// check for token in localStorage, try it to see if it's still valid.
-				var validStoredData = svc.getStoredUserData();
-				if (validStoredData) {
-					appState.user = validStoredData;
-					// assume good until proven otherwise.
-					$http.defaults.headers.common.Authorization = 'Token token="' + validStoredData.access_token + '"';
 					svc.getCurrentUser().then(function () {
-						console.log("Using token from localStorage");
 						defer.resolve();
 					}, function () {
-						// token in localStorage must have expired. RESET ALL THE THINGS
-						delete $http.defaults.headers.common.Authorization;
+						return svc.authenticateViaNonce();
+					});
+					// end of dubious code block
+				}
+			} else if ($routeParams.key) {
+				// Have key in route
+				var nonce = $routeParams.key;
+				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
+				return svc.getAccessToken(nonce);
+			} else {
+				var token = svc.getStoredToken();
+				if (token) {
+					// have localStorage token; try it
+					$http.defaults.headers.common.Authorization = 'Token token="' + token + '"';
+					svc.getCurrentUser().then(function () {
+						// token worked
+						defer.resolve();
+					}, function () {
+						// token expired; clear everything and start over
 						localStorage.removeItem(config.localStorageKey);
 						document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 						document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 						appState.user = {};
-						// and start again:
-						console.log("Discarding expired localStorage, starting again");
-						svc.getNonce().then(function (nonce) {
-							svc.getAccessToken(nonce).then(function () {
-								defer.resolve();
-							});
-						});
+						return svc.authenticateViaNonce();
 					});
 				} else {
-					// start from scratch
-					svc.getNonce().then(function (nonce) {
-						svc.getAccessToken(nonce).then(function () {
-							defer.resolve();
-						});
-					});
+					// no login info at all, start from scratch
+					return svc.authenticateViaNonce();
 				}
 			}
 			return defer.promise;
 		};
 
-		svc.getStoredUserData = function () {
-			var validStoredData;
+		svc.authenticateViaNonce = function () {
+			var defer = $q.defer();
+			svc.getNonce().then(function (nonce) {
+				svc.getAccessToken(nonce).then(function () {
+					defer.resolve();
+				});
+			});
+			return defer.promise;
+		};
+
+		svc.getStoredToken = function () {
+			var storedData = {};
 			if (localStorage && localStorage.getItem(config.localStorageKey)) {
-				var storedData = angular.fromJson(localStorage.getItem(config.localStorageKey));
+
+				// temporary: clear old key
+				localStorage.removeItem('storyKey');
+
+				storedData = angular.fromJson(localStorage.getItem(config.localStorageKey));
 				var currentCustomer = config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1];
-				if (storedData.customer === currentCustomer) {
-					validStoredData = storedData;
-					if (storedData.roles && storedData.roles.length === 1 && storedData.roles[0] === "guest") {
-						validStoredData.isGuestUser = true;
-					}
-				} else {
-					// this token must be invalid, so remove it
+				if (storedData.customer !== currentCustomer) {
 					console.log("deleting wrong-customer token: was ", storedData.customer, " should be ", currentCustomer);
 					localStorage.removeItem(config.localStorageKey);
-					validStoredData = false;
+					storedData = {};
 				}
 			}
-			return validStoredData;
+			return storedData.token || false;
 		};
 
 		svc.getCurrentUser = function () {
@@ -143,10 +153,9 @@ angular.module('com.inthetelling.story')
 					url: config.apiDataBaseUrl + '/show_user'
 				})
 				.success(function (respData) {
-					appState.user._id = respData._id;
-					appState.user.name = respData.name;
-					storeUserData(appState.user);
-					defer.resolve(respData);
+					console.log("getCurrentUser success: ", respData);
+					storeUserData(respData);
+					defer.resolve();
 				})
 				.error(function () {
 					defer.reject();
@@ -155,23 +164,26 @@ angular.module('com.inthetelling.story')
 		};
 
 		var storeUserData = function (data) {
-			// strip out fields we don't want in localStorage
-			var storeMe = {
-				access_token: data.access_token,
+			// updates appState.user and localStorage
+			var user = {
+				access_token: data.access_token || data.authentication_token,
 				customer: config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1], // Access tokens are per-customer, which is based on subdomain.
 				//                                                            Logging in with one customer invalidates the key for any others for the same user,
 				//                                                            otherwise we'd just store separate ones per customer
 				roles: data.roles
 			};
-			if (data._id) {
-				storeMe._id = data._id;
-			}
-			if (data.name) {
-				storeMe.name = data.name;
-			}
-			appState.user = storeMe;
+			angular.forEach(["_id", "name", "email"], function (key) {
+				if (data[key]) {
+					user[key] = data[key];
+				}
+			});
+
+			appState.user = user;
 			try {
-				localStorage.setItem(config.localStorageKey, JSON.stringify(storeMe));
+				localStorage.setItem(config.localStorageKey, JSON.stringify({
+					token: user.access_token,
+					customer: user.customer
+				}));
 			} catch (e) {}
 
 		};
@@ -196,7 +208,9 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				})
-				.error(function () {
+				.error(function (x) {
+					console.warn("NONCE FAIL", x);
+					console.trace();
 					defer.reject();
 				});
 			return defer.promise;
