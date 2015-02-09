@@ -902,3 +902,6 @@ remove redirect on /#/auth
 Changes in v4.3.16:
 temporary fix for admin OAuth login
 
+------------------------------------------------
+Changes in v4.3.18:
+Narratives work in progress

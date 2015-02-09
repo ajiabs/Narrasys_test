@@ -79,6 +79,9 @@ angular.module('com.inthetelling.story')
 								/v3/episode_segments/:episode_segment_id/events intead of /v3/episode/:episode_id/events
 
 								For v1 I am just going to skip all that and send the parent episode ID to the player since we are only using full episodes at this point
+
+
+But this breaks guest access.  TODO fix this
 								*/
 
 								scope.showPlayer = true;
