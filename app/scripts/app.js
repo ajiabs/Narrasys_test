@@ -24,10 +24,10 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 		.when('/story', {
 			template: '<div itt-narrative></div>',
 		})
-		.when('/story/:narrativeId', {
+		.when('/story/:narrativePath', {
 			template: '<div itt-narrative></div>',
 		})
-		.when('/story/:narrativeId/:timelinePath', {
+		.when('/story/:narrativePath/:timelinePath', {
 			template: '<div itt-narrative-timeline></div>',
 			reloadOnSearch: false
 		})

@@ -60,14 +60,13 @@ angular.module('com.inthetelling.story')
 				// for now this simply points to the episode player.  When timelines support multiple segments this will need to change significantly
 				console.log('ittNarrativeTimeline link');
 				appState.init();
-				appState.narrativeId = $routeParams.narrativeId;
-				scope.narrativeId = $routeParams.narrativeId;
-				appState.product = "player";
 
-				dataSvc.getNarrative(scope.narrativeId).then(function () {
-					console.log("NARRATIVE IS ", modelSvc.narratives[scope.narrativeId]);
-					var narr = modelSvc.narratives[scope.narrativeId];
-					angular.forEach(narr.timelines, function (timeline) {
+				appState.product = "player";
+				dataSvc.getNarrative($routeParams.narrativePath).then(function (narrative) {
+					console.log("NARRATIVE IS ", narrative);
+					appState.narrativeId = narrative._id;
+					scope.narrative = narrative;
+					angular.forEach(narrative.timelines, function (timeline) {
 						if (timeline.path === $routeParams.timelinePath) {
 							console.log("TL IS ", timeline);
 							if (timeline.episode_segments[0]) {
@@ -96,19 +95,25 @@ angular.module('com.inthetelling.story')
 			}
 		};
 	})
-	.directive('ittNarrative', function (authSvc, appState, $location, $routeParams, modelSvc, dataSvc, errorSvc) {
+	.directive('ittNarrative', function (authSvc, appState, $location, $routeParams, modelSvc, dataSvc) {
 		return {
 			scope: {
-				_id: '=ittNarrative',
+				path: '=ittNarrative',
 			},
 			templateUrl: "templates/narrative/narrative.html",
 
-			link: function (scope, element) {
+			link: function (scope) {
 				scope.loading = true;
 				authSvc.authenticate().then(function () {
 					scope.userIsAdmin = authSvc.userHasRole('admin'); // TODO this won't update if role changes
 
 					scope.user = appState.user;
+
+					if (authSvc.userHasRole('admin')) {
+						dataSvc.getCustomerList().then(function (data) {
+							scope.customerList = data;
+						});
+					}
 
 				});
 
@@ -119,24 +124,23 @@ angular.module('com.inthetelling.story')
 					scope.isOwner = !scope.isOwner;
 				};
 
-				var narrativeId = (scope._id) ? scope.id : $routeParams.narrativeId;
-				if (narrativeId) {
-					scope.narrative = modelSvc.narratives[narrativeId];
-					if (scope.narrative) {
+				// The route param might be the narrative path or its ID (both are interchangeable in the API)
+				var path_or_id = (scope._id) ? scope._id : $routeParams.narrativePath;
+				console.log("TET", path_or_id);
+				if (path_or_id) {
+					if (modelSvc.narratives[path_or_id]) {
+						console.log('...');
+						scope.narrative = modelSvc.narratives[path_or_id];
 						scope.loading = false;
 					} else {
-						dataSvc.getNarrative(narrativeId).then(function () {
-							scope.narrative = modelSvc.narratives[narrativeId];
-							scope.loading = false;
-						}, function () {
-							scope.loading = false;
-							errorSvc.error({
-								data: "No narrative with that ID exists."
-							});
+						console.log("Getting narrative");
+						dataSvc.getNarrative(path_or_id).then(function (narrativeData) {
 
+							scope.loading = false;
+							scope.narrative = narrativeData;
 						});
-
 					}
+
 				} else {
 					scope.loading = false;
 					scope.toggleOwnership(true);
@@ -270,7 +274,6 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-				console.log("ittNarrative", scope.narrativeId, element);
 			}
 		};
 	});

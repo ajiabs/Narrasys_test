@@ -7,8 +7,8 @@
 	}">
 	<!-- TODO: make sure user has admin role for canEditContent -->
 	<div class="toolbar">
-		<div ng-if="narrativeId" class="buttongroup">
-			<a class="button button-exitEpisode" href="/#/story/{{narrativeId}}">
+		<div ng-if="appState.narrativeId" class="buttongroup">
+			<a class="button button-exitEpisode" href="/#/story/{{narrative.path}}">
 				<span>Exit</span>
 			</a>
 		</div>

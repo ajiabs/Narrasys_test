@@ -18,6 +18,7 @@ angular.module('com.inthetelling.story')
 		svc.getNarrative = function (narrativeId) {
 			return GET("/v3/narratives/" + narrativeId + "/resolve", function (data) {
 				modelSvc.cache("narrative", data);
+				return data;
 			});
 		};
 
@@ -27,6 +28,9 @@ angular.module('com.inthetelling.story')
 
 		svc.getUserNarratives = function (userId) {
 			return GET("/v3/users/" + userId + "/narrative_purchases");
+		};
+		svc.getCustomerList = function () {
+			return GET("/v3/customers/");
 		};
 
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
