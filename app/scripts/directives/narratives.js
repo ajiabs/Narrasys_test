@@ -118,9 +118,7 @@ angular.module('com.inthetelling.story')
 				});
 
 				scope.isOwner = false;
-
 				scope.toggleOwnership = function () {
-
 					scope.isOwner = !scope.isOwner;
 				};
 
@@ -135,12 +133,10 @@ angular.module('com.inthetelling.story')
 					} else {
 						console.log("Getting narrative");
 						dataSvc.getNarrative(path_or_id).then(function (narrativeData) {
-
 							scope.loading = false;
 							scope.narrative = narrativeData;
 						});
 					}
-
 				} else {
 					scope.loading = false;
 					scope.toggleOwnership(true);
@@ -218,9 +214,6 @@ angular.module('com.inthetelling.story')
 				scope.saveTimeline = function (timeline) {
 					console.log("About to store ", timeline);
 					timeline.saveInProgress = true;
-
-					// validate path, make sure no other timeline is using it
-
 					if (timeline._id) {
 						// updating an existing timeline: just store it
 						dataSvc.storeTimeline(scope.narrative._id, timeline).then(function () {
