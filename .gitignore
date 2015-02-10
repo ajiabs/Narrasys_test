@@ -5,3 +5,4 @@
 *.swp
 *.swo
 *.orig
+/log/newrelic_agent.log
