@@ -153,7 +153,6 @@ angular.module('com.inthetelling.story')
 					url: config.apiDataBaseUrl + '/show_user'
 				})
 				.success(function (respData) {
-					console.log("getCurrentUser success: ", respData);
 					storeUserData(respData);
 					defer.resolve();
 				})
@@ -208,9 +207,7 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				})
-				.error(function (x) {
-					console.warn("NONCE FAIL", x);
-					console.trace();
+				.error(function () {
 					defer.reject();
 				});
 			return defer.promise;
