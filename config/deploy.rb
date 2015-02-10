@@ -20,6 +20,8 @@ set :ssh_options, { :forward_agent => true, :keys => [File.join(ENV["HOME"], ".s
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 set :keep_releases, 15
 
+set :newrelic_revision, "Client #{fetch(:branch)}"
+
 namespace :deploy do
 
   desc 'Restart application'
@@ -43,4 +45,4 @@ namespace :deploy do
 
 end
 
-after "deploy:updated", "newrelic:notice_deployment"
+after "deploy:finished", "newrelic:notice_deployment"
