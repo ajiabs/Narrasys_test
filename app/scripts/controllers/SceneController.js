@@ -3,6 +3,26 @@
 angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
 
+		// sort items so that inline items are displayed last
+		var sortItems = function (itemArray) {
+			itemArray.sort(function (a, b) {
+				if (a.start_time !== b.start_time) {
+					return a - b;
+				} else {
+					if (b.layouts.indexOf("sidebarL") > -1 || b.layouts.indexOf("sidebarR") > -1) {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
+			});
+
+			// for (var i = 0; i < itemArray.length; i++) {
+			// 	console.log(itemArray[i].start_time, itemArray[i].layouts[0]);
+			// }
+			return itemArray;
+		};
+
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");
 
@@ -51,7 +71,6 @@ angular.module('com.inthetelling.story')
 			}
 
 			// Check for left and right sidebars
-
 			for (var i = 0; i < $scope.mainContentItems.length; i++) {
 				if ($.inArray("burstL", $scope.mainContentItems[i].layouts) > -1 ||
 					$.inArray("sidebarL", $scope.mainContentItems[i].layouts) > -1 ||
@@ -68,6 +87,11 @@ angular.module('com.inthetelling.story')
 					i = $scope.mainContentItems.length; // no need to keep checking the rest
 				}
 			}
+			if ($scope.mainContentItems.length) {
+				// console.log("mainContentItems:");
+				sortItems($scope.mainContentItems);
+			}
+
 			for (i = 0; i < $scope.altContentItems.length; i++) {
 				if ($.inArray("burstL", $scope.altContentItems[i].layouts) > -1 ||
 					$.inArray("sidebarL", $scope.altContentItems[i].layouts) > -1 ||
@@ -84,7 +108,10 @@ angular.module('com.inthetelling.story')
 					i = $scope.altContentItems.length; // no need to keep checking the rest
 				}
 			}
-
+			if ($scope.altContentItems.length) {
+				// console.log("altContentItems:");
+				sortItems($scope.altContentItems);
+			}
 		};
 
 	});
