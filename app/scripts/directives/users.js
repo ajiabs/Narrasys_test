@@ -10,7 +10,9 @@ angular.module('com.inthetelling.story')
 			},
 			templateUrl: 'templates/user.html',
 
-			link: function (scope) {
+			link: function (scope, element, attrs) {
+
+				scope.inPlayer = attrs.inPlayer;
 
 				scope.loading = true;
 				scope.logout = authSvc.logout;
@@ -18,6 +20,7 @@ angular.module('com.inthetelling.story')
 				authSvc.authenticate().then(function () {
 					scope.loading = false;
 					scope.user = appState.user;
+					scope.userHasRole = authSvc.userHasRole;
 
 					scope.getMyNarratives();
 				});

@@ -1,0 +1,8 @@
+<div class="admin" ng-if="userIsAdmin">
+	<div ng-repeat="narrative in narratives">
+		<a href="/#/story/{{narrative.path.en}}">{{narrative.name.en}}</a>
+	</div>
+
+	<hr>
+	<a href="/#/story/?admin">Create new narrative</a>
+</div>

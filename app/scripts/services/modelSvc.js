@@ -23,6 +23,7 @@ angular.module('com.inthetelling.story')
 		// use angular.extend if an object already exists, so we don't lose existing bindings
 		svc.cache = function (cacheType, item) {
 			if (cacheType === 'narrative') {
+				// NOTE no deriveNarrative used here, not needed so far
 				if (svc.narratives[item._id]) {
 					angular.extend(svc.narratives[item._id], item);
 				} else {
@@ -115,11 +116,11 @@ angular.module('com.inthetelling.story')
 			//questions
 			"templates/question-mc-formative.html": "templates/item/question-mc-formative.html",
 			"templates/question-mc-poll.html": "templates/item/question-mc-poll.html",
-			
+
 			"templates/question-mc.html": "templates/item/question-mc.html",
 			"templates/question-mc-image-left.html": "templates/item/question-mc-image-left.html",
 			"templates/question-mc-image-right.html": "templates/item/question-mc-image-right.html",
-			
+
 			"templates/sxs-question.html": "templates/item/sxs-question.html"
 		};
 

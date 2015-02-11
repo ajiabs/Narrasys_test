@@ -1,6 +1,5 @@
 <div class="player" ng-class="{
 	isFramed: appState.isFramed,
-	guestUser: appState.user.isGuestUser,
 	isProducer: (appState.product == 'producer'),
 	isSxS: (appState.product == 'sxs'),
 	canEditContent: (!appState.editEvent && !appState.editEpisode) && (appState.product == 'producer' || appState.product == 'sxs')
@@ -8,7 +7,7 @@
 	<!-- TODO: make sure user has admin role for canEditContent -->
 	<div class="toolbar">
 		<div ng-if="appState.narrativeId" class="buttongroup">
-			<a class="button button-exitEpisode" href="/#/story/{{narrative.path}}">
+			<a class="button button-exitEpisode" href="/#/story/{{narrative.path.en}}">
 				<span>Exit</span>
 			</a>
 		</div>
@@ -54,7 +53,7 @@
 			<label for="searchtext" class="hidden">Search Text</label>
 			<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
 		</div>
-		<div class="profilegroup buttongroup" ng-if="narrativeId || appState.product == 'sxs'">
+		<div class="profilegroup buttongroup" ng-if="appState.narrativeId || appState.product == 'sxs'">
 			<a class="button button-profile" ng-click="appState.show.profilePanel = true">
 				<span>Profile</span>
 			</a>
@@ -139,8 +138,8 @@
 	<a class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;">Don't show this again</a>
 </div>
 
-<!-- PROFILE (mostly faked for now) -->
+
 <div ng-if="show.profilePanel" class="profilePanel">
 	<div class="arrow-up"></div>
-	<div itt-user></div>
+	<div itt-user x-in-player="true"></div>
 </div>

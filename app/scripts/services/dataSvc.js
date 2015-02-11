@@ -17,8 +17,8 @@ angular.module('com.inthetelling.story')
 
 		svc.getNarrative = function (narrativeId) {
 			return GET("/v3/narratives/" + narrativeId + "/resolve", function (data) {
-				modelSvc.cache("narrative", data);
-				return data;
+				modelSvc.cache("narrative", svc.resolveIDs(data));
+				return modelSvc.narratives[data._id];
 			});
 		};
 
@@ -77,9 +77,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.createNarrative = function (narrativeData) {
+			delete narrativeData.templateUrl;
 			return POST("/v3/narratives", narrativeData);
 		};
 		svc.updateNarrative = function (narrativeData) {
+			delete narrativeData.templateUrl;
 			return PUT("/v3/narratives/" + narrativeData._id, narrativeData);
 		};
 
@@ -226,6 +228,11 @@ angular.module('com.inthetelling.story')
 		svc.resolveIDs = function (obj) {
 			// console.log("resolving IDs", obj);
 
+			// temporary:
+			if (obj.everyone_group && !obj.template_id) {
+				obj.templateUrl = "templates/narrative/default.html";
+			}
+
 			if (obj.template_id) {
 				if (dataCache.template[obj.template_id]) {
 					obj.templateUrl = dataCache.template[obj.template_id].url;
@@ -273,16 +280,18 @@ angular.module('com.inthetelling.story')
 
 		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
 		var getEpisode = function (epId, segmentId) {
-			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId)
-				.success(function (episodeData) {
 
-					// console.log("episode: ", episodeData);
+			// The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
+
+			var url = (segmentId) ? "/v3/episode_segments/" + segmentId + "/resolve" : "/v3/episodes/" + epId;
+			$http.get(url)
+				.success(function (ret) {
+					var episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
+
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
-
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
 						getEpisodeEvents(epId, segmentId);
-
 						svc.getContainer(episodeData.container_id, epId);
 					} else {
 						errorSvc.error({
@@ -299,6 +308,7 @@ angular.module('com.inthetelling.story')
 
 		var getEpisodeEvents = function (epId, segmentId) {
 			var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
+
 			$http.get(config.apiDataBaseUrl + endpoint)
 				.success(function (events) {
 					getEventActivityDataForUser(events, "Plugin", epId);

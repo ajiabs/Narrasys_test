@@ -27,25 +27,21 @@ TO add a timeline:
 to update narrative or timeline: just send the basic fields, not the fully-resolved data.
 
 
-
-
 */
 angular.module('com.inthetelling.story')
 	.directive('ittNarrativeList', function (dataSvc, authSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
-			templateUrl: 'templates/narrative/narrativelist.html',
+			templateUrl: 'templates/narrativelist.html',
 
 			link: function (scope) {
 				authSvc.authenticate().then(function () {
 					scope.userIsAdmin = authSvc.userHasRole('admin');
-					console.log(scope.userIsAdmin);
 				});
 
 				dataSvc.getNarrativeList().then(function (narratives) {
 					scope.narratives = narratives;
-					// console.log("XXXXXX", scope.narratives);
 				});
 			}
 		};
@@ -54,35 +50,24 @@ angular.module('com.inthetelling.story')
 		return {
 			restrict: 'A',
 			replace: true,
-			templateUrl: 'templates/narrative/timeline.html',
+			templateUrl: 'templates/player-timeline.html',
 
 			link: function (scope) {
 				// for now this simply points to the episode player.  When timelines support multiple segments this will need to change significantly
-				console.log('ittNarrativeTimeline link');
 				appState.init();
 
 				appState.product = "player";
 				dataSvc.getNarrative($routeParams.narrativePath).then(function (narrative) {
-					console.log("NARRATIVE IS ", narrative);
 					appState.narrativeId = narrative._id;
 					scope.narrative = narrative;
 					angular.forEach(narrative.timelines, function (timeline) {
-						if (timeline.path === $routeParams.timelinePath) {
-							console.log("TL IS ", timeline);
+						// TODO remove this hack to work around i18n paths when the api is sorted
+						if (timeline.path === $routeParams.timelinePath ||
+							timeline.path.en === $routeParams.timelinePath) {
 							if (timeline.episode_segments[0]) {
 
 								appState.episodeId = timeline.episode_segments[0].episode_id;
 								appState.episodeSegmentId = timeline.episode_segments[0]._id;
-
-								/* 
-								player will need to know this is a segment instead of an episode, so for its events it will call
-								/v3/episode_segments/:episode_segment_id/events intead of /v3/episode/:episode_id/events
-
-								For v1 I am just going to skip all that and send the parent episode ID to the player since we are only using full episodes at this point
-
-
-But this breaks guest access.  TODO fix this
-								*/
 
 								scope.showPlayer = true;
 							}
@@ -100,18 +85,26 @@ But this breaks guest access.  TODO fix this
 	})
 	.directive('ittNarrative', function (authSvc, appState, $location, $routeParams, modelSvc, dataSvc) {
 		return {
-			scope: {
-				path: '=ittNarrative',
+
+			template: function () {
+				return '<div ng-include="narrative.templateUrl"></div>';
 			},
-			templateUrl: "templates/narrative/narrative.html",
 
 			link: function (scope) {
+
 				scope.loading = true;
+
+				// TODO remove this when I build in real template support
+				scope.tmpSetNarrativeTemplate = function () {
+					scope.narrative.templateUrl = 'templates/narrative/default.html';
+					if ($routeParams.admin) {
+						scope.narrative.templateUrl = 'templates/narrative/edit.html';
+					}
+				};
+
 				authSvc.authenticate().then(function () {
 					scope.userIsAdmin = authSvc.userHasRole('admin'); // TODO this won't update if role changes
-
 					scope.user = appState.user;
-
 					if (authSvc.userHasRole('admin')) {
 						dataSvc.getCustomerList().then(function (data) {
 							scope.customerList = data;
@@ -127,23 +120,24 @@ But this breaks guest access.  TODO fix this
 
 				// The route param might be the narrative path or its ID (both are interchangeable in the API)
 				var path_or_id = (scope._id) ? scope._id : $routeParams.narrativePath;
-				console.log("TET", path_or_id);
+
 				if (path_or_id) {
-					if (modelSvc.narratives[path_or_id]) {
-						console.log('...');
+					if (modelSvc.narratives[path_or_id]) { // must be an ID
 						scope.narrative = modelSvc.narratives[path_or_id];
+						scope.tmpSetNarrativeTemplate();
 						scope.loading = false;
 					} else {
-						console.log("Getting narrative");
 						dataSvc.getNarrative(path_or_id).then(function (narrativeData) {
 							scope.loading = false;
 							scope.narrative = narrativeData;
+							scope.tmpSetNarrativeTemplate();
 						});
 					}
 				} else {
 					scope.loading = false;
 					scope.toggleOwnership(true);
 					scope.narrative = {};
+					scope.tmpSetNarrativeTemplate();
 				}
 
 				scope.toggleEpisodeList = function () {
@@ -164,16 +158,17 @@ But this breaks guest access.  TODO fix this
 					// redirect
 					authSvc.authenticate().then(function () {
 
-						dataSvc.createUserGroup("All users").then(function (groupData) {
-							console.log("Group:", groupData);
+						dataSvc.createUserGroup({
+							en: "All users"
+						}).then(function (groupData) {
 							scope.narrative.everyone_group_id = groupData._id;
 							scope.narrative.sub_groups_id = [];
 
-							console.log("about to create narrative: ", scope.narrative);
 							dataSvc.createNarrative(
 								scope.narrative
 							).then(function (narrativeData) {
-								console.log("created narrative", narrativeData);
+
+								scope.tmpSetNarrativeTemplate();
 								$location.path('/story/' + narrativeData._id);
 							});
 
@@ -186,13 +181,13 @@ But this breaks guest access.  TODO fix this
 					scope.narrative.saveInProgress = true;
 
 					dataSvc.updateNarrative(scope.narrative).then(function () {
+						scope.tmpSetNarrativeTemplate();
 						scope.narrative.saveInProgress = false;
 					});
 				};
 
 				scope.addTimeline = function (epId) {
 					dataSvc.getEpisodeOverview(epId).then(function (episodeData) {
-						console.log("EP:", episodeData);
 
 						var newTimeline = {
 							"name": episodeData.title,
@@ -215,7 +210,6 @@ But this breaks guest access.  TODO fix this
 				};
 
 				scope.saveTimeline = function (timeline) {
-					console.log("About to store ", timeline);
 					timeline.saveInProgress = true;
 					if (timeline._id) {
 						// updating an existing timeline: just store it
@@ -235,10 +229,7 @@ But this breaks guest access.  TODO fix this
 								//"container_id": timeline.parent_episode.container_id
 
 						}).then(function (childEpisode) {
-							console.log("Created child episode", childEpisode);
 							dataSvc.storeTimeline(scope.narrative._id, timeline).then(function (timelineData) {
-								console.log("Created timeline", timelineData);
-
 								// create episode segment 
 								dataSvc.createEpisodeSegment(timelineData._id, {
 									"episode_id": childEpisode._id,
@@ -248,28 +239,20 @@ But this breaks guest access.  TODO fix this
 									"timeline_id": timelineData._id
 								}).then(function (segmentData) {
 									// store the segment in the timeline
-									console.log("Created episode segment", segmentData);
 									timelineData.episode_segments = [segmentData];
-									console.log(timelineData);
-									dataSvc.storeTimeline(scope.narrative._id, timelineData).then(function (atLongLast) {
-										console.log("all done:", atLongLast);
+									dataSvc.storeTimeline(scope.narrative._id, timelineData).then(function () {
 										scope.isAddingTimeline = false;
-
-										// refresh the narrative data:
+										// finally, refresh the narrative data:
 										var narrativeId = scope.narrative._id;
 										dataSvc.getNarrative(narrativeId).then(function () {
 											scope.narrative = modelSvc.narratives[narrativeId];
-
 										});
 									});
-
 								});
 							});
 						});
-
 					}
 				};
-
 			}
 		};
 	});

@@ -181,7 +181,9 @@ button {
 }
 .button-exitEpisode:before {
 	font-family: sans-serif;
-	content: "⌫";
+	content: "«";
+	font-size: 22px !important;
+	line-height: 18px;
 }
 .button-discover:before {
 	content: "\e60f"

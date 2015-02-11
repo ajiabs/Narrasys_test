@@ -1,9 +1,11 @@
-<div class="rootLogin" itt-login>
+<div class="rootLogin standaloneAncillaryPage" itt-login>
 	<div class="inner" style="height: 100%">
 		<div ng-if="appState.user.roles">
-			You're currently logged in as {{appState.user.name}}, {{appState.user.role_description}}
+			You're currently logged in as
+			<span ng-if="!userHasRole('guest')">{{appState.user.name}}, </span>
+			{{appState.user.role_description}}
 			<br>
-			<a href="/#/user">User homepage</a>
+			<a ng-if="!userHasRole('guest')" href="/#/user">User homepage</a>
 			<br>
 			<a ng-if="userHasRole('admin')" href="/#/episodes">Find episodes</a>
 			<br>
