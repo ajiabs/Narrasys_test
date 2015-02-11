@@ -29,60 +29,6 @@ to update narrative or timeline: just send the basic fields, not the fully-resol
 
 */
 angular.module('com.inthetelling.story')
-	.directive('ittNarrativeList', function (dataSvc, authSvc) {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'templates/narrativelist.html',
-
-			link: function (scope) {
-				authSvc.authenticate().then(function () {
-					scope.userIsAdmin = authSvc.userHasRole('admin');
-				});
-
-				dataSvc.getNarrativeList().then(function (narratives) {
-					scope.narratives = narratives;
-				});
-			}
-		};
-	})
-	.directive('ittNarrativeTimeline', function ($routeParams, $timeout, dataSvc, appState, modelSvc, errorSvc) {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'templates/player-timeline.html',
-
-			link: function (scope) {
-				// for now this simply points to the episode player.  When timelines support multiple segments this will need to change significantly
-				appState.init();
-
-				appState.product = "player";
-				dataSvc.getNarrative($routeParams.narrativePath).then(function (narrative) {
-					appState.narrativeId = narrative._id;
-					scope.narrative = narrative;
-					angular.forEach(narrative.timelines, function (timeline) {
-						// TODO remove this hack to work around i18n paths when the api is sorted
-						if (timeline.path === $routeParams.timelinePath ||
-							timeline.path.en === $routeParams.timelinePath) {
-							if (timeline.episode_segments[0]) {
-
-								appState.episodeId = timeline.episode_segments[0].episode_id;
-								appState.episodeSegmentId = timeline.episode_segments[0]._id;
-
-								scope.showPlayer = true;
-							}
-						}
-					});
-					if (!appState.episodeId) {
-						errorSvc.error({
-							data: "Sorry, no episode was found in this timeline."
-						});
-					}
-				});
-
-			}
-		};
-	})
 	.directive('ittNarrative', function (authSvc, appState, $location, $routeParams, modelSvc, dataSvc) {
 		return {
 
@@ -91,7 +37,6 @@ angular.module('com.inthetelling.story')
 			},
 
 			link: function (scope) {
-
 				scope.loading = true;
 
 				// TODO remove this when I build in real template support
