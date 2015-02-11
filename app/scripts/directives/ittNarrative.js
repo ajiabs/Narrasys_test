@@ -113,7 +113,6 @@ angular.module('com.inthetelling.story')
 								scope.narrative
 							).then(function (narrativeData) {
 
-								scope.tmpSetNarrativeTemplate();
 								$location.path('/story/' + narrativeData._id);
 							});
 
@@ -191,6 +190,7 @@ angular.module('com.inthetelling.story')
 										var narrativeId = scope.narrative._id;
 										dataSvc.getNarrative(narrativeId).then(function () {
 											scope.narrative = modelSvc.narratives[narrativeId];
+											scope.tmpSetNarrativeTemplate();
 										});
 									});
 								});
