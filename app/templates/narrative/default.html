@@ -18,6 +18,9 @@
 					{{timeline.episode_segments[0].end_time | asTime}}
 				</div>
 				<!-- end display -->
+				<div ng-if="narrative.support_url">
+					<a ng-href="{{narrative.support_url}}" target="_new">Support</a>
+				</div>
 			</div>
 		</div>
 	</div>

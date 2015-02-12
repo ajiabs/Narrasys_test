@@ -2,10 +2,11 @@
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 	<div ng-if="!loading">
 
-		<div ng-if="userIsAdmin">
-			Temporary edit toggle for admin users:
-			<input type="checkbox" ng-model="blarg" ng-change="toggleOwnership(blarg)">
-		</div>
+
+		<label ng-if="userIsAdmin">
+			<input type="checkbox" ng-model="blarg" ng-change="toggleOwnership(blarg)"> Edit
+		</label>
+
 
 		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
 
@@ -29,14 +30,12 @@
 				</div>
 			</div>
 
-
 			<div class="field">
 				<div class="label">Name</div>
 				<div class="input">
 					<input ng-model="narrative.name.en">
 				</div>
 			</div>
-
 
 			<div class="field">
 				<div class="label">Description</div>
@@ -52,22 +51,26 @@
 				</div>
 			</div>
 
+			<div class="field">
+				<div class="label">Support URL</div>
+				<div class="input">
+					<input ng-model="narrative.support_url">
+				</div>
+			</div>
 
 			<div class="field">
 				<div class="label">Access</div>
 				<div class="input">
 					<label>
-						<input type="checkbox" ng-model="narrative.guest_access_allowed"> Guest access allowed
+						<input type="checkbox" ng-model="narrative.guest_access_allowed"> Guest access allowed [TODO]
 					</label>
 				</div>
 			</div>
 
 			<div class="field controls">
 				<button ng-if="narrative._id" ng-click="updateNarrative()">
-
 					<span ng-if="narrative.saveInProgress">Saving...</span>
 					<span ng-if="!narrative.saveInProgress">Save changes</span>
-
 				</button>
 				<button ng-if="!narrative._id" ng-click="createNarrative()">Create narrative</button>
 			</div>
@@ -148,6 +151,7 @@
 			<!-- end display -->
 		</div>
 
-		<pre style="font-size: 0.8em;">{{narrative|pretty}}</pre>
+		<!-- 		<pre style="font-size: 0.8em;">{{narrative|pretty}}</pre>
+ -->
 	</div>
 </div>
