@@ -20,7 +20,9 @@ angular.module('com.inthetelling.story')
 			// for (var i = 0; i < itemArray.length; i++) {
 			// 	console.log(itemArray[i].start_time, itemArray[i].layouts[0]);
 			// }
-			return itemArray;
+
+			// we're passing in already-scoped arrays, mainContentItems and altContentItems, here
+			//return itemArray;
 		};
 
 		$scope.precalculateSceneValues = function () {
