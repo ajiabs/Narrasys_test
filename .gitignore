@@ -6,4 +6,3 @@
 *.swo
 *.orig
 /log/newrelic_agent.log
-app/config.js
