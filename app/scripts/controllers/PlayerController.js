@@ -97,8 +97,7 @@ angular.module('com.inthetelling.story')
 		var eventsWatcher = $scope.$watch(function () {
 			return modelSvc.episodes[appState.episodeId].items;
 		}, function (a) {
-			if (a) {
-
+			if (a && a.length) { // make sure there are events before we attempt this
 				modelSvc.addEndingScreen(appState.episodeId);
 				timelineSvc.init(appState.episodeId);
 

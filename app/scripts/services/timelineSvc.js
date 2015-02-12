@@ -172,6 +172,7 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 			stopEventClock();
+
 			var oldT = appState.time;
 			t = parseTime(t);
 			if (t < 0) {
@@ -294,7 +295,6 @@ angular.module('com.inthetelling.story')
 			}
 			var vidTime = videoScope.currentTime();
 			var ourTime = appState.time;
-			// console.log("stepEvent handling events from ", eventClockData.lastTimelineTime, " to ", ourTime);
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
@@ -309,7 +309,7 @@ angular.module('com.inthetelling.story')
 					// Don't let stop events stop us before we even start.
 					// (if the stop event and lastTimelineTime match, that stop event is what stopped us in the first place)
 					if (evt.action === "pause" && (ignoreStopEvents || evt.t === eventClockData.lastTimelineTime)) {
-						console.log("Skipping pause event");
+						// console.log("Skipping pause event");
 					} else {
 						handleEvent(evt);
 						if (evt.action === "pause") {
@@ -403,7 +403,7 @@ angular.module('com.inthetelling.story')
 
 		svc.injectEvents = function (events, injectionTime) {
 
-			console.log("timelineSvc.injectEvents: has ", svc.timelineEvents.length, " adding ", events.length);
+			// console.log("timelineSvc.injectEvents: has ", svc.timelineEvents.length, " adding ", events.length);
 			// events should be an array of items in modelSvc.events
 			// for now this only supports adding events starting at injectionTime=0,
 			// which does not shift existing events later in time.
@@ -627,7 +627,6 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
-			stepEvent();
 		};
 
 		var alreadyPreloadedImages = {};

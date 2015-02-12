@@ -68,6 +68,17 @@ Here are a few common bower commands and workflows:
 
 Note: You can get around using the `bower install packageName` and `bower update packageName` commands by simply editing the bower.json file by hand and then running `bower install` or `bower update`.
 
+
+## Config
+
+To prevent accidentally checking in your local config file, use this:
+
+`git update-index --assume-unchanged app/config.js`
+
+(If you *need* to commit changes to config for whatever reason, you can revert this with `--no-assume-unchanged`.  To see a list of files for which assume-unchanged is set, you can use `git ls-files -v | grep "^h"`.)
+
+Warning, this may not work correctly on OSX systems. Either that or I am just the unlucky sap whose indexes get lost every time he changes branches
+
 ## Release Process
 
 The following steps are required to release a new version:
