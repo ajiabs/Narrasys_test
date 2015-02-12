@@ -107,11 +107,11 @@ angular.module('com.inthetelling.story')
 			//questions
 			"templates/question-mc-formative.html": "templates/item/question-mc-formative.html",
 			"templates/question-mc-poll.html": "templates/item/question-mc-poll.html",
-			
+
 			"templates/question-mc.html": "templates/item/question-mc.html",
 			"templates/question-mc-image-left.html": "templates/item/question-mc-image-left.html",
 			"templates/question-mc-image-right.html": "templates/item/question-mc-image-right.html",
-			
+
 			"templates/sxs-question.html": "templates/item/sxs-question.html"
 		};
 
@@ -305,7 +305,7 @@ angular.module('com.inthetelling.story')
 					event.noEmbed = true;
 				}
 
-				if (event._type === "Link" && event.url.match(/^http:\/\//)) {
+				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//)) {
 					//console.warn("Can't embed http:// link type:", event.url);
 					event.noEmbed = true;
 				}
@@ -739,27 +739,32 @@ angular.module('com.inthetelling.story')
 
 			//coerce end of last scene (and its items) to match video duration:
 			var lastScene = svc.episodes[episodeId].scenes[svc.episodes[episodeId].scenes.length - 1];
-			lastScene.end_time = duration;
-			angular.forEach(lastScene.items, function (item) {
-				if (item.end_time > duration) {
-					item.end_time = duration;
-				}
-			});
 
-			// create a new scene event for this episode
-			svc.events["internal:endingscreen:" + episodeId] = {
-				"_id": "internal:endingscreen:" + episodeId,
-				"_type": "Scene",
-				"_internal": true,
-				"templateUrl": "templates/scene/endingscreen.html",
-				"episode_id": episodeId,
-				"start_time": duration,
-				"end_time": duration + 0.1
+			if (lastScene._id.match(/internal:landingscreen/)) {
+				console.error("Attempted to add an ending screen before episode events had loaded!");
+				return; // Don't do this if the real event data hasn't loaded yet...
+			} else {
+				lastScene.end_time = duration;
+				angular.forEach(lastScene.items, function (item) {
+					if (item.end_time > duration) {
+						item.end_time = duration;
+					}
+				});
 
-			};
-			svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
-			svc.resolveEpisodeEvents(appState.episodeId);
+				// create a new scene event for this episode
+				svc.events["internal:endingscreen:" + episodeId] = {
+					"_id": "internal:endingscreen:" + episodeId,
+					"_type": "Scene",
+					"_internal": true,
+					"templateUrl": "templates/scene/endingscreen.html",
+					"episode_id": episodeId,
+					"start_time": duration,
+					"end_time": duration + 0.1
 
+				};
+				svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
+				svc.resolveEpisodeEvents(appState.episodeId);
+			}
 		};
 
 		var resolveVideo = function (videoAsset) {
