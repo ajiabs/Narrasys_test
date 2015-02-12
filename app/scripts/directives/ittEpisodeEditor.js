@@ -48,6 +48,7 @@ angular.module('com.inthetelling.story')
 
 				// extract episode languages for the form
 				scope.langForm = {};
+				scope.episode.languages = scope.episode.languages || [];
 				for (var j = 0; j < scope.episode.languages.length; j++) {
 					scope.langForm[scope.episode.languages[j].code] = true;
 				}
