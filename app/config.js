@@ -10,6 +10,7 @@ var config = {
 	// apiDataBaseUrl: 'https://purdue.inthetelling.com',
 	// apiDataBaseUrl: 'https://usc-scholars.inthetelling.com',
 	// apiDataBaseUrl: 'https://sustainablebizeducation.inthetelling.com',
+
 	// apiDataBaseUrl: 'https://columbiabusinessschool.inthetelling.com',
 	// apiDataBaseUrl: 'https://middlebury.inthetelling.com',
 
