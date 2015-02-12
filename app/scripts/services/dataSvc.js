@@ -186,7 +186,7 @@ angular.module('com.inthetelling.story')
 		var getEpisode = function (epId) {
 			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId)
 				.success(function (episodeData) {
-
+					episodeData = episodeData || {};
 					// console.log("episode: ", episodeData);
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 
