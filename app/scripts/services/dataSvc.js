@@ -480,6 +480,24 @@ angular.module('com.inthetelling.story')
 		svc.deleteItem = function (evtId) {
 			return DELETE("/v3/events/" + evtId);
 		};
+		svc.createAsset = function (containerId, asset) {
+			var createAssetDefer = $q.defer();
+			console.log("Attempting to create asset ", asset);
+			asset.container_id = containerId;
+			if (asset._id && asset._id.match(/internal/)) {
+				delete asset._id;
+			}
+			POST("/v1/containers/" + containerId + "/assets", asset)
+				.then(function (data) {
+					console.log("Created asset: ", data);
+
+					modelSvc.containers[data.container_id].episodes = [data._id];
+					createAssetDefer.resolve(data);
+					modelSvc.cache("asset", data);
+					//modelSvc.resolveEpisodeAssets(episodeId);
+				});
+			return createAssetDefer.promise;
+		};
 
 		svc.deleteAsset = function (assetId) {
 			return DELETE("/v1/assets/" + assetId);
