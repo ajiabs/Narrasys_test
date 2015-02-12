@@ -1,8 +1,0 @@
-<div class="standaloneAncillaryPage" ng-if="userIsAdmin">
-	<div ng-repeat="narrative in narratives">
-		<a href="/#/story/{{narrative.path.en}}">{{narrative.name.en}}</a>
-	</div>
-
-	<hr>
-	<a ng-if="showAddNarrative" href="/#/story/?admin">Create new narrative</a>
-</div>
