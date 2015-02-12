@@ -171,11 +171,16 @@ angular.module('com.inthetelling.story')
 				//                                                            otherwise we'd just store separate ones per customer
 				roles: data.roles
 			};
-			angular.forEach(["_id", "name", "email"], function (key) {
+			angular.forEach(["_id", "name", "email", "track_event_actions", "track_episode_metrics"], function (key) {
 				if (data[key]) {
 					user[key] = data[key];
 				}
 			});
+
+			// API BUG workaround
+			if (data["track_episode_metrics:"]) {
+				user.track_episode_metrics = true;
+			}
 
 			appState.user = user;
 			try {

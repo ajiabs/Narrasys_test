@@ -7,7 +7,7 @@
 // so we can preemptively switch streams and not have to do all the intentionalStall nonsense
 
 angular.module('com.inthetelling.story')
-	.controller('VideoController', function ($q, $scope, $timeout, $interval, $window, $document, appState, timelineSvc) {
+	.controller('VideoController', function ($q, $scope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc) {
 		// console.log("videoController instantiate");
 
 		// init youtube
@@ -113,7 +113,7 @@ angular.module('com.inthetelling.story')
 				if ($scope.video.urls.lowRes.webm) {
 					$scope.video.urls.webm = $scope.video.urls.lowRes.webm;
 				}
-
+				analyticsSvc.captureEpisodeActivity('lowBandwidth');
 				// Need to wait a tick for the DOM to have updated before callign videoNode.load():
 				$timeout(function () {
 					$scope.videoNode.load();
@@ -211,6 +211,9 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 			// console.warn("Video stalled");
+			if (!$scope.intentionalStall) {
+				analyticsSvc.captureEpisodeActivity("stall");
+			}
 			timelineSvc.stall();
 			var unwatch = $scope.$watch(function () {
 				return $scope.playerState;

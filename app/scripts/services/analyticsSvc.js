@@ -17,6 +17,8 @@ episode activity:
 												mode: "watch","discover","review"
 	playbackRateChange	triggered when user changes the playback speed
 												playbackRate: 1
+	stall								triggered when video playback stalls unintentionally
+	lowBandwidth				triggered when we switch to a lower-bandwidth video stream due to too many stall events
 	search (TODO)				(search is incremental, so will have to think about how/when to capture this)
 
 event activity: captures interaction with specific transmedia items ("events").
@@ -79,7 +81,6 @@ angular.module('com.inthetelling.story')
 				"data": data
 			});
 		};
-
 
 		svc.forceCaptureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
@@ -144,13 +145,13 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.flushActivityQueue = function () {
-
 			var defer = $q.defer();
-			// console.log("flush interval");
+			console.log("Flushing:", svc.activityQueue);
 			if (svc.activityQueue.length === 0) {
 				defer.resolve("");
 				return defer.promise;
 			}
+
 			var actions = angular.copy(svc.activityQueue);
 			svc.activityQueue = [];
 
