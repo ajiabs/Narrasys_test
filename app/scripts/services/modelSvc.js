@@ -863,16 +863,17 @@ angular.module('com.inthetelling.story')
 			if (!a && b) {
 				return {
 					larger: b,
-					smaller: null
+					smaller: b
 				};
 			}
 			if (!b) {
 				return {
 					larger: a,
-					smaller: null
+					smaller: a
 				};
 			}
 			if (!a && !b) {
+				console.error("_sortVideoAssets tried to compare two nulls");
 				return {
 					larger: null,
 					smaller: null
