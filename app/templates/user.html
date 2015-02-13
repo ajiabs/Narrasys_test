@@ -1,24 +1,56 @@
-<div class="userHome" ng-class="{standaloneAncillaryPage: !inPlayer}">
-	<div class="inner">
-		<div ng-if="loading" ng-include="'templates/loading.html'"></div>
-		<div ng-if="!loading" style="margin:1em">
-			<h2>{{user.name}}</h2>
+<div class="userHome">
 
-			<p>
-				<i>{{user.email}} {{user.role_description}}</i>
-			</p>
+	<div ng-if="inPlayer">
+		<h2>{{user.name}}</h2>
 
-			<span ng-if="!userHasRole('guest')">
-				<a ng-if="inPlayer" href="/#/user">Home</a>
-				<div ng-if="!inPlayer">
-					<h3>Your purchased stories</h3>
-					<div ng-repeat="narrative in myNarratives">
-						<a ng-href="/#/story/{{narrative._id}}">{{narrative.name.en}}</a>
-					</div>
-					<div ng-if="myNarratives.length == 0">You have not purchased any stories.</div>
-				</div>
-			</span>
-			<a style="float:right;" ng-click="logout()">Log out</a>
+		<p>
+			<i>{{user.email}} {{user.role_description}}</i>
+		</p>
+		<a style="float:left;" href="/#/user" class="button" ng-if="user._id">Home</a>
+
+		<a style="float:right;" class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
+
+	</div>
+	<div ng-if="!inPlayer">
+		You're signed in as
+		<span ng-if="!userHasRole('guest')">{{user.name}}, </span>
+		{{user.role_description}}.
+
+		<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
+
+		<div ng-if="userHasRole('admin')">
+			<h3>Administrator</h3>
+			<a href="/#/episodes">Find episodes</a>
+			<br>
+			<a href="/#/stories">Find narratives</a>
 		</div>
+
+
+		<div ng-if="!userHasRole('guest') && myPurchases">
+			<h3>Your purchases</h3>
+			<div class="narrativelist" ng-repeat="purchase in myPurchases">
+
+				<div ng-if="purchase.daysUntilExpiration < 0">
+					<h3>{{purchase.narrativeData.name.en}}</h3>
+					<p>We're sorry, this purchase has expired.</p>
+				</div>
+
+				<div ng-if="purchase.daysUntilExpiration >=0 || !purchase.daysUntilExpiration">
+					<h3>
+						<a ng-href="/#/story/{{purchase.narrativeData.path.en}}">{{purchase.narrativeData.name.en}}</a>
+					</h3>
+					<p>
+						<i>{{purchase.daysUntilExpiration}} days remaining</i>
+					</p>
+					<p>
+						{{purchase.narrativeData.description.en}}
+					</p>
+				</div>
+
+			</div>
+			<div ng-if="myPurchases.length == 0">You have not purchased any stories.</div>
+		</div>
+
+
 	</div>
 </div>

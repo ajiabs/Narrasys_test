@@ -15,17 +15,17 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			reloadOnSearch: false
 		})
 		.when('/user', {
-			template: '<div itt-user></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-user></div></div>'
 		})
 		.when('/stories', {
 			title: "Existing narratives",
-			template: '<div itt-narrative-list></div>',
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list></div></div>',
 		})
 		.when('/story', {
-			template: '<div itt-narrative></div>',
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>',
 		})
 		.when('/story/:narrativePath', {
-			template: '<div itt-narrative></div>',
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>',
 		})
 		.when('/story/:narrativePath/:timelinePath', {
 			template: '<div itt-narrative-timeline></div>',

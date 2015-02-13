@@ -27,13 +27,20 @@ angular.module('com.inthetelling.story')
 
 				scope.getMyNarratives = function () {
 					dataSvc.getUserNarratives(scope.user._id).then(function (data) {
-						console.log("narrs", data);
+						// console.log("purchase", data);
 
-						scope.myNarratives = [];
-						angular.forEach(data, function (n) {
-							// Definitely a race condition here as far as sort order goes, but ¯\_(ツ)_/¯
-							dataSvc.getNarrativeOverview(n.narrative_id).then(function (nData) {
-								scope.myNarratives.push(nData);
+						scope.myPurchases = data;
+
+						angular.forEach(scope.myPurchases, function (purchase) {
+							purchase.daysUntilExpiration = Math.floor((new Date(purchase.expiration_date) - new Date()) / 86400000);
+
+							// get the narrative data for each purchase (this copes with multiple purchases of the same narrative)
+							dataSvc.getNarrativeOverview(purchase.narrative_id).then(function (nData) {
+								angular.forEach(scope.myPurchases, function (pur) {
+									if (pur.narrative_id === nData._id) {
+										pur.narrativeData = nData;
+									}
+								});
 							});
 						});
 

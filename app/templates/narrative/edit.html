@@ -1,16 +1,13 @@
 <div class="narrative">
 	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 	<div ng-if="!loading">
+		<div class="ancillaryNav">
+			<a class="button" ng-if="user._id" href="/#/user">Home</a>
+			<a class="button" ng-click="stopEditing()">Done editing</a>
+			<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
+		</div>
 
-
-		<label ng-if="userIsAdmin">
-			<input type="checkbox" ng-model="blarg" ng-change="toggleOwnership(blarg)"> Edit
-		</label>
-
-
-		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
-
-		<div class="authoringForm" ng-if="isOwner">
+		<div class="authoringForm">
 			<!-- begin edit -->
 			<h2>Narrative</h2>
 			<div class="field">
@@ -136,22 +133,5 @@
 			<!-- end edit-->
 		</div>
 
-		<div class="narrative" ng-if="!isOwner">
-			<!-- begin display -->
-			<h2 ng-bind-html="narrative.name.en"></h2>
-			<p ng-bind-html="narrative.description.en"></p>
-
-			<div class="storyTimeline" ng-repeat="timeline in narrative.timelines | filter:{hidden:!true} | orderBy:'sort_order'">
-				<h3>
-					<a href="/#/story/{{narrative.path.en}}/{{timeline.path.en}}">{{timeline.name.en}}</a>
-				</h3>
-				<p>{{timeline.description.en}}</p>
-				{{timeline.episode_segments[0].end_time | asTime}}
-			</div>
-			<!-- end display -->
-		</div>
-
-		<!-- 		<pre style="font-size: 0.8em;">{{narrative|pretty}}</pre>
- -->
 	</div>
 </div>

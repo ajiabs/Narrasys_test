@@ -31,13 +31,14 @@ to update narrative or timeline: just send the basic fields, not the fully-resol
 angular.module('com.inthetelling.story')
 	.directive('ittNarrative', function (authSvc, appState, $location, $routeParams, modelSvc, dataSvc) {
 		return {
-
 			template: function () {
 				return '<div ng-include="narrative.templateUrl"></div>';
 			},
 
 			link: function (scope) {
 				scope.loading = true;
+
+				scope.logout = authSvc.logout;
 
 				// TODO remove this when I build in real template support
 				scope.tmpSetNarrativeTemplate = function () {
@@ -47,8 +48,13 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
+				// TEMPORARY
+				scope.stopEditing = function () {
+					$location.search('admin', null);
+				};
+
 				authSvc.authenticate().then(function () {
-					scope.userIsAdmin = authSvc.userHasRole('admin'); // TODO this won't update if role changes
+					scope.userHasRole = authSvc.userHasRole;
 					scope.user = appState.user;
 					if (authSvc.userHasRole('admin')) {
 						dataSvc.getCustomerList().then(function (data) {
