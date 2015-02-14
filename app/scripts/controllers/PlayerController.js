@@ -92,9 +92,12 @@ angular.module('com.inthetelling.story')
 			}
 		});
 
-		// Watch for the first load of the episode items; update the timeline and current language when found
+		// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 		$scope.loading = true;
 		var eventsWatcher = $scope.$watch(function () {
+			if (!modelSvc.episodes[appState.episodeId].masterAsset) {
+				return false;
+			}
 			return modelSvc.episodes[appState.episodeId].items;
 		}, function (a) {
 			if (a && a.length) { // make sure there are events before we attempt this

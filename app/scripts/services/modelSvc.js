@@ -729,11 +729,9 @@ angular.module('com.inthetelling.story')
 			};
 		};
 
-		// TODO: Future episodes should have this as an available scene template instead 
+		// Don't call this until the master asset exists and episode events have loaded!
 		svc.addEndingScreen = function (episodeId) {
-			if (!svc.episodes[episodeId].masterAsset) {
-				return;
-			}
+			console.log("addEndingScreen", svc.episodes[episodeId].masterAsset);
 
 			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration);
 
@@ -744,10 +742,10 @@ angular.module('com.inthetelling.story')
 				console.error("Attempted to add an ending screen before episode events had loaded!");
 				return; // Don't do this if the real event data hasn't loaded yet...
 			} else {
-				lastScene.end_time = duration;
+				lastScene.end_time = duration - 0.1;
 				angular.forEach(lastScene.items, function (item) {
-					if (item.end_time > duration) {
-						item.end_time = duration;
+					if (item.end_time > duration - 0.1) {
+						item.end_time = duration - 0.1;
 					}
 				});
 
@@ -758,8 +756,8 @@ angular.module('com.inthetelling.story')
 					"_internal": true,
 					"templateUrl": "templates/scene/endingscreen.html",
 					"episode_id": episodeId,
-					"start_time": duration,
-					"end_time": duration + 0.1
+					"start_time": duration - 0.1,
+					"end_time": duration
 
 				};
 				svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
