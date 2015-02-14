@@ -71,9 +71,9 @@ angular.module('com.inthetelling.story')
 		}, 50, 0, false);
 
 		// another iOS workaround:
-		if (svc.isTouchDevice) {
-			document.getElementById('CONTAINER').className = "touchDevice";
-		}
+		//		if (svc.isTouchDevice) {
+		//			document.getElementById('CONTAINER').className = "touchDevice";
+		//		}
 
 		if (config.debugInBrowser) {
 			console.log("appState:", svc);
