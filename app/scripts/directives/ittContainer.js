@@ -23,7 +23,6 @@ angular.module('com.inthetelling.story')
 					scope.isDemoServer = ($location.host().match(/demo|localhost|api-dev|client.dev/));
 
 					scope.containerTypes = ["customer", "course", "session", "episode"];
-
 					scope.toggleChildren = function () {
 						if (scope.container.children) {
 							// have already loaded kids
@@ -33,7 +32,6 @@ angular.module('com.inthetelling.story')
 								scope.container = modelSvc.containers[id];
 								scope.container.showChildren = true;
 							});
-
 						}
 					};
 

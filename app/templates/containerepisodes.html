@@ -3,7 +3,7 @@ WARN: never use a container's children[] array directly. Instead always refer to
 -->
 
 <li ng-if="!container.episodes.length" ng-bind-html="container.display_name"></li>
-<li ng-if="container.episodes.length">
+<li ng-if="container.episodes.length && container.status === 'Published'">
 	<span ng-if="container.episodes[0] == episodeId">
 		<b ng-bind-html="containers[container._id].display_name"></b>
 	</span>
