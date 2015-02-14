@@ -586,11 +586,21 @@ angular.module('com.inthetelling.story')
 					var c = svc.containers[containerId].children[i];
 					if (c.episodes[0] === epId) {
 						if (i > 0) {
-							// must embed directly from container cache, do not use an entry in children[] (they don't get derived!)
-							episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[i - 1]._id];
+							// find the previous 'Published' episode
+							for (var j = i - 1; j > -1; j--) {
+								if (svc.containers[svc.containers[containerId].children[j]._id].status === 'Published') {
+									episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[j]._id];
+									break;
+								}
+							}
 						}
 						if (i < svc.containers[containerId].children.length - 1) {
-							episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[i + 1]._id];
+							for (var k = i + 1; k < svc.containers[containerId].children.length; k++) {
+								if (svc.containers[svc.containers[containerId].children[k]._id].status === 'Published') {
+									episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[k]._id];
+									break;
+								}
+							}
 						}
 					}
 				}
