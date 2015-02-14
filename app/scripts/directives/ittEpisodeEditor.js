@@ -122,7 +122,6 @@ angular.module('com.inthetelling.story')
 						'episode.navigation_depth'
 					],
 					function (newVal, oldVal) {
-						// console.log("DETECTED CHANGE", newVal, oldVal);
 						if (newVal[0] !== oldVal[0]) { // templateUrl
 							// Some templates have built-in color and typography selections; need to update them along with the template.
 							// TODO This would be a lot simpler if I hadn't chosen such a dumb structure for style info...
@@ -181,7 +180,17 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
 
-
+				var createDefaultScene = function (duration) {
+					console.log('duration', duration);
+					var emptyScene = scope.generateEmptyItem("scene");
+					console.log("default scene", emptyScene);
+					return emptyScene;
+				};
+				var createDefaultAsset = function (duration) {
+					var emptyAsset = scope.generateEmptyItem("asset");
+					console.log("default asset", emptyAsset);
+					return emptyAsset;
+				};
 				scope.setMasterAsset = function (asset) {
 					console.log("asset:", asset);
 
@@ -194,19 +203,29 @@ angular.module('com.inthetelling.story')
 
 					appState.duration = modelSvc.assets[scope.episode.master_asset_id].duration;
 					dataSvc.storeEpisode(scope.episode);
-
+					//createDefaultScene(appState.duration);
 					modelSvc.deriveEpisode(scope.episode);
 					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
+				var getScenes = function () {
+					var episode = modelSvc.episodes[appState.episodeId];
+					return episode.scenes;
+				};
+				var getItems = function () {
+					var episode = modelSvc.episodes[appState.episodeId];
+					return episode.items;
+				};
 				scope.uploadAsset = function (files) {
 					scope.uploads = awsSvc.uploadFiles(files);
-
 					scope.uploads[0].then(function (data) {
-						modelSvc.cache("asset", data.file);
 
-						var asset = modelSvc.assets[data.file._id];
-						scope.setMasterAsset(asset);
+						var previousMasterAsset = angular.copy(scope.masterAsset);
+						if (scope.checkAndConfirmDuration(previousMasterAsset, data.file)) {
+							modelSvc.cache("asset", data.file);
+							var asset = modelSvc.assets[data.file._id];
+							scope.setMasterAsset(asset);
+						}
 						delete scope.uploads;
 					}, function () {
 						console.log("fail");
@@ -214,7 +233,68 @@ angular.module('com.inthetelling.story')
 					}, function (update) {
 						scope.uploadStatus[0] = update;
 					});
-			};
+				};
+//TODO: expose this somewhere shared. maybe just on modelSvc.
+	var embeddableYoutubeUrl = function (origUrl) {
+			// regexp to extract the ID from a youtube
+			if (!origUrl) {
+				return undefined;
+			}
+			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+			var ytId = origUrl.match(getYoutubeID)[1];
+			return "//www.youtube.com/embed/" + ytId;
+		};
+				scope.attachYouTube = function (url) {
+					console.log("attachYouTube");
+					if (typeof (scope.masterAsset) == 'undefined') {
+						scope.masterAsset = {};
+						scope.masterAsset.urls = {};
+					}
+					//			scope.masterAsset.you_tube_url = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
+					//			scope.masterAsset.urls["youtube"] = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
+					//			scope.masterAsset.videoType = "youtube";
+					//			scope.appState.videoType = "youtube";
+					//			scope.appState.duration = 123;
+					scope.episode.masterAsset = scope.masterAsset;
+					modelSvc.deriveEpisode(scope.episode);
+					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+					modelSvc.resolveEpisodeAssets(scope.episode._id);
+
+					console.log("url", url);
+					console.log("attach you tube asset", scope.masterAsset);
+					var hasMasterAsset = true;
+					if (typeof scope.masterAsset != 'undefined') {
+						if (typeof scope.masterAsset._id == 'undefined') {
+							hasMasterAsset = false;
+						}
+					} else {
+						hasMasterAsset = false;
+					}
+
+					if (!hasMasterAsset) {
+						console.log('save the asset');
+						var asset = {}; //createDefaultAsset()
+						asset.url = embeddableYoutubeUrl(url);
+						console.log("episode", scope.episode);
+						//var toSave = angular.copy(appState.editEpisode);
+						console.log('toSave - asset ', asset);
+						dataSvc.createAsset(scope.episodeContainerId, asset)
+							.then(function (data) {
+								modelSvc.cache("asset", data);
+								var asset = modelSvc.assets[data.file._id];
+								scope.setMasterAsset(asset);
+								modelSvc.deriveEpisode(scope.episode);
+								modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+								modelSvc.resolveEpisodeAssets(scope.episode._id);
+
+							}, function () {
+								console.log("fail");
+								//console.log("FAIL", );
+							});
+
+					}
+				};
+
 
 				scope.deleteAsset = function (assetId) {
 					console.log("deleteAsset", assetId);

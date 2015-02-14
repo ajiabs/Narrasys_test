@@ -490,10 +490,10 @@ angular.module('com.inthetelling.story')
 			POST("/v1/containers/" + containerId + "/assets", asset)
 				.then(function (data) {
 					console.log("Created asset: ", data);
-
-					modelSvc.containers[data.container_id].episodes = [data._id];
+					var dataActual = data.file;
+					modelSvc.containers[dataActual.container_id].episodes = [dataActual._id];
 					createAssetDefer.resolve(data);
-					modelSvc.cache("asset", data);
+					modelSvc.cache("asset", dataActual);
 					//modelSvc.resolveEpisodeAssets(episodeId);
 				});
 			return createAssetDefer.promise;
