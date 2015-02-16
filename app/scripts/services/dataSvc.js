@@ -186,7 +186,7 @@ angular.module('com.inthetelling.story')
 		var getEpisode = function (epId) {
 			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId)
 				.success(function (episodeData) {
-					episodeData = episodeData || {};
+
 					// console.log("episode: ", episodeData);
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 
@@ -481,24 +481,6 @@ angular.module('com.inthetelling.story')
 
 		svc.deleteItem = function (evtId) {
 			return DELETE("/v3/events/" + evtId);
-		};
-		svc.createAsset = function (containerId, asset) {
-			var createAssetDefer = $q.defer();
-			console.log("Attempting to create asset ", asset);
-			asset.container_id = containerId;
-			if (asset._id && asset._id.match(/internal/)) {
-				delete asset._id;
-			}
-			POST("/v1/containers/" + containerId + "/assets", asset)
-				.then(function (data) {
-					console.log("Created asset: ", data);
-					var dataActual = data.file;
-					modelSvc.containers[dataActual.container_id].episodes = [dataActual._id];
-					createAssetDefer.resolve(data);
-					modelSvc.cache("asset", dataActual);
-					//modelSvc.resolveEpisodeAssets(episodeId);
-				});
-			return createAssetDefer.promise;
 		};
 
 		svc.deleteAsset = function (assetId) {
