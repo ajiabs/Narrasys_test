@@ -271,6 +271,11 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 	background-image: url('/images/buffering-overlay.png');
 	animation: delayedFadeIn 3s;
 }
+.isTouchDevice .videoMask.buffering {
+	/* HACK iOS always has the wrong state for this, hiding it until I can find a proper fix */
+	
+	background-image: none !important;
+}
 .videoMask.rewind {
 	background-image: url('/images/rewind-overlay.png');
 	animation: delayedFadeIn 3s;
@@ -318,3 +323,4 @@ Misc useful keyframes
 		opacity: 1;
 	}
 }
+
