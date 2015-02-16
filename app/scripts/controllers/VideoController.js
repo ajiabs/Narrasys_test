@@ -25,7 +25,7 @@ angular.module('com.inthetelling.story')
 			// Adjust bitrate.  For now still depends on there being only two versions of the mp4 and webm:
 			$scope.video.curStream = (appState.isTouchDevice ? 0 : 1);
 
-			if ($scope.video.urls.youtube.length) {
+			if ($scope.video.urls.youtube && $scope.video.urls.youtube.length) {
 				$scope.videoType = 'youtube';
 				appState.videoType = $scope.videoType;
 				$scope.videoNode = el.find('iframe')[0];

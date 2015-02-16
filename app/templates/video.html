@@ -1,6 +1,6 @@
 <div class="video">
 	<iframe tabindex="-1" id="ytplayer{{uid}}" ng-if="video.urls.youtube.length" ng-src="{{video.urls.youtube + '?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0'}}"></iframe>
-	<video ng-if="!video.urls.youtube.length" aria-label="media player">
+	<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player">
 		<source class="m3u8" ng-if="video.urls.m3u8[0]" ng-src="{{video.urls.m3u8[0]}}" type="application/x-mpegURL" />
 		<source class="mpeg4" ng-if="video.urls.mp4[video.curStream]" ng-src="{{video.urls.mp4[video.curStream]}}" type="video/mp4" />
 		<source class="webm" ng-if="video.urls.webm[video.curStream]" ng-src="{{video.urls.webm[video.curStream]}}" type="video/webm" />

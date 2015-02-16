@@ -8,6 +8,9 @@ angular.module('com.inthetelling.story')
 			itemArray.sort(function (a, b) {
 				if (a.start_time !== b.start_time) {
 					return a - b;
+				} else if (!b.layouts) {
+					return 0;
+
 				} else {
 					if (b.layouts.indexOf("sidebarL") > -1 || b.layouts.indexOf("sidebarR") > -1) {
 						return 1;
