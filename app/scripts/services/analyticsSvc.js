@@ -146,7 +146,7 @@ angular.module('com.inthetelling.story')
 
 		svc.flushActivityQueue = function () {
 			var defer = $q.defer();
-			console.log("Flushing:", svc.activityQueue);
+			// console.log("Flushing:", svc.activityQueue);
 			if (svc.activityQueue.length === 0) {
 				defer.resolve("");
 				return defer.promise;
