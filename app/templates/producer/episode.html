@@ -83,7 +83,6 @@
 		</div>
 		<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Master Asset">
 			<!-- begin metadata tab -->
-
 			<div class="field">
 				<div class="label">Master asset type</div>
 				<div clas="input">
@@ -96,14 +95,30 @@
 				</div>
 			</div>
 			<div class="field" ng-if="masterAssetType != 'None'">
-				<div class="label">
-					{{masterAssetType}}
-				</div>
 
-				<div class="input" ng-include="'templates/producer/upload-single.html'">
+				<div class="field">
+					<small>
+						<div style="width:20%; display:inline-block"></div>
+						<div style="width:48%; display:inline-block">Link to a video on YouTube...</div>
+						<div style="width:32%; display:inline-block">...or upload your own</div>
+					</small>
+				</div>
+				<div class="field">
+					<div class="label">{{masterAssetType}}</div>
+					<div class="input">
+						<div style="width:60%; display:inline-block; padding-right: 5%;vertical-align:top;">
+							<input type="text" ng-model="masterAsset.you_tube_url"> </br>
+
+							<input ng-click="attachYouTube(masterAsset.you_tube_url)" type="button" value="Attach YouTube" style="width: 48%; margin-top:1%;">
+						</div>
+						<div style="width:40%; display:inline-block" >
+							<div style="float:left;" class="input" ng-include="'templates/producer/upload-single-episode.html'">
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			
+
 			<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
 				<div class="label">Duration</div>
 				<input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">
