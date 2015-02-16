@@ -22,35 +22,38 @@ angular.module('com.inthetelling.story')
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');
 
-				// catch the startEditing event to zoom in on item being edited
-				// need to figure out why this is called twice for every edit
-				var saveZoomLevel, saveAppStateTime;
-				$rootScope.$on("startEditingItem",  function(event, item) {
-					console.log("startEditingItem event received");
-					saveZoomLevel = scope.zoomLevel;
-					saveAppStateTime = appState.time;
-					editZoom(item);
-				});
+				// zoom in on item edit:
+				scope.autoZoom = function (item) {
+					scope.savedZoomLevel = scope.zoomLevel;
+					var itemLength = item.end_time - item.start_time;
+					var toEnd = (appState.duration - item.end_time);
 
-				// catch endEventEdit (with cancel/delete/save) to zoom back out
-				$rootScope.$on("endEventEdit",  function(event, data) {
-					console.log("endEventEdit received: ", data);
-					scope.zoomLevel = saveZoomLevel;
-					appState.time = saveAppStateTime;
-					console.log("restored appState.time = ", appState.time);
-					timelineSvc.seek(appState.time, "scrubTimeline");
-					zoom();
-				});
+					// toEnd/itemLength puts the item end at the right edge of the visible playhead.
+					// trim it back by 20% for some wiggle room, and cap it at 2000% zoom so we don't go nuts on short-duration events
+					scope.zoomLevel = Math.min(Math.max(Math.round(0.8 * toEnd / itemLength), 1), 20);
 
-				// zoom so item time block stretches to right edge of time line
-				var editZoom = function (item) {
-					var itemLength = item.end_time - item.start_time,
-						toEnd = (appState.duration - (item.start_time + itemLength));
-					scope.zoomLevel = Math.max(Math.round(toEnd/itemLength), 1);
 					console.log("scope.zoomLevel = ", scope.zoomLevel);
-					timelineSvc.seek(item.start_time, "scrubTimeline");
+					timelineSvc.seek(item.start_time);
 					zoom();
 				};
+
+				scope.endAutoZoom = function () {
+					if (scope.savedZoomLevel) {
+						scope.zoomLevel = scope.savedZoomLevel;
+						zoom();
+						delete scope.savedZoomLevel;
+					}
+				};
+
+				var editWatcher = scope.$watch(function () {
+					return appState.editEvent;
+				}, function (item) {
+					if (item) {
+						scope.autoZoom(item);
+					} else {
+						scope.endAutoZoom();
+					}
+				});
 
 				scope.appState = appState;
 
@@ -219,27 +222,21 @@ angular.module('com.inthetelling.story')
 				};
 				scope.zoomOut = function () {
 					scope.stopWatching = true;
-					// scope.zoomLevel = scope.zoomLevel - 1;
-					// if (scope.zoomLevel < 1) {
-					// 	scope.zoomLevel = 1;
-					// }
 					if (scope.zoomLevel <= 2) {
 						scope.zoomLevel = 1;
 					} else if (scope.zoomLevel <= 3) {
 						scope.zoomLevel = 1.5;
 					} else {
 						scope.zoomLevel = scope.zoomLevel / 2;
-
 					}
 					zoom();
-
 				};
 
 				// adjust the position of the playhead after a scale change:
 				var zoom = function () {
 					scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
-					console.log("zoom().scope.zoomOffset = ", scope.zoomOffset);
-					console.log("zoom().scope.zoomLevel = ", scope.zoomLevel);
+					// console.log("zoom().scope.zoomOffset = ", scope.zoomOffset);
+					// console.log("zoom().scope.zoomLevel = ", scope.zoomLevel);
 					timelineNode.stop().animate({
 						"left": (scope.zoomOffset * 100) + "%",
 						"width": (scope.zoomLevel * 100) + "%"
@@ -373,6 +370,7 @@ angular.module('com.inthetelling.story')
 
 				scope.$on('$destroy', function () {
 					cancelSeek(); // unbinds playhead events
+					editWatcher(); // stop watching for event edits
 				});
 
 			}

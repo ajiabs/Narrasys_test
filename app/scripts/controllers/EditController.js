@@ -99,7 +99,6 @@ angular.module('com.inthetelling.story')
 				}, function (data) {
 					console.error("FAILED TO STORE EVENT", data);
 				});
-			$rootScope.$emit("endEventEdit", "save");
 		};
 
 		$scope.saveEpisode = function () {
@@ -258,7 +257,6 @@ angular.module('com.inthetelling.story')
 						console.log("failed to delete:", data);
 					});
 			}
-			$rootScope.$emit("endEventEdit", "delete");
 		};
 
 		$scope.cancelEventEdit = function (originalEvent) {
@@ -279,8 +277,6 @@ angular.module('com.inthetelling.story')
 
 			appState.editEvent = false;
 			appState.videoControlsLocked = false;
-
-			$rootScope.$emit("endEventEdit", "cancel");
 		};
 
 		$scope.cancelEpisodeEdit = function (originalEvent) {
