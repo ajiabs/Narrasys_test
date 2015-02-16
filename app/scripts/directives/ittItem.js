@@ -106,7 +106,6 @@ angular.module('com.inthetelling.story')
 
 				scope.editItem = function () {
 					appState.editEvent = scope.item;
-
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
 				};
