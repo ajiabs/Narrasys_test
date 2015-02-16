@@ -5,7 +5,7 @@
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
 angular.module('com.inthetelling.story')
-	.directive('ittTimeline', function ($timeout, appState, timelineSvc, modelSvc) {
+	.directive('ittTimeline', function ($rootScope, $timeout, appState, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -22,6 +22,36 @@ angular.module('com.inthetelling.story')
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');
 
+				// catch the startEditing event to zoom in on item being edited
+				// need to figure out why this is called twice for every edit
+				var saveZoomLevel, saveAppStateTime;
+				$rootScope.$on("startEditingItem",  function(event, item) {
+					console.log("startEditingItem event received");
+					saveZoomLevel = scope.zoomLevel;
+					saveAppStateTime = appState.time;
+					editZoom(item);
+				});
+
+				// catch endEventEdit (with cancel/delete/save) to zoom back out
+				$rootScope.$on("endEventEdit",  function(event, data) {
+					console.log("endEventEdit received: ", data);
+					scope.zoomLevel = saveZoomLevel;
+					appState.time = saveAppStateTime;
+					console.log("restored appState.time = ", appState.time);
+					timelineSvc.seek(appState.time, "scrubTimeline");
+					zoom();
+				});
+
+				// zoom so item time block stretches to right edge of time line
+				var editZoom = function (item) {
+					var itemLength = item.end_time - item.start_time,
+						toEnd = (appState.duration - (item.start_time + itemLength));
+					scope.zoomLevel = Math.max(Math.round(toEnd/itemLength), 1);
+					console.log("scope.zoomLevel = ", scope.zoomLevel);
+					timelineSvc.seek(item.start_time, "scrubTimeline");
+					zoom();
+				};
+
 				scope.appState = appState;
 
 				scope.setNewLanguage = function () {
@@ -37,9 +67,11 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.prevScene = function () {
+					console.log("prevScene");
 					timelineSvc.prevScene();
 				};
 				scope.nextScene = function () {
+					console.log("nextScene");
 					timelineSvc.nextScene();
 				};
 
@@ -206,6 +238,8 @@ angular.module('com.inthetelling.story')
 				// adjust the position of the playhead after a scale change:
 				var zoom = function () {
 					scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
+					console.log("zoom().scope.zoomOffset = ", scope.zoomOffset);
+					console.log("zoom().scope.zoomLevel = ", scope.zoomLevel);
 					timelineNode.stop().animate({
 						"left": (scope.zoomOffset * 100) + "%",
 						"width": (scope.zoomLevel * 100) + "%"

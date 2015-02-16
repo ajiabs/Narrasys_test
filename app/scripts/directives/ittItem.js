@@ -6,7 +6,7 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, $interval, config, appState, analyticsSvc, timelineSvc, modelSvc) {
+	.directive('ittItem', function ($rootScope, $http, $timeout, $interval, config, appState, analyticsSvc, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -109,6 +109,9 @@ angular.module('com.inthetelling.story')
 
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
+
+					// this event is caught in ittTimeline.js for timeline zoom
+					$rootScope.$emit("startEditingItem", scope.item);
 				};
 
 				scope.captureInteraction = function () {
