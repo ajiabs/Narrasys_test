@@ -384,6 +384,8 @@ angular.module('com.inthetelling.story')
 							if (child.episodes[0]) {
 								svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
 									child.status = overview.status;
+									child.title = overview.title; // name == container, title == episode
+									modelSvc.cache("container", child); // trigger setLang
 								});
 							}
 						});
@@ -511,7 +513,6 @@ angular.module('com.inthetelling.story')
 		};
 		svc.getSingleContainer = function (id) {
 			return GET("/v3/containers/" + id, function (containers) {
-				console.log("CHILD: ", containers);
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];
 
@@ -527,6 +528,8 @@ angular.module('com.inthetelling.story')
 						if (child.episodes[0]) {
 							svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
 								child.status = overview.status;
+								child.title = overview.title; // name == container name, title == episode name
+								modelSvc.cache("container", child); // trigger setLang
 							});
 						}
 					});

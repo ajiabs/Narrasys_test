@@ -49,11 +49,6 @@ angular.module('com.inthetelling.story')
 					svc.assets[item._id] = svc.deriveAsset(angular.copy(item));
 				}
 			} else if (cacheType === 'container') {
-
-				// item will have children data. deriveContainer will also create (childless) stubs
-				// for each child of this container, and replace container.children with an array of references to each stub
-
-				// parent first:
 				if (svc.containers[item._id]) {
 					angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(item)));
 				} else {
@@ -775,8 +770,8 @@ angular.module('com.inthetelling.story')
 				"_internal": true,
 				"templateUrl": "templates/scene/endingscreen.html",
 				"cur_episode_id": episodeId,
-				"start_time": duration,
-				"end_time": duration + 0.1
+				"start_time": duration-0.1,
+				"end_time": duration
 
 				};
 				svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
