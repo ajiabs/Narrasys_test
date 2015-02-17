@@ -264,7 +264,8 @@ angular.module('com.inthetelling.story')
 			// Also (wastefully) requests episode status on all children, so we can do interepisode nav
 
 			// TODO check cache first to see if we already have this container!
-			// console.log("getContainer", containerId, episodeId);
+			console.log("getContainer", containerId, episodeId);
+			console.log(modelSvc.episodes[episodeId]);
 			if (!modelSvc.containers[containerId]) {
 				modelSvc.cache("container", {
 					"_id": containerId
@@ -283,16 +284,19 @@ angular.module('com.inthetelling.story')
 						}
 
 						// QUICK HACK to get episode status for inter-episode nav; stuffing it into the container data
-						// Wasteful of API calls, discards useful data
-						angular.forEach(container.children, function (child) {
-							if (child.episodes[0]) {
-								svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
-									child.status = overview.status;
-									child.title = overview.title; // name == container, title == episode
-									modelSvc.cache("container", child); // trigger setLang
-								});
-							}
-						});
+						// Wasteful of API calls, discards useful data.
+
+						if (modelSvc.episodes[episodeId].navigation_depth > 0) {
+							angular.forEach(container.children, function (child) {
+								if (child.episodes[0]) {
+									svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
+										child.status = overview.status;
+										child.title = overview.title; // name == container, title == episode
+										modelSvc.cache("container", child); // trigger setLang
+									});
+								}
+							});
+						}
 					}
 
 					// iterate to parent container
@@ -410,6 +414,7 @@ angular.module('com.inthetelling.story')
 			});
 		};
 		svc.getSingleContainer = function (id) {
+			console.log("getSingleContainer", id);
 			return GET("/v3/containers/" + id, function (containers) {
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];
