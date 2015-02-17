@@ -95,11 +95,6 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			controller: 'ContainerAssetsTestController',
 			template: '<div style="margin:1em" class="admin"><a class="goUp" href="#episodes">Episodes</a><div sxs-container-assets="containerId"></div></div>',
 		})
-		.when('/event/:eventId', {
-			title: "Event test",
-			controller: 'EventTestController',
-			templateUrl: 'templates/testbed-event.html',
-		})
 		.otherwise({
 			title: "Telling STORY: Error",
 			controller: 'ErrorController',
