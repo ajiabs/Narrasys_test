@@ -10,7 +10,7 @@
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, userSvc, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -59,6 +59,9 @@ angular.module('com.inthetelling.story')
 						return getEpisode(epId, segmentId);
 					});
 			}
+		};
+		svc.getEpisodeOverview = function (epId) {
+			return GET("/v3/episodes/" + epId);
 		};
 
 		svc.getEpisodeOverview = function (epId) {
@@ -349,8 +352,12 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getContainer = function (containerId, episodeId) {
+			// used by episode load currently, probably want to phase this out in favor of getSingleContainer or else merge them
+
 			// iterates to all parent containers
 			// episode ID is included so we can trigger it to resolve when this is all complete
+
+			// Also (wastefully) requests episode status on all children, so we can do interepisode nav
 
 			// TODO check cache first to see if we already have this container!
 			// console.log("getContainer", containerId, episodeId);
@@ -361,11 +368,30 @@ angular.module('com.inthetelling.story')
 			}
 
 			$http.get(config.apiDataBaseUrl + "/v3/containers/" + containerId)
-				.success(function (container) {
-					modelSvc.cache("container", container[0]);
+				.success(function (containers) {
+					modelSvc.cache("container", containers[0]);
+
+					// ensure container children refers to modelSvc cache:
+					var container = modelSvc.containers[containers[0]._id];
+					if (container.children) {
+						for (var i = 0; i < container.children.length; i++) {
+							container.children[i] = modelSvc.containers[container.children[i]._id];
+						}
+
+						// QUICK HACK to get episode status for inter-episode nav; stuffing it into the container data
+						// Wasteful of API calls, discards useful data
+						angular.forEach(container.children, function (child) {
+							if (child.episodes[0]) {
+								svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
+									child.status = overview.status;
+								});
+							}
+						});
+					}
+
 					// iterate to parent container
-					if (container[0].parent_id) {
-						svc.getContainer(container[0].parent_id, episodeId);
+					if (container.parent_id) {
+						svc.getContainer(container.parent_id, episodeId);
 					} else {
 						// all parent containers now loaded:
 						if (episodeId) {
@@ -375,6 +401,7 @@ angular.module('com.inthetelling.story')
 				});
 			svc.getContainerAssets(containerId, episodeId);
 		};
+
 		svc.getContainerAssets = function (containerId, episodeId) {
 			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
 				.success(function (containerAssets) {
@@ -397,7 +424,7 @@ angular.module('com.inthetelling.story')
 
 		// to use GET(), pass in the API endpoint, and an optional callback for post-processing of the results
 		var GET = function (path, postprocessCallback) {
-			console.log("GET", path);
+			// console.log("GET", path);
 			var defer = $q.defer();
 			authSvc.authenticate().then(function () {
 				$http.get(config.apiDataBaseUrl + path).then(function (response) {
@@ -484,8 +511,26 @@ angular.module('com.inthetelling.story')
 		};
 		svc.getSingleContainer = function (id) {
 			return GET("/v3/containers/" + id, function (containers) {
-				// console.log("CHILD: ", containers);
+				console.log("CHILD: ", containers);
 				modelSvc.cache("container", containers[0]);
+				var container = modelSvc.containers[containers[0]._id];
+
+				// Ensure container.children refers to items in modelSvc cache:
+				if (container.children) {
+					for (var i = 0; i < container.children.length; i++) {
+						container.children[i] = modelSvc.containers[container.children[i]._id];
+					}
+
+					// QUICK HACK to get episode status for inter-episode nav; stuffing it into the container data
+					// Wasteful of API calls, discards useful data
+					angular.forEach(container.children, function (child) {
+						if (child.episodes[0]) {
+							svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
+								child.status = overview.status;
+							});
+						}
+					});
+				}
 				return containers[0]._id;
 			});
 

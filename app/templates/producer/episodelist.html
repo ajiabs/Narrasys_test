@@ -8,9 +8,7 @@
 
 	<!-- TODO proper i18n -->
 	<div ng-if="userHasRole('admin')">
-		<div ng-if="root.children.length" style="color:#C00">
-			<p>PLEASE NOTE Producer is in alpha. There are bugs. It is generally safe to edit individual events and scenes, but please do not depend on producer for episode creation or for routine episode production yet. </p>
-		</div>
+
 		<div ng-if="loading" ng-include="'templates/loading.html'"></div>
 
 

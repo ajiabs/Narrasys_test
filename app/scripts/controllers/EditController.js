@@ -27,8 +27,7 @@ angular.module('com.inthetelling.story')
 				}
 			}
 			if ($scope.episode) {
-				console.log("asset", asset);
-				//BUGBUG? - could episode be truthy and the asset be video during "item" edition (and not episode editing) 
+				// BUG? - could episode be truthy and the asset be video during "item" edition (and not episode editing) 
 				// causing us to inadvertently change the master asset to the item video asset?  Due to using editcontroller for both item and episode
 				if (asset._type === 'Asset::Video') {
 					console.log("setting master episode asset");
@@ -86,6 +85,7 @@ angular.module('com.inthetelling.story')
 
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
+					console.log("storeItem");
 					if (appState.editEvent._id === 'internal:editing') {
 						// update the new item with its real ID (and remove the temp version)
 						timelineSvc.removeEvent("internal:editing");
@@ -99,7 +99,6 @@ angular.module('com.inthetelling.story')
 				}, function (data) {
 					console.error("FAILED TO STORE EVENT", data);
 				});
-
 		};
 
 		$scope.saveEpisode = function () {
@@ -236,7 +235,7 @@ angular.module('com.inthetelling.story')
 							console.error("FAILED TO STORE EVENT", data);
 						});
 				});
-				
+
 				var eventType = modelSvc.events[eventId]._type;
 				dataSvc.deleteItem(eventId)
 					.then(function (data) {

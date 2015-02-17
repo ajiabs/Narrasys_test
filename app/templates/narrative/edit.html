@@ -124,9 +124,9 @@
 				</button>
 			</div>
 
-			<div itt-episode-list x-forNavigation="true" class="admin episodePicker" ng-if="showEpisodeList">
+			<div itt-episode-list class="admin episodePicker" ng-if="showEpisodeList">
 				Choose an episode:
-				<ul ng-repeat="child in root.children" itt-container-episodes="containers[child._id]" depth="0"></ul>
+				<ul ng-repeat="child in root.children" x-for-admin="true" itt-container-episodes="containers[child._id]" depth="0"></ul>
 			</div>
 
 

@@ -237,14 +237,13 @@ angular.module('com.inthetelling.story')
 				modelSvc.cache("event", link);
 			}
 
-
 			var questionFormativeStub = {
 				"_id": "",
 				"_type": "Plugin",
 				"type": "Plugin",
 				"producerItemType": "question",
 				"episode_id": epId,
-				"templateUrl": "templates/item/question-mc-formative.html",
+				"templateUrl": "templates/item/question-mc.html",
 				"style_id": [],
 				"layout_id": [],
 				"data": {
@@ -288,7 +287,7 @@ angular.module('com.inthetelling.story')
 				"type": "Plugin",
 				"producerItemType": "question",
 				"episode_id": epId,
-				"templateUrl": "templates/item/question-mc-poll.html",
+				"templateUrl": "templates/item/question-mc.html",
 				"style_id": [],
 				"layout_id": [],
 				"data": {

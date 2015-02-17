@@ -314,7 +314,7 @@ angular.module('com.inthetelling.story')
 					event.noEmbed = true;
 				}
 
-				if (event._type === "Link" && event.url.match(/^http:\/\//)) {
+				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//)) {
 					//console.warn("Can't embed http:// link type:", event.url);
 					event.noEmbed = true;
 				}
@@ -595,11 +595,21 @@ angular.module('com.inthetelling.story')
 					var c = svc.containers[containerId].children[i];
 					if (c.episodes[0] === epId) {
 						if (i > 0) {
-							// must embed directly from container cache, do not use an entry in children[] (they don't get derived!)
-							episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[i - 1]._id];
+							// find the previous 'Published' episode
+							for (var j = i - 1; j > -1; j--) {
+								if (svc.containers[svc.containers[containerId].children[j]._id].status === 'Published') {
+									episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[j]._id];
+									break;
+								}
+							}
 						}
 						if (i < svc.containers[containerId].children.length - 1) {
-							episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[i + 1]._id];
+							for (var k = i + 1; k < svc.containers[containerId].children.length; k++) {
+								if (svc.containers[svc.containers[containerId].children[k]._id].status === 'Published') {
+									episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[k]._id];
+									break;
+								}
+							}
 						}
 					}
 				}
@@ -738,22 +748,25 @@ angular.module('com.inthetelling.story')
 			};
 		};
 
-		// TODO: Future episodes should have this as an available scene template instead 
+		// Don't call this until the master asset exists and episode events have loaded!
 		svc.addEndingScreen = function (episodeId) {
-			if (!svc.episodes[episodeId].masterAsset) {
-				return;
-			}
+			console.log("addEndingScreen", svc.episodes[episodeId].masterAsset);
 
 			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration);
 
 			//coerce end of last scene (and its items) to match video duration:
 			var lastScene = svc.episodes[episodeId].scenes[svc.episodes[episodeId].scenes.length - 1];
-			lastScene.end_time = duration;
-			angular.forEach(lastScene.items, function (item) {
-				if (item.end_time > duration) {
-					item.end_time = duration;
-				}
-			});
+
+			if (lastScene._id.match(/internal:landingscreen/)) {
+				console.error("Attempted to add an ending screen before episode events had loaded!");
+				return; // Don't do this if the real event data hasn't loaded yet...
+			} else {
+				lastScene.end_time = duration - 0.1;
+				angular.forEach(lastScene.items, function (item) {
+					if (item.end_time > duration - 0.1) {
+						item.end_time = duration - 0.1;
+					}
+				});
 
 			// create a new scene event for this episode
 			svc.events["internal:endingscreen:" + episodeId] = {
@@ -765,55 +778,54 @@ angular.module('com.inthetelling.story')
 				"start_time": duration,
 				"end_time": duration + 0.1
 
-			};
-			svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
-			svc.resolveEpisodeEvents(appState.episodeId);
-
+				};
+				svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
+				svc.resolveEpisodeEvents(appState.episodeId);
+			}
 		};
 
 		var resolveVideo = function (videoAsset) {
-			var videoObject = {};
-			if (videoAsset.alternate_urls) {
-				videoObject.lowRes = {};
-				// This will eventually replace the old method below.
-				// Sort them out by file extension first, then size
-				// TODO we should really be making an array of stream sizes for each type, instead of 'larger' + 'smaller
+			var videoObject = {
+				youtube: [],
+				mp4: [],
+				webm: [],
+				m3u8: []
+			};
 
+			if (videoAsset.alternate_urls) {
+
+				// Sort them out by file extension first:
 				var extensionMatch = /\.(\w+)$/;
+
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
-						videoObject.youtube = embeddableYoutubeUrl(videoAsset.alternate_urls[i]);
+						videoObject.youtube.push(embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
 					} else {
-						var videoAssetObject;
-						switch (videoAsset.alternate_urls[i].match(extensionMatch)[1]) {
-						case "mp4":
-							videoAssetObject = _sortVideoAssets(videoObject.mpeg4, videoAsset.alternate_urls[i]);
-							videoObject.mpeg4 = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
-							videoObject.lowRes.mpeg4 = videoAssetObject.smaller;
-							break;
-						case "m3u8":
-							videoAssetObject = _sortVideoAssets(videoObject.m3u8, videoAsset.alternate_urls[i]);
-							videoObject.m3u8 = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
-							videoObject.lowRes.m3u8 = videoAssetObject.smaller;
-							break;
-						case "webm":
-							videoAssetObject = _sortVideoAssets(videoObject.webm, videoAsset.alternate_urls[i]);
-							videoObject.webm = appState.isTouchDevice ? videoAssetObject.smaller : videoAssetObject.larger;
-							videoObject.lowRes.webm = videoAssetObject.smaller;
-							break;
-						}
+						videoObject[videoAsset.alternate_urls[i].match(extensionMatch)[1]].push(videoAsset.alternate_urls[i]);
 					}
 				}
 				if (videoAsset.you_tube_url) {
-					videoObject.youtube = embeddableYoutubeUrl(videoAsset.you_tube_url);
+					videoObject.youtube.push = embeddableYoutubeUrl(videoAsset.you_tube_url);
 				}
+				// now by size:
+				// most video files come from the API with their width and height in the URL as blahblah123x456.foo:
+				var videoPixelSize = /(\d+)x(\d+)\.\w+$/; // [1]=w, [2]=h
+				angular.forEach(Object.keys(videoObject), function (key) {
+					videoObject[key] = videoObject[key].sort(function (a, b) {
+						// There shouldn't ever be cases where we're comparing two non-null filenames, neither of which have a
+						// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out 
+						var aTest = a.match(videoPixelSize) || [0, 0];
+						var bTest = b.match(videoPixelSize) || [0, 0];
+						return aTest[1] - bTest[1]; // compare on width
+					});
+				});
 			} else {
 				// This is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes.
 				console.warn("No alternate_urls array found; faking it!");
 				videoObject = {
-					mpeg4: videoAsset.url.replace('.mp4', '.m3u8'),
-					webm: videoAsset.url.replace(".mp4", ".webm"),
-					youtube: embeddableYoutubeUrl(videoAsset.you_tube_url)
+					mp4: [videoAsset.url.replace('.mp4', '.m3u8')],
+					webm: [videoAsset.url.replace(".mp4", ".webm")],
+					youtube: [embeddableYoutubeUrl(videoAsset.you_tube_url)]
 				};
 			}
 
@@ -825,10 +837,13 @@ angular.module('com.inthetelling.story')
 			// youtube is still throwing errors in desktop safari (pre Yosemite) and in ipad.  Disable for now.
 			// TODO fix this so we can use youtube on these devices
 			if (appState.isTouchDevice || (isSafari && !isNewSafari)) {
-				videoObject.youtube = undefined;
+				delete videoObject.youtube;
 			}
 			if (config.disableYoutube) {
-				videoObject.youtube = undefined;
+				delete videoObject.youtube;
+			}
+			if (!isSafari) {
+				delete videoObject.m3u8;
 			}
 
 			// Chrome won't allow the same video to play in two windows, which interferes with our 'escape the iframe' button.
@@ -837,15 +852,16 @@ angular.module('com.inthetelling.story')
 			if (isChrome) {
 				var tDelimit;
 				var tParam = "t=" + new Date().getTime();
-				if (videoObject.mpeg4) {
-					tDelimit = videoObject.mpeg4.match(/\?/) ? "&" : "?";
-					videoObject.mpeg4 = videoObject.mpeg4 + tDelimit + tParam;
-				}
-				if (videoObject.webm) {
-					tDelimit = videoObject.webm.match(/\?/) ? "&" : "?";
-					videoObject.webm = videoObject.webm + tDelimit + tParam;
-				}
+				angular.forEach(["mp4", "webm"], function (ext) {
+					if (videoObject[ext].length > 0) {
+						for (var i = 0; i < videoObject[ext].length; i++) {
+							tDelimit = videoObject[ext][i].match(/\?/) ? "&" : "?";
+							videoObject[ext][i] = videoObject[ext][i] + tDelimit + tParam;
+						}
+					}
+				});
 			}
+
 			// console.log("video asset:", videoObject);
 			videoAsset.urls = videoObject;
 			return videoAsset;
@@ -859,43 +875,6 @@ angular.module('com.inthetelling.story')
 			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 			var ytId = origUrl.match(getYoutubeID)[1];
 			return "//www.youtube.com/embed/" + ytId;
-		};
-
-		// Private convenience function called only from within resolveMasterAssetVideo. Pass in up to two filenames,
-		// returns a sorted object of {larger: , smaller: } based on a WxH portion of the filenames
-		var _sortVideoAssets = function (a, b) {
-			if (!a && b) {
-				return {
-					larger: b,
-					smaller: null
-				};
-			}
-			if (!b) {
-				return {
-					larger: a,
-					smaller: null
-				};
-			}
-			if (!a && !b) {
-				return {
-					larger: null,
-					smaller: null
-				};
-			}
-			// most video files come from the API with their width and height in the URL as blahblah123x456.foo:
-			var regexp = /(\d+)x(\d+)\.\w+$/; // [1]=w, [2]=h
-			// There shouldn't ever be cases where we're comparing two non-null filenames, neither of which have a
-			// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out 
-			var aTest = a.match(regexp) || [0, 0];
-			var bTest = b.match(regexp) || [0, 0];
-
-			var smaller = (Math.floor(aTest[1]) > Math.floor(bTest[1])) ? b : a; // return the smaller one
-			var larger = (Math.floor(aTest[1]) < Math.floor(bTest[1])) ? b : a; // return the bigger one
-			return {
-				larger: larger,
-				smaller: smaller
-			};
-
 		};
 
 		if (config.debugInBrowser) {

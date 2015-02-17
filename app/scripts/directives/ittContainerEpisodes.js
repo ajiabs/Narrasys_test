@@ -6,7 +6,7 @@ angular.module('com.inthetelling.story')
 			replace: false,
 			scope: {
 				container: '=ittContainerEpisodes',
-				forNavigation: '=forNavigation'
+				forAdmin: '=forAdmin'
 			},
 			templateUrl: "templates/containerepisodes.html",
 

@@ -71,11 +71,6 @@ angular.module('com.inthetelling.story')
 			svc.windowWidth = angular.element(window).width();
 		}, 50, 0, false);
 
-		// another iOS workaround:
-		if (svc.isTouchDevice) {
-			document.getElementById('CONTAINER').className = "touchDevice";
-		}
-
 		if (config.debugInBrowser) {
 			console.log("appState:", svc);
 		}

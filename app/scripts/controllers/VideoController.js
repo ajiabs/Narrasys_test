@@ -1,13 +1,13 @@
 'use strict';
 
 // TODO youtube support for multiple playback speeds?
-// TODO some scoping untidiness here; some of htis should have been done in a directive
+// TODO some scoping untidiness here; some of this should be moved to ittVideo
 
 // TODO: counting stalls works ok-ish, but look into watching buffer % directly instead 
 // so we can preemptively switch streams and not have to do all the intentionalStall nonsense
 
 angular.module('com.inthetelling.story')
-	.controller('VideoController', function ($q, $scope, $timeout, $interval, $window, $document, appState, timelineSvc) {
+	.controller('VideoController', function ($q, $scope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc) {
 		// console.log("videoController instantiate");
 
 		// init youtube
@@ -21,7 +21,11 @@ angular.module('com.inthetelling.story')
 
 		$scope.initVideo = function (el) {
 			// console.log("videoController.initVideo");
-			if ($scope.video.urls.youtube) {
+
+			// Adjust bitrate.  For now still depends on there being only two versions of the mp4 and webm:
+			$scope.video.curStream = (appState.isTouchDevice ? 0 : 1);
+
+			if ($scope.video.urls.youtube && $scope.video.urls.youtube.length) {
 				$scope.videoType = 'youtube';
 				appState.videoType = $scope.videoType;
 				$scope.videoNode = el.find('iframe')[0];
@@ -98,7 +102,7 @@ angular.module('com.inthetelling.story')
 			}, false);
 
 			$scope.changeVideoBandwidth = function () {
-				console.log("changeVideoBandwidth");
+				// console.log("changeVideoBandwidth");
 				var currentTime = $scope.videoNode.currentTime;
 				$scope.videoNode.pause();
 
@@ -106,14 +110,10 @@ angular.module('com.inthetelling.story')
 				// $scope.video.urls.mpeg4 = "https://s3.amazonaws.com/itt.uploads/development/API%20Development/Course%201/Session%201/Episode%201/v_7abjCKYdnezGGXoX7neg_960x540.mp4";
 				// $scope.video.urls.webm = "https://s3.amazonaws.com/itt.uploads/development/API%20Development/Course%201/Session%201/Episode%201/v_7abjCKYdnezGGXoX7neg_960x540.webm";
 
-				// if there are lower res versions, switch to them
-				if ($scope.video.urls.lowRes.mpeg4) {
-					$scope.video.urls.mpeg4 = $scope.video.urls.lowRes.mpeg4;
-				}
-				if ($scope.video.urls.lowRes.webm) {
-					$scope.video.urls.webm = $scope.video.urls.lowRes.webm;
-				}
+				// switch to the lower-bitrate stream
+				$scope.video.curStream = 0;
 
+				analyticsSvc.captureEpisodeActivity('lowBandwidth');
 				// Need to wait a tick for the DOM to have updated before callign videoNode.load():
 				$timeout(function () {
 					$scope.videoNode.load();
@@ -184,7 +184,7 @@ angular.module('com.inthetelling.story')
 				if (appState.timelineState === 'playing') {
 					if ($scope.lastPlayheadTime === $scope.videoNode.currentTime) {
 						timelineSvc.stall();
-						if (!$scope.intentionalStall && numberOfStalls++ === 1) {
+						if (!$scope.intentionalStall && numberOfStalls++ === 2) {
 							$scope.changeVideoBandwidth();
 						}
 						// console.log("numberOfStalls = ", numberOfStalls);
@@ -192,6 +192,7 @@ angular.module('com.inthetelling.story')
 					$scope.lastPlayheadTime = $scope.videoNode.currentTime;
 				} else if (appState.timelineState === 'buffering') {
 					if ($scope.lastPlayheadTime !== $scope.videoNode.currentTime) {
+						appState.timelineState = 'playing';
 						timelineSvc.unstall();
 					}
 				}
@@ -205,12 +206,14 @@ angular.module('com.inthetelling.story')
 		});
 
 		$scope.stall = function () {
-			console.log("stall");
 			// notify timelineSvc if the video stalls during playback
 			if (appState.timelineState !== 'playing') {
 				return;
 			}
-			// console.warn("Video stalled");
+			console.warn("Video stalled");
+			if (!$scope.intentionalStall) {
+				analyticsSvc.captureEpisodeActivity("stall");
+			}
 			timelineSvc.stall();
 			var unwatch = $scope.$watch(function () {
 				return $scope.playerState;
@@ -273,7 +276,7 @@ angular.module('com.inthetelling.story')
 						$scope.videoNode.currentTime = t;
 						$scope.stallGracePeriod = $timeout(function () {
 							$scope.intentionalStall = false;
-						}, 1000); // So we won't interpret user-triggered seeks as poor bandwidth
+						}, 1500); // So we won't interpret user-triggered seeks as poor bandwidth
 					} else {
 						// video is partially loaded but still not seek-ready
 						$scope.intentionalStall = false;
