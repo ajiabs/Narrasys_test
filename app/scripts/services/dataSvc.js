@@ -288,6 +288,8 @@ angular.module('com.inthetelling.story')
 							if (child.episodes[0]) {
 								svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
 									child.status = overview.status;
+									child.title = overview.title; // name == container, title == episode
+									modelSvc.cache("container", child); // trigger setLang
 								});
 							}
 						});
@@ -424,6 +426,8 @@ angular.module('com.inthetelling.story')
 						if (child.episodes[0]) {
 							svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
 								child.status = overview.status;
+								child.title = overview.title; // name == container name, title == episode name
+								modelSvc.cache("container", child); // trigger setLang
 							});
 						}
 					});

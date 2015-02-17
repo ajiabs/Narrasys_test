@@ -5,7 +5,7 @@
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
 angular.module('com.inthetelling.story')
-	.directive('ittTimeline', function ($timeout, appState, timelineSvc, modelSvc) {
+	.directive('ittTimeline', function ($rootScope, $timeout, appState, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -22,6 +22,39 @@ angular.module('com.inthetelling.story')
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');
 
+				// zoom in on item edit:
+				scope.autoZoom = function (item) {
+					scope.savedZoomLevel = scope.zoomLevel;
+					var itemLength = item.end_time - item.start_time;
+					var toEnd = (appState.duration - item.end_time);
+
+					// toEnd/itemLength puts the item end at the right edge of the visible playhead.
+					// trim it back by 20% for some wiggle room, and cap it at 2000% zoom so we don't go nuts on short-duration events
+					scope.zoomLevel = Math.min(Math.max(Math.round(0.8 * toEnd / itemLength), 1), 20);
+
+					console.log("scope.zoomLevel = ", scope.zoomLevel);
+					timelineSvc.seek(item.start_time);
+					zoom();
+				};
+
+				scope.endAutoZoom = function () {
+					if (scope.savedZoomLevel) {
+						scope.zoomLevel = scope.savedZoomLevel;
+						zoom();
+						delete scope.savedZoomLevel;
+					}
+				};
+
+				var editWatcher = scope.$watch(function () {
+					return appState.editEvent;
+				}, function (item) {
+					if (item) {
+						scope.autoZoom(item);
+					} else {
+						scope.endAutoZoom();
+					}
+				});
+
 				scope.appState = appState;
 
 				scope.setNewLanguage = function () {
@@ -37,9 +70,11 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.prevScene = function () {
+					console.log("prevScene");
 					timelineSvc.prevScene();
 				};
 				scope.nextScene = function () {
+					console.log("nextScene");
 					timelineSvc.nextScene();
 				};
 
@@ -187,25 +222,21 @@ angular.module('com.inthetelling.story')
 				};
 				scope.zoomOut = function () {
 					scope.stopWatching = true;
-					// scope.zoomLevel = scope.zoomLevel - 1;
-					// if (scope.zoomLevel < 1) {
-					// 	scope.zoomLevel = 1;
-					// }
 					if (scope.zoomLevel <= 2) {
 						scope.zoomLevel = 1;
 					} else if (scope.zoomLevel <= 3) {
 						scope.zoomLevel = 1.5;
 					} else {
 						scope.zoomLevel = scope.zoomLevel / 2;
-
 					}
 					zoom();
-
 				};
 
 				// adjust the position of the playhead after a scale change:
 				var zoom = function () {
 					scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
+					// console.log("zoom().scope.zoomOffset = ", scope.zoomOffset);
+					// console.log("zoom().scope.zoomLevel = ", scope.zoomLevel);
 					timelineNode.stop().animate({
 						"left": (scope.zoomOffset * 100) + "%",
 						"width": (scope.zoomLevel * 100) + "%"
@@ -339,6 +370,7 @@ angular.module('com.inthetelling.story')
 
 				scope.$on('$destroy', function () {
 					cancelSeek(); // unbinds playhead events
+					editWatcher(); // stop watching for event edits
 				});
 
 			}

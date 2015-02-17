@@ -40,11 +40,6 @@ angular.module('com.inthetelling.story')
 					svc.assets[item._id] = svc.deriveAsset(angular.copy(item));
 				}
 			} else if (cacheType === 'container') {
-
-				// item will have children data. deriveContainer will also create (childless) stubs
-				// for each child of this container, and replace container.children with an array of references to each stub
-
-				// parent first:
 				if (svc.containers[item._id]) {
 					angular.extend(svc.containers[item._id], svc.deriveContainer(angular.copy(item)));
 				} else {
