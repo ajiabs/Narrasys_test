@@ -9,5 +9,5 @@
 	</span>
 </li>
 <ul class="crossEpisodeNav">
-	<li ng-repeat="child in container.children" itt-container-episodes="containers[child._id]"></li>
+	<li ng-repeat="child in container.children | orderBy:'name.en'" itt-container-episodes="containers[child._id]"></li>
 </ul>
