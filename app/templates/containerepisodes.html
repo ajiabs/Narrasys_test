@@ -1,7 +1,7 @@
 <li ng-if="!container.episodes.length" ng-bind-html="container.display_name"></li>
 <li ng-if="container.episodes.length && container.status === 'Published'">
 	<span ng-if="container.episodes[0] == episodeId">
-		<b ng-bind-html="containers[container._id].display_name"></b>
+		<b ng-bind-html="containers[container._id].display_title"></b>
 	</span>
 	<span ng-if="container.episodes[0] != episodeId">
 		<!-- display_name shows the container name; display_title is the episode title.  For this we want the episode title. -->

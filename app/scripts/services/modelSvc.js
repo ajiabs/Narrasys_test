@@ -778,11 +778,10 @@ angular.module('com.inthetelling.story')
 				m3u8: []
 			};
 
+			var extensionMatch = /\.(\w+)$/;
+
 			if (videoAsset.alternate_urls) {
-
 				// Sort them out by file extension first:
-				var extensionMatch = /\.(\w+)$/;
-
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
 						videoObject.youtube.push(embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
@@ -805,15 +804,19 @@ angular.module('com.inthetelling.story')
 						return aTest[1] - bTest[1]; // compare on width
 					});
 				});
-			} else {
-				// This is the hacky older version which will be removed once we've got the alternate_urls array in place for all episodes.
-				console.warn("No alternate_urls array found; faking it!");
-				videoObject = {
-					mp4: [videoAsset.url.replace('.mp4', '.m3u8')],
-					webm: [videoAsset.url.replace(".mp4", ".webm")],
-					youtube: [embeddableYoutubeUrl(videoAsset.you_tube_url)]
-				};
 			}
+
+			// Old-school episodes:
+			// Use the old you_tube_url if it wasn't present in alternate_urls:
+			if (videoObject.youtube.length === 0 && videoAsset.you_tube_url) {
+				videoObject.youtube = [embeddableYoutubeUrl(videoAsset.you_tube_url)];
+			}
+			// Same for other types (we used to put the .mp4 in videoAsset.url and just swapped out the extension for other types, which was silly, which is why we stopped doing it, but some old episodes never got updated)
+			angular.forEach(["mp4", "webm", "m3u8"], function (ext) {
+				if (videoObject[ext].length === 0) {
+					videoObject[ext].push(videoAsset.url.replace("mp4", ext));
+				}
+			});
 
 			// HACK some platform detection here.
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
