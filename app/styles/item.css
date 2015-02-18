@@ -28,7 +28,7 @@
 	display: inline-block;
 	vertical-align: top;
 	padding-left: 2%;
-	width:60%;
+	width: 60%;
 }
 .item .itemQuestionImageRight {
 	display: inline-block;
@@ -36,23 +36,19 @@
 	vertical-align: top;
 	padding-left: 2%;
 }
-
 .item .itemQuestionWrapper {
-	width:90%;
+	width: 90%;
 }
-
-
 .item .itemQuestionRight {
 	display: inline-block;
 	text-align: left;
 	vertical-align: top;
 	padding-left: 2%;
-	width:60%;
+	width: 60%;
 }
 .item .itemQuestionWrapper {
-	width:90%;
+	width: 90%;
 }
-
 .item .icon {
 	max-width: 55px;
 	;
@@ -234,6 +230,8 @@ Inline images (TODO show these only when image is larger than available space) *
 	right: 5px;
 	font-family: Story;
 	font-size: 1em;
+	pointer-events: none;
+	/* let clicks pass through to the image */
 }
 .touchableIndicator:before {
 	content: "\e609";
