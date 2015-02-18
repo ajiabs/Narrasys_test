@@ -105,6 +105,13 @@ angular.module('com.inthetelling.story')
 				console.log("changeVideoBandwidth");
 				// switch to the lower-bitrate stream, if there is one.
 
+				// HACK some platform detection here.
+				var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+
+				if (isSafari) {
+					return; // Old Safari seems to have trouble with this.  At Bill's house.  Not mine.  Eh. Worth a shot.
+				}
+
 				// According to spec we can't just update the dom via databinding, have to do it in script instead.
 				// So don't do this:
 				// $scope.video.curStream = 0;
