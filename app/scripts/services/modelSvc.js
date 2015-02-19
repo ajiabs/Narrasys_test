@@ -231,6 +231,18 @@ angular.module('com.inthetelling.story')
 			return setLang(container);
 		};
 
+
+
+		var isTranscript = function(item) {
+			if (typeof(item) !== 'undefined') {
+					if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
+						return true;	
+					} else {
+						return false;
+					}
+			}
+		};
+
 		svc.deriveEvent = function (event) {
 
 			event = setLang(event);
@@ -293,7 +305,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				// Old templates which (TODO) should have been database fields instead:
-				if (event._type === 'Annotation' && event.templateUrl.match(/transcript/)) {
+				if (isTranscript(event)) {
 					event.isTranscript = true;
 				}
 				if (event.templateUrl.match(/noembed/)) {
@@ -497,8 +509,8 @@ angular.module('com.inthetelling.story')
 			// assign items to scenes (give them a scene_id and attach references to the scene's items[]:
 			angular.forEach(scenes, function (scene) {
 				var sceneItems = [];
+				var previousTranscript = {};
 				angular.forEach(items, function (event) {
-
 					/* possible cases: 
 							start and end are within the scene: put it in this scene
 							start is within this scene, end is after this scene: 
@@ -508,24 +520,32 @@ angular.module('com.inthetelling.story')
 							start is after this scene: let the next loop take care of it
 					*/
 					if (event.start_time >= scene.start_time && event.start_time < scene.end_time) {
+						if (isTranscript(event)) {
+							console.log('transcript event', event);
+							//the current event is a transcript and we have a transcript (in this scene) before it that has incorrectly set its end_time to the scene end_time.
+										if (previousTranscript.end_time == scene.end_time) {
+											console.log('adjusting according to previousTranscript');
+											//end_time may have been empty before the last itter of loop
+											previousTranscript.end_time = event.start_time;
+										} 
+									previousTranscript = event;
+								} 
 						if (event.end_time <= scene.end_time) {
 							// entirely within scene
 							svc.events[event._id].scene_id = scene._id;
-							sceneItems.push(event);
 						} else {
 							// end time is in next scene.  Check if start time is close to scene end, if so bump to next scene, otherwise truncate the item to fit in this one
 							if (scene.end_time - 0.25 < event.start_time) {
 								// bump to next scene
 								event.start_time = scene.end_time;
 							} else {
-								// truncate and add to this one
+									
 								event.end_time = scene.end_time;
-								sceneItems.push(event);
+								// truncate and add to this one
 							}
 						}
-
+						sceneItems.push(event);
 					}
-
 				});
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
