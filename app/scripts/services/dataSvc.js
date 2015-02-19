@@ -307,7 +307,7 @@ angular.module('com.inthetelling.story')
 			// The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
 
 			var url = (segmentId) ? "/v3/episode_segments/" + segmentId + "/resolve" : "/v3/episodes/" + epId;
-			$http.get(url)
+			$http.get(config.apiDataBaseUrl + url)
 				.success(function (ret) {
 
 					var episodeData = {};

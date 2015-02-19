@@ -249,8 +249,6 @@ angular.module('com.inthetelling.story')
 			return setLang(container);
 		};
 
-
-
 		var isTranscript = function (item) {
 			if (typeof (item) !== 'undefined') {
 				if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
@@ -541,7 +539,7 @@ angular.module('com.inthetelling.story')
 					*/
 					if (event.start_time >= scene.start_time && event.start_time < scene.end_time) {
 						if (isTranscript(event)) {
-							console.log('transcript event', event);
+							// console.log('transcript event', event);
 							//the current event is a transcript and we have a transcript (in this scene) before it that has incorrectly set its end_time to the scene end_time.
 							if (previousTranscript.end_time === scene.end_time) {
 								console.log('adjusting according to previousTranscript');
