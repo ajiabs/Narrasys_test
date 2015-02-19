@@ -205,11 +205,13 @@ angular.module('com.inthetelling.story')
 					scope.uploads[0].then(function (data) {
 
 						var previousMasterAsset = angular.copy(scope.masterAsset);
-						if (scope.checkAndConfirmDuration(previousMasterAsset, data.file)) {
-							modelSvc.cache("asset", data.file);
-							var asset = modelSvc.assets[data.file._id];
-							scope.setMasterAsset(asset);
-						}
+						scope.checkAndConfirmDuration(previousMasterAsset, data.file, function (confirmed) {
+							if (confirmed) {
+								modelSvc.cache("asset", data.file);
+								var asset = modelSvc.assets[data.file._id];
+								scope.setMasterAsset(asset);
+							}
+						});
 						delete scope.uploads;
 					}, function () {
 						console.log("fail");
@@ -218,47 +220,48 @@ angular.module('com.inthetelling.story')
 						scope.uploadStatus[0] = update;
 					});
 				};
-//TODO: expose this somewhere shared. maybe just on modelSvc.
-	var embeddableYoutubeUrl = function (origUrl) {
-			// regexp to extract the ID from a youtube
-			if (!origUrl) {
-				return undefined;
-			}
-			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-			var ytId = origUrl.match(getYoutubeID)[1];
-			return "//www.youtube.com/embed/" + ytId;
-		};
-				scope.attachYouTube = function (url) {
-					console.log("attachYouTube");
-					if (typeof (scope.masterAsset) === 'undefined') {
-						scope.masterAsset = {};
-						scope.masterAsset.urls = {};
+				//TODO: expose this somewhere shared. maybe just on modelSvc.
+				var embeddableYoutubeUrl = function (origUrl) {
+					// regexp to extract the ID from a youtube
+					if (!origUrl) {
+						return undefined;
 					}
-					//			scope.masterAsset.you_tube_url = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
-					//			scope.masterAsset.urls["youtube"] = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
-					//			scope.masterAsset.videoType = "youtube";
-					//			scope.appState.videoType = "youtube";
-					//			scope.appState.duration = 123;
-					scope.episode.masterAsset = scope.masterAsset;
-					modelSvc.deriveEpisode(scope.episode);
-					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-					modelSvc.resolveEpisodeAssets(scope.episode._id);
+					var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+					var ytId = origUrl.match(getYoutubeID)[1];
+					return "//www.youtube.com/embed/" + ytId;
+				};
+				scope.attachYouTube = function (url) {
+						console.log("attachYouTube");
+						url = embeddableYoutubeUrl(url);
 
-					console.log("url", url);
-					console.log("attach you tube asset", scope.masterAsset);
-					var hasMasterAsset = true;
-					if (typeof scope.masterAsset !== 'undefined') {
-						if (typeof scope.masterAsset._id === 'undefined') {
+						if (typeof (scope.masterAsset) === 'undefined') {
+							scope.masterAsset = {};
+							scope.masterAsset.urls = {};
+						}
+						//			scope.masterAsset.you_tube_url = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
+						//			scope.masterAsset.urls["youtube"] = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
+						//			scope.masterAsset.videoType = "youtube";
+						//			scope.appState.videoType = "youtube";
+						//			scope.appState.duration = 123;
+						scope.episode.masterAsset = scope.masterAsset;
+						modelSvc.deriveEpisode(scope.episode);
+						modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+						modelSvc.resolveEpisodeAssets(scope.episode._id);
+
+						console.log("url", url);
+						console.log("attach you tube asset", scope.masterAsset);
+						var hasMasterAsset = true;
+						if (typeof scope.masterAsset !== 'undefined') {
+							if (typeof scope.masterAsset._id === 'undefined') {
+								hasMasterAsset = false;
+							}
+						} else {
 							hasMasterAsset = false;
 						}
-					} else {
-						hasMasterAsset = false;
-					}
 
-					if (!hasMasterAsset) {
 						console.log('save the asset');
 						var asset = {}; //createDefaultAsset()
-						asset.url = embeddableYoutubeUrl(url);
+						asset.you_tube_url = asset.url = url;
 						console.log("episode", scope.episode);
 						//var toSave = angular.copy(appState.editEpisode);
 						console.log('toSave - asset ', asset);
@@ -266,6 +269,8 @@ angular.module('com.inthetelling.story')
 							.then(function (data) {
 								modelSvc.cache("asset", data);
 								var asset = modelSvc.assets[data.file._id];
+
+								asset.you_tube_url = url;
 								scope.setMasterAsset(asset);
 								modelSvc.deriveEpisode(scope.episode);
 								modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
@@ -273,11 +278,9 @@ angular.module('com.inthetelling.story')
 
 							}, function () {
 								console.log("fail");
-								//console.log("FAIL", );
 							});
 
-					}
-				};
+					};
 
 
 				scope.deleteAsset = function (assetId) {
