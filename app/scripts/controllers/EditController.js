@@ -423,7 +423,7 @@ angular.module('com.inthetelling.story')
 
 				var eventType = modelSvc.events[eventId]._type;
 				dataSvc.deleteItem(eventId)
-					.then(function (data) {
+					.then(function () {
 						// console.log("success deleting:", data);
 						if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
 							dataSvc.deleteAsset(modelSvc.events[eventId].asset._id);
