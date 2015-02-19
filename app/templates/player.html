@@ -7,7 +7,7 @@
 	}">
 	<!-- TODO: make sure user has admin role for canEditContent -->
 	<div class="toolbar">
-		<div ng-if="appState.narrativeId" class="buttongroup">
+		<div ng-if="appState.productLoadedAs == 'narrative'" class="buttongroup">
 			<a class="button button-exitEpisode" href="/#/story/{{narrative.path.en}}">
 				<span>Exit</span>
 			</a>
