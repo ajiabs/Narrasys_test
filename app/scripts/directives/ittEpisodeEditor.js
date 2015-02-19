@@ -180,17 +180,6 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
 
-				var createDefaultScene = function (duration) {
-					console.log('duration', duration);
-					var emptyScene = scope.generateEmptyItem("scene");
-					console.log("default scene", emptyScene);
-					return emptyScene;
-				};
-				var createDefaultAsset = function (duration) {
-					var emptyAsset = scope.generateEmptyItem("asset");
-					console.log("default asset", emptyAsset);
-					return emptyAsset;
-				};
 				scope.setMasterAsset = function (asset) {
 					console.log("asset:", asset);
 
@@ -207,14 +196,6 @@ angular.module('com.inthetelling.story')
 					modelSvc.deriveEpisode(scope.episode);
 					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
-				};
-				var getScenes = function () {
-					var episode = modelSvc.episodes[appState.episodeId];
-					return episode.scenes;
-				};
-				var getItems = function () {
-					var episode = modelSvc.episodes[appState.episodeId];
-					return episode.items;
 				};
 				scope.uploadAsset = function (files) {
 					scope.uploads = awsSvc.uploadFiles(files);
@@ -246,7 +227,7 @@ angular.module('com.inthetelling.story')
 		};
 				scope.attachYouTube = function (url) {
 					console.log("attachYouTube");
-					if (typeof (scope.masterAsset) == 'undefined') {
+					if (typeof (scope.masterAsset) === 'undefined') {
 						scope.masterAsset = {};
 						scope.masterAsset.urls = {};
 					}
@@ -263,8 +244,8 @@ angular.module('com.inthetelling.story')
 					console.log("url", url);
 					console.log("attach you tube asset", scope.masterAsset);
 					var hasMasterAsset = true;
-					if (typeof scope.masterAsset != 'undefined') {
-						if (typeof scope.masterAsset._id == 'undefined') {
+					if (typeof scope.masterAsset !== 'undefined') {
+						if (typeof scope.masterAsset._id === 'undefined') {
 							hasMasterAsset = false;
 						}
 					} else {
