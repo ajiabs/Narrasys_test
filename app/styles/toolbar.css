@@ -214,6 +214,14 @@ button {
 .escapelink {
 	font-size: 0.86em;
 }
+.button-preview {
+	margin-right: 0.5em;
+}
+.button-preview:before {
+	content: "⎋";
+	font-size: 18px !important;
+	position: absolute;
+}
 .colorInvert .escapelink:before {
 	color: #CCC
 }

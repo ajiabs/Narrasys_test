@@ -51,7 +51,7 @@ angular.module('com.inthetelling.story')
 			svc.autoscrollBlocked = false; // User has disabled autoscroll
 
 			svc.product = svc.product; // "player", "sxs", or "producer"
-
+			svc.productLoadedAs = svc.productLoadedAs; // same as product but only set on initial load, this lets producer toggle back to player preview temporarily
 			if (svc.product === 'sxs' || svc.product === 'producer') {
 				svc.crossEpisodePath = svc.product;
 			} else {

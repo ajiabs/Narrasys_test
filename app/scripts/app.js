@@ -87,6 +87,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			resolve: {
 				product: function (appState) {
 					appState.product = "producer";
+					appState.productLoadedAs = "producer";
 				}
 			}
 		})
