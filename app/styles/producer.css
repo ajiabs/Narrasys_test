@@ -1,3 +1,8 @@
+input[readonly] {
+	background: none;
+	border: medium none !important;
+	box-shadow: none !important;
+}
 .containerAssets {
 	padding: 1em;
 }

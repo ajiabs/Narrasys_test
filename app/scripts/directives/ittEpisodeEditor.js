@@ -22,6 +22,9 @@ angular.module('com.inthetelling.story')
 				console.log("element", element);
 				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
+				var container = modelSvc.containers[scope.episodeContainerId];
+				scope.customer = modelSvc.customers[container.customer_id];
+
 				if (scope.episode.master_asset_id && scope.episode.master_asset_id !== "") {
 					scope.masterAsset = modelSvc.assets[scope.episode.master_asset_id];
 				}
@@ -180,7 +183,6 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
 
-
 				scope.setMasterAsset = function (asset) {
 					console.log("asset:", asset);
 
@@ -213,7 +215,7 @@ angular.module('com.inthetelling.story')
 					}, function (update) {
 						scope.uploadStatus[0] = update;
 					});
-			};
+				};
 
 				scope.deleteAsset = function (assetId) {
 					console.log("deleteAsset", assetId);
@@ -222,6 +224,10 @@ angular.module('com.inthetelling.story')
 				scope.detachAsset = function () {
 					scope.detachMasterAsset();
 					scope.showUpload = false;
+				};
+
+				scope.selectText = function (event) {
+					event.target.select();
 				};
 
 				scope.$on('$destroy', function () {

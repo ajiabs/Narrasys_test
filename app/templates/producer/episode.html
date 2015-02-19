@@ -9,6 +9,14 @@
 				<!-- begin episode content tab -->
 
 				<div class="field">
+					<div class="label">Public URL</div>
+					<div class="input">
+						<!-- not editable; only an input to make text selection easier -->
+						<input ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{episode._id}}" readonly>
+					</div>
+				</div>
+
+				<div class="field">
 					<div class="input">
 						<select ng-if="episode.languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
 						</select>

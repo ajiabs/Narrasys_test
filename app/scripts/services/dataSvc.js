@@ -29,8 +29,28 @@ angular.module('com.inthetelling.story')
 		svc.getUserNarratives = function (userId) {
 			return GET("/v3/users/" + userId + "/narrative_purchases");
 		};
+
 		svc.getCustomerList = function () {
-			return GET("/v3/customers/");
+			return GET("/v3/customers/", function (customers) {
+				angular.forEach(customers, function (customer) {
+					modelSvc.cache("customer", customer);
+				});
+			});
+		};
+
+		svc.getCustomer = function (customerId) {
+			if (modelSvc.customers[customerId]) {
+				// have it already, or at least already getting it
+				return;
+			} else {
+				// cache a stub:
+				modelSvc.cache("customer", {
+					_id: customerId
+				});
+				GET("/v3/customers/" + customerId, function (customer) {
+					modelSvc.cache("customer", customer); // the real thing
+				});
+			}
 		};
 
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
@@ -290,7 +310,6 @@ angular.module('com.inthetelling.story')
 			$http.get(url)
 				.success(function (ret) {
 					var episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
-
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
@@ -370,6 +389,8 @@ angular.module('com.inthetelling.story')
 			$http.get(config.apiDataBaseUrl + "/v3/containers/" + containerId)
 				.success(function (containers) {
 					modelSvc.cache("container", containers[0]);
+
+					svc.getCustomer(containers[0].customer_id);
 
 					// ensure container children refers to modelSvc cache:
 					var container = modelSvc.containers[containers[0]._id];

@@ -13,6 +13,7 @@ angular.module('com.inthetelling.story')
 		svc.events = {}; // NOTE svc.events contains scenes and items -- anything that happens during the episode timeline
 		svc.containers = {};
 		svc.narratives = {};
+		svc.customers = {};
 
 		// receives cacheTypes of episode, event, asset, and container.
 		// splits event into scenes and items.  Not sure yet whether we care about containers, discarding them for now.
@@ -28,6 +29,14 @@ angular.module('com.inthetelling.story')
 					angular.extend(svc.narratives[item._id], item);
 				} else {
 					svc.narratives[item._id] = angular.copy(item);
+				}
+			}
+			if (cacheType === 'customer') {
+				// NOTE no deriveCustomer used here, not needed so far
+				if (svc.customers[item._id]) {
+					angular.extend(svc.customers[item._id], item);
+				} else {
+					svc.customers[item._id] = angular.copy(item);
 				}
 			}
 			if (cacheType === 'episode') {
@@ -763,15 +772,15 @@ angular.module('com.inthetelling.story')
 					}
 				});
 
-			// create a new scene event for this episode
-			svc.events["internal:endingscreen:" + episodeId] = {
-				"_id": "internal:endingscreen:" + episodeId,
-				"_type": "Scene",
-				"_internal": true,
-				"templateUrl": "templates/scene/endingscreen.html",
-				"cur_episode_id": episodeId,
-				"start_time": duration-0.1,
-				"end_time": duration
+				// create a new scene event for this episode
+				svc.events["internal:endingscreen:" + episodeId] = {
+					"_id": "internal:endingscreen:" + episodeId,
+					"_type": "Scene",
+					"_internal": true,
+					"templateUrl": "templates/scene/endingscreen.html",
+					"cur_episode_id": episodeId,
+					"start_time": duration - 0.1,
+					"end_time": duration
 
 				};
 				svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
@@ -878,6 +887,7 @@ angular.module('com.inthetelling.story')
 			console.log("Container cache:", svc.containers);
 			console.log("Episode cache:", svc.episodes);
 			console.log("Narrative cache:", svc.narratives);
+			console.log("Customer cache:", svc.customers);
 		}
 		return svc;
 
