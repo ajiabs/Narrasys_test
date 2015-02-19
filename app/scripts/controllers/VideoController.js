@@ -55,6 +55,7 @@ angular.module('com.inthetelling.story')
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
 					'onStateChange': function (x) {
+						console.log("state change:", playerStates[x.data]);
 						$scope.playerState = playerStates[x.data];
 						if ($scope.playerState === 'buffering') {
 							$scope.stall();
@@ -273,6 +274,7 @@ angular.module('com.inthetelling.story')
 				$scope.intentionalStall = !!intentionalStall;
 				if ($scope.videoType === 'youtube') {
 					var wasPlaying = (appState.timelineState === 'playing');
+					console.log("wasplaying:", wasPlaying);
 					$scope.YTPlayer.seekTo(t, true);
 					if (!wasPlaying) {
 						$scope.YTPlayer.pauseVideo(); // youtube always autoplays on seek.

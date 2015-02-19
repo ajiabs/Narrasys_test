@@ -51,7 +51,6 @@ angular.module('com.inthetelling.story')
 
 				// extract episode languages for the form
 				scope.langForm = {};
-				scope.episode.languages = scope.episode.languages || [];
 				for (var j = 0; j < scope.episode.languages.length; j++) {
 					scope.langForm[scope.episode.languages[j].code] = true;
 				}
@@ -125,6 +124,7 @@ angular.module('com.inthetelling.story')
 						'episode.navigation_depth'
 					],
 					function (newVal, oldVal) {
+						// console.log("DETECTED CHANGE", newVal, oldVal);
 						if (newVal[0] !== oldVal[0]) { // templateUrl
 							// Some templates have built-in color and typography selections; need to update them along with the template.
 							// TODO This would be a lot simpler if I hadn't chosen such a dumb structure for style info...
@@ -195,14 +195,16 @@ angular.module('com.inthetelling.story')
 
 					appState.duration = modelSvc.assets[scope.episode.master_asset_id].duration;
 					dataSvc.storeEpisode(scope.episode);
-					//createDefaultScene(appState.duration);
+
 					modelSvc.deriveEpisode(scope.episode);
 					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
 				scope.uploadAsset = function (files) {
 					scope.uploads = awsSvc.uploadFiles(files);
+
 					scope.uploads[0].then(function (data) {
+						modelSvc.cache("asset", data.file);
 
 						var previousMasterAsset = angular.copy(scope.masterAsset);
 						scope.checkAndConfirmDuration(previousMasterAsset, data.file, function (confirmed) {

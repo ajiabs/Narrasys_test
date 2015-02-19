@@ -136,7 +136,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		svc.stall = function () {
+		svc.stall = function (intentional) {
 			console.warn("timelineSvc.stall");
 			// called by videoController when video stalls.  Essentially similar to pause() but sets different states
 			// (and doesn't tell the video to pause)
@@ -145,7 +145,9 @@ angular.module('com.inthetelling.story')
 			clock = undefined;
 			lastTick = undefined;
 			svc.wasPlaying = (svc.wasPlaying || appState.timelineState === "playing");
-			appState.timelineState = "buffering";
+			if (!intentional) {
+				appState.timelineState = "buffering";
+			}
 		};
 
 		svc.unstall = function () {
@@ -190,7 +192,6 @@ angular.module('com.inthetelling.story')
 			appState.time = t;
 			videoScope.seek(t, true);
 			svc.updateEventStates();
-			stepEvent(true);
 
 			// capture analytics data:
 			if (method) {

@@ -140,11 +140,6 @@ angular.module('com.inthetelling.story')
 						// if end time is "auto"
 						// 	if transcript, set end time to start of next transcript
 						// 	else set end time to end of scene
-						if (isTranscript(scope.item)) {
-							console.log("end times!!!!");
-							console.log(scope.item.end_time);
-						}
-
 
 
 						modelSvc.resolveEpisodeEvents(appState.episodeId); // in case the item has changed scenes
