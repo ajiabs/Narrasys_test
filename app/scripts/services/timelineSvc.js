@@ -144,7 +144,7 @@ angular.module('com.inthetelling.story')
 			stopEventClock();
 			clock = undefined;
 			lastTick = undefined;
-			svc.wasPlaying = (appState.timelineState === "playing");
+			svc.wasPlaying = (svc.wasPlaying || appState.timelineState === "playing");
 			appState.timelineState = "buffering";
 		};
 
@@ -153,6 +153,7 @@ angular.module('com.inthetelling.story')
 			// console.warn("timelineSvc.unstall");
 			if (svc.wasPlaying) {
 				appState.timelineState = "playing";
+				delete svc.wasPlaying;
 				svc.play();
 			} else {
 				appState.timelineState = "paused";
@@ -173,7 +174,9 @@ angular.module('com.inthetelling.story')
 				}, 300);
 				return;
 			}
-			stopEventClock();
+
+			// force the timeline to stop until the video is ready again:
+			svc.stall();
 
 			var oldT = appState.time;
 			t = parseTime(t);
