@@ -379,7 +379,8 @@ angular.module('com.inthetelling.story')
 			// Also (wastefully) requests episode status on all children, so we can do interepisode nav
 
 			// TODO check cache first to see if we already have this container!
-			// console.log("getContainer", containerId, episodeId);
+			console.log("getContainer", containerId, episodeId);
+			console.log(modelSvc.episodes[episodeId]);
 			if (!modelSvc.containers[containerId]) {
 				modelSvc.cache("container", {
 					"_id": containerId
@@ -533,6 +534,7 @@ angular.module('com.inthetelling.story')
 			});
 		};
 		svc.getSingleContainer = function (id) {
+			console.log("getSingleContainer", id);
 			return GET("/v3/containers/" + id, function (containers) {
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];
