@@ -18,8 +18,7 @@ angular.module('com.inthetelling.story')
 			},
 			templateUrl: 'templates/producer/episode.html',
 			controller: 'EditController',
-			link: function (scope, element) {
-				// console.log("element", element);
+			link: function (scope) {
 				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
 				var container = modelSvc.containers[scope.episodeContainerId];
