@@ -110,9 +110,9 @@ angular.module('com.inthetelling.story')
 					// this is silly but it works.
 					appState.editEvent.fnord = (appState.editEvent.fnord) ? "" : "fnord";
 				};
-				var isTranscript = function(item) {
+				var isTranscript = function (item) {
 					if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
-						return true;	
+						return true;
 					} else {
 						return false;
 					}
@@ -135,7 +135,7 @@ angular.module('com.inthetelling.story')
 						modelSvc.resolveEpisodeEvents(appState.episodeId); // redundant but necessary
 						timelineSvc.updateEventTimes(scope.item);
 					} else {
-						
+
 						// TODO
 						// if end time is "auto"
 						// 	if transcript, set end time to start of next transcript
@@ -146,7 +146,7 @@ angular.module('com.inthetelling.story')
 						}
 
 
-						
+
 						modelSvc.resolveEpisodeEvents(appState.episodeId); // in case the item has changed scenes
 
 						// for now, just using end of scene if the currently set end time is invalid.
