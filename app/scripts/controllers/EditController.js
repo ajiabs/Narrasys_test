@@ -35,9 +35,9 @@ angular.module('com.inthetelling.story')
 					$timeout(function () {
 						$scope.checkAndConfirmDuration(previousAsset, asset, function (confirmed) {
 							if (confirmed) {
-					$scope.episode.master_asset_id = asset_id;
+								$scope.episode.master_asset_id = asset_id;
 							}
-						})
+						});
 					}, 0);
 				}
 			}
@@ -129,8 +129,7 @@ angular.module('com.inthetelling.story')
 
 		var hasScenes = function () {
 			var scenes = getScenes();
-			var scenesExist = true;
-			if (typeof (scenes) == 'undefined') {
+			if (typeof (scenes) === 'undefined') {
 				return false;
 			}
 			if (scenes.length < 1) {
@@ -160,7 +159,6 @@ angular.module('com.inthetelling.story')
 				if (!isInternal(items[i])) {
 					if (duration < items[i].start_time || duration < items[i].end_time) {
 						return true;
-						break;
 					}
 				}
 			}
@@ -190,12 +188,11 @@ angular.module('com.inthetelling.story')
 		$scope.confirmDurationImpact = function (oldDuration, newDuration, callback) {
 			var noop = function () {};
 			callback = callback || noop;
-			var setNewMasterAsset = true;
 			var durationDiff = oldDuration - newDuration;
 			var minutes = Math.floor(durationDiff / 60);
 			var seconds = durationDiff % 60;
 			var secondsText = seconds.toString();
-			if (secondsText.length == 1) {
+			if (secondsText.length === 1) {
 				secondsText = "0" + secondsText;
 			}
 
@@ -213,9 +210,9 @@ angular.module('com.inthetelling.story')
 			var shouldWarnOfTruncation = false;
 			var newDuration = 0;
 			var oldDuration = 0;
-			newDuration = parseInt(asset.duration);
+			newDuration = parseInt(asset.duration, 10);
 			if (typeof (previousMasterAsset) !== 'undefined') {
-				oldDuration = parseInt(previousMasterAsset.duration);
+				oldDuration = parseInt(previousMasterAsset.duration, 10);
 				//we are changing assets, we need to check if we are impacting existing items/scenes by chopping duration
 				if (newDuration < oldDuration) {
 					shouldWarnOfTruncation = $scope.willCauseOrphanedData(asset.duration);
@@ -263,7 +260,7 @@ angular.module('com.inthetelling.story')
 			});
 			angular.forEach(orphanedItems, function (item) {
 				timelineSvc.removeEvent(item._id);
-				dataSvc.storeItem(item)
+				dataSvc.storeItem(item);
 			});
 
 			timelineSvc.injectEvents(orphanedScenes);
@@ -277,10 +274,10 @@ angular.module('com.inthetelling.story')
 			console.log('saving Episode');
 
 			$timeout(function () {
-			dataSvc.storeEpisode(toSave)
-				.then(function (data) {
+				dataSvc.storeEpisode(toSave)
+					.then(function (data) {
 						//	$timeout(function () {
-					modelSvc.cache("episode", dataSvc.resolveIDs(data));
+						modelSvc.cache("episode", dataSvc.resolveIDs(data));
 						console.log('saved Episode');
 						var scene = generateEmptyItem("scene");
 						var duration = modelSvc.assets[data.master_asset_id].duration;
@@ -295,18 +292,18 @@ angular.module('com.inthetelling.story')
 									console.error("FAILED TO STORE EVENT", data);
 								});
 						}
-					modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
-					modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
-					modelSvc.resolveEpisodeAssets(appState.episodeId);
-					appState.duration = modelSvc.assets[data.master_asset_id].duration;
-					appState.editEpisode = false;
-					appState.videoControlsLocked = false;
+						modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
+						modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
+						modelSvc.resolveEpisodeAssets(appState.episodeId);
+						appState.duration = modelSvc.assets[data.master_asset_id].duration;
+						appState.editEpisode = false;
+						appState.videoControlsLocked = false;
 
 						$scope.moveEventsAfter(duration);
 						//		}, 0);
-				}, function (data) {
-					console.error("FAILED TO STORE EPISODE", data);
-				});
+					}, function (data) {
+						console.error("FAILED TO STORE EPISODE", data);
+					});
 			}, 0);
 		};
 
@@ -314,11 +311,6 @@ angular.module('com.inthetelling.story')
 			//var episode = modelSvc.episodes[appState.episodeId];
 			return angular.copy(getScenes());
 		};
-		var getItemsSnapshot = function () {
-			//var episode = modelSvc.episodes[appState.episodeId];
-			return angular.copy(getItems());
-		};
-
 		var resetScenes = function (updatedScenes, originalScene) {
 			for (var i = 0; i < updatedScenes.length; i++) {
 				if (typeof (updatedScenes[i]._id) === 'undefined' || updatedScenes[i]._id === 'internal:editing') {
@@ -367,13 +359,7 @@ angular.module('com.inthetelling.story')
 			return a.start_time - b.start_time;
 		};
 
-		var adjustTranscripts = function (transcript, isDelete) {
-			var adjusted = [];
-			var items = getItemsSnapshot();
-			var scenes = getScenesSnapshot();
-			scenes = scenes.sort(sortByStartTime);
-		};
-		var adjustScenes = function (modifiedScene, isDelete) {
+				var adjustScenes = function (modifiedScene, isDelete) {
 			var scenes = getScenesSnapshot();
 			var adjusted = [];
 
@@ -434,7 +420,7 @@ angular.module('com.inthetelling.story')
 							console.error("FAILED TO STORE EVENT", data);
 						});
 				});
-				
+
 				var eventType = modelSvc.events[eventId]._type;
 				dataSvc.deleteItem(eventId)
 					.then(function (data) {
