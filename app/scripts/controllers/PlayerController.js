@@ -62,23 +62,23 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		$scope.toggleProducerPreview = function () {
+			appState.product = (appState.product === 'producer') ? 'player' : 'producer';
+		};
+
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		// console.log("playerController init");
-		appState.init();
-
 		errorSvc.init();
-		appState.episodeId = $routeParams.epId;
-		modelSvc.addLandingScreen(appState.episodeId);
-		dataSvc.getEpisode(appState.episodeId);
 
-		console.log("USER:", appState.user, appState.product);
-
-		// TEMPORARY SAFETY VALVE: redirect non-admin users from editor or producer to player:
-		if (!authSvc.userHasRole('admin') && appState.product !== 'player') {
-			//			appState.product = 'player';
-			$location.path('/episode/' + appState.episodeId);
+		if ($routeParams.epId) { // if this is missing we're in a narrative, which will init appstate and episodeID for us
+			appState.init();
+			appState.episodeId = $routeParams.epId;
+		} else {
+			$scope.narrativeId = $routeParams.narrativeId;
 		}
+
+		modelSvc.addLandingScreen(appState.episodeId);
+		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
 
 		// Watch for the first load of the episode data; init page title and crossnav when found
 
@@ -94,6 +94,14 @@ angular.module('com.inthetelling.story')
 
 		// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 		$scope.loading = true;
+
+		// So newly-created episodes don't keep the loading spinner forever.
+		// TODO show a friendly "how to get started" message of some kind if there are no events / no master asset
+		$rootScope.$on("dataSvc.getEpisodeEvents.done", function () {
+			$scope.loading = false;
+
+		});
+
 		var eventsWatcher = $scope.$watch(function () {
 			if (!modelSvc.episodes[appState.episodeId].masterAsset) {
 				return false;
@@ -106,7 +114,6 @@ angular.module('com.inthetelling.story')
 
 				appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 				modelSvc.setLanguageStrings();
-
 				$scope.loading = false;
 				eventsWatcher(); // stop watching
 			}

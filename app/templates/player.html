@@ -1,13 +1,17 @@
 <div class="player" ng-class="{
 	isTouchDevice: appState.isTouchDevice,
 	isFramed: appState.isFramed,
-	guestUser: appState.user.isGuestUser,
 	isProducer: (appState.product == 'producer'),
 	isSxS: (appState.product == 'sxs'),
 	canEditContent: (!appState.editEvent && !appState.editEpisode) && (appState.product == 'producer' || appState.product == 'sxs')
 	}">
 	<!-- TODO: make sure user has admin role for canEditContent -->
 	<div class="toolbar">
+		<div ng-if="appState.productLoadedAs == 'narrative'" class="buttongroup">
+			<a class="button button-exitEpisode" href="/#/story/{{narrative.path.en}}">
+				<span>Exit</span>
+			</a>
+		</div>
 		<div class="modegroup buttongroup">
 			<nav role="navigation">
 				<button tabindex="0" class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')" aria-label="Watch">
@@ -50,7 +54,12 @@
 			<label for="searchtext" class="hidden">Search Text</label>
 			<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
 		</div>
-		<div class="profilegroup buttongroup" ng-if="appState.product == 'sxs'">
+		<div class="profilegroup buttongroup" ng-if="appState.narrativeId || appState.product == 'sxs' || userHasRole('admin')">
+			<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && userHasRole('admin')" ng-click="toggleProducerPreview()">
+				<span ng-if="appState.product == 'producer'">Preview</span>
+				<span ng-if="appState.product == 'player'">Edit</span>
+			</a>
+
 			<a class="button button-profile" ng-click="appState.show.profilePanel = true">
 				<span>Profile</span>
 			</a>
@@ -99,8 +108,6 @@
 <div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()" sxs-add-content></div>
 
 
-<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
-
 <div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
 	<img src="/images/autoscroll.svg" width="32" height="32">
 </div>
@@ -137,49 +144,8 @@
 	<a class="goAway" x-ng-click="noMoreHelp()" href="javascript:void 1;">Don't show this again</a>
 </div>
 
-<!-- PROFILE (mostly faked for now) -->
+
 <div ng-if="show.profilePanel" class="profilePanel">
 	<div class="arrow-up"></div>
-	<div ng-if="userHasRole('admin')">
-
-		<img src="/images/customer/tmp-userprofile.png" style="float:left; border: 5px solid #FFF">
-
-		<div class="authoringForm">
-			<div class="field">
-				<div class="label">Name
-				</div>
-				<div class="input">
-					<input type="text" value="Professor Smith">
-				</div>
-			</div>
-
-			<div class="field">
-				<div class="label">Email
-				</div>
-				<div class="input">
-					<input type="text" value="example@this-is-todo.com">
-				</div>
-			</div>
-			<br>
-			<br>
-			<div class="field">
-				<div style="text-align:right;">
-					<a ng-click="logout()">Log out</a>
-				</div>
-			</div>
-		</div>
-
-		<div ng-if="!(userHasRole('admin'))">
-
-			<a ng-href="/pages/launch_oauth2?episode={{appState.episodeId}}" target="_new">Log in</a>
-
-		</div>
-	</div>
+	<div itt-user x-in-player="true"></div>
 </div>
-
-
-<!-- 
-<a href="javascript:void 1;" ng-click="showDebug=!showDebug">DEBUG:</a>
-<pre ng-if="showDebug === true">{{appState | pretty }}</pre>
-<pre ng-if="showDebug === true">{{episode | pretty}}</pre>
- -->

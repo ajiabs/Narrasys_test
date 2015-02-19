@@ -23,27 +23,32 @@ angular.module('com.inthetelling.story')
 				scope.apiDataBaseUrl = config.apiDataBaseUrl;
 
 				authSvc.authenticate().then(function () {
-					errorSvc.init();
-					if ($routeParams.key) {
-						// (Probably unnecessary here, but testing to see if this fixes the unintended redirect from /#/auth)
-						$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
-					}
-					if ($routeParams.episode) {
-						var epId = $routeParams.episode;
-						$location.search('episode', null);
-						$location.search('nonce', null);
-						$location.path('/episode/' + epId);
-					} else {
-						// Don't redirect by default, as it breaks LTI login.  
-						// TODO investigate why that started breaking LTI login (it hits /auth with no episode param at least once...)
-						if (scope.userHasRole('admin') && Object.keys($routeParams).length === 0) {
-							$location.path('/');
+						errorSvc.init();
+						if ($routeParams.key) {
+							// (Probably unnecessary here, but testing to see if this fixes the unintended redirect from /#/auth)
+							$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
 						}
-
-					}
-				}, function () {
-					console.log("Login failed...");
-				});
+						if ($routeParams.episode) {
+							var epId = $routeParams.episode;
+							$location.search('episode', null);
+							$location.search('nonce', null);
+							$location.path('/episode/' + epId);
+						} else if ($routeParams.narrative) {
+							var narrId = $routeParams.narrative;
+							$location.search('narrative', null);
+							$location.search('nonce', null);
+							$location.path('/story/' + narrId);
+						} else {
+							// Don't redirect by default, as it breaks LTI login.  
+							// TODO investigate why that started breaking LTI login (it hits /auth with no episode param at least once...)
+							if (scope.userHasRole('admin') && Object.keys($routeParams).length === 0) {
+								$location.path('/');
+							}
+						}
+					},
+					function () {
+						console.log("Login failed...");
+					});
 
 				// for admin logins only, for now. In future maybe oauth-based login will route through here too
 				scope.adminLogin = function () {

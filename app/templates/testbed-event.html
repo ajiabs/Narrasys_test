@@ -1,0 +1,56 @@
+<style>
+.testContentPane {
+	border: 1px solid #000;
+	position: absolute;
+	overflow: hidden;
+	top: 3em;
+	left: 2em;
+	right: 2em;
+	bottom: 10em;
+}
+.testEditorPane {
+	position: absolute;
+	bottom: 0;
+	z-index: 2;
+	left: 0;
+	right: 0;
+	height: 10em;
+	overflow-y: scroll;
+}
+label {
+	margin: 0 2em;
+}
+</style>
+
+
+<div class="controls">
+	<label>
+		Content pane type:
+		<select size="1" ng-model="testbed.contentType" ng-init="testbed.contentType='content'">
+			<option value="content">Content</option>
+			<option value="fill">Overlay</option>
+		</select>
+	</label>
+
+	<label ng-if="testbed.contentType == 'content'">
+		<input type="checkbox" ng-model="testbed.isNarrow"> Narrow content pane
+	</label>
+	<label>
+		Item state:
+		<select size="1" ng-model="item.state" ng-init="item.state='isCurrent'">
+			<option value="isCurrent">Current</option>
+			<option value="isPast">Past</option>
+			<option value="isFuture">Future</option>
+		</select>
+	</label>
+	<label>
+		<input type="checkbox" ng-model="testbed.showCurrent" ng-init="testbed.showCurrent = false;"> Hide non-current items
+	</label>
+
+</div>
+
+<div class="testContentPane allowHighlights allowSidebars hasLeftSidebar hasRightSidebar {{testbed.contentType}}" ng-class="{isNarrow: testbed.isNarrow, showCurrent: testbed.showCurrent}">
+	<div ng-if="!(testbed.showCurrent && item.state!='isCurrent')" class="item animate" itt-item="item" ng-class="item.styleCss + ' ' + item.state"></div>
+</div>
+
+<div class="testEditorPane" itt-item-editor="item"></div>

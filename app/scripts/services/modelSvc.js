@@ -12,6 +12,8 @@ angular.module('com.inthetelling.story')
 		svc.assets = {};
 		svc.events = {}; // NOTE svc.events contains scenes and items -- anything that happens during the episode timeline
 		svc.containers = {};
+		svc.narratives = {};
+		svc.customers = {};
 
 		// receives cacheTypes of episode, event, asset, and container.
 		// splits event into scenes and items.  Not sure yet whether we care about containers, discarding them for now.
@@ -21,6 +23,22 @@ angular.module('com.inthetelling.story')
 
 		// use angular.extend if an object already exists, so we don't lose existing bindings
 		svc.cache = function (cacheType, item) {
+			if (cacheType === 'narrative') {
+				// NOTE no deriveNarrative used here, not needed so far
+				if (svc.narratives[item._id]) {
+					angular.extend(svc.narratives[item._id], item);
+				} else {
+					svc.narratives[item._id] = angular.copy(item);
+				}
+			}
+			if (cacheType === 'customer') {
+				// NOTE no deriveCustomer used here, not needed so far
+				if (svc.customers[item._id]) {
+					angular.extend(svc.customers[item._id], item);
+				} else {
+					svc.customers[item._id] = angular.copy(item);
+				}
+			}
 			if (cacheType === 'episode') {
 				if (svc.episodes[item._id]) {
 					angular.extend(svc.episodes[item._id], svc.deriveEpisode(angular.copy(item)));
@@ -231,12 +249,22 @@ angular.module('com.inthetelling.story')
 			return setLang(container);
 		};
 
+		var isTranscript = function (item) {
+			if (typeof (item) !== 'undefined') {
+				if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
+
 		svc.deriveEvent = function (event) {
 
 			event = setLang(event);
 
 			if (event._type !== 'Scene') {
-				if (svc.episodes[event.episode_id] && svc.episodes[event.episode_id].templateUrl === 'templates/episode/usc.html') {
+				if (svc.episodes[event.cur_episode_id] && svc.episodes[event.cur_episode_id].templateUrl === 'templates/episode/usc.html') {
 					// HACKS AHOY
 					// USC made a bunch of change requests post-release; this was the most expedient way
 					// to deal with them. Sorry!
@@ -293,7 +321,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				// Old templates which (TODO) should have been database fields instead:
-				if (event._type === 'Annotation' && event.templateUrl.match(/transcript/)) {
+				if (isTranscript(event)) {
 					event.isTranscript = true;
 				}
 				if (event.templateUrl.match(/noembed/)) {
@@ -422,7 +450,7 @@ angular.module('com.inthetelling.story')
 			var episode = svc.episodes[epId];
 
 			angular.forEach(svc.events, function (event) {
-				if (event.episode_id !== epId) {
+				if (event.cur_episode_id !== epId) {
 					return;
 				}
 				if (event._type === 'Scene') {
@@ -446,7 +474,8 @@ angular.module('com.inthetelling.story')
 
 					if (key === undefined) {
 						// this annotator doesn't have a translation in the default language, so use its first language instead
-						key = event.annotator[Object.keys(event.annotator).sort()[0]];
+						key = event.annotator[Object.keys(event.annotator)
+							.sort()[0]];
 					}
 
 					if (annotators[key]) {
@@ -463,7 +492,8 @@ angular.module('com.inthetelling.story')
 					}
 
 					// construct a description containing all languages, starting with the default
-					var langs = Object.keys(annotators[key].name).sort();
+					var langs = Object.keys(annotators[key].name)
+						.sort();
 					var longKey = annotators[key].name[defaultLanguage] || '(untranslated)';
 					for (var i = 0; i < langs.length; i++) {
 						if (langs[i] !== defaultLanguage) {
@@ -497,8 +527,8 @@ angular.module('com.inthetelling.story')
 			// assign items to scenes (give them a scene_id and attach references to the scene's items[]:
 			angular.forEach(scenes, function (scene) {
 				var sceneItems = [];
+				var previousTranscript = {};
 				angular.forEach(items, function (event) {
-
 					/* possible cases: 
 							start and end are within the scene: put it in this scene
 							start is within this scene, end is after this scene: 
@@ -508,6 +538,17 @@ angular.module('com.inthetelling.story')
 							start is after this scene: let the next loop take care of it
 					*/
 					if (event.start_time >= scene.start_time && event.start_time < scene.end_time) {
+						if (isTranscript(event)) {
+							// console.log('transcript event', event);
+							//the current event is a transcript and we have a transcript (in this scene) before it that has incorrectly set its end_time to the scene end_time.
+							if (previousTranscript.end_time === scene.end_time) {
+								// console.log('adjusting according to previousTranscript');
+								//end_time may have been empty before the last itter of loop
+								previousTranscript.end_time = event.start_time;
+							}
+							previousTranscript = event;
+						}
+
 						if (event.end_time <= scene.end_time) {
 							// entirely within scene
 							svc.events[event._id].scene_id = scene._id;
@@ -523,9 +564,7 @@ angular.module('com.inthetelling.story')
 								sceneItems.push(event);
 							}
 						}
-
 					}
-
 				});
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
@@ -537,7 +576,7 @@ angular.module('com.inthetelling.story')
 			// Now that we have the structure, calculate event styles (for scenes and items:)
 			episode.styleCss = cascadeStyles(episode);
 			angular.forEach(svc.events, function (event) {
-				if (event.episode_id !== epId) {
+				if (event.cur_episode_id !== epId) {
 					return;
 				}
 				event.styleCss = cascadeStyles(event);
@@ -619,7 +658,7 @@ angular.module('com.inthetelling.story')
 			// console.log("modelSvc.episodeEvents");
 			var ret = [];
 			angular.forEach(svc.events, function (event) {
-				if (event.episode_id !== epId) {
+				if (event.cur_episode_id !== epId) {
 					return;
 				}
 				ret.push(event);
@@ -674,8 +713,8 @@ angular.module('com.inthetelling.story')
 			}
 
 			// add each episodeStyle, only if it is in a styleCategory the thing isn't already using
-			if (thing.episode_id) {
-				var episodeStyles = svc.episodes[thing.episode_id].styles;
+			if (thing.cur_episode_id) {
+				var episodeStyles = svc.episodes[thing.cur_episode_id].styles;
 				angular.forEach(episodeStyles, function (style) {
 					angular.forEach(styleCategories, function (categoryValue, categoryName) {
 						if (!styleCategories[categoryName] && style.indexOf(categoryName) === 0) {
@@ -700,7 +739,7 @@ angular.module('com.inthetelling.story')
 		svc.resolveEpisodeAssets = function (episodeId) {
 			// console.log("resolveEpisodeAssets", episodeId);
 			angular.forEach(svc.events, function (item) {
-				if (item.episode_id !== episodeId) {
+				if (item.cur_episode_id !== episodeId) {
 					return;
 				}
 				var assetId = item.asset_id || item.link_image_id || item.annotation_image_id;
@@ -728,7 +767,7 @@ angular.module('com.inthetelling.story')
 				"_type": "Scene",
 				"_internal": true,
 				"templateUrl": "templates/scene/landingscreen.html",
-				"episode_id": episodeId,
+				"cur_episode_id": episodeId,
 				"start_time": 0,
 				"end_time": 0.001
 			};
@@ -736,7 +775,7 @@ angular.module('com.inthetelling.story')
 
 		// Don't call this until the master asset exists and episode events have loaded!
 		svc.addEndingScreen = function (episodeId) {
-			console.log("addEndingScreen", svc.episodes[episodeId].masterAsset);
+			// console.log("addEndingScreen", svc.episodes[episodeId].masterAsset);
 
 			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration);
 
@@ -760,7 +799,7 @@ angular.module('com.inthetelling.story')
 					"_type": "Scene",
 					"_internal": true,
 					"templateUrl": "templates/scene/endingscreen.html",
-					"episode_id": episodeId,
+					"cur_episode_id": episodeId,
 					"start_time": duration - 0.1,
 					"end_time": duration
 
@@ -840,7 +879,8 @@ angular.module('com.inthetelling.story')
 
 			if (isChrome) {
 				var tDelimit;
-				var tParam = "t=" + new Date().getTime();
+				var tParam = "t=" + new Date()
+					.getTime();
 				angular.forEach(["mp4", "webm"], function (ext) {
 					if (videoObject[ext].length > 0) {
 						for (var i = 0; i < videoObject[ext].length; i++) {
@@ -871,6 +911,8 @@ angular.module('com.inthetelling.story')
 			console.log("Asset cache:", svc.assets);
 			console.log("Container cache:", svc.containers);
 			console.log("Episode cache:", svc.episodes);
+			console.log("Narrative cache:", svc.narratives);
+			console.log("Customer cache:", svc.customers);
 		}
 		return svc;
 

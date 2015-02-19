@@ -54,7 +54,6 @@ describe('Service: dataSvc', function () {
 			"templateUrl": "templates/foo.html"
 		};
 		item = dataSvc.prepItemForStorage(item);
-		console.log(item);
 		expect(item.style_id).toEqual(['1', '2', '3']);
 	});
 

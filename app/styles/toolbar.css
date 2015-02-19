@@ -179,6 +179,12 @@ button {
 .button-watch:before {
 	content: "\e610"
 }
+.button-exitEpisode:before {
+	font-family: sans-serif;
+	content: "«";
+	font-size: 22px !important;
+	line-height: 18px;
+}
 .button-discover:before {
 	content: "\e60f"
 }
@@ -207,6 +213,14 @@ button {
 }
 .escapelink {
 	font-size: 0.86em;
+}
+.button-preview {
+	margin-right: 0.5em;
+}
+.button-preview:before {
+	content: "✔";
+	font-size: 18px !important;
+	position: absolute;
 }
 .colorInvert .escapelink:before {
 	color: #CCC
@@ -613,7 +627,7 @@ button {
 	font-size: 0.86em;
 	right: 2em;
 	padding: 15px;
-	position: absolute;
+	position: fixed;
 	width: 60%;
 	max-width: 500px;
 	min-width: 290px;

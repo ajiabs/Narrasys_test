@@ -34,11 +34,17 @@ describe('Service: modelSvc', function () {
 				"start_time": i * 10,
 				"end_time": (i * 10 + 10),
 				"templateUrl": "templates/item/default.html",
-				"episode_id": "EP1"
+				"episode_id": "EP1",
+				"cur_episode_id": "EP1"
 			});
 		}
 	}));
-
+	it('modelSvc should exist', function () {
+		expect(modelSvc).toNotEqual(undefined);
+	});
+	it('test rig beforeEach should have cached 11 scenes', function () {
+		expect(Object.keys(modelSvc.events).length).toEqual(11);
+	});
 	it('addLandingScreen should not cause duplicates', function () {
 		modelSvc.addLandingScreen("EP1");
 		modelSvc.addLandingScreen("EP1");
@@ -69,7 +75,8 @@ describe('Service: modelSvc', function () {
 			"start_time": 29.99,
 			"end_time": 35,
 			"templateUrl": "templates/item/default.html",
-			"episode_id": "EP1"
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 		});
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(modelSvc.events.annotation1.start_time).toEqual(30);
@@ -83,7 +90,8 @@ describe('Service: modelSvc', function () {
 			"start_time": 28,
 			"end_time": 35,
 			"templateUrl": "templates/item/default.html",
-			"episode_id": "EP1"
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 		});
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(modelSvc.events.annotation1.start_time).toEqual(28);
@@ -97,7 +105,8 @@ describe('Service: modelSvc', function () {
 			"start_time": 10,
 			"end_time": 12,
 			"templateUrl": "templates/item/default.html",
-			"episode_id": "EP1"
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1"
 		});
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(0);
@@ -112,7 +121,8 @@ describe('Service: modelSvc', function () {
 			"start_time": 10,
 			"end_time": 10,
 			"templateUrl": "templates/item/default.html",
-			"episode_id": "EP1"
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1"
 		});
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(0);
@@ -129,7 +139,8 @@ describe('Service: modelSvc', function () {
 			"start_time": 10,
 			"end_time": 20,
 			"templateUrl": "templates/item/default.html",
-			"episode_id": "EP1"
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1"
 		});
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(0);
@@ -146,7 +157,8 @@ describe('Service: modelSvc', function () {
 			"start_time": 9.9,
 			"end_time": 11,
 			"templateUrl": "templates/item/default.html",
-			"episode_id": "EP1"
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1"
 		});
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(0);
@@ -162,7 +174,8 @@ describe('Service: modelSvc', function () {
 			"start_time": 9,
 			"end_time": 10.5,
 			"templateUrl": "templates/item/default.html",
-			"episode_id": "EP1"
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1"
 		});
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(1);
@@ -178,6 +191,7 @@ describe('Service: modelSvc', function () {
 			"_type": "Annotation",
 			"start_time": 1,
 			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 			"templateUrl": "templates/item/default.html",
 			"annotator": {
 				en: "Mister Smith",
@@ -199,6 +213,7 @@ describe('Service: modelSvc', function () {
 			"_type": "Annotation",
 			"start_time": 1,
 			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 			"templateUrl": "templates/item/default.html",
 			"annotator": {
 				en: "Mister Smith",
@@ -209,6 +224,7 @@ describe('Service: modelSvc', function () {
 			"_type": "Annotation",
 			"start_time": 1,
 			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 			"templateUrl": "templates/item/default.html",
 			"annotator": {
 				en: "Mister Smith",
@@ -220,6 +236,7 @@ describe('Service: modelSvc', function () {
 			"_type": "Annotation",
 			"start_time": 1,
 			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 			"templateUrl": "templates/item/default.html",
 			"annotator": {
 				en: "Mister Smith",
@@ -241,6 +258,7 @@ describe('Service: modelSvc', function () {
 			"_type": "Annotation",
 			"start_time": 1,
 			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 			"templateUrl": "templates/item/default.html",
 			"annotator": {
 				es: "AA",
@@ -251,6 +269,7 @@ describe('Service: modelSvc', function () {
 			"_type": "Annotation",
 			"start_time": 1,
 			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 			"templateUrl": "templates/item/default.html",
 			"annotator": {
 				zh: "BB",
@@ -261,6 +280,7 @@ describe('Service: modelSvc', function () {
 			"_type": "Annotation",
 			"start_time": 1,
 			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 			"templateUrl": "templates/item/default.html",
 			"annotator": {
 				pt: "CC",
@@ -278,6 +298,7 @@ describe('Service: modelSvc', function () {
 			"_type": "Annotation",
 			"start_time": 1,
 			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 			"templateUrl": "templates/item/default.html",
 			"annotator": {
 				en: "Mister Smith",
@@ -291,6 +312,7 @@ describe('Service: modelSvc', function () {
 			"_type": "Annotation",
 			"start_time": 1,
 			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
 			"templateUrl": "templates/item/default.html",
 			"annotator": {
 				en: "Mister Smith",

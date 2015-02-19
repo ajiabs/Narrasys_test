@@ -7,7 +7,7 @@ angular.module('com.inthetelling.story')
 		$scope.pause = timelineSvc.pause;
 
 		$scope.changeSpeed = function (n) {
-			console.log("timelineController.changeSpeed");
+			// console.log("timelineController.changeSpeed");
 			// Limit speed to between 0.5 and 2 inclusive
 			var newSpeed = appState.timeMultiplier + n;
 			if (newSpeed < 0.5) {

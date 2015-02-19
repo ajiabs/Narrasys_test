@@ -23,6 +23,8 @@
 	<link rel="stylesheet" href="styles/typography.css">
 	<link rel="stylesheet" href="styles/colors.css">
 
+	<link rel="stylesheet" href="styles/narrative.css">
+
 	<!-- 
 TODO hide these when not in use? 
 (have grunt build two different stylesheets and link to one or the other for player/producer?) 
@@ -46,16 +48,16 @@ TODO hide these when not in use?
 	<p style="position:fixed; top: 0; left: 0; right: 0; bottom:0; background-color:#FFF; z-index:99">We're sorry, Internet Explorer versions 8 and earlier are not currently supported.</p>
 	<![endif]-->
 
-	<div id="CONTAINER" x-ng-view="">
-	</div>
+	<div id="CONTAINER" x-ng-view=""></div>
+	<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
 
 	<script src="config.js"></script>
 	<!-- CDN links-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-animate.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-sanitize.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-route.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-animate.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-sanitize.min.js"></script>
 
 	<!-- end CDN -->
 
@@ -94,6 +96,8 @@ TODO hide these when not in use?
 
 	<script src="scripts/controllers/EditController.js"></script>
 	<script src="scripts/controllers/QuestionAuthoringController.js"></script>
+	<script src="scripts/controllers/EventTestController.js"></script>
+
 
 	<script src="scripts/directives/ittLogin.js"></script>
 	<script src="scripts/directives/autofocus.js"></script>
@@ -120,8 +124,11 @@ TODO hide these when not in use?
 	<script src="scripts/directives/ittSearchPanel.js"></script>
 	<script src="scripts/directives/ittContainer.js"></script>
 	<script src="scripts/directives/ittContainerEpisodes.js"></script>
-
 	<script src="scripts/directives/ittEpisodeList.js"></script>
+	<script src="scripts/directives/ittUser.js"></script>
+	<script src="scripts/directives/ittNarrative.js"></script>
+	<script src="scripts/directives/ittNarrativeList.js"></script>
+	<script src="scripts/directives/ittNarrativeTimeline.js"></script>
 
 	<script src="scripts/controllers/UploadController.js"></script>
 	<script src="scripts/directives/sxsAddContent.js"></script>
@@ -130,6 +137,7 @@ TODO hide these when not in use?
 	<script src="scripts/directives/sxsInputI18n.js"></script>
 	<script src="scripts/directives/ittTabs.js"></script>
 	<script src="scripts/directives/sxsContainerAssets.js"></script>
+
 
 	<!-- endbuild -->
 </body>

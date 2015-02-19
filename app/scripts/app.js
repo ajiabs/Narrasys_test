@@ -14,29 +14,46 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			templateUrl: 'templates/auth.html',
 			reloadOnSearch: false
 		})
+		.when('/user', {
+			template: '<div class="standaloneAncillaryPage"><div itt-user></div></div>'
+		})
+		.when('/stories', {
+			title: "Existing narratives",
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list></div></div>'
+		})
+		.when('/story', {
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
+		})
+		.when('/story/:narrativePath', {
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
+		})
+		.when('/story/:narrativePath/:timelinePath', {
+			template: '<div itt-narrative-timeline></div>',
+			reloadOnSearch: false,
+			resolve: {
+				product: function (appState) {
+					appState.product = "player";
+					appState.productLoadedAs = "narrative";
+				}
+			}
+		})
 		.when('/episodes', {
 			title: "Available episodes",
 			templateUrl: 'templates/producer/episodelist.html'
 		})
-		// Was temporary.  TODO remove this controller when we're certain it's dead
-		// .when('/producer/questioneditor', {
-		// 	title: "Plugin authoring for standalone questions",
-		// 	controller: 'QuestionAuthoringController',
-		// 	templateUrl: 'templates/producer/questionauthoring.html',
-		// })
 		// Was for testing uploads
 		// .when('/upload', {
 		// 	title: "Upload test",
 		// 	templateUrl: 'templates/producer/upload.html'
 		// })
-
-	.when('/episode/:epId', {
+		.when('/episode/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
 				product: function (appState) {
 					appState.product = "player";
+					appState.productLoadedAs = "player";
 				}
 			}
 		})
@@ -47,17 +64,18 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			resolve: {
 				product: function (appState) {
 					appState.product = "player";
+					appState.productLoadedAs = "player";
 				}
 			}
 		})
-
-	.when('/sxs/:epId', {
+		.when('/sxs/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
 				product: function (appState) {
 					appState.product = "sxs";
+					appState.productLoadedAs = "sxs";
 				}
 			}
 		})
@@ -68,6 +86,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			resolve: {
 				product: function (appState) {
 					appState.product = "sxs";
+					appState.productLoadedAs = "sxs";
 				}
 			}
 		})
@@ -78,6 +97,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			resolve: {
 				product: function (appState) {
 					appState.product = "producer";
+					appState.productLoadedAs = "producer";
 				}
 			}
 		})
@@ -85,6 +105,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			title: "Container Assets test",
 			controller: 'ContainerAssetsTestController',
 			template: '<div style="margin:1em" class="admin"><a class="goUp" href="#episodes">Episodes</a><div sxs-container-assets="containerId"></div></div>',
+		})
+		.when('/event/:eventId', {
+			title: "Event test",
+			controller: 'EventTestController',
+			templateUrl: 'templates/testbed-event.html',
 		})
 		.otherwise({
 			title: "Telling STORY: Error",
@@ -98,8 +123,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 .run(function ($rootScope, errorSvc) {
 
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
-		errorSvc.init(); // clear pending errors on path changes
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
+		errorSvc.init(); // clear display of any errors from the previous route
 	});
 
 	// globally emit rootscope event for certain keypresses:

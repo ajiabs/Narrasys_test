@@ -1,0 +1,67 @@
+.narrative {
+	padding: 1em;
+}
+.narrative .controls {
+	text-align: right;
+}
+.narrativelist {
+	border-top: 1px solid #ddd;
+	font-family: Droid Sans;
+	padding: 0;
+	margin: 0.5em 0;
+}
+.standaloneAncillaryPage {
+	display: block;
+	height: 100%;
+	overflow: scroll;
+	padding: 5% 10%;
+	position: absolute;
+	width: 100%;
+	background: url("/images/itt.svg") no-repeat fixed 50% 80% #eee;
+}
+.standaloneAncillaryPage .authoringForm {
+	background-color: rgba(238, 238, 238, 0.4);
+}
+.standaloneAncillaryPage a {
+	color: #C44343;
+}
+.standaloneAncillaryPage a:hover {
+	color: #FFF;
+	text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.7);
+}
+.standaloneAncillaryPage button,
+.standaloneAncillaryPage .button,
+.standaloneAncillaryPage input[type="submit"] {
+	background-color: #C44343;
+	color: #FFF;
+	border-radius: 8px;
+	font-size: 86%;
+	padding: 0.4em;
+	border: 0;
+	cursor: pointer;
+}
+.standaloneAncillaryPage .button {
+	line-height: 36px;
+}
+.standaloneAncillaryPage button a,
+.standaloneAncillaryPage .bigredbutton a {
+	color: #FFF;
+}
+.standaloneAncillaryPage input[type="text"],
+.standaloneAncillaryPage textarea {
+	border: 0 none;
+	border-radius: 6px;
+	font-size: 13px !important;
+	padding: 4px 6px !important;
+}
+.standaloneAncillaryPage .bigredbutton {
+	color: #FFF;
+	border-radius: 8px;
+	width: 100%;
+	display: block;
+	padding: 2em;
+	text-align: center;
+	color: #FFF;
+	background-color: #c44343;
+}
+
