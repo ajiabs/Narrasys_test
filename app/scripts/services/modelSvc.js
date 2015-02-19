@@ -233,13 +233,13 @@ angular.module('com.inthetelling.story')
 
 
 
-		var isTranscript = function(item) {
-			if (typeof(item) !== 'undefined') {
-					if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
-						return true;	
-					} else {
-						return false;
-					}
+		var isTranscript = function (item) {
+			if (typeof (item) !== 'undefined') {
+				if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		};
 
@@ -458,7 +458,8 @@ angular.module('com.inthetelling.story')
 
 					if (key === undefined) {
 						// this annotator doesn't have a translation in the default language, so use its first language instead
-						key = event.annotator[Object.keys(event.annotator).sort()[0]];
+						key = event.annotator[Object.keys(event.annotator)
+							.sort()[0]];
 					}
 
 					if (annotators[key]) {
@@ -475,7 +476,8 @@ angular.module('com.inthetelling.story')
 					}
 
 					// construct a description containing all languages, starting with the default
-					var langs = Object.keys(annotators[key].name).sort();
+					var langs = Object.keys(annotators[key].name)
+						.sort();
 					var longKey = annotators[key].name[defaultLanguage] || '(untranslated)';
 					for (var i = 0; i < langs.length; i++) {
 						if (langs[i] !== defaultLanguage) {
@@ -523,28 +525,29 @@ angular.module('com.inthetelling.story')
 						if (isTranscript(event)) {
 							console.log('transcript event', event);
 							//the current event is a transcript and we have a transcript (in this scene) before it that has incorrectly set its end_time to the scene end_time.
-										if (previousTranscript.end_time == scene.end_time) {
-											console.log('adjusting according to previousTranscript');
-											//end_time may have been empty before the last itter of loop
-											previousTranscript.end_time = event.start_time;
-										} 
-									previousTranscript = event;
-								} 
+							if (previousTranscript.end_time === scene.end_time) {
+								console.log('adjusting according to previousTranscript');
+								//end_time may have been empty before the last itter of loop
+								previousTranscript.end_time = event.start_time;
+							}
+							previousTranscript = event;
+						}
+
 						if (event.end_time <= scene.end_time) {
 							// entirely within scene
 							svc.events[event._id].scene_id = scene._id;
+							sceneItems.push(event);
 						} else {
 							// end time is in next scene.  Check if start time is close to scene end, if so bump to next scene, otherwise truncate the item to fit in this one
 							if (scene.end_time - 0.25 < event.start_time) {
 								// bump to next scene
 								event.start_time = scene.end_time;
 							} else {
-									
-								event.end_time = scene.end_time;
 								// truncate and add to this one
+								event.end_time = scene.end_time;
+								sceneItems.push(event);
 							}
 						}
-						sceneItems.push(event);
 					}
 				});
 				// attach array of items to the scene event:
@@ -860,7 +863,8 @@ angular.module('com.inthetelling.story')
 
 			if (isChrome) {
 				var tDelimit;
-				var tParam = "t=" + new Date().getTime();
+				var tParam = "t=" + new Date()
+					.getTime();
 				angular.forEach(["mp4", "webm"], function (ext) {
 					if (videoObject[ext].length > 0) {
 						for (var i = 0; i < videoObject[ext].length; i++) {
