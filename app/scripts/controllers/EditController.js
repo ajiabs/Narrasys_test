@@ -27,7 +27,7 @@ angular.module('com.inthetelling.story')
 				}
 			}
 			if ($scope.episode) {
-				console.log("asset", asset);
+				// console.log("asset", asset);
 				//BUGBUG? - could episode be truthy and the asset be video during "item" edition (and not episode editing) 
 				// causing us to inadvertently change the master asset to the item video asset?  Due to using editcontroller for both item and episode
 				if (asset._type === 'Asset::Video') {
@@ -61,7 +61,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.addEvent = function (producerItemType) {
 			//captureCurrentScenes();
-			console.log("itemEditController.addEvent");
+			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
 			modelSvc.cache("event", newEvent);
 
@@ -90,7 +90,7 @@ angular.module('com.inthetelling.story')
 				angular.forEach(adjusted, function (scene) {
 					dataSvc.storeItem(scene)
 						.then(function () {
-							console.log("scene end_time updated");
+							// console.log("scene end_time updated");
 						}, function (data) {
 							console.error("FAILED TO STORE EVENT", data);
 						});
@@ -98,11 +98,11 @@ angular.module('com.inthetelling.story')
 			}
 
 			if (isTranscript(toSave)) {
-				console.log("woot transcript");
+				// console.log("woot transcript");
 			}
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
-					console.log("storeItem");
+					// console.log("storeItem");
 					if (appState.editEvent._id === 'internal:editing') {
 						// update the new item with its real ID (and remove the temp version)
 						timelineSvc.removeEvent("internal:editing");
@@ -271,23 +271,23 @@ angular.module('com.inthetelling.story')
 
 		$scope.saveEpisode = function () {
 			var toSave = angular.copy(appState.editEpisode);
-			console.log('saving Episode');
+			// console.log('saving Episode');
 
 			$timeout(function () {
 				dataSvc.storeEpisode(toSave)
 					.then(function (data) {
 						//	$timeout(function () {
 						modelSvc.cache("episode", dataSvc.resolveIDs(data));
-						console.log('saved Episode');
+						// console.log('saved Episode');
 						var scene = generateEmptyItem("scene");
 						var duration = modelSvc.assets[data.master_asset_id].duration;
 						if (!hasScenes()) {
-							console.log('no scenes, creating one');
+							// console.log('no scenes, creating one');
 							scene.start_time = 0;
 							scene.end_time = duration;
 							dataSvc.storeItem(scene)
 								.then(function () {
-									console.log("default scene created");
+									// console.log("default scene created");
 								}, function (data) {
 									console.error("FAILED TO STORE EVENT", data);
 								});
@@ -359,7 +359,7 @@ angular.module('com.inthetelling.story')
 			return a.start_time - b.start_time;
 		};
 
-				var adjustScenes = function (modifiedScene, isDelete) {
+		var adjustScenes = function (modifiedScene, isDelete) {
 			var scenes = getScenesSnapshot();
 			var adjusted = [];
 
@@ -399,7 +399,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.editEpisode = function () {
-			console.log("editController editEpisode");
+			// console.log("editController editEpisode");
 			appState.editEpisode = modelSvc.episodes[appState.episodeId];
 			appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 			appState.videoControlsLocked = true;
@@ -407,7 +407,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.deleteEvent = function (eventId) {
 			if (window.confirm("Are you sure you wish to delete this item?")) {
-				console.log("About to delete ", eventId);
+				// console.log("About to delete ", eventId);
 				//fabricate scene event
 				var event = {};
 				event._id = eventId;
@@ -415,7 +415,7 @@ angular.module('com.inthetelling.story')
 				angular.forEach(adjusted, function (scene) {
 					dataSvc.storeItem(scene)
 						.then(function () {
-							console.log("scene end_time updated");
+							// console.log("scene end_time updated");
 						}, function (data) {
 							console.error("FAILED TO STORE EVENT", data);
 						});
@@ -424,7 +424,7 @@ angular.module('com.inthetelling.story')
 				var eventType = modelSvc.events[eventId]._type;
 				dataSvc.deleteItem(eventId)
 					.then(function (data) {
-						console.log("success deleting:", data);
+						// console.log("success deleting:", data);
 						if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
 							dataSvc.deleteAsset(modelSvc.events[eventId].asset._id);
 						}
@@ -439,13 +439,13 @@ angular.module('com.inthetelling.story')
 						appState.editEvent = false;
 						appState.videoControlsLocked = false;
 					}, function (data) {
-						console.log("failed to delete:", data);
+						console.warn("failed to delete:", data);
 					});
 			}
 		};
 
 		$scope.cancelEventEdit = function (originalEvent) {
-			console.log("cancelEventEdit");
+			// console.log("cancelEventEdit");
 			if (appState.editEvent._id === 'internal:editing') {
 				delete(modelSvc.events['internal:editing']);
 				timelineSvc.removeEvent("internal:editing");
@@ -465,14 +465,14 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.cancelEpisodeEdit = function (originalEvent) {
-			console.log("cancelEpisodeEdit", originalEvent);
+			// console.log("cancelEpisodeEdit", originalEvent);
 
 			modelSvc.episodes[appState.episodeId] = originalEvent;
 
 			modelSvc.deriveEpisode(modelSvc.episodes[originalEvent._id]);
 			modelSvc.resolveEpisodeContainers(originalEvent._id); // only needed for navigation_depth changes
 			modelSvc.resolveEpisodeEvents(originalEvent._id); // needed for template or style changes
-			console.log("Episode StyleCss is now ", modelSvc.episodes[originalEvent._id].styleCss);
+			// console.log("Episode StyleCss is now ", modelSvc.episodes[originalEvent._id].styleCss);
 			appState.editEpisode = false;
 			appState.videoControlsLocked = false;
 		};

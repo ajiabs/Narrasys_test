@@ -542,7 +542,7 @@ angular.module('com.inthetelling.story')
 							// console.log('transcript event', event);
 							//the current event is a transcript and we have a transcript (in this scene) before it that has incorrectly set its end_time to the scene end_time.
 							if (previousTranscript.end_time === scene.end_time) {
-								console.log('adjusting according to previousTranscript');
+								// console.log('adjusting according to previousTranscript');
 								//end_time may have been empty before the last itter of loop
 								previousTranscript.end_time = event.start_time;
 							}
@@ -775,7 +775,7 @@ angular.module('com.inthetelling.story')
 
 		// Don't call this until the master asset exists and episode events have loaded!
 		svc.addEndingScreen = function (episodeId) {
-			console.log("addEndingScreen", svc.episodes[episodeId].masterAsset);
+			// console.log("addEndingScreen", svc.episodes[episodeId].masterAsset);
 
 			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration);
 

@@ -68,10 +68,7 @@ angular.module('com.inthetelling.story')
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		console.log("playerController init");
-
 		errorSvc.init();
-		console.log($routeParams, appState);
 
 		if ($routeParams.epId) { // if this is missing we're in a narrative, which will init appstate and episodeID for us
 			appState.init();

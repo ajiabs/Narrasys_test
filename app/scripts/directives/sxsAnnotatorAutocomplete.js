@@ -67,7 +67,7 @@ angular.module('com.inthetelling.story')
 						scope.preselectedItem = -1;
 						var newFilter = {};
 						angular.forEach(scope.annotators, function (annotator) {
-							console.log(annotator.key.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1, annotator.key.toLowerCase(), scope.searchText.toLowerCase());
+							// console.log(annotator.key.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1, annotator.key.toLowerCase(), scope.searchText.toLowerCase());
 							if (annotator.key.toLowerCase().indexOf(scope.searchText.toLowerCase()) > -1) {
 								newFilter[annotator.key] = annotator;
 							}
@@ -95,7 +95,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.select = function (annotator) {
-					console.log("Selected ", annotator);
+					// console.log("Selected ", annotator);
 					scope.preselectedItem = -1;
 
 					if (annotator.annotation_image_id) {

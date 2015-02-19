@@ -32,7 +32,7 @@ angular.module('com.inthetelling.story')
 					// trim it back by 20% for some wiggle room, and cap it at 2000% zoom so we don't go nuts on short-duration events
 					scope.zoomLevel = Math.min(Math.max(Math.round(0.8 * toEnd / itemLength), 1), 20);
 
-					console.log("scope.zoomLevel = ", scope.zoomLevel);
+					// console.log("scope.zoomLevel = ", scope.zoomLevel);
 					timelineSvc.seek(item.start_time);
 					zoom();
 				};
@@ -70,11 +70,11 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.prevScene = function () {
-					console.log("prevScene");
+					// console.log("prevScene");
 					timelineSvc.prevScene();
 				};
 				scope.nextScene = function () {
-					console.log("nextScene");
+					// console.log("nextScene");
 					timelineSvc.nextScene();
 				};
 
@@ -161,7 +161,7 @@ angular.module('com.inthetelling.story')
 						break;
 					}
 					if (!passThrough) {
-						console.log("stop propagation");
+						// console.log("stop propagation");
 						$event.stopPropagation();
 						$event.preventDefault();
 					}

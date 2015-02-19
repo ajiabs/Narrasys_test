@@ -102,7 +102,7 @@ angular.module('com.inthetelling.story')
 			}, false);
 
 			$scope.changeVideoBandwidth = function () {
-				console.log("changeVideoBandwidth");
+				console.warn("changeVideoBandwidth");
 				// switch to the lower-bitrate stream, if there is one.
 
 				// According to spec we can't just update the dom via databinding, have to do it in script instead.
@@ -113,7 +113,7 @@ angular.module('com.inthetelling.story')
 				if ($scope.videoNode.currentSrc !== '') {
 					var ext = $scope.videoNode.currentSrc.match(/\.(\w+)$/)[1];
 					if ($scope.video.urls[ext][0] !== $scope.videoNode.currentSrc) {
-						console.log("Switching from ", $scope.videoNode.currentSrc, " to ", $scope.video.urls[ext][0]);
+						// console.log("Switching from ", $scope.videoNode.currentSrc, " to ", $scope.video.urls[ext][0]);
 
 						var currentTime = $scope.videoNode.currentTime;
 						$scope.videoNode.pause();

@@ -71,12 +71,12 @@ angular.module('com.inthetelling.story')
 						// Optimistically delete the container from modelSvc.containers[containerToDelete.parent_id].children
 						// TODO This really ought to be a dataSvc thing, and shouldn't assume success
 						// (but the worst that happens is that something appears to be deleted when it wasn't, until next reload. Could be worse)
-						console.log("About to delete", containerToDelete);
+						// console.log("About to delete", containerToDelete);
 
 						var parentId = (containerToDelete.parent_id) ? containerToDelete.parent_id : containerToDelete.ancestry.replace(/.*\//, '');
 
 						var parent = modelSvc.containers[parentId];
-						console.log("parent is ", parent);
+						// console.log("parent is ", parent);
 						var newChildren = [];
 						angular.forEach(parent.children, function (child) {
 							if (child._id !== id) {
