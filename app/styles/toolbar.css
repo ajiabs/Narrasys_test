@@ -218,7 +218,7 @@ button {
 	margin-right: 0.5em;
 }
 .button-preview:before {
-	content: "⎋";
+	content: "✔";
 	font-size: 18px !important;
 	position: absolute;
 }

@@ -142,6 +142,13 @@ input[readonly] {
 	font-family: sans-serif;
 	font-size: 13px;
 }
+.authoringForm button {
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	border-radius: 0.3em;
+	font-family: sans-serif;
+	font-size: 13px;
+}
 .authoringForm .input label {
 	font-family: sans-serif;
 	font-size: 13px;
