@@ -178,6 +178,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			// force the timeline to stop until the video is ready again:
+			svc.stall();
 
 			var oldT = appState.time;
 			t = parseTime(t);
@@ -190,7 +191,6 @@ angular.module('com.inthetelling.story')
 
 			appState.time = t;
 			videoScope.seek(t, true);
-			svc.stall(true);
 			svc.updateEventStates();
 
 			// capture analytics data:
