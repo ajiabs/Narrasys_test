@@ -14,6 +14,7 @@ angular.module('com.inthetelling.story')
 				scope.loading = true;
 				scope.containers = modelSvc.containers;
 				scope.userHasRole = authSvc.userHasRole;
+				dataSvc.getCustomerList();
 				dataSvc.getContainerRoot().then(function (rootIDs) {
 					scope.root = {
 						children: []
