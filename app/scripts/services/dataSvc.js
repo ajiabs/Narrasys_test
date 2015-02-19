@@ -10,15 +10,52 @@
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, modelSvc, errorSvc, mockSvc, questionAnswersSvc, appState) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
 
+		svc.getNarrative = function (narrativeId) {
+			return GET("/v3/narratives/" + narrativeId + "/resolve", function (data) {
+				modelSvc.cache("narrative", svc.resolveIDs(data));
+				return modelSvc.narratives[data._id];
+			});
+		};
+
+		svc.getNarrativeOverview = function (narrativeId) {
+			return GET("/v3/narratives/" + narrativeId);
+		};
+
+		svc.getUserNarratives = function (userId) {
+			return GET("/v3/users/" + userId + "/narrative_purchases");
+		};
+
+		svc.getCustomerList = function () {
+			return GET("/v3/customers/", function (customers) {
+				angular.forEach(customers, function (customer) {
+					modelSvc.cache("customer", customer);
+				});
+			});
+		};
+
+		svc.getCustomer = function (customerId) {
+			if (modelSvc.customers[customerId]) {
+				// have it already, or at least already getting it
+				return;
+			} else {
+				// cache a stub:
+				modelSvc.cache("customer", {
+					_id: customerId
+				});
+				GET("/v3/customers/" + customerId, function (customer) {
+					modelSvc.cache("customer", customer); // the real thing
+				});
+			}
+		};
+
 		// getEpisode just needs to retrieve all episode data from the API, and pass it on
 		// to modelSvc.  No promises needed, let the $digest do the work
-		svc.getEpisode = function (epId) {
-			console.log("dataSvc.getEpisode");
+		svc.getEpisode = function (epId, segmentId) {
 			if (!epId) {
 				throw ("no episode ID supplied to dataSvc.getEpisode");
 			}
@@ -39,12 +76,86 @@ angular.module('com.inthetelling.story')
 						return getCommon();
 					})
 					.then(function () {
-						return getEpisode(epId);
+						return getEpisode(epId, segmentId);
 					});
 			}
 		};
 		svc.getEpisodeOverview = function (epId) {
 			return GET("/v3/episodes/" + epId);
+		};
+
+		svc.getEpisodeOverview = function (epId) {
+			return GET("/v3/episodes/" + epId);
+		};
+		svc.getNarrativeList = function () {
+			return GET("/v3/narratives/");
+		};
+
+		svc.createUserGroup = function (groupName) {
+			return POST("/v3/groups", {
+				"group": {
+					"name": groupName
+				}
+			});
+		};
+
+		svc.createNarrative = function (narrativeData) {
+			delete narrativeData.templateUrl;
+			return POST("/v3/narratives", narrativeData);
+		};
+		svc.updateNarrative = function (narrativeData) {
+			delete narrativeData.templateUrl;
+			return PUT("/v3/narratives/" + narrativeData._id, narrativeData);
+		};
+
+		svc.createChildEpisode = function (childData) {
+			console.log("about to create child epsiode", childData);
+			return POST("/v3/episodes", {
+				"episode": childData
+			});
+		};
+
+		svc.createEpisodeSegment = function (narrativeId, segmentData) {
+			return POST("/v3/timelines/" + narrativeId + "/episode_segments", segmentData);
+		};
+
+		svc.storeTimeline = function (narrativeId, timeline) {
+			console.log("About to store timeline", timeline);
+			if (timeline._id) {
+				return PUT("/v3/timelines/" + timeline._id, timeline, function (ret) {
+					// TEMPORARY until api stops doing this
+					if (typeof ret.name === 'string') {
+						ret.name = {
+							en: ret.name
+						};
+					}
+					if (typeof ret.description === 'string') {
+						ret.description = {
+							en: ret.description
+						};
+					}
+					return ret;
+				});
+			} else {
+				return POST("/v3/narratives/" + narrativeId + "/timelines", timeline, function (ret) {
+					// TEMPORARY until api stops doing this
+					if (typeof ret.name === 'string') {
+						ret.name = {
+							en: ret.name
+						};
+					}
+					if (typeof ret.description === 'string') {
+						ret.description = {
+							en: ret.description
+						};
+					}
+					return ret;
+				});
+			}
+		};
+
+		svc.getSingleAsset = function (assetId) {
+			return GET("/v1/assets/" + assetId);
 		};
 
 		var dataCache = {
@@ -140,6 +251,11 @@ angular.module('com.inthetelling.story')
 		svc.resolveIDs = function (obj) {
 			// console.log("resolving IDs", obj);
 
+			// temporary:
+			if (obj.everyone_group && !obj.template_id) {
+				obj.templateUrl = "templates/narrative/default.html";
+			}
+
 			if (obj.template_id) {
 				if (dataCache.template[obj.template_id]) {
 					obj.templateUrl = dataCache.template[obj.template_id].url;
@@ -186,20 +302,22 @@ angular.module('com.inthetelling.story')
 		};
 
 		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
-		var getEpisode = function (epId) {
-			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId)
-				.success(function (episodeData) {
-					episodeData = episodeData || {};
-					// console.log("episode: ", episodeData);
-					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
+		var getEpisode = function (epId, segmentId) {
 
+			// The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
+
+			var url = (segmentId) ? "/v3/episode_segments/" + segmentId + "/resolve" : "/v3/episodes/" + epId;
+			$http.get(url)
+				.success(function (ret) {
+
+					var episodeData = {};
+					if (ret) {
+						episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
+					}
+					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
-						getEpisodeEvents(epId);
-
-						// this will get the episode container and its assets, then iterate up the chain to all parent containers
-						// (In retrospect, would have been easier to just get all containers at once, but maybe someday we will have soooo many containers
-						// that this will be worthwhile)
+						getEpisodeEvents(epId, segmentId);
 						svc.getContainer(episodeData.container_id, epId);
 					} else {
 						errorSvc.error({
@@ -214,13 +332,14 @@ angular.module('com.inthetelling.story')
 				});
 		};
 
-		var getEpisodeEvents = function (epId) {
-			$http.get(config.apiDataBaseUrl + "/v3/episodes/" + epId + "/events")
+		var getEpisodeEvents = function (epId, segmentId) {
+			var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
+
+			$http.get(config.apiDataBaseUrl + endpoint)
 				.success(function (events) {
-
 					getEventActivityDataForUser(events, "Plugin", epId);
-
 					angular.forEach(events, function (eventData) {
+						eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
 						modelSvc.cache("event", svc.resolveIDs(eventData));
 					});
 					// Tell modelSvc it can build episode->scene->item child arrays
@@ -276,6 +395,8 @@ angular.module('com.inthetelling.story')
 				.success(function (containers) {
 					modelSvc.cache("container", containers[0]);
 
+					svc.getCustomer(containers[0].customer_id);
+
 					// ensure container children refers to modelSvc cache:
 					var container = modelSvc.containers[containers[0]._id];
 					if (container.children) {
@@ -284,19 +405,16 @@ angular.module('com.inthetelling.story')
 						}
 
 						// QUICK HACK to get episode status for inter-episode nav; stuffing it into the container data
-						// Wasteful of API calls, discards useful data.
-
-						if (modelSvc.episodes[episodeId].navigation_depth > 0) {
-							angular.forEach(container.children, function (child) {
-								if (child.episodes[0]) {
-									svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
-										child.status = overview.status;
-										child.title = overview.title; // name == container, title == episode
-										modelSvc.cache("container", child); // trigger setLang
-									});
-								}
-							});
-						}
+						// Wasteful of API calls, discards useful data
+						angular.forEach(container.children, function (child) {
+							if (child.episodes[0]) {
+								svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
+									child.status = overview.status;
+									child.title = overview.title; // name == container, title == episode
+									modelSvc.cache("container", child); // trigger setLang
+								});
+							}
+						});
 					}
 
 					// iterate to parent container
@@ -348,30 +466,36 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-		var PUT = function (path, putData) {
+		var PUT = function (path, putData, postprocessCallback) {
 			var defer = $q.defer();
 			$http({
 					method: 'PUT',
 					url: config.apiDataBaseUrl + path,
 					data: putData
 				})
-				.success(function (data) {
-					// console.log("Updated event:", data);
-					return defer.resolve(data);
+				.success(function (response) {
+					var ret = response;
+					if (postprocessCallback) {
+						ret = postprocessCallback(ret);
+					}
+					defer.resolve(ret);
 				});
 			return defer.promise;
 		};
 
-		var POST = function (path, postData) {
+		var POST = function (path, postData, postprocessCallback) {
 			var defer = $q.defer();
 			$http({
 					method: 'POST',
 					url: config.apiDataBaseUrl + path,
 					data: postData
 				})
-				.success(function (data) {
-					// console.log("Updated event:", data);
-					return defer.resolve(data);
+				.success(function (response) {
+					var ret = response;
+					if (postprocessCallback) {
+						ret = postprocessCallback(ret);
+					}
+					defer.resolve(ret);
 				});
 			return defer.promise;
 		};
@@ -458,7 +582,7 @@ angular.module('com.inthetelling.story')
 
 			POST("/v3/containers", newContainer)
 				.then(function (data) {
-					console.log("CREATED CONTAINER", data);
+					// console.log("CREATED CONTAINER", data);
 					modelSvc.cache("container", data);
 
 					var parentId;

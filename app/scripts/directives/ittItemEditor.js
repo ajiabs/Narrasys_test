@@ -15,7 +15,7 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/producer/item.html',
 			controller: 'EditController',
 			link: function (scope) {
-				// console.log("EditController", scope.item);
+				// console.log("ittItemEditor", scope.item);
 				scope.uploadStatus = [];
 				scope.uneditedItem = angular.copy(scope.item); // in case of cancel
 				scope.annotators = modelSvc.episodes[appState.episodeId].annotators;

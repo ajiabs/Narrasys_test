@@ -181,7 +181,9 @@ angular.module('com.inthetelling.story')
 			if (data["track_episode_metrics:"]) {
 				user.track_episode_metrics = true;
 			}
-
+			if (user.roles) {
+				user.role_description = getRoleDescription(user.roles[0]);
+			}
 			appState.user = user;
 			try {
 				localStorage.setItem(config.localStorageKey, JSON.stringify({
@@ -189,7 +191,25 @@ angular.module('com.inthetelling.story')
 					customer: user.customer
 				}));
 			} catch (e) {}
+		};
 
+		var getRoleDescription = function (roleKey) {
+			if (roleKey === 'admin') {
+				return "Administrator";
+			}
+			if (roleKey === undefined) {
+				return "User";
+			}
+			if (roleKey === "guest") {
+				return "Guest user";
+			}
+			if (roleKey.match(/student/i)) {
+				return "Student";
+			}
+			if (roleKey.match(/instructor/i)) {
+				return "Instructor";
+			}
+			return roleKey;
 		};
 
 		svc.getNonce = function () {

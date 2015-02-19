@@ -1,0 +1,17 @@
+<div class="">
+
+	<div class="ancillaryNav">
+		<a class="button" ng-if="user._id" href="/#/user">Home</a>
+		<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
+	</div>
+
+
+	<div ng-if="userHasRole('admin')">
+		<div ng-repeat="narrative in narratives">
+			<a href="/#/story/{{narrative.path.en}}">{{narrative.name.en}}</a>
+		</div>
+		<hr>
+		<a ng-if="showAddNarrative" href="/#/story/?admin">Create new narrative</a>
+	</div>
+
+</div>

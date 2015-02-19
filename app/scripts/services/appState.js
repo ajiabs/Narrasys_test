@@ -16,6 +16,7 @@ angular.module('com.inthetelling.story')
 		svc.init = function () {
 			svc.user = svc.user || {}; // whatever authSvc gets back from getAccessToken
 			svc.episodeId = false; // ID of current episode
+			svc.episodeSegmentId = false; // ID of current episode segment (only relevant in narratives)
 
 			/* jshint -W116 */
 			svc.isFramed = (window.parent != window); // are we inside an iframe?  Don't use !== because IE8 gets it wrong
@@ -50,7 +51,7 @@ angular.module('com.inthetelling.story')
 			svc.autoscrollBlocked = false; // User has disabled autoscroll
 
 			svc.product = svc.product; // "player", "sxs", or "producer"
-
+			svc.productLoadedAs = svc.productLoadedAs; // same as product but only set on initial load, this lets producer toggle back to player preview temporarily
 			if (svc.product === 'sxs' || svc.product === 'producer') {
 				svc.crossEpisodePath = svc.product;
 			} else {

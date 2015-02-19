@@ -62,17 +62,26 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		$scope.toggleProducerPreview = function () {
+			appState.product = (appState.product === 'producer') ? 'player' : 'producer';
+		};
+
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-		// console.log("playerController init");
-		appState.init();
+		console.log("playerController init");
 
 		errorSvc.init();
-		appState.episodeId = $routeParams.epId;
-		modelSvc.addLandingScreen(appState.episodeId);
-		dataSvc.getEpisode(appState.episodeId);
+		console.log($routeParams, appState);
 
-		console.log("USER:", appState.user, appState.product);
+		if ($routeParams.epId) { // if this is missing we're in a narrative, which will init appstate and episodeID for us
+			appState.init();
+			appState.episodeId = $routeParams.epId;
+		} else {
+			$scope.narrativeId = $routeParams.narrativeId;
+		}
+
+		modelSvc.addLandingScreen(appState.episodeId);
+		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
 
 		// Watch for the first load of the episode data; init page title and crossnav when found
 

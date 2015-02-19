@@ -20,8 +20,11 @@
 			<!-- .title is the episode, .name is the container -->
 			{{child.name.en}}
 			<span style="opacity:0.7">({{child.status}})</span>
+			<div ng-if="child.showGuestUrl">The guest-accessible URL for this episode is:
+				<br>https://{{customer.domains[0]}}.inthetelling.com/#/auth?episode={{child.episodes[0]}}</div>
 
 			<small>
+				<a ng-if="customer.guest_access_allowed" ng-click="child.showGuestUrl=true">[Guest]</a>
 				<a href="#/episode/{{child.episodes[0]}}">[Player]</a>
 				<a ng-if="isDemoServer" href="#/editor/{{child.episodes[0]}}">[Editor]</a>
 				<a href="#/producer/{{child.episodes[0]}}">[Producer]</a>

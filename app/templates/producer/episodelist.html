@@ -1,4 +1,11 @@
 <div itt-episode-list class="admin">
+	<!-- TODO dress this up with standaloneAncillaryPage? -->
+	<div cass="ancillaryNav">
+		<a ng-if="userHasRole('admin')" href="/#/">[Home]</a>
+		<a ng-if="user._id" ng-click="logout()">[Log out] </a>
+		<a ng-if="narrative.support_url" ng-href="{{narrative.support_url}}">[Support]</a>
+	</div>
+
 	<!-- TODO proper i18n -->
 	<div ng-if="userHasRole('admin')">
 
@@ -16,4 +23,3 @@
 	</div>
 	<div ng-if="!userHasRole('admin') || (!loading && (failedLogin || root.children.length == 0))">Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.</div>
 
-	<div x-ng-controller="ErrorController" x-ng-include="'templates/error.html'"></div>

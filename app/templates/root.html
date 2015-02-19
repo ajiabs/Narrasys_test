@@ -1,15 +1,22 @@
-<div class="rootLogin" itt-login>
+<div class="rootLogin standaloneAncillaryPage" itt-login>
 	<div class="inner" style="height: 100%">
-		<div ng-if="appState.user.roles">
-			You're currently logged in as {{appState.user.roles}}
-			<br>
-			<a ng-if="userHasRole('admin')" href="/#/episodes">Find episodes</a>
-			<br>
-			<a ng-click="logout()">Log out</a>
+		<div ng-if="appState.user._id">
+
+			<div itt-user></div>
+
 		</div>
 
-		<div ng-if="!appState.user.roles">
-			<form ng-submit="adminLogin()">
+		<div ng-if="!appState.user._id">
+
+
+			<div>
+				<a class="bigredbutton" href="{{apiDataBaseUrl}}/oauth2">Begin</a>
+			</div>
+			<div ng-click="showAdminLogin=1;" style="margin-top: 1em;font-size: 0.86em;display:block">
+				<a ng-if="showAdminLogin!=1">Admin</a>
+			</div>
+
+			<form ng-submit="adminLogin()" ng-if="showAdminLogin">
 				<h1>Administrators</h1>
 				<label>
 					<span>Username</span>
@@ -25,9 +32,6 @@
 				<span class="error" ng-if="badlogin">Sorry, try again?</span>
 			</form>
 
-			<p>
-				Or login <a href="{{apiDataBaseUrl}}/oauth2">via OAuth</a>
-			</p>
 		</div>
 
 

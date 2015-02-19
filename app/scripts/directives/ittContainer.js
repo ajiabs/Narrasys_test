@@ -18,7 +18,9 @@ angular.module('com.inthetelling.story')
 				return recursionHelper.compile(element, function (scope) {
 					scope.appState = appState;
 					scope.containers = modelSvc.containers;
+					scope.customer = modelSvc.customers[scope.container.customer_id];
 
+					console.log(scope.container.customer_id);
 					// TEMP obviously
 					scope.isDemoServer = ($location.host().match(/demo|localhost|api-dev|client.dev/));
 
