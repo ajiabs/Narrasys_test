@@ -162,7 +162,6 @@ angular.module('com.inthetelling.story')
 				var getNextStartTime = function (currentScene, currentItem, items) {
 					var nextItem;
 					var nextStartTime = currentScene.end_time;
-					console.log('currentItem isTranscript', isTranscript(currentItem));
 					items = items.sort(sortByStartTime);
 					for (var i = 0, len = items.length; i < len; i++) {
 						if (items[i]._id === currentItem._id) {
