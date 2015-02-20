@@ -39,7 +39,7 @@
 							<span ng-if="!(item.stop || item._type === 'Scene')">
 								<span class="label">End</span>
 								<input ng-if="customEndTime" ng-change="setItemEndTime()" type="text" ng-model="item.end_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }">
-								<a class="fakeLink" ng-click="customEndTime = !customEndTime; item.end_time=100000">
+								<a class="fakeLink" ng-click="switchToAutoOrCustom(customEndTime)">
 									<span ng-if="customEndTime">(x)</span>
 									<span ng-if="!customEndTime">(auto)</span>
 								</a>
