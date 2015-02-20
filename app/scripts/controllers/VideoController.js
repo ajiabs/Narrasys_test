@@ -55,7 +55,7 @@ angular.module('com.inthetelling.story')
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
 					'onStateChange': function (x) {
-						// console.log("state change:", playerStates[x.data]);
+						console.log("state change:", playerStates[x.data]);
 						$scope.playerState = playerStates[x.data];
 						if ($scope.playerState === 'buffering') {
 							$scope.stall();
@@ -106,30 +106,43 @@ angular.module('com.inthetelling.story')
 			}, false);
 
 			$scope.changeVideoBandwidth = function () {
-				console.warn("changeVideoBandwidth");
-				// switch to the lower-bitrate stream, if there is one.
+				// console.log("changeVideoBandwidth");
+				var currentTime = $scope.videoNode.currentTime;
+				$scope.videoNode.pause();
 
-				// According to spec we can't just update the dom via databinding, have to do it in script instead.
-				// So don't do this:
-				// $scope.video.curStream = 0;
+				// TODO
+				// according to the html5 spec, just changing the DOM shouldn't work.  But it does.
+				// switch to the lower-bitrate stream
+				$scope.video.curStream = 0;
 
-				// Instead identify the currently-used file type, switch to the smaller version of the same type if there is one.
-				if ($scope.videoNode.currentSrc !== '') {
-					var ext = $scope.videoNode.currentSrc.match(/\.(\w+)$/)[1];
-					if ($scope.video.urls[ext][0] !== $scope.videoNode.currentSrc) {
-						// console.log("Switching from ", $scope.videoNode.currentSrc, " to ", $scope.video.urls[ext][0]);
+				analyticsSvc.captureEpisodeActivity('lowBandwidth');
+				// Need to wait a tick for the DOM to have updated before callign videoNode.load():
+				$timeout(function () {
+					$scope.videoNode.load();
+					$scope.seek(currentTime);
+					$scope.videoNode.play();
+				});
 
-						var currentTime = $scope.videoNode.currentTime;
-						$scope.videoNode.pause();
-						$scope.videoNode.src = $scope.video.urls[ext][0];
-						$scope.videoNode.load();
-						$scope.seek(currentTime);
-						$timeout(function () {
-							$scope.videoNode.play();
-						});
-						analyticsSvc.captureEpisodeActivity('lowBandwidth');
-					}
-				}
+				// TODO according to the html5 spec, the way we should change the video stream is like this. but iOS (at least) chokes on it:
+				/*
+								if ($scope.videoNode.currentSrc !== '') {
+									var ext = $scope.videoNode.currentSrc.match(/\.(\w+)$/)[1];
+									if ($scope.video.urls[ext][0] !== $scope.videoNode.currentSrc) {
+										console.log("Switching from ", $scope.videoNode.currentSrc, " to ", $scope.video.urls[ext][0]);
+
+										var currentTime = $scope.videoNode.currentTime;
+										$scope.videoNode.pause();
+										$scope.videoNode.src = $scope.video.urls[ext][0];
+										$scope.videoNode.load();
+										$scope.seek(currentTime);
+										$timeout(function () {
+											$scope.videoNode.play();
+										});
+										analyticsSvc.captureEpisodeActivity('lowBandwidth');
+									}
+								}
+				*/
+
 			};
 
 			$scope.babysitHTML5Video();
@@ -277,7 +290,6 @@ angular.module('com.inthetelling.story')
 				$scope.intentionalStall = !!intentionalStall;
 				if ($scope.videoType === 'youtube') {
 					var wasPlaying = (appState.timelineState === 'playing');
-					console.log("wasplaying:", wasPlaying);
 					$scope.YTPlayer.seekTo(t, true);
 					if (!wasPlaying) {
 						$scope.YTPlayer.pauseVideo(); // youtube always autoplays on seek.

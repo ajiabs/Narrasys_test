@@ -125,7 +125,6 @@ angular.module('com.inthetelling.story')
 			if (videoScope) {
 				videoScope.pause();
 			}
-
 			// TODO we're not using timed pauses yet...
 			// if (n) {
 			// 	$timeout(svc.play, (n * 1000 * Math.abs(timeMultiplier)));
@@ -136,7 +135,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		svc.stall = function (intentional) {
+		svc.stall = function () {
 			console.warn("timelineSvc.stall");
 			// called by videoController when video stalls.  Essentially similar to pause() but sets different states
 			// (and doesn't tell the video to pause)
@@ -144,10 +143,8 @@ angular.module('com.inthetelling.story')
 			stopEventClock();
 			clock = undefined;
 			lastTick = undefined;
-			svc.wasPlaying = (svc.wasPlaying || appState.timelineState === "playing");
-			if (!intentional) {
-				appState.timelineState = "buffering";
-			}
+			svc.wasPlaying = (appState.timelineState === "playing");
+			appState.timelineState = "buffering";
 		};
 
 		svc.unstall = function () {
@@ -155,7 +152,6 @@ angular.module('com.inthetelling.story')
 			// console.warn("timelineSvc.unstall");
 			if (svc.wasPlaying) {
 				appState.timelineState = "playing";
-				delete svc.wasPlaying;
 				svc.play();
 			} else {
 				appState.timelineState = "paused";
@@ -176,9 +172,7 @@ angular.module('com.inthetelling.story')
 				}, 300);
 				return;
 			}
-
-			// force the timeline to stop until the video is ready again:
-			svc.stall();
+			stopEventClock();
 
 			var oldT = appState.time;
 			t = parseTime(t);
@@ -192,6 +186,7 @@ angular.module('com.inthetelling.story')
 			appState.time = t;
 			videoScope.seek(t, true);
 			svc.updateEventStates();
+			stepEvent(true);
 
 			// capture analytics data:
 			if (method) {
