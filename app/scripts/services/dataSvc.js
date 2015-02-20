@@ -75,8 +75,8 @@ angular.module('com.inthetelling.story')
 			}); // init with empty object to be filled by asynch process
 
 			if ($routeParams.local) {
-				// console.log("LOCAL DATA");
 				mockSvc.mockEpisode(epId);
+				$rootScope.$emit("dataSvc.getEpisodeEvents.done");
 			} else {
 				authSvc.authenticate()
 					.then(function () {
