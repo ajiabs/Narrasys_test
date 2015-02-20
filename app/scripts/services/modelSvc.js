@@ -548,7 +548,7 @@ angular.module('com.inthetelling.story')
 							}
 							previousTranscript = event;
 						}
-
+						
 						if (event.end_time <= scene.end_time) {
 							// entirely within scene
 							svc.events[event._id].scene_id = scene._id;
@@ -561,6 +561,7 @@ angular.module('com.inthetelling.story')
 							} else {
 								// truncate and add to this one
 								event.end_time = scene.end_time;
+								event.scene_id = scene._id;
 								sceneItems.push(event);
 							}
 						}
