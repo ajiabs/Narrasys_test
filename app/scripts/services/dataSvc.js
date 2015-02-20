@@ -26,8 +26,19 @@ angular.module('com.inthetelling.story')
 			return GET("/v3/narratives/" + narrativeId);
 		};
 
+		var cachedPurchases = false;
 		svc.getUserNarratives = function (userId) {
-			return GET("/v3/users/" + userId + "/narrative_purchases");
+			if (cachedPurchases) {
+				var defer = $q.defer();
+				defer.resolve(cachedPurchases);
+				return defer.promise;
+			} else {
+				return GET("/v3/users/" + userId + "/narrative_purchases", function (data) {
+					cachedPurchases = data;
+					return data;
+				});
+
+			}
 		};
 
 		svc.getCustomerList = function () {

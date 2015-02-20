@@ -22,12 +22,14 @@ angular.module('com.inthetelling.story')
 					scope.user = appState.user;
 					scope.userHasRole = authSvc.userHasRole;
 
-					scope.getMyNarratives();
+					if (!scope.inPlayer && !scope.userHasRole('guest')) {
+						scope.getMyNarratives();
+					}
 				});
 
 				scope.getMyNarratives = function () {
 					dataSvc.getUserNarratives(scope.user._id).then(function (data) {
-						// console.log("purchase", data);
+						console.log("purchase", data);
 
 						scope.myPurchases = data;
 

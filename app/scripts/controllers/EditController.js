@@ -27,7 +27,6 @@ angular.module('com.inthetelling.story')
 				}
 			}
 			if ($scope.episode) {
-				// console.log("asset", asset);
 				//BUGBUG? - could episode be truthy and the asset be video during "item" edition (and not episode editing) 
 				// causing us to inadvertently change the master asset to the item video asset?  Due to using editcontroller for both item and episode
 				if (asset._type === 'Asset::Video') {
@@ -76,16 +75,12 @@ angular.module('com.inthetelling.story')
 				timelineSvc.updateSceneTimes(appState.episodeId);
 			}
 		};
-		var isTranscript = function (item) {
-			if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
-				return true;
-			} else {
-				return false;
-			}
-		};
-
+		
 		$scope.saveEvent = function () {
 			var toSave = angular.copy(appState.editEvent);
+
+			//assign current episode_id
+			toSave.cur_episode_id = appState.episodeId;
 			if (toSave._type === 'Scene') {
 				var adjusted = adjustScenes(toSave);
 				angular.forEach(adjusted, function (scene) {
@@ -97,13 +92,10 @@ angular.module('com.inthetelling.story')
 						});
 				});
 			}
-
-			if (isTranscript(toSave)) {
-				// console.log("woot transcript");
-			}
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
-					// console.log("storeItem");
+
+					data.cur_episode_id = appState.episodeId;
 					if (appState.editEvent._id === 'internal:editing') {
 						// update the new item with its real ID (and remove the temp version)
 						timelineSvc.removeEvent("internal:editing");
@@ -112,7 +104,6 @@ angular.module('com.inthetelling.story')
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 						timelineSvc.injectEvents([modelSvc.events[data._id]]);
 					}
-
 					appState.editEvent = false;
 				}, function (data) {
 					console.error("FAILED TO STORE EVENT", data);
@@ -272,18 +263,15 @@ angular.module('com.inthetelling.story')
 
 		$scope.saveEpisode = function () {
 			var toSave = angular.copy(appState.editEpisode);
-			// console.log('saving Episode');
 
 			$timeout(function () {
 				dataSvc.storeEpisode(toSave)
 					.then(function (data) {
 						//	$timeout(function () {
 						modelSvc.cache("episode", dataSvc.resolveIDs(data));
-						// console.log('saved Episode');
 						var scene = generateEmptyItem("scene");
 						var duration = modelSvc.assets[data.master_asset_id].duration;
 						if (!hasScenes()) {
-							// console.log('no scenes, creating one');
 							scene.start_time = 0;
 							scene.end_time = duration;
 							dataSvc.storeItem(scene)
@@ -400,7 +388,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.editEpisode = function () {
-			// console.log("editController editEpisode");
 			appState.editEpisode = modelSvc.episodes[appState.episodeId];
 			appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 			appState.videoControlsLocked = true;
@@ -408,7 +395,6 @@ angular.module('com.inthetelling.story')
 
 		$scope.deleteEvent = function (eventId) {
 			if (window.confirm("Are you sure you wish to delete this item?")) {
-				// console.log("About to delete ", eventId);
 				//fabricate scene event
 				var event = {};
 				event._id = eventId;
@@ -425,7 +411,6 @@ angular.module('com.inthetelling.story')
 				var eventType = modelSvc.events[eventId]._type;
 				dataSvc.deleteItem(eventId)
 					.then(function () {
-						// console.log("success deleting:", data);
 						if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
 							dataSvc.deleteAsset(modelSvc.events[eventId].asset._id);
 						}
@@ -446,7 +431,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.cancelEventEdit = function (originalEvent) {
-			// console.log("cancelEventEdit");
 			if (appState.editEvent._id === 'internal:editing') {
 				delete(modelSvc.events['internal:editing']);
 				timelineSvc.removeEvent("internal:editing");
@@ -466,7 +450,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.cancelEpisodeEdit = function (originalEvent) {
-			// console.log("cancelEpisodeEdit", originalEvent);
 
 			modelSvc.episodes[appState.episodeId] = originalEvent;
 

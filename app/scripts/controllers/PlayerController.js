@@ -98,6 +98,7 @@ angular.module('com.inthetelling.story')
 		// So newly-created episodes don't keep the loading spinner forever.
 		// TODO show a friendly "how to get started" message of some kind if there are no events / no master asset
 		$rootScope.$on("dataSvc.getEpisodeEvents.done", function () {
+			timelineSvc.init(appState.episodeId);
 			$scope.loading = false;
 		});
 
