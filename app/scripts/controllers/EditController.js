@@ -75,14 +75,7 @@ angular.module('com.inthetelling.story')
 				timelineSvc.updateSceneTimes(appState.episodeId);
 			}
 		};
-		var isTranscript = function (item) {
-			if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
-				return true;
-			} else {
-				return false;
-			}
-		};
-
+		
 		$scope.saveEvent = function () {
 			var toSave = angular.copy(appState.editEvent);
 
