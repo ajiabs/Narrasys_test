@@ -63,6 +63,7 @@ angular.module('com.inthetelling.story')
 			//captureCurrentScenes();
 			console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
+			newEvent.cur_episode_id = appState.episodeId;
 			modelSvc.cache("event", newEvent);
 
 			appState.editEvent = modelSvc.events["internal:editing"];
@@ -359,7 +360,7 @@ angular.module('com.inthetelling.story')
 			return a.start_time - b.start_time;
 		};
 
-				var adjustScenes = function (modifiedScene, isDelete) {
+		var adjustScenes = function (modifiedScene, isDelete) {
 			var scenes = getScenesSnapshot();
 			var adjusted = [];
 
