@@ -122,8 +122,9 @@ angular.module('com.inthetelling.story')
 			lastTick = undefined;
 
 			appState.timelineState = "paused";
-			videoScope.pause();
-
+			if (videoScope) {
+				videoScope.pause();
+			}
 			// TODO we're not using timed pauses yet...
 			// if (n) {
 			// 	$timeout(svc.play, (n * 1000 * Math.abs(timeMultiplier)));

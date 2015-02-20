@@ -106,10 +106,8 @@ angular.module('com.inthetelling.story')
 				var currentTime = $scope.videoNode.currentTime;
 				$scope.videoNode.pause();
 
-				// TEST URLs:
-				// $scope.video.urls.mpeg4 = "https://s3.amazonaws.com/itt.uploads/development/API%20Development/Course%201/Session%201/Episode%201/v_7abjCKYdnezGGXoX7neg_960x540.mp4";
-				// $scope.video.urls.webm = "https://s3.amazonaws.com/itt.uploads/development/API%20Development/Course%201/Session%201/Episode%201/v_7abjCKYdnezGGXoX7neg_960x540.webm";
-
+				// TODO
+				// according to the html5 spec, just changing the DOM shouldn't work.  But it does.
 				// switch to the lower-bitrate stream
 				$scope.video.curStream = 0;
 
@@ -120,6 +118,27 @@ angular.module('com.inthetelling.story')
 					$scope.seek(currentTime);
 					$scope.videoNode.play();
 				});
+
+				// TODO according to the html5 spec, the way we should change the video stream is like this. but iOS (at least) chokes on it:
+				/*
+								if ($scope.videoNode.currentSrc !== '') {
+									var ext = $scope.videoNode.currentSrc.match(/\.(\w+)$/)[1];
+									if ($scope.video.urls[ext][0] !== $scope.videoNode.currentSrc) {
+										console.log("Switching from ", $scope.videoNode.currentSrc, " to ", $scope.video.urls[ext][0]);
+
+										var currentTime = $scope.videoNode.currentTime;
+										$scope.videoNode.pause();
+										$scope.videoNode.src = $scope.video.urls[ext][0];
+										$scope.videoNode.load();
+										$scope.seek(currentTime);
+										$timeout(function () {
+											$scope.videoNode.play();
+										});
+										analyticsSvc.captureEpisodeActivity('lowBandwidth');
+									}
+								}
+				*/
+
 			};
 
 			$scope.babysitHTML5Video();
