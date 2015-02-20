@@ -272,23 +272,19 @@ angular.module('com.inthetelling.story')
 
 		$scope.saveEpisode = function () {
 			var toSave = angular.copy(appState.editEpisode);
-			// console.log('saving Episode');
 
 			$timeout(function () {
 				dataSvc.storeEpisode(toSave)
 					.then(function (data) {
-						//	$timeout(function () {
 						modelSvc.cache("episode", dataSvc.resolveIDs(data));
-						// console.log('saved Episode');
 						var scene = generateEmptyItem("scene");
+						scene.cur_episode_id = appState.episodeId;
 						var duration = modelSvc.assets[data.master_asset_id].duration;
 						if (!hasScenes()) {
-							// console.log('no scenes, creating one');
 							scene.start_time = 0;
 							scene.end_time = duration;
 							dataSvc.storeItem(scene)
 								.then(function () {
-									// console.log("default scene created");
 								}, function (data) {
 									console.error("FAILED TO STORE EVENT", data);
 								});
@@ -301,7 +297,6 @@ angular.module('com.inthetelling.story')
 						appState.videoControlsLocked = false;
 
 						$scope.moveEventsAfter(duration);
-						//		}, 0);
 					}, function (data) {
 						console.error("FAILED TO STORE EPISODE", data);
 					});
