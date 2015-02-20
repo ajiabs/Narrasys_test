@@ -11,7 +11,7 @@
 					<div class="item" ng-repeat="item in sceneItems=
 						(scene.items 
 						| orderBy:'startTime' 
-						| filter:{'searchableText': searchText, 'cosmetic': false}
+						| filter:{'searchableText': searchText||'', 'cosmetic': false}
 						)" ng-include="'templates/item/searchresults.html'">
 					</div>
 				</div>
@@ -24,12 +24,12 @@
 					<div class="item" ng-repeat="item in typeItems=
 						(episode.items 
 						| orderBy:'startTime' 
-						| filter:{'type': typeID, 'searchableText': searchText, 'cosmetic': false}
+						| filter:{'type': typeID, 'searchableText': searchText||'', 'cosmetic': false}
 						)" ng-include="'templates/item/searchresults.html'">
 					</div>
 				</div>
 			</div>
-			<div ng-if="(episode.items | filter:{'searchableText': searchText, 'cosmetic': false}).length == 0">
+			<div ng-if="(episode.items | filter:{'searchableText': searchText||'', 'cosmetic': false}).length == 0">
 				(Nothing matched your search.)
 			</div>
 		</div>
