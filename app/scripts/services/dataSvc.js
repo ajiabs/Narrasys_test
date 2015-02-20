@@ -409,15 +409,20 @@ angular.module('com.inthetelling.story')
 							container.children[i] = modelSvc.containers[container.children[i]._id];
 						}
 
-						// QUICK HACK to get episode status for inter-episode nav; stuffing it into the container data
+						// QUICK HACK to get episode title and status for inter-episode nav; stuffing it into the container data
 						// Wasteful of API calls, discards useful data
 						angular.forEach(container.children, function (child) {
 							if (child.episodes[0]) {
 								svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
-									overview = overview || {};
-									child.status = overview.status;
-									child.title = overview.title; // name == container, title == episode
-									modelSvc.cache("container", child); // trigger setLang
+									if (overview) {
+										child.status = overview.status;
+										child.title = overview.title; // name == container, title == episode
+										modelSvc.cache("container", child); // trigger setLang
+									} else {
+										// This shouldn't ever happen, but apparently it does.
+										// (Is this a permissions error? adding warning to help track it down)
+										console.error("Got no episode data for ", child.episodes[0]);
+									}
 								});
 							}
 						});
@@ -560,10 +565,15 @@ angular.module('com.inthetelling.story')
 					angular.forEach(container.children, function (child) {
 						if (child.episodes[0]) {
 							svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
-								overview = overview || {};
-								child.status = overview.status;
-								child.title = overview.title; // name == container name, title == episode name
-								modelSvc.cache("container", child); // trigger setLang
+								if (overview) {
+									child.status = overview.status;
+									child.title = overview.title; // name == container, title == episode
+									modelSvc.cache("container", child); // trigger setLang
+								} else {
+									// This shouldn't ever happen, but apparently it does.
+									// (Is this a permissions error? adding warning to help track it down)
+									console.error("Got no episode data for ", child.episodes[0]);
+								}
 							});
 						}
 					});
