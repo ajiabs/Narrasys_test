@@ -55,10 +55,13 @@ angular.module('com.inthetelling.story')
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
 					'onStateChange': function (x) {
-						console.log("state change:", playerStates[x.data]);
+						// console.log("state change:", playerStates[x.data]);
 						$scope.playerState = playerStates[x.data];
 						if ($scope.playerState === 'buffering') {
 							$scope.stall();
+						} else {
+							// timelineSvc intentionally stalls during seek events, need to inform it to resume:
+							timelineSvc.unstall();
 						}
 					}
 				}
