@@ -18,8 +18,7 @@ angular.module('com.inthetelling.story')
 			},
 			templateUrl: 'templates/producer/episode.html',
 			controller: 'EditController',
-			link: function (scope, element) {
-				console.log("element", element);
+			link: function (scope) {
 				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
 				var container = modelSvc.containers[scope.episodeContainerId];
@@ -51,7 +50,6 @@ angular.module('com.inthetelling.story')
 
 				// extract episode languages for the form
 				scope.langForm = {};
-				scope.episode.languages = scope.episode.languages || [];
 				for (var j = 0; j < scope.episode.languages.length; j++) {
 					scope.langForm[scope.episode.languages[j].code] = true;
 				}
@@ -99,7 +97,7 @@ angular.module('com.inthetelling.story')
 				scope.watchStyleEdits = scope.$watch(function () {
 					return scope.itemForm;
 				}, function () {
-					console.log("itemForm:", scope.itemForm);
+					// console.log("itemForm:", scope.itemForm);
 					var styles = [];
 					for (var styleType in scope.itemForm) {
 						if (scope.itemForm[styleType]) {
@@ -125,11 +123,12 @@ angular.module('com.inthetelling.story')
 						'episode.navigation_depth'
 					],
 					function (newVal, oldVal) {
+						// console.log("DETECTED CHANGE", newVal, oldVal);
 						if (newVal[0] !== oldVal[0]) { // templateUrl
 							// Some templates have built-in color and typography selections; need to update them along with the template.
 							// TODO This would be a lot simpler if I hadn't chosen such a dumb structure for style info...
-							console.log("Template changed from ", oldVal[0], " to ", newVal[0]);
-							console.log(scope.episode.styles);
+							// console.log("Template changed from ", oldVal[0], " to ", newVal[0]);
+							// console.log(scope.episode.styles);
 							var fixStyles = [];
 
 							//oldVal may be empty if newly created episode
@@ -152,7 +151,7 @@ angular.module('com.inthetelling.story')
 								}
 							});
 							scope.episode.styles = angular.copy(fixStyles);
-							console.log("Updated styles:", scope.episode.styles);
+							// console.log("Updated styles:", scope.episode.styles);
 
 						}
 
@@ -184,7 +183,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.setMasterAsset = function (asset) {
-					console.log("asset:", asset);
+					// console.log("asset:", asset);
 
 					if (!scope.episode.template_id) {
 						//set the default template url...
@@ -195,14 +194,16 @@ angular.module('com.inthetelling.story')
 
 					appState.duration = modelSvc.assets[scope.episode.master_asset_id].duration;
 					dataSvc.storeEpisode(scope.episode);
-					//createDefaultScene(appState.duration);
+
 					modelSvc.deriveEpisode(scope.episode);
 					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
 				scope.uploadAsset = function (files) {
 					scope.uploads = awsSvc.uploadFiles(files);
+
 					scope.uploads[0].then(function (data) {
+						modelSvc.cache("asset", data.file);
 
 						var previousMasterAsset = angular.copy(scope.masterAsset);
 						scope.checkAndConfirmDuration(previousMasterAsset, data.file, function (confirmed) {
@@ -214,7 +215,6 @@ angular.module('com.inthetelling.story')
 						});
 						delete scope.uploads;
 					}, function () {
-						console.log("fail");
 						//console.log("FAIL", );
 					}, function (update) {
 						scope.uploadStatus[0] = update;
@@ -231,60 +231,61 @@ angular.module('com.inthetelling.story')
 					return "//www.youtube.com/embed/" + ytId;
 				};
 				scope.attachYouTube = function (url) {
-						console.log("attachYouTube");
-						url = embeddableYoutubeUrl(url);
+					// console.log("attachYouTube");
+					url = embeddableYoutubeUrl(url);
 
-						if (typeof (scope.masterAsset) === 'undefined') {
-							scope.masterAsset = {};
-							scope.masterAsset.urls = {};
-						}
-						//			scope.masterAsset.you_tube_url = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
-						//			scope.masterAsset.urls["youtube"] = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
-						//			scope.masterAsset.videoType = "youtube";
-						//			scope.appState.videoType = "youtube";
-						//			scope.appState.duration = 123;
-						scope.episode.masterAsset = scope.masterAsset;
-						modelSvc.deriveEpisode(scope.episode);
-						modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-						modelSvc.resolveEpisodeAssets(scope.episode._id);
+					if (typeof (scope.masterAsset) === 'undefined') {
+						scope.masterAsset = {};
+						scope.masterAsset.urls = {};
+					}
+					//			scope.masterAsset.you_tube_url = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
+					//			scope.masterAsset.urls["youtube"] = 'http://www.youtube.com/embed/RrSL7_dyV38?autoplay=1';
+					//			scope.masterAsset.videoType = "youtube";
+					//			scope.appState.videoType = "youtube";
+					//			scope.appState.duration = 123;
+					scope.episode.masterAsset = scope.masterAsset;
+					modelSvc.deriveEpisode(scope.episode);
+					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+					modelSvc.resolveEpisodeAssets(scope.episode._id);
 
-						console.log("url", url);
-						console.log("attach you tube asset", scope.masterAsset);
-						var hasMasterAsset = true;
-						if (typeof scope.masterAsset !== 'undefined') {
-							if (typeof scope.masterAsset._id === 'undefined') {
-								hasMasterAsset = false;
-							}
-						} else {
+					// console.log("url", url);
+					// console.log("attach you tube asset", scope.masterAsset);
+					var hasMasterAsset = true;
+					if (typeof scope.masterAsset !== 'undefined') {
+						if (typeof scope.masterAsset._id === 'undefined') {
 							hasMasterAsset = false;
 						}
+					} else {
+						hasMasterAsset = false;
+					}
 
-						console.log('save the asset');
-						var asset = {}; //createDefaultAsset()
-						asset.you_tube_url = asset.url = url;
-						console.log("episode", scope.episode);
-						//var toSave = angular.copy(appState.editEpisode);
-						console.log('toSave - asset ', asset);
-						dataSvc.createAsset(scope.episodeContainerId, asset)
-							.then(function (data) {
-								modelSvc.cache("asset", data);
-								var asset = modelSvc.assets[data.file._id];
+					// console.log('save the asset');
+					var asset = {}; //createDefaultAsset()
+					asset.you_tube_url = asset.url = url;
+					// console.log("episode", scope.episode);
+					//var toSave = angular.copy(appState.editEpisode);
+					// console.log('toSave - asset ', asset);
+					dataSvc.createAsset(scope.episodeContainerId, asset)
+						.then(function (data) {
+							modelSvc.cache("asset", data);
+							var asset = modelSvc.assets[data.file._id];
 
-								asset.you_tube_url = url;
-								scope.setMasterAsset(asset);
-								modelSvc.deriveEpisode(scope.episode);
-								modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-								modelSvc.resolveEpisodeAssets(scope.episode._id);
+							asset.you_tube_url = url;
+							scope.setMasterAsset(asset);
+							modelSvc.deriveEpisode(scope.episode);
+							modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+							modelSvc.resolveEpisodeAssets(scope.episode._id);
 
-							}, function () {
-								console.log("fail");
-							});
+						}, function () {
+							console.warn("dataSvc.createAsset failed");
+						});
 
-					};
-
+				};
 
 				scope.deleteAsset = function (assetId) {
 					console.log("deleteAsset", assetId);
+					console.warn("NOT IMPLEMENTED(?)");
+					//TODO...?
 				};
 				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event/episode:
 				scope.detachAsset = function () {
@@ -293,7 +294,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.selectText = function (event) {
-					event.target.select();
+					event.target.select(); // convenience for selecting the episode url
 				};
 
 				scope.$on('$destroy', function () {

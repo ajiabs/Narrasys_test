@@ -10,7 +10,7 @@
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -31,14 +31,21 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getCustomerList = function () {
+			if (!authSvc.userHasRole('admin')) {
+				return false;
+			}
 			return GET("/v3/customers/", function (customers) {
 				angular.forEach(customers, function (customer) {
 					modelSvc.cache("customer", customer);
 				});
 			});
+
 		};
 
 		svc.getCustomer = function (customerId) {
+			if (!authSvc.userHasRole('admin')) {
+				return false;
+			}
 			if (modelSvc.customers[customerId]) {
 				// have it already, or at least already getting it
 				return;
@@ -344,6 +351,7 @@ angular.module('com.inthetelling.story')
 					});
 					// Tell modelSvc it can build episode->scene->item child arrays
 					modelSvc.resolveEpisodeEvents(epId);
+					$rootScope.$emit("dataSvc.getEpisodeEvents.done");
 				});
 		};
 
@@ -382,9 +390,6 @@ angular.module('com.inthetelling.story')
 
 			// Also (wastefully) requests episode status on all children, so we can do interepisode nav
 
-			// TODO check cache first to see if we already have this container!
-			console.log("getContainer", containerId, episodeId);
-			console.log(modelSvc.episodes[episodeId]);
 			if (!modelSvc.containers[containerId]) {
 				modelSvc.cache("container", {
 					"_id": containerId
