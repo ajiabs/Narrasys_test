@@ -72,7 +72,7 @@ angular.module('com.inthetelling.story')
 					if (scope.item.yturl) {
 						scope.item.url = embeddableYTUrl(scope.item.yturl);
 					}
-
+					//TODO: performance improvement, this resolve gets called a ton.  For example on every letter you type in an Author name.
 					modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
 					modelSvc.cache("event", scope.item);
 					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
@@ -110,19 +110,17 @@ angular.module('com.inthetelling.story')
 					// this is silly but it works.
 					appState.editEvent.fnord = (appState.editEvent.fnord) ? "" : "fnord";
 				};
-				// var isTranscript = function (item) {
-				// 	if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
-				// 		return true;
-				// 	} else {
-				// 		return false;
-				// 	}
-				// };
+				var isTranscript = function (item) {
+					if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
+						return true;
+					} else {
+						return false;
+					}
+				};
 				scope.setItemTime = function () {
 					// triggered when user changes start time in the input field
 
 					// TODO ensure within episode duration. If too close to a scene start, match to scene start. If end time not in same scene, change end time to end of scene / beginning of next transcript
-					console.log("setItemTime");
-					console.log(scope.item._id, scope.item.start_time);
 
 					if (scope.item._type === 'Scene') {
 						modelSvc.resolveEpisodeEvents(appState.episodeId); // reparent events to new scene times if necessary
@@ -135,12 +133,6 @@ angular.module('com.inthetelling.story')
 						modelSvc.resolveEpisodeEvents(appState.episodeId); // redundant but necessary
 						timelineSvc.updateEventTimes(scope.item);
 					} else {
-
-						// TODO
-						// if end time is "auto"
-						// 	if transcript, set end time to start of next transcript
-						// 	else set end time to end of scene
-
 						modelSvc.resolveEpisodeEvents(appState.episodeId); // in case the item has changed scenes
 
 						// for now, just using end of scene if the currently set end time is invalid.
@@ -151,16 +143,62 @@ angular.module('com.inthetelling.story')
 					}
 
 				};
+				var sortByStartTime = function (a, b) {
+					return a.start_time - b.start_time;
+				};
 
 				scope.setItemEndTime = function () {
-					//console.log("END TIME", scope);
-					// TODO ensure within same scene, not before start
 					if (scope.item.end_time <= scope.item.start_time || scope.item.end_time > modelSvc.events[scope.item.scene_id].end_time) {
 						scope.item.end_time = modelSvc.events[scope.item.scene_id].end_time;
 					}
 					timelineSvc.updateEventTimes(scope.item);
 				};
+				var getTranscriptItems = function () {
+					var episode = modelSvc.episodes[appState.episodeId];
+					var allItems = angular.copy(episode.items);
+					return allItems.filter(isTranscript);
+				};
 
+				var getNextStartTime = function (currentScene, currentItem, items) {
+					var nextItem;
+					var nextStartTime = currentScene.end_time;
+					console.log('currentItem isTranscript', isTranscript(currentItem));
+					items = items.sort(sortByStartTime);
+					for (var i = 0, len = items.length; i < len; i++) {
+						if (items[i]._id === currentItem._id) {
+							//the next item start_time if less than scen end time
+							nextItem = items[i + 1];
+							break;
+						}
+					}
+					if (nextItem) {
+						if (nextItem.start_time < currentScene.end_time) {
+							nextStartTime = nextItem.start_time;
+						}
+					}
+					return nextStartTime;
+				};
+
+				scope.switchToAutoOrCustom = function (isSwitchingFromCustom) {
+					if (isSwitchingFromCustom) {
+						var items = isTranscript(scope.item) ? getTranscriptItems() : [];
+						scope.item.end_time = getNextStartTime(modelSvc.events[scope.item.scene_id], scope.item, items);
+						scope.customEndTime = false;
+					} else {
+						scope.customEndTime = true;
+					}
+				};
+				scope.isAutoEndTime = function () {
+					var items = isTranscript(scope.item) ? getTranscriptItems() : [];
+					var nextStartTime = getNextStartTime(modelSvc.events[scope.item.scene_id], scope.item, items);
+					if (scope.item.end_time === nextStartTime) {
+						return true;
+					} else {
+						return false;
+					}
+
+				};
+				scope.customEndTime = !scope.isAutoEndTime();
 				scope.dismissalWatcher = $rootScope.$on("player.dismissAllPanels", scope.cancelEdit);
 
 				scope.cancelEdit = function () {
