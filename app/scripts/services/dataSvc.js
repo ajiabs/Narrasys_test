@@ -31,14 +31,21 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getCustomerList = function () {
+			if (!authSvc.userHasRole('admin')) {
+				return false;
+			}
 			return GET("/v3/customers/", function (customers) {
 				angular.forEach(customers, function (customer) {
 					modelSvc.cache("customer", customer);
 				});
 			});
+
 		};
 
 		svc.getCustomer = function (customerId) {
+			if (!authSvc.userHasRole('admin')) {
+				return false;
+			}
 			if (modelSvc.customers[customerId]) {
 				// have it already, or at least already getting it
 				return;
@@ -68,8 +75,8 @@ angular.module('com.inthetelling.story')
 			}); // init with empty object to be filled by asynch process
 
 			if ($routeParams.local) {
-				// console.log("LOCAL DATA");
 				mockSvc.mockEpisode(epId);
+				$rootScope.$emit("dataSvc.getEpisodeEvents.done");
 			} else {
 				authSvc.authenticate()
 					.then(function () {
@@ -402,14 +409,20 @@ angular.module('com.inthetelling.story')
 							container.children[i] = modelSvc.containers[container.children[i]._id];
 						}
 
-						// QUICK HACK to get episode status for inter-episode nav; stuffing it into the container data
+						// QUICK HACK to get episode title and status for inter-episode nav; stuffing it into the container data
 						// Wasteful of API calls, discards useful data
 						angular.forEach(container.children, function (child) {
 							if (child.episodes[0]) {
 								svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
-									child.status = overview.status;
-									child.title = overview.title; // name == container, title == episode
-									modelSvc.cache("container", child); // trigger setLang
+									if (overview) {
+										child.status = overview.status;
+										child.title = overview.title; // name == container, title == episode
+										modelSvc.cache("container", child); // trigger setLang
+									} else {
+										// This shouldn't ever happen, but apparently it does.
+										// (Is this a permissions error? adding warning to help track it down)
+										console.error("Got no episode data for ", child.episodes[0]);
+									}
 								});
 							}
 						});
@@ -552,9 +565,15 @@ angular.module('com.inthetelling.story')
 					angular.forEach(container.children, function (child) {
 						if (child.episodes[0]) {
 							svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
-								child.status = overview.status;
-								child.title = overview.title; // name == container name, title == episode name
-								modelSvc.cache("container", child); // trigger setLang
+								if (overview) {
+									child.status = overview.status;
+									child.title = overview.title; // name == container, title == episode
+									modelSvc.cache("container", child); // trigger setLang
+								} else {
+									// This shouldn't ever happen, but apparently it does.
+									// (Is this a permissions error? adding warning to help track it down)
+									console.error("Got no episode data for ", child.episodes[0]);
+								}
 							});
 						}
 					});

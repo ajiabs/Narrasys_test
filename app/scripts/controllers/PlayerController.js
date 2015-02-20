@@ -99,7 +99,6 @@ angular.module('com.inthetelling.story')
 		// TODO show a friendly "how to get started" message of some kind if there are no events / no master asset
 		$rootScope.$on("dataSvc.getEpisodeEvents.done", function () {
 			$scope.loading = false;
-
 		});
 
 		var eventsWatcher = $scope.$watch(function () {
@@ -118,6 +117,21 @@ angular.module('com.inthetelling.story')
 				eventsWatcher(); // stop watching
 			}
 		});
+
+		// keep non-admins from seeing the producer interface
+		if (appState.productLoadedAs === 'producer') {
+			var rolesWatcher = $scope.$watch(function () {
+				return appState.user;
+			}, function (x) {
+				if (Object.keys(x).length) {
+					rolesWatcher();
+					if (!authSvc.userHasRole('admin')) {
+						appState.product = 'player';
+						appState.productLoadedAs = 'player';
+					}
+				}
+			});
+		}
 
 		$scope.appState = appState;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read

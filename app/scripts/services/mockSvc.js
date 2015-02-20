@@ -76,6 +76,7 @@ angular.module('com.inthetelling.story')
 				"end_time": 200,
 				"type": "Scene",
 				"episode_id": epId,
+				"cur_episode_id": epId,
 				//"templateUrl": "templates/scene/centered.html",
 				"layouts": ["", ""],
 				"styles": ["transitionSlideL"]
@@ -116,6 +117,7 @@ angular.module('com.inthetelling.story')
 				},
 				"cosmetic": false,
 				"episode_id": epId,
+				"cur_episode_id": epId,
 				"required": false,
 				"stop": false,
 				"type": "Annotation",
@@ -212,6 +214,7 @@ angular.module('com.inthetelling.story')
 				"stop": false,
 				"type": "Link",
 				"episode_id": epId,
+				"cur_episode_id": epId,
 				"templateUrl": "templates/item/link-withimage.html",
 				"layouts": ["inline"],
 				"styles": ["timestampNone"],
@@ -243,6 +246,7 @@ angular.module('com.inthetelling.story')
 				"type": "Plugin",
 				"producerItemType": "question",
 				"episode_id": epId,
+				"cur_episode_id": epId,
 				"templateUrl": "templates/item/question-mc.html",
 				"style_id": [],
 				"layout_id": [],
@@ -287,6 +291,7 @@ angular.module('com.inthetelling.story')
 				"type": "Plugin",
 				"producerItemType": "question",
 				"episode_id": epId,
+				"cur_episode_id": epId,
 				"templateUrl": "templates/item/question-mc.html",
 				"style_id": [],
 				"layout_id": [],
@@ -333,6 +338,7 @@ angular.module('com.inthetelling.story')
 				"stop": false,
 				"type": "Upload",
 				"episode_id": epId,
+				"cur_episode_id": epId,
 				"templateUrl": "templates/item/image-caption.html",
 				"styles": [
 					"transitionFade", "tl"
