@@ -10,7 +10,15 @@
 	<div ng-if="userHasRole('admin')">
 
 		<div ng-if="loading" ng-include="'templates/loading.html'"></div>
-
+		<div ng-if="!loading">
+			<p>Greetings, Administrator! Here are the currently known issues to be aware of:</p>
+			<ul style="margin-left: 1em">
+				<li>This page looks terrible</li>
+				<li>Episode creation and master asset upload is not 100%. For now, continue to use old authoring to initialize new episodes</li>
+				<li>Event end times will try to reset themselves to their 'auto' value (usually the end of the scene) when you start editing them.</li>
+				<li>"Auto" end times aren't updated properly when you add or change other events that would affect their timing. (Adding transcript B after transcript A won't update transcript A's end time correctly yet.)</li>
+			</ul>
+		</div>
 
 		<!-- 	<div ng-if="!loading" class="controls">
 		<label>
@@ -22,4 +30,3 @@
 		<div ng-repeat="child in root.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="0"></div>
 	</div>
 	<div ng-if="!userHasRole('admin') || (!loading && (failedLogin || root.children.length == 0))">Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.</div>
-
