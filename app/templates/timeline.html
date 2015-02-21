@@ -47,20 +47,34 @@
 					<div class="handle" ng-show="isSeeking && !appState.editEvent" ng-style="{left: markerPercent(willSeekTo)+'%'}">
 						<div class="tip" ng-show="seekHandleVisible">{{willSeekTo | asTime}}</div>
 					</div>
-					<div class="handle sxsHandle playhead" ng-show="appState.editEvent" ng-style="{left: markerPercent(willSeekTo)+'%'}">
-						<div class="tip">{{willSeekTo | asTime}}</div>
-					</div>
-
 					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}">
 						<span class="content" ng-bind-html="event.display_title || '(&quot;Hidden&quot; scene)'"></span>
 					</div>
-					<div ng-if="appState.editEvent" class="editingItem" ng-style="{left: markerPercent(appState.editEvent.start_time)+'%', right: markerPercent(appState.duration - appState.editEvent.end_time)+'%'}"></div>
+
+					<!-- draggable handles for start/end time editing. TODO make draggable, move them somewhere
+					that doesn't incidentally trigger setting appState.time -->
+
+					<div class="handle sxsHandle playhead" ng-show="appState.editEvent" ng-style="{left: markerPercent(appState.editEvent.start_time)+'%'}">
+						<div class="tip" ng-click="">{{appState.editEvent.start_time | asTime}}</div>
+					</div>
+
+					<!-- TODO make this one visible only when end_time != auto
+					<div class="handle sxsHandle playhead" ng-show="appState.editEvent" ng-style="{left: markerPercent(appState.editEvent.end_time)+'%'}">
+						<div class="tip">{{appState.editEvent.end_time | asTime}}</div>
+					</div>
+ -->
+					<!-- end of draggable handles -->
+
 				</div>
 				<div class="playhead mask">
 					<!-- interactive parts of timeline -->
 					<div class="progressbarContainer " ng-style="{width: zoomLevel+'00%'}">
 						<!-- scene markers -->
 						<div class="marker" ng-mouseover="showTooltip(event);" ng-mouseout="hideTooltip(event)" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}" ng-if="event.display_title || appState.product == 'producer'" ng-class="{mini: (!event.display_title)}"></div>
+
+						<!-- highlight item being edited -->
+						<div ng-if="appState.editEvent" class="editingItem" ng-style="{left: markerPercent(appState.editEvent.start_time)+'%', right: markerPercent(appState.duration - appState.editEvent.end_time)+'%'}"></div>
+
 					</div>
 				</div>
 			</div>
