@@ -160,6 +160,12 @@ angular.module('com.inthetelling.story')
 				};
 
 				var getNextStartTime = function (currentScene, currentItem, items) {
+
+					//HACK to work around TS-412
+					if (!currentScene) {
+						console.warn("getNextStartTime called with no scene (becuase it's being called for a scene event?)", currentItem, items);
+						return false;
+					}
 					var nextItem;
 					var nextStartTime = currentScene.end_time;
 					items = items.sort(sortByStartTime);
