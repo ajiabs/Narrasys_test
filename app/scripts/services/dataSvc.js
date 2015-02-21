@@ -45,10 +45,12 @@ angular.module('com.inthetelling.story')
 			if (!authSvc.userHasRole('admin')) {
 				return false;
 			}
+			console.log("getCustomerList");
 			return GET("/v3/customers/", function (customers) {
 				angular.forEach(customers, function (customer) {
 					modelSvc.cache("customer", customer);
 				});
+				return customers;
 			});
 
 		};
