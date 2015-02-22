@@ -177,11 +177,17 @@ angular.module('com.inthetelling.story')
 					}
 					return nextStartTime;
 				};
-
+				var getCurrentScene = function (item) {
+					if (item._type === 'Scene') {
+						return item;
+					} else {
+						return modelSvc.events[scope.item.scene_id];
+					}
+				};
 				scope.switchToAutoOrCustom = function (isSwitchingFromCustom) {
 					if (isSwitchingFromCustom) {
 						var items = isTranscript(scope.item) ? getTranscriptItems() : [];
-						scope.item.end_time = getNextStartTime(modelSvc.events[scope.item.scene_id], scope.item, items);
+						scope.item.end_time = getNextStartTime(getCurrentScene(scope.item), scope.item, items);
 						scope.customEndTime = false;
 					} else {
 						scope.customEndTime = true;
@@ -189,7 +195,7 @@ angular.module('com.inthetelling.story')
 				};
 				scope.isAutoEndTime = function () {
 					var items = isTranscript(scope.item) ? getTranscriptItems() : [];
-					var nextStartTime = getNextStartTime(modelSvc.events[scope.item.scene_id], scope.item, items);
+					var nextStartTime = getNextStartTime(getCurrentScene(scope.item), scope.item, items);
 					if (scope.item.end_time === nextStartTime) {
 						return true;
 					} else {
