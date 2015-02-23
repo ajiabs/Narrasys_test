@@ -3,14 +3,13 @@
 angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
 
-		// sort items so that inline items are displayed last
+		// sort items so that inline items are displayed after simultaneous sidebar items.
+		// (Other sorting already done for us before this, so mostly return 0 during the sort) 
+		// (TODO this should really happen as part of modelSvc sort, not here)
 		var sortItems = function (itemArray) {
 			itemArray.sort(function (a, b) {
-				if (a.start_time !== b.start_time) {
-					return a - b;
-				} else if (!b.layouts) {
+				if (a.start_time !== b.start_time || !b.layouts) {
 					return 0;
-
 				} else {
 					if (b.layouts.indexOf("sidebarL") > -1 || b.layouts.indexOf("sidebarR") > -1) {
 						return 1;
@@ -21,10 +20,10 @@ angular.module('com.inthetelling.story')
 			});
 
 			// for (var i = 0; i < itemArray.length; i++) {
-			// 	console.log(itemArray[i].start_time, itemArray[i].layouts[0]);
+			// 	console.log(itemArray[i].start_time, itemArray[i].layouts);
 			// }
 
-			// we're passing in already-scoped arrays, mainContentItems and altContentItems, here
+			// This is working in place against already-scoped arrays, mainContentItems and altContentItems. no return needed
 			//return itemArray;
 		};
 
