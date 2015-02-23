@@ -104,9 +104,6 @@ angular.module('com.inthetelling.story')
 			return GET("/v3/episodes/" + epId);
 		};
 
-		svc.getEpisodeOverview = function (epId) {
-			return GET("/v3/episodes/" + epId);
-		};
 		svc.getNarrativeList = function () {
 			return GET("/v3/narratives/");
 		};
@@ -267,6 +264,21 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+		// TODO more template management: add/delete/edit
+		svc.createTemplate = function (templateData) {
+			// TEMPORARY.  Doesn't check to see if it's adding a duplicate, or do any other sort of data prophylaxis
+			/*  sample:
+			{
+				url: 'templates/item/foo.html',
+				name: 'foo',
+				event_types: ['Upload'], // Upload, Scene, Plugin, Annotation, Link
+				applies_to_episode: false,
+				applies_to_narrative: false
+			}
+			*/
+			return POST("/v1/templates", templateData);
+		};
+
 		// transform API common IDs into real values
 		svc.resolveIDs = function (obj) {
 			// console.log("resolving IDs", obj);
@@ -424,21 +436,25 @@ angular.module('com.inthetelling.story')
 
 						// QUICK HACK to get episode title and status for inter-episode nav; stuffing it into the container data
 						// Wasteful of API calls, discards useful data
-						angular.forEach(container.children, function (child) {
-							if (child.episodes[0]) {
-								svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
-									if (overview) {
-										child.status = overview.status;
-										child.title = overview.title; // name == container, title == episode
-										modelSvc.cache("container", child); // trigger setLang
-									} else {
-										// This shouldn't ever happen, but apparently it does.
-										// (Is this a permissions error? adding warning to help track it down)
-										console.error("Got no episode data for ", child.episodes[0]);
-									}
-								});
-							}
-						});
+						if (modelSvc.episodes[episodeId].navigation_depth > 0) {
+							angular.forEach(container.children, function (child) {
+								if (child.episodes[0]) {
+									svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
+										if (overview) {
+											child.status = overview.status;
+											child.title = overview.title; // name == container, title == episode
+											modelSvc.cache("container", child); // trigger setLang
+										} else {
+											// This shouldn't ever happen, but apparently it does.
+											// (Is this a permissions error? adding warning to help track it down)
+											console.error("Got no episode data for ", child.episodes[0]);
+										}
+									});
+								}
+							});
+						} else {
+							console.log("Not getting sibling data, no interep nav");
+						}
 					}
 
 					// iterate to parent container
