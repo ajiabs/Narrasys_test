@@ -202,6 +202,9 @@ angular.module('com.inthetelling.story')
 				// console.log($scope.videoNode.currentTime, appState.timelineState);
 				if (appState.timelineState === 'playing') {
 					if ($scope.lastPlayheadTime === $scope.videoNode.currentTime) {
+						if (!$scope.intentionalStall) {
+							analyticsSvc.captureEpisodeActivity("stall");
+						}
 						timelineSvc.stall();
 						if (!$scope.intentionalStall && numberOfStalls++ === 2) {
 							$scope.changeVideoBandwidth();
@@ -225,6 +228,7 @@ angular.module('com.inthetelling.story')
 		});
 
 		$scope.stall = function () {
+			// NOTE this is only called for youtube; native video uses babysitHtml5Video instead.  TODO refactor, because that's damn confusing
 			// notify timelineSvc if the video stalls during playback
 			if (appState.timelineState !== 'playing') {
 				return;
