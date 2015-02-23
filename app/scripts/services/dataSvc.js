@@ -452,8 +452,8 @@ angular.module('com.inthetelling.story')
 									});
 								}
 							});
-						} else {
-							console.log("Not getting sibling data, no interep nav");
+							// } else {
+							// 	console.log("Not getting sibling data, no interep nav");
 						}
 					}
 
