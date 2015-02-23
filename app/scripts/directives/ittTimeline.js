@@ -19,6 +19,8 @@ angular.module('com.inthetelling.story')
 				scope.handlePosition = 0; // position of draghandle (as a fraction of full timeline)
 				scope.zoomLevel = 1; // multiples by which the timeline is zoomed in
 				scope.zoomOffset = 0; // multiple by which the timeline is offset to the left
+
+				// these classnames and variable names aren't confusing AT ALL.  Curse you, past Daniel
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');
 
@@ -29,10 +31,8 @@ angular.module('com.inthetelling.story')
 					var toEnd = (appState.duration - item.end_time);
 
 					// toEnd/itemLength puts the item end at the right edge of the visible playhead.
-					// trim it back by 20% for some wiggle room, and cap it at 2000% zoom so we don't go nuts on short-duration events
-					scope.zoomLevel = Math.min(Math.max(Math.round(0.8 * toEnd / itemLength), 1), 20);
-
-					// console.log("scope.zoomLevel = ", scope.zoomLevel);
+					// trim it back by 40% for some wiggle room, and cap it at 2000% zoom so we don't go nuts on short-duration events
+					scope.zoomLevel = Math.min(Math.max(Math.round(0.6 * toEnd / itemLength), 1), 20);
 					timelineSvc.seek(item.start_time);
 					zoom();
 				};

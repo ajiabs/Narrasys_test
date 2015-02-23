@@ -29,7 +29,7 @@ angular.module('com.inthetelling.story')
 
 				scope.getMyNarratives = function () {
 					dataSvc.getUserNarratives(scope.user._id).then(function (data) {
-						console.log("purchase", data);
+						// console.log("purchase", data);
 
 						scope.myPurchases = data;
 
