@@ -3,7 +3,7 @@
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
 
 angular.module('com.inthetelling.story')
-	.directive('sxsInputTime', function (appState) {
+	.directive('sxsInputTime', function (appState, $timeout) {
 		return {
 			// require: 'ngModel',
 			scope: {
@@ -58,11 +58,15 @@ angular.module('com.inthetelling.story')
 				// Watch for user input, send it to item if different
 				scope.$watch(function () {
 					return scope.parse(scope.model);
-				}, function (m) {
+				}, function (t) {
 					// console.log(m, scope.parse(m), scope.format(m));
-					scope.item[attrs.inputField] = scope.parse(m);
-					scope.model = scope.format(m);
+					scope.setTime(t);
 				});
+
+				scope.setTime = function (t) {
+					scope.item[attrs.inputField] = scope.parse(t);
+					scope.model = scope.format(t);
+				};
 
 				/* These are from back when I was cargo-culting using ngModel directly:
 				ngModel.$parsers.push(function toModel(data) {
@@ -75,13 +79,21 @@ angular.module('com.inthetelling.story')
 				*/
 
 				scope.showTools = function (x) {
-					scope.tooltip = x;
+					if (x) {
+						scope.tooltip = true;
+					} else {
+						// allow time for clicks before we unload the thing being clicked on:
+						$timeout(function () {
+							scope.tooltip = false;
+						}, 200);
+					}
 				};
 
 				scope.isTranscript = function () {
 					// TODO
 					return true;
-				}
+				};
+
 			}
 		};
 	});

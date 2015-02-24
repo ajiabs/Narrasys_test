@@ -3,7 +3,7 @@
 	<div class="floater" ng-if="tooltip">
 		Set to:
 		<ul style="list-style:none;">
-			<li ng-click="TODO">
+			<li ng-click="setTime(appState.time)">
 				<a>Current time ({{format(appState.time)}})</a>
 			</li>
 			<li ng-if="fieldname=='start_time'" ng-click="TODO">
