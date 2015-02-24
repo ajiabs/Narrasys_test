@@ -3,7 +3,7 @@
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
 
 angular.module('com.inthetelling.story')
-	.directive('sxsInputTime', function (appState, $timeout) {
+	.directive('sxsInputTime', function (appState, $timeout, modelSvc) {
 		return {
 			// require: 'ngModel',
 			scope: {
@@ -51,9 +51,10 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.fieldname = angular.copy(attrs.inputField); // start_time or end_time
-
-				scope.model = scope.format(angular.copy(scope.item[attrs.inputField]));
+				scope.model = scope.format(angular.copy(scope.item[attrs.inputField])); // our internal version of the user input
 				scope.appState = appState;
+
+				scope.scene = (scope.item.type === 'Scene') ? scope.item : modelSvc.events[scope.item.scene_id];
 
 				// Watch for user input, send it to item if different
 				scope.$watch(function () {
