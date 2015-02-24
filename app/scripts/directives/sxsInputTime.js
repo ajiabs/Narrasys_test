@@ -54,6 +54,7 @@ angular.module('com.inthetelling.story')
 				scope.model = scope.format(angular.copy(scope.item[attrs.inputField])); // our internal version of the user input
 				scope.appState = appState;
 
+				// TODO scope.scene needs to update during editing if the event being edited is moved from one scene to another!
 				scope.scene = (scope.item.type === 'Scene') ? scope.item : modelSvc.events[scope.item.scene_id];
 
 				// Watch for user input, send it to item if different
