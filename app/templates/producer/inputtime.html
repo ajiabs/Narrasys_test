@@ -1,0 +1,21 @@
+<span class="floaterContainer">
+	<input ng-model="model" ng-focus="showTools(true)" ng-blur="showTools(false)" ng-model-options="{ updateOn: 'blur' }" style="max-width: 150px">
+	<div class="floater" ng-if="tooltip">
+		Set to:
+		<ul style="list-style:none;">
+			<li ng-click="TODO">
+				<a>Current time ({{format(appState.time)}})</a>
+			</li>
+			<li ng-if="fieldname=='start_time'" ng-click="TODO">
+				<a>Beginning of scene ({{TODO}})</a>
+			</li>
+			<li ng-if="fieldname=='end_time'" ng-click="TODO">
+				<a>End of scene ({{TODO}})</a>
+			</li>
+			<li ng-if="fieldname=='end_time' && isTranscript()" ng-click="TODO">
+				<a>Auto ({{TODO}})</a>
+			</li>
+		</ul>
+
+	</div>
+</span>

@@ -5,10 +5,15 @@
 angular.module('com.inthetelling.story')
 	.directive('sxsInputTime', function (appState) {
 		return {
-			require: 'ngModel',
+			// require: 'ngModel',
+			scope: {
+				item: '=sxsInputTime',
+			},
+			templateUrl: 'templates/producer/inputtime.html',
 			link: function (scope, elem, attrs, ngModel) {
-				ngModel.$parsers.push(function toModel(data) {
-					// console.log("Converting ", data, " to model");
+
+				scope.parse = function (data) {
+					// console.log("Converting view ", data, " to model");
 					var ret;
 					if (data === undefined || data === '') {
 						ret = appState.time;
@@ -28,16 +33,14 @@ angular.module('com.inthetelling.story')
 					} else {
 						ret = data;
 					}
-					// First scene is bumped a bit after the landing screen...
+					// HACK First scene is bumped a bit after the landing screen...
 					if (ret < 0.01) {
 						ret = 0.01;
 					}
-					//  TODO I want this to trigger the formatter again, but there doesn't seem to be an easy way to do that: ngModel.$render() doesn't
 					return ret;
+				};
 
-				});
-
-				ngModel.$formatters.push(function toView(data) {
+				scope.format = function (data) {
 					// convert model value to view value
 					var ret = Math.floor(data / 60) + ":" + ("0" + Math.floor(data) % 60).slice(-2);
 					var fraction = (data + "").slice(4, 6);
@@ -45,8 +48,40 @@ angular.module('com.inthetelling.story')
 						ret = ret + "." + fraction;
 					}
 					return ret;
+				};
 
+				scope.fieldname = angular.copy(attrs.inputField); // start_time or end_time
+
+				scope.model = scope.format(angular.copy(scope.item[attrs.inputField]));
+				scope.appState = appState;
+
+				// Watch for user input, send it to item if different
+				scope.$watch(function () {
+					return scope.parse(scope.model);
+				}, function (m) {
+					// console.log(m, scope.parse(m), scope.format(m));
+					scope.item[attrs.inputField] = scope.parse(m);
+					scope.model = scope.format(m);
 				});
+
+				/* These are from back when I was cargo-culting using ngModel directly:
+				ngModel.$parsers.push(function toModel(data) {
+					return scope.parse(data);
+				});
+
+				ngModel.$formatters.push(function toView(data) {
+					return scope.format(data);
+				});
+				*/
+
+				scope.showTools = function (x) {
+					scope.tooltip = x;
+				};
+
+				scope.isTranscript = function () {
+					// TODO
+					return true;
+				}
 			}
 		};
 	});
