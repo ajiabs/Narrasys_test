@@ -49,6 +49,15 @@ angular.module('com.inthetelling.story')
 					}
 					return ret;
 				};
+				/* These are from back when I was cargo-culting using ngModel directly:
+				ngModel.$parsers.push(function toModel(data) {
+					return scope.parse(data);
+				});
+
+				ngModel.$formatters.push(function toView(data) {
+					return scope.format(data);
+				});
+				*/
 
 				scope.fieldname = angular.copy(attrs.inputField); // start_time or end_time
 				scope.model = scope.format(angular.copy(scope.item[attrs.inputField])); // our internal version of the user input
@@ -70,16 +79,6 @@ angular.module('com.inthetelling.story')
 					scope.model = scope.format(t);
 				};
 
-				/* These are from back when I was cargo-culting using ngModel directly:
-				ngModel.$parsers.push(function toModel(data) {
-					return scope.parse(data);
-				});
-
-				ngModel.$formatters.push(function toView(data) {
-					return scope.format(data);
-				});
-				*/
-
 				scope.showTools = function (x) {
 					if (x) {
 						scope.tooltip = true;
@@ -87,7 +86,7 @@ angular.module('com.inthetelling.story')
 						// allow time for clicks before we unload the thing being clicked on:
 						$timeout(function () {
 							scope.tooltip = false;
-						}, 200);
+						}, 300);
 					}
 				};
 
