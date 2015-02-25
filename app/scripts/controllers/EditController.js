@@ -11,16 +11,20 @@ angular.module('com.inthetelling.story')
 			});
 			$scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
 		};
+
+		// TODO these were failing to match against the API types (which are "Upload", "Scene", "Plugin" or "Link" )
+		// Not sure if the existing ones ('link', 'image', 'annotation') need to be there, I'm leaving them in for now
+
 		$scope.selectedAsset = function (asset_id) {
 			var asset = modelSvc.assets[asset_id];
 			$scope.masterAsset = asset;
 			if ($scope.item) {
 				$scope.item.asset = asset;
-				if ($scope.item.type === 'image') {
+				if ($scope.item.type === 'image' || $scope.item.type === 'Upload' || $scope.item.type === 'Plugin') {
 					$scope.item.asset_id = asset_id;
-				} else if ($scope.item.type === 'link') {
+				} else if ($scope.item.type === 'link' || $scope.item.type === 'Link') {
 					$scope.item.link_image_id = asset_id;
-				} else if ($scope.item.type === 'annotation') {
+				} else if ($scope.item.type === 'annotation' || $scope.item.type === 'Annotation') {
 					$scope.item.annotation_image_id = asset_id;
 				} else {
 					console.error("Tried to select asset for unknown item type", $scope.item);
@@ -75,7 +79,7 @@ angular.module('com.inthetelling.story')
 				timelineSvc.updateSceneTimes(appState.episodeId);
 			}
 		};
-		
+
 		$scope.saveEvent = function () {
 			var toSave = angular.copy(appState.editEvent);
 
