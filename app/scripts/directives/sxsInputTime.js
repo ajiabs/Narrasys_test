@@ -10,7 +10,7 @@ angular.module('com.inthetelling.story')
 				item: '=sxsInputTime',
 			},
 			templateUrl: 'templates/producer/inputtime.html',
-			link: function (scope, elem, attrs, ngModel) {
+			link: function (scope, elem, attrs) {
 
 				scope.parse = function (data) {
 					// console.log("Converting view ", data, " to model");
