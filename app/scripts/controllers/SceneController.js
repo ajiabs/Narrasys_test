@@ -3,30 +3,6 @@
 angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
 
-		// sort items so that inline items are displayed after simultaneous sidebar items.
-		// (Other sorting already done for us before this, so mostly return 0 during the sort) 
-		// (TODO this should really happen as part of modelSvc sort, not here)
-		var sortItems = function (itemArray) {
-			itemArray.sort(function (a, b) {
-				if (a.start_time !== b.start_time || !b.layouts) {
-					return 0;
-				} else {
-					if (b.layouts.indexOf("sidebarL") > -1 || b.layouts.indexOf("sidebarR") > -1) {
-						return 1;
-					} else {
-						return 0;
-					}
-				}
-			});
-
-			// for (var i = 0; i < itemArray.length; i++) {
-			// 	console.log(itemArray[i].start_time, itemArray[i].layouts);
-			// }
-
-			// This is working in place against already-scoped arrays, mainContentItems and altContentItems. no return needed
-			//return itemArray;
-		};
-
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");
 
@@ -91,10 +67,6 @@ angular.module('com.inthetelling.story')
 					i = $scope.mainContentItems.length; // no need to keep checking the rest
 				}
 			}
-			if ($scope.mainContentItems.length) {
-				// console.log("mainContentItems:");
-				sortItems($scope.mainContentItems);
-			}
 
 			for (i = 0; i < $scope.altContentItems.length; i++) {
 				if ($.inArray("burstL", $scope.altContentItems[i].layouts) > -1 ||
@@ -111,10 +83,6 @@ angular.module('com.inthetelling.story')
 					$scope.altContentHasBothSidebars = true;
 					i = $scope.altContentItems.length; // no need to keep checking the rest
 				}
-			}
-			if ($scope.altContentItems.length) {
-				// console.log("altContentItems:");
-				sortItems($scope.altContentItems);
 			}
 		};
 
