@@ -757,13 +757,14 @@ angular.module('com.inthetelling.story')
 			//  The data we want to store:
 			var fields = [
 				"_id",
-				"producerItemType",
-				"start_time",
+				//				"producerItemType", // Nope
 				"end_time",
 				"episode_id",
 				"template_id",
 				"templateUrl",
 				"stop",
+				"required",
+				"cosmetic",
 				"sxs",
 				"title",
 				"url",
