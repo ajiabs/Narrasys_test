@@ -16,7 +16,7 @@ angular.module('com.inthetelling.story')
 			},
 			templateUrl: "templates/item/question-mc-inner.html",
 			link: function (scope) {
-				
+
 				scope.scoreQuiz = function (i) {
 					scope.plugin.distractors[i].selected = true;
 					scope.plugin.hasBeenAnswered = true;
@@ -37,7 +37,7 @@ angular.module('com.inthetelling.story')
 							label: {
 								show: true,
 								background: {
-									opacity: 0.3
+									opacity: 0.7
 								}
 							}
 						}
@@ -72,7 +72,6 @@ angular.module('com.inthetelling.story')
 					return chartData;
 				};
 
-
 				if (scope.plugin.hasBeenAnswered === true) {
 					if (typeof scope.plugin.answer_counts === 'undefined') {
 						scope.plugin.answer_counts = {};
@@ -103,8 +102,6 @@ angular.module('com.inthetelling.story')
 						});
 
 				};
-
-
 
 			}
 

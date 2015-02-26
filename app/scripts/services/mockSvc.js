@@ -243,13 +243,14 @@ angular.module('com.inthetelling.story')
 			var questionFormativeStub = {
 				"_id": "",
 				"_type": "Plugin",
-				"type": "Plugin",
+
 				"producerItemType": "question",
 				"episode_id": epId,
 				"cur_episode_id": epId,
 				"templateUrl": "templates/item/question-mc.html",
 				"style_id": [],
 				"layout_id": [],
+				"title": {},
 				"data": {
 					"_id": "",
 					"_pluginType": "question",
