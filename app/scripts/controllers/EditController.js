@@ -12,19 +12,17 @@ angular.module('com.inthetelling.story')
 			$scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
 		};
 
-		// TODO these were failing to match against the API types (which are "Upload", "Scene", "Plugin" or "Link" )
-		// Not sure if the existing ones ('link', 'image', 'annotation') need to be there, I'm leaving them in for now
-
 		$scope.selectedAsset = function (asset_id) {
+			console.log($scope.item);
 			var asset = modelSvc.assets[asset_id];
 			$scope.masterAsset = asset;
 			if ($scope.item) {
 				$scope.item.asset = asset;
-				if ($scope.item.type === 'image' || $scope.item.type === 'Upload' || $scope.item.type === 'Plugin') {
+				if ($scope.item._type === 'Upload' || $scope.item._type === 'Plugin') {
 					$scope.item.asset_id = asset_id;
-				} else if ($scope.item.type === 'link' || $scope.item.type === 'Link') {
+				} else if ($scope.item._type === 'Link') {
 					$scope.item.link_image_id = asset_id;
-				} else if ($scope.item.type === 'annotation' || $scope.item.type === 'Annotation') {
+				} else if ($scope.item._type === 'Annotation') {
 					$scope.item.annotation_image_id = asset_id;
 				} else {
 					console.error("Tried to select asset for unknown item type", $scope.item);
@@ -470,7 +468,7 @@ angular.module('com.inthetelling.story')
 				"_id": "internal:editing",
 				"start_time": appState.time,
 				"episode_id": appState.episodeId,
-				"type": type,
+				// "type": type,  <-- NOPE that's a bug.  Confusing, so I'm leaving in this comment:  API types are Plugin, Scene, Upload, Link; these producer item types are different
 				"isCurrent": true,
 				"producerItemType": type,
 				"layouts": ["inline"],
@@ -552,6 +550,7 @@ TODO merge 'comment' with 'annotation'?
 				// TODO i18n
 				stub = {
 					"_type": "Plugin",
+					"title": {},
 					"data": {
 						"_pluginType": "question",
 						"_version": 1,
