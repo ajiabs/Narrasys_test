@@ -43,7 +43,7 @@ angular.module('com.inthetelling.story')
 				scope.format = function (data) {
 					// convert model value to view value
 					var ret = Math.floor(data / 60) + ":" + ("0" + Math.floor(data) % 60).slice(-2);
-					var fraction = (data + "").slice(4, 6);
+					var fraction = (data + "").slice(3, 5);
 					if (fraction !== "") {
 						ret = ret + "." + fraction;
 					}
@@ -60,7 +60,8 @@ angular.module('com.inthetelling.story')
 				*/
 
 				scope.fieldname = angular.copy(attrs.inputField); // start_time or end_time
-				scope.model = scope.format(angular.copy(scope.item[attrs.inputField])); // our internal version of the user input
+				scope.realValue = angular.copy(scope.item[attrs.inputField]); // internal representation of the selected time.  Don't parse or format this, it causes rounding errors
+				scope.model = scope.format(scope.realValue); // user input
 				scope.appState = appState;
 
 				// TODO scope.scene needs to update during editing if the event being edited is moved from one scene to another!
@@ -70,12 +71,12 @@ angular.module('com.inthetelling.story')
 				scope.$watch(function () {
 					return scope.parse(scope.model);
 				}, function (t) {
-					// console.log(m, scope.parse(m), scope.format(m));
 					scope.setTime(t);
 				});
 
-				scope.setTime = function (t) {
-					scope.item[attrs.inputField] = scope.parse(t);
+				scope.setTime = function (t) { // pass in parsed values only!
+					scope.realValue = t;
+					scope.item[attrs.inputField] = scope.realValue;
 					scope.model = scope.format(t);
 				};
 
@@ -92,7 +93,7 @@ angular.module('com.inthetelling.story')
 
 				scope.isTranscript = function () {
 					// TODO
-					return true;
+					return false;
 				};
 
 			}
