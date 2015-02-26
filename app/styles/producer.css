@@ -408,7 +408,7 @@ input[readonly] {
 	z-index: 10;
 }
 .editingItem {
-	background-color: #66C;
+	background: rgba(0, 0, 128, 0.3);
 	position: absolute;
 	height: 1em;
 	border: 1px solid #555;
