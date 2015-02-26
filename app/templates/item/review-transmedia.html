@@ -4,8 +4,8 @@
 		<a class="edit-event" ng-click="editItem()">
 			<span>Edit item</span>
 		</a>
-		<div ng-if="item.data._pluginType == 'credlyBadge'" ng-include="'templates/item/usc-badges.html'"></div>
-		<div ng-if="item.data._pluginType != 'credlyBadge'" class="itemTemplate">
+		<div ng-if="item.data._pluginType" ng-include="item.templateUrl"></div>
+		<div ng-if="!item.data._pluginType" class="itemTemplate">
 			<div class="itemHead">
 				<a role="button" tabindex="0" class="startTime displayTime" aria-label="Seek video to {{item.displayStartTime}}" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
 				<div class="category">
