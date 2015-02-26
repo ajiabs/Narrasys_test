@@ -17,48 +17,47 @@ angular.module('com.inthetelling.story')
 			template: ' <div id="chartContainer" aria-label="{{chartLabel}}"></div>',
 			link: function (scope, element, attrs) {
 				var chartContainer;
-				var width = 500;
-				var height = 500;
-				var after = function (times, func) {
-					return function () {
-						if (--times < 1) {
-							return func.apply(this, arguments);
-						}
-					};
-				};
-				var draw = after(2, function (el, d, o) {
+
+				var draw = function (el, d, o) {
+					d = JSON.parse(d);
+					o = JSON.parse(o);
 					scope.chartLabel = createLabel(d);
 					o.series.pie.label.formatter = function (label, series) {
 						return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.percent) + '%' + ' (' + series.data[0][1] + ')</div>';
 					};
 					$.plot(el, d, o);
-
 					el.show();
-				});
+				};
+
 				chartContainer = $("#chartContainer");
-				
 				var chartId = "chartContainer" + uniqueId++;
 				chartContainer.attr("id", chartId);
-				
-				if (scope.width) {
-					width = scope.width;
-				}
-				if (scope.height) {
-					height = scope.height;
-				}
 
-				chartContainer.css({
-					width: width,
-					height: height
+				scope.$watch(function () {
+					return chartContainer.width();
+				}, function (w) {
+					if (w > 0) {
+						chartContainer.css({
+							height: w
+						});
+
+						draw(chartContainer, scope.data, scope.options);
+
+						// Now that we have a height we can safely observe changes in the data:
+						attrs.$observe('data', function (value) {
+							scope.data = value;
+							draw(chartContainer, scope.data, scope.options);
+						});
+
+						// Options never change (for now) so disabling the watcher (for now)
+						// attrs.$observe('options', function (value) {
+						// 	scope.options = value;
+						// 	draw(chartContainer, scope.data, scope.options);
+						// });
+
+					}
 				});
-				attrs.$observe('data', function (value) {
-					scope.data = JSON.parse(value);
-					draw(chartContainer, scope.data, scope.options);
-				});
-				attrs.$observe('options', function (value) {
-					scope.options = JSON.parse(value);
-					draw(chartContainer, scope.data, scope.options);
-				});
+
 				var addPercent = function (data) {
 					var total = 0;
 					for (var i = 0; i < data.length; i++) {
@@ -77,12 +76,6 @@ angular.module('com.inthetelling.story')
 					}
 					return labelText;
 				};
-
-				
-
 			}
 		};
 	});
-
-//div#chartContainer
-//<itt-flotr2-chart title="" data="" options=""></itt-flotr2-chart>

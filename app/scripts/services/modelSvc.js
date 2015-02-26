@@ -548,7 +548,7 @@ angular.module('com.inthetelling.story')
 							}
 							previousTranscript = event;
 						}
-						
+
 						if (event.end_time <= scene.end_time) {
 							// entirely within scene
 							svc.events[event._id].scene_id = scene._id;
@@ -570,7 +570,18 @@ angular.module('com.inthetelling.story')
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 				svc.events[scene._id].items = sceneItems.sort(function (a, b) {
-					return a.start_time - b.start_time;
+
+					if (a.start_time !== b.start_time || !b.layouts) {
+						return a.start_time - b.start_time;
+					} else {
+						// put simultaneous sidebar items first:
+						if (b.layouts.indexOf("sidebarL") > -1 || b.layouts.indexOf("sidebarR") > -1) {
+							return 1;
+						} else {
+							return 0;
+						}
+					}
+
 				});
 			});
 

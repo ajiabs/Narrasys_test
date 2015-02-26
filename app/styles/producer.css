@@ -193,6 +193,19 @@ input[readonly] {
 	padding: 3px;
 	pointer-events: none;
 }
+.authoringForm .floaterContainer {
+	position: relative;
+	display: inline-block;
+}
+.authoringForm .floater {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+	font-size: smaller;
+	padding: 0.5em;
+	position: absolute;
+	z-index: 99;
+}
 /* ------ */
 
 .editButtonPanel,
