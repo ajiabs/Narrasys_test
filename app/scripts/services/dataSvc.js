@@ -758,6 +758,7 @@ angular.module('com.inthetelling.story')
 			var fields = [
 				"_id",
 				//				"producerItemType", // Nope
+				"start_time",
 				"end_time",
 				"episode_id",
 				"template_id",
