@@ -42,13 +42,16 @@ angular.module('com.inthetelling.story')
 
 				scope.format = function (data) {
 					// convert model value to view value
-					var ret = Math.floor(data / 60) + ":" + ("0" + Math.floor(data) % 60).slice(-2);
-					var fraction = (data + "").slice(3, 5);
-					if (fraction !== "") {
-						ret = ret + "." + fraction;
+					// in a way which is not completely borken, for a change
+					// srsly how was that even working before
+					var mins = Math.floor(data / 60);
+					var secs = Math.round((data % 60) * 100) / 100;
+					if (secs < 10) {
+						secs = "0" + secs;
 					}
-					return ret;
+					return mins + ":" + secs;
 				};
+
 				/* These are from back when I was cargo-culting using ngModel directly:
 				ngModel.$parsers.push(function toModel(data) {
 					return scope.parse(data);
@@ -63,6 +66,7 @@ angular.module('com.inthetelling.story')
 				scope.realValue = angular.copy(scope.item[attrs.inputField]); // internal representation of the selected time.  Don't parse or format this, it causes rounding errors
 				scope.model = scope.format(scope.realValue); // user input
 				scope.appState = appState;
+				console.log("initing inputTime: ", scope.realValue, scope.model);
 
 				// TODO scope.scene needs to update during editing if the event being edited is moved from one scene to another!
 				scope.scene = (scope.item.type === 'Scene') ? scope.item : modelSvc.events[scope.item.scene_id];
