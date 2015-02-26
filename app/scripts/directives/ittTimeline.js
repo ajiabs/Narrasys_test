@@ -33,7 +33,7 @@ angular.module('com.inthetelling.story')
 					// toEnd/itemLength puts the item end at the right edge of the visible playhead.
 					// trim it back by 40% for some wiggle room, and cap it at 2000% zoom so we don't go nuts on short-duration events
 					scope.zoomLevel = Math.min(Math.max(Math.round(0.6 * toEnd / itemLength), 1), 20);
-					timelineSvc.seek(item.start_time);
+
 					zoom();
 				};
 
