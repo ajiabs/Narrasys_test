@@ -66,7 +66,7 @@ angular.module('com.inthetelling.story')
 				scope.realValue = angular.copy(scope.item[attrs.inputField]); // internal representation of the selected time.  Don't parse or format this, it causes rounding errors
 				scope.model = scope.format(scope.realValue); // user input
 				scope.appState = appState;
-				console.log("initing inputTime: ", scope.realValue, scope.model);
+				// console.log("initing inputTime: ", scope.realValue, scope.model);
 
 				// TODO scope.scene needs to update during editing if the event being edited is moved from one scene to another!
 				scope.scene = (scope.item.type === 'Scene') ? scope.item : modelSvc.events[scope.item.scene_id];
