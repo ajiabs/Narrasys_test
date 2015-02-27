@@ -60,12 +60,19 @@ angular.module('com.inthetelling.story')
 				};
 
 				var formatAnswersForFlotPieChart = function (grouped) {
+					console.log("Formatting ", grouped);
 					var chartData = [];
-					for (var answertext in grouped) {
-						if (grouped.hasOwnProperty(answertext)) {
-							chartData.push({
-								data: grouped[answertext],
-								label: answertext
+					for (var answerIndex in grouped) {
+						console.log("index:", answerIndex);
+						if (grouped.hasOwnProperty(answerIndex)) {
+							// translate the index into the answer text
+							angular.forEach(scope.plugin.distractors, function (distractor) {
+								if (distractor.index + "" === answerIndex + "") {
+									chartData.push({
+										data: grouped[answerIndex],
+										label: distractor.text
+									});
+								}
 							});
 						}
 					}
@@ -74,11 +81,16 @@ angular.module('com.inthetelling.story')
 
 				if (scope.plugin.hasBeenAnswered === true) {
 
+					/*
+					answer_counts is included in event data as {
+						index: count,
+						index: count
+					}
+					*/
 					if (typeof scope.plugin.answer_counts === 'undefined') {
 						// This is in case of failure on the API side to return answer_counts (which shouldn't happen):
 						console.error("No answer_counts returned from API");
 						scope.plugin.answer_counts = {};
-						scope.plugin.answer_counts[scope.plugin.selectedDistractor] = 1;
 					}
 
 					var grouped = scope.plugin.answer_counts;
@@ -87,6 +99,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				scope.scorePoll = function (i) {
+					console.log("scorePoll");
 					questionAnswersSvc.saveAnswer("question-answered", scope.qid, {
 							'answer': scope.plugin.distractors[i].text,
 							'index': scope.plugin.distractors[i].index,
@@ -94,7 +107,7 @@ angular.module('com.inthetelling.story')
 						})
 						.then(function () {
 							scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
-							questionAnswersSvc.incrementAnswerCount(scope.plugin.answer_counts, scope.plugin.distractors[i].text);
+							questionAnswersSvc.incrementAnswerCount(scope.plugin.answer_counts, scope.plugin.distractors[i].index);
 							var grouped = scope.plugin.answer_counts;
 							var chartData = formatAnswersForFlotPieChart(grouped);
 							scope.chartData = chartData;

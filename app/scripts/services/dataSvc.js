@@ -386,20 +386,25 @@ angular.module('com.inthetelling.story')
 					(function (evData) {
 						questionAnswersSvc.getUserAnswer(evData._id, appState.user._id)
 							.then(function (userAnswer) {
-								evData.data._plugin.hasBeenAnswered = true;
-								var i = 0;
-								var angularContinue = true;
-								angular.forEach(evData.data._plugin.distractors, function (distractor) {
-									if (angularContinue) {
-										if (distractor.text === userAnswer.data.answer) {
-											distractor.selected = true;
-											evData.data._plugin.selectedDistractor = distractor.index;
-											angularContinue = false;
+
+								if (userAnswer.data) {
+									evData.data._plugin.hasBeenAnswered = true;
+									var i = 0;
+									var angularContinue = true;
+									angular.forEach(evData.data._plugin.distractors, function (distractor) {
+										if (angularContinue) {
+											if (distractor.text === userAnswer.data.answer) {
+												distractor.selected = true;
+												evData.data._plugin.selectedDistractor = distractor.index;
+												angularContinue = false;
+											}
+											i++;
 										}
-										i++;
-									}
-								});
-								modelSvc.cache("event", svc.resolveIDs(evData));
+									});
+									modelSvc.cache("event", svc.resolveIDs(evData));
+								} else {
+									console.error("Got no user data from getUserAnswer:", userAnswer);
+								}
 							});
 					}(eventData));
 				}
@@ -789,6 +794,7 @@ angular.module('com.inthetelling.story')
 			if (evt.data) {
 				delete evt.data._plugin.selectedDistractor;
 				delete evt.data._plugin.hasBeenAnswered;
+				delete evt.data._plugin._type;
 				if (evt.data._plugin.distractors.length) {
 					for (i = 0; i < evt.data._plugin.distractors.length; i++) {
 						delete evt.data._plugin.distractors[i].selected;
