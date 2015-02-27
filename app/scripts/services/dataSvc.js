@@ -840,12 +840,20 @@ angular.module('com.inthetelling.story')
 				return false;
 			}
 		};
-		svc.detachEventAsset = function (evt) {
+		svc.detachEventAsset = function (evt, assetId) {
 			evt = prepItemForStorage(evt);
 			if (!evt) {
 				return false;
 			}
-			evt.asset_id = null;
+			if (evt.asset_id === assetId){
+				evt.asset_id = null;
+			}
+			if (evt.link_image_id === assetId){
+				evt.link_image_id = null;
+			}
+			if (evt.annotation_image_id=== assetId){
+				evt.annotation_image_id = null;
+			}
 			if (evt && evt._id && !evt._id.match(/internal/)) {
 				// update
 				return PUT("/v3/events/" + evt._id, {
