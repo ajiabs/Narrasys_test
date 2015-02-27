@@ -134,42 +134,12 @@ angular.module('com.inthetelling.story')
 					scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
 				}
 
-				// TODO plugins should each be their own directive!
+				// TODO make credly badge its own directive instead of including it here
 				if (scope.item.data) {
-
 					scope.plugin = scope.item.data._plugin;
 					scope.plugin._type = scope.item.data._pluginType;
 
-					// BEGIN multiple choice question
-					if (scope.plugin._type === 'question') {
-
-						//scope.plugin.selectedDistractor = undefined;
-
-						scope.scorePoll = function () {
-							scope.plugin.distractors[scope.plugin.selectedDistractor].selected = true;
-							scope.plugin.hasBeenAnswered = true;
-
-							analyticsSvc.captureEventActivity("question-answered", scope.item._id, {
-								'answer': scope.plugin.distractors[scope.plugin.selectedDistractor].text,
-								'correct': !!(scope.plugin.distractors[scope.plugin.selectedDistractor].correct)
-							});
-							// TODO: get back list of all users' responses (need a new api endpoint for this)
-							// and display results
-						};
-
-						scope.resetQuestion = function () {
-							// console.log("RESET");
-							scope.plugin.selectedDistractor = undefined;
-							scope.plugin.hasBeenAnswered = false;
-							for (var i = 0; i < scope.plugin.distractors.length; i++) {
-								scope.plugin.distractors[i].selected = false;
-							}
-						};
-
-					}
-					// END m/c question
 					// BEGIN credly badge
-
 					if (scope.plugin._type === 'credlyBadge') {
 						// console.log("credly");
 						// have analytics record that this event has been reached, so it can be used as a trigger for other achievements
@@ -215,9 +185,7 @@ angular.module('com.inthetelling.story')
 							if (scope.plugin.totalAchieved === scope.plugin.requirements.length) {
 								// HACK TODO we need to implement a real way for items to control the visibility of other items or scenes.
 								// The silly workaround here only works (for some poorly-defined version of 'works') because USC episodes only have one badge
-
 								modelSvc.episodes[appState.episodeId].styleCss = modelSvc.episodes[appState.episodeId].styleCss + " uscHackUserHasBadge";
-
 							}
 						};
 
@@ -263,7 +231,6 @@ angular.module('com.inthetelling.story')
 								});
 						};
 					}
-
 					// END credly badge
 				}
 				// end plugin
