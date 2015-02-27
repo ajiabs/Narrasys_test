@@ -282,6 +282,10 @@ angular.module('com.inthetelling.story')
 						delete scope.item.link_image_id;
 						delete scope.item.annotation_image_id;
 
+						dataSvc.detachEventAsset(scope.item)
+							.then(function () {}, function (data) {
+								console.error("FAILED TO DETACH ASSET FROM ITEM IN DATASTORE", data);
+							});
 						scope.showUpload = false;
 					}
 				};
