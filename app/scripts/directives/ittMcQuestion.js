@@ -29,6 +29,7 @@ angular.module('com.inthetelling.story')
 				var getQuestionType = function (item) {
 					return item.questiontype;
 				};
+
 				scope.questionType = getQuestionType(scope.plugin);
 				scope.chartOptions = {
 					series: {
@@ -60,10 +61,10 @@ angular.module('com.inthetelling.story')
 				};
 
 				var formatAnswersForFlotPieChart = function (grouped) {
-					console.log("Formatting ", grouped);
+					// console.log("Formatting ", grouped, " for ", scope.plugin);
 					var chartData = [];
 					for (var answerIndex in grouped) {
-						console.log("index:", answerIndex);
+
 						if (grouped.hasOwnProperty(answerIndex)) {
 							// translate the index into the answer text
 							angular.forEach(scope.plugin.distractors, function (distractor) {
