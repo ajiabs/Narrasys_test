@@ -273,24 +273,26 @@ angular.module('com.inthetelling.story')
 						modelSvc.cache("episode", dataSvc.resolveIDs(data));
 						var scene = generateEmptyItem("scene");
 						scene.cur_episode_id = appState.episodeId;
-						var duration = modelSvc.assets[data.master_asset_id].duration;
-						if (!hasScenes()) {
-							scene.start_time = 0;
-							scene.end_time = duration;
-							dataSvc.storeItem(scene)
-								.then(function () {
-								}, function (data) {
-									console.error("FAILED TO STORE EVENT", data);
-								});
+						if (data.master_asset_id) {
+							var duration = modelSvc.assets[data.master_asset_id].duration;
+							if (!hasScenes()) {
+								scene.start_time = 0;
+								scene.end_time = duration;
+								dataSvc.storeItem(scene)
+									.then(function () {
+									}, function (data) {
+										console.error("FAILED TO STORE EVENT", data);
+									});
+							}
+							appState.duration = modelSvc.assets[data.master_asset_id].duration;
+							$scope.moveEventsAfter(duration);
 						}
 						modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
 						modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
 						modelSvc.resolveEpisodeAssets(appState.episodeId);
-						appState.duration = modelSvc.assets[data.master_asset_id].duration;
 						appState.editEpisode = false;
 						appState.videoControlsLocked = false;
 
-						$scope.moveEventsAfter(duration);
 					}, function (data) {
 						console.error("FAILED TO STORE EPISODE", data);
 					});
