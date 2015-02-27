@@ -444,17 +444,18 @@ angular.module('com.inthetelling.story')
 						if (modelSvc.episodes[episodeId].navigation_depth > 0) {
 							angular.forEach(container.children, function (child) {
 								if (child.episodes[0]) {
-									svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
-										if (overview) {
-											child.status = overview.status;
-											child.title = overview.title; // name == container, title == episode
-											modelSvc.cache("container", child); // trigger setLang
-										} else {
-											// This shouldn't ever happen, but apparently it does.
-											// (Is this a permissions error? adding warning to help track it down)
-											console.error("Got no episode data for ", child.episodes[0]);
-										}
-									});
+									svc.getEpisodeOverview(child.episodes[0])
+										.then(function (overview) {
+											if (overview) {
+												child.status = overview.status;
+												child.title = overview.title; // name == container, title == episode
+												modelSvc.cache("container", child); // trigger setLang
+											} else {
+												// This shouldn't ever happen, but apparently it does.
+												// (Is this a permissions error? adding warning to help track it down)
+												console.error("Got no episode data for ", child.episodes[0]);
+											}
+										});
 								}
 							});
 							// } else {
@@ -499,15 +500,17 @@ angular.module('com.inthetelling.story')
 		var GET = function (path, postprocessCallback) {
 			// console.log("GET", path);
 			var defer = $q.defer();
-			authSvc.authenticate().then(function () {
-				$http.get(config.apiDataBaseUrl + path).then(function (response) {
-					var ret = response.data;
-					if (postprocessCallback) {
-						ret = postprocessCallback(ret);
-					}
-					return defer.resolve(ret);
+			authSvc.authenticate()
+				.then(function () {
+					$http.get(config.apiDataBaseUrl + path)
+						.then(function (response) {
+							var ret = response.data;
+							if (postprocessCallback) {
+								ret = postprocessCallback(ret);
+							}
+							return defer.resolve(ret);
+						});
 				});
-			});
 			return defer.promise;
 		};
 
@@ -598,17 +601,18 @@ angular.module('com.inthetelling.story')
 					// Wasteful of API calls, discards useful data
 					angular.forEach(container.children, function (child) {
 						if (child.episodes[0]) {
-							svc.getEpisodeOverview(child.episodes[0]).then(function (overview) {
-								if (overview) {
-									child.status = overview.status;
-									child.title = overview.title; // name == container, title == episode
-									modelSvc.cache("container", child); // trigger setLang
-								} else {
-									// This shouldn't ever happen, but apparently it does.
-									// (Is this a permissions error? adding warning to help track it down)
-									console.error("Got no episode data for ", child.episodes[0]);
-								}
-							});
+							svc.getEpisodeOverview(child.episodes[0])
+								.then(function (overview) {
+									if (overview) {
+										child.status = overview.status;
+										child.title = overview.title; // name == container, title == episode
+										modelSvc.cache("container", child); // trigger setLang
+									} else {
+										// This shouldn't ever happen, but apparently it does.
+										// (Is this a permissions error? adding warning to help track it down)
+										console.error("Got no episode data for ", child.episodes[0]);
+									}
+								});
 						}
 					});
 				}
@@ -836,6 +840,33 @@ angular.module('com.inthetelling.story')
 				return false;
 			}
 		};
+		svc.detachEventAsset = function (evt, assetId) {
+			evt = prepItemForStorage(evt);
+			if (!evt) {
+				return false;
+			}
+			if (evt.asset_id === assetId){
+				evt.asset_id = null;
+			}
+			if (evt.link_image_id === assetId){
+				evt.link_image_id = null;
+			}
+			if (evt.annotation_image_id=== assetId){
+				evt.annotation_image_id = null;
+			}
+			if (evt && evt._id && !evt._id.match(/internal/)) {
+				// update
+				return PUT("/v3/events/" + evt._id, {
+					event: evt
+				});
+			} else {
+				// create
+				return POST("/v3/episodes/" + evt.episode_id + "/events", {
+					event: evt
+				});
+			}
+		};
+
 		svc.storeEpisode = function (epData) {
 			// For now only update, no create... create needs a customer_id and probably other data as well
 			var preppedData = prepEpisodeForStorage(epData);
