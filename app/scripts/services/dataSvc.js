@@ -785,6 +785,17 @@ angular.module('com.inthetelling.story')
 				}
 			}
 
+			// equiv to Matt's "removeUserQuestionPluginData" code here.  No reason to have two separate prep functions...
+			if (evt.data) {
+				delete evt.data._plugin.selectedDistractor;
+				delete evt.data._plugin.hasBeenAnswered;
+				if (evt.data._plugin.distractors.length) {
+					for (i = 0; i < evt.data._plugin.distractors.length; i++) {
+						delete evt.data._plugin.distractors[i].selected;
+					}
+				}
+			}
+
 			prepped.style_id = [];
 			prepped.layout_id = [];
 
