@@ -46,6 +46,10 @@ angular.module('com.inthetelling.story')
 					svc.episodes[item._id] = svc.deriveEpisode(angular.copy(item));
 				}
 			} else if (cacheType === 'event') {
+				// TEMP fix for events without titles:
+				if (!item.title) {
+					item.title = {};
+				}
 				if (svc.events[item._id]) {
 					angular.extend(svc.events[item._id], svc.deriveEvent(angular.copy(item)));
 				} else {
