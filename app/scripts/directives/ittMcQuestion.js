@@ -20,7 +20,7 @@ angular.module('com.inthetelling.story')
 				scope.scoreQuiz = function (i) {
 					scope.plugin.distractors[i].selected = true;
 					scope.plugin.hasBeenAnswered = true;
-					scope.plugin.selectedDistractor = i;
+					scope.plugin.selectedDistractor = scope.plugin.distractors[i].index;
 					analyticsSvc.captureEventActivity("question-answered", scope.qid, {
 						'answer': scope.plugin.distractors[i].text,
 						'correct': !!(scope.plugin.distractors[i].correct)
@@ -74,9 +74,11 @@ angular.module('com.inthetelling.story')
 
 				if (scope.plugin.hasBeenAnswered === true) {
 					if (typeof scope.plugin.answer_counts === 'undefined') {
+						// newly answered question:
 						scope.plugin.answer_counts = {};
-						scope.plugin.answer_counts[scope.plugin.distractors[scope.plugin.selectedDistractor].text] = 1;
+						scope.plugin.answer_counts[scope.plugin.selectedDistractor] = 1;
 					}
+
 					//TODO: this is a -bad- edge case. it means that we stored the user answer in the analytics svc
 					//scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
 					var grouped = scope.plugin.answer_counts;
@@ -97,7 +99,7 @@ angular.module('com.inthetelling.story')
 							scope.chartData = chartData;
 							scope.plugin.distractors[i].selected = true;
 							scope.plugin.hasBeenAnswered = true;
-							scope.plugin.selectedDistractor = i;
+							scope.plugin.selectedDistractor = scope.plugin.distractors[i].index;
 							//});
 						});
 
