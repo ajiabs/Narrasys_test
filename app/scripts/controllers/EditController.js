@@ -15,7 +15,6 @@ angular.module('com.inthetelling.story')
 		$scope.selectedAsset = function (asset_id) {
 			console.log($scope.item);
 			var asset = modelSvc.assets[asset_id];
-			$scope.masterAsset = asset;
 			if ($scope.item) {
 				$scope.item.asset = asset;
 				if ($scope.item._type === 'Upload' || $scope.item._type === 'Plugin') {
@@ -32,6 +31,7 @@ angular.module('com.inthetelling.story')
 				//BUGBUG? - could episode be truthy and the asset be video during "item" edition (and not episode editing) 
 				// causing us to inadvertently change the master asset to the item video asset?  Due to using editcontroller for both item and episode
 				if (asset._type === 'Asset::Video') {
+					$scope.masterAsset = asset;
 					var previousAsset = modelSvc.assets[$scope.episode.master_asset_id];
 					$timeout(function () {
 						$scope.checkAndConfirmDuration(previousAsset, asset, function (confirmed) {
