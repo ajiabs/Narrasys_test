@@ -89,6 +89,7 @@ angular.module('com.inthetelling.story')
 				scope.scorePoll = function (i) {
 					questionAnswersSvc.saveAnswer("question-answered", scope.qid, {
 							'answer': scope.plugin.distractors[i].text,
+							'index': scope.plugin.distractors[i].index,
 							'correct': !!(scope.plugin.distractors[i].correct)
 						})
 						.then(function () {
