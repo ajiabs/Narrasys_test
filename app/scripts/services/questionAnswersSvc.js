@@ -39,36 +39,42 @@ angular.module('com.inthetelling.story')
 		svc.calculateCounts = function (events) {
 			var grouped;
 			angular.forEach(events, function (event) {
-				grouped[event.data.answer] ++;
+				grouped[event.data.index] ++;
 			});
 			return grouped;
 		};
-		svc.incrementAnswerCount = function (answerCounts, answerText) {
-			answerCounts[answerText] = (answerCounts[answerText] || 0) + 1;
+		svc.incrementAnswerCount = function (answerCounts, answerIndex) {
+			answerCounts[answerIndex] = (answerCounts[answerIndex] || 0) + 1;
 		};
-		svc.calculatePercentages = function (grouped) {
-			var totalAnswers = 0;
-			for (var answertext in grouped) {
-				if (grouped.hasOwnProperty(answertext)) {
-					totalAnswers += grouped[answertext];
-				}
-			}
-			var chartData = [];
-			var x = 0;
-			for (answertext in grouped) {
-				if (grouped.hasOwnProperty(answertext)) {
-					chartData.push({
-						data: ((grouped[answertext] / totalAnswers) * 100),
-						//						data: [
-						//							[x, ((grouped[answertext] / totalAnswers) * 100)]
-						//						],
-						label: answertext
-					});
 
-				}
-				x++;
-			}
-			return chartData;
-		};
+		/* This never gets used (flot calculates percentages for us) and was I think incorrect anyway (the chart was displaying the percentage as the answer count)
+				svc.calculatePercentages = function (grouped) {
+					console.log("CalcPercentages", grouped);
+					var totalAnswers = 0;
+					for (var answerIndex in grouped) {
+						if (grouped.hasOwnProperty(answerIndex)) {
+							totalAnswers += grouped[answerIndex];
+						}
+					}
+					var chartData = [];
+					var x = 0;
+					for (answerIndex in grouped) {
+						if (grouped.hasOwnProperty(answerIndex)) {
+							chartData.push({
+								data: ((grouped[answerIndex] / totalAnswers) * 100),
+								//						data: [
+								//							[x, ((grouped[answertext] / totalAnswers) * 100)]
+								//						],
+								label: answerIndex
+							});
+
+						}
+						x++;
+					}
+					console.log("returning ", chartData);
+					return chartData;
+				};
+		*/
+
 		return svc;
 	});
