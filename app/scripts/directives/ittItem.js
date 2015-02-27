@@ -195,7 +195,7 @@ angular.module('com.inthetelling.story')
 						// slow poll after that, up to some reasonable time limit
 						var pollLimit = 0;
 						scope.badgePoll = $interval(function () {
-							console.log('poll', pollLimit);
+							// console.log('poll', pollLimit);
 							pollLimit++;
 							if (scope.item.isCurrent || appState.viewMode === 'review') {
 								scope.checkBadgeEligibility();

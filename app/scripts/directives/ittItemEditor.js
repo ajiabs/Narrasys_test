@@ -5,7 +5,7 @@ TODO: right now we're re-building the episode structure on every keystroke.  Tha
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, appState, modelSvc, timelineSvc, awsSvc, dataSvc) {
+	.directive('ittItemEditor', function ($rootScope, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -57,7 +57,11 @@ angular.module('com.inthetelling.story')
 					}
 
 				}
-
+				if (!scope.item.producerItemType) {
+					errorSvc.error({
+						data: "Don't have a producerItemType for item " + scope.item._id
+					});
+				}
 				// TODO:this breaks when editing sxs items within producer!
 				scope.itemEditor = 'templates/producer/item/' + appState.product + '-' + scope.item.producerItemType + '.html';
 
