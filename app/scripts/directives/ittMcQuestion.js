@@ -73,14 +73,14 @@ angular.module('com.inthetelling.story')
 				};
 
 				if (scope.plugin.hasBeenAnswered === true) {
+
 					if (typeof scope.plugin.answer_counts === 'undefined') {
-						// newly answered question:
+						// This is in case of failure on the API side to return answer_counts (which shouldn't happen):
+						console.error("No answer_counts returned from API");
 						scope.plugin.answer_counts = {};
 						scope.plugin.answer_counts[scope.plugin.selectedDistractor] = 1;
 					}
 
-					//TODO: this is a -bad- edge case. it means that we stored the user answer in the analytics svc
-					//scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
 					var grouped = scope.plugin.answer_counts;
 					var chartData = formatAnswersForFlotPieChart(grouped);
 					scope.chartData = chartData;
