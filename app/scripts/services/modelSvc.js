@@ -926,7 +926,7 @@ angular.module('com.inthetelling.story')
 		var isYoutubeUrl = function (url) {
 			var youtube = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 			return youtube.test(url);
-		}
+		};
 		var embeddableYoutubeUrl = function (origUrl) {
 			// regexp to extract the ID from a youtube
 			if (!origUrl) {
