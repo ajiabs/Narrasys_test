@@ -393,7 +393,7 @@ angular.module('com.inthetelling.story')
 									if (angularContinue) {
 										if (distractor.text === userAnswer.data.answer) {
 											distractor.selected = true;
-											evData.data._plugin.selectedDistractor = i;
+											evData.data._plugin.selectedDistractor = distractor.index;
 											angularContinue = false;
 										}
 										i++;
@@ -782,6 +782,22 @@ angular.module('com.inthetelling.story')
 			for (var i = 0; i < fields.length; i++) {
 				if (evt[fields[i]] || evt[fields[i]] === 0) {
 					prepped[fields[i]] = angular.copy(evt[fields[i]]);
+				}
+			}
+
+			// equiv to Matt's "removeUserQuestionPluginData" code here.  No reason to have two separate prep functions...
+			if (evt.data) {
+				delete evt.data._plugin.selectedDistractor;
+				delete evt.data._plugin.hasBeenAnswered;
+				if (evt.data._plugin.distractors.length) {
+					for (i = 0; i < evt.data._plugin.distractors.length; i++) {
+						delete evt.data._plugin.distractors[i].selected;
+
+						// Next bit is temporary, for questions authored before we added the distractor index:
+						if (!evt.data._plugin.distractors[i].index) {
+							evt.data._plugin.distractors[i].index = i + 1;
+						}
+					}
 				}
 			}
 

@@ -20,7 +20,7 @@ angular.module('com.inthetelling.story')
 				scope.scoreQuiz = function (i) {
 					scope.plugin.distractors[i].selected = true;
 					scope.plugin.hasBeenAnswered = true;
-					scope.plugin.selectedDistractor = i;
+					scope.plugin.selectedDistractor = scope.plugin.distractors[i].index;
 					analyticsSvc.captureEventActivity("question-answered", scope.qid, {
 						'answer': scope.plugin.distractors[i].text,
 						'correct': !!(scope.plugin.distractors[i].correct)
@@ -73,12 +73,14 @@ angular.module('com.inthetelling.story')
 				};
 
 				if (scope.plugin.hasBeenAnswered === true) {
+
 					if (typeof scope.plugin.answer_counts === 'undefined') {
+						// This is in case of failure on the API side to return answer_counts (which shouldn't happen):
+						console.error("No answer_counts returned from API");
 						scope.plugin.answer_counts = {};
-						scope.plugin.answer_counts[scope.plugin.distractors[scope.plugin.selectedDistractor].text] = 1;
+						scope.plugin.answer_counts[scope.plugin.selectedDistractor] = 1;
 					}
-					//TODO: this is a -bad- edge case. it means that we stored the user answer in the analytics svc
-					//scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
+
 					var grouped = scope.plugin.answer_counts;
 					var chartData = formatAnswersForFlotPieChart(grouped);
 					scope.chartData = chartData;
@@ -87,17 +89,18 @@ angular.module('com.inthetelling.story')
 				scope.scorePoll = function (i) {
 					questionAnswersSvc.saveAnswer("question-answered", scope.qid, {
 							'answer': scope.plugin.distractors[i].text,
+							'index': scope.plugin.distractors[i].index,
 							'correct': !!(scope.plugin.distractors[i].correct)
 						})
 						.then(function () {
 							scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
 							questionAnswersSvc.incrementAnswerCount(scope.plugin.answer_counts, scope.plugin.distractors[i].text);
 							var grouped = scope.plugin.answer_counts;
-							var chartData = questionAnswersSvc.calculatePercentages(grouped);
+							var chartData = formatAnswersForFlotPieChart(grouped);
 							scope.chartData = chartData;
 							scope.plugin.distractors[i].selected = true;
 							scope.plugin.hasBeenAnswered = true;
-							scope.plugin.selectedDistractor = i;
+							scope.plugin.selectedDistractor = scope.plugin.distractors[i].index;
 							//});
 						});
 

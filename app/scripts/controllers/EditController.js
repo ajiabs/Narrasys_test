@@ -56,7 +56,8 @@ angular.module('com.inthetelling.story')
 
 		$scope.addDistractor = function () {
 			$scope.item.data._plugin.distractors.push({
-				text: ""
+				text: "",
+				index: ($scope.item.data._plugin.distractors.length + 1)
 			});
 		};
 
@@ -553,17 +554,21 @@ TODO merge 'comment' with 'annotation'?
 					"title": {},
 					"data": {
 						"_pluginType": "question",
-						"_version": 1,
+						"_version": 2,
 						"_plugin": {
 							"questiontext": "",
 							"questiontype": "mc-formative",
 							"distractors": [{
+								"index": 1,
 								"text": ""
 							}, {
+								"index": 2,
 								"text": ""
 							}, {
+								"index": 3,
 								"text": ""
 							}, {
+								"index": 4,
 								"text": ""
 							}],
 							"correctfeedback": "",

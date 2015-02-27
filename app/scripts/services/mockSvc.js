@@ -254,19 +254,23 @@ angular.module('com.inthetelling.story')
 				"data": {
 					"_id": "",
 					"_pluginType": "question",
-					"_version": 1,
+					"_version": 2,
 					"_plugin": {
 						"questiontext": "Some question text?",
 						"questiontype": "mc-formative",
 						"distractors": [{
-							"text": "a"
+							"text": "a",
+							"index": 1,
 						}, {
-							"text": "b"
+							"text": "b",
+							"index": 2
 						}, {
 							"text": "c",
-							"correct": true
+							"correct": true,
+							"index": 3,
 						}, {
-							"text": ""
+							"text": "",
+							"index": 4
 						}],
 						"correctfeedback": "Great!",
 						"incorrectfeedback": "Doh!",
@@ -299,18 +303,22 @@ angular.module('com.inthetelling.story')
 				"data": {
 					"_id": "",
 					"_pluginType": "question",
-					"_version": 1,
+					"_version": 2,
 					"_plugin": {
 						"questiontext": "Some question text?",
 						"questiontype": "mc-poll",
 						"distractors": [{
-							"text": "a"
+							"text": "a",
+							"index": 1,
 						}, {
-							"text": "b"
+							"text": "b",
+							"index": 2
 						}, {
-							"text": "c"
+							"text": "c",
+							"index": 3,
 						}, {
-							"text": ""
+							"text": "",
+							"index": 4
 						}],
 						"_type": "question"
 					}
