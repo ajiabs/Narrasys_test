@@ -863,9 +863,19 @@ angular.module('com.inthetelling.story')
 
 			// Old-school episodes:
 			// Use the old you_tube_url if it wasn't present in alternate_urls:
-			if (videoObject.youtube.length === 0 && videoAsset.you_tube_url) {
-				videoObject.youtube = [embeddableYoutubeUrl(videoAsset.you_tube_url)];
+			if (videoObject.youtube.length === 0) {
+				//it is on url, and not on you_tube_url.
+				if (videoAsset.url && !videoAsset.you_tube_url) {
+					if (isYoutubeUrl(videoAsset.url)) {
+						videoAsset.you_tube_url = embeddableYoutubeUrl(videoAsset.url);
+					}
+				}
+
+				if (videoAsset.you_tube_url) {
+					videoObject.youtube = [embeddableYoutubeUrl(videoAsset.you_tube_url)];
+				}
 			}
+
 			// Same for other types (we used to put the .mp4 in videoAsset.url and just swapped out the extension for other types, which was silly, which is why we stopped doing it, but some old episodes never got updated)
 			angular.forEach(["mp4", "webm", "m3u8"], function (ext) {
 				if (videoObject[ext].length === 0) {
@@ -912,6 +922,11 @@ angular.module('com.inthetelling.story')
 			return videoAsset;
 		};
 
+
+		var isYoutubeUrl = function (url) {
+			var youtube = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+			return youtube.test(url);
+		}
 		var embeddableYoutubeUrl = function (origUrl) {
 			// regexp to extract the ID from a youtube
 			if (!origUrl) {
