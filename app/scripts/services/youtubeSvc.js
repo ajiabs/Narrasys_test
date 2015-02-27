@@ -16,7 +16,6 @@ angular.module('com.inthetelling.story')
 				defer.reject("Timed out");
 			}, config.timeout);
 
-			var canceler = $q.defer();
 			$http.jsonp(url)
 				.success(function (respData) {
 					$timeout.cancel(timeoutPromise);
