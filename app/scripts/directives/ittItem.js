@@ -105,6 +105,18 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.editItem = function () {
+
+					// TEMP CODE to add index fields to distractors if not already present
+					// Remove me after v1 questions are reauthored
+					if (scope.item.data._pluginType === 'question') {
+						if (scope.item.data._plugin.distractors.length) {
+							for (var i = 0; i < scope.item.data._plugin.distractors.length; i++) {
+								scope.item.data._plugin.distractors[i].index = scope.item.data._plugin.distractors[i].index || (i + 1);
+							}
+						}
+					}
+					// END OF TEMP CODE
+
 					appState.editEvent = scope.item;
 
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
