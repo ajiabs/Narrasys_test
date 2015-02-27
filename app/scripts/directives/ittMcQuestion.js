@@ -96,7 +96,7 @@ angular.module('com.inthetelling.story')
 							scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
 							questionAnswersSvc.incrementAnswerCount(scope.plugin.answer_counts, scope.plugin.distractors[i].text);
 							var grouped = scope.plugin.answer_counts;
-							var chartData = questionAnswersSvc.calculatePercentages(grouped);
+							var chartData = formatAnswersForFlotPieChart(grouped);
 							scope.chartData = chartData;
 							scope.plugin.distractors[i].selected = true;
 							scope.plugin.hasBeenAnswered = true;
