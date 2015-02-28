@@ -29,7 +29,7 @@ angular.module('com.inthetelling.story')
 							// have already loaded kids
 							scope.container.showChildren = !scope.container.showChildren;
 						} else {
-							dataSvc.getSingleContainer(scope.container._id).then(function (id) {
+							dataSvc.getContainer(scope.container._id).then(function (id) {
 								scope.container = modelSvc.containers[id];
 								scope.container.showChildren = true;
 							});

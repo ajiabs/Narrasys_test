@@ -350,7 +350,10 @@ angular.module('com.inthetelling.story')
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
 						getEpisodeEvents(epId, segmentId);
-						svc.getContainer(episodeData.container_id, epId);
+
+						svc.getContainerAncestry(episodeData.container_id).then(function (x) {
+							modelSvc.resolveEpisodeContainers(epId);
+						});
 					} else {
 						errorSvc.error({
 							data: "This episode has not yet been published."
@@ -362,6 +365,21 @@ angular.module('com.inthetelling.story')
 						data: "API call to /v3/episodes/" + epId + " failed (bad episode ID?)"
 					});
 				});
+		};
+
+		// calls getContainer, iterates to all parents before finally resolving
+		svc.getContainerAncestry = function (containerId, defer) {
+			defer = defer || $q.defer();
+			svc.getContainer(containerId).then(function (id) {
+				var container = modelSvc.containers[id];
+				console.log("Got CONTAINER", container.name);
+				if (container.parent_id) {
+					svc.getContainerAncestry(container.parent_id, defer);
+				} else {
+					defer.resolve(id);
+				}
+			});
+			return defer.promise;
 		};
 
 		var getEpisodeEvents = function (epId, segmentId) {
@@ -410,85 +428,6 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			modelSvc.resolveEpisodeEvents(epId);
-		};
-
-		svc.getContainer = function (containerId, episodeId) {
-			// used by episode load currently, probably want to phase this out in favor of getSingleContainer or else merge them
-
-			// iterates to all parent containers
-			// episode ID is included so we can trigger it to resolve when this is all complete
-
-			// Also (wastefully) requests episode status on all children, so we can do interepisode nav
-
-			if (!modelSvc.containers[containerId]) {
-				modelSvc.cache("container", {
-					"_id": containerId
-				});
-			}
-
-			$http.get(config.apiDataBaseUrl + "/v3/containers/" + containerId)
-				.success(function (containers) {
-					modelSvc.cache("container", containers[0]);
-
-					svc.getCustomer(containers[0].customer_id);
-
-					// ensure container children refers to modelSvc cache:
-					var container = modelSvc.containers[containers[0]._id];
-					if (container.children) {
-						for (var i = 0; i < container.children.length; i++) {
-							container.children[i] = modelSvc.containers[container.children[i]._id];
-						}
-
-						// QUICK HACK to get episode title and status for inter-episode nav; stuffing it into the container data
-						// Wasteful of API calls, discards useful data
-						if (modelSvc.episodes[episodeId].navigation_depth > 0) {
-							angular.forEach(container.children, function (child) {
-								if (child.episodes[0]) {
-									svc.getEpisodeOverview(child.episodes[0])
-										.then(function (overview) {
-											if (overview) {
-												child.status = overview.status;
-												child.title = overview.title; // name == container, title == episode
-												modelSvc.cache("container", child); // trigger setLang
-											} else {
-												// This shouldn't ever happen, but apparently it does.
-												// (Is this a permissions error? adding warning to help track it down)
-												console.error("Got no episode data for ", child.episodes[0]);
-											}
-										});
-								}
-							});
-							// } else {
-							// 	console.log("Not getting sibling data, no interep nav");
-						}
-					}
-
-					// iterate to parent container
-					if (container.parent_id) {
-						svc.getContainer(container.parent_id, episodeId);
-					} else {
-						// all parent containers now loaded:
-						if (episodeId) {
-							modelSvc.resolveEpisodeContainers(episodeId);
-						}
-					}
-				});
-			svc.getContainerAssets(containerId, episodeId);
-		};
-
-		svc.getContainerAssets = function (containerId, episodeId) {
-			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
-				.success(function (containerAssets) {
-					// console.log("container assets", containerAssets);
-					modelSvc.containers[containerId].assetsHaveLoaded = true;
-					angular.forEach(containerAssets.files, function (asset) {
-						modelSvc.cache("asset", asset);
-					});
-					// this might be better as an $emit:
-					if (episodeId) {
-						modelSvc.resolveEpisodeAssets(episodeId);
-					}
-				});
 		};
 
 		/* ------------------------------------------------------------------------------ */
@@ -566,6 +505,8 @@ angular.module('com.inthetelling.story')
 		- start at root, climb down on demand
 		- start at episode, need all ancestors
 
+
+
 		loading any container should
 		- cache its own (complete) data
 		- cache its (incomplete) children
@@ -585,8 +526,10 @@ angular.module('com.inthetelling.story')
 				return customerIDs;
 			});
 		};
-		svc.getSingleContainer = function (id) {
-			console.log("getSingleContainer", id);
+
+		// Starts top-down, doesn't iterate
+		svc.getContainer = function (id) {
+			console.log("getContainer", id);
 			return GET("/v3/containers/" + id, function (containers) {
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];
@@ -619,6 +562,21 @@ angular.module('com.inthetelling.story')
 				return containers[0]._id;
 			});
 
+		};
+
+		svc.getContainerAssets = function (containerId, episodeId) {
+			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
+				.success(function (containerAssets) {
+					// console.log("container assets", containerAssets);
+					modelSvc.containers[containerId].assetsHaveLoaded = true;
+					angular.forEach(containerAssets.files, function (asset) {
+						modelSvc.cache("asset", asset);
+					});
+					// this might be better as an $emit:
+					if (episodeId) {
+						modelSvc.resolveEpisodeAssets(episodeId);
+					}
+				});
 		};
 
 		svc.createContainer = function (container) {
@@ -848,13 +806,13 @@ angular.module('com.inthetelling.story')
 			if (!evt) {
 				return false;
 			}
-			if (evt.asset_id === assetId){
+			if (evt.asset_id === assetId) {
 				evt.asset_id = null;
 			}
-			if (evt.link_image_id === assetId){
+			if (evt.link_image_id === assetId) {
 				evt.link_image_id = null;
 			}
-			if (evt.annotation_image_id=== assetId){
+			if (evt.annotation_image_id === assetId) {
 				evt.annotation_image_id = null;
 			}
 			if (evt && evt._id && !evt._id.match(/internal/)) {
