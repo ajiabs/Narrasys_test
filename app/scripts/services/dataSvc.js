@@ -351,7 +351,10 @@ angular.module('com.inthetelling.story')
 						// Get episode events
 						getEpisodeEvents(epId, segmentId);
 
-						svc.getContainerAncestry(episodeData.container_id).then(function (x) {
+						// Load the episode container and all parent containers
+						// (Need this so we can get all potential episode assets, not just for interepisode nav)
+						svc.getContainerAncestry(episodeData.container_id).then(function () {
+							// got them all.
 							modelSvc.resolveEpisodeContainers(epId);
 						});
 					} else {
@@ -372,7 +375,6 @@ angular.module('com.inthetelling.story')
 			defer = defer || $q.defer();
 			svc.getContainer(containerId).then(function (id) {
 				var container = modelSvc.containers[id];
-				console.log("Got CONTAINER", container.name);
 				if (container.parent_id) {
 					svc.getContainerAncestry(container.parent_id, defer);
 				} else {
@@ -500,20 +502,6 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-		/*
-		Circumstances in which we need containers:
-		- start at root, climb down on demand
-		- start at episode, need all ancestors
-
-
-
-		loading any container should
-		- cache its own (complete) data
-		- cache its (incomplete) children
-		load all of its ancestors if not already present (datasvc will need to keep a list of container_ids it's already requested, to avoid circular refs to modelSvc)
-
-		*/
-
 		svc.getContainerRoot = function () {
 			// This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
 			return GET("/v3/containers", function (containers) {
@@ -624,20 +612,29 @@ angular.module('com.inthetelling.story')
 			return DELETE("/v3/containers/" + containerId);
 		};
 
+		// Create new episodes, c.f. storeEpisode.   TODO mild cruft
 		svc.createEpisode = function (episode) {
-			var createEpisodeDefer = $q.defer();
-			// TODO store in API and resolve with results instead of episode
-
-			console.log("Attempting to create ", episode);
+			var defer = $q.defer();
+			// console.log("Attempting to create ", episode);
 			POST("/v3/episodes", episode)
 				.then(function (data) {
-					console.log("Created episode: ", data);
-
+					// console.log("Created episode: ", data);
 					// muck around in modelSvc.containers again:
 					modelSvc.containers[data.container_id].episodes = [data._id];
-					createEpisodeDefer.resolve(data);
+					defer.resolve(data);
 				});
-			return createEpisodeDefer.promise;
+			return defer.promise;
+		};
+
+		// Update existing episodes, c.f. createEpisode TODO mild cruft
+		svc.storeEpisode = function (epData) {
+			var preppedData = prepEpisodeForStorage(epData);
+			console.log("prepped for storage:", preppedData);
+			if (preppedData) {
+				return PUT("/v3/episodes/" + preppedData._id, preppedData);
+			} else {
+				return false;
+			}
 		};
 
 		svc.deleteEpisode = function (episodeId) {
@@ -826,23 +823,6 @@ angular.module('com.inthetelling.story')
 					event: evt
 				});
 			}
-		};
-
-		svc.storeEpisode = function (epData) {
-			// For now only update, no create... create needs a customer_id and probably other data as well
-			var preppedData = prepEpisodeForStorage(epData);
-			console.log("prepped for storage:", preppedData);
-			if (preppedData) {
-				return PUT("/v3/episodes/" + preppedData._id, preppedData);
-			} else {
-				return false;
-			}
-			// 	// update
-			// } else {
-			// 	// create
-			// TODO need to determine (at least) the container ID before creating episodes here....
-			// 	return POST("/v3/episodes", epData);
-			// }
 		};
 
 		var prepEpisodeForStorage = function (epData) {
