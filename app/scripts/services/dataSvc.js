@@ -775,7 +775,7 @@ angular.module('com.inthetelling.story')
 				"stop",
 				"required",
 				"cosmetic",
-				"sxs",
+				"sxs", // for demos, for now
 				"title",
 				"url",
 				"annotator",
@@ -794,7 +794,7 @@ angular.module('com.inthetelling.story')
 				}
 			}
 
-			// equiv to Matt's "removeUserQuestionPluginData" code here.  No reason to have two separate prep functions...
+			// clean up multiple choice question Plugin data
 			if (prepped.data) {
 				delete prepped.data._plugin.selectedDistractor;
 				delete prepped.data._plugin.hasBeenAnswered;
@@ -805,6 +805,9 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			}
+
+			// TODO if Credly badge events are ever authorable in producer we will have to do the same
+			// filtering of user data for those here.   Let's not
 
 			prepped.style_id = [];
 			prepped.layout_id = [];
