@@ -284,7 +284,7 @@ angular.module('com.inthetelling.story')
 						}
 					} else {
 						hasMasterAsset = false;
-					}					
+					}
 
 					getYoutubeDuration(url)
 						.then(function (duration) {
