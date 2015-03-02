@@ -511,14 +511,17 @@ angular.module('com.inthetelling.story')
 			});
 			episode.annotators = annotators;
 
+			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 			episode.scenes = scenes.sort(function (a, b) {
 				return a.start_time - b.start_time;
 			});
+			console.log("SCENES", episode.scenes);
 
 			// and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
 			episode.items = items.sort(function (a, b) {
+
 				return a.start_time - b.start_time;
 			});
 
@@ -784,7 +787,7 @@ angular.module('com.inthetelling.story')
 				"_internal": true,
 				"templateUrl": "templates/scene/landingscreen.html",
 				"cur_episode_id": episodeId,
-				"start_time": 0,
+				"start_time": -0.01, // enforce its firstness; a start time of zero might sort after the first scene which also starts at zero
 				"end_time": 0.001
 			};
 		};
@@ -792,8 +795,9 @@ angular.module('com.inthetelling.story')
 		// Don't call this until the master asset exists and episode events have loaded!
 		svc.addEndingScreen = function (episodeId) {
 
+			console.log("addEndingScreen", svc.episodes[episodeId].scenes);
 			if (svc.episodes[episodeId] && !svc.episodes[episodeId].masterAsset) {
-				console.warn("No master asset in episode...?")
+				console.warn("No master asset in episode...?");
 				return;
 			}
 
@@ -803,7 +807,7 @@ angular.module('com.inthetelling.story')
 			var lastScene = svc.episodes[episodeId].scenes[svc.episodes[episodeId].scenes.length - 1];
 
 			if (lastScene._id.match(/internal:landingscreen/)) {
-				console.error("Attempted to add an ending screen before episode events had loaded!");
+				console.error("Attempted to add an ending screen before episode events had loaded (or on an episode with no events");
 				return; // Don't do this if the real event data hasn't loaded yet...
 			} else {
 				lastScene.end_time = duration - 0.1;
