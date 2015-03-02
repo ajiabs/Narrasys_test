@@ -21,7 +21,7 @@ angular.module('com.inthetelling.story')
 
 					scope.loadChildren = function () {
 						if (modelSvc.containers[scope.container._id].haveNotLoadedChildData) {
-							dataSvc.getContainer(scope.container._id);
+							dataSvc.getSingleContainer(scope.container._id);
 						}
 					};
 					scope.toggle = function () {
