@@ -23,6 +23,7 @@ angular.module('com.inthetelling.story')
 					scope.plugin.selectedDistractor = scope.plugin.distractors[i].index;
 					analyticsSvc.captureEventActivity("question-answered", scope.qid, {
 						'answer': scope.plugin.distractors[i].text,
+						'index': scope.plugin.distractors[i].index,
 						'correct': !!(scope.plugin.distractors[i].correct)
 					});
 				};
