@@ -447,7 +447,7 @@ angular.module('com.inthetelling.story')
 
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
-			// console.log("resolveEpisodeEvents");
+			console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
@@ -753,7 +753,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.resolveEpisodeAssets = function (episodeId) {
-			// console.log("resolveEpisodeAssets", episodeId);
+			console.log("resolveEpisodeAssets", episodeId);
 			angular.forEach(svc.events, function (item) {
 				if (item.cur_episode_id !== episodeId) {
 					return;
@@ -791,9 +791,13 @@ angular.module('com.inthetelling.story')
 
 		// Don't call this until the master asset exists and episode events have loaded!
 		svc.addEndingScreen = function (episodeId) {
-			// console.log("addEndingScreen", svc.episodes[episodeId].masterAsset);
 
-			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration);
+			if (svc.episodes[episodeId] && !svc.episodes[episodeId].masterAsset) {
+				console.warn("No master asset in episode...?")
+				return;
+			}
+
+			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration); // HACK
 
 			//coerce end of last scene (and its items) to match video duration:
 			var lastScene = svc.episodes[episodeId].scenes[svc.episodes[episodeId].scenes.length - 1];
@@ -921,7 +925,6 @@ angular.module('com.inthetelling.story')
 			videoAsset.urls = videoObject;
 			return videoAsset;
 		};
-
 
 		var isYoutubeUrl = function (url) {
 			var youtube = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
