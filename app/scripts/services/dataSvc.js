@@ -45,7 +45,7 @@ angular.module('com.inthetelling.story')
 			if (!authSvc.userHasRole('admin')) {
 				return false;
 			}
-			console.log("getCustomerList");
+			// console.log("getCustomerList");
 			return GET("/v3/customers/", function (customers) {
 				angular.forEach(customers, function (customer) {
 					modelSvc.cache("customer", customer);
@@ -81,6 +81,8 @@ angular.module('com.inthetelling.story')
 			}
 			if (modelSvc.episodes[epId]) {
 				console.log("have episode: ", modelSvc.episodes[epId]);
+				$rootScope.$emit("dataSvc.getEpisodeAssets.done");
+				$rootScope.$emit("dataSvc.getEpisodeEvents.done");
 				return; // already requested
 			}
 			modelSvc.cache("episode", {
@@ -89,6 +91,8 @@ angular.module('com.inthetelling.story')
 
 			if ($routeParams.local) {
 				mockSvc.mockEpisode(epId);
+				// console.log("Got all events");
+				$rootScope.$emit("dataSvc.getEpisodeAssets.done");
 				$rootScope.$emit("dataSvc.getEpisodeEvents.done");
 			} else {
 				authSvc.authenticate()
@@ -126,7 +130,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.createChildEpisode = function (childData) {
-			console.log("about to create child epsiode", childData);
+			// console.log("about to create child epsiode", childData);
 			return POST("/v3/episodes", {
 				"episode": childData
 			});
@@ -137,7 +141,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.storeTimeline = function (narrativeId, timeline) {
-			console.log("About to store timeline", timeline);
+			// console.log("About to store timeline", timeline);
 			if (timeline._id) {
 				return PUT("/v3/timelines/" + timeline._id, timeline, function (ret) {
 					// TEMPORARY until api stops doing this
@@ -349,13 +353,17 @@ angular.module('com.inthetelling.story')
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
-						getEpisodeEvents(epId, segmentId);
+						getEpisodeEvents(epId, segmentId).then(function () {
+							$rootScope.$emit("dataSvc.getEpisodeEvents.done");
+						});
 
 						// Load the episode container and all parent containers
 						// (Need this so we can get all potential episode assets, not just for interepisode nav)
 						svc.getContainerAncestry(episodeData.container_id).then(function () {
 							// got them all.
 							modelSvc.resolveEpisodeContainers(epId);
+							modelSvc.resolveEpisodeAssets(epId);
+							$rootScope.$emit("dataSvc.getEpisodeAssets.done", epId);
 						});
 					} else {
 						errorSvc.error({
@@ -387,7 +395,7 @@ angular.module('com.inthetelling.story')
 		var getEpisodeEvents = function (epId, segmentId) {
 			var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
 
-			$http.get(config.apiDataBaseUrl + endpoint)
+			return $http.get(config.apiDataBaseUrl + endpoint)
 				.success(function (events) {
 					getEventActivityDataForUser(events, "Plugin", epId);
 					angular.forEach(events, function (eventData) {
@@ -396,7 +404,7 @@ angular.module('com.inthetelling.story')
 					});
 					// Tell modelSvc it can build episode->scene->item child arrays
 					modelSvc.resolveEpisodeEvents(epId);
-					$rootScope.$emit("dataSvc.getEpisodeEvents.done");
+
 				});
 		};
 
@@ -515,12 +523,14 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
-		// Starts top-down, doesn't iterate
 		svc.getContainer = function (id) {
-			console.log("getContainer", id);
+			// console.log("getContainer", id);
 			return GET("/v3/containers/" + id, function (containers) {
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];
+
+				// Get the container' asset list:
+				svc.getContainerAssets(id);
 
 				// Ensure container.children refers to items in modelSvc cache:
 				if (container.children) {
@@ -552,7 +562,8 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		svc.getContainerAssets = function (containerId, episodeId) {
+		svc.getContainerAssets = function (containerId) {
+			// console.log("dataSvc.getContainerAssets");
 			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
 				.success(function (containerAssets) {
 					// console.log("container assets", containerAssets);
@@ -560,10 +571,6 @@ angular.module('com.inthetelling.story')
 					angular.forEach(containerAssets.files, function (asset) {
 						modelSvc.cache("asset", asset);
 					});
-					// this might be better as an $emit:
-					if (episodeId) {
-						modelSvc.resolveEpisodeAssets(episodeId);
-					}
 				});
 		};
 

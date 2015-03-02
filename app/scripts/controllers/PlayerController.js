@@ -42,15 +42,6 @@ angular.module('com.inthetelling.story')
 			timelineSvc.seek($routeParams.t, "URLParameter");
 		}
 
-		$scope.$on('$routeUpdate', function () {
-			if ($routeParams.viewMode) {
-				$scope.viewMode($routeParams.viewMode);
-			}
-			if ($routeParams.t) {
-				timelineSvc.seek($routeParams.t, "URLParameter");
-			}
-		});
-
 		$scope.changeProducerEditLayer = function (newLayer) {
 			appState.producerEditLayer = appState.producerEditLayer + newLayer;
 			// I'm sure there's a fancier way to do this but
@@ -77,47 +68,41 @@ angular.module('com.inthetelling.story')
 			$scope.narrativeId = $routeParams.narrativeId;
 		}
 
+		$scope.loading = true;
 		modelSvc.addLandingScreen(appState.episodeId);
-		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
 
-		// Watch for the first load of the episode data; init page title and crossnav when found
-
-		// TODO: update this on language change
-		var episodeWatcher = $scope.$watch(function () {
-			return modelSvc.episodes[appState.episodeId].display_title;
-		}, function (a) {
-			if (a) {
-				document.title = "STORY: " + a;
-				episodeWatcher(); // stop watching;
-			}
-		});
+		// You're right, Matt, this was a mess.
 
 		// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
-		$scope.loading = true;
-
-		// So newly-created episodes don't keep the loading spinner forever.
-		// TODO show a friendly "how to get started" message of some kind if there are no events / no master asset
-		$rootScope.$on("dataSvc.getEpisodeEvents.done", function () {
-			timelineSvc.init(appState.episodeId);
-			$scope.loading = false;
-		});
-
-		var eventsWatcher = $scope.$watch(function () {
-			if (!modelSvc.episodes[appState.episodeId].masterAsset) {
-				return false;
-			}
-			return modelSvc.episodes[appState.episodeId].items;
-		}, function (a) {
-			if (a && a.length) { // make sure there are events before we attempt this
-				modelSvc.addEndingScreen(appState.episodeId);
-				timelineSvc.init(appState.episodeId);
-
+		// keeping these triggers separate for now in case we can do anything useful with one or the other before we have both,
+		// but for now I'm too wary of race conditions to try
+		var amIFinished = 0; // poor man's curry :)
+		$scope.finishLoading = function () {
+			console.log("finishLoading", amIFinished);
+			if (amIFinished < 1) {
+				amIFinished++;
+			} else {
+				console.log("GOT BOTH");
+				amIFinished = 0;
 				appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 				modelSvc.setLanguageStrings();
+				document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
+
+				// modelSvc.resolveEpisodeEvents(appState.episodeId); // this may be redundant
+				modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist (so depends on getEpisodeAssets)
+				timelineSvc.init(appState.episodeId);
 				$scope.loading = false;
-				eventsWatcher(); // stop watching
 			}
+		};
+
+		var watcher1 = $rootScope.$on("dataSvc.getEpisodeEvents.done", function () {
+			$scope.finishLoading();
 		});
+		var watcher2 = $rootScope.$on("dataSvc.getEpisodeAssets.done", function () {
+			$scope.finishLoading();
+		});
+
+		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
 
 		// keep non-admins from seeing the producer interface
 		if (appState.productLoadedAs === 'producer') {
@@ -163,9 +148,7 @@ angular.module('com.inthetelling.story')
 				}, 5000);
 			}
 		});
-		$scope.$on('$destroy', function () {
-			videoControlsWatcher();
-		});
+
 		$scope.showControls = function () {
 			// console.log("showControls");
 			$timeout.cancel(controlTimer);
@@ -227,7 +210,7 @@ angular.module('com.inthetelling.story')
 		}
 
 		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
-		$rootScope.$on("video.firstPlay", function () {
+		var watcher3 = $rootScope.$on("video.firstPlay", function () {
 			if (localStorageAllowed && !(localStorage.getItem("noMoreHelp"))) {
 				appState.show.helpPanel = true;
 			} else {
@@ -358,6 +341,13 @@ angular.module('com.inthetelling.story')
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
-		$rootScope.$on("userKeypress.ESC", $scope.hidePanels);
+		var watcher4 = $rootScope.$on("userKeypress.ESC", $scope.hidePanels);
 
+		$scope.$on('$destroy', function () {
+			videoControlsWatcher();
+			watcher1();
+			watcher2();
+			watcher3();
+			watcher4();
+		});
 	});
