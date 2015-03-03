@@ -4,8 +4,6 @@
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 
 TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
-
-
 */
 
 angular.module('com.inthetelling.story')
@@ -251,7 +249,7 @@ angular.module('com.inthetelling.story')
 						.then(function (data) {
 							data.you_tube_url = asset.url;
 							data.duration = asset.duration;
-							
+
 							modelSvc.cache("asset", data);
 							var modelAsset = modelSvc.assets[data.file._id];
 							modelAsset.you_tube_url = asset.url;
@@ -284,7 +282,7 @@ angular.module('com.inthetelling.story')
 						}
 					} else {
 						hasMasterAsset = false;
-					}					
+					}
 
 					getYoutubeDuration(url)
 						.then(function (duration) {
