@@ -447,7 +447,7 @@ angular.module('com.inthetelling.story')
 
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
-			console.log("resolveEpisodeEvents");
+			// console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
@@ -517,11 +517,9 @@ angular.module('com.inthetelling.story')
 			episode.scenes = scenes.sort(function (a, b) {
 				return a.start_time - b.start_time;
 			});
-			console.log("SCENES", episode.scenes);
 
 			// and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
 			episode.items = items.sort(function (a, b) {
-
 				return a.start_time - b.start_time;
 			});
 
@@ -756,7 +754,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.resolveEpisodeAssets = function (episodeId) {
-			console.log("resolveEpisodeAssets", episodeId);
+			// console.log("resolveEpisodeAssets", episodeId);
 			angular.forEach(svc.events, function (item) {
 				if (item.cur_episode_id !== episodeId) {
 					return;
@@ -794,8 +792,7 @@ angular.module('com.inthetelling.story')
 
 		// Don't call this until the master asset exists and episode events have loaded!
 		svc.addEndingScreen = function (episodeId) {
-
-			console.log("addEndingScreen", svc.episodes[episodeId].scenes);
+			// console.log("addEndingScreen", svc.episodes[episodeId].scenes);
 			if (svc.episodes[episodeId] && !svc.episodes[episodeId].masterAsset) {
 				console.warn("No master asset in episode...?");
 				return;
