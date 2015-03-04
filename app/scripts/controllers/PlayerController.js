@@ -78,11 +78,10 @@ angular.module('com.inthetelling.story')
 		// but for now I'm too wary of race conditions to try
 		var amIFinished = 0; // poor man's curry :)
 		$scope.finishLoading = function () {
-			console.log("finishLoading", amIFinished);
+			// console.log("finishLoading", amIFinished);
 			if (amIFinished < 1) {
 				amIFinished++;
 			} else {
-				console.log("GOT BOTH");
 				amIFinished = 0;
 				appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 				modelSvc.setLanguageStrings();
