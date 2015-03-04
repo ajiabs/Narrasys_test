@@ -511,6 +511,7 @@ angular.module('com.inthetelling.story')
 			});
 			episode.annotators = annotators;
 
+			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 			episode.scenes = scenes.sort(function (a, b) {
@@ -784,22 +785,26 @@ angular.module('com.inthetelling.story')
 				"_internal": true,
 				"templateUrl": "templates/scene/landingscreen.html",
 				"cur_episode_id": episodeId,
-				"start_time": 0,
+				"start_time": -0.01, // enforce its firstness; a start time of zero might sort after the first scene which also starts at zero
 				"end_time": 0.001
 			};
 		};
 
 		// Don't call this until the master asset exists and episode events have loaded!
 		svc.addEndingScreen = function (episodeId) {
-			// console.log("addEndingScreen", svc.episodes[episodeId].masterAsset);
+			// console.log("addEndingScreen", svc.episodes[episodeId].scenes);
+			if (svc.episodes[episodeId] && !svc.episodes[episodeId].masterAsset) {
+				console.warn("No master asset in episode...?");
+				return;
+			}
 
-			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration);
+			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration); // HACK
 
 			//coerce end of last scene (and its items) to match video duration:
 			var lastScene = svc.episodes[episodeId].scenes[svc.episodes[episodeId].scenes.length - 1];
 
 			if (lastScene._id.match(/internal:landingscreen/)) {
-				console.error("Attempted to add an ending screen before episode events had loaded!");
+				console.error("Attempted to add an ending screen before episode events had loaded (or on an episode with no events");
 				return; // Don't do this if the real event data hasn't loaded yet...
 			} else {
 				lastScene.end_time = duration - 0.1;
@@ -863,9 +868,19 @@ angular.module('com.inthetelling.story')
 
 			// Old-school episodes:
 			// Use the old you_tube_url if it wasn't present in alternate_urls:
-			if (videoObject.youtube.length === 0 && videoAsset.you_tube_url) {
-				videoObject.youtube = [embeddableYoutubeUrl(videoAsset.you_tube_url)];
+			if (videoObject.youtube.length === 0) {
+				//it is on url, and not on you_tube_url.
+				if (videoAsset.url && !videoAsset.you_tube_url) {
+					if (isYoutubeUrl(videoAsset.url)) {
+						videoAsset.you_tube_url = embeddableYoutubeUrl(videoAsset.url);
+					}
+				}
+
+				if (videoAsset.you_tube_url) {
+					videoObject.youtube = [embeddableYoutubeUrl(videoAsset.you_tube_url)];
+				}
 			}
+
 			// Same for other types (we used to put the .mp4 in videoAsset.url and just swapped out the extension for other types, which was silly, which is why we stopped doing it, but some old episodes never got updated)
 			angular.forEach(["mp4", "webm", "m3u8"], function (ext) {
 				if (videoObject[ext].length === 0) {
@@ -912,6 +927,10 @@ angular.module('com.inthetelling.story')
 			return videoAsset;
 		};
 
+		var isYoutubeUrl = function (url) {
+			var youtube = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+			return youtube.test(url);
+		};
 		var embeddableYoutubeUrl = function (origUrl) {
 			// regexp to extract the ID from a youtube
 			if (!origUrl) {

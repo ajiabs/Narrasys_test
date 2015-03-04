@@ -51,7 +51,7 @@ describe('Service: modelSvc', function () {
 		modelSvc.addLandingScreen("EP1");
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(modelSvc.episodes.EP1.scenes.length).toEqual(11);
-		expect(modelSvc.episodes.EP1.scenes[0].start_time).toEqual(0);
+		expect(modelSvc.episodes.EP1.scenes[0].start_time).toEqual(-0.01);
 		expect(modelSvc.episodes.EP1.scenes[1].start_time).toEqual(0);
 		expect(modelSvc.episodes.EP1.scenes[2].start_time).toEqual(10);
 	});

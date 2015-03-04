@@ -15,7 +15,6 @@ angular.module('com.inthetelling.story')
 		$scope.selectedAsset = function (asset_id) {
 			console.log($scope.item);
 			var asset = modelSvc.assets[asset_id];
-			$scope.masterAsset = asset;
 			if ($scope.item) {
 				$scope.item.asset = asset;
 				if ($scope.item._type === 'Upload' || $scope.item._type === 'Plugin') {
@@ -32,6 +31,7 @@ angular.module('com.inthetelling.story')
 				//BUGBUG? - could episode be truthy and the asset be video during "item" edition (and not episode editing) 
 				// causing us to inadvertently change the master asset to the item video asset?  Due to using editcontroller for both item and episode
 				if (asset._type === 'Asset::Video') {
+					$scope.masterAsset = asset;
 					var previousAsset = modelSvc.assets[$scope.episode.master_asset_id];
 					$timeout(function () {
 						$scope.checkAndConfirmDuration(previousAsset, asset, function (confirmed) {
@@ -78,9 +78,111 @@ angular.module('com.inthetelling.story')
 				timelineSvc.updateSceneTimes(appState.episodeId);
 			}
 		};
+		var isTranscript = function (item) {
+			if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+
+		var getTranscriptItems = function () {
+			var episode = modelSvc.episodes[appState.episodeId];
+			var allItems = angular.copy(episode.items);
+			return allItems.filter(isTranscript);
+		};
+		var getItemIndex = function (items, item) {
+			var centerIndex = 0;
+			for (var i = 0, len = items.length; i < len; i++) {
+				if (items[i]._id === item._id) {
+					centerIndex = i;
+					break;
+				}
+			}
+			return centerIndex;
+		};
+		var filterToItemBefore = function (items, centerItem) {
+			items = items.sort(sortByStartTime);
+			var centerIndex = getItemIndex(items, centerItem);
+			var itemBefore = [];
+			if (centerIndex === 0) {
+				return itemBefore;
+			} else {
+				if (centerIndex < items.length - 1) {
+					if (centerIndex >= 1) {
+						if (!isInternal(items[centerIndex - 1])) {
+							itemBefore.push(items[centerIndex - 1]);
+						}
+					}
+				}
+			}
+			return itemBefore;
+		};
+
+		var filterToBookends = function (items, centerItem) {
+			items = items.sort(sortByStartTime);
+			var centerIndex = getItemIndex(items, centerItem);
+			var itemsBeforeAndAfter = [];
+
+			if (centerIndex === 0) {
+				if (centerIndex < items.length - 1) {
+					if (!isInternal(items[centerIndex + 1])) {
+						itemsBeforeAndAfter.push(items[centerIndex + 1]);
+					}
+				}
+			} else {
+				if (centerIndex < items.length - 1) {
+					if (!isInternal(items[centerIndex + 1])) {
+						itemsBeforeAndAfter.push(items[centerIndex + 1]);
+					}
+					if (centerIndex >= 1) {
+						if (!isInternal(items[centerIndex - 1])) {
+							itemsBeforeAndAfter.push(items[centerIndex - 1]);
+						}
+					}
+				}
+			}
+			return itemsBeforeAndAfter;
+		};
+
+		var saveAdjustedEvents = function (item, operation, original) {
+			if (isTranscript(item)) {
+				var itemsToSave = [];
+				// assuming that this is called after a resolve and that we are dealing with events that have been adjusted already
+				var transcriptItems = getTranscriptItems();
+				switch (operation) {
+				case "create":
+					itemsToSave = filterToBookends(transcriptItems, item);
+					console.log('adjust for create');
+					break;
+				case "delete":
+					itemsToSave = filterToItemBefore(transcriptItems, item);
+					console.log('adjust for delete');
+					break;
+				case "update":
+					// if an event moved, should we brute force it? if not we need to capture original position and new position. and update like a delete for the original and a create on the new. 
+					if (original) {
+						saveAdjustedEvents(original, "delete");
+					}
+					saveAdjustedEvents(item, "create");
+					console.log('adjust for update');
+					break;
+				}
+				angular.forEach(itemsToSave, function (item) {
+					dataSvc.storeItem(item)
+						.then(function () {
+							console.log('updated transcript item', item);
+						}, function (data) {
+							console.error("FAILED TO STORE EVENT", data);
+						});
+				});
+			}
+		};
 
 		$scope.saveEvent = function () {
 			var toSave = angular.copy(appState.editEvent);
+
+
 
 			//assign current episode_id
 			toSave.cur_episode_id = appState.episodeId;
@@ -97,7 +199,6 @@ angular.module('com.inthetelling.story')
 			}
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
-
 					data.cur_episode_id = appState.episodeId;
 					if (appState.editEvent._id === 'internal:editing') {
 						// update the new item with its real ID (and remove the temp version)
@@ -106,6 +207,11 @@ angular.module('com.inthetelling.story')
 						modelSvc.cache("event", dataSvc.resolveIDs(data));
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 						timelineSvc.injectEvents([modelSvc.events[data._id]]);
+						saveAdjustedEvents(data, "create");
+					} else {
+						modelSvc.resolveEpisodeEvents(appState.episodeId);
+						timelineSvc.injectEvents([modelSvc.events[data._id]]);
+						saveAdjustedEvents(data, "update"); //TODO: send in the original (pre-move) event as last param
 					}
 					appState.editEvent = false;
 				}, function (data) {
@@ -270,29 +376,28 @@ angular.module('com.inthetelling.story')
 			$timeout(function () {
 				dataSvc.storeEpisode(toSave)
 					.then(function (data) {
-						//	$timeout(function () {
 						modelSvc.cache("episode", dataSvc.resolveIDs(data));
 						var scene = generateEmptyItem("scene");
-						var duration = modelSvc.assets[data.master_asset_id].duration;
-						if (!hasScenes()) {
-							scene.start_time = 0;
-							scene.end_time = duration;
-							dataSvc.storeItem(scene)
-								.then(function () {
-									// console.log("default scene created");
-								}, function (data) {
-									console.error("FAILED TO STORE EVENT", data);
-								});
+						scene.cur_episode_id = appState.episodeId;
+						if (data.master_asset_id) {
+							var duration = modelSvc.assets[data.master_asset_id].duration;
+							if (!hasScenes()) {
+								scene.start_time = 0;
+								scene.end_time = duration;
+								dataSvc.storeItem(scene)
+									.then(function () {}, function (data) {
+										console.error("FAILED TO STORE EVENT", data);
+									});
+							}
+							appState.duration = modelSvc.assets[data.master_asset_id].duration;
+							$scope.moveEventsAfter(duration);
 						}
 						modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
 						modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
 						modelSvc.resolveEpisodeAssets(appState.episodeId);
-						appState.duration = modelSvc.assets[data.master_asset_id].duration;
 						appState.editEpisode = false;
 						appState.videoControlsLocked = false;
 
-						$scope.moveEventsAfter(duration);
-						//		}, 0);
 					}, function (data) {
 						console.error("FAILED TO STORE EPISODE", data);
 					});
@@ -424,7 +529,7 @@ angular.module('com.inthetelling.story')
 						if (eventType === 'Scene') {
 							timelineSvc.updateSceneTimes(appState.episodeId);
 						}
-
+						saveAdjustedEvents(event, "delete");
 						appState.editEvent = false;
 						appState.videoControlsLocked = false;
 					}, function (data) {
