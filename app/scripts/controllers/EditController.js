@@ -363,6 +363,7 @@ angular.module('com.inthetelling.story')
 		var ensureEpisodeScenes = function (episode, doneCallback) {
 			var duration = modelSvc.assets[episode.master_asset_id].duration;
 			var nonInternalScenes = getScenesNonInternal();
+			$scope.adjustEndingScene();
 			if (nonInternalScenes.length === 0) {
 				var scene = generateEmptyItem("scene");
 				scene.cur_episode_id = appState.episodeId;
@@ -421,7 +422,6 @@ angular.module('com.inthetelling.story')
 								console.log('done ensureEpisodeScenes');
 								appState.duration = duration;
 								$scope.moveEventsAfter(duration);
-								modelSvc.addEndingScreen(appState.episodeId);
 								modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
 								modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
 								modelSvc.resolveEpisodeAssets(appState.episodeId);
