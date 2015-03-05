@@ -14,7 +14,8 @@
 				allowHighlights: !showCurrent,
 				hasLeftSidebar: mainContentHasLeftSidebar, 
 				hasRightSidebar: mainContentHasRightSidebar,
-				isNarrow: isNarrow
+				isNarrow: isNarrow,
+				isEmpty: mainContentItems.length == 0
 			}" itt-width-watch>
 				<div class="item animate" ng-repeat="item in showCurrent ? (contentItems | isCurrent) : contentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 				<div class="clear"></div>

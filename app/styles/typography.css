@@ -158,7 +158,6 @@ a {
 	font-family: "Chaparral Pro", "Times New Roman", "Times", serif;
 }
 /* ----- */
-
 /* (Columbia is same as typographyBook: ) */
 
 .typographyColumbia {
@@ -170,11 +169,11 @@ a {
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }
 /* ----- */
-
 /* (Columbia Business: ) */
 
 .typographyColumbiabusiness {
 	/* They specify Galaxie Sans, we don't have a license. */
+	
 	font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
 }
 .typographyColumbiabusiness .startTime,
@@ -196,3 +195,24 @@ a {
 .typographyColumbiabusiness .pullquote:before {
 	display: none !important;
 }
+/* (GWSB: ) */
+
+.typographyGwsb {
+	font-family: 'EB Garamond', 'Adobe Garamond', Garamond, serif;
+}
+.typographyGwsb h1,
+.typographyGwsb h2,
+.typographyGwsb h3,
+.typographyGwsb .authorName {
+	font-family: Helvetica, sans-serif;
+}
+.typographyGwsb .item .pullquote,
+.typographyGwsb .item .pullquoteSpeaker {
+	font-family: Helvetica, sans-serif;
+	font-weight: lighter;
+}
+.typographyGwsb .item .pullquote:before {
+	font-family: "Cardo", serif;
+	font-size: 6em;
+}
+

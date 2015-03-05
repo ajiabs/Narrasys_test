@@ -282,6 +282,10 @@ angular.module('com.inthetelling.story')
 			*/
 			return POST("/v1/templates", templateData);
 		};
+		// svc.createStyle = function (styleData) {
+		// 	// ALSO TEMPORARY, UNSAFE
+		// 	return POST("/v1/styles", styleData);
+		// };
 
 		// transform API common IDs into real values
 		svc.resolveIDs = function (obj) {
@@ -1044,6 +1048,26 @@ angular.module('com.inthetelling.story')
 		}
 
 		var get_id_values = function (cache, realNames) {
+
+			// HACK These values won't have IDs, they're generated inside modelSvc. 
+			// Can remove this after template config is updated
+			var pseudos = [
+				"colorEliterate",
+				"colorGw",
+				"colorGwsb",
+				"colorPurdue",
+				"colorUsc",
+				"colorColumbia",
+				"colorColumbiabusiness",
+				"typographyEliterate",
+				"typographyGw",
+				"typographyGwsb",
+				"typographyPurdue",
+				"typographyUsc",
+				"typographyColumbia",
+				"typographyColumbiabusiness"
+			];
+
 			// convert real styles and layouts back into id arrays. Not for templateUrls!
 			var ids = [];
 
@@ -1053,10 +1077,15 @@ angular.module('com.inthetelling.story')
 					if (cachedValue) {
 						ids.push(cachedValue.id);
 					} else {
-						errorSvc.error({
-							data: "Tried to store a " + cache + " with no ID: " + realName
-						});
-						return false;
+						// HACK ignore pseudo-styles generated within modelSvc:
+						if (pseudos.indexOf(realName) === -1) {
+							errorSvc.error({
+								data: "Tried to store a " + cache + " with no ID: " + realName
+							});
+							return false;
+						} else {
+							console.log("Ignoring ", realName);
+						}
 					}
 				}
 			});

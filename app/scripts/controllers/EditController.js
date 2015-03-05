@@ -228,25 +228,8 @@ angular.module('com.inthetelling.story')
 			return episode.items;
 		};
 
-		var hasScenes = function () {
-			var scenes = getScenes();
-			if (typeof (scenes) === 'undefined') {
-				return false;
-			}
-			if (scenes.length < 1) {
-				return false;
-			}
-			var internalScenesOnly = true;
-			// we have scenes, but may be internal	
-			for (var i = 0, len = scenes.length; i < len; i++) {
-				if (isInternal(scenes[i])) {
-					continue;
-				} else {
-					internalScenesOnly = false;
-					break;
-				}
-			}
-			return !internalScenesOnly;
+		var isntInternal = function (item) {
+			return !isInternal(item);
 		};
 		var isInternal = function (item) {
 			if (item._id && item._id.match(/internal/)) {
@@ -254,6 +237,13 @@ angular.module('com.inthetelling.story')
 			} else {
 				return false;
 			}
+		};
+		var getScenesNonInternal = function () {
+			var scenes = getScenes();
+			if (typeof (scenes) === 'undefined' || scenes.length < 1) {
+				return [];
+			}
+			return scenes.filter(isntInternal);
 		};
 		$scope.checkIfTimesAfter = function (items, duration) {
 			for (var i = 0, len = items.length; i < len; i++) {
@@ -370,6 +360,52 @@ angular.module('com.inthetelling.story')
 			timelineSvc.updateSceneTimes(appState.episodeId);
 		};
 
+		var ensureEpisodeScenes = function (episode, doneCallback) {
+			var duration = modelSvc.assets[episode.master_asset_id].duration;
+			var nonInternalScenes = getScenesNonInternal();
+			$scope.adjustEndingScene();
+			if (nonInternalScenes.length === 0) {
+				var scene = generateEmptyItem("scene");
+				scene.cur_episode_id = appState.episodeId;
+				scene.start_time = 0;
+				scene.end_time = duration;
+				scene.episode_id = appState.episodeId;
+				dataSvc.storeItem(scene)
+					.then(function (data) {
+						data.episode_id = appState.episodeId;
+						data.cur_episode_id = appState.episodeId;
+						modelSvc.cache("event", data);
+						modelSvc.resolveEpisodeEvents(appState.episodeId);
+						timelineSvc.init();
+						timelineSvc.injectEvents([data]);
+						doneCallback();
+					}, function (data) {
+						console.error("FAILED TO STORE EVENT", data);
+						doneCallback();
+					});
+			} else if (nonInternalScenes.length === 1) {
+				//check this scene and see if we need to adjust it so it takes up the entire episode length...
+				if (nonInternalScenes[0].end_time !== duration) {
+					nonInternalScenes[0].end_time = duration;
+					dataSvc.storeItem(nonInternalScenes[0])
+						.then(function (data) {
+							data.episode_id = appState.episodeId;
+							data.cur_episode_id = appState.episodeId;
+							modelSvc.events[data._id] = data;
+							modelSvc.resolveEpisodeEvents(appState.episodeId);
+							timelineSvc.removeEvent(data._id);
+							timelineSvc.injectEvents([data]);
+							doneCallback();
+						}, function (data) {
+							doneCallback();
+							console.error("FAILED TO UPDATE scene duration ", data);
+						});
+				}
+			} else {
+				doneCallback();
+			}
+		};
+
 		$scope.saveEpisode = function () {
 			var toSave = angular.copy(appState.editEpisode);
 
@@ -377,27 +413,29 @@ angular.module('com.inthetelling.story')
 				dataSvc.storeEpisode(toSave)
 					.then(function (data) {
 						modelSvc.cache("episode", dataSvc.resolveIDs(data));
-						var scene = generateEmptyItem("scene");
-						scene.cur_episode_id = appState.episodeId;
 						if (data.master_asset_id) {
 							var duration = modelSvc.assets[data.master_asset_id].duration;
-							if (!hasScenes()) {
-								scene.start_time = 0;
-								scene.end_time = duration;
-								dataSvc.storeItem(scene)
-									.then(function () {}, function (data) {
-										console.error("FAILED TO STORE EVENT", data);
-									});
-							}
-							appState.duration = modelSvc.assets[data.master_asset_id].duration;
-							$scope.moveEventsAfter(duration);
-						}
-						modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
-						modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
-						modelSvc.resolveEpisodeAssets(appState.episodeId);
-						appState.editEpisode = false;
-						appState.videoControlsLocked = false;
+							//TODO: figure out which (or both) of these masterAsset properties are needed. and maybe get rid of one.
+							appState.masterAsset = modelSvc.assets[$scope.episode.master_asset_id];
+							modelSvc.episodes[appState.episodeId].masterAsset = modelSvc.assets[$scope.episode.master_asset_id];
+							ensureEpisodeScenes(data, function () {
+								console.log('done ensureEpisodeScenes');
+								appState.duration = duration;
+								$scope.moveEventsAfter(duration);
+								modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
+								modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
+								modelSvc.resolveEpisodeAssets(appState.episodeId);
+								appState.editEpisode = false;
+								appState.videoControlsLocked = false;
+							});
+							//timelineSvc.init(appState.episodeId);
+						} else {
+							modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
+							modelSvc.resolveEpisodeAssets(appState.episodeId);
+							appState.editEpisode = false;
+							appState.videoControlsLocked = false;
 
+						}
 					}, function (data) {
 						console.error("FAILED TO STORE EPISODE", data);
 					});
