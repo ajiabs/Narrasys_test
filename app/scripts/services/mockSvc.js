@@ -30,7 +30,7 @@ angular.module('com.inthetelling.story')
 				}],
 
 				"status": "Published",
-				"templateUrl": "templates/episode/middlebury.html",
+				"templateUrl": "templates/episode/gwsb.html",
 				"styles": [
 					"", "", ""
 				]

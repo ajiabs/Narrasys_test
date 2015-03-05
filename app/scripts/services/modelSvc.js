@@ -161,7 +161,7 @@ angular.module('com.inthetelling.story')
 			if (!episode.styles) {
 				episode.styles = [];
 			}
-			angular.forEach(["eliterate", "gw", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
+			angular.forEach(["eliterate", "gw", "gwsb", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
 				if (episode.templateUrl === "templates/episode/" + customer + ".html") {
 					angular.forEach(["color", "typography"], function (styleType) {
 						// if the episode doesn't already have styletypeFoo, add styletypeCustomer 

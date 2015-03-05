@@ -6,6 +6,15 @@ angular.module('com.inthetelling.story')
 	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc) {
 		// console.log("playerController", $scope);
 
+		$scope.tmp = function () {
+			// dataSvc.createTemplate({
+			// 	url: 'templates/episode/gwsb.html',
+			// 	name: 'GWSB',
+			// 	event_types: [], // Upload, Scene, Plugin, Annotation, Link
+			// 	applies_to_episode: true,
+			// });
+		};
+
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
 			analyticsSvc.captureEpisodeActivity("modeChange", {
