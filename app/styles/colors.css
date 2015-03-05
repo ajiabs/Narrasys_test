@@ -275,4 +275,39 @@ a.startTime.displayTime {
 	text-transform: uppercase;
 	margin-left: -0.5em;
 }
+.colorGwsb h1,
+.colorGwsb h2,
+.colorGwsb h3 {
+	color: #004B6E;
+	text-transform: uppercase;
+}
+.colorGwsb .title,
+.colorGwsb .fakeLink,
+.colorGwsb a.startTime.displayTime {
+	color: #008BC4;
+}
+.colorGwsb .colorInvert {
+	color: #000;
+	background-color: #BEDAE9;
+}
+.colorGwsb a {
+	color: #008BC4;
+}
+.colorGwsb .colorInvert a,
+.colorInvert a.startTime.displayTime {
+	color: #004B6E
+}
+.colorGwsb .colorInvert .pullquote,
+.colorGwsb .pullquote {
+	color: #008bC4;
+}
+.colorGwsb .colorInvert .pullquote:before,
+.colorGwsb .pullquote:before {
+	color: #FFF0B5;
+}
+/*
+dark blue: 004B6E light blue: 008BC4;
+super-light blue: BEDAE9 yellow: FFF0B5;
+
+*/
 

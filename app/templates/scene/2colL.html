@@ -16,7 +16,8 @@
 				allowHighlights: !showCurrent,
 				hasLeftSidebar: mainContentHasLeftSidebar, 
 				hasRightSidebar: mainContentHasRightSidebar,
-				isNarrow: isNarrow
+				isNarrow: isNarrow,
+				isEmpty: mainContentItems.length == 0
 			}" itt-width-watch>
 				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
 				<div class="clear"></div>
@@ -41,7 +42,8 @@
 				allowHighlights: !showCurrent,
 				hasLeftSidebar: altContentHasLeftSidebar, 
 				hasRightSidebar: altContentHasRightSidebar,
-				isNarrow: isNarrow
+				isNarrow: isNarrow,
+				isEmpty: altContentItems.length == 0
 			}" itt-width-watch>
 				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
 				<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
