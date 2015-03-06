@@ -7,12 +7,12 @@ angular.module('com.inthetelling.story')
 		// console.log("playerController", $scope);
 
 		$scope.tmp = function () {
-			// dataSvc.createTemplate({
-			// 	url: 'templates/episode/gwsb.html',
-			// 	name: 'GWSB',
-			// 	event_types: [], // Upload, Scene, Plugin, Annotation, Link
-			// 	applies_to_episode: true,
-			// });
+			dataSvc.createTemplate({
+				url: 'templates/episode/gwsb.html',
+				name: 'GWSB',
+				event_types: [], // Upload, Scene, Plugin, Annotation, Link
+				applies_to_episode: true,
+			});
 		};
 
 		$scope.viewMode = function (newMode) {
