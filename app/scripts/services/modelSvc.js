@@ -523,10 +523,21 @@ angular.module('com.inthetelling.story')
 				return a.start_time - b.start_time;
 			});
 
-			// ensure scenes are contiguous. Skip the landing scene and the ending scene.
+			var duration = 0;
+			if (episode.masterAsset) {
+				duration = episode.masterAsset.duration;
+			}
+
+			// ensure scenes are contiguous. Including the landing scene and the ending scene as end_times are relied on in producer in any editable scene.
 			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
-			for (var i = 1; i < episode.scenes.length - 1; i++) {
-				episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
+			for (var i = 0, len = episode.scenes.length; i < len; i++) {
+				if (i === len - 1) {
+					if (duration !== 0) {
+						episode.scenes[i].end_time = duration;
+					}
+				} else {
+					episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
+				}
 			}
 
 			// assign items to scenes (give them a scene_id and attach references to the scene's items[]:
