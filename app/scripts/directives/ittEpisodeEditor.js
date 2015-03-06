@@ -239,9 +239,9 @@ angular.module('com.inthetelling.story')
 					return "//www.youtube.com/embed/" + extractYoutubeId(origUrl);
 				};
 
-				var getYoutubeDuration = function (url) {
+				var getYoutubeVideoMetadata = function (url) {
 					var youtubeId = extractYoutubeId(url);
-					return youtubeSvc.getVideoDuration(youtubeId);
+					return youtubeSvc.getVideoData(youtubeId);
 				};
 
 				var createAsset = function (containerId, episodeId, asset) {
@@ -284,11 +284,14 @@ angular.module('com.inthetelling.story')
 						hasMasterAsset = false;
 					}
 
-					getYoutubeDuration(url)
-						.then(function (duration) {
+					getYoutubeVideoMetadata(url)
+						.then(function (data) {
 							var asset = {}; //createDefaultAsset()
 							asset.you_tube_url = asset.url = url;
-							asset.duration = duration;
+							asset.duration = data.duration;
+							asset.name = data.title;
+							asset.description = data.description;
+							asset.content_type = "video/x-youtube";
 							createAsset(scope.episodeContainerId, scope.episode._id, asset);
 						}, function (error) {
 							console.log("Error getting duration from youtube:", error);
