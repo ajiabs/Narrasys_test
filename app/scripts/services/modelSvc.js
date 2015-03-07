@@ -528,9 +528,9 @@ angular.module('com.inthetelling.story')
 				duration = episode.masterAsset.duration;
 			}
 
-			// ensure scenes are contiguous. Including the landing scene and the ending scene as end_times are relied on in producer in any editable scene.
+			// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
 			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
-			for (var i = 0, len = episode.scenes.length; i < len; i++) {
+			for (var i = 1, len = episode.scenes.length; i < len; i++) {
 				if (i === len - 1) {
 					if (duration !== 0) {
 						episode.scenes[i].end_time = duration;
@@ -540,11 +540,19 @@ angular.module('com.inthetelling.story')
 				}
 			}
 
+
+
+			var itemsIndex = 0;
 			// assign items to scenes (give them a scene_id and attach references to the scene's items[]:
-			angular.forEach(scenes, function (scene) {
+			//angular.forEach(scenes, function (scene) {
+			for (var y = 0, scenesLength = scenes.length; y < scenesLength; y ++) {
+				var scene = scenes[y];
 				var sceneItems = [];
 				var previousTranscript = {};
-				angular.forEach(items, function (event) {
+				for (var x = itemsIndex, itemsLength = items.length; x < itemsLength; x++ ) {
+					var event = items[x];
+
+					//angular.forEach(items, function (event) {
 					/* possible cases: 
 							start and end are within the scene: put it in this scene
 							start is within this scene, end is after this scene: 
@@ -564,16 +572,24 @@ angular.module('com.inthetelling.story')
 							}
 							previousTranscript = event;
 						}
-
+						
 						if (event.end_time <= scene.end_time) {
 							// entirely within scene
 							svc.events[event._id].scene_id = scene._id;
 							sceneItems.push(event);
 						} else {
+							
 							// end time is in next scene.  Check if start time is close to scene end, if so bump to next scene, otherwise truncate the item to fit in this one
 							if (scene.end_time - 0.25 < event.start_time) {
-								// bump to next scene
-								event.start_time = scene.end_time;
+								if (y !== scenesLength - 1) {
+									// bump to next scene
+									event.start_time = scene.end_time;
+								} else {
+									//in last scene
+									event.end_time = scene.end_time;
+									event.scene_id = scene._id;
+									sceneItems.push(event);
+								}
 							} else {
 								// truncate and add to this one
 								event.end_time = scene.end_time;
@@ -582,7 +598,14 @@ angular.module('com.inthetelling.story')
 							}
 						}
 					}
-				});
+					if (event.start_time > scene.end_time) {
+						itemsIndex = x; //set the current index to i, no need to loop through things we've already seen
+						break; // no need to continue checking events after this point as no events will be added to this scene after this point
+					}
+
+
+
+				}
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 				svc.events[scene._id].items = sceneItems.sort(function (a, b) {
@@ -599,8 +622,7 @@ angular.module('com.inthetelling.story')
 					}
 
 				});
-			});
-
+			}
 			// Now that we have the structure, calculate event styles (for scenes and items:)
 			episode.styleCss = cascadeStyles(episode);
 			angular.forEach(svc.events, function (event) {

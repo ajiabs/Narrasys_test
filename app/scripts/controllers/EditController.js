@@ -463,7 +463,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var fixEndTimes = function (scenes, duration) {
-			for (var i = 0, len = scenes.length; i < len; i++) {
+			for (var i = 1, len = scenes.length; i < len; i++) {
 				if (i === len - 1) {
 						scenes[i].end_time = duration;
 				} else {
@@ -517,7 +517,7 @@ angular.module('com.inthetelling.story')
 				scenes.push(modifiedScene);
 			}
 			scenes = scenes.sort(sortByStartTime);
-			for (var i = 0, len = scenes.length; i < len; i++) {
+			for (var i = 1, len = scenes.length; i < len; i++) {
 				if (i === len - 1) {
 					if (scenes[i].end_time !== duration) {
 						scenes[i].end_time = duration;
