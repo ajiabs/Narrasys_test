@@ -851,6 +851,24 @@ angular.module('com.inthetelling.story')
 				}
 			}
 
+			// check that end_time is greater than start time
+			if (prepped.start_time && prepped.end_time) {
+				var startFloat = parseFloat(prepped.start_time);
+				var endFloat = parseFloat(prepped.end_time);
+				if (isNaN(startFloat) || isNaN(endFloat)) {
+					errorSvc.error({
+						data: "Tried to store an invalid start_time or end_time."
+					});
+					return false;
+				}
+				if (startFloat > endFloat) {
+					errorSvc.error({
+						data: "Tried to store a start_time that is after the end_time."
+					});
+					return false;
+				}
+			}
+
 			// clean up multiple choice question Plugin data
 			if (prepped.data) {
 				delete prepped.data._plugin.selectedDistractor;

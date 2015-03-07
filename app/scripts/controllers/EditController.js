@@ -462,10 +462,14 @@ angular.module('com.inthetelling.story')
 			return updatedScenes;
 		};
 
-		var fixEndTimes = function (scenes) {
-			for (var i = 1, len = scenes.length; i < len - 1; i++) {
-				if (scenes[i].end_time !== scenes[i + 1].start_time) {
-					scenes[i].end_time = scenes[i + 1].start_time;
+		var fixEndTimes = function (scenes, duration) {
+			for (var i = 1, len = scenes.length; i < len; i++) {
+				if (i === len - 1) {
+						scenes[i].end_time = duration;
+				} else {
+					if (scenes[i].end_time !== scenes[i + 1].start_time) {
+						scenes[i].end_time = scenes[i + 1].start_time;
+					}
 				}
 			}
 		};
@@ -495,9 +499,9 @@ angular.module('com.inthetelling.story')
 		};
 
 		var adjustScenes = function (modifiedScene, isDelete) {
+			var duration = appState.duration;
 			var scenes = getScenesSnapshot();
 			var adjusted = [];
-
 			// get scenes back into original state (before editing,adding,deleting)
 			if (isDelete) {
 				pushScene(scenes, $scope.uneditedScene);
@@ -505,7 +509,7 @@ angular.module('com.inthetelling.story')
 				resetScenes(scenes, $scope.uneditedScene);
 			}
 			scenes = scenes.sort(sortByStartTime);
-			fixEndTimes(scenes);
+			fixEndTimes(scenes, duration);
 
 			// now scenes is back to pre edit state.  let's drop in our new scene and then see what is impacted (and needs updating)
 			removeScene(scenes, modifiedScene._id);
@@ -513,11 +517,19 @@ angular.module('com.inthetelling.story')
 				scenes.push(modifiedScene);
 			}
 			scenes = scenes.sort(sortByStartTime);
-			for (var i = 1; i < scenes.length - 1; i++) {
-				if (scenes[i].end_time !== scenes[i + 1].start_time) {
-					scenes[i].end_time = scenes[i + 1].start_time;
-					adjusted.push(scenes[i]);
+			for (var i = 1, len = scenes.length; i < len; i++) {
+				if (i === len - 1) {
+					if (scenes[i].end_time !== duration) {
+						scenes[i].end_time = duration;
+						adjusted.push(scenes[i]);
+					}
+				} else {
+					if (scenes[i].end_time !== scenes[i + 1].start_time) {
+						scenes[i].end_time = scenes[i + 1].start_time;
+						adjusted.push(scenes[i]);
+					}
 				}
+				
 			}
 			return adjusted;
 		};
