@@ -3,7 +3,7 @@ angular.module('com.inthetelling.story')
 	.factory('youtubeSvc', function ($q, $http, $timeout) {
 		var svc = {};
 		var config = {
-			domain: "http://gdata.youtube.com/",
+			domain: "https://gdata.youtube.com/",
 			timeout: 5000
 		};
 		var getVideoMetaDataV1 = function (id) {
