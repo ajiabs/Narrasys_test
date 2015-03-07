@@ -192,6 +192,7 @@ angular.module('com.inthetelling.story')
 			if (asset._type === "Asset::Video") {
 				asset = resolveVideo(asset);
 			}
+			asset = setLang(asset);
 			return asset;
 		};
 
