@@ -66,6 +66,7 @@ angular.module('com.inthetelling.story')
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
 			newEvent.cur_episode_id = appState.episodeId;
+			newEvent.episode_id = appState.episodeId;
 			modelSvc.cache("event", newEvent);
 
 			appState.editEvent = modelSvc.events["internal:editing"];
@@ -538,6 +539,8 @@ angular.module('com.inthetelling.story')
 				if (scene.isCurrent) {
 					// TODO This is redundant with ittItem editItem...
 					appState.editEvent = modelSvc.events[scene._id];
+					appState.editEvent.cur_episode_id = appState.episodeId;
+					appState.editEvent.episode_id = appState.episodeId;
 					appState.editEvent.producerItemType = 'scene';
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
