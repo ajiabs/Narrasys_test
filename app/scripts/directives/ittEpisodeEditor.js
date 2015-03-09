@@ -220,13 +220,6 @@ angular.module('com.inthetelling.story')
 					});
 				};
 
-				var getYoutubeVideoMetadata = function (url) {
-					var youtubeId = youtubeSvc.extractYoutubeId(url);
-					if (youtubeId) {
-						return youtubeSvc.getVideoData(youtubeId);
-					}
-				};
-
 				var createAsset = function (containerId, episodeId, asset) {
 					dataSvc.createAsset(scope.episodeContainerId, asset)
 						.then(function (data) {
@@ -258,7 +251,8 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 
-					var hasMasterAsset = (typeof scope.masterAsset !== 'undefined' && !(typeof scope.masterAsset._id === 'undefined'));
+					// defined but never used.  Did I remove something that was using this?
+					//var hasMasterAsset = (typeof scope.masterAsset !== 'undefined' && typeof scope.masterAsset._id !== 'undefined');
 
 					var youtubeId = youtubeSvc.extractYoutubeId(url);
 					if (youtubeId) {
