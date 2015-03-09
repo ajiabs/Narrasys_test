@@ -4,7 +4,7 @@
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState) {
+	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc) {
 
 		var svc = {};
 
@@ -878,13 +878,15 @@ angular.module('com.inthetelling.story')
 				// Sort them out by file extension first:
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
-						videoObject.youtube.push(embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
+						if (youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i])) {
+							videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
+						}
 					} else {
 						videoObject[videoAsset.alternate_urls[i].match(extensionMatch)[1]].push(videoAsset.alternate_urls[i]);
 					}
 				}
-				if (videoAsset.you_tube_url) {
-					videoObject.youtube.push = embeddableYoutubeUrl(videoAsset.you_tube_url);
+				if (videoAsset.you_tube_url && youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
+					videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url));
 				}
 				// now by size:
 				// most video files come from the API with their width and height in the URL as blahblah123x456.foo:
@@ -905,22 +907,26 @@ angular.module('com.inthetelling.story')
 			if (videoObject.youtube.length === 0) {
 				//it is on url, and not on you_tube_url.
 				if (videoAsset.url && !videoAsset.you_tube_url) {
-					if (isYoutubeUrl(videoAsset.url)) {
-						videoAsset.you_tube_url = embeddableYoutubeUrl(videoAsset.url);
+					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.url)) {
+						videoAsset.you_tube_url = youtubeSvc.embeddableYoutubeUrl(videoAsset.url);
 					}
 				}
 
 				if (videoAsset.you_tube_url) {
-					videoObject.youtube = [embeddableYoutubeUrl(videoAsset.you_tube_url)];
+					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
+						videoObject.youtube = [youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)];
+					}
 				}
 			}
 
 			// Same for other types (we used to put the .mp4 in videoAsset.url and just swapped out the extension for other types, which was silly, which is why we stopped doing it, but some old episodes never got updated)
-			angular.forEach(["mp4", "webm", "m3u8"], function (ext) {
-				if (videoObject[ext].length === 0) {
-					videoObject[ext].push(videoAsset.url.replace("mp4", ext));
-				}
-			});
+			if (!videoAsset.alternate_urls) {
+				angular.forEach(["mp4", "webm", "m3u8"], function (ext) {
+					if (videoObject[ext].length === 0 && !(videoAsset.url.match(/youtube/))) {
+						videoObject[ext].push(videoAsset.url.replace("mp4", ext));
+					}
+				});
+			}
 
 			// HACK some platform detection here.
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
@@ -930,7 +936,7 @@ angular.module('com.inthetelling.story')
 			// youtube is still throwing errors in desktop safari (pre Yosemite) and in ipad.  Disable for now.
 			// TODO fix this so we can use youtube on these devices
 			if (appState.isTouchDevice || (isSafari && !isNewSafari)) {
-				delete videoObject.youtube;
+				// delete videoObject.youtube;
 			}
 			if (config.disableYoutube) {
 				delete videoObject.youtube;
@@ -959,20 +965,6 @@ angular.module('com.inthetelling.story')
 			// console.log("video asset:", videoObject);
 			videoAsset.urls = videoObject;
 			return videoAsset;
-		};
-
-		var isYoutubeUrl = function (url) {
-			var youtube = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-			return youtube.test(url);
-		};
-		var embeddableYoutubeUrl = function (origUrl) {
-			// regexp to extract the ID from a youtube
-			if (!origUrl) {
-				return undefined;
-			}
-			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-			var ytId = origUrl.match(getYoutubeID)[1];
-			return "//www.youtube.com/embed/" + ytId;
 		};
 
 		if (config.debugInBrowser) {

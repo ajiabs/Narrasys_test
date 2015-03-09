@@ -103,7 +103,7 @@ angular.module('com.inthetelling.story')
 
 			$scope.changeVideoBandwidth = function () {
 				// console.log("changeVideoBandwidth");
-				var currentTime = $scope.videoNode.currentTime;
+				var currentTime = $scope.currentTime();
 				$scope.videoNode.pause();
 
 				// TODO
@@ -201,7 +201,7 @@ angular.module('com.inthetelling.story')
 			$scope.babysitter = $interval(function () {
 				// console.log($scope.videoNode.currentTime, appState.timelineState);
 				if (appState.timelineState === 'playing') {
-					if ($scope.lastPlayheadTime === $scope.videoNode.currentTime) {
+					if ($scope.lastPlayheadTime === $scope.currentTime()) {
 						if (!$scope.intentionalStall) {
 							analyticsSvc.captureEpisodeActivity("stall");
 						}
@@ -211,9 +211,9 @@ angular.module('com.inthetelling.story')
 						}
 						// console.log("numberOfStalls = ", numberOfStalls);
 					}
-					$scope.lastPlayheadTime = $scope.videoNode.currentTime;
+					$scope.lastPlayheadTime = $scope.currentTime();
 				} else if (appState.timelineState === 'buffering') {
-					if ($scope.lastPlayheadTime !== $scope.videoNode.currentTime) {
+					if ($scope.lastPlayheadTime !== $scope.currentTime()) {
 						appState.timelineState = 'playing';
 						timelineSvc.unstall();
 					}
@@ -269,37 +269,43 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.pause = function () {
-			// console.log("VIDEO PAUSE");
 			if ($scope.videoType === 'youtube') {
-				$scope.YTPlayer.seekTo(appState.time, true);
+				$scope.YTPlayer.seekTo(appState.time, true); // in case t has drifted
 				$scope.YTPlayer.pauseVideo();
 			} else {
 				$scope.videoNode.pause();
-			}
-			try {
-				$scope.videoNode.currentTime = appState.time; // in case t has drifted
-			} catch (e) {
-				// this is harmless when it fails; because it can't be out of synch if it doesn't yet exist
+				try {
+					$scope.videoNode.currentTime = appState.time; // in case t has drifted
+				} catch (e) {
+					// this is harmless when it fails; because it can't be out of synch if it doesn't yet exist
+				}
 			}
 		};
 
-		$scope.seek = function (t, intentionalStall) {
-			// console.log("VIDEO seek to ", t);
+		$scope.seek = function (t, intentionalStall, defer) {
+			// console.log("videoController.seek", t, intentionalStall, defer);
+			defer = defer || $q.defer();
 			var videoNotReady = false;
+			if (intentionalStall) {
+				$scope.intentionalStall = true;
+				// Keep this flag alive for a while, so we won't interpret user-triggered seeks as poor bandwidth
+				$scope.stallGracePeriod = $timeout(function () {
+					$scope.intentionalStall = false;
+				}, 1500);
+			}
 			try {
-				$scope.intentionalStall = !!intentionalStall;
 				if ($scope.videoType === 'youtube') {
 					var wasPlaying = (appState.timelineState === 'playing');
+					$scope.YTPlayer.pauseVideo(); // always pause before seek, otherwise YT keeps yammering on during the buffering phase
 					$scope.YTPlayer.seekTo(t, true);
-					if (!wasPlaying) {
-						$scope.YTPlayer.pauseVideo(); // youtube always autoplays on seek.
+					if (wasPlaying) {
+						$scope.YTPlayer.playVideo(); // youtube always autoplays on seek.
 					}
+					defer.resolve();
 				} else {
-					if ($scope.videoNode.readyState === 4) {
+					if ($scope.videoNode.readyState > 1) {
 						$scope.videoNode.currentTime = t;
-						$scope.stallGracePeriod = $timeout(function () {
-							$scope.intentionalStall = false;
-						}, 1500); // So we won't interpret user-triggered seeks as poor bandwidth
+						defer.resolve();
 					} else {
 						// video is partially loaded but still not seek-ready
 						$scope.intentionalStall = false;
@@ -316,9 +322,10 @@ angular.module('com.inthetelling.story')
 				// TODO: throw error and stop looping if this goes on too long.
 				// Or be less lazy and watch the loadedmetadata or youtube equivalent event
 				$timeout(function () {
-					$scope.seek(t);
+					$scope.seek(t, intentionalStall, defer);
 				}, 100);
 			}
+			return defer.promise;
 		};
 
 		$scope.setSpeed = function (speed) {

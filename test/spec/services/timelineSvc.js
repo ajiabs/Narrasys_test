@@ -36,14 +36,14 @@ TODO lots of math-y stuff we should be testing here:
 - (when we add this functionality) skip scenes, multiple episodes in one timeline -- translate epsidoe time to timeline time and vv
 
 */
-	/* TODO fix these (bug is in the test, not the code, I'm pretty sure)
 
 	it('stop items should sort their "enter" event before their "pause"', function () {
 		var events = [{
 			"_id": "event",
 			"start_time": 1,
 			"stop": true,
-			"end_time": 2
+			"end_time": 2,
+			"templateUrl": ""
 		}];
 
 		for (var i = 0; i < events.length; i++) {
@@ -58,12 +58,14 @@ TODO lots of math-y stuff we should be testing here:
 		var events = [{
 			"_id": "event2",
 			"start_time": 0,
-			"end_time": 1
+			"end_time": 1,
+			"templateUrl": ""
 		}, {
 			"_id": "event",
 			"start_time": 1,
 			"stop": true,
-			"end_time": 2
+			"end_time": 2,
+			"templateUrl": ""
 		}];
 
 		for (var i = 0; i < events.length; i++) {
@@ -80,11 +82,13 @@ TODO lots of math-y stuff we should be testing here:
 			"_id": "event",
 			"start_time": 1,
 			"stop": true,
-			"end_time": 2
+			"end_time": 2,
+			"templateUrl": ""
 		}, {
 			"_id": "event2",
 			"start_time": 0,
-			"end_time": 1
+			"end_time": 1,
+			"templateUrl": ""
 		}];
 
 		for (var i = 0; i < events.length; i++) {
@@ -101,11 +105,13 @@ TODO lots of math-y stuff we should be testing here:
 			"_id": "event",
 			"start_time": 1,
 			"stop": true,
-			"end_time": 2
+			"end_time": 2,
+			"templateUrl": ""
 		}, {
 			"_id": "event2",
 			"start_time": 1,
-			"end_time": 2
+			"end_time": 2,
+			"templateUrl": ""
 		}];
 
 		for (var i = 0; i < events.length; i++) {
@@ -121,12 +127,14 @@ TODO lots of math-y stuff we should be testing here:
 		var events = [{
 			"_id": "event",
 			"start_time": 1,
-			"end_time": 2
+			"end_time": 2,
+			"templateUrl": ""
 		}, {
 			"_id": "event2",
 			"start_time": 1,
 			"stop": true,
-			"end_time": 2
+			"end_time": 2,
+			"templateUrl": ""
 		}];
 
 		for (var i = 0; i < events.length; i++) {
@@ -137,5 +145,5 @@ TODO lots of math-y stuff we should be testing here:
 		expect(timelineSvc.timelineEvents[1].action).toEqual("enter");
 		expect(timelineSvc.timelineEvents[2].action).toEqual("pause");
 	});
-*/
+
 });

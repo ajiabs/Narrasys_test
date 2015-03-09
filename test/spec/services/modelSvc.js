@@ -19,9 +19,7 @@ describe('Service: modelSvc', function () {
 			"title": "Test Episode",
 			"status": "Published",
 			"templateUrl": "templates/episode/purdue.html",
-			"styles": [
-				"", "", ""
-			]
+			"styles": []
 		});
 		modelSvc.addLandingScreen("EP1");
 
@@ -39,12 +37,15 @@ describe('Service: modelSvc', function () {
 			});
 		}
 	}));
+
 	it('modelSvc should exist', function () {
 		expect(modelSvc).toNotEqual(undefined);
 	});
+
 	it('test rig beforeEach should have cached 11 scenes', function () {
 		expect(Object.keys(modelSvc.events).length).toEqual(11);
 	});
+
 	it('addLandingScreen should not cause duplicates', function () {
 		modelSvc.addLandingScreen("EP1");
 		modelSvc.addLandingScreen("EP1");
@@ -328,6 +329,154 @@ describe('Service: modelSvc', function () {
 			},
 			annotation_image_id: undefined,
 			key: 'Mister Smith / BB'
+		});
+	});
+
+	/* resolveVideo tests: */
+	/* NOTE some of these will fail in Chrome (we add fake params to the url in chrome to allow playback in multiple windows) */
+	it('resolveVideoAsset should cope with missing alternate_urls', function () {
+		modelSvc.cache("asset", {
+			_id: "vid1",
+			_type: "Asset::Video",
+			url: "foo.mp4",
+		});
+		expect(modelSvc.assets["vid1"].urls).toEqual({
+			"mp4": ["foo.mp4"],
+			"webm": ["foo.webm"],
+			"m3u8": ["foo.m3u8"],
+			"youtube": []
+		});
+	});
+	it('resolveVideoAsset should drop the original url if there is an alternate_urls array', function () {
+		modelSvc.cache("asset", {
+			_id: "vid1",
+			_type: "Asset::Video",
+			url: "foo.mp4",
+			alternate_urls: [
+				"bar.webm"
+			]
+		});
+		expect(modelSvc.assets["vid1"].urls).toEqual({
+			"mp4": [],
+			"webm": ["bar.webm"],
+			"m3u8": [],
+			"youtube": []
+		});
+	});
+
+	it('resolveVideoAsset should cope with missing alternate_urls when there is a you_tube_url', function () {
+		modelSvc.cache("asset", {
+			_id: "vid1",
+			_type: "Asset::Video",
+			url: "foo.mp4",
+			you_tube_url: "https://www.youtube.com/watch?v=AAAAAAAAAAA"
+		});
+		expect(modelSvc.assets["vid1"].urls).toEqual({
+			"mp4": ["foo.mp4"],
+			"webm": ["foo.webm"],
+			"m3u8": ["foo.m3u8"],
+			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA']
+		});
+	});
+
+	it('resolveVideoAsset should cope with missing alternate_urls when base url is youtube', function () {
+		modelSvc.cache("asset", {
+			_id: "vid1",
+			_type: "Asset::Video",
+			url: "https://www.youtube.com/watch?v=AAAAAAAAAAA",
+		});
+		expect(modelSvc.assets["vid1"].urls).toEqual({
+			"mp4": [],
+			"webm": [],
+			"m3u8": [],
+			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA']
+		});
+	});
+
+	it('resolveVideoAsset should ignore bad you_tube_urls', function () {
+		modelSvc.cache("asset", {
+			_id: "vid1",
+			_type: "Asset::Video",
+			url: "https://www.youtube.com/",
+			you_tube_url: "https://www.youtube.com/embed/broken",
+		});
+		expect(modelSvc.assets["vid1"].urls).toEqual({
+			"mp4": [],
+			"webm": [],
+			"m3u8": [],
+			"youtube": []
+		});
+	});
+
+	it('resolveVideoAsset should ignore bad youtube alternate_urls', function () {
+		modelSvc.cache("asset", {
+			_id: "vid1",
+			_type: "Asset::Video",
+			url: "https://www.youtube.com/",
+			alternate_urls: [
+				'http://youtube.com/embed/broken'
+			]
+		});
+		expect(modelSvc.assets["vid1"].urls).toEqual({
+			"mp4": [],
+			"webm": [],
+			"m3u8": [],
+			"youtube": []
+		});
+	});
+
+	it('resolveVideoAsset should not extrapolate url filetypes if there is an alternate_urls array', function () {
+		modelSvc.cache("asset", {
+			_id: "vid1",
+			_type: "Asset::Video",
+			url: "foo.mp4",
+			alternate_urls: [
+				'bar.mp4'
+			]
+		});
+		expect(modelSvc.assets["vid1"].urls).toEqual({
+			"mp4": ["bar.mp4"],
+			"webm": [],
+			"m3u8": [],
+			"youtube": []
+		});
+	});
+
+	it('resolveVideoAsset for videos should prioritize alternate_urls over yout_tube_url', function () {
+		modelSvc.cache("asset", {
+			_id: "vid1",
+			_type: "Asset::Video",
+			url: "https://www.youtube.com/watch?v=AAAAAAAAAAA",
+			alternate_urls: [
+				"https://www.youtube.com/watch?v=BBBBBBBBBBB"
+			]
+		});
+		expect(modelSvc.assets["vid1"].urls).toEqual({
+			"mp4": [],
+			"webm": [],
+			"m3u8": [],
+			"youtube": ['//www.youtube.com/embed/BBBBBBBBBBB']
+		});
+	});
+
+	it('resolveVideoAsset should sort alternate_urls correctly by size', function () {
+		modelSvc.cache("asset", {
+			_id: "vid1",
+			_type: "Asset::Video",
+			url: "foo.mp4",
+			alternate_urls: [
+				"bar1000x1000.mp4",
+				"bar123x123.webm",
+				"bar250x250.mp4",
+				"bar321x321.webm",
+				"bar500x400.mp4"
+			]
+		});
+		expect(modelSvc.assets["vid1"].urls).toEqual({
+			mp4: ['bar250x250.mp4', 'bar500x400.mp4', 'bar1000x1000.mp4'],
+			webm: ['bar123x123.webm', 'bar321x321.webm'],
+			m3u8: [],
+			youtube: []
 		});
 	});
 

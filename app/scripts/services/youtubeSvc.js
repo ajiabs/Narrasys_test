@@ -6,6 +6,7 @@ angular.module('com.inthetelling.story')
 			domain: "https://gdata.youtube.com/",
 			timeout: 5000
 		};
+
 		var getVideoMetaDataV1 = function (id) {
 			var resourcePath = "feeds/api/videos/";
 			var queryString = "?v=2&alt=json&callback=JSON_CALLBACK";
@@ -36,6 +37,25 @@ angular.module('com.inthetelling.story')
 			}
 			return true;
 		};
+
+		svc.extractYoutubeId = function (origUrl) {
+			if (!origUrl) {
+				return false;
+			}
+			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+			var ytMatch = origUrl.match(getYoutubeID);
+			if (ytMatch && ytMatch[1]) {
+				return ytMatch[1];
+			} else {
+				return false;
+			}
+		};
+
+		svc.embeddableYoutubeUrl = function (origUrl) {
+			var YtId = svc.extractYoutubeId(origUrl);
+			return (YtId) ? "//www.youtube.com/embed/" + YtId : false;
+		};
+
 		svc.getVideoData = function (id) {
 			var defer = $q.defer();
 			var promise = getVideoMetaDataV1(id);
@@ -66,8 +86,6 @@ angular.module('com.inthetelling.story')
 				});
 			return defer.promise;
 		};
-		
-
 
 		svc.getVideoDuration = function (id) {
 			var defer = $q.defer();

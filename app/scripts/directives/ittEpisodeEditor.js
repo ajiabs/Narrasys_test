@@ -219,29 +219,12 @@ angular.module('com.inthetelling.story')
 						scope.uploadStatus[0] = update;
 					});
 				};
-				//TODO: expose this somewhere shared. maybe just on modelSvc.
-
-				var extractYoutubeId = function (origUrl) {
-					// regexp to extract the ID from a youtube
-					if (!origUrl) {
-						return undefined;
-					}
-					var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-					var ytId = origUrl.match(getYoutubeID)[1];
-					return ytId;
-				};
-
-				var embeddableYoutubeUrl = function (origUrl) {
-					// regexp to extract the ID from a youtube
-					if (!origUrl) {
-						return undefined;
-					}
-					return "//www.youtube.com/embed/" + extractYoutubeId(origUrl);
-				};
 
 				var getYoutubeVideoMetadata = function (url) {
-					var youtubeId = extractYoutubeId(url);
-					return youtubeSvc.getVideoData(youtubeId);
+					var youtubeId = youtubeSvc.extractYoutubeId(url);
+					if (youtubeId) {
+						return youtubeSvc.getVideoData(youtubeId);
+					}
 				};
 
 				var createAsset = function (containerId, episodeId, asset) {
@@ -263,7 +246,7 @@ angular.module('com.inthetelling.story')
 						});
 				};
 				scope.attachYouTube = function (url) {
-					url = embeddableYoutubeUrl(url);
+					url = youtubeSvc.embeddableYoutubeUrl(url);
 
 					if (typeof (scope.masterAsset) === 'undefined') {
 						scope.masterAsset = {};
@@ -275,37 +258,35 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 
-					var hasMasterAsset = true;
-					if (typeof scope.masterAsset !== 'undefined') {
-						if (typeof scope.masterAsset._id === 'undefined') {
-							hasMasterAsset = false;
-						}
-					} else {
-						hasMasterAsset = false;
-					}
+					var hasMasterAsset = (typeof scope.masterAsset !== 'undefined' && !(typeof scope.masterAsset._id === 'undefined'));
 
-					getYoutubeVideoMetadata(url)
-						.then(function (data) {
-							var asset = {}; //createDefaultAsset()
-							asset.you_tube_url = asset.url = url;
-							asset.duration = data.duration;
-							asset.name = { en: data.title };
-							asset.description = { en: data.description };
-							asset.content_type = "video/x-youtube";
-							createAsset(scope.episodeContainerId, scope.episode._id, asset);
-						}, function (error) {
-							console.log("Error getting duration from youtube:", error);
-							var asset = {}; //createDefaultAsset()
-							asset.you_tube_url = asset.url = url;
-							asset.duration = 0;
-							createAsset(scope.episodeContainerId, scope.episode._id, asset);
-						});
+					var youtubeId = youtubeSvc.extractYoutubeId(url);
+					if (youtubeId) {
+						youtubeSvc.getVideoData(youtubeId)
+							.then(function (data) {
+								var asset = {}; //createDefaultAsset()
+								asset.you_tube_url = asset.url = url;
+								asset.duration = data.duration;
+								asset.name = data.title;
+								asset.description = data.description;
+								asset.content_type = "video/x-youtube";
+								createAsset(scope.episodeContainerId, scope.episode._id, asset);
+							}, function (error) {
+								console.log("Error getting duration from youtube:", error);
+								var asset = {}; //createDefaultAsset()
+								asset.you_tube_url = asset.url = url;
+								asset.duration = 0;
+								createAsset(scope.episodeContainerId, scope.episode._id, asset);
+							});
+					} else {
+						console.warn("attachYoutube tried to attach a bad URL", url);
+					}
 				};
 
 				scope.deleteAsset = function (assetId) {
 					console.log("deleteAsset", assetId);
-					console.warn("NOT IMPLEMENTED(?)");
-					//TODO...?
+					console.warn("NOT IMPLEMENTED");
+					//TODO (in Editor / SxS episode this will be useful, since those assets are tied to individual events so can safely be deleted)
 				};
 				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event/episode:
 				scope.detachAsset = function () {
