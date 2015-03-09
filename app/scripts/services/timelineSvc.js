@@ -187,10 +187,10 @@ angular.module('com.inthetelling.story')
 
 			appState.time = t;
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
-			console.log("About to videoScope.seek");
 			videoScope.seek(t, true).then(function () {
-				console.log("Seek complete");
-				svc.unstall();
+				$timeout(function () { // avoid the unlikely possibility of videoScope.seek completing before we call stall()
+					svc.unstall();
+				});
 			});
 			svc.stall();
 			svc.updateEventStates();
