@@ -357,14 +357,6 @@ angular.module('com.inthetelling.story')
 					if (ret) {
 						episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
 					}
-
-					// Stub the master asset immediately, to reduce load order dependence:
-					if (episodeData.master_asset_id) {
-						modelSvc.cache("asset", {
-							_id: episodeData.master_asset_id
-						});
-					}
-
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
