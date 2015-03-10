@@ -32,9 +32,11 @@ angular.module('com.inthetelling.story')
 				// console.log("unblocking autoscroll");
 				appState.autoscroll = true;
 				appState.autoscrollBlocked = false;
+				startScrollWatcher();
 				$timeout(handleAutoscroll); // timeout is for edge case where user loads review mode first, before handleAutoscroll is defined below...
 			} else {
 				appState.autoscroll = false;
+				// appState.autoscrollBlocked = true;
 			}
 			$timeout(function () {
 				$(window).trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
@@ -195,7 +197,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.seek = function (t) {
-			$scope.enableAutoscroll();
+			// triggered by nav panel
 			timelineSvc.seek(t, "sceneMenu");
 			appState.show.navPanel = false;
 		};
@@ -268,9 +270,13 @@ angular.module('com.inthetelling.story')
 		// #CONTAINER instead of window.  Have removed that, but leaving this here in case we bring it back:
 		var autoscrollableNode = $(window);
 		var animatableScrollNode = $('html,body');
+		var autoscrollTimer = false;
 
 		var startScrollWatcher = function () {
 			// console.log("startScrollWatcher");
+			if (autoscrollTimer) {
+				return;
+			}
 			autoscrollTimer = $interval(handleAutoscroll, 400);
 			autoscrollableNode.bind("scroll", function () {
 				// User-initiated scrolling should block autoscroll.
@@ -287,6 +293,7 @@ angular.module('com.inthetelling.story')
 			// console.log("stopScrollWatcher");
 			autoscrollableNode.unbind("scroll");
 			$interval.cancel(autoscrollTimer);
+			autoscrollTimer = false;
 
 		};
 
@@ -301,6 +308,7 @@ angular.module('com.inthetelling.story')
 		// TODO this is a relatively expensive watch.  Could greatly increase its $interval if we
 		// support directly triggering it from timeline on seek()... 
 		var handleAutoscroll = function () {
+			// console.log("handleAutoscroll", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked);
 			// if autoscroll is true and autoscrollBlocked is false,
 			// find the topmost visible current item and scroll to put it in the viewport.
 			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
