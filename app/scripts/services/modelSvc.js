@@ -541,16 +541,14 @@ angular.module('com.inthetelling.story')
 				}
 			}
 
-
-
 			var itemsIndex = 0;
 			// assign items to scenes (give them a scene_id and attach references to the scene's items[]:
 			//angular.forEach(scenes, function (scene) {
-			for (var y = 0, scenesLength = scenes.length; y < scenesLength; y ++) {
+			for (var y = 0, scenesLength = scenes.length; y < scenesLength; y++) {
 				var scene = scenes[y];
 				var sceneItems = [];
 				var previousTranscript = {};
-				for (var x = itemsIndex, itemsLength = items.length; x < itemsLength; x++ ) {
+				for (var x = itemsIndex, itemsLength = items.length; x < itemsLength; x++) {
 					var event = items[x];
 
 					//angular.forEach(items, function (event) {
@@ -573,13 +571,13 @@ angular.module('com.inthetelling.story')
 							}
 							previousTranscript = event;
 						}
-						
+
 						if (event.end_time <= scene.end_time) {
 							// entirely within scene
 							svc.events[event._id].scene_id = scene._id;
 							sceneItems.push(event);
 						} else {
-							
+
 							// end time is in next scene.  Check if start time is close to scene end, if so bump to next scene, otherwise truncate the item to fit in this one
 							if (scene.end_time - 0.25 < event.start_time) {
 								if (y !== scenesLength - 1) {
@@ -603,8 +601,6 @@ angular.module('com.inthetelling.story')
 						itemsIndex = x; //set the current index to i, no need to loop through things we've already seen
 						break; // no need to continue checking events after this point as no events will be added to this scene after this point
 					}
-
-
 
 				}
 				// attach array of items to the scene event:
@@ -930,14 +926,19 @@ angular.module('com.inthetelling.story')
 
 			// HACK some platform detection here.
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-			var isNewSafari = /Version\/[891]/.test(navigator.appVersion); // HACKs upon HACKs.  presumably we'll fix this before safari 10 so that 1 will be unnecessary FAMOUS LAST WORDS amirite  (If anyone uses Safari 1 they're on their own)
+			// var isNewSafari = /Version\/[891]/.test(navigator.appVersion); // HACKs upon HACKs.  presumably we'll fix this before safari 10 so that 1 will be unnecessary FAMOUS LAST WORDS amirite  (If anyone uses Safari 1 they're on their own)
 			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-			// youtube is still throwing errors in desktop safari (pre Yosemite) and in ipad.  Disable for now.
-			// TODO fix this so we can use youtube on these devices
-			if (appState.isTouchDevice || (isSafari && !isNewSafari)) {
-				// delete videoObject.youtube;
+			// Youtube in old Safari(seems to be) fixed...
+			// if(isSafari && !isNewSafari) {
+			// 	delete videoObject.youtube;
+			// }
+
+			// ...but iOS is not there yet:
+			if (appState.isTouchDevice) {
+				delete videoObject.youtube;
 			}
+
 			if (config.disableYoutube) {
 				delete videoObject.youtube;
 			}
