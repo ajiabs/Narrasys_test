@@ -446,6 +446,8 @@ angular.module('com.inthetelling.story')
 		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but 
 		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them.
 
+		// HACK magic numbers galore; endingscene cuts the duration of the last scene by 0.1 seconds
+
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
 			// console.log("resolveEpisodeEvents");
@@ -454,12 +456,18 @@ angular.module('com.inthetelling.story')
 			var items = [];
 			var episode = svc.episodes[epId];
 
+			var endingscreen = false; // We'll stash the ending scene here, if there is one, until after we've finished the duration math
+
 			angular.forEach(svc.events, function (event) {
 				if (event.cur_episode_id !== epId) {
 					return;
 				}
 				if (event._type === 'Scene') {
-					scenes.push(event);
+					if (event._id.match(/internal:endingscreen/)) {
+						endingscreen = event;
+					} else {
+						scenes.push(event);
+					}
 				} else {
 					items.push(event);
 				}
@@ -512,7 +520,32 @@ angular.module('com.inthetelling.story')
 			});
 			episode.annotators = annotators;
 
-			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order
+			var duration = 0;
+			if (episode.masterAsset) {
+				duration = episode.masterAsset.duration;
+			}
+
+			// Fix bad data
+			if (duration > 0) {
+				angular.forEach(items, function (event) {
+					// We have some events whose start time is beyond the episode duration; they were winding up attached to the endingscene (and therefore invisible)
+					// HACK just shove those into the end of the last (real) scene with a short duration
+					if (event.start_time > duration) {
+						event.start_time = duration - 0.2;
+						event.end_time = duration - 0.1;
+					}
+					// Some events have been stored with end times before their start times.  EditController was since updated to prevent that, so we may be able to remove this once the bad data is cleared out)
+					// as a HACKy fix, just swap start and end if they're out of order
+					if (event.start_time > event.end_time) {
+						var swap = event.start_time;
+						event.start_time = event.end_time;
+						event.end_time = swap;
+					}
+				});
+			}
+
+			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order.
+
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 			episode.scenes = scenes.sort(function (a, b) {
@@ -524,17 +557,13 @@ angular.module('com.inthetelling.story')
 				return a.start_time - b.start_time;
 			});
 
-			var duration = 0;
-			if (episode.masterAsset) {
-				duration = episode.masterAsset.duration;
-			}
-
-			// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
-			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
+			// ensure scenes are contiguous.  
+			// NOTE endingscene is explicitly omitted from the scenes array at this point, so we don't need to worry about whether it was added yet or not 
+			// NOTE that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
 			for (var i = 1, len = episode.scenes.length; i < len; i++) {
 				if (i === len - 1) {
 					if (duration !== 0) {
-						episode.scenes[i].end_time = duration;
+						episode.scenes[i].end_time = duration - 0.1;
 					}
 				} else {
 					episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
@@ -598,15 +627,14 @@ angular.module('com.inthetelling.story')
 						}
 					}
 					if (event.start_time > scene.end_time) {
-						itemsIndex = x; //set the current index to i, no need to loop through things we've already seen
+						itemsIndex = x; //  no need to loop through things we've already seen
 						break; // no need to continue checking events after this point as no events will be added to this scene after this point
 					}
-
 				}
+
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 				svc.events[scene._id].items = sceneItems.sort(function (a, b) {
-
 					if (a.start_time !== b.start_time || !b.layouts) {
 						return a.start_time - b.start_time;
 					} else {
@@ -617,9 +645,17 @@ angular.module('com.inthetelling.story')
 							return 0;
 						}
 					}
-
 				});
 			}
+
+			// Now it's safe to reattach the ending scene (with updated start and end times if necessary)
+			if (endingscreen && (duration>0)) {
+				endingscreen.start_time = duration - 0.1;
+				endingscreen.end_time = duration;
+				episode.scenes.push(endingscreen);
+			}
+
+
 			// Now that we have the structure, calculate event styles (for scenes and items:)
 			episode.styleCss = cascadeStyles(episode);
 			angular.forEach(svc.events, function (event) {
