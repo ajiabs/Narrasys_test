@@ -230,7 +230,7 @@ angular.module('com.inthetelling.story')
 						} else {
 							console.error("No login url suppplied", window.location);
 							if (window.location.hash !== '#/') {
-								window.location.href = "/";
+								window.location.href = "/#/";
 							}
 							defer.reject();
 						}
