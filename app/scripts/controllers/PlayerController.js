@@ -287,7 +287,7 @@ angular.module('com.inthetelling.story')
 			});
 			// handleAutoscroll();
 		};
-		var autoscrollTimer;
+		
 
 		var stopScrollWatcher = function () {
 			// console.log("stopScrollWatcher");
