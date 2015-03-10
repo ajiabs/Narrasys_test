@@ -365,6 +365,7 @@ angular.module('com.inthetelling.story')
 						// (Need this so we can get all potential episode assets, not just for interepisode nav)
 						svc.getContainerAncestry(episodeData.container_id).then(function () {
 							// got them all.
+							modelSvc.resolveEpisodeEvents(epId); // Necessary here in case events finished loading first
 							modelSvc.resolveEpisodeContainers(epId);
 							modelSvc.resolveEpisodeAssets(epId);
 							$rootScope.$emit("dataSvc.getEpisodeAssets.done", epId);
