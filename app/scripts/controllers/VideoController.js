@@ -296,10 +296,11 @@ angular.module('com.inthetelling.story')
 			try {
 				if ($scope.videoType === 'youtube') {
 					var wasPlaying = (appState.timelineState === 'playing');
+					$scope.YTPlayer.pauseVideo(); // always pause before seek, otherwise YT keeps yammering on during the buffering phase
 					$scope.YTPlayer.seekTo(t, true);
-					$scope.YTPlayer.pauseVideo(); // always pause on seek, otherwise YT keeps yammering on during the buffering phase
+					$scope.YTPlayer.pauseVideo(); // and pause afterwards too, because YT always autoplays after seek
 					if (wasPlaying) {
-						$scope.YTPlayer.playVideo(); // youtube always autoplays on seek.
+						$scope.YTPlayer.playVideo();
 					}
 					defer.resolve();
 				} else {
