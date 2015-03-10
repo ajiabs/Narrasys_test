@@ -4,7 +4,7 @@
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState) {
+	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc) {
 
 		var svc = {};
 
@@ -192,6 +192,7 @@ angular.module('com.inthetelling.story')
 			if (asset._type === "Asset::Video") {
 				asset = resolveVideo(asset);
 			}
+			asset = setLang(asset);
 			return asset;
 		};
 
@@ -523,17 +524,34 @@ angular.module('com.inthetelling.story')
 				return a.start_time - b.start_time;
 			});
 
-			// ensure scenes are contiguous. Skip the landing scene and the ending scene.
-			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
-			for (var i = 1; i < episode.scenes.length - 1; i++) {
-				episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
+			var duration = 0;
+			if (episode.masterAsset) {
+				duration = episode.masterAsset.duration;
 			}
 
+			// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
+			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
+			for (var i = 1, len = episode.scenes.length; i < len; i++) {
+				if (i === len - 1) {
+					if (duration !== 0) {
+						episode.scenes[i].end_time = duration;
+					}
+				} else {
+					episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
+				}
+			}
+
+			var itemsIndex = 0;
 			// assign items to scenes (give them a scene_id and attach references to the scene's items[]:
-			angular.forEach(scenes, function (scene) {
+			//angular.forEach(scenes, function (scene) {
+			for (var y = 0, scenesLength = scenes.length; y < scenesLength; y++) {
+				var scene = scenes[y];
 				var sceneItems = [];
 				var previousTranscript = {};
-				angular.forEach(items, function (event) {
+				for (var x = itemsIndex, itemsLength = items.length; x < itemsLength; x++) {
+					var event = items[x];
+
+					//angular.forEach(items, function (event) {
 					/* possible cases: 
 							start and end are within the scene: put it in this scene
 							start is within this scene, end is after this scene: 
@@ -559,10 +577,18 @@ angular.module('com.inthetelling.story')
 							svc.events[event._id].scene_id = scene._id;
 							sceneItems.push(event);
 						} else {
+
 							// end time is in next scene.  Check if start time is close to scene end, if so bump to next scene, otherwise truncate the item to fit in this one
 							if (scene.end_time - 0.25 < event.start_time) {
-								// bump to next scene
-								event.start_time = scene.end_time;
+								if (y !== scenesLength - 1) {
+									// bump to next scene
+									event.start_time = scene.end_time;
+								} else {
+									//in last scene
+									event.end_time = scene.end_time;
+									event.scene_id = scene._id;
+									sceneItems.push(event);
+								}
 							} else {
 								// truncate and add to this one
 								event.end_time = scene.end_time;
@@ -571,7 +597,12 @@ angular.module('com.inthetelling.story')
 							}
 						}
 					}
-				});
+					if (event.start_time > scene.end_time) {
+						itemsIndex = x; //set the current index to i, no need to loop through things we've already seen
+						break; // no need to continue checking events after this point as no events will be added to this scene after this point
+					}
+
+				}
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 				svc.events[scene._id].items = sceneItems.sort(function (a, b) {
@@ -588,8 +619,7 @@ angular.module('com.inthetelling.story')
 					}
 
 				});
-			});
-
+			}
 			// Now that we have the structure, calculate event styles (for scenes and items:)
 			episode.styleCss = cascadeStyles(episode);
 			angular.forEach(svc.events, function (event) {
@@ -844,13 +874,15 @@ angular.module('com.inthetelling.story')
 				// Sort them out by file extension first:
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
-						videoObject.youtube.push(embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
+						if (youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i])) {
+							videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
+						}
 					} else {
 						videoObject[videoAsset.alternate_urls[i].match(extensionMatch)[1]].push(videoAsset.alternate_urls[i]);
 					}
 				}
-				if (videoAsset.you_tube_url) {
-					videoObject.youtube.push = embeddableYoutubeUrl(videoAsset.you_tube_url);
+				if (videoAsset.you_tube_url && youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
+					videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url));
 				}
 				// now by size:
 				// most video files come from the API with their width and height in the URL as blahblah123x456.foo:
@@ -871,33 +903,42 @@ angular.module('com.inthetelling.story')
 			if (videoObject.youtube.length === 0) {
 				//it is on url, and not on you_tube_url.
 				if (videoAsset.url && !videoAsset.you_tube_url) {
-					if (isYoutubeUrl(videoAsset.url)) {
-						videoAsset.you_tube_url = embeddableYoutubeUrl(videoAsset.url);
+					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.url)) {
+						videoAsset.you_tube_url = youtubeSvc.embeddableYoutubeUrl(videoAsset.url);
 					}
 				}
 
 				if (videoAsset.you_tube_url) {
-					videoObject.youtube = [embeddableYoutubeUrl(videoAsset.you_tube_url)];
+					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
+						videoObject.youtube = [youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)];
+					}
 				}
 			}
 
 			// Same for other types (we used to put the .mp4 in videoAsset.url and just swapped out the extension for other types, which was silly, which is why we stopped doing it, but some old episodes never got updated)
-			angular.forEach(["mp4", "webm", "m3u8"], function (ext) {
-				if (videoObject[ext].length === 0) {
-					videoObject[ext].push(videoAsset.url.replace("mp4", ext));
-				}
-			});
+			if (!videoAsset.alternate_urls) {
+				angular.forEach(["mp4", "webm", "m3u8"], function (ext) {
+					if (videoObject[ext].length === 0 && !(videoAsset.url.match(/youtube/))) {
+						videoObject[ext].push(videoAsset.url.replace("mp4", ext));
+					}
+				});
+			}
 
 			// HACK some platform detection here.
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-			var isNewSafari = /Version\/[891]/.test(navigator.appVersion); // HACKs upon HACKs.  presumably we'll fix this before safari 10 so that 1 will be unnecessary FAMOUS LAST WORDS amirite  (If anyone uses Safari 1 they're on their own)
+			// var isNewSafari = /Version\/[891]/.test(navigator.appVersion); // HACKs upon HACKs.  presumably we'll fix this before safari 10 so that 1 will be unnecessary FAMOUS LAST WORDS amirite  (If anyone uses Safari 1 they're on their own)
 			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-			// youtube is still throwing errors in desktop safari (pre Yosemite) and in ipad.  Disable for now.
-			// TODO fix this so we can use youtube on these devices
-			if (appState.isTouchDevice || (isSafari && !isNewSafari)) {
+			// Youtube in old Safari(seems to be) fixed...
+			// if(isSafari && !isNewSafari) {
+			// 	delete videoObject.youtube;
+			// }
+
+			// ...but iOS is not there yet:
+			if (appState.isTouchDevice) {
 				delete videoObject.youtube;
 			}
+
 			if (config.disableYoutube) {
 				delete videoObject.youtube;
 			}
@@ -925,20 +966,6 @@ angular.module('com.inthetelling.story')
 			// console.log("video asset:", videoObject);
 			videoAsset.urls = videoObject;
 			return videoAsset;
-		};
-
-		var isYoutubeUrl = function (url) {
-			var youtube = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-			return youtube.test(url);
-		};
-		var embeddableYoutubeUrl = function (origUrl) {
-			// regexp to extract the ID from a youtube
-			if (!origUrl) {
-				return undefined;
-			}
-			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-			var ytId = origUrl.match(getYoutubeID)[1];
-			return "//www.youtube.com/embed/" + ytId;
 		};
 
 		if (config.debugInBrowser) {

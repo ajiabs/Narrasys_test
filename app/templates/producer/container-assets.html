@@ -35,7 +35,7 @@
 				<div ng-if="asset._type != 'Asset::Image'">
 					<div class="thumbnail">(video)</div>
 				</div>
-				{{asset.name}}
+				{{asset.display_name}}
 			</div>
 		</div>
 		<table ng-if="!gridView">
@@ -48,7 +48,7 @@
 				<td>{{asset.size |asBytes}}</td>
 				<td>{{asset.content_type}}</td>
 				<td>
-					{{asset.name}}
+					{{asset.display_name}}
 				</td>
 			</tr>
 		</table>

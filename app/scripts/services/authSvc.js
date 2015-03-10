@@ -220,7 +220,7 @@ angular.module('com.inthetelling.story')
 						defer.resolve(data.nonce);
 					} else {
 						// Guest access is not allowed
-						if (data.login_url) {
+						if (data.login_url && data.login_url !== null) {
 							if (data.login_via_top_window_only) {
 								window.top.location.href = data.login_url;
 							} else {
@@ -228,6 +228,10 @@ angular.module('com.inthetelling.story')
 							}
 							defer.reject();
 						} else {
+							console.error("No login url suppplied", window.location);
+							if (window.location.hash !== '#/') {
+								window.location.href = "/#/";
+							}
 							defer.reject();
 						}
 					}
