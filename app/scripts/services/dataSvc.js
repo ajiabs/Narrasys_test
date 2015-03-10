@@ -370,6 +370,7 @@ angular.module('com.inthetelling.story')
 							// got them all.
 							modelSvc.resolveEpisodeContainers(epId);
 							modelSvc.resolveEpisodeAssets(epId);
+							modelSvc.resolveEpisodeEvents(epId); // make sure this happens after the assets are resolved
 							$rootScope.$emit("dataSvc.getEpisodeAssets.done", epId);
 						});
 					} else {
