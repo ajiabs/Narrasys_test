@@ -79,12 +79,15 @@ angular.module('com.inthetelling.story')
 			if (!epId) {
 				throw ("no episode ID supplied to dataSvc.getEpisode");
 			}
-			if (modelSvc.episodes[epId]) {
-				console.log("have episode: ", modelSvc.episodes[epId]);
-				$rootScope.$emit("dataSvc.getEpisodeAssets.done");
-				$rootScope.$emit("dataSvc.getEpisodeEvents.done");
-				return; // already requested
-			}
+
+			// Removing this as it caused race conditions: sometimes the asset and event data has already been loaded, sometimes not.
+			// This will cause epsiode data to be requested from the api every time the page loads, instead of trying to recycle the cache, but that's probably safer anyway
+			// if (modelSvc.episodes[epId]) {
+			// 	console.log("have episode: ", modelSvc.episodes[epId]);
+			// 	$rootScope.$emit("dataSvc.getEpisodeAssets.done");
+			// 	$rootScope.$emit("dataSvc.getEpisodeEvents.done");
+			// 	return; // already requested
+			// }
 			modelSvc.cache("episode", {
 				_id: epId
 			}); // init with empty object to be filled by asynch process
