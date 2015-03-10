@@ -660,18 +660,6 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		svc.getContainerAssets = function (containerId) {
-			// console.log("dataSvc.getContainerAssets");
-			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
-				.success(function (containerAssets) {
-					// console.log("container assets", containerAssets);
-					modelSvc.containers[containerId].assetsHaveLoaded = true;
-					angular.forEach(containerAssets.files, function (asset) {
-						modelSvc.cache("asset", asset);
-					});
-				});
-		};
-
 		svc.createContainer = function (container) {
 			var createContainerDefer = $q.defer();
 
