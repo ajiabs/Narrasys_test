@@ -357,14 +357,6 @@ angular.module('com.inthetelling.story')
 					if (ret) {
 						episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
 					}
-
-					// Stub the master asset immediately, to reduce load order dependence:
-					if (episodeData.master_asset_id) {
-						modelSvc.cache("asset", {
-							_id: episodeData.master_asset_id
-						});
-					}
-
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
@@ -667,18 +659,6 @@ angular.module('com.inthetelling.story')
 				return containers[0]._id;
 			});
 
-		};
-
-		svc.getContainerAssets = function (containerId) {
-			// console.log("dataSvc.getContainerAssets");
-			$http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
-				.success(function (containerAssets) {
-					// console.log("container assets", containerAssets);
-					modelSvc.containers[containerId].assetsHaveLoaded = true;
-					angular.forEach(containerAssets.files, function (asset) {
-						modelSvc.cache("asset", asset);
-					});
-				});
 		};
 
 		svc.createContainer = function (container) {
