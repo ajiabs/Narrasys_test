@@ -30,11 +30,11 @@ module.exports = function (grunt) {
 					htmlmin: {
 						collapseBooleanAttributes: true,
 						collapseWhitespace: true, // Safe in templates, not in base html
-						removeAttributeQuotes: true,
+						// removeAttributeQuotes: true,  // Disabled for Instructure (they theorize this somehow causes their iframe to load at the wrong size)
 						removeCommentsFromCDATA: true,
 						removeComments: true,
 						removeEmptyAttributes: true,
-						removeOptionalTags: true,
+						// removeOptionalTags: true, // Disabled for Instructure (they theorize this somehow causes their iframe to load at the wrong size)
 						removeRedundantAttributes: true,
 						useShortDoctype: true,
 					}
@@ -210,11 +210,11 @@ module.exports = function (grunt) {
 					removeCommentsFromCDATA: true,
 					//collapseWhitespace: true, // https://github.com/yeoman/grunt-usemin/issues/44
 					collapseBooleanAttributes: true,
-					removeAttributeQuotes: true,
+					// removeAttributeQuotes: true, // Disabled for Instructure (they theorize this somehow causes their iframe to load at the wrong size)
 					removeRedundantAttributes: true,
 					useShortDoctype: true,
 					removeEmptyAttributes: true,
-					removeOptionalTags: true
+					// removeOptionalTags: true     // Disabled for Instructure (they theorize this somehow causes their iframe to load at the wrong size)
 				},
 				files: [{
 					expand: true,
