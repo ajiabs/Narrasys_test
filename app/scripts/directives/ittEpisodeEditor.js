@@ -261,8 +261,8 @@ angular.module('com.inthetelling.story')
 								var asset = {}; //createDefaultAsset()
 								asset.you_tube_url = asset.url = url;
 								asset.duration = data.duration;
-								asset.name = data.title;
-								asset.description = data.description;
+								asset.name = {en: data.title};
+								asset.description = {en: data.description};
 								asset.content_type = "video/x-youtube";
 								createAsset(scope.episodeContainerId, scope.episode._id, asset);
 							}, function (error) {

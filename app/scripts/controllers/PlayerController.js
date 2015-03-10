@@ -97,8 +97,6 @@ angular.module('com.inthetelling.story')
 				appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 				modelSvc.setLanguageStrings();
 				document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
-
-				// modelSvc.resolveEpisodeEvents(appState.episodeId); // this may be redundant
 				modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist (so depends on getEpisodeAssets)
 				timelineSvc.init(appState.episodeId);
 				$scope.loading = false;
