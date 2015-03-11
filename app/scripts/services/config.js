@@ -14,5 +14,12 @@ angular.module('com.inthetelling.story')
 			config.localStorageKey = "storyToken";
 		}
 
+		if (!config.youtube) {
+			config.youtube = {
+				domain: "//gdata.youtube.com/",
+				timeout: 5000
+			};
+		}
+
 		return config;
 	});

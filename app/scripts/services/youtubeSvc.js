@@ -2,10 +2,7 @@
 angular.module('com.inthetelling.story')
 	.factory('youtubeSvc', function ($q, $http, $timeout, config) {
 		var svc = {};
-		var YTconfig = config.youtube || {
-			domain: "//gdata.youtube.com/",
-			timeout: 5000
-		};
+		var YTconfig = config.youtube;
 
 		var getVideoMetaDataV1 = function (id) {
 			var resourcePath = "feeds/api/videos/";
