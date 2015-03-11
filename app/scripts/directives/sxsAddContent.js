@@ -1,6 +1,12 @@
 'use strict';
 
-/* The "add" buttons for instructors to choose what type of content they want to add to the episode */
+/* 
+	The "add" buttons for instructors to choose what type of content they want to add to the episode.
+
+	TODO make this smarter about when it shows buttons; for example instead of matching against appState.time,
+	look for current scene.id matching "internal".  Dim buttons instead of hiding them completely.
+
+*/
 
 angular.module('com.inthetelling.story')
 	.directive('sxsAddContent', function (appState) {
@@ -12,10 +18,6 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/producer/addcontent.html',
 			controller: 'EditController',
 			link: function (scope) {
-				/* 
-				TODO: hide buttons for items that can't be added at this timepoint 
-				(any time that matches a stop video item) 
-				*/
 
 				scope.appState = appState;
 

@@ -7,7 +7,9 @@
 		<source class="webm" ng-if="video.urls.webm[video.curStream]" ng-src="{{video.urls.webm[video.curStream]}}" type="video/webm" />
 		<p>Oh no! Your browser does not support the HTML5 Video element.</p>
 	</video>
-	<div ng-click="videoClick()" class="videoMask" ng-class="{
+	<!-- hide this on touch devices before hasBeenPlayed, if youtube, so users can click the YT player directly to init it.
+	see also ittTimeline.js -->
+	<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{
 		play: appState.timelineState == 'paused',
 		buffering: appState.timelineState == 'buffering',
 		firstplay: !appState.hasBeenPlayed,

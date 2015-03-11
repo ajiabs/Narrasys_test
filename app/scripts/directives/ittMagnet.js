@@ -6,17 +6,27 @@
 // TODO: remove dependence on jQuery?  (.is(:visible))
 
 angular.module('com.inthetelling.story')
-	.directive('ittMagnet', function ($rootScope) {
+	.directive('ittMagnet', function ($rootScope, appState) {
 		return {
 			restrict: 'A',
 			replace: true,
 			scope: true,
 			link: function (scope, element) {
+
+				scope.changeMagnet = function (element) {
+					$rootScope.$emit('magnet.changeMagnet', element);
+
+					// skip the animation on first load, and when on mobile
+					if (appState.isTouchDevice || appState.time === 0) {
+						$rootScope.$emit('magnet.jumpToMagnet');
+					}
+				};
+
 				scope.unwatchVisibility = scope.$watch(function () {
 					return element.is(':visible');
 				}, function (newV) {
 					if (newV) {
-						$rootScope.$emit('magnet.changeMagnet', element);
+						scope.changeMagnet(element);
 					}
 				});
 
@@ -37,7 +47,7 @@ angular.module('com.inthetelling.story')
 						} else {
 							element.width(win.width());
 						}
-						$rootScope.$emit('magnet.changeMagnet', element);
+						scope.changeMagnet(element);
 					}, true);
 				}
 

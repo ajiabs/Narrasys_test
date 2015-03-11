@@ -114,7 +114,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.pause = function (nocapture) {
-			// console.log("timelineSvc.pause");
+			console.log("timelineSvc.pause");
 			appState.videoControlsActive = true;
 			$interval.cancel(clock);
 			stopEventClock();
@@ -136,7 +136,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.stall = function () {
-			// console.warn("timelineSvc.stall");
+			console.warn("timelineSvc.stall");
 			// called by videoController when video stalls.  Essentially similar to pause() but sets different states
 			// (and doesn't tell the video to pause)
 			$interval.cancel(clock);
@@ -149,7 +149,7 @@ angular.module('com.inthetelling.story')
 
 		svc.unstall = function () {
 			// videoController will call this when ready
-			// console.warn("timelineSvc.unstall");
+			console.warn("timelineSvc.unstall");
 			if (svc.wasPlaying) {
 				appState.timelineState = "playing";
 				svc.play();
@@ -173,6 +173,11 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
+			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
+			if (appState.isTouchDevice && appState.hasBeenPlayed === false && videoScope.videoType === 'youtube') {
+				return;
+			}
+
 			var oldT = appState.time; // for analytics
 
 			t = parseTime(t);
@@ -187,12 +192,8 @@ angular.module('com.inthetelling.story')
 
 			appState.time = t;
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
-			videoScope.seek(t, true).then(function () {
-				$timeout(function () { // avoid the unlikely possibility of videoScope.seek completing before we call stall()
-					svc.unstall();
-				});
-			});
-			svc.stall();
+			videoScope.seek(t, true);
+
 			svc.updateEventStates();
 			// capture analytics data:
 			if (method) {

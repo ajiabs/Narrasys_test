@@ -52,25 +52,31 @@ angular.module('com.inthetelling.story')
 		$scope.initYoutube = function () {
 
 			// console.log("videoController initYoutube");
-			var playerStates = ["ended", "playing", "paused", "buffering", "", "cued"]; // convert YT codes to html5 state names
+			var playerStates = ["ended", "playing", "paused", "buffering", "???", "cued"]; // convert YT codes to html5 state names
 			// NOTE youtube is currently sending us playerState of 'buffering' when paused 
 
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
 					'onStateChange': function (x) {
-						console.log("state change:", playerStates[x.data]);
-						$scope.playerState = playerStates[x.data];
+						if (x.data < 0) {
+							return;
+						}
+						// console.log("state change:", playerStates[x.data], x.data);
 
-						if ($scope.playerState === 'buffering') {
-							$scope.stall();
+						if (appState.isTouchDevice && appState.hasBeenPlayed === false) {
+							// The first user-initiated click needs to go directly to youtube, not to our player.  
+							// So we have to do some catchup here:
+							$scope.YTPlayer.pauseVideo(); // block the direct user action, now that it's successfully inited YT for us
+							timelineSvc.play(); // now our code can take over as per normal
 						} else {
-							// timelineSvc intentionally stalls during seek events, need to inform it to resume:
-							timelineSvc.unstall();
+							$scope.playerState = playerStates[x.data];
+							if ($scope.playerState === 'buffering') {
+								$scope.stall();
+							}
 						}
 					}
 				}
 			});
-			// console.log("YTPlayer", $scope.YTPlayer.playVideo);
 			// but we still need to wait for youtube to Do More Stuff, apparently:
 			var unwatch = $scope.$watch(function () {
 				return $scope.YTPlayer.playVideo !== undefined;
@@ -100,7 +106,18 @@ angular.module('com.inthetelling.story')
 						console.warn("Timeline was playing while video was not.");
 						$scope.YTPlayer.playVideo();
 					}
+					if (appState.timelineState === "buffering" && $scope.playerState === "buffering") {
+						console.warn("Timeline and video were being Canadian, both waiting for the other to go.");
+						timelineSvc.unstall();
+					}
 
+					// No good: execution time is more than enough to throw this off, and it interferes with intentuonal seeks
+					// if (appState.timelineState === "playing" && $scope.playerState === "playing") {
+					// 	if (Math.abs(appState.time - $scope.YTPlayer.getCurrentTime()) > 0.5) {
+					// 		console.warn("More than 0.5s out of sync");
+					// 		timelineSvc.resync();
+					// 	}
+					// }
 				}, 333);
 			};
 			$scope.babysitYoutubeVideo();
@@ -173,7 +190,6 @@ angular.module('com.inthetelling.story')
 								if ($scope.videoNode.currentSrc !== '') {
 									var ext = $scope.videoNode.currentSrc.match(/\.(\w+)$/)[1];
 									if ($scope.video.urls[ext][0] !== $scope.videoNode.currentSrc) {
-										console.log("Switching from ", $scope.videoNode.currentSrc, " to ", $scope.video.urls[ext][0]);
 
 										var currentTime = $scope.videoNode.currentTime;
 										$scope.videoNode.pause();
@@ -183,7 +199,6 @@ angular.module('com.inthetelling.story')
 										$timeout(function () {
 											$scope.videoNode.play();
 										});
-										analyticsSvc.captureEpisodeActivity('lowBandwidth');
 									}
 								}
 				*/

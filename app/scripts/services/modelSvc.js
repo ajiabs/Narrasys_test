@@ -837,10 +837,11 @@ angular.module('com.inthetelling.story')
 			if (svc.episodes[episodeId]) {
 				var master_asset_id = svc.episodes[episodeId].master_asset_id;
 				if (master_asset_id) {
-					if (!svc.assets[master_asset_id]) {
-						console.error("Had master_asset_id but no asset");
+					if (svc.assets[master_asset_id]) {
+						svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
+					} else {
+						// master asset hasn't loaded yet
 					}
-					svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
 				}
 			}
 		};
@@ -966,20 +967,15 @@ angular.module('com.inthetelling.story')
 
 			// HACK some platform detection here.
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-			// var isNewSafari = /Version\/[891]/.test(navigator.appVersion); // HACKs upon HACKs.  presumably we'll fix this before safari 10 so that 1 will be unnecessary FAMOUS LAST WORDS amirite  (If anyone uses Safari 1 they're on their own)
 			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-			// Youtube in old Safari(seems to be) fixed...
-			// if(isSafari && !isNewSafari) {
-			// 	delete videoObject.youtube;
-			// }
-
-			// ...but iOS is not there yet:
+			// iOS is ready! But still disabling this for now, until we've done more QA.
+			// When that's done, remove this block:
 			if (appState.isTouchDevice) {
 				delete videoObject.youtube;
 			}
 
-			if (config.disableYoutube) {
+			if (config.youtube.disabled) {
 				delete videoObject.youtube;
 			}
 			if (!isSafari) {
@@ -988,7 +984,6 @@ angular.module('com.inthetelling.story')
 
 			// Chrome won't allow the same video to play in two windows, which interferes with our 'escape the iframe' button.
 			// Therefore we trick Chrome into thinking it is not the same video:
-
 			if (isChrome) {
 				var tDelimit;
 				var tParam = "t=" + new Date()
