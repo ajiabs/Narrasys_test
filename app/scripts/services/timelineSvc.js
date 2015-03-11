@@ -188,6 +188,11 @@ angular.module('com.inthetelling.story')
 				t = appState.duration;
 			}
 
+			// Brute force Safari into not fucking up on seek:
+			if (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+				svc.pause(true);
+			}
+
 			stopEventClock();
 
 			appState.time = t;
