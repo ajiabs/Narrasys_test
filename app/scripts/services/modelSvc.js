@@ -842,11 +842,14 @@ angular.module('com.inthetelling.story')
 						"asset: ", svc.assets[master_asset_id]
 					);
 					if (!svc.assets[master_asset_id]) {
-						console.warn("Had master_asset_id but no asset; making a stub");
-						// We can bind to a stub for now, but that still leaves addLandingScreen with an incorrect duration (of zero)
-						svc.cache("asset", {
-							_id: master_asset_id
-						})
+
+						console.error("Had master_asset_id but no asset");
+
+						// Leaving this here for now just to remind me DONT DO THIS (it causes havok downstream )
+						// have to track down why this is happening in the first place, no cheating
+						// svc.cache("asset", {
+						// 	_id: master_asset_id
+						// })
 					}
 					svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
 
