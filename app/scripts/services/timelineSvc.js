@@ -173,6 +173,11 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
+			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
+			if (appState.isTouchDevice && appState.hasBeenPlayed === false && videoScope.videoType === 'youtube') {
+				return;
+			}
+
 			var oldT = appState.time; // for analytics
 
 			t = parseTime(t);

@@ -20,6 +20,19 @@ angular.module('com.inthetelling.story')
 				scope.zoomLevel = 1; // multiples by which the timeline is zoomed in
 				scope.zoomOffset = 0; // multiple by which the timeline is offset to the left
 
+				// Prevent this from being visible on touchscreens before playback, to allow youtube to init from direct user input
+				if (appState.isTouchDevice && !appState.hasBeenPlayed) {
+					scope.isSuppressed = true;
+				}
+				var watch = scope.$watch(function () {
+					return appState.hasBeenPlayed;
+				}, function (wasPlayed) {
+					if (wasPlayed === true) {
+						scope.isSuppressed = false;
+						watch();
+					}
+				});
+
 				// these classnames and variable names aren't confusing AT ALL.  Curse you, past Daniel
 				var timelineNode = element.find('.progressbarContainer');
 				var timelineContainer = element.find('.progressbar');

@@ -58,19 +58,25 @@ angular.module('com.inthetelling.story')
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
 					'onStateChange': function (x) {
-						if (x < 0) {
+						if (x.data < 0) {
 							return;
 						}
-						console.log("state change:", playerStates[x.data]);
-						$scope.playerState = playerStates[x.data];
+						// console.log("state change:", playerStates[x.data], x.data);
 
-						if ($scope.playerState === 'buffering') {
-							$scope.stall();
+						if (appState.isTouchDevice && appState.hasBeenPlayed === false) {
+							// The first user-initiated click needs to go directly to youtube, not to our player.  
+							// So we have to do some catchup here:
+							$scope.YTPlayer.pauseVideo(); // block the direct user action, now that it's successfully inited YT for us
+							timelineSvc.play(); // now our code can take over as per normal
+						} else {
+							$scope.playerState = playerStates[x.data];
+							if ($scope.playerState === 'buffering') {
+								$scope.stall();
+							}
 						}
 					}
 				}
 			});
-			// console.log("YTPlayer", $scope.YTPlayer.playVideo);
 			// but we still need to wait for youtube to Do More Stuff, apparently:
 			var unwatch = $scope.$watch(function () {
 				return $scope.YTPlayer.playVideo !== undefined;
@@ -90,7 +96,7 @@ angular.module('com.inthetelling.story')
 					// For now copping out: assume that youtube and the player will inevitably get out of synch sometimes,
 					// and deal with it.  The player's state is the correct one in all cases.
 
-					console.log("Timeline: ", appState.timelineState, "Video:", $scope.playerState);
+					// console.log("Timeline: ", appState.timelineState, "Video:", $scope.playerState);
 
 					if (appState.timelineState === "paused" && $scope.playerState === "playing") {
 						console.warn("Video was playing while timeline was paused.");
@@ -184,7 +190,6 @@ angular.module('com.inthetelling.story')
 								if ($scope.videoNode.currentSrc !== '') {
 									var ext = $scope.videoNode.currentSrc.match(/\.(\w+)$/)[1];
 									if ($scope.video.urls[ext][0] !== $scope.videoNode.currentSrc) {
-										console.log("Switching from ", $scope.videoNode.currentSrc, " to ", $scope.video.urls[ext][0]);
 
 										var currentTime = $scope.videoNode.currentTime;
 										$scope.videoNode.pause();
@@ -194,7 +199,6 @@ angular.module('com.inthetelling.story')
 										$timeout(function () {
 											$scope.videoNode.play();
 										});
-										analyticsSvc.captureEpisodeActivity('lowBandwidth');
 									}
 								}
 				*/

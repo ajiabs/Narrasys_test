@@ -1,4 +1,4 @@
-<div class="timeline">
+<div class="timeline" ng-show="!isSuppressed">
 
 	<button tabindex="0" ng-focus="showControls()" class="button button-play" ng-if="appState.timelineState == 'paused'" ng-click="play()">
 		<span class="control-text">Play</span>
