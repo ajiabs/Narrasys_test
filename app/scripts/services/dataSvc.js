@@ -84,8 +84,7 @@ angular.module('com.inthetelling.story')
 			// This will cause epsiode data to be requested from the api every time the page loads, instead of trying to recycle the cache, but that's probably safer anyway
 			// if (modelSvc.episodes[epId]) {
 			// 	console.log("have episode: ", modelSvc.episodes[epId]);
-			// 	$rootScope.$emit("dataSvc.getEpisodeAssets.done");
-			// 	$rootScope.$emit("dataSvc.getEpisodeEvents.done");
+			// 	$rootScope.$emit("dataSvc.getEpisode.done");
 			// 	return; // already requested
 			// }
 			modelSvc.cache("episode", {
@@ -95,8 +94,7 @@ angular.module('com.inthetelling.story')
 			if ($routeParams.local) {
 				mockSvc.mockEpisode(epId);
 				// console.log("Got all events");
-				$rootScope.$emit("dataSvc.getEpisodeAssets.done");
-				$rootScope.$emit("dataSvc.getEpisodeEvents.done");
+				$rootScope.$emit("dataSvc.getEpisode.done");
 			} else {
 				authSvc.authenticate()
 					.then(function () {
@@ -359,19 +357,23 @@ angular.module('com.inthetelling.story')
 					}
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
-						// Get episode events
+						var partsWeGot = 0;
+						// part 1: episode events
 						getEpisodeEvents(epId, segmentId).then(function () {
 							modelSvc.resolveEpisodeEvents(epId);
-							$rootScope.$emit("dataSvc.getEpisodeEvents.done");
+							if (++partsWeGot === 2) {
+								$rootScope.$emit("dataSvc.getEpisode.done");
+							}
 						});
 
-						// Load the episode container and all parent containers
-						// (Need this so we can get all potential episode assets, not just for interepisode nav)
-						svc.getContainerAncestry(episodeData.container_id).then(function () {
-							// got them all.
+						// part 2: the episode container and all parent containers
+						// (Need parents so we can get all potential episode assets, not just for interepisode nav)
+						svc.getContainerAncestry(episodeData.container_id, epId).then(function () {
+							// NOTE assets are not guaranteed to be loaded by this point!
 							modelSvc.resolveEpisodeContainers(epId);
-							modelSvc.resolveEpisodeAssets(epId);
-							$rootScope.$emit("dataSvc.getEpisodeAssets.done", epId);
+							if (++partsWeGot === 2) {
+								$rootScope.$emit("dataSvc.getEpisode.done");
+							}
 						});
 					} else {
 						errorSvc.error({
@@ -387,12 +389,12 @@ angular.module('com.inthetelling.story')
 		};
 
 		// calls getContainer, iterates to all parents before finally resolving
-		svc.getContainerAncestry = function (containerId, defer) {
+		svc.getContainerAncestry = function (containerId, episodeId, defer) {
 			defer = defer || $q.defer();
-			svc.getContainer(containerId).then(function (id) {
+			svc.getContainer(containerId, episodeId).then(function (id) {
 				var container = modelSvc.containers[id];
 				if (container.parent_id) {
-					svc.getContainerAncestry(container.parent_id, defer);
+					svc.getContainerAncestry(container.parent_id, episodeId, defer);
 				} else {
 					defer.resolve(id);
 				}
@@ -410,8 +412,6 @@ angular.module('com.inthetelling.story')
 						eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
 						modelSvc.cache("event", svc.resolveIDs(eventData));
 					});
-					// Tell modelSvc it can build episode->scene->item child arrays
-					modelSvc.resolveEpisodeEvents(epId);
 
 				});
 		};
@@ -446,17 +446,6 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			modelSvc.resolveEpisodeEvents(epId);
-		};
-
-		svc.getContainerAssets = function (containerId) {
-			return $http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
-				.success(function (containerAssets) {
-					// console.log("container assets", containerAssets);
-					modelSvc.containers[containerId].assetsHaveLoaded = true;
-					angular.forEach(containerAssets.files, function (asset) {
-						modelSvc.cache("asset", asset);
-					});
-				});
 		};
 
 		/* ------------------------------------------------------------------------------ */
@@ -554,14 +543,14 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
-		svc.getContainer = function (id) {
+		svc.getContainer = function (id, episodeId) {
 			// console.log("getContainer", id);
 			return GET("/v3/containers/" + id, function (containers) {
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];
 
 				// Get the container' asset list:
-				svc.getContainerAssets(id);
+				svc.getContainerAssets(id, episodeId);
 
 				// Ensure container.children refers to items in modelSvc cache:
 				if (container.children) {
@@ -591,6 +580,18 @@ angular.module('com.inthetelling.story')
 				return containers[0]._id;
 			});
 
+		};
+
+		svc.getContainerAssets = function (containerId, episodeId) {
+			return $http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
+				.success(function (containerAssets) {
+					console.log("container assets ", containerId, containerAssets);
+					modelSvc.containers[containerId].assetsHaveLoaded = true;
+					angular.forEach(containerAssets.files, function (asset) {
+						modelSvc.cache("asset", asset);
+					});
+					modelSvc.resolveEpisodeAssets(episodeId);
+				});
 		};
 
 		svc.createContainer = function (container) {

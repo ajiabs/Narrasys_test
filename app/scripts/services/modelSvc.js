@@ -819,8 +819,8 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.resolveEpisodeAssets = function (episodeId) {
+			console.log("resolveEpisodeAssets");
 			// attaches assets to svc.events
-			console.log("resolveEpisodeAssets", episodeId);
 			angular.forEach(svc.events, function (item) {
 				if (item.cur_episode_id !== episodeId) {
 					return;
@@ -834,25 +834,13 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			// Do episode's master asset, too
-			var master_asset_id = svc.episodes[episodeId].master_asset_id;
 			if (svc.episodes[episodeId]) {
+				var master_asset_id = svc.episodes[episodeId].master_asset_id;
 				if (master_asset_id) {
-					console.log(
-						"Master ID: ", master_asset_id,
-						"asset: ", svc.assets[master_asset_id]
-					);
 					if (!svc.assets[master_asset_id]) {
-
 						console.error("Had master_asset_id but no asset");
-
-						// Leaving this here for now just to remind me DONT DO THIS (it causes havok downstream )
-						// have to track down why this is happening in the first place, no cheating
-						// svc.cache("asset", {
-						// 	_id: master_asset_id
-						// })
 					}
 					svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
-
 				}
 			}
 		};
