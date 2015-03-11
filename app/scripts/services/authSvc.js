@@ -228,7 +228,7 @@ angular.module('com.inthetelling.story')
 							}
 							defer.reject();
 						} else {
-							console.error("No login url suppplied", window.location);
+							console.warn("get_nonce returned a null login_url");
 							if (window.location.hash !== '#/') {
 								window.location.href = "/#/";
 							}
