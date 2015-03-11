@@ -20,7 +20,7 @@ angular.module('com.inthetelling.story')
 					if (appState.isTouchDevice || appState.time === 0) {
 						$rootScope.$emit('magnet.jumpToMagnet');
 					}
-				}
+				};
 
 				scope.unwatchVisibility = scope.$watch(function () {
 					return element.is(':visible');
