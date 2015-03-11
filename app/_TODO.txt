@@ -1,4 +1,8 @@
-TODO topline tasks
+
+Youtube on iOS is *SO CLOSE* to working.   Need to make the user click on the video to start it, so hide the bottom toolbar and the video overlay until hasBeenPlayed is true (and make sure the timeline is watching the video for that first play, instead of the usual other way around)
+
+
+---  archeological layers of old TODOs below this line ---
 
 finish producer (matt(?) + daniel)
 	edit background layer events (mostly done)
@@ -49,7 +53,7 @@ UI design for asset / transmedia curation (daniel)
 	manage assets
 
 
----  archeological layers of old TODOs below this line ---
+---  More ancient epochs below this line ---
 
 
 i18n fields: make sure we support language fields from the /v3 endpoints for each of these:
@@ -110,7 +114,6 @@ Extract autscroll and maybe toolbar hide/reveal behavior from PlayerController i
 
 
 
-Bring back the loading icon for iframes attempted in v4.0.32 (disabled because wasn't working with PDFs in chrome)
 
 
 include a sample iframe page with instructions for customers on how best to embed our player

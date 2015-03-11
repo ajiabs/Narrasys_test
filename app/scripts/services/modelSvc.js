@@ -649,12 +649,11 @@ angular.module('com.inthetelling.story')
 			}
 
 			// Now it's safe to reattach the ending scene (with updated start and end times if necessary)
-			if (endingscreen && (duration>0)) {
+			if (endingscreen && (duration > 0)) {
 				endingscreen.start_time = duration - 0.1;
 				endingscreen.end_time = duration;
 				episode.scenes.push(endingscreen);
 			}
-
 
 			// Now that we have the structure, calculate event styles (for scenes and items:)
 			episode.styleCss = cascadeStyles(episode);
@@ -820,7 +819,8 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.resolveEpisodeAssets = function (episodeId) {
-			// console.log("resolveEpisodeAssets", episodeId);
+			// console.log("resolveEpisodeAssets");
+			// attaches assets to svc.events
 			angular.forEach(svc.events, function (item) {
 				if (item.cur_episode_id !== episodeId) {
 					return;
@@ -835,8 +835,12 @@ angular.module('com.inthetelling.story')
 			});
 			// Do episode's master asset, too
 			if (svc.episodes[episodeId]) {
-				if (svc.episodes[episodeId].master_asset_id) {
-					svc.episodes[episodeId].masterAsset = svc.assets[svc.episodes[episodeId].master_asset_id];
+				var master_asset_id = svc.episodes[episodeId].master_asset_id;
+				if (master_asset_id) {
+					if (!svc.assets[master_asset_id]) {
+						console.error("Had master_asset_id but no asset");
+					}
+					svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
 				}
 			}
 		};

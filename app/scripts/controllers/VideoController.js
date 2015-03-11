@@ -50,13 +50,17 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.initYoutube = function () {
+
 			// console.log("videoController initYoutube");
 			var playerStates = ["ended", "playing", "paused", "buffering", "", "cued"]; // convert YT codes to html5 state names
+			// NOTE youtube is currently sending us playerState of 'buffering' when paused 
+
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
 					'onStateChange': function (x) {
 						console.log("state change:", playerStates[x.data]);
 						$scope.playerState = playerStates[x.data];
+
 						if ($scope.playerState === 'buffering') {
 							$scope.stall();
 						} else {
@@ -80,7 +84,48 @@ angular.module('com.inthetelling.story')
 					timelineSvc.registerVideo($scope);
 				}
 			});
-		};
+
+			$scope.babysitYoutubeVideo = function () {
+				$scope.babysitter = $interval(function () {
+					// For now copping out: assume that youtube and the player will inevitably get out of synch sometimes,
+					// and deal with it.  The player's state is the correct one in all cases.
+
+					// console.log("Timeline: ", appState.timelineState, "Video:", $scope.playerState);
+
+					if (appState.timelineState === "paused" && $scope.playerState === "playing") {
+						console.warn("Video was playing while timeline was paused.");
+						$scope.pause();
+					}
+					if (appState.timelineState === "playing" && $scope.playerState !== "playing") {
+						console.warn("Timeline was playing while video was not.");
+						$scope.YTPlayer.playVideo();
+					}
+
+				}, 333);
+			};
+			$scope.babysitYoutubeVideo();
+
+			$scope.stall = function () {
+				// notify timelineSvc if the video stalls during playback
+				if (appState.timelineState !== 'playing') {
+					return;
+				}
+				console.warn("Video stalled");
+				if (!$scope.intentionalStall) {
+					analyticsSvc.captureEpisodeActivity("stall");
+				}
+				timelineSvc.stall();
+				var unwatch = $scope.$watch(function () {
+					return $scope.playerState;
+				}, function (newState) {
+					if (newState !== 'buffering') {
+						unwatch();
+						timelineSvc.unstall();
+					}
+				});
+			};
+
+		}; // end of initYoutube
 
 		$scope.initHTML5Video = function () {
 			// console.log("initHTML5Video");
@@ -145,6 +190,31 @@ angular.module('com.inthetelling.story')
 
 			};
 
+			$scope.babysitHTML5Video = function () {
+				numberOfStalls = 0;
+				// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
+				$scope.babysitter = $interval(function () {
+					// console.log($scope.videoNode.currentTime, appState.timelineState);
+					if (appState.timelineState === 'playing') {
+						if ($scope.lastPlayheadTime === $scope.currentTime()) {
+							if (!$scope.intentionalStall) {
+								analyticsSvc.captureEpisodeActivity("stall");
+							}
+							timelineSvc.stall();
+							if (!$scope.intentionalStall && numberOfStalls++ === 2) {
+								$scope.changeVideoBandwidth();
+							}
+							// console.log("numberOfStalls = ", numberOfStalls);
+						}
+						$scope.lastPlayheadTime = $scope.currentTime();
+					} else if (appState.timelineState === 'buffering') {
+						if ($scope.lastPlayheadTime !== $scope.currentTime()) {
+							appState.timelineState = 'playing';
+							timelineSvc.unstall();
+						}
+					}
+				}, 333);
+			};
 			$scope.babysitHTML5Video();
 
 			$scope.getBufferPercent = function () {
@@ -192,65 +262,19 @@ angular.module('com.inthetelling.story')
 				webkitbeginfullscreen
 				webkitendfullscreen
 			*/
-		};
+
+		}; // end of initHTML5Video
 
 		// DO NOT CALL ANY OF THE BELOW DIRECTLY!
 		// Instead call via timelineSvc; otherwise the timeline won't know the video is playing
 		var numberOfStalls = 0;
 		$scope.intentionalStall = false;
 
-		$scope.babysitHTML5Video = function () {
-			numberOfStalls = 0;
-			// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
-			$scope.babysitter = $interval(function () {
-				// console.log($scope.videoNode.currentTime, appState.timelineState);
-				if (appState.timelineState === 'playing') {
-					if ($scope.lastPlayheadTime === $scope.currentTime()) {
-						if (!$scope.intentionalStall) {
-							analyticsSvc.captureEpisodeActivity("stall");
-						}
-						timelineSvc.stall();
-						if (!$scope.intentionalStall && numberOfStalls++ === 2) {
-							$scope.changeVideoBandwidth();
-						}
-						// console.log("numberOfStalls = ", numberOfStalls);
-					}
-					$scope.lastPlayheadTime = $scope.currentTime();
-				} else if (appState.timelineState === 'buffering') {
-					if ($scope.lastPlayheadTime !== $scope.currentTime()) {
-						appState.timelineState = 'playing';
-						timelineSvc.unstall();
-					}
-				}
-			}, 333);
-		};
-
 		$scope.$on("$destroy", function () {
 			$interval.cancel($scope.babysitter);
 			$timeout.cancel($scope.stallGracePeriod);
 			delete $scope.videoNode; // possibly unnecessary, but just for safety's sake
 		});
-
-		$scope.stall = function () {
-			// NOTE this is only called for youtube; native video uses babysitHtml5Video instead.  TODO refactor, because that's damn confusing
-			// notify timelineSvc if the video stalls during playback
-			if (appState.timelineState !== 'playing') {
-				return;
-			}
-			console.warn("Video stalled");
-			if (!$scope.intentionalStall) {
-				analyticsSvc.captureEpisodeActivity("stall");
-			}
-			timelineSvc.stall();
-			var unwatch = $scope.$watch(function () {
-				return $scope.playerState;
-			}, function (newState) {
-				if (newState !== 'buffering' && newState !== 'waiting') {
-					unwatch();
-					timelineSvc.unstall();
-				}
-			});
-		};
 
 		// play doesn't start immediately -- need to return a promise so timelineSvc can wait until the video is actually playing
 		$scope.play = function () {
@@ -300,7 +324,7 @@ angular.module('com.inthetelling.story')
 			try {
 				if ($scope.videoType === 'youtube') {
 					var wasPlaying = (appState.timelineState === 'playing');
-					$scope.YTPlayer.pauseVideo(); // always pause before seek, otherwise YT keeps yammering on during the buffering phase
+					$scope.YTPlayer.pauseVideo(); // pause before seek, otherwise YT keeps yammering on during the buffering phase
 					$scope.YTPlayer.seekTo(t, true);
 					$scope.YTPlayer.pauseVideo(); // and pause afterwards too, because YT always autoplays after seek
 					if (wasPlaying) {

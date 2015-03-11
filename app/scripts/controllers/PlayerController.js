@@ -6,15 +6,6 @@ angular.module('com.inthetelling.story')
 	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc) {
 		// console.log("playerController", $scope);
 
-		$scope.tmp = function () {
-			// dataSvc.createTemplate({
-			// 	url: 'templates/episode/gwsb.html',
-			// 	name: 'GWSB',
-			// 	event_types: [], // Upload, Scene, Plugin, Annotation, Link
-			// 	applies_to_episode: true,
-			// });
-		};
-
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
 			analyticsSvc.captureEpisodeActivity("modeChange", {
@@ -82,34 +73,28 @@ angular.module('com.inthetelling.story')
 		$scope.loading = true;
 		modelSvc.addLandingScreen(appState.episodeId);
 
-		// You're right, Matt, this was a mess.
+		// You're right, Matt, this was a mess.   
 
 		// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
-		// keeping these triggers separate for now in case we can do anything useful with one or the other before we have both,
-		// but for now I'm too wary of race conditions to try
-		var amIFinished = 0; // poor man's curry :)
-		$scope.finishLoading = function () {
-			// console.log("finishLoading", amIFinished);
-			if (amIFinished < 1) {
-				amIFinished++;
-			} else {
-				amIFinished = 0;
-				appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
-				modelSvc.setLanguageStrings();
-				document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
+		var getEpisodeWatcher = $rootScope.$on("dataSvc.getEpisode.done", function () {
+			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
+			modelSvc.setLanguageStrings();
+			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
 
-				// modelSvc.resolveEpisodeEvents(appState.episodeId); // this may be redundant
-				modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist (so depends on getEpisodeAssets)
-				timelineSvc.init(appState.episodeId);
-				$scope.loading = false;
-			}
-		};
+			// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
+			// HACK this is a weird place for this.
+			var master_asset_id = modelSvc.episodes[appState.episodeId].master_asset_id;
+			var watch = $scope.$watch(function () {
+				return modelSvc.assets[master_asset_id];
+			}, function (masterAsset) {
+				if (masterAsset && Object.keys(masterAsset).length > 1) {
+					watch();
+					modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
+					timelineSvc.init(appState.episodeId);
+					$scope.loading = false;
+				}
+			});
 
-		var watcher1 = $rootScope.$on("dataSvc.getEpisodeEvents.done", function () {
-			$scope.finishLoading();
-		});
-		var watcher2 = $rootScope.$on("dataSvc.getEpisodeAssets.done", function () {
-			$scope.finishLoading();
 		});
 
 		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
@@ -220,7 +205,7 @@ angular.module('com.inthetelling.story')
 		}
 
 		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
-		var watcher3 = $rootScope.$on("video.firstPlay", function () {
+		var firstplayWatcher = $rootScope.$on("video.firstPlay", function () {
 			if (localStorageAllowed && !(localStorage.getItem("noMoreHelp"))) {
 				appState.show.helpPanel = true;
 			} else {
@@ -287,7 +272,6 @@ angular.module('com.inthetelling.story')
 			});
 			// handleAutoscroll();
 		};
-		
 
 		var stopScrollWatcher = function () {
 			// console.log("stopScrollWatcher");
@@ -357,13 +341,12 @@ angular.module('com.inthetelling.story')
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 
-		var watcher4 = $rootScope.$on("userKeypress.ESC", $scope.hidePanels);
+		var escWatcher = $rootScope.$on("userKeypress.ESC", $scope.hidePanels);
 
 		$scope.$on('$destroy', function () {
 			videoControlsWatcher();
-			watcher1();
-			watcher2();
-			watcher3();
-			watcher4();
+			getEpisodeWatcher();
+			firstplayWatcher();
+			escWatcher();
 		});
 	});
