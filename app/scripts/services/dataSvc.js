@@ -585,7 +585,6 @@ angular.module('com.inthetelling.story')
 		svc.getContainerAssets = function (containerId, episodeId) {
 			return $http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
 				.success(function (containerAssets) {
-					console.log("container assets ", containerId, containerAssets);
 					modelSvc.containers[containerId].assetsHaveLoaded = true;
 					angular.forEach(containerAssets.files, function (asset) {
 						modelSvc.cache("asset", asset);

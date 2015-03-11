@@ -450,7 +450,7 @@ angular.module('com.inthetelling.story')
 
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
-			console.log("resolveEpisodeEvents");
+			// console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
@@ -819,7 +819,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.resolveEpisodeAssets = function (episodeId) {
-			console.log("resolveEpisodeAssets");
+			// console.log("resolveEpisodeAssets");
 			// attaches assets to svc.events
 			angular.forEach(svc.events, function (item) {
 				if (item.cur_episode_id !== episodeId) {

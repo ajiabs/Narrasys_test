@@ -83,15 +83,17 @@ angular.module('com.inthetelling.story')
 
 			$scope.babysitYoutubeVideo = function () {
 				$scope.babysitter = $interval(function () {
-					console.log("Timeline: ", appState.timelineState, "Video:", $scope.playerState);
-
 					// For now copping out: assume that youtube and the player will inevitably get out of synch sometimes,
 					// and deal with it.  The player's state is the correct one in all cases.
 
+					// console.log("Timeline: ", appState.timelineState, "Video:", $scope.playerState);
+
 					if (appState.timelineState === "paused" && $scope.playerState === "playing") {
+						console.warn("Video was playing while timeline was paused.");
 						$scope.pause();
 					}
 					if (appState.timelineState === "playing" && $scope.playerState !== "playing") {
+						console.warn("Timeline was playing while video was not.");
 						$scope.YTPlayer.playVideo();
 					}
 
