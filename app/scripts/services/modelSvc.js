@@ -837,10 +837,11 @@ angular.module('com.inthetelling.story')
 			if (svc.episodes[episodeId]) {
 				var master_asset_id = svc.episodes[episodeId].master_asset_id;
 				if (master_asset_id) {
-					if (!svc.assets[master_asset_id]) {
-						console.error("Had master_asset_id but no asset");
+					if (svc.assets[master_asset_id]) {
+						svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
+					} else {
+						// master asset hasn't loaded yet
 					}
-					svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
 				}
 			}
 		};
