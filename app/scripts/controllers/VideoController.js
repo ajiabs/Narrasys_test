@@ -52,12 +52,16 @@ angular.module('com.inthetelling.story')
 		$scope.initYoutube = function () {
 
 			// console.log("videoController initYoutube");
-			var playerStates = ["ended", "playing", "paused", "buffering", "", "cued"]; // convert YT codes to html5 state names
+			var playerStates = ["ended", "playing", "paused", "buffering", "???", "cued"]; // convert YT codes to html5 state names
 			// NOTE youtube is currently sending us playerState of 'buffering' when paused 
 
 			$scope.YTPlayer = new window.YT.Player($scope.videoNode.id, {
 				events: {
 					'onStateChange': function (x) {
+						if (x < 0) {
+							return;
+						}
+						console.log("state change:", playerStates[x.data]);
 						$scope.playerState = playerStates[x.data];
 
 						if ($scope.playerState === 'buffering') {
@@ -86,7 +90,7 @@ angular.module('com.inthetelling.story')
 					// For now copping out: assume that youtube and the player will inevitably get out of synch sometimes,
 					// and deal with it.  The player's state is the correct one in all cases.
 
-					// console.log("Timeline: ", appState.timelineState, "Video:", $scope.playerState);
+					console.log("Timeline: ", appState.timelineState, "Video:", $scope.playerState);
 
 					if (appState.timelineState === "paused" && $scope.playerState === "playing") {
 						console.warn("Video was playing while timeline was paused.");
@@ -95,6 +99,10 @@ angular.module('com.inthetelling.story')
 					if (appState.timelineState === "playing" && $scope.playerState !== "playing") {
 						console.warn("Timeline was playing while video was not.");
 						$scope.YTPlayer.playVideo();
+					}
+					if (appState.timelineState === "buffering" && $scope.playerState === "buffering") {
+						console.warn("Timeline and video were being Canadian, both waiting for the other to go.");
+						timelineSvc.unstall();
 					}
 
 				}, 333);
