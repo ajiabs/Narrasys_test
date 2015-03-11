@@ -969,10 +969,9 @@ angular.module('com.inthetelling.story')
 			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-			// iOS is ready! But still disabling this for now, until we've done more QA.
-			// When that's done, remove this block:
+			// iOS youtube is ready! mostly.  iPhones aren't pausable during playback. iPad is working though
 			if (appState.isTouchDevice) {
-				// delete videoObject.youtube;
+				delete videoObject.youtube;
 			}
 
 			if (config.youtube.disabled) {
