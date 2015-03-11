@@ -105,6 +105,13 @@ angular.module('com.inthetelling.story')
 						timelineSvc.unstall();
 					}
 
+					// No good: execution time is more than enough to throw this off, and it interferes with intentuonal seeks
+					// if (appState.timelineState === "playing" && $scope.playerState === "playing") {
+					// 	if (Math.abs(appState.time - $scope.YTPlayer.getCurrentTime()) > 0.5) {
+					// 		console.warn("More than 0.5s out of sync");
+					// 		timelineSvc.resync();
+					// 	}
+					// }
 				}, 333);
 			};
 			$scope.babysitYoutubeVideo();
