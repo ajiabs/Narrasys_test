@@ -36,10 +36,12 @@
 	padding: 1em;
 	background-color: #FFF;
 	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
-	height: 80%; overflow-y:scroll;
+	height: 80%;
+	overflow-y: scroll;
 }
 .videoContainer {
 	overflow: hidden;
+	background-color: #000;
 	/*overflow-y: hidden;*/
 }
 .content {

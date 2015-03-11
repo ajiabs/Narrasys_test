@@ -90,7 +90,13 @@ button {
 	}
 }
 @media screen and (max-width: 421px) {
+	/*
 	.isFramed .toolbar .buttongroup.modegroup {
+		display: none;
+	}
+	*/
+	
+	.banner-logo {
 		display: none;
 	}
 }
