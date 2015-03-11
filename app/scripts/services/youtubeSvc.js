@@ -1,21 +1,21 @@
 'use strict';
 angular.module('com.inthetelling.story')
-	.factory('youtubeSvc', function ($q, $http, $timeout) {
+	.factory('youtubeSvc', function ($q, $http, $timeout, config) {
 		var svc = {};
-		var config = {
-			domain: "https://gdata.youtube.com/",
+		var YTconfig = config.youtube || {
+			domain: "//gdata.youtube.com/",
 			timeout: 5000
 		};
 
 		var getVideoMetaDataV1 = function (id) {
 			var resourcePath = "feeds/api/videos/";
 			var queryString = "?v=2&alt=json&callback=JSON_CALLBACK";
-			var url = config.domain + resourcePath + id + queryString;
+			var url = YTconfig.domain + resourcePath + id + queryString;
 			var defer = $q.defer();
 
 			var timeoutPromise = $timeout(function () {
 				defer.reject("Timed out");
-			}, config.timeout);
+			}, YTconfig.timeout);
 
 			$http.jsonp(url)
 				.success(function (respData) {

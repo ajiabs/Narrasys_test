@@ -975,7 +975,7 @@ angular.module('com.inthetelling.story')
 				delete videoObject.youtube;
 			}
 
-			if (config.disableYoutube) {
+			if (config.youtube.disabled) {
 				delete videoObject.youtube;
 			}
 			if (!isSafari) {
