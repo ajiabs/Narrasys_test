@@ -570,17 +570,11 @@ angular.module('com.inthetelling.story')
 				}
 			}
 
-			var itemsIndex = 0;
 			// assign items to scenes (give them a scene_id and attach references to the scene's items[]:
-			//angular.forEach(scenes, function (scene) {
-			for (var y = 0, scenesLength = scenes.length; y < scenesLength; y++) {
-				var scene = scenes[y];
+			angular.forEach(scenes, function (scene) {
 				var sceneItems = [];
 				var previousTranscript = {};
-				for (var x = itemsIndex, itemsLength = items.length; x < itemsLength; x++) {
-					var event = items[x];
-
-					//angular.forEach(items, function (event) {
+				angular.forEach(items, function (event) {
 					/* possible cases: 
 							start and end are within the scene: put it in this scene
 							start is within this scene, end is after this scene: 
@@ -606,18 +600,10 @@ angular.module('com.inthetelling.story')
 							svc.events[event._id].scene_id = scene._id;
 							sceneItems.push(event);
 						} else {
-
 							// end time is in next scene.  Check if start time is close to scene end, if so bump to next scene, otherwise truncate the item to fit in this one
 							if (scene.end_time - 0.25 < event.start_time) {
-								if (y !== scenesLength - 1) {
-									// bump to next scene
-									event.start_time = scene.end_time;
-								} else {
-									//in last scene
-									event.end_time = scene.end_time;
-									event.scene_id = scene._id;
-									sceneItems.push(event);
-								}
+								// bump to next scene
+								event.start_time = scene.end_time;
 							} else {
 								// truncate and add to this one
 								event.end_time = scene.end_time;
@@ -626,12 +612,7 @@ angular.module('com.inthetelling.story')
 							}
 						}
 					}
-					if (event.start_time > scene.end_time) {
-						itemsIndex = x; //  no need to loop through things we've already seen
-						break; // no need to continue checking events after this point as no events will be added to this scene after this point
-					}
-				}
-
+				});
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 				svc.events[scene._id].items = sceneItems.sort(function (a, b) {
@@ -646,7 +627,7 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				});
-			}
+			});
 
 			// Now it's safe to reattach the ending scene (with updated start and end times if necessary)
 			if (endingscreen && (duration > 0)) {
