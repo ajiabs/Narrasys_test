@@ -972,7 +972,7 @@ angular.module('com.inthetelling.story')
 			// iOS is ready! But still disabling this for now, until we've done more QA.
 			// When that's done, remove this block:
 			if (appState.isTouchDevice) {
-				delete videoObject.youtube;
+				// delete videoObject.youtube;
 			}
 
 			if (config.youtube.disabled) {
