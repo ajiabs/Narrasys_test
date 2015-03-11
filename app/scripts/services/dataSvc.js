@@ -361,6 +361,7 @@ angular.module('com.inthetelling.story')
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						// Get episode events
 						getEpisodeEvents(epId, segmentId).then(function () {
+							modelSvc.resolveEpisodeEvents(epId);
 							$rootScope.$emit("dataSvc.getEpisodeEvents.done");
 						});
 

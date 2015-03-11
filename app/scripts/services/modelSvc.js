@@ -450,7 +450,7 @@ angular.module('com.inthetelling.story')
 
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
-			// console.log("resolveEpisodeEvents");
+			console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
@@ -649,12 +649,11 @@ angular.module('com.inthetelling.story')
 			}
 
 			// Now it's safe to reattach the ending scene (with updated start and end times if necessary)
-			if (endingscreen && (duration>0)) {
+			if (endingscreen && (duration > 0)) {
 				endingscreen.start_time = duration - 0.1;
 				endingscreen.end_time = duration;
 				episode.scenes.push(endingscreen);
 			}
-
 
 			// Now that we have the structure, calculate event styles (for scenes and items:)
 			episode.styleCss = cascadeStyles(episode);
@@ -820,7 +819,8 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.resolveEpisodeAssets = function (episodeId) {
-			// console.log("resolveEpisodeAssets", episodeId);
+			// attaches assets to svc.events
+			console.log("resolveEpisodeAssets", episodeId);
 			angular.forEach(svc.events, function (item) {
 				if (item.cur_episode_id !== episodeId) {
 					return;
@@ -834,9 +834,22 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			// Do episode's master asset, too
+			var master_asset_id = svc.episodes[episodeId].master_asset_id;
 			if (svc.episodes[episodeId]) {
-				if (svc.episodes[episodeId].master_asset_id) {
-					svc.episodes[episodeId].masterAsset = svc.assets[svc.episodes[episodeId].master_asset_id];
+				if (master_asset_id) {
+					console.log(
+						"Master ID: ", master_asset_id,
+						"asset: ", svc.assets[master_asset_id]
+					);
+					if (!svc.assets[master_asset_id]) {
+						console.warn("Had master_asset_id but no asset; making a stub");
+						// We can bind to a stub for now, but that still leaves addLandingScreen with an incorrect duration (of zero)
+						svc.cache("asset", {
+							_id: master_asset_id
+						})
+					}
+					svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
+
 				}
 			}
 		};
