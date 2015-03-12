@@ -539,7 +539,7 @@ angular.module('com.inthetelling.story')
 				// We have some events whose start time is beyond the episode duration; they were winding up attached to the endingscene (and therefore invisible)
 				// HACK just shove those into the end of the last (real) scene with a short duration
 				if (duration > 0) {
-					if (event.start_time > duration - 0.1) { // the -0.1 ensures they don't get attached to the ending screen
+					if (event.start_time > duration - 0.11) { // the -0.11 ensures they don't get attached to the ending screen
 						event.start_time = duration - 0.2;
 						event.end_time = duration - 0.1;
 					}

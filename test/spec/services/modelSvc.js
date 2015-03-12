@@ -201,15 +201,42 @@ describe('Service: modelSvc', function () {
 		expect(modelSvc.episodes.EP1.scenes[10].items.length).toEqual(1); // annotation1 should be attached to the scene running from 90-99.9
 	});
 
-	it('Events near end of episode should not get attached to the ending screen', function () {
+	it('Events near or at end of episode should not get attached to the ending screen', function () {
 		modelSvc.episodes.EP1.masterAsset = {
 			duration: 100
 		};
 		modelSvc.cache("event", {
 			"_id": "TEST",
 			"_type": "Annotation",
-			"start_time": 99.99,
+			"start_time": 99.9,
 			"end_time": 100,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
+		});
+		modelSvc.cache("event", {
+			"_id": "TEST2",
+			"_type": "Annotation",
+			"start_time": 99.9,
+			"end_time": 100,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
+		});
+		modelSvc.cache("event", {
+			"_id": "TEST3",
+			"_type": "Annotation",
+			"start_time": 99.89,
+			"end_time": 110,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
+		});
+		modelSvc.cache("event", {
+			"_id": "TEST4",
+			"_type": "Annotation",
+			"start_time": 99.99,
+			"end_time": 110,
 			"templateUrl": "templates/item/default.html",
 			"episode_id": "EP1",
 			"cur_episode_id": "EP1",
@@ -217,27 +244,7 @@ describe('Service: modelSvc', function () {
 		modelSvc.addEndingScreen("EP1");
 		modelSvc.resolveEpisodeEvents("EP1");
 
-		expect(modelSvc.episodes.EP1.scenes[10].items.length).toEqual(1); // annotation1 should be attached to the scene running from 90-99.9
-		expect(modelSvc.episodes.EP1.scenes[11].items.length).toEqual(0); // not the ending scene
-	});
-
-	it('(order of events in last test should not matter)', function () {
-		modelSvc.episodes.EP1.masterAsset = {
-			duration: 100
-		};
-		modelSvc.addEndingScreen("EP1");
-		modelSvc.cache("event", {
-			"_id": "TEST",
-			"_type": "Annotation",
-			"start_time": 99.99,
-			"end_time": 100,
-			"templateUrl": "templates/item/default.html",
-			"episode_id": "EP1",
-			"cur_episode_id": "EP1",
-		});
-		modelSvc.resolveEpisodeEvents("EP1");
-
-		expect(modelSvc.episodes.EP1.scenes[10].items.length).toEqual(1); // annotation1 should be attached to the scene running from 90-99.9
+		expect(modelSvc.episodes.EP1.scenes[10].items.length).toEqual(4); // annotation1 should be attached to the scene running from 90-99.9
 		expect(modelSvc.episodes.EP1.scenes[11].items.length).toEqual(0); // not the ending scene
 	});
 
