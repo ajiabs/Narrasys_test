@@ -553,12 +553,9 @@ angular.module('com.inthetelling.story')
 					}
 				}
 
-				// Some events have been stored with end times before their start times.  EditController was since updated to prevent that, so we may be able to remove this once the bad data is cleared out)
-				// as a HACKy fix, just swap start and end if they're out of order
+				// Some events have been stored with end times before their start times.
 				if (event.start_time > event.end_time) {
-					var swap = event.start_time;
-					event.start_time = event.end_time;
-					event.end_time = swap;
+					event.end_time = event.start_time;
 				}
 			});
 
@@ -746,6 +743,17 @@ angular.module('com.inthetelling.story')
 			});
 			return ret;
 		};
+
+		// returns whichever scene is current for the given time.
+		svc.sceneAtEpisodeTime = function (epId, t) {
+			t = t || appState.time;
+			var scenes = svc.episodes[epId].scenes;
+			for (var i = 0; i < scenes.length; i++) {
+				if (scene.start_time <= t && scene.end_time > t) {
+					return scene;
+				}
+			}
+		}
 
 		svc.scene = function (sceneId) {
 			// console.log("modelsvc.scene: ", sceneId);
