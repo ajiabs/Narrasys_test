@@ -255,9 +255,6 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .reviewMode h3 {
 	font-size: 1em;
 }
-.reviewMode .isCosmetic {
-	opacity: 0.5;
-}
 .reviewMode .isCosmetic .category:before {
 	background-color: #999;
 	border-radius: 0.5em;

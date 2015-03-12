@@ -373,14 +373,12 @@ angular.module('com.inthetelling.story')
 			if (!event.producerItemType) {
 				if (event.templateUrl.match(/file/)) {
 					event.producerItemType = 'file';
-				} else if (event.templateUrl.match(/image/)) {
-					event.producerItemType = 'image';
+				} else if (event.templateUrl.match(/question/)) {
+					event.producerItemType = 'question';
 				} else if (event.templateUrl.match(/link/)) {
 					event.producerItemType = 'link';
 				} else if (event.templateUrl.match(/video/)) {
 					event.producerItemType = 'link'; // HACK for now
-				} else if (event.templateUrl.match(/question/)) {
-					event.producerItemType = 'question';
 				} else if (event.templateUrl.match(/transcript/)) {
 					event.producerItemType = 'transcript';
 				} else if (event.templateUrl.match(/text/)) {
@@ -391,6 +389,8 @@ angular.module('com.inthetelling.story')
 					event.producerItemType = 'scene';
 				} else if (event.templateUrl.match(/comment/)) {
 					event.producerItemType = 'comment';
+				} else if (event.templateUrl.match(/image/)) { // Do this last, other types have some templtes with 'image' in their name.  I did say this was fragile...  this'll get cleaned up as part of the template refactor
+					event.producerItemType = 'image';
 				} else {
 					// console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
 				}
@@ -446,7 +446,9 @@ angular.module('com.inthetelling.story')
 		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but 
 		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them.
 
-		// HACK magic numbers galore; endingscene cuts the duration of the last scene by 0.1 seconds
+		// HACK magic numbers galore: 
+			endingscene cuts the duration of the last scene by 0.1 seconds
+			startingscreen extends from below zero to 0.01s
 
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
@@ -455,19 +457,14 @@ angular.module('com.inthetelling.story')
 			var scenes = [];
 			var items = [];
 			var episode = svc.episodes[epId];
-
-			var endingscreen = false; // We'll stash the ending scene here, if there is one, until after we've finished the duration math
-
 			angular.forEach(svc.events, function (event) {
 				if (event.cur_episode_id !== epId) {
 					return;
 				}
+
 				if (event._type === 'Scene') {
-					if (event._id.match(/internal:endingscreen/)) {
-						endingscreen = event;
-					} else {
-						scenes.push(event);
-					}
+
+					scenes.push(event);
 				} else {
 					items.push(event);
 				}
@@ -520,32 +517,7 @@ angular.module('com.inthetelling.story')
 			});
 			episode.annotators = annotators;
 
-			var duration = 0;
-			if (episode.masterAsset) {
-				duration = episode.masterAsset.duration;
-			}
-
-			// Fix bad data
-			if (duration > 0) {
-				angular.forEach(items, function (event) {
-					// We have some events whose start time is beyond the episode duration; they were winding up attached to the endingscene (and therefore invisible)
-					// HACK just shove those into the end of the last (real) scene with a short duration
-					if (event.start_time > duration) {
-						event.start_time = duration - 0.2;
-						event.end_time = duration - 0.1;
-					}
-					// Some events have been stored with end times before their start times.  EditController was since updated to prevent that, so we may be able to remove this once the bad data is cleared out)
-					// as a HACKy fix, just swap start and end if they're out of order
-					if (event.start_time > event.end_time) {
-						var swap = event.start_time;
-						event.start_time = event.end_time;
-						event.end_time = swap;
-					}
-				});
-			}
-
-			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order.
-
+			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 			episode.scenes = scenes.sort(function (a, b) {
@@ -557,24 +529,59 @@ angular.module('com.inthetelling.story')
 				return a.start_time - b.start_time;
 			});
 
-			// ensure scenes are contiguous.  
-			// NOTE endingscene is explicitly omitted from the scenes array at this point, so we don't need to worry about whether it was added yet or not 
-			// NOTE that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
+			var duration = 0;
+			if (episode.masterAsset) {
+				duration = episode.masterAsset.duration;
+			}
+
+			// Fix bad event data:
+			angular.forEach(items, function (event) {
+				// We have some events whose start time is beyond the episode duration; they were winding up attached to the endingscene (and therefore invisible)
+				// HACK just shove those into the end of the last (real) scene with a short duration
+				if (duration > 0) {
+					if (event.start_time > duration - 0.11) { // the -0.11 ensures they don't get attached to the ending screen
+						event.start_time = duration - 0.2;
+						event.end_time = duration - 0.1;
+					}
+				}
+
+				// HACK keep events from being attached to landing screen if there is one
+				if (event.start_time < 0.01) {
+					event.start_time = 0.01;
+					if (event.end_time < 0.01) {
+						event.end_time = 0.01;
+					}
+				}
+
+				// Some events have been stored with end times before their start times.
+				if (event.start_time > event.end_time) {
+					event.end_time = event.start_time;
+				}
+			});
+
+			// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
+			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
 			for (var i = 1, len = episode.scenes.length; i < len; i++) {
 				if (i === len - 1) {
 					if (duration !== 0) {
-						episode.scenes[i].end_time = duration - 0.1;
+						episode.scenes[i].end_time = duration;
 					}
 				} else {
 					episode.scenes[i].end_time = episode.scenes[i + 1].start_time;
 				}
 			}
 
+			var itemsIndex = 0;
 			// assign items to scenes (give them a scene_id and attach references to the scene's items[]:
-			angular.forEach(scenes, function (scene) {
+			//angular.forEach(scenes, function (scene) {
+			for (var y = 0, scenesLength = scenes.length; y < scenesLength; y++) {
+				var scene = scenes[y];
 				var sceneItems = [];
 				var previousTranscript = {};
-				angular.forEach(items, function (event) {
+				for (var x = itemsIndex, itemsLength = items.length; x < itemsLength; x++) {
+					var event = items[x];
+
+					//angular.forEach(items, function (event) {
 					/* possible cases: 
 							start and end are within the scene: put it in this scene
 							start is within this scene, end is after this scene: 
@@ -600,10 +607,18 @@ angular.module('com.inthetelling.story')
 							svc.events[event._id].scene_id = scene._id;
 							sceneItems.push(event);
 						} else {
+
 							// end time is in next scene.  Check if start time is close to scene end, if so bump to next scene, otherwise truncate the item to fit in this one
 							if (scene.end_time - 0.25 < event.start_time) {
-								// bump to next scene
-								event.start_time = scene.end_time;
+								if (y !== scenesLength - 1) {
+									// bump to next scene
+									event.start_time = scene.end_time;
+								} else {
+									//in last scene
+									event.end_time = scene.end_time;
+									event.scene_id = scene._id;
+									sceneItems.push(event);
+								}
 							} else {
 								// truncate and add to this one
 								event.end_time = scene.end_time;
@@ -612,10 +627,17 @@ angular.module('com.inthetelling.story')
 							}
 						}
 					}
-				});
+					// This optimization was dropping some events:
+					// if (event.start_time > scene.end_time) {
+					// 	itemsIndex = x; //set the current index to i, no need to loop through things we've already seen
+					// 	break; // no need to continue checking events after this point as no events will be added to this scene after this point
+					// }
+
+				}
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 				svc.events[scene._id].items = sceneItems.sort(function (a, b) {
+
 					if (a.start_time !== b.start_time || !b.layouts) {
 						return a.start_time - b.start_time;
 					} else {
@@ -626,16 +648,9 @@ angular.module('com.inthetelling.story')
 							return 0;
 						}
 					}
+
 				});
-			});
-
-			// Now it's safe to reattach the ending scene (with updated start and end times if necessary)
-			if (endingscreen && (duration > 0)) {
-				endingscreen.start_time = duration - 0.1;
-				endingscreen.end_time = duration;
-				episode.scenes.push(endingscreen);
 			}
-
 			// Now that we have the structure, calculate event styles (for scenes and items:)
 			episode.styleCss = cascadeStyles(episode);
 			angular.forEach(svc.events, function (event) {
@@ -837,49 +852,53 @@ angular.module('com.inthetelling.story')
 				"_internal": true,
 				"templateUrl": "templates/scene/landingscreen.html",
 				"cur_episode_id": episodeId,
+				"episode_id": episodeId,
 				"start_time": -0.01, // enforce its firstness; a start time of zero might sort after the first scene which also starts at zero
-				"end_time": 0.001
+				"end_time": 0.01
 			};
 		};
 
 		// Don't call this until the master asset exists and episode events have loaded!
 		svc.addEndingScreen = function (episodeId) {
 			// console.log("addEndingScreen", svc.episodes[episodeId].scenes);
-			if (svc.episodes[episodeId] && !svc.episodes[episodeId].masterAsset) {
-				console.warn("No master asset in episode...?");
+			var episode = svc.episodes[episodeId];
+
+			if (!episode || !episode.scenes) {
+				// console.warn("addEndingScreen called on an episode without scenes");
+				return;
+			}
+			if (!episode.masterAsset) {
+				// console.warn("No master asset in episode...");
+				return;
+			}
+			var lastScene = episode.scenes[episode.scenes.length - 1];
+			if (lastScene._id.match(/internal:landingscreen/)) {
+				console.error("Attempted to add an ending screen twice");
 				return;
 			}
 
-			var duration = parseFloat(svc.episodes[episodeId].masterAsset.duration); // HACK
+			var duration = parseFloat(episode.masterAsset.duration); // HACK
 
 			//coerce end of last scene (and its items) to match video duration:
-			var lastScene = svc.episodes[episodeId].scenes[svc.episodes[episodeId].scenes.length - 1];
+			lastScene.end_time = duration - 0.1;
+			angular.forEach(lastScene.items, function (item) {
+				if (item.end_time > duration - 0.1) {
+					item.end_time = duration - 0.1;
+				}
+			});
 
-			if (lastScene._id.match(/internal:landingscreen/)) {
-				console.error("Attempted to add an ending screen before episode events had loaded (or on an episode with no events");
-				return; // Don't do this if the real event data hasn't loaded yet...
-			} else {
-				lastScene.end_time = duration - 0.1;
-				angular.forEach(lastScene.items, function (item) {
-					if (item.end_time > duration - 0.1) {
-						item.end_time = duration - 0.1;
-					}
-				});
-
-				// create a new scene event for this episode
-				svc.events["internal:endingscreen:" + episodeId] = {
-					"_id": "internal:endingscreen:" + episodeId,
-					"_type": "Scene",
-					"_internal": true,
-					"templateUrl": "templates/scene/endingscreen.html",
-					"cur_episode_id": episodeId,
-					"start_time": duration - 0.1,
-					"end_time": duration
-
-				};
-				svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
-				svc.resolveEpisodeEvents(appState.episodeId);
-			}
+			// create a new scene event for this episode
+			svc.events["internal:endingscreen:" + episodeId] = {
+				"_id": "internal:endingscreen:" + episodeId,
+				"_type": "Scene",
+				"_internal": true,
+				"templateUrl": "templates/scene/endingscreen.html",
+				"cur_episode_id": episodeId,
+				"start_time": duration - 0.1,
+				"end_time": duration
+			};
+			svc.events["internal:endingscreen:" + episodeId] = setLang(svc.events["internal:endingscreen:" + episodeId]);
+			svc.resolveEpisodeEvents(episodeId);
 		};
 
 		var resolveVideo = function (videoAsset) {

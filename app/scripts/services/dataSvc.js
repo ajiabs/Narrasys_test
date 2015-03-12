@@ -765,12 +765,12 @@ angular.module('com.inthetelling.story')
 				"data",
 				"asset_id",
 				"link_image_id",
-				"annotation_image_id",
+				"annotation_image_id"
 			];
 
 			prepped.type = evt._type;
 			for (var i = 0; i < fields.length; i++) {
-				if (evt[fields[i]] || evt[fields[i]] === 0) {
+				if (evt[fields[i]] !== undefined) {
 					prepped[fields[i]] = angular.copy(evt[fields[i]]);
 				}
 			}
