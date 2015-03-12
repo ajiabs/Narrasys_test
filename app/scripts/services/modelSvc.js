@@ -373,14 +373,12 @@ angular.module('com.inthetelling.story')
 			if (!event.producerItemType) {
 				if (event.templateUrl.match(/file/)) {
 					event.producerItemType = 'file';
-				} else if (event.templateUrl.match(/image/)) {
-					event.producerItemType = 'image';
+				} else if (event.templateUrl.match(/question/)) {
+					event.producerItemType = 'question';
 				} else if (event.templateUrl.match(/link/)) {
 					event.producerItemType = 'link';
 				} else if (event.templateUrl.match(/video/)) {
 					event.producerItemType = 'link'; // HACK for now
-				} else if (event.templateUrl.match(/question/)) {
-					event.producerItemType = 'question';
 				} else if (event.templateUrl.match(/transcript/)) {
 					event.producerItemType = 'transcript';
 				} else if (event.templateUrl.match(/text/)) {
@@ -391,6 +389,8 @@ angular.module('com.inthetelling.story')
 					event.producerItemType = 'scene';
 				} else if (event.templateUrl.match(/comment/)) {
 					event.producerItemType = 'comment';
+				} else if (event.templateUrl.match(/image/)) { // Do this last, other types have some templtes with 'image' in their name.  I did say this was fragile...  this'll get cleaned up as part of the template refactor
+					event.producerItemType = 'image';
 				} else {
 					// console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
 				}
