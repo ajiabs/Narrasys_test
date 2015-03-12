@@ -753,7 +753,7 @@ angular.module('com.inthetelling.story')
 					return scenes[i];
 				}
 			}
-		}
+		};
 
 		svc.scene = function (sceneId) {
 			// console.log("modelsvc.scene: ", sceneId);
