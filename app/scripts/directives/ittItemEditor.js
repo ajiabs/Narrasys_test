@@ -15,7 +15,11 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/producer/item.html',
 			controller: 'EditController',
 			link: function (scope) {
-				// console.log("ittItemEditor", scope.item);
+				console.log("ittItemEditor", scope.item);
+
+				timelineSvc.pause();
+				timelineSvc.seek(scope.item.start_time);
+
 				scope.uploadStatus = [];
 				scope.uneditedItem = angular.copy(scope.item); // in case of cancel
 				scope.annotators = modelSvc.episodes[appState.episodeId].annotators;
@@ -277,13 +281,13 @@ angular.module('com.inthetelling.story')
 						var targetItem = angular.copy(scope.item);
 						delete modelSvc.events[scope.item._id].asset;
 						delete scope.item.asset;
-						if (scope.item.asset_id === assetId){
+						if (scope.item.asset_id === assetId) {
 							delete scope.item.asset_id;
 						}
-						if (scope.item.link_image_id === assetId){
-							delete scope.item.link_image_id ;
+						if (scope.item.link_image_id === assetId) {
+							delete scope.item.link_image_id;
 						}
-						if (scope.item.annotation_image_id=== assetId){
+						if (scope.item.annotation_image_id === assetId) {
 							delete scope.item.annotation_image_id;
 						}
 						dataSvc.detachEventAsset(targetItem, assetId)

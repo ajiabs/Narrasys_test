@@ -70,12 +70,27 @@ angular.module('com.inthetelling.story')
 
 				// TODO scope.scene needs to update during editing if the event being edited is moved from one scene to another!
 				scope.scene = (scope.item.type === 'Scene') ? scope.item : modelSvc.events[scope.item.scene_id];
+				if (scope.item._type === 'Scene') {
+					scope.scene = function () {
+						return scope.item;
+					};
+				} else {
+					scope.scene = function () {
+						return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, appState.time)
+					};
+				}
 
 				// Watch for user input, send it to item if different
 				scope.$watch(function () {
 					return scope.parse(scope.model);
 				}, function (t) {
 					scope.setTime(t);
+
+					// Stop questions should always have the same start + end
+					if (attrs.inputField === 'start_time' && scope.item.stop) {
+						scope.item.end_time = t;
+					}
+
 				});
 
 				scope.setTime = function (t) { // pass in parsed values only!

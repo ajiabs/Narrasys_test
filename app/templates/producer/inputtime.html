@@ -7,11 +7,11 @@
 				<a>Current time ({{format(appState.time)}})</a>
 			</li>
 			<span ng-if="item.type != 'Scene'">
-				<li ng-if="fieldname=='start_time'" ng-click="setTime(scene.start_time)">
-					<a>Beginning of scene ({{format(scene.start_time)}})</a>
+				<li ng-if="fieldname=='start_time'" ng-click="setTime(scene().start_time)">
+					<a>Beginning of scene ({{format(scene().start_time)}})</a>
 				</li>
-				<li ng-if="fieldname=='end_time'" ng-click="setTime(scene.end_time)">
-					<a>End of scene ({{format(scene.end_time)}})</a>
+				<li ng-if="fieldname=='end_time'" ng-click="setTime(scene().end_time)">
+					<a>End of scene ({{format(scene().end_time)}})</a>
 				</li>
 				<li ng-if="fieldname=='end_time' && isTranscript()" ng-click="TODO">
 					<a>Auto (TODO)</a>
