@@ -770,9 +770,7 @@ angular.module('com.inthetelling.story')
 
 			prepped.type = evt._type;
 			for (var i = 0; i < fields.length; i++) {
-				if (evt[fields[i]] || evt[fields[i]] === 0) {
-					prepped[fields[i]] = angular.copy(evt[fields[i]]);
-				}
+				prepped[fields[i]] = angular.copy(evt[fields[i]]);
 			}
 
 			// check that end_time is greater than start time
