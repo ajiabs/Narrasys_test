@@ -75,16 +75,9 @@ angular.module('com.inthetelling.story')
 					};
 				} else {
 					scope.scene = function () {
-						return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, appState.time)
+						return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, appState.time);
 					};
 				}
-
-				//WIP
-				// if (scope.item._type === 'Scene') {
-				// 	scope.scene = scope.item;
-				// } else {
-				// 	scope.scene = modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, scope.item.start_time);
-				// }
 
 				// Watch for user input, send it to item if different
 				scope.$watch(function () {
