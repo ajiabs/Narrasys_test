@@ -69,6 +69,15 @@ angular.module('com.inthetelling.story')
 				// console.log("initing inputTime: ", scope.realValue, scope.model);
 
 				scope.scene = (scope.item.type === 'Scene') ? scope.item : modelSvc.events[scope.item.scene_id];
+				if (scope.item._type === 'Scene') {
+					scope.scene = function () {
+						return scope.item;
+					};
+				} else {
+					scope.scene = function () {
+						return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, appState.time)
+					};
+				}
 
 				//WIP
 				// if (scope.item._type === 'Scene') {
@@ -82,6 +91,12 @@ angular.module('com.inthetelling.story')
 					return scope.parse(scope.model);
 				}, function (t) {
 					scope.setTime(t);
+
+					// Stop questions should always have the same start + end
+					if (attrs.inputField === 'start_time' && scope.item.stop) {
+						scope.item.end_time = t;
+					}
+
 				});
 
 				scope.setTime = function (t) { // pass in parsed values only!
