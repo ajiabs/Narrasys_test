@@ -6,7 +6,7 @@
 			<li ng-click="setTime(appState.time)">
 				<a>Current time ({{format(appState.time)}})</a>
 			</li>
-			<span ng-if="item.type != 'Scene'">
+			<span ng-if="item._type != 'Scene'">
 				<li ng-if="fieldname=='start_time'" ng-click="setTime(scene().start_time)">
 					<a>Beginning of scene ({{format(scene().start_time)}})</a>
 				</li>
