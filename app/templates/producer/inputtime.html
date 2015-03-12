@@ -1,5 +1,5 @@
 <span class="floaterContainer">
-	<input ng-model="model" ng-focus="showTools(true)" ng-blur="showTools(false)" ng-model-options="{ updateOn: 'blur' }" style="max-width: 150px">{{scene}}
+	<input ng-model="model" ng-focus="showTools(true)" ng-blur="showTools(false)" ng-model-options="{ updateOn: 'blur' }" style="max-width: 150px">
 	<div class="floater" ng-if="tooltip">
 		Set to:
 		<ul style="list-style:none; white-space:nowrap">
@@ -12,10 +12,6 @@
 				</li>
 				<li ng-if="fieldname=='end_time'" ng-click="setTime(scene.end_time)">
 					<a>End of scene ({{format(scene.end_time)}})</a>
-				</li>
-				<li ng-if="fieldname=='end_time'" ng-click="setTime(scene.end_time)">
-
-					<a>End of episode ({{format()}})</a>
 				</li>
 				<li ng-if="fieldname=='end_time' && isTranscript()" ng-click="TODO">
 					<a>Auto (TODO)</a>

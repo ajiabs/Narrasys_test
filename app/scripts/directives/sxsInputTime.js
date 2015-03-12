@@ -68,11 +68,14 @@ angular.module('com.inthetelling.story')
 				scope.appState = appState;
 				// console.log("initing inputTime: ", scope.realValue, scope.model);
 
-				if (scope.item._type === 'Scene') {
-					scope.scene = scope.item;
-				} else {
-					scope.scene = modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, scope.item.start_time);
-				}
+				scope.scene = (scope.item.type === 'Scene') ? scope.item : modelSvc.events[scope.item.scene_id];
+
+				//WIP
+				// if (scope.item._type === 'Scene') {
+				// 	scope.scene = scope.item;
+				// } else {
+				// 	scope.scene = modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, scope.item.start_time);
+				// }
 
 				// Watch for user input, send it to item if different
 				scope.$watch(function () {
