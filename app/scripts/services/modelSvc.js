@@ -744,16 +744,16 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 
-		// returns whichever scene is current for the given time.
-		svc.sceneAtEpisodeTime = function (epId, t) {
-			t = t || appState.time;
-			var scenes = svc.episodes[epId].scenes;
-			for (var i = 0; i < scenes.length; i++) {
-				if (scene.start_time <= t && scene.end_time > t) {
-					return scene;
-				}
-			}
-		}
+		// returns whichever scene is current for the given time.   WIP
+		// svc.sceneAtEpisodeTime = function (epId, t) {
+		// 	t = t || appState.time;
+		// 	var scenes = svc.episodes[epId].scenes;
+		// 	for (var i = 0; i < scenes.length; i++) {
+		// 		if (scene.start_time <= t && scene.end_time > t) {
+		// 			return scene;
+		// 		}
+		// 	}
+		// }
 
 		svc.scene = function (sceneId) {
 			// console.log("modelsvc.scene: ", sceneId);
