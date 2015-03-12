@@ -7,6 +7,67 @@ describe('Service: modelSvc', function () {
 
 	// instantiate service
 	var modelSvc;
+
+	// For easier debugging of episode event data
+	var dumpEpisode = function (epId) {
+		console.log("EPISODE------ episode ", epId);
+		var episode = modelSvc.episodes[epId];
+		angular.forEach(modelSvc.episodes[epId].scenes, function (scene) {
+			console.log("Scene: ", scene._id, scene.start_time, scene.end_time);
+			angular.forEach(scene.items, function (event) {
+				console.log("  Evt: ", event._id, event.start_time, event.end_time);
+			});
+		});
+	};
+
+	var setupSceneContentsTest = function (data) {
+		var episodeId = data[0].episode_id;
+		// make a stub for the episode:
+		modelSvc.cache("episode", {
+			"_id": episodeId,
+			"master_asset_id": "masterasset",
+			"title": "Test Episode",
+			"status": "Published",
+			"templateUrl": "templates/episode/purdue.html",
+			"styles": []
+		});
+
+		for (var i = 0; i < data.length; i++) {
+			data[i].templateUrl = data[i].templateUrl || '';
+			data[i].cur_episode_id = data[i].episode_id;
+			modelSvc.cache("event", data[i]);
+		}
+		modelSvc.resolveEpisodeEvents(episodeId);
+		return episodeId;
+	};
+
+	// used in the real eposide event data tests:
+	var tallySceneContents = function (epId) {
+		var eventsThatExist = {};
+		var eventsInEpisode = {};
+		var episode = modelSvc.episodes[epId];
+
+		// loop through modelSvc.events, find all events with this ID
+		angular.forEach(modelSvc.events, function (evt) {
+			if (evt.cur_episode_id === epId) {
+				eventsThatExist[evt._id] = evt;
+			}
+		});
+
+		// loop through episode, count all scenes and their child events
+		for (var i = 0; i < episode.scenes.length; i++) {
+			var scene = episode.scenes[i];
+			eventsInEpisode[scene._id] = scene;
+			for (var j = 0; j < scene.items.length; j++) {
+				var evt = scene.items[j];
+				eventsInEpisode[evt._id] = evt;
+			}
+		}
+
+		return Object.keys(eventsInEpisode).length;
+
+	}
+
 	beforeEach(inject(function (_modelSvc_) {
 		modelSvc = _modelSvc_;
 
@@ -36,6 +97,7 @@ describe('Service: modelSvc', function () {
 				"cur_episode_id": "EP1"
 			});
 		}
+
 	}));
 
 	it('modelSvc should exist', function () {
@@ -168,6 +230,7 @@ describe('Service: modelSvc', function () {
 		expect(modelSvc.events.annotation1.start_time).toEqual(10);
 		expect(modelSvc.events.annotation1.end_time).toEqual(11);
 	});
+
 	it('truncated items should not end up in both scenes', function () {
 		modelSvc.cache("event", {
 			"_id": "annotation1",
@@ -250,7 +313,6 @@ describe('Service: modelSvc', function () {
 		// Those translations should be merged into a single key
 		expect(Object.keys(modelSvc.episodes.EP1.annotators)).toEqual(["Mister Smith"]);
 		expect(modelSvc.episodes.EP1.annotators["Mister Smith"].key).toEqual("Mister Smith / AA / BB");
-
 	});
 
 	it('Episode annotators should not try to combine "undefined" keys', function () {
@@ -290,7 +352,6 @@ describe('Service: modelSvc', function () {
 
 		modelSvc.resolveEpisodeEvents("EP1");
 		expect(Object.keys(modelSvc.episodes.EP1.annotators)).toEqual(["AA", "BB", "CC"]);
-
 	});
 
 	it('Episode annotators should replace old keys as translations are added', function () {
@@ -332,7 +393,45 @@ describe('Service: modelSvc', function () {
 		});
 	});
 
-	/* resolveVideo tests: */
+	it('Multiple items whose start time match a scene start should all end up in that scene', function () {
+		modelSvc.cache("event", {
+			"_id": "annotation1",
+			"_type": "Annotation",
+			"start_time": 10,
+			"end_time": 15,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
+		});
+		modelSvc.cache("event", {
+			"_id": "annotation2",
+			"_type": "Annotation",
+			"start_time": 10,
+			"end_time": 12,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
+		});
+		modelSvc.cache("event", {
+			"_id": "annotation3",
+			"_type": "Annotation",
+			"start_time": 10,
+			"end_time": 13,
+			"templateUrl": "templates/item/default.html",
+			"episode_id": "EP1",
+			"cur_episode_id": "EP1",
+		});
+		modelSvc.resolveEpisodeEvents("EP1");
+		expect(modelSvc.events.annotation1.start_time).toEqual(10);
+		expect(modelSvc.events.annotation1.end_time).toEqual(15);
+
+		expect(modelSvc.episodes.EP1.scenes[0].items.length).toEqual(0); // landing
+		expect(modelSvc.episodes.EP1.scenes[1].items.length).toEqual(0); // 0-10
+		expect(modelSvc.episodes.EP1.scenes[2].items.length).toEqual(3); // 10-20
+		expect(modelSvc.episodes.EP1.scenes[3].items.length).toEqual(0); // 20-30
+	});
+
+	/* BEGIN resolveVideo tests: */
 	/* NOTE some of these will fail in Chrome (we add fake params to the url in chrome to allow playback in multiple windows) */
 	it('resolveVideoAsset should cope with missing alternate_urls', function () {
 		modelSvc.cache("asset", {
@@ -347,6 +446,7 @@ describe('Service: modelSvc', function () {
 			"youtube": []
 		});
 	});
+
 	it('resolveVideoAsset should drop the original url if there is an alternate_urls array', function () {
 		modelSvc.cache("asset", {
 			_id: "vid1",
@@ -479,5 +579,42 @@ describe('Service: modelSvc', function () {
 			youtube: []
 		});
 	});
+
+	/* BEGIN real event data tests */
+	// TODO check real event data and ensure it's not dropping any scenes on the floor
+	describe("Testing real episode event data", function () {
+
+		it('resolveEpisodeEvents should assign all events to scenes (1)', function () {
+			var data = mockEpisodeEvents1;
+			var episodeId = setupSceneContentsTest(data);
+			expect(tallySceneContents(episodeId)).toEqual(data.length);
+		});
+		it('resolveEpisodeEvents should assign all events to scenes (2)', function () {
+			var data = mockEpisodeEvents2;
+			var episodeId = setupSceneContentsTest(data);
+			expect(tallySceneContents(episodeId)).toEqual(data.length);
+		});
+		it('resolveEpisodeEvents should assign all events to scenes (3)', function () {
+			var data = mockEpisodeEvents3;
+			var episodeId = setupSceneContentsTest(data);
+			expect(tallySceneContents(episodeId)).toEqual(data.length);
+		});
+		it('resolveEpisodeEvents should assign all events to scenes (4)', function () {
+			var data = mockEpisodeEvents4;
+			var episodeId = setupSceneContentsTest(data);
+			expect(tallySceneContents(episodeId)).toEqual(data.length);
+		});
+		it('resolveEpisodeEvents should assign all events to scenes (5)', function () {
+			var data = mockEpisodeEvents5;
+			var episodeId = setupSceneContentsTest(data);
+			expect(tallySceneContents(episodeId)).toEqual(data.length);
+		});
+		it('resolveEpisodeEvents should assign all events to scenes (6)', function () {
+			var data = mockEpisodeEvents5;
+			var episodeId = setupSceneContentsTest(data);
+			expect(tallySceneContents(episodeId)).toEqual(data.length);
+		});
+	});
+	/* END real event data tests */
 
 });
