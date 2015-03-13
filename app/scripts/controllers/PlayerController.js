@@ -6,6 +6,16 @@ angular.module('com.inthetelling.story')
 	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc) {
 		// console.log("playerController", $scope);
 
+		// $scope.tmp = function () {
+		// 	dataSvc.createTemplate({
+		// 		url: 'templates/item/question-mc.html',
+		// 		name: 'Question',
+		// 		event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
+		// 		applies_to_episode: false,
+		// 		applies_to_narrative: false
+		// 	});
+		// };
+
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
 			analyticsSvc.captureEpisodeActivity("modeChange", {
@@ -231,6 +241,17 @@ angular.module('com.inthetelling.story')
 
 		$scope.play = function () {
 			timelineSvc.play();
+		};
+
+		$scope.continue = function () {
+			console.log("continue", modelSvc.episodes[appState.episodeId].masterAsset.duration, appState.time);
+			// If we're close to the end, jsut move to the ending screen and stop.
+			if (modelSvc.episodes[appState.episodeId].masterAsset.duration - appState.time < 0.2) {
+				timelineSvc.pause();
+				timelineSvc.seek(modelSvc.episodes[appState.episodeId].masterAsset.duration - 0.01);
+			} else {
+				timelineSvc.play();
+			}
 		};
 
 		$scope.userHasRole = function (role) {

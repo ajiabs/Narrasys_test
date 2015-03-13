@@ -114,7 +114,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.pause = function (nocapture) {
-			console.log("timelineSvc.pause");
+			// console.log("timelineSvc.pause");
 			appState.videoControlsActive = true;
 			$interval.cancel(clock);
 			stopEventClock();

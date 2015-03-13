@@ -1,12 +1,12 @@
 <span class="floaterContainer">
-	<input ng-model="model" ng-focus="showTools(true)" ng-blur="showTools(false)" ng-model-options="{ updateOn: 'blur' }" style="max-width: 150px">
+	<input ng-model="model" ng-focus="showTools(true)" ng-blur="showTools(false)" ng-model-options="{ updateOn: 'blur' }" style="max-width: 150px" ng-class="{invalid: (fieldname == 'end_time' && item.invalid_end_time)}">
 	<div class="floater" ng-if="tooltip">
 		Set to:
 		<ul style="list-style:none; white-space:nowrap">
 			<li ng-click="setTime(appState.time)">
 				<a>Current time ({{format(appState.time)}})</a>
 			</li>
-			<span ng-if="item.type != 'Scene'">
+			<span ng-if="item._type != 'Scene' && scene().start_time > 0">
 				<li ng-if="fieldname=='start_time'" ng-click="setTime(scene().start_time)">
 					<a>Beginning of scene ({{format(scene().start_time)}})</a>
 				</li>
@@ -18,6 +18,5 @@
 				</li>
 			</span>
 		</ul>
-
 	</div>
 </span>

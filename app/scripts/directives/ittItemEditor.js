@@ -15,7 +15,7 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/producer/item.html',
 			controller: 'EditController',
 			link: function (scope) {
-				console.log("ittItemEditor", scope.item);
+				// console.log("ittItemEditor", scope.item);
 
 				timelineSvc.pause();
 				timelineSvc.seek(scope.item.start_time);
