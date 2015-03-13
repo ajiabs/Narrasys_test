@@ -1,0 +1,25 @@
+<a class="edit-event" ng-click="editItem()">
+	<span>Edit item</span>
+</a>
+<div class="itemTemplate">
+	<div class="itemHead">
+		<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
+		<div class="category">
+			<span ng-if="item.required">(Required viewing)</span>
+		</div>
+	</div>
+	<div class="text">
+		<div class="title">
+			<a tabindex="0" ng-click="seek(item.start_time)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+		</div>
+		<div class="text" ng-if="item.data._plugin._type == 'question'">
+			You have
+			<span ng-if="!item.data._plugin.hasBeenAnswered"> not yet </span>
+			answered this
+			<span ng-if="item.data._plugin.questiontype == 'mc-poll'"> poll </span>
+			question.
+		</div>
+		<div class="text" ng-bind-html="item.display_description"></div>
+		<div class="clear"></div>
+	</div>
+</div>
