@@ -38,12 +38,10 @@ angular.module('com.inthetelling.story')
 							$location.search('narrative', null);
 							$location.search('nonce', null);
 							$location.path('/story/' + narrId);
-						} else {
-							// Don't redirect by default, as it breaks LTI login.  
-							// TODO investigate why that started breaking LTI login (it hits /auth with no episode param at least once...)
-							if (scope.userHasRole('admin') && Object.keys($routeParams).length === 0) {
-								$location.path('/');
-							}
+
+						} else if (Object.keys($routeParams).length === 0) {
+							$location.path('/user');
+
 						}
 					},
 					function () {
