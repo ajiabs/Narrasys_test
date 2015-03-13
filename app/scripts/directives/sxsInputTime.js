@@ -76,7 +76,7 @@ angular.module('com.inthetelling.story')
 					};
 				} else {
 					scope.scene = function () {
-						return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, appState.time)
+						return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, appState.time);
 					};
 				}
 
