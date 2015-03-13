@@ -444,4 +444,7 @@ input[readonly] {
 	right: 0;
 	top: 24px;
 }
+.invalid {
+	background-color: #FEE !important;
+}
 

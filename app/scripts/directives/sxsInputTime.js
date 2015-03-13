@@ -80,23 +80,37 @@ angular.module('com.inthetelling.story')
 					};
 				}
 
+				// TODO this will break in multi-episode timelines
+				var episodeDuration = modelSvc.episodes[scope.item.cur_episode_id].masterAsset.duration;
+
 				// Watch for user input, send it to item if different
 				scope.$watch(function () {
 					return scope.parse(scope.model);
 				}, function (t) {
 					scope.setTime(t);
-
-					// Stop questions should always have the same start + end
-					if (attrs.inputField === 'start_time' && scope.item.stop) {
-						scope.item.end_time = t;
-					}
-
 				});
 
+				var episodeDuration = modelSvc.episodes[scope.item.cur_episode_id].masterAsset.duration;
+
 				scope.setTime = function (t) { // pass in parsed values only!
+					console.log("setTime", t);
+
+					// Validation:
+					if (t < 0) {
+						t = 0;
+					}
+					if (t > episodeDuration) {
+						t = episodeDuration;
+					}
+					if (scope.item.stop) {
+						scope.item.end_time = t;
+					}
 					scope.realValue = t;
 					scope.item[attrs.inputField] = scope.realValue;
 					scope.model = scope.format(t);
+
+					scope.item.invalid_end_time = (scope.item.start_time > scope.item.end_time);
+
 				};
 
 				scope.showTools = function (x) {
