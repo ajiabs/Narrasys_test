@@ -90,8 +90,6 @@ angular.module('com.inthetelling.story')
 					scope.setTime(t);
 				});
 
-				var episodeDuration = modelSvc.episodes[scope.item.cur_episode_id].masterAsset.duration;
-
 				scope.setTime = function (t) { // pass in parsed values only!
 					console.log("setTime", t);
 

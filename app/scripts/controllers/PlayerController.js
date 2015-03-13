@@ -248,7 +248,7 @@ angular.module('com.inthetelling.story')
 			// If we're close to the end, jsut move to the ending screen and stop.
 			if (modelSvc.episodes[appState.episodeId].masterAsset.duration - appState.time < 0.2) {
 				timelineSvc.pause();
-				timelineSvc.seek(modelSvc.episodes[appState.episodeId].masterAsset.duration - .01);
+				timelineSvc.seek(modelSvc.episodes[appState.episodeId].masterAsset.duration - 0.01);
 			} else {
 				timelineSvc.play();
 			}
