@@ -29,11 +29,11 @@ showCurrent is forced in Main.
 		</div>
 	</div>
 	<div class="row">
-		<div class="pane altPane stretchToViewport">
+		<div class="pane altPane ">
 			<div class="fill bgLayer">
 				<div class="item animate" ng-repeat="item in altBgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
-			<div class="content contentLayer" ng-class="{
+			<div class="content contentLayer stretchToViewport" ng-class="{
 				singleitem: showCurrent
 					? (altContentItems | isCurrent).length == 1
 					: (altContentItems).length == 1, 

@@ -5,11 +5,11 @@
 		</div>
 	</div>
 	<div class="col col1">
-		<div class="pane altPane stretchToViewport">
+		<div class="pane altPane">
 			<div class="fill bgLayer">
 				<div class="item animate" ng-repeat="item in (altBgItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
-			<div class="content contentLayer" ng-class="{
+			<div class="content contentLayer stretchToViewport" ng-class="{
 				singleitem: showCurrent
 					? (altContentItems | isCurrent).length == 1
 					: (altContentItems).length == 1, 
@@ -31,11 +31,11 @@
 		</div>
 	</div>
 	<div class="col col2">
-		<div class="pane mainPane stretchToViewport">
+		<div class="pane mainPane">
 			<div class="fill bgLayer">
 				<div class="item animate" ng-repeat="item in (mainBgItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
-			<div class="content contentLayer" ng-class="{
+			<div class="content contentLayer stretchToViewport" ng-class="{
 				singleitem: showCurrent
 					? (mainContentItems | isCurrent).length == 1
 					: (mainContentItems).length == 1, 

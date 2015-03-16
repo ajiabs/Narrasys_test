@@ -271,6 +271,19 @@
 	border: 2px solid #c0ab80;
 	margin: 0.5em;
 }
+.episode-gwsb .mainPane .fill .item,
+.episode-gwsb .altPane .fill .item {
+	margin: 0 0.5em;
+}
+.episode-gwsb .cornerH .altPane .fill .item {
+	margin: 0.5em;
+}
+.episode-gwsb .centered .content,
+.episode-gwsb .cornerH .mainPane .content,
+.episode-gwsb .pip .content {
+	border: none;
+	margin: 0;
+}
 .episode-gwsb .content.isEmpty,
 .episode-gwsb .reviewMode .content {
 	border: none;
@@ -333,5 +346,16 @@
 }
 .episode-gwsb .startTime {
 	font-weight: lighter
+}
+.episode-gwsb .sceneTitle {
+	margin: 0;
+	border-bottom: 2px solid #c0ab80;
+}
+.episode-gwsb .content.allowHighlights .highlightBorder.item.isCurrent {
+	border: 2px solid #c0ab80;
+	margin: 0.5em;
+}
+.episode-gwsb .content.allowHighlights .highlightSide.item.isCurrent {
+	border-left: 10px solid #c0ab80;
 }
 

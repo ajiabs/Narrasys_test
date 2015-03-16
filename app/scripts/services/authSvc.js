@@ -30,10 +30,14 @@ angular.module('com.inthetelling.story')
 				url: config.apiDataBaseUrl + "/logout"
 			}).success(function () {
 				delete $http.defaults.headers.common.Authorization; // now it's safe
-				$location.path('/');
+				$location.path('/').search({
+					logout: 1
+				});
 			}).error(function () {
 				delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
-				$location.path('/');
+				$location.path('/').search({
+					logout: 1
+				});
 			});
 		};
 
