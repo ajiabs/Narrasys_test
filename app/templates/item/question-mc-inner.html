@@ -13,13 +13,8 @@
 				</label>
 			</div>
 		</div>
-		<div ng-if="plugin.hasBeenAnswered">
-			<div ng-if="plugin.distractors[plugin.selectedDistractor].correct" ng-bind-html="plugin.correctfeedback"></div>
-			<div ng-if="!plugin.distractors[plugin.selectedDistractor].correct" ng-bind-html="plugin.incorrectfeedback"></div>
-
-		</div>
+		<div ng-if="plugin.hasBeenAnswered" ng-bind-html="feedback()"></div>
 	</div>
-
 
 	<div ng-if="showChart">
 		<div ng-if="!plugin.hasBeenAnswered" ng-repeat="distractor in plugin.distractors">

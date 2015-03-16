@@ -27,11 +27,16 @@ angular.module('com.inthetelling.story')
 						'correct': !!(scope.plugin.distractors[i].correct)
 					});
 				};
-				var getQuestionType = function (item) {
-					return item.questiontype;
+
+				scope.feedback = function () {
+					for (var i = 0; i < scope.plugin.distractors.length; i++) {
+						if (scope.plugin.distractors[i].index === scope.plugin.selectedDistractor) {
+							return (scope.plugin.distractors[i].correct) ? scope.plugin.correctfeedback : scope.plugin.incorrectfeedback;
+						}
+					}
 				};
 
-				scope.questionType = getQuestionType(scope.plugin);
+				scope.questionType = scope.plugin.questiontype;
 				scope.chartOptions = {
 					series: {
 						pie: {
