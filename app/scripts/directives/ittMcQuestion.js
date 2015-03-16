@@ -30,7 +30,7 @@ angular.module('com.inthetelling.story')
 
 				scope.feedback = function () {
 					for (var i = 0; i < scope.plugin.distractors.length; i++) {
-						if (scope.plugin.distractors[i].index == scope.plugin.selectedDistractor) {
+						if (scope.plugin.distractors[i].index === scope.plugin.selectedDistractor) {
 							return (scope.plugin.distractors[i].correct) ? scope.plugin.correctfeedback : scope.plugin.incorrectfeedback;
 						}
 					}
