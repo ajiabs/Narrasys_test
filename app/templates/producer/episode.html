@@ -105,7 +105,8 @@
 					<div class="label">Master asset type</div>
 					<div clas="input">
 						<select size="1" ng-model="masterAssetType" ng-init="masterAssetType='Video'">
-							<option value="Video">Video</option>
+							<option value="Video">Native Video</option>
+							<option value="Youtube">Youtube</option>
 							<option value="Audio">Audio (TODO)</option>
 							<option value="Images">Image sequence (TODO)</option>
 							<option value="None">No master asset (TODO)</option>
@@ -113,31 +114,14 @@
 					</div>
 				</div>
 				<div class="field" ng-if="masterAssetType == 'Video'">
-
-					<div style="width:20%; display:inline-block"></div>
-					<div style="width:48%; display:inline-block">
-						<div class="ittTabs" itt-tabs>
-							<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="YouTube">
-
-								<div class="field">
-									<div class="input" style="float:left;">
-										<input type="text" ng-model="masterAsset.you_tube_url"> </br>
-										<input ng-click="attachYouTube(masterAsset.you_tube_url)" type="button" value="Attach YouTube" style="width: 48%; margin-top:1%;">
-									</div>
-								</div>
-
-							</div>
-							<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Upload">
-								<div class="field">
-									<div class="input" style="float:left;">
-										<div style="width:40%; display:inline-block">
-											<div style="float:left;" class="input" ng-include="'templates/producer/upload-single-episode.html'">
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+					<div class="label">Video</div>
+					<div class="input" ng-include="'templates/producer/upload-single.html'"></div>
+				</div>
+				<div class="field" ng-if="masterAssetType == 'Youtube'">
+					<div class="label">Youtube URL</div>
+					<div class="input">
+						<input type="text" ng-model="masterAsset.you_tube_url" style="width: 78%">
+						<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>
 					</div>
 				</div>
 
