@@ -23,7 +23,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.uploadFiles = function () {
 			$scope.upload_status = [];
-			$scope.uploads = awsSvc.uploadFiles(document.getElementById('file').files);
+			$scope.uploads = awsSvc.uploadFiles(modelSvc.episodes[appState.episodeId].container_id, document.getElementById('file').files);
 			for (var i in $scope.uploads) {
 				//Pass i in a closure so it is unique for each promise
 				(function (i) {

@@ -33,7 +33,6 @@ input[readonly] {
 	height: 50px;
 	width: 50px;
 	display: block;
-	background: #000;
 }
 
 .containerAssets table {

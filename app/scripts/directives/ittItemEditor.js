@@ -236,7 +236,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.uploadAsset = function (files) {
-					scope.uploads = awsSvc.uploadFiles(files);
+					scope.uploads = awsSvc.uploadFiles(scope.episodeContainerId, files);
 
 					scope.uploads[0].then(function (data) {
 						modelSvc.cache("asset", data.file);

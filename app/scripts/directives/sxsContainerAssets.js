@@ -4,7 +4,7 @@ angular.module('com.inthetelling.story')
 	.controller("ContainerAssetsTestController", function ($scope, $routeParams) {
 		$scope.containerId = $routeParams.containerId;
 	})
-	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc) {
+	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -17,6 +17,7 @@ angular.module('com.inthetelling.story')
 				// Use the compile function from the recursionHelper,
 				// And return the linking function(s) which it returns
 				return recursionHelper.compile(element, function (scope) {
+					scope.appState = appState;
 					if (!modelSvc.containers[scope.containerId]) {
 						dataSvc.getContainer(scope.containerId);
 					} else {
@@ -28,7 +29,14 @@ angular.module('com.inthetelling.story')
 						}
 					}
 
-					scope.container = modelSvc.containers[scope.containerId];
+					if (modelSvc.containers[scope.containerId]) {
+						scope.container = modelSvc.containers[scope.containerId];
+					} else {
+						dataSvc.getContainer(scope.containerId).then(function (id) {
+							scope.container = modelSvc.containers[scope.containerId];
+						});
+					}
+
 					scope.assets = modelSvc.assets; // this is going to be a horrible performance hit isn't it.  TODO: build asset array inside each container in modelSvc
 					scope.up = function () {
 						scope.showParent = true;
@@ -46,6 +54,16 @@ angular.module('com.inthetelling.story')
 						$rootScope.$emit("UserSelectedAsset", assetId);
 					};
 
+					scope.uploadAsset = function (fileInput) {
+						var files = fileInput.files;
+						scope.uploads = awsSvc.uploadFiles(scope.containerId, files);
+						scope.uploads[0].then(function (data) {
+							modelSvc.cache("asset", data.file);
+							fileInput.value = '';
+							delete scope.uploads;
+						});
+
+					};
 				});
 			}
 		};

@@ -199,7 +199,7 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
 				scope.uploadAsset = function (files) {
-					scope.uploads = awsSvc.uploadFiles(files);
+					scope.uploads = awsSvc.uploadFiles(scope.episodeContainerId, files);
 
 					scope.uploads[0].then(function (data) {
 						modelSvc.cache("asset", data.file);
@@ -221,6 +221,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				var createAsset = function (containerId, episodeId, asset) {
+					// used when creating assets from a (youtube) url; for uploads awsSvc handles this for us
 					dataSvc.createAsset(scope.episodeContainerId, asset)
 						.then(function (data) {
 							data.you_tube_url = asset.url;
@@ -261,8 +262,12 @@ angular.module('com.inthetelling.story')
 								var asset = {}; //createDefaultAsset()
 								asset.you_tube_url = asset.url = url;
 								asset.duration = data.duration;
-								asset.name = {en: data.title};
-								asset.description = {en: data.description};
+								asset.name = {
+									en: data.title
+								};
+								asset.description = {
+									en: data.description
+								};
 								asset.content_type = "video/x-youtube";
 								createAsset(scope.episodeContainerId, scope.episode._id, asset);
 							}, function (error) {
