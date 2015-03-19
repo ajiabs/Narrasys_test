@@ -122,8 +122,9 @@ input[readonly] {
 }
 
 .authoringFormScrollContainer {
-	height: 200px;
+	height: 210px;
 	overflow-y: scroll;
+	overflow-x: hidden;
 	padding-right: 24px;
 }
 
@@ -255,7 +256,6 @@ input[readonly] {
 	min-width: 60px;
 	padding: 0 0.6em;
 	position: fixed;
-	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .isProducer .editButtonPanel {
@@ -526,6 +526,7 @@ input[readonly] {
 	width: 100%;
 	text-align: right;
 	padding-right: 24px;
+	font-size: 0.86em;
 }
 
 .ittTabFoot button {

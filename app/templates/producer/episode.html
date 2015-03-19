@@ -8,19 +8,19 @@
 			<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="Episode">
 				<!-- begin episode content tab -->
 				<div class="authoringFormScrollContainer">
-					<div class="field">
-						<div class="label">Public URL</div>
-						<div class="input">
-							<!-- not editable; only an input to make text selection easier -->
-							<input ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{episode._id}}" readonly>
-						</div>
-					</div>
 
 					<div class="field">
 						<div class="input">
 							<select ng-if="episode.languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
 							</select>
 							</span>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">Public URL</div>
+						<div class="input">
+							<!-- not editable; only an input to make text selection easier -->
+							<input ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{episode._id}}" readonly>
 						</div>
 					</div>
 
@@ -103,7 +103,7 @@
 				<div class="authoringFormScrollContainer">
 					<div class="field">
 						<div class="label">Master asset type</div>
-						<div clas="input">
+						<div class="input">
 							<select size="1" ng-model="masterAssetType" ng-init="masterAssetType='Video'">
 								<option value="Video">Native Video</option>
 								<option value="Youtube">Youtube</option>
@@ -124,7 +124,6 @@
 							<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>
 						</div>
 					</div>
-
 					<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
 						<div class="label">Duration</div>
 						<input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">
@@ -226,15 +225,10 @@
 			</div>
 			<!-- end of tabset -->
 		</div>
-
-
 	</div>
-	<div style="clear:both; width: 100%; text-align:right; padding-right: 24px">
-		<small>
-			<a ng-click="cancelEdit()">Cancel</a>
-		</small>
-		&nbsp; &nbsp;
-		<input type="button" value="Save" ng-click="saveEpisode()">
+	<div class="ittTabFoot">
+		<a ng-click="cancelEdit()">Cancel</a> &nbsp; &nbsp;
+		<button ng-click="saveEpisode()">Save</button>
 	</div>
 
 </div>
