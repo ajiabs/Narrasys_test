@@ -1,23 +1,26 @@
-<div itt-episode-list class="admin">
-	<!-- TODO dress this up with standaloneAncillaryPage? -->
-	<div cass="ancillaryNav">
-		<a ng-if="userHasRole('admin')" href="/#/">[Home]</a>
-		<a ng-if="user._id" ng-click="logout()">[Log out] </a>
-		<a ng-if="narrative.support_url" ng-href="{{narrative.support_url}}">[Support]</a>
+<div class="standaloneAncillaryPage">
+	<div itt-episode-list>
+
+		<!-- TODO proper i18n -->
+		<div ng-if="userHasRole('admin')">
+			<div class="ancillaryNav">
+				<a class="button" href="/#/">Home</a>
+				<a class="button" ng-click="logout()">Log out</a>
+			</div>
+			<div ng-if="loading" ng-include="'templates/loading.html'"></div>
+			<div class="controls">
+				<label>
+					<input type="checkbox" ng-model="appState.dangerousButtons">&nbsp;Enable danger</label>
+				<div ng-if="appState.dangerousButtons" STYLE="background-color:#F00; color:#FFF; padding: 1em">THERE IS NO UNDO. YOU HAVE BEEN WARNED.</div>
+			</div>
+			<div ng-repeat="child in root.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="0"></div>
+			<div class="container">
+				<div class="controls">
+					<button disabled>TODO add customer</button>
+				</div>
+			</div>
+			<div ng-if="!userHasRole('admin') || (!loading && (failedLogin || root.children.length == 0))">
+				Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.
+			</div>
+		</div>
 	</div>
-
-	<!-- TODO proper i18n -->
-	<div ng-if="userHasRole('admin')">
-
-		<div ng-if="loading" ng-include="'templates/loading.html'"></div>
-
-		<!-- 	<div ng-if="!loading" class="controls">
-		<label>
-			<input type="checkbox" ng-model="appState.dangerousButtons">&nbsp;Enable danger</label>
-		<div ng-if="appState.dangerousButtons" STYLE="COLOR:#C00">THERE IS NO UNDO. YOU HAVE BEEN WARNED.</div>
-	</div>
- -->
-
-		<div ng-repeat="child in root.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="0"></div>
-	</div>
-	<div ng-if="!userHasRole('admin') || (!loading && (failedLogin || root.children.length == 0))">Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.</div>

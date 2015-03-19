@@ -30,6 +30,17 @@
 	border-radius: 1em;
 }
 
+@media screen and (max-width: 500px) {
+	.standaloneAncillaryPage {
+		padding: 0;
+		background: none;
+	}
+	.standaloneAncillaryPage > div {
+		border: none;
+		padding: 1em 0.5em;
+	}
+}
+
 .standaloneAncillaryPage a {
 	color: #C44343;
 }
@@ -43,11 +54,17 @@
 .standaloneAncillaryPage input[type="submit"] {
 	background-color: #C44343;
 	color: #FFF;
-	border-radius: 8px;
-	font-size: 86%;
-	padding: 0.4em;
+	border-radius: 0.6em;
+	font-size: 0.8em;
+	padding: 0.1em 0.8em;
+	margin: 0.2em;
 	border: 0;
 	cursor: pointer;
+}
+
+.standaloneAncillaryPage button:disabled {
+	background-color: #BBB;
+	cursor: default;
 }
 
 .standaloneAncillaryPage .button {
@@ -79,7 +96,6 @@
 }
 
 .standaloneAncillaryPage .ancillaryNav {
-	margin-top: -1em;
 	text-align: right;
 }
 
