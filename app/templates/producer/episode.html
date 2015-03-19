@@ -4,18 +4,14 @@
 
 
 		<div class="ittTabs" itt-tabs>
+			<select ng-if="episode.languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; padding-right: 24px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
+			</select>
+
 			<!-- begin tabset -->
 			<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="Episode">
 				<!-- begin episode content tab -->
 				<div class="authoringFormScrollContainer">
 
-					<div class="field">
-						<div class="input">
-							<select ng-if="episode.languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; width: 100px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
-							</select>
-							</span>
-						</div>
-					</div>
 					<div class="field">
 						<div class="label">Public URL</div>
 						<div class="input">
