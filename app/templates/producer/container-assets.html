@@ -51,13 +51,14 @@
 	<div ng-if="appState.product != 'sxs'">
 		<span ng-if="uploads">
 			<div ng-repeat="upload in uploads">
-				<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}">
+				<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}"></progress>
 			</div>
 		</span>
-		<span ng-if="!uploads">
-			Upload:
-			<input type="file" onchange="angular.element(this).scope().uploadAsset(this)">
-		</span>
+		<div ng-if="!uploads" class="field">
+			<div class="label">Upload</div>
+			<div class="input">
+				<input type="file" onchange="angular.element(this).scope().uploadAsset(this)">
+			</div>
+		</div>
 	</div>
-
 </div>

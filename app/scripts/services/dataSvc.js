@@ -42,10 +42,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getCustomerList = function () {
-			if (!authSvc.userHasRole('admin')) {
-				return false;
-			}
-			// console.log("getCustomerList");
 			return GET("/v3/customers/", function (customers) {
 				angular.forEach(customers, function (customer) {
 					modelSvc.cache("customer", customer);
@@ -602,7 +598,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.createContainer = function (container) {
-			var createContainerDefer = $q.defer();
+			var defer = $q.defer();
 
 			// TODO sanitize
 			var newContainer = {
@@ -620,20 +616,30 @@ angular.module('com.inthetelling.story')
 					// console.log("CREATED CONTAINER", data);
 					modelSvc.cache("container", data);
 
-					var parentId;
-					if (data.parent_id) {
-						parentId = data.parent_id;
-					} else {
-						parentId = data.ancestry.replace(/.*\//, '');
-					}
+					var parentId = data.parent_id;
 
 					// add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
+					console.log(modelSvc.containers[parentId]);
 					modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
 
-					createContainerDefer.resolve(data);
+					defer.resolve(data);
 				});
-			return createContainerDefer.promise;
+			return defer.promise;
 		};
+
+		svc.updateContainer = function (container) {
+			//TODO sanitize
+			var defer = $q.defer();
+			if (!container._id) {
+				console.error("Tried to update a container with no id", container);
+				defer.reject();
+			}
+			PUT("/v3/containers/" + container._id, container, function (data) {
+				modelSvc.cache("container", data);
+				defer.resolve(data);
+			});
+			return defer.promise;
+		}
 
 		svc.deleteContainer = function (containerId) {
 			// DANGER WILL ROBINSON incomplete and unsafe.  only for deleting test data for now, don't expose this to the production team.

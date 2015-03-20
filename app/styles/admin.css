@@ -1,26 +1,32 @@
 .rootLogin h1 {
   font-size: 1em;
 }
+
 .rootLogin form {
   padding-bottom: 1em;
 }
+
 .rootLogin .error {
   color: #F00;
 }
+
 .rootLogin label {
   display: block;
   width: 100%;
   margin: 0.2em 0;
 }
+
 .rootLogin label span {
   width: 30%;
   display: inline-block;
 }
+
 .rootLogin label input {
   width: 70%;
   font-size: 1em;
   padding: 0.1em;
 }
+
 .rootLogin .submit {
   float: right;
 }
@@ -29,12 +35,13 @@
 .admin {
   margin: 1em;
 }
+
 .admin small {
   opacity: 0.3;
   float: right;
   text-align: right;
 }
-.admin button {
+/*.admin button {
   background-color: #fff;
   border: 1px solid;
   border-color: #ccc #999 #999 #ccc;
@@ -44,26 +51,37 @@
   margin: 0.2em;
   padding: 0 0.4em;
 }
+
 .admin button:disabled {
   border-color: #EEE;
   color: #EEE;
-}
-.admin .controls {
-  background-color: #FDFDFD;
-  padding: 0 1em;
-  text-align: right;
-  font-size: 0.76em;
-}
-.admin .controls input,
-.admin .controls button {
-  margin: 0 0.3em;
-}
-.admin .container {
-  margin-left: 1em;
-  cursor: pointer;
-  cursor: hand;
+}*/
+
+.container {
   list-style: none;
+  clear: both;
 }
+
+.container .container {
+  margin-left: 1em;
+}
+
+.container .controls {
+  background-color: #FDFDFD;
+  text-align: right;
+  font-size: 0.9em;
+  clear: right;
+}
+
+.container span.controls {
+  background: none;
+  float: right;
+}
+
+.container input {
+  width: 50%;
+}
+
 .episodePicker {
   background: none repeat scroll 0 0 #fff;
   border: 1px solid;
@@ -74,37 +92,40 @@
   padding: 0.5em;
   position: absolute;
 }
-.admin .container.customer {
+
+.container.customer {
   margin-left: 0;
 }
-.admin .container.isOpen:before {
+
+.container.isOpen:before {
   content: "-";
   display: inline-block;
   width: 1em;
   opacity: 0.5;
   float: left;
 }
-.admin .container.isClosed:before {
+
+.container.isClosed:before {
   content: "+";
   display: inline-block;
   width: 1em;
   opacity: 0.5;
   float: left;
 }
-.admin .hoverIndicator:hover {
+
+.hoverIndicator:hover {
   background-color: #EEE;
 }
-.admin .hoverIndicator {
-  /* This is terrible I know */
-  
-  display: inline-block;
-  width: 95%;
-}
-.admin .hoverIndicator:hover small {
-  opacity: 0.8;
-}
+
 .admin .danger {
   background-color: #C00 !important;
   color: #FFF;
+}
+
+input.readonly {
+  border: none;
+  width: 100%;
+  background: none;
+  font-size: 0.9em;
 }
 

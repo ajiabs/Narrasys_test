@@ -250,6 +250,8 @@ angular.module('com.inthetelling.story')
 				});
 
 				container.loadedChildData = true;
+			} else {
+				container.children = [];
 			}
 			return setLang(container);
 		};
@@ -380,10 +382,10 @@ angular.module('com.inthetelling.story')
 						event.producerItemType = 'annotation';
 					}
 				} else if (event._type === 'Upload') {
-					if (event.templateUrl.match(/^image/)) {
-						event.producerItemType = 'image';
-					} else {
+					if (event.templateUrl.match(/file/)) {
 						event.producerItemType = 'file';
+					} else {
+						event.producerItemType = 'image';
 					}
 				} else if (event._type === 'Link') {
 					event.producerItemType = 'link'; // for now this includes sxs video
@@ -422,6 +424,7 @@ angular.module('com.inthetelling.story')
 			});
 			return obj;
 		};
+
 		svc.setLanguageStrings = function () {
 			angular.forEach(svc.events, function (evt) {
 				evt = setLang(evt);
