@@ -61,7 +61,7 @@ angular.module('com.inthetelling.story')
 							"customer_id": scope.container.customer_id,
 							"parent_id": scope.container._id,
 							"name": {
-								en: scope.container.newContainerTitle
+								en: angular.copy(scope.container.newContainerTitle)
 							}
 						};
 						dataSvc.createContainer(newContainer).then(function (newContainer) {
@@ -69,16 +69,14 @@ angular.module('com.inthetelling.story')
 							if (scope.depth == 2) {
 								var newEpisode = {
 									"container_id": newContainer._id,
-									"title": {
-										en: scope.container.newContainerTitle
-									}
+									"title": angular.copy(newContainer.name)
 								};
 								dataSvc.createEpisode(newEpisode).then(function (episode) {
 									console.log("Created episode: ", episode);
 								});
 							}
-
 						});
+						scope.container.newContainerTitle = '';
 						scope.container.addingContainer = false;
 					};
 

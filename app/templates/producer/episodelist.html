@@ -11,7 +11,10 @@
 			<div class="controls">
 				<label>
 					<input type="checkbox" ng-model="appState.dangerousButtons">&nbsp;Enable danger</label>
-				<div ng-if="appState.dangerousButtons" STYLE="background-color:#F00; color:#FFF; padding: 1em">THERE IS NO UNDO. YOU HAVE BEEN WARNED.</div>
+				<div ng-if="appState.dangerousButtons" STYLE="background-color:#F00; color:#FFF; padding: 1em">DANGER ENABLED. THERE IS NO UNDO.
+					<br>
+					<small> This message brought to you by the letter "B", for "Be careful what you delete!"</small>
+				</div>
 			</div>
 			<div ng-repeat="child in root.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="0"></div>
 			<div class="container">
