@@ -6,6 +6,7 @@ input[readonly] {
 
 .containerAssets {
 	padding: 1em;
+	clear: both;
 }
 
 .goUp {
