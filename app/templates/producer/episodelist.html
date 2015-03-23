@@ -8,6 +8,7 @@
 				<a class="button" ng-click="logout()">Log out</a>
 			</div>
 			<div ng-if="loading" ng-include="'templates/loading.html'"></div>
+			<!--
 			<div class="controls">
 				<label>
 					<input type="checkbox" ng-model="appState.dangerousButtons">&nbsp;Enable danger</label>
@@ -16,6 +17,7 @@
 					<small> This message brought to you by the letter "B", for "Be careful what you delete!"</small>
 				</div>
 			</div>
+			-->
 			<div ng-repeat="child in root.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="0"></div>
 			<div class="container">
 				<div class="controls">
