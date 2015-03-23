@@ -51,7 +51,7 @@ angular.module('com.inthetelling.story')
 						newContainer.name = {
 							en: scope.container.newContainerName
 						};
-						dataSvc.updateContainer(newContainer).then(function (ret) {
+						dataSvc.updateContainer(newContainer).then(function () {
 							scope.container.editingContainer = false;
 						});
 					};
@@ -66,7 +66,7 @@ angular.module('com.inthetelling.story')
 						};
 						dataSvc.createContainer(newContainer).then(function (newContainer) {
 							console.log("Created container:", newContainer);
-							if (scope.depth == 2) {
+							if (scope.depth === 2) {
 								var newEpisode = {
 									"container_id": newContainer._id,
 									"title": angular.copy(newContainer.name)

@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('awsSvc', function (config, $routeParams, $http, $q, appState, modelSvc) {
+	.factory('awsSvc', function (config, $routeParams, $http, $q, appState) {
 		console.log('awsSvc, user: ', appState.user);
 		var MAX_CHUNKS = 1000;
 		var MAX_SIMUL_PARTS_UPLOADING = 3;
@@ -274,7 +274,7 @@ angular.module('com.inthetelling.story')
 						fileUploadPromise = uploadBigFile();
 					}
 					fileUploadPromise.then(function () {
-							createAsset(containerId)
+							createAsset(containerId);
 						},
 						function (reason) {
 							deferredUploads[fileIndex].reject(reason);

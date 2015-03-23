@@ -639,7 +639,7 @@ angular.module('com.inthetelling.story')
 				defer.resolve(data);
 			});
 			return defer.promise;
-		}
+		};
 
 		svc.deleteContainer = function (containerId) {
 			// DANGER WILL ROBINSON incomplete and unsafe.  only for deleting test data for now, don't expose this to the production team.

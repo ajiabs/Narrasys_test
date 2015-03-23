@@ -32,7 +32,7 @@ angular.module('com.inthetelling.story')
 					if (modelSvc.containers[scope.containerId]) {
 						scope.container = modelSvc.containers[scope.containerId];
 					} else {
-						dataSvc.getContainer(scope.containerId).then(function (id) {
+						dataSvc.getContainer(scope.containerId).then(function () {
 							scope.container = modelSvc.containers[scope.containerId];
 						});
 					}

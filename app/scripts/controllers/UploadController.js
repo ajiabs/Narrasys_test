@@ -1,3 +1,8 @@
+/*
+Not in use. TODO delete me once we're certain of that
+
+
+
 'use strict';
 
 angular.module('com.inthetelling.story')
@@ -66,3 +71,4 @@ angular.module('com.inthetelling.story')
 		};
 
 	});
+*/
