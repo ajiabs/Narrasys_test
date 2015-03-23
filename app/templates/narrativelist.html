@@ -10,8 +10,10 @@
 		<div ng-repeat="narrative in narratives">
 			<a href="/#/story/{{narrative.path.en}}">{{narrative.name.en}}</a>
 		</div>
+		<span ng-if="showAddNarrative">
 		<hr>
-		<a ng-if="showAddNarrative" href="/#/story/?admin">Create new narrative</a>
+		<a href="/#/story/?admin">Create new narrative</a>
+		</span>
 	</div>
 
 </div>

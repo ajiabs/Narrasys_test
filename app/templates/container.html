@@ -1,52 +1,58 @@
 <!-- recursive template for admin episode list -->
 
-<div class="container {{containerTypes[depth]}}" ng-class="{isOpen: container.showChildren, isClosed: !container.showChildren}" ng-if="container._id">
+<div class="container" ng-class="{
+		isOpen: container.showChildren, 
+		isClosed: !container.showChildren,
+		hoverIndicator: depth == 3
+	}" ng-if="container._id">
 	<div class="hoverIndicator">
-
-		<button class="danger" ng-if="appState.dangerousButtons && !container.children && !container.haveNotLoadedChildData" ng-click="deleteEpisodeAndContainer(container._id)">
-			Delete
-		</button>
-
-		<a ng-click="toggleChildren()">{{container.name.en}}</a>
-
-		<small>
-			<a ng-href="#/assets/{{container._id}}">[Assets]</a>
-		</small>
-	</div>
-
-
-	<div ng-if="container.showChildren" ng-repeat="child in container.children | orderBy:'name.en'">
-		<span ng-if="depth == 2" class="container hoverIndicator">
-			<!-- .title is the episode, .name is the container -->
-			{{child.name.en}}
-			<span style="opacity:0.7">({{child.status}})</span>
-			<div ng-if="child.showGuestUrl">The guest-accessible URL for this episode is:
-				<br>https://{{customer.domains[0]}}.inthetelling.com/#/auth?episode={{child.episodes[0]}}</div>
-
-			<small>
-				<a ng-if="customer.guest_access_allowed" ng-click="child.showGuestUrl=true">[Guest]</a>
-				<a href="#/episode/{{child.episodes[0]}}">[Player]</a>
-				<a ng-if="isDemoServer" href="#/editor/{{child.episodes[0]}}">[Editor]</a>
-				<a href="#/producer/{{child.episodes[0]}}">[Producer]</a>
-				<button class="danger" ng-if="appState.dangerousButtons" ng-click="deleteEpisodeAndContainer(child._id)">Delete</button>
-				<a ng-href="#/assets/{{child._id}}">[Assets]</a>
-			</small>
+		<span ng-if="!container.editingContainer">
+			<a ng-click="toggleChildren()">{{container.name.en}}</a>
+			<span ng-if="depth==3" style="color:#999">({{container.status || Unpublished}})</span>
+			<a style="color:#666" ng-click="container.editingContainer = true">▾</a>
 		</span>
-		<span ng-if="depth < 2" itt-container="containers[child._id]" depth="depth+1"></span>
+		<span ng-if="container.editingContainer">
+			<label>Name:&nbsp;
+				<input ng-model="container.newContainerName" ng-init="container.newContainerName = container.name.en" type="text" autofocus>&nbsp;
+			</label>
+			<button ng-click="container.editingContainer = false">Cancel</button>
+			<button ng-disabled="!container.newContainerName || container.newContainerName == container.name.en" ng-click="renameContainer()">Save</button>
+		</span>
+		<span class="controls">
+			<button class="danger" ng-if="appState.dangerousButtons && !container.children.length && !container.haveNotLoadedChildData" ng-click="deleteEpisodeAndContainer(container._id)">
+				Delete
+			</button>
+			<a ng-href="#/assets/{{container._id}}">[Assets]</a>
+		</span>
+	</div>
+	<div ng-if="container.showChildren">
+		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="depth+1"></div>
+		<div ng-if="depth == 3" class="container">
+			<!-- begin episode -->
+			<a class="button" ng-if="customer.guest_access_allowed" ng-click="container.showGuestUrl=!container.showGuestUrl">Guest</a>
+			<a class="button" href="#/episode/{{container.episodes[0]}}">Player</a>
+			<a class="button" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}">Editor</a>
+			<a class="button" href="#/producer/{{container.episodes[0]}}">Producer</a>
+			<div ng-if="container.showGuestUrl">
+				<!-- not editable; only an input to make text selection easier -->
+				The guest-accessible url for this episode is
+				<input class="readonly" ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{container.episodes[0]}}" readonly>
+			</div>
+
+			<!-- end episode -->
+		</div>
+
+		<div ng-if="!container.addingContainer" class="controls">
+			<button ng-if="depth < 3" ng-click="container.addingContainer = true">Add {{containerTypes[depth+1]}} to {{container.name.en}}</button>
+		</div>
+		<div ng-if="container.addingContainer" class="controls">
+			<label>Name:&nbsp;
+				<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
+			</label>
+			<button ng-click="container.addingContainer = false">Cancel</button>
+			<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
+		</div>
+
 	</div>
 
-	<div ng-if="container.showChildren && !container.addingEpisode" class="controls">
-
-		<button ng-if="depth==2" ng-click="container.addingEpisode = true;">Add episode to {{container.name.en}}</button>
-		<button ng-if="depth !== 2" ng-disabled="true">TODO add {{containerTypes[depth+1]}} to {{container.name.en}}</button>
-	</div>
-
-
-	<div class="controls" ng-if="container.addingEpisode">
-		<label>Name:
-			<input ng-model="container.newEpisodeTitle" type="text" ng-focus="">
-		</label>
-		<button ng-click="container.addingEpisode = false">Cancel</button>
-		<button ng-disabled="!container.newEpisodeTitle" ng-click="addEpisode(container)">Add</button>
-	</div>
 </div>

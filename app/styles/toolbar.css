@@ -11,13 +11,16 @@
 	left: 0;
 	right: 0;
 }
+
 .toolbar {
 	pointer-events: none
 }
+
 .toolbar a,
 .toolbar div {
 	pointer-events: auto
 }
+
 .toolbar .buttongroup {
 	float: left;
 	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.1) inset;
@@ -27,6 +30,7 @@
 	margin: 0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
 }
+
 button {
 	margin: 0;
 	padding: 0;
@@ -36,6 +40,7 @@ button {
 	font-size: 1em;
 	cursor: pointer;
 }
+
 .toolbar .buttongroup .button span {
 	display: block;
 	position: absolute;
@@ -47,24 +52,30 @@ button {
 	color: #666;
 	font-size: 12px;
 }
+
 .toolbar .buttongroup:hover .button span {
 	opacity: 0 !important
 }
+
 .toolbar .buttongroup .button:hover span {
 	opacity: 1 !important;
 	transition: opacity 0.3s;
 }
+
 .toolbar .buttongroup.modegroup {
 	padding: 0 0.5em;
 }
+
 .toolbar .buttongroup.modegroup .button.cur span {
 	animation: delayedFadeOut 7s ease-out;
 }
+
 .toolbar .searchgroup,
 .toolbar .escapegroup,
 .toolbar .profilegroup {
 	float: right;
 }
+
 .toolbar .searchgroup .hidden {
 	position: absolute;
 	left: 0;
@@ -73,6 +84,7 @@ button {
 	height: 1px;
 	overflow: hidden;
 }
+
 .button-profile {
 	background: url('/images/tmp-user.png');
 	background-size: 16px;
@@ -80,15 +92,18 @@ button {
 	background-repeat: no-repeat;
 	width: 30px;
 }
+
 .toolbar .buttongroup.searchgroup {
 	transition: all 1s;
 	width: 2em;
 }
+
 @media screen and (max-width: 300px) {
 	.isFramed .toolbar .buttongroup.searchgroup {
 		display: none;
 	}
 }
+
 @media screen and (max-width: 421px) {
 	/*
 	.isFramed .toolbar .buttongroup.modegroup {
@@ -100,6 +115,7 @@ button {
 		display: none;
 	}
 }
+
 @media screen and (max-width: 480px) {
 	.button-discover {
 		/* See also helpPanel below */
@@ -113,22 +129,27 @@ button {
 		display: none !important;
 	}
 }
+
 .toolbar .buttongroup.escapegroup .button span {
 	margin-left: -120px;
 	text-align: right !important;
 	width: 150px;
 }
+
 .toolbar .buttongroup.searchgroup .button {
 	float: left;
 }
+
 .toolbar .buttongroup.searchgroup.cur {
 	width: 27%;
 	font-size: 22px;
 	padding-top: 3px;
 }
+
 .toolbar .buttongroup.searchgroup.cur .button span {
 	display: none
 }
+
 #searchtext {
 	background: none;
 	border: none;
@@ -140,12 +161,15 @@ button {
 	left: 40px;
 	top: 2px;
 }
+
 #searchtext:focus {
 	outline: 0;
 }
+
 .cur #searchtext {
 	width: 80%
 }
+
 .toolbar .button {
 	padding: 0 0.5em;
 	line-height: 24px;
@@ -154,6 +178,7 @@ button {
 	color: #555;
 	display: inline-block;
 }
+
 .producerEditLayers {
 	background: url("/images/producer-edit.png") top center transparent;
 	background-size: contain;
@@ -162,54 +187,69 @@ button {
 	line-height: 24px;
 	display: inline-block;
 }
+
 .producerEditLayers.bg {
 	background-image: url("/images/producer-edit-bg.png");
 }
+
 .producerEditLayers.fg {
 	background-image: url("/images/producer-edit-fg.png");
 }
+
 .modegroup .button {
 	color: #AAA;
 }
+
 .modegroup .button.cur {
 	background-color: rgba(255, 255, 255, 0.6);
 }
+
 .toolbar .button.cur {
 	color: #000;
 	text-shadow: -1px -1px 2px #FFF;
 }
+
 .toolbar .button:before {
 	font-family: Story;
 	font-size: 1em;
 }
+
 .button-watch:before {
 	content: "\e610"
 }
+
 .button-exitEpisode:before {
 	font-family: sans-serif;
 	content: "«";
 	font-size: 22px !important;
 	line-height: 18px;
 }
+
 .button-discover:before {
 	content: "\e60f"
 }
+
 .button-review:before {
 	content: "\e611"
 }
+
 .button-search {
 	display: block;
 	width: 2em;
 }
+
 .button-search:before {
 	content: "\e609"
 }
+
 .cur .button-search:before {
 	content: "\e60a"
 }
+
 .button-mainframeescape:before {
 	content: "\e60e"
 }
+
 .escapelink:before {
 	font-family: Story;
 	content: "\e60e";
@@ -217,20 +257,25 @@ button {
 	font-size: 0.86em;
 	color: #333;
 }
+
 .escapelink {
 	font-size: 0.86em;
 }
+
 .button-preview {
 	margin-right: 0.5em;
 }
+
 .button-preview:before {
 	content: "✔";
 	font-size: 18px !important;
 	position: absolute;
 }
+
 .colorInvert .escapelink:before {
 	color: #CCC
 }
+
 .autoscroll {
 	position: fixed;
 	right: 16px;
@@ -241,6 +286,7 @@ button {
 	cursor: pointer;
 	cursor: hand;
 }
+
 .toolbar-bottom,
 .toolbar-bottom-controltrigger {
 	position: fixed;
@@ -250,6 +296,7 @@ button {
 	min-height: 60px;
 	margin-bottom: -3px;
 }
+
 .toolbar-bottom {
 	pointer-events: none;
 	padding-top: 27px;
@@ -259,24 +306,30 @@ button {
 	background-size: 100% 30px;
 	background-position: top;
 }
+
 .toolbar-bottom-fill {
 	pointer-events: auto;
 	background-color: rgba(255, 255, 255, 0.9);
 }
+
 .toolbar-bottom.ng-hide-remove {
 	transition: opacity 0.25s;
 	opacity: 0;
 }
+
 .toolbar-bottom.ng-hide-remove.ng-hide-remove-active {
 	opacity: 1;
 }
+
 .toolbar-bottom.ng-hide-add {
 	transition: opacity 3s;
 	opacity: 1;
 }
+
 .toolbar-bottom.ng-hide-add.ng-hide-add-active {
 	opacity: 0;
 }
+
 .offscreen {
 	position: absolute !important;
 	clip: rect(1px 1px 1px 1px);
@@ -291,9 +344,11 @@ button {
 	-webkit-transition: all linear 5s;
 	transition: all linear 5s;
 }
+
 .visual-hide {
 	opacity: 0;
 }
+
 .offscreen-animate {
 	transition: opacity 3s;
 	opacity: .3;
@@ -308,9 +363,11 @@ button {
 	transition: 1s linear all;
 	opacity: 1;
 }
+
 .modal-backdrop.ng-hide {
 	opacity: 0;
 }
+
 .modal-backdrop.ng-hide-add,
 .modal-backdrop.ng-hide-remove {
 	display: block!important;
@@ -326,22 +383,26 @@ button {
 	top: 45px;
 	/* TOOLBAR HEIGHT */
 }
+
 .searchPanel {
 	bottom: 0;
 	right: 0;
 	width: 40%;
 	background-color: #FFF;
 }
+
 @media screen and (max-width: 421px) {
 	.searchPanel {
 		width: 90%;
 	}
 }
+
 @media screen and (min-width: 422px) and (max-width: 601px) {
 	.searchPanel {
 		width: 60%;
 	}
 }
+
 .searchPanel .scrollContainer {
 	top: 20px;
 	bottom: 0;
@@ -352,12 +413,15 @@ button {
 	left: 0px;
 	position: absolute;
 }
+
 .searchPanel .searchresults {
 	padding: 1em;
 }
+
 .searchPanel.ng-hide .searchfilters {
 	opacity: 0;
 }
+
 .searchPanel .searchfilters {
 	opacity: 1;
 	animation: delayedFadeIn 4s ease-out;
@@ -378,19 +442,21 @@ button {
 .searchResults h3 {
 	padding: 0.5em 0.3em 0.1em 0.3em
 }
+
 .searchResults .item {
 	border-bottom: 1px solid #CCC;
 	padding: 0.1em 0.3em;
 	clear: both;
 }
+
 .searchResults .item .isSxS {
 	background: url('/images/customer/tmp-userprofile.png') top right no-repeat;
 	background-size: 24px;
 	margin-right: -4px;
 	margin-top: -2px;
 	padding-right: 24px;
-	;
 }
+
 .searchResults .item .displayTime button {
 	cursor: pointer;
 	cursor: hand;
@@ -398,14 +464,17 @@ button {
 	display: inline;
 	width: 45px;
 }
+
 .searchResults .description {
 	font-size: 0.86em;
 	margin-left: 45px
 }
+
 .searchResults .type {
 	opacity: 0.4;
 	font-size: 0.86em
 }
+
 .searchResults .sortedbytype .type {
 	display: none
 }
@@ -418,14 +487,17 @@ button {
 	opacity: 1;
 	transform: translateX(0);
 }
+
 .searchPanel.ng-hide {
 	opacity: 0;
 	transform: translateX(200px);
 }
+
 .searchPanel.ng-hide-add,
 .searchPanel.ng-hide-remove {
 	display: block!important;
 }
+
 .ui-match {
 	background-color: rgba(50, 50, 50, 0.4);
 	color: #FFF;
@@ -443,49 +515,60 @@ button {
 	max-height: 300px;
 	transition: 1s all;
 	overflow-y: scroll;
-	padding-top: 1em;
+	padding-top: 0.5em;
 }
+
 .navPanel.ng-hide-add,
 .navPanel.ng-hide-remove {
 	display: block!important;
 }
+
 .navPanel.ng-hide-add {
 	max-height: 300px;
 }
+
 .navPanel.ng-hide-add-active {
 	max-height: 0;
 }
+
 .navPanel.ng-hide-remove {
 	max-height: 0;
 }
+
 .navPanel.ng-hide-remove-active {
 	max-height: 300px;
 }
+
 @media screen and (max-width: 500px) {
 	.navPanel {
 		margin: 0 0.5em;
 	}
 }
+
 @media screen and (max-width: 300px) {
 	.navPanel {
 		font-size: 60%;
 	}
 }
+
 @media screen and (max-width: 600px) {
 	.navPanel {
 		padding-bottom: 0.4em !important;
 	}
 }
+
 @media screen and (min-width: 301px) and (max-width: 500px) {
 	.navPanel {
 		font-size: 75%;
 	}
 }
+
 @media screen and (min-width: 700px) {
 	.navPanel {
 		margin: 0 72px;
 	}
 }
+
 .navPanel h2 {
 	font-size: 120%;
 	font-weight: bold;
@@ -493,6 +576,7 @@ button {
 	padding-left: 1em;
 	border-top: none;
 }
+
 .navPanel .scene {
 	cursor: pointer;
 	cursor: hand;
@@ -500,21 +584,26 @@ button {
 	border-top: 1px solid rgba(0, 0, 0, 0.2);
 	padding-left: 45px;
 }
+
 .navPanel .currentScene {
 	background-color: rgba(0, 0, 0, 0.1);
 }
+
 .navPanel .displayTime {
 	width: 45px;
 	float: left;
 	text-align: right;
 	padding-right: 10px;
 }
+
 .navPanel .parent {
 	font-size: 0.8em;
 }
+
 .navPanel .crossEpisode {
 	font-size: 0.8em;
 }
+
 .navPanel .nextEpisode {
 	float: right;
 }
@@ -539,40 +628,49 @@ button {
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
+
 .helpPanel ul {
 	list-style: none;
 	margin: 0.5em 1em;
 }
+
 .helpPanel li:before,
 .helpPanel h3 {
 	height: 30px;
 	margin: 0;
 }
+
 .helpPanel li {
 	clear: both;
 	border-top: 1px solid #EEE;
 	padding: 0.5em 0;
 }
+
 .helpPanel li:before {
 	float: left;
 	font-family: Story;
 	font-size: 1.7em;
 	padding-right: 0.5em;
 }
+
 .helpPanel li.video:before {
 	content: "\e610"
 }
+
 .helpPanel li.directed:before {
 	content: "\e60f"
 }
+
 @media screen and (max-width: 480px) {
 	.helpPanel li.directed {
 		display: none !important;
 	}
 }
+
 .helpPanel li.explore:before {
 	content: "\e611"
 }
+
 .helpPanel .goAway {
 	float: right;
 	color: #069;
@@ -584,6 +682,7 @@ button {
 	font-size: 1em;
 	cursor: pointer;
 }
+
 .arrow-up {
 	width: 20px;
 	height: 20px;
@@ -594,18 +693,22 @@ button {
 	z-index: 5;
 	transform: rotate(45deg);
 }
+
 .helpPanel .arrow-up {
 	left: 30px;
 }
+
 .profilePanel .arrow-up {
 	right: 35px;
 }
+
 .profilePanel .authoringForm {
 	position: absolute;
 	left: 85px;
 	right: 0;
 	top: 0;
 }
+
 .helpPanel .screen-reader-offscreen {
 	position: absolute;
 	left: -999px;
@@ -622,11 +725,13 @@ button {
 	font-size: 3em;
 	float: right
 }
+
 .button-continue {
 	line-height: 3.4em;
 	float: right;
 	margin-top: 5em;
 }
+
 .profilePanel {
 	background-color: #EEE;
 	border-radius: 15px;

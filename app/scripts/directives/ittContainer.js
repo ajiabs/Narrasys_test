@@ -23,9 +23,13 @@ angular.module('com.inthetelling.story')
 					// TEMP obviously
 					scope.isDemoServer = ($location.host().match(/demo|localhost|api-dev|client.dev/));
 
+					scope.selectText = function (event) {
+						event.target.select(); // convenience for selecting the episode url
+					};
+
 					scope.containerTypes = ["customer", "course", "session", "episode"];
 					scope.toggleChildren = function () {
-						if (scope.container.children) {
+						if (scope.container.children || scope.container.episodes.length) {
 							// have already loaded kids
 							scope.container.showChildren = !scope.container.showChildren;
 						} else {
@@ -36,33 +40,44 @@ angular.module('com.inthetelling.story')
 						}
 					};
 
-					scope.addEpisode = function () {
+					scope.renameContainer = function () {
+						console.log("CHanging container name from ", scope.container.name.en, " to ", scope.container.newContainerName);
+						console.log(scope.container);
 
-						var newEpisodeContainer = {
+						var newContainer = {};
+						angular.forEach(["_id", "customer_id", "episodes", "keywords", "parent_id", "sort_order"], function (field) {
+							newContainer[field] = angular.copy(scope.container[field]);
+						});
+						newContainer.name = {
+							en: scope.container.newContainerName
+						};
+						dataSvc.updateContainer(newContainer).then(function () {
+							scope.container.editingContainer = false;
+						});
+					};
+
+					scope.addContainer = function () {
+						var newContainer = {
 							"customer_id": scope.container.customer_id,
 							"parent_id": scope.container._id,
 							"name": {
-								en: scope.container.newEpisodeTitle
+								en: angular.copy(scope.container.newContainerTitle)
 							}
 						};
-
-						dataSvc.createContainer(newEpisodeContainer).then(function (newContainer) {
-							// console.log("Created container:", newContainer);
-							var newEpisode = {
-								"container_id": newContainer._id,
-								"title": {
-									en: scope.container.newEpisodeTitle
-								}
-							};
-							dataSvc.createEpisode(newEpisode).then(function (episode) {
-								console.log("Created episode: ", episode);
-
-								//$location.path('producer/' + episode._id);
-							});
-
+						dataSvc.createContainer(newContainer).then(function (newContainer) {
+							console.log("Created container:", newContainer);
+							if (scope.depth === 2) {
+								var newEpisode = {
+									"container_id": newContainer._id,
+									"title": angular.copy(newContainer.name)
+								};
+								dataSvc.createEpisode(newEpisode).then(function (episode) {
+									console.log("Created episode: ", episode);
+								});
+							}
 						});
-
-						scope.container.addingEpisode = false;
+						scope.container.newContainerTitle = '';
+						scope.container.addingContainer = false;
 					};
 
 					scope.deleteEpisodeAndContainer = function (id) {

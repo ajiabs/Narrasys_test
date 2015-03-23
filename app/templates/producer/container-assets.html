@@ -2,28 +2,22 @@
 	<div sxs-container-assets="container.parent_id"></div>
 </div>
 <div class="containerAssets">
-	<div ng-if="container.parent_id && !showParent">
+	<div ng-if="appState.product != 'sxs' && container.parent_id && !showParent">
 		<a class="goUp" ng-click="up()">Parent container</a>
 	</div>
 	<div class="title">{{container.display_name}}
 	</div>
 
 	<div class="controls">
-		<!-- 		<span style="float:left;">
-			<a ng-click="hideItems = !hideItems">(x)</a>
-		</span>
- -->
-		<span ng-if="!hideItems">
-			<a ng-click="toggleImages()">
-				<span ng-if="onlyImages">Images</span>
-				<span ng-if="!onlyImages">All</span>
-			</a>
-			&nbsp;
-			<a ng-click="toggleGrid()">
-				<span ng-if="gridView">▦</span>
-				<span ng-if="!gridView">☰</span>
-			</a>
-		</span>
+		<a ng-click="toggleImages()">
+			<span ng-if="onlyImages">Images</span>
+			<span ng-if="!onlyImages">All</span>
+		</a>
+		&nbsp;
+		<a ng-click="toggleGrid()">
+			<span ng-if="gridView">▦</span>
+			<span ng-if="!gridView">☰</span>
+		</a>
 	</div>
 
 	<div class="scrollPane" ng-if="!hideItems">
@@ -54,5 +48,17 @@
 		</table>
 	</div>
 
-
+	<div ng-if="appState.product != 'sxs'">
+		<span ng-if="uploads">
+			<div ng-repeat="upload in uploads">
+				<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}"></progress>
+			</div>
+		</span>
+		<div ng-if="!uploads" class="field">
+			<div class="label">Upload</div>
+			<div class="input">
+				<input type="file" onchange="angular.element(this).scope().uploadAsset(this)">
+			</div>
+		</div>
+	</div>
 </div>

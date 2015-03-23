@@ -1,10 +1,17 @@
 <span class="floaterContainer">
-	<input ng-model="model" ng-focus="showTools(true)" ng-blur="showTools(false)" ng-model-options="{ updateOn: 'blur' }" style="max-width: 150px" ng-class="{invalid: (fieldname == 'end_time' && item.invalid_end_time)}">
+	<input class="inputfield" ng-model="model" ng-focus="showTools(true)" ng-blur="showTools(false)" ng-model-options="{ updateOn: 'blur' }" style="max-width: 150px" ng-class="{invalid: (fieldname == 'end_time' && item.invalid_end_time)}">
 	<div class="floater" ng-if="tooltip">
-		Set to:
+
 		<ul style="list-style:none; white-space:nowrap">
+			<li style="text-align:center; font-size: 150%">
+				<a ng-click="nudge(-5)">«</a>
+				<a ng-click="nudge(-1)">‹</a>
+				<span> &nbsp;&nbsp; </span>
+				<a ng-click="nudge(1)">›</a>
+				<a ng-click="nudge(5)">»</a>
+			</li>
 			<li ng-click="setTime(appState.time)">
-				<a>Current time ({{format(appState.time)}})</a>
+				<a>Set to current time ({{format(appState.time)}})</a>
 			</li>
 			<span ng-if="item._type != 'Scene' && scene().start_time > 0">
 				<li ng-if="fieldname=='start_time'" ng-click="setTime(scene().start_time)">

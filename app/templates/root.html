@@ -1,14 +1,10 @@
 <div class="rootLogin standaloneAncillaryPage" itt-login>
-	<div class="inner" style="height: 100%">
+	<div class="inner">
 		<div ng-if="appState.user._id">
-
 			<div itt-user></div>
-
 		</div>
 
 		<div ng-if="!appState.user._id">
-
-
 			<div>
 				<a class="bigredbutton" href="{{apiDataBaseUrl}}/oauth2">Begin</a>
 			</div>

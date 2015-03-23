@@ -3,7 +3,7 @@
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
 
 angular.module('com.inthetelling.story')
-	.directive('sxsInputTime', function (appState, $timeout, modelSvc) {
+	.directive('sxsInputTime', function (appState, $timeout, modelSvc, timelineSvc) {
 		return {
 			// require: 'ngModel',
 			scope: {
@@ -95,9 +95,20 @@ angular.module('com.inthetelling.story')
 
 				});
 
-				scope.setTime = function (t) { // pass in parsed values only!
-					console.log("setTime", t);
+				scope.nudge = function (amt) {
+					// keep the tooltip panel open:
+					$timeout.cancel(tooltipHider);
+					elem.find('.inputfield').focus();
 
+					// This ends up triggering setTime twice (it changes scope.model, which triggers the $watch)  Oh Well
+					var diff = amt / 30; // pretend 1 frame is always 1/30s for now
+					scope.setTime(scope.item[attrs.inputField] + diff);
+					if (attrs.inputField === 'start_time') {
+						timelineSvc.seek(scope.item[attrs.inputField] + diff);
+					}
+				};
+
+				scope.setTime = function (t) { // pass in parsed values only!
 					// Validation:
 					if (t < 0) {
 						t = 0;
@@ -116,12 +127,13 @@ angular.module('com.inthetelling.story')
 
 				};
 
+				var tooltipHider;
 				scope.showTools = function (x) {
 					if (x) {
 						scope.tooltip = true;
 					} else {
 						// allow time for clicks before we unload the thing being clicked on:
-						$timeout(function () {
+						tooltipHider = $timeout(function () {
 							scope.tooltip = false;
 						}, 300);
 					}

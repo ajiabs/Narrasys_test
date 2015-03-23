@@ -71,30 +71,69 @@ angular.module('com.inthetelling.story')
 
 				scope.appState = appState;
 
+				// TODO this still needs more performance improvements...
 				scope.watchEdits = scope.$watch(function () {
 					return scope.item;
-				}, function () {
-
-					// TODO throw away parts of scope.item.styles that match scene or episode defaults
-
-					if (scope.item.yturl) {
-						scope.item.url = embeddableYTUrl(scope.item.yturl);
+				}, function (newItem, oldItem) {
+					if (!oldItem) {
+						return;
 					}
-					//TODO: performance improvement, this resolve gets called a ton.  For example on every letter you type in an Author name.
-					modelSvc.resolveEpisodeEvents(appState.episodeId); // <-- Only needed for layout changes, strictly speaking
-					modelSvc.cache("event", scope.item);
-					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
-					if (scope.item.asset) {
-						scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
-						scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
+
+					// FOR DEBUGGING
+					/*
+										angular.forEach(Object.keys(newItem), function (f) {
+											if (f !== '$$hashKey' && !(angular.equals(newItem[f], oldItem[f]))) {
+												console.log("CHANGED:", f, newItem[f]);
+											}
+										});
+					*/
+
+					if (newItem.yturl !== oldItem.yturl) {
+						scope.item.url = embeddableYTUrl(newItem.yturl);
 					}
+
+					// Special cases:
+					// if new template is image-fill, 
+					// 	set cosmetic to true, itemForm.
+					// if old template was image-fill, set cosmetic to false
+					// TODO this is fragile, based on template name:
+					if (newItem.templateUrl !== oldItem.templateUrl) {
+						if (newItem.templateUrl === 'templates/item/image-fill.html') {
+							scope.item.cosmetic = true;
+							scope.item.layouts = ["windowBg"];
+							scope.itemForm.position = "fill";
+						}
+						if (oldItem.templateUrl === 'templates/item/image-fill.html') {
+							scope.item.cosmetic = false;
+							scope.item.layouts = ["inline"];
+							scope.itemForm.position = "";
+							scope.itemForm.pin = "";
+						}
+					}
+
+					scope.item = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+
+					if (newItem.asset) {
+						scope.item.asset.cssUrl = "url('" + newItem.asset.url + "');";
+						scope.item.backgroundImageStyle = "background-image: url('" + newItem.asset.url + "');";
+					} else {
+						delete scope.item.asset;
+						delete scope.item.backgroundImageStyle;
+					}
+
+					// TODO BUG items moved from one scene to another aren't being included in the new scene until the user hits save,
+					// only in discover mode (review mode has no problem.)   This was also the case when we ran resolveEpisodeEvents on every edit, it's an older bug.
+					// This _should_ be setting it, and it _is_ triggering sceneController precalculateSceneValues...  IT IS A MYSTERY
+					if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time) {
+						modelSvc.resolveEpisodeEvents(appState.episodeId);
+					}
+
 				}, true);
 
 				// Transform changes to form fields for styles into item.styles[]:
 				scope.watchStyleEdits = scope.$watch(function () {
 					return scope.itemForm;
 				}, function () {
-
 					var styles = [];
 					for (var styleType in scope.itemForm) {
 						if (scope.itemForm[styleType]) {
@@ -236,7 +275,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.uploadAsset = function (files) {
-					scope.uploads = awsSvc.uploadFiles(files);
+					scope.uploads = awsSvc.uploadFiles(scope.episodeContainerId, files);
 
 					scope.uploads[0].then(function (data) {
 						modelSvc.cache("asset", data.file);
@@ -278,7 +317,6 @@ angular.module('com.inthetelling.story')
 				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event:
 				scope.detachAsset = function (assetId) {
 					if (assetId) {
-						var targetItem = angular.copy(scope.item);
 						delete modelSvc.events[scope.item._id].asset;
 						delete scope.item.asset;
 						if (scope.item.asset_id === assetId) {
@@ -290,7 +328,7 @@ angular.module('com.inthetelling.story')
 						if (scope.item.annotation_image_id === assetId) {
 							delete scope.item.annotation_image_id;
 						}
-						dataSvc.detachEventAsset(targetItem, assetId)
+						dataSvc.detachEventAsset(angular.copy(scope.item), assetId)
 							.then(function () {}, function (data) {
 								console.error("FAILED TO DETACH ASSET FROM ITEM IN DATASTORE", data);
 							});

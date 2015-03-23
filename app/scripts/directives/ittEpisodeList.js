@@ -20,7 +20,7 @@ angular.module('com.inthetelling.story')
 						children: []
 					};
 					angular.forEach(rootIDs, function (id) {
-						modelSvc.containers[id].showChildren = true;
+						// modelSvc.containers[id].showChildren = true;
 						scope.root.children.push(modelSvc.containers[id]);
 					});
 					scope.loading = false;

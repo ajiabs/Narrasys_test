@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('awsSvc', function (config, $routeParams, $http, $q, appState, modelSvc) {
+	.factory('awsSvc', function (config, $routeParams, $http, $q, appState) {
 		console.log('awsSvc, user: ', appState.user);
 		var MAX_CHUNKS = 1000;
 		var MAX_SIMUL_PARTS_UPLOADING = 3;
@@ -52,8 +52,8 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		//Pass in a FileList object
-		svc.uploadFiles = function (fileList) {
+		//Pass in a FileList object and the container in which the files are to be placed
+		svc.uploadFiles = function (containerId, fileList) {
 			var deferredUploadsPromises = [];
 			console.log('files: ', files);
 			for (var i = 0; i < fileList.length; i++) {
@@ -62,8 +62,7 @@ angular.module('com.inthetelling.story')
 				deferredUploads.push(deferred);
 				deferredUploadsPromises.push(deferred.promise);
 			}
-			startNextUpload();
-			console.log('files: ', files);
+			startNextUpload(containerId);
 			console.log('DEFERRED UPLOADS: ', deferredUploads);
 			return deferredUploadsPromises;
 		};
@@ -253,7 +252,7 @@ angular.module('com.inthetelling.story')
 			return awsCache.sessionDeferred.promise;
 		};
 
-		var startNextUpload = function () {
+		var startNextUpload = function (containerId) {
 			console.log('START NEXT UPLOAD: ', files.length, ', ', fileIndex, ', ', fileBeingUploaded);
 			if (files.length > fileIndex && !fileBeingUploaded) {
 				fileBeingUploaded = files[fileIndex];
@@ -262,7 +261,7 @@ angular.module('com.inthetelling.story')
 					deferredUploads[fileIndex].resolve('Could not determine file type for file \'' + fileBeingUploaded.name + '\'');
 					fileBeingUploaded = null;
 					fileIndex++;
-					startNextUpload();
+					startNextUpload(containerId);
 					return;
 				}
 				console.log('files: ', files);
@@ -274,10 +273,13 @@ angular.module('com.inthetelling.story')
 					} else {
 						fileUploadPromise = uploadBigFile();
 					}
-					fileUploadPromise.then(createAsset,
+					fileUploadPromise.then(function () {
+							createAsset(containerId);
+						},
 						function (reason) {
 							deferredUploads[fileIndex].reject(reason);
-						}, function (update) {
+						},
+						function (update) {
 							deferredUploads[fileIndex].notify(update);
 						});
 				});
@@ -619,7 +621,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		var createAsset = function () {
+		var createAsset = function (containerId) {
 			var deferred = $q.defer();
 			var assetData = {
 				'url': 'https://s3.amazonaws.com/' + awsCache.s3.config.params.Bucket + '/' + awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName,
@@ -627,14 +629,12 @@ angular.module('com.inthetelling.story')
 				'size': fileBeingUploaded.size,
 				'original_filename': fileBeingUploaded.name
 			};
-			var containerId = modelSvc.episodes[appState.episodeId].container_id;
 			$http.post(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets", assetData)
 				.success(function (data) {
-					console.log('CREATED ASSET:', data);
 					deferredUploads[fileIndex].resolve(data);
 					fileBeingUploaded = null;
 					fileIndex++;
-					startNextUpload();
+					startNextUpload(containerId);
 				})
 				.error(function () {
 					deferredUploads[fileIndex].reject();

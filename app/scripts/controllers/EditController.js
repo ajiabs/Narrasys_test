@@ -183,8 +183,6 @@ angular.module('com.inthetelling.story')
 		$scope.saveEvent = function () {
 			var toSave = angular.copy(appState.editEvent);
 
-
-
 			//assign current episode_id
 			toSave.cur_episode_id = appState.episodeId;
 			if (toSave._type === 'Scene') {
@@ -466,7 +464,7 @@ angular.module('com.inthetelling.story')
 		var fixEndTimes = function (scenes, duration) {
 			for (var i = 1, len = scenes.length; i < len; i++) {
 				if (i === len - 1) {
-						scenes[i].end_time = duration;
+					scenes[i].end_time = duration;
 				} else {
 					if (scenes[i].end_time !== scenes[i + 1].start_time) {
 						scenes[i].end_time = scenes[i + 1].start_time;
@@ -530,7 +528,7 @@ angular.module('com.inthetelling.story')
 						adjusted.push(scenes[i]);
 					}
 				}
-				
+
 			}
 			return adjusted;
 		};
@@ -753,9 +751,9 @@ TODO merge 'comment' with 'annotation'?
 				var defaultTemplateUrls = {
 					"scene": "templates/scene/1col.html",
 					"transcript": "templates/item/transcript.html",
-					"annotation": "templates/item/pullquote.html",
+					"annotation": "templates/item/pullquote-noattrib.html",
 					"link": "templates/item/link.html",
-					"image": "templates/item/image.html",
+					"image": "templates/item/image-inline-withtext.html",
 					"file": "templates/item/link.html",
 					"question": "templates/item/question-mc.html",
 					"video": "TODO:VIDEO"

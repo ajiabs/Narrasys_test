@@ -42,10 +42,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getCustomerList = function () {
-			if (!authSvc.userHasRole('admin')) {
-				return false;
-			}
-			// console.log("getCustomerList");
 			return GET("/v3/customers/", function (customers) {
 				angular.forEach(customers, function (customer) {
 					modelSvc.cache("customer", customer);
@@ -344,7 +340,6 @@ angular.module('com.inthetelling.story')
 
 		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
 		var getEpisode = function (epId, segmentId) {
-
 			// The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
 
 			var url = (segmentId) ? "/v3/episode_segments/" + segmentId + "/resolve" : "/v3/episodes/" + epId;
@@ -544,7 +539,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getContainer = function (id, episodeId) {
-			// console.log("getContainer", id);
 			return GET("/v3/containers/" + id, function (containers) {
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];
@@ -560,22 +554,32 @@ angular.module('com.inthetelling.story')
 
 					// QUICK HACK to get episode status for inter-episode nav; stuffing it into the container data
 					// Wasteful of API calls, discards useful data
-					angular.forEach(container.children, function (child) {
-						if (child.episodes[0]) {
-							svc.getEpisodeOverview(child.episodes[0])
-								.then(function (overview) {
-									if (overview) {
-										child.status = overview.status;
-										child.title = overview.title; // name == container, title == episode
-										modelSvc.cache("container", child); // trigger setLang
-									} else {
-										// This shouldn't ever happen, but apparently it does.
-										// (Is this a permissions error? adding warning to help track it down)
-										console.error("Got no episode data for ", child.episodes[0]);
-									}
-								});
-						}
-					});
+					var getSiblings = false;
+					if (!episodeId) {
+						getSiblings = true; // we're in a container list
+					}
+					if (episodeId && modelSvc.episodes[episodeId].navigation_depth > 0) {
+						getSiblings = true;
+					}
+					if (getSiblings) {
+						angular.forEach(container.children, function (child) {
+							if (child.episodes[0]) {
+								svc.getEpisodeOverview(child.episodes[0])
+									.then(function (overview) {
+										if (overview) {
+											child.status = overview.status;
+											child.title = overview.title; // name == container, title == episode
+											modelSvc.cache("container", child); // trigger setLang
+										} else {
+											// This shouldn't ever happen, but apparently it does.
+											// (Is this a permissions error? adding warning to help track it down)
+											console.error("Got no episode data for ", child.episodes[0]);
+										}
+									});
+							}
+						});
+
+					}
 				}
 				return containers[0]._id;
 			});
@@ -594,7 +598,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.createContainer = function (container) {
-			var createContainerDefer = $q.defer();
+			var defer = $q.defer();
 
 			// TODO sanitize
 			var newContainer = {
@@ -612,19 +616,29 @@ angular.module('com.inthetelling.story')
 					// console.log("CREATED CONTAINER", data);
 					modelSvc.cache("container", data);
 
-					var parentId;
-					if (data.parent_id) {
-						parentId = data.parent_id;
-					} else {
-						parentId = data.ancestry.replace(/.*\//, '');
-					}
+					var parentId = data.parent_id;
 
 					// add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
+					console.log(modelSvc.containers[parentId]);
 					modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
 
-					createContainerDefer.resolve(data);
+					defer.resolve(data);
 				});
-			return createContainerDefer.promise;
+			return defer.promise;
+		};
+
+		svc.updateContainer = function (container) {
+			//TODO sanitize
+			var defer = $q.defer();
+			if (!container._id) {
+				console.error("Tried to update a container with no id", container);
+				defer.reject();
+			}
+			PUT("/v3/containers/" + container._id, container, function (data) {
+				modelSvc.cache("container", data);
+				defer.resolve(data);
+			});
+			return defer.promise;
 		};
 
 		svc.deleteContainer = function (containerId) {

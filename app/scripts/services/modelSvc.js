@@ -250,6 +250,8 @@ angular.module('com.inthetelling.story')
 				});
 
 				container.loadedChildData = true;
+			} else {
+				container.children = [];
 			}
 			return setLang(container);
 		};
@@ -371,30 +373,30 @@ angular.module('com.inthetelling.story')
 
 			// Finally one more super-fragile HACK for producer:
 			if (!event.producerItemType) {
-				if (event.templateUrl.match(/file/)) {
-					event.producerItemType = 'file';
-				} else if (event.templateUrl.match(/question/)) {
-					event.producerItemType = 'question';
-				} else if (event.templateUrl.match(/link/)) {
-					event.producerItemType = 'link';
-				} else if (event.templateUrl.match(/video/)) {
-					event.producerItemType = 'link'; // HACK for now
-				} else if (event.templateUrl.match(/transcript/)) {
-					event.producerItemType = 'transcript';
-				} else if (event.templateUrl.match(/text/)) {
-					event.producerItemType = 'annotation';
-				} else if (event.templateUrl.match(/pullquote/)) {
-					event.producerItemType = 'annotation';
-				} else if (event.templateUrl.match(/scene/)) {
+				if (event._type === 'Scene') {
 					event.producerItemType = 'scene';
-				} else if (event.templateUrl.match(/comment/)) {
-					event.producerItemType = 'comment';
-				} else if (event.templateUrl.match(/image/)) { // Do this last, other types have some templtes with 'image' in their name.  I did say this was fragile...  this'll get cleaned up as part of the template refactor
-					event.producerItemType = 'image';
-				} else {
-					// console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
+				} else if (event._type === 'Annotation') {
+					if (event.templateUrl.match(/transcript/)) {
+						event.producerItemType = 'transcript';
+					} else {
+						event.producerItemType = 'annotation';
+					}
+				} else if (event._type === 'Upload') {
+					if (event.templateUrl.match(/file/)) {
+						event.producerItemType = 'file';
+					} else {
+						event.producerItemType = 'image';
+					}
+				} else if (event._type === 'Link') {
+					event.producerItemType = 'link'; // for now this includes sxs video
+				} else if (event._type === 'Plugin') {
+					if (event.templateUrl.match(/question/)) {
+						event.producerItemType = 'question';
+					}
 				}
-
+				if (!event.producerItemType) {
+					console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
+				}
 			}
 
 			event.displayStartTime = $filter("asTime")(event.start_time);
@@ -422,6 +424,7 @@ angular.module('com.inthetelling.story')
 			});
 			return obj;
 		};
+
 		svc.setLanguageStrings = function () {
 			angular.forEach(svc.events, function (evt) {
 				evt = setLang(evt);
