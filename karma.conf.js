@@ -19,6 +19,7 @@ module.exports = function (config) {
 			'app/bower_components/angular-animate/angular-animate.min.js',
 			'app/bower_components/angular-route/angular-route.min.js',
 			'app/bower_components/angular-sanitize/angular-sanitize.min.js',
+			'app/bower_components/angular-resource/angular-resource.min.js',
 			'app/config.js',
 			'app/scripts/*.js',
 			'app/scripts/**/*.js',
