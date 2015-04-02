@@ -46,7 +46,21 @@ angular.module('com.inthetelling.story')
 				en: ["keyword1", "keyword2", "keyword3"]
 			},
 			"containers": []
+		},
+		{
+			"_id": "537123762442bd8432000003",
+			"parent_id": null,
+			"name": {
+				"en": "Test Container"
+			},
+			"customer_id": "52cb3b65d72cc328be000002",
+			"keywords": {
+				en: ["keyword1", "keyword2", "keyword3"]
+			},
+			"containers": []
 		}
+
+
 ];
 	});
 

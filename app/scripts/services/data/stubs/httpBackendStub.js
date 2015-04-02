@@ -4,7 +4,7 @@
 //TODO: grunt build include/exclude these files in dev/prod respectively
 //TODO: consider breaking up BackendStub into multiple stubs by domain (e.g. AssetBackendStub, etc)
 angular.module('com.inthetelling.story')
-	.service('BackendStub', function BackendStub(config, DataModelUtils, UserDataModel, AssetDataModel, LayoutDataModel, StyleDataModel, TemplateDataModel, EpisodeDataModel, ContainerDataModel, EventUserActionDataModel, NarrativeDataModel, NarrativeHierarchyDataModel, CustomerDataModel) {
+	.service('BackendStub', function BackendStub(config, DataModelUtils, UserDataModel, AssetDataModel, LayoutDataModel, StyleDataModel, TemplateDataModel, EpisodeDataModel, ContainerDataModel, EventUserActionDataModel, NarrativeDataModel, NarrativeHierarchyDataModel, CustomerDataModel, EpisodeSegmentDataModel, EpisodeSegmentExpandedDataModel) {
 		var svc = {};
 		svc.StubIt = function (backend, ise2e) {
 			console.log('url', config.apiDataBaseUrl);
@@ -183,8 +183,34 @@ angular.module('com.inthetelling.story')
 					var narrativeFull = NarrativeHierarchyDataModel.findNarrativeByPath(narrativePathOrId);
 					//var narrativeFull = DataModelUtils.findOne(narrativePathOrId);
 					console.log("narrativeFull", narrativeFull);
-					return [200, narrativeFull, {}]; //containers returns an array, even when by id, so we'll match the backend
+					return [200, narrativeFull, {}];
 				});
+
+			var narrativesAllRegex = /\/v3\/narratives/
+			backend.whenGET(narrativesAllRegex)
+				.respond(function (method, url, data) {
+					DataModelUtils.setData(NarrativeDataModel.data);
+					var narratives = DataModelUtils.findAll();
+					return [200, narratives, {}];
+				});
+
+			var episodeSegmentResolveRegex = /\/v3\/episode_segments\/(\w+)\/resolve/
+			backend.whenGET(episodeSegmentResolveRegex)
+				.respond(function (method, url, data) {
+					// parse the matching URL to pull out the id (/games/:id)
+					var matches = episodeSegmentResolveRegex.exec(url);
+					var segmentid = matches[1];
+					//TODO: AssetDataModel needs to be extended to have FindByContainerId
+					console.log('segmentid', segmentid);
+					DataModelUtils.setData(EpisodeSegmentExpandedDataModel.data);
+					var episodeSegmentFull = DataModelUtils.findOne(segmentid );
+					//var narrativeFull = DataModelUtils.findOne(narrativePathOrId);
+					console.log("episode seg full", episodeSegmentFull);
+					console.log('seg full');
+					return [200, episodeSegmentFull, {}];
+				});
+
+
 			var customersAllRegex = /\/v3\/customers/
 			backend.whenGET(customersAllRegex)
 				.respond(function (method, url, data) {
