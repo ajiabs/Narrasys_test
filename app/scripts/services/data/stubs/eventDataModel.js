@@ -155,7 +155,8 @@ angular.module('com.inthetelling.story')
 			"stop": false,
 			"type": "Annotation",
 			"episode_id": "54c9551e41f6df9359000060",
-			"user_id": "52e6c809c9b715e92b000007"
+			"user_id": "52e6c809c9b715e92b000007",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54f8a59e41f6dfeecf0000be",
 			"_type": "Annotation",
@@ -176,7 +177,8 @@ angular.module('com.inthetelling.story')
 			"stop": false,
 			"type": "Annotation",
 			"episode_id": "54c9551e41f6df9359000060",
-			"user_id": "52e6c809c9b715e92b000007"
+			"user_id": "52e6c809c9b715e92b000007",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e4d8cb41f6df8959000064",
 			"_type": "Annotation",
@@ -196,7 +198,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": true,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e4d91127f85827d7000014",
 			"_type": "Annotation",
@@ -216,7 +219,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": true,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e4ff7941f6dff41100006f",
 			"_type": "Annotation",
@@ -236,7 +240,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": false,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e4fff441f6dff411000082",
 			"_type": "Annotation",
@@ -256,7 +261,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": false,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e5003141f6dff411000088",
 			"_type": "Annotation",
@@ -276,7 +282,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": false,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e5005f41f6dff41100008b",
 			"_type": "Annotation",
@@ -296,7 +303,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": false,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e500a141f6dff06500001d",
 			"_type": "Annotation",
@@ -316,7 +324,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": false,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e500c027f858166e0001ca",
 			"_type": "Annotation",
@@ -336,7 +345,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": false,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e500f227f858166e0001d2",
 			"_type": "Annotation",
@@ -356,7 +366,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": false,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e5012141f6dff411000092",
 			"_type": "Annotation",
@@ -376,7 +387,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": false,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e5013f27f858166e0001d8",
 			"_type": "Annotation",
@@ -396,7 +408,8 @@ angular.module('com.inthetelling.story')
 			"cosmetic": false,
 			"stop": false,
 			"type": "Annotation",
-			"episode_id": "54c9551e41f6df9359000060"
+			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html"
 		}, {
 			"_id": "54e5137427f8580c470000c9",
 			"_type": "Scene",
@@ -586,6 +599,7 @@ angular.module('com.inthetelling.story')
 			"layout_id": ["52e15b40c9b715cfbb00000c", "52e15b40c9b715cfbb00000f"],
 			"style_id": [],
 			"type": "Scene",
+			"templateUrl": "templates/item/transcript.html",
 			"episode_id": "54c9551e41f6df9359000060"
 		}, {
 			"_id": "54eb8b4841f6df6537000072",
@@ -610,6 +624,7 @@ angular.module('com.inthetelling.story')
 			"stop": false,
 			"type": "Upload",
 			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html",
 			"user_id": "53752542bf31cd8c23000001"
 		}, {
 			"_id": "54eb8b7627f858d5f400005a",
@@ -634,6 +649,7 @@ angular.module('com.inthetelling.story')
 			"stop": false,
 			"type": "Upload",
 			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html",
 			"user_id": "53752542bf31cd8c23000001"
 		}, {
 			"_id": "54eb8c1e27f85855eb0000de",
@@ -658,6 +674,7 @@ angular.module('com.inthetelling.story')
 			"stop": false,
 			"type": "Upload",
 			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html",
 			"user_id": "53752542bf31cd8c23000001"
 		}, {
 			"_id": "54eb8c3741f6dfd28100008a",
@@ -682,6 +699,7 @@ angular.module('com.inthetelling.story')
 			"stop": false,
 			"type": "Upload",
 			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html",
 			"user_id": "53752542bf31cd8c23000001"
 		}, {
 			"_id": "54ca817741f6df804a00000f",
@@ -2214,6 +2232,7 @@ angular.module('com.inthetelling.story')
 			"stop": false,
 			"type": "Annotation",
 			"episode_id": "54c9551e41f6df9359000060",
+			"templateUrl": "templates/item/transcript.html",
 			"user_id": "52e6c809c9b715e92b000007"
 		}, {
 			"_id": "5500b6ad41f6dfc09f000026",
@@ -2235,6 +2254,7 @@ angular.module('com.inthetelling.story')
 			"style_id": [],
 			"layout_id": ["52e15b43c9b715cfbb000025"],
 			"template_id": "52e15b41c9b715cfbb000015",
+			"templateUrl": "templates/item/transcript.html",
 			"user_id": "52e6c766c9b715e92b000001"
 		}];
 	});

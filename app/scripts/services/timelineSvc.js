@@ -401,6 +401,19 @@ angular.module('com.inthetelling.story')
 			lastTick = thisTick;
 		};
 
+		svc.init_Narrative = function (episode_segment_ids) {
+			// console.log("timelineSvc.init", episodeId);
+			svc.timelineEvents = [];
+			svc.markedEvents = [];
+			timeMultiplier = 1;
+			appState.duration = 0;
+			appState.timelineState = 'paused';
+
+			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
+			$interval.cancel(clock);
+			stopEventClock();
+		};
+
 		svc.init = function (episodeId) {
 			// console.log("timelineSvc.init", episodeId);
 			svc.timelineEvents = [];

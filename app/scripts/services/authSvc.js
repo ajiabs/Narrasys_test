@@ -158,7 +158,7 @@ angular.module('com.inthetelling.story')
 				})
 				.success(function (respData) {
 					storeUserData(respData);
-					defer.resolve();
+					defer.resolve(respData);
 				})
 				.error(function () {
 					defer.reject();

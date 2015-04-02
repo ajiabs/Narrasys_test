@@ -1,5 +1,6 @@
 angular.module('com.inthetelling.story')
 	.service('AssetDataModel', function AssetDataModel() {
+		
 		this.data = [{
             "_id": "52697c7add4736339000000d",
             "master_asset": false,

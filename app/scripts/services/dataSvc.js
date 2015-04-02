@@ -405,6 +405,7 @@ angular.module('com.inthetelling.story')
 					getEventActivityDataForUser(events, "Plugin", epId);
 					angular.forEach(events, function (eventData) {
 						eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
+						console.log('EVENT DATA: ', eventData);
 						modelSvc.cache("event", svc.resolveIDs(eventData));
 					});
 
@@ -540,6 +541,7 @@ angular.module('com.inthetelling.story')
 
 		svc.getContainer = function (id, episodeId) {
 			return GET("/v3/containers/" + id, function (containers) {
+				console.log("containers", containers);
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];
 
