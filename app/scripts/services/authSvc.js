@@ -9,7 +9,7 @@ angular.module('com.inthetelling.story')
 
 			if (appState.user && appState.user.roles) {
 				for (var i = 0; i < appState.user.roles.length; i++) {
-					if (appState.user.roles[i] === role) {
+					if (appState.user.roles[i].role === role) {
 						return true;
 					}
 				}
@@ -198,19 +198,19 @@ angular.module('com.inthetelling.story')
 		};
 
 		var getRoleDescription = function (roleKey) {
-			if (roleKey === 'admin') {
+			if (roleKey.role === 'admin') {
 				return "Administrator";
 			}
-			if (roleKey === undefined) {
+			if (roleKey.role === undefined) {
 				return "User";
 			}
-			if (roleKey === "guest") {
+			if (roleKey.role === "guest") {
 				return "Guest user";
 			}
-			if (roleKey.match(/student/i)) {
+			if (roleKey.role.match(/student/i)) {
 				return "Student";
 			}
-			if (roleKey.match(/instructor/i)) {
+			if (roleKey.role.match(/instructor/i)) {
 				return "Instructor";
 			}
 			return roleKey;
