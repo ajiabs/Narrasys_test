@@ -116,7 +116,7 @@ angular.module('com.inthetelling.story')
 			}, function (x) {
 				if (Object.keys(x).length) {
 					rolesWatcher();
-					if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer_admin'))) {
+					if (!authSvc.userHasRole('admin')) {
 						appState.product = 'player';
 						appState.productLoadedAs = 'player';
 					}

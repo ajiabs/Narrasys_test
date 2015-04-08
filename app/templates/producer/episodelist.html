@@ -2,7 +2,7 @@
 	<div itt-episode-list>
 
 		<!-- TODO proper i18n -->
-		<div ng-if="userHasRole('admin') || userHasRole('customer_admin')">
+		<div ng-if="userHasRole('admin')">
 			<div class="ancillaryNav">
 				<a class="button" href="/#/">Home</a>
 				<a class="button" ng-click="logout()">Log out</a>
@@ -24,7 +24,7 @@
 					<button disabled>TODO add customer</button>
 				</div>
 			</div>
-			<div ng-if="!(userHasRole('admin') || userHasRole('customer_admin')) || (!loading && (failedLogin || root.children.length == 0))">
+			<div ng-if="!userHasRole('admin') || (!loading && (failedLogin || root.children.length == 0))">
 				Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.
 			</div>
 		</div>

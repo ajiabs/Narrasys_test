@@ -52,7 +52,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getCustomer = function (customerId) {
-			if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer_admin'))) {
+			if (!authSvc.userHasRole('admin')) {
 				return false;
 			}
 			if (modelSvc.customers[customerId]) {
@@ -350,7 +350,7 @@ angular.module('com.inthetelling.story')
 					if (ret) {
 						episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
 					}
-					if (episodeData.status === "Published" || authSvc.userHasRole("admin") || authSvc.userHasRole('customer_admin')) {
+					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						var partsWeGot = 0;
 						// part 1: episode events
