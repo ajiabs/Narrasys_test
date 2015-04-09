@@ -8,10 +8,10 @@ angular.module('com.inthetelling.story')
 
 		// $scope.tmp = function () {
 		// 	dataSvc.createTemplate({
-		// 		url: 'templates/item/question-mc.html',
-		// 		name: 'Question',
-		// 		event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
-		// 		applies_to_episode: false,
+		// 		url: 'templates/episode/kellogg.html',
+		// 		name: 'Kellogg',
+		// 		//event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
+		// 		applies_to_episode: true,
 		// 		applies_to_narrative: false
 		// 	});
 		// };
