@@ -53,7 +53,7 @@ angular.module('com.inthetelling.story')
 						});
 						// landing screen: keep the bottom toolbar onscreen
 						element.find('.stretchToViewportShort:visible').each(function () {
-							$(this).css("min-height", (availableViewportHeight - $(this).offset().top - 210));
+							$(this).css("min-height", (availableViewportHeight - $(this).offset().top - 210)); // HARDCODED FOOTER HEIGHT
 						});
 					}
 
