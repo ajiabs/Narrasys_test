@@ -22,52 +22,53 @@ angular.module('com.inthetelling.story')
 
 				scope.uploadStatus = [];
 				scope.uneditedItem = angular.copy(scope.item); // in case of cancel
-				scope.annotators = modelSvc.episodes[appState.episodeId].annotators;
-				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
-
-				scope.languages = modelSvc.episodes[appState.episodeId].languages;
-
-				scope.itemForm = {
-					"transition": "",
-					"highlight": "",
-					"color": "",
-					"typography": "",
-					"timestamp": "",
-					"position": "", // for image fills only
-					"pin": "" // for image fills only
-				};
-
-				if (!scope.item.layouts) {
-					scope.item.layouts = ["inline"];
+				if (modelSvc.episodes[appState.episodeId]) {
+					scope.annotators = modelSvc.episodes[appState.episodeId].annotators;
+					scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
+					scope.languages = modelSvc.episodes[appState.episodeId].languages;
 				}
+
+				// scope.itemForm = {
+				// 	"transition": "",
+				// 	"highlight": "",
+				// 	"color": "",
+				// 	"typography": "",
+				// 	"timestamp": "",
+				// 	"position": "", // for image fills only
+				// 	"pin": "" // for image fills only
+				// };
+
+				// if (!scope.item.layouts) {
+				// 	scope.item.layouts = ["inline"];
+				// }
 
 				// extract current event styles for the form
-				if (scope.item.styles) {
-					for (var styleType in scope.itemForm) {
-						for (var i = 0; i < scope.item.styles.length; i++) {
-							if (scope.item.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
-								scope.itemForm[styleType] = scope.item.styles[i].substr(styleType.length); // Remainder of scope.item.styles[i]
-							}
-						}
-					}
-					// position and pin don't have a prefix because I was dumb when I planned this
-					for (var j = 0; j < scope.item.styles.length; j++) {
-						if (scope.item.styles[j] === 'contain' || scope.item.styles[j] === 'cover' || scope.item.styles[j] === 'center' || scope.item.styles[j] === 'fill') {
-							scope.itemForm.position = scope.item.styles[j];
-						}
-						if (scope.item.styles[j] === 'tl' || scope.item.styles[j] === 'tr' || scope.item.styles[j] === 'bl' || scope.item.styles[j] === 'br') {
-							scope.itemForm.pin = scope.item.styles[j];
-						}
-					}
+				// if (scope.item.styles) {
+				// 	for (var styleType in scope.itemForm) {
+				// 		for (var i = 0; i < scope.item.styles.length; i++) {
+				// 			if (scope.item.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
+				// 				scope.itemForm[styleType] = scope.item.styles[i].substr(styleType.length); // Remainder of scope.item.styles[i]
+				// 			}
+				// 		}
+				// 	}
+				// 	// position and pin don't have a prefix because I was dumb when I planned this
+				// 	for (var j = 0; j < scope.item.styles.length; j++) {
+				// 		if (scope.item.styles[j] === 'contain' || scope.item.styles[j] === 'cover' || scope.item.styles[j] === 'center' || scope.item.styles[j] === 'fill') {
+				// 			scope.itemForm.position = scope.item.styles[j];
+				// 		}
+				// 		if (scope.item.styles[j] === 'tl' || scope.item.styles[j] === 'tr' || scope.item.styles[j] === 'bl' || scope.item.styles[j] === 'br') {
+				// 			scope.itemForm.pin = scope.item.styles[j];
+				// 		}
+				// 	}
 
-				}
-				if (!scope.item.producerItemType) {
-					errorSvc.error({
-						data: "Don't have a producerItemType for item " + scope.item._id
-					});
-				}
-				// TODO:this breaks when editing sxs items within producer!
-				scope.itemEditor = 'templates/producer/item/' + appState.product + '-' + scope.item.producerItemType + '.html';
+				// }
+				// if (!scope.item.producerItemType) {
+				// 	errorSvc.error({
+				// 		data: "Don't have a producerItemType for item " + scope.item._id
+				// 	});
+				// }
+
+				scope.itemEditor = 'templates/producer/item/producer-' + scope.item.tmpl.itemType + '.html';
 
 				scope.appState = appState;
 

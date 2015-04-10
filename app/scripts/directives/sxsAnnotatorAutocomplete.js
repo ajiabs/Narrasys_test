@@ -18,10 +18,13 @@ angular.module('com.inthetelling.story')
 
 				scope.appState = appState;
 				scope.hasAnnotator = function () {
-					return Object.keys(scope.item.annotator).length > 0;
+					if (scope.item.annotator) {
+						return Object.keys(scope.item.annotator).length > 0;
+					}
 				};
 
 				// look up the annotator images
+
 				angular.forEach(scope.annotators, function (annotator) {
 					if (annotator.annotation_image_id) {
 						annotator.imageUrl = modelSvc.assets[annotator.annotation_image_id].url;

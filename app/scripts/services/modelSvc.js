@@ -4,7 +4,7 @@
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc) {
+	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc, styleCompatibility) {
 
 		var svc = {};
 
@@ -71,78 +71,17 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		// update template paths from v1.  This is temporary until I have the set of new templates nailed down
-		// and have figured out which can be merged or etc; then we can update the values in the database
-		var updateTemplates = {
-			"templates/episode-default.html": "templates/episode/episode.html",
-			"templates/episode-eliterate.html": "templates/episode/eliterate.html",
-			"templates/episode-ewb.html": "templates/episode/ewb.html",
-			"templates/episode-gw.html": "templates/episode/gw.html",
-			"templates/episode-purdue.html": "templates/episode/purdue.html",
-			"templates/episode-tellingstory.html": "templates/episode/story.html",
-
-			"templates/scene-1col.html": "templates/scene/1col.html",
-			"templates/scene-2colL.html": "templates/scene/2colL.html",
-			"templates/scene-2colR.html": "templates/scene/2colR.html",
-			"templates/scene-centered.html": "templates/scene/centered.html",
-			"templates/scene-cornerH.html": "templates/scene/cornerH.html",
-			"templates/scene-cornerV.html": "templates/scene/cornerV.html",
-
-			//annotation:
-			"templates/transcript-default.html": "templates/item/transcript.html",
-			"templates/transcript-withthumbnail.html": "templates/item/transcript-withthumbnail.html",
-			"templates/transcript-withthumbnail-alt.html": "templates/item/transcript-withthumbnail-alt.html",
-			"templates/text-h1.html": "templates/item/text-h1.html",
-			"templates/text-h2.html": "templates/item/text-h2.html",
-			"templates/text-pullquote-noattrib.html": "templates/item/pullquote-noattrib.html",
-			"templates/text-pullquote.html": "templates/item/pullquote.html",
-
-			// upload
-			"templates/transmedia-caption.html": "templates/item/image-caption.html",
-			"templates/transmedia-image-default.html": "templates/item/image.html",
-			"templates/transmedia-slidingcaption.html": "templates/item/image-caption-sliding.html",
-			"templates/transmedia-image-fill.html": "templates/item/image-fill.html",
-			"templates/transmedia-image-plain.html": "templates/item/image-plain.html",
-			"templates/transmedia-linkonly.html": "templates/item/image-linkonly.html",
-			"templates/transmedia-thumbnail.html": "templates/item/image-thumbnail.html",
-
-			//link
-			"templates/transmedia-link-default.html": "templates/item/link.html",
-			"templates/transmedia-link-frameicide.html": "templates/item/link.html",
-			"templates/transmedia-link-noembed.html": "templates/item/link.html",
-			"templates/transmedia-link-embed.html": "templates/item/link-embed.html",
-			"templates/transmedia-link-youtube.html": "templates/item/link.html",
-			"templates/transmedia-embed-youtube.html": "templates/item/link-embed.html",
-
-			// was used internally in v3 player, never exposed to authors so shouldn't appear BUT YOU NEVER KNOW:
-			"templates/transmedia-link-icon.html": "templates/item/link.html",
-
-			// (from old sxs demo; can delete later)
-			"templates/upload-demo-inline.html": "templates/item/debug.html",
-			"templates/upload-demo.html": "templates/item/debug.html",
-
-			//questions
-			"templates/question-mc-formative.html": "templates/item/question-mc-formative.html",
-			"templates/question-mc-poll.html": "templates/item/question-mc-poll.html",
-
-			"templates/question-mc.html": "templates/item/question-mc.html",
-			"templates/question-mc-image-left.html": "templates/item/question-mc-image-left.html",
-			"templates/question-mc-image-right.html": "templates/item/question-mc-image-right.html",
-
-			"templates/sxs-question.html": "templates/item/sxs-question.html"
-		};
-
 		// svc.deriveFoo() are for efficiency precalculations. 
 		// Input API data, output API data plus clientside-only convenience variables.
 		// Should call this after making any changes to the underlying data.
 
 		svc.deriveEpisode = function (episode) {
-			// console.log("deriveEpisode:", episode);
+			console.log("deriveEpisode:", episode);
 
-			if (updateTemplates[episode.templateUrl]) {
-				episode.origTemplateUrl = episode.templateUrl;
-				episode.templateUrl = updateTemplates[episode.templateUrl];
+			if (!episode.tmpl) { // v1 styles
+				episode = styleCompatibility.unpackEpisodeV1Styles(episode);
 			}
+			episode = unpackEpisodeStyles(episode); // v2 styles
 
 			// unpack languages
 			angular.forEach(episode.languages, function (lang) {
@@ -155,28 +94,6 @@ angular.module('com.inthetelling.story')
 				episode.defaultLanguage = "en"; // last resort
 			}
 			svc.setLanguageStrings();
-
-			// For now, automatically add customer-specific styles to episode if there aren't other selections.
-			// (TODO Producer should do this automatically; this is for legacy episodes):
-			if (!episode.styles) {
-				episode.styles = [];
-			}
-			angular.forEach(["eliterate", "gw", "gwsb", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
-				if (episode.templateUrl === "templates/episode/" + customer + ".html") {
-					angular.forEach(["color", "typography"], function (styleType) {
-						// if the episode doesn't already have styletypeFoo, add styletypeCustomer 
-						var found = false;
-						angular.forEach(episode.styles, function (style) {
-							if (style.match(styleType)) {
-								found = true;
-							}
-						});
-						if (!found) {
-							episode.styles.push(styleType + customer[0].toUpperCase() + customer.substring(1));
-						}
-					});
-				}
-			});
 
 			if (episode.title && svc.events["internal:landingscreen:" + episode._id]) {
 				svc.events["internal:landingscreen:" + episode._id].title = episode.title;
@@ -196,36 +113,8 @@ angular.module('com.inthetelling.story')
 			return asset;
 		};
 
-		// TODO there are some hacky dependencies on existing templateUrls which really ought to become
-		// separate data fields in their own right:  
-		//      isTranscript (for Annotations)
-		//      allowEmbed, noExternalLink, and targetTop (for Links)
-
-		/* TODO also we should merge the Link and Upload types, split those templates by file type instead of source,
-		   and make all these data fields consistent:
-
-				Upload/link
-					title: Link text
-					(category)
-					required
-					description: Description
-					displayTime: Timestamp
-					allowEmbed: is/isn't frameable
-					targetTop: link should point to window.top (for end-of-episode links back to LTI host)
-					url: primary URL
-					url_type: file type
-					(?) secondary image URL (icon, thumbnail, etc)
-					
-				Annotation
-					Speaker
-					text
-					secondary image URL (speaker icon)
-*/
-
 		svc.deriveContainer = function (container) {
-
 			// console.log("deriving container", container);
-
 			container.haveNotLoadedChildData = false; // not sure yet if this is necessary
 			// first sort the children:
 			if (container.children && container.children.length > 0) {
@@ -267,140 +156,35 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.deriveEvent = function (event) {
+			if (!event.tmpl) { // v1 styles
+				// HACK for USC
+				if (svc.episodes[event.cur_episode_id] && svc.episodes[event.cur_episode_id].templateUrl === 'templates/episode/usc.html') {
+					event = styleCompatibility.uscHacks(event);
+				}
+				event = styleCompatibility.unpackEventV1Styles(event);
+			}
+
+			event = unpackEventStyles(event); // v2+ styles
 
 			event = setLang(event);
 
-			if (event._type !== 'Scene') {
-				if (svc.episodes[event.cur_episode_id] && svc.episodes[event.cur_episode_id].templateUrl === 'templates/episode/usc.html') {
-					// HACKS AHOY
-					// USC made a bunch of change requests post-release; this was the most expedient way
-					// to deal with them. Sorry!
-
-					// I don't know why this situation occurs, but it does:
-					if (!event.templateUrl) {
-						event.templateUrl = 'templates/item/usc-badges.html';
-					}
-
-					if (event._type === "Link") {
-						if (event.templateUrl === 'templates/transmedia-link-default.html') {
-							// they don't want any embedded links (shrug)
-							event.templateUrl = 'templates/transmedia-link-noembed.html';
-						}
-						if (event.display_title.match(/ACTIVITY/)) {
-							// Unnecessary explanatory text
-							event.display_description = event.display_description + '<div class="uscWindowFgOnly">Remember! You need to complete this activity to earn a Friends of USC Scholars badge. (When you’re finished - Come back to this page and click <b>Continue</b>).<br><br>If you’d rather <b>not</b> do the activity, clicking Continue will take you back to the micro-lesson and you can decide where you want to go from there.</div>';
-						}
-						if (event.display_title.match(/Haven't Registered/)) {
-							// hide this event for non-guest users
-							event.styles = event.styles ? event.styles : [];
-							event.styles.push("uscHackOnlyGuests"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-							event.uscReviewModeHack = "uscHackOnlyGuests"; // ...except the review mode template, because item styles don't show up there
-						}
-						if (event.display_title.match(/Connect with/)) {
-							// hide this event unless episode badge is achieved
-							event.styles = event.styles ? event.styles : [];
-							event.styles.push("uscHackOnlyBadge"); // will be used in discover mode (so we don't have to explicitly include it in the scene templates)
-							event.uscReviewModeHack = "uscHackOnlyBadge"; // ...except the review mode template, because item styles don't show up there
-						}
-					}
-					// END of USC hacks
-				}
-
-				//items
-
-				// clear derived flags before re-setting them (in case we're editing an existing item):
-				event.isContent = false;
-				event.isTranscript = false;
-				event.noEmbed = false;
-				event.noExternalLink = false;
-				event.targetTop = false;
-
-				// determine whether the item is in a regular content pane.
-				// items only have one layout (scenes may have more than one...)
-				if (event.layouts) {
-					event.layoutCss = event.layouts[0];
-					if (event.layouts[0] === 'inline' || event.layouts[0].match(/sidebar/) || event.layouts[0].match(/burst/)) {
-						event.isContent = true;
-					}
-				} else {
-					// no layout, therefore inline content
-					event.isContent = true;
-				}
-
-				// Old templates which (TODO) should have been database fields instead:
-				if (isTranscript(event)) {
-					event.isTranscript = true;
-				}
-				if (event.templateUrl.match(/noembed/)) {
-					event.noEmbed = true;
-				}
-
-				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//)) {
-					//console.warn("Can't embed http:// link type:", event.url);
-					event.noEmbed = true;
-				}
-
-				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
-					event.noExternalLink = true;
-				}
-				if (event.templateUrl.match(/frameicide/)) {
-					event.targetTop = true;
-					event.noEmbed = true;
-				}
-			}
-
-			// both scenes and items.  Do this last for now, since we're doing some ugly string matching against the old templateUrl:
-			if (updateTemplates[event.templateUrl]) {
-				event.origTemplateUrl = event.templateUrl;
-				event.templateUrl = updateTemplates[event.templateUrl];
-
-				// coerce old image-plain background images into image-fill:
-				if (!event.isContent && event.templateUrl === "templates/item/image-plain.html") {
-					event.templateUrl = "templates/item/image-fill.html";
-				}
-				// hack for old authoring tool quirk:
-				if (event.templateUrl === "templates/item/image-plain.html") {
-					if (event.styles) {
-						event.styles.push("timestampNone");
-					} else {
-						event.styles = ["timestampNone"];
-					}
-				}
-			} else {
-				// console.log("Keeping same templateUrl:", event.templateUrl);
-				event.origTemplateUrl = event.templateUrl;
-			}
-
-			// Finally one more super-fragile HACK for producer:
-			if (!event.producerItemType) {
-				if (event._type === 'Scene') {
-					event.producerItemType = 'scene';
-				} else if (event._type === 'Annotation') {
-					if (event.templateUrl.match(/transcript/)) {
-						event.producerItemType = 'transcript';
-					} else {
-						event.producerItemType = 'annotation';
-					}
-				} else if (event._type === 'Upload') {
-					if (event.templateUrl.match(/file/)) {
-						event.producerItemType = 'file';
-					} else {
-						event.producerItemType = 'image';
-					}
-				} else if (event._type === 'Link') {
-					event.producerItemType = 'link'; // for now this includes sxs video
-				} else if (event._type === 'Plugin') {
-					if (event.templateUrl.match(/question/)) {
-						event.producerItemType = 'question';
-					}
-				}
-				if (!event.producerItemType) {
-					console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
-				}
-			}
-
 			event.displayStartTime = $filter("asTime")(event.start_time);
 
+			return event;
+		};
+
+		var unpackEpisodeStyles = function (episode) {
+			return unpackEventStyles(episode); // for now...
+		}
+
+		var unpackEventStyles = function (event) {
+			if (event.tmpl) {
+				event.tmpl.template = event.tmpl.template || 'default';
+				event.tmpl.wrapper = event.tmpl.wrapper || 'default';
+				event.tmpl._v = event.tmpl._v || 2;
+				event.templateUrl = "templates/v" + event.tmpl["_v"] + "/" + event.tmpl.itemType + "/" + event.tmpl.template + ".html";
+				event.wrapperUrl = "templates/v" + event.tmpl["_v"] + "/wrapper/" + event.tmpl.wrapper + ".html";
+			}
 			return event;
 		};
 
@@ -655,6 +439,8 @@ angular.module('com.inthetelling.story')
 				});
 			}
 			// Now that we have the structure, calculate event styles (for scenes and items:)
+
+			// TODO replace with .tmpl fields (and possibly eliminate altogether.)
 			episode.styleCss = cascadeStyles(episode);
 			angular.forEach(svc.events, function (event) {
 				if (event.cur_episode_id !== epId) {

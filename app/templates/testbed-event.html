@@ -8,6 +8,7 @@
 	right: 2em;
 	bottom: 10em;
 }
+
 .testEditorPane {
 	position: absolute;
 	bottom: 0;
@@ -17,12 +18,19 @@
 	height: 10em;
 	overflow-y: scroll;
 }
+
 label {
 	margin: 0 2em;
 }
 </style>
 
 
+<!-- THis is what a content pane looks like. -->
+<div class="content testContentPane">
+	<div ng-repeat="item in items" ng-include="item.wrapperUrl" class="animate"></div>
+</div>
+
+<!--
 <div class="controls">
 	<label>
 		Content pane type:
@@ -46,11 +54,11 @@ label {
 	<label>
 		<input type="checkbox" ng-model="testbed.showCurrent" ng-init="testbed.showCurrent = false;"> Hide non-current items
 	</label>
-
 </div>
-
+-->
+<!--
 <div class="testContentPane allowHighlights allowSidebars hasLeftSidebar hasRightSidebar {{testbed.contentType}}" ng-class="{isNarrow: testbed.isNarrow, showCurrent: testbed.showCurrent}">
 	<div ng-if="!(testbed.showCurrent && item.state!='isCurrent')" class="item animate" itt-item="item" ng-class="item.styleCss + ' ' + item.state"></div>
-</div>
+</div> -->
 
-<div class="testEditorPane" itt-item-editor="item"></div>
+<div class="testEditorPane" itt-item-editor="items[0]"></div>
