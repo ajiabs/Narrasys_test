@@ -167,6 +167,16 @@ angular.module('com.inthetelling.story')
 		};
 
 		var storeUserData = function (data) {
+			// Modify the structure of the roles data if necessary.  This is a temporary fix and can be removed after the new roles system is in place.
+			if(data.roles !== null && data.roles !== undefined && data.roles.length > 0 && data.roles[0].constructor === String) {
+				var roles = [];
+				for (var i = 0; i < data.roles.length; i++) {
+					var role = {role:data.roles[i]};
+					roles.push(role);
+				}
+				data.roles = roles;
+			}
+
 			// updates appState.user and localStorage
 			var user = {
 				access_token: data.access_token || data.authentication_token,
