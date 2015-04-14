@@ -175,15 +175,15 @@ angular.module('com.inthetelling.story')
 
 		var unpackEpisodeStyles = function (episode) {
 			return unpackEventStyles(episode); // for now...
-		}
+		};
 
 		var unpackEventStyles = function (event) {
 			if (event.tmpl) {
 				event.tmpl.template = event.tmpl.template || 'default';
 				event.tmpl.wrapper = event.tmpl.wrapper || 'default';
 				event.tmpl._v = event.tmpl._v || 2;
-				event.templateUrl = "templates/v" + event.tmpl["_v"] + "/" + event.tmpl.itemType + "/" + event.tmpl.template + ".html";
-				event.wrapperUrl = "templates/v" + event.tmpl["_v"] + "/wrapper/" + event.tmpl.wrapper + ".html";
+				event.templateUrl = "templates/v" + event.tmpl._v + "/" + event.tmpl.itemType + "/" + event.tmpl.template + ".html";
+				event.wrapperUrl = "templates/v" + event.tmpl._v + "/wrapper/" + event.tmpl.wrapper + ".html";
 			}
 			return event;
 		};

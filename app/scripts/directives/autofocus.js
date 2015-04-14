@@ -9,7 +9,9 @@ angular.module('com.inthetelling.story')
 					if (element[0].tagName === 'TEXTAREA' || element[0].tagName === 'INPUT') {
 						element[0].focus();
 					} else {
-						element.find('input,textarea')[0].focus();
+						if (element.find('input,textarea')[0]) {
+							element.find('input,textarea')[0].focus();
+						}
 					}
 				});
 			}

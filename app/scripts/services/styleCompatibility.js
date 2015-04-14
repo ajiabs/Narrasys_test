@@ -222,7 +222,7 @@ angular.module('com.inthetelling.story').factory('styleCompatibility', function 
 			}
 		});
 
-		console.log(tmpl);
+		// console.log(tmpl);
 
 		if (tmpl.itemType) {
 			tmpl.template = updateTemplates[tmpl.itemType][event.templateUrl];
@@ -367,7 +367,7 @@ angular.module('com.inthetelling.story').factory('styleCompatibility', function 
 			}
 		}
 		return event;
-	}
+	};
 
 	return svc;
 });

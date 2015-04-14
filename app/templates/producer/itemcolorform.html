@@ -1,0 +1,16 @@
+<div>
+	<label>
+		<input type="checkbox" ng-model="defaultColors"> Default colors
+	</label>
+	<br> Primary color:
+	<color-picker ng-model="item.tmpl.textcolor1" color-picker-format="'hex'" color-picker-alpha="false"></color-picker>
+	Secondary color:
+	<color-picker ng-model="item.tmpl.textcolor2" color-picker-format="'hex'" color-picker-alpha="false"></color-picker>
+	Link color:
+	<color-picker ng-model="item.tmpl.link" color-picker-format="'hex'" color-picker-alpha="false"></color-picker>
+	Background color:
+	<label>
+		<input type="checkbox" ng-model="noBg"> Transparent
+	</label>
+	<color-picker ng-if="!noBg" ng-model="item.tmpl.bgcolor" color-picker-format="'hex'" color-picker-alpha="false"></color-picker>
+</div>

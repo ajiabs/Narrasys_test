@@ -1,12 +1,10 @@
 <style>
 .testContentPane {
-	border: 1px solid #000;
 	position: absolute;
 	overflow: hidden;
 	top: 3em;
 	left: 2em;
 	right: 2em;
-	bottom: 10em;
 }
 
 .testEditorPane {
@@ -15,12 +13,23 @@
 	z-index: 2;
 	left: 0;
 	right: 0;
-	height: 10em;
 	overflow-y: scroll;
+}
+
+.edit-event {
+	display: none !important;
 }
 
 label {
 	margin: 0 2em;
+}
+
+text-angular {
+	clear: both;
+}
+
+.animate {
+	transition: none !important;
 }
 </style>
 
@@ -29,6 +38,7 @@ label {
 <div class="content testContentPane">
 	<div ng-repeat="item in items" ng-include="item.wrapperUrl" class="animate"></div>
 </div>
+
 
 <!--
 <div class="controls">
@@ -61,4 +71,4 @@ label {
 	<div ng-if="!(testbed.showCurrent && item.state!='isCurrent')" class="item animate" itt-item="item" ng-class="item.styleCss + ' ' + item.state"></div>
 </div> -->
 
-<div class="testEditorPane" itt-item-editor="items[0]"></div>
+<div class="testEditorPane" itt-item-editor="items[0]" style="margin: 1em"></div>

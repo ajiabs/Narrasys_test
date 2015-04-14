@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare the top level application module and its dependencies
-angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
+angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular', 'color.picker'])
 
 // Configure routing
 .config(function ($routeProvider) {
@@ -133,11 +133,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			fhotkb = true;
 			if (e.keyCode === 27) {
 				$rootScope.$emit("userKeypress.ESC");
-				e.preventDefault();
+				//e.preventDefault();
 			}
 			if (e.which === 32) {
 				$rootScope.$emit("userKeypress.SPACE");
-				e.preventDefault();
+				//e.preventDefault();
 			}
 		}
 	});
@@ -171,4 +171,21 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize'])
 			}
 		};
 	});
+})
+
+.config(function ($provide) {
+	// this demonstrates how to register a new tool and add it to the default toolbar
+	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
+		taOptions.toolbar = [
+			['h1', 'h2', 'h3'],
+			['bold', 'italics', 'underline', 'strikeThrough'],
+			['ul', 'ol'],
+			['undo', 'redo', 'clear']
+			// ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
+			// ['justifyLeft','justifyCenter','justifyRight','indent','outdent'],
+			// ['html', 'insertImage', 'insertLink', 'insertVideo', 'wordcount', 'charcount']
+		];
+		return taOptions;
+	}]);
+
 });

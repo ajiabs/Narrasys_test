@@ -22,6 +22,7 @@ angular.module('com.inthetelling.story')
 			tmpl: {
 				itemType: 'transcript',
 				wrapper: 'inset',
+				template: 'default'
 			},
 			annotation: {
 				en: "HI THERE"
@@ -36,6 +37,7 @@ angular.module('com.inthetelling.story')
 		console.log(modelSvc);
 
 	})
+	/* TODO move these somewhere sensible */
 
 .directive('bindVal', function () {
 	return {
@@ -44,11 +46,49 @@ angular.module('com.inthetelling.story')
 		scope: {
 			val: '=bindVal'
 		},
-		template: '<div ng-class="{lorem: !val}">{{val}}</div>',
-		link: function (scope, el) {
-			console.log("scope.val", scope.val)
+		template: '<div ng-class="{lorem: !val}" ng-bind-html="val"></div>',
+		link: function (scope) {
+			// console.log("scope.val", scope.val);
 		}
+	};
+})
 
-	}
+.directive('formField', function () {
+	return {
+		restrict: 'A',
+		transclude: true,
+		scope: {
+			label: '@formField'
+		},
+		template: '<div class="field"><div class="label" ng-bind-html="label"></div><div class="input" ng-transclude></div></div>',
+		link: function (scope) {
+			// console.log("scope.label", scope);
+		}
+	};
+})
 
+.directive('ittPositionPicker', function () {
+	return {
+		restrict: 'E',
+		require: 'ngModel',
+		scope: {
+			ngModel: '='
+		},
+		template: 'FOO:<input ng-model="ngModel">BAR',
+		link: function (scope) {
+			console.log("ittPP", scope.ngModel);
+		}
+	};
+})
+
+.directive('ittItemColorForm', function () {
+	return {
+		restrict: 'A',
+
+		scope: true,
+		templateUrl: '/templates/producer/itemcolorform.html',
+		link: function (scope) {
+			console.log("color form", scope.item);
+		}
+	};
 });
