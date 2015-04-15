@@ -1,0 +1,84 @@
+<style>
+.posContent {
+	position: relative;
+	width: 100%;
+	border: 2px solid #CCC;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.posContent:before {
+	display: block;
+	content: "";
+	padding-top: 75%;
+}
+
+.posZone {
+	position: absolute;
+	width: 50%;
+	height: 50%;
+}
+
+.posZone1 {
+	top: 0;
+	left: 0;
+	border-bottom: 2px dotted #CCC;
+	border-right: 2px dotted #CCC;
+}
+
+.posZone2 {
+	top: 0;
+	right: 0;
+}
+
+.posZone3 {
+	bottom: 0;
+	left: 0;
+}
+
+.posZone4 {
+	border-top: 2px dotted #CCC;
+	border-left: 2px dotted #CCC;
+	bottom: 0;
+	right: 0;
+}
+
+.posZone5 {
+	top: 25%;
+	left: 25%;
+	border: 2px dotted #CCC;
+	background-color: #DDD;
+}
+
+.posContent.tl .posZone1,
+.posContent.tr .posZone2,
+.posContent.bl .posZone3,
+.posContent.br .posZone4 {
+	background-color: #DDD;
+}
+
+.posContent.tl .posZone5,
+.posContent.tr .posZone5,
+.posContent.bl .posZone5,
+.posContent.br .posZone5 {
+	background-color: #FFF;
+}
+</style>
+<div style="max-width:300px">
+	<div class="posContent {{ngModel}}">
+		<div class="posZone posZone1" ng-click="zoneClick(0)"></div>
+		<div class="posZone posZone2" ng-click="zoneClick(1)"></div>
+		<div class="posZone posZone3" ng-click="zoneClick(2)"></div>
+		<div class="posZone posZone4" ng-click="zoneClick(3)"></div>
+		<div class="posZone posZone5" ng-click="zoneClick(4)"></div>
+	</div>
+	<div ng-if="!pinned">
+		<select size="1" ng-model="centerType" ng-click="forceModel($event)">
+			<option value="center">Centered</option>
+			<option value="stretch">Stretch to fill</option>
+			<option value="cover">Cover</option>
+			<option value="contain">Contain</option>
+		</select>
+	</div>
+	<div ng-if="pinned" style="text-align:center;">{{posLabel}}</div>
+</div>

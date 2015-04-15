@@ -45,7 +45,6 @@
 
 				</div>
 
-				Content / Overlay
 
 				<div form-field="Border/Background">
 					<select ng-model="item.tmpl.wrapper">
@@ -54,11 +53,24 @@
 						<option value="inset">Inset</option>
 						<option value="coloredborder">Colored Border</option>
 					</select>
-
 				</div>
 
-				<div form-field="Position">
-					<itt-position-picker ng-model="item.tmpl.position"></itt-position-picker>
+				<div form-field="Layout">
+					<select ng-model="item.tmpl.layout">
+						<option value="">As content</option>
+						<option value="overlay">As overlay</option>
+					</select>
+				</div>
+
+				<div ng-if="item.tmpl.layout !== 'overlay'" form-field="Position">
+
+					<itt-position-content ng-model="item.tmpl.position"></itt-position-content>
+				</div>
+				<div ng-if="item.tmpl.layout === 'overlay'" form-field="Position">
+					<itt-position-overlay style="float:left;width:50%;" ng-model="item.tmpl.position"></itt-position-overlay>
+
+					TODO pane selection TODO size settings
+
 				</div>
 
 			</div>
@@ -70,8 +82,7 @@
 			<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" x-tablabel="Style">
 				TODO:
 				<br> preset
-				<br>
-				<br> typography
+
 				<br> transitions
 				<br> highlights
 				<br>
@@ -81,6 +92,7 @@
 				</div>
 				<div form-field="Font face">
 					<select size="1" ng-model="item.tmpl.style.font1">
+						<option value="">Default</option>
 						<optgroup label="Sans Serif">
 							<option value="droidsans">Droid Sans</option>
 							<option value="helvetica">Helvetica</option>
@@ -112,11 +124,14 @@
 
 				<div form-field="Alternate font">
 					<select size="1" ng-model="item.tmpl.style.font2">
+						<option value="">Default</option>
 						<optgroup label="Sans Serif">
 							<option value="droidsans">Droid Sans</option>
 							<option value="helvetica">Helvetica</option>
+							<option value="impact">Impact</option>
 							<option value="lato">Lato</option>
 							<option value="latothin">Lato Extra Light</option>
+							<option value="myriad">Myriad</option>
 							<option value="opensans">Open Sans</option>
 							<option value="ptsans">PT Sans</option>
 							<option value="roboto">Roboto</option>
@@ -133,7 +148,7 @@
 							<option value="oldstandard">Old Standard</option>
 							<option value="playfair">Playfair Display</option>
 							<option value="ptserif">PT Serif</option>
-							<option value="ptserif">Trajan</option>
+							<option value="trajan">Trajan</option>
 							<option value="vollkorn">Vollkorn</option>
 						</optgroup>
 					</select>

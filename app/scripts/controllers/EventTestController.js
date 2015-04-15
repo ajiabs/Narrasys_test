@@ -21,11 +21,13 @@ angular.module('com.inthetelling.story')
 			cur_episode_id: 'ep1',
 			tmpl: {
 				itemType: 'transcript',
-				wrapper: 'inset',
-				template: 'default'
+				wrapper: 'default',
+				template: 'default',
+				position: 'tl',
+				layout: 'overlay'
 			},
 			annotation: {
-				en: "HI THERE"
+				en: "Hello there.  THis is some english text."
 			},
 		}];
 
@@ -67,16 +69,102 @@ angular.module('com.inthetelling.story')
 	};
 })
 
-.directive('ittPositionPicker', function () {
+.directive('ittPositionContent', function () {
 	return {
 		restrict: 'E',
 		require: 'ngModel',
 		scope: {
 			ngModel: '='
 		},
-		template: '<input ng-model="ngModel">',
+		templateUrl: '/templates/producer/itempositioncontent.html',
 		link: function (scope) {
-			console.log("ittPP", scope.ngModel);
+			console.log("ipc");
+			scope.sizeSet = 0;
+			scope.posSet = 1;
+			var labels = [
+				["Left Sidebar", "Inline", "Right Sidebar"],
+				["Burst left margin", "Burst margins", "Burst right margin"]
+			];
+			var vals = [
+				["sidebarL", "inline", "sidebarR"],
+				["burstL", "burst", "burstR"]
+			];
+
+			scope.toggleSize = function () {
+				scope.sizeSet = (scope.sizeSet === 0) ? 1 : 0;
+				setPos();
+			}
+
+			scope.zoneClick = function (x) {
+				scope.posSet = x;
+				setPos();
+			}
+
+			var setPos = function () {
+				console.log("setPos", scope.sizeSet, scope.posSet);
+				scope.posLabel = labels[scope.sizeSet][scope.posSet];
+				scope.ngModel = vals[scope.sizeSet][scope.posSet];
+			}
+
+			for (var i = 0; i < vals.length; i++) {
+				for (var j = 0; j < vals[i].length; j++) {
+					if (vals[i][j] === scope.ngModel) {
+						scope.sizeSet = i;
+						scope.posSet = j;
+					}
+				}
+			}
+			setPos();
+		}
+	};
+})
+
+.directive('ittPositionOverlay', function () {
+	return {
+		restrict: 'E',
+		require: 'ngModel',
+		scope: {
+			ngModel: '='
+		},
+		templateUrl: '/templates/producer/itempositionoverlay.html',
+		link: function (scope) {
+			console.log("ipo", scope.ngModel);
+
+			var vals = ['tl', 'tr', 'bl', 'br', 'center', 'stretch', 'cover', 'contain'];
+			var labels = ['Top left', 'Top right', 'Bottom left', 'Bottom right', 'Centered', 'Stretched', 'Cover', 'Contain'];
+
+			var init = function () {
+				for (var i = 0; i < vals.length; i++) {
+					if (scope.ngModel === vals[i]) {
+						scope.posLabel = labels[i];
+						scope.centerType = vals[i];
+					}
+				}
+				if (!scope.posLabel) {
+					scope.ngModel = 'center';
+					scope.centerType = 'center';
+					scope.posLabel = labels[4];
+				}
+
+				scope.pinned = (scope.ngModel.length === 2); // HACKish
+			}
+			init();
+
+			scope.zoneClick = function (x) {
+				scope.ngModel = vals[x];
+				scope.posLabel = labels[x];
+				scope.pinned = (scope.ngModel.length === 2); // HACKish
+				if (x > 3) {
+					scope.centerType = 'center';
+				}
+			}
+
+			scope.forceModel = function (evt) {
+				scope.ngModel = evt.currentTarget.options[evt.currentTarget.selectedIndex].value;
+				init();
+
+			}
+
 		}
 	};
 })
