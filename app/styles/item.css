@@ -1,16 +1,12 @@
 .lorem:before {
 	content: "Lorem ipsum dolor sit amet...";
-	color: #DDD;
+	opacity: 0.3;
 }
 /*============================
  *
  * Defaults
  *
 //===========================*/
-
-.content .item:first-child {
-	padding-top: 1.5em;
-}
 
 .content .item.sidebarL:first-child,
 .content .item.sidebarR:first-child {

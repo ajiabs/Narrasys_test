@@ -20,14 +20,6 @@
 	display: none !important;
 }
 
-label {
-	margin: 0 2em;
-}
-
-text-angular {
-	clear: both;
-}
-
 .animate {
 	transition: none !important;
 }
@@ -36,7 +28,7 @@ text-angular {
 
 <!-- THis is what a content pane looks like. -->
 <div class="content testContentPane">
-	<div ng-repeat="item in items" ng-include="item.wrapperUrl" class="animate"></div>
+	<div ng-repeat="item in items" ng-include="'templates/v2/wrapper/_global.html'" class="animate"></div>
 </div>
 
 

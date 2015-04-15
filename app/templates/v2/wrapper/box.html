@@ -1,7 +1,5 @@
-<div style="margin: 1em; background-color:#FFF; box-shadow: 2px 2px 2px #000; border: 1px solid #666; padding:1em;">
-	<a class="edit-event" ng-click="editItem()">
-		<span>Edit item</span>
-	</a>
+<div style="margin: 1em; box-shadow: 2px 2px 2px #000; border: 1px solid #666; padding:1em;" ng-style="{
+	backgroundColor: item.tmpl.style.bgcolor
+}">
 	<div itt-item="item" class="item itemTemplate" ng-class="item.tmpl.itemType"></div>
-	</span>
 </div>

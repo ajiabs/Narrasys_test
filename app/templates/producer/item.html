@@ -52,6 +52,7 @@
 						<option value="default">Default (none)</option>
 						<option value="box">Box</option>
 						<option value="inset">Inset</option>
+						<option value="coloredborder">Colored Border</option>
 					</select>
 
 				</div>
@@ -77,6 +78,73 @@
 
 				<div form-field="Colors">
 					<div itt-item-color-form="item"></div>
+				</div>
+				<div form-field="Font face">
+					<select size="1" ng-model="item.tmpl.style.font1">
+						<optgroup label="Sans Serif">
+							<option value="droidsans">Droid Sans</option>
+							<option value="helvetica">Helvetica</option>
+							<option value="impact">Impact</option>
+							<option value="lato">Lato</option>
+							<option value="latothin">Lato Extra Light</option>
+							<option value="myriad">Myriad</option>
+							<option value="opensans">Open Sans</option>
+							<option value="ptsans">PT Sans</option>
+							<option value="roboto">Roboto</option>
+							<option value="trebuchet">Trebuchet MS</option>
+							<option value="verdana">Verdana</option>
+						</optgroup>
+						<optgroup label="Serif">
+							<option value="arvo">Arvo</option>
+							<option value="cardo">Cardo</option>
+							<option value="droidserif">Droid Serif</option>
+							<option value="garamond">Garamond</option>
+							<option value="gentium">Gentium</option>
+							<option value="merriweather">Merriweather</option>
+							<option value="oldstandard">Old Standard</option>
+							<option value="playfair">Playfair Display</option>
+							<option value="ptserif">PT Serif</option>
+							<option value="trajan">Trajan</option>
+							<option value="vollkorn">Vollkorn</option>
+						</optgroup>
+					</select>
+				</div>
+
+				<div form-field="Alternate font">
+					<select size="1" ng-model="item.tmpl.style.font2">
+						<optgroup label="Sans Serif">
+							<option value="droidsans">Droid Sans</option>
+							<option value="helvetica">Helvetica</option>
+							<option value="lato">Lato</option>
+							<option value="latothin">Lato Extra Light</option>
+							<option value="opensans">Open Sans</option>
+							<option value="ptsans">PT Sans</option>
+							<option value="roboto">Roboto</option>
+							<option value="trebuchet">Trebuchet MS</option>
+							<option value="verdana">Verdana</option>
+						</optgroup>
+						<optgroup label="Serif">
+							<option value="arvo">Arvo</option>
+							<option value="cardo">Cardo</option>
+							<option value="droidserif">Droid Serif</option>
+							<option value="garamond">Garamond</option>
+							<option value="gentium">Gentium</option>
+							<option value="merriweather">Merriweather</option>
+							<option value="oldstandard">Old Standard</option>
+							<option value="playfair">Playfair Display</option>
+							<option value="ptserif">PT Serif</option>
+							<option value="ptserif">Trajan</option>
+							<option value="vollkorn">Vollkorn</option>
+						</optgroup>
+					</select>
+				</div>
+
+
+				<div form-field="Text size">
+					<input type="range" min="75" max="150" ng-model="item.tmpl.style.fontsize" />
+					<div style="margin-top: -0.3em" ng-if="item.tmpl.style.fontsize">
+						<input style="border: none; box-shadow: none !important; text-align:right; font-size: small; width: 3em" ng-model="item.tmpl.style.fontsize">%
+					</div>
 				</div>
 			</div>
 			<!-- end of tabset -->

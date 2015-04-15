@@ -182,6 +182,7 @@ angular.module('com.inthetelling.story')
 				event.tmpl.template = event.tmpl.template || 'default';
 				event.tmpl.wrapper = event.tmpl.wrapper || 'default';
 				event.tmpl._v = event.tmpl._v || 2;
+				event.tmpl.style = event.tmpl.style || {};
 				event.templateUrl = "templates/v" + event.tmpl._v + "/" + event.tmpl.itemType + "/" + event.tmpl.template + ".html";
 				event.wrapperUrl = "templates/v" + event.tmpl._v + "/wrapper/" + event.tmpl.wrapper + ".html";
 			}

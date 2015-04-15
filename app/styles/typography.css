@@ -7,15 +7,133 @@
 body {
 	font-family: 'Droid Sans', sans-serif
 }
+
 a {
 	text-decoration: none;
 }
-/* TODO see what these were in pre-4.0 */
+/* NEW HOTNESS */
+
+.type1-droidsans,
+.type2-droidsans .altType {
+	font-family: 'Droid Sans', sans-serif;
+}
+
+.type1-helvetica,
+.type2-helvetica .altType {
+	font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.type1-lato,
+.type2-lato .altType {
+	font-family: 'Lato', 'Helvetica', sans-serif;
+	font-weight: 400;
+}
+
+.type1-latothin,
+.type2-latothin .altType {
+	font-family: 'Lato', 'Helvetica', sans-serif;
+	font-weight: 100;
+	font-size: 120%;
+	text-transform: uppercase;
+}
+
+.type1-opensans,
+.type2-opensans .altType {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.type1-ptsans,
+.type2-ptsans .altType {
+	font-family: 'PT Sans', sans-serif;
+}
+
+.type1-roboto,
+.type2-roboto .altType {
+	font-family: 'Roboto', sans-serif;
+}
+
+.type1-trebuchet,
+.type2-trebuchet .altType {
+	font-family: 'Trebuchet MS', sans-serif;
+}
+
+.type1-verdana,
+.type2-verdana .altType {
+	font-family: 'Verdana', sans-serif;
+}
+
+.type1-arvo,
+.type2-arvo .altType {
+	font-family: 'Arvo', serif;
+}
+
+.type1-cardo,
+.type2-cardo .altType {
+	font-family: 'Cardo', serif;
+}
+
+.type1-droidserif,
+.type2-droidserif .altType {
+	font-family: 'Droid Serif', serif;
+}
+
+.type1-garamond,
+.type2-garamond .altType {
+	font-family: 'EB Garamond', 'Adobe Garamond', 'Garamond', serif;
+}
+
+.type1-gentium,
+.type2-gentium .altType {
+	font-family: 'Gentium Basic', serif;
+}
+
+.type1-merriweather,
+.type2-merriweather .altType {
+	font-family: 'Merriweather', serif;
+}
+
+.type1-oldstandard,
+.type2-oldstandard .altType {
+	font-family: 'Old Standard TT', serif;
+}
+
+.type1-playfair,
+.type2-playfair .altType {
+	font-family: 'Playfair Display', serif;
+}
+
+.type1-ptserif,
+.type2-ptserif .altType {
+	font-family: 'PT Serif', serif;
+}
+
+.type1-vollkorn,
+.type2-vollkorn .altType {
+	font-family: 'Vollkorn', serif;
+}
+
+.type1-trajan,
+.type2-trajan .altType {
+	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif;
+}
+
+.type1-impact,
+.type2-impact .altType {
+	font-family: "Champion", "Impact", "Charcoal", sans-serif;
+	letter-spacing: 1px;
+}
+
+.type1-myriad,
+.type2-myriad .altType {
+	font-family: "Myriad Pro", "Arial";
+}
+/* BELOW IS OLD, TO BE REMOVED */
 
 .title {
 	font-size: 1.2em;
 	line-height: 1em;
 }
+
 .authorName,
 .category {
 	font-size: 0.8em;
@@ -30,6 +148,7 @@ a {
 .typographySans {
 	font-family: 'Droid Sans', sans-serif
 }
+
 .item.typographySans,
 .item.typographySans h1,
 .item.typographySans h2,
@@ -46,6 +165,7 @@ a {
 .typographySerif {
 	font-family: 'Droid Serif', serif
 }
+
 .item.typographySerif,
 .item.typographySerif h1,
 .item.typographySerif h2,
@@ -62,6 +182,7 @@ a {
 .typographyBook {
 	font-family: 'EB Garamond', 'Adobe Garamond', Garamond, serif;
 }
+
 .item.typographyBook h1,
 .item.typographyBook h2,
 .item.typographyBook h3 {
@@ -76,6 +197,7 @@ a {
 .typographySwiss {
 	font-family: 'Roboto', sans-serif;
 }
+
 .item.typographySwiss,
 .item.typographySwiss h1,
 .item.typographySwiss h2,
@@ -83,6 +205,7 @@ a {
 .item.typographySwiss a {
 	font-family: 'Roboto', sans-serif !important;
 }
+
 .typographySwiss .authorName,
 .typographySwiss .title {
 	font-weight: 300
@@ -103,6 +226,7 @@ a {
 	font-family: "Helvetica", "Arial", sans-serif;
 	font-weight: 300;
 }
+
 .typographyGw h1,
 .typographyGw h2,
 .typographyGw h3,
@@ -110,21 +234,25 @@ a {
 .typographyGw.navPanel a {
 	font-family: "Montserrat", sans-serif;
 }
+
 .typographyGw h1,
 .typographyGw h2,
 .typographyGw h3 {
 	font-weight: 700
 }
+
 .typographyGw .item .title {
 	font-family: "Montserrat", sans-serif;
 	font-weight: 400;
 	font-size: 1em;
 	line-height: 1.2em;
 }
+
 .typographyGw .item .pullquote,
 .typographyGw .item .pullquoteSpeaker {
 	font-family: "Cardo", serif;
 }
+
 .typographyGw .item .pullquote:before {
 	font-family: "Cardo", serif;
 }
@@ -133,6 +261,7 @@ a {
 .typographyUsc {
 	font-family: National, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
 .typographyUsc h1,
 .typographyUsc h2,
 .typographyUsc h3,
@@ -140,6 +269,7 @@ a {
 	font-family: "Adobe Caslon", "Crimson Text", serif;
 	/*line-height: 1.6em;*/
 }
+
 .typographyUsc .item .pullquote:before {
 	line-height: 0.7em;
 }
@@ -148,12 +278,14 @@ a {
 .typographyPurdue {
 	font-family: "Myriad Pro", "Arial";
 }
+
 .typographyPurdue h1,
 .typographyPurdue h2,
 .typographyPurdue h3 {
 	font-family: "Champion", "Impact", "Charcoal", sans-serif;
 	letter-spacing: 1px;
 }
+
 .typographyPurdue .headerItem {
 	font-family: "Chaparral Pro", "Times New Roman", "Times", serif;
 }
@@ -163,6 +295,7 @@ a {
 .typographyColumbia {
 	font-family: 'EB Garamond', 'Adobe Garamond', Garamond, serif;
 }
+
 .typographyColumbia h1,
 .typographyColumbia h2,
 .typographyColumbia h3 {
@@ -176,6 +309,7 @@ a {
 	
 	font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
 }
+
 .typographyColumbiabusiness .startTime,
 .typographyColumbiabusiness .title,
 .typographyColumbiabusiness .authorName {
@@ -183,6 +317,7 @@ a {
 	line-height: 26px !important;
 	font-weight: 300 !important;
 }
+
 .typographyColumbiabusiness .pullquote {
 	min-height: 60px;
 	font-size: 30px;
@@ -192,6 +327,7 @@ a {
 	padding-left: 60px;
 	background: url('/images/quote-white.svg') top left no-repeat;
 }
+
 .typographyColumbiabusiness .pullquote:before {
 	display: none !important;
 }
@@ -200,17 +336,20 @@ a {
 .typographyGwsb {
 	font-family: 'EB Garamond', 'Adobe Garamond', Garamond, serif;
 }
+
 .typographyGwsb h1,
 .typographyGwsb h2,
 .typographyGwsb h3,
 .typographyGwsb .authorName {
 	font-family: Helvetica, sans-serif;
 }
+
 .typographyGwsb .item .pullquote,
 .typographyGwsb .item .pullquoteSpeaker {
 	font-family: Helvetica, sans-serif;
 	font-weight: lighter;
 }
+
 .typographyGwsb .item .pullquote:before {
 	font-family: "Cardo", serif;
 	font-size: 6em;

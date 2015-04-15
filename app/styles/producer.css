@@ -188,6 +188,14 @@ input[readonly] {
 	box-shadow: none;
 }
 
+.authoringForm input[type="range"] {
+	border: none;
+}
+
+.authoring-form .color-picker-wrapper {
+	display: inline-block;
+}
+
 .authoringForm .color-picker-wrapper .color-picker-panel {
 	border: 1px solid #999;
 	box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.1);
@@ -235,8 +243,20 @@ input[readonly] {
 	font-size: 0.7em;
 }
 
-.authoringForm option {
-	padding: 0.2em 0;
+optgroup {
+	font-size: small;
+	font-weight: normal;
+	color: #666;
+	background-color: #DDD;
+	text-align: center;
+	font-style: normal;
+}
+
+option {
+	padding: 0.2em 0.5em;
+	color: #000;
+	background-color: #FFF;
+	text-align: left;
 }
 
 .annotatorEmptyCue {

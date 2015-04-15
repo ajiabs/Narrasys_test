@@ -1,0 +1,9 @@
+<!-- Every item gets this -->
+<div class="type1-{{item.tmpl.style.font1}} type2-{{item.tmpl.style.font2}}" ng-style="{
+	fontSize: item.tmpl.style.fontsize+ '%' || '100%' 
+}">
+	<a class="edit-event " ng-click="editItem() ">
+		<span>Edit item</span>
+	</a>
+	<div ng-include="item.wrapperUrl"></div>
+</div>
