@@ -33,13 +33,18 @@ angular.module('com.inthetelling.story')
 			var list = $.grep(this.getData(), function (element, index) {
 				var matchAll = true;
 				$.each(options, function (optionKey, optionValue) {
+		//			console.log(optionKey, optionValue);
+		//			console.log('actualValue:', element[optionKey]);
 					if (element[optionKey] != optionValue) {
+			//			console.log('no match');
 						matchAll = false;
 						return false;
 					}
 				});
 				return matchAll;
 			});
+			//console.log('match list', list);
+			return list
 		};
 
 		// add a new data item that does not exist already

@@ -4,7 +4,7 @@
 //TODO: grunt build include/exclude these files in dev/prod respectively
 //TODO: consider breaking up BackendStub into multiple stubs by domain (e.g. AssetBackendStub, etc)
 angular.module('com.inthetelling.story')
-	.service('BackendStub', function BackendStub(config, DataModelUtils, UserDataModel, AssetDataModel, LayoutDataModel, StyleDataModel, TemplateDataModel, EpisodeDataModel, ContainerDataModel, EventUserActionDataModel, NarrativeDataModel, NarrativeHierarchyDataModel, CustomerDataModel, EpisodeSegmentDataModel, EpisodeSegmentExpandedDataModel) {
+	.service('BackendStub', function BackendStub(config, DataModelUtils, UserDataModel, AssetDataModel, LayoutDataModel, StyleDataModel, TemplateDataModel, EpisodeDataModel, ContainerDataModel, EventUserActionDataModel, NarrativeDataModel, NarrativeHierarchyDataModel, CustomerDataModel, EpisodeSegmentDataModel, EpisodeSegmentExpandedDataModel, EpisodeUserMetricDataModel, EventDataModel) {
 		var svc = {};
 		svc.StubIt = function (backend, ise2e) {
 			console.log('url', config.apiDataBaseUrl);
@@ -15,9 +15,6 @@ angular.module('com.inthetelling.story')
 
 			backend.whenGET(/\/show_user/)
 				.respond(function (method, url, data) {
-					console.log(method);
-					console.log(url);
-					console.log(data);
 
 					var userid = "5494786021e37f20f0000004";
 					DataModelUtils.setData(UserDataModel.data);
@@ -31,10 +28,8 @@ angular.module('com.inthetelling.story')
 					// parse the matching URL to pull out the id (/games/:id)
 					var matches = templateByIdRegex.exec(url);
 					var templateid = matches[1];
-					console.log('templateid', templateid);
 					DataModelUtils.setData(TemplateDataModel.data);
 					var template = DataModelUtils.findOne(templateid);
-
 					return [200, template, {}];
 				});
 			backend.whenGET(/\/v1\/templates/)
@@ -52,7 +47,6 @@ angular.module('com.inthetelling.story')
 					// parse the matching URL to pull out the id (/games/:id)
 					var matches = layoutByIdRegex.exec(url);
 					var layoutid = matches[1];
-					console.log('layoutid', layoutid);
 					DataModelUtils.setData(LayoutDataModel.data);
 					var layout = DataModelUtils.findOne(layoutid);
 					return [200, layout, {}];
@@ -71,7 +65,6 @@ angular.module('com.inthetelling.story')
 					// parse the matching URL to pull out the id (/games/:id)
 					var matches = styleByIdRegex.exec(url);
 					var styleid = matches[1];
-					console.log('styleid', styleid);
 					DataModelUtils.setData(StyleDataModel.data);
 					var style = DataModelUtils.findOne(styleid);
 
@@ -93,6 +86,7 @@ angular.module('com.inthetelling.story')
 					//TODO: extend to support findOneByEventId
 					DataModelUtils.setData(EventDataModel.data);
 					var event = DataModelUtils.findOne(eventid);
+
 					return [200, event, {}];
 				});
 			var eventsAllByEpisodeRegex = /\/v3\/episodes\/(\w+)\/events$/
@@ -101,7 +95,35 @@ angular.module('com.inthetelling.story')
 					var matches = eventsAllByEpisodeRegex.exec(url);
 					var episodeid = matches[1];
 					DataModelUtils.setData(EventDataModel.data);
-					var events = DataModelUtils.findAll();
+					
+				  var events = DataModelUtils.findMany({episode_id:episodeid});
+					//var events = DataModelUtils.findAll();
+					return [200, events, {}];
+				});
+				//TODO: do this in one regex. with above . e.g. episodes(?:\_segments) or whatever optional match is in js regex
+			var eventBySegmentIdRegex = /\/v3\/episode_segments\/(\w+)\/events\/(\w+)$/
+			backend.whenGET(eventBySegmentIdRegex)
+				.respond(function (method, url, data) {
+					var matches = eventBySegmentIdRegex.exec(url);
+					var episodeid = matches[1];
+					var eventid = matches[2];
+
+					//TODO: extend to support findOneByEventId
+					DataModelUtils.setData(EventDataModel.data);
+					var event = DataModelUtils.findOne(eventid);
+					return [200, event, {}];
+				});
+			var eventsAllByEpisodeSegmentRegex = /\/v3\/episode_segments\/(\w+)\/events$/
+			backend.whenGET(eventsAllByEpisodeSegmentRegex)
+				.respond(function (method, url, data) {
+					var matches = eventsAllByEpisodeSegmentRegex.exec(url);
+					var segmentid = matches[1];
+
+					DataModelUtils.setData(EpisodeSegmentExpandedDataModel.data);
+					var episode_segment = DataModelUtils.findOne(segmentid);
+					var episode_id = episode_segment.episode.parent_id;
+					DataModelUtils.setData(EventDataModel.data);
+					var events = DataModelUtils.findMany({episode_id:episode_id});
 					return [200, events, {}];
 				});
 
@@ -117,6 +139,18 @@ angular.module('com.inthetelling.story')
 					return [200, event, {}];
 				});
 
+			var episodeEventUserActionsRegex = /\/v2\/episodes\/(\w+)\/event_user_actions$/
+			backend.whenGET(episodeEventUserActionsRegex)
+				.respond(function (method, url, data) {
+					var matches = episodeEventUserActionsRegex.exec(url);
+					var episodeid = matches[1];
+					var eventid = matches[2];
+					DataModelUtils.setData(EventUserActionDataModel.data);
+					var event = DataModelUtils.findAll();
+					return [200, event, {}];
+				});
+
+
 
 			var episodeByIdRegex = /\/v3\/episodes\/(\w+)$/
 			backend.whenGET(episodeByIdRegex)
@@ -124,7 +158,6 @@ angular.module('com.inthetelling.story')
 					// parse the matching URL to pull out the id (/games/:id)
 					var matches = episodeByIdRegex.exec(url);
 					var episodeid = matches[1];
-					console.log('episodeid', episodeid);
 					DataModelUtils.setData(EpisodeDataModel.data);
 					var episode = DataModelUtils.findOne(episodeid);
 
@@ -134,6 +167,7 @@ angular.module('com.inthetelling.story')
 				.respond(function (method, url, data) {
 					DataModelUtils.setData(EpisodeDataModel.data);
 					var episodes = DataModelUtils.findAll();
+
 					return [200, episodes, {}];
 				});
 
@@ -143,7 +177,6 @@ angular.module('com.inthetelling.story')
 					// parse the matching URL to pull out the id (/games/:id)
 					var matches = containerByIdRegex.exec(url);
 					var containerid = matches[1];
-					console.log('containerid', containerid);
 					DataModelUtils.setData(ContainerDataModel.data);
 					var container = DataModelUtils.findOne(containerid);
 
@@ -165,11 +198,12 @@ angular.module('com.inthetelling.story')
 					var matches = assetsByContainerIdRegex.exec(url);
 					var containerid = matches[1];
 					//TODO: AssetDataModel needs to be extended to have FindByContainerId
-					console.log('containerid', containerid);
 					DataModelUtils.setData(AssetDataModel.data);
-					var container = DataModelUtils.findOne(containerid);
+					var assets = DataModelUtils.findAll();
+					var files = {};
+					files.files = assets;
 
-					return [200, [container], {}]; //containers returns an array, even when by id, so we'll match the backend
+					return [200, files, {}]; //containers returns an array, even when by id, so we'll match the backend
 				});
 			var narrativeByIdRegex = /\/v3\/narratives\/(\w+)\/resolve/
 			backend.whenGET(narrativeByIdRegex)
@@ -178,11 +212,9 @@ angular.module('com.inthetelling.story')
 					var matches = narrativeByIdRegex.exec(url);
 					var narrativePathOrId = matches[1];
 					//TODO: AssetDataModel needs to be extended to have FindByContainerId
-					console.log('narrativepathorid', narrativePathOrId);
 					//DataModelUtils.setData(NarrativeHierarchyDataModel.data);
 					var narrativeFull = NarrativeHierarchyDataModel.findNarrativeByPath(narrativePathOrId);
 					//var narrativeFull = DataModelUtils.findOne(narrativePathOrId);
-					console.log("narrativeFull", narrativeFull);
 					return [200, narrativeFull, {}];
 				});
 
@@ -201,12 +233,9 @@ angular.module('com.inthetelling.story')
 					var matches = episodeSegmentResolveRegex.exec(url);
 					var segmentid = matches[1];
 					//TODO: AssetDataModel needs to be extended to have FindByContainerId
-					console.log('segmentid', segmentid);
 					DataModelUtils.setData(EpisodeSegmentExpandedDataModel.data);
-					var episodeSegmentFull = DataModelUtils.findOne(segmentid );
+					var episodeSegmentFull = DataModelUtils.findOne(segmentid);
 					//var narrativeFull = DataModelUtils.findOne(narrativePathOrId);
-					console.log("episode seg full", episodeSegmentFull);
-					console.log('seg full');
 					return [200, episodeSegmentFull, {}];
 				});
 
@@ -218,7 +247,18 @@ angular.module('com.inthetelling.story')
 					var customers = DataModelUtils.findAll();
 					return [200, customers, {}]; //containers returns an array, even when by id, so we'll match the backend
 				});
-
+			var episodeUserMetricsRegex = /\/v2\/episodes\/(\w+)\/episode_user_metrics/
+			backend.whenPOST(episodeUserMetricsRegex)
+				.respond(function (method, url, data) {
+					var params = angular.fromJson(data);
+					var matches = episodeUserMetricsRegex.exec(url);
+					var episodeid = matches[1];
+					DataModelUtils.setData(EpisodeUserMetricDataModel.data);
+					var metric = DataModelUtils.addOne(params);
+					return [201, metric, {
+						Location: '/v2/episodes/' + episodeid + '/episode_user_metrics/' + metric._id
+					}];
+				});
 
 
 			if (ise2e) {
