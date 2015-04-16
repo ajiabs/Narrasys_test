@@ -167,6 +167,11 @@ angular.module('com.inthetelling.story')
 				$scope.playerState = 'pause';
 			}, false);
 
+
+
+
+
+
 			$scope.changeVideoBandwidth = function () {
 				// console.log("changeVideoBandwidth");
 				var currentTime = $scope.currentTime();
@@ -205,11 +210,29 @@ angular.module('com.inthetelling.story')
 
 			};
 
+
+			$scope.changeVideo = function (masterAsset, time) {
+				 console.log("changeVideo", masterAsset);
+				var currentTime = time; 
+				$scope.videoNode.pause();
+				$scope.videoNode.src = masterAsset.url;
+				analyticsSvc.captureEpisodeActivity('segmentChange');
+				// Need to wait a tick for the DOM to have updated before callign videoNode.load():
+				$timeout(function () {
+					$scope.videoNode.load();
+					$scope.seek(currentTime);
+					//$scope.videoNode.play();
+				});
+
+
+			};
+
+
+
 			$scope.babysitHTML5Video = function () {
 				numberOfStalls = 0;
 				// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
 				$scope.babysitter = $interval(function () {
-					// console.log($scope.videoNode.currentTime, appState.timelineState);
 					if (appState.timelineState === 'playing') {
 						if ($scope.lastPlayheadTime === $scope.currentTime()) {
 							if (!$scope.intentionalStall) {
@@ -227,6 +250,9 @@ angular.module('com.inthetelling.story')
 							appState.timelineState = 'playing';
 							timelineSvc.unstall();
 						}
+					} else if (appState.timelineState === 'transitioning') {
+						appState.timelineState = 'playing'
+						timelineSvc.unstall();
 					}
 				}, 333);
 			};
