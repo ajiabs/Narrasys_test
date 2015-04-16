@@ -17,7 +17,9 @@ angular.module('com.inthetelling.story')
 			svc.user = svc.user || {}; // whatever authSvc gets back from getAccessToken
 			svc.episodeId = false; // ID of current episode
 			svc.episodeSegmentId = false; // ID of current episode segment (only relevant in narratives)
-
+			
+			delete svc.timelineId;
+			delete svc.timelines;
 			/* jshint -W116 */
 			svc.isFramed = (window.parent != window); // are we inside an iframe?  Don't use !== because IE8 gets it wrong
 			/* jshint +W116 */
