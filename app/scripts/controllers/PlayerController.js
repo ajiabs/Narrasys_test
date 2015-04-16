@@ -95,7 +95,36 @@ angular.module('com.inthetelling.story')
 			// HACK this is a weird place for this.
 			var master_asset_id = modelSvc.episodes[appState.episodeId].master_asset_id;
 			var watch = $scope.$watch(function () {
-				return modelSvc.assets[master_asset_id];
+				if (appState.timelineId) {
+					//ensure master assets for all episode segments
+					var allLoaded = false;
+					var sortOrder = -1;
+					var firstSegment;
+					for (var i=0, len = modelSvc.timelines[appState.timelineId].episode_segments.length; i < len; i++) {
+						var episode = modelSvc.episodes[modelSvc.timelines[appState.timelineId].episode_segments[i].episode_id];
+						if (episode && episode.master_asset_id) {
+							if (modelSvc.assets[episode.master_asset_id]) {
+								allLoaded = true;
+							} else {
+								allLoaded = false;	
+								break;	
+							}
+						} else {
+							allLoaded = false;	
+							break;	
+						}
+						if (i == 0 || modelSvc.timelines[appState.timelineId].episode_segments[i].sort_order < sortOrder) {
+							firstSegment = modelSvc.timelines[appState.timelineId].episode_segments[i];
+							sortOrder = modelSvc.timelines[appState.timelineId].episode_segments[i].sort_order;
+						}
+					}
+					if (allLoaded) {
+						return modelSvc.assets[modelSvc.episodes[firstSegment.episode_id].master_asset_id];
+					}
+					
+				} else {
+					return modelSvc.assets[master_asset_id];
+				}
 			}, function (masterAsset) {
 				if (masterAsset && Object.keys(masterAsset).length > 1) {
 					watch();
