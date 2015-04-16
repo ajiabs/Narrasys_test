@@ -1,18 +1,18 @@
 
 
 angular.module('com.inthetelling.story')
-	.factory('Asset', ['$resource', function ($resource) {
-	return $resource('/v1/assets/:assetId', {_id:'@assetId'}, {
+	.factory('Asset', ['$resource', 'config', function ($resource, config) {
+	return $resource(config.apiDataBaseUrl + '/v1/assets/:assetId', {_id:'@assetId'}, {
 		'update': {
 			method: 'PUT'
 		},
 		'create': {
-			url: '/v3/containers/:containerId/assets'
+			url: config.apiDataBaseUrl + '/v1/containers/:containerId/assets'
 		},
 		'getAll' : {
-			url: '/v3/containers/:containerId/assets',
+			url: config.apiDataBaseUrl + '/v1/containers/:containerId/assets',
 			method: 'GET',
-			isArray: true
+			isArray: false
 		}
 	});
 }]);
