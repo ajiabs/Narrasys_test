@@ -1,8 +1,10 @@
+*~
 /node_modules
 .tmp
 .sass-cache
 /app/scripts/templates.js
 *.swp
 *.swo
+*.swn
 *.orig
 /log/newrelic_agent.log
