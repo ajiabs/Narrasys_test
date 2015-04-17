@@ -52,21 +52,13 @@ angular.module('com.inthetelling.story')
 											data.expanded.events[c].cur_episode_id = data.episode._id;
 											var eventStartActual = segmentTimelineStart + (data.expanded.events[c].start_time - segment.start_time);
 											var eventEndActual = segmentTimelineStart + (data.expanded.events[c].end_time - segment.start_time);
-											var eventVideoStartTime = data.expanded.events[c].start_time;
-											var eventVideoEndTime = data.expanded.events[c].end_time;
 											data.expanded.events[c].start_time = eventStartActual;
 
 											data.expanded.events[c].end_time = eventEndActual;
-											//adjust times according to segment?  either overwrite start_time and end_time here... or set it to another value. in any case store both.
 											modelSvc.cache("event", dataSvc.resolveIDs(data.expanded.events[c]));
 										}
 										modelSvc.resolveEpisodeEvents(data.episode._id);
-										// Add to model svc.  ensure that cur_episode_id is set on all sub items that are flattened into modelsvc (e.g. events, assets)
-										// do we need "status" on the container?
-										// also store modelSvc.timelines[timelineId or path] and timelines["fabricated"] for legacy route
-										// timelineSvc.init will look at timelines in modelSvc and get all episode_segments for that timeline, and then the events for the episodes/segments
-										// ensuring injection of a fabricated "transition" marked event at the start/end of each segment. also need to know the episode of the event being handled... cur_episode_id might work
-									}
+									};
 								};
 								var segments = timeline.episode_segments;
 								for (var i = 0, len = segments.length; i < len; i++) {
@@ -82,10 +74,10 @@ angular.module('com.inthetelling.story')
 								//single episode work... TODO: remove 
 								var sortSegments = function (segmentA, segmentB) {
 
-									var a = parseInt(segmentA.sort_order);
-									var b = parseInt(segmentB.sort_order);
+									var a = parseInt(segmentA.sort_order, 10);
+									var b = parseInt(segmentB.sort_order, 10);
 									return a - b;
-								}
+								};
 								timeline.episode_segments = timeline.episode_segments.sort(sortSegments);
 								if (timeline.episode_segments[0]) {
 
