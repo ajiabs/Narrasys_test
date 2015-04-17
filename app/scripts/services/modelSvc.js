@@ -888,6 +888,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		// Don't call this until the master asset exists and episode events have loaded!
+		// and handle cases where we are dealing w/ timelines with multiple episode_segments
 		svc.addEndingScreen = function (episodeId) {
 			// console.log("addEndingScreen", svc.episodes[episodeId].scenes);
 			var episode = svc.episodes[episodeId];
@@ -905,8 +906,12 @@ angular.module('com.inthetelling.story')
 				console.error("Attempted to add an ending screen twice");
 				return;
 			}
-
-			var duration = parseFloat(episode.masterAsset.duration); // HACK
+			var duration = 0;
+			if (svc.timelines[appState.timelineId]) {
+				duration = timelineTranslator.getDuration(svc.timelines[appState.timelineId].episode_segments);
+			} else {
+				duration = episode.masterAsset.duration;
+			}
 
 			//coerce end of last scene (and its items) to match video duration:
 			lastScene.end_time = duration - 0.1;
