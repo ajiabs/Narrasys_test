@@ -13,7 +13,8 @@ angular.module('com.inthetelling.story')
 		// init youtube
 		var apiTag = document.createElement('script');
 		apiTag.src = "//www.youtube.com/iframe_api";
-		angular.element($document[0].head).append(apiTag);
+		angular.element($document[0].head)
+			.append(apiTag);
 		$window.onYouTubeIframeAPIReady = function () {
 			appState.youtubeIsReady = true;
 			// console.log("Youtube Service is ready");
@@ -212,8 +213,8 @@ angular.module('com.inthetelling.story')
 
 
 			$scope.changeVideo = function (masterAsset, time) {
-				 console.log("changeVideo", masterAsset);
-				var currentTime = time; 
+				console.log("changeVideo", masterAsset);
+				var currentTime = time;
 				$scope.videoNode.pause();
 				$scope.videoNode.src = masterAsset.url;
 				analyticsSvc.captureEpisodeActivity('segmentChange');
@@ -251,7 +252,7 @@ angular.module('com.inthetelling.story')
 							timelineSvc.unstall();
 						}
 					} else if (appState.timelineState === 'transitioning') {
-						appState.timelineState = 'playing'
+						appState.timelineState = 'playing';
 						timelineSvc.unstall();
 					}
 				}, 333);
