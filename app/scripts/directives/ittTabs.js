@@ -67,10 +67,11 @@ angular.module('com.inthetelling.story')
 			scope: {
 				isCur: "=ittTab"
 			},
-			template: '<div><div class="ittTabLabel" ng-class="{cur: isCur}"><a ng-click="$parent.tab(tabindex)">{{tablabel}}</a></div><div class="ittTabContents" ng-if="isCur" ng-transclude></div></div>',
+			template: '<div class="ittTabLabel" ng-style="{left: tableft}" ng-class="{cur: isCur}"><a ng-click="$parent.tab(tabindex)">{{tablabel}}</a></div><div class="ittTabContents" ng-if="isCur" ng-transclude></div>',
 			link: function (scope, element, attrs) {
 				scope.tablabel = attrs.tablabel;
 				scope.tabindex = attrs.tabindex;
+				scope.tableft = (scope.tabindex * 100) + 'px';
 			}
 		};
 	});

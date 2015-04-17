@@ -24,8 +24,8 @@
 }
 
 .ta-root.focussed .ta-toolbar {
-	max-height: 2em;
-	padding: 0.2em;
+	max-height: 30px;
+	padding: 4px;
 	opacity: 1;
 }
 

@@ -1,0 +1,7 @@
+<div ng-style="{backgroundColor: (item.tmpl.style.textcolor2 || '#CCC')}" style="height: 1.4em; margin-bottom: -1.4em; padding: 0.2em; float:left; border-radius: 0.3em; opacity: 0.3; pointer-events:none">
+	<span style="opacity:0">{{item.displayStartTime}}</span>
+</div>
+<span class="timestamp" style="display:inline-block; padding: 0.2em;">
+	<a style="color:#000;" role=" button " aria-label="Seek video to {{item.displayStartTime}} " tabindex="0 " x-ng-click="seek(item.start_time) " ng-keypress="seekOnKeyPress(item.start_time, $event) ">
+	{{item.displayStartTime}}</a>
+</span>

@@ -1,19 +1,18 @@
 <style>
 .testContentPane {
-	position: absolute;
-	overflow: hidden;
-	top: 3em;
-	left: 2em;
-	right: 2em;
+	border: 1px solid #000;
+	margin: 1em;
+	min-height: 300px;
+	max-height: 600px;
 }
 
 .testEditorPane {
 	position: absolute;
 	bottom: 0;
-	z-index: 2;
 	left: 0;
 	right: 0;
-	overflow-y: scroll;
+	z-index: 3;
+	background-color: #FFF;
 }
 
 .edit-event {
@@ -27,10 +26,10 @@
 
 
 <!-- THis is what a content pane looks like. -->
-<div class="content testContentPane">
-	<div ng-repeat="item in items" ng-include="'templates/v2/wrapper/_global.html'" class="animate"></div>
-</div>
+<div class="testContentPane content" itt-content-pane="items"></div>
 
+<br>
+<br>
 
 <!--
 <div class="controls">
@@ -63,4 +62,4 @@
 	<div ng-if="!(testbed.showCurrent && item.state!='isCurrent')" class="item animate" itt-item="item" ng-class="item.styleCss + ' ' + item.state"></div>
 </div> -->
 
-<div class="testEditorPane" itt-item-editor="items[0]" style="margin: 1em"></div>
+<div class="testEditorPane" itt-item-editor="items[1]" style="margin: 1em"></div>

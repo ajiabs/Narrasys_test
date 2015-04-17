@@ -40,20 +40,12 @@
 				</div>
 
 				<div form-field="Template">
-
-					Template TODO; show timestamp toggle TODO
-
-				</div>
-
-
-				<div form-field="Border/Background">
-					<select ng-model="item.tmpl.wrapper">
-						<option value="default">Default (none)</option>
-						<option value="box">Box</option>
-						<option value="inset">Inset</option>
-						<option value="coloredborder">Colored Border</option>
+					<select ng-model="item.tmpl.template">
+						<option value="default">Default</option>
+						<option value="debug">DEBUG</option>
 					</select>
 				</div>
+
 
 				<div form-field="Layout">
 					<select ng-model="item.tmpl.layout">
@@ -62,16 +54,39 @@
 					</select>
 				</div>
 
-				<div ng-if="item.tmpl.layout !== 'overlay'" form-field="Position">
+				<div ng-if="item.tmpl.layout === 'overlay'">
 
-					<itt-position-content ng-model="item.tmpl.position"></itt-position-content>
+					<div form-field="Border/Background">
+						<select ng-model="item.tmpl.wrapper">
+							<option value="default">Default</option>
+							<option value="bleed">Edge to edge</option>
+							<option value="box">Box</option>
+							<option value="inset">Inset</option>
+							<option value="coloredborder">Colored Border</option>
+						</select>
+					</div>
+
+					<div form-field="Position">
+						<itt-position-overlay style="float:left;width:50%;" ng-model="item.tmpl.position"></itt-position-overlay>
+						TODO pane selection TODO size settings TODO opacity
+					</div>
+
 				</div>
-				<div ng-if="item.tmpl.layout === 'overlay'" form-field="Position">
-					<itt-position-overlay style="float:left;width:50%;" ng-model="item.tmpl.position"></itt-position-overlay>
+				<div ng-if="item.tmpl.layout !== 'overlay'">
+					<div form-field="Border/Background">
+						<select ng-model="item.tmpl.wrapper">
+							<option value="default">Default</option>
+							<option value="box">Box</option>
+							<option value="inset">Inset</option>
+							<option value="coloredborder">Colored Border</option>
+						</select>
+					</div>
 
-					TODO pane selection TODO size settings
-
+					<div form-field="Position">
+						<itt-position-content ng-model="item.tmpl.position"></itt-position-content>
+					</div>
 				</div>
+
 
 			</div>
 			<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="{{item._type === 'Scene' ? 'Scene' : 'Item'}}">
@@ -81,11 +96,21 @@
 			</div>
 			<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" x-tablabel="Style">
 				TODO:
-				<br> preset
+				<br> presets
 
 				<br> transitions
 				<br> highlights
-				<br>
+
+				<div form-field="Timestamp">
+					<select ng-model="item.tmpl.timestamp">
+						<option value="">Default</option>
+						<option value="none">No timestamp</option>
+						<option value="rounded">Rounded</option>
+						<option value="roundedwhite">Rounded White</option>
+						<option value="corner">Corner</option>
+					</select>
+				</div>
+
 
 				<div form-field="Colors">
 					<div itt-item-color-form="item"></div>
@@ -119,10 +144,18 @@
 							<option value="trajan">Trajan</option>
 							<option value="vollkorn">Vollkorn</option>
 						</optgroup>
+						<optgroup label="Italic">
+							<option value="droidital">Droid Italic</option>
+							<option value="latoital">Lato Italic</option>
+							<option value="merriweatherital">Merriweather Italic</option>
+							<option value="ptsansital">PT Sans Italic</option>
+							<option value="ptserifital">PT Serif Italic</option>
+							<option value="vollkornital">Vollkorn Italic</option>
+						</optgroup>
 					</select>
 				</div>
 
-				<div form-field="Alternate font">
+				<div form-field="Secondary font">
 					<select size="1" ng-model="item.tmpl.style.font2">
 						<option value="">Default</option>
 						<optgroup label="Sans Serif">
@@ -151,12 +184,23 @@
 							<option value="trajan">Trajan</option>
 							<option value="vollkorn">Vollkorn</option>
 						</optgroup>
+						<optgroup label="Italic">
+							<option value="droidital">Droid Italic</option>
+							<option value="latoital">Lato Italic</option>
+							<option value="merriweatherital">Merriweather Italic</option>
+							<option value="ptsansital">PT Sans Italic</option>
+							<option value="ptserifital">PT Serif Italic</option>
+							<option value="vollkornital">Vollkorn Italic</option>
+						</optgroup>
 					</select>
 				</div>
 
 
 				<div form-field="Text size">
-					<input type="range" min="75" max="150" ng-model="item.tmpl.style.fontsize" />
+					<input style="width: 79%" type="range" min="75" max="150" ng-model="item.tmpl.style.fontsize" />
+
+					<button ng-if="item.tmpl.style.fontsize && item.tmpl.style.fontsize !== 100" style="width: 20%" ng-click="item.tmpl.style.fontsize=100" class="fa fa-lg fa-ban borderless"></button>
+
 					<div style="margin-top: -0.3em" ng-if="item.tmpl.style.fontsize">
 						<input style="border: none; box-shadow: none !important; text-align:right; font-size: small; width: 3em" ng-model="item.tmpl.style.fontsize">%
 					</div>

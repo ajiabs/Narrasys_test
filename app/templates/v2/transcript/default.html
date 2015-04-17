@@ -1,5 +1,15 @@
 <div>
-	<a class="startTime displayTime" role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" x-ng-click="seek(item.start_time)" ng-keypress="seekOnKeyPress(item.start_time, $event)" ng-style="{color: item.tmpl.style.linkcolor}">{{item.displayStartTime}}</a>
-	<div class="altType" bind-val="item.display_annotator" ng-style="{color: item.tmpl.style.textcolor2}"></div>
+	<div class="outset">
+		<div itt-timestamp="item" pos="outset"></div>
+	</div>
+
+	<div class="body">
+		<div>
+			<span class="inset">
+				<span itt-timestamp="item" pos="inset"></span>
+			</span>
+			<span class="altType" bind-val="item.display_annotator" ng-style="{color: item.tmpl.style.textcolor2}"></span>
+		</div>
+		<div class="text" bind-val="item.display_annotation" ng-style="{color:item.tmpl.style.textcolor1}"></div>
+	</div>
 </div>
-<div class="text" bind-val="item.display_annotation" ng-style="{color:item.tmpl.style.textcolor1}"></div>

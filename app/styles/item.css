@@ -2,6 +2,62 @@
 	content: "Lorem ipsum dolor sit amet...";
 	opacity: 0.3;
 }
+
+.content {
+	overflow-y: scroll;
+}
+
+.content,
+.item {
+	position: relative;
+}
+
+.borderless {
+	border: none !important;
+}
+
+.content .overlay,
+.content .overlay .wrapper {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.content .outset {
+	width: 60px;
+	float: left;
+	text-align: right;
+	padding-right: 5px;
+}
+
+.content .body {
+	margin-left: 60px;
+}
+
+.content .inset {
+	display: none;
+}
+
+.content.isNarrow .outset,
+.content .timestamp-none .outset {
+	display: none;
+}
+
+.content.isNarrow .inset {
+	display: inline;
+}
+
+.content.isNarrow .body,
+.content .timestamp-none .body {
+	margin-left: 0;
+}
+
+.timestamp- .timestamp {
+	text-align: right;
+	padding-right: 0.5em;
+}
 /*============================
  *
  * Defaults
@@ -12,10 +68,10 @@
 .content .item.sidebarR:first-child {
 	padding-top: 0.5em;
 }
-
-.content .item {
+/*.content .item {
 	padding: 0.3em 0.5em 0.3em 60px;
 }
+*/
 
 .windowFg .content .item {
 	padding: 0;
@@ -353,7 +409,7 @@ Inline images (TODO show these only when image is larger than available space) *
   narrow, sidebar:            item: pad 0,    timestamp display none;
 
 =========================== */
-
+/*
 .content .item {
 	padding-left: 60px;
 }
@@ -387,11 +443,13 @@ Inline images (TODO show these only when image is larger than available space) *
 .content.isNarrow .item.sidebarR .startTime {
 	display: none;
 }
-/* =========================== */
+
 
 .item.timestampNone .startTime {
 	display: none
 }
+
+*/
 /* =========================== */
 
 .content.isNarrow .item .headerItem {

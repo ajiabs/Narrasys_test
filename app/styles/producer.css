@@ -524,15 +524,18 @@ option {
 /* TODO reconcile tabs and drawer height / scroll */
 
 .ittTabs {
-	clear: both;
-	height: 400px;
 	position: relative;
 }
 
 .ittTabLabel {
+	position: absolute;
+	top: 0;
+	height: 24px;
 	float: left;
 	padding: 0 10px;
 	border-bottom: 1px solid #CCC;
+	width: 100px;
+	text-align: center;
 }
 
 .ittTabLabel.cur {
@@ -549,10 +552,7 @@ option {
 }
 
 .ittTabContents {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 20px;
+	padding-top: 24px;
 }
 
 .ittTabFoot {

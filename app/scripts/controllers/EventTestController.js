@@ -17,24 +17,51 @@ angular.module('com.inthetelling.story')
 		$scope.itemId = 'internal:editing';
 
 		var items = [{
-			_id: 'internal:editing',
-			cur_episode_id: 'ep1',
-			tmpl: {
-				itemType: 'transcript',
-				wrapper: 'default',
-				template: 'default',
-				position: 'tl',
-				layout: 'overlay'
+				_id: 'foo1',
+				cur_episode_id: 'ep1',
+				tmpl: {
+					itemType: 'transcript',
+				},
+				annotation: {
+					en: "This is a sample transcript not being edited"
+				},
+				annotator: {
+					en: "John Doe"
+				}
 			},
-			annotation: {
-				en: "Hello there.  THis is some english text."
-			},
-		}];
 
-		modelSvc.cache("event", items[0]);
-		$scope.items = [
-			modelSvc.events[items[0]._id]
+			{
+				_id: 'internal:editing',
+				cur_episode_id: 'ep1',
+				tmpl: {
+					itemType: 'transcript',
+				},
+				annotation: {
+					en: ""
+				},
+				annotator: {
+					en: "John Doe"
+				}
+			}, {
+				_id: 'foo2',
+				cur_episode_id: 'ep1',
+				tmpl: {
+					itemType: 'transcript',
+				},
+				annotation: {
+					en: "This is a sample transcript not being edited"
+				},
+				annotator: {
+					en: "John Doe"
+				}
+			}
 		];
+
+		$scope.items = [];
+		for (var i = 0; i < items.length; i++) {
+			modelSvc.cache("event", items[i]);
+			$scope.items.push(modelSvc.events[items[i]._id]);
+		};
 
 		console.log(modelSvc);
 
@@ -48,7 +75,7 @@ angular.module('com.inthetelling.story')
 		scope: {
 			val: '=bindVal'
 		},
-		template: '<div ng-class="{lorem: !val}" ng-bind-html="val"></div>',
+		template: '<span ng-class="{lorem: !val}" ng-bind-html="val"></span>',
 		link: function (scope) {
 			// console.log("scope.val", scope.val);
 		}
@@ -65,6 +92,38 @@ angular.module('com.inthetelling.story')
 		template: '<div class="field"><div class="label" ng-bind-html="label"></div><div class="input" ng-transclude></div></div>',
 		link: function (scope) {
 			// console.log("scope.label", scope);
+		}
+	};
+})
+
+.directive('ittContentPane', function () {
+	return {
+		restrict: 'A',
+		replace: 'true',
+		scope: {
+			items: '=ittContentPane'
+		},
+		template: '<div class="content" ng-class="{isNarrow: isNarrow()}"><div ng-repeat="item in items" ng-include="\'templates/v2/wrapper/_global.html\'" class="animate"></div></div>',
+		link: function (scope, el) {
+			console.log("contentpane", scope, el);
+			scope.isNarrow = function () {
+				return el.width() < 400;
+			};
+		}
+	};
+})
+
+.directive('ittTimestamp', function () {
+	return {
+		restrict: 'A',
+		replace: 'true',
+		scope: {
+			item: '=ittTimestamp',
+			pos: '@pos'
+		},
+		template: '<span ng-include="\'/templates/v2/timestamp/\'+(item.tmpl.timestamp||\'default\')+\'-\'+pos+\'.html\'"></span>',
+		link: function () {
+
 		}
 	};
 })
@@ -160,9 +219,9 @@ angular.module('com.inthetelling.story')
 			}
 
 			scope.forceModel = function (evt) {
+				// HACK we hijacked ng-model for this directive, so update it via an ng-click handler instead.
 				scope.ngModel = evt.currentTarget.options[evt.currentTarget.selectedIndex].value;
 				init();
-
 			}
 
 		}

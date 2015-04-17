@@ -1,0 +1,9 @@
+<div class="timestamp" style="position:relative">
+	<div style="position:absolute; width: 55px; padding:3px;opacity:0.8;border-radius:5px; pointer-events:none" ng-style="{backgroundColor: (item.tmpl.style.textcolor2 || '#CCC')}">
+		<span style="opacity:0">{{item.displayStartTime}}</span>
+	</div>
+	<div style="position:absolute; width: 55px; padding:3px;">
+		<a style="color:#FFF;" role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" x-ng-click="seek(item.start_time)" ng-keypress="seekOnKeyPress(item.start_time, $event)">
+	{{item.displayStartTime}}</a>
+	</div>
+</div>

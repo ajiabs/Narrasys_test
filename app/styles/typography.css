@@ -12,21 +12,25 @@ a {
 	text-decoration: none;
 }
 /* NEW HOTNESS */
+/* TODO bring back the explicit 'ital' styles, so they can be used on plain input fields */
 
 .type1-droidsans,
 .type2-droidsans .altType {
 	font-family: 'Droid Sans', sans-serif;
+	font-style: normal;
 }
 
 .type1-helvetica,
 .type2-helvetica .altType {
 	font-family: 'Helvetica', 'Arial', sans-serif;
+	font-style: normal;
 }
 
 .type1-lato,
 .type2-lato .altType {
 	font-family: 'Lato', 'Helvetica', sans-serif;
 	font-weight: 400;
+	font-style: normal;
 }
 
 .type1-latothin,
@@ -35,97 +39,158 @@ a {
 	font-weight: 100;
 	font-size: 120%;
 	text-transform: uppercase;
+	font-style: normal;
 }
 
 .type1-opensans,
 .type2-opensans .altType {
 	font-family: 'Open Sans', sans-serif;
+	font-style: normal;
 }
 
 .type1-ptsans,
 .type2-ptsans .altType {
 	font-family: 'PT Sans', sans-serif;
+	font-style: normal;
 }
 
 .type1-roboto,
 .type2-roboto .altType {
 	font-family: 'Roboto', sans-serif;
+	font-style: normal;
 }
 
 .type1-trebuchet,
 .type2-trebuchet .altType {
 	font-family: 'Trebuchet MS', sans-serif;
+	font-style: normal;
 }
 
 .type1-verdana,
 .type2-verdana .altType {
 	font-family: 'Verdana', sans-serif;
+	font-style: normal;
 }
 
 .type1-arvo,
 .type2-arvo .altType {
 	font-family: 'Arvo', serif;
+	font-style: normal;
 }
 
 .type1-cardo,
 .type2-cardo .altType {
 	font-family: 'Cardo', serif;
+	font-style: normal;
 }
 
 .type1-droidserif,
 .type2-droidserif .altType {
 	font-family: 'Droid Serif', serif;
+	font-style: normal;
 }
 
 .type1-garamond,
 .type2-garamond .altType {
 	font-family: 'EB Garamond', 'Adobe Garamond', 'Garamond', serif;
+	font-style: normal;
 }
 
 .type1-gentium,
 .type2-gentium .altType {
 	font-family: 'Gentium Basic', serif;
+	font-style: normal;
 }
 
 .type1-merriweather,
 .type2-merriweather .altType {
 	font-family: 'Merriweather', serif;
+	font-style: normal;
 }
 
 .type1-oldstandard,
 .type2-oldstandard .altType {
 	font-family: 'Old Standard TT', serif;
+	font-style: normal;
 }
 
 .type1-playfair,
 .type2-playfair .altType {
 	font-family: 'Playfair Display', serif;
+	font-style: normal;
 }
 
 .type1-ptserif,
 .type2-ptserif .altType {
 	font-family: 'PT Serif', serif;
+	font-style: normal;
 }
 
 .type1-vollkorn,
 .type2-vollkorn .altType {
 	font-family: 'Vollkorn', serif;
+	font-style: normal;
 }
 
 .type1-trajan,
 .type2-trajan .altType {
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif;
+	font-style: normal;
 }
 
 .type1-impact,
 .type2-impact .altType {
 	font-family: "Champion", "Impact", "Charcoal", sans-serif;
 	letter-spacing: 1px;
+	font-style: normal;
 }
 
 .type1-myriad,
 .type2-myriad .altType {
 	font-family: "Myriad Pro", "Arial";
+	font-style: normal;
+}
+
+.type1-latoital,
+.type2-latlital .altType {
+	font-family: 'Lato', 'Helvetica', sans-serif;
+	font-weight: 400;
+	font-style: italic;
+}
+
+.type1-ptsansital,
+.type2-ptsansital .altType {
+	font-family: 'PT Sans', sans-serif;
+	font-weight: 400;
+	font-style: italic;
+}
+
+.type1-ptserifital,
+.type2-ptserifital .altType {
+	font-family: 'PT Serif', serif;
+	font-weight: 400;
+	font-style: italic;
+}
+
+.type1-droidital,
+.type2-droidital .altType {
+	font-family: 'Droid Serif', serif;
+	font-weight: 400;
+	font-style: italic;
+}
+
+.type1-vollkornital,
+.type2-vollkornital .altType {
+	font-family: 'Vollkorn', serif;
+	font-weight: 400;
+	font-style: italic;
+}
+
+.type1-merriweatherital,
+.type2-merriweatherital .altType {
+	font-family: 'Merriweather', serif;
+	font-weight: 300;
+	font-style: italic;
 }
 /* BELOW IS OLD, TO BE REMOVED */
 
