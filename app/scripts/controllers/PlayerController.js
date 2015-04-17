@@ -130,7 +130,12 @@ angular.module('com.inthetelling.story')
 				if (masterAsset && Object.keys(masterAsset)
 					.length > 1) {
 					watch();
+				if (appState.timelineId) {
+					var lastSegmentEpisodeId = modelSvc.timelines[appState.timelineId].episode_segments[modelSvc.timelines[appState.timelineId].episode_segments.length-1].episode_id;
+					modelSvc.addEndingScreen(lastSegmentEpisodeId); // needs master asset to exist so we can get duration
+				} else {
 					modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
+				}
 					timelineSvc.init(appState.episodeId);
 					$scope.loading = false;
 				}
