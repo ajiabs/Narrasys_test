@@ -416,26 +416,18 @@ angular.module('com.inthetelling.story')
 		};
 		var sortSegments = function (segmentA, segmentB) {
 
-			var a = parseInt(segmentA.sort_order);
-			var b = parseInt(segmentB.sort_order);
+			var a = parseInt(segmentA.sort_order, 10);
+			var b = parseInt(segmentB.sort_order, 10);
 			return a - b;
-		}
-
-		var calculateTotalTime = function (segments) {
-			var segments = segments.sort(sortSegments); //sorting doesn't matter here. remove later.
-			var totalTime = 0;
-			for (var i = 0, len = segments.length; i < len; i++) {
-				totalTime += segments[i].end_time - segments[i].start_time;
-			}
-			return totalTime;
 		};
+
 		var getStartTimeForSegment = function (segments, segment) {
 			return timelineTranslator.getTimelineTimeFromSegmentTime(segments, segment, 0);
 		};
 		var injectAllEventsForSegments = function (epId, segments) {
 			var start = 0;
 			var previousStart = 0;
-			var segments = segments.sort(sortSegments); //sorting doesn't matter here. remove later.
+			segments = segments.sort(sortSegments); //sorting doesn't matter here. remove later.
 			for (var i = 0, len = segments.length; i < len; i++) {
 				var segment = segments[i];
 				previousStart = start;
