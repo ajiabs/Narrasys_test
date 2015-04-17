@@ -4639,6 +4639,28 @@ angular.module('com.inthetelling.story')
 					"layout_id": ["528d17eeba4f65e57800001e"],
 					"template_id": "5339deddba4f65a45e00000b",
 					"episode_id": "533aec182442bdd34c000003"
+				}, {
+					"_id": "54ca807341f6dff5f1000014",
+					"_type": "Upload",
+					"type": "Upload",
+					"templateUrl": "templates/item/image.html",
+					"asset_id": "534af2602442bd081f000002",
+					"start_time": 301.75074951618103,
+					"description": {
+						"en": "testing"
+					},
+					"title": {
+						"en": "testing"
+					},
+					"keywords": {
+						"en": ["SxS"]
+					},
+					"style_id": [],
+					"end_time": 303.75074951618103,
+					"stop": true,
+					"layout_id": ["528d17eeba4f65e57800001e"],
+					"template_id": "5339deddba4f65a45e00000b",
+					"episode_id": "533aec182442bdd34c000003"
 				}];
 
 			});

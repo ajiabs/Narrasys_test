@@ -205,7 +205,22 @@ angular.module('com.inthetelling.story')
 
 					return [200, files, {}]; //containers returns an array, even when by id, so we'll match the backend
 				});
-			var narrativeByIdRegex = /\/v3\/narratives\/(\w+)\/resolve/
+	
+			var assetsByIdRegex = /\/v1\/assets\/(\w+)/
+			backend.whenGET(assetsByIdRegex)
+				.respond(function (method, url, data) {
+					// parse the matching URL to pull out the id (/games/:id)
+					var matches = assetsByIdRegex .exec(url);
+					var assetid = matches[1];
+					//TODO: AssetDataModel needs to be extended to have FindByContainerId
+					DataModelUtils.setData(AssetDataModel.data);
+					var assets = DataModelUtils.findOne(assetid);
+					var files = {};
+					files.files = assets;
+
+					return [200, files, {}]; //containers returns an array, even when by id, so we'll match the backend
+				});
+		var narrativeByIdRegex = /\/v3\/narratives\/(\w+)\/resolve/
 			backend.whenGET(narrativeByIdRegex)
 				.respond(function (method, url, data) {
 					// parse the matching URL to pull out the id (/games/:id)

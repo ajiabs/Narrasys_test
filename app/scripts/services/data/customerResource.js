@@ -1,8 +1,8 @@
 
 
 angular.module('com.inthetelling.story')
-	.factory('Customer', ['$resource', function ($resource) {
-	return $resource('/v3/customers/:customerId', {_id:'@customerId'}, {
+	.factory('Customer', ['$resource', 'config', function ($resource, config) {
+	return $resource(config.apiDataBaseUrl + '/v3/customers/:customerId', {_id:'@customerId'}, {
 		'update': {
 			method: 'PUT'
 		},

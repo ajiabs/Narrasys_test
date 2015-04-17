@@ -12,6 +12,7 @@ angular.module('com.inthetelling.story')
 
 		this.findOne = function (Id) {
 			// find the item that matches that id
+			console.log("finding one", Id);
 			var list = $.grep(this.getData(), function (element, index) {
 				return (element._id == Id);
 			});
