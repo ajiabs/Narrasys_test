@@ -405,7 +405,6 @@ angular.module('com.inthetelling.story')
 					getEventActivityDataForUser(events, "Plugin", epId);
 					angular.forEach(events, function (eventData) {
 						eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-						console.log('EVENT DATA: ', eventData);
 						modelSvc.cache("event", svc.resolveIDs(eventData));
 					});
 
