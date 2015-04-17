@@ -9,9 +9,6 @@ angular.module('com.inthetelling.story')
 	.factory('dataMgr', function ($q, $routeParams, $timeout, $rootScope, config, authSvc, errorSvc, EpisodeSegmentExpanded, Event, Container, Asset) {
 		var svc = {};
 
-		var isEvents = function (items) {
-
-		};
 		var isContainers = function (items) {
 			if (typeof items[0] !== 'undefined' && items[0] !== null) {
 				if (items[0].parent_id !== undefined && items[0].customer_id !== undefined) {
@@ -21,12 +18,6 @@ angular.module('com.inthetelling.story')
 				}
 			}
 			return false;
-		};
-		var isAssets = function (items) {
-
-		};
-		var isArray = function (thing) {
-			return thing.constructor === Array ? true : false;
 		};
 		svc.getEpisodeSegmentExpandedBySegmentId = function (segmentId) {
 			var defer = $q.defer();
