@@ -8,6 +8,7 @@ describe('templateResource', function () {
 						TemplateDataModel = $injector.get('TemplateDataModel');
 						DataModelUtils = $injector.get('DataModelUtils');
             mockTemplateResource = $injector.get('Template');
+						config = $injector.get('config');
         })
     });
 
@@ -16,7 +17,7 @@ describe('templateResource', function () {
 						var templateId = "5240be41dd4736976c00000d";						
 						DataModelUtils.setData(TemplateDataModel.data);
 						var template = DataModelUtils.findOne(templateId);
-            $httpBackend.expectGET('/v1/templates/' + templateId)
+            $httpBackend.expectGET(config.apiDataBaseUrl + '/v1/templates/' + templateId)
                 .respond(template);
 
             var result = mockTemplateResource.get({templateId:templateId});

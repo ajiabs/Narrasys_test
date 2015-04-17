@@ -8,6 +8,7 @@ describe('eventResource', function () {
 						EventDataModel = $injector.get('EventDataModel');
 						DataModelUtils = $injector.get('DataModelUtils');
             mockEventResource = $injector.get('Event');
+						config = $injector.get('config');
         })
     });
 
@@ -16,7 +17,7 @@ describe('eventResource', function () {
 						var eventId = "54ca807341f6dff5f1000014";						
 						DataModelUtils.setData(EventDataModel.data);
 						var event = DataModelUtils.findOne(eventId);
-            $httpBackend.expectGET('/v3/events/' + eventId)
+            $httpBackend.expectGET(config.apiDataBaseUrl + '/v3/events/' + eventId)
                 .respond(event);
 
             var result = mockEventResource.get({eventId:eventId});

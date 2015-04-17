@@ -8,6 +8,7 @@ describe('containerResource', function () {
 						ContainerDataModel = $injector.get('ContainerDataModel');
 						DataModelUtils = $injector.get('DataModelUtils');
             mockContainerResource = $injector.get('Container');
+						config = $injector.get('config');
         })
     });
 
@@ -15,15 +16,15 @@ describe('containerResource', function () {
         it('should call container get by id', inject(function (Container) {
 						var containerId = "527d078fd72cc3699f000003";						
 						DataModelUtils.setData(ContainerDataModel.data);
-						var container = DataModelUtils.findOne(containerId);
+						var container = DataModelUtils.findAll(containerId);
 						console.log('expected container: ', container);
-            $httpBackend.expectGET('/v3/containers/' + containerId)
+            $httpBackend.expectGET(config.apiDataBaseUrl + '/v3/containers/' + containerId)
                 .respond(container);
 
             var result = mockContainerResource.get({containerId:containerId});
             $httpBackend.flush();
             console.log("Container: ", result)
-            expect(result._id).toEqual(containerId);
+            expect(result[0]._id).toEqual(containerId);
         }));
 
     });

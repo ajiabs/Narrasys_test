@@ -1,5 +1,5 @@
 describe('assetResource', function () {
-    var mockUserResource, $httpBackend;
+    var mockAssetResource, AssetDataModel, DataModelUtils, $httpBackend, config;
     beforeEach(angular.mock.module('com.inthetelling.story'));
 
     beforeEach(function () {
@@ -8,6 +8,7 @@ describe('assetResource', function () {
 						AssetDataModel = $injector.get('AssetDataModel');
 						DataModelUtils = $injector.get('DataModelUtils');
             mockAssetResource = $injector.get('Asset');
+						config = $injector.get('config');
         })
     });
 
@@ -18,7 +19,7 @@ describe('assetResource', function () {
 						
 						DataModelUtils.setData(AssetDataModel.data);
 						var asset = DataModelUtils.findOne(assetId);
-            $httpBackend.expectGET('/v1/assets/' + assetId)
+            $httpBackend.expectGET(config.apiDataBaseUrl + '/v1/assets/' + assetId)
                 .respond(asset);
 
             var result = mockAssetResource.get({assetId:assetId});
