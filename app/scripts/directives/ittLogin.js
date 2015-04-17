@@ -37,7 +37,13 @@ angular.module('com.inthetelling.story')
 							var narrId = $routeParams.narrative;
 							$location.search('narrative', null);
 							$location.search('nonce', null);
-							$location.path('/story/' + narrId);
+                                                        if($routeParams.timeline) {
+                                                            var timelineId = $routeParams.timeline;
+                                                            $location.search('timeline', null);
+							    $location.path('/story/' + narrId + '/' + timelineId);
+                                                        } else {
+							    $location.path('/story/' + narrId);
+                                                        }
 
 						} else if (Object.keys($routeParams).length === 0) {
 							$location.path('/user');
