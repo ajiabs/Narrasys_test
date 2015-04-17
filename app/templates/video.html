@@ -13,6 +13,6 @@
 		play: appState.timelineState == 'paused',
 		buffering: appState.timelineState == 'buffering',
 		firstplay: !appState.hasBeenPlayed,
-		rewind: (appState.time > 0 && appState.time >= video.duration - 0.3)
+		rewind: (appState.time > 0 && appState.time >= appState.duration - 0.3)
 	}"></div>
 </div>
