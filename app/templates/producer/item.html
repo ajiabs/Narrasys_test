@@ -1,106 +1,108 @@
 <div class="itemEdit authoringForm">
 
 
-	<div ng-if="appState.product == 'sxs'" class="authoringFormScrollContainer">
-		<!-- begin sxs -->
-
-		<div class="field">
-			<div class="label">Time
-			</div>
-			<div class="input">
-				<a ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
-					<span class="control-text">Beginning of scene</span>
-				</a>
-				<input type="text" ng-model="item.start_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }" ng-change="setItemTime()">
-			</div>
-		</div>
-		<div ng-include="itemEditor"></div>
-		<!-- end sxs -->
-	</div>
+	<!-- begin producer -->
+	<div class="ittTabs" itt-tabs>
+		<!-- begin tabset -->
 
 
-	<div ng-if="appState.product == 'producer'">
-		<!-- begin producer -->
-		<div class="ittTabs" itt-tabs>
+		<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="{{item._type === 'Scene' ? 'Scene' : 'Item'}}">
+
 			<select style="float:right; padding-right: 24px" ng-if="languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
 			</select>
-			<!-- begin tabset -->
 
-			<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="Layout">
-
-				<div form-field="Time">
-					<!-- TODO call setItemTime and setItemEndTime or equivalent on these: -->
-					<span sxs-input-time="item" x-input-field="start_time"></span>
-					<span ng-if="!(item.stop || item._type === 'Scene')">
-						<span class="label"> &nbsp; &nbsp; &nbsp; End</span>
+			<div form-field="Time">
+				<!-- TODO call setItemTime and setItemEndTime or equivalent on these: -->
+				<span sxs-input-time="item" x-input-field="start_time"></span>
+				<span ng-if="!(item.stop || item._type === 'Scene')">
+					<label>-
 						<span sxs-input-time="item" x-input-field="end_time"></span>
-					</span>
-					<br>
-					<input type="checkbox" ng-model="item.stop">Pause playback when this enters
-				</div>
+					</label>
+				</span>
+				<br>
+				<input type="checkbox" ng-model="item.stop">Pause playback when this enters
+			</div>
 
-				<div form-field="Template">
-					<select ng-model="item.tmpl.template">
+
+			<div ng-include="itemEditor"></div>
+
+			<div form-field="Metadata">
+				<label>
+					<input type="checkbox" ng-model="item.required"> Students are required to view this item.</label>
+				<label>
+					<input type="checkbox" ng-model="item.cosmetic"> This is a cosmetic item (and will not appear in search results or review mode.)</label>
+			</div>
+		</div>
+
+		<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Style">
+
+			<div form-field="Template">
+				<select ng-model="item.tmpl.template">
+					<option value="default">Default</option>
+					<option value="debug">DEBUG</option>
+				</select>
+			</div>
+
+
+			<div form-field="Layout">
+				<select ng-model="item.tmpl.layout">
+					<option value="">As content</option>
+					<option value="overlay">As overlay</option>
+				</select>
+			</div>
+
+			<div ng-if="item.tmpl.layout === 'overlay'">
+
+				<div form-field="Border/Background">
+					<select ng-model="item.tmpl.wrapper">
 						<option value="default">Default</option>
-						<option value="debug">DEBUG</option>
+						<option value="bleed">Edge to edge</option>
+						<option value="box">Box</option>
+						<option value="inset">Inset</option>
+						<option value="coloredborder">Colored Border</option>
 					</select>
 				</div>
 
+				<div form-field="Position">
+					<itt-position-overlay style="float:left;width:50%;" ng-model="item.tmpl.position"></itt-position-overlay>
+					TODO pane selection TODO size settings TODO opacity
+				</div>
 
-				<div form-field="Layout">
-					<select ng-model="item.tmpl.layout">
-						<option value="">As content</option>
-						<option value="overlay">As overlay</option>
+			</div>
+			<div ng-if="item.tmpl.layout !== 'overlay'">
+				<div form-field="Border/Background">
+					<select ng-model="item.tmpl.wrapper">
+						<option value="default">Default</option>
+						<option value="box">Box</option>
+						<option value="inset">Inset</option>
+						<option value="coloredborder">Colored Border</option>
 					</select>
 				</div>
 
-				<div ng-if="item.tmpl.layout === 'overlay'">
-
-					<div form-field="Border/Background">
-						<select ng-model="item.tmpl.wrapper">
-							<option value="default">Default</option>
-							<option value="bleed">Edge to edge</option>
-							<option value="box">Box</option>
-							<option value="inset">Inset</option>
-							<option value="coloredborder">Colored Border</option>
-						</select>
-					</div>
-
-					<div form-field="Position">
-						<itt-position-overlay style="float:left;width:50%;" ng-model="item.tmpl.position"></itt-position-overlay>
-						TODO pane selection TODO size settings TODO opacity
-					</div>
-
+				<div form-field="Position">
+					<itt-position-content ng-model="item.tmpl.position"></itt-position-content>
 				</div>
-				<div ng-if="item.tmpl.layout !== 'overlay'">
-					<div form-field="Border/Background">
-						<select ng-model="item.tmpl.wrapper">
-							<option value="default">Default</option>
-							<option value="box">Box</option>
-							<option value="inset">Inset</option>
-							<option value="coloredborder">Colored Border</option>
-						</select>
-					</div>
+			</div>
 
-					<div form-field="Position">
-						<itt-position-content ng-model="item.tmpl.position"></itt-position-content>
-					</div>
-				</div>
 
+			<div form-field="Style">
+				<select size="1" ng-model="item.tmpl.stylepreset">
+					<option value="">Default style</option>
+					<optgroup label="Presets">
+						<option value="x">Preset X
+						</option>
+					</optgroup>
+					<optgroup label="My saved styles">
+
+					</optgroup>
+					<option value="custom">Custom styles</option>
+				</select>
 
 			</div>
-			<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="{{item._type === 'Scene' ? 'Scene' : 'Item'}}">
 
-				<div ng-include="itemEditor"></div>
-
-			</div>
-			<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" x-tablabel="Style">
-				TODO:
-				<br> presets
-
-				<br> transitions
-				<br> highlights
-
+			<fieldset ng-if="item.tmpl.stylepreset == 'custom'">
+				<legend>Custom styles</legend>
+				<!-- begin custom styles -->
 				<div form-field="Timestamp">
 					<select ng-model="item.tmpl.timestamp">
 						<option value="">Default</option>
@@ -115,6 +117,7 @@
 				<div form-field="Colors">
 					<div itt-item-color-form="item"></div>
 				</div>
+
 				<div form-field="Font face">
 					<select size="1" ng-model="item.tmpl.style.font1">
 						<option value="">Default</option>
@@ -195,7 +198,6 @@
 					</select>
 				</div>
 
-
 				<div form-field="Text size">
 					<input style="width: 79%" type="range" min="75" max="150" ng-model="item.tmpl.style.fontsize" />
 
@@ -205,20 +207,15 @@
 						<input style="border: none; box-shadow: none !important; text-align:right; font-size: small; width: 3em" ng-model="item.tmpl.style.fontsize">%
 					</div>
 				</div>
-			</div>
-			<!-- end of tabset -->
+				<!-- end of custom styles -->
+			</fieldset>
 		</div>
-
-		<!-- end producer -->
+		<!-- end of tabset -->
 	</div>
 
-
 	<div class="ittTabFoot">
-
 		<a ng-click="cancelEdit()">Cancel</a> &nbsp; &nbsp;
 		<button ng-if="item._id != 'internal:editing'" ng-click="deleteEvent(item._id)">Delete</button>
 		<button ng-click="saveEvent()">Save</button>
 	</div>
-	<br>
-	<br>
 </div>
