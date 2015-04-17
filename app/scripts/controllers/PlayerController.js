@@ -40,7 +40,8 @@ angular.module('com.inthetelling.story')
 				// appState.autoscrollBlocked = true;
 			}
 			$timeout(function () {
-				$(window).trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
+				$(window)
+					.trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
 			});
 		};
 
@@ -100,20 +101,20 @@ angular.module('com.inthetelling.story')
 					var allLoaded = false;
 					var sortOrder = -1;
 					var firstSegment;
-					for (var i=0, len = modelSvc.timelines[appState.timelineId].episode_segments.length; i < len; i++) {
+					for (var i = 0, len = modelSvc.timelines[appState.timelineId].episode_segments.length; i < len; i++) {
 						var episode = modelSvc.episodes[modelSvc.timelines[appState.timelineId].episode_segments[i].episode_id];
 						if (episode && episode.master_asset_id) {
 							if (modelSvc.assets[episode.master_asset_id]) {
 								allLoaded = true;
 							} else {
-								allLoaded = false;	
-								break;	
+								allLoaded = false;
+								break;
 							}
 						} else {
-							allLoaded = false;	
-							break;	
+							allLoaded = false;
+							break;
 						}
-						if (i == 0 || modelSvc.timelines[appState.timelineId].episode_segments[i].sort_order < sortOrder) {
+						if (i === 0 || modelSvc.timelines[appState.timelineId].episode_segments[i].sort_order < sortOrder) {
 							firstSegment = modelSvc.timelines[appState.timelineId].episode_segments[i];
 							sortOrder = modelSvc.timelines[appState.timelineId].episode_segments[i].sort_order;
 						}
@@ -121,12 +122,13 @@ angular.module('com.inthetelling.story')
 					if (allLoaded) {
 						return modelSvc.assets[modelSvc.episodes[firstSegment.episode_id].master_asset_id];
 					}
-					
+
 				} else {
 					return modelSvc.assets[master_asset_id];
 				}
 			}, function (masterAsset) {
-				if (masterAsset && Object.keys(masterAsset).length > 1) {
+				if (masterAsset && Object.keys(masterAsset)
+					.length > 1) {
 					watch();
 					modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
 					timelineSvc.init(appState.episodeId);
@@ -143,7 +145,8 @@ angular.module('com.inthetelling.story')
 			var rolesWatcher = $scope.$watch(function () {
 				return appState.user;
 			}, function (x) {
-				if (Object.keys(x).length) {
+				if (Object.keys(x)
+					.length) {
 					rolesWatcher();
 					if (!authSvc.userHasRole('admin')) {
 						appState.product = 'player';
@@ -354,7 +357,8 @@ angular.module('com.inthetelling.story')
 			var top = Infinity;
 			var curScroll = autoscrollableNode.scrollTop();
 			angular.forEach($('.content .item.isCurrent:visible'), function (item) {
-				var t = item.getBoundingClientRect().top + curScroll;
+				var t = item.getBoundingClientRect()
+					.top + curScroll;
 				if (t < top) {
 					top = t;
 				}
@@ -364,7 +368,8 @@ angular.module('com.inthetelling.story')
 			}
 
 			// There's a visible current item; is it within the viewport?
-			var slop = $(window).height() / 5;
+			var slop = $(window)
+				.height() / 5;
 			if (top > curScroll + slop && top < (curScroll + slop + slop + slop)) {
 				return;
 			}
