@@ -5,7 +5,7 @@ TODO: right now we're re-building the episode structure on every keystroke.  Tha
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -27,6 +27,61 @@ angular.module('com.inthetelling.story')
 					scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 					scope.languages = modelSvc.episodes[appState.episodeId].languages;
 				}
+
+				/* BEGIN style presets */
+
+				scope.preset = {};
+				scope.stylePresets = angular.fromJson(localStorage.getItem('ittStylePresets')) || {};
+
+				scope.$watch(function () {
+					return scope.item.tmpl.stylepreset;
+				}, function (newV) {
+					console.log(newV);
+					if (newV === '') {
+						delete scope.item.tmpl.wrapper;
+						delete scope.item.tmpl.timestamp;
+						scope.item.tmpl.style = {};
+						scope.showCustomStyles = false;
+					} else if (newV === 'custom') {
+						scope.showCustomStyles = true;
+						scope.preset.name = "";
+					} else if (scope.stylePresets[newV]) {
+						scope.preset.name = newV;
+						scope.item.tmpl.wrapper = scope.stylePresets[newV].wrapper;
+						scope.item.tmpl.timestamp = scope.stylePresets[newV].timestamp;
+						scope.item.tmpl.style = angular.copy(scope.stylePresets[newV].style);
+					}
+
+				});
+
+				scope.editStyle = function () {
+					scope.showCustomStyles = true;
+				}
+
+				scope.saveStylePreset = function () {
+					console.log("Store", scope.preset.name, scope.item.tmpl.style);
+					var newPreset = {
+						name: scope.preset.name,
+						wrapper: scope.item.tmpl.wrapper,
+						timestamp: scope.item.tmpl.timestamp,
+						style: angular.copy(scope.item.tmpl.style)
+					};
+					scope.stylePresets[scope.preset.name] = newPreset;
+					localStorage.setItem('ittStylePresets', JSON.stringify(scope.stylePresets));
+					scope.showCustomStyles = false;
+					$timeout(function () { // give the <select> time to include the preset first
+						scope.item.tmpl.stylepreset = scope.preset.name;
+					});
+				};
+
+				scope.deleteStylePreset = function () {
+					delete scope.stylePresets[scope.preset.name];
+					localStorage.setItem('ittStylePresets', JSON.stringify(scope.stylePresets));
+					delete scope.preset.name;
+					scope.showCustomStyles = false;
+				}
+
+				/* END style presets */
 
 				// scope.itemForm = {
 				// 	"transition": "",
@@ -98,29 +153,29 @@ angular.module('com.inthetelling.story')
 					// 	set cosmetic to true, itemForm.
 					// if old template was image-fill, set cosmetic to false
 					// TODO this is fragile, based on template name:
-					if (newItem.templateUrl !== oldItem.templateUrl) {
-						if (newItem.templateUrl === 'templates/item/image-fill.html') {
-							scope.item.cosmetic = true;
-							scope.item.layouts = ["windowBg"];
-							scope.itemForm.position = "fill";
-						}
-						if (oldItem.templateUrl === 'templates/item/image-fill.html') {
-							scope.item.cosmetic = false;
-							scope.item.layouts = ["inline"];
-							scope.itemForm.position = "";
-							scope.itemForm.pin = "";
-						}
-					}
+					// if (newItem.templateUrl !== oldItem.templateUrl) {
+					// 	if (newItem.templateUrl === 'templates/item/image-fill.html') {
+					// 		scope.item.cosmetic = true;
+					// 		scope.item.layouts = ["windowBg"];
+					// 		scope.itemForm.position = "fill";
+					// 	}
+					// 	if (oldItem.templateUrl === 'templates/item/image-fill.html') {
+					// 		scope.item.cosmetic = false;
+					// 		scope.item.layouts = ["inline"];
+					// 		scope.itemForm.position = "";
+					// 		scope.itemForm.pin = "";
+					// 	}
+					// }
 
 					scope.item = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
 
-					if (newItem.asset) {
-						scope.item.asset.cssUrl = "url('" + newItem.asset.url + "');";
-						scope.item.backgroundImageStyle = "background-image: url('" + newItem.asset.url + "');";
-					} else {
-						delete scope.item.asset;
-						delete scope.item.backgroundImageStyle;
-					}
+					// if (newItem.asset) {
+					// 	scope.item.asset.cssUrl = "url('" + newItem.asset.url + "');";
+					// 	scope.item.backgroundImageStyle = "background-image: url('" + newItem.asset.url + "');";
+					// } else {
+					// 	delete scope.item.asset;
+					// 	delete scope.item.backgroundImageStyle;
+					// }
 
 					// TODO BUG items moved from one scene to another aren't being included in the new scene until the user hits save,
 					// only in discover mode (review mode has no problem.)   This was also the case when we ran resolveEpisodeEvents on every edit, it's an older bug.
@@ -131,28 +186,28 @@ angular.module('com.inthetelling.story')
 
 				}, true);
 
-				// Transform changes to form fields for styles into item.styles[]:
-				scope.watchStyleEdits = scope.$watch(function () {
-					return scope.itemForm;
-				}, function () {
-					var styles = [];
-					for (var styleType in scope.itemForm) {
-						if (scope.itemForm[styleType]) {
-							if (styleType === 'position' || styleType === 'pin') { // reason #2,142,683 why I should've specced these styles in some more structured way than a simple array
-								styles.push(scope.itemForm[styleType]);
-							} else {
-								styles.push(styleType + scope.itemForm[styleType]);
-							}
-						}
-					}
-					scope.item.styles = styles;
+				// // Transform changes to form fields for styles into item.styles[]:
+				// scope.watchStyleEdits = scope.$watch(function () {
+				// 	return scope.itemForm;
+				// }, function () {
+				// 	var styles = [];
+				// 	for (var styleType in scope.itemForm) {
+				// 		if (scope.itemForm[styleType]) {
+				// 			if (styleType === 'position' || styleType === 'pin') { // reason #2,142,683 why I should've specced these styles in some more structured way than a simple array
+				// 				styles.push(scope.itemForm[styleType]);
+				// 			} else {
+				// 				styles.push(styleType + scope.itemForm[styleType]);
+				// 			}
+				// 		}
+				// 	}
+				// 	scope.item.styles = styles;
 
-					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
-					if (scope.item.asset) {
-						scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
-						scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
-					}
-				}, true);
+				// 	// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
+				// 	if (scope.item.asset) {
+				// 		scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
+				// 		scope.item.backgroundImageStyle = "background-image: url('" + scope.item.asset.url + "');";
+				// 	}
+				// }, true);
 
 				scope.forcePreview = function () {
 					// this is silly but it works.

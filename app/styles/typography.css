@@ -11,6 +11,11 @@ body {
 a {
 	text-decoration: none;
 }
+
+ol,
+ul {
+	margin: 0 1em;
+}
 /* NEW HOTNESS */
 /* TODO bring back the explicit 'ital' styles, so they can be used on plain input fields */
 
@@ -29,7 +34,6 @@ a {
 .type1-lato,
 .type2-lato .altType {
 	font-family: 'Lato', 'Helvetica', sans-serif;
-	font-weight: 400;
 	font-style: normal;
 }
 
@@ -152,37 +156,32 @@ a {
 }
 
 .type1-latoital,
-.type2-latlital .altType {
+.type2-latoital .altType {
 	font-family: 'Lato', 'Helvetica', sans-serif;
-	font-weight: 400;
 	font-style: italic;
 }
 
 .type1-ptsansital,
 .type2-ptsansital .altType {
 	font-family: 'PT Sans', sans-serif;
-	font-weight: 400;
 	font-style: italic;
 }
 
 .type1-ptserifital,
 .type2-ptserifital .altType {
 	font-family: 'PT Serif', serif;
-	font-weight: 400;
 	font-style: italic;
 }
 
 .type1-droidital,
 .type2-droidital .altType {
 	font-family: 'Droid Serif', serif;
-	font-weight: 400;
 	font-style: italic;
 }
 
 .type1-vollkornital,
 .type2-vollkornital .altType {
 	font-family: 'Vollkorn', serif;
-	font-weight: 400;
 	font-style: italic;
 }
 

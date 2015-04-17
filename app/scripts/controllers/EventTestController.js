@@ -231,39 +231,27 @@ angular.module('com.inthetelling.story')
 .directive('ittItemColorForm', function ($timeout) {
 	return {
 		restrict: 'A',
-
 		scope: true,
 		templateUrl: '/templates/producer/itemcolorform.html',
 		link: function (scope) {
 			console.log("color form", scope.item);
 
-			if (!scope.item.tmpl.style.textcolor1 && !scope.item.tmpl.style.textcolor2 && !scope.item.tmpl.style.textcolor3) {
-				$timeout(function () {
-					scope.defaultColors = true; // HACK color-picker wants to init as #FFF, timeout will override
+			if (!scope.item.tmpl.style.textcolor1 && !scope.item.tmpl.style.textcolor2 && !scope.item.tmpl.style.linkcolor) {
+				console.log("Found no colors... turn on defaultColors");
+				scope.item.tmpl.style.linkcolor = "#0000FF";
+				scope.item.tmpl.style.textcolor1 = "#000000";
+				scope.item.tmpl.style.textcolor2 = "#000000";
+				scope.defaultColors = true; // HACK color-picker wants to init as #FFF, timeout will override
+			};
 
-				})
-			}
 			if (!scope.item.tmpl.style.bgcolor) {
 				scope.noBg = true;
 			}
 
 			scope.$watch(function () {
-				return [
-					scope.item.tmpl.style.linkcolor,
-					scope.item.tmpl.style.textcolor1,
-					scope.item.tmpl.style.textcolor2,
-					scope.item.tmpl.style.bgcolor
-				]
-			}, function (newV) {
-				console.log("w1", newV);
-				// scope.defaultColors = !(newV[0] || newV[1] || newV[2]);
-				// scope.noBg = !(newV[3]);
-			}, true);
-
-			scope.$watch(function () {
 				return scope.noBg;
 			}, function (newV) {
-				console.log("w2 ", newV);
+				console.log("noBg: ", newV);
 				if (newV) {
 					console.log("Deleting bgcolor");
 					delete scope.item.tmpl.style.bgcolor;
@@ -273,21 +261,14 @@ angular.module('com.inthetelling.story')
 			scope.$watch(function () {
 				return scope.defaultColors;
 			}, function (newV) {
-				console.log("w3", newV);
+				console.log("defaultColors:", newV);
 				if (newV) {
 					console.log("Resetting default colors");
 					delete scope.item.tmpl.style.linkcolor;
 					delete scope.item.tmpl.style.textcolor1;
 					delete scope.item.tmpl.style.textcolor2;
-				} else {
-					//TODO set to episode defaults instead?
-					console.log("initing  custom colors");
-					scope.item.tmpl.style.linkcolor = "#0000FF";
-					scope.item.tmpl.style.textcolor1 = "#000000";
-					scope.item.tmpl.style.textcolor2 = "#000000"
 				}
 			});
-
 		}
 	};
 });

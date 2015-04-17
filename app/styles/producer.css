@@ -134,8 +134,8 @@ input[readonly] {
 }
 
 .authoringForm legend {
-	padding: 0.5em;
-	margin: 0.5em;
+	padding: 0 0.5em;
+	margin: 0 0.5em;
 	font-size: small;
 }
 
@@ -543,6 +543,8 @@ option {
 	border-bottom: 1px solid #CCC;
 	width: 100px;
 	text-align: center;
+	background-color: #FFF;
+	z-index: 3;
 }
 
 .ittTabLabel.cur {
@@ -560,6 +562,8 @@ option {
 
 .ittTabContents {
 	padding-top: 24px;
+	max-height: 350px;
+	overflow-y: scroll;
 }
 
 .ittTabFoot {

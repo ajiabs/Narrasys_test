@@ -51,9 +51,44 @@
 				</select>
 			</div>
 
-			<div ng-if="item.tmpl.layout === 'overlay'">
 
-				<div form-field="Border/Background">
+			<div ng-if="item.tmpl.layout === 'overlay'" form-field="Position">
+				<itt-position-overlay style="float:left;width:50%;" ng-model="item.tmpl.position"></itt-position-overlay>
+				TODO pane selection TODO size settings TODO opacity
+			</div>
+
+
+			<div ng-if="item.tmpl.layout !== 'overlay'" form-field="Position">
+				<itt-position-content ng-model="item.tmpl.position"></itt-position-content>
+			</div>
+
+
+			<div form-field="Style">
+				<select size="1" ng-model="item.tmpl.stylepreset">
+					<option value="">Default style</option>
+					<!--
+					<optgroup label="Presets">
+						<option value="x">Preset X
+						</option>
+					</optgroup>
+					-->
+					<optgroup label="My saved styles">
+						<option ng-repeat="preset in stylePresets" value="{{preset.name}}">{{preset.name}}</option>
+					</optgroup>
+					<optgroup label="Custom styles">
+						<option value="custom">New style</option>
+					</optgroup>
+				</select>
+				<span ng-if="!showCustomStyles && item.tmpl.stylepreset">
+					<button ng-click="editStyle()">Edit this style</button>
+					<button ng-if="stylePresets[preset.name]" ng-click="deleteStylePreset()" style="background-color:#800; color:#FFF">Delete this style</button>
+				</span>
+			</div>
+
+			<fieldset ng-if="showCustomStyles">
+				<legend>Custom styles</legend>
+
+				<div ng-if="item.tmpl.layout === 'overlay'" form-field="Border/Background">
 					<select ng-model="item.tmpl.wrapper">
 						<option value="default">Default</option>
 						<option value="bleed">Edge to edge</option>
@@ -63,14 +98,7 @@
 					</select>
 				</div>
 
-				<div form-field="Position">
-					<itt-position-overlay style="float:left;width:50%;" ng-model="item.tmpl.position"></itt-position-overlay>
-					TODO pane selection TODO size settings TODO opacity
-				</div>
-
-			</div>
-			<div ng-if="item.tmpl.layout !== 'overlay'">
-				<div form-field="Border/Background">
+				<div ng-if="item.tmpl.layout !== 'overlay'" form-field="Border/Background">
 					<select ng-model="item.tmpl.wrapper">
 						<option value="default">Default</option>
 						<option value="box">Box</option>
@@ -79,29 +107,6 @@
 					</select>
 				</div>
 
-				<div form-field="Position">
-					<itt-position-content ng-model="item.tmpl.position"></itt-position-content>
-				</div>
-			</div>
-
-
-			<div form-field="Style">
-				<select size="1" ng-model="item.tmpl.stylepreset">
-					<option value="">Default style</option>
-					<optgroup label="Presets">
-						<option value="x">Preset X
-						</option>
-					</optgroup>
-					<optgroup label="My saved styles">
-
-					</optgroup>
-					<option value="custom">Custom styles</option>
-				</select>
-
-			</div>
-
-			<fieldset ng-if="item.tmpl.stylepreset == 'custom'">
-				<legend>Custom styles</legend>
 				<!-- begin custom styles -->
 				<div form-field="Timestamp">
 					<select ng-model="item.tmpl.timestamp">
@@ -199,15 +204,26 @@
 				</div>
 
 				<div form-field="Text size">
-					<input style="width: 79%" type="range" min="75" max="150" ng-model="item.tmpl.style.fontsize" />
+					<input style="width: 70%" type="range" min="75" max="150" ng-model="item.tmpl.style.fontsize" />
 
-					<button ng-if="item.tmpl.style.fontsize && item.tmpl.style.fontsize !== 100" style="width: 20%" ng-click="item.tmpl.style.fontsize=100" class="fa fa-lg fa-ban borderless"></button>
-
-					<div style="margin-top: -0.3em" ng-if="item.tmpl.style.fontsize">
+					<span style="width:15%; display:inline-block" ng-if="item.tmpl.style.fontsize">
 						<input style="border: none; box-shadow: none !important; text-align:right; font-size: small; width: 3em" ng-model="item.tmpl.style.fontsize">%
-					</div>
+					</span>
+					<button ng-if="item.tmpl.style.fontsize && item.tmpl.style.fontsize !== 100" style="width: 10%" ng-click="item.tmpl.style.fontsize=100" class="fa fa-lg fa-ban borderless"></button>
+
+
 				</div>
+
+
+				<div form-field="Save Preset">
+					You can save these style settings for later re-use:
+					<br>
+					<input type="text" ng-model="preset.name" style="width:auto">
+					<button ng-click="saveStylePreset()">Save</button>
+				</div>
+
 				<!-- end of custom styles -->
+
 			</fieldset>
 		</div>
 		<!-- end of tabset -->
