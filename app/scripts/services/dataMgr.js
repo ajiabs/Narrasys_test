@@ -19,6 +19,53 @@ angular.module('com.inthetelling.story')
 			}
 			return false;
 		};
+// this duplicates dataSvc.getEpisode except it returns a promose of data instead of setting in modelSvc. 
+		// the intent is that this is reusable/composable with no side-effects.  setting modelSvc should happen elsewhere.
+	svc.getEpisodeExpandedByEpisodeId = function (episodeId) {
+			var defer = $q.defer();
+			var expandedData = [];
+			svc.getEpisodeById(episodeId)
+				.then(function (data) {
+					expandedData.push(data);
+					data.expanded = {};
+					//get the rest of the data... i.e. containers, and... more
+					//and set in modelSvc
+					var allDone = $q.all([svc.getEventsByEpisodeId(episodeId), svc.getContainerAndAncestors(data.container_id, data._id)]);
+					allDone.then(function (allData) {
+						expandedData.concat(allData);
+						var assetPromises = [];
+						for (var i = 0, len = allData.length; i < len; i++) {
+							if (isContainers(allData[i])) {
+								var containers = allData[i];
+								data.expanded.containers = containers;
+								for (var y = 0, length = containers.length; y < length; y++) {
+									assetPromises.push(svc.getAssetsByContainerId(containers[y]._id));
+								}
+								break;
+							} else {
+								//events
+								data.expanded.events = allData[i];
+							}
+						}
+						if (assetPromises.length > 0) {
+							$q.all(assetPromises)
+								.then(function (assetsData) {
+									//flatten
+									var assets = assetsData.reduce(function (a, b) {
+										return a.concat(b);
+									});
+									data.expanded.assets = assets;
+									defer.resolve(data);
+								});
+						} else {
+							defer.resolve(data);
+						}
+					});
+				});
+			return defer.promise;
+		};
+
+
 		svc.getEpisodeSegmentExpandedBySegmentId = function (segmentId) {
 			var defer = $q.defer();
 			var expandedData = [];
@@ -62,6 +109,22 @@ angular.module('com.inthetelling.story')
 				});
 			return defer.promise;
 		};
+
+
+		svc.getEpisodeByEpisodeId = function (episodeId) {
+			var defer = $q.defer();
+			authSvc.authenticate()
+				.then(function () {
+					EpisodeExpanded.get({
+							episodeId: episodeId
+						})
+						.$promise.then(function (data) {
+							defer.resolve(data);
+						});
+				});
+			return defer.promise;
+		};
+
 		svc.getEpisodeBySegmentId = function (episodeSegmentId) {
 			var defer = $q.defer();
 			authSvc.authenticate()
@@ -81,6 +144,19 @@ angular.module('com.inthetelling.story')
 				.then(function () {
 					Event.getSegmentEvents({
 							segmentId: episodeSegmentId
+						})
+						.$promise.then(function (data) {
+							defer.resolve(data);
+						});
+				});
+			return defer.promise;
+		};
+		svc.getEventsByEpisodeId = function (episodeId) {
+			var defer = $q.defer();
+			authSvc.authenticate()
+				.then(function () {
+					Event.getEpisodeEvents({
+							episodeId: episodeId
 						})
 						.$promise.then(function (data) {
 							defer.resolve(data);
