@@ -1,25 +1,30 @@
 <div class="userHome">
 
-	<div ng-if="inPlayer">
-		<h2>{{user.name}}</h2>
-
-		<p>
-			<i>{{user.email}} {{user.role_description}}</i>
-		</p>
-		<a style="float:left;" href="/#/user" class="button" ng-if="user._id">Home</a>
-
-		<a style="float:right;" class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
-
+	<p><i><span ng-bind="user.role_description"></span></i></p>
+	<div style="float:right; width: 79px">
+		<div class="avatar" ng-click="TODOuploadAvatar()">
+			<img ng-if="TODOavatar" ng-src="TODO">
+		</div>
 	</div>
-	<div ng-if="!inPlayer">
-		You're signed in as
-		<span ng-if="!userHasRole('guest')">{{user.name}}, </span>
-		{{user.role_description}}.
+	<div style="margin-right:80px;">
+		<label>
+			<span>Name</span>
+			<input class="userEditable" ng-model="user.name">
+		</label>
+		<br>
+		<label>
+			<span>Email</span>
+			<input class="userEditable" ng-model="user.email">
+		</label>
+	</div>
+	<div style="clear:both; padding-top: 2em">
+		<a style="float:left;" href="/#/user" class="button" ng-if="inPlayer && user._id">Home</a>
+		<a style="float:right;" class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
+	</div>
 
-		<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
+	<div ng-if="!inPlayer">
 
 		<div ng-if="userHasRole('admin')">
-			<h3>Administrator</h3>
 			<a href="/#/episodes">Find episodes</a>
 			<br>
 			<a href="/#/stories">Find narratives</a>
