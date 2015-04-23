@@ -1,5 +1,7 @@
 'use strict';
 
+var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
+
 /* Parses API data into player-acceptable format, 
 and derives secondary data where necessary for performance/convenience/fun */
 
@@ -138,6 +140,11 @@ angular.module('com.inthetelling.story')
 
 		svc.deriveEpisode = function (episode) {
 			// console.log("deriveEpisode:", episode);
+
+			//If the episode doesn't have a template then assign it the default template
+			if(!episode.templateUrl) {
+				episode.templateUrl = DEFAULT_EPISODE_TEMPLATE_URL;
+			}
 
 			if (updateTemplates[episode.templateUrl]) {
 				episode.origTemplateUrl = episode.templateUrl;
