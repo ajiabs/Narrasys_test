@@ -29,14 +29,20 @@
 		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="depth+1"></div>
 		<div ng-if="depth == 3" class="container">
 			<!-- begin episode -->
-			<a class="button" ng-if="customer.guest_access_allowed" ng-click="container.showGuestUrl=!container.showGuestUrl">Guest</a>
+			<a class="button" ng-click="container.showGuestUrl=!container.showGuestUrl">
+				<span ng-if="customer.guest_access_allowed">Guest</span>
+				<span ng-if="!customer.guest_access_allowed">ID</span>
+			</a>
 			<a class="button" href="#/episode/{{container.episodes[0]}}">Player</a>
 			<a class="button" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}">Editor</a>
 			<a class="button" href="#/producer/{{container.episodes[0]}}">Producer</a>
-			<div ng-if="container.showGuestUrl">
+			<div ng-if="container.showGuestUrl && customer.guest_access_allowed">
 				<!-- not editable; only an input to make text selection easier -->
 				The guest-accessible url for this episode is
 				<input class="readonly" ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{container.episodes[0]}}" readonly>
+			</div>
+			<div ng-if="container.showGuestUrl && !customer.guest_access_allowed">
+				The ID for this episode is {{container.episodes[0]}}
 			</div>
 
 			<!-- end episode -->
