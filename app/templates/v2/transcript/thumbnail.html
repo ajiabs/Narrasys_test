@@ -1,0 +1,20 @@
+<div>
+	<div class="outset">
+		<div itt-timestamp="item" pos="outset"></div>
+	</div>
+
+	<div class="body">
+		<div class="icon" style="float:left; margin-right: 0.5em;">
+			<img ng-src="{{item.asset.url}}">
+			<div class="clear"></div>
+		</div>
+
+		<div>
+			<span class="inset">
+				<span itt-timestamp="item" pos="inset"></span>
+			</span>
+			<span class="altType" bind-val="item.display_annotator" ng-style="{color: item.tmpl.style.textcolor2}"></span>
+		</div>
+		<div class="text" bind-val="item.display_annotation" ng-style="{color:item.tmpl.style.textcolor1}"></div>
+	</div>
+</div>

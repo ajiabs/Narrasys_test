@@ -41,7 +41,8 @@ angular.module('com.inthetelling.story')
 				},
 				annotator: {
 					en: "John Doe"
-				}
+				},
+				asset_id: 'asset2' // TMP
 			}, {
 				_id: 'foo2',
 				cur_episode_id: 'ep1',
@@ -271,4 +272,89 @@ angular.module('com.inthetelling.story')
 			});
 		}
 	};
-});
+})
+
+// TODO needs to support upload, detach, etc
+.directive('ittAssetForm', function (modelSvc) {
+	return {
+		restrict: 'E',
+		require: 'ngModel',
+		scope: {
+			ngModel: '='
+		},
+		template: '<div><img ng-src="{{asset.url}}" style="width:60px;height:60px;">TODO</div>',
+		link: function (scope) {
+			console.log("assetForm TODO", scope.ngModel);
+			scope.asset = modelSvc.assets[scope.ngModel];
+			console.log(scope.asset);
+		}
+	};
+})
+
+.directive('ittChooserForm', function (modelSvc) {
+	/* choices is array of objects each with name, value required; flippable(bool) optional, FUTURE: image(url) optional. */
+
+	return {
+		restrict: 'E',
+		require: 'ngModel',
+		scope: {
+			ngModel: '=',
+			inputChoices: '=choices', // [{name: 'foo', value: 'bar'},...]
+		},
+		templateUrl: '/templates/producer/chooserForm.html',
+		link: function (scope) {
+			console.log("chooserForm TODO", scope.ngModel, scope.choices);
+
+			scope.flipped = false;
+			scope.innerModel = scope.ngModel;
+			if (scope.innerModel.indexOf('-flip') > 0) {
+				scope.innerModel = scope.innerModel.substr(0, scope.innerModel.indexOf('-flip'));
+				scope.flipped = true;
+			}
+			scope.choices = [];
+			scope.chooserindex = 0;
+			// init: build indexes + find the currently matching one
+			for (var i = 0; i < scope.inputChoices.length; i++) {
+				var newChoice = angular.copy(scope.inputChoices[i]);
+				newChoice.chooserindex = i;
+				if (newChoice.value === scope.innerModel) {
+					scope.chooserindex = i;
+				}
+				scope.choices.push(newChoice);
+			}
+
+			scope.stepOption = function (i) {
+				scope.chooserindex = (scope.chooserindex + i);
+				scope.noPrev = (scope.chooserindex === 0);
+				scope.noNext = (scope.chooserindex === scope.choices.length);
+
+				scope.updateModel();
+
+			};
+			scope.setOption = function (i) {
+				scope.picking = !scope.picking;
+				scope.chooserindex = i;
+				scope.updateModel();
+			}
+			scope.flip = function () {
+				console.log("flipping");
+				scope.flipped = !scope.flipped;
+				scope.updateModel();
+			}
+
+			scope.updateModel = function () {
+				var newModel = scope.choices[scope.chooserindex].value;
+				if (!scope.choices[scope.chooserindex].flippable) {
+					scope.flipped = false;
+				}
+				if (scope.flipped) {
+					newModel = newModel + "-flip";
+				}
+				scope.ngModel = newModel;
+			}
+
+		}
+	};
+})
+
+;

@@ -1,0 +1,36 @@
+<div>
+	<style>
+	.chooserForm.picking > div.cur {
+		background-color: #333;
+		color: #FFF;
+	}
+	
+	.chooserForm.picking > div:hover {
+		background-color: #DDD;
+	}
+	</style>
+
+
+	<div style="display:flex">
+
+		<div style="display:inline-block; width:32px">
+			<button ng-if="chooserindex > 0" ng-click="stepOption(-1)" class="fa fa-arrow-left borderless"></button>
+		</div>
+		<div style="position:relative;height:32px;display:inline-block; flex:1 0 auto">
+			<div class="chooserForm select" ng-class="{picking: picking}" style="position:absolute;left:0;right:0">
+				<div class="option" ng-click="setOption(choice.chooserindex)" ng-repeat="choice in choices" ng-class="{cur: chooserindex == choice.chooserindex}" ng-click="pick()">
+					{{choice.name}}
+				</div>
+			</div>
+		</div>
+
+		<div ng-if="choices[chooserindex].flippable" style="display:inline-block; width:32px">
+			<button class="fa fa-refresh borderless" ng-click="flip()"></button>
+		</div>
+
+
+		<div style="display:inline-block; width:32px">
+			<button ng-if="chooserindex < choices.length-1" ng-click="stepOption(1)" class="fa fa-arrow-right borderless"></button>
+		</div>
+	</div>
+</div>

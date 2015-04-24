@@ -22,6 +22,7 @@
 				<br>
 				<input type="checkbox" ng-model="item.stop">Pause playback when this enters
 			</div>
+			<itt-asset-form ng-model="item.asset_id">test</itt-asset-form>
 
 
 			<div ng-include="itemEditor"></div>
@@ -36,11 +37,13 @@
 
 		<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Style">
 
+
 			<div form-field="Template">
-				<select ng-model="item.tmpl.template">
-					<option value="default">Default</option>
-					<option value="debug">DEBUG</option>
-				</select>
+				<itt-chooser-form ng-model="item.tmpl.template" choices="[
+					{name: 'Default', value: 'default'},
+					{name: 'thumbnail', value: 'thumbnail',flippable:1},
+					{name: 'DEBUG', value: 'debug'}
+				]"></itt-chooser-form>
 			</div>
 
 
@@ -89,33 +92,33 @@
 				<legend>Custom styles</legend>
 
 				<div ng-if="item.tmpl.layout === 'overlay'" form-field="Border/Background">
-					<select ng-model="item.tmpl.wrapper">
-						<option value="default">Default</option>
-						<option value="bleed">Edge to edge</option>
-						<option value="box">Box</option>
-						<option value="inset">Inset</option>
-						<option value="coloredborder">Colored Border</option>
-					</select>
+					<itt-chooser-form ng-model="item.tmpl.wrapper" choices="[
+						{name: 'Default', value: 'default'},
+						{name: 'Edge to edge', value: 'bleed'},
+						{name: 'Box', value: 'box'},
+						{name: 'Inset', value: 'inset'},
+						{name: 'coloredborder', value: 'coloredborder'},
+					]"></itt-chooser-form>
 				</div>
 
 				<div ng-if="item.tmpl.layout !== 'overlay'" form-field="Border/Background">
-					<select ng-model="item.tmpl.wrapper">
-						<option value="default">Default</option>
-						<option value="box">Box</option>
-						<option value="inset">Inset</option>
-						<option value="coloredborder">Colored Border</option>
-					</select>
+					<itt-chooser-form ng-model="item.tmpl.wrapper" choices="[
+						{name: 'Default', value: 'default'},
+						{name: 'Box', value: 'box'},
+						{name: 'Inset', value: 'inset'},
+						{name: 'coloredborder', value: 'coloredborder'},
+					]"></itt-chooser-form>
 				</div>
 
 				<!-- begin custom styles -->
 				<div form-field="Timestamp">
-					<select ng-model="item.tmpl.timestamp">
-						<option value="">Default</option>
-						<option value="none">No timestamp</option>
-						<option value="rounded">Rounded</option>
-						<option value="roundedwhite">Rounded White</option>
-						<option value="corner">Corner</option>
-					</select>
+					<itt-chooser-form ng-model="item.tmpl.timestamp" choices="[
+					{name: 'Default', value: ''},
+					{name: 'No timestamp', value: 'none'},
+					{name: 'Rounded', value: 'rounded'},
+					{name: 'Rounded white', value: 'roundedwhite'},
+					{name: 'corner', value: 'corner'}
+				]"></itt-chooser-form>
 				</div>
 
 
