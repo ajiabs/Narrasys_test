@@ -93,9 +93,8 @@ angular.module('com.inthetelling.story')
 
 			// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
 			// HACK this is a weird place for this.
-			var master_asset_id = modelSvc.episodes[appState.episodeId].master_asset_id;
 			var watch = $scope.$watch(function () {
-				return modelSvc.assets[master_asset_id];
+				return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
 			}, function (masterAsset) {
 				if (masterAsset && Object.keys(masterAsset).length > 1) {
 					watch();
