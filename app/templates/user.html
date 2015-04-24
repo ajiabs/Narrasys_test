@@ -9,12 +9,12 @@
 	<div style="margin-right:80px;">
 		<label>
 			<span>Name</span>
-			<input class="userEditable" ng-model="user.name">
+			<input class="userEditable" ng-model="user.name" ng-blur="updateUser()">
 		</label>
 		<br>
 		<label>
 			<span>Email</span>
-			<input class="userEditable" ng-model="user.email">
+			<input class="userEditable" ng-model="user.email" ng-blur="updateUser()">
 		</label>
 	</div>
 	<div style="clear:both; padding-top: 2em">
