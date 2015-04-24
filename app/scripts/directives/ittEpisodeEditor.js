@@ -168,7 +168,7 @@ angular.module('com.inthetelling.story')
 				};
 				scope.detachMasterAsset = function () {
 					//TODO: removing a property on json object during PUT doesn't delete the property. let's set it to an empty string.
-					scope.episode.master_asset_id = null;
+					//scope.episode.master_asset_id = null;
 					//delete scope.episode.master_asset_id;
 					scope.masterAsset = {};
 
@@ -213,8 +213,8 @@ angular.module('com.inthetelling.story')
 							}
 						});
 						delete scope.uploads;
-					}, function () {
-						//console.log("FAIL", );
+					}, function (data) {
+						console.log("FAIL", data);
 					}, function (update) {
 						scope.uploadStatus[0] = update;
 					});
