@@ -20,13 +20,21 @@ angular.module('com.inthetelling.story')
 				authSvc.authenticate().then(function () {
 					scope.loading = false;
 					scope.user = appState.user;
+					console.log('user', scope.user);
 					scope.userHasRole = authSvc.userHasRole;
 
 					if (!scope.inPlayer && !scope.userHasRole('guest')) {
 						scope.getMyNarratives();
 					}
 				});
+				
 
+				scope.updateUser = function() {
+					appState.user.email = appState.user.email;
+					authSvc.updateUser(appState.user).then(function(data) {
+						//console.log("Saved user data", data);
+					});
+				};
 				scope.getMyNarratives = function () {
 					dataSvc.getUserNarratives(scope.user._id).then(function (data) {
 						// console.log("purchase", data);

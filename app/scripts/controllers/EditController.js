@@ -739,7 +739,7 @@ TODO merge 'comment' with 'annotation'?
 				// SxS overrides a lot of the item options:
 				stub.sxs = true; // temporary?
 				stub.annotator = {
-					en: 'Professor Smith' // TODO get real name from somewhere
+					en: appState.user.name
 				};
 				stub.layouts = ["windowFg"];
 				stub.end_time = appState.time;
