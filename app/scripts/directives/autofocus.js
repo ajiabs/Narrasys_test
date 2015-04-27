@@ -1,6 +1,6 @@
 'use strict';
 // attach to any directive to make its first input/textarea autofocus
-
+// TODO move me into formFields.js
 angular.module('com.inthetelling.story')
 	.directive('autofocus', function ($timeout) {
 		return {

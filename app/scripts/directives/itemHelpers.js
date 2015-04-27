@@ -1,0 +1,39 @@
+'use strict';
+/*
+Directives for use inside of item templates
+
+loremVal
+ittTimestamp
+
+*/
+
+angular.module('com.inthetelling.story')
+	.directive('loremVal', function () {
+		return {
+			restrict: 'A',
+			replace: true,
+			scope: {
+				val: '=loremVal'
+			},
+			template: '<span ng-class="{lorem: !val}" ng-bind-html="val"></span>',
+			link: function (scope) {
+				// console.log("scope.val", scope.val);
+			}
+		};
+	})
+	.directive('ittTimestamp', function () {
+		return {
+			restrict: 'A',
+			replace: 'true',
+			scope: {
+				item: '=ittTimestamp',
+				pos: '@pos'
+			},
+			template: '<span ng-include="\'/templates/v2/timestamp/\'+(item.tmpl.timestamp||\'default\')+\'-\'+pos+\'.html\'"></span>',
+			link: function () {
+
+			}
+		};
+	})
+
+;
