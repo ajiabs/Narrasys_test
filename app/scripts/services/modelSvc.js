@@ -1,5 +1,7 @@
 'use strict';
 
+var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
+
 /* Parses API data into player-acceptable format, 
 and derives secondary data where necessary for performance/convenience/fun */
 
@@ -78,9 +80,8 @@ angular.module('com.inthetelling.story')
 		svc.deriveEpisode = function (episode) {
 			console.log("deriveEpisode:", episode);
 
-			if (!episode.tmpl) { // v1 styles
-				episode = styleCompatibility.unpackEpisodeV1Styles(episode);
-			}
+			episode = styleCompatibility.unpackEpisodeV1Styles(episode);
+
 			episode = unpackEpisodeStyles(episode); // v2 styles
 
 			// unpack languages
@@ -240,7 +241,7 @@ angular.module('com.inthetelling.story')
 
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
-			// console.log("resolveEpisodeEvents");
+
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
@@ -665,15 +666,21 @@ angular.module('com.inthetelling.story')
 			var episode = svc.episodes[episodeId];
 
 			if (!episode || !episode.scenes) {
-				// console.warn("addEndingScreen called on an episode without scenes");
+				console.warn("addEndingScreen called on an episode without scenes");
 				return;
 			}
+
 			if (!episode.masterAsset) {
-				// console.warn("No master asset in episode...");
+				console.warn("No master asset in episode...");
 				return;
 			}
+
+			//may not be sorted... so sort them
+			episode.scenes = episode.scenes.sort(function (a, b) {
+				return a.start_time - b.start_time;
+			});
 			var lastScene = episode.scenes[episode.scenes.length - 1];
-			if (lastScene._id.match(/internal:landingscreen/)) {
+			if (lastScene._id.match(/internal:endingscreen/)) {
 				console.error("Attempted to add an ending screen twice");
 				return;
 			}
@@ -687,7 +694,6 @@ angular.module('com.inthetelling.story')
 					item.end_time = duration - 0.1;
 				}
 			});
-
 			// create a new scene event for this episode
 			svc.events["internal:endingscreen:" + episodeId] = {
 				"_id": "internal:endingscreen:" + episodeId,
