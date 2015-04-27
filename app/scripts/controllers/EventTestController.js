@@ -307,6 +307,9 @@ angular.module('com.inthetelling.story')
 
 			scope.flipped = false;
 			scope.innerModel = scope.ngModel;
+			if (!scope.innerModel) {
+				scope.innerModel = scope.inputChoices[0].value; // default to first item in list
+			}
 			if (scope.innerModel.indexOf('-flip') > 0) {
 				scope.innerModel = scope.innerModel.substr(0, scope.innerModel.indexOf('-flip'));
 				scope.flipped = true;
