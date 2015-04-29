@@ -3,13 +3,18 @@
 
 Directives for positioning items within content panes
 
-ittContentPane
-ittPositionContent
-ittPositionOverlay
+ittContentPane -- the pane itself
+ittPositionContent -- positions regular 'inline' content
+ittPositionOverlay -- positions absolute-positioned (modal or background) content
 */
 
 angular.module('com.inthetelling.story')
 	.directive('ittContentPane', function () {
+		/* TODO:
+			overlay items in separate div; 
+			track inline items' offset and height, and compare to pane's scroll position and height  to set isInView on items
+			support autoscroll
+		*/
 		return {
 			restrict: 'A',
 			replace: 'true',

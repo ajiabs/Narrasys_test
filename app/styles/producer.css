@@ -497,6 +497,7 @@ option {
 	right: 0.6em;
 	top: 0.5em;
 }
+/* TODO: more fine-grained control of when 'edit' button appears; base on roles */
 
 .canEditContent.isProducer .item:hover .edit-event {
 	/* producer sees all edit buttons */
@@ -510,6 +511,15 @@ option {
 	/* TODO: touchscreens! */
 	
 	display: block;
+}
+
+.editing .item:hover .edit-event {
+	display: none !important;
+}
+
+.editing .lorem:before {
+	content: "Lorem ipsum dolor sit amet...";
+	opacity: 0.3;
 }
 
 .item .edit-event span {
@@ -552,7 +562,7 @@ option {
 	z-index: 10;
 }
 
-.editingItem {
+.playhead .editingItem {
 	background: rgba(0, 0, 128, 0.3);
 	position: absolute;
 	height: 1em;

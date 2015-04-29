@@ -105,7 +105,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			controller: 'ContainerAssetsTestController',
 			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="#episodes">Episodes</a><div sxs-container-assets="containerId"></div></div></div>',
 		})
-		.when('/event/:eventId', {
+		.when('/event/:eventType', {
 			title: "Event test",
 			controller: 'EventTestController',
 			templateUrl: 'templates/testbed-event.html',

@@ -241,7 +241,7 @@ angular.module('com.inthetelling.story')
 
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
-
+			console.log("resolveEpisodeEvents", epId);
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];

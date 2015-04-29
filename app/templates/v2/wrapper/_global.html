@@ -1,8 +1,11 @@
 <!-- Every item gets this -->
 <div class="item type1-{{item.tmpl.style.font1}} type2-{{item.tmpl.style.font2}} timestamp-{{item.tmpl.timestamp}}" ng-style="{
 	fontSize: item.tmpl.style.fontsize+ '%' || '100%' 
-}" ng-class="{overlay: item.tmpl.layout=='overlay'}">
-	<a class="edit-event " ng-click="editItem() ">
+}" ng-class="{
+	overlay: item.tmpl.layout=='overlay',
+	editing: item.editing
+}">
+	<a class="edit-event" ng-click="editItem() ">
 		<span>Edit item</span>
 	</a>
 	<div ng-include="item.wrapperUrl"></div>

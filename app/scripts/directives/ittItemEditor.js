@@ -123,7 +123,7 @@ angular.module('com.inthetelling.story')
 				// 	});
 				// }
 
-				scope.itemEditor = 'templates/producer/item/producer-' + scope.item.tmpl.itemType + '.html';
+				scope.itemEditor = 'templates/producer/item/' + scope.item.tmpl.itemType + '.html';
 
 				scope.appState = appState;
 

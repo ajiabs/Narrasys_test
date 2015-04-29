@@ -36,8 +36,13 @@ angular.module('com.inthetelling.story')
 					name: scope.item.annotator
 				};
 
-				if (scope.annotators[scope.item.annotator] && scope.annotators[scope.item.annotator].annotation_image_id) {
-					scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
+				if (scope.annotators) {
+					if (scope.annotators[scope.item.annotator] && scope.annotators[scope.item.annotator].annotation_image_id) {
+						scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
+					}
+				} else {
+					scope.annotators = {}
+
 				}
 
 				scope.filteredAnnotators = angular.copy(scope.annotators);

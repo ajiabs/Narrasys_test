@@ -59,7 +59,7 @@ angular.module('com.inthetelling.story').factory('styleCompatibility', function 
 			"templates/text-pullquote.html": "pullquote",
 			"templates/text-pullquote-noattrib.html": "pullquote-noattrib",
 			"templates/item/pullquote-noattrib.html": "pullquote-noattrib",
-			"templates/text-transmedia.html": "text",
+			"templates/text-transmedia.html": "default",
 		},
 		transcript: {
 			"templates/item/transcript.html": "default",
@@ -84,7 +84,7 @@ angular.module('com.inthetelling.story').factory('styleCompatibility', function 
 			"templates/transmedia-thumbnail.html": "thumbnail",
 			"templates/item/image-thumbnail.html": "thumbnail",
 		},
-		upload: {
+		file: {
 			"templates/item/image-linkonly.html": "link",
 			"templates/transmedia-linkonly.html": "link",
 		},
@@ -100,7 +100,7 @@ angular.module('com.inthetelling.story').factory('styleCompatibility', function 
 			"templates/item/link-withimage.html": "with-image",
 			"templates/transmedia-link-frameicide.html": "framebreak",
 		},
-		quiz: {
+		question: {
 			"templates/item/multiplechoice.html": "mc",
 			"templates/item/question-mc-formative.html": "mc",
 			"templates/item/question-mc-poll.html": "mc",
@@ -117,7 +117,8 @@ angular.module('com.inthetelling.story').factory('styleCompatibility', function 
 		},
 		plugin: {
 			"templates/item/usc-badges.html": "usc-badge"
-		}
+		},
+		video: {}
 	};
 
 	svc.unpackEpisodeV1Styles = function (episode) {

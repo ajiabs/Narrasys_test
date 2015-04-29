@@ -11,14 +11,11 @@ angular.module('com.inthetelling.story')
 	.directive('loremVal', function () {
 		return {
 			restrict: 'A',
-			replace: true,
+			replace: false,
 			scope: {
 				val: '=loremVal'
 			},
-			template: '<span ng-class="{lorem: !val}" ng-bind-html="val"></span>',
-			link: function (scope) {
-				// console.log("scope.val", scope.val);
-			}
+			template: '<span ng-class="{lorem: !val}" ng-bind-html="val"></span>'
 		};
 	})
 	.directive('ittTimestamp', function () {

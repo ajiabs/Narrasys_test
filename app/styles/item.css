@@ -1,8 +1,3 @@
-.lorem:before {
-	content: "Lorem ipsum dolor sit amet...";
-	opacity: 0.3;
-}
-
 .content {
 	overflow-y: scroll;
 }
@@ -464,15 +459,6 @@ Inline images (TODO show these only when image is larger than available space) *
 	text-align: left;
 	margin-right: 0.4em;
 }
-
-.content.isNarrow .item .pullquote:before {
-	display: inline;
-	margin-left: 0;
-	width: auto;
-	text-align: left;
-	height: 1px;
-	padding-right: 5px;
-}
 /* =========================== */
 
 .item.timestampSidebar .startTime {
@@ -494,32 +480,23 @@ Inline images (TODO show these only when image is larger than available space) *
  *
 //=========================== */
 
-.item .pullquote:before {
-	color: rgba(0, 0, 0, 0.1);
-	content: "“";
-	float: left;
-	font-size: 2.5em;
-	line-height: 0.8em;
-	text-align: right;
-	width: 50px;
-	text-shadow: none !important;
-	height: 1px;
+.item .pullquote {
+	position: relative;
+	font-size: 125%;
 }
 
-.item .pullquote {
-	font-size: 2em;
-	padding-top: 0.3em;
-	line-height: 1.1em;
+.item .pullquote .quote {
+	position: absolute;
+	font-size: 100px;
+	line-height: 1em;
+	text-align: center;
+	opacity: 0.2;
+	margin-left: -25px;
 }
 
 .item .pullquoteSpeaker {
 	text-align: right;
-	font-style: italic;
 	font-size: 0.8em
-}
-
-.item .pullquoteSpeaker:before {
-	content: " — ";
 }
 /* - - - - - - - - - - - - - -  */
 
