@@ -9,6 +9,12 @@ angular.module('com.inthetelling.story')
 				inputtype: "=inputtype"
 			},
 			link: function (scope) {
+				if (!scope.field) {
+					// need to init the object if it's empty
+					scope.field = {
+						en: ""
+					};
+				}
 				scope.appState = appState;
 			}
 		};
