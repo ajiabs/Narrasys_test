@@ -174,7 +174,7 @@ angular.module('com.inthetelling.story')
 					url: config.apiDataBaseUrl + '/users/' + user._id,
 					data: user
 				})
-				.success(function (respData) {
+				.success(function () {
 					//storeUserData(respData);
 					defer.resolve();
 				})

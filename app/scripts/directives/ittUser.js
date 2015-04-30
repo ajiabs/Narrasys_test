@@ -31,7 +31,7 @@ angular.module('com.inthetelling.story')
 
 				scope.updateUser = function() {
 					appState.user.email = appState.user.email;
-					authSvc.updateUser(appState.user).then(function(data) {
+					authSvc.updateUser(appState.user).then(function() {
 						//console.log("Saved user data", data);
 					});
 				};

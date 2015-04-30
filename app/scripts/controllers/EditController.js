@@ -753,7 +753,7 @@ TODO merge 'comment' with 'annotation'?
 					"transcript": "templates/item/transcript.html",
 					"annotation": "templates/item/pullquote-noattrib.html",
 					"link": "templates/item/link.html",
-					"image": "templates/item/image-inline-withtext.html",
+					"image": "templates/item/image-plain.html",
 					"file": "templates/item/link.html",
 					"question": "templates/item/question-mc.html",
 					"video": "TODO:VIDEO"
