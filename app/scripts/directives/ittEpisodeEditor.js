@@ -199,6 +199,10 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
 				scope.uploadAsset = function (files) {
+					//Start the upload status out at 0 so that the
+					//progress bar renders correctly at first
+					scope.uploadStatus[0] = {"bytesSent": 0, "bytesTotal": 1};
+
 					scope.uploads = awsSvc.uploadFiles(scope.episodeContainerId, files);
 
 					scope.uploads[0].then(function (data) {

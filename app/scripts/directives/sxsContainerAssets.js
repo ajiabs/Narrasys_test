@@ -38,6 +38,7 @@ angular.module('com.inthetelling.story')
 					}
 
 					scope.assets = modelSvc.assets; // this is going to be a horrible performance hit isn't it.  TODO: build asset array inside each container in modelSvc
+					scope.uploadStatus = [];
 					scope.up = function () {
 						scope.showParent = true;
 					};
@@ -56,13 +57,19 @@ angular.module('com.inthetelling.story')
 
 					scope.uploadAsset = function (fileInput) {
 						var files = fileInput.files;
+						//Start the upload status out at 0 so that the
+						//progress bar renders correctly at first
+						scope.uploadStatus[0] = {"bytesSent": 0, "bytesTotal": 1};
 						scope.uploads = awsSvc.uploadFiles(scope.containerId, files);
 						scope.uploads[0].then(function (data) {
 							modelSvc.cache("asset", data.file);
 							fileInput.value = '';
 							delete scope.uploads;
+						}, function (data) {
+							console.log("FAIL", data);
+						}, function (update) {
+							scope.uploadStatus[0] = update;
 						});
-
 					};
 				});
 			}
