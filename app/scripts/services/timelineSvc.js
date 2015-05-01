@@ -161,7 +161,7 @@ angular.module('com.inthetelling.story')
 
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function (t, method, eventID) {
-			// console.log("timelineSvc.seek ", t);
+			console.log("timelineSvc.seek ", t, method, eventID);
 			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
@@ -188,8 +188,10 @@ angular.module('com.inthetelling.story')
 				t = appState.duration;
 			}
 
-			// Brute force Safari into not fucking up on seek:
-			if (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+			// Lots of synch issues caused by seek during playback. Temporary workaround: pause, then seek, then play.
+			var wasPlaying = (appState.timelineState === "playing");
+			if (wasPlaying) {
+				console.log("pausing playback before seek");
 				svc.pause(true);
 			}
 
@@ -213,6 +215,13 @@ angular.module('com.inthetelling.story')
 				analyticsSvc.captureEpisodeActivity("seek", captureData);
 			} else {
 				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
+			}
+
+			if (wasPlaying) {
+				$timeout(function () {
+					console.log("restarting playback after seek");
+					svc.play();
+				}, 350); // go ahead and give it a decent chunk of time, it'll just look like buffering.
 			}
 		};
 

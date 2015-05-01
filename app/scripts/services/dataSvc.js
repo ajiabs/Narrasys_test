@@ -654,6 +654,10 @@ angular.module('com.inthetelling.story')
 
 		// Create new episodes, c.f. storeEpisode.   TODO mild cruft
 		svc.createEpisode = function (episode) {
+
+			//Default the status of the episode to 'Unpublished'
+			episode.status = 'Unpublished';
+
 			var defer = $q.defer();
 			// console.log("Attempting to create ", episode);
 			POST("/v3/episodes", episode)
@@ -661,6 +665,7 @@ angular.module('com.inthetelling.story')
 					// console.log("Created episode: ", data);
 					// muck around in modelSvc.containers again:
 					modelSvc.containers[data.container_id].episodes = [data._id];
+					modelSvc.containers[data.container_id].status = data.status;
 					defer.resolve(data);
 				});
 			return defer.promise;

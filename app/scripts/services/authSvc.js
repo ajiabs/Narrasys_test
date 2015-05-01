@@ -9,7 +9,7 @@ angular.module('com.inthetelling.story')
 
 			if (appState.user && appState.user.roles) {
 				for (var i = 0; i < appState.user.roles.length; i++) {
-					if (appState.user.roles[i] === role) {
+					if (appState.user.roles[i].role === role) {
 						return true;
 					}
 				}
@@ -167,6 +167,16 @@ angular.module('com.inthetelling.story')
 		};
 
 		var storeUserData = function (data) {
+			// Modify the structure of the roles data if necessary.  This is a temporary fix and can be removed after the new roles system is in place.
+			if(data.roles !== null && data.roles !== undefined && data.roles.length > 0 && data.roles[0].constructor === String) {
+				var roles = [];
+				for (var i = 0; i < data.roles.length; i++) {
+					var role = {role:data.roles[i]};
+					roles.push(role);
+				}
+				data.roles = roles;
+			}
+
 			// updates appState.user and localStorage
 			var user = {
 				access_token: data.access_token || data.authentication_token,
@@ -198,19 +208,19 @@ angular.module('com.inthetelling.story')
 		};
 
 		var getRoleDescription = function (roleKey) {
-			if (roleKey === 'admin') {
+			if (roleKey.role === 'admin') {
 				return "Administrator";
 			}
-			if (roleKey === undefined) {
+			if (roleKey.role === undefined) {
 				return "User";
 			}
-			if (roleKey === "guest") {
+			if (roleKey.role === "guest") {
 				return "Guest user";
 			}
-			if (roleKey.match(/student/i)) {
+			if (roleKey.role.match(/student/i)) {
 				return "Student";
 			}
-			if (roleKey.match(/instructor/i)) {
+			if (roleKey.role.match(/instructor/i)) {
 				return "Instructor";
 			}
 			return roleKey;

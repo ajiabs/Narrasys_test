@@ -60,8 +60,37 @@ angular.module('com.inthetelling.story')
 				index: ($scope.item.data._plugin.distractors.length + 1)
 			});
 		};
+		var isScene = function (event) {
+			if (event.Type === 'Scene') {
+				return true;
+			}
+			if (event._type === 'Scene') {
+				return true;
+			}
+			return false;
+		};
+		var isOnExistingSceneStart = function (time) {
+			var isOverlapping = false;
+			for (var property in modelSvc.events) {
+				if (modelSvc.events.hasOwnProperty(property)) {
+					if (isScene(modelSvc.events[property])) {
+						if (modelSvc.events[property].start_time === time) {
+							isOverlapping = true;
+							break;
+						}
+					}
+				}
+			}
+			return isOverlapping;
+		};
 
 		$scope.addEvent = function (producerItemType) {
+
+			if (producerItemType === 'scene') {
+				if (isOnExistingSceneStart(appState.time)) {
+					return $scope.editCurrentScene();
+				}
+			}
 			//captureCurrentScenes();
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
@@ -364,24 +393,8 @@ angular.module('com.inthetelling.story')
 			var nonInternalScenes = getScenesNonInternal();
 			$scope.adjustEndingScene();
 			if (nonInternalScenes.length === 0) {
-				var scene = generateEmptyItem("scene");
-				scene.cur_episode_id = appState.episodeId;
-				scene.start_time = 0;
-				scene.end_time = duration;
-				scene.episode_id = appState.episodeId;
-				dataSvc.storeItem(scene)
-					.then(function (data) {
-						data.episode_id = appState.episodeId;
-						data.cur_episode_id = appState.episodeId;
-						modelSvc.cache("event", data);
-						modelSvc.resolveEpisodeEvents(appState.episodeId);
-						timelineSvc.init();
-						timelineSvc.injectEvents([data]);
-						doneCallback();
-					}, function (data) {
-						console.error("FAILED TO STORE EVENT", data);
-						doneCallback();
-					});
+				//console.log('this is where we would create a default scene');
+				return doneCallback();
 			} else if (nonInternalScenes.length === 1) {
 				//check this scene and see if we need to adjust it so it takes up the entire episode length...
 				if (nonInternalScenes[0].end_time !== duration) {
@@ -394,14 +407,14 @@ angular.module('com.inthetelling.story')
 							modelSvc.resolveEpisodeEvents(appState.episodeId);
 							timelineSvc.removeEvent(data._id);
 							timelineSvc.injectEvents([data]);
-							doneCallback();
+							return doneCallback();
 						}, function (data) {
-							doneCallback();
 							console.error("FAILED TO UPDATE scene duration ", data);
+							return doneCallback();
 						});
 				}
 			} else {
-				doneCallback();
+				return doneCallback();
 			}
 		};
 
@@ -417,6 +430,7 @@ angular.module('com.inthetelling.story')
 							//TODO: figure out which (or both) of these masterAsset properties are needed. and maybe get rid of one.
 							appState.masterAsset = modelSvc.assets[$scope.episode.master_asset_id];
 							modelSvc.episodes[appState.episodeId].masterAsset = modelSvc.assets[$scope.episode.master_asset_id];
+							modelSvc.episodes[appState.episodeId].master_asset_id = data.master_asset_id;
 							ensureEpisodeScenes(data, function () {
 								console.log('done ensureEpisodeScenes');
 								appState.duration = duration;
