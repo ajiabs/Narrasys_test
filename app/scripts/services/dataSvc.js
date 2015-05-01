@@ -980,7 +980,8 @@ angular.module('com.inthetelling.story')
 				"templates/item/question-mc-image-left.html": "templates/question-mc-image-left.html",
 				"templates/item/question-mc-image-right.html": "templates/question-mc-image-right.html",
 
-				"templates/item/sxs-question.html": "templates/sxs-question.html"
+				"templates/item/sxs-question.html": "templates/sxs-question.html",
+				"templates/item/sxs-link.html": "templates/sxs-link.html"
 			};
 			if (reverseTemplates[templateUrl]) {
 				var template = svc.readCache("template", "url", reverseTemplates[templateUrl]);

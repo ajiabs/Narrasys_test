@@ -709,6 +709,43 @@ button {
 	top: 0;
 }
 
+input.userEditable {
+	border: none;
+	background: transparent;
+	border: 1px solid rgba(0, 0, 0, 0);
+	border-bottom: 1px solid #000;
+	padding: 2px 5px;
+	margin: 2px;
+	font-size: 15px !important;
+}
+
+input.userEditable:focus {
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	border-radius: 4px;
+}
+
+.userHome {
+	background-color: #EEE;
+}
+
+.userHome label span {
+	font-size: 80%;
+	padding: 0 1em;
+	text-align: right;
+	width: 50px !important;
+	display: inline-block;
+	color: #999;
+}
+
+.avatar {
+	width: 60px;
+	height: 60px;
+	background: url('/images/no-avatar.gif') top left no-repeat;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
+	float: right;
+}
+
 .helpPanel .screen-reader-offscreen {
 	position: absolute;
 	left: -999px;

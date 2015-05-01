@@ -9,10 +9,7 @@
 				<div class="label">Time
 				</div>
 				<div class="input">
-					<a ng-class="{invisible: appState.time == 0}" class="button-prev" ng-click="prevScene()">
-						<span class="control-text">Beginning of scene</span>
-					</a>
-					<input type="text" ng-model="item.start_time" sxs-input-time style="max-width:100px" ng-model-options="{ updateOn: 'blur' }" ng-change="setItemTime()">
+					<span sxs-input-time="item" x-input-field="start_time"></span>
 				</div>
 			</div>
 			<div ng-include="itemEditor"></div>
