@@ -166,6 +166,24 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
+
+		svc.updateUser = function (user) {
+			var defer = $q.defer();
+			$http({
+					method: 'PUT',
+					url: config.apiDataBaseUrl + '/users/' + user._id,
+					data: user
+				})
+				.success(function () {
+					//storeUserData(respData);
+					defer.resolve();
+				})
+				.error(function () {
+					defer.reject();
+				});
+			return defer.promise;
+		};
+
 		var storeUserData = function (data) {
 			// Modify the structure of the roles data if necessary.  This is a temporary fix and can be removed after the new roles system is in place.
 			if(data.roles !== null && data.roles !== undefined && data.roles.length > 0 && data.roles[0].constructor === String) {
@@ -197,6 +215,11 @@ angular.module('com.inthetelling.story')
 			}
 			if (user.roles) {
 				user.role_description = getRoleDescription(user.roles[0]);
+			}
+			console.log('------------------');
+			console.log(data);
+			if (data.emails) {
+				user.email = data.emails[0];
 			}
 			appState.user = user;
 			try {
