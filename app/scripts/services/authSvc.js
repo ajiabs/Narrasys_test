@@ -231,6 +231,9 @@ angular.module('com.inthetelling.story')
 		};
 
 		var getRoleDescription = function (roleKey) {
+			if (roleKey === undefined) {
+				return "User";
+			}
 			if (roleKey.role === 'admin') {
 				return "Administrator";
 			}
