@@ -725,10 +725,6 @@ input.userEditable:focus {
 	border-radius: 4px;
 }
 
-.userHome {
-	background-color: #EEE;
-}
-
 .userHome label span {
 	font-size: 80%;
 	padding: 0 1em;
