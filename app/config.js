@@ -3,7 +3,7 @@ var config = {
 	// apiDataBaseUrl: 'https://demo.inthetelling.com',
 	// apiDataBaseUrl: 'https://api-dev-sub.inthetelling.com',
 	// apiDataBaseUrl: 'https://story.inthetelling.com',
-	// apiDataBaseUrl: 'http://localhost:3000',
+
 	// apiDataBaseUrl: 'https://e-literate-tv.inthetelling.com',
 	// apiDataBaseUrl: 'https://gwsb.inthetelling.com',
 	// apiDataBaseUrl: 'https://ewb-usa.inthetelling.com',
@@ -20,5 +20,5 @@ var config = {
 		timeout: 5000
 	},
 	disableAnalytics: false,
-	debugInBrowser: true // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
+	debugInBrowser: false // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
 };
