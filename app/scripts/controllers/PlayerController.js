@@ -80,6 +80,16 @@ angular.module('com.inthetelling.story')
 			$scope.narrativeId = $routeParams.narrativeId;
 		}
 
+		if (appState.isFramed) {
+			/* workaround for when instructure canvas fails to size our iframe: */
+			if (Math.max(document.documentElement.clientHeight, window.innerHeight || 0) < 151) {
+				window.parent.postMessage(JSON.stringify({
+					subject: 'lti.frameResize',
+					height: "650px"
+				}), '*');
+			}
+		}
+
 		$scope.loading = true;
 		modelSvc.addLandingScreen(appState.episodeId);
 
