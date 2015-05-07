@@ -7,30 +7,38 @@
 .content .item:first-child {
 	padding-top: 1.5em;
 }
+
 .content .item.sidebarL:first-child,
 .content .item.sidebarR:first-child {
 	padding-top: 0.5em;
 }
+
 .content .item {
 	padding: 0.3em 0.5em 0.3em 60px;
 }
+
 .windowFg .content .item {
 	padding: 0;
 }
+
 .item {
 	transition: all ease-in-out 1s;
 }
+
 .item .itemHead {
 	display: inline;
 	line-height: 1em
 }
+
 .item .icon {
 	max-width: 55px;
 	;
 }
+
 .item .icon img {
 	width: 100%;
 }
+
 .item .startTime {
 	cursor: pointer;
 	cursor: hand;
@@ -39,9 +47,11 @@
 	text-align: right;
 	float: left;
 }
+
 .item .title {
 	margin-bottom: 0.5em;
 }
+
 a.startTime.displayTime {
 	text-decoration: none;
 	text-shadow: none;
@@ -54,19 +64,23 @@ a.startTime.displayTime {
 	background-color: #FFF;
 	overflow: hidden;
 }
+
 .item .iframeContainer {
 	height: 320px;
 }
+
 .windowFg .item .iframeContainer,
 .modal .iframeContainer {
 	min-height: 500px;
 }
+
 .touchDevice .iframeContainer {
 	/* TODO make sure this class is being applied */
 	
 	-webkit-overflow-scrolling: touch;
 	overflow: auto;
 }
+
 .iframeContainer .loading,
 .iframeContainer iframe {
 	position: absolute;
@@ -75,6 +89,7 @@ a.startTime.displayTime {
 	right: 0;
 	bottom: 0;
 }
+
 .iframeContainer iframe {
 	background-color: transparent;
 	border: none;
@@ -115,6 +130,7 @@ image-fill items */
 	right: 0;
 	bottom: 0;
 }
+
 .fill .item.contain .fillImg,
 .fill .item.cover .fillImg,
 .fill .item.fill .fillImg,
@@ -123,15 +139,19 @@ image-fill items */
 .windowFg .item.fill .fillImg {
 	display: none;
 }
+
 .item.fill .itemTemplate {
 	background-size: 100% 100%;
 }
+
 .item.contain .itemTemplate {
 	background-size: contain;
 }
+
 .item.cover .itemTemplate {
 	background-size: cover;
 }
+
 .fill .item .fillImg {
 	width: auto;
 	max-width: 100%;
@@ -139,25 +159,31 @@ image-fill items */
 	max-height: 100%;
 	position: absolute;
 }
+
 .fill .item.center .fillImg {
 	position: static;
 }
+
 .fill .item.tr img,
 .fill .item.br .fillImg {
 	right: 0;
 }
+
 .fill .item.bl img,
 .fill .item.br .fillImg {
 	bottom: 0;
 }
+
 .fill .item.tl img,
 .fill .item.tr .fillImg {
 	top: 0;
 }
+
 .fill .item.bl img,
 .fill .item.tl .fillImg {
 	left: 0;
 }
+
 .fill .item.center .itemTemplate {
 	display: flex;
 	justify-content: center;
@@ -177,15 +203,18 @@ Inline images (TODO show these only when image is larger than available space) *
 	
 	margin-top: -1.5em;
 }
+
 .content .item .imagePlain {
 	/* and override content pane's margin always: */
 	
 	margin-right: -0.5em;
 	margin-left: -0.5em;
 }
+
 .content img {
 	max-width: 100%;
 }
+
 .item .touchable {
 	cursor: pointer;
 	position: relative;
@@ -193,10 +222,12 @@ Inline images (TODO show these only when image is larger than available space) *
 	max-width: 100%;
 	max-height: 100%;
 }
+
 .item .touchable img {
 	max-width: 100%;
 	max-height: 100%;
 }
+
 .item .touchableIndicator {
 	opacity: 0;
 	transition: opacity 1.5s;
@@ -208,10 +239,12 @@ Inline images (TODO show these only when image is larger than available space) *
 	pointer-events: none;
 	/* let clicks pass through to the image */
 }
+
 .touchableIndicator:before {
 	content: "\e609";
 	text-shadow: 1px 1px 1px #FFF;
 }
+
 .item .touchable:hover .touchableIndicator {
 	opacity: 0.8;
 }
@@ -223,23 +256,28 @@ Inline images (TODO show these only when image is larger than available space) *
 	width: 100%;
 	background-color: #FFF;
 }
+
 .itemDetail.ng-enter,
 .itemDetail.ng-leave {
 	transition: 1s all;
 	overflow: hidden;
 }
+
 .itemDetail.ng-enter {
 	height: 1px;
 	opacity: 0;
 }
+
 .itemDetail.ng-enter-active {
 	height: 300px;
 	opacity: 1;
 }
+
 .itemDetail.ng-leave {
 	height: 300px;
 	opacity: 1;
 }
+
 .itemDetail.ng-leave-active {
 	height: 1px;
 	opacity: 0;
@@ -256,6 +294,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	overflow: auto;
 	transition: 1s all;
 }
+
 .modal.ng-enter,
 .modal.ng-leave.ng-leave-active {
 	left: 49%;
@@ -263,6 +302,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	top: 33%;
 	overflow: hidden;
 }
+
 .modal.ng-enter-active,
 .modal.ng-leave {
 	left: 5%;
@@ -271,6 +311,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	display: block !important;
 	overflow: hidden;
 }
+
 .modalmenu {
 	border-radius: 1em 1em 0 0;
 	text-align: right;
@@ -280,13 +321,16 @@ Inline images (TODO show these only when image is larger than available space) *
 	height: 30px;
 	line-height: 30px
 }
+
 .modalmenu a,
 .modalmenu a:before {
 	color: #FFF !important;
 }
+
 .modalimage {
 	text-align: center;
 }
+
 .modalimage img {
 	max-width: 100%;
 	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
@@ -313,18 +357,22 @@ Inline images (TODO show these only when image is larger than available space) *
 .content .item {
 	padding-left: 60px;
 }
+
 .content .item .startTime {
 	margin-left: -60px;
 }
+
 .content .item .headerItem {
 	margin-left: -50px;
 }
+
 .content .item.timestampInline,
 .content .item.timestampNone,
 .content .item.sidebarL,
 .content .item.sidebarR {
 	padding-left: 0.5em;
 }
+
 .content.isNarrow .item,
 .content.isNarrow .item.timestampInline,
 .content.isNarrow .item.timestampNone,
@@ -332,6 +380,7 @@ Inline images (TODO show these only when image is larger than available space) *
 .content.isNarrow .item.sidebarR {
 	padding-left: 0.5em;
 }
+
 .content.isNarrow .item.timestampNone .startTime,
 .content.isNarrow .item.headerItem .startTime,
 .content.isNarrow .item.sidebarL .startTime,
@@ -348,6 +397,7 @@ Inline images (TODO show these only when image is larger than available space) *
 .content.isNarrow .item .headerItem {
 	margin-left: 0;
 }
+
 .content.isNarrow .item .startTime,
 .item.timestampInline .startTime {
 	display: inline;
@@ -356,6 +406,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	text-align: left;
 	margin-right: 0.4em;
 }
+
 .content.isNarrow .item .pullquote:before {
 	display: inline;
 	margin-left: 0;
@@ -396,16 +447,19 @@ Inline images (TODO show these only when image is larger than available space) *
 	text-shadow: none !important;
 	height: 1px;
 }
+
 .item .pullquote {
 	font-size: 2em;
 	padding-top: 0.3em;
 	line-height: 1.1em;
 }
+
 .item .pullquoteSpeaker {
 	text-align: right;
 	font-style: italic;
 	font-size: 0.8em
 }
+
 .item .pullquoteSpeaker:before {
 	content: " — ";
 }
@@ -416,6 +470,7 @@ Inline images (TODO show these only when image is larger than available space) *
 	overflow: hidden;
 	width: 100%;
 }
+
 .item .caption {
 	position: absolute;
 	/* TODO why is this not zero: */
@@ -431,21 +486,26 @@ Inline images (TODO show these only when image is larger than available space) *
 	border-top: 1px solid #666;
 	color: #FFF;
 }
+
 .item .captionContainer img {
 	width: 100%;
 }
+
 .item.colorInvert .caption {
 	background-color: #eee;
 	background-color: rgba(255, 255, 255, 0.7);
 	color: #000;
 	border-top: 1px solid #666;
 }
+
 .item:hover .caption {
 	opacity: 0;
 }
+
 .item .slidingcaption {
 	transform: translateY(0);
 }
+
 .item:hover .slidingcaption {
 	transform: translateY(100%);
 }
@@ -454,12 +514,14 @@ Inline images (TODO show these only when image is larger than available space) *
 .item .thumbnail img {
 	width: 100%;
 }
+
 .item .thumbnail {
 	max-width: 72px;
 	transition: all 0.7s;
 	float: left;
 	margin-right: 1em;
 }
+
 .item .thumbnail.fullsize {
 	max-width: 100%;
 	float: none;
@@ -470,13 +532,21 @@ Inline images (TODO show these only when image is larger than available space) *
 	display: block;
 	padding: 0.3em;
 }
+
 .item .question .correct {
 	border-left: 5px solid #0C0;
 }
+
 .item .question .incorrect {
 	border-left: 5px solid #C00;
 }
+
 .item .question input[type="radio"] {
 	margin-right: 0.5em;
+}
+
+.item .chartContainer {
+	max-width: 400px;
+	margin: auto;
 }
 
