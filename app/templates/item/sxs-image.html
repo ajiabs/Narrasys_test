@@ -2,7 +2,7 @@
 	<a class="edit-event" ng-click="editItem()" ng-if="item._id != 'internal:editing'">[Edit]</a>
 	<img class="sxs-profile" src="/images/no-avatar.gif">
 	<div class="itemHead">
-		<div class="authorName" ng-bind-html="item.annotator.en"></div>
+		<div class="authorName" ng-bind-html="item.display_annotator"></div>
 	</div>
 	<div>
 		<b ng-bind-html="item.title.en"></b>
