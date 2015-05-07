@@ -54,6 +54,27 @@ TODO lots of math-y stuff we should be testing here:
 		expect(timelineSvc.timelineEvents[1].action).toEqual("pause");
 	});
 
+	it('stop items injected and then removed should have their "pause" removed as well', function () {
+		var events = [{
+			"_id": "event",
+			"start_time": 1,
+			"stop": true,
+			"end_time": 2,
+			"templateUrl": ""
+		}];
+
+		for (var i = 0; i < events.length; i++) {
+			modelSvc.cache("event", events[i]);
+		}
+		timelineSvc.injectEvents(events, 0);
+		expect(timelineSvc.timelineEvents[0].action).toEqual("enter");
+		expect(timelineSvc.timelineEvents[1].action).toEqual("pause");
+		expect(timelineSvc.timelineEvents[2].action).toEqual("exit");
+		timelineSvc.removeEvent("event");
+		console.log(timelineSvc.timelineEvents);
+		expect(timelineSvc.timelineEvents.length).toEqual(0);
+	});
+
 	it('if "stop" and "exit" are simultaneous, "exit" should sort before "pause"', function () {
 		var events = [{
 			"_id": "event2",
