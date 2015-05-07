@@ -162,7 +162,13 @@ image-fill items */
 }
 
 .fill .item.center .fillImg {
-	position: static;
+	/* This was position:static, but that broke in IE.  temporary fix. */
+	
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 }
 
 .fill .item.tr img,
