@@ -725,10 +725,6 @@ input.userEditable:focus {
 	border-radius: 4px;
 }
 
-.userHome {
-	background-color: #EEE;
-}
-
 .userHome label span {
 	font-size: 80%;
 	padding: 0 1em;
@@ -764,9 +760,15 @@ input.userEditable:focus {
 }
 
 .button-continue {
-	line-height: 3.4em;
+	line-height: 50px;
+	height: 50px;
 	float: right;
-	margin-top: 5em;
+	position: fixed;
+	bottom: 80px;
+	right: 4em;
+	background-color: #FFF;
+	padding: 0 1em;
+	z-index: 2;
 }
 
 .profilePanel {

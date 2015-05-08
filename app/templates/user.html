@@ -11,11 +11,13 @@
 			<span>Name</span>
 			<input class="userEditable" ng-model="user.name" ng-blur="updateUser()">
 		</label>
-		<br>
-		<label>
-			<span>Email</span>
-			<input class="userEditable" ng-model="user.email" readonly>
-		</label>
+		<span ng-if="!userHasRole('guest')">
+			<br>
+			<label>
+				<span>Email</span>
+				<input class="userEditable" ng-model="user.email" readonly>
+			</label>
+		</span>
 	</div>
 	<div style="clear:both; padding-top: 2em">
 		<a style="float:left;" href="/#/user" class="button" ng-if="inPlayer && user._id">Home</a>

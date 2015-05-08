@@ -464,6 +464,7 @@ angular.module('com.inthetelling.story')
 					svc.timelineEvents.push({
 						t: event.start_time + injectionTime,
 						id: "timeline",
+						eventId: event._id, //Need to store the event id in case this event needs to get removed from the timeline
 						action: "pause"
 					});
 					svc.timelineEvents.push({
@@ -535,8 +536,12 @@ angular.module('com.inthetelling.story')
 		svc.removeEvent = function (removeId) {
 			// delete anything corresponding to this id from the timeline:
 			// console.log("timelineSvc.removeEvent");
-			svc.timelineEvents = $filter('filter')(svc.timelineEvents, {
-				id: '!' + removeId
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, function(timelineEvent) {
+				//Remove the timeline event if it's _id or eventId  equal the removeId
+				if(timelineEvent.id === removeId || timelineEvent.eventId === removeId) {
+					return false;
+				}
+				return true;
 			});
 			// and from the markedEvents, with its inexplicably inconsistent ID naming:
 			svc.markedEvents = $filter('filter')(svc.markedEvents, {
