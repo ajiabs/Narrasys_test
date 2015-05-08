@@ -76,7 +76,7 @@ angular.module('com.inthetelling.story')
 					  product = "producer";
 						break;
 					case Roles.INSTRUCTOR:
-					  product = "editor";
+					  product = "sxs";
 						break;
 					case Roles.STUDENT:
 					case Roles.GUEST:
