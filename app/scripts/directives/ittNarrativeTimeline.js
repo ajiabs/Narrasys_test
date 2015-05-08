@@ -19,6 +19,7 @@ angular.module('com.inthetelling.story')
 						// TODO remove this hack to work around i18n paths when the api is sorted
 						if (timeline.path === $routeParams.timelinePath ||
 							timeline.path.en === $routeParams.timelinePath) {
+							appState.timelineId = timeline._id;
 							if (timeline.episode_segments[0]) {
 
 								appState.episodeId = timeline.episode_segments[0].episode_id;

@@ -139,7 +139,14 @@ angular.module('com.inthetelling.story')
 		$scope.appState = appState;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
-		$scope.apiDataBaseUrl = config.apiDataBaseUrl;
+
+		$scope.newWindowUrl = config.apiDataBaseUrl + "/v1/new_window";
+		if (appState.narrativeId) {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?narrative=" + appState.narrativeId + "&timeline=" + appState.timelineId;
+		} else {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?episode=" + appState.episodeId;
+		}
+		$scope.newWindowUrl = $scope.newWindowUrl + "&access_token=" + appState.user.access_token;
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
