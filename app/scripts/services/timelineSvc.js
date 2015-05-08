@@ -217,11 +217,25 @@ angular.module('com.inthetelling.story')
 				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
 			}
 
+			// Restart playback after seek, unless they seeked (sought?) to a stop event
 			if (wasPlaying) {
-				$timeout(function () {
-					console.log("restarting playback after seek");
-					svc.play();
-				}, 350); // go ahead and give it a decent chunk of time, it'll just look like buffering.
+				var doRestart = true,
+					allowedLag = 150;
+				// make sure they didn't seek to a stop event:
+				for (var i = 0; i < svc.timelineEvents.length; i++) {
+					var evt = svc.timelineEvents[i];
+					if (evt.t > (t - allowedLag) && evt.action === 'pause') {
+						doRestart = false;
+					}
+					if (evt.t > t) {
+						break;
+					}
+				}
+				if (doRestart) {
+					$timeout(function () {
+						svc.play();
+					}, allowedLag);
+				}
 			}
 		};
 

@@ -139,7 +139,14 @@ angular.module('com.inthetelling.story')
 		$scope.appState = appState;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
-		$scope.apiDataBaseUrl = config.apiDataBaseUrl;
+
+		$scope.newWindowUrl = config.apiDataBaseUrl + "/v1/new_window";
+		if (appState.narrativeId) {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?narrative=" + appState.narrativeId + "&timeline=" + appState.timelineId;
+		} else {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?episode=" + appState.episodeId;
+		}
+		$scope.newWindowUrl = $scope.newWindowUrl + "&access_token=" + appState.user.access_token;
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -333,10 +340,12 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
-			// find topmost visible current items:
+			// find topmost visible current items.
+			// Limiting search to .reviewMode for now, because it was matching and trying to scroll to modals;
+			// when we add more generalized autoscroll support within scenes that will need to change of course
 			var top = Infinity;
 			var curScroll = autoscrollableNode.scrollTop();
-			angular.forEach($('.content .item.isCurrent:visible'), function (item) {
+			angular.forEach($('.reviewMode .content .item.isCurrent:visible'), function (item) {
 				var t = item.getBoundingClientRect().top + curScroll;
 				if (t < top) {
 					top = t;
