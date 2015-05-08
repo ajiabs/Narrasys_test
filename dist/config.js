@@ -3,7 +3,7 @@ var config = {
 	// apiDataBaseUrl: 'https://demo.inthetelling.com',
 	// apiDataBaseUrl: 'https://api-dev-sub.inthetelling.com',
 	// apiDataBaseUrl: 'https://story.inthetelling.com',
-
+ 	// apiDataBaseUrl: 'http://localhost:3000',
 	// apiDataBaseUrl: 'https://e-literate-tv.inthetelling.com',
 	// apiDataBaseUrl: 'https://gwsb.inthetelling.com',
 	// apiDataBaseUrl: 'https://ewb-usa.inthetelling.com',
