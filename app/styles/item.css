@@ -401,8 +401,10 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 /* =========================== */
 
-.content.isNarrow .item .headerItem {
-	margin-left: 0;
+.content.isNarrow .item .headerItem,
+.timestampNone .headerItem,
+.timestampInline .headerItem {
+	margin-left: 0 !important;
 }
 
 .content.isNarrow .item .startTime,

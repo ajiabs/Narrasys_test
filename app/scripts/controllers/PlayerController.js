@@ -333,10 +333,12 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
-			// find topmost visible current items:
+			// find topmost visible current items.
+			// Limiting search to .reviewMode for now, because it was matching and trying to scroll to modals;
+			// when we add more generalized autoscroll support within scenes that will need to change of course
 			var top = Infinity;
 			var curScroll = autoscrollableNode.scrollTop();
-			angular.forEach($('.content .item.isCurrent:visible'), function (item) {
+			angular.forEach($('.reviewMode .content .item.isCurrent:visible'), function (item) {
 				var t = item.getBoundingClientRect().top + curScroll;
 				if (t < top) {
 					top = t;
