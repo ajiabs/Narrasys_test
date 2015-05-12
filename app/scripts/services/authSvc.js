@@ -61,33 +61,33 @@ angular.module('com.inthetelling.story')
 						break;
 					}
 					if (exitLoop) {
-            break;
-          }
-
+						break;
+					}
 				}
 			}
 			return role;
-
 		};
-    svc.getDefaultProductForRole = function(role) {
-      var product = "player";
-      switch (role) {
-					case Roles.ADMINISTRATOR:
-					  product = "producer";
-						break;
-					case Roles.INSTRUCTOR:
-					  product = "sxs";
-						break;
-					case Roles.STUDENT:
-					case Roles.GUEST:
-            product = "player";
-						break;
-					}
-      return product;
-    };
 
-  
-
+		svc.getDefaultProductForRole = function (role) {
+			/* 
+			This was making it impossible for users with admin role to see editor or player interface.
+			For now, producer should be used only at the /#/episode urls, editor at the narrative urls
+			(producer only works with individual episodes atm anyway)
+			TODO later on we'll make this user-selectable within the product UI (and probably 
+			eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
+			*/
+			var product = "player";
+			if (appState.productLoadedAs === 'narrative') {
+				if (role === Roles.ADMINISTRATOR || role === Roles.INSTRUCTOR) {
+					product = "sxs";
+				}
+			} else {
+				errorSvc.error({
+					data: "authSvc.getDefaultProductForRole should only be used within narratives for now"
+				});
+			}
+			return product;
+		};
 
 		svc.logout = function () {
 			// Clear these even if the logout call fails (which it will if the token in localStorage has expired).
@@ -249,7 +249,6 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-
 		svc.updateUser = function (user) {
 			var defer = $q.defer();
 			$http({
@@ -301,8 +300,8 @@ angular.module('com.inthetelling.story')
 			if (user.roles) {
 				user.role_description = getRoleDescription(user.roles[0]);
 			}
-			console.log('------------------');
-			console.log(data);
+			// console.log('------------------');
+			// console.log(data);
 			if (data.emails) {
 				user.email = data.emails[0];
 			}
