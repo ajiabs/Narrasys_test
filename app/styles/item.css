@@ -65,15 +65,13 @@ a.startTime.displayTime {
 	overflow: hidden;
 }
 
+.modal .iframeContainer {
+	height: 100%;
+}
+
 .item .iframeContainer {
 	height: 320px;
 }
-/*
-.windowFg .item .iframeContainer,
-.modal .iframeContainer {
-	min-height: 500px;
-}
-*/
 
 .touchDevice .iframeContainer {
 	/* TODO make sure this class is being applied */
@@ -89,6 +87,7 @@ a.startTime.displayTime {
 	left: 0;
 	right: 0;
 	bottom: 0;
+	height: 100%;
 }
 
 .iframeContainer iframe {
