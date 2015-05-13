@@ -4,6 +4,7 @@ angular.module('com.inthetelling.story')
 	.controller("ContainerAssetsTestController", function ($scope, $routeParams) {
 		$scope.containerId = $routeParams.containerId;
 	})
+	/* WARN I badly misnamed this; it's used in both editor and producer.  TODO eliminate the sxs prefix, it never made sense anyway */
 	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState) {
 		return {
 			restrict: 'A',
@@ -59,8 +60,11 @@ angular.module('com.inthetelling.story')
 						var files = fileInput.files;
 						//Start the upload status out at 0 so that the
 						//progress bar renders correctly at first
-						scope.uploadStatus[0] = {"bytesSent": 0, "bytesTotal": 1};
-						scope.uploads = awsSvc.uploadFiles(scope.containerId, files);
+						scope.uploadStatus[0] = {
+							"bytesSent": 0,
+							"bytesTotal": 1
+						};
+						scope.uploads = awsSvc.uploadContainerFiles(scope.containerId, files);
 						scope.uploads[0].then(function (data) {
 							modelSvc.cache("asset", data.file);
 							fileInput.value = '';
