@@ -71,8 +71,47 @@ TODO lots of math-y stuff we should be testing here:
 		expect(timelineSvc.timelineEvents[1].action).toEqual("pause");
 		expect(timelineSvc.timelineEvents[2].action).toEqual("exit");
 		timelineSvc.removeEvent("event");
-		console.log(timelineSvc.timelineEvents);
+
 		expect(timelineSvc.timelineEvents.length).toEqual(0);
+	});
+
+	it('stop items updated with a new time should have their old timeline events removed', function () {
+		var events = [{
+			"_id": "event",
+			"start_time": 1,
+			"stop": true,
+			"end_time": 2,
+			"templateUrl": ""
+		}];
+
+		for (var i = 0; i < events.length; i++) {
+			modelSvc.cache("event", events[i]);
+		}
+
+		//Add the events to the timeline
+		timelineSvc.injectEvents(events, 0);
+
+		//Let's make sure that everything made it into the timeline correctly
+		expect(timelineSvc.timelineEvents.length).toEqual(3);
+		expect(timelineSvc.timelineEvents[0].action).toEqual("enter");
+		expect(timelineSvc.timelineEvents[0].t).toEqual(1);
+		expect(timelineSvc.timelineEvents[1].action).toEqual("pause");
+		expect(timelineSvc.timelineEvents[1].t).toEqual(1);
+		expect(timelineSvc.timelineEvents[2].action).toEqual("exit");
+		expect(timelineSvc.timelineEvents[2].t).toEqual(1.01);
+
+		//Update the time of the event
+		events[0].start_time = 4
+		timelineSvc.updateEventTimes(events[0]);
+
+		//Make sure that there are only timeline events for the new event time
+		expect(timelineSvc.timelineEvents.length).toEqual(3);
+		expect(timelineSvc.timelineEvents[0].action).toEqual("enter");
+		expect(timelineSvc.timelineEvents[0].t).toEqual(4);
+		expect(timelineSvc.timelineEvents[1].action).toEqual("pause");
+		expect(timelineSvc.timelineEvents[1].t).toEqual(4);
+		expect(timelineSvc.timelineEvents[2].action).toEqual("exit");
+		expect(timelineSvc.timelineEvents[2].t).toEqual(4.01);
 	});
 
 	it('if "stop" and "exit" are simultaneous, "exit" should sort before "pause"', function () {
