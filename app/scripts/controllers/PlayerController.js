@@ -40,7 +40,8 @@ angular.module('com.inthetelling.story')
 				// appState.autoscrollBlocked = true;
 			}
 			$timeout(function () {
-				$(window).trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
+				$(window)
+					.trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
 			});
 		};
 
@@ -109,7 +110,8 @@ angular.module('com.inthetelling.story')
 			var watch = $scope.$watch(function () {
 				return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
 			}, function (masterAsset) {
-				if (masterAsset && Object.keys(masterAsset).length > 1) {
+				if (masterAsset && Object.keys(masterAsset)
+					.length > 1) {
 					watch();
 					modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
 					timelineSvc.init(appState.episodeId);
@@ -120,13 +122,18 @@ angular.module('com.inthetelling.story')
 		});
 
 		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
-
-		// keep non-admins from seeing the producer interface
 		if (appState.productLoadedAs === 'producer') {
+			//producer needs the container based assets, we will load them here, but could move it to on demand when assets are being selected
+			$rootScope.$on("dataSvc.getEpisode.done", function () {
+				dataSvc.getContainerAncestry(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId);
+			});
+
+			// keep non-admins from seeing the producer interface
 			var rolesWatcher = $scope.$watch(function () {
 				return appState.user;
 			}, function (x) {
-				if (Object.keys(x).length) {
+				if (Object.keys(x)
+					.length) {
 					rolesWatcher();
 					if (!authSvc.userHasRole('admin')) {
 						appState.product = 'player';
@@ -346,7 +353,8 @@ angular.module('com.inthetelling.story')
 			var top = Infinity;
 			var curScroll = autoscrollableNode.scrollTop();
 			angular.forEach($('.reviewMode .content .item.isCurrent:visible'), function (item) {
-				var t = item.getBoundingClientRect().top + curScroll;
+				var t = item.getBoundingClientRect()
+					.top + curScroll;
 				if (t < top) {
 					top = t;
 				}
@@ -356,7 +364,8 @@ angular.module('com.inthetelling.story')
 			}
 
 			// There's a visible current item; is it within the viewport?
-			var slop = $(window).height() / 5;
+			var slop = $(window)
+				.height() / 5;
 			if (top > curScroll + slop && top < (curScroll + slop + slop + slop)) {
 				return;
 			}
