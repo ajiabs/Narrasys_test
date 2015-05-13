@@ -470,7 +470,7 @@ angular.module('com.inthetelling.story')
 		//getEvents returns the data via a promise, instead of just setting modelSvc
 		var getEvents = function (epId, segmentId) {
 			var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
-			return $http.get(config.apiDataBaseUrl + endpoint)
+			return $http.get(config.apiDataBaseUrl + endpoint);
 		};
 
 		var getEventActivityDataForUser = function (events, activityType, epId) {
