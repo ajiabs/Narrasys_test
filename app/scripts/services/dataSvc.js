@@ -404,36 +404,40 @@ angular.module('com.inthetelling.story')
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						console.log('episodeData', episodeData);
-						var partsWeGot = 0;
-						// part 1: episode events
-						//
-						getEvents(epId, segmentId, function (events) {
-							if (events) {
-								getEventActivityDataForUser(events, "Plugin", epId);
-								angular.forEach(events, function (eventData) {
-									eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-									modelSvc.cache("event", svc.resolveIDs(eventData));
-									modelSvc.resolveEpisodeEvents(epId);
-								});
-								var assetIds = getAssetIdsFromEvents(events);
-								if (typeof assetIds != 'undefined' && assetIds.length > 0) {
-									// we need to also get the master asset, while we are at it
-									assetIds.push(episodeData.master_asset_id);
-									//batch get assets
-									svc.getAssetsByAssetIds(assetIds, function (assets) {
-										angular.forEach(assets.files, function (asset) {
-											modelSvc.cache("asset", asset);
-										});
-										modelSvc.resolveEpisodeAssets(epId);
-										$rootScope.$emit("dataSvc.getEpisode.done");
+						getEvents(epId, segmentId)
+							.success(function (events) {
+								if (events) {
+									getEventActivityDataForUser(events, "Plugin", epId);
+									angular.forEach(events, function (eventData) {
+										eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
+										modelSvc.cache("event", svc.resolveIDs(eventData));
+										modelSvc.resolveEpisodeEvents(epId);
 									});
+									var assetIds = getAssetIdsFromEvents(events);
+									if (typeof assetIds !== 'undefined' && assetIds.length > 0) {
+										// we need to also get the master asset, while we are at it
+										assetIds.push(episodeData.master_asset_id);
+										//batch get assets
+										svc.getAssetsByAssetIds(assetIds, function (assets) {
+											angular.forEach(assets.files, function (asset) {
+												modelSvc.cache("asset", asset);
+											});
+											modelSvc.resolveEpisodeAssets(epId);
+											$rootScope.$emit("dataSvc.getEpisode.done");
+										});
+									}
+								} else {
+									//no events... is this an error condition?
+									console.warn("API call to get events resulted in no events");
 								}
-							} else {
+							})
+							.error(function () {
 								errorSvc.error({
 									data: "API call to get events failed."
 								});
-							}
-						});
+							});
+
+
 					} else {
 						errorSvc.error({
 							data: "This episode has not yet been published."
@@ -463,31 +467,10 @@ angular.module('com.inthetelling.story')
 		};
 
 
-		//getEvents returns the data via a callback, instead of setting modelSvc
-		var getEvents = function (epId, segmentId, callback) {
+		//getEvents returns the data via a promise, instead of just setting modelSvc
+		var getEvents = function (epId, segmentId) {
 			var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
 			return $http.get(config.apiDataBaseUrl + endpoint)
-				.success(function (data) {
-					callback(data);
-				})
-				.error(function () {
-					callback();
-				});
-		};
-
-		var getEpisodeEvents = function (epId, segmentId) {
-			var defer = $q.defer();
-			getEvents(epId, segmentId, function (events) {
-				defer.resolve();
-				if (events) {
-					getEventActivityDataForUser(events, "Plugin", epId);
-					angular.forEach(events, function (eventData) {
-						eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-						modelSvc.cache("event", svc.resolveIDs(eventData));
-					});
-				}
-			});
-			return defer.promise;
 		};
 
 		var getEventActivityDataForUser = function (events, activityType, epId) {
