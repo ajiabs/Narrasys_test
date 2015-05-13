@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('authSvc', function (config, $routeParams, $http, $q, $location, appState) {
+	.factory('authSvc', function (config, $routeParams, $http, $q, $location, appState, modelSvc) {
 		// console.log('authSvc factory');
 		var svc = {};
 
@@ -61,33 +61,33 @@ angular.module('com.inthetelling.story')
 						break;
 					}
 					if (exitLoop) {
-            break;
-          }
-
+						break;
+					}
 				}
 			}
 			return role;
-
 		};
-    svc.getDefaultProductForRole = function(role) {
-      var product = "player";
-      switch (role) {
-					case Roles.ADMINISTRATOR:
-					  product = "producer";
-						break;
-					case Roles.INSTRUCTOR:
-					  product = "sxs";
-						break;
-					case Roles.STUDENT:
-					case Roles.GUEST:
-            product = "player";
-						break;
-					}
-      return product;
-    };
 
-  
-
+		svc.getDefaultProductForRole = function (role) {
+			/* 
+			This was making it impossible for users with admin role to see editor or player interface.
+			For now, producer should be used only at the /#/episode urls, editor at the narrative urls
+			(producer only works with individual episodes atm anyway)
+			TODO later on we'll make this user-selectable within the product UI (and probably 
+			eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
+			*/
+			var product = "player";
+			if (appState.productLoadedAs === 'narrative') {
+				if (role === Roles.ADMINISTRATOR || role === Roles.INSTRUCTOR) {
+					product = "sxs";
+				}
+			} else {
+				errorSvc.error({
+					data: "authSvc.getDefaultProductForRole should only be used within narratives for now"
+				});
+			}
+			return product;
+		};
 
 		svc.logout = function () {
 			// Clear these even if the logout call fails (which it will if the token in localStorage has expired).
@@ -132,7 +132,7 @@ angular.module('com.inthetelling.story')
 				})
 				.success(function (data) {
 					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
-					storeUserData(data);
+					resolveUserData(data);
 					svc.getCurrentUser()
 						.then(function () {
 							defer.resolve(data);
@@ -240,7 +240,7 @@ angular.module('com.inthetelling.story')
 					url: config.apiDataBaseUrl + '/show_user'
 				})
 				.success(function (respData) {
-					storeUserData(respData);
+					resolveUserData(respData);
 					defer.resolve();
 				})
 				.error(function () {
@@ -248,7 +248,6 @@ angular.module('com.inthetelling.story')
 				});
 			return defer.promise;
 		};
-
 
 		svc.updateUser = function (user) {
 			var defer = $q.defer();
@@ -257,8 +256,8 @@ angular.module('com.inthetelling.story')
 					url: config.apiDataBaseUrl + '/users/' + user._id,
 					data: user
 				})
-				.success(function () {
-					//storeUserData(respData);
+				.success(function (respData) {
+					resolveUserData(respData);
 					defer.resolve();
 				})
 				.error(function () {
@@ -267,7 +266,7 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-		var storeUserData = function (data) {
+		var resolveUserData = function (data) {
 			// Modify the structure of the roles data if necessary.  This is a temporary fix and can be removed after the new roles system is in place.
 			if (data.roles !== null && data.roles !== undefined && data.roles.length > 0 && data.roles[0].constructor === String) {
 				var roles = [];
@@ -288,11 +287,20 @@ angular.module('com.inthetelling.story')
 				//                                                            otherwise we'd just store separate ones per customer
 				roles: data.roles
 			};
-			angular.forEach(["_id", "name", "email", "track_event_actions", "track_episode_metrics"], function (key) {
+			angular.forEach(["_id", "name", "email", "track_event_actions", "track_episode_metrics", "avatar_id"], function (key) {
 				if (data[key]) {
 					user[key] = data[key];
 				}
 			});
+
+			if (user.avatar_id) {
+				// Load and cache avatar asset for current user
+				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
+					console.log("GOT AVATAR", response);
+					modelSvc.cache("asset", response.data);
+					appState.user.avatar = response.data.url; // convenience for now, may be better to use modelSvc here
+				});
+			}
 
 			// API BUG workaround
 			if (data["track_episode_metrics:"]) {
@@ -366,7 +374,7 @@ angular.module('com.inthetelling.story')
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
 				.success(function (data) {
-					storeUserData(data);
+					resolveUserData(data);
 					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
 					svc.getCurrentUser()
 						.then(function () {

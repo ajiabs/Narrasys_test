@@ -49,11 +49,23 @@ angular.module('com.inthetelling.story')
 			});
 
 			return defer.promise;
-
 		};
 
+		/* 
+		CRUFT asset creation endpoint is passed down through uploadFiles, startNextUpload, and createAsset.
+		TODO Refactor to create asset record outside of awsSvc, after returned promise from uploadFiles (meaning we could go back to a single svc.uploadFiles fn), 
+		or at the very least to handle it within these next two functions instead of passing it all the way down the chain
+		*/
+
+		svc.uploadContainerFiles = function (containerId, fileList) {
+			return uploadFiles("/v1/containers/" + containerId + "/assets", fileList);
+		}
+		svc.uploadUserFiles = function (userId, fileList) {
+			return uploadFiles("/v1/users/" + userId + "/assets", fileList);
+		}
+
 		//Pass in a FileList object and the container in which the files are to be placed
-		svc.uploadFiles = function (containerId, fileList) {
+		var uploadFiles = function (assetEndpoint, fileList) {
 			var deferredUploadsPromises = [];
 			console.log('files: ', files);
 			for (var i = 0; i < fileList.length; i++) {
@@ -62,7 +74,7 @@ angular.module('com.inthetelling.story')
 				deferredUploads.push(deferred);
 				deferredUploadsPromises.push(deferred.promise);
 			}
-			startNextUpload(containerId);
+			startNextUpload(assetEndpoint);
 			console.log('DEFERRED UPLOADS: ', deferredUploads);
 			return deferredUploadsPromises;
 		};
@@ -252,7 +264,7 @@ angular.module('com.inthetelling.story')
 			return awsCache.sessionDeferred.promise;
 		};
 
-		var startNextUpload = function (containerId) {
+		var startNextUpload = function (assetEndpoint) {
 			console.log('START NEXT UPLOAD: ', files.length, ', ', fileIndex, ', ', fileBeingUploaded);
 			if (files.length > fileIndex && !fileBeingUploaded) {
 				fileBeingUploaded = files[fileIndex];
@@ -261,7 +273,7 @@ angular.module('com.inthetelling.story')
 					deferredUploads[fileIndex].resolve('Could not determine file type for file \'' + fileBeingUploaded.name + '\'');
 					fileBeingUploaded = null;
 					fileIndex++;
-					startNextUpload(containerId);
+					startNextUpload(assetEndpoint);
 					return;
 				}
 				console.log('files: ', files);
@@ -274,7 +286,7 @@ angular.module('com.inthetelling.story')
 						fileUploadPromise = uploadBigFile();
 					}
 					fileUploadPromise.then(function () {
-							createAsset(containerId);
+							createAsset(assetEndpoint);
 						},
 						function (reason) {
 							deferredUploads[fileIndex].reject(reason);
@@ -621,7 +633,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		var createAsset = function (containerId) {
+		var createAsset = function (assetEndpoint) {
 			var deferred = $q.defer();
 			var assetData = {
 				'url': 'https://s3.amazonaws.com/' + awsCache.s3.config.params.Bucket + '/' + awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName,
@@ -629,12 +641,13 @@ angular.module('com.inthetelling.story')
 				'size': fileBeingUploaded.size,
 				'original_filename': fileBeingUploaded.name
 			};
-			$http.post(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets", assetData)
+
+			$http.post(config.apiDataBaseUrl + assetEndpoint, assetData)
 				.success(function (data) {
 					deferredUploads[fileIndex].resolve(data);
 					fileBeingUploaded = null;
 					fileIndex++;
-					startNextUpload(containerId);
+					startNextUpload(assetEndpoint);
 				})
 				.error(function () {
 					deferredUploads[fileIndex].reject();
