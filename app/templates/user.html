@@ -2,9 +2,11 @@
 
 	<p><i><span ng-bind="user.role_description"></span></i></p>
 	<div style="float:right; width: 79px">
-		<div class="avatar" ng-click="TODOuploadAvatar()">
-			<img ng-if="TODOavatar" ng-src="TODO">
+		<div class="avatar" ng-click="toggleUploadAvatar()" style="cursor:pointer;cursor:hand">
+			<img ng-src="{{user.avatar || '/images/no-avatar.gif'}}">
 		</div>
+		<input ng-if="showUploadField && !uploads" style="width: 70px" type="file" onchange="angular.element(this).scope().uploadAvatar(this.files)">
+		<progress ng-if="uploads" style="width:79px" ng-attr-max="{{uploadStatus[0].bytesTotal}}" ng-attr-value="{{uploadStatus[0].bytesSent}}">
 	</div>
 	<div style="margin-right:80px;">
 		<label>
