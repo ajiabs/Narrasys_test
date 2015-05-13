@@ -228,7 +228,7 @@ angular.module('com.inthetelling.story')
 
 		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
 		var firstplayWatcher = $rootScope.$on("video.firstPlay", function () {
-			if (localStorageAllowed && !(localStorage.getItem("noMoreHelp"))) {
+			if (localStorageAllowed && appState.time === 0 && !(localStorage.getItem("noMoreHelp"))) {
 				appState.show.helpPanel = true;
 			} else {
 				timelineSvc.play();
