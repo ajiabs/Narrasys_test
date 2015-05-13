@@ -301,8 +301,6 @@ angular.module('com.inthetelling.story')
 			if (user.roles) {
 				user.role_description = getRoleDescription(user.roles[0]);
 			}
-			console.log('------------------');
-			console.log(data);
 			if (data.emails) {
 				user.email = data.emails[0];
 			}
