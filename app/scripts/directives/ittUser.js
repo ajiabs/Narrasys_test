@@ -31,7 +31,7 @@ angular.module('com.inthetelling.story')
 				scope.uploadStatus = [];
 				scope.toggleUploadAvatar = function () {
 					scope.showUploadField = !scope.showUploadField;
-				}
+				};
 
 				scope.uploadAvatar = function (files) {
 					//Start the upload status out at 0 so that the

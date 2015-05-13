@@ -59,10 +59,10 @@ angular.module('com.inthetelling.story')
 
 		svc.uploadContainerFiles = function (containerId, fileList) {
 			return uploadFiles("/v1/containers/" + containerId + "/assets", fileList);
-		}
+		};
 		svc.uploadUserFiles = function (userId, fileList) {
 			return uploadFiles("/v1/users/" + userId + "/assets", fileList);
-		}
+		};
 
 		//Pass in a FileList object and the container in which the files are to be placed
 		var uploadFiles = function (assetEndpoint, fileList) {
