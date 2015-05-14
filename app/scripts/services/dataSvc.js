@@ -414,20 +414,20 @@ angular.module('com.inthetelling.story')
 										modelSvc.resolveEpisodeEvents(epId);
 									});
 									var assetIds = getAssetIdsFromEvents(events);
-									if (typeof assetIds !== 'undefined' && assetIds.length > 0) {
-										// we need to also get the master asset, while we are at it
-										assetIds.push(episodeData.master_asset_id);
-										//batch get assets
-										svc.getAssetsByAssetIds(assetIds, function (assets) {
-											angular.forEach(assets.files, function (asset) {
-												modelSvc.cache("asset", asset);
-											});
-											modelSvc.resolveEpisodeAssets(epId);
-											$rootScope.$emit("dataSvc.getEpisode.done");
+									assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
+									assetIds.push(episodeData.master_asset_id);
+									// we need to also get the master asset, while we are at it
+									//batch get assets
+									svc.getAssetsByAssetIds(assetIds, function (assets) {
+										angular.forEach(assets.files, function (asset) {
+											modelSvc.cache("asset", asset);
 										});
-									}
+										modelSvc.resolveEpisodeAssets(epId);
+										$rootScope.$emit("dataSvc.getEpisode.done");
+									});
 								} else {
 									//no events... is this an error condition?
+									$rootScope.$emit("dataSvc.getEpisode.done");
 									console.warn("API call to get events resulted in no events");
 								}
 							})
