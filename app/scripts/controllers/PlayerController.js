@@ -8,10 +8,10 @@ angular.module('com.inthetelling.story')
 
 		// $scope.tmp = function () {
 		// 	dataSvc.createTemplate({
-		// 		url: 'templates/item/question-mc.html',
-		// 		name: 'Question',
-		// 		event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
-		// 		applies_to_episode: false,
+		// 		url: 'templates/episode/wiley1.html',
+		// 		name: 'Wiley LearningSpace (1)',
+		// 		// event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
+		// 		applies_to_episode: true,
 		// 		applies_to_narrative: false
 		// 	});
 		// };
@@ -96,26 +96,36 @@ angular.module('com.inthetelling.story')
 		$scope.loading = true;
 		modelSvc.addLandingScreen(appState.episodeId);
 
-		// You're right, Matt, this was a mess.   
-
 		// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 		var getEpisodeWatcher = $rootScope.$on("dataSvc.getEpisode.done", function () {
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 			modelSvc.setLanguageStrings();
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
 
-			// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
-			// HACK this is a weird place for this.
-			var watch = $scope.$watch(function () {
-				return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
-			}, function (masterAsset) {
-				if (masterAsset && Object.keys(masterAsset).length > 1) {
-					watch();
-					modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
-					timelineSvc.init(appState.episodeId);
-					$scope.loading = false;
-				}
-			});
+			console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
+
+			if (modelSvc.episodes[appState.episodeId].master_asset_id) {
+				// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
+				// HACK this is a weird place for this.
+				var watch = $scope.$watch(function () {
+					return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
+				}, function (masterAsset) {
+					if (masterAsset && Object.keys(masterAsset).length > 1) {
+						watch();
+						modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
+						timelineSvc.init(appState.episodeId);
+						$scope.loading = false;
+					}
+				});
+			} else {
+				// Episode has no master asset
+				$scope.loading = false;
+				// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
+				appState.editEpisode = modelSvc.episodes[appState.episodeId];
+				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+				appState.videoControlsLocked = true;
+
+			}
 
 		});
 
