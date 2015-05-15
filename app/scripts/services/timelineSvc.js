@@ -568,8 +568,12 @@ angular.module('com.inthetelling.story')
 		svc.updateEventTimes = function (event) {
 			// remove old references, as in removeEvent, then re-add it with new times 
 			// (not calling removeEvent here since it would do a redundant updateEventStates)
-			svc.timelineEvents = $filter('filter')(svc.timelineEvents, {
-				id: '!' + event._id
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, function(timelineEvent) {
+				//Remove the timeline event if it's _id or eventId  equal the removeId
+				if(timelineEvent.id === event._id || timelineEvent.eventId === event._id) {
+					return false;
+				}
+				return true;
 			});
 			svc.injectEvents([event], 0);
 		};
