@@ -252,12 +252,14 @@ angular.module('com.inthetelling.story')
 					if (typeof (scope.masterAsset) === 'undefined') {
 						scope.masterAsset = {};
 						scope.masterAsset.urls = {};
-					}
+					} else {
+						scope.episode.masterAsset = scope.masterAsset;
+						modelSvc.deriveEpisode(scope.episode);
+						modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+						modelSvc.resolveEpisodeAssets(scope.episode._id);
 
-					scope.episode.masterAsset = scope.masterAsset;
-					modelSvc.deriveEpisode(scope.episode);
-					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-					modelSvc.resolveEpisodeAssets(scope.episode._id);
+
+					}
 
 					// defined but never used.  Did I remove something that was using this?
 					//var hasMasterAsset = (typeof scope.masterAsset !== 'undefined' && typeof scope.masterAsset._id !== 'undefined');
