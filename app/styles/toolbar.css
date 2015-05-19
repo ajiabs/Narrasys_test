@@ -702,6 +702,10 @@ button {
 	right: 35px;
 }
 
+.isFramed.profilePanel .arrow-up {
+	right: 80px;
+}
+
 .profilePanel .authoringForm {
 	position: absolute;
 	left: 85px;

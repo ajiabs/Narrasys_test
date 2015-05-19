@@ -146,7 +146,7 @@
 </div>
 
 
-<div ng-if="show.profilePanel" class="profilePanel">
+<div ng-if="show.profilePanel" class="profilePanel" ng-class="{isFramed: appState.isFramed}">
 	<div class="arrow-up"></div>
 	<div itt-user x-in-player="true"></div>
 </div>
