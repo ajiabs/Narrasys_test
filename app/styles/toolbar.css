@@ -737,9 +737,13 @@ input.userEditable:focus {
 .avatar {
 	width: 60px;
 	height: 60px;
-	background: url('/images/no-avatar.gif') top left no-repeat;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
 	float: right;
+}
+
+.avatar img {
+	width: 60px;
+	height: 60px;
 }
 
 .helpPanel .screen-reader-offscreen {

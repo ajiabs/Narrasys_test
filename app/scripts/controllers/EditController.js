@@ -238,7 +238,7 @@ angular.module('com.inthetelling.story')
 						saveAdjustedEvents(data, "create");
 					} else {
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
-						timelineSvc.injectEvents([modelSvc.events[data._id]]);
+						timelineSvc.updateEventTimes(modelSvc.events[data._id]);
 						saveAdjustedEvents(data, "update"); //TODO: send in the original (pre-move) event as last param
 					}
 					appState.editEvent = false;

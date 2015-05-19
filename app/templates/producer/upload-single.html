@@ -15,8 +15,7 @@
 	<span ng-if="!uploads">
 		<span ng-if="(item.asset || masterAsset.original_filename)">
 			{{item.asset.original_filename || masterAsset.original_filename}}
-			<button ng-if="appState.product == 'sxs'" ng-click="deleteAsset(item.asset._id)">Delete</button>
-			<button ng-if="appState.product == 'producer'" ng-click="detachAsset(item.asset._id)">Detach</button>
+			<button ng-click="detachAsset(item.asset._id)">Detach</button>
 		</span>
 		<span ng-if="!(item.asset || masterAsset.original_filename)">
 			<button ng-if="!showUpload" ng-click="chooseAsset()">Select</button>

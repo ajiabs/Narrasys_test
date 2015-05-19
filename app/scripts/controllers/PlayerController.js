@@ -40,7 +40,8 @@ angular.module('com.inthetelling.story')
 				// appState.autoscrollBlocked = true;
 			}
 			$timeout(function () {
-				$(window).trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
+				$(window)
+					.trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
 			});
 		};
 
@@ -130,13 +131,19 @@ angular.module('com.inthetelling.story')
 		});
 
 		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
-
-		// keep non-admins from seeing the producer interface
 		if (appState.productLoadedAs === 'producer') {
+			//producer needs the container based assets, we will load them here, but could move it to on demand when assets are being selected
+			$rootScope.$on("dataSvc.getEpisode.done", function () {
+				dataSvc.getContainerAncestry(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId);
+				modelSvc.resolveEpisodeContainers(appState.episodeId);
+			});
+
+			// keep non-admins from seeing the producer interface
 			var rolesWatcher = $scope.$watch(function () {
 				return appState.user;
 			}, function (x) {
-				if (Object.keys(x).length) {
+				if (Object.keys(x)
+					.length) {
 					rolesWatcher();
 					if (!authSvc.userHasRole('admin')) {
 						appState.product = 'player';
@@ -149,7 +156,14 @@ angular.module('com.inthetelling.story')
 		$scope.appState = appState;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
-		$scope.apiDataBaseUrl = config.apiDataBaseUrl;
+
+		$scope.newWindowUrl = config.apiDataBaseUrl + "/v1/new_window";
+		if (appState.narrativeId) {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?narrative=" + appState.narrativeId + "&timeline=" + appState.timelineId;
+		} else {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?episode=" + appState.episodeId;
+		}
+		$scope.newWindowUrl = $scope.newWindowUrl + "&access_token=" + appState.user.access_token;
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -349,7 +363,8 @@ angular.module('com.inthetelling.story')
 			var top = Infinity;
 			var curScroll = autoscrollableNode.scrollTop();
 			angular.forEach($('.reviewMode .content .item.isCurrent:visible'), function (item) {
-				var t = item.getBoundingClientRect().top + curScroll;
+				var t = item.getBoundingClientRect()
+					.top + curScroll;
 				if (t < top) {
 					top = t;
 				}
@@ -359,7 +374,8 @@ angular.module('com.inthetelling.story')
 			}
 
 			// There's a visible current item; is it within the viewport?
-			var slop = $(window).height() / 5;
+			var slop = $(window)
+				.height() / 5;
 			if (top > curScroll + slop && top < (curScroll + slop + slop + slop)) {
 				return;
 			}

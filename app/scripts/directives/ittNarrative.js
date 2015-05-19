@@ -109,20 +109,20 @@ angular.module('com.inthetelling.story')
 					// redirect
 					authSvc.authenticate().then(function () {
 
-						dataSvc.createUserGroup({
-							en: "All users"
-						}).then(function (groupData) {
-							scope.narrative.everyone_group_id = groupData._id;
-							scope.narrative.sub_groups_id = [];
+						// dataSvc.createUserGroup({
+						// 	en: "All users"
+						// }).then(function (groupData) {
+						// 	scope.narrative.everyone_group_id = groupData._id;
+						// 	scope.narrative.sub_groups_id = [];
 
-							dataSvc.createNarrative(
-								scope.narrative
-							).then(function (narrativeData) {
+						dataSvc.createNarrative(
+							scope.narrative
+						).then(function (narrativeData) {
 
-								$location.path('/story/' + narrativeData._id);
-							});
-
+							$location.path('/story/' + narrativeData._id);
 						});
+
+						// });
 					});
 
 				};
