@@ -2,6 +2,9 @@
 
 /* 
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
+
+TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/when we decide we're going to keep it...
+
 */
 
 angular.module('com.inthetelling.story')
@@ -16,6 +19,27 @@ angular.module('com.inthetelling.story')
 			controller: 'EditController',
 			link: function (scope) {
 				// console.log("ittItemEditor", scope.item);
+
+				scope.startRecordVideo = function () {
+					scope.isRecordingVideo = !scope.isRecordingVideo;
+					var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
+					if (widgetwidth > 500) {
+						widgetwidth = 500;
+					}
+					var widget = new YT.UploadWidget('recordWidgetContainer', {
+						width: widgetwidth,
+						events: {
+							'onUploadSuccess': function (ret) {
+								scope.item.url = "//www.youtube.com/embed/" + ret.data.videoId + "?modestbranding=1&showinfo=0&autoplay=0&disablekb=1";
+								scope.isRecordingVideo = false;
+								scope.isProcessingVideo = true;
+							},
+							'onProcessingComplete': function () {
+								scope.isProcessingVideo = false;
+							}
+						}
+					});
+				}
 
 				timelineSvc.pause();
 				timelineSvc.seek(scope.item.start_time);
