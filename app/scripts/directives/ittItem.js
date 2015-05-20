@@ -22,7 +22,7 @@ angular.module('com.inthetelling.story')
 			},
 			controller: 'ItemController',
 			link: function (scope, element) {
-
+				scope.user = appState.user;
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
 					if (scope.item.showInlineDetail) {
