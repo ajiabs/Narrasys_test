@@ -1,6 +1,8 @@
 <div class="itemTemplate sxs-item">
 	<a class="edit-event" ng-click="editItem()" ng-if="item._id != 'internal:editing'">[Edit]</a>
-	<img class="sxs-profile" src="/images/no-avatar.gif">
+	<div class="avatar">
+		<img ng-src="{{user.avatar || '/images/no-avatar.gif'}}">
+	</div>
 	<div class="itemHead">
 		<div class="authorName" ng-bind-html="item.display_annotator"></div>
 	</div>
