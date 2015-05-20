@@ -19,14 +19,14 @@ angular.module('com.inthetelling.story')
 			controller: 'EditController',
 			link: function (scope) {
 				// console.log("ittItemEditor", scope.item);
-
+				var widget;
 				scope.startRecordVideo = function () {
 					scope.isRecordingVideo = !scope.isRecordingVideo;
 					var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
 					if (widgetwidth > 500) {
 						widgetwidth = 500;
 					}
-					var widget = new YT.UploadWidget('recordWidgetContainer', {
+					widget = new window.YT.UploadWidget('recordWidgetContainer', {
 						width: widgetwidth,
 						events: {
 							'onUploadSuccess': function (ret) {
@@ -39,7 +39,7 @@ angular.module('com.inthetelling.story')
 							}
 						}
 					});
-				}
+				};
 
 				timelineSvc.pause();
 				timelineSvc.seek(scope.item.start_time);
