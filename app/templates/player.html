@@ -17,8 +17,6 @@
 				<button tabindex="0" class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')" aria-label="Watch">
 					<span>Watch</span>
 				</button>
-
-
 				<span ng-switch="appState.product != 'producer' || appState.viewMode != 'discover' || appState.time == 0">
 					<button ng-switch-when="true" tabindex="0" class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')" aria-label="Discover">
 						<span>Discover</span>

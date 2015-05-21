@@ -571,17 +571,19 @@ angular.module('com.inthetelling.story')
 				//fabricate scene event
 				var event = {};
 				event._id = eventId;
-				var adjusted = adjustScenes(event, true);
-				angular.forEach(adjusted, function (scene) {
-					dataSvc.storeItem(scene)
-						.then(function () {
-							// console.log("scene end_time updated");
-						}, function (data) {
-							console.error("FAILED TO STORE EVENT", data);
-						});
-				});
-
 				var eventType = modelSvc.events[eventId]._type;
+				if (eventType === 'Scene') {
+					var adjusted = adjustScenes(event, true);
+					angular.forEach(adjusted, function (scene) {
+						dataSvc.storeItem(scene)
+							.then(function () {
+								// console.log("scene end_time updated");
+							}, function (data) {
+								console.error("FAILED TO STORE EVENT", data);
+							});
+					});
+				}
+
 				dataSvc.deleteItem(eventId)
 					.then(function () {
 						if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
@@ -604,16 +606,17 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.cancelEventEdit = function (originalEvent) {
+			var episodeId = originalEvent.cur_episode_id ? originalEvent.cur_episode_id : originalEvent.episode_id;
 			if (appState.editEvent._id === 'internal:editing') {
 				delete(modelSvc.events['internal:editing']);
 				timelineSvc.removeEvent("internal:editing");
 			} else {
 				modelSvc.events[appState.editEvent._id] = originalEvent;
 			}
-			modelSvc.resolveEpisodeEvents(originalEvent.episode_id);
+			modelSvc.resolveEpisodeEvents(episodeId);
 
 			if (originalEvent._type === 'Scene') {
-				timelineSvc.updateSceneTimes(originalEvent.episode_id);
+				timelineSvc.updateSceneTimes(episodeId);
 			} else {
 				timelineSvc.updateEventTimes(originalEvent);
 			}
