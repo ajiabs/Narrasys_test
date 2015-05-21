@@ -571,17 +571,19 @@ angular.module('com.inthetelling.story')
 				//fabricate scene event
 				var event = {};
 				event._id = eventId;
-				var adjusted = adjustScenes(event, true);
-				angular.forEach(adjusted, function (scene) {
-					dataSvc.storeItem(scene)
-						.then(function () {
-							// console.log("scene end_time updated");
-						}, function (data) {
-							console.error("FAILED TO STORE EVENT", data);
-						});
-				});
-
 				var eventType = modelSvc.events[eventId]._type;
+				if (eventType === 'Scene') {
+					var adjusted = adjustScenes(event, true);
+					angular.forEach(adjusted, function (scene) {
+						dataSvc.storeItem(scene)
+							.then(function () {
+								// console.log("scene end_time updated");
+							}, function (data) {
+								console.error("FAILED TO STORE EVENT", data);
+							});
+					});
+				}
+
 				dataSvc.deleteItem(eventId)
 					.then(function () {
 						if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
