@@ -395,7 +395,11 @@ angular.module('com.inthetelling.story')
 						event.producerItemType = 'image';
 					}
 				} else if (event._type === 'Link') {
-					event.producerItemType = 'link'; // for now this includes sxs video
+					if (event.templateUrl.match(/video/)) {
+						event.producerItemType = 'video';
+					} else {
+						event.producerItemType = 'link';
+					}
 				} else if (event._type === 'Plugin') {
 					if (event.templateUrl.match(/question/)) {
 						event.producerItemType = 'question';
