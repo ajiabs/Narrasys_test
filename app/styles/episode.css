@@ -501,3 +501,121 @@
 	background: none;
 }
 
+.episode-wiley {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+}
+
+.episode-wiley .banner-logo img {
+	max-height: 30px;
+	width: 100%;
+}
+
+.episode-wiley .ghost {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	top: 0;
+	left: 0;
+	opacity: 0.2;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.episode-wiley1 .landingscreen {
+	background: linear-gradient(to left top, #778899 0%, #CCE2EB 100%);
+	color: #FFF;
+}
+
+.episode-wiley1 .footer {
+	background: linear-gradient(to left, #778899 0%, #A2B5C2 100%);
+}
+
+.episode-wiley1 .ghost {
+	background: url('/images/customer/wiley-bg1.png') bottom right no-repeat;
+}
+
+.episode-wiley2 .landingscreen {
+	background: linear-gradient(to right top, #B22222 0%, #ea9da0 100%);
+	color: #FFF;
+}
+
+.episode-wiley2 .footer {
+	background: linear-gradient(to right, #b22222 0%, #ce5f61 100%);
+}
+
+.episode-wiley3 .landingscreen {
+	background: linear-gradient(to left top, #5F9EA0 0%, #CCE2EB 100%);
+	color: #FFF;
+}
+
+.episode-wiley3 .footer {
+	background: linear-gradient(to left, #5F9EA0 0%, #95C0C5 100%);
+}
+
+.episode-wiley a,
+.episode-wiley .fakeLink {
+	color: #00A8FF;
+}
+
+.episode-wiley h1,
+.episode-wiley h2,
+.episode-wiley h3,
+.episode-wiley h4,
+.episode-wiley .pullquote {
+	font-weight: lighter;
+	color: #808080;
+}
+
+.episode-wiley h1 {
+	font-size: 2.3em;
+	line-height: 1.2em;
+	color: #808080;
+}
+
+.episode-wiley h2 {
+	color: #B22222;
+}
+
+.episode-wiley .landingscreen {
+	padding: 3%;
+}
+
+.episode-wiley .landingscreen .introtext {
+	float: none;
+	width: auto;
+}
+
+.episode-wiley .landingscreen p {
+	margin: 0 0 1em 0;
+}
+
+.episode-wiley .landingscreen .videoMagnet {
+	float: none;
+	width: 70%;
+}
+
+.episode-wiley .landingscreen h1 {
+	color: #FFF;
+}
+
+.episode-wiley .colorInvert {
+	background-color: #808080;
+	color: #FFF;
+}
+
+.episode-wiley .colorInvert h1,
+.episode-wiley .colorInvert h2,
+.episode-wiley .colorInvert h3,
+.episode-wiley .colorInvert .pullquote {
+	color: #FFF;
+}
+
+.episode-wiley .item .startTime {
+	border: 2px solid #CCC;
+	padding: 3px;
+	font-size: 80%;
+	font-weight: bold;
+	opacity: 0.5;
+}
+
