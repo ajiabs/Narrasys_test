@@ -604,16 +604,17 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.cancelEventEdit = function (originalEvent) {
+			var episodeId = originalEvent.cur_episode_id ? originalEvent.cur_episode_id : originalEvent.episode_id;
 			if (appState.editEvent._id === 'internal:editing') {
 				delete(modelSvc.events['internal:editing']);
 				timelineSvc.removeEvent("internal:editing");
 			} else {
 				modelSvc.events[appState.editEvent._id] = originalEvent;
 			}
-			modelSvc.resolveEpisodeEvents(originalEvent.episode_id);
+			modelSvc.resolveEpisodeEvents(episodeId);
 
 			if (originalEvent._type === 'Scene') {
-				timelineSvc.updateSceneTimes(originalEvent.episode_id);
+				timelineSvc.updateSceneTimes(episodeId);
 			} else {
 				timelineSvc.updateEventTimes(originalEvent);
 			}
