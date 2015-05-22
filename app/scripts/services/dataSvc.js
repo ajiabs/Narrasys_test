@@ -847,7 +847,8 @@ angular.module('com.inthetelling.story')
 				"data",
 				"asset_id",
 				"link_image_id",
-				"annotation_image_id"
+				"annotation_image_id",
+				"avatar_id"
 			];
 
 			prepped.type = evt._type;

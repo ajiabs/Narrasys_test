@@ -450,7 +450,10 @@ button {
 }
 
 .searchResults .item .isSxS {
-	background: url('/images/customer/tmp-userprofile.png') top right no-repeat;
+	/* background-image will be set inline by searchresults template */
+	
+	background-position: top right;
+	background-repeat: no-repeat;
 	background-size: 24px;
 	margin-right: -4px;
 	margin-top: -2px;
