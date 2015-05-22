@@ -29,11 +29,11 @@ angular.module('com.inthetelling.story')
 					widget = new window.YT.UploadWidget('recordWidgetContainer', {
 						width: widgetwidth,
 						events: {
-							'onApiReady': function (ret) {
+							'onApiReady': function () {
 								// console.log('youtube onApiReady');
 								widget.setVideoPrivacy('unlisted');
 								var d = new Date();
-								var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am")
+								var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
 								widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
 								// widget.setVideoDescription();
 								// widget.setVideoKeywords();
