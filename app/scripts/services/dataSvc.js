@@ -338,7 +338,6 @@ angular.module('com.inthetelling.story')
 			return obj;
 		};
 
-
 		var getAssetIdFromEvent = function (event) {
 			if (event.hasOwnProperty("asset_id")) {
 				if (event.asset_id) {
@@ -355,7 +354,13 @@ angular.module('com.inthetelling.story')
 					return event.link_image_id;
 				}
 			}
+			if (event.hasOwnProperty("avatar_id")) {
+				if (event.avatar_id) {
+					return event.avatar_id;
+				}
+			}
 		};
+
 		var getAssetIdsFromEvents = function (events) {
 			//asset_id,
 			//annotation_image_id
@@ -374,7 +379,6 @@ angular.module('com.inthetelling.story')
 			return ids;
 		};
 
-
 		svc.getAssetsByAssetIds = function (assetIds, callback) {
 			var endpoint = "/v1/assets";
 			var assetIdsObj = {};
@@ -387,7 +391,6 @@ angular.module('com.inthetelling.story')
 					callback();
 				});
 		};
-
 
 		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
 		var getEpisode = function (epId, segmentId) {
@@ -437,7 +440,6 @@ angular.module('com.inthetelling.story')
 								});
 							});
 
-
 					} else {
 						errorSvc.error({
 							data: "This episode has not yet been published."
@@ -465,7 +467,6 @@ angular.module('com.inthetelling.story')
 				});
 			return defer.promise;
 		};
-
 
 		//getEvents returns the data via a promise, instead of just setting modelSvc
 		var getEvents = function (epId, segmentId) {
