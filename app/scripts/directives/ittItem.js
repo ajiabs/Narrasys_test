@@ -22,12 +22,7 @@ angular.module('com.inthetelling.story')
 			},
 			controller: 'ItemController',
 			link: function (scope, element) {
-				//scope.user = appState.user;
-
-				if (scope.item.avatar_id) {
-					scope.item.avatar = modelSvc.assets[scope.item.avatar_id];
-				}
-
+				scope.user = appState.user;
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
 					if (scope.item.showInlineDetail) {

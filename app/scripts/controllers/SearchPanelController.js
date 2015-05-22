@@ -2,7 +2,7 @@
 
 // Controller for the search panel results
 angular.module('com.inthetelling.story')
-	.controller('SearchPanelController', function ($scope, timelineSvc, modelSvc) {
+	.controller('SearchPanelController', function ($scope, timelineSvc) {
 
 		// map which we could in future also bind to user selection of types.
 		// TODO should use categories instead of item "type".  But to do that we need to define categories
@@ -61,9 +61,6 @@ angular.module('com.inthetelling.story')
 					}
 					if (item.sxs) { // HACK
 						item.cosmetic = false;
-					}
-					if (item.avatar_id) {
-						item.avatar = modelSvc.assets[item.avatar_id];
 					}
 				}
 			});
