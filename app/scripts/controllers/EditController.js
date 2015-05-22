@@ -96,6 +96,9 @@ angular.module('com.inthetelling.story')
 			var newEvent = generateEmptyItem(producerItemType);
 			newEvent.cur_episode_id = appState.episodeId;
 			newEvent.episode_id = appState.episodeId;
+			if (appState.user && appState.user.avatar_id) {
+				newEvent.avatar_id = appState.user.avatar_id;
+			}
 			modelSvc.cache("event", newEvent);
 
 			appState.editEvent = modelSvc.events["internal:editing"];

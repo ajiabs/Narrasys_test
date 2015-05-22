@@ -1,4 +1,4 @@
-<div ng-class="{isSxS: item.sxs}">
+<div ng-class="{isSxS: item.sxs}" ng-style="{backgroundImage:'url('+item.avatar.url+')'}">
 	<span class="displayTime">
 		<button class="fakeLink" tabindex="2" ng-click="seek(item.start_time, item._id)">{{item.displayStartTime}}</button>
 	</span>
