@@ -8,7 +8,7 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -29,12 +29,29 @@ angular.module('com.inthetelling.story')
 					widget = new window.YT.UploadWidget('recordWidgetContainer', {
 						width: widgetwidth,
 						events: {
+							'onApiReady': function (ret) {
+								// console.log('youtube onApiReady');
+								widget.setVideoPrivacy('unlisted');
+								var d = new Date();
+								var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am")
+								widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
+								// widget.setVideoDescription();
+								// widget.setVideoKeywords();
+							},
 							'onUploadSuccess': function (ret) {
+								// console.log("youtube onUploadSuccess");
 								scope.item.url = "//www.youtube.com/embed/" + ret.data.videoId + "?modestbranding=1&showinfo=0&autoplay=0&disablekb=1";
 								scope.isRecordingVideo = false;
 								scope.isProcessingVideo = true;
+
+								// onProcessingComplete is not always fired by youtube; force it after 30 secs:
+								$timeout(function () {
+									console.log("Forcing process-complete");
+									scope.isProcessingVideo = false;
+								}, 30000);
 							},
 							'onProcessingComplete': function () {
+								// console.log("youtube onProcessingComplete");
 								scope.isProcessingVideo = false;
 							}
 						}
