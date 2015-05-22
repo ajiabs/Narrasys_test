@@ -1,11 +1,11 @@
 <div class="itemTemplate sxs-item">
 	<a class="edit-event" ng-click="editItem()" ng-if="item._id != 'internal:editing'">[Edit]</a>
 	<div class="avatar">
-		<img ng-src="{{user.avatar || '/images/no-avatar.gif'}}">
+		<img ng-src="{{item.avatar.url || '/images/no-avatar.gif'}}">
 	</div>
 	<div class="itemHead">
 		<div class="authorName" ng-bind-html="item.display_annotator"></div>
 	</div>
 
-  <itt-mc-question choices="item.data._plugin.distractors" data="item.data._plugin" qid="item._id"></itt-question>
+	<itt-mc-question choices="item.data._plugin.distractors" data="item.data._plugin" qid="item._id"></itt-question>
 </div>

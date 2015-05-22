@@ -1,7 +1,9 @@
-<div ng-class="{isSxS: item.sxs}">
+<div ng-class="{isSxS: item.sxs}" ng-style="{'background-image':'url(\" '+ item.avatar.url +'\ ")'}">
+
 	<span class="displayTime">
 		<button class="fakeLink" tabindex="2" ng-click="seek(item.start_time, item._id)">{{item.displayStartTime}}</button>
 	</span>
+
 	<span class="type" ng-bind-html="(item.display_title || item.display_annotator) | highlightSubstring: searchText"></span>
 	<div class="description" ng-bind-html="(item.display_description || item.display_annotation) | highlightSubstring: searchText"></div>
 </div>
