@@ -8,7 +8,7 @@
 	<img style="max-width: 5em; float:left; margin-right: 0.5em" ng-src="{{plugin.credlyImageUrl}}">
 	<b>{{plugin.achievement}}</b>
 	<span ng-if="plugin.eligibleForBadges">
-		<p>Complete the following requirements to earn a <a ng-href="https://credly.com/recipients/{{plugin.credlyBadgeId}}" target="_new">USC Scholar's Badge</a>:</p>
+		<p>Complete the following requirements to earn a <a ng-href="https://credly.com/recipients/{{plugin.credlyBadgeId}}" target="_blank">USC Scholar's Badge</a>:</p>
 		<div style="clear:both; margin: 1em 1.2em; font-size:90%">
 			<div ng-repeat="req in plugin.requirements">
 				<img ng-if="req.achieved" style="width: 1em; height: 1em; margin-left: -1.2em" src="/images/checkmark.png">
