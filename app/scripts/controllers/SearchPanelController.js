@@ -98,7 +98,7 @@ angular.module('com.inthetelling.story')
 					if (item.producerItemType) {
 						$scope.showTypes[item.producerItemType].items.push(item);
 					} else {
-						$scope.showTypes["other"].items.push(item);
+						$scope.showTypes.other.items.push(item);
 					}
 				}
 			});
