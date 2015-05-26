@@ -19,7 +19,16 @@
 
 			<!-- sorted by type -->
 			<div ng-if="sortBy == 'type'">
-				<div ng-repeat="(typeID,showType) in searchTypes" ng-if="showType">
+				<div ng-repeat="category in typeCategories">
+					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
+					<div class="item" ng-repeat="item in matchedItems=(showTypes[category].items
+						| orderBy:'startTime'
+						| filter:{'searchableText':searchText||'','cosmetic':false})" ng-include="'templates/item/searchresults.html'">
+					</div>
+				</div>
+
+
+				<!-- 				<div ng-repeat="(typeID,showType) in searchTypes" ng-if="showType">
 					<h3 ng-if="typeItems.length > 0">{{searchTypeNames[typeID]}}</h3>
 					<div class="item" ng-repeat="item in typeItems=
 						(episode.items 
@@ -28,7 +37,7 @@
 						)" ng-include="'templates/item/searchresults.html'">
 					</div>
 				</div>
-			</div>
+ --></div>
 			<div ng-if="(episode.items | filter:{'searchableText': searchText||'', 'cosmetic': false}).length == 0">
 				(Nothing matched your search.)
 			</div>
