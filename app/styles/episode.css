@@ -511,46 +511,65 @@
 	width: 100%;
 }
 
-.episode-wiley .ghost {
+.episode-wiley .landingscreen-end {
 	position: fixed;
 	bottom: 0;
 	right: 0;
 	top: 0;
 	left: 0;
 	opacity: 0.2;
-	z-index: 1;
+	z-index: 2;
 	pointer-events: none;
 }
 
 .episode-wiley1 .landingscreen {
-	background: linear-gradient(to left top, #778899 0%, #CCE2EB 100%);
+	background: linear-gradient(to left top, #F7F7F7 0%, #76899B 100%);
 	color: #FFF;
 }
 
 .episode-wiley1 .footer {
-	background: linear-gradient(to left, #778899 0%, #A2B5C2 100%);
+	background: linear-gradient(to left, #F7F7F7 0%, #BAC3CC 100%);
 }
 
-.episode-wiley1 .ghost {
-	background: url('/images/customer/wiley-bg1.png') bottom right no-repeat;
+.episode-wiley1 .landingscreen-end {
+	background: url('/images/customer/wiley-bg-ap.png') bottom right no-repeat;
+	opacity: 0.2;
 }
 
 .episode-wiley2 .landingscreen {
-	background: linear-gradient(to right top, #B22222 0%, #ea9da0 100%);
+	background: linear-gradient(to left top, #F7F7F7 0%, #C10008 100%);
 	color: #FFF;
 }
 
 .episode-wiley2 .footer {
-	background: linear-gradient(to right, #b22222 0%, #ce5f61 100%);
+	background: linear-gradient(to left, #F7F7F7 0%, #DC7B7F 100%);
+}
+
+.episode-wiley2 .landingscreen-end {
+	background: url("/images/customer/wiley-bg-ecb.svg");
+	opacity: 0.2;
+	background-size: 70%;
+	background-repeat: no-repeat;
+	right: -20%;
+	bottom: -20%;
+	top: 0;
+	left: 0;
+	background-position: right bottom;
 }
 
 .episode-wiley3 .landingscreen {
-	background: linear-gradient(to left top, #5F9EA0 0%, #CCE2EB 100%);
+	background: linear-gradient(to right top, #F7F7F7 0%, #3FBAE6 100%);
 	color: #FFF;
 }
 
 .episode-wiley3 .footer {
-	background: linear-gradient(to left, #5F9EA0 0%, #95C0C5 100%);
+	background: linear-gradient(to right, #F7F7F7 0%, #9BD8EE 100%);
+}
+
+.episode-wiley3 .landingscreen-end {
+	background: url('/images/customer/wiley-bg-psych.svg') bottom right no-repeat;
+	opacity: 0.2;
+	background-size: 55%;
 }
 
 .episode-wiley a,
@@ -588,6 +607,8 @@
 
 .episode-wiley .landingscreen p {
 	margin: 0 0 1em 0;
+	color: #000;
+	font-size: 150%;
 }
 
 .episode-wiley .landingscreen .videoMagnet {
