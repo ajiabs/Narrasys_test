@@ -220,6 +220,10 @@ angular.module('com.inthetelling.story')
 		// Misc toolbars too small to rate their own controllers
 		$scope.toggleSearchPanel = function () {
 			appState.show.searchPanel = !appState.show.searchPanel;
+			if (appState.productLoadedAs !== 'player') {
+				appState.viewMode = (appState.show.searchPanel ? 'review' : 'discover');
+			}
+
 		};
 		$scope.toggleNavPanel = function () {
 			// console.log("toggleNavPanel");
@@ -259,16 +263,23 @@ angular.module('com.inthetelling.story')
 			}
 		});
 
-		$scope.hidePanels = function () {
-			// dismiss ALL THE THINGS
-			appState.show.searchPanel = false;
-			// appState.show.helpPanel = false;
-			appState.show.navPanel = false;
-			appState.show.profilePanel = false;
-			appState.itemDetail = false;
-			$rootScope.$emit("player.dismissAllPanels");
-		};
+		$scope.hidePanel = function (panel) {
+			console.log("hidePanel", panel);
+			appState.show[panel] = false;
+			console.log(appState);
+		}
 
+		/*
+				$scope.hidePanels = function () {
+					// dismiss ALL THE THINGS
+					appState.show.searchPanel = false;
+					// appState.show.helpPanel = false;
+					appState.show.navPanel = false;
+					appState.show.profilePanel = false;
+					appState.itemDetail = false;
+					$rootScope.$emit("player.dismissAllPanels");
+				};
+		*/
 		// $scope.noMoreHelp = function () {
 		// 	appState.show.helpPanel = false;
 		// 	localStorage.setItem("noMoreHelp", "1");

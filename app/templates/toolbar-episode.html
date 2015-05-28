@@ -56,3 +56,9 @@
 		</a>
 	</div>
 </div>
+
+<!-- SEARCH -->
+<div ng-show="show.searchPanel" class="searchPanel">
+	<div ng-if="show.searchPanel" itt-search-panel>This will be the search panel</div>
+</div>
+<div ng-show="show.searchPanel" class="modal-backdrop" ng-click="hidePanel('searchPanel')"></div>

@@ -58,16 +58,13 @@
 	<img src="/images/autoscroll.svg" width="32" height="32">
 </div>
 
-<div ng-show="show.navPanel || show.searchPanel || show.profilePanel" class="modal-backdrop" ng-click="hidePanels()"></div>
+<div ng-show="show.navPanel" class="modal-backdrop" ng-click="hidePanel('navPanel')"></div>
+<div ng-show="show.profilePanel" class="modal-backdrop" ng-click="hidePanel('profilePanel')"></div>
 
 <!-- ITEM DETAIL -->
 <div ng-show="appState.itemDetail" class="modal-backdrop" ng-click="appState.itemDetail=false"></div>
 <div ng-if="appState.itemDetail" itt-item-detail-modal="appState.itemDetail"></div>
 
-<!-- SEARCH -->
-<div ng-show="show.searchPanel" class="searchPanel">
-	<div ng-if="show.searchPanel" itt-search-panel>This will be the search panel</div>
-</div>
 
 <div ng-if="show.profilePanel" class="profilePanel" ng-class="{isFramed: appState.isFramed}">
 	<div class="arrow-up"></div>

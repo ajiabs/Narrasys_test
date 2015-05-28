@@ -9,7 +9,7 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/searchpanel.html',
 			controller: 'SearchPanelController',
 			link: function (scope) {
-				// console.log("ittSearchPanel", scope);
+				console.log("ittSearchPanel", scope);
 				$timeout(function () {
 					scope.indexEvents();
 				});
