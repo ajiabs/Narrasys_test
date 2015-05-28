@@ -20,7 +20,7 @@
 
 	<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
 		<div class="toolbar-bottom-fill">
-			<div ng-show="show.navPanel" class="navPanel" ng-class="episode.styleCss">
+			<div ng-if="appState.productLoadedAs=='player'" ng-show="show.navPanel" class="navPanel" ng-class="episode.styleCss">
 
 				<div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
 				<!-- <h2 ng-bind-html="episode.display_title"></h2> -->
@@ -69,7 +69,7 @@
 	<div ng-if="show.searchPanel" itt-search-panel>This will be the search panel</div>
 </div>
 
-<div ng-if="show.profilePanel && !show.searchPanel" class="profilePanel" ng-class="{isFramed: appState.isFramed}">
+<div ng-if="show.profilePanel" class="profilePanel" ng-class="{isFramed: appState.isFramed}">
 	<div class="arrow-up"></div>
 	<div itt-user x-in-player="true"></div>
 </div>

@@ -514,6 +514,20 @@ button {
 	border-radius: 4px;
 }
 /*============================
+*
+* Top Panels
+*
+//===========================*/
+
+.topDrawer {
+	position: fixed;
+	top: 45px;
+	left: 0;
+	right: 0;
+	background-color: #FFF;
+	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.5);
+}
+/*============================
  *
  * Nav Panel
  *
@@ -523,7 +537,6 @@ button {
 	max-height: 300px;
 	transition: 1s all;
 	overflow-y: scroll;
-	padding-top: 0.5em;
 }
 
 .navPanel.ng-hide-add,

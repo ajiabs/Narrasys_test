@@ -237,7 +237,8 @@ h4 {
 .banner-logo,
 /*.helpPanel,*/
 
-.profilePanel {
+.profilePanel,
+.topDrawer {
 	z-index: 11;
 }
 
