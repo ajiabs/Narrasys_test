@@ -3,6 +3,7 @@
 	isFramed: appState.isFramed,
 	isProducer: (appState.product == 'producer'),
 	isSxS: (appState.product == 'sxs'),
+	episodeUI: (appState.productLoadedAs == 'player'),
 	canEditContent: (!appState.editEvent && !appState.editEpisode) && (appState.product == 'producer' || appState.product == 'sxs')
 	}">
 	<!-- TODO: make sure user has admin role for canEditContent -->

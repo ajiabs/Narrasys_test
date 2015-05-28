@@ -70,7 +70,7 @@ button {
 	animation: delayedFadeOut 7s ease-out;
 }
 
-.episodeUI.toolbar .searchgroup,
+.episodeUI .toolbar .searchgroup,
 .toolbar .escapegroup,
 .toolbar .profilegroup {
 	float: right;
@@ -141,9 +141,13 @@ button {
 }
 
 .toolbar .buttongroup.searchgroup.cur {
-	width: 27%;
-	font-size: 22px;
 	padding-top: 3px;
+	font-size: 20px;
+	width: 50%;
+}
+
+.episodeUI .toolbar .buttongroup.searchgroup.cur {
+	width: 27%;
 }
 
 .toolbar .buttongroup.searchgroup.cur .button span {
@@ -816,5 +820,14 @@ input.userEditable:focus {
 	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+/* Undoing a bad decision: */
+
+.banner-logo {
+	visibility: hidden;
+}
+
+.episodeUI .banner-logo {
+	visibility: visible;
 }
 
