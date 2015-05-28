@@ -23,14 +23,6 @@
 			<button ng-focus="showControls()" ng-class="{invisible: appState.time == 0}" class="button button-prev" ng-click="prevScene()">
 				<span class="control-text">Previous</span>
 			</button>
-			<!-- 			<div class="tooltip sceneMenuTooltip" ng-if="sceneMenuToolTip">
-				<span class="content">Scene-by-scene navigation</span>
-			</div>
- -->
-			<!-- 			<button ng-focus="showControls()" tabindex="0" class="button-scenemenu" ng-click="showSceneMenuTooltip(false);toggleNavPanel();" ng-mouseover="showSceneMenuTooltip(true)" ng-mouseout="showSceneMenuTooltip(false)">
-				<span class="control-text">Scenes</span>
-			</button>
- -->
 			<button ng-focus="showControls()" tabindex="0" ng-class="{invisible: appState.time >= appState.duration-0.1}" class="button button-next" ng-click="nextScene()">
 				<span class="control-text">Next</span>
 			</button>

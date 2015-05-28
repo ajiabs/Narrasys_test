@@ -4,6 +4,15 @@
 			<span>Exit</span>
 		</a>
 	</div>
+
+	<div class="buttongroup">
+		<button tabindex="0" class="button button-nav" ng-click="toggleNavPanel();">
+			<span>Scenes</span>
+		</button>
+	</div>
+
+
+	<!--
 	<div class="modegroup buttongroup">
 		<nav role="navigation">
 			<span ng-switch="appState.product != 'producer' || appState.viewMode != 'discover' || appState.time == 0">
@@ -14,20 +23,21 @@
 				bg: appState.producerEditLayer < 0,
 				fg: appState.producerEditLayer > 0
 			}">
-					<!-- HACK for now. This needs better 508 -->
-					<a ng-click="changeProducerEditLayer(-1)" class="button">&nbsp;&nbsp;
+					
+	<a ng-click="changeProducerEditLayer(-1)" class="button">&nbsp;&nbsp;
 							<span>Discover</span>
 						</a>
-					<a ng-click="changeProducerEditLayer(+1)" class="button">&nbsp;&nbsp;
+	<a ng-click="changeProducerEditLayer(+1)" class="button">&nbsp;&nbsp;
 							<span>Discover</span>
 						</a>
-				</span>
-				<button tabindex="0" class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="Review">
-					<span>Review</span>
-				</button>
-			</span>
-		</nav>
-	</div>
+	</span>
+	<button tabindex="0" class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="Review">
+		<span>Review</span>
+	</button>
+	</span>
+	</nav>
+</div>
+-->
 	<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 		<!-- this needs to be an <a> or it trips popup blockers -->
 

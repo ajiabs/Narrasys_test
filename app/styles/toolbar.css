@@ -70,7 +70,7 @@ button {
 	animation: delayedFadeOut 7s ease-out;
 }
 
-.toolbar .searchgroup,
+.episodeUI.toolbar .searchgroup,
 .toolbar .escapegroup,
 .toolbar .profilegroup {
 	float: right;
@@ -236,6 +236,11 @@ button {
 .button-search {
 	display: block;
 	width: 2em;
+}
+
+.button-nav:before {
+	content: "\e60b";
+	font-size: 0.8em !important;
 }
 
 .button-search:before {
