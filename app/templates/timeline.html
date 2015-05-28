@@ -102,10 +102,13 @@
 				<span class="control-text">Captions</span>
 			</button>
 
-			<!-- <a ng-if="!appState.isTouchDevice" class="button button-fullscreen" ng-class="{active: appState.isInFullscreenMode}" ng-click="toggleFullscreen()">
-    <span class="control-text">Fullscreen</span>
-</a>
- -->
+			<a ng-if="appState.viewMode=='watch'" class="button button-fullscreen active" ng-click="viewMode('discover')">
+				<span class="control-text">Exit fullscreen</span>
+			</a>
+			<a ng-if="appState.viewMode!='watch'" class="button button-fullscreen" ng-click="viewMode('watch')">
+				<span class="control-text">Fullscreen video</span>
+			</a>
+
 			<span ng-if="!appState.isTouchDevice">
 				<button ng-focus="showControls()" tabindex="0" class="button button-mute {{audioIcon()}}" ng-click="toggleMute()">
 					<span class="control-text">Mute</span>

@@ -42,7 +42,7 @@ angular.module('com.inthetelling.story')
 			svc.hideCaptions = false; // visibility of "closed captions" in watch mode
 			svc.show = {
 				searchPanel: false,
-				helpPanel: false,
+				// helpPanel: false,
 				navPanel: false
 			};
 			svc.videoControlsActive = false; // whether bottom toolbar is visible

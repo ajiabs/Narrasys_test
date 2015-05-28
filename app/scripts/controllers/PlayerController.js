@@ -253,7 +253,7 @@ angular.module('com.inthetelling.story')
 		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
 		var firstplayWatcher = $rootScope.$on("video.firstPlay", function () {
 			if (localStorageAllowed && appState.time === 0 && !(localStorage.getItem("noMoreHelp"))) {
-				appState.show.helpPanel = true;
+				// appState.show.helpPanel = true;
 			} else {
 				timelineSvc.play();
 			}
@@ -262,18 +262,18 @@ angular.module('com.inthetelling.story')
 		$scope.hidePanels = function () {
 			// dismiss ALL THE THINGS
 			appState.show.searchPanel = false;
-			appState.show.helpPanel = false;
+			// appState.show.helpPanel = false;
 			appState.show.navPanel = false;
 			appState.show.profilePanel = false;
 			appState.itemDetail = false;
 			$rootScope.$emit("player.dismissAllPanels");
 		};
 
-		$scope.noMoreHelp = function () {
-			appState.show.helpPanel = false;
-			localStorage.setItem("noMoreHelp", "1");
-			timelineSvc.play();
-		};
+		// $scope.noMoreHelp = function () {
+		// 	appState.show.helpPanel = false;
+		// 	localStorage.setItem("noMoreHelp", "1");
+		// 	timelineSvc.play();
+		// };
 
 		$scope.play = function () {
 			timelineSvc.play();

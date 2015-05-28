@@ -235,7 +235,8 @@ h4 {
 .toolbar,
 .toolbar-bottom,
 .banner-logo,
-.helpPanel,
+/*.helpPanel,*/
+
 .profilePanel {
 	z-index: 11;
 }

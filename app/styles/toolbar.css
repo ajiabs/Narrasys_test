@@ -615,7 +615,7 @@ button {
  * Help Panel
  *
 //===========================*/
-
+/*
 .helpPanel {
 	background-color: #EEE;
 	border-radius: 15px;
@@ -626,7 +626,6 @@ button {
 	width: 60%;
 	max-width: 500px;
 	min-width: 290px;
-	/* TOOLBAR HEIGHT */
 	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
@@ -685,6 +684,7 @@ button {
 	font-size: 1em;
 	cursor: pointer;
 }
+*/
 
 .arrow-up {
 	width: 20px;
@@ -696,10 +696,11 @@ button {
 	z-index: 5;
 	transform: rotate(45deg);
 }
-
+/*
 .helpPanel .arrow-up {
 	left: 30px;
 }
+*/
 
 .profilePanel .arrow-up {
 	right: 35px;
@@ -752,7 +753,7 @@ input.userEditable:focus {
 	width: 60px;
 	height: 60px;
 }
-
+/*
 .helpPanel .screen-reader-offscreen {
 	position: absolute;
 	left: -999px;
@@ -760,6 +761,7 @@ input.userEditable:focus {
 	height: 1px;
 	top: auto;
 }
+*/
 /* .button-continue appears in windowFg: */
 
 .button-continue:after {
