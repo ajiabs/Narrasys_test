@@ -43,7 +43,7 @@
 			<span>Search</span>
 		</button>
 		<label for="searchtext" class="hidden">Search Text</label>
-		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
+		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="appState.searchText" />
 	</div>
 	<div class="profilegroup buttongroup" ng-if="!(show.searchPanel) && (appState.narrativeId || appState.product == 'sxs' || userHasRole('admin'))">
 		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && userHasRole('admin')" ng-click="toggleProducerPreview()">

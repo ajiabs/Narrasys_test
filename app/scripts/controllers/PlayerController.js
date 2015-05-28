@@ -224,7 +224,14 @@ angular.module('com.inthetelling.story')
 				appState.viewMode = (appState.show.searchPanel ? 'review' : 'discover');
 			}
 
+			appState.searchText = '';
+			if (appState.show.searchPanel) {
+				$timeout(function () {
+					document.getElementById('searchtext').focus();
+				});
+			}
 		};
+
 		$scope.toggleNavPanel = function () {
 			// console.log("toggleNavPanel");
 			timelineSvc.pause();

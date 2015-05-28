@@ -2,15 +2,18 @@
 
 // Controller for the search panel results
 angular.module('com.inthetelling.story')
-	.controller('SearchPanelController', function ($scope, timelineSvc, modelSvc) {
+	.controller('SearchPanelController', function ($scope, $timeout, timelineSvc, modelSvc) {
 
 		// default sort order
 		$scope.sortBy = "startTime";
-		$scope.setSortBy = function (sortedBy) {
-			$scope.sortBy = sortedBy;
-		};
+		// $scope.setSortBy = function (sortedBy) {
+		// 	$scope.sortBy = sortedBy;
+		// };
 		$scope.toggleSortBy = function (sortedBy) {
 			$scope.sortBy = getFlippedSortValue(sortedBy);
+			if (!$scope.indexed) {
+				$scope.indexEvents()
+			};
 		};
 		$scope.getToggledValue = function (currentSortBy) {
 			return getFlippedSortValue(currentSortBy);
@@ -38,8 +41,16 @@ angular.module('com.inthetelling.story')
 		// generate searchable text for the episode (on demand).
 		// TODO need to handle multi-episode timelines.
 
+		$scope.indexed = false;
 		$scope.indexEvents = function () {
-
+			console.log("indexEvents", $scope.episode.items);
+			if (!$scope.episode.items) {
+				$timeout(function () { // HACK Sorry, future me
+					$scope.indexEvents();
+				}, 300);
+				return false;
+			}
+			$scope.indexed = true;
 			// map the increasingly-misnamed producerItemType to search categories.
 			// Array so we can control sort order in panel.
 			$scope.typeCategories = [

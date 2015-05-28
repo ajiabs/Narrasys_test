@@ -1,5 +1,5 @@
 <div ng-class="episode.styleCss">
-	<div aria-label="sort toggle" class="searchfilters" aria-controls="sortableSearch">
+	<div aria-label="sort toggle" class="searchfilters matchVideoHeight" aria-controls="sortableSearch">
 		Sorted by
 		<button tabindex="0" class="fakeLink" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
 	</div>
@@ -11,7 +11,7 @@
 					<div class="item" ng-repeat="item in sceneItems=
 						(scene.items 
 						| orderBy:'startTime' 
-						| filter:{'searchableText': searchText||'', 'cosmetic': false}
+						| filter:{'searchableText': appState.searchText||'', 'cosmetic': false}
 						)" ng-include="'templates/item/searchresults.html'">
 					</div>
 				</div>
@@ -22,11 +22,11 @@
 					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
 					<div class="item" ng-repeat="item in matchedItems=(showTypes[category].items
 						| orderBy:'startTime'
-						| filter:{'searchableText':searchText||'','cosmetic':false})" ng-include="'templates/item/searchresults.html'">
+						| filter:{'searchableText':appState.searchText||'','cosmetic':false})" ng-include="'templates/item/searchresults.html'">
 					</div>
 				</div>
 			</div>
-			<div ng-if="(episode.items | filter:{'searchableText': searchText||'', 'cosmetic': false}).length == 0">
+			<div ng-if="(episode.items | filter:{'searchableText': appState.searchText||'', 'cosmetic': false}).length == 0">
 				(Nothing matched your search.)
 			</div>
 		</div>

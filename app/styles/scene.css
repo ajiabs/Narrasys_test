@@ -348,6 +348,23 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		width: 130px;
 	}
 }
+
+.searchMode .videoMagnet {
+	width: 40%;
+	position: fixed;
+	right: 0;
+}
+
+.searchMode .searchfilters {
+	height: 100px;
+	/* TODO matchVideoHeight */
+	
+	padding: 1em;
+}
+
+.searchMode .scrollContainer {
+	padding: 1em;
+}
 /* -------------------------------------------  
    Landing screen 
 */

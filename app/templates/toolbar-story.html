@@ -11,7 +11,6 @@
 		</button>
 	</div>
 
-
 	<!--
 	<div class="modegroup buttongroup">
 		<nav role="navigation">
@@ -40,7 +39,6 @@
 -->
 	<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 		<!-- this needs to be an <a> or it trips popup blockers -->
-
 		<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{appState.time}}" target="_blank">
 			<span>New window</span>
 		</a>
@@ -50,20 +48,18 @@
 			<span>Search</span>
 		</button>
 		<label for="searchtext" class="hidden">Search Text</label>
-		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="searchText" />
+		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="appState.searchText" />
 	</div>
 	<div class="profilegroup buttongroup">
 		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && userHasRole('admin')" ng-click="toggleProducerPreview()">
 			<span ng-if="appState.product == 'producer'">Preview</span>
 			<span ng-if="appState.product == 'player'">Edit</span>
 		</a>
-
 		<a class="button button-profile" ng-click="appState.show.profilePanel = true">
 			<span>Profile</span>
 		</a>
 	</div>
 </div>
-
 
 <div ng-show="show.navPanel" class="navPanel topDrawer" ng-class="episode.styleCss">
 	<!-- this is for now duplicactive of code in player.html; it will change to include narrative links soon enough -->
