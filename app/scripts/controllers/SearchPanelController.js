@@ -2,13 +2,11 @@
 
 // Controller for the search panel results
 angular.module('com.inthetelling.story')
-	.controller('SearchPanelController', function ($scope, $timeout, timelineSvc, modelSvc) {
+	.controller('SearchPanelController', function ($scope, $timeout, timelineSvc, modelSvc, appState) {
 
 		// default sort order
 		$scope.sortBy = "startTime";
-		// $scope.setSortBy = function (sortedBy) {
-		// 	$scope.sortBy = sortedBy;
-		// };
+
 		$scope.toggleSortBy = function (sortedBy) {
 			$scope.sortBy = getFlippedSortValue(sortedBy);
 			if (!$scope.indexed) {
@@ -36,6 +34,12 @@ angular.module('com.inthetelling.story')
 		$scope.seek = function (t, eventID) {
 			$scope.enableAutoscroll(); // in playerController
 			timelineSvc.seek(t, "clickedOnEventInSearch", eventID);
+		};
+
+		$scope.editItem = function (id) {
+			appState.editEvent = modelSvc.events[id];
+			appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+			appState.videoControlsLocked = true;
 		};
 
 		// generate searchable text for the episode (on demand).
