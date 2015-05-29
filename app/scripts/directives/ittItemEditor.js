@@ -63,6 +63,7 @@ angular.module('com.inthetelling.story')
 
 				scope.uploadStatus = [];
 				scope.uneditedItem = angular.copy(scope.item); // in case of cancel
+				scope.uneditedItem['$$hashKey'] = scope.item['$$hashKey']; //Preserve the hashkey, which angular.copy strips out
 				scope.annotators = modelSvc.episodes[appState.episodeId].annotators;
 				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
