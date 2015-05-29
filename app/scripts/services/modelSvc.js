@@ -286,6 +286,9 @@ angular.module('com.inthetelling.story')
 				if (event.sxs) { // HACK can probably be safely removed?
 					event.cosmetic = false;
 				}
+				if (!event.templateUrl) {
+					event.templateUrl = '';
+				}
 
 				if (event.avatar_id) {
 					if (!svc.assets[event.avatar_id]) { // not sure if necessary here.  Should move this into a getter function for assets anyway
@@ -300,7 +303,7 @@ angular.module('com.inthetelling.story')
 					// to deal with them. Sorry!
 
 					// I don't know why this situation occurs, but it does:
-					if (!event.templateUrl) {
+					if (event.templateUrl === '') {
 						event.templateUrl = 'templates/item/usc-badges.html';
 					}
 

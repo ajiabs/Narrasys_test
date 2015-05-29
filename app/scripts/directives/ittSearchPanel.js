@@ -10,7 +10,7 @@ angular.module('com.inthetelling.story')
 			controller: 'SearchPanelController',
 			link: function (scope) {
 
-				// scope.appState = appState;
+				scope.appState = appState;
 
 				// $timeout(function () {
 				// console.log("ittSearchPanel", scope);
