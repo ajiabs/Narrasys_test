@@ -1,6 +1,7 @@
 
-changing view modes needs to turn off 'search'
+changing into 'watch' mode needs to turn off 'search'
 
+see how much of search's indexEvents can be moved into modelSvc and done once
 
 editor shouldn't be zooming timeline... 
 

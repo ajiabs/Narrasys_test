@@ -11,7 +11,7 @@
 					<div class="item" ng-repeat="item in sceneItems=
 						(scene.items 
 						| orderBy:'startTime' 
-						| filter:{'searchableText': appState.searchText||'', 'cosmetic': false}
+						| filter:{'searchableText': appState.searchText||''}
 						)" ng-include="'templates/item/searchresults.html'">
 					</div>
 				</div>
@@ -22,7 +22,7 @@
 					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
 					<div class="item" ng-repeat="item in matchedItems=(showTypes[category].items
 						| orderBy:'startTime'
-						| filter:{'searchableText':appState.searchText||'','cosmetic':false})" ng-include="'templates/item/searchresults.html'">
+						| filter:{'searchableText':appState.searchText||''})" ng-include="'templates/item/searchresults.html'">
 					</div>
 				</div>
 			</div>

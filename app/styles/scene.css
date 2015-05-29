@@ -357,6 +357,26 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	padding: 1em;
 }
 
+.searchMode .searchResults .isCosmetic {
+	display: none;
+}
+
+.isProducer .searchMode .searchResults .isCosmetic {
+	display: block;
+	opacity: 0.8;
+}
+
+.isProducer .searchMode .searchResults .isCosmetic:before {
+	background-color: #999;
+	border-radius: 0.5em;
+	color: #fff;
+	content: "COSMETIC";
+	font-size: 0.8em;
+	font-weight: bold;
+	padding: 0.2em;
+	float: right;
+}
+
 @media screen and (min-width: 750px) {
 	.searchMode .videoMagnet {
 		width: 300px !important;

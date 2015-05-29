@@ -1,7 +1,8 @@
 <div ng-class="{
 searchitem:true,
 isSxS: item.sxs,
-isCurrent: ((item.start_time <= appState.time) && (item.end_time > appState.time))
+isCurrent: ((item.start_time <= appState.time) && (item.end_time > appState.time)),
+isCosmetic: item.cosmetic
 }" ng-style="item.sxs?{backgroundImage:'url('+item.avatar.url+')'}:{}">
 	<span class="displayTime">
 		<button class="fakeLink" tabindex="2" ng-click="seek(item.start_time, item._id)">{{item.displayStartTime}}</button>
