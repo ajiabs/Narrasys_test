@@ -651,6 +651,9 @@ angular.module('com.inthetelling.story')
 				})
 				.error(function () {
 					deferredUploads[fileIndex].reject();
+					fileBeingUploaded = null;
+					fileIndex++;
+					startNextUpload(assetEndpoint);
 				});
 			return deferred.promise;
 		};

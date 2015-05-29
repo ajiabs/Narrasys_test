@@ -343,8 +343,12 @@ angular.module('com.inthetelling.story')
 							scope.item.annotation_image_id = data.file._id;
 						}
 						delete scope.uploads;
-					}, function () {
-						// console.log("FAIL", );
+					}, function (err) {
+						console.log("FAILED UPLOAD", err);
+						errorSvc.error({
+							data: "Sorry, we couldn't upload that type of file."
+						});
+						delete scope.uploads;
 					}, function (update) {
 						scope.uploadStatus[0] = update;
 					});
