@@ -95,16 +95,6 @@ angular.module('com.inthetelling.story')
 
 			angular.forEach($scope.episode.items, function (item) {
 				if (item._type !== 'Scene') {
-					item.searchableText = (item.display_annotation || item.display_description) + " " + (item.display_title || item.display_annotator);
-					if (!item.cosmetic) {
-						item.cosmetic = false; // otherwise events without a cosmetic field at all will get filtered out
-					}
-					if (item.sxs) { // HACK
-						item.cosmetic = false;
-					}
-					if (item.avatar_id) {
-						item.avatar = modelSvc.assets[item.avatar_id];
-					}
 					// build 'by type' arrays:
 					if (item.producerItemType) {
 						$scope.showTypes[item.producerItemType].items.push(item);

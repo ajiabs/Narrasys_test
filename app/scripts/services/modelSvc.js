@@ -142,7 +142,7 @@ angular.module('com.inthetelling.story')
 			// console.log("deriveEpisode:", episode);
 
 			//If the episode doesn't have a template then assign it the default template
-			if(!episode.templateUrl) {
+			if (!episode.templateUrl) {
 				episode.templateUrl = DEFAULT_EPISODE_TEMPLATE_URL;
 			}
 
@@ -278,6 +278,22 @@ angular.module('com.inthetelling.story')
 			event = setLang(event);
 
 			if (event._type !== 'Scene') {
+
+				event.searchableText = (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator);
+				if (!event.cosmetic) {
+					event.cosmetic = false; // search needs this to be explicit
+				}
+				if (event.sxs) { // HACK can probably be safely removed?
+					event.cosmetic = false;
+				}
+
+				if (event.avatar_id) {
+					if (!svc.assets[event.avatar_id]) { // not sure if necessary here.  Should move this into a getter function for assets anyway
+						svc.assets[event.avatar_id] = {};
+					}
+					event.avatar = svc.assets[event.avatar_id];
+				}
+
 				if (svc.episodes[event.cur_episode_id] && svc.episodes[event.cur_episode_id].templateUrl === 'templates/episode/usc.html') {
 					// HACKS AHOY
 					// USC made a bunch of change requests post-release; this was the most expedient way
@@ -477,11 +493,11 @@ angular.module('com.inthetelling.story')
 				}
 
 				if (event._type === 'Scene') {
-
 					scenes.push(event);
 				} else {
 					items.push(event);
 				}
+
 			});
 
 			// collect a list of all the speakers/annotators in the episode.
@@ -524,9 +540,7 @@ angular.module('com.inthetelling.story')
 							longKey = longKey + " / " + annotators[key].name[langs[i]];
 						}
 					}
-
 					annotators[key].key = longKey;
-
 				}
 			});
 			episode.annotators = annotators;
@@ -548,8 +562,9 @@ angular.module('com.inthetelling.story')
 				duration = episode.masterAsset.duration;
 			}
 
-			// Fix bad event data:
+			// Fix bad event timing data.  (see also svc.deriveEvent())
 			angular.forEach(items, function (event) {
+
 				// We have some events whose start time is beyond the episode duration; they were winding up attached to the endingscene (and therefore invisible)
 				// HACK just shove those into the end of the last (real) scene with a short duration
 				if (duration > 0) {
