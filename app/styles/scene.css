@@ -350,11 +350,11 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 
 .searchMode .searchfilters {
-	padding: 1em;
+	padding: 1em 0 0 0.5em;
 }
 
 .searchMode .scrollContainer {
-	padding: 1em;
+	padding: 0 0.5em;
 }
 
 .searchMode .searchResults .isCosmetic {
@@ -379,18 +379,21 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 
 @media screen and (min-width: 750px) {
 	.searchMode .videoMagnet {
-		width: 300px !important;
+		width: 320px;
 		position: fixed;
 		right: 0;
 	}
 	.searchMode .searchResults {
-		margin-right: 300px;
+		margin-right: 290px;
+	}
+	.searchMode .searchResults .item {
+		padding-right: 50px;
 	}
 }
 
-@media screen and (min-width: 360px) and (max-width: 499px) {
+@media screen and (min-width: 360px) and (max-width: 749px) {
 	.searchMode .videoMagnet {
-		width: 45% !important;
+		width: 220px;
 		position: fixed;
 		right: 0;
 	}
@@ -398,23 +401,14 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		height: 100px;
 		/* TODO matchVideoHeight */
 	}
-}
-
-@media screen and (min-width: 500px) and (max-width: 749px) {
-	.searchMode .videoMagnet {
-		width: 30% !important;
-		position: fixed;
-		right: 0;
-	}
-	.searchMode .searchfilters {
-		height: 100px;
-		/* TODO matchVideoHeight */
+	.searchMode .searchResults .item {
+		padding-right: 50px;
 	}
 }
 
 @media screen and (max-width: 359px) {
 	.searchMode .videoMagnet {
-		width: 100% !important;
+		width: 100%;
 		position: static;
 	}
 	.searchMode .searchfilters {
