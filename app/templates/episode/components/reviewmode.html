@@ -1,19 +1,13 @@
 <div ng-show="appState.viewMode == 'review'">
-
-
 	<span ng-if="appState.productLoadedAs=='player'" class="reviewMode">
 		<div itt-magnet id="reviewModeVideoMagnet" class="videoMagnet">
 			<img src="images/aspectratiopreserver-16x9.gif">
 		</div>
 		<div itt-review-mode="episode.scenes"></div>
-
 	</span>
 	<span ng-if="appState.productLoadedAs!='player'" class="searchMode">
-
 		<div itt-magnet id="searchVideoMagnet" class="videoMagnet">
 			<img src="images/aspectratiopreserver-16x9.gif">
 		</div>
-		<div ng-if="appState.productLoadedAs!='player'" itt-search-panel></div>
-
-
+		<div itt-search-panel></div>
 </div>

@@ -349,21 +349,58 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	}
 }
 
-.searchMode .videoMagnet {
-	width: 40%;
-	position: fixed;
-	right: 0;
-}
-
 .searchMode .searchfilters {
-	height: 100px;
-	/* TODO matchVideoHeight */
-	
 	padding: 1em;
 }
 
 .searchMode .scrollContainer {
 	padding: 1em;
+}
+
+@media screen and (min-width: 750px) {
+	.searchMode .videoMagnet {
+		width: 300px !important;
+		position: fixed;
+		right: 0;
+	}
+	.searchMode .searchResults {
+		margin-right: 300px;
+	}
+}
+
+@media screen and (min-width: 360px) and (max-width: 499px) {
+	.searchMode .videoMagnet {
+		width: 45% !important;
+		position: fixed;
+		right: 0;
+	}
+	.searchMode .searchfilters {
+		height: 100px;
+		/* TODO matchVideoHeight */
+	}
+}
+
+@media screen and (min-width: 500px) and (max-width: 749px) {
+	.searchMode .videoMagnet {
+		width: 30% !important;
+		position: fixed;
+		right: 0;
+	}
+	.searchMode .searchfilters {
+		height: 100px;
+		/* TODO matchVideoHeight */
+	}
+}
+
+@media screen and (max-width: 359px) {
+	.searchMode .videoMagnet {
+		width: 100% !important;
+		position: static;
+	}
+	.searchMode .searchfilters {
+		height: auto;
+		padding: 1em;
+	}
 }
 /* -------------------------------------------  
    Landing screen 

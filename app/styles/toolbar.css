@@ -452,10 +452,25 @@ button {
 	padding: 0.5em 0.3em 0.1em 0.3em
 }
 
-.searchResults .item {
+.episodeUI .searchResults .item {
 	border-bottom: 1px solid #CCC;
 	padding: 0.1em 0.3em;
+}
+
+.searchResults .item {
 	clear: both;
+}
+
+.searchResults .searchitem {
+	border-top: 1px solid #EEE;
+}
+
+.searchResults .item .isCurrent {
+	background-color: #EEE;
+}
+
+.searchResults .searchitem {
+	padding: 0.2em;
 }
 
 .searchResults .item .isSxS {
