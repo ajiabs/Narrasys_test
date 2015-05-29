@@ -8,9 +8,14 @@
 	</div>
 	<div>
 		<b ng-bind-html="item.title.en"></b>
+
 		<p style="text-align:center">
-			<img ng-if="item.asset.url" ng-src="{{item.asset.url}}">
+			<div ng-if="item.asset.url" class="touchable">
+				<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
+				<div class="touchableIndicator"></div>
+			</div>
 		</p>
+
 	</div>
 	<div class="text" ng-bind-html="item.description.en"></div>
 	<div class="clear"></div>
