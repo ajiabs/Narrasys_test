@@ -43,7 +43,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.indexed = false;
 		$scope.indexEvents = function () {
-			console.log("indexEvents", $scope.episode.items);
+			// console.log("indexEvents", $scope.episode.items);
 			if (!$scope.episode.items) {
 				$timeout(function () { // HACK Sorry, future me
 					$scope.indexEvents();

@@ -1,10 +1,16 @@
 
 changing view modes needs to turn off 'search'
 
-need to change how searchText gets bound to scope, it's getting masked
 
+editor shouldn't be zooming timeline... 
 
 
 matchVideoHeight should be a directive, not part of scene setup
 
 autoscroll should be a directive
+
+block autoscroll when sort by type
+
+search: links should link, images should modal
+producer should see cosmetic items in search, marked as such
+(use itt-item with forced template?)

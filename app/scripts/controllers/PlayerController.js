@@ -28,9 +28,7 @@ angular.module('com.inthetelling.story')
 				// magnet animation looks too choppy when loading review mode; skip it:
 				$timeout(function () {
 					$rootScope.$emit('magnet.jumpToMagnet');
-				}, 1);
-
-				// console.log("unblocking autoscroll");
+				});
 				appState.autoscroll = true;
 				appState.autoscrollBlocked = false;
 				startScrollWatcher();
@@ -221,7 +219,7 @@ angular.module('com.inthetelling.story')
 		$scope.toggleSearchPanel = function () {
 			appState.show.searchPanel = !appState.show.searchPanel;
 			if (appState.productLoadedAs !== 'player') {
-				appState.viewMode = (appState.show.searchPanel ? 'review' : 'discover');
+				$scope.viewMode(appState.show.searchPanel ? 'review' : 'discover');
 			}
 
 			appState.searchText = '';
@@ -380,7 +378,9 @@ angular.module('com.inthetelling.story')
 			// when we add more generalized autoscroll support within scenes that will need to change of course
 			var top = Infinity;
 			var curScroll = autoscrollableNode.scrollTop();
-			angular.forEach($('.reviewMode .content .item.isCurrent:visible'), function (item) {
+
+			// HACK. Need to limit this to search within a pane
+			angular.forEach($('.isCurrent:visible'), function (item) {
 				var t = item.getBoundingClientRect()
 					.top + curScroll;
 				if (t < top) {
