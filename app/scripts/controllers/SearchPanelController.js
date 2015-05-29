@@ -31,15 +31,11 @@ angular.module('com.inthetelling.story')
 				return "type";
 			}
 		};
+
+		// NOTE this is only called from episodeUI -- searchMode does not reach this! (which is probably what we want)
 		$scope.seek = function (t, eventID) {
 			$scope.enableAutoscroll(); // in playerController
 			timelineSvc.seek(t, "clickedOnEventInSearch", eventID);
-		};
-
-		$scope.editItem = function (id) {
-			appState.editEvent = modelSvc.events[id];
-			appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
-			appState.videoControlsLocked = true;
 		};
 
 		// generate searchable text for the episode (on demand).

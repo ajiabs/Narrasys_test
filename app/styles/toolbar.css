@@ -465,7 +465,7 @@ button {
 	border-top: 1px solid #EEE;
 }
 
-.searchResults .item .isCurrent {
+.searchResults .item.isCurrent {
 	background-color: #EEE;
 }
 
@@ -493,12 +493,18 @@ button {
 }
 
 .searchResults .description {
-	font-size: 0.86em;
-	margin-left: 45px
+	margin-left: 45px;
 }
 
 .searchResults .type {
 	opacity: 0.4;
+}
+
+.episodeUI .searchResults .description {
+	font-size: 0.86em;
+}
+
+.episodeUI .searchResults .type {
 	font-size: 0.86em
 }
 

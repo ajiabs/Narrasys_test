@@ -8,22 +8,23 @@
 			<div ng-if="sortBy == 'startTime'">
 				<div ng-repeat="scene in episode.scenes">
 					<h3 ng-if="sceneItems.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h3>
-					<div class="item" ng-repeat="item in sceneItems=
+
+					<div class="item animate" ng-repeat="item in sceneItems=
 						(scene.items 
 						| orderBy:'startTime' 
 						| filter:{'searchableText': appState.searchText||''}
-						)" ng-include="'templates/item/searchresults.html'">
-					</div>
+						)" ng-class="item.state" itt-item="item" forceTemplate="searchresults"></div>
 				</div>
 			</div>
 			<!-- sorted by type -->
 			<div ng-if="sortBy == 'type'">
 				<div ng-repeat="category in typeCategories">
 					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
-					<div class="item" ng-repeat="item in matchedItems=(showTypes[category].items
+					<div class="item animate" ng-repeat="item in matchedItems=
+						(showTypes[category].items
 						| orderBy:'startTime'
-						| filter:{'searchableText':appState.searchText||''})" ng-include="'templates/item/searchresults.html'">
-					</div>
+						| filter:{'searchableText':appState.searchText||''}
+					)" ng-class="item.state" itt-item="item" forceTemplate="searchresults"></div>
 				</div>
 			</div>
 			<div ng-if="(episode.items | filter:{'searchableText': appState.searchText||'', 'cosmetic': false}).length == 0">

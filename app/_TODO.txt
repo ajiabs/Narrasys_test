@@ -1,3 +1,8 @@
+
+sort out a better way to handle appstate.product and appstate.productloadedas
+(appstate.uiversion?)
+
+
 better handling for case where page loads in search mode initially
 
 changing into 'watch' mode needs to turn off 'search'
@@ -11,8 +16,4 @@ matchVideoHeight should be a directive, not part of scene setup
 
 autoscroll should be a directive
 
-block autoscroll when sort by type
-
-search: links should link, images should modal
-producer should see cosmetic items in search, marked as such
-(use itt-item with forced template?)
+search results: links should link, images should modal
