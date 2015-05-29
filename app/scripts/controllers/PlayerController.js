@@ -392,12 +392,13 @@ angular.module('com.inthetelling.story')
 			}
 
 			// There's a visible current item; is it within the viewport?
-			var slop = $(window)
-				.height() / 5;
-			if (top > curScroll + slop && top < (curScroll + slop + slop + slop)) {
+			var slop = 180;
+			if (
+				(top > curScroll + slop) && // below top of viewport
+				((top - curScroll) < (document.documentElement.clientHeight - slop)) // above bottom of viewport
+			) {
 				return;
 			}
-
 			if (top < slop && curScroll < slop) {
 				return; // too close to top of window to bother
 			}

@@ -1,3 +1,4 @@
+better handling for case where page loads in search mode initially
 
 changing into 'watch' mode needs to turn off 'search'
 

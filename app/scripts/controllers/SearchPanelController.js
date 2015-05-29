@@ -9,13 +9,13 @@ angular.module('com.inthetelling.story')
 
 		$scope.toggleSortBy = function (sortedBy) {
 			$scope.sortBy = getFlippedSortValue(sortedBy);
-			if (!$scope.indexed) {
-				$scope.indexEvents()
-			};
+			appState.autoscroll = ($scope.sortBy === 'startTime'); // autoscroll only when sorted by time
 		};
+
 		$scope.getToggledValue = function (currentSortBy) {
 			return getFlippedSortValue(currentSortBy);
 		};
+
 		var getFlippedSortValue = function (current) {
 			if (current === "startTime") {
 				return "type";
