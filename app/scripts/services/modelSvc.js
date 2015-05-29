@@ -1029,7 +1029,18 @@ angular.module('com.inthetelling.story')
 
 			// console.log("video asset:", videoObject);
 			videoAsset.urls = videoObject;
+
+			// We need to know if the video has been transcoded or not in the template,
+			// so let's centralize the logic for that here
+			videoAsset.html5IsTranscoded = function() {
+				return svc.isTranscoded(this);
+			};
+
 			return videoAsset;
+		};
+
+		svc.isTranscoded = function(video) {
+			return !!video.alternate_urls;
 		};
 
 		if (config.debugInBrowser) {
