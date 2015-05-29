@@ -48,7 +48,7 @@ angular.module('com.inthetelling.story')
 
 		// for episode-related activity
 		svc.captureEpisodeActivity = function (name, data) {
-			if (config.disableAnalytics || !appState.user.track_episode_metrics) {
+			if (config.disableAnalytics || (appState.user._id && !appState.user.track_episode_metrics)) {
 				return;
 			}
 			var userActivity = {
@@ -59,14 +59,14 @@ angular.module('com.inthetelling.story')
 			if (data) {
 				userActivity.data = data;
 			}
+
 			svc.activityQueue.push(userActivity);
 		};
 
 		// for transmedia-related activity
 		svc.captureEventActivity = function (name, eventID, data, force) {
-			// console.log("analyticsSvc.captureEventActivity", eventID, data);
 			if (!force) {
-				if (config.disableAnalytics || !appState.user.track_event_actions) {
+				if (config.disableAnalytics || (appState.user._id && !appState.user.track_event_actions)) {
 					return;
 				}
 			}
