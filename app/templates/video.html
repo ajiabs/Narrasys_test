@@ -1,11 +1,10 @@
 <div class="video">
 	<iframe tabindex="-1" id="ytplayer{{uid}}" ng-if="video.urls.youtube.length" ng-src="{{video.urls.youtube + '?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=1&loop=0'}}"></iframe>
 	<!-- NOTE in html5 video we can't depend on databinding to change the video src after rendering!  See videoController changeVideoBandwidth -->
-	<video ng-if="video.url && (!video.urls.youtube || !video.urls.youtube.length)" aria-label="media player">
+	<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player">
 		<source class="m3u8" ng-if="video.urls.m3u8[0]" ng-src="{{video.urls.m3u8[0]}}" type="application/x-mpegURL" />
 		<source class="mpeg4" ng-if="video.urls.mp4[video.curStream]" ng-src="{{video.urls.mp4[video.curStream]}}" type="video/mp4" />
 		<source class="webm" ng-if="video.urls.webm[video.curStream]" ng-src="{{video.urls.webm[video.curStream]}}" type="video/webm" />
-		<source class="{{video.extension}}" ng-src="{{video.url}}" type="{{video.content_type}}" />
 		<p>Oh no! Your browser does not support the HTML5 Video element.</p>
 	</video>
 	<!-- hide this on touch devices before hasBeenPlayed, if youtube, so users can click the YT player directly to init it.
@@ -14,6 +13,11 @@
 		play: appState.timelineState == 'paused',
 		buffering: appState.timelineState == 'buffering',
 		firstplay: !appState.hasBeenPlayed,
-		rewind: (appState.time > 0 && appState.time >= video.duration - 0.3)
-	}"></div>
+		rewind: (appState.time > 0 && appState.time >= video.duration - 0.3),
+		transcoding: !video.urls.youtube.length && !video.html5IsTranscoded()
+	}">
+		<div class="convertingMessage" ng-if="!video.urls.youtube.length && !video.html5IsTranscoded()">
+			This video is being converted to a web-playable format and will be ready in a&nbsp;few&nbsp;minutes
+		</div>
+	</div>
 </div>
