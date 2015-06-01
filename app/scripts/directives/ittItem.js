@@ -28,6 +28,13 @@ angular.module('com.inthetelling.story')
 					scope.item.avatar = modelSvc.assets[scope.item.avatar_id];
 				}
 
+				if (
+					(scope.item._id !== 'internal:editing') &&
+					(scope.item.user_id === appState.user._id)
+				) {
+					scope.item.editableByThisUser = true;
+				}
+
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
 					if (scope.item.showInlineDetail) {
