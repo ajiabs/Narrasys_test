@@ -11,12 +11,12 @@
 					<!-- Would split this into separate templates if episodeUI's days weren't already numbered -->
 					<div ng-if="appState.product == 'player'" class="item animate" ng-repeat="item in sceneItems=
 						(scene.items 
-						| orderBy:'startTime' 
+						| orderBy:'wtfchromesort'
 						| filter:{'searchableText': appState.searchText||''}
 						)" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
 					<div ng-if="appState.product != 'player'" class="item animate" ng-repeat="item in sceneItems=
 						(scene.items 
-						| orderBy:'startTime' 
+						| orderBy:'wtfchromesort'
 						| filter:{'searchableText': appState.searchText||''}
 						)" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
 				</div>
@@ -27,12 +27,12 @@
 					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
 					<div ng-if="appState.product=='player'" class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
-						| orderBy:'startTime'
+						| orderBy:'wtfchromesort'
 						| filter:{'searchableText':appState.searchText||''}
 					)" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
 					<div ng-if="appState.product!='player'" class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
-						| orderBy:'startTime'
+						| orderBy:'wtfchromesort'
 						| filter:{'searchableText':appState.searchText||''}
 					)" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
 				</div>

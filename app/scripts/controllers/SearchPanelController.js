@@ -93,7 +93,13 @@ angular.module('com.inthetelling.story')
 				}
 			};
 
+			var padDigits = function (number, digits) {
+				return Array(Math.max(digits - String(parseInt(number)).length + 1, 0)).join(0) + number;
+			}
+
 			angular.forEach($scope.episode.items, function (item) {
+				// Chrome has decided to sort these alphabetically instead of numerically...
+				item.wtfchromesort = padDigits(item.start_time, 5);
 				if (item._type !== 'Scene') {
 					// build 'by type' arrays:
 					if (item.producerItemType) {
