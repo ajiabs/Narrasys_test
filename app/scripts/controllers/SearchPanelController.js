@@ -94,8 +94,8 @@ angular.module('com.inthetelling.story')
 			};
 
 			var padDigits = function (number, digits) {
-				return Array(Math.max(digits - String(parseInt(number)).length + 1, 0)).join(0) + number;
-			}
+				return new Array(Math.max(digits - String(parseInt(number, 10)).length + 1, 0)).join(0) + number;
+			};
 
 			angular.forEach($scope.episode.items, function (item) {
 				// Chrome has decided to sort these alphabetically instead of numerically...
