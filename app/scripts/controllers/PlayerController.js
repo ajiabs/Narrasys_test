@@ -272,7 +272,7 @@ angular.module('com.inthetelling.story')
 			console.log("hidePanel", panel);
 			appState.show[panel] = false;
 			console.log(appState);
-		}
+		};
 
 		/*
 				$scope.hidePanels = function () {

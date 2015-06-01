@@ -40,7 +40,7 @@ angular.module('com.inthetelling.story')
 								// widget.setVideoKeywords();
 							},
 							'onUploadSuccess': function (ret) {
-                var includeYoutubeQSParams = true;
+								var includeYoutubeQSParams = true;
 								scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId, includeYoutubeQSParams);
 								scope.isRecordingVideo = false;
 								scope.isProcessingVideo = true;
@@ -331,12 +331,12 @@ angular.module('com.inthetelling.story')
 
 						scope.item.asset = modelSvc.assets[data.file._id];
 						// TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
-						if (scope.item._type === 'Upload') {
-							scope.item.asset_id = data.file._id;
-						} else if (scope.item._type === 'Link') {
+						if (scope.item._type === 'Link') {
 							scope.item.link_image_id = data.file._id;
 						} else if (scope.item._type === 'Annotation') {
 							scope.item.annotation_image_id = data.file._id;
+						} else {
+							scope.item.asset_id = data.file._id;
 						}
 						delete scope.uploads;
 					}, function (err) {
