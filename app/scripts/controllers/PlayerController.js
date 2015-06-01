@@ -28,9 +28,7 @@ angular.module('com.inthetelling.story')
 				// magnet animation looks too choppy when loading review mode; skip it:
 				$timeout(function () {
 					$rootScope.$emit('magnet.jumpToMagnet');
-				}, 1);
-
-				// console.log("unblocking autoscroll");
+				});
 				appState.autoscroll = true;
 				appState.autoscrollBlocked = false;
 				startScrollWatcher();
@@ -220,7 +218,18 @@ angular.module('com.inthetelling.story')
 		// Misc toolbars too small to rate their own controllers
 		$scope.toggleSearchPanel = function () {
 			appState.show.searchPanel = !appState.show.searchPanel;
+			if (appState.productLoadedAs !== 'player') {
+				$scope.viewMode(appState.show.searchPanel ? 'review' : 'discover');
+			}
+
+			appState.searchText = '';
+			if (appState.show.searchPanel) {
+				$timeout(function () {
+					document.getElementById('searchtext').focus();
+				});
+			}
 		};
+
 		$scope.toggleNavPanel = function () {
 			// console.log("toggleNavPanel");
 			timelineSvc.pause();
@@ -253,27 +262,34 @@ angular.module('com.inthetelling.story')
 		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
 		var firstplayWatcher = $rootScope.$on("video.firstPlay", function () {
 			if (localStorageAllowed && appState.time === 0 && !(localStorage.getItem("noMoreHelp"))) {
-				appState.show.helpPanel = true;
+				// appState.show.helpPanel = true;
 			} else {
 				timelineSvc.play();
 			}
 		});
 
-		$scope.hidePanels = function () {
-			// dismiss ALL THE THINGS
-			appState.show.searchPanel = false;
-			appState.show.helpPanel = false;
-			appState.show.navPanel = false;
-			appState.show.profilePanel = false;
-			appState.itemDetail = false;
-			$rootScope.$emit("player.dismissAllPanels");
-		};
+		$scope.hidePanel = function (panel) {
+			console.log("hidePanel", panel);
+			appState.show[panel] = false;
+			console.log(appState);
+		}
 
-		$scope.noMoreHelp = function () {
-			appState.show.helpPanel = false;
-			localStorage.setItem("noMoreHelp", "1");
-			timelineSvc.play();
-		};
+		/*
+				$scope.hidePanels = function () {
+					// dismiss ALL THE THINGS
+					appState.show.searchPanel = false;
+					// appState.show.helpPanel = false;
+					appState.show.navPanel = false;
+					appState.show.profilePanel = false;
+					appState.itemDetail = false;
+					$rootScope.$emit("player.dismissAllPanels");
+				};
+		*/
+		// $scope.noMoreHelp = function () {
+		// 	appState.show.helpPanel = false;
+		// 	localStorage.setItem("noMoreHelp", "1");
+		// 	timelineSvc.play();
+		// };
 
 		$scope.play = function () {
 			timelineSvc.play();
@@ -362,7 +378,9 @@ angular.module('com.inthetelling.story')
 			// when we add more generalized autoscroll support within scenes that will need to change of course
 			var top = Infinity;
 			var curScroll = autoscrollableNode.scrollTop();
-			angular.forEach($('.reviewMode .content .item.isCurrent:visible'), function (item) {
+
+			// HACK. Need to limit this to search within a pane
+			angular.forEach($('.isCurrent:visible'), function (item) {
 				var t = item.getBoundingClientRect()
 					.top + curScroll;
 				if (t < top) {
@@ -374,12 +392,13 @@ angular.module('com.inthetelling.story')
 			}
 
 			// There's a visible current item; is it within the viewport?
-			var slop = $(window)
-				.height() / 5;
-			if (top > curScroll + slop && top < (curScroll + slop + slop + slop)) {
+			var slop = 180;
+			if (
+				(top > curScroll + slop) && // below top of viewport
+				((top - curScroll) < (document.documentElement.clientHeight - slop)) // above bottom of viewport
+			) {
 				return;
 			}
-
 			if (top < slop && curScroll < slop) {
 				return; // too close to top of window to bother
 			}

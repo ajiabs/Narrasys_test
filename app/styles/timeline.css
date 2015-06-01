@@ -7,68 +7,92 @@
 	position: absolute;
 	width: 1px;
 }
+
 .timeline {
 	position: relative;
 }
+
 .timeline a {
 	color: #000;
 	cursor: pointer;
 	cursor: hand;
 }
+
 .progressbarBox {
 	margin: 0 1em 0 4em;
 	position: relative;
 }
+
 .pbarTop,
 .pbarBottom {
-	margin: 0.2em 2em 0.2em 4em;
+	margin: 0.2em 2em;
 	height: 1.5em;
 	line-height: 1.5em;
 	clear: both;
 	text-align: right;
 }
+
+.episodeUI .pbarTop,
+.episodeUI .pbarBottom {
+	margin-left: 4em;
+}
+
 .pbarMain {
 	height: 1em;
 }
+
 .progressbarBox .button {
 	display: inline-block;
 	height: 1.2em;
 	min-width: 1em;
 	overflow: hidden;
 }
+
 .pbarBottom .button {
 	padding-right: 1em;
 }
+
 .timedisplay {
 	float: left;
 	font-size: 0.8em;
 	margin-top: -0.4em;
 }
+
 .progressbar {
 	position: absolute;
-	left: 4em;
+	left: 2em;
 	right: 2em;
 	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.2) inset;
-	border-radius: 0 0.5em 0.5em 0;
 	width: auto;
 	height: 1em;
 	background-color: rgba(0, 0, 0, 0.2);
 	user-select: none;
 }
+
+.episodeUI .progressbar {
+	left: 4em;
+}
+
+.episodeUI .progressbar,
+.episodeUI .progressbarContainer,
+.episodeUI .progressbar .mask {
+	border-radius: 0 0.5em 0.5em 0;
+}
+
 .progressbar .mask {
 	height: 1em;
 	overflow: hidden;
-	border-radius: 0 0.5em 0.5em 0;
 	position: absolute;
 	width: 100%;
 }
+
 .progressbarContainer {
 	position: absolute;
 	height: 1em;
 	width: 100%;
-	border-radius: 0 0.5em 0.5em 0;
 	pointer-events: none;
 }
+
 .progressbar .played,
 .progressbar .buffered,
 .progressbar .handle,
@@ -77,10 +101,12 @@
 	height: 1em;
 	cursor: default;
 }
+
 .progressbar .buffered {
 	background-color: #FFF;
 	opacity: 0.4;
 }
+
 .progressbar .played {
 	background: #8DB9D4 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAALklEQVQYGWP4//+/DwMU4GKDpXFJIosTVoisGhebsClQ9xJWiMsKZHHCphBrHQDRYVi0zUYEIwAAAABJRU5ErkJggg==) repeat;
 	box-shadow: 4px 2px 4px rgba(0, 0, 0, 0.15) inset;
@@ -89,10 +115,12 @@
 	/*background-color: #b0cee2;*/
 	/*border-right: 2px solid #66a8cc;*/
 }
+
 .progressbar .buffered {
 	background: rgba(255, 255, 255, 0.6);
 	border-radius: 0 0.5em 0.5em 0;
 }
+
 .progressbar .handle {
 	border-left: 2px solid #000;
 	height: 1.2em;
@@ -101,12 +129,14 @@
 	width: 1px;
 	pointer-events: auto;
 }
+
 .progressbar .handle.sxsHandle {
 	margin-left: -2px;
 	height: 1.3em;
 	margin-top: -0.2em;
 	border: 2px solid #333;
 }
+
 .progressbar .sxsHandle .tip {
 	border: 2px solid #333;
 	padding: 1px;
@@ -117,6 +147,7 @@
 	background: url('/images/draggable.png') 50% 50% no-repeat;
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 .progressbar .marker {
 	font-size: 0.7em;
 	line-height: 1.4em;
@@ -124,16 +155,19 @@
 	margin-left: -0.5em;
 	pointer-events: auto;
 }
+
 .progressbar .marker.mini {
 	font-size: 0.5em;
 	line-height: 2em;
 	opacity: 0.5;
 }
+
 .progressbar .marker:before {
 	content: "\e007";
 	font-family: Story;
 	position: absolute;
 }
+
 .timeline .tooltip {
 	position: absolute;
 	width: 250px;
@@ -145,6 +179,7 @@
 	color: #FFF;
 	border-radius: 0.5em;
 }
+
 .timeline .tooltip:after,
 .timeline .tooltip:before {
 	top: 100%;
@@ -156,23 +191,27 @@
 	position: absolute;
 	pointer-events: none;
 }
+
 .timeline .tooltip:after {
 	border-color: rgba(64, 64, 64, 0);
 	border-top-color: #404040;
 	border-width: 6px;
 	margin-left: -6px;
 }
+
 .timeline .tooltip:before {
 	border-color: rgba(0, 0, 0, 0);
 	border-top-color: #000;
 	border-width: 9px;
 	margin-left: -9px;
 }
+
 .timeline .sceneMenuTooltip.tooltip {
 	left: 85px;
 	bottom: 53px;
 	width: 175px;
 }
+
 .timeline .handle .tip {
 	font-size: smaller;
 	top: -1em;
@@ -181,6 +220,7 @@
 	margin-left: -25px;
 	text-align: center;
 }
+
 .timeline .button-prev,
 .timeline .button-next {
 	width: 1.5em;
@@ -188,33 +228,40 @@
 	margin-top: -0.15em;
 	height: 1em;
 }
+
 .button-scenemenu {
 	background-color: #CCCCCC;
 	border-radius: 0.5em 0 0 0.5em;
 	height: 1em;
 	width: 2em;
 }
+
 .timeline .button-prev {
 	position: absolute;
 	left: 0;
 }
+
 .timeline .button-next {
 	position: absolute;
 	right: 0;
 	text-align: right;
 }
+
 .button-scenemenu {
 	position: absolute;
 	left: 2em;
 }
+
 .button-prev:before {
 	content: "\e608";
 	font-family: Story;
 }
+
 .button-next:before {
 	font-family: Story;
 	content: "\e607";
 }
+
 .button-scenemenu:before {
 	content: "\e60b";
 	font-family: Story;
@@ -222,6 +269,7 @@
 	position: absolute;
 	top: 30%;
 }
+
 .button-play,
 .button-pause {
 	position: absolute;
@@ -232,68 +280,85 @@
 	left: 0.5em;
 	bottom: 0;
 }
+
 .button-play:before {
 	font-family: Story;
 	content: "\e001";
 }
+
 .button-pause:before {
 	font-family: Story;
 	content: "\e002";
 }
+
 .button-mute {
 	padding-right: 0 !important;
 }
+
 .button-mute.muted:before {
 	font-family: Story;
 	content: "\e003";
 }
+
 .button-mute.vol0:before {
 	font-family: Story;
 	content: "\e004";
 }
+
 .button-mute.vol1:before {
 	font-family: Story;
 	content: "\e005";
 }
+
 .button-mute.vol2:before {
 	font-family: Story;
 	content: "\e006";
 }
+
 .button-captions {
 	padding-right: 0.5em;
 }
+
 .button-captions:before {
 	font-family: Story;
 	content: "\e008";
 	color: #CCC;
 }
+
 .button-captions.active:before {
 	color: #000;
 }
+
 .button-fullscreen {
 	padding-right: 0.5em;
 }
+
 .button-fullscreen:before {
 	font-family: Story;
 	content: "\e60c";
 }
+
 .button-fullscreen.active:before {
 	content: "\e60d";
 }
+
 .button-zoomout,
 .button-zoomin {
 	height: 1em;
 	overflow: hidden;
 	display: inline-block;
 }
+
 .button-zoomout:before {
 	font-family: Story;
 	content: "\e613";
 }
+
 .button-zoomin:before {
 	font-family: Story;
 	content: "\e612";
 }
+
 .volumebar {
 	position: relative;
 	display: inline-block;
@@ -306,11 +371,13 @@
 	user-select: none;
 	overflow: hidden;
 }
+
 .volumebar .volume {
 	position: absolute;
 	height: 1em;
 	background: #555 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
+
 .pbarBottom .screen-reader-offscreen {
 	position: absolute;
 	left: -999px;
@@ -318,22 +385,27 @@
 	height: 1px;
 	top: auto;
 }
+
 .speedcontrol {
 	margin-left: 1em;
 	display: inline;
 }
+
 .button-speedcontrol {
 	width: 1em;
 	display: inline-block;
 }
+
 .button-speedcontrol div {
 	display: inline-block;
 }
+
 .speeddisplay {
 	width: 1.75em;
 	display: inline-block;
 	cursor: pointer;
 }
+
 .arrowLeft,
 .arrowRight {
 	width: 0;
@@ -341,12 +413,15 @@
 	border-top: 0.4em solid transparent;
 	border-bottom: 0.4em solid transparent;
 }
+
 .arrowLeft {
 	border-right: 0.4em solid #000;
 }
+
 .arrowRight {
 	border-left: 0.4em solid #000;
 }
+
 .languageSelector {
 	border: 0;
 	position: absolute;

@@ -3,30 +3,41 @@
 		Sorted by
 		<button tabindex="0" class="fakeLink" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
 	</div>
-	<div class="scrollContainer">
+	<div class="scrollContainer content">
 		<div class="searchResults" id="sortableSearch">
 			<div ng-if="sortBy == 'startTime'">
 				<div ng-repeat="scene in episode.scenes">
 					<h3 ng-if="sceneItems.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h3>
-					<div class="item" ng-repeat="item in sceneItems=
+					<!-- Would split this into separate templates if episodeUI's days weren't already numbered -->
+					<div ng-if="appState.product == 'player'" class="item animate" ng-repeat="item in sceneItems=
 						(scene.items 
 						| orderBy:'startTime' 
-						| filter:{'searchableText': searchText||'', 'cosmetic': false}
-						)" ng-include="'templates/item/searchresults.html'">
-					</div>
+						| filter:{'searchableText': appState.searchText||''}
+						)" ng-class="item.state" itt-item="item" forceTemplate="searchresults"></div>
+					<div ng-if="appState.product != 'player'" class="item animate" ng-repeat="item in sceneItems=
+						(scene.items 
+						| orderBy:'startTime' 
+						| filter:{'searchableText': appState.searchText||''}
+						)" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
 				</div>
 			</div>
 			<!-- sorted by type -->
 			<div ng-if="sortBy == 'type'">
 				<div ng-repeat="category in typeCategories">
 					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
-					<div class="item" ng-repeat="item in matchedItems=(showTypes[category].items
+					<div ng-if="appState.product=='player'" class="item animate" ng-repeat="item in matchedItems=
+						(showTypes[category].items
 						| orderBy:'startTime'
-						| filter:{'searchableText':searchText||'','cosmetic':false})" ng-include="'templates/item/searchresults.html'">
-					</div>
+						| filter:{'searchableText':appState.searchText||''}
+					)" ng-class="item.state" itt-item="item" forceTemplate="searchresults"></div>
+					<div ng-if="appState.product!='player'" class="item animate" ng-repeat="item in matchedItems=
+						(showTypes[category].items
+						| orderBy:'startTime'
+						| filter:{'searchableText':appState.searchText||''}
+					)" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
 				</div>
 			</div>
-			<div ng-if="(episode.items | filter:{'searchableText': searchText||'', 'cosmetic': false}).length == 0">
+			<div ng-if="(episode.items | filter:{'searchableText': appState.searchText||'', 'cosmetic': false}).length == 0">
 				(Nothing matched your search.)
 			</div>
 		</div>
