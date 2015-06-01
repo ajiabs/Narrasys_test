@@ -360,7 +360,7 @@ angular.module('com.inthetelling.story')
 						if (scope.item._type === 'Link') {
 							assetKey = "link_image_id";
 						} else if (scope.item._type === 'Annotation') {
-							assetKey = "annotation_image_id"
+							assetKey = "annotation_image_id";
 						} else {
 							assetKey = "asset_id";
 						}
