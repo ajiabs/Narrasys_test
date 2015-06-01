@@ -1,3 +1,4 @@
+/*jshint sub:true*/
 'use strict';
 
 /* 
@@ -8,7 +9,7 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -39,8 +40,8 @@ angular.module('com.inthetelling.story')
 								// widget.setVideoKeywords();
 							},
 							'onUploadSuccess': function (ret) {
-								// console.log("youtube onUploadSuccess");
-								scope.item.url = "//www.youtube.com/embed/" + ret.data.videoId + "?modestbranding=1&showinfo=0&autoplay=0&disablekb=1";
+                var includeYoutubeQSParams = true;
+								scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId, includeYoutubeQSParams);
 								scope.isRecordingVideo = false;
 								scope.isProcessingVideo = true;
 
@@ -307,13 +308,8 @@ angular.module('com.inthetelling.story')
 				};
 
 				var embeddableYTUrl = function (origUrl) {
-					var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-					var ytId = origUrl.match(getYoutubeID);
-					if (ytId) {
-						return "//www.youtube.com/embed/" + ytId[1];
-					} else {
-						return "";
-					}
+					var url = youtubeSvc.embeddableYoutubeUrl(origUrl);
+					return url ? url : "";
 				};
 
 				scope.uploadAsset = function (files) {
