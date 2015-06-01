@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittUser', function (appState, authSvc, dataSvc) {
+	.directive('ittUser', function (appState, authSvc, dataSvc, awsSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -20,19 +20,50 @@ angular.module('com.inthetelling.story')
 				authSvc.authenticate().then(function () {
 					scope.loading = false;
 					scope.user = appState.user;
-					console.log('user', scope.user);
 					scope.userHasRole = authSvc.userHasRole;
 
 					if (!scope.inPlayer && !scope.userHasRole('guest')) {
 						scope.getMyNarratives();
 					}
 				});
-				
 
-				scope.updateUser = function() {
-					appState.user.email = appState.user.email;
-					authSvc.updateUser(appState.user).then(function() {
-						//console.log("Saved user data", data);
+				// TODO refactor: this is very similar to ittItemEditor's uploadAsset
+				scope.uploadStatus = [];
+				scope.toggleUploadAvatar = function () {
+					scope.showUploadField = !scope.showUploadField;
+				};
+
+				scope.uploadAvatar = function (files) {
+					//Start the upload status out at 0 so that the
+					//progress bar renders correctly at first
+					scope.uploadStatus[0] = {
+						"bytesSent": 0,
+						"bytesTotal": 1
+					};
+
+					scope.uploads = awsSvc.uploadUserFiles(appState.user._id, files);
+					scope.uploads[0].then(function (data) {
+						scope.showUploadField = false;
+						modelSvc.cache("asset", data.file);
+						if (appState.user.avatar_id) {
+							// TODO delete the user's previous avatar asset now that we have a new one
+							// (but first confirm that events the user has already created aren't storing the old avatar_id directly.... which would be a bug)
+						}
+
+						appState.user.avatar_id = data.file._id;
+						scope.updateUser();
+
+						delete scope.uploads;
+					}, function () {
+						// console.log("FAIL", );
+					}, function (update) {
+						scope.uploadStatus[0] = update;
+					});
+				};
+
+				scope.updateUser = function () {
+					authSvc.updateUser(appState.user).then(function () {
+						scope.user = appState.user;
 					});
 				};
 				scope.getMyNarratives = function () {

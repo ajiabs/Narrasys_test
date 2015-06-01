@@ -235,8 +235,10 @@ h4 {
 .toolbar,
 .toolbar-bottom,
 .banner-logo,
-.helpPanel,
-.profilePanel {
+/*.helpPanel,*/
+
+.profilePanel,
+.topDrawer {
 	z-index: 11;
 }
 
@@ -320,6 +322,20 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 .videoMask.rewind {
 	background-image: url('/images/rewind-overlay.png');
 	animation: delayedFadeIn 3s;
+}
+
+.videoMask.transcoding {
+	background-image: none;
+}
+
+
+.videoMask .convertingMessage {
+	color: #FFF;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	margin: -4% 2em 0;
+
 }
 /* 
 Misc useful keyframes 

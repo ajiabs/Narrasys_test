@@ -537,3 +537,11 @@ input[readonly] {
 	background-color: #FEE !important;
 }
 
+.ytRecordWidgetFloater {
+	position: fixed;
+	top: 8%;
+	left: 0;
+	text-align: center;
+	right: 0;
+}
+

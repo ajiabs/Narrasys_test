@@ -1,9 +1,15 @@
 <div class="itemTemplate sxs-item">
-	<a class="edit-event" ng-click="editItem()" ng-if="item._id != 'internal:editing'">[Edit]</a>
-	<img class="sxs-profile" src="/images/no-avatar.gif">
+	<a class="edit-event" ng-click="editItem()" ng-if="item.editableByThisUser">[Edit]</a>
+	<div class="avatar">
+		<img ng-src="{{item.avatar.url || '/images/no-avatar.gif'}}">
+	</div>
 	<div class="itemHead">
 		<div class="authorName" ng-bind-html="item.display_annotator"></div>
 	</div>
-
-  <itt-mc-question choices="item.data._plugin.distractors" data="item.data._plugin" qid="item._id"></itt-question>
+	<div class="title" ng-if="item.display_title" ng-bind-html="item.display_title"></div>
+	<div ng-if="item.asset.url" class="touchable" style="float:right; clear:right; max-width: 50%; padding: 0.5em">
+		<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
+		<div class="touchableIndicator"></div>
+	</div>
+	<itt-mc-question choices="item.data._plugin.distractors" data="item.data._plugin" qid="item._id"></itt-question>
 </div>

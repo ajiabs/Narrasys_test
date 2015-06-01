@@ -17,7 +17,8 @@ angular.module('com.inthetelling.story')
 			svc.user = svc.user || {}; // whatever authSvc gets back from getAccessToken
 			svc.episodeId = false; // ID of current episode
 			svc.episodeSegmentId = false; // ID of current episode segment (only relevant in narratives)
-
+			svc.narrativeId = false; // also only relevant in narratives
+			svc.timelineId = false; // ditto
 			/* jshint -W116 */
 			svc.isFramed = (window.parent != window); // are we inside an iframe?  Don't use !== because IE8 gets it wrong
 			/* jshint +W116 */
@@ -41,7 +42,7 @@ angular.module('com.inthetelling.story')
 			svc.hideCaptions = false; // visibility of "closed captions" in watch mode
 			svc.show = {
 				searchPanel: false,
-				helpPanel: false,
+				// helpPanel: false,
 				navPanel: false
 			};
 			svc.videoControlsActive = false; // whether bottom toolbar is visible

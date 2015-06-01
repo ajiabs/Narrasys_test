@@ -1,0 +1,19 @@
+<div>
+	<span ng-if="uploads">
+		<div ng-repeat="upload in uploads">
+			<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}">
+		</div>
+	</span>
+	<span ng-if="!uploads">
+
+		<span ng-if="(item.asset || masterAsset.original_filename)">
+			{{item.asset.original_filename || masterAsset.original_filename}}
+			<button ng-click="deleteAsset(item.asset._id)">Delete</button>
+		</span>
+
+
+		<span ng-if="!(item.asset || masterAsset.original_filename)">
+			<input type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
+		</span>
+	</span>
+</div>

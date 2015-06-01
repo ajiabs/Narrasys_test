@@ -201,9 +201,12 @@ angular.module('com.inthetelling.story')
 				scope.uploadAsset = function (files) {
 					//Start the upload status out at 0 so that the
 					//progress bar renders correctly at first
-					scope.uploadStatus[0] = {"bytesSent": 0, "bytesTotal": 1};
+					scope.uploadStatus[0] = {
+						"bytesSent": 0,
+						"bytesTotal": 1
+					};
 
-					scope.uploads = awsSvc.uploadFiles(scope.episodeContainerId, files);
+					scope.uploads = awsSvc.uploadContainerFiles(scope.episodeContainerId, files);
 
 					scope.uploads[0].then(function (data) {
 						modelSvc.cache("asset", data.file);
@@ -249,12 +252,14 @@ angular.module('com.inthetelling.story')
 					if (typeof (scope.masterAsset) === 'undefined') {
 						scope.masterAsset = {};
 						scope.masterAsset.urls = {};
-					}
+					} else {
+						scope.episode.masterAsset = scope.masterAsset;
+						modelSvc.deriveEpisode(scope.episode);
+						modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+						modelSvc.resolveEpisodeAssets(scope.episode._id);
 
-					scope.episode.masterAsset = scope.masterAsset;
-					modelSvc.deriveEpisode(scope.episode);
-					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-					modelSvc.resolveEpisodeAssets(scope.episode._id);
+
+					}
 
 					// defined but never used.  Did I remove something that was using this?
 					//var hasMasterAsset = (typeof scope.masterAsset !== 'undefined' && typeof scope.masterAsset._id !== 'undefined');

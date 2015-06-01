@@ -47,12 +47,24 @@ angular.module('com.inthetelling.story')
 				return false;
 			}
 		};
-
-		svc.embeddableYoutubeUrl = function (origUrl) {
-			var YtId = svc.extractYoutubeId(origUrl);
-			return (YtId) ? "//www.youtube.com/embed/" + YtId : false;
+    svc.getYoutubeEmbedQueryString = function() {
+      return "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=0&loop=0";
+    };
+    svc.createEmbedLinkFromYoutubeId = function(ytid, includeQSParams) {
+      var includeQS = false;
+      if (arguments.length === 2) {
+        includeQS = includeQSParams;
+      }
+      if (includeQS) {
+        return (ytid) ? "//www.youtube.com/embed/" + ytid + svc.getYoutubeEmbedQueryString() : false;
+      } else {
+        return (ytid) ? "//www.youtube.com/embed/" + ytid : false;
+      }
+    };
+		svc.embeddableYoutubeUrl = function (origUrl, includeQSParams) {
+			var ytid = svc.extractYoutubeId(origUrl);
+      return svc.createEmbedLinkFromYoutubeId(ytid, includeQSParams);
 		};
-
 		svc.getVideoData = function (id) {
 			var defer = $q.defer();
 			var promise = getVideoMetaDataV1(id);

@@ -8,10 +8,10 @@ angular.module('com.inthetelling.story')
 
 		// $scope.tmp = function () {
 		// 	dataSvc.createTemplate({
-		// 		url: 'templates/item/question-mc.html',
-		// 		name: 'Question',
-		// 		event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
-		// 		applies_to_episode: false,
+		// 		url: 'templates/episode/wiley1.html',
+		// 		name: 'Wiley LearningSpace (1)',
+		// 		// event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
+		// 		applies_to_episode: true,
 		// 		applies_to_narrative: false
 		// 	});
 		// };
@@ -28,9 +28,7 @@ angular.module('com.inthetelling.story')
 				// magnet animation looks too choppy when loading review mode; skip it:
 				$timeout(function () {
 					$rootScope.$emit('magnet.jumpToMagnet');
-				}, 1);
-
-				// console.log("unblocking autoscroll");
+				});
 				appState.autoscroll = true;
 				appState.autoscrollBlocked = false;
 				startScrollWatcher();
@@ -40,7 +38,8 @@ angular.module('com.inthetelling.story')
 				// appState.autoscrollBlocked = true;
 			}
 			$timeout(function () {
-				$(window).trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
+				$(window)
+					.trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
 			});
 		};
 
@@ -96,37 +95,53 @@ angular.module('com.inthetelling.story')
 		$scope.loading = true;
 		modelSvc.addLandingScreen(appState.episodeId);
 
-		// You're right, Matt, this was a mess.   
-
 		// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 		var getEpisodeWatcher = $rootScope.$on("dataSvc.getEpisode.done", function () {
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 			modelSvc.setLanguageStrings();
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
 
-			// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
-			// HACK this is a weird place for this.
-			var watch = $scope.$watch(function () {
-				return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
-			}, function (masterAsset) {
-				if (masterAsset && Object.keys(masterAsset).length > 1) {
-					watch();
-					modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
-					timelineSvc.init(appState.episodeId);
-					$scope.loading = false;
-				}
-			});
+			console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
+
+			if (modelSvc.episodes[appState.episodeId].master_asset_id) {
+				// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
+				// HACK this is a weird place for this.
+				var watch = $scope.$watch(function () {
+					return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
+				}, function (masterAsset) {
+					if (masterAsset && Object.keys(masterAsset).length > 1) {
+						watch();
+						modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
+						timelineSvc.init(appState.episodeId);
+						$scope.loading = false;
+					}
+				});
+			} else {
+				// Episode has no master asset
+				$scope.loading = false;
+				// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
+				appState.editEpisode = modelSvc.episodes[appState.episodeId];
+				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+				appState.videoControlsLocked = true;
+
+			}
 
 		});
 
 		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
-
-		// keep non-admins from seeing the producer interface
 		if (appState.productLoadedAs === 'producer') {
+			//producer needs the container based assets, we will load them here, but could move it to on demand when assets are being selected
+			$rootScope.$on("dataSvc.getEpisode.done", function () {
+				dataSvc.getContainerAncestry(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId);
+				modelSvc.resolveEpisodeContainers(appState.episodeId);
+			});
+
+			// keep non-admins from seeing the producer interface
 			var rolesWatcher = $scope.$watch(function () {
 				return appState.user;
 			}, function (x) {
-				if (Object.keys(x).length) {
+				if (Object.keys(x)
+					.length) {
 					rolesWatcher();
 					if (!authSvc.userHasRole('admin')) {
 						appState.product = 'player';
@@ -139,7 +154,14 @@ angular.module('com.inthetelling.story')
 		$scope.appState = appState;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
-		$scope.apiDataBaseUrl = config.apiDataBaseUrl;
+
+		$scope.newWindowUrl = config.apiDataBaseUrl + "/v1/new_window";
+		if (appState.narrativeId) {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?narrative=" + appState.narrativeId + "&timeline=" + appState.timelineId;
+		} else {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?episode=" + appState.episodeId;
+		}
+		$scope.newWindowUrl = $scope.newWindowUrl + "&access_token=" + appState.user.access_token;
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -196,7 +218,18 @@ angular.module('com.inthetelling.story')
 		// Misc toolbars too small to rate their own controllers
 		$scope.toggleSearchPanel = function () {
 			appState.show.searchPanel = !appState.show.searchPanel;
+			if (appState.productLoadedAs !== 'player') {
+				$scope.viewMode(appState.show.searchPanel ? 'review' : 'discover');
+			}
+
+			appState.searchText = '';
+			if (appState.show.searchPanel) {
+				$timeout(function () {
+					document.getElementById('searchtext').focus();
+				});
+			}
 		};
+
 		$scope.toggleNavPanel = function () {
 			// console.log("toggleNavPanel");
 			timelineSvc.pause();
@@ -228,28 +261,35 @@ angular.module('com.inthetelling.story')
 
 		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
 		var firstplayWatcher = $rootScope.$on("video.firstPlay", function () {
-			if (localStorageAllowed && !(localStorage.getItem("noMoreHelp"))) {
-				appState.show.helpPanel = true;
+			if (localStorageAllowed && appState.time === 0 && !(localStorage.getItem("noMoreHelp"))) {
+				// appState.show.helpPanel = true;
 			} else {
 				timelineSvc.play();
 			}
 		});
 
-		$scope.hidePanels = function () {
-			// dismiss ALL THE THINGS
-			appState.show.searchPanel = false;
-			appState.show.helpPanel = false;
-			appState.show.navPanel = false;
-			appState.show.profilePanel = false;
-			appState.itemDetail = false;
-			$rootScope.$emit("player.dismissAllPanels");
+		$scope.hidePanel = function (panel) {
+			console.log("hidePanel", panel);
+			appState.show[panel] = false;
+			console.log(appState);
 		};
 
-		$scope.noMoreHelp = function () {
-			appState.show.helpPanel = false;
-			localStorage.setItem("noMoreHelp", "1");
-			timelineSvc.play();
-		};
+		/*
+				$scope.hidePanels = function () {
+					// dismiss ALL THE THINGS
+					appState.show.searchPanel = false;
+					// appState.show.helpPanel = false;
+					appState.show.navPanel = false;
+					appState.show.profilePanel = false;
+					appState.itemDetail = false;
+					$rootScope.$emit("player.dismissAllPanels");
+				};
+		*/
+		// $scope.noMoreHelp = function () {
+		// 	appState.show.helpPanel = false;
+		// 	localStorage.setItem("noMoreHelp", "1");
+		// 	timelineSvc.play();
+		// };
 
 		$scope.play = function () {
 			timelineSvc.play();
@@ -338,8 +378,11 @@ angular.module('com.inthetelling.story')
 			// when we add more generalized autoscroll support within scenes that will need to change of course
 			var top = Infinity;
 			var curScroll = autoscrollableNode.scrollTop();
-			angular.forEach($('.reviewMode .content .item.isCurrent:visible'), function (item) {
-				var t = item.getBoundingClientRect().top + curScroll;
+
+			// HACK. Need to limit this to search within a pane
+			angular.forEach($('.isCurrent:visible'), function (item) {
+				var t = item.getBoundingClientRect()
+					.top + curScroll;
 				if (t < top) {
 					top = t;
 				}
@@ -349,11 +392,13 @@ angular.module('com.inthetelling.story')
 			}
 
 			// There's a visible current item; is it within the viewport?
-			var slop = $(window).height() / 5;
-			if (top > curScroll + slop && top < (curScroll + slop + slop + slop)) {
+			var slop = 180;
+			if (
+				(top > curScroll + slop) && // below top of viewport
+				((top - curScroll) < (document.documentElement.clientHeight - slop)) // above bottom of viewport
+			) {
 				return;
 			}
-
 			if (top < slop && curScroll < slop) {
 				return; // too close to top of window to bother
 			}

@@ -8,7 +8,7 @@
 					correct: plugin.hasBeenAnswered && distractor.correct,
 					incorrect: plugin.hasBeenAnswered && !distractor.correct
 				}">
-					<input ng-change="scoreQuiz($index)" type="radio" name="fnord" ng-model="index" ng-disabled="plugin.hasBeenAnswered" value="{{$index}}">
+					<input ng-change="scoreQuiz($index)" type="radio" name="fnord" ng-model="index" ng-disabled="plugin.hasBeenAnswered" value="{{$index}}" ng-checked="distractor.selected">
 					<span ng-bind-html="distractor.text"></span>
 				</label>
 			</div>

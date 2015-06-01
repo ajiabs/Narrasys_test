@@ -70,7 +70,7 @@ button {
 	animation: delayedFadeOut 7s ease-out;
 }
 
-.toolbar .searchgroup,
+.episodeUI .toolbar .searchgroup,
 .toolbar .escapegroup,
 .toolbar .profilegroup {
 	float: right;
@@ -141,9 +141,13 @@ button {
 }
 
 .toolbar .buttongroup.searchgroup.cur {
-	width: 27%;
-	font-size: 22px;
 	padding-top: 3px;
+	font-size: 20px;
+	width: 50%;
+}
+
+.episodeUI .toolbar .buttongroup.searchgroup.cur {
+	width: 27%;
 }
 
 .toolbar .buttongroup.searchgroup.cur .button span {
@@ -236,6 +240,11 @@ button {
 .button-search {
 	display: block;
 	width: 2em;
+}
+
+.button-nav:before {
+	content: "\e60b";
+	font-size: 0.8em !important;
 }
 
 .button-search:before {
@@ -443,14 +452,33 @@ button {
 	padding: 0.5em 0.3em 0.1em 0.3em
 }
 
-.searchResults .item {
-	border-bottom: 1px solid #CCC;
+.episodeUI .searchResults .item {
+	/*border-bottom: 1px solid #CCC;*/
+	
 	padding: 0.1em 0.3em;
+}
+
+.searchResults .item {
 	clear: both;
 }
 
+.searchResults .searchitem {
+	border-top: 1px solid #EEE;
+}
+
+.searchResults .item.isCurrent {
+	background-color: #EEE;
+}
+
+.searchResults .searchitem {
+	padding: 0.2em;
+}
+
 .searchResults .item .isSxS {
-	background: url('/images/customer/tmp-userprofile.png') top right no-repeat;
+	/* background-image will be set inline by searchresults template */
+	
+	background-position: top right;
+	background-repeat: no-repeat;
 	background-size: 24px;
 	margin-right: -4px;
 	margin-top: -2px;
@@ -466,12 +494,18 @@ button {
 }
 
 .searchResults .description {
-	font-size: 0.86em;
-	margin-left: 45px
+	margin-left: 45px;
 }
 
 .searchResults .type {
 	opacity: 0.4;
+}
+
+.episodeUI .searchResults .description {
+	font-size: 0.86em;
+}
+
+.episodeUI .searchResults .type {
 	font-size: 0.86em
 }
 
@@ -506,6 +540,20 @@ button {
 	border-radius: 4px;
 }
 /*============================
+*
+* Top Panels
+*
+//===========================*/
+
+.topDrawer {
+	position: fixed;
+	top: 45px;
+	left: 0;
+	right: 0;
+	background-color: #FFF;
+	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.5);
+}
+/*============================
  *
  * Nav Panel
  *
@@ -515,7 +563,6 @@ button {
 	max-height: 300px;
 	transition: 1s all;
 	overflow-y: scroll;
-	padding-top: 0.5em;
 }
 
 .navPanel.ng-hide-add,
@@ -612,7 +659,7 @@ button {
  * Help Panel
  *
 //===========================*/
-
+/*
 .helpPanel {
 	background-color: #EEE;
 	border-radius: 15px;
@@ -623,7 +670,6 @@ button {
 	width: 60%;
 	max-width: 500px;
 	min-width: 290px;
-	/* TOOLBAR HEIGHT */
 	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
@@ -682,6 +728,7 @@ button {
 	font-size: 1em;
 	cursor: pointer;
 }
+*/
 
 .arrow-up {
 	width: 20px;
@@ -693,13 +740,18 @@ button {
 	z-index: 5;
 	transform: rotate(45deg);
 }
-
+/*
 .helpPanel .arrow-up {
 	left: 30px;
 }
+*/
 
 .profilePanel .arrow-up {
 	right: 35px;
+}
+
+.isFramed.profilePanel .arrow-up {
+	right: 80px;
 }
 
 .profilePanel .authoringForm {
@@ -737,11 +789,15 @@ input.userEditable:focus {
 .avatar {
 	width: 60px;
 	height: 60px;
-	background: url('/images/no-avatar.gif') top left no-repeat;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
 	float: right;
 }
 
+.avatar img {
+	width: 60px;
+	height: 60px;
+}
+/*
 .helpPanel .screen-reader-offscreen {
 	position: absolute;
 	left: -999px;
@@ -749,6 +805,7 @@ input.userEditable:focus {
 	height: 1px;
 	top: auto;
 }
+*/
 /* .button-continue appears in windowFg: */
 
 .button-continue:after {
@@ -785,5 +842,14 @@ input.userEditable:focus {
 	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+/* Undoing a bad decision: */
+
+.banner-logo {
+	visibility: hidden;
+}
+
+.episodeUI .banner-logo {
+	visibility: visible;
 }
 

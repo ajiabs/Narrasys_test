@@ -348,6 +348,74 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		width: 130px;
 	}
 }
+
+.searchMode .searchfilters {
+	padding: 1em 0 0 0.5em;
+}
+
+.searchMode .scrollContainer {
+	padding: 0 0.5em;
+}
+
+.searchMode .searchResults .isCosmetic {
+	display: none;
+}
+
+.isProducer .searchMode .searchResults .isCosmetic {
+	display: block;
+	opacity: 0.8;
+}
+
+.isProducer .searchMode .searchResults .isCosmetic:before {
+	background-color: #999;
+	border-radius: 0.5em;
+	color: #fff;
+	content: "COSMETIC";
+	font-size: 0.8em;
+	font-weight: bold;
+	padding: 0.2em;
+	float: right;
+}
+
+@media screen and (min-width: 750px) {
+	.searchMode .videoMagnet {
+		width: 320px;
+		position: fixed;
+		right: 0;
+	}
+	.searchMode .searchResults {
+		margin-right: 290px;
+	}
+	.searchMode .searchResults .item {
+		padding-right: 50px;
+	}
+}
+
+@media screen and (min-width: 360px) and (max-width: 749px) {
+	.searchMode .videoMagnet {
+		width: 220px;
+		position: fixed;
+		right: 0;
+	}
+	.searchMode .searchfilters {
+		height: 100px;
+		/* TODO matchVideoHeight */
+	}
+	.searchMode .searchResults .item {
+		padding-right: 50px;
+	}
+}
+
+@media screen and (max-width: 359px) {
+	.searchMode .videoMagnet {
+		width: 100%;
+		position: static;
+	}
+	.searchMode .searchfilters {
+		height: auto;
+		padding: 1em;
+	}
+}
 /* -------------------------------------------  
    Landing screen 
 */

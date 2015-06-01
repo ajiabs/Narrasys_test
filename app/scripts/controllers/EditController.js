@@ -96,6 +96,9 @@ angular.module('com.inthetelling.story')
 			var newEvent = generateEmptyItem(producerItemType);
 			newEvent.cur_episode_id = appState.episodeId;
 			newEvent.episode_id = appState.episodeId;
+			if (appState.user && appState.user.avatar_id) {
+				newEvent.avatar_id = appState.user.avatar_id;
+			}
 			modelSvc.cache("event", newEvent);
 
 			appState.editEvent = modelSvc.events["internal:editing"];
@@ -238,7 +241,7 @@ angular.module('com.inthetelling.story')
 						saveAdjustedEvents(data, "create");
 					} else {
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
-						timelineSvc.injectEvents([modelSvc.events[data._id]]);
+						timelineSvc.updateEventTimes(modelSvc.events[data._id]);
 						saveAdjustedEvents(data, "update"); //TODO: send in the original (pre-move) event as last param
 					}
 					appState.editEvent = false;
@@ -571,17 +574,19 @@ angular.module('com.inthetelling.story')
 				//fabricate scene event
 				var event = {};
 				event._id = eventId;
-				var adjusted = adjustScenes(event, true);
-				angular.forEach(adjusted, function (scene) {
-					dataSvc.storeItem(scene)
-						.then(function () {
-							// console.log("scene end_time updated");
-						}, function (data) {
-							console.error("FAILED TO STORE EVENT", data);
-						});
-				});
-
 				var eventType = modelSvc.events[eventId]._type;
+				if (eventType === 'Scene') {
+					var adjusted = adjustScenes(event, true);
+					angular.forEach(adjusted, function (scene) {
+						dataSvc.storeItem(scene)
+							.then(function () {
+								// console.log("scene end_time updated");
+							}, function (data) {
+								console.error("FAILED TO STORE EVENT", data);
+							});
+					});
+				}
+
 				dataSvc.deleteItem(eventId)
 					.then(function () {
 						if (appState.product === 'sxs' && modelSvc.events[eventId].asset) {
@@ -604,16 +609,17 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.cancelEventEdit = function (originalEvent) {
+			var episodeId = originalEvent.cur_episode_id ? originalEvent.cur_episode_id : originalEvent.episode_id;
 			if (appState.editEvent._id === 'internal:editing') {
 				delete(modelSvc.events['internal:editing']);
 				timelineSvc.removeEvent("internal:editing");
 			} else {
 				modelSvc.events[appState.editEvent._id] = originalEvent;
 			}
-			modelSvc.resolveEpisodeEvents(originalEvent.episode_id);
+			modelSvc.resolveEpisodeEvents(episodeId);
 
 			if (originalEvent._type === 'Scene') {
-				timelineSvc.updateSceneTimes(originalEvent.episode_id);
+				timelineSvc.updateSceneTimes(episodeId);
 			} else {
 				timelineSvc.updateEventTimes(originalEvent);
 			}

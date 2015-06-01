@@ -10,10 +10,17 @@ angular.module('com.inthetelling.story')
 			restrict: 'A',
 			replace: true,
 			scope: true,
-			templateUrl: "templates/timeline.html",
+
+			// The extra div is because of what I believe may be an angular bug: 
+			// if the ng-include is the directive's root, angular inits its element using a comment node in the DOM;
+			// from then on element.find() fails (comment nodes don't support that I guess)
+			template: "<div><div ng-include='timelineTemplate'></div></div>",
+			// templateUrl: "templates/timeline-episode.html",
 			controller: "TimelineController",
 			link: function (scope, element) {
-				// console.log('ittTimeline', scope, element, attrs);
+				console.log('ittTimeline', scope, element);
+
+				scope.timelineTemplate = (appState.productLoadedAs === 'player' ? 'templates/timeline-episode.html' : 'templates/timeline-story.html');
 				scope.appState = appState;
 				scope.timeline = timelineSvc;
 				scope.handlePosition = 0; // position of draghandle (as a fraction of full timeline)
@@ -24,6 +31,7 @@ angular.module('com.inthetelling.story')
 				if (appState.isTouchDevice && !appState.hasBeenPlayed) {
 					scope.isSuppressed = true;
 				}
+
 				var watch = scope.$watch(function () {
 					return appState.hasBeenPlayed;
 				}, function (wasPlayed) {
@@ -34,8 +42,12 @@ angular.module('com.inthetelling.story')
 				});
 
 				// these classnames and variable names aren't confusing AT ALL.  Curse you, past Daniel
-				var timelineNode = element.find('.progressbarContainer');
-				var timelineContainer = element.find('.progressbar');
+				var timelineNode, timelineContainer;
+				$timeout(function () { // HACK need to wait for template url to resolve before doing element.find
+					timelineNode = element.find('.progressbarContainer');
+					timelineContainer = element.find('.progressbar');
+					initPlayheadEvents();
+				});
 
 				// zoom in on item edit:
 				scope.autoZoom = function (item) {
@@ -268,9 +280,11 @@ angular.module('com.inthetelling.story')
 				}, function () {
 					if (!scope.stopWatching) {
 						scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
-						timelineNode.css({
-							"left": (scope.zoomOffset * 100) + '%'
-						});
+						if (timelineNode) {
+							timelineNode.css({
+								"left": (scope.zoomOffset * 100) + '%'
+							});
+						}
 					}
 				}, true);
 
@@ -282,6 +296,7 @@ angular.module('com.inthetelling.story')
 				// cancelSeek when they mouseup or touchend outside the playhead (cancels)
 
 				var startSeek = function (evt) {
+					console.log('startSeek');
 					$timeout(function () {
 						// short delay for visibility of handle (don't want it when just clicking)
 						scope.seekHandleVisible = true;
@@ -357,8 +372,8 @@ angular.module('com.inthetelling.story')
 
 				var initPlayheadEvents = function () {
 					// bind playhead events:
-					// console.log("ittTimeline initPlayheadEvents");
-					var playhead = $(element.find('.playhead'));
+					var playhead = $(element.find('.playhead')); // WARN template url needs to have resolved first!
+					console.log("ittTimeline initPlayheadEvents", playhead);
 					if (appState.isTouchDevice) {
 						playhead.on('touchstart.timeline', function (e) {
 							startSeek(e.originalEvent.targetTouches[0]);
@@ -379,7 +394,6 @@ angular.module('com.inthetelling.story')
 						});
 					}
 				};
-				initPlayheadEvents();
 
 				scope.$on('$destroy', function () {
 					cancelSeek(); // unbinds playhead events
