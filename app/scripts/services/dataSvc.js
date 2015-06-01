@@ -834,7 +834,7 @@ angular.module('com.inthetelling.story')
 				"end_time",
 				"episode_id",
 				"template_id",
-				"templateUrl",
+				// "templateUrl", no, we should get this from template_id
 				"stop",
 				"required",
 				"cosmetic",
