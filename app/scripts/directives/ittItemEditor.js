@@ -351,20 +351,38 @@ angular.module('com.inthetelling.story')
 				};
 
 				// in SxS, event assets are only ever used in one event, so we can safely delete them.
-				// TODO determine which of asset_id, link_image_id, annotation_image_id we're really trying to delete.
-				// being lazy for now, since events only have one of them
+				// We need to first store the event without the asset id, however, or else the server side will block the deletion
+
 				scope.deleteAsset = function (assetId) {
 					if (window.confirm("Are you sure you wish to delete this asset?")) {
+
+						var assetKey;
+						if (scope.item._type === 'Link') {
+							assetKey = "link_image_id";
+						} else if (scope.item._type === 'Annotation') {
+							assetKey = "annotation_image_id"
+						} else {
+							assetKey = "asset_id";
+						}
+
+						if (scope.item._id !== 'internal:editing') {
+							// Server enforces that you can't delete an asset which any event is using. So
+							// must store an (unedited) version of event without the asset, 
+							// before we can delete the asset itself
+							scope.uneditedItem[assetKey] = null;
+							delete scope.uneditedItem.asset;
+							dataSvc.storeItem(scope.uneditedItem).then(function () {
+								dataSvc.deleteAsset(assetId);
+							});
+						} else {
+							// event hasn't been stored yet, so it's safe to just delete the asset
+							dataSvc.deleteAsset(assetId);
+						}
+
 						delete modelSvc.events[scope.item._id].asset;
-						//TODO for whichever of these matches assetId, delete it
-						delete scope.item.asset_id;
-						delete modelSvc.events[scope.item._id].asset_id;
-						delete scope.item.link_image_id;
-						delete modelSvc.events[scope.item._id].link_image_id;
-						delete scope.item.annotation_image_id;
-						delete modelSvc.events[scope.item._id].annotation_image_id;
+						delete scope.item[assetKey];
+						delete modelSvc.events[scope.item._id][assetKey];
 						delete scope.item.asset;
-						dataSvc.deleteAsset(assetId);
 					}
 				};
 				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event:
