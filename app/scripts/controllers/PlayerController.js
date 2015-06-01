@@ -161,7 +161,10 @@ angular.module('com.inthetelling.story')
 		} else {
 			$scope.newWindowUrl = $scope.newWindowUrl + "?episode=" + appState.episodeId;
 		}
-		$scope.newWindowUrl = $scope.newWindowUrl + "&access_token=" + appState.user.access_token;
+
+		// if (appState.user.access_token) {
+		// 	$scope.newWindowUrl = $scope.newWindowUrl + "&access_token=" + appState.user.access_token;
+		// }
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 

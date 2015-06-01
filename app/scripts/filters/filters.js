@@ -186,7 +186,13 @@ angular.module('com.inthetelling.story')
 	})
 	.filter('asTime', function () {
 		return function (t) {
-			return isNaN(t) ? "0:00" : Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
+			if (isNaN(t)) {
+				return "0:00";
+			}
+			if (t < 0) {
+				return "0:00";
+			}
+			return Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
 		};
 	})
 	.filter('alpha', function () {
