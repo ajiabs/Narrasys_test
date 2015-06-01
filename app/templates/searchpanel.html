@@ -13,7 +13,7 @@
 						(scene.items 
 						| orderBy:'startTime' 
 						| filter:{'searchableText': appState.searchText||''}
-						)" ng-class="item.state" itt-item="item" forceTemplate="searchresults"></div>
+						)" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
 					<div ng-if="appState.product != 'player'" class="item animate" ng-repeat="item in sceneItems=
 						(scene.items 
 						| orderBy:'startTime' 
@@ -29,7 +29,7 @@
 						(showTypes[category].items
 						| orderBy:'startTime'
 						| filter:{'searchableText':appState.searchText||''}
-					)" ng-class="item.state" itt-item="item" forceTemplate="searchresults"></div>
+					)" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
 					<div ng-if="appState.product!='player'" class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'startTime'
