@@ -533,11 +533,23 @@ button {
 }
 
 .ui-match {
+	border-color: rgba(0, 0, 0, 0.1);
+	border-radius: 6px;
+	border-style: solid;
+	border-width: 1px 1px 3px;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+	margin: -8px;
+	padding: 2px 8px 0 8px;
+}
+
+.episodeUI .ui-match {
 	background-color: rgba(50, 50, 50, 0.4);
 	color: #FFF;
 	margin: -4px;
 	padding: 4px;
 	border-radius: 4px;
+	border-width: 0;
+	box-shadow: none;
 }
 /*============================
 *

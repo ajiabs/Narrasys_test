@@ -14,7 +14,7 @@
 			<span ng-if="!item.targetTop">
 				<div class="title">
 
-					<a tabindex="0" class="escapelink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+					<a tabindex="0" class="escapelink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
 				</div>
 				<a tabindex="0" ng-if="item.asset.url" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">
 					<img ng-src="{{item.asset.url}}">
@@ -22,7 +22,7 @@
 			</span>
 			<span ng-if="item.targetTop">
 				<div class="title">
-					<a tabindex="0" target="_top" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+					<a tabindex="0" target="_top" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
 				</div>
 				<a tabindex="0" target="_top" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">
 					<img ng-src="{{item.asset.url}}">
@@ -32,13 +32,13 @@
 		</span>
 		<span ng-if="!item.noEmbed">
 			<div class="title">
-				<a role="button" x-ng-keypress="toggleDetailOnKeyPress($event)" class="fakeLink" tabindex="0" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'"></a>
+				<a role="button" x-ng-keypress="toggleDetailOnKeyPress($event)" class="fakeLink" tabindex="0" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
 			</div>
 			<img ng-click="toggleDetailView()" ng-src="{{item.asset.url}}">
 		</span>
 
 	</div>
-	<div ng-bind-html="item.display_description"></div>
+	<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 </div>
 
 <div class="itemDetail" ng-if="item.showInlineDetail">

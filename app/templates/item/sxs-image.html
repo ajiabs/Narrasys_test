@@ -4,7 +4,7 @@
 		<img ng-src="{{item.avatar.url || '/images/no-avatar.gif'}}">
 	</div>
 	<div class="itemHead">
-		<div class="authorName" ng-bind-html="item.display_annotator"></div>
+		<div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
 	</div>
 	<div>
 		<b ng-bind-html="item.title.en"></b>

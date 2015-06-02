@@ -3,5 +3,5 @@
 </a>
 <div class="itemTemplate headerItem">
 	<div class="category"></div>
-	<h1 ng-bind-html="item.display_annotation"></h1>
+	<h1 ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></h1>
 </div>
