@@ -181,6 +181,7 @@
 	background-size: 250%;
 	position: fixed !important;
 	opacity: 0.3;
+	pointer-events: none;
 }
 
 .episode-columbiabusiness .DiscoverModeOnly .item {
