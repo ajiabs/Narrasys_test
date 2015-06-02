@@ -10,7 +10,7 @@
 
 	<div ng-if="appState.isFramed" class="escapegroup buttongroup">
 		<!-- this needs to be an <a> or it trips popup blockers -->
-		<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{appState.time}}" target="_blank">
+		<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{appState.time || 0}}&access_token={{appState.user.access_token}}" target="_blank">
 			<span>New window</span>
 		</a>
 	</div>
