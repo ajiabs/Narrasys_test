@@ -19,10 +19,10 @@
 					</div>
 					<div class="text">
 						<div class="title">
-							<a tabindex="0" ng-if="item.noEmbed" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)'"></a>
-							<a tabindex="0" role="button" class="fakeLink" ng-if="!item.noEmbed" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)'" aria-label="Toggle detail display of {{item.display_title}}"></a>
+							<a tabindex="0" ng-if="item.noEmbed" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
+							<a tabindex="0" role="button" class="fakeLink" ng-if="!item.noEmbed" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText" aria-label="Toggle detail display of {{item.display_title}}"></a>
 						</div>
-						<div ng-bind-html="item.display_description"></div>
+						<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 					</div>
 					<div class="itemDetail" ng-if="item.showInlineDetail && item._type == 'Link'">
 						<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>

@@ -4,9 +4,9 @@
 		<img ng-src="{{item.avatar.url || '/images/no-avatar.gif'}}">
 	</div>
 	<div class="itemHead">
-		<div class="authorName" ng-bind-html="item.display_annotator"></div>
+		<div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
 	</div>
-	<div class="title" ng-if="item.display_title" ng-bind-html="item.display_title"></div>
+	<div class="title" ng-if="item.display_title | highlightSubstring: appState.searchText" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
 	<div ng-if="item.asset.url" class="touchable" style="float:right; clear:right; max-width: 50%; padding: 0.5em">
 		<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
 		<div class="touchableIndicator"></div>

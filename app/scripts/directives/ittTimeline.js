@@ -51,6 +51,8 @@ angular.module('com.inthetelling.story')
 
 				// zoom in on item edit:
 				scope.autoZoom = function (item) {
+					console.log("autoZoom");
+					console.trace();
 					scope.savedZoomLevel = scope.zoomLevel;
 					var itemLength = item.end_time - item.start_time;
 					var toEnd = (appState.duration - item.end_time);
@@ -73,10 +75,12 @@ angular.module('com.inthetelling.story')
 				var editWatcher = scope.$watch(function () {
 					return appState.editEvent;
 				}, function (item) {
-					if (item) {
-						scope.autoZoom(item);
-					} else {
-						scope.endAutoZoom();
+					if (appState.product === 'producer') {
+						if (item) {
+							scope.autoZoom(item);
+						} else {
+							scope.endAutoZoom();
+						}
 					}
 				});
 

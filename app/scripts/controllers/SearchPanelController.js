@@ -4,6 +4,9 @@
 angular.module('com.inthetelling.story')
 	.controller('SearchPanelController', function ($scope, $timeout, timelineSvc, modelSvc, appState) {
 
+		// Events searchableText is:
+		// (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator)
+
 		// default sort order
 		$scope.sortBy = "startTime";
 

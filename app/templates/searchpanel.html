@@ -9,36 +9,52 @@
 				<div ng-repeat="scene in episode.scenes">
 					<h3 ng-if="sceneItems.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h3>
 					<!-- Would split this into separate templates if episodeUI's days weren't already numbered -->
-					<div ng-if="appState.product == 'player'" class="item animate" ng-repeat="item in sceneItems=
-						(scene.items 
-						| orderBy:'wtfchromesort'
-						| filter:{'searchableText': appState.searchText||''}
-						)" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
-					<div ng-if="appState.product != 'player'" class="item animate" ng-repeat="item in sceneItems=
-						(scene.items 
-						| orderBy:'wtfchromesort'
-						| filter:{'searchableText': appState.searchText||''}
-						)" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
+
+					<span ng-if="appState.product == 'player'">
+						<div class="item animate" ng-repeat="item in 
+							sceneItems=(scene.items | orderBy:'wtfchromesort')
+						" ng-show="
+							([item.searchableText] | filter:appState.searchText).length
+						" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
+					</span>
+
+					<span ng-if="appState.product != 'player'">
+						<div class="item animate" ng-repeat="item in 
+							sceneItems=(scene.items | orderBy:'wtfchromesort')
+						" ng-show="
+							([item.searchableText] | filter:appState.searchText).length
+						" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
+					</span>
+
 				</div>
 			</div>
 			<!-- sorted by type -->
 			<div ng-if="sortBy == 'type'">
 				<div ng-repeat="category in typeCategories">
 					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
-					<div ng-if="appState.product=='player'" class="item animate" ng-repeat="item in matchedItems=
+
+					<span ng-if="appState.product == 'player'">
+						<div class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'wtfchromesort'
-						| filter:{'searchableText':appState.searchText||''}
-					)" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
-					<div ng-if="appState.product!='player'" class="item animate" ng-repeat="item in matchedItems=
+						)" ng-show="
+							([item.searchableText] | filter:appState.searchText).length
+						" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
+					</span>
+
+					<span ng-if="appState.product != 'player'">
+						<div class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'wtfchromesort'
-						| filter:{'searchableText':appState.searchText||''}
-					)" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
+						)" ng-show="
+							([item.searchableText] | filter:appState.searchText).length
+						" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
+					</span>
+
 				</div>
-			</div>
-			<div ng-if="(episode.items | filter:{'searchableText': appState.searchText||'', 'cosmetic': false}).length == 0">
-				(Nothing matched your search.)
+				<div ng-if="(episode.items | filter:{'searchableText': appState.searchText||'', 'cosmetic': false}).length == 0">
+					(Nothing matched your search.)
+				</div>
 			</div>
 		</div>
 	</div>

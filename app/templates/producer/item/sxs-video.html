@@ -28,7 +28,7 @@
 <div class="field" ng-if="(item.url || item.yturl) && !(isRecordingVideo || isProcessingVideo)">
 	<div class="label">YouTube url</div>
 	<div class="input">
-		<small ng-if="item.url">{{item.url}}</small>
+		<small ng-if="item.url">{{item.url | stripParams}}</small>
 		<small ng-if="item.yturl && !item.url">(No valid YouTube video found)</small>
 	</div>
 </div>
