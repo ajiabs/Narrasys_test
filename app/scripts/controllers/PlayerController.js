@@ -125,7 +125,9 @@ angular.module('com.inthetelling.story')
 				// Episode has no master asset
 				$scope.loading = false;
 				// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
-				appState.editEpisode = modelSvc.episodes[appState.episodeId];
+				if (appState.product === 'producer') {
+					appState.editEpisode = modelSvc.episodes[appState.episodeId];
+				}
 				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 				appState.videoControlsLocked = true;
 
