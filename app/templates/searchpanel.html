@@ -10,7 +10,7 @@
 					<h3 ng-if="sceneItems.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h3>
 					<!-- Would split this into separate templates if episodeUI's days weren't already numbered -->
 
-					<span ng-if="appState.product == 'player'">
+					<span ng-if="appState.productLoadedAs == 'player'">
 						<div class="item animate" ng-repeat="item in 
 							sceneItems=(scene.items | orderBy:'wtfchromesort')
 						" ng-show="
@@ -18,7 +18,7 @@
 						" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
 					</span>
 
-					<span ng-if="appState.product != 'player'">
+					<span ng-if="appState.productLoadedAs != 'player'">
 						<div class="item animate" ng-repeat="item in 
 							sceneItems=(scene.items | orderBy:'wtfchromesort')
 						" ng-show="
@@ -33,7 +33,7 @@
 				<div ng-repeat="category in typeCategories">
 					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
 
-					<span ng-if="appState.product == 'player'">
+					<span ng-if="appState.productLoadedAs == 'player'">
 						<div class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'wtfchromesort'
@@ -42,7 +42,7 @@
 						" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
 					</span>
 
-					<span ng-if="appState.product != 'player'">
+					<span ng-if="appState.productLoadedAs != 'player'">
 						<div class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'wtfchromesort'
