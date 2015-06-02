@@ -25,7 +25,7 @@
 			<span>Search</span>
 		</button>
 		<label for="searchtext" class="hidden">Search Text</label>
-		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="appState.searchText" />
+		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="appState.searchText" ng-model-options="{ debounce: 200 }" />
 	</div>
 	<div class="profilegroup buttongroup" ng-if="!(show.searchPanel) && (appState.narrativeId || appState.product == 'sxs' || userHasRole('admin'))">
 		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && userHasRole('admin')" ng-click="toggleProducerPreview()">
@@ -33,7 +33,7 @@
 			<span ng-if="appState.product == 'player'">Edit</span>
 		</a>
 
-		<a class="button button-profile" ng-click="appState.show.profilePanel = true">
+		<a class="button button-profile" ng-click="appState.show.profilePanel = !appState.show.profilePanel">
 			<span>Profile</span>
 		</a>
 	</div>

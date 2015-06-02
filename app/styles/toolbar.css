@@ -437,6 +437,7 @@ button {
 	margin-top: 0.3em;
 	font-size: 0.86em;
 	text-align: right;
+	padding-right: 1em;
 }
 /*.searchfilters label {
 	float: right;
@@ -533,13 +534,14 @@ button {
 }
 
 .ui-match {
-	border-color: rgba(0, 0, 0, 0.1);
+	border-color: rgba(0, 0, 0, 0.2);
 	border-radius: 6px;
 	border-style: solid;
 	border-width: 1px 1px 3px;
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-	margin: -8px;
-	padding: 2px 8px 0 8px;
+	margin: -4px;
+	padding: 2px 4px 0;
+	background-color: #rgba(255, 255, 255, 0.5);
 }
 
 .episodeUI .ui-match {
@@ -550,6 +552,7 @@ button {
 	border-radius: 4px;
 	border-width: 0;
 	box-shadow: none;
+	text-shadow: none;
 }
 /*============================
 *
@@ -759,10 +762,18 @@ button {
 */
 
 .profilePanel .arrow-up {
+	right: -1000px;
+}
+
+.episodeUI .profilePanel .arrow-up {
 	right: 35px;
 }
 
 .isFramed.profilePanel .arrow-up {
+	right: 35px;
+}
+
+.episodeUI .isFramed.profilePanel .arrow-up {
 	right: 80px;
 }
 
