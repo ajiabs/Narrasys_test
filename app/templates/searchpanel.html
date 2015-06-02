@@ -31,9 +31,8 @@
 			<!-- sorted by type -->
 			<div ng-if="sortBy == 'type'">
 				<div ng-repeat="category in typeCategories">
-					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
-
 					<span ng-if="appState.productLoadedAs == 'player'">
+						<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
 						<div class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'wtfchromesort'
@@ -43,6 +42,7 @@
 					</span>
 
 					<span ng-if="appState.productLoadedAs != 'player'">
+						<h1 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h1>
 						<div class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'wtfchromesort'
