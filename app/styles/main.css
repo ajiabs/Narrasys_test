@@ -328,14 +328,14 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 	background-image: none;
 }
 
-
 .videoMask .convertingMessage {
-	color: #FFF;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	margin: auto;
+	max-width: 80%;
 	text-align: center;
-	position: absolute;
-	top: 50%;
-	margin: -4% 2em 0;
-
 }
 /* 
 Misc useful keyframes 
