@@ -125,7 +125,7 @@ button {
 	.volumebar {
 		display: none;
 	}
-	.button-fullscreen {
+	.speedcontrol {
 		display: none !important;
 	}
 }

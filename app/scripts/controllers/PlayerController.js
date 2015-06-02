@@ -37,6 +37,11 @@ angular.module('com.inthetelling.story')
 				appState.autoscroll = false;
 				// appState.autoscrollBlocked = true;
 			}
+
+			if (newMode === 'watch') {
+				$scope.endSearch();
+			}
+
 			$timeout(function () {
 				$(window)
 					.trigger('resize'); // possible fix for unreproducible-by-me layout issue in review mode
@@ -231,6 +236,11 @@ angular.module('com.inthetelling.story')
 					document.getElementById('searchtext').focus();
 				});
 			}
+		};
+
+		$scope.endSearch = function () {
+			appState.searchText = '';
+			appState.show.searchPanel = false;
 		};
 
 		$scope.toggleNavPanel = function () {
