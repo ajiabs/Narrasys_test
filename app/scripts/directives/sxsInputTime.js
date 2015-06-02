@@ -3,7 +3,7 @@
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
 
 angular.module('com.inthetelling.story')
-	.directive('sxsInputTime', function (appState, $timeout, modelSvc, timelineSvc) {
+	.directive('sxsInputTime', function (appState, $rootScope, $timeout, modelSvc, timelineSvc) {
 		return {
 			// require: 'ngModel',
 			scope: {
@@ -37,6 +37,7 @@ angular.module('com.inthetelling.story')
 					if (ret < 0.01) {
 						ret = 0.01;
 					}
+					$rootScope.$emit('searchReindexNeeded'); // HACK
 					return ret;
 				};
 
