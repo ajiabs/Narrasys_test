@@ -48,7 +48,13 @@ angular.module('com.inthetelling.story')
 
 		// for episode-related activity
 		svc.captureEpisodeActivity = function (name, data) {
-			if (config.disableAnalytics || (appState.user._id && !appState.user.track_episode_metrics)) {
+			if (config.disableAnalytics) {
+				return;
+			}
+			if (
+				(appState.user && appState.user._id) &&
+				(!appState.user.track_episode_metrics)
+			) {
 				return;
 			}
 			var userActivity = {
@@ -146,10 +152,8 @@ angular.module('com.inthetelling.story')
 
 		svc.flushActivityQueue = function () {
 			var defer = $q.defer();
-			// console.log("Flushing:", svc.activityQueue);
 			if (svc.activityQueue.length === 0) {
 				defer.resolve("");
-				return defer.promise;
 			}
 
 			var actions = angular.copy(svc.activityQueue);
@@ -168,22 +172,24 @@ angular.module('com.inthetelling.story')
 					episodeUserMetrics.push(action);
 				}
 			});
-
 			episodeUserMetrics = svc.dejitter(episodeUserMetrics);
 
+			var posts = [];
 			if (eventUserActions.length > 0) {
-				// console.log("Event actions to log:", eventUserActions);
-				// /v2/episodes/<episode id>/event_user_actions
-				return post("event_user_actions", {
+				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/event_user_actions', {
 					"event_user_actions": eventUserActions
-				});
+				}));
 			}
 			if (episodeUserMetrics.length > 0) {
-				// console.log("Episode metrics to log:", episodeUserMetrics);
-				return post("episode_user_metrics", {
+				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/episode_user_metrics', {
 					"episode_user_metrics": episodeUserMetrics
-				});
+				}));
 			}
+			$q.all(posts).then(function (responses) {
+				defer.resolve("");
+			})
+
+			return defer.promise;
 		};
 
 		svc.dejitter = function (events) {

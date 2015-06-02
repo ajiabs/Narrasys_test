@@ -127,8 +127,17 @@ angular.module('com.inthetelling.story')
 				};
 
 				// HACK: need to capture embedded links on item enter, since they're automatically 'clicked'
+				// TODO timelineSvc should be able to inform the item directive directly that enter or exit has happened, $watch is silly
 				if (scope.item.templateUrl === 'templates/item/link-embed.html') {
-					scope.captureInteraction();
+					var captureEmbed = scope.$watch(function () {
+						return appState.time > scope.item.start_time;
+					}, function (x) {
+						if (x) {
+							scope.captureInteraction();
+							captureEmbed();
+						}
+					});
+
 				}
 
 				// HACK not sure why but modelSvc.resolveEpisodeAssets isn't always doing the job.
