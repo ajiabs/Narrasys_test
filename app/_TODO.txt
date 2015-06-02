@@ -2,20 +2,16 @@
 sort out a better way to handle appstate.product and appstate.productloadedas
 (appstate.uiversion?)
 
-editor shouldn't be zooming timeline... 
 creating editor items while in search mode: items are sometimes sorted incorrectly
 
 better handling for case where page loads in search mode initially
 
 changing into 'watch' mode needs to turn off 'search'
 
-
-
-
-
+searchresults needs to set isNarrow
 
 matchVideoHeight should be a directive, not part of scene setup
 
 autoscroll should be a directive
 
-search results: links should link, images should modal
+search results: sorted by type should use simplified but still functional template (searchresult.html with actual links etc)
