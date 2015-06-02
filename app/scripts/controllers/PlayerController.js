@@ -167,8 +167,14 @@ angular.module('com.inthetelling.story')
 			$scope.newWindowUrl = $scope.newWindowUrl + "?episode=" + appState.episodeId;
 		}
 
+		// put this in template instead
 		// if (appState.user.access_token) {
 		// 	$scope.newWindowUrl = $scope.newWindowUrl + "&access_token=" + appState.user.access_token;
+		// } else {
+		// 	// HACK wait for user info to finish loading
+		// 	$timeout(function () {
+		// 		$scope.newWindowUrl = $scope.newWindowUrl + "&access_token=" + appState.user.access_token;
+		// 	}, 500);
 		// }
 
 		/* END LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
