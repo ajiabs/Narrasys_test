@@ -69,7 +69,7 @@ describe('Service: modelSvc', function () {
 
 	beforeEach(inject(function (_modelSvc_) {
 		modelSvc = _modelSvc_;
-	 		// data to test against
+		// data to test against
 		modelSvc.cache("episode", {
 			"_id": "EP1",
 			"master_asset_id": "masterasset",
@@ -90,10 +90,10 @@ describe('Service: modelSvc', function () {
 				"cur_episode_id": "EP1"
 			});
 		}
-			
+
 		modelSvc.resolveEpisodeEvents("EP1");
 		var masterAsset = {
-		  duration: modelSvc.episodes["EP1"].scenes[modelSvc.episodes["EP1"].scenes.length - 1].end_time
+			duration: modelSvc.episodes["EP1"].scenes[modelSvc.episodes["EP1"].scenes.length - 1].end_time
 		};
 		modelSvc.episodes["EP1"].masterAsset = masterAsset;
 
@@ -175,7 +175,7 @@ describe('Service: modelSvc', function () {
 		modelSvc.episodes.EP1.masterAsset = {
 			duration: 105
 		};
-			modelSvc.addEndingScreen("EP1");
+		modelSvc.addEndingScreen("EP1");
 		modelSvc.episodes.EP1.masterAsset = {
 			duration: 115
 		};
@@ -188,9 +188,9 @@ describe('Service: modelSvc', function () {
 
 		//TODO: add separate tests for modelSvc.scenes testing of start and end times
 		//expect(modelSvc.episodes.EP1.scenes[modelSvc.episodes.EP1.scenes.length-1].end_time).toEqual(95);
-		
+
 		//only one should get added
-		expect(modelSvc.episodes.EP1.scenes.length).toEqual(sceneCount+1);
+		expect(modelSvc.episodes.EP1.scenes.length).toEqual(sceneCount + 1);
 	});
 
 	it('Events near end of episode should not get dropped', function () {
@@ -631,7 +631,7 @@ describe('Service: modelSvc', function () {
 			"mp4": ["foo.mp4"],
 			"webm": ["foo.webm"],
 			"m3u8": ["foo.m3u8"],
-			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA']
+			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=0&loop=0']
 		});
 	});
 
@@ -645,7 +645,7 @@ describe('Service: modelSvc', function () {
 			"mp4": [],
 			"webm": [],
 			"m3u8": [],
-			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA']
+			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=0&loop=0']
 		});
 	});
 
@@ -711,7 +711,7 @@ describe('Service: modelSvc', function () {
 			"mp4": [],
 			"webm": [],
 			"m3u8": [],
-			"youtube": ['//www.youtube.com/embed/BBBBBBBBBBB']
+			"youtube": ['//www.youtube.com/embed/BBBBBBBBBBB?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=0&loop=0']
 		});
 	});
 
