@@ -185,9 +185,9 @@ angular.module('com.inthetelling.story')
 					"episode_user_metrics": episodeUserMetrics
 				}));
 			}
-			$q.all(posts).then(function (responses) {
-				defer.resolve("");
-			})
+			$q.all(posts).then(function () {
+				defer.resolve();
+			});
 
 			return defer.promise;
 		};
@@ -214,24 +214,6 @@ angular.module('com.inthetelling.story')
 			}
 			ret.push(events[events.length - 1]);
 			return ret;
-		};
-
-		// This is not a general-purpose function, it's only for the analytics endpoints
-		var post = function (endpoint, endpointData) {
-
-			var defer = $q.defer();
-			$http({
-					method: 'POST',
-					url: config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + endpoint,
-					data: endpointData
-				})
-				.success(function (respData) {
-					defer.resolve(respData);
-				})
-				.error(function () {
-					defer.reject();
-				});
-			return defer.promise;
 		};
 
 		return svc;

@@ -186,7 +186,7 @@ angular.module('com.inthetelling.story')
 	})
 	.filter('stripParams', function () {
 		return function (x) {
-			return x.substr(0, x.indexOf('?'))
+			return x.substr(0, x.indexOf('?'));
 		};
 	})
 	.filter('asTime', function () {
