@@ -184,6 +184,11 @@ angular.module('com.inthetelling.story')
 			return isNaN(n) ? (Math.floor(n * 100)) + "%" : '0%';
 		};
 	})
+	.filter('stripParams', function () {
+		return function (x) {
+			return x.substr(0, x.indexOf('?'))
+		};
+	})
 	.filter('asTime', function () {
 		return function (t) {
 			if (isNaN(t)) {

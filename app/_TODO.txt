@@ -2,14 +2,16 @@
 sort out a better way to handle appstate.product and appstate.productloadedas
 (appstate.uiversion?)
 
+editor shouldn't be zooming timeline... 
+creating editor items while in search mode: items are sometimes sorted incorrectly
 
 better handling for case where page loads in search mode initially
 
 changing into 'watch' mode needs to turn off 'search'
 
-see how much of search's indexEvents can be moved into modelSvc and done once
 
-editor shouldn't be zooming timeline... 
+
+
 
 
 matchVideoHeight should be a directive, not part of scene setup
