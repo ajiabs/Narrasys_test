@@ -3,9 +3,9 @@
 		Sorted by
 		<button tabindex="0" class="fakeLink" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
 	</div>
-	<div class="scrollContainer content">
-		<div class="searchResults" id="sortableSearch">
-			<div ng-if="sortBy == 'startTime'">
+	<div class="scrollContainer">
+		<div class="searchResults content" id="sortableSearch" itt-width-watch ng-class="{isNarrow: isNarrow}">
+			<div ng-if="sortBy == 'startTime'" class="sortByTime">
 				<div ng-repeat="scene in episode.scenes">
 					<h3 ng-if="sceneItems.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h3>
 					<!-- Would split this into separate templates if episodeUI's days weren't already numbered -->
@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<!-- sorted by type -->
-			<div ng-if="sortBy == 'type'">
+			<div ng-if="sortBy == 'type'" class="sortByType">
 				<div ng-repeat="category in typeCategories">
 					<span ng-if="appState.productLoadedAs == 'player'">
 						<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
@@ -42,7 +42,7 @@
 					</span>
 
 					<span ng-if="appState.productLoadedAs != 'player'">
-						<h1 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h1>
+						<h2 class="searchCategory" ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h2>
 						<div class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'wtfchromesort'
