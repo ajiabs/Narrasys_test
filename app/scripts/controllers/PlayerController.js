@@ -137,11 +137,6 @@ angular.module('com.inthetelling.story')
 
 		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
 		if (appState.productLoadedAs === 'producer') {
-			//producer needs the container based assets, we will load them here, but could move it to on demand when assets are being selected
-			$rootScope.$on("dataSvc.getEpisode.done", function () {
-				dataSvc.getContainerAncestry(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId);
-				modelSvc.resolveEpisodeContainers(appState.episodeId);
-			});
 
 			// keep non-admins from seeing the producer interface
 			var rolesWatcher = $scope.$watch(function () {
