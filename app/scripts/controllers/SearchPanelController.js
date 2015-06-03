@@ -2,7 +2,7 @@
 
 // Controller for the search panel results
 angular.module('com.inthetelling.story')
-	.controller('SearchPanelController', function ($scope, $timeout, timelineSvc, modelSvc, appState) {
+	.controller('SearchPanelController', function ($scope, $rootScope, $timeout, timelineSvc, modelSvc, appState) {
 
 		// Events searchableText is:
 		// (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator)
@@ -45,8 +45,8 @@ angular.module('com.inthetelling.story')
 		// TODO need to handle multi-episode timelines.
 
 		$scope.indexed = false;
+
 		$scope.indexEvents = function () {
-			// console.log("indexEvents", $scope.episode.items);
 			if (!$scope.episode.items) {
 				$timeout(function () { // HACK Sorry, future me
 					$scope.indexEvents();
@@ -113,5 +113,7 @@ angular.module('com.inthetelling.story')
 				}
 			});
 		};
+
+		$rootScope.$on('searchReindexNeeded', $scope.indexEvents); // HACK
 
 	});

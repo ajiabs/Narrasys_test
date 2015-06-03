@@ -45,7 +45,7 @@ angular.module('com.inthetelling.story')
 					} else {
 						timelineSvc.pause();
 						scope.captureInteraction();
-						if (element.width() > 400) {
+						if (element.width() > 450) {
 							// show detail inline if there's room for it:
 							scope.item.showInlineDetail = true;
 						} else {

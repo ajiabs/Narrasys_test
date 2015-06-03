@@ -125,7 +125,9 @@ angular.module('com.inthetelling.story')
 				// Episode has no master asset
 				$scope.loading = false;
 				// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
-				appState.editEpisode = modelSvc.episodes[appState.episodeId];
+				if (appState.product === 'producer') {
+					appState.editEpisode = modelSvc.episodes[appState.episodeId];
+				}
 				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 				appState.videoControlsLocked = true;
 
@@ -135,11 +137,6 @@ angular.module('com.inthetelling.story')
 
 		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
 		if (appState.productLoadedAs === 'producer') {
-			//producer needs the container based assets, we will load them here, but could move it to on demand when assets are being selected
-			$rootScope.$on("dataSvc.getEpisode.done", function () {
-				dataSvc.getContainerAncestry(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId);
-				modelSvc.resolveEpisodeContainers(appState.episodeId);
-			});
 
 			// keep non-admins from seeing the producer interface
 			var rolesWatcher = $scope.$watch(function () {

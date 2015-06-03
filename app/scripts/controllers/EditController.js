@@ -110,6 +110,7 @@ angular.module('com.inthetelling.story')
 			if (producerItemType === 'scene') {
 				timelineSvc.updateSceneTimes(appState.episodeId);
 			}
+			$rootScope.$emit('searchReindexNeeded'); // HACK
 		};
 		var isTranscript = function (item) {
 			if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
@@ -245,6 +246,7 @@ angular.module('com.inthetelling.story')
 						saveAdjustedEvents(data, "update"); //TODO: send in the original (pre-move) event as last param
 					}
 					appState.editEvent = false;
+					$rootScope.$emit('searchReindexNeeded'); // HACK
 				}, function (data) {
 					console.error("FAILED TO STORE EVENT", data);
 				});
