@@ -53,7 +53,8 @@ angular.module('com.inthetelling.story')
 					$location.search('admin', null);
 				};
 
-				authSvc.authenticate().then(function () {
+				// Need to let getNarrative do the authentication, so it can pass the narrative ID.
+				var doAfterAuthentication = function () {
 					scope.userHasRole = authSvc.userHasRole;
 					scope.user = appState.user;
 					if (authSvc.userHasRole('admin')) {
@@ -61,8 +62,7 @@ angular.module('com.inthetelling.story')
 							scope.customerList = data;
 						});
 					}
-
-				});
+				};
 
 				scope.isOwner = false;
 				scope.toggleOwnership = function () {
@@ -73,18 +73,17 @@ angular.module('com.inthetelling.story')
 				var path_or_id = (scope._id) ? scope._id : $routeParams.narrativePath;
 
 				if (path_or_id) {
-					if (modelSvc.narratives[path_or_id]) { // must be an ID
-						scope.narrative = modelSvc.narratives[path_or_id];
-						scope.tmpSetNarrativeTemplate();
+					// For simplicity's sake, not trying to retrieve narrative from cache; just get it from the API for now.
+					dataSvc.getNarrative(path_or_id).then(function (narrativeData) {
+						doAfterAuthentication();
 						scope.loading = false;
-					} else {
-						dataSvc.getNarrative(path_or_id).then(function (narrativeData) {
-							scope.loading = false;
-							scope.narrative = narrativeData;
-							scope.tmpSetNarrativeTemplate();
-						});
-					}
+						scope.narrative = narrativeData;
+						scope.tmpSetNarrativeTemplate();
+					});
 				} else {
+					authSvc.authenticate().then(doAfterAuthentication);
+					// New narrative
+					console.log("CREATE NEW NARRATIVE");
 					scope.loading = false;
 					scope.toggleOwnership(true);
 					scope.narrative = {};
