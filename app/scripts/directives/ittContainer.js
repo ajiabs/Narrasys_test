@@ -71,8 +71,21 @@ angular.module('com.inthetelling.story')
 									"container_id": newContainer._id,
 									"title": angular.copy(newContainer.name)
 								};
-								dataSvc.createEpisode(newEpisode).then(function (episode) {
-									console.log("Created episode: ", episode);
+								dataSvc.getCommon().then(function () {
+									dataSvc.createEpisode(newEpisode).then(function (episode) {
+										console.log("Created episode: ", episode);
+										var newScene = {
+											"_type": "Scene",
+											"title": {},
+											"description": {},
+											"templateUrl": "templates/scene/1col.html",
+											"start_time": 0,
+											"end_time": 0,
+											"episode_id": episode._id
+										};
+
+										dataSvc.storeItem(newScene);
+									});
 								});
 							}
 						});
