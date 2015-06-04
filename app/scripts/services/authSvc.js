@@ -157,23 +157,16 @@ angular.module('com.inthetelling.story')
 		*/
 
 		var authenticateDefer = $q.defer();
-		var authenticationInProgress = false;
 		svc.authenticate = function (nonceParam) {
-			if (authenticationInProgress) {
-				return authenticateDefer.promise;
-			}
-			authenticationInProgress = true;
 			if ($http.defaults.headers.common.Authorization) {
 				if (appState.user) {
 					// Have header and user; all done.
-					authenticationInProgress = false;
 					authenticateDefer.resolve();
 				} else {
 					// begin dubious code block
 					console.warn("Have auth header but no appState.user data. Not sure this should ever happen, TODO delete this from authSvc if it continues to not happen");
 					svc.getCurrentUser()
 						.then(function () {
-							authenticationInProgress = false;
 							authenticateDefer.resolve();
 						}, function () {
 							return svc.authenticateViaNonce(nonceParam);
@@ -193,7 +186,6 @@ angular.module('com.inthetelling.story')
 					svc.getCurrentUser()
 						.then(function () {
 							// token worked
-							authenticationInProgress = false;
 							authenticateDefer.resolve();
 						}, function () {
 							// token expired; clear everything and start over
@@ -217,7 +209,6 @@ angular.module('com.inthetelling.story')
 				.then(function (nonce) {
 					svc.getAccessToken(nonce)
 						.then(function () {
-							authenticationInProgress = false;
 							defer.resolve();
 						});
 				});
