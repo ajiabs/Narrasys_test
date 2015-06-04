@@ -156,20 +156,27 @@ angular.module('com.inthetelling.story')
 
 		*/
 
-		svc.authenticate = function () {
-			var defer = $q.defer();
+		var authenticateDefer = $q.defer();
+		var authenticationInProgress = false;
+		svc.authenticate = function (nonceParam) {
+			if (authenticationInProgress) {
+				return authenticateDefer.promise;
+			}
+			authenticationInProgress = true;
 			if ($http.defaults.headers.common.Authorization) {
 				if (appState.user) {
 					// Have header and user; all done.
-					defer.resolve();
+					authenticationInProgress = false;
+					authenticateDefer.resolve();
 				} else {
 					// begin dubious code block
 					console.warn("Have auth header but no appState.user data. Not sure this should ever happen, TODO delete this from authSvc if it continues to not happen");
 					svc.getCurrentUser()
 						.then(function () {
-							defer.resolve();
+							authenticationInProgress = false;
+							authenticateDefer.resolve();
 						}, function () {
-							return svc.authenticateViaNonce();
+							return svc.authenticateViaNonce(nonceParam);
 						});
 					// end of dubious code block
 				}
@@ -186,29 +193,31 @@ angular.module('com.inthetelling.story')
 					svc.getCurrentUser()
 						.then(function () {
 							// token worked
-							defer.resolve();
+							authenticationInProgress = false;
+							authenticateDefer.resolve();
 						}, function () {
 							// token expired; clear everything and start over
 							localStorage.removeItem(config.localStorageKey);
 							document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 							document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 							appState.user = {};
-							return svc.authenticateViaNonce();
+							return svc.authenticateViaNonce(nonceParam);
 						});
 				} else {
 					// no login info at all, start from scratch
-					return svc.authenticateViaNonce();
+					return svc.authenticateViaNonce(nonceParam);
 				}
 			}
-			return defer.promise;
+			return authenticateDefer.promise;
 		};
 
-		svc.authenticateViaNonce = function () {
+		svc.authenticateViaNonce = function (nonceParam) {
 			var defer = $q.defer();
-			svc.getNonce()
+			svc.getNonce(nonceParam)
 				.then(function (nonce) {
 					svc.getAccessToken(nonce)
 						.then(function () {
+							authenticationInProgress = false;
 							defer.resolve();
 						});
 				});
@@ -322,9 +331,9 @@ angular.module('com.inthetelling.story')
 		};
 
 		var getRoleDescription = function (roleKey) {
-      if (roleKey === undefined) {
-        return "User";
-      }
+			if (roleKey === undefined) {
+				return "User";
+			}
 			if (roleKey.role === 'admin') {
 				return "Administrator";
 			}
@@ -343,9 +352,13 @@ angular.module('com.inthetelling.story')
 			return roleKey;
 		};
 
-		svc.getNonce = function () {
+		svc.getNonce = function (nonceParam) {
 			var defer = $q.defer();
-			$http.get(config.apiDataBaseUrl + "/v1/get_nonce")
+			var url = config.apiDataBaseUrl + "/v1/get_nonce";
+			if (nonceParam) {
+				url = url + "?" + nonceParam;
+			}
+			$http.get(url)
 				.success(function (data) {
 					if (data.nonce) {
 						defer.resolve(data.nonce);

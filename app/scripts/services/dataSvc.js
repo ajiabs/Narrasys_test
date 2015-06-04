@@ -16,10 +16,16 @@ angular.module('com.inthetelling.story')
 		/* ------------------------------------------------------------------------------ */
 
 		svc.getNarrative = function (narrativeId) {
-			return GET("/v3/narratives/" + narrativeId + "/resolve", function (data) {
-				modelSvc.cache("narrative", svc.resolveIDs(data));
-				return modelSvc.narratives[data._id];
+			// Special case here, since it needs to call getNonce differently:
+			var defer = $q.defer();
+			authSvc.authenticate("narrative=" + narrativeId).then(function () {
+				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve")
+					.then(function (response) {
+						modelSvc.cache("narrative", svc.resolveIDs(response.data));
+						defer.resolve(modelSvc.narratives[response.data._id]);
+					});
 			});
+			return defer.promise;
 		};
 
 		svc.getNarrativeOverview = function (narrativeId) {
