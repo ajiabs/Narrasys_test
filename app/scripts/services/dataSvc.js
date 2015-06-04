@@ -219,6 +219,8 @@ angular.module('com.inthetelling.story')
 			return getCommonDefer.promise;
 		};
 
+		svc.getCommon = getCommon; // TEMPORARY for ittContainer, so it can get the scene template ID.  After template refactor none of this id stuff will be necessary
+
 		svc.cache = function (cacheType, dataList) {
 			// console.log("dataSvc.cache", cacheType, dataList);
 			angular.forEach(dataList, function (item) {
@@ -405,7 +407,6 @@ angular.module('com.inthetelling.story')
 			var url = (segmentId) ? "/v3/episode_segments/" + segmentId + "/resolve" : "/v3/episodes/" + epId;
 			$http.get(config.apiDataBaseUrl + url)
 				.success(function (ret) {
-
 					var episodeData = {};
 					if (ret) {
 						episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
