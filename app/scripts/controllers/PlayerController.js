@@ -138,6 +138,17 @@ angular.module('com.inthetelling.story')
 		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
 		if (appState.productLoadedAs === 'producer') {
 
+			$rootScope.$on("dataSvc.getEpisode.done", function () {
+				// Producer needs its container to stash the master asset and other asset uploads.
+
+				// TODO We could almost certainly get away with using dataSvc.getContainer here instead of crawling the full ancestry
+				// but I want to test that more thoroughly before I commit
+				dataSvc.getContainerAncestry(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId);
+				// dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId);
+
+				modelSvc.resolveEpisodeContainers(appState.episodeId);
+			});
+
 			// keep non-admins from seeing the producer interface
 			var rolesWatcher = $scope.$watch(function () {
 				return appState.user;
