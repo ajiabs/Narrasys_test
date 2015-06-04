@@ -108,61 +108,43 @@ angular.module('com.inthetelling.story')
 
 			console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
 
-			if (modelSvc.episodes[appState.episodeId].master_asset_id) {
-				// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
-				// HACK this is a weird place for this.
-				var watch = $scope.$watch(function () {
-					return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
-				}, function (masterAsset) {
-					if (masterAsset && Object.keys(masterAsset).length > 1) {
-						watch();
-						modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
-						timelineSvc.init(appState.episodeId);
-						$scope.loading = false;
+			// producer needs the episode container:
+			dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId).then(function () {
+				if (modelSvc.episodes[appState.episodeId].master_asset_id) {
+					// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
+					// HACK this is a weird place for this.
+					var watch = $scope.$watch(function () {
+						return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
+					}, function (masterAsset) {
+						if (masterAsset && Object.keys(masterAsset).length > 1) {
+							watch();
+							modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
+							timelineSvc.init(appState.episodeId);
+							$scope.loading = false;
+						}
+					});
+				} else {
+					// Episode has no master asset
+					$scope.loading = false;
+					// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
+					if (appState.product === 'producer') {
+						appState.editEpisode = modelSvc.episodes[appState.episodeId];
 					}
-				});
-			} else {
-				// Episode has no master asset
-				$scope.loading = false;
-				// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
-				if (appState.product === 'producer') {
-					appState.editEpisode = modelSvc.episodes[appState.episodeId];
+					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+					appState.videoControlsLocked = true;
 				}
-				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
-				appState.videoControlsLocked = true;
 
-			}
+				if (appState.productLoadedAs === 'producer' && !authSvc.userHasRole('admin')) {
+					// TODO redirect instead?
+					appState.product = 'player';
+					appState.productLoadedAs = 'player';
+				}
+
+			});
 
 		});
 
 		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
-		if (appState.productLoadedAs === 'producer') {
-
-			$rootScope.$on("dataSvc.getEpisode.done", function () {
-				// Producer needs its container to stash the master asset and other asset uploads.
-
-				// TODO We could almost certainly get away with using dataSvc.getContainer here instead of crawling the full ancestry
-				// but I want to test that more thoroughly before I commit
-				dataSvc.getContainerAncestry(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId);
-				// dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId);
-
-				modelSvc.resolveEpisodeContainers(appState.episodeId);
-			});
-
-			// keep non-admins from seeing the producer interface
-			var rolesWatcher = $scope.$watch(function () {
-				return appState.user;
-			}, function (x) {
-				if (Object.keys(x)
-					.length) {
-					rolesWatcher();
-					if (!authSvc.userHasRole('admin')) {
-						appState.product = 'player';
-						appState.productLoadedAs = 'player';
-					}
-				}
-			});
-		}
 
 		$scope.appState = appState;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
