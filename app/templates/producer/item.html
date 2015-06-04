@@ -263,7 +263,10 @@
 	<div class="ittTabFoot">
 
 		<a ng-click="cancelEdit()">Cancel</a> &nbsp; &nbsp;
-		<button ng-if="item._id != 'internal:editing'" ng-click="deleteEvent(item._id)">Delete</button>
+		<button ng-if="
+			item._id != 'internal:editing' && 
+			!(item._type == 'Scene' && item.start_time <= 0.01)
+		" ng-click="deleteEvent(item._id)">Delete</button>
 		<button ng-click="saveEvent()">Save</button>
 	</div>
 
