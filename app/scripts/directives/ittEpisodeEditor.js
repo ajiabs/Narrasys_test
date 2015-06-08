@@ -35,6 +35,18 @@ angular.module('com.inthetelling.story')
 					"timestamp": ""
 				};
 
+				// is the master asset a youtube link? (i.e. is yt the only url we have?)
+				if (
+					scope.masterAsset &&
+					scope.masterAsset.urls.youtube.length &&
+					Object.keys(scope.masterAsset.urls).filter(function (x) {
+						return scope.masterAsset.urls[x].length > 0;
+					}).length === 1) {
+					scope.masterAssetType = 'Youtube';
+				} else {
+					scope.masterAssetType = 'Video';
+				}
+
 				// extract current event styles for the form
 				if (scope.episode.styles) {
 					for (var styleType in scope.itemForm) {
@@ -166,18 +178,24 @@ angular.module('com.inthetelling.story')
 					// hand off to EditController (with the original to be restored)
 					scope.cancelEpisodeEdit(scope.uneditedEpisode);
 				};
+
 				scope.detachMasterAsset = function () {
-					//TODO: removing a property on json object during PUT doesn't delete the property. let's set it to an empty string.
-					//scope.episode.master_asset_id = null;
-					//delete scope.episode.master_asset_id;
-					scope.masterAsset = {};
 
-					appState.duration = 0;
-					dataSvc.detachMasterAsset(scope.episode);
+					// This needs to be undo-able.  Don't commit until the user hits save
 
-					modelSvc.deriveEpisode(scope.episode);
-					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-					modelSvc.resolveEpisodeAssets(scope.episode._id);
+					// //TODO: removing a property on json object during PUT doesn't delete the property. let's set it to an empty string.
+					// //scope.episode.master_asset_id = null;
+					// //delete scope.episode.master_asset_id;
+
+					// scope.masterAsset = {};
+
+					// appState.duration = 0;
+					// dataSvc.detachMasterAsset(scope.episode);
+
+					// modelSvc.deriveEpisode(scope.episode);
+					// modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+					// modelSvc.resolveEpisodeAssets(scope.episode._id);
+
 				};
 
 				scope.setMasterAsset = function (asset) {
@@ -198,6 +216,7 @@ angular.module('com.inthetelling.story')
 					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
+
 				scope.uploadAsset = function (files) {
 					//Start the upload status out at 0 so that the
 					//progress bar renders correctly at first
@@ -207,10 +226,8 @@ angular.module('com.inthetelling.story')
 					};
 
 					scope.uploads = awsSvc.uploadContainerFiles(scope.episodeContainerId, files);
-
 					scope.uploads[0].then(function (data) {
 						modelSvc.cache("asset", data.file);
-
 						var previousMasterAsset = angular.copy(scope.masterAsset);
 						scope.checkAndConfirmDuration(previousMasterAsset, data.file, function (confirmed) {
 							if (confirmed) {
@@ -257,12 +274,7 @@ angular.module('com.inthetelling.story')
 						modelSvc.deriveEpisode(scope.episode);
 						modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 						modelSvc.resolveEpisodeAssets(scope.episode._id);
-
-
 					}
-
-					// defined but never used.  Did I remove something that was using this?
-					//var hasMasterAsset = (typeof scope.masterAsset !== 'undefined' && typeof scope.masterAsset._id !== 'undefined');
 
 					var youtubeId = youtubeSvc.extractYoutubeId(url);
 					if (youtubeId) {
@@ -278,16 +290,27 @@ angular.module('com.inthetelling.story')
 									en: data.description
 								};
 								asset.content_type = "video/x-youtube";
-								createAsset(scope.episodeContainerId, scope.episode._id, asset);
+
+								scope.checkAndConfirmDuration(scope.masterAsset, asset, function (confirmed) {
+									if (confirmed) {
+										createAsset(scope.episodeContainerId, scope.episode._id, asset);
+									}
+								});
+
+								scope.ytmessage = "";
 							}, function (error) {
-								console.log("Error getting duration from youtube:", error);
+								console.error("Error getting duration from youtube:", error);
+								scope.ytmessage = "Sorry, couldn't find that video on youtube.";
+								/* No let's not create bad data on purpose
 								var asset = {}; //createDefaultAsset()
 								asset.you_tube_url = asset.url = url;
 								asset.duration = 0;
 								createAsset(scope.episodeContainerId, scope.episode._id, asset);
+								*/
 							});
 					} else {
 						console.warn("attachYoutube tried to attach a bad URL", url);
+						scope.ytmessage = "Sorry, couldn't match that to a valid YouTube url.";
 					}
 				};
 
@@ -296,6 +319,7 @@ angular.module('com.inthetelling.story')
 					console.warn("NOT IMPLEMENTED");
 					//TODO (in Editor / SxS episode this will be useful, since those assets are tied to individual events so can safely be deleted)
 				};
+
 				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event/episode:
 				scope.detachAsset = function () {
 					scope.detachMasterAsset();
