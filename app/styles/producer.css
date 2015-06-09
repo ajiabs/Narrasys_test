@@ -216,6 +216,11 @@ input[readonly] {
 	padding-right: 2em;
 }
 
+.authoringForm button,
+.ittTabFoot button {
+	padding: 0.2em 0.6em;
+}
+
 .authoringForm .button-prev {
 	font-size: 0.7em;
 }
@@ -527,10 +532,6 @@ input[readonly] {
 	text-align: right;
 	padding-right: 24px;
 	font-size: 0.86em;
-}
-
-.ittTabFoot button {
-	padding: 0.2em 0.6em;
 }
 
 .invalid {

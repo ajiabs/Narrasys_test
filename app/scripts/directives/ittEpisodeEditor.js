@@ -7,7 +7,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, appState, modelSvc, dataSvc, awsSvc, youtubeSvc) {
+	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -179,24 +179,25 @@ angular.module('com.inthetelling.story')
 					scope.cancelEpisodeEdit(scope.uneditedEpisode);
 				};
 
-				scope.detachMasterAsset = function () {
+				/*				scope.detachMasterAsset = function () {
 
-					// This needs to be undo-able.  Don't commit until the user hits save
+									// This needs to be undo-able.  Don't commit until the user hits save
 
-					// //TODO: removing a property on json object during PUT doesn't delete the property. let's set it to an empty string.
-					// //scope.episode.master_asset_id = null;
-					// //delete scope.episode.master_asset_id;
+									// //TODO: removing a property on json object during PUT doesn't delete the property. let's set it to an empty string.
+									// //scope.episode.master_asset_id = null;
+									// //delete scope.episode.master_asset_id;
 
-					// scope.masterAsset = {};
+									// scope.masterAsset = {};
 
-					// appState.duration = 0;
-					// dataSvc.detachMasterAsset(scope.episode);
+									// appState.duration = 0;
+									// dataSvc.detachMasterAsset(scope.episode);
 
-					// modelSvc.deriveEpisode(scope.episode);
-					// modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-					// modelSvc.resolveEpisodeAssets(scope.episode._id);
+									// modelSvc.deriveEpisode(scope.episode);
+									// modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+									// modelSvc.resolveEpisodeAssets(scope.episode._id);
 
-				};
+								};
+				*/
 
 				scope.setMasterAsset = function (asset) {
 					// console.log("asset:", asset);
@@ -218,30 +219,34 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.uploadAsset = function (files) {
-					//Start the upload status out at 0 so that the
-					//progress bar renders correctly at first
-					scope.uploadStatus[0] = {
-						"bytesSent": 0,
-						"bytesTotal": 1
-					};
 
-					scope.uploads = awsSvc.uploadContainerFiles(scope.episodeContainerId, files);
-					scope.uploads[0].then(function (data) {
-						modelSvc.cache("asset", data.file);
-						var previousMasterAsset = angular.copy(scope.masterAsset);
-						scope.checkAndConfirmDuration(previousMasterAsset, data.file, function (confirmed) {
-							if (confirmed) {
-								modelSvc.cache("asset", data.file);
-								var asset = modelSvc.assets[data.file._id];
-								scope.setMasterAsset(asset);
-							}
+					scope.handleAssetUpload(files, scope.episodeContainerId)
+						.then(function (file) {
+							console.log("Successfully upload asset", file);
+
+						}, function (err) {
+							errorSvc.error({
+								data: err
+							});
+							// TODO reset the form
+
 						});
-						delete scope.uploads;
-					}, function (data) {
-						console.log("FAIL", data);
-					}, function (update) {
-						scope.uploadStatus[0] = update;
-					});
+
+					// 	modelSvc.cache("asset", data.file);
+					// 	var previousMasterAsset = angular.copy(scope.masterAsset);
+					// 	scope.checkAndConfirmDuration(previousMasterAsset, data.file, function (confirmed) {
+					// 		if (confirmed) {
+					// 			modelSvc.cache("asset", data.file);
+					// 			var asset = modelSvc.assets[data.file._id];
+					// 			scope.setMasterAsset(asset);
+					// 		}
+					// 	});
+					// 	delete scope.uploads;
+					// }, function (data) {
+					// 	console.log("FAIL", data);
+					// }, function (update) {
+					// 	scope.uploadStatus[0] = update;
+					// });
 				};
 
 				var createAsset = function (containerId, episodeId, asset) {
@@ -322,8 +327,8 @@ angular.module('com.inthetelling.story')
 
 				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event/episode:
 				scope.detachAsset = function () {
-					scope.detachMasterAsset();
-					scope.showUpload = false;
+					scope.showUploadButtons = true;
+					scope.showUploadField = false;
 				};
 
 				scope.selectText = function (event) {

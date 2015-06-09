@@ -13,14 +13,16 @@
 		</div>
 	</span>
 	<span ng-if="!uploads">
-		<span ng-if="(item.asset || masterAsset.original_filename)">
+		<div ng-if="!showUploadButtons && (item.asset || masterAsset.original_filename)">
 			{{item.asset.original_filename || masterAsset.original_filename}}
-			<button ng-click="detachAsset(item.asset._id)">Detach</button>
-		</span>
-		<span ng-if="!(item.asset || masterAsset.original_filename)">
-			<button ng-if="!showUpload" ng-click="chooseAsset()">Select</button>
-			<button ng-if="!showUpload" ng-click="toggleUpload()">Upload</button>
-			<input ng-if="showUpload" type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
+			<button class="button" ng-click="replaceAsset(item.asset._id)"> Replace this asset </button>
+		</div>
+		<span ng-if="showUploadButtons || !(item.asset || masterAsset.original_filename)">
+			<button class="button" ng-if="!showUploadField" ng-click="chooseAsset()">Browse uploaded assets</button>
+			<button class="button" ng-if="!showUploadField" ng-click="toggleUpload()">Upload new asset</button>
+			<input ng-if="showUploadField" type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
 		</span>
 	</span>
+
+
 </div>

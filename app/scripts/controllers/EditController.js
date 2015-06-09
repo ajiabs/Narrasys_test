@@ -1,19 +1,12 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($scope, $rootScope, $timeout, appState, dataSvc, modelSvc, timelineSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, appState, dataSvc, modelSvc, timelineSvc, awsSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
-		$scope.chooseAsset = function () {
-			$scope.showAssetPicker = true;
-			$scope.w1 = $rootScope.$on('UserSelectedAsset', function (e, id) {
-				$scope.selectedAsset(id);
-			});
-			$scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
-		};
-
-		$scope.selectedAsset = function (asset_id) {
-			console.log($scope.item);
+		// TODO wait to do this until user saves event
+		var attachAssetToEvent = function (asset_id) {
+			// console.log($scope.item);
 			var asset = modelSvc.assets[asset_id];
 			if ($scope.item) {
 				$scope.item.asset = asset;
@@ -44,14 +37,59 @@ angular.module('com.inthetelling.story')
 			}
 			$scope.endChooseAsset();
 		};
-		$scope.toggleUpload = function () {
-			$scope.showUpload = !$scope.showUpload;
-			// TODO: trigger 'click' event on the file upload field if showUpload=true.  Or come up with a less hacky way to do the same thing
+		$scope.chooseAsset = function () {
+			$scope.showAssetPicker = true;
+			$scope.w1 = $rootScope.$on('UserSelectedAsset', function (e, id) {
+				attachAssetToEvent(id);
+				$scope.showUploadButtons = false;
+			});
+			$scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
 		};
 		$scope.endChooseAsset = function () {
 			$scope.w1();
 			$scope.w2();
 			$scope.showAssetPicker = false;
+		};
+
+		// TODO rename this to toggleUploadField (or eliminate it)
+		$scope.toggleUpload = function () {
+			$scope.showUploadField = !$scope.showUploadField;
+			// TODO: trigger 'click' event on the file upload field if showUpload=true.  Or come up with a less hacky way to do the same thing
+		};
+
+		$scope.handleAssetUpload = function (files, containerId) {
+			// if no container ID, put it in the user's container
+			var defer = $q.defer();
+
+			//Start the upload status out at 0 so that the
+			//progress bar renders correctly at first
+			$scope.uploadStatus[0] = {
+				"bytesSent": 0,
+				"bytesTotal": 1
+			};
+			if (containerId) {
+				$scope.uploads = awsSvc.uploadContainerFiles(containerId, files);
+			} else {
+				$scope.uploads = awsSvc.uploadUserFiles(appState.user._id, files);
+			}
+			$scope.uploads[0].then(function (data) {
+					if (data.file) {
+						modelSvc.cache("asset", data.file);
+						delete $scope.uploads;
+						defer.resolve(data.file);
+					} else {
+						console.log("FAIL", data);
+						defer.reject(data);
+					}
+				},
+				function (data) {
+					console.log("FAIL", data);
+					defer.reject();
+				},
+				function (update) {
+					$scope.uploadStatus[0] = update;
+				});
+			return defer.promise;
 		};
 
 		$scope.addDistractor = function () {
@@ -214,7 +252,12 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.saveEvent = function () {
+
+			// TODO if item.sxs, check scope.removedAsset and try deleting that asset after the save
+			// (see ittItemEditor)
+
 			var toSave = angular.copy(appState.editEvent);
+			console.log("SAVING:", toSave);
 
 			//assign current episode_id
 			toSave.cur_episode_id = appState.episodeId;
@@ -245,6 +288,17 @@ angular.module('com.inthetelling.story')
 						timelineSvc.updateEventTimes(modelSvc.events[data._id]);
 						saveAdjustedEvents(data, "update"); //TODO: send in the original (pre-move) event as last param
 					}
+
+					// In editor, delete unused assets.
+					// (In producer, assets can be shared across episodes, so leave them be)
+					console.log("Saved", toSave, toSave.sxs, toSave.removedAssets);
+					if (toSave.sxs) {
+						console.log("Deleting old asset");
+						angular.forEach(toSave.removedAssets, function (id) {
+							dataSvc.deleteAsset(id);
+						});
+					}
+
 					appState.editEvent = false;
 					$rootScope.$emit('searchReindexNeeded'); // HACK
 				}, function (data) {
@@ -551,6 +605,7 @@ angular.module('com.inthetelling.story')
 			}
 			return adjusted;
 		};
+
 		$scope.editCurrentScene = function () {
 			angular.forEach(getScenes(), function (scene) {
 				if (scene.isCurrent) {
@@ -653,8 +708,6 @@ angular.module('com.inthetelling.story')
 				"layouts": ["inline"],
 				"styles": []
 			};
-
-			var stub = {};
 			/*
 			Item types:
 
@@ -672,12 +725,9 @@ angular.module('com.inthetelling.story')
 				link
 				question
 				video (injected episode) TODO
-
-TODO merge 'comment' with 'annotation'?
-
-
 			*/
 
+			var stub = {};
 			if (type === 'scene') {
 				stub = {
 					"_type": "Scene",
@@ -786,5 +836,4 @@ TODO merge 'comment' with 'annotation'?
 			return base;
 		};
 
-		$scope.generateEmptyItem = generateEmptyItem;
 	});
