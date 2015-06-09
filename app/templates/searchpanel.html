@@ -7,7 +7,7 @@
 		<div class="searchResults content" id="sortableSearch" itt-width-watch ng-class="{isNarrow: isNarrow}">
 			<div ng-if="sortBy == 'startTime'" class="sortByTime">
 				<div ng-repeat="scene in episode.scenes">
-					<h3 ng-if="sceneItems.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h3>
+					<h2 class="searchCategory" ng-if="scene.items.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h2>
 					<!-- Would split this into separate templates if episodeUI's days weren't already numbered -->
 
 					<span ng-if="appState.productLoadedAs == 'player'">

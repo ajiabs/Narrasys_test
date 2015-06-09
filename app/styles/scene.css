@@ -358,13 +358,13 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	padding: 0 0.5em;
 }
 
-.searchMode .sortByType h2,
-.searchMode .sortByType h3,
-.searchMode .sortByType .pullquote {
-	font-size: 1.2em;
+.searchMode .item h2,
+.searchMode .item h3,
+.searchMode .item .pullquote {
+	font-size: 1.4em;
 }
 
-.searchMode .sortByType h2.searchCategory {
+.searchMode h2.searchCategory {
 	font-size: 1.8em;
 }
 
