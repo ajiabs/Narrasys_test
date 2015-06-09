@@ -100,7 +100,6 @@ angular.module('com.inthetelling.story')
 					});
 
 					scope.episode.languages = angular.copy(newLanguages);
-
 				}, true);
 
 				// Transform changes to form fields for styles into item.styles[]:
@@ -179,6 +178,22 @@ angular.module('com.inthetelling.story')
 					scope.cancelEpisodeEdit(scope.uneditedEpisode);
 				};
 
+				scope.attachChosenAsset = function (asset_id) {
+					// console.log(scope.item);
+					var asset = modelSvc.assets[asset_id];
+
+					scope.masterAsset = asset;
+					var previousAsset = modelSvc.assets[scope.episode.master_asset_id];
+					//$timeout(function () {
+					scope.checkAndConfirmDuration(previousAsset, asset, function (confirmed) {
+						if (confirmed) {
+							scope.episode.master_asset_id = asset_id;
+						}
+					});
+					//});
+
+				};
+
 				/*				scope.detachMasterAsset = function () {
 
 									// This needs to be undo-able.  Don't commit until the user hits save
@@ -219,10 +234,12 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.uploadAsset = function (files) {
-
 					scope.handleAssetUpload(files, scope.episodeContainerId)
 						.then(function (file) {
-							console.log("Successfully upload asset", file);
+							console.log("Successfully uploaded asset", file);
+
+							// TODO confirm new asset length, show warning if necessary
+							// TODO attach new asset to episode
 
 						}, function (err) {
 							errorSvc.error({
@@ -232,7 +249,6 @@ angular.module('com.inthetelling.story')
 
 						});
 
-					// 	modelSvc.cache("asset", data.file);
 					// 	var previousMasterAsset = angular.copy(scope.masterAsset);
 					// 	scope.checkAndConfirmDuration(previousMasterAsset, data.file, function (confirmed) {
 					// 		if (confirmed) {
@@ -241,12 +257,6 @@ angular.module('com.inthetelling.story')
 					// 			scope.setMasterAsset(asset);
 					// 		}
 					// 	});
-					// 	delete scope.uploads;
-					// }, function (data) {
-					// 	console.log("FAIL", data);
-					// }, function (update) {
-					// 	scope.uploadStatus[0] = update;
-					// });
 				};
 
 				var createAsset = function (containerId, episodeId, asset) {
@@ -262,12 +272,13 @@ angular.module('com.inthetelling.story')
 							modelAsset.duration = asset.duration;
 							scope.setMasterAsset(modelAsset);
 							modelSvc.deriveEpisode(scope.episode);
-							modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+							// modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 							modelSvc.resolveEpisodeAssets(scope.episode._id);
 						}, function () {
 							console.warn("dataSvc.createAsset failed");
 						});
 				};
+
 				scope.attachYouTube = function (url) {
 					url = youtubeSvc.embeddableYoutubeUrl(url);
 
@@ -319,14 +330,7 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-				scope.deleteAsset = function (assetId) {
-					console.log("deleteAsset", assetId);
-					console.warn("NOT IMPLEMENTED");
-					//TODO (in Editor / SxS episode this will be useful, since those assets are tied to individual events so can safely be deleted)
-				};
-
-				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event/episode:
-				scope.detachAsset = function () {
+				scope.replaceAsset = function () {
 					scope.showUploadButtons = true;
 					scope.showUploadField = false;
 				};

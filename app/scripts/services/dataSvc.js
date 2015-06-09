@@ -922,16 +922,18 @@ angular.module('com.inthetelling.story')
 			}
 		};
 		svc.prepItemForStorage = prepItemForStorage;
-		svc.detachMasterAsset = function (epData) {
-			var preppedData = prepEpisodeForStorage(epData);
-			preppedData.master_asset_id = null;
-			console.log("prepped sans master_asset_id for storage:", preppedData);
-			if (preppedData) {
-				return PUT("/v3/episodes/" + preppedData._id, preppedData);
-			} else {
-				return false;
-			}
-		};
+
+		// No, we should not be storing episodes with no master asset halfway through editing 
+		// svc.detachMasterAsset = function (epData) {
+		// 	var preppedData = prepEpisodeForStorage(epData);
+		// 	preppedData.master_asset_id = null;
+		// 	console.log("prepped sans master_asset_id for storage:", preppedData);
+		// 	if (preppedData) {
+		// 		return PUT("/v3/episodes/" + preppedData._id, preppedData);
+		// 	} else {
+		// 		return false;
+		// 	}
+		// };
 		svc.detachEventAsset = function (evt, assetId) {
 			evt = prepItemForStorage(evt);
 			if (!evt) {

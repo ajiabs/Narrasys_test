@@ -4,44 +4,12 @@ angular.module('com.inthetelling.story')
 	.controller('EditController', function ($q, $scope, $rootScope, $timeout, appState, dataSvc, modelSvc, timelineSvc, awsSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
-		// TODO wait to do this until user saves event
-		var attachAssetToEvent = function (asset_id) {
-			// console.log($scope.item);
-			var asset = modelSvc.assets[asset_id];
-			if ($scope.item) {
-				$scope.item.asset = asset;
-				if ($scope.item._type === 'Upload' || $scope.item._type === 'Plugin') {
-					$scope.item.asset_id = asset_id;
-				} else if ($scope.item._type === 'Link') {
-					$scope.item.link_image_id = asset_id;
-				} else if ($scope.item._type === 'Annotation') {
-					$scope.item.annotation_image_id = asset_id;
-				} else {
-					console.error("Tried to select asset for unknown item type", $scope.item);
-				}
-			}
-			if ($scope.episode) {
-				//BUGBUG? - could episode be truthy and the asset be video during "item" edition (and not episode editing) 
-				// causing us to inadvertently change the master asset to the item video asset?  Due to using editcontroller for both item and episode
-				if (asset._type === 'Asset::Video') {
-					$scope.masterAsset = asset;
-					var previousAsset = modelSvc.assets[$scope.episode.master_asset_id];
-					$timeout(function () {
-						$scope.checkAndConfirmDuration(previousAsset, asset, function (confirmed) {
-							if (confirmed) {
-								$scope.episode.master_asset_id = asset_id;
-							}
-						});
-					}, 0);
-				}
-			}
-			$scope.endChooseAsset();
-		};
 		$scope.chooseAsset = function () {
 			$scope.showAssetPicker = true;
 			$scope.w1 = $rootScope.$on('UserSelectedAsset', function (e, id) {
-				attachAssetToEvent(id);
+				$scope.attachChosenAsset(id); // in ittItemEditor or ittEpisodeEditor
 				$scope.showUploadButtons = false;
+				$scope.endChooseAsset();
 			});
 			$scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
 		};
@@ -252,12 +220,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.saveEvent = function () {
-
-			// TODO if item.sxs, check scope.removedAsset and try deleting that asset after the save
-			// (see ittItemEditor)
-
 			var toSave = angular.copy(appState.editEvent);
-			console.log("SAVING:", toSave);
 
 			//assign current episode_id
 			toSave.cur_episode_id = appState.episodeId;
@@ -289,16 +252,13 @@ angular.module('com.inthetelling.story')
 						saveAdjustedEvents(data, "update"); //TODO: send in the original (pre-move) event as last param
 					}
 
-					// In editor, delete unused assets.
-					// (In producer, assets can be shared across episodes, so leave them be)
-					console.log("Saved", toSave, toSave.sxs, toSave.removedAssets);
-					if (toSave.sxs) {
-						console.log("Deleting old asset");
-						angular.forEach(toSave.removedAssets, function (id) {
-							dataSvc.deleteAsset(id);
-						});
-					}
-
+					// Delete attached asset(s)  (this should only occur for sxs items, for now)
+					// yes we could combine these into one call I suppose but there will almost always only be one
+					// unless the user was very indecisive and uploaded/detached a bunch of assets to the same event.
+					// It was probably already a premature optimization to use an array here in the first place
+					angular.forEach(toSave.removedAssets, function (id) {
+						dataSvc.deleteAsset(id);
+					});
 					appState.editEvent = false;
 					$rootScope.$emit('searchReindexNeeded'); // HACK
 				}, function (data) {
