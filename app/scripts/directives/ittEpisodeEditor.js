@@ -273,7 +273,7 @@ angular.module('com.inthetelling.story')
 					// 	modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 					// 	modelSvc.resolveEpisodeAssets(scope.episode._id);
 					// }
-
+					scope.showmessage = "Getting video from YouTube...";
 					var youtubeId = youtubeSvc.extractYoutubeId(url);
 					if (youtubeId) {
 						youtubeSvc.getVideoData(youtubeId)
@@ -294,12 +294,14 @@ angular.module('com.inthetelling.story')
 									data.you_tube_url = asset.url;
 									data.duration = asset.duration;
 									modelSvc.cache("asset", data);
+									scope.showmessage = "Your video has been retrieved from YouTube and will be attached to this episode when you hit 'save'.";
+									// this may override the showmessage, so do it last:
 									scope.attachChosenAsset(data._id);
 								});
 
 							}, function (error) {
 								console.error("Error getting duration from youtube:", error);
-								scope.showmessage = "Sorry, couldn't find that video on youtube.";
+								scope.showmessage = "Sorry, couldn't find that video on YouTube.";
 							});
 					} else {
 						console.warn("attachYoutube tried to attach a bad URL", url);

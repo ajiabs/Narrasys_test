@@ -492,12 +492,18 @@ angular.module('com.inthetelling.story')
 							modifiedEvents.push(item);
 						});
 
-						modelSvc.events["internal:endingscreen:" + toSave._id].start_time = endTime;
-						modelSvc.events["internal:endingscreen:" + toSave._id].end_time = endTime;
+						var endingScene = modelSvc.events["internal:endingscreen:" + toSave._id];
+						if (endingScene) {
+							endingScene.start_time = endTime;
+							endingScene.end_time = endTime;
+						} else {
+							modelSvc.addEndingScreen(toSave._id);
+						}
 
-						modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
+						// modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
+						modelSvc.resolveEpisodeEvents(appState.episodeId);
 						// modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
-						modelSvc.resolveEpisodeAssets(appState.episodeId);
+						modelSvc.resolveEpisodeAssets(appState.episodeId); // TODO I suspect this is unnecessary...
 						appState.duration = duration;
 						appState.editEpisode = false;
 						appState.videoControlsLocked = false;
@@ -510,6 +516,7 @@ angular.module('com.inthetelling.story')
 
 					} else {
 						// modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
+						modelSvc.resolveEpisodeEvents(appState.episodeId);
 						modelSvc.resolveEpisodeAssets(appState.episodeId);
 						appState.editEpisode = false;
 						appState.videoControlsLocked = false;
