@@ -67,24 +67,30 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
-		var isScene = function (event) {
-			return (event._type === 'Scene');
-		};
+		// var isScene = function (event) {
+		// 	return (event._type === 'Scene');
+		// };
 
 		var isOnExistingSceneStart = function (time) {
-			// TODO this is very fancy and all but why are we iterating over the entire modelSvc.events hash? -- use episode.scenes instead
-			var isOverlapping = false;
-			for (var property in modelSvc.events) {
-				if (modelSvc.events.hasOwnProperty(property)) {
-					if (isScene(modelSvc.events[property])) {
-						if (modelSvc.events[property].start_time === time) {
-							isOverlapping = true;
-							break;
-						}
-					}
+
+			// let's change this to iterate over just the scenes instead of the entire modelSvc.events hash:
+			angular.forEach(getScenes(), function (scene) {
+				if (scene.start_time === time) {
+					return true;
 				}
-			}
-			return isOverlapping;
+			});
+			return false;
+			// for (var property in modelSvc.events) {
+			// 	if (modelSvc.events.hasOwnProperty(property)) {
+			// 		if (isScene(modelSvc.events[property])) {
+			// 			if (modelSvc.events[property].start_time === time) {
+			// 				isOverlapping = true;
+			// 				break;
+			// 			}
+			// 		}
+			// 	}
+			// }
+			// return isOverlapping;
 		};
 
 		$scope.addEvent = function (producerItemType) {
