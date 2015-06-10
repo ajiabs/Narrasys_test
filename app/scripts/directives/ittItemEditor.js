@@ -170,7 +170,6 @@ angular.module('com.inthetelling.story')
 					if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time) {
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 					}
-
 				}, true);
 
 				// Transform changes to form fields for styles into item.styles[]:
@@ -313,97 +312,59 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.uploadAsset = function (files) {
-					//Start the upload status out at 0 so that the
-					//progress bar renders correctly at first
-					scope.uploadStatus[0] = {
-						"bytesSent": 0,
-						"bytesTotal": 1
-					};
+					scope.handleAssetUpload(files, scope.episodeContainerId)
+						.then(function (file) {
+							console.log("Successfully upload asset", file);
 
-					if (appState.product === 'sxs') {
-						scope.uploads = awsSvc.uploadUserFiles(appState.user._id, files);
-					} else {
-						scope.uploads = awsSvc.uploadContainerFiles(scope.episodeContainerId, files);
-					}
+							scope.item.asset = modelSvc.assets[file._id];
+							// TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
+							if (scope.item._type === 'Link') {
+								scope.item.link_image_id = file._id;
+							} else if (scope.item._type === 'Annotation') {
+								scope.item.annotation_image_id = file._id;
+							} else {
+								scope.item.asset_id = file._id;
+							}
+							scope.showUploadButtons = false;
 
-					scope.uploads[0].then(function (data) {
-						modelSvc.cache("asset", data.file);
-
-						scope.item.asset = modelSvc.assets[data.file._id];
-						// TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
-						if (scope.item._type === 'Link') {
-							scope.item.link_image_id = data.file._id;
-						} else if (scope.item._type === 'Annotation') {
-							scope.item.annotation_image_id = data.file._id;
-						} else {
-							scope.item.asset_id = data.file._id;
-						}
-						delete scope.uploads;
-					}, function (err) {
-						console.log("FAILED UPLOAD", err);
-						errorSvc.error({
-							data: "Sorry, we couldn't upload that type of file."
+						}, function (err) {
+							errorSvc.error({
+								data: err
+							});
+							// TODO reset the form
 						});
-						delete scope.uploads;
-					}, function (update) {
-						scope.uploadStatus[0] = update;
-					});
 				};
 
-				// in SxS, event assets are only ever used in one event, so we can safely delete them.
-				// We need to first store the event without the asset id, however, or else the server side will block the deletion
+				scope.replaceAsset = function () {
+					scope.showUploadButtons = true;
 
-				scope.deleteAsset = function (assetId) {
-					if (window.confirm("Are you sure you wish to delete this asset?")) {
-
-						var assetKey;
+					if (scope.item.sxs) { // we will delete assets atached to editor items, not from producer items
+						scope.item.removedAssets = scope.item.removedAssets || [];
+						// removedAsset will be used by editController on save to delete the old asset (if we're in editor)
 						if (scope.item._type === 'Link') {
-							assetKey = "link_image_id";
+							scope.item.removedAssets.push(scope.item.link_image_id);
 						} else if (scope.item._type === 'Annotation') {
-							assetKey = "annotation_image_id";
+							scope.item.removedAssets.push(scope.item.annotation_image_id);
 						} else {
-							assetKey = "asset_id";
+							scope.item.removedAssets.push(scope.item.asset_id);
 						}
-
-						if (scope.item._id !== 'internal:editing') {
-							// Server enforces that you can't delete an asset which any event is using. So
-							// must store an (unedited) version of event without the asset, 
-							// before we can delete the asset itself
-							scope.uneditedItem[assetKey] = null;
-							delete scope.uneditedItem.asset;
-							dataSvc.storeItem(scope.uneditedItem).then(function () {
-								dataSvc.deleteAsset(assetId);
-							});
-						} else {
-							// event hasn't been stored yet, so it's safe to just delete the asset
-							dataSvc.deleteAsset(assetId);
-						}
-
-						delete modelSvc.events[scope.item._id].asset;
-						delete scope.item[assetKey];
-						delete modelSvc.events[scope.item._id][assetKey];
-						delete scope.item.asset;
 					}
 				};
-				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event:
-				scope.detachAsset = function (assetId) {
-					if (assetId) {
-						delete modelSvc.events[scope.item._id].asset;
-						delete scope.item.asset;
-						if (scope.item.asset_id === assetId) {
-							delete scope.item.asset_id;
+
+				scope.attachChosenAsset = function (asset_id) {
+					// console.log(scope.item);
+					var asset = modelSvc.assets[asset_id];
+					if (scope.item) {
+						scope.item.asset = asset;
+						if (scope.item._type === 'Upload' || scope.item._type === 'Plugin') {
+							scope.item.asset_id = asset_id;
+						} else if (scope.item._type === 'Link') {
+							scope.item.link_image_id = asset_id;
+						} else if (scope.item._type === 'Annotation') {
+							scope.item.annotation_image_id = asset_id;
+						} else {
+							console.error("Tried to select asset for unknown item type", scope.item);
 						}
-						if (scope.item.link_image_id === assetId) {
-							delete scope.item.link_image_id;
-						}
-						if (scope.item.annotation_image_id === assetId) {
-							delete scope.item.annotation_image_id;
-						}
-						dataSvc.detachEventAsset(angular.copy(scope.item), assetId)
-							.then(function () {}, function (data) {
-								console.error("FAILED TO DETACH ASSET FROM ITEM IN DATASTORE", data);
-							});
-						scope.showUpload = false;
 					}
 				};
 

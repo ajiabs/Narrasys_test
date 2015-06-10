@@ -52,7 +52,7 @@ angular.module('com.inthetelling.story')
 				// zoom in on item edit:
 				scope.autoZoom = function (item) {
 					console.log("autoZoom");
-					console.trace();
+
 					scope.savedZoomLevel = scope.zoomLevel;
 					var itemLength = item.end_time - item.start_time;
 					var toEnd = (appState.duration - item.end_time);

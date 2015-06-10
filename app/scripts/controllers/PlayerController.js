@@ -258,23 +258,24 @@ angular.module('com.inthetelling.story')
 		// show the help pane, only if localStorage is settable and there isn't one already.
 		// (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
 
-		var localStorageAllowed = true;
-		try {
-			localStorage.setItem("iCanHazStorage", 1);
-		} catch (e) {
-			localStorageAllowed = false;
-		}
-		if (localStorageAllowed) {
-			localStorage.removeItem("iCanHazStorage");
-		}
+		// var localStorageAllowed = true;
+		// try {
+		// 	localStorage.setItem("iCanHazStorage", 1);
+		// } catch (e) {
+		// 	localStorageAllowed = false;
+		// }
+		// if (localStorageAllowed) {
+		// 	localStorage.removeItem("iCanHazStorage");
+		// }
 
-		// Intercepts the first play of the video and decides whether to show the help panel beforehand:
+		// Intercepts the first play of the video and decides whether to show the help panel beforehand.
+		// Disabling this,since we're not showing a help panel anymore, but keeping it in case we change our minds on that
 		var firstplayWatcher = $rootScope.$on("video.firstPlay", function () {
-			if (localStorageAllowed && appState.time === 0 && !(localStorage.getItem("noMoreHelp"))) {
-				// appState.show.helpPanel = true;
-			} else {
-				timelineSvc.play();
-			}
+			// if (localStorageAllowed && appState.time === 0 && !(localStorage.getItem("noMoreHelp"))) {
+			// 	// appState.show.helpPanel = true;
+			// } else {
+			timelineSvc.play();
+			// }
 		});
 
 		$scope.hidePanel = function (panel) {
