@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, appState, dataSvc, modelSvc, timelineSvc, awsSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, awsSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		$scope.chooseAsset = function () {
@@ -336,8 +336,17 @@ angular.module('com.inthetelling.story')
 
 						// push each of modifiedEvents to server (TODO combine these into one call!)
 						angular.forEach(modifiedEvents, function (event) {
-							dataSvc.storeItem(event);
+							if (event._id.indexOf('internal') < 0) {
+								dataSvc.storeItem(event);
+							}
 						});
+
+						// HACK HACK HACK super brute force -- something is going screwy with the timeline and video here,
+						// especially when we switch from youtube to native or vv.  Force it with a full reload.
+						// (Note this makes a lot of the above re-init code redundant, but I'm hopeful I'll someday have time to fix this prOH HA HA HA I COULDNT SAY IT WITH A STRAIGHT FACE)
+						$timeout(function () {
+							$window.location.reload();
+						}, 500);
 
 					} else {
 						// modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
