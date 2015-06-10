@@ -791,10 +791,9 @@ angular.module('com.inthetelling.story')
 			if (asset._id && asset._id.match(/internal/)) {
 				delete asset._id;
 			}
-			console.log("ABOUT TO POST");
+			asset = modelSvc.deriveAsset(asset);
 			POST("/v1/containers/" + containerId + "/assets", asset)
 				.then(function (data) {
-					console.log("Created asset: ", data);
 					modelSvc.containers[data.file.container_id].episodes = [data.file._id];
 					modelSvc.cache("asset", data.file);
 					createAssetDefer.resolve(data.file);

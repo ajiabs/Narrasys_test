@@ -67,6 +67,11 @@ angular.module('com.inthetelling.story')
 			// }
 		};
 		svc.embeddableYoutubeUrl = function (origUrl, includeQSParams) {
+			if (!origUrl) {
+				return false;
+			}
+			origUrl = origUrl.replace(/%3F/, '?');
+			origUrl = origUrl.replace(/%26/, '&');
 			var ytid = svc.extractYoutubeId(origUrl);
 			return svc.createEmbedLinkFromYoutubeId(ytid, includeQSParams);
 		};

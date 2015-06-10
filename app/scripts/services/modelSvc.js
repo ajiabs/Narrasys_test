@@ -987,16 +987,14 @@ angular.module('com.inthetelling.story')
 				});
 			}
 
-			// Old-school episodes:
-			// Use the old you_tube_url if it wasn't present in alternate_urls:
+			// Old-school episodes, or linked youtube assets
+			// Use the you_tube_url,  if it's not present in alternate_urls:
 			if (videoObject.youtube.length === 0) {
-				//it is on url, and not on you_tube_url.
-				if (videoAsset.url && !videoAsset.you_tube_url) {
+				if (videoAsset.url) {
 					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.url)) {
 						videoAsset.you_tube_url = youtubeSvc.embeddableYoutubeUrl(videoAsset.url);
 					}
 				}
-
 				if (videoAsset.you_tube_url) {
 					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
 						videoObject.youtube = [youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)];
@@ -1044,20 +1042,18 @@ angular.module('com.inthetelling.story')
 					}
 				});
 			}
-
-			// console.log("video asset:", videoObject);
 			videoAsset.urls = videoObject;
 
 			// We need to know if the video has been transcoded or not in the template,
 			// so let's centralize the logic for that here
-			videoAsset.html5IsTranscoded = function() {
+			videoAsset.html5IsTranscoded = function () {
 				return svc.isTranscoded(this);
 			};
 
 			return videoAsset;
 		};
 
-		svc.isTranscoded = function(video) {
+		svc.isTranscoded = function (video) {
 			return !!video.alternate_urls;
 		};
 

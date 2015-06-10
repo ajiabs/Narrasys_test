@@ -42,7 +42,7 @@ angular.module('com.inthetelling.story')
 			}
 			$scope.uploads[0].then(function (data) {
 					if (data.file) {
-						modelSvc.cache("asset", data.file);
+						modelSvc.cache("asset", modelSvc.deriveAsset(data.file));
 						delete $scope.uploads;
 						defer.resolve(data.file);
 					} else {
@@ -250,8 +250,8 @@ angular.module('com.inthetelling.story')
 				}, function (data) {
 					console.error("FAILED TO STORE EVENT", data);
 				});
-
 		};
+
 		var getScenes = function () {
 			return modelSvc.episodes[appState.episodeId].scenes;
 		};
@@ -296,12 +296,13 @@ angular.module('com.inthetelling.story')
 
 						*/
 						var modifiedEvents = [];
+						var deletedScenes = [];
 
 						var episode = modelSvc.episodes[toSave._id];
 						angular.forEach(episode.scenes, function (scene) {
 
 							if (scene.start_time > duration) {
-								// TODO api delete this scene
+								deletedScenes.push(scene);
 							} else if (scene.end_time > duration) {
 								scene.end_time = endTime;
 								modifiedEvents.push(scene);
@@ -338,6 +339,12 @@ angular.module('com.inthetelling.story')
 						angular.forEach(modifiedEvents, function (event) {
 							if (event._id.indexOf('internal') < 0) {
 								dataSvc.storeItem(event);
+							}
+						});
+						// ditto for orphaned scenes
+						angular.forEach(deletedScenes, function (scene) {
+							if (scene._id.indexOf('internal') < 0) {
+								dataSvc.deleteItem(scene._id);
 							}
 						});
 

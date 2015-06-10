@@ -186,7 +186,7 @@ angular.module('com.inthetelling.story')
 
 					scope.showmessage = "New video attached.";
 					if (previousAsset && (asset.duration < previousAsset.duration)) {
-						var orphans = scope.getItemsAfter(scope.episode.items, asset.duration);
+						var orphans = scope.getItemsAfter(scope.episode.items.concat(scope.episode.scenes), asset.duration);
 						if (orphans.length) {
 							// TODO i18n
 							scope.showmessage = "Warning: this new video is shorter than the current video and we've detected that some existing content items will be impacted. If you save this edit, these events will have their start and end times adjusted to the new episode end. (If this isn't what you want, choose a different video or hit 'cancel'.)";
@@ -220,7 +220,7 @@ angular.module('com.inthetelling.story')
 						youtubeSvc.getVideoData(youtubeId)
 							.then(function (data) {
 								var asset = {}; //createDefaultAsset()
-								asset.you_tube_url = asset.url = url;
+								asset.you_tube_url = asset.url = youtubeSvc.embeddableYoutubeUrl(url);
 								asset.duration = data.duration;
 								asset.name = {
 									en: data.title
@@ -232,8 +232,6 @@ angular.module('com.inthetelling.story')
 
 								dataSvc.createAsset(scope.episodeContainerId, asset).then(function (data) {
 									console.log("Created asset", data);
-									data.you_tube_url = asset.url;
-									data.duration = asset.duration;
 									modelSvc.cache("asset", data);
 									// this may override the showmessage, so do it last:
 									scope.attachChosenAsset(data._id);
