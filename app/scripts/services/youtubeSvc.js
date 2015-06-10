@@ -41,6 +41,9 @@ angular.module('com.inthetelling.story')
 			if (!origUrl) {
 				return false;
 			}
+			origUrl = origUrl.replace(/%3F/, '?');
+			origUrl = origUrl.replace(/%26/, '&');
+
 			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 			var ytMatch = origUrl.match(getYoutubeID);
 			if (ytMatch && ytMatch[1]) {
