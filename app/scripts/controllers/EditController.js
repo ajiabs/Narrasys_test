@@ -67,40 +67,21 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
-		// var isScene = function (event) {
-		// 	return (event._type === 'Scene');
-		// };
-
 		var isOnExistingSceneStart = function (time) {
-
-			// let's change this to iterate over just the scenes instead of the entire modelSvc.events hash:
 			angular.forEach(getScenes(), function (scene) {
 				if (scene.start_time === time) {
 					return true;
 				}
 			});
 			return false;
-			// for (var property in modelSvc.events) {
-			// 	if (modelSvc.events.hasOwnProperty(property)) {
-			// 		if (isScene(modelSvc.events[property])) {
-			// 			if (modelSvc.events[property].start_time === time) {
-			// 				isOverlapping = true;
-			// 				break;
-			// 			}
-			// 		}
-			// 	}
-			// }
-			// return isOverlapping;
 		};
 
 		$scope.addEvent = function (producerItemType) {
-
 			if (producerItemType === 'scene') {
 				if (isOnExistingSceneStart(appState.time)) {
 					return $scope.editCurrentScene();
 				}
 			}
-			//captureCurrentScenes();
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
 			newEvent.cur_episode_id = appState.episodeId;
@@ -121,6 +102,7 @@ angular.module('com.inthetelling.story')
 			}
 			$rootScope.$emit('searchReindexNeeded'); // HACK
 		};
+
 		var isTranscript = function (item) {
 			if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
 				return true;
@@ -188,10 +170,11 @@ angular.module('com.inthetelling.story')
 			return itemsBeforeAndAfter;
 		};
 
+		// Editing some events has side effects on other events; this stores those side effects.
+		// assuming that this is called after a resolve and that we are dealing with events that have been adjusted already
 		var saveAdjustedEvents = function (item, operation, original) {
 			if (isTranscript(item)) {
 				var itemsToSave = [];
-				// assuming that this is called after a resolve and that we are dealing with events that have been adjusted already
 				var transcriptItems = getTranscriptItems();
 				switch (operation) {
 				case "create":
@@ -203,7 +186,7 @@ angular.module('com.inthetelling.story')
 					console.log('adjust for delete');
 					break;
 				case "update":
-					// if an event moved, should we brute force it? if not we need to capture original position and new position. and update like a delete for the original and a create on the new. 
+					// TODO this should be updating the adjusted events, not delete-and-create.  
 					if (original) {
 						saveAdjustedEvents(original, "delete");
 					}
@@ -272,38 +255,10 @@ angular.module('com.inthetelling.story')
 		var getScenes = function () {
 			return modelSvc.episodes[appState.episodeId].scenes;
 		};
-		// var getItems = function () {
-		// 	return modelSvc.episodes[appState.episodeId].items;
-		// };
 
-		// var isntInternal = function (item) {
-		// 	return !isInternal(item);
-		// };
 		var isInternal = function (item) {
-			if (item._id && item._id.match(/internal/)) {
-				return true;
-			} else {
-				return false;
-			}
+			return (item._id && item._id.match(/internal/));
 		};
-		// var getScenesNonInternal = function () {
-		// 	var scenes = getScenes();
-		// 	if (typeof (scenes) === 'undefined' || scenes.length < 1) {
-		// 		return [];
-		// 	}
-		// 	return scenes.filter(isntInternal);
-		// };
-
-		// $scope.checkIfTimesAfter = function (items, duration) {
-		// 	for (var i = 0, len = items.length; i < len; i++) {
-		// 		if (!isInternal(items[i])) {
-		// 			if (duration < items[i].start_time || duration < items[i].end_time) {
-		// 				return true;
-		// 			}
-		// 		}
-		// 	}
-		// 	return false;
-		// };
 
 		$scope.getItemsAfter = function (items, after) {
 			var itemsAfter = [];
@@ -317,138 +272,9 @@ angular.module('com.inthetelling.story')
 			return itemsAfter;
 		};
 
-		// $scope.willCauseOrphanedData = function (duration) {
-		// 	var scenes = getScenes();
-		// 	var items = getItems();
-		// 	var orphaned = false;
-		// 	orphaned = $scope.checkIfTimesAfter(scenes, duration);
-		// 	if (orphaned) {
-		// 		return true;
-		// 	}
-		// 	return $scope.checkIfTimesAfter(items, duration);
-		// };
-		// $scope.confirmDurationImpact = function (oldDuration, newDuration, callback) {
-		// 	var noop = function () {};
-		// 	callback = callback || noop;
-		// 	var durationDiff = oldDuration - newDuration;
-		// 	var minutes = Math.floor(durationDiff / 60);
-		// 	var seconds = durationDiff % 60;
-		// 	var secondsText = seconds.toString();
-		// 	if (secondsText.length === 1) {
-		// 		secondsText = "0" + secondsText;
-		// 	}
-
-		// 	//TODO: i18n. translation
-		// 	//
-		// 	//NOTE: this window.confirm was causing an -unexpected- angular apply (and the inprog digest error). 
-		// 	// it seems (in firefox only?) that this triggers an nested apply. to fix it we are going async (to get out of the current digest loop) and using a callback.
-		// 	if (!window.confirm("Warning: Your new video is " + minutes + ":" + secondsText + " shorter than the current video and we've detected that some events will be impacted. These events will have their start and end times adjusted to the new episode end.  Are you sure you wish to continue?")) {
-		// 		callback(false);
-		// 	} else {
-		// 		callback(true);
-		// 	}
-		// };
-		// $scope.checkAndConfirmDuration = function (previousMasterAsset, asset, callback) {
-		// 	var shouldWarnOfTruncation = false;
-		// 	var newDuration = 0;
-		// 	var oldDuration = 0;
-		// 	newDuration = parseInt(asset.duration, 10);
-		// 	if (typeof (previousMasterAsset) !== 'undefined') {
-		// 		oldDuration = parseInt(previousMasterAsset.duration, 10);
-		// 		//we are changing assets, we need to check if we are impacting existing items/scenes by chopping duration
-		// 		if (newDuration < oldDuration) {
-		// 			shouldWarnOfTruncation = $scope.willCauseOrphanedData(asset.duration);
-		// 		}
-		// 	}
-		// 	if (shouldWarnOfTruncation) {
-		// 		return $scope.confirmDurationImpact(oldDuration, newDuration, callback);
-		// 	} else {
-		// 		return callback(true);
-		// 	}
-		// };
-
-		// $scope.setStartAndEndTimes = function (items, time) {
-		// 	for (var i = 0, len = items.length; i < len; i++) {
-		// 		items[i].start_time = time;
-		// 		items[i].end_time = time;
-		// 	}
-		// };
-
-		// $scope.getEndingSceneId = function (episodeId) {
-		// 	//for now we will fabricate this... as it is really just "internal:endingscreen:[episodeId]"
-		// 	return "internal:endingscreen:" + episodeId;
-		// };
-		// $scope.removeEndingScene = function () {
-		// 	var endsceneid = $scope.getEndingSceneId(appState.episodeId);
-		// 	timelineSvc.removeEvent(endsceneid);
-		// };
-		// $scope.adjustEndingScene = function () {
-		// 	timelineSvc.removeEvent("internal:endingscreen:" + appState.episodeId);
-		// 	modelSvc.addEndingScreen(appState.episodeId);
-		// };
-
-		// $scope.moveEventsAfter = function (after) {
-		// 	var scenes = getScenes();
-		// 	var items = getItems();
-
-		// 	var orphanedScenes = $scope.getItemsAfter(scenes, after);
-		// 	var orphanedItems = $scope.getItemsAfter(items, after);
-
-		// 	//move and save
-		// 	$scope.setStartAndEndTimes(orphanedScenes, after);
-		// 	$scope.setStartAndEndTimes(orphanedItems, after);
-		// 	angular.forEach(orphanedScenes, function (scene) {
-		// 		timelineSvc.removeEvent(scene._id);
-		// 		dataSvc.storeItem(scene);
-		// 	});
-		// 	angular.forEach(orphanedItems, function (item) {
-		// 		timelineSvc.removeEvent(item._id);
-		// 		dataSvc.storeItem(item);
-		// 	});
-
-		// 	timelineSvc.injectEvents(orphanedScenes);
-		// 	timelineSvc.injectEvents(orphanedItems);
-		// 	$scope.adjustEndingScene();
-		// 	timelineSvc.updateSceneTimes(appState.episodeId);
-		// };
-
-		// var ensureEpisodeScenes = function (episode, doneCallback) {
-
-		// 	var duration = modelSvc.assets[episode.master_asset_id].duration;
-		// 	var nonInternalScenes = getScenesNonInternal();
-		// 	if (nonInternalScenes.length === 0) {
-		// 		console.error('Found episode with no scenes in it!');
-		// 		return doneCallback();
-		// 	} else {
-		// 		var lastSceneIndex = nonInternalScenes.length - 1;
-		// 		console.log("nonInternalScenes is ", nonInternalScenes, lastSceneIndex);
-		// 		//check this scene and see if we need to adjust it so it takes up the entire episode length...
-		// 		if (nonInternalScenes[lastSceneIndex].end_time !== duration) {
-		// 			nonInternalScenes[lastSceneIndex].end_time = duration;
-		// 			dataSvc.storeItem(nonInternalScenes[lastSceneIndex])
-		// 				.then(function (data) {
-
-		// 					data.episode_id = appState.episodeId;
-		// 					data.cur_episode_id = appState.episodeId;
-		// 					modelSvc.events[data._id] = data;
-		// 					modelSvc.resolveEpisode(appState.episodeId);
-		// 					modelSvc.resolveEpisodeEvents(appState.episodeId);
-		// 					timelineSvc.removeEvent(data._id);
-		// 					timelineSvc.injectEvents([data]);
-
-		// 					return doneCallback();
-		// 				}, function (data) {
-		// 					console.error("FAILED TO UPDATE scene duration ", data);
-		// 					return doneCallback();
-		// 				});
-		// 		}
-		// 	}
-		// };
-
 		$scope.saveEpisode = function () {
 			var toSave = angular.copy(appState.editEpisode);
 
-			// $timeout(function () {
 			dataSvc.storeEpisode(toSave)
 				.then(function (data) {
 					modelSvc.cache("episode", dataSvc.resolveIDs(data));
@@ -459,15 +285,13 @@ angular.module('com.inthetelling.story')
 						modelSvc.episodes[appState.episodeId].master_asset_id = data.master_asset_id;
 
 						/*
-						drop internal endingScene
-
 						iterate through episode.scenes. 
 							if start time > duration, delete the scene.
 							if end time > duration, set end time to duration.
 						iterate through episode.items.
 							if start or end time > duration, set to duration.
 
-						add endingScene
+						update ending scene
 						resolveEpisode and resolveEpisodeEvents
 
 						*/
@@ -475,6 +299,7 @@ angular.module('com.inthetelling.story')
 
 						var episode = modelSvc.episodes[toSave._id];
 						angular.forEach(episode.scenes, function (scene) {
+
 							if (scene.start_time > duration) {
 								// TODO api delete this scene
 							} else if (scene.end_time > duration) {
@@ -493,7 +318,7 @@ angular.module('com.inthetelling.story')
 						});
 
 						var endingScene = modelSvc.events["internal:endingscreen:" + toSave._id];
-						if (endingScene) {
+						if (endingScene) { // if episode was shortened, this might have been one that was deleted
 							endingScene.start_time = endTime;
 							endingScene.end_time = endTime;
 						} else {
@@ -525,7 +350,6 @@ angular.module('com.inthetelling.story')
 				}, function (data) {
 					console.error("FAILED TO STORE EPISODE", data);
 				});
-			// }, 0);
 		};
 
 		var resetScenes = function (updatedScenes, originalScene) {

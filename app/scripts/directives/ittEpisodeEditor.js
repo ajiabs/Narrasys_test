@@ -184,7 +184,7 @@ angular.module('com.inthetelling.story')
 
 					var previousAsset = modelSvc.assets[scope.episode.master_asset_id];
 
-					scope.showmessage = '';
+					scope.showmessage = "New video attached.";
 					if (previousAsset && (asset.duration < previousAsset.duration)) {
 						var orphans = scope.getItemsAfter(scope.episode.items, asset.duration);
 						if (orphans.length) {
@@ -199,80 +199,21 @@ angular.module('com.inthetelling.story')
 					modelSvc.deriveEpisode(scope.episode);
 				};
 
-				// scope.setMasterAsset = function (asset) {
-				// 	// console.log("asset:", asset);
-
-				// 	if (!scope.episode.template_id) {
-				// 		//set the default template url...
-				// 		scope.episode.templateUrl = "templates/episode/episode.html";
-				// 	}
-				// 	scope.episode.master_asset_id = asset._id;
-				// 	scope.masterAsset = asset;
-
-				// 	appState.duration = modelSvc.assets[scope.episode.master_asset_id].duration;
-				// 	//Should we store the episode with the new master asset id here, after uploading or selecting or attaching you tube... or should we wait until save?
-				// 	//dataSvc.storeEpisode(scope.episode);
-
-				// 	modelSvc.deriveEpisode(scope.episode);
-				// 	modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-				// 	modelSvc.resolveEpisodeAssets(scope.episode._id);
-				// };
-
 				scope.uploadAsset = function (files) {
 					scope.handleAssetUpload(files, scope.episodeContainerId)
 						.then(function (file) {
 							console.log("Successfully uploaded asset", file);
+							scope.showUploadButtons = false;
 							scope.attachChosenAsset(file._id);
 						}, function (err) {
 							errorSvc.error({
 								data: err
 							});
 							scope.showUploadButtons = false;
-
 						});
-
-					// 	var previousMasterAsset = angular.copy(scope.masterAsset);
-					// 	scope.checkAndConfirmDuration(previousMasterAsset, data.file, function (confirmed) {
-					// 		if (confirmed) {
-					// 			modelSvc.cache("asset", data.file);
-					// 			var asset = modelSvc.assets[data.file._id];
-					// 			scope.setMasterAsset(asset);
-					// 		}
-					// 	});
 				};
 
-				// var createAsset = function (containerId, episodeId, asset) {
-				// 	// used when creating assets from a (youtube) url; for uploads awsSvc handles this for us
-				// 	dataSvc.createAsset(scope.episodeContainerId, asset)
-				// 		.then(function (data) {
-				// 			data.you_tube_url = asset.url;
-				// 			data.duration = asset.duration;
-
-				// 			modelSvc.cache("asset", data);
-				// 			var modelAsset = modelSvc.assets[data.file._id];
-				// 			modelAsset.you_tube_url = asset.url;
-				// 			modelAsset.duration = asset.duration;
-				// 			scope.setMasterAsset(modelAsset);
-				// 			modelSvc.deriveEpisode(scope.episode);
-				// 			// modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-				// 			modelSvc.resolveEpisodeAssets(scope.episode._id);
-				// 		}, function () {
-				// 			console.warn("dataSvc.createAsset failed");
-				// 		});
-				// };
-
 				scope.attachYouTube = function (url) {
-					url = youtubeSvc.embeddableYoutubeUrl(url);
-
-					// if (typeof (scope.masterAsset) === 'undefined') {
-					// 	scope.masterAsset = {};
-					// 	scope.masterAsset.urls = {};
-					// } else {
-					// 	scope.episode.masterAsset = scope.masterAsset;
-					// 	modelSvc.deriveEpisode(scope.episode);
-					// 	modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-					// 	modelSvc.resolveEpisodeAssets(scope.episode._id);
-					// }
 					scope.showmessage = "Getting video from YouTube...";
 					var youtubeId = youtubeSvc.extractYoutubeId(url);
 					if (youtubeId) {
@@ -294,7 +235,6 @@ angular.module('com.inthetelling.story')
 									data.you_tube_url = asset.url;
 									data.duration = asset.duration;
 									modelSvc.cache("asset", data);
-									scope.showmessage = "Your video has been retrieved from YouTube and will be attached to this episode when you hit 'save'.";
 									// this may override the showmessage, so do it last:
 									scope.attachChosenAsset(data._id);
 								});
