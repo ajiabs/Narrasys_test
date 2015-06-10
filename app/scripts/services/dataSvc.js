@@ -791,13 +791,13 @@ angular.module('com.inthetelling.story')
 			if (asset._id && asset._id.match(/internal/)) {
 				delete asset._id;
 			}
+			console.log("ABOUT TO POST");
 			POST("/v1/containers/" + containerId + "/assets", asset)
 				.then(function (data) {
 					console.log("Created asset: ", data);
-					var dataActual = data.file;
-					modelSvc.containers[dataActual.container_id].episodes = [dataActual._id];
-					createAssetDefer.resolve(data);
-					modelSvc.cache("asset", dataActual);
+					modelSvc.containers[data.file.container_id].episodes = [data.file._id];
+					modelSvc.cache("asset", data.file);
+					createAssetDefer.resolve(data.file);
 					//modelSvc.resolveEpisodeAssets(episodeId);
 				});
 			return createAssetDefer.promise;

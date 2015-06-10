@@ -14,7 +14,7 @@
 	</span>
 	<span ng-if="!uploads">
 		<div ng-if="!showUploadButtons && (item.asset || masterAsset.original_filename)">
-			{{item.asset.original_filename || masterAsset.original_filename}}
+			{{item.asset.display_name || masterAsset.display_name}}
 			<button class="button" ng-click="replaceAsset(item.asset._id)"> Replace this asset </button>
 		</div>
 		<span ng-if="showUploadButtons || !(item.asset || masterAsset.original_filename)">
@@ -23,6 +23,4 @@
 			<input ng-if="showUploadField" type="file" onchange="angular.element(this).scope().uploadAsset(this.files)">
 		</span>
 	</span>
-
-
 </div>

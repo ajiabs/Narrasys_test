@@ -66,16 +66,13 @@ angular.module('com.inthetelling.story')
 				index: ($scope.item.data._plugin.distractors.length + 1)
 			});
 		};
+
 		var isScene = function (event) {
-			if (event.Type === 'Scene') {
-				return true;
-			}
-			if (event._type === 'Scene') {
-				return true;
-			}
-			return false;
+			return (event._type === 'Scene');
 		};
+
 		var isOnExistingSceneStart = function (time) {
+			// TODO this is very fancy and all but why are we iterating over the entire modelSvc.events hash? -- use episode.scenes instead
 			var isOverlapping = false;
 			for (var property in modelSvc.events) {
 				if (modelSvc.events.hasOwnProperty(property)) {
@@ -267,17 +264,15 @@ angular.module('com.inthetelling.story')
 
 		};
 		var getScenes = function () {
-			var episode = modelSvc.episodes[appState.episodeId];
-			return episode.scenes;
+			return modelSvc.episodes[appState.episodeId].scenes;
 		};
-		var getItems = function () {
-			var episode = modelSvc.episodes[appState.episodeId];
-			return episode.items;
-		};
+		// var getItems = function () {
+		// 	return modelSvc.episodes[appState.episodeId].items;
+		// };
 
-		var isntInternal = function (item) {
-			return !isInternal(item);
-		};
+		// var isntInternal = function (item) {
+		// 	return !isInternal(item);
+		// };
 		var isInternal = function (item) {
 			if (item._id && item._id.match(/internal/)) {
 				return true;
@@ -285,23 +280,25 @@ angular.module('com.inthetelling.story')
 				return false;
 			}
 		};
-		var getScenesNonInternal = function () {
-			var scenes = getScenes();
-			if (typeof (scenes) === 'undefined' || scenes.length < 1) {
-				return [];
-			}
-			return scenes.filter(isntInternal);
-		};
-		$scope.checkIfTimesAfter = function (items, duration) {
-			for (var i = 0, len = items.length; i < len; i++) {
-				if (!isInternal(items[i])) {
-					if (duration < items[i].start_time || duration < items[i].end_time) {
-						return true;
-					}
-				}
-			}
-			return false;
-		};
+		// var getScenesNonInternal = function () {
+		// 	var scenes = getScenes();
+		// 	if (typeof (scenes) === 'undefined' || scenes.length < 1) {
+		// 		return [];
+		// 	}
+		// 	return scenes.filter(isntInternal);
+		// };
+
+		// $scope.checkIfTimesAfter = function (items, duration) {
+		// 	for (var i = 0, len = items.length; i < len; i++) {
+		// 		if (!isInternal(items[i])) {
+		// 			if (duration < items[i].start_time || duration < items[i].end_time) {
+		// 				return true;
+		// 			}
+		// 		}
+		// 	}
+		// 	return false;
+		// };
+
 		$scope.getItemsAfter = function (items, after) {
 			var itemsAfter = [];
 			for (var i = 0, len = items.length; i < len; i++) {
@@ -313,171 +310,211 @@ angular.module('com.inthetelling.story')
 			}
 			return itemsAfter;
 		};
-		$scope.willCauseOrphanedData = function (duration) {
-			var scenes = getScenes();
-			var items = getItems();
-			var orphaned = false;
-			orphaned = $scope.checkIfTimesAfter(scenes, duration);
-			if (orphaned) {
-				return true;
-			}
-			return $scope.checkIfTimesAfter(items, duration);
-		};
-		$scope.confirmDurationImpact = function (oldDuration, newDuration, callback) {
-			var noop = function () {};
-			callback = callback || noop;
-			var durationDiff = oldDuration - newDuration;
-			var minutes = Math.floor(durationDiff / 60);
-			var seconds = durationDiff % 60;
-			var secondsText = seconds.toString();
-			if (secondsText.length === 1) {
-				secondsText = "0" + secondsText;
-			}
 
-			//TODO: i18n. translation
-			//
-			//NOTE: this window.confirm was causing an -unexpected- angular apply (and the inprog digest error). 
-			// it seems (in firefox only?) that this triggers an nested apply. to fix it we are going async (to get out of the current digest loop) and using a callback.
-			if (!window.confirm("Warning: Your new video is " + minutes + ":" + secondsText + " shorter than the current video and we've detected that some events will be impacted. These events will have their start and end times adjusted to the new episode end.  Are you sure you wish to continue?")) {
-				callback(false);
-			} else {
-				callback(true);
-			}
-		};
-		$scope.checkAndConfirmDuration = function (previousMasterAsset, asset, callback) {
-			var shouldWarnOfTruncation = false;
-			var newDuration = 0;
-			var oldDuration = 0;
-			newDuration = parseInt(asset.duration, 10);
-			if (typeof (previousMasterAsset) !== 'undefined') {
-				oldDuration = parseInt(previousMasterAsset.duration, 10);
-				//we are changing assets, we need to check if we are impacting existing items/scenes by chopping duration
-				if (newDuration < oldDuration) {
-					shouldWarnOfTruncation = $scope.willCauseOrphanedData(asset.duration);
-				}
-			}
-			if (shouldWarnOfTruncation) {
-				return $scope.confirmDurationImpact(oldDuration, newDuration, callback);
-			} else {
-				return callback(true);
-			}
-		};
-		$scope.setStartAndEndTimes = function (items, time) {
-			for (var i = 0, len = items.length; i < len; i++) {
-				items[i].start_time = time;
-				items[i].end_time = time;
-			}
-		};
+		// $scope.willCauseOrphanedData = function (duration) {
+		// 	var scenes = getScenes();
+		// 	var items = getItems();
+		// 	var orphaned = false;
+		// 	orphaned = $scope.checkIfTimesAfter(scenes, duration);
+		// 	if (orphaned) {
+		// 		return true;
+		// 	}
+		// 	return $scope.checkIfTimesAfter(items, duration);
+		// };
+		// $scope.confirmDurationImpact = function (oldDuration, newDuration, callback) {
+		// 	var noop = function () {};
+		// 	callback = callback || noop;
+		// 	var durationDiff = oldDuration - newDuration;
+		// 	var minutes = Math.floor(durationDiff / 60);
+		// 	var seconds = durationDiff % 60;
+		// 	var secondsText = seconds.toString();
+		// 	if (secondsText.length === 1) {
+		// 		secondsText = "0" + secondsText;
+		// 	}
 
-		$scope.getEndingSceneId = function (episodeId) {
-			//for now we will fabricate this... as it is really just "internal:endingscreen:[episodeId]"
-			return "internal:endingscreen:" + episodeId;
-		};
-		$scope.removeEndingScene = function () {
-			var endsceneid = $scope.getEndingSceneId(appState.episodeId);
-			timelineSvc.removeEvent(endsceneid);
-		};
-		$scope.adjustEndingScene = function () {
-			$scope.removeEndingScene();
-			modelSvc.addEndingScreen(appState.episodeId);
-		};
-		$scope.moveEventsAfter = function (after) {
+		// 	//TODO: i18n. translation
+		// 	//
+		// 	//NOTE: this window.confirm was causing an -unexpected- angular apply (and the inprog digest error). 
+		// 	// it seems (in firefox only?) that this triggers an nested apply. to fix it we are going async (to get out of the current digest loop) and using a callback.
+		// 	if (!window.confirm("Warning: Your new video is " + minutes + ":" + secondsText + " shorter than the current video and we've detected that some events will be impacted. These events will have their start and end times adjusted to the new episode end.  Are you sure you wish to continue?")) {
+		// 		callback(false);
+		// 	} else {
+		// 		callback(true);
+		// 	}
+		// };
+		// $scope.checkAndConfirmDuration = function (previousMasterAsset, asset, callback) {
+		// 	var shouldWarnOfTruncation = false;
+		// 	var newDuration = 0;
+		// 	var oldDuration = 0;
+		// 	newDuration = parseInt(asset.duration, 10);
+		// 	if (typeof (previousMasterAsset) !== 'undefined') {
+		// 		oldDuration = parseInt(previousMasterAsset.duration, 10);
+		// 		//we are changing assets, we need to check if we are impacting existing items/scenes by chopping duration
+		// 		if (newDuration < oldDuration) {
+		// 			shouldWarnOfTruncation = $scope.willCauseOrphanedData(asset.duration);
+		// 		}
+		// 	}
+		// 	if (shouldWarnOfTruncation) {
+		// 		return $scope.confirmDurationImpact(oldDuration, newDuration, callback);
+		// 	} else {
+		// 		return callback(true);
+		// 	}
+		// };
 
-			var scenes = getScenes();
-			var items = getItems();
+		// $scope.setStartAndEndTimes = function (items, time) {
+		// 	for (var i = 0, len = items.length; i < len; i++) {
+		// 		items[i].start_time = time;
+		// 		items[i].end_time = time;
+		// 	}
+		// };
 
-			var orphanedScenes = $scope.getItemsAfter(scenes, after);
-			var orphanedItems = $scope.getItemsAfter(items, after);
+		// $scope.getEndingSceneId = function (episodeId) {
+		// 	//for now we will fabricate this... as it is really just "internal:endingscreen:[episodeId]"
+		// 	return "internal:endingscreen:" + episodeId;
+		// };
+		// $scope.removeEndingScene = function () {
+		// 	var endsceneid = $scope.getEndingSceneId(appState.episodeId);
+		// 	timelineSvc.removeEvent(endsceneid);
+		// };
+		// $scope.adjustEndingScene = function () {
+		// 	timelineSvc.removeEvent("internal:endingscreen:" + appState.episodeId);
+		// 	modelSvc.addEndingScreen(appState.episodeId);
+		// };
 
-			//move and save
-			$scope.setStartAndEndTimes(orphanedScenes, after);
-			$scope.setStartAndEndTimes(orphanedItems, after);
-			angular.forEach(orphanedScenes, function (scene) {
-				timelineSvc.removeEvent(scene._id);
-				dataSvc.storeItem(scene);
-			});
-			angular.forEach(orphanedItems, function (item) {
-				timelineSvc.removeEvent(item._id);
-				dataSvc.storeItem(item);
-			});
+		// $scope.moveEventsAfter = function (after) {
+		// 	var scenes = getScenes();
+		// 	var items = getItems();
 
-			timelineSvc.injectEvents(orphanedScenes);
-			timelineSvc.injectEvents(orphanedItems);
-			$scope.adjustEndingScene();
-			timelineSvc.updateSceneTimes(appState.episodeId);
-		};
+		// 	var orphanedScenes = $scope.getItemsAfter(scenes, after);
+		// 	var orphanedItems = $scope.getItemsAfter(items, after);
 
-		var ensureEpisodeScenes = function (episode, doneCallback) {
-			var duration = modelSvc.assets[episode.master_asset_id].duration;
-			var nonInternalScenes = getScenesNonInternal();
-			$scope.adjustEndingScene();
-			if (nonInternalScenes.length === 0) {
-				//console.log('this is where we would create a default scene');
-				return doneCallback();
-			} else if (nonInternalScenes.length === 1) {
-				//check this scene and see if we need to adjust it so it takes up the entire episode length...
-				if (nonInternalScenes[0].end_time !== duration) {
-					nonInternalScenes[0].end_time = duration;
-					dataSvc.storeItem(nonInternalScenes[0])
-						.then(function (data) {
-							data.episode_id = appState.episodeId;
-							data.cur_episode_id = appState.episodeId;
-							modelSvc.events[data._id] = data;
-							modelSvc.resolveEpisodeEvents(appState.episodeId);
-							timelineSvc.removeEvent(data._id);
-							timelineSvc.injectEvents([data]);
-							return doneCallback();
-						}, function (data) {
-							console.error("FAILED TO UPDATE scene duration ", data);
-							return doneCallback();
-						});
-				}
-			} else {
-				return doneCallback();
-			}
-		};
+		// 	//move and save
+		// 	$scope.setStartAndEndTimes(orphanedScenes, after);
+		// 	$scope.setStartAndEndTimes(orphanedItems, after);
+		// 	angular.forEach(orphanedScenes, function (scene) {
+		// 		timelineSvc.removeEvent(scene._id);
+		// 		dataSvc.storeItem(scene);
+		// 	});
+		// 	angular.forEach(orphanedItems, function (item) {
+		// 		timelineSvc.removeEvent(item._id);
+		// 		dataSvc.storeItem(item);
+		// 	});
+
+		// 	timelineSvc.injectEvents(orphanedScenes);
+		// 	timelineSvc.injectEvents(orphanedItems);
+		// 	$scope.adjustEndingScene();
+		// 	timelineSvc.updateSceneTimes(appState.episodeId);
+		// };
+
+		// var ensureEpisodeScenes = function (episode, doneCallback) {
+
+		// 	var duration = modelSvc.assets[episode.master_asset_id].duration;
+		// 	var nonInternalScenes = getScenesNonInternal();
+		// 	if (nonInternalScenes.length === 0) {
+		// 		console.error('Found episode with no scenes in it!');
+		// 		return doneCallback();
+		// 	} else {
+		// 		var lastSceneIndex = nonInternalScenes.length - 1;
+		// 		console.log("nonInternalScenes is ", nonInternalScenes, lastSceneIndex);
+		// 		//check this scene and see if we need to adjust it so it takes up the entire episode length...
+		// 		if (nonInternalScenes[lastSceneIndex].end_time !== duration) {
+		// 			nonInternalScenes[lastSceneIndex].end_time = duration;
+		// 			dataSvc.storeItem(nonInternalScenes[lastSceneIndex])
+		// 				.then(function (data) {
+
+		// 					data.episode_id = appState.episodeId;
+		// 					data.cur_episode_id = appState.episodeId;
+		// 					modelSvc.events[data._id] = data;
+		// 					modelSvc.resolveEpisode(appState.episodeId);
+		// 					modelSvc.resolveEpisodeEvents(appState.episodeId);
+		// 					timelineSvc.removeEvent(data._id);
+		// 					timelineSvc.injectEvents([data]);
+
+		// 					return doneCallback();
+		// 				}, function (data) {
+		// 					console.error("FAILED TO UPDATE scene duration ", data);
+		// 					return doneCallback();
+		// 				});
+		// 		}
+		// 	}
+		// };
 
 		$scope.saveEpisode = function () {
 			var toSave = angular.copy(appState.editEpisode);
 
-			$timeout(function () {
-				dataSvc.storeEpisode(toSave)
-					.then(function (data) {
-						modelSvc.cache("episode", dataSvc.resolveIDs(data));
-						if (data.master_asset_id) {
-							var duration = modelSvc.assets[data.master_asset_id].duration;
-							//TODO: figure out which (or both) of these masterAsset properties are needed. and maybe get rid of one.
-							appState.masterAsset = modelSvc.assets[$scope.episode.master_asset_id];
-							modelSvc.episodes[appState.episodeId].masterAsset = modelSvc.assets[$scope.episode.master_asset_id];
-							modelSvc.episodes[appState.episodeId].master_asset_id = data.master_asset_id;
-							ensureEpisodeScenes(data, function () {
-								console.log('done ensureEpisodeScenes');
-								appState.duration = duration;
-								$scope.moveEventsAfter(duration);
-								modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
-								modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
-								modelSvc.resolveEpisodeAssets(appState.episodeId);
-								appState.editEpisode = false;
-								appState.videoControlsLocked = false;
-							});
-							//timelineSvc.init(appState.episodeId);
-						} else {
-							modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
-							modelSvc.resolveEpisodeAssets(appState.episodeId);
-							appState.editEpisode = false;
-							appState.videoControlsLocked = false;
+			// $timeout(function () {
+			dataSvc.storeEpisode(toSave)
+				.then(function (data) {
+					modelSvc.cache("episode", dataSvc.resolveIDs(data));
+					if (data.master_asset_id) {
+						var duration = modelSvc.assets[data.master_asset_id].duration;
+						var endTime = duration - 0.01;
+						modelSvc.episodes[appState.episodeId].masterAsset = modelSvc.assets[$scope.episode.master_asset_id];
+						modelSvc.episodes[appState.episodeId].master_asset_id = data.master_asset_id;
 
-						}
-					}, function (data) {
-						console.error("FAILED TO STORE EPISODE", data);
-					});
-			}, 0);
+						/*
+						drop internal endingScene
+
+						iterate through episode.scenes. 
+							if start time > duration, delete the scene.
+							if end time > duration, set end time to duration.
+						iterate through episode.items.
+							if start or end time > duration, set to duration.
+
+						add endingScene
+						resolveEpisode and resolveEpisodeEvents
+
+						*/
+						var modifiedEvents = [];
+
+						var episode = modelSvc.episodes[toSave._id];
+						angular.forEach(episode.scenes, function (scene) {
+							if (scene.start_time > duration) {
+								// TODO api delete this scene
+							} else if (scene.end_time > duration) {
+								scene.end_time = endTime;
+								modifiedEvents.push(scene);
+							}
+						});
+						angular.forEach(episode.items, function (item) {
+							if (item.start_time > duration) {
+								item.start_time = endTime;
+							}
+							if (item.end_time > duration) {
+								item.end_time = endTime;
+							}
+							modifiedEvents.push(item);
+						});
+
+						modelSvc.events["internal:endingscreen:" + toSave._id].start_time = endTime;
+						modelSvc.events["internal:endingscreen:" + toSave._id].end_time = endTime;
+
+						modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
+						// modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
+						modelSvc.resolveEpisodeAssets(appState.episodeId);
+						appState.duration = duration;
+						appState.editEpisode = false;
+						appState.videoControlsLocked = false;
+						timelineSvc.init(appState.episodeId);
+
+						// push each of modifiedEvents to server (TODO combine these into one call!)
+						angular.forEach(modifiedEvents, function (event) {
+							dataSvc.storeItem(event);
+						});
+
+					} else {
+						// modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
+						modelSvc.resolveEpisodeAssets(appState.episodeId);
+						appState.editEpisode = false;
+						appState.videoControlsLocked = false;
+
+					}
+				}, function (data) {
+					console.error("FAILED TO STORE EPISODE", data);
+				});
+			// }, 0);
 		};
 
-		var getScenesSnapshot = function () {
-			//var episode = modelSvc.episodes[appState.episodeId];
-			return angular.copy(getScenes());
-		};
 		var resetScenes = function (updatedScenes, originalScene) {
 			for (var i = 0; i < updatedScenes.length; i++) {
 				if (typeof (updatedScenes[i]._id) === 'undefined' || updatedScenes[i]._id === 'internal:editing') {
@@ -532,7 +569,7 @@ angular.module('com.inthetelling.story')
 
 		var adjustScenes = function (modifiedScene, isDelete) {
 			var duration = appState.duration;
-			var scenes = getScenesSnapshot();
+			var scenes = angular.copy(getScenes());
 			var adjusted = [];
 			// get scenes back into original state (before editing,adding,deleting)
 			if (isDelete) {

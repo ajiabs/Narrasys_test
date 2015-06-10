@@ -179,73 +179,55 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.attachChosenAsset = function (asset_id) {
-					// console.log(scope.item);
+					console.log("attachChosenAsset", asset_id);
 					var asset = modelSvc.assets[asset_id];
 
-					scope.masterAsset = asset;
 					var previousAsset = modelSvc.assets[scope.episode.master_asset_id];
-					//$timeout(function () {
-					scope.checkAndConfirmDuration(previousAsset, asset, function (confirmed) {
-						if (confirmed) {
-							scope.episode.master_asset_id = asset_id;
+
+					scope.showmessage = '';
+					if (previousAsset && (asset.duration < previousAsset.duration)) {
+						var orphans = scope.getItemsAfter(scope.episode.items, asset.duration);
+						if (orphans.length) {
+							// TODO i18n
+							scope.showmessage = "Warning: this new video is shorter than the current video and we've detected that some existing content items will be impacted. If you save this edit, these events will have their start and end times adjusted to the new episode end. (If this isn't what you want, choose a different video or hit 'cancel'.)";
 						}
-					});
-					//});
-
-				};
-
-				/*				scope.detachMasterAsset = function () {
-
-									// This needs to be undo-able.  Don't commit until the user hits save
-
-									// //TODO: removing a property on json object during PUT doesn't delete the property. let's set it to an empty string.
-									// //scope.episode.master_asset_id = null;
-									// //delete scope.episode.master_asset_id;
-
-									// scope.masterAsset = {};
-
-									// appState.duration = 0;
-									// dataSvc.detachMasterAsset(scope.episode);
-
-									// modelSvc.deriveEpisode(scope.episode);
-									// modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-									// modelSvc.resolveEpisodeAssets(scope.episode._id);
-
-								};
-				*/
-
-				scope.setMasterAsset = function (asset) {
-					// console.log("asset:", asset);
-
-					if (!scope.episode.template_id) {
-						//set the default template url...
-						scope.episode.templateUrl = "templates/episode/episode.html";
 					}
+
 					scope.episode.master_asset_id = asset._id;
 					scope.masterAsset = asset;
-
-					appState.duration = modelSvc.assets[scope.episode.master_asset_id].duration;
-					//Should we store the episode with the new master asset id here, after uploading or selecting or attaching you tube... or should we wait until save?
-					//dataSvc.storeEpisode(scope.episode);
-
+					scope.episode.masterAsset = asset;
 					modelSvc.deriveEpisode(scope.episode);
-					modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-					modelSvc.resolveEpisodeAssets(scope.episode._id);
 				};
+
+				// scope.setMasterAsset = function (asset) {
+				// 	// console.log("asset:", asset);
+
+				// 	if (!scope.episode.template_id) {
+				// 		//set the default template url...
+				// 		scope.episode.templateUrl = "templates/episode/episode.html";
+				// 	}
+				// 	scope.episode.master_asset_id = asset._id;
+				// 	scope.masterAsset = asset;
+
+				// 	appState.duration = modelSvc.assets[scope.episode.master_asset_id].duration;
+				// 	//Should we store the episode with the new master asset id here, after uploading or selecting or attaching you tube... or should we wait until save?
+				// 	//dataSvc.storeEpisode(scope.episode);
+
+				// 	modelSvc.deriveEpisode(scope.episode);
+				// 	modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+				// 	modelSvc.resolveEpisodeAssets(scope.episode._id);
+				// };
 
 				scope.uploadAsset = function (files) {
 					scope.handleAssetUpload(files, scope.episodeContainerId)
 						.then(function (file) {
 							console.log("Successfully uploaded asset", file);
-
-							// TODO confirm new asset length, show warning if necessary
-							// TODO attach new asset to episode
-
+							scope.attachChosenAsset(file._id);
 						}, function (err) {
 							errorSvc.error({
 								data: err
 							});
-							// TODO reset the form
+							scope.showUploadButtons = false;
 
 						});
 
@@ -259,38 +241,38 @@ angular.module('com.inthetelling.story')
 					// 	});
 				};
 
-				var createAsset = function (containerId, episodeId, asset) {
-					// used when creating assets from a (youtube) url; for uploads awsSvc handles this for us
-					dataSvc.createAsset(scope.episodeContainerId, asset)
-						.then(function (data) {
-							data.you_tube_url = asset.url;
-							data.duration = asset.duration;
+				// var createAsset = function (containerId, episodeId, asset) {
+				// 	// used when creating assets from a (youtube) url; for uploads awsSvc handles this for us
+				// 	dataSvc.createAsset(scope.episodeContainerId, asset)
+				// 		.then(function (data) {
+				// 			data.you_tube_url = asset.url;
+				// 			data.duration = asset.duration;
 
-							modelSvc.cache("asset", data);
-							var modelAsset = modelSvc.assets[data.file._id];
-							modelAsset.you_tube_url = asset.url;
-							modelAsset.duration = asset.duration;
-							scope.setMasterAsset(modelAsset);
-							modelSvc.deriveEpisode(scope.episode);
-							// modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-							modelSvc.resolveEpisodeAssets(scope.episode._id);
-						}, function () {
-							console.warn("dataSvc.createAsset failed");
-						});
-				};
+				// 			modelSvc.cache("asset", data);
+				// 			var modelAsset = modelSvc.assets[data.file._id];
+				// 			modelAsset.you_tube_url = asset.url;
+				// 			modelAsset.duration = asset.duration;
+				// 			scope.setMasterAsset(modelAsset);
+				// 			modelSvc.deriveEpisode(scope.episode);
+				// 			// modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+				// 			modelSvc.resolveEpisodeAssets(scope.episode._id);
+				// 		}, function () {
+				// 			console.warn("dataSvc.createAsset failed");
+				// 		});
+				// };
 
 				scope.attachYouTube = function (url) {
 					url = youtubeSvc.embeddableYoutubeUrl(url);
 
-					if (typeof (scope.masterAsset) === 'undefined') {
-						scope.masterAsset = {};
-						scope.masterAsset.urls = {};
-					} else {
-						scope.episode.masterAsset = scope.masterAsset;
-						modelSvc.deriveEpisode(scope.episode);
-						modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
-						modelSvc.resolveEpisodeAssets(scope.episode._id);
-					}
+					// if (typeof (scope.masterAsset) === 'undefined') {
+					// 	scope.masterAsset = {};
+					// 	scope.masterAsset.urls = {};
+					// } else {
+					// 	scope.episode.masterAsset = scope.masterAsset;
+					// 	modelSvc.deriveEpisode(scope.episode);
+					// 	modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+					// 	modelSvc.resolveEpisodeAssets(scope.episode._id);
+					// }
 
 					var youtubeId = youtubeSvc.extractYoutubeId(url);
 					if (youtubeId) {
@@ -307,26 +289,21 @@ angular.module('com.inthetelling.story')
 								};
 								asset.content_type = "video/x-youtube";
 
-								scope.checkAndConfirmDuration(scope.masterAsset, asset, function (confirmed) {
-									if (confirmed) {
-										createAsset(scope.episodeContainerId, scope.episode._id, asset);
-									}
+								dataSvc.createAsset(scope.episodeContainerId, asset).then(function (data) {
+									console.log("Created asset", data);
+									data.you_tube_url = asset.url;
+									data.duration = asset.duration;
+									modelSvc.cache("asset", data);
+									scope.attachChosenAsset(data._id);
 								});
 
-								scope.ytmessage = "";
 							}, function (error) {
 								console.error("Error getting duration from youtube:", error);
-								scope.ytmessage = "Sorry, couldn't find that video on youtube.";
-								/* No let's not create bad data on purpose
-								var asset = {}; //createDefaultAsset()
-								asset.you_tube_url = asset.url = url;
-								asset.duration = 0;
-								createAsset(scope.episodeContainerId, scope.episode._id, asset);
-								*/
+								scope.showmessage = "Sorry, couldn't find that video on youtube.";
 							});
 					} else {
 						console.warn("attachYoutube tried to attach a bad URL", url);
-						scope.ytmessage = "Sorry, couldn't match that to a valid YouTube url.";
+						scope.showmessage = "Sorry, couldn't match that to a valid YouTube url.";
 					}
 				};
 

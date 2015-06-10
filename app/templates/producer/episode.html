@@ -122,10 +122,12 @@
 						<div class="input">
 							<input type="text" ng-model="masterAsset.you_tube_url" style="width: 75%">
 							<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>
-							<br>
-							<span ng-bind-html="ytmessage"></span>
 						</div>
 					</div>
+					<div class="field" ng-if="showmessage">
+						<div class="input" ng-bind-html="showmessage"></div>
+					</div>
+
 					<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
 						<div class="label">Duration</div>
 						<input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">
