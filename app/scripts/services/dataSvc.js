@@ -791,13 +791,13 @@ angular.module('com.inthetelling.story')
 			if (asset._id && asset._id.match(/internal/)) {
 				delete asset._id;
 			}
+			console.log("ABOUT TO POST");
 			POST("/v1/containers/" + containerId + "/assets", asset)
 				.then(function (data) {
 					console.log("Created asset: ", data);
-					var dataActual = data.file;
-					modelSvc.containers[dataActual.container_id].episodes = [dataActual._id];
-					createAssetDefer.resolve(data);
-					modelSvc.cache("asset", dataActual);
+					modelSvc.containers[data.file.container_id].episodes = [data.file._id];
+					modelSvc.cache("asset", data.file);
+					createAssetDefer.resolve(data.file);
 					//modelSvc.resolveEpisodeAssets(episodeId);
 				});
 			return createAssetDefer.promise;
@@ -922,16 +922,18 @@ angular.module('com.inthetelling.story')
 			}
 		};
 		svc.prepItemForStorage = prepItemForStorage;
-		svc.detachMasterAsset = function (epData) {
-			var preppedData = prepEpisodeForStorage(epData);
-			preppedData.master_asset_id = null;
-			console.log("prepped sans master_asset_id for storage:", preppedData);
-			if (preppedData) {
-				return PUT("/v3/episodes/" + preppedData._id, preppedData);
-			} else {
-				return false;
-			}
-		};
+
+		// No, we should not be storing episodes with no master asset halfway through editing 
+		// svc.detachMasterAsset = function (epData) {
+		// 	var preppedData = prepEpisodeForStorage(epData);
+		// 	preppedData.master_asset_id = null;
+		// 	console.log("prepped sans master_asset_id for storage:", preppedData);
+		// 	if (preppedData) {
+		// 		return PUT("/v3/episodes/" + preppedData._id, preppedData);
+		// 	} else {
+		// 		return false;
+		// 	}
+		// };
 		svc.detachEventAsset = function (evt, assetId) {
 			evt = prepItemForStorage(evt);
 			if (!evt) {

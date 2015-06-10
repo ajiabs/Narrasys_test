@@ -79,18 +79,20 @@
 						</div>
 					</div>
 
+					<!--disabled unless we really need it; narratives are better
 					<div class="field" style="display:none;">
-						<!-- disabled unless we really need it; narratives are better -->
 						<div class="label">Inter-episode navigation</div>
 						<div class="input">
 							<select ng-model="episode.navigation_depth">
 								<option value="0">None</option>
 								<option value="1">Include links to published episodes in the same container</option>
-								<!-- <option value="2">2 levels (course and session) NO DATA FOR SIBLING SESSIONS </option> -->
-								<!-- <option value="3">HULK TOO DEEP HULK SMASH DATABASE</option> -->
+								<option value="2">2 levels (course and session) NO DATA FOR SIBLING SESSIONS </option>
+								<option value="3">HULK TOO DEEP HULK SMASH DATABASE</option> 
 							</select>
 						</div>
 					</div>
+					-->
+
 				</div>
 				<!-- end episode content tab -->
 			</div>
@@ -100,12 +102,14 @@
 					<div class="field">
 						<div class="label">Master asset type</div>
 						<div class="input">
-							<select size="1" ng-model="masterAssetType" ng-init="masterAssetType='Video'">
+							<select size="1" ng-model="masterAssetType">
 								<option value="Video">Native Video</option>
 								<option value="Youtube">Youtube</option>
-								<option value="Audio">Audio (TODO)</option>
+								<!--
+ 								<option value="Audio">Audio (TODO)</option>
 								<option value="Images">Image sequence (TODO)</option>
 								<option value="None">No master asset (TODO)</option>
+ -->
 							</select>
 						</div>
 					</div>
@@ -116,10 +120,14 @@
 					<div class="field" ng-if="masterAssetType == 'Youtube'">
 						<div class="label">Youtube URL</div>
 						<div class="input">
-							<input type="text" ng-model="masterAsset.you_tube_url" style="width: 78%">
+							<input type="text" ng-model="masterAsset.you_tube_url" style="width: 75%">
 							<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>
 						</div>
 					</div>
+					<div class="field" ng-if="showmessage">
+						<div class="input" ng-bind-html="showmessage"></div>
+					</div>
+
 					<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
 						<div class="label">Duration</div>
 						<input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">
