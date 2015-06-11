@@ -1,7 +1,7 @@
 var config = {
 	// Fill this in only if you need to load data from something other than the current server
 	// apiDataBaseUrl: 'https://story.inthetelling.com',
-	apiDataBaseUrl: 'https://demo.inthetelling.com',
+	// apiDataBaseUrl: 'https://demo.inthetelling.com',
 	// apiDataBaseUrl: 'https://api-dev.inthetelling.com',
 	// apiDataBaseUrl: 'https://api-dev-sub.inthetelling.com',
 
@@ -18,8 +18,8 @@ var config = {
 	youtube: {
 		disabled: false,
 		timeout: 5000,
-		apikey: 'AIzaSyDBU-E8lrZdKdAJ9XaVva95FuZLYoL-Tb4' // Temporary key tied to a daniel@inthetelling.com acct
+		apikey: 'AIzaSyDBU-E8lrZdKdAJ9XaVva95FuZLYoL-Tb4'
 	},
 	disableAnalytics: false,
-	debugInBrowser: true // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
+	debugInBrowser: false // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
 };
