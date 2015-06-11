@@ -316,20 +316,30 @@ angular.module('com.inthetelling.story')
 							// Then, if this is going to be a multipart upload, make sure there isn't already a multipart upload with the same name
 							if (!isSmallUpload()) {
 								svc.getMultipartUploads().then(function (data) {
-									var mpuExists = true;
-									while (mpuExists) {
-										var uniqueKey = awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName;
-										for (var mpu = 0; mpu < data.Uploads.length; mpu++) {
-											if (data.Uploads[mpu].Key === uniqueKey) {
-												console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, ' already exists!');
-												fileBeingUploaded.uniqueName = generateUUID();
-												break;
-											} else if (mpu === data.Uploads.length - 1) {
-												console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, '  is unique!');
-												mpuExists = false;
-											}
+
+									// the while loop commented out below freezes some browsers.  I think this loop is equivalent?
+									var uniqueKey = awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName;
+									for (var mpu = 0; mpu < data.Uploads.length; mpu++) {
+										if (data.Uploads[mpu].Key === uniqueKey) {
+											console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, ' already exists!');
+											fileBeingUploaded.uniqueName = generateUUID();
 										}
 									}
+
+									// var mpuExists = true;
+									// while (mpuExists) {
+									// 	var uniqueKey = awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName;
+									// 	for (var mpu = 0; mpu < data.Uploads.length; mpu++) {
+									// 		if (data.Uploads[mpu].Key === uniqueKey) {
+									// 			console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, ' already exists!');
+									// 			fileBeingUploaded.uniqueName = generateUUID();
+									// 			break;
+									// 		} else if (mpu === data.Uploads.length - 1) {
+									// 			console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, '  is unique!');
+									// 			mpuExists = false;
+									// 		}
+									// 	}
+									// }
 								});
 							}
 							deferred.resolve();
