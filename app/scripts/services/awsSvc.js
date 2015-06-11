@@ -314,25 +314,27 @@ angular.module('com.inthetelling.story')
 							deferred.reject(err);
 						} else {
 							// Then, if this is going to be a multipart upload, make sure there isn't already a multipart upload with the same name
-							if (!isSmallUpload()) {
+							if (isSmallUpload()) {
+								deferred.resolve();
+							} else {
 								svc.getMultipartUploads().then(function (data) {
-									var mpuExists = true;
-									while (mpuExists) {
-										var uniqueKey = awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName;
-										for (var mpu = 0; mpu < data.Uploads.length; mpu++) {
-											if (data.Uploads[mpu].Key === uniqueKey) {
-												console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, ' already exists!');
-												fileBeingUploaded.uniqueName = generateUUID();
-												break;
-											} else if (mpu === data.Uploads.length - 1) {
-												console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, '  is unique!');
-												mpuExists = false;
+
+									var findUnique = function (name) {
+										// console.log("Looking for a unique name", name);
+										for (var i = 0; i < data.Uploads.length; i++) {
+											// console.log("trying ", data.Uploads[i].Key);
+											if (data.Uploads[i].Key === name) {
+												// console.log("Not unique; try again");
+												return findUnique(generateUUID());
 											}
 										}
-									}
+										return name;
+									};
+
+									fileBeingUploaded.uniqueName = findUnique(awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName);
+									deferred.resolve();
 								});
 							}
-							deferred.resolve();
 						}
 					} else {
 						//Had a filename collision, try again
