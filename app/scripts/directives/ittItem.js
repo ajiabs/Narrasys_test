@@ -6,7 +6,7 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, $interval, config, appState, analyticsSvc, timelineSvc, modelSvc) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -33,7 +33,7 @@ angular.module('com.inthetelling.story')
 				if (scope.item._id === 'internal:editing') {
 					element.addClass('noTransitions');
 				} else {
-					if (scope.item.user_id === appState.user._id) {
+					if (authSvc.userHasRole('admin') || scope.item.user_id === appState.user._id) {
 						scope.item.editableByThisUser = true;
 					}
 				}

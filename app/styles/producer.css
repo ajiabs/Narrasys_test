@@ -389,23 +389,12 @@ input[readonly] {
 	content: "\e610";
 }
 
-.sxs-item {
+.searchMode .sxs-item {
 	background-color: #FFF;
-	padding: 0.5em;
-}
-
-.sxs-item .sxs-profile {
-	float: right;
-	margin-top: -0.5em;
-	margin-right: -0.5em;
-}
-
-.reviewMode .sxs-item {
-	border: 1px solid #000;
-}
-
-.reviewMode .sxs-item .sxs-profile {
-	width: 40px;
+	display: block;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 10px;
 }
 /* edit button on items */
 
