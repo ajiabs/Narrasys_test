@@ -7,7 +7,7 @@
 		<div class="searchResults content" id="sortableSearch" itt-width-watch ng-class="{isNarrow: isNarrow}">
 			<div ng-if="sortBy == 'startTime'" class="sortByTime">
 				<div ng-repeat="scene in episode.scenes">
-					<h2 class="searchCategory" ng-if="scene.items.length > 0 && scene.display_title" ng-bind-html="scene.display_title"></h2>
+					<h2 class="searchCategory" ng-if="([scene.display_title] | filter:appState.searchText).length" ng-bind-html="scene.display_title  | highlightSubstring: appState.searchText"></h2>
 					<!-- Would split this into separate templates if episodeUI's days weren't already numbered -->
 
 					<span ng-if="appState.productLoadedAs == 'player'">
@@ -23,7 +23,7 @@
 							sceneItems=(scene.items | orderBy:'wtfchromesort')
 						" ng-show="
 							([item.searchableText] | filter:appState.searchText).length
-						" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
+						" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
 					</span>
 
 				</div>
@@ -48,7 +48,7 @@
 						| orderBy:'wtfchromesort'
 						)" ng-show="
 							([item.searchableText] | filter:appState.searchText).length
-						" ng-class="item.state" itt-item="item" forceTemplate="review-all"></div>
+						" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
 					</span>
 
 				</div>
