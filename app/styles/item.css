@@ -8,6 +8,10 @@
 	padding-top: 1.5em;
 }
 
+.searchMode .content .item:first-child {
+	padding-top: 0;
+}
+
 .content .item.sidebarL:first-child,
 .content .item.sidebarR:first-child {
 	padding-top: 0.5em;
@@ -42,7 +46,6 @@
 .item .startTime {
 	cursor: pointer;
 	cursor: hand;
-	margin-left: -55px;
 	width: 50px;
 	text-align: right;
 	float: left;
@@ -365,7 +368,13 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 
 .content .item .startTime {
-	margin-left: -60px;
+	margin-left: -55px;
+}
+
+.searchMode .content .item .sxs-item .startTime {
+	/* these items have 10px padding */
+	
+	margin-left: -65px;
 }
 
 .content .item .headerItem {
@@ -407,6 +416,7 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 
 .content.isNarrow .item .startTime,
+.content.isNarrow .item .sxs-item .startTime,
 .item.timestampInline .startTime {
 	display: inline;
 	margin-left: 0;

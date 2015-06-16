@@ -57,7 +57,7 @@ angular.module('com.inthetelling.story')
 			// map the increasingly-misnamed producerItemType to search categories.
 			// Array so we can control sort order in panel.
 			$scope.typeCategories = [
-				"transcript", "annotation", "file", "image", "link", "video", "question", ""
+				"transcript", "annotation", "file", "image", "link", "video", "question", "other"
 			];
 
 			// map type literals to pretty/printable version. 
@@ -105,7 +105,7 @@ angular.module('com.inthetelling.story')
 				item.wtfchromesort = padDigits(item.start_time, 5);
 				if (item._type !== 'Scene') {
 					// build 'by type' arrays:
-					if (item.producerItemType) {
+					if (item.producerItemType && $scope.showTypes[item.producerItemType]) {
 						$scope.showTypes[item.producerItemType].items.push(item);
 					} else {
 						$scope.showTypes.other.items.push(item);
