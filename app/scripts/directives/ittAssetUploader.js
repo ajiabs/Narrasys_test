@@ -8,7 +8,8 @@ angular.module('com.inthetelling.story')
 			restrict: 'A',
 			replace: false,
 			scope: {
-				containerId: '=ittAssetUploader'
+				containerId: '=ittAssetUploader',
+				callback: '=callback' // function that will be called for each uploaded file (with the newly cretaed asset's ID)
 			},
 			templateUrl: 'templates/producer/asset-uploader.html',
 			link: function (scope, element) {
@@ -17,27 +18,28 @@ angular.module('com.inthetelling.story')
 				scope.uploadsinprogress = 0;
 
 				scope.handleUploads = function (files) {
-					// TODO push these onto the end of anything that's already in progress...
-					console.log("handleUploads:", files);
-					scope.uploadsinprogress = files.length;
-
-					for (var i = 0; i < files.length; i++) {
-						scope.uploadStatus[i] = {
-							"bytesSent": 0,
-							"bytesTotal": 1,
-							"percent": 0,
-							"name": files[i].name
-						};
-					}
+					// push these onto the end of the existing uploads array, if any:
+					var oldstack = scope.uploads.length;
+					var newstack = scope.uploads.length + files.length;
+					scope.uploadsinprogress = scope.uploadsinprogress + files.length;
 					if (scope.containerId) {
-						scope.uploads = awsSvc.uploadContainerFiles(scope.containerId, files);
+						scope.uploads = scope.uploads.concat(awsSvc.uploadContainerFiles(scope.containerId, files));
 					} else {
-						scope.uploads = awsSvc.uploadUserFiles(appState.user._id, files);
+						scope.uploads = scope.uploads.concat(awsSvc.uploadUserFiles(appState.user._id, files));
 					}
-					for (i = 0; i < scope.uploads.length; i++) {
+					for (var i = oldstack; i < newstack; i++) {
 						(function (i) { // closure for i
+							scope.uploadStatus[i] = {
+								"bytesSent": 0,
+								"bytesTotal": 1,
+								"percent": 0,
+								"name": files[i - oldstack].name
+							};
 							scope.uploads[i].then(function (data) {
 								modelSvc.cache("asset", data.file);
+								if (scope.callback) {
+									scope.callback(data.file._id);
+								}
 								scope.uploadStatus[i].done = true;
 								scope.oneDone();
 							}, function (data) {
@@ -57,17 +59,12 @@ angular.module('com.inthetelling.story')
 					if (scope.uploadsinprogress === 0) {
 						scope.fileinput.value = '';
 						scope.paused = false;
-
 					}
 				};
 
 				scope.handleDrop = function (e) {
 					e.preventDefault();
 					e.stopPropagation();
-
-					console.log(scope.containerType, scope.containerId);
-					console.log(e.dataTransfer.files);
-
 					scope.handleDragLeave();
 					scope.handleUploads(e.dataTransfer.files);
 				};
@@ -79,12 +76,12 @@ angular.module('com.inthetelling.story')
 					return false;
 				};
 				scope.handleDragEnter = function () {
-					angular.element(scope.droptarget).addClass('droppable');
-					return false;
+					scope.droptarget.addClass('droppable');
+
 				};
 				scope.handleDragLeave = function () {
-					angular.element(scope.droptarget).removeClass('droppable');
-					return false;
+					scope.droptarget.removeClass('droppable');
+
 				};
 
 				scope.pauseUpload = function () {
@@ -107,15 +104,14 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-				$timeout(function () {
-					scope.droptarget = element.find('.uploadDropTarget')[0];
-					scope.fileinput = element.find('.uploadFileInput')[0];
+				$timeout(function () { // need to wait for the DOM
+					scope.droptarget = element.find('.uploadDropTarget');
+					scope.fileinput = element.find('.uploadFileInput');
 					scope.uploadsinprogress = 0;
-					scope.droptarget.addEventListener('drop', scope.handleDrop);
-					scope.droptarget.addEventListener('dragover', scope.handleDragOver);
-					scope.droptarget.addEventListener('dragenter', scope.handleDragEnter);
-					scope.droptarget.addEventListener('dragleave', scope.handleDragLeave);
-
+					scope.droptarget[0].addEventListener('drop', scope.handleDrop);
+					scope.droptarget[0].addEventListener('dragover', scope.handleDragOver);
+					scope.droptarget[0].addEventListener('dragenter', scope.handleDragEnter);
+					scope.droptarget[0].addEventListener('dragleave', scope.handleDragLeave);
 				});
 
 			}

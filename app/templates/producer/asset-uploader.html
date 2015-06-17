@@ -1,7 +1,6 @@
 <div>
 	<div ng-if="uploads.length">
 		<div ng-repeat="upload in uploads">
-
 			<small>
 				{{uploadStatus[$index].name}}:
 				<span ng-if="uploadStatus[$index].done">Upload complete</span>
@@ -12,8 +11,6 @@
 					({{uploadStatus[$index].percent}}%)
 				</span>
 			</small>
-
-
 		</div>
 		<span ng-if="uploadsinprogress > 0">{{uploadsinprogress}} files remaining
 			<button ng-if="!paused" ng-click="pauseUpload()">Pause</button>

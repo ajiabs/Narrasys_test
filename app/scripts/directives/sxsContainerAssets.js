@@ -42,6 +42,10 @@ angular.module('com.inthetelling.story')
 						scope.showParent = true;
 					};
 
+					scope.logme = function (x) {
+						console.log("LOGME WAS CALLED", x);
+					}
+
 					scope.toggleImages = function () {
 						scope.onlyImages = !scope.onlyImages;
 					};
