@@ -358,14 +358,31 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	padding: 0 0.5em;
 }
 
+.searchMode h1 {
+	font-size: 2em;
+}
+
 .searchMode .item h2,
 .searchMode .item h3,
 .searchMode .item .pullquote {
 	font-size: 1.4em;
 }
 
+.searchMode .annotation {
+	font-size: 1.3em;
+	opacity: 0.5;
+}
+
+.searchMode .annotation::before {
+	content: "“";
+}
+
+.searchMode .annotation::after {
+	content: "”";
+}
+
 .searchMode h2.searchCategory {
-	font-size: 1.8em;
+	font-size: 1.6em;
 }
 
 .searchMode .searchResults .isCosmetic {

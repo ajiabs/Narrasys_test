@@ -120,8 +120,8 @@ angular.module('com.inthetelling.story')
 			"templates/transmedia-link-icon.html": "templates/item/link.html",
 
 			// (from old sxs demo; can delete later)
-			"templates/upload-demo-inline.html": "templates/item/debug.html",
-			"templates/upload-demo.html": "templates/item/debug.html",
+			// "templates/upload-demo-inline.html": "templates/item/debug.html",
+			// "templates/upload-demo.html": "templates/item/debug.html",
 
 			//questions
 			"templates/question-mc-formative.html": "templates/item/question-mc-formative.html",

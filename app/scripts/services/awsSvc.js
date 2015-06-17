@@ -323,7 +323,7 @@ angular.module('com.inthetelling.story')
 										// console.log("Looking for a unique name", name);
 										for (var i = 0; i < data.Uploads.length; i++) {
 											// console.log("trying ", data.Uploads[i].Key);
-											if (data.Uploads[i].Key === name) {
+											if (data.Uploads[i].Key === awsCache.s3.config.params.Prefix + name) {
 												// console.log("Not unique; try again");
 												return findUnique(generateUUID());
 											}
@@ -331,7 +331,7 @@ angular.module('com.inthetelling.story')
 										return name;
 									};
 
-									fileBeingUploaded.uniqueName = findUnique(awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName);
+									fileBeingUploaded.uniqueName = findUnique(fileBeingUploaded.uniqueName);
 									deferred.resolve();
 								});
 							}
