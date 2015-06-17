@@ -270,7 +270,7 @@ angular.module('com.inthetelling.story')
 				fileBeingUploaded = files[fileIndex];
 				if (fileBeingUploaded.type === "") {
 					console.log('ABORTING UPLOAD, COULD NOT DETERMINE FILE TYPE FOR FILE:', fileBeingUploaded);
-					deferredUploads[fileIndex].resolve('Could not determine file type for file \'' + fileBeingUploaded.name + '\'');
+					deferredUploads[fileIndex].reject('Could not determine file type for file \'' + fileBeingUploaded.name + '\'');
 					fileBeingUploaded = null;
 					fileIndex++;
 					startNextUpload(assetEndpoint);
