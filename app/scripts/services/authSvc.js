@@ -92,9 +92,13 @@ angular.module('com.inthetelling.story')
 		svc.logout = function () {
 			// Clear these even if the logout call fails (which it will if the token in localStorage has expired).
 			// DO NOT clear the Authorization header yet (it's needed for the logout server call)
-			localStorage.removeItem(config.localStorageKey);
-			document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			try {
+				localStorage.removeItem(config.localStorageKey);
+				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			} catch (e) {
+				// user disabled cookies, so no need to try to remove them...
+			}
 			appState.user = {};
 
 			$http({
@@ -189,9 +193,14 @@ angular.module('com.inthetelling.story')
 							authenticateDefer.resolve();
 						}, function () {
 							// token expired; clear everything and start over
-							localStorage.removeItem(config.localStorageKey);
-							document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-							document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+							try {
+								localStorage.removeItem(config.localStorageKey);
+								document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+								document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+							} catch (e) {
+								// user disabled cookies
+							}
 							appState.user = {};
 							return svc.authenticateViaNonce(nonceParam);
 						});
@@ -217,11 +226,11 @@ angular.module('com.inthetelling.story')
 
 		svc.getStoredToken = function () {
 			var storedData = {};
-			if (localStorage && localStorage.getItem(config.localStorageKey)) {
-
-				// temporary: clear old key
-				localStorage.removeItem('storyKey');
-
+			try {
+				if (!localStorage) {
+					return false;
+				}
+				localStorage.getItem(config.localStorageKey);
 				storedData = angular.fromJson(localStorage.getItem(config.localStorageKey));
 				var currentCustomer = config.apiDataBaseUrl.match(/\/\/([^\.]*)./)[1];
 				if (storedData.customer !== currentCustomer) {
@@ -229,8 +238,11 @@ angular.module('com.inthetelling.story')
 					localStorage.removeItem(config.localStorageKey);
 					storedData = {};
 				}
+				return storedData.token || false;
+			} catch (e) {
+				return false;
 			}
-			return storedData.token || false;
+
 		};
 
 		svc.getCurrentUser = function () {
