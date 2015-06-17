@@ -20,7 +20,7 @@
 		<div class="text">
 			<!-- TODO display header/pullquote differently? -->
 
-			<div ng-bind-html="(item.display_annotation || item.display_description) | highlightSubstring: appState.searchText"></div>
+			<div ng-class="{annotation: item.producerItemType == 'annotation'}" ng-bind-html="item.display_annotation || item.display_description | highlightSubstring: appState.searchText"></div>
 		</div>
 		<div class="itemDetail" ng-if="item.showInlineDetail">
 			<span ng-if="item.producerItemType == 'file' || item.producerItemType == 'video' || item.producerItemType == 'link'">

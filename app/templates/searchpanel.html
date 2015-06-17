@@ -1,56 +1,35 @@
 <div ng-class="episode.styleCss">
 	<div aria-label="sort toggle" class="searchfilters" aria-controls="sortableSearch">
-		Sorted by
-		<button tabindex="0" class="fakeLink" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
+		<div>
+			Sorted by
+			<button tabindex="0" class="fakeLink" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
+		</div>
 	</div>
 	<div class="scrollContainer">
 		<div class="searchResults content" id="sortableSearch" itt-width-watch ng-class="{isNarrow: isNarrow}">
 			<div ng-if="sortBy == 'startTime'" class="sortByTime">
+				<h1 ng-if="appState.productLoadedAs != 'player'" ng-bind-html="episode.display_title"></h1>
 				<div ng-repeat="scene in episode.scenes">
-					<h2 class="searchCategory" ng-if="([scene.display_title] | filter:appState.searchText).length" ng-bind-html="scene.display_title  | highlightSubstring: appState.searchText"></h2>
-					<!-- Would split this into separate templates if episodeUI's days weren't already numbered -->
-
-					<span ng-if="appState.productLoadedAs == 'player'">
-						<div class="item animate" ng-repeat="item in 
-							sceneItems=(scene.items | orderBy:'wtfchromesort')
-						" ng-show="
-							([item.searchableText] | filter:appState.searchText).length
-						" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
-					</span>
-
-					<span ng-if="appState.productLoadedAs != 'player'">
-						<div class="item animate" ng-repeat="item in 
-							sceneItems=(scene.items | orderBy:'wtfchromesort')
-						" ng-show="
-							([item.searchableText] | filter:appState.searchText).length
-						" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
-					</span>
-
+					<h2 class="searchCategory" ng-if="scene.start_time > 0 && ([scene.display_title] | filter:appState.searchText).length" ng-bind-html="scene.display_title  | highlightSubstring: appState.searchText"></h2>
+					<div ng-repeat="item in sceneItems=(scene.items | orderBy:'wtfchromesort')" ng-show="([item.searchableText] | filter:appState.searchText).length" class="item animate" ng-class="item.state">
+						<div ng-if="appState.productLoadedAs == 'player'" ng-include="'templates/item/searchresults.html'"></div>
+						<div ng-if="appState.productLoadedAs != 'player'" itt-item="item" forceTemplate="searchresults-all"></div>
+					</div>
 				</div>
 			</div>
 			<!-- sorted by type -->
 			<div ng-if="sortBy == 'type'" class="sortByType">
 				<div ng-repeat="category in typeCategories">
-					<span ng-if="appState.productLoadedAs == 'player'">
-						<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
-						<div class="item animate" ng-repeat="item in matchedItems=
+					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
+					<div class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'wtfchromesort'
 						)" ng-show="
 							([item.searchableText] | filter:appState.searchText).length
-						" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
-					</span>
-
-					<span ng-if="appState.productLoadedAs != 'player'">
-						<h2 class="searchCategory" ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h2>
-						<div class="item animate" ng-repeat="item in matchedItems=
-						(showTypes[category].items
-						| orderBy:'wtfchromesort'
-						)" ng-show="
-							([item.searchableText] | filter:appState.searchText).length
-						" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
-					</span>
-
+						" ng-class="item.state">
+						<div ng-if="appState.productLoadedAs == 'player'" ng-include="'templates/item/searchresults.html'"></div>
+						<div ng-if="appState.productLoadedAs != 'player'" itt-item="item" forceTemplate="searchresults-all"></div>
+					</div>
 				</div>
 				<div ng-if="(episode.items | filter:{'searchableText': appState.searchText||'', 'cosmetic': false}).length == 0">
 					(Nothing matched your search.)
