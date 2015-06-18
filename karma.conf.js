@@ -18,7 +18,15 @@ module.exports = function (config) {
 			'app/bower_components/jquery/dist/jquery.min.js',
 			'app/bower_components/angular-animate/angular-animate.min.js',
 			'app/bower_components/angular-route/angular-route.min.js',
-			'app/bower_components/angular-sanitize/angular-sanitize.min.js',
+			// 'app/bower_components/angular-sanitize/angular-sanitize.min.js',
+
+			'app/bower_components/flot/jquery.flot.js',
+			'app/bower_components/flot/jquery.flot.pie.js',
+			'app/scripts/plugin/newrelic.js',
+			'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
+			'app/bower_components/textAngular/dist/textAngular-sanitize.min.js',
+			'app/bower_components/textAngular/dist/textAngular.min.js',
+
 			'app/config.js',
 			'app/scripts/*.js',
 			'app/scripts/**/*.js',
