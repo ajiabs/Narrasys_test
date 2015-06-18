@@ -10,7 +10,10 @@
 				<span ng-if="!uploadStatus[$index].done && !uploadStatus[$index].error">
 					<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}">
 					</progress>
-					&nbsp;({{uploadStatus[$index].percent}}%)
+					<span ng-switch="uploadStatus[$index].percent">
+						<span ng-switch-when="100">...</span>
+						<span ng-switch-default>{{uploadStatus[$index].percent}}%</span>
+					</span>
 				</span>
 			</span>
 			<div ng-if="uploadStatus[$index].error">{{uploadStatus[$index].error}}</div>

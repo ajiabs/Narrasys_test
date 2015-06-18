@@ -10,6 +10,13 @@ input[readonly] {
 	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2) inset;
 	padding: 0.5em;
 	text-align: center;
+	background-color: #FFF;
+}
+
+.assetUploader .uploadDropTarget input {
+	border: none !important;
+	width: 70px !important;
+	/* TODO better styling for file inputs */
 }
 
 .assetUploader .uploadDropTarget.droppable {

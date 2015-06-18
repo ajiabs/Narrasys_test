@@ -199,18 +199,10 @@ angular.module('com.inthetelling.story')
 					modelSvc.deriveEpisode(scope.episode);
 				};
 
-				scope.uploadAsset = function (files) {
-					scope.handleAssetUpload(files, scope.episodeContainerId)
-						.then(function (file) {
-							console.log("Successfully uploaded asset", file);
-							scope.showUploadButtons = false;
-							scope.attachChosenAsset(file._id);
-						}, function (err) {
-							errorSvc.error({
-								data: err
-							});
-							scope.showUploadButtons = false;
-						});
+				scope.assetUploaded = function (assetId) {
+					scope.showUploadButtons = false;
+					scope.showUploadField = false;
+					scope.attachChosenAsset(assetId);
 				};
 
 				scope.attachYouTube = function (url) {
