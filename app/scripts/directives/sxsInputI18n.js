@@ -16,7 +16,7 @@ angular.module('com.inthetelling.story')
 					};
 				}
 				scope.appState = appState;
-				console.log(attrs, textAngularManager);
+
 				if (scope.inputtype === 'textarea') {
 					// textAngular needs some extra magic for autofocus:
 					scope.textangularname = "ta" + new Date().getUTCMilliseconds() + "y" + Math.random().toString(16);
@@ -27,6 +27,30 @@ angular.module('com.inthetelling.story')
 							editorScope.displayElements.text.trigger('focus');
 						}
 					});
+
+					scope.trim = function () {
+						// Let's prevent users from throwing extra whitespace at beginning and end:
+						var txt = scope.field[appState.lang];
+
+						// yay regexp parsing of html my favorite thing to do
+
+						txt = txt.replace(/<br\/>/g, '<br>'); // no xml-style tags
+
+						// strip any <foo>(<br>*)</foo> from beginning and end:
+						txt = txt.replace(/^\s*<([\w\d]*)>(<br>)*<\/\1>/, '');
+						txt = txt.replace(/<([\w\d]*)>(<br>)*<\/\1>\s*$/, '');
+
+						// strip all <p> and <br> from beginning, then replace the initial <p> if necessary
+						txt = txt.replace(/^(\s|<(\/?p|br)>)*/, '');
+						txt = txt.replace(/^([^<]*?)<\/p>/, '<p>$1</p>');
+
+						// and strip all <p> and <br> from end, then replace the closing </p> if necessary
+						txt = txt.replace(/(\s|<(\/?p|br)>)*$/, '');
+						txt = txt.replace(/<p>([^<]*)$/, '<p>$1</p>');
+
+						scope.field[appState.lang] = txt;
+
+					};
 				}
 			}
 		};

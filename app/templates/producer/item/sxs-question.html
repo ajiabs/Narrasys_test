@@ -12,9 +12,8 @@
 <div class="field">
 	<div class="label">Question text
 	</div>
-	<div class="input">
-		<textarea ng-model="item.data._plugin.questiontext" rows="4" autofocus></textarea>
-	</div>
+	<div class="input" autofocus sxs-input-i18n="item.data._plugin.questiontext" x-inputtype="'textarea'"></div>
+
 </div>
 <div class="field">
 	<div class="label">Question Title
@@ -35,9 +34,7 @@
 		{{$index | alpha}} &nbsp;
 		<input type="checkbox" ng-model="distractor.correct" ng-if="item.data._plugin.questiontype == 'mc-formative'">
 	</div>
-	<div class="input">
-		<textarea ng-model="distractor.text" rows="4"></textarea>
-	</div>
+	<div class="input" sxs-input-i18n="distractor.text" x-inputtype="'textarea'"></div>
 </div>
 <div class="field">
 	<div class="input">
@@ -47,14 +44,10 @@
 <div class="field" ng-if="item.data._plugin.questiontype == 'mc-formative'">
 	<div class="label">Feedback when correct
 	</div>
-	<div class="input">
-		<textarea rows="4" ng-model="item.data._plugin.correctfeedback"></textarea>
-	</div>
+	<div class="input" sxs-input-i18n="item.data._plugin.correctfeedback" x-inputtype="'textarea'"></div>
 </div>
 <div class="field" ng-if="item.data._plugin.questiontype == 'mc-formative'">
 	<div class="label">Feedback when incorrect
 	</div>
-	<div class="input">
-		<textarea rows="4" ng-model="item.data._plugin.incorrectfeedback"></textarea>
-	</div>
+	<div class="input" sxs-input-i18n="item.data._plugin.incorrectfeedback" x-inputtype="'textarea'"></div>
 </div>
