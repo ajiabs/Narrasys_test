@@ -44,7 +44,7 @@ angular.module('com.inthetelling.story')
 
 					scope.logme = function (x) {
 						console.log("LOGME WAS CALLED", x);
-					}
+					};
 
 					scope.toggleImages = function () {
 						scope.onlyImages = !scope.onlyImages;

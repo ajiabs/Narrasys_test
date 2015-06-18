@@ -4,16 +4,46 @@ input[readonly] {
 	box-shadow: none !important;
 }
 
-.uploadDropTarget {
-	border: 1px solid #ccc;
-	border-radius: 1em;
-	box-shadow: 1px 1px 2px #ccc inset;
-	font-size: 0.86em;
+.assetUploader .uploadDropTarget {
+	border: 2px dashed #bbb;
+	border-radius: 0.5em;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2) inset;
 	padding: 0.5em;
+	text-align: center;
 }
 
-.uploadDropTarget.droppable {
-	box-shadow: 2px 2px 4px #000 inset;
+.assetUploader .uploadDropTarget.droppable {
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6) inset;
+	border: 2px solid #BBB;
+}
+
+.assetUploader .uploadList {
+	border-bottom: 1px solid #eee;
+	font-size: 0.7em;
+	line-height: 1em;
+	margin: 0.2em;
+	padding: 0.2em;
+}
+
+.assetUploader .uploadName,
+.assetUploader .uploadProgress {
+	display: inline-block;
+	overflow-x: hidden;
+	white-space: nowrap;
+}
+
+.assetUploader .uploadName {
+	width: 60%;
+}
+
+.assetUploader .uploadProgress {
+	float: right;
+	width: 38%;
+	position: relative;
+}
+
+.uploadProgress progress {
+	width: 70%;
 }
 
 .containerAssets {

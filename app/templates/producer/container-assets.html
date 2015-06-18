@@ -26,8 +26,9 @@
 				<div ng-if="asset._type == 'Asset::Image'">
 					<img class="thumbnail" ng-src="{{asset.url}}">
 				</div>
+
 				<div ng-if="asset._type != 'Asset::Image'">
-					<div class="thumbnail">(video)</div>
+					<div class="thumbnail">{{asset._type}}</div>
 				</div>
 				{{asset.display_name}}
 			</div>
@@ -47,5 +48,6 @@
 			</tr>
 		</table>
 	</div>
-	<div itt-asset-uploader="container._id" callback="logme"></div>
+	<br>
+	<div itt-asset-uploader="container._id" callback="logme" multiple> </div>
 </div>

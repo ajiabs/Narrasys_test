@@ -1,23 +1,30 @@
 'use strict';
 
-/* If no container ID is supplied, the uploaded asset(s) will be placed in user space instead. */
-
 angular.module('com.inthetelling.story')
 	.directive('ittAssetUploader', function ($timeout, awsSvc, appState, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
 			scope: {
-				containerId: '=ittAssetUploader',
+				containerId: '=ittAssetUploader', // If no container ID is supplied, the uploaded asset(s) will be placed in user space instead.
 				callback: '=callback' // function that will be called for each uploaded file (with the newly cretaed asset's ID)
 			},
 			templateUrl: 'templates/producer/asset-uploader.html',
-			link: function (scope, element) {
+			link: function (scope, element, attrs) {
 				scope.uploadStatus = [];
 				scope.uploads = [];
 				scope.uploadsinprogress = 0;
+				scope.multiple = (attrs.multiple !== undefined);
 
 				scope.handleUploads = function (files) {
+					if (!scope.multiple) {
+						if (files.length > 1 || scope.uploads.length > 0) {
+							scope.errormessage = "You may only upload one file at a time here.";
+							return false;
+						}
+					}
+					scope.errormessage = "";
+
 					// push these onto the end of the existing uploads array, if any:
 					var oldstack = scope.uploads.length;
 					var newstack = scope.uploads.length + files.length;
@@ -96,12 +103,7 @@ angular.module('com.inthetelling.story')
 
 				scope.cancelUpload = function () {
 					awsSvc.cancelUpload();
-					scope.uploadsinprogress = 0;
-					for (var i = 0; i < scope.uploadStatus.length; i++) {
-						if (!scope.uploadStatus[i].done && !scope.uploadStatus[i].error) {
-							scope.uploadStatus[i].error = "Canceled by user";
-						}
-					}
+
 				};
 
 				$timeout(function () { // need to wait for the DOM
