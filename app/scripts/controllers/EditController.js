@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, awsSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		$scope.chooseAsset = function () {
@@ -22,42 +22,6 @@ angular.module('com.inthetelling.story')
 		// TODO rename this to toggleUploadField (or eliminate it)
 		$scope.toggleUpload = function () {
 			$scope.showUploadField = !$scope.showUploadField;
-			// TODO: trigger 'click' event on the file upload field if showUpload=true.  Or come up with a less hacky way to do the same thing
-		};
-
-		$scope.handleAssetUpload = function (files, containerId) {
-			// if no container ID, put it in the user's container
-			var defer = $q.defer();
-
-			//Start the upload status out at 0 so that the
-			//progress bar renders correctly at first
-			$scope.uploadStatus[0] = {
-				"bytesSent": 0,
-				"bytesTotal": 1
-			};
-			if (containerId) {
-				$scope.uploads = awsSvc.uploadContainerFiles(containerId, files);
-			} else {
-				$scope.uploads = awsSvc.uploadUserFiles(appState.user._id, files);
-			}
-			$scope.uploads[0].then(function (data) {
-					if (data.file) {
-						modelSvc.cache("asset", modelSvc.deriveAsset(data.file));
-						delete $scope.uploads;
-						defer.resolve(data.file);
-					} else {
-						console.log("FAIL", data);
-						defer.reject(data);
-					}
-				},
-				function (data) {
-					console.log("FAIL", data);
-					defer.reject();
-				},
-				function (update) {
-					$scope.uploadStatus[0] = update;
-				});
-			return defer.promise;
 		};
 
 		$scope.addDistractor = function () {
