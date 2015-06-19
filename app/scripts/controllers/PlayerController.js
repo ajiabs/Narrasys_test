@@ -110,29 +110,55 @@ angular.module('com.inthetelling.story')
 
 			// producer needs the episode container:
 			dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId).then(function () {
-				if (modelSvc.episodes[appState.episodeId].master_asset_id) {
-					// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
-					// HACK this is a weird place for this.
-					var watch = $scope.$watch(function () {
-						return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
-					}, function (masterAsset) {
-						if (masterAsset && Object.keys(masterAsset).length > 1) {
-							watch();
-							modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
-							timelineSvc.init(appState.episodeId);
-							$scope.loading = false;
+
+				var master_asset_id = modelSvc.episodes[appState.episodeId].master_asset_id;
+				var watch = $scope.$watch(function () {
+					if (appState.timelineId) {
+						//ensure master assets for all episode segments
+						var allLoaded = false;
+						var sortOrder = -1;
+						var firstSegment;
+						for (var i = 0, len = modelSvc.timelines[appState.timelineId].episode_segments.length; i < len; i++) {
+							var episode = modelSvc.episodes[modelSvc.timelines[appState.timelineId].episode_segments[i].episode_id];
+							if (episode && episode.master_asset_id) {
+								if (modelSvc.assets[episode.master_asset_id]) {
+									allLoaded = true;
+								} else {
+									allLoaded = false;
+									break;
+								}
+							} else {
+								allLoaded = false;
+								break;
+							}
+							if (i === 0 || modelSvc.timelines[appState.timelineId].episode_segments[i].sort_order < sortOrder) {
+								firstSegment = modelSvc.timelines[appState.timelineId].episode_segments[i];
+								sortOrder = modelSvc.timelines[appState.timelineId].episode_segments[i].sort_order;
+							}
 						}
-					});
-				} else {
-					// Episode has no master asset
-					$scope.loading = false;
-					// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
-					if (appState.product === 'producer') {
-						appState.editEpisode = modelSvc.episodes[appState.episodeId];
+						if (allLoaded) {
+							return modelSvc.assets[modelSvc.episodes[firstSegment.episode_id].master_asset_id];
+						}
+					} else {
+						return modelSvc.assets[master_asset_id];
 					}
-					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
-					appState.videoControlsLocked = true;
-				}
+				}, function (masterAsset) {
+					if (masterAsset && Object.keys(masterAsset).length > 1) {
+						watch();
+						modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
+						timelineSvc.init(appState.episodeId);
+						$scope.loading = false;
+					} else {
+						// Episode has no master asset
+						$scope.loading = false;
+						// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
+						if (appState.product === 'producer') {
+							appState.editEpisode = modelSvc.episodes[appState.episodeId];
+						}
+						appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+						appState.videoControlsLocked = true;
+					}
+				});
 
 				if (appState.productLoadedAs === 'producer' && !authSvc.userHasRole('admin')) {
 					// TODO redirect instead?

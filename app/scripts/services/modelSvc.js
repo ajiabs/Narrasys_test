@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc) {
+	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc, timelineTranslator) {
 
 		var svc = {};
 
@@ -16,6 +16,8 @@ angular.module('com.inthetelling.story')
 		svc.containers = {};
 		svc.narratives = {};
 		svc.customers = {};
+
+		svc.timelines = {};
 
 		// receives cacheTypes of episode, event, asset, and container.
 		// splits event into scenes and items.  Not sure yet whether we care about containers, discarding them for now.
@@ -31,6 +33,13 @@ angular.module('com.inthetelling.story')
 					angular.extend(svc.narratives[item._id], item);
 				} else {
 					svc.narratives[item._id] = angular.copy(item);
+				}
+			}
+			if (cacheType === 'timeline') {
+				if (svc.timelines[item._id]) {
+					angular.extend(svc.timelines[item._id], item);
+				} else {
+					svc.timelines[item._id] = angular.copy(item);
 				}
 			}
 			if (cacheType === 'customer') {
@@ -265,6 +274,9 @@ angular.module('com.inthetelling.story')
 
 		var isTranscript = function (item) {
 			if (typeof (item) !== 'undefined') {
+				if (!item.templateUrl) {
+					return false;
+				}
 				if (item._type === 'Annotation' && item.templateUrl.match(/transcript/)) {
 					return true;
 				} else {
@@ -430,7 +442,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			event.displayStartTime = $filter("asTime")(event.start_time);
-
+			
 			return event;
 		};
 
@@ -559,10 +571,13 @@ angular.module('com.inthetelling.story')
 			episode.items = items.sort(function (a, b) {
 				return a.start_time - b.start_time;
 			});
-
 			var duration = 0;
-			if (episode.masterAsset) {
-				duration = episode.masterAsset.duration;
+			if (svc.timelines[appState.timelineId]) {
+				duration = timelineTranslator.getDuration(svc.timelines[appState.timelineId].episode_segments);
+			} else {
+				if (episode.masterAsset) {
+					duration = episode.masterAsset.duration;
+				}
 			}
 
 			// Fix bad event timing data.  (see also svc.deriveEvent())
@@ -1063,6 +1078,7 @@ angular.module('com.inthetelling.story')
 			console.log("Container cache:", svc.containers);
 			console.log("Episode cache:", svc.episodes);
 			console.log("Narrative cache:", svc.narratives);
+			console.log("Timeline cache:", svc.timelines);
 			console.log("Customer cache:", svc.customers);
 		}
 		return svc;

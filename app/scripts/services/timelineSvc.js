@@ -30,9 +30,9 @@ TODO: support injecting into the middle of an episode
 TODO: have a way to delete a portion of the timeline (so sXs users can skip scenes)
 
 */
-
+//TODO: remove dataSvc injection, temporary for messing w/ timelines
 angular.module('com.inthetelling.story')
-	.factory('timelineSvc', function ($timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc) {
+	.factory('timelineSvc', function ($timeout, $interval, $rootScope, $filter, config, modelSvc, dataSvc, appState, analyticsSvc, timelineTranslator) {
 
 		var svc = {};
 
@@ -161,7 +161,17 @@ angular.module('com.inthetelling.story')
 
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function (t, method, eventID) {
-			console.log("timelineSvc.seek ", t, method, eventID);
+			var timeline = modelSvc.timelines[appState.timelineId];
+			var videoTime = t;
+			if (timeline) {
+				var segments = timeline.episode_segments;
+				var segAndTime = timelineTranslator.getSegmentWithTime(segments, t);
+				videoTime = segAndTime.time;
+				var asset = modelSvc.assets[modelSvc.episodes[segAndTime.segment.episode_id].master_asset_id];
+				videoScope.changeVideo(asset, videoTime);
+				appState.episodeId = segAndTime.segment.episode_id;
+				appState.episode = modelSvc.episodes[appState.episodeId];
+			}
 			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
@@ -199,7 +209,7 @@ angular.module('com.inthetelling.story')
 
 			appState.time = t;
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
-			videoScope.seek(t, true);
+			videoScope.seek(videoTime, true);
 
 			svc.updateEventStates();
 			// capture analytics data:
@@ -211,7 +221,6 @@ angular.module('com.inthetelling.story')
 				if (eventID) {
 					captureData.event_id = eventID;
 				}
-				// console.log("capture", captureData);
 				analyticsSvc.captureEpisodeActivity("seek", captureData);
 			} else {
 				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
@@ -246,7 +255,6 @@ angular.module('com.inthetelling.story')
 					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
 				}
 				if (svc.markedEvents[i].start_time < now) {
-					// console.log("Seeking to ", svc.markedEvents[i].start_time);
 					//scope.enableAutoscroll(); // TODO in playerController
 					svc.seek(svc.markedEvents[i].start_time, "prevScene");
 
@@ -260,7 +268,6 @@ angular.module('com.inthetelling.story')
 			var found = false;
 			for (var i = 0; i < svc.markedEvents.length; i++) {
 				if (svc.markedEvents[i].start_time > appState.time) {
-					// console.log("Seeking to ", svc.markedEvents[i].start_time);
 					//scope.enableAutoscroll(); // TODO in playerController
 					svc.seek(svc.markedEvents[i].start_time, "nextScene");
 					found = true;
@@ -331,7 +338,6 @@ angular.module('com.inthetelling.story')
 			}
 			var vidTime = videoScope.currentTime();
 			var ourTime = appState.time;
-
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
 
@@ -373,9 +379,8 @@ angular.module('com.inthetelling.story')
 
 		// "event" here refers to a timelineEvents event, not the modelSvc.event:
 		var handleEvent = function (event) {
-			//console.log("handle event: ", event);
+
 			if (event.id === 'timeline') {
-				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
 					appState.time = event.t;
 					svc.pause(); // TODO handle pause with duration too
@@ -391,6 +396,15 @@ angular.module('com.inthetelling.story')
 					modelSvc.events[event.id].isCurrent = false;
 				} else if (event.action === "preload") {
 					preloadImageAsset(modelSvc.events[event.id]);
+				} else if (event.action === "transition") {
+					var asset = modelSvc.assets[modelSvc.episodes[event.segment.episode_id].master_asset_id];
+					videoScope.changeVideo(asset);
+					appState.episodeId = event.segment.episode_id;
+					appState.timelineState = 'transitioning';
+					$timeout(function () {
+						svc.play();
+					});
+
 				} else {
 					console.warn("Unknown event action: ", event, event.action);
 				}
@@ -415,7 +429,6 @@ angular.module('com.inthetelling.story')
 				svc.pause();
 			}
 
-			// console.log(newTime, appState.time);
 			if (newTime > appState.duration) {
 				newTime = appState.duration;
 				svc.pause();
@@ -423,23 +436,65 @@ angular.module('com.inthetelling.story')
 			appState.time = newTime;
 			lastTick = thisTick;
 		};
+		var sortSegments = function (segmentA, segmentB) {
+
+			var a = parseInt(segmentA.sort_order, 10);
+			var b = parseInt(segmentB.sort_order, 10);
+			return a - b;
+		};
+
+		// var calculateTotalTime = function (segments) {
+		// 	segments = segments.sort(sortSegments); //sorting doesn't matter here. remove later.
+		// 	var totalTime = 0;
+		// 	for (var i = 0, len = segments.length; i < len; i++) {
+		// 		totalTime += segments[i].end_time - segments[i].start_time;
+		// 	}
+		// 	return totalTime;
+		// };
+		var getStartTimeForSegment = function (segments, segment) {
+			return timelineTranslator.getTimelineTimeFromSegmentTime(segments, segment, 0);
+		};
+		var injectAllEventsForSegments = function (epId, segments) {
+			var start = 0;
+			var previousStart = 0;
+			segments = segments.sort(sortSegments); //sorting doesn't matter here. remove later.
+			for (var i = 0, len = segments.length; i < len; i++) {
+				var segment = segments[i];
+				previousStart = start;
+				start = getStartTimeForSegment(segments, segment);
+				if (start > 0) {
+					var transitionEvent = getFabricatedTransitionEvent(segment.episode_id, start);
+					svc.injectEvents([transitionEvent], previousStart, segment); // fix start time
+				}
+
+				var injectableEvents = modelSvc.episodeEvents(segment.episode_id);
+
+				if (injectableEvents) {
+					//currently injecting at 0, as the events have the correct start end_time in modelSvc according to their episode_segment
+					svc.injectEvents(modelSvc.episodeEvents(segment.episode_id), 0, segment);
+				}
+			}
+		};
 
 		svc.init = function (episodeId) {
-			// console.log("timelineSvc.init", episodeId);
+			var timeline = modelSvc.timelines[appState.timelineId];
+
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
 			timeMultiplier = 1;
 			appState.duration = 0;
 			appState.timelineState = 'paused';
 
-			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
+			if (timeline) {
+				injectAllEventsForSegments(episodeId, timeline.episode_segments);
+			} else {
+				svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
+			}
 			$interval.cancel(clock);
 			stopEventClock();
 		};
 
-		svc.injectEvents = function (events, injectionTime) {
-
-			// console.log("timelineSvc.injectEvents: has ", svc.timelineEvents.length, " adding ", events.length);
+		svc.injectEvents = function (events, injectionTime, segment) {
 			// events should be an array of items in modelSvc.events
 			// for now this only supports adding events starting at injectionTime=0,
 			// which does not shift existing events later in time.
@@ -458,7 +513,7 @@ angular.module('com.inthetelling.story')
 				event.start_time = Number(event.start_time);
 				event.end_time = Number(event.end_time);
 				// add scenes to markedEvents[]:
-				if (event._type === "Scene") {
+				if (event._type === "Scene" || event._type === "Transition") {
 					if (appState.product === 'producer') {
 						// producer gets all scenes, even 'hidden' ones
 						addMarkedEvent(event);
@@ -479,39 +534,56 @@ angular.module('com.inthetelling.story')
 						t: event.start_time + injectionTime,
 						id: "timeline",
 						eventId: event._id, //Need to store the event id in case this event needs to get removed from the timeline
-						action: "pause"
+						action: "pause",
+						segment: segment
 					});
 					svc.timelineEvents.push({
 						t: event.start_time + injectionTime,
 						id: event._id,
-						action: "enter"
+						action: "enter",
+						segment: segment
 					});
 					// For now, ignore end_time on stop events; they always end immediately after user hits play again.
 					// TODO: In future we may allow durations on stop events so the video will start automatically after that elapses.
 					svc.timelineEvents.push({
 						t: (event.start_time + injectionTime + 0.01),
 						id: event._id,
-						action: "exit"
+						action: "exit",
+						segment: segment
 					});
 				} else {
-					// not a stop event.
-					svc.timelineEvents.push({
-						t: event.start_time + injectionTime,
-						id: event._id,
-						action: "enter"
-					});
-					if (event.end_time || event.end_time === 0) {
+					var action = "enter";
+					if (event._type === "Transition") {
+						action = "transition";
 						svc.timelineEvents.push({
-							t: event.end_time + injectionTime,
+							t: event.start_time + injectionTime,
 							id: event._id,
-							action: "exit"
+							action: action,
+							segment: segment
 						});
 					} else {
-						// TODO: handle missing end times.  For transcript items, create an end time matching the start of the next transcript or the end of the scene or the duration (whichever comes first)
-						// For other items, create an end time matching the next scene start or the duration, whichever comes first
-						// For scenes, create an end time matching the start of the next scene or the duration, whichever comes first.
-						// That's complex logic, may be better handled in a second pass.... or, duh,  during authoring
-						console.warn("Missing end_time on event ", event);
+						// not a stop event.
+						svc.timelineEvents.push({
+							t: event.start_time + injectionTime,
+							id: event._id,
+							action: action,
+							segment: segment
+						});
+
+						if (event.end_time || event.end_time === 0) {
+							svc.timelineEvents.push({
+								t: event.end_time + injectionTime,
+								id: event._id,
+								action: "exit",
+								segment: segment
+							});
+						} else {
+							// TODO: handle missing end times.  For transcript items, create an end time matching the start of the next transcript or the end of the scene or the duration (whichever comes first)
+							// For other items, create an end time matching the next scene start or the duration, whichever comes first
+							// For scenes, create an end time matching the start of the next scene or the duration, whichever comes first.
+							// That's complex logic, may be better handled in a second pass.... or, duh,  during authoring
+							console.warn("Missing end_time on event ", event);
+						}
 					}
 				}
 
@@ -520,7 +592,9 @@ angular.module('com.inthetelling.story')
 					svc.timelineEvents.push({
 						t: (event.start_time < 3) ? 0 : event.start_time - 3, // 3 seconds early
 						id: event._id,
-						action: "preload"
+						action: "preload",
+						segment: segment
+
 					});
 				}
 
@@ -544,15 +618,14 @@ angular.module('com.inthetelling.story')
 			if (!wasFound) {
 				svc.markedEvents.push(newEvent);
 			}
-			//console.log(svc.markedEvents);
 		};
 
 		svc.removeEvent = function (removeId) {
 			// delete anything corresponding to this id from the timeline:
 			// console.log("timelineSvc.removeEvent");
-			svc.timelineEvents = $filter('filter')(svc.timelineEvents, function(timelineEvent) {
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, function (timelineEvent) {
 				//Remove the timeline event if it's _id or eventId  equal the removeId
-				if(timelineEvent.id === removeId || timelineEvent.eventId === removeId) {
+				if (timelineEvent.id === removeId || timelineEvent.eventId === removeId) {
 					return false;
 				}
 				return true;
@@ -568,9 +641,9 @@ angular.module('com.inthetelling.story')
 		svc.updateEventTimes = function (event) {
 			// remove old references, as in removeEvent, then re-add it with new times 
 			// (not calling removeEvent here since it would do a redundant updateEventStates)
-			svc.timelineEvents = $filter('filter')(svc.timelineEvents, function(timelineEvent) {
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, function (timelineEvent) {
 				//Remove the timeline event if it's _id or eventId  equal the removeId
-				if(timelineEvent.id === event._id || timelineEvent.eventId === event._id) {
+				if (timelineEvent.id === event._id || timelineEvent.eventId === event._id) {
 					return false;
 				}
 				return true;
@@ -635,7 +708,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.updateEventStates = function () {
-			// console.log("timelineSvc.updateEventStates", appState.time);
 			// Sets past/present/future state of every event in the timeline.  
 			// TODO performance check (though this isn't done often, only on seek and inject.)
 
@@ -674,7 +746,6 @@ angular.module('com.inthetelling.story')
 		var preloadImageAsset = function (event) {
 			if (event.asset && event.asset._type === 'Asset::Image') {
 				if (!alreadyPreloadedImages[event.asset.url]) {
-					// console.log("Preloading ", event.asset.url);
 					alreadyPreloadedImages[event.asset.url] = new Image();
 					alreadyPreloadedImages[event.asset.url].src = event.asset.url;
 				}
@@ -699,6 +770,26 @@ angular.module('com.inthetelling.story')
 				return parseFloat(parse[1] * 60);
 			}
 			console.error("Tried to parse invalid time string: ", t);
+		};
+
+		var getFabricatedTransitionEvent = function (episodeId, time) {
+
+			var transitionEvent = {
+				"_id": "transition_fabricated",
+				"_type": "Transition",
+				"description": {
+					"en": "Transition"
+				},
+				"end_time": time - 1,
+				"episode_id": episodeId,
+				"start_time": time - 1,
+				"display_title": "Start of next episode -> REMOVE ME",
+				"title": {
+					"en": "Transition"
+				},
+				"type": "Transition"
+			};
+			return transitionEvent;
 		};
 
 		if (config.debugInBrowser) {

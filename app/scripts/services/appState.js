@@ -19,6 +19,7 @@ angular.module('com.inthetelling.story')
 			svc.episodeSegmentId = false; // ID of current episode segment (only relevant in narratives)
 			svc.narrativeId = false; // also only relevant in narratives
 			svc.timelineId = false; // ditto
+			delete svc.timelines;
 			/* jshint -W116 */
 			svc.isFramed = (window.parent != window); // are we inside an iframe?  Don't use !== because IE8 gets it wrong
 			/* jshint +W116 */
