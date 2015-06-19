@@ -311,28 +311,18 @@ angular.module('com.inthetelling.story')
 					return url ? url : "";
 				};
 
-				scope.uploadAsset = function (files) {
-					scope.handleAssetUpload(files, scope.episodeContainerId)
-						.then(function (file) {
-							console.log("Successfully upload asset", file);
-
-							scope.item.asset = modelSvc.assets[file._id];
-							// TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
-							if (scope.item._type === 'Link') {
-								scope.item.link_image_id = file._id;
-							} else if (scope.item._type === 'Annotation') {
-								scope.item.annotation_image_id = file._id;
-							} else {
-								scope.item.asset_id = file._id;
-							}
-							scope.showUploadButtons = false;
-
-						}, function (err) {
-							errorSvc.error({
-								data: err
-							});
-							// TODO reset the form
-						});
+				scope.assetUploaded = function (assetId) {
+					scope.item.asset = modelSvc.assets[assetId];
+					// TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
+					if (scope.item._type === 'Link') {
+						scope.item.link_image_id = assetId;
+					} else if (scope.item._type === 'Annotation') {
+						scope.item.annotation_image_id = assetId;
+					} else {
+						scope.item.asset_id = assetId;
+					}
+					scope.showUploadButtons = false;
+					scope.showUploadField = false;
 				};
 
 				scope.replaceAsset = function () {

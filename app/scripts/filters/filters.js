@@ -165,6 +165,19 @@ angular.module('com.inthetelling.story')
 			return JSON.stringify(json, undefined, 2);
 		};
 	})
+	.filter('i18n', function (appState) {
+		// Used for plugin data only; other fields precalculate into display_foo.
+		// let's see if this is a huge performance hit, if not maybe we'll skip the precalc...
+		return function (input) {
+			if (!input) {
+				return "";
+			}
+			if (typeof (input) === 'object') {
+				return input[appState.lang] || input.en || "";
+			}
+			return input;
+		};
+	})
 	.filter('asBytes', function () {
 		// quick + sloppy
 		return function (b) {
