@@ -9,6 +9,9 @@ angular.module('com.inthetelling.story')
 		if (!config.apiDataBaseUrl) {
 			config.apiDataBaseUrl = "//" + window.location.host;
 		}
+		if (config.apiDataBaseUrl.indexOf('localhost') > -1) {
+			config.apiDataBaseUrl = '';
+		}
 
 		if (!config.localStorageKey) {
 			config.localStorageKey = "storyToken";

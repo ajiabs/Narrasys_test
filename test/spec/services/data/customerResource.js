@@ -5,22 +5,25 @@ describe('customerResource', function () {
     beforeEach(function () {
         angular.mock.inject(function ($injector) {
             $httpBackend = $injector.get('$httpBackend');
-						CustomerDataModel = $injector.get('CustomerDataModel');
-						DataModelUtils = $injector.get('DataModelUtils');
+            CustomerDataModel = $injector.get('CustomerDataModel');
+            DataModelUtils = $injector.get('DataModelUtils');
             mockCustomerResource = $injector.get('Customer');
+            config = $injector.get('config');
         })
     });
 
     describe('getCustomer', function () {
         it('should call customer get by id', inject(function (Customer) {
-						var customerId = "51d365cdbd526e037d000001";						
-						
-						DataModelUtils.setData(CustomerDataModel.data);
-						var customer = DataModelUtils.findOne(customerId);
-            $httpBackend.expectGET('/v3/customers/' + customerId)
+            var customerId = "51d365cdbd526e037d000001";
+
+            DataModelUtils.setData(CustomerDataModel.data);
+            var customer = DataModelUtils.findOne(customerId);
+            $httpBackend.expectGET(config.apiDataBaseUrl + '/v3/customers/' + customerId)
                 .respond(customer);
 
-            var result = mockCustomerResource.get({customerId:customerId});
+            var result = mockCustomerResource.get({
+                customerId: customerId
+            });
             $httpBackend.flush();
             console.log(result)
             expect(result._id).toEqual(customerId);
