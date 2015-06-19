@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare the top level application module and its dependencies
-angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular'])
+angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'ngResource', 'textAngular', 'ngMockE2E'])
 
 // Configure routing
 .config(function ($routeProvider) {

@@ -1,122 +1,32 @@
-describe('Service: authSvc', function () {
+'use strict';
+describe('authSvc', function () {
+	var $httpBackend, authSvc, backendStub, appState;
+	beforeEach(angular.mock.module('com.inthetelling.story'));
 
-	beforeEach(module('com.inthetelling.story'));
-
-	var authSvc;
-	beforeEach(inject(function (_authSvc_) {
-		authSvc = _authSvc_;
-	}));
-
-	it('should return admin from getRoleForNarrative when admin is included with no scoping', function () {
-    var roles = [
-      {
-        role: "instructor"
-      },
-      {
-        role: "admin"
-      }
-    ];
-
-		var role = authSvc.getRoleForNarrative("1234", roles);
-		expect(role).toEqual("admin");
+	beforeEach(function () {
+		angular.mock.inject(function ($injector) {
+			$httpBackend = $injector.get('$httpBackend');
+			authSvc = $injector.get('authSvc');
+			backendStub = $injector.get('BackendStub');
+			appState = $injector.get('appState');
+			backendStub.StubIt($httpBackend);
+		});
 	});
 
-	it('should return instructor from getRoleForNarrative when admin is scoped out', function () {
-    var roles = [
-      {
-        role: "instructor"
-      },
-      {
-        role: "admin",
-        resource_id: "1111"
-      }
-    ];
-		var role = authSvc.getRoleForNarrative("1234", roles);
-		expect(role).toEqual("instructor");
+	describe('getCurrentUser', function () {
+		it('should call get current user', inject(function () {
+			var userId = "5494786021e37f20f0000004";
+			console.log("TESTING CURRENT USER");
+			var promise = authSvc.getCurrentUser();
+			promise.then(function (result) {
+				console.log(result);
+				console.log("RESULTS", result);
+				expect(result._id)
+					.toEqual(userId);
+				expect(appState.user._id)
+					.toEqual(userId);
+			});
+			$httpBackend.flush();
+		}));
 	});
-  it('should return guest from getRoleForNarrative when admin, instructor, and student is scoped out', function () {
-    var roles = [
-      {
-        role: "instructor",
-        resource_id: "1111"
-      },
-      {
-        role: "admin",
-        resource_id: "1111"
-      },
-      {
-        role: "student",
-        resource_id: "1111"
-      },
-      {
-        role: "guest"
-      }
-    ];
-		var role = authSvc.getRoleForNarrative("1234", roles);
-		expect(role).toEqual("guest");
-	});
-  it('should return student from getRoleForNarrative when admin, but others included, is scoped out', function () {
-    var roles = [
-      {
-        role: "instructor",
-        resource_id: "1111"
-      },
-      {
-        role: "student"
-      },
-      {
-        role: "guest"
-      },
-      {
-        role: "admin",
-        resource_id: "1111"
-      }
-    ];
-		var role = authSvc.getRoleForNarrative("1234", roles);
-		expect(role).toEqual("student");
-	});
-  it('should return instructor from getRoleForNarrative when admin,  is scoped out', function () {
-    var roles = [
-      {
-        role: "instructor",
-      },
-      {
-        role: "admin",
-        resource_id: "1111"
-      },
-      {
-        role: "student"
-      },
-      {
-        role: "guest"
-      }
-    ];
-		var role = authSvc.getRoleForNarrative("1234", roles);
-		expect(role).toEqual("instructor");
-	});
-  it('should return admin from getRoleForNarrative when admin, has correct scope', function () {
-    var roles = [
-      {
-        role: "instructor",
-      },
-      {
-        role: "admin",
-        resource_id: "1111"
-      },
-      {
-        role: "student"
-      },
-      {
-        role: "guest"
-      }
-    ];
-		var role = authSvc.getRoleForNarrative("1111", roles);
-		expect(role).toEqual("admin");
-	});
-
-  it('should return empty string when roles array is empty', function () {
-    var roles = [];
-		var role = authSvc.getRoleForNarrative("1111", roles);
-		  expect(role).toEqual("");
-	 });
 });

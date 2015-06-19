@@ -478,7 +478,17 @@ angular.module('com.inthetelling.story')
 		//getEvents returns the data via a promise, instead of just setting modelSvc
 		var getEvents = function (epId, segmentId) {
 			var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
-			return $http.get(config.apiDataBaseUrl + endpoint);
+
+			return $http.get(config.apiDataBaseUrl + endpoint)
+				.success(function (events) {
+					getEventActivityDataForUser(events, "Plugin", epId);
+					angular.forEach(events, function (eventData) {
+						eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
+						console.log('EVENT DATA: ', eventData);
+						modelSvc.cache("event", svc.resolveIDs(eventData));
+					});
+
+				});
 		};
 
 		var getEventActivityDataForUser = function (events, activityType, epId) {
@@ -610,6 +620,7 @@ angular.module('com.inthetelling.story')
 
 		svc.getContainer = function (id, episodeId) {
 			return GET("/v3/containers/" + id, function (containers) {
+				console.log("containers", containers);
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];
 
