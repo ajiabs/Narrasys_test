@@ -55,7 +55,8 @@ angular.module('com.inthetelling.story')
 		}
 
 		if ($routeParams.t) {
-			timelineSvc.seek($routeParams.t, "URLParameter");
+			// DISABLING because it broke
+			// timelineSvc.seek($routeParams.t, "URLParameter");
 		}
 
 		$scope.changeProducerEditLayer = function (newLayer) {
