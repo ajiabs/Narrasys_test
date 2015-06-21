@@ -50,7 +50,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.initYoutube = function () {
-
 			// console.log("videoController initYoutube");
 			var playerStates = ["ended", "playing", "paused", "buffering", "???", "cued"]; // convert YT codes to html5 state names
 			// NOTE youtube is currently sending us playerState of 'buffering' when paused 
@@ -62,7 +61,6 @@ angular.module('com.inthetelling.story')
 							return;
 						}
 						// console.log("state change:", playerStates[x.data], x.data);
-
 						if (appState.isTouchDevice && appState.hasBeenPlayed === false) {
 							// The first user-initiated click needs to go directly to youtube, not to our player.  
 							// So we have to do some catchup here:
@@ -94,7 +92,7 @@ angular.module('com.inthetelling.story')
 			$scope.babysitYoutubeVideo = function () {
 				$scope.babysitter = $interval(function () {
 					// For now copping out: assume that youtube and the player will inevitably get out of synch sometimes,
-					// and deal with it.  The player's state is the correct one in all cases.
+					// and deal with it.  playerState (the video) is the correct one in all cases.
 
 					// console.log("Timeline: ", appState.timelineState, "Video:", $scope.playerState);
 
@@ -107,7 +105,7 @@ angular.module('com.inthetelling.story')
 						$scope.YTPlayer.playVideo();
 					}
 					if (appState.timelineState === "buffering" && $scope.playerState === "buffering") {
-						console.warn("Timeline and video were being Canadian, both waiting for the other to go.");
+						console.warn("Timeline and video were both waiting for the other to go.");
 						timelineSvc.unstall();
 					}
 
@@ -325,6 +323,33 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		$scope.startAtTime = function (t) {
+			if ($scope.videoType === 'youtube') {
+				// HACK HACK HACK UNBELIEVABLE HACK
+				// youtube recently started getting very confused if we try to seek before the video is playable.
+				// there seems to be no reliable way to tell when it is safe, other than just playing the video and waiting 
+				// until it actually starts.  SO THAT'S THE CUNNING PLAN
+				// Have to mute the audio so it doesn't blip the first few frames of sound in the meanwhile
+
+				$scope.setVolume(0);
+				$scope.YTPlayer.playVideo();
+				var unwatch = $scope.$watch(function () {
+					return $scope.playerState;
+				}, function (newPlayerState) {
+					if (newPlayerState === 'playing') {
+						unwatch();
+						$scope.YTPlayer.pauseVideo();
+						$scope.YTPlayer.seekTo(t, true);
+						$scope.setVolume(100);
+					}
+				});
+
+			} else {
+				// native video does not have this problem
+				$scope.seek(t, true);
+			}
+		};
+
 		$scope.seek = function (t, intentionalStall, defer) {
 			// console.log("videoController.seek", t, intentionalStall, defer);
 			defer = defer || $q.defer();
@@ -345,6 +370,7 @@ angular.module('com.inthetelling.story')
 					if (wasPlaying) {
 						$scope.YTPlayer.playVideo();
 					}
+
 					defer.resolve();
 				} else {
 					if ($scope.videoNode.readyState > 1) {
@@ -358,11 +384,14 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			} catch (e) {
+				console.error("video error", e);
 				$scope.intentionalStall = false;
 				$timeout.cancel($scope.stallGracePeriod);
 				videoNotReady = true;
 			}
 			if (videoNotReady) {
+
+				// console.log("Video not ready");
 				// TODO: throw error and stop looping if this goes on too long.
 				// Or be less lazy and watch the loadedmetadata or youtube equivalent event
 				$timeout(function () {
