@@ -1046,15 +1046,23 @@ angular.module('com.inthetelling.story')
 
 			// We need to know if the video has been transcoded or not in the template,
 			// so let's centralize the logic for that here
-			videoAsset.html5IsTranscoded = function () {
+			videoAsset.isTranscoded = function () {
 				return svc.isTranscoded(this);
 			};
 
 			return videoAsset;
 		};
 
+		// TODO get rid of this; really wasteful to be checking this constantly, it's only useful
+		//  right after a master asset upload  (put it in ittVideo pollInterval() instead)
 		svc.isTranscoded = function (video) {
-			return !!video.alternate_urls;
+			if (video.urls && video.urls.youtube && video.urls.youtube.length) {
+				return true;
+			}
+			if (video.alternate_urls) {
+				return true;
+			}
+			return false;
 		};
 
 		if (config.debugInBrowser) {
