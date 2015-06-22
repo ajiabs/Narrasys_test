@@ -14,9 +14,9 @@
 		buffering: appState.timelineState == 'buffering',
 		firstplay: !appState.hasBeenPlayed,
 		rewind: (appState.time > 0 && appState.time >= video.duration - 0.3),
-		transcoding: !video.urls.youtube.length && !video.html5IsTranscoded()
+		transcoding: !video.isTranscoded()
 	}">
-		<div class="convertingMessage" ng-if="!video.urls.youtube.length && !video.html5IsTranscoded()">
+		<div class="convertingMessage" ng-if="!video.isTranscoded()">
 			This video is being converted to a web-playable format and will be ready in a&nbsp;few&nbsp;minutes
 		</div>
 	</div>
