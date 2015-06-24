@@ -175,20 +175,24 @@ angular.module('com.inthetelling.story')
 			episodeUserMetrics = svc.dejitter(episodeUserMetrics);
 
 			var posts = [];
-			if (eventUserActions.length > 0) {
-				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/event_user_actions', {
-					"event_user_actions": eventUserActions
-				}));
-			}
-			if (episodeUserMetrics.length > 0) {
-				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/episode_user_metrics', {
-					"episode_user_metrics": episodeUserMetrics
-				}));
-			}
-			$q.all(posts).then(function () {
-				defer.resolve();
-			});
 
+			// WARN iOS is posting this before episodeID is set.  
+			if (appState.episodeId) {
+				if (eventUserActions.length > 0) {
+					posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/event_user_actions', {
+						"event_user_actions": eventUserActions
+					}));
+				}
+				if (episodeUserMetrics.length > 0) {
+					posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/episode_user_metrics', {
+						"episode_user_metrics": episodeUserMetrics
+					}));
+				}
+
+				$q.all(posts).then(function () {
+					defer.resolve();
+				});
+			}
 			return defer.promise;
 		};
 
