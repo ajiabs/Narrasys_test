@@ -155,6 +155,9 @@ angular.module('com.inthetelling.story')
 			if (svc.activityQueue.length === 0) {
 				defer.resolve("");
 			}
+			if (!appState.episodeId) {
+				defer.resolve(); // iOS with ?t= param is trying to post metrics before it has an episode ID. TODO figure out wtf is causing that...
+			}
 
 			var actions = angular.copy(svc.activityQueue);
 			svc.activityQueue = [];
@@ -175,24 +178,20 @@ angular.module('com.inthetelling.story')
 			episodeUserMetrics = svc.dejitter(episodeUserMetrics);
 
 			var posts = [];
-
-			// WARN iOS is posting this before episodeID is set.  
-			if (appState.episodeId) {
-				if (eventUserActions.length > 0) {
-					posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/event_user_actions', {
-						"event_user_actions": eventUserActions
-					}));
-				}
-				if (episodeUserMetrics.length > 0) {
-					posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/episode_user_metrics', {
-						"episode_user_metrics": episodeUserMetrics
-					}));
-				}
-
-				$q.all(posts).then(function () {
-					defer.resolve();
-				});
+			if (eventUserActions.length > 0) {
+				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/event_user_actions', {
+					"event_user_actions": eventUserActions
+				}));
 			}
+			if (episodeUserMetrics.length > 0) {
+				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/episode_user_metrics', {
+					"episode_user_metrics": episodeUserMetrics
+				}));
+			}
+			$q.all(posts).then(function () {
+				defer.resolve();
+			});
+
 			return defer.promise;
 		};
 
