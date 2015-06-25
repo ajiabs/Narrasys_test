@@ -503,6 +503,9 @@ angular.module('com.inthetelling.story')
 				}
 				// add start and end to timelineEvents array
 				if (event.stop) {
+					console.log("STOP EVENT", event);
+					addMarkedEvent(event); // give all stop items a timeline marker
+
 					svc.timelineEvents.push({
 						t: event.start_time + injectionTime,
 						id: "timeline",
