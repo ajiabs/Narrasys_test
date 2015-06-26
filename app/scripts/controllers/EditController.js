@@ -171,7 +171,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.saveEvent = function () {
 			var toSave = angular.copy(appState.editEvent);
-
+			$scope.blockDoubleClicks = true;
 			//assign current episode_id
 			toSave.cur_episode_id = appState.episodeId;
 			if (toSave._type === 'Scene') {
