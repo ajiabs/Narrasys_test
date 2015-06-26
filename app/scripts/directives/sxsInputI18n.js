@@ -1,5 +1,9 @@
 'use strict';
+/*
 
+TODO  add ta-default-wrap="span" attribute to the text-angular node, then change scope.trim to work with that instead.
+
+*/
 angular.module('com.inthetelling.story')
 	.directive('sxsInputI18n', function (appState, $timeout, textAngularManager) {
 		return {
@@ -53,7 +57,10 @@ angular.module('com.inthetelling.story')
 					};
 
 					scope.sanitizePastedHtml = function (pasted) {
-						console.log("PASTED ", pasted);
+						// Strip out all markup from pasted content (to keep those addicted to MS Word from shooting themselves in the foot)
+						var frag = document.createElement("div");
+						frag.innerHTML = pasted;
+						return frag.textContent;
 					};
 
 				}
