@@ -51,6 +51,11 @@ angular.module('com.inthetelling.story')
 						scope.field[appState.lang] = txt;
 
 					};
+
+					scope.sanitizePastedHtml = function (pasted) {
+						console.log("PASTED ", pasted);
+					};
+
 				}
 			}
 		};
