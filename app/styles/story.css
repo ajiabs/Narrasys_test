@@ -160,6 +160,7 @@
 .storyUI .tablabel {
 	border: 1px solid;
 	padding: 0.5em;
+	background-color: #FFF;
 }
 
 .storyUI .topPane {
@@ -173,7 +174,7 @@
 }
 
 .storyUI .topPane .modalBg {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -183,12 +184,42 @@
 }
 
 .storyUI .topPane .pane {
-	position: absolute;
+	position: fixed;
 	top: 50px;
-	left: 2em;
-	right: 2em;
-	max-height: 100%;
-	overflow-y: scroll;
+	margin: 0 2em;
+}
+
+.storyUI .pointer {
+	height: 24px;
+	margin-left: -20px;
+	overflow: hidden;
+	padding-top: 15px;
+	position: fixed;
+	width: 40px;
+}
+
+.storyUI .topPane .pointer div {
+	background-color: #fff;
+	box-shadow: 0 0 7px #000;
+	height: 20px;
+	margin: auto;
+	transform: rotate(45deg);
+	width: 20px;
+}
+
+.storyUI .topPane .overflow {
+	overflow: scroll;
+	max-height: 80%;
+}
+/* decorative */
+
+.storyUI .topPane .paneContents {
 	background-color: #FFF;
+	padding: 1em;
+}
+
+.storyUI .topPane .pane {
+	border-radius: 0.5em;
+	box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.5);
 }
 

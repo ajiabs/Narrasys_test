@@ -1,8 +1,10 @@
 <div ng-if="pane.active" class="topPane animate transitionFade">
 	<div class="modalBg" ng-click="hidePane()"></div>
-
-	<div class="pane">
-		{{pointer}}{{pane}}
-		<div role="tabpanel" ng-transclude></div>
+	<div class="pointer">
+		<div></div>
+	</div>
+	<div class="pane overflow">
+		<div ng-transclude>
+		</div>
 	</div>
 </div>
