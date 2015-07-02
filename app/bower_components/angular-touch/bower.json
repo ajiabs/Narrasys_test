@@ -1,7 +1,7 @@
 {
-  "name": "angular-mocks",
+  "name": "angular-touch",
   "version": "1.4.1",
-  "main": "./angular-mocks.js",
+  "main": "./angular-touch.js",
   "ignore": [],
   "dependencies": {
     "angular": "1.4.1"

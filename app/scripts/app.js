@@ -110,11 +110,15 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			controller: 'EventTestController',
 			templateUrl: 'templates/testbed-event.html',
 		})
-		.otherwise({
-			title: "Telling STORY: Error",
-			controller: 'ErrorController',
-			templateUrl: 'templates/error-404.html'
-		});
+		.when('/foo', {
+			template: '<div itt-story-ui></div>'
+		})
+
+	.otherwise({
+		title: "Telling STORY: Error",
+		controller: 'ErrorController',
+		templateUrl: 'templates/error-404.html'
+	});
 
 	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
 })
@@ -139,6 +143,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		}
 
 		fhotkb = true;
+		console.log(e.keyCode);
 		if (e.keyCode === 27) {
 			$rootScope.$emit("userKeypress.ESC");
 			e.preventDefault();

@@ -1,0 +1,194 @@
+.fpo {
+	border: 1px solid #00F;
+}
+
+.hidden {
+	/*display: none;*/
+}
+
+.storyUI .episodeContainer {
+	z-index: 1;
+}
+
+.storyUI .bottomToolbarTrigger {
+	z-index: 10;
+}
+
+.storyUI .topToolbar,
+.storyUI .bottomToolbar {
+	z-index: 20;
+}
+/* --- */
+
+.storyUI .viewport {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: scroll;
+	background-color: #CCC;
+}
+
+.storyUI .topToolbar {
+	font-size: 16px;
+	text-align: center;
+	height: 85px;
+	margin-bottom: -40px;
+	background-image: url('/images/toolbar.png');
+	background-repeat: repeat-x;
+	background-size: 100% 100%;
+	opacity: 1;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	pointer-events: none;
+}
+
+.storyUI .topToolbar > div {
+	pointer-events: auto;
+}
+
+.storyUI .topToolbar,
+.storyUI .bottomToolbar,
+.storyUI .topToolbarPadding {
+	transition: all 0.5s;
+}
+
+.storyUI .topToolbarPadding {
+	height: 45px;
+}
+
+.hiddenToolbars .storyUI .topToolbarPadding {
+	height: 0;
+}
+
+.hiddenToolbars .storyUI .topToolbar {
+	top: -45px;
+	opacity: 0;
+}
+
+.hiddenToolbars .storyUI .bottomToolbar {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.storyUI .episodeContainer {
+	width: 100%;
+	min-height: 100%;
+	position: relative;
+}
+
+.storyUI .bottomToolbarTrigger {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 60px;
+}
+
+.storyUI .bottomToolbar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	opacity: 1;
+}
+
+.storyUI .bottomToolbar .toolbarSecondary {
+	background-image: url('/images/toolbar-bottom.png');
+	background-repeat: repeat-x;
+	background-size: 100% 30px;
+	background-position: bottom;
+	min-height: 30px;
+	margin-top: -30px;
+	width: 100%;
+}
+
+.storyUI .bottomToolbar .toolbarPrimary {
+	background-color: #EEE;
+}
+/* - */
+
+.storyUI .tabset .tablabel {
+	opacity: 0.5;
+}
+
+.storyUI .tabset .cur.tablabel {
+	opacity: 1;
+}
+
+.storyUI .tabset .tablabel {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.storyUI .tabsLeft .tabset .tab {
+	width: 70%;
+	margin-left: 30%;
+}
+
+.storyUI .tabsRight .tabset .tab {
+	width: 70%;
+	margin-right: 30%;
+}
+
+.storyUI .tabset .tablabels {
+	width: 30%;
+}
+
+.storyUI .tabset .tablabel {
+	list-style: none;
+}
+
+.storyUI .tabsLeft .tabset .tablabels {
+	float: left;
+	text-align: right;
+}
+
+.storyUI .tabsRight .tabset .tablabels {
+	float: right;
+}
+
+.storyUI .tablabel {
+	text-align: center;
+}
+/* - */
+
+.storyUI .tab,
+.storyUI .tablabel {
+	border: 1px solid;
+	padding: 0.5em;
+}
+
+.storyUI .topPane {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 1;
+	z-index: 30;
+}
+
+.storyUI .topPane .modalBg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #000;
+	opacity: 0.3;
+}
+
+.storyUI .topPane .pane {
+	position: absolute;
+	top: 50px;
+	left: 2em;
+	right: 2em;
+	max-height: 100%;
+	overflow-y: scroll;
+	background-color: #FFF;
+}
+

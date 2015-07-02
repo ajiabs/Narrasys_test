@@ -539,33 +539,33 @@ input[readonly] {
 	position: relative;
 }
 
-.ittTabLabel {
+.ittTabs .ittTabLabel {
 	float: left;
 	padding: 0 10px;
 	border-bottom: 1px solid #CCC;
 }
 
-.ittTabLabel.cur {
+.ittTabs .ittTabLabel.cur {
 	border: 1px solid #CCC;
 	border-bottom: none;
 }
 
-.ittTabLabel a {
+.ittTabs .ittTabLabel a {
 	color: #767676;
 }
 
-.ittTabLabel.cur a {
+.ittTabs .ittTabLabel.cur a {
 	color: #000;
 }
 
-.ittTabContents {
+.ittTabs .ittTabContents {
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 20px;
 }
 
-.ittTabFoot {
+.ittTabs .ittTabFoot {
 	clear: both;
 	width: 100%;
 	text-align: right;

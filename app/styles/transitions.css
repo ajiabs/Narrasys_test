@@ -107,6 +107,14 @@ Transition time should be set for the specific object type
 .animate.ng-leave.ng-leave-active.transitionFade {
 	opacity: 0;
 }
+
+.animate.transitionFade.ng-hide-add {
+	animation: 1s fadeOut;
+}
+
+.animate.transitionFade.ng-hide-remove {
+	animation: 1s fadeIn;
+}
 /* ------------------------------------------------------------------------------------------------------------------
    transitionSlideL */
 
