@@ -1,9 +1,9 @@
-<div ng-if="pane.active" class="topPane animate transitionFade">
+<div ng-show="pane.active" class="topPane animate transitionFade">
 	<div class="modalBg" ng-click="hidePane()"></div>
 	<div itt-pane-pointer class="pointer">
 		<div></div>
 	</div>
-	<div itt-pane class="pane overflow">
+	<div itt-pane class="pane overflow" ng-class="{withBackground: background}">
 		<div ng-transclude>
 		</div>
 	</div>

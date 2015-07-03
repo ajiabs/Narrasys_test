@@ -143,7 +143,8 @@ yet the same controller in ittTopPane needs $scope to store values but not contr
 		restrict: 'EA',
 		transclude: true,
 		scope: {
-			label: '@'
+			label: '@', // internal ID used to identify the pane to be launched
+			background: '@' // adds background color and decoration
 		},
 		// controllerAs: 'ittTopPane',  // Why doesn't this one need this?  tabset does...
 		controller: function ($scope) {
@@ -222,14 +223,14 @@ yet the same controller in ittTopPane needs $scope to store values but not contr
 				} else {
 					// console.log("Centering pane");
 					scope.paneNode.css({
-						'left': (pointAt.x - (paneSize.x / 2)) + 'px',
+						'left': Math.floor(pointAt.x - (paneSize.x / 2)) + 'px',
 						'right': 'auto'
 					});
 				}
 
 				var pointerPosition = {
-					left: pointAt.x,
-					top: (scope.paneNode.offset().top - 24)
+					left: Math.floor(pointAt.x),
+					top: Math.floor((scope.paneNode.offset().top - 24))
 				};
 				if (pointerPosition.left < 50) {
 					pointerPosition.left = 50;

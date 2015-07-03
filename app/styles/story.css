@@ -1,5 +1,10 @@
 .fpo {
-	border: 1px solid #00F;
+	background-image: url('/images/fpo.png');
+	background-size: 100% 100%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
 }
 
 .hidden {
@@ -10,16 +15,6 @@
 	z-index: 1;
 }
 
-.storyUI .bottomToolbarTrigger {
-	z-index: 10;
-}
-
-.storyUI .topToolbar,
-.storyUI .bottomToolbar {
-	z-index: 20;
-}
-/* --- */
-
 .storyUI .viewport {
 	position: fixed;
 	top: 0;
@@ -28,6 +23,16 @@
 	bottom: 0;
 	overflow: scroll;
 	background-color: #CCC;
+}
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
+.storyUI .topToolbar,
+.storyUI .bottomToolbar {
+	z-index: 20;
+}
+
+.storyUI .bottomToolbarTrigger {
+	z-index: 10;
 }
 
 .storyUI .topToolbar {
@@ -109,14 +114,10 @@
 .storyUI .bottomToolbar .toolbarPrimary {
 	background-color: #EEE;
 }
-/* - */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 
 .storyUI .tabset .tablabel {
-	opacity: 0.5;
-}
-
-.storyUI .tabset .cur.tablabel {
-	opacity: 1;
+	list-style: none;
 }
 
 .storyUI .tabset .tablabel {
@@ -124,44 +125,88 @@
 	cursor: hand;
 }
 
-.storyUI .tabsLeft .tabset .tab {
-	width: 70%;
-	margin-left: 30%;
-}
-
-.storyUI .tabsRight .tabset .tab {
-	width: 70%;
-	margin-right: 30%;
-}
-
-.storyUI .tabset .tablabels {
-	width: 30%;
-}
-
-.storyUI .tabset .tablabel {
-	list-style: none;
-}
-
-.storyUI .tabsLeft .tabset .tablabels {
-	float: left;
-	text-align: right;
-}
-
-.storyUI .tabsRight .tabset .tablabels {
-	float: right;
-}
-
-.storyUI .tablabel {
+.storyUI .tablabels {
 	text-align: center;
+	min-width: 120px;
 }
-/* - */
 
-.storyUI .tab,
+.storyUI .tabset {
+	display: flex;
+}
+
+.storyUI .tabsRight .tabset {
+	flex-direction: row-reverse;
+}
+
+.storyUI .tabset .tab {
+	height: 100%;
+}
+
+.storyUI .tabset .tabs {
+	display: block;
+}
+/* decorative */
+
+.storyUI .tabs,
 .storyUI .tablabel {
-	border: 1px solid;
 	padding: 0.5em;
+	border: 2px solid rgba(0, 0, 0, 0.5);
+	border-top: none;
+}
+
+.storyUI .tabs,
+.storyUI .cur.tablabel {
 	background-color: #FFF;
 }
+
+.storyUI .tablabel {
+	background-color: #DDD;
+}
+
+.storyUI .tabsRight .tabs,
+.storyUI .tabsLeft .cur.tablabel {
+	box-shadow: -5px 5px 4px rgba(0, 0, 0, 0.3);
+}
+
+.storyUI .tabsLeft .tabs,
+.storyUI .tabsRight .cur.tablabel {
+	box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tablabel:last-child {
+	margin-bottom: 1em;
+}
+
+.storyUI .tabsRight .tabs {
+	border-radius: 0.5em 0 0.5em 0.5em;
+	border-right: none;
+}
+
+.storyUI .tabsLeft .tabs {
+	border-radius: 0 0.5em 0.5em 0.5em;
+	border-left: none;
+}
+
+.storyUI .tabsRight .tablabel {
+	margin-right: 20px;
+	border-radius: 0 1em 1em 0;
+	border-left: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.storyUI .tabsLeft .tablabel {
+	margin-left: 20px;
+	border-radius: 1em 0 0 1em;
+	border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.storyUI .tabsRight .cur.tablabel {
+	border-left: none;
+}
+
+.storyUI .tabsLeft .cur.tablabel {
+	border-right: none;
+}
+/*  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 .storyUI .topPane {
 	position: absolute;
@@ -213,13 +258,11 @@
 }
 /* decorative */
 
-.storyUI .topPane .paneContents {
+.storyUI .topPane .pane.withBackground {
 	background-color: #FFF;
 	padding: 1em;
-}
-
-.storyUI .topPane .pane {
 	border-radius: 0.5em;
 	box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.5);
 }
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 
