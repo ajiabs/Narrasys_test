@@ -64,7 +64,7 @@ angular.module('com.inthetelling.story')
 			console.log("itt-top-toolbar", scope, element);
 
 			scope.showPane = function (x, y) {
-				console.log("SHOWPANE ", x, y);
+				// console.log("SHOWPANE ", x, y);
 				$rootScope.$emit("showPane", x, y);
 			};
 
@@ -91,7 +91,7 @@ angular.module('com.inthetelling.story')
 			var self = this;
 			self.tabs = [];
 			self.addTab = function (tab) {
-				console.log("Adding tab", tab);
+				// console.log("Adding tab", tab);
 				self.tabs.push(tab);
 				if (tab.active || self.tabs.length === 1) {
 					self.chooseTab(tab);
@@ -104,7 +104,7 @@ angular.module('com.inthetelling.story')
 					}
 				});
 				selectedTab.active = true;
-				console.log("Selecting tab", selectedTab);
+				// console.log("Selecting tab", selectedTab);
 			};
 		},
 		controllerAs: 'tabset',
@@ -131,7 +131,7 @@ angular.module('com.inthetelling.story')
 	};
 })
 
-.directive('ittTopPane', function ($rootScope, $timeout) {
+.directive('ittTopPane', function ($rootScope, $timeout, $interval) {
 	return {
 		restrict: 'EA',
 		transclude: true,
@@ -149,7 +149,7 @@ angular.module('com.inthetelling.story')
 					// TODO watch evt.currentTarget.offsetLeft and update position
 					if (evt) {
 						$timeout(function () {
-							scope.reposition({
+							scope.position({
 								x: evt.clientX,
 								y: evt.clientY
 							});
@@ -166,60 +166,92 @@ angular.module('com.inthetelling.story')
 			scope.hidePane = function () {
 				scope.pane.active = false;
 				$rootScope.$emit('unlockToolbars');
+				$interval.cancel(scope.repositioner);
 			};
 			scope.showPane = function () {
-				console.log("SCOPING PANE");
 				scope.pane.active = true;
 				$rootScope.$emit('lockToolbars');
+				scope.repositioner = $interval(scope.reposition, 47);
 			};
 
-			scope.reposition = function (pointer) {
+			scope.position = function (pointer) {
 				// For now, this is for top panels only. TODO extend to bottom as well?
 
 				// oh FFS no I am not going to  create separate pane directives and a controller just to get access to a couple of goddamn dom nodes
 				scope.paneNode = element.find('.pane'); // JQUERY DEPENDENCY
 				scope.pointerNode = element.find('.pointer');
-				console.log("REPOSITIONING: ", element, scope.paneNode);
 
-				if (pointer && scope.paneNode && scope.paneNode.width() > 0) {
-					var paneWidth = scope.paneNode.width();
-					if (paneWidth > pointer.x) {
-						console.log("Positioning pane on left");
+				// if (pointer && scope.paneNode && scope.paneNode.width() > 0) {
+				var paneWidth = scope.paneNode.width();
+				if (paneWidth > pointer.x) {
+					// console.log("Positioning pane on left");
+					scope.pane.position = "left";
+					scope.paneNode.css({
+						left: 0,
+						right: 'auto'
+					});
+				} else if (paneWidth > (window.innerWidth - pointer.x)) {
+					// console.log("Positioning pane on right");
+					scope.pane.position = "right";
+					scope.paneNode.css({
+						left: 'auto',
+						right: 0
+					});
+				} else {
+					// console.log("Centering pane");
+					scope.pane.position = "center";
+					scope.paneNode.css({
+						'left': (pointer.x - (paneWidth / 2)) + 'px',
+						'right': 'auto'
+					});
+				}
+
+				var pointerPos = {
+					left: pointer.x,
+					top: (scope.paneNode.offset().top - 24)
+				};
+				if (pointerPos.left < 50) {
+					pointerPos.left = 50;
+				}
+				if (pointerPos.left > window.innerWidth - 50) {
+					pointerPos.left = window.innerWidth - 50;
+				}
+
+				scope.pointerNode.css(pointerPos);
+
+				scope.originalPos = angular.copy(pointerPos);
+
+				scope.originalWindow = window.innerWidth;
+			};
+
+			scope.reposition = function () {
+				// console.log("reposition...");
+				var delta = {
+					x: 0,
+					y: 0
+				};
+				if (scope.pane.position === 'left') {
+					// nothing
+				} else if (scope.pane.position === 'right') {
+					delta.x = (window.innerWidth - scope.originalWindow);
+				} else if (scope.pane.position === 'center') {
+					delta.x = (window.innerWidth - scope.originalWindow) / 2;
+				}
+				if (scope.pointerNode) {
+					scope.pointerNode.css({
+						left: (scope.originalPos.left + delta.x),
+						top: (scope.originalPos.top + delta.y)
+					});
+					if (scope.pane.position === 'center') {
 						scope.paneNode.css({
-							left: 0,
-							right: 'auto'
-						});
-					} else if (paneWidth > (window.innerWidth - pointer.x)) {
-						console.log("Positioning pane on right");
-						scope.paneNode.css({
-							left: 'auto',
-							right: 0
-						});
-					} else {
-						console.log("Centering pane");
-						scope.paneNode.css({
-							'left': (pointer.x - (paneWidth / 2)) + 'px',
+							'left': ((scope.originalPos.left + delta.x) - (scope.paneNode.width() / 2)) + 'px',
 							'right': 'auto'
 						});
 					}
-
-					console.log("TTTTT", scope.paneNode, scope.paneNode.offsetTop);
-					var pointerPos = {
-						left: pointer.x,
-						top: (scope.paneNode.offset().top - 24)
-					};
-					if (pointerPos.left < 50) {
-						pointerPos.left = 50;
-					}
-					if (pointerPos.left > window.innerWidth - 50) {
-						pointerPos.left = window.innerWidth - 50;
-					}
-
-					scope.pointerNode.css(pointerPos);
-
 				}
-
 			};
+
+			// TODO only do this while pane is open!
 
 		}
 	};
