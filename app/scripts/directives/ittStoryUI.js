@@ -107,7 +107,7 @@ angular.module('com.inthetelling.story')
 				// console.log("Selecting tab", selectedTab);
 			};
 		},
-		controllerAs: 'tabset',
+		controllerAs: 'tabset', // why is this necessary here but not in ittPane? fuck if I know...
 		templateUrl: 'templates/v2/ui/tabset.html',
 		link: function () {}
 	};
@@ -131,6 +131,13 @@ angular.module('com.inthetelling.story')
 	};
 })
 
+/* TODO
+
+understand why the controller in tabset doesn't let you attach values to $scope, only to self, and needs controllerAs even though it never tries to use it,
+yet the same controller in ittTopPane needs $scope to store values but not controllerAs?!
+
+*/
+
 .directive('ittTopPane', function ($rootScope, $timeout, $interval) {
 	return {
 		restrict: 'EA',
@@ -138,22 +145,30 @@ angular.module('com.inthetelling.story')
 		scope: {
 			label: '@'
 		},
+		// controllerAs: 'ittTopPane',  // Why doesn't this one need this?  tabset does...
+		controller: function ($scope) {
+			var self = this;
+			self.registerPane = function (el) {
+				console.log("registerPane", el);
+				$scope.paneNode = el;
+			};
+			self.registerPanePointer = function (el) {
+				console.log("registerPanePointer", el);
+				$scope.pointerNode = el;
+			};
+		},
 		templateUrl: 'templates/v2/ui/top-pane.html',
-		link: function (scope, element) {
+		link: function (scope) {
 			console.log("ittTopPane", scope);
 			scope.pane = {
 				active: false
 			};
+
+			// external trigger to show pane, capture the click event in evt so we have its position:
 			$rootScope.$on('showPane', function (emit, label, evt) {
 				if (label === scope.label) {
-					// TODO watch evt.currentTarget.offsetLeft and update position
 					if (evt) {
-						$timeout(function () {
-							scope.position({
-								x: evt.clientX,
-								y: evt.clientY
-							});
-						});
+						scope.pointerTarget = evt.target;
 					}
 					scope.showPane();
 				}
@@ -162,7 +177,6 @@ angular.module('com.inthetelling.story')
 				scope.hidePane();
 				scope.$digest();
 			});
-
 			scope.hidePane = function () {
 				scope.pane.active = false;
 				$rootScope.$emit('unlockToolbars');
@@ -171,88 +185,78 @@ angular.module('com.inthetelling.story')
 			scope.showPane = function () {
 				scope.pane.active = true;
 				$rootScope.$emit('lockToolbars');
-				scope.repositioner = $interval(scope.reposition, 47);
+				scope.repositioner = $interval(scope.reposition, 47); // WARN fast loop; slow me down if need be
 			};
 
-			scope.position = function (pointer) {
-				// For now, this is for top panels only. TODO extend to bottom as well?
+			scope.reposition = function () {
+				if (!scope.pointerTarget || !scope.paneNode) {
+					return; // wait until ready
+				}
 
-				// oh FFS no I am not going to  create separate pane directives and a controller just to get access to a couple of goddamn dom nodes
-				scope.paneNode = element.find('.pane'); // JQUERY DEPENDENCY
-				scope.pointerNode = element.find('.pointer');
+				// NOTE for now only x matters; leaving in stubs for y for later
+				var pointAt = {
+					x: scope.pointerTarget.offsetLeft + (angular.element(scope.pointerTarget).width() / 2), // center of element width
+					// y: scope.pointerTarget.offsetTop + (angular.element(scope.pointerTarget).height()) // bottom of element NOTE will need to subtract the height when pointing from above...
+				};
+				var paneSize = {
+					x: scope.paneNode.width(),
+					// y: scope.paneNode.height()
+				};
+				var windowSize = {
+					x: window.innerWidth,
+					// y: window.innerHeight
+				};
 
-				// if (pointer && scope.paneNode && scope.paneNode.width() > 0) {
-				var paneWidth = scope.paneNode.width();
-				if (paneWidth > pointer.x) {
+				if (paneSize.x > pointAt.x) {
 					// console.log("Positioning pane on left");
-					scope.pane.position = "left";
 					scope.paneNode.css({
 						left: 0,
 						right: 'auto'
 					});
-				} else if (paneWidth > (window.innerWidth - pointer.x)) {
+				} else if (paneSize.x > (windowSize.x - pointAt.x)) {
 					// console.log("Positioning pane on right");
-					scope.pane.position = "right";
 					scope.paneNode.css({
 						left: 'auto',
 						right: 0
 					});
 				} else {
 					// console.log("Centering pane");
-					scope.pane.position = "center";
 					scope.paneNode.css({
-						'left': (pointer.x - (paneWidth / 2)) + 'px',
+						'left': (pointAt.x - (paneSize.x / 2)) + 'px',
 						'right': 'auto'
 					});
 				}
 
-				var pointerPos = {
-					left: pointer.x,
+				var pointerPosition = {
+					left: pointAt.x,
 					top: (scope.paneNode.offset().top - 24)
 				};
-				if (pointerPos.left < 50) {
-					pointerPos.left = 50;
+				if (pointerPosition.left < 50) {
+					pointerPosition.left = 50;
 				}
-				if (pointerPos.left > window.innerWidth - 50) {
-					pointerPos.left = window.innerWidth - 50;
+				if (pointerPosition.left > windowSize.x - 50) {
+					pointerPosition.left = windowSize.x - 50;
 				}
-
-				scope.pointerNode.css(pointerPos);
-
-				scope.originalPos = angular.copy(pointerPos);
-
-				scope.originalWindow = window.innerWidth;
+				scope.pointerNode.css(pointerPosition);
 			};
+		}
+	};
+})
 
-			scope.reposition = function () {
-				// console.log("reposition...");
-				var delta = {
-					x: 0,
-					y: 0
-				};
-				if (scope.pane.position === 'left') {
-					// nothing
-				} else if (scope.pane.position === 'right') {
-					delta.x = (window.innerWidth - scope.originalWindow);
-				} else if (scope.pane.position === 'center') {
-					delta.x = (window.innerWidth - scope.originalWindow) / 2;
-				}
-				if (scope.pointerNode) {
-					scope.pointerNode.css({
-						left: (scope.originalPos.left + delta.x),
-						top: (scope.originalPos.top + delta.y)
-					});
-					if (scope.pane.position === 'center') {
-						scope.paneNode.css({
-							'left': ((scope.originalPos.left + delta.x) - (scope.paneNode.width() / 2)) + 'px',
-							'right': 'auto'
-						});
-					}
-				}
-			};
+.directive('ittPane', function () {
+	return {
+		require: '^ittTopPane',
+		link: function (scope, element, attr, parentController) {
+			parentController.registerPane(element);
+		}
+	};
+})
 
-			// TODO only do this while pane is open!
-
+.directive('ittPanePointer', function () {
+	return {
+		require: '^ittTopPane',
+		link: function (scope, element, attr, parentController) {
+			parentController.registerPanePointer(element);
 		}
 	};
 })
