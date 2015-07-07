@@ -1,7 +1,18 @@
-<div style="width: 100%; height: 45px;">
-	<a ng-click="showPane('xyz',$event)">CHEESEBURGER</a>
+<div class="flexRow" style="width: 100%; height: 45px;">
+	<div>
 
-	<a ng-click="showPane('foo',$event)">BACKPACK</a>
-	<a style="float:right" ng-click="showPane('bar',$event)">LA LA LA </a>
-	<a style="float:left" ng-click="showPane('foo',$event)">LEFT SIDE</a>
+		<a ng-click="showPane('foo',$event)">LEFT SIDE</a>
+	</div>
+
+	<div>
+		<a ng-click="showPane('xyz',$event)">CHEESEBURGER</a>
+		<a ng-click="showPane('foo',$event)">BACKPACK</a>
+	</div>
+
+	<div>
+		<a ng-click="showPane('bar',$event)">LA LA LA </a>
+	</div>
+</div>
+
+
 </div>

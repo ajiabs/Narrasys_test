@@ -72,11 +72,28 @@ angular.module('com.inthetelling.story')
 	};
 })
 
-.directive('ittBottomToolbar', function () {
+.directive('ittBottomToolbar', function (appState) {
 	return {
 		templateUrl: 'templates/v2/ui/toolbar-bottom.html',
 		link: function (scope, element) {
 			console.log("itt-bottom-toolbar", scope, element);
+
+			scope.appState = appState;
+			scope.TMPstartEdit = function () {
+
+				scope.isDirty = false;
+				appState.editEvent = true;
+			};
+
+			scope.TMPcancelEdit = function () {
+				scope.isDirty = false;
+				appState.editEvent = false;
+			};
+
+			scope.TMPmakeEditDirty = function () {
+				// demo fakery
+				scope.isDirty = true;
+			};
 
 		}
 	};

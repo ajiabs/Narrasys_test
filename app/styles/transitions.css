@@ -91,29 +91,26 @@ Transition time should be set for the specific object type
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionFade */
+/* ng-if */
+/* the order of these does matter! */
 
-.animate.ng-enter.transitionFade {
-	opacity: 0;
-}
-
-.animate.ng-enter-active.transitionFade {
-	opacity: 1;
-}
-
+.animate.ng-enter-active.transitionFade,
 .animate.ng-leave.transitionFade {
 	opacity: 1;
 }
 
+.animate.ng-enter.transitionFade,
 .animate.ng-leave.ng-leave-active.transitionFade {
 	opacity: 0;
 }
+/* ng-show */
 
 .animate.transitionFade.ng-hide-add {
-	animation: 1s fadeOut;
+	animation: 0.5s fadeOut;
 }
 
 .animate.transitionFade.ng-hide-remove {
-	animation: 1s fadeIn;
+	animation: 0.5s fadeIn;
 }
 /* ------------------------------------------------------------------------------------------------------------------
    transitionSlideL */

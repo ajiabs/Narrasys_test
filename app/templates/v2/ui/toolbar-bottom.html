@@ -1,10 +1,40 @@
 <div class="ittBottomToolbar">
+	<div ng-show="appState.editEvent" class="faintOverlay immaterial"></div>
 	<div class="toolbarSecondary">
 
-		add/edit
 
+		<div ng-show="appState.editEvent" class="editPanel animate transitionFade">
+			<div class="editPanelDecoration"></div>
 
+			<div class="editPanelContents">
+				<tabset ng-click="TMPmakeEditDirty()" class="tabsLeft">
+					<tab heading="Edit">
+						Edit the event content
+						<br> Event content
+						<br> Event content
+						<br>Edit the event content
+						<br> Event content
+						<br> Event content
+						<br>Edit the event content
+						<br> Event content
+						<br> Event content
+						<br>
+					</tab>
+					<tab heading="Style">
+						Choose event templates
+					</tab>
+				</tabset>
+			</div>
+
+		</div>
+		<div class="buttongroup">
+			<a class="button" ng-if="appState.editEvent && isDirty" ng-click="TMPcancelEdit()">Delete</a>
+			<a class="button" ng-if="appState.editEvent" ng-click="TMPcancelEdit()">Cancel</a>
+			<a class="button" ng-if="appState.editEvent" ng-click="TMPcancelEdit()">Save</a>
+			<a class="button" ng-if="!appState.editEvent" ng-click="TMPstartEdit()">Add</a>
+		</div>
 	</div>
+
 	<div class="toolbarPrimary">
 
 		PLAY/PAUSE; TIMELINE (prev, playhead, next, zoom); MINICONTROLS (fullscreen, CC, audio)

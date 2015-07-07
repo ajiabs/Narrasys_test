@@ -11,6 +11,10 @@
 	/*display: none;*/
 }
 
+.immaterial {
+	pointer-events: none;
+}
+
 .storyUI .episodeContainer {
 	z-index: 1;
 }
@@ -22,7 +26,6 @@
 	right: 0;
 	bottom: 0;
 	overflow: scroll;
-	background-color: #CCC;
 }
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 
@@ -165,12 +168,12 @@
 
 .storyUI .tabsRight .tabs,
 .storyUI .tabsLeft .cur.tablabel {
-	box-shadow: -5px 5px 4px rgba(0, 0, 0, 0.3);
+	box-shadow: -3px 5px 5px rgba(0, 0, 0, 0.1);
 }
 
 .storyUI .tabsLeft .tabs,
 .storyUI .tabsRight .cur.tablabel {
-	box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.3);
+	box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
 }
 
 .tablabel:last-child {
@@ -206,6 +209,68 @@
 .storyUI .tabsLeft .cur.tablabel {
 	border-right: none;
 }
+/* - */
+/*
+.storyUI .ittBottomToolbar .tabs,
+.storyUI .ittBottomToolbar .tablabel {
+	padding: 0.5em;
+	border: 1px solid #CCC;
+}
+
+.storyUI .ittBottomToolbar .tabs,
+.storyUI .ittBottomToolbar .cur.tablabel {
+	background-color: #FBFBFB;
+}
+
+.storyUI .ittBottomToolbar .tablabel {
+	background-color: #DDD;
+}
+
+.storyUI .ittBottomToolbar .tabsRight .tabs,
+.storyUI .ittBottomToolbar .tabsLeft .cur.tablabel {
+	box-shadow: -3px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.storyUI .ittBottomToolbar .tabsLeft .tabs,
+.storyUI .ittBottomToolbar .tabsRight .cur.tablabel {
+	box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tablabel:last-child {
+	margin-bottom: 1em;
+}
+
+.storyUI .ittBottomToolbar .tabsRight .tabs {
+	border-radius: 0.5em 0 0.5em 0.5em;
+	border-right: none;
+}
+
+.storyUI .ittBottomToolbar .tabsLeft .tabs {
+	border-radius: 0 0.5em 0.5em 0.5em;
+	border-left: none;
+}
+
+.storyUI .ittBottomToolbar .tabsRight .tablabel {
+	margin-right: 20px;
+	border-radius: 0 1em 1em 0;
+	border-left: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.storyUI .ittBottomToolbar .tabsLeft .tablabel {
+	margin-left: 20px;
+	border-radius: 1em 0 0 1em;
+	border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.storyUI .ittBottomToolbar .tabsRight .cur.tablabel {
+	border-left: none;
+}
+
+.storyUI .ittBottomToolbar .tabsLeft .cur.tablabel {
+	border-right: none;
+}
+
+*/
 /*  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 .storyUI .topPane {
@@ -218,7 +283,7 @@
 	z-index: 30;
 }
 
-.storyUI .topPane .modalBg {
+.storyUI .modalBg {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -265,4 +330,96 @@
 	box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.5);
 }
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
+.flexRow {
+	display: flex;
+	flex-direction: row;
+}
+
+.flexRow > div {
+	flex: 1 1 auto;
+	align-self: stretch;
+	text-align: center;
+}
+
+.flexRow > div:first-child {
+	text-align: left;
+}
+
+.flexRow > div:last-child {
+	text-align: right;
+}
+/*  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+.toolbarSecondary {
+	position: relative;
+}
+
+.toolbarSecondary .buttongroup {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 100px;
+}
+
+.toolbarSecondary .button {
+	background-color: #fff;
+	border-radius: 40px;
+	display: inline-block;
+	height: 60px;
+	line-height: 60px;
+	margin: 10px 20px;
+	text-align: center;
+	width: 60px;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.toolbarSecondary .editPanel {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin-right: 100px;
+}
+
+.toolbarSecondary .editPanelContents {
+	;
+}
+
+.toolbarSecondary .editPanelDecoration {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 108px;
+	height: 80px;
+	margin-right: -100px;
+	background: url('/images/TMP-editpaneldecoration.png') bottom left no-repeat;
+}
+
+.ittBottomToolbar .faintOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #000;
+	opacity: 0.05;
+	transition: all ease-out 2s;
+}
+/* NG-IF */
+
+.faintOverlay.ng-enter-active,
+.faintOverlay.ng-leave {
+	opacity: 0.05;
+}
+
+.faintOverlay.ng-enter,
+.faintOverlay.ng-leave.ng-leave-active {
+	opacity: 0;
+}
+/* ng-show TODO understand why isn't this good enough in transitionFade?*/
+
+.faintOverlay.ng-hide {
+	transition: all ease-out 0.5s;
+	opacity: 0;
+}
 
