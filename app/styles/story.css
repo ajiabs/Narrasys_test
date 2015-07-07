@@ -176,7 +176,7 @@
 	box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
 }
 
-.tablabel:last-child {
+.storyUI .tablabels {
 	margin-bottom: 1em;
 }
 
@@ -210,65 +210,6 @@
 	border-right: none;
 }
 /* - */
-/*
-.storyUI .ittBottomToolbar .tabs,
-.storyUI .ittBottomToolbar .tablabel {
-	padding: 0.5em;
-	border: 1px solid #CCC;
-}
-
-.storyUI .ittBottomToolbar .tabs,
-.storyUI .ittBottomToolbar .cur.tablabel {
-	background-color: #FBFBFB;
-}
-
-.storyUI .ittBottomToolbar .tablabel {
-	background-color: #DDD;
-}
-
-.storyUI .ittBottomToolbar .tabsRight .tabs,
-.storyUI .ittBottomToolbar .tabsLeft .cur.tablabel {
-	box-shadow: -3px 5px 5px rgba(0, 0, 0, 0.1);
-}
-
-.storyUI .ittBottomToolbar .tabsLeft .tabs,
-.storyUI .ittBottomToolbar .tabsRight .cur.tablabel {
-	box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
-}
-
-.tablabel:last-child {
-	margin-bottom: 1em;
-}
-
-.storyUI .ittBottomToolbar .tabsRight .tabs {
-	border-radius: 0.5em 0 0.5em 0.5em;
-	border-right: none;
-}
-
-.storyUI .ittBottomToolbar .tabsLeft .tabs {
-	border-radius: 0 0.5em 0.5em 0.5em;
-	border-left: none;
-}
-
-.storyUI .ittBottomToolbar .tabsRight .tablabel {
-	margin-right: 20px;
-	border-radius: 0 1em 1em 0;
-	border-left: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.storyUI .ittBottomToolbar .tabsLeft .tablabel {
-	margin-left: 20px;
-	border-radius: 1em 0 0 1em;
-	border-right: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.storyUI .ittBottomToolbar .tabsRight .cur.tablabel {
-	border-left: none;
-}
-
-.storyUI .ittBottomToolbar .tabsLeft .cur.tablabel {
-	border-right: none;
-}
 
 */
 /*  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -381,9 +322,7 @@
 	margin-right: 100px;
 }
 
-.toolbarSecondary .editPanelContents {
-	;
-}
+.toolbarSecondary .editPanelContents {}
 
 .toolbarSecondary .editPanelDecoration {
 	position: absolute;
@@ -421,5 +360,35 @@
 .faintOverlay.ng-hide {
 	transition: all ease-out 0.5s;
 	opacity: 0;
+}
+
+.storyUI .ittBottomToolbar .tabs,
+.storyUI .ittBottomToolbar .tablabel {
+	border: 1px solid #CCC;
+}
+
+.storyUI .ittBottomToolbar .tabs,
+.storyUI .ittBottomToolbar .cur.tablabel {
+	background-color: #FBFBFB;
+}
+
+.storyUI .ittBottomToolbar .tablabels {
+	align-self: flex-end;
+	margin-top: 1em;
+}
+
+.storyUI .ittBottomToolbar .tabs {
+	border-radius: 0.5em 0.5em 0 0;
+	border-left: none;
+}
+
+.storyUI .ittBottomToolbar .tablabel {
+	margin-left: 20px;
+	border-radius: 1em 0 0 1em;
+	border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.storyUI .ittBottomToolbar .cur.tablabel {
+	border-right: none;
 }
 
