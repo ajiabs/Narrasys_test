@@ -485,7 +485,7 @@ angular.module('com.inthetelling.story')
 
 		*/
 		svc.resolveEpisodeEvents = function (epId) {
-
+			// console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
@@ -551,7 +551,23 @@ angular.module('com.inthetelling.story')
 			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
+			var duration = 0;
+			if (episode.masterAsset) {
+				duration = episode.masterAsset.duration;
+				angular.forEach(episode.scenes, function (scene) {
+					if (scene.start_time > duration) {
+						scene.start_time = duration - 0.2; // last resort HACK to catch bad scene data
+					}
+				});
+			}
+
 			episode.scenes = scenes.sort(function (a, b) {
+				if (a._id.indexOf('internal:start') > -1 || b._id.indexOf('internal:end') > -1) {
+					return -1;
+				}
+				if (b._id.indexOf('internal:start') > -1 || a._id.indexOf('internal:end') > -1) {
+					return 1;
+				}
 				return a.start_time - b.start_time;
 			});
 
@@ -559,11 +575,6 @@ angular.module('com.inthetelling.story')
 			episode.items = items.sort(function (a, b) {
 				return a.start_time - b.start_time;
 			});
-
-			var duration = 0;
-			if (episode.masterAsset) {
-				duration = episode.masterAsset.duration;
-			}
 
 			// Fix bad event timing data.  (see also svc.deriveEvent())
 			angular.forEach(items, function (event) {
