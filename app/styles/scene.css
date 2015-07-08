@@ -373,14 +373,6 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	opacity: 0.5;
 }
 
-.searchMode .annotation::before {
-	content: "“";
-}
-
-.searchMode .annotation::after {
-	content: "”";
-}
-
 .searchMode h2.searchCategory {
 	font-size: 1.6em;
 }

@@ -156,6 +156,16 @@
 	pointer-events: auto;
 }
 
+.progressbar .marker.stop {
+	border-left: 1px solid #000;
+	height: 15px;
+	margin-left: 0;
+}
+
+.progressbar .marker.stop:before {
+	content: "";
+}
+
 .progressbar .marker.mini {
 	font-size: 0.5em;
 	line-height: 2em;

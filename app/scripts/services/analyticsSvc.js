@@ -155,6 +155,9 @@ angular.module('com.inthetelling.story')
 			if (svc.activityQueue.length === 0) {
 				defer.resolve("");
 			}
+			if (!appState.episodeId) {
+				defer.resolve(); // iOS with ?t= param is trying to post metrics before it has an episode ID. TODO figure out wtf is causing that...
+			}
 
 			var actions = angular.copy(svc.activityQueue);
 			svc.activityQueue = [];
