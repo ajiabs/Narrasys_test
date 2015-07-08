@@ -421,8 +421,8 @@ angular.module('com.inthetelling.story')
 									angular.forEach(events, function (eventData) {
 										eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
 										modelSvc.cache("event", svc.resolveIDs(eventData));
-										modelSvc.resolveEpisodeEvents(epId);
 									});
+									modelSvc.resolveEpisodeEvents(epId);
 									var assetIds = getAssetIdsFromEvents(events);
 									assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
 									assetIds.push(episodeData.master_asset_id);
