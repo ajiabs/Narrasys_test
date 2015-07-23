@@ -74,7 +74,8 @@ angular.module('com.inthetelling.story')
 			scope: {
 				ngModel: '='
 			},
-			template: '<div><img ng-src="{{asset.url}}" style="width:60px;height:60px;">TODO</div>',
+			template: '',
+			// template: '<div><img ng-src="{{asset.url}}" style="width:60px;height:60px;">TODO</div>',
 			link: function (scope) {
 				console.log("assetForm TODO", scope.ngModel);
 				scope.asset = modelSvc.assets[scope.ngModel];
@@ -82,7 +83,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 	})
-	.directive('ittChooserForm', function (modelSvc) {
+	.directive('ittChooserForm', function () {
 		/* choices is array of objects each with name, value required; flippable(bool) optional, FUTURE: image(url) optional. */
 
 		return {
@@ -90,6 +91,7 @@ angular.module('com.inthetelling.story')
 			require: 'ngModel',
 			scope: {
 				ngModel: '=',
+				item: '=',
 				inputChoices: '=choices', // [{name: 'foo', value: 'bar'},...]
 			},
 			templateUrl: '/templates/producer/chooserForm.html',
@@ -126,15 +128,15 @@ angular.module('com.inthetelling.story')
 
 				};
 				scope.setOption = function (i) {
-					scope.picking = !scope.picking;
+					// scope.picking = !scope.picking;
 					scope.chooserindex = i;
 					scope.updateModel();
-				}
+				};
 				scope.flip = function () {
 					console.log("flipping");
 					scope.flipped = !scope.flipped;
 					scope.updateModel();
-				}
+				};
 
 				scope.updateModel = function () {
 					var newModel = scope.choices[scope.chooserindex].value;
@@ -145,7 +147,7 @@ angular.module('com.inthetelling.story')
 						newModel = newModel + "-flip";
 					}
 					scope.ngModel = newModel;
-				}
+				};
 
 			}
 		};

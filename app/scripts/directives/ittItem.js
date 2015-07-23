@@ -11,14 +11,11 @@ angular.module('com.inthetelling.story')
 			restrict: 'A',
 			replace: false,
 			scope: {
-				item: '=ittItem'
+				item: '=ittItem',
+				forcetemplate: '@forcetemplate'
 			},
-			template: function (el, attrs) {
-				if (attrs.forcetemplate) {
-					return '<div ng-include="\'templates/item/' + attrs.forcetemplate + '.html\'"></div>';
-				} else {
-					return '<div ng-include="item.templateUrl"></div>';
-				}
+			template: function () {
+				return '<div ng-include="forcetemplate ? forcetemplate : item.templateUrl"></div>';
 			},
 			controller: 'ItemController',
 			link: function (scope, element) {

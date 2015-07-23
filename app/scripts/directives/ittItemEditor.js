@@ -395,7 +395,7 @@ angular.module('com.inthetelling.story')
 				scope.$on('$destroy', function () {
 					scope.watchEdits();
 					scope.dismissalWatcher();
-					scope.watchStyleEdits();
+					// scope.watchStyleEdits();
 				});
 			}
 		};

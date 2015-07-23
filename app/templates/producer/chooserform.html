@@ -8,29 +8,77 @@
 	.chooserForm.picking > div:hover {
 		background-color: #DDD;
 	}
+	
+	.templateSample {
+		display: inline-block;
+		width: 200px;
+		margin: 0 1em;
+		height: 200px;
+		cursor: pointer;
+		cursor: hand;
+	}
+	
+	.templateSample .item {
+		border: 2px solid #666;
+		height: 180px;
+		overflow: hidden;
+	}
+	
+	.templateSample .legend {
+		clear: both;
+		text-align: center;
+		font-size: 130%;
+		padding-top: 0.5em;
+	}
+	
+	.templateSample .item.cur {
+		border: 6px solid #666;
+		box-shadow: 3px 3px 3px #000;
+	}
 	</style>
 
-
-	<div style="display:flex">
-
+	<!-- begin "normal" picker -->
+	<div style="display:flex" ng-if="!item">
 		<div style="display:inline-block; width:32px">
 			<button ng-if="chooserindex > 0" ng-click="stepOption(-1)" class="fa fa-arrow-left borderless"></button>
 		</div>
 		<div style="position:relative;height:32px;display:inline-block; flex:1 0 auto">
-			<div class="chooserForm select" ng-class="{picking: picking}" style="position:absolute;left:0;right:0">
+			<div class="chooserForm select" ng-click="picking=!picking" ng-class="{picking: picking}" style="position:absolute;left:0;right:0">
 				<div class="option" ng-click="setOption(choice.chooserindex)" ng-repeat="choice in choices" ng-class="{cur: chooserindex == choice.chooserindex}" ng-click="pick()">
 					{{choice.name}}
 				</div>
 			</div>
 		</div>
-
 		<div ng-if="choices[chooserindex].flippable" style="display:inline-block; width:32px">
 			<button class="fa fa-refresh borderless" ng-click="flip()"></button>
 		</div>
-
-
 		<div style="display:inline-block; width:32px">
 			<button ng-if="chooserindex < choices.length-1" ng-click="stepOption(1)" class="fa fa-arrow-right borderless"></button>
 		</div>
 	</div>
+	<!-- end normal picker -->
+
+	<!-- begin template picker -->
+	<div ng-if="item" class="content" style="overflow-x: scroll; overflow-y:hidden; white-space:nowrap;width:100%; height: 160px">
+		<div style="transform:scale(0.7); transform-origin: top left">
+			<div class="templateSample" ng-repeat="choice in choices" ng-click="setOption(choice.chooserindex)">
+
+				<!-- TODO: this isn't using the global wrapper, so doesn't pick up some styles; see ittContentPane -->
+				<div ng-class="{cur: chooserindex == choice.chooserindex}" class="item" itt-item="item" forceTemplate="templates/v2/{{item.tmpl.itemType}}/{{choice.value}}.html">
+				</div>
+
+				<div class="legend">
+					<div ng-if="choice.flippable" style="position:absolute; width:32px">
+						<button class="fa fa-refresh borderless" ng-click="flip()"></button>
+					</div>
+					{{choice.name}}
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+	<!-- end template picker -->
+
+
 </div>

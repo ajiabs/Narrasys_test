@@ -24,7 +24,6 @@
 			</div>
 			<itt-asset-form ng-model="item.asset_id">test</itt-asset-form>
 
-
 			<div ng-include="itemEditor"></div>
 
 			<div form-field="Metadata">
@@ -36,16 +35,13 @@
 		</div>
 
 		<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Style">
-
-
 			<div form-field="Template">
-
-				<itt-chooser-form ng-if="item.tmpl.itemType=='transcript'" ng-model="item.tmpl.template" choices="[
+				<itt-chooser-form ng-if="item.tmpl.itemType=='transcript'" ng-model="item.tmpl.template" item="item" choices="[
 					{name: 'Default', value: 'default'},
 					{name: 'thumbnail', value: 'thumbnail',flippable:1},
 					{name: 'DEBUG', value: 'debug'}
 				]"></itt-chooser-form>
-				<itt-chooser-form ng-if="item.tmpl.itemType=='annotation'" ng-model="item.tmpl.template" choices="[
+				<itt-chooser-form ng-if="item.tmpl.itemType=='annotation'" ng-model="item.tmpl.template" item="item" choices="[
 					{name: 'Default', value: 'default'},
 					{name: 'Pullquote (attributed)', value: 'pullquote'},
 					{name: 'DEBUG', value: 'debug'}
