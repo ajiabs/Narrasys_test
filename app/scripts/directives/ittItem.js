@@ -12,15 +12,11 @@ angular.module('com.inthetelling.story')
 			replace: false,
 			scope: {
 				item: '=ittItem',
-
-				variant: '@'
+				variant: '@' // json for modifications to be made to this item
 			},
-			template: function () {
-				return '<div ng-include="forcetemplate ? forcetemplate : item.templateUrl"></div>';
-			},
+			templateUrl: 'templates/v2/wrapper/_global.html',
 			controller: 'ItemController',
 			link: function (scope, element) {
-
 				if (scope.variant) {
 					try {
 						scope.variantItem = angular.fromJson(scope.variant);

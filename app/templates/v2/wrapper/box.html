@@ -1,5 +1,5 @@
 <div class="wrapper" style="position:relative; margin: 1em; box-shadow: 2px 2px 2px #000; border: 1px solid #666; padding:1em;" ng-style="{
 	backgroundColor: item.tmpl.style.bgcolor || '#FFF'
 }">
-	<div itt-item="item" class="itemTemplate" ng-class="item.tmpl.itemType"></div>
+	<div ng-include="item.templateUrl" class="itemTemplate" ng-class="item.tmpl.itemType"></div>
 </div>

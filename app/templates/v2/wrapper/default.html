@@ -1,3 +1,3 @@
 <div class="wrapper" style="padding: 0.5em;" ng-style="{backgroundColor: item.tmpl.style.bgcolor}">
-	<div itt-item="item" class="itemTemplate " ng-class="item.tmpl.itemType"></div>
+	<div ng-include="item.templateUrl" class="itemTemplate" ng-class="item.tmpl.itemType"></div>
 </div>

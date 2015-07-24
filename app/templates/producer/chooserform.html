@@ -58,21 +58,15 @@
 	</div>
 	<!-- end normal picker -->
 
-	<!-- begin template picker -->
+	<!-- begin template picker.  TODO generalize this to allow overriding other tmpl elements instead -->
 	<div ng-if="item" class="content editing isNarrow" style="overflow-x: scroll; overflow-y:hidden; white-space:nowrap;width:100%; height: 160px">
 		<div style="transform:scale(0.7); transform-origin: top left">
-			<div class="templateSample" ng-repeat="choice in choices" ng-click="setOption(choice.chooserindex)">
 
-				<!-- TODO: this isn't using the global wrapper, so doesn't pick up some styles; see ittContentPane.
-						Change ittItem to embed the wrapper as its template
-				 -->
-				<div ng-class="{cur: chooserindex == choice.chooserindex}" class="item" itt-item="item" variant='{
-					"tmpl": {
-						"template": "{{choice.value}}"
-					} 
+			<div class="templateSample" ng-repeat="choice in choices" ng-click="setOption(choice.chooserindex)">
+				<div ng-class="{cur: chooserindex == choice.chooserindex}" class="item" itt-item="item" x-variant='{
+					"tmpl": {"template": "{{choice.value}}"} 
 				}'>
 				</div>
-
 				<div class="legend">
 					<div ng-if="choice.flippable" style="position:absolute; width:32px">
 						<button class="fa fa-refresh borderless" ng-click="flip()"></button>

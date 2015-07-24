@@ -21,7 +21,7 @@ angular.module('com.inthetelling.story')
 			scope: {
 				items: '=ittContentPane'
 			},
-			template: '<div class="content" ng-class="{isNarrow: isNarrow()}"><div ng-repeat="item in items" ng-include="\'templates/v2/wrapper/_global.html\'" class="animate"></div></div>',
+			template: '<div class="content" ng-class="{isNarrow: isNarrow()}"><div ng-repeat="item in items" itt-item="item"></div></div>',
 			link: function (scope, el) {
 				console.log("contentpane", scope, el);
 				scope.isNarrow = function () {
