@@ -88,6 +88,8 @@ input[readonly] {
 	background-color: #EEE;
 	cursor: pointer;
 }
+
+
 /* -- */
 
 .floatAssetPicker {
@@ -115,6 +117,8 @@ input[readonly] {
 	right: 0.5em;
 	z-index: 99;
 }
+
+
 /* -- */
 
 .padForEditing .episode {
@@ -168,6 +172,8 @@ input[readonly] {
 	width: 75%;
 	float: right;
 }
+
+
 /* Angular removes the type=text attribute when you use ng-model (grr) so can't use [type="text"] */
 
 .authoringForm .input {
@@ -318,6 +324,8 @@ option {
 	position: absolute;
 	z-index: 99;
 }
+
+
 /* ------ */
 
 .editButtonPanel,
@@ -475,11 +483,12 @@ option {
 .reviewMode .sxs-item .sxs-profile {
 	width: 40px;
 }
+
+
 /* edit button on items */
 
 .item {
 	/* TODO: This may mess with some layouts; test me! */
-	
 	position: relative;
 }
 
@@ -497,19 +506,19 @@ option {
 	right: 0.6em;
 	top: 0.5em;
 }
+
+
 /* TODO: more fine-grained control of when 'edit' button appears; base on roles */
 
 .canEditContent.isProducer .item:hover .edit-event {
 	/* producer sees all edit buttons */
 	/* TODO: touchscreens! */
-	
 	display: block;
 }
 
 .canEditContent.isSxS .item:hover .sxs-item .edit-event {
 	/* SxS only gets sxs edit buttons */
 	/* TODO: touchscreens! */
-	
 	display: block;
 }
 
@@ -570,6 +579,8 @@ option {
 	border-left: 1px solid #000;
 	border-right: none;
 }
+
+
 /* TODO reconcile tabs and drawer height / scroll */
 
 .ittTabs {
@@ -587,6 +598,13 @@ option {
 	text-align: center;
 	background-color: #FFF;
 	z-index: 3;
+}
+
+.ittTabLabel:last-child {
+	width: 100%;
+	text-align: left;
+	padding-left: 1em;
+	background-color: #FFF
 }
 
 .ittTabLabel.cur {
