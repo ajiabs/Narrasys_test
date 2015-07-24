@@ -59,12 +59,18 @@
 	<!-- end normal picker -->
 
 	<!-- begin template picker -->
-	<div ng-if="item" class="content" style="overflow-x: scroll; overflow-y:hidden; white-space:nowrap;width:100%; height: 160px">
+	<div ng-if="item" class="content editing isNarrow" style="overflow-x: scroll; overflow-y:hidden; white-space:nowrap;width:100%; height: 160px">
 		<div style="transform:scale(0.7); transform-origin: top left">
 			<div class="templateSample" ng-repeat="choice in choices" ng-click="setOption(choice.chooserindex)">
 
-				<!-- TODO: this isn't using the global wrapper, so doesn't pick up some styles; see ittContentPane -->
-				<div ng-class="{cur: chooserindex == choice.chooserindex}" class="item" itt-item="item" forceTemplate="templates/v2/{{item.tmpl.itemType}}/{{choice.value}}.html">
+				<!-- TODO: this isn't using the global wrapper, so doesn't pick up some styles; see ittContentPane.
+						Change ittItem to embed the wrapper as its template
+				 -->
+				<div ng-class="{cur: chooserindex == choice.chooserindex}" class="item" itt-item="item" variant='{
+					"tmpl": {
+						"template": "{{choice.value}}"
+					} 
+				}'>
 				</div>
 
 				<div class="legend">

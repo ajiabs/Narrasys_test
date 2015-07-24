@@ -75,7 +75,7 @@ angular.module('com.inthetelling.story')
 					itemType: 'transcript',
 				},
 				annotation: {
-					en: "This is a sample transcript not being edited"
+					en: "This is a sample transcript item"
 				},
 				annotator: {
 					en: "John Doe"
@@ -88,10 +88,10 @@ angular.module('com.inthetelling.story')
 					itemType: 'transcript',
 				},
 				annotation: {
-					en: ""
+					en: "This is another sample transcript item"
 				},
 				annotator: {
-					en: "John Doe"
+					en: "Jane Roe"
 				}
 			}
 		];
@@ -101,7 +101,7 @@ angular.module('com.inthetelling.story')
 		for (var i = 0; i < items.length; i++) {
 			modelSvc.cache("event", items[i]);
 			$scope.items.push(modelSvc.events[items[i]._id]);
-		};
+		}
 
 	})
 

@@ -54,18 +54,18 @@ angular.module('com.inthetelling.story')
 				scope.toggleSize = function () {
 					scope.sizeSet = (scope.sizeSet === 0) ? 1 : 0;
 					setPos();
-				}
+				};
 
 				scope.zoneClick = function (x) {
 					scope.posSet = x;
 					setPos();
-				}
+				};
 
 				var setPos = function () {
 					console.log("setPos", scope.sizeSet, scope.posSet);
 					scope.posLabel = labels[scope.sizeSet][scope.posSet];
 					scope.ngModel = vals[scope.sizeSet][scope.posSet];
-				}
+				};
 
 				for (var i = 0; i < vals.length; i++) {
 					for (var j = 0; j < vals[i].length; j++) {
@@ -105,25 +105,24 @@ angular.module('com.inthetelling.story')
 						scope.centerType = 'center';
 						scope.posLabel = labels[4];
 					}
-
-					scope.pinned = (scope.ngModel.length === 2); // HACKish
-				}
+					scope.pinned = (scope.ngModel.length === 2); // HACK (matches 'tl', 'tr', 'bl', 'br')
+				};
 				init();
 
 				scope.zoneClick = function (x) {
 					scope.ngModel = vals[x];
 					scope.posLabel = labels[x];
-					scope.pinned = (scope.ngModel.length === 2); // HACKish
+					scope.pinned = (scope.ngModel.length === 2); // HACK as above
 					if (x > 3) {
 						scope.centerType = 'center';
 					}
-				}
+				};
 
 				scope.forceModel = function (evt) {
 					// HACK we hijacked ng-model for this directive, so update it via an ng-click handler instead.
 					scope.ngModel = evt.currentTarget.options[evt.currentTarget.selectedIndex].value;
 					init();
-				}
+				};
 
 			}
 		};

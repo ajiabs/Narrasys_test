@@ -6,19 +6,48 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, $interval, config, appState, analyticsSvc, timelineSvc, modelSvc) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, errorSvc, appState, analyticsSvc, timelineSvc, modelSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
 			scope: {
 				item: '=ittItem',
-				forcetemplate: '@forcetemplate'
+
+				variant: '@'
 			},
 			template: function () {
 				return '<div ng-include="forcetemplate ? forcetemplate : item.templateUrl"></div>';
 			},
 			controller: 'ItemController',
 			link: function (scope, element) {
+
+				if (scope.variant) {
+					try {
+						scope.variantItem = angular.fromJson(scope.variant);
+					} catch (e) {
+						errorSvc.error({
+							data: "Unparsable JSON: " + scope.variant
+						});
+					}
+
+					if (scope.variantItem) {
+						// WARN this is going to be a performance hit. Use with care!  Never override the item ID with variant data
+
+						// Display a copy of the original item, overwritten by any variant data. 
+						// Then we need to watch the original item for changes...
+						scope.item = modelSvc.deriveEvent(angular.merge({}, scope.item, scope.variantItem));
+						scope.watchOriginalItem = scope.$watch(function () {
+							return modelSvc.events[scope.item._id];
+						}, function (newItem) {
+							scope.item = modelSvc.deriveEvent(angular.merge({}, newItem, scope.variantItem));
+						}, true);
+
+						scope.$on('$destroy', function () {
+							scope.watchOriginalItem(); // cancel watch
+						});
+
+					}
+				}
 
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
