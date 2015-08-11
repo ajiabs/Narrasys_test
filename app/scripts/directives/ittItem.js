@@ -45,6 +45,22 @@ angular.module('com.inthetelling.story')
 					}
 				}
 
+				scope.linkKeypress = function ($event) {
+					// 13: ENTER, 32: SPACE
+					if ($event.keyCode === '13' || $event.keyCode === '32') {
+						scope.linkClick();
+					}
+				};
+
+				scope.linkClick = function ($event) {
+					if (scope.item.urltarget) {
+						scope.outgoingLink();
+					} else {
+						scope.toggleDetailView();
+						$event.preventDefault();
+					}
+				};
+
 				scope.toggleDetailView = function () {
 					// console.log("Item toggleDetailView");
 					if (scope.item.showInlineDetail) {
@@ -62,68 +78,15 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				};
-				var KeyCodes = {
-					ENTER: 13,
-					SPACE: 32
-				};
 
-				scope.toggleDetailOnKeyPress = function ($event) {
-					var e = $event;
-					var passThrough = true;
-					switch (e.keyCode) {
-					case KeyCodes.ENTER:
-						scope.toggleDetailView();
-						passThrough = false;
-						break;
-					case KeyCodes.SPACE:
-						scope.toggleDetailView();
-						passThrough = false;
-						break;
-					default:
-						passThrough = true;
-						break;
-					}
-					if (!passThrough) {
-						$event.stopPropagation();
-						$event.preventDefault();
-					}
+				scope.outgoingLink = function () {
+					timelineSvc.pause();
+					scope.captureInteraction();
 				};
 
 				scope.forceModal = function () {
 					timelineSvc.pause();
 					appState.itemDetail = scope.item;
-				};
-				scope.outgoingLinkOnKeyPress = function (url, $event) {
-					var e = $event;
-					var passThrough = true;
-					switch (e.keyCode) {
-					case KeyCodes.ENTER:
-						scope.outgoingLink(url);
-						passThrough = false;
-						break;
-					case KeyCodes.SPACE:
-						scope.outgoingLink(url);
-						passThrough = false;
-						break;
-					default:
-						passThrough = true;
-						break;
-					}
-					if (!passThrough) {
-						$event.stopPropagation();
-						$event.preventDefault();
-					}
-				};
-				scope.outgoingLink = function (url) {
-					timelineSvc.pause();
-					scope.captureInteraction();
-					if (scope.item.targetTop) {
-						$timeout(function () {
-							window.location.href = url;
-						});
-					} else {
-						window.open(url);
-					}
 				};
 
 				scope.editItem = function () {
@@ -156,106 +119,107 @@ angular.module('com.inthetelling.story')
 				}
 
 				// TODO make credly badge its own directive instead of including it here
-				if (scope.item.data) {
-					scope.plugin = scope.item.data._plugin;
-					scope.plugin._type = scope.item.data._pluginType;
+				/*
+								if (scope.item.data) {
+									scope.plugin = scope.item.data._plugin;
+									scope.plugin._type = scope.item.data._pluginType;
 
-					// BEGIN credly badge
-					if (scope.plugin._type === 'credlyBadge') {
-						// console.log("credly");
-						// have analytics record that this event has been reached, so it can be used as a trigger for other achievements
-						analyticsSvc.captureEventActivity("viewed", scope.item._id);
-						if (appState.user.roles && appState.user.roles.length === 1 && appState.user.roles[0] === "guest") {
-							scope.plugin.eligibleForBadges = false;
-						} else {
-							scope.plugin.eligibleForBadges = true;
-							if (appState.user.emails) {
-								scope.plugin.userEmail = appState.user.emails[0];
-							} else {
-								scope.plugin.userEmail = '';
-							}
-							scope.plugin.totalAchieved = 0;
-						}
+									// BEGIN credly badge
+									if (scope.plugin._type === 'credlyBadge') {
+										// console.log("credly");
+										// have analytics record that this event has been reached, so it can be used as a trigger for other achievements
+										analyticsSvc.captureEventActivity("viewed", scope.item._id);
+										if (appState.user.roles && appState.user.roles.length === 1 && appState.user.roles[0] === "guest") {
+											scope.plugin.eligibleForBadges = false;
+										} else {
+											scope.plugin.eligibleForBadges = true;
+											if (appState.user.emails) {
+												scope.plugin.userEmail = appState.user.emails[0];
+											} else {
+												scope.plugin.userEmail = '';
+											}
+											scope.plugin.totalAchieved = 0;
+										}
 
-						scope.checkBadgeEligibility = function () {
-							// console.log('checkBadgeEligibility');
-							if (!scope.plugin.eligibleForBadges) {
-								return;
-							}
+										scope.checkBadgeEligibility = function () {
+											// console.log('checkBadgeEligibility');
+											if (!scope.plugin.eligibleForBadges) {
+												return;
+											}
 
-							angular.forEach(scope.plugin.requirements, function (req) {
-								if (!req.achieved) {
-									analyticsSvc.readEventActivity(req.eventId, req.activity)
-										.then(function (achieved) {
-											req.achieved = achieved;
-											scope.countAchievements(); // can't just do totalAchieved++ here: .then() happens asynch to the forEach, so scoping problems
+											angular.forEach(scope.plugin.requirements, function (req) {
+												if (!req.achieved) {
+													analyticsSvc.readEventActivity(req.eventId, req.activity)
+														.then(function (achieved) {
+															req.achieved = achieved;
+															scope.countAchievements(); // can't just do totalAchieved++ here: .then() happens asynch to the forEach, so scoping problems
+														});
+												}
+												scope.countAchievements(); // catch the case where all were already marked
+											});
+										};
+
+										scope.countAchievements = function () {
+											var count = 0;
+											angular.forEach(scope.plugin.requirements, function (req) {
+												if (req.achieved) {
+													count = count + 1;
+												}
+											});
+											scope.plugin.totalAchieved = count;
+											if (scope.plugin.totalAchieved === scope.plugin.requirements.length) {
+												// HACK TODO we need to implement a real way for items to control the visibility of other items or scenes.
+												// The silly workaround here only works (for some poorly-defined version of 'works') because USC episodes only have one badge
+												modelSvc.episodes[appState.episodeId].styleCss = modelSvc.episodes[appState.episodeId].styleCss + " uscHackUserHasBadge";
+											}
+										};
+
+										// on link:
+										scope.checkBadgeEligibility();
+
+										// slow poll after that, up to some reasonable time limit
+										var pollLimit = 0;
+										scope.badgePoll = $interval(function () {
+											// console.log('poll', pollLimit);
+											pollLimit++;
+											if (scope.item.isCurrent || appState.viewMode === 'review') {
+												scope.checkBadgeEligibility();
+											}
+											if (pollLimit > 60) {
+												$interval.cancel(scope.badgePoll);
+											}
+										}, 10000);
+
+										scope.$on('$destroy', function () {
+											$interval.cancel(scope.badgePoll);
 										});
-								}
-								scope.countAchievements(); // catch the case where all were already marked
-							});
-						};
 
-						scope.countAchievements = function () {
-							var count = 0;
-							angular.forEach(scope.plugin.requirements, function (req) {
-								if (req.achieved) {
-									count = count + 1;
-								}
-							});
-							scope.plugin.totalAchieved = count;
-							if (scope.plugin.totalAchieved === scope.plugin.requirements.length) {
-								// HACK TODO we need to implement a real way for items to control the visibility of other items or scenes.
-								// The silly workaround here only works (for some poorly-defined version of 'works') because USC episodes only have one badge
-								modelSvc.episodes[appState.episodeId].styleCss = modelSvc.episodes[appState.episodeId].styleCss + " uscHackUserHasBadge";
-							}
-						};
-
-						// on link:
-						scope.checkBadgeEligibility();
-
-						// slow poll after that, up to some reasonable time limit
-						var pollLimit = 0;
-						scope.badgePoll = $interval(function () {
-							// console.log('poll', pollLimit);
-							pollLimit++;
-							if (scope.item.isCurrent || appState.viewMode === 'review') {
-								scope.checkBadgeEligibility();
-							}
-							if (pollLimit > 60) {
-								$interval.cancel(scope.badgePoll);
-							}
-						}, 10000);
-
-						scope.$on('$destroy', function () {
-							$interval.cancel(scope.badgePoll);
-						});
-
-						scope.badger = function () {
-							scope.plugin.gettingBadge = true;
-							$http({
-									method: 'GET',
-									url: config.apiDataBaseUrl + '/v1/send_credly_badge?badge_id=' + scope.plugin.credlyBadgeId + '&email=' + scope.plugin.userEmail
-								})
-								.
-							success(function (data) {
-									// TODO check the data to make sure it's not status: "Badge previously sent."
-									scope.checkBadgeEligibility();
-									// console.log("SUCCESS", data);
-									if (data.status === 'Badge previously sent.') {
-										scope.plugin.alreadyHadBadge = true;
+										scope.badger = function () {
+											scope.plugin.gettingBadge = true;
+											$http({
+													method: 'GET',
+													url: config.apiDataBaseUrl + '/v1/send_credly_badge?badge_id=' + scope.plugin.credlyBadgeId + '&email=' + scope.plugin.userEmail
+												})
+												.
+											success(function (data) {
+													// TODO check the data to make sure it's not status: "Badge previously sent."
+													scope.checkBadgeEligibility();
+													// console.log("SUCCESS", data);
+													if (data.status === 'Badge previously sent.') {
+														scope.plugin.alreadyHadBadge = true;
+													}
+													scope.plugin.gotBadge = true;
+												})
+												.error(function () {
+													scope.plugin.gettingBadge = false;
+													scope.plugin.error = true; // TEMP HACK
+												});
+										};
 									}
-									scope.plugin.gotBadge = true;
-								})
-								.error(function () {
-									scope.plugin.gettingBadge = false;
-									scope.plugin.error = true; // TEMP HACK
-								});
-						};
-					}
-					// END credly badge
-				}
-				// end plugin
-
+									// END credly badge
+								}
+								// end plugin
+				*/
 			}
 		};
 	});

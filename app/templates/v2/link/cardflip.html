@@ -1,0 +1,36 @@
+<div>
+	<div class="outset">
+		<div itt-timestamp="item" pos="outset"></div>
+	</div>
+
+	<div class="body transitionContainer">
+
+		<div ng-if="!item.showInlineDetail" class="animate transitionCardflip">
+			<div>
+				<span class="inset">
+					<span itt-timestamp="item" pos="inset"></span>
+				</span>
+				<a ng-if="item.url" tabindex="0" ng-class="{escapelink: item.urltarget=='_blank'}" target="{{item.urltarget}}" ng-keypress="linkKeypress($event)" ng-click="linkClick($event)" ng-href="{{item.url}}" ng-style="{color: item.tmpl.style.linkcolor}">
+					<span class="altType" lorem-val="item.display_title || '(Untitled)'"></span>
+				</a>
+				<span ng-if="!item.url" lorem-val="item.display_title || '(Untitled)'"></span>
+			</div>
+			<div style="text-align:center">
+				<img ng-src="{{item.asset.url}}">
+			</div>
+			<div class="text" lorem-val="item.display_description" ng-style="{color:item.tmpl.style.textcolor1}"></div>
+		</div>
+
+		<div ng-if="item.showInlineDetail" class="animate transitionCardflip" ng-mouseleave="item.showInlineDetail = false;">
+			<div>
+				<a tabindex="0" class="escapelink" target="_blank" ng-href="{{item.url}}">
+				(New window)
+				</a>
+			</div>
+			<div class="iframeContainer">
+				<!-- <iframe style="display:none;" onload="console.log('load',this.src);if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
+				<iframe ng-src="{{item.url}}"></iframe>
+			</div>
+		</div>
+	</div>
+</div>

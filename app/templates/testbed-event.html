@@ -2,8 +2,8 @@
 .testContentPane {
 	border: 1px solid #000;
 	margin: 1em;
-	min-height: 300px;
-	max-height: 700px;
+	height: 300px;
+	overflow-y: scroll;
 }
 
 .testEditorPane {
@@ -19,11 +19,19 @@
 	display: none !important;
 }
 
+.item:after,
+.icon:after,
+.item .body:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
 .animate {
 	transition: none !important;
 }
 </style>
-
+<!-- 
 <a href="/#/event/annotation">annotation</a>
 <a href="/#/event/transcript">transcript</a>
 <a href="/#/event/image">image</a>
@@ -33,7 +41,7 @@
 <a href="/#/event/question">question</a>
 <a href="/#/event/plugin">plugin</a>
 <a href="/#/event/scene">scene</a>
-
+ -->
 
 <!-- THis is what a content pane looks like. -->
 <div class="testContentPane content editing" itt-content-pane="items"></div>
@@ -72,4 +80,4 @@
 	<div ng-if="!(testbed.showCurrent && item.state!='isCurrent')" class="item animate" itt-item="item" ng-class="item.styleCss + ' ' + item.state"></div>
 </div> -->
 
-<div class="testEditorPane" itt-item-editor="items[1]" style="margin: 1em"></div>
+<div class="testEditorPane" itt-item-editor="items[1]" style="padding: 1em"></div>

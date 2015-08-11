@@ -110,7 +110,6 @@ button {
 		display: none;
 	}
 	*/
-	
 	.banner-logo {
 		display: none;
 	}
@@ -119,7 +118,6 @@ button {
 @media screen and (max-width: 480px) {
 	.button-discover {
 		/* See also helpPanel below */
-		
 		display: none !important;
 	}
 	.volumebar {
@@ -255,11 +253,8 @@ button {
 	content: "\e60e";
 	padding-right: 0.5em;
 	font-size: 0.86em;
+	line-height: 1em;
 	color: #333;
-}
-
-.escapelink {
-	font-size: 0.86em;
 }
 
 .button-preview {
@@ -334,7 +329,6 @@ button {
 	position: absolute !important;
 	clip: rect(1px 1px 1px 1px);
 	/* IE6, IE7 */
-	
 	clip: rect(1px, 1px, 1px, 1px);
 	padding: 0 !important;
 	border: 0 !important;
@@ -353,6 +347,8 @@ button {
 	transition: opacity 3s;
 	opacity: .3;
 }
+
+
 /*============================
 *
 * Side Panels
@@ -372,6 +368,8 @@ button {
 .modal-backdrop.ng-hide-remove {
 	display: block!important;
 }
+
+
 /*============================
  *
  * Search Panel
@@ -429,6 +427,8 @@ button {
 	font-size: 0.86em;
 	text-align: right;
 }
+
+
 /*.searchfilters label {
 	float: right;
 	margin-right: 0.5em;
@@ -478,6 +478,8 @@ button {
 .searchResults .sortedbytype .type {
 	display: none
 }
+
+
 /* Panel animations */
 
 .searchPanel {
@@ -505,6 +507,8 @@ button {
 	padding: 4px;
 	border-radius: 4px;
 }
+
+
 /*============================
  *
  * Nav Panel
@@ -607,6 +611,8 @@ button {
 .navPanel .nextEpisode {
 	float: right;
 }
+
+
 /*============================
  *
  * Help Panel
@@ -624,7 +630,6 @@ button {
 	max-width: 500px;
 	min-width: 290px;
 	/* TOOLBAR HEIGHT */
-	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
@@ -716,6 +721,8 @@ button {
 	height: 1px;
 	top: auto;
 }
+
+
 /* .button-continue appears in windowFg: */
 
 .button-continue:after {
@@ -743,7 +750,6 @@ button {
 	max-width: 500px;
 	min-width: 290px;
 	/* TOOLBAR HEIGHT */
-	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }

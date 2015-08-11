@@ -173,6 +173,25 @@ input[readonly] {
 	float: right;
 }
 
+.authoringForm .info {
+	font-size: 0.8em;
+	line-height: 1.2em;
+	opacity: 0.6;
+}
+
+
+/* give checkboxes and radio button label text nice indents */
+
+.authoringForm .input .toggle {
+	padding-left: 2em;
+	display: block;
+}
+
+.authoringForm .input .toggle input[type="checkbox"],
+.authoringForm .input .toggle input[type="radio"] {
+	margin-left: -2em;
+}
+
 
 /* Angular removes the type=text attribute when you use ng-model (grr) so can't use [type="text"] */
 

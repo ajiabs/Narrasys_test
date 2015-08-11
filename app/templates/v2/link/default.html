@@ -8,8 +8,23 @@
 			<span class="inset">
 				<span itt-timestamp="item" pos="inset"></span>
 			</span>
-			<span class="altType" lorem-val="item.display_annotator" ng-style="{color: item.tmpl.style.textcolor2}"></span>
+
+			<a tabindex="0" ng-class="{escapelink: item.urltarget=='_blank'}" target="{{item.urltarget}}" ng-keypress="linkKeypress($event)" ng-click="linkClick($event)" ng-href="{{item.url}}" ng-style="{color: item.tmpl.style.linkcolor}">
+				<span class="altType" lorem-val="item.display_title || '(Untitled)'"></span>
+			</a>
+
 		</div>
-		<div class="text" lorem-val="item.display_annotation" ng-style="{color:item.tmpl.style.textcolor1}"></div>
+		<div class="text" lorem-val="item.display_description" ng-style="{color:item.tmpl.style.textcolor1}"></div>
+
+		<div ng-if="item.showInlineDetail" class="itemDetail">
+			<a tabindex="0" class="escapelink" target="_blank" ng-href="{{item.url}}">
+				(New window)
+			</a>
+			<div class="iframeContainer">
+				<div ng-include="'templates/loading.html'"></div>
+				<!-- <iframe style="display:none;" onload="console.log('load',this.src);if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
+				<iframe ng-src="{{item.url}}"></iframe>
+			</div>
+		</div>
 	</div>
 </div>

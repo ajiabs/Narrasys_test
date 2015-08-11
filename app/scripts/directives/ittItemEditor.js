@@ -56,7 +56,7 @@ angular.module('com.inthetelling.story')
 
 				scope.editStyle = function () {
 					scope.showCustomStyles = true;
-				}
+				};
 
 				scope.saveStylePreset = function () {
 					console.log("Store", scope.preset.name, scope.item.tmpl.style);
@@ -146,6 +146,19 @@ angular.module('com.inthetelling.story')
 
 					if (newItem.yturl !== oldItem.yturl) {
 						scope.item.url = embeddableYTUrl(newItem.yturl);
+					}
+
+					// For links:
+					if (scope.item.url) {
+						if (scope.item.url.match(/http:\/\//)) {
+							scope.warnForcedNoEmbed = true; // small HACK for edit form feedback (shouldn't be stuffing this onto the item data)
+							if (!scope.item.urltarget) {
+								scope.item.urltarget = '_blank';
+							}
+						} else {
+							// TODO: determine if the url has a framebreaker here, if so block attempts to embed
+							scope.warnForcedNoEmbed = false;
+						}
 					}
 
 					// Special cases:

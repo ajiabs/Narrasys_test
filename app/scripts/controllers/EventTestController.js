@@ -12,7 +12,7 @@ angular.module('com.inthetelling.story')
 		modelSvc.cache("asset", {
 			"_id": "asset",
 			"_type": "Asset::Image",
-			"url": "http://placehold.it/350x350",
+			"url": "https://placekitten.com/123/123",
 			"extension": "jpg",
 			"name": "350x350 placeholder",
 		});
@@ -51,14 +51,17 @@ angular.module('com.inthetelling.story')
 			},
 			'image': {},
 			'file': {},
-			'link': {},
+			'link': {
+				asset_id: 'asset' // TMP
+
+			},
 			'video': {},
 			'question': {},
 			'plugin': {},
 			'scene': {}
 		};
 
-		$scope.itemType = $routeParams["eventType"] || 'transcript';
+		$scope.itemType = $routeParams.eventType || 'transcript';
 		$scope.itemId = 'internal:editing';
 		var thisItem = emptyStubs[$scope.itemType];
 		thisItem._id = $scope.itemId;
@@ -68,6 +71,7 @@ angular.module('com.inthetelling.story')
 		};
 		thisItem.editing = true; // TODO ensure this gets set in the real editor/producer!
 
+		console.log(">>>>thisItem");
 		var items = [{
 				_id: 'foo1',
 				cur_episode_id: 'ep1',

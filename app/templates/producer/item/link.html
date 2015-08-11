@@ -4,10 +4,27 @@
 	<div class="input" sxs-input-i18n="item.title" x-inputtype="'input'" autofocus></div>
 </div>
 <div class="field">
-	<div class="label">URL
+	<div class="label">Link URL
 	</div>
 	<div class="input">
 		<input type="text" ng-model="item.url">
+	</div>
+</div>
+<div class="field">
+	<div class="label">Link type
+	</div>
+	<div class="input">
+		<label class="toggle">
+			<input type="radio" ng-model="item.urltarget" value=""> Embed link within the episode
+			<div ng-if="warnForcedNoEmbed" class="info">Only https:// links can be embedded within Story episodes.</div>
+		</label>
+		<label class="toggle">
+			<input type="radio" ng-model="item.urltarget" value="_blank"> Link to new tab / window
+		</label>
+		<label class="toggle">
+			<input type="radio" ng-model="item.urltarget" value="_top"> Target window parent
+			<div class="info">(This is only useful when the Story episode is embedded inside another website)</div>
+		</label>
 	</div>
 </div>
 <div class="field">

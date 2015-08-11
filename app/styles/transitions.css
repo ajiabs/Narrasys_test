@@ -4,6 +4,8 @@
 	transitionSlideR
 	transitionPop
 */
+
+
 /* Misc useful keyframes */
 
 @keyframes fadeOut {
@@ -14,6 +16,7 @@
 		opacity: 0;
 	}
 }
+
 @keyframes fadeIn {
 	0% {
 		opacity: 0;
@@ -22,6 +25,7 @@
 		opacity: 1;
 	}
 }
+
 @keyframes delayedFadeOut {
 	0% {
 		opacity: 1;
@@ -33,6 +37,7 @@
 		opacity: 0;
 	}
 }
+
 @keyframes delayedFadeIn {
 	0% {
 		opacity: 0;
@@ -44,18 +49,24 @@
 		opacity: 1;
 	}
 }
+
 body {
 	/* Addresses a small issue in webkit: http://bit.ly/NEdoDq */
-	
 	-webkit-backface-visibility: hidden;
 }
+
+
 /* ------------------------------------------------------------------------------------------------------------------ */
+
+
 /* 
 Defaults.  Always include a bit of height animation, to make it look less jumpy when items are removed from
 the middle of a list
 
 Transition time should be set for the specific object type
  */
+
+
 /* disabling the height animation for now; looks bad in Safari. TODO fix in safari */
 
 .animate.ng-enter,
@@ -63,35 +74,109 @@ Transition time should be set for the specific object type
 .animate.ng-move {
 	transition: all ease-in-out 0.5s;
 }
+
 .content .animate.ng-enter {
 	/*max-height: 1px;*/
 }
+
 .content .animate.ng-enter.ng-enter-active {
 	/*max-height: 300px;*/
 }
+
 .content .animate.ng-leave {
 	/*max-height:100px;*/
-	
 	display: block !important;
 }
+
 .content .animate.ng-leave.ng-leave-active {
 	/*max-height:0;*/
 }
+
+
 /* ------------------------------------------------------------------------------------------------------------------
    transitionFade */
 
 .animate.ng-enter.transitionFade {
 	opacity: 0;
 }
+
 .animate.ng-enter-active.transitionFade {
 	opacity: 1;
 }
+
 .animate.ng-leave.transitionFade {
 	opacity: 1;
 }
+
 .animate.ng-leave.ng-leave-active.transitionFade {
 	opacity: 0;
 }
+
+
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionCardflip */
+
+.transitionContainer {
+	position: relative;
+	perspective: 1000px;
+	perspective-origin: 50% 50%;
+}
+
+.transitionContainer .animate {
+	transform-style: preserve-3d;
+	backface-visibility: hidden;
+	overflow: hidden;
+}
+
+@keyframes cardflip {
+	0% {
+		transform: rotateY(-90deg);
+		max-height: 0;
+	}
+	50% {
+		max-height: 0;
+	}
+	51% {
+		max-height: 1000px;
+		transform: rotateY(-90deg);
+		box-shadow: 3px 3px 7px #000000;
+	}
+	100% {
+		max-height: 1000px;
+		transform: rotateY(0);
+		box-shadow: 0px 0px 0px #000000;
+	}
+}
+
+@keyframes cardflipOut {
+	0% {
+		transform: rotateY(0);
+		box-shadow: 0px 0px 0px #000000;
+		max-height: 1000px;
+	}
+	50% {
+		transform: rotateY(90deg);
+		box-shadow: 3px 3px 7px #000000;
+		max-height: 1000px;
+	}
+	51% {
+		max-height: 0;
+	}
+	100% {
+		max-height: 0;
+		transform: rotateY(90deg);
+	}
+}
+
+.transitionCardflip {
+	animation: cardflip 0.5s ease-in-out;
+}
+
+.ng-leave.transitionCardflip {
+	animation: cardflipOut 0.5s ease-in-out;
+}
+
+
 /* ------------------------------------------------------------------------------------------------------------------
    transitionSlideL */
 
@@ -99,18 +184,23 @@ Transition time should be set for the specific object type
 	transform: translateX(50px);
 	opacity: 0;
 }
+
 .animate.ng-enter-active.transitionSlideL {
 	transform: translateX(0);
 	opacity: 1;
 }
+
 .animate.ng-leave.transitionSlideL {
 	transform: translateX(0);
 	opacity: 1;
 }
+
 .animate.ng-leave.ng-leave-active.transitionSlideL {
 	transform: translateX(-50px);
 	opacity: 0;
 }
+
+
 /* ------------------------------------------------------------------------------------------------------------------
    transitionSlideR */
 
@@ -118,18 +208,23 @@ Transition time should be set for the specific object type
 	transform: translateX(-50px);
 	opacity: 0;
 }
+
 .animate.ng-enter-active.transitionSlideR {
 	transform: translateX(0);
 	opacity: 1;
 }
+
 .animate.ng-leave.transitionSlideR {
 	transform: translateX(0);
 	opacity: 1;
 }
+
 .animate.ng-leave.ng-leave-active.transitionSlideR {
 	transform: translateX(50px);
 	opacity: 0;
 }
+
+
 /* ------------------------------------------------------------------------------------------------------------------
    transitionExpandW */
 
@@ -137,22 +232,28 @@ Transition time should be set for the specific object type
 	overflow: hidden;
 	display: block;
 }
+
 .animate.ng-enter.transitionExpandW {
 	max-width: 1px;
 	opacity: 0;
 }
+
 .animate.ng-enter-active.transitionExpandW {
 	max-width: 1200px;
 	opacity: 1;
 }
+
 .animate.ng-leave.transitionExpandW {
 	max-width: 1200px;
 	opacity: 1;
 }
+
 .animate.ng-leave.ng-leave-active.transitionExpandW {
 	max-width: 1px;
 	opacity: 0;
 }
+
+
 /* ------------------------------------------------------------------------------------------------------------------
    transitionPop */
 
@@ -160,18 +261,23 @@ Transition time should be set for the specific object type
 	transform: scale(0.9);
 	opacity: 0;
 }
+
 .animate.ng-enter-active.transitionPop {
 	transform: scale(1);
 	opacity: 1;
 }
+
 .animate.ng-leave.transitionPop {
 	transform: scale(1);
 	opacity: 1;
 }
+
 .animate.ng-leave.ng-leave-active.transitionPop {
 	transform: scale(0.9);
 	opacity: 0;
 }
+
+
 /* ------------------------------------------------------------------------------------------------------------------
    transitionNone */
 
