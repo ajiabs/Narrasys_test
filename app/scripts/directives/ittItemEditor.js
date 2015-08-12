@@ -79,7 +79,7 @@ angular.module('com.inthetelling.story')
 					localStorage.setItem('ittStylePresets', JSON.stringify(scope.stylePresets));
 					delete scope.preset.name;
 					scope.showCustomStyles = false;
-				}
+				};
 
 				/* END style presets */
 
@@ -149,8 +149,11 @@ angular.module('com.inthetelling.story')
 					}
 
 					// For links:
-					if (scope.item.url) {
-						if (scope.item.url.match(/http:\/\//)) {
+					if (scope.item.tmpl.itemType === 'link') {
+						if (!scope.item.url) {
+							scope.item.url = "https://";
+						}
+						if (scope.item.url.match(/^http:\/\//)) {
 							scope.warnForcedNoEmbed = true; // small HACK for edit form feedback (shouldn't be stuffing this onto the item data)
 							if (!scope.item.urltarget) {
 								scope.item.urltarget = '_blank';

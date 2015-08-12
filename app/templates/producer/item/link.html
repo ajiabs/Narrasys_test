@@ -15,7 +15,7 @@
 	</div>
 	<div class="input">
 		<label class="toggle">
-			<input type="radio" ng-model="item.urltarget" value=""> Embed link within the episode
+			<input ng-disabled="warnForcedNoEmbed" type="radio" ng-model="item.urltarget" value=""> Embed link within the episode
 			<div ng-if="warnForcedNoEmbed" class="info">Only https:// links can be embedded within Story episodes.</div>
 		</label>
 		<label class="toggle">
