@@ -16,29 +16,28 @@ ol,
 ul {
 	margin: 0 1em;
 }
-/* NEW HOTNESS */
-/* TODO bring back the explicit 'ital' styles, so they can be used on plain input fields */
 
-.type1-droidsans,
-.type2-droidsans .altType {
+
+/* NEW HOTNESS */
+
+.type-default {}
+
+.type-droidsans {
 	font-family: 'Droid Sans', sans-serif;
 	font-style: normal;
 }
 
-.type1-helvetica,
-.type2-helvetica .altType {
+.type-helvetica {
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	font-style: normal;
 }
 
-.type1-lato,
-.type2-lato .altType {
+.type-lato {
 	font-family: 'Lato', 'Helvetica', sans-serif;
 	font-style: normal;
 }
 
-.type1-latothin,
-.type2-latothin .altType {
+.type-latothin {
 	font-family: 'Lato', 'Helvetica', sans-serif;
 	font-weight: 100;
 	font-size: 120%;
@@ -46,151 +45,129 @@ ul {
 	font-style: normal;
 }
 
-.type1-opensans,
-.type2-opensans .altType {
+.type-opensans {
 	font-family: 'Open Sans', sans-serif;
 	font-style: normal;
 }
 
-.type1-ptsans,
-.type2-ptsans .altType {
+.type-ptsans {
 	font-family: 'PT Sans', sans-serif;
 	font-style: normal;
 }
 
-.type1-roboto,
-.type2-roboto .altType {
+.type-roboto {
 	font-family: 'Roboto', sans-serif;
 	font-style: normal;
 }
 
-.type1-trebuchet,
-.type2-trebuchet .altType {
+.type-trebuchet {
 	font-family: 'Trebuchet MS', sans-serif;
 	font-style: normal;
 }
 
-.type1-verdana,
-.type2-verdana .altType {
+.type-verdana {
 	font-family: 'Verdana', sans-serif;
 	font-style: normal;
 }
 
-.type1-arvo,
-.type2-arvo .altType {
+.type-arvo {
 	font-family: 'Arvo', serif;
 	font-style: normal;
 }
 
-.type1-cardo,
-.type2-cardo .altType {
+.type-cardo {
 	font-family: 'Cardo', serif;
 	font-style: normal;
 }
 
-.type1-droidserif,
-.type2-droidserif .altType {
+.type-droidserif {
 	font-family: 'Droid Serif', serif;
 	font-style: normal;
 }
 
-.type1-garamond,
-.type2-garamond .altType {
+.type-garamond {
 	font-family: 'EB Garamond', 'Adobe Garamond', 'Garamond', serif;
 	font-style: normal;
 }
 
-.type1-gentium,
-.type2-gentium .altType {
+.type-gentium {
 	font-family: 'Gentium Basic', serif;
 	font-style: normal;
 }
 
-.type1-merriweather,
-.type2-merriweather .altType {
+.type-merriweather {
 	font-family: 'Merriweather', serif;
 	font-style: normal;
 }
 
-.type1-oldstandard,
-.type2-oldstandard .altType {
+.type-oldstandard {
 	font-family: 'Old Standard TT', serif;
 	font-style: normal;
 }
 
-.type1-playfair,
-.type2-playfair .altType {
+.type-playfair {
 	font-family: 'Playfair Display', serif;
 	font-style: normal;
 }
 
-.type1-ptserif,
-.type2-ptserif .altType {
+.type-ptserif {
 	font-family: 'PT Serif', serif;
 	font-style: normal;
 }
 
-.type1-vollkorn,
-.type2-vollkorn .altType {
+.type-vollkorn {
 	font-family: 'Vollkorn', serif;
 	font-style: normal;
 }
 
-.type1-trajan,
-.type2-trajan .altType {
+.type-trajan {
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif;
 	font-style: normal;
 }
 
-.type1-impact,
-.type2-impact .altType {
+.type-impact {
 	font-family: "Champion", "Impact", "Charcoal", sans-serif;
 	letter-spacing: 1px;
 	font-style: normal;
 }
 
-.type1-myriad,
-.type2-myriad .altType {
+.type-myriad {
 	font-family: "Myriad Pro", "Arial";
 	font-style: normal;
 }
 
-.type1-latoital,
-.type2-latoital .altType {
+.type-latoital {
 	font-family: 'Lato', 'Helvetica', sans-serif;
 	font-style: italic;
 }
 
-.type1-ptsansital,
-.type2-ptsansital .altType {
+.type-ptsansital {
 	font-family: 'PT Sans', sans-serif;
 	font-style: italic;
 }
 
-.type1-ptserifital,
-.type2-ptserifital .altType {
+.type-ptserifital {
 	font-family: 'PT Serif', serif;
 	font-style: italic;
 }
 
-.type1-droidital,
-.type2-droidital .altType {
+.type-droidital {
 	font-family: 'Droid Serif', serif;
 	font-style: italic;
 }
 
-.type1-vollkornital,
-.type2-vollkornital .altType {
+.type-vollkornital {
 	font-family: 'Vollkorn', serif;
 	font-style: italic;
 }
 
-.type1-merriweatherital,
-.type2-merriweatherital .altType {
+.type-merriweatherital {
 	font-family: 'Merriweather', serif;
 	font-weight: 300;
 	font-style: italic;
 }
+
+
 /* BELOW IS OLD, TO BE REMOVED */
 
 .title {
@@ -203,6 +180,8 @@ ul {
 	font-size: 0.8em;
 	font-weight: 700
 }
+
+
 /*============================
  *
  * typographySans
@@ -220,6 +199,8 @@ ul {
 .item.typographySans a {
 	font-family: 'Droid Sans', sans-serif !important;
 }
+
+
 /*============================
  *
  * typographySerif
@@ -237,6 +218,8 @@ ul {
 .item.typographySerif a {
 	font-family: 'Droid Serif', serif !important;
 }
+
+
 /*============================
  *
  * typographyBook
@@ -252,6 +235,8 @@ ul {
 .item.typographyBook h3 {
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }
+
+
 /*============================
  *
  * typographySwiss
@@ -274,6 +259,8 @@ ul {
 .typographySwiss .title {
 	font-weight: 300
 }
+
+
 /*============================
  *
  * customer specific:   typographyEliterate, typographyGw, typographyUsc, typographyPurdue
@@ -284,6 +271,8 @@ ul {
 	font-family: Arial, Helvetica, Tahoma, sans-serif;
 	font-size: 15px;
 }
+
+
 /* ----- */
 
 .typographyGw {
@@ -320,6 +309,8 @@ ul {
 .typographyGw .item .pullquote:before {
 	font-family: "Cardo", serif;
 }
+
+
 /* ------ */
 
 .typographyUsc {
@@ -337,6 +328,8 @@ ul {
 .typographyUsc .item .pullquote:before {
 	line-height: 0.7em;
 }
+
+
 /* ----- */
 
 .typographyPurdue {
@@ -353,7 +346,11 @@ ul {
 .typographyPurdue .headerItem {
 	font-family: "Chaparral Pro", "Times New Roman", "Times", serif;
 }
+
+
 /* ----- */
+
+
 /* (Columbia is same as typographyBook: ) */
 
 .typographyColumbia {
@@ -365,12 +362,15 @@ ul {
 .typographyColumbia h3 {
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }
+
+
 /* ----- */
+
+
 /* (Columbia Business: ) */
 
 .typographyColumbiabusiness {
 	/* They specify Galaxie Sans, we don't have a license. */
-	
 	font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
 }
 
@@ -395,6 +395,8 @@ ul {
 .typographyColumbiabusiness .pullquote:before {
 	display: none !important;
 }
+
+
 /* (GWSB: ) */
 
 .typographyGwsb {

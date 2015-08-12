@@ -53,6 +53,8 @@
 	text-align: right;
 	padding-right: 0.5em;
 }
+
+
 /*============================
  *
  * Defaults
@@ -63,6 +65,8 @@
 .content .item.sidebarR:first-child {
 	padding-top: 0.5em;
 }
+
+
 /*.content .item {
 	padding: 0.3em 0.5em 0.3em 60px;
 }
@@ -107,6 +111,8 @@ a.startTime.displayTime {
 	text-decoration: none;
 	text-shadow: none;
 }
+
+
 /* iframes */
 
 .iframeContainer {
@@ -127,7 +133,6 @@ a.startTime.displayTime {
 
 .touchDevice .iframeContainer {
 	/* TODO make sure this class is being applied */
-	
 	-webkit-overflow-scrolling: touch;
 	overflow: auto;
 }
@@ -147,11 +152,15 @@ a.startTime.displayTime {
 	width: 100%;
 	height: 98%;
 }
+
+
 /* 
 	.singleitem panes are intended for cleaner transitions when there's only one content item in the pane at a time. 
 	TODO: this works fine when moving from single item to single item, but transitioning between
 	single and multiple is not so hot.  try again later
  */
+
+
 /* .singleitem .item {
 	position:absolute;
 	width:100%;
@@ -162,8 +171,12 @@ a.startTime.displayTime {
 	display:block;
 }
 */
+
+
 /*============================ ============================ ============================ 
 image-fill items */
+
+
 /* 
 	item.contain, item.cover, and item.fill should use background-image.  Others should use the img, and resize to fit the img. 
 	
@@ -240,24 +253,26 @@ image-fill items */
 	justify-content: center;
 	align-items: center;
 }
+
+
 /* this background-image is only used for contain or cover styles; never in content: */
 
 .content .itemTemplate.imageFill {
 	background-image: none !important;
 	padding-left: 5px;
 }
+
+
 /*============================ ============================ ============================ 
 Inline images (TODO show these only when image is larger than available space) */
 
 .content .item:first-child .imagePlain {
 	/* override first-child padding for plain images: */
-	
 	margin-top: -1.5em;
 }
 
 .content .item .imagePlain {
 	/* and override content pane's margin always: */
-	
 	margin-right: -0.5em;
 	margin-left: -0.5em;
 }
@@ -299,6 +314,8 @@ Inline images (TODO show these only when image is larger than available space) *
 .item .touchable:hover .touchableIndicator {
 	opacity: 0.8;
 }
+
+
 /*============================ ============================ ============================
   inline item detail */
 
@@ -333,6 +350,8 @@ Inline images (TODO show these only when image is larger than available space) *
 	height: 1px;
 	opacity: 0;
 }
+
+
 /*============================ ============================ ============================
   Modal overlay */
 
@@ -387,6 +406,8 @@ Inline images (TODO show these only when image is larger than available space) *
 	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
 	background-color: #FFF;
 }
+
+
 /*============================ ============================ ============================
  *
  * timestamps
@@ -404,6 +425,8 @@ Inline images (TODO show these only when image is larger than available space) *
   narrow, sidebar:            item: pad 0,    timestamp display none;
 
 =========================== */
+
+
 /*
 .content .item {
 	padding-left: 60px;
@@ -445,6 +468,8 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 
 */
+
+
 /* =========================== */
 
 .content.isNarrow .item .headerItem {
@@ -459,6 +484,8 @@ Inline images (TODO show these only when image is larger than available space) *
 	text-align: left;
 	margin-right: 0.4em;
 }
+
+
 /* =========================== */
 
 .item.timestampSidebar .startTime {
@@ -468,12 +495,18 @@ Inline images (TODO show these only when image is larger than available space) *
 	font-size: 20px;
 	margin-left: -45px;
 }
+
+
 /* =========================== */
 
 .item.timestampSmall .displayTime {
 	font-size: 0.86em;
 }
+
+
 /* =========================== */
+
+
 /*============================ ============================ ============================
  *
  * Template variants
@@ -481,6 +514,43 @@ Inline images (TODO show these only when image is larger than available space) *
 //=========================== */
 
 .item .pullquote {
+	font-size: 125%;
+	display: flex;
+	flex-direction: row;
+}
+
+.item .pullquote .pullquoteText {
+	align-self: stretch;
+}
+
+.item .pullquote .pullquoteStart,
+.item .pullquote .pullquoteEnd {
+	opacity: 0.2;
+	font-size: 400%;
+}
+
+.item .pullquote .pullquoteStart {
+	align-self: flex-start;
+	line-height: 0.5em;
+}
+
+.item .pullquote .pullquoteEnd {
+	align-self: flex-end;
+	line-height: 0;
+}
+
+.item .pullquoteSpeaker {
+	text-align: right;
+	font-size: 80%;
+}
+
+.item .pullquoteSpeaker:before {
+	content: '—';
+	display: inline-block;
+}
+
+
+/*.item .pullquote {
 	position: relative;
 	font-size: 125%;
 }
@@ -494,10 +564,18 @@ Inline images (TODO show these only when image is larger than available space) *
 	margin-left: -25px;
 }
 
-.item .pullquoteSpeaker {
-	text-align: right;
-	font-size: 0.8em
+.item .pullquote .pullquoteMark {
+	opacity: 0.2;
+	display: inline-block;
+	font-size: 400%;
+	height: 0.6em;
+	line-height: 1em;
+	vertical-align: bottom;
 }
+
+*/
+
+
 /* - - - - - - - - - - - - - -  */
 
 .item .captionContainer {
@@ -509,7 +587,6 @@ Inline images (TODO show these only when image is larger than available space) *
 .item .caption {
 	position: absolute;
 	/* TODO why is this not zero: */
-	
 	bottom: 4px;
 	left: 0;
 	right: 0;
@@ -544,6 +621,8 @@ Inline images (TODO show these only when image is larger than available space) *
 .item:hover .slidingcaption {
 	transform: translateY(100%);
 }
+
+
 /* - - - - - - - - - - - - - -  */
 
 .item .thumbnail img {
@@ -561,6 +640,8 @@ Inline images (TODO show these only when image is larger than available space) *
 	max-width: 100%;
 	float: none;
 }
+
+
 /* - - - - - - - - - - - - - -  */
 
 .item .question label {

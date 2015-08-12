@@ -17,12 +17,12 @@ angular.module('com.inthetelling.story')
 				label: '@formField'
 			},
 			template: '<div class="field"><div class="label" ng-bind-html="label"></div><div class="input" ng-transclude></div></div>',
-			link: function (scope) {
+			link: function () {
 				// console.log("scope.label", scope);
 			}
 		};
 	})
-	.directive('ittItemColorForm', function ($timeout) {
+	.directive('ittItemColorForm', function () {
 		return {
 			restrict: 'A',
 			scope: true,
@@ -30,11 +30,11 @@ angular.module('com.inthetelling.story')
 			link: function (scope) {
 				console.log("color form", scope.item);
 
-				if (!scope.item.tmpl.style.textcolor1 && !scope.item.tmpl.style.textcolor2 && !scope.item.tmpl.style.linkcolor) {
+				if (!scope.item.tmpl.style.font1.color && !scope.item.tmpl.style.font2.color && !scope.item.tmpl.style.linkcolor) {
 					console.log("Found no colors... turn on defaultColors");
 					scope.item.tmpl.style.linkcolor = "#0000FF";
-					scope.item.tmpl.style.textcolor1 = "#000000";
-					scope.item.tmpl.style.textcolor2 = "#000000";
+					scope.item.tmpl.style.font1.color = "#000000";
+					scope.item.tmpl.style.font2.color = "#000000";
 					scope.defaultColors = true; // HACK color-picker wants to init as #FFF, timeout will override
 				};
 
@@ -59,8 +59,8 @@ angular.module('com.inthetelling.story')
 					if (newV) {
 						console.log("Resetting default colors");
 						delete scope.item.tmpl.style.linkcolor;
-						delete scope.item.tmpl.style.textcolor1;
-						delete scope.item.tmpl.style.textcolor2;
+						delete scope.item.tmpl.style.font1.color;
+						delete scope.item.tmpl.style.font2.color;
 					}
 				});
 			}

@@ -2,26 +2,16 @@
 /*
 Directives for use inside of item templates
 
-loremVal
 ittTimestamp
-
+ittText 
 */
 
 angular.module('com.inthetelling.story')
-	.directive('loremVal', function () {
+
+.directive('ittTimestamp', function () {
 		return {
 			restrict: 'A',
-			replace: false,
-			scope: {
-				val: '=loremVal'
-			},
-			template: '<span ng-class="{lorem: !val}" ng-bind-html="val"></span>'
-		};
-	})
-	.directive('ittTimestamp', function () {
-		return {
-			restrict: 'A',
-			replace: 'true',
+			replace: true,
 			scope: {
 				item: '=ittTimestamp',
 				pos: '@pos'
@@ -32,5 +22,20 @@ angular.module('com.inthetelling.story')
 			}
 		};
 	})
-
-;
+	.directive('ittText', function () {
+		return {
+			restrict: 'A',
+			replace: false,
+			scope: {
+				font: '=ittText', // {face: 'default',size: 50,color: '#000'}
+				bindval: '='
+			},
+			template: '<span class="type-{{font.face}}" ng-class="{lorem: !bindval}" ng-style="{fontSize: font.size+\'%\', color: font.color}" ng-bind-html="bindval"></span>',
+			link: function (scope) {
+				scope.font = scope.font || {};
+				scope.font.face = scope.font.face || 'default';
+				scope.font.size = scope.font.size || '100';
+				scope.font.color = scope.font.color || '#000';
+			}
+		};
+	});

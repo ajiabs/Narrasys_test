@@ -50,6 +50,9 @@
 				<itt-chooser-form ng-if="item.tmpl.itemType=='annotation'" ng-model="item.tmpl.template" item="item" choices="[
 					{name: 'Default', value: 'default'},
 					{name: 'Pullquote (attributed)', value: 'pullquote'},
+					{name: 'Pullquote (unattributed)', value: 'pullquote-noattrib'},
+					{name: 'Header', value: 'h1'},
+					{name: 'Sub-head', value: 'h2'},
 					{name: 'DEBUG', value: 'debug'}
 				]"></itt-chooser-form>
 
@@ -141,9 +144,9 @@
 					<div itt-item-color-form="item"></div>
 				</div>
 
-				<div form-field="Font face">
-					<select size="1" ng-model="item.tmpl.style.font1">
-						<option value="">Default</option>
+				<div form-field="Primary font">
+					<select size="1" ng-model="item.tmpl.style.font1.face" style="width:49%;display:inline-block">
+						<option value="default">Default</option>
 						<optgroup label="Sans Serif">
 							<option value="droidsans">Droid Sans</option>
 							<option value="helvetica">Helvetica</option>
@@ -179,11 +182,22 @@
 							<option value="vollkornital">Vollkorn Italic</option>
 						</optgroup>
 					</select>
+					<div style="width:49%;display:inline-block">
+						<div class="size">
+							<input class="sizeSlider" type="range" min="75" max="150" ng-model="item.tmpl.style.font1.size">
+							<span class="sizeSize" ng-if="item.tmpl.style.font1.size">
+								<input ng-model="item.tmpl.style.font1.size">%
+							</span>
+							<span class="sizeReset" ng-if="item.tmpl.style.font1.size && item.tmpl.style.font1.size !== 100">
+								<button ng-click="item.tmpl.style.font1.size=100" class="fa fa-lg fa-ban borderless"></button>
+							</span>
+						</div>
+					</div>
 				</div>
 
 				<div form-field="Secondary font">
-					<select size="1" ng-model="item.tmpl.style.font2">
-						<option value="">Default</option>
+					<select size="1" ng-model="item.tmpl.style.font2.face" style="width:49%;display:inline-block">
+						<option value="default">Default</option>
 						<optgroup label="Sans Serif">
 							<option value="droidsans">Droid Sans</option>
 							<option value="helvetica">Helvetica</option>
@@ -219,17 +233,29 @@
 							<option value="vollkornital">Vollkorn Italic</option>
 						</optgroup>
 					</select>
+					<div style="width:49%;display:inline-block">
+						<div class="size">
+							<input class="sizeSlider" type="range" min="75" max="150" ng-model="item.tmpl.style.font2.size">
+							<span class="sizeSize" ng-if="item.tmpl.style.font2.size">
+								<input ng-model="item.tmpl.style.font2.size">%
+							</span>
+							<span class="sizeReset" ng-if="item.tmpl.style.font2.size && item.tmpl.style.font2.size !== 100">
+								<button ng-click="item.tmpl.style.font2.size=100" class="fa fa-lg fa-ban borderless"></button>
+							</span>
+						</div>
+					</div>
 				</div>
 
-				<div form-field="Text size">
-					<input style="width: 70%" type="range" min="75" max="150" ng-model="item.tmpl.style.fontsize" />
-
-					<span style="width:15%; display:inline-block" ng-if="item.tmpl.style.fontsize">
-						<input style="border: none; box-shadow: none !important; text-align:right; font-size: small; width: 3em" ng-model="item.tmpl.style.fontsize">%
-					</span>
-					<button ng-if="item.tmpl.style.fontsize && item.tmpl.style.fontsize !== 100" style="width: 10%" ng-click="item.tmpl.style.fontsize=100" class="fa fa-lg fa-ban borderless"></button>
-
-
+				<div form-field="Scale all text">
+					<div class="size">
+						<input class="sizeSlider" type="range" min="75" max="150" ng-model="item.tmpl.style.fontsize">
+						<span class="sizeSize" ng-if="item.tmpl.style.fontsize">
+							<input ng-model="item.tmpl.style.fontsize">%
+						</span>
+						<span class="sizeReset" ng-if="item.tmpl.style.fontsize && item.tmpl.style.fontsize !== 100">
+							<button ng-click="item.tmpl.style.fontsize=100" class="fa fa-lg fa-ban borderless"></button>
+						</span>
+					</div>
 				</div>
 
 

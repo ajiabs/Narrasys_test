@@ -46,6 +46,7 @@ angular.module('com.inthetelling.story')
 						scope.showCustomStyles = true;
 						scope.preset.name = "";
 					} else if (scope.stylePresets[newV]) {
+						scope.showCustomStyles = false;
 						scope.preset.name = newV;
 						scope.item.tmpl.wrapper = scope.stylePresets[newV].wrapper;
 						scope.item.tmpl.timestamp = scope.stylePresets[newV].timestamp;
