@@ -717,55 +717,59 @@ angular.module('com.inthetelling.story')
 			episode.parents = [];
 			delete episode.previousEpisodeContainer;
 			delete episode.nextEpisodeContainer;
-			if (episode.navigation_depth > 0) {
-				setParents(Number(episode.navigation_depth) + 1, epId, episode.container_id);
-			} else {
-				episode.navigation_depth = 0;
-			}
+			// if (episode.navigation_depth > 0) {
+			// 	setParents(Number(episode.navigation_depth) + 1, epId, episode.container_id);
+			// } else {
+			episode.navigation_depth = 0;
+			// }
 		};
 
+		/*
 		var setParents = function (depth, epId, containerId) {
+						
 
-			// console.log("setParents", depth, epId, containerId);
-			var episode = svc.episodes[epId];
+						// console.log("setParents", depth, epId, containerId);
+						var episode = svc.episodes[epId];
 
-			// THis will build up the parents array backwards, starting at the end
-			if (depth <= episode.navigation_depth) { // skip the episode container
-				episode.parents[depth - 1] = svc.containers[containerId];
-			}
+						// THis will build up the parents array backwards, starting at the end
+						if (depth <= episode.navigation_depth) { // skip the episode container
+							episode.parents[depth - 1] = svc.containers[containerId];
+						}
 
-			if (depth === episode.navigation_depth) {
-				// as long as we're at the sibling level, get the next and previous episodes 
-				// (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
-				for (var i = 0; i < svc.containers[containerId].children.length; i++) {
-					var c = svc.containers[containerId].children[i];
-					if (c.episodes[0] === epId) {
-						if (i > 0) {
-							// find the previous 'Published' episode
-							for (var j = i - 1; j > -1; j--) {
-								if (svc.containers[svc.containers[containerId].children[j]._id].status === 'Published') {
-									episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[j]._id];
-									break;
+						if (depth === episode.navigation_depth) {
+							// as long as we're at the sibling level, get the next and previous episodes 
+							// (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
+							for (var i = 0; i < svc.containers[containerId].children.length; i++) {
+								var c = svc.containers[containerId].children[i];
+								if (c.episodes[0] === epId) {
+									if (i > 0) {
+										// find the previous 'Published' episode
+										for (var j = i - 1; j > -1; j--) {
+											if (svc.containers[svc.containers[containerId].children[j]._id].status === 'Published') {
+												episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[j]._id];
+												break;
+											}
+										}
+									}
+									if (i < svc.containers[containerId].children.length - 1) {
+										for (var k = i + 1; k < svc.containers[containerId].children.length; k++) {
+											if (svc.containers[svc.containers[containerId].children[k]._id].status === 'Published') {
+												episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[k]._id];
+												break;
+											}
+										}
+									}
 								}
 							}
 						}
-						if (i < svc.containers[containerId].children.length - 1) {
-							for (var k = i + 1; k < svc.containers[containerId].children.length; k++) {
-								if (svc.containers[svc.containers[containerId].children[k]._id].status === 'Published') {
-									episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[k]._id];
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
 
-			// iterate
-			if (depth > 1) {
-				setParents(depth - 1, epId, svc.containers[containerId].parent_id);
-			}
+						// iterate
+						if (depth > 1) {
+							setParents(depth - 1, epId, svc.containers[containerId].parent_id);
+						}
+			
 		};
+		*/
 
 		svc.episode = function (epId) {
 			if (!svc.episodes[epId]) {

@@ -628,9 +628,9 @@ angular.module('com.inthetelling.story')
 					if (!episodeId) {
 						getSiblings = true; // we're in a container list
 					}
-					if (episodeId && modelSvc.episodes[episodeId].navigation_depth > 0) {
-						getSiblings = true;
-					}
+					// if (episodeId && modelSvc.episodes[episodeId].navigation_depth > 0) {
+					// 	getSiblings = true;
+					// }
 					if (getSiblings) {
 						angular.forEach(container.children, function (child) {
 							if (child.episodes[0]) {
@@ -974,8 +974,8 @@ angular.module('com.inthetelling.story')
 				"customer_id",
 				"master_asset_id",
 				"status",
-				"languages",
-				"navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
+				"languages"
+				// "navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
 			];
 
 			for (var i = 0; i < fields.length; i++) {
