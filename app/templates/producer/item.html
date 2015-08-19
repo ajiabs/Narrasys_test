@@ -21,6 +21,7 @@
 			<div class="ittTabs" itt-tabs>
 				<select style="float:right; padding-right: 24px" ng-if="languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
 				</select>
+
 				<!-- begin tabset -->
 				<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="{{item._type === 'Scene' ? 'Scene' : 'Item'}}">
 					<!-- begin data tab -->
@@ -139,7 +140,7 @@
 										<select size="1" ng-model="itemForm.position">
 											<!-- TODO some of these are behaving oddly; naming them according to their actual behavior at the moment.  Will need to fix this -->
 											<option value="">Fit</option>
-											<option value="center">Center</option>
+											<!-- <option value="center">Center</option> -->
 											<option value="cover">Cover</option>
 											<option value="contain">Contain</option>
 											<option value="fill">Fill and stretch</option>
