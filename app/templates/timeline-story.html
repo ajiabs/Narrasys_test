@@ -64,7 +64,7 @@
 					<!-- interactive parts of timeline -->
 					<div class="progressbarContainer " ng-style="{width: zoomLevel+'00%'}">
 						<!-- scene markers -->
-						<div class="marker" ng-mouseover="showTooltip(event);" ng-mouseout="hideTooltip(event)" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}" ng-if="event.display_title || appState.product == 'producer'" ng-class="{stop: event.type != 'Scene', mini: (event.type == 'Scene' && !event.display_title)}"></div>
+						<div class="marker" ng-mouseover="showTooltip(event);" ng-mouseout="hideTooltip(event)" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}" ng-if="event.stop || event.display_title || appState.product == 'producer'" ng-class="{stop: event.type != 'Scene', mini: (event.type == 'Scene' && !event.display_title)}"></div>
 
 						<!-- highlight item being edited -->
 						<div ng-if="appState.editEvent" class="editingItem" ng-style="{left: markerPercent(appState.editEvent.start_time)+'%', right: markerPercent(appState.duration - appState.editEvent.end_time)+'%'}"></div>
