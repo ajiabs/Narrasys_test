@@ -11,7 +11,7 @@
 	<div class="producer addButtonPanel" ng-show="!item && appState.time > 0 && appState.time < (appState.duration - 0.1) ">
 		<span ng-if="expanded" style="padding: 0 1em" class="animate transitionExpandW">
 			<span ng-if="appState.product == 'sxs'">
-				<a class="button button-comment" ng-click="addEvent('comment')">Comment</a>
+				<a class="button button-comment" ng-click="addEvent('annotation')">Comment</a>
 				<a class="button button-link" ng-click="addEvent('link')">Link</a>
 				<a class="button button-question" ng-click="addEvent('question')">Question</a>
 				<a class="button button-image" ng-click="addEvent('image')">Image</a>

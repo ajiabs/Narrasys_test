@@ -69,7 +69,7 @@ angular.module('com.inthetelling.story')
 					} else {
 						timelineSvc.pause();
 						scope.captureInteraction();
-						if (element.width() > 400) {
+						if (element.width() > 450) {
 							// show detail inline if there's room for it:
 							scope.item.showInlineDetail = true;
 						} else {
@@ -100,8 +100,17 @@ angular.module('com.inthetelling.story')
 				};
 
 				// HACK: need to capture embedded links on item enter, since they're automatically 'clicked'
+				// TODO timelineSvc should be able to inform the item directive directly that enter or exit has happened, $watch is silly
 				if (scope.item.templateUrl === 'templates/item/link-embed.html') {
-					scope.captureInteraction();
+					var captureEmbed = scope.$watch(function () {
+						return appState.time > scope.item.start_time;
+					}, function (x) {
+						if (x) {
+							scope.captureInteraction();
+							captureEmbed();
+						}
+					});
+
 				}
 
 				// HACK not sure why but modelSvc.resolveEpisodeAssets isn't always doing the job.
@@ -111,7 +120,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				// Slight hack to simplify css for image-fill:
-				if (scope.item.styleCss && scope.item.styleCss.match(/fill|contain|cover/)) {
+				if (scope.item.asset && scope.item.styleCss && scope.item.styleCss.match(/fill|contain|cover/)) {
 					// TODO: figure out why item.asset.cssUrl works in IE, and item.backgroundImageStyle works in everything else.
 					// Probably just an escaped-quote issue or something dumb like that
 					scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";

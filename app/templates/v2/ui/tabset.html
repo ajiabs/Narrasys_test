@@ -1,0 +1,14 @@
+<div class="tabset" role="tabpanel">
+  <ul class="tablabels" role="tablist">
+    <li class="tablabel" role="tab" ng-repeat="tab in tabset.tabs" ng-class="{cur: tab.active}" ng-click="tabset.chooseTab(tab)">
+      <a>
+        <span ng-if="tab.icon">
+          <img ng-src="{{tab.icon}}">
+          <br>
+        </span>
+        <span>{{tab.heading}}</span>
+      </a>
+    </li>
+  </ul>
+  <div ng-transclude class="tabs"></div>
+</div>

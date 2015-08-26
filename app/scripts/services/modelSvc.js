@@ -252,11 +252,11 @@ angular.module('com.inthetelling.story')
 				}
 
 				if (event._type === 'Scene') {
-
 					scenes.push(event);
 				} else {
 					items.push(event);
 				}
+
 			});
 
 			// collect a list of all the speakers/annotators in the episode.
@@ -299,9 +299,7 @@ angular.module('com.inthetelling.story')
 							longKey = longKey + " / " + annotators[key].name[langs[i]];
 						}
 					}
-
 					annotators[key].key = longKey;
-
 				}
 			});
 			episode.annotators = annotators;
@@ -309,7 +307,23 @@ angular.module('com.inthetelling.story')
 			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order
 			// attach array of scenes to the episode.
 			// Note these are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
+			var duration = 0;
+			if (episode.masterAsset) {
+				duration = episode.masterAsset.duration;
+				angular.forEach(episode.scenes, function (scene) {
+					if (scene.start_time > duration) {
+						scene.start_time = duration - 0.2; // last resort HACK to catch bad scene data
+					}
+				});
+			}
+
 			episode.scenes = scenes.sort(function (a, b) {
+				if (a._id.indexOf('internal:start') > -1 || b._id.indexOf('internal:end') > -1) {
+					return -1;
+				}
+				if (b._id.indexOf('internal:start') > -1 || a._id.indexOf('internal:end') > -1) {
+					return 1;
+				}
 				return a.start_time - b.start_time;
 			});
 
@@ -318,13 +332,9 @@ angular.module('com.inthetelling.story')
 				return a.start_time - b.start_time;
 			});
 
-			var duration = 0;
-			if (episode.masterAsset) {
-				duration = episode.masterAsset.duration;
-			}
-
-			// Fix bad event data:
+			// Fix bad event timing data.  (see also svc.deriveEvent())
 			angular.forEach(items, function (event) {
+
 				// We have some events whose start time is beyond the episode duration; they were winding up attached to the endingscene (and therefore invisible)
 				// HACK just shove those into the end of the last (real) scene with a short duration
 				if (duration > 0) {
@@ -465,55 +475,59 @@ angular.module('com.inthetelling.story')
 			episode.parents = [];
 			delete episode.previousEpisodeContainer;
 			delete episode.nextEpisodeContainer;
-			if (episode.navigation_depth > 0) {
-				setParents(Number(episode.navigation_depth) + 1, epId, episode.container_id);
-			} else {
-				episode.navigation_depth = 0;
-			}
+			// if (episode.navigation_depth > 0) {
+			// 	setParents(Number(episode.navigation_depth) + 1, epId, episode.container_id);
+			// } else {
+			episode.navigation_depth = 0;
+			// }
 		};
 
+		/*
 		var setParents = function (depth, epId, containerId) {
+						
 
-			// console.log("setParents", depth, epId, containerId);
-			var episode = svc.episodes[epId];
+						// console.log("setParents", depth, epId, containerId);
+						var episode = svc.episodes[epId];
 
-			// THis will build up the parents array backwards, starting at the end
-			if (depth <= episode.navigation_depth) { // skip the episode container
-				episode.parents[depth - 1] = svc.containers[containerId];
-			}
+						// THis will build up the parents array backwards, starting at the end
+						if (depth <= episode.navigation_depth) { // skip the episode container
+							episode.parents[depth - 1] = svc.containers[containerId];
+						}
 
-			if (depth === episode.navigation_depth) {
-				// as long as we're at the sibling level, get the next and previous episodes 
-				// (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
-				for (var i = 0; i < svc.containers[containerId].children.length; i++) {
-					var c = svc.containers[containerId].children[i];
-					if (c.episodes[0] === epId) {
-						if (i > 0) {
-							// find the previous 'Published' episode
-							for (var j = i - 1; j > -1; j--) {
-								if (svc.containers[svc.containers[containerId].children[j]._id].status === 'Published') {
-									episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[j]._id];
-									break;
+						if (depth === episode.navigation_depth) {
+							// as long as we're at the sibling level, get the next and previous episodes 
+							// (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
+							for (var i = 0; i < svc.containers[containerId].children.length; i++) {
+								var c = svc.containers[containerId].children[i];
+								if (c.episodes[0] === epId) {
+									if (i > 0) {
+										// find the previous 'Published' episode
+										for (var j = i - 1; j > -1; j--) {
+											if (svc.containers[svc.containers[containerId].children[j]._id].status === 'Published') {
+												episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[j]._id];
+												break;
+											}
+										}
+									}
+									if (i < svc.containers[containerId].children.length - 1) {
+										for (var k = i + 1; k < svc.containers[containerId].children.length; k++) {
+											if (svc.containers[svc.containers[containerId].children[k]._id].status === 'Published') {
+												episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[k]._id];
+												break;
+											}
+										}
+									}
 								}
 							}
 						}
-						if (i < svc.containers[containerId].children.length - 1) {
-							for (var k = i + 1; k < svc.containers[containerId].children.length; k++) {
-								if (svc.containers[svc.containers[containerId].children[k]._id].status === 'Published') {
-									episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[k]._id];
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
 
-			// iterate
-			if (depth > 1) {
-				setParents(depth - 1, epId, svc.containers[containerId].parent_id);
-			}
+						// iterate
+						if (depth > 1) {
+							setParents(depth - 1, epId, svc.containers[containerId].parent_id);
+						}
+			
 		};
+		*/
 
 		svc.episode = function (epId) {
 			if (!svc.episodes[epId]) {
@@ -746,16 +760,14 @@ angular.module('com.inthetelling.story')
 				});
 			}
 
-			// Old-school episodes:
-			// Use the old you_tube_url if it wasn't present in alternate_urls:
+			// Old-school episodes, or linked youtube assets
+			// Use the you_tube_url,  if it's not present in alternate_urls:
 			if (videoObject.youtube.length === 0) {
-				//it is on url, and not on you_tube_url.
-				if (videoAsset.url && !videoAsset.you_tube_url) {
+				if (videoAsset.url) {
 					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.url)) {
 						videoAsset.you_tube_url = youtubeSvc.embeddableYoutubeUrl(videoAsset.url);
 					}
 				}
-
 				if (videoAsset.you_tube_url) {
 					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
 						videoObject.youtube = [youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)];
@@ -803,10 +815,27 @@ angular.module('com.inthetelling.story')
 					}
 				});
 			}
-
-			// console.log("video asset:", videoObject);
 			videoAsset.urls = videoObject;
+
+			// We need to know if the video has been transcoded or not in the template,
+			// so let's centralize the logic for that here
+			videoAsset.isTranscoded = function () {
+				return svc.isTranscoded(this);
+			};
+
 			return videoAsset;
+		};
+
+		// TODO get rid of this; really wasteful to be checking this constantly, it's only useful
+		//  right after a master asset upload  (put it in ittVideo pollInterval() instead)
+		svc.isTranscoded = function (video) {
+			if (video.urls && video.urls.youtube && video.urls.youtube.length) {
+				return true;
+			}
+			if (video.alternate_urls) {
+				return true;
+			}
+			return false;
 		};
 
 		if (config.debugInBrowser) {

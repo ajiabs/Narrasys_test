@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittMcQuestion', function (questionAnswersSvc, analyticsSvc) {
+	.directive('ittMcQuestion', function (questionAnswersSvc, analyticsSvc, appState) {
 		return {
 			restrict: 'E',
 			replace: false,
@@ -70,14 +70,17 @@ angular.module('com.inthetelling.story')
 					// console.log("Formatting ", grouped, " for ", scope.plugin);
 					var chartData = [];
 					for (var answerIndex in grouped) {
-
 						if (grouped.hasOwnProperty(answerIndex)) {
 							// translate the index into the answer text
 							angular.forEach(scope.plugin.distractors, function (distractor) {
 								if (distractor.index + "" === answerIndex + "") {
+									var label = distractor.text;
+									if (typeof (label) === 'object') {
+										label = label[appState.lang] || label.en || "";
+									}
 									chartData.push({
 										data: grouped[answerIndex],
-										label: distractor.text
+										label: label
 									});
 								}
 							});

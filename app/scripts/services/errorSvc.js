@@ -32,6 +32,11 @@ angular.module('com.inthetelling.story')
 					exception = undefined;
 				}
 			}
+
+			if (exception.config && exception.config.url && exception.config.url.match(/metrics/)) {
+				console.warn("Got error attempting to store analytics data");
+				exception = undefined; // guest users are sometimes getting errors on storing analytics data; don't bother to tell them as there's nothing they can do about it.
+			}
 			if (exception && exception.data) {
 				// API errors go here.
 

@@ -1,0 +1,43 @@
+<div class="assetUploader">
+	<div ng-if="uploads.length">
+		<div class="uploadList" ng-repeat="upload in uploads">
+			<span class="uploadName">
+				{{uploadStatus[$index].name}}:
+			</span>
+			<span class="uploadProgress">
+				<span ng-if="uploadStatus[$index].done">Upload complete</span>
+				<div ng-if="uploadStatus[$index].error">Error</div>
+				<span ng-if="!uploadStatus[$index].done && !uploadStatus[$index].error">
+					<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}">
+					</progress>
+					<span ng-switch="uploadStatus[$index].percent">
+						<span ng-switch-when="100">...</span>
+						<span ng-switch-default>{{uploadStatus[$index].percent}}%</span>
+					</span>
+				</span>
+			</span>
+			<div ng-if="uploadStatus[$index].error">{{uploadStatus[$index].error}}</div>
+		</div>
+		<span ng-if="uploadsinprogress > 0">{{uploadsinprogress}} files remaining
+			<button ng-if="!paused" ng-click="pauseUpload()">Pause</button>
+			<button ng-if="paused" ng-click="resumeUpload()">Resume</button>
+			<button ng-click="cancelUpload()">Cancel</button>
+		</span>
+	</div>
+	<div ng-if="errormessage" ng-bind-html="errormessage"></div>
+
+
+	<div class="uploadDropTarget">
+		Drag and drop
+		<span ng-if="multiple">files</span>
+		<span ng-if="!multiple">a file</span> here
+		<br>
+		<small>
+			or choose
+			<span ng-if="multiple">files</span>
+			<span ng-if="!multiple">a file</span> to upload:
+			<input class="uploadFileInput" type="file" multiple onchange="angular.element(this).scope().handleUploads(this.files)">
+		</small>
+	</div>
+
+</div>

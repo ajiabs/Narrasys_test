@@ -9,7 +9,7 @@ angular.module('com.inthetelling.story')
 				var unwatch = scope.$watch(function () {
 					return element.width();
 				}, function (w) {
-					scope.isNarrow = (w < 400);
+					scope.isNarrow = (w < 450);
 				});
 				scope.$on("$destroy", unwatch);
 			}

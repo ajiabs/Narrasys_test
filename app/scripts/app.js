@@ -110,11 +110,15 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			controller: 'EventTestController',
 			templateUrl: 'templates/testbed-event.html',
 		})
-		.otherwise({
-			title: "Telling STORY: Error",
-			controller: 'ErrorController',
-			templateUrl: 'templates/error-404.html'
-		});
+		.when('/foo', {
+			template: '<div itt-story-ui></div>'
+		})
+
+	.otherwise({
+		title: "Telling STORY: Error",
+		controller: 'ErrorController',
+		templateUrl: 'templates/error-404.html'
+	});
 
 	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
 })
@@ -129,17 +133,26 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	// globally emit rootscope event for certain keypresses:
 	var fhotkb = false; // user's forehead is not on the keyboard
 	$(document).on("keydown", function (e) {
-		if (!fhotkb && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-			fhotkb = true;
-			if (e.keyCode === 27) {
-				$rootScope.$emit("userKeypress.ESC");
-				//e.preventDefault();
-			}
-			if (e.which === 32) {
-				$rootScope.$emit("userKeypress.SPACE");
-				//e.preventDefault();
-			}
+		if (
+			fhotkb ||
+			document.activeElement.tagName === 'INPUT' ||
+			document.activeElement.tagName === 'TEXTAREA' ||
+			document.activeElement.attributes.contenteditable
+		) {
+			return;
 		}
+
+		fhotkb = true;
+		console.log(e.keyCode);
+		if (e.keyCode === 27) {
+			$rootScope.$emit("userKeypress.ESC");
+			e.preventDefault();
+		}
+		if (e.which === 32) {
+			$rootScope.$emit("userKeypress.SPACE");
+			e.preventDefault();
+		}
+
 	});
 	$(document).on("keyup", function () {
 		fhotkb = false; // oh good they've woken up

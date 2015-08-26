@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittSearchPanel', function ($timeout) {
+	.directive('ittSearchPanel', function ($timeout, appState) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -9,10 +9,13 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/searchpanel.html',
 			controller: 'SearchPanelController',
 			link: function (scope) {
+
+				scope.appState = appState;
+
+				// $timeout(function () {
 				// console.log("ittSearchPanel", scope);
-				$timeout(function () {
-					scope.indexEvents();
-				});
+				scope.indexEvents();
+				// });
 			}
 		};
 	});

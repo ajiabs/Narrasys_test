@@ -1,0 +1,26 @@
+<!-- producer -->
+
+<div ng-if="showAssetPicker" class="floatAssetPicker">
+	<div class="scrollContainer">
+		<div sxs-container-assets="episodeContainerId"></div>
+	</div>
+	<div class="controlsContainer">
+		<button ng-click="endChooseAsset();">Cancel</button>
+	</div>
+</div>
+
+<div>
+	<div ng-if="(item.asset || masterAsset.original_filename) && !showUploadButtons">
+		{{item.asset.display_name || masterAsset.display_name}}
+		<button class="button" ng-click="replaceAsset(item.asset._id)"> Replace this asset </button>
+	</div>
+	<div ng-if="showUploadButtons || !(item.asset || masterAsset.original_filename)">
+		<span ng-if="showUploadField">
+			<div itt-asset-uploader="episodeContainerId" callback="assetUploaded"> </div>
+		</span>
+		<span ng-if="!showUploadField">
+			<button class="button" ng-click="chooseAsset()">Browse uploaded assets</button>
+			<button class="button" ng-click="toggleUpload()">Upload new asset</button>
+		</span>
+	</div>
+</div>

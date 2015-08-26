@@ -70,7 +70,9 @@ angular.module('com.inthetelling.story')
 
 				// cleanup watchers on destroy
 				scope.$on('$destroy', function () {
-					scope.unwatch();
+					if(scope.unwatch) {
+						scope.unwatch();
+					}
 				});
 			}
 		};

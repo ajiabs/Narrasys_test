@@ -70,7 +70,7 @@ button {
 	animation: delayedFadeOut 7s ease-out;
 }
 
-.toolbar .searchgroup,
+.episodeUI .toolbar .searchgroup,
 .toolbar .escapegroup,
 .toolbar .profilegroup {
 	float: right;
@@ -123,7 +123,7 @@ button {
 	.volumebar {
 		display: none;
 	}
-	.button-fullscreen {
+	.speedcontrol {
 		display: none !important;
 	}
 }
@@ -139,9 +139,13 @@ button {
 }
 
 .toolbar .buttongroup.searchgroup.cur {
-	width: 27%;
-	font-size: 22px;
 	padding-top: 3px;
+	font-size: 20px;
+	width: 50%;
+}
+
+.episodeUI .toolbar .buttongroup.searchgroup.cur {
+	width: 27%;
 }
 
 .toolbar .buttongroup.searchgroup.cur .button span {
@@ -234,6 +238,11 @@ button {
 .button-search {
 	display: block;
 	width: 2em;
+}
+
+.button-nav:before {
+	content: "\e60b";
+	font-size: 0.8em !important;
 }
 
 .button-search:before {
@@ -426,6 +435,7 @@ button {
 	margin-top: 0.3em;
 	font-size: 0.86em;
 	text-align: right;
+	padding-right: 1em;
 }
 
 
@@ -443,14 +453,33 @@ button {
 	padding: 0.5em 0.3em 0.1em 0.3em
 }
 
-.searchResults .item {
-	border-bottom: 1px solid #CCC;
+.episodeUI .searchResults .item {
+	/*border-bottom: 1px solid #CCC;*/
+	
 	padding: 0.1em 0.3em;
+}
+
+.searchResults .item {
 	clear: both;
 }
 
+.searchResults .searchitem {
+	border-top: 1px solid #EEE;
+}
+
+.searchResults .item.isCurrent {
+	background-color: #EEE;
+}
+
+.searchResults .searchitem {
+	padding: 0.2em;
+}
+
 .searchResults .item .isSxS {
-	background: url('/images/customer/tmp-userprofile.png') top right no-repeat;
+	/* background-image will be set inline by searchresults template */
+	
+	background-position: top right;
+	background-repeat: no-repeat;
 	background-size: 24px;
 	margin-right: -4px;
 	margin-top: -2px;
@@ -466,12 +495,18 @@ button {
 }
 
 .searchResults .description {
-	font-size: 0.86em;
-	margin-left: 45px
+	margin-left: 45px;
 }
 
 .searchResults .type {
 	opacity: 0.4;
+}
+
+.episodeUI .searchResults .description {
+	font-size: 0.86em;
+}
+
+.episodeUI .searchResults .type {
 	font-size: 0.86em
 }
 
@@ -501,11 +536,39 @@ button {
 }
 
 .ui-match {
+	border-color: rgba(0, 0, 0, 0.2);
+	border-radius: 6px;
+	border-style: solid;
+	border-width: 1px 1px 3px;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+	margin: -4px;
+	padding: 2px 4px 0;
+	background-color: #rgba(255, 255, 255, 0.5);
+}
+
+.episodeUI .ui-match {
 	background-color: rgba(50, 50, 50, 0.4);
 	color: #FFF;
 	margin: -4px;
 	padding: 4px;
 	border-radius: 4px;
+	border-width: 0;
+	box-shadow: none;
+	text-shadow: none;
+}
+/*============================
+*
+* Top Panels
+*
+//===========================*/
+
+.topDrawer {
+	position: fixed;
+	top: 45px;
+	left: 0;
+	right: 0;
+	background-color: #FFF;
+	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.5);
 }
 
 
@@ -519,7 +582,6 @@ button {
 	max-height: 300px;
 	transition: 1s all;
 	overflow-y: scroll;
-	padding-top: 0.5em;
 }
 
 .navPanel.ng-hide-add,
@@ -618,7 +680,7 @@ button {
  * Help Panel
  *
 //===========================*/
-
+/*
 .helpPanel {
 	background-color: #EEE;
 	border-radius: 15px;
@@ -687,6 +749,7 @@ button {
 	font-size: 1em;
 	cursor: pointer;
 }
+*/
 
 .arrow-up {
 	width: 20px;
@@ -698,13 +761,26 @@ button {
 	z-index: 5;
 	transform: rotate(45deg);
 }
-
+/*
 .helpPanel .arrow-up {
 	left: 30px;
 }
+*/
 
 .profilePanel .arrow-up {
+	right: -1000px;
+}
+
+.episodeUI .profilePanel .arrow-up {
 	right: 35px;
+}
+
+.isFramed.profilePanel .arrow-up {
+	right: 35px;
+}
+
+.episodeUI .isFramed.profilePanel .arrow-up {
+	right: 80px;
 }
 
 .profilePanel .authoringForm {
@@ -714,6 +790,43 @@ button {
 	top: 0;
 }
 
+input.userEditable {
+	border: none;
+	background: transparent;
+	border: 1px solid rgba(0, 0, 0, 0);
+	border-bottom: 1px solid #000;
+	padding: 2px 5px;
+	margin: 2px;
+	font-size: 15px !important;
+}
+
+input.userEditable:focus {
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	border-radius: 4px;
+}
+
+.userHome label span {
+	font-size: 80%;
+	padding: 0 1em;
+	text-align: right;
+	width: 50px !important;
+	display: inline-block;
+	color: #999;
+}
+
+.avatar {
+	width: 60px;
+	height: 60px;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
+	float: right;
+}
+
+.avatar img {
+	width: 60px;
+	height: 60px;
+}
+/*
 .helpPanel .screen-reader-offscreen {
 	position: absolute;
 	left: -999px;
@@ -734,9 +847,15 @@ button {
 }
 
 .button-continue {
-	line-height: 3.4em;
+	line-height: 50px;
+	height: 50px;
 	float: right;
-	margin-top: 5em;
+	position: fixed;
+	bottom: 80px;
+	right: 4em;
+	background-color: #FFF;
+	padding: 0 1em;
+	z-index: 2;
 }
 
 .profilePanel {
@@ -752,5 +871,14 @@ button {
 	/* TOOLBAR HEIGHT */
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+/* Undoing a bad decision: */
+
+.banner-logo {
+	visibility: hidden;
+}
+
+.episodeUI .banner-logo {
+	visibility: visible;
 }
 

@@ -2,8 +2,8 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('awsSvc', function (config, $routeParams, $http, $q, appState) {
-		console.log('awsSvc, user: ', appState.user);
+	.factory('awsSvc', function (config, $routeParams, $http, $q) {
+		// console.log('awsSvc, user: ', appState.user);
 		var MAX_CHUNKS = 1000;
 		var MAX_SIMUL_PARTS_UPLOADING = 3;
 		var PUBLIC_READ = "public-read";
@@ -39,31 +39,43 @@ angular.module('com.inthetelling.story')
 			getUploadSession().then(function listObjects() {
 				awsCache.s3.listObjects(function (err, data) {
 					if (err) {
-						console.log(err, err.stack); // an error occurred
+						console.error(err, err.stack); // an error occurred
 						defer.reject();
 					} else {
-						console.log('awsSvc, got bucket listing!', data);
+						// console.log('awsSvc, got bucket listing!', data);
 						defer.resolve(data); // successful response
 					}
 				});
 			});
 
 			return defer.promise;
+		};
 
+		/* 
+		CRUFT asset creation endpoint is passed down through uploadFiles, startNextUpload, and createAsset.
+		TODO Refactor to create asset record outside of awsSvc, after returned promise from uploadFiles (meaning we could go back to a single svc.uploadFiles fn), 
+		or at the very least to handle it within these next two functions instead of passing it all the way down the chain
+		*/
+
+		svc.uploadContainerFiles = function (containerId, fileList) {
+			return uploadFiles("/v1/containers/" + containerId + "/assets", fileList);
+		};
+		svc.uploadUserFiles = function (userId, fileList) {
+			return uploadFiles("/v1/users/" + userId + "/assets", fileList);
 		};
 
 		//Pass in a FileList object and the container in which the files are to be placed
-		svc.uploadFiles = function (containerId, fileList) {
+		var uploadFiles = function (assetEndpoint, fileList) {
 			var deferredUploadsPromises = [];
-			console.log('files: ', files);
+			// console.log('files: ', files);
 			for (var i = 0; i < fileList.length; i++) {
 				files.push(fileList.item(i));
 				var deferred = $q.defer();
 				deferredUploads.push(deferred);
 				deferredUploadsPromises.push(deferred.promise);
 			}
-			startNextUpload(containerId);
-			console.log('DEFERRED UPLOADS: ', deferredUploads);
+			startNextUpload(assetEndpoint);
+			// console.log('DEFERRED UPLOADS: ', deferredUploads);
 			return deferredUploadsPromises;
 		};
 
@@ -114,14 +126,18 @@ angular.module('com.inthetelling.story')
 					multipartUpload = null;
 				}
 				fileBeingUploaded = null;
-				deferredUpload.notify({
-					bytesSent: 0,
-					bytesTotal: 0
-				});
-				deferredUpload.reject("Canceled by user");
-			} else {
-				console.log("NOTHING TO CANCEL");
+				// deferredUpload.notify({
+				// 	bytesSent: 0,
+				// 	bytesTotal: 0
+				// });
+				deferredUploads[fileIndex].reject("Canceled by user");
 			}
+			// cancel pending uploads as well
+			for (var i = fileIndex + 1; i < files.length; i++) {
+				deferredUploads[i].reject("Canceled by user");
+			}
+			fileIndex = files.length;
+
 		};
 
 		svc.networkError = function () {
@@ -139,10 +155,10 @@ angular.module('com.inthetelling.story')
 				};
 				awsCache.s3.deleteObject(params, function (err, data) {
 					if (err) {
-						console.log(err, err.stack); // an error occurred
+						console.error(err, err.stack); // an error occurred
 						defer.reject();
 					} else {
-						console.log('awsSvc, deleted object!', data);
+						// console.log('awsSvc, deleted object!', data);
 						defer.resolve(data); // successful response
 					}
 				});
@@ -156,10 +172,10 @@ angular.module('com.inthetelling.story')
 			getUploadSession().then(function listMultipartUploads() {
 				awsCache.s3.listMultipartUploads(function (err, data) {
 					if (err) {
-						console.log(err, err.stack); // an error occurred
+						console.error(err, err.stack); // an error occurred
 						defer.reject();
 					} else {
-						console.log('awsSvc, got mulipart upload listing!', data);
+						// console.log('awsSvc, got mulipart upload listing!', data);
 						defer.resolve(data); // successful response
 					}
 				});
@@ -179,10 +195,10 @@ angular.module('com.inthetelling.story')
 				};
 				awsCache.s3.listParts(params, function (err, data) {
 					if (err) {
-						console.log(err, err.stack); // an error occurred
+						console.error(err, err.stack); // an error occurred
 						defer.reject();
 					} else {
-						console.log('awsSvc, got mulipart upload listing!', data);
+						// console.log('awsSvc, got mulipart upload listing!', data);
 						defer.resolve({
 							i: index,
 							parts: data
@@ -205,10 +221,10 @@ angular.module('com.inthetelling.story')
 				};
 				awsCache.s3.abortMultipartUpload(params, function (err, data) {
 					if (err) {
-						console.log(err, err.stack); // an error occurred
+						console.error(err, err.stack); // an error occurred
 						defer.reject();
 					} else {
-						console.log('awsSvc, deleted mulipart upload!', data);
+						// console.log('awsSvc, deleted mulipart upload!', data);
 						defer.resolve(data); // successful response
 					}
 				});
@@ -252,20 +268,20 @@ angular.module('com.inthetelling.story')
 			return awsCache.sessionDeferred.promise;
 		};
 
-		var startNextUpload = function (containerId) {
-			console.log('START NEXT UPLOAD: ', files.length, ', ', fileIndex, ', ', fileBeingUploaded);
+		var startNextUpload = function (assetEndpoint) {
+			// console.log('START NEXT UPLOAD: ', files.length, ', ', fileIndex, ', ', fileBeingUploaded);
 			if (files.length > fileIndex && !fileBeingUploaded) {
 				fileBeingUploaded = files[fileIndex];
 				if (fileBeingUploaded.type === "") {
-					console.log('ABORTING UPLOAD, COULD NOT DETERMINE FILE TYPE FOR FILE:', fileBeingUploaded);
-					deferredUploads[fileIndex].resolve('Could not determine file type for file \'' + fileBeingUploaded.name + '\'');
+					// console.log('ABORTING UPLOAD, COULD NOT DETERMINE FILE TYPE FOR FILE:', fileBeingUploaded);
+					deferredUploads[fileIndex].reject('Could not determine file type for file \'' + fileBeingUploaded.name + '\'');
 					fileBeingUploaded = null;
 					fileIndex++;
-					startNextUpload(containerId);
+					startNextUpload(assetEndpoint);
 					return;
 				}
-				console.log('files: ', files);
-				console.log('awsSvc uploading file', fileBeingUploaded);
+				// console.log('files: ', files);
+				// console.log('awsSvc uploading file', fileBeingUploaded);
 				ensureUniqueFilename().then(function () {
 					var fileUploadPromise;
 					if (isSmallUpload()) {
@@ -274,7 +290,7 @@ angular.module('com.inthetelling.story')
 						fileUploadPromise = uploadBigFile();
 					}
 					fileUploadPromise.then(function () {
-							createAsset(containerId);
+							createAsset(assetEndpoint);
 						},
 						function (reason) {
 							deferredUploads[fileIndex].reject(reason);
@@ -290,7 +306,7 @@ angular.module('com.inthetelling.story')
 			deferred = deferred || $q.defer();
 			fileBeingUploaded.uniqueName = generateUUID();
 			getUploadSession().then(function () {
-				console.log('awsSvc, ensureUniqueFilename: ', fileBeingUploaded.uniqueName);
+				// console.log('awsSvc, ensureUniqueFilename: ', fileBeingUploaded.uniqueName);
 				//First check for an object with the same name
 				var params = {
 					Key: awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName
@@ -298,29 +314,31 @@ angular.module('com.inthetelling.story')
 				awsCache.s3.headObject(params, function (err) {
 					if (err) {
 						if (err.statusCode !== 404) {
-							console.log(err, err.stack); // an error occurred
+							console.error(err, err.stack); // an error occurred
 							deferred.reject(err);
 						} else {
 							// Then, if this is going to be a multipart upload, make sure there isn't already a multipart upload with the same name
-							if (!isSmallUpload()) {
+							if (isSmallUpload()) {
+								deferred.resolve();
+							} else {
 								svc.getMultipartUploads().then(function (data) {
-									var mpuExists = true;
-									while (mpuExists) {
-										var uniqueKey = awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName;
-										for (var mpu = 0; mpu < data.Uploads.length; mpu++) {
-											if (data.Uploads[mpu].Key === uniqueKey) {
-												console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, ' already exists!');
-												fileBeingUploaded.uniqueName = generateUUID();
-												break;
-											} else if (mpu === data.Uploads.length - 1) {
-												console.log('awsSvc, Multipart upload with name ', fileBeingUploaded.uniqueName, '  is unique!');
-												mpuExists = false;
+
+									var findUnique = function (name) {
+										// console.log("Looking for a unique name", name);
+										for (var i = 0; i < data.Uploads.length; i++) {
+											// console.log("trying ", data.Uploads[i].Key);
+											if (data.Uploads[i].Key === awsCache.s3.config.params.Prefix + name) {
+												// console.log("Not unique; try again");
+												return findUnique(generateUUID());
 											}
 										}
-									}
+										return name;
+									};
+
+									fileBeingUploaded.uniqueName = findUnique(fileBeingUploaded.uniqueName);
+									deferred.resolve();
 								});
 							}
-							deferred.resolve();
 						}
 					} else {
 						//Had a filename collision, try again
@@ -363,12 +381,12 @@ angular.module('com.inthetelling.story')
 		};
 
 		var uploadSmallFile = function () {
-			console.log('awsSvc uploading small file');
+			// console.log('awsSvc uploading small file');
 			deferredUpload = $q.defer();
 			putObject().then(function (data) {
 				console.log('UPLOAD SMALL FILE COMPLETE', data);
 			}, function (reason) {
-				console.log('UPLOAD SMALL FILE FAILED: ', reason);
+				console.error('UPLOAD SMALL FILE FAILED: ', reason);
 			}, function (update) {
 				console.log('UPLOAD SMALL FILE UPDATE: ', update);
 			});
@@ -378,7 +396,7 @@ angular.module('com.inthetelling.story')
 		var putObject = function () {
 			var defer = $q.defer();
 			getUploadSession().then(function putObject() {
-				console.log('awsSvc, putting object with key: ', awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName);
+				// console.log('awsSvc, putting object with key: ', awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName);
 				var params = {
 					Key: awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName,
 					ContentType: fileBeingUploaded.type,
@@ -388,10 +406,10 @@ angular.module('com.inthetelling.story')
 
 				currentRequest = awsCache.s3.putObject(params, function (err, data) {
 					if (err) {
-						console.log(err, err.stack); // an error occurred
+						console.error(err, err.stack); // an error occurred
 						deferredUpload.reject();
 					} else {
-						console.log('awsSvc, uploaded file!', data);
+						// console.log('awsSvc, uploaded file!', data);
 						deferredUpload.resolve(data); // successful response
 					}
 				});
@@ -401,11 +419,11 @@ angular.module('com.inthetelling.story')
 						bytesTotal: progress.total
 					});
 				}).on('error', function (err, response) {
-					console.log('error: ', err, response);
+					console.error('error: ', err, response);
 					deferredUpload.reject(err);
 				});
 			}, function (reason) {
-				console.log('PUT OBJECT FAILED: ', reason);
+				console.error('PUT OBJECT FAILED: ', reason);
 			}, function (update) {
 				console.log('PUT OBJECT UPDATE: ', update);
 			});
@@ -413,7 +431,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var uploadBigFile = function () {
-			console.log('awsSvc uploading big file');
+			// console.log('awsSvc uploading big file');
 			deferredUpload = $q.defer();
 			createMultipartUpload().then(prepareUploadParts).then(function startUpload() {
 				for (var i = 0; i < MAX_SIMUL_PARTS_UPLOADING; i++) {
@@ -431,10 +449,10 @@ angular.module('com.inthetelling.story')
 				};
 				awsCache.s3.createMultipartUpload(params, function (err, data) {
 					if (err) {
-						console.log(err, err.stack); // an error occurred
+						console.error(err, err.stack); // an error occurred
 						defer.reject();
 					} else {
-						console.log('awsSvc, created multipart upload!', data);
+						// console.log('awsSvc, created multipart upload!', data);
 						defer.resolve(data); // successful response
 					}
 				});
@@ -514,7 +532,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var uploadPart = function (partNumber, blob) {
-			console.log('awsSvc, Uploading part: ', partNumber);
+			// console.log('awsSvc, Uploading part: ', partNumber);
 			var defer = $q.defer();
 			getUploadSession().then(function uploadPart() {
 				var params = {
@@ -526,10 +544,10 @@ angular.module('com.inthetelling.story')
 				};
 				chunks[partNumber - 1].request = awsCache.s3.uploadPart(params, function (err, data) {
 					if (err) {
-						console.log(err, err.stack); // an error occurred
+						console.error(err, err.stack); // an error occurred
 						defer.reject();
 					} else {
-						console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
+						// console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
 						defer.resolve(data.ETag); // successful response
 					}
 				});
@@ -541,7 +559,7 @@ angular.module('com.inthetelling.story')
 						bytesTotal: fileBeingUploaded.size
 					});
 				}).on('error', function (err, response) {
-					console.log('error: ', err, response);
+					console.error('error: ', err, response);
 					deferredUpload.reject(err);
 				});
 			});
@@ -571,11 +589,11 @@ angular.module('com.inthetelling.story')
 				};
 				awsCache.s3.completeMultipartUpload(params, function (err, data) {
 					if (err) {
-						console.log(err, err.stack); // an error occurred
+						console.error(err, err.stack); // an error occurred
 						deferredUpload.reject(err);
 						defer.reject(err);
 					} else {
-						console.log('awsSvc, uploadedComplete! data:', data);
+						// console.log('awsSvc, uploadedComplete! data:', data);
 						params = {
 							Bucket: multipartUpload.Bucket,
 							Key: multipartUpload.Key,
@@ -584,7 +602,7 @@ angular.module('com.inthetelling.story')
 						awsCache.s3.putObjectAcl(params, function (err, data) {
 							if (err) {
 								deferredUpload.reject(err);
-								console.log(err, err.stack); // an error occurred
+								console.error(err, err.stack); // an error occurred
 								defer.reject(err);
 							} else {
 								console.log('awsSvc, set file permissions:', data);
@@ -611,7 +629,7 @@ angular.module('com.inthetelling.story')
 				while (!foundAllUploadingChunks && chunkIndex < chunkCount) {
 					var chunk = chunks[chunkIndex];
 					if (chunk.status === UPLOADING) {
-						console.log('awsSvc, Cancelling upload of chunk: ', chunkIndex);
+						// console.log('awsSvc, Cancelling upload of chunk: ', chunkIndex);
 						chunk.cancel();
 					} else if (chunk.status === PENDING) {
 						foundAllUploadingChunks = true;
@@ -621,7 +639,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		var createAsset = function (containerId) {
+		var createAsset = function (assetEndpoint) {
 			var deferred = $q.defer();
 			var assetData = {
 				'url': 'https://s3.amazonaws.com/' + awsCache.s3.config.params.Bucket + '/' + awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName,
@@ -629,15 +647,19 @@ angular.module('com.inthetelling.story')
 				'size': fileBeingUploaded.size,
 				'original_filename': fileBeingUploaded.name
 			};
-			$http.post(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets", assetData)
+
+			$http.post(config.apiDataBaseUrl + assetEndpoint, assetData)
 				.success(function (data) {
 					deferredUploads[fileIndex].resolve(data);
 					fileBeingUploaded = null;
 					fileIndex++;
-					startNextUpload(containerId);
+					startNextUpload(assetEndpoint);
 				})
 				.error(function () {
 					deferredUploads[fileIndex].reject();
+					fileBeingUploaded = null;
+					fileIndex++;
+					startNextUpload(assetEndpoint);
 				});
 			return deferred.promise;
 		};
