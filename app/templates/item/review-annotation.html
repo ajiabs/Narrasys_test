@@ -9,9 +9,10 @@
 				<!--{{item.category}}-->
 				<span ng-if="item.required">(Required viewing)</span>
 			</div>
-			<div class="authorName" ng-bind-html="item.display_annotator"></div>
+
+			<div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
 		</div>
-		<div class="text" ng-bind-html="item.display_annotation"></div>
+		<div class="text" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
 	</div>
 	<div ng-if="!item.isTranscript" ng-include="item.templateUrl"></div>
 	<div class="clear"></div>

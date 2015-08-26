@@ -10,7 +10,7 @@
 	</div>
 	<div class="text">
 		<div class="title">
-			<a tabindex="0" ng-click="seek(item.start_time)" ng-bind-html="item.display_title || '(Untitled)'"></a>
+			<a tabindex="0" ng-click="seek(item.start_time)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
 		</div>
 		<div class="text" ng-if="item.data._plugin._type == 'question'">
 			You have
@@ -19,7 +19,7 @@
 			<span ng-if="item.data._plugin.questiontype == 'mc-poll'"> poll </span>
 			question.
 		</div>
-		<div class="text" ng-bind-html="item.display_description"></div>
+		<div class="text" ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 		<div class="clear"></div>
 	</div>
 </div>

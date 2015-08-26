@@ -35,8 +35,7 @@ angular.module('com.inthetelling.story')
 			timelineSvc.setVolume(volume);
 		};
 
-		// And this is just plain the wrong place for this.
-		/* TODO make this a fullscreenbutton directive -------------------------------- */
+		/* DEAD CODE
 		$scope.toggleFullscreen = function () {
 			if (isInFullscreenMode()) {
 				exitFullscreen();
@@ -79,7 +78,7 @@ angular.module('com.inthetelling.story')
 				element.webkitRequestFullScreen();
 			}
 		};
-		/* END TODO -------------------------------------------------------- */
+*/
 
 		$scope.$on('$destroy', function () {
 			// Make sure that the clock and event timers are destroyed too

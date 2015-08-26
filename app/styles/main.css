@@ -27,6 +27,10 @@
 	padding: 0
 }
 
+li {
+	list-style: inside;
+}
+
 body {
 	background-color: #FFF;
 }
@@ -235,8 +239,10 @@ h4 {
 .toolbar,
 .toolbar-bottom,
 .banner-logo,
-.helpPanel,
-.profilePanel {
+/*.helpPanel,*/
+
+.profilePanel,
+.topDrawer {
 	z-index: 11;
 }
 
@@ -320,6 +326,21 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 .videoMask.rewind {
 	background-image: url('/images/rewind-overlay.png');
 	animation: delayedFadeIn 3s;
+}
+
+.videoMask.transcoding {
+	background-image: none;
+}
+
+.videoMask .convertingMessage {
+	align-items: center;
+	background-color: #000;
+	color: #fff;
+	display: flex;
+	height: 100%;
+	padding: 0 1em;
+	text-align: center;
+	width: 100%;
 }
 /* 
 Misc useful keyframes 

@@ -2,34 +2,23 @@
 
 // Controller for the search panel results
 angular.module('com.inthetelling.story')
-	.controller('SearchPanelController', function ($scope, timelineSvc) {
+	.controller('SearchPanelController', function ($scope, $rootScope, $timeout, timelineSvc, modelSvc, appState) {
 
-		// map which we could in future also bind to user selection of types.
-		// TODO should use categories instead of item "type".  But to do that we need to define categories
-		$scope.searchTypes = {
-			Annotation: true,
-			Link: true,
-			Upload: true
-		};
-
-		// map type literals to pretty/printable version
-		$scope.searchTypeNames = {
-			Annotation: "Transcript",
-			Link: "Link",
-			Upload: "Image"
-		};
+		// Events searchableText is:
+		// (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator)
 
 		// default sort order
 		$scope.sortBy = "startTime";
-		$scope.setSortBy = function (sortedBy) {
-			$scope.sortBy = sortedBy;
-		};
+
 		$scope.toggleSortBy = function (sortedBy) {
 			$scope.sortBy = getFlippedSortValue(sortedBy);
+			appState.autoscroll = ($scope.sortBy === 'startTime'); // autoscroll only when sorted by time
 		};
+
 		$scope.getToggledValue = function (currentSortBy) {
 			return getFlippedSortValue(currentSortBy);
 		};
+
 		var getFlippedSortValue = function (current) {
 			if (current === "startTime") {
 				return "type";
@@ -45,22 +34,86 @@ angular.module('com.inthetelling.story')
 				return "type";
 			}
 		};
+
+		// NOTE this is only called from episodeUI -- searchMode does not reach this! (which is probably what we want)
 		$scope.seek = function (t, eventID) {
 			$scope.enableAutoscroll(); // in playerController
 			timelineSvc.seek(t, "clickedOnEventInSearch", eventID);
 		};
 
 		// generate searchable text for the episode (on demand).
-		// TODO handle more than one episode.....
+		// TODO need to handle multi-episode timelines.
+
+		$scope.indexed = false;
+
 		$scope.indexEvents = function () {
+			if (!$scope.episode.items) {
+				$timeout(function () { // HACK Sorry, future me
+					$scope.indexEvents();
+				}, 300);
+				return false;
+			}
+			$scope.indexed = true;
+			// map the increasingly-misnamed producerItemType to search categories.
+			// Array so we can control sort order in panel.
+			$scope.typeCategories = [
+				"transcript", "annotation", "file", "image", "link", "video", "question", "other"
+			];
+
+			// map type literals to pretty/printable version. 
+			$scope.showTypes = {
+				transcript: {
+					name: "Transcript",
+					items: []
+				},
+				annotation: {
+					name: "Annotations",
+					items: []
+				},
+				file: {
+					name: "Files",
+					items: []
+				},
+				image: {
+					name: "Images",
+					items: []
+				},
+				link: {
+					name: "Links",
+					items: []
+				},
+				video: {
+					name: "Videos",
+					items: []
+				},
+				question: {
+					name: "Questions",
+					items: []
+				},
+				other: {
+					name: "Other",
+					items: []
+				}
+			};
+
+			var padDigits = function (number, digits) {
+				return new Array(Math.max(digits - String(parseInt(number, 10)).length + 1, 0)).join(0) + number;
+			};
+
 			angular.forEach($scope.episode.items, function (item) {
+				// Chrome has decided to sort these alphabetically instead of numerically...
+				item.wtfchromesort = padDigits(item.start_time, 5);
 				if (item._type !== 'Scene') {
-					item.searchableText = (item.display_annotation || item.display_description) + " " + (item.display_title || item.display_annotator);
-					if (item.sxs) { // HACK
-						item.cosmetic = false;
+					// build 'by type' arrays:
+					if (item.producerItemType && $scope.showTypes[item.producerItemType]) {
+						$scope.showTypes[item.producerItemType].items.push(item);
+					} else {
+						$scope.showTypes.other.items.push(item);
 					}
 				}
 			});
 		};
+
+		$rootScope.$on('searchReindexNeeded', $scope.indexEvents); // HACK
 
 	});

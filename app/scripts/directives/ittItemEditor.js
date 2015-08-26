@@ -1,7 +1,11 @@
+/*jshint sub:true*/
 'use strict';
 
 /* 
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
+
+TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/when we decide we're going to keep it...
+
 */
 
 angular.module('com.inthetelling.story')
@@ -16,6 +20,44 @@ angular.module('com.inthetelling.story')
 			controller: 'EditController',
 			link: function (scope) {
 				// console.log("ittItemEditor", scope.item);
+				var widget;
+				scope.startRecordVideo = function () {
+					scope.isRecordingVideo = !scope.isRecordingVideo;
+					var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
+					if (widgetwidth > 500) {
+						widgetwidth = 500;
+					}
+					widget = new window.YT.UploadWidget('recordWidgetContainer', {
+						width: widgetwidth,
+						events: {
+							'onApiReady': function () {
+								// console.log('youtube onApiReady');
+								widget.setVideoPrivacy('unlisted');
+								var d = new Date();
+								var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
+								widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
+								// widget.setVideoDescription();
+								// widget.setVideoKeywords();
+							},
+							'onUploadSuccess': function (ret) {
+								var includeYoutubeQSParams = true;
+								scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId, includeYoutubeQSParams);
+								scope.isRecordingVideo = false;
+								scope.isProcessingVideo = true;
+
+								// onProcessingComplete is not always fired by youtube; force it after 30 secs:
+								$timeout(function () {
+									console.log("Forcing process-complete");
+									scope.isProcessingVideo = false;
+								}, 30000);
+							},
+							'onProcessingComplete': function () {
+								// console.log("youtube onProcessingComplete");
+								scope.isProcessingVideo = false;
+							}
+						}
+					});
+				};
 
 				timelineSvc.pause();
 				timelineSvc.seek(scope.item.start_time);
@@ -200,7 +242,6 @@ angular.module('com.inthetelling.story')
 					if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time) {
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 					}
-
 				}, true);
 
 				// // Transform changes to form fields for styles into item.styles[]:
@@ -338,74 +379,54 @@ angular.module('com.inthetelling.story')
 				};
 
 				var embeddableYTUrl = function (origUrl) {
-					var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-					var ytId = origUrl.match(getYoutubeID);
-					if (ytId) {
-						return "//www.youtube.com/embed/" + ytId[1];
+					var url = youtubeSvc.embeddableYoutubeUrl(origUrl);
+					return url ? url : "";
+				};
+
+				scope.assetUploaded = function (assetId) {
+					scope.item.asset = modelSvc.assets[assetId];
+					// TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
+					if (scope.item._type === 'Link') {
+						scope.item.link_image_id = assetId;
+					} else if (scope.item._type === 'Annotation') {
+						scope.item.annotation_image_id = assetId;
 					} else {
-						return "";
+						scope.item.asset_id = assetId;
 					}
+					scope.showUploadButtons = false;
+					scope.showUploadField = false;
 				};
 
-				scope.uploadAsset = function (files) {
-					scope.uploads = awsSvc.uploadFiles(scope.episodeContainerId, files);
+				scope.replaceAsset = function () {
+					scope.showUploadButtons = true;
 
-					scope.uploads[0].then(function (data) {
-						modelSvc.cache("asset", data.file);
-
-						scope.item.asset = modelSvc.assets[data.file._id];
-						// TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
-						if (scope.item._type === 'Upload') {
-							scope.item.asset_id = data.file._id;
-						} else if (scope.item._type === 'Link') {
-							scope.item.link_image_id = data.file._id;
+					if (scope.item.sxs) { // we will delete assets atached to editor items, not from producer items
+						scope.item.removedAssets = scope.item.removedAssets || [];
+						// removedAsset will be used by editController on save to delete the old asset (if we're in editor)
+						if (scope.item._type === 'Link') {
+							scope.item.removedAssets.push(scope.item.link_image_id);
 						} else if (scope.item._type === 'Annotation') {
-							scope.item.annotation_image_id = data.file._id;
+							scope.item.removedAssets.push(scope.item.annotation_image_id);
+						} else {
+							scope.item.removedAssets.push(scope.item.asset_id);
 						}
-						delete scope.uploads;
-					}, function () {
-						// console.log("FAIL", );
-					}, function (update) {
-						scope.uploadStatus[0] = update;
-					});
-				};
-
-				// in SxS, event assets are only ever used in one event, so we can safely delete them.
-				// TODO determine which of asset_id, link_image_id, annotation_image_id we're really trying to delete.
-				// being lazy for now, since events only have one of them
-				scope.deleteAsset = function (assetId) {
-					if (window.confirm("Are you sure you wish to delete this asset?")) {
-						delete modelSvc.events[scope.item._id].asset;
-						//TODO for whichever of these matches assetId, delete it
-						delete scope.item.asset_id;
-						delete modelSvc.events[scope.item._id].asset_id;
-						delete scope.item.link_image_id;
-						delete modelSvc.events[scope.item._id].link_image_id;
-						delete scope.item.annotation_image_id;
-						delete modelSvc.events[scope.item._id].annotation_image_id;
-						delete scope.item.asset;
-						dataSvc.deleteAsset(assetId);
 					}
 				};
-				// In producer, assets might be shared by many events, so we avoid deleting them, instead just detach them from the event:
-				scope.detachAsset = function (assetId) {
-					if (assetId) {
-						delete modelSvc.events[scope.item._id].asset;
-						delete scope.item.asset;
-						if (scope.item.asset_id === assetId) {
-							delete scope.item.asset_id;
+
+				scope.attachChosenAsset = function (asset_id) {
+					// console.log(scope.item);
+					var asset = modelSvc.assets[asset_id];
+					if (scope.item) {
+						scope.item.asset = asset;
+						if (scope.item._type === 'Upload' || scope.item._type === 'Plugin') {
+							scope.item.asset_id = asset_id;
+						} else if (scope.item._type === 'Link') {
+							scope.item.link_image_id = asset_id;
+						} else if (scope.item._type === 'Annotation') {
+							scope.item.annotation_image_id = asset_id;
+						} else {
+							console.error("Tried to select asset for unknown item type", scope.item);
 						}
-						if (scope.item.link_image_id === assetId) {
-							delete scope.item.link_image_id;
-						}
-						if (scope.item.annotation_image_id === assetId) {
-							delete scope.item.annotation_image_id;
-						}
-						dataSvc.detachEventAsset(angular.copy(scope.item), assetId)
-							.then(function () {}, function (data) {
-								console.error("FAILED TO DETACH ASSET FROM ITEM IN DATASTORE", data);
-							});
-						scope.showUpload = false;
 					}
 				};
 

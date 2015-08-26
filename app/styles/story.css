@@ -1,0 +1,430 @@
+.fpo {
+	background-image: url('/images/fpo.png');
+	background-size: 100% 100%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+}
+
+.hidden {
+	/*display: none;*/
+}
+
+.immaterial {
+	pointer-events: none;
+}
+
+.storyUI .episodeContainer {
+	z-index: 1;
+}
+
+.storyUI .viewport {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow: scroll;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
+.storyUI .topToolbar,
+.storyUI .bottomToolbar {
+	z-index: 20;
+}
+
+.storyUI .bottomToolbarTrigger {
+	z-index: 10;
+}
+
+.storyUI .topToolbar {
+	font-size: 16px;
+	text-align: center;
+	height: 85px;
+	margin-bottom: -40px;
+	background-image: url('/images/toolbar.png');
+	background-repeat: repeat-x;
+	background-size: 100% 100%;
+	opacity: 1;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	pointer-events: none;
+}
+
+.storyUI .topToolbar > div {
+	pointer-events: auto;
+}
+
+.storyUI .topToolbar,
+.storyUI .bottomToolbar,
+.storyUI .topToolbarPadding {
+	transition: all 0.5s;
+}
+
+.storyUI .topToolbarPadding {
+	height: 45px;
+}
+
+.hiddenToolbars .storyUI .topToolbarPadding {
+	height: 0;
+}
+
+.hiddenToolbars .storyUI .topToolbar {
+	top: -45px;
+	opacity: 0;
+}
+
+.hiddenToolbars .storyUI .bottomToolbar {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.storyUI .episodeContainer {
+	width: 100%;
+	min-height: 100%;
+	position: relative;
+}
+
+.storyUI .bottomToolbarTrigger {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 60px;
+}
+
+.storyUI .bottomToolbar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	opacity: 1;
+}
+
+.storyUI .bottomToolbar .toolbarSecondary {
+	background-image: url('/images/toolbar-bottom.png');
+	background-repeat: repeat-x;
+	background-size: 100% 30px;
+	background-position: bottom;
+	min-height: 30px;
+	margin-top: -30px;
+	width: 100%;
+}
+
+.storyUI .bottomToolbar .toolbarPrimary {
+	background-color: #EEE;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
+.storyUI .tabset .tablabel {
+	list-style: none;
+}
+
+.storyUI .tabset .tablabel {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.storyUI .tablabels {
+	text-align: center;
+	min-width: 120px;
+}
+
+.storyUI .tabset {
+	display: flex;
+}
+
+.storyUI .tabsRight .tabset {
+	flex-direction: row-reverse;
+}
+
+.storyUI .tabset .tab {
+	height: 100%;
+}
+
+.storyUI .tabset .tabs {
+	display: block;
+}
+
+
+/* decorative */
+
+.storyUI .tabs,
+.storyUI .tablabel {
+	padding: 0.5em;
+	border: 2px solid rgba(0, 0, 0, 0.5);
+	border-top: none;
+}
+
+.storyUI .tabs,
+.storyUI .cur.tablabel {
+	background-color: #FFF;
+}
+
+.storyUI .tablabel {
+	background-color: #DDD;
+}
+
+.storyUI .tabsRight .tabs,
+.storyUI .tabsLeft .cur.tablabel {
+	box-shadow: -3px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.storyUI .tabsLeft .tabs,
+.storyUI .tabsRight .cur.tablabel {
+	box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.storyUI .tablabels {
+	margin: 0 0 1em 0;
+}
+
+.storyUI .tabsRight .tabs {
+	border-radius: 0.5em 0 0.5em 0.5em;
+	border-right: none;
+}
+
+.storyUI .tabsLeft .tabs {
+	border-radius: 0 0.5em 0.5em 0.5em;
+	border-left: none;
+}
+
+.storyUI .tabsRight .tablabel {
+	margin-right: 20px;
+	border-radius: 0 1em 1em 0;
+	border-left: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.storyUI .tabsLeft .tablabel {
+	margin-left: 20px;
+	border-radius: 1em 0 0 1em;
+	border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.storyUI .tabsRight .cur.tablabel {
+	border-left: none;
+}
+
+.storyUI .tabsLeft .cur.tablabel {
+	border-right: none;
+}
+
+
+/* - */
+
+
+/*  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+.storyUI .topPane {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 1;
+	z-index: 30;
+}
+
+.storyUI .modalBg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #000;
+	opacity: 0.3;
+}
+
+.storyUI .topPane .pane {
+	position: fixed;
+	top: 50px;
+	margin: 0 2em;
+}
+
+.storyUI .topPane .pointer {
+	height: 24px;
+	margin-left: -20px;
+	overflow: hidden;
+	padding-top: 15px;
+	position: fixed;
+	width: 40px;
+}
+
+.storyUI .topPane .pointer div {
+	background-color: #fff;
+	box-shadow: 0 0 7px #000;
+	height: 20px;
+	margin: auto;
+	transform: rotate(45deg);
+	width: 20px;
+}
+
+.storyUI .topPane .overflow {
+	overflow: scroll;
+	max-height: 80%;
+}
+
+
+/* decorative */
+
+.storyUI .topPane .pane.withBackground {
+	background-color: #FFF;
+	padding: 1em;
+	border-radius: 0.5em;
+	box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.5);
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
+.flexRow {
+	display: flex;
+	flex-direction: row;
+}
+
+.flexRow > div {
+	flex: 1 1 auto;
+	align-self: stretch;
+	text-align: center;
+}
+
+.flexRow > div:first-child {
+	text-align: left;
+}
+
+.flexRow > div:last-child {
+	text-align: right;
+}
+
+
+/*  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+.toolbarSecondary {
+	position: relative;
+}
+
+.toolbarSecondary .buttongroup {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 100px;
+}
+
+.toolbarSecondary .button {
+	background-color: #fff;
+	border-radius: 40px;
+	display: inline-block;
+	height: 60px;
+	line-height: 60px;
+	margin: 10px 20px;
+	text-align: center;
+	width: 60px;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.toolbarSecondary .editPanel .button {
+	margin: 4px;
+}
+
+.toolbarSecondary .editPanel {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin-right: 100px;
+}
+
+.toolbarSecondary .editPanelContents {}
+
+.toolbarSecondary .editPanelDecoration {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 100px;
+	height: 80px;
+	margin-right: -99px;
+	background: url('/images/TMP-editpaneldecoration.png') bottom left no-repeat;
+}
+
+.ittBottomToolbar .faintOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #000;
+	opacity: 0.08;
+	transition: all ease-out 2s;
+}
+
+
+/* NG-IF */
+
+.faintOverlay.ng-enter-active,
+.faintOverlay.ng-leave {
+	opacity: 0.08;
+}
+
+.faintOverlay.ng-enter,
+.faintOverlay.ng-leave.ng-leave-active {
+	opacity: 0;
+}
+
+
+/* ng-show TODO understand why isn't this good enough in transitionFade?*/
+
+.faintOverlay.ng-hide {
+	transition: all ease-out 0.5s;
+	opacity: 0;
+}
+
+.storyUI .ittBottomToolbar .tabs {
+	padding: 0;
+}
+
+.storyUI .ittBottomToolbar .tabs .main {
+	border-top: 1px solid #CCC;
+	border-radius: 0.5em 0.5em 0 0;
+	padding: 0.5em;
+}
+
+.storyUI .ittBottomToolbar .tabs .extra {
+	padding: 0.5em;
+}
+
+.storyUI .ittBottomToolbar .tabs,
+.storyUI .ittBottomToolbar .tablabel {
+	border: 1px solid #CCC;
+}
+
+.storyUI .ittBottomToolbar .tabs,
+.storyUI .ittBottomToolbar .cur.tablabel {
+	background-color: #FBFBFB;
+}
+
+.storyUI .ittBottomToolbar .tablabels {
+	align-self: flex-end;
+	margin-top: 1em;
+}
+
+.storyUI .ittBottomToolbar .tabs {
+	border-radius: 0.5em 0.5em 0 0;
+	border-left: none;
+}
+
+.storyUI .ittBottomToolbar .tablabel {
+	margin-left: 20px;
+	border-radius: 1em 0 0 1em;
+	border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.storyUI .ittBottomToolbar .cur.tablabel {
+	border-right: none;
+}
+

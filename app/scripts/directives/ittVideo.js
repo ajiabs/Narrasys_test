@@ -3,7 +3,7 @@
 // use only for master asset!
 
 angular.module('com.inthetelling.story')
-	.directive('ittVideo', function ($timeout, $interval, $rootScope, appState, timelineSvc) {
+	.directive('ittVideo', function ($timeout, $interval, $rootScope, appState, timelineSvc, dataSvc, modelSvc) {
 
 		var uniqueDirectiveID = 0; // Youtube wants to work via DOM IDs; this is a cheap way of getting unique ones
 
@@ -57,10 +57,32 @@ angular.module('com.inthetelling.story')
 					}
 				}, 200);
 
+				// if the video is not yet transcoded poll for updates until it is
+				var pollCount = 0;
+				scope.pollInterval = $interval(function () {
+					pollCount++;
+					if (pollCount > 360) {
+						$interval.cancel(scope.pollInterval); // Give up after an hour, the user certainly will have
+					}
+					var currentEpisode = modelSvc.episodes[appState.episodeId];
+
+					if (currentEpisode && currentEpisode.masterAsset && !modelSvc.isTranscoded(currentEpisode.masterAsset)) {
+						dataSvc.getSingleAsset(currentEpisode.master_asset_id).then(function (latestAsset) {
+
+							if (modelSvc.isTranscoded(latestAsset)) {
+								$interval.cancel(scope.pollInterval);
+								modelSvc.cache('asset', latestAsset);
+							}
+						});
+					} else {
+						$interval.cancel(scope.pollInterval);
+					}
+				}, 10000);
+
 				scope.$on('$destroy', function () {
 					scope.spaceWatcher();
 					$interval.cancel(scope.bufferInterval);
-
+					$interval.cancel(scope.pollInterval);
 				});
 			},
 

@@ -165,6 +165,19 @@ angular.module('com.inthetelling.story')
 			return JSON.stringify(json, undefined, 2);
 		};
 	})
+	.filter('i18n', function (appState) {
+		// Used for plugin data only; other fields precalculate into display_foo.
+		// let's see if this is a huge performance hit, if not maybe we'll skip the precalc...
+		return function (input) {
+			if (!input) {
+				return "";
+			}
+			if (typeof (input) === 'object') {
+				return input[appState.lang] || input.en || "";
+			}
+			return input;
+		};
+	})
 	.filter('asBytes', function () {
 		// quick + sloppy
 		return function (b) {
@@ -184,9 +197,20 @@ angular.module('com.inthetelling.story')
 			return isNaN(n) ? (Math.floor(n * 100)) + "%" : '0%';
 		};
 	})
+	.filter('stripParams', function () {
+		return function (x) {
+			return x.substr(0, x.indexOf('?'));
+		};
+	})
 	.filter('asTime', function () {
 		return function (t) {
-			return isNaN(t) ? "0:00" : Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
+			if (isNaN(t)) {
+				return "0:00";
+			}
+			if (t < 0) {
+				return "0:00";
+			}
+			return Math.floor(t / 60) + ":" + ("0" + Math.floor(t) % 60).slice(-2);
 		};
 	})
 	.filter('alpha', function () {

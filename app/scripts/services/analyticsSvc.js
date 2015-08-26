@@ -48,7 +48,13 @@ angular.module('com.inthetelling.story')
 
 		// for episode-related activity
 		svc.captureEpisodeActivity = function (name, data) {
-			if (config.disableAnalytics || !appState.user.track_episode_metrics) {
+			if (config.disableAnalytics) {
+				return;
+			}
+			if (
+				(appState.user && appState.user._id) &&
+				(!appState.user.track_episode_metrics)
+			) {
 				return;
 			}
 			var userActivity = {
@@ -59,14 +65,14 @@ angular.module('com.inthetelling.story')
 			if (data) {
 				userActivity.data = data;
 			}
+
 			svc.activityQueue.push(userActivity);
 		};
 
 		// for transmedia-related activity
 		svc.captureEventActivity = function (name, eventID, data, force) {
-			// console.log("analyticsSvc.captureEventActivity", eventID, data);
 			if (!force) {
-				if (config.disableAnalytics || !appState.user.track_event_actions) {
+				if (config.disableAnalytics || (appState.user._id && !appState.user.track_event_actions)) {
 					return;
 				}
 			}
@@ -146,10 +152,11 @@ angular.module('com.inthetelling.story')
 
 		svc.flushActivityQueue = function () {
 			var defer = $q.defer();
-			// console.log("Flushing:", svc.activityQueue);
 			if (svc.activityQueue.length === 0) {
 				defer.resolve("");
-				return defer.promise;
+			}
+			if (!appState.episodeId) {
+				defer.resolve(); // iOS with ?t= param is trying to post metrics before it has an episode ID. TODO figure out wtf is causing that...
 			}
 
 			var actions = angular.copy(svc.activityQueue);
@@ -168,22 +175,24 @@ angular.module('com.inthetelling.story')
 					episodeUserMetrics.push(action);
 				}
 			});
-
 			episodeUserMetrics = svc.dejitter(episodeUserMetrics);
 
+			var posts = [];
 			if (eventUserActions.length > 0) {
-				// console.log("Event actions to log:", eventUserActions);
-				// /v2/episodes/<episode id>/event_user_actions
-				return post("event_user_actions", {
+				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/event_user_actions', {
 					"event_user_actions": eventUserActions
-				});
+				}));
 			}
 			if (episodeUserMetrics.length > 0) {
-				// console.log("Episode metrics to log:", episodeUserMetrics);
-				return post("episode_user_metrics", {
+				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/episode_user_metrics', {
 					"episode_user_metrics": episodeUserMetrics
-				});
+				}));
 			}
+			$q.all(posts).then(function () {
+				defer.resolve();
+			});
+
+			return defer.promise;
 		};
 
 		svc.dejitter = function (events) {
@@ -208,24 +217,6 @@ angular.module('com.inthetelling.story')
 			}
 			ret.push(events[events.length - 1]);
 			return ret;
-		};
-
-		// This is not a general-purpose function, it's only for the analytics endpoints
-		var post = function (endpoint, endpointData) {
-
-			var defer = $q.defer();
-			$http({
-					method: 'POST',
-					url: config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + endpoint,
-					data: endpointData
-				})
-				.success(function (respData) {
-					defer.resolve(respData);
-				})
-				.error(function () {
-					defer.reject();
-				});
-			return defer.promise;
 		};
 
 		return svc;

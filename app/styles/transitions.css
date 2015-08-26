@@ -72,7 +72,7 @@ Transition time should be set for the specific object type
 .animate.ng-enter,
 .animate.ng-leave,
 .animate.ng-move {
-	transition: all ease-in-out 0.5s;
+	transition: all linear 0.5s;
 }
 
 .content .animate.ng-enter {
@@ -96,20 +96,35 @@ Transition time should be set for the specific object type
 /* ------------------------------------------------------------------------------------------------------------------
    transitionFade */
 
-.animate.ng-enter.transitionFade {
-	opacity: 0;
-}
 
-.animate.ng-enter-active.transitionFade {
-	opacity: 1;
-}
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionFade */
 
+
+/* ng-if */
+
+
+/* the order of these does matter! */
+
+.animate.ng-enter-active.transitionFade,
 .animate.ng-leave.transitionFade {
 	opacity: 1;
 }
 
+.animate.ng-enter.transitionFade,
 .animate.ng-leave.ng-leave-active.transitionFade {
 	opacity: 0;
+}
+
+
+/* ng-show */
+
+.animate.transitionFade.ng-hide-add {
+	animation: 0.5s fadeOut;
+}
+
+.animate.transitionFade.ng-hide-remove {
+	animation: 0.5s fadeIn;
 }
 
 
@@ -222,6 +237,39 @@ Transition time should be set for the specific object type
 .animate.ng-leave.ng-leave-active.transitionSlideR {
 	transform: translateX(50px);
 	opacity: 0;
+}
+
+
+/* ------------------------------------------------------------------------------------------------------------------
+   transitionSlideUp */
+
+@keyframes slideInUp {
+	0% {
+		max-height: 0;
+	}
+	100% {
+		max-height: 500px;
+	}
+}
+
+@keyframes slideOutDown {
+	0% {
+		max-height: 500px;
+	}
+	100% {
+		visibility: hidden;
+		max-height: 0;
+	}
+}
+
+.transitionSlideUp {
+	overflow: hidden;
+	animation: slideInUp 1s linear;
+}
+
+.ng-leave.transitionSlideUp {
+	animation: slideOutDown 1s linear;
+	overflow: hidden;
 }
 
 

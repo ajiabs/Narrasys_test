@@ -5,15 +5,9 @@
 		</div>
 
 		<div ng-if="!appState.user._id">
-			<div>
-				<a class="bigredbutton" href="{{apiDataBaseUrl}}/oauth2">Begin</a>
-			</div>
-			<div ng-click="showAdminLogin=1;" style="margin-top: 1em;font-size: 0.86em;display:block">
-				<a ng-if="showAdminLogin!=1">Admin</a>
-			</div>
 
-			<form ng-submit="adminLogin()" ng-if="showAdminLogin">
-				<h1>Administrators</h1>
+			<form ng-submit="adminLogin()">
+				<h1>Sign in to Telling STORY</h1>
 				<label>
 					<span>Username</span>
 					<input type="email" name="auth_key" ng-model="loginForm.auth_key">
@@ -24,12 +18,14 @@
 					<input type="password" name="password" ng-model="loginForm.password">
 				</label>
 
-				<input class="submit" type="submit" value="Log in">
+				<input class="submit button" type="submit" value="Sign in">
 				<span class="error" ng-if="badlogin">Sorry, try again?</span>
 			</form>
 
 		</div>
 
-
+		<br style="clear:both">
 	</div>
+	<small ng-if="!appState.user._id"><a href="{{apiDataBaseUrl}}/oauth2">OAuth</a></small>
+
 </div>

@@ -16,10 +16,16 @@ angular.module('com.inthetelling.story')
 		/* ------------------------------------------------------------------------------ */
 
 		svc.getNarrative = function (narrativeId) {
-			return GET("/v3/narratives/" + narrativeId + "/resolve", function (data) {
-				modelSvc.cache("narrative", svc.resolveIDs(data));
-				return modelSvc.narratives[data._id];
+			// Special case here, since it needs to call getNonce differently:
+			var defer = $q.defer();
+			authSvc.authenticate("narrative=" + narrativeId).then(function () {
+				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve")
+					.then(function (response) {
+						modelSvc.cache("narrative", svc.resolveIDs(response.data));
+						defer.resolve(modelSvc.narratives[response.data._id]);
+					});
 			});
+			return defer.promise;
 		};
 
 		svc.getNarrativeOverview = function (narrativeId) {
@@ -213,6 +219,8 @@ angular.module('com.inthetelling.story')
 			return getCommonDefer.promise;
 		};
 
+		svc.getCommon = getCommon; // TEMPORARY for ittContainer, so it can get the scene template ID.  After template refactor none of this id stuff will be necessary
+
 		svc.cache = function (cacheType, dataList) {
 			// console.log("dataSvc.cache", cacheType, dataList);
 			angular.forEach(dataList, function (item) {
@@ -338,6 +346,60 @@ angular.module('com.inthetelling.story')
 			return obj;
 		};
 
+		var getAssetIdFromEvent = function (event) {
+			if (event.hasOwnProperty("asset_id")) {
+				if (event.asset_id) {
+					return event.asset_id;
+				}
+			}
+			if (event.hasOwnProperty("annotation_image_id")) {
+				if (event.annotation_image_id) {
+					return event.annotation_image_id;
+				}
+			}
+			if (event.hasOwnProperty("link_image_id")) {
+				if (event.link_image_id) {
+					return event.link_image_id;
+				}
+			}
+			if (event.hasOwnProperty("avatar_id")) {
+				if (event.avatar_id) {
+					return event.avatar_id;
+				}
+			}
+		};
+
+		var getAssetIdsFromEvents = function (events) {
+			//asset_id,
+			//annotation_image_id
+			//link_image_id
+			var idsobject = {}; //object is way faster to prevent duplicates
+			for (var i = 0, length = events.length; i < length; i++) {
+				var id = getAssetIdFromEvent(events[i]);
+				if (id) {
+					if (!(id in idsobject)) {
+						idsobject[id] = 0;
+					}
+				}
+			}
+			//now make an array instead of an object 
+			var ids = Object.keys(idsobject);
+			return ids;
+		};
+
+		svc.getAssetsByAssetIds = function (assetIds, callback) {
+			var endpoint = "/v1/assets";
+			var assetIdsObj = {};
+			assetIdsObj.asset_ids = assetIds;
+			return $http.post(config.apiDataBaseUrl + endpoint, assetIdsObj)
+				.success(function (data) {
+					callback(data);
+				})
+				.error(function () {
+					callback();
+				});
+		};
+
 		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
 		var getEpisode = function (epId, segmentId) {
 			// The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
@@ -345,31 +407,46 @@ angular.module('com.inthetelling.story')
 			var url = (segmentId) ? "/v3/episode_segments/" + segmentId + "/resolve" : "/v3/episodes/" + epId;
 			$http.get(config.apiDataBaseUrl + url)
 				.success(function (ret) {
-
 					var episodeData = {};
 					if (ret) {
 						episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
 					}
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
-						var partsWeGot = 0;
-						// part 1: episode events
-						getEpisodeEvents(epId, segmentId).then(function () {
-							modelSvc.resolveEpisodeEvents(epId);
-							if (++partsWeGot === 2) {
-								$rootScope.$emit("dataSvc.getEpisode.done");
-							}
-						});
+						console.log('episodeData', episodeData);
+						getEvents(epId, segmentId)
+							.success(function (events) {
+								if (events) {
+									getEventActivityDataForUser(events, "Plugin", epId);
+									angular.forEach(events, function (eventData) {
+										eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
+										modelSvc.cache("event", svc.resolveIDs(eventData));
+									});
+									modelSvc.resolveEpisodeEvents(epId);
+									var assetIds = getAssetIdsFromEvents(events);
+									assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
+									assetIds.push(episodeData.master_asset_id);
+									// we need to also get the master asset, while we are at it
+									//batch get assets
+									svc.getAssetsByAssetIds(assetIds, function (assets) {
+										angular.forEach(assets.files, function (asset) {
+											modelSvc.cache("asset", asset);
+										});
+										modelSvc.resolveEpisodeAssets(epId);
+										$rootScope.$emit("dataSvc.getEpisode.done");
+									});
+								} else {
+									//no events... is this an error condition?
+									$rootScope.$emit("dataSvc.getEpisode.done");
+									console.warn("API call to get events resulted in no events");
+								}
+							})
+							.error(function () {
+								errorSvc.error({
+									data: "API call to get events failed."
+								});
+							});
 
-						// part 2: the episode container and all parent containers
-						// (Need parents so we can get all potential episode assets, not just for interepisode nav)
-						svc.getContainerAncestry(episodeData.container_id, epId).then(function () {
-							// NOTE assets are not guaranteed to be loaded by this point!
-							modelSvc.resolveEpisodeContainers(epId);
-							if (++partsWeGot === 2) {
-								$rootScope.$emit("dataSvc.getEpisode.done");
-							}
-						});
 					} else {
 						errorSvc.error({
 							data: "This episode has not yet been published."
@@ -386,29 +463,22 @@ angular.module('com.inthetelling.story')
 		// calls getContainer, iterates to all parents before finally resolving
 		svc.getContainerAncestry = function (containerId, episodeId, defer) {
 			defer = defer || $q.defer();
-			svc.getContainer(containerId, episodeId).then(function (id) {
-				var container = modelSvc.containers[id];
-				if (container.parent_id) {
-					svc.getContainerAncestry(container.parent_id, episodeId, defer);
-				} else {
-					defer.resolve(id);
-				}
-			});
+			svc.getContainer(containerId, episodeId)
+				.then(function (id) {
+					var container = modelSvc.containers[id];
+					if (container.parent_id) {
+						svc.getContainerAncestry(container.parent_id, episodeId, defer);
+					} else {
+						defer.resolve(id);
+					}
+				});
 			return defer.promise;
 		};
 
-		var getEpisodeEvents = function (epId, segmentId) {
+		//getEvents returns the data via a promise, instead of just setting modelSvc
+		var getEvents = function (epId, segmentId) {
 			var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
-
-			return $http.get(config.apiDataBaseUrl + endpoint)
-				.success(function (events) {
-					getEventActivityDataForUser(events, "Plugin", epId);
-					angular.forEach(events, function (eventData) {
-						eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-						modelSvc.cache("event", svc.resolveIDs(eventData));
-					});
-
-				});
+			return $http.get(config.apiDataBaseUrl + endpoint);
 		};
 
 		var getEventActivityDataForUser = function (events, activityType, epId) {
@@ -558,9 +628,9 @@ angular.module('com.inthetelling.story')
 					if (!episodeId) {
 						getSiblings = true; // we're in a container list
 					}
-					if (episodeId && modelSvc.episodes[episodeId].navigation_depth > 0) {
-						getSiblings = true;
-					}
+					// if (episodeId && modelSvc.episodes[episodeId].navigation_depth > 0) {
+					// 	getSiblings = true;
+					// }
 					if (getSiblings) {
 						angular.forEach(container.children, function (child) {
 							if (child.episodes[0]) {
@@ -721,13 +791,12 @@ angular.module('com.inthetelling.story')
 			if (asset._id && asset._id.match(/internal/)) {
 				delete asset._id;
 			}
+			asset = modelSvc.deriveAsset(asset);
 			POST("/v1/containers/" + containerId + "/assets", asset)
 				.then(function (data) {
-					console.log("Created asset: ", data);
-					var dataActual = data.file;
-					modelSvc.containers[dataActual.container_id].episodes = [dataActual._id];
-					createAssetDefer.resolve(data);
-					modelSvc.cache("asset", dataActual);
+					modelSvc.containers[data.file.container_id].episodes = [data.file._id];
+					modelSvc.cache("asset", data.file);
+					createAssetDefer.resolve(data.file);
 					//modelSvc.resolveEpisodeAssets(episodeId);
 				});
 			return createAssetDefer.promise;
@@ -771,7 +840,7 @@ angular.module('com.inthetelling.story')
 				"end_time",
 				"episode_id",
 				"template_id",
-				"templateUrl",
+				"templateUrl", // We should get this from template_id, but for now there's a dependency in editController on this existing. TODO remove that dependency
 				"stop",
 				"required",
 				"cosmetic",
@@ -784,7 +853,8 @@ angular.module('com.inthetelling.story')
 				"data",
 				"asset_id",
 				"link_image_id",
-				"annotation_image_id"
+				"annotation_image_id",
+				"avatar_id"
 			];
 
 			prepped.type = evt._type;
@@ -851,16 +921,18 @@ angular.module('com.inthetelling.story')
 			}
 		};
 		svc.prepItemForStorage = prepItemForStorage;
-		svc.detachMasterAsset = function (epData) {
-			var preppedData = prepEpisodeForStorage(epData);
-			preppedData.master_asset_id = null;
-			console.log("prepped sans master_asset_id for storage:", preppedData);
-			if (preppedData) {
-				return PUT("/v3/episodes/" + preppedData._id, preppedData);
-			} else {
-				return false;
-			}
-		};
+
+		// No, we should not be storing episodes with no master asset halfway through editing 
+		// svc.detachMasterAsset = function (epData) {
+		// 	var preppedData = prepEpisodeForStorage(epData);
+		// 	preppedData.master_asset_id = null;
+		// 	console.log("prepped sans master_asset_id for storage:", preppedData);
+		// 	if (preppedData) {
+		// 		return PUT("/v3/episodes/" + preppedData._id, preppedData);
+		// 	} else {
+		// 		return false;
+		// 	}
+		// };
 		svc.detachEventAsset = function (evt, assetId) {
 			evt = prepItemForStorage(evt);
 			if (!evt) {
@@ -902,8 +974,8 @@ angular.module('com.inthetelling.story')
 				"customer_id",
 				"master_asset_id",
 				"status",
-				"languages",
-				"navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
+				"languages"
+				// "navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
 			];
 
 			for (var i = 0; i < fields.length; i++) {
@@ -980,7 +1052,8 @@ angular.module('com.inthetelling.story')
 				"templates/item/question-mc-image-left.html": "templates/question-mc-image-left.html",
 				"templates/item/question-mc-image-right.html": "templates/question-mc-image-right.html",
 
-				"templates/item/sxs-question.html": "templates/sxs-question.html"
+				"templates/item/sxs-question.html": "templates/sxs-question.html",
+				"templates/item/sxs-link.html": "templates/sxs-link.html"
 			};
 			if (reverseTemplates[templateUrl]) {
 				var template = svc.readCache("template", "url", reverseTemplates[templateUrl]);

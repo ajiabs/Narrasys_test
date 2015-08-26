@@ -159,9 +159,42 @@ angular.module('com.inthetelling.story')
 			svc.wasPlaying = undefined;
 		};
 
+		svc.startAtSpecificTime = function (t) {
+			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
+			if (appState.isTouchDevice && appState.hasBeenPlayed === false && videoScope.videoType === 'youtube') {
+				return;
+			}
+			if (!videoScope || appState.duration === 0) {
+				// if duration = 0, we're trying to seek to a time from a url param before the events 
+				// have loaded.  Just poll until events load, that's good enough for now.
+				// TODO throw error and stop looping if this goes on too long
+				$timeout(function () {
+					svc.startAtSpecificTime(t);
+				}, 300);
+				return;
+			}
+
+			t = parseTime(t);
+			if (t < 0) {
+				t = 0;
+			}
+			if (t > appState.duration) {
+				t = appState.duration;
+			}
+
+			appState.time = t;
+			svc.updateEventStates();
+			videoScope.startAtTime(t);
+
+			analyticsSvc.captureEpisodeActivity("seek", {
+				method: "URLParameter"
+			});
+
+		};
+
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function (t, method, eventID) {
-			// console.log("timelineSvc.seek ", t);
+			console.log("timelineSvc.seek ", t, method, eventID);
 			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
@@ -170,11 +203,6 @@ angular.module('com.inthetelling.story')
 					// console.log("waiting for video to be ready");
 					svc.seek(t, method, eventID);
 				}, 300);
-				return;
-			}
-
-			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
-			if (appState.isTouchDevice && appState.hasBeenPlayed === false && videoScope.videoType === 'youtube') {
 				return;
 			}
 
@@ -188,8 +216,10 @@ angular.module('com.inthetelling.story')
 				t = appState.duration;
 			}
 
-			// Brute force Safari into not fucking up on seek:
-			if (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+			// Lots of synch issues caused by seek during playback. Temporary workaround: pause, then seek, then play.
+			var wasPlaying = (appState.timelineState === "playing");
+			if (wasPlaying) {
+				console.log("pausing playback before seek");
 				svc.pause(true);
 			}
 
@@ -213,6 +243,27 @@ angular.module('com.inthetelling.story')
 				analyticsSvc.captureEpisodeActivity("seek", captureData);
 			} else {
 				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
+			}
+
+			// Restart playback after seek, unless they seeked (sought?) to a stop event
+			if (wasPlaying) {
+				var doRestart = true,
+					allowedLag = 150;
+				// make sure they didn't seek to a stop event:
+				for (var i = 0; i < svc.timelineEvents.length; i++) {
+					var evt = svc.timelineEvents[i];
+					if (evt.t > (t - allowedLag) && evt.action === 'pause') {
+						doRestart = false;
+					}
+					if (evt.t > t) {
+						break;
+					}
+				}
+				if (doRestart) {
+					$timeout(function () {
+						svc.play();
+					}, allowedLag);
+				}
 			}
 		};
 
@@ -452,9 +503,12 @@ angular.module('com.inthetelling.story')
 				}
 				// add start and end to timelineEvents array
 				if (event.stop) {
+					addMarkedEvent(event); // give all stop items a timeline marker
+
 					svc.timelineEvents.push({
 						t: event.start_time + injectionTime,
 						id: "timeline",
+						eventId: event._id, //Need to store the event id in case this event needs to get removed from the timeline
 						action: "pause"
 					});
 					svc.timelineEvents.push({
@@ -526,8 +580,12 @@ angular.module('com.inthetelling.story')
 		svc.removeEvent = function (removeId) {
 			// delete anything corresponding to this id from the timeline:
 			// console.log("timelineSvc.removeEvent");
-			svc.timelineEvents = $filter('filter')(svc.timelineEvents, {
-				id: '!' + removeId
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, function (timelineEvent) {
+				//Remove the timeline event if it's _id or eventId  equal the removeId
+				if (timelineEvent.id === removeId || timelineEvent.eventId === removeId) {
+					return false;
+				}
+				return true;
 			});
 			// and from the markedEvents, with its inexplicably inconsistent ID naming:
 			svc.markedEvents = $filter('filter')(svc.markedEvents, {
@@ -540,8 +598,12 @@ angular.module('com.inthetelling.story')
 		svc.updateEventTimes = function (event) {
 			// remove old references, as in removeEvent, then re-add it with new times 
 			// (not calling removeEvent here since it would do a redundant updateEventStates)
-			svc.timelineEvents = $filter('filter')(svc.timelineEvents, {
-				id: '!' + event._id
+			svc.timelineEvents = $filter('filter')(svc.timelineEvents, function (timelineEvent) {
+				//Remove the timeline event if it's _id or eventId  equal the removeId
+				if (timelineEvent.id === event._id || timelineEvent.eventId === event._id) {
+					return false;
+				}
+				return true;
 			});
 			svc.injectEvents([event], 0);
 		};

@@ -97,7 +97,6 @@
 .item .startTime {
 	cursor: pointer;
 	cursor: hand;
-	margin-left: -55px;
 	width: 50px;
 	text-align: right;
 	float: left;
@@ -144,6 +143,7 @@ a.startTime.displayTime {
 	left: 0;
 	right: 0;
 	bottom: 0;
+	height: 100%;
 }
 
 .iframeContainer iframe {
@@ -225,7 +225,13 @@ image-fill items */
 }
 
 .fill .item.center .fillImg {
-	position: static;
+	/* This was position:static, but that broke in IE.  temporary fix. */
+	
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 }
 
 .fill .item.tr img,
@@ -433,7 +439,7 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 
 .content .item .startTime {
-	margin-left: -60px;
+	margin-left: -55px;
 }
 
 .content .item .headerItem {
@@ -472,11 +478,14 @@ Inline images (TODO show these only when image is larger than available space) *
 
 /* =========================== */
 
-.content.isNarrow .item .headerItem {
-	margin-left: 0;
+.content.isNarrow .item .headerItem,
+.timestampNone .headerItem,
+.timestampInline .headerItem {
+	margin-left: 0 !important;
 }
 
 .content.isNarrow .item .startTime,
+.content.isNarrow .item .sxs-item .startTime,
 .item.timestampInline .startTime {
 	display: inline;
 	margin-left: 0;
@@ -659,5 +668,10 @@ Inline images (TODO show these only when image is larger than available space) *
 
 .item .question input[type="radio"] {
 	margin-right: 0.5em;
+}
+
+.item .chartContainer {
+	max-width: 400px;
+	margin: auto;
 }
 
