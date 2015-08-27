@@ -7,19 +7,19 @@ angular.module('com.inthetelling.story')
 		scope: {},
 		templateUrl: 'templates/v2/ui/story-ui.html',
 		link: function (scope, element) {
-			console.log("itt-story-ui", scope, element);
+			// console.log("itt-story-ui", scope, element);
 
 			/* TOOLBAR hide/reveal */
 			scope.hideToolbars = function () {
 				if (scope.toolbarLocks > 0) {
 					return;
 				}
-				console.log("Hiding toolbar");
+				// console.log("Hiding toolbar");
 				element.addClass('hiddenToolbars');
 			};
 
 			scope.showToolbars = function () {
-				console.log("Showing toolbar");
+				// console.log("Showing toolbar");
 				element.removeClass('hiddenToolbars');
 				$timeout.cancel(scope.hideToolbarTimer);
 				scope.hideToolbarTimer = $timeout(scope.hideToolbars, 3000);
@@ -30,20 +30,20 @@ angular.module('com.inthetelling.story')
 			};
 
 			scope.lockToolbars = function () {
-				console.log("lockToolbars");
+				// console.log("lockToolbars");
 				scope.toolbarLocks = (scope.toolbarLocks) ? scope.toolbarLocks + 1 : 1;
 				$timeout.cancel(scope.hideToolbarTimer);
 			};
 
 			scope.unlockToolbars = function () {
-				console.log("unlockToolbars");
+				// console.log("unlockToolbars");
 				scope.toolbarLocks = (scope.toolbarLocks) ? scope.toolbarLocks - 1 : 0;
 				$timeout.cancel(scope.hideToolbarTimer);
 				scope.hideToolbarTimer = $timeout(scope.hideToolbars, 3000);
 			};
 
 			$rootScope.$on('userKeypress.ESC', function () {
-				console.log("stoyUI got ESC");
+				// console.log("stoyUI got ESC");
 				scope.hideToolbars();
 			});
 			$rootScope.$on('userKeypress.SPACE', scope.showToolbars);
@@ -60,8 +60,8 @@ angular.module('com.inthetelling.story')
 .directive('ittTopToolbar', function ($rootScope) {
 	return {
 		templateUrl: 'templates/v2/ui/toolbar-top.html',
-		link: function (scope, element) {
-			console.log("itt-top-toolbar", scope, element);
+		link: function (scope) {
+			// console.log("itt-top-toolbar", scope, element);
 
 			scope.showPane = function (x, y) {
 				// console.log("SHOWPANE ", x, y);
@@ -76,7 +76,7 @@ angular.module('com.inthetelling.story')
 	return {
 		templateUrl: 'templates/v2/ui/toolbar-bottom.html',
 		link: function (scope, element) {
-			console.log("itt-bottom-toolbar", scope, element);
+			// console.log("itt-bottom-toolbar", scope, element);
 
 			scope.appState = appState;
 			scope.TMPstartEdit = function () {
@@ -116,9 +116,7 @@ angular.module('com.inthetelling.story')
 			var self = this;
 			self.tabs = [];
 			self.addTab = function (tab) {
-				console.log("Adding tab", tab);
 				self.tabs.push(tab);
-				console.log(self.tabs);
 				if (tab.active || self.tabs.length === 1) {
 					self.chooseTab(tab);
 				}
@@ -130,8 +128,6 @@ angular.module('com.inthetelling.story')
 					}
 				});
 				selectedTab.active = true;
-				console.log("Selecting tab", selectedTab);
-				console.log(self.tabs);
 			};
 		},
 		controllerAs: 'tabset', // why is this necessary here but not in ittPane? fuck if I know...
@@ -152,9 +148,7 @@ angular.module('com.inthetelling.story')
 			activeAttr: '@active'
 		},
 		link: function (scope, elem, attr, tabsetController) {
-			console.log(">>>>>", scope.activeAttr);
 			scope.active = scope.activeAttr || false;
-			console.log("Tab", scope.active, scope);
 			tabsetController.addTab(scope);
 		}
 	};
@@ -179,17 +173,15 @@ yet the same controller in ittTopPane needs $scope to store values but not contr
 		controller: function ($scope) {
 			var self = this;
 			self.registerPane = function (el) {
-				console.log("registerPane", el);
 				$scope.paneNode = el;
 			};
 			self.registerPanePointer = function (el) {
-				console.log("registerPanePointer", el);
 				$scope.pointerNode = el;
 			};
 		},
 		templateUrl: 'templates/v2/ui/top-pane.html',
 		link: function (scope) {
-			console.log("ittTopPane", scope);
+			// console.log("ittTopPane", scope);
 			scope.pane = {
 				active: false
 			};
@@ -261,6 +253,7 @@ yet the same controller in ittTopPane needs $scope to store values but not contr
 					left: Math.floor(pointAt.x),
 					top: Math.floor((scope.paneNode.offset().top - 24))
 				};
+				// TODO add more padding on the tabs side, if the pane has them
 				if (pointerPosition.left < 50) {
 					pointerPosition.left = 50;
 				}
