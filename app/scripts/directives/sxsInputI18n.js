@@ -5,7 +5,7 @@ TODO  add ta-default-wrap="span" attribute to the text-angular node, then change
 
 */
 angular.module('com.inthetelling.story')
-	.directive('sxsInputI18n', function (appState, $timeout, textAngularManager) {
+	.directive('sxsInputI18n', function (appState, $timeout) {
 		return {
 			templateUrl: 'templates/producer/inputi18n.html',
 			scope: {
@@ -22,13 +22,13 @@ angular.module('com.inthetelling.story')
 				scope.appState = appState;
 
 				if (scope.inputtype === 'textarea') {
-					// textAngular needs some extra magic for autofocus:
-					scope.textangularname = "ta" + new Date().getUTCMilliseconds() + "y" + Math.random().toString(16);
-
+					// the "correct" way to focus textAngualr editor is via the textAngularManager, whcih doesn't exist in the TA version we're using.  If we upgrade it switch to the commented stuff instead of .find
+					// scope.textangularname = "ta" + new Date().getUTCMilliseconds() + "y" + Math.random().toString(16);
 					$timeout(function () { // wait for DOM
 						if (attrs.autofocus !== undefined) {
-							var editorScope = textAngularManager.retrieveEditor(scope.textangularname).scope;
-							editorScope.displayElements.text.trigger('focus');
+							// var editorScope = textAngularManager.retrieveEditor(scope.textangularname).scope;
+							// editorScope.displayElements.text.trigger('focus');
+							el.find('div[contenteditable="true"]')[0].focus(); // WARN jQuery dependency
 						}
 					});
 
