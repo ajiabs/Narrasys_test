@@ -421,8 +421,8 @@ angular.module('com.inthetelling.story')
 									angular.forEach(events, function (eventData) {
 										eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
 										modelSvc.cache("event", svc.resolveIDs(eventData));
-										modelSvc.resolveEpisodeEvents(epId);
 									});
+									modelSvc.resolveEpisodeEvents(epId);
 									var assetIds = getAssetIdsFromEvents(events);
 									assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
 									assetIds.push(episodeData.master_asset_id);
@@ -628,9 +628,9 @@ angular.module('com.inthetelling.story')
 					if (!episodeId) {
 						getSiblings = true; // we're in a container list
 					}
-					if (episodeId && modelSvc.episodes[episodeId].navigation_depth > 0) {
-						getSiblings = true;
-					}
+					// if (episodeId && modelSvc.episodes[episodeId].navigation_depth > 0) {
+					// 	getSiblings = true;
+					// }
 					if (getSiblings) {
 						angular.forEach(container.children, function (child) {
 							if (child.episodes[0]) {
@@ -974,8 +974,8 @@ angular.module('com.inthetelling.story')
 				"customer_id",
 				"master_asset_id",
 				"status",
-				"languages",
-				"navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
+				"languages"
+				// "navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
 			];
 
 			for (var i = 0; i < fields.length; i++) {

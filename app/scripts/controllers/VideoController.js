@@ -384,7 +384,7 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			} catch (e) {
-				console.error("video error", e);
+				// console.error("video error", e);
 				$scope.intentionalStall = false;
 				$timeout.cancel($scope.stallGracePeriod);
 				videoNotReady = true;

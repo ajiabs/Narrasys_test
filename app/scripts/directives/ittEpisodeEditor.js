@@ -128,8 +128,8 @@ angular.module('com.inthetelling.story')
 					[
 						'episode.templateUrl',
 						'episode.title[appState.lang]',
-						'episode.description[appState.lang]',
-						'episode.navigation_depth'
+						'episode.description[appState.lang]'
+						// 'episode.navigation_depth'
 					],
 					function (newVal, oldVal) {
 						// console.log("DETECTED CHANGE", newVal, oldVal);
@@ -165,7 +165,7 @@ angular.module('com.inthetelling.story')
 						}
 
 						modelSvc.deriveEpisode(scope.episode);
-						modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
+						// modelSvc.resolveEpisodeContainers(scope.episode._id); // only needed for navigation_depth changes
 						modelSvc.resolveEpisodeEvents(scope.episode._id); // needed for template or style changes
 
 					}
