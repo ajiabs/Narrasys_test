@@ -11,6 +11,8 @@
 	position: relative;
 	color: #FFF;
 }
+
+
 /* IE9-specific hack: */
 
 @media all and (min-width: 0\0) and (min-resolution: .001dpcm) {
@@ -80,6 +82,8 @@
 	max-height: 35px;
 	max-width: 100%;
 }
+
+
 /* -------------------------------------------  
    Customer-specific tweaks
 
@@ -95,11 +99,12 @@
 	background-position: 0 30%;
 	background-repeat: no-repeat;
 }
+
+
 /* -- */
 
 .episode-gw .videoMask.firstplay {
 	/* GW doesn't want our logo here */
-	
 	background-image: url('/images/play-overlay.png');
 }
 
@@ -136,6 +141,8 @@
 		padding-top: 45%;
 	}
 }
+
+
 /* Purdue */
 
 .episode-purdue .landingscreen {
@@ -144,6 +151,8 @@
 	background-repeat: no-repeat;
 	background-size: 110%;
 }
+
+
 /* USC */
 
 .uscWindowFgOnly {
@@ -170,6 +179,8 @@
 .uscHackUserHasBadge .uscHackOnlyBadge {
 	display: block;
 }
+
+
 /* CBS */
 
 .episode-columbiabusiness {
@@ -191,6 +202,8 @@
 .episode-schoolclimatesolutions {
 	background: url("/images/customer/schoolclimatelogo-big.svg") no-repeat scroll right -140px bottom -140px / 90% auto #FFF;
 }
+
+
 /* Middlebury */
 
 .episode-middlebury .DiscoverModeOnly {
@@ -351,7 +364,6 @@
 
 */.episode-gwsb .videoMask.firstplay {
 	/* GW doesn't want our logo here */
-	
 	background-image: url('/images/play-overlay.png');
 }
 
@@ -481,6 +493,18 @@
 .episode-kellogg a,
 .episode-kellogg a.fakelink {
 	color: #00AC9E;
+}
+
+.episode-kellogg .item a {
+	/* time to party like it's 1996: */
+	text-decoration: underline;
+	font-size: 110%;
+}
+
+.episode-kellogg .item a:hover {
+	/* time to party like it's 1996: */
+	text-decoration: none;
+	border-bottom: 2px solid;
 }
 
 .episode-kellogg .colorInvert {
