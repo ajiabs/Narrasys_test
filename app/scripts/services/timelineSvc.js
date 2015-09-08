@@ -32,7 +32,7 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 */
 
 angular.module('com.inthetelling.story')
-	.factory('timelineSvc', function ($timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc) {
+	.factory('timelineSvc', function ($window, $timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc) {
 
 		var svc = {};
 
@@ -103,6 +103,11 @@ angular.module('com.inthetelling.story')
 			appState.show.navPanel = false;
 			appState.timelineState = "buffering";
 
+			// For episodes embedded within episodes:
+			if ($window.parent !== $window) {
+				$window.parent.postMessage('pauseEpisodePlayback', '*'); // negligible risk in using a global here
+			}
+
 			videoScope.play().then(function () {
 				appState.timelineState = "playing";
 				startTimelineClock();
@@ -112,6 +117,15 @@ angular.module('com.inthetelling.story')
 				}
 			});
 		};
+
+		if (!svc.enforceSingletonPauseListener) {
+			$window.addEventListener('message', function (e) {
+				if (e.data === 'pauseEpisodePlayback') {
+					svc.pause();
+				}
+			}, false);
+		}
+		svc.enforceSingletonPauseListener = true; // this is probably unnecessary paranoia
 
 		svc.pause = function (nocapture) {
 			// console.log("timelineSvc.pause");

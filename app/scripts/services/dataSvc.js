@@ -413,7 +413,7 @@ angular.module('com.inthetelling.story')
 					}
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
-						console.log('episodeData', episodeData);
+						// console.log('episodeData', episodeData);
 						getEvents(epId, segmentId)
 							.success(function (events) {
 								if (events) {

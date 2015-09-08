@@ -40,8 +40,7 @@ angular.module('com.inthetelling.story')
 								// widget.setVideoKeywords();
 							},
 							'onUploadSuccess': function (ret) {
-								var includeYoutubeQSParams = true;
-								scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId, includeYoutubeQSParams);
+								scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
 								scope.isRecordingVideo = false;
 								scope.isProcessingVideo = true;
 
@@ -132,7 +131,7 @@ angular.module('com.inthetelling.story')
 					*/
 
 					if (newItem.yturl !== oldItem.yturl) {
-						scope.item.url = embeddableYTUrl(newItem.yturl);
+						scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
 					}
 
 					// Special cases:
@@ -304,11 +303,6 @@ angular.module('com.inthetelling.story')
 				scope.cancelEdit = function () {
 					// hand off to EditController (with the original to be restored)
 					scope.cancelEventEdit(scope.uneditedItem);
-				};
-
-				var embeddableYTUrl = function (origUrl) {
-					var url = youtubeSvc.embeddableYoutubeUrl(origUrl);
-					return url ? url : "";
 				};
 
 				scope.assetUploaded = function (assetId) {

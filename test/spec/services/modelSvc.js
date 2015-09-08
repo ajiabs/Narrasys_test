@@ -7,18 +7,18 @@ describe('Service: modelSvc', function () {
 
 	// instantiate service
 	var modelSvc;
-
+	var youtubeSvc;
 	// For easier debugging of episode event data
-	var dumpEpisode = function (epId) {
-		console.log("------------------------ EPISODE ", epId);
-		var episode = modelSvc.episodes[epId];
-		angular.forEach(modelSvc.episodes[epId].scenes, function (scene) {
-			console.log("Scene: ", scene._id, scene.start_time, scene.end_time);
-			angular.forEach(scene.items, function (event) {
-				console.log("  Evt: ", event._id, event.start_time, event.end_time);
-			});
-		});
-	};
+	// var dumpEpisode = function (epId) {
+	// 	console.log("------------------------ EPISODE ", epId);
+	// 	var episode = modelSvc.episodes[epId];
+	// 	angular.forEach(modelSvc.episodes[epId].scenes, function (scene) {
+	// 		console.log("Scene: ", scene._id, scene.start_time, scene.end_time);
+	// 		angular.forEach(scene.items, function (event) {
+	// 			console.log("  Evt: ", event._id, event.start_time, event.end_time);
+	// 		});
+	// 	});
+	// };
 
 	var setupSceneContentsTest = function (data) {
 		var episodeId = data[0].episode_id;
@@ -65,10 +65,12 @@ describe('Service: modelSvc', function () {
 		}
 		// dumpEpisode(epId);
 		return Object.keys(eventsInEpisode).length;
-	}
+	};
 
-	beforeEach(inject(function (_modelSvc_) {
+	beforeEach(inject(function (_modelSvc_, _youtubeSvc_) {
 		modelSvc = _modelSvc_;
+		youtubeSvc = _youtubeSvc_; // only to retrieve embed params
+
 		// data to test against
 		modelSvc.cache("episode", {
 			"_id": "EP1",
@@ -631,7 +633,7 @@ describe('Service: modelSvc', function () {
 			"mp4": ["foo.mp4"],
 			"webm": ["foo.webm"],
 			"m3u8": ["foo.m3u8"],
-			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=0&loop=0']
+			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA' + youtubeSvc.embedParams()]
 		});
 	});
 
@@ -645,7 +647,7 @@ describe('Service: modelSvc', function () {
 			"mp4": [],
 			"webm": [],
 			"m3u8": [],
-			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=0&loop=0']
+			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA' + youtubeSvc.embedParams()]
 		});
 	});
 
@@ -711,7 +713,7 @@ describe('Service: modelSvc', function () {
 			"mp4": [],
 			"webm": [],
 			"m3u8": [],
-			"youtube": ['//www.youtube.com/embed/BBBBBBBBBBB?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=0&loop=0']
+			"youtube": ['//www.youtube.com/embed/BBBBBBBBBBB' + youtubeSvc.embedParams()]
 		});
 	});
 
