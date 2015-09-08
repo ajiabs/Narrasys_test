@@ -1,5 +1,5 @@
 <div class="video">
-	<iframe tabindex="-1" id="ytplayer{{uid}}" ng-if="video.urls.youtube.length" ng-src="{{video.urls.youtube + '?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=1&loop=0'}}"></iframe>
+	<iframe tabindex="-1" id="ytplayer{{uid}}" ng-if="video.urls.youtube.length" ng-src="{{video.urls.youtube[0]}}"></iframe>
 	<!-- NOTE in html5 video we can't depend on databinding to change the video src after rendering!  See videoController changeVideoBandwidth -->
 	<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player">
 		<source class="m3u8" ng-if="video.urls.m3u8[0]" ng-src="{{video.urls.m3u8[0]}}" type="application/x-mpegURL" />

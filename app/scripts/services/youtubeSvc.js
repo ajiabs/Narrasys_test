@@ -30,50 +30,27 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-		/* TODO combine the next 4 fns (and update all callers), and remove the 'includeQSParams' thing; we always want the params. 
-
-		should only need:
-		svc.extractId -- convert url to plain ID
-		svc.createEmbedLink -- convert url or ID to embed url
-
-		*/
 		svc.extractYoutubeId = function (origUrl) {
 			if (!origUrl) {
 				return false;
 			}
 			origUrl = origUrl.replace(/%3F/, '?');
 			origUrl = origUrl.replace(/%26/, '&');
-
 			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 			var ytMatch = origUrl.match(getYoutubeID);
-			if (ytMatch && ytMatch[1]) {
-				return ytMatch[1];
-			} else {
-				return false;
-			}
+			return (ytMatch && ytMatch[1]) ? ytMatch[1] : false;
 		};
-		svc.getYoutubeEmbedQueryString = function () {
-			return "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&wmode=opaque&rel=0&html5=1&autoplay=0&disablekb=0&loop=0";
+
+		svc.createEmbedLinkFromYoutubeId = function (ytid) {
+			return (ytid) ? "//www.youtube.com/embed/" + ytid + "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" : false;
 		};
-		svc.createEmbedLinkFromYoutubeId = function (ytid, includeQSParams) {
-			var includeQS = false;
-			if (arguments.length === 2) {
-				includeQS = includeQSParams;
-			}
-			// if (includeQS) {
-			return (ytid) ? "//www.youtube.com/embed/" + ytid + svc.getYoutubeEmbedQueryString() : false;
-			// } else {
-			// return (ytid) ? "//www.youtube.com/embed/" + ytid : false;
-			// }
-		};
-		svc.embeddableYoutubeUrl = function (origUrl, includeQSParams) {
+
+		svc.embeddableYoutubeUrl = function (origUrl) {
 			if (!origUrl) {
 				return false;
 			}
-			origUrl = origUrl.replace(/%3F/, '?');
-			origUrl = origUrl.replace(/%26/, '&');
 			var ytid = svc.extractYoutubeId(origUrl);
-			return svc.createEmbedLinkFromYoutubeId(ytid, includeQSParams);
+			return svc.createEmbedLinkFromYoutubeId(ytid);
 		};
 
 		var parseRidiculousDurationFormat = function (input) {
