@@ -1043,7 +1043,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			// HACK encoding error at youtube(?)  Safari (and only Safari) fails to play this episode properly unless forced to a lower bitrate
-			if (isSafari && videoObject.youtube[0].match(/cJPf7Kdq6ag/)) {
+			if (isSafari && videoObject.youtube && videoObject.youtube[0] && videoObject.youtube[0].match(/cJPf7Kdq6ag/)) {
 				// delete videoObject.youtube;
 				videoObject.youtube[0] = videoObject.youtube[0] + '&vq=small';
 			}

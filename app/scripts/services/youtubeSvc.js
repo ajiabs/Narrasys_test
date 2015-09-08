@@ -41,8 +41,12 @@ angular.module('com.inthetelling.story')
 			return (ytMatch && ytMatch[1]) ? ytMatch[1] : false;
 		};
 
+		svc.embedParams = function () {
+			return "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3";
+		};
+
 		svc.createEmbedLinkFromYoutubeId = function (ytid) {
-			return (ytid) ? "//www.youtube.com/embed/" + ytid + "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" : false;
+			return (ytid) ? "//www.youtube.com/embed/" + ytid + svc.embedParams() : false;
 		};
 
 		svc.embeddableYoutubeUrl = function (origUrl) {
