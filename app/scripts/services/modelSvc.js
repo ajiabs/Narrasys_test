@@ -1042,6 +1042,12 @@ angular.module('com.inthetelling.story')
 				delete videoObject.m3u8;
 			}
 
+			// HACK encoding error at youtube(?)  Safari (and only Safari) fails to play this episode properly unless forced to a lower bitrate
+			if (isSafari && videoObject.youtube[0].match(/cJPf7Kdq6ag/)) {
+				// delete videoObject.youtube;
+				videoObject.youtube[0] = videoObject.youtube[0] + '&vq=small';
+			}
+
 			// Chrome won't allow the same video to play in two windows, which interferes with our 'escape the iframe' button.
 			// Therefore we trick Chrome into thinking it is not the same video:
 			if (isChrome) {
