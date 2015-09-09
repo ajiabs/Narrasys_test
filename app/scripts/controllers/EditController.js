@@ -4,11 +4,19 @@ angular.module('com.inthetelling.story')
 	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
-		$scope.chooseAsset = function () {
+		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
+		// Poor encapsulation of the upload controls. Sorry about that.
+
+		$scope.chooseAsset = function (assetType) {
+			assetType = assetType || '';
 			$scope.showAssetPicker = true;
 			$scope.w1 = $rootScope.$on('UserSelectedAsset', function (e, id) {
-				$scope.attachChosenAsset(id); // in ittItemEditor or ittEpisodeEditor
-				$scope.showUploadButtons = false;
+				if (assetType === 'Poster') {
+					$scope.attachPosterAsset(id); // in ittEpisodeEditor
+				} else {
+					$scope.attachChosenAsset(id); // in ittItemEditor or ittEpisodeEditor
+				}
+				$scope["showUploadButtons" + assetType] = false;
 				$scope.endChooseAsset();
 			});
 			$scope.w2 = $rootScope.$on('userKeypress.ESC', $scope.endChooseAsset);
@@ -19,9 +27,9 @@ angular.module('com.inthetelling.story')
 			$scope.showAssetPicker = false;
 		};
 
-		// TODO rename this to toggleUploadField (or eliminate it)
-		$scope.toggleUpload = function () {
-			$scope.showUploadField = !$scope.showUploadField;
+		$scope.toggleUpload = function (assetType) {
+			assetType = assetType || '';
+			$scope["showUploadField" + assetType] = !$scope["showUploadField" + assetType];
 		};
 
 		$scope.addDistractor = function () {
@@ -242,7 +250,8 @@ angular.module('com.inthetelling.story')
 			dataSvc.storeEpisode(toSave)
 				.then(function (data) {
 					modelSvc.cache("episode", dataSvc.resolveIDs(data));
-					if (data.master_asset_id) {
+					if (appState.editEpisode._master_asset_was_changed) {
+						delete modelSvc.episodes[data._id]._master_asset_was_changed; // probably unnecessary
 						var duration = modelSvc.assets[data.master_asset_id].duration;
 						var endTime = duration - 0.01;
 						modelSvc.episodes[appState.episodeId].masterAsset = modelSvc.assets[$scope.episode.master_asset_id];
@@ -290,7 +299,6 @@ angular.module('com.inthetelling.story')
 							modelSvc.addEndingScreen(toSave._id);
 						}
 
-						// modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 						// modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
 						modelSvc.resolveEpisodeAssets(appState.episodeId); // TODO I suspect this is unnecessary...

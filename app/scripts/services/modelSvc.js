@@ -887,14 +887,18 @@ angular.module('com.inthetelling.story')
 					svc.events[item._id].asset = svc.assets[assetId];
 				}
 			});
-			// Do episode's master asset, too
+			// Do episode's master asset and poster, too.  If they're not here, do nothing; this will get called again after assets load
 			if (svc.episodes[episodeId]) {
 				var master_asset_id = svc.episodes[episodeId].master_asset_id;
 				if (master_asset_id) {
 					if (svc.assets[master_asset_id]) {
 						svc.episodes[episodeId].masterAsset = svc.assets[master_asset_id];
-					} else {
-						// master asset hasn't loaded yet
+					}
+				}
+				var poster_frame_id = svc.episodes[episodeId].poster_frame_id;
+				if (poster_frame_id) {
+					if (svc.assets[poster_frame_id]) {
+						svc.episodes[episodeId].poster = svc.assets[poster_frame_id];
 					}
 				}
 			}
