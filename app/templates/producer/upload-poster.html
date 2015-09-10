@@ -1,0 +1,26 @@
+<!-- producer episode poster asset-->
+
+<div ng-if="showAssetPicker" class="floatAssetPicker">
+	<div class="scrollContainer">
+		<div sxs-container-assets="episodeContainerId"></div>
+	</div>
+	<div class="controlsContainer">
+		<button ng-click="endChooseAsset();">Cancel</button>
+	</div>
+</div>
+
+<div>
+	<div ng-if="episode.poster && !showUploadButtonsPoster">
+		{{episode.poster.display_name}}
+		<button class="button" ng-click="replaceAsset('Poster')">Replace this</button>
+	</div>
+	<div ng-if="showUploadButtonsPoster || !episode.poster">
+		<span ng-if="showUploadFieldPoster">
+			<div itt-asset-uploader="episodeContainerId" callback="posterUploaded"> </div>
+		</span>
+		<span ng-if="!showUploadFieldPoster">
+			<button class="button" ng-click="chooseAsset('Poster')">Browse uploaded</button>
+			<button class="button" ng-click="toggleUpload('Poster')">Upload new</button>
+		</span>
+	</div>
+</div>

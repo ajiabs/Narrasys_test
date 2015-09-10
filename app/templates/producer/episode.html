@@ -115,7 +115,7 @@
 					</div>
 					<div class="field" ng-if="masterAssetType == 'Video'">
 						<div class="label">Video</div>
-						<div class="input" ng-include="'templates/producer/upload-producer.html'"></div>
+						<div class="input" ng-include="'templates/producer/upload-masterasset.html'"></div>
 					</div>
 					<div class="field" ng-if="masterAssetType == 'Youtube'">
 						<div class="label">Youtube URL</div>
@@ -128,10 +128,20 @@
 						<div class="input" ng-bind-html="showmessage"></div>
 					</div>
 
+					<!--
 					<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
 						<div class="label">Duration</div>
 						<input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">
 					</div>
+					
+ -->
+					<div class="field">
+						<div class="label">Poster image
+						</div>
+						<div class="input" ng-include="'templates/producer/upload-poster.html'">
+						</div>
+					</div>
+
 				</div>
 				<!-- end metadata tab -->
 			</div>
@@ -158,9 +168,7 @@
 								<option value="templates/episode/schoolclimatesolutions.html">School Climate Solutions</option>
 								<option value="templates/episode/usc.html">University of Southern California</option>
 								<option value="templates/episode/middlebury.html">Middlebury</option>
-								<option value="templates/episode/wiley1.html">Wiley A &amp; P</option>
-								<option value="templates/episode/wiley2.html">Wiley ECB</option>
-								<option value="templates/episode/wiley3.html">Wiley Psych</option>
+								<option value="templates/episode/wiley1.html">Wiley</option>
 							</select>
 						</div>
 					</div>

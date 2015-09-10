@@ -178,12 +178,9 @@ angular.module('com.inthetelling.story')
 					scope.cancelEpisodeEdit(scope.uneditedEpisode);
 				};
 
-				scope.attachChosenAsset = function (asset_id) {
-					console.log("attachChosenAsset", asset_id);
+				scope.attachChosenAsset = function (asset_id) { // master asset only!
 					var asset = modelSvc.assets[asset_id];
-
 					var previousAsset = modelSvc.assets[scope.episode.master_asset_id];
-
 					scope.showmessage = "New video attached.";
 					if (previousAsset && (asset.duration < previousAsset.duration)) {
 						var orphans = scope.getItemsAfter(scope.episode.items.concat(scope.episode.scenes), asset.duration);
@@ -192,10 +189,17 @@ angular.module('com.inthetelling.story')
 							scope.showmessage = "Warning: this new video is shorter than the current video and we've detected that some existing content items will be impacted. If you save this edit, these events will have their start and end times adjusted to the new episode end. (If this isn't what you want, choose a different video or hit 'cancel'.)";
 						}
 					}
-
+					scope.episode._master_asset_was_changed = true;
 					scope.episode.master_asset_id = asset._id;
 					scope.masterAsset = asset;
 					scope.episode.masterAsset = asset;
+					modelSvc.deriveEpisode(scope.episode);
+				};
+
+				scope.attachPosterAsset = function (assetId) {
+					var asset = modelSvc.assets[assetId];
+					scope.episode.poster_frame_id = assetId;
+					scope.episode.poster = asset;
 					modelSvc.deriveEpisode(scope.episode);
 				};
 
@@ -203,6 +207,11 @@ angular.module('com.inthetelling.story')
 					scope.showUploadButtons = false;
 					scope.showUploadField = false;
 					scope.attachChosenAsset(assetId);
+				};
+				scope.posterUploaded = function (assetId) {
+					scope.showUploadButtonsPoster = false;
+					scope.showUploadFieldPoster = false;
+					scope.attachPosterAsset(assetId);
 				};
 
 				scope.attachYouTube = function (url) {
@@ -223,7 +232,6 @@ angular.module('com.inthetelling.story')
 								asset.content_type = "video/x-youtube";
 
 								dataSvc.createAsset(scope.episodeContainerId, asset).then(function (data) {
-									console.log("Created asset", data);
 									modelSvc.cache("asset", data);
 									// this may override the showmessage, so do it last:
 									scope.attachChosenAsset(data._id);
@@ -239,9 +247,10 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-				scope.replaceAsset = function () {
-					scope.showUploadButtons = true;
-					scope.showUploadField = false;
+				scope.replaceAsset = function (assetType) {
+					assetType = assetType || '';
+					scope["showUploadButtons" + assetType] = true;
+					scope["showUploadField" + assetType] = false;
 				};
 
 				scope.selectText = function (event) {

@@ -14,6 +14,7 @@ angular.module('com.inthetelling.story')
 			controller: 'VideoController',
 			scope: {
 				video: "=ittVideo",
+				poster: "="
 			},
 			link: function (scope, element) {
 				// console.log('ittVideo', scope);

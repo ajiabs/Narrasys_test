@@ -52,13 +52,11 @@ body {
 
 .videoMagnet {
 	/* No idea */
-	
 	margin-bottom: -5px;
 }
 
 .videoMagnet img {
 	/* aspect ratio preserver */
-	
 	width: 100%;
 }
 
@@ -77,6 +75,13 @@ a {
 	cursor: hand;
 }
 
+a:hover,
+a:focus,
+.fakeLink:hover,
+.fakeLink:focus {
+	text-decoration: underline;
+}
+
 h1,
 h2,
 h3,
@@ -84,6 +89,8 @@ h4 {
 	margin: 0.8em 0 0.2em;
 	line-height: 1em;
 }
+
+
 /* --------------------------------------------------------------------------------
  loading indicator
 */
@@ -167,10 +174,14 @@ h4 {
 		opacity: 0;
 	}
 }
+
+
 /* --------------------------------------------------------------------------------
  position:fixed causes Safari to act less weird in fullscreen mode, but interferes with
  scrolling.  Disabling for now, let safari do what safari does.
 */
+
+
 /*
  #CONTAINER {
 	position:fixed;
@@ -186,6 +197,8 @@ h4 {
 	-webkit-overflow-scrolling: auto;
 }
 */
+
+
 /* Z-indexes 
 --------------------------------------------------------------------------------
 */
@@ -239,6 +252,7 @@ h4 {
 .toolbar,
 .toolbar-bottom,
 .banner-logo,
+
 /*.helpPanel,*/
 
 .profilePanel,
@@ -253,6 +267,8 @@ h4 {
 .errors {
 	z-index: 13;
 }
+
+
 /* Custom Icon Font
 --------------------------------------------------------------------------------
 See /images/font/story/map.png for a list of available glyphs
@@ -278,10 +294,14 @@ See /images/font/story/map.png for a list of available glyphs
 	bottom: 0;
 	background-color: rgba(0, 0, 0, 0.6);
 }
+
+
 /* 
 Video
 --------------------------------------------------------------------------------
 */
+
+
 /* 
 TODO: native video seems to perform better when not position:absolute, but iframe doesn't size properly without it.
 Check to see if there's a consistent way to do without absolute positioning, or if it's safe to just do it to native and not youtube.
@@ -319,7 +339,6 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 
 .isTouchDevice .videoMask.buffering {
 	/* HACK iOS always has the wrong state for this, hiding it until I can find a proper fix */
-	
 	background-image: none !important;
 }
 
@@ -342,6 +361,8 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 	text-align: center;
 	width: 100%;
 }
+
+
 /* 
 Misc useful keyframes 
 --------------------------------------------------------------------------------

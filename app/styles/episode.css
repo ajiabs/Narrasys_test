@@ -68,6 +68,11 @@
 	height: 100%;
 }
 
+.video .poster {
+	background-size: 100% 100%;
+	background-repeat: none;
+}
+
 .banner-logo {
 	left: 38%;
 	margin: 0 auto;
@@ -277,7 +282,7 @@
 }
 
 .episode-prolotherapy {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Source Sans', sans-serif;
 }
 
 .episode-prolotherapy .colorInvert {
@@ -491,7 +496,7 @@
 }
 
 .episode-kellogg a,
-.episode-kellogg a.fakelink {
+.episode-kellogg .fakeLink {
 	color: #00AC9E;
 }
 
@@ -527,74 +532,8 @@
 }
 
 .episode-wiley {
-	font-family: 'Open Sans', sans-serif;
-	font-size: 14px;
-}
-
-.episode-wiley .banner-logo img {
-	max-height: 30px;
-	width: 100%;
-}
-
-.episode-wiley .landingscreen-end {
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	top: 0;
-	left: 0;
-	opacity: 0.2;
-	z-index: 2;
-	pointer-events: none;
-}
-
-.episode-wiley1 .landingscreen {
-	background: linear-gradient(to left top, #F7F7F7 0%, #76899B 100%);
-	color: #FFF;
-}
-
-.episode-wiley1 .footer {
-	background: linear-gradient(to left, #F7F7F7 0%, #BAC3CC 100%);
-}
-
-.episode-wiley1 .landingscreen-end {
-	background: url('/images/customer/wiley-bg-ap.png') bottom right no-repeat;
-	opacity: 0.2;
-}
-
-.episode-wiley2 .landingscreen {
-	background: linear-gradient(to left top, #F7F7F7 0%, #C10008 100%);
-	color: #FFF;
-}
-
-.episode-wiley2 .footer {
-	background: linear-gradient(to left, #F7F7F7 0%, #DC7B7F 100%);
-}
-
-.episode-wiley2 .landingscreen-end {
-	background: url("/images/customer/wiley-bg-ecb.svg");
-	opacity: 0.2;
-	background-size: 70%;
-	background-repeat: no-repeat;
-	right: -20%;
-	bottom: -20%;
-	top: 0;
-	left: 0;
-	background-position: right bottom;
-}
-
-.episode-wiley3 .landingscreen {
-	background: linear-gradient(to right top, #F7F7F7 0%, #3FBAE6 100%);
-	color: #FFF;
-}
-
-.episode-wiley3 .footer {
-	background: linear-gradient(to right, #F7F7F7 0%, #9BD8EE 100%);
-}
-
-.episode-wiley3 .landingscreen-end {
-	background: url('/images/customer/wiley-bg-psych.svg') bottom right no-repeat;
-	opacity: 0.2;
-	background-size: 55%;
+	font-family: 'Source Sans', sans-serif;
+	font-weight: 200;
 }
 
 .episode-wiley a,
@@ -607,7 +546,7 @@
 .episode-wiley h3,
 .episode-wiley h4,
 .episode-wiley .pullquote {
-	font-weight: lighter;
+	font-weight: 200;
 	color: #808080;
 }
 
@@ -622,27 +561,29 @@
 }
 
 .episode-wiley .landingscreen {
-	padding: 3%;
+	padding: 0;
 }
 
-.episode-wiley .landingscreen .introtext {
-	float: none;
-	width: auto;
-}
-
-.episode-wiley .landingscreen p {
-	margin: 0 0 1em 0;
-	color: #000;
-	font-size: 150%;
+.episode-wiley .landingscreen .introtext,
+.episode-wiley .endingscreen .introtext {
+	display: none;
 }
 
 .episode-wiley .landingscreen .videoMagnet {
 	float: none;
-	width: 70%;
+	width: 100%;
 }
 
-.episode-wiley .landingscreen h1 {
-	color: #FFF;
+.episode-wiley .endingscreen .videoMagnet {
+	margin: 0 10%;
+}
+
+.episode-wiley .endingscreen:after {
+	content: "Learn more: Check out the etext and its resources to learn more about the topics discussed in this episode.";
+	display: block;
+	font-size: 120%;
+	font-style: italic;
+	margin: 1em 0;
 }
 
 .episode-wiley .colorInvert {

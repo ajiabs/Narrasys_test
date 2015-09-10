@@ -1,4 +1,10 @@
 
+Switch all uses of wiley2.html or wiley3.html to the wiley1.html template
+Delete wiley2 and wiley3 templates from database
+
+
+
+
 sort out a better way to handle appstate.product and appstate.productloadedas
 (appstate.uiversion?)
 

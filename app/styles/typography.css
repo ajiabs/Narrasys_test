@@ -11,6 +11,8 @@ body {
 a {
 	text-decoration: none;
 }
+
+
 /* TODO see what these were in pre-4.0 */
 
 .title {
@@ -23,6 +25,8 @@ a {
 	font-size: 0.8em;
 	font-weight: 700
 }
+
+
 /*============================
  *
  * typographySans
@@ -40,6 +44,8 @@ a {
 .item.typographySans a {
 	font-family: 'Droid Sans', sans-serif !important;
 }
+
+
 /*============================
  *
  * typographySerif
@@ -57,6 +63,8 @@ a {
 .item.typographySerif a {
 	font-family: 'Droid Serif', serif !important;
 }
+
+
 /*============================
  *
  * typographyBook
@@ -72,6 +80,8 @@ a {
 .item.typographyBook h3 {
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }
+
+
 /*============================
  *
  * typographySwiss
@@ -94,6 +104,8 @@ a {
 .typographySwiss .title {
 	font-weight: 300
 }
+
+
 /*============================
  *
  * customer specific:   typographyEliterate, typographyGw, typographyUsc, typographyPurdue
@@ -104,6 +116,8 @@ a {
 	font-family: Arial, Helvetica, Tahoma, sans-serif;
 	font-size: 15px;
 }
+
+
 /* ----- */
 
 .typographyGw {
@@ -140,6 +154,8 @@ a {
 .typographyGw .item .pullquote:before {
 	font-family: "Cardo", serif;
 }
+
+
 /* ------ */
 
 .typographyUsc {
@@ -157,6 +173,8 @@ a {
 .typographyUsc .item .pullquote:before {
 	line-height: 0.7em;
 }
+
+
 /* ----- */
 
 .typographyPurdue {
@@ -173,7 +191,11 @@ a {
 .typographyPurdue .headerItem {
 	font-family: "Chaparral Pro", "Times New Roman", "Times", serif;
 }
+
+
 /* ----- */
+
+
 /* (Columbia is same as typographyBook: ) */
 
 .typographyColumbia {
@@ -185,13 +207,16 @@ a {
 .typographyColumbia h3 {
 	font-family: 'Trajan Pro', 'Trajan', 'EB Garamond', 'Adobe Garamond', Garamond, serif !important;
 }
+
+
 /* ----- */
+
+
 /* (Columbia Business: ) */
 
 .typographyColumbiabusiness {
 	/* They specify Galaxie Sans, we don't have a license. */
-	
-	font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
+	font-family: 'Source Sans', Arial, Helvetica, sans-serif !important;
 }
 
 .typographyColumbiabusiness .startTime,
@@ -215,6 +240,8 @@ a {
 .typographyColumbiabusiness .pullquote:before {
 	display: none !important;
 }
+
+
 /* (GWSB: ) */
 
 .typographyGwsb {

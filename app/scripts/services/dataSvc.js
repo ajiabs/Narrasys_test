@@ -403,7 +403,7 @@ angular.module('com.inthetelling.story')
 		// auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
 		var getEpisode = function (epId, segmentId) {
 			// The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
-
+			// console.log("dataSvc.getEpisode");
 			var url = (segmentId) ? "/v3/episode_segments/" + segmentId + "/resolve" : "/v3/episodes/" + epId;
 			$http.get(config.apiDataBaseUrl + url)
 				.success(function (ret) {
@@ -413,33 +413,33 @@ angular.module('com.inthetelling.story')
 					}
 					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
-						// console.log('episodeData', episodeData);
 						getEvents(epId, segmentId)
 							.success(function (events) {
-								if (events) {
-									getEventActivityDataForUser(events, "Plugin", epId);
-									angular.forEach(events, function (eventData) {
-										eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-										modelSvc.cache("event", svc.resolveIDs(eventData));
-									});
-									modelSvc.resolveEpisodeEvents(epId);
-									var assetIds = getAssetIdsFromEvents(events);
-									assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
-									assetIds.push(episodeData.master_asset_id);
-									// we need to also get the master asset, while we are at it
-									//batch get assets
-									svc.getAssetsByAssetIds(assetIds, function (assets) {
-										angular.forEach(assets.files, function (asset) {
-											modelSvc.cache("asset", asset);
-										});
-										modelSvc.resolveEpisodeAssets(epId);
-										$rootScope.$emit("dataSvc.getEpisode.done");
-									});
-								} else {
-									//no events... is this an error condition?
-									$rootScope.$emit("dataSvc.getEpisode.done");
-									console.warn("API call to get events resulted in no events");
+								events = events || [];
+								getEventActivityDataForUser(events, "Plugin", epId);
+								angular.forEach(events, function (eventData) {
+									eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
+									modelSvc.cache("event", svc.resolveIDs(eventData));
+								});
+								modelSvc.resolveEpisodeEvents(epId);
+								var assetIds = getAssetIdsFromEvents(events);
+								assetIds = (typeof assetIds !== 'undefined' && assetIds.length > 0) ? assetIds : [];
+								// we need to also get the master asset and poster, while we are at it
+								assetIds.push(episodeData.master_asset_id);
+
+								if (episodeData.poster_frame_id) {
+									console.log("FOUND POSTER FRAME ID");
+									assetIds.push(episodeData.poster_frame_id);
 								}
+
+								//batch get assets
+								svc.getAssetsByAssetIds(assetIds, function (assets) {
+									angular.forEach(assets.files, function (asset) {
+										modelSvc.cache("asset", asset);
+									});
+									modelSvc.resolveEpisodeAssets(epId);
+									$rootScope.$emit("dataSvc.getEpisode.done");
+								});
 							})
 							.error(function () {
 								errorSvc.error({
@@ -973,6 +973,7 @@ angular.module('com.inthetelling.story')
 				"container_id",
 				"customer_id",
 				"master_asset_id",
+				"poster_frame_id",
 				"status",
 				"languages"
 				// "navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
