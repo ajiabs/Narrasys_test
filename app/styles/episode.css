@@ -496,7 +496,7 @@
 }
 
 .episode-kellogg a,
-.episode-kellogg a.fakelink {
+.episode-kellogg .fakeLink {
 	color: #00AC9E;
 }
 

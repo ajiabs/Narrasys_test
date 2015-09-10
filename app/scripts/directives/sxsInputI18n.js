@@ -34,7 +34,7 @@ angular.module('com.inthetelling.story')
 
 					scope.trim = function () {
 						// Let's prevent users from throwing extra whitespace at beginning and end:
-						var txt = scope.field[appState.lang];
+						var txt = scope.field[appState.lang] || '';
 
 						// yay regexp parsing of html my favorite thing to do
 
