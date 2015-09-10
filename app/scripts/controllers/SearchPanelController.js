@@ -111,6 +111,12 @@ angular.module('com.inthetelling.story')
 						$scope.showTypes.other.items.push(item);
 					}
 				}
+
+				// control whether annotations are shown header-style:
+				if (item.producerItemType === 'annotation') {
+					// HACK template url dependency
+					item.showAsHeader = !(item.templateUrl.match(/(transmedia|definition)/));
+				}
 			});
 		};
 
