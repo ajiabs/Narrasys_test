@@ -98,14 +98,17 @@
 
 .showBackgroundOnly .windowBg .item .edit-event {
 	/* TOP TOOLBAR */
-	
 	margin-top: 55px;
 }
 
 .showForegroundOnly .bgLayer {
 	display: none;
 }
+
+
 /* ------------------------------------------- */
+
+
 /* Sidebars and margins.
 
 .sidebar items float to one margin or the other when sidebars are allowed
@@ -134,6 +137,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .hasRightSidebar .sidebarR .displayTime {
 	display: none
 }
+
+
 /* has only one sidebar: */
 
 .allowSidebars.hasLeftSidebar .burstL,
@@ -147,6 +152,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	clear: right;
 	margin-right: -43%;
 }
+
+
 /* - */
 
 .allowSidebars.hasLeftSidebar .sidebarL {
@@ -162,6 +169,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	margin-right: -43%;
 	width: 43%;
 }
+
+
 /* - has both sidebars: */
 
 .allowSidebars.hasLeftSidebar.hasRightSidebar .burstL,
@@ -175,6 +184,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	clear: right;
 	margin-right: -75%;
 }
+
+
 /* - */
 
 .allowSidebars.hasLeftSidebar.hasRightSidebar .sidebarL {
@@ -190,6 +201,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	margin-right: -70% !important;
 	width: 70% !important;
 }
+
+
 /* ------------------------------------------- */
 
 .watchMode {
@@ -197,7 +210,6 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	background-color: #000;
 	top: 45px;
 	/* VIEWPORT HEIGHT */
-	
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -220,6 +232,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .watchModeCaptions.padForBottomToolbar {
 	bottom: 80px;
 }
+
+
 /* TODO this is a bit of a hack.  Need to restrict ng-animate to .animate class items */
 
 .watchModeCaption.ng-enter,
@@ -251,6 +265,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		font-size: 70% !important;
 	}
 }
+
+
 /* ------------------------------------------- */
 
 .reviewMode .videoMagnet {
@@ -262,7 +278,6 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 
 .reviewMode .videoPadding {
 	/* double the width of videoMagnet, because it's in a column half the size */
-	
 	width: 60%;
 }
 
@@ -314,7 +329,6 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 
 @media screen and (min-width: 1000px) {
 	/* three-col layout on wide screens */
-	
 	.reviewMode .videoPadding {
 		display: none;
 	}
@@ -332,7 +346,6 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 
 @media screen and (max-width: 480px) {
 	/* Smallscreen layout */
-	
 	.reviewMode .scene {
 		display: auto;
 	}
@@ -343,7 +356,6 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	.reviewMode .mainPane {
 		width:100%;
 	}*/
-	
 	.reviewMode .videoMagnet {
 		width: 130px;
 	}
@@ -368,7 +380,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	font-size: 1.4em;
 }
 
-.searchMode .annotation {
+.searchMode .showAsHeader {
 	font-size: 1.3em;
 	opacity: 0.5;
 }
@@ -436,6 +448,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		padding: 1em;
 	}
 }
+
+
 /* -------------------------------------------  
    Landing screen 
 */
@@ -488,6 +502,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	margin-left: 1em;
 	font-size: 0.95em;
 }
+
+
 /* ------------------------------------------- */
 
 .scene.cornerV {
@@ -505,6 +521,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .scene.cornerV.videoRight {
 	flex-direction: row-reverse;
 }
+
+
 /* ------------------------------------------- */
 
 .scene.cornerH {}
@@ -535,6 +553,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .scene.cornerH.videoRight .row {
 	flex-direction: row-reverse;
 }
+
+
 /* ------------------------------------------- */
 
 .scene.twocol {
@@ -570,6 +590,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .scene.twocol.videoRight .col1 .matchVideoHeight {
 	display: none;
 }
+
+
 /* ------------------------------------------- 
 		1col scene
 */
@@ -617,6 +639,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		margin: 0 5% 0 50%;
 	}
 }
+
+
 /* ------------------------------------------- */
 
 .scene.centered .col {
@@ -628,6 +652,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		padding: 7% 25% 0 25%;
 	}
 }
+
+
 /* ------------------------------------------- */
 
 .scene.pip .mainPane {
@@ -650,7 +676,6 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 
 .scene.pip .mainPane .content .item:first-child {
 	/* override extra padding for first item */
-	
 	padding-top: 0.7em;
 }
 
