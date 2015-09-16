@@ -92,7 +92,7 @@ angular.module('com.inthetelling.story')
 			});
 
 			$scope.babysitYoutubeVideo = function () {
-				var numberOfStalls = 0;
+				numberOfStalls = 0;
 
 				$scope.babysitter = $interval(function () {
 					// For now copping out: assume that youtube and the player will inevitably get out of synch sometimes,
@@ -216,7 +216,7 @@ angular.module('com.inthetelling.story')
 			};
 
 			$scope.babysitHTML5Video = function () {
-				var numberOfStalls = 0;
+				numberOfStalls = 0;
 				// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
 				$scope.babysitter = $interval(function () {
 					// console.log($scope.videoNode.currentTime, appState.timelineState);
