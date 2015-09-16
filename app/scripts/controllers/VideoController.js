@@ -81,6 +81,8 @@ angular.module('com.inthetelling.story')
 			}, function (isReady) {
 				if (isReady) {
 					unwatch();
+					$scope.YTPlayer.setPlaybackQuality("medium"); // auto is causing stalls...
+
 					$scope.getBufferPercent = function () {
 						appState.bufferedPercent = $scope.YTPlayer.getVideoLoadedFraction() * 100;
 						return appState.bufferedPercent;
@@ -90,6 +92,8 @@ angular.module('com.inthetelling.story')
 			});
 
 			$scope.babysitYoutubeVideo = function () {
+				var numberOfStalls = 0;
+
 				$scope.babysitter = $interval(function () {
 					// For now copping out: assume that youtube and the player will inevitably get out of synch sometimes,
 					// and deal with it.  playerState (the video) is the correct one in all cases.
@@ -99,12 +103,20 @@ angular.module('com.inthetelling.story')
 					if (appState.timelineState === "paused" && $scope.playerState === "playing") {
 						console.warn("Video was playing while timeline was paused.");
 						$scope.pause();
-					}
+					} else
 					if (appState.timelineState === "playing" && $scope.playerState !== "playing") {
 						console.warn("Timeline was playing while video was not.");
+						if (numberOfStalls++ === 2) {
+							console.log("Too many stalls: reducing playback quality.");
+							$scope.YTPlayer.setPlaybackQuality("small"); // auto is causing stalls...
+						}
 						$scope.YTPlayer.playVideo();
-					}
+					} else
 					if (appState.timelineState === "buffering" && $scope.playerState === "buffering") {
+						if (numberOfStalls++ === 2) {
+							console.log("Too many stalls: reducing playback quality.");
+							$scope.YTPlayer.setPlaybackQuality("small"); // auto is causing stalls...
+						}
 						console.warn("Timeline and video were both waiting for the other to go.");
 						timelineSvc.unstall();
 					}
@@ -204,7 +216,7 @@ angular.module('com.inthetelling.story')
 			};
 
 			$scope.babysitHTML5Video = function () {
-				numberOfStalls = 0;
+				var numberOfStalls = 0;
 				// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
 				$scope.babysitter = $interval(function () {
 					// console.log($scope.videoNode.currentTime, appState.timelineState);
