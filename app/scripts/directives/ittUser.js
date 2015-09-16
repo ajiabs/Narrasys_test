@@ -13,6 +13,7 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element, attrs) {
 
 				scope.inPlayer = attrs.inPlayer;
+				scope.appState = appState;
 
 				scope.loading = true;
 				scope.logout = authSvc.logout;
