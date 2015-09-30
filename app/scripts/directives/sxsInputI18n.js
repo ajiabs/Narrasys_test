@@ -1,9 +1,5 @@
 'use strict';
-/*
 
-TODO  add ta-default-wrap="span" attribute to the text-angular node, then change scope.trim to work with that instead.
-
-*/
 angular.module('com.inthetelling.story')
 	.directive('sxsInputI18n', function (appState, $timeout, textAngularManager) {
 		return {
@@ -37,23 +33,29 @@ angular.module('com.inthetelling.story')
 						var txt = scope.field[appState.lang] || '';
 
 						// yay regexp parsing of html my favorite thing to do
-
 						txt = txt.replace(/<br\/>/g, '<br>'); // no xml-style tags
 
-						// strip any <foo>(<br>*)</foo> from beginning and end:
-						txt = txt.replace(/^\s*<([\w\d]*)>(<br>)*<\/\1>/, '');
-						txt = txt.replace(/<([\w\d]*)>(<br>)*<\/\1>\s*$/, '');
+						// we're using ta-default-wrap="span"; without that tA would wrap single-line elements in <p><br>...</p>
+						// span still puts in too much extraneous html, so we do a bit of cleanup.
+						// This could obvs be made more efficient.
+						var startSpan = /^(\s|<span>)/;
+						var endSpan = /(\s|<\/span>)*$/;
+						if (txt.match(startSpan)) {
+							while (txt.match(startSpan)) {
+								txt = txt.replace(startSpan, '');
+								txt = txt.replace(endSpan, '');
+							}
+						}
 
-						// strip all <p> and <br> from beginning, then replace the initial <p> if necessary
-						txt = txt.replace(/^(\s|<(\/?p|br)>)*/, '');
-						txt = txt.replace(/^([^<]*?)<\/p>/, '<p>$1</p>');
-
-						// and strip all <p> and <br> from end, then replace the closing </p> if necessary
-						txt = txt.replace(/(\s|<(\/?p|br)>)*$/, '');
-						txt = txt.replace(/<p>([^<]*)$/, '<p>$1</p>');
+						// This was for the default <p><br>...</p> behavior:
+						// var numberOfPs = txt.match(/<p>/);
+						// console.log("Matches:", numberOfPs);
+						// if (numberOfPs && numberOfPs.length === 1) {
+						// 	txt = txt.replace(/^(\s|<(\/?p|br)>)*/, '');
+						// 	txt = txt.replace(/(\s|<(\/?p|br)>)*$/, '');
+						// }
 
 						scope.field[appState.lang] = txt;
-
 					};
 
 					scope.sanitizePastedHtml = function (pasted) {
