@@ -37,34 +37,9 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.questionType = scope.plugin.questiontype;
-				scope.chartOptions = {
-					series: {
-						pie: {
-							show: true,
-							label: {
-								show: true,
-								background: {
-									opacity: 0.7
-								}
-							}
-						}
-					},
-					legend: {
-						show: false
-					},
-					grid: {
-						hoverable: true
-					},
-					tooltip: true,
-					tooltipOpts: {
-						content: "%y.0, %s", // show percentages, rounding to 2 decimal places
-						shifts: {
-							x: 20,
-							y: 0
-						},
-						defaultTheme: false
-					}
-				};
+
+				// NOT YET SUPPORTED IN ittFlotChart:
+				scope.chartOptions = {}; // moving default chartOptions into ittFlotChart; use this to override.
 
 				var formatAnswersForFlotPieChart = function (grouped) {
 					// console.log("Formatting ", grouped, " for ", scope.plugin);

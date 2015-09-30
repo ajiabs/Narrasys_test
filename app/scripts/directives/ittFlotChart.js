@@ -14,25 +14,74 @@ angular.module('com.inthetelling.story')
 				options: '@',
 				data: '@'
 			},
-			template: ' <div class="chartContainer" id="chartContainer" aria-label="{{chartLabel}}"></div>',
+			template: '<div class="flotContainer"><div class="chartContainer" id="chartContainer" aria-label="{{chartLabel}}"></div><div class="legendContainer" id="legendContainer"></div></div>',
 			link: function (scope, element, attrs) {
-				var chartContainer;
 
 				var draw = function (el, d, o) {
-					d = JSON.parse(d);
-					o = JSON.parse(o);
 					scope.chartLabel = createLabel(d);
-					o.series.pie.label.formatter = function (label, series) {
-						return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.percent) + '%' + ' (' + series.data[0][1] + ')</div>';
-					};
 					$.plot(el, d, o);
 					el.show();
 				};
 
-				chartContainer = $("#chartContainer");
-				var chartId = "chartContainer" + uniqueId++;
-				chartContainer.attr("id", chartId);
+				var chartContainer = $("#chartContainer");
+				chartContainer.attr("id", "chartContainer" + uniqueId);
+				var legendContainer = $("#legendContainer");
+				legendContainer.attr("id", "legendContainer" + uniqueId++);
 
+				var legendFormatterFn = function (label, series) {
+					return Math.round(series.percent) + '% (' + series.data[0][1] + '): ' + label;
+				};
+				var labelFormatterFn = function (label, series) {
+					return '<div style="padding: 3px; font-size: 80%">' + Math.round(series.percent) + '%</div>';
+				};
+
+				// defaults
+				scope.chartOptions = {
+					series: {
+						pie: {
+							show: true,
+							label: {
+								show: true,
+								background: {
+									opacity: 0.7
+								},
+								formatter: labelFormatterFn
+							}
+						}
+					},
+					legend: {
+						show: true,
+						labelFormatter: legendFormatterFn,
+						//labelBoxBorderColor: color
+						noColumns: 1,
+						position: "sw", // or "nw" or "ne" or "sw"   
+						margin: 0, //number of pixels or [x margin, y margin]
+						backgroundColor: null, // or color
+						backgroundOpacity: 1, // number between 0 and 1
+						sorted: 'descending', // null/false, true, "ascending", "descending", "reverse", or a comparator
+						container: legendContainer // or jQuery object/DOM element/jQuery expression        
+					},
+
+					grid: {
+						hoverable: true
+					},
+					tooltip: true,
+					tooltipOpts: {
+						content: "%y.0, %s", // show percentages, rounding to 2 decimal places
+						shifts: {
+							x: 20,
+							y: 0
+						},
+						defaultTheme: false
+					}
+				};
+
+				//  TODO merge scope.options into chartOptions
+				// if (scope.options) {
+				// 	 var newOptions = JSON.parse(scope.options);
+				// }
+
+				// watch width for both init and for resize:
 				scope.$watch(function () {
 					return chartContainer.width();
 				}, function (w) {
@@ -40,16 +89,16 @@ angular.module('com.inthetelling.story')
 						chartContainer.css({
 							height: w
 						});
-
-						draw(chartContainer, scope.data, scope.options);
+						draw(chartContainer, JSON.parse(scope.data), scope.chartOptions);
 
 						// Now that we have a height we can safely observe changes in the data:
-						attrs.$observe('data', function (value) {
-							scope.data = value;
-							draw(chartContainer, scope.data, scope.options);
+						scope.observeData = attrs.$observe('data', function (value) {
+							scope.data = JSON.parse(value);
+							draw(chartContainer, scope.data, scope.chartOptions);
 						});
+						scope.$on('$destroy', scope.observeData);
 
-						// Options never change (for now) so disabling the watcher (for now)
+						// Options never change (for now) so disabling the watcher
 						// attrs.$observe('options', function (value) {
 						// 	scope.options = value;
 						// 	draw(chartContainer, scope.data, scope.options);
