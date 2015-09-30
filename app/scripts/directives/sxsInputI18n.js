@@ -30,31 +30,21 @@ angular.module('com.inthetelling.story')
 
 					scope.trim = function () {
 						// Let's prevent users from throwing extra whitespace at beginning and end:
-						var txt = scope.field[appState.lang] || '';
+						var txt = scope.field[appState.lang];
+						if (!txt) {
+							return;
+						}
+						console.log("BEFORE", txt);
 
 						// yay regexp parsing of html my favorite thing to do
 						txt = txt.replace(/<br\/>/g, '<br>'); // no xml-style tags
 
-						// we're using ta-default-wrap="span"; without that tA would wrap single-line elements in <p><br>...</p>
-						// span still puts in too much extraneous html, so we do a bit of cleanup.
-						// This could obvs be made more efficient.
-						var startSpan = /^(\s|<span>)/;
-						var endSpan = /(\s|<\/span>)*$/;
-						if (txt.match(startSpan)) {
-							while (txt.match(startSpan)) {
-								txt = txt.replace(startSpan, '');
-								txt = txt.replace(endSpan, '');
-							}
-						}
+						// Replacing lots of complicated regexps with this brute force (we don't want user-input spans or divs anyway.)
+						txt = txt.replace(/<div>/g, '<br>');
+						txt = txt.replace(/<\/?(span|div)>/g, '');
+						txt = txt.replace(/(<br>)*$/, ''); // kill extra linebreaks at end of entered text
 
-						// This was for the default <p><br>...</p> behavior:
-						// var numberOfPs = txt.match(/<p>/);
-						// console.log("Matches:", numberOfPs);
-						// if (numberOfPs && numberOfPs.length === 1) {
-						// 	txt = txt.replace(/^(\s|<(\/?p|br)>)*/, '');
-						// 	txt = txt.replace(/(\s|<(\/?p|br)>)*$/, '');
-						// }
-
+						console.log("AFTER", txt);
 						scope.field[appState.lang] = txt;
 					};
 
