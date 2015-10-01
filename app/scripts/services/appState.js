@@ -23,7 +23,9 @@ angular.module('com.inthetelling.story')
 			svc.isFramed = (window.parent != window); // are we inside an iframe?  Don't use !== because IE8 gets it wrong
 			/* jshint +W116 */
 
+			// sniff sniff
 			svc.isTouchDevice = (navigator.platform.match(/iPad|iPod|iPhone/) || navigator.userAgent.match(/Android/));
+			svc.isIPhone = (navigator.platform.match(/iPod|iPhone/)); // iPhone has weird video handling, see  timelineSvc
 
 			svc.windowWidth = 0;
 			svc.windowHeight = 0;

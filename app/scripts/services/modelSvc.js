@@ -1030,34 +1030,22 @@ angular.module('com.inthetelling.story')
 				});
 			}
 
-			// HACK some platform detection here.
-			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-			// iOS youtube is ready! mostly.  iPhones aren't pausable during playback. iPad is working though
-			if (appState.isTouchDevice) {
-				delete videoObject.youtube;
-			}
-
 			if (config.youtube.disabled) {
 				delete videoObject.youtube;
 			}
+
+			// Only Safari supports m3u8 at the moment
+			var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 			if (!isSafari) {
 				delete videoObject.m3u8;
 			}
 
-			// HACK encoding error at youtube(?)  Safari (and only Safari) fails to play this episode properly unless forced to a lower bitrate
-			if (isSafari && videoObject.youtube && videoObject.youtube[0] && videoObject.youtube[0].match(/cJPf7Kdq6ag/)) {
-				// delete videoObject.youtube;
-				videoObject.youtube[0] = videoObject.youtube[0] + '&vq=small';
-			}
-
 			// Chrome won't allow the same video to play in two windows, which interferes with our 'escape the iframe' button.
 			// Therefore we trick Chrome into thinking it is not the same video:
+			var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 			if (isChrome) {
 				var tDelimit;
-				var tParam = "t=" + new Date()
-					.getTime();
+				var tParam = "t=" + new Date().getTime();
 				angular.forEach(["mp4", "webm"], function (ext) {
 					if (videoObject[ext].length > 0) {
 						for (var i = 0; i < videoObject[ext].length; i++) {
@@ -1067,6 +1055,7 @@ angular.module('com.inthetelling.story')
 					}
 				});
 			}
+
 			videoAsset.urls = videoObject;
 
 			// We need to know if the video has been transcoded or not in the template,
