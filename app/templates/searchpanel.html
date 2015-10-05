@@ -12,9 +12,11 @@
 				<div ng-repeat="scene in episode.scenes">
 					<h2 class="searchCategory" ng-if="scene.start_time > 0 && ([scene.display_title] | filter:appState.searchText).length" ng-bind-html="scene.display_title  | highlightSubstring: appState.searchText"></h2>
 					<span ng-if="appState.productLoadedAs=='player'">
+						<!-- old style search panel -->
 						<div ng-repeat="item in sceneItems=(scene.items | orderBy:'wtfchromesort')" ng-show="([item.searchableText] | filter:appState.searchText).length" class="item animate" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
 					</span>
 					<span ng-if="appState.productLoadedAs!='player'">
+						<!-- new style search+review mode -->
 						<div ng-repeat="item in sceneItems=(scene.items | orderBy:'wtfchromesort')" ng-show="([item.searchableText] | filter:appState.searchText).length" class="item animate" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
 					</span>
 				</div>

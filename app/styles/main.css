@@ -82,6 +82,12 @@ a:focus,
 	text-decoration: underline;
 }
 
+a.button:hover,
+a.button:focus {
+	text-decoration: none;
+	text-shadow: 0 0 5px #FFC;
+}
+
 h1,
 h2,
 h3,

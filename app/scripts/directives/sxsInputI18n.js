@@ -1,9 +1,5 @@
 'use strict';
-/*
 
-TODO  add ta-default-wrap="span" attribute to the text-angular node, then change scope.trim to work with that instead.
-
-*/
 angular.module('com.inthetelling.story')
 	.directive('sxsInputI18n', function (appState, $timeout, textAngularManager) {
 		return {
@@ -34,26 +30,22 @@ angular.module('com.inthetelling.story')
 
 					scope.trim = function () {
 						// Let's prevent users from throwing extra whitespace at beginning and end:
-						var txt = scope.field[appState.lang] || '';
+						var txt = scope.field[appState.lang];
+						if (!txt) {
+							return;
+						}
+						console.log("BEFORE", txt);
 
 						// yay regexp parsing of html my favorite thing to do
-
 						txt = txt.replace(/<br\/>/g, '<br>'); // no xml-style tags
 
-						// strip any <foo>(<br>*)</foo> from beginning and end:
-						txt = txt.replace(/^\s*<([\w\d]*)>(<br>)*<\/\1>/, '');
-						txt = txt.replace(/<([\w\d]*)>(<br>)*<\/\1>\s*$/, '');
+						// Replacing lots of complicated regexps with this brute force (we don't want user-input spans or divs anyway.)
+						txt = txt.replace(/<div>/g, '<br>');
+						txt = txt.replace(/<\/?(span|div)>/g, '');
+						txt = txt.replace(/(<br>)*$/, ''); // kill extra linebreaks at end of entered text
 
-						// strip all <p> and <br> from beginning, then replace the initial <p> if necessary
-						txt = txt.replace(/^(\s|<(\/?p|br)>)*/, '');
-						txt = txt.replace(/^([^<]*?)<\/p>/, '<p>$1</p>');
-
-						// and strip all <p> and <br> from end, then replace the closing </p> if necessary
-						txt = txt.replace(/(\s|<(\/?p|br)>)*$/, '');
-						txt = txt.replace(/<p>([^<]*)$/, '<p>$1</p>');
-
+						console.log("AFTER", txt);
 						scope.field[appState.lang] = txt;
-
 					};
 
 					scope.sanitizePastedHtml = function (pasted) {

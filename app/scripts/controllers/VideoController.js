@@ -6,6 +6,10 @@
 // TODO: counting stalls works ok-ish, but look into watching buffer % directly instead 
 // so we can preemptively switch streams and not have to do all the intentionalStall nonsense
 
+// NOTE iPhone has a separate video controller which doesn't send all the user events to the web side.
+// This screws with all our stall watchers and babysitters since we can't distinguish between intententional pauses and unintended stalls.
+// babysitters and stalls are disabled on phone therefore.
+
 angular.module('com.inthetelling.story')
 	.controller('VideoController', function ($q, $scope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc) {
 		// console.log("videoController instantiate");
@@ -94,6 +98,10 @@ angular.module('com.inthetelling.story')
 			$scope.babysitYoutubeVideo = function () {
 				numberOfStalls = 0;
 
+				if (appState.isIPhone) {
+					return;
+				}
+
 				$scope.babysitter = $interval(function () {
 					// For now copping out: assume that youtube and the player will inevitably get out of synch sometimes,
 					// and deal with it.  playerState (the video) is the correct one in all cases.
@@ -135,6 +143,9 @@ angular.module('com.inthetelling.story')
 			$scope.stall = function () {
 				// notify timelineSvc if the video stalls during playback
 				if (appState.timelineState !== 'playing') {
+					return;
+				}
+				if (appState.isIPhone) {
 					return;
 				}
 				console.warn("Video stalled");
@@ -217,6 +228,9 @@ angular.module('com.inthetelling.story')
 
 			$scope.babysitHTML5Video = function () {
 				numberOfStalls = 0;
+				if (appState.isIPhone) {
+					return;
+				}
 				// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
 				$scope.babysitter = $interval(function () {
 					// console.log($scope.videoNode.currentTime, appState.timelineState);

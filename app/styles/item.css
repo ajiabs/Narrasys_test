@@ -595,9 +595,34 @@ Inline images (TODO show these only when image is larger than available space) *
 	margin-right: 0.5em;
 }
 
+.item .flotContainer {
+	position: relative;
+}
+
 .item .chartContainer {
+	width: 30%;
 	max-width: 400px;
+}
+
+.item .legendContainer {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	left: 31%;
+}
+
+.item .legendContainer td {
+	padding: 2px;
+	vertical-align: top;
+}
+
+.isNarrow .item .chartContainer {
+	width: auto;
 	margin: auto;
+}
+
+.isNarrow .item .legendContainer {
+	position: static;
 }
 
 

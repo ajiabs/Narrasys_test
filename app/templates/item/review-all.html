@@ -1,5 +1,9 @@
-<span>
-	<!-- strictly speaking all the review mode templates could be one, but it'd be a complex template -->
-	<div ng-if="item._type == 'Annotation'" ng-include="'templates/item/review-annotation.html'"></div>
-	<div ng-if="item._type != 'Annotation'" ng-include="'templates/item/review-transmedia.html'"></div>
+<!-- hack, to be removed when we move away from review mode -->
+<span ng-switch="(item._type == 'Annotation' && item.templateUrl != 'templates/item/text-transmedia.html' && item.templateUrl != 'templates/item/text-definition.html')">
+	<span ng-switch-when="true">
+		<div ng-include="'templates/item/review-annotation.html'"></div>
+	</span>
+	<span ng-switch-default>
+		<div ng-include="'templates/item/review-transmedia.html'"></div>
+	</span>
 </span>
