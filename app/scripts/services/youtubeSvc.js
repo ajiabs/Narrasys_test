@@ -42,19 +42,23 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.embedParams = function () {
+			// kept separate from createEmbedLinkFromYoutubeId for convenience in unit tests
 			return "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3";
 		};
 
-		svc.createEmbedLinkFromYoutubeId = function (ytid) {
-			return (ytid) ? "//www.youtube.com/embed/" + ytid + svc.embedParams() : false;
+		svc.createEmbedLinkFromYoutubeId = function (ytid, suppressParams) {
+			if (!ytid) {
+				return false;
+			}
+			return "//www.youtube.com/embed/" + ytid + (suppressParams ? "" : svc.embedParams());
 		};
 
-		svc.embeddableYoutubeUrl = function (origUrl) {
+		svc.embeddableYoutubeUrl = function (origUrl, suppressParams) {
 			if (!origUrl) {
 				return false;
 			}
 			var ytid = svc.extractYoutubeId(origUrl);
-			return svc.createEmbedLinkFromYoutubeId(ytid);
+			return svc.createEmbedLinkFromYoutubeId(ytid, suppressParams);
 		};
 
 		var parseRidiculousDurationFormat = function (input) {

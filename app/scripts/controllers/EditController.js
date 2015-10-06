@@ -19,7 +19,7 @@ angular.module('com.inthetelling.story')
 
 				// convert youtube links to embed format
 				if (youtubeSvc.extractYoutubeId($scope.item.url)) {
-					$scope.item.url = youtubeSvc.embeddableYoutubeUrl($scope.item.url);
+					$scope.item.url = youtubeSvc.embeddableYoutubeUrl($scope.item.url, true);
 				}
 
 				// add param to episode links if necessary
