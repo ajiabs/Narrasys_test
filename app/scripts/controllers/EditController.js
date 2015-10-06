@@ -1,8 +1,33 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
+
+		$scope.validateItemUrl = function () {
+			$timeout(function () { // ng-blur triggers before 'ng-model-options=update-on:blur'... wait for the model to update
+				console.log("Checking Item link: ", $scope.item.url);
+
+				/* TODO have server side check for x-frame-options header, and for if the link exists at all (See TS-772) */
+
+				// handle missing protocol
+				if ($scope.item.url.length > 0 && !($scope.item.url.match(/^(\/\/|http)/))) {
+					$scope.item.url = "//" + $scope.item.url;
+				}
+
+				// No need to check http vs https, modelSvc sets item.noEmbed for us.
+
+				// convert youtube links to embed format
+				if (youtubeSvc.extractYoutubeId($scope.item.url)) {
+					$scope.item.url = youtubeSvc.embeddableYoutubeUrl($scope.item.url);
+				}
+
+				// add param to episode links if necessary
+				if ($scope.item.url.match(/inthetelling.com\/#/) && $scope.item.url.indexOf('?' === -1)) {
+					$scope.item.url = $scope.item.url + "?embed=1";
+				}
+			});
+		};
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
 		// Poor encapsulation of the upload controls. Sorry about that.

@@ -8,14 +8,16 @@
 	</div>
 
 	<a ng-if="item.noEmbed" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.title.en ||'(Untitled)'"></a>
-	<a ng-if="!item.noEmbed" ng-click="toggleDetailView()" ng-bind-html="item.title.en ||'(Untitled)'"></a>
+	<h3 ng-if="!item.noEmbed" ng-bind-html="item.title.en ||'(Untitled)'"></h3>
 	<div class="text" ng-bind-html="item.description.en"></div>
-	<div class="itemDetail" ng-if="item.showInlineDetail">
-		<a ng-if="!item.noExternalLink" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
+	<div class="itemDetail" ng-if="item.url && !item.noEmbed && item.url != 'https://'">
+		<div class="modalmenu" ng-if="!item.noExternalLink">
+			<a ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
+		</div>
 		<div class="iframeContainer">
 			<div ng-include="'templates/loading.html'"></div>
 			<!-- <iframe style="display:none;" onload="console.log('load',this.src);if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
-			<iframe ng-src="{{item.url}}"></iframe>
+			<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
 		</div>
 	</div>
 	<div class="clear"></div>
