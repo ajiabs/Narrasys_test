@@ -5,7 +5,7 @@
 	<div ng-if="item._type == 'Link'" class="iframeContainer">
 		<div ng-include="'templates/loading.html'"></div>
 		<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
-		<iframe ng-src="{{item.url}}"></iframe>
+		<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
 
 	</div>
 	<div class="modalimage" ng-if="item._type == 'Upload'">
