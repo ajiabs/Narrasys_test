@@ -42,7 +42,8 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.embedParams = function () {
-			// kept separate from createEmbedLinkFromYoutubeId for convenience in unit tests
+			// kept separate from createEmbedLinkFromYoutubeId for convenience in unit tests.
+			// TODO move these into videoController, as playerVar params, instead of embedding them in the url.  (Will need to init youtube as a div instead of as an iframe)
 			return "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3";
 		};
 

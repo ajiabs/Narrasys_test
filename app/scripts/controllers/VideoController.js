@@ -76,7 +76,18 @@ angular.module('com.inthetelling.story')
 								$scope.stall();
 							}
 						}
+					},
+
+					onPlaybackQualityChange: function (x) {
+						console.log("Playback quality changed: ", x.data);
+						// TS-810 HACK HACKITY HACK
+						// A significant number of our videos apparently have bad 360p encodes which won't play in Safari.
+						// It's a youtube bug, but we can hack our way around it:
+						if (x.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+							$scope.YTPlayer.setPlaybackQuality("large");
+						}
 					}
+
 				}
 			});
 			// but we still need to wait for youtube to Do More Stuff, apparently:
@@ -85,8 +96,6 @@ angular.module('com.inthetelling.story')
 			}, function (isReady) {
 				if (isReady) {
 					unwatch();
-					$scope.YTPlayer.setPlaybackQuality("medium"); // auto is causing stalls...
-
 					$scope.getBufferPercent = function () {
 						appState.bufferedPercent = $scope.YTPlayer.getVideoLoadedFraction() * 100;
 						return appState.bufferedPercent;
@@ -94,51 +103,6 @@ angular.module('com.inthetelling.story')
 					timelineSvc.registerVideo($scope);
 				}
 			});
-
-			$scope.babysitYoutubeVideo = function () {
-				numberOfStalls = 0;
-
-				if (appState.isIPhone) {
-					return;
-				}
-
-				$scope.babysitter = $interval(function () {
-					// For now copping out: assume that youtube and the player will inevitably get out of synch sometimes,
-					// and deal with it.  playerState (the video) is the correct one in all cases.
-
-					// console.log("Timeline: ", appState.timelineState, "Video:", $scope.playerState);
-
-					if (appState.timelineState === "paused" && $scope.playerState === "playing") {
-						console.warn("Video was playing while timeline was paused.");
-						$scope.pause();
-					} else
-					if (appState.timelineState === "playing" && $scope.playerState !== "playing") {
-						console.warn("Timeline was playing while video was not.");
-						if (numberOfStalls++ === 2) {
-							console.log("Too many stalls: reducing playback quality.");
-							$scope.YTPlayer.setPlaybackQuality("small"); // auto is causing stalls...
-						}
-						$scope.YTPlayer.playVideo();
-					} else
-					if (appState.timelineState === "buffering" && $scope.playerState === "buffering") {
-						if (numberOfStalls++ === 2) {
-							console.log("Too many stalls: reducing playback quality.");
-							$scope.YTPlayer.setPlaybackQuality("small"); // auto is causing stalls...
-						}
-						console.warn("Timeline and video were both waiting for the other to go.");
-						timelineSvc.unstall();
-					}
-
-					// No good: execution time is more than enough to throw this off, and it interferes with intentuonal seeks
-					// if (appState.timelineState === "playing" && $scope.playerState === "playing") {
-					// 	if (Math.abs(appState.time - $scope.YTPlayer.getCurrentTime()) > 0.5) {
-					// 		console.warn("More than 0.5s out of sync");
-					// 		timelineSvc.resync();
-					// 	}
-					// }
-				}, 333);
-			};
-			$scope.babysitYoutubeVideo();
 
 			$scope.stall = function () {
 				// notify timelineSvc if the video stalls during playback
