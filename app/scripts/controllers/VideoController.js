@@ -15,9 +15,13 @@ angular.module('com.inthetelling.story')
 		// console.log("videoController instantiate");
 
 		// init youtube
-		var apiTag = document.createElement('script');
-		apiTag.src = "//www.youtube.com/iframe_api";
-		angular.element($document[0].head).append(apiTag);
+		//if (angular.element(document.head).find('script[src="//www.youtube.com/iframe_api"]').length === 0) {
+		if (!appState.youtubeIsReady) {
+			var apiTag = document.createElement('script');
+			apiTag.src = "//www.youtube.com/iframe_api";
+			angular.element($document[0].head).append(apiTag);
+		}
+
 		$window.onYouTubeIframeAPIReady = function () {
 			appState.youtubeIsReady = true;
 			// console.log("Youtube Service is ready");
