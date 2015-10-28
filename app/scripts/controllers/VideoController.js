@@ -15,8 +15,7 @@ angular.module('com.inthetelling.story')
 		// console.log("videoController instantiate");
 
 		// init youtube
-		//if (angular.element(document.head).find('script[src="//www.youtube.com/iframe_api"]').length === 0) {
-		if (!appState.youtubeIsReady) {
+		if (angular.element(document.head).find('script[src="//www.youtube.com/iframe_api"]').length === 0) {
 			var apiTag = document.createElement('script');
 			apiTag.src = "//www.youtube.com/iframe_api";
 			angular.element($document[0].head).append(apiTag);
