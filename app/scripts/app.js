@@ -119,11 +119,13 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
 })
 
-.run(function ($rootScope, errorSvc, $window, $timeout) {
+.run(function ($rootScope, $window, $timeout, errorSvc, appState) {
 
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
 		// Temporary brute force HACK for TS-813 (master asset isn't always unloading from memory on route changes)
-		if (next !== current) {
+		// Don't do when framed, as it breaks LTI
+		if (next !== current && !appState.isFramed) {
+			console.log("RELOAD: ", next);
 			$timeout(function () {
 				console.log("RESET");
 				$window.location.reload();
