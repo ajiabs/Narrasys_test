@@ -368,7 +368,7 @@ angular.module('com.inthetelling.story')
 						.off('touchend.timeline');
 					timelineContainer.off('mouseup.timeline');
 					timelineContainer.off('touchend.timeline');
-					scope.$apply(function () {
+					$timeout(function () {
 						scope.isSeeking = false;
 						scope.seekHandleVisible = false;
 					});

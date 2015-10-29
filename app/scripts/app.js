@@ -5,27 +5,60 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 
 // Configure routing
 .config(function ($routeProvider) {
+
+	var forceVideoDisposal = function ($q, $timeout, $rootScope) {
+		// Workaround for a probable race condition TS-813 -- videoController $destroy isn't always killing the video object on its own during route changes.)
+		// If we manually trigger that $destroy before attempting the route change, the issue seems to go away.
+		// There's certainly a more DRY way to include forceVideoDisposal in every route's resolve, but eh
+		var defer = $q.defer();
+		$rootScope.$emit('video.forceDisposal');
+		// wait a tick for videoController to handle that, then continue the route change:
+		$timeout(function () {
+			defer.resolve();
+		});
+		return defer.promise;
+	};
+
 	$routeProvider
 		.when('/', {
 			title: "Telling STORY",
-			templateUrl: 'templates/root.html'
+			templateUrl: 'templates/root.html',
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
 		})
 		.when('/auth', {
 			templateUrl: 'templates/auth.html',
-			reloadOnSearch: false
+			reloadOnSearch: false,
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
 		})
 		.when('/user', {
-			template: '<div class="standaloneAncillaryPage"><div itt-user></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-user></div></div>',
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
 		})
 		.when('/stories', {
 			title: "Existing narratives",
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list></div></div>',
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
 		})
 		.when('/story', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>',
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
 		})
 		.when('/story/:narrativePath', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>',
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
+
 		})
 		.when('/story/:narrativePath/:timelinePath', {
 			template: '<div itt-narrative-timeline></div>',
@@ -33,18 +66,17 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				product: function (appState) {
 					appState.product = "player";
 					appState.productLoadedAs = "narrative";
-				}
+				},
+				unloadVideo: forceVideoDisposal
 			}
 		})
 		.when('/episodes', {
 			title: "Available episodes",
-			templateUrl: 'templates/producer/episodelist.html'
+			templateUrl: 'templates/producer/episodelist.html',
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
 		})
-		// Was for testing uploads
-		// .when('/upload', {
-		// 	title: "Upload test",
-		// 	templateUrl: 'templates/producer/upload.html'
-		// })
 		.when('/episode/:epId', {
 			title: "Telling STORY",
 			controller: 'PlayerController',
@@ -53,7 +85,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				product: function (appState) {
 					appState.product = "player";
 					appState.productLoadedAs = "player";
-				}
+				},
+				unloadVideo: forceVideoDisposal
 			}
 		})
 		.when('/episode/:epId/:viewMode', {
@@ -64,7 +97,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				product: function (appState) {
 					appState.product = "player";
 					appState.productLoadedAs = "player";
-				}
+				},
+				unloadVideo: forceVideoDisposal
 			}
 		})
 		.when('/sxs/:epId', {
@@ -75,7 +109,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				product: function (appState) {
 					appState.product = "sxs";
 					appState.productLoadedAs = "sxs";
-				}
+				},
+				unloadVideo: forceVideoDisposal
 			}
 		})
 		.when('/editor/:epId', {
@@ -86,7 +121,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				product: function (appState) {
 					appState.product = "sxs";
 					appState.productLoadedAs = "sxs";
-				}
+				},
+				unloadVideo: forceVideoDisposal
 			}
 		})
 		.when('/producer/:epId', {
@@ -97,42 +133,39 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				product: function (appState) {
 					appState.product = "producer";
 					appState.productLoadedAs = "producer";
-				}
+				},
+				unloadVideo: forceVideoDisposal
 			}
 		})
 		.when('/assets/:containerId', {
 			title: "Container Assets test",
 			controller: 'ContainerAssetsTestController',
 			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="#episodes">Episodes</a><div sxs-container-assets="containerId"></div></div></div>',
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
 		})
 		.when('/event/:eventId', {
 			title: "Event test",
 			controller: 'EventTestController',
 			templateUrl: 'templates/testbed-event.html',
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
 		})
 		.otherwise({
 			title: "Telling STORY: Error",
 			controller: 'ErrorController',
-			templateUrl: 'templates/error-404.html'
+			templateUrl: 'templates/error-404.html',
+			resolve: {
+				unloadVideo: forceVideoDisposal
+			}
 		});
 
 	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
 })
 
-.run(function ($rootScope, $window, $timeout, errorSvc, appState) {
-
-	$rootScope.$on('$locationChangeStart', function (event, next, current) {
-		// Temporary brute force HACK for TS-813 (master asset isn't always unloading from memory on route changes)
-		// Don't do when framed, as it breaks LTI
-		if (next !== current && !appState.isFramed) {
-			console.log("RELOAD: ", next);
-			$timeout(function () {
-				console.log("RESET");
-				$window.location.reload();
-			});
-		}
-
-	});
+.run(function ($rootScope, errorSvc) {
 
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
@@ -167,7 +200,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	});
 })
 
-// Configure x-domain resource whitelist (TODO: do we actually need this?) (TODO: is this the answer to youtube/safari woes?)
+// Configure x-domain resource whitelist (TODO: do we actually need this?)
 .config(function ($sceDelegateProvider) {
 	$sceDelegateProvider.resourceUrlWhitelist([
 		'self',
@@ -182,11 +215,9 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	$httpProvider.defaults.useXDomain = true;
 	$httpProvider.defaults.withCredentials = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-
 	$httpProvider.interceptors.push(function ($q, errorSvc) {
 		return {
 			'responseError': function (rejection) {
-				// console.log("RESPONSEERROR", rejection);
 				errorSvc.error(rejection);
 				return $q.reject(rejection);
 			}
@@ -194,8 +225,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	});
 })
 
+// Configuration for textAngular toolbar
 .config(function ($provide) {
-	// this demonstrates how to register a new tool and add it to the default toolbar
 	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
 		taOptions.toolbar = [
 			['h1', 'h2', 'h3'],

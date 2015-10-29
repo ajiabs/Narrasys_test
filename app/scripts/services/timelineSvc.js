@@ -56,6 +56,10 @@ angular.module('com.inthetelling.story')
 			videoScope = newVideoScope;
 		};
 
+		svc.unregisterVideo = function () {
+			videoScope = undefined;
+		};
+
 		svc.setSpeed = function (speed) {
 			// console.log("timelineSvc.setSpeed", speed);
 			timeMultiplier = speed;

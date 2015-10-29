@@ -11,8 +11,8 @@
 // babysitters and stalls are disabled on phone therefore.
 
 angular.module('com.inthetelling.story')
-	.controller('VideoController', function ($q, $scope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc) {
-		// console.log("videoController instantiate");
+	.controller('VideoController', function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc) {
+		console.log("videoController instantiate");
 
 		// init youtube
 		if (angular.element(document.head).find('script[src="//www.youtube.com/iframe_api"]').length === 0) {
@@ -132,12 +132,13 @@ angular.module('com.inthetelling.story')
 
 		}; // end of initYoutube
 
+		var eventListeners = {};
 		$scope.initHTML5Video = function () {
 			// console.log("initHTML5Video");
 			// $scope.videoNode.addEventListener("loadedmetadata", function () {
 			// 	console.log("video metadata has loaded");
 			// }, false);
-			$scope.videoNode.addEventListener('playing', function () {
+			eventListeners.playing = $scope.videoNode.addEventListener('playing', function () {
 				$scope.playerState = 'playing';
 			}, false);
 
@@ -151,7 +152,7 @@ angular.module('com.inthetelling.story')
 			// 	// triggered when buffering is stalled -- playback may be continuing if there's buffered data
 			// 	$scope.playerState = 'stalled';
 			// }, false);
-			$scope.videoNode.addEventListener('pause', function () {
+			eventListeners.pause = $scope.videoNode.addEventListener('pause', function () {
 				$scope.playerState = 'pause';
 			}, false);
 
@@ -275,12 +276,6 @@ angular.module('com.inthetelling.story')
 		// Instead call via timelineSvc; otherwise the timeline won't know the video is playing
 		var numberOfStalls = 0;
 		$scope.intentionalStall = false;
-
-		$scope.$on("$destroy", function () {
-			$interval.cancel($scope.babysitter);
-			$timeout.cancel($scope.stallGracePeriod);
-			delete $scope.videoNode; // possibly unnecessary, but just for safety's sake
-		});
 
 		// play doesn't start immediately -- need to return a promise so timelineSvc can wait until the video is actually playing
 		$scope.play = function () {
@@ -436,5 +431,31 @@ angular.module('com.inthetelling.story')
 				$scope.videoNode.volume = (vol / 100);
 			}
 		};
+
+		var destroyMe = function () {
+			$scope.destroyWatcher1();
+			$scope.destroyWatcher2();
+			$interval.cancel($scope.babysitter);
+			$timeout.cancel($scope.stallGracePeriod);
+			timelineSvc.unregisterVideo();
+			if ($scope.videoType === 'youtube') {
+				if ($scope.YTPlayer) {
+					delete $scope.YTPlayer;
+				}
+			} else {
+				if ($scope.videoNode) {
+					// Overkill, because TS-813
+					$scope.videoNode.removeEventListener('playing', eventListeners.playing);
+					$scope.videoNode.removeEventListener('pause', eventListeners.pause);
+					$scope.videoNode.pause();
+					$scope.videoNode.src = "";
+					$scope.videoNode.remove();
+					delete $scope.videoNode;
+				}
+			}
+		};
+
+		$scope.destroyWatcher1 = $scope.$on("$destroy", destroyMe);
+		$scope.destroyWatcher2 = $rootScope.$on('video.forceDisposal', destroyMe);
 
 	});
