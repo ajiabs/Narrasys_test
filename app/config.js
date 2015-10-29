@@ -1,6 +1,6 @@
 var config = {
 	// Fill this in only if you need to load data from something other than the current server
-	apiDataBaseUrl: 'https://story.inthetelling.com',
+	// apiDataBaseUrl: 'https://story.inthetelling.com',
 	// apiDataBaseUrl: 'https://demo.inthetelling.com',
 	// apiDataBaseUrl: 'https://api-dev.inthetelling.com',
 	// apiDataBaseUrl: 'https://api-dev-sub.inthetelling.com',
@@ -16,7 +16,7 @@ var config = {
 
 	localStorageKey: "storyToken",
 	youtube: {
-		disabled: true,
+		disabled: false,
 		timeout: 5000,
 		apikey: 'AIzaSyDBU-E8lrZdKdAJ9XaVva95FuZLYoL-Tb4'
 	},
