@@ -15,7 +15,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		// wait a tick for videoController to handle that, then continue the route change:
 		$timeout(function () {
 			defer.resolve();
-		});
+		}, 1000);
 		return defer.promise;
 	};
 
