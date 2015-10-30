@@ -12,7 +12,7 @@
 
 angular.module('com.inthetelling.story')
 	.controller('VideoController', function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc) {
-		console.log("videoController instantiate");
+		// console.log("videoController instantiate");
 
 		// init youtube
 		if (angular.element(document.head).find('script[src="//www.youtube.com/iframe_api"]').length === 0) {
@@ -27,7 +27,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.initVideo = function (el) {
-			// console.log("videoController.initVideo");
+			// console.log("videoController.initVideo", el);
 
 			// Adjust bitrate.  For now still depends on there being only two versions of the mp4 and webm:
 			$scope.video.curStream = (appState.isTouchDevice ? 0 : 1);
@@ -82,7 +82,7 @@ angular.module('com.inthetelling.story')
 					},
 
 					onPlaybackQualityChange: function (x) {
-						console.log("Playback quality changed: ", x.data);
+						// console.log("Playback quality changed: ", x.data);
 						// TS-810 HACK HACKITY HACK
 						// A significant number of our videos apparently have bad 360p encodes which won't play in Safari.
 						// It's a youtube bug, but we can hack our way around it:
@@ -433,8 +433,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var destroyMe = function () {
-			$scope.destroyWatcher1();
-			$scope.destroyWatcher2();
+			$scope.destroyWatcher();
 			$interval.cancel($scope.babysitter);
 			$timeout.cancel($scope.stallGracePeriod);
 			timelineSvc.unregisterVideo();
@@ -454,8 +453,6 @@ angular.module('com.inthetelling.story')
 				}
 			}
 		};
-
-		$scope.destroyWatcher1 = $scope.$on("$destroy", destroyMe);
-		$scope.destroyWatcher2 = $rootScope.$on('video.forceDisposal', destroyMe);
+		$scope.destroyWatcher = $scope.$on("$destroy", destroyMe);
 
 	});

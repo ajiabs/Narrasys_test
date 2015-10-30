@@ -4,7 +4,6 @@
 
 angular.module('com.inthetelling.story')
 	.directive('ittVideo', function ($timeout, $interval, $rootScope, appState, timelineSvc, dataSvc, modelSvc) {
-
 		var uniqueDirectiveID = 0; // Youtube wants to work via DOM IDs; this is a cheap way of getting unique ones
 
 		return {
@@ -17,24 +16,14 @@ angular.module('com.inthetelling.story')
 				poster: "="
 			},
 			link: function (scope, element) {
-				// console.log('ittVideo', scope);
+				// console.log('ittVideo', scope.video);
+
 				scope.appState = appState;
 				scope.uid = ++uniqueDirectiveID;
+
 				$timeout(function () {
-					if (scope.video) {
-						scope.initVideo(element);
-					} else {
-						// episode data is not here yet...
-						var unwatch = scope.$watch(function () {
-							return scope.video;
-						}, function (isReady) {
-							if (isReady) {
-								unwatch();
-								scope.initVideo(element);
-							}
-						});
-					}
-				});
+					scope.initVideo(element);
+				}); // in controller
 
 				scope.videoClick = function () {
 					if (appState.timelineState === "paused") {
