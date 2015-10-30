@@ -58,24 +58,22 @@ angular.module('com.inthetelling.story')
 			timelineSvc.startAtSpecificTime($routeParams.t);
 		}
 
-		$scope.changeProducerEditLayer = function (newLayer) {
-			appState.producerEditLayer = appState.producerEditLayer + newLayer;
-			// I'm sure there's a fancier way to do this but
-			if (appState.producerEditLayer === 2) {
-				appState.producerEditLayer = 1;
-			}
-			if (appState.producerEditLayer === -2) {
-				appState.producerEditLayer = -1;
-			}
-		};
+		// $scope.changeProducerEditLayer = function (newLayer) {
+		// 	appState.producerEditLayer = appState.producerEditLayer + newLayer;
+		// 	// I'm sure there's a fancier way to do this but
+		// 	if (appState.producerEditLayer === 2) {
+		// 		appState.producerEditLayer = 1;
+		// 	}
+		// 	if (appState.producerEditLayer === -2) {
+		// 		appState.producerEditLayer = -1;
+		// 	}
+		// };
 
 		$scope.toggleProducerPreview = function () {
 			appState.product = (appState.product === 'producer') ? 'player' : 'producer';
 		};
 
 		/* LOAD EPISODE - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-		errorSvc.init();
 
 		if ($routeParams.epId) { // if this is missing we're in a narrative, which will init appstate and episodeID for us
 			appState.init();
@@ -97,17 +95,13 @@ angular.module('com.inthetelling.story')
 			}
 		}
 
-		$scope.loading = true;
-		modelSvc.addLandingScreen(appState.episodeId);
-
-		// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 		var getEpisodeWatcher = $rootScope.$on("dataSvc.getEpisode.done", function () {
+			getEpisodeWatcher();
+			// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 			modelSvc.setLanguageStrings();
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
-
-			console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
-
+			// console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
 			// producer needs the episode container:
 			dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId).then(function () {
 				if (modelSvc.episodes[appState.episodeId].master_asset_id) {
@@ -141,10 +135,32 @@ angular.module('com.inthetelling.story')
 				}
 
 			});
-
 		});
 
-		dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
+		if (modelSvc.episodes[appState.episodeId]) {
+			// recycle existing episode data.   TODO: DRY the repeated code below from inside getEpisodeWatcher
+			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
+			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
+			if (modelSvc.episodes[appState.episodeId].master_asset_id) {
+				timelineSvc.init(appState.episodeId);
+			} else {
+				// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
+				if (appState.product === 'producer') {
+					appState.editEpisode = modelSvc.episodes[appState.episodeId];
+				}
+				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+				appState.videoControlsLocked = true;
+			}
+			if (appState.productLoadedAs === 'producer' && !authSvc.userHasRole('admin')) {
+				// TODO redirect instead?
+				appState.product = 'player';
+				appState.productLoadedAs = 'player';
+			}
+		} else {
+			$scope.loading = true;
+			modelSvc.addLandingScreen(appState.episodeId);
+			dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
+		}
 
 		$scope.appState = appState;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
@@ -279,9 +295,9 @@ angular.module('com.inthetelling.story')
 		});
 
 		$scope.hidePanel = function (panel) {
-			console.log("hidePanel", panel);
+			// console.log("hidePanel", panel);
 			appState.show[panel] = false;
-			console.log(appState);
+			// console.log(appState);
 		};
 
 		/*
@@ -306,7 +322,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.continue = function () {
-			console.log("continue", modelSvc.episodes[appState.episodeId].masterAsset.duration, appState.time);
+			// console.log("continue", modelSvc.episodes[appState.episodeId].masterAsset.duration, appState.time);
 			// If we're close to the end, jsut move to the ending screen and stop.
 			if (modelSvc.episodes[appState.episodeId].masterAsset.duration - appState.time < 0.2) {
 				timelineSvc.pause();

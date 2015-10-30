@@ -428,7 +428,6 @@ angular.module('com.inthetelling.story')
 								assetIds.push(episodeData.master_asset_id);
 
 								if (episodeData.poster_frame_id) {
-									console.log("FOUND POSTER FRAME ID");
 									assetIds.push(episodeData.poster_frame_id);
 								}
 
