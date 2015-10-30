@@ -212,7 +212,7 @@ angular.module('com.inthetelling.story')
 
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function (t, method, eventID) {
-			console.log("timelineSvc.seek ", t, method, eventID);
+			// console.log("timelineSvc.seek ", t, method, eventID);
 			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
@@ -237,7 +237,7 @@ angular.module('com.inthetelling.story')
 			// Lots of synch issues caused by seek during playback. Temporary workaround: pause, then seek, then play.
 			var wasPlaying = (appState.timelineState === "playing");
 			if (wasPlaying) {
-				console.log("pausing playback before seek");
+				// console.log("pausing playback before seek");
 				svc.pause(true);
 			}
 

@@ -308,7 +308,7 @@ angular.module('com.inthetelling.story')
 			if (user.avatar_id) {
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
-					console.log("GOT AVATAR", response);
+					// console.log("GOT AVATAR", response);
 					modelSvc.cache("asset", response.data);
 					appState.user.avatar = response.data.url; // convenience for now, may be better to use modelSvc here
 				});

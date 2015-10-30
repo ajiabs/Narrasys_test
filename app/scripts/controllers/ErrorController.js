@@ -2,7 +2,7 @@
 
 angular.module('com.inthetelling.story')
 	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState, authSvc) {
-		console.log("errorController", $scope);
+		// console.log("errorController", $scope);
 
 		$scope.errorSvc = errorSvc;
 		$scope.logout = authSvc.logout;

@@ -18,7 +18,7 @@ angular.module('com.inthetelling.story')
 			// templateUrl: "templates/timeline-episode.html",
 			controller: "TimelineController",
 			link: function (scope, element) {
-				console.log('ittTimeline', scope, element);
+				// console.log('ittTimeline', scope, element);
 
 				scope.timelineTemplate = (appState.productLoadedAs === 'player' ? 'templates/timeline-episode.html' : 'templates/timeline-story.html');
 				scope.appState = appState;
@@ -51,7 +51,7 @@ angular.module('com.inthetelling.story')
 
 				// zoom in on item edit:
 				scope.autoZoom = function (item) {
-					console.log("autoZoom");
+					// console.log("autoZoom");
 
 					scope.savedZoomLevel = scope.zoomLevel;
 					var itemLength = item.end_time - item.start_time;
@@ -300,7 +300,7 @@ angular.module('com.inthetelling.story')
 				// cancelSeek when they mouseup or touchend outside the playhead (cancels)
 
 				var startSeek = function (evt) {
-					console.log('startSeek');
+					// console.log('startSeek');
 					$timeout(function () {
 						// short delay for visibility of handle (don't want it when just clicking)
 						scope.seekHandleVisible = true;
@@ -377,7 +377,7 @@ angular.module('com.inthetelling.story')
 				var initPlayheadEvents = function () {
 					// bind playhead events:
 					var playhead = $(element.find('.playhead')); // WARN template url needs to have resolved first!
-					console.log("ittTimeline initPlayheadEvents", playhead);
+					// console.log("ittTimeline initPlayheadEvents", playhead);
 					if (appState.isTouchDevice) {
 						playhead.on('touchstart.timeline', function (e) {
 							startSeek(e.originalEvent.targetTouches[0]);
