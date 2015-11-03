@@ -142,7 +142,7 @@ angular.module('com.inthetelling.story')
 							"name": episodeData.title,
 							"description": episodeData.description,
 							"hidden": false,
-							"path": "",
+							"path_slug": "",
 							"sort_order": scope.narrative.timelines.length,
 							"parent_episode": episodeData
 						};
