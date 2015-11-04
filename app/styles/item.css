@@ -599,16 +599,21 @@ Inline images (TODO show these only when image is larger than available space) *
 	position: relative;
 }
 
+.item .flotContainer:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
 .item .chartContainer {
 	width: 30%;
 	max-width: 400px;
+	float: left;
 }
 
 .item .legendContainer {
-	position: absolute;
-	top: 0;
-	right: 0;
-	left: 31%;
+	float: right;
+	max-width: 70%;
 }
 
 .item .legendContainer td {
@@ -618,11 +623,14 @@ Inline images (TODO show these only when image is larger than available space) *
 
 .isNarrow .item .chartContainer {
 	width: auto;
+	max-width: auto;
 	margin: auto;
+	float: none;
 }
 
 .isNarrow .item .legendContainer {
-	position: static;
+	float: none;
+	max-width: 100%;
 }
 
 
