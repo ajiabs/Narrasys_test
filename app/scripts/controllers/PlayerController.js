@@ -8,8 +8,8 @@ angular.module('com.inthetelling.story')
 
 		// $scope.tmp = function () {
 		// 	dataSvc.createTemplate({
-		// 		url: 'templates/episode/wiley1.html',
-		// 		name: 'Wiley LearningSpace (1)',
+		// 		url: 'templates/episode/regis.html',
+		// 		name: 'Regis',
 		// 		// event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
 		// 		applies_to_episode: true,
 		// 		applies_to_narrative: false
