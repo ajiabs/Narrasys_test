@@ -1,6 +1,6 @@
 # In The Telling Story
 
-<a href="docs.md">(Design documentation)</a>
+<a href="docs/docs.md">(Design documentation)</a>
 
 ## Project Dependencies
 
