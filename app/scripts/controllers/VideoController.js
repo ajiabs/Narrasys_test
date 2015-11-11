@@ -313,25 +313,38 @@ angular.module('com.inthetelling.story')
 
 		$scope.startAtTime = function (t) {
 			if ($scope.videoType === 'youtube') {
-				// HACK HACK HACK UNBELIEVABLE HACK
-				// youtube recently started getting very confused if we try to seek before the video is playable.
-				// there seems to be no reliable way to tell when it is safe, other than just playing the video and waiting 
-				// until it actually starts.  SO THAT'S THE CUNNING PLAN
-				// Have to mute the audio so it doesn't blip the first few frames of sound in the meanwhile
-
-				$scope.setVolume(0);
-				$scope.YTPlayer.playVideo();
-				var unwatch = $scope.$watch(function () {
-					return $scope.playerState;
-				}, function (newPlayerState) {
-					if (newPlayerState === 'playing') {
-						unwatch();
-						$scope.YTPlayer.seekTo(t, true);
-						$scope.YTPlayer.pauseVideo();
-						$scope.setVolume(100);
-					}
-				});
-
+				var unwatch;
+				if (appState.isTouchDevice && appState.hasBeenPlayed === false) {
+					// iOS  doesn't init the YT player until after the user has interacted with it, so we can't set the start time now. 
+					// So we'll cheat, and just wait until we can set the time to do so.  This unfortunately leaves the video at frame 1
+					// until the user hits play, which is why we're using a different technique for non-touchscreens below
+					unwatch = $scope.$watch(function () {
+						return appState.hasBeenPlayed;
+					}, function (newState) {
+						if (newState) {
+							unwatch();
+							$scope.YTPlayer.seekTo(t, true);
+						}
+					});
+				} else {
+					// HACK Non-touchscreens:
+					// youtube recently started getting very confused if we try to seek before the video is playable.
+					// there seems to be no reliable way to tell when it is safe, other than just playing the video and waiting 
+					// until it actually starts.  SO THAT'S THE CUNNING PLAN
+					// Have to mute the audio so it doesn't blip the first few frames of sound in the meanwhile
+					$scope.setVolume(0);
+					$scope.YTPlayer.playVideo();
+					unwatch = $scope.$watch(function () {
+						return $scope.playerState;
+					}, function (newPlayerState) {
+						if (newPlayerState === 'playing') {
+							unwatch();
+							$scope.YTPlayer.seekTo(t, true);
+							$scope.YTPlayer.pauseVideo();
+							$scope.setVolume(100);
+						}
+					});
+				}
 			} else {
 				// native video does not have this problem
 				$scope.seek(t, true);

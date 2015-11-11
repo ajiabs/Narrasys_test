@@ -178,10 +178,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.startAtSpecificTime = function (t) {
-			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
-			if (appState.isTouchDevice && appState.hasBeenPlayed === false && videoScope.videoType === 'youtube') {
-				return;
-			}
 			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events 
 				// have loaded.  Just poll until events load, that's good enough for now.
@@ -190,6 +186,12 @@ angular.module('com.inthetelling.story')
 					svc.startAtSpecificTime(t);
 				}, 300);
 				return;
+			}
+
+			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
+			if (appState.isTouchDevice && appState.hasBeenPlayed === false && videoScope.videoType === 'youtube') {
+				//TODO in future it might be possible to trick YT into starting at the correct time even 
+				//return;
 			}
 
 			t = parseTime(t);
