@@ -27,6 +27,14 @@ CSS goes in /app/templates/(whichever).css
 Place any images in /app/images/customer/ (or somewhere nearby)
 
 
+For now you'll need to test your template changes against both the new modeless UI used in producer 
+and editor, and the three-mode UI used in the existing player episodes (at `/#/episode/(episodeID)` urls);
+there are some CSS differences between the two that can affect the appearance of content items.
+Don't forget to check all modes (including the search pane in the new UI).
+
+The three-mode UI is to be phased out at a semester break, after which this complication will no longer be be necessary.
+
+
 ### Registering a template
 
 Two pieces of code need to be run to make your new templates usable: the template needs to be 
@@ -106,6 +114,10 @@ codebase to each server, so the template and the ability to select it will be th
 #### Item
 
 
+### Design changes
+
+The three-modes UI used in episodes is to be phased out and replaced with the modeless UI used in 
+
 ## DEVELOPER
 
 ### Overview
@@ -118,9 +130,24 @@ codebase to each server, so the template and the ability to select it will be th
 
 ### Active branches
 
+* pathslug
+* video swapping
+* matt's dataMgr
+* nextgen templates
+
+
+
 ### Work in progress
 
+...active branches, plus
+
+
+
+
+
 #### Phase out the three-modes UI
+
+need to add /search urls and ?t= param to narratives, decide what to do with old /watch, /search urls if anything
 
 #### Template / styles refactor
 
