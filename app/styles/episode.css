@@ -647,7 +647,7 @@
 .episode-regis .searchMode .item,
 .episode-regis .reviewMode .item {
 	background: none !important;
-	box-shadow: none;
+	box-shadow: none !important;
 }
 
 .episode-regis .searchMode .item.isCurrent,
