@@ -20,8 +20,15 @@ angular.module('com.inthetelling.story')
 						var defaultProduct = authSvc.getDefaultProductForRole(narrativeRole);
 						appState.product = defaultProduct;
 						angular.forEach(narrative.timelines, function (timeline) {
-							if (timeline._id === $routeParams.timelinePath ||
-								timeline.path_slug.en === $routeParams.timelinePath) {
+							// TEMP COMPAT
+							if (timeline.path && !timeline.path_slug) {
+								timeline.path_slug = angular.copy(timeline.path);
+							}
+							if (
+								timeline._id === $routeParams.timelinePath ||
+								timeline.path_slug.en === $routeParams.timelinePath ||
+								timeline.path === $routeParams.timelinePath
+							) {
 								appState.timelineId = timeline._id;
 								if (timeline.episode_segments[0]) {
 									appState.episodeId = timeline.episode_segments[0].episode_id;

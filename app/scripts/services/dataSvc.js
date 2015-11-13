@@ -15,12 +15,14 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
+		// WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
 		svc.getNarrative = function (narrativeId) {
 			// Special case here, since it needs to call getNonce differently:
 			var defer = $q.defer();
 			authSvc.authenticate("narrative=" + narrativeId).then(function () {
 				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve")
 					.then(function (response) {
+						console.log("dataSvc.getNarrative", response.data);
 						modelSvc.cache("narrative", svc.resolveIDs(response.data));
 						defer.resolve(modelSvc.narratives[response.data._id]);
 					});

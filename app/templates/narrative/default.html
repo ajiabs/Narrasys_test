@@ -16,7 +16,7 @@
  -->
 			<div class="storyTimeline" ng-repeat="timeline in narrative.timelines | filter:{hidden:!true} | orderBy:'sort_order'">
 				<h3>
-					<a href="/#/story/{{narrative.path_slug.en}}/{{timeline.path_slug.en}}">{{timeline.name.en}}</a>
+					<a href="/#/story/{{narrative.path_slug.en || narrative.path.en}}/{{timeline.path_slug.en || timeline.path.en}}">{{timeline.name.en}}</a>
 				</h3>
 				<p>{{timeline.description.en}}</p>
 				{{timeline.episode_segments[0].end_time | asTime}}

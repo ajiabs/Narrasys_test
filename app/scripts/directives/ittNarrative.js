@@ -36,6 +36,7 @@ angular.module('com.inthetelling.story')
 			},
 
 			link: function (scope) {
+				console.log("ittNarrative");
 				scope.loading = true;
 
 				scope.logout = authSvc.logout;
