@@ -3,14 +3,89 @@
 ## GETTING STARTED
 
 ### Build, locally run client code
-(todo move from README)
+
+See the README for basic installation info.
+
+`grunt server` for routine development.
+`grunt server:dist` lets you test local code as compiled and minimized for the server.
+`grunt test` runs the unit tests once.
+`grunt dev` runs unit tests continuously in the background, and is configured to send OSX notifications via <a href="http://growl.info">growl</a>, if you have it installed.
+
+Do simple patches in the `dev` branch, and more complicated changes in their own dedicated git branches. Test, merge into dev, test again.  If all goes well, then you can merge into master, assign a version number, and deploy -- see "Tagging and deploying" below.
+
+
+
 
 ### Build, locally run server instance
 (todo link to api repo)
 
+
+
 ### Test locally or against specific servers
 
-config.js
+You can edit config.js to point your local code at our various database servers. (Use great care when testing against the production server; changes you make to episodes WILL be visible to the world.)
+
+(To get access to the servers, you'll need admin accounts on each and an IP address rule -- ask Bill for these.  If you run local code via http://client.dev/ you can skip the IP address rule, because an exception is already set up for that fake domain name.)
+
+This is my Apache setup for handling this (on OSX) -- this may or may not be useful to you.  (By default the rails server runs on port 3000, and grunt dev on port 9000):
+````
+<VirtualHost *:80>
+	ServerName client.dev
+	ProxyPass /v3 http://127.0.0.1:3000/v3
+	ProxyPass /v2 http://127.0.0.1:3000/v2
+	ProxyPass /v1 http://127.0.0.1:3000/v1
+	ProxyPass /users/ http://127.0.0.1:3000/users/
+	ProxyPass /auth/ http://127.0.0.1:3000/auth/
+	ProxyPass /login http://127.0.0.1:3000/login
+	ProxyPass /logout http://127.0.0.1:3000/logout
+	ProxyPass /signup http://127.0.0.1:3000/signup
+	ProxyPass /show_user http://127.0.0.1:3000/show_user
+	ProxyPass /pages http://127.0.0.1:3000/pages
+	ProxyPass /oauth2 http://127.0.0.1:3000/oauth2
+	ProxyPass / http://127.0.0.1:9000/
+</VirtualHost>
+````
+
+### Tagging and deploying
+
+This shell script is hacky and ugly, but it works. Such is the nature of shell scripts.  Run this against the master branch, after your changes have been tested and merged in, then let Bill know the version number you assigned so he can deploy to each server in turn:
+
+
+````
+#!/bin/bash
+
+
+cd /Users/daniel/Sites/client; # Change this to the location of your local repo
+find . -name "*.orig" -exec rm {} \;
+lastversion=`cat app/version.txt`;
+
+echo "Last version was ${lastversion}.  New version number:";
+read newversion;
+
+echo "New version will be ${newversion}";
+
+# This is a stupid way to prevent myself from checking in a bad config file -- just keep a pristine copy elsewhere and copy it into master every time:
+echo "resetting config.js...";
+cp /Users/daniel/bin/clean-config.js app/config.js
+
+echo "Building...";
+echo "${newversion}" > app/version.txt;
+grunt build;
+
+echo "############################################################";
+echo "#  If all went well, press a key to commit & push to server.";
+echo "############################################################";
+read -n 1 -s;
+
+git add --all .
+git commit -m "build ${newversion}"
+git push
+git tag ${newversion};
+git push --tags;
+
+````
+
+
 
 ## DESIGNER
 
@@ -130,7 +205,7 @@ The three-modes UI used in episodes is to be phased out and replaced with the mo
 
 ### Active branches
 
-* pathslug
+
 * video swapping
 * matt's dataMgr
 * nextgen templates
