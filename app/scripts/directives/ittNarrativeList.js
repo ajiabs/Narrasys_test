@@ -19,12 +19,14 @@ angular.module('com.inthetelling.story')
 				scope.logout = authSvc.logout;
 
 				dataSvc.getNarrativeList().then(function (narratives) {
-					// TEMP For during data migration from path to path_slug
-					// angular.forEach(narratives, function (narrative) {
-					// 	if (narrative.path && !narrative.path_slug) {
-					// 		narrative.path_slug = narrative.path;
-					// 	}
-					// });
+					angular.forEach(narratives, function (narrative) {
+
+						// TEMP For during data migration from path to path_slug
+						// if (narrative.path && !narrative.path_slug) {
+						// 	narrative.path_slug = narrative.path;
+						// }
+
+					});
 					scope.narratives = narratives;
 				});
 			}
