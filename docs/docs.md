@@ -19,6 +19,7 @@ Do simple patches in the `dev` branch, and more complicated changes in their own
 ### Build, locally run server instance
 (todo link to api repo)
 
+API endpoint documentation (somewhat out of date, but a start) is at https://developers.inthetelling.com 
 
 
 ### Test locally or against specific servers
@@ -85,11 +86,17 @@ git push --tags;
 
 ````
 
-
-
 ## DESIGNER
 
 ### Overview
+
+The template system controlling the appearance of episodes, scenes, and content items has a generally cascading structure (styles applied to a content item will override those set for the scene, which will override those set for the episode.
+
+It's important to note that the template system is well overdue for a refactor (the styles-refactor branch has the work in progress towards this end) -- try to avoid adding too many template in the existing system, as it will only increase the amount of work involved in migrating existing sites to the new template system.
+
+
+Also worth noting:  ideally all the templates would be totally compatible with one another, and you'd be able to mix and match any color option with any typography option with any transition with etc.; and the CSS for each type of styling would be segregated into its own file (color options in colors.css, transitions in transitions.css, and so on.)  In practice, a number of the customer-specific episode templates (especially those created after the replacement template system was well underway) do not support some of the secondary options, and all the related CSS is lumped into episode.css.
+
 
 ### Making a template
 
@@ -97,7 +104,7 @@ Template itself goes in /app/templates/episode or /app/templates/scene or /app/t
 Copy one of the existing ones, change it as needed, give it a reasonable new name and save it.
 
 CSS goes in /app/templates/(whichever).css
-(prefer CSS variations to HTML variations -- most of the episode template differences are pure CSS.)
+(When possible prefer CSS variations to HTML variations -- most of the episode template differences are pure CSS.)
 
 Place any images in /app/images/customer/ (or somewhere nearby)
 
@@ -182,16 +189,10 @@ Once this is complete, disable your temp function, remove the temporary link tha
 codebase to each server, so the template and the ability to select it will be there, and you're done. 
 
 
-### Available variables
-
-#### Episode
-#### Scene
-#### Item
-
-
 ### Design changes
 
-The three-modes UI used in episodes is to be phased out and replaced with the modeless UI used in 
+The three-modes UI used in episodes is to be phased out and replaced with the modeless UI currently used in editor and producer.
+
 
 ## DEVELOPER
 
@@ -201,7 +202,16 @@ The three-modes UI used in episodes is to be phased out and replaced with the mo
 
 #### Editor / Producer
 
-### Hacks to watch out for, and dead code you can probably prune
+### Hacks to watch out for
+
+### Dead code you can probably prune
+
+Commented throughout the codebase, but also:
+
+The three-modes design (after producer is updated to write narratives instead of plain episodes, and after the `/#/episode/{id}` route is phased out in favor of `/#/story/{narrative}/{timeline}`)
+
+
+
 
 ### Active branches
 
@@ -214,11 +224,7 @@ The three-modes UI used in episodes is to be phased out and replaced with the mo
 
 ### Work in progress
 
-...active branches, plus
-
-
-
-
+...active branches, plus:
 
 #### Phase out the three-modes UI
 

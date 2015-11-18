@@ -8,8 +8,7 @@
 
 	<div ng-if="userHasRole('admin')">
 		<div ng-repeat="narrative in narratives">
-			<!-- <a href="/#/story/{{narrative.path_slug.en}}">{{narrative.name.en}}</a> -->
-			<a href="/#/story/{{narrative.path.en}}">{{narrative.name.en}}</a>
+			<a href="/#/story/{{narrative.path_slug.en}}">{{narrative.name.en}}</a>
 		</div>
 		<span ng-if="showAddNarrative">
 			<hr>
