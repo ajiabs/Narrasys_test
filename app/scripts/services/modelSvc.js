@@ -28,13 +28,6 @@ angular.module('com.inthetelling.story')
 			if (cacheType === 'narrative') {
 				// NOTE no deriveNarrative used here, not needed so far
 
-				// TEMP remove this after data migration
-				if (item.path && !item.path_slug) {
-					console.log("CREATING PATH SLUG");
-					item.path_slug = angular.copy(item.path);
-				}
-				// END TEMP
-
 				if (svc.narratives[item._id]) {
 					angular.extend(svc.narratives[item._id], item);
 				} else {
