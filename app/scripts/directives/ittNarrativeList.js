@@ -21,10 +21,10 @@ angular.module('com.inthetelling.story')
 				dataSvc.getNarrativeList().then(function (narratives) {
 					angular.forEach(narratives, function (narrative) {
 
-						// TEMP For during data migration from path to path_slug
-						// if (narrative.path && !narrative.path_slug) {
-						// 	narrative.path_slug = narrative.path;
-						// }
+						// COMPAT
+						if (narrative.path && !narrative.path_slug) {
+							narrative.path_slug = narrative.path;
+						}
 
 					});
 					scope.narratives = narratives;
