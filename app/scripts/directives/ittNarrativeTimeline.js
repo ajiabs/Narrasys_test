@@ -27,7 +27,7 @@ angular.module('com.inthetelling.story')
 							if (
 								timeline._id === $routeParams.timelinePath ||
 								timeline.path_slug.en === $routeParams.timelinePath ||
-								timeline.path === $routeParams.timelinePath
+								timeline.path === $routeParams.timelinePath // TEMP remove this after data migration
 							) {
 								appState.timelineId = timeline._id;
 								if (timeline.episode_segments[0]) {
