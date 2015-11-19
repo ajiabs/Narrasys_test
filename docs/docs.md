@@ -2,6 +2,18 @@
 
 ## GETTING STARTED
 
+
+### ITT Jargon
+
+* Narrative: a playlist containing timelines
+* Timeline: One continuous playback within the player. Currently consists of a single video stream in a single episode, but in the planned implementation a timeline could contain a sequence of segments of multiple episodes / master assets
+* Episode: A collection of events (content items and scenes) synchronized with a single video stream
+* Master asset: the video stream for an episode. 
+* Scene: A template for a full-screen layout of content items and the master asset
+* Content item: A link, bit of text, image, etc attached to an episode.
+* Transmedia: A marketing term for content types which are not transcript or text annotations
+
+
 ### Build, locally run client code
 
 See the README for basic installation info.
@@ -46,6 +58,7 @@ This is my Apache setup for handling this (on OSX) -- this may or may not be use
 	ProxyPass / http://127.0.0.1:9000/
 </VirtualHost>
 ````
+...and add `127.0.0.1 client.dev` to `/etc/hosts`.
 
 ### Tagging and deploying
 
@@ -98,6 +111,20 @@ It's important to note that the template system is well overdue for a refactor (
 Also worth noting:  ideally all the templates would be totally compatible with one another, and you'd be able to mix and match any color option with any typography option with any transition with etc.; and the CSS for each type of styling would be segregated into its own file (color options in colors.css, transitions in transitions.css, and so on.)  In practice, a number of the customer-specific episode templates (especially those created after the replacement template system was well underway) do not support some of the secondary options, and all the related CSS is lumped into episode.css.
 
 
+### Icons
+
+Many (not all) of the icons used in the player interface are part of a custom font generated using http://icomoon.io.
+The font itself is contained in the source/ directory, along with a map of the codepoints.
+This has proved to be something of a hassle, and was probably a premature bandwidth optimization. It might almost be
+easier to replace it with a set of separate .svgs
+
+(The icons for player and producer weren't final and ought to be vector graphics as well, whether built into the font or separate svg.)
+
+Editing the font file has caused browser cache issues, which we've worked around by updating the font name each time, for some reason, rather than take the time to build that into the gruntfile where it belongs.
+
+
+
+
 ### Making a template
 
 Template itself goes in /app/templates/episode or /app/templates/scene or /app/templates/item.
@@ -125,7 +152,7 @@ in editor or producer.
 
 #### Add it to the Producer interface
 
-For episodes, open /app/templates/producer/episode.html (episodes aren't editable in editor yet). 
+For episodes, open /app/templates/producer/episode.html (episode templates aren't editable in editor yet). 
 Look for the `<select>` input with ng-model="episode.templateUrl" and add your new template as an
 `<option>`.
 
@@ -216,8 +243,8 @@ The three-modes design (after producer is updated to write narratives instead of
 ### Active branches
 
 
-* video swapping
 * matt's dataMgr
+
 * nextgen templates
 
 
@@ -226,11 +253,25 @@ The three-modes design (after producer is updated to write narratives instead of
 
 ...active branches, plus:
 
+
 #### Phase out the three-modes UI
 
 need to add /search urls and ?t= param to narratives, decide what to do with old /watch, /search urls if anything
 
 #### Template / styles refactor
 
+
+
 #### Multi-episode timelines
+
+Switching between one master asset and another within a timeline:
+
+##### Switching master assets
+For native video has been tested to work by simply updasting the video.urls object. In future, might preload the upcoming video by swapping between two `<video>` objects instead
+
+For youtube, the ideal structure would be to let Youtube do the work: we contruct a playlist in their API and embed that for the timeline instead of embedding a single video.
+
+##### Timelines
+
+The other necessary ingredient is translating between episode-relative times (start and end times within an episode segment), which will need to be what's stored to the API, and timeline-relative times which will be what comes from the UI events (play, pause, seek, edit)
 

@@ -626,7 +626,7 @@
 	background: linear-gradient(#F2F2F2, #94A4b2);
 	font-family: 'Lato', sans-serif;
 	font-weight: 300;
-	font-size: 1.3em;
+	font-size: 1.1em;
 }
 
 .episode-regis .branding {
@@ -638,11 +638,13 @@
 	background-color: #d8d3c3 !important;
 	color: #000;
 	box-shadow: 0 7px 5px rgba(0, 0, 0, 0.3) !important;
-	padding-left: 80px;
+	padding-left: 75px;
 }
 
 .episode-regis .content .item .startTime {
 	margin-left: -75px;
+	width: 70px;
+	text-align: right;
 }
 
 .episode-regis.content.allowHighlights .highlightSolid.item.isCurrent {
