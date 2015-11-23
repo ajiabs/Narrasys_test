@@ -608,13 +608,13 @@
 
 @media screen and (min-width: 700px) {
 	.episode-wiley {
-		font-size: 110%;
+		font-size: 105%;
 	}
 }
 
 @media screen and (min-width: 900px) {
 	.episode-wiley {
-		font-size: 120%;
+		font-size: 110%;
 	}
 }
 
