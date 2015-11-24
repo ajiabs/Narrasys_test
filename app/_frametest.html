@@ -3,38 +3,38 @@
 <script>
 'use strict';
 window.addEventListener('message', function(e) {
-	// Copy of Instructure Canvas's postMessage receiver:
-	try {
-		var message = JSON.parse(e.data);
-		switch (message.subject) {
-			case 'lti.frameResize':
-				console.log("Got frameResize message");
-				var height = message.height;
-				if (height >= 5000) height = 5000;
-				if (height <= 0) height = 1;
-				console.log(height);
-				// tool_content_wrapper().data('height_overridden', true);
-				// resize_tool_content_wrapper(height);
-				break;
+  // For testing of Instructure Canvas's postMessage receiver:
 
-			case 'lti.setUnloadMessage':
-				setUnloadMessage(message.message);
-				break;
+  try {
+    var message = JSON.parse(e.data);
+    switch (message.subject) {
+      case 'lti.frameResize':
+        console.log("Got frameResize message");
+        var height = message.height;
+        if (height >= 5000) height = 5000;
+        if (height <= 0) height = 1;
+        console.log(height);
+        // tool_content_wrapper().data('height_overridden', true);
+        // resize_tool_content_wrapper(height);
+        break;
 
-			case 'lti.removeUnloadMessage':
-				removeUnloadMessage();
-				break;
-		}
-	} catch (err) {
-		(console.error || console.log)('invalid message received from ', e.origin);
-	}
+      case 'lti.setUnloadMessage':
+        setUnloadMessage(message.message);
+        break;
+
+      case 'lti.removeUnloadMessage':
+        removeUnloadMessage();
+        break;
+    }
+  } catch (err) {
+    (console.error || console.log)('invalid message received from ', e.origin);
+  }
 });
 </script>
 
 <body>
-	<h1>iFrame test</h1>
-
-	<iframe src="http://client.dev/#/story/anatomy-physiology-32" width="90%" height="550px"></iframe>
+  <h1>iFrame test</h1>
+  <iframe src="http://client.dev/#/editor/53724989bf31cdd942000008" width="90%" height="550px"></iframe>
 
 
 </body>
