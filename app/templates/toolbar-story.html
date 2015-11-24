@@ -35,7 +35,7 @@
 	</div>
 </div>
 
-<div ng-show="show.navPanel" class="navPanel topDrawer" ng-class="episode.styleCss">
+<div ng-cloak ng-show="show.navPanel" class="navPanel topDrawer" ng-class="episode.styleCss">
 	<!-- this is for now duplicactive of code in player.html; it will change to include narrative links soon enough -->
 	<div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
 	<!-- <h2 ng-bind-html="episode.display_title"></h2> -->
@@ -47,8 +47,10 @@
 			<span ng-bind-html="scene.display_description"></span>
 		</p>
 	</div>
+	<!--
 	<div class="crossEpisode">
 		<a class="prevEpisode" ng-if="episode.previousEpisodeContainer" ng-href="/#/{{appState.crossEpisodePath}}/{{episode.previousEpisodeContainer.episodes[0]}}" title="{{episode.previousEpisodeContainer.display_name}}">Previous episode</a>
 		<a class="nextEpisode" ng-if="episode.nextEpisodeContainer" ng-href="/#/{{appState.crossEpisodePath}}/{{episode.nextEpisodeContainer.episodes[0]}}" title="{{episode.nextEpisodeContainer.display_name}}">Next Episode</a>
 	</div>
+ -->
 </div>

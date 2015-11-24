@@ -110,7 +110,6 @@ button {
 		display: none;
 	}
 	*/
-	
 	.banner-logo {
 		display: none;
 	}
@@ -119,7 +118,6 @@ button {
 @media screen and (max-width: 480px) {
 	.button-discover {
 		/* See also helpPanel below */
-		
 		display: none !important;
 	}
 	.volumebar {
@@ -339,7 +337,6 @@ button {
 	position: absolute !important;
 	clip: rect(1px 1px 1px 1px);
 	/* IE6, IE7 */
-	
 	clip: rect(1px, 1px, 1px, 1px);
 	padding: 0 !important;
 	border: 0 !important;
@@ -358,6 +355,8 @@ button {
 	transition: opacity 3s;
 	opacity: .3;
 }
+
+
 /*============================
 *
 * Side Panels
@@ -377,6 +376,8 @@ button {
 .modal-backdrop.ng-hide-remove {
 	display: block!important;
 }
+
+
 /*============================
  *
  * Search Panel
@@ -435,6 +436,8 @@ button {
 	text-align: right;
 	padding-right: 1em;
 }
+
+
 /*.searchfilters label {
 	float: right;
 	margin-right: 0.5em;
@@ -451,7 +454,6 @@ button {
 
 .episodeUI .searchResults .item {
 	/*border-bottom: 1px solid #CCC;*/
-	
 	padding: 0.1em 0.3em;
 }
 
@@ -473,7 +475,6 @@ button {
 
 .searchResults .item .isSxS {
 	/* background-image will be set inline by searchresults template */
-	
 	background-position: top right;
 	background-repeat: no-repeat;
 	background-size: 24px;
@@ -509,6 +510,8 @@ button {
 .searchResults .sortedbytype .type {
 	display: none
 }
+
+
 /* Panel animations */
 
 .searchPanel {
@@ -550,6 +553,8 @@ button {
 	box-shadow: none;
 	text-shadow: none;
 }
+
+
 /*============================
 *
 * Top Panels
@@ -564,6 +569,8 @@ button {
 	background-color: #FFF;
 	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.5);
 }
+
+
 /*============================
  *
  * Nav Panel
@@ -665,11 +672,15 @@ button {
 .navPanel .nextEpisode {
 	float: right;
 }
+
+
 /*============================
  *
  * Help Panel
  *
 //===========================*/
+
+
 /*
 .helpPanel {
 	background-color: #EEE;
@@ -741,6 +752,28 @@ button {
 }
 */
 
+.wileyNag {
+	background-color: #fff;
+	border-radius: 15px;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+	font-size: 0.86em;
+	max-width: 220px;
+	padding: 5px 10px;
+	position: absolute;
+	right: 10px;
+	top: 38px;
+	width: 60%;
+	z-index: 99;
+}
+
+.wileyNag .goAway {
+	float: left;
+	color: #069;
+	cursor: pointer;
+	font-size: 0.7em;
+	padding: 5px 0 0 5px;
+}
+
 .arrow-up {
 	width: 20px;
 	height: 20px;
@@ -751,6 +784,8 @@ button {
 	z-index: 5;
 	transform: rotate(45deg);
 }
+
+
 /*
 .helpPanel .arrow-up {
 	left: 30px;
@@ -816,6 +851,8 @@ input.userEditable:focus {
 	width: 60px;
 	height: 60px;
 }
+
+
 /*
 .helpPanel .screen-reader-offscreen {
 	position: absolute;
@@ -825,6 +862,8 @@ input.userEditable:focus {
 	top: auto;
 }
 */
+
+
 /* .button-continue appears in windowFg: */
 
 .button-continue:after {
@@ -858,10 +897,11 @@ input.userEditable:focus {
 	max-width: 500px;
 	min-width: 290px;
 	/* TOOLBAR HEIGHT */
-	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
+
+
 /* Undoing a bad decision: */
 
 .banner-logo {
