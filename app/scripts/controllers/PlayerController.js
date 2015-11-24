@@ -95,11 +95,43 @@ angular.module('com.inthetelling.story')
 			}
 		}
 
+		var wileyNag = function () {
+			// HACK design-by-committee TS-829 for framed Wiley episodes.
+			// (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
+			if (!appState.isFramed || (modelSvc.episodes[appState.episodeId].templateUrl.indexOf('wiley') === -1)) {
+				return;
+			}
+			var localStorageAllowed = true;
+			try {
+				localStorage.setItem("iCanHazStorage", 1);
+			} catch (e) {
+				localStorageAllowed = false;
+			}
+			if (localStorageAllowed) {
+				localStorage.removeItem("iCanHazStorage");
+			}
+			if (localStorageAllowed && !(localStorage.getItem("noWileyNag"))) {
+				appState.show.wileyNag = true;
+				var nagWatch = $scope.$watch('appState.time', function (n) {
+					if (n) {
+						appState.show.wileyNag = false;
+						nagWatch();
+					}
+				});
+			}
+			$scope.noWileyNag = function () {
+				appState.show.wileyNag = false;
+				localStorage.setItem("noWileyNag", "1");
+			};
+			// END WILEY HACK
+		};
+
 		var getEpisodeWatcher = $rootScope.$on("dataSvc.getEpisode.done", function () {
 			getEpisodeWatcher();
 			// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 			modelSvc.setLanguageStrings();
+			wileyNag(); // HACK
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
 			// console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
 			// producer needs the episode container:
@@ -271,19 +303,6 @@ angular.module('com.inthetelling.story')
 			timelineSvc.pause();
 		};
 
-		// show the help pane, only if localStorage is settable and there isn't one already.
-		// (If localStorage is blocked, default to not showing the overlay to avoid annoying them with repeats.)
-
-		// var localStorageAllowed = true;
-		// try {
-		// 	localStorage.setItem("iCanHazStorage", 1);
-		// } catch (e) {
-		// 	localStorageAllowed = false;
-		// }
-		// if (localStorageAllowed) {
-		// 	localStorage.removeItem("iCanHazStorage");
-		// }
-
 		// Intercepts the first play of the video and decides whether to show the help panel beforehand.
 		// Disabling this,since we're not showing a help panel anymore, but keeping it in case we change our minds on that
 		var firstplayWatcher = $rootScope.$on("video.firstPlay", function () {
@@ -299,23 +318,6 @@ angular.module('com.inthetelling.story')
 			appState.show[panel] = false;
 			// console.log(appState);
 		};
-
-		/*
-				$scope.hidePanels = function () {
-					// dismiss ALL THE THINGS
-					appState.show.searchPanel = false;
-					// appState.show.helpPanel = false;
-					appState.show.navPanel = false;
-					appState.show.profilePanel = false;
-					appState.itemDetail = false;
-					$rootScope.$emit("player.dismissAllPanels");
-				};
-		*/
-		// $scope.noMoreHelp = function () {
-		// 	appState.show.helpPanel = false;
-		// 	localStorage.setItem("noMoreHelp", "1");
-		// 	timelineSvc.play();
-		// };
 
 		$scope.play = function () {
 			timelineSvc.play();

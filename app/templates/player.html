@@ -71,4 +71,12 @@
 		<div class="arrow-up"></div>
 		<div itt-user x-in-player="true"></div>
 	</div>
+
+	<div ng-cloak ng-if="show.wileyNag" class="wileyNag animate transitionFade">
+		<!-- HACK design-by-committee idiocy -->
+		<div>
+			<span style="float:right">⤴</span>
+			<span style="float:right; display:inline-block; padding: 5px">Go here for best view</span>
+		</div> <a class="goAway" ng-click="noWileyNag()">Don't show this again</a>
+	</div>
 </div>
