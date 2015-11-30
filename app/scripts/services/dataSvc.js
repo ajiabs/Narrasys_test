@@ -5,7 +5,7 @@
 // Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
 // the rest gets passed to modelSvc
 
-//  use PUT to update, POST to create new   
+//  use PUT to update, POST to create new
 // for assets, DELETE then POST
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
@@ -227,7 +227,7 @@ angular.module('com.inthetelling.story')
 			// console.log("dataSvc.cache", cacheType, dataList);
 			angular.forEach(dataList, function (item) {
 				if (cacheType === "templates") {
-					/* API format: 
+					/* API format:
 					_id									"528d17ebba4f65e578000007"
 					applies_to_episodes	false  (if true, event_types is empty)
 					created_at					"2013-11-20T20:13:31Z"
@@ -384,7 +384,7 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			}
-			//now make an array instead of an object 
+			//now make an array instead of an object
 			var ids = Object.keys(idsobject);
 			return ids;
 		};
@@ -495,7 +495,7 @@ angular.module('com.inthetelling.story')
 									var angularContinue = true;
 									angular.forEach(evData.data._plugin.distractors, function (distractor) {
 										if (angularContinue) {
-											if (distractor.text === userAnswer.data.answer) {
+											if (distractor.index === userAnswer.data.index) {
 												distractor.selected = true;
 												evData.data._plugin.selectedDistractor = distractor.index;
 												angularContinue = false;
@@ -716,7 +716,7 @@ angular.module('com.inthetelling.story')
 			// DANGER WILL ROBINSON incomplete and unsafe.  only for deleting test data for now, don't expose this to the production team.
 
 			// TODO  this will error out if there are assets or child containers attached to the container...
-			// definitely it will if there's a child episode. 
+			// definitely it will if there's a child episode.
 
 			delete modelSvc.containers[containerId]; // WARN this assumes success......
 
@@ -754,7 +754,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.deleteEpisode = function (episodeId) {
-			// DANGER WILL ROBINSON this is both incomplete and unsafe; I've built just enough to remove some of my own test data. Do not include this in any UI that is available to the production team 
+			// DANGER WILL ROBINSON this is both incomplete and unsafe; I've built just enough to remove some of my own test data. Do not include this in any UI that is available to the production team
 			// First remove episode_user_metrics
 
 			// probably first need to remove events etc if there are any
@@ -923,7 +923,7 @@ angular.module('com.inthetelling.story')
 		};
 		svc.prepItemForStorage = prepItemForStorage;
 
-		// No, we should not be storing episodes with no master asset halfway through editing 
+		// No, we should not be storing episodes with no master asset halfway through editing
 		// svc.detachMasterAsset = function (epData) {
 		// 	var preppedData = prepEpisodeForStorage(epData);
 		// 	preppedData.master_asset_id = null;
@@ -1085,7 +1085,7 @@ angular.module('com.inthetelling.story')
 
 		var get_id_values = function (cache, realNames) {
 
-			// HACK These values won't have IDs, they're generated inside modelSvc. 
+			// HACK These values won't have IDs, they're generated inside modelSvc.
 			// Can remove this after template config is updated
 			var pseudos = [
 				"colorEliterate",
