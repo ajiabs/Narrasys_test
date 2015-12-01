@@ -1,6 +1,6 @@
 <div class="toolbar">
 	<div class="buttongroup">
-		<a ng-if="!appState.isFramed && appState.productLoadedAs == 'narrative'" class="button button-exitEpisode" href="/#/story/{{narrative.path_slug.en}}">
+		<a ng-if="appState.productLoadedAs == 'narrative' && !narrative.disable_navigation" class="button button-exitEpisode" href="/#/story/{{narrative.path_slug.en}}">
 			<span>Exit</span>
 		</a>
 		<button tabindex="0" class="button button-nav" ng-click="toggleNavPanel();">
@@ -10,8 +10,10 @@
 		<!-- 		<button ng-click="tmp()">TMP</button>
  -->
 	</div>
-
-	<div ng-if="appState.isFramed" class="escapegroup buttongroup">
+	<!--if we are a player, isFramed-->
+	<div ng-if="appState.isFramed && (appState.productLoadedAs == 'player'
+	 			|| (appState.productLoadedAs == 'narrative'
+	 			&& !narrative.disable_new_window ) )"  class="escapegroup buttongroup">
 		<!-- this needs to be an <a> or it trips popup blockers -->
 		<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{appState.time || 0}}&access_token={{appState.user.access_token}}" target="_blank">
 			<span>New window</span>
