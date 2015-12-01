@@ -11,8 +11,8 @@ angular.module('com.inthetelling.story')
 				.then(function (activityData) {
 					var answers = activityData.filter(function (activity) {
 						return (
-							(activity.name === "question-answered" || activity.name === "question-answered-updated")
-							&& activity.episode_id === appState.episodeId
+							(activity.name === "question-answered" || activity.name === "question-answered-updated") &&
+							 activity.episode_id === appState.episodeId
 						);
 					});
 					defer.resolve(answers);
