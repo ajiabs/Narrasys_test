@@ -9,8 +9,8 @@
 	<div class="player">
 		<!-- TODO: make sure user has admin role for canEditContent -->
 		<div ng-include="
-		appState.productLoadedAs=='player' 
-		? 'templates/toolbar-episode.html' 
+		appState.productLoadedAs=='player'
+		? 'templates/toolbar-episode.html'
 		: 'templates/toolbar-story.html'"></div>
 
 		<div ng-if="loading" ng-include="'templates/loading.html'"></div>
@@ -72,7 +72,9 @@
 		<div itt-user x-in-player="true"></div>
 	</div>
 
-	<div ng-cloak ng-if="show.wileyNag" class="wileyNag animate transitionFade">
+	<div ng-cloak ng-if="show.wileyNag &&  (appState.productLoadedAs == 'player'
+	 			|| (appState.productLoadedAs == 'narrative'
+	 			&& !narrative.disable_new_window ) )" class="wileyNag animate transitionFade">
 		<!-- HACK design-by-committee idiocy -->
 		<div>
 			<span style="float:right">⤴</span>
