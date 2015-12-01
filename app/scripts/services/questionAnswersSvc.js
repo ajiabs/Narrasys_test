@@ -1,6 +1,6 @@
 'use strict';
 angular.module('com.inthetelling.story')
-	.factory('questionAnswersSvc', function ($q, analyticsSvc) {
+	.factory('questionAnswersSvc', function ($q, analyticsSvc, appState) {
 		var svc = {};
 		svc.saveAnswer = function (name, eventID, data) {
 			return analyticsSvc.forceCaptureEventActivityWithPromise(name, eventID, data);
@@ -10,7 +10,10 @@ angular.module('com.inthetelling.story')
 			analyticsSvc.readEventActivity(eventId)
 				.then(function (activityData) {
 					var answers = activityData.filter(function (activity) {
-						return (activity.name === "question-answered" || activity.name === "question-answered-updated");
+						return (
+							(activity.name === "question-answered" || activity.name === "question-answered-updated")
+							&& activity.episode_id === appState.episodeId
+						);
 					});
 					defer.resolve(answers);
 				});
