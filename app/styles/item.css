@@ -606,14 +606,14 @@ Inline images (TODO show these only when image is larger than available space) *
 }
 
 .item .chartContainer {
-	width: 30%;
+	width: 70%;
 	max-width: 400px;
 	float: left;
 }
 
 .item .legendContainer {
 	float: right;
-	max-width: 70%;
+	max-width: 30%;
 }
 
 .item .legendContainer td {
