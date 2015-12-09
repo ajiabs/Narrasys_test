@@ -13,28 +13,33 @@
 			scope: {
 				item: '='
 			},
+			replace: true,
+			template: '<iframe ng-src="{{item.source}}"></iframe>',
 			link: link
 		};
 
-		function getTemplate(itemObj) {
-			var wSandbox = '<iframe ng-src="{{item.souce}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>';
-			var noSandbox = '<iframe ng-src="{{item.source}}"></iframe>';
-			var template;
+		function link(scope, elm) {
 
-			if (itemObj.type === 'Link' && itemObj.url.match(/.pdf/)) {
-				template = noSandbox;
-				itemObj.source = itemObj.url;
-			} else {
-				template = wSandbox;
-				itemObj.source = itemObj.url;
+			renderTemplate();
+
+			function renderTemplate() {
+				if (scope.item.type === 'Link' && scope.item.url.match(/.pdf/)) {
+					scope.item.source = scope.item.url;
+					elm.removeAttr('sandbox');
+					$compile(elm)(scope);
+				} else {
+					scope.item.source = scope.item.url;
+					elm.attr('sandbox', 'allow-forms allow-same-origin allow-scripts');
+				}
 			}
 
-			return template;
-		}
-
-		function link(scope, element) {
-			element.html(getTemplate(scope.item)).show();
-			$compile(element.contents())(scope);
+			scope.$watch(function() {
+				return scope.item.url;
+			}, function(newVal, oldVal) {
+				if (newVal !== oldVal) {
+					renderTemplate();
+				}
+			});
 		}
 
 	}
