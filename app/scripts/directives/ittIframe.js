@@ -17,11 +17,9 @@
 		};
 
 		function getTemplate(itemObj) {
-			var wSandbox = '<iframe src="{{item.souce}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>';
-			var noSandbox = '<iframe src="{{item.source}}"></iframe>';
+			var wSandbox = '<iframe ng-src="{{item.souce}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>';
+			var noSandbox = '<iframe ng-src="{{item.source}}"></iframe>';
 			var template;
-
-			console.log('item passed to directive', itemObj);
 
 			if (itemObj.type === 'Link' && itemObj.url.match(/.pdf/)) {
 				template = noSandbox;

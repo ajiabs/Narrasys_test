@@ -46,7 +46,8 @@
 	<div class="iframeContainer">
 		<div ng-include="'templates/loading.html'"></div>
 		<!-- <iframe style="display:none;" onload="console.log('load',this.src);if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
-		<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
+		<!--<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>-->
+		<itt-iframe item="item"></itt-iframe>
 	</div>
 </div>
 <div class="clear "></div>
