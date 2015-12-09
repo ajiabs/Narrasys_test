@@ -24,9 +24,22 @@
 
 			renderTemplate();
 
+			//console.log('directive scope.item', scope.item);
+
 			function renderTemplate() {
+
+				//case: pdf direct link
 				if (scope.item.type === 'Link' && scope.item.url.match(/.pdf/)) {
 					scope.item.source = scope.item.url;
+					elm.removeAttr('sandbox');
+					$compile(elm)(scope);
+					//case: uploaded pdf asset
+				} else if (
+					scope.item.type === 'Link' &&
+					angular.isDefined(scope.item.asset) &&
+					scope.item.asset.content_type === 'application/pdf'
+				) {
+					scope.item.source = scope.item.asset.url;
 					elm.removeAttr('sandbox');
 					$compile(elm)(scope);
 				} else {
