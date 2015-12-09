@@ -28,33 +28,52 @@
 
 			function renderTemplate() {
 
+				//helpers
+				function _doSandbox() {
+					elm.removeAttr('sandbox');
+					$compile(elm)(scope);
+				}
+
+				function _undoSandbox() {
+					elm.attr('sandbox', 'allow-forms allow-same-origin allow-scripts');
+				}
+
 				//case: pdf direct link
 				if (scope.item.type === 'Link' && scope.item.url.match(/.pdf/)) {
 					scope.item.source = scope.item.url;
-					elm.removeAttr('sandbox');
-					$compile(elm)(scope);
-					//case: uploaded pdf asset
-				} else if (
-					scope.item.type === 'Link' &&
-					angular.isDefined(scope.item.asset) &&
-					scope.item.asset.content_type === 'application/pdf'
-				) {
-					scope.item.source = scope.item.asset.url;
-					elm.removeAttr('sandbox');
-					$compile(elm)(scope);
+					_doSandbox();
+					//case: uploaded asset
+				} else if (scope.item.type === 'Link' && angular.isDefined(scope.item.asset)) {
+
+					//the upload is a PDF
+					if (scope.item.asset.content_type === 'application/pdf') {
+						scope.item.source = scope.item.asset.url;
+						_doSandbox();
+					}
+
+					//the upload is an image
+					if (scope.item.asset._type === 'Asset::Image') {
+						scope.item.source = scope.item.asset.url;
+						_undoSandbox();
+					}
+
 				} else {
 					scope.item.source = scope.item.url;
-					elm.attr('sandbox', 'allow-forms allow-same-origin allow-scripts');
+					_undoSandbox();
 				}
+
 			}
 
+			//may be able to pull this off without a watch, looking into using $apply for this.
 			scope.$watch(function() {
-				return scope.item.url;
+				//this works because optional third param set to true will check for object equality rather than reference
+				//eg angular.equals(newVal, newVal);
+				return [scope.item.url, scope.item.asset.url];
 			}, function(newVal, oldVal) {
-				if (newVal !== oldVal) {
+				if (newVal[0] !== oldVal[0] || newVal[1] !== oldVal[1]) {
 					renderTemplate();
 				}
-			});
+			}, true);
 		}
 
 	}
