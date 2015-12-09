@@ -4,6 +4,8 @@
  */
 
 (function(){
+	'use strict';
+
 	angular.module('com.inthetelling.story')
 		.directive('ittIframe', ittIframe);
 
