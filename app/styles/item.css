@@ -95,7 +95,8 @@ a.startTime.displayTime {
 }
 
 .iframeContainer iframe {
-	background-color: transparent;
+	background-color: #FFF;
+	/* can't be transparent; otherwise loading spinner stays visible if framed content is smaller than iframe */
 	border: none;
 	width: 100%;
 	height: 98%;

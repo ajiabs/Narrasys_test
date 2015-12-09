@@ -1,14 +1,22 @@
 <div class="modal" ng-click="dismiss();">
-	<div ng-if="item._type == 'Link'" class="modalmenu">
+	<div ng-if="
+		item._type == 'Link' ||
+		(item._type == 'Upload' && item.producerItemType == 'file')
+	" class="modalmenu">
 		<a href="{{item.url}}" target="_blank" class="escapelink">(new window)</a>
 	</div>
 	<div ng-if="item._type == 'Link'" class="iframeContainer">
 		<div ng-include="'templates/loading.html'"></div>
 		<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
 		<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
-
 	</div>
-	<div class="modalimage" ng-if="item._type == 'Upload'">
-		<img ng-src="{{item.asset.url}}">
-	</div>
+	<span ng-if="item._type == 'Upload'">
+		<div ng-if="item.producerItemType == 'file'" class="iframeContainer">
+			<div ng-include="'templates/loading.html'"></div>
+			<iframe ng-src="{{item.asset.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
+		</div>
+		<div class="modalimage" ng-if="item.producerItemType != 'file'">
+			<img ng-src="{{item.asset.url}}">
+		</div>
+	</span>
 </div>
