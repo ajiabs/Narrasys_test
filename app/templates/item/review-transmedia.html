@@ -39,7 +39,6 @@
 							<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 							<div class="iframeContainer">
 								<div ng-include="'templates/loading.html'"></div>
-								<!--<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>-->
 								<itt-iframe item="item"></itt-iframe>
 							</div>
 						</div>

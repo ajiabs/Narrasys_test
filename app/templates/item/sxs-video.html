@@ -14,8 +14,7 @@
 	<a class="escapelink" ng-click="outgoingLink(item.url)">New window</a>
 
 	<div class="iframeContainer" ng-if="item.url">
-		<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
-		<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
+		<itt-iframe item="item"></itt-iframe>
 	</div>
 	<div class="clear"></div>
 </div>
