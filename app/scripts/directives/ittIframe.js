@@ -4,40 +4,50 @@
  */
 
 (function(){
+	'use strict';
+
 	angular.module('com.inthetelling.story')
 		.directive('ittIframe', ittIframe);
 
-	function ittIframe($compile) {
+	function ittIframe() {
 		return {
 			restrict: 'EA',
 			scope: {
 				item: '='
 			},
-			link: link
+			replace: true,
+			template: '<iframe ng-src="{{ctrl.item.url || ctrl.item.asset.url}}" ng-attr-sandbox="{{ctrl.sandbox}}"></iframe>',
+			controller: iframeCtrl,
+			controllerAs: 'ctrl',
+			bindToController: true
 		};
 
-		function getTemplate(itemObj) {
-			var wSandbox = '<iframe src="{{item.souce}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>';
-			var noSandbox = '<iframe src="{{item.source}}"></iframe>';
-			var template;
+		function iframeCtrl() {
+			var ctrl = this; // jshint ignore:line
 
-			console.log('item passed to directive', itemObj);
+			var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
 
-			if (itemObj.type === 'Link' && itemObj.url.match(/.pdf/)) {
-				template = noSandbox;
-				itemObj.source = itemObj.url;
+			//root item's URL is a PDF
+			if (ctrl.item.type === 'Link' && ctrl.item.url.match(/.pdf/)) {
+				ctrl.sandbox = undefined;
+
+				//it could be an uploaded asset, with its own URL
+			} else if (ctrl.item.type === 'Link' && angular.isDefined(ctrl.item.asset)) {
+
+				//uploaded PDF asset
+				if (ctrl.item.asset.content_type === 'application/pdf') {
+					ctrl.sandbox = undefined;
+				}
+
+				//uploaded IMG asset
+				if (ctrl.item.asset._type === 'Asset::Image') {
+					ctrl.sandbox = _sandboxAttrs;
+				}
+
 			} else {
-				template = wSandbox;
-				itemObj.source = itemObj.url;
+				//root item's URL is not a PDF ->sandbox it!
+				ctrl.sandbox = _sandboxAttrs;
 			}
-
-			return template;
 		}
-
-		function link(scope, element) {
-			element.html(getTemplate(scope.item)).show();
-			$compile(element.contents())(scope);
-		}
-
 	}
 })();
