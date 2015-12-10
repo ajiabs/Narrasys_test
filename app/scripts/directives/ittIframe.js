@@ -23,8 +23,7 @@
 		};
 
 		function iframeCtrl() {
-			var ctrl = this; //jshint ignore:line
-							 // (not a strict violation, trust me!)
+			var ctrl = this; // jshint ignore:line
 
 			var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
 
