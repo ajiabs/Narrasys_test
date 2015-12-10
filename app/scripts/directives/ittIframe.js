@@ -9,72 +9,39 @@
 	angular.module('com.inthetelling.story')
 		.directive('ittIframe', ittIframe);
 
-	function ittIframe($compile) {
+	function ittIframe() {
 		return {
 			restrict: 'EA',
 			scope: {
 				item: '='
 			},
 			replace: true,
-			template: '<iframe ng-src="{{item.source}}"></iframe>',
-			link: link
+			template: '<iframe ng-src="{{ctrl.item.asset.url || ctrl.item.url}}" ng-attr-sandbox="{{ctrl.sandbox}}"></iframe>',
+			controller: iframeCtrl,
+			controllerAs: 'ctrl',
+			bindToController: true
 		};
 
-		function link(scope, elm) {
+		function iframeCtrl() {
+			var ctrl = this;
+			var _sandboxAttrs = "allow-forms allow-same-origin allow-scripts";
 
-			renderTemplate();
+			if (ctrl.item.type === 'Link' && ctrl.item.url.match(/.pdf/)) {
+				ctrl.sandbox = undefined;
 
-			//console.log('directive scope.item', scope.item);
+			} else if (ctrl.item.type === 'Link' && angular.isDefined(ctrl.item.asset)) {
 
-			function renderTemplate() {
-
-				//helpers
-				function _doSandbox() {
-					elm.removeAttr('sandbox');
-					$compile(elm)(scope);
+				if (ctrl.item.asset.content_type === 'application/pdf') {
+					ctrl.sandbox = undefined;
 				}
 
-				function _undoSandbox() {
-					elm.attr('sandbox', 'allow-forms allow-same-origin allow-scripts');
+				if (ctrl.item.asset._type === 'Asset::Image') {
+					ctrl.sandbox = _sandboxAttrs;
 				}
 
-				//case: pdf direct link
-				if (scope.item.type === 'Link' && scope.item.url.match(/.pdf/)) {
-					scope.item.source = scope.item.url;
-					_doSandbox();
-					//case: uploaded asset
-				} else if (scope.item.type === 'Link' && angular.isDefined(scope.item.asset)) {
-
-					//the upload is a PDF
-					if (scope.item.asset.content_type === 'application/pdf') {
-						scope.item.source = scope.item.asset.url;
-						_doSandbox();
-					}
-
-					//the upload is an image
-					if (scope.item.asset._type === 'Asset::Image') {
-						scope.item.source = scope.item.asset.url;
-						_undoSandbox();
-					}
-
-				} else {
-					scope.item.source = scope.item.url;
-					_undoSandbox();
-				}
-
+			} else {
+				ctrl.sandbox = _sandboxAttrs;
 			}
-
-			//may be able to pull this off without a watch, looking into using $apply for this.
-			scope.$watch(function() {
-				//this works because optional third param set to true will check for object equality rather than reference
-				//eg angular.equals(newVal, newVal);
-				return [scope.item.url, scope.item.asset.url];
-			}, function(newVal, oldVal) {
-				if (newVal[0] !== oldVal[0] || newVal[1] !== oldVal[1]) {
-					renderTemplate();
-				}
-			}, true);
 		}
-
 	}
 })();
