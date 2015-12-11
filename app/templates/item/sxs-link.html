@@ -14,11 +14,7 @@
 		<div class="modalmenu" ng-if="!item.noExternalLink">
 			<a ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 		</div>
-		<div class="iframeContainer">
-			<div ng-include="'templates/loading.html'"></div>
-			<!-- <iframe style="display:none;" onload="console.log('load',this.src);if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
-			<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
-		</div>
+		<itt-iframe x-src="{{item.url}}"></itt-iframe>
 	</div>
 	<div class="clear"></div>
 </div>

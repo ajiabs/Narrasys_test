@@ -5,7 +5,7 @@
 		<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
 	</div>
 
-	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
+	<itt-loading ng-if="loading"></itt-loading>
 	<div ng-if="!loading">
 		<div class="narrative">
 			<!-- begin display -->
