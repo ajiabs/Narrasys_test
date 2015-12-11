@@ -15,10 +15,6 @@
 		<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 	</div>
 	<a tabindex="0" class="escapelink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">(new window)</a>
-	<div class="iframeContainer">
-		<div ng-include="'templates/loading.html'"></div>
-		<!-- <iframe style="display:none;" onload="if(this.src) {$(this).css('display','block')};" ng-src="{{item.url}}"></iframe> -->
-		<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
-	</div>
+	<itt-iframe x-src="{{item.url}}"></itt-iframe>
 	<div class="clear"></div>
 </div>

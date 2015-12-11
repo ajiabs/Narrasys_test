@@ -1,5 +1,5 @@
 <div class="narrative">
-	<div ng-if="loading" ng-include="'templates/loading.html'"></div>
+	<itt-loading ng-if="loading"></itt-loading>
 	<div ng-if="!loading">
 		<div class="ancillaryNav">
 			<a class="button" ng-if="user._id" href="/#/user">Home</a>
