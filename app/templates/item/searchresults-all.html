@@ -23,18 +23,21 @@
 			<div ng-class="{showAsHeader: item.showAsHeader}" ng-bind-html="item.display_annotation || item.display_description | highlightSubstring: appState.searchText"></div>
 		</div>
 		<div class="itemDetail" ng-if="item.showInlineDetail">
-			<span ng-if="item.producerItemType == 'file' || item.producerItemType == 'video' || item.producerItemType == 'link'">
-				<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
-				<div class="iframeContainer">
-					<div ng-include="'templates/loading.html'"></div>
-					<!--<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>-->
-					<itt-iframe item="item"></itt-iframe>
-				</div>
-			</span>
 			<span ng-switch="item.producerItemType">
-				<span ng-switch-when="file"></span>
-				<span ng-switch-when="link"></span>
-				<span ng-switch-when="video"></span>
+				<span ng-switch-when="file">
+					<a tabindex="0" x-ng-keypress="outgoingLinkOnKeyPress(item.asset.url,$event)" ng-click="outgoingLink(item.asset.url)" class="escapelink">(new window)</a>
+					<itt-iframe x-src="{{item.asset.url}}" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
+				</span>
+				<span ng-switch-when="link">
+					<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
+					<itt-iframe x-src="{{item.url}}"></itt-iframe>
+				</span>
+				<span ng-switch-when="video">
+					<span ng-switch-when="file">
+						<a tabindex="0" x-ng-keypress="outgoingLinkOnKeyPress(item.asset.url,$event)" ng-click="outgoingLink(item.asset.url)" class="escapelink">(new window)</a>
+						<itt-iframe x-src="{{item.asset.url}}" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
+					</span>
+				</span>
 				<span ng-switch-when="image">
 					<div class="touchable" style="position:relative">
 						<img ng-click="forceModal()" ng-src="{{item.asset.url}}">
