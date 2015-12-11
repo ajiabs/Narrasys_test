@@ -16,8 +16,15 @@
     <div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
   </div>
   <div class="itemDetail" ng-if="item.showInlineDetail">
-    <a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
-    <itt-iframe x-src="{{item.asset.url}}" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
+    <span ng-switch="item.asset.content_type.indexOf('image/')">
+      <span ng-switch-when="-1">
+        <a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
+        <itt-iframe x-src="{{item.asset.url}}" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
+      </span>
+      <span ng-switch-default>
+        <img ng-src="{{item.asset.url}}">
+      </span>
+    </span>
   </div>
   <div class="clear "></div>
 </div>
