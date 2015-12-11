@@ -673,7 +673,7 @@ angular.module('com.inthetelling.story')
 					"annotation": "templates/item/pullquote-noattrib.html",
 					"link": "templates/item/link.html",
 					"image": "templates/item/image-plain.html",
-					"file": "templates/item/link.html",
+					"file": "templates/item/file.html",
 					"question": "templates/item/question-mc.html",
 					"video": "TODO:VIDEO"
 				};

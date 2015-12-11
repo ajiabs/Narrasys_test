@@ -37,12 +37,10 @@
 						</div>
 						<div class="itemDetail" ng-if="item.showInlineDetail && item._type == 'Link'">
 							<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
-							<div class="iframeContainer">
-								<div ng-include="'templates/loading.html'"></div>
-								<iframe ng-src="{{item.url}}" sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
-							</div>
+							<itt-iframe x-src="{{item.url}}"></itt-iframe>
 						</div>
 						<div class="itemDetail" ng-if="item.showInlineDetail && item._type != 'Link'">
+							<!-- this doesn't handle non-image Uploads, but this template is goign to be phased out very soon anyway in favor of searchresults-all so I'm not going to bother -->
 							<div class="touchable" style="position:relative">
 								<img ng-click="forceModal()" ng-src="{{item.asset.url}}">
 								<div class="touchableIndicator"></div>

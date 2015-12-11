@@ -409,7 +409,7 @@ angular.module('com.inthetelling.story')
 						event.producerItemType = 'annotation';
 					}
 				} else if (event._type === 'Upload') {
-					if (event.templateUrl.match(/file/)) {
+					if (event.templateUrl.match(/file/)) { // HACK
 						event.producerItemType = 'file';
 					} else {
 						event.producerItemType = 'image';

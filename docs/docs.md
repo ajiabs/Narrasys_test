@@ -2,6 +2,20 @@
 
 ## GETTING STARTED
 
+### Other documentation
+
+API documentation: 
+http://developers.inthetelling.com
+
+Documentation of (current) template system:
+https://docs.google.com/document/d/1WR9UnJIXZrNMwLqkf8GGw6_5-OwuQrZzJAxImxWC7O0 
+
+Planning and design documents for switching to narratives:
+https://docs.google.com/document/d/19PViWhOGfARx4iq9b67G3sIiGAjswr6o9b7oOUhzMug
+https://docs.google.com/document/d/1ZZK0-1KqvSJYrxedw5WThKbHdNLct65T4x6SIRuzjmY 
+
+Planned UI updates:
+https://www.dropbox.com/home/nextgen
 
 ### ITT Jargon
 
@@ -29,7 +43,6 @@ Do simple patches in the `dev` branch, and more complicated changes in their own
 
 
 ### Build, locally run server instance
-(todo link to api repo)
 
 API endpoint documentation (somewhat out of date, but a start) is at https://developers.inthetelling.com 
 
@@ -218,48 +231,37 @@ codebase to each server, so the template and the ability to select it will be th
 
 ### Design changes
 
-The three-modes UI used in episodes is to be phased out and replaced with the modeless UI currently used in editor and producer.
+The three-modes UI used in episodes is to be phased out and replaced with the modeless UI currently used in editor and producer. See TS-832
 
 
 ## DEVELOPER
 
-### Overview
-
-#### Player
-
-#### Editor / Producer
-
-### Hacks to watch out for
-
-### Dead code you can probably prune
-
-Commented throughout the codebase, but also:
-
-The three-modes design (after producer is updated to write narratives instead of plain episodes, and after the `/#/episode/{id}` route is phased out in favor of `/#/story/{narrative}/{timeline}`)
-
-
-
 
 ### Active branches
 
-
-* matt's dataMgr
-
-* nextgen templates
-
+"dev" branch for small fixes and pre-deploy testing.  "master" should match what is in production. Larger features should be built on branches from "dev".
 
 
 ### Work in progress
 
-...active branches, plus:
 
-
-#### Phase out the three-modes UI
-
-need to add /search urls and ?t= param to narratives, decide what to do with old /watch, /search urls if anything
+#### DataMgr
+The branch "dataMgr" contains some incomplete but potentially useful work towards converting API access to use $resource. (When we first developed the product, $resource didn't support promises, so we rolled our own.)  It's unfortunately mingled with some deck-chair-rearranging of functionality between modelSvc and dataSvc and the new dataMgr service  (I think the idea was to obsolete modelSvc and replace it with dataMgr, for some reason?)
 
 #### Template / styles refactor
+The branch "styles-refactor" contains a lot of incomplete work towards revamping the template system altogether, as well as some updates to the UI.
 
+When in that branch, the "/#/foo" route will show a testbed for some new UI widgets (better tabsets and floaters) mostly contained within ittStoryUI.js
+
+/#/event/annotation, /#/event/transcript, and /#/event/link show a working demo of the new template structure (in its partially implemented state).  This system has a LOT more individually selectable variations for each item (see in particular the 'style: new style' option in the pulldown under the style tab.)  Style combinations can currently be saved into localStorage, ultimately they were to be sharable via some API mechanism to be determined.
+
+Previews of edits are handled by using a new "variantItem" parameter in ittItem, which will override the base item data for display within that directive (this is a much better and more flexible strategy than the old 'forceTemplate' thing)
+
+Layout and Position are only partially implemented. The templates themselves (in /templates/v2) are mostly just for testbed, not real designs.  
+
+Items wind up rendered in templates/v2/wrapper/_global.html for boilerplate, then /v2/wrapper/{selected wrapper}.html, then the selected item template per item type (using templates/v2/(itemtype)/default.html by convention if none is specified.)
+
+The intended look-and-feel for all of this is in dropbox in the "nextgen" folder.
 
 
 #### Multi-episode timelines

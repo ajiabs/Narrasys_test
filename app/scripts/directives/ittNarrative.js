@@ -150,7 +150,11 @@ angular.module('com.inthetelling.story')
 
 						// as long as we're here, get the duration before moving on:
 						dataSvc.getSingleAsset(episodeData.master_asset_id).then(function (data) {
-							newTimeline.duration = data.duration;
+							if (data) {
+								newTimeline.duration = data.duration;
+							} else {
+								newTimeline.duration = 0;
+							}
 							scope.narrative.timelines.push(newTimeline);
 							scope.isAddingTimeline = true;
 						});

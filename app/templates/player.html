@@ -13,7 +13,7 @@
 		? 'templates/toolbar-episode.html'
 		: 'templates/toolbar-story.html'"></div>
 
-		<div ng-if="loading" ng-include="'templates/loading.html'"></div>
+		<itt-loading ng-if="loading"></itt-loading>
 		<div ng-show="!loading" itt-episode ng-class="{
 		padForEditing: appState.editEvent || appState.editEpisode,
 		showBackgroundOnly: appState.producerEditLayer < 0,

@@ -103,10 +103,10 @@
 									<option value="templates/item/image-thumbnail.html">Image thumbnail</option>
 									<option value="templates/item/image-plain.html">Plain image</option>
 								</select>
-
 								<select ng-if="item.producerItemType == 'file'" ng-model="item.templateUrl">
-									<option value="templates/item/file.html">Linked file (TODO: force noembed?)</option>
-									<option value="templates/item/file-withimage.html">Linked file with image</option>
+									<!-- HACK these MUST contain "file" in the url; see modelSvc trying to set producerItemType -->
+									<option value="templates/item/file.html">Uploaded file</option>
+									<!-- <option value="templates/item/file-withimage.html">Linked file with image</option> -->
 								</select>
 								<select ng-if="item.producerItemType == 'question'" ng-model="item.templateUrl">
 									<option value="templates/item/question-mc.html">Default question display</option>
