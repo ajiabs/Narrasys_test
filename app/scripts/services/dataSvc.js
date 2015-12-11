@@ -181,7 +181,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getSingleAsset = function (assetId) {
-			return GET("/v1/assets/" + assetId);
+			if (assetId) {
+				return GET("/v1/assets/" + assetId);
+			} else {
+				return $q(function(resolve) { resolve(undefined); });
+			}
 		};
 
 		var dataCache = {
