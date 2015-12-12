@@ -1,8 +1,7 @@
 'use strict';
-
 /*
 
-TODO: 
+TODO:
 
 split this file up into separate directive files
 when displaying a narrative, compare its user_id to the current user's id to set isOwner
@@ -10,7 +9,7 @@ i18n
 
 
 To create a narrative:
-* get the user ID, make a group containing that ID, 
+* get the user ID, make a group containing that ID,
 * create narrative with name,description,group id
 
 TO add a timeline:
@@ -184,7 +183,7 @@ angular.module('com.inthetelling.story')
 
 						}).then(function (childEpisode) {
 							dataSvc.storeTimeline(scope.narrative._id, timeline).then(function (timelineData) {
-								// create episode segment 
+								// create episode segment
 								dataSvc.createEpisodeSegment(timelineData._id, {
 									"episode_id": childEpisode._id,
 									"start_time": 0,
