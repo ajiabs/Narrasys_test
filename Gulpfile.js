@@ -14,8 +14,9 @@ var gulp        = require('gulp'),
 	ngAnnotate  = require('gulp-ng-annotate'),
 	rimraf      = require('rimraf'),
 	rev         = require('gulp-rev'),
-	watch       = require('gulp-watch'),
-	serve       = require('browser-sync');
+	runSequence = require('run-sequence'),
+	serve       = require('browser-sync'),
+	Server      = require('karma').Server;
 
 var root = 'client';
 
@@ -23,9 +24,10 @@ var root = 'client';
 var pathHelper = function(resolvePath) {
 	return function(glob) {
 		glob = glob || '';
-		return path.resolve(path.join(root, resolvePath, glob));
+		return path.resolve(path.join(resolvePath, glob));
 	};
 };
+
 
 var appPath = pathHelper('app');
 
@@ -34,10 +36,14 @@ var paths = {
 		appPath('**/*.html'),
 		path.join(root, 'index.html')
 	],
+	templates: appPath('templates/**/*.html'),
+	images: appPath('images/**/*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}'),
 	css: appPath('**/*.css'),
 	scripts: appPath('**/*.js'),
-	dist: path.join(__dirname + 'dist/')
+	dist: path.join(__dirname + '/dist')
 };
+
+console.log('PATHS', paths);
 
 gulp.task('serve', function(){
 	require('chokidar-socket-emitter')({port: 8081, path: 'client/app', relativeTo: 'client/app'})
@@ -56,19 +62,21 @@ gulp.task('serve', function(){
 		//		'/jspm_packages': './jspm_packages'
 		//	}
 		//},
+		//or use your own proxy url below
 		proxy: 'localhost.inthetelling.com',
 	});
 });
 
 gulp.task('lint', function() {
-	return gulp.src(['app/scripts/**/*.js', '!app/scripts/templates.js'])
+	return gulp.src([paths.scripts, '!app/scripts/templates.js', '!app/jspm_packages/**/*.js'])
 		.pipe(jshint('.jshintrc'))
-		.pipe(jshint.reporter('jshint-stylish'));
+		.pipe(jshint.reporter('jshint-stylish'))
+		.pipe(jshint.reporter('fail'));
 });
 
 gulp.task('templates', function () {
-	return gulp.src('app/templates/**/*.html')
-		.pipe(template('templates.js', {module: 'com.inthetelling.story'}))
+	return gulp.src(paths.templates)
+		.pipe(template('templates.js', {module: 'com.inthetelling.story', moduleSystem: 'ES6'}))
 		.pipe(gulp.dest('app/scripts'));
 });
 
@@ -80,25 +88,50 @@ gulp.task('jsHint', function() {
 	gulp.watch('**/*.js', ['lint']);
 });
 
-gulp.task('build', function() {
+gulp.task('images', function() {
+	return gulp.src(paths.images)
+		.pipe(gulp.dest(paths.dist +'/images'));
+});
+
+gulp.task('cleanDist', function() {
+	rimraf.sync(path.join(paths.dist, '*'));
+});
+
+gulp.task('bundle', function() {
 	var dist = path.join(paths.dist + 'app.js');
 	rimraf.sync(path.join(paths.dist, '*'));
 	// Use JSPM to bundle our app
-	return jspm.bundleSFX(resolveToApp('app'), dist, {})
+	return jspm.bundleSFX('scripts/app', dist, {})
 		.then(function() {
 			// Also create a fully annotated minified copy
 			return gulp.src(dist)
 				.pipe(ngAnnotate())
 				.pipe(uglify())
 				.pipe(rename('app.min.js'))
-				.pipe(gulp.dest(paths.dist));
+				.pipe(rev())
+				.pipe(gulp.dest(paths.dist + '/scripts'));
 		})
 		.then(function() {
 			// Inject minified script into index
-			return gulp.src('client/index.html')
+			return gulp.src('app/index.html')
 				.pipe(htmlreplace({
 					'js': 'app.min.js'
 				}))
 				.pipe(gulp.dest(paths.dist));
 		});
+});
+
+gulp.task('test', function (done) {
+	new Server({
+		configFile: __dirname + '/karma.conf.js',
+		singleRun: true
+	}, done).start();
+});
+
+gulp.task('build', function() {
+	return runSequence(
+		'lint',
+		['templates', 'images'],
+		'bundle'
+	);
 });

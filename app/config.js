@@ -1,4 +1,4 @@
-var config = {
+var config = { //jshint ignore:line
 	// Fill this in only if you need to load data from something other than the current server
 	// apiDataBaseUrl: 'https://story.inthetelling.com',
 	// apiDataBaseUrl: 'https://demo.inthetelling.com',
@@ -21,5 +21,5 @@ var config = {
 		apikey: 'AIzaSyDBU-E8lrZdKdAJ9XaVva95FuZLYoL-Tb4'
 	},
 	disableAnalytics: false,
-	debugInBrowser: false // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway. 
+	debugInBrowser: false // Set this to false to make karma less noisy.  This setting will have no effect in production builds, which drop all console logs anyway.
 };

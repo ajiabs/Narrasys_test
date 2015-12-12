@@ -13,20 +13,23 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: [
-			'app/bower_components/angular/angular.min.js',
-			'app/bower_components/angular-mocks/angular-mocks.js',
-			'app/bower_components/jquery/dist/jquery.min.js',
-			'app/bower_components/angular-animate/angular-animate.min.js',
-			'app/bower_components/angular-route/angular-route.min.js',
-			'app/bower_components/angular-sanitize/angular-sanitize.min.js',
+			//'app/bower_components/angular/angular.min.js',
+			//'app/bower_components/angular-mocks/angular-mocks.js',
+			//'app/bower_components/jquery/dist/jquery.min.js',
+			//'app/bower_components/angular-animate/angular-animate.min.js',
+			//'app/bower_components/angular-route/angular-route.min.js',
+			//'app/bower_components/angular-sanitize/angular-sanitize.min.js',
+            //
+			//'app/bower_components/flot/jquery.flot.js',
+			//'app/bower_components/flot/jquery.flot.pie.js',
+			//'app/scripts/plugin/newrelic.js',
+			//'app/bower_components/textAngular/dist/textAngular.min.js',
+			//'app/bower_components/textAngular/dist/textAngular-sanitize.min.js',
+			//// 'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
+			//'app/bower_components/textAngularRangyFake.js', // the real one throws errors we don't care about.
+            //
 
-			'app/bower_components/flot/jquery.flot.js',
-			'app/bower_components/flot/jquery.flot.pie.js',
-			'app/scripts/plugin/newrelic.js',
-			'app/bower_components/textAngular/dist/textAngular.min.js',
-			'app/bower_components/textAngular/dist/textAngular-sanitize.min.js',
-			// 'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
-			'app/bower_components/textAngularRangyFake.js', // the real one throws errors we don't care about.
+
 
 			'app/config.js',
 			'app/scripts/*.js',
@@ -34,6 +37,17 @@ module.exports = function (config) {
 			'test/mock/*.json',
 			'test/spec/**/*.js',
 		],
+
+		jspm: {
+			// Edit this to your needs
+			config: 'jspm.config.js',
+			loadFiles: ['test/**/*.js'],
+			serveFiles: [
+				'app/**/*.js',
+				'app/**/*.html',
+				'app/**/*.css'
+			]
+		},
 
 		// list of files / patterns to exclude
 		exclude: [],
@@ -63,3 +77,6 @@ module.exports = function (config) {
 		singleRun: true
 	});
 };
+//- UNMET PEER DEPENDENCY chai@*
+//+-- UNMET PEER DEPENDENCY karma-coffee-preprocessor@~0.1.0
+//+-- UNMET PEER DEPENDENCY mocha@*
