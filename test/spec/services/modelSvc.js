@@ -425,7 +425,7 @@ describe('Service: modelSvc', function () {
 
 		modelSvc.resolveEpisodeEvents("EP1");
 
-		// key should be the default language, or english,  followed by other available languages 
+		// key should be the default language, or english,  followed by other available languages
 		expect(modelSvc.episodes.EP1.annotators["Mister Smith"].key).toEqual("Mister Smith / AA / BB / CC");
 	});
 

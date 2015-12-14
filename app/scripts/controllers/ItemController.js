@@ -1,19 +1,19 @@
 'use strict';
 
-angular.module('com.inthetelling.story')
-	.controller('ItemController', function ($scope, timelineSvc) {
-		$scope.seek = function (t) {
-			timelineSvc.seek(t, "clickedOnItem", $scope.item._id);
-		};
-		var KeyCodes = {
-			ENTER: 13,
-			SPACE: 32
-		};
+export default function ItemController($scope, timelineSvc) {
+	'ngInject';
+	$scope.seek = function (t) {
+		timelineSvc.seek(t, "clickedOnItem", $scope.item._id);
+	};
+	var KeyCodes = {
+		ENTER: 13,
+		SPACE: 32
+	};
 
-		$scope.seekOnKeyPress = function (t, $event) {
-			var e = $event;
-			var passThrough = true;
-			switch (e.keyCode) {
+	$scope.seekOnKeyPress = function (t, $event) {
+		var e = $event;
+		var passThrough = true;
+		switch (e.keyCode) {
 			case KeyCodes.ENTER:
 				$scope.seek(t);
 				passThrough = false;
@@ -25,10 +25,10 @@ angular.module('com.inthetelling.story')
 			default:
 				passThrough = true;
 				break;
-			}
-			if (!passThrough) {
-				$event.stopPropagation();
-				$event.preventDefault();
-			}
-		};
-	});
+		}
+		if (!passThrough) {
+			$event.stopPropagation();
+			$event.preventDefault();
+		}
+	};
+}

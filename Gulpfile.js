@@ -36,6 +36,15 @@ var paths = {
 		appPath('**/*.html'),
 		path.join(root, 'index.html')
 	],
+	misc: [
+		appPath('apple-touch-icon.png'),
+		appPath('apple-touch-icon-72.png'),
+		appPath('apple-touch-icon-114.png'),
+		appPath('config.js'),
+		appPath('iosFrameHack.js'),
+		appPath('privacy.html'),
+
+	],
 	templates: appPath('templates/**/*.html'),
 	images: appPath('images/**/*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}'),
 	css: appPath('**/*.css'),
@@ -45,8 +54,8 @@ var paths = {
 
 console.log('PATHS', paths);
 
-gulp.task('serve', function(){
-	require('chokidar-socket-emitter')({port: 8081, path: 'client/app', relativeTo: 'client/app'})
+gulp.task('serve', ['templateCache'], function(){
+	require('chokidar-socket-emitter')({port: 8081, path: 'app', relativeTo: 'app'})
 	serve({
 		//port: process.env.PORT || 3000,
 		//open: false,
@@ -63,12 +72,12 @@ gulp.task('serve', function(){
 		//	}
 		//},
 		//or use your own proxy url below
-		proxy: 'localhost.inthetelling.com',
+		proxy: 'localhost.inthetelling.com'
 	});
 });
 
 gulp.task('lint', function() {
-	return gulp.src([paths.scripts, '!app/scripts/templates.js', '!app/jspm_packages/**/*.js'])
+	return gulp.src([paths.scripts, '!app/scripts/templates.js', '!app/jspm_packages/**/*.js', '!app/jspm.config.js'])
 		.pipe(jshint('.jshintrc'))
 		.pipe(jshint.reporter('jshint-stylish'))
 		.pipe(jshint.reporter('fail'));
@@ -76,7 +85,7 @@ gulp.task('lint', function() {
 
 gulp.task('templates', function () {
 	return gulp.src(paths.templates)
-		.pipe(template('templates.js', {module: 'com.inthetelling.story', moduleSystem: 'ES6'}))
+		.pipe(template('templates.js', {moduleSystem: 'ES6', module:'iTT.templates', standalone: true}))
 		.pipe(gulp.dest('app/scripts'));
 });
 
@@ -99,7 +108,6 @@ gulp.task('cleanDist', function() {
 
 gulp.task('bundle', function() {
 	var dist = path.join(paths.dist + 'app.js');
-	rimraf.sync(path.join(paths.dist, '*'));
 	// Use JSPM to bundle our app
 	return jspm.bundleSFX('scripts/app', dist, {})
 		.then(function() {
@@ -121,6 +129,11 @@ gulp.task('bundle', function() {
 		});
 });
 
+gulp.task('misc', function() {
+	return gulp.src(paths.misc)
+	.pipe(gulp.dest(paths.dist));
+});
+
 gulp.task('test', function (done) {
 	new Server({
 		configFile: __dirname + '/karma.conf.js',
@@ -131,7 +144,8 @@ gulp.task('test', function (done) {
 gulp.task('build', function() {
 	return runSequence(
 		'lint',
-		['templates', 'images'],
+		'cleanDist',
+		['templates', 'images', 'misc'],
 		'bundle'
 	);
 });

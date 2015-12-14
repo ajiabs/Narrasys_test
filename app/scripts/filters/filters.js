@@ -2,7 +2,9 @@
 
 // TODO make up my mind about 'foo' versus 'isFoo'
 
-angular.module('com.inthetelling.story')
+import angular from 'angular';
+
+export default angular.module('iTT.filters', [])
 
 /* List filters */
 .filter('itemLayout', function () {

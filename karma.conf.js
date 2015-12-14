@@ -27,8 +27,6 @@ module.exports = function (config) {
 			//'app/bower_components/textAngular/dist/textAngular-sanitize.min.js',
 			//// 'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
 			//'app/bower_components/textAngularRangyFake.js', // the real one throws errors we don't care about.
-            //
-
 
 
 			'app/config.js',
@@ -37,17 +35,17 @@ module.exports = function (config) {
 			'test/mock/*.json',
 			'test/spec/**/*.js',
 		],
-
-		jspm: {
-			// Edit this to your needs
-			config: 'jspm.config.js',
-			loadFiles: ['test/**/*.js'],
-			serveFiles: [
-				'app/**/*.js',
-				'app/**/*.html',
-				'app/**/*.css'
-			]
-		},
+        //
+		//jspm: {
+		//	// Edit this to your needs
+		//	config: 'jspm.config.js',
+		//	loadFiles: ['test/**/*.js'],
+		//	serveFiles: [
+		//		'app/**/*.js',
+		//		'app/**/*.html',
+		//		'app/**/*.css'
+		//	]
+		//},
 
 		// list of files / patterns to exclude
 		exclude: [],

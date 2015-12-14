@@ -1,7 +1,36 @@
 'use strict';
 
+import angular from 'angular';
+import 'angular-route';
+import 'angular-animate';
+import 'angular-sanitize';
+//import 'textAngular';
+
+import './plugin/newrelic';
+import Filters from './filters/filters';
+import * as styles from '../styles/styles'; //jshint ignore:line
+import $ from 'jquery';
+
+import Controllers from './controllers/Controllers.module';
+import Directives from './directives/directives.module';
+import Services from './services/services.module';
+import Templates from './templates';
+import Configs from './app.module.configs';
+
 // Declare the top level application module and its dependencies
-angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular'])
+let ittApp = angular.module('iTT', [
+	'ngRoute',
+	'ngAnimate',
+	'ngSanitize',
+	//'textAngular',
+	Configs.name,
+	Filters.name,
+	Templates.name,
+	Controllers.name,
+	Directives.name,
+	Services.name,
+])
+
 
 // Configure routing
 .config(function ($routeProvider) {
@@ -147,45 +176,42 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	$(document).on("keyup", function () {
 		fhotkb = false; // oh good they've woken up
 	});
-})
-
-// Configure x-domain resource whitelist (TODO: do we actually need this?)
-.config(function ($sceDelegateProvider) {
-	$sceDelegateProvider.resourceUrlWhitelist([
-		'self',
-		/.*/,
-		/^http(s)?:\/\/platformuniv-p.edgesuite.net/,
-		/^http(s)?:\/\/themes.googleusercontent.com/
-	]);
-})
-
-// Configure http headers and intercept http errors
-.config(function ($httpProvider) {
-	$httpProvider.defaults.useXDomain = true;
-	$httpProvider.defaults.withCredentials = true;
-	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-	$httpProvider.interceptors.push(function ($q, errorSvc) {
-		return {
-			'responseError': function (rejection) {
-				errorSvc.error(rejection);
-				return $q.reject(rejection);
-			}
-		};
-	});
-})
-
-// Configuration for textAngular toolbar
-.config(function ($provide) {
-	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
-		taOptions.toolbar = [
-			['h1', 'h2', 'h3'],
-			['bold', 'italics', 'underline', 'strikeThrough'],
-			['ul', 'ol'],
-			['undo', 'redo', 'clear']
-			// ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
-			// ['justifyLeft','justifyCenter','justifyRight','indent','outdent'],
-			// ['html', 'insertImage', 'insertLink', 'insertVideo', 'wordcount', 'charcount']
-		];
-		return taOptions;
-	}]);
 });
+
+//hot reload
+/* jshint ignore:start */
+var appContainer = document.getElementById('app-container');
+var noAngularDOM;
+
+angular.element(document).ready(() => {
+	angular.bootstrap(appContainer, [ittApp.name]), {strictDi: true}; //jshint ignore:line
+});
+
+//
+//angular.element(document).ready(()=> {
+//	if(location.origin.match(/localhost/)) {
+//		System.trace = true;
+//		noAngularDOM = appContainer.cloneNode(true);
+//		if ((!System.hotReloader)) {
+//			System.import('capaj/systemjs-hot-reloader').then(HotReloader => {
+//				System.hotReloader = new HotReloader.default('http://localhost:8081/');
+//				System.hotReloader.on('change', function (name) {
+//					console.log(name, 'changed');
+//				});
+//			});
+//		}
+//	}
+//	angular.bootstrap(appContainer, [ittApp.name]), {
+//		strictDi: true
+//	};
+//});
+
+
+//export function __unload(){
+//	appContainer = document.getElementById('app-container');
+//	appContainer.remove();
+//	document.body.appendChild(noAngularDOM.cloneNode(true));
+//}
+
+/* jshint ignore:end */
+export default ittApp;

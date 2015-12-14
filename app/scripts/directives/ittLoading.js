@@ -1,17 +1,12 @@
 /**
  * Created by githop on 12/11/15.
  */
+'use strict';
 
-(function() {
-	'use strict';
+export default function ittLoading() {
+	return {
+		scope: true,
+		templateUrl: 'templates/loading.html'
+	};
+}
 
-	angular.module('com.inthetelling.story')
-		.directive('ittLoading', ittLoading);
-
-	function ittLoading() {
-		return {
-			scope: true,
-			templateUrl: 'templates/loading.html'
-		};
-	}
-})();

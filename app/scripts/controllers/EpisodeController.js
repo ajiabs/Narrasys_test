@@ -1,6 +1,3 @@
 'use strict';
 
-angular.module('com.inthetelling.story')
-	.controller('EpisodeController', function () {
-
-	});
+export default function EpisodeController() {}
