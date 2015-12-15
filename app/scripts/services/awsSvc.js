@@ -51,9 +51,9 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-		/* 
+		/*
 		CRUFT asset creation endpoint is passed down through uploadFiles, startNextUpload, and createAsset.
-		TODO Refactor to create asset record outside of awsSvc, after returned promise from uploadFiles (meaning we could go back to a single svc.uploadFiles fn), 
+		TODO Refactor to create asset record outside of awsSvc, after returned promise from uploadFiles (meaning we could go back to a single svc.uploadFiles fn),
 		or at the very least to handle it within these next two functions instead of passing it all the way down the chain
 		*/
 
@@ -66,6 +66,11 @@ angular.module('com.inthetelling.story')
 
 		//Pass in a FileList object and the container in which the files are to be placed
 		var uploadFiles = function (assetEndpoint, fileList) {
+
+			angular.forEach(fileList, function(file) {
+				console.log('eachFile', file);
+			});
+
 			var deferredUploadsPromises = [];
 			// console.log('files: ', files);
 			for (var i = 0; i < fileList.length; i++) {

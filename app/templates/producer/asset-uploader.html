@@ -39,7 +39,8 @@
 			<input class="uploadFileInput" type="file" multiple onchange="angular.element(this).scope().handleUploads(this.files)">
 		</small>
 		<div ng-if="showInstructions" style="text-align:left">
-			<small>We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. </small>
+			<!--<small>We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. </small>-->
+			<small>{{manPage}}</small>
 		</div>
 	</div>
 

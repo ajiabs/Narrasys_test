@@ -2,7 +2,7 @@
 <div class="field">
 	<small>
 		<div style="width:20%; display:inline-block"></div>
-		<div style="width:48%; display:inline-block">Link to a video on YouTube...</div>
+		<div style="width:80%; display:inline-block">Link to a video on YouTube...</div>
 		<!--<div style="width:32%; display:inline-block">...or record your own</div>-->
 	</small>
 </div>
@@ -28,7 +28,7 @@
 <div class="field">
 	<div class="label">YouTube url</div>
 	<div class="input">
-		<input type="text" ng-model="item.url"/>
+		<input type="text" ng-model="item.yturl"/>
 		<small ng-if="item.url">{{item.url | stripParams}}</small>
 		<small ng-if="item.yturl && !item.url">(No valid YouTube video found)</small>
 	</div>
