@@ -9,10 +9,26 @@
 		<!-- no container ID for editor; uploads should go into user space -->
 		<!--<div itt-asset-uploader="" callback="assetUploaded"> </div>-->
 		<!--looks like we use the same template for image / file uploads in editor..-->
-		<div itt-asset-uploader=""
-			 callback="assetUploaded"
-			 mime-types="image/jpeg, image/png"
-		     instructions="We Accept .PNG and .JPEG image types currently"
-			 error-text="It looks like that wasn't an allowed file format!"></div>
+		<pre>{{item | json}}</pre>
+
+		<div ng-if="item.producerItemType === 'image'">
+			<div itt-asset-uploader=""
+				 callback="assetUploaded"
+				 mime-types="image/jpeg, image/png"
+				 instructions="We Accept .PNG and .JPEG image types currently"
+				 error-text="It looks like that wasn't an allowed file format!"></div>
+
+
+		</div>
+
+		<div ng-if="item.producerItemType === 'file">
+			<div itt-asset-uploader=""
+				 callback="assetUploaded"
+				 mime-types="image/jpeg, image/png"
+				 instructions="We Accept .PNG and .JPEG image types currently"
+				 error-text="It looks like that wasn't an allowed file format!"></div>
+
+
+		</div>
 	</div>
 </div>
