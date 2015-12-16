@@ -79,9 +79,14 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 					var paramStrEndsWithStar = strEndsWith(m, '*');
 
 					if (paramStrEndsWithStar) {
-						var fileAndMimeTypeStartWithSameChar = strStartsWith(f.type, m[0]);
 
-						if (fileAndMimeTypeStartWithSameChar) {
+						var mimeTypeUntilWildcard = m.slice(0, -1);
+
+						var applicationTypesMatch = strStartsWith(f.type, mimeTypeUntilWildcard);
+
+						console.log('fileAndMimeType', mimeTypeUntilWildcard);
+
+						if (applicationTypesMatch) {
 							stop = true;
 						}
 
