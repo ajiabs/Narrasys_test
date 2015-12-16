@@ -37,7 +37,8 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 		var _mimeTypes;
 		if (scope.mimeTypes === undefined) {
-			_mimeTypes = ['*'];
+			//allow basically doc, image, or video.
+			_mimeTypes = ['application/*', 'image/*', 'video/*'];
 		} else {
 			_mimeTypes = scope.mimeTypes.split(',');
 		}
@@ -49,20 +50,7 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 			_errorText = scope.errorText;
 		}
 
-
-		//function _parseMimeType(str){
-		//	var splat = str.split('/');
-		//	//normalize strings passed as params.
-		//	var trimmed = splat.map(function(item) { return item.trim(); });
-		//	return {mediaType: trimmed[0], extension: trimmed[1]};
-		//}
-        //
-		//angular.forEach(_mimeTypes, function(mime, i) {
-		//	_mimeTypes[i] = _parseMimeType(mime);
-		//});
-        //
-		//console.log('parsed mimetypes',_mimeTypes);
-
+		//normalize passed in params
 		angular.forEach(_mimeTypes, function(m, i) {
 			_mimeTypes[i] = m.trim();
 		});
