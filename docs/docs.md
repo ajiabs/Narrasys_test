@@ -14,8 +14,15 @@ Planning and design documents for switching to narratives:
 https://docs.google.com/document/d/19PViWhOGfARx4iq9b67G3sIiGAjswr6o9b7oOUhzMug
 https://docs.google.com/document/d/1ZZK0-1KqvSJYrxedw5WThKbHdNLct65T4x6SIRuzjmY 
 
-Planned UI updates:
-https://www.dropbox.com/home/nextgen
+Narrative implementation - timeline conversions:
+https://docs.google.com/document/d/1Q-VP_IRDX81fdGYvb67LxqJ0rsfANes3xfZ5LJCqWi4/
+
+
+Planned UI update wireframes:
+https://drive.google.com/drive/folders/0B4YqsTGuKs4yRnZjX3dJTHZPNk0
+(See the description on each image in this folderfor more info -- click the "details" icon when viewing an image in gdrive)
+
+
 
 ### ITT Jargon
 
@@ -246,34 +253,38 @@ The three-modes UI used in episodes is to be phased out and replaced with the mo
 
 
 #### DataMgr
-The branch "dataMgr" contains some incomplete but potentially useful work towards converting API access to use $resource. (When we first developed the product, $resource didn't support promises, so we rolled our own.)  It's unfortunately mingled with some deck-chair-rearranging of functionality between modelSvc and dataSvc and the new dataMgr service  (I think the idea was to obsolete modelSvc and replace it with dataMgr, for some reason?)
+The branch "dataMgr" contains some incomplete but potentially useful work towards converting API access to use $resource. (When we first developed the product, $resource didn't support promises, so we rolled our own.)  It's unfortunately mingled with some deck-chair-rearranging of functionality between modelSvc and dataSvc and the new dataMgr service  (I think the idea was to obsolete modelSvc and replace it with dataMgr, for some reason?) which we probably don't need to keep.
 
 #### Template / styles refactor
 The branch "styles-refactor" contains a lot of incomplete work towards revamping the template system altogether, as well as some updates to the UI.
 
-When in that branch, the "/#/foo" route will show a testbed for some new UI widgets (better tabsets and floaters) mostly contained within ittStoryUI.js
+The goal of this refactor was to clean up the existing template structure, extricate us from some of the versioning headaches we've already had when supporting older episodes based on now-obsolete templates, and give the users a lot more options about how items should be displayed.  
 
-/#/event/annotation, /#/event/transcript, and /#/event/link show a working demo of the new template structure (in its partially implemented state).  This system has a LOT more individually selectable variations for each item (see in particular the 'style: new style' option in the pulldown under the style tab.)  Style combinations can currently be saved into localStorage, ultimately they were to be sharable via some API mechanism to be determined.
+##### UI widgets
 
-Previews of edits are handled by using a new "variantItem" parameter in ittItem, which will override the base item data for display within that directive (this is a much better and more flexible strategy than the old 'forceTemplate' thing)
+The "/#/foo" route will show a testbed for some new UI widgets (better tabsets and floaters).  The directives for these are contained within ittStoryUI.js:
+* ittStoryUi: overall layout for episode chrome (currently this is mostly stuffed willy-nilly inside the player.html template)
+* ittTopToolbar and ittBottomToolbar: Guess what these are for.   ittBottomToolbar's template contains a stubbed-out version of the editPanel html.
+* tabset and tab: configurable tabbed ui widget.  Tabs can be positioned on left or right (controlled by tabsLeft or tabsRight class)
+* ittTopPane, ittPane, and ittPanePointer: for floating panels that should attach to content elements within the top toolbar (such as the 'user' pane). Can be docked to either side of the page or the center, and will try to keep its pointer arrow positioned near a specific DOM node (defined as scope.pointerTarget.)
 
-Layout and Position are only partially implemented. The templates themselves (in /templates/v2) are mostly just for testbed, not real designs.  
+CSS rules related to the above are in story.css.
+
+##### Template refactor
+
+The /#/event/annotation, /#/event/transcript, and /#/event/link show a working demo of the new template structure (in its partially implemented state).  This system has a LOT more individually selectable variations for each item (see in particular the 'style: new style' option in the pulldown under the style tab.)  Style combinations can currently be saved into localStorage; ultimately they were to be sharable via some API mechanism to be determined.
+
+Previews of edits are handled by using a new "variantItem" parameter in ittItem, which will override the base item data for display within that directive (this is a much better and more flexible strategy than the old 'forceTemplate' thing, which only allowed overriding the item's templateUrl.  variantItem lets you override any combination of data fields for the item data without modifying the cached modelSvc version of the item (it would be a useful way of rendering item edits in progress, instead of copying them into appState.editEvent as we do currently.)
+
+(Within template editingLayout and Position are only partially implemented. The templates themselves (in /templates/v2) are mostly just for testbed, not real designs.  
 
 Items wind up rendered in templates/v2/wrapper/_global.html for boilerplate, then /v2/wrapper/{selected wrapper}.html, then the selected item template per item type (using templates/v2/(itemtype)/default.html by convention if none is specified.)
 
-The intended look-and-feel for all of this is in dropbox in the "nextgen" folder.
+User-defined style collections are currently stored in localStorage as json blobs (you can view the raw data using `JSON.parse(localStorage.ittStylePresets)`.)  As with any individual template / stye selection, these blobs are overlaid atop item data using the variantItem parameter described above; when the user saves the edited item the various template/style selctions should be stored with the item itself (under the new item.tmpl field).
+
+Most of the related code controlling this is in ittItemEditor.js.
 
 
 #### Multi-episode timelines
 
-Switching between one master asset and another within a timeline:
-
-##### Switching master assets
-For native video has been tested to work by simply updasting the video.urls object. In future, might preload the upcoming video by swapping between two `<video>` objects instead
-
-For youtube, the ideal structure would be to let Youtube do the work: we contruct a playlist in their API and embed that for the timeline instead of embedding a single video.
-
-##### Timelines
-
-The other necessary ingredient is translating between episode-relative times (start and end times within an episode segment), which will need to be what's stored to the API, and timeline-relative times which will be what comes from the UI events (play, pause, seek, edit)
-
+This section outgrew markdown; see https://docs.google.com/document/d/1Q-VP_IRDX81fdGYvb67LxqJ0rsfANes3xfZ5LJCqWi4/
