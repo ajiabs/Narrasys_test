@@ -20,6 +20,15 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 	function link(scope, element, attrs) {
 
+		function strStartsWith(str, prefix) {
+			return str.indexOf(prefix) === 0;
+		}
+
+		function strEndsWith(str, match) {
+			return str.substring( str.length - match.length, str.length ) === match;
+		}
+
+
 		if (scope.instructions === undefined) {
 			scope.manPage = 'We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. ';
 		} else {
@@ -41,18 +50,23 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 		}
 
 
-		function _parseMimeType(str){
-			var splat = str.split('/');
-			//normalize strings passed as params.
-			var trimmed = splat.map(function(item) { return item.trim(); });
-			return {mediaType: trimmed[0], extension: trimmed[1]};
-		}
+		//function _parseMimeType(str){
+		//	var splat = str.split('/');
+		//	//normalize strings passed as params.
+		//	var trimmed = splat.map(function(item) { return item.trim(); });
+		//	return {mediaType: trimmed[0], extension: trimmed[1]};
+		//}
+        //
+		//angular.forEach(_mimeTypes, function(mime, i) {
+		//	_mimeTypes[i] = _parseMimeType(mime);
+		//});
+        //
+		//console.log('parsed mimetypes',_mimeTypes);
 
-		angular.forEach(_mimeTypes, function(mime, i) {
-			_mimeTypes[i] = _parseMimeType(mime);
+		angular.forEach(_mimeTypes, function(m, i) {
+			_mimeTypes[i] = m.trim();
 		});
 
-		console.log('parsed mimetypes',_mimeTypes);
 
 		scope.uploadStatus = [];
 		scope.uploads = [];
@@ -74,24 +88,31 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 			//gotta filter
 			if (appState.productLoadedAs === 'sxs') {
-				angular.forEach(files, function (file) {
-					var fileMime = _parseMimeType(file.type);
 
-					console.log('fileMme', fileMime);
-					angular.forEach(_mimeTypes, function (mime) {
-						if (mime.mediaType === fileMime.mediaType && mime.extension === '*') {
-							console.log('accept any extension of same media type');
-							stop = true;
-							return;
-						}
+				angular.forEach(files, function(f) {
+					console.log('file type', f.type);
 
-						if (angular.equals(fileMime, mime)) {
-							console.log('permitted extensions');
-							stop = true;
+					angular.forEach(_mimeTypes, function(m) {
+						var paramStrEndsWithStar = strEndsWith(m, '*');
+
+						if (paramStrEndsWithStar) {
+							var fileAndMimeTypeStartWithSameChar = strStartsWith(f.type, m[0]);
+
+							if (fileAndMimeTypeStartWithSameChar) {
+								stop = true;
+							}
+
+						} else {
+							//only accept identical mimeType?
+							if (f.type === m) {
+								stop = true;
+							}
+
 						}
 					});
-
 				});
+
+
 
 			}
 

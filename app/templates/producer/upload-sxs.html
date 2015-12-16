@@ -11,7 +11,7 @@
 		<!--looks like we use the same template for image / file uploads in editor..-->
 			<div ng-if="item.producerItemType === 'image'" itt-asset-uploader=""
 				 callback="assetUploaded"
-				 mime-types="image/png, image/jpeg"
+				 mime-types="image/jpeg, application/pdf"
 				 instructions="We Accept .PNG and .JPEG image types currently"
 				 error-text="Perhaps try again with a .PNG or JPEG file!">
 			</div>
@@ -19,7 +19,7 @@
 
 			<div ng-if="item.producerItemType === 'file'" itt-asset-uploader=""
 				 callback="assetUploaded"
-				 mime-types="application/*"
+				 mime-types="application/pdf"
 				 instructions="We Accept .PDF and .DOC / .DOCx image types currently"
 				 error-text="Try to use a .PDF or .DOC file">
 			</div>
