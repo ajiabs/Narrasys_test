@@ -9,19 +9,18 @@
 
 			<div ng-if="item.producerItemType === 'image'" itt-asset-uploader=""
 				 callback="assetUploaded"
-				 mime-types="image/png, image/jpeg"
-				 instructions="We Accept .PNG and .JPEG image types currently"
-				 error-text="Perhaps try again with a .PNG or JPEG file!">
+				 mime-types="image/*"
+				 instructions="We currently accept all image files."
+				 error-text="Please verify that the file you are trying to upload is an image.">
 			</div>
 
 
 			<div ng-if="item.producerItemType === 'file'" itt-asset-uploader=""
 				 callback="assetUploaded"
-				 mime-types="application/*"
-				 instructions="We Accept PDF and Word documents currently."
-				 error-text="Try to use a .PDF or .DOC file">
+				 mime-types="application/*, image/*, video/*, text/*, audio/*, model/*"
+				 instructions="We currently accept all non-image or non-video files"
+				 error-text="Please make you are not trying to upload an image or video file.">
 			</div>
-
 
 	</div>
 </div>

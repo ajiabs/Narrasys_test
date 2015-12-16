@@ -28,7 +28,6 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 			return str.substring(str.length - match.length, str.length) === match;
 		}
 
-
 		if (scope.instructions === undefined) {
 			scope.manPage = 'We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. ';
 		} else {
@@ -38,7 +37,7 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 		var _mimeTypes;
 		if (scope.mimeTypes === undefined) {
 			//allow basically doc, image, or video.
-			_mimeTypes = ['application/*', 'image/*', 'video/*'];
+			_mimeTypes = ['application/*', 'image/*', 'video/*', 'text/*', 'audio/*', 'model/*'];
 		} else {
 			_mimeTypes = scope.mimeTypes.split(',');
 		}

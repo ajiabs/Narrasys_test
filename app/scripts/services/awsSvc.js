@@ -66,11 +66,6 @@ angular.module('com.inthetelling.story')
 
 		//Pass in a FileList object and the container in which the files are to be placed
 		var uploadFiles = function (assetEndpoint, fileList) {
-
-			angular.forEach(fileList, function(file) {
-				console.log('eachFile', file);
-			});
-
 			var deferredUploadsPromises = [];
 			// console.log('files: ', files);
 			for (var i = 0; i < fileList.length; i++) {
