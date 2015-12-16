@@ -25,7 +25,7 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 		}
 
 		function strEndsWith(str, match) {
-			return str.substring( str.length - match.length, str.length ) === match;
+			return str.substring(str.length - match.length, str.length) === match;
 		}
 
 
@@ -51,7 +51,7 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 		}
 
 		//normalize passed in params
-		angular.forEach(_mimeTypes, function(m, i) {
+		angular.forEach(_mimeTypes, function (m, i) {
 			_mimeTypes[i] = m.trim();
 		});
 
@@ -73,36 +73,28 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 			//disallow certain file types
 			var stop = false;
-
 			//gotta filter
-			if (appState.productLoadedAs === 'sxs') {
+			angular.forEach(files, function (f) {
 
-				angular.forEach(files, function(f) {
-					console.log('file type', f.type);
+				angular.forEach(_mimeTypes, function (m) {
+					var paramStrEndsWithStar = strEndsWith(m, '*');
 
-					angular.forEach(_mimeTypes, function(m) {
-						var paramStrEndsWithStar = strEndsWith(m, '*');
+					if (paramStrEndsWithStar) {
+						var fileAndMimeTypeStartWithSameChar = strStartsWith(f.type, m[0]);
 
-						if (paramStrEndsWithStar) {
-							var fileAndMimeTypeStartWithSameChar = strStartsWith(f.type, m[0]);
-
-							if (fileAndMimeTypeStartWithSameChar) {
-								stop = true;
-							}
-
-						} else {
-							//only accept identical mimeType?
-							if (f.type === m) {
-								stop = true;
-							}
-
+						if (fileAndMimeTypeStartWithSameChar) {
+							stop = true;
 						}
-					});
+
+					} else {
+						//only accept identical mimeType?
+						if (f.type === m) {
+							stop = true;
+						}
+
+					}
 				});
-
-
-
-			}
+			});
 
 			if (!stop) {
 				scope.errormessage = _errorText;
