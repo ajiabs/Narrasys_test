@@ -6,7 +6,21 @@
 		<button class="button" ng-click="replaceAsset(item.asset._id)"> Replace this asset </button>
 	</div>
 	<div ng-if="showUploadButtons || !(item.asset)">
-		<!-- no container ID for editor; uploads should go into user space -->
-		<div itt-asset-uploader="" callback="assetUploaded"> </div>
+
+			<div ng-if="item.producerItemType === 'image'" itt-asset-uploader=""
+				 callback="assetUploaded"
+				 mime-types="image/*"
+				 instructions="We currently accept all image files."
+				 error-text="Please verify that the file you are trying to upload is an image.">
+			</div>
+
+
+			<div ng-if="item.producerItemType === 'file'" itt-asset-uploader=""
+				 callback="assetUploaded"
+				 mime-types="application/*, image/*, video/*, text/*, audio/*, model/*"
+				 instructions="We currently accept all non-image or non-video files"
+				 error-text="Please make you are not trying to upload an image or video file.">
+			</div>
+
 	</div>
 </div>
