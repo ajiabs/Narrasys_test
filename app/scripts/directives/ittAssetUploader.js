@@ -84,8 +84,6 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 						var applicationTypesMatch = strStartsWith(f.type, mimeTypeUntilWildcard);
 
-						console.log('fileAndMimeType', mimeTypeUntilWildcard);
-
 						if (applicationTypesMatch) {
 							stop = true;
 						}
