@@ -89,7 +89,7 @@
 }
 
 
-/* -------------------------------------------  
+/* -------------------------------------------
    Customer-specific tweaks
 
 */
@@ -367,7 +367,7 @@
 	background-color: rgba(255, 255, 255, 0.2);
 }
 
-*/.episode-gwsb .videoMask.firstplay {
+.episode-gwsb .videoMask.firstplay {
 	/* GW doesn't want our logo here */
 	background-image: url('/images/play-overlay.png');
 }
@@ -749,4 +749,153 @@
 		width: 90%;
 	}
 }
+
+/*Washington sbctc styles*/
+
+.episode-wsbctc {
+	background-image: url("/images/customer/SBCTC_Star.svg");
+	background-position: 80% 70%;
+	background-repeat: no-repeat;
+	/*background-size: 95%;*/
+	content: "";
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	top: 45px;
+	left: 0;
+	font-family: 'Gotham', sans-serif;
+	font-weight: 300;
+	font-size: 1.1em;
+}
+
+.episode-wsbctc .content .item {
+	background-color: #d8d3c3 !important;
+	color: #000;
+	box-shadow: 0 7px 5px rgba(0, 0, 0, 0.3) !important;
+	padding-left: 75px;
+}
+
+.episode-wsbctc .content .item .startTime {
+	margin-left: -75px;
+	width: 70px;
+	text-align: right;
+}
+
+.episode-wsbctc.content.allowHighlights .highlightSolid.item.isCurrent {
+	background-color: #f0f0f0 !important;
+}
+
+.episode-wsbctc .searchMode .item,
+.episode-wsbctc .reviewMode .item {
+	background-color: #d8d3c3 !important;
+	box-shadow: none !important;
+}
+
+.episode-wsbctc .searchMode .item.isCurrent,
+.episode-wsbctc .reviewMode .item.isCurrent,
+.episode-wsbctc .discoverMode .item.isCurrent {
+	background-color: #f0f0f0 !important;
+}
+
+.episode-wsbctc .item .startTime {
+	font-weight: 100;
+	font-size: 1.3em;
+	line-height: 1.3em;
+}
+
+.episode-wsbctc .authorName,
+.episode-wsbctc .title,
+.episode-wsbctc .searchMode .item a.fakeLink,
+.episode-wsbctc .reviewMode .item a.fakeLink {
+	font-size: 1.3em;
+	line-height: 1.3em;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.episode-wsbctc .category {
+	position: absolute;
+	left: 10px;
+	font-size: 10px;
+	top: -6px;
+}
+
+.episode-wsbctc .escapelink:before {
+	font-weight: normal;
+	padding: 0 0.5em;
+	font-size: 60%;
+}
+
+.episode-wsbctc a,
+.episode-wsbctc a:visited,
+.episode-wsbctc .fakeLink {
+	color: #284865;
+}
+
+.episode-wsbctc .landingscreen {
+	background-repeat: no-repeat;
+	margin: auto;
+	background-size: 90%;
+	padding: 2em 0;
+}
+
+.episode-wsbctc .landingscreen .introtext {
+	display: none;
+}
+
+.episode-wsbctc .landingscreen .videoMagnet {
+	float: none;
+	margin: auto;
+	width: 65%;
+}
+
+.episode-wsbctc .branding {
+	background: #fff;
+}
+
+.episode-wsbctc #sbctc-logo {
+	position: fixed;
+	right: 100px;
+	bottom: 10px;
+}
+
+.episode-wsbctc .itt.logo img {
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
+}
+
+.episode-wsbctc .copyright {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	font-size: 11px;
+	color: black;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 330px) {
+	.episode-wsbctc .landingscreen {
+		background-position: 50% 90px;
+		width: 300px;
+		padding-top: 1em;
+	}
+}
+
+@media screen and (min-width: 331px) and (max-width: 550px) {
+	.episode-wsbctc .landingscreen {
+		background-position: 50% 140px;
+		width: 90%;
+	}
+}
+
+@media screen and (min-width: 551px) {
+	.episode-wsbctc .landingscreen {
+		background-position: 50% 210px;
+		max-width: 750px;
+		width: 90%;
+	}
+}
+
+
 
