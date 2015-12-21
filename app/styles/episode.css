@@ -752,7 +752,9 @@
 
 /*Washington sbctc styles*/
 
-.episode-wsbctc {
+.episode-wsbctc .scene.isCurrent::before,
+.episode-wsbctc .searchMode::before,
+.episode-wsbctc .reviewMode::before {
 	background-image: url("/images/customer/SBCTC_Star.svg");
 	background-position: 80% 70%;
 	background-repeat: no-repeat;
@@ -769,7 +771,7 @@
 }
 
 .episode-wsbctc .branding {
-	background: #fff;
+	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
 }
 
 .episode-wsbctc .content .item {
@@ -796,8 +798,8 @@
 }
 
 .episode-wsbctc .searchMode .item.isCurrent,
-.episode-wsbctc .reviewMode .item.isCurrent,
-.episode-wsbctc .discoverMode .item.isCurrent {
+.episode-wsbctc .reviewMode .item.isCurrent
+.episode-wsbctc .discoverMode .item.isCurrent  {
 	background-color: #f0f0f0 !important;
 }
 
@@ -853,7 +855,7 @@
 	width: 65%;
 }
 
-.episode-wsbctc #sbctc-logo {
+#sbctc-logo {
 	position: fixed;
 	right: 100px;
 	bottom: 10px;
