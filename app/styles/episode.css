@@ -768,6 +768,10 @@
 	font-size: 1.1em;
 }
 
+.episode-wsbctc .branding {
+	background: #fff;
+}
+
 .episode-wsbctc .content .item {
 	background-color: #d8d3c3 !important;
 	color: #000;
@@ -847,10 +851,6 @@
 	float: none;
 	margin: auto;
 	width: 65%;
-}
-
-.episode-wsbctc .branding {
-	background: #fff;
 }
 
 .episode-wsbctc #sbctc-logo {
