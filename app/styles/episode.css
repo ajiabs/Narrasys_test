@@ -89,7 +89,7 @@
 }
 
 
-/* -------------------------------------------  
+/* -------------------------------------------
    Customer-specific tweaks
 
 */
@@ -367,7 +367,7 @@
 	background-color: rgba(255, 255, 255, 0.2);
 }
 
-*/.episode-gwsb .videoMask.firstplay {
+.episode-gwsb .videoMask.firstplay {
 	/* GW doesn't want our logo here */
 	background-image: url('/images/play-overlay.png');
 }
