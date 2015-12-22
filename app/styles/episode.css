@@ -751,23 +751,24 @@
 }
 
 /*Washington sbctc styles*/
-
+.episode-wsbctc {
+	background-image: url("/images/customer/WSBCTC_Star.svg");
+	background-position: 30% 0;
+	background-repeat: no-repeat;
+	background-size: 95%;
+	font-family: 'Gotham', sans-serif;
+	font-weight: 300;
+	font-size: 1.1em;
+}
 .episode-wsbctc .scene.isCurrent::before,
 .episode-wsbctc .searchMode::before,
 .episode-wsbctc .reviewMode::before {
-	background-image: url("/images/customer/SBCTC_Star.svg");
-	background-position: 80% 70%;
-	background-repeat: no-repeat;
-	/*background-size: 95%;*/
 	content: "";
 	position: fixed;
 	bottom: 0;
 	right: 0;
 	top: 45px;
 	left: 0;
-	font-family: 'Gotham', sans-serif;
-	font-weight: 300;
-	font-size: 1.1em;
 }
 
 .episode-wsbctc .branding {
@@ -775,7 +776,7 @@
 }
 
 .episode-wsbctc .content .item {
-	background-color: #d8d3c3 !important;
+	background-color: #fff !important;
 	color: #000;
 	box-shadow: 0 7px 5px rgba(0, 0, 0, 0.3) !important;
 	padding-left: 75px;
@@ -787,20 +788,20 @@
 	text-align: right;
 }
 
-.episode-wsbctc.content.allowHighlights .highlightSolid.item.isCurrent {
-	background-color: #f0f0f0 !important;
+
+.episode-wsbctc .content .item.isCurrent {
+	background-color: #d8d3c3 !important;
 }
 
 .episode-wsbctc .searchMode .item,
 .episode-wsbctc .reviewMode .item {
-	background-color: #d8d3c3 !important;
+	background: none !important;
 	box-shadow: none !important;
 }
 
 .episode-wsbctc .searchMode .item.isCurrent,
-.episode-wsbctc .reviewMode .item.isCurrent
-.episode-wsbctc .discoverMode .item.isCurrent  {
-	background-color: #f0f0f0 !important;
+.episode-wsbctc .reviewMode .item.isCurrent {
+	background-color: #d8d3c3 !important;
 }
 
 .episode-wsbctc .item .startTime {
@@ -838,42 +839,21 @@
 	color: #284865;
 }
 
-.episode-wsbctc .landingscreen {
-	background-repeat: no-repeat;
-	margin: auto;
-	background-size: 90%;
-	padding: 2em 0;
-}
-
-.episode-wsbctc .landingscreen .introtext {
-	display: none;
-}
-
-.episode-wsbctc .landingscreen .videoMagnet {
-	float: none;
-	margin: auto;
-	width: 65%;
-}
-
 #sbctc-logo {
-	position: fixed;
-	right: 100px;
-	bottom: 10px;
+	position: relative;
+	float: right;
+	right: 160px;
+	width: 120px;
 }
 
-.episode-wsbctc .itt.logo img {
-	position: fixed;
-	right: 10px;
-	bottom: 10px;
+.episode-wsbctc .branding {
+	margin-top: 85px;
 }
 
-.episode-wsbctc .copyright {
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
-	font-size: 11px;
-	color: black;
-	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+.episode-wsbctc .copyright,
+.episode-wsbctc .copyright a {
+	color: #666 !important;
+	text-shadow: none;
 }
 
 @media screen and (max-width: 330px) {
@@ -887,14 +867,6 @@
 @media screen and (min-width: 331px) and (max-width: 550px) {
 	.episode-wsbctc .landingscreen {
 		background-position: 50% 140px;
-		width: 90%;
-	}
-}
-
-@media screen and (min-width: 551px) {
-	.episode-wsbctc .landingscreen {
-		background-position: 50% 210px;
-		max-width: 750px;
 		width: 90%;
 	}
 }
