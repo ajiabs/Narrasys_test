@@ -773,7 +773,6 @@
 
 .episode-wsbctc .branding {
 	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
-	/*background: red;*/
 }
 
 .episode-wsbctc .content .item {
@@ -840,11 +839,17 @@
 	color: #284865;
 }
 
-#sbctc-logo {
+
+#branding-wrapper {
 	position: relative;
 	float: right;
-	right: 160px;
-	width: 120px;
+	bottom: -80px;
+	padding-right: 10px;
+}
+
+#sbctc-logo {
+	position: relative;
+	bottom: 20px
 }
 
 .episode-wsbctc .branding {
