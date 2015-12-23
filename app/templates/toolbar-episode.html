@@ -1,0 +1,46 @@
+<div class="toolbar">
+	<div class="modegroup buttongroup">
+		<nav role="navigation">
+			<button tabindex="0" class="button button-watch" ng-class="{cur: appState.viewMode == 'watch'}" ng-click="viewMode('watch')" aria-label="Watch">
+				<span>Watch</span>
+			</button>
+			<button tabindex="0" class="button button-discover" ng-class="{cur: appState.viewMode == 'discover'}" ng-click="viewMode('discover')" aria-label="Discover">
+				<span>Discover</span>
+			</button>
+			<button tabindex="0" class="button button-review" ng-class="{cur: appState.viewMode == 'review'}" ng-click="viewMode('review')" aria-label="Review">
+				<span>Review</span>
+			</button>
+			</span>
+		</nav>
+	</div>
+	<div ng-if="appState.isFramed" class="escapegroup buttongroup">
+		<!-- this needs to be an <a> or it trips popup blockers -->
+
+		<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{appState.time || 0}}&access_token={{appState.user.access_token}}" target="_blank">
+			<span>New window</span>
+		</a>
+	</div>
+	<div class="searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
+		<button tabindex="2" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
+			<span>Search</span>
+		</button>
+		<label for="searchtext" class="hidden">Search Text</label>
+		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="appState.searchText" ng-model-options="{ debounce: 200 }" />
+	</div>
+	<div class="profilegroup buttongroup" ng-if="!(show.searchPanel) && (appState.narrativeId || appState.product == 'sxs' || userHasRole('admin'))">
+		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && userHasRole('admin')" ng-click="toggleProducerPreview()">
+			<span ng-if="appState.product == 'producer'">Preview</span>
+			<span ng-if="appState.product == 'player'">Edit</span>
+		</a>
+
+		<a class="button button-profile" ng-click="appState.show.profilePanel = !appState.show.profilePanel">
+			<span>Profile</span>
+		</a>
+	</div>
+</div>
+
+<!-- SEARCH -->
+<div ng-show="show.searchPanel" class="searchPanel">
+	<div ng-if="show.searchPanel" itt-search-panel>This will be the search panel</div>
+</div>
+<div ng-show="show.searchPanel" class="modal-backdrop" ng-click="hidePanel('searchPanel')"></div>

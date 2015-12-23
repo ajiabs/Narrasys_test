@@ -8,11 +8,10 @@
 	}">
 	<div class="player">
 		<!-- TODO: make sure user has admin role for canEditContent -->
-
-		<!--<div ng-include="'templates/toolbar-story.html'"></div>-->
-
-		<itt-toolbar-story></itt-toolbar-story>
-
+		<div ng-include="
+		appState.productLoadedAs=='player'
+		? 'templates/toolbar-episode.html'
+		: 'templates/toolbar-story.html'"></div>
 
 		<itt-loading ng-if="loading"></itt-loading>
 		<div ng-show="!loading" itt-episode ng-class="{
