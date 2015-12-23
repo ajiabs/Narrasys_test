@@ -83,7 +83,7 @@ angular.module('com.inthetelling.story')
 		}
 
 		if (appState.isFramed) {
-			/* 
+			/*
 				workaround for when instructure canvas fails to size our iframe correctly
 				This will be harmless in other platforms:
 			 */
@@ -221,7 +221,7 @@ angular.module('com.inthetelling.story')
 		// TODO put this in own controller
 
 		// Bottom toolbar starts out hidden.  5s after using a control or leaving the pane, fade out controls.
-		//   If mouse re-enters pane, keep the controls visible. 
+		//   If mouse re-enters pane, keep the controls visible.
 
 		appState.videoControlsActive = false;
 		var controlTimer;
@@ -270,9 +270,8 @@ angular.module('com.inthetelling.story')
 		// Misc toolbars too small to rate their own controllers
 		$scope.toggleSearchPanel = function () {
 			appState.show.searchPanel = !appState.show.searchPanel;
-			if (appState.productLoadedAs !== 'player') {
-				$scope.viewMode(appState.show.searchPanel ? 'review' : 'discover');
-			}
+
+			$scope.viewMode(appState.show.searchPanel ? 'review' : 'discover');
 
 			appState.searchText = '';
 			if (appState.show.searchPanel) {
@@ -391,7 +390,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		// TODO this is a relatively expensive watch.  Could greatly increase its $interval if we
-		// support directly triggering it from timeline on seek()... 
+		// support directly triggering it from timeline on seek()...
 		var handleAutoscroll = function () {
 			// console.log("handleAutoscroll", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked);
 			// if autoscroll is true and autoscrollBlocked is false,
