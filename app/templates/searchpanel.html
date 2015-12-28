@@ -8,44 +8,27 @@
 	<div class="scrollContainer">
 		<div class="searchResults content" id="sortableSearch" itt-width-watch ng-class="{isNarrow: isNarrow}">
 			<div ng-if="sortBy == 'startTime'" class="sortByTime">
-				<h1 ng-if="appState.productLoadedAs != 'player'" ng-bind-html="episode.display_title"></h1>
+				<h1 ng-bind-html="episode.display_title"></h1>
 				<div ng-repeat="scene in episode.scenes">
 					<h2 class="searchCategory" ng-if="scene.start_time > 0 && ([scene.display_title] | filter:appState.searchText).length" ng-bind-html="scene.display_title  | highlightSubstring: appState.searchText"></h2>
-					<span ng-if="appState.productLoadedAs=='player'">
-						<!-- old style search panel -->
-						<div ng-repeat="item in sceneItems=(scene.items | orderBy:'wtfchromesort')" ng-show="([item.searchableText] | filter:appState.searchText).length" class="item animate" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
-					</span>
-					<span ng-if="appState.productLoadedAs!='player'">
-						<!-- new style search+review mode -->
-						<div ng-repeat="item in sceneItems=(scene.items | orderBy:'wtfchromesort')" ng-show="([item.searchableText] | filter:appState.searchText).length" class="item animate" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
+					<!-- Need to filter out cosmetic items when not in producer -->
+					<span ng-switch="appState.product">
+						<div ng-switch-when="producer" ng-repeat="item in sceneItems=(scene.items | orderBy:'wtfchromesort')" ng-show="([item.searchableText] | filter:appState.searchText).length" class="item animate" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
+						<div ng-switch-default ng-repeat="item in sceneItems=(scene.items | orderBy:'wtfchromesort' | filter:{cosmetic:false})" ng-show="([item.searchableText] | filter:appState.searchText).length" class="item animate" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
 					</span>
 				</div>
 			</div>
 			<!-- sorted by type -->
 			<div ng-if="sortBy == 'type'" class="sortByType">
 				<div ng-repeat="category in typeCategories">
-
-					<span ng-if="appState.productLoadedAs=='player'">
-						<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
-
-						<div class="item animate" ng-repeat="item in matchedItems=
-						(showTypes[category].items
-						| orderBy:'wtfchromesort'
-						)" ng-show="
-							([item.searchableText] | filter:appState.searchText).length
-						" ng-class="item.state" ng-include="'templates/item/searchresults.html'"></div>
-
-					</span>
-					<span ng-if="appState.productLoadedAs!='player'">
-						<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
-
-						<div class="item animate" ng-repeat="item in matchedItems=
+					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
+					<!-- controller handles stripping cosmetic items from showTypes.items, so no need to do it in template. -->
+					<div class="item animate" ng-repeat="item in matchedItems=
 						(showTypes[category].items
 						| orderBy:'wtfchromesort'
 						)" ng-show="
 							([item.searchableText] | filter:appState.searchText).length
 						" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
-					</span>
 				</div>
 				<div ng-if="(episode.items | filter:{'searchableText': appState.searchText||'', 'cosmetic': false}).length == 0">
 					(Nothing matched your search.)

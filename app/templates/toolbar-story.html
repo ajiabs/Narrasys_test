@@ -13,7 +13,7 @@
 	<!--if we are a player, isFramed-->
 	<div ng-if="appState.isFramed && (appState.productLoadedAs == 'player'
 	 			|| (appState.productLoadedAs == 'narrative'
-	 			&& !narrative.disable_new_window ) )"  class="escapegroup buttongroup">
+	 			&& !narrative.disable_new_window ) )" class="escapegroup buttongroup">
 		<!-- this needs to be an <a> or it trips popup blockers -->
 		<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{appState.time || 0}}&access_token={{appState.user.access_token}}" target="_blank">
 			<span>New window</span>
@@ -26,7 +26,8 @@
 		<label for="searchtext" class="hidden">Search Text</label>
 		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="appState.searchText" ng-model-options="{ debounce: 200 }" />
 	</div>
-	<div class="profilegroup buttongroup">
+	<!-- for now, hide user panel in regular player. TODO maybe show it for non-guest users here? -->
+	<div class="profilegroup buttongroup" ng-if="appState.productLoadedAs != 'player'">
 		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && userHasRole('admin')" ng-click="toggleProducerPreview()">
 			<span ng-if="appState.product == 'producer'">Preview</span>
 			<span ng-if="appState.product == 'player'">Edit</span>
@@ -38,7 +39,6 @@
 </div>
 
 <div ng-cloak ng-show="show.navPanel" class="navPanel topDrawer" ng-class="episode.styleCss">
-	<!-- this is for now duplicactive of code in player.html; it will change to include narrative links soon enough -->
 	<div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
 	<!-- <h2 ng-bind-html="episode.display_title"></h2> -->
 	<div class="scene" x-ng-if="scene.display_title" x-ng-repeat="scene in episode.scenes" x-ng-class="{currentScene: scene.isCurrent}" x-ng-click="seek(scene.start_time)">

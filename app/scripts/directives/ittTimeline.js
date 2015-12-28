@@ -10,17 +10,10 @@ angular.module('com.inthetelling.story')
 			restrict: 'A',
 			replace: true,
 			scope: true,
-
-			// The extra div is because of what I believe may be an angular bug: 
-			// if the ng-include is the directive's root, angular inits its element using a comment node in the DOM;
-			// from then on element.find() fails (comment nodes don't support that I guess)
-			template: "<div><div ng-include='timelineTemplate'></div></div>",
-			// templateUrl: "templates/timeline-episode.html",
+			templateUrl: "templates/timeline-story.html",
 			controller: "TimelineController",
 			link: function (scope, element) {
 				// console.log('ittTimeline', scope, element);
-
-				scope.timelineTemplate = (appState.productLoadedAs === 'player' ? 'templates/timeline-episode.html' : 'templates/timeline-story.html');
 				scope.appState = appState;
 				scope.timeline = timelineSvc;
 				scope.handlePosition = 0; // position of draghandle (as a fraction of full timeline)
