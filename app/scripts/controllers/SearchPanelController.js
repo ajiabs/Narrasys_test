@@ -35,12 +35,6 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		// NOTE this is only called from episodeUI -- searchMode does not reach this! (which is probably what we want)
-		$scope.seek = function (t, eventID) {
-			$scope.enableAutoscroll(); // in playerController
-			timelineSvc.seek(t, "clickedOnEventInSearch", eventID);
-		};
-
 		// generate searchable text for the episode (on demand).
 		// TODO need to handle multi-episode timelines.
 
@@ -103,13 +97,20 @@ angular.module('com.inthetelling.story')
 			angular.forEach($scope.episode.items, function (item) {
 				// Chrome has decided to sort these alphabetically instead of numerically...
 				item.wtfchromesort = padDigits(item.start_time, 5);
-				if (item._type !== 'Scene') {
-					// build 'by type' arrays:
-					if (item.producerItemType && $scope.showTypes[item.producerItemType]) {
-						$scope.showTypes[item.producerItemType].items.push(item);
-					} else {
-						$scope.showTypes.other.items.push(item);
-					}
+
+				// include cosmetic items only in producer:
+				if (appState.product !== 'producer' && item.cosmetic) {
+					return;
+				}
+				if (item._type === 'Scene') {
+					return;
+				}
+
+				// build 'by type' arrays:
+				if (item.producerItemType && $scope.showTypes[item.producerItemType]) {
+					$scope.showTypes[item.producerItemType].items.push(item);
+				} else {
+					$scope.showTypes.other.items.push(item);
 				}
 
 				// control whether annotations are shown header-style:
