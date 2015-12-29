@@ -804,6 +804,11 @@
 	background-color: #d8d3c3 !important;
 }
 
+.episode-wsbctc .item.isCurrent.colorInvert {
+	color: #fff !important;
+	background-color: #2B4B71  !important;
+}
+
 .episode-wsbctc .item .startTime {
 	font-weight: 100;
 	font-size: 1.3em;
