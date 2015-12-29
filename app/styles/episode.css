@@ -653,7 +653,7 @@
 	padding-left: 75px;
 }
 
-.episode-regis .content .item .startTime {
+.episode-regis .content .sxs-item .item .startTime {
 	margin-left: -75px;
 	width: 70px;
 	text-align: right;
@@ -782,7 +782,7 @@
 	padding-left: 75px;
 }
 
-.episode-wsbctc .content .item .startTime {
+.episode-wsbctc .content .sxs-item .item .startTime {
 	margin-left: -75px;
 	width: 70px;
 	text-align: right;
@@ -802,6 +802,16 @@
 .episode-wsbctc .searchMode .item.isCurrent,
 .episode-wsbctc .reviewMode .item.isCurrent {
 	background-color: #d8d3c3 !important;
+}
+
+.episode-wsbctc .content .item.colorInvert {
+	color: #fff !important;
+	background-color: #2B4B71  !important;
+}
+
+.episode-wsbctc .item.colorInvert a {
+	color: #fff !important;
+	background-color: #2B4B71  !important;
 }
 
 .episode-wsbctc .item .startTime {
