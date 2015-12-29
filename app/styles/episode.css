@@ -653,7 +653,7 @@
 	padding-left: 75px;
 }
 
-.episode-regis .content .item .startTime {
+.episode-regis .content .sxs-item .item .startTime {
 	margin-left: -75px;
 	width: 70px;
 	text-align: right;
@@ -782,7 +782,7 @@
 	padding-left: 75px;
 }
 
-.episode-wsbctc .content .item .startTime {
+.episode-wsbctc .content .sxs-item .item .startTime {
 	margin-left: -75px;
 	width: 70px;
 	text-align: right;
