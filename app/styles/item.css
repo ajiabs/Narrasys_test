@@ -353,6 +353,9 @@ Inline images (TODO show these only when image is larger than available space) *
 
 .modalimage {
 	text-align: center;
+	/* width and height are needed for IE, which otherwise borks exit animation: see TS-847 */
+	width: 100%;
+	height: 100%;
 }
 
 .modalimage img {
