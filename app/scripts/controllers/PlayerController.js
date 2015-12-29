@@ -318,6 +318,14 @@ angular.module('com.inthetelling.story')
 			// console.log(appState);
 		};
 
+		$scope.hidePanels = function () {
+			// dismiss ALL THE THINGS
+			appState.show.navPanel = false;
+			appState.show.profilePanel = false;
+			appState.itemDetail = false;
+			$rootScope.$emit("player.dismissAllPanels");
+		};
+
 		$scope.play = function () {
 			timelineSvc.play();
 		};
