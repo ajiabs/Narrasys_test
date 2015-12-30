@@ -776,11 +776,13 @@
 }
 
 .episode-wsbctc .copyright {
-	color: black;
+	color: grey;
+	text-shadow: none !important;
 }
 
 .episode-wsbctc .copyright a {
-	color: black !important;
+	color: grey !important;
+	text-shadow: none !important;
 }
 
 .episode-wsbctc .scene.isCurrent::before,
