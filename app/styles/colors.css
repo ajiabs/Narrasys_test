@@ -1,6 +1,6 @@
-/* 
-	TODO: make sure all colors play nice when combined with colorInvert 
-	(in both directions, i.e. .colorInvert .colorFoo, and .colorFoo .colorInvert) 
+/*
+	TODO: make sure all colors play nice when combined with colorInvert
+	(in both directions, i.e. .colorInvert .colorFoo, and .colorFoo .colorInvert)
 
 	TODO: explicitly limit color selections to .item and .scene, and in .scene sort out which pane gets the background colors;
 
@@ -49,7 +49,7 @@ a.startTime.displayTime {
 //===========================*/
 
 .colorSepia {
-	color: #4B4235;
+	color: #4B4235 !important;
 }
 .episode.colorSepia,
 .scene.colorSepia {
@@ -69,7 +69,7 @@ a.startTime.displayTime {
 //===========================*/
 
 .colorSolarized {
-	color: #586E75;
+	color: #586E75 !important;
 }
 .episode.colorSolarized,
 .scene.colorSolarized {
@@ -89,7 +89,7 @@ a.startTime.displayTime {
 //===========================*/
 
 .colorVivid {
-	color: #595959;
+	color: #595959 !important;
 }
 .episode.colorVivid,
 .scene.colorVivid {
