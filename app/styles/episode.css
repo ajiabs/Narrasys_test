@@ -653,14 +653,17 @@
 	padding-left: 75px;
 }
 
+.episode-regis .content .highlightSolid.item.isCurrent  {
+	background-color: #F2F2F2 !important;
+	color: #000;
+	box-shadow: 0 7px 5px rgba(0, 0, 0, 0.3) !important;
+	padding-left: 75px;
+}
+
 .episode-regis .content .sxs-item .item .startTime {
 	margin-left: -75px;
 	width: 70px;
 	text-align: right;
-}
-
-.episode-regis.content.allowHighlights .highlightSolid.item.isCurrent {
-	background-color: #FFF !important;
 }
 
 .episode-regis .searchMode .item,
@@ -709,6 +712,16 @@
 	color: #284865;
 }
 
+.episode-regis .content .item.colorInvert {
+	color: #fff !important;
+	background-color: #103852  !important;
+}
+
+.episode-regis .item.colorInvert a {
+	color: #fff !important;
+	background-color: #103852  !important;
+}
+
 .episode-regis .landingscreen {
 	background-image: url("/images/customer/regis-landing.svg");
 	background-repeat: no-repeat;
@@ -749,134 +762,6 @@
 		width: 90%;
 	}
 }
-
-/*Washington sbctc styles*/
-/*.episode-wsbctc {*/
-	/*background-image: url("/images/customer/WSBCTC_Star.svg");*/
-	/*background-position: 0 0;*/
-	/*background-repeat: no-repeat;*/
-	/*background-size: 95%;*/
-	/*font-family: 'Gotham', sans-serif;*/
-	/*font-weight: 300;*/
-	/*font-size: 1.1em;*/
-/*}*/
-/*.episode-wsbctc .scene.isCurrent::before,*/
-/*.episode-wsbctc .searchMode::before,*/
-/*.episode-wsbctc .reviewMode::before {*/
-	/*content: "";*/
-	/*position: fixed;*/
-	/*bottom: 0;*/
-	/*right: 0;*/
-	/*top: 45px;*/
-	/*left: 0;*/
-/*}*/
-
-/*.episode-wsbctc .branding {*/
-	/*background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));*/
-/*}*/
-
-/*.episode-wsbctc .content .item {*/
-	/*background-color: #fff !important;*/
-	/*color: #000;*/
-	/*box-shadow: 0 7px 5px rgba(0, 0, 0, 0.3) !important;*/
-	/*padding-left: 75px;*/
-/*}*/
-
-/*.episode-wsbctc .content .sxs-item .item .startTime {*/
-	/*margin-left: -75px;*/
-	/*width: 70px;*/
-	/*text-align: right;*/
-/*}*/
-
-
-/*.episode-wsbctc .content .item.isCurrent {*/
-	/*background-color: #d8d3c3 !important;*/
-/*}*/
-
-/*.episode-wsbctc .searchMode .item,*/
-/*.episode-wsbctc .reviewMode .item {*/
-	/*background: none !important;*/
-	/*box-shadow: none !important;*/
-/*}*/
-
-/*.episode-wsbctc .searchMode .item.isCurrent,*/
-/*.episode-wsbctc .reviewMode .item.isCurrent {*/
-	/*background-color: #d8d3c3 !important;*/
-/*}*/
-
-/*.episode-wsbctc .content .item.colorInvert {*/
-	/*color: #fff !important;*/
-	/*background-color: #2B4B71  !important;*/
-/*}*/
-
-/*.episode-wsbctc .item.colorInvert a {*/
-	/*color: #fff !important;*/
-	/*background-color: #2B4B71  !important;*/
-/*}*/
-
-/*.episode-wsbctc .item .startTime {*/
-	/*font-weight: 100;*/
-	/*font-size: 1.3em;*/
-	/*line-height: 1.3em;*/
-/*}*/
-
-/*.episode-wsbctc .authorName,*/
-/*.episode-wsbctc .title,*/
-/*.episode-wsbctc .searchMode .item a.fakeLink,*/
-/*.episode-wsbctc .reviewMode .item a.fakeLink {*/
-	/*font-size: 1.3em;*/
-	/*line-height: 1.3em;*/
-	/*font-weight: 700;*/
-	/*text-transform: uppercase;*/
-/*}*/
-
-/*.episode-wsbctc .category {*/
-	/*position: absolute;*/
-	/*left: 10px;*/
-	/*font-size: 10px;*/
-	/*top: -6px;*/
-/*}*/
-
-/*.episode-wsbctc .escapelink:before {*/
-	/*font-weight: normal;*/
-	/*padding: 0 0.5em;*/
-	/*font-size: 60%;*/
-/*}*/
-
-/*.episode-wsbctc a,*/
-/*.episode-wsbctc a:visited,*/
-/*.episode-wsbctc .fakeLink {*/
-	/*color: #284865;*/
-/*}*/
-
-
-
-
-/*.episode-wsbctc .branding {*/
-	/*margin-top: 85px;*/
-/*}*/
-
-/*.episode-wsbctc .copyright,*/
-/*.episode-wsbctc .copyright a {*/
-	/*color: #666 !important;*/
-	/*text-shadow: none;*/
-/*}*/
-
-/*@media screen and (max-width: 330px) {*/
-	/*.episode-wsbctc .landingscreen {*/
-		/*background-position: 50% 90px;*/
-		/*width: 300px;*/
-		/*padding-top: 1em;*/
-	/*}*/
-/*}*/
-
-/*@media screen and (min-width: 331px) and (max-width: 550px) {*/
-	/*.episode-wsbctc .landingscreen {*/
-		/*background-position: 50% 140px;*/
-		/*width: 90%;*/
-	/*}*/
-/*}*/
-
 
 .episode-wsbctc {
 	background-image: url("/images/customer/WSBCTC_Star.svg");
@@ -949,4 +834,5 @@
 	position: relative;
 	bottom: 20px
 }
+
 
