@@ -84,7 +84,7 @@
 				var mainPlayerState = playerState(main);
 
 				if (pid === main) {
-					if (mainPlayerState === YT.PlayerState.PLAYING) {
+					if (mainPlayerState === YT.PlayerState.PLAYING && angular.isDefined(embed)) {
 						pauseOtherEmbeds(embed);
 					}
 				}
