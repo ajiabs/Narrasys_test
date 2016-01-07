@@ -282,26 +282,6 @@
 			dfd.resolve(_id);
 			return dfd.promise;
 		}
-        //
-		//function setEmbedId(ytVideoId) {
-		//	var dfd = $q.defer();
-        //
-		//	var id = _guid() + ytVideoId;
-		//	_players[id] = {};
-		//	dfd.resolve(id);
-        //
-		//	return dfd.promise;
-		//}
-        //
-		//function setMainPlayerId(id) {
-		//	var dfd = $q.defer();
-        //
-		//	_mainPlayerId = id;
-		//	_players[id] = {};
-		//	dfd.resolve(id);
-        //
-		//	return dfd.promise;
-		//}
 
 		return _youTubePlayerManager;
 
