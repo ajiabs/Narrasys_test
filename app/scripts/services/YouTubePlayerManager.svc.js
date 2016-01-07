@@ -76,7 +76,7 @@
 				var target = event.target;
 				var pid = target.m.id;
 
-				if (pid !== 'main-player') {
+				if (pid !== _mainPlayerId) {
 					embed = pid;
 				}
 
