@@ -55,7 +55,11 @@
 					second = el1.html();
 				});
 
-				it('should make identical videoIDs unique by prefixing them with a random string', function() {
+				it('should parse the source URL to get the youtube video ID (using youtubeSvc)', function() {
+					expect(_ctrl0.ytVideoID).toBe('6wKqH6vlGHU');
+				});
+
+				it('should make identical embedIds unique by prefixing the input videoID with a random string', function() {
 					expect(first).not.toBe(second);
 				});
 

@@ -24,9 +24,10 @@
 
 		function ittYoutubeCtrl($timeout, youTubePlayerManager, youtubeSvc) {
 			var _ctrl = this;  //jshint ignore:line
-			    _ctrl.ytVideoID = youtubeSvc.extractYoutubeId(_ctrl.embedUrl);
 			var embedId;
 			var isMainPlayer;
+			_ctrl.ytVideoID = youtubeSvc.extractYoutubeId(_ctrl.embedUrl);
+
 
 			if (_ctrl.onPlayerStateChange === undefined) {
 				_ctrl.onPlayerStateChange = angular.noop;
