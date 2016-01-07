@@ -8,10 +8,11 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager(youtubeSvc, appState, timelineSvc) {
+	function youTubePlayerManager($q, appState, timelineSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
+		var _mainPlayerId;
 
 		_youTubePlayerManager = {
 			getPlayer: getPlayer,
@@ -23,6 +24,7 @@
 			pauseEmbeds: pauseEmbeds,
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			setPlaybackQuality: setPlaybackQuality,
+			setPlayerId: setPlayerId,
 			getVideoLoadedFraction: getVideoLoadedFraction,
 			seekTo: seekTo,
 			getCurrentTime: getCurrentTime,
@@ -32,11 +34,9 @@
 			setVolume: setVolume
 		};
 
-		function _createPlayer(elmId, sourceURL, stateChangeCB, qualityChangeCB, onReadyCB) {
+		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
-			var videoID = youtubeSvc.extractYoutubeId(sourceURL);
-
-			return new YT.Player(elmId, {
+			return new YT.Player(divId, {
 				videoId: videoID,
 
 				//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
@@ -56,10 +56,10 @@
 			});
 		}
 
-		function create(playerId, sourceURL, stateCb, qualityChangeCB, onReadyCB) {
+		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
 
-			_players[playerId] = _createPlayer(playerId, sourceURL, onPlayerStateChange, qualityChangeCB, onReady);
-			var currentPlayer = _players[playerId];
+			_players[divId] = _createInstance(divId, videoId, onPlayerStateChange, qualityChangeCB, onReady);
+			var currentPlayer = _players[videoId];
 			return currentPlayer;
 
 			//available 'states'
@@ -70,7 +70,7 @@
 			//YT.PlayerState.CUED
 
 			function onPlayerStateChange(event) {
-				var main = 'main-player';
+				var main = _mainPlayerId;
 				var embed;
 				var state = event.data;
 				var target = event.target;
@@ -254,6 +254,54 @@
 				appState.embedYTPlayerAvailable = false;
 			}
 		}
+
+		function _guid() {
+			function s4() {
+				return Math.floor((1 + Math.random()) * 0x10000)
+					.toString(16)
+					.substring(1);
+			}
+			return s4() + s4();
+		}
+
+
+
+		function setPlayerId(id, mainPlayer) {
+			var dfd = $q.defer();
+			var _id;
+			if (mainPlayer) {
+				_id = id;
+				_mainPlayerId = _id;
+				_players[_id] = {};
+			} else {
+				_id = _guid() + id;
+				_players[_id] = {};
+			}
+
+			console.log('PLAYERS', _players);
+			dfd.resolve(_id);
+			return dfd.promise;
+		}
+        //
+		//function setEmbedId(ytVideoId) {
+		//	var dfd = $q.defer();
+        //
+		//	var id = _guid() + ytVideoId;
+		//	_players[id] = {};
+		//	dfd.resolve(id);
+        //
+		//	return dfd.promise;
+		//}
+        //
+		//function setMainPlayerId(id) {
+		//	var dfd = $q.defer();
+        //
+		//	_mainPlayerId = id;
+		//	_players[id] = {};
+		//	dfd.resolve(id);
+        //
+		//	return dfd.promise;
+		//}
 
 		return _youTubePlayerManager;
 

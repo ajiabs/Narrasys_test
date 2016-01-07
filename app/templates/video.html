@@ -1,8 +1,8 @@
 <div class="video">
+
 	<itt-youtube tabindex="-1" ng-if="video.urls.youtube.length" embed-url="{{video.urls.youtube[0]}}"
 				 on-player-state-change="playerStateChange"
-				 on-ready="onReady"
-				 embed-id="main-player"></itt-youtube>
+				 on-ready="onReady" main-player="video._id"></itt-youtube>
 	<!-- NOTE in html5 video we can't depend on databinding to change the video src after rendering!  See videoController changeVideoBandwidth -->
 	<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player">
 		<source class="m3u8" ng-if="video.urls.m3u8[0]" ng-src="{{video.urls.m3u8[0]}}" type="application/x-mpegURL" />

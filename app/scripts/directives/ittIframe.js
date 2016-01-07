@@ -14,7 +14,8 @@
 			restrict: 'E',
 			scope: {
 				src: '@',
-				contenttype: '@'
+				contenttype: '@',
+				isYoutube: '=?'
 			},
 			replace: true,
 			templateUrl: 'templates/iframe.html',

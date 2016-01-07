@@ -13,7 +13,6 @@
 angular.module('com.inthetelling.story')
 	.controller('VideoController', function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
 		//exported functions / props
-
 		angular.extend($scope, {
 			initVideo: initVideo,
 			intentionalStall: false,
@@ -46,7 +45,7 @@ angular.module('com.inthetelling.story')
 			if ($scope.video.urls.youtube && $scope.video.urls.youtube.length) {
 				$scope.videoType = 'youtube';
 				appState.videoType = $scope.videoType;
-				$scope.videoNode = {id: 'main-player'};
+				$scope.videoNode = {id: $scope.video._id};
 
 				//YT.Player will fire onReady callback
 

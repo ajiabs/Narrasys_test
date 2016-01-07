@@ -1,6 +1,10 @@
 <div class="iframeContainer">
 	<itt-loading></itt-loading>
-	<iframe ng-src="{{iframeCtrl.src}}"
+
+	<iframe ng-if="!iframeCtrl.isYoutube"
+			ng-src="{{iframeCtrl.src}}"
 			ng-attr-sandbox="{{iframeCtrl.sandbox}}"></iframe>
 
+	<itt-youtube ng-if="iframeCtrl.isYoutube"
+				 embed-url="{{iframeCtrl.src}}"></itt-youtube>
 </div>

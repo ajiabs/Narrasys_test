@@ -16,12 +16,7 @@
 	</div>
 	<a tabindex="0" class="escapelink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">(new window)</a>
 
-	<itt-iframe ng-if="!item.ytEmbed"
+	<itt-iframe is-youtube="item.ytEmbed"
 				x-src="{{item.url}}"></itt-iframe>
-
-	<itt-youtube ng-if="item.ytEmbed"
-				 embed-url="{{item.url}}"
-				 embed-id="{{item._id}}"></itt-youtube>
-
 	<div class="clear"></div>
 </div>

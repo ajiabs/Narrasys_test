@@ -10,7 +10,8 @@
 
 		var embedUrl = '//www.youtube.com/embed/6wKqH6vlGHU';
 		var embedId = '568bf8746d571a053a000113';
-		var directiveTemplate = '<itt-youtube embed-url="' + embedUrl + ' " embed-id="' + embedId + '"></itt-youtube>';
+		var mainPlayerTemplate = '<itt-youtube main-player="mainPlayerEmbed" embed-url="' + embedUrl + '"></itt-youtube>';
+		var embedTemplate = '<itt-youtube embed-url="' + embedUrl + '"></itt-youtube>';
 		var scope, compile;
 
 		beforeEach(inject(function ($rootScope, $compile) {
@@ -18,39 +19,25 @@
 			compile = $compile;
 		}));
 
-		function createTestDirective() {
+		function createTestDirective(template, main) {
+			if (main) {
+				scope.mainPlayerEmbed = embedId;
+			}
 			var ittYoutubeElement, compiled;
-			ittYoutubeElement = angular.element(directiveTemplate);
+			ittYoutubeElement = angular.element(template);
 			compiled = compile(ittYoutubeElement)(scope);
 			scope.$digest();
 			return compiled;
 		}
 
-		describe('inputs: ', function() {
-			it('should bind the passed in embed-url param to the controller scope', function() {
-				var el = createTestDirective();
-
-				var ctrl = el.isolateScope().ittYoutubeCtrl;
-
-				expect(ctrl.embedUrl).toBe(embedUrl);
-			});
-
-			it('should bind the passed in embed-id param to the controller scope', function() {
-				var el = createTestDirective();
-
-				var ctrl = el.isolateScope().ittYoutubeCtrl;
-
-				expect(ctrl.embedId).toBe(embedId);
-			});
-		});
-
 		describe('DOM results: ', function() {
-			it('should create a div for the youtube iframe API and set the ID with the embed-id param', function() {
+			it('should create a div for the youtube iframe and set the div accordingly', function() {
 
-				var el = createTestDirective();
+				var el = createTestDirective(mainPlayerTemplate, true);
 
 				var playerDiv = el.html();
-				var renderedTemplate = '<div id="568bf8746d571a053a000113"></div>';
+
+				var renderedTemplate = '<div id="' + embedId + '"></div>';
 				expect(playerDiv).toBe(renderedTemplate);
 			});
 		});
