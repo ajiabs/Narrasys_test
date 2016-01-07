@@ -264,8 +264,6 @@
 			return s4() + s4();
 		}
 
-
-
 		function setPlayerId(id, mainPlayer) {
 			var dfd = $q.defer();
 			var _id;
@@ -278,7 +276,6 @@
 				_players[_id] = {};
 			}
 
-			console.log('PLAYERS', _players);
 			dfd.resolve(_id);
 			return dfd.promise;
 		}
@@ -286,6 +283,5 @@
 		return _youTubePlayerManager;
 
 	}
-
 
 })();

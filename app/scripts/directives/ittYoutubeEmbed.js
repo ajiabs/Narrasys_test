@@ -24,7 +24,7 @@
 
 		function ittYoutubeCtrl($timeout, youTubePlayerManager, youtubeSvc) {
 			var _ctrl = this;  //jshint ignore:line
-			var ytVideoID = youtubeSvc.extractYoutubeId(_ctrl.embedUrl);
+			    _ctrl.ytVideoID = youtubeSvc.extractYoutubeId(_ctrl.embedUrl);
 			var embedId;
 			var isMainPlayer;
 
@@ -41,7 +41,7 @@
 				isMainPlayer = true;
 			} else {
 				isMainPlayer = false;
-				embedId = ytVideoID;
+				embedId = _ctrl.ytVideoID;
 			}
 
 			youTubePlayerManager.setPlayerId(embedId, isMainPlayer)
@@ -49,8 +49,8 @@
 				_ctrl.embedId = divId;
 
 				$timeout(function() {
-					youTubePlayerManager.create(divId, ytVideoID, _ctrl.onPlayerStateChange, angular.noop, _ctrl.onReady);
-				});
+					youTubePlayerManager.create(divId, _ctrl.ytVideoID, _ctrl.onPlayerStateChange, angular.noop, _ctrl.onReady);
+				}, 0);
 			});
 
 		}

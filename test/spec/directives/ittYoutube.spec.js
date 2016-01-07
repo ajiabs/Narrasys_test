@@ -31,19 +31,40 @@
 		}
 
 		describe('DOM results: ', function() {
-			it('should create a div for the youtube iframe and set the div accordingly', function() {
+			describe('case: the main embed player. (with the main-player attribute)', function() {
+				it('should create a player div and set the ID with the value passed from main-player param', function() {
 
-				var el = createTestDirective(mainPlayerTemplate, true);
+					var el = createTestDirective(mainPlayerTemplate, true);
 
-				var playerDiv = el.html();
+					var playerDiv = el.html();
+					var renderedTemplate = '<div id="' + embedId + '"></div>';
 
-				var renderedTemplate = '<div id="' + embedId + '"></div>';
-				expect(playerDiv).toBe(renderedTemplate);
+					expect(playerDiv).toBe(renderedTemplate);
+				});
 			});
+
+			describe('case: an embed player. (main-player attribute omitted)', function() {
+
+				var first, second, _ctrl0, _ctrl1;
+				beforeEach(function() {
+					var el0  = createTestDirective(embedTemplate, false);
+					var el1 = createTestDirective(embedTemplate, false);
+					_ctrl0 = el0.isolateScope().ittYoutubeCtrl;
+					_ctrl1 = el0.isolateScope().ittYoutubeCtrl;
+					first = el0.html();
+					second = el1.html();
+				});
+
+				it('should make identical videoIDs unique by prefixing them with a random string', function() {
+					expect(first).not.toBe(second);
+				});
+
+				it('should use the same youtube videoID', function() {
+					expect(_ctrl0.ytVideoID).toBe(_ctrl1.ytVideoID);
+				});
+			});
+
 		});
-
-
-
 	});
 })();
 
