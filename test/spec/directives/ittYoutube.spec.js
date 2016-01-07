@@ -55,7 +55,7 @@
 					second = el1.html();
 				});
 
-				it('should parse the source URL to get the youtube video ID (using youtubeSvc)', function() {
+				it('should parse the embedUrl param to get the youtube video ID (using youtubeSvc)', function() {
 					expect(_ctrl0.ytVideoID).toBe('6wKqH6vlGHU');
 				});
 
@@ -63,7 +63,7 @@
 					expect(first).not.toBe(second);
 				});
 
-				it('should use the same youtube videoID', function() {
+				it('should use the same youtube videoID for embed players', function() {
 					expect(_ctrl0.ytVideoID).toBe(_ctrl1.ytVideoID);
 				});
 			});
