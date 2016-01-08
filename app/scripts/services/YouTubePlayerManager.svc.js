@@ -84,8 +84,8 @@
 				var mainPlayerState = playerState(main);
 
 				if (pid === main) {
-					if (mainPlayerState === YT.PlayerState.PLAYING && angular.isDefined(embed)) {
-						pauseOtherEmbeds(embed);
+					if (mainPlayerState === YT.PlayerState.PLAYING) {
+						pauseOtherEmbeds(main);
 					}
 				}
 
@@ -117,11 +117,11 @@
 				var target = event.target;
 				var pid = target.m.id;
 
-				if (pid === 'main-player') {
+				if (pid === _mainPlayerId) {
 					appState.mainYTPlayerReady = true;
 				}
 
-				if (pid !== 'main-player') {
+				if (pid !== _mainPlayerId) {
 					appState.embedYTPlayerReady = true;
 					appState.embedYTPlayerAvailable = true;
 				}
@@ -220,7 +220,7 @@
 
 		function pauseEmbeds() {
 			for (var p in _players) {
-				if (p !== 'main-player') {
+				if (p !== _mainPlayerId) {
 					var curPlayerState = playerState(p);
 					if (curPlayerState !== YT.PlayerState.UNSTARTED &&
 						curPlayerState !== YT.PlayerState.PAUSED &&
@@ -233,7 +233,7 @@
 
 		function pauseOtherEmbeds(id) {
 			for (var p in _players) {
-				if (p !== 'main-player' && p !== id) {
+				if (p !== _mainPlayerId && p !== id) {
 					var curPlayerState = playerState(p);
 					if (curPlayerState !== YT.PlayerState.UNSTARTED &&
 						curPlayerState !== YT.PlayerState.PAUSED &&
@@ -250,7 +250,7 @@
 				p.destroy();
 			}
 
-			if (pid !== 'main-player') {
+			if (pid !== _mainPlayerId) {
 				appState.embedYTPlayerAvailable = false;
 			}
 		}
