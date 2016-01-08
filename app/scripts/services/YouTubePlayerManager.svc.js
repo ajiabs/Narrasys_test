@@ -85,7 +85,7 @@
 
 				if (pid === main) {
 					if (mainPlayerState === YT.PlayerState.PLAYING) {
-						pauseOtherEmbeds(main);
+						pauseEmbeds();
 					}
 				}
 
@@ -233,7 +233,7 @@
 
 		function pauseOtherEmbeds(id) {
 			for (var p in _players) {
-				if (p !== _mainPlayerId && p !== id) {
+				if (p !== _mainPlayerId & p !== id) {
 					var curPlayerState = playerState(p);
 					if (curPlayerState !== YT.PlayerState.UNSTARTED &&
 						curPlayerState !== YT.PlayerState.PAUSED &&
