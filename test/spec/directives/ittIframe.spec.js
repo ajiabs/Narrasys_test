@@ -11,20 +11,29 @@
 
 		var pdfSrc = '.pdf';
 		var nonPdfSrc = '.doc';
+		var youtubeSrc = '//www.youtube.com/embed/6wKqH6vlGHU';
 		var htmlContentType = 'text/html';
 		var defaultSandbox = 'allow-forms allow-same-origin allow-scripts';
-		var directiveTemplate;
 		var scope, compile;
-
 		beforeEach(inject(function($rootScope, $compile) {
 			scope = $rootScope;
 			compile = $compile;
 		}));
 
-		function createTestDirective(srcParam, contentTypeParam) {
-			var element, compiled;
-			var directiveTemplate = '<itt-iframe x-src="' + srcParam + '" contenttype="' + contentTypeParam + '"></itt-iframe>';
-			element = angular.element(directiveTemplate);
+
+		function createTestDirective(srcParam, contentTypeParam, isYoutube) {
+			var element, compiled, template;
+
+			template = '<itt-iframe x-src="' + srcParam + '"></itt-iframe>';
+
+			if (contentTypeParam !== undefined) {
+				template = '<itt-iframe x-src="' + srcParam + '" contenttype="'+ contentTypeParam +'"></itt-iframe>';
+			} else if (isYoutube !== undefined) {
+				scope.isYoutube = true;
+				template = '<itt-iframe x-src="'+ srcParam +'"  is-youtube="isYoutube"></itt-iframe>';
+			}
+
+			element = angular.element(template);
 			compiled = compile(element)(scope);
 			scope.$digest();
 			return compiled;
@@ -38,6 +47,22 @@
 
 				expect(ctrl.src).toBe(pdfSrc);
 			});
+
+			describe('optional params', function() {
+
+				it('should bind the contenttype param to the controller scope', function() {
+					var el = createTestDirective(nonPdfSrc, htmlContentType);
+
+					expect(el.isolateScope().iframeCtrl.contenttype).toBe(htmlContentType);
+				});
+
+				it('should bind the isYoutube boolean to the controller scope', function() {
+					var el = createTestDirective(youtubeSrc, undefined, true);
+
+					expect(el.isolateScope().iframeCtrl.isYoutube).toBe(true);
+				});
+			});
+
 		});
 
 		describe('Sandbox Logic', function() {
@@ -48,6 +73,14 @@
 				var ctrl = el.isolateScope().iframeCtrl;
 
 				expect(ctrl.sandbox).toBe(defaultSandbox);
+			});
+
+			it('should remove sandbox attrs for PDFs', function() {
+				var el = createTestDirective(pdfSrc);
+
+				var ctrl = el.isolateScope().iframeCtrl;
+
+				expect(ctrl.sandbox).toBe(undefined);
 			});
 
 		});
