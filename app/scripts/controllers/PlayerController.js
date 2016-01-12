@@ -328,7 +328,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.play = function () {
-			console.log('play from PlayerCtrl!!');
 			timelineSvc.play();
 		};
 
@@ -367,7 +366,6 @@ angular.module('com.inthetelling.story')
 		//console.log("AppState scroll stuff", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked, appState.isTouchDevice);
 
 		if (appState.isTouchDevice && appState.viewMode == 'review') {
-			//console.log('set Things to Be Scrollin!!');
 			appState.autoscroll = true;
 		}
 
