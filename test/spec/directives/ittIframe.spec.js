@@ -21,16 +21,13 @@
 		}));
 
 
-		function createTestDirective(srcParam, contentTypeParam, isYoutube) {
+		function createTestDirective(srcParam, contentTypeParam) {
 			var element, compiled, template;
 
 			template = '<itt-iframe x-src="' + srcParam + '"></itt-iframe>';
 
 			if (contentTypeParam !== undefined) {
 				template = '<itt-iframe x-src="' + srcParam + '" contenttype="'+ contentTypeParam +'"></itt-iframe>';
-			} else if (isYoutube !== undefined) {
-				scope.isYoutube = true;
-				template = '<itt-iframe x-src="'+ srcParam +'"  is-youtube="isYoutube"></itt-iframe>';
 			}
 
 			element = angular.element(template);
@@ -48,18 +45,20 @@
 				expect(ctrl.src).toBe(pdfSrc);
 			});
 
+			it('should set detect when the link is to youtube', function() {
+				var el = createTestDirective(youtubeSrc);
+
+				var ctrl = el.isolateScope().iframeCtrl;
+
+				expect(ctrl.isYoutube).toBe(true);
+			});
+
 			describe('optional params', function() {
 
 				it('should bind the contenttype param to the controller scope', function() {
 					var el = createTestDirective(nonPdfSrc, htmlContentType);
 
 					expect(el.isolateScope().iframeCtrl.contenttype).toBe(htmlContentType);
-				});
-
-				it('should bind the isYoutube boolean to the controller scope', function() {
-					var el = createTestDirective(youtubeSrc, undefined, true);
-
-					expect(el.isolateScope().iframeCtrl.isYoutube).toBe(true);
 				});
 			});
 

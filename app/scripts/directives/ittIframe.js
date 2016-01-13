@@ -23,13 +23,13 @@
 			bindToController: true
 		};
 
-		function ittIframeCtrl($scope) {
+		function ittIframeCtrl($scope, youtubeSvc) {
 			// moved this all back out of the controller to avoid leaking $scope.sandbox across directives
 			var _ctrl = this; //jshint ignore:line
 			var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
 			_ctrl.isYoutube = false;
 
-			if (_ctrl.src.match(/youtube/)) {
+			if (youtubeSvc.extractYoutubeId(_ctrl.src)) {
 				_ctrl.isYoutube = true;
 			}
 
