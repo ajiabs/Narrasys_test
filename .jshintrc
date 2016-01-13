@@ -21,6 +21,7 @@
 		"angular": true,
 		"videojs": false,
 		"$": false,
-		"AWS": false
+		"AWS": false,
+		"YT": true
 	}
 }
