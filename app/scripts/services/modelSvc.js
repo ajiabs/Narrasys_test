@@ -341,7 +341,6 @@ angular.module('com.inthetelling.story')
 				event.noEmbed = false;
 				event.noExternalLink = false;
 				event.targetTop = false;
-				event.ytEmbed = false;
 
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)
@@ -366,10 +365,6 @@ angular.module('com.inthetelling.story')
 				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//)) {
 					//console.warn("Can't embed http:// link type:", event.url);
 					event.noEmbed = true;
-				}
-				//is it a youtube video embed?
-				if (event.templateUrl.match(/link-embed/) && event.url.match(/youtube/)) {
-					event.ytEmbed = true;
 				}
 
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
