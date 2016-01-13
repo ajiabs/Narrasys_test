@@ -255,7 +255,10 @@
 			}
 		}
 
+
+
 		function _guid() {
+			/* jshint ignore:start */
 			var d = new Date().getTime();
 			var uuid = 'xxxxxxxx'.replace(/[xy]/g, function (c) {
 				var r = (d + Math.random() * 16) % 16 | 0;
@@ -263,6 +266,7 @@
 				return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16);
 			});
 			return uuid;
+			/* jshint ignore:end */
 		}
 
 		function setPlayerId(id, mainPlayer) {

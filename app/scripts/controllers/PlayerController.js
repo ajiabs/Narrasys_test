@@ -365,7 +365,7 @@ angular.module('com.inthetelling.story')
 
 		//console.log("AppState scroll stuff", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked, appState.isTouchDevice);
 
-		if (appState.isTouchDevice && appState.viewMode == 'review') {
+		if (appState.isTouchDevice && appState.viewMode === 'review') {
 			appState.autoscroll = true;
 		}
 
