@@ -14,8 +14,7 @@
 			restrict: 'E',
 			scope: {
 				src: '@',
-				contenttype: '@',
-				isYoutube: '=?'
+				contenttype: '@'
 			},
 			replace: true,
 			templateUrl: 'templates/iframe.html',
@@ -28,6 +27,11 @@
 			// moved this all back out of the controller to avoid leaking $scope.sandbox across directives
 			var _ctrl = this; //jshint ignore:line
 			var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
+			_ctrl.isYoutube = false;
+
+			if (_ctrl.src.match(/youtube/)) {
+				_ctrl.isYoutube = true;
+			}
 
 			_ctrl.watcher = $scope.$watchGroup([function() {return _ctrl.src;}, function() {return _ctrl.contenttype;}], function () {
 				if (!_ctrl.src) {
