@@ -34,6 +34,14 @@ angular.module('com.inthetelling.story')
 		var _numberOfStalls = 0;
 		var _YTPlayer;
 		var _babysitter;
+		var playerStates = {
+			'-1': 'unstarted',
+			'0': 'ended',
+			'1': 'playing',
+			'2': 'paused',
+			'3': 'buffering',
+			'5': 'video cued'
+		};
 
 		//called from link fn of ittVideo
 		function initVideo(el) {
@@ -46,21 +54,6 @@ angular.module('com.inthetelling.story')
 				$scope.videoType = 'youtube';
 				appState.videoType = $scope.videoType;
 				$scope.videoNode = {id: $scope.video._id};
-
-				//YT.Player will fire onReady callback
-
-				//if (appState.youtubeIsReady) {
-				//	_initYoutube();
-				//} else {
-				//	var unwatch = $scope.$watch(function () {
-				//		return appState.youtubeIsReady;
-				//	}, function (itIsReady) {
-				//		if (itIsReady) {
-				//			_initYoutube();
-				//			unwatch();
-				//		}
-				//	});
-				//}
 			} else {
 				$scope.videoType = "video"; // as in html5 <video> tagx
 				appState.videoType = $scope.videoType;
@@ -74,14 +67,6 @@ angular.module('com.inthetelling.story')
 		}
 
 		function onPlayerStateChange(event) {
-			var playerStates = {
-				'-1': 'unstarted',
-				'0': 'ended',
-				'1': 'playing',
-				'2': 'paused',
-				'3': 'buffering',
-				'5': 'video cued'
-			};
 
 			var state = event.data;
 
@@ -133,8 +118,6 @@ angular.module('com.inthetelling.story')
 
 
 		function _initYoutube() {
-			 console.log("videoController initYoutube");
-
 			// NOTE youtube is currently sending us playerState of 'buffering' when paused
 
 			timelineSvc.registerVideo($scope);
@@ -363,7 +346,7 @@ angular.module('com.inthetelling.story')
 					$scope.setVolume(0);
 					youTubePlayerManager.play($scope.videoNode.id);
 					unwatch = $scope.$watch(function () {
-						return $scope.playerState;
+						return playerStates[youTubePlayerManager.playerState($scope.videoNode.id)];
 					}, function (newPlayerState) {
 						if (newPlayerState === 'playing') {
 							unwatch();
