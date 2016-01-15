@@ -17,7 +17,6 @@ angular.module('com.inthetelling.story')
 		// };
 
 		$scope.viewMode = function (newMode) {
-			console.log('PlayerCtrl.viewMode() ->', newMode);
 			appState.viewMode = newMode;
 			analyticsSvc.captureEpisodeActivity("modeChange", {
 				"mode": newMode
@@ -272,7 +271,11 @@ angular.module('com.inthetelling.story')
 		$scope.toggleSearchPanel = function () {
 			appState.show.searchPanel = !appState.show.searchPanel;
 
-			$scope.viewMode(appState.show.searchPanel ? 'review' : 'discover');
+			if (appState.windowWidth < 480) {
+				$scope.viewMode('review');
+			} else {
+				$scope.viewMode(appState.show.searchPanel ? 'review' : 'discover');
+			}
 
 			appState.searchText = '';
 			if (appState.show.searchPanel) {
