@@ -397,30 +397,33 @@ angular.module('com.inthetelling.story')
 			var defer = $q.defer();
 			getUploadSession().then(function putObject() {
 				// console.log('awsSvc, putting object with key: ', awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName);
-				var params = {
-					Key: awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName,
-					ContentType: fileBeingUploaded.type,
-					Body: fileBeingUploaded,
-					ACL: PUBLIC_READ
-				};
+				getMD5ForFileOrBlob(fileBeingUploaded).then(function (md5) {
+					var params = {
+						Key: awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName,
+						ContentType: fileBeingUploaded.type,
+						Body: fileBeingUploaded,
+						ContentMD5: md5,
+						ACL: PUBLIC_READ
+					};
 
-				currentRequest = awsCache.s3.putObject(params, function (err, data) {
-					if (err) {
-						console.error(err, err.stack); // an error occurred
-						deferredUpload.reject();
-					} else {
-						// console.log('awsSvc, uploaded file!', data);
-						deferredUpload.resolve(data); // successful response
-					}
-				});
-				currentRequest.on('httpUploadProgress', function (progress) {
-					deferredUpload.notify({
-						bytesSent: progress.loaded,
-						bytesTotal: progress.total
+					currentRequest = awsCache.s3.putObject(params, function (err, data) {
+						if (err) {
+							console.error(err, err.stack); // an error occurred
+							deferredUpload.reject();
+						} else {
+							// console.log('awsSvc, uploaded file!', data);
+							deferredUpload.resolve(data); // successful response
+						}
 					});
-				}).on('error', function (err, response) {
-					console.error('error: ', err, response);
-					deferredUpload.reject(err);
+					currentRequest.on('httpUploadProgress', function (progress) {
+						deferredUpload.notify({
+							bytesSent: progress.loaded,
+							bytesTotal: progress.total
+						});
+					}).on('error', function (err, response) {
+						console.error('error: ', err, response);
+						deferredUpload.reject("An error occured while uploading the file, please try again.");
+					});
 				});
 			}, function (reason) {
 				console.error('PUT OBJECT FAILED: ', reason);
@@ -531,36 +534,51 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
+		var getMD5ForFileOrBlob = function (fileOrBlob) {
+			var defer = $q.defer();
+			var reader = new FileReader();
+			reader.onload = function() {
+				var data = reader.result;
+                                defer.resolve(AWS.util.crypto.md5(new Uint8Array(data), 'base64'));
+			};
+			reader.readAsArrayBuffer(fileOrBlob);
+                	return defer.promise;
+		};
+
 		var uploadPart = function (partNumber, blob) {
 			// console.log('awsSvc, Uploading part: ', partNumber);
 			var defer = $q.defer();
 			getUploadSession().then(function uploadPart() {
-				var params = {
-					Bucket: multipartUpload.Bucket,
-					Key: multipartUpload.Key,
-					UploadId: multipartUpload.UploadId,
-					PartNumber: partNumber,
-					Body: blob
-				};
-				chunks[partNumber - 1].request = awsCache.s3.uploadPart(params, function (err, data) {
-					if (err) {
-						console.error(err, err.stack); // an error occurred
-						defer.reject();
-					} else {
-						// console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
-						defer.resolve(data.ETag); // successful response
-					}
-				});
-				chunks[partNumber - 1].request.on('httpUploadProgress', function (progress) {
-					bytesUploaded += progress.loaded - chunks[partNumber - 1].uploaded;
-					chunks[partNumber - 1].uploaded = progress.loaded;
-					deferredUpload.notify({
-						bytesSent: bytesUploaded,
-						bytesTotal: fileBeingUploaded.size
+				getMD5ForFileOrBlob(blob).then(function (md5) {
+                                	console.error("MD5 for part '", partNumber, "' of size '", blob.size,"' is ", md5);
+					var params = {
+						Bucket: multipartUpload.Bucket,
+						Key: multipartUpload.Key,
+						UploadId: multipartUpload.UploadId,
+						PartNumber: partNumber,
+						ContentMD5: md5,
+						Body: blob
+					};
+					chunks[partNumber - 1].request = awsCache.s3.uploadPart(params, function (err, data) {
+						if (err) {
+							console.error(err, err.stack); // an error occurred
+							defer.reject();
+						} else {
+							// console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
+							defer.resolve(data.ETag); // successful response
+						}
 					});
-				}).on('error', function (err, response) {
-					console.error('error: ', err, response);
-					deferredUpload.reject(err);
+					chunks[partNumber - 1].request.on('httpUploadProgress', function (progress) {
+						bytesUploaded += progress.loaded - chunks[partNumber - 1].uploaded;
+						chunks[partNumber - 1].uploaded = progress.loaded;
+						deferredUpload.notify({
+							bytesSent: bytesUploaded,
+							bytesTotal: fileBeingUploaded.size
+						});
+					}).on('error', function (err, response) {
+						console.error('error: ', err, response);
+						deferredUpload.reject(err);
+					});
 				});
 			});
 			return defer.promise;
