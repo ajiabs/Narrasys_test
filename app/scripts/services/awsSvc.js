@@ -5,10 +5,13 @@ angular.module('com.inthetelling.story')
 	.factory('awsSvc', function (config, $routeParams, $http, $q) {
 		// console.log('awsSvc, user: ', appState.user);
 		var MAX_CHUNKS = 1000;
+		var MAX_RETRIES = 3;
 		var MAX_SIMUL_PARTS_UPLOADING = 3;
+		var REQUEST_TIMEOUT = 15000; //15 seconds (default is 2 minutes)
 		var PUBLIC_READ = "public-read";
 		var PENDING = "pending";
 		var UPLOADING = "uploading";
+		var FAILED = "failed";
 		var COMPLETE = "complete";
 		var svc = {};
 		var awsCache = {
@@ -251,6 +254,8 @@ angular.module('com.inthetelling.story')
 							region: config.awsRegion
 						});
 						var params = {
+                                                        maxRetries: 0,
+							httpOptions: {timeout: REQUEST_TIMEOUT},
 							params: {
 								Bucket: data.bucket,
 								Prefix: data.key_base
@@ -397,7 +402,7 @@ angular.module('com.inthetelling.story')
 			var defer = $q.defer();
 			getUploadSession().then(function putObject() {
 				// console.log('awsSvc, putting object with key: ', awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName);
-				getMD5ForFileOrBlob(fileBeingUploaded).then(function (md5) {
+				getMD5ForFileOrBlob(fileBeingUploaded, 'base64').then(function (md5) {
 					var params = {
 						Key: awsCache.s3.config.params.Prefix + fileBeingUploaded.uniqueName,
 						ContentType: fileBeingUploaded.type,
@@ -485,6 +490,7 @@ angular.module('com.inthetelling.story')
 					chunk.end = fileBeingUploaded.size;
 				}
 				chunk.status = PENDING;
+				chunk.retries = 0;
 
 				chunks.push(chunk);
 			}
@@ -515,6 +521,7 @@ angular.module('com.inthetelling.story')
 						}).then(completePart).then(function (data) {
 							defer.resolve(data);
 						}, function (reason) {
+			                                console.error("UPLOAD PART FAILED: ",reason);
 							defer.reject(reason);
 						}, function (update) {
 							defer.update(update);
@@ -534,23 +541,25 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
-		var getMD5ForFileOrBlob = function (fileOrBlob) {
+		var getMD5ForFileOrBlob = function (fileOrBlob, hashType) {
 			var defer = $q.defer();
 			var reader = new FileReader();
 			reader.onload = function() {
 				var data = reader.result;
-                                defer.resolve(AWS.util.crypto.md5(new Uint8Array(data), 'base64'));
+                                defer.resolve(AWS.util.crypto.md5(new Uint8Array(data), hashType));
 			};
 			reader.readAsArrayBuffer(fileOrBlob);
                 	return defer.promise;
 		};
 
-		var uploadPart = function (partNumber, blob) {
+		var uploadPart = function (partNumber, blob, defer) {
 			// console.log('awsSvc, Uploading part: ', partNumber);
-			var defer = $q.defer();
-			getUploadSession().then(function uploadPart() {
-				getMD5ForFileOrBlob(blob).then(function (md5) {
-                                	console.error("MD5 for part '", partNumber, "' of size '", blob.size,"' is ", md5);
+                        if (!defer) {
+				defer = $q.defer();
+			}
+			getUploadSession().then(function () {
+				getMD5ForFileOrBlob(blob, 'base64').then(function (md5) {
+                                	console.log("MD5 for part '", partNumber, "' of size '", blob.size,"' is ", md5);
 					var params = {
 						Bucket: multipartUpload.Bucket,
 						Key: multipartUpload.Key,
@@ -561,10 +570,18 @@ angular.module('com.inthetelling.story')
 					};
 					chunks[partNumber - 1].request = awsCache.s3.uploadPart(params, function (err, data) {
 						if (err) {
-							console.error(err, err.stack); // an error occurred
-							defer.reject();
+							if (chunks[partNumber - 1].retries < MAX_RETRIES) {
+								console.error("RETRYING PART UPLOAD FOR CHUNK ", partNumber);
+								chunks[partNumber - 1].request.abort();
+								chunks[partNumber - 1].retries++;
+								uploadPart(partNumber, blob, defer);
+							} else {
+								console.error("PART UPLOAD FAILED FOR CHUNK ", partNumber, err, err.stack); // an error occurred
+								chunks[partNumber - 1].status = FAILED;
+								defer.reject(err);
+							}
 						} else {
-							// console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
+							console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
 							defer.resolve(data.ETag); // successful response
 						}
 					});
@@ -576,8 +593,12 @@ angular.module('com.inthetelling.story')
 							bytesTotal: fileBeingUploaded.size
 						});
 					}).on('error', function (err, response) {
-						console.error('error: ', err, response);
-						deferredUpload.reject(err);
+						console.log('PART UPLOAD FAILED ON UPDATE: ', err, response);
+						//defer.reject(err);
+					}).on('httpError', function (err, response) {
+						console.log('HTTP ERROR: ', err, response);
+					}).on('httpDone', function (response) {
+						console.log('HTTP DONE: ', response);
 					});
 				});
 			});
