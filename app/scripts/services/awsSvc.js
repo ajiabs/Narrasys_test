@@ -5,9 +5,9 @@ angular.module('com.inthetelling.story')
 	.factory('awsSvc', function (config, $routeParams, $http, $q) {
 		// console.log('awsSvc, user: ', appState.user);
 		var MAX_CHUNKS = 1000;
-		var MAX_RETRIES = 3;
+		var MAX_RETRIES = 4;
 		var MAX_SIMUL_PARTS_UPLOADING = 3;
-		var REQUEST_TIMEOUT = 15000; //15 seconds (default is 2 minutes)
+		var REQUEST_TIMEOUT = 30000; //30 seconds (default is 2 minutes)
 		var PUBLIC_READ = "public-read";
 		var PENDING = "pending";
 		var UPLOADING = "uploading";
@@ -518,7 +518,7 @@ angular.module('com.inthetelling.story')
 						$q.all({
 							partNumber: $q.when(chunkIndex + 1),
 							eTag: uploadPart(chunkIndex + 1, blob)
-						}).then(completePart).then(function (data) {
+						}).then(completePart, handleFailedPart).then(function (data) {
 							defer.resolve(data);
 						}, function (reason) {
 			                                console.error("UPLOAD PART FAILED: ",reason);
@@ -559,7 +559,7 @@ angular.module('com.inthetelling.story')
 			}
 			getUploadSession().then(function () {
 				getMD5ForFileOrBlob(blob, 'base64').then(function (md5) {
-                                	console.log("MD5 for part '", partNumber, "' of size '", blob.size,"' is ", md5);
+                                	//console.log("MD5 for part '", partNumber, "' of size '", blob.size,"' is ", md5);
 					var params = {
 						Bucket: multipartUpload.Bucket,
 						Key: multipartUpload.Key,
@@ -581,7 +581,7 @@ angular.module('com.inthetelling.story')
 								defer.reject(err);
 							}
 						} else {
-							console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
+							//console.log('awsSvc, uploadedPart! data.ETag:', data.ETag);
 							defer.resolve(data.ETag); // successful response
 						}
 					});
@@ -595,10 +595,10 @@ angular.module('com.inthetelling.story')
 					}).on('error', function (err, response) {
 						console.log('PART UPLOAD FAILED ON UPDATE: ', err, response);
 						//defer.reject(err);
-					}).on('httpError', function (err, response) {
-						console.log('HTTP ERROR: ', err, response);
-					}).on('httpDone', function (response) {
-						console.log('HTTP DONE: ', response);
+					//}).on('httpError', function (err, response) {
+					//	console.log('HTTP ERROR: ', err, response);
+					//}).on('httpDone', function (response) {
+					//	console.log('HTTP DONE: ', response);
 					});
 				});
 			});
@@ -657,6 +657,12 @@ angular.module('com.inthetelling.story')
 			}
 
 			return defer.promise;
+		};
+
+		var handleFailedPart = function (err) {
+			console.error("PART OF MULTIPART UPLOAD FAILED, CANCELLING UPLOAD", err);
+			svc.cancelMultipartUpload(multipartUpload);
+			deferredUpload.reject(err);
 		};
 
 		var cancelCurrentUploadRequests = function () {
