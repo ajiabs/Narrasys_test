@@ -2,7 +2,7 @@
  * Created by githop on 12/3/15.
  */
 
-(function() {
+(function () {
 	'use strict';
 
 	angular.module('com.inthetelling.story')
@@ -38,7 +38,6 @@
 
 			var host = $location.host();
 
-			console.log('host', host);
 			return new YT.Player(divId, {
 				videoId: videoID,
 
@@ -135,12 +134,16 @@
 			}
 
 			function onPlayerQualityChange(event) {
-				var pid = event.target;
-				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
-					setPlaybackQuality(pid, 'large');
+				var pid = event.target.m.id;
+				if (pid !== _mainPlayerId) {
+					if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+						setPlaybackQuality(pid, 'large');
+					}
+
+				} else {
+					qualityChangeCB(event);
 				}
 
-				qualityChangeCB(event);
 			}
 		}
 
@@ -152,28 +155,28 @@
 
 		function getCurrentTime(pid) {
 			var p = getPlayer(pid);
-			if ( p !== undefined ) {
+			if (p !== undefined) {
 				return p.getCurrentTime();
 			}
 		}
 
 		function playerState(pid) {
 			var p = getPlayer(pid);
-			if ( p !== undefined ) {
+			if (p !== undefined) {
 				return p.getPlayerState();
 			}
 		}
 
 		function play(pid) {
 			var p = getPlayer(pid);
-			if ( p !== undefined ) {
+			if (p !== undefined) {
 				return p.playVideo();
 			}
 		}
 
 		function pause(pid) {
 			var p = getPlayer(pid);
-			if ( p !== undefined ) {
+			if (p !== undefined) {
 				return p.pauseVideo();
 			}
 		}
@@ -267,7 +270,6 @@
 				appState.embedYTPlayerAvailable = false;
 			}
 		}
-
 
 
 		function _guid() {
