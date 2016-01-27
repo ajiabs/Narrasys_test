@@ -58,7 +58,7 @@
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
 
-			_players[divId] = _createInstance(divId, videoId, onPlayerStateChange, qualityChangeCB, onReady);
+			_players[divId] = _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady);
 			var currentPlayer = _players[videoId];
 			return currentPlayer;
 
@@ -129,6 +129,14 @@
 				onReadyCB(event);
 			}
 
+			function onPlayerQualityChange(event) {
+				var pid = event.target;
+				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+					setPlaybackQuality(pid, 'large');
+				}
+
+				qualityChangeCB(event);
+			}
 		}
 
 		function getPlayer(pid) {
