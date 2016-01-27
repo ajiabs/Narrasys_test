@@ -1,0 +1,1089 @@
+digraph dependencies {
+  node[shape="component",style="filled",colorscheme=paired12]
+
+
+    node[shape="component"]
+    "com.inthetelling.story"[label="com.inthetelling.story", color=1]
+
+    
+      "ngRoute"[label="ngRoute", color=1]
+      "ngRoute" -> "com.inthetelling.story"
+    
+      "ngAnimate"[label="ngAnimate", color=1]
+      "ngAnimate" -> "com.inthetelling.story"
+    
+      "ngSanitize"[label="ngSanitize", color=1]
+      "ngSanitize" -> "com.inthetelling.story"
+    
+      "textAngular"[label="textAngular", color=1]
+      "textAngular" -> "com.inthetelling.story"
+    
+
+
+    node[shape="ellipse"]
+    
+
+
+    
+      "EditController"[label="EditController", color=4]
+      "com.inthetelling.story" -> "EditController"
+    
+      "EpisodeController"[label="EpisodeController", color=4]
+      "com.inthetelling.story" -> "EpisodeController"
+    
+      "ErrorController"[label="ErrorController", color=4]
+      "com.inthetelling.story" -> "ErrorController"
+    
+      "EventTestController"[label="EventTestController", color=4]
+      "com.inthetelling.story" -> "EventTestController"
+    
+      "ItemController"[label="ItemController", color=4]
+      "com.inthetelling.story" -> "ItemController"
+    
+      "PlayerController"[label="PlayerController", color=4]
+      "com.inthetelling.story" -> "PlayerController"
+    
+      "SceneController"[label="SceneController", color=4]
+      "com.inthetelling.story" -> "SceneController"
+    
+      "SearchPanelController"[label="SearchPanelController", color=4]
+      "com.inthetelling.story" -> "SearchPanelController"
+    
+      "TimelineController"[label="TimelineController", color=4]
+      "com.inthetelling.story" -> "TimelineController"
+    
+      "VideoController"[label="VideoController", color=4]
+      "com.inthetelling.story" -> "VideoController"
+    
+      "VideoController2"[label="VideoController2", color=4]
+      "com.inthetelling.story" -> "VideoController2"
+    
+      "ittIframeCtrl"[label="ittIframeCtrl", color=4]
+      "com.inthetelling.story" -> "ittIframeCtrl"
+    
+      "ittYoutubeCtrl"[label="ittYoutubeCtrl", color=4]
+      "com.inthetelling.story" -> "ittYoutubeCtrl"
+    
+      "ContainerAssetsTestController"[label="ContainerAssetsTestController", color=4]
+      "com.inthetelling.story" -> "ContainerAssetsTestController"
+    
+
+    
+      "YoutubePlayerApi"[label="YoutubePlayerApi", color=5]
+      "com.inthetelling.story" -> "YoutubePlayerApi"
+    
+      "playbackChannel"[label="playbackChannel", color=5]
+      "com.inthetelling.story" -> "playbackChannel"
+    
+
+    
+      "youTubePlayerManager"[label="youTubePlayerManager", color=6]
+      "com.inthetelling.story" -> "youTubePlayerManager"
+    
+      "analyticsSvc"[label="analyticsSvc", color=6]
+      "com.inthetelling.story" -> "analyticsSvc"
+    
+      "appState"[label="appState", color=6]
+      "com.inthetelling.story" -> "appState"
+    
+      "authSvc"[label="authSvc", color=6]
+      "com.inthetelling.story" -> "authSvc"
+    
+      "awsSvc"[label="awsSvc", color=6]
+      "com.inthetelling.story" -> "awsSvc"
+    
+      "config"[label="config", color=6]
+      "com.inthetelling.story" -> "config"
+    
+      "dataSvc"[label="dataSvc", color=6]
+      "com.inthetelling.story" -> "dataSvc"
+    
+      "errorSvc"[label="errorSvc", color=6]
+      "com.inthetelling.story" -> "errorSvc"
+    
+      "html5Video"[label="html5Video", color=6]
+      "com.inthetelling.story" -> "html5Video"
+    
+      "mockSvc"[label="mockSvc", color=6]
+      "com.inthetelling.story" -> "mockSvc"
+    
+      "modelSvc"[label="modelSvc", color=6]
+      "com.inthetelling.story" -> "modelSvc"
+    
+      "playback"[label="playback", color=6]
+      "com.inthetelling.story" -> "playback"
+    
+      "questionAnswersSvc"[label="questionAnswersSvc", color=6]
+      "com.inthetelling.story" -> "questionAnswersSvc"
+    
+      "recursionHelper"[label="recursionHelper", color=6]
+      "com.inthetelling.story" -> "recursionHelper"
+    
+      "timelineSvc"[label="timelineSvc", color=6]
+      "com.inthetelling.story" -> "timelineSvc"
+    
+      "youtubeSvc"[label="youtubeSvc", color=6]
+      "com.inthetelling.story" -> "youtubeSvc"
+    
+
+    node[shape="cds"]
+    
+      "itemLayout"[label="itemLayout", color=7]
+      "com.inthetelling.story" -> "itemLayout"
+    
+      "annotation"[label="annotation", color=7]
+      "com.inthetelling.story" -> "annotation"
+    
+      "transmedia"[label="transmedia", color=7]
+      "com.inthetelling.story" -> "transmedia"
+    
+      "transcript"[label="transcript", color=7]
+      "com.inthetelling.story" -> "transcript"
+    
+      "isCurrent"[label="isCurrent", color=7]
+      "com.inthetelling.story" -> "isCurrent"
+    
+      "isContent"[label="isContent", color=7]
+      "com.inthetelling.story" -> "isContent"
+    
+      "reviewMode"[label="reviewMode", color=7]
+      "com.inthetelling.story" -> "reviewMode"
+    
+      "transcriptandrequired"[label="transcriptandrequired", color=7]
+      "com.inthetelling.story" -> "transcriptandrequired"
+    
+      "transcriptandoptional"[label="transcriptandoptional", color=7]
+      "com.inthetelling.story" -> "transcriptandoptional"
+    
+      "required"[label="required", color=7]
+      "com.inthetelling.story" -> "required"
+    
+      "optional"[label="optional", color=7]
+      "com.inthetelling.story" -> "optional"
+    
+      "highlightSubstring"[label="highlightSubstring", color=7]
+      "com.inthetelling.story" -> "highlightSubstring"
+    
+      "pretty"[label="pretty", color=7]
+      "com.inthetelling.story" -> "pretty"
+    
+      "i18n"[label="i18n", color=7]
+      "com.inthetelling.story" -> "i18n"
+    
+      "asBytes"[label="asBytes", color=7]
+      "com.inthetelling.story" -> "asBytes"
+    
+      "asPercent"[label="asPercent", color=7]
+      "com.inthetelling.story" -> "asPercent"
+    
+      "stripParams"[label="stripParams", color=7]
+      "com.inthetelling.story" -> "stripParams"
+    
+      "asTime"[label="asTime", color=7]
+      "com.inthetelling.story" -> "asTime"
+    
+      "alpha"[label="alpha", color=7]
+      "com.inthetelling.story" -> "alpha"
+    
+
+    
+      "autofocus"[label="autofocus", color=3]
+      "com.inthetelling.story" -> "autofocus"
+    
+      "ittAssetUploader"[label="ittAssetUploader", color=3]
+      "com.inthetelling.story" -> "ittAssetUploader"
+    
+      "ittContainer"[label="ittContainer", color=3]
+      "com.inthetelling.story" -> "ittContainer"
+    
+      "ittContainerEpisodes"[label="ittContainerEpisodes", color=3]
+      "com.inthetelling.story" -> "ittContainerEpisodes"
+    
+      "ittEpisode"[label="ittEpisode", color=3]
+      "com.inthetelling.story" -> "ittEpisode"
+    
+      "ittEpisodeEditor"[label="ittEpisodeEditor", color=3]
+      "com.inthetelling.story" -> "ittEpisodeEditor"
+    
+      "ittEpisodeList"[label="ittEpisodeList", color=3]
+      "com.inthetelling.story" -> "ittEpisodeList"
+    
+      "ittFlotr2Chart"[label="ittFlotr2Chart", color=3]
+      "com.inthetelling.story" -> "ittFlotr2Chart"
+    
+      "ittIframe"[label="ittIframe", color=3]
+      "com.inthetelling.story" -> "ittIframe"
+    
+      "ittItem"[label="ittItem", color=3]
+      "com.inthetelling.story" -> "ittItem"
+    
+      "ittItemDetailModal"[label="ittItemDetailModal", color=3]
+      "com.inthetelling.story" -> "ittItemDetailModal"
+    
+      "ittItemEditor"[label="ittItemEditor", color=3]
+      "com.inthetelling.story" -> "ittItemEditor"
+    
+      "ittLoading"[label="ittLoading", color=3]
+      "com.inthetelling.story" -> "ittLoading"
+    
+      "ittLogin"[label="ittLogin", color=3]
+      "com.inthetelling.story" -> "ittLogin"
+    
+      "ittMagnet"[label="ittMagnet", color=3]
+      "com.inthetelling.story" -> "ittMagnet"
+    
+      "ittMagnetized"[label="ittMagnetized", color=3]
+      "com.inthetelling.story" -> "ittMagnetized"
+    
+      "ittMcQuestion"[label="ittMcQuestion", color=3]
+      "com.inthetelling.story" -> "ittMcQuestion"
+    
+      "ittNarrative"[label="ittNarrative", color=3]
+      "com.inthetelling.story" -> "ittNarrative"
+    
+      "ittNarrativeList"[label="ittNarrativeList", color=3]
+      "com.inthetelling.story" -> "ittNarrativeList"
+    
+      "ittNarrativeTimeline"[label="ittNarrativeTimeline", color=3]
+      "com.inthetelling.story" -> "ittNarrativeTimeline"
+    
+      "ittReviewMode"[label="ittReviewMode", color=3]
+      "com.inthetelling.story" -> "ittReviewMode"
+    
+      "ittScene"[label="ittScene", color=3]
+      "com.inthetelling.story" -> "ittScene"
+    
+      "ittSearchPanel"[label="ittSearchPanel", color=3]
+      "com.inthetelling.story" -> "ittSearchPanel"
+    
+      "ittShowFocus"[label="ittShowFocus", color=3]
+      "com.inthetelling.story" -> "ittShowFocus"
+    
+      "ittShowHideVisualOnly"[label="ittShowHideVisualOnly", color=3]
+      "com.inthetelling.story" -> "ittShowHideVisualOnly"
+    
+      "ittTabs"[label="ittTabs", color=3]
+      "com.inthetelling.story" -> "ittTabs"
+    
+      "ittTab"[label="ittTab", color=3]
+      "com.inthetelling.story" -> "ittTab"
+    
+      "ittTimeline"[label="ittTimeline", color=3]
+      "com.inthetelling.story" -> "ittTimeline"
+    
+      "ittToolbarStory"[label="ittToolbarStory", color=3]
+      "com.inthetelling.story" -> "ittToolbarStory"
+    
+      "ittUser"[label="ittUser", color=3]
+      "com.inthetelling.story" -> "ittUser"
+    
+      "ittVideo"[label="ittVideo", color=3]
+      "com.inthetelling.story" -> "ittVideo"
+    
+      "ittVideo2"[label="ittVideo2", color=3]
+      "com.inthetelling.story" -> "ittVideo2"
+    
+      "ittVolumeSlider"[label="ittVolumeSlider", color=3]
+      "com.inthetelling.story" -> "ittVolumeSlider"
+    
+      "ittWidthWatch"[label="ittWidthWatch", color=3]
+      "com.inthetelling.story" -> "ittWidthWatch"
+    
+      "ittYoutube"[label="ittYoutube", color=3]
+      "com.inthetelling.story" -> "ittYoutube"
+    
+      "sxsAddContent"[label="sxsAddContent", color=3]
+      "com.inthetelling.story" -> "sxsAddContent"
+    
+      "sxsAnnotatorAutocomplete"[label="sxsAnnotatorAutocomplete", color=3]
+      "com.inthetelling.story" -> "sxsAnnotatorAutocomplete"
+    
+      "sxsContainerAssets"[label="sxsContainerAssets", color=3]
+      "com.inthetelling.story" -> "sxsContainerAssets"
+    
+      "sxsInputI18n"[label="sxsInputI18n", color=3]
+      "com.inthetelling.story" -> "sxsInputI18n"
+    
+      "sxsInputTime"[label="sxsInputTime", color=3]
+      "com.inthetelling.story" -> "sxsInputTime"
+    
+
+
+
+
+
+
+
+
+
+    node[shape="ellipse",style="filled", color=9]
+    
+
+    
+      
+    
+      
+        "awsSvc"[label="awsSvc"]
+        "awsSvc" -> "ittAssetUploader"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittAssetUploader"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittAssetUploader"
+      
+    
+      
+        "$route"[label="$route"]
+        "$route" -> "ittContainer"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittContainer"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittContainer"
+      
+        "recursionHelper"[label="recursionHelper"]
+        "recursionHelper" -> "ittContainer"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittContainer"
+      
+    
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittContainerEpisodes"
+      
+        "recursionHelper"[label="recursionHelper"]
+        "recursionHelper" -> "ittContainerEpisodes"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittContainerEpisodes"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittContainerEpisodes"
+      
+    
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "ittEpisode"
+      
+        "analyticsSvc"[label="analyticsSvc"]
+        "analyticsSvc" -> "ittEpisode"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittEpisode"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittEpisode"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittEpisodeEditor"
+      
+        "errorSvc"[label="errorSvc"]
+        "errorSvc" -> "ittEpisodeEditor"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittEpisodeEditor"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittEpisodeEditor"
+      
+        "awsSvc"[label="awsSvc"]
+        "awsSvc" -> "ittEpisodeEditor"
+      
+        "youtubeSvc"[label="youtubeSvc"]
+        "youtubeSvc" -> "ittEpisodeEditor"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittEpisodeList"
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "ittEpisodeList"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittEpisodeList"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittEpisodeList"
+      
+    
+      
+    
+      
+    
+      
+        "config"[label="config"]
+        "config" -> "ittItem"
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "ittItem"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittItem"
+      
+        "analyticsSvc"[label="analyticsSvc"]
+        "analyticsSvc" -> "ittItem"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "ittItem"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittItem"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittItemDetailModal"
+      
+    
+      
+        "errorSvc"[label="errorSvc"]
+        "errorSvc" -> "ittItemEditor"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittItemEditor"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittItemEditor"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "ittItemEditor"
+      
+        "awsSvc"[label="awsSvc"]
+        "awsSvc" -> "ittItemEditor"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittItemEditor"
+      
+        "youtubeSvc"[label="youtubeSvc"]
+        "youtubeSvc" -> "ittItemEditor"
+      
+    
+      
+    
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "ittLogin"
+      
+        "config"[label="config"]
+        "config" -> "ittLogin"
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "ittLogin"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittLogin"
+      
+        "errorSvc"[label="errorSvc"]
+        "errorSvc" -> "ittLogin"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittMagnet"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittMagnetized"
+      
+    
+      
+        "questionAnswersSvc"[label="questionAnswersSvc"]
+        "questionAnswersSvc" -> "ittMcQuestion"
+      
+        "analyticsSvc"[label="analyticsSvc"]
+        "analyticsSvc" -> "ittMcQuestion"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittMcQuestion"
+      
+    
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "ittNarrative"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittNarrative"
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "ittNarrative"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittNarrative"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittNarrative"
+      
+    
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittNarrativeList"
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "ittNarrativeList"
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "ittNarrativeList"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittNarrativeList"
+      
+    
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "ittNarrativeTimeline"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittNarrativeTimeline"
+      
+        "appState"[label="appState"]
+        "appState" -> "ittNarrativeTimeline"
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "ittNarrativeTimeline"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittNarrativeTimeline"
+      
+        "errorSvc"[label="errorSvc"]
+        "errorSvc" -> "ittNarrativeTimeline"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittReviewMode"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittScene"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittSearchPanel"
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittTimeline"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "ittTimeline"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittTimeline"
+      
+    
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittUser"
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "ittUser"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittUser"
+      
+        "awsSvc"[label="awsSvc"]
+        "awsSvc" -> "ittUser"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittUser"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittVideo"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "ittVideo"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittVideo"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittVideo"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittVideo2"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "ittVideo2"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "ittVideo2"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "ittVideo2"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "ittVolumeSlider"
+      
+    
+      
+    
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "sxsAddContent"
+      
+    
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "sxsAnnotatorAutocomplete"
+      
+        "appState"[label="appState"]
+        "appState" -> "sxsAnnotatorAutocomplete"
+      
+    
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "sxsContainerAssets"
+      
+        "recursionHelper"[label="recursionHelper"]
+        "recursionHelper" -> "sxsContainerAssets"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "sxsContainerAssets"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "sxsContainerAssets"
+      
+        "awsSvc"[label="awsSvc"]
+        "awsSvc" -> "sxsContainerAssets"
+      
+        "appState"[label="appState"]
+        "appState" -> "sxsContainerAssets"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "sxsInputI18n"
+      
+        "textAngularManager"[label="textAngularManager"]
+        "textAngularManager" -> "sxsInputI18n"
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "sxsInputTime"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "sxsInputTime"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "sxsInputTime"
+      
+    
+
+
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "EditController"
+      
+        "appState"[label="appState"]
+        "appState" -> "EditController"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "EditController"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "EditController"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "EditController"
+      
+        "youtubeSvc"[label="youtubeSvc"]
+        "youtubeSvc" -> "EditController"
+      
+    
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "ErrorController"
+      
+        "config"[label="config"]
+        "config" -> "ErrorController"
+      
+        "errorSvc"[label="errorSvc"]
+        "errorSvc" -> "ErrorController"
+      
+        "appState"[label="appState"]
+        "appState" -> "ErrorController"
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "ErrorController"
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "EventTestController"
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "EventTestController"
+      
+        "mockSvc"[label="mockSvc"]
+        "mockSvc" -> "EventTestController"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "EventTestController"
+      
+        "appState"[label="appState"]
+        "appState" -> "EventTestController"
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "ItemController"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "ItemController"
+      
+    
+      
+        "config"[label="config"]
+        "config" -> "PlayerController"
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "PlayerController"
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "PlayerController"
+      
+        "appState"[label="appState"]
+        "appState" -> "PlayerController"
+      
+        "dataSvc"[label="dataSvc"]
+        "dataSvc" -> "PlayerController"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "PlayerController"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "PlayerController"
+      
+        "analyticsSvc"[label="analyticsSvc"]
+        "analyticsSvc" -> "PlayerController"
+      
+        "errorSvc"[label="errorSvc"]
+        "errorSvc" -> "PlayerController"
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "PlayerController"
+      
+        "playback"[label="playback"]
+        "playback" -> "PlayerController"
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "SceneController"
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "SearchPanelController"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "SearchPanelController"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "SearchPanelController"
+      
+        "appState"[label="appState"]
+        "appState" -> "SearchPanelController"
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "TimelineController"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "TimelineController"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "TimelineController"
+      
+        "appState"[label="appState"]
+        "appState" -> "TimelineController"
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "VideoController"
+      
+        "appState"[label="appState"]
+        "appState" -> "VideoController"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "VideoController"
+      
+        "analyticsSvc"[label="analyticsSvc"]
+        "analyticsSvc" -> "VideoController"
+      
+        "youTubePlayerManager"[label="youTubePlayerManager"]
+        "youTubePlayerManager" -> "VideoController"
+      
+        "html5Video"[label="html5Video"]
+        "html5Video" -> "VideoController"
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "VideoController2"
+      
+        "timelineSvc"[label="timelineSvc"]
+        "timelineSvc" -> "VideoController2"
+      
+        "appState"[label="appState"]
+        "appState" -> "VideoController2"
+      
+        "playbackChannel"[label="playbackChannel"]
+        "playbackChannel" -> "VideoController2"
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "ittIframeCtrl"
+      
+        "youtubeSvc"[label="youtubeSvc"]
+        "youtubeSvc" -> "ittIframeCtrl"
+      
+    
+      
+        "youTubePlayerManager"[label="youTubePlayerManager"]
+        "youTubePlayerManager" -> "ittYoutubeCtrl"
+      
+        "youtubeSvc"[label="youtubeSvc"]
+        "youtubeSvc" -> "ittYoutubeCtrl"
+      
+    
+      
+        "$scope"[label="$scope"]
+        "$scope" -> "ContainerAssetsTestController"
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "ContainerAssetsTestController"
+      
+    
+
+    
+      
+    
+      
+    
+
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "youTubePlayerManager"
+      
+    
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "analyticsSvc"
+      
+        "config"[label="config"]
+        "config" -> "analyticsSvc"
+      
+        "appState"[label="appState"]
+        "appState" -> "analyticsSvc"
+      
+    
+      
+        "config"[label="config"]
+        "config" -> "appState"
+      
+    
+      
+        "config"[label="config"]
+        "config" -> "authSvc"
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "authSvc"
+      
+        "appState"[label="appState"]
+        "appState" -> "authSvc"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "authSvc"
+      
+        "errorSvc"[label="errorSvc"]
+        "errorSvc" -> "authSvc"
+      
+    
+      
+        "config"[label="config"]
+        "config" -> "awsSvc"
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "awsSvc"
+      
+    
+      
+    
+      
+        "$routeParams"[label="$routeParams"]
+        "$routeParams" -> "dataSvc"
+      
+        "config"[label="config"]
+        "config" -> "dataSvc"
+      
+        "authSvc"[label="authSvc"]
+        "authSvc" -> "dataSvc"
+      
+        "appState"[label="appState"]
+        "appState" -> "dataSvc"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "dataSvc"
+      
+        "errorSvc"[label="errorSvc"]
+        "errorSvc" -> "dataSvc"
+      
+        "mockSvc"[label="mockSvc"]
+        "mockSvc" -> "dataSvc"
+      
+        "questionAnswersSvc"[label="questionAnswersSvc"]
+        "questionAnswersSvc" -> "dataSvc"
+      
+    
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "html5Video"
+      
+        "playbackChannel"[label="playbackChannel"]
+        "playbackChannel" -> "html5Video"
+      
+    
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "mockSvc"
+      
+    
+      
+        "config"[label="config"]
+        "config" -> "modelSvc"
+      
+        "appState"[label="appState"]
+        "appState" -> "modelSvc"
+      
+        "youtubeSvc"[label="youtubeSvc"]
+        "youtubeSvc" -> "modelSvc"
+      
+    
+      
+        "html5Video"[label="html5Video"]
+        "html5Video" -> "playback"
+      
+        "youTubePlayerManager"[label="youTubePlayerManager"]
+        "youTubePlayerManager" -> "playback"
+      
+    
+      
+        "analyticsSvc"[label="analyticsSvc"]
+        "analyticsSvc" -> "questionAnswersSvc"
+      
+        "appState"[label="appState"]
+        "appState" -> "questionAnswersSvc"
+      
+    
+      
+    
+      
+        "config"[label="config"]
+        "config" -> "timelineSvc"
+      
+        "modelSvc"[label="modelSvc"]
+        "modelSvc" -> "timelineSvc"
+      
+        "appState"[label="appState"]
+        "appState" -> "timelineSvc"
+      
+        "analyticsSvc"[label="analyticsSvc"]
+        "analyticsSvc" -> "timelineSvc"
+      
+        "playback"[label="playback"]
+        "playback" -> "timelineSvc"
+      
+    
+      
+        "config"[label="config"]
+        "config" -> "youtubeSvc"
+      
+    
+
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "reviewMode"
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        "appState"[label="appState"]
+        "appState" -> "i18n"
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+
+}

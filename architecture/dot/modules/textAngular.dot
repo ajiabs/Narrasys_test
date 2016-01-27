@@ -1,0 +1,115 @@
+digraph dependencies {
+  node[shape="component",style="filled",colorscheme=paired12]
+
+
+    node[shape="component"]
+    "textAngular"[label="textAngular", color=1]
+
+    
+      "ngSanitize"[label="ngSanitize", color=1]
+      "ngSanitize" -> "textAngular"
+    
+      "textAngularSetup"[label="textAngularSetup", color=1]
+      "textAngularSetup" -> "textAngular"
+    
+      "textAngular.factories"[label="textAngular.factories", color=1]
+      "textAngular.factories" -> "textAngular"
+    
+      "textAngular.DOM"[label="textAngular.DOM", color=1]
+      "textAngular.DOM" -> "textAngular"
+    
+      "textAngular.validators"[label="textAngular.validators", color=1]
+      "textAngular.validators" -> "textAngular"
+    
+      "textAngular.taBind"[label="textAngular.taBind", color=1]
+      "textAngular.taBind" -> "textAngular"
+    
+
+
+    node[shape="ellipse"]
+    
+
+
+    
+
+    
+      "textAngularManager"[label="textAngularManager", color=5]
+      "textAngular" -> "textAngularManager"
+    
+
+    
+
+    node[shape="cds"]
+    
+
+    
+      "textAngular"[label="textAngular", color=3]
+      "textAngular" -> "textAngular"
+    
+      "textAngularToolbar"[label="textAngularToolbar", color=3]
+      "textAngular" -> "textAngularToolbar"
+    
+
+
+
+
+
+
+
+
+
+    node[shape="ellipse",style="filled", color=9]
+    
+
+    
+      
+        "taOptions"[label="taOptions"]
+        "taOptions" -> "textAngular"
+      
+        "taSelection"[label="taSelection"]
+        "taSelection" -> "textAngular"
+      
+        "taExecCommand"[label="taExecCommand"]
+        "taExecCommand" -> "textAngular"
+      
+        "textAngularManager"[label="textAngularManager"]
+        "textAngularManager" -> "textAngular"
+      
+    
+      
+        "textAngularManager"[label="textAngularManager"]
+        "textAngularManager" -> "textAngularToolbar"
+      
+        "taOptions"[label="taOptions"]
+        "taOptions" -> "textAngularToolbar"
+      
+        "taTools"[label="taTools"]
+        "taTools" -> "textAngularToolbar"
+      
+        "taToolExecuteAction"[label="taToolExecuteAction"]
+        "taToolExecuteAction" -> "textAngularToolbar"
+      
+    
+
+
+    
+
+    
+      
+        "taToolExecuteAction"[label="taToolExecuteAction"]
+        "taToolExecuteAction" -> "textAngularManager"
+      
+        "taTools"[label="taTools"]
+        "taTools" -> "textAngularManager"
+      
+        "taRegisterTool"[label="taRegisterTool"]
+        "taRegisterTool" -> "textAngularManager"
+      
+    
+
+    
+
+    
+
+
+}

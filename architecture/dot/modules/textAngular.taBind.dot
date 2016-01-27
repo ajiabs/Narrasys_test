@@ -1,0 +1,97 @@
+digraph dependencies {
+  node[shape="component",style="filled",colorscheme=paired12]
+
+
+    node[shape="component"]
+    "textAngular.taBind"[label="textAngular.taBind", color=1]
+
+    
+      "textAngular.factories"[label="textAngular.factories", color=1]
+      "textAngular.factories" -> "textAngular.taBind"
+    
+      "textAngular.DOM"[label="textAngular.DOM", color=1]
+      "textAngular.DOM" -> "textAngular.taBind"
+    
+
+
+    node[shape="ellipse"]
+    
+
+
+    
+
+    
+      "_taBlankTest"[label="_taBlankTest", color=5]
+      "textAngular.taBind" -> "_taBlankTest"
+    
+
+    
+
+    node[shape="cds"]
+    
+
+    
+      "taButton"[label="taButton", color=3]
+      "textAngular.taBind" -> "taButton"
+    
+      "taBind"[label="taBind", color=3]
+      "textAngular.taBind" -> "taBind"
+    
+
+
+
+
+
+
+
+
+
+    node[shape="ellipse",style="filled", color=9]
+    
+
+    
+      
+    
+      
+        "taSanitize"[label="taSanitize"]
+        "taSanitize" -> "taBind"
+      
+        "taFixChrome"[label="taFixChrome"]
+        "taFixChrome" -> "taBind"
+      
+        "taBrowserTag"[label="taBrowserTag"]
+        "taBrowserTag" -> "taBind"
+      
+        "taSelection"[label="taSelection"]
+        "taSelection" -> "taBind"
+      
+        "taSelectableElements"[label="taSelectableElements"]
+        "taSelectableElements" -> "taBind"
+      
+        "taApplyCustomRenderers"[label="taApplyCustomRenderers"]
+        "taApplyCustomRenderers" -> "taBind"
+      
+        "taOptions"[label="taOptions"]
+        "taOptions" -> "taBind"
+      
+        "_taBlankTest"[label="_taBlankTest"]
+        "_taBlankTest" -> "taBind"
+      
+        "taDOM"[label="taDOM"]
+        "taDOM" -> "taBind"
+      
+    
+
+
+    
+
+    
+      
+    
+
+    
+
+    
+
+
+}

@@ -1,0 +1,59 @@
+digraph dependencies {
+  node[shape="component",style="filled",colorscheme=paired12]
+
+
+    node[shape="component"]
+    "textAngular.validators"[label="textAngular.validators", color=1]
+
+    
+
+
+    node[shape="ellipse"]
+    
+
+
+    
+
+    
+
+    
+
+    node[shape="cds"]
+    
+
+    
+      "taMaxText"[label="taMaxText", color=3]
+      "textAngular.validators" -> "taMaxText"
+    
+      "taMinText"[label="taMinText", color=3]
+      "textAngular.validators" -> "taMinText"
+    
+
+
+
+
+
+
+
+
+
+    node[shape="ellipse",style="filled", color=9]
+    
+
+    
+      
+    
+      
+    
+
+
+    
+
+    
+
+    
+
+    
+
+
+}

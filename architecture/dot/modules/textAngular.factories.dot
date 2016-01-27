@@ -1,0 +1,83 @@
+digraph dependencies {
+  node[shape="component",style="filled",colorscheme=paired12]
+
+
+    node[shape="component"]
+    "textAngular.factories"[label="textAngular.factories", color=1]
+
+    
+
+
+    node[shape="ellipse"]
+    
+
+
+    
+
+    
+
+    
+      "taBrowserTag"[label="taBrowserTag", color=6]
+      "textAngular.factories" -> "taBrowserTag"
+    
+      "taApplyCustomRenderers"[label="taApplyCustomRenderers", color=6]
+      "textAngular.factories" -> "taApplyCustomRenderers"
+    
+      "taFixChrome"[label="taFixChrome", color=6]
+      "textAngular.factories" -> "taFixChrome"
+    
+      "taSanitize"[label="taSanitize", color=6]
+      "textAngular.factories" -> "taSanitize"
+    
+      "taToolExecuteAction"[label="taToolExecuteAction", color=6]
+      "textAngular.factories" -> "taToolExecuteAction"
+    
+
+    node[shape="cds"]
+    
+
+    
+
+
+
+
+
+
+
+
+
+    node[shape="ellipse",style="filled", color=9]
+    
+
+    
+
+
+    
+
+    
+
+    
+      
+    
+      
+        "taCustomRenderers"[label="taCustomRenderers"]
+        "taCustomRenderers" -> "taApplyCustomRenderers"
+      
+        "taDOM"[label="taDOM"]
+        "taDOM" -> "taApplyCustomRenderers"
+      
+    
+      
+    
+      
+        "$sanitize"[label="$sanitize"]
+        "$sanitize" -> "taSanitize"
+      
+    
+      
+    
+
+    
+
+
+}
