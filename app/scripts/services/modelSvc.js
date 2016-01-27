@@ -2,7 +2,7 @@
 
 var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 
-/* Parses API data into player-acceptable format, 
+/* Parses API data into player-acceptable format,
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
@@ -135,7 +135,7 @@ angular.module('com.inthetelling.story')
 			"templates/sxs-question.html": "templates/item/sxs-question.html"
 		};
 
-		// svc.deriveFoo() are for efficiency precalculations. 
+		// svc.deriveFoo() are for efficiency precalculations.
 		// Input API data, output API data plus clientside-only convenience variables.
 		// Should call this after making any changes to the underlying data.
 
@@ -172,7 +172,7 @@ angular.module('com.inthetelling.story')
 			angular.forEach(["eliterate", "gw", "gwsb", "purdue", "usc", "columbia", "columbiabusiness"], function (customer) {
 				if (episode.templateUrl === "templates/episode/" + customer + ".html") {
 					angular.forEach(["color", "typography"], function (styleType) {
-						// if the episode doesn't already have styletypeFoo, add styletypeCustomer 
+						// if the episode doesn't already have styletypeFoo, add styletypeCustomer
 						var found = false;
 						angular.forEach(episode.styles, function (style) {
 							if (style.match(styleType)) {
@@ -205,7 +205,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		// TODO there are some hacky dependencies on existing templateUrls which really ought to become
-		// separate data fields in their own right:  
+		// separate data fields in their own right:
 		//      isTranscript (for Annotations)
 		//      allowEmbed, noExternalLink, and targetTop (for Links)
 
@@ -223,7 +223,7 @@ angular.module('com.inthetelling.story')
 					url: primary URL
 					url_type: file type
 					(?) secondary image URL (icon, thumbnail, etc)
-					
+
 				Annotation
 					Speaker
 					text
@@ -437,7 +437,7 @@ angular.module('com.inthetelling.story')
 
 		var setLang = function (obj) {
 			// TODO: keywords, customers/oauth2_message
-			// TODO use episode default language instead of 'en' 
+			// TODO use episode default language instead of 'en'
 			var langToSet = (appState.lang) ? appState.lang : "en";
 			angular.forEach(["title", "annotator", "annotation", "description", "name"], function (field) {
 				if (obj[field]) {
@@ -448,7 +448,7 @@ angular.module('com.inthetelling.story')
 						if (obj[field][langToSet]) {
 							obj["display_" + field] = obj[field][langToSet];
 						} else {
-							obj["display_" + field] = obj[field].en; // TODO use episode default language instead of 'en' 
+							obj["display_" + field] = obj[field].en; // TODO use episode default language instead of 'en'
 						}
 					}
 				}
@@ -476,11 +476,11 @@ angular.module('com.inthetelling.story')
 				- item.scene_id
 				- episode.annotators (for use in producer)
 
-		NOTE: this currently calls cascadeStyles on episodes and events as a side effect.  
-		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but 
+		NOTE: this currently calls cascadeStyles on episodes and events as a side effect.
+		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but
 		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them.
 
-		// HACK magic numbers galore: 
+		// HACK magic numbers galore:
 			endingscene cuts the duration of the last scene by 0.1 seconds
 			startingscreen extends from below zero to 0.01s
 
@@ -511,7 +511,7 @@ angular.module('com.inthetelling.story')
 			var annotators = {};
 			angular.forEach(items, function (event) {
 				if (event._type === 'Annotation' && event.annotator) {
-					// This is kind of a mess 
+					// This is kind of a mess
 					// Use the default language as the key; merge any other languages into that key
 					var defaultLanguage = episode.defaultLanguage || 'en';
 					var key = event.annotator[defaultLanguage];
@@ -626,9 +626,9 @@ angular.module('com.inthetelling.story')
 					var event = items[x];
 
 					//angular.forEach(items, function (event) {
-					/* possible cases: 
+					/* possible cases:
 							start and end are within the scene: put it in this scene
-							start is within this scene, end is after this scene: 
+							start is within this scene, end is after this scene:
 								if item start is close to the scene end, change item start to next scene start time. The next loop will assign it to that scene
 								if item start is not close to the scene end, change item end to scene end, assign it to this scene.
 							start is before this scene, end is within this scene: will have already been fixed by a previous loop
@@ -727,7 +727,7 @@ angular.module('com.inthetelling.story')
 
 		/*
 		var setParents = function (depth, epId, containerId) {
-						
+
 
 						// console.log("setParents", depth, epId, containerId);
 						var episode = svc.episodes[epId];
@@ -738,7 +738,7 @@ angular.module('com.inthetelling.story')
 						}
 
 						if (depth === episode.navigation_depth) {
-							// as long as we're at the sibling level, get the next and previous episodes 
+							// as long as we're at the sibling level, get the next and previous episodes
 							// (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
 							for (var i = 0; i < svc.containers[containerId].children.length; i++) {
 								var c = svc.containers[containerId].children[i];
@@ -768,7 +768,7 @@ angular.module('com.inthetelling.story')
 						if (depth > 1) {
 							setParents(depth - 1, epId, svc.containers[containerId].parent_id);
 						}
-			
+
 		};
 		*/
 
@@ -905,7 +905,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		// TODO: Future episodes should have this as an available scene template instead 
+		// TODO: Future episodes should have this as an available scene template instead
 		svc.addLandingScreen = function (episodeId) {
 			// console.log("add landing screen", episodeId);
 			// create a new scene event for this episode
@@ -999,7 +999,7 @@ angular.module('com.inthetelling.story')
 				angular.forEach(Object.keys(videoObject), function (key) {
 					videoObject[key] = videoObject[key].sort(function (a, b) {
 						// There shouldn't ever be cases where we're comparing two non-null filenames, neither of which have a
-						// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out 
+						// WxH portion, but fill in zero just in case so we can at least continue rather than erroring out
 						var aTest = a.match(videoPixelSize) || [0, 0];
 						var bTest = b.match(videoPixelSize) || [0, 0];
 						return aTest[1] - bTest[1]; // compare on width

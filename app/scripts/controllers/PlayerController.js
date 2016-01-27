@@ -271,7 +271,11 @@ angular.module('com.inthetelling.story')
 		$scope.toggleSearchPanel = function () {
 			appState.show.searchPanel = !appState.show.searchPanel;
 
-			$scope.viewMode(appState.show.searchPanel ? 'review' : 'discover');
+			if (appState.windowWidth < 480) {
+				$scope.viewMode('review');
+			} else {
+				$scope.viewMode(appState.show.searchPanel ? 'review' : 'discover');
+			}
 
 			appState.searchText = '';
 			if (appState.show.searchPanel) {
@@ -361,12 +365,19 @@ angular.module('com.inthetelling.story')
 
 		// NOTE: When we had the #CONTAINER position:fixed hack for fullscreen safari, this needed to be configurable to point to
 		// #CONTAINER instead of window.  Have removed that, but leaving this here in case we bring it back:
+
+		//console.log("AppState scroll stuff", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked, appState.isTouchDevice);
+
+		if (appState.isTouchDevice && appState.viewMode === 'review') {
+			appState.autoscroll = true;
+		}
+
 		var autoscrollableNode = $(window);
 		var animatableScrollNode = $('html,body');
 		var autoscrollTimer = false;
 
 		var startScrollWatcher = function () {
-			// console.log("startScrollWatcher");
+			 //console.log("startScrollWatcher");
 			if (autoscrollTimer) {
 				return;
 			}
@@ -382,7 +393,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var stopScrollWatcher = function () {
-			// console.log("stopScrollWatcher");
+			 console.log("stopScrollWatcher");
 			autoscrollableNode.unbind("scroll");
 			$interval.cancel(autoscrollTimer);
 			autoscrollTimer = false;
@@ -400,7 +411,7 @@ angular.module('com.inthetelling.story')
 		// TODO this is a relatively expensive watch.  Could greatly increase its $interval if we
 		// support directly triggering it from timeline on seek()...
 		var handleAutoscroll = function () {
-			// console.log("handleAutoscroll", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked);
+			 //console.log("handleAutoscroll", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked);
 			// if autoscroll is true and autoscrollBlocked is false,
 			// find the topmost visible current item and scroll to put it in the viewport.
 			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
