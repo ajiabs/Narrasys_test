@@ -89,7 +89,6 @@ angular.module('com.inthetelling.story')
 
 		function onPlaybackQualityChange(state) {
 			if (state.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
-				console.log('we made it!!!!');
 				youTubePlayerManager.setPlaybackQuality($scope.videoNode.id, "large");
 			}
 		}
