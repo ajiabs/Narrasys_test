@@ -2,6 +2,7 @@
 
 	<itt-youtube tabindex="-1" ng-if="video.urls.youtube.length" embed-url="{{video.urls.youtube[0]}}"
 				 on-player-state-change="playerStateChange"
+				 on-player-quality-change="playerQualityChange"
 				 on-ready="onReady" main-player="video._id"></itt-youtube>
 	<!-- NOTE in html5 video we can't depend on databinding to change the video src after rendering!  See videoController changeVideoBandwidth -->
 	<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player">
