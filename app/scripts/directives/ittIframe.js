@@ -21,7 +21,8 @@
 			templateUrl: 'templates/iframe.html',
 			controller: 'ittIframeCtrl',
 			controllerAs: 'iframeCtrl',
-			bindToController: true
+			bindToController: true,
+			link: linkFn
 		};
 	}
 
@@ -73,5 +74,9 @@
 		$scope.$on('$destroy', function () {
 			_ctrl.watcher();
 		});
+	}
+
+	function linkFn(scope, elm) {
+		var _btnConst = 80;
 	}
 })();
