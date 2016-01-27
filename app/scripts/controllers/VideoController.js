@@ -25,7 +25,6 @@ angular.module('com.inthetelling.story')
 			toggleMute: toggleMute,
 			setVolume: setVolume,
 			playerStateChange: onPlayerStateChange,
-			playerQualityChange: onPlaybackQualityChange,
 			onReady: onReady
 		});
 
@@ -84,12 +83,6 @@ angular.module('com.inthetelling.story')
 				if ($scope.playerState === 'buffering') {
 					_stall();
 				}
-			}
-		}
-
-		function onPlaybackQualityChange(state) {
-			if (state.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
-				youTubePlayerManager.setPlaybackQuality($scope.videoNode.id, "large");
 			}
 		}
 

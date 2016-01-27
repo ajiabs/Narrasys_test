@@ -135,14 +135,11 @@
 
 			function onPlayerQualityChange(event) {
 				var pid = event.target.m.id;
-				if (pid !== _mainPlayerId) {
-					if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
-						setPlaybackQuality(pid, 'large');
-					}
-
-				} else {
-					qualityChangeCB(event);
+				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+					setPlaybackQuality(pid, 'large');
 				}
+
+				qualityChangeCB(event);
 
 			}
 		}
