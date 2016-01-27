@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, appState, timelineSvc) {
+	function youTubePlayerManager($q, $location, appState, timelineSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -36,6 +36,9 @@
 
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
+			var host = $location.host();
+
+			console.log('host', host);
 			return new YT.Player(divId, {
 				videoId: videoID,
 
@@ -46,7 +49,8 @@
 					'modestbranding': 1,
 					'showinfo': 0,
 					'rel': 0,
-					'iv_load_policy': 3
+					'iv_load_policy': 3,
+					'origin': host
 				},
 				events: {
 					onReady: onReadyCB,
@@ -54,6 +58,7 @@
 					onPlaybackQualityChange: qualityChangeCB
 				}
 			});
+
 		}
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
