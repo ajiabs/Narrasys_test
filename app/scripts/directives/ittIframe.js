@@ -77,7 +77,7 @@
 	}
 
 	function linkFn(scope, elm) {
-		var _btnConst = 85;
+		var _btnConst = 95;
 		var modalWrapper = $('.w-modal');
 		var unWatch;
 
