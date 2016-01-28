@@ -79,6 +79,7 @@
 	function linkFn(scope, elm) {
 		var _btnConst = 85;
 		var modalWrapper = $('.w-modal');
+		var unWatch;
 
 		//search for the 'w-modal" class, if we find one,
 		//then we know that we are using windowfg template, which seems to handle modals.
@@ -89,11 +90,8 @@
 		function setIframeHeight() {
 			var y = modalWrapper.height() - _btnConst;
 			elm.css('height', y);
-			watchY();
-		}
 
-		function watchY() {
-			return scope.$watch(function() {
+			unWatch =  scope.$watch(function() {
 				return modalWrapper.height();
 			}, function(newVal, oldVal) {
 				if (newVal !== oldVal) {
@@ -103,9 +101,8 @@
 			});
 		}
 
-
 		scope.$on('$destroy', function() {
-			watchY();
+			unWatch();
 		});
 	}
 
