@@ -14,9 +14,15 @@
 	<div ng-if="poster && appState.time == 0" class="poster overlay fill" ng-style="{backgroundImage:'url('+poster.url+')'}"></div>
 	<!-- hide this on touch devices before hasBeenPlayed, if youtube, so users can click the YT player directly to init it.
 	see also ittTimeline.js -->
-	<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{
+	<!--<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{-->
+		<!--play: appState.timelineState == 'paused',-->
+		<!--buffering: appState.timelineState == 'buffering',-->
+		<!--firstplay: !appState.hasBeenPlayed && !poster,-->
+		<!--rewind: (appState.time > 0 && appState.time >= video.duration - 0.3),-->
+		<!--transcoding: !video.isTranscoded()-->
+	<!--}">-->
+		<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{
 		play: appState.timelineState == 'paused',
-		buffering: appState.timelineState == 'buffering',
 		firstplay: !appState.hasBeenPlayed && !poster,
 		rewind: (appState.time > 0 && appState.time >= video.duration - 0.3),
 		transcoding: !video.isTranscoded()
