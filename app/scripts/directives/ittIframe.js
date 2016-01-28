@@ -21,7 +21,8 @@
 			templateUrl: 'templates/iframe.html',
 			controller: 'ittIframeCtrl',
 			controllerAs: 'iframeCtrl',
-			bindToController: true
+			bindToController: true,
+			link: linkFn
 		};
 	}
 
@@ -74,4 +75,35 @@
 			_ctrl.watcher();
 		});
 	}
+
+	function linkFn(scope, elm) {
+		var _btnConst = 85;
+		var modalWrapper = $('.w-modal');
+		var unWatch;
+
+		//search for the 'w-modal" class, if we find one,
+		//then we know that we are using windowfg template, which seems to handle modals.
+		if (modalWrapper.length > 0) {
+			setIframeHeight();
+		}
+
+		function setIframeHeight() {
+			var y = modalWrapper.height() - _btnConst;
+			elm.css('height', y);
+
+			unWatch =  scope.$watch(function() {
+				return modalWrapper.height();
+			}, function(newVal, oldVal) {
+				if (newVal !== oldVal) {
+					var newY = newVal - _btnConst;
+					elm.css('height', newY);
+				}
+			});
+		}
+
+		scope.$on('$destroy', function() {
+			unWatch();
+		});
+	}
+
 })();
