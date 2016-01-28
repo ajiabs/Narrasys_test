@@ -2,13 +2,13 @@
  * Created by githop on 12/3/15.
  */
 
-(function() {
+(function () {
 	'use strict';
 
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, appState, timelineSvc) {
+	function youTubePlayerManager($q, $location, appState, timelineSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -36,6 +36,8 @@
 
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
+			var host = $location.host();
+
 			return new YT.Player(divId, {
 				videoId: videoID,
 
@@ -46,7 +48,8 @@
 					'modestbranding': 1,
 					'showinfo': 0,
 					'rel': 0,
-					'iv_load_policy': 3
+					'iv_load_policy': 3,
+					'origin': host
 				},
 				events: {
 					onReady: onReadyCB,
@@ -54,11 +57,12 @@
 					onPlaybackQualityChange: qualityChangeCB
 				}
 			});
+
 		}
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
 
-			_players[divId] = _createInstance(divId, videoId, onPlayerStateChange, qualityChangeCB, onReady);
+			_players[divId] = _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady);
 			var currentPlayer = _players[videoId];
 			return currentPlayer;
 
@@ -129,6 +133,15 @@
 				onReadyCB(event);
 			}
 
+			function onPlayerQualityChange(event) {
+				var pid = event.target.m.id;
+				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+					setPlaybackQuality(pid, 'large');
+				}
+
+				qualityChangeCB(event);
+
+			}
 		}
 
 		function getPlayer(pid) {
@@ -139,28 +152,28 @@
 
 		function getCurrentTime(pid) {
 			var p = getPlayer(pid);
-			if ( p !== undefined ) {
+			if (p !== undefined) {
 				return p.getCurrentTime();
 			}
 		}
 
 		function playerState(pid) {
 			var p = getPlayer(pid);
-			if ( p !== undefined ) {
+			if (p !== undefined) {
 				return p.getPlayerState();
 			}
 		}
 
 		function play(pid) {
 			var p = getPlayer(pid);
-			if ( p !== undefined ) {
+			if (p !== undefined) {
 				return p.playVideo();
 			}
 		}
 
 		function pause(pid) {
 			var p = getPlayer(pid);
-			if ( p !== undefined ) {
+			if (p !== undefined) {
 				return p.pauseVideo();
 			}
 		}
@@ -254,7 +267,6 @@
 				appState.embedYTPlayerAvailable = false;
 			}
 		}
-
 
 
 		function _guid() {

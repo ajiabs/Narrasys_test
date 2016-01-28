@@ -15,6 +15,7 @@
 			scope: {
 				embedUrl: '@',
 				onPlayerStateChange: '=?',
+				onPlayerQualityChange: '=?',
 				onReady: '=?',
 				mainPlayer: '=mainPlayer'
 			},
@@ -39,6 +40,10 @@
 			_ctrl.onReady = angular.noop;
 		}
 
+		if (_ctrl.onPlayerQualityChange === undefined) {
+			_ctrl.onPlayerQualityChange = angular.noop;
+		}
+
 		if (angular.isDefined(_ctrl.mainPlayer)) {
 			embedId = _ctrl.mainPlayer;
 			isMainPlayer = true;
@@ -52,7 +57,7 @@
 				_ctrl.embedId = divId;
 
 				$timeout(function() {
-					youTubePlayerManager.create(divId, _ctrl.ytVideoID, _ctrl.onPlayerStateChange, angular.noop, _ctrl.onReady);
+					youTubePlayerManager.create(divId, _ctrl.ytVideoID, _ctrl.onPlayerStateChange, _ctrl.onPlayerQualityChange, _ctrl.onReady);
 				}, 0);
 			});
 
