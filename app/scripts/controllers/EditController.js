@@ -23,7 +23,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				// add param to episode links if necessary
-				if ($scope.item.url.match(/inthetelling.com\/#/) && $scope.item.url.indexOf('?' === -1)) {
+				if ($scope.item.url.match(/inthetelling.com\/#/) && $scope.item.url.indexOf('?') === -1) {
 					$scope.item.url = $scope.item.url + "?embed=1";
 				}
 			});
@@ -183,7 +183,7 @@ angular.module('com.inthetelling.story')
 					console.log('adjust for delete');
 					break;
 				case "update":
-					// TODO this should be updating the adjusted events, not delete-and-create.  
+					// TODO this should be updating the adjusted events, not delete-and-create.
 					if (original) {
 						saveAdjustedEvents(original, "delete");
 					}
@@ -283,7 +283,7 @@ angular.module('com.inthetelling.story')
 						modelSvc.episodes[appState.episodeId].master_asset_id = data.master_asset_id;
 
 						/*
-						iterate through episode.scenes. 
+						iterate through episode.scenes.
 							if start time > duration, delete the scene.
 							if end time > duration, set end time to duration.
 						iterate through episode.items.
@@ -397,7 +397,7 @@ angular.module('com.inthetelling.story')
 			for (var i = 0, len = scenes.length; i < len; i++) {
 				if (scenes[i]._id === scene._id) {
 					exists = true;
-					//do nothing, as already exists	
+					//do nothing, as already exists
 					break;
 				}
 			}
