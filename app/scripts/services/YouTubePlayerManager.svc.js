@@ -65,7 +65,7 @@
 			var firstTry = $q.defer();
 
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, firstTry)
-			.then(handleSuccess, handleError)
+			.then(handleSuccess, tryAgain)
 			.then(handleSuccess, lastTry);
 
 
@@ -73,7 +73,7 @@
 				_players[divId] = ytInstance;
 			}
 
-			function handleError(e) {
+			function tryAgain(e) {
 				var again = $q.defer();
 
 				console.log('handling error', e);
