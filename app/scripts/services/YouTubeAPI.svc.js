@@ -27,7 +27,7 @@
 		this.$timeout(function(){
 			//attempting to call reject after promise resolves results in a noop.
 			dfd.reject('too long!');
-		}, 1500);
+		}, 10);
 
 		return dfd.promise;
 	};

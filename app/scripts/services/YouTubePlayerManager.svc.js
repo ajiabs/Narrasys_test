@@ -65,21 +65,25 @@
 			var firstTry = $q.defer();
 
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, firstTry)
-			.then(function(ytInstance) {
+			.then(handleSuccess, handleError)
+			.then(handleSuccess, lastTry);
+
+
+			function handleSuccess(ytInstance) {
 				_players[divId] = ytInstance;
-			}, function(errorOne) {
+			}
 
-				console.log('trying again', errorOne);
-				var retry = $q.defer();
+			function handleError(e) {
+				var again = $q.defer();
 
-				_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, retry)
-				.then(function(secondTry) {
-					_players[divId] = secondTry;
-				}, function(finalError) {
-					console.log('rerty failed!', finalError);
-					errorSvc.error({data: 'Error Loading Youtube, Try Reloading!'});
-				});
-			});
+				console.log('handling error', e);
+				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, again);
+			}
+
+			function lastTry(e) {
+				console.log('rerty failed!', e);
+				errorSvc.error({data: 'Error Loading Youtube, Try Reloading!'});
+			}
 
 			//available 'states'
 			//YT.PlayerState.ENDED
