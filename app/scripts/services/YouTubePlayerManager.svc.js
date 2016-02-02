@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi) {
+	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -37,8 +37,8 @@
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
 			var host = $location.host();
-
-			return YoutubePlayerApi.load().then(function() {
+			var firstTry = $q.defer();
+			return YoutubePlayerApi.load(firstTry).then(function() {
 				console.log('iframe loaded!');
 				return new YT.Player(divId, {
 					videoId: videoID,
@@ -67,8 +67,20 @@
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
 			.then(function(ytInstance) {
 				_players[divId] = ytInstance;
-			}, function(e) {
-				console.log("err, it took too long?", e);
+			}, function(errorOne) {
+
+				console.log('trying again', errorOne);
+				var retry = $q.defer();
+
+				YoutubePlayerApi.load(retry).then(function() {
+					_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+						.then(function(secondTry) {
+							_players[divId] = secondTry;
+						}, function(e) {
+							console.log('rerty failed!', e);
+							errorSvc.error({data: 'Error Loading Youtube, Try Reloading!'});
+						});
+				});
 			});
 
 			//available 'states'
