@@ -34,12 +34,10 @@
 			setVolume: setVolume
 		};
 
-		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
+		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, dfd) {
 
 			var host = $location.host();
-			var firstTry = $q.defer();
-			return YoutubePlayerApi.load(firstTry).then(function() {
-				console.log('iframe loaded!');
+			return YoutubePlayerApi.load(dfd).then(function() {
 				return new YT.Player(divId, {
 					videoId: videoID,
 
@@ -64,7 +62,9 @@
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
 
-			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+			var firstTry = $q.defer();
+
+			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, firstTry)
 			.then(function(ytInstance) {
 				_players[divId] = ytInstance;
 			}, function(errorOne) {
@@ -72,14 +72,12 @@
 				console.log('trying again', errorOne);
 				var retry = $q.defer();
 
-				YoutubePlayerApi.load(retry).then(function() {
-					_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
-						.then(function(secondTry) {
-							_players[divId] = secondTry;
-						}, function(e) {
-							console.log('rerty failed!', e);
-							errorSvc.error({data: 'Error Loading Youtube, Try Reloading!'});
-						});
+				_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, retry)
+				.then(function(secondTry) {
+					_players[divId] = secondTry;
+				}, function(finalError) {
+					console.log('rerty failed!', finalError);
+					errorSvc.error({data: 'Error Loading Youtube, Try Reloading!'});
 				});
 			});
 
