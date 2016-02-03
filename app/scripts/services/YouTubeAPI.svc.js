@@ -9,15 +9,15 @@
 	function YoutubePlayerApi($timeout, $q) {
 		this.$q = $q;
 		this.$timeout = $timeout;
+		this.timesRan = 0;
 	}
 
 	YoutubePlayerApi.prototype.load = function() {
 		this.dfd = this.$q.defer();
 		//pass the promise where it can be resolved when onYoutubeIframeReady cb fires.
+		//this.fails(1, this.dfd);
 		this.onYouTubeIframeAPIReady(this.dfd);
-
 		if (this.checkForScriptTag(this.dfd) === false) {
-			console.log('check for script tag');
 			var url = '//www.youtube.com/iframe_api';
 			var tag = document.createElement('script');
 			tag.src = url;
@@ -26,7 +26,7 @@
 			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 		}
 
-		this.$timeout(function(){
+		this.cancelIframe = this.$timeout(function(){
 			//attempting to call reject after promise resolves results in a noop.
 			this.dfd.reject('too long!');
 		}.bind(this), 1500);
@@ -36,18 +36,28 @@
 
 	YoutubePlayerApi.prototype.onYouTubeIframeAPIReady = function(dfd) {
 		window.onYouTubeIframeAPIReady = function() {
-			console.log('onYoutubeIframeAPIReady called');
 			dfd.resolve();
-		};
+			this.$timeout.cancel(this.cancelIframe);
+		}.bind(this);
+	};
+
+	YoutubePlayerApi.prototype.fails = function(times, dfd) {
+		if (this.timesRan < times) {
+			this.timesRan++;
+			dfd.reject();
+		}
 	};
 
 	YoutubePlayerApi.prototype.checkForScriptTag = function(dfd) {
 		var scriptTags = document.getElementsByTagName('script');
+		var firstIframe = document.getElementById('yt-iframe-api');
 		var found = false;
-
+		if(firstIframe) {
+			return;
+		}
 		var i = 0, len = scriptTags.length;
 		for (i; i < len; i++) {
-			if (scriptTags[i].getAttribute('id') === 'yt-iframe-api') {
+			if (scriptTags[i].getAttribute('id') === 'www-widgetapi-script') {
 				found = true;
 				dfd.resolve();
 				break;
