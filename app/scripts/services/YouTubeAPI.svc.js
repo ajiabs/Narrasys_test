@@ -52,9 +52,6 @@
 		var scriptTags = document.getElementsByTagName('script');
 		var firstIframe = document.getElementById('yt-iframe-api');
 		var found = false;
-		if(firstIframe) {
-			return;
-		}
 		var i = 0, len = scriptTags.length;
 		for (i; i < len; i++) {
 			if (scriptTags[i].getAttribute('id') === 'www-widgetapi-script') {
@@ -63,6 +60,11 @@
 				break;
 			}
 		}
+
+		if(firstIframe) {
+			return;
+		}
+
 		return found;
 	};
 })();

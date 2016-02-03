@@ -61,21 +61,21 @@
 		}
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
-
+		console.log('creating instance!');
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
-			.then(handleSuccess)
-			.catch(tryAgain)
-			.catch(lastTry);
+				.then(handleSuccess)
+				.catch(tryAgain)
+				.catch(lastTry);
 
 			function handleSuccess(ytInstance) {
-				console.count('success!');
+				console.log('success!', ytInstance);
 				_players[divId] = ytInstance;
 			}
 
 			function tryAgain() {
 				console.log('trying again!');
 				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
-				.then(handleSuccess);
+					.then(handleSuccess);
 			}
 
 			function lastTry(e) {
