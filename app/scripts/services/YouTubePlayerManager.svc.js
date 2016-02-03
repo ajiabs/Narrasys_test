@@ -40,7 +40,6 @@
 			return YoutubePlayerApi.load().then(function() {
 				return new YT.Player(divId, {
 					videoId: videoID,
-
 					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
 					playerVars: {
 						'controls': 0,
@@ -61,25 +60,21 @@
 		}
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
-		console.log('creating instance!');
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
 				.then(handleSuccess)
 				.catch(tryAgain)
 				.catch(lastTry);
 
 			function handleSuccess(ytInstance) {
-				console.log('success!', ytInstance);
 				_players[divId] = ytInstance;
 			}
 
 			function tryAgain() {
-				console.log('trying again!');
 				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
 					.then(handleSuccess);
 			}
 
 			function lastTry(e) {
-				console.log('last try!');
 				errorSvc.error({data: 'Error Loading Youtube, Try Reloading!'}, e);
 			}
 
