@@ -79,7 +79,7 @@
 	function linkFn(scope, elm) {
 		var _btnConst = 95;
 		var modalWrapper = $('.w-modal');
-		var unWatch;
+		var unWatch = angular.noop;
 
 		//search for the 'w-modal" class, if we find one,
 		//then we know that we are using windowfg template, which seems to handle modals.
