@@ -6,15 +6,17 @@
 	angular.module('com.inthetelling.story')
 		.service('YoutubePlayerApi', YoutubePlayerApi);
 
-	function YoutubePlayerApi($timeout) {
+	function YoutubePlayerApi($timeout, $q) {
+		this.$q = $q;
 		this.$timeout = $timeout;
 	}
 
-	YoutubePlayerApi.prototype.load = function(dfd) {
+	YoutubePlayerApi.prototype.load = function() {
+		this.dfd = this.$q.defer();
 		//pass the promise where it can be resolved when onYoutubeIframeReady cb fires.
-		this.onYouTubeIframeAPIReady(dfd);
+		this.onYouTubeIframeAPIReady(this.dfd);
 
-		if (this.checkForScriptTag(dfd) === false) {
+		if (this.checkForScriptTag(this.dfd) === false) {
 			console.log('check for script tag');
 			var url = '//www.youtube.com/iframe_api';
 			var tag = document.createElement('script');
@@ -26,10 +28,10 @@
 
 		this.$timeout(function(){
 			//attempting to call reject after promise resolves results in a noop.
-			dfd.reject('too long!');
-		}, 10);
+			this.dfd.reject('too long!');
+		}.bind(this), 1500);
 
-		return dfd.promise;
+		return this.dfd.promise;
 	};
 
 	YoutubePlayerApi.prototype.onYouTubeIframeAPIReady = function(dfd) {

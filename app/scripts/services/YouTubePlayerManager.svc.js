@@ -34,10 +34,10 @@
 			setVolume: setVolume
 		};
 
-		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, dfd) {
+		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
 			var host = $location.host();
-			return YoutubePlayerApi.load(dfd).then(function() {
+			return YoutubePlayerApi.load().then(function() {
 				return new YT.Player(divId, {
 					videoId: videoID,
 
@@ -62,9 +62,7 @@
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
 
-			var firstTry = $q.defer();
-
-			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, firstTry)
+			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
 			.then(handleSuccess, tryAgain)
 			.then(handleSuccess, lastTry);
 
@@ -74,10 +72,8 @@
 			}
 
 			function tryAgain(e) {
-				var again = $q.defer();
-
 				console.log('handling error', e);
-				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, again);
+				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady);
 			}
 
 			function lastTry(e) {
