@@ -114,12 +114,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
 })
 
-.run(function ($rootScope, errorSvc, YoutubePlayerApi, appState) {
-
-	YoutubePlayerApi.load().then(function() {
-		console.log('YT Api Setup!');
-		appState.youtubeIframeAPIReady = true;
-	});
+.run(function ($rootScope, errorSvc) {
 
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';

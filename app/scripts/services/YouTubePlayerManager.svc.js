@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, $location, appState, timelineSvc) {
+	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -37,34 +37,46 @@
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
 			var host = $location.host();
-
-			return new YT.Player(divId, {
-				videoId: videoID,
-
-				//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
-				playerVars: {
-					'controls': 0,
-					'enablejsonapi': 1,
-					'modestbranding': 1,
-					'showinfo': 0,
-					'rel': 0,
-					'iv_load_policy': 3,
-					'origin': host
-				},
-				events: {
-					onReady: onReadyCB,
-					onStateChange: stateChangeCB,
-					onPlaybackQualityChange: qualityChangeCB
-				}
+			return YoutubePlayerApi.load().then(function() {
+				return new YT.Player(divId, {
+					videoId: videoID,
+					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
+					playerVars: {
+						'controls': 0,
+						'enablejsonapi': 1,
+						'modestbranding': 1,
+						'showinfo': 0,
+						'rel': 0,
+						'iv_load_policy': 3,
+						'origin': host
+					},
+					events: {
+						onReady: onReadyCB,
+						onStateChange: stateChangeCB,
+						onPlaybackQualityChange: qualityChangeCB
+					}
+				});
 			});
-
 		}
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
+			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+				.then(handleSuccess)
+				.catch(tryAgain)
+				.catch(lastTry);
 
-			_players[divId] = _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady);
-			var currentPlayer = _players[videoId];
-			return currentPlayer;
+			function handleSuccess(ytInstance) {
+				_players[divId] = ytInstance;
+			}
+
+			function tryAgain() {
+				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+					.then(handleSuccess);
+			}
+
+			function lastTry(e) {
+				errorSvc.error({data: 'Error Loading Youtube, Try Reloading!'}, e);
+			}
 
 			//available 'states'
 			//YT.PlayerState.ENDED
