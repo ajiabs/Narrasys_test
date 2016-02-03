@@ -9,13 +9,12 @@
 	function YoutubePlayerApi($timeout, $q) {
 		this.$q = $q;
 		this.$timeout = $timeout;
-		this.timesRan = 0;
+		//this.timesRan = 0;
 	}
 
 	YoutubePlayerApi.prototype.load = function() {
 		this.dfd = this.$q.defer();
 		//pass the promise where it can be resolved when onYoutubeIframeReady cb fires.
-		//this.fails(1, this.dfd);
 		this.onYouTubeIframeAPIReady(this.dfd);
 		if (this.checkForScriptTag(this.dfd) === false) {
 			var url = '//www.youtube.com/iframe_api';
@@ -41,12 +40,13 @@
 		}.bind(this);
 	};
 
-	YoutubePlayerApi.prototype.fails = function(times, dfd) {
-		if (this.timesRan < times) {
-			this.timesRan++;
-			dfd.reject();
-		}
-	};
+	//for testing purposes
+	//YoutubePlayerApi.prototype.fails = function(times, dfd) {
+	//	if (this.timesRan < times) {
+	//		this.timesRan++;
+	//		dfd.reject();
+	//	}
+	//};
 
 	YoutubePlayerApi.prototype.checkForScriptTag = function(dfd) {
 		var scriptTags = document.getElementsByTagName('script');
