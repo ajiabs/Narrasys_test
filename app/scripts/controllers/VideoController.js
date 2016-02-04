@@ -33,6 +33,7 @@ angular.module('com.inthetelling.story')
 		var _numberOfStalls = 0;
 		var _YTPlayer;
 		var _babysitter;
+		var _bufferInterval;
 		var playerStates = {
 			'-1': 'unstarted',
 			'0': 'ended',
@@ -41,25 +42,6 @@ angular.module('com.inthetelling.story')
 			'3': 'buffering',
 			'5': 'video cued'
 		};
-
-		var _bufferInterval = $interval(function () {
-			//if (!$scope.getBufferPercent) {
-			//	return;
-			//}
-			//var pct = $scope.getBufferPercent();
-			//if (pct > 98) { // close enough
-			//	$interval.cancel($scope.bufferInterval);
-			//	appState.bufferedPercent = 100;
-			//}
-
-			if ($scope.videoType === 'video') {
-				//do html stuff!
-				$scope.getBufferPercent();
-				console.log('in html!');
-			} else {
-				appState.bufferedPercent = youTubePlayerManager.getVideoLoadedFraction($scope.videoNode.id) * 100;
-			}
-		}, 200);
 
 		//called from link fn of ittVideo
 		function initVideo(el) {
@@ -79,6 +61,28 @@ angular.module('com.inthetelling.story')
 				$scope.videoNode = html5PlayerManager.create($scope.video._id, mainPlayer);
 				initHTML5Video();
 			}
+			_startBufferIntervalPoll();
+		}
+
+		function _startBufferIntervalPoll() {
+			_bufferInterval = $interval(function () {
+				//if (!$scope.getBufferPercent) {
+				//	return;
+				//}
+				//var pct = $scope.getBufferPercent();
+				//if (pct > 98) { // close enough
+				//	$interval.cancel($scope.bufferInterval);
+				//	appState.bufferedPercent = 100;
+				//}
+
+				if ($scope.videoType === 'video') {
+					//do html stuff!
+					$scope.getBufferPercent();
+					console.log('in html!');
+				} else {
+					youTubePlayerManager.setBufferPercent($scope.videoNode.id);
+				}
+			}, 200);
 		}
 
 		function onReady() {

@@ -24,7 +24,7 @@
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			setPlaybackQuality: setPlaybackQuality,
 			setPlayerId: setPlayerId,
-			getVideoLoadedFraction: getVideoLoadedFraction,
+			setBufferPercent: setBufferPercent,
 			seekTo: seekTo,
 			getCurrentTime: getCurrentTime,
 			isMuted: isMuted,
@@ -143,6 +143,7 @@
 					appState.embedYTPlayerAvailable = true;
 				}
 
+				_players[pid].ready = true;
 				onReadyCB(event);
 			}
 
@@ -158,7 +159,7 @@
 		}
 
 		function getPlayer(pid) {
-			if (_players[pid]) {
+			if (_players[pid] && _players[pid].ready === true) {
 				return _players[pid];
 			}
 		}
@@ -202,6 +203,13 @@
 			var p = getPlayer(pid);
 			if (p !== undefined) {
 				return p.getVideoLoadedFraction();
+			}
+		}
+
+		function setBufferPercent(pid) {
+			var p = getPlayer(pid);
+			if (p !== undefined) {
+				appState.bufferedPercent = p.getVideoLoadedFraction() * 100;
 			}
 		}
 
