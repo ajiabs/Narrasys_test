@@ -18,6 +18,6 @@
 
 	<itt-iframe ng-if="!item.html5Embed" x-src="{{item.url}}"></itt-iframe>
 
-	<itt-html5-video ng-if="item.html5Embed" src="{{item.url}}" player-id="{{item._id}}"></itt-html5-video>
+	<itt-html5-video ng-if="item.html5Embed" src="item.url" player-id="{{item._id}}"></itt-html5-video>
 	<div class="clear"></div>
 </div>

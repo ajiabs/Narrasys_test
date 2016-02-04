@@ -372,7 +372,7 @@ angular.module('com.inthetelling.story')
 					event.noExternalLink = true;
 				}
 
-				if (event.templateUrl.match(/link-embed/) && event.url.match(/.mp4/)) {
+				if (event.templateUrl.match(/link-embed/) && (event.url.match(/.mp4/) || event.url.match(/.webm/) || event.url.match(/.m3u8/) )) {
 					event.html5Embed = true;
 				}
 
