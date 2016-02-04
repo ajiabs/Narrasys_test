@@ -17,17 +17,20 @@
 	};
 
 	function html5PlayerManager(appState, timelineSvc) {
-		var _html5Video = {};
+		var _html5Video;
 		var _players = {};
 		var _mainPlayerId;
 
-		_html5Video.create = create;
-		_html5Video.play = play;
-		_html5Video.pause = pause;
-		_html5Video.getCurrentTime = getCurrentTime;
-		_html5Video.getPlayerState = getPlayerState;
-		_html5Video.seek = seek;
-		_html5Video.pauseOtherEmbeds = pauseOtherEmbeds;
+		_html5Video = {
+			create: create,
+			play: play,
+			pause: pause,
+			getCurrentTime: getCurrentTime,
+			getPlayerState: getPlayerState,
+			seek: seek,
+			pauseOtherEmbeds: pauseOtherEmbeds,
+			setBufferPercent: setBufferPercent
+		};
 
 		function create(divID, mainPlayer) {
 			var plr = document.getElementById(divID);
@@ -207,6 +210,24 @@
 					pause(p);
 				}
 			}
+		}
+
+		function setBufferPercent(pid) {
+			var instance = _getInstance(pid);
+			if (instance && instance.meta.playerState !== -1) {
+				if (instance.buffered.length > 0) {
+					var bufLen = instance.buffered.length;
+					var bufStart = instance.buffered.start(bufLen -1);
+					var bufEnd   = instance.buffered.end(bufLen -1);
+
+					if (bufEnd < 0) {
+						bufEnd = bufEnd - bufStart;
+						bufStart = 0;
+					}
+					appState.bufferedPercent = bufEnd / appState.duration * 100;
+				}
+			}
+
 		}
 
 

@@ -66,19 +66,8 @@ angular.module('com.inthetelling.story')
 
 		function _startBufferIntervalPoll() {
 			_bufferInterval = $interval(function () {
-				//if (!$scope.getBufferPercent) {
-				//	return;
-				//}
-				//var pct = $scope.getBufferPercent();
-				//if (pct > 98) { // close enough
-				//	$interval.cancel($scope.bufferInterval);
-				//	appState.bufferedPercent = 100;
-				//}
-
 				if ($scope.videoType === 'video') {
-					//do html stuff!
-					$scope.getBufferPercent();
-					console.log('in html!');
+					html5PlayerManager.setBufferPercent($scope.video._id);
 				} else {
 					youTubePlayerManager.setBufferPercent($scope.videoNode.id);
 				}
@@ -244,23 +233,6 @@ angular.module('com.inthetelling.story')
 			}
 
 			_babysitHTML5Video();
-
-			//this gets defined on scope twice, once in a watch, not sure which one is the one we want if we called it on the scope
-			$scope.getBufferPercent = function () {
-				if ($scope.videoNode.buffered.length > 0) {
-					var bufStart = $scope.videoNode.buffered.start($scope.videoNode.buffered.length - 1);
-					var bufEnd = $scope.videoNode.buffered.end($scope.videoNode.buffered.length - 1);
-
-					if (bufEnd < 0) {
-						bufEnd = bufEnd - bufStart;
-						bufStart = 0;
-					}
-					appState.bufferedPercent = bufEnd / appState.duration * 100;
-					return appState.bufferedPercent;
-				} else {
-					return 0;
-				}
-			};
 
 			timelineSvc.registerVideo($scope);
 
