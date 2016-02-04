@@ -75,7 +75,9 @@
 			}
 
 			function lastTry(e) {
-				errorSvc.error({data: 'Error Loading Youtube, Try Reloading!'}, e);
+				console.log('too long!');
+				var errorMsg = 'Network timeout initializing video player. Please try again.';
+				errorSvc.error({data: errorMsg}, e);
 			}
 
 			//available 'states'

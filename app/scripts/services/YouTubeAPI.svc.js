@@ -28,7 +28,7 @@
 		this.cancelIframe = this.$timeout(function(){
 			//attempting to call reject after promise resolves results in a noop.
 			this.dfd.reject('too long!');
-		}.bind(this), 1500);
+		}.bind(this), 2000);
 
 		return this.dfd.promise;
 	};
