@@ -54,23 +54,20 @@ angular.module('com.inthetelling.story')
 				$scope.videoType = 'youtube';
 				appState.videoType = $scope.videoType;
 				$scope.videoNode = {id: $scope.video._id};
+				_startBufferPercentInterval(youTubePlayerManager, $scope.videoNode.id);
 			} else {
 				$scope.videoType = "video"; // as in html5 <video> tagx
 				appState.videoType = $scope.videoType;
 				var mainPlayer = true;
 				$scope.videoNode = html5PlayerManager.create($scope.video._id, mainPlayer);
 				initHTML5Video();
+				_startBufferIntervalPoll(html5PlayerManager, $scope.video._id);
 			}
-			_startBufferIntervalPoll();
 		}
 
-		function _startBufferIntervalPoll() {
-			_bufferInterval = $interval(function () {
-				if ($scope.videoType === 'video') {
-					html5PlayerManager.setBufferPercent($scope.video._id);
-				} else {
-					youTubePlayerManager.setBufferPercent($scope.videoNode.id);
-				}
+		function _startBufferPercentInterval(playerInterface, id) {
+			_bufferInterval = $interval(function() {
+				playerInterface.setBufferPercent(id);
 			}, 200);
 		}
 
