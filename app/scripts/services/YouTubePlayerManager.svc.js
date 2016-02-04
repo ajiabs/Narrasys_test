@@ -24,7 +24,7 @@
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			setPlaybackQuality: setPlaybackQuality,
 			setPlayerId: setPlayerId,
-			setBufferPercent: setBufferPercent,
+			getBufferPercent: getBufferPercent,
 			seekTo: seekTo,
 			getCurrentTime: getCurrentTime,
 			isMuted: isMuted,
@@ -206,10 +206,10 @@
 			}
 		}
 
-		function setBufferPercent(pid) {
+		function getBufferPercent(pid) {
 			var p = getPlayer(pid);
 			if (p !== undefined) {
-				appState.bufferedPercent = p.getVideoLoadedFraction() * 100;
+				return p.getVideoLoadedFraction() * 100;
 			}
 		}
 

@@ -29,7 +29,7 @@
 			getPlayerState: getPlayerState,
 			seek: seek,
 			pauseOtherEmbeds: pauseOtherEmbeds,
-			setBufferPercent: setBufferPercent
+			getBufferPercent: getBufferPercent
 		};
 
 		function create(divID, mainPlayer) {
@@ -212,7 +212,7 @@
 			}
 		}
 
-		function setBufferPercent(pid) {
+		function getBufferPercent(pid) {
 			var instance = _getInstance(pid);
 			if (instance && instance.meta.playerState !== -1) {
 				if (instance.buffered.length > 0) {
@@ -224,7 +224,7 @@
 						bufEnd = bufEnd - bufStart;
 						bufStart = 0;
 					}
-					appState.bufferedPercent = bufEnd / appState.duration * 100;
+					return bufEnd / appState.duration * 100;
 				}
 			}
 

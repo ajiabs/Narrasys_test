@@ -61,13 +61,13 @@ angular.module('com.inthetelling.story')
 				var mainPlayer = true;
 				$scope.videoNode = html5PlayerManager.create($scope.video._id, mainPlayer);
 				initHTML5Video();
-				_startBufferIntervalPoll(html5PlayerManager, $scope.video._id);
+				_startBufferPercentInterval(html5PlayerManager, $scope.video._id);
 			}
 		}
 
 		function _startBufferPercentInterval(playerInterface, id) {
 			_bufferInterval = $interval(function() {
-				playerInterface.setBufferPercent(id);
+				appState.bufferedPercent = playerInterface.getBufferPercent(id);
 			}, 200);
 		}
 
