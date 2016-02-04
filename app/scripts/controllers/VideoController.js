@@ -25,8 +25,7 @@ angular.module('com.inthetelling.story')
 			toggleMute: toggleMute,
 			setVolume: setVolume,
 			playerStateChange: onPlayerStateChange,
-			onReady: onReady,
-			bufferInterval: _bufferInterval
+			onReady: onReady
 		});
 
 		//private properties
@@ -55,11 +54,9 @@ angular.module('com.inthetelling.story')
 
 			if ($scope.videoType === 'video') {
 				//do html stuff!
-				console.log('in if?');
 				$scope.getBufferPercent();
 			} else {
 				appState.bufferedPercent = youTubePlayerManager.getVideoLoadedFraction($scope.videoNode.id) * 100;
-				console.log('buff%: ', appState.bufferedPercent);
 			}
 		}, 200);
 
@@ -473,6 +470,7 @@ angular.module('com.inthetelling.story')
 		function _destroyMe() {
 			//_destroyWatcher();
 			$interval.cancel(_babysitter);
+			$timeout.cancel(_bufferInterval);
 			$timeout.cancel($scope.stallGracePeriod);
 			timelineSvc.unregisterVideo();
 			if ($scope.videoType === 'youtube') {

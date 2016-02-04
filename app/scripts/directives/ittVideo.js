@@ -35,19 +35,6 @@ angular.module('com.inthetelling.story')
 
 				scope.spaceWatcher = $rootScope.$on('userKeypress.SPACE', scope.videoClick);
 
-				// watch buffered amount on an interval
-				//scope.bufferInterval = $interval(function () {
-				//	console.log('polling for buff%', scope.videoType);
-				//	if (!scope.getBufferPercent) {
-				//		return;
-				//	}
-				//	var pct = scope.getBufferPercent();
-				//	if (pct > 98) { // close enough
-				//		$interval.cancel(scope.bufferInterval);
-				//		appState.bufferedPercent = 100;
-				//	}
-				//}, 200);
-
 				// if the video is not yet transcoded poll for updates until it is
 				var pollCount = 0;
 				scope.pollInterval = $interval(function () {
@@ -72,7 +59,6 @@ angular.module('com.inthetelling.story')
 
 				scope.$on('$destroy', function () {
 					scope.spaceWatcher();
-					$interval.cancel(scope.bufferInterval);
 					$interval.cancel(scope.pollInterval);
 				});
 			},
