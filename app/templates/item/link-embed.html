@@ -16,6 +16,8 @@
 	</div>
 	<a tabindex="0" class="escapelink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">(new window)</a>
 
-	<itt-iframe x-src="{{item.url}}"></itt-iframe>
+	<itt-iframe ng-if="!item.html5Embed" x-src="{{item.url}}"></itt-iframe>
+
+	<itt-html5-video ng-if="item.html5Embed" src="{{item.url}}" player-id="{{item._id}}"></itt-html5-video>
 	<div class="clear"></div>
 </div>

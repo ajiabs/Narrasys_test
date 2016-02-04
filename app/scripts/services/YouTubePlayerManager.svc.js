@@ -21,7 +21,6 @@
 			play: play,
 			playerState: playerState,
 			pause: pause,
-			pauseEmbeds: pauseEmbeds,
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			setPlaybackQuality: setPlaybackQuality,
 			setPlayerId: setPlayerId,
@@ -103,7 +102,7 @@
 
 				if (pid === main) {
 					if (mainPlayerState === YT.PlayerState.PLAYING) {
-						pauseEmbeds();
+						pauseOtherEmbeds();
 					}
 				}
 
@@ -242,19 +241,6 @@
 
 			if (p !== undefined) {
 				p.setVolume(v);
-			}
-		}
-
-		function pauseEmbeds() {
-			for (var p in _players) {
-				if (p !== _mainPlayerId) {
-					var curPlayerState = playerState(p);
-					if (curPlayerState !== YT.PlayerState.UNSTARTED &&
-						curPlayerState !== YT.PlayerState.PAUSED &&
-						curPlayerState !== YT.PlayerState.CUED) {
-						pause(p);
-					}
-				}
 			}
 		}
 

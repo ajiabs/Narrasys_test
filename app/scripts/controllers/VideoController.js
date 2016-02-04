@@ -11,7 +11,7 @@
 // babysitters and stalls are disabled on phone therefore.
 
 angular.module('com.inthetelling.story')
-	.controller('VideoController', function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
+	.controller('VideoController', function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager, html5PlayerManager) {
 		//exported functions / props
 		angular.extend($scope, {
 			initVideo: initVideo,
@@ -55,6 +55,7 @@ angular.module('com.inthetelling.story')
 			if ($scope.videoType === 'video') {
 				//do html stuff!
 				$scope.getBufferPercent();
+				console.log('in html!');
 			} else {
 				appState.bufferedPercent = youTubePlayerManager.getVideoLoadedFraction($scope.videoNode.id) * 100;
 			}
@@ -74,7 +75,8 @@ angular.module('com.inthetelling.story')
 			} else {
 				$scope.videoType = "video"; // as in html5 <video> tagx
 				appState.videoType = $scope.videoType;
-				$scope.videoNode = el.find('video')[0];
+				var mainPlayer = true;
+				$scope.videoNode = html5PlayerManager.create($scope.video._id, mainPlayer);
 				initHTML5Video();
 			}
 		}
@@ -299,8 +301,9 @@ angular.module('com.inthetelling.story')
 				youTubePlayerManager.play($scope.videoNode.id);
 			} else {
 				$scope.videoNode.play();
-				if (appState.embedYTPlayerAvailable) {
-					youTubePlayerManager.pauseEmbeds();
+				if (appState.embedYTPlayerAvailable || appState.embedHtml5PlayerAvailable) {
+					youTubePlayerManager.pauseOtherEmbeds();
+					html5PlayerManager.pauseOtherEmbeds($scope.video._id);
 				}
 			}
 

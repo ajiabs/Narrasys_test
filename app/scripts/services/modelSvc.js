@@ -341,6 +341,7 @@ angular.module('com.inthetelling.story')
 				event.noEmbed = false;
 				event.noExternalLink = false;
 				event.targetTop = false;
+				event.html5Embed = false;
 
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)
@@ -370,6 +371,11 @@ angular.module('com.inthetelling.story')
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
 					event.noExternalLink = true;
 				}
+
+				if (event.templateUrl.match(/link-embed/) && event.url.match(/.mp4/)) {
+					event.html5Embed = true;
+				}
+
 				if (event.templateUrl.match(/frameicide/)) {
 					event.targetTop = true;
 					event.noEmbed = true;
