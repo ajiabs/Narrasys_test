@@ -25,7 +25,8 @@ angular.module('com.inthetelling.story')
 			toggleMute: toggleMute,
 			setVolume: setVolume,
 			playerStateChange: onPlayerStateChange,
-			onReady: onReady
+			onReady: onReady,
+			bufferInterval: _bufferInterval
 		});
 
 		//private properties
@@ -41,6 +42,26 @@ angular.module('com.inthetelling.story')
 			'3': 'buffering',
 			'5': 'video cued'
 		};
+
+		var _bufferInterval = $interval(function () {
+			//if (!$scope.getBufferPercent) {
+			//	return;
+			//}
+			//var pct = $scope.getBufferPercent();
+			//if (pct > 98) { // close enough
+			//	$interval.cancel($scope.bufferInterval);
+			//	appState.bufferedPercent = 100;
+			//}
+
+			if ($scope.videoType === 'video') {
+				//do html stuff!
+				console.log('in if?');
+				$scope.getBufferPercent();
+			} else {
+				appState.bufferedPercent = youTubePlayerManager.getVideoLoadedFraction($scope.videoNode.id) * 100;
+				console.log('buff%: ', appState.bufferedPercent);
+			}
+		}, 200);
 
 		//called from link fn of ittVideo
 		function initVideo(el) {
@@ -116,14 +137,14 @@ angular.module('com.inthetelling.story')
 			timelineSvc.registerVideo($scope);
 
 			 //but we still need to wait for youtube to Do More Stuff, apparently:
-			$scope.$watch(function () {
-				return youTubePlayerManager.getVideoLoadedFraction($scope.videoNode.id);
-			}, function (cur) {
-				if (cur) {
-					appState.bufferedPercent = youTubePlayerManager.getVideoLoadedFraction($scope.videoNode.id) * 100;
-					//unwatch();
-				}
-			});
+			//$scope.$watch(function () {
+			//	return youTubePlayerManager.getVideoLoadedFraction($scope.videoNode.id);
+			//}, function (cur) {
+			//	if (cur) {
+			//		appState.bufferedPercent = youTubePlayerManager.getVideoLoadedFraction($scope.videoNode.id) * 100;
+			//		//unwatch();
+			//	}
+			//});
 
 
 		} // end of initYoutube
