@@ -29,7 +29,7 @@
 			getCurrentTime: getCurrentTime,
 			isMuted: isMuted,
 			mute: mute,
-			unMute: unmute,
+			unMute: unMute,
 			setVolume: setVolume
 		};
 
@@ -236,11 +236,11 @@
 			}
 		}
 
-		function unmute(pid) {
+		function unMute(pid) {
 			var p = getPlayer(pid);
 
 			if (p !== undefined) {
-				return p.unmute();
+				return p.unMute();
 			}
 		}
 
