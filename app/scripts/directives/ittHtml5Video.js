@@ -24,15 +24,15 @@
 			template:[
 				'<div ng-click="ittHtml5Video.togglePlayback($event)">',
 					'<video class="html5Embed" id="{{ittHtml5Video.playerId}}">',
-			'<source class="m3u8" ng-if="ittHtml5Video.src.m3u8[0]" ng-src="{{video.urls.m3u8[0]}}" type="application/x-mpegURL" />',
-			'<source class="mpeg4" ng-if="ittHtml5Video.src.mp4[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.src.mp4[ittHtml5Video.curStream]}}" type="video/mp4" />',
-			'<source class="webm" ng-if="ittHtml5Video.src.webm[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.src.webm[ittHtml5Video.curStream]}}" type="video/webm" />',
+			'<source class="m3u8" ng-if="ittHtml5Video.urls.m3u8[0]" ng-src="{{ittHtml5Video.m3u8[0]}}" type="application/x-mpegURL" />',
+			'<source class="mpeg4" ng-if="ittHtml5Video.urls.mp4[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.mp4[ittHtml5Video.curStream]}}" type="video/mp4" />',
+			'<source class="webm" ng-if="ittHtml5Video.urls.webm[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.webm[ittHtml5Video.curStream]}}" type="video/webm" />',
 					'</video>',
 					'<div class="embedMask" ng-class="{ play: ittHtml5Video.showOverlay() }"></div>',
 				'</div>'
 			].join(''),
 			scope: {
-				src: '=',
+				src: '&',
 				playerId: '@'
 			},
 			controller: 'ittHtml5VideoCtrl',
@@ -57,18 +57,19 @@
 
 		function _handleSrcUrl() {
 			//a single source url, determine video type and format as our url obj.
-			if (typeof ctrl.src === 'string') {
-				if (ctrl.src.match(/.webm/) || ctrl.src.match(/.mp4/) || ctrl.src.match(/.m3u8/)) { //allowed formats
+			ctrl.urls = ctrl.src();
+			if (typeof ctrl.urls === 'string') {
+				if (ctrl.urls.match(/.webm/) || ctrl.urls.match(/.mp4/) || ctrl.urls.match(/.m3u8/)) { //allowed formats
 					//duplicate ctrl.src in arrays to ensure playback regardless of curStream
 					switch(true) {
-						case /.webm/.test(ctrl.src):
-							ctrl.src = {webm: [ctrl.src, ctrl.src]};
+						case /.webm/.test(ctrl.urls):
+							ctrl.urls = {webm: [ctrl.urls, ctrl.urls]};
 							break;
-						case /.mp4/.test(ctrl.src):
-							ctrl.src = {mp4: [ctrl.src, ctrl.src]};
+						case /.mp4/.test(ctrl.urls):
+							ctrl.urls = {mp4: [ctrl.urls, ctrl.urls]};
 							break;
-						case /.m3u8/.test(ctrl.src):
-							ctrl.src = {m3u8: [ctrl.src, ctrl.src]};
+						case /.m3u8/.test(ctrl.urls):
+							ctrl.urls = {m3u8: [ctrl.urls, ctrl.urls]};
 					}
 				}
 			}
