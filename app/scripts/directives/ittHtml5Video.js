@@ -21,15 +21,15 @@
 	function ittHtml5Video() {
 		return {
 			restrict: 'EA',
-			template:[
-				'<div ng-click="ittHtml5Video.togglePlayback($event)">',
-					'<video class="html5Embed" id="{{ittHtml5Video.playerId}}">',
-			'<source class="m3u8" ng-if="ittHtml5Video.urls.m3u8[0]" ng-src="{{ittHtml5Video.m3u8[0]}}" type="application/x-mpegURL" />',
-			'<source class="mpeg4" ng-if="ittHtml5Video.urls.mp4[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.mp4[ittHtml5Video.curStream]}}" type="video/mp4" />',
-			'<source class="webm" ng-if="ittHtml5Video.urls.webm[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.webm[ittHtml5Video.curStream]}}" type="video/webm" />',
-					'</video>',
-					'<div class="embedMask" ng-class="{ play: ittHtml5Video.showOverlay() }"></div>',
-				'</div>'
+			template: [
+    '<div ng-click="ittHtml5Video.togglePlayback($event)">',
+    '	<div class="embedMask" ng-class="{ play: ittHtml5Video.showOverlay() }"></div>',
+    '	<video class="html5Embed" id="{{ittHtml5Video.playerId}}">',
+    '		<source class="m3u8" ng-if="ittHtml5Video.urls.m3u8[0]" ng-src="{{ittHtml5Video.m3u8[0]}}" type="application/x-mpegURL" />',
+    '		<source class="mpeg4" ng-if="ittHtml5Video.urls.mp4[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.mp4[ittHtml5Video.curStream]}}" type="video/mp4" />',
+    '		<source class="webm" ng-if="ittHtml5Video.urls.webm[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.webm[ittHtml5Video.curStream]}}" type="video/webm" />',
+    '	</video>',
+    '</div>'
 			].join(''),
 			scope: {
 				src: '&',
@@ -81,7 +81,8 @@
 			return value;
 		}
 
-		function togglePlayback() {
+		function togglePlayback(ev) {
+			console.log('event!', ev);
 			var playerState = STATES[parseInt(html5PlayerManager.getPlayerState(ctrl.playerId))];
 
 			if (playerState === 'unstarted' || playerState === 'paused') {
