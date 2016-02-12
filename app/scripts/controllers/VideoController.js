@@ -42,6 +42,21 @@ angular.module('com.inthetelling.story')
 			'5': 'video cued'
 		};
 
+		var bufferToPauseDetected;
+		$scope.$watch('playerState', function(newState, oldState) {
+			if (oldState === 'buffering' && newState === 'paused') {
+				bufferToPauseDetected = true;
+			} else {
+				bufferToPauseDetected = '';
+			}
+
+			if (newState === 'paused' && bufferToPauseDetected === true) {
+				console.warn('checkerboard detected!');
+			}
+
+
+		});
+
 		//called from link fn of ittVideo
 		function initVideo(el) {
 			// console.log("videoController.initVideo", el);
@@ -357,6 +372,7 @@ angular.module('com.inthetelling.story')
 
 		function seek(t, intentionalStall, defer) {
 			// console.log("videoController.seek", t, intentionalStall, defer);
+			console.count('VidCtrl seek start');
 			defer = defer || $q.defer();
 			var videoNotReady = false;
 			if (intentionalStall) {

@@ -34,7 +34,7 @@
 			setVolume: setVolume
 		};
 
-		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
+		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, errorCB) {
 
 			var host = $location.host();
 			return YoutubePlayerApi.load().then(function() {
@@ -53,14 +53,15 @@
 					events: {
 						onReady: onReadyCB,
 						onStateChange: stateChangeCB,
-						onPlaybackQualityChange: qualityChangeCB
+						onPlaybackQualityChange: qualityChangeCB,
+						onError: errorCB
 					}
 				});
 			});
 		}
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
-			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain)
 				.catch(lastTry);
@@ -70,7 +71,7 @@
 			}
 
 			function tryAgain() {
-				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 					.then(handleSuccess);
 			}
 
@@ -93,6 +94,23 @@
 				var state = event.data;
 				var target = event.target;
 				var pid = target.m.id;
+
+				switch(state) {
+					case YT.PlayerState.PLAYING:
+						console.count('ON PLAYING!');
+						break;
+					case YT.PlayerState.PAUSED:
+						console.count('ON PAUSED!');
+						break;
+					case YT.PlayerState.BUFFERING:
+						console.count('ON BUFFERING!!');
+						break;
+					case YT.PlayerState.CUED:
+						break;
+					case YT.PlayerState.UNSTARTED:
+						console.count('ON unstarted -> READY!');
+						break;
+				}
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -144,6 +162,7 @@
 					appState.embedYTPlayerAvailable = true;
 				}
 
+				_players[pid].ready = true;
 				onReadyCB(event);
 			}
 
@@ -156,10 +175,14 @@
 				qualityChangeCB(event);
 
 			}
+
+			function onError(event) {
+				console.log(event);
+			}
 		}
 
 		function getPlayer(pid) {
-			if (_players[pid]) {
+			if (_players[pid] && _players[pid].ready === true) {
 				return _players[pid];
 			}
 		}
