@@ -52,10 +52,29 @@ angular.module('com.inthetelling.story')
 
 			if (newState === 'paused' && bufferToPauseDetected === true) {
 				console.warn('checkerboard detected!');
+				checkerBoardErr();
 			}
 
 
 		});
+
+		function checkerBoardErr() {
+
+			var erroredPlayer = youTubePlayerManager.getPlayer($scope.videoNode.id);
+			var playerState = erroredPlayer.getPlayerState();
+			console.log('appState, playerState, instance', appState.timelineState, $scope.playerState, playerState);
+
+			var checkberBoardStateVerified = appState.timelineState === 'buffering' && $scope.playerState === 'paused' && playerState === 2;
+
+			if (checkberBoardStateVerified) {
+				erroredPlayer.clearVideo();
+				var videoData = erroredPlayer.getVideoData();
+				//attempt to recover gracefully
+				erroredPlayer.loadVideoById(videoData.video_id, appState.time);
+				erroredPlayer.playVideo();
+			}
+
+		}
 
 		//called from link fn of ittVideo
 		function initVideo(el) {

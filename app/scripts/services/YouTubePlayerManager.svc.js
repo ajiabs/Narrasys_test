@@ -94,6 +94,7 @@
 				var state = event.data;
 				var target = event.target;
 				var pid = target.m.id;
+				//var emittingPlayer = getPlayer(pid);
 
 				switch(state) {
 					case YT.PlayerState.PLAYING:
@@ -177,7 +178,9 @@
 			}
 
 			function onError(event) {
-				console.log(event);
+				//failed to recover gracefully, inform user, log stuff etc..
+				errorSvc.error({data: 'Aww Snap, youtube player is on the fritz!', offerReset: true});
+
 			}
 		}
 
