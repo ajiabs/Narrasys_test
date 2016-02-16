@@ -36,13 +36,19 @@
 
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, errorCB) {
 
+			//allow controls for embed player, remove for main
+			var _controls = 1;
+			if (divId === _mainPlayerId) {
+				_controls = 0;
+			}
+
 			var host = $location.host();
 			return YoutubePlayerApi.load().then(function() {
 				return new YT.Player(divId, {
 					videoId: videoID,
 					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
 					playerVars: {
-						'controls': 0,
+						'controls': _controls,
 						'enablejsonapi': 1,
 						'modestbranding': 1,
 						'showinfo': 0,
