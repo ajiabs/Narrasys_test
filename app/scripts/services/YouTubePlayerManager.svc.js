@@ -54,7 +54,8 @@
 						'showinfo': 0,
 						'rel': 0,
 						'iv_load_policy': 3,
-						'origin': host
+						'origin': host,
+						'wmode': 'transparent'
 					},
 					events: {
 						onReady: onReadyCB,
