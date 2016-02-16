@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc) {
+	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc, analyticsSvc) { // jshint ignore:line
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -34,7 +34,13 @@
 			setVolume: setVolume
 		};
 
-		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
+		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, errorCB) {
+
+			//allow controls for embed player, remove for main
+			var _controls = 1;
+			if (divId === _mainPlayerId) {
+				_controls = 0;
+			}
 
 			var host = $location.host();
 			return YoutubePlayerApi.load().then(function() {
@@ -42,25 +48,27 @@
 					videoId: videoID,
 					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
 					playerVars: {
-						'controls': 0,
-						'enablejsonapi': 1,
+						'controls': _controls,
+						'enablejsapi': 1,
 						'modestbranding': 1,
 						'showinfo': 0,
 						'rel': 0,
 						'iv_load_policy': 3,
-						'origin': host
+						'origin': host,
+						'wmode': 'transparent'
 					},
 					events: {
 						onReady: onReadyCB,
 						onStateChange: stateChangeCB,
-						onPlaybackQualityChange: qualityChangeCB
+						onPlaybackQualityChange: qualityChangeCB,
+						onError: errorCB
 					}
 				});
 			});
 		}
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
-			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain)
 				.catch(lastTry);
@@ -70,7 +78,7 @@
 			}
 
 			function tryAgain() {
-				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 					.then(handleSuccess);
 			}
 
@@ -93,6 +101,28 @@
 				var state = event.data;
 				var target = event.target;
 				var pid = target.m.id;
+				//var emittingPlayer = getPlayer(pid);
+                //
+				//var debugText = emittingPlayer.getDebugText();
+                //
+				//console.log('debug json',JSON.parse(debugText));
+                //
+				//switch(state) {
+				//	case YT.PlayerState.PLAYING:
+				//		console.count('ON PLAYING!');
+				//		break;
+				//	case YT.PlayerState.PAUSED:
+				//		console.count('ON PAUSED!');
+				//		break;
+				//	case YT.PlayerState.BUFFERING:
+				//		console.count('ON BUFFERING!!');
+				//		break;
+				//	case YT.PlayerState.CUED:
+				//		break;
+				//	case YT.PlayerState.UNSTARTED:
+				//		console.count('ON unstarted -> READY!');
+				//		break;
+				//}
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -144,6 +174,7 @@
 					appState.embedYTPlayerAvailable = true;
 				}
 
+				_players[pid].ready = true;
 				onReadyCB(event);
 			}
 
@@ -156,10 +187,21 @@
 				qualityChangeCB(event);
 
 			}
+
+			function onError(event) { // jshint ignore:line
+				//failed to recover gracefully, inform user, log stuff etc..
+				//var brokenPlayer = getPlayer(event.target.m.id);
+				//var ytDebugData = brokenPlayer.getDebugText();
+				//var errorReport = { youtube: JSON.parse(ytDebugData), appState: appState };
+				//analyticsSvc.captureEpisodeActivity('youtube checkerboard error', errorReport);
+				//analyticsSvc.flushActivityQueue();
+				errorSvc.error({data: 'We\'ve detected an error with the YouTube player. You can try resetting the player here:', offerReset: true});
+
+			}
 		}
 
 		function getPlayer(pid) {
-			if (_players[pid]) {
+			if (_players[pid] && _players[pid].ready === true) {
 				return _players[pid];
 			}
 		}
