@@ -183,11 +183,11 @@
 
 			function onError(event) {
 				//failed to recover gracefully, inform user, log stuff etc..
-				var brokenPlayer = getPlayer(event.target.m.id);
-				var ytDebugData = brokenPlayer.getDebugText();
-				var errorReport = { youtube: JSON.parse(ytDebugData), appState: appState };
-				analyticsSvc.captureEpisodeActivity('youtube checkerboard error', errorReport);
-				analyticsSvc.flushActivityQueue();
+				//var brokenPlayer = getPlayer(event.target.m.id);
+				//var ytDebugData = brokenPlayer.getDebugText();
+				//var errorReport = { youtube: JSON.parse(ytDebugData), appState: appState };
+				//analyticsSvc.captureEpisodeActivity('youtube checkerboard error', errorReport);
+				//analyticsSvc.flushActivityQueue();
 				errorSvc.error({data: 'Aww Snap, youtube player is on the fritz!', offerReset: true});
 
 			}
