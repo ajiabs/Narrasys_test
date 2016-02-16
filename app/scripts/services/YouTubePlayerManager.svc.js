@@ -95,23 +95,27 @@
 				var target = event.target;
 				var pid = target.m.id;
 				//var emittingPlayer = getPlayer(pid);
-
-				switch(state) {
-					case YT.PlayerState.PLAYING:
-						console.count('ON PLAYING!');
-						break;
-					case YT.PlayerState.PAUSED:
-						console.count('ON PAUSED!');
-						break;
-					case YT.PlayerState.BUFFERING:
-						console.count('ON BUFFERING!!');
-						break;
-					case YT.PlayerState.CUED:
-						break;
-					case YT.PlayerState.UNSTARTED:
-						console.count('ON unstarted -> READY!');
-						break;
-				}
+                //
+				//var debugText = emittingPlayer.getDebugText();
+                //
+				//console.log('debug json',JSON.parse(debugText));
+                //
+				//switch(state) {
+				//	case YT.PlayerState.PLAYING:
+				//		console.count('ON PLAYING!');
+				//		break;
+				//	case YT.PlayerState.PAUSED:
+				//		console.count('ON PAUSED!');
+				//		break;
+				//	case YT.PlayerState.BUFFERING:
+				//		console.count('ON BUFFERING!!');
+				//		break;
+				//	case YT.PlayerState.CUED:
+				//		break;
+				//	case YT.PlayerState.UNSTARTED:
+				//		console.count('ON unstarted -> READY!');
+				//		break;
+				//}
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -181,7 +185,7 @@
 				//failed to recover gracefully, inform user, log stuff etc..
 				var brokenPlayer = getPlayer(event.target.m.id);
 				var ytDebugData = brokenPlayer.getDebugText();
-				var errorReport = { youtube: ytDebugData, appState: appState };
+				var errorReport = { youtube: JSON.parse(ytDebugData), appState: appState };
 				analyticsSvc.captureEpisodeActivity('youtube checkerboard error', errorReport);
 				analyticsSvc.flushActivityQueue();
 				errorSvc.error({data: 'Aww Snap, youtube player is on the fritz!', offerReset: true});
