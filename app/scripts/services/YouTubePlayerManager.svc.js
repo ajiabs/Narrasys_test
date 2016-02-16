@@ -195,7 +195,7 @@
 				//var errorReport = { youtube: JSON.parse(ytDebugData), appState: appState };
 				//analyticsSvc.captureEpisodeActivity('youtube checkerboard error', errorReport);
 				//analyticsSvc.flushActivityQueue();
-				errorSvc.error({data: 'Aww Snap, youtube player is on the fritz!', offerReset: true});
+				errorSvc.error({data: 'We\'ve detected an error with the YouTube player. You can try resetting the player here:', offerReset: true});
 
 			}
 		}
