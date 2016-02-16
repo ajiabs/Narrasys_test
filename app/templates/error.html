@@ -1,6 +1,13 @@
 <span ng-if="errorSvc.errors.length || errorSvc.notifications.length" class="errors">
 	<div class="error" ng-repeat="error in errorSvc.errors" ng-click="dismiss(error)">
 		<h3>Error: {{error.cause || error.exception.data.error || error.exception.data || '(unknown reason)'}}</h3>
+
+		<div class="button-wrapper">
+		<button ng-if="error.exception.offerReset === true"
+				class="reset-button"
+				ng-click="reset()">Reset Player?</button>
+		</div>
+
 		<p ng-if="error.exception.config.url">
 			<i>(While trying to load {{error.exception.config.url}})</i>
 		</p>

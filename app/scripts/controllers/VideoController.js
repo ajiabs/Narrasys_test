@@ -42,6 +42,43 @@ angular.module('com.inthetelling.story')
 			'5': 'video cued'
 		};
 
+		var bufferToPauseDetected;
+		$scope.$watch('playerState', function(newState, oldState) {
+			if (oldState === 'buffering' && newState === 'paused') {
+				bufferToPauseDetected = true;
+			} else {
+				bufferToPauseDetected = '';
+			}
+
+			if (newState === 'paused' && bufferToPauseDetected === true) {
+				//console.log('potential checkerboard');
+				checkerBoardErr();
+			}
+
+		});
+
+		function checkerBoardErr() {
+
+			var erroredPlayer = youTubePlayerManager.getPlayer($scope.videoNode.id);
+			var playerState = erroredPlayer.getPlayerState();
+			var timelineState = appState.timelineState;
+
+			var checkerBoardStateVerified = timelineState === 'buffering' && $scope.playerState === 'paused' && playerState === 2;
+			if (playerState === 3) { console.warn("abort checkerboard!"); return; }
+			if (checkerBoardStateVerified) {
+				//console.warn('attempting to recover from checkerboard!');
+				//console.log('timelineState', timelineState);
+				//console.log('playerState', $scope.playerState);
+				//console.log('instance', playerState);
+				erroredPlayer.clearVideo();
+				var videoData = erroredPlayer.getVideoData();
+				////attempt to recover gracefully
+				erroredPlayer.loadVideoById(videoData.video_id, Math.floor(appState.time));
+				erroredPlayer.playVideo();
+			}
+
+		}
+
 		//called from link fn of ittVideo
 		function initVideo(el) {
 			// console.log("videoController.initVideo", el);
@@ -357,6 +394,7 @@ angular.module('com.inthetelling.story')
 
 		function seek(t, intentionalStall, defer) {
 			// console.log("videoController.seek", t, intentionalStall, defer);
+			console.count('VidCtrl seek start');
 			defer = defer || $q.defer();
 			var videoNotReady = false;
 			if (intentionalStall) {
