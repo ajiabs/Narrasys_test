@@ -51,10 +51,9 @@ angular.module('com.inthetelling.story')
 			}
 
 			if (newState === 'paused' && bufferToPauseDetected === true) {
-				console.warn('checkerboard detected!');
+				//console.log('potential checkerboard');
 				checkerBoardErr();
 			}
-
 
 		});
 
@@ -62,15 +61,19 @@ angular.module('com.inthetelling.story')
 
 			var erroredPlayer = youTubePlayerManager.getPlayer($scope.videoNode.id);
 			var playerState = erroredPlayer.getPlayerState();
-			console.log('appState, playerState, instance', appState.timelineState, $scope.playerState, playerState);
+			var timelineState = appState.timelineState;
 
-			var checkberBoardStateVerified = appState.timelineState === 'buffering' && $scope.playerState === 'paused' && playerState === 2;
-
-			if (checkberBoardStateVerified) {
+			var checkerBoardStateVerified = timelineState === 'buffering' && $scope.playerState === 'paused' && playerState === 2;
+			if (playerState === 3) { console.warn("abort checkerboard!"); return; }
+			if (checkerBoardStateVerified) {
+				//console.warn('attempting to recover from checkerboard!');
+				//console.log('timelineState', timelineState);
+				//console.log('playerState', $scope.playerState);
+				//console.log('instance', playerState);
 				erroredPlayer.clearVideo();
 				var videoData = erroredPlayer.getVideoData();
-				//attempt to recover gracefully
-				erroredPlayer.loadVideoById(videoData.video_id, appState.time);
+				////attempt to recover gracefully
+				erroredPlayer.loadVideoById(videoData.video_id, Math.floor(appState.time));
 				erroredPlayer.playVideo();
 			}
 

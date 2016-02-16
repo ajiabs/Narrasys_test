@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState, authSvc) {
+	.controller('ErrorController', function ($scope, $http, $location, config, errorSvc, appState, authSvc) {
 		// console.log("errorController", $scope);
 
 		$scope.errorSvc = errorSvc;
@@ -28,7 +28,8 @@ angular.module('com.inthetelling.story')
 		};
 
 		function reset() {
-			var resetUrl = window.location.href + '?t=' + appState.time;
+			var path = $location.path();
+			var resetUrl = window.location.href = '/#' + path + '?t=' + Math.floor(appState.time);
 			window.location.href = resetUrl;
 		}
 

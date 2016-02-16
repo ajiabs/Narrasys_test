@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc) {
+	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc, analyticsSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -179,6 +179,11 @@
 
 			function onError(event) {
 				//failed to recover gracefully, inform user, log stuff etc..
+				var brokenPlayer = getPlayer(event.target.m.id);
+				var ytDebugData = brokenPlayer.getDebugText();
+				var errorReport = { youtube: ytDebugData, appState: appState };
+				analyticsSvc.captureEpisodeActivity('youtube checkerboard error', errorReport);
+				analyticsSvc.flushActivityQueue();
 				errorSvc.error({data: 'Aww Snap, youtube player is on the fritz!', offerReset: true});
 
 			}
