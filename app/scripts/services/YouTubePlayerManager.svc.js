@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc, analyticsSvc) {
+	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc, analyticsSvc) { // jshint ignore:line
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -188,7 +188,7 @@
 
 			}
 
-			function onError(event) {
+			function onError(event) { // jshint ignore:line
 				//failed to recover gracefully, inform user, log stuff etc..
 				//var brokenPlayer = getPlayer(event.target.m.id);
 				//var ytDebugData = brokenPlayer.getDebugText();
