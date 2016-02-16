@@ -49,7 +49,7 @@
 					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
 					playerVars: {
 						'controls': _controls,
-						'enablejsonapi': 1,
+						'enablejsapi': 1,
 						'modestbranding': 1,
 						'showinfo': 0,
 						'rel': 0,
