@@ -36,19 +36,26 @@
 
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
+			var _controls = 1;
+
+			if (divId === _mainPlayerId) {
+				_controls = 0;
+			}
+
 			var host = $location.host();
 			return YoutubePlayerApi.load().then(function() {
 				return new YT.Player(divId, {
 					videoId: videoID,
 					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
 					playerVars: {
-						'controls': 0,
-						'enablejsonapi': 1,
+						'controls': _controls,
+						'enablejsapi': 1,
 						'modestbranding': 1,
 						'showinfo': 0,
 						'rel': 0,
 						'iv_load_policy': 3,
-						'origin': host
+						'origin': host,
+						'wmode': 'transparent'
 					},
 					events: {
 						onReady: onReadyCB,
