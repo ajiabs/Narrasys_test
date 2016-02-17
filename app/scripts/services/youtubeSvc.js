@@ -41,10 +41,15 @@ angular.module('com.inthetelling.story')
 			return (ytMatch && ytMatch[1]) ? ytMatch[1] : false;
 		};
 
-		svc.embedParams = function () {
+		svc.embedParams = function (outgoing) {
 			// kept separate from createEmbedLinkFromYoutubeId for convenience in unit tests.
 			// TODO move these into videoController, as playerVar params, instead of embedding them in the url.  (Will need to init youtube as a div instead of as an iframe)
 			// WARN dont remove the wmode param, it works around an IE z-index bug
+
+			if (outgoing === true) {
+				return "?enablejsapi=1&controls=1&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent";
+			}
+
 			return "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent";
 		};
 
