@@ -61,6 +61,10 @@
 				}, 0);
 			});
 
+
+		$scope.$on('$destroy', function() {
+			youTubePlayerManager.destroy(_ctrl.embedId);
+		});
 	}
 
 })();
