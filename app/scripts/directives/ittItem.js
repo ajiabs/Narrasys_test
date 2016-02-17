@@ -6,7 +6,7 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -112,6 +112,7 @@ angular.module('com.inthetelling.story')
 					scope.captureInteraction();
 
 					if (url.match(/youtube/)) {
+						youTubePlayerManager.pauseOtherEmbeds();
 						url += youtubeSvc.embedParams(true);
 					}
 
