@@ -112,7 +112,12 @@ angular.module('com.inthetelling.story')
 					scope.captureInteraction();
 
 					if (url.match(/youtube/)) {
-						youTubePlayerManager.pauseOtherEmbeds();
+						//if we have an embed set, pause it when
+						//linking to new window.
+						if (appState.embedYTPlayerAvailable) {
+							youTubePlayerManager.pauseOtherEmbeds();
+						}
+
 						url += youtubeSvc.embedParams(true);
 					}
 
