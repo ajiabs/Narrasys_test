@@ -24,10 +24,11 @@
 			template: [
     '<div ng-click="ittHtml5Video.togglePlayback($event)">',
     '	<div class="embedMask" ng-class="{ play: ittHtml5Video.showOverlay() }"></div>',
-    '	<video class="html5Embed" id="{{ittHtml5Video.playerId}}">',
+    '	<video class="html5Embed" id="{{ittHtml5Video.playerId}}" controls>',
     '		<source class="m3u8" ng-if="ittHtml5Video.urls.m3u8[0]" ng-src="{{ittHtml5Video.m3u8[0]}}" type="application/x-mpegURL" />',
     '		<source class="mpeg4" ng-if="ittHtml5Video.urls.mp4[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.mp4[ittHtml5Video.curStream]}}" type="video/mp4" />',
     '		<source class="webm" ng-if="ittHtml5Video.urls.webm[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.webm[ittHtml5Video.curStream]}}" type="video/webm" />',
+    '		<source class="mp3" ng-if="ittHtml5Video.urls.mp3[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.mp3[ittHtml5Video.curStream]}}" type="audio/mpeg" />',
     '	</video>',
     '</div>'
 			].join(''),
@@ -59,7 +60,7 @@
 			//a single source url, determine video type and format as our url obj.
 			ctrl.urls = ctrl.src();
 			if (typeof ctrl.urls === 'string') {
-				if (ctrl.urls.match(/.webm/) || ctrl.urls.match(/.mp4/) || ctrl.urls.match(/.m3u8/)) { //allowed formats
+				if (ctrl.urls.match(/.webm/) || ctrl.urls.match(/.mp4/) || ctrl.urls.match(/.m3u8/) || ctrl.urls.match(/.mp3/)) { //allowed formats
 					//duplicate ctrl.src in arrays to ensure playback regardless of curStream
 					switch(true) {
 						case /.webm/.test(ctrl.urls):
@@ -70,6 +71,10 @@
 							break;
 						case /.m3u8/.test(ctrl.urls):
 							ctrl.urls = {m3u8: [ctrl.urls, ctrl.urls]};
+							break;
+						case /.mp3/.test(ctrl.urls):
+							ctrl.urls = {mp3: [ctrl.urls, ctrl.urls]};
+							break;
 					}
 				}
 			}
