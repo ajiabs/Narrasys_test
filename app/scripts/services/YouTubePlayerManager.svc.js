@@ -152,6 +152,9 @@
 					appState.embedYTPlayerAvailable = true;
 				}
 
+				_players[pid].ready = true;
+
+
 				onReadyCB(event);
 			}
 
@@ -167,7 +170,7 @@
 		}
 
 		function getPlayer(pid) {
-			if (_players[pid]) {
+			if (_players[pid] && _players[pid].ready === true) {
 				return _players[pid];
 			}
 		}
@@ -284,9 +287,6 @@
 			if (p) {
 				p.destroy();
 				delete _players[pid];
-			}
-			if (pid !== _mainPlayerId) {
-				appState.embedYTPlayerAvailable = false;
 			}
 		}
 
