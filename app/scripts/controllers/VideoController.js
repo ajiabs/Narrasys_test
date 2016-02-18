@@ -272,11 +272,12 @@ angular.module('com.inthetelling.story')
 			var defer = $q.defer();
 			if ($scope.videoType === 'youtube') {
 				youTubePlayerManager.play($scope.videoNode.id);
+				html5PlayerManager.pauseOtherEmbeds();
 			} else {
 				$scope.videoNode.play();
 				if (appState.embedYTPlayerAvailable || appState.embedHtml5PlayerAvailable) {
 					youTubePlayerManager.pauseOtherEmbeds();
-					html5PlayerManager.pauseOtherEmbeds($scope.video._id);
+					html5PlayerManager.pauseOtherEmbeds();
 				}
 			}
 
