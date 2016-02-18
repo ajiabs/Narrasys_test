@@ -25,7 +25,7 @@
 		};
 	}
 
-	function ittYoutubeCtrl($timeout, youTubePlayerManager, youtubeSvc) {
+	function ittYoutubeCtrl($timeout, $scope, youTubePlayerManager, youtubeSvc) {
 		var _ctrl = this;  //jshint ignore:line
 		var embedId;
 		var isMainPlayer;
@@ -61,6 +61,10 @@
 				}, 0);
 			});
 
+
+		$scope.$on('$destroy', function() {
+			youTubePlayerManager.destroy(_ctrl.embedId);
+		});
 	}
 
 })();
