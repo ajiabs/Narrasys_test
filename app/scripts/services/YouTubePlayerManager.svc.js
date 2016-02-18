@@ -36,6 +36,7 @@
 
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
+
 			var _controls = 1;
 
 			if (divId === _mainPlayerId) {
@@ -151,6 +152,9 @@
 					appState.embedYTPlayerAvailable = true;
 				}
 
+				_players[pid].ready = true;
+
+
 				onReadyCB(event);
 			}
 
@@ -166,7 +170,7 @@
 		}
 
 		function getPlayer(pid) {
-			if (_players[pid]) {
+			if (_players[pid] && _players[pid].ready === true) {
 				return _players[pid];
 			}
 		}
@@ -282,13 +286,9 @@
 			var p = getPlayer(pid);
 			if (p) {
 				p.destroy();
-			}
-
-			if (pid !== _mainPlayerId) {
-				appState.embedYTPlayerAvailable = false;
+				delete _players[pid];
 			}
 		}
-
 
 		function _guid() {
 			/* jshint ignore:start */
@@ -306,12 +306,16 @@
 			var dfd = $q.defer();
 			var _id;
 			if (mainPlayer) {
+				// clear out players obj in the case that we are main player
+				// do not want stale players staying around.
+				_players = {};
 				_id = id;
 				_mainPlayerId = _id;
 				_players[_id] = {};
 			} else {
 				_id = _guid() + id;
 				_players[_id] = {};
+
 			}
 
 			dfd.resolve(_id);
