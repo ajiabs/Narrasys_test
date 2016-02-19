@@ -33,7 +33,7 @@
 			<span ng-if="appState.product == 'player'">Edit</span>
 		</a>
 		<a class="button button-profile"
-		   ng-hide="appState.user.role_description === 'guest'"
+		   ng-hide="appState.user.roles[0].role === 'guest'"
 		   ng-click="appState.show.profilePanel = !appState.show.profilePanel">
 			<span>Profile</span>
 		</a>
