@@ -69,11 +69,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getDefaultProductForRole = function (role) {
-			/* 
+			/*
 			This was making it impossible for users with admin role to see editor or player interface.
 			For now, producer should be used only at the /#/episode urls, editor at the narrative urls
 			(producer only works with individual episodes atm anyway)
-			TODO later on we'll make this user-selectable within the product UI (and probably 
+			TODO later on we'll make this user-selectable within the product UI (and probably
 			eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
 			*/
 			var product = "player";
@@ -161,10 +161,15 @@ angular.module('com.inthetelling.story')
 		*/
 
 		var authenticateDefer = $q.defer();
+		console.log('pre auth', authenticateDefer.promise.$$state);
 		svc.authenticate = function (nonceParam) {
+			console.count('authenticating!');
+			console.log('auth deferred', authenticateDefer.promise.$$state);
 			if ($http.defaults.headers.common.Authorization) {
+				//console.log("have auth headers!");
 				if (appState.user) {
 					// Have header and user; all done.
+					//console.log('have auth headers and user!', appState.user);
 					authenticateDefer.resolve();
 				} else {
 					// begin dubious code block
@@ -206,6 +211,7 @@ angular.module('com.inthetelling.story')
 						});
 				} else {
 					// no login info at all, start from scratch
+					console.log('start from scratch! auth');
 					return svc.authenticateViaNonce(nonceParam);
 				}
 			}
@@ -364,6 +370,7 @@ angular.module('com.inthetelling.story')
 			$http.get(url)
 				.success(function (data) {
 					if (data.nonce) {
+						console.log('resolve nonce', data.nonce);
 						defer.resolve(data.nonce);
 					} else {
 						// Guest access is not allowed
