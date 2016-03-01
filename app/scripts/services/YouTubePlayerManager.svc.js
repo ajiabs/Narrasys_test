@@ -75,6 +75,7 @@
 
 			function handleSuccess(ytInstance) {
 				_players[divId] = ytInstance;
+				_players[divId].pid = divId;
 			}
 
 			function tryAgain() {
@@ -83,7 +84,6 @@
 			}
 
 			function lastTry(e) {
-				console.log('too long!');
 				var errorMsg = 'Network timeout initializing video player. Please try again.';
 				errorSvc.error({data: errorMsg}, e);
 			}
@@ -100,11 +100,7 @@
 				var embed;
 				var state = event.data;
 				var target = event.target;
-				var pid = target.l.id;
-
-
-				console.log('new pid', pid);
-				console.log('onPlayerSTateChange ev',event);
+				var pid = target.pid;
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -145,7 +141,7 @@
 
 			function onReady(event) {
 				var target = event.target;
-				var pid = target.l.id;
+				var pid = target.pid;
 
 				if (pid === _mainPlayerId) {
 					appState.mainYTPlayerReady = true;
@@ -156,6 +152,7 @@
 					appState.embedYTPlayerAvailable = true;
 				}
 
+				//_players[pid].pid = pid;
 				_players[pid].ready = true;
 
 
@@ -163,7 +160,7 @@
 			}
 
 			function onPlayerQualityChange(event) {
-				var pid = event.target.l.id;
+				var pid = event.target.pid;
 				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
 					setPlaybackQuality(pid, 'large');
 				}
@@ -194,10 +191,8 @@
 		}
 
 		function play(pid) {
-			console.log('play!!', _players);
 			var p = getPlayer(pid);
 			if (p !== undefined) {
-				console.log('playing!');
 				return p.playVideo();
 			}
 		}
