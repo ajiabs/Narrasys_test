@@ -29,11 +29,6 @@ angular.module('com.inthetelling.story')
 		});
 
 
-		$timeout(function() {
-			console.log('playing!');
-			youTubePlayerManager.play($scope.videoNode.id);
-		}, 5000);
-
 		//private properties
 		var _eventListeners = {};
 		var _numberOfStalls = 0;
