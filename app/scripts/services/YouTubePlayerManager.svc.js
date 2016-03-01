@@ -36,9 +36,7 @@
 
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
-
 			var _controls = 1;
-
 			if (divId === _mainPlayerId) {
 				_controls = 0;
 			}
@@ -75,7 +73,7 @@
 
 			function handleSuccess(ytInstance) {
 				_players[divId] = ytInstance;
-				_players[divId].pid = divId;
+				_players[divId].ittPID = divId;
 			}
 
 			function tryAgain() {
@@ -100,7 +98,9 @@
 				var embed;
 				var state = event.data;
 				var target = event.target;
-				var pid = target.pid;
+				var pid = target.ittPID;
+
+				console.log('youtube\'s event object: ', event);
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -141,7 +141,7 @@
 
 			function onReady(event) {
 				var target = event.target;
-				var pid = target.pid;
+				var pid = target.ittPID;
 
 				if (pid === _mainPlayerId) {
 					appState.mainYTPlayerReady = true;
@@ -152,15 +152,13 @@
 					appState.embedYTPlayerAvailable = true;
 				}
 
-				//_players[pid].pid = pid;
 				_players[pid].ready = true;
-
 
 				onReadyCB(event);
 			}
 
 			function onPlayerQualityChange(event) {
-				var pid = event.target.pid;
+				var pid = event.target.ittPID;
 				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
 					setPlaybackQuality(pid, 'large');
 				}
