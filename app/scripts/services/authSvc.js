@@ -107,10 +107,15 @@ angular.module('com.inthetelling.story')
 				})
 				.success(function () {
 					delete $http.defaults.headers.common.Authorization; // now it's safe
-					$location.path('/')
-						.search({
-							logout: 1
-						});
+					var rememberMe = $location.absUrl();
+					console.log('BEFORE REDIRECT!', rememberMe);
+					//$location.path('/')
+					//	.search({
+					//		logout: 1
+					//	}); // /?logout=1
+					window.location.reload();
+
+					console.log('AFTER REDIRECT', $location.absUrl());
 				})
 				.error(function () {
 					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
@@ -160,16 +165,13 @@ angular.module('com.inthetelling.story')
 
 		*/
 
+
 		var authenticateDefer = $q.defer();
-		console.log('pre auth', authenticateDefer.promise.$$state);
 		svc.authenticate = function (nonceParam) {
-			console.count('authenticating!');
-			console.log('auth deferred', authenticateDefer.promise.$$state);
 			if ($http.defaults.headers.common.Authorization) {
 				//console.log("have auth headers!");
 				if (appState.user) {
 					// Have header and user; all done.
-					//console.log('have auth headers and user!', appState.user);
 					authenticateDefer.resolve();
 				} else {
 					// begin dubious code block
@@ -211,7 +213,6 @@ angular.module('com.inthetelling.story')
 						});
 				} else {
 					// no login info at all, start from scratch
-					console.log('start from scratch! auth');
 					return svc.authenticateViaNonce(nonceParam);
 				}
 			}
