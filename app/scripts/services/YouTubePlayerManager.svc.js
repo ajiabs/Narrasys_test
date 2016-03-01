@@ -152,7 +152,7 @@
 					appState.embedYTPlayerAvailable = true;
 				}
 
-				_players[pid].ready = true;
+				//_players[pid].ready = true;
 
 
 				onReadyCB(event);
@@ -190,8 +190,10 @@
 		}
 
 		function play(pid) {
+			console.log('play!!')
 			var p = getPlayer(pid);
 			if (p !== undefined) {
+				console.log('playing!');
 				return p.playVideo();
 			}
 		}
