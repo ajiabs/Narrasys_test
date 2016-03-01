@@ -100,7 +100,11 @@
 				var embed;
 				var state = event.data;
 				var target = event.target;
-				var pid = target.m.id;
+				var pid = target.l.id;
+
+
+				console.log('new pid', pid);
+				console.log('onPlayerSTateChange ev',event);
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -141,7 +145,7 @@
 
 			function onReady(event) {
 				var target = event.target;
-				var pid = target.m.id;
+				var pid = target.l.id;
 
 				if (pid === _mainPlayerId) {
 					appState.mainYTPlayerReady = true;
@@ -152,14 +156,14 @@
 					appState.embedYTPlayerAvailable = true;
 				}
 
-				//_players[pid].ready = true;
+				_players[pid].ready = true;
 
 
 				onReadyCB(event);
 			}
 
 			function onPlayerQualityChange(event) {
-				var pid = event.target.m.id;
+				var pid = event.target.l.id;
 				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
 					setPlaybackQuality(pid, 'large');
 				}
@@ -190,7 +194,7 @@
 		}
 
 		function play(pid) {
-			console.log('play!!')
+			console.log('play!!', _players);
 			var p = getPlayer(pid);
 			if (p !== undefined) {
 				console.log('playing!');
