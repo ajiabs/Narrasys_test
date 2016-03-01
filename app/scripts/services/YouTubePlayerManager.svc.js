@@ -15,7 +15,6 @@
 		var _mainPlayerId;
 
 		_youTubePlayerManager = {
-			getPlayer: getPlayer,
 			create: create,
 			destroy: destroy,
 			play: play,
@@ -72,8 +71,8 @@
 				.catch(lastTry);
 
 			function handleSuccess(ytInstance) {
-				_players[divId] = ytInstance;
-				_players[divId].ittPID = divId;
+				_players[divId] = {yt: ytInstance, ready: false };
+
 			}
 
 			function tryAgain() {
@@ -94,13 +93,14 @@
 			//YT.PlayerState.CUED
 
 			function onPlayerStateChange(event) {
+				console.log('playerStateChange ev', event);
 				var main = _mainPlayerId;
 				var embed;
 				var state = event.data;
-				var target = event.target;
-				var pid = target.ittPID;
+				var pid = getPidFromInstance(event.target);
 
-				console.log('youtube\'s event object: ', event);
+
+				console.log('found PID', pid);
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -135,13 +135,14 @@
 					}
 				}
 
+				console.log('gotten PID', pid);
+
 				stateCb(event);
 
 			}
 
 			function onReady(event) {
-				var target = event.target;
-				var pid = target.ittPID;
+				var pid = getPidFromInstance(event.target);
 
 				if (pid === _mainPlayerId) {
 					appState.mainYTPlayerReady = true;
@@ -158,7 +159,7 @@
 			}
 
 			function onPlayerQualityChange(event) {
-				var pid = event.target.ittPID;
+				var pid = getPidFromInstance(event.target);
 				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
 					setPlaybackQuality(pid, 'large');
 				}
@@ -168,63 +169,73 @@
 			}
 		}
 
-		function getPlayer(pid) {
+		function _getYTinstance(pid) {
 			if (_players[pid] && _players[pid].ready === true) {
-				return _players[pid];
+				return _players[pid].yt;
 			}
 		}
 
+		function getPidFromInstance(ytInstance) {
+			var _key = '';
+			angular.forEach(_players, function(p, key) {
+				if (angular.equals(ytInstance, p.yt)) {
+					_key = key;
+				}
+			});
+			return _key;
+		}
+
 		function getCurrentTime(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 			if (p !== undefined) {
 				return p.getCurrentTime();
 			}
 		}
 
 		function playerState(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 			if (p !== undefined) {
 				return p.getPlayerState();
 			}
 		}
 
 		function play(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 			if (p !== undefined) {
 				return p.playVideo();
 			}
 		}
 
 		function pause(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 			if (p !== undefined) {
 				return p.pauseVideo();
 			}
 		}
 
 		function setPlaybackQuality(pid, size) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 			if (p !== undefined) {
 				p.setPlaybackQuality(size);
 			}
 		}
 
 		function getVideoLoadedFraction(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 			if (p !== undefined) {
 				return p.getVideoLoadedFraction();
 			}
 		}
 
 		function seekTo(pid, t, bool) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 			if (p !== undefined) {
 				p.seekTo(t, bool);
 			}
 		}
 
 		function isMuted(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 
 			if (p !== undefined) {
 				return p.isMuted();
@@ -232,7 +243,7 @@
 		}
 
 		function mute(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 
 			if (p !== undefined) {
 				return p.mute();
@@ -240,7 +251,7 @@
 		}
 
 		function unMute(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 
 			if (p !== undefined) {
 				return p.unMute();
@@ -248,7 +259,7 @@
 		}
 
 		function setVolume(pid, v) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 
 			if (p !== undefined) {
 				p.setVolume(v);
@@ -282,7 +293,7 @@
 		}
 
 		function destroy(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTinstance(pid);
 			if (p) {
 				p.destroy();
 				delete _players[pid];
