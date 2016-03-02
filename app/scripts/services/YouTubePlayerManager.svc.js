@@ -147,8 +147,6 @@
 				var state = event.data;
 				var pid = _getPidFromInstance(event.target);
 
-				console.log('all players', _players);
-
 				if (pid !== _mainPlayerId) {
 					embed = pid;
 				}
