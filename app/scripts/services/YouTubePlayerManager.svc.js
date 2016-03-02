@@ -93,14 +93,11 @@
 			//YT.PlayerState.CUED
 
 			function onPlayerStateChange(event) {
-				console.log('playerStateChange ev', event);
 				var main = _mainPlayerId;
 				var embed;
 				var state = event.data;
 				var pid = getPidFromInstance(event.target);
 
-
-				console.log('found PID', pid);
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -135,14 +132,14 @@
 					}
 				}
 
-				console.log('gotten PID', pid);
-
 				stateCb(event);
 
 			}
 
 			function onReady(event) {
+
 				var pid = getPidFromInstance(event.target);
+
 
 				if (pid === _mainPlayerId) {
 					appState.mainYTPlayerReady = true;
@@ -169,73 +166,116 @@
 			}
 		}
 
-		function _getYTinstance(pid) {
+		function _getYTInstance(pid) {
 			if (_players[pid] && _players[pid].ready === true) {
 				return _players[pid].yt;
 			}
 		}
 
-		function getPidFromInstance(ytInstance) {
-			var _key = '';
-			angular.forEach(_players, function(p, key) {
-				if (angular.equals(ytInstance, p.yt)) {
-					_key = key;
+		function deepEqual(x, y) {
+			if (x === y) {
+				return true;
+			}
+
+			if (!existy(x) || typeof x != 'object' || !existy(y) || typeof y != 'object') {
+				return false;
+			}
+
+			var xKeys = Object.keys(x).length,
+				yKeys = Object.keys(y).length;
+
+			for (var k in x) {
+				if (!(y.hasOwnProperty(k)) || !deepEqual(x[k], y[k])) {
+					return false;
 				}
-			});
-			return _key;
+			}
+
+			return xKeys == yKeys;
+		}
+
+		function existy(x) {
+			return x != null;
+		}
+
+		function getPidFromInstance(ytInstance) {
+			//var _key;
+			////angular.forEach(_players, function(p, key) {
+			////	if (angular.equals(ytInstance, p.yt)) {
+			////		_key = key;
+			////	}
+			////});
+
+			//var _key;
+			//angular.forEach(_players, function(p, key) {
+			//	console.log('each player', p);
+			//	if (deepEqual(p, ytInstance)) {
+			//		return _key = key;
+			//	}
+			//});
+
+
+			for (var p in _players) {
+				if (_players.hasOwnProperty(p)) {
+					if (deepEqual(_players[p].yt, ytInstance)) {
+						console.log('found it!', p);
+						return p;
+					}
+				}
+			}
+			//return _key;
 		}
 
 		function getCurrentTime(pid) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 			if (p !== undefined) {
 				return p.getCurrentTime();
 			}
 		}
 
 		function playerState(pid) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 			if (p !== undefined) {
 				return p.getPlayerState();
 			}
 		}
 
 		function play(pid) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 			if (p !== undefined) {
 				return p.playVideo();
 			}
 		}
 
 		function pause(pid) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 			if (p !== undefined) {
 				return p.pauseVideo();
 			}
 		}
 
 		function setPlaybackQuality(pid, size) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 			if (p !== undefined) {
 				p.setPlaybackQuality(size);
 			}
 		}
 
 		function getVideoLoadedFraction(pid) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 			if (p !== undefined) {
 				return p.getVideoLoadedFraction();
 			}
 		}
 
 		function seekTo(pid, t, bool) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 			if (p !== undefined) {
 				p.seekTo(t, bool);
 			}
 		}
 
 		function isMuted(pid) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 
 			if (p !== undefined) {
 				return p.isMuted();
@@ -243,7 +283,7 @@
 		}
 
 		function mute(pid) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 
 			if (p !== undefined) {
 				return p.mute();
@@ -251,7 +291,7 @@
 		}
 
 		function unMute(pid) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 
 			if (p !== undefined) {
 				return p.unMute();
@@ -259,7 +299,7 @@
 		}
 
 		function setVolume(pid, v) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 
 			if (p !== undefined) {
 				p.setVolume(v);
@@ -293,7 +333,7 @@
 		}
 
 		function destroy(pid) {
-			var p = _getYTinstance(pid);
+			var p = _getYTInstance(pid);
 			if (p) {
 				p.destroy();
 				delete _players[pid];
