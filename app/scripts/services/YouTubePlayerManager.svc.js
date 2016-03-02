@@ -323,7 +323,7 @@
 
 		function destroy(pid) {
 			var p = _getYTInstance(pid);
-			if (p) {
+			if (_existy(p)) {
 				p.destroy();
 				delete _players[pid];
 			}
