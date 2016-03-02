@@ -33,6 +33,8 @@
 			setVolume: setVolume
 		};
 
+		//private methods
+
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
 			var _controls = 1;
@@ -63,6 +65,53 @@
 				});
 			});
 		}
+
+		function _getYTInstance(pid) {
+			if (_players[pid] && _players[pid].ready === true) {
+				return _players[pid].yt;
+			}
+		}
+
+		function _existy(x) {
+			return x != null;  // jshint ignore:line
+		}
+
+		function _shallowEqual(x, y) {
+			if (x === y) {
+				return true;
+			}
+
+			if (!_existy(x) || typeof x != 'object' || !_existy(y) || typeof y != 'object') {
+				return false;
+			}
+
+			var xKeys = Object.keys(x).length,
+				yKeys = Object.keys(y).length;
+
+			for (var k in x) {
+				if (!(y.hasOwnProperty(k)) || x[k] !== y[k]) {
+					return false;
+				}
+			}
+
+			return xKeys == yKeys;
+		}
+
+		function _getPidFromInstance(ytInstance) {
+			var _key;
+
+			angular.forEach(_players, function(p, key) {
+				//for some reason, angular.equals was not working in this context.
+				//context: when embedding two identical youtube videos seemed to break
+				if (_shallowEqual(p.yt, ytInstance)) {
+					return _key = key;
+				}
+			});
+
+			return _key;
+		}
+
+		//public methods
 
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
@@ -96,7 +145,7 @@
 				var main = _mainPlayerId;
 				var embed;
 				var state = event.data;
-				var pid = getPidFromInstance(event.target);
+				var pid = _getPidFromInstance(event.target);
 
 				console.log('all players', _players);
 
@@ -139,7 +188,7 @@
 
 			function onReady(event) {
 
-				var pid = getPidFromInstance(event.target);
+				var pid = _getPidFromInstance(event.target);
 
 
 				if (pid === _mainPlayerId) {
@@ -157,7 +206,7 @@
 			}
 
 			function onPlayerQualityChange(event) {
-				var pid = getPidFromInstance(event.target);
+				var pid = _getPidFromInstance(event.target);
 				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
 					setPlaybackQuality(pid, 'large');
 				}
@@ -165,53 +214,6 @@
 				qualityChangeCB(event);
 
 			}
-		}
-
-		function _getYTInstance(pid) {
-			if (_players[pid] && _players[pid].ready === true) {
-				return _players[pid].yt;
-			}
-		}
-
-		function deepEqual(x, y) {
-			if (x === y) {
-				return true;
-			}
-
-			if (!existy(x) || typeof x != 'object' || !existy(y) || typeof y != 'object') {
-				return false;
-			}
-
-			var xKeys = Object.keys(x).length,
-				yKeys = Object.keys(y).length;
-
-			for (var k in x) {
-				if (!(y.hasOwnProperty(k)) || x[k] !== y[k] /*!deepEqual(x[k], y[k]) */ ) {
-					return false;
-				}
-			}
-
-			return xKeys == yKeys;
-		}
-
-		function existy(x) {
-			return x != null;
-		}
-
-		function getPidFromInstance(ytInstance) {
-			var _key;
-
-			angular.forEach(_players, function(p, key) {
-				//for some reason, angular.equals was not working in this context.
-				//context: when embedding two identical youtube videos seemed to break
-				if (deepEqual(p.yt, ytInstance)) {
-					return _key = key;
-
-				}
-			});
-
-
-			return _key;
 		}
 
 		function getCurrentTime(pid) {
