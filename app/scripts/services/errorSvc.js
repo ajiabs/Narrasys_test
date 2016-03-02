@@ -31,6 +31,9 @@ angular.module('com.inthetelling.story')
 				if (exception.status === 401 && exception.data.error === 'Authentication expired. Please log in again.') {
 
 					$rootScope.$broadcast('error:sessionTimeout');
+					//return out of this fn in order to avoid
+					//pushing current exception into errors array
+					//where it would trigger the error dialog to pop up.
 					return;
 				}
 
