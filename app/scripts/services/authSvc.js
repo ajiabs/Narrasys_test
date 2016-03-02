@@ -25,6 +25,7 @@ angular.module('com.inthetelling.story')
 
 		$rootScope.$on('error:sessionTimeout', function () {
 			//for guest accessible narratives
+			console.log('handling session timeout');
 			svc.authenticateViaNonce($routeParams.narrativePath);
 		});
 
