@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 to throw explicit errors:
 		errorSvc.error({data: "This episode has not yet been published."});
 		errorSvc.notify({data: "This hovercraft is full of Monty Python quotes."});
@@ -9,10 +9,10 @@ throw() or other js errors also get sent here by $exceptionHandler (though we're
 */
 
 angular.module('com.inthetelling.story')
-	.factory('errorSvc', function ($location) {
+	.factory('errorSvc', function ($location, $rootScope) {
 		var svc = {};
 
-		// TODO This is a mess.  make the field names less ridiculously inconsistent.  
+		// TODO This is a mess.  make the field names less ridiculously inconsistent.
 
 		svc.init = function () {
 			svc.errors = [];
@@ -26,6 +26,13 @@ angular.module('com.inthetelling.story')
 				// TODO in future there may be cases where this isn't desirable (i.e. when we support more roles,
 				// it may make sense to keep an existing role in place even if the user attempts to do something they're not allowed to?)
 				console.warn(exception.status, " detected");
+
+
+				if (exception.status === 401 && exception.data.error === 'Authentication expired. Please log in again.') {
+
+					$rootScope.$broadcast('error:sessionTimeout');
+					return;
+				}
 
 				// hacky special case for login page
 				if ($location.path() === '/') {

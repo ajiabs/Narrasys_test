@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('authSvc', function (config, $routeParams, $http, $q, $location, appState, modelSvc, errorSvc) {
+	.factory('authSvc', function (config, $routeParams, $http, $q, $location, $timeout, $rootScope, appState, modelSvc, errorSvc) {
 		// console.log('authSvc factory');
 		var svc = {};
 
@@ -22,6 +22,10 @@ angular.module('com.inthetelling.story')
 			STUDENT: "student",
 			GUEST: "guest",
 		};
+
+		$rootScope.$on('error:sessionTimeout', function() {
+			svc.authenticateViaNonce($routeParams.narrativePath);
+		});
 
 		svc.getRoleForNarrative = function (narrativeId, roles) {
 			roles = typeof roles !== 'undefined' ? roles : appState.user.roles;
@@ -146,10 +150,11 @@ angular.module('com.inthetelling.story')
 				//handle redirect;
 				delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
 
-				$location.path('/')
-					.search({
-						logout: 1
-					});
+				window.location.reload();
+				//$location.path('/')
+				//	.search({
+				//		logout: 1
+				//	});
 			});
 		};
 
