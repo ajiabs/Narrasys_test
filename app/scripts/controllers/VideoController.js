@@ -28,6 +28,7 @@ angular.module('com.inthetelling.story')
 			onReady: onReady
 		});
 
+
 		//private properties
 		var _eventListeners = {};
 		var _numberOfStalls = 0;

@@ -15,7 +15,6 @@
 		var _mainPlayerId;
 
 		_youTubePlayerManager = {
-			getPlayer: getPlayer,
 			create: create,
 			destroy: destroy,
 			play: play,
@@ -34,11 +33,11 @@
 			setVolume: setVolume
 		};
 
+		//private methods
+
 		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
 
-
 			var _controls = 1;
-
 			if (divId === _mainPlayerId) {
 				_controls = 0;
 			}
@@ -67,6 +66,33 @@
 			});
 		}
 
+		function _getYTInstance(pid) {
+			if (_players[pid] && _players[pid].ready === true) {
+				return _players[pid].yt;
+			}
+		}
+
+		function _existy(x) {
+			return x != null;  // jshint ignore:line
+		}
+
+		function _getPidFromInstance(ytInstance) {
+			var _key;
+
+			angular.forEach(_players, function(p, key) {
+				//for some reason, angular.equals was not working in this context.
+				//context: when embedding two identical youtube videos seemed to break
+
+				if (p.yt === ytInstance) {
+					return _key = key; // jshint ignore:line
+				}
+			});
+
+			return _key;
+		}
+
+		//public methods
+
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
 				.then(handleSuccess)
@@ -74,7 +100,8 @@
 				.catch(lastTry);
 
 			function handleSuccess(ytInstance) {
-				_players[divId] = ytInstance;
+				_players[divId] = {yt: ytInstance, ready: false };
+
 			}
 
 			function tryAgain() {
@@ -83,7 +110,6 @@
 			}
 
 			function lastTry(e) {
-				console.log('too long!');
 				var errorMsg = 'Network timeout initializing video player. Please try again.';
 				errorSvc.error({data: errorMsg}, e);
 			}
@@ -99,8 +125,7 @@
 				var main = _mainPlayerId;
 				var embed;
 				var state = event.data;
-				var target = event.target;
-				var pid = target.m.id;
+				var pid = _getPidFromInstance(event.target);
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -140,8 +165,9 @@
 			}
 
 			function onReady(event) {
-				var target = event.target;
-				var pid = target.m.id;
+
+				var pid = _getPidFromInstance(event.target);
+
 
 				if (pid === _mainPlayerId) {
 					appState.mainYTPlayerReady = true;
@@ -154,12 +180,11 @@
 
 				_players[pid].ready = true;
 
-
 				onReadyCB(event);
 			}
 
 			function onPlayerQualityChange(event) {
-				var pid = event.target.m.id;
+				var pid = _getPidFromInstance(event.target);
 				if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
 					setPlaybackQuality(pid, 'large');
 				}
@@ -169,89 +194,83 @@
 			}
 		}
 
-		function getPlayer(pid) {
-			if (_players[pid] && _players[pid].ready === true) {
-				return _players[pid];
-			}
-		}
-
 		function getCurrentTime(pid) {
-			var p = getPlayer(pid);
-			if (p !== undefined) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
 				return p.getCurrentTime();
 			}
 		}
 
 		function playerState(pid) {
-			var p = getPlayer(pid);
-			if (p !== undefined) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
 				return p.getPlayerState();
 			}
 		}
 
 		function play(pid) {
-			var p = getPlayer(pid);
-			if (p !== undefined) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
 				return p.playVideo();
 			}
 		}
 
 		function pause(pid) {
-			var p = getPlayer(pid);
-			if (p !== undefined) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
 				return p.pauseVideo();
 			}
 		}
 
 		function setPlaybackQuality(pid, size) {
-			var p = getPlayer(pid);
-			if (p !== undefined) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
 				p.setPlaybackQuality(size);
 			}
 		}
 
 		function getVideoLoadedFraction(pid) {
-			var p = getPlayer(pid);
-			if (p !== undefined) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
 				return p.getVideoLoadedFraction();
 			}
 		}
 
 		function seekTo(pid, t, bool) {
-			var p = getPlayer(pid);
-			if (p !== undefined) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
 				p.seekTo(t, bool);
 			}
 		}
 
 		function isMuted(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTInstance(pid);
 
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.isMuted();
 			}
 		}
 
 		function mute(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTInstance(pid);
 
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.mute();
 			}
 		}
 
 		function unMute(pid) {
-			var p = getPlayer(pid);
+			var p = _getYTInstance(pid);
 
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.unMute();
 			}
 		}
 
 		function setVolume(pid, v) {
-			var p = getPlayer(pid);
+			var p = _getYTInstance(pid);
 
-			if (p !== undefined) {
+			if (_existy(p)) {
 				p.setVolume(v);
 			}
 		}
@@ -283,8 +302,8 @@
 		}
 
 		function destroy(pid) {
-			var p = getPlayer(pid);
-			if (p) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
 				p.destroy();
 				delete _players[pid];
 			}
