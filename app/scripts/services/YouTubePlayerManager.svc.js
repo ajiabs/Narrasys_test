@@ -76,35 +76,15 @@
 			return x != null;  // jshint ignore:line
 		}
 
-		function _shallowEqual(x, y) {
-			if (x === y) {
-				return true;
-			}
-
-			if (!_existy(x) || typeof x != 'object' || !_existy(y) || typeof y != 'object') {
-				return false;
-			}
-
-			var xKeys = Object.keys(x).length,
-				yKeys = Object.keys(y).length;
-
-			for (var k in x) {
-				if (!(y.hasOwnProperty(k)) || x[k] !== y[k]) {
-					return false;
-				}
-			}
-
-			return xKeys == yKeys;
-		}
-
 		function _getPidFromInstance(ytInstance) {
 			var _key;
 
 			angular.forEach(_players, function(p, key) {
 				//for some reason, angular.equals was not working in this context.
 				//context: when embedding two identical youtube videos seemed to break
-				if (_shallowEqual(p.yt, ytInstance)) {
-					return _key = key;
+
+				if (p.yt === ytInstance) {
+					return _key = key; // jshint ignore:line
 				}
 			});
 
