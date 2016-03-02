@@ -89,42 +89,92 @@ angular.module('com.inthetelling.story')
 			return product;
 		};
 
-		svc.logout = function () {
-			// Clear these even if the logout call fails (which it will if the token in localStorage has expired).
-			// DO NOT clear the Authorization header yet (it's needed for the logout server call)
-			try {
-				localStorage.removeItem(config.localStorageKey);
-				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			} catch (e) {
-				// user disabled cookies, so no need to try to remove them...
-			}
-			appState.user = {};
+		//svc.logout = function () {
+		//	// Clear these even if the logout call fails (which it will if the token in localStorage has expired).
+		//	// DO NOT clear the Authorization header yet (it's needed for the logout server call)
+		//	try {
+		//		localStorage.removeItem(config.localStorageKey);
+		//		document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		//		document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		//	} catch (e) {
+		//		// user disabled cookies, so no need to try to remove them...
+		//	}
+		//	appState.user = {};
+        //
+		//	$http({
+		//			method: 'GET',
+		//			url: config.apiDataBaseUrl + "/logout"
+		//		})
+		//		.finally(function() {
+		//			delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
+		//			$location.path('/')
+		//				.search({
+		//					logout: 1
+		//				});
+		//		});
+        //
+		//	//we do the same on happy / sad path, perfect usecase for .finally()
+		//	//	.success(function () {
+		//	//		delete $http.defaults.headers.common.Authorization; // now it's safe
+		//	//		//var rememberMe = $location.absUrl();
+		//	//		//$location.path('/')
+		//	//		//	.search({
+		//	//		//		logout: 1
+		//	//		//	}); // /?logout=1
+		//	//		window.location.reload();
+         //   //
+		//	//		//console.log('AFTER REDIRECT', $location.absUrl());
+		//	//	})
+		//	//	.error(function () {
+		//	//		delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
+		//	//		$location.path('/')
+		//	//			.search({
+		//	//				logout: 1
+		//	//			});
+		//	//	});
+		//};
 
-			$http({
-					method: 'GET',
-					url: config.apiDataBaseUrl + "/logout"
-				})
-				.success(function () {
-					delete $http.defaults.headers.common.Authorization; // now it's safe
-					var rememberMe = $location.absUrl();
-					console.log('BEFORE REDIRECT!', rememberMe);
-					//$location.path('/')
-					//	.search({
-					//		logout: 1
-					//	}); // /?logout=1
-					window.location.reload();
+		svc.logout = function() {
+			_clearLocalAuthData()
+			.then(_clearServerSession)
+			.catch(function(errors) {
+				//handle any errors from
+				//clearing local / ss session
+				console.log(errors);
+			})
+			.finally(function() {
+				//handle redirect;
+				delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
 
-					console.log('AFTER REDIRECT', $location.absUrl());
-				})
-				.error(function () {
-					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
-					$location.path('/')
-						.search({
-							logout: 1
-						});
-				});
+				$location.path('/')
+					.search({
+						logout: 1
+					});
+			});
 		};
+
+		function _clearLocalAuthData() {
+
+			return $q(function(resolve, reject) {
+				try {
+					localStorage.removeItem(config.localStorageKey);
+					document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+					document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+					appState.user = {};
+					return resolve();
+				} catch (e) {
+					// user disabled cookies, so no need to try to remove them...
+					return reject(e);
+				}
+			});
+		}
+
+		function _clearServerSession() {
+			return $http({
+				method: 'GET',
+				url: config.apiDataBaseUrl + "/logout"
+			});
+		}
 
 		svc.adminLogin = function (authKey, password) {
 			var defer = $q.defer();
