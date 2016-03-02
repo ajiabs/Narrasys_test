@@ -98,6 +98,7 @@
 				var state = event.data;
 				var pid = getPidFromInstance(event.target);
 
+				console.log('all players', _players);
 
 				if (pid !== _mainPlayerId) {
 					embed = pid;
@@ -185,7 +186,7 @@
 				yKeys = Object.keys(y).length;
 
 			for (var k in x) {
-				if (!(y.hasOwnProperty(k)) || !deepEqual(x[k], y[k])) {
+				if (!(y.hasOwnProperty(k)) || x[k] !== y[k] /*!deepEqual(x[k], y[k]) */ ) {
 					return false;
 				}
 			}
@@ -198,31 +199,19 @@
 		}
 
 		function getPidFromInstance(ytInstance) {
-			//var _key;
-			////angular.forEach(_players, function(p, key) {
-			////	if (angular.equals(ytInstance, p.yt)) {
-			////		_key = key;
-			////	}
-			////});
+			var _key;
 
-			//var _key;
-			//angular.forEach(_players, function(p, key) {
-			//	console.log('each player', p);
-			//	if (deepEqual(p, ytInstance)) {
-			//		return _key = key;
-			//	}
-			//});
+			angular.forEach(_players, function(p, key) {
+				//for some reason, angular.equals was not working in this context.
+				//context: when embedding two identical youtube videos seemed to break
+				if (deepEqual(p.yt, ytInstance)) {
+					return _key = key;
 
-
-			for (var p in _players) {
-				if (_players.hasOwnProperty(p)) {
-					if (deepEqual(_players[p].yt, ytInstance)) {
-						console.log('found it!', p);
-						return p;
-					}
 				}
-			}
-			//return _key;
+			});
+
+
+			return _key;
 		}
 
 		function getCurrentTime(pid) {
