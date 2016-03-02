@@ -216,49 +216,49 @@
 
 		function getCurrentTime(pid) {
 			var p = _getYTInstance(pid);
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.getCurrentTime();
 			}
 		}
 
 		function playerState(pid) {
 			var p = _getYTInstance(pid);
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.getPlayerState();
 			}
 		}
 
 		function play(pid) {
 			var p = _getYTInstance(pid);
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.playVideo();
 			}
 		}
 
 		function pause(pid) {
 			var p = _getYTInstance(pid);
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.pauseVideo();
 			}
 		}
 
 		function setPlaybackQuality(pid, size) {
 			var p = _getYTInstance(pid);
-			if (p !== undefined) {
+			if (_existy(p)) {
 				p.setPlaybackQuality(size);
 			}
 		}
 
 		function getVideoLoadedFraction(pid) {
 			var p = _getYTInstance(pid);
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.getVideoLoadedFraction();
 			}
 		}
 
 		function seekTo(pid, t, bool) {
 			var p = _getYTInstance(pid);
-			if (p !== undefined) {
+			if (_existy(p)) {
 				p.seekTo(t, bool);
 			}
 		}
@@ -266,7 +266,7 @@
 		function isMuted(pid) {
 			var p = _getYTInstance(pid);
 
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.isMuted();
 			}
 		}
@@ -274,7 +274,7 @@
 		function mute(pid) {
 			var p = _getYTInstance(pid);
 
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.mute();
 			}
 		}
@@ -282,7 +282,7 @@
 		function unMute(pid) {
 			var p = _getYTInstance(pid);
 
-			if (p !== undefined) {
+			if (_existy(p)) {
 				return p.unMute();
 			}
 		}
@@ -290,7 +290,7 @@
 		function setVolume(pid, v) {
 			var p = _getYTInstance(pid);
 
-			if (p !== undefined) {
+			if (_existy(p)) {
 				p.setVolume(v);
 			}
 		}
