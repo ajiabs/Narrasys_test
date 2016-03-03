@@ -159,8 +159,12 @@ angular.module('com.inthetelling.story')
 				defer.resolve(); // iOS with ?t= param is trying to post metrics before it has an episode ID. TODO figure out wtf is causing that...
 			}
 
+			console.count('Flushin!');
+			console.log('ActivityQueue Contents: ', svc.activityQueue);
+
 			var actions = angular.copy(svc.activityQueue);
 			svc.activityQueue = [];
+
 
 			var now = new Date();
 			var episodeUserMetrics = [];
@@ -181,44 +185,35 @@ angular.module('com.inthetelling.story')
 			if (eventUserActions.length > 0) {
 				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/event_user_actions', {
 					"event_user_actions": eventUserActions
-				}));
+				}).catch(handleFailedReport));
 			}
 			if (episodeUserMetrics.length > 0) {
 				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/episode_user_metrics', {
 					"episode_user_metrics": episodeUserMetrics
-				}));
+				}).catch(handleFailedReport));
 			}
+
 			$q.all(posts).then(function () {
 				defer.resolve();
-			}).catch(function(e) {
-				//only try to recover from session timeout errors.
-				if (e.status === 401 && e.data.error === 'Authentication expired. Please log in again.') {
-					return handleFailedReport(e.config.data);
-				}
 			});
-
-			function handleFailedReport(missedReports) {
-				var dfds = [];
-				//timeout for 2 seconds in order to let
-				//the errorSvc handle renewing session.
-				$timeout(function() {
-					angular.forEach(missedReports, function(data, reportType) {
-						var urlStr  = config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + reportType;
-						var payLoad = {};
-						payLoad[reportType] = data;
-
-						dfds.push($http.post(urlStr, payLoad));
-					});
-
-				}, 2000).then(function() {
-					$q.all(dfds).then(function(resp) {
-						console.log('sweet fulfillment!', resp);
-					});
-				});
-			}
 
 			return defer.promise;
 		};
+
+		function handleFailedReport(errorData) {
+			//var dfds = [];
+			//timeout for 2 seconds in order to let
+			//the errorSvc handle renewing session.
+
+			$timeout(function() {
+				var missedReports = errorData.config.data;
+				angular.forEach(missedReports, function(reportsArr) {
+					//merge each failed report back into the activity queue.
+					Array.prototype.push.apply(svc.activityQueue, reportsArr);
+				});
+
+			}, 2000);
+		}
 
 		svc.dejitter = function (events) {
 			// Consolidate repeated seek events into one single seek event before sending to API.
