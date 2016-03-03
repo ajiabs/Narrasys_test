@@ -30,7 +30,7 @@ Different types of event can define their own interactions, but the core ones wi
 */
 
 angular.module('com.inthetelling.story')
-	.factory('analyticsSvc', function ($q, $http, $routeParams, $interval, $timeout, config, appState) {
+	.factory('analyticsSvc', function ($q, $http, $routeParams, $interval, config, appState) {
 		// console.log('analyticsSvc factory');
 		var svc = {};
 
