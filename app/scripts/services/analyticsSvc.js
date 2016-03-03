@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 There are two separate types of user activity to capture, which go to separate API endpoints.
 Some types must contain additional info in a "data" object:
 
@@ -30,7 +30,7 @@ Different types of event can define their own interactions, but the core ones wi
 */
 
 angular.module('com.inthetelling.story')
-	.factory('analyticsSvc', function ($q, $http, $routeParams, $interval, config, appState) {
+	.factory('analyticsSvc', function ($q, $http, $routeParams, $interval, $timeout, config, appState) {
 		// console.log('analyticsSvc factory');
 		var svc = {};
 
@@ -91,12 +91,12 @@ angular.module('com.inthetelling.story')
 		svc.forceCaptureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
 			svc.captureEventActivity(name, eventID, data, true);
-			return svc.flushActivityQueue(); //this is async, and returns a promise.	
+			return svc.flushActivityQueue(); //this is async, and returns a promise.
 		};
 		svc.captureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
 			svc.captureEventActivity(name, eventID, data);
-			return svc.flushActivityQueue(); //this is async, and returns a promise.	
+			return svc.flushActivityQueue(); //this is async, and returns a promise.
 		};
 
 		// read from API:
@@ -190,7 +190,32 @@ angular.module('com.inthetelling.story')
 			}
 			$q.all(posts).then(function () {
 				defer.resolve();
+			}).catch(function(e) {
+				//only try to recover from session timeout errors.
+				if (e.status === 401 && e.data.error === 'Authentication expired. Please log in again.') {
+					return handleFailedReport(e.config.data);
+				}
 			});
+
+			function handleFailedReport(missedReports) {
+				var dfds = [];
+				//timeout for 2 seconds in order to let
+				//the errorSvc handle renewing session.
+				$timeout(function() {
+					angular.forEach(missedReports, function(data, reportType) {
+						var urlStr  = config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/' + reportType;
+						var payLoad = {};
+						payLoad[reportType] = data;
+
+						dfds.push($http.post(urlStr, payLoad));
+					});
+
+				}, 2000).then(function() {
+					$q.all(dfds).then(function(resp) {
+						console.log('sweet fulfillment!', resp);
+					});
+				});
+			}
 
 			return defer.promise;
 		};
