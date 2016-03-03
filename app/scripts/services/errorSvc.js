@@ -27,8 +27,6 @@ angular.module('com.inthetelling.story')
 				// it may make sense to keep an existing role in place even if the user attempts to do something they're not allowed to?)
 				console.warn(exception.status, " detected");
 
-
-				console.log('exception', exception);
 				if (exception.status === 401 && !exception.config.url.match(/show_user/)) {
 					$rootScope.$broadcast('error:sessionTimeout');
 					//return out of this fn in order to avoid

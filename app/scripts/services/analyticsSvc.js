@@ -159,9 +159,6 @@ angular.module('com.inthetelling.story')
 				defer.resolve(); // iOS with ?t= param is trying to post metrics before it has an episode ID. TODO figure out wtf is causing that...
 			}
 
-			console.count('Flushin!');
-			console.log('ActivityQueue Contents: ', svc.activityQueue);
-
 			var actions = angular.copy(svc.activityQueue);
 			svc.activityQueue = [];
 
@@ -201,18 +198,13 @@ angular.module('com.inthetelling.story')
 		};
 
 		function handleFailedReport(errorData) {
-			//var dfds = [];
-			//timeout for 2 seconds in order to let
-			//the errorSvc handle renewing session.
 
-			$timeout(function() {
-				var missedReports = errorData.config.data;
-				angular.forEach(missedReports, function(reportsArr) {
-					//merge each failed report back into the activity queue.
-					Array.prototype.push.apply(svc.activityQueue, reportsArr);
-				});
+			var missedActivityOrMetrics = errorData.config.data;
 
-			}, 2000);
+			angular.forEach(missedActivityOrMetrics, function(metricsOrActionsArr) {
+				//merge each failed report back into the activity queue.
+				Array.prototype.push.apply(svc.activityQueue, metricsOrActionsArr);
+			});
 		}
 
 		svc.dejitter = function (events) {
