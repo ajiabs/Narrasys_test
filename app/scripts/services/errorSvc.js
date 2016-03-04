@@ -27,12 +27,19 @@ angular.module('com.inthetelling.story')
 				// it may make sense to keep an existing role in place even if the user attempts to do something they're not allowed to?)
 				console.warn(exception.status, " detected");
 
+
+				//guest accessible narratives - refresh session
 				if (exception.status === 401 && exception.data.error === 'Authentication expired. Please log in again.' && !exception.config.url.match(/show_user/)) {
-					$rootScope.$broadcast('error:sessionTimeout');
+					$rootScope.$broadcast('error:guest-sessionTimeout');
 					//return out of this fn in order to avoid
 					//pushing current exception into errors array
 					//where it would trigger the error dialog to pop up.
 					return;
+				}
+
+				if (exception.status === 401 && exception.data.error === "This action requires logging in or you do not have sufficient rights.") {
+					console.log('catch user session time out');
+					$rootScope.$broadcast('error:user-sessionTimeout');
 				}
 
 				// hacky special case for login page

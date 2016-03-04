@@ -23,9 +23,14 @@ angular.module('com.inthetelling.story')
 			GUEST: "guest",
 		};
 
-		$rootScope.$on('error:sessionTimeout', function () {
+		$rootScope.$on('error:guest-sessionTimeout', function () {
 			//for guest accessible narratives
+			console.warn('Attemping to reset session');
 			svc.authenticateViaNonce($routeParams.narrativePath);
+		});
+
+		$rootScope.$on('error:user-sessionTimeout', function() {
+			svc.logout();
 		});
 
 		svc.getRoleForNarrative = function (narrativeId, roles) {
@@ -164,6 +169,7 @@ angular.module('com.inthetelling.story')
 
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function (nonceParam) {
+			console.trace('authenticating...');
 			if ($http.defaults.headers.common.Authorization) {
 				//console.log("have auth headers!");
 				if (appState.user) {
