@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('authSvc', function (config, $routeParams, $http, $q, $location, $timeout, $rootScope, appState, modelSvc, errorSvc) {
+	.factory('authSvc', function (config, $routeParams, $http, $q, $location, $rootScope, appState, modelSvc, errorSvc) {
 		// console.log('authSvc factory');
 		var svc = {};
 
