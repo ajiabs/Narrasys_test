@@ -1,11 +1,11 @@
 'use strict';
 
 /*
- NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function,
- so they get logged properly: don't draw plain hrefs
- */
+NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function,
+so they get logged properly: don't draw plain hrefs
+*/
 
-export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc){
+export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager){
 	'ngInject';
 	return {
 		restrict: 'A',
@@ -24,46 +24,46 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
 		link: function (scope, element) {
 			//scope.user = appState.user;
 
-			scope.appState = appState; // to get searchText
+				scope.appState = appState; // to get searchText
 
-			if (scope.item.avatar_id) {
-				scope.item.avatar = modelSvc.assets[scope.item.avatar_id];
-			}
-
-			if (scope.item._id === 'internal:editing') {
-				element.addClass('noTransitions');
-			} else {
-				if (authSvc.userHasRole('admin') || scope.item.user_id === appState.user._id) {
-					scope.item.editableByThisUser = true;
+				if (scope.item.avatar_id) {
+					scope.item.avatar = modelSvc.assets[scope.item.avatar_id];
 				}
-			}
 
-			scope.toggleDetailView = function () {
-				// console.log("Item toggleDetailView");
-				if (scope.item.showInlineDetail) {
-					// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
-					scope.item.showInlineDetail = false;
+				if (scope.item._id === 'internal:editing') {
+					element.addClass('noTransitions');
 				} else {
-					timelineSvc.pause();
-					scope.captureInteraction();
-					if (element.width() > 450) {
-						// show detail inline if there's room for it:
-						scope.item.showInlineDetail = true;
-					} else {
-						// otherwise pop a modal:
-						appState.itemDetail = scope.item;
+					if (authSvc.userHasRole('admin') || scope.item.user_id === appState.user._id) {
+						scope.item.editableByThisUser = true;
 					}
 				}
-			};
-			var KeyCodes = {
-				ENTER: 13,
-				SPACE: 32
-			};
 
-			scope.toggleDetailOnKeyPress = function ($event) {
-				var e = $event;
-				var passThrough = true;
-				switch (e.keyCode) {
+				scope.toggleDetailView = function () {
+					// console.log("Item toggleDetailView");
+					if (scope.item.showInlineDetail) {
+						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
+						scope.item.showInlineDetail = false;
+					} else {
+						timelineSvc.pause();
+						scope.captureInteraction();
+						if (element.width() > 450) {
+							// show detail inline if there's room for it:
+							scope.item.showInlineDetail = true;
+						} else {
+							// otherwise pop a modal:
+							appState.itemDetail = scope.item;
+						}
+					}
+				};
+				var KeyCodes = {
+					ENTER: 13,
+					SPACE: 32
+				};
+
+				scope.toggleDetailOnKeyPress = function ($event) {
+					var e = $event;
+					var passThrough = true;
+					switch (e.keyCode) {
 					case KeyCodes.ENTER:
 						scope.toggleDetailView();
 						passThrough = false;
@@ -75,21 +75,21 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
 					default:
 						passThrough = true;
 						break;
-				}
-				if (!passThrough) {
-					$event.stopPropagation();
-					$event.preventDefault();
-				}
-			};
+					}
+					if (!passThrough) {
+						$event.stopPropagation();
+						$event.preventDefault();
+					}
+				};
 
-			scope.forceModal = function () {
-				timelineSvc.pause();
-				appState.itemDetail = scope.item;
-			};
-			scope.outgoingLinkOnKeyPress = function (url, $event) {
-				var e = $event;
-				var passThrough = true;
-				switch (e.keyCode) {
+				scope.forceModal = function () {
+					timelineSvc.pause();
+					appState.itemDetail = scope.item;
+				};
+				scope.outgoingLinkOnKeyPress = function (url, $event) {
+					var e = $event;
+					var passThrough = true;
+					switch (e.keyCode) {
 					case KeyCodes.ENTER:
 						scope.outgoingLink(url);
 						passThrough = false;
@@ -101,23 +101,34 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
 					default:
 						passThrough = true;
 						break;
-				}
-				if (!passThrough) {
-					$event.stopPropagation();
-					$event.preventDefault();
-				}
-			};
-			scope.outgoingLink = function (url) {
-				timelineSvc.pause();
-				scope.captureInteraction();
-				if (scope.item.targetTop) {
-					$timeout(function () {
-						window.location.href = url;
-					});
-				} else {
-					window.open(url);
-				}
-			};
+					}
+					if (!passThrough) {
+						$event.stopPropagation();
+						$event.preventDefault();
+					}
+				};
+				scope.outgoingLink = function (url) {
+					timelineSvc.pause();
+					scope.captureInteraction();
+
+					if (url.match(/youtube/)) {
+						//if we have an embed set, pause it when
+						//linking to new window.
+						if (appState.embedYTPlayerAvailable) {
+							youTubePlayerManager.pauseOtherEmbeds();
+						}
+
+						url += youtubeSvc.embedParams(true);
+					}
+
+					if (scope.item.targetTop) {
+						$timeout(function () {
+							window.location.href = url;
+						});
+					} else {
+						window.open(url);
+					}
+				};
 
 			scope.editItem = function () {
 				appState.editEvent = scope.item;

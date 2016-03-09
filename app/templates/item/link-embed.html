@@ -15,6 +15,7 @@
 		<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 	</div>
 	<a tabindex="0" class="escapelink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">(new window)</a>
+
 	<itt-iframe x-src="{{item.url}}"></itt-iframe>
 	<div class="clear"></div>
 </div>

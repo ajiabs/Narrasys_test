@@ -1,5 +1,5 @@
 <div ng-if="(episode.items | isCurrent | itemLayout:'windowFg').length > 0" class="overlay windowFg fgLayer animate transitionFade">
-	<div class="content">
+	<div class="content w-modal">
 		<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate  timestampNone" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowFg'">
 		</div>
 

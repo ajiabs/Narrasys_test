@@ -89,7 +89,7 @@
 }
 
 
-/* -------------------------------------------  
+/* -------------------------------------------
    Customer-specific tweaks
 
 */
@@ -367,7 +367,7 @@
 	background-color: rgba(255, 255, 255, 0.2);
 }
 
-*/.episode-gwsb .videoMask.firstplay {
+.episode-gwsb .videoMask.firstplay {
 	/* GW doesn't want our logo here */
 	background-image: url('/images/play-overlay.png');
 }
@@ -503,7 +503,7 @@
 .episode-kellogg .item a {
 	/* time to party like it's 1996: */
 	text-decoration: underline;
-	font-size: 110%;
+	font-size: 90%;
 }
 
 .episode-kellogg .item a:hover {
@@ -653,14 +653,17 @@
 	padding-left: 75px;
 }
 
-.episode-regis .content .item .startTime {
+.episode-regis .content .highlightSolid.item.isCurrent  {
+	background-color: #F2F2F2 !important;
+	color: #000;
+	box-shadow: 0 7px 5px rgba(0, 0, 0, 0.3) !important;
+	padding-left: 75px;
+}
+
+.episode-regis .content .sxs-item .item .startTime {
 	margin-left: -75px;
 	width: 70px;
 	text-align: right;
-}
-
-.episode-regis.content.allowHighlights .highlightSolid.item.isCurrent {
-	background-color: #FFF !important;
 }
 
 .episode-regis .searchMode .item,
@@ -709,6 +712,16 @@
 	color: #284865;
 }
 
+.episode-regis .content .item.colorInvert {
+	color: #fff !important;
+	background-color: #103852  !important;
+}
+
+.episode-regis .item.colorInvert a {
+	color: #fff !important;
+	background-color: #103852  !important;
+}
+
 .episode-regis .landingscreen {
 	background-image: url("/images/customer/regis-landing.svg");
 	background-repeat: no-repeat;
@@ -749,4 +762,80 @@
 		width: 90%;
 	}
 }
+
+.episode-wsbctc {
+	background-image: url("/images/customer/WSBCTC_Star.svg");
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	background-size: 95%;
+	font-family: 'Gotham', sans-serif;
+}
+
+.episode-wsbctc .branding {
+	background: transparent;
+}
+
+.episode-wsbctc .copyright {
+	color: grey;
+	text-shadow: none !important;
+}
+
+.episode-wsbctc .copyright a {
+	color: grey !important;
+	text-shadow: none !important;
+}
+
+.episode-wsbctc .scene.isCurrent::before,
+.episode-wsbctc .searchMode::before,
+.episode-wsbctc .reviewMode::before {
+	content: "";
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	top: 45px;
+	left: 0;
+}
+
+.episode-wsbctc .searchMode .item.isCurrent {
+	background-color: #d8d3c3 !important;
+}
+
+.episode-wsbctc .content.allowHighlights .highlightSolid.item.isCurrent{
+	background-color: #d8d3c3 !important;
+}
+
+.episode-wsbctc .content .item.colorInvert {
+	color: #fff !important;
+	background-color: #2B4B71  !important;
+}
+
+.episode-wsbctc .item.colorInvert a {
+	color: #fff !important;
+	background-color: #2B4B71  !important;
+}
+
+.episode-wsbctc .authorName,
+.episode-wsbctc .title,
+.episode-wsbctc .searchMode .item a.fakeLink {
+	font-size: 1.2em;
+	color: #2B4B71;
+}
+
+.episode-wsbctc a, a:visited, .fakeLink {
+	color: #2B4B71;
+}
+
+#branding-wrapper {
+	position: relative;
+	float: right;
+	bottom: -80px;
+	padding-right: 10px;
+}
+
+#sbctc-logo {
+	margin-right: 3px;
+	position: relative;
+	bottom: 20px
+}
+
 

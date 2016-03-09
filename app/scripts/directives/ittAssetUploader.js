@@ -7,23 +7,94 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 		replace: false,
 		scope: {
 			containerId: '=ittAssetUploader', // If no container ID is supplied, the uploaded asset(s) will be placed in user space instead.
-			callback: '=callback' // function that will be called for each uploaded file (with the newly cretaed asset's ID)
+			callback: '=callback', // function that will be called for each uploaded file (with the newly cretaed asset's ID)
+			mimeTypes: '@',
+			instructions: '@',
+			errorText: '@'
 		},
 		templateUrl: 'templates/producer/asset-uploader.html',
 		link: function (scope, element, attrs) {
+
+			function strStartsWith(str, prefix) {
+				return str.indexOf(prefix) === 0;
+			}
+
+			function strEndsWith(str, match) {
+				return str.substring(str.length - match.length, str.length) === match;
+			}
+
+			if (scope.instructions === undefined) {
+				scope.manPage = 'We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. ';
+			} else {
+				scope.manPage = scope.instructions;
+			}
+
+			var _mimeTypes;
+			if (scope.mimeTypes === undefined) {
+				//allow basically doc, image, or video.
+				_mimeTypes = ['application/*', 'image/*', 'video/*', 'text/*', 'audio/*', 'model/*'];
+			} else {
+				_mimeTypes = scope.mimeTypes.split(',');
+			}
+
+			var _errorText;
+			if (scope.errorText === undefined) {
+				_errorText = 'Whoops!, you may want to try that again!';
+			} else {
+				_errorText = scope.errorText;
+			}
+
+			//normalize passed in params
+			angular.forEach(_mimeTypes, function (m, i) {
+				_mimeTypes[i] = m.trim();
+			});
+
 			scope.uploadStatus = [];
 			scope.uploads = [];
 			scope.uploadsinprogress = 0;
 			scope.multiple = (attrs.multiple !== undefined);
 
 			scope.handleUploads = function (files) {
+
 				if (!scope.multiple) {
 					if (files.length > 1 || scope.uploads.length > 0) {
 						scope.errormessage = "You may only upload one file at a time here.";
 						return false;
 					}
 				}
-				scope.errormessage = "";
+
+				//disallow certain file types
+				var stop = false;
+				//gotta filter
+				angular.forEach(files, function (f) {
+
+					angular.forEach(_mimeTypes, function (m) {
+						var paramStrEndsWithStar = strEndsWith(m, '*');
+
+						if (paramStrEndsWithStar) {
+
+							var mimeTypeUntilWildcard = m.slice(0, -1);
+
+							var applicationTypesMatch = strStartsWith(f.type, mimeTypeUntilWildcard);
+
+							if (applicationTypesMatch) {
+								stop = true;
+							}
+
+						} else {
+							//only accept identical mimeType?
+							if (f.type === m) {
+								stop = true;
+							}
+
+						}
+					});
+				});
+
+				if (!stop) {
+					scope.errormessage = _errorText;
+					return;
+				}
 
 				// push these onto the end of the existing uploads array, if any:
 				var oldstack = scope.uploads.length;
@@ -103,7 +174,6 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 			scope.cancelUpload = function () {
 				awsSvc.cancelUpload();
-
 			};
 
 			$timeout(function () { // need to wait for the DOM
@@ -115,7 +185,6 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 				scope.droptarget[0].addEventListener('dragenter', scope.handleDragEnter);
 				scope.droptarget[0].addEventListener('dragleave', scope.handleDragLeave);
 			});
-
 		}
 	};
 }

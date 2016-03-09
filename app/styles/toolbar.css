@@ -70,7 +70,6 @@ button {
 	animation: delayedFadeOut 7s ease-out;
 }
 
-.episodeUI .toolbar .searchgroup,
 .toolbar .escapegroup,
 .toolbar .profilegroup {
 	float: right;
@@ -142,10 +141,6 @@ button {
 	padding-top: 3px;
 	font-size: 20px;
 	width: 50%;
-}
-
-.episodeUI .toolbar .buttongroup.searchgroup.cur {
-	width: 27%;
 }
 
 .toolbar .buttongroup.searchgroup.cur .button span {
@@ -452,11 +447,6 @@ button {
 	padding: 0.5em 0.3em 0.1em 0.3em
 }
 
-.episodeUI .searchResults .item {
-	/*border-bottom: 1px solid #CCC;*/
-	padding: 0.1em 0.3em;
-}
-
 .searchResults .item {
 	clear: both;
 }
@@ -499,14 +489,6 @@ button {
 	opacity: 0.4;
 }
 
-.episodeUI .searchResults .description {
-	font-size: 0.86em;
-}
-
-.episodeUI .searchResults .type {
-	font-size: 0.86em
-}
-
 .searchResults .sortedbytype .type {
 	display: none
 }
@@ -541,17 +523,6 @@ button {
 	margin: -4px;
 	padding: 2px 4px 0;
 	background-color: #rgba(255, 255, 255, 0.5);
-}
-
-.episodeUI .ui-match {
-	background-color: rgba(50, 50, 50, 0.4);
-	color: #FFF;
-	margin: -4px;
-	padding: 4px;
-	border-radius: 4px;
-	border-width: 0;
-	box-shadow: none;
-	text-shadow: none;
 }
 
 
@@ -796,16 +767,8 @@ button {
 	right: -1000px;
 }
 
-.episodeUI .profilePanel .arrow-up {
-	right: 35px;
-}
-
 .isFramed.profilePanel .arrow-up {
 	right: 35px;
-}
-
-.episodeUI .isFramed.profilePanel .arrow-up {
-	right: 80px;
 }
 
 .profilePanel .authoringForm {
@@ -906,9 +869,5 @@ input.userEditable:focus {
 
 .banner-logo {
 	visibility: hidden;
-}
-
-.episodeUI .banner-logo {
-	visibility: visible;
 }
 

@@ -32,11 +32,6 @@
 	text-align: right;
 }
 
-.episodeUI .pbarTop,
-.episodeUI .pbarBottom {
-	margin-left: 4em;
-}
-
 .pbarMain {
 	height: 1em;
 }
@@ -67,16 +62,6 @@
 	height: 1em;
 	background-color: rgba(0, 0, 0, 0.2);
 	user-select: none;
-}
-
-.episodeUI .progressbar {
-	left: 4em;
-}
-
-.episodeUI .progressbar,
-.episodeUI .progressbarContainer,
-.episodeUI .progressbar .mask {
-	border-radius: 0 0.5em 0.5em 0;
 }
 
 .progressbar .mask {
