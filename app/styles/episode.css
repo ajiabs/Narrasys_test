@@ -839,9 +839,57 @@
 }
 
 /*using wsbctc as temp sandbox for linkedin stuff*/
+#toolbar-logo {
+	position: fixed;
+	left: 42%;
+	top: 2px;
+	width: 140px;
+}
 
-/*.episode-wsbctc h2 {*/
-	/*color: red;*/
-	/*position: fixed;*/
-	/*top: 0;*/
+#narrasys-logo img {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+}
+
+.narrasys-ln {
+	font-family: 'Gotham', sans-serif;
+}
+
+/*.narrasys-ln, .narrasys-ln .altPane {*/
+	/*background-color: white;*/
 /*}*/
+
+.narrasys-ln .item {
+	/*margin: 5px;*/
+	/*border: 5px solid black;*/
+	background: white;
+}
+
+.narrasys-ln .banner-pull-quote h1 {
+	color: white;
+	background-color: #DE6625;
+	width: 100%;
+	text-align: center;
+	padding: 20px;
+	position: absolute;
+	top: 3em;
+	font-weight: lighter;
+	letter-spacing: 0.3em;
+}
+
+.narrasys-ln .videoMask {
+	/*border: 3px solid black;*/
+}
+
+/*.narrasys-ln .scene.cornerV.videoRight .videoMagnet {*/
+	/*margin: 0 auto;*/
+	/*margin-top: 10px;*/
+	/*width: 80%;*/
+/*}*/
+
+.narrasys-ln .scene.centered .videoMagnet {
+	margin-top: 80px;
+}
+
+

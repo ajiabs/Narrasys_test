@@ -56,6 +56,7 @@
 								<span ng-if="item.producerItemType == 'scene'">
 									<select ng-model="item.templateUrl">
 										<option value="templates/scene/centered.html">Centered video</option>
+										<option value="templates/scene/centeredPro.html">Centered Pro</option>
 										<option value="templates/scene/1col.html">One column</option>
 
 										<option value="templates/scene/2colL.html">Two columns</option>
@@ -266,7 +267,7 @@
 
 		<a ng-click="cancelEdit()">Cancel</a> &nbsp; &nbsp;
 		<button ng-if="
-			item._id != 'internal:editing' && 
+			item._id != 'internal:editing' &&
 			!(item._type == 'Scene' && item.start_time <= 0.01)
 		" ng-click="deleteEvent(item._id)">Delete</button>
 		<button ng-click="saveEvent()" ng-disabled="blockDoubleClicks">Save</button>

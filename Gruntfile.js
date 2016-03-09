@@ -319,10 +319,11 @@ module.exports = function (grunt) {
 		browserSync: {
 			dev: {
 				bsFiles: {
-					src : '<%= yeoman.app %>'
+					src : ['<%= yeoman.app %>', '!<%= yeoman.app %>/scripts/templates.js' ]
 				},
 				options: {
-					proxy: "https://localhost.inthetelling.com"
+					proxy: "https://localhost.inthetelling.com",
+					watchTask: true
 				}
 			}
 		}
@@ -381,7 +382,8 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('doWork', [
-		'browserSync'
+		'browserSync',
+		'watch'
 	]);
 
 };
