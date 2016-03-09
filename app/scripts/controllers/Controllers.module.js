@@ -14,6 +14,8 @@ import SearchPanelController from './SearchPanelController';
 import TimelineController from './TimelineController';
 import VideoController from './VideoController';
 import ContainerAssetsTestController from './ContainerAssetsTestController';
+import ittYoutubeCtrl from '../directives/ittYoutubeEmbed';
+import ittIframeCtrl from '../directives/ittIframe';
 
 let controllersModule = angular.module('iTT.controllers', [])
 	.controller('EditController', EditController)
@@ -26,6 +28,8 @@ let controllersModule = angular.module('iTT.controllers', [])
 	.controller('SearchPanelController', SearchPanelController)
 	.controller('TimelineController', TimelineController)
 	.controller('ContainerAssetsTestController', ContainerAssetsTestController)
-	.controller('VideoController', VideoController);
+	.controller('VideoController', VideoController)
+	.controller('ittYoutubeCtrl', ittYoutubeCtrl)
+	.controller('ittIframeCtrl', ittIframeCtrl);
 
 export default controllersModule;

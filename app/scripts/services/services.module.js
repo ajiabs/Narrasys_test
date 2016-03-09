@@ -15,6 +15,8 @@ import questionAnswersSvc from './questionAnswersSvc';
 import recursionHelper from './recursionHelper';
 import timelineSvc from './timelineSvc';
 import youtubeSvc from './youtubeSvc';
+import youTubePlayerManager from './YouTubePlayerManager.svc';
+import YoutubePlayerApi from './YouTubeAPI.svc';
 
 let servicesModule = angular.module('iTT.services', [])
 	.factory('analyticsSvc', analyticsSvc)
@@ -29,6 +31,8 @@ let servicesModule = angular.module('iTT.services', [])
 	.factory('questionAnswersSvc', questionAnswersSvc)
 	.factory('recursionHelper', recursionHelper)
 	.factory('timelineSvc', timelineSvc)
-	.factory('youtubeSvc', youtubeSvc);
+	.factory('youtubeSvc', youtubeSvc)
+	.factory('youTubePlayerManager', youTubePlayerManager)
+	.service('YoutubePlayerApi', YoutubePlayerApi);
 
 export default servicesModule;

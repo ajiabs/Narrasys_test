@@ -41,6 +41,9 @@ import sxsContainerAssets from './sxsContainerAssets';
 import sxsInputI18n from './sxsInputI18n';
 import sxsInputTime from './sxsInputTime';
 
+import ittYoutube from './ittYoutubeEmbed';
+import ittToolbarStory from './ittToolbarStory';
+
 let directivesModule = angular.module('iTT.directives', [])
 	.directive('autofocus', autofocus)
 	.directive('ittAssetUploader', ittAssetUploader)
@@ -78,6 +81,8 @@ let directivesModule = angular.module('iTT.directives', [])
 	.directive('sxsAnnotatorAutocomplete', sxsAnnotatorAutocomplete)
 	.directive('sxsContainerAssets', sxsContainerAssets)
 	.directive('sxsInputI18n', sxsInputI18n)
-	.directive('sxsInputTime', sxsInputTime);
+	.directive('sxsInputTime', sxsInputTime)
+	.directive('ittYoutube', ittYoutube)
+	.directive('ittToolbarStory', ittToolbarStory);
 
 export default directivesModule;
