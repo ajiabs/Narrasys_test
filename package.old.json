@@ -1,0 +1,71 @@
+{
+  "name": "com.inthetelling.story",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.10.0",
+    "chai": "^3.4.1",
+    "chokidar-socket-emitter": "^0.3.0",
+    "gulp": "^3.9.0",
+    "gulp-angular-templatecache": "^1.8.0",
+    "gulp-html-replace": "^1.5.5",
+    "gulp-jshint": "^2.0.0",
+    "gulp-ng-annotate": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-rev": "^6.0.1",
+    "gulp-uglify": "^1.5.1",
+    "gulp-watch": "^4.3.5",
+    "jshint": "^2.8.0",
+    "jshint-stylish": "^2.1.0",
+    "karma": "~0.10.2",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-coffee-preprocessor": "^0.3.0",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-growler-reporter": "0.0.1",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-jasmine": "~0.1.3",
+    "karma-ng-html2js-preprocessor": "~0.1.0",
+    "karma-ng-scenario": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma-requirejs": "~0.2.2",
+    "karma-safari-launcher": "^0.1.1",
+    "karma-script-launcher": "~0.1.0",
+    "mocha": "^2.3.4",
+    "requirejs": "^2.1.22",
+    "rimraf": "^2.4.4",
+    "run-sequence": "^1.1.5"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "scripts": {
+    "test": "npm test"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "app"
+    },
+    "configFile": "jspm.config.js",
+    "dependencies": {
+      "angular": "github:angular/bower-angular@^1.3.14",
+      "angular-animate": "github:angular/bower-angular-animate@^1.3.14",
+      "angular-resource": "github:angular/bower-angular-resource@^1.3.14",
+      "angular-route": "github:angular/bower-angular-route@^1.3.14",
+      "angular-sanitize": "github:angular/bower-angular-sanitize@^1.3.14",
+      "capaj/systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.5.0",
+      "css": "github:systemjs/plugin-css@^0.1.20",
+      "flot/flot": "github:flot/flot@^0.8.3",
+      "jquery": "github:components/jquery@^2.1.1",
+      "text": "github:systemjs/plugin-text@^0.0.4",
+      "textAngular": "github:fraywing/textAngular@^1.4.6"
+    },
+    "devDependencies": {
+      "angular-mocks": "github:angular/bower-angular-mocks@^1.3.14",
+      "angular/bower-angular-scenario": "github:angular/bower-angular-scenario@^1.3.14",
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "clean-css": "npm:clean-css@^3.4.8",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  }
+}
