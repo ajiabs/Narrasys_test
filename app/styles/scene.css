@@ -580,6 +580,22 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	}
 }
 
+/* ------------------------------------------- */
+.scene.centered-pro .col {
+	/*top | right | bottom | left*/
+	padding: 2% 20% 0 20%;
+}
+
+.scene.centered-pro .videoMagnet {
+	/*margin-top: 80px;*/
+}
+
+@media screen and (min-width: 900px) {
+	.scene.centered .col {
+		padding: 7% 25% 0 25%;
+	}
+}
+
 
 /* ------------------------------------------- */
 
