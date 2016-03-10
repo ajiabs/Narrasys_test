@@ -11,7 +11,15 @@
  -->
 	</div>
 
-	<img ng-src="images/customer/Narrasys.png" id="toolbar-logo" ng-if="episode.templateUrl === 'templates/episode/linkedin-narrasys.html'">
+	<div>
+		<img ng-src="images/customer/Narrasys_Logo.png"
+			 id="toolbar-logo-big"
+			 ng-if="episode.templateUrl === 'templates/episode/linkedin-narrasys.html' && appState.windowWidth > 500">
+
+		<img ng-src="images/customer/Narrasys-Tree.png"
+			 id="toolbar-logo-small"
+			 ng-if="episode.templateUrl === 'templates/episode/linkedin-narrasys.html' && appState.windowWidth <= 500"/>
+	</div>
 
 	<!--if we are a player, isFramed-->
 	<div ng-if="appState.isFramed && (appState.productLoadedAs == 'player'

@@ -838,12 +838,24 @@
 	bottom: 20px
 }
 
-/*using wsbctc as temp sandbox for linkedin stuff*/
-#toolbar-logo {
+/*Narrasys linkedin*/
+@font-face {
+	font-family: 'Gotham Thin';
+	src: url('/source/GothamHTF-Thin.otf');
+}
+
+#toolbar-logo-big {
 	position: fixed;
 	left: 42%;
 	top: 2px;
 	width: 140px;
+}
+
+#toolbar-logo-small {
+	position: fixed;
+	top: 2px;
+	left: 45%;
+	width: 40px;
 }
 
 #narrasys-logo img {
@@ -852,44 +864,219 @@
 	bottom: 0;
 }
 
+
 .narrasys-ln {
 	font-family: 'Gotham', sans-serif;
+	background-image: url("/images/customer/Narrasys_tree.svg");
+	background-size: 62%;
+	background-repeat: no-repeat;
+	background-position: top right;
+	position: absolute;
 }
 
-/*.narrasys-ln, .narrasys-ln .altPane {*/
-	/*background-color: white;*/
-/*}*/
+.narrasys-ln .branding {
+	height: 210px;
+	background: none;
+}
 
 .narrasys-ln .item {
 	/*margin: 5px;*/
 	/*border: 5px solid black;*/
 	background: white;
+	color: black;
 }
 
 .narrasys-ln .banner-pull-quote h1 {
+	font-family: 'Gotham Thin';
 	color: white;
 	background-color: #DE6625;
 	width: 100%;
 	text-align: center;
 	padding: 20px;
 	position: absolute;
-	top: 3em;
+	/*top: 1.5em;*/
 	font-weight: lighter;
-	letter-spacing: 0.3em;
+	letter-spacing: 0.1em;
+}
+
+.narrasys-ln .centerVV .item.centerVV-h2 {
+	margin-top: 14px;
+}
+
+.narrasys-ln .centerVV .item.centerVV-h2 h2 {
+	position: relative;
+	top: 10;
+}
+
+.narrasys-ln h2 {
+	font-weight: 500;
+	/*border: 3px solid black;*/
+	/*letter-spacing: 0.1em;*/
+}
+
+.narrasys-ln .banner-pull-quote .edit-event {
+	top: 1.8em;
 }
 
 .narrasys-ln .videoMask {
 	/*border: 3px solid black;*/
 }
 
-/*.narrasys-ln .scene.cornerV.videoRight .videoMagnet {*/
+/*.narrasys-ln .scene.cornerV.videoLeft .videoMagnet {*/
 	/*margin: 0 auto;*/
-	/*margin-top: 10px;*/
+	/*!*position: absolute;*!*/
+
 	/*width: 80%;*/
 /*}*/
 
+.narrasys-ln, .narrasys-ln .altPane {
+	background-color: white;
+}
+
+.narrasys-ln .bgLayer {
+	width: 50%;
+	/*background-clip: padding-box;*/
+	/*z-index: 99;*/
+	/*position: relative;*/
+}
+
 .narrasys-ln .scene.centered .videoMagnet {
 	margin-top: 80px;
+}
+
+@media all and (min-width: 50px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 0.1em;
+	}
+}
+
+@media all and (min-width: 100px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 0.2em;
+	}
+}
+
+@media all and (min-width: 200px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 0.4em;
+	}
+}
+
+@media all and (min-width: 300px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 0.6em;
+	}
+}
+
+@media all and (min-width: 400px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 0.8em;
+	}
+}
+
+@media all and (min-width: 500px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 1.0em;
+	}
+}
+
+@media all and (min-width: 600px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 1.1em;
+	}
+}
+
+@media all and (min-width: 700px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 1.4em;
+	}
+}
+
+@media all and (min-width: 800px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 1.6em;
+	}
+}
+
+@media all and (min-width: 900px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 1.8em;
+	}
+}
+
+@media all and (min-width: 1000px) {
+	.narrasys-ln .banner-pull-quote h1 {
+		font-size: 2.0em;
+	}
+	.narrasys-ln h2 {
+		font-size: 1.7em;
+	}
+}
+
+@media all and (min-width: 1100px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 2.2em;
+	}
+}
+
+@media all and (min-width: 1200px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 2.4em;
+	}
+}
+
+@media all and (min-width: 1300px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 2.6em;
+	}
+}
+
+@media all and (min-width: 1400px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 2.8em;
+	}
+}
+
+@media all and (min-width: 1500px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 3.0em;
+	}
+}
+
+@media all and (min-width: 1500px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 3.2em;
+	}
+}
+
+@media all and (min-width: 1600px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 3.4em;
+	}
+}
+
+@media all and (min-width: 1700px) {
+	.narrasys-ln .banner-pull-quote h1,
+	.narrasys-ln h2 {
+		font-size: 3.6em;
+	}
 }
 
 

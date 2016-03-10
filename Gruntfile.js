@@ -319,7 +319,7 @@ module.exports = function (grunt) {
 		browserSync: {
 			dev: {
 				bsFiles: {
-					src : ['<%= yeoman.app %>', '!<%= yeoman.app %>/scripts/templates.js' ]
+					src : ['<%= yeoman.app %>/styles/**/*.css', '<%= yeoman.app>/scripts/**/*.js']
 				},
 				options: {
 					proxy: "https://localhost.inthetelling.com",

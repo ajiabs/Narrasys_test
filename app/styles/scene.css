@@ -426,7 +426,29 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .scene.cornerV.videoRight {
 	flex-direction: row-reverse;
 }
+/* ------------------------------------------- */
 
+.scene.centerVV {
+	display: flex;
+}
+
+.scene.centerVV .col {
+	width: 50%;
+}
+
+.scene.centerVV .videoMagnet {
+	margin: 0 auto;
+	margin-top: 9em;
+	width: 97%;
+}
+
+.scene.centerVV.videoLeft {
+	flex-direction: row;
+}
+
+.scene.centerVV.videoRight {
+	flex-direction: row-reverse;
+}
 
 /* ------------------------------------------- */
 
