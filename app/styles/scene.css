@@ -438,8 +438,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 
 .scene.centerVV .videoMagnet {
 	margin: 0 auto;
-	margin-top: 9em;
-	width: 97%;
+	margin-top: 5em;
+	width: 95%;
 }
 
 .scene.centerVV.videoLeft {

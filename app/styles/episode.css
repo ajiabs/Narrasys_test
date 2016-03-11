@@ -838,11 +838,14 @@
 	bottom: 20px
 }
 
-/*Narrasys linkedin*/
+/*Narrasys pro*/
 @font-face {
 	font-family: 'Gotham Thin';
 	src: url('/source/GothamHTF-Thin.otf');
 }
+
+
+/*logo in toolbar*/
 
 #toolbar-logo-big {
 	position: fixed;
@@ -864,7 +867,7 @@
 	bottom: 0;
 }
 
-
+/*base template class */
 .narrasys-pro {
 	font-family: 'Gotham', sans-serif;
 	background-image: url("/images/customer/Narrasys_tree.svg");
@@ -874,6 +877,7 @@
 	position: absolute;
 }
 
+/*footer spacing*/
 .narrasys-pro .branding {
 	height: 210px;
 	background: none;
@@ -882,10 +886,21 @@
 .narrasys-pro .item {
 	/*margin: 5px;*/
 	/*border: 5px solid black;*/
-	background: white;
+	/*background: white;*/
 	color: black;
 }
 
+.narrasys-pro h2 {
+	font-weight: 500;
+	/*border: 3px solid black;*/
+	/*letter-spacing: 0.1em;*/
+}
+
+.narrasys-pro .videoMask {
+	/*border: 3px solid black;*/
+}
+
+/*new banner above video item */
 .narrasys-pro .banner-pull-quote h1 {
 	font-family: 'Gotham Thin';
 	color: white;
@@ -903,23 +918,28 @@
 	top: 1.8em;
 }
 
+
+/*center video - vertical custom styles*/
 .narrasys-pro .centerVV .item.centerVV-h2 {
 	margin-top: 14px;
+	background: white;
+	padding-bottom:  0;
 }
 
 .narrasys-pro .centerVV .item.centerVV-h2 h2 {
 	position: relative;
-	top: 10;
+	bottom: 0.7em;
+	font-size: 1.8em;
+	font-weight: lighter;
+	text-align: center;
+	letter-spacing: 0.1em;
 }
 
-.narrasys-pro h2 {
-	font-weight: 500;
-	/*border: 3px solid black;*/
-	/*letter-spacing: 0.1em;*/
-}
-
-.narrasys-pro .videoMask {
-	/*border: 3px solid black;*/
+/*link with no image custom styles*/
+.narrasys-pro .link-no-title-img {
+	display: block;
+	margin: 0 auto;
+	width: 260px;
 }
 
 /*.narrasys-pro .scene.cornerV.videoLeft .videoMagnet {*/
@@ -933,11 +953,38 @@
 	background-color: white;
 }
 
-.narrasys-pro .bgLayer {
+/*center video vertical background images*/
+.narrasys-pro .centerVV .bgLayer.bg-main {
 	width: 50%;
-	/*background-clip: padding-box;*/
-	/*z-index: 99;*/
-	/*position: relative;*/
+	opacity: 1;
+}
+
+.narrasys-pro .centerVV .bgLayer.bg-alt {
+	opacity: 1;
+	background-size: cover;
+	left: 50%;
+}
+
+/*center video vertical video right*/
+
+.narrasys-pro .scene.centerVV.videoRight .bgLayer.bg-main {
+	background-color: #DE6625;
+	border-right: 5px solid #4D4D4D;
+}
+
+.narrasys-pro .scene.centerVV.videoRight .item {
+	margin-top: 5em;
+	background-color: #4D4D4D;
+	color: white;
+	/*width: 90%;*/
+}
+
+.narrasys-pro .scene.centerVV.videoRight .item img {
+	width: 99%;
+}
+
+.narrasys-pro .scene.centerVV.videoRight .item .title a {
+	color: white;
 }
 
 @media all and (min-width: 50px) {
