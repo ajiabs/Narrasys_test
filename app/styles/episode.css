@@ -844,6 +844,16 @@
 	src: url('/source/GothamHTF-Thin.otf');
 }
 
+@font-face {
+	font-family: 'Gotham Medium';
+	src: url('/source/GothamHTF-Medium.otf');
+}
+
+@font-face {
+	font-family: 'Gotham Bold Condensed';
+	src: url('/source/GothamHTF-LightItalic.otf');
+}
+
 
 /*logo in toolbar*/
 
@@ -884,32 +894,34 @@
 }
 
 .narrasys-pro .item {
-	/*margin: 5px;*/
-	/*border: 5px solid black;*/
-	/*background: white;*/
 	color: black;
-}
-
-.narrasys-pro h2 {
-	font-weight: 500;
-	/*border: 3px solid black;*/
-	/*letter-spacing: 0.1em;*/
 }
 
 .narrasys-pro .videoMask {
 	/*border: 3px solid black;*/
 }
 
+.narrasys-pro .centered-pro .videoMagnet {
+	margin-top: 7em;
+}
+
 /*new banner above video item */
+
 .narrasys-pro .banner-pull-quote h1 {
+	margin-top: 0.5em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	font-family: 'Gotham Thin';
 	color: white;
 	background-color: #DE6625;
 	width: 100%;
 	text-align: center;
-	padding: 20px;
-	position: relative;
-	/*top: 1.5em;*/
+	padding: 10px 0;
+	min-height: 100px;
+	max-height: 100px;
+	position: absolute;
+	font-size: 2.5vw;
 	font-weight: lighter;
 	letter-spacing: 0.1em;
 }
@@ -917,7 +929,6 @@
 .narrasys-pro .banner-pull-quote .edit-event {
 	top: 1.8em;
 }
-
 
 /*center video - vertical custom styles*/
 .narrasys-pro .centerVV .item.centerVV-h2 {
@@ -929,10 +940,21 @@
 .narrasys-pro .centerVV .item.centerVV-h2 h2 {
 	position: relative;
 	bottom: 0.7em;
-	font-size: 1.8em;
 	font-weight: lighter;
 	text-align: center;
-	letter-spacing: 0.1em;
+	font-size: 2vmax;
+	/*letter-spacing: 0.1em;*/
+}
+
+.narrasys-pro .centerVV .item .definition .text {
+	font-family: 'Gotham Thin';
+	padding-right: 40px;
+	font-size: 1.5vmax;
+}
+
+.narrasys-pro .centerVV .item .itemHead {
+	/*border: 3px solid black;*/
+	font-family: "Gotham Medium";
 }
 
 /*link with no image custom styles*/
@@ -965,163 +987,55 @@
 	left: 50%;
 }
 
-/*center video vertical video right*/
+/*pullquote h2*/
 
-.narrasys-pro .scene.centerVV.videoRight .bgLayer.bg-main {
-	background-color: #DE6625;
-	border-right: 5px solid #4D4D4D;
+.narrasys-pro .item .pullquote:before {
+	color: #DE6625;
+	content: U+201C;
+	font-family: "Gotham";
+	font-size: 5em;
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0.5;
 }
 
-.narrasys-pro .scene.centerVV.videoRight .item {
-	margin-top: 5em;
+.narrasys-pro .pullquote {
+	padding-left: 60px;
+	color: #878787;
+	font-family: 'Gotham Bold Condensed';
+	font-style: italic;
+	font-weight: lighter;
+}
+
+/*center video vertical Mondrian*/
+
+.narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-alt {
+	/*border: 5px solid black;*/
+	position: fixed;
+	width: 50%;
+	border-right: 8px solid #4D4D4D;
+	background-color: #DE6625;
+	opacity: 1;
+}
+
+.narrasys-pro .scene.centerVV-mondrian .fill.bgLayer.bg-main {
+	opacity: 1;
+	background-size: cover;
+	left: 50%;
+}
+
+.narrasys-pro .scene.centerVV-mondrian .item.mondrian {
+	margin-top: 1.7em;
 	background-color: #4D4D4D;
 	color: white;
 	/*width: 90%;*/
 }
 
-.narrasys-pro .scene.centerVV.videoRight .item img {
+.narrasys-pro .scene.centerVV-mondrian .item img {
 	width: 99%;
 }
 
-.narrasys-pro .scene.centerVV.videoRight .item .title a {
+.narrasys-pro .scene.centerVV-mondrian .item .title a {
 	color: white;
 }
-
-@media all and (min-width: 50px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 0.1em;
-	}
-}
-
-@media all and (min-width: 100px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 0.2em;
-	}
-}
-
-@media all and (min-width: 200px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 0.4em;
-	}
-}
-
-@media all and (min-width: 300px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 0.6em;
-	}
-}
-
-@media all and (min-width: 400px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 0.8em;
-	}
-}
-
-@media all and (min-width: 500px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 1.0em;
-	}
-}
-
-@media all and (min-width: 600px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 1.1em;
-	}
-}
-
-@media all and (min-width: 700px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 1.4em;
-	}
-}
-
-@media all and (min-width: 800px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 1.6em;
-	}
-}
-
-@media all and (min-width: 900px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 1.8em;
-	}
-}
-
-@media all and (min-width: 1000px) {
-	.narrasys-pro .banner-pull-quote h1 {
-		font-size: 2.0em;
-	}
-	.narrasys-pro h2 {
-		font-size: 1.7em;
-	}
-}
-
-@media all and (min-width: 1100px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 2.2em;
-	}
-}
-
-@media all and (min-width: 1200px) {
-	.narrasys-pro .banner-pull-quote h1 {
-		font-size: 1.5em;
-	}
-	.narrasys-pro h2 {
-		font-size: 2.4em;
-	}
-}
-
-@media all and (min-width: 1300px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 2.6em;
-	}
-}
-
-@media all and (min-width: 1400px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 2.8em;
-	}
-}
-
-@media all and (min-width: 1500px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 3.0em;
-	}
-}
-
-@media all and (min-width: 1500px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 3.2em;
-	}
-}
-
-@media all and (min-width: 1600px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 3.4em;
-	}
-}
-
-@media all and (min-width: 1700px) {
-	.narrasys-pro .banner-pull-quote h1,
-	.narrasys-pro h2 {
-		font-size: 3.6em;
-	}
-}
-
-

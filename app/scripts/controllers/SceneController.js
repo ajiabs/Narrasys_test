@@ -92,8 +92,9 @@ angular.module('com.inthetelling.story')
 
 		function filterCenterVideoItems(item) {
 			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
+			var isPullQuoteAttrib = item.templateUrl === 'templates/item/pullquote-noattrib.html';
 			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
-			return (isPullQuote || isH2) ? item : false;
+			return (isPullQuote || isH2 || isPullQuoteAttrib) ? item : false;
 		}
 
 	});
