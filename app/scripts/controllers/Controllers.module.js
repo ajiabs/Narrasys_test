@@ -14,8 +14,6 @@ import SearchPanelController from './SearchPanelController';
 import TimelineController from './TimelineController';
 import VideoController from './VideoController';
 import ContainerAssetsTestController from './ContainerAssetsTestController';
-import ittYoutubeCtrl from '../directives/ittYoutubeEmbed';
-import ittIframeCtrl from '../directives/ittIframe';
 
 let controllersModule = angular.module('iTT.controllers', [])
 	.controller('EditController', EditController)
