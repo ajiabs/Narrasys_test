@@ -8,11 +8,14 @@ var gulp = require('gulp'),
 	webpackHotMiddleware = require('webpack-hot-middleware'),
 	webpackDevMiddleware = require('webpack-dev-middleware'),
 	colorsSupported = require('supports-color'),
+	path = require('path'),
+	rimraf = require('rimraf'),
 	gutil = require('gulp-util'),
 	serve = require('browser-sync');
 
 var paths = {
-	templates: './app/templates/**/*.html'
+	templates: './app/templates/**/*.html',
+	webpackDist: './webpack-dist'
 };
 
 gulp.task('templates', function () {
@@ -21,7 +24,7 @@ gulp.task('templates', function () {
 		.pipe(gulp.dest('app/scripts'));
 });
 
-gulp.task('templateCache', function() {
+gulp.task('templateCache', ['templates'], function() {
 	gulp.watch('**/*.html', ['templates']);
 });
 
@@ -45,7 +48,7 @@ gulp.task('serve', ['templateCache'], function() {
 	});
 });
 
-gulp.task('build', ['templates'], function(cb) {
+gulp.task('build', ['clean', 'templates'], function(cb) {
 	var wpConfig = require('./webpack.prod.config');
 	webpack(wpConfig, function(err, stats) {
 		if(err)  {
@@ -59,4 +62,8 @@ gulp.task('build', ['templates'], function(cb) {
 		}));
 	});
 	cb();
+});
+
+gulp.task('clean', function() {
+	rimraf.sync(path.join(paths.webpackDist, '*'));
 });

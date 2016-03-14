@@ -5,6 +5,10 @@
 
 import angular from 'angular';
 
+//import './plugin/taShim';
+//import 'textAngular/dist/textAngular-sanitize.min';
+//import 'textAngular';
+
 let configsModule = angular.module('iTT.configs', [
 	//'textAngular'
 ])

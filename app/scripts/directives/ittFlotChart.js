@@ -1,9 +1,7 @@
 'use strict';
 
-import flot from 'flot/flot';
+import 'flot-charts';
 import $ from 'jquery';
-
-console.log('flot', flot);
 
 // an angular.js wrapper for flot charting library -http://www.flotcharts.org/ but using flot.pie.js
 export default function ittFlotr2Chart() {

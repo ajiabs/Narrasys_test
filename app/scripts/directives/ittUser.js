@@ -1,4 +1,7 @@
 'use strict';
+
+import noAvatarDefaultImg from '../../images/no-avatar.gif';
+
 export default function ittUser(appState, authSvc, dataSvc, awsSvc, modelSvc) {
 	'ngInject';
 	return {
@@ -13,6 +16,7 @@ export default function ittUser(appState, authSvc, dataSvc, awsSvc, modelSvc) {
 			scope.appState = appState;
 
 			scope.loading = true;
+			scope.noAvatarImg = noAvatarDefaultImg;
 			scope.logout = authSvc.logout;
 
 			authSvc.authenticate().then(function () {

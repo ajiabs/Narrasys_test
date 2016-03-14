@@ -1,12 +1,11 @@
 'use strict';
 import './plugin/newrelic';
 import '../config';
+
 import angular from 'angular';
 import 'angular-route';
 import 'angular-animate';
-//import 'angular-sanitize';
-//import 'textAngular/dist/textAngular-sanitize.min';
-//import 'textAngular';
+import 'angular-sanitize';
 import Filters from './filters/filters';
 
 import Controllers from './controllers/Controllers.module';
@@ -22,7 +21,7 @@ let ittApp = angular.module('iTT', [
 	'ngRoute',
 	'ngAnimate',
 	//'textAngular',
-	//'ngSanitize',
+	'ngSanitize',
 	Filters.name,
 	Templates.name,
 	Controllers.name,
