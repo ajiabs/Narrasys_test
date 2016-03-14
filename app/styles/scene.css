@@ -607,7 +607,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 
 @media screen and (min-width: 900px) {
-	.scene.centered .col {
+	.scene.centered-pro .col {
 		padding: 7% 25% 0 25%;
 	}
 }
