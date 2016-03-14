@@ -96,8 +96,8 @@
 		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
 				.then(handleSuccess)
-				.catch(tryAgain)
-				.catch(lastTry);
+				.catch(tryAgain);
+
 
 			function handleSuccess(ytInstance) {
 				_players[divId] = {yt: ytInstance, ready: false };
@@ -106,7 +106,8 @@
 
 			function tryAgain() {
 				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
-					.then(handleSuccess);
+					.then(handleSuccess)
+					.catch(lastTry);
 			}
 
 			function lastTry(e) {
