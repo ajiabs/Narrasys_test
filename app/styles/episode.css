@@ -850,7 +850,7 @@
 }
 
 @font-face {
-	font-family: 'Gotham Bold Condensed';
+	font-family: 'Gotham Light Italic';
 	src: url('/source/GothamHTF-LightItalic.otf');
 }
 
@@ -1003,7 +1003,7 @@
 .narrasys-pro .pullquote {
 	padding-left: 60px;
 	color: #878787;
-	font-family: 'Gotham Bold Condensed';
+	font-family: 'Gotham Light Italic';
 	font-style: italic;
 	font-weight: lighter;
 }
