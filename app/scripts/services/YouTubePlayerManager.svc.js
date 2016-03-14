@@ -3,7 +3,7 @@
  */
 'use strict';
 export default function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc) {
-
+	'ngInject';
 	var _youTubePlayerManager;
 	var _players = {};
 	var _mainPlayerId;

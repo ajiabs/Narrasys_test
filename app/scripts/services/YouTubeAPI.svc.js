@@ -4,6 +4,7 @@
 
 class YoutubePlayerApi {
 	constructor($timeout, $q) {
+		'ngInject';
 		this.$q = $q;
 		this.$timeout = $timeout;
 		//this.timesRan = 0;

@@ -2,7 +2,7 @@
  * Created by githop on 12/7/15.
  */
 
-export default function ittYoutube() {
+export function ittYoutube() {
 	return {
 		restrict: 'EA',
 		template: '<div id="{{ittYoutubeCtrl.embedId}}"></div>',
@@ -19,7 +19,8 @@ export default function ittYoutube() {
 	};
 }
 
-function ittYoutubeCtrl($timeout, $scope, youTubePlayerManager, youtubeSvc) {
+export function ittYoutubeCtrl($timeout, $scope, youTubePlayerManager, youtubeSvc) {
+	'ngInject';
 	var _ctrl = this;  //jshint ignore:line
 	var embedId;
 	var isMainPlayer;

@@ -70,8 +70,8 @@ export default function appState($interval, config) {
 
 	// workaround for iOS crasher (can't bind to window.resize when inside an iframe)
 	$interval(function () {
-		svc.windowHeight = angular.element(window).height();
-		svc.windowWidth = angular.element(window).width();
+		svc.windowHeight = $(window).height();
+		svc.windowWidth = $(window).width();
 	}, 50, 0, false);
 
 	if (config.debugInBrowser) {

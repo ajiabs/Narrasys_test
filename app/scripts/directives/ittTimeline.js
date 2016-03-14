@@ -4,7 +4,6 @@
 // TODO some events need to be unbound on destroy, which I'll get around to implementing if this ever needs to be destroyed
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
-import $ from 'jquery';
 
 export default function ittTimeline($rootScope, $timeout, appState, timelineSvc, modelSvc) {
 	'ngInject';
@@ -22,7 +21,7 @@ export default function ittTimeline($rootScope, $timeout, appState, timelineSvc,
 		link: function (scope, element) {
 			// console.log('ittTimeline', scope, element);
 
-			scope.timelineTemplate = (appState.productLoadedAs === 'player' ? 'templates/timeline-episode.html' : 'templates/timeline-story.html');
+			scope.timelineTemplate = 'templates/timeline-story.html';
 			scope.appState = appState;
 			scope.timeline = timelineSvc;
 			scope.handlePosition = 0; // position of draghandle (as a fraction of full timeline)

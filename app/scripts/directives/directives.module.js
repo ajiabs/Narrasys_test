@@ -1,7 +1,6 @@
 /**
  * Created by githop on 12/12/15.
  */
-
 import angular from 'angular';
 import autofocus from './autofocus';
 import ittAssetUploader from './ittAssetUploader';
@@ -11,7 +10,7 @@ import ittEpisode from './ittEpisode';
 import ittEpisodeEditor from './ittEpisodeEditor';
 import ittEpisodeList from './ittEpisodeList';
 import ittFlotr2Chart from './ittFlotChart';
-import ittIframe from './ittIframe';
+import {ittIframe, ittIframeCtrl} from './ittIframe';
 import ittItem from './ittItem';
 import ittItemDetailModal from './ittItemDetailModal';
 import ittItemEditor from './ittItemEditor';
@@ -41,7 +40,7 @@ import sxsContainerAssets from './sxsContainerAssets';
 import sxsInputI18n from './sxsInputI18n';
 import sxsInputTime from './sxsInputTime';
 
-import ittYoutube from './ittYoutubeEmbed';
+import {ittYoutube, ittYoutubeCtrl} from './ittYoutubeEmbed';
 import ittToolbarStory from './ittToolbarStory';
 
 let directivesModule = angular.module('iTT.directives', [])
@@ -54,6 +53,7 @@ let directivesModule = angular.module('iTT.directives', [])
 	.directive('ittEpisodeList', ittEpisodeList)
 	.directive('ittFlotr2Chart', ittFlotr2Chart)
 	.directive('ittIframe', ittIframe)
+	.controller('ittIframeCtrl', ittIframeCtrl)
 	.directive('ittItem', ittItem)
 	.directive('ittItemDetailModal', ittItemDetailModal)
 	.directive('ittItemEditor', ittItemEditor)
@@ -83,6 +83,7 @@ let directivesModule = angular.module('iTT.directives', [])
 	.directive('sxsInputI18n', sxsInputI18n)
 	.directive('sxsInputTime', sxsInputTime)
 	.directive('ittYoutube', ittYoutube)
+	.controller('ittYoutubeCtrl', ittYoutubeCtrl)
 	.directive('ittToolbarStory', ittToolbarStory);
 
 export default directivesModule;

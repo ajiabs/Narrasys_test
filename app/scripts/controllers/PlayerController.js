@@ -480,5 +480,4 @@ export default function PlayerController(config, $scope, $location, $rootScope, 
 			firstplayWatcher();
 			escWatcher();
 		});
-	});
 }

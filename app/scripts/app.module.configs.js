@@ -5,9 +5,11 @@
 
 import angular from 'angular';
 
-let configsModule = angular.module('iTT.configs', [])
+let configsModule = angular.module('iTT.configs', [
+	//'textAngular'
+])
 	//// Configure x-domain resource whitelist (TODO: do we actually need this?)
-	.config(function($sceDelegateProvider, $httpProvider) {
+	.config(function($sceDelegateProvider, $httpProvider, $provide) {
 		'ngInject';
 		$sceDelegateProvider.resourceUrlWhitelist([
 			'self',
@@ -29,6 +31,8 @@ let configsModule = angular.module('iTT.configs', [])
 		});
 
 		//$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
+			//taOptions.forceTextAngularSanitize = false;
+
 		//	taOptions.toolbar = [
 		//		['h1', 'h2', 'h3'],
 		//		['bold', 'italics', 'underline', 'strikeThrough'],

@@ -28,8 +28,6 @@ let controllersModule = angular.module('iTT.controllers', [])
 	.controller('SearchPanelController', SearchPanelController)
 	.controller('TimelineController', TimelineController)
 	.controller('ContainerAssetsTestController', ContainerAssetsTestController)
-	.controller('VideoController', VideoController)
-	.controller('ittYoutubeCtrl', ittYoutubeCtrl)
-	.controller('ittIframeCtrl', ittIframeCtrl);
+	.controller('VideoController', VideoController);
 
 export default controllersModule;

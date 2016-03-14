@@ -1,39 +1,39 @@
 'use strict';
-
+import './plugin/newrelic';
+import '../config';
 import angular from 'angular';
 import 'angular-route';
 import 'angular-animate';
-import 'angular-sanitize';
+//import 'angular-sanitize';
+//import 'textAngular/dist/textAngular-sanitize.min';
 //import 'textAngular';
-
-import './plugin/newrelic';
 import Filters from './filters/filters';
-import * as styles from '../styles/styles'; //jshint ignore:line
-import $ from 'jquery';
 
 import Controllers from './controllers/Controllers.module';
 import Directives from './directives/directives.module';
 import Services from './services/services.module';
 import Templates from './templates';
 import Configs from './app.module.configs';
+import * as Styles from '../styles/styles';
 
 // Declare the top level application module and its dependencies
 let ittApp = angular.module('iTT', [
+	Configs.name,
 	'ngRoute',
 	'ngAnimate',
-	'ngSanitize',
 	//'textAngular',
-	Configs.name,
+	//'ngSanitize',
 	Filters.name,
 	Templates.name,
 	Controllers.name,
 	Directives.name,
-	Services.name,
+	Services.name
 ])
 
 
 // Configure routing
 .config(function ($routeProvider) {
+	'ngInject';
 	$routeProvider
 		.when('/', {
 			title: "Telling STORY",
@@ -144,7 +144,7 @@ let ittApp = angular.module('iTT', [
 })
 
 .run(function ($rootScope, errorSvc) {
-
+	'ngInject';
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
 		errorSvc.init(); // clear display of any errors from the previous route
@@ -178,40 +178,4 @@ let ittApp = angular.module('iTT', [
 	});
 });
 
-//hot reload
-/* jshint ignore:start */
-var appContainer = document.getElementById('app-container');
-var noAngularDOM;
-
-angular.element(document).ready(() => {
-	angular.bootstrap(appContainer, [ittApp.name]), {strictDi: true}; //jshint ignore:line
-});
-
-//
-//angular.element(document).ready(()=> {
-//	if(location.origin.match(/localhost/)) {
-//		System.trace = true;
-//		noAngularDOM = appContainer.cloneNode(true);
-//		if ((!System.hotReloader)) {
-//			System.import('capaj/systemjs-hot-reloader').then(HotReloader => {
-//				System.hotReloader = new HotReloader.default('http://localhost:8081/');
-//				System.hotReloader.on('change', function (name) {
-//					console.log(name, 'changed');
-//				});
-//			});
-//		}
-//	}
-//	angular.bootstrap(appContainer, [ittApp.name]), {
-//		strictDi: true
-//	};
-//});
-
-
-//export function __unload(){
-//	appContainer = document.getElementById('app-container');
-//	appContainer.remove();
-//	document.body.appendChild(noAngularDOM.cloneNode(true));
-//}
-
-/* jshint ignore:end */
 export default ittApp;
