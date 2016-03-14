@@ -1,7 +1,7 @@
 /*jshint sub:true*/
 'use strict';
 
-/* 
+/*
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 
 TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/when we decide we're going to keep it...
@@ -135,7 +135,7 @@ angular.module('com.inthetelling.story')
 					}
 
 					// Special cases:
-					// if new template is image-fill, 
+					// if new template is image-fill,
 					// 	set cosmetic to true, itemForm.
 					// if old template was image-fill, set cosmetic to false
 					// TODO this is fragile, based on template name:
