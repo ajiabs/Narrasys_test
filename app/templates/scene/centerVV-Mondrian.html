@@ -43,7 +43,7 @@ showCurrent is forced in main.
 		</div>
 		<div class="pane mainPane">
 			<div class="content contentLayer stretchToViewport" ng-class="{isNarrow: isNarrow, isEmpty: mainContentItems.length == 0}" itt-width-watch>
-				<div class="item animate" ng-repeat="item in mainItems = (mainContentItems | isCurrent )" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+				<div class="item animate" ng-repeat="item in mainItems = (mainContentItems | isCurrent | filter:filterCenterVideoItems )" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 				<div class="clear"></div>
 			</div>
 			<div class="fill fgLayer overlay">
