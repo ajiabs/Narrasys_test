@@ -22,14 +22,17 @@
 	</div>
 
 	<!--if we are a player, isFramed-->
-	<div class="nav-item new-window-btn" ng-if="appState.isFramed && (appState.productLoadedAs == 'player'
+	<div class="nav-item new-window-btn">
+		<div ng-if="appState.isFramed && (appState.productLoadedAs == 'player'
 	 			|| (appState.productLoadedAs == 'narrative'
 	 			&& !narrative.disable_new_window ) )" class="escapegroup buttongroup">
-		<!-- this needs to be an <a> or it trips popup blockers -->
-		<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{appState.time || 0}}&access_token={{appState.user.access_token}}" target="_blank">
-			<span>New window</span>
-		</a>
+			<!-- this needs to be an <a> or it trips popup blockers -->
+			<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{appState.time || 0}}&access_token={{appState.user.access_token}}" target="_blank">
+				<span>New window</span>
+			</a>
+		</div>
 	</div>
+
 	<div class="nav-item searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
 		<button tabindex="2" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
 			<span>Search</span>

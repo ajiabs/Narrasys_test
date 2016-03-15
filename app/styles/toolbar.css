@@ -40,8 +40,8 @@
 	order: 2;
 }
 .toolbar .nav-item.toolbar-logos {
-	flex: 2;
 	order: 3;
+	flex: 2;
 	margin-top: 5px;
 }
 
@@ -53,11 +53,11 @@
 }
 
 .toolbar .nav-item.new-window-btn {
-	order: 4;
+	order: 5;
 }
 
 .toolbar .nav-item.profilegroup {
-	order: 5;
+	order: 4;
 }
 
 button {
