@@ -13,8 +13,7 @@
 }
 
 .toolbar {
-	pointer-events: none;
-	display: flex;
+	pointer-events: none
 }
 
 .toolbar a,
@@ -30,34 +29,6 @@
 	border-radius: 0.75em;
 	margin: 0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
-}
-
-.toolbar .nav-item.scene-navs-btns {
-	order: 1;
-}
-
-.toolbar .nav-item.searchgroup {
-	order: 2;
-}
-.toolbar .nav-item.toolbar-logos {
-	flex: 2;
-	order: 3;
-	margin-top: 5px;
-}
-
-#toolbar-logo-big {
-	width: 140px;
-}
-#toolbar-logo-small {
-	width: 40px;
-}
-
-.toolbar .nav-item.new-window-btn {
-	order: 4;
-}
-
-.toolbar .nav-item.profilegroup {
-	order: 5;
 }
 
 button {
@@ -692,7 +663,7 @@ button {
 	width: 60%;
 	max-width: 500px;
 	min-width: 290px;
-
+	
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
