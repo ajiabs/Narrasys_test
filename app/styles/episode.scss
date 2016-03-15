@@ -841,17 +841,17 @@
 /*Narrasys pro*/
 @font-face {
 	font-family: 'Gotham Thin';
-	src: url('/source/GothamHTF-Thin.otf');
+	src: url('/images/font/GothamHTF-Thin.otf');
 }
 
 @font-face {
 	font-family: 'Gotham Medium';
-	src: url('/source/GothamHTF-Medium.otf');
+	src: url('/images/font/GothamHTF-Medium.otf');
 }
 
 @font-face {
 	font-family: 'Gotham Light Italic';
-	src: url('/source/GothamHTF-LightItalic.otf');
+	src: url('/images/font/GothamHTF-LightItalic.otf');
 }
 
 $narrasysOrange: #DE6625;
@@ -926,9 +926,6 @@ $mondrianBorder: #4D4D4D;
 	}
 
 	.centered-pro {
-		.videoMagnet {
-			margin-top: 5em;
-		}
 
 		.banner-pull-quote {
 			h1 {

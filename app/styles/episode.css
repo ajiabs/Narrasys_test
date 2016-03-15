@@ -663,13 +663,13 @@
 /*Narrasys pro*/
 @font-face {
   font-family: 'Gotham Thin';
-  src: url("/source/GothamHTF-Thin.otf"); }
+  src: url("/images/font/GothamHTF-Thin.otf"); }
 @font-face {
   font-family: 'Gotham Medium';
-  src: url("/source/GothamHTF-Medium.otf"); }
+  src: url("/images/font/GothamHTF-Medium.otf"); }
 @font-face {
   font-family: 'Gotham Light Italic';
-  src: url("/source/GothamHTF-LightItalic.otf"); }
+  src: url("/images/font/GothamHTF-LightItalic.otf"); }
 .toolbar-logo {
   background: transparent; }
   .toolbar-logo #toolbar-logo-big {
@@ -721,8 +721,6 @@
     width: 260px; }
   .narrasys-pro .altPane {
     background-color: white; }
-  .narrasys-pro .centered-pro .videoMagnet {
-    margin-top: 5em; }
   .narrasys-pro .centered-pro .banner-pull-quote h1 {
     margin-top: 0.5em;
     display: flex;

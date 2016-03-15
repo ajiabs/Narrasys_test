@@ -438,7 +438,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 
 .scene.centerVV .videoMagnet {
 	margin: 0 auto;
-	margin-top: 5em;
+	margin-top: 8.5em;
 	width: 95%;
 }
 
@@ -603,14 +603,15 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 
 .scene.centered-pro .videoMagnet {
-	/*margin-top: 80px;*/
+	margin-top: 5em;
 }
 
-@media screen and (min-width: 900px) {
-	.scene.centered-pro .col {
-		padding: 7% 25% 0 25%;
-	}
-}
+
+/*@media screen and (min-width: 900px) {*/
+	/*.scene.centered-pro .col {*/
+		/*padding: 7% 25% 0 25%;*/
+	/*}*/
+/*}*/
 
 
 /* ------------------------------------------- */
