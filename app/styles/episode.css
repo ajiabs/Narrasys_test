@@ -697,21 +697,16 @@
   .narrasys-pro .item {
     color: black; }
     .narrasys-pro .item .pullquote {
-      color: #5B5B5B;
       font-family: 'Gotham Light Italic';
-      font-weight: lighter;
+      color: #5b5b5b;
       font-size: 2.7vmax;
       position: relative;
-      bottom: 20px;
-      left: 20px; }
+      bottom: 0.8em; }
       .narrasys-pro .item .pullquote:before {
         color: #de6625;
         content: U+201C;
         font-family: "Gotham";
         font-size: 4em;
-        position: absolute;
-        top: 0;
-        left: 0;
         opacity: 0.2; }
   .narrasys-pro .videoMask {
     /*border: 3px solid black;*/ }
@@ -775,6 +770,10 @@
     .narrasys-pro .centerVV .item .itemHead {
       /*border: 3px solid black;*/
       font-family: "Gotham Medium"; }
+    .narrasys-pro .centerVV .item .pullquote {
+      font-size: 2.7vmax;
+      position: relative;
+      bottom: 0.5em; }
   .narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-alt {
     position: fixed;
     width: 50%;

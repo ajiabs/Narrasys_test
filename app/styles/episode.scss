@@ -856,6 +856,7 @@
 
 $narrasysOrange: #DE6625;
 $mondrianBorder: #4D4D4D;
+$h2pullquote: #5B5B5B;
 
 .toolbar-logo {
 	background: transparent;
@@ -892,21 +893,16 @@ $mondrianBorder: #4D4D4D;
 		color: black;
 
 		.pullquote {
-			color: #5B5B5B;
 			font-family: 'Gotham Light Italic';
-			font-weight: lighter;
+			color: $h2pullquote;
 			font-size: 2.7vmax;
 			position: relative;
-			bottom: 20px;
-			left: 20px;
+			bottom: 0.8em;
 			&:before {
 				color: $narrasysOrange;
 				content: U+201C;
 				font-family: "Gotham";
 				font-size: 4em;
-				position: absolute;
-				top: 0;
-				left: 0;
 				opacity: 0.2;
 			}
 		}
@@ -1008,6 +1004,12 @@ $mondrianBorder: #4D4D4D;
 				font-family: "Gotham Medium";
 			}
 
+			//pull quote overrides
+			.pullquote {
+				font-size: 2.7vmax;
+				position: relative;
+				bottom: 0.5em;
+			}
 		}
 	}
 
