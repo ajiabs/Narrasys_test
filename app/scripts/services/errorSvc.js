@@ -30,6 +30,7 @@ angular.module('com.inthetelling.story')
 
 				//guest accessible narratives - refresh session
 				if (exception.status === 401 && exception.data.error === 'Authentication expired. Please log in again.' && !exception.config.url.match(/show_user/)) {
+					console.log('exception: ', exception);
 					$rootScope.$broadcast('error:guest-sessionTimeout');
 					//return out of this fn in order to avoid
 					//pushing current exception into errors array

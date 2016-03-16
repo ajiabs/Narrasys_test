@@ -29,9 +29,9 @@ angular.module('com.inthetelling.story')
 			svc.authenticateViaNonce($routeParams.narrativePath);
 		});
 
-		$rootScope.$on('error:user-sessionTimeout', function() {
-			svc.logout();
-		});
+		//$rootScope.$on('error:user-sessionTimeout', function() {
+		//	svc.logout();
+		//});
 
 		svc.getRoleForNarrative = function (narrativeId, roles) {
 			roles = typeof roles !== 'undefined' ? roles : appState.user.roles;
@@ -227,6 +227,7 @@ angular.module('com.inthetelling.story')
 				.then(function (nonce) {
 					svc.getAccessToken(nonce)
 						.then(function () {
+							console.warn('Auth\'d via Nonce Success!');
 							defer.resolve();
 						});
 				});
