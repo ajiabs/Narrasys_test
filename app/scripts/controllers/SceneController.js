@@ -3,6 +3,8 @@
 angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
 
+		$scope.filterCenterVideoItems = filterCenterVideoItems;
+
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");
 
@@ -17,7 +19,7 @@ angular.module('com.inthetelling.story')
 			// some scene templates let you specify showCurrent for one or more columns; others do it automatically (that will be in the template)
 			$scope.showCurrent = ($.inArray("showCurrent", $scope.scene.layouts) > -1);
 
-			// Precalculate each fg, bg, and content pane on scene creation for performance.  
+			// Precalculate each fg, bg, and content pane on scene creation for performance.
 			$scope.contentItems = $filter("isContent")($scope.scene.items);
 			$scope.mainFgItems = $filter("itemLayout")($scope.scene.items, "mainFg");
 			$scope.mainBgItems = $filter("itemLayout")($scope.scene.items, "mainBg");
@@ -25,7 +27,7 @@ angular.module('com.inthetelling.story')
 			$scope.altBgItems = $filter("itemLayout")($scope.scene.items, "altBg");
 
 			// Content is a little trickier:
-			// * splitRequired:   
+			// * splitRequired:
 			//   main = transcript + optional   / alt=required - transcript
 			// * splitOptional:
 			//   main=transcript + required / alt=optional - transcript
@@ -87,5 +89,12 @@ angular.module('com.inthetelling.story')
 				}
 			}
 		};
+
+		function filterCenterVideoItems(item) {
+			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
+			var isPullQuoteAttrib = item.templateUrl === 'templates/item/pullquote-noattrib.html';
+			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
+			return (isPullQuote || isH2 || isPullQuoteAttrib) ? item : false;
+		}
 
 	});

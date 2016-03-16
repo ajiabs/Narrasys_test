@@ -23,7 +23,7 @@ module.exports = function (grunt) {
 				src: 'templates/**/*.html',
 				dest: '<%= yeoman.app %>/scripts/templates.js',
 				options: {
-					/* 
+					/*
 					collapseWhitespace does save some space, and works corretly here (though not as part of the base htmlmin rule)
 					but it has visible side effects, making server and server:dist appear different.
 					*/
@@ -67,19 +67,19 @@ module.exports = function (grunt) {
 			templates: {
 				files: ['<%= yeoman.app %>/templates/**/*.html'],
 				tasks: ['ngtemplates']
-			},
-			livereload: {
-				options: {
-					livereload: '<%= connect.options.livereload %>'
-				},
-				files: [
-					'<%= yeoman.app %>/**/*.html',
-					'.tmp/styles/{,*/}*.css',
-					'{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
-					'<%= yeoman.app %>/server-mock/**/*.{html,json}',
-					'<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}'
-				]
 			}
+			//livereload: {
+			//	options: {
+			//		livereload: '<%= connect.options.livereload %>'
+			//	},
+			//	files: [
+			//		'<%= yeoman.app %>/**/*.html',
+			//		'.tmp/styles/{,*/}*.css',
+			//		'{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
+			//		'<%= yeoman.app %>/server-mock/**/*.{html,json}',
+			//		'<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}'
+			//	]
+			//}
 		},
 		autoprefixer: {
 			options: ['last 2 versions'],
@@ -235,7 +235,7 @@ module.exports = function (grunt) {
 					dest: '<%= yeoman.dist %>',
 					src: [
 						'[^_]*.{ico,png,txt}',
-						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}',
+						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,otf,woff}',
 						'styles/font/*',
 						'config.js',
 						'iosFrameHack.js'
@@ -315,9 +315,22 @@ module.exports = function (grunt) {
 					ext: '.min.js'
 				}]
 			}
+		},
+		browserSync: {
+			dev: {
+				bsFiles: {
+					src : ['<%= yeoman.app %>/styles/**/*.css', '<%= yeoman.app>/scripts/**/*.js']
+				},
+				options: {
+					proxy: "https://localhost.inthetelling.com",
+					watchTask: true
+				}
+			}
 		}
 
 	});
+
+	grunt.loadNpmTasks('grunt-browser-sync');
 
 	grunt.registerTask('server', function (target) {
 		if (target === 'dist') {
@@ -366,6 +379,11 @@ module.exports = function (grunt) {
 		'uglify',
 		'rev',
 		'usemin'
+	]);
+
+	grunt.registerTask('doWork', [
+		'browserSync',
+		'watch'
 	]);
 
 };
