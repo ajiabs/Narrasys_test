@@ -82,7 +82,6 @@ angular.module('com.inthetelling.story')
 			$scope.narrativeId = $routeParams.narrativeId;
 		}
 
-		console.log('setting templateUrl on appState:', $scope);
 
 		if (appState.isFramed) {
 			/*
