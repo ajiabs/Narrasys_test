@@ -3,7 +3,7 @@
 angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
 
-		$scope.filterCenterVideoItems = filterCenterVideoItems;
+		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");
@@ -90,7 +90,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		function filterCenterVideoItems(item) {
+		function byPullquoteOrH2(item) {
 			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
 			var isPullQuoteAttrib = item.templateUrl === 'templates/item/pullquote-noattrib.html';
 			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
