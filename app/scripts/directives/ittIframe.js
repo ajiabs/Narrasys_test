@@ -28,7 +28,6 @@
 		function linkFn(scope, elm) {
 			var _btnConst = 95;
 
-			console.log('linkfn fun', appState);
 			var _unWatch = angular.noop;
 			var _toolbarH = 75;
 			var _timelineBarH = 145;
