@@ -858,23 +858,6 @@ $narrasysOrange: #DE6625;
 $mondrianBorder: #4D4D4D;
 $h2pullquote: #5B5B5B;
 
-.toolbar-logo {
-	background: transparent;
-	#toolbar-logo-big {
-		position: fixed;
-		left: 42%;
-		top: 2px;
-		width: 140px;
-	}
-
-	#toolbar-logo-small {
-		position: fixed;
-		top: 2px;
-		left: 45%;
-		width: 40px;
-	}
-}
-
 /*base template class */
 .narrasys-pro {
 	font-family: 'Gotham', sans-serif;
@@ -897,7 +880,7 @@ $h2pullquote: #5B5B5B;
 			color: $h2pullquote;
 			font-size: 2.7vmax;
 			position: relative;
-			bottom: 0.8em;
+			bottom: 0.5em;
 			&:before {
 				color: $narrasysOrange;
 				content: U+201C;

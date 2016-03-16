@@ -82,6 +82,7 @@ angular.module('com.inthetelling.story')
 			$scope.narrativeId = $routeParams.narrativeId;
 		}
 
+
 		if (appState.isFramed) {
 			/*
 				workaround for when instructure canvas fails to size our iframe correctly

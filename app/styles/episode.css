@@ -670,19 +670,6 @@
 @font-face {
   font-family: 'Gotham Light Italic';
   src: url("/images/font/GothamHTF-LightItalic.otf"); }
-.toolbar-logo {
-  background: transparent; }
-  .toolbar-logo #toolbar-logo-big {
-    position: fixed;
-    left: 42%;
-    top: 2px;
-    width: 140px; }
-  .toolbar-logo #toolbar-logo-small {
-    position: fixed;
-    top: 2px;
-    left: 45%;
-    width: 40px; }
-
 /*base template class */
 .narrasys-pro {
   font-family: 'Gotham', sans-serif;
@@ -701,7 +688,7 @@
       color: #5b5b5b;
       font-size: 2.7vmax;
       position: relative;
-      bottom: 0.8em; }
+      bottom: 0.5em; }
       .narrasys-pro .item .pullquote:before {
         color: #de6625;
         content: U+201C;

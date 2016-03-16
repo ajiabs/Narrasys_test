@@ -9,9 +9,8 @@ angular.module('com.inthetelling.story')
 			controller: 'EpisodeController',
 
 			link: function (scope) {
-				// console.log('ittEpisode', scope, element, attrs);
+				 console.log('ittEpisode', scope);
 				scope.episode = modelSvc.episodes[appState.episodeId];
-
 				// TODO: this will break if the timeline and the episode timeline don't match.
 				// TODO: check whether this gets called if multiple episodes are added to the timeline... I'm thinking probably not....
 				analyticsSvc.captureEpisodeActivity("episodeLoad");
@@ -20,6 +19,7 @@ angular.module('com.inthetelling.story')
 				// This is an even stupider but relatively harmless HACK to keep it  pointing at the right data:
 				var scopeHack = function () {
 					scope.episode = modelSvc.episodes[appState.episodeId];
+					appState.playerTemplate = scope.episode.templateUrl;
 				};
 				$interval(scopeHack, 457);
 
