@@ -39,6 +39,14 @@ angular.module('com.inthetelling.story')
 					return;
 				}
 
+				var _userRoleAccessError = exception.status === 401 && exception.data.error === "This action requires logging in or you do not have sufficient rights.";
+
+				if (_userRoleAccessError) {
+					console.warn('access not allowed??');
+					$rootScope.$broadcast('error:sessionTimeout');
+					return;
+				}
+
 				var _eventReportAccessFailure = exception.config.url.match(/(episode_user_metrics|event_user_actions)/);
 				if (_eventReportAccessFailure) {
 					//this is prevent the error dialog from showing when failing to post an event report with BOTH
@@ -57,14 +65,6 @@ angular.module('com.inthetelling.story')
 					//the analytics service will save failed reports and eventually post them when credentials are restored
 					//which happens in the _sessionTimeout conditional above.
 					return;
-				}
-
-
-				var _userRoleTimeout;
-
-				if (exception.status === 401 && exception.data.error === "This action requires logging in or you do not have sufficient rights.") {
-					console.log('catch user session time out');
-					$rootScope.$broadcast('error:user-sessionTimeout');
 				}
 
 
@@ -87,6 +87,9 @@ angular.module('com.inthetelling.story')
 						"exception": exception
 					});
 				}
+			} else if (exception && exception.session) {
+				svc.errors.push({exception: exception});
+
 			} else {
 				// generic thrown javascript error.  TODO show these too, but only in dev environment (they're often not meaningful)
 				console.warn("ErrorSvc caught error: ", exception, cause);

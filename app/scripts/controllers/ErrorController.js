@@ -1,16 +1,17 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState, authSvc) {
+	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState, authSvc, $interval) {
 		// console.log("errorController", $scope);
 
 		$scope.errorSvc = errorSvc;
 		$scope.logout = authSvc.logout;
 		$scope.user = appState.user;
+		$scope.countDown = countDown;
 
 		// probably should split this into separate functions for errors and notifications, but good enough for now
 		$scope.dismiss = function (cur) {
-			// this use of splice to remove items from the middle of the array in place works here 
+			// this use of splice to remove items from the middle of the array in place works here
 			// only because we're only removing a single item.  For multiple removes in one pass, will need to  scan backwards through the array
 			for (var i = 0; i < errorSvc.errors.length; i++) {
 				if (errorSvc.errors[i] === cur) {
@@ -25,5 +26,19 @@ angular.module('com.inthetelling.story')
 				}
 			}
 		};
+
+		function countDown() {
+			var _timer = 5;
+			$scope.timer = _timer;
+
+			$interval(function() {
+				$scope.timer--;
+
+				if ($scope.timer === 0) { authSvc.logout(); }
+
+			}, 1000);
+
+		}
+
 
 	});

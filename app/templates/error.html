@@ -1,6 +1,6 @@
 <span ng-if="errorSvc.errors.length || errorSvc.notifications.length" class="errors">
 	<div class="error" ng-repeat="error in errorSvc.errors" ng-click="dismiss(error)">
-		<h3>Error: {{error.cause || error.exception.data.error || error.exception.data || '(unknown reason)'}}</h3>
+		<h3>Error: {{error.cause || error.exception.data.error || error.exception.data || error.exception.session || '(unknown reason)'}}</h3>
 		<p ng-if="error.exception.config.url">
 			<i>(While trying to load {{error.exception.config.url}})</i>
 		</p>
@@ -14,6 +14,13 @@
 				<a ng-click="logout();">reset your session</a> and start over.
 			</span>
 		</p>
+
+		<div ng-if="error.exception.session" ng-init="countDown()">
+			<p>Look's like your session timed out... :/</p>
+
+			Redirecting to Login screen in: <h1>{{timer}} seconds</h1>
+		</div>
+
 		<!-- 		<a style="font-size: small" ng-click="showDetails= !showDetails">(show details)</a>
 		<pre ng-if="showDetails" style="font-size: small" ng-bind="error | pretty"></pre>
  -->
