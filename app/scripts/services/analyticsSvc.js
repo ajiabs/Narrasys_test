@@ -198,7 +198,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		function handleFailedReport(errorData) {
-			console.warn('post failed', errorData.config);
 			var missedActivityOrMetrics = errorData.config.data;
 
 			angular.forEach(missedActivityOrMetrics, function(metricsOrActionsArr) {
