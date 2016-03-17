@@ -59,11 +59,6 @@ angular.module('com.inthetelling.story')
 					return;
 				}
 
-				if (exception.status === 401 && exception.data.error === "This action requires logging in or you do not have sufficient rights.") {
-					//console.log('catch user session time out');
-					//$rootScope.$broadcast('error:user-sessionTimeout');
-				}
-
 				// hacky special case for login page
 				if ($location.path() === '/') {
 					exception = undefined;
