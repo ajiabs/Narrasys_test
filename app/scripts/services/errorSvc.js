@@ -29,18 +29,39 @@ angular.module('com.inthetelling.story')
 
 
 				//guest accessible narratives - refresh session
-				if (exception.status === 401 && exception.data.error === 'Authentication expired. Please log in again.' && !exception.config.url.match(/show_user/)) {
-					console.log('exception: ', exception);
+				var _sessionTimeout = exception.status === 401 && exception.data.error === 'Authentication expired. Please log in again.' && !exception.config.url.match(/show_user/);
+				if (_sessionTimeout) {
 					$rootScope.$broadcast('error:guest-sessionTimeout');
 					//return out of this fn in order to avoid
 					//pushing current exception into errors array
 					//where it would trigger the error dialog to pop up.
+
+					return;
+				}
+
+				var _eventReportAccessFailure = exception.config.url.match(/(episode_user_metrics|event_user_actions)/);
+				if (_eventReportAccessFailure) {
+					//this is prevent the error dialog from showing when failing to post an event report with BOTH
+					//episode_user_metrics and event_user_actions.
+
+					//The analyticsSvc will make 2 post requests to 2 endpoints in parallel when sending multiple reports.
+					//if the first request is rejected, the server will reset the the access token and respond
+					//with a 401.
+					//the second post request will also respond with 401, but not due to session timeout, as the prior request resulted in
+					//their access token being reset.
+
+					//the first 401 response gets intercepted by the httpInterceptor in app.js and sends the exception to the errorSvc
+					//where it will trigger the _sessionTimeout conditional above, and begin to re-authenticate the user via nonce.
+					//the second 401 response is handled via the above _eventReportAccessFailure conditional.
+					//here we return out of the error service to avoid popping up the error dialog.
+					//the analytics service will save failed reports and eventually post them when credentials are restored
+					//which happens in the _sessionTimeout conditional above.
 					return;
 				}
 
 				if (exception.status === 401 && exception.data.error === "This action requires logging in or you do not have sufficient rights.") {
-					console.log('catch user session time out');
-					$rootScope.$broadcast('error:user-sessionTimeout');
+					//console.log('catch user session time out');
+					//$rootScope.$broadcast('error:user-sessionTimeout');
 				}
 
 				// hacky special case for login page
