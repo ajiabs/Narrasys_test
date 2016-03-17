@@ -31,7 +31,7 @@ angular.module('com.inthetelling.story')
 				//guest accessible narratives - refresh session
 				var _sessionTimeout = exception.status === 401 && exception.data.error === 'Authentication expired. Please log in again.' && !exception.config.url.match(/show_user/);
 				if (_sessionTimeout) {
-					$rootScope.$broadcast('error:guest-sessionTimeout');
+					$rootScope.$broadcast('error:sessionTimeout');
 					//return out of this fn in order to avoid
 					//pushing current exception into errors array
 					//where it would trigger the error dialog to pop up.
@@ -58,6 +58,15 @@ angular.module('com.inthetelling.story')
 					//which happens in the _sessionTimeout conditional above.
 					return;
 				}
+
+
+				var _userRoleTimeout;
+
+				if (exception.status === 401 && exception.data.error === "This action requires logging in or you do not have sufficient rights.") {
+					console.log('catch user session time out');
+					$rootScope.$broadcast('error:user-sessionTimeout');
+				}
+
 
 				// hacky special case for login page
 				if ($location.path() === '/') {

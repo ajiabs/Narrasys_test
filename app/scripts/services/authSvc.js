@@ -23,10 +23,21 @@ angular.module('com.inthetelling.story')
 			GUEST: "guest",
 		};
 
-		$rootScope.$on('error:guest-sessionTimeout', function () {
+		$rootScope.$on('error:sessionTimeout', function () {
 			//for guest accessible narratives
-			console.warn('Attemping to reset session');
-			svc.authenticateViaNonce($routeParams.narrativePath);
+			//console.warn('Attemping to reset session');
+			//console.log('appState', appState);
+
+			//derive user role
+			var isGuest = appState.user.roles.filter(function(r) {
+				return r.role === 'guest';
+			});
+
+			if (isGuest.length > 0) {
+				svc.authenticateViaNonce($routeParams.narrativePath);
+			} else {
+				svc.logout();
+			}
 		});
 
 		//$rootScope.$on('error:user-sessionTimeout', function() {
