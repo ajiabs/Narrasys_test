@@ -4,7 +4,7 @@ export default function SceneController($scope, $filter) {
 	'ngInject';
 	$scope.precalculateSceneValues = function () {
 		// console.log("precalcSceneValues");
-		$scope.filterCenterVideoItems = filterCenterVideoItems;
+		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 
 			// clear out old calculations in case we're re-precalculating
 			delete $scope.mainContentHasLeftSidebar;
@@ -88,8 +88,7 @@ export default function SceneController($scope, $filter) {
 			}
 		};
 
-
-		function filterCenterVideoItems(item) {
+		function byPullquoteOrH2(item) {
 			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
 			var isPullQuoteAttrib = item.templateUrl === 'templates/item/pullquote-noattrib.html';
 			var isH2 = item.templateUrl === 'templates/item/text-h2.html';

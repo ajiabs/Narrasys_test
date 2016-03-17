@@ -663,30 +663,17 @@
 /*Narrasys pro*/
 @font-face {
   font-family: 'Gotham Thin';
-  src: url("/source/GothamHTF-Thin.otf"); }
+  src: url("/images/font/GothamHTF-Thin.otf"); }
 @font-face {
   font-family: 'Gotham Medium';
-  src: url("/source/GothamHTF-Medium.otf"); }
+  src: url("/images/font/GothamHTF-Medium.otf"); }
 @font-face {
   font-family: 'Gotham Light Italic';
-  src: url("/source/GothamHTF-LightItalic.otf"); }
-.toolbar-logo {
-  background: transparent; }
-  .toolbar-logo #toolbar-logo-big {
-    position: fixed;
-    left: 42%;
-    top: 2px;
-    width: 140px; }
-  .toolbar-logo #toolbar-logo-small {
-    position: fixed;
-    top: 2px;
-    left: 45%;
-    width: 40px; }
-
+  src: url("/images/font/GothamHTF-LightItalic.otf"); }
 /*base template class */
 .narrasys-pro {
   font-family: 'Gotham', sans-serif;
-  background-image: url("/images/customer/Narrasys_tree.svg");
+  background-image: url("/images/customer/Narrasys_Tree.svg");
   background-size: 62%;
   background-repeat: no-repeat;
   background-position: top right;
@@ -697,34 +684,25 @@
   .narrasys-pro .item {
     color: black; }
     .narrasys-pro .item .pullquote {
-      color: #5B5B5B;
       font-family: 'Gotham Light Italic';
-      font-weight: lighter;
+      color: #5b5b5b;
       font-size: 2.7vmax;
       position: relative;
-      bottom: 20px;
-      left: 20px; }
+      bottom: 0.5em; }
       .narrasys-pro .item .pullquote:before {
         color: #de6625;
         content: U+201C;
         font-family: "Gotham";
         font-size: 4em;
-        position: absolute;
-        top: 0;
-        left: 0;
         opacity: 0.2; }
-  .narrasys-pro .videoMask {
-    /*border: 3px solid black;*/ }
   .narrasys-pro .link-no-title-img {
     display: block;
     margin: 0 auto;
     width: 260px; }
   .narrasys-pro .altPane {
     background-color: white; }
-  .narrasys-pro .centered-pro .videoMagnet {
-    margin-top: 5em; }
   .narrasys-pro .centered-pro .banner-pull-quote h1 {
-    margin-top: 0.5em;
+    margin-top: 1em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -734,8 +712,8 @@
     width: 100%;
     text-align: center;
     padding: 10px 0;
-    min-height: 60px;
-    max-height: 60px;
+    min-height: 80px;
+    max-height: 80px;
     position: absolute;
     font-size: 2.0vmax;
     font-weight: lighter;
@@ -777,6 +755,10 @@
     .narrasys-pro .centerVV .item .itemHead {
       /*border: 3px solid black;*/
       font-family: "Gotham Medium"; }
+    .narrasys-pro .centerVV .item .pullquote {
+      font-size: 2.7vmax;
+      position: relative;
+      bottom: 0.5em; }
   .narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-alt {
     position: fixed;
     width: 50%;

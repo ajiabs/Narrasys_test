@@ -235,7 +235,7 @@ module.exports = function (grunt) {
 					dest: '<%= yeoman.dist %>',
 					src: [
 						'[^_]*.{ico,png,txt}',
-						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,woff}',
+						'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,eot,ttf,otf,woff}',
 						'styles/font/*',
 						'config.js',
 						'iosFrameHack.js'
