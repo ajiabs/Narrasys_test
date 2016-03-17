@@ -10,7 +10,7 @@
 		.directive('ittIframe', ittIframe)
 		.controller('ittIframeCtrl', ittIframeCtrl);
 
-	function ittIframe() {
+	function ittIframe(appState) {
 		return {
 			restrict: 'E',
 			scope: {
@@ -24,6 +24,53 @@
 			bindToController: true,
 			link: linkFn
 		};
+
+		function linkFn(scope, elm) {
+			var _btnConst = 95;
+
+			var _unWatch = angular.noop;
+			var _toolbarH = 75;
+			var _timelineBarH = 145;
+			var _offsetConst = _toolbarH + _timelineBarH;
+			var _modalWrapper = $('.w-modal');
+			var _frameBottom = $(window).height() - _offsetConst;
+
+			//search for the 'w-modal" class, if we find one,
+			//then we know that we are using windowfg template, which seems to handle modals.
+			if (_modalWrapper.length > 0) {
+				setIframeHeight();
+			} else {
+				resizeIframeReviewMode();
+			}
+
+			function setIframeHeight() {
+				var y = _modalWrapper.height() - _btnConst;
+				elm.css('height', y);
+
+				_unWatch =  scope.$watch(function() {
+					return _modalWrapper.height();
+				}, function(newVal, oldVal) {
+					if (newVal !== oldVal) {
+						var newY = newVal - _btnConst;
+						elm.css('height', newY);
+					}
+				});
+			}
+
+			function resizeIframeReviewMode() {
+				//only resize iframe in discover mode for the narrasys pro template (at the moment)
+				if (appState.viewMode === 'discover' && appState.playerTemplate === 'templates/episode/narrasys-pro.html') {
+					elm.css('height', _frameBottom);
+				}
+			}
+
+
+			scope.$on('$destroy', function() {
+				_unWatch();
+			});
+		}
+
+
 	}
 
 	function ittIframeCtrl($scope, youtubeSvc) {
@@ -73,36 +120,6 @@
 
 		$scope.$on('$destroy', function () {
 			_ctrl.watcher();
-		});
-	}
-
-	function linkFn(scope, elm) {
-		var _btnConst = 95;
-		var modalWrapper = $('.w-modal');
-		var unWatch = angular.noop;
-
-		//search for the 'w-modal" class, if we find one,
-		//then we know that we are using windowfg template, which seems to handle modals.
-		if (modalWrapper.length > 0) {
-			setIframeHeight();
-		}
-
-		function setIframeHeight() {
-			var y = modalWrapper.height() - _btnConst;
-			elm.css('height', y);
-
-			unWatch =  scope.$watch(function() {
-				return modalWrapper.height();
-			}, function(newVal, oldVal) {
-				if (newVal !== oldVal) {
-					var newY = newVal - _btnConst;
-					elm.css('height', newY);
-				}
-			});
-		}
-
-		scope.$on('$destroy', function() {
-			unWatch();
 		});
 	}
 
