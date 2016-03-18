@@ -24,37 +24,19 @@ angular.module('com.inthetelling.story')
 		};
 
 		$rootScope.$on('error:sessionTimeout', function () {
-			//for guest accessible narratives
-			//console.warn('Attemping to reset session');
-			//console.log('appState', appState);
-
-			//derive user roles
-
-			var _hasGuest = false, _isAdmin = false, _isStudent = false;
+			var _isGuest = true;
 
 			angular.forEach(appState.user.roles, function(r) {
-				if (r.role === 'guest') {
-					_hasGuest = true;
-				}
-
-				if (r.role === 'admin') {
-					_isAdmin = true;
-				}
-
-				if (r.role === 'student') {
-					_isStudent = true;
+				if (r.role !== 'guest') {
+					_isGuest = false;
 				}
 			});
 
-			if (_hasGuest && !_isAdmin && !_isStudent) {
+			if (_isGuest) {
 				svc.authenticateViaNonce($routeParams.narrativePath);
-				return;
-			}
-
-			if (_isAdmin || _isStudent) {
+			} else {
 				errorSvc.error({session: 'User Session Timed out!'});
 			}
-
 		});
 
 

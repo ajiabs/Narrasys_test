@@ -35,14 +35,12 @@ angular.module('com.inthetelling.story')
 					//return out of this fn in order to avoid
 					//pushing current exception into errors array
 					//where it would trigger the error dialog to pop up.
-
 					return;
 				}
 
 				var _userRoleAccessError = exception.status === 401 && exception.data.error === "This action requires logging in or you do not have sufficient rights.";
 
 				if (_userRoleAccessError) {
-					console.warn('access not allowed??');
 					$rootScope.$broadcast('error:sessionTimeout');
 					return;
 				}
