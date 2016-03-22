@@ -93,14 +93,14 @@
 
 		//public methods
 
-		function create(divId, videoId, stateCb, qualityChangeCB, onReadyCB) {
+		function create(divId, playerId, videoId, stateCb, qualityChangeCB, onReadyCB) {
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
 				.then(handleSuccess)
 				.catch(tryAgain);
 
 
 			function handleSuccess(ytInstance) {
-				_players[divId] = {yt: ytInstance, ready: false };
+				_players[playerId] = {yt: ytInstance, ready: false };
 
 			}
 
@@ -333,8 +333,13 @@
 				_mainPlayerId = _id;
 				_players[_id] = {};
 			} else {
+				//the resolved _id is used for the ID of the actual player element
+				//it needs to be unique
+				//the _id passed to the YT constructor to set the divID (see _create() above,
+				//setPlayer is always called prior to create() - see ittYoutubeEmbed )
+				//YT will search the dom for the above _id and insert the iframe player.
 				_id = _guid() + id;
-				_players[_id] = {};
+				_players[id] = {};
 
 			}
 

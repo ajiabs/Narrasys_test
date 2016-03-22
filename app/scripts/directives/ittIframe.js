@@ -15,7 +15,8 @@
 			restrict: 'E',
 			scope: {
 				src: '@',
-				contenttype: '@'
+				contenttype: '@',
+				item: '&'
 			},
 			replace: true,
 			templateUrl: 'templates/iframe.html',
