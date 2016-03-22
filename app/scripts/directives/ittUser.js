@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittUser', function (appState, authSvc, dataSvc, awsSvc, modelSvc) {
+	.directive('ittUser', function (appState, authSvc, dataSvc, awsSvc, modelSvc, resizeImage) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -42,23 +42,30 @@ angular.module('com.inthetelling.story')
 						"bytesTotal": 1
 					};
 
-					scope.uploads = awsSvc.uploadUserFiles(appState.user._id, files);
-					scope.uploads[0].then(function (data) {
-						scope.showUploadField = false;
-						modelSvc.cache("asset", data.file);
-						if (appState.user.avatar_id) {
-							// TODO delete the user's previous avatar asset now that we have a new one
-							// (but first confirm that events the user has already created aren't storing the old avatar_id directly.... which would be a bug)
-						}
+					resizeImage.twoStepResize(files[0], 60, 60)
+					.then(function(imgUrl) {
+						resizeImage.createFileFromDataURL(imgUrl)
+						.then(function(file) {
+							//awsSvc#uploadUerFiles expects a FileList obj
+							//wrap file in array to simulate FileList obj
+							//change awsSvc to use array index to access files rather than .item() FileList method
+							awsSvc.uploadUserFiles(appState.user._id, [file])[0]
+							.then(function(data) {
+								scope.showUploadField = false;
+								modelSvc.cache("asset", data.file);
+								if (appState.user.avatar_id) {
+									// TODO delete the user's previous avatar asset now that we have a new one
+									// (but first confirm that events the user has already created aren't storing the old avatar_id directly.... which would be a bug)
+								}
 
-						appState.user.avatar_id = data.file._id;
-						scope.updateUser();
+								appState.user.avatar_id = data.file._id;
+								scope.updateUser();
 
-						delete scope.uploads;
-					}, function () {
-						// console.log("FAIL", );
-					}, function (update) {
-						scope.uploadStatus[0] = update;
+								delete scope.uploads;
+							});
+						});
+					}).catch(function(e) {
+						console.log('something failed resizing / uploading the image', e);
 					});
 				};
 

@@ -69,7 +69,9 @@ angular.module('com.inthetelling.story')
 			var deferredUploadsPromises = [];
 			// console.log('files: ', files);
 			for (var i = 0; i < fileList.length; i++) {
-				files.push(fileList.item(i));
+				//can access this with regular array index
+				//https://developer.mozilla.org/en-US/docs/Web/API/FileList
+				files.push(fileList[i]);
 				var deferred = $q.defer();
 				deferredUploads.push(deferred);
 				deferredUploadsPromises.push(deferred.promise);
