@@ -6,7 +6,17 @@
 (function() {
 	'use strict';
 
+	/**
+	 * @ngDoc overview
+	 * @name com.inthetelling.story
+	 **/
 	angular.module('com.inthetelling.story')
+		/**
+		 * @ngDoc service
+		 * @name com.inthetelling.story.imageResize
+		 * @description
+		 * Resize images and convert File Objects into images.
+		 **/
 		.factory('imageResize', imageResize);
 
 	function imageResize($q) {
@@ -19,7 +29,7 @@
 		};
 
 		/**
-		 * @ngDoc function
+		 * @ngDoc method
 		 * @name #createFileFromDataURL
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @description
@@ -35,7 +45,7 @@
 			});
 		}
 		/**
-		 * @ngDoc function
+		 * @ngDoc method
 		 * @name #readFileToImg
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @description
@@ -57,7 +67,7 @@
 			});
 		}
 		/**
-		 * @ngDoc function
+		 * @ngDoc method
 		 * @name #autoResizeAvatar
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @description
@@ -108,6 +118,7 @@
 			});
 		}
 		/**
+		 * @ngDoc function
 		 * @private
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _setCanvasWH
@@ -123,6 +134,7 @@
 			canvas.height = height;
 		}
 		/**
+		 * @ngDoc function
 		 * @private
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _resizeImgWithCanvas
@@ -146,6 +158,7 @@
 			return _resizeCvs;
 		}
 		/**
+		 * @ngDoc function
 		 * @private
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _getContext
@@ -163,6 +176,7 @@
 			return context;
 		}
 		/**
+		 * @ngDoc function
 		 * @private
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _dataURLToBlob
@@ -196,13 +210,14 @@
 			return new Blob([uInt8Array], {type: contentType});
 		}
 		/**
+		 * @ngDoc function
 		 * @private
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _calculateNewDimensions
 		 * @description
 		 * Calculates the dimensions of a rectangle (for an image while maintaining the original aspect ratio.
 		 * @param {Number} srcWidth Input width of rectangle.
-		 * @param {Number} srcHeight Input height of rectangle.
+		 * @param {Number} srcHeight Input height of recta	ngle.
 		 * @param {Number} maxWidth Target width of rectangle.
 		 * @param {Number} maxHeight Target height of rectangle.
 		 * @returns {Object} Object with width and height properties as integers.
