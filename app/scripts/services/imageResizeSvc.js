@@ -72,7 +72,9 @@
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @description
 		 * Resize image by reducing width/height by half until target dimensions are met.
-		 * multiple steps results in overall smoother image.
+		 * If the max dimensions square, e.g. 60x60, and the input image is not, the resulting
+		 * image is resized to the max width and vertically centered inside a 60x60 canvas,
+		 * resulting in a letter-box effect.
 		 * @param {Object} img Image to resize.
 		 * @param {Number} maxWidth target with of image resize.
 		 * @param {Number} maxHeight target height of image resize.
@@ -92,6 +94,7 @@
 
 				_ctx.drawImage(img, 0, 0, _tmpCvsWidth, _tmpCvsHeight);
 
+				//step down the image size by half for a smoother overall resize.
 				while (_tmpCvsWidth > maxWidth) {
 					//break here because we want our final resize out of the loop
 					//to still be a down step.
