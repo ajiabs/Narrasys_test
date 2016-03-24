@@ -46,21 +46,23 @@ angular.module('com.inthetelling.story')
 					.then(function(img) {
 						imageResize.autoResizeAvatar(img, files[0].type, 60, 60)
 						.then(function(imgUrl) {
-							var file = imageResize.createFileFromDataURL(imgUrl, files[0].name);
-							awsSvc.uploadUserFiles(appState.user._id, [file])[0]
-								.then(function(data) {
-									scope.showUploadField = false;
-									modelSvc.cache("asset", data.file);
-									if (appState.user.avatar_id) {
-										// TODO delete the user's previous avatar asset now that we have a new one
-										// (but first confirm that events the user has already created aren't storing the old avatar_id directly.... which would be a bug)
-									}
-
-									appState.user.avatar_id = data.file._id;
-									scope.updateUser();
-
-									delete scope.uploads;
-								});
+							console.log('imgUrl', imgUrl);
+							scope.img = {dataUrl: imgUrl};
+							//var file = imageResize.createFileFromDataURL(imgUrl, files[0].name);
+							//awsSvc.uploadUserFiles(appState.user._id, [file])[0]
+							//	.then(function(data) {
+							//		scope.showUploadField = false;
+							//		modelSvc.cache("asset", data.file);
+							//		if (appState.user.avatar_id) {
+							//			// TODO delete the user's previous avatar asset now that we have a new one
+							//			// (but first confirm that events the user has already created aren't storing the old avatar_id directly.... which would be a bug)
+							//		}
+                            //
+							//		appState.user.avatar_id = data.file._id;
+							//		scope.updateUser();
+                            //
+							//		delete scope.uploads;
+							//	});
 						});
 					}).catch(function(e) {
 						console.log('something failed resizing / uploading the image', e);

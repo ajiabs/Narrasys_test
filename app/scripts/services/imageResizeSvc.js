@@ -63,7 +63,6 @@
 				return _img;
 			});
 		}
-
 		/**
 		 * @ngDoc method
 		 * @name #autoResizeAvatar
@@ -71,7 +70,7 @@
 		 * @description
 		 * Resize image by reducing width/height by half until target dimensions are met.
 		 * If the max dimensions square, e.g. 60x60, and the input image is not, the resulting
-		 * image is resized to the max width and vertically centered inside a 60x60 canvas,
+		 * image is resized to the max width / height and vertically / horizontally centered inside a 60x60 canvas,
 		 * resulting in a letter-box effect.
 		 * @param {Object} img Image to resize.
 		 * @param {String} mimeType type of image file
@@ -81,7 +80,8 @@
 		 */
 		function autoResizeAvatar(img, mimeType, maxWidth, maxHeight) {
 			return $q(function(resolve) {
-				var _vertAlign;
+				var _dy;
+				var _dx;
 				var _finalWH;
 				var _canvas = document.createElement('canvas');
 				var _ctx = _getContext(_canvas);
@@ -110,11 +110,19 @@
 
 				_finalWH = _calculateNewDimensions(_tmpCvsWidth, _tmpCvsHeight, maxWidth, maxHeight);
 
+				//image is taller than it is wide
+				//center it vertically
 				if (_finalWH.height < _finalWH.width) {
-					_vertAlign = (_finalWH.width - _finalWH.height) / 2;
+					_dy = (_finalWH.width - _finalWH.height) / 2;
 				}
 
-				_canvas = _resizeImgWithCanvas(_canvas, _finalWH.width, _finalWH.height, maxWidth, maxHeight, _vertAlign);
+				//image is wider than it is tall
+				//center it horizontally
+				if(_finalWH.height > _finalWH.width) {
+					_dx = (_finalWH.height - _finalWH.width) / 2;
+				}
+
+				_canvas = _resizeImgWithCanvas(_canvas, _finalWH.width, _finalWH.height, maxWidth, maxHeight, _dx, _dy);
 				resolve(_canvas.toDataURL(mimeType || 'image/jpeg', 1.0));
 			});
 		}
@@ -146,18 +154,22 @@
 		 * @param {Number} h Target height to resize image to.
 		 * @param {Number} [cW=w] Optional param, Target width of canvas, defaults to image width.
 		 * @param {Number} [cH=h] Optional param, Target height of canvas, defaults to image height.
-		 * @params {Number} [dy=0] Optional param, Amount to vertically offset the image inside the canvas element, defaults to 0.
+		 * @param {Number} [dx=0] Optional param, Amount to horizontally offset the image inside the canvas element, defaults to 0.
+		 * @param {Number} [dy=0] Optional param, Amount to vertically offset the image inside the canvas element, defaults to 0.
 		 * @returns {Object} HTML5 canvas element.
 		 */
-		function _resizeImgWithCanvas(c, w, h, cW, cH, dy) {
+		function _resizeImgWithCanvas(c, w, h, cW, cH, dx, dy) {
 			if (dy === undefined) {
 				dy = 0;
+			}
+			if (dx === undefined) {
+				dx = 0;
 			}
 			var _resizeCvs = document.createElement('canvas');
 			var _resizeCtx = _getContext(_resizeCvs);
 			_resizeCvs.width = cW !== undefined ? cW : w;
 			_resizeCvs.height = cH !== undefined ? cH : h;
-			_resizeCtx.drawImage(c, 0, dy, w, h);
+			_resizeCtx.drawImage(c, dx, dy, w, h);
 			console.log('resizing img: ', w, 'x', h);
 			return _resizeCvs;
 		}
