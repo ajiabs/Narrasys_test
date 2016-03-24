@@ -16,18 +16,15 @@
 		 * @name com.inthetelling.story.imageResize
 		 * @description
 		 * Resize images and convert File Objects into images.
-		 **/
+		 */
 		.factory('imageResize', imageResize);
 
 	function imageResize($q) {
-		var _fileName;
-
 		return {
 			createFileFromDataURL: createFileFromDataURL,
 			readFileToImg: readFileToImg,
 			autoResizeAvatar: autoResizeAvatar
 		};
-
 		/**
 		 * @ngDoc method
 		 * @name #createFileFromDataURL
@@ -37,7 +34,7 @@
 		 * @param {string} url base64 encoded string as url
 		 * @param {string} fileName name of file
 		 * @returns {Object} File object containing an image.
-		 **/
+		 */
 		function createFileFromDataURL(url, fileName) {
 			var _blob = _dataURLToBlob(url);
 			_blob.name = 'resized' + fileName;
@@ -52,7 +49,7 @@
 		 * Creates an Image from a File Object
 		 * @param {Object} file File Object
 		 * @returns {Object} Promise that resolves to an Image
-		 **/
+		 */
 		function readFileToImg(file) {
 			var _reader = new FileReader();
 			var _img = new Image();
@@ -66,6 +63,7 @@
 				return _img;
 			});
 		}
+
 		/**
 		 * @ngDoc method
 		 * @name #autoResizeAvatar
@@ -80,7 +78,7 @@
 		 * @param {Number} maxWidth target with of image resize.
 		 * @param {Number} maxHeight target height of image resize.
 		 * @returns {String} Promise that resolves to a data url.
-		 **/
+		 */
 		function autoResizeAvatar(img, mimeType, maxWidth, maxHeight) {
 			return $q(function(resolve) {
 				var _vertAlign;
@@ -103,7 +101,6 @@
 						break;
 					}
 
-					//bitwise OR will floor num ;)
 					img.width  = Math.floor(img.width  * 0.5);
 					img.height = Math.floor(img.height * 0.5);
 					_tmpCvsWidth  = img.width;
@@ -132,7 +129,7 @@
 		 * @param {Number} width Width to set.
 		 * @param {Number} height Height to set.
 		 * @returns
-		 **/
+		 */
 		function _setCanvasWH(canvas, width, height) {
 			canvas.width = width;
 			canvas.height = height;
@@ -151,7 +148,7 @@
 		 * @param {Number} [cH=h] Optional param, Target height of canvas, defaults to image height.
 		 * @params {Number} [dy=0] Optional param, Amount to vertically offset the image inside the canvas element, defaults to 0.
 		 * @returns {Object} HTML5 canvas element.
-		 **/
+		 */
 		function _resizeImgWithCanvas(c, w, h, cW, cH, dy) {
 			if (dy === undefined) {
 				dy = 0;
@@ -173,7 +170,7 @@
 		 * Method to get the Context from an HTML5 canvas element and set anti-aliasing properties
 		 * @param {Object} canvas HTML5 Canvas Element
 		 * @returns {Object} HTML5 Canvas Context object.
-		 **/
+		 */
 		function _getContext (canvas) {
 			var context = canvas.getContext('2d');
 			context.imageSmoothingEnabled       = true;
@@ -192,7 +189,7 @@
 		 * Taken from https://github.com/ebidel/filer.js/blob/master/src/filer.js#L137
 		 * @param {String} dataURL base64 encoded string containing image
 		 * @returns {Object} Blob Object
-		 **/
+		 */
 		function _dataURLToBlob(dataURL) {
 			var BASE64_MARKER = ';base64,';
 			if (dataURL.indexOf(BASE64_MARKER) == -1) {
@@ -228,7 +225,7 @@
 		 * @param {Number} maxWidth Target width of rectangle.
 		 * @param {Number} maxHeight Target height of rectangle.
 		 * @returns {Object} Object with width and height properties as integers.
-		 **/
+		 */
 		function _calculateNewDimensions(srcWidth, srcHeight, maxWidth, maxHeight) {
 			var _ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
