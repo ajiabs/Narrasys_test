@@ -6,9 +6,9 @@
 			<img ng-src="{{user.avatar || '/images/no-avatar.gif'}}">
 		</div>
 		<input ng-if="showUploadField && !uploads" style="width: 70px" type="file" accept="image/*" onchange="angular.element(this).scope().uploadAvatar(this.files)">
-		<div style="text-align: center; border: 1px solid black">
-			<img ng-src="{{img.dataUrl}}" style="margin: 10px auto"/>
-		</div>
+		<!--<div style="text-align: center; border: 1px solid black">-->
+			<!--<img ng-src="{{img.dataUrl}}" style="margin: 10px auto"/>-->
+		<!--</div>-->
 		<progress ng-if="uploads" style="width:79px" ng-attr-max="{{uploadStatus[0].bytesTotal}}" ng-attr-value="{{uploadStatus[0].bytesSent}}">
 	</div>
 	<div style="margin-right:80px;">

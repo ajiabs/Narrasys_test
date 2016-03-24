@@ -35,14 +35,14 @@
 		 * @description
 		 * Creates a File object from a data url.
 		 * @param {string} url base64 encoded string as url
-		 * @returns {Object} Promise that resolves to a File object.
+		 * @param {string} fileName name of file
+		 * @returns {Object} File object containing an image.
 		 **/
-		function createFileFromDataURL(url) {
+		function createFileFromDataURL(url, fileName) {
 			var _blob = _dataURLToBlob(url);
-			_fileName = 'resized ' + _fileName;
-			return $q(function(resolve) {
-				resolve(new File([_blob], _fileName, {type: 'image/jpeg'})); //jshint ignore:line
-			});
+			_blob.name = 'resized' + fileName;
+			_blob.lastModifiedDate = new Date();
+			return _blob;
 		}
 		/**
 		 * @ngDoc method
@@ -76,11 +76,12 @@
 		 * image is resized to the max width and vertically centered inside a 60x60 canvas,
 		 * resulting in a letter-box effect.
 		 * @param {Object} img Image to resize.
+		 * @param {String} mimeType type of image file
 		 * @param {Number} maxWidth target with of image resize.
 		 * @param {Number} maxHeight target height of image resize.
 		 * @returns {String} Promise that resolves to a data url.
 		 **/
-		function autoResizeAvatar(img, maxWidth, maxHeight) {
+		function autoResizeAvatar(img, mimeType, maxWidth, maxHeight) {
 			return $q(function(resolve) {
 				var _vertAlign;
 				var _finalWH;
@@ -103,8 +104,8 @@
 					}
 
 					//bitwise OR will floor num ;)
-					img.width  = (img.width  * 0.5) | 0; //jshint ignore:line
-					img.height = (img.height * 0.5) | 0; //jshint ignore:line
+					img.width  = Math.floor(img.width  * 0.5);
+					img.height = Math.floor(img.height * 0.5);
 					_tmpCvsWidth  = img.width;
 					_tmpCvsHeight = img.height;
 					_canvas = _resizeImgWithCanvas(_canvas, _tmpCvsWidth, _tmpCvsHeight);
@@ -117,7 +118,7 @@
 				}
 
 				_canvas = _resizeImgWithCanvas(_canvas, _finalWH.width, _finalWH.height, maxWidth, maxHeight, _vertAlign);
-				resolve(_canvas.toDataURL('image/jpeg', 1.0));
+				resolve(_canvas.toDataURL(mimeType || 'image/jpeg', 1.0));
 			});
 		}
 		/**
@@ -152,11 +153,14 @@
 		 * @returns {Object} HTML5 canvas element.
 		 **/
 		function _resizeImgWithCanvas(c, w, h, cW, cH, dy) {
+			if (dy === undefined) {
+				dy = 0;
+			}
 			var _resizeCvs = document.createElement('canvas');
 			var _resizeCtx = _getContext(_resizeCvs);
-			_resizeCvs.width = cW || w;
-			_resizeCvs.height = cH || h;
-			_resizeCtx.drawImage(c, 0, dy || 0, w, h);
+			_resizeCvs.width = cW !== undefined ? cW : w;
+			_resizeCvs.height = cH !== undefined ? cH : h;
+			_resizeCtx.drawImage(c, 0, dy, w, h);
 			console.log('resizing img: ', w, 'x', h);
 			return _resizeCvs;
 		}
