@@ -10,7 +10,9 @@
 	 * @name services.imageResize
 	 * @requires $q
 	 * @description
-	 * Resize images and convert File Objects into images.
+	 * Resize images and convert File Objects into images. Used in practice to resize images client side prior
+	 * to uploading to AWS. Basic Idea is to resize images client side with HTML5 Canvas. The resized image
+	 * is converted back into a File object so it can be passed to the AWS service.
 	 */
 	angular.module('com.inthetelling.story')
 		.factory('imageResize', imageResize);
