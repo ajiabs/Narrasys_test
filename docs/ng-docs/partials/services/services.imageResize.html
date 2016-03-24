@@ -1,17 +1,62 @@
 <h1><code ng:non-bindable="">imageResize</code>
-<div><span class="hint">service in module <code ng:non-bindable="">com.inthetelling.story</code>
+<div><span class="hint">service in module <code ng:non-bindable="">services</code>
 </span>
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="com-inthetelling-story-imageresize-page"><p>Resize images and convert File Objects into images.</p>
+<div class="description"><div class="services-imageresize-page"><p>Resize images and convert File Objects into images.</p>
 </div></div>
 <h2 id="dependencies">Dependencies</h2>
 <ul class="dependencies"><li><code ng:non-bindable=""><a href="#/services/ng.$q">$q</a></code>
 </li>
 </ul>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><h3 id="methods__calculatenewdimensions">_calculateNewDimensions(srcWidth, srcHeight, maxWidth, maxHeight)</h3>
+<ul class="methods"><li><h3 id="methods_autoresizeavatar">autoResizeAvatar(img, mimeType, maxWidth, maxHeight)</h3>
+<div class="autoresizeavatar"><div class="-autoresizeavatar-page"><p>Resize image by reducing width/height by half until target dimensions are met.
+If the max dimensions square, e.g. 60x60, and the input image is not, the resulting
+image is resized to the max width / height and vertically / horizontally centered inside a 60x60 canvas,
+resulting in a letter-box effect.</p>
+</div><h5 id="methods_autoresizeavatar_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>img</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-autoresizeavatar-page"><p>Image to resize.</p>
+</div></td></tr><tr><td>mimeType</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-autoresizeavatar-page"><p>type of image file</p>
+</div></td></tr><tr><td>maxWidth</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-autoresizeavatar-page"><p>target with of image resize.</p>
+</div></td></tr><tr><td>maxHeight</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-autoresizeavatar-page"><p>target height of image resize.</p>
+</div></td></tr></tbody></table><h5 id="methods_autoresizeavatar_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-autoresizeavatar-page"><p>Promise that resolves to a data url.</p>
+</div></td></tr></table><h4 id="methods_autoresizeavatar_example">Example</h4>
+<div class="example"><div class="-autoresizeavatar-page"><pre class="prettyprint linenums">
+imageResize.autoResize(img, 'image/jpeg', 60, 60)
+.then(function(resizedImg) {
+//do stuff with resizedImg
+});
+</pre>
+</div></div>
+</div>
+</li>
+<li><h3 id="methods_createfilefromdataurl">createFileFromDataURL(url, fileName)</h3>
+<div class="createfilefromdataurl"><div class="-createfilefromdataurl-page"><p>Creates a File object from a data url.</p>
+</div><h5 id="methods_createfilefromdataurl_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-createfilefromdataurl-page"><p>base64 encoded string as url</p>
+</div></td></tr><tr><td>fileName</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-createfilefromdataurl-page"><p>name of file</p>
+</div></td></tr></tbody></table><h5 id="methods_createfilefromdataurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createfilefromdataurl-page"><p>File object containing an image.</p>
+</div></td></tr></table><h4 id="methods_createfilefromdataurl_example">Example</h4>
+<div class="example"><div class="-createfilefromdataurl-page"><pre class="prettyprint linenums">
+var file = imageResize.createFileFromDataURL(dataUrl);
+</pre>
+</div></div>
+</div>
+</li>
+<li><h3 id="methods_readfiletoimg">readFileToImg(file)</h3>
+<div class="readfiletoimg"><div class="-readfiletoimg-page"><p>Creates an Image from a File Object</p>
+</div><h5 id="methods_readfiletoimg_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>file</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-readfiletoimg-page"><p>File Object</p>
+</div></td></tr></tbody></table><h5 id="methods_readfiletoimg_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-readfiletoimg-page"><p>Promise that resolves to an Image</p>
+</div></td></tr></table><h4 id="methods_readfiletoimg_example">Example</h4>
+<div class="example"><div class="-readfiletoimg-page"><pre class="prettyprint linenums">
+imageResize.readFileToImg(file).then(function(file) {
+		//do stuff with file
+}));
+</pre>
+</div></div>
+</div>
+</li>
+<li><h3 id="methods__calculatenewdimensions">_calculateNewDimensions(srcWidth, srcHeight, maxWidth, maxHeight)</h3>
 <div class="_calculatenewdimensions"><div class="-calculatenewdimensions-page"><p>Calculates the dimensions of a rectangle (for an image while maintaining the original aspect ratio.</p>
 </div><h5 id="methods__calculatenewdimensions_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>srcWidth</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-calculatenewdimensions-page"><p>Input width of rectangle.</p>
 </div></td></tr><tr><td>srcHeight</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-calculatenewdimensions-page"><p>Input height of rectangle.</p>
@@ -51,31 +96,6 @@ Taken from <a href="https://github.com/ebidel/filer.js/blob/master/src/filer.js#
 </div></td></tr><tr><td>width</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-setcanvaswh-page"><p>Width to set.</p>
 </div></td></tr><tr><td>height</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-setcanvaswh-page"><p>Height to set.</p>
 </div></td></tr></tbody></table><h5 id="methods__setcanvaswh_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-setcanvaswh-page"><p>returns undefined.</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="methods_autoresizeavatar">autoResizeAvatar(img, mimeType, maxWidth, maxHeight)</h3>
-<div class="autoresizeavatar"><div class="imageresize-autoresizeavatar-page"><p>Resize image by reducing width/height by half until target dimensions are met.
-If the max dimensions square, e.g. 60x60, and the input image is not, the resulting
-image is resized to the max width / height and vertically / horizontally centered inside a 60x60 canvas,
-resulting in a letter-box effect.</p>
-</div><h5 id="methods_autoresizeavatar_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>img</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="imageresize-autoresizeavatar-page"><p>Image to resize.</p>
-</div></td></tr><tr><td>mimeType</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="imageresize-autoresizeavatar-page"><p>type of image file</p>
-</div></td></tr><tr><td>maxWidth</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="imageresize-autoresizeavatar-page"><p>target with of image resize.</p>
-</div></td></tr><tr><td>maxHeight</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="imageresize-autoresizeavatar-page"><p>target height of image resize.</p>
-</div></td></tr></tbody></table><h5 id="methods_autoresizeavatar_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="imageresize-autoresizeavatar-page"><p>Promise that resolves to a data url.</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="methods_createfilefromdataurl">createFileFromDataURL(url, fileName)</h3>
-<div class="createfilefromdataurl"><div class="imageresize-createfilefromdataurl-page"><p>Creates a File object from a data url.</p>
-</div><h5 id="methods_createfilefromdataurl_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>url</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="imageresize-createfilefromdataurl-page"><p>base64 encoded string as url</p>
-</div></td></tr><tr><td>fileName</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="imageresize-createfilefromdataurl-page"><p>name of file</p>
-</div></td></tr></tbody></table><h5 id="methods_createfilefromdataurl_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="imageresize-createfilefromdataurl-page"><p>File object containing an image.</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="methods_readfiletoimg">readFileToImg(file)</h3>
-<div class="readfiletoimg"><div class="imageresize-readfiletoimg-page"><p>Creates an Image from a File Object</p>
-</div><h5 id="methods_readfiletoimg_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>file</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="imageresize-readfiletoimg-page"><p>File Object</p>
-</div></td></tr></tbody></table><h5 id="methods_readfiletoimg_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="imageresize-readfiletoimg-page"><p>Promise that resolves to an Image</p>
 </div></td></tr></table></div>
 </li>
 </ul>

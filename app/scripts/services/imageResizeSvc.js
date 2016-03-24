@@ -4,6 +4,7 @@
  */
 (function() {
 	'use strict';
+
 	/**
 	 * @ngdoc service
 	 * @name services.imageResize
@@ -22,7 +23,7 @@
 		};
 		/**
 		 * @ngdoc method
-		 * @name imageResize#createFileFromDataURL
+		 * @name #createFileFromDataURL
 		 * @methodOf services.imageResize
 		 * @description
 		 * Creates a File object from a data url.
@@ -42,7 +43,7 @@
 		}
 		/**
 		 * @ngdoc method
-		 * @name imageResize#readFileToImg
+		 * @name #readFileToImg
 		 * @methodOf services.imageResize
 		 * @description
 		 * Creates an Image from a File Object
@@ -70,7 +71,7 @@
 		}
 		/**
 		 * @ngdoc method
-		 * @name imageResize#autoResizeAvatar
+		 * @name #autoResizeAvatar
 		 * @methodOf services.imageResize
 		 * @description
 		 * Resize image by reducing width/height by half until target dimensions are met.
@@ -139,6 +140,9 @@
 			});
 		}
 		/**
+		 * @private
+		 * @ngdoc
+		 * @methodOf services.imageResize
 		 * @name _setCanvasWH
 		 * @description
 		 * sets the width and height on a given canvas.
@@ -146,13 +150,16 @@
 		 * @param {Number} width Width to set.
 		 * @param {Number} height Height to set.
 		 * @returns {Void} returns undefined.
-		 * @private
+		 *
 		 */
 		function _setCanvasWH(canvas, width, height) {
 			canvas.width = width;
 			canvas.height = height;
 		}
 		/**
+		 * @private
+		 * @ngdoc
+		 * @methodOf services.imageResize
 		 * @name _resizeImgWithCanvas
 		 * @description
 		 * Resize an image rendered in an HTML5 canvas element to given dimensions
@@ -182,6 +189,8 @@
 		}
 		/**
 		 * @private
+		 * @ngdoc
+		 * @methodOf services.imageResize
 		 * @name _getContext
 		 * @description
 		 * Method to get the Context from an HTML5 canvas element and set anti-aliasing properties
@@ -198,6 +207,8 @@
 		}
 		/**
 		 * @private
+		 * @ngdoc
+		 * @methodOf services.imageResize
 		 * @name _dataURLToBlob
 		 * @description
 		 * Converts data url to Blob object which can be used as data for a File object
@@ -230,6 +241,8 @@
 		}
 		/**
 		 * @private
+		 * @ngdoc method
+		 * @methodOf services.imageResize
 		 * @name _calculateNewDimensions
 		 * @description
 		 * Calculates the dimensions of a rectangle (for an image while maintaining the original aspect ratio.

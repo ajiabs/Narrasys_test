@@ -21,7 +21,7 @@ module.exports = function (grunt) {
 		},
 		ngdocs: {
 			options: {
-				dest: 'docs',
+				dest: 'docs/ng-docs',
 				html5Mode: false,
 				scripts: [
 					'<%= yeoman.app %>/bower_components/angular/angular.js',
@@ -152,7 +152,7 @@ module.exports = function (grunt) {
 				}]
 			},
 			server: '.tmp',
-			docs: 'docs/**/*.{js, html, otf, eot, svg, ttf, woff}'
+			docs: 'docs/ng-docs/*'
 		},
 		jshint: {
 			options: {
