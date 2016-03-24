@@ -138,6 +138,14 @@ module.exports = function (grunt) {
 					]
 				}
 			},
+			docs: {
+				options: {
+					hostname: 'localhost',
+					port: 6969,
+					base: 'docs/ng-docs',
+					keepalive: true
+				}
+			},
 			dist: {
 				options: {
 					base: '<%= yeoman.dist %>'
@@ -346,6 +354,14 @@ module.exports = function (grunt) {
 					proxy: "https://localhost.inthetelling.com",
 					watchTask: true
 				}
+			},
+			docs: {
+				options: {
+					port: 6969, //heh
+					server: {
+						baseDir: './docs/ng-docs'
+					}
+				}
 			}
 		}
 
@@ -409,7 +425,8 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('docGen', [
 		'clean:docs',
-		'ngdocs'
+		'ngdocs',
+		'browserSync:docs'
 	]);
 
 };
