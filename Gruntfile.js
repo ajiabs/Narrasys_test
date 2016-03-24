@@ -11,11 +11,27 @@ module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
 	require('time-grunt')(grunt);
 
+	grunt.loadNpmTasks('grunt-ngdocs');
+
 	grunt.initConfig({
 		yeoman: {
 			// configurable paths
 			app: require('./bower.json').appPath || 'app',
 			dist: 'dist'
+		},
+		ngdocs: {
+			options: {
+				dest: 'docs',
+				html5Mode: false,
+				scripts: [
+					'<%= yeoman.app %>/bower_components/angular/angular.js',
+					'<%= yeoman.app %>/bower_components/angular-animate/angular-animate.js'
+				]
+			},
+			services: {
+				src: ['<%= yeoman.app %>/scripts/services/*.js'],
+				title: 'Services Docs'
+			}
 		},
 		ngtemplates: {
 			"com.inthetelling.story": { // this subtask name becomes the module name that is created
@@ -135,7 +151,8 @@ module.exports = function (grunt) {
 					]
 				}]
 			},
-			server: '.tmp'
+			server: '.tmp',
+			docs: 'docs/**/*.{js, html, otf, eot, svg, ttf, woff}'
 		},
 		jshint: {
 			options: {
@@ -384,6 +401,11 @@ module.exports = function (grunt) {
 	grunt.registerTask('doWork', [
 		'browserSync',
 		'watch'
+	]);
+
+	grunt.registerTask('docGen', [
+		'clean:docs',
+		'ngdocs'
 	]);
 
 };

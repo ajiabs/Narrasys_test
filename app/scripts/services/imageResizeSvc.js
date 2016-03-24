@@ -2,21 +2,16 @@
  *
  * Created by githop on 3/23/16.
  */
-
 (function() {
 	'use strict';
-
 	/**
-	 * @ngDoc overview
-	 * @name com.inthetelling.story
-	 **/
+	 * @ngdoc service
+	 * @name services.imageResize
+	 * @requires $q
+	 * @description
+	 * Resize images and convert File Objects into images.
+	 */
 	angular.module('com.inthetelling.story')
-		/**
-		 * @ngDoc service
-		 * @name com.inthetelling.story.imageResize
-		 * @description
-		 * Resize images and convert File Objects into images.
-		 */
 		.factory('imageResize', imageResize);
 
 	function imageResize($q) {
@@ -26,14 +21,18 @@
 			autoResizeAvatar: autoResizeAvatar
 		};
 		/**
-		 * @ngDoc method
-		 * @name #createFileFromDataURL
-		 * @methodOf com.inthetelling.story.imageResize:imageResize
+		 * @ngdoc method
+		 * @name imageResize#createFileFromDataURL
+		 * @methodOf services.imageResize
 		 * @description
 		 * Creates a File object from a data url.
 		 * @param {String} url base64 encoded string as url
 		 * @param {String} fileName name of file
 		 * @returns {Object} File object containing an image.
+		 * @example
+		 * <pre>
+		 *     var file = imageResize.createFileFromDataURL(dataUrl);
+		 * </pre>
 		 */
 		function createFileFromDataURL(url, fileName) {
 			var _blob = _dataURLToBlob(url);
@@ -42,13 +41,19 @@
 			return _blob;
 		}
 		/**
-		 * @ngDoc method
-		 * @name #readFileToImg
-		 * @methodOf com.inthetelling.story.imageResize:imageResize
+		 * @ngdoc method
+		 * @name imageResize#readFileToImg
+		 * @methodOf services.imageResize
 		 * @description
 		 * Creates an Image from a File Object
 		 * @param {Object} file File Object
 		 * @returns {Object} Promise that resolves to an Image
+		 * @example
+		 * <pre>
+		 *     imageResize.readFileToImg(file).then(function(file) {
+		 *     		//do stuff with file
+		 *     }));
+		 * </pre>
 		 */
 		function readFileToImg(file) {
 			var _reader = new FileReader();
@@ -64,9 +69,9 @@
 			});
 		}
 		/**
-		 * @ngDoc method
-		 * @name #autoResizeAvatar
-		 * @methodOf com.inthetelling.story.imageResize:imageResize
+		 * @ngdoc method
+		 * @name imageResize#autoResizeAvatar
+		 * @methodOf services.imageResize
 		 * @description
 		 * Resize image by reducing width/height by half until target dimensions are met.
 		 * If the max dimensions square, e.g. 60x60, and the input image is not, the resulting
@@ -77,6 +82,13 @@
 		 * @param {Number} maxWidth target with of image resize.
 		 * @param {Number} maxHeight target height of image resize.
 		 * @returns {String} Promise that resolves to a data url.
+		 * @example
+		 * <pre>
+		 *     imageResize.autoResize(img, 'image/jpeg', 60, 60)
+		 *     .then(function(resizedImg) {
+		 *     //do stuff with resizedImg
+		 *     });
+		 * </pre>
 		 */
 		function autoResizeAvatar(img, mimeType, maxWidth, maxHeight) {
 			return $q(function(resolve) {
@@ -127,25 +139,20 @@
 			});
 		}
 		/**
-		 * @ngDoc function
-		 * @private
-		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _setCanvasWH
 		 * @description
 		 * sets the width and height on a given canvas.
 		 * @param {Object} canvas HTML5 Canvas Element
 		 * @param {Number} width Width to set.
 		 * @param {Number} height Height to set.
-		 * @returns
+		 * @returns {Void} returns undefined.
+		 * @private
 		 */
 		function _setCanvasWH(canvas, width, height) {
 			canvas.width = width;
 			canvas.height = height;
 		}
 		/**
-		 * @ngDoc function
-		 * @private
-		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _resizeImgWithCanvas
 		 * @description
 		 * Resize an image rendered in an HTML5 canvas element to given dimensions
@@ -174,9 +181,7 @@
 			return _resizeCvs;
 		}
 		/**
-		 * @ngDoc function
 		 * @private
-		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _getContext
 		 * @description
 		 * Method to get the Context from an HTML5 canvas element and set anti-aliasing properties
@@ -192,9 +197,7 @@
 			return context;
 		}
 		/**
-		 * @ngDoc function
 		 * @private
-		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _dataURLToBlob
 		 * @description
 		 * Converts data url to Blob object which can be used as data for a File object
@@ -226,9 +229,7 @@
 			return new Blob([uInt8Array], {type: contentType});
 		}
 		/**
-		 * @ngDoc function
 		 * @private
-		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @name _calculateNewDimensions
 		 * @description
 		 * Calculates the dimensions of a rectangle (for an image while maintaining the original aspect ratio.
