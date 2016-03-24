@@ -247,7 +247,7 @@
 		 * @methodOf iTT.service:imageResize
 		 * @name _calculateNewDimensions
 		 * @description
-		 * Calculates the dimensions of a rectangle (for an image while maintaining the original aspect ratio.
+		 * Calculates the dimensions of a rectangle (for an image) while maintaining the original aspect ratio.
 		 * @param {Number} srcWidth Input width of rectangle.
 		 * @param {Number} srcHeight Input height of rectangle.
 		 * @param {Number} maxWidth Target width of rectangle.
