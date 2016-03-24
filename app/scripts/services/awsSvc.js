@@ -70,7 +70,7 @@ angular.module('com.inthetelling.story')
 			// console.log('files: ', files);
 			for (var i = 0; i < fileList.length; i++) {
 				//can access this with regular array index
-				//https://developer.mozilla.org/en-US/docs/Web/API/FileList
+				//https://developer.mozilla.org/en-US/docs/Web/API/FileList#Example
 				files.push(fileList[i]);
 				var deferred = $q.defer();
 				deferredUploads.push(deferred);
