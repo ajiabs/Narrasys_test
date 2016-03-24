@@ -7,7 +7,7 @@
 
 	/**
 	 * @ngdoc service
-	 * @name services.imageResize
+	 * @name iTT.service:imageResize
 	 * @requires $q
 	 * @description
 	 * Resize images and convert File Objects into images. Used in practice to resize images client side prior
@@ -26,7 +26,7 @@
 		/**
 		 * @ngdoc method
 		 * @name #createFileFromDataURL
-		 * @methodOf services.imageResize
+		 * @methodOf iTT.service:imageResize
 		 * @description
 		 * Creates a File object from a data url.
 		 * @param {String} url base64 encoded string as url
@@ -46,7 +46,7 @@
 		/**
 		 * @ngdoc method
 		 * @name #readFileToImg
-		 * @methodOf services.imageResize
+		 * @methodOf iTT.service:imageResize
 		 * @description
 		 * Creates an Image from a File Object
 		 * @param {Object} file File Object
@@ -74,7 +74,7 @@
 		/**
 		 * @ngdoc method
 		 * @name #autoResizeAvatar
-		 * @methodOf services.imageResize
+		 * @methodOf iTT.service:imageResize
 		 * @description
 		 * Resize image by reducing width/height by half until target dimensions are met.
 		 * If the max dimensions square, e.g. 60x60, and the input image is not, the resulting
@@ -144,7 +144,7 @@
 		/**
 		 * @private
 		 * @ngdoc
-		 * @methodOf services.imageResize
+		 * @methodOf iTT.service:imageResize
 		 * @name _setCanvasWH
 		 * @description
 		 * sets the width and height on a given canvas.
@@ -161,7 +161,7 @@
 		/**
 		 * @private
 		 * @ngdoc
-		 * @methodOf services.imageResize
+		 * @methodOf iTT.service:imageResize
 		 * @name _resizeImgWithCanvas
 		 * @description
 		 * Resize an image rendered in an HTML5 canvas element to given dimensions
@@ -192,7 +192,7 @@
 		/**
 		 * @private
 		 * @ngdoc
-		 * @methodOf services.imageResize
+		 * @methodOf iTT.service:imageResize
 		 * @name _getContext
 		 * @description
 		 * Method to get the Context from an HTML5 canvas element and set anti-aliasing properties
@@ -210,7 +210,7 @@
 		/**
 		 * @private
 		 * @ngdoc
-		 * @methodOf services.imageResize
+		 * @methodOf iTT.service:imageResize
 		 * @name _dataURLToBlob
 		 * @description
 		 * Converts data url to Blob object which can be used as data for a File object
@@ -244,7 +244,7 @@
 		/**
 		 * @private
 		 * @ngdoc method
-		 * @methodOf services.imageResize
+		 * @methodOf iTT.service:imageResize
 		 * @name _calculateNewDimensions
 		 * @description
 		 * Calculates the dimensions of a rectangle (for an image while maintaining the original aspect ratio.

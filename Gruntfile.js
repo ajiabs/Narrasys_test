@@ -30,7 +30,11 @@ module.exports = function (grunt) {
 			},
 			services: {
 				src: ['<%= yeoman.app %>/scripts/services/*.js'],
-				title: 'Services Docs'
+				title: 'iTT Service Layer'
+			},
+			directives: {
+				src: ['<%= yeoman.app %>/scripts/directives/*.js'],
+				title: 'iTT Directives'
 			}
 		},
 		ngtemplates: {
