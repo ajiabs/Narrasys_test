@@ -31,8 +31,8 @@
 		 * @methodOf com.inthetelling.story.imageResize:imageResize
 		 * @description
 		 * Creates a File object from a data url.
-		 * @param {string} url base64 encoded string as url
-		 * @param {string} fileName name of file
+		 * @param {String} url base64 encoded string as url
+		 * @param {String} fileName name of file
 		 * @returns {Object} File object containing an image.
 		 */
 		function createFileFromDataURL(url, fileName) {
