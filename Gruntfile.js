@@ -28,13 +28,8 @@ module.exports = function (grunt) {
 					'<%= yeoman.app %>/bower_components/angular-animate/angular-animate.js'
 				]
 			},
-			services: {
-				src: ['<%= yeoman.app %>/scripts/services/*.js'],
-				title: 'iTT Service Layer'
-			},
-			directives: {
-				src: ['<%= yeoman.app %>/scripts/directives/*.js'],
-				title: 'iTT Directives'
+			all: {
+				src: '<%= yeoman.app %>/scripts/**/*.js'
 			}
 		},
 		ngtemplates: {
@@ -358,6 +353,7 @@ module.exports = function (grunt) {
 			docs: {
 				options: {
 					port: 6969, //heh
+					startPath: '/#/api/iTT'	,
 					server: {
 						baseDir: './docs/ng-docs'
 					}

@@ -4,12 +4,12 @@
 
 (function () {
 	'use strict';
-
 	/**
 	 * @ngdoc service
 	 * @name iTT.service:youTubePlayerManager
 	 * @description
 	 * A service for working with youtube iframes
+	 * {@link https://github.com/InTheTelling/client/blob/master/app/scripts/services/YouTubePlayerManager.svc.js source}
 	 * @requires $q
 	 * @requires $location
 	 * @requires appState
@@ -17,7 +17,6 @@
 	 * @requires YoutubePlayerApi
 	 * @requires errorSvc
 	 */
-
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 

@@ -12,9 +12,10 @@
 	 * @description
 	 * Directive used to render the actual youtube iframe and link
 	 * YT instances with the youTubePlayerManager service
+	 * {@link https://github.com/InTheTelling/client/blob/master/app/scripts/directives/ittYoutubeEmbed.js source}
 	 * @requires $timeout
 	 * @requires $scope
-	 * @requires youTubePlayerManager
+	 * @requires iTT.service:youTubePlayerManager
 	 * @requires youtubeSvc
 	 * @param {String} embedUrl The URL to the youtube video
 	 * @param {Function=} onPlayerStateChange Callback used to control player state
