@@ -121,6 +121,9 @@ angular.module('com.inthetelling.story')
 						return;
 					}
 
+					console.count('editing!!');
+					console.log('new Item no embed', newItem.noEmbed);
+
 					// FOR DEBUGGING
 					/*
 										angular.forEach(Object.keys(newItem), function (f) {

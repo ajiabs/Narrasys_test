@@ -14,6 +14,7 @@
 		<div class="modalmenu" ng-if="!item.noExternalLink">
 			<a ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 		</div>
+		<h1>This should not be here!! {{item.noEmbed}}</h1>
 		<itt-iframe x-src="{{item.url}}"></itt-iframe>
 	</div>
 	<div class="clear"></div>

@@ -9,11 +9,39 @@
 // for assets, DELETE then POST
 // to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
+/**
+ * @ngdoc service
+ * @name iTT.service:dataSvc
+ * @description
+ * Service for hitting API endpoints
+ * @requires $q
+ * @requires $http
+ * @requires $routeParams
+ * @requires $timeout
+ * @requires $rootScope
+ * @requires config
+ * @requires authSvc
+ * @requires appState
+ * @requires modelSvc
+ * @requires errorSvc
+ * @requires mockSvc
+ * @requires questionAnswersSvc
+ */
+
 angular.module('com.inthetelling.story')
 	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
+
+		svc.checkXFrameOpts = function(url) {
+			//why use a 'post process callback'
+			//when you can simply chain promises?
+			return SANE_GET('/x_frame_options_proxy?url=' + url)
+			.then(function(result) {
+				return result.x_frame_options;
+			});
+		};
 
 		// WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
 		svc.getNarrative = function (narrativeId) {
@@ -541,6 +569,21 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
+		var SANE_GET = function(path) {
+			//wrapping a method in a promises that is already using functions that return promises
+			//is an anti-pattern.
+			//simply return this promise
+			return authSvc.authenticate()
+			.then(function() {
+				//then return this promise
+				return $http.get(config.apiDataBaseUrl + path)
+				.then(function(resp) {
+					//SANE_GET will resolve to this
+					return resp.data;
+				});
+			});
+		};
+
 		var PUT = function (path, putData, postprocessCallback) {
 			var defer = $q.defer();
 			$http({
@@ -852,6 +895,7 @@ angular.module('com.inthetelling.story')
 				"sxs", // for demos, for now
 				"title",
 				"url",
+				"noEmbed",
 				"annotator",
 				"annotation",
 				"description",

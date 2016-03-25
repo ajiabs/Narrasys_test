@@ -338,9 +338,11 @@ angular.module('com.inthetelling.story')
 				// clear derived flags before re-setting them (in case we're editing an existing item):
 				event.isContent = false;
 				event.isTranscript = false;
-				event.noEmbed = false;
+				event.noEmbed = event.noEmbed !== undefined ? event.noEmbed : false;
 				event.noExternalLink = false;
 				event.targetTop = false;
+
+				console.log("dataSvc event noEmbed", event.noEmbed);
 
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)
@@ -370,6 +372,7 @@ angular.module('com.inthetelling.story')
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
 					event.noExternalLink = true;
 				}
+
 				if (event.templateUrl.match(/frameicide/)) {
 					event.targetTop = true;
 					event.noEmbed = true;

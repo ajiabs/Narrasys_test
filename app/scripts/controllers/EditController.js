@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc, errorSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		$scope.validateItemUrl = function () {
+
 			$timeout(function () { // ng-blur triggers before 'ng-model-options=update-on:blur'... wait for the model to update
 				console.log("Checking Item link: ", $scope.item.url);
 
@@ -26,6 +27,24 @@ angular.module('com.inthetelling.story')
 				if ($scope.item.url.match(/inthetelling.com\/#/) && $scope.item.url.indexOf('?') === -1) {
 					$scope.item.url = $scope.item.url + "?embed=1";
 				}
+			})
+				.then(function() {
+				if ($scope.item.url === 'https://') {
+					return;
+				}
+				dataSvc.checkXFrameOpts($scope.item.url)
+					.then(function(result) {
+						console.log('result', result);
+						//$scope.item.x_frame_options = result;
+						if (result === 'SAMEORIGIN' || result === null) {
+							$scope.item.noEmbed = true;
+							console.log('item after', $scope.item);
+							errorSvc.notify('This site does not allow iframing, so no link-embed option');
+
+						}
+					}).catch(function(e) {
+					console.log('reason', e);
+				});
 			});
 		};
 
@@ -74,6 +93,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.addEvent = function (producerItemType) {
+			console.warn('add event called!');
 			if (producerItemType === 'scene') {
 				if (isOnExistingSceneStart(appState.time)) {
 					return $scope.editCurrentScene();
@@ -218,6 +238,9 @@ angular.module('com.inthetelling.story')
 						});
 				});
 			}
+
+			console.log("saving this thing: ", appState.editEvent);
+
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
 					data.cur_episode_id = appState.episodeId;
