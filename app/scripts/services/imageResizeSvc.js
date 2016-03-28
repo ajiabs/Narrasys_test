@@ -95,6 +95,8 @@
 			return $q(function(resolve) {
 				var _canvas = document.createElement('canvas');
 				var _ctx = _getContext(_canvas);
+				var _dx = 0, _dy = 0;
+
 				_setCanvasWH(_canvas, img.width, img.height);
 
 				var _tmpCvsWidth  = img.width,
@@ -119,7 +121,7 @@
 
 				var _finalWH = _calculateNewDimensions(_tmpCvsWidth, _tmpCvsHeight, maxWidth, maxHeight);
 
-				var _dx = 0, _dy = 0;
+				//handle centering of non-square resized images
 				if (center) {
 					//image is taller than it is wide
 					//center it vertically
