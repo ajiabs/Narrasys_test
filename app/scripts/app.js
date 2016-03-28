@@ -1,6 +1,19 @@
 'use strict';
 
+
+
 // Declare the top level application module and its dependencies
+/**
+ * @ngdoc interface
+ * @name iTT
+ * @description
+ * The default namespace / angular module which houses the rest of the application code.
+ * Officially titled as 'com.inthetelling.story' but iTT seems a little less verbose
+ * @requires ngRoute
+ * @requires ngAnimate
+ * @requires ngSanitize
+ * @requires textAngular
+ */
 angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular'])
 
 // Configure routing
@@ -177,6 +190,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 // Configuration for textAngular toolbar
 .config(function ($provide) {
 	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
+		taOptions.defaultFileDropHandler = function(a, b) { }; //jshint ignore:line
 		taOptions.toolbar = [
 			['h1', 'h2', 'h3'],
 			['bold', 'italics', 'underline', 'strikeThrough'],
