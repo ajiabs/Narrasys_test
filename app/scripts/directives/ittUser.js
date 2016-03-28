@@ -42,22 +42,32 @@ angular.module('com.inthetelling.story')
 						"bytesTotal": 1
 					};
 
-					var resizeWithService = function(img) {
-						return imageResize.resizeImg(img, 60, 60)
-						.then(function(canvas) {
-							return canvas;
+					//promise chain
+					imageResize.readFileToImg(files[0])
+						.then(_resizeWithService)
+						.then(_formatAvatarFile)
+						.then(_postToAWS)
+						.catch(function(e) {
+							console.log('something failed resizing / uploading the image', e);
 						});
-					};
 
-					var formatAvatarFile = function(canvas) {
+					//handler functions; i.e., 'links' in the 'promise chain' ;)
+					function _resizeWithService(img) {
+						return imageResize.resizeImg(img, 60, 60, true)
+						.then(function(dataUrl) {
+							return dataUrl;
+						});
+					}
+					//takes a base64 encoded URL with PNG image
+					//and turns it back into a File Object
+					function _formatAvatarFile(dataUrl) {
 						return $q(function(resolve) {
-							var dataUrl  = imageResize.processAvatar(canvas);
-							var file     = imageResize.createFileFromDataURL(dataUrl, files[0].name);
+							var file = imageResize.createFileFromDataURL(dataUrl, files[0].name);
 							resolve(file);
 						});
-					};
-
-					var postToAWS = function(file) {
+					}
+					//pass file to AWS service for file upload
+					function _postToAWS(file) {
 						awsSvc.uploadUserFiles(appState.user._id, [file])[0]
 							.then(function(data) {
 								scope.showUploadField = false;
@@ -71,15 +81,6 @@ angular.module('com.inthetelling.story')
 								delete scope.uploads;
 							});
 					};
-
-					//promise chain
-					imageResize.readFileToImg(files[0])
-					.then(resizeWithService)
-					.then(formatAvatarFile)
-					.then(postToAWS)
-					.catch(function(e) {
-						console.log('something failed resizing / uploading the image', e);
-					});
 				};
 
 				scope.updateUser = function () {

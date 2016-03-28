@@ -22,8 +22,7 @@
 		return {
 			createFileFromDataURL: createFileFromDataURL,
 			readFileToImg: readFileToImg,
-			resizeImg: resizeImg,
-			processAvatar: processAvatar
+			resizeImg: resizeImg
 		};
 		/**
 		 * @ngdoc method
@@ -78,28 +77,24 @@
 		 * @name #resizeImg
 		 * @methodOf iTT.service:imageResize
 		 * @description
-		 * Resize image by reducing width/height by half until target dimensions are met.
-		 * If the max dimensions square, e.g. 60x60, and the input image is not, the resulting
-		 * image is resized to the max width / height and vertically / horizontally centered inside a 60x60 canvas,
-		 * resulting in a letter-box effect.
+		 * Resize image by reducing width/height by factor of 2
 		 * @param {Object} img Image to resize.
-		 * @param {String} mimeType type of image file
 		 * @param {Number} maxWidth target with of image resize.
 		 * @param {Number} maxHeight target height of image resize.
+		 * @param {Boolean} center Toggle image centering
 		 * @returns {String} Promise that resolves to a data url.
 		 * @example
 		 * <pre>
-		 *     imageResize.autoResize(img, 'image/jpeg', 60, 60)
+		 *     imageResize.resizeImg(img, 60, 60, true)
 		 *     .then(function(resizedImg) {
 		 *     //do stuff with resizedImg
 		 *     });
 		 * </pre>
 		 */
-		function resizeImg(img, maxWidth, maxHeight) {
+		function resizeImg(img, maxWidth, maxHeight, center) {
 			return $q(function(resolve) {
 				var _canvas = document.createElement('canvas');
 				var _ctx = _getContext(_canvas);
-
 				_setCanvasWH(_canvas, img.width, img.height);
 
 				var _tmpCvsWidth  = img.width,
@@ -108,10 +103,10 @@
 				_ctx.drawImage(img, 0, 0, _tmpCvsWidth, _tmpCvsHeight);
 
 				//step down the image size by half for a smoother overall resize.
-				while (_tmpCvsWidth > maxWidth) {
+				while (_tmpCvsWidth > maxWidth || _tmpCvsHeight > maxHeight) {
 					//break here because we want our final resize out of the loop
 					//to still be a down step.
-					if ((_tmpCvsWidth * 0.5) / 2 < maxWidth) {
+					if ((_tmpCvsWidth * 0.5) < maxWidth || (_tmpCvsHeight * 0.5) < maxHeight) {
 						break;
 					}
 
@@ -122,44 +117,25 @@
 					_canvas = _resizeImgWithCanvas(_canvas, _tmpCvsWidth, _tmpCvsHeight);
 				}
 
-				resolve(_canvas);
+				var _finalWH = _calculateNewDimensions(_tmpCvsWidth, _tmpCvsHeight, maxWidth, maxHeight);
+
+				var _dx = 0, _dy = 0;
+				if (center) {
+					//image is taller than it is wide
+					//center it vertically
+					if (_finalWH.height < maxHeight) {
+						_dy = (maxHeight - _finalWH.height) / 2;
+					}
+
+					//image is wider than it is tall
+					//center it horizontally
+					if(_finalWH.width < maxWidth) {
+						_dx = (maxWidth- _finalWH.width) / 2;
+					}
+				}
+				_canvas = _resizeImgWithCanvas(_canvas, _finalWH.width, _finalWH.height, maxWidth, maxHeight, _dx, _dy);
+				resolve(_canvas.toDataURL('image/png', 1.0));
 			});
-		}
-		/**
-		 * @ngdoc method
-		 * @name #processAvatar
-		 * @methodOf iTT.service:imageResize
-		 * @description
-		 * Resize image into avatar format, i.e. 60x60 image that is letter-boxed either vertically or horizontally
-		 * @param {Object} canvas  HTML5 Canvas containing image
-		 * @returns {String} returns base64 encoded str containing PNG image.
-		 * @example
-		 * <pre>
-		 *     var imgUrl = imageResize.processAvatar(canvas);
-		 * </pre>
-         */
-		function processAvatar(canvas) {
-			var _dy;
-			var _dx;
-			var _maxWidth = 60,
-				_maxHeight = 60;
-
-			var _finalWH = _calculateNewDimensions(canvas.width, canvas.height, _maxWidth, _maxHeight);
-
-			//image is taller than it is wide
-			//center it vertically
-			if (_finalWH.height < _finalWH.width) {
-				_dy = (_finalWH.width - _finalWH.height) / 2;
-			}
-
-			//image is wider than it is tall
-			//center it horizontally
-			if(_finalWH.height > _finalWH.width) {
-				_dx = (_finalWH.height - _finalWH.width) / 2;
-			}
-
-			canvas = _resizeImgWithCanvas(canvas, _finalWH.width, _finalWH.height, _maxWidth, _maxHeight, _dx, _dy);
-			return canvas.toDataURL('image/png', 1.0);
 		}
 		/**
 		 * @private
@@ -172,7 +148,6 @@
 		 * @param {Number} width Width to set.
 		 * @param {Number} height Height to set.
 		 * @returns {Void} returns undefined.
-		 *
 		 */
 		function _setCanvasWH(canvas, width, height) {
 			canvas.width = width;
