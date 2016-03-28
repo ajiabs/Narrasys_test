@@ -190,6 +190,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 // Configuration for textAngular toolbar
 .config(function ($provide) {
 	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
+		taOptions.defaultFileDropHandler = function(a, b) { }; //jshint ignore:line
 		taOptions.toolbar = [
 			['h1', 'h2', 'h3'],
 			['bold', 'italics', 'underline', 'strikeThrough'],
