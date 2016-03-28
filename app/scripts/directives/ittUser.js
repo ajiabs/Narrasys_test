@@ -80,7 +80,7 @@ angular.module('com.inthetelling.story')
 								scope.updateUser();
 								delete scope.uploads;
 							});
-					};
+					}
 				};
 
 				scope.updateUser = function () {
