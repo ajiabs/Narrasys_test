@@ -62,14 +62,29 @@
 		function readFileToImg(file) {
 			var _reader = new FileReader();
 			var _img = new Image();
-			return $q(function(resolve) {
-				_reader.onload = function() {
+			return $q(function(resolve, reject) {
+				_reader.onloadend = function() {
+					console.log('onloadend fileReader!!');
 					resolve(_reader.result);
+				};
+				_reader.onerror = function() {
+					console.log('FIleReader Err', _reader.error);
+					reject(_reader.error);
 				};
 				_reader.readAsDataURL(file);
 			}).then(function(imgUrl) {
 				_img.src = imgUrl;
-				return _img;
+				console.log('image preload', _img);
+				return $q(function(resolve, reject) {
+					_img.onload = function() {
+						resolve(_img);
+					};
+					_img.onerror = function() {
+						reject('Error Loading Image');
+					};
+				}).then(function(img) {
+					return img;
+				});
 			});
 		}
 		/**
@@ -97,21 +112,18 @@
 				var _ctx = _getContext(_canvas);
 				var _dx = 0, _dy = 0;
 
-				_setCanvasWH(_canvas, img.width, img.height);
-
 				var _tmpCvsWidth  = img.width,
 					_tmpCvsHeight = img.height;
+
+				_setCanvasWH(_canvas, _tmpCvsWidth, _tmpCvsHeight);
 
 				_ctx.drawImage(img, 0, 0, _tmpCvsWidth, _tmpCvsHeight);
 
 				//step down the image size by half for a smoother overall resize.
-				while (_tmpCvsWidth > maxWidth || _tmpCvsHeight > maxHeight) {
-					//break here because we want our final resize out of the loop
-					//to still be a down step.
-					if ((_tmpCvsWidth * 0.5) < maxWidth || (_tmpCvsHeight * 0.5) < maxHeight) {
-						break;
-					}
-
+				//break here because we want our final resize out of the loop
+				//to still be a down step.
+				while ((_tmpCvsWidth > maxWidth || _tmpCvsHeight > maxHeight) &&
+				!((_tmpCvsWidth * 0.5) < maxWidth || (_tmpCvsHeight * 0.5) < maxHeight)) {
 					img.width  = img.width  * 0.5;
 					img.height = img.height * 0.5;
 					_tmpCvsWidth  = img.width;
@@ -119,7 +131,7 @@
 					_canvas = _resizeImgWithCanvas(_canvas, _tmpCvsWidth, _tmpCvsHeight);
 				}
 
-				var _finalWH = _calculateNewDimensions(_tmpCvsWidth, _tmpCvsHeight, maxWidth, maxHeight);
+				var _finalWH = _calculateNewDimensions(_canvas.width, _canvas.height, maxWidth, maxHeight);
 
 				//handle centering of non-square resized images
 				if (center) {
@@ -135,6 +147,8 @@
 						_dx = (maxWidth- _finalWH.width) / 2;
 					}
 				}
+
+				//console.log('final draw params: ', 'cvs', _canvas, 'finalWH', _finalWH, 'dx dy', _dx, _dy);
 				_canvas = _resizeImgWithCanvas(_canvas, _finalWH.width, _finalWH.height, maxWidth, maxHeight, _dx, _dy);
 				resolve(_canvas.toDataURL('image/png', 1.0));
 			});
@@ -178,12 +192,13 @@
 			if (dx === undefined) {
 				dx = 0;
 			}
+			//console.log('drawImage inputs: ', 'c', c, 'dx', dx, 'dy', dy, 'w', w, 'h', h);
 			var _resizeCvs = document.createElement('canvas');
 			var _resizeCtx = _getContext(_resizeCvs);
 			_resizeCvs.width = cW !== undefined ? cW : w;
 			_resizeCvs.height = cH !== undefined ? cH : h;
 			_resizeCtx.drawImage(c, dx, dy, w, h);
-			console.log('resizing img: ', w, 'x', h);
+
 			return _resizeCvs;
 		}
 		/**
