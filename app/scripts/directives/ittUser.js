@@ -45,7 +45,7 @@ angular.module('com.inthetelling.story')
 					//promise chain
 					imageResize.readFileToImg(files[0])
 						.then(_resizeWithService)
-						.then(_formatAvatarFile)
+						.then(_avatarFileFromImg)
 						.then(_postToAWS)
 						.catch(function(e) {
 							console.log('something failed resizing / uploading the image', e);
@@ -60,7 +60,7 @@ angular.module('com.inthetelling.story')
 					}
 					//takes a base64 encoded URL with PNG image
 					//and turns it back into a File Object
-					function _formatAvatarFile(dataUrl) {
+					function _avatarFileFromImg(dataUrl) {
 						return $q(function(resolve) {
 							var file = imageResize.createFileFromDataURL(dataUrl, files[0].name);
 							resolve(file);
