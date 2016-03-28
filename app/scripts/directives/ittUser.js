@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittUser', function (appState, authSvc, dataSvc, awsSvc, modelSvc, imageResize) {
+	.directive('ittUser', function ($q, appState, authSvc, dataSvc, awsSvc, modelSvc, imageResize) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -42,29 +42,42 @@ angular.module('com.inthetelling.story')
 						"bytesTotal": 1
 					};
 
-					imageResize.readFileToImg(files[0])
-					.then(function(img) {
-						imageResize.autoResizeAvatar(img, files[0].type, 60, 60)
-						.then(function(imgUrl) {
-							console.log('imgUrl', imgUrl);
-							scope.img = {dataUrl: imgUrl};
-							//var file = imageResize.createFileFromDataURL(imgUrl, files[0].name);
-							//awsSvc.uploadUserFiles(appState.user._id, [file])[0]
-							//	.then(function(data) {
-							//		scope.showUploadField = false;
-							//		modelSvc.cache("asset", data.file);
-							//		if (appState.user.avatar_id) {
-							//			// TODO delete the user's previous avatar asset now that we have a new one
-							//			// (but first confirm that events the user has already created aren't storing the old avatar_id directly.... which would be a bug)
-							//		}
-                            //
-							//		appState.user.avatar_id = data.file._id;
-							//		scope.updateUser();
-                            //
-							//		delete scope.uploads;
-							//	});
+					var resizeWithService = function(img) {
+						return imageResize.resizeImg(img, 60, 60)
+						.then(function(canvas) {
+							return canvas;
 						});
-					}).catch(function(e) {
+					};
+
+					var formatAvatarFile = function(canvas) {
+						return $q(function(resolve) {
+							var dataUrl  = imageResize.processAvatar(canvas);
+							var file     = imageResize.createFileFromDataURL(dataUrl, files[0].name);
+							resolve(file);
+						});
+					};
+
+					var postToAWS = function(file) {
+						awsSvc.uploadUserFiles(appState.user._id, [file])[0]
+							.then(function(data) {
+								scope.showUploadField = false;
+								modelSvc.cache("asset", data.file);
+								if (appState.user.avatar_id) {
+									// TODO delete the user's previous avatar asset now that we have a new one
+									// (but first confirm that events the user has already created aren't storing the old avatar_id directly.... which would be a bug)
+								}
+								appState.user.avatar_id = data.file._id;
+								scope.updateUser();
+								delete scope.uploads;
+							});
+					};
+
+					//promise chain
+					imageResize.readFileToImg(files[0])
+					.then(resizeWithService)
+					.then(formatAvatarFile)
+					.then(postToAWS)
+					.catch(function(e) {
 						console.log('something failed resizing / uploading the image', e);
 					});
 				};

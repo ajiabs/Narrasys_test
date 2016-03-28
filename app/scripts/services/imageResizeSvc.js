@@ -22,7 +22,8 @@
 		return {
 			createFileFromDataURL: createFileFromDataURL,
 			readFileToImg: readFileToImg,
-			autoResizeAvatar: autoResizeAvatar
+			resizeImg: resizeImg,
+			processAvatar: processAvatar
 		};
 		/**
 		 * @ngdoc method
@@ -74,7 +75,7 @@
 		}
 		/**
 		 * @ngdoc method
-		 * @name #autoResizeAvatar
+		 * @name #resizeImg
 		 * @methodOf iTT.service:imageResize
 		 * @description
 		 * Resize image by reducing width/height by half until target dimensions are met.
@@ -94,11 +95,8 @@
 		 *     });
 		 * </pre>
 		 */
-		function autoResizeAvatar(img, mimeType, maxWidth, maxHeight) {
+		function resizeImg(img, maxWidth, maxHeight) {
 			return $q(function(resolve) {
-				var _dy;
-				var _dx;
-				var _finalWH;
 				var _canvas = document.createElement('canvas');
 				var _ctx = _getContext(_canvas);
 
@@ -117,30 +115,51 @@
 						break;
 					}
 
-					img.width  = Math.floor(img.width  * 0.5);
-					img.height = Math.floor(img.height * 0.5);
+					img.width  = img.width  * 0.5;
+					img.height = img.height * 0.5;
 					_tmpCvsWidth  = img.width;
 					_tmpCvsHeight = img.height;
 					_canvas = _resizeImgWithCanvas(_canvas, _tmpCvsWidth, _tmpCvsHeight);
 				}
 
-				_finalWH = _calculateNewDimensions(_tmpCvsWidth, _tmpCvsHeight, maxWidth, maxHeight);
-
-				//image is taller than it is wide
-				//center it vertically
-				if (_finalWH.height < _finalWH.width) {
-					_dy = (_finalWH.width - _finalWH.height) / 2;
-				}
-
-				//image is wider than it is tall
-				//center it horizontally
-				if(_finalWH.height > _finalWH.width) {
-					_dx = (_finalWH.height - _finalWH.width) / 2;
-				}
-
-				_canvas = _resizeImgWithCanvas(_canvas, _finalWH.width, _finalWH.height, maxWidth, maxHeight, _dx, _dy);
-				resolve(_canvas.toDataURL(mimeType || 'image/jpeg', 1.0));
+				resolve(_canvas);
 			});
+		}
+		/**
+		 * @ngdoc method
+		 * @name #processAvatar
+		 * @methodOf iTT.service:imageResize
+		 * @description
+		 * Resize image into avatar format, i.e. 60x60 image that is letter-boxed either vertically or horizontally
+		 * @param {Object} canvas  HTML5 Canvas containing image
+		 * @returns {String} returns base64 encoded str containing PNG image.
+		 * @example
+		 * <pre>
+		 *     var imgUrl = imageResize.processAvatar(canvas);
+		 * </pre>
+         */
+		function processAvatar(canvas) {
+			var _dy;
+			var _dx;
+			var _maxWidth = 60,
+				_maxHeight = 60;
+
+			var _finalWH = _calculateNewDimensions(canvas.width, canvas.height, _maxWidth, _maxHeight);
+
+			//image is taller than it is wide
+			//center it vertically
+			if (_finalWH.height < _finalWH.width) {
+				_dy = (_finalWH.width - _finalWH.height) / 2;
+			}
+
+			//image is wider than it is tall
+			//center it horizontally
+			if(_finalWH.height > _finalWH.width) {
+				_dx = (_finalWH.height - _finalWH.width) / 2;
+			}
+
+			canvas = _resizeImgWithCanvas(canvas, _finalWH.width, _finalWH.height, _maxWidth, _maxHeight, _dx, _dy);
+			return canvas.toDataURL('image/png', 1.0);
 		}
 		/**
 		 * @private
