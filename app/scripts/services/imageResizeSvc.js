@@ -215,7 +215,7 @@
 		 */
 		function _dataURLToBlob(dataURL) {
 			var BASE64_MARKER = ';base64,';
-			if (dataURL.indexOf(BASE64_MARKER) == -1) {
+			if (dataURL.indexOf(BASE64_MARKER) == -1) {  //jshint ignore:line
 				var parts = dataURL.split(',');
 				var contentType = parts[0].split(':')[1];
 				var raw = decodeURIComponent(parts[1]);
@@ -223,9 +223,9 @@
 				return new Blob([raw], {type: contentType});
 			}
 
-			var parts = dataURL.split(BASE64_MARKER);
-			var contentType = parts[0].split(':')[1];
-			var raw = window.atob(parts[1]);
+			var parts = dataURL.split(BASE64_MARKER); //jshint ignore:line
+			var contentType = parts[0].split(':')[1]; //jshint ignore:line
+			var raw = window.atob(parts[1]); //jshint ignore:line
 			var rawLength = raw.length;
 
 			var uInt8Array = new Uint8Array(rawLength);
