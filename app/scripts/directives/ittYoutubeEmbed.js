@@ -21,7 +21,7 @@
 	 * @param {Function=} onPlayerStateChange Callback used to control player state
 	 * @param {Function=} onPlayerQualityChange Callback used to change player quality
 	 * @param {Function=} onReady Callback fired when YT instance is ready
-	 * @param {String} mainPlayer=false Set to false for embed players
+	 * @param {Boolean} mainPlayer Set to false for embed players
 	 * @param {String} playerId ID, either main video asset ID or event ID, used to set PID of YT Instance inside _players Object
 	 * @example
 	 * <pre>
