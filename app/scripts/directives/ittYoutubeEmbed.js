@@ -21,11 +21,12 @@
 	 * @param {Function=} onPlayerStateChange Callback used to control player state
 	 * @param {Function=} onPlayerQualityChange Callback used to change player quality
 	 * @param {Function=} onReady Callback fired when YT instance is ready
-	 * @param {String} [mainPlayer=false] ID of main video asset
+	 * @param {String} mainPlayer=false Set to false for embed players
+	 * @param {String} playerId ID, either main video asset ID or event ID, used to set PID of YT Instance inside _players Object
 	 * @example
 	 * <pre>
 	 *     //for the main player
-	 *     <itt-youtube embed-url="path/to/url" main-player="<id of main video asset>"></itt-youtube>
+	 *     <itt-youtube embed-url="path/to/url" main-player="true" player-id="<ID>"></itt-youtube>
 	 * </pre>
 	 */
 	angular.module('com.inthetelling.story')

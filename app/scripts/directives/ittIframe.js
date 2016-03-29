@@ -5,7 +5,22 @@
 
 (function () {
 	'use strict';
-
+	/**
+	 * @ngdoc directive
+	 * @name iTT.directive:ittIframe
+	 * @restrict 'E'
+	 * @scope
+	 * @description
+	 * Directive used to display iframed content
+	 * @requires appState
+	 * @param {String} src The Source URL for the iframe
+	 * @param {String} contenttype The mime type of the iframed content
+	 * @Param {Object} item The Item object, aka an Event from the Database
+	 * @example
+	 * <pre>
+	 *     <itt-iframe src="<url>" contenttype="text/html" item="<itemObject>"></itt-iframe>
+	 * </pre>
+	 */
 	angular.module('com.inthetelling.story')
 		.directive('ittIframe', ittIframe)
 		.controller('ittIframeCtrl', ittIframeCtrl);

@@ -525,8 +525,8 @@
 		 * @description
 		 * Used to set the PID / divID for a YT instance, is called prior to create()
 		 * @param {String} id Main Video Asset ID or Event ID (for embeds)
-		 * param {Boolean} mainPlayer Determines type of player, embed or main
-		 * @returns {String} PID of YT instance.
+		 * @param {Boolean} mainPlayer Determines type of player, embed or main
+		 * @returns {String} Div ID of YT instance.
 		 */
 		function setPlayerId(id, mainPlayer) {
 			var dfd = $q.defer();
