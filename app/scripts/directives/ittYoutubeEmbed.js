@@ -4,6 +4,30 @@
 
 (function() {
 	'use strict';
+	/**
+	 * @ngdoc directive
+	 * @name iTT.directive:ittYoutube
+	 * @restrict 'EA'
+	 * @scope
+	 * @description
+	 * Directive used to render the actual youtube iframe and link
+	 * YT instances with the youTubePlayerManager service
+	 * {@link https://github.com/InTheTelling/client/blob/master/app/scripts/directives/ittYoutubeEmbed.js source}
+	 * @requires $timeout
+	 * @requires $scope
+	 * @requires iTT.service:youTubePlayerManager
+	 * @requires youtubeSvc
+	 * @param {String} embedUrl The URL to the youtube video
+	 * @param {Function=} onPlayerStateChange Callback used to control player state
+	 * @param {Function=} onPlayerQualityChange Callback used to change player quality
+	 * @param {Function=} onReady Callback fired when YT instance is ready
+	 * @param {String} [mainPlayer=false] ID of main video asset
+	 * @example
+	 * <pre>
+	 *     //for the main player
+	 *     <itt-youtube embed-url="path/to/url" main-player="<id of main video asset>"></itt-youtube>
+	 * </pre>
+	 */
 	angular.module('com.inthetelling.story')
 		.directive('ittYoutube', ittYoutube)
 		.controller('ittYoutubeCtrl', ittYoutubeCtrl);

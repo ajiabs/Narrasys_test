@@ -11,11 +11,26 @@ module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
 	require('time-grunt')(grunt);
 
+	grunt.loadNpmTasks('grunt-ngdocs');
+
 	grunt.initConfig({
 		yeoman: {
 			// configurable paths
 			app: require('./bower.json').appPath || 'app',
 			dist: 'dist'
+		},
+		ngdocs: {
+			options: {
+				dest: 'docs/ng-docs',
+				html5Mode: false,
+				scripts: [
+					'<%= yeoman.app %>/bower_components/angular/angular.js',
+					'<%= yeoman.app %>/bower_components/angular-animate/angular-animate.js'
+				]
+			},
+			all: {
+				src: '<%= yeoman.app %>/scripts/**/*.js'
+			}
 		},
 		ngtemplates: {
 			"com.inthetelling.story": { // this subtask name becomes the module name that is created
@@ -118,6 +133,14 @@ module.exports = function (grunt) {
 					]
 				}
 			},
+			docs: {
+				options: {
+					hostname: 'localhost',
+					port: 6969,
+					base: 'docs/ng-docs',
+					keepalive: true
+				}
+			},
 			dist: {
 				options: {
 					base: '<%= yeoman.dist %>'
@@ -135,7 +158,8 @@ module.exports = function (grunt) {
 					]
 				}]
 			},
-			server: '.tmp'
+			server: '.tmp',
+			docs: 'docs/ng-docs/*'
 		},
 		jshint: {
 			options: {
@@ -319,11 +343,20 @@ module.exports = function (grunt) {
 		browserSync: {
 			dev: {
 				bsFiles: {
-					src : ['<%= yeoman.app %>/styles/**/*.css', '<%= yeoman.app>/scripts/**/*.js']
+					src : ['<%= yeoman.app %>/styles/**/*.css', '<%= yeoman.app %>/scripts/**/*.js']
 				},
 				options: {
 					proxy: "https://localhost.inthetelling.com",
 					watchTask: true
+				}
+			},
+			docs: {
+				options: {
+					port: 6969, //heh
+					startPath: '/#/api/iTT'	,
+					server: {
+						baseDir: './docs/ng-docs'
+					}
 				}
 			}
 		}
@@ -382,8 +415,14 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('doWork', [
-		'browserSync',
+		'browserSync:dev',
 		'watch'
+	]);
+
+	grunt.registerTask('docGen', [
+		'clean:docs',
+		'ngdocs',
+		'browserSync:docs'
 	]);
 
 };
