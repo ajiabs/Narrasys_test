@@ -2,18 +2,18 @@
 
 // TODO: load and resolve categories
 
-// Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
-// the rest gets passed to modelSvc
-
-//  use PUT to update, POST to create new
-// for assets, DELETE then POST
-// to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
 
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
  * @description
  * Service for hitting API endpoints
+ * prior code comments:
+ * Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
+ * the rest gets passed to modelSvc
+ * use PUT to update, POST to create new
+ * for assets, DELETE then POST
+ * to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
  * @requires $q
  * @requires $http
  * @requires $routeParams
@@ -34,6 +34,15 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
+		/**
+		 * @ngdoc method
+		 * @name #checkXFrameOpts
+		 * @methodOf iTT.service:dataSvc
+		 * @description
+		 * Used to check whether or not a website can be iframed by inspecting the x-frame-options header
+		 * @param {String} url The target URL of site to inspect
+		 * @returns {Promise} that resolves to the x-frames-options header value, could be SAME-ORIGIN, null, DENY, or ALLOW-FROM
+         */
 		svc.checkXFrameOpts = function(url) {
 			//why use a 'post process callback'
 			//when you can simply chain promises?
