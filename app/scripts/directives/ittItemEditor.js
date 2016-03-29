@@ -8,6 +8,24 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
 
 */
 
+/**
+ * @ngDoc directive
+ * @name iTT.directive:ittItemEditor
+ * @restrict 'A'
+ * @scope
+ * @description
+ * Directive for editing items in the producer / editor interface
+ * @requires $rootScope
+ * @requires $timeOut
+ * @requires errorSvc
+ * @requires appState
+ * @requires modelSvc
+ * @requires timelineSvc
+ * @requires awsSvc
+ * @requires dataSvc
+ * @requires youtubeSvc
+ * @param {Object} Item object representing an Event object from the DB to be edited.
+ */
 angular.module('com.inthetelling.story')
 	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
 		return {
