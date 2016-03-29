@@ -24,14 +24,16 @@ YT instances with the youTubePlayerManager service
        [on-player-state-change="{Function}"]
        [on-player-quality-change="{Function}"]
        [on-ready="{Function}"]
-       main-player="{String}"&gt;
+       main-player="{Boolean}"
+       player-id="{String}"&gt;
 &lt;/itt-youtube&gt;</pre>
 as attribute<pre class="prettyprint linenums">&lt;ANY itt-youtube
      embed-url="{String}"
      [on-player-state-change="{Function}"]
      [on-player-quality-change="{Function}"]
      [on-ready="{Function}"]
-     main-player="{String}"&gt;
+     main-player="{Boolean}"
+     player-id="{String}"&gt;
    ...
 &lt;/ANY&gt;</pre>
 <h3 id="usage_directive-info">Directive info</h3>
@@ -42,12 +44,13 @@ as attribute<pre class="prettyprint linenums">&lt;ANY itt-youtube
 </div></td></tr><tr><td>onPlayerStateChange <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="itt-directive-page itt-directive-ittyoutube-page"><p>Callback used to control player state</p>
 </div></td></tr><tr><td>onPlayerQualityChange <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="itt-directive-page itt-directive-ittyoutube-page"><p>Callback used to change player quality</p>
 </div></td></tr><tr><td>onReady <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="itt-directive-page itt-directive-ittyoutube-page"><p>Callback fired when YT instance is ready</p>
-</div></td></tr><tr><td>mainPlayer</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="itt-directive-page itt-directive-ittyoutube-page"><p>ID of main video asset</p>
-</div> <p><em>(default: false)</em></p></td></tr></tbody></table></div>
+</div></td></tr><tr><td>mainPlayer</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="itt-directive-page itt-directive-ittyoutube-page"><p>Set to false for embed players</p>
+</div></td></tr><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="itt-directive-page itt-directive-ittyoutube-page"><p>ID, either main video asset ID or event ID, used to set PID of YT Instance inside _players Object</p>
+</div></td></tr></tbody></table></div>
 <h2 id="example">Example</h2>
 <div class="example"><div class="itt-directive-page itt-directive-ittyoutube-page"><pre class="prettyprint linenums">
 //for the main player
-&lt;itt-youtube embed-url="path/to/url" main-player="&lt;id of main video asset&gt;"&gt;&lt;/itt-youtube&gt;
+&lt;itt-youtube embed-url="path/to/url" main-player="true" player-id="&lt;ID&gt;"&gt;&lt;/itt-youtube&gt;
 </pre>
 </div></div>
 </div>

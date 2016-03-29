@@ -21,11 +21,12 @@
 	 * @param {Function=} onPlayerStateChange Callback used to control player state
 	 * @param {Function=} onPlayerQualityChange Callback used to change player quality
 	 * @param {Function=} onReady Callback fired when YT instance is ready
-	 * @param {String} [mainPlayer=false] ID of main video asset
+	 * @param {Boolean} mainPlayer Set to false for embed players
+	 * @param {String} playerId ID, either main video asset ID or event ID, used to set PID of YT Instance inside _players Object
 	 * @example
 	 * <pre>
 	 *     //for the main player
-	 *     <itt-youtube embed-url="path/to/url" main-player="<id of main video asset>"></itt-youtube>
+	 *     <itt-youtube embed-url="path/to/url" main-player="true" player-id="<ID>"></itt-youtube>
 	 * </pre>
 	 */
 	angular.module('com.inthetelling.story')
@@ -41,7 +42,8 @@
 				onPlayerStateChange: '=?',
 				onPlayerQualityChange: '=?',
 				onReady: '=?',
-				mainPlayer: '=mainPlayer'
+				mainPlayer: '&',
+				playerId: '&'
 			},
 			controller: 'ittYoutubeCtrl',
 			controllerAs: 'ittYoutubeCtrl',
@@ -51,9 +53,9 @@
 
 	function ittYoutubeCtrl($timeout, $scope, youTubePlayerManager, youtubeSvc) {
 		var _ctrl = this;  //jshint ignore:line
-		var embedId;
-		var isMainPlayer;
+		_ctrl.isMainPlayer = _ctrl.mainPlayer();
 		_ctrl.ytVideoID = youtubeSvc.extractYoutubeId(_ctrl.embedUrl);
+		var _playerId = _ctrl.playerId();
 
 		if (_ctrl.onPlayerStateChange === undefined) {
 			_ctrl.onPlayerStateChange = angular.noop;
@@ -67,22 +69,15 @@
 			_ctrl.onPlayerQualityChange = angular.noop;
 		}
 
-		if (angular.isDefined(_ctrl.mainPlayer)) {
-			embedId = _ctrl.mainPlayer;
-			isMainPlayer = true;
-		} else {
-			isMainPlayer = false;
-			embedId = _ctrl.ytVideoID;
-		}
-
-		youTubePlayerManager.setPlayerId(embedId, isMainPlayer)
+		youTubePlayerManager.setPlayerId(_playerId, _ctrl.mainPlayer())
 			.then(function(divId) {
 				_ctrl.embedId = divId;
 
 				$timeout(function() {
-					youTubePlayerManager.create(divId, _ctrl.ytVideoID, _ctrl.onPlayerStateChange, _ctrl.onPlayerQualityChange, _ctrl.onReady);
+					youTubePlayerManager.create(divId, _playerId, _ctrl.ytVideoID, _ctrl.onPlayerStateChange, _ctrl.onPlayerQualityChange, _ctrl.onReady);
 				}, 0);
 			});
+
 
 		$scope.$on('$destroy', function() {
 			youTubePlayerManager.destroy(_ctrl.embedId);
