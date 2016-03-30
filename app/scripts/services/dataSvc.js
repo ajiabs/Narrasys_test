@@ -68,7 +68,7 @@ angular.module('com.inthetelling.story')
 					case /ALLOW-FROM/.test(xFrameOpts):
 						//check if we're on the list
 						var currentOrigin = $location.host();
-						//split on comma to get CSV array of [ALLOW-FROM: <url>], structure
+						//split on comma to get CSV array of [ALLOW-FROM: <url>, ALLOW-FROM: <url>, ...], structure
 						var xFrameArr = xFrameOpts.split(',');
 						angular.forEach(xFrameArr, function(i) {
 							var url = i.trim().split(' ')[1];
