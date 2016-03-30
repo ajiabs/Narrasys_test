@@ -48,6 +48,7 @@ angular.module('com.inthetelling.story')
 			//when you can simply chain promises?
 			return SANE_GET('/x_frame_options_proxy?url=' + url)
 			.then(function(result) {
+				console.log('x-frame-opts: ', result.x_frame_options);
 				return _canEmbed(result.x_frame_options);
 			});
 

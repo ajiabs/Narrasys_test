@@ -35,7 +35,7 @@ angular.module('com.inthetelling.story')
 					.then(function(noEmbed) {
 						$scope.item.noEmbed = noEmbed;
 						if (noEmbed) {
-							errorSvc.notify('This site does not allow iframing, so no link-embed option');
+							errorSvc.notify($scope.item.url +  ' does not allow iframing, so no link-embed option');
 						}
 					}).catch(function(e) {
 					console.log('Error ', e);
