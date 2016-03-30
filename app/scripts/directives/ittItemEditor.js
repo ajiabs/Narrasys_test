@@ -135,12 +135,13 @@ angular.module('com.inthetelling.story')
 				scope.watchEdits = scope.$watch(function () {
 					return scope.item;
 				}, function (newItem, oldItem) {
-					if (!oldItem) {
+					console.log('top level, old new embed', oldItem.noEmbed, newItem.noEmbed);
+					if (!oldItem || oldItem !== newItem) {
 						return;
 					}
 
 					console.count('editing!!');
-					console.log('new Item no embed', newItem.noEmbed);
+					console.log('old then new Item no embed', oldItem.noEmbed, newItem.noEmbed);
 
 					// FOR DEBUGGING
 					/*

@@ -27,23 +27,18 @@ angular.module('com.inthetelling.story')
 				if ($scope.item.url.match(/inthetelling.com\/#/) && $scope.item.url.indexOf('?') === -1) {
 					$scope.item.url = $scope.item.url + "?embed=1";
 				}
-			})
-				.then(function() {
-				if ($scope.item.url === 'https://') {
+			}).then(function() {
+				if ($scope.item.url === 'https://' || $scope.item.url === '') {
 					return;
 				}
 				dataSvc.checkXFrameOpts($scope.item.url)
-					.then(function(result) {
-						console.log('result', result);
-						//$scope.item.x_frame_options = result;
-						if (result === 'SAMEORIGIN' || result === null) {
-							$scope.item.noEmbed = true;
-							console.log('item after', $scope.item);
+					.then(function(noEmbed) {
+						$scope.item.noEmbed = noEmbed;
+						if (noEmbed) {
 							errorSvc.notify('This site does not allow iframing, so no link-embed option');
-
 						}
 					}).catch(function(e) {
-					console.log('reason', e);
+					console.log('Error ', e);
 				});
 			});
 		};

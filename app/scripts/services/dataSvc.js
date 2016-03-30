@@ -29,7 +29,7 @@
  */
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -41,15 +41,54 @@ angular.module('com.inthetelling.story')
 		 * @description
 		 * Used to check whether or not a website can be iframed by inspecting the x-frame-options header
 		 * @param {String} url The target URL of site to inspect
-		 * @returns {Promise} that resolves to the x-frames-options header value, could be SAME-ORIGIN, null, DENY, or ALLOW-FROM
+		 * @returns {Boolean} Whether or not we can embed the input URL in an iframe.
          */
 		svc.checkXFrameOpts = function(url) {
 			//why use a 'post process callback'
 			//when you can simply chain promises?
 			return SANE_GET('/x_frame_options_proxy?url=' + url)
 			.then(function(result) {
-				return result.x_frame_options;
+				return _canEmbed(result.x_frame_options);
 			});
+
+			function _canEmbed(xFrameOpts) {
+				var _noEmbed = true;
+
+				switch(true) {
+					case /SAMEORIGIN/.test(xFrameOpts):
+						//check our origin
+						var currentOrigin = $location.host();
+						//use link element to parse URI
+						var parseInputUrl = document.createElement('a');
+						parseInputUrl.href = url;
+						if (currentOrigin === parseInputUrl.hostname) {
+							_noEmbed = false;
+						}
+						break;
+					case /ALLOW-FROM/.test(xFrameOpts):
+						//check if we're on the list
+						var currentOrigin = $location.host();
+						//split on comma to get CSV array of [ALLOW-FROM: <url>], structure
+						var xFrameArr = xFrameOpts.split(',');
+						angular.forEach(xFrameArr, function(i) {
+							var url = i.trim().split(' ')[1];
+							var aElm = document.createElement('a');
+							aElm.href = url;
+							if (currentOrigin === aElm.hostname) {
+								_noEmbed = false;
+							}
+						});
+						break;
+					case /DENY/.test(xFrameOpts):
+						// do nothing
+						break;
+					case /null/.test(xFrameOpts):
+						//ticket to ride
+						_noEmbed = false;
+						break;
+				}
+				return _noEmbed;
+			}
 		};
 
 		// WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
