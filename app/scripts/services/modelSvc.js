@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc) {
+	.factory('modelSvc', function ($interval, $filter, $location, config, appState, youtubeSvc) {
 
 		var svc = {};
 
@@ -338,11 +338,13 @@ angular.module('com.inthetelling.story')
 				// clear derived flags before re-setting them (in case we're editing an existing item):
 				event.isContent = false;
 				event.isTranscript = false;
-				event.noEmbed = event.noEmbed !== undefined ? event.noEmbed : false;
+				event.noEmbed = event.noEmbed === undefined ? false : event.noEmbed;
+				event.mixedContent = false;
 				event.noExternalLink = false;
 				event.targetTop = false;
 
-				console.log("dataSvc event noEmbed", event.noEmbed);
+				//console.log("dataSvc event noEmbed", event.noEmbed);
+				//console.log("dataSvc event reset", event);
 
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)
@@ -364,10 +366,14 @@ angular.module('com.inthetelling.story')
 					event.noEmbed = true;
 				}
 
-				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//)) {
-					//console.warn("Can't embed http:// link type:", event.url);
+				var currentProto = $location.protocol();
+				//console.log('currentProto', currentProto);
+				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//) && currentProto === 'https') {
 					event.noEmbed = true;
+					event.mixedContent = true;
 				}
+
+
 
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
 					event.noExternalLink = true;

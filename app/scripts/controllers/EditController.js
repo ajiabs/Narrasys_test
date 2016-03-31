@@ -31,14 +31,21 @@ angular.module('com.inthetelling.story')
 				if ($scope.item.url === 'https://' || $scope.item.url === '') {
 					return;
 				}
+
+				if ($scope.item.mixedContent === true) {
+					errorSvc.notify('Disabling Link Embed option. HTTP sites cannot be iframed on an HTTPS site');
+					return;
+				}
+
 				dataSvc.checkXFrameOpts($scope.item.url)
 					.then(function(noEmbed) {
+						console.log('noEmbed?', noEmbed);
 						$scope.item.noEmbed = noEmbed;
 						if (noEmbed) {
 							errorSvc.notify($scope.item.url +  ' does not allow iframing, so no link-embed option');
 						}
 					}).catch(function(e) {
-					console.log('Error ', e);
+					console.log('Check X-Frame-Opts e ', e);
 				});
 			});
 		};

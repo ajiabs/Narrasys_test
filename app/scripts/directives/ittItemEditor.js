@@ -136,7 +136,7 @@ angular.module('com.inthetelling.story')
 					return scope.item;
 				}, function (newItem, oldItem) {
 					console.log('top level, old new embed', oldItem.noEmbed, newItem.noEmbed);
-					if (!oldItem || oldItem !== newItem) {
+					if (!oldItem) {
 						return;
 					}
 

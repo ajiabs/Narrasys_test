@@ -46,6 +46,11 @@ angular.module('com.inthetelling.story')
 		svc.checkXFrameOpts = function(url) {
 			//why use a 'post process callback'
 			//when you can simply chain promises?
+
+			//check protcol for mixed content??
+			var currentOrigin;
+			var parseInputUrl;
+
 			return SANE_GET('/x_frame_options_proxy?url=' + url)
 			.then(function(result) {
 				console.log('x-frame-opts: ', result.x_frame_options);
@@ -54,23 +59,21 @@ angular.module('com.inthetelling.story')
 
 			function _canEmbed(xFrameOpts) {
 				var _noEmbed = true;
-
 				switch(true) {
 					case /SAMEORIGIN/.test(xFrameOpts):
-						//check our origin
-						var currentOrigin = $location.host();
-						//use link element to parse URI
-						var parseInputUrl = document.createElement('a');
+						currentOrigin = $location.host();
+						parseInputUrl = document.createElement('a');
 						parseInputUrl.href = url;
+						//check our origin
 						if (currentOrigin === parseInputUrl.hostname) {
 							_noEmbed = false;
 						}
 						break;
 					case /ALLOW-FROM/.test(xFrameOpts):
 						//check if we're on the list
-						var currentOrigin = $location.host();
 						//split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
 						var xFrameArr = xFrameOpts.split(',');
+						currentOrigin = $location.host();
 						angular.forEach(xFrameArr, function(i) {
 							var url = i.trim().split(' ')[1];
 							var aElm = document.createElement('a');
