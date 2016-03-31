@@ -10,7 +10,7 @@
 
 		var embedUrl = '//www.youtube.com/embed/6wKqH6vlGHU';
 		var embedId = '568bf8746d571a053a000113';
-		var mainPlayerTemplate = '<itt-youtube main-player="mainPlayerEmbed" embed-url="' + embedUrl + '"></itt-youtube>';
+		var mainPlayerTemplate = '<itt-youtube main-player="mainPlayerEmbed" player-id="mainPlayerId" embed-url="' + embedUrl + '"></itt-youtube>';
 		var embedTemplate = '<itt-youtube embed-url="' + embedUrl + '"></itt-youtube>';
 		var scope, compile;
 
@@ -21,7 +21,8 @@
 
 		function createTestDirective(template, main) {
 			if (main) {
-				scope.mainPlayerEmbed = embedId;
+				scope.mainPlayerEmbed = true;
+				scope.mainPlayerId = embedId;
 			}
 			var ittYoutubeElement, compiled;
 			ittYoutubeElement = angular.element(template);

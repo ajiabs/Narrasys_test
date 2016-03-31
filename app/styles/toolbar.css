@@ -40,6 +40,7 @@
 	order: 2;
 }
 .toolbar .nav-item.toolbar-logos {
+	height: 40px;
 	flex: 2;
 	order: 3;
 	margin-top: 5px;
@@ -835,7 +836,7 @@ input.userEditable:focus {
 .avatar {
 	width: 60px;
 	height: 60px;
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
+	/*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;*/
 	float: right;
 }
 
