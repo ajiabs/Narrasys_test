@@ -1,53 +1,80 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc, errorSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, $location, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc, errorSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
-		$scope.validateItemUrl = function () {
+		var isHttps = $location.protocol() === 'https';
+		//this function is invoked on a blur event in sxs-link.html or producer-link.html
+		//in order to pass an ng-model on a blur event, you have to pass in the $event object
+		//and pull the value out of the event.
+		//I made a few changes in order to make this easier to work with:
+		//first, using $timeout to wrap the logic so you can access the $scope is a hack and should be avoided, and
+		//speaks to a larger misunderstanding of the framework in general, i digress...
+		//this function now operates on data it accepts as a param, rather than needing to use the $timeout hack
+		//second, when it comes to mutating $scope.item, we want collect all of our changes and apply them only once.
+		//this is because $scope.item is being $watched (the $watch fn is 66 lines..)
+		//and we only want to kick off the $watch one time, for all changes,
+		//not for each time we touch $scope.item in the conditionals below...
+		//we also potentially do async stuff here (http calls to check for x-frame-options),
+		//thus we could have gotten into a place where our updates are lost because the thing we are trying to
+		//keep updated is set back to the default state (via the $watch, modelSvc#deriveEvent) prior to our async operation completing.
+		//To remedy this, I created a temporary object to hold our changes, and we're merging with $scope at the end of this fn.
+		//this should result in fewer $digest cycles, perf gains, and easier mental model to follow.
+		$scope.validateItemUrl = function (ev) {
+			var url = ev.target.value;
+			var tmpItem = {url: url};
+			/* TODO have server side check for x-frame-options header, and for if the link exists at all (See TS-772) */
+			//TODONE ^^ -Tom ;)
 
-			$timeout(function () { // ng-blur triggers before 'ng-model-options=update-on:blur'... wait for the model to update
-				console.log("Checking Item link: ", $scope.item.url);
+			// handle missing protocol
+			if (tmpItem.url.length > 0 && !(tmpItem.url.match(/^(\/\/|http)/))) {
+				tmpItem.url = '//' + tmpItem.url;
+			}
 
-				/* TODO have server side check for x-frame-options header, and for if the link exists at all (See TS-772) */
+			// convert youtube links to embed format
+			if (youtubeSvc.extractYoutubeId(tmpItem.url)) {
+				tmpItem.url = youtubeSvc.embeddableYoutubeUrl(tmpItem.url, true);
+			}
 
-				// handle missing protocol
-				if ($scope.item.url.length > 0 && !($scope.item.url.match(/^(\/\/|http)/))) {
-					$scope.item.url = "//" + $scope.item.url;
-				}
+			// add param to episode links if necessary
+			if (tmpItem.url.match(/inthetelling.com\/#/) && tmpItem.url.indexOf('?') === -1) {
+				tmpItem.url = tmpItem.url + "?embed=1";
+			}
 
-				// No need to check http vs https, modelSvc sets item.noEmbed for us.
+			// No need to check http vs https, modelSvc sets item.noEmbed for us.
+			//^^except this code runs prior to modelSvc#deriveEvent so we need to set it here as well
+			if (tmpItem.url.match(/^http:\/\//) && isHttps) {
+				//since this function is trigger on blur, we need to make sure we have actual values to check against
+				tmpItem.noEmbed = true;
+				tmpItem.mixedContent = true;
+				console.warn('mixed content detected');
+			}
 
-				// convert youtube links to embed format
-				if (youtubeSvc.extractYoutubeId($scope.item.url)) {
-					$scope.item.url = youtubeSvc.embeddableYoutubeUrl($scope.item.url, true);
-				}
+			//let editors know what is happening.
+			if (appState.product === 'sxs' && tmpItem.mixedContent) {
+				errorSvc.notify('HTTP urls cannot be embedded into an HTTPS site');
+			}
 
-				// add param to episode links if necessary
-				if ($scope.item.url.match(/inthetelling.com\/#/) && $scope.item.url.indexOf('?') === -1) {
-					$scope.item.url = $scope.item.url + "?embed=1";
-				}
-			}).then(function() {
-				if ($scope.item.url === 'https://' || $scope.item.url === '') {
-					return;
-				}
-
-				if ($scope.item.mixedContent === true) {
-					errorSvc.notify('Disabling Link Embed option. HTTP sites cannot be iframed on an HTTPS site');
-					return;
-				}
-
-				dataSvc.checkXFrameOpts($scope.item.url)
+			//only check for x-frame-options if its a valid URL and we're not using HTTP urls
+			//this fn is called on blur so its very likely we can get bad data.
+			if (!(tmpItem.url === 'https://' || tmpItem.url === '') && !tmpItem.mixedContent) {
+				console.warn('checking for xframe opts', tmpItem);
+				dataSvc.checkXFrameOpts(tmpItem.url)
 					.then(function(noEmbed) {
-						console.log('noEmbed?', noEmbed);
-						$scope.item.noEmbed = noEmbed;
+						tmpItem.noEmbed = noEmbed;
+						angular.extend($scope.item, tmpItem);
 						if (noEmbed) {
-							errorSvc.notify($scope.item.url +  ' does not allow iframing, so no link-embed option');
+							errorSvc.notify(tmpItem.url +  ' does not allow iframing, so no link-embed option');
 						}
 					}).catch(function(e) {
 					console.log('Check X-Frame-Opts e ', e);
 				});
-			});
+			} else {
+				//do this once and last, either in the promise resolve above
+				//or here if we didn't check for x-frame-opts
+				angular.extend($scope.item, tmpItem);
+			}
 		};
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)

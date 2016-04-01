@@ -135,7 +135,6 @@ angular.module('com.inthetelling.story')
 				scope.watchEdits = scope.$watch(function () {
 					return scope.item;
 				}, function (newItem, oldItem) {
-					console.log('top level, old new embed', oldItem.noEmbed, newItem.noEmbed);
 					if (!oldItem) {
 						return;
 					}
@@ -156,6 +155,7 @@ angular.module('com.inthetelling.story')
 						scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
 					}
 
+
 					// Special cases:
 					// if new template is image-fill,
 					// 	set cosmetic to true, itemForm.
@@ -175,7 +175,8 @@ angular.module('com.inthetelling.story')
 						}
 					}
 
-					scope.item = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+					//newItem is scope.item
+					newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
 
 					if (newItem.asset) {
 						scope.item.asset.cssUrl = "url('" + newItem.asset.url + "');";

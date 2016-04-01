@@ -366,14 +366,10 @@ angular.module('com.inthetelling.story')
 					event.noEmbed = true;
 				}
 
-				var currentProto = $location.protocol();
-				//console.log('currentProto', currentProto);
-				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//) && currentProto === 'https') {
+				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//)) {
 					event.noEmbed = true;
 					event.mixedContent = true;
 				}
-
-
 
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
 					event.noExternalLink = true;
