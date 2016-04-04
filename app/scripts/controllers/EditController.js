@@ -51,9 +51,8 @@ angular.module('com.inthetelling.story')
 				console.warn('mixed content detected');
 			}
 
-			//let editors know what is happening.
-			if (appState.product === 'sxs' && tmpItem.mixedContent) {
-				var editorNote = 'Links to HTTP sites will need to be opened in a new tab.';
+			if (tmpItem.mixedContent) {
+				var editorNote = 'Links starting with HTTP will need to be opened in a new tab. Try HTTPS';
 				errorSvc.notify(editorNote);
 			}
 
@@ -65,8 +64,9 @@ angular.module('com.inthetelling.story')
 					.then(function(noEmbed) {
 						tmpItem.noEmbed = noEmbed;
 						angular.extend($scope.item, tmpItem);
+						//notify editors
 						if (noEmbed) {
-							var xFrameOptsNote = ' does not allow embedding, try using the Link template instead';
+							var xFrameOptsNote = ' does not allow embedding, so we\'ll have to open it in a new tab';
 							errorSvc.notify(tmpItem.url +  xFrameOptsNote);
 						}
 					}).catch(function(e) {
