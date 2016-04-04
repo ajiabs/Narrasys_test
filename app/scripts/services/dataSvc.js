@@ -69,7 +69,7 @@ angular.module('com.inthetelling.story')
 							_noEmbed = false;
 						}
 						break;
-					case /ALLOW-FROM/.test(xFrameOpts):
+					case /ALLOW-FROM/i.test(xFrameOpts):
 						//check if we're on the list
 						//split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
 						var xFrameArr = xFrameOpts.split(',');
@@ -83,7 +83,7 @@ angular.module('com.inthetelling.story')
 							}
 						});
 						break;
-					case /DENY/.test(xFrameOpts):
+					case /DENY/i.test(xFrameOpts):
 						// do nothing
 						break;
 					case /null/.test(xFrameOpts):
