@@ -49,9 +49,6 @@ angular.module('com.inthetelling.story')
 				tmpItem.noEmbed = true;
 				tmpItem.mixedContent = true;
 				console.warn('mixed content detected');
-			}
-
-			if (tmpItem.mixedContent) {
 				var editorNote = 'Links starting with HTTP will need to be opened in a new tab. Try HTTPS';
 				errorSvc.notify(editorNote);
 			}
