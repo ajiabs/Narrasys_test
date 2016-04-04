@@ -60,7 +60,7 @@ angular.module('com.inthetelling.story')
 			function _canEmbed(xFrameOpts) {
 				var _noEmbed = true;
 				switch(true) {
-					case /SAMEORIGIN/.test(xFrameOpts):
+					case /SAMEORIGIN/i.test(xFrameOpts):
 						currentOrigin = $location.host();
 						parseInputUrl = document.createElement('a');
 						parseInputUrl.href = url;
