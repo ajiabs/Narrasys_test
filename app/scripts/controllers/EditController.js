@@ -53,7 +53,8 @@ angular.module('com.inthetelling.story')
 
 			//let editors know what is happening.
 			if (appState.product === 'sxs' && tmpItem.mixedContent) {
-				errorSvc.notify('HTTP urls cannot be embedded into an HTTPS site');
+				var editorNote = 'Links to HTTP sites will need to be opened in a new tab.';
+				errorSvc.notify(editorNote);
 			}
 
 			//only check for x-frame-options if its a valid URL and we're not using HTTP urls
@@ -65,7 +66,8 @@ angular.module('com.inthetelling.story')
 						tmpItem.noEmbed = noEmbed;
 						angular.extend($scope.item, tmpItem);
 						if (noEmbed) {
-							errorSvc.notify(tmpItem.url +  ' does not allow iframing, so no link-embed option');
+							var xFrameOptsNote = ' does not allow embedding, try using the Link template instead';
+							errorSvc.notify(tmpItem.url +  xFrameOptsNote);
 						}
 					}).catch(function(e) {
 					console.log('Check X-Frame-Opts e ', e);
