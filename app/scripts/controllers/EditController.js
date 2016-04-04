@@ -47,6 +47,8 @@ angular.module('com.inthetelling.story')
 			if (tmpItem.url.match(/^http:\/\//) && isHttps) {
 				//since this function is trigger on blur, we need to make sure we have actual values to check against
 				tmpItem.noEmbed = true;
+				//added mixedContent bool because it is specific to this error and noEmbed is
+				//used for a variety of reasons.
 				tmpItem.mixedContent = true;
 				console.warn('mixed content detected');
 				var editorNote = 'Links starting with HTTP will need to be opened in a new tab. Try HTTPS';
