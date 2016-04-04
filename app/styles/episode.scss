@@ -1015,12 +1015,24 @@ $h2pullquote: #5B5B5B;
 				}
 			}
 
+
+			.content {
+				.item:first-child {
+					&.mondrian {
+						//top right bottom left
+						padding: 0.1em 0 0.3em 0.3em;
+					}
+				}
+			}
+
 			.item {
 				&.mondrian {
 					margin-top: 1.7em;
 					background-color: $mondrianBorder;
 					color: white;
-					/*width: 90%;*/
+					a {
+						color: white;
+					}
 				}
 			}
 

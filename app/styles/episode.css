@@ -769,11 +769,14 @@
     opacity: 1;
     background-size: cover;
     left: 50%; }
+  .narrasys-pro .scene.centerVV-mondrian .content .item:first-child.mondrian {
+    padding: 0.1em 0 0.3em 0.3em; }
   .narrasys-pro .scene.centerVV-mondrian .item.mondrian {
     margin-top: 1.7em;
     background-color: #4d4d4d;
-    color: white;
-    /*width: 90%;*/ }
+    color: white; }
+    .narrasys-pro .scene.centerVV-mondrian .item.mondrian a {
+      color: white; }
   .narrasys-pro .scene.centerVV-mondrian img {
     width: 99%; }
   .narrasys-pro .scene.centerVV-mondrian .title a {
