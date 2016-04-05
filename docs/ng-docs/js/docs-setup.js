@@ -32,6 +32,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "iTT.service:appState",
+      "shortName": "appState",
+      "type": "service",
+      "moduleName": "iTT",
+      "shortDescription": "POJO designed to store application state during app runtime. All values are initiazed as boolean and set to false.",
+      "keywords": "$interval agent api app application appstate audio authsvc autoscroll autoscrollblocked background based bit bool boolean booleans bottom buffered bufferedpercent buffering captions class client closed config content corner current currently data default designed destination determines disabled discover displaying don duration edited editepisode editevent enabled episode episodeid episodesegmentid false force foreground future getaccesstoken hacky half handling hasbeenplayed height help helpful hidecaptions ie8 iframe initial initiazed injecting inside interrupt iphone isframed isiphone istouchdevice item itemdetail items itt itt-service-appstate-page itt-service-page kind lang layers load locked main modal mode modes muted narrativeid narratives navpanel object overlay override overwriting paint pane paused pct place play player playhead playing plays pojo portion position preview producer producereditlayer product productloadedas properties question relative relevant reports runtime scene scroll searchpanel seconds segment service set sets speed stay store sxs temporarily time timeline timelineid timelinestate timelinesvc timemultiplier toggle toolbar touch true updated user values video videocontrolsactive videocontrolslocked view viewmode visibility visible volume watch weird width window windowheight windowwidth wrong youtube"
+    },
+    {
+      "section": "api",
       "id": "iTT.service:imageResize",
       "shortName": "imageResize",
       "type": "service",
