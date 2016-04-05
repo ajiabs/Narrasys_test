@@ -1,0 +1,147 @@
+<h1><code ng:non-bindable="">appState</code>
+<div><span class="hint">service in module <code ng:non-bindable="">iTT</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="itt-service-page itt-service-appstate-page"><p>POJO designed to store application state during app runtime. All values are initiazed as boolean and set to false.
+Values are then updated in place by injecting the appState into the relevant destination and overwriting the initial values</p>
+</div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/ng.$interval">$interval</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/config">config</a></code>
+</li>
+</ul>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_user">user</h3>
+<div class="user"><div class="itt-service-page itt-service-appstate-page"><p>whatever authSvc gets back from getAccessToken</p>
+</div></div>
+</li>
+<li><h3 id="properties_episodeid">episodeId</h3>
+<div class="episodeid"><div class="itt-service-page itt-service-appstate-page"><p>ID of current episode (Initialized as bool set to false).</p>
+</div></div>
+</li>
+<li><h3 id="properties_episodesegmentid">episodeSegmentId</h3>
+<div class="episodesegmentid"><div class="itt-service-page itt-service-appstate-page"><p>ID of current episode segment (only relevant in narratives)</p>
+</div></div>
+</li>
+<li><h3 id="properties_narrativeid">narrativeId</h3>
+<div class="narrativeid"><div class="itt-service-page itt-service-appstate-page"><p>also only relevant in narratives</p>
+</div></div>
+</li>
+<li><h3 id="properties_timelineid">timelineId</h3>
+<div class="timelineid"><div class="itt-service-page itt-service-appstate-page"><p>ID of timeline</p>
+</div></div>
+</li>
+<li><h3 id="properties_isframed">isFramed</h3>
+<div class="isframed"><div class="itt-service-page itt-service-appstate-page"><p>are we inside an iframe?  Don&#39;t use !== because IE8 gets it wrong</p>
+</div></div>
+</li>
+<li><h3 id="properties_istouchdevice">isTouchDevice</h3>
+<div class="istouchdevice"><div class="itt-service-page itt-service-appstate-page"><p>Determines whether or not client is touch enabled via user agent</p>
+</div></div>
+</li>
+<li><h3 id="properties_isiphone">isIphone</h3>
+<div class="isiphone"><div class="itt-service-page itt-service-appstate-page"><p>iPhone has weird video handling, see  timelineSvc</p>
+</div></div>
+</li>
+<li><h3 id="properties_windowwidth">windowWidth</h3>
+<div class="windowwidth"><div class="itt-service-page itt-service-appstate-page"><p>width of content pane, updated every 50ms</p>
+</div></div>
+</li>
+<li><h3 id="properties_windowheight">windowHeight</h3>
+<div class="windowheight"><div class="itt-service-page itt-service-appstate-page"><p>height of content pane, updated every 50ms</p>
+</div></div>
+</li>
+<li><h3 id="properties_viewmode">viewMode</h3>
+<div class="viewmode"><div class="itt-service-page itt-service-appstate-page"><p>Sets view mode based upon window width</p>
+</div></div>
+</li>
+<li><h3 id="properties_producereditlayer">producerEditLayer</h3>
+<div class="producereditlayer"><div class="itt-service-page itt-service-appstate-page"><p>a bit hacky, this.  Only has an effect in producer in discover mode; 0 is default, -1 is background layers only, 1 is foreground layers only</p>
+</div></div>
+</li>
+<li><h3 id="properties_time">time</h3>
+<div class="time"><div class="itt-service-page itt-service-appstate-page"><p>current playhead position (in seconds) relative to timeline NOT TO EPISODE!</p>
+</div></div>
+</li>
+<li><h3 id="properties_bufferedpercent">bufferedPercent</h3>
+<div class="bufferedpercent"><div class="itt-service-page itt-service-appstate-page"><p>portion of video that has been buffered (as pct instead of time because that&#39;s how youtube reports it, and that&#39;s what we end up displaying anyway)</p>
+</div></div>
+</li>
+<li><h3 id="properties_timemultiplier">timeMultiplier</h3>
+<div class="timemultiplier"><div class="itt-service-page itt-service-appstate-page"><p>sets player speed (0.5 = half speed; 2=double;etc)</p>
+</div></div>
+</li>
+<li><h3 id="properties_duration">duration</h3>
+<div class="duration"><div class="itt-service-page itt-service-appstate-page"><p>duration of timeline (in seconds)</p>
+</div></div>
+</li>
+<li><h3 id="properties_timelinestate">timelineState</h3>
+<div class="timelinestate"><div class="itt-service-page itt-service-appstate-page"><p>&quot;playing&quot;, &quot;paused&quot;, or &quot;buffering&quot; (set by timelineSvc). Future = &quot;locked&quot; (by stop question or etc)</p>
+</div></div>
+</li>
+<li><h3 id="properties_hasbeenplayed">hasBeenPlayed</h3>
+<div class="hasbeenplayed"><div class="itt-service-page itt-service-appstate-page"><p>set to true after first time the video plays (used so we can interrupt that first play with a helpful help)</p>
+</div></div>
+</li>
+<li><h3 id="properties_volume">volume</h3>
+<div class="volume"><div class="itt-service-page itt-service-appstate-page"><p>Audio for main video</p>
+</div></div>
+</li>
+<li><h3 id="properties_muted">muted</h3>
+<div class="muted"><div class="itt-service-page itt-service-appstate-page"><p>audio for main video</p>
+</div></div>
+</li>
+<li><h3 id="properties_hidecaptions">hideCaptions</h3>
+<div class="hidecaptions"><div class="itt-service-page itt-service-appstate-page"><p>visibility of &quot;closed captions&quot; in watch mode</p>
+</div></div>
+</li>
+<li><h3 id="properties_show">show</h3>
+<div class="show"><div class="itt-service-page itt-service-appstate-page"><p>Object with SearchPanel and NavPanel properties which are booleans</p>
+</div></div>
+</li>
+<li><h3 id="properties_videocontrolsactive">videoControlsActive</h3>
+<div class="videocontrolsactive"><div class="itt-service-page itt-service-appstate-page"><p>whether bottom toolbar is visible</p>
+</div></div>
+</li>
+<li><h3 id="properties_videocontrolslocked">videoControlsLocked</h3>
+<div class="videocontrolslocked"><div class="itt-service-page itt-service-appstate-page"><p>force bottom toolbar to stay in its current visible/hidden state</p>
+</div></div>
+</li>
+<li><h3 id="properties_itemdetail">itemDetail</h3>
+<div class="itemdetail"><div class="itt-service-page itt-service-appstate-page"><p>Put item data here to show it as a modal overlay</p>
+</div></div>
+</li>
+<li><h3 id="properties_autoscroll">autoscroll</h3>
+<div class="autoscroll"><div class="itt-service-page itt-service-appstate-page"><p>scroll window to make current items visible (in relevant modes)</p>
+</div></div>
+</li>
+<li><h3 id="properties_autoscrollblocked">autoscrollBlocked</h3>
+<div class="autoscrollblocked"><div class="itt-service-page itt-service-appstate-page"><p>User has disabled autoscroll</p>
+</div></div>
+</li>
+<li><h3 id="properties_product">product</h3>
+<div class="product"><div class="itt-service-page itt-service-appstate-page"><p>&quot;player&quot;, &quot;sxs&quot;, or &quot;producer&quot;</p>
+</div></div>
+</li>
+<li><h3 id="properties_productloadedas">productLoadedAs</h3>
+<div class="productloadedas"><div class="itt-service-page itt-service-appstate-page"><p>same as product but only set on initial load, this lets producer toggle back to player preview temporarily</p>
+</div></div>
+</li>
+<li><h3 id="properties_editevent">editEvent</h3>
+<div class="editevent"><div class="itt-service-page itt-service-appstate-page"><p>Scene or item currently being edited by user.</p>
+</div></div>
+</li>
+<li><h3 id="properties_editepisode">editEpisode</h3>
+<div class="editepisode"><div class="itt-service-page itt-service-appstate-page"><p>Episode currently being edited by user. yes I did kind of paint myself into a corner here</p>
+</div></div>
+</li>
+<li><h3 id="properties_lang">lang</h3>
+<div class="lang"><div class="itt-service-page itt-service-appstate-page"><p>set to false so the episode default knows when to override it</p>
+</div></div>
+</li>
+</ul>
+</div>
+</div>
