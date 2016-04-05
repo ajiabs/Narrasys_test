@@ -52,7 +52,7 @@ angular.module('com.inthetelling.story')
 				tmpItem.mixedContent = true;
 				tmpItem.tipText = 'Link Embed is disabled because ' + tmpItem.url + ' is not HTTPS';
 				console.warn('mixed content detected');
-				var editorNote = 'Links starting with HTTP will need to be opened in a new tab.';
+				var editorNote = 'Links starting with HTTP will be opened in a new tab.';
 				errorSvc.notify(editorNote);
 			}
 
@@ -64,7 +64,7 @@ angular.module('com.inthetelling.story')
 					.then(function(noEmbed) {
 						tmpItem.noEmbed = noEmbed;
 						if (noEmbed) {
-							var xFrameOptsNote = ' does not allow embedding, so we\'ll have to open it in a new tab';
+							var xFrameOptsNote = ' does not allow embedding, so this link will open in a new tab';
 							tmpItem.tipText = 'Link embed is disabled because ' + tmpItem.url + ' does not allow iframing';
 							errorSvc.notify(tmpItem.url +  xFrameOptsNote);
 						}
