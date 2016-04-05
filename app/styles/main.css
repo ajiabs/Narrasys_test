@@ -17,6 +17,14 @@
 	overflow: auto;
 }
 
+.error-red {
+	color: #c00;
+}
+
+.info-blue {
+	color: #2d6099;
+}
+
 .errors .notification {
 	border-color: #2d6099;
 }
@@ -26,6 +34,7 @@
 	display: inline-block;
 	width: 0;
 	height: 0;
+	/*offset tooltip next to template drop down*/
 	right: 77px;
 	top: 5px;
 }

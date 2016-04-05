@@ -63,7 +63,6 @@ angular.module('com.inthetelling.story')
 				dataSvc.checkXFrameOpts(tmpItem.url)
 					.then(function(noEmbed) {
 						tmpItem.noEmbed = noEmbed;
-						//notify editors
 						if (noEmbed) {
 							var xFrameOptsNote = ' does not allow embedding, so we\'ll have to open it in a new tab';
 							tmpItem.tipText = 'Link embed is disabled because ' + tmpItem.url + ' does not allow iframing';
