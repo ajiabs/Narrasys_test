@@ -50,6 +50,7 @@ angular.module('com.inthetelling.story')
 				//added mixedContent bool because it is specific to this error and noEmbed is
 				//used for a variety of reasons.
 				tmpItem.mixedContent = true;
+				tmpItem.tipText = 'Link Embed is disabled because the link is not HTTPS';
 				console.warn('mixed content detected');
 				var editorNote = 'Links starting with HTTP will need to be opened in a new tab.';
 				errorSvc.notify(editorNote);
@@ -62,12 +63,13 @@ angular.module('com.inthetelling.story')
 				dataSvc.checkXFrameOpts(tmpItem.url)
 					.then(function(noEmbed) {
 						tmpItem.noEmbed = noEmbed;
-						angular.extend($scope.item, tmpItem);
 						//notify editors
 						if (noEmbed) {
 							var xFrameOptsNote = ' does not allow embedding, so we\'ll have to open it in a new tab';
+							tmpItem.tipText = 'Link embed is disabled because ' + tmpItem.url + ' does not allow iframing';
 							errorSvc.notify(tmpItem.url +  xFrameOptsNote);
 						}
+						angular.extend($scope.item, tmpItem);
 					}).catch(function(e) {
 					console.log('Check X-Frame-Opts e ', e);
 				});

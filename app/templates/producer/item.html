@@ -49,6 +49,10 @@
 					<!-- begin metadata  tab -->
 					<div class="authoringFormScrollContainer">
 						<div class="field">
+							<div ng-if="item.noEmbed" class="tooltip-static">
+								<i class="fa fa-info-circle"></i>
+								<p class="tooltip-text">{{item.tipText}}</p>
+							</div>
 							<div class="label">
 								Template
 							</div>
