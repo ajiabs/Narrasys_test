@@ -51,7 +51,7 @@ angular.module('com.inthetelling.story')
 				//used for a variety of reasons.
 				tmpItem.mixedContent = true;
 				console.warn('mixed content detected');
-				var editorNote = 'Links starting with HTTP will need to be opened in a new tab. Try HTTPS';
+				var editorNote = 'Links starting with HTTP will need to be opened in a new tab.';
 				errorSvc.notify(editorNote);
 			}
 
