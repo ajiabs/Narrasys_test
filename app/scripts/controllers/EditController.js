@@ -50,7 +50,7 @@ angular.module('com.inthetelling.story')
 				//added mixedContent bool because it is specific to this error and noEmbed is
 				//used for a variety of reasons.
 				tmpItem.mixedContent = true;
-				tmpItem.tipText = 'Link Embed is disabled because the link is not HTTPS';
+				tmpItem.tipText = 'Link Embed is disabled because ' + tmpItem.url + ' is not HTTPS';
 				console.warn('mixed content detected');
 				var editorNote = 'Links starting with HTTP will need to be opened in a new tab.';
 				errorSvc.notify(editorNote);
