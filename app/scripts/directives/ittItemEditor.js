@@ -8,6 +8,24 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
 
 */
 
+/**
+ * @ngDoc directive
+ * @name iTT.directive:ittItemEditor
+ * @restrict 'A'
+ * @scope
+ * @description
+ * Directive for editing items in the producer / editor interface
+ * @requires $rootScope
+ * @requires $timeOut
+ * @requires errorSvc
+ * @requires appState
+ * @requires modelSvc
+ * @requires timelineSvc
+ * @requires awsSvc
+ * @requires dataSvc
+ * @requires youtubeSvc
+ * @param {Object} Item object representing an Event object from the DB to be edited.
+ */
 angular.module('com.inthetelling.story')
 	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
 		return {
@@ -121,6 +139,9 @@ angular.module('com.inthetelling.story')
 						return;
 					}
 
+					console.count('editing!!');
+					console.log('old then new Item no embed', oldItem.noEmbed, newItem.noEmbed);
+
 					// FOR DEBUGGING
 					/*
 										angular.forEach(Object.keys(newItem), function (f) {
@@ -133,6 +154,7 @@ angular.module('com.inthetelling.story')
 					if (newItem.yturl !== oldItem.yturl) {
 						scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
 					}
+
 
 					// Special cases:
 					// if new template is image-fill,
@@ -153,7 +175,8 @@ angular.module('com.inthetelling.story')
 						}
 					}
 
-					scope.item = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+					//newItem is scope.item
+					newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
 
 					if (newItem.asset) {
 						scope.item.asset.cssUrl = "url('" + newItem.asset.url + "');";

@@ -1,32 +1,82 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, $location, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc, errorSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
-		$scope.validateItemUrl = function () {
-			$timeout(function () { // ng-blur triggers before 'ng-model-options=update-on:blur'... wait for the model to update
-				console.log("Checking Item link: ", $scope.item.url);
+		var isHttps = $location.protocol() === 'https';
+		//this function is invoked on a blur event in sxs-link.html or producer-link.html
+		//in order to pass an ng-model on a blur event, you have to pass in the $event object
+		//and pull the value out of the event.
+		//I made a few changes in order to make this easier to work with:
+		//first, using $timeout to wrap the logic so you can access the $scope is a hack and should be avoided, and
+		//speaks to a larger misunderstanding of the framework in general, i digress...
+		//this function now operates on data it accepts as a param, rather than needing to use the $timeout hack
+		//second, when it comes to mutating $scope.item, we want collect all of our changes and apply them only once.
+		//this is because $scope.item is being $watched (the $watch fn is 66 lines..)
+		//and we only want to kick off the $watch one time, for all changes,
+		//not for each time we touch $scope.item in the conditionals below...
+		//we also potentially do async stuff here (http calls to check for x-frame-options),
+		//thus we could have gotten into a place where our updates are lost because the thing we are trying to
+		//keep updated is set back to the default state (via the $watch, modelSvc#deriveEvent) prior to our async operation completing.
+		//To remedy this, I created a temporary object to hold our changes, and we're merging with $scope at the end of this fn.
+		//this should result in fewer $digest cycles, perf gains, and easier mental model to follow.
+		$scope.validateItemUrl = function (ev) {
+			var url = ev.target.value;
+			var tmpItem = {url: url};
+			/* TODO have server side check for x-frame-options header, and for if the link exists at all (See TS-772) */
+			//TODONE ^^ -Tom ;)
 
-				/* TODO have server side check for x-frame-options header, and for if the link exists at all (See TS-772) */
+			// handle missing protocol
+			if (tmpItem.url.length > 0 && !(tmpItem.url.match(/^(\/\/|http)/))) {
+				tmpItem.url = '//' + tmpItem.url;
+			}
 
-				// handle missing protocol
-				if ($scope.item.url.length > 0 && !($scope.item.url.match(/^(\/\/|http)/))) {
-					$scope.item.url = "//" + $scope.item.url;
-				}
+			// convert youtube links to embed format
+			if (youtubeSvc.extractYoutubeId(tmpItem.url)) {
+				tmpItem.url = youtubeSvc.embeddableYoutubeUrl(tmpItem.url, true);
+			}
 
-				// No need to check http vs https, modelSvc sets item.noEmbed for us.
+			// add param to episode links if necessary
+			if (tmpItem.url.match(/inthetelling.com\/#/) && tmpItem.url.indexOf('?') === -1) {
+				tmpItem.url = tmpItem.url + "?embed=1";
+			}
 
-				// convert youtube links to embed format
-				if (youtubeSvc.extractYoutubeId($scope.item.url)) {
-					$scope.item.url = youtubeSvc.embeddableYoutubeUrl($scope.item.url, true);
-				}
+			// No need to check http vs https, modelSvc sets item.noEmbed for us.
+			//^^except this code runs prior to modelSvc#deriveEvent so we need to set it here as well
+			if (tmpItem.url.match(/^http:\/\//) && isHttps) {
+				//since this function is trigger on blur, we need to make sure we have actual values to check against
+				tmpItem.noEmbed = true;
+				//added mixedContent bool because it is specific to this error and noEmbed is
+				//used for a variety of reasons.
+				tmpItem.mixedContent = true;
+				tmpItem.tipText = 'Link Embed is disabled because ' + tmpItem.url + ' is not HTTPS';
+				console.warn('mixed content detected');
+				var editorNote = 'Links starting with HTTP will be opened in a new tab.';
+				errorSvc.notify(editorNote);
+			}
 
-				// add param to episode links if necessary
-				if ($scope.item.url.match(/inthetelling.com\/#/) && $scope.item.url.indexOf('?') === -1) {
-					$scope.item.url = $scope.item.url + "?embed=1";
-				}
-			});
+			//only check for x-frame-options if its a valid URL and we're not using HTTP urls
+			//this fn is called on blur so its very likely we can get bad data.
+			if (!(tmpItem.url === 'https://' || tmpItem.url === '') && !tmpItem.mixedContent) {
+				console.warn('checking for xframe opts', tmpItem);
+				dataSvc.checkXFrameOpts(tmpItem.url)
+					.then(function(noEmbed) {
+						tmpItem.noEmbed = noEmbed;
+						if (noEmbed) {
+							var xFrameOptsNote = ' does not allow embedding, so this link will open in a new tab';
+							tmpItem.tipText = 'Link embed is disabled because ' + tmpItem.url + ' does not allow iframing';
+							errorSvc.notify(tmpItem.url +  xFrameOptsNote);
+						}
+						angular.extend($scope.item, tmpItem);
+					}).catch(function(e) {
+					console.log('Check X-Frame-Opts e ', e);
+				});
+			} else {
+				//do this once and last, either in the promise resolve above
+				//or here if we didn't check for x-frame-opts
+				angular.extend($scope.item, tmpItem);
+			}
 		};
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
@@ -74,6 +124,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.addEvent = function (producerItemType) {
+			console.warn('add event called!');
 			if (producerItemType === 'scene') {
 				if (isOnExistingSceneStart(appState.time)) {
 					return $scope.editCurrentScene();
@@ -218,6 +269,9 @@ angular.module('com.inthetelling.story')
 						});
 				});
 			}
+
+			console.log("saving this thing: ", appState.editEvent);
+
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
 					data.cur_episode_id = appState.episodeId;
@@ -663,6 +717,10 @@ angular.module('com.inthetelling.story')
 				stub.layouts = ["windowFg"];
 				stub.end_time = appState.time;
 				stub.stop = true;
+				//set noEmbed true here in order to prevent
+				//sites that cannot be iframed from being eagerly loaded
+				//and causing mixed-content browser errors.
+				stub.noEmbed = true;
 
 				// Override default template selection with a special SXS one:
 				stub.templateUrl = 'templates/item/sxs-' + type + '.html';

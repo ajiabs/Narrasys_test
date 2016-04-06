@@ -49,6 +49,10 @@
 					<!-- begin metadata  tab -->
 					<div class="authoringFormScrollContainer">
 						<div class="field">
+							<div ng-if="item.noEmbed" class="tooltip-static">
+								<i class="fa fa-info-circle info-blue"></i>
+								<p class="tooltip-text">{{item.tipText}}</p>
+							</div>
 							<div class="label">
 								Template
 							</div>
@@ -95,7 +99,8 @@
 									<option value="templates/item/link-withimage.html">Link with image</option>
 									<option value="templates/item/link-withimage-notitle.html">Link with image - no title</option>
 									<option value="templates/item/link-descriptionfirst.html">Link: description first</option>
-									<option value="templates/item/link-embed.html">Embedded link</option>
+									<option ng-hide="item.noEmbed" value="templates/item/link-embed.html">Embedded link</option>
+									<option ng-show="item.noEmbed" disabled value="templates/item/link-embed.html">Embedded link</option>
 								</select>
 								<select ng-if="item.producerItemType == 'image'" ng-model="item.templateUrl">
 									<option value="templates/item/image-fill.html">Overlay or background fill</option>
