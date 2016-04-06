@@ -3,29 +3,25 @@
 angular.module('com.inthetelling.story')
 	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, $location, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc, errorSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
-
-		var isHttps = $location.protocol() === 'https';
 		//this function is invoked on a blur event in sxs-link.html or producer-link.html
-		//in order to pass an ng-model on a blur event, you have to pass in the $event object
-		//and pull the value out of the event.
-		//I made a few changes in order to make this easier to work with:
-		//first, using $timeout to wrap the logic so you can access the $scope is a hack and should be avoided, and
-		//speaks to a larger misunderstanding of the framework in general, i digress...
-		//this function now operates on data it accepts as a param, rather than needing to use the $timeout hack
-		//second, when it comes to mutating $scope.item, we want collect all of our changes and apply them only once.
-		//this is because $scope.item is being $watched (the $watch fn is 66 lines..)
-		//and we only want to kick off the $watch one time, for all changes,
-		//not for each time we touch $scope.item in the conditionals below...
-		//we also potentially do async stuff here (http calls to check for x-frame-options),
-		//thus we could have gotten into a place where our updates are lost because the thing we are trying to
-		//keep updated is set back to the default state (via the $watch, modelSvc#deriveEvent) prior to our async operation completing.
-		//To remedy this, I created a temporary object to hold our changes, and we're merging with $scope at the end of this fn.
-		//this should result in fewer $digest cycles, perf gains, and easier mental model to follow.
-		$scope.validateItemUrl = function (ev) {
-			var url = ev.target.value;
-			var tmpItem = {url: url};
-			/* TODO have server side check for x-frame-options header, and for if the link exists at all (See TS-772) */
-			//TODONE ^^ -Tom ;)
+		//it was originally set up to work on the $scope.item
+
+		//A user goes to add a link via the UI, they click the 'add' button,
+		//a stub item is created (see EditCtrl#addEvent, generateEmptyItem())
+		//generateEmptyItem() calls modelSvc#cache -> which calls modelSvc#deriveEvent -> which
+		//sets the ephemeral properties on the stub item (noEmbed, mixedContent). <-- with default values
+
+		//When the user goes to input a URL in the "URL" field in the UI
+		//EditCtrl#validateItemUrl is invoked (on blur), and is passed the entire ITEM object (not just the URL)
+		//we want the entire item because, we have to update properties on this item, based upon
+		//the outcome of validation; i.e. we need to set the noEmbed or mixedContent props
+		//at this point, we send the tempItem to modelSvc#deriveEvent to set the ephemeral props. <-- with actual values
+		//after validation, we merge the validated item back to the angular $scope
+		//which kicks off the $watch in ittItemEditor
+		$scope.validateItemUrl = function (item) {
+
+			//copy to dereference object under $watch
+			var tmpItem = angular.copy(item);
 
 			// handle missing protocol
 			if (tmpItem.url.length > 0 && !(tmpItem.url.match(/^(\/\/|http)/))) {
@@ -41,19 +37,11 @@ angular.module('com.inthetelling.story')
 			if (tmpItem.url.match(/inthetelling.com\/#/) && tmpItem.url.indexOf('?') === -1) {
 				tmpItem.url = tmpItem.url + "?embed=1";
 			}
+			//derive event to set all the properties that are not persisted in the database.
+			tmpItem = modelSvc.deriveEvent(tmpItem);
 
-			// No need to check http vs https, modelSvc sets item.noEmbed for us.
-			//^^except this code runs prior to modelSvc#deriveEvent so we need to set it here as well
-			if (tmpItem.url.match(/^http:\/\//) && isHttps) {
-				//since this function is trigger on blur, we need to make sure we have actual values to check against
-				tmpItem.noEmbed = true;
-				//added mixedContent bool because it is specific to this error and noEmbed is
-				//used for a variety of reasons.
-				tmpItem.mixedContent = true;
-				tmpItem.tipText = 'Link Embed is disabled because ' + tmpItem.url + ' is not HTTPS';
-				console.warn('mixed content detected');
-				var editorNote = 'Links starting with HTTP will be opened in a new tab.';
-				errorSvc.notify(editorNote);
+			if (tmpItem.mixedContent === true) {
+				errorSvc.notify(tmpItem.tipText);
 			}
 
 			//only check for x-frame-options if its a valid URL and we're not using HTTP urls

@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc) {
+	.factory('modelSvc', function ($interval, $filter, $location, config, appState, youtubeSvc) {
 
 		var svc = {};
 
@@ -366,9 +366,11 @@ angular.module('com.inthetelling.story')
 					event.noEmbed = true;
 				}
 
-				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//)) {
+				var isHttps = $location.protocol() === 'https';
+				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//) && isHttps) {
 					event.noEmbed = true;
 					event.mixedContent = true;
+					event.tipText = 'Link Embed is disabled because ' + event.url + ' is not HTTPS';
 				}
 
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {

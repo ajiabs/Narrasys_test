@@ -138,10 +138,6 @@ angular.module('com.inthetelling.story')
 					if (!oldItem) {
 						return;
 					}
-
-					console.count('editing!!');
-					console.log('old then new Item no embed', oldItem.noEmbed, newItem.noEmbed);
-
 					// FOR DEBUGGING
 					/*
 										angular.forEach(Object.keys(newItem), function (f) {
@@ -162,6 +158,7 @@ angular.module('com.inthetelling.story')
 					// if old template was image-fill, set cosmetic to false
 					// TODO this is fragile, based on template name:
 					if (newItem.templateUrl !== oldItem.templateUrl) {
+						console.log('tempalte URL stuff in $watch');
 						if (newItem.templateUrl === 'templates/item/image-fill.html') {
 							scope.item.cosmetic = true;
 							scope.item.layouts = ["windowBg"];
@@ -175,8 +172,15 @@ angular.module('com.inthetelling.story')
 						}
 					}
 
+
 					//newItem is scope.item
 					newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+
+					//for producers, if they edit a URL to link-embed template a site that cannot be embedded,
+					//change the template URL to 'link'
+					if (appState.product === 'producer' && newItem.noEmbed === true && newItem.templateUrl === 'templates/item/link-embed.html') {
+						newItem.templateUrl = 'templates/item/link.html';
+					}
 
 					if (newItem.asset) {
 						scope.item.asset.cssUrl = "url('" + newItem.asset.url + "');";
@@ -192,6 +196,8 @@ angular.module('com.inthetelling.story')
 					if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time) {
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 					}
+					console.count('$watch turn');
+
 				}, true);
 
 				// Transform changes to form fields for styles into item.styles[]:
