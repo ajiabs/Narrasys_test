@@ -54,6 +54,7 @@ angular.module('com.inthetelling.story')
 						if (noEmbed) {
 							var xFrameOptsNote = ' does not allow embedding, so this link will open in a new tab';
 							tmpItem.tipText = 'Link embed is disabled because ' + tmpItem.url + ' does not allow iframing';
+							tmpItem.showInlineDetail = false;
 							errorSvc.notify(tmpItem.url +  xFrameOptsNote);
 						}
 						angular.extend($scope.item, tmpItem);
