@@ -322,6 +322,7 @@ module.exports = function (grunt) {
 					src : ['<%= yeoman.app %>/styles/**/*.css', '<%= yeoman.app %>/scripts/**/*.js']
 				},
 				options: {
+					port: 3333,
 					proxy: "https://localhost.inthetelling.com",
 					watchTask: true
 				}
