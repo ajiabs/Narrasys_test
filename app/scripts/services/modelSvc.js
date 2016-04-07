@@ -371,6 +371,7 @@ angular.module('com.inthetelling.story')
 					event.noEmbed = true;
 					event.mixedContent = true;
 					event.tipText = 'Link Embed is disabled because ' + event.url + ' is not HTTPS';
+					event.showInlineDetail = false;
 				}
 
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
