@@ -93,6 +93,8 @@
 		// moved this all back out of the controller to avoid leaking $scope.sandbox across directives
 		var _ctrl = this; //jshint ignore:line
 		var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
+		var _popupsTopWindow = ' allow-top-navigation allow-popups';
+
 		_ctrl.isYoutube = false;
 
 		if (youtubeSvc.extractYoutubeId(_ctrl.src)) {
@@ -116,6 +118,10 @@
 				// Remove it for PDFs (for now; probably we'll be growing this list later on)
 				if (_ctrl.src.match(/.pdf$/)) {
 					delete _ctrl.sandbox;
+				}
+				//give ourselves more permission
+				if (_ctrl.src.match(/inthetelling.com\/#/)) {
+					_ctrl.sandbox += _popupsTopWindow;
 				}
 
 				// Looks like we have some episodes where production used Links item types to point to asset uploads,
