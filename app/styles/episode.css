@@ -217,7 +217,7 @@
   font-size: 110%; }
 
 .episode-prolotherapy {
-  font-family: 'Source Sans', sans-serif; }
+  font-family: 'Source Sans Pro', sans-serif; }
 
 .episode-prolotherapy .colorInvert {
   background-color: #3f58a7;
@@ -413,8 +413,8 @@
   background: none; }
 
 .episode-wiley {
-  font-family: 'Source Sans', sans-serif;
-  font-weight: 200; }
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 300; }
 
 .episode-wiley a,
 .episode-wiley .fakeLink {

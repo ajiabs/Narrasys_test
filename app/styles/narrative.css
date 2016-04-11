@@ -20,7 +20,7 @@
 	position: absolute;
 	width: 100%;
 	background: url("/images/itt.svg") no-repeat fixed 50% 80% #eee;
-	font-family: 'Source Sans', 'Droid Sans', Helvetica, sans-serif;
+	font-family: 'Source Sans Pro', 'Droid Sans', Helvetica, sans-serif;
 }
 
 .standaloneAncillaryPage > div {
