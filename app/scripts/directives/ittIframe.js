@@ -121,7 +121,6 @@
 				}
 				//give ourselves more permission
 				if (_ctrl.src.match(/inthetelling.com\/#/)) {
-					console.log('allow pop-ups, top window');
 					_ctrl.sandbox += _popupsTopWindow;
 				}
 
