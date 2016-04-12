@@ -69,11 +69,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getDefaultProductForRole = function (role) {
-			/* 
+			/*
 			This was making it impossible for users with admin role to see editor or player interface.
 			For now, producer should be used only at the /#/episode urls, editor at the narrative urls
 			(producer only works with individual episodes atm anyway)
-			TODO later on we'll make this user-selectable within the product UI (and probably 
+			TODO later on we'll make this user-selectable within the product UI (and probably
 			eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
 			*/
 			var product = "player";
@@ -205,6 +205,7 @@ angular.module('com.inthetelling.story')
 							return svc.authenticateViaNonce(nonceParam);
 						});
 				} else {
+					console.log('auth Via Nonce', nonceParam);
 					// no login info at all, start from scratch
 					return svc.authenticateViaNonce(nonceParam);
 				}
@@ -305,7 +306,10 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
-			if (user.avatar_id) {
+			var tok = svc.getStoredToken();
+			if (user.avatar_id && tok) {
+				console.log('culprit identified', tok);
+				$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
 					// console.log("GOT AVATAR", response);

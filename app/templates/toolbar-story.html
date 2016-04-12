@@ -40,7 +40,7 @@
 		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="appState.searchText" ng-model-options="{ debounce: 200 }" />
 	</div>
 	<!-- for now, hide user panel in regular player. TODO maybe show it for non-guest users here? -->
-	<div class="nav-item profilegroup buttongroup" ng-if="appState.productLoadedAs != 'player'">
+	<div class="nav-item profilegroup buttongroup">
 		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && userHasRole('admin')" ng-click="toggleProducerPreview()">
 			<span ng-if="appState.product == 'producer'">Preview</span>
 			<span ng-if="appState.product == 'player'">Edit</span>
