@@ -794,6 +794,8 @@
     margin-top: 1.7em;
     background-color: #4d4d4d;
     color: white; }
+    .narrasys-pro .scene.centerVV-mondrian .item.mondrian .escapelink:before {
+      color: white; }
     .narrasys-pro .scene.centerVV-mondrian .item.mondrian a {
       color: white; }
   .narrasys-pro .scene.centerVV-mondrian img {

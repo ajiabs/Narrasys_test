@@ -1041,8 +1041,12 @@ $h2pullquote: #5B5B5B;
 					margin-top: 1.7em;
 					background-color: $mondrianBorder;
 					color: white;
+					.escapelink:before {
+						color: white;
+					}
 					a {
 						color: white;
+
 					}
 				}
 			}
