@@ -82,10 +82,14 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-				scope.forceModal = function () {
+				scope.forceModal = function (doAnimate) {
+					if (doAnimate === undefined) {
+						doAnimate = true;
+					}
 					timelineSvc.pause();
-					appState.itemDetail = scope.item;
+					appState.itemDetail = {item: scope.item, animate: doAnimate};
 				};
+
 				scope.outgoingLinkOnKeyPress = function (url, $event) {
 					var e = $event;
 					var passThrough = true;

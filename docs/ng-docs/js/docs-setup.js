@@ -23,6 +23,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "iTT.directive:ittItemDetailModal",
+      "shortName": "ittItemDetailModal",
+      "type": "directive",
+      "moduleName": "iTT",
+      "shortDescription": "For opening modals with event objects.",
+      "keywords": "$scope accepts animated api appstate based bool boolean currently data directive display event forcemodal html invoked item itt ittitem method modal modals object objects opening param passed player resides service sets transition"
+    },
+    {
+      "section": "api",
       "id": "iTT.directive:ittYoutube",
       "shortName": "ittYoutube",
       "type": "directive",
