@@ -23,6 +23,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "iTT.directive:ittItemDetailModal",
+      "shortName": "ittItemDetailModal",
+      "type": "directive",
+      "moduleName": "iTT",
+      "shortDescription": "For opening modals with event objects",
+      "keywords": "api directive display event item itt modal modals object objects opening service"
+    },
+    {
+      "section": "api",
       "id": "iTT.directive:ittYoutube",
       "shortName": "ittYoutube",
       "type": "directive",
