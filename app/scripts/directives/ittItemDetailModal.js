@@ -5,7 +5,11 @@
  * @restrict 'A'
  * @scope
  * @description
- * For opening modals with event objects
+ * For opening modals with event objects.
+ * Currently resides in player.html and is passed the item data via appState.
+ * Modal is invoked via forceModal() $scope method in ittItem.
+ * forceModal() accepts a bool as param, and sets the item on the appState.
+ * The modal transition is animated based upon the boolean param passed to forceModal()
  * @requires iTT.service:appState
  * @param {Object} item Event object to display in modal
  */
