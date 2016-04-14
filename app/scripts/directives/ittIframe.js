@@ -49,8 +49,12 @@
 			var _timelineBarH = 145;
 			var _offsetConst = _toolbarH + _timelineBarH;
 			var _modalWrapper = $('.w-modal');
+			var _otherModal   = $('.modal');
 			var _frameBottom = $(window).height() - _offsetConst;
 
+			if (_otherModal.length > 0 && appState.isTouchDevice) {
+				scope.iframeCtrl.styles = {'height': _otherModal.height() + 'px'};
+			}
 			//search for the 'w-modal" class, if we find one,
 			//then we know that we are using windowfg template, which seems to handle modals.
 			if (_modalWrapper.length > 0) {
@@ -89,16 +93,21 @@
 
 	}
 
-	function ittIframeCtrl($scope, youtubeSvc) {
+	function ittIframeCtrl($scope, youtubeSvc, appState) {
 		// moved this all back out of the controller to avoid leaking $scope.sandbox across directives
 		var _ctrl = this; //jshint ignore:line
 		var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
 		var _popupsTopWindow = ' allow-top-navigation allow-popups';
-
 		_ctrl.isYoutube = false;
+		_ctrl.isTouchDevice = appState.isTouchDevice;
 
 		if (youtubeSvc.extractYoutubeId(_ctrl.src)) {
 			_ctrl.isYoutube = true;
+		}
+
+		if (_ctrl.isTouchDevice) {
+			_ctrl.iOSScroll = 'no';
+			//_ctrl.styles = {'height': '500px'};
 		}
 
 		_ctrl.watcher = $scope.$watchGroup([function() {return _ctrl.src;}, function() {return _ctrl.contenttype;}], function () {

@@ -3,6 +3,8 @@
 
 	<iframe ng-if="!iframeCtrl.isYoutube"
 			ng-src="{{iframeCtrl.src}}"
+			ng-attr-scrolling="{{iframeCtrl.iOSScroll}}"
+			ng-style="iframeCtrl.styles"
 			ng-attr-sandbox="{{iframeCtrl.sandbox}}"></iframe>
 
 	<itt-youtube ng-if="iframeCtrl.isYoutube"

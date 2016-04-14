@@ -65,7 +65,7 @@ angular.module('com.inthetelling.story')
 			/* jshint +W116 */
 
 			// sniff sniff
-			svc.isTouchDevice = (navigator.platform.match(/iPad|iPod|iPhone/) || navigator.userAgent.match(/Android/));
+			svc.isTouchDevice = (/iPad|iPod|iPhone/.test(navigator.platform) || /Android/.test(navigator.userAvent));
 			svc.isIPhone = (navigator.platform.match(/iPod|iPhone/)); // iPhone has weird video handling, see  timelineSvc
 
 			svc.windowWidth = 0;

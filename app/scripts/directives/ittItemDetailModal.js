@@ -26,11 +26,9 @@ angular.module('com.inthetelling.story')
 			},
 			templateUrl: 'templates/item/modal.html',
 			link: function (scope) {
-
 				var modalSmooth = {
 					'transition': 'none'
 				};
-
 				if (!scope.item.animate) {
 					scope.modalSmooth = modalSmooth;
 				}
