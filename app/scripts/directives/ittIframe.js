@@ -53,8 +53,10 @@
 			var _frameBottom = $(window).height() - _offsetConst;
 
 			if (_otherModal.length > 0 && appState.isTouchDevice) {
-				var newY = _otherModal.height() - _btnConst;
-				scope.iframeCtrl.styles = {'height': newY + 'px'};
+				//set dimenions on <iframe>
+				scope.iframeCtrl.styles = {'height': _frameBottom + 'px'};
+				//set dimensions on iframeContainer div
+				elm.css('height', _frameBottom);
 			}
 			//search for the 'w-modal" class, if we find one,
 			//then we know that we are using windowfg template, which seems to handle modals.
@@ -80,7 +82,9 @@
 
 			function resizeIframeReviewMode() {
 				//only resize iframe in discover mode for the narrasys pro template (at the moment)
-				if (appState.viewMode === 'discover' && appState.playerTemplate === 'templates/episode/narrasys-pro.html') {
+				if (appState.viewMode === 'discover'
+					&& appState.playerTemplate === 'templates/episode/narrasys-pro.html'
+					&& !appState.isTouchDevice) {
 					elm.css('height', _frameBottom);
 				}
 			}
@@ -105,10 +109,11 @@
 		if (youtubeSvc.extractYoutubeId(_ctrl.src)) {
 			_ctrl.isYoutube = true;
 		}
-
-		if (_ctrl.isTouchDevice) {
+		//set scrolling to no if we're on an ipad
+		//and we're attempting to iframe our own player
+		//this stops the player from expanding the iframe its contained in.
+		if (_ctrl.isTouchDevice && /inthetelling.com\/#/.test(_ctrl.src)) {
 			_ctrl.iOSScroll = 'no';
-			//_ctrl.styles = {'height': '500px'};
 		}
 
 		_ctrl.watcher = $scope.$watchGroup([function() {return _ctrl.src;}, function() {return _ctrl.contenttype;}], function () {
