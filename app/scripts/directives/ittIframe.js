@@ -82,9 +82,9 @@
 
 			function resizeIframeReviewMode() {
 				//only resize iframe in discover mode for the narrasys pro template (at the moment)
-				if (appState.viewMode === 'discover'
-					&& appState.playerTemplate === 'templates/episode/narrasys-pro.html'
-					&& !appState.isTouchDevice) {
+				if (appState.viewMode === 'discover' &&
+					appState.playerTemplate === 'templates/episode/narrasys-pro.html' &&
+					!appState.isTouchDevice) {
 					elm.css('height', _frameBottom);
 				}
 			}
