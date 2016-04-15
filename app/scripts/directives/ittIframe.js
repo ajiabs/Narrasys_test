@@ -53,7 +53,8 @@
 			var _frameBottom = $(window).height() - _offsetConst;
 
 			if (_otherModal.length > 0 && appState.isTouchDevice) {
-				scope.iframeCtrl.styles = {'height': _otherModal.height() + 'px'};
+				var newY = _otherModal.height() - _btnConst;
+				scope.iframeCtrl.styles = {'height': newY + 'px'};
 			}
 			//search for the 'w-modal" class, if we find one,
 			//then we know that we are using windowfg template, which seems to handle modals.
