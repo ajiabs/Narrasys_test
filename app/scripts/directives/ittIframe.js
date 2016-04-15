@@ -69,6 +69,7 @@
 			function setIframeHeight() {
 				var y = _modalWrapper.height() - _btnConst;
 				elm.css('height', y);
+				_modalWrapper.css('overflow-y', 'hidden');
 
 				_unWatch =  scope.$watch(function() {
 					return _modalWrapper.height();
