@@ -894,6 +894,28 @@ $h2pullquote: #5B5B5B;
 		}
 	}
 
+	.landingscreen {
+		padding-top: 0%;
+		div {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.introtext {
+			width: 100%;
+			margin-bottom: 5em;
+		}
+
+		.videoMagnet {
+			width: 100%;
+		}
+
+		h1 {
+			width: 100%;
+			@include banner-pull-quote;
+		}
+	}
+
 	.branding {
 		height: 210px;
 		background: none;

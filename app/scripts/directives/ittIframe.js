@@ -57,6 +57,15 @@
 				scope.iframeCtrl.styles = {'height': _frameBottom + 'px'};
 				//set dimensions on iframeContainer div
 				elm.css('height', _frameBottom);
+
+				scope.$watch(function() {
+					return elm.height();
+				}, function(newVal, oldval) {
+					if (newVal !== oldval) {
+						scope.iframeCtrl.styles = {'height': newVal + 'px'};
+						elm.css('height', _frameBottom);
+					}
+				});
 			}
 			//search for the 'w-modal" class, if we find one,
 			//then we know that we are using windowfg template, which seems to handle modals.
