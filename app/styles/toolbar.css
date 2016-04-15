@@ -54,11 +54,11 @@
 }
 
 .toolbar .nav-item.new-window-btn {
-	order: 4;
+	order: 5;
 }
 
 .toolbar .nav-item.profilegroup {
-	order: 5;
+	order: 4;
 }
 
 button {
