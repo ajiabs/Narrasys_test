@@ -367,6 +367,10 @@ angular.module('com.inthetelling.story')
 					event.noEmbed = true;
 				}
 
+				if (event._type === "Link" && event.url && /mailto/.test(event.url)) {
+					event.noEmbed = true;
+				}
+
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
 					event.noExternalLink = true;
 				}

@@ -11,7 +11,7 @@ angular.module('com.inthetelling.story')
 				/* TODO have server side check for x-frame-options header, and for if the link exists at all (See TS-772) */
 
 				// handle missing protocol
-				if ($scope.item.url.length > 0 && !($scope.item.url.match(/^(\/\/|http)/))) {
+				if ($scope.item.url.length > 0 && !($scope.item.url.match(/^(\/\/|http|mailto)/))) {
 					$scope.item.url = "//" + $scope.item.url;
 				}
 
