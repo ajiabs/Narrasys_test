@@ -34,7 +34,7 @@
 			<div class="title">
 				<a role="button" x-ng-keypress="toggleDetailOnKeyPress($event)" class="fakeLink" tabindex="0" ng-click="forceModal(false)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
 			</div>
-			<img ng-click="forceModal(false)" ng-src="{{item.asset.url}}">
+			<img ng-if="item.asset.url" ng-click="forceModal(false)" ng-src="{{item.asset.url}}">
 		</span>
 
 	</div>
