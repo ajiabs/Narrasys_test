@@ -729,6 +729,8 @@
     background: none; }
   .narrasys-pro .item {
     color: black; }
+    .narrasys-pro .item .itemCaption {
+      color: white; }
     .narrasys-pro .item .pullquote {
       font-family: 'Gotham Light Italic';
       color: #5b5b5b;

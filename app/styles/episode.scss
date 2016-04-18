@@ -923,6 +923,10 @@ $h2pullquote: #5B5B5B;
 	.item {
 		color: black;
 
+		.itemCaption {
+			color: white;
+		}
+
 		.pullquote {
 			font-family: 'Gotham Light Italic';
 			color: $h2pullquote;
