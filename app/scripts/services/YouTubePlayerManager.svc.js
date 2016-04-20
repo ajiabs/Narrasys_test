@@ -290,11 +290,7 @@
 			 * @returns {Void} has no return value
 			 */
 			function onError(event) {
-				console.log('youtube error', event);
 				var brokePlayerPID = _getPidFromInstance(event.target);
-				var message = 'Attempt to recover and continue?';
-				//var err = {data: {error: 'Youtube is having a hard time...', action: message, pid: brokePlayerPID} };
-				//errorSvc.error(err);
 				console.warn('resetting for chrome!!!');
 				reset(brokePlayerPID);
 			}
