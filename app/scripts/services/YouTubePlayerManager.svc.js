@@ -80,7 +80,17 @@
 				});
 			});
 		}
-
+		/**
+		 * @private
+		 * @ngdoc
+		 * @name _getYTInstance
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to retrieve an instance of the YT player out of the _players object.
+		 * @param {String} pid the ID of the instance to retrieve
+		 * player that emitted it.
+		 * @returns {Object} Youtube Player Instance Object.
+		 */
 		function _getYTInstance(pid) {
 			if (_players[pid] && _players[pid].ready === true) {
 				return _players[pid].yt;
@@ -90,7 +100,16 @@
 		function _existy(x) {
 			return x != null;  // jshint ignore:line
 		}
-
+		/**
+		 * @private
+		 * @ngdoc
+		 * @name _getPidFromInstance
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to retrieve a PID from a YT Instance
+		 * @param {Object} ytInstance
+		 * @returns {String} PID of YT Instance
+		 */
 		function _getPidFromInstance(ytInstance) {
 			var _key;
 
@@ -315,7 +334,6 @@
 				return p.getPlayerState();
 			}
 		}
-
 		/**
 		 * @ngdoc method
 		 * @name #play
