@@ -33,6 +33,8 @@
 			playerState: playerState,
 			pause: pause,
 			pauseEmbeds: pauseEmbeds,
+			stop: stop,
+			reset: reset,
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			setPlaybackQuality: setPlaybackQuality,
 			setPlayerId: setPlayerId,
@@ -47,7 +49,7 @@
 
 		//private methods
 
-		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
+		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
 
 			var _controls = 1;
 			if (divId === _mainPlayerId) {
@@ -72,7 +74,8 @@
 					events: {
 						onReady: onReadyCB,
 						onStateChange: stateChangeCB,
-						onPlaybackQualityChange: qualityChangeCB
+						onPlaybackQualityChange: qualityChangeCB,
+						onError: onError
 					}
 				});
 			});
@@ -92,9 +95,6 @@
 			var _key;
 
 			angular.forEach(_players, function(p, key) {
-				//for some reason, angular.equals was not working in this context.
-				//context: when embedding two identical youtube videos seemed to break
-
 				if (p.yt === ytInstance) {
 					return _key = key; // jshint ignore:line
 				}
@@ -119,7 +119,7 @@
 		 * @returns {Void} has no return value
          */
 		function create(divId, playerId, videoId, stateCb, qualityChangeCB, onReadyCB) {
-			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
 
@@ -130,7 +130,7 @@
 			}
 
 			function tryAgain() {
-				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 					.then(handleSuccess)
 					.catch(lastTry);
 			}
@@ -162,6 +162,7 @@
 			 * @returns {Void} has no return value
              */
 			function onPlayerStateChange(event) {
+				console.log("player state change!", event);
 				var main = _mainPlayerId;
 				var embed;
 				var state = event.data;
@@ -177,6 +178,12 @@
 				if (pid === main) {
 					if (mainPlayerState === YT.PlayerState.PLAYING) {
 						pauseEmbeds();
+					}
+
+					if (state === YT.PlayerState.ENDED) {
+						console.log('thanks for watching!!!');
+						//stop in the manager on the emitting player
+						stop(pid);
 					}
 				}
 
@@ -253,6 +260,24 @@
 				qualityChangeCB(event);
 
 			}
+			/**
+			 * @private
+			 * @ngdoc
+			 * @name onError
+			 * @methodOf iTT.service:youTubePlayerManager
+			 * @description
+			 * Error Handler for youtube iframe API errors
+			 * @param {Object} event an object with target and data properties with metadata regarding the event and
+			 * player that emitted it.
+			 * @returns {Void} has no return value
+			 */
+			function onError(event) {
+				console.log('youtube error', event);
+				var brokePlayerPID = _getPidFromInstance(event.target);
+				var message = 'Attempt to recover and continue?';
+				var err = {data: {error: 'Youtube is having a hard time...', action: message, pid: brokePlayerPID} };
+				errorSvc.error(err);
+			}
 		}
 		/**
 		 * @ngdoc method
@@ -319,6 +344,40 @@
 			var p = _getYTInstance(pid);
 			if (_existy(p)) {
 				return p.pauseVideo();
+			}
+		}
+		/**
+		 * @ngdoc method
+		 * @name #stop
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Stops video playback and download of video stream
+		 * @param pid
+		 * @returns {Void} no return value
+		 */
+		function stop(pid) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
+				return p.stopVideo();
+			}
+		}
+		/**
+		 * @ngdoc method
+		 * @name #reset
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to reset the player after detecting
+		 * onError event.
+		 * @param pid
+		 * @returns {Void} no return value
+		 */
+		function reset(pid) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
+				//TODO save debug data server side in a report.
+				console.log('debug info', p.getDebugText());
+				var videoId = p.getVideoData().video_id;
+				p.loadVideoById(videoId, appState.time);
 			}
 		}
 		/**
