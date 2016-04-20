@@ -4,14 +4,6 @@
 		<p ng-if="error.exception.config.url">
 			<i>(While trying to load {{error.exception.config.url}})</i>
 		</p>
-		<div class="reset-options">
-			<p ng-if="error.exception.data.action">{{error.exception.data.action}}!</p>
-			<button
-				class="reset-button"
-				ng-if="error.exception.data.action"
-				ng-click="doReset(error.exception.data.pid)">Reset
-			</button>
-		</div>
 
 		<p ng-if="error.exception.status == 401">
 			Please

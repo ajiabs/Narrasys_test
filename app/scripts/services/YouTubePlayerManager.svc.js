@@ -181,7 +181,7 @@
 			 * @returns {Void} has no return value
              */
 			function onPlayerStateChange(event) {
-				console.log("player state change!", event);
+				//console.log("player state change!", event);
 				var main = _mainPlayerId;
 				var embed;
 				var state = event.data;
@@ -190,7 +190,6 @@
 				if (pid !== _mainPlayerId) {
 					embed = pid;
 				}
-
 				var embedPlayerState = playerState(embed);
 				var mainPlayerState = playerState(main);
 
@@ -294,8 +293,10 @@
 				console.log('youtube error', event);
 				var brokePlayerPID = _getPidFromInstance(event.target);
 				var message = 'Attempt to recover and continue?';
-				var err = {data: {error: 'Youtube is having a hard time...', action: message, pid: brokePlayerPID} };
-				errorSvc.error(err);
+				//var err = {data: {error: 'Youtube is having a hard time...', action: message, pid: brokePlayerPID} };
+				//errorSvc.error(err);
+				console.warn('resetting for chrome!!!');
+				reset(brokePlayerPID);
 			}
 		}
 		/**
@@ -395,7 +396,8 @@
 				//TODO save debug data server side in a report.
 				console.log('debug info', p.getDebugText());
 				var videoId = p.getVideoData().video_id;
-				p.loadVideoById(videoId, appState.time);
+				p.cueVideoById(videoId, appState.time);
+				timelineSvc.play();
 			}
 		}
 		/**
