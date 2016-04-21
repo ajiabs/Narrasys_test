@@ -1,6 +1,6 @@
 <div class="iframeContainer">
 	<!--temp hide loading spinner until we wire it up correctly-->
-	<!--<itt-loading></itt-loading>-->
+	<itt-loading ng-if="iframeCtrl.isLoading"></itt-loading>
 
 	<iframe ng-if="!iframeCtrl.isYoutube"
 			ng-src="{{iframeCtrl.src}}"

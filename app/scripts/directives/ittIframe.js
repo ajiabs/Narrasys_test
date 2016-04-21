@@ -114,10 +114,12 @@
 		var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
 		var _popupsTopWindow = ' allow-top-navigation allow-popups';
 		_ctrl.isYoutube = false;
+		_ctrl.isLoading = true;
 		_ctrl.isTouchDevice = appState.isTouchDevice;
 
 		if (youtubeSvc.extractYoutubeId(_ctrl.src)) {
 			_ctrl.isYoutube = true;
+			_ctrl.isLoading = false;
 		}
 		//set scrolling to no if we're on an ipad
 		//and we're attempting to iframe our own player

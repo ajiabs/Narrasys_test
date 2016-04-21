@@ -34,6 +34,7 @@ angular.module('com.inthetelling.story')
 			// convert youtube links to embed format
 			if (youtubeSvc.extractYoutubeId(tmpItem.url)) {
 				tmpItem.url = youtubeSvc.embeddableYoutubeUrl(tmpItem.url, true);
+				tmpItem.isYoutube = true;
 			}
 
 			// add param to episode links if necessary
@@ -49,7 +50,7 @@ angular.module('com.inthetelling.story')
 
 			//only check for x-frame-options if its a valid URL and we're not using HTTP urls
 			//this fn is called on blur so its very likely we can get bad data.
-			if (!(tmpItem.url === 'https://' || tmpItem.url === '') && !tmpItem.mixedContent) {
+			if (!(tmpItem.url === 'https://' || tmpItem.url === '') && !tmpItem.mixedContent && !tmpItem.isYoutube) {
 				console.warn('checking for xframe opts', tmpItem);
 				dataSvc.checkXFrameOpts(tmpItem.url)
 					.then(function(noEmbed) {
