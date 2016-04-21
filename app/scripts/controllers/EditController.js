@@ -24,7 +24,7 @@ angular.module('com.inthetelling.story')
 			var tmpItem = angular.copy(item);
 
 			// handle missing protocol
-			if (tmpItem.url.length > 0 && !(tmpItem.url.match(/^(\/\/|http)/))) {
+			if (tmpItem.url.length > 0 && !(tmpItem.url.match(/^(\/\/|http|mailto)/))) {
 				tmpItem.url = '//' + tmpItem.url;
 			}
 
