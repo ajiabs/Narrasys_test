@@ -202,4 +202,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		];
 		return taOptions;
 	}]);
+})
+
+.config(function($compileProvider) {
+	var isDev = /localhost|api-dev.inthetelling.com/.test(window.location.hostname);
+	if (isDev === false) {
+		$compileProvider.debugInfoEnabled(false);
+	}
 });
