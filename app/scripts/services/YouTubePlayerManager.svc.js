@@ -112,7 +112,8 @@
 		 */
 		function _getPidFromInstance(ytInstance) {
 			var _key;
-
+			//for some reason, angular.equals was not working in this context.
+			//context: when embedding two identical youtube videos seemed to break
 			angular.forEach(_players, function(p, key) {
 				if (p.yt === ytInstance) {
 					return _key = key; // jshint ignore:line
@@ -144,7 +145,8 @@
 
 
 			function handleSuccess(ytInstance) {
-				_players[playerId] = {yt: ytInstance, ready: false };
+				_players[playerId].yt = ytInstance;
+				_players.ready = false;
 
 			}
 
@@ -291,8 +293,11 @@
 			 */
 			function onError(event) {
 				var brokePlayerPID = _getPidFromInstance(event.target);
-				console.warn('resetting for chrome!!!');
-				reset(brokePlayerPID);
+				if (event.data === 5) {
+					//only reset for HTML5 player errors
+					console.warn('resetting for chrome!!!');
+					reset(brokePlayerPID);
+				}
 			}
 		}
 		/**
@@ -387,13 +392,21 @@
 		 * @returns {Void} no return value
 		 */
 		function reset(pid) {
-			var p = _getYTInstance(pid);
-			if (_existy(p)) {
-				//TODO save debug data server side in a report.
-				console.log('debug info', p.getDebugText());
-				var videoId = p.getVideoData().video_id;
-				p.cueVideoById(videoId, appState.time);
-				timelineSvc.play();
+
+			var obj = _players[pid];
+			var instance = _players[pid].yt;
+
+			if (_existy(instance)) {
+				console.log('debug info', instance.getDebugText());
+				var videoId = instance.getVideoData().video_id;
+				var lastTime = instance.getCurrentTime();
+
+				if (obj.isMainPlayer) {
+					instance.cueVideoById(videoId, lastTime);
+					timelineSvc.play();
+				} else {
+					instance.loadVideoById(videoId, lastTime);
+				}
 			}
 		}
 		/**
@@ -612,7 +625,7 @@
 				_players = {};
 				_id = id;
 				_mainPlayerId = _id;
-				_players[_id] = {};
+				_players[_id] = { isMainPlayer: true };
 			} else {
 				//the resolved _id is used for the ID of the actual player element
 				//it needs to be unique
@@ -620,7 +633,7 @@
 				//setPlayer is always called prior to create() - see ittYoutubeEmbed )
 				//YT will search the dom for the above _id and insert the iframe player.
 				_id = _guid() + id;
-				_players[id] = {};
+				_players[id] = { isMainPlayer: false };
 
 			}
 
