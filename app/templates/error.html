@@ -4,6 +4,7 @@
 		<p ng-if="error.exception.config.url">
 			<i>(While trying to load {{error.exception.config.url}})</i>
 		</p>
+
 		<p ng-if="error.exception.status == 401">
 			Please
 			<span ng-if="user.login_url">
@@ -14,6 +15,7 @@
 				<a ng-click="logout();">reset your session</a> and start over.
 			</span>
 		</p>
+
 		<!-- 		<a style="font-size: small" ng-click="showDetails= !showDetails">(show details)</a>
 		<pre ng-if="showDetails" style="font-size: small" ng-bind="error | pretty"></pre>
  -->
