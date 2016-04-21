@@ -22,19 +22,6 @@
 	align-items: baseline;
 }
 
-.reset-button {
-	color: white;
-	background-color: #c00;
-	border: 1px solid black;
-	border-radius: 2px;
-	padding: 5px;
-	margin: 0 5px;
-}
-
-.errors .notification {
-	border-color: #EE0;
-}
-
 * {
 	box-sizing: border-box;
 	margin: 0;
