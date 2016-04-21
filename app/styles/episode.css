@@ -697,11 +697,40 @@
     letter-spacing: 0.1em;
     position: relative;
     top: 0; }
+  .narrasys-pro .landingscreen {
+    padding-top: 0%; }
+    .narrasys-pro .landingscreen div {
+      display: flex;
+      flex-direction: column; }
+    .narrasys-pro .landingscreen .introtext {
+      width: 100%;
+      margin-bottom: 5em; }
+    .narrasys-pro .landingscreen .videoMagnet {
+      width: 100%; }
+    .narrasys-pro .landingscreen h1 {
+      margin-top: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Gotham Thin';
+      color: white;
+      background-color: #de6625;
+      width: 100%;
+      text-align: center;
+      padding: 10px 0;
+      min-height: 80px;
+      max-height: 80px;
+      position: absolute;
+      font-size: 2.0vmax;
+      font-weight: lighter;
+      letter-spacing: 0.1em; }
   .narrasys-pro .branding {
     height: 210px;
     background: none; }
   .narrasys-pro .item {
     color: black; }
+    .narrasys-pro .item .itemCaption {
+      color: white; }
     .narrasys-pro .item .pullquote {
       font-family: 'Gotham Light Italic';
       color: #5b5b5b;
@@ -798,7 +827,5 @@
       color: white; }
     .narrasys-pro .scene.centerVV-mondrian .item.mondrian a {
       color: white; }
-  .narrasys-pro .scene.centerVV-mondrian img {
-    width: 99%; }
   .narrasys-pro .scene.centerVV-mondrian .title a {
     color: white; }

@@ -293,7 +293,7 @@ h4 {
 .toolbar-bottom,
 .banner-logo,
 
-/*.helpPanel,*/
+	/*.helpPanel,*/
 
 .profilePanel,
 .topDrawer {
@@ -449,4 +449,3 @@ Misc useful keyframes
 		opacity: 1;
 	}
 }
-

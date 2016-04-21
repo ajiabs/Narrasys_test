@@ -101,6 +101,7 @@
 									<option value="templates/item/link-descriptionfirst.html">Link: description first</option>
 									<option ng-hide="item.noEmbed" value="templates/item/link-embed.html">Embedded link</option>
 									<option ng-show="item.noEmbed" disabled value="templates/item/link.html">Embedded link</option>
+									<option value="templates/item/link-modal-thumb.html">Link Modal</option>
 								</select>
 								<select ng-if="item.producerItemType == 'image'" ng-model="item.templateUrl">
 									<option value="templates/item/image-fill.html">Overlay or background fill</option>

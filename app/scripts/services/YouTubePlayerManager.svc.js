@@ -33,6 +33,8 @@
 			playerState: playerState,
 			pause: pause,
 			pauseEmbeds: pauseEmbeds,
+			stop: stop,
+			reset: reset,
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			setPlaybackQuality: setPlaybackQuality,
 			setPlayerId: setPlayerId,
@@ -47,7 +49,7 @@
 
 		//private methods
 
-		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB) {
+		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
 
 			var _controls = 1;
 			if (divId === _mainPlayerId) {
@@ -72,12 +74,23 @@
 					events: {
 						onReady: onReadyCB,
 						onStateChange: stateChangeCB,
-						onPlaybackQualityChange: qualityChangeCB
+						onPlaybackQualityChange: qualityChangeCB,
+						onError: onError
 					}
 				});
 			});
 		}
-
+		/**
+		 * @private
+		 * @ngdoc
+		 * @name _getYTInstance
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to retrieve an instance of the YT player out of the _players object.
+		 * @param {String} pid the ID of the instance to retrieve
+		 * player that emitted it.
+		 * @returns {Object} Youtube Player Instance Object.
+		 */
 		function _getYTInstance(pid) {
 			if (_players[pid] && _players[pid].ready === true) {
 				return _players[pid].yt;
@@ -87,14 +100,21 @@
 		function _existy(x) {
 			return x != null;  // jshint ignore:line
 		}
-
+		/**
+		 * @private
+		 * @ngdoc
+		 * @name _getPidFromInstance
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to retrieve a PID from a YT Instance
+		 * @params {Object} ytInstance
+		 * @returns {String} PID of YT Instance
+		 */
 		function _getPidFromInstance(ytInstance) {
 			var _key;
-
+			//for some reason, angular.equals was not working in this context.
+			//context: when embedding two identical youtube videos seemed to break
 			angular.forEach(_players, function(p, key) {
-				//for some reason, angular.equals was not working in this context.
-				//context: when embedding two identical youtube videos seemed to break
-
 				if (p.yt === ytInstance) {
 					return _key = key; // jshint ignore:line
 				}
@@ -119,18 +139,19 @@
 		 * @returns {Void} has no return value
          */
 		function create(divId, playerId, videoId, stateCb, qualityChangeCB, onReadyCB) {
-			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
 
 
 			function handleSuccess(ytInstance) {
-				_players[playerId] = {yt: ytInstance, ready: false };
+				_players[playerId].yt = ytInstance;
+				_players[playerId].ready = false;
 
 			}
 
 			function tryAgain() {
-				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady)
+				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 					.then(handleSuccess)
 					.catch(lastTry);
 			}
@@ -162,6 +183,7 @@
 			 * @returns {Void} has no return value
              */
 			function onPlayerStateChange(event) {
+				//console.log("player state change!", event);
 				var main = _mainPlayerId;
 				var embed;
 				var state = event.data;
@@ -170,13 +192,18 @@
 				if (pid !== _mainPlayerId) {
 					embed = pid;
 				}
-
 				var embedPlayerState = playerState(embed);
 				var mainPlayerState = playerState(main);
 
 				if (pid === main) {
 					if (mainPlayerState === YT.PlayerState.PLAYING) {
 						pauseEmbeds();
+					}
+
+					if (state === YT.PlayerState.ENDED) {
+						console.log('thanks for watching!!!');
+						//stop in the manager on the emitting player
+						stop(pid);
 					}
 				}
 
@@ -253,6 +280,25 @@
 				qualityChangeCB(event);
 
 			}
+			/**
+			 * @private
+			 * @ngdoc
+			 * @name onError
+			 * @methodOf iTT.service:youTubePlayerManager
+			 * @description
+			 * Error Handler for youtube iframe API errors
+			 * @param {Object} event an object with target and data properties with metadata regarding the event and
+			 * player that emitted it.
+			 * @returns {Void} has no return value
+			 */
+			function onError(event) {
+				var brokePlayerPID = _getPidFromInstance(event.target);
+				if (event.data === 5) {
+					//only reset for HTML5 player errors
+					console.warn('resetting for chrome!!!');
+					reset(brokePlayerPID);
+				}
+			}
 		}
 		/**
 		 * @ngdoc method
@@ -290,7 +336,6 @@
 				return p.getPlayerState();
 			}
 		}
-
 		/**
 		 * @ngdoc method
 		 * @name #play
@@ -319,6 +364,49 @@
 			var p = _getYTInstance(pid);
 			if (_existy(p)) {
 				return p.pauseVideo();
+			}
+		}
+		/**
+		 * @ngdoc method
+		 * @name #stop
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Stops video playback and download of video stream
+		 * @params pid The id of the player
+		 * @returns {Void} no return value
+		 */
+		function stop(pid) {
+			var p = _getYTInstance(pid);
+			if (_existy(p)) {
+				return p.stopVideo();
+			}
+		}
+		/**
+		 * @ngdoc method
+		 * @name #reset
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to reset the player after detecting
+		 * onError event.
+		 * @params pid The id of the player
+		 * @returns {Void} no return value
+		 */
+		function reset(pid) {
+
+			var obj = _players[pid];
+			var instance = _players[pid].yt;
+
+			if (_existy(instance)) {
+				console.log('debug info', instance.getDebugText());
+				var videoId = instance.getVideoData().video_id;
+				var lastTime = instance.getCurrentTime();
+
+				if (obj.isMainPlayer) {
+					instance.cueVideoById(videoId, lastTime);
+					timelineSvc.play();
+				} else {
+					instance.loadVideoById(videoId, lastTime);
+				}
 			}
 		}
 		/**
@@ -537,7 +625,7 @@
 				_players = {};
 				_id = id;
 				_mainPlayerId = _id;
-				_players[_id] = {};
+				_players[_id] = { isMainPlayer: true };
 			} else {
 				//the resolved _id is used for the ID of the actual player element
 				//it needs to be unique
@@ -545,7 +633,7 @@
 				//setPlayer is always called prior to create() - see ittYoutubeEmbed )
 				//YT will search the dom for the above _id and insert the iframe player.
 				_id = _guid() + id;
-				_players[id] = {};
+				_players[id] = { isMainPlayer: false };
 
 			}
 

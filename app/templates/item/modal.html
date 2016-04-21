@@ -1,4 +1,4 @@
-<div class="modal" ng-click="dismiss();">
+<div class="modal" ng-style="modalSmooth" ng-click="dismiss();">
   <span ng-if="item._type == 'Link'">
     <div class="modalmenu">
       <a href="{{item.url}}" target="_blank" class="escapelink">(new window)</a>
@@ -20,5 +20,4 @@
       </span>
     </span>
   </span>
-
 </div>
