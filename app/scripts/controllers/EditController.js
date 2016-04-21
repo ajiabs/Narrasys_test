@@ -23,6 +23,9 @@ angular.module('com.inthetelling.story')
 			//copy to dereference object under $watch
 			var tmpItem = angular.copy(item);
 
+			if (tmpItem.url === undefined) {
+				return;
+			}
 			// handle missing protocol
 			if (tmpItem.url.length > 0 && !(tmpItem.url.match(/^(\/\/|http|mailto)/))) {
 				tmpItem.url = '//' + tmpItem.url;
