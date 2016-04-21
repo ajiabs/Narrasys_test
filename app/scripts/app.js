@@ -205,7 +205,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 })
 
 .config(function($compileProvider) {
-	var isDev = /localhost|api-dev.inthetelling.com/.test(window.location.hostname);
+	var isDev = false;
+	var currentHost = window.location.hostname;
+	if (currentHost.indexOf('localhost') === 0 || currentHost.indexOf('api-dev') === 0) {
+		isDev = true;
+	}
+
 	if (isDev === false) {
 		$compileProvider.debugInfoEnabled(false);
 	}
