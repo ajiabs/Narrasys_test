@@ -17,9 +17,8 @@
 	overflow: auto;
 }
 
-.reset-options {
-	display: flex;
-	align-items: baseline;
+.errors .notification {
+	border-color: #EE0;
 }
 
 * {
@@ -260,7 +259,7 @@ h4 {
 .toolbar-bottom,
 .banner-logo,
 
-/*.helpPanel,*/
+	/*.helpPanel,*/
 
 .profilePanel,
 .topDrawer {
@@ -416,4 +415,3 @@ Misc useful keyframes
 		opacity: 1;
 	}
 }
-
