@@ -107,7 +107,7 @@
 		 * @methodOf iTT.service:youTubePlayerManager
 		 * @description
 		 * Used to retrieve a PID from a YT Instance
-		 * @param {Object} ytInstance
+		 * @params {Object} ytInstance
 		 * @returns {String} PID of YT Instance
 		 */
 		function _getPidFromInstance(ytInstance) {
@@ -372,7 +372,7 @@
 		 * @methodOf iTT.service:youTubePlayerManager
 		 * @description
 		 * Stops video playback and download of video stream
-		 * @param pid
+		 * @params pid The id of the player
 		 * @returns {Void} no return value
 		 */
 		function stop(pid) {
@@ -388,7 +388,7 @@
 		 * @description
 		 * Used to reset the player after detecting
 		 * onError event.
-		 * @param pid
+		 * @params pid The id of the player
 		 * @returns {Void} no return value
 		 */
 		function reset(pid) {
