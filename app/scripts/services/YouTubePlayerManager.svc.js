@@ -146,7 +146,7 @@
 
 			function handleSuccess(ytInstance) {
 				_players[playerId].yt = ytInstance;
-				_players.ready = false;
+				_players[playerId].ready = false;
 
 			}
 
