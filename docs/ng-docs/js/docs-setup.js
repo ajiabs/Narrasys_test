@@ -32,6 +32,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "iTT.directive:ittValidateUrl",
+      "shortName": "ittValidateUrl",
+      "type": "directive",
+      "moduleName": "iTT",
+      "shortDescription": "Directive used on url inputs to allow custom validation",
+      "keywords": "$q allow api belongs custom datasvc directive ea errorsvc inputs item itt itt-validate-url ittutils ngmodel type url validating validation youtubesvc"
+    },
+    {
+      "section": "api",
       "id": "iTT.directive:ittYoutube",
       "shortName": "ittYoutube",
       "type": "directive",
