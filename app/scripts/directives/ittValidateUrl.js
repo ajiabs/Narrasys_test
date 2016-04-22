@@ -5,7 +5,25 @@
 
 (function() {
 	'use strict';
-
+	/**
+	 * @ngdoc directive
+	 * @name iTT.directive:ittValidateUrl
+	 * @restrict 'EA'
+	 * @scope
+	 * @description
+	 * Directive used on url inputs to allow custom validation
+	 * @requires $q
+	 * @requires ngModel
+	 * @requires errorSvc
+	 * @requires youtubeSvc
+	 * @requires ittUtils
+	 * @requires dataSvc
+	 * @param {Object} item The item that the url we are validating belongs to
+	 * @example
+	 * <pre>
+	 *     <input type="url" itt-validate-url item="item"/>
+	 * </pre>
+	 */
 	angular.module('com.inthetelling.story')
 		.directive('ittValidateUrl', ittValidateUrl);
 
@@ -19,11 +37,12 @@
 				function allowSchemelessUrls() {
 					ngModel.$asyncValidators.url = function(modelVal) {
 						return $q(function(resolve, reject) {
+							//check for mixed content
 							if (modelVal.match(/^http:\/\//)) {
 								errorSvc.notify('Link Embed is disabled because ' + modelVal +' is not HTTPS');
 								resolve();
 							}
-
+							//check valid URLS (not youtube videos) for x-frame-options
 							if (!youtubeSvc.isYoutubeUrl(modelVal) && ittUtils.isValidURL(modelVal)) {
 								var itemUrl = modelVal;
 								dataSvc.checkXFrameOpts(itemUrl)
@@ -38,6 +57,7 @@
 										resolve(modelVal);
 									});
 							} else {
+								//validate links to youtube videos
 								if (ngModel.$isEmpty(modelVal) || ittUtils.isValidURL(modelVal)) {
 									scope.item.noEmbed = false;
 									scope.item.tipText = undefined;
