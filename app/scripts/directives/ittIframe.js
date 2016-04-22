@@ -119,8 +119,6 @@
 
 
 		function validateFrameUrl(url) {
-			console.log('iframe validate', url);
-			_ctrl.src = url;
 			if (youtubeSvc.isYoutubeUrl(url)) {
 				_ctrl.isYoutube = true;
 				_ctrl.isLoading = false;
