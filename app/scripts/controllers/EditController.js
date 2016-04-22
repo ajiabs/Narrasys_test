@@ -3,51 +3,6 @@
 angular.module('com.inthetelling.story')
 	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, $location, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc, errorSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
-		//this function is invoked on a blur event in sxs-link.html or producer-link.html
-		//it was originally set up to work on the $scope.item
-
-		//A user goes to add a link via the UI, they click the 'add' button,
-		//a stub item is created (see EditCtrl#addEvent, generateEmptyItem())
-		//generateEmptyItem() calls modelSvc#cache -> which calls modelSvc#deriveEvent -> which
-		//sets the ephemeral properties on the stub item (noEmbed, mixedContent). <-- with default values
-
-		//When the user goes to input a URL in the "URL" field in the UI
-		//EditCtrl#validateItemUrl is invoked (on blur), and is passed the entire ITEM object (not just the URL)
-		//we want the entire item because, we have to update properties on this item, based upon
-		//the outcome of validation; i.e. we need to set the noEmbed or mixedContent props
-		//at this point, we send the tempItem to modelSvc#deriveEvent to set the ephemeral props. <-- with actual values
-		//after validation, we merge the validated item back to the angular $scope
-		//which kicks off the $watch in ittItemEditor
-		$scope.validateItemUrl = function (item) {
-
-			//copy to dereference object under $watch
-			var tmpItem = angular.copy(item);
-
-			if (tmpItem.url === undefined) {
-				return;
-			}
-			// handle missing protocol
-			if (tmpItem.url.length > 0 && !(tmpItem.url.match(/^(\/\/|http|mailto)/))) {
-				tmpItem.url = '//' + tmpItem.url;
-			}
-
-			// convert youtube links to embed format
-			if (youtubeSvc.extractYoutubeId(tmpItem.url)) {
-				tmpItem.url = youtubeSvc.embeddableYoutubeUrl(tmpItem.url, true);
-				tmpItem.isYoutube = true;
-			}
-
-			// add param to episode links if necessary
-			if (tmpItem.url.match(/inthetelling.com\/#/) && tmpItem.url.indexOf('?') === -1) {
-				tmpItem.url = tmpItem.url + "?embed=1";
-			}
-			//derive event to set all the properties that are not persisted in the database.
-			tmpItem = modelSvc.deriveEvent(tmpItem);
-
-			if (tmpItem.mixedContent === true) {
-				errorSvc.notify(tmpItem.tipText);
-			}
-		};
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
 		// Poor encapsulation of the upload controls. Sorry about that.
