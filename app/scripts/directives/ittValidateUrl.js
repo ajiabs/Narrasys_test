@@ -16,9 +16,17 @@
 				item: '='
 			},
 			link: function link(scope, elm, attrs, ngModel) {
+
 				function allowSchemelessUrls() {
 
-					ngModel.$asyncValidators.url = function(modelVal) {
+					ngModel.$asyncValidators.url = function(modelVal, viewVal) {
+
+						if ( modelVal.match(/^http:\/\//)) {
+							console.log('rejected!!');
+							errorSvc.notify('Link Embed is disabled because ' + modelVal +' is not HTTPS');
+							return $q(function(resolve) {resolve();});
+						}
+
 						if (!youtubeSvc.isYoutubeUrl(modelVal) && ittUtils.isValidURL(modelVal)) {
 							var itemUrl = modelVal;
 							return dataSvc.checkXFrameOpts(itemUrl)
@@ -35,10 +43,12 @@
 						} else {
 							return $q(function(resolve, reject) {
 								if (ngModel.$isEmpty(modelVal) || ittUtils.isValidURL(modelVal)) {
+									console.log("we must be here!!", modelVal);
 									scope.item.noEmbed = false;
 									scope.item.tipText = undefined;
 									resolve(modelVal);
 								} else {
+									console.log('hmm', modelVal);
 									reject(modelVal);
 								}
 							});

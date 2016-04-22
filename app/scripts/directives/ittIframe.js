@@ -108,7 +108,7 @@
 
 	}
 
-	function ittIframeCtrl($scope, youtubeSvc, appState) {
+	function ittIframeCtrl($scope, ittUtils, youtubeSvc, appState) {
 		// moved this all back out of the controller to avoid leaking $scope.sandbox across directives
 		var _ctrl = this; //jshint ignore:line
 		var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
@@ -117,10 +117,25 @@
 		_ctrl.isLoading = true;
 		_ctrl.isTouchDevice = appState.isTouchDevice;
 
-		if (youtubeSvc.extractYoutubeId(_ctrl.src)) {
-			_ctrl.isYoutube = true;
-			_ctrl.isLoading = false;
+
+		function validateFrameUrl(url) {
+			console.log('iframe validate', url);
+			_ctrl.src = url;
+			if (youtubeSvc.isYoutubeUrl(url)) {
+				_ctrl.isYoutube = true;
+				_ctrl.isLoading = false;
+				return true;
+			} else if (ittUtils.isValidURL(url)) {
+				_ctrl.isLoading = false;
+				_ctrl.isYoutube = false;
+				return true;
+			} else {
+				_ctrl.isLoading = true;
+				return false;
+			}
+
 		}
+
 		//set scrolling to no if we're on an ipad
 		//and we're attempting to iframe our own player
 		//this stops the player from expanding the iframe its contained in.
@@ -129,7 +144,7 @@
 		}
 
 		_ctrl.watcher = $scope.$watchGroup([function() {return _ctrl.src;}, function() {return _ctrl.contenttype;}], function () {
-			if (!_ctrl.src) {
+			if (!_ctrl.src || !validateFrameUrl(_ctrl.src)) {
 				return;
 			}
 
@@ -149,6 +164,10 @@
 				//give ourselves more permission
 				if (_ctrl.src.match(/inthetelling.com\/#/)) {
 					_ctrl.sandbox += _popupsTopWindow;
+				}
+
+				if (_ctrl.src.match(/inthetelling.com\/#/) && _ctrl.src.indexOf('?') === -1) {
+					_ctrl.src += '?embed=1';
 				}
 
 				// Looks like we have some episodes where production used Links item types to point to asset uploads,

@@ -16,7 +16,6 @@
 				   item="item"
 				   name="itemUrl"
 				   ng-model="item.url"
-				   ng-change="validateItemUrl(item)"
 				   ng-model-options="{updateOn: 'blur'}">
 			<h4 ng-if="urlForm.itemUrl.$invalid && urlForm.itemUrl.$touched">not a valid URL!!!</h4>
 		</form>
