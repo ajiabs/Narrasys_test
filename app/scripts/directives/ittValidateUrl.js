@@ -40,6 +40,7 @@
 							//check for mixed content
 							if (modelVal.match(/^http:\/\//)) {
 								errorSvc.notify('Link Embed is disabled because ' + modelVal +' is not HTTPS');
+								ngModel.$setDirty();
 								resolve();
 							}
 							//check valid URLS (not youtube videos) for x-frame-options
@@ -54,6 +55,7 @@
 											scope.item.showInlineDetail = false;
 											errorSvc.notify(itemUrl + xFrameOptsNote);
 										}
+										ngModel.$setDirty();
 										resolve(modelVal);
 									});
 							} else {
@@ -61,8 +63,10 @@
 								if (ngModel.$isEmpty(modelVal) || ittUtils.isValidURL(modelVal)) {
 									scope.item.noEmbed = false;
 									scope.item.tipText = undefined;
+									ngModel.$setDirty();
 									resolve(modelVal);
 								} else {
+									ngModel.$setDirty();
 									reject(modelVal);
 								}
 							}
@@ -70,7 +74,7 @@
 					};
 				}
 
-				if (ngModel && attrs.type === 'url') {
+				if (ngModel && !ngModel.$pristine &&attrs.type === 'url') {
 					allowSchemelessUrls();
 				}
 			}
