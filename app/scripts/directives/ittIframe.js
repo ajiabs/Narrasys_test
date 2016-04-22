@@ -164,6 +164,7 @@
 					_ctrl.sandbox += _popupsTopWindow;
 				}
 
+				//for certain browsers, see: TS-757 and TS-773
 				if (_ctrl.src.match(/inthetelling.com\/#/) && _ctrl.src.indexOf('?') === -1) {
 					_ctrl.src += '?embed=1';
 				}
