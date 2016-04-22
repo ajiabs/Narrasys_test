@@ -47,29 +47,6 @@ angular.module('com.inthetelling.story')
 			if (tmpItem.mixedContent === true) {
 				errorSvc.notify(tmpItem.tipText);
 			}
-
-			//only check for x-frame-options if its a valid URL and we're not using HTTP urls
-			//this fn is called on blur so its very likely we can get bad data.
-			if (!(tmpItem.url === 'https://' || tmpItem.url === '') && !tmpItem.mixedContent && !tmpItem.isYoutube) {
-				console.warn('checking for xframe opts', tmpItem);
-				dataSvc.checkXFrameOpts(tmpItem.url)
-					.then(function(noEmbed) {
-						tmpItem.noEmbed = noEmbed;
-						if (noEmbed) {
-							var xFrameOptsNote = ' does not allow embedding, so this link will open in a new tab';
-							tmpItem.tipText = 'Link embed is disabled because ' + tmpItem.url + ' does not allow iframing';
-							tmpItem.showInlineDetail = false;
-							errorSvc.notify(tmpItem.url +  xFrameOptsNote);
-						}
-						angular.extend($scope.item, tmpItem);
-					}).catch(function(e) {
-					console.log('Check X-Frame-Opts e ', e);
-				});
-			} else {
-				//do this once and last, either in the promise resolve above
-				//or here if we didn't check for x-frame-opts
-				angular.extend($scope.item, tmpItem);
-			}
 		};
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
