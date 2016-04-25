@@ -8,13 +8,13 @@
 	</div>
 	<div class="input">
 		<form name="urlForm">
-		<input type="url"
+			<h4 ng-if="urlForm.itemUrl.$invalid && urlForm.itemUrl.$dirty">{{urlForm.itemUrl.$viewValue}} is not valid URL!</h4>
+			<input type="text"
 			   itt-validate-url
 			   item="item"
 			   name="itemUrl"
-			   ng-model="item.url"
-			   ng-model-options="{updateOn: 'blur'}">
-		<h4 ng-if="urlForm.itemUrl.$invalid && urlForm.itemUrl.$touched">not a valid URL!!!</h4>
+			   ng-model-options="{ updateOn: 'default blur', debounce: { default: 1000, blur: 0 } }"
+			   ng-model="item.url"/>
 		</form>
 	</div>
 </div>

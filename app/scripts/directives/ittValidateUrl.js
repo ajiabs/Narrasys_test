@@ -35,17 +35,18 @@
 			},
 			link: function link(scope, elm, attrs, ngModel) {
 				function allowSchemelessUrls() {
-					ngModel.$asyncValidators.url = function(modelVal) {
+					ngModel.$asyncValidators.url = function(modelVal, viewVal) {
 						return $q(function(resolve, reject) {
 							//check for mixed content
-							if (modelVal.match(/^http:\/\//)) {
-								errorSvc.notify('Link Embed is disabled because ' + modelVal +' is not HTTPS');
-								ngModel.$setDirty();
-								resolve();
+							console.log('begin validation!', viewVal);
+							if (viewVal.match(/^http:\/\//)) {
+								errorSvc.notify('Link Embed is disabled because ' + viewVal +' is not HTTPS');
+								console.log("resolving mixed content!", viewVal);
+								return resolve(viewVal);
 							}
 							//check valid URLS (not youtube videos) for x-frame-options
-							if (!youtubeSvc.isYoutubeUrl(modelVal) && ittUtils.isValidURL(modelVal)) {
-								var itemUrl = modelVal;
+							if (!youtubeSvc.isYoutubeUrl(viewVal) && ittUtils.isValidURL(viewVal)) {
+								var itemUrl = viewVal;
 								dataSvc.checkXFrameOpts(itemUrl)
 									.then(function(noEmbed) {
 										var xFrameOptsNote = ' does not allow embedding, so this link will open in a new tab';
@@ -55,26 +56,26 @@
 											scope.item.showInlineDetail = false;
 											errorSvc.notify(itemUrl + xFrameOptsNote);
 										}
-										ngModel.$setDirty();
-										resolve(modelVal);
+										return resolve(viewVal);
 									});
 							} else {
 								//validate links to youtube videos
-								if (ngModel.$isEmpty(modelVal) || ittUtils.isValidURL(modelVal)) {
+								if (ngModel.$isEmpty(viewVal) || ittUtils.isValidURL(viewVal)) {
 									scope.item.noEmbed = false;
 									scope.item.tipText = undefined;
-									ngModel.$setDirty();
-									resolve(modelVal);
+									console.log('resolving valid!', viewVal);
+									return resolve(viewVal);
 								} else {
-									ngModel.$setDirty();
-									reject(modelVal);
+									console.log('rejecting invalid!', viewVal);
+									return reject(viewVal);
 								}
 							}
 						});
 					};
 				}
 
-				if (ngModel && !ngModel.$pristine &&attrs.type === 'url') {
+				if (ngModel) {
+					console.log('tigger validation', ngModel);
 					allowSchemelessUrls();
 				}
 			}
