@@ -300,6 +300,10 @@ input[readonly] {
 	position: absolute;
 	z-index: 99;
 }
+
+.authoringForm .input input.ng-invalid {
+	border-color: red;
+}
 /* ------ */
 
 .editButtonPanel,

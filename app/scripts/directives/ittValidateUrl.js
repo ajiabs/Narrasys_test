@@ -67,6 +67,9 @@
 									return resolve(viewVal);
 								} else {
 									console.log('rejecting invalid!', viewVal);
+									if (viewVal !== 'https://') {
+										errorSvc.notify(viewVal + ' is not a valid URL.');
+									}
 									return reject(viewVal);
 								}
 							}
