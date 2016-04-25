@@ -11,12 +11,13 @@
 	</div>
 	<div class="input">
 		<form name="urlForm">
-			<h4 ng-if="urlForm.itemUrl.$invalid && urlForm.itemUrl.$dirty">{{urlForm.itemUrl.$viewValue}} is not valid URL!</h4>
+			<h4 ng-if="urlForm.itemUrl.$invalid && urlForm.itemUrl.$dirty">{{urlForm.itemUrl.$viewValue}} is not valid
+				URL!</h4>
 			<input type="text"
 				   itt-validate-url
 				   item="item"
 				   name="itemUrl"
-				   ng-model-options="{ updateOn: 'default blur', debounce: { default: 1000, blur: 0 } }"
+				   ng-model-options="{ updateOn: 'blur' }"
 				   ng-model="item.url"/>
 		</form>
 	</div>
