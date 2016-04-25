@@ -301,8 +301,16 @@ input[readonly] {
 	z-index: 99;
 }
 
-.authoringForm .input input.ng-invalid {
+.authoringForm  .input .doValidate input.ng-pending {
+	border-color: yellow;
+}
+
+.authoringForm  .input .doValidate input.ng-invalid {
 	border-color: red;
+}
+
+.authoringForm .input .doValidate input.ng-valid {
+	border-color: green;
 }
 /* ------ */
 
