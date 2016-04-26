@@ -77,7 +77,6 @@
 									scope.item.tipText = 'Link embed is disabled because ' + viewVal + ' does not allow iframing';
 									scope.item.showInlineDetail = false;
 									errorSvc.notify(viewVal + xFrameOptsNote);
-									ngModel.$setValidity('mixedContent', true);
 								}
 							});
 					};
