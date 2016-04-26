@@ -3,7 +3,7 @@
  * Created by githop on 4/21/16.
  */
 
-(function() {
+(function () {
 	'use strict';
 	/**
 	 * @ngdoc directive
@@ -28,58 +28,59 @@
 		.directive('ittValidateUrl', ittValidateUrl);
 
 	function ittValidateUrl($q, errorSvc, youtubeSvc, ittUtils, dataSvc) {
-	    return {
+		return {
 			require: '?ngModel',
 			scope: {
 				item: '='
 			},
 			link: function link(scope, elm, attrs, ngModel) {
-				function allowSchemelessUrls() {
-					ngModel.$asyncValidators.url = function(modelVal, viewVal) {
-						return $q(function(resolve, reject) {
-							//check for mixed content
-							console.log('begin validation!', viewVal);
-							if (viewVal.match(/^http:\/\//)) {
-								errorSvc.notify('Link Embed is disabled because ' + viewVal +' is not HTTPS');
-								console.log("resolving mixed content!", viewVal);
-								return resolve(viewVal);
-							}
-							//check valid URLS (not youtube videos) for x-frame-options
-							if (!youtubeSvc.isYoutubeUrl(viewVal) && ittUtils.isValidURL(viewVal)) {
-								var itemUrl = viewVal;
-								dataSvc.checkXFrameOpts(itemUrl)
-									.then(function(noEmbed) {
-										var xFrameOptsNote = ' does not allow embedding, so this link will open in a new tab';
-										scope.item.noEmbed = noEmbed;
-										if (noEmbed) {
-											scope.item.tipText = 'Link embed is disabled because ' + itemUrl + ' does not allow iframing';
-											scope.item.showInlineDetail = false;
-											errorSvc.notify(itemUrl + xFrameOptsNote);
-										}
-										return resolve(viewVal);
-									});
-							} else {
-								//validate links to youtube videos
-								if (ngModel.$isEmpty(viewVal) || ittUtils.isValidURL(viewVal)) {
-									scope.item.noEmbed = false;
-									scope.item.tipText = undefined;
-									console.log('resolving valid!', viewVal);
-									return resolve(viewVal);
-								} else {
-									console.log('rejecting invalid!', viewVal);
-									if (viewVal !== 'https://') {
-										errorSvc.notify(viewVal + ' is not a valid URL.');
-									}
-									return reject(viewVal);
-								}
-							}
-						});
-					};
-				}
 
 				if (ngModel) {
 					console.log('tigger validation', ngModel);
-					allowSchemelessUrls();
+					validateUrl();
+				}
+
+				function validateUrl() {
+					//always consider mixedContent url 'valid' but notify user
+					ngModel.$validators.mixedContent = function (modelVal, viewVal) {
+						if (viewVal.match(/^http:\/\//)) {
+							errorSvc.notify('Link Embed is disabled because ' + viewVal + ' is not HTTPS');
+							console.log("resolving mixed content!", viewVal);
+						}
+						return true;
+					};
+
+					ngModel.$validators.url = function (modelVal, viewVal) {
+						if (ngModel.$isEmpty(viewVal) || ittUtils.isValidURL(viewVal)) {
+							scope.item.noEmbed = false;
+							scope.item.tipText = undefined;
+							return true;
+						} else {
+							if (viewVal !== 'https://') {
+								errorSvc.notify(viewVal + ' is not a valid URL.');
+							}
+							return false;
+						}
+					};
+
+					ngModel.$asyncValidators.xFrameOpts = function (modelVal, viewVal) {
+						//bail out if empty or link to youtube
+						if (ngModel.$isEmpty(viewVal) || youtubeSvc.isYoutubeUrl(viewVal)) {
+							return $q(function (resolve) { resolve(); });
+						}
+
+						return dataSvc.checkXFrameOpts(viewVal)
+							.then(function (noEmbed) {
+								var xFrameOptsNote = ' does not allow embedding, so this link will open in a new tab';
+								scope.item.noEmbed = noEmbed;
+								if (noEmbed) {
+									scope.item.tipText = 'Link embed is disabled because ' + viewVal + ' does not allow iframing';
+									scope.item.showInlineDetail = false;
+									errorSvc.notify(viewVal + xFrameOptsNote);
+									ngModel.$setValidity('mixedContent', true);
+								}
+							});
+					};
 				}
 			}
 		};
