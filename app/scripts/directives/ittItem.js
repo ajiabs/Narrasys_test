@@ -51,7 +51,7 @@ angular.module('com.inthetelling.story')
 							scope.item.showInlineDetail = true;
 						} else {
 							// otherwise pop a modal:
-							appState.itemDetail = scope.item;
+							appState.itemDetail = {item: scope.item, animate: true};
 						}
 					}
 				};
