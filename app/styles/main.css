@@ -17,8 +17,42 @@
 	overflow: auto;
 }
 
+.error-red {
+	color: #c00;
+}
+
+.info-blue {
+	color: #2d6099;
+}
+
 .errors .notification {
-	border-color: #EE0;
+	border-color: #2d6099;
+}
+
+.tooltip-static {
+	position: relative;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	/*offset tooltip next to template drop down*/
+	right: 77px;
+	top: 5px;
+}
+
+.tooltip-static .tooltip-text {
+	visibility: hidden;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px;
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+}
+
+.tooltip-static:hover .tooltip-text {
+	visibility: visible;
 }
 
 * {

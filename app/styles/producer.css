@@ -300,6 +300,7 @@ input[readonly] {
 	position: absolute;
 	z-index: 99;
 }
+
 /* ------ */
 
 .editButtonPanel,
@@ -409,6 +410,8 @@ input[readonly] {
 .addButtonPanel .button:hover {
 	color: #DE6625;
 }
+
+
 
 .button-comment:before,
 .eventIcon.icon-comment:before {
@@ -582,6 +585,10 @@ input[readonly] {
 	text-align: right;
 	padding-right: 24px;
 	font-size: 0.86em;
+}
+
+.ittTabFoot button:disabled {
+	color: #B7B7B7;
 }
 
 .invalid {

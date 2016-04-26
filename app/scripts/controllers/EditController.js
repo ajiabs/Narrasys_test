@@ -1,33 +1,8 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
-
-		$scope.validateItemUrl = function () {
-			$timeout(function () { // ng-blur triggers before 'ng-model-options=update-on:blur'... wait for the model to update
-				console.log("Checking Item link: ", $scope.item.url);
-
-				/* TODO have server side check for x-frame-options header, and for if the link exists at all (See TS-772) */
-
-				// handle missing protocol
-				if ($scope.item.url.length > 0 && !($scope.item.url.match(/^(\/\/|http|mailto)/))) {
-					$scope.item.url = "//" + $scope.item.url;
-				}
-
-				// No need to check http vs https, modelSvc sets item.noEmbed for us.
-
-				// convert youtube links to embed format
-				if (youtubeSvc.extractYoutubeId($scope.item.url)) {
-					$scope.item.url = youtubeSvc.embeddableYoutubeUrl($scope.item.url, true);
-				}
-
-				// add param to episode links if necessary
-				if ($scope.item.url.match(/inthetelling.com\/#/) && $scope.item.url.indexOf('?') === -1) {
-					$scope.item.url = $scope.item.url + "?embed=1";
-				}
-			});
-		};
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
 		// Poor encapsulation of the upload controls. Sorry about that.
@@ -74,6 +49,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.addEvent = function (producerItemType) {
+			console.warn('add event called!');
 			if (producerItemType === 'scene') {
 				if (isOnExistingSceneStart(appState.time)) {
 					return $scope.editCurrentScene();
@@ -218,6 +194,9 @@ angular.module('com.inthetelling.story')
 						});
 				});
 			}
+
+			console.log("saving this thing: ", appState.editEvent);
+
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
 					data.cur_episode_id = appState.episodeId;
@@ -663,6 +642,10 @@ angular.module('com.inthetelling.story')
 				stub.layouts = ["windowFg"];
 				stub.end_time = appState.time;
 				stub.stop = true;
+				//set noEmbed true here in order to prevent
+				//sites that cannot be iframed from being eagerly loaded
+				//and causing mixed-content browser errors.
+				stub.noEmbed = true;
 
 				// Override default template selection with a special SXS one:
 				stub.templateUrl = 'templates/item/sxs-' + type + '.html';
