@@ -411,6 +411,8 @@ input[readonly] {
 	color: #DE6625;
 }
 
+
+
 .button-comment:before,
 .eventIcon.icon-comment:before {
 	content: "\e600";
@@ -583,6 +585,10 @@ input[readonly] {
 	text-align: right;
 	padding-right: 24px;
 	font-size: 0.86em;
+}
+
+.ittTabFoot button:disabled {
+	color: #B7B7B7;
 }
 
 .invalid {

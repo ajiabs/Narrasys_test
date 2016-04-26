@@ -37,6 +37,7 @@
 
 				if (ngModel) {
 					console.log('tigger validation', ngModel);
+					scope.item.urlForm = ngModel;
 					validateUrl();
 				}
 
@@ -51,7 +52,12 @@
 					};
 
 					ngModel.$validators.url = function (modelVal, viewVal) {
-						if (ngModel.$isEmpty(viewVal) || ittUtils.isValidURL(viewVal)) {
+						if (ngModel.$isEmpty(viewVal)) {
+							errorSvc.notify('URL is a required field.');
+							return false;
+						}
+
+						if (ittUtils.isValidURL(viewVal)) {
 							scope.item.noEmbed = false;
 							scope.item.tipText = undefined;
 							return true;

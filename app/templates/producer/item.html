@@ -279,7 +279,7 @@
 			item._id != 'internal:editing' &&
 			!(item._type == 'Scene' && item.start_time <= 0.01)
 		" ng-click="deleteEvent(item._id)">Delete</button>
-		<button ng-click="saveEvent()" ng-disabled="blockDoubleClicks">Save</button>
+		<button ng-click="saveEvent()" ng-disabled="blockDoubleClicks || item.urlForm.$invalid">Save</button>
 	</div>
 
 </div>
