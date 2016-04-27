@@ -50,8 +50,8 @@ angular.module('com.inthetelling.story')
 			//check protcol for mixed content??
 			var currentOrigin;
 			var parseInputUrl;
-
-			return SANE_GET('/x_frame_options_proxy?url=' + url)
+			var encodedUrl = encodeURIComponent(url);
+			return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
 			.then(function(result) {
 				console.log('x-frame-opts: ', result.x_frame_options);
 				return _canEmbed(result.x_frame_options);
