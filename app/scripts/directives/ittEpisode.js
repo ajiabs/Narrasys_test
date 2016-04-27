@@ -69,7 +69,7 @@ angular.module('com.inthetelling.story')
 					scope.episode.master_asset_id = asset._id;
 					scope.masterAsset = asset;
 					scope.episode.masterAsset = asset;
-					scope.isDemo = false;
+					scope.newVideo = true;
 					modelSvc.deriveEpisode(scope.episode);
 				};
 			}

@@ -10,6 +10,16 @@
 			<h4>Upload main video drag target</h4>
 
 			<div itt-asset-uploader callback="attachMasterVideoCb"></div>
+			<!--<span ng-include="'templates/episode/components/watchmode.html'"></span>-->
+
+			<div ng-if="newVideo">
+				<h1>new video</h1>
+				scenes: <pre>{{episode.scenes | json}}</pre>
+				<span ng-repeat="scene in episode.scenes | isCurrent"
+					  ng-include="'templates/episode/components/discovermode.html'"></span>
+				<span ng-include="'templates/episode/components/video.html'"></span>
+			</div>
+
 		</div>
 
 	</div>
