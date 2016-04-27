@@ -3,7 +3,7 @@
 angular.module('com.inthetelling.story')
 	.directive('ittAssetUploader', ittAssetUploader);
 
-function ittAssetUploader($timeout, $routeParams, $q, awsSvc, appState, modelSvc) {
+function ittAssetUploader($timeout, $routeParams, $q, ittUtils, awsSvc, appState, modelSvc) {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -74,21 +74,22 @@ function ittAssetUploader($timeout, $routeParams, $q, awsSvc, appState, modelSvc
 						};
 						_reader.readAsDataURL(files[0]);
 					}).then(function(url) {
-
-
-
+						
 						stub = {
+							'_id': ittUtils.generateUUID(),
+							'type': 'Asset::Video',
+							'_type': 'Asset::Video',
 							'user_id': appState.user._id,
-							'_id': '0328v9vijadnfvzlvk934',
 							'url': url,
-							'type': 'Asset::Image',
-							'container_id': 'anything1u3',
-							'description': {},
+							'alternate_urls':[url],
 							'name':{en: files[0].name},
 							'content_type': files[0].type,
 							'size': files[0].size,
-							'original_filename': files[0].name
+							'original_filename': files[0].name,
+							'duration': 37,
+							'description': {}
 						};
+						console.log('videoStub', stub);
 						modelSvc.cache("asset", stub);
 						scope.callback(stub._id);
 					});

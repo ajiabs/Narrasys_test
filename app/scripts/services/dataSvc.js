@@ -50,8 +50,8 @@ angular.module('com.inthetelling.story')
 			//check protcol for mixed content??
 			var currentOrigin;
 			var parseInputUrl;
-
-			return SANE_GET('/x_frame_options_proxy?url=' + url)
+			var encodedUrl = encodeURIComponent(url);
+			return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
 			.then(function(result) {
 				console.log('x-frame-opts: ', result.x_frame_options);
 				return _canEmbed(result.x_frame_options);
@@ -829,15 +829,24 @@ angular.module('com.inthetelling.story')
 			episode.status = 'Unpublished';
 
 			var defer = $q.defer();
-			// console.log("Attempting to create ", episode);
-			POST("/v3/episodes", episode)
-				.then(function (data) {
-					// console.log("Created episode: ", data);
-					// muck around in modelSvc.containers again:
-					modelSvc.containers[data.container_id].episodes = [data._id];
-					modelSvc.containers[data.container_id].status = data.status;
-					defer.resolve(data);
-				});
+			if ($routeParams.demo) {
+				episode.status = 'Published';
+				episode._id =  '1304909dskfjlk2340';
+				episode.container_id = '908562q303u5lkjafkjasf';
+				modelSvc.containers[episode.container_id].episodes = [episode._id];
+				modelSvc.containers[episode.container_id].status = episode.status;
+				defer.resovle(episode);
+			} else {
+				// console.log("Attempting to create ", episode);
+				POST("/v3/episodes", episode)
+					.then(function (data) {
+						// console.log("Created episode: ", data);
+						// muck around in modelSvc.containers again:
+						modelSvc.containers[data.container_id].episodes = [data._id];
+						modelSvc.containers[data.container_id].status = data.status;
+						defer.resolve(data);
+					});
+			}
 			return defer.promise;
 		};
 

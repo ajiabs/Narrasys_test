@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, $location, config, appState, youtubeSvc) {
+	.factory('modelSvc', function ($interval, $filter, $location, $routeParams, config, appState, youtubeSvc) {
 
 		var svc = {};
 
@@ -998,6 +998,9 @@ angular.module('com.inthetelling.story')
 						if (youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i])) {
 							videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
 						}
+					} else if ($routeParams.demo) {
+						videoObject.mp4.push(videoAsset.url);
+						//console.log('videoObject afer push', videoObject);
 					} else {
 						videoObject[videoAsset.alternate_urls[i].match(extensionMatch)[1]].push(videoAsset.alternate_urls[i]);
 					}
@@ -1070,7 +1073,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			videoAsset.urls = videoObject;
-
+			console.log("videoAsset", videoAsset);
 			// We need to know if the video has been transcoded or not in the template,
 			// so let's centralize the logic for that here
 			videoAsset.isTranscoded = function () {
@@ -1083,6 +1086,9 @@ angular.module('com.inthetelling.story')
 		// TODO get rid of this; really wasteful to be checking this constantly, it's only useful
 		//  right after a master asset upload  (put it in ittVideo pollInterval() instead)
 		svc.isTranscoded = function (video) {
+			if ($routeParams.demo) {
+				return true;
+			}
 			if (video.urls && video.urls.youtube && video.urls.youtube.length) {
 				return true;
 			}

@@ -11,7 +11,7 @@
 // babysitters and stalls are disabled on phone therefore.
 
 angular.module('com.inthetelling.story')
-	.controller('VideoController', function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
+	.controller('VideoController', function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, $routeParams, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
 		//exported functions / props
 		angular.extend($scope, {
 			initVideo: initVideo,
@@ -48,7 +48,9 @@ angular.module('com.inthetelling.story')
 			// console.log("videoController.initVideo", el);
 
 			// Adjust bitrate.  For now still depends on there being only two versions of the mp4 and webm:
-			$scope.video.curStream = (appState.isTouchDevice ? 0 : 1);
+			$scope.video.curStream = ( (appState.isTouchDevice || $routeParams.demo) ? 0 : 1);
+
+
 
 			if ($scope.video.urls.youtube && $scope.video.urls.youtube.length) {
 				$scope.videoType = 'youtube';
@@ -58,6 +60,8 @@ angular.module('com.inthetelling.story')
 				$scope.videoType = "video"; // as in html5 <video> tagx
 				appState.videoType = $scope.videoType;
 				$scope.videoNode = el.find('video')[0];
+				//console.log('videoUrl', $scope.video.url);
+				$scope.videoNode.setAttribute('src', $scope.video.url);
 				initHTML5Video();
 			}
 		}
@@ -136,7 +140,7 @@ angular.module('com.inthetelling.story')
 
 
 		function initHTML5Video() {
-			// console.log("initHTML5Video");
+			 console.log("initHTML5Video");
 			// $scope.videoNode.addEventListener("loadedmetadata", function () {
 			// 	console.log("video metadata has loaded");
 			// }, false);
