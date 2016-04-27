@@ -3,7 +3,7 @@
 angular.module('com.inthetelling.story')
 	.directive('ittAssetUploader', ittAssetUploader);
 
-function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
+function ittAssetUploader($timeout, $routeParams, $q, awsSvc, appState, modelSvc) {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -57,6 +57,50 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 			scope.multiple = (attrs.multiple !== undefined);
 
 			scope.handleUploads = function (files) {
+
+
+				function readFile(files) {
+					var stub;
+					var _reader = new FileReader();
+					//var _img = new Image();
+					return $q(function(resolve, reject) {
+						_reader.onloadend = function() {
+							console.log('onloadend fileReader!!');
+							resolve(_reader.result);
+						};
+						_reader.onerror = function() {
+							console.log('FIleReader Err', _reader.error);
+							reject(_reader.error);
+						};
+						_reader.readAsDataURL(files[0]);
+					}).then(function(url) {
+
+
+
+						stub = {
+							'user_id': appState.user._id,
+							'_id': '0328v9vijadnfvzlvk934',
+							'url': url,
+							'type': 'Asset::Image',
+							'container_id': 'anything1u3',
+							'description': {},
+							'name':{en: files[0].name},
+							'content_type': files[0].type,
+							'size': files[0].size,
+							'original_filename': files[0].name
+						};
+						modelSvc.cache("asset", stub);
+						scope.callback(stub._id);
+					});
+				}
+
+
+				if ($routeParams.demo) {
+					readFile(files);
+					scope.fileinput.value = '';
+					scope.paused = false;
+					return;
+				}
 
 				if (!scope.multiple) {
 					if (files.length > 1 || scope.uploads.length > 0) {

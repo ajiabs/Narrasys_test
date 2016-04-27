@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, $routeParams, appState, dataSvc, modelSvc, timelineSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
@@ -196,6 +196,35 @@ angular.module('com.inthetelling.story')
 			}
 
 			console.log("saving this thing: ", appState.editEvent);
+
+			if ($routeParams.demo) {
+				var data = toSave;
+				data.cur_episode_id = appState.episodeId;
+				if (appState.editEvent._id === 'internal:editing') {
+					// update the new item with its real ID (and remove the temp version)
+					timelineSvc.removeEvent("internal:editing");
+					delete(modelSvc.events["internal:editing"]);
+					modelSvc.cache("event", dataSvc.resolveIDs(data));
+					modelSvc.resolveEpisodeEvents(appState.episodeId);
+					timelineSvc.injectEvents([modelSvc.events[data._id]]);
+					saveAdjustedEvents(data, "create");
+				} else {
+					modelSvc.resolveEpisodeEvents(appState.episodeId);
+					timelineSvc.updateEventTimes(modelSvc.events[data._id]);
+					saveAdjustedEvents(data, "update"); //TODO: send in the original (pre-move) event as last param
+				}
+
+				// Delete attached asset(s)  (this should only occur for sxs items, for now)
+				// yes we could combine these into one call I suppose but there will almost always only be one
+				// unless the user was very indecisive and uploaded/detached a bunch of assets to the same event.
+				// It was probably already a premature optimization to use an array here in the first place
+				angular.forEach(toSave.removedAssets, function (id) {
+					//dataSvc.deleteAsset(id);
+				});
+				appState.editEvent = false;
+				$rootScope.$emit('searchReindexNeeded'); // HACK
+				return;
+			}
 
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
