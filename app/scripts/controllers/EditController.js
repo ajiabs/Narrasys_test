@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, $routeParams, appState, dataSvc, modelSvc, timelineSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, demoService, appState, dataSvc, modelSvc, timelineSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
@@ -150,22 +150,22 @@ angular.module('com.inthetelling.story')
 				var itemsToSave = [];
 				var transcriptItems = getTranscriptItems();
 				switch (operation) {
-				case "create":
-					itemsToSave = filterToBookends(transcriptItems, item);
-					console.log('adjust for create');
-					break;
-				case "delete":
-					itemsToSave = filterToItemBefore(transcriptItems, item);
-					console.log('adjust for delete');
-					break;
-				case "update":
-					// TODO this should be updating the adjusted events, not delete-and-create.
-					if (original) {
-						saveAdjustedEvents(original, "delete");
-					}
-					saveAdjustedEvents(item, "create");
-					console.log('adjust for update');
-					break;
+					case "create":
+						itemsToSave = filterToBookends(transcriptItems, item);
+						console.log('adjust for create');
+						break;
+					case "delete":
+						itemsToSave = filterToItemBefore(transcriptItems, item);
+						console.log('adjust for delete');
+						break;
+					case "update":
+						// TODO this should be updating the adjusted events, not delete-and-create.
+						if (original) {
+							saveAdjustedEvents(original, "delete");
+						}
+						saveAdjustedEvents(item, "create");
+						console.log('adjust for update');
+						break;
 				}
 				angular.forEach(itemsToSave, function (item) {
 					dataSvc.storeItem(item)
@@ -197,7 +197,7 @@ angular.module('com.inthetelling.story')
 
 			console.log("saving this thing: ", appState.editEvent);
 
-			if ($routeParams.demo) {
+			if (demoService.isDemo()) {
 				var data = toSave;
 				data.cur_episode_id = appState.episodeId;
 				if (appState.editEvent._id === 'internal:editing') {
@@ -618,6 +618,10 @@ angular.module('com.inthetelling.story')
 					"title": {},
 					"description": {}
 				};
+
+				if (demoService.isDemo()) {
+					stub.showInlineDetail = true;
+				}
 			}
 
 			if (type === 'link') {

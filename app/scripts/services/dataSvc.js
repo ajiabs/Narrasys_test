@@ -29,7 +29,7 @@
  */
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $timeout, $rootScope, $location, $routeParams, demoService, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -829,7 +829,7 @@ angular.module('com.inthetelling.story')
 			episode.status = 'Unpublished';
 
 			var defer = $q.defer();
-			if ($routeParams.demo) {
+			if (demoService.isDemo()) {
 				episode.status = 'Published';
 				episode._id =  '1304909dskfjlk2340';
 				episode.container_id = '908562q303u5lkjafkjasf';

@@ -3,5 +3,11 @@
 </a>
 <div class="itemTemplate headerItem">
 	<div class="category"></div>
-	<div class="pullquote" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
+	<div ng-click="notSaved = !notSaved" class="pullquote" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
+	<div ng-init="notSaved = false">
+		<div ng-show="notSaved">
+			<input class="pullquote" ng-model="item.display_annotation" />
+			<button ng-click="notSaved = !notSaved">save</button>
+		</div>
+	</div>
 </div>

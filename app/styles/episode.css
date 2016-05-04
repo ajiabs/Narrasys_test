@@ -829,3 +829,105 @@
       color: white; }
   .narrasys-pro .scene.centerVV-mondrian .title a {
     color: white; }
+
+.side-bar__background {
+  display: flex; }
+  .side-bar__background .side-bar__content {
+    width: 100%;
+    align-self: center; }
+    .side-bar__background .side-bar__content .select-text {
+      margin: 0 auto;
+      padding: 10px;
+      width: 50%;
+      height: 50%;
+      text-align: center;
+      background-color: #de6625;
+      color: white; }
+      .side-bar__background .side-bar__content .select-text h1 {
+        text-transform: uppercase;
+        font-family: 'Gotham Medium'; }
+  .side-bar__background .side-bar {
+    -webkit-transition: all 0.33s cubic-bezier(0, 0, 0.3, 1);
+    width: 25%;
+    height: 100%;
+    box-shadow: inset 0px 0px 10px 0px #4d4d4d;
+    background-color: #f1f1f1; }
+    .side-bar__background .side-bar.ng-hide {
+      opacity: 0;
+      transform: translateX(-102%); }
+    .side-bar__background .side-bar .side-bar__container {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: space-between; }
+      .side-bar__background .side-bar .side-bar__container .layout-opt {
+        margin: 10px auto;
+        width: 125px;
+        height: 125px; }
+        .side-bar__background .side-bar .side-bar__container .layout-opt img {
+          width: 100%; }
+
+.demo {
+  -webkit-transition: all 0.5s ease-in-out; }
+  .demo.ng-hide {
+    height: 0;
+    opacity: 0; }
+  .demo.ng-enter, .demo .ng-leave {
+    max-height: 0;
+    opacity: 0; }
+  .demo .static-items {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px; }
+    .demo .static-items .image {
+      height: 150px; }
+    .demo .static-items .pdf {
+      margin-top: 20px;
+      height: 350px; }
+  .demo .disable-drop {
+    opacity: 0.2; }
+  .demo .video__container {
+    width: 100%; }
+    .demo .video__container .videoStub {
+      margin: 0 auto;
+      margin-top: 8.5em;
+      width: 616px;
+      height: 347px; }
+
+.drop-target {
+  height: 100%;
+  margin: 25px;
+  padding: 5px;
+  -webkit-transition: all linear 0.5s;
+  transition: all linear 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid black; }
+  .drop-target.droppable {
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6) inset;
+    background-color: #4d4d4d; }
+  .drop-target .drop-box {
+    display: flex;
+    width: 98%;
+    height: 98%;
+    border: 3px dashed black;
+    justify-content: center; }
+    .drop-target .drop-box .fa {
+      align-self: center;
+      text-align: center; }
+
+.fa-2 {
+  font-size: 2em !important; }
+
+.fa-3 {
+  font-size: 4em !important; }
+
+.fa-4 {
+  font-size: 7em !important; }
+
+.fa-5 {
+  font-size: 12em !important; }
+
+.fa-6 {
+  font-size: 20em !important; }

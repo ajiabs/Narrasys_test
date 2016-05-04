@@ -1,9 +1,93 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('SceneController', function ($scope, $filter) {
+	.controller('SceneController', function ($scope, $filter, $log, demoService, appState, modelSvc, demoMock) {
 
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
+		$scope.selectLayout = selectLayout;
+		$scope.imageSwap = imageSwap;
+		$scope.pdfSwap = pdfSwap;
+		$scope.pqSwap = pqSwap;
+		$scope.videoSwap = videoSwap;
+
+		$scope.demo = demoService;
+		$scope.$log = $log;
+		$scope.episode = modelSvc.episodes[appState.episodeId];
+
+
+		function _addPqTest() {
+			$scope.mainContentItems = [demoMock.addStubPq()];
+		}
+
+		function selectLayout() {
+			$scope.demo.selectLayout();
+		}
+
+		function imageSwap(fileList) {
+			console.log('img swap wired up!!', fileList);
+			demoMock.imageAsset(fileList).then(function(img) {
+				$scope.altContentItems.push(img);
+				console.log('new img', img);
+				$scope.demo.replaceImage();
+			});
+		}
+
+		function pdfSwap() {
+			$scope.altContentItems.push(demoMock.stubPdf);
+			$scope.demo.replacePdf();
+
+		}
+
+		function pqSwap(e) {
+			//console.log("ev in ctrl", e);
+			_addPqTest();
+			console.log(e);
+			e.currentTarget.remove();
+			$scope.demo.replacePq();
+		}
+
+		function videoSwap(e) {
+			$scope.demo.replaceVideo();
+		}
+
+		$scope.attachMasterVideoCb = function (asset_id) { // master asset only!
+			console.log('replacing master asset!', $scope.episode);
+			var asset = modelSvc.assets[asset_id];
+			console.log('asset', asset);
+			var previousAsset = modelSvc.assets[$scope.episode.master_asset_id];
+			console.log('prev', previousAsset);
+			$scope.showmessage = "New video attached.";
+			//if (previousAsset && (asset.duration < previousAsset.duration)) {
+			//	var orphans = $scope.getItemsAfter($scope.episode.items.concat($scope.episode.scenes), asset.duration);
+			//	if (orphans.length) {
+			//		// TODO i18n
+			//		$scope.showmessage = "Warning: this new video is shorter than the current video and we've detected that some existing content items will be impacted. If you save this edit, these events will have their start and end times adjusted to the new episode end. (If this isn't what you want, choose a different video or hit 'cancel'.)";
+			//	}
+			//}
+
+			$scope.episode._master_asset_was_changed = true;
+			$scope.episode.master_asset_id = asset._id;
+			$scope.masterAsset = asset;
+			$scope.episode.masterAsset = asset;
+			$scope.demo.replaceVideo();
+			modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
+		};
+
+		var isInternal = function (item) {
+			return (item._id && item._id.match(/internal/));
+		};
+
+		$scope.getItemsAfter = function (items, after) {
+			var itemsAfter = [];
+			for (var i = 0, len = items.length; i < len; i++) {
+				if (!isInternal(items[i])) {
+					if (after < items[i].start_time || after < items[i].end_time) {
+						itemsAfter.push(items[i]);
+					}
+				}
+			}
+			return itemsAfter;
+		};
 
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");

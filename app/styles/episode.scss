@@ -1086,3 +1086,139 @@ $h2pullquote: #5B5B5B;
 	}
 }
 
+//demo styles
+
+.side-bar__background {
+	display: flex;
+	.side-bar__content {
+		width: 100%;
+		align-self: center;
+		//border: 4px solid black;
+		//box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+		.select-text {
+			margin: 0 auto;
+			padding: 10px;
+			width: 50%;
+			height: 50%;
+			text-align: center;
+			background-color: $narrasysOrange;
+			color: white;
+			h1 {
+				text-transform: uppercase;
+				font-family: 'Gotham Medium';
+			}
+		}
+
+	}
+
+	.side-bar {
+		-webkit-transition: all 0.33s cubic-bezier(0, 0, 0.3, 1);
+		width: 25%;
+		height: 100%;
+		//border-right: 1px solid $mondrianBorder;
+		//border-bottom: 1px solid $mondrianBorder;
+		box-shadow: inset 0px 0px 10px 0px $mondrianBorder;
+		background-color: #f1f1f1;
+
+		&.ng-hide {
+			opacity: 0;
+			transform: translateX(-102%);
+		}
+
+		.side-bar__container {
+			display: flex;
+			flex-direction: column;
+			flex-wrap: nowrap;
+			justify-content: space-between;
+			.layout-opt {
+				margin: 10px auto;
+				width: 125px;
+				height: 125px;
+				img {
+					width: 100%;
+				}
+			}
+		}
+	}
+}
+
+.demo {
+	-webkit-transition:all 0.5s ease-in-out;
+	&.ng-hide {
+		height: 0;
+		opacity: 0;
+	}
+
+
+	&.ng-enter, .ng-leave {
+		max-height: 0;
+		opacity: 0;
+	}
+
+
+	.static-items {
+		display: flex;
+		flex-direction: column;
+		margin-top: 40px;
+		.image {
+			height: 150px;
+		}
+
+		.pdf {
+			margin-top: 20px;
+			height: 350px;
+		}
+	}
+
+	.disable-drop {
+		opacity: 0.2;
+		//background-color: grey;
+	}
+
+	.video__container {
+		width: 100%;
+		.videoStub {
+			margin: 0 auto;
+			margin-top: 8.5em;
+			width: 616px;
+			height: 347px;
+		}
+	}
+}
+
+.drop-target {
+	//width: 400px;
+	height: 100%;
+	margin: 25px;
+	padding: 5px;
+	-webkit-transition:all linear 0.5s;
+	transition:all linear 0.5s;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 3px solid black;
+	&.droppable {
+		box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6) inset;
+		background-color: $mondrianBorder;
+	}
+	.drop-box {
+		display: flex;
+		width: 98%;
+		height: 98%;
+		border: 3px dashed black;
+		justify-content: center;
+		.fa {
+			align-self: center;
+			text-align: center;
+		}
+	}
+}
+
+
+$sizes: (2, 2em), (3, 4em), (4,7em), (5,12em), (6,20em);
+
+@each $key, $size in $sizes {
+	.fa-#{$key} {
+		font-size: $size !important;
+	}
+}

@@ -1,18 +1,14 @@
 <div class="iframeContainer">
 	<!--temp hide loading spinner until we wire it up correctly-->
-	<itt-loading ng-if="iframeCtrl.isLoading"></itt-loading>
+	<!--<itt-loading ng-if="iframeCtrl.isLoading"></itt-loading>-->
 
 
-	<div ng-if="!iframeCtrl.isLoading">
-		<iframe ng-if="!iframeCtrl.isYoutube"
-				ng-src="{{iframeCtrl.src}}"
-				ng-attr-scrolling="{{iframeCtrl.iOSScroll}}"
-				ng-style="iframeCtrl.styles"
-				ng-attr-sandbox="{{iframeCtrl.sandbox}}"></iframe>
+	<div>
+		<iframe itt-src-linker item="iframeCtrl.item"></iframe>
 
-		<itt-youtube ng-if="iframeCtrl.isYoutube"
-					 embed-url="{{iframeCtrl.src}}"
-					 main-player="false"
-					 player-id="iframeCtrl.item()._id"></itt-youtube>
+		<!--<itt-youtube ng-if="iframeCtrl.isYoutube"-->
+					 <!--embed-url="{{iframeCtrl.src}}"-->
+					 <!--main-player="false"-->
+					 <!--player-id="iframeCtrl.item()._id"></itt-youtube>-->
 	</div>
 </div>

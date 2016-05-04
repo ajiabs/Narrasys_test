@@ -15,16 +15,23 @@
     </div>
     <div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
   </div>
-  <div class="itemDetail" ng-if="item.showInlineDetail">
-    <span ng-switch="item.asset.content_type.indexOf('image/')">
-      <span ng-switch-when="-1">
-        <a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.asset.url,$event)" ng-click="outgoingLink(item.asset.url)" class="escapelink">(new window)</a>
-        <itt-iframe x-src="{{item.asset.url}}" item="item" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
-      </span>
-      <span ng-switch-default>
-        <img ng-src="{{item.asset.url}}">
-      </span>
-    </span>
-  </div>
+
+
+	<itt-iframe item="item"
+				src="{{item.url}}"
+				x-contenttype="{{item.asset.content_type}}"></itt-iframe>
+	<!--<div class="itemDetail" ng-if="item.showInlineDetail">-->
+
+
+    <!--<span ng-switch="item.asset.content_type.indexOf('image/')">-->
+      <!--<span ng-switch-when="-1">-->
+        <!--<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.asset.url,$event)" ng-click="outgoingLink(item.asset.url)" class="escapelink">(new window)</a>-->
+
+      <!--</span>-->
+      <!--<span ng-switch-default>-->
+        <!--<img ng-src="{{item.asset.url}}">-->
+      <!--</span>-->
+    <!--</span>-->
+  <!--</div>-->
   <div class="clear "></div>
 </div>

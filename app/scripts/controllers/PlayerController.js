@@ -3,7 +3,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager) {
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, demoService, analyticsSvc, errorSvc, authSvc, youTubePlayerManager) {
 		// console.log("playerController", $scope);
 
 		// $scope.tmp = function () {
@@ -136,6 +136,7 @@ angular.module('com.inthetelling.story')
 			// console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
 			// producer needs the episode container:
 			dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId).then(function () {
+				console.log('get container');
 				if (modelSvc.episodes[appState.episodeId].master_asset_id) {
 					// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
 					// HACK this is a weird place for this.
@@ -151,6 +152,7 @@ angular.module('com.inthetelling.story')
 					});
 				} else {
 					// Episode has no master asset
+					console.log('in else b!');
 					$scope.loading = false;
 					// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
 					if (appState.product === 'producer') {
@@ -170,6 +172,8 @@ angular.module('com.inthetelling.story')
 		});
 
 		if (modelSvc.episodes[appState.episodeId]) {
+
+			console.log('in conditional a');
 			// recycle existing episode data.   TODO: DRY the repeated code below from inside getEpisodeWatcher
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
@@ -189,6 +193,7 @@ angular.module('com.inthetelling.story')
 				appState.productLoadedAs = 'player';
 			}
 		} else {
+			console.log('in else a', modelSvc.episodes[appState.episodeId]);
 			$scope.loading = true;
 			modelSvc.addLandingScreen(appState.episodeId);
 			dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);

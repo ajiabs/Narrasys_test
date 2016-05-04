@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, $location, $routeParams, config, appState, youtubeSvc) {
+	.factory('modelSvc', function ($interval, $filter, $location, demoService, config, appState, youtubeSvc) {
 
 		var svc = {};
 
@@ -196,7 +196,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.deriveAsset = function (asset) {
-			// console.log("deriveAsset:", asset);
 			if (asset._type === "Asset::Video") {
 				asset = resolveVideo(asset);
 			}
@@ -275,7 +274,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.deriveEvent = function (event) {
-
 			event = setLang(event);
 
 			if (event._type !== 'Scene') {
@@ -343,6 +341,7 @@ angular.module('com.inthetelling.story')
 				event.noExternalLink = false;
 				event.targetTop = false;
 
+
 				//console.log("dataSvc event noEmbed", event.noEmbed);
 				//console.log("dataSvc event reset", event);
 
@@ -380,6 +379,9 @@ angular.module('com.inthetelling.story')
 
 				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
 					event.noExternalLink = true;
+					if (demoService.isDemo()) {
+						event.noExternalLink = false;
+					}
 				}
 
 				if (event.templateUrl.match(/frameicide/)) {
@@ -421,6 +423,7 @@ angular.module('com.inthetelling.story')
 						event.producerItemType = 'annotation';
 					}
 				} else if (event._type === 'Upload') {
+					console.log('deriveEvent -> upload branch!');
 					if (event.templateUrl.match(/file/)) { // HACK
 						event.producerItemType = 'file';
 					} else {
@@ -443,7 +446,6 @@ angular.module('com.inthetelling.story')
 			}
 
 			event.displayStartTime = $filter("asTime")(event.start_time);
-
 			return event;
 		};
 
@@ -634,9 +636,17 @@ angular.module('com.inthetelling.story')
 				var scene = scenes[y];
 				var sceneItems = [];
 				var previousTranscript = {};
+
 				for (var x = itemsIndex, itemsLength = items.length; x < itemsLength; x++) {
 					var event = items[x];
 
+					//if (demoService.isDemo()) {
+					//	if ( scene._id.indexOf('landingScreen') > 0 && event._id === 'stubPQ') {
+					//		sceneItems.push(event);
+					//	}
+					//}
+
+					//console.log('event', event);
 					//angular.forEach(items, function (event) {
 					/* possible cases:
 							start and end are within the scene: put it in this scene
@@ -693,7 +703,6 @@ angular.module('com.inthetelling.story')
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
 				svc.events[scene._id].items = sceneItems.sort(function (a, b) {
-
 					if (a.start_time !== b.start_time || !b.layouts) {
 						return a.start_time - b.start_time;
 					} else {
@@ -718,6 +727,7 @@ angular.module('com.inthetelling.story')
 					event.styleCss = event.styleCss + " " + event.layouts.join(' ');
 				}
 			});
+		//console.log('resolveEpisodeEvents', scenes);
 		};
 
 		svc.resolveEpisodeContainers = function (epId) {
@@ -998,9 +1008,8 @@ angular.module('com.inthetelling.story')
 						if (youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i])) {
 							videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
 						}
-					} else if ($routeParams.demo) {
-						videoObject.mp4.push(videoAsset.url);
-						//console.log('videoObject afer push', videoObject);
+					} else if (demoService.isDemo()) {
+						videoObject.mp4.push(videoAsset.alternate_urls[i]);
 					} else {
 						videoObject[videoAsset.alternate_urls[i].match(extensionMatch)[1]].push(videoAsset.alternate_urls[i]);
 					}
@@ -1073,7 +1082,6 @@ angular.module('com.inthetelling.story')
 			}
 
 			videoAsset.urls = videoObject;
-			console.log("videoAsset", videoAsset);
 			// We need to know if the video has been transcoded or not in the template,
 			// so let's centralize the logic for that here
 			videoAsset.isTranscoded = function () {
@@ -1086,7 +1094,7 @@ angular.module('com.inthetelling.story')
 		// TODO get rid of this; really wasteful to be checking this constantly, it's only useful
 		//  right after a master asset upload  (put it in ittVideo pollInterval() instead)
 		svc.isTranscoded = function (video) {
-			if ($routeParams.demo) {
+			if (demoService.isDemo()) {
 				return true;
 			}
 			if (video.urls && video.urls.youtube && video.urls.youtube.length) {

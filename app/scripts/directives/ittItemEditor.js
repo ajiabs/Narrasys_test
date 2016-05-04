@@ -335,6 +335,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.assetUploaded = function (assetId) {
+					console.log("assetUploaded CB");
 					scope.item.asset = modelSvc.assets[assetId];
 					// TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
 					if (scope.item._type === 'Link') {
