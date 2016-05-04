@@ -642,12 +642,6 @@ angular.module('com.inthetelling.story')
 				stub.layouts = ["windowFg"];
 				stub.end_time = appState.time;
 				stub.stop = true;
-				//set noEmbed true here in order to prevent
-				//sites that cannot be iframed from being eagerly loaded
-				//and causing mixed-content browser errors.
-				stub.noEmbed = true;
-
-				// Override default template selection with a special SXS one:
 				stub.templateUrl = 'templates/item/sxs-' + type + '.html';
 			} else {
 				var defaultTemplateUrls = {
