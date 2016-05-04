@@ -30,35 +30,35 @@ angular.module('com.inthetelling.story')
 			if (roles) {
 				for (var i = 0; i < roles.length; i++) {
 					switch (roles[i].role) {
-					case Roles.ADMINISTRATOR:
-						if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
-							continue; // they are an admin, but not in this narrative, so let's keep going
-						} else {
-							role = "admin";
-							exitLoop = true; //if they are an admin, then we can just get out as it trumps
-						}
-						break;
-					case Roles.INSTRUCTOR:
-						if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
-							continue;
-						} else {
-							role = roles[i].role;
-						}
-						break;
-					case Roles.STUDENT:
-						if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
-							continue;
-						} else {
-							role = role === "instructor" ? role : roles[i].role;
-						}
-						break;
-					case Roles.GUEST:
-						if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
-							continue;
-						} else {
-							role = role === "instructor" || role === "student" ? role : roles[i].role;
-						}
-						break;
+						case Roles.ADMINISTRATOR:
+							if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
+								continue; // they are an admin, but not in this narrative, so let's keep going
+							} else {
+								role = "admin";
+								exitLoop = true; //if they are an admin, then we can just get out as it trumps
+							}
+							break;
+						case Roles.INSTRUCTOR:
+							if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
+								continue;
+							} else {
+								role = roles[i].role;
+							}
+							break;
+						case Roles.STUDENT:
+							if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
+								continue;
+							} else {
+								role = role === "instructor" ? role : roles[i].role;
+							}
+							break;
+						case Roles.GUEST:
+							if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
+								continue;
+							} else {
+								role = role === "instructor" || role === "student" ? role : roles[i].role;
+							}
+							break;
 					}
 					if (exitLoop) {
 						break;
@@ -70,12 +70,12 @@ angular.module('com.inthetelling.story')
 
 		svc.getDefaultProductForRole = function (role) {
 			/*
-			This was making it impossible for users with admin role to see editor or player interface.
-			For now, producer should be used only at the /#/episode urls, editor at the narrative urls
-			(producer only works with individual episodes atm anyway)
-			TODO later on we'll make this user-selectable within the product UI (and probably
-			eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
-			*/
+			 This was making it impossible for users with admin role to see editor or player interface.
+			 For now, producer should be used only at the /#/episode urls, editor at the narrative urls
+			 (producer only works with individual episodes atm anyway)
+			 TODO later on we'll make this user-selectable within the product UI (and probably
+			 eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
+			 */
 			var product = "player";
 			if (appState.productLoadedAs === 'narrative') {
 				if (role === Roles.ADMINISTRATOR || role === Roles.INSTRUCTOR) {
@@ -102,9 +102,9 @@ angular.module('com.inthetelling.story')
 			appState.user = {};
 
 			$http({
-					method: 'GET',
-					url: config.apiDataBaseUrl + "/logout"
-				})
+				method: 'GET',
+				url: config.apiDataBaseUrl + "/logout"
+			})
 				.success(function () {
 					delete $http.defaults.headers.common.Authorization; // now it's safe
 					$location.path('/')
@@ -124,16 +124,16 @@ angular.module('com.inthetelling.story')
 		svc.adminLogin = function (authKey, password) {
 			var defer = $q.defer();
 			$http({
-					method: 'POST',
-					url: config.apiDataBaseUrl + "/auth/identity/callback",
-					data: $.param({
-						"auth_key": authKey,
-						"password": password
-					}),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				})
+				method: 'POST',
+				url: config.apiDataBaseUrl + "/auth/identity/callback",
+				data: $.param({
+					"auth_key": authKey,
+					"password": password
+				}),
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				}
+			})
 				.success(function (data) {
 					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
 					resolveUserData(data);
@@ -151,14 +151,14 @@ angular.module('com.inthetelling.story')
 
 		/*
 
-			authentication paths:
-				header + user data: resolve immediately
-				header + no user data: call show_user (this shouldn't be possible, but I coded it in at some point for some reason...)
-				key in url param: call get_nonce
-				token in localStorage: set header, call show_user
-				nothing: get_nonce
+		 authentication paths:
+		 header + user data: resolve immediately
+		 header + no user data: call show_user (this shouldn't be possible, but I coded it in at some point for some reason...)
+		 key in url param: call get_nonce
+		 token in localStorage: set header, call show_user
+		 nothing: get_nonce
 
-		*/
+		 */
 
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function (nonceParam) {
@@ -249,9 +249,9 @@ angular.module('com.inthetelling.story')
 		svc.getCurrentUser = function () {
 			var defer = $q.defer();
 			$http({
-					method: 'GET',
-					url: config.apiDataBaseUrl + '/show_user'
-				})
+				method: 'GET',
+				url: config.apiDataBaseUrl + '/show_user'
+			})
 				.success(function (respData) {
 					resolveUserData(respData);
 					defer.resolve();
@@ -265,10 +265,10 @@ angular.module('com.inthetelling.story')
 		svc.updateUser = function (user) {
 			var defer = $q.defer();
 			$http({
-					method: 'PUT',
-					url: config.apiDataBaseUrl + '/users/' + user._id,
-					data: user
-				})
+				method: 'PUT',
+				url: config.apiDataBaseUrl + '/users/' + user._id,
+				data: user
+			})
 				.success(function (respData) {
 					resolveUserData(respData);
 					defer.resolve();
@@ -334,7 +334,8 @@ angular.module('com.inthetelling.story')
 					token: user.access_token,
 					customer: user.customer
 				}));
-			} catch (e) {}
+			} catch (e) {
+			}
 		};
 
 		var getRoleDescription = function (roleKey) {
@@ -360,6 +361,12 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getNonce = function (nonceParam) {
+            //
+			//if ($routeParams.demo === '1') {
+			//	return $q(function (resolve) {
+			//		resolve();
+			//	});
+			//}
 			var defer = $q.defer();
 			var url = config.apiDataBaseUrl + "/v1/get_nonce";
 			if (nonceParam) {
@@ -394,6 +401,45 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getAccessToken = function (nonce) {
+
+			//if ($routeParams.demo === '1') {
+			//	var stub = {
+			//		"_id": "565f578227f858b7e20000e4",
+			//		"name": "Tom Hopkins",
+			//		"access_token": "RZMqXxUPpUFtp32k5BJT",
+			//		"avatar_id": "56f9b8b741f6df37610079cd",
+			//		"roles": [{"role": "admin"}, {
+			//			"role": "guest",
+			//			"resource_type": "Narrative",
+			//			"resource_id": "565f569a27f858283100005c"
+			//		}, {
+			//			"role": "student",
+			//			"resource_type": "Narrative",
+			//			"resource_id": "565f569a27f858283100005c"
+			//		}, {
+			//			"role": "student",
+			//			"resource_type": "Narrative",
+			//			"resource_id": "56b4207441f6df6fc5000899"
+			//		}, {
+			//			"role": "guest",
+			//			"resource_type": "Narrative",
+			//			"resource_id": "56bbba1327f858f3f4002476"
+			//		}, {
+			//			"role": "student",
+			//			"resource_type": "Narrative",
+			//			"resource_id": "56bbba1327f858f3f4002476"
+			//		}, {"role": "guest", "resource_type": "Narrative", "resource_id": "570e809b27f858e3660033a5"}],
+			//		"emails": ["tom@inthetelling.com"],
+			//		"track_event_actions": true,
+			//		"track_episode_metrics": true
+			//	};
+            //
+			//	$http.defaults.headers.common.Authorization = 'Token token="' + stub.access_token + '"';
+			//	return $q(function(resolve) {
+			//		resolve(stub);
+			//	});
+			//}
+
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
 				.success(function (data) {

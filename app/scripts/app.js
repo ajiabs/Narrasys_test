@@ -179,6 +179,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 	$httpProvider.interceptors.push(function ($q, errorSvc) {
 		return {
+
+			'request': function(config) {
+				console.log('request to ', config.url);
+				return config;
+			},
+
 			'responseError': function (rejection) {
 				errorSvc.error(rejection);
 				return $q.reject(rejection);
@@ -215,3 +221,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		$compileProvider.debugInfoEnabled(false);
 	}
 });
+
+if (window.location.href.indexOf('?demo=1') > 0) {
+	angular.module('com.inthetelling.story').requires.push('iTT.offline');
+}

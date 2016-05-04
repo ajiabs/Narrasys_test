@@ -237,10 +237,17 @@
 			"track_episode_metrics": true
 		};
 
+		var _nonce = {
+			"nonce": "2ieFQqc1WNIkTkoSziwHKw"
+		};
+
+		var _accessToken = {"_id":"565f578227f858b7e20000e4","name":"Tom Hopkins","access_token":"RZMqXxUPpUFtp32k5BJT","avatar_id":"56f9b8b741f6df37610079cd","roles":[{"role":"admin"},{"role":"guest","resource_type":"Narrative","resource_id":"565f569a27f858283100005c"},{"role":"student","resource_type":"Narrative","resource_id":"565f569a27f858283100005c"},{"role":"student","resource_type":"Narrative","resource_id":"56b4207441f6df6fc5000899"},{"role":"guest","resource_type":"Narrative","resource_id":"56bbba1327f858f3f4002476"},{"role":"student","resource_type":"Narrative","resource_id":"56bbba1327f858f3f4002476"},{"role":"guest","resource_type":"Narrative","resource_id":"570e809b27f858e3660033a5"}],"emails":["tom@inthetelling.com"],"track_event_actions":true,"track_episode_metrics":true};
 		return {
 			stubImg: _stubImg,
 			stubPdf: _stubPdf,
 			showUser: _showUser,
+			nonce: _nonce,
+			accessToken: _accessToken,
 			addStubPq: addStubPq,
 			landingScreenSceneItems: _landingScreenSceneItems,
 			videoAsset: videoAsset,
