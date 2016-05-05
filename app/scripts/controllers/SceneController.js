@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('SceneController', function ($scope, $filter, $log, demoService, appState, modelSvc, demoMock) {
+	.controller('SceneController', function ($scope, $filter, $log, demoService, appState, modelSvc, demoMock, stubData) {
 
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 		$scope.selectLayout = selectLayout;
@@ -33,7 +33,7 @@ angular.module('com.inthetelling.story')
 		}
 
 		function pdfSwap() {
-			$scope.altContentItems.push(demoMock.stubPdf);
+			$scope.altContentItems.push(stubData.stubPdf);
 			$scope.demo.replacePdf();
 
 		}
