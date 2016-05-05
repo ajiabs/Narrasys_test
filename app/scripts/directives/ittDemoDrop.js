@@ -53,7 +53,7 @@
 				return false;
 			}
 
-			function handleDragEnter(ev) {
+			function handleDragEnter() {
 				var isDisabled = elm.hasClass('disable-drop');
 				if (isDisabled) {
 					scope.dropDisabled = true;
@@ -61,7 +61,7 @@
 				elm.addClass('droppable');
 			}
 
-			function handleDragLeave(ev) {
+			function handleDragLeave() {
 				scope.dropDisabled = false;
 				elm.removeClass('droppable');
 			}

@@ -46,7 +46,7 @@ angular.module('com.inthetelling.story')
 			$scope.demo.replacePq();
 		}
 
-		function videoSwap(e) {
+		function videoSwap() {
 			$scope.demo.replaceVideo();
 		}
 

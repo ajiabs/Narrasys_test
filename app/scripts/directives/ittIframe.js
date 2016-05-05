@@ -113,8 +113,8 @@
 		var _ctrl = this; //jshint ignore:line
 		var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
 		var _popupsTopWindow = ' allow-top-navigation allow-popups';
-		//_ctrl.isYoutube = false;
-		//_ctrl.isLoading = true;
+		_ctrl.isYoutube = false;
+		_ctrl.isLoading = true;
 		_ctrl.isTouchDevice = appState.isTouchDevice;
 
 
@@ -142,7 +142,7 @@
 		}
 
 		_ctrl.watcher = $scope.$watchGroup([function() {return _ctrl.src;}, function() {return _ctrl.contenttype;}], function () {
-			if (!_ctrl.src) {
+			if (!_ctrl.src || !validateFrameUrl(_ctrl.src)) {
 				return;
 			}
 

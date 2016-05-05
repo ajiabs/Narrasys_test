@@ -218,9 +218,9 @@ angular.module('com.inthetelling.story')
 				// yes we could combine these into one call I suppose but there will almost always only be one
 				// unless the user was very indecisive and uploaded/detached a bunch of assets to the same event.
 				// It was probably already a premature optimization to use an array here in the first place
-				angular.forEach(toSave.removedAssets, function (id) {
-					//dataSvc.deleteAsset(id);
-				});
+				//angular.forEach(toSave.removedAssets, function (id) {
+				//	//dataSvc.deleteAsset(id);
+				//});
 				appState.editEvent = false;
 				$rootScope.$emit('searchReindexNeeded'); // HACK
 				return;
@@ -618,10 +618,6 @@ angular.module('com.inthetelling.story')
 					"title": {},
 					"description": {}
 				};
-
-				if (demoService.isDemo()) {
-					stub.showInlineDetail = true;
-				}
 			}
 
 			if (type === 'link') {

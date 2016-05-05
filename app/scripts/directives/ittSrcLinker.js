@@ -15,12 +15,11 @@
 				item: '='
 			},
 			link: function(scope, elm) {
-				var url;
 				var existy = ittUtils.existy;
-				scope.$watch('item', function(newVal, oldVal) {
+				scope.$watch('item', function(newVal) {
 					console.count("iframe src change!");
 
-					if (!existy(newVal)) return;
+					if (!existy(newVal)) { return; }
 
 					if (existy(newVal) && existy(newVal.asset)) {
 						elm.attr('src', newVal.asset.url);

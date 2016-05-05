@@ -29,7 +29,7 @@
  */
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $timeout, $rootScope, $location, $routeParams, demoService, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -42,7 +42,7 @@ angular.module('com.inthetelling.story')
 		 * Used to check whether or not a website can be iframed by inspecting the x-frame-options header
 		 * @param {String} url The target URL of site to inspect
 		 * @returns {Boolean} Whether or not we can embed the input URL in an iframe.
-         */
+		 */
 		svc.checkXFrameOpts = function(url) {
 			//why use a 'post process callback'
 			//when you can simply chain promises?
@@ -52,10 +52,10 @@ angular.module('com.inthetelling.story')
 			var parseInputUrl;
 			var encodedUrl = encodeURIComponent(url);
 			return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
-			.then(function(result) {
-				console.log('x-frame-opts: ', result.x_frame_options);
-				return _canEmbed(result.x_frame_options);
-			});
+				.then(function(result) {
+					console.log('x-frame-opts: ', result.x_frame_options);
+					return _canEmbed(result.x_frame_options);
+				});
 
 			function _canEmbed(xFrameOpts) {
 				var _noEmbed = true;
@@ -312,14 +312,14 @@ angular.module('com.inthetelling.story')
 			angular.forEach(dataList, function (item) {
 				if (cacheType === "templates") {
 					/* API format:
-					_id									"528d17ebba4f65e578000007"
-					applies_to_episodes	false  (if true, event_types is empty)
-					created_at					"2013-11-20T20:13:31Z"
-					event_types					["Scene"]    (or Annotation, Link, Upload)
-					name								"Scene 2 columns right"
-					updated_at					"2013-11-20T20:13:31Z"
-					url									"templates/scene-centered.html"
-				*/
+					 _id									"528d17ebba4f65e578000007"
+					 applies_to_episodes	false  (if true, event_types is empty)
+					 created_at					"2013-11-20T20:13:31Z"
+					 event_types					["Scene"]    (or Annotation, Link, Upload)
+					 name								"Scene 2 columns right"
+					 updated_at					"2013-11-20T20:13:31Z"
+					 url									"templates/scene-centered.html"
+					 */
 					dataCache.template[item._id] = {
 						id: item._id,
 						url: item.url,
@@ -328,13 +328,13 @@ angular.module('com.inthetelling.story')
 					};
 				} else if (cacheType === "layouts") {
 					/* API format:
-					_id									"528d17ebba4f65e57800000a"
-					created_at					"2013-11-20T20:13:31Z"
-					css_name						"videoLeft"
-					description					"The video is on the left"
-					display_name				"Video Left"
-					updated_at					"2013-11-20T20:13:31Z"
-				*/
+					 _id									"528d17ebba4f65e57800000a"
+					 created_at					"2013-11-20T20:13:31Z"
+					 css_name						"videoLeft"
+					 description					"The video is on the left"
+					 display_name				"Video Left"
+					 updated_at					"2013-11-20T20:13:31Z"
+					 */
 					dataCache.layout[item._id] = {
 						id: item._id,
 						css_name: item.css_name,
@@ -343,13 +343,13 @@ angular.module('com.inthetelling.story')
 
 				} else if (cacheType === "styles") {
 					/* API format:
-					_id						"528d17f1ba4f65e578000036"
-					created_at		"2013-11-20T20:13:37Z"
-					css_name			"typographySerif"
-					description		"Controls the fonts and relative text sizes"
-					display_name	"Typography Serif"
-					updated_at		"2013-11-20T20:13:37Z"
-				*/
+					 _id						"528d17f1ba4f65e578000036"
+					 created_at		"2013-11-20T20:13:37Z"
+					 css_name			"typographySerif"
+					 description		"Controls the fonts and relative text sizes"
+					 display_name	"Typography Serif"
+					 updated_at		"2013-11-20T20:13:37Z"
+					 */
 					dataCache.style[item._id] = {
 						id: item._id,
 						css_name: item.css_name,
@@ -363,14 +363,14 @@ angular.module('com.inthetelling.story')
 		svc.createTemplate = function (templateData) {
 			// TEMPORARY.  Doesn't check to see if it's adding a duplicate, or do any other sort of data prophylaxis
 			/*  sample:
-			{
-				url: 'templates/item/foo.html',
-				name: 'foo',
-				event_types: ['Upload'], // Upload, Scene, Plugin, Annotation, Link
-				applies_to_episode: false,
-				applies_to_narrative: false
-			}
-			*/
+			 {
+			 url: 'templates/item/foo.html',
+			 name: 'foo',
+			 event_types: ['Upload'], // Upload, Scene, Plugin, Annotation, Link
+			 applies_to_episode: false,
+			 applies_to_narrative: false
+			 }
+			 */
 			return POST("/v1/templates", templateData);
 		};
 		// svc.createStyle = function (styleData) {
@@ -626,23 +626,23 @@ angular.module('com.inthetelling.story')
 			//is an anti-pattern.
 			//simply return this promise
 			return authSvc.authenticate()
-			.then(function() {
-				//then return this promise
-				return $http.get(config.apiDataBaseUrl + path)
-				.then(function(resp) {
-					//SANE_GET will resolve to this
-					return resp.data;
+				.then(function() {
+					//then return this promise
+					return $http.get(config.apiDataBaseUrl + path)
+						.then(function(resp) {
+							//SANE_GET will resolve to this
+							return resp.data;
+						});
 				});
-			});
 		};
 
 		var PUT = function (path, putData, postprocessCallback) {
 			var defer = $q.defer();
 			$http({
-					method: 'PUT',
-					url: config.apiDataBaseUrl + path,
-					data: putData
-				})
+				method: 'PUT',
+				url: config.apiDataBaseUrl + path,
+				data: putData
+			})
 				.success(function (response) {
 					var ret = response;
 					if (postprocessCallback) {
@@ -656,10 +656,10 @@ angular.module('com.inthetelling.story')
 		var POST = function (path, postData, postprocessCallback) {
 			var defer = $q.defer();
 			$http({
-					method: 'POST',
-					url: config.apiDataBaseUrl + path,
-					data: postData
-				})
+				method: 'POST',
+				url: config.apiDataBaseUrl + path,
+				data: postData
+			})
 				.success(function (response) {
 					var ret = response;
 					if (postprocessCallback) {
@@ -673,9 +673,9 @@ angular.module('com.inthetelling.story')
 		var DELETE = function (path) {
 			var defer = $q.defer();
 			$http({
-					method: 'DELETE',
-					url: config.apiDataBaseUrl + path,
-				})
+				method: 'DELETE',
+				url: config.apiDataBaseUrl + path,
+			})
 				.success(function (data) {
 					// console.log("Deleted:", data);
 					return defer.resolve(data);
@@ -684,16 +684,16 @@ angular.module('com.inthetelling.story')
 		};
 
 		/*
-		Circumstances in which we need containers:
-		- start at root, climb down on demand
-		- start at episode, need all ancestors
+		 Circumstances in which we need containers:
+		 - start at root, climb down on demand
+		 - start at episode, need all ancestors
 
-		loading any container should
-		- cache its own (complete) data
-		- cache its (incomplete) children
-		load all of its ancestors if not already present (datasvc will need to keep a list of container_ids it's already requested, to avoid circular refs to modelSvc)
+		 loading any container should
+		 - cache its own (complete) data
+		 - cache its (incomplete) children
+		 load all of its ancestors if not already present (datasvc will need to keep a list of container_ids it's already requested, to avoid circular refs to modelSvc)
 
-		*/
+		 */
 
 		svc.getContainerRoot = function () {
 			// This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
@@ -776,7 +776,7 @@ angular.module('com.inthetelling.story')
 					customer_id: container.customer_id,
 					name: container.name,
 					parent_id: container.parent_id
-						// keywords: [] // for now
+					// keywords: [] // for now
 				}
 			};
 			// store in API and resolve with results instead of container
@@ -829,24 +829,15 @@ angular.module('com.inthetelling.story')
 			episode.status = 'Unpublished';
 
 			var defer = $q.defer();
-			if (demoService.isDemo()) {
-				episode.status = 'Published';
-				episode._id =  '1304909dskfjlk2340';
-				episode.container_id = '908562q303u5lkjafkjasf';
-				modelSvc.containers[episode.container_id].episodes = [episode._id];
-				modelSvc.containers[episode.container_id].status = episode.status;
-				defer.resovle(episode);
-			} else {
-				// console.log("Attempting to create ", episode);
-				POST("/v3/episodes", episode)
-					.then(function (data) {
-						// console.log("Created episode: ", data);
-						// muck around in modelSvc.containers again:
-						modelSvc.containers[data.container_id].episodes = [data._id];
-						modelSvc.containers[data.container_id].status = data.status;
-						defer.resolve(data);
-					});
-			}
+			// console.log("Attempting to create ", episode);
+			POST("/v3/episodes", episode)
+				.then(function (data) {
+					// console.log("Created episode: ", data);
+					// muck around in modelSvc.containers again:
+					modelSvc.containers[data.container_id].episodes = [data._id];
+					modelSvc.containers[data.container_id].status = data.status;
+					defer.resolve(data);
+				});
 			return defer.promise;
 		};
 
