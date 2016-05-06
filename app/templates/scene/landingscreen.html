@@ -14,7 +14,6 @@
 		<div itt-magnet class="videoMagnet">
 			<img src="images/aspectratiopreserver-16x9.gif">
 		</div>
-		<h2>isDemo: {{isDemo}} {{isPlayerCtrl}}</h2>
 		<div class="landingscreen-end"></div>
 		<div class="clear"></div>
 	</div>
@@ -30,8 +29,6 @@
 	<!--</div>-->
 <!--</div>-->
 
-
-<button ng-click="selectLayout()">select layout</button>
 <div class="side-bar__background">
 	<div class="side-bar" ng-show="demo.isDemo() && !demo.layoutSelected()">
 		<div class="side-bar__container">
@@ -59,7 +56,7 @@
 			<div ng-show="!demo.videoReplaced()">
 				<div class="videoStub" ng-if="!demo.videoReplaced()">
 					<!--<div itt-asset-uploader callback="attachMasterVideoCb"></div>-->
-					<itt-demo-drop on-drop="videoSwap()" fa-icon="fa-film"></itt-demo-drop>
+					<itt-demo-drop on-drop="videoSwap(val)" fa-icon="fa-film"></itt-demo-drop>
 					<!--<div itt-magnet></div>-->
 				</div>
 			</div>
@@ -99,12 +96,12 @@
 			}" itt-width-watch>
 				<div class="static-items">
                     <div class="static-item image">
-						<itt-demo-drop ng-class="{ 'disable-drop': !demo.videoReplaced() }" fa-icon="fa-file-image-o" ng-show="!demo.imageReplaced()" on-drop="imageSwap(ev)"></itt-demo-drop>
-						<div class="item" ng-if="demo.imageReplaced()" itt-item="altContentItems[0]"></div>
+						<itt-demo-drop ng-class="{ 'disable-drop': !demo.videoReplaced() }" fa-icon="fa-file-image-o" ng-show="!demo.imageReplaced()" on-drop="imageSwap(val)"></itt-demo-drop>
+						<div class="item" ng-if="demo.imageReplaced()" ng-repeat="item in altContentItems | filter:{ _id: 'stubImg' }" itt-item="item"></div>
                     </div>
                     <div class="static-item pdf">
-						<itt-demo-drop ng-class="{ 'disable-drop': !demo.videoReplaced() }" fa-icon="fa-file-pdf-o" ng-show="!demo.pdfReplaced()" on-drop="pdfSwap()"></itt-demo-drop>
-						<div class="item" ng-if="demo.pdfReplaced()" itt-item="altContentItems[1]"></div>
+						<itt-demo-drop ng-class="{ 'disable-drop': !demo.videoReplaced() }" fa-icon="fa-file-pdf-o" ng-show="!demo.pdfReplaced()" on-drop="pdfSwap(val)"></itt-demo-drop>
+						<div class="item" ng-if="demo.pdfReplaced()" ng-repeat="item in altContentItems | filter:{ _id: 'stubPdf' }" itt-item="item"></div>
                     </div>
 				</div>
 				<!--<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems ) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">-->

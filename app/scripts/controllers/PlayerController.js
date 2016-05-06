@@ -136,7 +136,6 @@ angular.module('com.inthetelling.story')
 			// console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
 			// producer needs the episode container:
 			dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId).then(function () {
-				console.log('get container');
 				if (modelSvc.episodes[appState.episodeId].master_asset_id) {
 					// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
 					// HACK this is a weird place for this.
@@ -193,7 +192,6 @@ angular.module('com.inthetelling.story')
 				appState.productLoadedAs = 'player';
 			}
 		} else {
-			console.log('in else a', modelSvc.episodes[appState.episodeId]);
 			$scope.loading = true;
 			modelSvc.addLandingScreen(appState.episodeId);
 			dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);

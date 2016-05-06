@@ -181,7 +181,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		return {
 
 			'request': function(config) {
-				console.log('request to ', config.url);
+				//console.log('request to ', config.url);
 				return config;
 			},
 

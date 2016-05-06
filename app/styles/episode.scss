@@ -1071,7 +1071,11 @@ $h2pullquote: #5B5B5B;
 					}
 					a {
 						color: white;
+					}
 
+					.fakeLink {
+						cursor: pointer;
+						color: white;
 					}
 				}
 			}

@@ -989,7 +989,11 @@ angular.module('com.inthetelling.story')
 				m3u8: []
 			};
 
-			var extensionMatch = /\.(\w+)$/;
+			//var extensionMatch = /\.(\w+)$/;
+			//this works for the above file extensions
+			//and allows for matching against a dataURL
+			//which does not have a file extension
+			var betterMatch = /(mp4|webm|m3u8)/;
 
 			if (videoAsset.alternate_urls) {
 				// Sort them out by file extension first:
@@ -999,7 +1003,7 @@ angular.module('com.inthetelling.story')
 							videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
 						}
 					} else {
-						videoObject[videoAsset.alternate_urls[i].match(extensionMatch)[1]].push(videoAsset.alternate_urls[i]);
+						videoObject[videoAsset.alternate_urls[i].match(betterMatch)[0]].push(videoAsset.alternate_urls[i]);
 					}
 				}
 				if (videoAsset.you_tube_url && youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {

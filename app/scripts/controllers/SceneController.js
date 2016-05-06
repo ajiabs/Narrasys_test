@@ -16,7 +16,9 @@ angular.module('com.inthetelling.story')
 
 
 		function _addPqTest() {
-			$scope.mainContentItems = [demoMock.addStubPq()];
+			var pq = demoMock.addStubPq();
+			$scope.mainContentItems = [pq];
+			modelSvc.events['572920395c92ebb2590000df'].items.push(pq);
 		}
 
 		function selectLayout() {
@@ -27,14 +29,18 @@ angular.module('com.inthetelling.story')
 			console.log('img swap wired up!!', fileList);
 			demoMock.imageAsset(fileList).then(function(img) {
 				$scope.altContentItems.push(img);
-				console.log('new img', img);
+				modelSvc.events['572920395c92ebb2590000df'].items.push(img);
 				$scope.demo.replaceImage();
 			});
 		}
 
-		function pdfSwap() {
-			$scope.altContentItems.push(stubData.stubPdf);
-			$scope.demo.replacePdf();
+		function pdfSwap(fileList) {
+			demoMock.pdfAsset(fileList).then(function(newPdf) {
+				$scope.altContentItems.push(newPdf);
+				$scope.demo.replacePdf();
+				modelSvc.events['572920395c92ebb2590000df'].items.push(newPdf);
+				//console.log('scene items', modelSvc.events['572920395c92ebb2590000df'].items);
+			});
 
 		}
 
@@ -46,48 +52,16 @@ angular.module('com.inthetelling.story')
 			$scope.demo.replacePq();
 		}
 
-		function videoSwap() {
-			$scope.demo.replaceVideo();
+		function videoSwap(fileList) {
+			//console.log('video on scope?', $scope);
+
+			var currentMain = modelSvc.assets['572923f15c92eb00cf000110'];
+			demoMock.videoAsset(fileList).then(function(newVideo) {
+				currentMain.url = newVideo.url;
+				currentMain.urls.mp4.push(newVideo.url);
+				$scope.demo.replaceVideo();
+			});
 		}
-
-		$scope.attachMasterVideoCb = function (asset_id) { // master asset only!
-			console.log('replacing master asset!', $scope.episode);
-			var asset = modelSvc.assets[asset_id];
-			console.log('asset', asset);
-			var previousAsset = modelSvc.assets[$scope.episode.master_asset_id];
-			console.log('prev', previousAsset);
-			$scope.showmessage = "New video attached.";
-			//if (previousAsset && (asset.duration < previousAsset.duration)) {
-			//	var orphans = $scope.getItemsAfter($scope.episode.items.concat($scope.episode.scenes), asset.duration);
-			//	if (orphans.length) {
-			//		// TODO i18n
-			//		$scope.showmessage = "Warning: this new video is shorter than the current video and we've detected that some existing content items will be impacted. If you save this edit, these events will have their start and end times adjusted to the new episode end. (If this isn't what you want, choose a different video or hit 'cancel'.)";
-			//	}
-			//}
-
-			$scope.episode._master_asset_was_changed = true;
-			$scope.episode.master_asset_id = asset._id;
-			$scope.masterAsset = asset;
-			$scope.episode.masterAsset = asset;
-			$scope.demo.replaceVideo();
-			modelSvc.deriveEpisode(modelSvc.episodes[appState.episodeId]);
-		};
-
-		var isInternal = function (item) {
-			return (item._id && item._id.match(/internal/));
-		};
-
-		$scope.getItemsAfter = function (items, after) {
-			var itemsAfter = [];
-			for (var i = 0, len = items.length; i < len; i++) {
-				if (!isInternal(items[i])) {
-					if (after < items[i].start_time || after < items[i].end_time) {
-						itemsAfter.push(items[i]);
-					}
-				}
-			}
-			return itemsAfter;
-		};
 
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");

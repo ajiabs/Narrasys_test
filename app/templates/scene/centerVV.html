@@ -42,7 +42,7 @@ showCurrent is forced in main.
 				isNarrow: isNarrow,
 				isEmpty: altContentItems.length == 0
 			}" itt-width-watch>
-				<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
+				<div class="item animate" ng-repeat="item in altContentItems | orderBy:'start_time'" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
 				<div class="clear"></div>
 			</div>

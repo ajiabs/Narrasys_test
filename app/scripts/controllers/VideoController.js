@@ -43,6 +43,16 @@ angular.module('com.inthetelling.story')
 			'5': 'video cued'
 		};
 
+		$scope.$watch(function() {
+			return $scope.video.url;
+		}, function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				console.log('reset video URL!!');
+				$scope.video.url = newVal;
+				$scope.videoNode.setAttribute('src', $scope.video.url);
+			}
+		});
+
 		//called from link fn of ittVideo
 		function initVideo(el) {
 			// console.log("videoController.initVideo", el);
@@ -139,7 +149,7 @@ angular.module('com.inthetelling.story')
 
 
 		function initHTML5Video() {
-			 console.log("initHTML5Video");
+			$scope.videoNode.setAttribute('src', $scope.video.url);
 			// $scope.videoNode.addEventListener("loadedmetadata", function () {
 			// 	console.log("video metadata has loaded");
 			// }, false);
@@ -285,6 +295,7 @@ angular.module('com.inthetelling.story')
 
 		// play doesn't start immediately -- need to return a promise so timelineSvc can wait until the video is actually playing
 		function play() {
+			console.trace('play!');
 			var defer = $q.defer();
 			if ($scope.videoType === 'youtube') {
 				youTubePlayerManager.play($scope.videoNode.id);
