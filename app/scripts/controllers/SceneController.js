@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('SceneController', function ($scope, $filter, $log, demoService, appState, modelSvc, demoMock, stubData) {
+	.controller('SceneController', function ($scope, $filter, $log, demoService, appState, modelSvc, demoMock) {
 
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 		$scope.selectLayout = selectLayout;

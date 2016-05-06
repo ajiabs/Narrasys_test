@@ -35,7 +35,7 @@
 
 			function handleDrop(ev) {
 				ev.preventDefault();
-				scope.onDrop({ev: ev.dataTransfer.files});
+				scope.onDrop({val: ev.dataTransfer.files});
 				elm.remove();
 			}
 
