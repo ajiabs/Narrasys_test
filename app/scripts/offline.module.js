@@ -28,7 +28,6 @@
 				return [200, stubData.nonce, {}];
 			});
 
-
 			$httpBackend.whenGET(_origin + '/v1/get_access_token/' + stubData.nonce.nonce).respond(function() {
 				return [200, stubData.accessToken, {}];
 			});
@@ -63,7 +62,6 @@
 			$httpBackend.whenPOST(_origin + '/v1/assets').respond(function() {
 				return [200, stubData.postAsset, {}];
 			});
-
 
 			$httpBackend.whenGET(containerByIdRegex).respond(function() {
 				return [200, stubData.container, {}];
