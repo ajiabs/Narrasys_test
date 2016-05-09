@@ -33,51 +33,51 @@
 				return [200, stubData.accessToken, {}];
 			});
 
-			$httpBackend.whenGET(assetsByIdRegex).respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenGET(assetsByIdRegex).respond(function() {
 				return [200, stubData.v1Assets, {}];
 			});
 
-			$httpBackend.whenGET(_origin + '/v1/styles').respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenGET(_origin + '/v1/styles').respond(function() {
 				return [200, stubData.v1Styles, {}];
 			});
 
-			$httpBackend.whenGET(_origin + '/v1/layouts').respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenGET(_origin + '/v1/layouts').respond(function() {
 				return [200, stubData.v1Layouts, {}];
 			});
 
-			$httpBackend.whenGET(_origin + '/v1/templates').respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenGET(_origin + '/v1/templates').respond(function() {
 				return [200, stubData.v1Templates, {}];
 			});
 
-			$httpBackend.whenGET(episodeByIdRegex).respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenGET(episodeByIdRegex).respond(function(method, url) {
 				var matches = episodeByIdRegex.exec(url);
 				var episodeid = matches[1];
 
 				return [200, stubData[episodeid], {}];
 			});
 
-			$httpBackend.whenGET(eventsAllByEpisodeRegex).respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenGET(eventsAllByEpisodeRegex).respond(function() {
 				return [200, stubData.events, {}];
 			});
 
-			$httpBackend.whenPOST(_origin + '/v1/assets').respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenPOST(_origin + '/v1/assets').respond(function() {
 				return [200, stubData.postAsset, {}];
 			});
 
 
-			$httpBackend.whenGET(containerByIdRegex).respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenGET(containerByIdRegex).respond(function() {
 				return [200, stubData.container, {}];
 			});
 
-			$httpBackend.whenGET(assetsByContainerIdRegex).respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenGET(assetsByContainerIdRegex).respond(function() {
 				return [200, stubData.containerAssets, {}];
 			});
 
-			$httpBackend.whenPOST(episodeUserMetricsRegex).respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenPOST(episodeUserMetricsRegex).respond(function() {
 				return [200, {}, {}];
 			});
 
-			$httpBackend.whenPOST(episodeEventUserActionsRegex).respond(function(method, url, data, headers, keys) {
+			$httpBackend.whenPOST(episodeEventUserActionsRegex).respond(function() {
 				return [200, {}, {}];
 			});
 		});
