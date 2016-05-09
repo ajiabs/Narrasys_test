@@ -834,7 +834,8 @@
     color: white; }
 
 .side-bar__background {
-  display: flex; }
+  display: flex;
+  height: 100%; }
   .side-bar__background .side-bar__content {
     width: 100%;
     align-self: center; }
@@ -851,29 +852,33 @@
         font-family: 'Gotham Medium'; }
   .side-bar__background .side-bar {
     -webkit-transition: all 0.33s cubic-bezier(0, 0, 0.3, 1);
-    width: 25%;
-    height: 100%;
+    -webkit-backface-visibility: hidden;
+    max-height: 650px;
+    overflow-y: scroll;
     box-shadow: inset 0px 0px 10px 0px #4d4d4d;
-    background-color: #f1f1f1; }
+    background-color: #f1f1f1;
+    width: 15%; }
     .side-bar__background .side-bar.ng-hide {
       opacity: 0;
       transform: translateX(-102%); }
     .side-bar__background .side-bar .side-bar__container {
       display: flex;
       flex-direction: column;
-      flex-wrap: nowrap;
       justify-content: space-between; }
       .side-bar__background .side-bar .side-bar__container .layout-opt {
-        margin: 10px auto;
-        width: 125px;
-        height: 125px; }
+        margin: 10px; }
         .side-bar__background .side-bar .side-bar__container .layout-opt img {
           width: 100%; }
+        .side-bar__background .side-bar .side-bar__container .layout-opt img:hover {
+          background-color: #de6625;
+          -webkit-box-shadow: 0px 0px 10px 0px #de6525;
+          -moz-box-shadow: 0px 0px 10px 0px #de6525;
+          box-shadow: 0px 0px 10px 0px #de6525; }
 
 .demo {
-  -webkit-transition: all 0.5s ease-in-out; }
+  -webkit-transition: all 0.5s ease-in-out;
+  -webkit-backface-visibility: hidden; }
   .demo.ng-hide {
-    height: 0;
     opacity: 0; }
   .demo.ng-enter, .demo .ng-leave {
     max-height: 0;

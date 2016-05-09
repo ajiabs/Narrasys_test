@@ -9,6 +9,8 @@ angular.module('com.inthetelling.story')
 		$scope.pdfSwap = pdfSwap;
 		$scope.pqSwap = pqSwap;
 		$scope.videoSwap = videoSwap;
+		$scope.sideBarClick = sideBarClick;
+		$scope.show = false;
 
 		$scope.demo = demoService;
 		$scope.$log = $log;
@@ -22,6 +24,12 @@ angular.module('com.inthetelling.story')
 		}
 
 		function selectLayout() {
+			$scope.demo.selectLayout();
+		}
+
+		function sideBarClick() {
+			console.log('wired up!');
+			$scope.show = !$scope.show;
 			$scope.demo.selectLayout();
 		}
 

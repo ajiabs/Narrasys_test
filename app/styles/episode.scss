@@ -1094,6 +1094,7 @@ $h2pullquote: #5B5B5B;
 
 .side-bar__background {
 	display: flex;
+	height: 100%;
 	.side-bar__content {
 		width: 100%;
 		align-self: center;
@@ -1117,29 +1118,34 @@ $h2pullquote: #5B5B5B;
 
 	.side-bar {
 		-webkit-transition: all 0.33s cubic-bezier(0, 0, 0.3, 1);
-		width: 25%;
-		height: 100%;
-		//border-right: 1px solid $mondrianBorder;
-		//border-bottom: 1px solid $mondrianBorder;
+		-webkit-backface-visibility: hidden;
+		max-height: 650px;
+		overflow-y: scroll;
 		box-shadow: inset 0px 0px 10px 0px $mondrianBorder;
 		background-color: #f1f1f1;
+		width: 15%;
 
 		&.ng-hide {
 			opacity: 0;
 			transform: translateX(-102%);
 		}
-
 		.side-bar__container {
 			display: flex;
 			flex-direction: column;
-			flex-wrap: nowrap;
+			//flex-wrap: nowrap;
 			justify-content: space-between;
 			.layout-opt {
-				margin: 10px auto;
-				width: 125px;
-				height: 125px;
+				//border: 1px solid black;
+				margin: 10px;
+
 				img {
 					width: 100%;
+				}
+				img:hover {
+					background-color: $narrasysOrange;
+					-webkit-box-shadow: 0px 0px 10px 0px rgba(222,101,37,1);
+					-moz-box-shadow: 0px 0px 10px 0px rgba(222,101,37,1);
+					box-shadow: 0px 0px 10px 0px rgba(222,101,37,1);
 				}
 			}
 		}
@@ -1148,17 +1154,16 @@ $h2pullquote: #5B5B5B;
 
 .demo {
 	-webkit-transition:all 0.5s ease-in-out;
+	-webkit-backface-visibility: hidden;
 	&.ng-hide {
-		height: 0;
+		//height: 0;
 		opacity: 0;
 	}
-
 
 	&.ng-enter, .ng-leave {
 		max-height: 0;
 		opacity: 0;
 	}
-
 
 	.static-items {
 		display: flex;

@@ -32,14 +32,13 @@
 <div class="side-bar__background">
 	<div class="side-bar" ng-show="demo.isDemo() && !demo.layoutSelected()">
 		<div class="side-bar__container">
-
-			<div ng-repeat="item in [1,2,3,4]" class="layout-opt" ng-click="selectLayout()">
-				<img ng-src="/images/customer/layout{{item}}.png">
+			<div ng-repeat="item in [1,2,3,4,5,6,7,8]" class="layout-opt" ng-click="selectLayout()">
+				<img ng-src="/images/customer/layout{{item > 4 ? item - 4 : item}}.svg">
 			</div>
 		</div>
 	</div>
 	<div ng-show="demo.isDemo() && !demo.layoutSelected()" class="side-bar__content">
-		<div class="select-text" ng-click="selectLayout()">
+		<div class="select-text">
 			<h1>Select Layout</h1>
 			<i class="fa fa-cubes fa-3"></i>
 		</div>
