@@ -32,8 +32,8 @@
 <div class="side-bar__background">
 	<div class="side-bar" ng-show="demo.isDemo() && !demo.layoutSelected()">
 		<div class="side-bar__container">
-			<div ng-repeat="item in [1,2,3,4,5,6,7,8]" class="layout-opt" ng-click="selectLayout()">
-				<img ng-src="/images/customer/layout{{item > 4 ? item - 4 : item}}.svg">
+			<div ng-repeat="item in [1,2,3,4,5,6,7,8,9,10,11,12]" class="layout-opt" ng-click="selectLayout()">
+				<img ng-src="/images/customer/layout{{item % 4 + 1}}.svg">
 			</div>
 		</div>
 	</div>
