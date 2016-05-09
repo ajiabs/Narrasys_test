@@ -149,7 +149,6 @@ angular.module('com.inthetelling.story')
 
 
 		function initHTML5Video() {
-			$scope.videoNode.setAttribute('src', $scope.video.url);
 			// $scope.videoNode.addEventListener("loadedmetadata", function () {
 			// 	console.log("video metadata has loaded");
 			// }, false);
