@@ -10,12 +10,35 @@ angular.module('com.inthetelling.story')
 		$scope.pqSwap = pqSwap;
 		$scope.videoSwap = videoSwap;
 		$scope.sideBarClick = sideBarClick;
+		$scope.toggleSideBar = toggleSideBar;
 		$scope.show = false;
 
 		$scope.demo = demoService;
 		$scope.$log = $log;
 		$scope.episode = modelSvc.episodes[appState.episodeId];
+		setupSideBar();
 
+		//console.log('scene scope', $scope);
+
+
+		function setupSideBar() {
+			var _path = 'templates/scene/';
+			var _layoutData = [
+				{name : 'Start', templateUrl: _path + 'landingscreen.html'},
+				{name: 'Video Left', templateUrl: _path + 'cornerV.html'},
+				{name: 'Centered Pro', templateUrl: _path + 'centeredPro.html'},
+				{name: 'Video Right', templateUrl: _path + 'cornerV.html'}
+			];
+			var _repeatData = [];
+			var len = 11;
+			for (; len >= 0; len--) {
+				var tmp = angular.copy(_layoutData[len % 4]);
+				tmp.id = len;
+				tmp.img = 'images/customer/layout' + ((len % 4) + 1) + '.svg';
+				_repeatData.push(tmp);
+			}
+			$scope.layouts = _repeatData;
+		}
 
 		function _addPqTest() {
 			var pq = demoMock.addStubPq();
@@ -23,8 +46,13 @@ angular.module('com.inthetelling.story')
 			modelSvc.events['572920395c92ebb2590000df'].items.push(pq);
 		}
 
-		function selectLayout() {
+		function toggleSideBar() {
 			$scope.demo.selectLayout();
+		}
+
+		function selectLayout(l) {
+			//$scope.demo.selectLayout();
+			$scope.scene.templateUrl = l.templateUrl;
 		}
 
 		function sideBarClick() {
