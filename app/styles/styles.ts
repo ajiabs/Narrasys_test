@@ -17,7 +17,7 @@ import toolbar from './toolbar.css';
 import transitions from './transitions.css';
 import typography from './typography.css';
 
-export {
+export default {
 		admin, colors, highlights, item, main,
 		narrative, producer, scene, texangular,
 		timeline, toolbar, transitions, typography

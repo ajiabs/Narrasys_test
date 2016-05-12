@@ -1,32 +1,31 @@
-'use strict';
+/// <reference path="../../typings/main.d.ts" />
+
 import './plugin/newrelic';
 import '../config';
 
-import angular from 'angular';
+import 'angular';
 import 'angular-route';
 import 'angular-animate';
 import 'angular-sanitize';
-import Filters from './filters/filters';
-
-import Controllers from './controllers/Controllers.module';
-import Directives from './directives/directives.module';
-import Services from './services/services.module';
-import Templates from './templates';
-import Configs from './app.module.configs';
-import * as Styles from '../styles/styles';
+import './filters/filters.ts';
+import './controllers/Controllers.module.ts';
+import './directives/directives.module.ts';
+import './services/services.module.ts';
+import './templates.ts';
+import './app.module.configs.ts';
+import '../styles/styles';
 
 // Declare the top level application module and its dependencies
 let ittApp = angular.module('iTT', [
-	Configs.name,
+	'iTT.configs',
 	'ngRoute',
 	'ngAnimate',
-	//'textAngular',
 	'ngSanitize',
-	Filters.name,
-	Templates.name,
-	Controllers.name,
-	Directives.name,
-	Services.name
+	'iTT.filters',
+	'iTT.templates',
+	'iTT.controllers',
+	'iTT.directives',
+	'iTT.services'
 ])
 
 

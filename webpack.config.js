@@ -8,12 +8,15 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 console.log(path.resolve(__dirname, 'app'));
 
 module.exports = {
+	resolve: {
+		extensions: ['', '.ts', '.js']
+	},
 	module: {
 		loaders: [
 			{
-				test: /\.js$/,
+				test: /\.ts$/,
 				exclude: [/app\/scripts\/plugin/, /node_modules/],
-				loader: 'ng-annotate!babel-loader'
+				loader: 'ng-annotate!ts-loader'
 			},
 			{
 				test: /\.css$/,

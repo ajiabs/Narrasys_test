@@ -2,7 +2,7 @@
 
 // TODO make up my mind about 'foo' versus 'isFoo'
 
-import angular from 'angular';
+import 'angular';
 
 export default angular.module('iTT.filters', [])
 

@@ -3,7 +3,7 @@
  */
 'use strict';
 
-import angular from 'angular';
+import 'angular';
 
 //import './plugin/taShim';
 import 'textAngular/dist/textAngular-sanitize.min';

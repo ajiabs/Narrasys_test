@@ -9,7 +9,7 @@ config.devtool = 'inline-source-map';
 config.entry = {
 	app: [
 		'webpack-hot-middleware/client?reload=true',
-		'./app/scripts/app.js'
+		'./app/scripts/app.ts'
 	]
 };
 config.output = {

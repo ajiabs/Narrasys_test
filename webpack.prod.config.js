@@ -9,7 +9,7 @@ var versionTxt = fs.readFileSync(path.resolve(__dirname, 'app', 'version.txt'), 
 
 //add source maps
 config.entry = {
-	app: './app/scripts/app.js'
+	app: './app/scripts/app.ts'
 };
 
 config.output = {
