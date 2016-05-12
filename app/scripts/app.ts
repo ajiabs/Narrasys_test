@@ -17,18 +17,17 @@ import '../styles/styles';
 
 // Declare the top level application module and its dependencies
 let ittApp = angular.module('iTT', [
-	'iTT.configs',
 	'ngRoute',
 	'ngAnimate',
 	'ngSanitize',
+	'iTT.configs',
 	'iTT.filters',
 	'iTT.templates',
 	'iTT.controllers',
 	'iTT.directives',
 	'iTT.services'
 ])
-
-
+	
 // Configure routing
 .config(function ($routeProvider) {
 	'ngInject';
@@ -151,6 +150,7 @@ let ittApp = angular.module('iTT', [
 	// globally emit rootscope event for certain keypresses:
 	var fhotkb = false; // user's forehead is not on the keyboard
 	$(document).on("keydown", function (e) {
+		//noinspection TypeScriptUnresolvedVariable
 		if (
 			fhotkb ||
 			document.activeElement.tagName === 'INPUT' ||
@@ -201,6 +201,6 @@ let ittApp = angular.module('iTT', [
 			}
 		};
 	});
-})
+});
 
 export default ittApp;

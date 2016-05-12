@@ -46,7 +46,7 @@ export default function youTubePlayerManager($q: ng.IQService, $location: ng.ILo
 
 	//private methods
 
-	function _createInstance(divId: string, videoID: string, stateChangeCB: Function, qualityChangeCB: Function, onReadyCB: Function, onError: Function) {
+	function _createInstance(divId: string, videoID: string, stateChangeCB: Function, qualityChangeCB: Function, onReadyCB: Function, onError: Function): Promise<YT.Player> {
 
 		var _controls = 1;
 		if (divId === _mainPlayerId) {
@@ -131,13 +131,14 @@ export default function youTubePlayerManager($q: ng.IQService, $location: ng.ILo
 	 * Used to create an instance of the YT object which is necessary to
 	 * interface with the youtube Iframe API
 	 * @param {String} divId Unique ID of Div element to append iframe into
+	 * @param {String} playerId PID of player
 	 * @param {String} videoId The youtube Video ID
 	 * @param {Function} [stateCb=noop] Optional control flow callback
 	 * @param {Function} [qualityChangeCB=noop] Optional quality change callback
 	 * @param {Function} [onReadyCB=noop] Optional onReady callback
 	 * @returns {Void} has no return value
 	 */
-	function create(divId: string, playerId: string, videoId: string, stateCb: Function, qualityChangeCB: Function, onReadyCB: Function) {
+	function create(divId: string, playerId:string, videoId: string, stateCb: Function, qualityChangeCB: Function, onReadyCB: Function) {
 		_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 			.then(handleSuccess)
 			.catch(tryAgain);
@@ -402,7 +403,7 @@ export default function youTubePlayerManager($q: ng.IQService, $location: ng.ILo
 	 * Used to reset the player after detecting
 	 * onError event.
 	 * @params pid The id of the player
-	 * @returns {Void} no return value
+	 * @returns {void} no return value
 	 */
 	function reset(pid: string) {
 
@@ -431,7 +432,7 @@ export default function youTubePlayerManager($q: ng.IQService, $location: ng.ILo
 	 * Used to pick a desired video quality
 	 * @param {String} pid The ID of the YT instance
 	 * @param {String} size The size to set playback quality
-	 * @returns {Void} no return value
+	 * @returns {void} no return value
 	 */
 	function setPlaybackQuality(pid:string, size:string) {
 		var p = _getYTInstance(pid);
@@ -468,7 +469,7 @@ export default function youTubePlayerManager($q: ng.IQService, $location: ng.ILo
 	 * @param {Boolean} allowSeekAhead Determines whether the player will make a new request to
 	 * the server if the t (seconds) parameter specifies a time outside of the currently
 	 * buffered video data
-	 * @returns {Void} no return value
+	 * @returns {void} no return value
 	 */
 	function seekTo(pid:string, t:number, allowSeekAhead:boolean) {
 		var p = _getYTInstance(pid);
