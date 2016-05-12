@@ -1,0 +1,19 @@
+<div class="side-bar__background" ng-class="{firstSelect: !$ctrl.firstSelect}">
+	<nav class="side-bar" ng-show="$ctrl.visible">
+		<div class="side-bar__container">
+			<div class="layout-opt" ng-repeat="l in $ctrl.layouts | orderBy:'id'"
+				 ng-click="$ctrl.setSelect(l)">
+				<h4>{{l.name}} <small ng-if="$ctrl.l.id === l.id">(current)</small></h4>
+				<img ng-class="{invert: $index > 0 && ($index + 1) % 4 === 0, selected: $ctrl.l.id === l.id }" ng-src="{{l.img}}"/>
+			</div>
+		</div>
+	</nav>
+	<div class="side-bar__content"
+		 ng-click="$ctrl.sceneSelect()"
+		 ng-show="$ctrl.visible && !$ctrl.firstSelect">
+		<div class="select-text">
+			<h1>Select Layout</h1>
+			<i class="fa fa-cubes fa-3"></i>
+		</div>
+	</div>
+</div>

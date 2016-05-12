@@ -10,13 +10,82 @@
 		.factory('demoMock', demoMock);
 
 	function demoMock($q, modelSvc, ittUtils, appState, stubData) {
+		var _isVisible = true;
+		var _firstSelect = false;
 		return {
 			addStubPq: addStubPq,
 			landingScreenSceneItems: _landingScreenSceneItems,
 			videoAsset: videoAsset,
 			imageAsset: imageAsset,
-			pdfAsset: pdfAsset
+			pdfAsset: pdfAsset,
+			setupSideBar: setupSideBar,
+			sideBarVisible: sideBarVisible,
+			toggleSideBar: toggleSideBar,
+			afterFirstSelect: afterFirstSelect,
+			sideBarFirstSelect: sideBarFirstSelect
 		};
+		
+		function sideBarFirstSelect() {
+			return _firstSelect;
+		}
+		
+		function afterFirstSelect() {
+			_firstSelect = true;
+		}
+		
+		function toggleSideBar() {
+			console.log('toggle vis');
+			_isVisible = !_isVisible;
+			return _isVisible;
+		}
+
+		function sideBarVisible() {
+			return _isVisible;
+		}
+
+		function setupSideBar() {
+			var _path = 'templates/scene/';
+
+			var _imgPath = function (i) {
+				return 'images/customer/' + i + '.svg';
+			};
+
+			var _layoutData = [
+				{
+					name: 'Corner Left',
+					style: 'demo videoLeft',
+					templateUrl: _path + 'cornerV.html',
+					img: _imgPath('layout1')
+				},
+				{
+					name: 'Center Right',
+					style: 'demo videoRight',
+					templateUrl: _path + 'centerVV.html',
+					img: _imgPath('layout2')
+				},
+				{
+					name: 'Center Left',
+					style: 'demo videoLeft',
+					templateUrl: _path + 'centerVV.html',
+					img: _imgPath('layout3')
+				},
+				{	//flip the img with CSS
+					name: 'Corner Right',
+					style: 'demo videoRight ',
+					templateUrl: _path + 'cornerV.html',
+					img: _imgPath('layout1')
+				}
+			];
+
+			var _repeatData = [];
+			var len = 11;
+			for (; len >= 0; len--) {
+				var tmp = angular.copy(_layoutData[len % 4]);
+				tmp.id = len;
+				_repeatData.push(tmp);
+			}
+			return _repeatData;
+		}
 
 		function _landingScreenSceneItems() {
 
@@ -56,7 +125,7 @@
 		}
 
 		function pdfAsset(files) {
-			return _readFile(files).then(function(url) {
+			return _readFile(files).then(function (url) {
 				var stub = {
 					"_id": 'stubPdf',
 					"_type": "Link",

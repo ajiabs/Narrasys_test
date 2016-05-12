@@ -833,9 +833,36 @@
   .narrasys-pro .scene.centerVV-mondrian .title a {
     color: white; }
 
+.toggle-side-bar__container {
+  -webkit-transition: all 0.25s cubic-bezier(0, 0, 0.3, 1);
+  display: inline-block;
+  position: fixed;
+  bottom: 5px;
+  right: 10px;
+  z-index: 199; }
+  .toggle-side-bar__container.onTop {
+    transform: translateY(-85px); }
+  .toggle-side-bar__container button {
+    box-shadow: 0px 0px 10px 0px #de6525;
+    width: 65px;
+    height: 65px;
+    background-color: #de6625;
+    border-radius: 50px;
+    color: white; }
+
 .side-bar__background {
+  will-change: opacity;
+  transition: opacity 0.3s cubic-bezier(0, 0, 0.3, 1);
+  top: 45px;
+  position: fixed;
   display: flex;
-  height: 100%; }
+  z-index: 100;
+  width: 100%; }
+  .side-bar__background.firstSelect {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background-color: #f1f1f1; }
   .side-bar__background .side-bar__content {
     width: 100%;
     align-self: center; }
@@ -850,30 +877,40 @@
       .side-bar__background .side-bar__content .select-text h1 {
         text-transform: uppercase;
         font-family: 'Gotham Medium'; }
+      .side-bar__background .side-bar__content .select-text img {
+        width: 20%; }
   .side-bar__background .side-bar {
     -webkit-transition: all 0.33s cubic-bezier(0, 0, 0.3, 1);
     -webkit-backface-visibility: hidden;
-    max-height: 900px;
+    height: 93vh;
     overflow-y: scroll;
     box-shadow: inset 0px 0px 10px 0px #4d4d4d;
-    background-color: #f1f1f1;
-    width: 15%; }
+    background-color: #f1f1f1; }
     .side-bar__background .side-bar.ng-hide {
       opacity: 0;
       transform: translateX(-102%); }
     .side-bar__background .side-bar .side-bar__container {
       display: flex;
       flex-direction: column;
-      justify-content: space-between; }
+      justify-content: space-between;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.4); }
       .side-bar__background .side-bar .side-bar__container .layout-opt {
-        margin: 10px; }
+        margin: 10px;
+        cursor: pointer; }
         .side-bar__background .side-bar .side-bar__container .layout-opt img {
           width: 100%; }
-        .side-bar__background .side-bar .side-bar__container .layout-opt img:hover {
-          background-color: #de6625;
-          -webkit-box-shadow: 0px 0px 10px 0px #de6525;
-          -moz-box-shadow: 0px 0px 10px 0px #de6525;
-          box-shadow: 0px 0px 10px 0px #de6525; }
+          .side-bar__background .side-bar .side-bar__container .layout-opt img.invert {
+            transform: scaleX(-1); }
+          .side-bar__background .side-bar .side-bar__container .layout-opt img:hover {
+            background-color: #de6625;
+            -webkit-box-shadow: 0px 0px 10px 0px #de6525;
+            -moz-box-shadow: 0px 0px 10px 0px #de6525;
+            box-shadow: 0px 0px 10px 0px #de6525; }
+          .side-bar__background .side-bar .side-bar__container .layout-opt img.selected {
+            background-color: #de6625;
+            -webkit-box-shadow: 0px 0px 10px 0px #de6525;
+            -moz-box-shadow: 0px 0px 10px 0px #de6525;
+            box-shadow: 0px 0px 10px 0px #de6525; }
 
 .demo {
   -webkit-transition: all 0.5s ease-in-out;
@@ -892,8 +929,6 @@
     .demo .static-items .pdf {
       margin-top: 20px;
       height: 350px; }
-  .demo .disable-drop {
-    opacity: 0.2; }
   .demo .video__container {
     width: 100%; }
     .demo .video__container .videoStub {
@@ -901,6 +936,24 @@
       margin-top: 8.5em;
       width: 616px;
       height: 347px; }
+  .demo.cornerV .video__container {
+    width: 100%; }
+    .demo.cornerV .video__container .videoStub {
+      margin: 0 auto;
+      margin-top: 2em;
+      width: 616px;
+      height: 347px; }
+  .demo.cornerV .static-items {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px; }
+    .demo.cornerV .static-items .image {
+      height: 150px; }
+    .demo.cornerV .static-items .pdf {
+      margin-top: 20px;
+      height: 350px; }
+  .demo .disable-drop {
+    opacity: 0.2; }
 
 .drop-target {
   height: 100%;

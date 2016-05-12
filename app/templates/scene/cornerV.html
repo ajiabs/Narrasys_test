@@ -11,15 +11,34 @@ showCurrent is forced in main.
 
 <div class="scene cornerV" ng-class="scene.styleCss + ' '+ scene.state">
 	<div class="col">
-		<div itt-magnet class="videoMagnet">
-			<img src="images/aspectratiopreserver-16x9.gif">
+		<div class="video__container">
+			<!--start video drag target-->
+			<div ng-show="!demo.videoReplaced()">
+				<div class="videoStub" ng-if="!demo.videoReplaced()">
+					<itt-demo-drop on-drop="videoSwap(val)" fa-icon="fa-film"></itt-demo-drop>
+				</div>
+			</div>
+			<div ng-show="demo.videoReplaced()" itt-magnet class="videoMagnet">
+				<img src="images/aspectratiopreserver-16x9.gif">
+			</div>
 		</div>
 		<div class="pane mainPane">
 			<div class="fill bgLayer">
 				<div class="item animate" ng-repeat="item in mainBgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
 			<div class="content contentLayer stretchToViewport" ng-class="{singleitem: mainContentItems.length==1, isNarrow: isNarrow, isEmpty: mainContentItems.length == 0}" itt-width-watch>
-				<div class="item animate" ng-repeat="item in mainItems = (mainContentItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+				<div class="pq__container">
+					<itt-demo-drop
+						ng-if="!demo.pqReplaced()"
+						ng-class="{ 'disable-drop': !demo.videoReplaced() }"
+						fa-icon="fa-font"
+						ng-click="pqSwap($event)"></itt-demo-drop>
+					<div class="item animate"
+						 ng-if="demo.pqReplaced()"
+						 ng-repeat="item in mainItems = (mainContentItems | isCurrent)"
+						 ng-class="item.styleCss + ' ' + item.state"
+						 itt-item="item"></div>
+				</div>
 				<div class="clear"></div>
 			</div>
 			<div class="fill fgLayer overlay">
@@ -35,14 +54,40 @@ showCurrent is forced in main.
 			<div class="content contentLayer stretchToViewport" ng-class="{
 				singleitem: showCurrent
 					? (altContentItems | isCurrent).length == 1
-					: (altContentItems).length == 1, 
+					: (altContentItems).length == 1,
 				allowHighlights: !showCurrent,
-				hasLeftSidebar: altContentHasLeftSidebar, 
+				hasLeftSidebar: altContentHasLeftSidebar,
 				hasRightSidebar: altContentHasRightSidebar,
 				isNarrow: isNarrow,
 				isEmpty: altContentItems.length == 0
 			}" itt-width-watch>
-				<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
+				<div class="static-items" ng-if="!(demo.imageReplaced() && demo.pdfReplaced())">
+					<!--start pdf and image drop targets-->
+					<div class="static-item image">
+						<itt-demo-drop
+							ng-if="!demo.imageReplaced()"
+							ng-class="{ 'disable-drop': !demo.videoReplaced() }"
+							fa-icon="fa-file-image-o"
+							on-drop="imageSwap(val)"></itt-demo-drop>
+						<div class="item" ng-if="demo.imageReplaced()"
+							 ng-repeat="item in altContentItems | filter:{ _id: 'stubImg' }"
+							 itt-item="item"></div>
+					</div>
+					<div class="static-item pdf">
+						<itt-demo-drop
+							ng-if="!demo.pdfReplaced()"
+							ng-class="{ 'disable-drop': !demo.videoReplaced() }"
+							fa-icon="fa-file-pdf-o"
+							on-drop="pdfSwap(val)"></itt-demo-drop>
+						<div class="item" ng-if="demo.pdfReplaced()"
+							 ng-repeat="item in altContentItems | filter:{ _id: 'stubPdf' }"
+							 itt-item="item"></div>
+					</div>
+				</div>
+				<div class="item animate"
+					 ng-if="(demo.imageReplaced() && demo.pdfReplaced())"
+					 ng-repeat="item in altContentItems | orderBy:'start_time'"
+					 ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
 				<div class="clear"></div>
 			</div>

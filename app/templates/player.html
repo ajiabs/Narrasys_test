@@ -9,31 +9,50 @@
 	<div class="player">
 		<!-- TODO: make sure user has admin role for canEditContent -->
 
-		<!--<div ng-include="'templates/toolbar-story.html'"></div>-->
-
 		<itt-toolbar-story></itt-toolbar-story>
 
 		<itt-loading ng-if="loading"></itt-loading>
-		<div ng-show="!loading" itt-episode ng-class="{
+
+
+		<!--begin sidenav-->
+		<itt-sidenav
+			ng-if="isDemo"
+			layouts="layouts"
+			visible="demoMock.sideBarVisible() && !loading"
+			on-select="updateScene($locals); demoMock.afterFirstSelect()"></itt-sidenav>
+
+
+		<!--begin episode-->
+		<div ng-show="!loading && demoMock.sideBarFirstSelect()" itt-episode ng-class="{
 		padForEditing: appState.editEvent || appState.editEpisode,
 		showBackgroundOnly: appState.producerEditLayer < 0,
 		showForegroundOnly: appState.producerEditLayer > 0,
 	}"></div>
 
-		<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
+		<div class="toggle-side-bar__container"
+			 ng-click="demoMock.toggleSideBar()"
+			 ng-class="{'onTop': appState.videoControlsActive}">
+			<button class="fa fa-cubes fa-2"></button>
+		</div>
+		<!--begin timeline-->
+		<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive"
+			 ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
 			<div class="toolbar-bottom-fill">
 				<div ng-show="appState.editEvent || appState.editEpisode" class="navPanel editPanel">
 					<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
 					<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>
 				</div>
-
 				<div itt-timeline></div>
 			</div>
 		</div>
-		<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()"></div>
+		<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();"
+			 ng-focus="showControls()"></div>
+
 	</div>
 
-	<div class="animate transitionFade" ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()" sxs-add-content></div>
+	<div class="animate transitionFade"
+		 ng-if="appState.videoControlsActive && (appState.product == 'sxs' || appState.product == 'producer')"
+		 ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()" sxs-add-content></div>
 
 	<div class="autoscroll" ng-if="appState.autoscroll && appState.autoscrollBlocked" ng-click="enableAutoscroll()">
 		<img src="/images/autoscroll.svg" width="32" height="32">
@@ -59,6 +78,7 @@
 		<div>
 			<span style="float:right">⤴</span>
 			<span style="float:right; display:inline-block; padding: 5px">Go here for best view</span>
-		</div> <a class="goAway" ng-click="noWileyNag()">Don't show this again</a>
+		</div>
+		<a class="goAway" ng-click="noWileyNag()">Don't show this again</a>
 	</div>
 </div>

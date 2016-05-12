@@ -16,34 +16,36 @@ angular.module('com.inthetelling.story')
 		$scope.demo = demoService;
 		$scope.$log = $log;
 		$scope.episode = modelSvc.episodes[appState.episodeId];
-		setupSideBar();
 
-		//console.log('scene scope', $scope);
+		appState.currentSceneTemplate = {path: $scope.scene.templateUrl, style: ''};
 
-
-		function setupSideBar() {
-			var _path = 'templates/scene/';
-			var _layoutData = [
-				{name : 'Start', templateUrl: _path + 'landingscreen.html'},
-				{name: 'Video Left', templateUrl: _path + 'cornerV.html'},
-				{name: 'Centered Pro', templateUrl: _path + 'centeredPro.html'},
-				{name: 'Video Right', templateUrl: _path + 'cornerV.html'}
-			];
-			var _repeatData = [];
-			var len = 11;
-			for (; len >= 0; len--) {
-				var tmp = angular.copy(_layoutData[len % 4]);
-				tmp.id = len;
-				tmp.img = 'images/customer/layout' + ((len % 4) + 1) + '.svg';
-				_repeatData.push(tmp);
+		$scope.$watch(function() {
+			return appState.currentSceneTemplate;
+		}, function(nv, ov) {
+			if (nv !== ov) {
+				console.log('scene tmpl change', nv);
+				$scope.scene.templateUrl = nv.path;
+				$scope.scene.styleCss = nv.style;
+				//set the first scene to use the template selected
+				//from sidebar
+				var firstScene = modelSvc.events['572920395c92ebb2590000df'];
+				firstScene.templateUrl = nv.path;
+				firstScene.styleCss = nv.style;
 			}
-			$scope.layouts = _repeatData;
-		}
+		}, true);
 
 		function _addPqTest() {
 			var pq = demoMock.addStubPq();
 			$scope.mainContentItems = [pq];
 			modelSvc.events['572920395c92ebb2590000df'].items.push(pq);
+		}
+
+		function pqSwap(e) {
+			//console.log("ev in ctrl", e);
+			_addPqTest();
+			console.log(e);
+			e.currentTarget.remove();
+			$scope.demo.replacePq();
 		}
 
 		function toggleSideBar() {
@@ -53,6 +55,7 @@ angular.module('com.inthetelling.story')
 		function selectLayout(l) {
 			//$scope.demo.selectLayout();
 			$scope.scene.templateUrl = l.templateUrl;
+
 		}
 
 		function sideBarClick() {
@@ -78,14 +81,6 @@ angular.module('com.inthetelling.story')
 				//console.log('scene items', modelSvc.events['572920395c92ebb2590000df'].items);
 			});
 
-		}
-
-		function pqSwap(e) {
-			//console.log("ev in ctrl", e);
-			_addPqTest();
-			console.log(e);
-			e.currentTarget.remove();
-			$scope.demo.replacePq();
 		}
 
 		function videoSwap(fileList) {

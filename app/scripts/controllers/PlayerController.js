@@ -3,8 +3,8 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager) {
-		// console.log("playerController", $scope);
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager, demoMock) {
+		 console.log("playerController", $scope);
 
 		// $scope.tmp = function () {
 		// 	dataSvc.createTemplate({
@@ -15,6 +15,19 @@ angular.module('com.inthetelling.story')
 		// 		applies_to_narrative: false
 		// 	});
 		// };
+
+		$scope.layouts = demoMock.setupSideBar();
+		$scope.demoMock = demoMock;
+		$scope.isDemo = $routeParams.demo === '1';
+		$scope.updateScene = updateScene;
+
+		function updateScene(selected) {
+			console.log("scene select", selected);
+			appState.currentSceneTemplate.path = selected.templateUrl;
+			appState.currentSceneTemplate.style = selected.style;
+			appState.currentSceneTemplate.name = selected.name;
+			demoMock.toggleSideBar();
+		}
 
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
