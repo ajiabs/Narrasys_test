@@ -20,7 +20,7 @@ var paths = {
 
 gulp.task('templates', function () {
 	return gulp.src(paths.templates)
-		.pipe(template('templates.ts', {moduleSystem: 'ES6', module:'iTT.templates', root: 'templates', standalone: true}))
+		.pipe(template('templates.ts', {moduleSystem: 'RequireJS', module:'iTT.templates', root: 'templates', standalone: true}))
 		.pipe(gulp.dest('app/scripts'));
 });
 

@@ -1,7 +1,7 @@
 /**
  * Created by githop on 12/7/15.
  */
-
+import {IPlayer} from '../interfaces/IPlayer';
 /**
  * @ngdoc directive
  * @name iTT.directive:ittYoutube
@@ -49,7 +49,7 @@ export function ittYoutube() {
 	};
 }
 
-export function ittYoutubeCtrl($timeout, $scope, youTubePlayerManager, youtubeSvc) {
+export function ittYoutubeCtrl($timeout: ng.ITimeoutService, $scope: ng.IScope, youTubePlayerManager: IPlayer, youtubeSvc) {
 	'ngInject';
 	var _ctrl = this;  //jshint ignore:line
 	_ctrl.isMainPlayer = _ctrl.mainPlayer();

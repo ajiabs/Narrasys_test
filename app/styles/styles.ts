@@ -3,19 +3,19 @@
  * Created by githop on 12/12/15.
  */
 
-import admin from './admin.css';
-import colors from './episode.scss';
-import highlights from './highlights.css';
-import item from './item.css';
-import main from './main.css';
-import narrative from './narrative.css';
-import producer from './producer.css';
-import scene from './scene.css';
-import texangular from './textangular.css';
-import timeline from './timeline.css';
-import toolbar from './toolbar.css';
-import transitions from './transitions.css';
-import typography from './typography.css';
+const admin =  require('./admin.css');
+const colors = require('./episode.scss');
+const highlights = require('./highlights.css');
+const item = require('./item.css');
+const main = require('./main.css');
+const narrative = require('./narrative.css');
+const producer = require('./producer.css');
+const scene = require('./scene.css');
+const texangular = require('./textangular.css');
+const timeline = require('./timeline.css');
+const toolbar = require('./toolbar.css');
+const transitions = require('./transitions.css');
+const typography = require('./typography.css');
 
 export default {
 		admin, colors, highlights, item, main,

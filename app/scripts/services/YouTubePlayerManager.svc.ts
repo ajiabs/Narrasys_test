@@ -3,6 +3,7 @@
  */
 
 
+import {IPlayer} from '../interfaces/IPlayer';
 /**
  * @ngdoc service
  * @name iTT.service:youTubePlayerManager
@@ -16,8 +17,7 @@
  * @requires YoutubePlayerApi
  * @requires errorSvc
  */
-
-export default function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc) {
+export default function youTubePlayerManager($q: ng.IQService, $location: ng.ILocationService, appState, timelineSvc, YoutubePlayerApi, errorSvc): IPlayer {
 	'ngInject';
 	var _youTubePlayerManager;
 	var _players = {};
@@ -46,7 +46,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 
 	//private methods
 
-	function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
+	function _createInstance(divId: string, videoID: string, stateChangeCB: Function, qualityChangeCB: Function, onReadyCB: Function, onError: Function) {
 
 		var _controls = 1;
 		if (divId === _mainPlayerId) {
@@ -89,13 +89,13 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * player that emitted it.
 	 * @returns {Object} Youtube Player Instance Object.
 	 */
-	function _getYTInstance(pid) {
+	function _getYTInstance(pid: string) {
 		if (_players[pid] && _players[pid].ready === true) {
 			return _players[pid].yt;
 		}
 	}
 
-	function _existy(x) {
+	function _existy(x: any) {
 		return x != null;  // jshint ignore:line
 	}
 
@@ -109,7 +109,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @params {Object} ytInstance
 	 * @returns {String} PID of YT Instance
 	 */
-	function _getPidFromInstance(ytInstance) {
+	function _getPidFromInstance(ytInstance: Object) {
 		var _key;
 		//for some reason, angular.equals was not working in this context.
 		//context: when embedding two identical youtube videos seemed to break
@@ -137,13 +137,13 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {Function} [onReadyCB=noop] Optional onReady callback
 	 * @returns {Void} has no return value
 	 */
-	function create(divId, playerId, videoId, stateCb, qualityChangeCB, onReadyCB) {
+	function create(divId: string, playerId: string, videoId: string, stateCb: Function, qualityChangeCB: Function, onReadyCB: Function) {
 		_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 			.then(handleSuccess)
 			.catch(tryAgain);
 
 
-		function handleSuccess(ytInstance) {
+		function handleSuccess(ytInstance: Object) {
 			_players[playerId].yt = ytInstance;
 			_players[playerId].ready = false;
 
@@ -181,7 +181,13 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 		 * player that emitted it.
 		 * @returns {Void} has no return value
 		 */
-		function onPlayerStateChange(event) {
+
+		interface IYoutubeEvent {
+			target: Object,
+			data: number | string
+		}
+
+		function onPlayerStateChange(event: IYoutubeEvent) {
 			//console.log("player state change!", event);
 			var main = _mainPlayerId;
 			var embed;
@@ -241,7 +247,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 		 * player that emitted it.
 		 * @returns {Void} has no return value
 		 */
-		function onReady(event) {
+		function onReady(event: IYoutubeEvent) {
 
 			var pid = _getPidFromInstance(event.target);
 
@@ -271,7 +277,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 		 * player that emitted it.
 		 * @returns {Void} has no return value
 		 */
-		function onPlayerQualityChange(event) {
+		function onPlayerQualityChange(event: IYoutubeEvent) {
 			var pid = _getPidFromInstance(event.target);
 			if (event.data === 'medium' && /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
 				setPlaybackQuality(pid, 'large');
@@ -292,7 +298,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 		 * player that emitted it.
 		 * @returns {Void} has no return value
 		 */
-		function onError(event) {
+		function onError(event: IYoutubeEvent) {
 			var brokePlayerPID = _getPidFromInstance(event.target);
 			if (event.data === 5) {
 				//only reset for HTML5 player errors
@@ -311,7 +317,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {String} pid The ID of the YT instance
 	 * @returns {Number} The current time of video in seconds.
 	 */
-	function getCurrentTime(pid) {
+	function getCurrentTime(pid: string) {
 		var p = _getYTInstance(pid);
 		if (_existy(p)) {
 			return p.getCurrentTime();
@@ -333,7 +339,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {String} pid The ID of the YT instance
 	 * @returns {Number} Int representing current player state.
 	 */
-	function playerState(pid) {
+	function playerState(pid: string) {
 		var p = _getYTInstance(pid);
 		if (_existy(p)) {
 			return p.getPlayerState();
@@ -349,7 +355,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {String} pid The ID of the YT instance
 	 * @returns {Void} no return value
 	 */
-	function play(pid) {
+	function play(pid: string) {
 		var p = _getYTInstance(pid);
 		if (_existy(p)) {
 			return p.playVideo();
@@ -365,7 +371,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {String} pid The ID of the YT instance
 	 * @returns {Void} no return value
 	 */
-	function pause(pid) {
+	function pause(pid: string) {
 		var p = _getYTInstance(pid);
 		if (_existy(p)) {
 			return p.pauseVideo();
@@ -381,7 +387,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @params pid The id of the player
 	 * @returns {Void} no return value
 	 */
-	function stop(pid) {
+	function stop(pid: string) {
 		var p = _getYTInstance(pid);
 		if (_existy(p)) {
 			return p.stopVideo();
@@ -398,7 +404,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @params pid The id of the player
 	 * @returns {Void} no return value
 	 */
-	function reset(pid) {
+	function reset(pid: string) {
 
 		var obj = _players[pid];
 		var instance = _players[pid].yt;
@@ -424,9 +430,10 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @description
 	 * Used to pick a desired video quality
 	 * @param {String} pid The ID of the YT instance
+	 * @param {String} size The size to set playback quality
 	 * @returns {Void} no return value
 	 */
-	function setPlaybackQuality(pid, size) {
+	function setPlaybackQuality(pid:string, size:string) {
 		var p = _getYTInstance(pid);
 		if (_existy(p)) {
 			p.setPlaybackQuality(size);
@@ -443,7 +450,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @returns {Number} Numerical value representing
 	 * percent of video that is currently buffered
 	 */
-	function getVideoLoadedFraction(pid) {
+	function getVideoLoadedFraction(pid: string) {
 		var p = _getYTInstance(pid);
 		if (_existy(p)) {
 			return p.getVideoLoadedFraction();
@@ -463,7 +470,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * buffered video data
 	 * @returns {Void} no return value
 	 */
-	function seekTo(pid, t, allowSeekAhead) {
+	function seekTo(pid:string, t:number, allowSeekAhead:boolean) {
 		var p = _getYTInstance(pid);
 		if (_existy(p)) {
 			p.seekTo(t, allowSeekAhead);
@@ -479,7 +486,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {String} pid The ID of the YT instance
 	 * @returns {Boolean} Bool representing mute state
 	 */
-	function isMuted(pid) {
+	function isMuted(pid:string) {
 		var p = _getYTInstance(pid);
 
 		if (_existy(p)) {
@@ -496,7 +503,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {String} pid The ID of the YT instance
 	 * @returns {Void} No return value.
 	 */
-	function mute(pid) {
+	function mute(pid:string) {
 		var p = _getYTInstance(pid);
 
 		if (_existy(p)) {
@@ -513,7 +520,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {String} pid The ID of the YT instance
 	 * @returns {Void} No return value.
 	 */
-	function unMute(pid) {
+	function unMute(pid:string) {
 		var p = _getYTInstance(pid);
 
 		if (_existy(p)) {
@@ -531,7 +538,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {Number} v Number between 1 and 100
 	 * @returns {Void} No return value.
 	 */
-	function setVolume(pid, v) {
+	function setVolume(pid:string, v:number) {
 		var p = _getYTInstance(pid);
 
 		if (_existy(p)) {
@@ -573,7 +580,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {String} pid The ID of the YT instance
 	 * @returns {Void} No return value.
 	 */
-	function pauseOtherEmbeds(pid) {
+	function pauseOtherEmbeds(pid:string) {
 		for (var p in _players) {
 			if (p !== _mainPlayerId && p !== pid) {
 				var curPlayerState = playerState(p);
@@ -595,7 +602,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {String} pid The ID of the YT instance
 	 * @returns {Void} No return value.
 	 */
-	function destroy(pid) {
+	function destroy(pid:string) {
 		var p = _getYTInstance(pid);
 		if (_existy(p)) {
 			p.destroy();
@@ -635,7 +642,7 @@ export default function youTubePlayerManager($q, $location, appState, timelineSv
 	 * @param {Boolean} mainPlayer Determines type of player, embed or main
 	 * @returns {String} Div ID of YT instance.
 	 */
-	function setPlayerId(id, mainPlayer) {
+	function setPlayerId(id:string, mainPlayer:boolean) {
 		var dfd = $q.defer();
 		var _id;
 		if (mainPlayer) {

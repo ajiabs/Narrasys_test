@@ -7,12 +7,12 @@ import 'angular';
 import 'angular-route';
 import 'angular-animate';
 import 'angular-sanitize';
-import './filters/filters.ts';
-import './controllers/Controllers.module.ts';
-import './directives/directives.module.ts';
-import './services/services.module.ts';
-import './templates.ts';
-import './app.module.configs.ts';
+import './filters/filters';
+import './controllers/Controllers.module';
+import './directives/directives.module';
+import './services/services.module';
+import './templates';
+import './app.module.configs';
 import '../styles/styles';
 
 // Declare the top level application module and its dependencies
