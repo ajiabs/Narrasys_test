@@ -1,6 +1,6 @@
 'use strict';
 
-export default function EditController($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, youtubeSvc) {
+export default function EditController($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
 	'ngInject';
 	$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 

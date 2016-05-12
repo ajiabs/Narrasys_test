@@ -42,6 +42,7 @@ import sxsInputTime from './sxsInputTime';
 
 import {ittYoutube, ittYoutubeCtrl} from './ittYoutubeEmbed';
 import ittToolbarStory from './ittToolbarStory';
+import ittValidateUrl from './ittValidateUrl';
 
 let directivesModule = angular.module('iTT.directives', [])
 	.directive('autofocus', autofocus)
@@ -84,6 +85,7 @@ let directivesModule = angular.module('iTT.directives', [])
 	.directive('sxsInputTime', sxsInputTime)
 	.directive('ittYoutube', ittYoutube)
 	.controller('ittYoutubeCtrl', ittYoutubeCtrl)
-	.directive('ittToolbarStory', ittToolbarStory);
+	.directive('ittToolbarStory', ittToolbarStory)
+	.directive('ittValidateUrl', ittValidateUrl);
 
 export default directivesModule;
