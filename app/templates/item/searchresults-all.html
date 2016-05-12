@@ -30,12 +30,12 @@
         </span>
         <span ng-switch-when="link">
           <a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
-          <itt-iframe x-src="{{item.url}}"></itt-iframe>
+          <itt-iframe x-src="{{item.url}}" item="item"></itt-iframe>
         </span>
         <span ng-switch-when="video">
           <span ng-switch-when="file">
             <a tabindex="0" x-ng-keypress="outgoingLinkOnKeyPress(item.asset.url,$event)" ng-click="outgoingLink(item.asset.url)" class="escapelink">(new window)</a>
-            <itt-iframe x-src="{{item.asset.url}}" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
+            <itt-iframe x-src="{{item.asset.url}}" item="item" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
           </span>
         </span>
         <span ng-switch-when="image">

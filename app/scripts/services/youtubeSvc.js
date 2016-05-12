@@ -41,6 +41,16 @@ export default function youtubeSvc($q, $http, $timeout, config) {
 			return (ytMatch && ytMatch[1]) ? ytMatch[1] : false;
 		};
 
+		svc.isYoutubeUrl = function(origUrl) {
+			if (!origUrl) {
+				return false;
+			}
+			origUrl = origUrl.replace(/%3F/, '?');
+			origUrl = origUrl.replace(/%26/, '&');
+			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+			return getYoutubeID.test(origUrl);
+		};
+
 		svc.embedParams = function (outgoing) {
 			// kept separate from createEmbedLinkFromYoutubeId for convenience in unit tests.
 			// TODO move these into videoController, as playerVar params, instead of embedding them in the url.  (Will need to init youtube as a div instead of as an iframe)

@@ -8,41 +8,59 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
 
 */
 
-export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
-	'ngInject';
-	return {
-		restrict: 'A',
-		replace: true,
-		scope: {
-			item: '=ittItemEditor'
-		},
-		templateUrl: 'templates/producer/item.html',
-		controller: 'EditController',
-		link: function (scope) {
-			// console.log("ittItemEditor", scope.item);
-			var widget;
-			scope.startRecordVideo = function () {
-				scope.isRecordingVideo = !scope.isRecordingVideo;
-				var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
-				if (widgetwidth > 500) {
-					widgetwidth = 500;
-				}
-				widget = new window.YT.UploadWidget('recordWidgetContainer', {
-					width: widgetwidth,
-					events: {
-						'onApiReady': function () {
-							// console.log('youtube onApiReady');
-							widget.setVideoPrivacy('unlisted');
-							var d = new Date();
-							var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
-							widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
-							// widget.setVideoDescription();
-							// widget.setVideoKeywords();
-						},
-						'onUploadSuccess': function (ret) {
-							scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
-							scope.isRecordingVideo = false;
-							scope.isProcessingVideo = true;
+/**
+ * @ngDoc directive
+ * @name iTT.directive:ittItemEditor
+ * @restrict 'A'
+ * @scope
+ * @description
+ * Directive for editing items in the producer / editor interface
+ * @requires $rootScope
+ * @requires $timeOut
+ * @requires errorSvc
+ * @requires appState
+ * @requires modelSvc
+ * @requires timelineSvc
+ * @requires awsSvc
+ * @requires dataSvc
+ * @requires youtubeSvc
+ * @param {Object} Item object representing an Event object from the DB to be edited.
+ */
+angular.module('com.inthetelling.story')
+	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
+		return {
+			restrict: 'A',
+			replace: true,
+			scope: {
+				item: '=ittItemEditor'
+			},
+			templateUrl: 'templates/producer/item.html',
+			controller: 'EditController',
+			link: function (scope) {
+				// console.log("ittItemEditor", scope.item);
+				var widget;
+				scope.startRecordVideo = function () {
+					scope.isRecordingVideo = !scope.isRecordingVideo;
+					var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
+					if (widgetwidth > 500) {
+						widgetwidth = 500;
+					}
+					widget = new window.YT.UploadWidget('recordWidgetContainer', {
+						width: widgetwidth,
+						events: {
+							'onApiReady': function () {
+								// console.log('youtube onApiReady');
+								widget.setVideoPrivacy('unlisted');
+								var d = new Date();
+								var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
+								widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
+								// widget.setVideoDescription();
+								// widget.setVideoKeywords();
+							},
+							'onUploadSuccess': function (ret) {
+								scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
+								scope.isRecordingVideo = false;
+								scope.isProcessingVideo = true;
 
 								// onProcessingComplete is not always fired by youtube; force it after 30 secs:
 								$timeout(function () {
@@ -120,7 +138,6 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 					if (!oldItem) {
 						return;
 					}
-
 					// FOR DEBUGGING
 					/*
 										angular.forEach(Object.keys(newItem), function (f) {
@@ -134,12 +151,14 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 						scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
 					}
 
+
 					// Special cases:
 					// if new template is image-fill,
 					// 	set cosmetic to true, itemForm.
 					// if old template was image-fill, set cosmetic to false
 					// TODO this is fragile, based on template name:
 					if (newItem.templateUrl !== oldItem.templateUrl) {
+						console.log('tempalte URL stuff in $watch');
 						if (newItem.templateUrl === 'templates/item/image-fill.html') {
 							scope.item.cosmetic = true;
 							scope.item.layouts = ["windowBg"];
@@ -153,7 +172,15 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 						}
 					}
 
-					scope.item = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+
+					//newItem is scope.item
+					newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+
+					//for producers, if they edit a URL to link-embed template a site that cannot be embedded,
+					//change the template URL to 'link'
+					if (appState.product === 'producer' && newItem.noEmbed === true && newItem.templateUrl === 'templates/item/link-embed.html') {
+						newItem.templateUrl = 'templates/item/link.html';
+					}
 
 					if (newItem.asset) {
 						scope.item.asset.cssUrl = "url('" + newItem.asset.url + "');";
@@ -169,6 +196,8 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 					if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time) {
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 					}
+					console.count('$watch turn');
+
 				}, true);
 
 				// Transform changes to form fields for styles into item.styles[]:
@@ -352,11 +381,11 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 					}
 				};
 
-			scope.$on('$destroy', function () {
-				scope.watchEdits();
-				scope.dismissalWatcher();
-				scope.watchStyleEdits();
-			});
-		}
-	};
-}
+				scope.$on('$destroy', function () {
+					scope.watchEdits();
+					scope.dismissalWatcher();
+					scope.watchStyleEdits();
+				});
+			}
+		};
+	});

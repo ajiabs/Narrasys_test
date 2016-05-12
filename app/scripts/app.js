@@ -32,7 +32,6 @@ let ittApp = angular.module('iTT', [
 
 // Configure routing
 .config(function ($routeProvider) {
-	'ngInject';
 	$routeProvider
 		.when('/', {
 			title: "Telling STORY",
@@ -143,7 +142,7 @@ let ittApp = angular.module('iTT', [
 })
 
 .run(function ($rootScope, errorSvc) {
-	'ngInject';
+
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
 		errorSvc.init(); // clear display of any errors from the previous route
@@ -175,6 +174,31 @@ let ittApp = angular.module('iTT', [
 	$(document).on("keyup", function () {
 		fhotkb = false; // oh good they've woken up
 	});
-});
+})
+
+// Configure x-domain resource whitelist (TODO: do we actually need this?)
+.config(function ($sceDelegateProvider) {
+	$sceDelegateProvider.resourceUrlWhitelist([
+		'self',
+		/.*/,
+		/^http(s)?:\/\/platformuniv-p.edgesuite.net/,
+		/^http(s)?:\/\/themes.googleusercontent.com/
+	]);
+})
+
+// Configure http headers and intercept http errors
+.config(function ($httpProvider) {
+	$httpProvider.defaults.useXDomain = true;
+	$httpProvider.defaults.withCredentials = true;
+	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+	$httpProvider.interceptors.push(function ($q, errorSvc) {
+		return {
+			'responseError': function (rejection) {
+				errorSvc.error(rejection);
+				return $q.reject(rejection);
+			}
+		};
+	});
+})
 
 export default ittApp;

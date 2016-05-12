@@ -1,11 +1,11 @@
 'use strict';
 
-const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
+var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 
 /* Parses API data into player-acceptable format,
 and derives secondary data where necessary for performance/convenience/fun */
 
-export default function modelSvc($interval, $filter, config, appState, youtubeSvc) {
+export default function modelSvc($interval, $filter, $location, config, appState, youtubeSvc) {
 	'ngInject';
 	var svc = {};
 
@@ -337,7 +337,8 @@ export default function modelSvc($interval, $filter, config, appState, youtubeSv
 				// clear derived flags before re-setting them (in case we're editing an existing item):
 				event.isContent = false;
 				event.isTranscript = false;
-				event.noEmbed = false;
+				event.noEmbed = event.noEmbed === undefined ? false : event.noEmbed;
+				event.mixedContent = false;
 				event.noExternalLink = false;
 				event.targetTop = false;
 
@@ -361,8 +362,15 @@ export default function modelSvc($interval, $filter, config, appState, youtubeSv
 					event.noEmbed = true;
 				}
 
-				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//)) {
-					//console.warn("Can't embed http:// link type:", event.url);
+				var isHttps = $location.protocol() === 'https';
+				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//) && isHttps) {
+					event.noEmbed = true;
+					event.mixedContent = true;
+					event.tipText = 'Link Embed is disabled because ' + event.url + ' is not HTTPS';
+					event.showInlineDetail = false;
+				}
+
+				if (event._type === "Link" && event.url && /mailto/.test(event.url)) {
 					event.noEmbed = true;
 				}
 
@@ -1089,4 +1097,4 @@ export default function modelSvc($interval, $filter, config, appState, youtubeSv
 		}
 		return svc;
 
-}
+	});

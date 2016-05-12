@@ -5,6 +5,10 @@ set :scm, :git
 set :last_commit, `git rev-list --tags --max-count=1`
 ask :branch, proc { `git describe --tags #{fetch(:last_commit)}`.chomp }
 
+# Sometimes ask sets the value to the Proc itself rather than the value.  This only happens when accepting the default value. Calling fetch unrolls that.
+# See https://github.com/capistrano/capistrano/issues/859.  They should have just fixed ask when accepting the default value.
+set :branch, fetch(:branch)
+
 set :user, 'deploy'
 set :deploy_to, "/home/deploy/#{fetch(:application)}"
 set :deploy_via, :remote_cache

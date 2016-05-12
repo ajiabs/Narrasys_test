@@ -49,6 +49,10 @@
 					<!-- begin metadata  tab -->
 					<div class="authoringFormScrollContainer">
 						<div class="field">
+							<div ng-if="item.tipText && item.noEmbed" class="tooltip-static">
+								<i class="fa fa-info-circle info-blue"></i>
+								<p class="tooltip-text">{{item.tipText}}</p>
+							</div>
 							<div class="label">
 								Template
 							</div>
@@ -95,7 +99,9 @@
 									<option value="templates/item/link-withimage.html">Link with image</option>
 									<option value="templates/item/link-withimage-notitle.html">Link with image - no title</option>
 									<option value="templates/item/link-descriptionfirst.html">Link: description first</option>
-									<option value="templates/item/link-embed.html">Embedded link</option>
+									<option ng-if="!item.noEmbed" value="templates/item/link-embed.html">Embedded link</option>
+									<option ng-if="item.noEmbed" disabled value="templates/item/link.html">Embedded link</option>
+									<option value="templates/item/link-modal-thumb.html">Link Modal</option>
 								</select>
 								<select ng-if="item.producerItemType == 'image'" ng-model="item.templateUrl">
 									<option value="templates/item/image-fill.html">Overlay or background fill</option>
@@ -273,7 +279,7 @@
 			item._id != 'internal:editing' &&
 			!(item._type == 'Scene' && item.start_time <= 0.01)
 		" ng-click="deleteEvent(item._id)">Delete</button>
-		<button ng-click="saveEvent()" ng-disabled="blockDoubleClicks">Save</button>
+		<button ng-click="saveEvent()" ng-disabled="blockDoubleClicks || item.urlForm.$invalid">Save</button>
 	</div>
 
 </div>

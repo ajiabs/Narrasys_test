@@ -1,9 +1,9 @@
-<div class="modal" ng-click="dismiss();">
+<div class="modal" ng-style="modalSmooth" ng-click="dismiss();">
   <span ng-if="item._type == 'Link'">
     <div class="modalmenu">
       <a href="{{item.url}}" target="_blank" class="escapelink">(new window)</a>
     </div>
-    <itt-iframe x-src="{{item.url}}"></itt-iframe>
+    <itt-iframe x-src="{{item.url}}" item="item"></itt-iframe>
   </span>
   <span ng-if="item._type == 'Upload'">
     <span ng-switch="item.asset.content_type.indexOf('image/')">
@@ -11,7 +11,7 @@
         <div class="modalmenu">
           <a href="{{item.asset.url}}" target="_blank" class="escapelink">(new window)</a>
         </div>
-        <itt-iframe x-src="{{item.asset.url}}" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
+        <itt-iframe x-src="{{item.asset.url}}" item="item" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
       </span>
       <span ng-switch-default>
         <div class="modalimage" ng-if="item._type == 'Upload'">
@@ -20,5 +20,4 @@
       </span>
     </span>
   </span>
-
 </div>
