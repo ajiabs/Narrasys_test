@@ -34,7 +34,7 @@
 				item: '='
 			},
 			link: function link(scope, elm, attrs, ngModel) {
-
+				var _separateTabNotice = 'This link will be displayed in a separate tab.';
 				if (ngModel) {
 					console.log('tigger validation', ngModel);
 					scope.item.urlForm = ngModel;
@@ -45,7 +45,7 @@
 					//always consider mixedContent url 'valid' but notify user
 					ngModel.$validators.mixedContent = function (modelVal, viewVal) {
 						if (viewVal.match(/^http:\/\//)) {
-							errorSvc.notify('This link will be displayed in a separate tab.');
+							errorSvc.notify(_separateTabNotice);
 							console.log("resolving mixed content!", viewVal);
 						}
 						return true;
@@ -77,12 +77,11 @@
 
 						return dataSvc.checkXFrameOpts(viewVal)
 							.then(function (noEmbed) {
-								var xFrameOptsNote = ' does not allow embedding, so this link will open in a new tab';
 								scope.item.noEmbed = noEmbed;
 								if (noEmbed) {
 									scope.item.tipText = 'Link embed is disabled because ' + viewVal + ' does not allow iframing';
 									scope.item.showInlineDetail = false;
-									errorSvc.notify(viewVal + xFrameOptsNote);
+									errorSvc.notify(_separateTabNotice);
 								}
 							});
 					};
