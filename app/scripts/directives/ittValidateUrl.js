@@ -45,7 +45,7 @@
 					//always consider mixedContent url 'valid' but notify user
 					ngModel.$validators.mixedContent = function (modelVal, viewVal) {
 						if (viewVal.match(/^http:\/\//)) {
-							errorSvc.notify('Link Embed is disabled because ' + viewVal + ' is not HTTPS');
+							errorSvc.notify('This link will be displayed in a separate tab.');
 							console.log("resolving mixed content!", viewVal);
 						}
 						return true;
