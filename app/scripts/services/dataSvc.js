@@ -2,18 +2,98 @@
 
 // TODO: load and resolve categories
 
-// Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
-// the rest gets passed to modelSvc
 
-//  use PUT to update, POST to create new
-// for assets, DELETE then POST
-// to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
+/**
+ * @ngdoc service
+ * @name iTT.service:dataSvc
+ * @description
+ * Service for hitting API endpoints
+ * prior code comments:
+ * Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
+ * the rest gets passed to modelSvc
+ * use PUT to update, POST to create new
+ * for assets, DELETE then POST
+ * to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
+ * @requires $q
+ * @requires $http
+ * @requires $routeParams
+ * @requires $timeout
+ * @requires $rootScope
+ * @requires config
+ * @requires authSvc
+ * @requires appState
+ * @requires modelSvc
+ * @requires errorSvc
+ * @requires mockSvc
+ * @requires questionAnswersSvc
+ */
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
+
+		/**
+		 * @ngdoc method
+		 * @name #checkXFrameOpts
+		 * @methodOf iTT.service:dataSvc
+		 * @description
+		 * Used to check whether or not a website can be iframed by inspecting the x-frame-options header
+		 * @param {String} url The target URL of site to inspect
+		 * @returns {Boolean} Whether or not we can embed the input URL in an iframe.
+         */
+		svc.checkXFrameOpts = function(url) {
+			//why use a 'post process callback'
+			//when you can simply chain promises?
+
+			//check protcol for mixed content??
+			var currentOrigin;
+			var parseInputUrl;
+			var encodedUrl = encodeURIComponent(url);
+			return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
+			.then(function(result) {
+				console.log('x-frame-opts: ', result.x_frame_options);
+				return _canEmbed(result.x_frame_options);
+			});
+
+			function _canEmbed(xFrameOpts) {
+				var _noEmbed = true;
+				switch(true) {
+					case /SAMEORIGIN/i.test(xFrameOpts):
+						currentOrigin = $location.host();
+						parseInputUrl = document.createElement('a');
+						parseInputUrl.href = url;
+						//check our origin
+						if (currentOrigin === parseInputUrl.hostname) {
+							_noEmbed = false;
+						}
+						break;
+					case /ALLOW-FROM/i.test(xFrameOpts):
+						//check if we're on the list
+						//split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
+						var xFrameArr = xFrameOpts.split(',');
+						currentOrigin = $location.host();
+						angular.forEach(xFrameArr, function(i) {
+							var url = i.trim().split(' ')[1];
+							var aElm = document.createElement('a');
+							aElm.href = url;
+							if (currentOrigin === aElm.hostname) {
+								_noEmbed = false;
+							}
+						});
+						break;
+					case /DENY/i.test(xFrameOpts):
+						// do nothing
+						break;
+					case /null/.test(xFrameOpts):
+						//ticket to ride
+						_noEmbed = false;
+						break;
+				}
+				return _noEmbed;
+			}
+		};
 
 		// WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
 		svc.getNarrative = function (narrativeId) {
@@ -541,6 +621,21 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
+		var SANE_GET = function(path) {
+			//wrapping a method in a promises that is already using functions that return promises
+			//is an anti-pattern.
+			//simply return this promise
+			return authSvc.authenticate()
+			.then(function() {
+				//then return this promise
+				return $http.get(config.apiDataBaseUrl + path)
+				.then(function(resp) {
+					//SANE_GET will resolve to this
+					return resp.data;
+				});
+			});
+		};
+
 		var PUT = function (path, putData, postprocessCallback) {
 			var defer = $q.defer();
 			$http({
@@ -852,6 +947,7 @@ angular.module('com.inthetelling.story')
 				"sxs", // for demos, for now
 				"title",
 				"url",
+				"noEmbed",
 				"annotator",
 				"annotation",
 				"description",

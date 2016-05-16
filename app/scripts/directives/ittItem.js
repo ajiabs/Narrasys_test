@@ -51,7 +51,7 @@ angular.module('com.inthetelling.story')
 							scope.item.showInlineDetail = true;
 						} else {
 							// otherwise pop a modal:
-							appState.itemDetail = scope.item;
+							appState.itemDetail = {item: scope.item, animate: true};
 						}
 					}
 				};
@@ -82,10 +82,14 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-				scope.forceModal = function () {
+				scope.forceModal = function (doAnimate) {
+					if (doAnimate === undefined) {
+						doAnimate = true;
+					}
 					timelineSvc.pause();
-					appState.itemDetail = scope.item;
+					appState.itemDetail = {item: scope.item, animate: doAnimate};
 				};
+
 				scope.outgoingLinkOnKeyPress = function (url, $event) {
 					var e = $event;
 					var passThrough = true;
@@ -112,13 +116,19 @@ angular.module('com.inthetelling.story')
 					scope.captureInteraction();
 
 					if (url.match(/youtube/)) {
+						url += youtubeSvc.embedParams(true);
 						//if we have an embed set, pause it when
 						//linking to new window.
 						if (appState.embedYTPlayerAvailable) {
 							youTubePlayerManager.pauseOtherEmbeds();
+							var curTime = Math.floor(youTubePlayerManager.getCurrentTime(scope.item._id));
+							console.log('made it to the right spot!!', curTime);
+							if (curTime > 0) {
+								url += '&start=' + curTime;
+							}
 						}
 
-						url += youtubeSvc.embedParams(true);
+
 					}
 
 					if (scope.item.targetTop) {

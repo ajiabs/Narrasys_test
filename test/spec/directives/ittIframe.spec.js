@@ -71,7 +71,7 @@
 
 				var ctrl = el.isolateScope().iframeCtrl;
 
-				expect(ctrl.sandbox).toBe(defaultSandbox);
+				expect(ctrl.sandbox).toBeUndefined();
 			});
 
 			it('should remove sandbox attrs for PDFs', function() {

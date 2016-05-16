@@ -217,7 +217,7 @@
   font-size: 110%; }
 
 .episode-prolotherapy {
-  font-family: 'Source Sans', sans-serif; }
+  font-family: 'Source Sans Pro', sans-serif; }
 
 .episode-prolotherapy .colorInvert {
   background-color: #3f58a7;
@@ -413,8 +413,8 @@
   background: none; }
 
 .episode-wiley {
-  font-family: 'Source Sans', sans-serif;
-  font-weight: 200; }
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 300; }
 
 .episode-wiley a,
 .episode-wiley .fakeLink {
@@ -476,10 +476,19 @@
 
 @media screen and (min-width: 700px) {
   .episode-wiley {
-    font-size: 105%; } }
+    font-size: 105%; }
+    .episode-wiley .searchMode .searchResults {
+      margin: 0; } }
+@media screen and (min-width: 750px) {
+  .episode-wiley {
+    font-size: 105%; }
+    .episode-wiley .searchMode .searchResults {
+      margin-right: 315px; } }
 @media screen and (min-width: 900px) {
   .episode-wiley {
-    font-size: 110%; } }
+    font-size: 110%; }
+    .episode-wiley .searchMode .searchResults {
+      margin-right: 315px; } }
 .episode-regis .scene.isCurrent::before,
 .episode-regis .searchMode::before,
 .episode-regis .reviewMode::before {
@@ -678,11 +687,59 @@
   background-repeat: no-repeat;
   background-position: top right;
   position: absolute; }
+  .narrasys-pro .endingscreen p {
+    margin-top: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Gotham Thin';
+    color: white;
+    background-color: #de6625;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    min-height: 80px;
+    max-height: 80px;
+    position: absolute;
+    font-size: 2.0vmax;
+    font-weight: lighter;
+    letter-spacing: 0.1em;
+    position: relative;
+    top: 0; }
+  .narrasys-pro .landingscreen {
+    padding-top: 0%; }
+    .narrasys-pro .landingscreen div {
+      display: flex;
+      flex-direction: column; }
+    .narrasys-pro .landingscreen .introtext {
+      width: 100%;
+      margin-bottom: 5em; }
+    .narrasys-pro .landingscreen .videoMagnet {
+      width: 100%; }
+    .narrasys-pro .landingscreen h1 {
+      margin-top: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Gotham Thin';
+      color: white;
+      background-color: #de6625;
+      width: 100%;
+      text-align: center;
+      padding: 10px 0;
+      min-height: 80px;
+      max-height: 80px;
+      position: absolute;
+      font-size: 2.0vmax;
+      font-weight: lighter;
+      letter-spacing: 0.1em; }
   .narrasys-pro .branding {
     height: 210px;
     background: none; }
   .narrasys-pro .item {
     color: black; }
+    .narrasys-pro .item .itemCaption {
+      color: white; }
     .narrasys-pro .item .pullquote {
       font-family: 'Gotham Light Italic';
       color: #5b5b5b;
@@ -769,12 +826,15 @@
     opacity: 1;
     background-size: cover;
     left: 50%; }
+  .narrasys-pro .scene.centerVV-mondrian .content .item:first-child.mondrian {
+    padding: 0.1em 0 0.3em 0.3em; }
   .narrasys-pro .scene.centerVV-mondrian .item.mondrian {
     margin-top: 1.7em;
     background-color: #4d4d4d;
-    color: white;
-    /*width: 90%;*/ }
-  .narrasys-pro .scene.centerVV-mondrian img {
-    width: 99%; }
+    color: white; }
+    .narrasys-pro .scene.centerVV-mondrian .item.mondrian .escapelink:before {
+      color: white; }
+    .narrasys-pro .scene.centerVV-mondrian .item.mondrian a {
+      color: white; }
   .narrasys-pro .scene.centerVV-mondrian .title a {
     color: white; }
