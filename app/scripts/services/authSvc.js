@@ -26,6 +26,7 @@ angular.module('com.inthetelling.story')
 		$rootScope.$on('error:sessionTimeout', function () {
 			var _isGuest = true;
 
+			console.log('session timeout!!');
 			angular.forEach(appState.user.roles, function(r) {
 				if (r.role !== 'guest') {
 					_isGuest = false;
@@ -35,6 +36,7 @@ angular.module('com.inthetelling.story')
 			if (_isGuest) {
 				svc.authenticateViaNonce($routeParams.narrativePath);
 			} else {
+				console.log('notifying of session timeout');
 				errorSvc.error({session: 'User Session Timed out!'});
 			}
 		});
@@ -176,7 +178,6 @@ angular.module('com.inthetelling.story')
 
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function (nonceParam) {
-			console.trace('authenticating...');
 			if ($http.defaults.headers.common.Authorization) {
 				//console.log("have auth headers!");
 				if (appState.user) {
@@ -195,6 +196,7 @@ angular.module('com.inthetelling.story')
 				}
 			} else if ($routeParams.key) {
 				// Have key in route
+				console.log('have key, no token!');
 				var nonce = $routeParams.key;
 				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
 				return svc.getAccessToken(nonce);
@@ -322,7 +324,10 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
-			if (user.avatar_id) {
+			var tok = svc.getStoredToken();
+			if (user.avatar_id && tok) {
+				console.log('culprit identified', tok);
+				$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
 					// console.log("GOT AVATAR", response);
