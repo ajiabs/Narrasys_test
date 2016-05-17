@@ -16,6 +16,9 @@ angular.module('com.inthetelling.story')
 		// 	});
 		// };
 
+		//setup check of localStorage when Ctrl inits.
+		var recoverData = localStorage.getItem('recoverData');
+
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
 			analyticsSvc.captureEpisodeActivity("modeChange", {
@@ -165,11 +168,24 @@ angular.module('com.inthetelling.story')
 					appState.product = 'player';
 					appState.productLoadedAs = 'player';
 				}
+			}).finally(function() {
+				//recoverData is set only by the errorCtrl
+				if (recoverData) {
+					var asJson = JSON.parse(recoverData);
+					//we know we're in the right spot
+					//this doesn't check for narratives / episodes
+					if (asJson.entityId === appState.episodeId) {
+						timelineSvc.seek(asJson.time);
+						//blow it away after recovery
+						localStorage.removeItem('recoverData')
+					}
+				}
 
 			});
 		});
 
 		if (modelSvc.episodes[appState.episodeId]) {
+			console.log("we have an episode in the modelSvC!!");
 			// recycle existing episode data.   TODO: DRY the repeated code below from inside getEpisodeWatcher
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change

@@ -34,7 +34,17 @@ angular.module('com.inthetelling.story')
 			$interval(function() {
 				$scope.timer--;
 
-				if ($scope.timer === 0) { authSvc.logout(); }
+				if ($scope.timer === 0) {
+					var epId = appState.episodeId;
+					var curTime = appState.time;
+					//TODO make this work with both episodes and narratives
+					var payload = {time: curTime, entityId: epId};
+					localStorage.setItem('recoverData', JSON.stringify(payload));
+					//authSvc.logout() flushes client side / server side
+					//auth data and finally reloads the browser. 
+					authSvc.logout();
+					//authSvc.authenticate() will handle routing the user after this.
+				}
 
 			}, 1000);
 
