@@ -109,12 +109,12 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.logout = function() {
-			_clearLocalAuthData()
-				.then(_clearServerSession)
+			_clearServerSession()
+				.then(_clearLocalAuthData)
 				.finally(function () {
 					//handle redirect;
 					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
-					window.location.reload();
+					window.location.href = '/#/user';
 				});
 		};
 
@@ -130,6 +130,7 @@ angular.module('com.inthetelling.story')
 		}
 
 		function _clearServerSession() {
+			console.trace('wtf mate?');
 			return $http({
 				method: 'GET',
 				url: config.apiDataBaseUrl + "/logout"
@@ -178,6 +179,7 @@ angular.module('com.inthetelling.story')
 
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function (nonceParam) {
+
 			if ($http.defaults.headers.common.Authorization) {
 				//console.log("have auth headers!");
 				if (appState.user) {
@@ -324,10 +326,10 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
-			var tok = svc.getStoredToken();
-			if (user.avatar_id && tok) {
-				console.log('culprit identified', tok);
-				$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
+			// var tok = svc.getStoredToken();
+			if (user.avatar_id) {
+				// console.log('culprit identified', tok);
+				// $http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
 					// console.log("GOT AVATAR", response);
@@ -379,6 +381,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getNonce = function (nonceParam) {
+			console.trace('getting nonce');
 			var defer = $q.defer();
 			var url = config.apiDataBaseUrl + "/v1/get_nonce";
 			if (nonceParam) {
@@ -414,21 +417,38 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getAccessToken = function (nonce) {
-			var defer = $q.defer();
-			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
-				.success(function (data) {
-					resolveUserData(data);
-					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
+			// var defer = $q.defer();
+
+			console.log("nonce ", nonce);
+
+			return $http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
+				.then(function(data) {
+					resolveUserData(data.data);
+					$http.defaults.headers.common.Authorization = 'Token token="' + data.data.access_token + '"';
+					console.log('data', data.data);
 					svc.getCurrentUser()
-						.then(function () {
-							defer.resolve(data);
+						.then(function(userData) {
+							return data.data;
 						});
 				})
-				.error(function () {
-					// console.error("get_access_token failed:", data, status);
-					defer.reject();
+				.catch(function(e) {
+					console.error("get_access_token failed:", e);
 				});
-			return defer.promise;
+
+			// $http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
+			// 	.success(function (data) {
+			// 		resolveUserData(data);
+			// 		$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
+			// 		svc.getCurrentUser()
+			// 			.then(function () {
+			// 				defer.resolve(data);
+			// 			});
+			// 	})
+			// 	.error(function () {
+			// 		console.error("get_access_token failed:", data, status);
+			// 		defer.reject();
+			// 	});
+			// return defer.promise;
 		};
 
 		return svc;

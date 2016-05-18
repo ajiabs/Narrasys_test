@@ -43,7 +43,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		.when('/story/:narrativePath/:timelinePath', {
 			template: '<div itt-narrative-timeline></div>',
 			resolve: {
-				product: function (appState) {
+				narrative: function (appState) {
 					appState.product = "player";
 					appState.productLoadedAs = "narrative";
 				}

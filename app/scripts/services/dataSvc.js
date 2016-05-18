@@ -96,10 +96,12 @@ angular.module('com.inthetelling.story')
 		};
 
 		// WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
+
 		svc.getNarrative = function (narrativeId) {
+			console.log('hmm', narrativeId);
 			// Special case here, since it needs to call getNonce differently:
 			var defer = $q.defer();
-			authSvc.authenticate("narrative=" + narrativeId).then(function () {
+			authSvc.authenticate(narrativeId).then(function () {
 				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve")
 					.then(function (response) {
 						console.log("dataSvc.getNarrative", response.data);
@@ -522,6 +524,7 @@ angular.module('com.inthetelling.story')
 									angular.forEach(assets.files, function (asset) {
 										modelSvc.cache("asset", asset);
 									});
+									console.log('resolving asset');
 									modelSvc.resolveEpisodeAssets(epId);
 									$rootScope.$emit("dataSvc.getEpisode.done");
 								});
@@ -708,7 +711,56 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+		svc.saneGetContainer = function(id, episodeId) {
+			return SANE_GET('/v3/containers/' + id)
+				.then(function(containers) {
+					modelSvc.cache("container", containers[0]);
+					var container = modelSvc.containers[containers[0]._id];
+
+					// Get the container' asset list:
+					svc.getContainerAssets(id, episodeId);
+
+					// Ensure container.children refers to items in modelSvc cache:
+					if (container.children) {
+						for (var i = 0; i < container.children.length; i++) {
+							container.children[i] = modelSvc.containers[container.children[i]._id];
+						}
+
+						// QUICK HACK to get episode status for inter-episode nav; stuffing it into the container data
+						// Wasteful of API calls, discards useful data
+						var getSiblings = false;
+						if (!episodeId) {
+							getSiblings = true; // we're in a container list
+						}
+						// if (episodeId && modelSvc.episodes[episodeId].navigation_depth > 0) {
+						// 	getSiblings = true;
+						// }
+						if (getSiblings) {
+							angular.forEach(container.children, function (child) {
+								if (child.episodes[0]) {
+									svc.getEpisodeOverview(child.episodes[0])
+										.then(function (overview) {
+											if (overview) {
+												child.status = overview.status;
+												child.title = overview.title; // name == container, title == episode
+												modelSvc.cache("container", child); // trigger setLang
+											} else {
+												// This shouldn't ever happen, but apparently it does.
+												// (Is this a permissions error? adding warning to help track it down)
+												console.error("Got no episode data for ", child.episodes[0]);
+											}
+										});
+								}
+							});
+
+						}
+					}
+					return containers[0]._id;
+				});
+		};
+
 		svc.getContainer = function (id, episodeId) {
+			console.log('getting container!!', id, episodeId);
 			return GET("/v3/containers/" + id, function (containers) {
 				modelSvc.cache("container", containers[0]);
 				var container = modelSvc.containers[containers[0]._id];

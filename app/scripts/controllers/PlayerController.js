@@ -129,8 +129,8 @@ angular.module('com.inthetelling.story')
 			// END WILEY HACK
 		};
 
-		var getEpisodeWatcher = $rootScope.$on("dataSvc.getEpisode.done", function () {
-			getEpisodeWatcher();
+		$rootScope.$on("dataSvc.getEpisode.done", function () {
+			console.log('$on getEpisode.done');
 			// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 			modelSvc.setLanguageStrings();
@@ -138,54 +138,57 @@ angular.module('com.inthetelling.story')
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
 			// console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
 			// producer needs the episode container:
-			dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId).then(function () {
-				if (modelSvc.episodes[appState.episodeId].master_asset_id) {
-					// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
-					// HACK this is a weird place for this.
-					var watch = $scope.$watch(function () {
-						return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
-					}, function (masterAsset) {
-						if (masterAsset && Object.keys(masterAsset).length > 1) {
-							watch();
-							modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
-							timelineSvc.init(appState.episodeId);
-							$scope.loading = false;
-						}
-					});
-				} else {
-					// Episode has no master asset
-					$scope.loading = false;
-					// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
-					if (appState.product === 'producer') {
-						appState.editEpisode = modelSvc.episodes[appState.episodeId];
-					}
-					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
-					appState.videoControlsLocked = true;
-				}
+			dataSvc.saneGetContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId)
+				.then(function(containers) {
+					console.log('got container', containers);
+				});
 
-				if (appState.productLoadedAs === 'producer' && !authSvc.userHasRole('admin')) {
-					// TODO redirect instead?
-					appState.product = 'player';
-					appState.productLoadedAs = 'player';
-				}
-			}).finally(function() {
-				//recoverData is set only by the errorCtrl
-				if (recoverData) {
-					var asJson = JSON.parse(recoverData);
-					//we know we're in the right spot
-					//this doesn't check for narratives / episodes
-					if (asJson.entityId === appState.episodeId) {
-						timelineSvc.seek(asJson.time);
-						//blow it away after recovery
-						localStorage.removeItem('recoverData')
-					}
-				}
-
-			});
+			// dataSvc.getContainer(modelSvc.episodes[appState.episodeId].container_id, appState.episodeId).then(function () {
+			// 	if (modelSvc.episodes[appState.episodeId].master_asset_id) {
+			// 		// watch for the master asset to exist, so we know duration; then call addEndingScreen and timelineSvc.init.
+			// 		// HACK this is a weird place for this.
+            //
+			// 		var watch = $scope.$watch(function () {
+			// 			return modelSvc.assets[modelSvc.episodes[appState.episodeId].master_asset_id];
+			// 		}, function (masterAsset) {
+			// 			if (masterAsset && Object.keys(masterAsset).length > 1) {
+			// 				watch();
+			// 				modelSvc.addEndingScreen(appState.episodeId); // needs master asset to exist so we can get duration
+			// 				timelineSvc.init(appState.episodeId);
+			// 				$scope.loading = false;
+			// 			}
+			// 		});
+			// 	} else {
+			// 		// Episode has no master asset
+			// 		$scope.loading = false;
+			// 		// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
+			// 		if (appState.product === 'producer') {
+			// 			appState.editEpisode = modelSvc.episodes[appState.episodeId];
+			// 		}
+			// 		appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+			// 		appState.videoControlsLocked = true;
+			// 	}
+            //
+			// 	if (appState.productLoadedAs === 'producer' && !authSvc.userHasRole('admin')) {
+			// 		// TODO redirect instead?
+			// 		appState.product = 'player';
+			// 		appState.productLoadedAs = 'player';
+			// 	}
+			// }).finally(function() {
+			// 	//recoverData is set only by the errorCtrl
+			// 	if (recoverData) {
+			// 		var asJson = JSON.parse(recoverData);
+			// 		//we know we're in the right spot
+			// 		//this doesn't check for narratives / episodes
+			// 		timelineSvc.seek(asJson.time);
+			// 		//blow it away after recovery
+			// 		localStorage.removeItem('recoverData')
+			// 	}
+            //
+			// });
 		});
 
 		if (modelSvc.episodes[appState.episodeId]) {
-			console.log("we have an episode in the modelSvC!!");
 			// recycle existing episode data.   TODO: DRY the repeated code below from inside getEpisodeWatcher
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
