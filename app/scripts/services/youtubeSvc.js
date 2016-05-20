@@ -57,7 +57,8 @@ angular.module('com.inthetelling.story')
 			// WARN dont remove the wmode param, it works around an IE z-index bug
 
 			if (outgoing === true) {
-				return "?enablejsapi=1&controls=1&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent";
+				//supported params available at https://developers.google.com/youtube/player_parameters
+				return "?controls=1&autoplay=1&modestbranding=1&showinfo=1&rel=0&iv_load_policy=3&wmode=transparent";
 			}
 
 			return "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent";
@@ -67,7 +68,7 @@ angular.module('com.inthetelling.story')
 			if (!ytid) {
 				return false;
 			}
-			return "//www.youtube.com/embed/" + ytid + (suppressParams ? "" : svc.embedParams());
+			return "//www.youtube.com/embed/" + ytid + (suppressParams ? "" : svc.embedParams(!suppressParams));
 		};
 
 		svc.embeddableYoutubeUrl = function (origUrl, suppressParams) {
