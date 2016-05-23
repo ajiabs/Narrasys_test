@@ -116,15 +116,15 @@ angular.module('com.inthetelling.story')
 					scope.captureInteraction();
 
 					if (url.match(/youtube/)) {
-						url += youtubeSvc.embedParams(true);
+						url = youtubeSvc.embeddableYoutubeUrl(url, false);
 						//if we have an embed set, pause it when
 						//linking to new window.
 						if (appState.embedYTPlayerAvailable) {
 							youTubePlayerManager.pauseOtherEmbeds();
 							var curTime = Math.floor(youTubePlayerManager.getCurrentTime(scope.item._id));
-							console.log('made it to the right spot!!', curTime);
 							if (curTime > 0) {
 								url += '&start=' + curTime;
+								console.log('made it to the right spot!!', url);
 							}
 						}
 
