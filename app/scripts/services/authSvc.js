@@ -37,7 +37,7 @@ angular.module('com.inthetelling.story')
 				svc.authenticateViaNonce($routeParams.narrativePath);
 			} else {
 				console.log('notifying of session timeout');
-				errorSvc.error({session: 'User Session Timed out!'});
+				errorSvc.notify({session: 'Your session has expired, you will now be re-directed to login again.'});
 			}
 		});
 

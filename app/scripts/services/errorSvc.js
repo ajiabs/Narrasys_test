@@ -26,6 +26,9 @@ angular.module('com.inthetelling.story')
 				// TODO in future there may be cases where this isn't desirable (i.e. when we support more roles,
 				// it may make sense to keep an existing role in place even if the user attempts to do something they're not allowed to?)
 				console.warn(exception.status, " detected");
+				console.log('EXCEPTION URL: ', exception.config.url);
+
+
 
 
 				//guest accessible narratives - refresh session

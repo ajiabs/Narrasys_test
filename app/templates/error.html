@@ -15,19 +15,19 @@
 			</span>
 		</p>
 
-		<div ng-if="error.exception.session" ng-init="countDown()">
-			<p>Look's like your session timed out.</p>
-
-			<a ng-click="logout()">Click here to Log in again</a>
-			Redirecting to Login screen in: <h1>{{timer}} seconds</h1>
-		</div>
-
 		<!-- 		<a style="font-size: small" ng-click="showDetails= !showDetails">(show details)</a>
 		<pre ng-if="showDetails" style="font-size: small" ng-bind="error | pretty"></pre>
  -->
 	</div>
 	<div class="notification" ng-repeat="notification in errorSvc.notifications">
+
+		<div ng-if="notification.text.session" ng-init="countDown()">
+			<p>Your session has expired, you will be re-directed  to login again in {{timer}} seconds.</p>
+
+			<a ng-click="logout()">Click here if you are not automatically redirected.</a>
+
+		</div>
 		<a style="float: right;" ng-click="dismiss(notification)">[x]</a>
-		<p><i class="fa fa-info-circle info-blue"></i> <strong> Note: </strong> {{notification.text}}</p>
+		<p ng-if="!notification.text.session"><i class="fa fa-info-circle info-blue"></i> <strong> Note: </strong> {{notification.text}}</p>
 	</div>
 </span>
