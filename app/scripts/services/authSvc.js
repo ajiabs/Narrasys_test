@@ -26,7 +26,6 @@ angular.module('com.inthetelling.story')
 		$rootScope.$on('error:sessionTimeout', function () {
 			var _isGuest = true;
 
-			console.log('session timeout!!');
 			angular.forEach(appState.user.roles, function(r) {
 				if (r.role !== 'guest') {
 					_isGuest = false;
@@ -36,7 +35,6 @@ angular.module('com.inthetelling.story')
 			if (_isGuest) {
 				svc.authenticateViaNonce($routeParams.narrativePath);
 			} else {
-				console.log('notifying of session timeout');
 				errorSvc.notify({session: 'Your session has expired, you will now be re-directed to login again.'});
 			}
 		});
@@ -196,7 +194,6 @@ angular.module('com.inthetelling.story')
 				}
 			} else if ($routeParams.key) {
 				// Have key in route
-				console.log('have key, no token!');
 				var nonce = $routeParams.key;
 				$location.search('key', null); // hide the param from the url.  reloadOnSearch must be turned off in $routeProvider!
 				return svc.getAccessToken(nonce);
@@ -236,7 +233,6 @@ angular.module('com.inthetelling.story')
 				.then(function (nonce) {
 					svc.getAccessToken(nonce)
 						.then(function () {
-							console.warn('Auth\'d via Nonce Success!');
 							defer.resolve();
 						});
 				});
@@ -326,7 +322,6 @@ angular.module('com.inthetelling.story')
 
 			var tok = svc.getStoredToken();
 			if (user.avatar_id && tok) {
-				console.log('culprit identified', tok);
 				$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
@@ -387,7 +382,6 @@ angular.module('com.inthetelling.story')
 			$http.get(url)
 				.success(function (data) {
 					if (data.nonce) {
-						console.log('resolve nonce', data.nonce);
 						defer.resolve(data.nonce);
 					} else {
 						// Guest access is not allowed
@@ -399,7 +393,6 @@ angular.module('com.inthetelling.story')
 							}
 							defer.reject();
 						} else {
-							console.warn("get_nonce returned a null login_url");
 							if (window.location.hash !== '#/') {
 								window.location.href = "/#/";
 							}
