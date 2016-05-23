@@ -107,27 +107,43 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.logout = function() {
-			_clearLocalAuthData()
-				.then(_clearServerSession)
-				.catch(e => console.log(e))
+			_promiseClearLocalAuthData()
+				.then(_clearServerSession())
+				//catch handles any errors from clearing cookies and talking to the server
+				.catch(function(e) { console.log(e); })
+				//do this regardless of what happens after hitting /logout
 				.finally(function () {
-					//handle redirect;
 					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
 					window.location.reload();
 				});
+
 		};
 
 		function _clearLocalAuthData() {
-			return $q(function (resolve, reject) {
-				try {
-					localStorage.removeItem(config.localStorageKey);
-					document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-					document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-					appState.user = {};
-					// throw new Error('cookies exploded!');
-					resolve();
-				} catch(e) {
-					reject(e);
+			try {
+				localStorage.removeItem(config.localStorageKey);
+				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+				appState.user = {};
+				// throw 'simulate problems with cookies!';
+				return true
+			} catch (e) {
+				return e
+			}
+		}
+
+		function _promiseClearLocalAuthData() {
+			//clear auth data is not async operation,
+			//it does not really need to be wrapped in a promise
+			//but it is worth it in this case because we can
+			//handle all errors (from clearing cookies or from the $http call)
+			//with the same strategy, i.e. a .catch() statement.
+			var canResolve = _clearLocalAuthData();
+			return $q(function(resolve, reject) {
+				if (canResolve === true)  {
+					resolve()
+				} else {
+					reject(canResolve);
 				}
 			});
 		}
