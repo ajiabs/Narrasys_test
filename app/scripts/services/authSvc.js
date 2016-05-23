@@ -109,6 +109,7 @@ angular.module('com.inthetelling.story')
 		svc.logout = function() {
 			_clearLocalAuthData()
 				.then(_clearServerSession)
+				.catch(e => console.log(e))
 				.finally(function () {
 					//handle redirect;
 					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
@@ -117,13 +118,17 @@ angular.module('com.inthetelling.story')
 		};
 
 		function _clearLocalAuthData() {
-
-			return $q(function (resolve) {
-				localStorage.removeItem(config.localStorageKey);
-				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-				appState.user = {};
-				return resolve();
+			return $q(function (resolve, reject) {
+				try {
+					localStorage.removeItem(config.localStorageKey);
+					document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+					document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+					appState.user = {};
+					// throw new Error('cookies exploded!');
+					resolve();
+				} catch(e) {
+					reject(e);
+				}
 			});
 		}
 
