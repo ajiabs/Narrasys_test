@@ -114,7 +114,10 @@ angular.module('com.inthetelling.story')
 				.finally(function () {
 					_clearServerSession().catch(function(e){ console.log("err clearing", e) });
 					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
-					window.location.reload();
+					$location.path('/')
+						.search({
+							logout: 1
+						});
 
 				});
 
