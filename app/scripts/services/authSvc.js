@@ -112,7 +112,7 @@ angular.module('com.inthetelling.story')
 				.catch(function(e) { console.log(e); })
 				//do this regardless of what happens after hitting /logout
 				.finally(function () {
-					_clearServerSession().catch(function(e){ console.log("err clearing", e) });
+					_clearServerSession().catch(function(e){ console.log("err clearing", e); });
 					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
 					$location.path('/')
 						.search({
@@ -130,9 +130,9 @@ angular.module('com.inthetelling.story')
 				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 				appState.user = {};
 				// throw new Error('simulate problems with cookies!');
-				return true
+				return true;
 			} catch (e) {
-				return e
+				return e;
 			}
 		}
 
@@ -145,7 +145,7 @@ angular.module('com.inthetelling.story')
 			var canResolve = _clearLocalAuthData();
 			return $q(function(resolve, reject) {
 				if (canResolve === true)  {
-					return resolve()
+					return resolve();
 				} else {
 					return reject(canResolve);
 				}
