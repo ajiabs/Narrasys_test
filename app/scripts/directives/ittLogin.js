@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 No UI for this directive. This originally showed a login form but that led to a flash-of-content when authenticating via lti
 
 */

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('authSvc', function (config, $routeParams, $http, $q, $location, appState, modelSvc, errorSvc) {
+	.factory('authSvc', function (config, $routeParams, $http, $q, $location, $rootScope, appState, modelSvc, errorSvc) {
 		// console.log('authSvc factory');
 		var svc = {};
 
@@ -23,6 +23,23 @@ angular.module('com.inthetelling.story')
 			GUEST: "guest",
 		};
 
+		$rootScope.$on('error:sessionTimeout', function () {
+			var _isGuest = true;
+
+			angular.forEach(appState.user.roles, function(r) {
+				if (r.role !== 'guest') {
+					_isGuest = false;
+				}
+			});
+
+			if (_isGuest) {
+				svc.authenticateViaNonce($routeParams.narrativePath);
+			} else {
+				errorSvc.notify({session: 'Your session has expired, you will now be re-directed to login again.'});
+			}
+		});
+
+
 		svc.getRoleForNarrative = function (narrativeId, roles) {
 			roles = typeof roles !== 'undefined' ? roles : appState.user.roles;
 			var role = "";
@@ -30,35 +47,35 @@ angular.module('com.inthetelling.story')
 			if (roles) {
 				for (var i = 0; i < roles.length; i++) {
 					switch (roles[i].role) {
-					case Roles.ADMINISTRATOR:
-						if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
-							continue; // they are an admin, but not in this narrative, so let's keep going
-						} else {
-							role = "admin";
-							exitLoop = true; //if they are an admin, then we can just get out as it trumps
-						}
-						break;
-					case Roles.INSTRUCTOR:
-						if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
-							continue;
-						} else {
-							role = roles[i].role;
-						}
-						break;
-					case Roles.STUDENT:
-						if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
-							continue;
-						} else {
-							role = role === "instructor" ? role : roles[i].role;
-						}
-						break;
-					case Roles.GUEST:
-						if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
-							continue;
-						} else {
-							role = role === "instructor" || role === "student" ? role : roles[i].role;
-						}
-						break;
+						case Roles.ADMINISTRATOR:
+							if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
+								continue; // they are an admin, but not in this narrative, so let's keep going
+							} else {
+								role = "admin";
+								exitLoop = true; //if they are an admin, then we can just get out as it trumps
+							}
+							break;
+						case Roles.INSTRUCTOR:
+							if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
+								continue;
+							} else {
+								role = roles[i].role;
+							}
+							break;
+						case Roles.STUDENT:
+							if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
+								continue;
+							} else {
+								role = role === "instructor" ? role : roles[i].role;
+							}
+							break;
+						case Roles.GUEST:
+							if (roles[i].resource_id && roles[i].resource_id !== narrativeId) {
+								continue;
+							} else {
+								role = role === "instructor" || role === "student" ? role : roles[i].role;
+							}
+							break;
 					}
 					if (exitLoop) {
 						break;
@@ -70,12 +87,12 @@ angular.module('com.inthetelling.story')
 
 		svc.getDefaultProductForRole = function (role) {
 			/*
-			This was making it impossible for users with admin role to see editor or player interface.
-			For now, producer should be used only at the /#/episode urls, editor at the narrative urls
-			(producer only works with individual episodes atm anyway)
-			TODO later on we'll make this user-selectable within the product UI (and probably
-			eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
-			*/
+			 This was making it impossible for users with admin role to see editor or player interface.
+			 For now, producer should be used only at the /#/episode urls, editor at the narrative urls
+			 (producer only works with individual episodes atm anyway)
+			 TODO later on we'll make this user-selectable within the product UI (and probably
+			 eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
+			 */
 			var product = "player";
 			if (appState.productLoadedAs === 'narrative') {
 				if (role === Roles.ADMINISTRATOR || role === Roles.INSTRUCTOR) {
@@ -89,51 +106,72 @@ angular.module('com.inthetelling.story')
 			return product;
 		};
 
-		svc.logout = function () {
-			// Clear these even if the logout call fails (which it will if the token in localStorage has expired).
-			// DO NOT clear the Authorization header yet (it's needed for the logout server call)
-			try {
-				localStorage.removeItem(config.localStorageKey);
-				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			} catch (e) {
-				// user disabled cookies, so no need to try to remove them...
-			}
-			appState.user = {};
-
-			$http({
-					method: 'GET',
-					url: config.apiDataBaseUrl + "/logout"
-				})
-				.success(function () {
-					delete $http.defaults.headers.common.Authorization; // now it's safe
-					$location.path('/')
-						.search({
-							logout: 1
-						});
-				})
-				.error(function () {
+		svc.logout = function() {
+			_promiseClearLocalAuthData()
+				//catch handles any errors from clearing cookies and talking to the server
+				.catch(function(e) { console.log(e); })
+				//do this regardless of what happens after hitting /logout
+				.finally(function () {
+					_clearServerSession().catch(function(e){ console.log("err clearing", e) });
 					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
 					$location.path('/')
 						.search({
 							logout: 1
 						});
+
 				});
+
 		};
+
+		function _clearLocalAuthData() {
+			try {
+				localStorage.removeItem(config.localStorageKey);
+				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+				appState.user = {};
+				// throw new Error('simulate problems with cookies!');
+				return true
+			} catch (e) {
+				return e
+			}
+		}
+
+		function _promiseClearLocalAuthData() {
+			//clear auth data is not async operation,
+			//it does not really need to be wrapped in a promise
+			//but it is worth it in this case because we can
+			//handle all errors (from clearing cookies or from the $http call)
+			//with the same strategy, i.e. a .catch() statement.
+			var canResolve = _clearLocalAuthData();
+			return $q(function(resolve, reject) {
+				if (canResolve === true)  {
+					return resolve()
+				} else {
+					return reject(canResolve);
+				}
+			});
+		}
+
+		function _clearServerSession() {
+			return $http({
+				method: 'GET',
+				url: config.apiDataBaseUrl + "/logout"
+			});
+		}
 
 		svc.adminLogin = function (authKey, password) {
 			var defer = $q.defer();
 			$http({
-					method: 'POST',
-					url: config.apiDataBaseUrl + "/auth/identity/callback",
-					data: $.param({
-						"auth_key": authKey,
-						"password": password
-					}),
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					}
-				})
+				method: 'POST',
+				url: config.apiDataBaseUrl + "/auth/identity/callback",
+				data: $.param({
+					"auth_key": authKey,
+					"password": password
+				}),
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				}
+			})
 				.success(function (data) {
 					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
 					resolveUserData(data);
@@ -151,18 +189,20 @@ angular.module('com.inthetelling.story')
 
 		/*
 
-			authentication paths:
-				header + user data: resolve immediately
-				header + no user data: call show_user (this shouldn't be possible, but I coded it in at some point for some reason...)
-				key in url param: call get_nonce
-				token in localStorage: set header, call show_user
-				nothing: get_nonce
+		 authentication paths:
+		 header + user data: resolve immediately
+		 header + no user data: call show_user (this shouldn't be possible, but I coded it in at some point for some reason...)
+		 key in url param: call get_nonce
+		 token in localStorage: set header, call show_user
+		 nothing: get_nonce
 
-		*/
+		 */
+
 
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function (nonceParam) {
 			if ($http.defaults.headers.common.Authorization) {
+				//console.log("have auth headers!");
 				if (appState.user) {
 					// Have header and user; all done.
 					authenticateDefer.resolve();
@@ -205,7 +245,6 @@ angular.module('com.inthetelling.story')
 							return svc.authenticateViaNonce(nonceParam);
 						});
 				} else {
-					console.log('auth Via Nonce', nonceParam);
 					// no login info at all, start from scratch
 					return svc.authenticateViaNonce(nonceParam);
 				}
@@ -249,9 +288,9 @@ angular.module('com.inthetelling.story')
 		svc.getCurrentUser = function () {
 			var defer = $q.defer();
 			$http({
-					method: 'GET',
-					url: config.apiDataBaseUrl + '/show_user'
-				})
+				method: 'GET',
+				url: config.apiDataBaseUrl + '/show_user'
+			})
 				.success(function (respData) {
 					resolveUserData(respData);
 					defer.resolve();
@@ -265,10 +304,10 @@ angular.module('com.inthetelling.story')
 		svc.updateUser = function (user) {
 			var defer = $q.defer();
 			$http({
-					method: 'PUT',
-					url: config.apiDataBaseUrl + '/users/' + user._id,
-					data: user
-				})
+				method: 'PUT',
+				url: config.apiDataBaseUrl + '/users/' + user._id,
+				data: user
+			})
 				.success(function (respData) {
 					resolveUserData(respData);
 					defer.resolve();
@@ -308,7 +347,6 @@ angular.module('com.inthetelling.story')
 
 			var tok = svc.getStoredToken();
 			if (user.avatar_id && tok) {
-				console.log('culprit identified', tok);
 				$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
@@ -334,7 +372,8 @@ angular.module('com.inthetelling.story')
 					token: user.access_token,
 					customer: user.customer
 				}));
-			} catch (e) {}
+			} catch (e) {
+			}
 		};
 
 		var getRoleDescription = function (roleKey) {
@@ -379,7 +418,6 @@ angular.module('com.inthetelling.story')
 							}
 							defer.reject();
 						} else {
-							console.warn("get_nonce returned a null login_url");
 							if (window.location.hash !== '#/') {
 								window.location.href = "/#/";
 							}
