@@ -108,13 +108,14 @@ angular.module('com.inthetelling.story')
 
 		svc.logout = function() {
 			_promiseClearLocalAuthData()
-				.then(_clearServerSession())
 				//catch handles any errors from clearing cookies and talking to the server
 				.catch(function(e) { console.log(e); })
 				//do this regardless of what happens after hitting /logout
 				.finally(function () {
+					_clearServerSession().catch(function(e){ console.log("err clearing", e) });
 					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
 					window.location.reload();
+
 				});
 
 		};
@@ -125,7 +126,7 @@ angular.module('com.inthetelling.story')
 				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 				appState.user = {};
-				// throw 'simulate problems with cookies!';
+				// throw new Error('simulate problems with cookies!');
 				return true
 			} catch (e) {
 				return e
@@ -141,9 +142,9 @@ angular.module('com.inthetelling.story')
 			var canResolve = _clearLocalAuthData();
 			return $q(function(resolve, reject) {
 				if (canResolve === true)  {
-					resolve()
+					return resolve()
 				} else {
-					reject(canResolve);
+					return reject(canResolve);
 				}
 			});
 		}
