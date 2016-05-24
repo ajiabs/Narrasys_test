@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState, authSvc, $interval) {
+	.controller('ErrorController', function ($scope, $http, $interval, config, errorSvc, appState, authSvc) {
 		// console.log("errorController", $scope);
 
 		$scope.errorSvc = errorSvc;
