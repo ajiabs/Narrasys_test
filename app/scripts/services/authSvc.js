@@ -133,11 +133,18 @@ angular.module('com.inthetelling.story')
 		};
 
 		function _clearLocalAuthData() {
+			//always clear user object
+			//if we try an access localStorage in an iframe
+			//it will throw an exception
+			//we used to clear the appState.user obj
+			//after trying to clear localStorage and cookies
+			//in cases when the exception is thrown, 
+			//the code that clears the user obj was never executed.
+			appState.user = {};
 			try {
 				localStorage.removeItem(config.localStorageKey);
 				document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 				document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-				appState.user = {};
 				// throw new Error('simulate problems with cookies!');
 				return true;
 			} catch (e) {
