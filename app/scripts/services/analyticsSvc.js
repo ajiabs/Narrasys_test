@@ -37,7 +37,9 @@ angular.module('com.inthetelling.story')
 		svc.activityQueue = []; // contains events not yet sent to the server.
 
 		var flusher = $interval(function () {
-			svc.flushActivityQueue();
+			if ($http.defaults.headers.common.Authorization) {
+				svc.flushActivityQueue();
+			}
 		}, 10000);
 
 		// don't try to capture when running from local data or if it's disabled in config:
