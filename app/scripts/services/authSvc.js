@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('authSvc', function (config, $routeParams, $http, $q, $location, $timeout, $rootScope, appState, modelSvc, errorSvc) {
+	.factory('authSvc', function (config, $routeParams, $http, $q, $location, $rootScope, appState, modelSvc, errorSvc) {
 		// console.log('authSvc factory');
 		var svc = {};
 
@@ -168,7 +168,7 @@ angular.module('com.inthetelling.story')
 					url: config.apiDataBaseUrl + "/logout"
 				});
 			} else {
-				return $q(function(resolve, reject) { return reject('Failed log out since Auth Header is not present.')});
+				return $q(function(resolve, reject) { return reject('Failed log out since Auth Header is not present.');});
 			}
 
 		}
