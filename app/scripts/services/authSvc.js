@@ -33,7 +33,11 @@ angular.module('com.inthetelling.story')
 			});
 
 			if (_isGuest) {
-				svc.authenticateViaNonce($routeParams.narrativePath);
+				var isNarrative = $routeParams.narrativePath;
+				if (isNarrative !== undefined) {
+					isNarrative = 'narrative=' + isNarrative;
+				}
+				svc.authenticateViaNonce(isNarrative);
 			} else {
 				errorSvc.notify({session: 'Your session has expired, you will now be re-directed to login again.'});
 			}
@@ -106,13 +110,18 @@ angular.module('com.inthetelling.story')
 			return product;
 		};
 
-		svc.logout = function() {
+		svc.logout = function () {
 			_promiseClearLocalAuthData()
-				//catch handles any errors from clearing cookies and talking to the server
-				.catch(function(e) { console.log(e); })
+			//catch handles any errors from clearing cookies and talking to the server
+				.catch(function (e) {
+					console.log(e);
+				})
 				//do this regardless of what happens after hitting /logout
 				.finally(function () {
-					_clearServerSession().catch(function(e){ console.log("err clearing", e); });
+
+					_clearServerSession().catch(function (e) {
+						console.log("err clearing", e);
+					});
 					delete $http.defaults.headers.common.Authorization; // if it exists at all here, it's definitely invalid
 					$location.path('/')
 						.search({
@@ -153,10 +162,15 @@ angular.module('com.inthetelling.story')
 		}
 
 		function _clearServerSession() {
-			return $http({
-				method: 'GET',
-				url: config.apiDataBaseUrl + "/logout"
-			});
+			if ($http.defaults.headers.common.Authorization) {
+				return $http({
+					method: 'GET',
+					url: config.apiDataBaseUrl + "/logout"
+				});
+			} else {
+				return $q(function(resolve, reject) { return reject('Failed log out since Auth Header is not present.');});
+			}
+
 		}
 
 		svc.adminLogin = function (authKey, password) {
