@@ -46,7 +46,7 @@ angular.module('com.inthetelling.story')
 							}
 
 						} else if (Object.keys($routeParams).length === 0) {
-							$location.path('/user');
+							$location.path('/');
 
 						}
 					},
