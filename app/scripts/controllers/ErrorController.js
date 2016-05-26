@@ -31,14 +31,18 @@ angular.module('com.inthetelling.story')
 			var _timer = 5;
 			$scope.timer = _timer;
 
-			$interval(function() {
+			var _counter = $interval(function() {
 				$scope.timer--;
 
-				if ($scope.timer === 0) { authSvc.logout(); }
+				if ($scope.timer === 0) {
+					$interval.cancel(_counter);
+					authSvc.logout();
+				}
 
 			}, 1000);
 
 		}
+
 
 
 	});
