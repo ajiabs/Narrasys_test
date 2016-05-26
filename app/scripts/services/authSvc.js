@@ -22,28 +22,7 @@ angular.module('com.inthetelling.story')
 			STUDENT: "student",
 			GUEST: "guest",
 		};
-
-		$rootScope.$on('error:sessionTimeout', function () {
-			var _isGuest = true;
-
-			angular.forEach(appState.user.roles, function(r) {
-				if (r.role !== 'guest') {
-					_isGuest = false;
-				}
-			});
-
-			if (_isGuest) {
-				var isNarrative = $routeParams.narrativePath;
-				if (isNarrative !== undefined) {
-					isNarrative = 'narrative=' + isNarrative;
-				}
-				svc.authenticateViaNonce(isNarrative);
-			} else {
-				errorSvc.notify({session: 'Your session has expired, you will now be re-directed to login again.'});
-			}
-		});
-
-
+		
 		svc.getRoleForNarrative = function (narrativeId, roles) {
 			roles = typeof roles !== 'undefined' ? roles : appState.user.roles;
 			var role = "";
@@ -138,7 +117,7 @@ angular.module('com.inthetelling.story')
 			//it will throw an exception
 			//we used to clear the appState.user obj
 			//after trying to clear localStorage and cookies
-			//in cases when the exception is thrown, 
+			//in cases when the exception is thrown,
 			//the code that clears the user obj was never executed.
 			appState.user = {};
 			try {
@@ -254,15 +233,7 @@ angular.module('com.inthetelling.story')
 							authenticateDefer.resolve();
 						}, function () {
 							// token expired; clear everything and start over
-
-							try {
-								localStorage.removeItem(config.localStorageKey);
-								document.cookie = 'XSRF-TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-								document.cookie = '_tellit-api_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-							} catch (e) {
-								// user disabled cookies
-							}
-							appState.user = {};
+							_clearLocalAuthData();
 							return svc.authenticateViaNonce(nonceParam);
 						});
 				} else {
@@ -366,9 +337,9 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
-			var tok = svc.getStoredToken();
-			if (user.avatar_id && tok) {
-				$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
+			// var tok = svc.getStoredToken();
+			if (user.avatar_id) {
+				// $http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
 					// console.log("GOT AVATAR", response);
@@ -456,8 +427,8 @@ angular.module('com.inthetelling.story')
 			var defer = $q.defer();
 			$http.get(config.apiDataBaseUrl + "/v1/get_access_token/" + nonce)
 				.success(function (data) {
-					resolveUserData(data);
 					$http.defaults.headers.common.Authorization = 'Token token="' + data.access_token + '"';
+					resolveUserData(data);
 					svc.getCurrentUser()
 						.then(function () {
 							defer.resolve(data);
