@@ -180,6 +180,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	$httpProvider.interceptors.push(function ($q, $injector, errorSvc) {
 		return {
 			'responseError': function (rejection) {
+
+				var _adminAuthFail = rejection.status === 401 &&
+					rejection.config.method === 'POST' &&
+					/\/auth\/identity\/callback/.test(rejection.config.url);
+
 				var _sessionTimeout = rejection.status === 401 &&
 					rejection.data.error === 'Authentication expired. Please log in again.' &&
 					!rejection.config.url.match(/show_user/);
@@ -193,8 +198,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				var appState = $injector.get('appState');
 				var $routeParams = $injector.get('$routeParams');
 
-				if (_sessionTimeout || _userRoleAccessError)  {
-
+				if (_sessionTimeout || _userRoleAccessError && !_adminAuthFail)  {
 					if (isGuest()) {
 						var isNarrative = $routeParams.narrativePath;
 						if (isNarrative !== undefined) {
@@ -203,13 +207,13 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 						return authSvc.authenticateViaNonce(isNarrative);
 					} else {
 						errorSvc.notify({session: 'Your session has expired, you will now be re-directed to login again.'});
-						$q.reject(rejection);
+						return $q.reject(rejection);
 					}
 				} else {
 					errorSvc.error(rejection);
+					return $q.reject(rejection);
 				}
 
-				return $q.reject(rejection);
 
 				function isGuest() {
 					var _isGuest = true;
