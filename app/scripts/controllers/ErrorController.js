@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('ErrorController', function ($scope, $http, config, errorSvc, appState, authSvc) {
+	.controller('ErrorController', function ($scope, $http, $interval, config, errorSvc, appState, authSvc) {
 		// console.log("errorController", $scope);
 
 		$scope.errorSvc = errorSvc;
 		$scope.logout = authSvc.logout;
 		$scope.user = appState.user;
+		$scope.countDown = countDown;
 
 		// probably should split this into separate functions for errors and notifications, but good enough for now
 		$scope.dismiss = function (cur) {
@@ -25,5 +26,23 @@ angular.module('com.inthetelling.story')
 				}
 			}
 		};
+
+		function countDown() {
+			var _timer = 5;
+			$scope.timer = _timer;
+
+			var _counter = $interval(function() {
+				$scope.timer--;
+
+				if ($scope.timer === 0) {
+					$interval.cancel(_counter);
+					authSvc.logout();
+				}
+
+			}, 1000);
+
+		}
+
+
 
 	});

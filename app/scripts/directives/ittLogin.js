@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 No UI for this directive. This originally showed a login form but that led to a flash-of-content when authenticating via lti
 
 */
@@ -46,7 +46,7 @@ angular.module('com.inthetelling.story')
 							}
 
 						} else if (Object.keys($routeParams).length === 0) {
-							$location.path('/user');
+							$location.path('/');
 
 						}
 					},

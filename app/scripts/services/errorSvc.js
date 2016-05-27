@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 to throw explicit errors:
 		errorSvc.error({data: "This episode has not yet been published."});
 		errorSvc.notify({data: "This hovercraft is full of Monty Python quotes."});
@@ -12,7 +12,7 @@ angular.module('com.inthetelling.story')
 	.factory('errorSvc', function ($location) {
 		var svc = {};
 
-		// TODO This is a mess.  make the field names less ridiculously inconsistent.  
+		// TODO This is a mess.  make the field names less ridiculously inconsistent.
 
 		svc.init = function () {
 			svc.errors = [];
@@ -46,6 +46,9 @@ angular.module('com.inthetelling.story')
 						"exception": exception
 					});
 				}
+			} else if (exception && exception.session) {
+				svc.errors.push({exception: exception});
+
 			} else {
 				// generic thrown javascript error.  TODO show these too, but only in dev environment (they're often not meaningful)
 				console.warn("ErrorSvc caught error: ", exception, cause);

@@ -177,11 +177,54 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	$httpProvider.defaults.useXDomain = true;
 	$httpProvider.defaults.withCredentials = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-	$httpProvider.interceptors.push(function ($q, errorSvc) {
+	$httpProvider.interceptors.push(function ($q, $injector, errorSvc) {
 		return {
 			'responseError': function (rejection) {
-				errorSvc.error(rejection);
-				return $q.reject(rejection);
+
+				var _adminAuthFail = rejection.status === 401 &&
+					rejection.config.method === 'POST' &&
+					/\/auth\/identity\/callback/.test(rejection.config.url);
+
+				var _sessionTimeout = rejection.status === 401 &&
+					rejection.data.error === 'Authentication expired. Please log in again.' &&
+					!rejection.config.url.match(/show_user/);
+
+				var _userRoleAccessError = rejection.status === 401 &&
+					rejection.data.error === "This action requires logging in or you do not have sufficient rights.";
+
+				//not sure if we need this anymore.
+				// var _eventReportAccessFailure = rejection.config.url.match(/(episode_user_metrics|event_user_actions)/);
+				var authSvc = $injector.get('authSvc');
+				var appState = $injector.get('appState');
+				var $routeParams = $injector.get('$routeParams');
+
+				if (_sessionTimeout || _userRoleAccessError && !_adminAuthFail)  {
+					if (isGuest()) {
+						var isNarrative = $routeParams.narrativePath;
+						if (isNarrative !== undefined) {
+							isNarrative = 'narrative=' + isNarrative;
+						}
+						return authSvc.authenticateViaNonce(isNarrative);
+					} else {
+						errorSvc.notify({session: 'Your session has expired, you will now be re-directed to login again.'});
+						return $q.reject(rejection);
+					}
+				} else {
+					errorSvc.error(rejection);
+					return $q.reject(rejection);
+				}
+
+
+				function isGuest() {
+					var _isGuest = true;
+					angular.forEach(appState.user.roles, function(r) {
+						if (r.role !== 'guest') {
+							_isGuest = false;
+						}
+					});
+
+					return _isGuest;
+				}
 			}
 		};
 	});

@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 There are two separate types of user activity to capture, which go to separate API endpoints.
 Some types must contain additional info in a "data" object:
 
@@ -37,7 +37,9 @@ angular.module('com.inthetelling.story')
 		svc.activityQueue = []; // contains events not yet sent to the server.
 
 		var flusher = $interval(function () {
-			svc.flushActivityQueue();
+			if ($http.defaults.headers.common.Authorization) {
+				svc.flushActivityQueue();
+			}
 		}, 10000);
 
 		// don't try to capture when running from local data or if it's disabled in config:
@@ -91,12 +93,12 @@ angular.module('com.inthetelling.story')
 		svc.forceCaptureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
 			svc.captureEventActivity(name, eventID, data, true);
-			return svc.flushActivityQueue(); //this is async, and returns a promise.	
+			return svc.flushActivityQueue(); //this is async, and returns a promise.
 		};
 		svc.captureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
 			svc.captureEventActivity(name, eventID, data);
-			return svc.flushActivityQueue(); //this is async, and returns a promise.	
+			return svc.flushActivityQueue(); //this is async, and returns a promise.
 		};
 
 		// read from API:
@@ -162,6 +164,7 @@ angular.module('com.inthetelling.story')
 			var actions = angular.copy(svc.activityQueue);
 			svc.activityQueue = [];
 
+
 			var now = new Date();
 			var episodeUserMetrics = [];
 			var eventUserActions = [];
@@ -181,19 +184,29 @@ angular.module('com.inthetelling.story')
 			if (eventUserActions.length > 0) {
 				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/event_user_actions', {
 					"event_user_actions": eventUserActions
-				}));
+				}).catch(handleFailedReport));
 			}
 			if (episodeUserMetrics.length > 0) {
 				posts.push($http.post(config.apiDataBaseUrl + '/v2/episodes/' + appState.episodeId + '/episode_user_metrics', {
 					"episode_user_metrics": episodeUserMetrics
-				}));
+				}).catch(handleFailedReport));
 			}
+
 			$q.all(posts).then(function () {
 				defer.resolve();
 			});
 
 			return defer.promise;
 		};
+
+		function handleFailedReport(errorData) {
+			var missedActivityOrMetrics = errorData.config.data;
+
+			angular.forEach(missedActivityOrMetrics, function(metricsOrActionsArr) {
+				//merge each failed report back into the activity queue.
+				Array.prototype.push.apply(svc.activityQueue, metricsOrActionsArr);
+			});
+		}
 
 		svc.dejitter = function (events) {
 			// Consolidate repeated seek events into one single seek event before sending to API.

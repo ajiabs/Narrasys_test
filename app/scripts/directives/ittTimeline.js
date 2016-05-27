@@ -1,6 +1,6 @@
 'use strict';
 
-// jQuery dependencies: offset(), animate(), namespaced .bind and .unbind 
+// jQuery dependencies: offset(), animate(), namespaced .bind and .unbind
 // TODO some events need to be unbound on destroy, which I'll get around to implementing if this ever needs to be destroyed
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
@@ -329,12 +329,12 @@ angular.module('com.inthetelling.story')
 					}
 
 					// timelineNode is the full timeline, including offscreen portions if zoomed in.
-					// So this math gives how far the pointer is in the full timeline as a percentage, 
+					// So this math gives how far the pointer is in the full timeline as a percentage,
 					// multiplied by the real duration, which gives the real time.
 					scope.willSeekTo = (evt.clientX - timelineNode.offset()
 						.left) / timelineNode.width() * appState.duration;
 
-					// ios is still registering drags outside the visible boundaries of the timeline, 
+					// ios is still registering drags outside the visible boundaries of the timeline,
 					// so need to do some sanity checking here:
 					if (scope.willSeekTo < 0) {
 						scope.willSeekTo = 0;
@@ -359,8 +359,11 @@ angular.module('com.inthetelling.story')
 						.off('mouseup.timeline');
 					angular.element(document)
 						.off('touchend.timeline');
-					timelineContainer.off('mouseup.timeline');
-					timelineContainer.off('touchend.timeline');
+					if (timelineContainer !== undefined) {
+						timelineContainer.off('mouseup.timeline');
+						timelineContainer.off('touchend.timeline');
+					}
+
 					$timeout(function () {
 						scope.isSeeking = false;
 						scope.seekHandleVisible = false;
