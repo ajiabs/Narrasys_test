@@ -44,12 +44,6 @@ angular.module('com.inthetelling.story')
 			}
 			return false;
 		};
-		var Roles = {
-			ADMINISTRATOR: "admin",
-			INSTRUCTOR: "instructor",
-			STUDENT: "student",
-			GUEST: "guest"
-		};
 
 		svc.getRoleForNarrative = function (narrativeId, roles) {
 			roles = typeof roles !== 'undefined' ? roles : appState.user.roles;
