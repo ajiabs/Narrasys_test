@@ -13,7 +13,7 @@
 			<span>Name</span>
 			<input class="userEditable" ng-model="user.name" ng-blur="updateUser()">
 		</label>
-		<span ng-if="!userHasRole('guest')">
+		<span ng-if="!isGuest()">
 			<br>
 			<label>
 				<span>Email</span>
@@ -37,7 +37,7 @@
 		</div>
 
 
-		<div ng-if="!userHasRole('guest') && myPurchases">
+		<div ng-if="!isGuest() && myPurchases">
 			<h3>Your purchases</h3>
 			<div class="narrativelist" ng-repeat="purchase in myPurchases">
 

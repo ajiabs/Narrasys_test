@@ -4,29 +4,44 @@ angular.module('com.inthetelling.story')
 	.factory('authSvc', function (config, $routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
 		// console.log('authSvc factory');
 		var svc = {};
-
-		svc.userHasRole = function (role) {
-			if (appState.user && appState.user.roles) {
-				for (var i = 0; i < appState.user.roles.length; i++) {
-					if (appState.user.roles[i].role === role) {
-						if (!(role === 'admin' && ittUtils.existy(appState.user.roles[i].resource_id))) {
-							return true;
-						}
-					} else if (role === 'customer admin' && appState.user.roles[i].role === 'admin' &&
-						ittUtils.existy(appState.user.roles[i].resource_id) &&
-						appState.user.roles[i].resource_type === 'Customer') {
-						return true;
-					}
-				}
-			}
-			return false;
-		};
 		var Roles = {
 			ADMINISTRATOR: "admin",
 			INSTRUCTOR: "instructor",
 			STUDENT: "student",
 			GUEST: "guest",
 			CUSTOMER_ADMINISTRATOR: 'customer admin'
+		};
+
+		var Resources = {
+			CUSTOMER: 'Customer'
+		};
+
+		svc.isGuest = function isGuest() {
+			var _isGuest = true;
+			angular.forEach(appState.user.roles, function(r) {
+				if (r.role !== Roles.GUEST) {
+					_isGuest = false;
+				}
+			});
+
+			return _isGuest;
+		};
+
+		svc.userHasRole = function (role) {
+			if (appState.user && appState.user.roles) {
+				for (var i = 0; i < appState.user.roles.length; i++) {
+					if (appState.user.roles[i].role === role) {
+						if (!(role === Roles.ADMINISTRATOR && ittUtils.existy(appState.user.roles[i].resource_id))) {
+							return true;
+						}
+					} else if (role === Roles.CUSTOMER_ADMINISTRATOR && appState.user.roles[i].role === Roles.ADMINISTRATOR &&
+						ittUtils.existy(appState.user.roles[i].resource_id) &&
+						appState.user.roles[i].resource_type === Resources.CUSTOMER) {
+						return true;
+					}
+				}
+			}
+			return false;
 		};
 
 		svc.getRoleForNarrative = function (narrativeId, roles) {
