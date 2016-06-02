@@ -25,6 +25,7 @@ angular.module('com.inthetelling.story')
 				//scope.user = appState.user;
 
 				scope.appState = appState; // to get searchText
+				scope.userHasRole = authSvc.userHasRole;
 
 				if (scope.item.avatar_id) {
 					scope.item.avatar = modelSvc.assets[scope.item.avatar_id];
@@ -33,7 +34,7 @@ angular.module('com.inthetelling.story')
 				if (scope.item._id === 'internal:editing') {
 					element.addClass('noTransitions');
 				} else {
-					if (authSvc.userHasRole('admin') || scope.item.user_id === appState.user._id) {
+					if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin') || scope.item.user_id === appState.user._id) {
 						scope.item.editableByThisUser = true;
 					}
 				}

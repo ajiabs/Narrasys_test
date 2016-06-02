@@ -1,15 +1,20 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('authSvc', function (config, $routeParams, $http, $q, $location, appState, modelSvc, errorSvc) {
+	.factory('authSvc', function (config, $routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
 		// console.log('authSvc factory');
 		var svc = {};
 
 		svc.userHasRole = function (role) {
-
 			if (appState.user && appState.user.roles) {
 				for (var i = 0; i < appState.user.roles.length; i++) {
 					if (appState.user.roles[i].role === role) {
+						if (!(role === 'admin' && ittUtils.existy(appState.user.roles[i].resource_id))) {
+							return true;
+						}
+					} else if (role === 'customer admin' && appState.user.roles[i].role === 'admin' &&
+						ittUtils.existy(appState.user.roles[i].resource_id) &&
+						appState.user.roles[i].resource_type === 'Customer') {
 						return true;
 					}
 				}
@@ -21,6 +26,7 @@ angular.module('com.inthetelling.story')
 			INSTRUCTOR: "instructor",
 			STUDENT: "student",
 			GUEST: "guest",
+			CUSTOMER_ADMINISTRATOR: 'customer admin'
 		};
 
 		svc.getRoleForNarrative = function (narrativeId, roles) {

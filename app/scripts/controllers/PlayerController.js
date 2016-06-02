@@ -160,7 +160,7 @@ angular.module('com.inthetelling.story')
 					appState.videoControlsLocked = true;
 				}
 
-				if (appState.productLoadedAs === 'producer' && !authSvc.userHasRole('admin')) {
+				if (appState.productLoadedAs === 'producer' && !(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
 					// TODO redirect instead?
 					appState.product = 'player';
 					appState.productLoadedAs = 'player';
@@ -183,7 +183,7 @@ angular.module('com.inthetelling.story')
 				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 				appState.videoControlsLocked = true;
 			}
-			if (appState.productLoadedAs === 'producer' && !authSvc.userHasRole('admin')) {
+			if (appState.productLoadedAs === 'producer' && !(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
 				// TODO redirect instead?
 				appState.product = 'player';
 				appState.productLoadedAs = 'player';

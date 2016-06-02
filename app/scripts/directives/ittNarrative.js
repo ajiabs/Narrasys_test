@@ -58,7 +58,7 @@ angular.module('com.inthetelling.story')
 				var doAfterAuthentication = function () {
 					scope.userHasRole = authSvc.userHasRole;
 					scope.user = appState.user;
-					if (authSvc.userHasRole('admin')) {
+					if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
 						dataSvc.getCustomerList().then(function (data) {
 							scope.customerList = data;
 						});
