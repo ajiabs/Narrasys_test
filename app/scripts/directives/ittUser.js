@@ -23,7 +23,7 @@ angular.module('com.inthetelling.story')
 					scope.user = appState.user;
 					scope.userHasRole = authSvc.userHasRole;
 
-					if (!scope.inPlayer && !scope.userHasRole('guest')) {
+					if (!scope.inPlayer && !authSvc.isGuest()) {
 						scope.getMyNarratives();
 					}
 				});
