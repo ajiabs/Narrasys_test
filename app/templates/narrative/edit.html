@@ -72,6 +72,24 @@
 				<button ng-if="!narrative._id" ng-click="createNarrative()">Create narrative</button>
 			</div>
 
+
+			<div style="padding: 0.5em">
+				<button ng-if="narrative._id && !isAddingTimeline" ng-click="toggleEpisodeList()">
+					<span ng-if="showEpisodeList">Cancel</span>
+					<span ng-if="!showEpisodeList">Add timeline</span>
+				</button>
+			</div>
+
+			<!--modal-->
+			<itt-modal ng-if="showEpisodeList">
+				<div itt-episode-list class="admin episodePicker">
+					Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>
+					<ul ng-repeat="child in root.children" x-for-admin="true" itt-container-episodes="containers[child._id]" depth="0"></ul>
+				</div>
+			</itt-modal>
+
+			<!--end modal-->
+
 			<h3>Timelines</h3>
 			<div class="storyTimeline" ng-repeat="timeline in narrative.timelines">
 
@@ -116,20 +134,6 @@
 				</div>
 
 			</div>
-
-			<div style="padding: 0.5em">
-				<button ng-if="narrative._id && !isAddingTimeline" ng-click="toggleEpisodeList()">
-					<span ng-if="showEpisodeList">Cancel</span>
-					<span ng-if="!showEpisodeList">Add timeline</span>
-				</button>
-			</div>
-
-			<div itt-episode-list class="admin episodePicker" ng-if="showEpisodeList">
-				Choose an episode:
-				<ul ng-repeat="child in root.children" x-for-admin="true" itt-container-episodes="containers[child._id]" depth="0"></ul>
-			</div>
-
-
 			<!-- end edit-->
 		</div>
 
