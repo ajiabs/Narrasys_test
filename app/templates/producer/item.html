@@ -73,7 +73,7 @@
 
 										<option value="templates/scene/pip.html">Picture-in-picture</option>
 									</select>
-									<select ng-model="item.layouts[0]" ng-if="item.templateUrl !='templates/scene/centered.html'">
+									<select ng-model="item.layouts[0]" ng-if="item.templateUrl !='templates/scene/centered.html' && item.templateUrl !== 'templates/scene/centeredPro.html'">
 										<option value="" ng-if="item.templateUrl != 'templates/scene/cornerH.html' && item.templateUrl != 'templates/scene/cornerV.html' && item.templateUrl != 'templates/scene/pip.html'">Centered</option>
 										<option value="videoLeft">Video on left</option>
 										<option value="videoRight">Video on right</option>
@@ -192,6 +192,7 @@
 					</div>
 					<!-- end metadata  tab -->
 				</div>
+				<!--<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" ng-show="{{userHasRole('admin')}}" x-tablabel="Customize">-->
 				<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" x-tablabel="Customize">
 					<!-- begin styles tab -->
 

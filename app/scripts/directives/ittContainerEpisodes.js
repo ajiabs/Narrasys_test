@@ -25,7 +25,7 @@ angular.module('com.inthetelling.story')
 						}
 					};
 					scope.toggle = function () {
-						scope.wasClicked = !scope.wasClicked;
+						scope.container.wasClicked = !scope.container.wasClicked;
 					};
 					scope.selectEpisode = function () {
 						scope.$emit('episodeSelected', scope.container.episodes[0]);

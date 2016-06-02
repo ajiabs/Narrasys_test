@@ -5,8 +5,7 @@
 		<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
 	</div>
 
-
-	<div ng-if="userHasRole('admin')">
+	<div ng-if="userHasRole('admin') || userHasRole('customer admin')">
 		<div ng-repeat="narrative in narratives">
 			<a href="/#/story/{{narrative.path_slug.en}}">{{narrative.name.en}}</a>
 		</div>
