@@ -16,14 +16,29 @@
 			<!-- end sxs -->
 		</div>
 
+
+		<!--<div>-->
+			<!--<itt-tabz>-->
+				<!--<itt-tabb ng-if="false" title="Layout">-->
+					<!--A-->
+				<!--</itt-tabb>-->
+				<!--<itt-tabb title="Style">-->
+					<!--B-->
+				<!--</itt-tabb>-->
+				<!--<itt-tabb title="Customize">-->
+					<!--C-->
+				<!--</itt-tabb>-->
+			<!--</itt-tabz>-->
+		<!--</div>-->
+
+
 		<div ng-if="appState.product == 'producer'">
 			<!-- begin producer -->
 			<div class="ittTabs" itt-tabs>
 				<select style="float:right; padding-right: 24px" ng-if="languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
 				</select>
-
 				<!-- begin tabset -->
-				<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="{{item._type === 'Scene' ? 'Scene' : 'Item'}}">
+				<div class="ittTab" itt-tab title="{{item._type === 'Scene' ? 'Layout' : 'Item'}}">
 					<!-- begin data tab -->
 					<div class="authoringFormScrollContainer">
 						<div class="field" ng-if="!(item._type==='Scene' && item.start_time <= 0.1)">
@@ -42,12 +57,23 @@
 						<div ng-include="itemEditor"></div>
 					</div>
 					<!-- end data tab -->
-
-
 				</div>
-				<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Style">
+				<div class="ittTab" itt-tab title="Style">
 					<!-- begin metadata  tab -->
 					<div class="authoringFormScrollContainer">
+						<div class="field" ng-if="!(item._type==='Scene' && item.start_time <= 0.1)">
+							<div class="label">Time
+							</div>
+							<div class="input">
+								<!-- TODO call setItemTime and setItemEndTime or equivalent on these: -->
+								<span sxs-input-time="item" x-input-field="start_time"></span>
+								<span ng-if="!(item.stop || item._type === 'Scene')">
+									<span class="label"> &nbsp; &nbsp; &nbsp; End</span>
+									<span sxs-input-time="item" x-input-field="end_time"></span>
+								</span>
+
+							</div>
+						</div>
 						<div class="field">
 							<div ng-if="item.tipText && item.noEmbed" class="tooltip-static">
 								<i class="fa fa-info-circle info-blue"></i>
@@ -192,8 +218,7 @@
 					</div>
 					<!-- end metadata  tab -->
 				</div>
-				<!--<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" ng-show="{{userHasRole('admin')}}" x-tablabel="Customize">-->
-				<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" x-tablabel="Customize">
+				<div class="ittTab" itt-tab title="Customize">
 					<!-- begin styles tab -->
 
 					<div class="authoringFormScrollContainer">
