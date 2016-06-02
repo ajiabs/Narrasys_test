@@ -48,7 +48,7 @@ angular.module('com.inthetelling.story')
 			ADMINISTRATOR: "admin",
 			INSTRUCTOR: "instructor",
 			STUDENT: "student",
-			GUEST: "guest",
+			GUEST: "guest"
 		};
 
 		svc.getRoleForNarrative = function (narrativeId, roles) {
