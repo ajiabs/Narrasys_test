@@ -41,7 +41,7 @@
 	</div>
 	<!-- for now, hide user panel in regular player. TODO maybe show it for non-guest users here? -->
 	<div class="nav-item profilegroup buttongroup">
-		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && userHasRole('admin')" ng-click="toggleProducerPreview()">
+		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && (userHasRole('admin') || userHasRole('customer admin'))" ng-click="toggleProducerPreview()">
 			<span ng-if="appState.product == 'producer'">Preview</span>
 			<span ng-if="appState.product == 'player'">Edit</span>
 		</a>
