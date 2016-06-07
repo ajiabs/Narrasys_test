@@ -6,7 +6,7 @@
 		<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
 	</div>
 	<div class="icon" style="float:left; margin-right: 0.5em;">
-		<img ng-if="item.asseet_url" ng-src="{{item.asset.url}}">
+		<img ng-if="item.asset.url" ng-src="{{item.asset.url}}">
 		<div class="clear"></div>
 	</div>
 	<div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
