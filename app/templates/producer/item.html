@@ -22,7 +22,7 @@
 				<select style="float:right; padding-right: 24px" ng-if="languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
 				</select>
 				<!-- begin tabset -->
-				<div class="ittTab" itt-tab ng-if="userHasRole('admin')" title="{{item._type === 'Scene' ? 'Layout' : 'Item'}}">
+				<div class="ittTab" itt-tab ng-if="selectService.showTab(item.producerItemType, 'Item')" title="{{item._type === 'Scene' ? 'Layout' : 'Item'}}">
 					<!-- begin data tab -->
 					<div class="authoringFormScrollContainer">
 						<div class="field" ng-if="!(item._type==='Scene' && item.start_time <= 0.1)">
@@ -42,7 +42,7 @@
 					</div>
 					<!-- end data tab -->
 				</div>
-				<div class="ittTab" itt-tab title="Style">
+				<div class="ittTab" itt-tab ng-if="selectService.showTab(item.producerItemType, 'Style')" title="Style">
 					<!-- begin metadata  tab -->
 					<div class="authoringFormScrollContainer">
 						<div class="field" ng-if="!(item._type==='Scene' && item.start_time <= 0.1)">
@@ -196,7 +196,7 @@
 					</div>
 					<!-- end metadata  tab -->
 				</div>
-				<div class="ittTab" itt-tab title="Customize" ng-if="userHasRole('admin')">
+				<div class="ittTab" itt-tab ng-if="selectService.showTab(item.producerItemType, 'Customize')" title="Customize">
 					<!-- begin styles tab -->
 
 					<div class="authoringFormScrollContainer">

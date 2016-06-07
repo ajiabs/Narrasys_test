@@ -12,7 +12,10 @@
 	function selectService(authSvc) {
 		var _videoPositionOpts = [];
 		var _layoutDropdownVisible = false;
+		var _admin = authSvc.userHasRole('admin');
+		var _custAdmin = authSvc.userHasRole('customer admin');
 		return {
+			showTab: showTab,
 			getVideoPositionOpts: getVideoPositionOpts,
 			onSelectChange: onSelectChange,
 			getTemplates: getTemplates,
@@ -84,8 +87,6 @@
 
 
 		function onSelectChange(item) {
-			var _admin = authSvc.userHasRole('admin');
-			var _custAdmin = authSvc.userHasRole('customer admin');
 			_layoutDropdownVisible = false;
 			switch(item._type) {
 				case 'Scene':
@@ -139,6 +140,84 @@
 
 		function showLayoutDropdown() {
 			return _layoutDropdownVisible;
+		}
+		
+		function showTab(itemType, tabTitle) {
+			switch (itemType) {
+				case 'scene':
+					switch(tabTitle) {
+						case 'Item':
+							return _admin;
+						case 'Style':
+							return true;
+						case 'Customize':
+							return _admin;
+					}
+					break;
+				case 'transcript':
+					switch(tabTitle) {
+						case 'Item':
+							return true;
+						case 'Style':
+							return (_admin || _custAdmin);
+						case 'Customize':
+							return _admin;
+					}
+					break;
+				case 'annotation':
+					switch(tabTitle) {
+						case 'Item':
+							return true;
+						case 'Style':
+							return (_admin || _custAdmin);
+						case 'Customize':
+							return _admin;
+					}
+					break;
+				case 'link':
+					switch(tabTitle) {
+						case 'Item':
+							return true;
+						case 'Style':
+							return (_admin || _custAdmin);
+						case 'Customize':
+							return _admin;
+					}
+					break;
+				case 'image':
+					switch(tabTitle) {
+						case 'Item':
+							return true;
+						case 'Style':
+							return (_admin || _custAdmin);
+						case 'Customize':
+							return _admin;
+					}
+					break;
+				case 'file':
+					switch(tabTitle) {
+						case 'Item':
+							return true;
+						case 'Style':
+							return (_admin || _custAdmin);
+						case 'Customize':
+							return _admin;
+					}
+					break;
+				case 'question':
+					switch(tabTitle) {
+						case 'Item':
+							return true;
+						case 'Style':
+							return _admin;
+						case 'Customize':
+							return _admin;
+					}
+					break;
+				case 'chapter':
+					//placeholder for now
+					return true;
+			}
 		}
 
 
