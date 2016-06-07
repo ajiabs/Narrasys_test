@@ -11,15 +11,11 @@
 
 	function selectService(authSvc) {
 		var _videoPositionOpts = [];
-		var _layoutOpts = [];
 		var _layoutDropdownVisible = false;
 		return {
 			getVideoPositionOpts: getVideoPositionOpts,
-			getLayoutOpts: getLayoutOpts,
 			onSelectChange: onSelectChange,
 			getTemplates: getTemplates,
-			sceneTemplates: sceneTemplates,
-			videoPosChange: videoPosChange,
 			showLayoutDropdown: showLayoutDropdown
 		};
 
@@ -86,17 +82,10 @@
 			}
 		}
 
-		function sceneTemplates() {
-
-		}
 
 		function onSelectChange(item) {
-			// console.log('item', item);
 			var _admin = authSvc.userHasRole('admin');
 			var _custAdmin = authSvc.userHasRole('customer admin');
-            //
-			// console.log('admin', _admin, ' custAdmin', _custAdmin);
-
 			_layoutDropdownVisible = false;
 			switch(item._type) {
 				case 'Scene':
@@ -133,13 +122,13 @@
 							}
 
 							if (/pip|corner/.test(item.templateUrl)) {
-								console.log('can use');
 								_layoutDropdownVisible = true;
 							}
 
 							break;
 					}
-
+					break;
+				case 'Image':
 					break;
 			}
 		}
@@ -148,17 +137,7 @@
 			return _videoPositionOpts;
 		}
 
-		function getLayoutOpts() {
-			return _layoutOpts;
-		}
-
-		function videoPosChange(item) {
-			console.log('ON VIDEO POS CHANGE', item)
-		}
-
-
 		function showLayoutDropdown() {
-
 			return _layoutDropdownVisible;
 		}
 
