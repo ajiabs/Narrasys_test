@@ -69,9 +69,14 @@
 							</div>
 
 							<div class="input">
-								<select ng-model="item.templateUrl"
-									ng-options="option.url as option.name for option in selectService.getTemplates(item.producerItemType) track by optionl.url">
+								<!--<select ng-model="item.templateUrl"-->
+									<!--ng-options="option.url as option.name for option in selectService.getTemplates(item.producerItemType) track by optionl.url">-->
 
+								<!--</select>-->
+
+								<select ng-model="item.templateUrl"
+										ng-change="selectService.onSelectChange(item)"
+										ng-options="option.url as option.name for option in item.templateOpts">
 								</select>
 								<!--<span ng-if="item.producerItemType == 'scene'">-->
 									<!--<select ng-model="item.templateUrl" ng-options="option.url as option.name for option in item.templateOpts">-->
@@ -125,7 +130,8 @@
 							<div class="label">Video Postion</div>
 							<div class="input">
 								<select ng-model="item.layouts[0]"
-										ng-options="option.value as option.name for option in item.layoutOpts">
+										ng-change="selectService.videoPosChange(item)"
+										ng-options="option.value as option.name for option in selectService.getVideoPositionOpts()">
 
 									<!--<option value="inline">inline</option>-->
 									<!--<option value="" ng-if="item.templateUrl != 'templates/scene/cornerH.html' && item.templateUrl != 'templates/scene/cornerV.html' && item.templateUrl != 'templates/scene/pip.html'">Centered</option>-->
@@ -134,7 +140,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="field" ng-if="!(isCentered || isCenteredPro || is1Col)">
+						<div class="field" ng-if="selectService.showLayoutDropdown()">
 							<div class="label">Layout</div>
 							<div class="input">
 								<span ng-if="item._type === 'Scene'">
@@ -201,7 +207,7 @@
 					</div>
 					<!-- end metadata  tab -->
 				</div>
-				<div class="ittTab" itt-tab title="Customize">
+				<div class="ittTab" itt-tab title="Customize" ng-if="userHasRole('admin')">
 					<!-- begin styles tab -->
 
 					<div class="authoringFormScrollContainer">

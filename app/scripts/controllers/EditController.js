@@ -59,11 +59,6 @@ angular.module('com.inthetelling.story')
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
 
-			newEvent.layoutOpts = selectService.getLayouts(newEvent);
-
-			console.log('new Event', newEvent);
-
-			console.log('this', this);
 
 			newEvent.cur_episode_id = appState.episodeId;
 			newEvent.episode_id = appState.episodeId;
@@ -567,10 +562,8 @@ angular.module('com.inthetelling.story')
 					"_type": "Scene",
 					"title": {},
 					"description": {},
-					"selected": {url: 'templates/scene/1col.html', name: 'One Column'},
-					"templateOpts": selectService.getTemplates('scene')
-					// "updateOpts": updateOps,
-					// "layoutOpts": getLayouts()
+					"templateOpts": selectService.getTemplates(type),
+					"layouts": ['', 'showCurrent']
 				};
 			}
 			if (type === 'video') {
@@ -581,7 +574,8 @@ angular.module('com.inthetelling.story')
 					"link_image_id": "",
 					"url": "",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -590,7 +584,8 @@ angular.module('com.inthetelling.story')
 					"_type": "Annotation",
 					"annotation": {},
 					"annotator": {},
-					"annotation_image_id": ""
+					"annotation_image_id": "",
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -599,7 +594,8 @@ angular.module('com.inthetelling.story')
 					"_type": "Upload",
 					"asset_id": "",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -609,7 +605,8 @@ angular.module('com.inthetelling.story')
 					"link_image_id": "",
 					"url": "https://",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -618,6 +615,7 @@ angular.module('com.inthetelling.story')
 				stub = {
 					"_type": "Plugin",
 					"title": {},
+					"templateOpts": selectService.getTemplates(type),
 					"data": {
 						"_pluginType": "question",
 						"_version": 2,
@@ -657,7 +655,7 @@ angular.module('com.inthetelling.story')
 				stub.templateUrl = 'templates/item/sxs-' + type + '.html';
 			} else {
 				var defaultTemplateUrls = {
-					"scene": "templates/scene/1col.html",
+					"scene": "templates/scene/centered.html",
 					"transcript": "templates/item/transcript.html",
 					"annotation": "templates/item/pullquote-noattrib.html",
 					"link": "templates/item/link.html",

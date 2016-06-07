@@ -9,14 +9,19 @@
 	angular.module('com.inthetelling.story')
 		.service('selectService', selectService);
 
-	function selectService() {
-
+	function selectService(authSvc) {
+		var _videoPositionOpts = [];
+		var _layoutOpts = [];
+		var _layoutDropdownVisible = false;
 		return {
+			getVideoPositionOpts: getVideoPositionOpts,
+			getLayoutOpts: getLayoutOpts,
+			onSelectChange: onSelectChange,
 			getTemplates: getTemplates,
 			sceneTemplates: sceneTemplates,
-			getLayouts: getLayouts
+			videoPosChange: videoPosChange,
+			showLayoutDropdown: showLayoutDropdown
 		};
-
 
 		function getTemplates(type) {
 			switch(type) {
@@ -30,7 +35,8 @@
 						{url: 'templates/scene/cornerH.html', name: 'Horizontal'},
 						{url: 'templates/scene/cornerV.html', name: 'Vertical'},
 						{url: 'templates/scene/centerVV.html', name: 'Vertical Pro'},
-						{url: 'templates/scene/centerVV-Mondrian.html', name: 'Vertical Pro Mondrian'}
+						{url: 'templates/scene/centerVV-Mondrian.html', name: 'Vertical Pro Mondrian'},
+						{url: 'templates/scene/pip.html', name: 'Picture-in-picture'}
 					];
 				case 'transcript':
 					return [
@@ -84,12 +90,79 @@
 
 		}
 
-		function getLayouts(arg) {
-			return [
-				{value: 'inline', name: 'inline'},
-				{value: '', name: 'Centered'}
-			];
+		function onSelectChange(item) {
+			// console.log('item', item);
+			var _admin = authSvc.userHasRole('admin');
+			var _custAdmin = authSvc.userHasRole('customer admin');
+            //
+			// console.log('admin', _admin, ' custAdmin', _custAdmin);
+
+			_layoutDropdownVisible = false;
+			switch(item._type) {
+				case 'Scene':
+					switch(item.templateUrl) {
+						case 'templates/scene/1col.html':
+							if (_admin) { _layoutDropdownVisible = true; }
+						case 'templates/scene/centered.html':
+						case 'templates/scene/centeredPro.html':
+							_videoPositionOpts = [
+								{value: 'inline', name: 'Inline'},
+								{value: '', name: 'Centered'}
+							];
+							item.layouts[0] = '';
+							item.layouts[1] = 'showCurrent';
+							break;
+						case 'templates/scene/2colL.html':
+						case 'templates/scene/2colR.html':
+						case 'templates/scene/cornerH.html':
+						case 'templates/scene/cornerV.html':
+						case 'templates/scene/centerVV.html':
+						case 'templates/scene/centerVV-Mondrian.html':
+						case 'templates/scene/pip.html':
+							_videoPositionOpts = [
+								{value: 'videoLeft', name: 'Video on Left'},
+								{value: 'videoRight', name: 'Video on Right'}
+							];
+							item.layouts[0] = 'videoLeft';
+
+							if (/2col/.test(item.templateUrl)) {
+
+								item.layouts[1] = '';
+							} else {
+								item.layouts[1] = 'showCurrent';
+							}
+
+							if (/pip|corner/.test(item.templateUrl)) {
+								console.log('can use');
+								_layoutDropdownVisible = true;
+							}
+
+							break;
+					}
+
+					break;
+			}
 		}
+
+		function getVideoPositionOpts() {
+			return _videoPositionOpts;
+		}
+
+		function getLayoutOpts() {
+			return _layoutOpts;
+		}
+
+		function videoPosChange(item) {
+			console.log('ON VIDEO POS CHANGE', item)
+		}
+
+
+		function showLayoutDropdown() {
+
+			return _layoutDropdownVisible;
+		}
+
+
 	}
 
 
