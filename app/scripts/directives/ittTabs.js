@@ -87,7 +87,7 @@
 	function ittTabb() {
 		return {
 			template: '<div ng-show="selected"><ng-transclude></ng-transclude></div>',
-			require: '^ittTabs',
+			require: '^^ittTabs',
 			transclude: true,
 			scope: {
 				title: '@'

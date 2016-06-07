@@ -27,7 +27,7 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, $log, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -97,9 +97,47 @@ angular.module('com.inthetelling.story')
 					"pin": "" // for image fills only
 				};
 
+
 				if (!scope.item.layouts) {
 					scope.item.layouts = ["inline"];
 				}
+
+				var _tmplPath = 'templates/scene/';
+
+
+				// scope.layoutDefaults = layoutDefaults;
+                //
+				// function layoutDefaults(item) {
+				// 	switch(item.templateUrl) {
+				// 		//set 1col to scene centered as default;
+				// 		case _tmplPath + '1col.html':
+				// 			item.layouts[0] = '';
+				// 			item.layouts[1] = 'showCurrent';
+				// 			break;
+				// 		case _tmplPath + '2colL.html':
+				// 			console.log('setting 2col');
+				// 			item.layouts[0] = 'videoLeft';
+				// 			item.layouts[1] = '';
+				// 			break;
+				// 		default:
+				// 			return;
+				// 	}
+				// 	console.log('hmm', item);
+				// }
+
+				// // setup default for scenes
+				// if (scope.item._type === 'Scene') {
+				// 	switch(scope.item.templateUrl) {
+				// 		//set 1col to scene centered as default;
+				// 		case _tmplPath + '1col.html':
+				// 			scope.item.layouts[0] = '';
+				// 			scope.item.layouts[1] = '';
+				// 			scope.is1Col = true;
+				// 			break;
+				// 		default:
+				// 			return;
+				// 	}
+				// }
 
 				// extract current event styles for the form
 				if (scope.item.styles) {
@@ -131,13 +169,23 @@ angular.module('com.inthetelling.story')
 
 				scope.appState = appState;
 
+				//watch templateUrl
+
 				// TODO this still needs more performance improvements...
+
+				scope.stuff = function stuff(item) {
+					console.log('item', item);
+				};
+
 				scope.watchEdits = scope.$watch(function () {
 					return scope.item;
 				}, function (newItem, oldItem) {
 					if (!oldItem) {
 						return;
 					}
+
+					// console.log('item:', newItem);
+					console.log('templateUrl: ', newItem.templateUrl, '\n', 'layouts: ', newItem.layouts);
 					// FOR DEBUGGING
 					/*
 										angular.forEach(Object.keys(newItem), function (f) {
@@ -151,14 +199,21 @@ angular.module('com.inthetelling.story')
 						scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
 					}
 
-
 					// Special cases:
 					// if new template is image-fill,
 					// 	set cosmetic to true, itemForm.
 					// if old template was image-fill, set cosmetic to false
 					// TODO this is fragile, based on template name:
+
+					//for changes to templateUrl, i.e. picking an option from the drop down.
+					var newUrl = newItem.templateUrl;
+					var oldUrl = oldItem.templateUrl;
 					if (newItem.templateUrl !== oldItem.templateUrl) {
-						console.log('tempalte URL stuff in $watch');
+
+						scope.isCentered = newUrl === _tmplPath + 'centered.html';
+						scope.isCenteredPro = newUrl === _tmplPath + 'centeredPro.html';
+						scope.is1Col = newUrl === _tmplPath + '1col.html';
+
 						if (newItem.templateUrl === 'templates/item/image-fill.html') {
 							scope.item.cosmetic = true;
 							scope.item.layouts = ["windowBg"];
