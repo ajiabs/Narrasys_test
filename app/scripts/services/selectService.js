@@ -31,10 +31,10 @@
 						{url: 'templates/scene/1col.html', name: 'One Column'},
 						{url: 'templates/scene/2colL.html', name: 'Two Columns'},
 						{url: 'templates/scene/2colR.html', name: 'Two Columns (mirrored)'},
-						{url: 'templates/scene/cornerH.html', name: 'Horizontal'},
 						{url: 'templates/scene/cornerV.html', name: 'Vertical'},
 						{url: 'templates/scene/centerVV.html', name: 'Vertical Pro'},
 						{url: 'templates/scene/centerVV-Mondrian.html', name: 'Vertical Pro Mondrian'},
+						{url: 'templates/scene/cornerH.html', name: 'Horizontal'},
 						{url: 'templates/scene/pip.html', name: 'Picture-in-picture'}
 					];
 				case 'transcript':
