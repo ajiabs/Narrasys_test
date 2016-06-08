@@ -411,7 +411,10 @@ input[readonly] {
 	color: #DE6625;
 }
 
-
+.button-chapter:before,
+.eventIcon.icon-comment:before {
+	content: "\e60b";
+}
 
 .button-comment:before,
 .eventIcon.icon-comment:before {
