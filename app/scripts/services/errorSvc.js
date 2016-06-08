@@ -21,7 +21,6 @@ angular.module('com.inthetelling.story')
 		svc.init();
 
 		svc.error = function (exception, cause) {
-			console.trace('err');
 			if (exception && (exception.status === 401 || exception.status === 403)) {
 				// "unauthorized" errors will clear login state for now.
 				// TODO in future there may be cases where this isn't desirable (i.e. when we support more roles,

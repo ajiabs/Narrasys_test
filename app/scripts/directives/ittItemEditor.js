@@ -27,7 +27,7 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, $timeout, $log, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -77,8 +77,6 @@ angular.module('com.inthetelling.story')
 				};
 
 				timelineSvc.pause();
-
-				console.log("sub item??", scope.item);
 				timelineSvc.seek(scope.item.start_time);
 
 				scope.uploadStatus = [];
@@ -138,10 +136,6 @@ angular.module('com.inthetelling.story')
 				//watch templateUrl
 
 				// TODO this still needs more performance improvements...
-
-				scope.stuff = function stuff(item) {
-					console.log('item', item);
-				};
 
 				scope.watchEdits = scope.$watch(function () {
 					return scope.item;
