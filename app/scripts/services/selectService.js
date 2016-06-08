@@ -141,7 +141,7 @@
 		function showLayoutDropdown() {
 			return _layoutDropdownVisible;
 		}
-		
+
 		function showTab(itemType, tabTitle) {
 			switch (itemType) {
 				case 'scene':
@@ -215,8 +215,14 @@
 					}
 					break;
 				case 'chapter':
-					//placeholder for now
-					return true;
+					switch(tabTitle) {
+						case 'Item':
+							return true;
+						case 'Style':
+							return false;
+						case 'Customize':
+							return false;
+					}
 			}
 		}
 
