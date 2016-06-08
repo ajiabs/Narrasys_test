@@ -292,10 +292,10 @@ angular.module('com.inthetelling.story')
 				};
 
 				var getNextStartTime = function (currentScene, currentItem, items) {
-
+					if (currentItem._type === 'Chapter') { return false; }
 					//HACK to work around TS-412
 					if (!currentScene) {
-						console.warn("getNextStartTime called with no scene (becuase it's being called for a scene event?)", currentItem, items);
+						console.warn("getNextStartTime called with no scene (because it's being called for a scene event?)", currentItem, items);
 						return false;
 					}
 					var nextItem;

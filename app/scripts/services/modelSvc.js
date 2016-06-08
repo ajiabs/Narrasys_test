@@ -605,8 +605,6 @@ angular.module('com.inthetelling.story')
 				return a.start_time - b.start_time;
 			});
 
-
-
 			angular.forEach(chapters, function(chapter) {
 				chapter.end_time = chapter.start_time;
 			});
