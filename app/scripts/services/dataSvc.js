@@ -939,6 +939,7 @@ angular.module('com.inthetelling.story')
 				"start_time",
 				"end_time",
 				"episode_id",
+				"chapter_marker",
 				"template_id",
 				"templateUrl", // We should get this from template_id, but for now there's a dependency in editController on this existing. TODO remove that dependency
 				"stop",

@@ -561,6 +561,13 @@ angular.module('com.inthetelling.story')
 					"description": {}
 				};
 			}
+			if (type === 'chapter') {
+				stub = {
+					'_type': 'Chapter',
+					'title': {},
+					'description': {}
+				}
+			}
 			if (type === 'video') {
 				// TODO: this should be an injected episode with the linked/uploaded video as its master asset.
 				// For now we're faking it as a link item.

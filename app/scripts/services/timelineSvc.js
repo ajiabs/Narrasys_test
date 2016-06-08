@@ -1,11 +1,11 @@
 'use strict';
 
 /*
-Son of cuePointScheduler, with a smattering of video controls.    
+Son of cuePointScheduler, with a smattering of video controls.
 
 This needs a bit of a rewrite before it can safely handle more than one episode at a time:
 stepEvent (and probably other things too) currently depends on video time matching timeline time;
-we'll need to have a way to calculate one from the other (which will get especially complicated when 
+we'll need to have a way to calculate one from the other (which will get especially complicated when
 we allow skipping scenes in SxS...)
 
 
@@ -81,7 +81,7 @@ angular.module('com.inthetelling.story')
 			if (!appState.hasBeenPlayed) {
 				appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
 				$rootScope.$emit("video.firstPlay");
-				return; // playerController needs to catch this and either show the help pane or trigger play again 
+				return; // playerController needs to catch this and either show the help pane or trigger play again
 			}
 
 			if (appState.time > appState.duration - 0.1) {
@@ -179,7 +179,7 @@ angular.module('com.inthetelling.story')
 
 		svc.startAtSpecificTime = function (t) {
 			if (!videoScope || appState.duration === 0) {
-				// if duration = 0, we're trying to seek to a time from a url param before the events 
+				// if duration = 0, we're trying to seek to a time from a url param before the events
 				// have loaded.  Just poll until events load, that's good enough for now.
 				// TODO throw error and stop looping if this goes on too long
 				$timeout(function () {
@@ -190,7 +190,7 @@ angular.module('com.inthetelling.story')
 
 			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
 			if (appState.isTouchDevice && appState.hasBeenPlayed === false && videoScope.videoType === 'youtube') {
-				//TODO in future it might be possible to trick YT into starting at the correct time even 
+				//TODO in future it might be possible to trick YT into starting at the correct time even
 				//return;
 			}
 
@@ -216,7 +216,7 @@ angular.module('com.inthetelling.story')
 		svc.seek = function (t, method, eventID) {
 			// console.log("timelineSvc.seek ", t, method, eventID);
 			if (!videoScope || appState.duration === 0) {
-				// if duration = 0, we're trying to seek to a time from a url param before the events 
+				// if duration = 0, we're trying to seek to a time from a url param before the events
 				// have loaded.  Just poll until events load, that's good enough for now.
 				// TODO throw error and stop looping if this goes on too long
 				$timeout(function () {
@@ -340,11 +340,11 @@ angular.module('com.inthetelling.story')
 		// - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// Event clock
 
-		/* 
-		  If timeline is playing, 
+		/*
+		  If timeline is playing,
 			(TODO 1. find out how long since last checked, compare videotime delta to timeline delta, adjust timeline if necessary)
 			2. check for timeline events since the last time stepEvent ran, handle them in order
-			3. if any were stop events, 
+			3. if any were stop events,
 				rewind the timeline and the video to that time (and stop handling events)
 			otherwise
 				set a timeout for a bit after the next event in the queue, up to some maximum amount of time, to run again
@@ -506,16 +506,19 @@ angular.module('com.inthetelling.story')
 				event.start_time = Number(event.start_time);
 				event.end_time = Number(event.end_time);
 				// add scenes to markedEvents[]:
-				if (event._type === "Scene") {
-					if (appState.product === 'producer') {
-						// producer gets all scenes, even 'hidden' ones
-						addMarkedEvent(event);
-					} else {
-						// sxs and player just get scenes with titles
-						if (event.display_title) {
-							addMarkedEvent(event);
-						}
-					}
+				// if (event._type === "Scene") {
+				// 	if (appState.product === 'producer') {
+				// 		// producer gets all scenes, even 'hidden' ones
+				// 		addMarkedEvent(event);
+				// 	} else {
+				// 		// sxs and player just get scenes with titles
+				// 		if (event.display_title) {
+				// 			addMarkedEvent(event);
+				// 		}
+				// 	}
+				// }
+				if (event._type === 'Chapter' || event.chapter_marker === true) {
+					addMarkedEvent(event);
 				}
 				if (event.start_time === 0 && !event._id.match('internal')) {
 					event.start_time = 0.01;
@@ -594,7 +597,8 @@ angular.module('com.inthetelling.story')
 			if (!wasFound) {
 				svc.markedEvents.push(newEvent);
 			}
-			//console.log(svc.markedEvents);
+
+			// console.log(svc.markedEvents);
 		};
 
 		svc.removeEvent = function (removeId) {
@@ -616,7 +620,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.updateEventTimes = function (event) {
-			// remove old references, as in removeEvent, then re-add it with new times 
+			// remove old references, as in removeEvent, then re-add it with new times
 			// (not calling removeEvent here since it would do a redundant updateEventStates)
 			svc.timelineEvents = $filter('filter')(svc.timelineEvents, function (timelineEvent) {
 				//Remove the timeline event if it's _id or eventId  equal the removeId
@@ -645,7 +649,7 @@ angular.module('com.inthetelling.story')
 					if (a.action === b.action) {
 						return 0;
 					}
-					// This is overly verbose, but I keep running into differences in 
+					// This is overly verbose, but I keep running into differences in
 					// how Safari and FF sort when I try to simplify it:
 					if (a.action === 'enter') {
 						if (b.action === 'pause') {
@@ -686,7 +690,7 @@ angular.module('com.inthetelling.story')
 
 		svc.updateEventStates = function () {
 			// console.log("timelineSvc.updateEventStates", appState.time);
-			// Sets past/present/future state of every event in the timeline.  
+			// Sets past/present/future state of every event in the timeline.
 			// TODO performance check (though this isn't done often, only on seek and inject.)
 
 			// DO NOT check event start and end times directly; they're relative to the episode, not the timeline!

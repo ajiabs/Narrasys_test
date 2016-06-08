@@ -276,6 +276,7 @@ angular.module('com.inthetelling.story')
 
 		svc.deriveEvent = function (event) {
 
+			// console.log("event type!!", event._type, '\n', event);
 			event = setLang(event);
 
 			if (event._type !== 'Scene') {
@@ -436,6 +437,8 @@ angular.module('com.inthetelling.story')
 					if (event.templateUrl.match(/question/)) {
 						event.producerItemType = 'question';
 					}
+				} else if (event._type === 'Chapter') {
+					event.producerItemType = 'chapter';
 				}
 				if (!event.producerItemType) {
 					console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
@@ -502,6 +505,7 @@ angular.module('com.inthetelling.story')
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
+			var chapters = [];
 			var episode = svc.episodes[epId];
 			angular.forEach(svc.events, function (event) {
 				if (event.cur_episode_id !== epId) {
@@ -510,11 +514,16 @@ angular.module('com.inthetelling.story')
 
 				if (event._type === 'Scene') {
 					scenes.push(event);
+				} else if (event._type === 'Chapter') {
+					chapters.push(event);
 				} else {
 					items.push(event);
 				}
 
 			});
+
+
+
 
 			// collect a list of all the speakers/annotators in the episode.
 			// Try to merge partially-translated annotator names into the more fully-translated versions.
@@ -522,6 +531,10 @@ angular.module('com.inthetelling.story')
 			// TODO replace all of this, have the API keep track of each annotator as a real, separate entity
 			var annotators = {};
 			angular.forEach(items, function (event) {
+				if (event._type === 'Annotation' && event.chapter_marker === true) {
+					chapters.push(event);
+				}
+
 				if (event._type === 'Annotation' && event.annotator) {
 					// This is kind of a mess
 					// Use the default language as the key; merge any other languages into that key
@@ -560,6 +573,7 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			episode.annotators = annotators;
+			episode.chapters = chapters;
 
 			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order
 			// attach array of scenes to the episode.
