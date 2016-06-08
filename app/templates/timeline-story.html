@@ -41,7 +41,7 @@
 						<div class="tip" ng-show="seekHandleVisible">{{willSeekTo | asTime}}</div>
 					</div>
 					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}">
-						<span ng-if="!event.stop" class="content" ng-bind-html="event.display_title || event.display_annotation"></span>
+						<span ng-if="!event.stop" class="content" ng-bind-html="event.display_annotation || event.display_title"></span>
 						<span ng-if="event.stop" class="content">Stop item</span>
 					</div>
 
