@@ -547,6 +547,15 @@ input[readonly] {
 }
 /* TODO reconcile tabs and drawer height / scroll */
 
+ul.nav-tabs {
+	list-style-type: none;
+}
+
+
+li.tab-pane {
+	display: inline;
+}
+
 .ittTabs {
 	clear: both;
 	height: 230px;

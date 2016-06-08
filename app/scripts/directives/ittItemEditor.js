@@ -27,7 +27,7 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, $log, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -97,9 +97,11 @@ angular.module('com.inthetelling.story')
 					"pin": "" // for image fills only
 				};
 
+
 				if (!scope.item.layouts) {
 					scope.item.layouts = ["inline"];
 				}
+
 
 				// extract current event styles for the form
 				if (scope.item.styles) {
@@ -131,13 +133,23 @@ angular.module('com.inthetelling.story')
 
 				scope.appState = appState;
 
+				//watch templateUrl
+
 				// TODO this still needs more performance improvements...
+
+				scope.stuff = function stuff(item) {
+					console.log('item', item);
+				};
+
 				scope.watchEdits = scope.$watch(function () {
 					return scope.item;
 				}, function (newItem, oldItem) {
 					if (!oldItem) {
 						return;
 					}
+
+					// console.log('item:', newItem);
+					console.log('templateUrl: ', newItem.templateUrl, '\n', 'layouts: ', newItem.layouts);
 					// FOR DEBUGGING
 					/*
 										angular.forEach(Object.keys(newItem), function (f) {
@@ -151,14 +163,15 @@ angular.module('com.inthetelling.story')
 						scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
 					}
 
-
 					// Special cases:
 					// if new template is image-fill,
 					// 	set cosmetic to true, itemForm.
 					// if old template was image-fill, set cosmetic to false
 					// TODO this is fragile, based on template name:
+
+					//for changes to templateUrl, i.e. picking an option from the drop down.
 					if (newItem.templateUrl !== oldItem.templateUrl) {
-						console.log('tempalte URL stuff in $watch');
+						
 						if (newItem.templateUrl === 'templates/item/image-fill.html') {
 							scope.item.cosmetic = true;
 							scope.item.layouts = ["windowBg"];

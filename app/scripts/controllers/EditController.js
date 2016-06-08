@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
 		// Poor encapsulation of the upload controls. Sorry about that.
 
+		$scope.selectService = selectService;
 		$scope.chooseAsset = function (assetType) {
 			assetType = assetType || '';
 			$scope.showAssetPicker = true;
@@ -57,6 +58,8 @@ angular.module('com.inthetelling.story')
 			}
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
+
+
 			newEvent.cur_episode_id = appState.episodeId;
 			newEvent.episode_id = appState.episodeId;
 			if (appState.user && appState.user.avatar_id) {
@@ -558,7 +561,9 @@ angular.module('com.inthetelling.story')
 				stub = {
 					"_type": "Scene",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
+					"layouts": ['', 'showCurrent']
 				};
 			}
 			if (type === 'chapter') {
@@ -576,7 +581,8 @@ angular.module('com.inthetelling.story')
 					"link_image_id": "",
 					"url": "",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -585,7 +591,8 @@ angular.module('com.inthetelling.story')
 					"_type": "Annotation",
 					"annotation": {},
 					"annotator": {},
-					"annotation_image_id": ""
+					"annotation_image_id": "",
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -594,7 +601,8 @@ angular.module('com.inthetelling.story')
 					"_type": "Upload",
 					"asset_id": "",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -604,7 +612,8 @@ angular.module('com.inthetelling.story')
 					"link_image_id": "",
 					"url": "https://",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -613,6 +622,7 @@ angular.module('com.inthetelling.story')
 				stub = {
 					"_type": "Plugin",
 					"title": {},
+					"templateOpts": selectService.getTemplates(type),
 					"data": {
 						"_pluginType": "question",
 						"_version": 2,
@@ -652,7 +662,7 @@ angular.module('com.inthetelling.story')
 				stub.templateUrl = 'templates/item/sxs-' + type + '.html';
 			} else {
 				var defaultTemplateUrls = {
-					"scene": "templates/scene/1col.html",
+					"scene": "templates/scene/centered.html",
 					"transcript": "templates/item/transcript.html",
 					"annotation": "templates/item/pullquote-noattrib.html",
 					"link": "templates/item/link.html",
@@ -661,6 +671,7 @@ angular.module('com.inthetelling.story')
 					"question": "templates/item/question-mc.html",
 					"video": "TODO:VIDEO"
 				};
+
 				stub.templateUrl = defaultTemplateUrls[type];
 			}
 			angular.extend(base, stub);
