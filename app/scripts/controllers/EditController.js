@@ -186,7 +186,7 @@ angular.module('com.inthetelling.story')
 			$scope.blockDoubleClicks = true;
 			//assign current episode_id
 			toSave.cur_episode_id = appState.episodeId;
-			if (toSave._type === 'Scene') {
+			if (toSave._type === 'Scene' || toSave._type === 'Chapter') {
 				var adjusted = adjustScenes(toSave);
 				angular.forEach(adjusted, function (scene) {
 					dataSvc.storeItem(scene)

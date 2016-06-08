@@ -214,6 +214,7 @@ angular.module('com.inthetelling.story')
 
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function (t, method, eventID) {
+			console.trace('seek');
 			// console.log("timelineSvc.seek ", t, method, eventID);
 			if (!videoScope || appState.duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events

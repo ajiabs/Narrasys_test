@@ -522,9 +522,7 @@ angular.module('com.inthetelling.story')
 
 			});
 
-
-
-
+			// items = items.concat(chapters);
 			// collect a list of all the speakers/annotators in the episode.
 			// Try to merge partially-translated annotator names into the more fully-translated versions.
 			// This is imperfect -- a few will slip through if there is a missing translation in the default language -- but good enough for now
@@ -601,6 +599,16 @@ angular.module('com.inthetelling.story')
 			// and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
 			episode.items = items.sort(function (a, b) {
 				return a.start_time - b.start_time;
+			});
+
+			episode.chapters = chapters.sort(function(a, b) {
+				return a.start_time - b.start_time;
+			});
+
+
+
+			angular.forEach(chapters, function(chapter) {
+				chapter.end_time = chapter.start_time;
 			});
 
 			// Fix bad event timing data.  (see also svc.deriveEvent())

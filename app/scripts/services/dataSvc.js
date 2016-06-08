@@ -910,7 +910,8 @@ angular.module('com.inthetelling.story')
 		svc.storeItem = function (evt) {
 			evt = prepItemForStorage(evt);
 			if (!evt) {
-				return false;
+				console.log('made it here!!');
+				return $q.reject(false);
 			}
 			if (evt && evt._id && !evt._id.match(/internal/)) {
 				// update
@@ -1007,6 +1008,9 @@ angular.module('com.inthetelling.story')
 			prepped.style_id = get_id_values("style", evt.styles);
 			prepped.layout_id = get_id_values("layout", evt.layouts);
 
+			if (evt._type === 'Chapter') {
+				return prepped;
+			}
 			var template = svc.readCache("template", "url", evt.templateUrl);
 			if (template) {
 				prepped.template_id = template.id;

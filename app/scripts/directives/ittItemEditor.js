@@ -77,6 +77,8 @@ angular.module('com.inthetelling.story')
 				};
 
 				timelineSvc.pause();
+
+				console.log("sub item??", scope.item);
 				timelineSvc.seek(scope.item.start_time);
 
 				scope.uploadStatus = [];
@@ -171,7 +173,7 @@ angular.module('com.inthetelling.story')
 
 					//for changes to templateUrl, i.e. picking an option from the drop down.
 					if (newItem.templateUrl !== oldItem.templateUrl) {
-						
+
 						if (newItem.templateUrl === 'templates/item/image-fill.html') {
 							scope.item.cosmetic = true;
 							scope.item.layouts = ["windowBg"];
