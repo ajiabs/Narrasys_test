@@ -106,8 +106,8 @@
 								</select>
 							</div>
 						</div>
-						<div class="field" ng-if="selectService.showLayoutDropdown()">
-							<div class="label">Layout</div>
+						<div class="field" ng-if="selectService.showDisplayDropdown()">
+							<div class="label">Display</div>
 							<div class="input">
 								<span ng-if="item._type === 'Scene'">
 
@@ -163,7 +163,7 @@
 								<label>
 									<input type="checkbox" ng-model="item.cosmetic">Cosmetic
 								</label>
-								<label ng-if="item.templateUrl === 'templates/item/text-h1.html'">
+								<label ng-if="item.templateUrl === 'templates/item/text-h1.html' || item.templateUrl === 'templates/item/text-h2.html'">
 									<input type="checkbox" ng-model="item.chapter_marker">Chapter Event
 								</label>
 							</div>

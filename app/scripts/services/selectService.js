@@ -9,7 +9,7 @@
 
 	function selectService(authSvc) {
 		var _videoPositionOpts = [];
-		var _layoutDropdownVisible = false;
+		var _displayDropdownVisible = false;
 		var _imageUploadVisible = false;
 		var _videoPositionVisible = false;
 		var _admin = authSvc.userHasRole('admin');
@@ -25,7 +25,7 @@
 			getVideoPositionOpts: getVideoPositionOpts,
 			onSelectChange: onSelectChange,
 			getTemplates: getTemplates,
-			showLayoutDropdown: showLayoutDropdown,
+			showDisplayDropdown: showDisplayDropdown,
 			showImageUpload: showImageUpload,
 			showVideoPosition: showVideoPosition
 		};
@@ -38,8 +38,8 @@
 			return _videoPositionOpts;
 		}
 
-		function showLayoutDropdown() {
-			return _layoutDropdownVisible;
+		function showDisplayDropdown() {
+			return _displayDropdownVisible;
 		}
 
 		function showImageUpload() {
@@ -53,6 +53,7 @@
 		function getTemplates(type) {
 			switch(type) {
 				case 'scene':
+					_displayDropdownVisible = false;
 					return [
 						{url: 'templates/scene/centered.html', name: 'Centered'},
 						{url: 'templates/scene/centeredPro.html', name: 'Centered Pro' },
@@ -81,7 +82,7 @@
 						{url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
 					];
 				case 'link':
-					_layoutDropdownVisible = true;
+					_displayDropdownVisible = true;
 					_videoPositionVisible = false;
 					return [
 						{url: 'templates/item/link.html', name: 'Link'},
@@ -116,12 +117,12 @@
 		}
 
 		function onSelectChange(item) {
-			_layoutDropdownVisible = false;
+			_displayDropdownVisible = false;
 			switch(item._type) {
 				case 'Scene':
 					switch(item.templateUrl) {
 						case 'templates/scene/1col.html':
-							if (_admin) { _layoutDropdownVisible = true; }
+							if (_admin) { _displayDropdownVisible = true; }
 						case 'templates/scene/centered.html':
 						case 'templates/scene/centeredPro.html':
 							_videoPositionVisible = false;
@@ -154,14 +155,14 @@
 							}
 
 							if (/pip|corner/.test(item.templateUrl)) {
-								_layoutDropdownVisible = true;
+								_displayDropdownVisible = true;
 							}
 
 							break;
 					}
 					break;
 				case 'Link':
-					_layoutDropdownVisible = true;
+					_displayDropdownVisible = true;
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';
 					} else {
