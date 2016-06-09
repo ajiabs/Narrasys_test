@@ -1,7 +1,4 @@
 <div class="itemEdit authoringForm">
-	<div>
-
-
 		<div ng-if="appState.product == 'sxs'" class="authoringFormScrollContainer">
 			<!-- begin sxs -->
 
@@ -39,13 +36,41 @@
 							</div>
 						</div>
 						<div ng-include="itemEditor"></div>
+						<div ng-if="item.producerItemType === 'link'">
+							<div class="field">
+								<div class="label">Template</div>
+								<div class="input">
+									<select ng-model="item.templateUrl"
+											ng-change="selectService.onSelectChange(item)"
+											ng-options="option.url as option.name for option in item.templateOpts">
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Flags</div>
+								<div class="input">
+									<label>
+										<input type="checkbox" ng-model="item.required">Required
+									</label>
+									<label>
+										<input type="checkbox" ng-change="selectService.onSelectChange(item)" ng-model="item.stop">Stop item
+									</label>
+									<label>
+										<input type="checkbox" ng-model="item.cosmetic">Cosmetic
+									</label>
+									<label ng-if="item.templateUrl === 'templates/item/text-h1.html'">
+										<input type="checkbox" ng-model="item.chapter_marker">Chapter Event
+									</label>
+								</div>
+							</div>
+						</div>
 					</div>
 					<!-- end data tab -->
 				</div>
 				<div class="ittTab" itt-tab ng-if="selectService.showTab(item.producerItemType, 'Style')" title="Style">
 					<!-- begin metadata  tab -->
 					<div class="authoringFormScrollContainer">
-						<div class="field" ng-if="!(item._type==='Scene' && item.start_time <= 0.1)">
+						<div class="field" ng-if="!(item._type === 'Scene' && item.start_time <= 0.1) && item.producerItemType !== 'link'">
 							<div class="label">Time
 							</div>
 							<div class="input">
@@ -58,8 +83,7 @@
 
 							</div>
 						</div>
-
-						<div class="field">
+						<div class="field" ng-if="item.producerItemType !== 'link'">
 							<div ng-if="item.tipText && item.noEmbed" class="tooltip-static">
 								<i class="fa fa-info-circle info-blue"></i>
 								<p class="tooltip-text">{{item.tipText}}</p>
@@ -67,61 +91,14 @@
 							<div class="label">
 								Template
 							</div>
-
 							<div class="input">
 								<select ng-model="item.templateUrl"
 										ng-change="selectService.onSelectChange(item)"
 										ng-options="option.url as option.name for option in item.templateOpts">
 								</select>
-								<!--<span ng-if="item.producerItemType == 'scene'">-->
-									<!--<select ng-model="item.templateUrl" ng-options="option.url as option.name for option in item.templateOpts">-->
-									<!--</select>-->
-								<!--</span>-->
-								<!--<select ng-if="item.producerItemType == 'transcript'" ng-model="item.templateUrl">-->
-									<!--<option value="templates/item/transcript.html">Transcript</option>-->
-									<!--<option value="templates/item/transcript-withthumbnail.html">Transcript with thumbnail</option>-->
-									<!--<option value="templates/item/transcript-withthumbnail-alt.html">Transcript with thumbnail B</option>-->
-								<!--</select>-->
-								<!--<select ng-if="item.producerItemType == 'annotation'" ng-model="item.templateUrl">-->
-									<!--<option value="templates/item/pullquote.html">Pullquote with attribution</option>-->
-									<!--<option value="templates/item/pullquote-noattrib.html">Pullquote</option>-->
-									<!--<option value="templates/item/text-h1.html">Header 1</option>-->
-									<!--<option value="templates/item/text-h2.html">Header 2</option>-->
-									<!--<option value="templates/item/text-transmedia.html">Long text (as transmedia)</option>-->
-									<!--<option value="templates/item/text-definition.html">Definition (as transmedia)</option>-->
-								<!--</select>-->
-								<!--<select ng-if="item.producerItemType == 'link'" ng-model="item.templateUrl">-->
-									<!--<option value="templates/item/link.html">Link</option>-->
-									<!--<option value="templates/item/link-withimage.html">Link with image</option>-->
-									<!--<option value="templates/item/link-withimage-notitle.html">Link with image - no title</option>-->
-									<!--<option value="templates/item/link-descriptionfirst.html">Link: description first</option>-->
-									<!--<option ng-if="!item.noEmbed" value="templates/item/link-embed.html">Embedded link</option>-->
-									<!--<option ng-if="item.noEmbed" disabled value="templates/item/link.html">Embedded link</option>-->
-									<!--<option value="templates/item/link-modal-thumb.html">Link Modal</option>-->
-								<!--</select>-->
-								<!--<select ng-if="item.producerItemType == 'image'" ng-model="item.templateUrl">-->
-									<!--<option value="templates/item/image-fill.html">Overlay or background fill</option>-->
-									<!--<option value="templates/item/image.html">Linked image</option>-->
-									<!--<option value="templates/item/image-inline.html">Inline image</option>-->
-									<!--<option value="templates/item/image-inline-withtext.html">Inline image with text</option>-->
-									<!--<option value="templates/item/image-caption.html">Image with caption</option>-->
-									<!--<option value="templates/item/image-caption-sliding.html">Image with sliding caption</option>-->
-									<!--<option value="templates/item/image-thumbnail.html">Image thumbnail</option>-->
-									<!--<option value="templates/item/image-plain.html">Plain image</option>-->
-								<!--</select>-->
-								<!--<select ng-if="item.producerItemType == 'file'" ng-model="item.templateUrl">-->
-									<!--&lt;!&ndash; HACK these MUST contain "file" in the url; see modelSvc trying to set producerItemType &ndash;&gt;-->
-									<!--<option value="templates/item/file.html">Uploaded file</option>-->
-									<!--&lt;!&ndash; <option value="templates/item/file-withimage.html">Linked file with image</option> &ndash;&gt;-->
-								<!--</select>-->
-								<!--<select ng-if="item.producerItemType == 'question'" ng-model="item.templateUrl">-->
-									<!--<option value="templates/item/question-mc.html">Default question display</option>-->
-									<!--<option value="templates/item/question-mc-image-right.html">Question with image right</option>-->
-									<!--<option value="templates/item/question-mc-image-left.html">Question with image left</option>-->
-								<!--</select>-->
 							</div>
 						</div>
-						<div class="field" ng-if="item.templateUrl !='templates/scene/centered.html' && item.templateUrl !== 'templates/scene/centeredPro.html' && item.templateUrl !== 'templates/scene/1col.html'">
+						<div class="field" ng-if="selectService.showVideoPosition()">
 							<div class="label">Video Postion</div>
 							<div class="input">
 								<select ng-model="item.layouts[0]"
@@ -167,26 +144,21 @@
 											<option value="br">Bottom right</option>
 										</select>
 									</span>
-									<select ng-if="item.templateUrl != 'templates/item/image-fill.html'" size="1" ng-model="item.layouts[0]">
-										<option value="windowFg">Modal</option>
-										<option value="inline">Inline</option>
-										<option value="sidebarL">Sidebar: left</option>
-										<option value="sidebarR">Sidebar: right</option>
-										<option value="burstL">Burst left margin</option>
-										<option value="burstR">Burst right margin</option>
-										<option value="burst">Burst both margins</option>
+									<select ng-if="item.templateUrl != 'templates/item/image-fill.html'"
+										ng-model="item.layouts[0]"
+										ng-options="option.value as option.name for option in selectService.getLinkDisplayOpts()">
 									</select>
 								</span>
 							</div>
 						</div>
-						<div class="field" ng-if="item.producerItemType != 'scene'">
+						<div class="field" ng-if="item.producerItemType != 'scene' && item.producerItemType !== 'link'">
 							<div class="label">Flags</div>
 							<div class="input">
 								<label>
 									<input type="checkbox" ng-model="item.required">Required
 								</label>
 								<label>
-									<input type="checkbox" ng-model="item.stop">Stop item
+									<input type="checkbox" ng-change="selectService.onSelectChange(item)" ng-model="item.stop">Stop item
 								</label>
 								<label>
 									<input type="checkbox" ng-model="item.cosmetic">Cosmetic
@@ -275,10 +247,6 @@
 
 			<!-- end producer -->
 		</div>
-
-
-	</div>
-
 	<div class="ittTabFoot">
 
 		<a ng-click="cancelEdit()">Cancel</a> &nbsp; &nbsp;

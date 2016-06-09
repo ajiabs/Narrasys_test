@@ -1,8 +1,6 @@
 /**
  * Created by githop on 6/7/16.
  */
-
-
 (function() {
 	'use strict';
 
@@ -12,15 +10,45 @@
 	function selectService(authSvc) {
 		var _videoPositionOpts = [];
 		var _layoutDropdownVisible = false;
+		var _imageUploadVisible = false;
+		var _videoPositionVisible = false;
 		var _admin = authSvc.userHasRole('admin');
 		var _custAdmin = authSvc.userHasRole('customer admin');
+		var _linkPositionOpts = [
+			{value: 'windowFg', name: 'Modal'},
+			{value: 'inline', name: 'Inline'}
+		];
+
 		return {
+			getLinkDisplayOpts: getLinkDisplayOpts,
 			showTab: showTab,
 			getVideoPositionOpts: getVideoPositionOpts,
 			onSelectChange: onSelectChange,
 			getTemplates: getTemplates,
-			showLayoutDropdown: showLayoutDropdown
+			showLayoutDropdown: showLayoutDropdown,
+			showImageUpload: showImageUpload,
+			showVideoPosition: showVideoPosition
 		};
+
+		function getLinkDisplayOpts() {
+			return _linkPositionOpts;
+		}
+
+		function getVideoPositionOpts() {
+			return _videoPositionOpts;
+		}
+
+		function showLayoutDropdown() {
+			return _layoutDropdownVisible;
+		}
+
+		function showImageUpload() {
+			return _imageUploadVisible;
+		}
+
+		function showVideoPosition() {
+			return _videoPositionVisible;
+		}
 
 		function getTemplates(type) {
 			switch(type) {
@@ -53,10 +81,12 @@
 						{url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
 					];
 				case 'link':
+					_layoutDropdownVisible = true;
+					_videoPositionVisible = false;
 					return [
 						{url: 'templates/item/link.html', name: 'Link'},
 						{url: 'templates/item/link-withimage.html', name: 'Link with image'},
-						{url: 'templates/item/link-withimage-notitle.html', name: 'Link with image - no title'},
+						{url: 'templates/item/link-withimage-notitle.html', name: 'Link with image / hide title'},
 						{url: 'templates/item/link-descriptionfirst.html', name: 'Link: description first'},
 						{url: 'templates/item/link-embed.html', name: 'Embedded Link'},
 						{url: 'templates/item/link-modal-thumb.html', name: 'Link Modal'}
@@ -85,7 +115,6 @@
 			}
 		}
 
-
 		function onSelectChange(item) {
 			_layoutDropdownVisible = false;
 			switch(item._type) {
@@ -95,6 +124,7 @@
 							if (_admin) { _layoutDropdownVisible = true; }
 						case 'templates/scene/centered.html':
 						case 'templates/scene/centeredPro.html':
+							_videoPositionVisible = false;
 							_videoPositionOpts = [
 								{value: 'inline', name: 'Inline'},
 								{value: '', name: 'Centered'}
@@ -109,6 +139,7 @@
 						case 'templates/scene/centerVV.html':
 						case 'templates/scene/centerVV-Mondrian.html':
 						case 'templates/scene/pip.html':
+							_videoPositionVisible = true;
 							_videoPositionOpts = [
 								{value: 'videoLeft', name: 'Video on Left'},
 								{value: 'videoRight', name: 'Video on Right'}
@@ -129,17 +160,27 @@
 							break;
 					}
 					break;
-				case 'Image':
+				case 'Link':
+					_layoutDropdownVisible = true;
+					if (item.stop === true) {
+						item.layouts[0] = 'windowFg';
+					} else {
+						item.layouts[0] = 'inline';
+					}
+					switch(item.templateUrl) {
+						case 'templates/item/link-withimage.html':
+						case 'templates/item/link-withimage-notitle.html':
+							_imageUploadVisible = true;
+							break;
+						case 'templates/item/link.html':
+						case 'templates/item/link-descriptionfirst.html':
+						case 'templates/item/link-embed.html':
+						case 'templates/item/link-modal-thumb.html':
+							_imageUploadVisible = false;
+							break;
+					}
 					break;
 			}
-		}
-
-		function getVideoPositionOpts() {
-			return _videoPositionOpts;
-		}
-
-		function showLayoutDropdown() {
-			return _layoutDropdownVisible;
 		}
 
 		function showTab(itemType, tabTitle) {
@@ -225,10 +266,6 @@
 					}
 			}
 		}
-
-
 	}
-
-
 
 })();
