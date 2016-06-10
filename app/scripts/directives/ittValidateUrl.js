@@ -57,7 +57,7 @@
 							return false;
 						}
 
-						if (ittUtils.isValidURL(viewVal)) {
+						if (ittUtils.isValidURL(viewVal) || /mailto:/.test(viewVal)) {
 							scope.item.noEmbed = false;
 							scope.item.tipText = undefined;
 							return true;
@@ -71,7 +71,7 @@
 
 					ngModel.$asyncValidators.xFrameOpts = function (modelVal, viewVal) {
 						//bail out if empty or link to youtube
-						if (ngModel.$isEmpty(viewVal) || youtubeSvc.isYoutubeUrl(viewVal)) {
+						if (ngModel.$isEmpty(viewVal) || youtubeSvc.isYoutubeUrl(viewVal) || /mailto:/.test(viewVal)) {
 							return $q(function (resolve) { resolve(); });
 						}
 
