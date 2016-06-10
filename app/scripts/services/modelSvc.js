@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
  and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, $location, config, appState, youtubeSvc) {
+	.factory('modelSvc', function ($interval, $filter, $location, ittUtils, config, appState, youtubeSvc) {
 
 		var svc = {};
 
@@ -616,24 +616,43 @@ angular.module('com.inthetelling.story')
 			});
 
 
-			episode.items = items.sort(function(a, b) {
+			//for items with the same time, ensure hierarchy of items
+			//in the following order:
+			// 1. Annotations:
+			//  	- H1 > H2 > isTranscript
+			// 3. Links
+			// 4. Uploads
+			//		- Image > Document
+			episode.items = items.sort(function (a, b) {
 				if (a.start_time === b.start_time) {
+
 					if (a._type === 'Annotation' && b._type === 'Annotation') {
-						//all transcripts are annotations but not all annotations are transcripts.
-						if (a.isTranscript === false && b.isTranscript === true) {
+						if (a.isTranscript === true && b.isTranscript === false) {
+							return 1;
+						} else {
+							return -1;
+						}
+					}
+
+					if (a._type === 'Upload' && b._type === 'Upload') {
+						if (ittUtils.existy(a.asset) && ittUtils.existy(b.asset)) {
+							if (a.asset._type === 'Asset::Image' && b.asset._type === 'Asset::Document') {
+								return -1;
+							} else {
+								return 1;
+							}
+						}
+					}
+
+					if (a._type === 'Annotation' && (b._type === 'Upload' || b._type === 'Link')) {
+						if (b._type === 'Link') {
 							return -1;
 						} else {
 							return 1;
 						}
-					} else if (a._type === 'Annotation' && (b._type === 'Upload' || b._type === 'Link')) {
-						if (b._type === 'Link') {
-							return -1;
-						} else if (b._type === 'Upload') {
-							if (a.asset._type === 'Asset::Image' && b.asset._type === 'Asset::Document') {
-								return 1;
-							} else {
-								return -1;
-							}
+					} else {
+						if (b._type === 'Upload') {
+							return -1
 						} else {
 							return 1;
 						}
@@ -641,6 +660,8 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
+
+			console.log('after sort \n', episode.items);
 			// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
 			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
 			for (var i = 1, len = episode.scenes.length; i < len; i++) {
