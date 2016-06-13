@@ -34,11 +34,78 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			title: "Existing narratives",
 			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list></div></div>'
 		})
-		.when('/story', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
-		})
+		//if we are on /story, we should really be on /stores/:id where id is narrative id or path.
+		// .when('/story', {
+		// 	template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve"></div></div>',
+		// 	controller: 'NarrativeCtrl',
+		// 	resolve: {
+		// 		narrativeResolve: function($route, $q, dataSvc, modelSvc, ittUtils) {
+		// 			var pathOrId = $route.current.params.narrativePath;
+		// 			//this only pulls from the cache.
+		// 			var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+        //
+		// 			var doPullFromCache = ittUtils.existy(cachedNarr) &&
+		// 				ittUtils.existy(cachedNarr.path_slug) &&
+		// 				cachedNarr.path_slug.en === pathOrId;
+        //
+		// 			if (doPullFromCache) {
+		// 				console.log('cache hit!');
+		// 				return $q(function(resolve) {resolve(cachedNarr)});
+		// 			}
+		// 			return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
+		// 				return narrativeData;
+		// 			})
+		// 		}
+		// 	}
+		// })
 		.when('/story/:narrativePath', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve"></div></div>',
+			controller: 'NarrativeCtrl',
+			resolve: {
+				narrativeResolve: function($route, $q, dataSvc, modelSvc, ittUtils) {
+					var pathOrId = $route.current.params.narrativePath;
+					//this only pulls from the cache.
+					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+
+					var doPullFromCache = ittUtils.existy(cachedNarr) &&
+						ittUtils.existy(cachedNarr.path_slug) &&
+						cachedNarr.path_slug.en === pathOrId;
+
+					if (doPullFromCache) {
+						cachedNarr.templateUrl = 'templates/narrative/default.html';
+						return $q(function(resolve) {resolve(cachedNarr)});
+					}
+					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
+						narrativeData.templateUrl = 'templates/narrative/default.html';
+						return narrativeData;
+					})
+				}
+			}
+		})
+		.when('/story/:narrativePath/edit', {
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve"></div></div>',
+			controller: 'NarrativeCtrl',
+			resolve: {
+				narrativeResolve: function($route, $q, dataSvc, modelSvc, ittUtils) {
+					var pathOrId = $route.current.params.narrativePath;
+					//this only pulls from the cache.
+					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+
+					var doPullFromCache = ittUtils.existy(cachedNarr) &&
+						ittUtils.existy(cachedNarr.path_slug) &&
+						cachedNarr.path_slug.en === pathOrId;
+
+					if (doPullFromCache) {
+						console.log('cache hit!');
+						cachedNarr.templateUrl = 'templates/narrative/edit.html';
+						return $q(function(resolve) {resolve(cachedNarr)});
+					}
+					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
+						narrativeData.templateUrl = 'templates/narrative/edit.html';
+						return narrativeData;
+					})
+				}
+			}
 		})
 		.when('/story/:narrativePath/:timelinePath', {
 			template: '<div itt-narrative-timeline></div>',
