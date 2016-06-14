@@ -632,7 +632,7 @@ angular.module('com.inthetelling.story')
 					} else if (b.templateUrl === 'templates/item/text-h2.html') {
 						return 1;
 					} else if (a.isTranscript) {
-						return -1
+						return -1;
 					} else if (b.isTranscript) {
 						return 1;
 					} else if (a._type === 'Link') {
@@ -641,7 +641,7 @@ angular.module('com.inthetelling.story')
 						return 1;
 					} else if (a._type === 'Upload') {
 						if (a.producerItemType === 'image' || b._type === 'Annotation' ) {
-							return -1
+							return -1;
 						} else {
 							return 1;
 						}
