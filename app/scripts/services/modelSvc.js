@@ -585,9 +585,6 @@ angular.module('com.inthetelling.story')
 			});
 
 			// and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
-			episode.items = items.sort(function (a, b) {
-				return a.start_time - b.start_time;
-			});
 
 			// Fix bad event timing data.  (see also svc.deriveEvent())
 			angular.forEach(items, function (event) {
@@ -623,45 +620,44 @@ angular.module('com.inthetelling.story')
 			// 3. Links
 			// 4. Uploads
 			//		- Image > Document
+			//5. all other annotations
 			episode.items = items.sort(function (a, b) {
 				if (a.start_time === b.start_time) {
-
-					if (a._type === 'Annotation' && b._type === 'Annotation') {
-						if (a.isTranscript === true && b.isTranscript === false) {
-							return 1;
-						} else {
-							return -1;
-						}
-					}
-
-					if (a._type === 'Upload' && b._type === 'Upload') {
-						if (ittUtils.existy(a.asset) && ittUtils.existy(b.asset)) {
-							if (a.asset._type === 'Asset::Image' && b.asset._type === 'Asset::Document') {
-								return -1;
-							} else {
-								return 1;
-							}
-						}
-					}
-
-					if (a._type === 'Annotation' && (b._type === 'Upload' || b._type === 'Link')) {
-						if (b._type === 'Link') {
-							return -1;
-						} else {
-							return 1;
-						}
-					} else {
-						if (b._type === 'Upload') {
+					if (a.templateUrl === 'templates/item/text-h1.html') {
+						return -1;
+					} else if (b.templateUrl === 'templates/item/text-h1.html') {
+						return 1;
+					} else if (a.templateUrl === 'templates/item/text-h2.html') {
+						return -1;
+					} else if (b.templateUrl === 'templates/item/text-h2.html') {
+						return 1;
+					} else if (a.isTranscript) {
+						return -1
+					} else if (b.isTranscript) {
+						return 1;
+					} else if (a._type === 'Link') {
+						return -1;
+					} else if (b._type === 'Link') {
+						return 1;
+					} else if (a._type === 'Upload') {
+						if (a.producerItemType === 'image' || b._type === 'Annotation' ) {
 							return -1
 						} else {
 							return 1;
 						}
+					} else if (b._type === 'Upload') {
+						return 1;
+					} else {
+						return -1;
 					}
+
+				} else {
+					return a.start_time - b.start_time;
 				}
 			});
 
 
-			console.log('after sort \n', episode.items);
+			// console.log('after sort \n', items);
 			// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
 			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
 			for (var i = 1, len = episode.scenes.length; i < len; i++) {
