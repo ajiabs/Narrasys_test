@@ -32,7 +32,23 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		})
 		.when('/stories', {
 			title: "Existing narratives",
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list narratives-data="narrativesResolve"></div></div>',
+			controller: 'NarrativesCtrl',
+			resolve: {
+				narrativesResolve: function(authSvc, dataSvc, modelSvc) {
+					return authSvc.authenticate().then(function() {
+						return dataSvc.getCustomerList().then(function() {
+							return dataSvc.getNarrativeList().then(function(narratives) {
+								angular.forEach(narratives, function(n) {
+									n.subDomain = modelSvc.customers[n.customer_id].domains[0];
+									modelSvc.cache('narrative', n);
+								});
+								return narratives;
+							});
+						});
+					});
+				}
+			}
 		})
 		//if we are on /story, we should really be on /stores/:id where id is narrative id or path.
 		// .when('/story', {

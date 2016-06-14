@@ -78,10 +78,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 	$scope.toggleOwnership = function () {
 		$scope.isOwner = !$scope.isOwner;
 	};
-
-
-
-
+	
 	//this logic now happens upstream, as the route is being navigated to
 	//we call getNarrative during the resolve phase and pass the resolved narrative
 	//to this directive, which now accepts a binding called narrativeData

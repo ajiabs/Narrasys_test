@@ -11,11 +11,20 @@
 	function IttUtils() { }
 
 	IttUtils.prototype = {
+		getSubdomain: getSubdomain,
 		existy: existy,
 		truthy: truthy,
 		generateUUID: generateUUID,
 		isValidURL: isValidURL
 	};
+
+	function getSubdomain(host) {
+		if (host.indexOf('.') < 0) {
+			return null;
+		} else {
+			return host.split('.')[0];
+		}
+	}
 
 	function existy(x) {
 		return x != null; //jshint ignore:line

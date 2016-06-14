@@ -29,7 +29,7 @@
  */
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -99,8 +99,17 @@ angular.module('com.inthetelling.story')
 		svc.getNarrative = function (narrativeId) {
 			// Special case here, since it needs to call getNonce differently:
 			var defer = $q.defer();
+
+			var cachedNarrative = modelSvc.narratives[narrativeId];
+			var subdomain = ittUtils.getSubdomain($location.host());
+			var urlParams = '';
+
+			if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.subDomain) && subdomain !== cachedNarrative.subDomain) {
+				urlParams = '?customer=' + cachedNarrative.subDomain;
+			}
+
 			authSvc.authenticate("narrative=" + narrativeId).then(function () {
-				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve")
+				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve" + urlParams)
 					.then(function (response) {
 						console.log("dataSvc.getNarrative", response.data);
 						modelSvc.cache("narrative", svc.resolveIDs(response.data));

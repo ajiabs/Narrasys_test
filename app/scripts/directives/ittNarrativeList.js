@@ -6,21 +6,31 @@ angular.module('com.inthetelling.story')
 			restrict: 'A',
 			replace: true,
 			templateUrl: 'templates/narrativelist.html',
-
+			scope: {
+				narrativesData: '='
+			},
 			link: function (scope) {
-				authSvc.authenticate().then(function () {
-					scope.userHasRole = authSvc.userHasRole;
-					scope.user = appState.user;
-					if ($routeParams.admin) {
-						scope.showAddNarrative = true;
-					}
-				});
+				// authSvc.authenticate().then(function () {
+				// 	scope.userHasRole = authSvc.userHasRole;
+				// 	scope.user = appState.user;
+				// 	if ($routeParams.admin) {
+				// 		scope.showAddNarrative = true;
+				// 	}
+				// });
+                //
+				// scope.logout = authSvc.logout;
+                //
+				// dataSvc.getNarrativeList().then(function (narratives) {
+				// 	scope.narratives = narratives;
+				// });
 
-				scope.logout = authSvc.logout;
+				scope.narratives = scope.narrativesData;
+				scope.userHasRole = authSvc.userHasRole;
 
-				dataSvc.getNarrativeList().then(function (narratives) {
-					scope.narratives = narratives;
-				});
+				scope.user = appState.user;
+				if ($routeParams.admin) {
+					scope.showAddNarrative = true;
+				}
 			}
 		};
 	});
