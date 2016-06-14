@@ -137,7 +137,6 @@ angular.module('com.inthetelling.story')
 							window.location.href = url;
 						});
 					} else {
-						console.log('opening mailto:url', url);
 						window.open(url);
 					}
 				};
