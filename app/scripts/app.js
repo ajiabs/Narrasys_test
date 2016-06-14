@@ -98,6 +98,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				}
 			}
 		})
+		//leaving this here for now, but will probably get rid of this all together
+		//and drive editing from the /story/:id route
 		.when('/story/:narrativePath/edit', {
 			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve"></div></div>',
 			controller: 'NarrativeCtrl',
