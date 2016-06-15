@@ -619,7 +619,7 @@ angular.module('com.inthetelling.story')
 			//  	- H1 > H2 > isTranscript
 			// 3. Links
 			// 4. Uploads
-			//		- Image > Document
+			//		- Document > Image
 			//5. all other annotations
 			episode.items = items.sort(function (a, b) {
 				if (a.start_time === b.start_time) {
