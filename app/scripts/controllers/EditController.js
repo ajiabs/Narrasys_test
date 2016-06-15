@@ -569,7 +569,7 @@ angular.module('com.inthetelling.story')
 					'_type': 'Chapter',
 					'title': {},
 					'description': {}
-				}
+				};
 			}
 			if (type === 'video') {
 				// TODO: this should be an injected episode with the linked/uploaded video as its master asset.

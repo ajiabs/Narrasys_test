@@ -123,6 +123,7 @@
 					switch(item.templateUrl) {
 						case 'templates/scene/1col.html':
 							if (_admin) { _displayDropdownVisible = true; }
+						/* falls through */
 						case 'templates/scene/centered.html':
 						case 'templates/scene/centeredPro.html':
 							_videoPositionVisible = false;

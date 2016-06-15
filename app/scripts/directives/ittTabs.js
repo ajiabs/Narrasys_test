@@ -79,7 +79,7 @@
 				select(pane);
 			}
 			panes.push(pane);
-		}
+		};
 
 	}
 
