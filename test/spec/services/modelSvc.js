@@ -739,7 +739,7 @@ describe('Service: modelSvc', function () {
 	});
 
 	describe('Event Hierarchy', function () {
-		
+
 		var epId;
 		beforeEach(function () {
 			epId = 'stubEpi';
@@ -784,9 +784,14 @@ describe('Service: modelSvc', function () {
 			expect(modelSvc.episodes.stubEpi.items[3].producerItemType).toEqual('link');
 		});
 
-		it('should sort Images ahead of Documents', function () {
-			expect(modelSvc.episodes.stubEpi.items[4].producerItemType).toEqual('image');
-			expect(modelSvc.episodes.stubEpi.items[5].producerItemType).toEqual('file');
+		it('should sort Uploads ahead of Links', function () {
+			expect(modelSvc.episodes.stubEpi.items[2].producerItemType).toEqual('transcript');
+			expect(modelSvc.episodes.stubEpi.items[3].producerItemType).toEqual('link');
+		});
+
+		it('should sort Documents ahead of Images', function () {
+			expect(modelSvc.episodes.stubEpi.items[4].producerItemType).toEqual('file');
+			expect(modelSvc.episodes.stubEpi.items[5].producerItemType).toEqual('image');
 		});
 
 		it('should put definition, pullquotes, text-as-transmedia, at the bottom', function() {

@@ -640,7 +640,7 @@ angular.module('com.inthetelling.story')
 					} else if (b._type === 'Link') {
 						return 1;
 					} else if (a._type === 'Upload') {
-						if (a.producerItemType === 'image' || b._type === 'Annotation' ) {
+						if (a.producerItemType === 'file' || b._type === 'Annotation' ) {
 							return -1;
 						} else {
 							return 1;
