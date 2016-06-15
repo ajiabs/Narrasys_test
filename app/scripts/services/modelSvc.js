@@ -3,10 +3,10 @@
 var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 
 /* Parses API data into player-acceptable format,
-and derives secondary data where necessary for performance/convenience/fun */
+ and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, $location, config, appState, youtubeSvc) {
+	.factory('modelSvc', function ($interval, $filter, $location, ittUtils, config, appState, youtubeSvc) {
 
 		var svc = {};
 
@@ -210,25 +210,25 @@ angular.module('com.inthetelling.story')
 		//      allowEmbed, noExternalLink, and targetTop (for Links)
 
 		/* TODO also we should merge the Link and Upload types, split those templates by file type instead of source,
-		   and make all these data fields consistent:
+		 and make all these data fields consistent:
 
-				Upload/link
-					title: Link text
-					(category)
-					required
-					description: Description
-					displayTime: Timestamp
-					allowEmbed: is/isn't frameable
-					targetTop: link should point to window.top (for end-of-episode links back to LTI host)
-					url: primary URL
-					url_type: file type
-					(?) secondary image URL (icon, thumbnail, etc)
+		 Upload/link
+		 title: Link text
+		 (category)
+		 required
+		 description: Description
+		 displayTime: Timestamp
+		 allowEmbed: is/isn't frameable
+		 targetTop: link should point to window.top (for end-of-episode links back to LTI host)
+		 url: primary URL
+		 url_type: file type
+		 (?) secondary image URL (icon, thumbnail, etc)
 
-				Annotation
-					Speaker
-					text
-					secondary image URL (speaker icon)
-*/
+		 Annotation
+		 Speaker
+		 text
+		 secondary image URL (speaker icon)
+		 */
 
 		svc.deriveContainer = function (container) {
 
@@ -485,21 +485,21 @@ angular.module('com.inthetelling.story')
 		};
 
 		/*  Any changes to any scene or item data must call svc.resolveEpisodeEvents afterwards. It sets:
-				- episode.scenes
-				- episode.items
-				- scene.items
-				- item.scene_id
-				- episode.annotators (for use in producer)
+		 - episode.scenes
+		 - episode.items
+		 - scene.items
+		 - item.scene_id
+		 - episode.annotators (for use in producer)
 
-		NOTE: this currently calls cascadeStyles on episodes and events as a side effect.
-		deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but
-		cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them.
+		 NOTE: this currently calls cascadeStyles on episodes and events as a side effect.
+		 deriveEvent() and deriveEpisode() would be a theoretically more consistent place for that, but
+		 cascadeStyles depends on the episode structure we're building here, so it feels dangerous to separate them.
 
-		// HACK magic numbers galore:
-			endingscene cuts the duration of the last scene by 0.1 seconds
-			startingscreen extends from below zero to 0.01s
+		 // HACK magic numbers galore:
+		 endingscene cuts the duration of the last scene by 0.1 seconds
+		 startingscreen extends from below zero to 0.01s
 
-		*/
+		 */
 		svc.resolveEpisodeEvents = function (epId) {
 			// console.log("resolveEpisodeEvents");
 			//Build up child arrays: episode->scene->item
@@ -597,9 +597,6 @@ angular.module('com.inthetelling.story')
 			});
 
 			// and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
-			episode.items = items.sort(function (a, b) {
-				return a.start_time - b.start_time;
-			});
 
 			episode.chapters = chapters.sort(function(a, b) {
 				return a.start_time - b.start_time;
@@ -630,6 +627,52 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
+
+			//for items with the same time, ensure hierarchy of items
+			//in the following order:
+			// 1. Annotations:
+			//  	- H1 > H2 > isTranscript
+			// 3. Links
+			// 4. Uploads
+			//		- Document > Image
+			//5. all other annotations
+			episode.items = items.sort(function (a, b) {
+				if (a.start_time === b.start_time) {
+					if (a.templateUrl === 'templates/item/text-h1.html') {
+						return -1;
+					} else if (b.templateUrl === 'templates/item/text-h1.html') {
+						return 1;
+					} else if (a.templateUrl === 'templates/item/text-h2.html') {
+						return -1;
+					} else if (b.templateUrl === 'templates/item/text-h2.html') {
+						return 1;
+					} else if (a.isTranscript) {
+						return -1;
+					} else if (b.isTranscript) {
+						return 1;
+					} else if (a._type === 'Link') {
+						return -1;
+					} else if (b._type === 'Link') {
+						return 1;
+					} else if (a._type === 'Upload') {
+						if (a.producerItemType === 'file' || b._type === 'Annotation' ) {
+							return -1;
+						} else {
+							return 1;
+						}
+					} else if (b._type === 'Upload') {
+						return 1;
+					} else {
+						return -1;
+					}
+
+				} else {
+					return a.start_time - b.start_time;
+				}
+			});
+
+
+			// console.log('after sort \n', items);
 			// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
 			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
 			for (var i = 1, len = episode.scenes.length; i < len; i++) {
@@ -654,13 +697,13 @@ angular.module('com.inthetelling.story')
 
 					//angular.forEach(items, function (event) {
 					/* possible cases:
-							start and end are within the scene: put it in this scene
-							start is within this scene, end is after this scene:
-								if item start is close to the scene end, change item start to next scene start time. The next loop will assign it to that scene
-								if item start is not close to the scene end, change item end to scene end, assign it to this scene.
-							start is before this scene, end is within this scene: will have already been fixed by a previous loop
-							start is after this scene: let the next loop take care of it
-					*/
+					 start and end are within the scene: put it in this scene
+					 start is within this scene, end is after this scene:
+					 if item start is close to the scene end, change item start to next scene start time. The next loop will assign it to that scene
+					 if item start is not close to the scene end, change item end to scene end, assign it to this scene.
+					 start is before this scene, end is within this scene: will have already been fixed by a previous loop
+					 start is after this scene: let the next loop take care of it
+					 */
 					if (event.start_time >= scene.start_time && event.start_time < scene.end_time) {
 						if (isTranscript(event)) {
 							// console.log('transcript event', event);
@@ -753,51 +796,51 @@ angular.module('com.inthetelling.story')
 		};
 
 		/*
-		var setParents = function (depth, epId, containerId) {
+		 var setParents = function (depth, epId, containerId) {
 
 
-						// console.log("setParents", depth, epId, containerId);
-						var episode = svc.episodes[epId];
+		 // console.log("setParents", depth, epId, containerId);
+		 var episode = svc.episodes[epId];
 
-						// THis will build up the parents array backwards, starting at the end
-						if (depth <= episode.navigation_depth) { // skip the episode container
-							episode.parents[depth - 1] = svc.containers[containerId];
-						}
+		 // THis will build up the parents array backwards, starting at the end
+		 if (depth <= episode.navigation_depth) { // skip the episode container
+		 episode.parents[depth - 1] = svc.containers[containerId];
+		 }
 
-						if (depth === episode.navigation_depth) {
-							// as long as we're at the sibling level, get the next and previous episodes
-							// (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
-							for (var i = 0; i < svc.containers[containerId].children.length; i++) {
-								var c = svc.containers[containerId].children[i];
-								if (c.episodes[0] === epId) {
-									if (i > 0) {
-										// find the previous 'Published' episode
-										for (var j = i - 1; j > -1; j--) {
-											if (svc.containers[svc.containers[containerId].children[j]._id].status === 'Published') {
-												episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[j]._id];
-												break;
-											}
-										}
-									}
-									if (i < svc.containers[containerId].children.length - 1) {
-										for (var k = i + 1; k < svc.containers[containerId].children.length; k++) {
-											if (svc.containers[svc.containers[containerId].children[k]._id].status === 'Published') {
-												episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[k]._id];
-												break;
-											}
-										}
-									}
-								}
-							}
-						}
+		 if (depth === episode.navigation_depth) {
+		 // as long as we're at the sibling level, get the next and previous episodes
+		 // (But only within the session: this won't let us find e.g. the previous episode from S4E1; that's TODO)
+		 for (var i = 0; i < svc.containers[containerId].children.length; i++) {
+		 var c = svc.containers[containerId].children[i];
+		 if (c.episodes[0] === epId) {
+		 if (i > 0) {
+		 // find the previous 'Published' episode
+		 for (var j = i - 1; j > -1; j--) {
+		 if (svc.containers[svc.containers[containerId].children[j]._id].status === 'Published') {
+		 episode.previousEpisodeContainer = svc.containers[svc.containers[containerId].children[j]._id];
+		 break;
+		 }
+		 }
+		 }
+		 if (i < svc.containers[containerId].children.length - 1) {
+		 for (var k = i + 1; k < svc.containers[containerId].children.length; k++) {
+		 if (svc.containers[svc.containers[containerId].children[k]._id].status === 'Published') {
+		 episode.nextEpisodeContainer = svc.containers[svc.containers[containerId].children[k]._id];
+		 break;
+		 }
+		 }
+		 }
+		 }
+		 }
+		 }
 
-						// iterate
-						if (depth > 1) {
-							setParents(depth - 1, epId, svc.containers[containerId].parent_id);
-						}
+		 // iterate
+		 if (depth > 1) {
+		 setParents(depth - 1, epId, svc.containers[containerId].parent_id);
+		 }
 
-		};
-		*/
+		 };
+		 */
 
 		svc.episode = function (epId) {
 			if (!svc.episodes[epId]) {
