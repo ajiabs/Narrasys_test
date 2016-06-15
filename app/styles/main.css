@@ -186,14 +186,34 @@ h4 {
 	animation: pieMask 2s steps(1, end) infinite;
 }
 
+.loading__background {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	border: 2px solid black;
+	z-index: 99999;
+	opacity: 0.33;
+	background-color: #000;
+}
+
 .routeLoading {
-	width: 95px;
-	height: 95px;
-	/*border: 2px solid black;*/
+	min-height: 0;
+	width: 60px;
+	height: 60px;
+	border-radius: 3px;
 	position: fixed;
 	top: 30%;
 	right: 50%;
-	z-index: 9999;
+}
+
+.routeLoading .spinner {
+	margin: 0;
+	padding: 0;
+}
+
+.routeLoading .loading__text {
+	position: relative;
+	bottom: 30px;
 }
 
 @keyframes rotate {

@@ -12,15 +12,17 @@
 	    return {
 	        restrict: 'EA',
             template: [
-				'<div ng-if="routeLoadingCtrl.isLoading" class="loading routeLoading">',
-				'<div class="spinner">',
-				'	<div class="rotating pie"></div>',
-				'	<div class="filler pie"></div>',
-				'	<div class="mask"></div>',
-				'</div>Loading',
+				'<div ng-if="!routeLoadingCtrl.isLoading" class="loading__background">',
+				'	<div class="loading routeLoading">',
+				'		<div class="spinner">',
+				'			<div class="rotating pie"></div>',
+				'			<div class="filler pie"></div>',
+				'			<div class="mask"></div>',
+				'		</div><span class="loading__text">Loading</span>',
+				'	</div>',
 				'</div>'
 			].join(' '),
-			controller: ['$rootScope', function($rootScope) {
+			controller: ['$rootScope', '$scope', 'errorSvc', function($rootScope, $scope, errorSvc) {
 				var ctrl = this;
 				ctrl.isLoading = false;
 
@@ -32,6 +34,16 @@
 				$rootScope.$on('$routeChangeSuccess', function() {
 					console.log('All done!');
 					ctrl.isLoading = false;
+				});
+
+				//do not show loading indicator
+				//when we have errors
+				$scope.$watch(function() {
+					return errorSvc.errors.length;
+				}, function(newVal, oldVal) {
+					if (newVal !== oldVal && newVal > 0) {
+						ctrl.isLoading = false;
+					}
 				});
 			}],
 			controllerAs: 'routeLoadingCtrl',
