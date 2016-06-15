@@ -619,7 +619,7 @@ angular.module('com.inthetelling.story')
 			//  	- H1 > H2 > isTranscript
 			// 3. Links
 			// 4. Uploads
-			//		- Image > Document
+			//		- Document > Image
 			//5. all other annotations
 			episode.items = items.sort(function (a, b) {
 				if (a.start_time === b.start_time) {
@@ -640,7 +640,7 @@ angular.module('com.inthetelling.story')
 					} else if (b._type === 'Link') {
 						return 1;
 					} else if (a._type === 'Upload') {
-						if (a.producerItemType === 'image' || b._type === 'Annotation' ) {
+						if (a.producerItemType === 'file' || b._type === 'Annotation' ) {
 							return -1;
 						} else {
 							return 1;
