@@ -186,6 +186,16 @@ h4 {
 	animation: pieMask 2s steps(1, end) infinite;
 }
 
+.routeLoading {
+	width: 95px;
+	height: 95px;
+	/*border: 2px solid black;*/
+	position: fixed;
+	top: 30%;
+	right: 50%;
+	z-index: 9999;
+}
+
 @keyframes rotate {
 	0% {
 		transform: rotate(0deg);
