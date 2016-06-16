@@ -20,7 +20,7 @@
 				'	</div><span class="loading__text">Loading</span>',
 				'</div>'
 			].join(' '),
-			controller: function($rootScope, $scope, $timeout, ittUtils, errorSvc) {
+			controller: function($rootScope, $scope, $timeout, errorSvc) {
 				var ctrl = this;
 				ctrl.isLoading = false;
 				var threshold;
