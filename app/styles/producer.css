@@ -393,6 +393,18 @@ input[readonly] {
 	font-size: 1.2em;
 }
 
+.edit-pencil {
+
+}
+
+
+
+.edit-pencil:before {
+	font-family: Story;
+	content: "\e601";
+	color: #000;
+}
+
 .edit-event:before {
 	font-family: Story;
 	content: "\e601";

@@ -32,9 +32,7 @@ angular.module('com.inthetelling.story')
 
 function ittNarrative() {
 	return {
-		template: function () {
-			return '<div ng-include="narrative.templateUrl"></div>';
-		},
+		templateUrl: 'templates/narrative/default.html',
 		controller: 'ittNarrativeCtrl',
 		scope: {
 			narrativeData: '='
@@ -44,8 +42,22 @@ function ittNarrative() {
 
 function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSvc) {
 
-	onInit();
+	angular.extend($scope, {
+		toggleEditing: toggleEditing,
+		toggleEditingTimeline: toggleEditingTimeline,
+		doneEditingTimeline: doneEditingTimeline,
+		toggleOwnership: toggleOwnership,
+		toggleEpisodeList: toggleEpisodeList,
+		createNarrative: createNarrative,
+		updateNarrative: updateNarrative,
+		addTimeline: addTimeline,
+		saveTimeline: saveTimeline,
+		updateTimeline: updateTimeline,
+		isEditing: false,
+		isEditingTimeline: false
+	});
 
+	onInit();
 	//set up scope and bindings
 	function onInit() {
 		$scope.loading = true;
@@ -65,55 +77,44 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 				$scope.customerList = data;
 			});
 		}
-		// tmpSetNarrativeTemplate();
 	}
 
-	// TEMPORARY
-	$scope.stopEditing = function () {
-	};
-	// Need to let getNarrative do the authentication, so it can pass the narrative ID.
+	function updateNarrative(update) {
+		dataSvc.updateNarrative(update).then(function (resp) {
+			$scope.isEditing = false;
+			//updateNarrative returns just the new narrative object, without timelines array
+			//merge the existing narrative on scope with the one returned via our post.
+			angular.extend($scope.narrative, resp);
+		});
+	}
 
+	function toggleEditing() {
+		$scope.isEditing = !$scope.isEditing;
+	}
 
+	function toggleEditingTimeline(tl) {
+		$scope.timelineUnderEdit = tl;
+		$scope.isEditingTimeline = !$scope.isEditingTimeline;
+	}
 
-	$scope.toggleOwnership = function () {
+	function doneEditingTimeline() {
+		$scope.timelineUnderEdit = null;
+	}
+
+	function toggleOwnership() {
 		$scope.isOwner = !$scope.isOwner;
-	};
-	
-	//this logic now happens upstream, as the route is being navigated to
-	//we call getNarrative during the resolve phase and pass the resolved narrative
-	//to this directive, which now accepts a binding called narrativeData
+	}
 
-	// The route param might be the narrative path or its ID (both are interchangeable in the API)
-	// var path_or_id = ($scope._id) ? $scope._id : $routeParams.narrativePath;
-	//
-	// if (path_or_id) {
-	// 	// For simplicity's sake, not trying to retrieve narrative from cache; just get it from the API for now.
-	// 	dataSvc.getNarrative(path_or_id).then(function (narrativeData) {
-	// 		doAfterAuthentication();
-	// 		$scope.loading = false;
-	// 		$scope.narrative = narrativeData;
-	// 		$scope.tmpSetNarrativeTemplate();
-	// 	});
-	// } else {
-	// 	authSvc.authenticate().then(doAfterAuthentication);
-	// 	// New narrative
-	// 	console.log("CREATE NEW NARRATIVE");
-	// 	$scope.loading = false;
-	// 	$scope.toggleOwnership(true);
-	// 	$scope.narrative = {};
-	// 	$scope.tmpSetNarrativeTemplate();
-	// }
-
-	$scope.toggleEpisodeList = function () {
+	function toggleEpisodeList() {
 		$scope.showEpisodeList = !$scope.showEpisodeList;
-	};
+	}
 
 	$scope.$on('episodeSelected', function (evt, epId) {
 		$scope.showEpisodeList = false;
 		$scope.addTimeline(epId);
 	});
 
-	$scope.createNarrative = function () {
+	function createNarrative() {
 		// get the current user's id
 		// create a group
 
@@ -138,18 +139,9 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 			// });
 		});
 
-	};
+	}
 
-	$scope.updateNarrative = function () {
-		$scope.narrative.saveInProgress = true;
-
-		dataSvc.updateNarrative($scope.narrative).then(function () {
-			tmpSetNarrativeTemplate();
-			$scope.narrative.saveInProgress = false;
-		});
-	};
-
-	$scope.addTimeline = function (epId) {
+	function addTimeline(epId) {
 		dataSvc.getEpisodeOverview(epId).then(function (episodeData) {
 
 			var newTimeline = {
@@ -174,9 +166,16 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 
 		});
 
-	};
+	}
 
-	$scope.saveTimeline = function (timeline) {
+	function updateTimeline(newTimeline, oldTimeline) {
+		dataSvc.storeTimeline($scope.narrative._id, newTimeline).then(function(resp) {
+			angular.extend(oldTimeline, newTimeline);
+			doneEditingTimeline();
+		});
+	}
+
+	function saveTimeline(timeline) {
 		timeline.saveInProgress = true;
 		if (timeline._id) {
 			// updating an existing timeline: just store it
@@ -220,6 +219,6 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 				});
 			});
 		}
-	};
+	}
 }
 

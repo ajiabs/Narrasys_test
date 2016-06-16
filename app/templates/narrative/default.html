@@ -5,21 +5,48 @@
 		<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
 	</div>
 
-	<itt-loading ng-if="loading"></itt-loading>
 	<div ng-if="!loading">
 		<div class="narrative">
+
 			<!-- begin display -->
-			<h2 ng-bind-html="narrative.name.en"></h2>
-			<p ng-bind-html="narrative.description.en"></p>
+			<div ng-hide="isEditing">
+				<h2 itt-edit-pencil on-edit="toggleEditing()" ng-bind-html="narrative.name.en"></h2>
+				<p ng-bind-html="narrative.description.en"></p>
+			</div>
+
+			<itt-narrative-editor
+				ng-if="isEditing"
+				narrative="narrative"
+				on-done="toggleEditing()"
+				on-update="updateNarrative(n)">
+			</itt-narrative-editor>
+
 			<!--
  		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
  -->
 			<div class="storyTimeline" ng-repeat="timeline in narrative.timelines | filter:{hidden:!true} | orderBy:'sort_order'">
-				<h3>
-					<a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
-				</h3>
-				<p>{{timeline.description.en}}</p>
-				{{timeline.episode_segments[0].end_time | asTime}}
+
+				<div ng-hide="timelineUnderEdit === timeline">
+					<h3 itt-edit-pencil on-edit="toggleEditingTimeline(timeline)">
+						<a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
+					</h3>
+					<p>{{timeline.description.en}}</p>
+					{{timeline.episode_segments[0].end_time | asTime}}
+				</div>
+
+				<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 5px"/>
+					<div ng-show="!!showLine">
+						+<hr>
+					</div>
+				</div>
+
+				<itt-timeline-editor
+					ng-if="timelineUnderEdit === timeline"
+					timeline="timeline"
+					on-done="doneEditingTimeline()"
+					on-update="updateTimeline(t, timeline)">
+				</itt-timeline-editor>
+
 			</div>
 			<!-- end display -->
 

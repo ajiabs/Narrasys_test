@@ -105,3 +105,26 @@
 	height: 1px;
 }
 
+
+.narrative__edit input[type="text"], .narrative__edit textarea {
+	width: 100%;
+	padding: 5px;
+	border-radius: 4px;
+	border: 1px solid black;
+	/*important used here to overide line .sandAloneAncillaryPage textarea above*/
+	font-size: 20px !important;
+}
+
+/*.narrative__edit.ng-hide-add, .narrative__edit.ng-hide-remove {*/
+	/*transition: all 0.5s ease-in-out;*/
+	/*transform: translateZ(0);*/
+	/*-webkit-backface-visibility: hidden;*/
+/*}*/
+
+/*.narrative__edit.ng-hide {*/
+	/*line-height: 0;*/
+	/*opacity: 0;*/
+/*}*/
+
+
+

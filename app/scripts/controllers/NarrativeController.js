@@ -11,6 +11,6 @@
 	function NarrativeCtrl($scope, narrativeResolve) {
 		$scope.narrativeResolve = narrativeResolve;
 	}
-	
+
 })();
 
