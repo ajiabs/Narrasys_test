@@ -12,14 +12,12 @@
 	    return {
 	        restrict: 'EA',
             template: [
-				'<div ng-if="!routeLoadingCtrl.isLoading" class="loading__background">',
-				'	<div class="loading routeLoading">',
-				'		<div class="spinner">',
-				'			<div class="rotating pie"></div>',
-				'			<div class="filler pie"></div>',
-				'			<div class="mask"></div>',
-				'		</div><span class="loading__text">Loading</span>',
-				'	</div>',
+				'<div ng-if="routeLoadingCtrl.isLoading" class="loading routeLoading">',
+				'	<div class="spinner">',
+				'		<div class="rotating pie"></div>',
+				'		<div class="filler pie"></div>',
+				'		<div class="mask"></div>',
+				'	</div><span class="loading__text">Loading</span>',
 				'</div>'
 			].join(' '),
 			controller: ['$rootScope', '$scope', 'errorSvc', function($rootScope, $scope, errorSvc) {
@@ -27,12 +25,10 @@
 				ctrl.isLoading = false;
 
 				$rootScope.$on('$routeChangeStart', function() {
-					console.log("loading route!");
 					ctrl.isLoading = true;
 				});
 
 				$rootScope.$on('$routeChangeSuccess', function() {
-					console.log('All done!');
 					ctrl.isLoading = false;
 				});
 

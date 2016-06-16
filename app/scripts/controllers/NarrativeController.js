@@ -8,13 +8,9 @@
 	angular.module('com.inthetelling.story')
 		.controller('NarrativeCtrl', NarrativeCtrl);
 
-	function NarrativeCtrl($scope, $routeParams, dataSvc, narrativeResolve) {
-
-
+	function NarrativeCtrl($scope, narrativeResolve) {
 		$scope.narrativeResolve = narrativeResolve;
-
 	}
-
-
+	
 })();
 
