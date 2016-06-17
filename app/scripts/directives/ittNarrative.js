@@ -42,6 +42,23 @@ function ittNarrative() {
 
 function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSvc) {
 
+	var treeOpts = {
+		accept: function(sourceNodeScope, destNodesScope, destIndex) {
+			// console.log('onAccept', arguments);
+			return true;
+		},
+		dropped: function(event) {
+			console.log('onDropped', event);
+
+			var destIndex = event.dest.index, len = $scope.narrative.timelines.length;
+
+			for (destIndex; destIndex < len; destIndex++) {
+				$scope.narrative.timelines[destIndex].sort_order = destIndex + 1;
+			}
+		}
+	};
+
+
 	angular.extend($scope, {
 		toggleEditing: toggleEditing,
 		toggleEditingTimeline: toggleEditingTimeline,
@@ -54,7 +71,8 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 		saveTimeline: saveTimeline,
 		updateTimeline: updateTimeline,
 		isEditing: false,
-		isEditingTimeline: false
+		isEditingTimeline: false,
+		treeOpts: treeOpts
 	});
 
 	onInit();

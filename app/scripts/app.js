@@ -14,7 +14,7 @@
  * @requires ngSanitize
  * @requires textAngular
  */
-angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular'])
+angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular', 'ui.tree'])
 
 // Configure routing
 .config(function ($routeProvider) {

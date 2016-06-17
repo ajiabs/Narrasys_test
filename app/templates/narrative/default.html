@@ -24,34 +24,44 @@
 			<!--
  		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
  -->
-			<div class="storyTimeline" ng-repeat="timeline in narrative.timelines | filter:{hidden:!true} | orderBy:'sort_order'">
+			<div ui-tree="treeOpts">
+				<div ui-tree-nodes="" ng-model="narrative.timelines">
+					<div class="storyTimeline" ui-tree-node
+						 ng-repeat="timeline in narrative.timelines | filter:{hidden:!true}">
 
-				<div ng-hide="timelineUnderEdit === timeline">
-					<h3 itt-edit-pencil on-edit="toggleEditingTimeline(timeline)">
-						<a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
-					</h3>
-					<p>{{timeline.description.en}}</p>
-					{{timeline.episode_segments[0].end_time | asTime}}
-				</div>
+						<div ng-hide="timelineUnderEdit === timeline">
+							<div>
+								<h3 itt-edit-pencil on-edit="toggleEditingTimeline(timeline)">
+									<a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
+									<span ui-tree-handle>Handle ({{timeline.sort_order}})</span>
+								</h3>
+								<p>{{timeline.description.en}}</p>
+								{{timeline.episode_segments[0].end_time | asTime}}
+							</div>
 
-				<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 5px"/>
-					<div ng-show="!!showLine">
-						+<hr>
+						</div>
+
+						<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 5px"/>
+						<div ng-show="!!showLine">
+							+<hr>
+						</div>
 					</div>
+					<!--end repeat-->
+					<itt-timeline-editor
+						ng-if="timelineUnderEdit === timeline"
+						timeline="timeline"
+						on-done="doneEditingTimeline()"
+						on-update="updateTimeline(t, timeline)">
+					</itt-timeline-editor>
 				</div>
-
-				<itt-timeline-editor
-					ng-if="timelineUnderEdit === timeline"
-					timeline="timeline"
-					on-done="doneEditingTimeline()"
-					on-update="updateTimeline(t, timeline)">
-				</itt-timeline-editor>
-
 			</div>
-			<!-- end display -->
-
+			<!--end ui-tree-->
 
 		</div>
+		<!-- end display -->
+
+
 	</div>
-	<a ng-if="narrative.support_url" ng-href="{{narrative.support_url}}">Support</a>
+</div>
+<a ng-if="narrative.support_url" ng-href="{{narrative.support_url}}">Support</a>
 </div>
