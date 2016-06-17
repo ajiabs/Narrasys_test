@@ -83,7 +83,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 		dataSvc.updateNarrative(update).then(function (resp) {
 			$scope.isEditing = false;
 			//updateNarrative returns just the new narrative object, without timelines array
-			//merge the existing narrative on scope with the one returned via our post.
+			//merge the existing narrative on scope with the one returned via our post resp.
 			angular.extend($scope.narrative, resp);
 		});
 	}
@@ -170,10 +170,11 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 
 	function updateTimeline(newTimeline, oldTimeline) {
 		dataSvc.storeTimeline($scope.narrative._id, newTimeline).then(function(resp) {
-			angular.extend(oldTimeline, newTimeline);
+			angular.extend(oldTimeline, resp);
 			doneEditingTimeline();
 		});
 	}
+
 
 	function saveTimeline(timeline) {
 		timeline.saveInProgress = true;

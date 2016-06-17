@@ -21,7 +21,7 @@
 				'	<label for="tlPath">Path</label>',
 				'	<input id="tlPath" type="text" ng-model="tEditor._timeline.path_slug.en"/>',
 				'	<div class="ancillaryNav">',
-				'		<button class="button" ng-click="tEditor.onUpdate({t: tEditor._timeline})">update</button>',
+				'		<button class="button" ng-click="tEditor.onUpdate({t: tEditor._timeline})">Save</button>',
 				'		<button class="button" ng-click="tEditor.onDone()">cancel</button>',
 				'	</div>',
 				'</div>'
