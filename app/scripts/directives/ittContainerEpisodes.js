@@ -6,7 +6,8 @@ angular.module('com.inthetelling.story')
 			replace: false,
 			scope: {
 				container: '=ittContainerEpisodes',
-				forAdmin: '=forAdmin'
+				forAdmin: '=forAdmin',
+				onChoice: '&'
 			},
 			templateUrl: "templates/containerepisodes.html",
 
@@ -27,9 +28,10 @@ angular.module('com.inthetelling.story')
 					scope.toggle = function () {
 						scope.container.wasClicked = !scope.container.wasClicked;
 					};
-					scope.selectEpisode = function () {
-						scope.$emit('episodeSelected', scope.container.episodes[0]);
-
+					scope.selectEpisode = function (e) {
+						// console.log(scope.container.episodes[0]);
+						// console.log('hmm', scope.onChoice);
+						scope.$emit('episodeSelected', e);
 					};
 
 				});

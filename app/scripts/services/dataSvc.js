@@ -111,8 +111,12 @@ angular.module('com.inthetelling.story')
 			authSvc.authenticate("narrative=" + narrativeId).then(function () {
 				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve" + urlParams)
 					.then(function (response) {
-						console.log("dataSvc.getNarrative", response.data);
+
+						response.data.timelines.sort(function(a, b) {return a.sort_order - b.sort_order;});
+
+
 						modelSvc.cache("narrative", svc.resolveIDs(response.data));
+
 						defer.resolve(modelSvc.narratives[response.data._id]);
 					});
 			});

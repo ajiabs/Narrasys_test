@@ -43,7 +43,8 @@
 
 						<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 5px"/>
 						<div ng-show="!!showLine">
-							+<hr>
+							<!--+<hr>-->
+							<button ng-click="addNewTimeline(timeline.sort_order)">add new timeline</button>
 						</div>
 					</div>
 					<!--end repeat-->
@@ -53,6 +54,20 @@
 						on-done="doneEditingTimeline()"
 						on-update="updateTimeline(t, timeline)">
 					</itt-timeline-editor>
+
+
+					<!--timeline episode selector-->
+					<itt-modal ng-if="showEpisodeList">
+						<div itt-episode-list class="admin episodePicker">
+							<!--Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>-->
+							Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>
+							<ul
+								ng-repeat="child in root.children"
+								x-for-admin="true"
+								itt-container-episodes="containers[child._id]"
+								depth="0"></ul>
+						</div>
+					</itt-modal>
 				</div>
 			</div>
 			<!--end ui-tree-->

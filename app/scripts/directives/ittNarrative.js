@@ -34,6 +34,7 @@ function ittNarrative() {
 	return {
 		templateUrl: 'templates/narrative/default.html',
 		controller: 'ittNarrativeCtrl',
+		controllerAs: 'ittNarrative',
 		scope: {
 			narrativeData: '='
 		}
@@ -48,16 +49,12 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 			return true;
 		},
 		dropped: function(event) {
-			console.log('onDropped', event);
-
-			var destIndex = event.dest.index, len = $scope.narrative.timelines.length;
-
-			for (destIndex; destIndex < len; destIndex++) {
-				$scope.narrative.timelines[destIndex].sort_order = destIndex + 1;
-			}
+			// console.log('onDropped', event);
+			var destIndex = event.dest.index;
+			_updateSortOrder(destIndex, $scope.narrative.timelines);
+			_persistTimelineSortUpdate($scope.narrative.timelines[destIndex]);
 		}
 	};
-
 
 	angular.extend($scope, {
 		toggleEditing: toggleEditing,
@@ -70,12 +67,14 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 		addTimeline: addTimeline,
 		saveTimeline: saveTimeline,
 		updateTimeline: updateTimeline,
+		addNewTimeline: addNewTimeline,
 		isEditing: false,
 		isEditingTimeline: false,
 		treeOpts: treeOpts
 	});
 
 	onInit();
+
 	//set up scope and bindings
 	function onInit() {
 		$scope.loading = true;
@@ -83,6 +82,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 		$scope.isOwner = false;
 
 		$scope.narrative = $scope.narrativeData;
+
 		doAfterAuthentication();
 		$scope.loading = false;
 	}
@@ -95,6 +95,21 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 				$scope.customerList = data;
 			});
 		}
+	}
+
+	function addNewTimeline(sortOrder) {
+		console.log('wired up!!', sortOrder);
+
+		var newTimeline = {
+			"name": 'New Timeline',
+			"description": '',
+			"hidden": false,
+			"path_slug": "",
+			"sort_order": sortOrder + 1,
+			"parent_episode": episodeData
+		};
+
+		// toggleEpisodeList();
 	}
 
 	function updateNarrative(update) {
@@ -129,7 +144,8 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 
 	$scope.$on('episodeSelected', function (evt, epId) {
 		$scope.showEpisodeList = false;
-		$scope.addTimeline(epId);
+		console.log('hmm', evt, epId);
+		// $scope.addTimeline(epId);
 	});
 
 	function createNarrative() {
@@ -238,6 +254,30 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, modelSvc, dataSv
 				});
 			});
 		}
+	}
+
+	function _updateSortOrder(destIndex, arr) {
+		var len = arr.length;
+		var sortIndex = 0;
+		if (destIndex > 0) {
+			sortIndex = arr[destIndex - 1].sort_order + 1;
+		}
+		var prevSortIndex = sortIndex;
+		arr[destIndex].sort_order = sortIndex;
+
+		for (destIndex + 1; destIndex < len; destIndex++) {
+			if (prevSortIndex === arr[destIndex].sort_order) {
+				arr[destIndex].sort_order = sortIndex;
+			}
+			prevSortIndex = sortIndex;
+			sortIndex++;
+		}
+	}
+
+	function _persistTimelineSortUpdate(timeline) {
+		dataSvc.storeTimeline($scope.narrative._id, timeline).then(function(resp) {
+			angular.extend(timeline, resp);
+		});
 	}
 }
 
