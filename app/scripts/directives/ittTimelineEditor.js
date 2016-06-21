@@ -17,9 +17,9 @@
 				'	<label for="tlName">Name</label>',
 				'	<input type="text" ng-model="tEditor._timeline.name.en" id="tlName">',
 				'	<label for="tlDescription">Description</label>',
-				'	<textarea id="tlDescription" ng-model="tEditor._timeline.description.en"></textarea>',
+				'	<textarea id="tlDescription" placeholder="Insert Description..." ng-model="tEditor._timeline.description.en"></textarea>',
 				'	<label for="tlPath">Path</label>',
-				'	<input id="tlPath" type="text" ng-model="tEditor._timeline.path_slug.en"/>',
+				'	<input id="tlPath" type="text" placeholder="path-to-episode" ng-model="tEditor._timeline.path_slug.en"/>',
 				'	<div class="ancillaryNav">',
 				'		<button class="button" ng-click="tEditor.onUpdate({t: tEditor._timeline})">Save</button>',
 				'		<button class="button" ng-click="tEditor.onDone()">cancel</button>',
@@ -28,12 +28,17 @@
 			].join(' '),
 	        scope: {
 				timeline:'=',
+				isTemp: '=',
 				onUpdate: '&',
 				onDone: '&'
 			},
 			controller: function() {
 				var ctrl = this;
-				ctrl._timeline = angular.copy(this.timeline);
+				if (ctrl.isTemp === true) {
+					ctrl._timeline = this.timeline;
+				} else {
+					ctrl._timeline = angular.copy(this.timeline);
+				}
 			},
 			controllerAs: 'tEditor',
 			bindToController: true

@@ -7,9 +7,18 @@ angular.module('com.inthetelling.story')
 			scope: {
 				container: '=ittContainerEpisodes',
 				forAdmin: '=forAdmin',
-				onChoice: '&'
+				onNodeClick: '&',
+				rootContext: '='
 			},
 			templateUrl: "templates/containerepisodes.html",
+			controller: function($scope) {
+
+				$scope.selectEpisode = function(e) {
+					$scope.onNodeClick({node: e});
+					console.log('ctrl select epi', e);
+					// $scope.emit('episodeSelected', e);
+				}
+			},
 
 			compile: function (element) {
 				// Use the compile function from the recursionHelper,
@@ -28,11 +37,11 @@ angular.module('com.inthetelling.story')
 					scope.toggle = function () {
 						scope.container.wasClicked = !scope.container.wasClicked;
 					};
-					scope.selectEpisode = function (e) {
-						// console.log(scope.container.episodes[0]);
-						// console.log('hmm', scope.onChoice);
-						scope.$emit('episodeSelected', e);
-					};
+					// scope.selectEpisode = function (e) {
+					// 	// console.log(scope.container.episodes[0]);
+					// 	// console.log('hmm', scope.onChoice);
+					// 	scope.$emit('episodeSelected', e);
+					// };
 
 				});
 			}
