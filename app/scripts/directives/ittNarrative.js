@@ -44,7 +44,7 @@ function ittNarrative() {
 function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtils) {
 
 	var treeOpts = {
-		accept: function(sourceNodeScope, destNodesScope, destIndex) {
+		accept: function(/*sourceNodeScope, destNodesScope, destIndex*/) {
 			// console.log('onAccept', arguments);
 			return true;
 		},
@@ -112,7 +112,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		$scope.timelineUnderEdit = null;
 		//remove tmp tl from timelines;
 		$scope.narrative.timelines = $scope.narrative.timelines.filter(function(tl) {
-			return tl !== $scope.tmpTimeline
+			return tl !== $scope.tmpTimeline;
 		});
 		$scope.tmpTimeline = null;
 	}
@@ -130,9 +130,9 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 
 	function editorAction(newTl, currTl) {
 		if (newTl.isTemp === true) {
-			persistTmpTimeline(newTl)
+			persistTmpTimeline(newTl);
 		} else {
-			updateTimeline(newTl, currTl)
+			updateTimeline(newTl, currTl);
 		}
 	}
 
@@ -142,7 +142,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 
 	function timelinesDuration(timelines) {
 		$scope.totalNarrativeDuration = timelines.map(function (tl) {
-			return tl.episode_segments.map(function(s) {return s.end_time})[0];
+			return tl.episode_segments.map(function(s) {return s.end_time;})[0];
 		}).reduce(function(accm, durs) {
 			return accm += durs;
 		}, 0);
@@ -194,7 +194,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		$scope.narrative.timelines = timelines;
 		$scope.tmpTimeline = newTimeline;
 		//to open episode select modal
-		toggleEpisodeList()
+		toggleEpisodeList();
 	}
 
 	function onEpisodeSelect(epId) {
@@ -258,7 +258,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 				timeline_id: tlData._id
 			}).then(function(segmentData) {
 				tlData.episode_segments = [segmentData];
-				dataSvc.storeTimeline($scope.narrative._id, tlData).then(function(tlResp) {
+				dataSvc.storeTimeline($scope.narrative._id, tlData).then(function() {
 					$scope.tmpTimeline = null;
 					doneEditingTimeline();
 				}).then(function() {
@@ -267,7 +267,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 			});
 		}
 
-		function logErr(e) { console.log(e) }
+		function logErr(e) { console.log(e); }
 	}
 
 	function updateNarrative(update) {

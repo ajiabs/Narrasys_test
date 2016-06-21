@@ -29,7 +29,7 @@
 				$rootScope.$on('$routeChangeStart', function() {
 					threshold = $timeout(function() {
 						ctrl.isLoading = true;
-					}, 500)
+					}, 500);
 
 				});
 
@@ -41,7 +41,7 @@
 				//do not show loading indicator
 				//when we have errors
 				$scope.$watch(function() {
-					return errorSvc.errors.length
+					return errorSvc.errors.length;
 				}, function(newVal, oldVal) {
 					if (newVal !== oldVal && newVal > 0) {
 						$timeout.cancel(threshold);

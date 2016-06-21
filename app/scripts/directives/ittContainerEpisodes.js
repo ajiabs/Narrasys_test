@@ -17,7 +17,7 @@ angular.module('com.inthetelling.story')
 					$scope.onNodeClick({node: e});
 					console.log('ctrl select epi', e);
 					// $scope.emit('episodeSelected', e);
-				}
+				};
 			},
 
 			compile: function (element) {

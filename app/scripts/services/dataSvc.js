@@ -277,7 +277,7 @@ angular.module('com.inthetelling.story')
 		svc.deleteTimeline = function(tlId) {
 			return PDELETE('/v3/timelines/' + tlId).then(function(resp) {
 				return resp;
-			})
+			});
 		};
 
 		svc.getSingleAsset = function (assetId) {

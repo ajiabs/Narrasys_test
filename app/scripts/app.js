@@ -89,12 +89,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 
 					if (doPullFromCache) {
 						cachedNarr.templateUrl = 'templates/narrative/default.html';
-						return $q(function(resolve) {resolve(cachedNarr)});
+						return $q(function(resolve) {resolve(cachedNarr);});
 					}
 					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
 						narrativeData.templateUrl = 'templates/narrative/default.html';
 						return narrativeData;
-					})
+					});
 				}
 			}
 		})
@@ -116,12 +116,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 					if (doPullFromCache) {
 						console.log('cache hit!');
 						cachedNarr.templateUrl = 'templates/narrative/edit.html';
-						return $q(function(resolve) {resolve(cachedNarr)});
+						return $q(function(resolve) {resolve(cachedNarr);});
 					}
 					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
 						narrativeData.templateUrl = 'templates/narrative/edit.html';
 						return narrativeData;
-					})
+					});
 				}
 			}
 		})
