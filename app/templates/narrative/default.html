@@ -12,6 +12,7 @@
 			<div ng-hide="isEditing">
 				<h2 itt-edit-pencil can-access="canAccess" on-edit="toggleEditing()" ng-bind-html="narrative.name.en"></h2>
 				<p ng-bind-html="narrative.description.en"></p>
+				<p>Total Duration: {{totalNarrativeDuration | asTime}}</p>
 			</div>
 
 			<itt-narrative-editor
@@ -24,10 +25,41 @@
 			<!--
  		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
  -->
-			<div ui-tree="treeOpts">
+			<div ng-if="narrative.timelines.length === 0">
+				<h4>Add A timeline</h4>
+				<p>looks like this narrative currently has no timelines</p>
+				<button ng-click="toggleEpisodeList()">add timeline</button>
+			</div>
+
+			<itt-modal ng-if="showEpisodeList">
+				<div itt-episode-list class="admin episodePicker">
+					<!--Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>-->
+					Choose an episode: <button ng-click="toggleEpisodeList(); doneEditingTimeline()">cancel</button>
+					<ul
+						ng-repeat="child in root.children"
+						x-for-admin="true"
+						itt-container-episodes="containers[child._id]"
+						on-node-click="onEpisodeSelect(node)" root-context="onEpisodeSelect"
+						depth="0"></ul>
+				</div>
+			</itt-modal>
+
+
+
+			<div ui-tree="treeOpts" ng-if="narrative.timelines.length !== 0">
+
 				<div ui-tree-nodes="" ng-model="narrative.timelines">
+
 					<div class="storyTimeline" ui-tree-node
 						 ng-repeat="timeline in narrative.timelines | filter:{hidden:!true}">
+
+						<itt-timeline-editor
+							ng-if="showTimelineEditor(timeline)"
+							timeline="timeline"
+							on-done="doneEditingTimeline()"
+							on-update="editorAction(t, timeline)"
+							on-delete="deleteTimeline(t)">
+						</itt-timeline-editor>
 
 						<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline">
 							<div>
@@ -41,45 +73,15 @@
 
 						</div>
 
-						<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 5px"/>
-						<div ng-show="!!showLine">
+						<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 5px">
+							<div ng-show="!!showLine">
 							<!--+<hr>-->
-							<button ng-click="addTmpTimeline(timeline, narrative.timelines)">add new timeline</button>
+								<button ng-click="addTmpTimeline(timeline, narrative.timelines)">add new timeline</button>
+							</div>
 						</div>
 					</div>
 					<!--end repeat-->
-
 					<!--for updates-->
-					<itt-timeline-editor
-						ng-if="timelineUnderEdit === timeline"
-						timeline="timeline"
-						on-done="doneEditingTimeline()"
-						on-update="updateTimeline(t, timeline)">
-					</itt-timeline-editor>
-
-					<!--for new timelines-->
-					<itt-timeline-editor
-						ng-if="tmpTimeline === timeline"
-						timeline="timeline"
-						is-temp="true"
-						on-done="doneEditingTimeline()"
-						on-update="persistTmpTimeline(t, timeline)">
-					</itt-timeline-editor>
-
-
-					<!--timeline episode selector-->
-					<itt-modal ng-if="showEpisodeList">
-						<div itt-episode-list class="admin episodePicker">
-							<!--Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>-->
-							Choose an episode: <button ng-click="toggleEpisodeList(); doneEditingTimeline()">cancel</button>
-							<ul
-								ng-repeat="child in root.children"
-								x-for-admin="true"
-								itt-container-episodes="containers[child._id]"
-								on-node-click="onEpisodeSelect(node)" root-context="onEpisodeSelect"
-								depth="0"></ul>
-						</div>
-					</itt-modal>
 				</div>
 			</div>
 			<!--end ui-tree-->

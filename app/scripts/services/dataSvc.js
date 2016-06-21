@@ -273,6 +273,13 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		// /v3/timelines/:id
+		svc.deleteTimeline = function(tlId) {
+			return PDELETE('/v3/timelines/' + tlId).then(function(resp) {
+				return resp;
+			})
+		};
+
 		svc.getSingleAsset = function (assetId) {
 			if (assetId) {
 				return GET("/v1/assets/" + assetId);
@@ -694,6 +701,15 @@ angular.module('com.inthetelling.story')
 					return defer.resolve(data);
 				});
 			return defer.promise;
+		};
+
+		var PDELETE = function(path) {
+			return $http({
+				method: 'DELETE',
+				url: config.apiDataBaseUrl + path
+			}).then(function(resp) {
+				return resp;
+			});
 		};
 
 		/*

@@ -41,7 +41,7 @@ function ittNarrative() {
 	};
 }
 
-function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
+function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtils) {
 
 	var treeOpts = {
 		accept: function(sourceNodeScope, destNodesScope, destIndex) {
@@ -68,6 +68,10 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 		addTmpTimeline: addTmpTimeline,
 		onEpisodeSelect: onEpisodeSelect,
 		persistTmpTimeline: persistTmpTimeline,
+		showTimelineEditor: showTimelineEditor,
+		editorAction: editorAction,
+		timelinesDuration: timelinesDuration,
+		deleteTimeline: deleteTimeline,
 		isEditing: false,
 		canAccess: false,
 		isEditingTimeline: false,
@@ -84,6 +88,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 		$scope.narrative = $scope.narrativeData;
 		doAfterAuthentication();
 		$scope.loading = false;
+		timelinesDuration($scope.narrative.timelines);
 	}
 
 	function toggleEditing() {
@@ -95,6 +100,14 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 		$scope.isEditingTimeline = !$scope.isEditingTimeline;
 	}
 
+	function toggleOwnership() {
+		$scope.isOwner = !$scope.isOwner;
+	}
+
+	function toggleEpisodeList() {
+		$scope.showEpisodeList = !$scope.showEpisodeList;
+	}
+
 	function doneEditingTimeline() {
 		$scope.timelineUnderEdit = null;
 		//remove tmp tl from timelines;
@@ -102,14 +115,6 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 			return tl !== $scope.tmpTimeline
 		});
 		$scope.tmpTimeline = null;
-	}
-
-	function toggleOwnership() {
-		$scope.isOwner = !$scope.isOwner;
-	}
-
-	function toggleEpisodeList() {
-		$scope.showEpisodeList = !$scope.showEpisodeList;
 	}
 
 	function doAfterAuthentication() {
@@ -121,6 +126,36 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 				$scope.customerList = data;
 			});
 		}
+	}
+
+	function editorAction(newTl, currTl) {
+		if (newTl.isTemp === true) {
+			persistTmpTimeline(newTl)
+		} else {
+			updateTimeline(newTl, currTl)
+		}
+	}
+
+	function showTimelineEditor(tl) {
+		return (tl === $scope.timelineUnderEdit || tl === $scope.tmpTimeline);
+	}
+
+	function timelinesDuration(timelines) {
+		$scope.totalNarrativeDuration = timelines.map(function (tl) {
+			return tl.episode_segments.map(function(s) {return s.end_time})[0];
+		}).reduce(function(accm, durs) {
+			return accm += durs;
+		}, 0);
+	}
+
+
+	function deleteTimeline(tl) {
+		dataSvc.deleteTimeline(tl._id).then(function() {
+			$scope.narrative.timelines = $scope.narrative.timelines.filter(function(t) {
+				return tl._id !== t._id;
+			});
+			doneEditingTimeline();
+		});
 	}
 
 	//this function kicks off the following sequence: addTmpTimeline -> onEpisodeSelect -> persistTmpTimeline
@@ -141,12 +176,14 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 			currSortOrder = Math.ceil((nextTlSortOrder + currSortOrder) / 2);
 		}
 
+		//TODO: dont forget to strip html tags from episode title
 		var newTimeline = {
 			name: {en: 'New Timeline'},
 			description: {en: 'Timeline Description'},
 			hidden: false,
 			path_slug: '',
-			sort_order: currSortOrder
+			sort_order: currSortOrder,
+			isTemp: true
 		};
 
 		//favor slice over splice as splice mutates array in place.
@@ -155,20 +192,31 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 		head.push(newTimeline);
 		timelines = head.concat(tail);
 		$scope.narrative.timelines = timelines;
-		_updateSortOrder(currIndex, $scope.narrative.timelines);
-		console.log('sort order pre save', currSortOrder);
 		$scope.tmpTimeline = newTimeline;
 		//to open episode select modal
 		toggleEpisodeList()
 	}
 
 	function onEpisodeSelect(epId) {
-		if (!$scope.tmpTimeline) { return; }
+		//if tmpTimeline is not set, assume
+		//this is the first timeline to create;
+		if (!$scope.tmpTimeline && $scope.narrative.timelines.length === 0) {
+			var newTimeline = {
+				name: {en: 'New Timeline'},
+				description: {en: 'Timeline Description'},
+				hidden: false,
+				path_slug: '',
+				sort_order: 0,
+				isTemp: true
+			};
+			$scope.tmpTimeline = newTimeline;
+			$scope.narrative.timelines.push(newTimeline);
+		}
 
 		dataSvc.getEpisodeOverview(epId).then(function(episodeData) {
 			$scope.tmpTimeline.parent_episode = episodeData;
-			$scope.tmpTimeline.description.en = episodeData.description.en;
-			$scope.tmpTimeline.name.en = episodeData.title.en;
+			$scope.tmpTimeline.description.en = ittUtils.stripHtmlTags(episodeData.description.en);
+			$scope.tmpTimeline.name.en = ittUtils.stripHtmlTags(episodeData.title.en);
 			return episodeData;
 		}).then(function(episodeData) {
 			dataSvc.getSingleAsset(episodeData.master_asset_id).then(function(data) {
@@ -211,16 +259,10 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 			}).then(function(segmentData) {
 				tlData.episode_segments = [segmentData];
 				dataSvc.storeTimeline($scope.narrative._id, tlData).then(function(tlResp) {
-					// var narrativeId = $scope.narrative._id;
-					// _updateSortOrder(tl.repeatIndex + 1, $scope.narrative.timelines);
-					// $scope.narrative.timelines = tlData;
+					$scope.tmpTimeline = null;
 					doneEditingTimeline();
-					console.log('sortOrder after', tlResp.sort_order);
-					console.log('we made it!', tlResp);
-					// dataSvc.getNarrative(narrativeId).then(function() {
-					// 	_updateSortOrder(tl.repeatIndex + 1, $scope.narrative.timelines);
-					// 	doneEditingTimeline();
-					// });
+				}).then(function() {
+					// timelinesDuration($scope.narrative.timelines);
 				});
 			});
 		}
@@ -268,7 +310,6 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 
 			// });
 		});
-
 	}
 
 	function _updateSortOrder(destIndex, arr) {
@@ -294,52 +335,5 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc) {
 			angular.extend(timeline, resp);
 		});
 	}
-
-	// replaced with updateTimeline and persistTmpTimeline
-	// function saveTimeline(timeline) {
-	// 	timeline.saveInProgress = true;
-	// 	if (timeline._id) {
-	// 		// updating an existing timeline: just store it
-	// 		dataSvc.storeTimeline($scope.narrative._id, timeline).then(function () {
-	// 			timeline.saveInProgress = false;
-	// 		});
-	// 	} else {
-	// 		// creating a new timeline is a lot more complex:
-	// 		// create child episode, get episode duration, then store a new episode segment, then store the timeline.
-    //
-	// 		// TODO In future when timelines aren't 1:1 to (child) episodes, split this up into separate actions
-    //
-	// 		// create child episode
-	// 		dataSvc.createChildEpisode({
-	// 			"parent_id": timeline.parent_episode._id,
-	// 			"title": timeline.name
-	// 			//"container_id": timeline.parent_episode.container_id
-    //
-	// 		}).then(function (childEpisode) {
-	// 			dataSvc.storeTimeline($scope.narrative._id, timeline).then(function (timelineData) {
-	// 				// create episode segment
-	// 				dataSvc.createEpisodeSegment(timelineData._id, {
-	// 					"episode_id": childEpisode._id,
-	// 					"start_time": 0,
-	// 					"end_time": timeline.duration,
-	// 					"sort_order": 0,
-	// 					"timeline_id": timelineData._id
-	// 				}).then(function (segmentData) {
-	// 					// store the segment in the timeline
-	// 					timelineData.episode_segments = [segmentData];
-	// 					dataSvc.storeTimeline($scope.narrative._id, timelineData).then(function () {
-	// 						$scope.isAddingTimeline = false;
-	// 						// finally, refresh the narrative data:
-	// 						var narrativeId = $scope.narrative._id;
-	// 						dataSvc.getNarrative(narrativeId).then(function () {
-	// 							$scope.narrative = modelSvc.narratives[narrativeId];
-	// 							tmpSetNarrativeTemplate();
-	// 						});
-	// 					});
-	// 				});
-	// 			});
-	// 		});
-	// 	}
-	// }
 }
 

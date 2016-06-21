@@ -15,8 +15,13 @@
 		existy: existy,
 		truthy: truthy,
 		generateUUID: generateUUID,
-		isValidURL: isValidURL
+		isValidURL: isValidURL,
+		stripHtmlTags: stripHtmlTags
 	};
+
+	function stripHtmlTags(str) {
+		return String(str).replace(/<\/?[^>]*>/gm, '');
+	}
 
 	function getSubdomain(host) {
 		if (host.indexOf('.') < 0) {
