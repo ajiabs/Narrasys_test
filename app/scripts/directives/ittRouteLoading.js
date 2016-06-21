@@ -20,7 +20,8 @@
 				'	</div><span class="loading__text">Loading</span>',
 				'</div>'
 			].join(' '),
-			controller: function($rootScope, $scope, $timeout, errorSvc) {
+			controller: ['$rootScope', '$scope', '$timeout', 'errorSvc',
+				function($rootScope, $scope, $timeout, errorSvc) {
 				var ctrl = this;
 				ctrl.isLoading = false;
 				var threshold;
@@ -48,7 +49,7 @@
 						ctrl.isLoading = false;
 					}
 				});
-			},
+			}],
 			controllerAs: 'routeLoadingCtrl',
 			bindToController: true
 	    };

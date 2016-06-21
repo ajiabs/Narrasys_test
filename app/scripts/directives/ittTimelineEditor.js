@@ -42,7 +42,7 @@
 				onDelete: '&',
 				onDone: '&'
 			},
-			controller: function(ittUtils) {
+			controller: ['ittUtils', function(ittUtils) {
 				var ctrl = this;
 				var existy = ittUtils.existy;
 
@@ -59,7 +59,7 @@
 					ctrl.underDelete = true;
 				}
 
-			},
+			}],
 			controllerAs: 'tEditor',
 			bindToController: true
 	    };
