@@ -203,7 +203,29 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		//to open episode select modal
 		toggleEpisodeList();
 	}
+	function _updateSortOrder(destIndex, arr) {
+		var len = arr.length;
+		var sortIndex = 0;
+		if (destIndex > 0) {
+			if (arr[destIndex].sort_order > arr[destIndex - 1].sort_order) {
+				sortIndex = arr[destIndex].sort_order;
+			} else {
+				sortIndex = arr[destIndex - 1].sort_order + 1;
+			}
+		}
+		var prevSortIndex = sortIndex;
+		arr[destIndex].sort_order = sortIndex;
 
+		sortIndex++;
+		destIndex++;
+		for (; destIndex < len; destIndex++) {
+			if (prevSortIndex >= arr[destIndex].sort_order) {
+				arr[destIndex].sort_order = sortIndex;
+			}
+			prevSortIndex = sortIndex;
+			sortIndex++;
+		}
+	}
 	function onEpisodeSelect(epId) {
 		//if tmpTimeline is not set, assume
 		// this is the first timeline to create;
@@ -311,23 +333,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		});
 	}
 
-	function _updateSortOrder(destIndex, arr) {
-		var len = arr.length;
-		var sortIndex = 0;
-		if (destIndex > 0) {
-			sortIndex = arr[destIndex - 1].sort_order + 1;
-		}
-		var prevSortIndex = sortIndex;
-		arr[destIndex].sort_order = sortIndex;
 
-		for (destIndex + 1; destIndex < len; destIndex++) {
-			if (prevSortIndex === arr[destIndex].sort_order) {
-				arr[destIndex].sort_order = sortIndex;
-			}
-			prevSortIndex = sortIndex;
-			sortIndex++;
-		}
-	}
 
 	function _persistTimelineSortUpdate(timeline) {
 		dataSvc.storeTimeline($scope.narrative._id, timeline).then(function(resp) {
