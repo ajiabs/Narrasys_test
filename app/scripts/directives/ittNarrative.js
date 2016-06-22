@@ -63,14 +63,12 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		toggleEpisodeList: toggleEpisodeList,
 		createNarrative: createNarrative,
 		updateNarrative: updateNarrative,
-		// saveTimeline: saveTimeline,
 		updateTimeline: updateTimeline,
 		addTmpTimeline: addTmpTimeline,
 		onEpisodeSelect: onEpisodeSelect,
 		persistTmpTimeline: persistTmpTimeline,
 		showTimelineEditor: showTimelineEditor,
 		editorAction: editorAction,
-		timelinesDuration: timelinesDuration,
 		deleteTimeline: deleteTimeline,
 		isEditing: false,
 		canAccess: false,
@@ -88,7 +86,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		$scope.narrative = $scope.narrativeData;
 		doAfterAuthentication();
 		$scope.loading = false;
-		timelinesDuration($scope.narrative.timelines);
+		_setTotalNarrativeDuration($scope.narrative.timelines);
 	}
 
 	function toggleEditing() {
@@ -140,7 +138,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		return (tl === $scope.timelineUnderEdit || tl === $scope.tmpTimeline);
 	}
 
-	function timelinesDuration(timelines) {
+	function _setTotalNarrativeDuration(timelines) {
 		$scope.totalNarrativeDuration = timelines.map(function (tl) {
 			return tl.episode_segments.map(function(s) {return s.end_time;})[0];
 		}).reduce(function(accm, durs) {
@@ -148,13 +146,13 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		}, 0);
 	}
 
-
 	function deleteTimeline(tl) {
 		dataSvc.deleteTimeline(tl._id).then(function() {
 			$scope.narrative.timelines = $scope.narrative.timelines.filter(function(t) {
 				return tl._id !== t._id;
 			});
 			doneEditingTimeline();
+			_setTotalNarrativeDuration($scope.narrative.timelines);
 		});
 	}
 
@@ -164,31 +162,40 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 	//onEpisodeSelect fills some of the temp props with actual props back from the selected episode
 	//persistTempTimeline saves the freshly created timeline
 	function addTmpTimeline(currTl, timelines) {
-		var currIndex = timelines.indexOf(currTl);
-		var fromTl = timelines[currIndex];
+		var currSortOrder;
+		var fromTl;
 		var nextTlSortOrder;
-		var currSortOrder = fromTl.sort_order;
+		var currIndex;
+		var newIndex;
 
-		if (timelines.slice(-1)[0] === fromTl) {
-			currSortOrder += 100;
+		if (!ittUtils.existy(currTl)) {
+			currSortOrder = 0;
+			newIndex = 0;
 		} else {
-			nextTlSortOrder = timelines[currIndex + 1].sort_order;
-			currSortOrder = Math.ceil((nextTlSortOrder + currSortOrder) / 2);
-		}
+			currIndex = timelines.indexOf(currTl);
+			newIndex = currIndex + 1;
+			fromTl = timelines[currIndex];
+			currSortOrder = fromTl.sort_order;
+			if (timelines.slice(-1)[0] === fromTl) {
+				currSortOrder += 100;
+			} else {
+				nextTlSortOrder = timelines[currIndex + 1].sort_order;
+				currSortOrder = Math.ceil((nextTlSortOrder + currSortOrder) / 2);
+			}
 
-		//TODO: dont forget to strip html tags from episode title
+		}
 		var newTimeline = {
 			name: {en: 'New Timeline'},
 			description: {en: 'Timeline Description'},
 			hidden: false,
 			path_slug: '',
 			sort_order: currSortOrder,
-			isTemp: true
+			isTemp: true,
+			index: newIndex
 		};
-
 		//favor slice over splice as splice mutates array in place.
-		var head = timelines.slice(0, currIndex + 1);
-		var tail = timelines.slice(currIndex + 1, timelines.length);
+		var head = timelines.slice(0, newIndex);
+		var tail = timelines.slice(newIndex, timelines.length);
 		head.push(newTimeline);
 		timelines = head.concat(tail);
 		$scope.narrative.timelines = timelines;
@@ -199,20 +206,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 
 	function onEpisodeSelect(epId) {
 		//if tmpTimeline is not set, assume
-		//this is the first timeline to create;
-		if (!$scope.tmpTimeline && $scope.narrative.timelines.length === 0) {
-			var newTimeline = {
-				name: {en: 'New Timeline'},
-				description: {en: 'Timeline Description'},
-				hidden: false,
-				path_slug: '',
-				sort_order: 0,
-				isTemp: true
-			};
-			$scope.tmpTimeline = newTimeline;
-			$scope.narrative.timelines.push(newTimeline);
-		}
-
+		// this is the first timeline to create;
 		dataSvc.getEpisodeOverview(epId).then(function(episodeData) {
 			$scope.tmpTimeline.parent_episode = episodeData;
 			$scope.tmpTimeline.description.en = ittUtils.stripHtmlTags(episodeData.description.en);
@@ -232,7 +226,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 	}
 
 	function persistTmpTimeline(tl) {
-
+		_updateSortOrder(tl.index, $scope.narrative.timelines);
 		dataSvc.createChildEpisode({
 			parent_id: tl.parent_episode._id,
 			title: tl.name
@@ -258,11 +252,16 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 				timeline_id: tlData._id
 			}).then(function(segmentData) {
 				tlData.episode_segments = [segmentData];
-				dataSvc.storeTimeline($scope.narrative._id, tlData).then(function() {
+				dataSvc.storeTimeline($scope.narrative._id, tlData).then(function(resp) {
+					var finalTl = angular.extend(tlData, resp);
+					angular.forEach($scope.narrative.timelines, function(tl) {
+						if (tl.sort_order === finalTl.sort_order) {
+							angular.extend(tl, finalTl);
+						}
+					});
 					$scope.tmpTimeline = null;
 					doneEditingTimeline();
-				}).then(function() {
-					// timelinesDuration($scope.narrative.timelines);
+					_setTotalNarrativeDuration($scope.narrative.timelines);
 				});
 			});
 		}
