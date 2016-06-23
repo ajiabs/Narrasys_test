@@ -238,8 +238,20 @@ angular.module('com.inthetelling.story')
 			return POST("/v3/timelines/" + narrativeId + "/episode_segments", segmentData);
 		};
 
-		svc.storeTimeline = function (narrativeId, timeline) {
-			// console.log("About to store timeline", timeline);
+		svc.storeTimeline = function (narrativeId, origTimeline) {
+
+			var permitted = [
+				'sort_order',
+				'path_slug',
+				'name',
+				'description',
+				'hidden',
+				'timeline_image_id',
+				'narrative_id',
+				'_id'
+			];
+			var timeline = ittUtils.permittedFields(origTimeline, permitted);
+
 			if (timeline._id) {
 				return PUT("/v3/timelines/" + timeline._id, timeline, function (ret) {
 					// TEMPORARY until api stops doing this

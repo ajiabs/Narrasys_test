@@ -394,10 +394,11 @@ input[readonly] {
 }
 
 .edit-pencil {
-
+	/*background-color: #fff;*/
+	/*color: #FFF;*/
+	/*border: 2px solid #555;*/
+	/*border-radius: 2.5em;*/
 }
-
-
 
 .edit-pencil:before {
 	font-family: Story;

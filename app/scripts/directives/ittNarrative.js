@@ -45,13 +45,16 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 
 	var treeOpts = {
 		accept: function(/*sourceNodeScope, destNodesScope, destIndex*/) {
-			// console.log('onAccept', arguments);
 			return true;
 		},
 		dropped: function(event) {
 			var destIndex = event.dest.index;
-			_updateSortOrder(destIndex, $scope.narrative.timelines);
-			_persistTimelineSortUpdate($scope.narrative.timelines[destIndex]);
+			var srcIndex = event.source.index;
+			if (destIndex !== srcIndex) {
+				_updateSortOrder(destIndex, $scope.narrative.timelines);
+				_persistTimelineSortUpdate($scope.narrative.timelines[destIndex]);
+			}
+
 		}
 	};
 
@@ -207,17 +210,18 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		var len = arr.length;
 		var sortIndex = 0;
 		if (destIndex > 0) {
-			if (arr[destIndex].sort_order > arr[destIndex - 1].sort_order) {
-				sortIndex = arr[destIndex].sort_order;
+
+			if (destIndex === len - 1) {
+				sortIndex = arr[destIndex - 1].sort_order + 100;
 			} else {
-				sortIndex = arr[destIndex - 1].sort_order + 1;
+				sortIndex = Math.ceil((arr[destIndex - 1].sort_order + arr[destIndex + 1].sort_order ) / 2);
 			}
+
 		}
 		var prevSortIndex = sortIndex;
 		arr[destIndex].sort_order = sortIndex;
-
-		sortIndex++;
 		destIndex++;
+		sortIndex++;
 		for (; destIndex < len; destIndex++) {
 			if (prevSortIndex >= arr[destIndex].sort_order) {
 				arr[destIndex].sort_order = sortIndex;
@@ -274,17 +278,14 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 				timeline_id: tlData._id
 			}).then(function(segmentData) {
 				tlData.episode_segments = [segmentData];
-				dataSvc.storeTimeline($scope.narrative._id, tlData).then(function(resp) {
-					var finalTl = angular.extend(tlData, resp);
-					angular.forEach($scope.narrative.timelines, function(tl) {
-						if (tl.sort_order === finalTl.sort_order) {
-							angular.extend(tl, finalTl);
-						}
-					});
-					$scope.tmpTimeline = null;
-					doneEditingTimeline();
-					_setTotalNarrativeDuration($scope.narrative.timelines);
+				angular.forEach($scope.narrative.timelines, function(tl) {
+					if (tl.sort_order === tlData.sort_order) {
+						angular.extend(tl, tlData);
+					}
 				});
+				$scope.tmpTimeline = null;
+				doneEditingTimeline();
+				_setTotalNarrativeDuration($scope.narrative.timelines);
 			});
 		}
 

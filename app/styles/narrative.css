@@ -132,6 +132,10 @@
 	padding: 5px;
 }
 
+.tlDrag__handle:before {
+	content: '\f047';
+}
+
 /*.narrative__edit.ng-hide-add, .narrative__edit.ng-hide-remove {*/
 	/*transition: all 0.5s ease-in-out;*/
 	/*transform: translateZ(0);*/

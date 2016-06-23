@@ -10,7 +10,7 @@
 
 			<!-- begin display -->
 			<div ng-hide="isEditing">
-				<h2 itt-edit-pencil can-access="canAccess" on-edit="toggleEditing()" ng-bind-html="narrative.name.en"></h2>
+				<h2 ng-bind-html="narrative.name.en"></h2>
 				<p ng-bind-html="narrative.description.en"></p>
 				<p>Total Duration: {{totalNarrativeDuration | asTime}}</p>
 			</div>
@@ -60,8 +60,8 @@
 						<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline">
 							<div>
 								<h3 itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
+									<span ng-if="canAccess" ui-tree-handle><i class="fa fa-th"></i></span>
 									<a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
-									<span ui-tree-handle>Handle ({{timeline.sort_order}})</span>
 								</h3>
 								<p>{{timeline.description.en}}</p>
 								{{timeline.episode_segments[0].end_time | asTime}}

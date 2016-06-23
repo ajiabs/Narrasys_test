@@ -16,8 +16,18 @@
 		truthy: truthy,
 		generateUUID: generateUUID,
 		isValidURL: isValidURL,
-		stripHtmlTags: stripHtmlTags
+		stripHtmlTags: stripHtmlTags,
+		permittedFields: permittedFields
 	};
+
+	function permittedFields(obj, arr) {
+		return arr.reduce(function(accm, field) {
+			if (existy(obj[field])) {
+				accm[field] =  angular.copy(obj[field]);
+			}
+			return accm;
+		}, {});
+	}
 
 	function stripHtmlTags(str) {
 		return String(str).replace(/<\/?[^>]*>/gm, '');
@@ -36,8 +46,15 @@
 	}
 
 	function truthy (x) {
-		return (x !== false && existy(x));
+		return (x != false) && existy(x); //jshint ignore:line
 	}
+
+	/*
+		empty string considered falsy
+		e.g. [null, undefined, '', 0, 1, false true].map(truthy)
+		-> [false, false, false, false, true, false, true]
+	*/
+
 
 	function generateUUID() {
 		//js hint does not like the bitwise operators in use below.

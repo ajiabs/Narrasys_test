@@ -25,7 +25,7 @@
 				'	<input id="nNewWindow" type="checkbox" ng-model="nEditor._narrative.disable_new_window"/>',
 				'	<label for="nDisableNav">Disable Navigation</label>',
 				'	<input id="nDisableNav" type="checkbox" ng-model="nEditor._narrative.disable_navigation"/>',
-				'	<label for="nGuestAccess">Disable Guest Access</label>',
+				'	<label for="nGuestAccess">Enable Guest Access</label>',
 				'	<input id="nGuestAccess" type="checkbox" ng-model="nEditor._narrative.guest_access_allowed"/>',
 				'	<div class="ancillaryNav">',
 				'		<button class="done" ng-click="nEditor.onUpdate({n: nEditor._narrative })">Save</button>',
