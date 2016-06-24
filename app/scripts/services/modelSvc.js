@@ -24,6 +24,24 @@ angular.module('com.inthetelling.story')
 		// TODO discard unused fields before cacheing
 
 		// use angular.extend if an object already exists, so we don't lose existing bindings
+
+		svc.getNarrativeByPathOrId = function(pathOrId) {
+			var isMongoId = /^[0-9a-fA-F]{24}$/.test(pathOrId);
+			if (isMongoId) {
+				return svc.narratives[pathOrId];
+			}
+			//else loop and find the matching path slug passed in.
+			var n;
+			for (n in svc.narratives) {
+				if (svc.narratives.hasOwnProperty(n)) {
+					if (pathOrId === svc.narratives[n].path_slug.en) {
+						return svc.narratives[n];
+					}
+				}
+
+			}
+		};
+
 		svc.cache = function (cacheType, item) {
 			if (cacheType === 'narrative') {
 				// NOTE no deriveNarrative used here, not needed so far

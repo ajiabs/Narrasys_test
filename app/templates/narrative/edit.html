@@ -3,7 +3,7 @@
 	<div ng-if="!loading">
 		<div class="ancillaryNav">
 			<a class="button" ng-if="user._id" href="/#/user">Home</a>
-			<a class="button" ng-click="stopEditing()">Done editing</a>
+			<a class="button" ng-href="/#/story/{{narrative.path_slug.en}}">Done editing</a>
 			<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
 		</div>
 

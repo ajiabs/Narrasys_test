@@ -14,7 +14,7 @@
  * @requires ngSanitize
  * @requires textAngular
  */
-angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular'])
+angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular', 'ui.tree'])
 
 // Configure routing
 .config(function ($routeProvider) {
@@ -32,13 +32,67 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		})
 		.when('/stories', {
 			title: "Existing narratives",
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list></div></div>'
-		})
-		.when('/story', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div></div>',
+			controller: 'NarrativesCtrl',
+			resolve: {
+				narrativesResolve: function($route, $q,  ittUtils, authSvc, dataSvc, modelSvc) {
+
+					var cachedNars = modelSvc.narratives;
+					var cachedCustomers;
+					//if use visits /story/:id prior to visiting this route, they will have a single
+					//narrative in modelSvc. We consider the cache 'empty' if the only narrative
+					//in it came from loading data for /story/:id. Otherwise when they visit
+					// /stories, the only listing they would see would be the narrative from
+					// /stories/:id. 
+					var isCached = Object.keys(cachedNars).length > 1;
+
+					if (isCached) {
+						cachedCustomers = modelSvc.customers;
+						return $q(function(resolve) {
+							return resolve({n: cachedNars, c: cachedCustomers});
+						});
+					}
+					return authSvc.authenticate().then(function() {
+						return dataSvc.getCustomerList().then(function(customers) {
+							return dataSvc.getNarrativeList().then(function(narratives) {
+								angular.forEach(narratives, function(n) {
+									n.subDomain = modelSvc.customers[n.customer_id].domains[0];
+									modelSvc.cache('narrative', n);
+								});
+								return {n: narratives, c: customers};
+							});
+						});
+					});
+				}
+			}
 		})
 		.when('/story/:narrativePath', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve" customer-data="customersResolve"></div></div>',
+			controller: 'NarrativeCtrl',
+			resolve: {
+				narrativeResolve: function($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
+					var pathOrId = $route.current.params.narrativePath;
+					//this only pulls from the cache.
+					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+
+					var doPullFromCache = ittUtils.existy(cachedNarr) &&
+						ittUtils.existy(cachedNarr.path_slug) &&
+						ittUtils.existy(cachedNarr.timelines) &&
+						(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
+
+					if (doPullFromCache) {
+						return $q(function(resolve) {return resolve({n:cachedNarr, c: [modelSvc.customers[cachedNarr.customer_id]] });});
+					}
+					return authSvc.authenticate().then(function() {
+						return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
+							return dataSvc.getCustomerList().then(function(customers) {
+								return {n: narrativeData, c: customers};
+							});
+						});
+					});
+
+				}
+			}
 		})
 		.when('/story/:narrativePath/:timelinePath', {
 			template: '<div itt-narrative-timeline></div>',

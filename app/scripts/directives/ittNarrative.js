@@ -2,15 +2,13 @@
 
 /*
 
-TODO: 
-
+TODO:
 split this file up into separate directive files
 when displaying a narrative, compare its user_id to the current user's id to set isOwner
 i18n
 
-
 To create a narrative:
-* get the user ID, make a group containing that ID, 
+* get the user ID, make a group containing that ID,
 * create narrative with name,description,group id
 
 TO add a timeline:
@@ -29,185 +27,287 @@ to update narrative or timeline: just send the basic fields, not the fully-resol
 
 */
 angular.module('com.inthetelling.story')
-	.directive('ittNarrative', function (authSvc, appState, $location, $routeParams, modelSvc, dataSvc) {
-		return {
-			template: function () {
-				return '<div ng-include="narrative.templateUrl"></div>';
-			},
+	.directive('ittNarrative', ittNarrative)
+	.controller('ittNarrativeCtrl', ittNarrativeCtrl);
 
-			link: function (scope) {
-				console.log("ittNarrative");
-				scope.loading = true;
+function ittNarrative() {
+	return {
+		templateUrl: 'templates/narrative/default.html',
+		controller: 'ittNarrativeCtrl',
+		controllerAs: 'ittNarrative',
+		scope: {
+			narrativeData: '=',
+			customerData: '='
+		}
+	};
+}
 
-				scope.logout = authSvc.logout;
+function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 
-				// TODO remove this when I build in real template support
-				scope.tmpSetNarrativeTemplate = function () {
-					scope.narrative.templateUrl = 'templates/narrative/default.html';
-					if ($routeParams.admin) {
-						scope.narrative.templateUrl = 'templates/narrative/edit.html';
-					}
-				};
-
-				// TEMPORARY
-				scope.stopEditing = function () {
-					$location.search('admin', null);
-				};
-
-				// Need to let getNarrative do the authentication, so it can pass the narrative ID.
-				var doAfterAuthentication = function () {
-					scope.userHasRole = authSvc.userHasRole;
-					scope.user = appState.user;
-					if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
-						dataSvc.getCustomerList().then(function (data) {
-							scope.customerList = data;
-						});
-					}
-				};
-
-				scope.isOwner = false;
-				scope.toggleOwnership = function () {
-					scope.isOwner = !scope.isOwner;
-				};
-
-				// The route param might be the narrative path or its ID (both are interchangeable in the API)
-				var path_or_id = (scope._id) ? scope._id : $routeParams.narrativePath;
-
-				if (path_or_id) {
-					// For simplicity's sake, not trying to retrieve narrative from cache; just get it from the API for now.
-					dataSvc.getNarrative(path_or_id).then(function (narrativeData) {
-						doAfterAuthentication();
-						scope.loading = false;
-						scope.narrative = narrativeData;
-						scope.tmpSetNarrativeTemplate();
-					});
-				} else {
-					authSvc.authenticate().then(doAfterAuthentication);
-					// New narrative
-					console.log("CREATE NEW NARRATIVE");
-					scope.loading = false;
-					scope.toggleOwnership(true);
-					scope.narrative = {};
-					scope.tmpSetNarrativeTemplate();
-				}
-
-				scope.toggleEpisodeList = function () {
-					scope.showEpisodeList = !scope.showEpisodeList;
-				};
-
-				scope.$on('episodeSelected', function (evt, epId) {
-					scope.showEpisodeList = false;
-					scope.addTimeline(epId);
-				});
-
-				scope.createNarrative = function () {
-					// get the current user's id
-					// create a group
-
-					// create a narrative with that group
-					// add the user to the group
-					// redirect
-					authSvc.authenticate().then(function () {
-
-						// dataSvc.createUserGroup({
-						// 	en: "All users"
-						// }).then(function (groupData) {
-						// 	scope.narrative.everyone_group_id = groupData._id;
-						// 	scope.narrative.sub_groups_id = [];
-
-						dataSvc.createNarrative(
-							scope.narrative
-						).then(function (narrativeData) {
-
-							$location.path('/story/' + narrativeData._id);
-						});
-
-						// });
-					});
-
-				};
-
-				scope.updateNarrative = function () {
-					scope.narrative.saveInProgress = true;
-
-					dataSvc.updateNarrative(scope.narrative).then(function () {
-						scope.tmpSetNarrativeTemplate();
-						scope.narrative.saveInProgress = false;
-					});
-				};
-
-				scope.addTimeline = function (epId) {
-					dataSvc.getEpisodeOverview(epId).then(function (episodeData) {
-
-						var newTimeline = {
-							"name": episodeData.title,
-							"description": episodeData.description,
-							"hidden": false,
-							"path_slug": "",
-							"sort_order": scope.narrative.timelines.length,
-							"parent_episode": episodeData
-						};
-
-						// as long as we're here, get the duration before moving on:
-						dataSvc.getSingleAsset(episodeData.master_asset_id).then(function (data) {
-							if (data) {
-								newTimeline.duration = data.duration;
-							} else {
-								newTimeline.duration = 0;
-							}
-							scope.narrative.timelines.push(newTimeline);
-							scope.isAddingTimeline = true;
-						});
-
-					});
-
-				};
-
-				scope.saveTimeline = function (timeline) {
-					timeline.saveInProgress = true;
-					if (timeline._id) {
-						// updating an existing timeline: just store it
-						dataSvc.storeTimeline(scope.narrative._id, timeline).then(function () {
-							timeline.saveInProgress = false;
-						});
-					} else {
-						// creating a new timeline is a lot more complex:
-						// create child episode, get episode duration, then store a new episode segment, then store the timeline.
-
-						// TODO In future when timelines aren't 1:1 to (child) episodes, split this up into separate actions
-
-						// create child episode
-						dataSvc.createChildEpisode({
-							"parent_id": timeline.parent_episode._id,
-							"title": timeline.name
-								//"container_id": timeline.parent_episode.container_id
-
-						}).then(function (childEpisode) {
-							dataSvc.storeTimeline(scope.narrative._id, timeline).then(function (timelineData) {
-								// create episode segment 
-								dataSvc.createEpisodeSegment(timelineData._id, {
-									"episode_id": childEpisode._id,
-									"start_time": 0,
-									"end_time": timeline.duration,
-									"sort_order": 0,
-									"timeline_id": timelineData._id
-								}).then(function (segmentData) {
-									// store the segment in the timeline
-									timelineData.episode_segments = [segmentData];
-									dataSvc.storeTimeline(scope.narrative._id, timelineData).then(function () {
-										scope.isAddingTimeline = false;
-										// finally, refresh the narrative data:
-										var narrativeId = scope.narrative._id;
-										dataSvc.getNarrative(narrativeId).then(function () {
-											scope.narrative = modelSvc.narratives[narrativeId];
-											scope.tmpSetNarrativeTemplate();
-										});
-									});
-								});
-							});
-						});
-					}
-				};
+	var treeOpts = {
+		accept: function(/*sourceNodeScope, destNodesScope, destIndex*/) {
+			return true;
+		},
+		dropped: function(event) {
+			var destIndex = event.dest.index;
+			var srcIndex = event.source.index;
+			if (destIndex !== srcIndex) {
+				_updateSortOrder(destIndex, $scope.narrative.timelines);
+				_persistTimelineSortUpdate($scope.narrative.timelines[destIndex]);
 			}
-		};
+
+		}
+	};
+
+	angular.extend($scope, {
+		toggleEditing: toggleEditing,
+		toggleEditingTimeline: toggleEditingTimeline,
+		doneEditingTimeline: doneEditingTimeline,
+		toggleOwnership: toggleOwnership,
+		toggleEpisodeList: toggleEpisodeList,
+		updateNarrative: updateNarrative,
+		updateTimeline: updateTimeline,
+		addTmpTimeline: addTmpTimeline,
+		onEpisodeSelect: onEpisodeSelect,
+		persistTmpTimeline: persistTmpTimeline,
+		showTimelineEditor: showTimelineEditor,
+		editorAction: editorAction,
+		deleteTimeline: deleteTimeline,
+		isEditing: false,
+		canAccess: false,
+		isEditingTimeline: false,
+		treeOpts: treeOpts
 	});
+
+	onInit();
+
+	function _updateSortOrder(destIndex, arr) {
+		var len = arr.length;
+		var sortIndex = 0;
+		if (destIndex > 0) {
+
+			if (destIndex === len - 1) {
+				sortIndex = arr[destIndex - 1].sort_order + 100;
+			} else {
+				sortIndex = ittUtils.bitwiseCeil((arr[destIndex - 1].sort_order + arr[destIndex + 1].sort_order ) / 2);
+			}
+
+		}
+		var prevSortIndex = sortIndex;
+		arr[destIndex].sort_order = sortIndex;
+		destIndex++;
+		sortIndex++;
+		for (; destIndex < len; destIndex++) {
+			if (prevSortIndex >= arr[destIndex].sort_order) {
+				arr[destIndex].sort_order = sortIndex;
+			}
+			prevSortIndex = sortIndex;
+			sortIndex++;
+		}
+	}
+
+	function _persistTimelineSortUpdate(timeline) {
+		dataSvc.storeTimeline($scope.narrative._id, timeline).then(function(resp) {
+			angular.extend(timeline, resp);
+		});
+	}
+
+	//set up scope and bindings
+	function onInit() {
+		$scope.loading = true;
+		$scope.logout = authSvc.logout;
+		$scope.isOwner = false;
+		$scope.narrative = $scope.narrativeData;
+		$scope.customers = $scope.customerData;
+		$scope.user = appState.user;
+		if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
+			$scope.canAccess = true;
+		}
+		$scope.loading = false;
+		_setTotalNarrativeDuration($scope.narrative.timelines);
+	}
+
+
+	function toggleEditing() {
+		$scope.isEditing = !$scope.isEditing;
+	}
+
+	function toggleEditingTimeline(tl) {
+		$scope.timelineUnderEdit = tl;
+		$scope.isEditingTimeline = !$scope.isEditingTimeline;
+	}
+
+	function toggleOwnership() {
+		$scope.isOwner = !$scope.isOwner;
+	}
+
+	function toggleEpisodeList() {
+		$scope.showEpisodeList = !$scope.showEpisodeList;
+	}
+
+	function doneEditingTimeline() {
+		$scope.timelineUnderEdit = null;
+		//remove tmp tl from timelines;
+		$scope.narrative.timelines = $scope.narrative.timelines.filter(function(tl) {
+			return tl !== $scope.tmpTimeline;
+		});
+		$scope.tmpTimeline = null;
+	}
+
+	function editorAction(newTl, currTl) {
+		if (newTl.isTemp === true) {
+			persistTmpTimeline(newTl);
+		} else {
+			updateTimeline(newTl, currTl);
+		}
+	}
+
+	function showTimelineEditor(tl) {
+		return (tl === $scope.timelineUnderEdit || tl === $scope.tmpTimeline);
+	}
+
+	function _setTotalNarrativeDuration(timelines) {
+		$scope.totalNarrativeDuration = timelines.map(function (tl) {
+			return tl.episode_segments.map(function(s) {return s.end_time;})[0];
+		}).reduce(function(accm, durs) {
+			return accm += durs;
+		}, 0);
+	}
+
+	function deleteTimeline(tl) {
+		dataSvc.deleteTimeline(tl._id).then(function() {
+			$scope.narrative.timelines = $scope.narrative.timelines.filter(function(t) {
+				return tl._id !== t._id;
+			});
+			doneEditingTimeline();
+			_setTotalNarrativeDuration($scope.narrative.timelines);
+		});
+	}
+
+	//this function kicks off the following sequence: addTmpTimeline -> onEpisodeSelect -> persistTmpTimeline
+	//addTempTimeline creates a temporary object and puts it on the narrative.timelines scope (so we can use it
+	//in the view via ittTimelineEditor directive)
+	//onEpisodeSelect fills some of the temp props with actual props back from the selected episode
+	//persistTempTimeline saves the freshly created timeline
+	function addTmpTimeline(currTl, timelines) {
+		var currSortOrder;
+		var fromTl;
+		var nextTlSortOrder;
+		var currIndex;
+		var newIndex;
+
+		if (!ittUtils.existy(currTl)) {
+			currSortOrder = 0;
+			newIndex = 0;
+		} else {
+			currIndex = timelines.indexOf(currTl);
+			newIndex = currIndex + 1;
+			fromTl = timelines[currIndex];
+			currSortOrder = fromTl.sort_order;
+			if (timelines.slice(-1)[0] === fromTl) {
+				currSortOrder += 100;
+			} else {
+				nextTlSortOrder = timelines[currIndex + 1].sort_order;
+				currSortOrder = ittUtils.bitwiseCeil((nextTlSortOrder + currSortOrder) / 2);
+			}
+
+		}
+		var newTimeline = {
+			name: {en: 'New Timeline'},
+			description: {en: 'Timeline Description'},
+			hidden: false,
+			path_slug: '',
+			sort_order: currSortOrder,
+			isTemp: true,
+			index: newIndex
+		};
+		//favor slice over splice as splice mutates array in place.
+		var head = timelines.slice(0, newIndex);
+		var tail = timelines.slice(newIndex, timelines.length);
+		head.push(newTimeline);
+		timelines = head.concat(tail);
+		$scope.narrative.timelines = timelines;
+		$scope.tmpTimeline = newTimeline;
+		//to open episode select modal
+		toggleEpisodeList();
+	}
+
+	function onEpisodeSelect(epId) {
+		//if tmpTimeline is not set, assume
+		// this is the first timeline to create;
+		dataSvc.getEpisodeOverview(epId).then(function(episodeData) {
+			$scope.tmpTimeline.parent_episode = episodeData;
+			$scope.tmpTimeline.description.en = ittUtils.stripHtmlTags(episodeData.description.en);
+			$scope.tmpTimeline.name.en = ittUtils.stripHtmlTags(episodeData.title.en);
+			return episodeData;
+		}).then(function(episodeData) {
+			dataSvc.getSingleAsset(episodeData.master_asset_id).then(function(data) {
+				if (data) {
+					$scope.tmpTimeline.duration = data.duration;
+				} else {
+					$scope.tmpTimeline.duration = 0;
+				}
+				//to close episode select modal after select
+				toggleEpisodeList();
+			});
+		});
+	}
+
+	function persistTmpTimeline(tl) {
+		_updateSortOrder(tl.index, $scope.narrative.timelines);
+		dataSvc.createChildEpisode({
+			parent_id: tl.parent_episode._id,
+			title: tl.name
+		})
+			.then(storeChildEpisode)
+			.then(handleEpisodeSegment)
+			.catch(logErr);
+
+		function storeChildEpisode(childEpisode) {
+			return dataSvc.storeTimeline($scope.narrative._id, tl).then(function(tlData) {
+				return {d: tlData, e: childEpisode};
+			});
+		}
+
+		function handleEpisodeSegment(config) {
+			var tlData = config.d;
+			var childEpisode = config.e;
+			dataSvc.createEpisodeSegment(tlData._id, {
+				episode_id: childEpisode._id,
+				start_time: 0,
+				end_time: tl.duration,
+				sort_order: 0,
+				timeline_id: tlData._id
+			}).then(function(segmentData) {
+				tlData.episode_segments = [segmentData];
+				angular.forEach($scope.narrative.timelines, function(tl) {
+					if (tl.sort_order === tlData.sort_order) {
+						angular.extend(tl, tlData);
+					}
+				});
+				$scope.tmpTimeline = null;
+				doneEditingTimeline();
+				_setTotalNarrativeDuration($scope.narrative.timelines);
+			});
+		}
+
+		function logErr(e) { console.log(e); }
+	}
+
+	function updateNarrative(update) {
+		dataSvc.updateNarrative(update).then(function (resp) {
+			$scope.isEditing = false;
+			//updateNarrative returns just the new narrative object, without timelines array
+			//merge the existing narrative on scope with the one returned via our post resp.
+			angular.extend($scope.narrative, resp);
+		});
+	}
+
+	function updateTimeline(newTimeline, oldTimeline) {
+		dataSvc.storeTimeline($scope.narrative._id, newTimeline).then(function(resp) {
+			angular.extend(oldTimeline, resp);
+			doneEditingTimeline();
+		});
+	}
+}
+

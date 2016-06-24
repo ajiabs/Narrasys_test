@@ -105,3 +105,65 @@
 	height: 1px;
 }
 
+
+.narrative__edit input[type="text"], .narrative__edit textarea {
+	width: 100%;
+	padding: 5px;
+	border-radius: 4px;
+	border: 1px solid black;
+	/*important used here to overide line .sandAloneAncillaryPage textarea above*/
+	font-size: 20px !important;
+}
+
+.timeline__delete {
+	text-align: center;
+	position: fixed;
+	border: 1px solid black;
+	width: 300px;
+	height: 200px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: white;
+	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
+}
+
+.timeline__delete .under__delete {
+	padding: 5px;
+}
+
+.tl__wrapper {
+	margin-left: 20px;
+}
+
+.tlDrag__handle {
+	top: 15px;
+	position: absolute;
+}
+
+
+.narrative__modal {
+	background-color: #fff;
+	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
+	padding: 10px;
+}
+
+.invalid__field {
+	color: red;
+}
+
+.timeline--hidden {
+	opacity: 0.5;
+	border: 1px dashed black;
+	/*background-color: grey;*/
+}
+
+.timeline__hidden-eye {
+	font-size: 48px !important;
+	position: absolute;
+	right: 50%;
+	top: 20%;
+}
+
+
+
