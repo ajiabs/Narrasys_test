@@ -10,7 +10,7 @@ angular.module('com.inthetelling.story')
 				qid: '=',
 				choices: '=',
 				correct: '=',
-				onEpisodeSelect: '=',
+				onChoice: '=',
 				questionType: '@',
 				showChart: '='
 			},
