@@ -10,7 +10,9 @@
 
 			<!-- begin display -->
 			<div ng-hide="isEditing">
-				<h2 itt-edit-pencil can-access="canAccess" on-edit="toggleEditing()" ng-bind-html="narrative.name.en"></h2>
+				<itt-edit-pencil can-access="canAccess" on-edit="toggleEditing()">
+					<h2 ng-bind-html="narrative.name.en"></h2>
+				</itt-edit-pencil>
 				<p ng-bind-html="narrative.description.en"></p>
 				<p>Total Duration: {{totalNarrativeDuration | asTime}}</p>
 			</div>
@@ -47,8 +49,9 @@
 			<div ui-tree="treeOpts" ng-if="narrative.timelines.length !== 0">
 				<div ui-tree-nodes="" ng-model="narrative.timelines">
 
+					<!--note: do not use track by on ng-repeats with ui-tree-->
 					<div class="storyTimeline" ui-tree-node
-						 ng-repeat="timeline in narrative.timelines | filter:{hidden:!true}">
+						 ng-repeat="timeline in narrative.timelines">
 
 						<itt-timeline-editor
 							ng-if="showTimelineEditor(timeline)"
@@ -58,22 +61,30 @@
 							on-delete="deleteTimeline(t)">
 						</itt-timeline-editor>
 
-						<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline">
-							<div>
-								<h3 itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
-									<span ng-if="canAccess" ui-tree-handle><i class="fa fa-th"></i></span>
-									<a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
-								</h3>
+
+						<div ng-mouseenter="showDrag = true" ng-mouseleave="showDrag = false">
+							<span ng-show="canAccess && showDrag" class="tlDrag__handle" ui-tree-handle>
+								<i class="fa fa-th"></i>
+							</span>
+							<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
+								 ng-class="{'timeline--hidden': timeline.hidden}"
+								 class="tl__wrapper">
+								<i ng-if="timeline.hidden" class="fa fa-eye-slash timeline__hidden-eye"></i>
+								<itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
+									<h3>
+										<a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
+									</h3>
+								</itt-edit-pencil>
 								<p>{{timeline.description.en}}</p>
 								{{timeline.episode_segments[0].end_time | asTime}}
-							</div>
 
-						</div>
+								<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 25px">
+									<div ng-show="!!showLine && canAccess">
+										<!--+<hr>-->
+										<button ng-click="addTmpTimeline(timeline, narrative.timelines)">add new timeline</button>
+									</div>
+								</div>
 
-						<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 5px">
-							<div ng-show="!!showLine">
-							<!--+<hr>-->
-								<button ng-click="addTmpTimeline(timeline, narrative.timelines)">add new timeline</button>
 							</div>
 						</div>
 					</div>

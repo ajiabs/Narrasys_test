@@ -10,33 +10,33 @@
 
 	function ittEditPencil() {
 	    return {
-	        restrict: 'A',
+	        restrict: 'EA',
+			transclude: true,
 			scope: {
 				canAccess: '=',
 				onEdit: '&'
 			},
+			template: [
+				'<div class="pencil__wrapper">',
+				'	<div class="wrapped" ng-transclude></div>',
+				'	<i class="edit-pencil" ng-click="onEdit()" ng-if="showPencil"></i>',
+				'</div>'
+			].join(' '),
 			link: function(scope, elm) {
+				scope.showPencil = false;
 				if (scope.canAccess === true) {
 					elm.mouseenter(function() {
-						elm.addClass('edit-pencil');
+						scope.$apply(function() {
+							scope.showPencil = true;
+						});
 					});
 
 					elm.mouseleave(function() {
-						elm.removeClass('edit-pencil');
-					});
-
-					//idomatic angular would say use ng-click, however this
-					//directive does not have a template, so there is no
-					//markup to append an ng-click attribute to...
-					//binding to click event doesn't kick off a digest (like ng-click does)
-					//we'll need to tell angular that a click happened,
-					//thus we use $apply to let ng know clicks are happening.
-					elm[0].addEventListener('click', function() {
-						scope.$apply(scope.onEdit);
+						scope.$apply(function() {
+							scope.showPencil = false;
+						});
 					});
 				}
-
-
 			}
 	    };
 	}

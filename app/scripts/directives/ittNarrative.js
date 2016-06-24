@@ -81,6 +81,38 @@ function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 
 	onInit();
 
+	function _updateSortOrder(destIndex, arr) {
+		var len = arr.length;
+		var sortIndex = 0;
+		if (destIndex > 0) {
+
+			console.log('destIndex', destIndex, 'len', len);
+			if (destIndex === len - 1) {
+				sortIndex = arr[destIndex - 1].sort_order + 100;
+			} else {
+				sortIndex = ittUtils.bitwiseCeil((arr[destIndex - 1].sort_order + arr[destIndex + 1].sort_order ) / 2);
+			}
+
+		}
+		var prevSortIndex = sortIndex;
+		arr[destIndex].sort_order = sortIndex;
+		destIndex++;
+		sortIndex++;
+		for (; destIndex < len; destIndex++) {
+			if (prevSortIndex >= arr[destIndex].sort_order) {
+				arr[destIndex].sort_order = sortIndex;
+			}
+			prevSortIndex = sortIndex;
+			sortIndex++;
+		}
+	}
+
+	function _persistTimelineSortUpdate(timeline) {
+		dataSvc.storeTimeline($scope.narrative._id, timeline).then(function(resp) {
+			angular.extend(timeline, resp);
+		});
+	}
+
 	//set up scope and bindings
 	function onInit() {
 		$scope.loading = true;
@@ -276,37 +308,6 @@ function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		dataSvc.storeTimeline($scope.narrative._id, newTimeline).then(function(resp) {
 			angular.extend(oldTimeline, resp);
 			doneEditingTimeline();
-		});
-	}
-
-	function _updateSortOrder(destIndex, arr) {
-		var len = arr.length;
-		var sortIndex = 0;
-		if (destIndex > 0) {
-
-			if (destIndex === len - 1) {
-				sortIndex = arr[destIndex - 1].sort_order + 100;
-			} else {
-				sortIndex = ittUtils.bitwiseCeil((arr[destIndex - 1].sort_order + arr[destIndex + 1].sort_order ) / 2);
-			}
-
-		}
-		var prevSortIndex = sortIndex;
-		arr[destIndex].sort_order = sortIndex;
-		destIndex++;
-		sortIndex++;
-		for (; destIndex < len; destIndex++) {
-			if (prevSortIndex >= arr[destIndex].sort_order) {
-				arr[destIndex].sort_order = sortIndex;
-			}
-			prevSortIndex = sortIndex;
-			sortIndex++;
-		}
-	}
-
-	function _persistTimelineSortUpdate(timeline) {
-		dataSvc.storeTimeline($scope.narrative._id, timeline).then(function(resp) {
-			angular.extend(timeline, resp);
 		});
 	}
 }

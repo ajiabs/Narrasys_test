@@ -393,11 +393,25 @@ input[readonly] {
 	font-size: 1.2em;
 }
 
+
+.pencil__wrapper {
+	display: flex;
+}
+
+.pencil__wrapper > .wrapped {
+	/*border: 1px solid black;*/
+}
+
 .edit-pencil {
-	/*background-color: #fff;*/
-	/*color: #FFF;*/
-	/*border: 2px solid #555;*/
-	/*border-radius: 2.5em;*/
+	position: absolute;
+	border: 2px solid #555;
+	border-radius: 2.5em;
+	width: 2em;
+	height: 2em;
+	padding: 4px 5px;
+	cursor: pointer;
+	margin-top: 6px;
+	margin-left: 5px;
 }
 
 .edit-pencil:before {
