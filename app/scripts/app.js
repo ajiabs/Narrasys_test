@@ -36,9 +36,15 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			controller: 'NarrativesCtrl',
 			resolve: {
 				narrativesResolve: function($route, $q,  ittUtils, authSvc, dataSvc, modelSvc) {
+
 					var cachedNars = modelSvc.narratives;
 					var cachedCustomers;
-					var isCached = Object.keys(cachedNars).length > 0;
+					//if use visits /story/:id prior to visiting this route, they will have a single
+					//narrative in modelSvc. We consider the cache 'empty' if the only narrative
+					//in it came from loading data for /story/:id. Otherwise when they visit
+					// /stories, the only listing they would see would be the narrative from
+					// /stories/:id. 
+					var isCached = Object.keys(cachedNars).length > 1;
 
 					if (isCached) {
 						cachedCustomers = modelSvc.customers;

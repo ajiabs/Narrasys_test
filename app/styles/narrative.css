@@ -142,7 +142,7 @@
 	padding: 10px;
 }
 
-.narrative__invalid {
+.invalid__field {
 	color: red;
 }
 
