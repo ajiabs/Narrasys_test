@@ -42,7 +42,7 @@ function ittNarrative() {
 	};
 }
 
-function ittNarrativeCtrl($scope, $location, $q, authSvc, appState, dataSvc, ittUtils, modelSvc) {
+function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 
 	var treeOpts = {
 		accept: function(/*sourceNodeScope, destNodesScope, destIndex*/) {
@@ -201,30 +201,7 @@ function ittNarrativeCtrl($scope, $location, $q, authSvc, appState, dataSvc, itt
 		//to open episode select modal
 		toggleEpisodeList();
 	}
-	function _updateSortOrder(destIndex, arr) {
-		var len = arr.length;
-		var sortIndex = 0;
-		if (destIndex > 0) {
 
-			if (destIndex === len - 1) {
-				sortIndex = arr[destIndex - 1].sort_order + 100;
-			} else {
-				sortIndex = ittUtils.bitwiseCeil((arr[destIndex - 1].sort_order + arr[destIndex + 1].sort_order ) / 2);
-			}
-
-		}
-		var prevSortIndex = sortIndex;
-		arr[destIndex].sort_order = sortIndex;
-		destIndex++;
-		sortIndex++;
-		for (; destIndex < len; destIndex++) {
-			if (prevSortIndex >= arr[destIndex].sort_order) {
-				arr[destIndex].sort_order = sortIndex;
-			}
-			prevSortIndex = sortIndex;
-			sortIndex++;
-		}
-	}
 	function onEpisodeSelect(epId) {
 		//if tmpTimeline is not set, assume
 		// this is the first timeline to create;
@@ -302,7 +279,32 @@ function ittNarrativeCtrl($scope, $location, $q, authSvc, appState, dataSvc, itt
 			doneEditingTimeline();
 		});
 	}
-	
+
+	function _updateSortOrder(destIndex, arr) {
+		var len = arr.length;
+		var sortIndex = 0;
+		if (destIndex > 0) {
+
+			if (destIndex === len - 1) {
+				sortIndex = arr[destIndex - 1].sort_order + 100;
+			} else {
+				sortIndex = ittUtils.bitwiseCeil((arr[destIndex - 1].sort_order + arr[destIndex + 1].sort_order ) / 2);
+			}
+
+		}
+		var prevSortIndex = sortIndex;
+		arr[destIndex].sort_order = sortIndex;
+		destIndex++;
+		sortIndex++;
+		for (; destIndex < len; destIndex++) {
+			if (prevSortIndex >= arr[destIndex].sort_order) {
+				arr[destIndex].sort_order = sortIndex;
+			}
+			prevSortIndex = sortIndex;
+			sortIndex++;
+		}
+	}
+
 	function _persistTimelineSortUpdate(timeline) {
 		dataSvc.storeTimeline($scope.narrative._id, timeline).then(function(resp) {
 			angular.extend(timeline, resp);
