@@ -36,12 +36,13 @@ function ittNarrative() {
 		controller: 'ittNarrativeCtrl',
 		controllerAs: 'ittNarrative',
 		scope: {
-			narrativeData: '='
+			narrativeData: '=',
+			customerData: '='
 		}
 	};
 }
 
-function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtils) {
+function ittNarrativeCtrl($scope, $location, $q, authSvc, appState, dataSvc, ittUtils, modelSvc) {
 
 	var treeOpts = {
 		accept: function(/*sourceNodeScope, destNodesScope, destIndex*/) {
@@ -87,10 +88,15 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 		$scope.logout = authSvc.logout;
 		$scope.isOwner = false;
 		$scope.narrative = $scope.narrativeData;
-		doAfterAuthentication();
+		$scope.customers = $scope.customerData;
+		$scope.user = appState.user;
+		if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
+			$scope.canAccess = true;
+		}
 		$scope.loading = false;
 		_setTotalNarrativeDuration($scope.narrative.timelines);
 	}
+
 
 	function toggleEditing() {
 		$scope.isEditing = !$scope.isEditing;
@@ -116,17 +122,6 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 			return tl !== $scope.tmpTimeline;
 		});
 		$scope.tmpTimeline = null;
-	}
-
-	function doAfterAuthentication() {
-		$scope.userHasRole = authSvc.userHasRole;
-		$scope.user = appState.user;
-		if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
-			$scope.canAccess = true;
-			dataSvc.getCustomerList().then(function (data) {
-				$scope.customerList = data;
-			});
-		}
 	}
 
 	function editorAction(newTl, currTl) {
@@ -183,7 +178,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 				currSortOrder += 100;
 			} else {
 				nextTlSortOrder = timelines[currIndex + 1].sort_order;
-				currSortOrder = Math.ceil((nextTlSortOrder + currSortOrder) / 2);
+				currSortOrder = ittUtils.bitwiseCeil((nextTlSortOrder + currSortOrder) / 2);
 			}
 
 		}
@@ -214,7 +209,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 			if (destIndex === len - 1) {
 				sortIndex = arr[destIndex - 1].sort_order + 100;
 			} else {
-				sortIndex = Math.ceil((arr[destIndex - 1].sort_order + arr[destIndex + 1].sort_order ) / 2);
+				sortIndex = ittUtils.bitwiseCeil((arr[destIndex - 1].sort_order + arr[destIndex + 1].sort_order ) / 2);
 			}
 
 		}
@@ -307,35 +302,7 @@ function ittNarrativeCtrl($scope, $location, authSvc, appState, dataSvc, ittUtil
 			doneEditingTimeline();
 		});
 	}
-
-	function createNarrative() {
-		// get the current user's id
-		// create a group
-
-		// create a narrative with that group
-		// add the user to the group
-		// redirect
-		authSvc.authenticate().then(function () {
-
-			// dataSvc.createUserGroup({
-			// 	en: "All users"
-			// }).then(function (groupData) {
-			// 	$scope.narrative.everyone_group_id = groupData._id;
-			// 	$scope.narrative.sub_groups_id = [];
-
-			dataSvc.createNarrative(
-				$scope.narrative
-			).then(function (narrativeData) {
-
-				$location.path('/story/' + narrativeData._id);
-			});
-
-			// });
-		});
-	}
-
-
-
+	
 	function _persistTimelineSortUpdate(timeline) {
 		dataSvc.storeTimeline($scope.narrative._id, timeline).then(function(resp) {
 			angular.extend(timeline, resp);

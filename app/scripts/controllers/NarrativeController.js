@@ -9,7 +9,8 @@
 		.controller('NarrativeCtrl', NarrativeCtrl);
 
 	function NarrativeCtrl($scope, narrativeResolve) {
-		$scope.narrativeResolve = narrativeResolve;
+		$scope.narrativeResolve = narrativeResolve.n;
+		$scope.customersResolve = narrativeResolve.c;
 	}
 
 })();

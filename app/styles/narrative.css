@@ -136,6 +136,16 @@
 	content: '\f047';
 }
 
+.narrative__modal {
+	background-color: #fff;
+	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
+	padding: 10px;
+}
+
+.narrative__invalid {
+	color: red;
+}
+
 /*.narrative__edit.ng-hide-add, .narrative__edit.ng-hide-remove {*/
 	/*transition: all 0.5s ease-in-out;*/
 	/*transform: translateZ(0);*/

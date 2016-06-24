@@ -250,7 +250,7 @@ angular.module('com.inthetelling.story')
 				'narrative_id',
 				'_id'
 			];
-			var timeline = ittUtils.permittedFields(origTimeline, permitted);
+			var timeline = ittUtils.pick(origTimeline, permitted);
 
 			if (timeline._id) {
 				return PUT("/v3/timelines/" + timeline._id, timeline, function (ret) {

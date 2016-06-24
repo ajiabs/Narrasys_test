@@ -13,7 +13,8 @@
 		.controller('NarrativesCtrl', NarrativesCtrl);
 
 	function NarrativesCtrl($scope, narrativesResolve) {
-		$scope.narrativesResolve = narrativesResolve;
+		$scope.narrativesResolve = narrativesResolve.n;
+		$scope.customersResolve = narrativesResolve.c;
 	}
 
 

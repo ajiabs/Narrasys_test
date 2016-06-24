@@ -1,19 +1,32 @@
 <div class="">
 
 	<div class="ancillaryNav">
-		<a class="button" ng-if="user._id" href="/#/user">Home</a>
-		<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
+		<a class="button" ng-if="narrativeList.user._id" href="/#/user">Home</a>
+		<a class="button" ng-if="narrativeList.user._id" ng-click="narrativeList.logout()">Sign out</a>
 	</div>
 
-	<div ng-if="userHasRole('admin') || userHasRole('customer admin')">
-		<div ng-repeat="narrative in narratives">
-			<a href="/#/story/{{narrative._id}}">{{narrative.name.en}}</a>
+	<div ng-if="narrativeList.canAccess">
+		<button ng-click="narrativeList.toggleSelectNarrative()">Add Narrative</button>
 
+		<itt-modal modal-class="narrative__modal" ng-if="narrativeList.narrativeSelect">
+			<h3>Add Narrative</h3>
+
+			<itt-narrative-editor
+				customers="narrativeList.customers"
+				on-done="narrativeList.toggleSelectNarrative()"
+				on-update="narrativeList.addNarrative(n)">
+			</itt-narrative-editor>
+
+		</itt-modal>
+
+
+		<div ng-repeat="narrative in narrativeList.narratives">
+			<a href="/#/story/{{narrative._id}}">{{narrative.name.en}}</a>
 		</div>
-		<span ng-if="showAddNarrative">
-			<hr>
-			<a href="/#/story/?admin">Create new narrative</a>
-		</span>
+		<!--<span ng-if="showAddNarrative">-->
+			<!--<hr>-->
+			<!--<a href="/#/story/?admin">Create new narrative</a>-->
+		<!--</span>-->
 	</div>
 
 </div>

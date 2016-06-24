@@ -25,9 +25,9 @@
 	 * </pre>
 	 */
 	angular.module('com.inthetelling.story')
-		.directive('ittValidateUrl', ittValidateUrl);
+		.directive('ittValidItemUrl', ittValidItemUrl);
 
-	function ittValidateUrl($q, errorSvc, youtubeSvc, ittUtils, dataSvc) {
+	function ittValidItemUrl($q, errorSvc, youtubeSvc, ittUtils, dataSvc) {
 		return {
 			require: '?ngModel',
 			scope: {

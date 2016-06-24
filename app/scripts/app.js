@@ -32,96 +32,59 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		})
 		.when('/stories', {
 			title: "Existing narratives",
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list narratives-data="narrativesResolve"></div></div>',
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div></div>',
 			controller: 'NarrativesCtrl',
 			resolve: {
-				narrativesResolve: function(authSvc, dataSvc, modelSvc) {
+				narrativesResolve: function($route, $q,  ittUtils, authSvc, dataSvc, modelSvc) {
+					var cachedNars = modelSvc.narratives;
+					var cachedCustomers;
+					var isCached = Object.keys(cachedNars).length > 0;
+
+					if (isCached) {
+						cachedCustomers = modelSvc.customers;
+						return $q(function(resolve) {
+							return resolve({n: cachedNars, c: cachedCustomers});
+						});
+					}
 					return authSvc.authenticate().then(function() {
-						return dataSvc.getCustomerList().then(function() {
+						return dataSvc.getCustomerList().then(function(customers) {
 							return dataSvc.getNarrativeList().then(function(narratives) {
 								angular.forEach(narratives, function(n) {
 									n.subDomain = modelSvc.customers[n.customer_id].domains[0];
 									modelSvc.cache('narrative', n);
 								});
-								return narratives;
+								return {n: narratives, c: customers};
 							});
 						});
 					});
 				}
 			}
 		})
-		//if we are on /story, we should really be on /stores/:id where id is narrative id or path.
-		// .when('/story', {
-		// 	template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve"></div></div>',
-		// 	controller: 'NarrativeCtrl',
-		// 	resolve: {
-		// 		narrativeResolve: function($route, $q, dataSvc, modelSvc, ittUtils) {
-		// 			var pathOrId = $route.current.params.narrativePath;
-		// 			//this only pulls from the cache.
-		// 			var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
-        //
-		// 			var doPullFromCache = ittUtils.existy(cachedNarr) &&
-		// 				ittUtils.existy(cachedNarr.path_slug) &&
-		// 				cachedNarr.path_slug.en === pathOrId;
-        //
-		// 			if (doPullFromCache) {
-		// 				console.log('cache hit!');
-		// 				return $q(function(resolve) {resolve(cachedNarr)});
-		// 			}
-		// 			return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
-		// 				return narrativeData;
-		// 			})
-		// 		}
-		// 	}
-		// })
 		.when('/story/:narrativePath', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve"></div></div>',
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve" customer-data="customersResolve"></div></div>',
 			controller: 'NarrativeCtrl',
 			resolve: {
-				narrativeResolve: function($route, $q, dataSvc, modelSvc, ittUtils) {
+				narrativeResolve: function($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
 					var pathOrId = $route.current.params.narrativePath;
 					//this only pulls from the cache.
 					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
 
 					var doPullFromCache = ittUtils.existy(cachedNarr) &&
 						ittUtils.existy(cachedNarr.path_slug) &&
-						cachedNarr.path_slug.en === pathOrId;
+						ittUtils.existy(cachedNarr.timelines) &&
+						(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
 
 					if (doPullFromCache) {
-						cachedNarr.templateUrl = 'templates/narrative/default.html';
-						return $q(function(resolve) {resolve(cachedNarr);});
+						return $q(function(resolve) {return resolve({n:cachedNarr, c: [modelSvc.customers[cachedNarr.customer_id]] });});
 					}
-					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
-						narrativeData.templateUrl = 'templates/narrative/default.html';
-						return narrativeData;
+					return authSvc.authenticate().then(function() {
+						return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
+							return dataSvc.getCustomerList().then(function(customers) {
+								return {n: narrativeData, c: customers};
+							});
+						});
 					});
-				}
-			}
-		})
-		//leaving this here for now, but will probably get rid of this all together
-		//and drive editing from the /story/:id route
-		.when('/story/:narrativePath/edit', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve"></div></div>',
-			controller: 'NarrativeCtrl',
-			resolve: {
-				narrativeResolve: function($route, $q, dataSvc, modelSvc, ittUtils) {
-					var pathOrId = $route.current.params.narrativePath;
-					//this only pulls from the cache.
-					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
 
-					var doPullFromCache = ittUtils.existy(cachedNarr) &&
-						ittUtils.existy(cachedNarr.path_slug) &&
-						cachedNarr.path_slug.en === pathOrId;
-
-					if (doPullFromCache) {
-						console.log('cache hit!');
-						cachedNarr.templateUrl = 'templates/narrative/edit.html';
-						return $q(function(resolve) {resolve(cachedNarr);});
-					}
-					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
-						narrativeData.templateUrl = 'templates/narrative/edit.html';
-						return narrativeData;
-					});
 				}
 			}
 		})
