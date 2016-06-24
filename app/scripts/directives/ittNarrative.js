@@ -65,7 +65,6 @@ function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		doneEditingTimeline: doneEditingTimeline,
 		toggleOwnership: toggleOwnership,
 		toggleEpisodeList: toggleEpisodeList,
-		createNarrative: createNarrative,
 		updateNarrative: updateNarrative,
 		updateTimeline: updateTimeline,
 		addTmpTimeline: addTmpTimeline,
