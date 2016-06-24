@@ -21,9 +21,9 @@
 		bitwiseCeil: bitwiseCeil
 	};
 
-	//using bitwise operators up to 20% faster than Math.ceil
+	//using bitwise operators up to 20% faster than Math.ceil (js hint not a fan of bitwise operators)
 	function bitwiseCeil(n) {
-		return n + (n < 0 ? 0 : 1) >> 0
+		return n + (n < 0 ? 0 : 1) >> 0; // jshint ignore:line
 	}
 
 	function pick(obj, arr) {

@@ -13,7 +13,7 @@
 			link: function(scope, elm, attr, ngModel) {
 				if (ngModel) {
 					ngModel.$validators.supportUrl = function(modelVal) {
-						return ngModel.$isEmpty(modelVal) || ittUtils.isValidURL(modelVal)
+						return ngModel.$isEmpty(modelVal) || ittUtils.isValidURL(modelVal);
 					};
 				}
 			}

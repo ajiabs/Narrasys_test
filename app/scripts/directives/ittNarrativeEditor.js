@@ -55,7 +55,7 @@
 				_onInit();
 
 				function _onInit() {
-					setCustomer()
+					setCustomer();
 				}
 
 				function handleUpdate(n) {
