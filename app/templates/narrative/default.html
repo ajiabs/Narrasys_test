@@ -62,12 +62,13 @@
 						</itt-timeline-editor>
 
 
-						<div ng-mouseenter="showDrag = true" ng-mouseleave="showDrag = false">
+						<div ng-mouseenter="showDrag = true"
+							 ng-mouseleave="showDrag = false"
+							 ng-class="{'timeline--hidden': timeline.hidden}">
 							<span ng-show="canAccess && showDrag" class="tlDrag__handle" ui-tree-handle>
 								<i class="fa fa-th"></i>
 							</span>
 							<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
-								 ng-class="{'timeline--hidden': timeline.hidden}"
 								 class="tl__wrapper">
 								<i ng-if="timeline.hidden" class="fa fa-eye-slash timeline__hidden-eye"></i>
 								<itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">

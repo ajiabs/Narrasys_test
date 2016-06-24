@@ -86,7 +86,6 @@ function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		var sortIndex = 0;
 		if (destIndex > 0) {
 
-			console.log('destIndex', destIndex, 'len', len);
 			if (destIndex === len - 1) {
 				sortIndex = arr[destIndex - 1].sort_order + 100;
 			} else {
