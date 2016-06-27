@@ -28,7 +28,7 @@
 			<!--
  		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
  -->
-				<button ng-if="canAccess" ng-click="addTmpTimeline(null, narrative.timelines)">add timeline</button>
+				<button ng-if="canAccess" ng-disabled="timelineUnderEdit || tmpTimeline" ng-click="addTmpTimeline(null, narrative.timelines)">add timeline</button>
 
 
 			<itt-modal ng-if="showEpisodeList">
