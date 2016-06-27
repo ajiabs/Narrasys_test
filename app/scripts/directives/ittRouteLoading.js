@@ -26,15 +26,18 @@
 				ctrl.isLoading = false;
 				var threshold;
 
-				//only show timer if loading time is longer than 500ms
 				$rootScope.$on('$routeChangeStart', function() {
 					threshold = $timeout(function() {
 						ctrl.isLoading = true;
 					}, 500);
-
 				});
 
 				$rootScope.$on('$routeChangeSuccess', function() {
+					$timeout.cancel(threshold);
+					ctrl.isLoading = false;
+				});
+
+				$rootScope.$on('$routeChangeError', function() {
 					$timeout.cancel(threshold);
 					ctrl.isLoading = false;
 				});
