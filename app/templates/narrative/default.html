@@ -70,9 +70,11 @@
 							</span>
 							<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
 								 class="tl__wrapper">
-								<i ng-if="timeline.hidden" class="fa fa-eye-slash timeline__hidden-eye"></i>
+
 								<itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
+
 									<h3>
+										<i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
 										<a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
 									</h3>
 								</itt-edit-pencil>

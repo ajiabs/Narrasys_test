@@ -154,15 +154,6 @@
 
 .timeline--hidden {
 	opacity: 0.5;
-	border: 1px dashed black;
-	/*background-color: grey;*/
-}
-
-.timeline__hidden-eye {
-	font-size: 48px !important;
-	position: absolute;
-	right: 50%;
-	top: 20%;
 }
 
 
