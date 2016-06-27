@@ -16,7 +16,7 @@
 				'	<form name="nEditForm">',
 				'		<div ng-hide="nEditor._customers.length === 1">',
 				'			<label for="nCustomer">Customer</label><span ng-if="nEditForm.customer.$invalid" class="invalid__field"> Required</span>',
-				'			<select id="nCustomer" name="customer" required ng-model="nEditor.selectedCustomer" ng-change="nEditor.selectCustomer(nEditor.selectedCustomer)" ng-options="cust.name for cust in nEditor._customers"></select></br>',
+				'			<select id="nCustomer" name="customer" required ng-model="nEditor.selectedCustomer" ng-change="nEditor.selectCustomer(nEditor.selectedCustomer)" ng-options="cust.name for cust in nEditor._customers track by cust._id"></select></br>',
 				'		</div>',
 				'		<label id="nName">Name of Narrative</label><span ng-if="nEditForm.name.$invalid" class="invalid__field"> Required</span>',
 				'		<input for="nName" type="text" name="name" placeholder="Add Narrative Name" ng-model="nEditor._narrative.name.en" required>',
@@ -95,10 +95,8 @@
 								return ctrl._narrative.customer_id === c._id;
 							})[0];
 
-							console.log('hmm', ctrl.selectedCustomer);
 						} else {
-							// console.log('we haz no narr!');
-							// ctrl.selectedCustomer = [{_id: 'blah', name: 'Select a Customer'}];
+							ctrl._customers.unshift({ name: 'Select a Customer' });
 						}
 
 					}
