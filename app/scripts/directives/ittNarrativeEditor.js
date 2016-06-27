@@ -58,7 +58,6 @@
 				_onInit();
 
 				function _onInit() {
-					console.log('customers!', ctrl._customers);
 					setCustomer();
 				}
 				//set selected customer on-change of dropdown select
@@ -84,8 +83,7 @@
 						'_id'
 					];
 					var narrative = ittUtils.pick(n, fields);
-					console.log('n', narrative);
-					// ctrl.onUpdate({n: narrative});
+					ctrl.onUpdate({n: narrative});
 				}
 
 				function setCustomer() {
