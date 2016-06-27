@@ -70,7 +70,8 @@
 						'path_slug',
 						'support_url',
 						'disable_navigation',
-						'disable_new_window'
+						'disable_new_window',
+						'_id'
 					];
 					var narrative = ittUtils.pick(n, fields);
 					ctrl.onUpdate({n: narrative});
