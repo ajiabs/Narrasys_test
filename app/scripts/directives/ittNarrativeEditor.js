@@ -15,8 +15,8 @@
 				'<div class="narrative__edit">',
 				'	<form name="nEditForm">',
 				'		<div ng-hide="nEditor._customers.length === 1">',
-				'			<label for="nCustomer">Customer</label>',
-				'			<select id="nCustomer" ng-model="nEditor._narrative.customer._id" ng-options="cust._id as cust.name for cust in nEditor._customers"></select></br>',
+				'			<label for="nCustomer">Customer</label><span ng-if="nEditForm.customer.$invalid" class="invalid__field"> Required</span>',
+				'			<select id="nCustomer" name="customer" required ng-model="nEditor.selectedCustomer" ng-change="nEditor.selectCustomer(nEditor.selectedCustomer)" ng-options="cust.name for cust in nEditor._customers"></select></br>',
 				'		</div>',
 				'		<label id="nName">Name of Narrative</label><span ng-if="nEditForm.name.$invalid" class="invalid__field"> Required</span>',
 				'		<input for="nName" type="text" name="name" placeholder="Add Narrative Name" ng-model="nEditor._narrative.name.en" required>',
@@ -45,22 +45,32 @@
 				onDone: '&',
 				onUpdate: '&'
 			},
+			controllerAs: 'nEditor',
+			bindToController: true,
 			controller: ['ittUtils', function(ittUtils) {
 				var ctrl = this;
 				//copy to dereference original narrative as we are two-way bound (one way binding available in 1.5)
 				ctrl._narrative = angular.copy(this.narrative);
 				ctrl._customers = angular.copy(this.customers);
 				ctrl.handleUpdate = handleUpdate;
+				ctrl.selectCustomer = selectCustomer;
 
 				_onInit();
 
 				function _onInit() {
+					console.log('customers!', ctrl._customers);
 					setCustomer();
+				}
+				//set selected customer on-change of dropdown select
+				function selectCustomer(cust) {
+					ctrl.selectedCustomer = cust;
 				}
 
 				function handleUpdate(n) {
-					if (ittUtils.existy(n.customer)) {
-						n.customer_id = n.customer._id;
+					//use selected customer from setCustomer() or from drop down select
+					if (ittUtils.existy(ctrl.selectedCustomer)) {
+						n.customer_id = ctrl.selectedCustomer._id;
+
 					}
 					var fields = [
 						'name',
@@ -74,31 +84,29 @@
 						'_id'
 					];
 					var narrative = ittUtils.pick(n, fields);
-					ctrl.onUpdate({n: narrative});
+					console.log('n', narrative);
+					// ctrl.onUpdate({n: narrative});
 				}
 
 				function setCustomer() {
-					//only one customer, must be a customer admin
-					//TODO handle blank in ng-select for admins
 					if (ctrl._customers.length === 1) {
-						//no narrative is passed in for create, thus we need to create
-						if (ittUtils.existy(ctrl._narrative)) {
-							ctrl._narrative.customer = ctrl._customers[0];
-						} else {
-							ctrl._narrative = {customer: ctrl._customers[0]};
-						}
+						ctrl.selectedCustomer = ctrl._customers[0];
 					} else {
 						if (ittUtils.existy(ctrl._narrative)) {
-							ctrl._narrative.customer = ctrl._customers.filter(function(c) {
+							ctrl.selectedCustomer = ctrl._customers.filter(function(c) {
 								return ctrl._narrative.customer_id === c._id;
 							})[0];
+
+							console.log('hmm', ctrl.selectedCustomer);
+						} else {
+							// console.log('we haz no narr!');
+							// ctrl.selectedCustomer = [{_id: 'blah', name: 'Select a Customer'}];
 						}
+
 					}
 				}
-			}],
-			controllerAs: 'nEditor',
-			bindToController: true
-	    };
+			}]
+		};
 	}
 
 

@@ -13,7 +13,6 @@
 	        restrict: 'EA',
 			template: [
 				'<div class="narrative__edit">',
-				'	<h3>Sort Order: <small>{{tEditor._timeline.sort_order}}</small></h3>',
 				'	<form name="tlEditForm">',
 				'		<label for="tlName">Name</label><span ng-if="tlEditForm.name.$invalid" class="invalid__field"> Required</span>',
 				'		<input type="text" name="name" ng-model="tEditor._timeline.name.en" id="tlName" required>',

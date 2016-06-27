@@ -43,11 +43,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 					//narrative in modelSvc. We consider the cache 'empty' if the only narrative
 					//in it came from loading data for /story/:id. Otherwise when they visit
 					// /stories, the only listing they would see would be the narrative from
-					// /stories/:id. 
+					// /stories/:id.
 					var isCached = Object.keys(cachedNars).length > 1;
 
 					if (isCached) {
-						cachedCustomers = modelSvc.customers;
+						//since this is going to be displayed in a dropdown, it needs to be an array of objects.
+						cachedCustomers = Object.keys(modelSvc.customers).map(function(c) { return modelSvc.customers[c]; });
 						return $q(function(resolve) {
 							return resolve({n: cachedNars, c: cachedCustomers});
 						});
