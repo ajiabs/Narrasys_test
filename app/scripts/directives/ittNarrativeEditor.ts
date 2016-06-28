@@ -3,6 +3,7 @@
  */
 
 export default function ittNarrativeEditor() {
+	'ngInject';
 	return {
 		restrict: 'EA',
 		template: [

@@ -7,6 +7,7 @@
  */
 
 export default function NarrativesCtrl($scope, narrativesResolve) {
+	'ngInject';
 	$scope.narrativesResolve = narrativesResolve.n;
 	$scope.customersResolve = narrativesResolve.c;
 }

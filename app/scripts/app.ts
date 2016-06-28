@@ -51,7 +51,7 @@ let ittApp = angular.module('iTT', [
 			controller: 'NarrativesCtrl',
 			resolve: {
 				narrativesResolve: function($route, $q,  ittUtils, authSvc, dataSvc, modelSvc) {
-
+					'ngInject';
 					var cachedNars = modelSvc.narratives;
 					var cachedCustomers;
 					//if use visits /story/:id prior to visiting this route, they will have a single
@@ -88,6 +88,7 @@ let ittApp = angular.module('iTT', [
 			controller: 'NarrativeCtrl',
 			resolve: {
 				narrativeResolve: function($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
+					'ngInject';
 					var pathOrId = $route.current.params.narrativePath;
 					//this only pulls from the cache.
 					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);

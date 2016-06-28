@@ -28,6 +28,7 @@
  * @requires questionAnswersSvc
  */
 export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	'ngInject';
 	var svc = {};
 
 	/* ------------------------------------------------------------------------------ */

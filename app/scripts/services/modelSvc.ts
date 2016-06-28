@@ -3,7 +3,7 @@ const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 export default function modelSvc($interval, $filter, $location, ittUtils, config, appState, youtubeSvc) {
-
+	'ngInject';
 	var svc = {};
 
 	svc.episodes = {};

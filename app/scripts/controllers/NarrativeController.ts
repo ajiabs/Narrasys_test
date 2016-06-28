@@ -3,6 +3,7 @@
  */
 
 export default function NarrativeCtrl($scope, narrativeResolve) {
+	'ngInject';
 	$scope.narrativeResolve = narrativeResolve.n;
 	$scope.customersResolve = narrativeResolve.c;
 }
