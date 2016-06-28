@@ -76,6 +76,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 					var pathOrId = $route.current.params.narrativePath;
 					//this only pulls from the cache.
 					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+					var cachedCustomers;
 
 					var doPullFromCache = ittUtils.existy(cachedNarr) &&
 						ittUtils.existy(cachedNarr.path_slug) &&
@@ -83,7 +84,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 						(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
 
 					if (doPullFromCache) {
-						return $q(function(resolve) {return resolve({n:cachedNarr, c: [modelSvc.customers[cachedNarr.customer_id]] });});
+						cachedCustomers = Object.keys(modelSvc.customers).map(function(c) { return modelSvc.customers[c]; });
+						return $q(function(resolve) {return resolve({n:cachedNarr, c: cachedCustomers });});
 					}
 					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
 						return dataSvc.getCustomerList().then(function(customers) {
@@ -186,7 +188,6 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
 		errorSvc.init(); // clear display of any errors from the previous route
 	});
-
 	// globally emit rootscope event for certain keypresses:
 	var fhotkb = false; // user's forehead is not on the keyboard
 	$(document).on("keydown", function (e) {

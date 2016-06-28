@@ -47,8 +47,7 @@
 
 
 			<div ui-tree="treeOpts" ng-if="narrative.timelines.length !== 0">
-				<div ui-tree-nodes="" ng-model="narrative.timelines">
-
+				<div ui-tree-nodes ng-model="narrative.timelines">
 					<!--note: do not use track by on ng-repeats with ui-tree-->
 					<div class="storyTimeline" ui-tree-node
 						 ng-repeat="timeline in narrative.timelines">
