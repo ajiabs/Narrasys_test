@@ -609,12 +609,36 @@
 @media screen and (min-width: 700px) {
 	.episode-wiley {
 		font-size: 105%;
+
+		.searchMode {
+			.searchResults {
+				margin: 0;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 750px) {
+	.episode-wiley {
+		font-size: 105%;
+
+		.searchMode {
+			.searchResults {
+				margin-right: 315px;
+			}
+		}
 	}
 }
 
 @media screen and (min-width: 900px) {
 	.episode-wiley {
 		font-size: 110%;
+
+		.searchMode {
+			.searchResults {
+				margin-right: 315px;
+			}
+		}
 	}
 }
 

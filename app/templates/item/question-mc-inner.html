@@ -29,7 +29,7 @@
 		<br>
 		<div ng-if="plugin.hasBeenAnswered">
 			<p ng-if="plugin.selectedDistractor">Here's how others answered this question. (Your choice was:
-				<b ng-repeat="distractor in plugin.distractors | filter:{ index: plugin.selectedDistractor }" ng-bind-html="distractor.text | i18n"></b>.)
+				<b ng-repeat="distractor in plugin.distractors | filter:{ index: plugin.selectedDistractor }" ng-bind-html="distractor.text | i18n"></b>)
 			</p>
 
 			<itt-flotr2-chart type="{{chartType}}" title="" data="{{chartData}}" options="{{chartOptions}}"></itt-flotr2-chart>

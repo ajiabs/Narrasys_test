@@ -93,6 +93,29 @@
   position: absolute;
 }
 
+.admin, .episodePicker {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	background: none repeat scroll 0 0 #fff;
+	border: 1px solid;
+	box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+	padding: 1em;
+	position: absolute;
+	overflow: auto;
+}
+
+.itt__modal {
+	max-height: calc(100% - 100px);
+	position: fixed;
+	width: 85%;
+	height: 85%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+}
+
 .container.customer {
   margin-left: 0;
 }

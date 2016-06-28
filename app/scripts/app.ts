@@ -1,4 +1,4 @@
-/// <reference path="../../typings/main.d.ts" />
+'use strict';
 
 import './plugin/newrelic';
 import '../config';
@@ -20,6 +20,7 @@ let ittApp = angular.module('iTT', [
 	'ngRoute',
 	'ngAnimate',
 	'ngSanitize',
+	'ui.tree',
 	'iTT.configs',
 	'iTT.filters',
 	'iTT.templates',
@@ -45,13 +46,66 @@ let ittApp = angular.module('iTT', [
 		})
 		.when('/stories', {
 			title: "Existing narratives",
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list></div></div>'
-		})
-		.when('/story', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div></div>',
+			controller: 'NarrativesCtrl',
+			resolve: {
+				narrativesResolve: function($route, $q,  ittUtils, authSvc, dataSvc, modelSvc) {
+
+					var cachedNars = modelSvc.narratives;
+					var cachedCustomers;
+					//if use visits /story/:id prior to visiting this route, they will have a single
+					//narrative in modelSvc. We consider the cache 'empty' if the only narrative
+					//in it came from loading data for /story/:id. Otherwise when they visit
+					// /stories, the only listing they would see would be the narrative from
+					// /stories/:id.
+					var isCached = Object.keys(cachedNars).length > 1;
+
+					if (isCached) {
+						//since this is going to be displayed in a dropdown, it needs to be an array of objects.
+						cachedCustomers = Object.keys(modelSvc.customers).map(function(c) { return modelSvc.customers[c]; });
+						return $q(function(resolve) {
+							return resolve({n: cachedNars, c: cachedCustomers});
+						});
+					}
+
+					return authSvc.authenticate().then(function() {
+						return dataSvc.getCustomerList().then(function(customers) {
+							return dataSvc.getNarrativeList().then(function(narratives) {
+								angular.forEach(narratives, function(n) {
+									n.subDomain = modelSvc.customers[n.customer_id].domains[0];
+									modelSvc.cache('narrative', n);
+								});
+								return {n: narratives, c: customers};
+							});
+						});
+					});
+				}
+			}
 		})
 		.when('/story/:narrativePath', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve" customer-data="customersResolve"></div></div>',
+			controller: 'NarrativeCtrl',
+			resolve: {
+				narrativeResolve: function($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
+					var pathOrId = $route.current.params.narrativePath;
+					//this only pulls from the cache.
+					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+
+					var doPullFromCache = ittUtils.existy(cachedNarr) &&
+						ittUtils.existy(cachedNarr.path_slug) &&
+						ittUtils.existy(cachedNarr.timelines) &&
+						(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
+
+					if (doPullFromCache) {
+						return $q(function(resolve) {return resolve({n:cachedNarr, c: [modelSvc.customers[cachedNarr.customer_id]] });});
+					}
+					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
+						return dataSvc.getCustomerList().then(function(customers) {
+							return {n: narrativeData, c: customers};
+						});
+					});
+				}
+			}
 		})
 		.when('/story/:narrativePath/:timelinePath', {
 			template: '<div itt-narrative-timeline></div>',
@@ -150,7 +204,6 @@ let ittApp = angular.module('iTT', [
 	// globally emit rootscope event for certain keypresses:
 	var fhotkb = false; // user's forehead is not on the keyboard
 	$(document).on("keydown", function (e) {
-		//noinspection TypeScriptUnresolvedVariable
 		if (
 			fhotkb ||
 			document.activeElement.tagName === 'INPUT' ||
@@ -201,6 +254,35 @@ let ittApp = angular.module('iTT', [
 			}
 		};
 	});
+})
+
+// Configuration for textAngular toolbar
+.config(function ($provide) {
+	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
+		taOptions.defaultFileDropHandler = function(a, b) { }; //jshint ignore:line
+		taOptions.toolbar = [
+			['h1', 'h2', 'h3'],
+			['bold', 'italics', 'underline', 'strikeThrough'],
+			['ul', 'ol'],
+			['undo', 'redo', 'clear']
+			// ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
+			// ['justifyLeft','justifyCenter','justifyRight','indent','outdent'],
+			// ['html', 'insertImage', 'insertLink', 'insertVideo', 'wordcount', 'charcount']
+		];
+		return taOptions;
+	}]);
+})
+
+.config(function($compileProvider) {
+	var isDev = false;
+	var currentHost = window.location.hostname;
+	if (currentHost.indexOf('localhost') === 0 || currentHost.indexOf('api-dev') === 0) {
+		isDev = true;
+	}
+
+	if (isDev === false) {
+		$compileProvider.debugInfoEnabled(false);
+	}
 });
 
 export default ittApp;
