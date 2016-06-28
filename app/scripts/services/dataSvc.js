@@ -29,7 +29,7 @@
  */
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
@@ -99,11 +99,24 @@ angular.module('com.inthetelling.story')
 		svc.getNarrative = function (narrativeId) {
 			// Special case here, since it needs to call getNonce differently:
 			var defer = $q.defer();
+
+			var cachedNarrative = modelSvc.narratives[narrativeId];
+			var subdomain = ittUtils.getSubdomain($location.host());
+			var urlParams = '';
+
+			if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.subDomain) && subdomain !== cachedNarrative.subDomain) {
+				urlParams = '?customer=' + cachedNarrative.subDomain;
+			}
+
 			authSvc.authenticate("narrative=" + narrativeId).then(function () {
-				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve")
+				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve" + urlParams)
 					.then(function (response) {
-						console.log("dataSvc.getNarrative", response.data);
+
+						response.data.timelines.sort(function(a, b) {return a.sort_order - b.sort_order;});
+
+
 						modelSvc.cache("narrative", svc.resolveIDs(response.data));
+
 						defer.resolve(modelSvc.narratives[response.data._id]);
 					});
 			});
@@ -140,7 +153,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getCustomer = function (customerId) {
-			if (!authSvc.userHasRole('admin')) {
+			if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
 				return false;
 			}
 			if (modelSvc.customers[customerId]) {
@@ -225,8 +238,20 @@ angular.module('com.inthetelling.story')
 			return POST("/v3/timelines/" + narrativeId + "/episode_segments", segmentData);
 		};
 
-		svc.storeTimeline = function (narrativeId, timeline) {
-			// console.log("About to store timeline", timeline);
+		svc.storeTimeline = function (narrativeId, origTimeline) {
+
+			var permitted = [
+				'sort_order',
+				'path_slug',
+				'name',
+				'description',
+				'hidden',
+				'timeline_image_id',
+				'narrative_id',
+				'_id'
+			];
+			var timeline = ittUtils.pick(origTimeline, permitted);
+
 			if (timeline._id) {
 				return PUT("/v3/timelines/" + timeline._id, timeline, function (ret) {
 					// TEMPORARY until api stops doing this
@@ -258,6 +283,13 @@ angular.module('com.inthetelling.story')
 					return ret;
 				});
 			}
+		};
+
+		// /v3/timelines/:id
+		svc.deleteTimeline = function(tlId) {
+			return PDELETE('/v3/timelines/' + tlId).then(function(resp) {
+				return resp;
+			});
 		};
 
 		svc.getSingleAsset = function (assetId) {
@@ -497,7 +529,7 @@ angular.module('com.inthetelling.story')
 					if (ret) {
 						episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
 					}
-					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
+					if (episodeData.status === "Published" || authSvc.userHasRole("admin") || authSvc.userHasRole('customer admin')) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						getEvents(epId, segmentId)
 							.success(function (events) {
@@ -681,6 +713,15 @@ angular.module('com.inthetelling.story')
 					return defer.resolve(data);
 				});
 			return defer.promise;
+		};
+
+		var PDELETE = function(path) {
+			return $http({
+				method: 'DELETE',
+				url: config.apiDataBaseUrl + path
+			}).then(function(resp) {
+				return resp;
+			});
 		};
 
 		/*
