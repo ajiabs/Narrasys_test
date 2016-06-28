@@ -76,6 +76,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 					var pathOrId = $route.current.params.narrativePath;
 					//this only pulls from the cache.
 					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+					var cachedCustomers;
 
 					var doPullFromCache = ittUtils.existy(cachedNarr) &&
 						ittUtils.existy(cachedNarr.path_slug) &&
@@ -83,7 +84,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 						(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
 
 					if (doPullFromCache) {
-						return $q(function(resolve) {return resolve({n:cachedNarr, c: [modelSvc.customers[cachedNarr.customer_id]] });});
+						cachedCustomers = Object.keys(modelSvc.customers).map(function(c) { return modelSvc.customers[c]; });
+						return $q(function(resolve) {return resolve({n:cachedNarr, c: cachedCustomers });});
 					}
 					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
 						return dataSvc.getCustomerList().then(function(customers) {
