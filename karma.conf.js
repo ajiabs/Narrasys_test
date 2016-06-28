@@ -27,6 +27,7 @@ module.exports = function (config) {
 			'app/bower_components/textAngular/dist/textAngular-sanitize.min.js',
 			// 'app/bower_components/textAngular/dist/textAngular-rangy.min.js',
 			'app/bower_components/textAngularRangyFake.js', // the real one throws errors we don't care about.
+			'app/bower_components/angular-ui-tree/dist/angular-ui-tree.min.js',
 
 			'app/config.js',
 			'app/scripts/*.js',
