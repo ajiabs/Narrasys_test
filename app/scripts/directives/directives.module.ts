@@ -19,8 +19,8 @@ import ittLogin from './ittLogin';
 import ittMagnet from './ittMagnet';
 import ittMagnetized from './ittMagnetized';
 import ittMcQuestion from './ittMcQuestion';
-import ittNarrative from './ittNarrative';
-import ittNarrativeList from './ittNarrativeList';
+import {ittNarrative, ittNarrativeCtrl} from './ittNarrative';
+import {ittNarrativeList, NarrativeListCtrl} from './ittNarrativeList';
 import ittNarrativeTimeline from './ittNarrativeTimeline';
 import ittReviewMode from './ittReviewMode';
 import ittScene from './ittScene';
@@ -42,7 +42,13 @@ import sxsInputTime from './sxsInputTime';
 
 import {ittYoutube, ittYoutubeCtrl} from './ittYoutubeEmbed';
 import ittToolbarStory from './ittToolbarStory';
-import ittValidateUrl from './ittValidateUrl';
+import ittValidItemUrl from './ittValidItemUrl'
+import ittEditPencil from './ittEditPencil';
+import ittModal from './ittModal';
+import ittNarrativeEditor from './ittNarrativeEditor';
+import ittRouteLoading from './ittRouteLoading';
+import ittTimelineEditor from './ittTimelineEditor';
+import ittValidUrl from './ittValidUrl';
 
 let directivesModule = angular.module('iTT.directives', [])
 	.directive('autofocus', autofocus)
@@ -64,6 +70,7 @@ let directivesModule = angular.module('iTT.directives', [])
 	.directive('ittMagnetized', ittMagnetized)
 	.directive('ittMcQuestion', ittMcQuestion)
 	.directive('ittNarrative', ittNarrative)
+	.controller('ittNarrativeCtrl', ittNarrativeCtrl)
 	.directive('ittNarrativeList', ittNarrativeList)
 	.directive('ittNarrativeTimeline', ittNarrativeTimeline)
 	.directive('ittReviewMode', ittReviewMode)
@@ -86,6 +93,15 @@ let directivesModule = angular.module('iTT.directives', [])
 	.directive('ittYoutube', ittYoutube)
 	.controller('ittYoutubeCtrl', ittYoutubeCtrl)
 	.directive('ittToolbarStory', ittToolbarStory)
-	.directive('ittValidateUrl', ittValidateUrl);
+	.directive('ittEditPencil', ittEditPencil)
+	.directive('ittModal', ittModal)
+	.directive('ittNarrativeEditor', ittNarrativeEditor)
+	.directive('ittNarrativeList', ittNarrativeList)
+	.controller('NarrativeListCtrl', NarrativeListCtrl)
+	.directive('ittRouteLoading', ittRouteLoading)
+	.directive('ittTimelineEditor', ittTimelineEditor)
+	.directive('ittValidItemUrl', ittValidItemUrl)
+	.directive('ittValidUrl', ittValidUrl);
+
 
 export default directivesModule;

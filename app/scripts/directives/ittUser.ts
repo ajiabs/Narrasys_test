@@ -1,7 +1,5 @@
-'use strict';
 
-
-export default function ($q, appState, authSvc, dataSvc, awsSvc, modelSvc, imageResize) {
+export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc, imageResize) {
 	'ngInject';
 	return {
 		restrict: 'A',
@@ -22,7 +20,7 @@ export default function ($q, appState, authSvc, dataSvc, awsSvc, modelSvc, image
 				scope.user = appState.user;
 				scope.userHasRole = authSvc.userHasRole;
 
-				if (!scope.inPlayer && !scope.userHasRole('guest')) {
+				if (!scope.inPlayer && !authSvc.isGuest()) {
 					scope.getMyNarratives();
 				}
 			});

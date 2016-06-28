@@ -1,12 +1,9 @@
-'use strict';
-
-var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
+const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
+export default function modelSvc($interval, $filter, $location, ittUtils, config, appState, youtubeSvc) {
 
-export default function modelSvc($interval, $filter, $location, config, appState, youtubeSvc) {
-	'ngInject';
 	var svc = {};
 
 	svc.episodes = {};
@@ -23,6 +20,24 @@ export default function modelSvc($interval, $filter, $location, config, appState
 	// TODO discard unused fields before cacheing
 
 	// use angular.extend if an object already exists, so we don't lose existing bindings
+
+	svc.getNarrativeByPathOrId = function (pathOrId) {
+		var isMongoId = /^[0-9a-fA-F]{24}$/.test(pathOrId);
+		if (isMongoId) {
+			return svc.narratives[pathOrId];
+		}
+		//else loop and find the matching path slug passed in.
+		var n;
+		for (n in svc.narratives) {
+			if (svc.narratives.hasOwnProperty(n)) {
+				if (pathOrId === svc.narratives[n].path_slug.en) {
+					return svc.narratives[n];
+				}
+			}
+
+		}
+	};
+
 	svc.cache = function (cacheType, item) {
 		if (cacheType === 'narrative') {
 			// NOTE no deriveNarrative used here, not needed so far
@@ -342,6 +357,9 @@ export default function modelSvc($interval, $filter, $location, config, appState
 			event.noExternalLink = false;
 			event.targetTop = false;
 
+			//console.log("dataSvc event noEmbed", event.noEmbed);
+			//console.log("dataSvc event reset", event);
+
 			// determine whether the item is in a regular content pane.
 			// items only have one layout (scenes may have more than one...)
 			if (event.layouts) {
@@ -377,6 +395,7 @@ export default function modelSvc($interval, $filter, $location, config, appState
 			if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
 				event.noExternalLink = true;
 			}
+
 			if (event.templateUrl.match(/frameicide/)) {
 				event.targetTop = true;
 				event.noEmbed = true;
@@ -580,9 +599,6 @@ export default function modelSvc($interval, $filter, $location, config, appState
 		});
 
 		// and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
-		episode.items = items.sort(function (a, b) {
-			return a.start_time - b.start_time;
-		});
 
 		// Fix bad event timing data.  (see also svc.deriveEvent())
 		angular.forEach(items, function (event) {
@@ -610,6 +626,52 @@ export default function modelSvc($interval, $filter, $location, config, appState
 			}
 		});
 
+
+		//for items with the same time, ensure hierarchy of items
+		//in the following order:
+		// 1. Annotations:
+		//  	- H1 > H2 > isTranscript
+		// 3. Links
+		// 4. Uploads
+		//		- Document > Image
+		//5. all other annotations
+		episode.items = items.sort(function (a, b) {
+			if (a.start_time === b.start_time) {
+				if (a.templateUrl === 'templates/item/text-h1.html') {
+					return -1;
+				} else if (b.templateUrl === 'templates/item/text-h1.html') {
+					return 1;
+				} else if (a.templateUrl === 'templates/item/text-h2.html') {
+					return -1;
+				} else if (b.templateUrl === 'templates/item/text-h2.html') {
+					return 1;
+				} else if (a.isTranscript) {
+					return -1;
+				} else if (b.isTranscript) {
+					return 1;
+				} else if (a._type === 'Link') {
+					return -1;
+				} else if (b._type === 'Link') {
+					return 1;
+				} else if (a._type === 'Upload') {
+					if (a.producerItemType === 'file' || b._type === 'Annotation') {
+						return -1;
+					} else {
+						return 1;
+					}
+				} else if (b._type === 'Upload') {
+					return 1;
+				} else {
+					return -1;
+				}
+
+			} else {
+				return a.start_time - b.start_time;
+			}
+		});
+
+
+		// console.log('after sort \n', items);
 		// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
 		// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
 		for (var i = 1, len = episode.scenes.length; i < len; i++) {

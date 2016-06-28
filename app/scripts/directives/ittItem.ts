@@ -24,7 +24,10 @@ export default function ($http, $timeout, $interval, config, authSvc, appState, 
 		link: function (scope, element) {
 			//scope.user = appState.user;
 
+			//scope.user = appState.user;
+
 			scope.appState = appState; // to get searchText
+			scope.userHasRole = authSvc.userHasRole;
 
 			if (scope.item.avatar_id) {
 				scope.item.avatar = modelSvc.assets[scope.item.avatar_id];
@@ -33,7 +36,7 @@ export default function ($http, $timeout, $interval, config, authSvc, appState, 
 			if (scope.item._id === 'internal:editing') {
 				element.addClass('noTransitions');
 			} else {
-				if (authSvc.userHasRole('admin') || scope.item.user_id === appState.user._id) {
+				if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin') || scope.item.user_id === appState.user._id) {
 					scope.item.editableByThisUser = true;
 				}
 			}
@@ -116,15 +119,15 @@ export default function ($http, $timeout, $interval, config, authSvc, appState, 
 				scope.captureInteraction();
 
 				if (url.match(/youtube/)) {
-					url += youtubeSvc.embedParams(true);
+					url = youtubeSvc.embeddableYoutubeUrl(url, false);
 					//if we have an embed set, pause it when
 					//linking to new window.
 					if (appState.embedYTPlayerAvailable) {
 						youTubePlayerManager.pauseOtherEmbeds();
 						var curTime = Math.floor(youTubePlayerManager.getCurrentTime(scope.item._id));
-						console.log('made it to the right spot!!', curTime);
 						if (curTime > 0) {
 							url += '&start=' + curTime;
+							console.log('made it to the right spot!!', url);
 						}
 					}
 
@@ -259,7 +262,8 @@ export default function ($http, $timeout, $interval, config, authSvc, appState, 
 							method: 'GET',
 							url: config.apiDataBaseUrl + '/v1/send_credly_badge?badge_id=' + scope.plugin.credlyBadgeId + '&email=' + scope.plugin.userEmail
 						})
-							.success(function (data) {
+							.
+							success(function (data) {
 								// TODO check the data to make sure it's not status: "Badge previously sent."
 								scope.checkBadgeEligibility();
 								// console.log("SUCCESS", data);

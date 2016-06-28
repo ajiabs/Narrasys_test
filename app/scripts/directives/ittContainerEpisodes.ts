@@ -9,7 +9,14 @@ export default function ittContainerEpisodes(modelSvc, recursionHelper, appState
 			forAdmin: '=forAdmin'
 		},
 		templateUrl: "templates/containerepisodes.html",
+		controller: function($scope) {
 
+			$scope.selectEpisode = function(e) {
+				$scope.onNodeClick({node: e});
+				console.log('ctrl select epi', e);
+				// $scope.emit('episodeSelected', e);
+			};
+		},
 		compile: function (element) {
 			// Use the compile function from the recursionHelper,
 			// And return the linking function(s) which it returns

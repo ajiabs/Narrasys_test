@@ -7,6 +7,7 @@ import 'angular';
 import 'angular-route';
 import 'angular-animate';
 import 'angular-sanitize';
+import 'angular-ui-tree';
 import './filters/filters';
 import './controllers/Controllers.module';
 import './directives/directives.module';
@@ -28,7 +29,7 @@ let ittApp = angular.module('iTT', [
 	'iTT.directives',
 	'iTT.services'
 ])
-	
+
 // Configure routing
 .config(function ($routeProvider) {
 	'ngInject';

@@ -22,9 +22,7 @@
  *     <input type="url" itt-validate-url item="item"/>
  * </pre>
  */
-
-
-export default function ittValidateUrl($q, errorSvc, youtubeSvc, ittUtils, dataSvc) {
+export default function ittValidItemUrl($q, errorSvc, youtubeSvc, ittUtils, dataSvc) {
 	'ngInject';
 	return {
 		require: '?ngModel',
@@ -32,7 +30,7 @@ export default function ittValidateUrl($q, errorSvc, youtubeSvc, ittUtils, dataS
 			item: '='
 		},
 		link: function link(scope, elm, attrs, ngModel) {
-
+			var _separateTabNotice = 'This link will be displayed in a separate tab.';
 			if (ngModel) {
 				console.log('tigger validation', ngModel);
 				scope.item.urlForm = ngModel;
@@ -43,7 +41,7 @@ export default function ittValidateUrl($q, errorSvc, youtubeSvc, ittUtils, dataS
 				//always consider mixedContent url 'valid' but notify user
 				ngModel.$validators.mixedContent = function (modelVal, viewVal) {
 					if (viewVal.match(/^http:\/\//)) {
-						errorSvc.notify('Link Embed is disabled because ' + viewVal + ' is not HTTPS');
+						errorSvc.notify(_separateTabNotice);
 						console.log("resolving mixed content!", viewVal);
 					}
 					return true;
@@ -55,7 +53,7 @@ export default function ittValidateUrl($q, errorSvc, youtubeSvc, ittUtils, dataS
 						return false;
 					}
 
-					if (ittUtils.isValidURL(viewVal)) {
+					if (ittUtils.isValidURL(viewVal) || /mailto:/.test(viewVal)) {
 						scope.item.noEmbed = false;
 						scope.item.tipText = undefined;
 						return true;
@@ -69,7 +67,7 @@ export default function ittValidateUrl($q, errorSvc, youtubeSvc, ittUtils, dataS
 
 				ngModel.$asyncValidators.xFrameOpts = function (modelVal, viewVal) {
 					//bail out if empty or link to youtube
-					if (ngModel.$isEmpty(viewVal) || youtubeSvc.isYoutubeUrl(viewVal)) {
+					if (ngModel.$isEmpty(viewVal) || youtubeSvc.isYoutubeUrl(viewVal) || /mailto:/.test(viewVal)) {
 						return $q(function (resolve) {
 							resolve();
 						});
@@ -77,12 +75,11 @@ export default function ittValidateUrl($q, errorSvc, youtubeSvc, ittUtils, dataS
 
 					return dataSvc.checkXFrameOpts(viewVal)
 						.then(function (noEmbed) {
-							var xFrameOptsNote = ' does not allow embedding, so this link will open in a new tab';
 							scope.item.noEmbed = noEmbed;
 							if (noEmbed) {
 								scope.item.tipText = 'Link embed is disabled because ' + viewVal + ' does not allow iframing';
 								scope.item.showInlineDetail = false;
-								errorSvc.notify(viewVal + xFrameOptsNote);
+								errorSvc.notify(_separateTabNotice);
 							}
 						});
 				};
@@ -90,5 +87,4 @@ export default function ittValidateUrl($q, errorSvc, youtubeSvc, ittUtils, dataS
 		}
 	};
 }
-
 

@@ -1,26 +1,45 @@
-'use strict';
-
-export default function authSvc(config, $routeParams, $http, $q, $location, appState, modelSvc, errorSvc) {
+export default function authSvc(config, $routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
 	'ngInject';
 	// console.log('authSvc factory');
 	var svc = {};
-
-	svc.userHasRole = function (role) {
-
-		if (appState.user && appState.user.roles) {
-			for (var i = 0; i < appState.user.roles.length; i++) {
-				if (appState.user.roles[i].role === role) {
-					return true;
-				}
-			}
-		}
-		return false;
-	};
 	var Roles = {
 		ADMINISTRATOR: "admin",
 		INSTRUCTOR: "instructor",
 		STUDENT: "student",
 		GUEST: "guest",
+		CUSTOMER_ADMINISTRATOR: 'customer admin'
+	};
+
+	var Resources = {
+		CUSTOMER: 'Customer'
+	};
+
+	svc.isGuest = function isGuest() {
+		var _isGuest = true;
+		angular.forEach(appState.user.roles, function (r) {
+			if (r.role !== Roles.GUEST) {
+				_isGuest = false;
+			}
+		});
+
+		return _isGuest;
+	};
+
+	svc.userHasRole = function (role) {
+		if (appState.user && appState.user.roles) {
+			for (var i = 0; i < appState.user.roles.length; i++) {
+				if (appState.user.roles[i].role === role) {
+					if (!(role === Roles.ADMINISTRATOR && ittUtils.existy(appState.user.roles[i].resource_id))) {
+						return true;
+					}
+				} else if (role === Roles.CUSTOMER_ADMINISTRATOR && appState.user.roles[i].role === Roles.ADMINISTRATOR &&
+					ittUtils.existy(appState.user.roles[i].resource_id) &&
+					appState.user.roles[i].resource_type === Resources.CUSTOMER) {
+					return true;
+				}
+			}
+		}
+		return false;
 	};
 
 	svc.getRoleForNarrative = function (narrativeId, roles) {
@@ -205,6 +224,7 @@ export default function authSvc(config, $routeParams, $http, $q, $location, appS
 						return svc.authenticateViaNonce(nonceParam);
 					});
 			} else {
+				console.log('auth Via Nonce', nonceParam);
 				// no login info at all, start from scratch
 				return svc.authenticateViaNonce(nonceParam);
 			}
@@ -305,7 +325,10 @@ export default function authSvc(config, $routeParams, $http, $q, $location, appS
 			}
 		});
 
-		if (user.avatar_id) {
+		var tok = svc.getStoredToken();
+		if (user.avatar_id && tok) {
+			console.log('culprit identified', tok);
+			$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 			// Load and cache avatar asset for current user
 			$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
 				// console.log("GOT AVATAR", response);
