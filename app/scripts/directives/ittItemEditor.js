@@ -205,7 +205,7 @@ angular.module('com.inthetelling.story')
 					if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time) {
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 					}
-					console.count('$watch turn');
+					// console.count('$watch turn');
 
 				}, true);
 

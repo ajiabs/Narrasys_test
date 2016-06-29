@@ -118,8 +118,8 @@
 
 		function onSelectChange(item) {
 			_displayDropdownVisible = false;
-			switch(item._type) {
-				case 'Scene':
+			switch(item.producerItemType) {
+				case 'scene':
 					switch(item.templateUrl) {
 						case 'templates/scene/1col.html':
 							if (_admin) { _displayDropdownVisible = true; }
@@ -162,7 +162,7 @@
 							break;
 					}
 					break;
-				case 'Link':
+				case 'link':
 					_displayDropdownVisible = true;
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';
@@ -182,6 +182,13 @@
 							break;
 					}
 					break;
+				case 'transcript':
+					_displayDropdownVisible = false;
+					item.layouts[0] = 'inline';
+					break;
+				case 'annotation':
+
+					break;
 			}
 		}
 
@@ -190,7 +197,7 @@
 				case 'scene':
 					switch(tabTitle) {
 						case 'Item':
-							return _admin;
+							return false;
 						case 'Style':
 							return true;
 						case 'Customize':
@@ -202,7 +209,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}
