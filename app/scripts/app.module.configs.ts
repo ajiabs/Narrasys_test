@@ -1,19 +1,13 @@
 /**
  * Created by githop on 12/13/15.
  */
-'use strict';
-
 import 'angular';
-
-//import './plugin/taShim';
-import 'textAngular/dist/textAngular-sanitize.min';
-import 'textAngular';
 
 let configsModule = angular.module('iTT.configs', [
 	'textAngular'
 ])
 	//// Configure x-domain resource whitelist (TODO: do we actually need this?)
-	.config(function($sceDelegateProvider, $httpProvider, $provide) {
+	.config(function($sceDelegateProvider, $httpProvider) {
 		'ngInject';
 		$sceDelegateProvider.resourceUrlWhitelist([
 			'self',
@@ -33,22 +27,6 @@ let configsModule = angular.module('iTT.configs', [
 				}
 			};
 		});
-
-		$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
-			taOptions.forceTextAngularSanitize = false;
-
-			taOptions.toolbar = [
-				['h1', 'h2', 'h3'],
-				['bold', 'italics', 'underline', 'strikeThrough'],
-				['ul', 'ol'],
-				['undo', 'redo', 'clear']
-				// ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
-				// ['justifyLeft','justifyCenter','justifyRight','indent','outdent'],
-				// ['html', 'insertImage', 'insertLink', 'insertVideo', 'wordcount', 'charcount']
-			];
-			return taOptions;
-		}]);
-
 	});
 
 export default configsModule;

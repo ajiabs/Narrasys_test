@@ -13,6 +13,7 @@ import './controllers/Controllers.module';
 import './directives/directives.module';
 import './services/services.module';
 import './templates';
+import './app.module.third-party.ts';
 import './app.module.configs';
 import '../styles/styles';
 
@@ -21,7 +22,7 @@ let ittApp = angular.module('iTT', [
 	'ngRoute',
 	'ngAnimate',
 	'ngSanitize',
-	'ui.tree',
+	'iTT.3rdPartyLibs',
 	'iTT.configs',
 	'iTT.filters',
 	'iTT.templates',
