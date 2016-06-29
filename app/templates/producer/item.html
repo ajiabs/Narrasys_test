@@ -13,6 +13,21 @@
 			<!-- end sxs -->
 		</div>
 
+	<!--i plan to tidy this up after it's fully implemented but the basic layout is as follows:
+	each tab contains an ng-switch set to switch on item.producerItemType.
+	<div itt-tabs>
+		<div itt-tab>
+			<div ng-switch on="item.producerItemType"></div>
+		/div>
+		<div itt-tab>
+			<div ng-switch on="item.producerItemType"></div>
+		</div>
+		<div itt-tab>
+			<div ng-switch on="item.producerItemType"></div>
+		</div>
+	</div>
+	-->
+
 		<div ng-if="appState.product == 'producer'">
 			<div itt-tabs class="ittTabs">
 				<!--ITEM/SCENE TAB BEGIN-->
