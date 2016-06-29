@@ -74,10 +74,10 @@
 					];
 				case 'annotation':
 					return [
-						{url: 'templates/item/pullquote.html', name: 'Pullquote with attribution'},
-						{url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
 						{url: 'templates/item/text-h1.html', name: 'Header 1'},
 						{url: 'templates/item/text-h2.html', name: 'Header 2'},
+						{url: 'templates/item/pullquote.html', name: 'Pullquote with attribution'},
+						{url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
 						{url: 'templates/item/text-transmedia.html', name: 'Long text (as transmedia)'},
 						{url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
 					];
@@ -108,10 +108,11 @@
 						{url: 'templates/item/file.html', name: 'Uploaded File'}
 					];
 				case 'question':
+					_displayDropdownVisible = true;
 					return [
 						{url: 'templates/item/question-mc.html', name: 'Default question display'},
-						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'},
-						{url: 'templates/item/question-mc-image-left.html', name: 'Question with image left'}
+						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'}
+						// {url: 'templates/item/question-mc-image-left.html', name: 'Question with image left'}
 					];
 			}
 		}
@@ -187,7 +188,12 @@
 					item.layouts[0] = 'inline';
 					break;
 				case 'annotation':
-
+					// console.log('in right spot!');
+					break;
+				case 'question':
+					// item.layouts[0] = 'windowFg';
+					//need a little feedback as the spreadsheet is a little confusing for this
+					//section
 					break;
 			}
 		}
@@ -219,7 +225,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}
@@ -229,7 +235,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}
@@ -259,7 +265,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return _admin;
+							return true;
 						case 'Customize':
 							return _admin;
 					}

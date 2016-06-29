@@ -22,7 +22,73 @@
 
 					<div ng-switch on="item.producerItemType">
 						<div ng-switch-when="link">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Time, Title, URL, Description, Template, Image, Flags-->
+							<div class="field">
+								<div class="label">Time
+								</div>
+								<div class="input">
+									<!-- TODO call setItemTime and setItemEndTime or equivalent on these: -->
+									<span sxs-input-time="item" x-input-field="start_time"></span>
+								<span ng-if="!(item.stop || item._type === 'Scene' || item._type === 'Chapter')">
+									<span class="label"> &nbsp; &nbsp; &nbsp; End</span>
+									<span sxs-input-time="item" x-input-field="end_time"></span>
+								</span>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Title [{{appState.lang}}]</div>
+								<div class="input" sxs-input-i18n="item.title" x-inputtype="'input'" autofocus></div>
+							</div>
+							<div class="field">
+								<div class="label">URL
+								</div>
+								<div class="input">
+									<form class="doValidate" name="urlForm">
+										<input type="text"
+											   itt-valid-item-url
+											   item="item"
+											   name="itemUrl"
+											   ng-model-options="{ updateOn: 'blur' }"
+											   ng-model="item.url"/>
+									</form>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Description [{{appState.lang}}]</div>
+								<div class="input" sxs-input-i18n="item.description" x-inputtype="'textarea'"></div>
+							</div>
+							<div class="field">
+								<div class="label">Template</div>
+								<div class="input">
+									<select ng-model="item.templateUrl"
+											ng-change="selectService.onSelectChange(item)"
+											ng-options="option.url as option.name for option in item.templateOpts">
+									</select>
+								</div>
+							</div>
+							<div class="field" ng-if="selectService.showImageUpload()">
+								<div class="label">Image
+								</div>
+								<div class="input" ng-include="'templates/producer/upload-producer.html'">
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Flags</div>
+								<div class="input">
+									<label>
+										<input type="checkbox" ng-model="item.required">Required
+									</label>
+									<label>
+										<input type="checkbox" ng-change="selectService.onSelectChange(item)" ng-model="item.stop">Stop item
+									</label>
+									<label>
+										<input type="checkbox" ng-model="item.cosmetic">Cosmetic
+									</label>
+									<label ng-if="item.templateUrl === 'templates/item/text-h1.html'">
+										<input type="checkbox" ng-model="item.chapter_marker">Chapter Event
+									</label>
+								</div>
+							</div>
 						</div>
 						<div ng-switch-when="transcript">
 							<!--time, speaker, transcript, speaker thumbnail-->
@@ -57,23 +123,160 @@
 							</div>
 						</div>
 						<div ng-switch-when="annotation">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Time, Annotation Text, Template, Speaker, Title, Flags-->
+							<div class="field">
+								<div class="label">Time
+								</div>
+								<div class="input">
+									<!-- TODO call setItemTime and setItemEndTime or equivalent on these: -->
+									<span sxs-input-time="item" x-input-field="start_time"></span>
+								<span ng-if="!(item.stop || item._type === 'Scene' || item._type === 'Chapter')">
+									<span class="label"> &nbsp; &nbsp; &nbsp; End</span>
+									<span sxs-input-time="item" x-input-field="end_time"></span>
+								</span>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Annotation Text [{{appState.lang}}]</div>
+								<div class="input" sxs-input-i18n="item.annotation" x-inputtype="'textarea'" autofocus></div>
+							</div>
+							<div class="field">
+								<div class="label">Template</div>
+								<div class="input">
+									<select ng-model="item.templateUrl"
+											ng-change="selectService.onSelectChange(item)"
+											ng-options="option.url as option.name for option in item.templateOpts">
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Speaker [{{appState.lang}}]
+								</div>
+								<div class="input">
+									<div sxs-annotator-autocomplete="annotators" item="item" ng-model="item.annotator"></div>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Title [{{appState.lang}}]</div>
+								<div class="input" sxs-input-i18n="item.title" x-inputtype="'input'" autofocus></div>
+							</div>
+							<div class="field">
+								<div class="label">Flags</div>
+								<div class="input">
+									<label>
+										<input type="checkbox" ng-model="item.required">Required
+									</label>
+									<label>
+										<input type="checkbox" ng-change="selectService.onSelectChange(item)" ng-model="item.stop">Stop item
+									</label>
+									<label>
+										<input type="checkbox" ng-model="item.cosmetic">Cosmetic
+									</label>
+									<label ng-if="item.templateUrl === 'templates/item/text-h1.html'">
+										<input type="checkbox" ng-model="item.chapter_marker">Chapter Event
+									</label>
+								</div>
+							</div>
 						</div>
 						<!--scenes are layouts; hidden in this tab-->
 						<!--<div ng-switch-when="scene">-->
 
 						<!--</div>-->
 						<div ng-switch-when="file">
+							<!--Time, Title, File, Description, Template, Flags-->
 							<h4>{{item.producerItemType}}</h4>
 						</div>
 						<div ng-switch-when="image">
+							<!--Time, Title, Image, Description, Template, Display, Position, Orientation	Flags-->
 							<h4>{{item.producerItemType}}</h4>
 						</div>
 						<div ng-switch-when="question">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Time, Question type, Title, Question Text, Image, Answers, Feedback when correct, Feedback when incorrect-->
+							<!-- <span class="eventIcon icon-question"></span> -->
+							<div class="field">
+								<div class="label">Time
+								</div>
+								<div class="input">
+									<!-- TODO call setItemTime and setItemEndTime or equivalent on these: -->
+									<span sxs-input-time="item" x-input-field="start_time"></span>
+								<span ng-if="!(item.stop || item._type === 'Scene' || item._type === 'Chapter')">
+									<span class="label"> &nbsp; &nbsp; &nbsp; End</span>
+									<span sxs-input-time="item" x-input-field="end_time"></span>
+								</span>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Question type
+								</div>
+								<div class="input">
+									<select ng-model="item.data._plugin.questiontype">
+										<option value="mc-poll">Poll</option>
+										<option value="mc-formative">Formative</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Title [{{appState.lang}}]</div>
+								<div class="input" sxs-input-i18n="item.title" x-inputtype="'input'" autofocus></div>
+							</div>
+							<div class="field">
+								<div class="label">Question text
+								</div>
+								<div class="input" sxs-input-i18n="item.data._plugin.questiontext" x-inputtype="'textarea'"></div>
+							</div>
+							<div class="field">
+								<div class="label">Image (optional)
+								</div>
+								<div class="input" ng-include="'templates/producer/upload-producer.html'">
+								</div>
+							</div>
+							<div class="field" ng-repeat="distractor in item.data._plugin.distractors track by $index">
+								<div class="label">
+									{{$index | alpha}} &nbsp;
+									<input type="checkbox" ng-model="distractor.correct" ng-if="item.data._plugin.questiontype == 'mc-formative'">
+								</div>
+								<div class="input" sxs-input-i18n="distractor.text" x-inputtype="'textarea'"></div>
+							</div>
+							<div class="field">
+								<div class="input">
+									<button ng-click="addDistractor($event)">Add distractor</button>
+								</div>
+							</div>
+
+							<div class="field" ng-if="item.data._plugin.questiontype == 'mc-formative'">
+								<div class="label">Feedback when correct
+								</div>
+								<div class="input" sxs-input-i18n="item.data._plugin.correctfeedback" x-inputtype="'textarea'"></div>
+							</div>
+							<div class="field" ng-if="item.data._plugin.questiontype == 'mc-formative'">
+								<div class="label">Feedback when incorrect
+								</div>
+								<div class="input" sxs-input-i18n="item.data._plugin.incorrectfeedback" x-inputtype="'textarea'"></div>
+							</div>
+
 						</div>
 						<div ng-switch-when="chapter">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Time, Title, Description-->
+							<div class="field">
+								<div class="label">Time
+								</div>
+								<div class="input">
+									<!-- TODO call setItemTime and setItemEndTime or equivalent on these: -->
+									<span sxs-input-time="item" x-input-field="start_time"></span>
+								<span ng-if="!(item.stop || item._type === 'Scene' || item._type === 'Chapter')">
+									<span class="label"> &nbsp; &nbsp; &nbsp; End</span>
+									<span sxs-input-time="item" x-input-field="end_time"></span>
+								</span>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Title [{{appState.lang}}]</div>
+								<div class="input" sxs-input-i18n="item.title" x-inputtype="'input'" autofocus></div>
+							</div>
+							<div class="field">
+								<div class="label">Description [{{appState.lang}}]</div>
+								<div class="input" sxs-input-i18n="item.description" x-inputtype="'textarea'"></div>
+							</div>
 						</div>
 						<div ng-switch-when="video">
 							<h4>{{item.producerItemType}}</h4>
@@ -90,9 +293,9 @@
 					ng-if="selectService.showTab(item.producerItemType, 'Style')"
 					title="Style">
 					<div ng-switch on="item.producerItemType">
-						<div ng-switch-when="link">
-							<h4>{{item.producerItemType}}</h4>
-						</div>
+						<!--hidden across the board-->
+						<!--<div ng-switch-when="link">-->
+						<!--</div>-->
 						<!--hidden accross the board-->
 						<!--<div ng-switch-when="transcript">-->
 							<!--Template, display, flags-->
@@ -147,9 +350,28 @@
 						</div>
 						<div ng-switch-when="image">
 							<h4>{{item.producerItemType}}</h4>
+
 						</div>
 						<div ng-switch-when="question">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Template, Display, Flags-->
+							<div class="field">
+								<div class="label">Template</div>
+								<div class="input">
+									<select ng-model="item.templateUrl"
+											ng-change="selectService.onSelectChange(item)"
+											ng-options="option.url as option.name for option in item.templateOpts">
+									</select>
+								</div>
+							</div>
+							<div class="field" ng-if="selectService.showDisplayDropdown()">
+								<div class="label">Display</div>
+								<div class="input">
+									<select ng-model="item.layouts[1]">
+										<option value="windoFg">Modal</option>
+										<!--<option value="showCurrent">Show only current items</option>-->
+									</select>
+								</div>
+							</div>
 						</div>
 						<div ng-switch-when="chapter">
 							<h4>{{item.producerItemType}}</h4>
@@ -171,13 +393,201 @@
 					title="Customize">
 					<div ng-switch on="item.producerItemType">
 						<div ng-switch-when="link">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Typography	Color	Timestamp	Highlight	Transition-->
+							<div class="field">
+								<div class="label">Typography</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.typography">
+										<option value="">(Default)</option>
+										<option value="Sans">Sans</option>
+										<option value="Serif">Serif</option>
+										<option value="Book">Book</option>
+										<option value="Swiss">Swiss</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Color</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.color">
+										<option value="">(Default)</option>
+										<option value="Invert">Invert</option>
+										<option value="Sepia">Sepia</option>
+										<option value="Solarized">Solarized</option>
+										<option value="Vivid">Vivid</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Timestamp</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.timestamp">
+										<option value="">(Default)</option>
+										<option value="None">No timestamp</option>
+										<option value="Inline">Inline timestamp</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Highlight</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.highlight">
+										<option value="">(Default)</option>
+										<option value="Solid">Solid</option>
+										<option value="Border">Border</option>
+										<option value="Side">Side</option>
+										<option value="Bloom">Bloom</option>
+										<option value="Highlighter">Highlighter</option>
+										<option value="Tilt">Tilt</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Transition</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.transition">
+										<option value="">(Default)</option>
+										<option value="None">No transition</option>
+										<option value="Fade">Fade</option>
+										<option value="SlideL">Slide left</option>
+										<option value="SlideR">Slide right</option>
+										<option value="ExpandW">Expand</option>
+										<option value="Pop">Pop</option>
+									</select>
+								</div>
+							</div>
 						</div>
 						<div ng-switch-when="transcript">
-							Typography,	Color,	Timestamp,	Highlight,	Transition
+							<!--Typography,	Color,	Timestamp,	Highlight,	Transition-->
+							<div class="field">
+								<div class="label">Typography</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.typography">
+										<option value="">(Default)</option>
+										<option value="Sans">Sans</option>
+										<option value="Serif">Serif</option>
+										<option value="Book">Book</option>
+										<option value="Swiss">Swiss</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Color</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.color">
+										<option value="">(Default)</option>
+										<option value="Invert">Invert</option>
+										<option value="Sepia">Sepia</option>
+										<option value="Solarized">Solarized</option>
+										<option value="Vivid">Vivid</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Timestamp</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.timestamp">
+										<option value="">(Default)</option>
+										<option value="None">No timestamp</option>
+										<option value="Inline">Inline timestamp</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Highlight</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.highlight">
+										<option value="">(Default)</option>
+										<option value="Solid">Solid</option>
+										<option value="Border">Border</option>
+										<option value="Side">Side</option>
+										<option value="Bloom">Bloom</option>
+										<option value="Highlighter">Highlighter</option>
+										<option value="Tilt">Tilt</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Transition</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.transition">
+										<option value="">(Default)</option>
+										<option value="None">No transition</option>
+										<option value="Fade">Fade</option>
+										<option value="SlideL">Slide left</option>
+										<option value="SlideR">Slide right</option>
+										<option value="ExpandW">Expand</option>
+										<option value="Pop">Pop</option>
+									</select>
+								</div>
+							</div>
+
 						</div>
 						<div ng-switch-when="annotation">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Typography, Color, Timestamp, Highlight, Transition-->
+							<div class="field">
+								<div class="label">Typography</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.typography">
+										<option value="">(Default)</option>
+										<option value="Sans">Sans</option>
+										<option value="Serif">Serif</option>
+										<option value="Book">Book</option>
+										<option value="Swiss">Swiss</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Color</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.color">
+										<option value="">(Default)</option>
+										<option value="Invert">Invert</option>
+										<option value="Sepia">Sepia</option>
+										<option value="Solarized">Solarized</option>
+										<option value="Vivid">Vivid</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Timestamp</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.timestamp">
+										<option value="">(Default)</option>
+										<option value="None">No timestamp</option>
+										<option value="Inline">Inline timestamp</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Highlight</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.highlight">
+										<option value="">(Default)</option>
+										<option value="Solid">Solid</option>
+										<option value="Border">Border</option>
+										<option value="Side">Side</option>
+										<option value="Bloom">Bloom</option>
+										<option value="Highlighter">Highlighter</option>
+										<option value="Tilt">Tilt</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Transition</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.transition">
+										<option value="">(Default)</option>
+										<option value="None">No transition</option>
+										<option value="Fade">Fade</option>
+										<option value="SlideL">Slide left</option>
+										<option value="SlideR">Slide right</option>
+										<option value="ExpandW">Expand</option>
+										<option value="Pop">Pop</option>
+									</select>
+								</div>
+							</div>
+
 						</div>
 						<div ng-switch-when="scene">
 							<!--typography, color, timestamp, transition-->
@@ -234,10 +644,106 @@
 							<h4>{{item.producerItemType}}</h4>
 						</div>
 						<div ng-switch-when="image">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Typography, Color, Timestamp, Highlight, Transition-->
+							<div class="field">
+								<div class="label">Typography</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.typography">
+										<option value="">(Default)</option>
+										<option value="Sans">Sans</option>
+										<option value="Serif">Serif</option>
+										<option value="Book">Book</option>
+										<option value="Swiss">Swiss</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Color</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.color">
+										<option value="">(Default)</option>
+										<option value="Invert">Invert</option>
+										<option value="Sepia">Sepia</option>
+										<option value="Solarized">Solarized</option>
+										<option value="Vivid">Vivid</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Timestamp</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.timestamp">
+										<option value="">(Default)</option>
+										<option value="None">No timestamp</option>
+										<option value="Inline">Inline timestamp</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Transition</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.transition">
+										<option value="">(Default)</option>
+										<option value="None">No transition</option>
+										<option value="Fade">Fade</option>
+										<option value="SlideL">Slide left</option>
+										<option value="SlideR">Slide right</option>
+										<option value="ExpandW">Expand</option>
+										<option value="Pop">Pop</option>
+									</select>
+								</div>
+							</div>
 						</div>
 						<div ng-switch-when="question">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Typography	Color	Timestamp	Highlight	Transition-->
+							<div class="field">
+								<div class="label">Typography</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.typography">
+										<option value="">(Default)</option>
+										<option value="Sans">Sans</option>
+										<option value="Serif">Serif</option>
+										<option value="Book">Book</option>
+										<option value="Swiss">Swiss</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Color</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.color">
+										<option value="">(Default)</option>
+										<option value="Invert">Invert</option>
+										<option value="Sepia">Sepia</option>
+										<option value="Solarized">Solarized</option>
+										<option value="Vivid">Vivid</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Timestamp</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.timestamp">
+										<option value="">(Default)</option>
+										<option value="None">No timestamp</option>
+										<option value="Inline">Inline timestamp</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<div class="label">Transition</div>
+								<div class="input">
+									<select size="1" ng-model="itemForm.transition">
+										<option value="">(Default)</option>
+										<option value="None">No transition</option>
+										<option value="Fade">Fade</option>
+										<option value="SlideL">Slide left</option>
+										<option value="SlideR">Slide right</option>
+										<option value="ExpandW">Expand</option>
+										<option value="Pop">Pop</option>
+									</select>
+								</div>
+							</div>
 						</div>
 						<div ng-switch-when="chapter">
 							<h4>{{item.producerItemType}}</h4>
@@ -255,6 +761,9 @@
 			</div>
 		</div>
 
+
+	<!--old implementation, sometimes its easier for me build from scratch, rather than -->
+	<!--insert changes into the existing implementation-->
 		<!--<div ng-if="appState.product == 'producer'">-->
 			<!--&lt;!&ndash; begin producer &ndash;&gt;-->
 			<!--<div class="ittTabs" itt-tabs>-->
