@@ -230,62 +230,6 @@ let ittApp = angular.module('iTT', [
 	$(document).on("keyup", function () {
 		fhotkb = false; // oh good they've woken up
 	});
-})
-
-// Configure x-domain resource whitelist (TODO: do we actually need this?)
-.config(function ($sceDelegateProvider) {
-	'ngInject';
-	$sceDelegateProvider.resourceUrlWhitelist([
-		'self',
-		/.*/,
-		/^http(s)?:\/\/platformuniv-p.edgesuite.net/,
-		/^http(s)?:\/\/themes.googleusercontent.com/
-	]);
-})
-
-// Configure http headers and intercept http errors
-.config(function ($httpProvider) {
-	'ngInject';
-	$httpProvider.defaults.useXDomain = true;
-	$httpProvider.defaults.withCredentials = true;
-	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-	$httpProvider.interceptors.push(function ($q, errorSvc) {
-		return {
-			'responseError': function (rejection) {
-				errorSvc.error(rejection);
-				return $q.reject(rejection);
-			}
-		};
-	});
-})
-
-// Configuration for textAngular toolbar
-.config(function ($provide) {
-	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
-		taOptions.defaultFileDropHandler = function(a, b) { }; //jshint ignore:line
-		taOptions.toolbar = [
-			['h1', 'h2', 'h3'],
-			['bold', 'italics', 'underline', 'strikeThrough'],
-			['ul', 'ol'],
-			['undo', 'redo', 'clear']
-			// ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
-			// ['justifyLeft','justifyCenter','justifyRight','indent','outdent'],
-			// ['html', 'insertImage', 'insertLink', 'insertVideo', 'wordcount', 'charcount']
-		];
-		return taOptions;
-	}]);
-})
-
-.config(function($compileProvider) {
-	var isDev = false;
-	var currentHost = window.location.hostname;
-	if (currentHost.indexOf('localhost') === 0 || currentHost.indexOf('api-dev') === 0) {
-		isDev = true;
-	}
-
-	if (isDev === false) {
-		$compileProvider.debugInfoEnabled(false);
-	}
 });
 
 export default ittApp;

@@ -3,11 +3,9 @@
  */
 import 'angular';
 
-let configsModule = angular.module('iTT.configs', [
-	'textAngular'
-])
-	//// Configure x-domain resource whitelist (TODO: do we actually need this?)
-	.config(function($sceDelegateProvider, $httpProvider) {
+let configsModule = angular.module('iTT.configs', [])
+//// Configure x-domain resource whitelist (TODO: do we actually need this?)
+	.config(function ($sceDelegateProvider, $httpProvider, $compileProvider) {
 		'ngInject';
 		$sceDelegateProvider.resourceUrlWhitelist([
 			'self',
@@ -27,6 +25,16 @@ let configsModule = angular.module('iTT.configs', [
 				}
 			};
 		});
+
+		var isDev = false;
+		var currentHost = window.location.hostname;
+		if (currentHost.indexOf('localhost') === 0 || currentHost.indexOf('api-dev') === 0) {
+			isDev = true;
+		}
+
+		if (isDev === false) {
+			$compileProvider.debugInfoEnabled(false);
+		}
 	});
 
 export default configsModule;
