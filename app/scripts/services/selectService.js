@@ -195,6 +195,9 @@
 					//need a little feedback as the spreadsheet is a little confusing for this
 					//section
 					break;
+				case 'image':
+					_displayDropdownVisible = true;
+					break;
 			}
 		}
 

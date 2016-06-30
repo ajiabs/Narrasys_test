@@ -34,7 +34,6 @@
 				<div itt-tab class="ittTab"
 					ng-if="selectService.showTab(item.producerItemType, 'Item')"
 					title="{{item._type === 'Scene' ? 'Layout' : 'Item'}}">
-
 					<div ng-switch on="item.producerItemType">
 						<div ng-switch-when="link">
 							<!--Time, Title, URL, Description, Template, Image, Flags-->
@@ -81,6 +80,8 @@
 							<itt-title-field></itt-title-field>
 							<itt-image-field></itt-image-field>
 							<itt-description-field></itt-description-field>,
+							<itt-template-select></itt-template-select>
+							<itt-display-select></itt-display-select>
 							<itt-video-position-select></itt-video-position-select>
 							<!--TODO reccommend moving orientation into layout tab-->
 							<itt-flags></itt-flags>
@@ -135,10 +136,10 @@
 						<div ng-switch-when="file">
 							<h4>{{item.producerItemType}}</h4>
 						</div>
-						<div ng-switch-when="image">
-							<h4>{{item.producerItemType}}</h4>
+						<!--image style tab hidden for all roles-->
+						<!--<div ng-switch-when="image">-->
 
-						</div>
+						<!--</div>-->
 						<div ng-switch-when="question">
 							<!--Template, Display, Flags-->
 							<itt-template-select></itt-template-select>
