@@ -38,72 +38,13 @@
 					<div ng-switch on="item.producerItemType">
 						<div ng-switch-when="link">
 							<!--Time, Title, URL, Description, Template, Image, Flags-->
-							<div class="field">
-								<div class="label">Time
-								</div>
-								<div class="input">
-									<!-- TODO call setItemTime and setItemEndTime or equivalent on these: -->
-									<span sxs-input-time="item" x-input-field="start_time"></span>
-								<span ng-if="!(item.stop || item._type === 'Scene' || item._type === 'Chapter')">
-									<span class="label"> &nbsp; &nbsp; &nbsp; End</span>
-									<span sxs-input-time="item" x-input-field="end_time"></span>
-								</span>
-								</div>
-							</div>
-							<div class="field">
-								<div class="label">Title [{{appState.lang}}]</div>
-								<div class="input" sxs-input-i18n="item.title" x-inputtype="'input'" autofocus></div>
-							</div>
-							<div class="field">
-								<div class="label">URL
-								</div>
-								<div class="input">
-									<form class="doValidate" name="urlForm">
-										<input type="text"
-											   itt-valid-item-url
-											   item="item"
-											   name="itemUrl"
-											   ng-model-options="{ updateOn: 'blur' }"
-											   ng-model="item.url"/>
-									</form>
-								</div>
-							</div>
-							<div class="field">
-								<div class="label">Description [{{appState.lang}}]</div>
-								<div class="input" sxs-input-i18n="item.description" x-inputtype="'textarea'"></div>
-							</div>
-							<div class="field">
-								<div class="label">Template</div>
-								<div class="input">
-									<select ng-model="item.templateUrl"
-											ng-change="selectService.onSelectChange(item)"
-											ng-options="option.url as option.name for option in item.templateOpts">
-									</select>
-								</div>
-							</div>
-							<div class="field" ng-if="selectService.showImageUpload()">
-								<div class="label">Image
-								</div>
-								<div class="input" ng-include="'templates/producer/upload-producer.html'">
-								</div>
-							</div>
-							<div class="field">
-								<div class="label">Flags</div>
-								<div class="input">
-									<label>
-										<input type="checkbox" ng-model="item.required">Required
-									</label>
-									<label>
-										<input type="checkbox" ng-change="selectService.onSelectChange(item)" ng-model="item.stop">Stop item
-									</label>
-									<label>
-										<input type="checkbox" ng-model="item.cosmetic">Cosmetic
-									</label>
-									<label ng-if="item.templateUrl === 'templates/item/text-h1.html'">
-										<input type="checkbox" ng-model="item.chapter_marker">Chapter Event
-									</label>
-								</div>
-							</div>
+							<itt-time-field></itt-time-field>
+							<itt-title-field></itt-title-field>
+							<itt-url-field></itt-url-field>
+							<itt-description-field></itt-description-field>
+							<itt-template-select></itt-template-select>
+							<itt-image-field></itt-image-field>
+							<itt-flags></itt-flags>
 						</div>
 						<div ng-switch-when="transcript">
 							<!--time, speaker, transcript, speaker thumbnail-->
