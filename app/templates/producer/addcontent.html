@@ -5,7 +5,7 @@
 
 	<div ng-if="appState.product == 'producer'" class="editButtonPanel">
 		<a class="button button-episode" ng-click="editEpisode()">Edit episode</a>
-		<a class="button button-scene" ng-if="appState.time > 0  && appState.time < (appState.duration - 0.1) && appState.viewMode == 'discover'" ng-click="editCurrentScene()">Edit scene</a>
+		<a class="button button-scene" ng-if="appState.time > 0  && appState.time < (appState.duration - 0.1) && appState.viewMode == 'discover'" ng-click="editCurrentScene()">Edit Layout</a>
 	</div>
 
 	<div class="producer addButtonPanel" ng-show="!item && appState.time > 0 && appState.time < (appState.duration - 0.1) ">

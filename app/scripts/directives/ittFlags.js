@@ -11,24 +11,64 @@
 	function ittFlags() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
+	        scope: {
+				flags: '=',
+				item: '='
+			},
 			template: [
-			'<div class="field">',
-			'	<div class="label">Flags</div>',
-			'	<div class="input">',
-			'		<label for="itemRequired"></label>',
-			'		<input id="itemRequired" type="checkbox" ng-model="item.required">Required',
-			'		<label for="itemStop"></label>',
-			'		<input id="itemStop" type="checkbox" ng-change="selectService.onSelectChange(item)" ng-model="item.stop">Stop item',
-			'		<label for="itemCosmetic"></label>',
-			'		<input id="itemCosmetic" type="checkbox" ng-model="item.cosmetic">Cosmetic',
-			'		<div ng-if="item.templateUrl === \'templates/item/text-h1.html\' || item.templateUrl === \'templates/item/text-h2.html\'">',
-			'			<label for="itemChapter"></label>',
-			'			<input id="itemChapter" type="checkbox" ng-model="item.chapter_marker">Chapter Event',
-			'		</div>',
-			'	</div>',
-			'</div>'
-			].join(' ')
+				'<div class="field">',
+				'	<div class="label">Flags</div>',
+				'	<div class="input">',
+				'		<span ng-repeat="flag in flags._flags">',
+				'			<label for="{{flags._ids[flag]}}"></label>',
+				'			<input id="{{flags._ids[flag]}}" type="checkbox" itt-dynamic-model="\'flags.item.\' + flag" ng-change="flags.handleChange()"/>{{flags._displays[flag]}}',
+				'		</span>',
+				'	</div>',
+				'</div>'
+			].join(' '),
+			controller: ['$scope', 'selectService', function($scope, selectService) {
+				var ctrl = this;
+				ctrl._flags = angular.copy(ctrl.flags);
+				ctrl.handleChange = handleChange;
+				ctrl._displays = {
+					required: 'Required',
+					stop: 'Stop item',
+					cosmetic: 'Cosmetic',
+					chapter_marker: 'Chapter Event'
+				};
+				ctrl._ids = {
+					required: 'itemRequired',
+					stop: 'itemStop',
+					cosmetic: 'itemCosmetic',
+					chapter_marker: 'itemChapter'
+				};
+
+				function handleChange() {
+					if (ctrl.item.stop) {
+						selectService.onSelectChange(ctrl.item);
+					}
+				}
+
+				function _h1OrH2(url) {
+					return (url === 'templates/item/text-h1.html' || url === 'templates/item/text-h2.html');
+				}
+
+				$scope.$watch(function() {
+					return ctrl.item.templateUrl;
+				}, function(newVal, oldVal) {
+					if (newVal !== oldVal) {
+						if (!_h1OrH2(newVal)) {
+							ctrl._flags = ctrl._flags.filter(function(f) {
+								return f !== 'chapter_marker';
+							});
+						} else {
+							ctrl._flags = ctrl.flags;
+						}
+					}
+				});
+			}],
+			controllerAs: 'flags',
+			bindToController: true
 	    };
 	}
 

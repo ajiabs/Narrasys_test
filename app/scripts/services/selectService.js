@@ -54,6 +54,7 @@
 			switch(type) {
 				case 'scene':
 					_displayDropdownVisible = false;
+					_videoPositionVisible = false;
 					return [
 						{url: 'templates/scene/centered.html', name: 'Centered'},
 						{url: 'templates/scene/centeredPro.html', name: 'Centered Pro' },
@@ -93,16 +94,23 @@
 						{url: 'templates/item/link-modal-thumb.html', name: 'Link Modal'}
 					];
 				case 'image':
-					return [
-						{url: 'templates/item/image-fill.html', name: 'Overlay or background fill'},
-						{url: 'templates/item/image.html', name: 'Linked Image'},
-						{url: 'templates/item/image-inline.html', name: 'Inline Image'},
+					_imageUploadVisible = true;
+					_displayDropdownVisible = false;
+					var imgTemplates = [
+						{url: 'templates/item/image-plain.html', name: 'Plain image'},
 						{url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
-						{url: 'templates/item/image-caption.html', name: 'Image with caption'},
 						{url: 'templates/item/image-caption-sliding.html', name: 'Image with sliding caption'},
 						{url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
-						{url: 'templates/item/image-plain.html', name: 'Plain image'}
+						{url: 'templates/item/image-fill.html', name: 'Overlay or background fill'},
 					];
+					if (_admin) {
+						imgTemplates.push(
+							{url: 'templates/item/image.html', name: 'Linked Image'},
+							{url: 'templates/item/image-inline.html', name: 'Inline Image'},
+							{url: 'templates/item/image-caption.html', name: 'Image with caption'}
+						);
+					}
+					return imgTemplates;
 				case 'file':
 					return [
 						{url: 'templates/item/file.html', name: 'Uploaded File'}
@@ -195,8 +203,22 @@
 					//need a little feedback as the spreadsheet is a little confusing for this
 					//section
 					break;
+
 				case 'image':
 					_displayDropdownVisible = true;
+					if (item.stop === true) {
+						item.layouts[0] = 'windowFg';
+					} else {
+						item.layouts[0] = 'inline';
+					}
+					switch(item.templateUrl) {
+						case 'templates/item/image-plain.html':
+						case 'templates/item/image-inline-withtext.html':
+						case 'templates/item/image-caption-sliding.html':
+						case 'templates/item/image.html':
+							item.layouts[0] = 'inline';
+							break;
+					}
 					break;
 			}
 		}
@@ -248,7 +270,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}

@@ -44,7 +44,7 @@
 							<itt-description-field></itt-description-field>
 							<itt-template-select></itt-template-select>
 							<itt-image-field></itt-image-field>
-							<itt-flags></itt-flags>
+							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="transcript">
 							<!--time, speaker, transcript, speaker thumbnail-->
@@ -60,7 +60,7 @@
 							<itt-template-select></itt-template-select>
 							<itt-speaker-field></itt-speaker-field>
 							<itt-title-field></itt-title-field>
-							<itt-flags></itt-flags>
+							<itt-flags item="item" flags="['required', 'stop', 'cosmetic', 'chapter_marker']"></itt-flags>
 						</div>
 						<!--scenes are layouts; hidden in this tab-->
 						<!--<div ng-switch-when="scene">-->
@@ -72,7 +72,7 @@
 							<itt-file-field></itt-file-field>
 							<itt-description-field></itt-description-field>
 							<itt-template-select></itt-template-select>
-							<itt-flags></itt-flags>
+							<itt-flags item="item" flags="['required']"></itt-flags>
 						</div>
 						<div ng-switch-when="image">
 							<!--Time, Title, Image, Description, Template, Display, Position, Orientation, Flags-->
@@ -84,7 +84,7 @@
 							<itt-display-select></itt-display-select>
 							<itt-video-position-select></itt-video-position-select>
 							<!--TODO reccommend moving orientation into layout tab-->
-							<itt-flags></itt-flags>
+							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="question">
 							<!--Time, Question type, Title, Question Text, Image, Answers, Feedback when correct, Feedback when incorrect-->
@@ -116,8 +116,9 @@
 					title="Style">
 					<div ng-switch on="item.producerItemType">
 						<!--hidden across the board-->
-						<!--<div ng-switch-when="link">-->
-						<!--</div>-->
+						<div ng-switch-when="link">
+							<itt-display-select></itt-display-select>
+						</div>
 						<!--hidden accross the board-->
 						<!--<div ng-switch-when="transcript">-->
 							<!--Template, display, flags-->
@@ -133,18 +134,17 @@
 							<itt-video-position-select></itt-video-position-select>
 							<itt-display-select></itt-display-select>
 						</div>
-						<div ng-switch-when="file">
-							<h4>{{item.producerItemType}}</h4>
-						</div>
+						<!--file hidden in style tab-->
+						<!--<div ng-switch-when="file">-->
+						<!--</div>-->
 						<!--image style tab hidden for all roles-->
 						<!--<div ng-switch-when="image">-->
-
 						<!--</div>-->
 						<div ng-switch-when="question">
 							<!--Template, Display, Flags-->
 							<itt-template-select></itt-template-select>
 							<itt-display-select></itt-display-select>
-							<itt-flags></itt-flags>
+							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="chapter">
 							<h4>{{item.producerItemType}}</h4>

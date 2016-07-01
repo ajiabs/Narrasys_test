@@ -434,15 +434,18 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.editCurrentScene = function () {
+
 			angular.forEach(getScenes(), function (scene) {
 				if (scene.isCurrent) {
 					// TODO This is redundant with ittItem editItem...
 					appState.editEvent = modelSvc.events[scene._id];
+					appState.editEvent.templateOpts = selectService.getTemplates('scene');
 					appState.editEvent.cur_episode_id = appState.episodeId;
 					appState.editEvent.episode_id = appState.episodeId;
 					appState.editEvent.producerItemType = 'scene';
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
+					selectService.onSelectChange(appState.editEvent)
 				}
 			});
 		};
