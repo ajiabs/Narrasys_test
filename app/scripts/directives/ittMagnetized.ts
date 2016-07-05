@@ -3,9 +3,8 @@
 // TODO: remove dependence on jQuery? (lots of it here)
 
 import 'jquery';
-
+ittMagnetized.$inject = ['$rootScope', '$timeout', 'appState'];
 export default function ittMagnetized($rootScope, $timeout, appState) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

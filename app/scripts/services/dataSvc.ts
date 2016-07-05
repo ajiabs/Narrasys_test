@@ -27,10 +27,9 @@
  * @requires mockSvc
  * @requires questionAnswersSvc
  */
+dataSvc.$inject = ['$q', '$http', '$routeParams', '$timeout', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
 export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
-	'ngInject';
 	var svc = {};
-
 	/* ------------------------------------------------------------------------------ */
 
 	/**

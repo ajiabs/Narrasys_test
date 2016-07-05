@@ -1,7 +1,7 @@
 'use strict';
 
+ittShowFocus.$inject = ['$timeout'];
 export default function ittShowFocus($timeout) {
-	'ngInject';
 	return function (scope, element, attrs) {
 		scope.$watch(attrs.ittShowFocus,
 			function (newValue) {

@@ -1,7 +1,8 @@
 'use strict';
 /* For admin screen episode list */
+ittContainer.$inject = ['$timeout', '$location', '$route', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc'];
+
 export default function ittContainer($timeout, $location, $route, appState, modelSvc, recursionHelper, dataSvc) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: false,

@@ -1,7 +1,7 @@
 'use strict';
 
+ItemController.$inject = ['$scope', 'timelineSvc'];
 export default function ItemController($scope, timelineSvc) {
-	'ngInject';
 	$scope.seek = function (t) {
 		timelineSvc.seek(t, "clickedOnItem", $scope.item._id);
 	};

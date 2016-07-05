@@ -1,8 +1,6 @@
 'use strict';
-
+EventTestController.$inject = ['$scope', '$routeParams', 'mockSvc', 'modelSvc', 'appState'];
 export default function EventTestController($scope, $routeParams, mockSvc, modelSvc, appState) {
-	'ngInject';
-	console.log('EventTestContrller');
 
 	mockSvc.mockEpisode("ep1");
 	appState.episodeId = "ep1";

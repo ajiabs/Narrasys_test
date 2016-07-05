@@ -22,8 +22,8 @@
  *     <input type="url" itt-validate-url item="item"/>
  * </pre>
  */
+ittValidItemUrl.$inject = ['$q', 'errorSvc', 'youtubeSvc', 'ittUtils', 'dataSvc'];
 export default function ittValidItemUrl($q, errorSvc, youtubeSvc, ittUtils, dataSvc) {
-	'ngInject';
 	return {
 		require: '?ngModel',
 		scope: {

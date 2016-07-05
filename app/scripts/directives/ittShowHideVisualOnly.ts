@@ -1,8 +1,8 @@
 'use strict';
 //import angular from 'angular';
 
-export default function ittShowHideVisualOnly($animate) {
-	'ngInject';
+ittShowHideVisualOnly.$inject = ['$animate'];
+export function ittShowHideVisualOnly($animate) {
 	return {
 		restrict: 'A',
 		multiElement: true,
@@ -18,17 +18,17 @@ export default function ittShowHideVisualOnly($animate) {
 	};
 }
 
-//angular.module('com.inthetelling.story')
-//	.animation(".visual-hide", function () {
-//		return {
-//			addClass: function (element) {
-//				//we'll use opacity, so we aren't hidden from screen readers, just hidden from eyes.
-//				element.fadeTo("slow", 0, function () {
-//				});
-//			},
-//			removeClass: function (element) {
-//				element.fadeTo("slow", 1, function () {
-//				});
-//			}
-//		};
-//	});
+export function customAnimation() {
+	return {
+		addClass: function (element) {
+			//we'll use opacity, so we aren't hidden from screen readers, just hidden from eyes.
+			element.fadeTo("slow", 0, function () {
+			});
+		},
+		removeClass: function (element) {
+			element.fadeTo("slow", 1, function () {
+			});
+		}
+	};
+}
+

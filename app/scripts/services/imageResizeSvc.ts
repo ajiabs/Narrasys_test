@@ -15,8 +15,8 @@
  * {@link https://github.com/InTheTelling/client/blob/master/app/scripts/services/imageResize.js source}
  */
 
+imageResize.$inject = ['$q'];
 export default function imageResize($q) {
-	'ngInject';
 	return {
 		createFileFromDataURL: createFileFromDataURL,
 		readFileToImg: readFileToImg,

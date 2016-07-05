@@ -7,10 +7,7 @@ var config  = require('./webpack.config');
 
 config.devtool = 'inline-source-map';
 config.entry = {
-	app: [
-		'webpack-hot-middleware/client?reload=true',
-		'./app/scripts/app.ts'
-	]
+	app: './app/scripts/app.ts'
 };
 config.output = {
 	filename: '[name].bundle.js',
@@ -18,8 +15,15 @@ config.output = {
 	path: '/webpack-dist'
 };
 
-config.plugins = config.plugins.concat([
-	new webpack.HotModuleReplacementPlugin()
+config.module.loaders = config.module.loaders.concat([
+	{
+		test: /\.css$/,
+		loader: 'style-loader!css-loader'
+	},
+	{
+		test: /\.scss$/,
+		loader: 'style!css!sass'
+	}
 ]);
 
 module.exports = config;

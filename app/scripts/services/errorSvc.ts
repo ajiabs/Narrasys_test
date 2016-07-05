@@ -7,9 +7,8 @@
 
  throw() or other js errors also get sent here by $exceptionHandler (though we're ignoring them for now)
  */
-
+errorSvc.$inject = ['$location'];
 export default function errorSvc($location) {
-	'ngInject';
 	var svc = {};
 
 	// TODO This is a mess.  make the field names less ridiculously inconsistent.

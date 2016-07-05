@@ -1,6 +1,6 @@
-'use strict';
+TimelineController.$inject = ['$scope', 'timelineSvc', 'modelSvc', 'appState'];
+
 export default function TimelineController($scope, timelineSvc, modelSvc, appState) {
-	'ngInject';
 	$scope.play = timelineSvc.play;
 	$scope.pause = timelineSvc.pause;
 

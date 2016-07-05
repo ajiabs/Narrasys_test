@@ -2,9 +2,8 @@
 
 // Was a 'panel' in the old three-modes style.  New layout combined search with review mode, still uses this.
 // Maybe rename it after we finally migrate completely away from the three-modes layout.
-
+ittSearchPanel.$inject = ['$timeout', 'appState'];
 export default function ittSearchPanel($timeout, appState) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

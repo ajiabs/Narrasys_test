@@ -38,8 +38,8 @@ export function ittNarrative() {
 	};
 }
 
+ittNarrativeCtrl.$inject = ['$scope', 'authSvc', 'appState', 'dataSvc', 'ittUtils'];
 export function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
-	'ngInject';
 	var treeOpts = {
 		accept: function (/*sourceNodeScope, destNodesScope, destIndex*/) {
 			return true;
@@ -77,6 +77,7 @@ export function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 
 	onInit();
 
+	console.log('js change!');
 	function _updateSortOrder(destIndex, arr) {
 		var len = arr.length;
 		var sortIndex = 0;

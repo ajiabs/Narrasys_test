@@ -26,9 +26,8 @@
  * @requires youtubeSvc
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
-
-export default function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
-	'ngInject';
+ittItemEditor.$inject = ['$rootScope', '$timeout', 'errorSvc', 'appState', 'modelSvc', 'timelineSvc', 'awsSvc', 'dataSvc', 'youtubeSvc'];
+export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
 	return {
 		restrict: 'A',
 		replace: true,

@@ -1,6 +1,6 @@
-'use strict';
+questionAnswersSvc.$inject = ['$q', 'analyticsSvc', 'appState'];
+
 export default function questionAnswersSvc($q, analyticsSvc, appState) {
-	'ngInject';
 	var svc = {};
 	svc.saveAnswer = function (name, eventID, data) {
 		return analyticsSvc.forceCaptureEventActivityWithPromise(name, eventID, data);

@@ -8,9 +8,8 @@
 
  */
 import 'jquery';
-
+appState.$inject = ['$interval', 'config'];
 export default function appState($interval, config) {
-	'ngInject';
 	var svc = {};
 
 		svc.init = function () {

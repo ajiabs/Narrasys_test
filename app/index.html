@@ -10,39 +10,13 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="pinterest" content="nopin"/>
 
-	<!--<link href="favicon.ico" rel="icon" type="image/x-icon">-->
-	<!--<link href="apple-touch-icon.png" rel="apple-touch-icon-precomposed">-->
-	<!--<link href="apple-touch-icon-72.png" sizes="72x72" rel="apple-touch-icon-precomposed">-->
-	<!--<link href="apple-touch-icon-114.png" sizes="114x114" rel="apple-touch-icon-precomposed">-->
+	<link href="favicon.ico" rel="icon" type="image/x-icon">
+	<link href="apple-touch-icon.png" rel="apple-touch-icon-precomposed">
+	<link href="apple-touch-icon-72.png" sizes="72x72" rel="apple-touch-icon-precomposed">
+	<link href="apple-touch-icon-114.png" sizes="114x114" rel="apple-touch-icon-precomposed">
 
 	<base href="/">
-	<!-- build:css(.tmp) styles/app-combined.css -->
-	<!--<link rel="stylesheet" href="styles/main.css">-->
-	<!--<link rel="stylesheet" href="styles/timeline.css">-->
-	<!--<link rel="stylesheet" href="styles/toolbar.css">-->
-	<!--<link rel="stylesheet" href="styles/episode.css">-->
-	<!--<link rel="stylesheet" href="styles/scene.css">-->
-	<!--<link rel="stylesheet" href="styles/item.css">-->
-
-	<!--<link rel="stylesheet" href="styles/highlights.css">-->
-	<!--<link rel="stylesheet" href="styles/transitions.css">-->
-	<!--<link rel="stylesheet" href="styles/typography.css">-->
-	<!--<link rel="stylesheet" href="styles/colors.css">-->
-
-	<!--<link rel="stylesheet" href="styles/narrative.css">-->
-
-	<!--<link rel="stylesheet" href="styles/admin.css">-->
-	<!--<link rel="stylesheet" href="styles/producer.css">-->
-	<!-- endbuild -->
-
-	<!-- build:css(.tmp) styles/vendor-combined.css -->
-	<link rel="stylesheet" href="styles/textangular.css">
-	<link rel="stylesheet" href="styles/angular-ui-tree.min.css">
-	<!-- endbuild -->
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
-
-
 	<!-- TODO: build only the fonts needed for the current episode -->
 	<link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700|EB+Garamond|Droid+Serif|Roboto:400,300,700,400italic|Montserrat:400,700|Cardo|Crimson+Text:400,700|Source+Sans+Pro:300,400|Lato:100,300,700' rel='stylesheet' type='text/css'>
 </head>
@@ -56,113 +30,17 @@
 	<div id="CONTAINER" x-ng-view=""></div>
 	<div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
 
-	<script src="config.js"></script>
+	<!--<script src="config.js"></script>-->
 	<!-- CDN links-->
-	<!--<script src="//sdk.amazonaws.com/js/aws-sdk-2.0.15.min.js"></script>-->
+
 	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
-	<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
-	<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>-->
-	<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-animate.min.js"></script>-->
-	<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-sanitize.min.js"></script>-->
+	<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>-->
+	<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.min.js"></script>-->
+	<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-animate.min.js"></script>-->
+	<!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-sanitize.min.js"></script>-->
 	<!-- end CDN -->
-
-	<!-- build:js({.tmp,app}) scripts/vendor-combined.min.js -->
-	<!--<script src="bower_components/flot/jquery.flot.js"></script>-->
-	<!--<script src="bower_components/flot/jquery.flot.pie.js"></script>-->
-	<!--<script src="bower_components/textAngular/dist/textAngular-rangy.min.js"></script>-->
-	<!--<script src="bower_components/textAngular/dist/textAngular-sanitize.min.js"></script>-->
-	<!--<script src="bower_components/textAngular/dist/textAngular.min.js"></script>-->
-	<!--<script src="bower_components/angular-ui-tree/dist/angular-ui-tree.min.js"></script>-->
-	<!--<script src="scripts/plugin/newrelic.js"></script>-->
-	<!-- endbuild -->
-	<!-- build:js({.tmp,app}) scripts/app-combined.min.js -->
-	<!--<script src="scripts/app.js"></script>-->
-	<!--<script src="scripts/templates.js"></script>-->
-	<!--<script src="scripts/services/config.js"></script>-->
-	<!--<script src="scripts/services/appState.js"></script>-->
-	<!--<script src="scripts/services/authSvc.ts"></script>-->
-	<!--<script src="scripts/services/awsSvc.js"></script>-->
-	<!--<script src="scripts/services/dataSvc.ts"></script>-->
-	<!--<script src="scripts/services/errorSvc.js"></script>-->
-	<!--<script src="scripts/services/modelSvc.ts"></script>-->
-	<!--<script src="scripts/services/timelineSvc.js"></script>-->
-	<!--<script src="scripts/services/analyticsSvc.js"></script>-->
-	<!--<script src="scripts/services/youtubeSvc.js"></script>-->
-	<!--<script src="scripts/services/YouTubeAPI.svc.js"></script>-->
-	<!--<script src="scripts/services/YouTubePlayerManager.svc.js"></script>-->
-	<!--<script src="scripts/services/questionAnswersSvc.js"></script>-->
-	<!--<script src="scripts/services/recursionHelper.js"></script>-->
-	<!--<script src="scripts/services/mockSvc.js"></script>-->
-	<!--<script src="scripts/services/imageResizeSvc.js"></script>-->
-	<!--<script src="scripts/services/ittUtils.js"></script>-->
-
-	<!--<script src="scripts/filters/filters.js"></script>-->
-
-	<!--<script src="scripts/controllers/ErrorController.js"></script>-->
-
-	<!--<script src="scripts/controllers/TimelineController.js"></script>-->
-	<!--<script src="scripts/controllers/PlayerController.js"></script>-->
-	<!--<script src="scripts/controllers/EpisodeController.js"></script>-->
-	<!--<script src="scripts/controllers/SceneController.js"></script>-->
-	<!--<script src="scripts/controllers/ItemController.js"></script>-->
-	<!--<script src="scripts/controllers/VideoController.js"></script>-->
-	<!--<script src="scripts/controllers/SearchPanelController.js"></script>-->
-	<!--<script src="scripts/controllers/NarrativeController.ts"></script>-->
-	<!--<script src="scripts/controllers/NarrativesController.ts"></script>-->
-
-	<!--<script src="scripts/controllers/EditController.js"></script>-->
-	<!--<script src="scripts/controllers/EventTestController.js"></script>-->
-
-	<!--<script src="scripts/directives/ittLogin.js"></script>-->
-	<!--<script src="scripts/directives/autofocus.js"></script>-->
-
-	<!--<script src="scripts/directives/ittMcQuestion.js"></script>-->
-	<!--<script src="scripts/directives/ittFlotChart.js"></script>-->
-
-	<!--<script src="scripts/directives/ittTimeline.js"></script>-->
-	<!--<script src="scripts/directives/ittEpisode.js"></script>-->
-	<!--<script src="scripts/directives/ittScene.js"></script>-->
-	<!--<script src="scripts/directives/ittShowHideVisualOnly.js"></script>-->
-	<!--<script src="scripts/directives/ittShowFocus.js"></script>-->
-	<!--<script src="scripts/directives/ittToolbarStory.js"></script>-->
-	<!--<script src="scripts/directives/ittVolumeSlider.js"></script>-->
-	<!--<script src="scripts/directives/ittIframe.js"></script>-->
-	<!--<script src="scripts/directives/ittLoading.js"></script>-->
-
-	<!--<script src="scripts/directives/ittWidthWatch.js"></script>-->
-	<!--<script src="scripts/directives/ittReviewMode.js"></script>-->
-	<!--<script src="scripts/directives/ittItem.js"></script>-->
-	<!--<script src="scripts/directives/ittItemDetailModal.js"></script>-->
-	<!--<script src="scripts/directives/ittEpisodeEditor.js"></script>-->
-	<!--<script src="scripts/directives/ittItemEditor.js"></script>-->
-	<!--<script src="scripts/directives/ittVideo.js"></script>-->
-	<!--<script src="scripts/directives/ittMagnetized.js"></script>-->
-	<!--<script src="scripts/directives/ittMagnet.js"></script>-->
-	<!--<script src="scripts/directives/ittSearchPanel.js"></script>-->
-	<!--<script src="scripts/directives/ittContainer.js"></script>-->
-	<!--<script src="scripts/directives/ittContainerEpisodes.js"></script>-->
-	<!--<script src="scripts/directives/ittEpisodeList.js"></script>-->
-	<!--<script src="scripts/directives/ittUser.ts"></script>-->
-	<!--<script src="scripts/directives/ittNarrative.ts"></script>-->
-	<!--<script src="scripts/directives/ittNarrativeList.ts"></script>-->
-	<!--<script src="scripts/directives/ittNarrativeTimeline.js"></script>-->
-	<!--<script src="scripts/directives/ittYoutubeEmbed.js"></script>-->
-	<!--<script src="scripts/directives/ittValidItemUrl.ts"></script>-->
-	<!--<script src="scripts/directives/ittRouteLoading.ts"></script>-->
-	<!--<script src="scripts/directives/ittValidUrl.ts"></script>-->
-
-	<!--<script src="scripts/directives/sxsAddContent.js"></script>-->
-	<!--<script src="scripts/directives/sxsInputTime.js"></script>-->
-	<!--<script src="scripts/directives/sxsAnnotatorAutocomplete.js"></script>-->
-	<!--<script src="scripts/directives/sxsInputI18n.js"></script>-->
-	<!--<script src="scripts/directives/ittTabs.js"></script>-->
-	<!--<script src="scripts/directives/sxsContainerAssets.js"></script>-->
-	<!--<script src="scripts/directives/ittAssetUploader.js"></script>-->
-	<!--<script src="scripts/directives/ittModal.ts"></script>-->
-	<!--<script src="scripts/directives/ittEditPencil.ts"></script>-->
-	<!--<script src="scripts/directives/ittNarrativeEditor.ts"></script>-->
-	<!--<script src="scripts/directives/ittTimelineEditor.ts"></script>-->
-	<!-- endbuild -->
+	<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+	<script src="//sdk.amazonaws.com/js/aws-sdk-2.0.15.min.js"></script>
 </body>
 
 </html>

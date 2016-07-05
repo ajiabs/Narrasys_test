@@ -9,6 +9,7 @@
     "youtube": "registry:dt/youtube#0.0.0+20160317120654"
   },
   "ambientDevDependencies": {
+    "angular-animate": "registry:dt/angular-animate#1.5.0+20160624085506",
     "require": "registry:dt/require#2.1.20+20160316155526"
   }
 }

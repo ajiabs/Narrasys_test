@@ -1,7 +1,6 @@
 'use strict';
-
-export default function sxsInputI18n(appState, $timeout, textAngularManager) {
-	'ngInject';
+sxsInputI18n.$inject = ['$timeout', 'appState', 'textAngularManager'];
+export default function sxsInputI18n($timeout, appState, textAngularManager) {
 	return {
 		templateUrl: 'templates/producer/inputi18n.html',
 		scope: {

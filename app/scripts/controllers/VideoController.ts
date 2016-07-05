@@ -9,9 +9,9 @@
 // NOTE iPhone has a separate video controller which doesn't send all the user events to the web side.
 // This screws with all our stall watchers and babysitters since we can't distinguish between intententional pauses and unintended stalls.
 // babysitters and stalls are disabled on phone therefore.
+VideoController.$inject = ['$q', '$scope', '$rootScope', '$timeout', '$interval', '$window', '$document', 'appState', 'timelineSvc', 'analyticsSvc', 'youTubePlayerManager'];
 
-export default function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
-	'ngInject';
+export default function VideoController($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
 	//exported functions / props
 	angular.extend($scope, {
 		initVideo: initVideo,

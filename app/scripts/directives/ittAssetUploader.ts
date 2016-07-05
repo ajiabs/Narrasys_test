@@ -1,7 +1,8 @@
 'use strict';
 
+ittAssetUploader.$inject = ['$timeout', 'awsSvc', 'appState', 'modelSvc'];
+
 export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: false,

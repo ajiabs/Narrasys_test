@@ -2,8 +2,8 @@
 
 
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
+sxsContainerAssets.$inject = ['$routeParams', '$rootScope', 'recursionHelper', 'dataSvc', 'modelSvc', 'awsSvc', 'appState'];
 export default function sxsContainerAssets($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: false,

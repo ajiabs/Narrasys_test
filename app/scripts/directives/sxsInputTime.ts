@@ -1,9 +1,8 @@
 'use strict';
 
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
-
-export default function sxsInputTime(appState, $rootScope, $timeout, modelSvc, timelineSvc) {
-	'ngInject';
+sxsInputTime.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'timelineSvc'];
+export default function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc) {
 	return {
 		// require: 'ngModel',
 		scope: {

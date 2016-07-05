@@ -48,9 +48,8 @@ export function ittYoutube() {
 		bindToController: true
 	};
 }
-
+ittYoutubeCtrl.$inject = ['$timeout', '$scope', 'youTubePlayerManager', 'youtubeSvc'];
 export function ittYoutubeCtrl($timeout: ng.ITimeoutService, $scope: ng.IScope, youTubePlayerManager: IPlayer, youtubeSvc) {
-	'ngInject';
 	var _ctrl = this;  //jshint ignore:line
 	_ctrl.isMainPlayer = _ctrl.mainPlayer();
 	_ctrl.ytVideoID = youtubeSvc.extractYoutubeId(_ctrl.embedUrl);

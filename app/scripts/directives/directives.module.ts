@@ -26,7 +26,7 @@ import ittReviewMode from './ittReviewMode';
 import ittScene from './ittScene';
 import ittSearchPanel from './ittSearchPanel';
 import ittShowFocus from './ittShowFocus';
-import ittShowHideVisualOnly from './ittShowHideVisualOnly';
+import {ittShowHideVisualOnly, customAnimation} from './ittShowHideVisualOnly';
 import ittTab from './ittTab';
 import ittTabs from './ittTabs';
 import ittTimeline from './ittTimeline';
@@ -77,6 +77,7 @@ let directivesModule = angular.module('iTT.directives', [])
 	.directive('ittSearchPanel', ittSearchPanel)
 	.directive('ittShowFocus', ittShowFocus)
 	.directive('ittShowHideVisualOnly', ittShowHideVisualOnly)
+	.animation('.visual-hide', customAnimation)
 	.directive('ittTab', ittTab)
 	.directive('ittTabs', ittTabs)
 	.directive('ittTimeline', ittTimeline)

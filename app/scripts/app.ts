@@ -1,4 +1,3 @@
-'use strict';
 
 import './plugin/newrelic';
 import '../config';
@@ -32,8 +31,7 @@ let ittApp = angular.module('iTT', [
 ])
 
 // Configure routing
-.config(function ($routeProvider) {
-	'ngInject';
+.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider
 		.when('/', {
 			title: "Telling STORY",
@@ -51,8 +49,7 @@ let ittApp = angular.module('iTT', [
 			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div></div>',
 			controller: 'NarrativesCtrl',
 			resolve: {
-				narrativesResolve: function($route, $q,  ittUtils, authSvc, dataSvc, modelSvc) {
-					'ngInject';
+				narrativesResolve: ['$route', '$q', 'ittUtils', 'authSvc', 'dataSvc', 'modelSvc', function($route, $q, ittUtils, authSvc, dataSvc, modelSvc) {
 					var cachedNars = modelSvc.narratives;
 					var cachedCustomers;
 					//if use visits /story/:id prior to visiting this route, they will have a single
@@ -81,15 +78,14 @@ let ittApp = angular.module('iTT', [
 							});
 						});
 					});
-				}
+				}]
 			}
 		})
 		.when('/story/:narrativePath', {
 			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve" customer-data="customersResolve"></div></div>',
 			controller: 'NarrativeCtrl',
 			resolve: {
-				narrativeResolve: function($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
-					'ngInject';
+				narrativeResolve: ['$route', '$q', 'authSvc', 'dataSvc', 'modelSvc', 'ittUtils', function($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
 					var pathOrId = $route.current.params.narrativePath;
 					//this only pulls from the cache.
 					var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
@@ -107,16 +103,16 @@ let ittApp = angular.module('iTT', [
 							return {n: narrativeData, c: customers};
 						});
 					});
-				}
+				}]
 			}
 		})
 		.when('/story/:narrativePath/:timelinePath', {
 			template: '<div itt-narrative-timeline></div>',
 			resolve: {
-				product: function (appState) {
+				product: ['appState', function (appState) {
 					appState.product = "player";
 					appState.productLoadedAs = "narrative";
-				}
+				}]
 			}
 		})
 		.when('/episodes', {
@@ -128,10 +124,10 @@ let ittApp = angular.module('iTT', [
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
-				product: function (appState) {
+				product: ['appState', function (appState) {
 					appState.product = "player";
 					appState.productLoadedAs = "player";
-				}
+				}]
 			}
 		})
 		.when('/episode/:epId/:viewMode', {
@@ -139,10 +135,10 @@ let ittApp = angular.module('iTT', [
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
-				product: function (appState) {
+				product: ['appState', function (appState) {
 					appState.product = "player";
 					appState.productLoadedAs = "player";
-				}
+				}]
 			}
 		})
 		.when('/sxs/:epId', {
@@ -150,10 +146,10 @@ let ittApp = angular.module('iTT', [
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
-				product: function (appState) {
+				product:['appState', function (appState) {
 					appState.product = "sxs";
 					appState.productLoadedAs = "sxs";
-				}
+				}]
 			}
 		})
 		.when('/editor/:epId', {
@@ -161,10 +157,10 @@ let ittApp = angular.module('iTT', [
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
-				product: function (appState) {
+				product: ['appState', function (appState) {
 					appState.product = "sxs";
 					appState.productLoadedAs = "sxs";
-				}
+				}]
 			}
 		})
 		.when('/producer/:epId', {
@@ -172,10 +168,10 @@ let ittApp = angular.module('iTT', [
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
-				product: function (appState) {
+				product: ['appState',function (appState) {
 					appState.product = "producer";
 					appState.productLoadedAs = "producer";
-				}
+				}]
 			}
 		})
 		.when('/assets/:containerId', {
@@ -195,10 +191,9 @@ let ittApp = angular.module('iTT', [
 		});
 
 	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
-})
+}])
 
-.run(function ($rootScope, errorSvc) {
-	'ngInject';
+.run(['$rootScope', 'errorSvc', function ($rootScope, errorSvc) {
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
 		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
 		errorSvc.init(); // clear display of any errors from the previous route
@@ -230,6 +225,6 @@ let ittApp = angular.module('iTT', [
 	$(document).on("keyup", function () {
 		fhotkb = false; // oh good they've woken up
 	});
-});
+}]);
 
 export default ittApp;

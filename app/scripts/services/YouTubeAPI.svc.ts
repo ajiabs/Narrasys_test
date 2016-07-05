@@ -6,7 +6,6 @@ class YoutubePlayerApi {
 	public dfd: Promise;
 	public cancelIframe: Function;
 	constructor($timeout: ng.ITimeoutService, $q: ng.IQService) {
-		'ngInject';
 		this.$q = $q;
 		this.$timeout = $timeout;
 		//this.timesRan = 0;
@@ -68,5 +67,7 @@ class YoutubePlayerApi {
 		return found;
 	}
 }
+
+YoutubePlayerApi.$inject = ['$timeout', '$q'];
 
 export default YoutubePlayerApi;

@@ -1,7 +1,7 @@
 'use strict';
+SceneController.$inject = ['$scope', '$filter'];
 
 export default function SceneController($scope, $filter) {
-	'ngInject';
 	$scope.precalculateSceneValues = function () {
 		// console.log("precalcSceneValues");
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;

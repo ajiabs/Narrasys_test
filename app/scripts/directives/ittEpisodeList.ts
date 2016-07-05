@@ -1,6 +1,5 @@
-'use strict';
+ittEpisodeList.$inject = ['$location', '$timeout', 'appState', 'authSvc', 'dataSvc', 'modelSvc'];
 export default function ittEpisodeList($location, $timeout, appState, authSvc, dataSvc, modelSvc) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

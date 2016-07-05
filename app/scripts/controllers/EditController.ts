@@ -1,7 +1,7 @@
 'use strict';
 
+EditController.$inject = ['$q', '$scope', '$rootScope', '$timeout', '$window', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc'];
 export default function EditController($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
-	'ngInject';
 	$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)

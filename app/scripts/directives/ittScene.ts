@@ -3,9 +3,8 @@
 // Minor jquery dependency ($.inArray)
 
 import 'jquery';
-
+ittScene.$inject = ['$timeout', '$interval', 'appState'];
 export default function ittScene($timeout, $interval, appState) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: false,

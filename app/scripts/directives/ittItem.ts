@@ -5,8 +5,8 @@
  so they get logged properly: don't draw plain hrefs
  */
 
-export default function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager) {
-	'ngInject';
+ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'youtubeSvc', 'youTubePlayerManager'];
+export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager) {
 	return {
 		restrict: 'A',
 		replace: false,

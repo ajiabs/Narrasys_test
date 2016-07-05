@@ -5,8 +5,8 @@
 
  TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
  */
+ittEpisodeEditor.$inject = ['$rootScope', 'appState', 'errorSvc', 'modelSvc', 'dataSvc', 'awsSvc', 'youtubeSvc'];
 export default function ittEpisodeEditor($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

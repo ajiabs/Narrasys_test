@@ -1,8 +1,8 @@
 'use strict';
 
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
+PlayerController.$inject = ['config', '$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'errorSvc', 'authSvc', 'youTubePlayerManager'];
 export default function PlayerController(config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager) {
-	'ngInject';
 	// console.log("playerController", $scope);
 
 		// $scope.tmp = function () {

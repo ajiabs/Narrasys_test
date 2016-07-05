@@ -1,6 +1,5 @@
-'use strict';
+ittEpisode.$inject = ['$interval', 'analyticsSvc', 'modelSvc', 'appState'];
 export default function ittEpisode($interval, analyticsSvc, modelSvc, appState) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

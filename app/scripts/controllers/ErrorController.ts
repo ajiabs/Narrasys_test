@@ -1,7 +1,7 @@
 'use strict';
 
+ErrorController.$inject = ['$scope', '$http', 'config', 'errorSvc', 'appState', 'authSvc'];
 export default function ErrorController($scope, $http, config, errorSvc, appState, authSvc) {
-	'ngInject';
 	// console.log("errorController", $scope);
 
 	$scope.errorSvc = errorSvc;

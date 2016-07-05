@@ -1,8 +1,8 @@
 'use strict';
 // attach to any directive to make its first input/textarea autofocus
 
+autofocus.$inject = ['$timeout'];
 export default function autofocus($timeout) {
-	'ngInject';
 	return {
 		link: function (scope, element) {
 			$timeout(function () { // give any child directives time to render themselves...

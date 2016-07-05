@@ -5,9 +5,8 @@
 // (why don't all ng-repeats do this?  More to the point, why don't all of OUR ng-repeats do this?)
 
 // NOTE this is only used in the "review mode", not in the new combined search/review
-
+ittReviewMode.$inject = ['appState', '$timeout'];
 export default function ittReviewMode(appState, $timeout) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: false,

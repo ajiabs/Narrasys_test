@@ -1,7 +1,7 @@
 'use strict';
 /* For now this is just a thin wrapper around the playerController */
+ittNarrativeTimeline.$inject = ['$routeParams', '$timeout', 'dataSvc', 'appState', 'authSvc', 'modelSvc', 'errorSvc'];
 export default function ittNarrativeTimeline($routeParams, $timeout, dataSvc, appState, authSvc, modelSvc, errorSvc) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

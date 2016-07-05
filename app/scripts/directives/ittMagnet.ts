@@ -4,8 +4,8 @@
 // In watch mode (only), also watches the window size and tries to keep the video from overflowing the window height
 
 // TODO: remove dependence on jQuery?  (.is(:visible))
+ittMagnet.$inject = ['$rootScope', 'appState'];
 export default function ittMagnet($rootScope, appState) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

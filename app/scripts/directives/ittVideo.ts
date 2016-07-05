@@ -1,8 +1,8 @@
 'use strict';
 
 // use only for master asset!
+ittVideo.$inject = ['$timeout', '$interval', '$rootScope', 'appState', 'timelineSvc', 'dataSvc', 'modelSvc'];
 export default function ittVideo($timeout, $interval, $rootScope, appState, timelineSvc, dataSvc, modelSvc) {
-	'ngInject';
 	var uniqueDirectiveID = 0; // Youtube wants to work via DOM IDs; this is a cheap way of getting unique ones
 
 	return {

@@ -1,17 +1,14 @@
-'use strict';
 
 /*
  No UI for this directive. This originally showed a login form but that led to a flash-of-content when authenticating via lti
 
  */
+ittLogin.$inject = ['$location', '$routeParams', 'config', 'authSvc', 'appState', 'errorSvc'];
 export default function ittLogin($location, $routeParams, config, authSvc, appState, errorSvc) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: false,
-
 		link: function (scope) {
-
 			scope.userHasRole = authSvc.userHasRole;
 
 			scope.appState = appState;

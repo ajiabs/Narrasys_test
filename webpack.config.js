@@ -5,8 +5,6 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-console.log(path.resolve(__dirname, 'app'));
-
 module.exports = {
 	resolve: {
 		extensions: ['', '.ts', '.js']
@@ -16,15 +14,7 @@ module.exports = {
 			{
 				test: /\.ts$/,
 				exclude: [/app\/scripts\/plugin/, /node_modules/],
-				loader: 'ng-annotate!ts-loader'
-			},
-			{
-				test: /\.css$/,
-				loader: 'style-loader!css-loader'
-			},
-			{
-				test: /\.scss$/,
-				loader: 'style!css!sass'
+				loader: 'ts-loader'
 			},
 			{
 				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -52,18 +42,14 @@ module.exports = {
 			inject: 'body',
 			hash: false
 		}),
-
 		new webpack.ProvidePlugin({
 			$: "jquery",
 			jQuery: "jquery",
 			'window.jQuery': 'jquery'
 		}),
-
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'vendor',
-			minChunks: function (module, count) {
-				return module.resource && module.resource.indexOf(path.resolve(__dirname, 'app')) === -1;
-			}
+			minChunks: module => /node_modules/.test(module.resource)
 		})
 	]
 

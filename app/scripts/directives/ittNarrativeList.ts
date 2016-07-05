@@ -1,5 +1,4 @@
 export function ittNarrativeList() {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,
@@ -14,8 +13,8 @@ export function ittNarrativeList() {
 	};
 }
 
+NarrativeListCtrl.$inject = ['$location', 'authSvc', 'appState', 'dataSvc'];
 export function NarrativeListCtrl($location, authSvc, appState, dataSvc) {
-	'ngInject';
 	var ctrl = this;
 
 	ctrl.narratives = ctrl.narrativesData;

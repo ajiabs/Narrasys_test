@@ -4,7 +4,6 @@ import 'flot-charts';
 
 // an angular.js wrapper for flot charting library -http://www.flotcharts.org/ but using flot.pie.js
 export default function ittFlotr2Chart() {
-	'ngInject';
 	var uniqueId = 1;
 	return {
 		restrict: 'E',

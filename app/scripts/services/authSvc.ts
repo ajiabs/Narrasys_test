@@ -1,5 +1,5 @@
-export default function authSvc(config, $routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
-	'ngInject';
+authSvc.$inject = ['$routeParams', '$http', '$q', '$location', 'config', 'ittUtils', 'appState', 'modelSvc', 'errorSvc'];
+export default function authSvc($routeParams, $http, $q, $location, config, ittUtils, appState, modelSvc, errorSvc) {
 	// console.log('authSvc factory');
 	var svc = {};
 	var Roles = {

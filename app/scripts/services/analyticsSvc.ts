@@ -29,8 +29,8 @@
  question-answered		for quiz questions.  Data field should be {answer: 'answer text', correct: t/f}
  */
 
+analyticsSvc.$inject = ['$q', '$http', '$routeParams', '$interval', 'config', 'appState'];
 export default function analyticsSvc($q, $http, $routeParams, $interval, config, appState) {
-	'ngInject';
 	// console.log('analyticsSvc factory');
 	var svc = {};
 

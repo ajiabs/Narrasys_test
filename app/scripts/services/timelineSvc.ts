@@ -30,9 +30,8 @@
  TODO: have a way to delete a portion of the timeline (so sXs users can skip scenes)
 
  */
+timelineSvc.$inject = ['$window', '$timeout', '$interval', '$rootScope', '$filter', 'config', 'modelSvc', 'appState', 'analyticsSvc'];
 export default function timelineSvc($window, $timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc) {
-
-	'ngInject';
 	var svc = {};
 
 	svc.timelineEvents = []; // each entry consists of {t:n, id:eventID|timeline, action:enter|exit|pause|play}. Keep sorted by t.

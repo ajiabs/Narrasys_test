@@ -1,6 +1,5 @@
-'use strict';
+ittContainerEpisodes.$inject = ['modelSvc', 'recursionHelper', 'appState', 'dataSvc'];
 export default function ittContainerEpisodes(modelSvc, recursionHelper, appState, dataSvc) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: false,
@@ -9,14 +8,13 @@ export default function ittContainerEpisodes(modelSvc, recursionHelper, appState
 			forAdmin: '=forAdmin'
 		},
 		templateUrl: "templates/containerepisodes.html",
-		controller: function($scope) {
-
+		controller: ['$scope', function($scope) {
 			$scope.selectEpisode = function(e) {
 				$scope.onNodeClick({node: e});
 				console.log('ctrl select epi', e);
 				// $scope.emit('episodeSelected', e);
 			};
-		},
+		}],
 		compile: function (element) {
 			// Use the compile function from the recursionHelper,
 			// And return the linking function(s) which it returns

@@ -1,7 +1,6 @@
 'use strict';
-
+ittMcQuestion.$inject = ['questionAnswersSvc', 'analyticsSvc', 'appState'];
 export default function ittMcQuestion(questionAnswersSvc, analyticsSvc, appState) {
-	'ngInject';
 	return {
 		restrict: 'E',
 		replace: false,

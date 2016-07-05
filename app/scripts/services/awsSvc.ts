@@ -1,8 +1,6 @@
 /*jshint bitwise: false*/
-'use strict';
-
-export default function awsSvc(config, $routeParams, $http, $q) {
-	'ngInject';
+awsSvc.$inject = ['$routeParams', '$http', '$q', 'config'];
+export default function awsSvc($routeParams, $http, $q, config) {
 	// console.log('awsSvc, user: ', appState.user);
 	var MAX_CHUNKS = 1000;
 	var MAX_SIMUL_PARTS_UPLOADING = 3;

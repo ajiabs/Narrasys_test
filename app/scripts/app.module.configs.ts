@@ -5,8 +5,7 @@ import 'angular';
 
 let configsModule = angular.module('iTT.configs', [])
 //// Configure x-domain resource whitelist (TODO: do we actually need this?)
-	.config(function ($sceDelegateProvider, $httpProvider, $compileProvider) {
-		'ngInject';
+	.config(['$sceDelegateProvider', '$httpProvider', '$compileProvider',($sceDelegateProvider, $httpProvider, $compileProvider) => {
 		$sceDelegateProvider.resourceUrlWhitelist([
 			'self',
 			/.*/,
@@ -17,24 +16,23 @@ let configsModule = angular.module('iTT.configs', [])
 		$httpProvider.defaults.useXDomain = true;
 		$httpProvider.defaults.withCredentials = true;
 		delete $httpProvider.defaults.headers.common['X-Requested-With'];
-		$httpProvider.interceptors.push(function ($q, errorSvc) {
+		$httpProvider.interceptors.push(['$q', 'errorSvc',function ($q, errorSvc) {
 			return {
 				'responseError': function (rejection) {
 					errorSvc.error(rejection);
 					return $q.reject(rejection);
 				}
 			};
-		});
+		}]);
 
 		var isDev = false;
 		var currentHost = window.location.hostname;
 		if (currentHost.indexOf('localhost') === 0 || currentHost.indexOf('api-dev') === 0) {
 			isDev = true;
 		}
-
 		if (isDev === false) {
 			$compileProvider.debugInfoEnabled(false);
 		}
-	});
+	}]);
 
 export default configsModule;

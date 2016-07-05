@@ -1,6 +1,6 @@
 
+ittUser.$inject = ['$q', 'appState', 'authSvc', 'dataSvc', 'awsSvc', 'modelSvc', 'imageResize'];
 export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc, imageResize) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

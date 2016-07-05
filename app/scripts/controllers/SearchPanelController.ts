@@ -1,8 +1,9 @@
 'use strict';
 
 // Controller for the search panel results
+SearchPanelController.$inject = ['$scope', '$rootScope', '$timeout', 'timelineSvc', 'modelSvc', 'appState'];
+
 export default function SearchPanelController($scope, $rootScope, $timeout, timelineSvc, modelSvc, appState) {
-	'ngInject';
 	// Events searchableText is:
 	// (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator)
 

@@ -8,9 +8,7 @@ import 'textAngular';
 import 'angular-ui-tree';
 
 let thirdParty = angular.module('iTT.3rdPartyLibs', ['textAngular', 'ui.tree'])
-.config(($provide) => {
-	'ngInject';
-
+.config(['$provide', ($provide) => {
 	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
 		taOptions.forceTextAngularSanitize = false;
 
@@ -25,6 +23,6 @@ let thirdParty = angular.module('iTT.3rdPartyLibs', ['textAngular', 'ui.tree'])
 		];
 		return taOptions;
 	}]);
-});
+}]);
 
 export default thirdParty;

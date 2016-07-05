@@ -1,6 +1,5 @@
-'use strict';
+youtubeSvc.$inject = ['$q', '$http', '$timeout', 'config'];
 export default function youtubeSvc($q, $http, $timeout, config) {
-	'ngInject';
 	var svc = {};
 
 		var getVideoMetaData = function (id) {

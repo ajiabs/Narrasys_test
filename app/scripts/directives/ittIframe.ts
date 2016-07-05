@@ -20,8 +20,8 @@
  * </pre>
  */
 
+ittIframe.$inject = ['appState'];
 export function ittIframe(appState) {
-	'ngInject';
 	return {
 		restrict: 'E',
 		scope: {
@@ -103,8 +103,8 @@ export function ittIframe(appState) {
 
 }
 
+ittIframeCtrl.$inject = ['$scope', 'ittUtils', 'youtubeSvc', 'appState'];
 export function ittIframeCtrl($scope, ittUtils, youtubeSvc, appState) {
-	'ngInject';
 	// moved this all back out of the controller to avoid leaking $scope.sandbox across directives
 	var _ctrl = this; //jshint ignore:line
 	var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';

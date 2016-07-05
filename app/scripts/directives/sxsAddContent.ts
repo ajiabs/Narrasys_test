@@ -7,9 +7,8 @@
  look for current scene.id matching "internal".  Dim buttons instead of hiding them completely.
 
  */
-
+sxsAddContent.$inject = ['appState'];
 export default function sxsAddContent(appState) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

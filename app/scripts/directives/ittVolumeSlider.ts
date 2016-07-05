@@ -1,6 +1,6 @@
 'use strict';
+ittVolumeSlider.$inject = ['appState'];
 export default function ittVolumeSlider(appState) {
-	'ngInject';
 	return {
 		restrict: 'E',
 		scope: true,

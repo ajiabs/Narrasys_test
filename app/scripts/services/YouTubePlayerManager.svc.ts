@@ -17,8 +17,8 @@ import {IPlayer} from '../interfaces/IPlayer';
  * @requires YoutubePlayerApi
  * @requires errorSvc
  */
+youTubePlayerManager.$inject = ['$q', '$location', 'appState', 'timelineSvc', 'YoutubePlayerApi', 'errorSvc'];
 export default function youTubePlayerManager($q: ng.IQService, $location: ng.ILocationService, appState, timelineSvc, YoutubePlayerApi, errorSvc): IPlayer {
-	'ngInject';
 	var _youTubePlayerManager;
 	var _players = {};
 	var _mainPlayerId;

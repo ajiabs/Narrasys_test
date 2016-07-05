@@ -3,9 +3,8 @@
 // for quick debugging of templates.
 
 // TODO: figure out how to get grunt to omit this from the build
-
+mockSvc.$inject = ['modelSvc'];
 export default function mockSvc(modelSvc) {
-	'ngInject';
 	var svc = {};
 	svc.keepJsLintHappy = function () {
 		var noop = modelSvc.episodes.noop;

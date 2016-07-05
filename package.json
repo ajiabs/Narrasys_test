@@ -16,7 +16,6 @@
   "dependencies": {
     "angular": "^1.5.5",
     "angular-animate": "^1.5.5",
-    "angular-resource": "^1.5.5",
     "angular-route": "^1.5.5",
     "angular-sanitize": "^1.5.5",
     "angular-ui-tree": "^2.16.0",
@@ -27,23 +26,24 @@
   "devDependencies": {
     "browser-sync": "^2.11.1",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^1.8.0",
+    "gulp-autoprefixer": "^3.1.0",
     "gulp-util": "^3.0.7",
     "html-webpack-plugin": "^2.10.0",
-    "ng-annotate-loader": "^0.1.0",
     "node-sass": "^3.4.2",
     "rimraf": "^2.5.2",
+    "run-sequence": "^1.2.2",
     "sass-loader": "^3.2.0",
     "style-loader": "^0.13.0",
     "ts-loader": "^0.8.2",
     "tslint": "^3.10.1",
-    "typescript": "^1.8.10",
+    "typescript": "^1.9.0-dev.20160624-1.0",
     "typings": "^0.8.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.14",
-    "webpack-dev-middleware": "^1.5.1",
-    "webpack-hot-middleware": "^2.10.0"
+    "webpack": "2.1.0-beta.15",
+    "webpack-dev-middleware": "^1.5.1"
   }
 }

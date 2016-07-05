@@ -13,8 +13,8 @@
  * @param {Object} item Event object to display in modal
  */
 
+ittItemDetailModal.$inject = ['appState'];
 export default function ittItemDetailModal(appState) {
-	'ngInject';
 	return {
 		restrict: 'A',
 		replace: true,

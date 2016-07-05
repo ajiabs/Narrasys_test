@@ -1,7 +1,6 @@
 'use strict';
-
+recursionHelper.$inject = ['$compile'];
 export default function recursionHelper($compile) {
-	'ngInject';
 	return {
 		// snarfed this from a SO answer.  Allows a directive to include itself without endless loops
 

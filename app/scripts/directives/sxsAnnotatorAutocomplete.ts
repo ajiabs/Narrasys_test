@@ -5,8 +5,8 @@
  TODO: disentangle annotator_image_id from this, move it into parent template
  */
 
-export default function sxsAnnotatorAutocomplete(modelSvc, $timeout, appState) {
-	'ngInject';
+sxsAnnotatorAutocomplete.$inject = ['$timeout', 'modelSvc', 'appState'];
+export default function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
 	return {
 		require: 'ngModel',
 		templateUrl: "templates/producer/annotator-autocomplete.html",
