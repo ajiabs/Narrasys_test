@@ -6,9 +6,9 @@
 	'use strict';
 
 	angular.module('com.inthetelling.story')
-		.directive('ittSpeakerThumpField', ittSpeakerThumpField);
+		.directive('ittSpeakerThumbField', ittSpeakerThumbField);
 
-	function ittSpeakerThumpField() {
+	function ittSpeakerThumbField() {
 	    return {
 	        restrict: 'EA',
 	        scope: true,

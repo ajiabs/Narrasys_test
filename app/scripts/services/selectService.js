@@ -77,8 +77,8 @@
 					return [
 						{url: 'templates/item/text-h1.html', name: 'Header 1'},
 						{url: 'templates/item/text-h2.html', name: 'Header 2'},
-						{url: 'templates/item/pullquote.html', name: 'Pullquote with attribution'},
-						{url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
+						{url: 'templates/item/pullquote.html', name: 'Pullquote'},
+						// {url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
 						{url: 'templates/item/text-transmedia.html', name: 'Long text (as transmedia)'},
 						{url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
 					];
@@ -205,18 +205,16 @@
 					break;
 
 				case 'image':
-					_displayDropdownVisible = true;
-					if (item.stop === true) {
-						item.layouts[0] = 'windowFg';
-					} else {
-						item.layouts[0] = 'inline';
-					}
+					_displayDropdownVisible = false;
 					switch(item.templateUrl) {
 						case 'templates/item/image-plain.html':
 						case 'templates/item/image-inline-withtext.html':
 						case 'templates/item/image-caption-sliding.html':
 						case 'templates/item/image.html':
 							item.layouts[0] = 'inline';
+							if (item.stop === true) {
+								item.layouts[0] = 'windowFg';
+							}
 							break;
 					}
 					break;
@@ -280,7 +278,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}

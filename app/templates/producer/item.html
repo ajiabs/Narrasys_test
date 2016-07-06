@@ -79,7 +79,8 @@
 							<itt-time-field></itt-time-field>
 							<itt-title-field></itt-title-field>
 							<itt-image-field></itt-image-field>
-							<itt-description-field></itt-description-field>,
+							<itt-description-field></itt-description-field>
+							<itt-url-field ng-if="item.templateUrl === 'templates/item/image.html'"></itt-url-field>
 							<itt-template-select></itt-template-select>
 							<itt-display-select></itt-display-select>
 							<itt-video-position-select></itt-video-position-select>
@@ -196,7 +197,12 @@
 							<itt-transition-select></itt-transition-select>
 						</div>
 						<div ng-switch-when="file">
-							<h4>{{item.producerItemType}}</h4>
+							<!--Typography, Color, Timestamp, Highlight, Transition-->
+							<itt-typography-select></itt-typography-select>
+							<itt-color-select></itt-color-select>
+							<itt-timestamp-select></itt-timestamp-select>
+							<itt-highlight-select></itt-highlight-select>
+							<itt-transition-select></itt-transition-select>
 						</div>
 						<div ng-switch-when="image">
 							<!--Typography, Color, Timestamp, Highlight, Transition-->

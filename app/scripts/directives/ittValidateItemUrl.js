@@ -46,7 +46,6 @@
 					ngModel.$validators.mixedContent = function (modelVal, viewVal) {
 						if (viewVal.match(/^http:\/\//)) {
 							errorSvc.notify(_separateTabNotice);
-							console.log("resolving mixed content!", viewVal);
 						}
 						return true;
 					};
