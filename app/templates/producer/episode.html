@@ -20,14 +20,8 @@
 						</div>
 					</div>
 
-					<div class="field">
-						<div class="label">Title [{{appState.lang}}]</div>
-						<div class="input" ng-model-options="{ debounce: 500 }" sxs-input-i18n="episode.title" x-inputtype="'input'" autofocus></div>
-					</div>
-					<div class="field">
-						<div class="label">Description [{{appState.lang}}]</div>
-						<div class="input" ng-model-options="{ debounce: 50 }" sxs-input-i18n="episode.description" x-inputtype="'textarea'"></div>
-					</div>
+					<itt-title-field data="episode" model-opts="{ debounce: 500 }"></itt-title-field>
+					<itt-description-field data="episode" model-opts="{debounce: 50}"></itt-description-field>
 
 					<div class="field">
 						<div class="label">Status</div>

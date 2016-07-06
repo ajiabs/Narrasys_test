@@ -39,9 +39,9 @@
 							<!--Time, Title, URL, Description, Template, Image, Flags-->
 							<!--these are impure component directives that depend inherited scope from item-->
 							<itt-time-field></itt-time-field>
-							<itt-title-field></itt-title-field>
+							<itt-title-field data="item"></itt-title-field>
 							<itt-url-field></itt-url-field>
-							<itt-description-field></itt-description-field>
+							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select></itt-template-select>
 							<itt-image-field></itt-image-field>
 							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
@@ -59,7 +59,7 @@
 							<itt-annotation-field></itt-annotation-field>
 							<itt-template-select></itt-template-select>
 							<itt-speaker-field></itt-speaker-field>
-							<itt-title-field></itt-title-field>
+							<itt-title-field data="item"></itt-title-field>
 							<itt-flags item="item" flags="['required', 'stop', 'cosmetic', 'chapter_marker']"></itt-flags>
 						</div>
 						<!--scenes are layouts; hidden in this tab-->
@@ -68,18 +68,18 @@
 						<div ng-switch-when="file">
 							<!--Time, Title, File, Description, Template, Flags-->
 							<itt-time-field></itt-time-field>
-							<itt-title-field></itt-title-field>
+							<itt-title-field data="item"></itt-title-field>
 							<itt-file-field></itt-file-field>
-							<itt-description-field></itt-description-field>
+							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select></itt-template-select>
 							<itt-flags item="item" flags="['required']"></itt-flags>
 						</div>
 						<div ng-switch-when="image">
 							<!--Time, Title, Image, Description, Template, Display, Position, Orientation, Flags-->
 							<itt-time-field></itt-time-field>
-							<itt-title-field></itt-title-field>
+							<itt-title-field data="item"></itt-title-field>
 							<itt-image-field></itt-image-field>
-							<itt-description-field></itt-description-field>
+							<itt-description-field data="item"></itt-description-field>
 							<itt-url-field ng-if="item.templateUrl === 'templates/item/image.html'"></itt-url-field>
 							<itt-template-select></itt-template-select>
 							<itt-display-select></itt-display-select>
@@ -98,8 +98,8 @@
 						<div ng-switch-when="chapter">
 							<!--Time, Title, Description-->
 							<itt-time-field></itt-time-field>
-							<itt-title-field></itt-title-field>
-							<itt-description-field></itt-description-field>
+							<itt-title-field data="item"></itt-title-field>
+							<itt-description-field data="item"></itt-description-field>
 						</div>
 						<div ng-switch-when="video">
 							<h4>{{item.producerItemType}}</h4>

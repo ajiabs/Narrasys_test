@@ -12,13 +12,25 @@
 	function ittDescriptionField() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
+	        scope: {
+				data: '=',
+				modelOpts: '=?'
+			},
 			template: [
 			'<div class="field">',
-			'	<div class="label">Description [{{appState.lang}}]</div>',
-			'	<div class="input" sxs-input-i18n="item.description" x-inputtype="\'textarea\'"></div>',
+			'	<div class="label">Description [{{descriptionField.lang}}]</div>',
+			'	<div class="input" ng-model-options="descriptionField.modelOpts" sxs-input-i18n="descriptionField.data.description" x-inputtype="\'textarea\'"></div>',
 			'</div>'
-			].join(' ')
+			].join(' '),
+			controller: ['appState', 'ittUtils', function(appState, ittUtils) {
+				var ctrl = this;
+				ctrl.lang = appState.lang;
+				if (!ittUtils.existy(ctrl.modelOpts)) {
+					ctrl.modelOpts = {updateOn: 'default'};
+				}
+			}],
+			controllerAs: 'descriptionField',
+			bindToController: true
 	    };
 	}
 

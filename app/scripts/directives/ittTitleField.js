@@ -10,13 +10,25 @@
 	function ittTitleField() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
+	        scope: {
+				data: '=',
+				modelOpts: '=?'
+			},
 			template: [
 			'<div class="field">',
-			'	<div class="label">Title [{{appState.lang}}]</div>',
-			'	<div class="input" sxs-input-i18n="item.title" x-inputtype="\'input\'" autofocus></div>',
+			'	<div class="label">Title [{{titleField.lang}}]</div>',
+			'	<div class="input" ng-model-options="titleField.modelOpts" sxs-input-i18n="titleField.data.title" x-inputtype="\'input\'" autofocus></div>',
 			'</div>'
-			].join(' ')
+			].join(' '),
+			controller: ['appState', 'ittUtils', function(appState, ittUtils) {
+				var ctrl = this;
+				ctrl.lang = appState.lang;
+				if (!ittUtils.existy(ctrl.modelOpts)) {
+					ctrl.modelOpts = {updateOn: 'default'};
+				}
+			}],
+			controllerAs: 'titleField',
+			bindToController: true
 	    };
 	}
 
