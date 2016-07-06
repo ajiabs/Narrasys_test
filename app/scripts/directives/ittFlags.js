@@ -44,7 +44,7 @@
 				};
 
 				function handleChange() {
-					if (ctrl.item.stop) {
+					if (ctrl.item.hasOwnProperty('stop')) {
 						selectService.onSelectChange(ctrl.item);
 					}
 				}
