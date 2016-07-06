@@ -23,7 +23,8 @@
 					<div class="field" ng-if="userHasRole('admin')">
 						<div class="label">Master asset type</div>
 						<div class="input">
-							<select size="1" ng-model="masterAssetType">
+												<!--$parent.masterAssetType because ng-if (above) creates isolated scope-->
+							<select size="1" ng-model="$parent.masterAssetType">
 								<option value="Video">Native Video</option>
 								<option value="Youtube">Youtube</option>
 								<!--

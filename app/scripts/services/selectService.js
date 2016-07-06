@@ -85,6 +85,7 @@
 				case 'link':
 					_displayDropdownVisible = true;
 					_videoPositionVisible = false;
+					_imageUploadVisible = false;
 					return [
 						{url: 'templates/item/link.html', name: 'Link'},
 						{url: 'templates/item/link-withimage.html', name: 'Link with image'},
