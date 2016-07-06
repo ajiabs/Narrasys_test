@@ -20,8 +20,51 @@
 						</div>
 					</div>
 
+					<div class="field" ng-if="userHasRole('admin')">
+						<div class="label">Master asset type</div>
+						<div class="input">
+							<select size="1" ng-model="masterAssetType">
+								<option value="Video">Native Video</option>
+								<option value="Youtube">Youtube</option>
+								<!--
+ 								<option value="Audio">Audio (TODO)</option>
+								<option value="Images">Image sequence (TODO)</option>
+								<option value="None">No master asset (TODO)</option> -->
+							</select>
+						</div>
+					</div>
+					<div class="field" ng-if="masterAssetType == 'Video'">
+						<div class="label">Video</div>
+						<div class="input" ng-include="'templates/producer/upload-masterasset.html'"></div>
+					</div>
+					<div class="field" ng-if="masterAssetType == 'Youtube'">
+						<div class="label">Youtube URL</div>
+						<div class="input">
+							<input type="text" ng-model="masterAsset.you_tube_url" style="width: 75%">
+							<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>
+						</div>
+					</div>
+					<div class="field" ng-if="showmessage">
+						<div class="input" ng-bind-html="showmessage"></div>
+					</div>
+
+					<!--
+					<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
+						<div class="label">Duration</div>
+						<input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">
+					</div>
+
+ -->
+
 					<itt-title-field data="episode" model-opts="{ debounce: 500 }"></itt-title-field>
 					<itt-description-field data="episode" model-opts="{debounce: 50}"></itt-description-field>
+
+					<div class="field">
+						<div class="label">Poster image
+						</div>
+						<div class="input" ng-include="'templates/producer/upload-poster.html'">
+						</div>
+					</div>
 
 					<div class="field">
 						<div class="label">Status</div>
@@ -75,55 +118,54 @@
 				</div>
 				<!-- end episode content tab -->
 			</div>
-			<div class="ittTab" itt-tab title="Master Asset">
-				<!-- begin metadata tab -->
-				<div class="authoringFormScrollContainer">
-					<div class="field">
-						<div class="label">Master asset type</div>
-						<div class="input">
-							<select size="1" ng-model="masterAssetType">
-								<option value="Video">Native Video</option>
-								<option value="Youtube">Youtube</option>
-								<!--
- 								<option value="Audio">Audio (TODO)</option>
-								<option value="Images">Image sequence (TODO)</option>
-								<option value="None">No master asset (TODO)</option>
- -->
-							</select>
-						</div>
-					</div>
-					<div class="field" ng-if="masterAssetType == 'Video'">
-						<div class="label">Video</div>
-						<div class="input" ng-include="'templates/producer/upload-masterasset.html'"></div>
-					</div>
-					<div class="field" ng-if="masterAssetType == 'Youtube'">
-						<div class="label">Youtube URL</div>
-						<div class="input">
-							<input type="text" ng-model="masterAsset.you_tube_url" style="width: 75%">
-							<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>
-						</div>
-					</div>
-					<div class="field" ng-if="showmessage">
-						<div class="input" ng-bind-html="showmessage"></div>
-					</div>
+			<!--<div class="ittTab" itt-tab title="Master Asset">-->
+				<!--&lt;!&ndash; begin metadata tab &ndash;&gt;-->
+				<!--<div class="authoringFormScrollContainer">-->
+					<!--<div class="field">-->
+						<!--<div class="label">Master asset type</div>-->
+						<!--<div class="input">-->
+							<!--<select size="1" ng-model="masterAssetType">-->
+								<!--<option value="Video">Native Video</option>-->
+								<!--<option value="Youtube">Youtube</option>-->
+								<!--&lt;!&ndash;-->
+ 								<!--<option value="Audio">Audio (TODO)</option>-->
+								<!--<option value="Images">Image sequence (TODO)</option>-->
+								<!--<option value="None">No master asset (TODO)</option> &ndash;&gt;-->
+							<!--</select>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="field" ng-if="masterAssetType == 'Video'">-->
+						<!--<div class="label">Video</div>-->
+						<!--<div class="input" ng-include="'templates/producer/upload-masterasset.html'"></div>-->
+					<!--</div>-->
+					<!--<div class="field" ng-if="masterAssetType == 'Youtube'">-->
+						<!--<div class="label">Youtube URL</div>-->
+						<!--<div class="input">-->
+							<!--<input type="text" ng-model="masterAsset.you_tube_url" style="width: 75%">-->
+							<!--<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="field" ng-if="showmessage">-->
+						<!--<div class="input" ng-bind-html="showmessage"></div>-->
+					<!--</div>-->
 
-					<!--
-					<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
-						<div class="label">Duration</div>
-						<input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">
-					</div>
+					<!--&lt;!&ndash;-->
+					<!--<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">-->
+						<!--<div class="label">Duration</div>-->
+						<!--<input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">-->
+					<!--</div>-->
 
- -->
-					<div class="field">
-						<div class="label">Poster image
-						</div>
-						<div class="input" ng-include="'templates/producer/upload-poster.html'">
-						</div>
-					</div>
+ <!--&ndash;&gt;-->
+					<!--<div class="field">-->
+						<!--<div class="label">Poster image-->
+						<!--</div>-->
+						<!--<div class="input" ng-include="'templates/producer/upload-poster.html'">-->
+						<!--</div>-->
+					<!--</div>-->
 
-				</div>
-				<!-- end metadata tab -->
-			</div>
+				<!--</div>-->
+				<!--&lt;!&ndash; end metadata tab &ndash;&gt;-->
+			<!--</div>-->
 			<div class="ittTab" itt-tab title="Style">
 				<!-- begin styles tab -->
 				<div class="authoringFormScrollContainer">
