@@ -211,9 +211,9 @@
 						case 'templates/item/image-inline-withtext.html':
 						case 'templates/item/image-caption-sliding.html':
 						case 'templates/item/image.html':
+							item.layouts[0] = 'inline';
 							break;
 					}
-					item.layouts[0] = 'inline';
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';
 					}
