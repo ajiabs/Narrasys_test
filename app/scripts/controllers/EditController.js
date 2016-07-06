@@ -446,7 +446,7 @@ angular.module('com.inthetelling.story')
 					appState.editEvent.producerItemType = 'scene';
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
-					selectService.onSelectChange(appState.editEvent)
+					selectService.onSelectChange(appState.editEvent);
 				}
 			});
 		};

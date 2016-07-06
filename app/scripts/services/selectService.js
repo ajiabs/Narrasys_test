@@ -13,7 +13,7 @@
 		var _imageUploadVisible = false;
 		var _videoPositionVisible = false;
 		var _admin = authSvc.userHasRole('admin');
-		var _custAdmin = authSvc.userHasRole('customer admin');
+		// var _custAdmin = authSvc.userHasRole('customer admin');
 		var _linkPositionOpts = [
 			{value: 'windowFg', name: 'Modal'},
 			{value: 'inline', name: 'Inline'}
