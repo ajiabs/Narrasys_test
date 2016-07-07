@@ -438,7 +438,10 @@ input[readonly] {
 	color: #DE6625;
 }
 
-
+.button-chapter:before,
+.eventIcon.icon-comment:before {
+	content: "\e60b";
+}
 
 .button-comment:before,
 .eventIcon.icon-comment:before {
@@ -573,6 +576,15 @@ input[readonly] {
 	border-right: none;
 }
 /* TODO reconcile tabs and drawer height / scroll */
+
+ul.nav-tabs {
+	list-style-type: none;
+}
+
+
+li.tab-pane {
+	display: inline;
+}
 
 .ittTabs {
 	clear: both;

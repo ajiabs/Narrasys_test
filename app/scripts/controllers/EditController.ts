@@ -1,12 +1,13 @@
 'use strict';
 
-EditController.$inject = ['$q', '$scope', '$rootScope', '$timeout', '$window', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc'];
-export default function EditController($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
+EditController.$inject = ['$q', '$scope', '$rootScope', '$timeout', '$window', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'selectService'];
+export default function EditController($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, selectService) {
 	$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
 		// Poor encapsulation of the upload controls. Sorry about that.
 
+		$scope.selectService = selectService;
 		$scope.chooseAsset = function (assetType) {
 			assetType = assetType || '';
 			$scope.showAssetPicker = true;
@@ -49,6 +50,7 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 		};
 
 		$scope.addEvent = function (producerItemType) {
+			console.warn('add event called!');
 			if (producerItemType === 'scene') {
 				if (isOnExistingSceneStart(appState.time)) {
 					return $scope.editCurrentScene();
@@ -193,6 +195,9 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 						});
 				});
 			}
+
+			console.log("saving this thing: ", appState.editEvent);
+
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
 					data.cur_episode_id = appState.episodeId;
@@ -554,7 +559,16 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 				stub = {
 					"_type": "Scene",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
+					"layouts": ['', 'showCurrent']
+				};
+			}
+			if (type === 'chapter') {
+				stub = {
+					'_type': 'Chapter',
+					'title': {},
+					'description': {}
 				};
 			}
 			if (type === 'video') {
@@ -565,7 +579,8 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 					"link_image_id": "",
 					"url": "",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -574,7 +589,8 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 					"_type": "Annotation",
 					"annotation": {},
 					"annotator": {},
-					"annotation_image_id": ""
+					"annotation_image_id": "",
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -583,7 +599,8 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 					"_type": "Upload",
 					"asset_id": "",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -593,7 +610,8 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 					"link_image_id": "",
 					"url": "https://",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -602,6 +620,7 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 				stub = {
 					"_type": "Plugin",
 					"title": {},
+					"templateOpts": selectService.getTemplates(type),
 					"data": {
 						"_pluginType": "question",
 						"_version": 2,
@@ -643,7 +662,7 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 				stub.templateUrl = 'templates/item/sxs-' + type + '.html';
 			} else {
 				var defaultTemplateUrls = {
-					"scene": "templates/scene/1col.html",
+					"scene": "templates/scene/centered.html",
 					"transcript": "templates/item/transcript.html",
 					"annotation": "templates/item/pullquote-noattrib.html",
 					"link": "templates/item/link.html",

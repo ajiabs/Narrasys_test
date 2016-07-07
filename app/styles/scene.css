@@ -290,6 +290,11 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	opacity: 0.5;
 }
 
+.searchMode h2.searchChapter {
+	font-size: 1.6em;
+	margin-left: -55px;
+}
+
 .searchMode h2.searchCategory {
 	font-size: 1.6em;
 }
