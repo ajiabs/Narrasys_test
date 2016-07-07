@@ -17,9 +17,10 @@ const timeline = require('./timeline.css');
 const toolbar = require('./toolbar.css');
 const transitions = require('./transitions.css');
 const typography = require('./typography.css');
+const angularUiTree = require('./angular-ui-tree.css');
 
 export default {
 		admin, episode, colors, highlights, item, main,
 		narrative, producer, scene, texangular,
-		timeline, toolbar, transitions, typography
+		timeline, toolbar, transitions, typography, angularUiTree
 		};

@@ -1,6 +1,8 @@
 /**
  * Created by githop on 6/7/16.
  */
+
+selectService.$inject = ['authSvc'];
 export default function selectService(authSvc) {
 	var _videoPositionOpts = [];
 	var _displayDropdownVisible = false;

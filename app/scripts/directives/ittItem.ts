@@ -5,8 +5,8 @@
  so they get logged properly: don't draw plain hrefs
  */
 
-ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'youtubeSvc', 'youTubePlayerManager'];
-export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager) {
+ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'youtubeSvc', 'youTubePlayerManager', 'selectService'];
+export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager, selectService) {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -145,6 +145,7 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
 
 			scope.editItem = function () {
 				appState.editEvent = scope.item;
+				selectService.getTemplates(appState.editEvent.producerItemType);
 				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 				appState.videoControlsLocked = true;
 			};

@@ -11,7 +11,7 @@ export default function ittTitleField() {
 		template: `
 			<div class="field">
 				<div class="label">Title [{{titleField.lang}}]</div>
-				<div class="input" ng-model-options="titleField.modelOpts" sxs-input-i18n="titleField.data.title" x-inputtype="input" autofocus></div>
+				<div class="input" ng-model-options="titleField.modelOpts" sxs-input-i18n="titleField.data.title" x-inputtype="'input'" autofocus></div>
 			</div>
 			`,
 		controller: ['appState', 'ittUtils', function (appState, ittUtils) {
