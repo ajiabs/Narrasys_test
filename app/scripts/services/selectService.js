@@ -13,7 +13,7 @@
 		var _imageUploadVisible = false;
 		var _videoPositionVisible = false;
 		var _admin = authSvc.userHasRole('admin');
-		var _custAdmin = authSvc.userHasRole('customer admin');
+		// var _custAdmin = authSvc.userHasRole('customer admin');
 		var _linkPositionOpts = [
 			{value: 'windowFg', name: 'Modal'},
 			{value: 'inline', name: 'Inline'}
@@ -54,6 +54,7 @@
 			switch(type) {
 				case 'scene':
 					_displayDropdownVisible = false;
+					_videoPositionVisible = false;
 					return [
 						{url: 'templates/scene/centered.html', name: 'Centered'},
 						{url: 'templates/scene/centeredPro.html', name: 'Centered Pro' },
@@ -74,16 +75,17 @@
 					];
 				case 'annotation':
 					return [
-						{url: 'templates/item/pullquote.html', name: 'Pullquote with attribution'},
-						{url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
 						{url: 'templates/item/text-h1.html', name: 'Header 1'},
 						{url: 'templates/item/text-h2.html', name: 'Header 2'},
+						{url: 'templates/item/pullquote.html', name: 'Pullquote'},
+						// {url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
 						{url: 'templates/item/text-transmedia.html', name: 'Long text (as transmedia)'},
 						{url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
 					];
 				case 'link':
 					_displayDropdownVisible = true;
 					_videoPositionVisible = false;
+					_imageUploadVisible = false;
 					return [
 						{url: 'templates/item/link.html', name: 'Link'},
 						{url: 'templates/item/link-withimage.html', name: 'Link with image'},
@@ -93,33 +95,41 @@
 						{url: 'templates/item/link-modal-thumb.html', name: 'Link Modal'}
 					];
 				case 'image':
-					return [
-						{url: 'templates/item/image-fill.html', name: 'Overlay or background fill'},
-						{url: 'templates/item/image.html', name: 'Linked Image'},
-						{url: 'templates/item/image-inline.html', name: 'Inline Image'},
+					_imageUploadVisible = true;
+					_displayDropdownVisible = false;
+					var imgTemplates = [
+						{url: 'templates/item/image-plain.html', name: 'Plain image'},
 						{url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
-						{url: 'templates/item/image-caption.html', name: 'Image with caption'},
 						{url: 'templates/item/image-caption-sliding.html', name: 'Image with sliding caption'},
 						{url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
-						{url: 'templates/item/image-plain.html', name: 'Plain image'}
+						{url: 'templates/item/image-fill.html', name: 'Overlay or background fill'},
 					];
+					if (_admin) {
+						imgTemplates.push(
+							{url: 'templates/item/image.html', name: 'Linked Image'},
+							{url: 'templates/item/image-inline.html', name: 'Inline Image'},
+							{url: 'templates/item/image-caption.html', name: 'Image with caption'}
+						);
+					}
+					return imgTemplates;
 				case 'file':
 					return [
 						{url: 'templates/item/file.html', name: 'Uploaded File'}
 					];
 				case 'question':
+					_displayDropdownVisible = true;
 					return [
 						{url: 'templates/item/question-mc.html', name: 'Default question display'},
-						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'},
-						{url: 'templates/item/question-mc-image-left.html', name: 'Question with image left'}
+						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'}
+						// {url: 'templates/item/question-mc-image-left.html', name: 'Question with image left'}
 					];
 			}
 		}
 
 		function onSelectChange(item) {
 			_displayDropdownVisible = false;
-			switch(item._type) {
-				case 'Scene':
+			switch(item.producerItemType) {
+				case 'scene':
 					switch(item.templateUrl) {
 						case 'templates/scene/1col.html':
 							if (_admin) { _displayDropdownVisible = true; }
@@ -162,7 +172,7 @@
 							break;
 					}
 					break;
-				case 'Link':
+				case 'link':
 					_displayDropdownVisible = true;
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';
@@ -182,6 +192,33 @@
 							break;
 					}
 					break;
+				case 'transcript':
+					_displayDropdownVisible = false;
+					item.layouts[0] = 'inline';
+					break;
+				case 'annotation':
+					// console.log('in right spot!');
+					break;
+				case 'question':
+					// item.layouts[0] = 'windowFg';
+					//need a little feedback as the spreadsheet is a little confusing for this
+					//section
+					break;
+
+				case 'image':
+					_displayDropdownVisible = false;
+					switch(item.templateUrl) {
+						case 'templates/item/image-plain.html':
+						case 'templates/item/image-inline-withtext.html':
+						case 'templates/item/image-caption-sliding.html':
+						case 'templates/item/image.html':
+							item.layouts[0] = 'inline';
+							break;
+					}
+					if (item.stop === true) {
+						item.layouts[0] = 'windowFg';
+					}
+					break;
 			}
 		}
 
@@ -190,7 +227,7 @@
 				case 'scene':
 					switch(tabTitle) {
 						case 'Item':
-							return _admin;
+							return false;
 						case 'Style':
 							return true;
 						case 'Customize':
@@ -202,7 +239,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}
@@ -212,7 +249,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}
@@ -222,7 +259,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}
@@ -232,7 +269,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}
@@ -242,7 +279,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return (_admin || _custAdmin);
+							return false;
 						case 'Customize':
 							return _admin;
 					}
@@ -252,7 +289,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return _admin;
+							return true;
 						case 'Customize':
 							return _admin;
 					}

@@ -212,8 +212,8 @@ export function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 
 		}
 		var newTimeline = {
-			name: {en: 'New Timeline'},
-			description: {en: 'Timeline Description'},
+			name: {en: ''},
+			description: {en: ''},
 			hidden: false,
 			path_slug: '',
 			sort_order: currSortOrder,
@@ -236,7 +236,11 @@ export function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		// this is the first timeline to create;
 		dataSvc.getEpisodeOverview(epId).then(function (episodeData) {
 			$scope.tmpTimeline.parent_episode = episodeData;
-			$scope.tmpTimeline.description.en = ittUtils.stripHtmlTags(episodeData.description.en);
+
+			if (ittUtils.existy(episodeData.description)) {
+				$scope.tmpTimeline.description.en = ittUtils.stripHtmlTags(episodeData.description.en);
+			}
+
 			$scope.tmpTimeline.name.en = ittUtils.stripHtmlTags(episodeData.title.en);
 			return episodeData;
 		}).then(function (episodeData) {

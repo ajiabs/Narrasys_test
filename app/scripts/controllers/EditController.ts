@@ -1,12 +1,13 @@
 'use strict';
 
-EditController.$inject = ['$q', '$scope', '$rootScope', '$timeout', '$window', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'selectService'];
-export default function EditController($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc, selectService) {
-	$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
+angular.module('com.inthetelling.story')
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc) {
+		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
 		// Poor encapsulation of the upload controls. Sorry about that.
 
+		$scope.userHasRole = authSvc.userHasRole;
 		$scope.selectService = selectService;
 		$scope.chooseAsset = function (assetType) {
 			assetType = assetType || '';
@@ -58,6 +59,8 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 			}
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
+
+
 			newEvent.cur_episode_id = appState.episodeId;
 			newEvent.episode_id = appState.episodeId;
 			if (appState.user && appState.user.avatar_id) {
@@ -195,8 +198,6 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 						});
 				});
 			}
-
-			console.log("saving this thing: ", appState.editEvent);
 
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
@@ -434,15 +435,18 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 		};
 
 		$scope.editCurrentScene = function () {
+
 			angular.forEach(getScenes(), function (scene) {
 				if (scene.isCurrent) {
 					// TODO This is redundant with ittItem editItem...
 					appState.editEvent = modelSvc.events[scene._id];
+					appState.editEvent.templateOpts = selectService.getTemplates('scene');
 					appState.editEvent.cur_episode_id = appState.episodeId;
 					appState.editEvent.episode_id = appState.episodeId;
 					appState.editEvent.producerItemType = 'scene';
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
+					selectService.onSelectChange(appState.editEvent);
 				}
 			});
 		};
@@ -657,24 +661,23 @@ export default function EditController($q, $scope, $rootScope, $timeout, $window
 				stub.layouts = ["windowFg"];
 				stub.end_time = appState.time;
 				stub.stop = true;
-
-				// Override default template selection with a special SXS one:
 				stub.templateUrl = 'templates/item/sxs-' + type + '.html';
 			} else {
 				var defaultTemplateUrls = {
 					"scene": "templates/scene/centered.html",
 					"transcript": "templates/item/transcript.html",
-					"annotation": "templates/item/pullquote-noattrib.html",
+					"annotation": "templates/item/text-h1.html",
 					"link": "templates/item/link.html",
 					"image": "templates/item/image-plain.html",
 					"file": "templates/item/file.html",
 					"question": "templates/item/question-mc.html",
 					"video": "TODO:VIDEO"
 				};
+
 				stub.templateUrl = defaultTemplateUrls[type];
 			}
 			angular.extend(base, stub);
 			return base;
 		};
 
-}
+	});
