@@ -8,7 +8,7 @@ export default function ittNarrativeEditor() {
 		template: [
 			'<div class="narrative__edit">',
 			'	<form name="nEditForm">',
-			'		<div ng-hide="nEditor._customers.length === 1">',
+			'		<div ng-show="nEditor.canAccess">',
 			'			<label for="nCustomer">Customer</label><span ng-if="nEditForm.customer.$invalid" class="invalid__field"> Required</span>',
 			'			<select id="nCustomer" name="customer" required ng-model="nEditor.selectedCustomer" ng-change="nEditor.selectCustomer(nEditor.selectedCustomer)" ng-options="cust.name for cust in nEditor._customers track by cust._id"></select></br>',
 			'		</div>',
@@ -41,13 +41,14 @@ export default function ittNarrativeEditor() {
 		},
 		controllerAs: 'nEditor',
 		bindToController: true,
-		controller: ['ittUtils', function (ittUtils) {
+		controller: ['ittUtils', 'authSvc', function (ittUtils, authSvc) {
 			var ctrl = this;
 			//copy to dereference original narrative as we are two-way bound (one way binding available in 1.5)
 			ctrl._narrative = angular.copy(this.narrative);
 			ctrl._customers = angular.copy(this.customers);
 			ctrl.handleUpdate = handleUpdate;
 			ctrl.selectCustomer = selectCustomer;
+			ctrl.canAccess = authSvc.userHasRole('admin');
 
 			_onInit();
 
@@ -99,4 +100,3 @@ export default function ittNarrativeEditor() {
 		}]
 	};
 }
-

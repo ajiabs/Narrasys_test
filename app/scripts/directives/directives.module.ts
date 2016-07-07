@@ -27,8 +27,8 @@ import ittScene from './ittScene';
 import ittSearchPanel from './ittSearchPanel';
 import ittShowFocus from './ittShowFocus';
 import {ittShowHideVisualOnly, customAnimation} from './ittShowHideVisualOnly';
+import {ittTabs, TabsCtrl} from './ittTabs';
 import ittTab from './ittTab';
-import ittTabs from './ittTabs';
 import ittTimeline from './ittTimeline';
 import ittUser from './ittUser';
 import ittVideo from './ittVideo';
@@ -49,6 +49,29 @@ import ittNarrativeEditor from './ittNarrativeEditor';
 import ittRouteLoading from './ittRouteLoading';
 import ittTimelineEditor from './ittTimelineEditor';
 import ittValidUrl from './ittValidUrl';
+import ittAnnotationField from './ittAnnotationField';
+import ittColorSelect from './ittColorSelect';
+import ittDescriptionField from './ittDescriptionField';
+import ittDisplaySelect from './ittDisplaySelect';
+import ittDynamicModel from './ittDynamicModel';
+import ittFileField from './ittFileField';
+import ittFlags from './ittFlags';
+import ittHighlightSelect from './ittHighlightSelect';
+import ittImageField from './ittImageField';
+import ittQuestionOptions from './ittQuestionOptions';
+import ittQuestionTextField from './ittQuestionTextField';
+import ittQuestionTypeSelect from './ittQuestionTypeSelect';
+import ittSpeakerField from './ittSpeakerField';
+import ittSpeakerThumbField from './ittSpeakerThumbField';
+import ittTemplateSelect from './ittTemplateSelect';
+import ittTimeField from './ittTimeField';
+import ittTimestampSelect from './ittTimestampSelect';
+import ittTitleField from './ittTitleField';
+import ittTranscriptField from './ittTranscriptField';
+import ittTransitionSelect from './ittTransitionSelect';
+import ittTypographySelect from './ittTypographySelect';
+import ittUrlField from './ittUrlField';
+import ittVideoPositionSelect from './ittVideoPositionSelect';
 
 let directivesModule = angular.module('iTT.directives', [])
 	.directive('autofocus', autofocus)
@@ -80,6 +103,7 @@ let directivesModule = angular.module('iTT.directives', [])
 	.animation('.visual-hide', customAnimation)
 	.directive('ittTab', ittTab)
 	.directive('ittTabs', ittTabs)
+	.controller('TabsCtrl', TabsCtrl)
 	.directive('ittTimeline', ittTimeline)
 	.directive('ittUser', ittUser)
 	.directive('ittVideo', ittVideo)
@@ -101,7 +125,29 @@ let directivesModule = angular.module('iTT.directives', [])
 	.directive('ittRouteLoading', ittRouteLoading)
 	.directive('ittTimelineEditor', ittTimelineEditor)
 	.directive('ittValidItemUrl', ittValidItemUrl)
-	.directive('ittValidUrl', ittValidUrl);
-
+	.directive('ittValidUrl', ittValidUrl)
+	.directive('ittAnnotationField', ittAnnotationField)
+	.directive('ittColorSelect', ittColorSelect)
+	.directive('ittDescriptionField', ittDescriptionField)
+	.directive('ittDisplaySelect', ittDisplaySelect)
+	.directive('ittDynamicModel', ittDynamicModel)
+	.directive('ittFileField', ittFileField)
+	.directive('ittFlags', ittFlags)
+	.directive('ittHighlightSelect', ittHighlightSelect)
+	.directive('ittImageField', ittImageField)
+	.directive('ittQuestionOptions', ittQuestionOptions)
+	.directive('ittQuestionTextField', ittQuestionTextField)
+	.directive('ittQuestionTypeSelect', ittQuestionTypeSelect)
+	.directive('ittSpeakerField', ittSpeakerField)
+	.directive('ittSpeakerThumbField', ittSpeakerThumbField)
+	.directive('ittTemplateSelect', ittTemplateSelect)
+	.directive('ittTimeField', ittTimeField)
+	.directive('ittTimestampSelect', ittTimestampSelect)
+	.directive('ittTitleField', ittTitleField)
+	.directive('ittTranscriptField', ittTranscriptField)
+	.directive('ittTransitionSelect', ittTransitionSelect)
+	.directive('ittTypographySelect', ittTypographySelect)
+	.directive('ittUrlField', ittUrlField)
+	.directive('ittVideoPositionSelect', ittVideoPositionSelect);
 
 export default directivesModule;

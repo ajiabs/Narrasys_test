@@ -3,17 +3,11 @@
  * Created by githop on 6/30/16.
  */
 
-(function() {
-	'use strict';
-
-	angular.module('com.inthetelling.story')
-		.directive('ittDisplaySelect', ittDisplaySelect);
-
-	function ittDisplaySelect() {
-	    return {
-	        restrict: 'EA',
-	        scope: true,
-			template: [
+export default function ittDisplaySelect() {
+	return {
+		restrict: 'EA',
+		scope: true,
+		template: [
 			'<div class="field" ng-if="selectService.showDisplayDropdown()">',
 			'	<div class="label">Display</div>',
 			'	<div class="input">',
@@ -23,9 +17,6 @@
 			'		</select>',
 			'	</div>',
 			'</div>'
-			].join('')
-	    };
-	}
-
-
-})();
+		].join('')
+	};
+}

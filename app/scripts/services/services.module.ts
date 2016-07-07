@@ -19,6 +19,7 @@ import youTubePlayerManager from './YouTubePlayerManager.svc';
 import YoutubePlayerApi from './YouTubeAPI.svc';
 import imageResize from './imageResizeSvc';
 import ittUtils from './ittUtils';
+import selectService from './selectService';
 
 let servicesModule = angular.module('iTT.services', [])
 	.factory('analyticsSvc', analyticsSvc)
@@ -37,6 +38,7 @@ let servicesModule = angular.module('iTT.services', [])
 	.factory('youTubePlayerManager', youTubePlayerManager)
 	.service('YoutubePlayerApi', YoutubePlayerApi)
 	.factory('imageResize', imageResize)
-	.service('ittUtils', ittUtils);
+	.service('ittUtils', ittUtils)
+	.factory('selectService', selectService);
 
 export default servicesModule;

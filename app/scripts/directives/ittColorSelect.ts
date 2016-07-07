@@ -1,18 +1,11 @@
 /**
  * Created by githop on 6/30/16.
  */
-
-(function() {
-	'use strict';
-
-	angular.module('com.inthetelling.story')
-		.directive('ittColorSelect', ittColorSelect);
-
-	function ittColorSelect() {
-	    return {
-	        restrict: 'EA',
-	        scope: true,
-			template: [
+export default function ittColorSelect() {
+	return {
+		restrict: 'EA',
+		scope: true,
+		template: [
 			'<div class="field">',
 			'	<div class="label">Color</div>',
 			'	<div class="input">',
@@ -25,9 +18,7 @@
 			'		</select>',
 			'	</div>',
 			'</div>'
-			].join(' ')
-	    };
-	}
+		].join(' ')
+	};
+}
 
-
-})();

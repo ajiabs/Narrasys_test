@@ -38,43 +38,43 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 		controller: 'EditController',
 		link: function (scope) {
 			// console.log("ittItemEditor", scope.item);
-			var widget;
-			scope.startRecordVideo = function () {
-				scope.isRecordingVideo = !scope.isRecordingVideo;
-				var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
-				if (widgetwidth > 500) {
-					widgetwidth = 500;
-				}
-				widget = new window.YT.UploadWidget('recordWidgetContainer', {
-					width: widgetwidth,
-					events: {
-						'onApiReady': function () {
-							// console.log('youtube onApiReady');
-							widget.setVideoPrivacy('unlisted');
-							var d = new Date();
-							var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
-							widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
-							// widget.setVideoDescription();
-							// widget.setVideoKeywords();
-						},
-						'onUploadSuccess': function (ret) {
-							scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
-							scope.isRecordingVideo = false;
-							scope.isProcessingVideo = true;
-
-							// onProcessingComplete is not always fired by youtube; force it after 30 secs:
-							$timeout(function () {
-								console.log("Forcing process-complete");
-								scope.isProcessingVideo = false;
-							}, 30000);
-						},
-						'onProcessingComplete': function () {
-							// console.log("youtube onProcessingComplete");
-							scope.isProcessingVideo = false;
-						}
-					}
-				});
-			};
+			// var widget;
+			// scope.startRecordVideo = function () {
+			// 	scope.isRecordingVideo = !scope.isRecordingVideo;
+			// 	var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
+			// 	if (widgetwidth > 500) {
+			// 		widgetwidth = 500;
+			// 	}
+			// 	widget = new window.YT.UploadWidget('recordWidgetContainer', {
+			// 		width: widgetwidth,
+			// 		events: {
+			// 			'onApiReady': function () {
+			// 				// console.log('youtube onApiReady');
+			// 				widget.setVideoPrivacy('unlisted');
+			// 				var d = new Date();
+			// 				var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
+			// 				widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
+			// 				// widget.setVideoDescription();
+			// 				// widget.setVideoKeywords();
+			// 			},
+			// 			'onUploadSuccess': function (ret) {
+			// 				scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
+			// 				scope.isRecordingVideo = false;
+			// 				scope.isProcessingVideo = true;
+            //
+			// 				// onProcessingComplete is not always fired by youtube; force it after 30 secs:
+			// 				$timeout(function () {
+			// 					console.log("Forcing process-complete");
+			// 					scope.isProcessingVideo = false;
+			// 				}, 30000);
+			// 			},
+			// 			'onProcessingComplete': function () {
+			// 				// console.log("youtube onProcessingComplete");
+			// 				scope.isProcessingVideo = false;
+			// 			}
+			// 		}
+			// 	});
+			// };
 
 			timelineSvc.pause();
 			timelineSvc.seek(scope.item.start_time);
@@ -97,9 +97,11 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 				"pin": "" // for image fills only
 			};
 
+
 			if (!scope.item.layouts) {
 				scope.item.layouts = ["inline"];
 			}
+
 
 			// extract current event styles for the form
 			if (scope.item.styles) {
@@ -131,13 +133,19 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 
 			scope.appState = appState;
 
+			//watch templateUrl
+
 			// TODO this still needs more performance improvements...
+
 			scope.watchEdits = scope.$watch(function () {
 				return scope.item;
 			}, function (newItem, oldItem) {
 				if (!oldItem) {
 					return;
 				}
+
+				// console.log('item:', newItem);
+				console.log('templateUrl: ', newItem.templateUrl, '\n', 'layouts: ', newItem.layouts);
 				// FOR DEBUGGING
 				/*
 				 angular.forEach(Object.keys(newItem), function (f) {
@@ -151,14 +159,15 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 					scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
 				}
 
-
 				// Special cases:
 				// if new template is image-fill,
 				// 	set cosmetic to true, itemForm.
 				// if old template was image-fill, set cosmetic to false
 				// TODO this is fragile, based on template name:
+
+				//for changes to templateUrl, i.e. picking an option from the drop down.
 				if (newItem.templateUrl !== oldItem.templateUrl) {
-					console.log('tempalte URL stuff in $watch');
+
 					if (newItem.templateUrl === 'templates/item/image-fill.html') {
 						scope.item.cosmetic = true;
 						scope.item.layouts = ["windowBg"];
@@ -196,7 +205,7 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 				if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time) {
 					modelSvc.resolveEpisodeEvents(appState.episodeId);
 				}
-				console.count('$watch turn');
+				// console.count('$watch turn');
 
 			}, true);
 
@@ -277,10 +286,12 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 			};
 
 			var getNextStartTime = function (currentScene, currentItem, items) {
-
+				if (currentItem._type === 'Chapter') {
+					return false;
+				}
 				//HACK to work around TS-412
 				if (!currentScene) {
-					console.warn("getNextStartTime called with no scene (becuase it's being called for a scene event?)", currentItem, items);
+					console.warn("getNextStartTime called with no scene (because it's being called for a scene event?)", currentItem, items);
 					return false;
 				}
 				var nextItem;

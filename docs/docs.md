@@ -282,7 +282,7 @@ Items wind up rendered in templates/v2/wrapper/_global.html for boilerplate, the
 
 User-defined style collections are currently stored in localStorage as json blobs (you can view the raw data using `JSON.parse(localStorage.ittStylePresets)`.)  As with any individual template / stye selection, these blobs are overlaid atop item data using the variantItem parameter described above; when the user saves the edited item the various template/style selctions should be stored with the item itself (under the new item.tmpl field).
 
-Most of the related code controlling this is in ittItemEditor.js.
+Most of the related code controlling this is in ittItemEditor.ts.
 
 
 #### Multi-episode timelines

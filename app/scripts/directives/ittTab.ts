@@ -1,21 +1,17 @@
 /**
- * Created by githop on 12/12/15.
+ * Created by githop on 7/6/16.
  */
-
-'use strict';
-
 export default function ittTab() {
 	return {
-		restrict: 'A',
-		replace: false,
+		template: '<div ng-show="selected"><ng-transclude></ng-transclude></div>',
+		require: '^^ittTabs',
 		transclude: true,
 		scope: {
-			isCur: "=ittTab"
+			title: '@'
 		},
-		template: '<div><div class="ittTabLabel" ng-class="{cur: isCur}"><a ng-click="$parent.tab(tabindex)">{{tablabel}}</a></div><div class="ittTabContents" ng-show="isCur" ng-transclude></div></div>',
-		link: function (scope, element, attrs) {
-			scope.tablabel = attrs.tablabel;
-			scope.tabindex = attrs.tabindex;
+		link: function (scope, elm, attrs, tabsCtrl) {
+			// console.log("tabsCtrl", tabsCtrl);
+			tabsCtrl.addPane(scope);
 		}
 	};
 }

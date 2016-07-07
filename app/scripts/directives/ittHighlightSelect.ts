@@ -2,17 +2,12 @@
  *
  * Created by githop on 6/30/16.
  */
-(function() {
-	'use strict';
 
-	angular.module('com.inthetelling.story')
-		.directive('ittHighlightSelect', ittHighlightSelect);
-
-	function ittHighlightSelect() {
-	    return {
-	        restrict: 'EA',
-	        scope: true,
-			template: [
+export default function ittHighlightSelect() {
+	return {
+		restrict: 'EA',
+		scope: true,
+		template: [
 			'<div class="field">',
 			'	<div class="label">Highlight</div>',
 			'	<div class="input">',
@@ -27,9 +22,7 @@
 			'		</select>',
 			'	</div>',
 			'</div>'
-			].join(' ')
-	    };
-	}
+		].join(' ')
+	};
+}
 
-
-})();
