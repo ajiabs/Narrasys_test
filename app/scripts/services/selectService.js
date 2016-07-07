@@ -97,6 +97,7 @@
 				case 'image':
 					_imageUploadVisible = true;
 					_displayDropdownVisible = false;
+					_videoPositionVisible = false;
 					var imgTemplates = [
 						{url: 'templates/item/image-plain.html', name: 'Plain image'},
 						{url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
