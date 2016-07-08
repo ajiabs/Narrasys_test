@@ -16,7 +16,7 @@
 			template: [
 			'<div class="field">',
 			'	<div class="label">Annotation Text [{{appState.lang}}]</div>',
-			'	<div class="input" sxs-input-i18n="item.annotation" x-inputtype="\'textarea\'" autofocus></div>',
+			'	<div class="input" sxs-input-i18n="item.annotation" do-validate="true" x-inputtype="\'textarea\'" autofocus></div>',
 			'</div>'
 			].join(' ')
 	    };

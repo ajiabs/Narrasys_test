@@ -11,7 +11,7 @@
 	    return {
 	        restrict: 'EA',
 			template: [
-			'<div class="field" ng-show="selectService.showImageUpload()">',
+			'<div class="field" ng-show="selectService.getVisibility(\'imageUpload\')">',
 			'	<div class="label">Image</div>',
 			'	<div class="input" ng-include="\'templates/producer/upload-producer.html\'"></div>',
 			'</div>'

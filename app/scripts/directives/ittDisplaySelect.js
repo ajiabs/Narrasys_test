@@ -14,7 +14,7 @@
 	        restrict: 'EA',
 	        scope: true,
 			template: [
-			'<div class="field" ng-if="selectService.showDisplayDropdown()">',
+			'<div class="field" ng-if="selectService.getVisibility(\'display\')">',
 			'	<div class="label">Display</div>',
 			'	<div class="input">',
 			'		<select ng-model="item.layouts[1]">',

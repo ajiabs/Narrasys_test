@@ -9,16 +9,27 @@
 
 	function selectService(authSvc) {
 		var _videoPositionOpts = [];
-		var _displayDropdownVisible = false;
-		var _imageUploadVisible = false;
-		var _videoPositionVisible = false;
-		var _admin = !authSvc.userHasRole('admin');
-		console.log('admin select srv', _admin);
+		var _admin = authSvc.userHasRole('admin');
 		// var _custAdmin = authSvc.userHasRole('customer admin');
 		var _linkPositionOpts = [
 			{value: 'windowFg', name: 'Modal'},
 			{value: 'inline', name: 'Inline'}
 		];
+
+		//use visibility map with getVisibility() and component directives
+		var _visibility = {
+			imageUpload: false,
+			display: false,
+			videoPosition: false,
+			titleField: true,
+			speakerField: true
+		};
+
+		var _imageFieldVisibility = _curryVis('imageField');
+		var _displaySelectVisibility = _curryVis('display');
+		var _videoPositionSelectVisibility = _curryVis('videoPosition');
+		var _titleFieldVisibility = _curryVis('titleField');
+		var _speakerFieldVisibility = _curryVis('speakerField');
 
 		return {
 			getLinkDisplayOpts: getLinkDisplayOpts,
@@ -26,10 +37,22 @@
 			getVideoPositionOpts: getVideoPositionOpts,
 			onSelectChange: onSelectChange,
 			getTemplates: getTemplates,
-			showDisplayDropdown: showDisplayDropdown,
-			showImageUpload: showImageUpload,
-			showVideoPosition: showVideoPosition
+			getVisibility: getVisibility
 		};
+
+		function _setVisibility(prop, bool) {
+			_visibility[prop] = bool;
+		}
+
+		function _curryVis(prop) {
+			return function (bool) {
+				return _setVisibility(prop, bool);
+			}
+		}
+
+		function getVisibility(prop) {
+			return _visibility[prop];
+		}
 
 		function getLinkDisplayOpts() {
 			return _linkPositionOpts;
@@ -39,23 +62,11 @@
 			return _videoPositionOpts;
 		}
 
-		function showDisplayDropdown() {
-			return _displayDropdownVisible;
-		}
-
-		function showImageUpload() {
-			return _imageUploadVisible;
-		}
-
-		function showVideoPosition() {
-			return _videoPositionVisible;
-		}
-
 		function getTemplates(type) {
 			switch(type) {
 				case 'scene':
-					_displayDropdownVisible = false;
-					_videoPositionVisible = false;
+					_displaySelectVisibility(false);
+					_videoPositionSelectVisibility(false);
 					return [
 						{url: 'templates/scene/centered.html', name: 'Centered'},
 						{url: 'templates/scene/centeredPro.html', name: 'Centered Pro' },
@@ -69,12 +80,15 @@
 						{url: 'templates/scene/pip.html', name: 'Picture-in-picture'}
 					];
 				case 'transcript':
+					_speakerFieldVisibility(true);
 					return [
 						{url: 'templates/item/transcript.html', name: 'Transcript'},
-						{url: 'templates/item/transcript-withthumbnail.html', name: 'Transcript with thumbnail'},
-						{url: 'templates/item/transcript-withthumbnail-alt.html', name: 'Transcript with thumbnail B'}
+						{url: 'templates/item/transcript-withthumbnail.html', name: 'Transcript with thumbnail'}
+						// {url: 'templates/item/transcript-withthumbnail-alt.html', name: 'Transcript with thumbnail B'}
 					];
 				case 'annotation':
+					_speakerFieldVisibility(false);
+					_titleFieldVisibility(false);
 					return [
 						{url: 'templates/item/text-h1.html', name: 'Header 1'},
 						{url: 'templates/item/text-h2.html', name: 'Header 2'},
@@ -84,9 +98,10 @@
 						{url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
 					];
 				case 'link':
-					_displayDropdownVisible = true;
-					_videoPositionVisible = false;
-					_imageUploadVisible = false;
+					_displaySelectVisibility(true);
+					_videoPositionSelectVisibility(false);
+					_imageFieldVisibility(false);
+					_titleFieldVisibility(true);
 					return [
 						{url: 'templates/item/link.html', name: 'Link'},
 						{url: 'templates/item/link-withimage.html', name: 'Link with image'},
@@ -96,15 +111,16 @@
 						{url: 'templates/item/link-modal-thumb.html', name: 'Link Modal'}
 					];
 				case 'image':
-					_imageUploadVisible = true;
-					_displayDropdownVisible = false;
-					_videoPositionVisible = false;
+					_imageFieldVisibility(true);
+					_displaySelectVisibility(false);
+					_videoPositionSelectVisibility(false);
+					_titleFieldVisibility(true);
 					var imgTemplates = [
 						{url: 'templates/item/image-plain.html', name: 'Plain image'},
 						{url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
 						{url: 'templates/item/image-caption-sliding.html', name: 'Image with sliding caption'},
 						{url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
-						{url: 'templates/item/image-fill.html', name: 'Overlay or background fill'},
+						{url: 'templates/item/image-fill.html', name: 'Overlay or background fill'}
 					];
 					if (_admin) {
 						imgTemplates.push(
@@ -115,31 +131,37 @@
 					}
 					return imgTemplates;
 				case 'file':
+					_titleFieldVisibility(true);
 					return [
 						{url: 'templates/item/file.html', name: 'Uploaded File'}
 					];
 				case 'question':
-					_displayDropdownVisible = true;
-					_imageUploadVisible = true;
+					_displaySelectVisibility(true);
+					_imageFieldVisibility(true);
+					_titleFieldVisibility(true);
 					return [
 						{url: 'templates/item/question-mc.html', name: 'Default question display'},
 						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'}
 						// {url: 'templates/item/question-mc-image-left.html', name: 'Question with image left'}
 					];
+				case 'chapter':
+					//chapters have no template, but need to do side-effects
+					_titleFieldVisibility(true);
+					break;
 			}
 		}
 
 		function onSelectChange(item) {
-			_displayDropdownVisible = false;
+			_displaySelectVisibility(false);
 			switch(item.producerItemType) {
 				case 'scene':
 					switch(item.templateUrl) {
 						case 'templates/scene/1col.html':
-							if (_admin) { _displayDropdownVisible = true; }
+							if (_admin) { _displaySelectVisibility(true) }
 						/* falls through */
 						case 'templates/scene/centered.html':
 						case 'templates/scene/centeredPro.html':
-							_videoPositionVisible = false;
+							_videoPositionSelectVisibility(false);
 							_videoPositionOpts = [
 								{value: 'inline', name: 'Inline'},
 								{value: '', name: 'Centered'}
@@ -154,7 +176,7 @@
 						case 'templates/scene/centerVV.html':
 						case 'templates/scene/centerVV-Mondrian.html':
 						case 'templates/scene/pip.html':
-							_videoPositionVisible = true;
+							_videoPositionSelectVisibility(true);
 							_videoPositionOpts = [
 								{value: 'videoLeft', name: 'Video on Left'},
 								{value: 'videoRight', name: 'Video on Right'}
@@ -169,14 +191,14 @@
 							}
 
 							if (/pip|corner/.test(item.templateUrl)) {
-								_displayDropdownVisible = true;
+								_displaySelectVisibility(true);
 							}
 
 							break;
 					}
 					break;
 				case 'link':
-					_displayDropdownVisible = true;
+					_displaySelectVisibility(true);
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';
 					} else {
@@ -185,22 +207,41 @@
 					switch(item.templateUrl) {
 						case 'templates/item/link-withimage.html':
 						case 'templates/item/link-withimage-notitle.html':
-							_imageUploadVisible = true;
+							_imageFieldVisibility(true);
 							break;
 						case 'templates/item/link.html':
 						case 'templates/item/link-descriptionfirst.html':
 						case 'templates/item/link-embed.html':
 						case 'templates/item/link-modal-thumb.html':
-							_imageUploadVisible = false;
+							_imageFieldVisibility(false);
 							break;
 					}
 					break;
 				case 'transcript':
-					_displayDropdownVisible = false;
+					_displaySelectVisibility(false);
 					item.layouts[0] = 'inline';
 					break;
 				case 'annotation':
-					// console.log('in right spot!');
+					item.layouts[0] = 'inline';
+					switch(item.templateUrl) {
+						case 'templates/item/text-h1.html':
+						case 'templates/item/text-h2.html':
+							_speakerFieldVisibility(false);
+							_titleFieldVisibility(false);
+							break;
+						case 'templates/item/pullquote.html':
+							_speakerFieldVisibility(true);
+							_titleFieldVisibility(false);
+							break;
+						case 'templates/item/text-transmedia.html':
+						case 'templates/item/text-definition.html':
+							_speakerFieldVisibility(false);
+							_titleFieldVisibility(true);
+							break;
+					}
+					if (item.stop === true) {
+						item.layouts[0] = 'windowFg';
+					}
 					break;
 				case 'question':
 					// item.layouts[0] = 'windowFg';
@@ -209,7 +250,7 @@
 					break;
 
 				case 'image':
-					_displayDropdownVisible = false;
+					_displaySelectVisibility(false);
 					switch(item.templateUrl) {
 						case 'templates/item/image-plain.html':
 						case 'templates/item/image-inline-withtext.html':
@@ -242,9 +283,9 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return false;
-						case 'Customize':
 							return _admin;
+						case 'Customize':
+							return false;
 					}
 					break;
 				case 'annotation':

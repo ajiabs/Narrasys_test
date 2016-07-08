@@ -40,7 +40,7 @@
 							<!--Time, Title, URL, Description, Template, Image, Flags-->
 							<!--these are impure component directives that depend inherited scope from item-->
 							<itt-time-field></itt-time-field>
-							<itt-title-field data="item"></itt-title-field>
+							<itt-title-field do-validate="true" data="item"></itt-title-field>
 							<itt-url-field></itt-url-field>
 							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select></itt-template-select>
@@ -48,11 +48,10 @@
 							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="transcript">
-							<!--time, speaker, transcript, speaker thumbnail-->
+							<!--time, speaker, transcript-->
 							<itt-time-field></itt-time-field>
 							<itt-speaker-field></itt-speaker-field>
 							<itt-transcript-field></itt-transcript-field>
-							<itt-speaker-thumb-field></itt-speaker-thumb-field>
 						</div>
 						<div ng-switch-when="annotation">
 							<!--Time, Annotation Text, Template, Speaker, Title, Flags-->
@@ -126,9 +125,13 @@
 							<itt-display-select></itt-display-select>
 						</div>
 						<!--hidden accross the board-->
-						<!--<div ng-switch-when="transcript">-->
-						<!--Template, display, flags-->
-						<!--</div>-->
+						<div ng-switch-when="transcript">
+							<!--Template, Speaker Thumb, timestamp, highlight-->
+							<itt-template-select></itt-template-select>
+							<itt-speaker-thumb-field></itt-speaker-thumb-field>
+							<itt-timestamp-select></itt-timestamp-select>
+							<itt-highlight-select></itt-highlight-select>
+						</div>
 						<div ng-switch-when="annotation">
 							<!--Display-->
 							<itt-display-select></itt-display-select>
