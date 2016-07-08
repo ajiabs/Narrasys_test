@@ -47,7 +47,7 @@
 		function _curryVis(prop) {
 			return function (bool) {
 				return _setVisibility(prop, bool);
-			}
+			};
 		}
 
 		function getVisibility(prop) {
@@ -157,7 +157,7 @@
 				case 'scene':
 					switch(item.templateUrl) {
 						case 'templates/scene/1col.html':
-							if (_admin) { _displaySelectVisibility(true) }
+							if (_admin) { _displaySelectVisibility(true); }
 						/* falls through */
 						case 'templates/scene/centered.html':
 						case 'templates/scene/centeredPro.html':
