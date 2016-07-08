@@ -11,7 +11,6 @@
 	function ittSpeakerThumbField() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
 			template: [
 			'<div class="field">',
 			'	<div class="label">Speaker thumbnail</div>',

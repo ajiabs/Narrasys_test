@@ -6,7 +6,8 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/producer/inputi18n.html',
 			scope: {
 				field: "=sxsInputI18n",
-				inputtype: "=inputtype"
+				inputtype: "=inputtype",
+				doValidate: '='
 			},
 			link: function (scope, el, attrs) {
 				if (!scope.field) {

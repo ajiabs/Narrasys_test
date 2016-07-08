@@ -36,8 +36,6 @@
 			link: function link(scope, elm, attrs, ngModel) {
 				var _separateTabNotice = 'This link will be displayed in a separate tab.';
 				if (ngModel) {
-					console.log('tigger validation', ngModel);
-					scope.item.urlForm = ngModel;
 					validateUrl();
 				}
 

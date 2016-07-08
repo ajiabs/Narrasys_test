@@ -10,7 +10,6 @@
 	function ittTemplateSelect() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
 			template: [
 			'<div class="field">',
 			'	<div class="label">Template</div>',

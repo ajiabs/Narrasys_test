@@ -11,7 +11,6 @@
 	function ittSpeakerField() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
 			template: [
 			'<div class="field">',
 			'	<div class="label">Speaker [{{appState.lang}}]</div>',

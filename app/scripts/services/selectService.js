@@ -12,7 +12,8 @@
 		var _displayDropdownVisible = false;
 		var _imageUploadVisible = false;
 		var _videoPositionVisible = false;
-		var _admin = authSvc.userHasRole('admin');
+		var _admin = !authSvc.userHasRole('admin');
+		console.log('admin select srv', _admin);
 		// var _custAdmin = authSvc.userHasRole('customer admin');
 		var _linkPositionOpts = [
 			{value: 'windowFg', name: 'Modal'},
@@ -119,6 +120,7 @@
 					];
 				case 'question':
 					_displayDropdownVisible = true;
+					_imageUploadVisible = true;
 					return [
 						{url: 'templates/item/question-mc.html', name: 'Default question display'},
 						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'}

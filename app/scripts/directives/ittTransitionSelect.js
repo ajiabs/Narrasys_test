@@ -10,7 +10,6 @@
 	function ittTransitionSelect() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
 			template: [
 			'<div class="field">',
 			'	<div class="label">Transition</div>',

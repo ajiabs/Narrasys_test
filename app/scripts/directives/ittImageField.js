@@ -10,7 +10,6 @@
 	function ittImageField() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
 			template: [
 			'<div class="field" ng-show="selectService.showImageUpload()">',
 			'	<div class="label">Image</div>',
