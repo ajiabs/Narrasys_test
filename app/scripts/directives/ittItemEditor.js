@@ -38,43 +38,43 @@ angular.module('com.inthetelling.story')
 			controller: 'EditController',
 			link: function (scope) {
 				// console.log("ittItemEditor", scope.item);
-				var widget;
-				scope.startRecordVideo = function () {
-					scope.isRecordingVideo = !scope.isRecordingVideo;
-					var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
-					if (widgetwidth > 500) {
-						widgetwidth = 500;
-					}
-					widget = new window.YT.UploadWidget('recordWidgetContainer', {
-						width: widgetwidth,
-						events: {
-							'onApiReady': function () {
-								// console.log('youtube onApiReady');
-								widget.setVideoPrivacy('unlisted');
-								var d = new Date();
-								var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
-								widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
-								// widget.setVideoDescription();
-								// widget.setVideoKeywords();
-							},
-							'onUploadSuccess': function (ret) {
-								scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
-								scope.isRecordingVideo = false;
-								scope.isProcessingVideo = true;
-
-								// onProcessingComplete is not always fired by youtube; force it after 30 secs:
-								$timeout(function () {
-									console.log("Forcing process-complete");
-									scope.isProcessingVideo = false;
-								}, 30000);
-							},
-							'onProcessingComplete': function () {
-								// console.log("youtube onProcessingComplete");
-								scope.isProcessingVideo = false;
-							}
-						}
-					});
-				};
+				// var widget;
+				// scope.startRecordVideo = function () {
+				// 	scope.isRecordingVideo = !scope.isRecordingVideo;
+				// 	var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
+				// 	if (widgetwidth > 500) {
+				// 		widgetwidth = 500;
+				// 	}
+				// 	widget = new window.YT.UploadWidget('recordWidgetContainer', {
+				// 		width: widgetwidth,
+				// 		events: {
+				// 			'onApiReady': function () {
+				// 				// console.log('youtube onApiReady');
+				// 				widget.setVideoPrivacy('unlisted');
+				// 				var d = new Date();
+				// 				var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
+				// 				widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
+				// 				// widget.setVideoDescription();
+				// 				// widget.setVideoKeywords();
+				// 			},
+				// 			'onUploadSuccess': function (ret) {
+				// 				scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
+				// 				scope.isRecordingVideo = false;
+				// 				scope.isProcessingVideo = true;
+                //
+				// 				// onProcessingComplete is not always fired by youtube; force it after 30 secs:
+				// 				$timeout(function () {
+				// 					console.log("Forcing process-complete");
+				// 					scope.isProcessingVideo = false;
+				// 				}, 30000);
+				// 			},
+				// 			'onProcessingComplete': function () {
+				// 				// console.log("youtube onProcessingComplete");
+				// 				scope.isProcessingVideo = false;
+				// 			}
+				// 		}
+				// 	});
+				// };
 
 				timelineSvc.pause();
 				timelineSvc.seek(scope.item.start_time);
@@ -145,7 +145,7 @@ angular.module('com.inthetelling.story')
 					}
 
 					// console.log('item:', newItem);
-					console.log('templateUrl: ', newItem.templateUrl, '\n', 'layouts: ', newItem.layouts);
+					// console.log('templateUrl: ', newItem.templateUrl, '\n', 'layouts: ', newItem.layouts);
 					// FOR DEBUGGING
 					/*
 										angular.forEach(Object.keys(newItem), function (f) {
@@ -382,7 +382,10 @@ angular.module('com.inthetelling.story')
 							scope.item.asset_id = asset_id;
 						} else if (scope.item._type === 'Link') {
 							scope.item.link_image_id = asset_id;
+							scope.item.asset_id = asset_id;
 						} else if (scope.item._type === 'Annotation') {
+							console.log('you are actually getting here!!');
+							scope.item.asset_id = asset_id;
 							scope.item.annotation_image_id = asset_id;
 						} else {
 							console.error("Tried to select asset for unknown item type", scope.item);
