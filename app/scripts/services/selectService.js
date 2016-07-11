@@ -10,11 +10,6 @@
 	function selectService(authSvc) {
 		var _videoPositionOpts = [];
 		var _userHasRole = authSvc.userHasRole;
-		var _linkPositionOpts = [
-			{value: 'windowFg', name: 'Modal'},
-			{value: 'inline', name: 'Inline'}
-		];
-
 		//use visibility map with getVisibility() and component directives
 		var _visibility = {
 			imageUpload: false,
@@ -24,14 +19,13 @@
 			speakerField: true
 		};
 
-		var _imageFieldVisibility = _curryVis('imageField');
+		var _imageFieldVisibility = _curryVis('imageUpload');
 		var _displaySelectVisibility = _curryVis('display');
 		var _videoPositionSelectVisibility = _curryVis('videoPosition');
 		var _titleFieldVisibility = _curryVis('titleField');
 		var _speakerFieldVisibility = _curryVis('speakerField');
 
 		return {
-			getLinkDisplayOpts: getLinkDisplayOpts,
 			showTab: showTab,
 			getVideoPositionOpts: getVideoPositionOpts,
 			onSelectChange: onSelectChange,
@@ -51,10 +45,6 @@
 
 		function getVisibility(prop) {
 			return _visibility[prop];
-		}
-
-		function getLinkDisplayOpts() {
-			return _linkPositionOpts;
 		}
 
 		function getVideoPositionOpts() {
