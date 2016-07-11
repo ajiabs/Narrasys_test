@@ -9,8 +9,7 @@
 
 	function selectService(authSvc) {
 		var _videoPositionOpts = [];
-		var _admin = authSvc.userHasRole('admin');
-		// var _custAdmin = authSvc.userHasRole('customer admin');
+		var _userHasRole = authSvc.userHasRole;
 		var _linkPositionOpts = [
 			{value: 'windowFg', name: 'Modal'},
 			{value: 'inline', name: 'Inline'}
@@ -122,7 +121,7 @@
 						{url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
 						{url: 'templates/item/image-fill.html', name: 'Overlay or background fill'}
 					];
-					if (_admin) {
+					if (_userHasRole('admin')) {
 						imgTemplates.push(
 							{url: 'templates/item/image.html', name: 'Linked Image'},
 							{url: 'templates/item/image-inline.html', name: 'Inline Image'},
@@ -157,7 +156,7 @@
 				case 'scene':
 					switch(item.templateUrl) {
 						case 'templates/scene/1col.html':
-							if (_admin) { _displaySelectVisibility(true); }
+							if (_userHasRole('admin')) { _displaySelectVisibility(true); }
 						/* falls through */
 						case 'templates/scene/centered.html':
 						case 'templates/scene/centeredPro.html':
@@ -275,7 +274,7 @@
 						case 'Style':
 							return true;
 						case 'Customize':
-							return _admin;
+							return _userHasRole('admin');
 					}
 					break;
 				case 'transcript':
@@ -283,7 +282,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return _admin;
+							return _userHasRole('admin');
 						case 'Customize':
 							return false;
 					}
@@ -295,7 +294,7 @@
 						case 'Style':
 							return false;
 						case 'Customize':
-							return _admin;
+							return _userHasRole('admin');
 					}
 					break;
 				case 'link':
@@ -305,7 +304,7 @@
 						case 'Style':
 							return false;
 						case 'Customize':
-							return _admin;
+							return _userHasRole('admin');
 					}
 					break;
 				case 'image':
@@ -315,7 +314,7 @@
 						case 'Style':
 							return false;
 						case 'Customize':
-							return _admin;
+							return _userHasRole('admin');
 					}
 					break;
 				case 'file':
@@ -325,7 +324,7 @@
 						case 'Style':
 							return false;
 						case 'Customize':
-							return _admin;
+							return _userHasRole('admin');
 					}
 					break;
 				case 'question':
@@ -335,7 +334,7 @@
 						case 'Style':
 							return true;
 						case 'Customize':
-							return _admin;
+							return _userHasRole('admin');
 					}
 					break;
 				case 'chapter':
