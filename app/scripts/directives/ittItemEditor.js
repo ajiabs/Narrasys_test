@@ -121,8 +121,8 @@ angular.module('com.inthetelling.story')
 							scope.itemForm.pin = scope.item.styles[j];
 						}
 					}
-
 				}
+
 				if (!scope.item.producerItemType) {
 					errorSvc.error({
 						data: "Don't have a producerItemType for item " + scope.item._id
