@@ -27,7 +27,7 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc, selectService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -373,11 +373,26 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
+				scope.detachAsset = function() {
+					if (scope.item.asset) {
+						switch(scope.item.producerItemType) {
+							case 'link':
+								scope.item.asset = null;
+								scope.item.link_image_id = null;
+								scope.item.asset_id = null;
+								scope.item.annotation_image_id = null;
+								scope.item.templateUrl = scope.item.templateOpts[0].url;
+								break;
+						}
+					}
+				};
+
 				scope.attachChosenAsset = function (asset_id) {
 					// console.log(scope.item);
 					var asset = modelSvc.assets[asset_id];
 					if (scope.item) {
 						scope.item.asset = asset;
+						selectService.onSelectChange(scope.item);
 						if (scope.item._type === 'Upload' || scope.item._type === 'Plugin') {
 							scope.item.asset_id = asset_id;
 						} else if (scope.item._type === 'Link') {

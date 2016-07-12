@@ -12,6 +12,7 @@
 		var _userHasRole = authSvc.userHasRole;
 		//use visibility map with getVisibility() and component directives
 		var _visibility = {
+			templateSelect: true,
 			imageUpload: false,
 			display: false,
 			videoPosition: false,
@@ -24,6 +25,7 @@
 		var _videoPositionSelectVisibility = _curryVis('videoPosition');
 		var _titleFieldVisibility = _curryVis('titleField');
 		var _speakerFieldVisibility = _curryVis('speakerField');
+		var _templateSelectVisibility = _curryVis('templateSelect');
 
 		return {
 			showTab: showTab,
@@ -56,6 +58,7 @@
 				case 'scene':
 					_displaySelectVisibility(false);
 					_videoPositionSelectVisibility(false);
+					_templateSelectVisibility(true);
 					return [
 						{url: 'templates/scene/centered.html', name: 'Centered'},
 						{url: 'templates/scene/centeredPro.html', name: 'Centered Pro' },
@@ -70,6 +73,7 @@
 					];
 				case 'transcript':
 					_speakerFieldVisibility(true);
+					_templateSelectVisibility(true);
 					return [
 						{url: 'templates/item/transcript.html', name: 'Transcript'},
 						{url: 'templates/item/transcript-withthumbnail.html', name: 'Transcript with thumbnail'}
@@ -78,6 +82,7 @@
 				case 'annotation':
 					_speakerFieldVisibility(false);
 					_titleFieldVisibility(false);
+					_templateSelectVisibility(true);
 					return [
 						{url: 'templates/item/text-h1.html', name: 'Header 1'},
 						{url: 'templates/item/text-h2.html', name: 'Header 2'},
@@ -89,12 +94,13 @@
 				case 'link':
 					_displaySelectVisibility(true);
 					_videoPositionSelectVisibility(false);
-					_imageFieldVisibility(false);
+					_imageFieldVisibility(true);
 					_titleFieldVisibility(true);
+					_templateSelectVisibility(true);
 					return [
 						{url: 'templates/item/link.html', name: 'Link'},
-						{url: 'templates/item/link-withimage.html', name: 'Link with image'},
-						{url: 'templates/item/link-withimage-notitle.html', name: 'Link with image / hide title'},
+						// {url: 'templates/item/link-withimage.html', name: 'Link with image'},
+						// {url: 'templates/item/link-withimage-notitle.html', name: 'Link with image / hide title'},
 						{url: 'templates/item/link-descriptionfirst.html', name: 'Link: description first'},
 						{url: 'templates/item/link-embed.html', name: 'Embedded Link'},
 						{url: 'templates/item/link-modal-thumb.html', name: 'Link Modal'}
@@ -104,6 +110,7 @@
 					_displaySelectVisibility(false);
 					_videoPositionSelectVisibility(false);
 					_titleFieldVisibility(true);
+					_templateSelectVisibility(true);
 					var imgTemplates = [
 						{url: 'templates/item/image-plain.html', name: 'Plain image'},
 						{url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
@@ -121,6 +128,7 @@
 					return imgTemplates;
 				case 'file':
 					_titleFieldVisibility(true);
+					_templateSelectVisibility(true);
 					return [
 						{url: 'templates/item/file.html', name: 'Uploaded File'}
 					];
@@ -128,6 +136,7 @@
 					_displaySelectVisibility(true);
 					_imageFieldVisibility(true);
 					_titleFieldVisibility(true);
+					_templateSelectVisibility(true);
 					return [
 						{url: 'templates/item/question-mc.html', name: 'Default question display'},
 						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'}
@@ -188,23 +197,30 @@
 					break;
 				case 'link':
 					_displaySelectVisibility(true);
+					_imageFieldVisibility(true);
+					_templateSelectVisibility(true);
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';
 					} else {
 						item.layouts[0] = 'inline';
 					}
-					switch(item.templateUrl) {
-						case 'templates/item/link-withimage.html':
-						case 'templates/item/link-withimage-notitle.html':
-							_imageFieldVisibility(true);
-							break;
-						case 'templates/item/link.html':
-						case 'templates/item/link-descriptionfirst.html':
-						case 'templates/item/link-embed.html':
-						case 'templates/item/link-modal-thumb.html':
-							_imageFieldVisibility(false);
-							break;
+					if (item.asset) {
+						_templateSelectVisibility(false);
+						item.templateUrl = 'templates/item/link-withimage.html';
+					} else {
+						_templateSelectVisibility(true);
 					}
+					// switch(item.templateUrl) {
+					// 	case 'templates/item/link-withimage.html':
+					// 	case 'templates/item/link-withimage-notitle.html':
+                    //
+					// 		break;
+					// 	case 'templates/item/link.html':
+					// 	case 'templates/item/link-descriptionfirst.html':
+					// 	case 'templates/item/link-embed.html':
+					// 	case 'templates/item/link-modal-thumb.html':
+					// 		break;
+					// }
 					break;
 				case 'transcript':
 					_displaySelectVisibility(false);

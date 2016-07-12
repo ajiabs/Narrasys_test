@@ -11,7 +11,7 @@
 	    return {
 	        restrict: 'EA',
 			template: [
-			'<div class="field">',
+			'<div class="field" ng-if="selectService.getVisibility(\'templateSelect\')">',
 			'	<div class="label">Template</div>',
 			'	<div class="input">',
 			'		<select ng-model="item.templateUrl" ng-change="selectService.onSelectChange(item)" ng-options="option.url as option.name for option in item.templateOpts"></select>',
