@@ -42,7 +42,7 @@
 				function validateUrl() {
 					//always consider mixedContent url 'valid' but notify user
 					ngModel.$validators.mixedContent = function (modelVal, viewVal) {
-						if (viewVal.match(/^http:\/\//)) {
+						if (ittUtils.existy(viewVal) && viewVal.match(/^http:\/\//)) {
 							errorSvc.notify(_separateTabNotice);
 						}
 						return true;
