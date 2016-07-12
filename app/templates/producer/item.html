@@ -39,11 +39,13 @@
 						<div ng-switch-when="link">
 							<!--Time, Title, URL, Description, Template, Image, Flags-->
 							<!--these are impure component directives that depend inherited scope from item-->
+							item form: <pre style="width: 600px; height: 900px; overflow: scroll">{{ittItemForm | json}}</pre>
 							<itt-time-field></itt-time-field>
 							<itt-title-field do-validate="true" data="item"></itt-title-field>
 							<itt-url-field></itt-url-field>
 							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select></itt-template-select>
+							<i ng-if="ittItemForm.imageUpload.$invalid" class="fa fa-exclamation-triangle error-red"></i>
 							<itt-image-field></itt-image-field>
 							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>

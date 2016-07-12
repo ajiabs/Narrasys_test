@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, $log) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
 		// Poor encapsulation of the upload controls. Sorry about that.
 
+		$scope.$log = $log;
 		$scope.userHasRole = authSvc.userHasRole;
 		$scope.selectService = selectService;
 		$scope.chooseAsset = function (assetType) {

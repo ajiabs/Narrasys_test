@@ -10,18 +10,18 @@
 	function ittValidateImage() {
 	    return {
 	        restrict: 'EA',
-			require: '?ngModel',
+			require: '^ngModel',
 			scope: {
 	        	asset:'='
 			},
 			link: function(scope, elm, attrs, ngModelCtrl) {
-	        	console.log('wiredd up!!', scope);
-				console.log('ngMod', ngModelCtrl);
-				if (ngModelCtrl) {
-					ngModelCtrl.$validators.imageUpload = function(modelVal) {
-
-					}
-				}
+				console.log(ngModelCtrl);
+				// if (ngModelCtrl) {
+				// 	ngModelCtrl.$validators.imageUpload = function(modelVal) {
+				// 		console.log('not valid!');
+				// 		return false
+				// 	}
+				// }
 
 			}
 	    };
