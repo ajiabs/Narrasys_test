@@ -105,7 +105,7 @@
 						{url: 'templates/item/link-embed.html', name: 'Embedded Link'}
 					];
 					if (_userHasRole('admin')) {
-						linkTemplates.splice(3, 0, {url: 'templates/item/link-descriptionfirst.html', name: 'Link w/ description first'})
+						linkTemplates.splice(3, 0, {url: 'templates/item/link-descriptionfirst.html', name: 'Link w/ description first'});
 					}
 					return linkTemplates;
 				case 'image':
