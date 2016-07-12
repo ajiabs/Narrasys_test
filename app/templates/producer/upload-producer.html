@@ -10,6 +10,7 @@
 </div>
 
 <div>
+	<ng-model ng-model="item.asset" itt-validate-image asset="item.asset"></ng-model>
 	<div ng-if="item.asset && !showUploadButtons">
 		{{item.asset.display_name}}
 		<button class="button" ng-click="replaceAsset()">Replace this</button>

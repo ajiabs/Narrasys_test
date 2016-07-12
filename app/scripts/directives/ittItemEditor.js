@@ -381,7 +381,6 @@ angular.module('com.inthetelling.story')
 								scope.item.link_image_id = null;
 								scope.item.asset_id = null;
 								scope.item.annotation_image_id = null;
-								scope.item.templateUrl = scope.item.templateOpts[0].url;
 								break;
 						}
 					}

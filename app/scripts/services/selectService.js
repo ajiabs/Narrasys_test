@@ -97,14 +97,17 @@
 					_imageFieldVisibility(true);
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(true);
-					return [
+					var linkTemplates = [
 						{url: 'templates/item/link.html', name: 'Link'},
+						{url: 'templates/item/link-withimage-notitle.html', name: 'Link with image / hide title'},
+						{url: 'templates/item/link-modal-thumb.html', name: 'Link Modal'},
 						// {url: 'templates/item/link-withimage.html', name: 'Link with image'},
-						// {url: 'templates/item/link-withimage-notitle.html', name: 'Link with image / hide title'},
-						{url: 'templates/item/link-descriptionfirst.html', name: 'Link: description first'},
-						{url: 'templates/item/link-embed.html', name: 'Embedded Link'},
-						{url: 'templates/item/link-modal-thumb.html', name: 'Link Modal'}
+						{url: 'templates/item/link-embed.html', name: 'Embedded Link'}
 					];
+					if (_userHasRole('admin')) {
+						linkTemplates.splice(3, 0, {url: 'templates/item/link-descriptionfirst.html', name: 'Link w/ description first'})
+					}
+					return linkTemplates;
 				case 'image':
 					_imageFieldVisibility(true);
 					_displaySelectVisibility(false);
@@ -204,23 +207,18 @@
 					} else {
 						item.layouts[0] = 'inline';
 					}
-					if (item.asset) {
-						_templateSelectVisibility(false);
-						item.templateUrl = 'templates/item/link-withimage.html';
-					} else {
-						_templateSelectVisibility(true);
+					switch(item.templateUrl) {
+						case 'templates/item/link.html':
+						case 'templates/item/link-withimage.html':
+						case 'templates/item/link-withimage-notitle.html':
+						case 'templates/item/link-modal-thumb.html':
+							_imageFieldVisibility(true);
+							break;
+						case 'templates/item/link-descriptionfirst.html':
+						case 'templates/item/link-embed.html':
+							_imageFieldVisibility(false);
+							break;
 					}
-					// switch(item.templateUrl) {
-					// 	case 'templates/item/link-withimage.html':
-					// 	case 'templates/item/link-withimage-notitle.html':
-                    //
-					// 		break;
-					// 	case 'templates/item/link.html':
-					// 	case 'templates/item/link-descriptionfirst.html':
-					// 	case 'templates/item/link-embed.html':
-					// 	case 'templates/item/link-modal-thumb.html':
-					// 		break;
-					// }
 					break;
 				case 'transcript':
 					_displaySelectVisibility(false);
