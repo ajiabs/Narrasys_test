@@ -435,7 +435,7 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('copyNewRelic', ['for copying a script from newrelic'], function() {
-		exec('cp app/scripts/plugin/newrelic.js dist/scripts/', (err, stdout, stderr) => {
+		exec('cp app/scripts/plugin/newrelic.js dist/scripts/', (err, stdout, stderr) => { // jshint ignore:line
 			if (err) {
 				console.error(err);
 				return;
