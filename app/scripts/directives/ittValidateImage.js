@@ -21,22 +21,33 @@
 					ngModelCtrl.$validators.imageUpload = function() {
 						return true;
 					};
-					var linkImgNoTitleTmpl = 'templates/item/link-withimage-notitle.html';
-					var linkImgTmpl = 'templates/item/link.html';
-					scope.$watch(function(){
-						return scope.item;
-					}, function(newVal){
-						var tmplUrl = newVal.templateUrl;
-						var asset = newVal.asset;
+					scope.$watch(watchItem, handleChanges, true);
+				}
 
-						if (tmplUrl === linkImgNoTitleTmpl && ittUtils.existy(asset)) {
+				function watchItem() {
+					return scope.item;
+				}
+
+				function handleChanges(newVal) {
+					var tmplUrl = newVal.templateUrl;
+					var asset = newVal.asset;
+
+					switch(tmplUrl) {
+						case 'templates/item/link-withimage-notitle.html':
+							if (ittUtils.existy(asset)) {
+								ngModelCtrl.$setValidity('imageUpload', true);
+							} else {
+								ngModelCtrl.$setValidity('imageUpload', false);
+							}
+							break;
+						case 'templates/item/link.html':
+						case 'templates/item/link-withimage.html':
+						case 'templates/item/link-modal-thumb.html':
+						case 'templates/item/link-descriptionfirst.html':
+						case 'templates/item/link-embed.html':
 							ngModelCtrl.$setValidity('imageUpload', true);
-						} else if (tmplUrl === linkImgTmpl) {
-							ngModelCtrl.$setValidity('imageUpload', true);
-						} else {
-							ngModelCtrl.$setValidity('imageUpload', false);
-						}
-					}, true);
+							break;
+					}
 				}
 
 			}

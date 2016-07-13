@@ -7,6 +7,8 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+const exec = require('child_process').exec;
+
 module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
 	require('time-grunt')(grunt);
@@ -414,7 +416,8 @@ module.exports = function (grunt) {
 		'rev',
 		'usemin',
 		'clean:docs',
-		'ngdocs'
+		'ngdocs',
+		'copyNewRelic'
 	]);
 
 	grunt.registerTask('doWork', [
@@ -430,5 +433,15 @@ module.exports = function (grunt) {
 		'ngdocs',
 		'browserSync:docs'
 	]);
+
+	grunt.registerTask('copyNewRelic', ['for copying a script from newrelic'], function() {
+		exec('cp app/scripts/plugin/newrelic.js dist/scripts/', (err, stdout, stderr) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+			console.log(stdout);
+		});
+	});
 
 };
