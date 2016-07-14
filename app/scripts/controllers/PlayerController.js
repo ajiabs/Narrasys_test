@@ -126,12 +126,63 @@ angular.module('com.inthetelling.story')
 			// END WILEY HACK
 		};
 
+		if (modelSvc.episodes[appState.episodeId]) {
+			// recycle existing episode data.   TODO: DRY the repeated code below from inside getEpisodeWatcher
+			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
+			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
+			if (modelSvc.episodes[appState.episodeId].master_asset_id) {
+				timelineSvc.init(appState.episodeId);
+			} else {
+				// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
+				if (appState.product === 'producer') {
+					appState.editEpisode = modelSvc.episodes[appState.episodeId];
+				}
+				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+				appState.videoControlsLocked = true;
+			}
+			if (appState.productLoadedAs === 'producer' && !(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
+				// TODO redirect instead?
+				appState.product = 'player';
+				appState.productLoadedAs = 'player';
+			}
+		} else {
+			$scope.loading = true;
+			modelSvc.addLandingScreen(appState.episodeId);
+			/*
+				this begins gathering the necessary data for our player, either for an episode or narrative.
+				we can get here in basically two ways: coming from a narrative or not.
+				case: <episode|editor|producer>/:id/... aka not a narrative
+					in this case, appState.episodeSegmentId is false and appState.episodeId is set from $routeParams ~ line 78 above.
+				case : story/:narrativePath/:timelinePath aka a narrative
+					this case is a little more tricky...
+			 		/story/:narrativePath/:timelinePath -> uses itt-narrative-timeline
+			 		itt-narrative-timeline users dataSvc.getNarrative(<id pulled from $routeParams.narrativePath>) , iterates over the matching narrative timelines
+			 		episodeId and episodeSegmentId get set on appState from the timelines first episode_segment
+			 */
+			dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
+		}
+
+
+
+		$scope.appState = appState;
+		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
+		$scope.now = new Date();
+
+		$scope.newWindowUrl = config.apiDataBaseUrl + "/v1/new_window";
+		if (appState.narrativeId) {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?narrative=" + appState.narrativeId + "&timeline=" + appState.timelineId;
+		} else {
+			$scope.newWindowUrl = $scope.newWindowUrl + "?episode=" + appState.episodeId;
+		}
+
 		var getEpisodeWatcher = $rootScope.$on("dataSvc.getEpisode.done", function () {
 			getEpisodeWatcher();
 			// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 			modelSvc.setLanguageStrings();
 			wileyNag(); // HACK
+
+
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
 			// console.log("getEpisode.done fired", modelSvc.episodes[appState.episodeId]);
 			// producer needs the episode container:
@@ -168,42 +219,6 @@ angular.module('com.inthetelling.story')
 
 			});
 		});
-
-		if (modelSvc.episodes[appState.episodeId]) {
-			// recycle existing episode data.   TODO: DRY the repeated code below from inside getEpisodeWatcher
-			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
-			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
-			if (modelSvc.episodes[appState.episodeId].master_asset_id) {
-				timelineSvc.init(appState.episodeId);
-			} else {
-				// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
-				if (appState.product === 'producer') {
-					appState.editEpisode = modelSvc.episodes[appState.episodeId];
-				}
-				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
-				appState.videoControlsLocked = true;
-			}
-			if (appState.productLoadedAs === 'producer' && !(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
-				// TODO redirect instead?
-				appState.product = 'player';
-				appState.productLoadedAs = 'player';
-			}
-		} else {
-			$scope.loading = true;
-			modelSvc.addLandingScreen(appState.episodeId);
-			dataSvc.getEpisode(appState.episodeId, appState.episodeSegmentId);
-		}
-
-		$scope.appState = appState;
-		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
-		$scope.now = new Date();
-
-		$scope.newWindowUrl = config.apiDataBaseUrl + "/v1/new_window";
-		if (appState.narrativeId) {
-			$scope.newWindowUrl = $scope.newWindowUrl + "?narrative=" + appState.narrativeId + "&timeline=" + appState.timelineId;
-		} else {
-			$scope.newWindowUrl = $scope.newWindowUrl + "?episode=" + appState.episodeId;
-		}
 
 		// put this in template instead
 		// if (appState.user.access_token) {
@@ -481,4 +496,5 @@ angular.module('com.inthetelling.story')
 			firstplayWatcher();
 			escWatcher();
 		});
+
 	});

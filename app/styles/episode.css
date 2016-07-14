@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .episode {
   padding-top: 45px;
   width: 100%;
@@ -837,4 +838,140 @@
     .narrasys-pro .scene.centerVV-mondrian .item.mondrian a {
       color: white; }
   .narrasys-pro .scene.centerVV-mondrian .title a {
+    color: white; }
+
+.field-pros .static-bg__main {
+  background: url("/images/customer/Green_BG-01.svg");
+  height: 100vh; }
+.field-pros .static-bg__alt {
+  background: url("/images/customer/Grid_Graphic-01.svg");
+  height: 100vh; }
+.field-pros .static-bg__main--mondrian {
+  background: url("/images/customer/Grid_Graphic-01.svg");
+  height: 100vh; }
+.field-pros .fp-branding {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  height: 150px; }
+  .field-pros .fp-branding .fp-logo {
+    width: 220px; }
+  .field-pros .fp-branding .fp-copyright {
+    color: grey;
+    vertical-align: baseline;
+    font-size: 14px; }
+    .field-pros .fp-branding .fp-copyright a {
+      text-decoration: underline;
+      color: grey; }
+.field-pros .item .itemHead {
+  font-family: 'Roboto Condensed';
+  font-weight: 700; }
+.field-pros .item .text {
+  font-family: 'Lato';
+  font-weight: 300;
+  font-size: 1.3em; }
+.field-pros .item .pullquote {
+  font-family: 'Lato';
+  font-weight: 300;
+  font-size: 2.5vmax;
+  position: relative;
+  bottom: 0.5em; }
+  .field-pros .item .pullquote:before {
+    content: "“";
+    opacity: 0.6;
+    font-family: 'Roboto Condensed';
+    font-weight: 700;
+    color: #4b4b52;
+    font-size: 4em; }
+.field-pros .landingscreen {
+  padding-top: 0%; }
+  .field-pros .landingscreen div {
+    display: flex;
+    flex-direction: column; }
+  .field-pros .landingscreen .introtext {
+    width: 100%;
+    margin-bottom: 5em; }
+  .field-pros .landingscreen .videoMagnet {
+    width: 100%; }
+  .field-pros .landingscreen h1 {
+    margin-top: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Roboto Condensed";
+    color: white;
+    background-color: #6baa36;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    min-height: 80px;
+    max-height: 80px;
+    position: absolute;
+    font-size: "3.0vmax";
+    font-weight: lighter;
+    letter-spacing: 0.1em; }
+.field-pros .centered-pro .banner-pull-quote h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Condensed";
+  color: white;
+  background-color: #6baa36;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: "3.0vmax";
+  font-weight: lighter;
+  letter-spacing: 0.1em; }
+.field-pros .centerVV .bgLayer.bg-alt {
+  opacity: 1;
+  background-size: cover;
+  left: 50%; }
+.field-pros .centerVV .bgLayer.bg-main {
+  width: 50%;
+  opacity: 1; }
+.field-pros .centerVV .item.centerVV-h2 {
+  font-family: 'Roboto Condensed';
+  font-weight: 700;
+  background: white;
+  margin-top: 14px; }
+  .field-pros .centerVV .item.centerVV-h2 h2 {
+    position: relative;
+    bottom: 0.7em;
+    font-weight: lighter;
+    text-align: center;
+    font-size: 2vmax;
+    letter-spacing: 0.5vmin; }
+.field-pros .centerVV .item .itemTemplate.headerItem .pullquote {
+  margin-top: 4px; }
+.field-pros .centerVV-mondrian .bgLayer.bg-alt {
+  position: fixed;
+  width: 50%;
+  border-right: 8px solid #4b4b52;
+  background-color: #6baa36;
+  opacity: 1; }
+.field-pros .centerVV-mondrian .bgLayer.bg-main {
+  opacity: 1;
+  background-size: cover;
+  left: 50%; }
+.field-pros .centerVV-mondrian .mainPane .item {
+  margin-top: 0.8em;
+  padding-top: 15px; }
+.field-pros .centerVV-mondrian .item {
+  background-color: #4b4b52;
+  color: white; }
+  .field-pros .centerVV-mondrian .item:first-child.mondrian {
+    margin-top: 1.7em; }
+  .field-pros .centerVV-mondrian .item .title {
+    font-family: 'Roboto Condensed';
+    font-weight: 700;
+    margin: 0;
+    padding: 0; }
+  .field-pros .centerVV-mondrian .item a {
+    color: white; }
+  .field-pros .centerVV-mondrian .item .itemTemplate.headerItem .pullquote:before {
     color: white; }

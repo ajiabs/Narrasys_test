@@ -1,0 +1,17 @@
+<div class="episode field-pros" ng-class="episode.styleCss">
+
+	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
+	<span ng-include="'templates/episode/components/watchmode.html'"></span>
+	<span ng-repeat="scene in episode.scenes | isCurrent" ng-include="'templates/episode/components/discovermode.html'"></span>
+	<span ng-include="'templates/episode/components/video.html'"></span>
+	<span ng-include="'templates/episode/components/windowfg.html'"></span>
+
+	<div ng-if="appState.viewMode != 'watch'" class="fp-branding">
+
+		<div class="fp-copyright" ng-include="'templates/copyright.html'"></div>
+		<div>
+			<img class="fp-logo" src="images/customer/Logo_ColorBars-01.svg"/>
+		</div>
+	</div>
+
+</div>
