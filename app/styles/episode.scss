@@ -1148,6 +1148,10 @@ $fieldProMain: #6baa36;
 
 .field-pros {
 
+	.searchResults {
+		@include roboto-condensed;
+	}
+
 	.static-bg__main {
 		background: url('/images/customer/Green_BG-01.svg');
 		height: 100vh;

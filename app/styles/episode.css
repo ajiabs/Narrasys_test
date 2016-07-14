@@ -840,6 +840,9 @@
   .narrasys-pro .scene.centerVV-mondrian .title a {
     color: white; }
 
+.field-pros .searchResults {
+  font-family: 'Roboto Condensed';
+  font-weight: 700; }
 .field-pros .static-bg__main {
   background: url("/images/customer/Green_BG-01.svg");
   height: 100vh; }
