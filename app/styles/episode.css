@@ -840,6 +840,8 @@
   .narrasys-pro .scene.centerVV-mondrian .title a {
     color: white; }
 
+.field-pros .mainPane, .field-pros .altPane {
+  background-color: transparent; }
 .field-pros .static-bg__main {
   background: url("/images/customer/Green_BG-01.svg");
   height: 100vh; }
@@ -959,13 +961,10 @@
   font-weight: lighter; }
 .field-pros .centered-pro .banner-pull-quote .edit-event {
   top: 1.8em; }
-.field-pros .centerVV .bgLayer.bg-alt {
-  opacity: 1;
-  background-size: cover;
-  left: 50%; }
-.field-pros .centerVV .bgLayer.bg-main {
-  width: 50%;
-  opacity: 1; }
+.field-pros .centerVV .mainBg {
+  position: absolute;
+  top: 0;
+  left: 0; }
 .field-pros .centerVV .item.centerVV-h2 {
   margin-top: 14px;
   background: white; }

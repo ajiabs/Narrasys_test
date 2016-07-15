@@ -1148,6 +1148,11 @@ $fieldProMain: #6baa36;
 .field-pros {
 	//static-bg's are background images in 2 col layouts
 	//currently only in use in CenterVV, CenterVV-mondrian layouts.
+
+	.mainPane, .altPane {
+		background-color: transparent;
+	}
+
 	.static-bg__main {
 		background: url('/images/customer/Green_BG-01.svg');
 		height: 100vh;
@@ -1274,18 +1279,24 @@ $fieldProMain: #6baa36;
 	}
 
 	.centerVV {
-		.bgLayer {
-			&.bg-alt {
-				opacity: 1;
-				background-size: cover;
-				left: 50%;
-			}
-
-			&.bg-main {
-				width: 50%;
-				opacity: 1;
-			}
+		.mainBg {
+			position: absolute;
+			top: 0;
+			left: 0;
 		}
+		//.bgLayer {
+		//	&.bg-alt {
+		//		opacity: 1;
+		//		background-size: cover;
+		//		left: 50%;
+		//	}
+        //
+		//	&.bg-main {
+		//		width: 50%;
+		//		background-size: contain;
+		//		opacity: 1;
+		//	}
+		//}
 
 		.item {
 			&.centerVV-h2 {
