@@ -1114,11 +1114,11 @@ $fieldProInvert: #4B4B52;
 $fieldProMain: #6baa36;
 
 @mixin roboto-condensed {
-	font-family: 'Roboto Condensed';
+	font-family: 'Roboto Condensed', sans-serif;
 	font-weight: 700;
 }
 @mixin lato-lite {
-	font-family: 'Lato';
+	font-family: 'Lato', sans-serif;
 	font-weight: 300;
 }
 
@@ -1143,15 +1143,11 @@ $fieldProMain: #6baa36;
 	position: absolute;
 	font-size: $fontSize;
 	font-weight: lighter;
-	letter-spacing: 0.1em;
 }
 
 .field-pros {
-
-	.searchResults {
-		@include roboto-condensed;
-	}
-
+	//static-bg's are background images in 2 col layouts
+	//currently only in use in CenterVV, CenterVV-mondrian layouts.
 	.static-bg__main {
 		background: url('/images/customer/Green_BG-01.svg');
 		height: 100vh;
@@ -1166,14 +1162,14 @@ $fieldProMain: #6baa36;
 		background: url('/images/customer/Grid_Graphic-01.svg');
 		height: 100vh;
 	}
-
+	//the logo / branding section in the episode template
 	.fp-branding {
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
 		height: 150px;
 		.fp-logo {
-			width: 220px;
+			width: 300px;
 		}
 		.fp-copyright {
 			color: grey;
@@ -1185,32 +1181,7 @@ $fieldProMain: #6baa36;
 			}
 		}
 	}
-
-	.item {
-		.itemHead {
-			@include roboto-condensed;
-		}
-
-		.text {
-			@include lato-lite;
-			font-size: 1.3em;
-		}
-
-		.pullquote {
-			@include lato-lite;
-			font-size: 2.5vmax;
-			position: relative;
-			bottom: 0.5em;
-			&:before {
-				content: "“";
-				opacity:0.6;
-				@include roboto-condensed;
-				color: $fieldProInvert;
-				font-size: 4em;
-			}
-		}
-	}
-
+	//
 	.landingscreen {
 		padding-top: 0%;
 		div {
@@ -1232,17 +1203,82 @@ $fieldProMain: #6baa36;
 		}
 	}
 
+	.endingscreen {
+		p {
+			@include banner-pq('Roboto Condensed', $fieldProMain, '3.0vmax');
+			position: relative;
+			top: 0;
+		}
+	}
+
+	//search view
+	.searchResults {
+		@include roboto-condensed;
+
+		a {
+			color: $fieldProMain;
+		}
+	}
+
+	//item overrides
+
+	.content {
+		.item {
+			&:first-child {
+				padding-top: 2px;
+			}
+		}
+	}
+
+	.item {
+		//background: white;
+		.headerItem {
+			@include roboto-condensed;
+		}
+
+		.text {
+			@include lato-lite;
+			font-size: 1.7vw;
+		}
+
+		.definition {
+			.text {
+				font-size: 1.7vw;
+			}
+		}
+
+		h2 {
+			font-size: 2vw;
+			text-align: center;
+			position: relative;
+			bottom: 0.2em;
+		}
+
+		.pullquote {
+			@include lato-lite;
+			font-size: 2.5vw;
+			position: relative;
+			&:before {
+				content: "“";
+				opacity: 0.6;
+				@include roboto-condensed;
+				color: $fieldProInvert;
+				width: 0.4em;
+				line-height: 1em;
+			}
+		}
+	}
+	//layout specific overrides
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
-				@include banner-pq('Roboto Condensed', $fieldProMain, '3.0vmax');
+				@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw);
 			}
 			.edit-event {
 				//top: 1.8em;
 			}
 		}
-
-		}
+	}
 
 	.centerVV {
 		.bgLayer {
@@ -1260,28 +1296,11 @@ $fieldProMain: #6baa36;
 
 		.item {
 			&.centerVV-h2 {
-				@include roboto-condensed;
-				background: white;
 				margin-top: 14px;
-				h2 {
-					position: relative;
-					bottom: 0.7em;
-					font-weight: lighter;
-					text-align: center;
-					font-size: 2vmax;
-					letter-spacing: 0.5vmin;
-				}
-			}
-
-			.itemTemplate {
-				&.headerItem {
-					.pullquote {
-						margin-top: 4px;
-					}
-				}
+				background: white;
+				//margin-bottom: 7px;
 			}
 		}
-
 	}
 
 	.centerVV-mondrian {
@@ -1304,7 +1323,6 @@ $fieldProMain: #6baa36;
 		.mainPane {
 			.item {
 				margin-top: 0.8em;
-				padding-top: 15px;
 			}
 		}
 
@@ -1320,10 +1338,23 @@ $fieldProMain: #6baa36;
 				@include roboto-condensed;
 				margin: 0;
 				padding: 0;
+				a {
+					color: white;
+				}
+
 			}
-			a {
+
+			.escapelink {
+				color: $fieldProMain;
+				&:before {
+					color: $fieldProMain;
+				}
+			}
+
+			a.fakeLink {
 				color: white;
 			}
+
 			.itemTemplate {
 				&.headerItem {
 					.pullquote {
