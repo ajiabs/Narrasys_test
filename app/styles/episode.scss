@@ -1169,7 +1169,7 @@ $fieldProMain: #6baa36;
 		align-items: baseline;
 		height: 150px;
 		.fp-logo {
-			width: 300px;
+			width: 350px;
 		}
 		.fp-copyright {
 			color: grey;
@@ -1222,16 +1222,7 @@ $fieldProMain: #6baa36;
 
 	//item overrides
 
-	.content {
-		.item {
-			&:first-child {
-				padding-top: 2px;
-			}
-		}
-	}
-
 	.item {
-		//background: white;
 		.headerItem {
 			@include roboto-condensed;
 		}
@@ -1258,13 +1249,15 @@ $fieldProMain: #6baa36;
 			@include lato-lite;
 			font-size: 2.5vw;
 			position: relative;
+			bottom: 0.2em;
 			&:before {
+				font-size: 4em;
 				content: "“";
 				opacity: 0.6;
 				@include roboto-condensed;
 				color: $fieldProInvert;
 				width: 0.4em;
-				line-height: 1em;
+				line-height: 0.8em;
 			}
 		}
 	}
@@ -1275,7 +1268,7 @@ $fieldProMain: #6baa36;
 				@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw);
 			}
 			.edit-event {
-				//top: 1.8em;
+				top: 1.8em;
 			}
 		}
 	}
@@ -1298,7 +1291,10 @@ $fieldProMain: #6baa36;
 			&.centerVV-h2 {
 				margin-top: 14px;
 				background: white;
-				//margin-bottom: 7px;
+				h2 {
+					position: relative;
+					bottom: 0.5em;
+				}
 			}
 		}
 	}
@@ -1323,6 +1319,13 @@ $fieldProMain: #6baa36;
 		.mainPane {
 			.item {
 				margin-top: 0.8em;
+			}
+		}
+		.content {
+			.item {
+				&:first-child {
+					padding-top: 2px;
+				}
 			}
 		}
 
