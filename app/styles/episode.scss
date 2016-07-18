@@ -1155,12 +1155,13 @@ $fieldProMain: #6baa36;
 
 	.static-bg__main {
 		background: url('/images/customer/Green_BG-01.svg');
+		background-size: cover;
 		height: 100vh;
 	}
 
 	.static-bg__alt {
 		background: url('/images/customer/Grid_Graphic-01.svg');
-		height: 100vh;
+		background-size: cover;
 	}
 
 	.static-bg__main--mondrian {
@@ -1279,11 +1280,13 @@ $fieldProMain: #6baa36;
 	}
 
 	.centerVV {
-		.mainBg {
-			position: absolute;
-			top: 0;
-			left: 0;
-		}
+		//.bgLayer {
+		//	position: absolute;
+		//	top: 0;
+		//	left: 0;
+		//	background-size: cover;
+		//	background-repeat: no-repeat;
+		//}
 		//.bgLayer {
 		//	&.bg-alt {
 		//		opacity: 1;

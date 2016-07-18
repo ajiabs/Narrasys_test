@@ -4,6 +4,7 @@ angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
 
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
+		$scope.setBgImgUrl = setBgImgUrl;
 
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");
@@ -25,7 +26,6 @@ angular.module('com.inthetelling.story')
 			$scope.mainBgItems = $filter("itemLayout")($scope.scene.items, "mainBg");
 			$scope.altFgItems = $filter("itemLayout")($scope.scene.items, "altFg");
 			$scope.altBgItems = $filter("itemLayout")($scope.scene.items, "altBg");
-
 			// Content is a little trickier:
 			// * splitRequired:
 			//   main = transcript + optional   / alt=required - transcript
@@ -95,6 +95,14 @@ angular.module('com.inthetelling.story')
 			var isPullQuoteAttrib = item.templateUrl === 'templates/item/pullquote-noattrib.html';
 			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
 			return (isPullQuote || isH2 || isPullQuoteAttrib) ? item : false;
+		}
+
+		function setBgImgUrl(items) {
+			var bgItem = $filter('isCurrent')(items);
+			if (bgItem.length > 0) {
+				return 'url('+bgItem[0].asset.url+')';
+			}
+			return '';
 		}
 
 	});
