@@ -757,8 +757,6 @@
     display: block;
     margin: 0 auto;
     width: 260px; }
-  .narrasys-pro .altPane {
-    background-color: white; }
   .narrasys-pro .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -785,13 +783,6 @@
     font-weight: lighter;
     font-size: 2vmax;
     letter-spacing: 0.3vw; }
-  .narrasys-pro .centerVV .bgLayer.bg-alt {
-    opacity: 1;
-    background-size: cover;
-    left: 50%; }
-  .narrasys-pro .centerVV .bgLayer.bg-main {
-    width: 50%;
-    opacity: 1; }
   .narrasys-pro .centerVV .item {
     margin-top: 14px;
     background: transparent;
@@ -817,16 +808,6 @@
       font-size: 2.7vmax;
       position: relative;
       bottom: 0.5em; }
-  .narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-alt {
-    position: fixed;
-    width: 50%;
-    border-right: 8px solid #4d4d4d;
-    background-color: #de6625;
-    opacity: 1; }
-  .narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-main {
-    opacity: 1;
-    background-size: cover;
-    left: 50%; }
   .narrasys-pro .scene.centerVV-mondrian .content .item:first-child.mondrian {
     padding: 0.1em 0 0.3em 0.3em; }
   .narrasys-pro .scene.centerVV-mondrian .item.mondrian {
