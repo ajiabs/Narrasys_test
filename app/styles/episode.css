@@ -824,9 +824,8 @@
 .field-pros .mainPane, .field-pros .altPane {
   background-color: transparent; }
 .field-pros .static-bg__main {
-  background: url("/images/customer/Green_BG-01.svg");
-  background-size: cover;
-  height: 100vh; }
+  background: url("/images/customer/Green_BG_01.svg");
+  background-size: cover; }
 .field-pros .static-bg__alt {
   background: url("/images/customer/Grid_Graphic-01.svg");
   background-size: cover; }
@@ -896,6 +895,10 @@
   font-weight: 700; }
   .field-pros .searchResults a {
     color: #6baa36; }
+  .field-pros .searchResults .text, .field-pros .searchResults .itemHead {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 2vh !important; }
 .field-pros .item .headerItem {
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 700; }

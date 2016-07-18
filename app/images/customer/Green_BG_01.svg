@@ -18,12 +18,12 @@
 	<g class="st0">
 		<rect class="st1" width="608.3" height="750"/>
 
-			<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="-559.012" y1="269" x2="158.987" y2="269" gradientTransform="matrix(-1 0 0 -1 49.988 348.5)">
+			<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="-559.012" y1="314" x2="158.987" y2="314" gradientTransform="matrix(-1 0 0 -1 49.988 348.5)">
 			<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
 			<stop  offset="0.1381" style="stop-color:#FFFFFF;stop-opacity:0.1381"/>
 			<stop  offset="1" style="stop-color:#FFFFFF"/>
 		</linearGradient>
-		<path class="st2" d="M609,114c0,0-163-69-608.3-69S609,45,609,45V114z"/>
+		<path class="st2" d="M609,69C609,69,446,0,0.7,0S609,0,609,0V69z"/>
 		<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="0" y1="715.25" x2="717.988" y2="715.25">
 			<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
 			<stop  offset="0.1381" style="stop-color:#FFFFFF;stop-opacity:0.1381"/>

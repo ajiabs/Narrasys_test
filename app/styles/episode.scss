@@ -1154,9 +1154,8 @@ $fieldProMain: #6baa36;
 	}
 
 	.static-bg__main {
-		background: url('/images/customer/Green_BG-01.svg');
+		background: url('/images/customer/Green_BG_01.svg');
 		background-size: cover;
-		height: 100vh;
 	}
 
 	.static-bg__alt {
@@ -1223,6 +1222,11 @@ $fieldProMain: #6baa36;
 
 		a {
 			color: $fieldProMain;
+		}
+
+		.text, .itemHead {
+			@include lato-lite;
+			font-size: 2vh !important;
 		}
 	}
 
