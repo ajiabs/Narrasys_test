@@ -25,8 +25,9 @@
 		<span ng-if="!item.noEmbed">
 			<img ng-click="toggleDetailView()" ng-src="{{item.asset.url}}" class="link-no-title-img">
 		</span>
+		<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 	</div>
-	<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
+
 </div>
 
 <div class="itemDetail" ng-if="item.showInlineDetail">

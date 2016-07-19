@@ -4,6 +4,10 @@
 	position: relative;
 }
 
+.col__background--opacity {
+	opacity: 0.33;
+}
+
 .fill,
 .fill .item,
 .fgLayer .item.contain,
@@ -453,6 +457,15 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	flex-direction: row-reverse;
 }
 
+.scene.centerVV .videoMagnet,
+.scene.centerVV .mainPane {
+	opacity: 1;
+	/*width: 50%;*/
+}
+
+.centerVV .foreground {
+	height: 0;
+}
 /* ------------------------------------------- */
 
 .scene.centerVV-mondrian {

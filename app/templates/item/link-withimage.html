@@ -36,9 +36,9 @@
 			</div>
 			<img ng-click="toggleDetailView()" ng-src="{{item.asset.url}}">
 		</span>
-
+		<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 	</div>
-	<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
+
 </div>
 
 <div class="itemDetail" ng-if="item.showInlineDetail">
