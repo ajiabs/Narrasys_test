@@ -463,11 +463,9 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	/*width: 50%;*/
 }
 
-.actual--col {
+.centerVV .foreground {
 	height: 0;
-	transform: translateY(-550px);
 }
-
 /* ------------------------------------------- */
 
 .scene.centerVV-mondrian {

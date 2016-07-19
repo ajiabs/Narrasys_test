@@ -5,8 +5,6 @@ angular.module('com.inthetelling.story')
 
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 		$scope.setBgImgUrl = setBgImgUrl;
-		$scope.setImgUrl = setImgUrl;
-		// $scope.setBgAltImgUrl = setBgAltImgUrl;
 		var _cssBackground = 'background-image';
 		var _cssOpacity = 'opacity';
 
@@ -111,21 +109,6 @@ angular.module('com.inthetelling.story')
 					opacity = 0.33;
 				}
 				return {[_cssBackground]: bgUrl, [_cssOpacity]: opacity};
-			}
-			return '';
-		}
-
-		function setImgUrl(items) {
-			var currItems = $filter('isCurrent')(items);
-			var mainColBgOrFg = $filter(col)(currItems);
-			var opacity = 1;
-			if (mainColBgOrFg.length > 0) {
-				// var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
-				// if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
-				// 	opacity = 0.33;
-				// }
-				// return {[_cssBackground]: bgUrl, [_cssOpacity]: opacity};
-				return mainColBgOrFg[0].asset.url;
 			}
 			return '';
 		}

@@ -1158,16 +1158,12 @@ $fieldProMain: #6baa36;
 		background: url('/images/customer/Green_BG_01.svg');
 		background-size: cover;
 		height: 100vh;
-		position: fixed;
-		//z-index: 9999;
 	}
 
 	.static-bg__alt {
 		background: url('/images/customer/Grid_Graphic-01.svg');
 		background-size: cover;
 		height: 100vh;
-		//position: fixed;
-		//z-index:9999;
 	}
 
 	.static-bg__main--mondrian {
@@ -1179,7 +1175,6 @@ $fieldProMain: #6baa36;
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
-		height: 150px;
 		.fp-logo {
 			width: 350px;
 		}
@@ -1291,6 +1286,13 @@ $fieldProMain: #6baa36;
 	}
 
 	.centerVV {
+
+		.mainPane {
+			.item {
+				margin-top: 2em;
+			}
+		}
+
 		.item {
 
 			.escapelink {

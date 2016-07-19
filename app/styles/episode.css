@@ -836,8 +836,7 @@
 .field-pros .static-bg__main {
   background: url("/images/customer/Green_BG_01.svg");
   background-size: cover;
-  height: 100vh;
-  position: fixed; }
+  height: 100vh; }
 .field-pros .static-bg__alt {
   background: url("/images/customer/Grid_Graphic-01.svg");
   background-size: cover;
@@ -848,8 +847,7 @@
 .field-pros .fp-branding {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  height: 150px; }
+  align-items: baseline; }
   .field-pros .fp-branding .fp-logo {
     width: 350px; }
   .field-pros .fp-branding .fp-copyright {
@@ -959,6 +957,8 @@
   font-weight: lighter; }
 .field-pros .centered-pro .banner-pull-quote .edit-event {
   top: 1.8em; }
+.field-pros .centerVV .mainPane .item {
+  margin-top: 2em; }
 .field-pros .centerVV .item .escapelink {
   color: #000000; }
   .field-pros .centerVV .item .escapelink:before {
