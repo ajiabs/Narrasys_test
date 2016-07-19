@@ -961,6 +961,16 @@
   .field-pros .centerVV .item.centerVV-h2 h2 {
     position: relative;
     bottom: 0.5em; }
+.field-pros .centerVV-mondrian .bgLayer.bg-alt {
+  position: fixed;
+  width: 50%;
+  border-right: 8px solid #4b4b52;
+  background-color: #6baa36;
+  opacity: 1; }
+.field-pros .centerVV-mondrian .bgLayer.bg-main {
+  opacity: 1;
+  background-size: cover;
+  left: 50%; }
 .field-pros .centerVV-mondrian .mainPane .item {
   margin-top: 0.8em; }
 .field-pros .centerVV-mondrian .content .item:first-child {
