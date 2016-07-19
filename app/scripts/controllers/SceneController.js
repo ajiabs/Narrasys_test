@@ -5,6 +5,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 		$scope.setBgImgUrl = setBgImgUrl;
+		// $scope.setBgAltImgUrl = setBgAltImgUrl;
 
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");
@@ -97,12 +98,112 @@ angular.module('com.inthetelling.story')
 			return (isPullQuote || isH2 || isPullQuoteAttrib) ? item : false;
 		}
 
-		function setBgImgUrl(items) {
-			var bgItem = $filter('isCurrent')(items);
-			if (bgItem.length > 0) {
-				return 'url('+bgItem[0].asset.url+')';
+		var _cssBackground = 'background-image';
+		var _cssOpacity = 'opacity';
+
+		function setBgImgUrl(items, col) {
+			var currItems = $filter('isCurrent')(items);
+			var mainColBgOrFg = $filter(col)(currItems);
+			var opacity = 1;
+			if (mainColBgOrFg.length > 0) {
+
+				var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
+
+				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
+					opacity = 0.33;
+				}
+				return {[_cssBackground]: bgUrl, [_cssOpacity]: opacity};
 			}
 			return '';
 		}
+
+		function setBgAltImgUrl(items) {
+			// console.trace('hmm');
+			// var bgItem = $filter('isCurrent')(items);
+            //
+			// if (bgItem.length > 0) {
+			// 	console.log('bgItem', bgItem[0].layoutCss);
+			// 	return 'url('+bgItem[0].asset.url+')';
+			// }
+			// return '';
+		}
+
+		function backgroundImage(items) {
+			var currentItems = $filter('isCurrent')(items);
+
+		}
+
+		//determine if main/alt, then bg/fg
+		//
+
+		// function setBgImgUrl(items) {
+        //
+		// 	// var bgItems = $filter('isCurrent')(items);
+        //
+		// 	// var mFgItem = $filter('itemLayout')(bgItems, 'mainFg');
+		// 	// var mBgItem = $filter('itemLayout')(bgItems, 'mainBg');
+		// 	// var aFgItem = $filter('itemLayout')(bgItems, 'altFg');
+		// 	// var aBgItem = $filter('itemLayout')(bgItems, 'altBg');
+        //
+        //
+		// 	var currentItems = $filter('isCurrent')(items);
+        //
+		// 	var bgItems = $filter('itemLayout')(currentItems);
+        //
+		// 	console.log('bgItems', bgItems);
+        //
+		// 	if (bgItems.length > 0) {
+		// 		var bgKey = 'background-image';
+		// 		var bgProp = 'url(' + bgItems[0].asset.url + ')';
+		// 		var opKey = 'opacity:';
+		// 		var opProp = '1';
+		// 		// console.log('bgItems', bgItems[0].layoutCss);
+		// 		// var isAlt = /altBg/.test(bgItems[0].layoutCss);
+		// 		var bgObj = {[bgKey]: bgProp};
+		// 		var opObj = {[opKey]: opProp};
+		// 		// if (isAlt) {
+		// 		// 	opProp = '0.33';
+		// 		// }
+		// 		// console.log('item', bgItems[0].title.en);
+		// 		// console.log('layoutCss',bgItems[0].layoutCss);
+		// 		var cssObj = angular.extend({}, bgObj, opObj);
+		// 		// console.log('cssObj', cssObj);
+		// 		return cssObj
+        //
+		// 	}
+		// 	return '';
+		// }
+
+		// function setBgImgUrl(items) {
+		// 	var currentItems = $filter('isCurrent')(items);
+		// 	// var mainBg = $filter('itemLayout')(bgItems, 'mainBg');
+		// 	// var mainFg = $filter('itemLayout')(bgItems, 'mainFg')
+		// 	var bgItems = $filter('bgItems')(currentItems);
+		// 	var cssBackground = 'background-image';
+		// 	var cssOpacity = 'opacity';
+		// 	var backgroundVal;
+		// 	var opacityVal = 1;
+        //
+		// 	var mainBg = bgItems('mainBg');
+		// 	var mainFg = bgItems('mainFg');
+        //
+		// 	var altBg = bgItems('altBg');
+		// 	var altFg = bgItems('altFg');
+        //
+		// 	console.log('mainBg', mainBg, 'altBg', altBg);
+		// 	// if (bgItems.length > 0) {
+		// 	// 	bgItems.forEach(function(item) {
+		// 	// 		backgroundVal = 'url('+ item.asset.url +') ';
+		// 	// 		//set opacity to 0.33
+		// 	// 		if (item.layoutCss === 'altBg' || item.layoutCss === 'mainBg') {
+		// 	// 			console.log(item.layoutCss);
+		// 	// 			opacityVal = 0.33;
+		// 	// 		}
+         //    //
+		// 	// 		return {[cssBackground]: backgroundVal, [cssOpacity]: opacityVal};
+		// 	// 	});
+		// 	// }
+        //
+		// }
 
 	});

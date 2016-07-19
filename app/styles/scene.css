@@ -4,6 +4,10 @@
 	position: relative;
 }
 
+.col__background--opacity {
+	opacity: 0.33;
+}
+
 .fill,
 .fill .item,
 .fgLayer .item.contain,
