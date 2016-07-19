@@ -808,6 +808,16 @@
       font-size: 2.7vmax;
       position: relative;
       bottom: 0.5em; }
+  .narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-alt {
+    position: fixed;
+    width: 50%;
+    border-right: 8px solid #4d4d4d;
+    background-color: #de6625;
+    opacity: 1; }
+  .narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-main {
+    opacity: 1;
+    background-size: cover;
+    left: 50%; }
   .narrasys-pro .scene.centerVV-mondrian .content .item:first-child.mondrian {
     padding: 0.1em 0 0.3em 0.3em; }
   .narrasys-pro .scene.centerVV-mondrian .item.mondrian {
@@ -831,7 +841,7 @@
   background-size: cover; }
 .field-pros .static-bg__main--mondrian {
   background: url("/images/customer/Grid_Graphic-01.svg");
-  height: 100vh; }
+  background-size: cover; }
 .field-pros .fp-branding {
   display: flex;
   justify-content: space-between;
