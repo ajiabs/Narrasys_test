@@ -1284,28 +1284,23 @@ $fieldProMain: #6baa36;
 	}
 
 	.centerVV {
-		//.bgLayer {
-		//	position: absolute;
-		//	top: 0;
-		//	left: 0;
-		//	background-size: cover;
-		//	background-repeat: no-repeat;
-		//}
-		//.bgLayer {
-		//	&.bg-alt {
-		//		opacity: 1;
-		//		background-size: cover;
-		//		left: 50%;
-		//	}
-        //
-		//	&.bg-main {
-		//		width: 50%;
-		//		background-size: contain;
-		//		opacity: 1;
-		//	}
-		//}
-
 		.item {
+
+			.escapelink {
+				color: #000000;
+				&:before {
+					color: #000000;
+				}
+			}
+
+			.title {
+				color: $fieldProMain;
+				font-size: 1.7vw;
+				a {
+					color: $fieldProMain;
+				}
+			}
+
 			&.centerVV-h2 {
 				margin-top: 14px;
 				background: white;
@@ -1318,21 +1313,21 @@ $fieldProMain: #6baa36;
 	}
 
 	.centerVV-mondrian {
-		.bgLayer {
-			&.bg-alt {
-				position: fixed;
-				width: 50%;
-				border-right: 8px solid $fieldProInvert;
-				background-color: $fieldProMain;
-				opacity: 1;
-			}
-
-			&.bg-main {
-				opacity: 1;
-				background-size: cover;
-				left: 50%;
-			}
-		}
+		//.bgLayer {
+		//	&.bg-alt {
+		//		position: fixed;
+		//		width: 50%;
+		//		border-right: 8px solid $fieldProInvert;
+		//		background-color: $fieldProMain;
+		//		opacity: 1;
+		//	}
+        //
+		//	&.bg-main {
+		//		opacity: 1;
+		//		background-size: cover;
+		//		left: 50%;
+		//	}
+		//}
 
 		.mainPane {
 			.item {
