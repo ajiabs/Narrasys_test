@@ -843,7 +843,8 @@
   height: 100vh; }
 .field-pros .static-bg__main--mondrian {
   background: url("/images/customer/Grid_Graphic-01.svg");
-  background-size: cover; }
+  background-size: cover;
+  height: 100vh; }
 .field-pros .fp-branding {
   display: flex;
   justify-content: space-between;
@@ -917,10 +918,13 @@
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   font-size: 1.3vw; }
-  .field-pros .item .text .title a {
-    color: #6baa36; }
-  .field-pros .item .text .title.link__embed--title {
-    color: black; }
+  .field-pros .item .text .title {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700; }
+    .field-pros .item .text .title a {
+      color: #6baa36; }
+    .field-pros .item .text .title.link__embed--title {
+      color: black; }
 .field-pros .item .escapelink.link__embed--escapelink {
   color: #6baa36; }
   .field-pros .item .escapelink.link__embed--escapelink:before {
@@ -970,6 +974,7 @@
   margin-top: 14px;
   background: white; }
   .field-pros .centerVV .item.centerVV-h2 h2 {
+    text-align: center;
     position: relative;
     bottom: 0.5em; }
 .field-pros .centerVV-mondrian .bgLayer.bg-alt {
@@ -991,18 +996,11 @@
   color: white; }
   .field-pros .centerVV-mondrian .item:first-child.mondrian {
     margin-top: 1.7em; }
-  .field-pros .centerVV-mondrian .item .title {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 700;
-    margin: 0;
-    padding: 0; }
-    .field-pros .centerVV-mondrian .item .title a {
-      color: white; }
-  .field-pros .centerVV-mondrian .item .escapelink {
-    color: #6baa36; }
-    .field-pros .centerVV-mondrian .item .escapelink:before {
-      color: #6baa36; }
-  .field-pros .centerVV-mondrian .item a.fakeLink {
+  .field-pros .centerVV-mondrian .item .title a {
     color: white; }
+  .field-pros .centerVV-mondrian .item .title.link__embed--title {
+    color: white; }
+  .field-pros .centerVV-mondrian .item .itemTemplate.headerItem h2 {
+    text-align: center; }
   .field-pros .centerVV-mondrian .item .itemTemplate.headerItem .pullquote:before {
     color: white; }

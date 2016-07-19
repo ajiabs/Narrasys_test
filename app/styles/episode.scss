@@ -1169,6 +1169,7 @@ $fieldProMain: #6baa36;
 	.static-bg__main--mondrian {
 		background: url('/images/customer/Grid_Graphic-01.svg');
 		background-size: cover;
+		height: 100vh;
 	}
 	//the logo / branding section in the episode template
 	.fp-branding {
@@ -1241,6 +1242,7 @@ $fieldProMain: #6baa36;
 			@include lato-lite;
 			font-size: 1.3vw;
 			.title {
+				@include roboto-condensed;
 				a {
 					color: $fieldProMain;
 				}
@@ -1309,6 +1311,7 @@ $fieldProMain: #6baa36;
 				margin-top: 14px;
 				background: white;
 				h2 {
+					text-align: center;
 					position: relative;
 					bottom: 0.5em;
 				}
@@ -1355,28 +1358,19 @@ $fieldProMain: #6baa36;
 				}
 			}
 			.title {
-				@include roboto-condensed;
-				margin: 0;
-				padding: 0;
 				a {
 					color: white;
 				}
-
-			}
-
-			.escapelink {
-				color: $fieldProMain;
-				&:before {
-					color: $fieldProMain;
+				&.link__embed--title {
+					color: white;
 				}
-			}
-
-			a.fakeLink {
-				color: white;
 			}
 
 			.itemTemplate {
 				&.headerItem {
+					h2 {
+						text-align: center;
+					}
 					.pullquote {
 						&:before {
 							color: white;
