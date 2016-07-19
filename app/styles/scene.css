@@ -457,6 +457,17 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	flex-direction: row-reverse;
 }
 
+.scene.centerVV .videoMagnet,
+.scene.centerVV .mainPane {
+	opacity: 1;
+	/*width: 50%;*/
+}
+
+.actual--col {
+	height: 0;
+	transform: translateY(-550px);
+}
+
 /* ------------------------------------------- */
 
 .scene.centerVV-mondrian {

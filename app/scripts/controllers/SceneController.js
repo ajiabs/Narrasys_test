@@ -5,7 +5,10 @@ angular.module('com.inthetelling.story')
 
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 		$scope.setBgImgUrl = setBgImgUrl;
+		$scope.setImgUrl = setImgUrl;
 		// $scope.setBgAltImgUrl = setBgAltImgUrl;
+		var _cssBackground = 'background-image';
+		var _cssOpacity = 'opacity';
 
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");
@@ -98,17 +101,12 @@ angular.module('com.inthetelling.story')
 			return (isPullQuote || isH2 || isPullQuoteAttrib) ? item : false;
 		}
 
-		var _cssBackground = 'background-image';
-		var _cssOpacity = 'opacity';
-
 		function setBgImgUrl(items, col) {
 			var currItems = $filter('isCurrent')(items);
 			var mainColBgOrFg = $filter(col)(currItems);
 			var opacity = 1;
 			if (mainColBgOrFg.length > 0) {
-
 				var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
-
 				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
 					opacity = 0.33;
 				}
@@ -117,20 +115,19 @@ angular.module('com.inthetelling.story')
 			return '';
 		}
 
-		function setBgAltImgUrl(items) {
-			// console.trace('hmm');
-			// var bgItem = $filter('isCurrent')(items);
-            //
-			// if (bgItem.length > 0) {
-			// 	console.log('bgItem', bgItem[0].layoutCss);
-			// 	return 'url('+bgItem[0].asset.url+')';
-			// }
-			// return '';
-		}
-
-		function backgroundImage(items) {
-			var currentItems = $filter('isCurrent')(items);
-
+		function setImgUrl(items) {
+			var currItems = $filter('isCurrent')(items);
+			var mainColBgOrFg = $filter(col)(currItems);
+			var opacity = 1;
+			if (mainColBgOrFg.length > 0) {
+				// var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
+				// if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
+				// 	opacity = 0.33;
+				// }
+				// return {[_cssBackground]: bgUrl, [_cssOpacity]: opacity};
+				return mainColBgOrFg[0].asset.url;
+			}
+			return '';
 		}
 
 		//determine if main/alt, then bg/fg

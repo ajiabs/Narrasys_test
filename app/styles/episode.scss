@@ -1004,18 +1004,18 @@ $h2pullquote: #5B5B5B;
 	}
 
 	.centerVV {
-		.bgLayer {
-			&.bg-alt {
-				opacity: 1;
-				background-size: cover;
-				left: 50%;
-			}
-
-			&.bg-main {
-				width: 50%;
-				opacity: 1;
-			}
-		}
+		//.bgLayer {
+		//	&.bg-alt {
+		//		opacity: 1;
+		//		background-size: cover;
+		//		left: 50%;
+		//	}
+		//
+		//	&.bg-main {
+		//		width: 50%;
+		//		opacity: 1;
+		//	}
+		//}
 
 		.item {
 			margin-top: 14px;
@@ -1026,10 +1026,11 @@ $h2pullquote: #5B5B5B;
 				h2 {
 					position: relative;
 					bottom: 0.7em;
-					font-weight: lighter;
+					//font-weight: lighter;
 					text-align: center;
 					font-size: 2vmax;
 					letter-spacing: 0.5vmin;
+					font-family: "Gotham Thin";
 					/*letter-spacing: 0.1em;*/
 				}
 			}
@@ -1156,11 +1157,17 @@ $fieldProMain: #6baa36;
 	.static-bg__main {
 		background: url('/images/customer/Green_BG_01.svg');
 		background-size: cover;
+		height: 100vh;
+		position: fixed;
+		//z-index: 9999;
 	}
 
 	.static-bg__alt {
 		background: url('/images/customer/Grid_Graphic-01.svg');
 		background-size: cover;
+		height: 100vh;
+		//position: fixed;
+		//z-index:9999;
 	}
 
 	.static-bg__main--mondrian {
@@ -1383,4 +1390,3 @@ $fieldProMain: #6baa36;
 		}
 	}
 }
-

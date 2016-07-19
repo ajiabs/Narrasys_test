@@ -783,13 +783,6 @@
     font-weight: lighter;
     font-size: 2vmax;
     letter-spacing: 0.3vw; }
-  .narrasys-pro .centerVV .bgLayer.bg-alt {
-    opacity: 1;
-    background-size: cover;
-    left: 50%; }
-  .narrasys-pro .centerVV .bgLayer.bg-main {
-    width: 50%;
-    opacity: 1; }
   .narrasys-pro .centerVV .item {
     margin-top: 14px;
     background: transparent;
@@ -799,10 +792,10 @@
       .narrasys-pro .centerVV .item.centerVV-h2 h2 {
         position: relative;
         bottom: 0.7em;
-        font-weight: lighter;
         text-align: center;
         font-size: 2vmax;
         letter-spacing: 0.5vmin;
+        font-family: "Gotham Thin";
         /*letter-spacing: 0.1em;*/ }
     .narrasys-pro .centerVV .item .definition .text {
       font-family: 'Gotham Thin';
@@ -842,10 +835,13 @@
   background-color: transparent; }
 .field-pros .static-bg__main {
   background: url("/images/customer/Green_BG_01.svg");
-  background-size: cover; }
+  background-size: cover;
+  height: 100vh;
+  position: fixed; }
 .field-pros .static-bg__alt {
   background: url("/images/customer/Grid_Graphic-01.svg");
-  background-size: cover; }
+  background-size: cover;
+  height: 100vh; }
 .field-pros .static-bg__main--mondrian {
   background: url("/images/customer/Grid_Graphic-01.svg");
   background-size: cover; }
