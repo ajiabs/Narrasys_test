@@ -25,7 +25,7 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			return ret;
-		}
+		};
 	})
 	.filter('altCol', function() {
 		return function (items) {
@@ -36,7 +36,7 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			return ret;
-		}
+		};
 	})
 	.filter('annotation', function () {
 		return function (items) {

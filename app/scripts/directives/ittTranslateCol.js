@@ -10,27 +10,21 @@
 	function ittTranslateCol() {
 	    return {
 	        restrict: 'EA',
-	        link: function(scope, elm, attr) {
-	        	var parentCol = $('.col');
-
-
+	        link: function(scope, elm) {
 				var initBcr = getDimensions();
 				setTranslateY(initBcr);
 
 				angular.element(window).bind('resize', function() {
-					console.log('window resized!!', getDimensions());
 					var bcr = getDimensions();
 					setTranslateY(bcr);
 				});
 
 				function getDimensions() {
 					return $(window).height();
-					// return parentCol[0].getBoundingClientRect();
 				}
 
 				function setTranslateY(bcr) {
-					var val = bcr;
-					var transformStr = 'translateY(-' + val +'px)';
+					var transformStr = 'translateY(-' + bcr +'px)';
 					elm.css('transform', transformStr);
 				}
 			}
