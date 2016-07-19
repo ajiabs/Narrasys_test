@@ -1058,21 +1058,21 @@ $h2pullquote: #5B5B5B;
 
 	.scene {
 		&.centerVV-mondrian {
-			//.bgLayer {
-			//	&.bg-alt {
-			//		position: fixed;
-			//		width: 50%;
-			//		border-right: 8px solid $mondrianBorder;
-			//		background-color: $narrasysOrange;
-			//		opacity: 1;
-			//	}
-            //
-			//	&.bg-main {
-			//		opacity: 1;
-			//		background-size: cover;
-			//		left: 50%;
-			//	}
-			//}
+			.bgLayer {
+				&.bg-alt {
+					position: fixed;
+					width: 50%;
+					border-right: 8px solid $mondrianBorder;
+					background-color: $narrasysOrange;
+					opacity: 1;
+				}
+
+				&.bg-main {
+					opacity: 1;
+					background-size: cover;
+					left: 50%;
+				}
+			}
 
 
 			.content {
@@ -1165,7 +1165,7 @@ $fieldProMain: #6baa36;
 
 	.static-bg__main--mondrian {
 		background: url('/images/customer/Grid_Graphic-01.svg');
-		height: 100vh;
+		background-size: cover;
 	}
 	//the logo / branding section in the episode template
 	.fp-branding {
