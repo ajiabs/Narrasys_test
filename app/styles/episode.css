@@ -792,10 +792,10 @@
       .narrasys-pro .centerVV .item.centerVV-h2 h2 {
         position: relative;
         bottom: 0.7em;
-        font-family: "Gotham Thin";
         text-align: center;
         font-size: 2vmax;
         letter-spacing: 0.5vmin;
+        font-family: "Gotham Thin";
         /*letter-spacing: 0.1em;*/ }
     .narrasys-pro .centerVV .item .definition .text {
       font-family: 'Gotham Thin';
@@ -835,18 +835,19 @@
   background-color: transparent; }
 .field-pros .static-bg__main {
   background: url("/images/customer/Green_BG_01.svg");
-  background-size: cover; }
+  background-size: cover;
+  height: 100vh; }
 .field-pros .static-bg__alt {
   background: url("/images/customer/Grid_Graphic-01.svg");
-  background-size: cover; }
+  background-size: cover;
+  height: 100vh; }
 .field-pros .static-bg__main--mondrian {
   background: url("/images/customer/Grid_Graphic-01.svg");
   background-size: cover; }
 .field-pros .fp-branding {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  height: 150px; }
+  align-items: baseline; }
   .field-pros .fp-branding .fp-logo {
     width: 350px; }
   .field-pros .fp-branding .fp-copyright {
@@ -916,11 +917,20 @@
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   font-size: 1.3vw; }
+  .field-pros .item .text .title a {
+    color: #6baa36; }
+  .field-pros .item .text .title.link__embed--title {
+    color: black; }
+.field-pros .item .escapelink.link__embed--escapelink {
+  color: #6baa36; }
+  .field-pros .item .escapelink.link__embed--escapelink:before {
+    color: #6baa36; }
 .field-pros .item .definition .text {
   font-size: 1.7vw; }
+.field-pros .item h1, .field-pros .item h2, .field-pros .item h3 {
+  text-align: left; }
 .field-pros .item h2 {
   font-size: 2vw;
-  text-align: center;
   position: relative;
   bottom: 0.2em; }
 .field-pros .item .pullquote {
@@ -956,15 +966,6 @@
   font-weight: lighter; }
 .field-pros .centered-pro .banner-pull-quote .edit-event {
   top: 1.8em; }
-.field-pros .centerVV .item .escapelink {
-  color: #000000; }
-  .field-pros .centerVV .item .escapelink:before {
-    color: #000000; }
-.field-pros .centerVV .item .title {
-  color: #6baa36;
-  font-size: 1.7vw; }
-  .field-pros .centerVV .item .title a {
-    color: #6baa36; }
 .field-pros .centerVV .item.centerVV-h2 {
   margin-top: 14px;
   background: white; }

@@ -1233,15 +1233,30 @@ $fieldProMain: #6baa36;
 	}
 
 	//item overrides
-
 	.item {
 		.headerItem {
 			@include roboto-condensed;
 		}
-
 		.text {
 			@include lato-lite;
 			font-size: 1.3vw;
+			.title {
+				a {
+					color: $fieldProMain;
+				}
+				&.link__embed--title {
+					color: black;
+				}
+			}
+		}
+
+		.escapelink {
+			&.link__embed--escapelink {
+				color: $fieldProMain;
+				&:before {
+					color: $fieldProMain;
+				}
+			}
 		}
 
 		.definition {
@@ -1250,9 +1265,12 @@ $fieldProMain: #6baa36;
 			}
 		}
 
+		h1, h2, h3 {
+			text-align: left;
+		}
+
 		h2 {
 			font-size: 2vw;
-			text-align: center;
 			position: relative;
 			bottom: 0.2em;
 		}
@@ -1286,30 +1304,7 @@ $fieldProMain: #6baa36;
 	}
 
 	.centerVV {
-
-		//.mainPane {
-		//	.item {
-		//		margin-top: 2em;
-		//	}
-		//}
-
 		.item {
-
-			.escapelink {
-				color: #000000;
-				&:before {
-					color: #000000;
-				}
-			}
-
-			.title {
-				color: $fieldProMain;
-				font-size: 1.7vw;
-				a {
-					color: $fieldProMain;
-				}
-			}
-
 			&.centerVV-h2 {
 				margin-top: 14px;
 				background: white;
