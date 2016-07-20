@@ -450,9 +450,6 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	flex-direction: row-reverse;
 }
 
-.centerVV .foreground {
-	/*height: 0;*/
-}
 /* ------------------------------------------- */
 
 .scene.centerVV-mondrian {

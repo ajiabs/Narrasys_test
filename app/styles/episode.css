@@ -689,11 +689,19 @@
   background-position: top right;
   position: absolute; }
   .narrasys-pro .static-bg__main {
+    position: absolute;
+    background-position: top;
+    background-repeat: no-repeat;
     background-size: cover;
-    height: 100vh; }
+    height: 100vh;
+    width: 50vw; }
   .narrasys-pro .static-bg__alt {
+    position: absolute;
+    background-position: top;
+    background-repeat: no-repeat;
     background-size: cover;
-    height: 100vh; }
+    height: 100vh;
+    width: 50vw; }
   .narrasys-pro .static-bg__main--mondrian {
     background-size: cover;
     height: 100vh; }
@@ -842,13 +850,21 @@
 .field-pros .mainPane, .field-pros .altPane {
   background-color: transparent; }
 .field-pros .static-bg__main {
-  background: url("/images/customer/Green_BG_01.svg");
+  position: absolute;
+  background-position: top;
+  background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh; }
+  height: 100vh;
+  width: 50vw;
+  background-image: url("/images/customer/Green_BG_01.svg"); }
 .field-pros .static-bg__alt {
-  background: url("/images/customer/Grid_Graphic-01.svg");
+  position: absolute;
+  background-position: top;
+  background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh; }
+  height: 100vh;
+  width: 50vw;
+  background-image: url("/images/customer/Grid_Graphic-01.svg"); }
 .field-pros .static-bg__main--mondrian {
   background: url("/images/customer/Grid_Graphic-01.svg");
   background-size: cover;

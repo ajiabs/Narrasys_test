@@ -881,6 +881,16 @@ $narrasysOrange: #DE6625;
 $mondrianBorder: #4D4D4D;
 $h2pullquote: #5B5B5B;
 
+@mixin static-bg {
+	position: absolute;
+	background-position: top;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 100vh;
+	width: 50vw;
+
+}
+
 @mixin banner-pull-quote {
 	margin-top: 1em;
 	display: flex;
@@ -910,15 +920,11 @@ $h2pullquote: #5B5B5B;
 	position: absolute;
 
 	.static-bg__main {
-		//background: url('/images/customer/Camera_Background.png');
-		background-size: cover;
-		height: 100vh;
+		@include static-bg
 	}
 
 	.static-bg__alt {
-		//background: url('/images/customer/Network_BackgroundV2.png');
-		background-size: cover;
-		height: 100vh;
+		@include static-bg
 	}
 
 	//use network bg
@@ -1175,15 +1181,13 @@ $fieldProMain: #6baa36;
 	}
 
 	.static-bg__main {
-		background: url('/images/customer/Green_BG_01.svg');
-		background-size: cover;
-		height: 100vh;
+		@include static-bg;
+		background-image: url('/images/customer/Green_BG_01.svg');
 	}
 
 	.static-bg__alt {
-		background: url('/images/customer/Grid_Graphic-01.svg');
-		background-size: cover;
-		height: 100vh;
+		@include static-bg;
+		background-image: url('/images/customer/Grid_Graphic-01.svg');
 	}
 
 	.static-bg__main--mondrian {
