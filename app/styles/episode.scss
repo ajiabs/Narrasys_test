@@ -909,6 +909,25 @@ $h2pullquote: #5B5B5B;
 	background-position: top right;
 	position: absolute;
 
+	.static-bg__main {
+		background: url('/images/customer/Camera_Background.png');
+		background-size: cover;
+		height: 100vh;
+	}
+
+	.static-bg__alt {
+		background: url('/images/customer/Network_BackgroundV2.png');
+		background-size: cover;
+		height: 100vh;
+	}
+
+	//use network bg
+	.static-bg__main--mondrian {
+		background: url('/images/customer/Network_BackgroundV2.png');
+		background-size: cover;
+		height: 100vh;
+	}
+
 	.endingscreen {
 		p {
 			@include banner-pull-quote;
@@ -939,7 +958,8 @@ $h2pullquote: #5B5B5B;
 	}
 
 	.branding {
-		height: 210px;
+		//height: 210px;
+		//height: 210px;
 		background: none;
 	}
 

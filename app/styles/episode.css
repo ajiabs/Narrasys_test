@@ -688,6 +688,18 @@
   background-repeat: no-repeat;
   background-position: top right;
   position: absolute; }
+  .narrasys-pro .static-bg__main {
+    background: url("/images/customer/Camera_Background.png");
+    background-size: cover;
+    height: 100vh; }
+  .narrasys-pro .static-bg__alt {
+    background: url("/images/customer/Network_BackgroundV2.png");
+    background-size: cover;
+    height: 100vh; }
+  .narrasys-pro .static-bg__main--mondrian {
+    background: url("/images/customer/Network_BackgroundV2.png");
+    background-size: cover;
+    height: 100vh; }
   .narrasys-pro .endingscreen p {
     margin-top: 1em;
     display: flex;
@@ -735,7 +747,6 @@
       font-weight: lighter;
       letter-spacing: 0.1em; }
   .narrasys-pro .branding {
-    height: 210px;
     background: none; }
   .narrasys-pro .item {
     color: black; }
