@@ -845,11 +845,9 @@
 .field-pros .mainPane, .field-pros .altPane {
   background-color: transparent; }
 .field-pros .static-bg__main {
-  background: url("/images/customer/Green_BG_01.svg");
   background-size: cover;
   height: 100vh; }
 .field-pros .static-bg__alt {
-  background: url("/images/customer/Grid_Graphic-01.svg");
   background-size: cover;
   height: 100vh; }
 .field-pros .static-bg__main--mondrian {

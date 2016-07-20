@@ -451,7 +451,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 
 .centerVV .foreground {
-	height: 0;
+	/*height: 0;*/
 }
 /* ------------------------------------------- */
 
