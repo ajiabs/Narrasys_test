@@ -689,15 +689,12 @@
   background-position: top right;
   position: absolute; }
   .narrasys-pro .static-bg__main {
-    background: url("/images/customer/Camera_Background.png");
     background-size: cover;
     height: 100vh; }
   .narrasys-pro .static-bg__alt {
-    background: url("/images/customer/Network_BackgroundV2.png");
     background-size: cover;
     height: 100vh; }
   .narrasys-pro .static-bg__main--mondrian {
-    background: url("/images/customer/Network_BackgroundV2.png");
     background-size: cover;
     height: 100vh; }
   .narrasys-pro .endingscreen p {
@@ -845,9 +842,11 @@
 .field-pros .mainPane, .field-pros .altPane {
   background-color: transparent; }
 .field-pros .static-bg__main {
+  background: url("/images/customer/Green_BG_01.svg");
   background-size: cover;
   height: 100vh; }
 .field-pros .static-bg__alt {
+  background: url("/images/customer/Grid_Graphic-01.svg");
   background-size: cover;
   height: 100vh; }
 .field-pros .static-bg__main--mondrian {

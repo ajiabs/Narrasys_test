@@ -11,28 +11,20 @@
 	    return {
 	        restrict: 'EA',
 	        link: function(scope, elm) {
-	        	//offset of top toolbar
-	        	var topConst = 85;
-				var initBcr = elm[0].getBoundingClientRect();
-
-				setTranslateY(initBcr.top - topConst);
-
-				var currentDimensions = getDimensions();
+				var initBcr = getDimensions();
+				setTranslateY(initBcr);
 
 				angular.element(window).bind('resize', function() {
 					var bcr = getDimensions();
-					var val = bcr.top - currentDimensions.top;
-					setTranslateY(val);
+					setTranslateY(bcr);
 				});
 
 				function getDimensions() {
-					console.log('bcr', elm[0].getBoundingClientRect());
-					return elm[0].getBoundingClientRect();
+					return $(window).height();
 				}
 
-				function setTranslateY(top) {
-					var val = top;
-					var transformStr = 'translateY(-' + val +'px)';
+				function setTranslateY(bcr) {
+					var transformStr = 'translateY(-' + bcr +'px)';
 					elm.css('transform', transformStr);
 				}
 			}

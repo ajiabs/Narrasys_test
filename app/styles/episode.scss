@@ -910,20 +910,20 @@ $h2pullquote: #5B5B5B;
 	position: absolute;
 
 	.static-bg__main {
-		background: url('/images/customer/Camera_Background.png');
+		//background: url('/images/customer/Camera_Background.png');
 		background-size: cover;
 		height: 100vh;
 	}
 
 	.static-bg__alt {
-		background: url('/images/customer/Network_BackgroundV2.png');
+		//background: url('/images/customer/Network_BackgroundV2.png');
 		background-size: cover;
 		height: 100vh;
 	}
 
 	//use network bg
 	.static-bg__main--mondrian {
-		background: url('/images/customer/Network_BackgroundV2.png');
+		//background: url('/images/customer/Network_BackgroundV2.png');
 		background-size: cover;
 		height: 100vh;
 	}
@@ -1175,13 +1175,13 @@ $fieldProMain: #6baa36;
 	}
 
 	.static-bg__main {
-		//background: url('/images/customer/Green_BG_01.svg');
+		background: url('/images/customer/Green_BG_01.svg');
 		background-size: cover;
 		height: 100vh;
 	}
 
 	.static-bg__alt {
-		//background: url('/images/customer/Grid_Graphic-01.svg');
+		background: url('/images/customer/Grid_Graphic-01.svg');
 		background-size: cover;
 		height: 100vh;
 	}
