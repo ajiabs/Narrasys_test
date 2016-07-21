@@ -883,12 +883,11 @@ $h2pullquote: #5B5B5B;
 
 @mixin static-bg {
 	position: absolute;
-	background-position: top;
+	top: 0;
 	background-repeat: no-repeat;
 	background-size: cover;
 	height: 100vh;
 	width: 50vw;
-
 }
 
 @mixin banner-pull-quote {
@@ -992,19 +991,11 @@ $h2pullquote: #5B5B5B;
 		}
 	}
 
-	//.videoMask {
-	//	/*border: 3px solid black;*/
-	//}
-
 	.link-no-title-img {
 		display: block;
 		margin: 0 auto;
 		width: 260px;
 	}
-
-	//.altPane {
-	//	background-color: white;
-	//}
 
 	.centered-pro {
 		.banner-pull-quote {
@@ -1030,24 +1021,9 @@ $h2pullquote: #5B5B5B;
 	}
 
 	.centerVV {
-		//.bgLayer {
-		//	&.bg-alt {
-		//		opacity: 1;
-		//		background-size: cover;
-		//		left: 50%;
-		//	}
-        //
-		//	&.bg-main {
-		//		width: 50%;
-		//		opacity: 1;
-		//	}
-		//}
-
 		.item {
-			margin-top: 14px;
-			background: transparent;
-			padding-bottom: 0;
 			&.centerVV-h2 {
+				margin-top: 14px;
 				background: white;
 				h2 {
 					position: relative;
@@ -1259,9 +1235,7 @@ $fieldProMain: #6baa36;
 
 	//item overrides
 	.item {
-		.headerItem {
-			@include roboto-condensed;
-		}
+		@include roboto-condensed;
 		.text {
 			@include lato-lite;
 			font-size: 1.3vw;
@@ -1327,6 +1301,12 @@ $fieldProMain: #6baa36;
 				top: 1.8em;
 			}
 		}
+
+		.item {
+			h2 {
+				text-align: center;
+			}
+		}
 	}
 
 	.centerVV {
@@ -1340,6 +1320,16 @@ $fieldProMain: #6baa36;
 					bottom: 0.5em;
 				}
 			}
+		}
+
+		.text {
+			.title {
+				@include lato-lite;
+			}
+		}
+
+		.title__text-transmedia {
+			text-align: center;
 		}
 	}
 
@@ -1387,6 +1377,16 @@ $fieldProMain: #6baa36;
 				}
 				&.link__embed--title {
 					color: white;
+				}
+
+				//in the case of link.html template
+				//.escapelink is a child of div.text
+				//it's typically a sibling.
+				.escapelink {
+					&:before {
+						color: $fieldProMain;
+
+					}
 				}
 			}
 

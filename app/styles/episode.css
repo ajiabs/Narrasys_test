@@ -690,14 +690,14 @@
   position: absolute; }
   .narrasys-pro .static-bg__main {
     position: absolute;
-    background-position: top;
+    top: 0;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
     width: 50vw; }
   .narrasys-pro .static-bg__alt {
     position: absolute;
-    background-position: top;
+    top: 0;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
@@ -799,31 +799,28 @@
     font-weight: lighter;
     font-size: 2vmax;
     letter-spacing: 0.3vw; }
-  .narrasys-pro .centerVV .item {
+  .narrasys-pro .centerVV .item.centerVV-h2 {
     margin-top: 14px;
-    background: transparent;
-    padding-bottom: 0; }
-    .narrasys-pro .centerVV .item.centerVV-h2 {
-      background: white; }
-      .narrasys-pro .centerVV .item.centerVV-h2 h2 {
-        position: relative;
-        bottom: 0.7em;
-        text-align: center;
-        font-size: 2vmax;
-        letter-spacing: 0.5vmin;
-        font-family: "Gotham Thin";
-        /*letter-spacing: 0.1em;*/ }
-    .narrasys-pro .centerVV .item .definition .text {
-      font-family: 'Gotham Thin';
-      padding-right: 40px;
-      font-size: 1.5vmax; }
-    .narrasys-pro .centerVV .item .itemHead {
-      /*border: 3px solid black;*/
-      font-family: "Gotham Medium"; }
-    .narrasys-pro .centerVV .item .pullquote {
-      font-size: 2.7vmax;
+    background: white; }
+    .narrasys-pro .centerVV .item.centerVV-h2 h2 {
       position: relative;
-      bottom: 0.5em; }
+      bottom: 0.7em;
+      text-align: center;
+      font-size: 2vmax;
+      letter-spacing: 0.5vmin;
+      font-family: "Gotham Thin";
+      /*letter-spacing: 0.1em;*/ }
+  .narrasys-pro .centerVV .item .definition .text {
+    font-family: 'Gotham Thin';
+    padding-right: 40px;
+    font-size: 1.5vmax; }
+  .narrasys-pro .centerVV .item .itemHead {
+    /*border: 3px solid black;*/
+    font-family: "Gotham Medium"; }
+  .narrasys-pro .centerVV .item .pullquote {
+    font-size: 2.7vmax;
+    position: relative;
+    bottom: 0.5em; }
   .narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-alt {
     position: fixed;
     width: 50%;
@@ -851,7 +848,7 @@
   background-color: transparent; }
 .field-pros .static-bg__main {
   position: absolute;
-  background-position: top;
+  top: 0;
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
@@ -859,7 +856,7 @@
   background-image: url("/images/customer/Green_BG_01.svg"); }
 .field-pros .static-bg__alt {
   position: absolute;
-  background-position: top;
+  top: 0;
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
@@ -935,47 +932,47 @@
     font-family: 'Lato', sans-serif;
     font-weight: 300;
     font-size: 2vh !important; }
-.field-pros .item .headerItem {
+.field-pros .item {
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 700; }
-.field-pros .item .text {
-  font-family: 'Lato', sans-serif;
-  font-weight: 300;
-  font-size: 1.3vw; }
-  .field-pros .item .text .title {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 700; }
-    .field-pros .item .text .title a {
-      color: #6baa36; }
-    .field-pros .item .text .title.link__embed--title {
-      color: black; }
-.field-pros .item .escapelink.link__embed--escapelink {
-  color: #6baa36; }
-  .field-pros .item .escapelink.link__embed--escapelink:before {
+  .field-pros .item .text {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 1.3vw; }
+    .field-pros .item .text .title {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-weight: 700; }
+      .field-pros .item .text .title a {
+        color: #6baa36; }
+      .field-pros .item .text .title.link__embed--title {
+        color: black; }
+  .field-pros .item .escapelink.link__embed--escapelink {
     color: #6baa36; }
-.field-pros .item .definition .text {
-  font-size: 1.7vw; }
-.field-pros .item h1, .field-pros .item h2, .field-pros .item h3 {
-  text-align: left; }
-.field-pros .item h2 {
-  font-size: 2vw;
-  position: relative;
-  bottom: 0.2em; }
-.field-pros .item .pullquote {
-  font-family: 'Lato', sans-serif;
-  font-weight: 300;
-  font-size: 2.5vw;
-  position: relative;
-  bottom: 0.2em; }
-  .field-pros .item .pullquote:before {
-    font-size: 4em;
-    content: "“";
-    opacity: 0.6;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 700;
-    color: #4b4b52;
-    width: 0.4em;
-    line-height: 0.8em; }
+    .field-pros .item .escapelink.link__embed--escapelink:before {
+      color: #6baa36; }
+  .field-pros .item .definition .text {
+    font-size: 1.7vw; }
+  .field-pros .item h1, .field-pros .item h2, .field-pros .item h3 {
+    text-align: left; }
+  .field-pros .item h2 {
+    font-size: 2vw;
+    position: relative;
+    bottom: 0.2em; }
+  .field-pros .item .pullquote {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 2.5vw;
+    position: relative;
+    bottom: 0.2em; }
+    .field-pros .item .pullquote:before {
+      font-size: 4em;
+      content: "“";
+      opacity: 0.6;
+      font-family: 'Roboto Condensed', sans-serif;
+      font-weight: 700;
+      color: #4b4b52;
+      width: 0.4em;
+      line-height: 0.8em; }
 .field-pros .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -994,6 +991,8 @@
   font-weight: lighter; }
 .field-pros .centered-pro .banner-pull-quote .edit-event {
   top: 1.8em; }
+.field-pros .centered-pro .item h2 {
+  text-align: center; }
 .field-pros .centerVV .item.centerVV-h2 {
   margin-top: 14px;
   background: white; }
@@ -1001,6 +1000,11 @@
     text-align: center;
     position: relative;
     bottom: 0.5em; }
+.field-pros .centerVV .text .title {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300; }
+.field-pros .centerVV .title__text-transmedia {
+  text-align: center; }
 .field-pros .centerVV-mondrian .bgLayer.bg-alt {
   position: fixed;
   width: 50%;
@@ -1024,6 +1028,8 @@
     color: white; }
   .field-pros .centerVV-mondrian .item .title.link__embed--title {
     color: white; }
+  .field-pros .centerVV-mondrian .item .title .escapelink:before {
+    color: #6baa36; }
   .field-pros .centerVV-mondrian .item .itemTemplate.headerItem h2 {
     text-align: center; }
   .field-pros .centerVV-mondrian .item .itemTemplate.headerItem .pullquote:before {
