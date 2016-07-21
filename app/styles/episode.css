@@ -991,7 +991,7 @@
   font-weight: lighter; }
 .field-pros .centered-pro .banner-pull-quote .edit-event {
   top: 1.8em; }
-.field-pros .centered-pro .item h2 {
+.field-pros .centered-pro .item__text--text-h2 h1, .field-pros .centered-pro .item__text--text-h2 h2, .field-pros .centered-pro .item__text--text-h2 h3 {
   text-align: center; }
 .field-pros .centerVV .item.centerVV-h2 {
   margin-top: 14px;
@@ -1000,11 +1000,11 @@
     text-align: center;
     position: relative;
     bottom: 0.5em; }
+.field-pros .centerVV .item__title__text-transmedia {
+  text-align: center; }
 .field-pros .centerVV .text .title {
   font-family: 'Lato', sans-serif;
   font-weight: 300; }
-.field-pros .centerVV .title__text-transmedia {
-  text-align: center; }
 .field-pros .centerVV-mondrian .bgLayer.bg-alt {
   position: fixed;
   width: 50%;

@@ -1302,8 +1302,8 @@ $fieldProMain: #6baa36;
 			}
 		}
 
-		.item {
-			h2 {
+		.item__text--text-h2 {
+			h1, h2, h3 {
 				text-align: center;
 			}
 		}
@@ -1322,15 +1322,17 @@ $fieldProMain: #6baa36;
 			}
 		}
 
+		.item__title__text-transmedia {
+			text-align: center;
+		}
+
 		.text {
 			.title {
 				@include lato-lite;
 			}
 		}
 
-		.title__text-transmedia {
-			text-align: center;
-		}
+
 	}
 
 	.centerVV-mondrian {
