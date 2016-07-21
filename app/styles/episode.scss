@@ -1234,6 +1234,7 @@ $fieldProMain: #6baa36;
 	}
 
 	//item overrides
+
 	.item {
 		@include roboto-condensed;
 		.text {
@@ -1244,17 +1245,8 @@ $fieldProMain: #6baa36;
 				a {
 					color: $fieldProMain;
 				}
-				&.link__embed--title {
+				&.item__link-embed--title {
 					color: black;
-				}
-			}
-		}
-
-		.escapelink {
-			&.link__embed--escapelink {
-				color: $fieldProMain;
-				&:before {
-					color: $fieldProMain;
 				}
 			}
 		}
@@ -1291,6 +1283,21 @@ $fieldProMain: #6baa36;
 			}
 		}
 	}
+
+	.item__link-embed--escapelink {
+		@include lato-lite;
+		color: $fieldProMain;
+		&:before {
+			color: $fieldProMain;
+		}
+	}
+
+	.item__text--text-h2 {
+		h1, h2, h3 {
+			text-align: center;
+		}
+	}
+
 	//layout specific overrides
 	.centered-pro {
 		.banner-pull-quote {
@@ -1299,12 +1306,6 @@ $fieldProMain: #6baa36;
 			}
 			.edit-event {
 				top: 1.8em;
-			}
-		}
-
-		.item__text--text-h2 {
-			h1, h2, h3 {
-				text-align: center;
 			}
 		}
 	}
@@ -1377,7 +1378,7 @@ $fieldProMain: #6baa36;
 				a {
 					color: white;
 				}
-				&.link__embed--title {
+				&.item__link-embed--title {
 					color: white;
 				}
 

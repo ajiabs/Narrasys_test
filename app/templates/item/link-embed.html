@@ -11,10 +11,10 @@
 		</div>
 	</div>
 	<div class="text">
-		<div class="title link__embed--title" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
+		<div class="title item__link-embed--title" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
 		<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 	</div>
-	<a tabindex="0" class="escapelink link__embed--escapelink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">(new window)</a>
+	<a tabindex="0" class="escapelink item__link-embed--escapelink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">(new window)</a>
 
 	<itt-iframe x-src="{{item.url}}" item="item"></itt-iframe>
 	<div class="clear"></div>
