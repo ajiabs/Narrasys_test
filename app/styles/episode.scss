@@ -968,8 +968,19 @@
 		}
 	}
 
+	//global title
+	.item__title { }
+
 	//global link titles
 	.item__title--link { }
+
+	.item__title--definition { }
+
+	.item__title--transmedia { }
+
+	.item__title--image { }
+
+	.item__title--image-thumbnail { }
 
 	//per template title modifier
 	.title--link { }
@@ -982,8 +993,23 @@
 
 	.title--link-with-image { }
 
+	//global text
+	.item__text { }
+
 	//global link text
 	.item__text--link { }
+
+	.item__text--definition { }
+
+	.item__text--h1 { }
+
+	.item__text--h2 { }
+
+	.item__text--transmedia { }
+
+	.item__text--image { }
+
+	.item__text--image-thumbnail {}
 
 	//per template text modifer
 
@@ -1011,7 +1037,7 @@
 
 	.escape-link--link-with-image {}
 
-	.item__text--annotation {
+	.item__text--h1, .item__text--h2 {
 		h1, h2, h3 {
 			text-align: center;
 		}
@@ -1295,56 +1321,111 @@ $fieldProMain: #6baa36;
 	}
 
 	//item overrides
-
-	.item {
+	.item__title {
 		@include roboto-condensed;
-		.text {
-			@include lato-lite;
-			font-size: 1.3vw;
-			.title {
-				@include roboto-condensed;
-				a {
-					color: $fieldProMain;
-				}
-				&.item__link-embed--title {
-					color: black;
-				}
-			}
-		}
+	}
 
-		.definition {
-			.text {
-				font-size: 1.7vw;
-			}
-		}
-
-		h2 {
-			font-size: 2vw;
-			position: relative;
-			bottom: 0.2em;
-		}
-
-		.pullquote {
-			@include lato-lite;
-			font-size: 2.5vw;
-			bottom: 0.2em;
-			&:before {
-				opacity: 0.6;
-				@include roboto-condensed;
-				color: $fieldProInvert;
-				width: 0.4em;
-				line-height: 0.8em;
-			}
+	.item__title--link {
+		a {
+			color: $fieldProMain;
 		}
 	}
 
-	.item__link-embed--escapelink {
+	.item__text {
+		@include lato-lite;
+		font-size: 1.3vw;
+	}
+
+	.item__text--definition {
+		font-size: 1.7vw;
+	}
+
+	.item__text--h2 {
+		@include roboto-condensed;
+		position: relative;
+		bottom: 0.2em;
+		h2 {
+			font-size: 2vw;
+			bottom: 0.5em;
+		}
+		h1 {
+			font-size: 2.5vw;
+		}
+		h3 {
+			font-size: 1.5vw;
+		}
+	}
+
+	.item .item__text--pullquote {
+		@include lato-lite;
+		font-size: 2.5vw;
+		bottom: 0.2em;
+		&:before {
+			opacity: 0.6;
+			@include roboto-condensed;
+			color: $fieldProInvert;
+			width: 0.4em;
+			line-height: 0.8em;
+		}
+	}
+
+	.item__link--escape-link {
 		@include lato-lite;
 		color: $fieldProMain;
 		&:before {
 			color: $fieldProMain;
 		}
 	}
+
+	//.item {
+	//	@include roboto-condensed;
+	//	.text {
+	//		@include lato-lite;
+	//		font-size: 1.3vw;
+	//		.title {
+	//			@include roboto-condensed;
+	//			a {
+	//				color: $fieldProMain;
+	//			}
+	//			&.item__link-embed--title {
+	//				color: black;
+	//			}
+	//		}
+	//	}
+    //
+	//	.definition {
+	//		.text {
+	//			font-size: 1.7vw;
+	//		}
+	//	}
+    //
+	//	h2 {
+	//		font-size: 2vw;
+	//		position: relative;
+	//		bottom: 0.2em;
+	//	}
+    //
+	//	.pullquote {
+	//		@include lato-lite;
+	//		font-size: 2.5vw;
+	//		bottom: 0.2em;
+	//		&:before {
+	//			opacity: 0.6;
+	//			@include roboto-condensed;
+	//			color: $fieldProInvert;
+	//			width: 0.4em;
+	//			line-height: 0.8em;
+	//		}
+	//	}
+	//}
+
+	//.item__link-embed--escapelink {
+	//	@include lato-lite;
+	//	color: $fieldProMain;
+	//	&:before {
+	//		color: $fieldProMain;
+	//	}
+	//}
 
 	//layout specific overrides
 	.centered-pro {
@@ -1359,24 +1440,26 @@ $fieldProMain: #6baa36;
 	}
 
 	.centerVV {
-		.item {
-			&.centerVV-h2 {
-				h2 {
-					position: relative;
-					bottom: 0.5em;
-				}
+		.item__link--escape-link {
+			&:before {
+				color: $fieldProInvert
 			}
 		}
 
-		//.item__title--text-transmedia {
-		//	text-align: center;
+		//.item {
+		//	&.centerVV-h2 {
+		//		h2 {
+		//			position: relative;
+		//			bottom: 0.4em;
+		//		}
+		//	}
 		//}
 
-		.text {
-			.title {
-				@include lato-lite;
-			}
-		}
+		//.text {
+		//	.title {
+		//		@include lato-lite;
+		//	}
+		//}
 
 
 	}
@@ -1406,31 +1489,36 @@ $fieldProMain: #6baa36;
 		.item {
 			background-color: $fieldProInvert;
 			color: white;
-			.title {
-				//in the case of link.html template
-				//.escapelink is a child of div.text
-				//it's typically a sibling.
-				.escapelink {
-					&:before {
-						color: $fieldProMain;
+		}
 
-					}
-				}
-			}
-
-			.itemTemplate {
-				&.headerItem {
-					h2 {
-						text-align: center;
-					}
-					.pullquote {
-						&:before {
-							color: white;
-						}
-					}
-				}
+		.item .item__text--pullquote {
+			&:before {
+				color: white;
 			}
 		}
+
+		.item__link--escape-link {
+			&:before {
+				color: $fieldProMain
+			}
+		}
+
+		//.item {
+		//	background-color: $fieldProInvert;
+		//	color: white;
+		//	//.itemTemplate {
+		//	//	&.headerItem {
+		//	//		h2 {
+		//	//			text-align: center;
+		//	//		}
+		//	//		.pullquote {
+		//	//			&:before {
+		//	//				color: white;
+		//	//			}
+		//	//		}
+		//	//	}
+		//	//}
+		//}
 	}
 }
 
