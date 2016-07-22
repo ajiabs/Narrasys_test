@@ -5,11 +5,12 @@
 <div>
 	<div class="itemTemplate">
 		<div class="itemHead">
-
 			<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
-			<h2 class="item__title__text-transmedia" ng-if="item.display_title | highlightSubstring: appState.searchText" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></h2>
+			<div class="item__title--annotation">
+				<h2 ng-if="item.display_title | highlightSubstring: appState.searchText" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></h2>
+			</div>
 		</div>
-		<div class="text" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
+		<div class="text item__text--annotation" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
 	</div>
 	<div class="clear"></div>
 </div>

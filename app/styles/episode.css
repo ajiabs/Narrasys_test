@@ -723,6 +723,8 @@
   .professional .item .pullquote:before {
     font-size: 4em;
     content: "“"; }
+.professional .item__text--annotation h1, .professional .item__text--annotation h2, .professional .item__text--annotation h3 {
+  text-align: center; }
 .professional .centerVV .item.centerVV-h2 {
   margin-top: 14px;
   background: white; }
@@ -868,12 +870,6 @@
 .field-pros .static-bg__main {
   background-image: url("/images/customer/Green_BG_01.svg"); }
 .field-pros .static-bg__alt {
-  position: absolute;
-  top: 0;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh;
-  width: 50vw;
   background-image: url("/images/customer/Grid_Graphic-01.svg"); }
 .field-pros .static-bg__main--mondrian {
   background: url("/images/customer/Grid_Graphic-01.svg"); }
@@ -936,8 +932,6 @@
         color: black; }
   .field-pros .item .definition .text {
     font-size: 1.7vw; }
-  .field-pros .item h1, .field-pros .item h2, .field-pros .item h3 {
-    text-align: left; }
   .field-pros .item h2 {
     font-size: 2vw;
     position: relative;
@@ -960,8 +954,6 @@
   color: #6baa36; }
   .field-pros .item__link-embed--escapelink:before {
     color: #6baa36; }
-.field-pros .item__text--text-h2 h1, .field-pros .item__text--text-h2 h2, .field-pros .item__text--text-h2 h3 {
-  text-align: center; }
 .field-pros .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -984,8 +976,6 @@
 .field-pros .centerVV .item.centerVV-h2 h2 {
   position: relative;
   bottom: 0.5em; }
-.field-pros .centerVV .item__title__text-transmedia {
-  text-align: center; }
 .field-pros .centerVV .text .title {
   font-family: 'Lato', sans-serif;
   font-weight: 300; }

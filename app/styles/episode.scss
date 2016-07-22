@@ -968,6 +968,55 @@
 		}
 	}
 
+	//global link titles
+	.item__title--link { }
+
+	//per template title modifier
+	.title--link { }
+
+	.title--link-embed { }
+
+	.title--description-first { }
+
+	.title--link-modal { }
+
+	.title--link-with-image { }
+
+	//global link text
+	.item__text--link { }
+
+	//per template text modifer
+
+	.text--link { }
+
+	.text--description-first { }
+
+	.text--link-embed { }
+
+	.text--link-modal { }
+
+	.text--link-with-image { }
+
+	//global escape link styles
+	.item_link--escape-link { }
+
+	//per template escape link styles
+	.escape-link--link { }
+
+	.escape-link--link-embed { }
+
+	.escape-link--description-first { }
+
+	.escape-link--link-modal { }
+
+	.escape-link--link-with-image {}
+
+	.item__text--annotation {
+		h1, h2, h3 {
+			text-align: center;
+		}
+	}
+
 	.centerVV {
 		.item {
 			&.centerVV-h2 {
@@ -1051,6 +1100,7 @@ $h2pullquote: #5B5B5B;
 
 .narrasys-pro {
 	font-family: 'Gotham', sans-serif;
+	//episode template background image
 	background-image: url("/images/customer/Narrasys_Tree.svg");
 	background-size: 62%;
 	background-repeat: no-repeat;
@@ -1210,7 +1260,6 @@ $fieldProMain: #6baa36;
 	}
 
 	.static-bg__alt {
-		@include static-bg;
 		background-image: url('/images/customer/Grid_Graphic-01.svg');
 	}
 
@@ -1269,10 +1318,6 @@ $fieldProMain: #6baa36;
 			}
 		}
 
-		h1, h2, h3 {
-			text-align: left;
-		}
-
 		h2 {
 			font-size: 2vw;
 			position: relative;
@@ -1301,12 +1346,6 @@ $fieldProMain: #6baa36;
 		}
 	}
 
-	.item__text--text-h2 {
-		h1, h2, h3 {
-			text-align: center;
-		}
-	}
-
 	//layout specific overrides
 	.centered-pro {
 		.banner-pull-quote {
@@ -1329,9 +1368,9 @@ $fieldProMain: #6baa36;
 			}
 		}
 
-		.item__title__text-transmedia {
-			text-align: center;
-		}
+		//.item__title--text-transmedia {
+		//	text-align: center;
+		//}
 
 		.text {
 			.title {
