@@ -861,26 +861,6 @@
 	bottom: 20px
 }
 
-/*Narrasys pro*/
-@font-face {
-	font-family: 'Gotham Thin';
-	src: url('/images/font/GothamHTF-Thin.otf');
-}
-
-@font-face {
-	font-family: 'Gotham Medium';
-	src: url('/images/font/GothamHTF-Medium.otf');
-}
-
-@font-face {
-	font-family: 'Gotham Light Italic';
-	src: url('/images/font/GothamHTF-LightItalic.otf');
-}
-
-$narrasysOrange: #DE6625;
-$mondrianBorder: #4D4D4D;
-$h2pullquote: #5B5B5B;
-
 @mixin static-bg {
 	position: absolute;
 	top: 0;
@@ -890,54 +870,61 @@ $h2pullquote: #5B5B5B;
 	width: 50vw;
 }
 
-@mixin banner-pull-quote {
+/*base template class */
+//use 3.0vmax
+@mixin banner-pq($fontFam, $bgColor, $fontSize, $letterSpacing: normal) {
 	margin-top: 1em;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-family: 'Gotham Thin';
+	font-family: $fontFam;
 	color: white;
-	background-color: $narrasysOrange;
+	background-color: $bgColor;
 	width: 100%;
 	text-align: center;
 	padding: 10px 0;
 	min-height: 80px;
 	max-height: 80px;
 	position: absolute;
-	font-size: 2.0vmax;
+	font-size: $fontSize;
 	font-weight: lighter;
-	letter-spacing: 0.1em;
+	letter-spacing: $letterSpacing;
 }
 
-/*base template class */
-.narrasys-pro {
-	font-family: 'Gotham', sans-serif;
-	background-image: url("/images/customer/Narrasys_Tree.svg");
-	background-size: 62%;
-	background-repeat: no-repeat;
-	background-position: top right;
-	position: absolute;
 
+.professional {
 	.static-bg__main {
-		@include static-bg
+		@include static-bg;
 	}
 
 	.static-bg__alt {
 		@include static-bg
 	}
 
-	//use network bg
+	.mainPane, .altPane {
+		background-color: transparent;
+	}
+
 	.static-bg__main--mondrian {
-		//background: url('/images/customer/Network_BackgroundV2.png');
 		background-size: cover;
 		height: 100vh;
 	}
 
-	.endingscreen {
-		p {
-			@include banner-pull-quote;
-			position: relative;
-			top: 0;
+	.professional__branding {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		.professional__logo {
+			width: 350px;
+		}
+		.professional__copyright {
+			color: grey;
+			vertical-align: baseline;
+			font-size: 14px;
+			a {
+				text-decoration: underline;
+				color: grey;
+			}
 		}
 	}
 
@@ -957,35 +944,141 @@ $h2pullquote: #5B5B5B;
 			width: 100%;
 		}
 
-		h1 {
-			@include banner-pull-quote;
+	}
+
+	.endingscreen {
+		div.pane.introtext p {
+			position: relative;
+			top: 0;
 		}
 	}
 
-	.branding {
-		//height: 210px;
-		//height: 210px;
-		background: none;
-	}
-
 	.item {
-		color: black;
-
 		.itemCaption {
 			color: white;
 		}
 
 		.pullquote {
-			font-family: 'Gotham Light Italic';
+			position: relative;
+
+			&:before {
+				font-size: 4em;
+				content: "“";
+			}
+		}
+	}
+
+	.centerVV {
+		.item {
+			&.centerVV-h2 {
+				margin-top: 14px;
+				background: white;
+				h2 {
+					position: relative;
+					text-align: center;
+				}
+			}
+		}
+	}
+
+	.centerVV-mondrian {
+		.bgLayer {
+			&.bg-alt {
+				position: fixed;
+				width: 50%;
+				opacity: 1;
+			}
+
+			&.bg-main {
+				opacity: 1;
+				background-size: cover;
+				left: 50%;
+			}
+		}
+
+		.item {
+			&.mondrian {
+				margin-top: 1.7em;
+			}
+
+			.text {
+				.title {
+					a {
+						color: white;
+					}
+					&.item__link-embed--title {
+						color: white;
+					}
+				}
+			}
+
+
+		}
+
+	}
+}
+/*Narrasys pro*/
+@font-face {
+	font-family: 'Gotham Thin';
+	src: url('/images/font/GothamHTF-Thin.otf');
+}
+
+@font-face {
+	font-family: 'Gotham Medium';
+	src: url('/images/font/GothamHTF-Medium.otf');
+}
+
+@font-face {
+	font-family: 'Gotham Light Italic';
+	src: url('/images/font/GothamHTF-LightItalic.otf');
+}
+
+@mixin gotham-lite-ital {
+	font-family: 'Gotham Light Italic', sans-serif;
+}
+
+@mixin gotham-medium {
+	font-family: "Gotham Medium", sans-serif;
+}
+
+@mixin gotham-thin {
+	font-family: "Gotham Thin", sans-serif;
+}
+
+$narrasysOrange: #DE6625;
+$mondrianBorder: #4D4D4D;
+$h2pullquote: #5B5B5B;
+
+.narrasys-pro {
+	font-family: 'Gotham', sans-serif;
+	background-image: url("/images/customer/Narrasys_Tree.svg");
+	background-size: 62%;
+	background-repeat: no-repeat;
+	background-position: top right;
+	position: absolute;
+
+	.landingscreen {
+		h1 {
+			@include banner-pq('Gotham Thin', $narrasysOrange, 2.0vmax, 0.1em);
+		}
+	}
+
+	.endingscreen {
+		p {
+			@include banner-pq('Gotham Thin', $narrasysOrange, 2.0vmax, 0.1em);
+		}
+	}
+
+	.item {
+		.pullquote {
+			//font-family: 'Gotham Light Italic';
+			@include gotham-lite-ital;
 			color: $h2pullquote;
 			font-size: 2.7vmax;
-			position: relative;
 			bottom: 0.5em;
 			&:before {
 				color: $narrasysOrange;
-				content: U+201C;
-				font-family: "Gotham";
-				font-size: 4em;
+				font-family: 'Gotham';
 				opacity: 0.2;
 			}
 		}
@@ -1000,7 +1093,7 @@ $h2pullquote: #5B5B5B;
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
-				@include banner-pull-quote;
+				@include banner-pq('Gotham Thin', $narrasysOrange, 2.0vmax, 0.1em);
 			}
 			.edit-event {
 				top: 1.8em;
@@ -1011,7 +1104,7 @@ $h2pullquote: #5B5B5B;
 			h2 {
 				position: relative;
 				bottom: 1.3em;
-				font-family: 'Gotham Medium';
+				@include gotham-medium;
 				font-weight: lighter;
 				font-size: 2vmax;
 				letter-spacing: 0.3vw;
@@ -1023,23 +1116,18 @@ $h2pullquote: #5B5B5B;
 	.centerVV {
 		.item {
 			&.centerVV-h2 {
-				margin-top: 14px;
-				background: white;
 				h2 {
 					position: relative;
 					bottom: 0.7em;
-					//font-weight: lighter;
-					text-align: center;
 					font-size: 2vmax;
 					letter-spacing: 0.5vmin;
-					font-family: "Gotham Thin";
-					/*letter-spacing: 0.1em;*/
+					@include gotham-thin;
 				}
 			}
 
 			.definition {
 				.text {
-					font-family: 'Gotham Thin';
+					@include gotham-thin;
 					padding-right: 40px;
 					font-size: 1.5vmax;
 				}
@@ -1047,7 +1135,7 @@ $h2pullquote: #5B5B5B;
 
 			.itemHead {
 				/*border: 3px solid black;*/
-				font-family: "Gotham Medium";
+				@include gotham-medium;
 			}
 
 			//pull quote overrides
@@ -1058,58 +1146,41 @@ $h2pullquote: #5B5B5B;
 			}
 		}
 	}
+	//mondrian styles
 
-	.scene {
-		&.centerVV-mondrian {
-			.bgLayer {
-				&.bg-alt {
-					position: fixed;
-					width: 50%;
-					border-right: 8px solid $mondrianBorder;
-					background-color: $narrasysOrange;
-					opacity: 1;
-				}
-
-				&.bg-main {
-					opacity: 1;
-					background-size: cover;
-					left: 50%;
-				}
+	.centerVV-mondrian {
+		.bgLayer {
+			&.bg-alt {
+				border-right: 8px solid $mondrianBorder;
+				background-color: $narrasysOrange;
+				opacity: 1;
 			}
+		}
 
-
-			.content {
-				.item:first-child {
-					&.mondrian {
-						//top right bottom left
-						padding: 0.1em 0 0.3em 0.3em;
-					}
-				}
-			}
-
-			.item {
+		.content {
+			.item:first-child {
 				&.mondrian {
-					margin-top: 1.7em;
-					background-color: $mondrianBorder;
-					color: white;
-					.escapelink:before {
-						color: white;
-					}
-					a {
-						color: white;
-
-					}
+					//top right bottom left
+					padding: 0.1em 0 0.3em 0.3em;
 				}
 			}
+		}
 
-			.title {
+		.item {
+			&.mondrian {
+				background-color: $mondrianBorder;
+				color: white;
+				.escapelink:before {
+					color: white;
+				}
 				a {
 					color: white;
+
 				}
 			}
-
 		}
 	}
+
 }
 
 
@@ -1129,35 +1200,12 @@ $fieldProMain: #6baa36;
 	background-color: $fieldProInvert;
 	color: $fieldProMain;
 }
-//use 3.0vmax
-@mixin banner-pq($fontFam, $bgColor, $fontSize) {
-	margin-top: 1em;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-family: $fontFam;
-	color: white;
-	background-color: $bgColor;
-	width: 100%;
-	text-align: center;
-	padding: 10px 0;
-	min-height: 80px;
-	max-height: 80px;
-	position: absolute;
-	font-size: $fontSize;
-	font-weight: lighter;
-}
 
 .field-pros {
 	//static-bg's are background images in 2 col layouts
 	//currently only in use in CenterVV, CenterVV-mondrian layouts.
 
-	.mainPane, .altPane {
-		background-color: transparent;
-	}
-
 	.static-bg__main {
-		@include static-bg;
 		background-image: url('/images/customer/Green_BG_01.svg');
 	}
 
@@ -1168,54 +1216,18 @@ $fieldProMain: #6baa36;
 
 	.static-bg__main--mondrian {
 		background: url('/images/customer/Grid_Graphic-01.svg');
-		background-size: cover;
-		height: 100vh;
 	}
 	//the logo / branding section in the episode template
-	.fp-branding {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		.fp-logo {
-			width: 350px;
-		}
-		.fp-copyright {
-			color: grey;
-			vertical-align: baseline;
-			font-size: 14px;
-			a {
-				text-decoration: underline;
-				color: grey;
-			}
-		}
-	}
-	//
+
 	.landingscreen {
-		padding-top: 0%;
-		div {
-			display: flex;
-			flex-direction: column;
-		}
-
-		.introtext {
-			width: 100%;
-			margin-bottom: 5em;
-		}
-
-		.videoMagnet {
-			width: 100%;
-		}
-
 		h1 {
-			@include banner-pq('Roboto Condensed', $fieldProMain, '3.0vmax');
+			@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw);
 		}
 	}
 
 	.endingscreen {
 		p {
-			@include banner-pq('Roboto Condensed', $fieldProMain, '3.0vmax');
-			position: relative;
-			top: 0;
+			@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw);
 		}
 	}
 
@@ -1270,11 +1282,8 @@ $fieldProMain: #6baa36;
 		.pullquote {
 			@include lato-lite;
 			font-size: 2.5vw;
-			position: relative;
 			bottom: 0.2em;
 			&:before {
-				font-size: 4em;
-				content: "“";
 				opacity: 0.6;
 				@include roboto-condensed;
 				color: $fieldProInvert;
@@ -1313,10 +1322,7 @@ $fieldProMain: #6baa36;
 	.centerVV {
 		.item {
 			&.centerVV-h2 {
-				margin-top: 14px;
-				background: white;
 				h2 {
-					text-align: center;
 					position: relative;
 					bottom: 0.5em;
 				}
@@ -1339,17 +1345,9 @@ $fieldProMain: #6baa36;
 	.centerVV-mondrian {
 		.bgLayer {
 			&.bg-alt {
-				position: fixed;
-				width: 50%;
 				border-right: 8px solid $fieldProInvert;
 				background-color: $fieldProMain;
 				opacity: 1;
-			}
-
-			&.bg-main {
-				opacity: 1;
-				background-size: cover;
-				left: 50%;
 			}
 		}
 
@@ -1369,19 +1367,7 @@ $fieldProMain: #6baa36;
 		.item {
 			background-color: $fieldProInvert;
 			color: white;
-			&:first-child {
-				&.mondrian {
-					margin-top: 1.7em;
-				}
-			}
 			.title {
-				a {
-					color: white;
-				}
-				&.item__link-embed--title {
-					color: white;
-				}
-
 				//in the case of link.html template
 				//.escapelink is a child of div.text
 				//it's typically a sibling.
