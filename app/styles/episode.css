@@ -979,6 +979,9 @@
   top: 1.8em; }
 .field-pros .centerVV .item__link--escape-link:before {
   color: #4b4b52; }
+.field-pros .centerVV .item__title--link {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300; }
 .field-pros .centerVV-mondrian .bgLayer.bg-alt {
   border-right: 8px solid #4b4b52;
   background-color: #6baa36;

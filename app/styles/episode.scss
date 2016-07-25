@@ -1050,10 +1050,6 @@
 			&.centerVV-h2 {
 				margin-top: 14px;
 				background: white;
-				//h2 {
-				//	position: relative;
-				//	text-align: center;
-				//}
 			}
 		}
 	}
@@ -1085,19 +1081,6 @@
 			&.mondrian {
 				margin-top: 1.7em;
 			}
-
-			//.text {
-			//	.title {
-			//		a {
-			//			color: white;
-			//		}
-			//		&.item__link-embed--title {
-			//			color: white;
-			//		}
-			//	}
-			//}
-
-
 		}
 
 	}
@@ -1171,20 +1154,6 @@ $h2pullquote: #5B5B5B;
 			opacity: 0.2;
 		}
 	}
-	//.item {
-	//	.pullquote {
-	//		//font-family: 'Gotham Light Italic';
-	//		@include gotham-lite-ital;
-	//		color: $h2pullquote;
-	//		font-size: 2.7vmax;
-	//		bottom: 0.5em;
-	//		&:before {
-	//			color: $narrasysOrange;
-	//			font-family: 'Gotham';
-	//			opacity: 0.2;
-	//		}
-	//	}
-	//}
 
 	.img--link-with-image-no-title {
 		display: block;
@@ -1215,17 +1184,6 @@ $h2pullquote: #5B5B5B;
 			}
 		}
 
-		//.item {
-		//	h2 {
-		//		position: relative;
-		//		bottom: 1.3em;
-		//		@include gotham-medium;
-		//		font-weight: lighter;
-		//		font-size: 2vmax;
-		//		letter-spacing: 0.3vw;
-		//	}
-		//}
-
 	}
 
 	.centerVV {
@@ -1245,37 +1203,6 @@ $h2pullquote: #5B5B5B;
 			font-size: 1.5vmax;
 		}
 
-		//.item {
-			//&.centerVV-h2 {
-			//	h2 {
-			//		position: relative;
-			//		bottom: 0.7em;
-			//		font-size: 2vmax;
-			//		letter-spacing: 0.5vmin;
-			//		@include gotham-thin;
-			//	}
-			//}
-
-			//.definition {
-			//	.text {
-			//		@include gotham-thin;
-			//		padding-right: 40px;
-			//		font-size: 1.5vmax;
-			//	}
-			//}
-
-			//.itemHead {
-			//	/*border: 3px solid black;*/
-			//	@include gotham-medium;
-			//}
-
-			//pull quote overrides
-			//.pullquote {
-			//	font-size: 2.7vmax;
-			//	position: relative;
-			//	bottom: 0.5em;
-			//}
-		//}
 	}
 	//mondrian styles
 
@@ -1327,13 +1254,6 @@ $h2pullquote: #5B5B5B;
 		.item {
 			&.mondrian {
 				background-color: $mondrianBorder;
-				//.escapelink:before {
-				//	color: white;
-				//}
-				//a {
-				//	color: white;
-                //
-				//}
 			}
 		}
 	}
@@ -1458,56 +1378,6 @@ $fieldProMain: #6baa36;
 		}
 	}
 
-	//.item {
-	//	@include roboto-condensed;
-	//	.text {
-	//		@include lato-lite;
-	//		font-size: 1.3vw;
-	//		.title {
-	//			@include roboto-condensed;
-	//			a {
-	//				color: $fieldProMain;
-	//			}
-	//			&.item__link-embed--title {
-	//				color: black;
-	//			}
-	//		}
-	//	}
-    //
-	//	.definition {
-	//		.text {
-	//			font-size: 1.7vw;
-	//		}
-	//	}
-    //
-	//	h2 {
-	//		font-size: 2vw;
-	//		position: relative;
-	//		bottom: 0.2em;
-	//	}
-    //
-	//	.pullquote {
-	//		@include lato-lite;
-	//		font-size: 2.5vw;
-	//		bottom: 0.2em;
-	//		&:before {
-	//			opacity: 0.6;
-	//			@include roboto-condensed;
-	//			color: $fieldProInvert;
-	//			width: 0.4em;
-	//			line-height: 0.8em;
-	//		}
-	//	}
-	//}
-
-	//.item__link-embed--escapelink {
-	//	@include lato-lite;
-	//	color: $fieldProMain;
-	//	&:before {
-	//		color: $fieldProMain;
-	//	}
-	//}
-
 	//layout specific overrides
 	.centered-pro {
 		.banner-pull-quote {
@@ -1527,22 +1397,9 @@ $fieldProMain: #6baa36;
 			}
 		}
 
-		//.item {
-		//	&.centerVV-h2 {
-		//		h2 {
-		//			position: relative;
-		//			bottom: 0.4em;
-		//		}
-		//	}
-		//}
-
-		//.text {
-		//	.title {
-		//		@include lato-lite;
-		//	}
-		//}
-
-
+		.item__title--link {
+			@include lato-lite;
+		}
 	}
 
 	.centerVV-mondrian {
@@ -1583,23 +1440,6 @@ $fieldProMain: #6baa36;
 				color: $fieldProMain
 			}
 		}
-
-		//.item {
-		//	background-color: $fieldProInvert;
-		//	color: white;
-		//	//.itemTemplate {
-		//	//	&.headerItem {
-		//	//		h2 {
-		//	//			text-align: center;
-		//	//		}
-		//	//		.pullquote {
-		//	//			&:before {
-		//	//				color: white;
-		//	//			}
-		//	//		}
-		//	//	}
-		//	//}
-		//}
 	}
 }
 
