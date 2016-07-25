@@ -968,80 +968,102 @@
 		}
 	}
 
+	//commented out as to remove from final build
+	//uncomment / add as necessary
+
 	//global title
-	.item__title { }
+	//.item__title { }
+    //
+	////global link titles
+	//.item__title--link { }
+    //
+	//.item__title--definition { }
+    //
+	//.item__title--transmedia { }
+    //
+	//.item__title--image { }
+    //
+	//.item__title--image-thumbnail { }
+    //
+	//.item__text--image-inline-with-text { }
+    //
+	////per template title modifier
+	//.title--link { }
+    //
+	//.title--link-embed { }
+    //
+	//.title--description-first { }
+    //
+	//.title--link-modal { }
+    //
+	//.title--link-with-image { }
+    //
+	////global text
+	//.item__text { }
+    //
+	////global link text
+	//.item__text--link { }
+    //
+	//.item__text--definition { }
+    //
+	//.item__text--h1 { }
+    //
+	//.item__text--h2 { }
+    //
+	//.item__text--transmedia { }
+    //
+	//.item__text--image { }
+    //
+	//.item__text--image-thumbnail {}
+    //
+	////per template text modifer
+    //
+	//.text--link { }
+    //
+	//.text--description-first { }
+    //
+	//.text--link-embed { }
+    //
+	//.text--link-modal { }
+    //
+	//.text--link-with-image { }
+    //
+	////global escape link styles
+	//.item_link--escape-link { }
+    //
+	////per template escape link styles
+	//.escape-link--link { }
+    //
+	//.escape-link--link-embed { }
+    //
+	//.escape-link--description-first { }
+    //
+	//.escape-link--link-modal { }
+    //
+	//.escape-link--link-with-image {}
 
-	//global link titles
-	.item__title--link { }
-
-	.item__title--definition { }
-
-	.item__title--transmedia { }
-
-	.item__title--image { }
-
-	.item__title--image-thumbnail { }
-
-	.item__text--image-inline-with-text { }
-
-	//per template title modifier
-	.title--link { }
-
-	.title--link-embed { }
-
-	.title--description-first { }
-
-	.title--link-modal { }
-
-	.title--link-with-image { }
-
-	//global text
-	.item__text { }
-
-	//global link text
-	.item__text--link { }
-
-	.item__text--definition { }
-
-	.item__text--h1 { }
-
-	.item__text--h2 { }
-
-	.item__text--transmedia { }
-
-	.item__text--image { }
-
-	.item__text--image-thumbnail {}
-
-	//per template text modifer
-
-	.text--link { }
-
-	.text--description-first { }
-
-	.text--link-embed { }
-
-	.text--link-modal { }
-
-	.text--link-with-image { }
-
-	//global escape link styles
-	.item_link--escape-link { }
-
-	//per template escape link styles
-	.escape-link--link { }
-
-	.escape-link--link-embed { }
-
-	.escape-link--description-first { }
-
-	.escape-link--link-modal { }
-
-	.escape-link--link-with-image {}
-
-	.item__text--h1, .item__text--h2 {
+	.item__text--h2, .item__text--h1 {
+		position: relative;
+		bottom: 0.2em; //ask abi OK to remove from narrasys?
 		h1, h2, h3 {
 			text-align: center;
+		}
+		h2 {
+			position: relative; //ask abi
+			font-size: 2vw;
+			bottom: 0.5em; //ask abi - change to 0.7em: reason: clean up Narrasys CenterVV h2
+		}
+		h1 {
+			font-size: 2.5vw;
+		}
+		h3 {
+			font-size: 1.5vw;
+		}
+	}
+
+	.centered-pro {
+		.edit-event {
+			top: 1.8em;
 		}
 	}
 
@@ -1051,6 +1073,10 @@
 				margin-top: 14px;
 				background: white;
 			}
+		}
+
+		.item__text--definition {
+			font-size: 1.7vw;
 		}
 	}
 
@@ -1083,6 +1109,10 @@
 			}
 		}
 
+		.item__link--escape-link {
+			color: white;
+		}
+
 	}
 }
 /*Narrasys pro*/
@@ -1101,6 +1131,10 @@
 	src: url('/images/font/GothamHTF-LightItalic.otf');
 }
 
+$narrasysOrange: #DE6625;
+$mondrianBorder: #4D4D4D;
+$h2pullquote: #5B5B5B;
+
 @mixin gotham-lite-ital {
 	font-family: 'Gotham Light Italic', sans-serif;
 }
@@ -1112,10 +1146,6 @@
 @mixin gotham-thin {
 	font-family: "Gotham Thin", sans-serif;
 }
-
-$narrasysOrange: #DE6625;
-$mondrianBorder: #4D4D4D;
-$h2pullquote: #5B5B5B;
 
 .narrasys-pro {
 	//episode font
@@ -1150,7 +1180,7 @@ $h2pullquote: #5B5B5B;
 		bottom: 0.5em;
 		&:before {
 			color: $narrasysOrange;
-			font-family: 'Gotham';
+			font-family: 'Gotham'; //ask abi
 			opacity: 0.2;
 		}
 	}
@@ -1167,19 +1197,13 @@ $h2pullquote: #5B5B5B;
 			h1 {
 				@include banner-pq('Gotham Thin', $narrasysOrange, 2.0vmax, 0.1em);
 			}
-			.edit-event {
-				top: 1.8em;
-			}
 		}
-
 
 		.item__text--h2 {
 			h2 {
-				position: relative;
 				bottom: 1.3em;
-				@include gotham-medium;
+				@include gotham-medium; //ask abi
 				font-weight: lighter;
-				font-size: 2vmax;
 				letter-spacing: 0.3vw;
 			}
 		}
@@ -1189,9 +1213,7 @@ $h2pullquote: #5B5B5B;
 	.centerVV {
 		.item__text--h2 {
 			h2 {
-				position: relative;
 				bottom: 0.7em;
-				font-size: 2vmax;
 				letter-spacing: 0.5vmin;
 				@include gotham-thin;
 			}
@@ -1199,8 +1221,6 @@ $h2pullquote: #5B5B5B;
 
 		.item__text--definition {
 			@include gotham-thin;
-			padding-right: 40px;
-			font-size: 1.5vmax;
 		}
 
 	}
@@ -1211,15 +1231,16 @@ $h2pullquote: #5B5B5B;
 			&.bg-alt {
 				border-right: 8px solid $mondrianBorder;
 				background-color: $narrasysOrange;
-				opacity: 1;
 			}
 		}
 
 		.content {
-			.item:first-child {
-				&.mondrian {
-					//top right bottom left
-					padding: 0.1em 0 0.3em 0.3em;
+			.item {
+				&:first-child {
+					&.mondrian {
+						//top right bottom left
+						padding: 0.1em 0 0.3em 0.3em;
+					}
 				}
 			}
 		}
@@ -1245,11 +1266,11 @@ $h2pullquote: #5B5B5B;
 		}
 
 		.item__link--escape-link {
-			color: white;
 			&:before {
 				color: white;
 			}
 		}
+
 
 		.item {
 			&.mondrian {
@@ -1337,24 +1358,8 @@ $fieldProMain: #6baa36;
 		font-size: 1.3vw;
 	}
 
-	.item__text--definition {
-		font-size: 1.7vw;
-	}
-
 	.item__text--h2 {
 		@include roboto-condensed;
-		position: relative;
-		bottom: 0.2em;
-		h2 {
-			font-size: 2vw;
-			bottom: 0.5em;
-		}
-		h1 {
-			font-size: 2.5vw;
-		}
-		h3 {
-			font-size: 1.5vw;
-		}
 	}
 
 	.item .item__text--pullquote {
@@ -1384,9 +1389,6 @@ $fieldProMain: #6baa36;
 			h1 {
 				@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw);
 			}
-			.edit-event {
-				top: 1.8em;
-			}
 		}
 	}
 
@@ -1400,6 +1402,10 @@ $fieldProMain: #6baa36;
 		.item__title--link {
 			@include lato-lite;
 		}
+
+		.item__title--link.title--link-embed {
+			@include roboto-condensed;
+		}
 	}
 
 	.centerVV-mondrian {
@@ -1407,7 +1413,6 @@ $fieldProMain: #6baa36;
 			&.bg-alt {
 				border-right: 8px solid $fieldProInvert;
 				background-color: $fieldProMain;
-				opacity: 1;
 			}
 		}
 
@@ -1429,6 +1434,7 @@ $fieldProMain: #6baa36;
 			color: white;
 		}
 
+
 		.item .item__text--pullquote {
 			&:before {
 				color: white;
@@ -1436,6 +1442,7 @@ $fieldProMain: #6baa36;
 		}
 
 		.item__link--escape-link {
+			@include roboto-condensed;
 			&:before {
 				color: $fieldProMain
 			}
