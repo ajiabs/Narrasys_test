@@ -33,7 +33,7 @@
 		</span>
 		<span ng-if="!item.noEmbed">
 			<div class="title">
-				<a role="button" x-ng-keypress="toggleDetailOnKeyPress($event)" class="fakeLink" tabindex="0" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
+				<a role="button" x-ng-keypress="toggleDetailOnKeyPress($event)" class="fakeLink item__link--fake-link" tabindex="0" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
 			</div>
 			<img ng-click="toggleDetailView()" ng-src="{{item.asset.url}}">
 		</span>

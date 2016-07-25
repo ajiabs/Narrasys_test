@@ -982,6 +982,8 @@
 
 	.item__title--image-thumbnail { }
 
+	.item__text--image-inline-with-text { }
+
 	//per template title modifier
 	.title--link { }
 
@@ -1048,10 +1050,10 @@
 			&.centerVV-h2 {
 				margin-top: 14px;
 				background: white;
-				h2 {
-					position: relative;
-					text-align: center;
-				}
+				//h2 {
+				//	position: relative;
+				//	text-align: center;
+				//}
 			}
 		}
 	}
@@ -1071,21 +1073,29 @@
 			}
 		}
 
+		.item__title {
+			color: white;
+		}
+
+		.item__link--escape-link.escape-link--link-embed {
+			color: white;
+		}
+
 		.item {
 			&.mondrian {
 				margin-top: 1.7em;
 			}
 
-			.text {
-				.title {
-					a {
-						color: white;
-					}
-					&.item__link-embed--title {
-						color: white;
-					}
-				}
-			}
+			//.text {
+			//	.title {
+			//		a {
+			//			color: white;
+			//		}
+			//		&.item__link-embed--title {
+			//			color: white;
+			//		}
+			//	}
+			//}
 
 
 		}
@@ -1125,6 +1135,7 @@ $mondrianBorder: #4D4D4D;
 $h2pullquote: #5B5B5B;
 
 .narrasys-pro {
+	//episode font
 	font-family: 'Gotham', sans-serif;
 	//episode template background image
 	background-image: url("/images/customer/Narrasys_Tree.svg");
@@ -1145,26 +1156,42 @@ $h2pullquote: #5B5B5B;
 		}
 	}
 
-	.item {
-		.pullquote {
-			//font-family: 'Gotham Light Italic';
-			@include gotham-lite-ital;
-			color: $h2pullquote;
-			font-size: 2.7vmax;
-			bottom: 0.5em;
-			&:before {
-				color: $narrasysOrange;
-				font-family: 'Gotham';
-				opacity: 0.2;
-			}
-		}
+	.item__title {
+		@include gotham-medium;
 	}
 
-	.link-no-title-img {
+	.item .item__text--pullquote {
+		@include gotham-lite-ital;
+		color: $h2pullquote;
+		font-size: 2.7vmax;
+		bottom: 0.5em;
+		&:before {
+			color: $narrasysOrange;
+			font-family: 'Gotham';
+			opacity: 0.2;
+		}
+	}
+	//.item {
+	//	.pullquote {
+	//		//font-family: 'Gotham Light Italic';
+	//		@include gotham-lite-ital;
+	//		color: $h2pullquote;
+	//		font-size: 2.7vmax;
+	//		bottom: 0.5em;
+	//		&:before {
+	//			color: $narrasysOrange;
+	//			font-family: 'Gotham';
+	//			opacity: 0.2;
+	//		}
+	//	}
+	//}
+
+	.img--link-with-image-no-title {
 		display: block;
 		margin: 0 auto;
 		width: 260px;
 	}
+
 
 	.centered-pro {
 		.banner-pull-quote {
@@ -1176,7 +1203,8 @@ $h2pullquote: #5B5B5B;
 			}
 		}
 
-		.item {
+
+		.item__text--h2 {
 			h2 {
 				position: relative;
 				bottom: 1.3em;
@@ -1187,40 +1215,67 @@ $h2pullquote: #5B5B5B;
 			}
 		}
 
+		//.item {
+		//	h2 {
+		//		position: relative;
+		//		bottom: 1.3em;
+		//		@include gotham-medium;
+		//		font-weight: lighter;
+		//		font-size: 2vmax;
+		//		letter-spacing: 0.3vw;
+		//	}
+		//}
+
 	}
 
 	.centerVV {
-		.item {
-			&.centerVV-h2 {
-				h2 {
-					position: relative;
-					bottom: 0.7em;
-					font-size: 2vmax;
-					letter-spacing: 0.5vmin;
-					@include gotham-thin;
-				}
-			}
-
-			.definition {
-				.text {
-					@include gotham-thin;
-					padding-right: 40px;
-					font-size: 1.5vmax;
-				}
-			}
-
-			.itemHead {
-				/*border: 3px solid black;*/
-				@include gotham-medium;
-			}
-
-			//pull quote overrides
-			.pullquote {
-				font-size: 2.7vmax;
+		.item__text--h2 {
+			h2 {
 				position: relative;
-				bottom: 0.5em;
+				bottom: 0.7em;
+				font-size: 2vmax;
+				letter-spacing: 0.5vmin;
+				@include gotham-thin;
 			}
 		}
+
+		.item__text--definition {
+			@include gotham-thin;
+			padding-right: 40px;
+			font-size: 1.5vmax;
+		}
+
+		//.item {
+			//&.centerVV-h2 {
+			//	h2 {
+			//		position: relative;
+			//		bottom: 0.7em;
+			//		font-size: 2vmax;
+			//		letter-spacing: 0.5vmin;
+			//		@include gotham-thin;
+			//	}
+			//}
+
+			//.definition {
+			//	.text {
+			//		@include gotham-thin;
+			//		padding-right: 40px;
+			//		font-size: 1.5vmax;
+			//	}
+			//}
+
+			//.itemHead {
+			//	/*border: 3px solid black;*/
+			//	@include gotham-medium;
+			//}
+
+			//pull quote overrides
+			//.pullquote {
+			//	font-size: 2.7vmax;
+			//	position: relative;
+			//	bottom: 0.5em;
+			//}
+		//}
 	}
 	//mondrian styles
 
@@ -1242,17 +1297,43 @@ $h2pullquote: #5B5B5B;
 			}
 		}
 
+		.item__text {
+			color: white;
+		}
+
+		.item__title--link {
+			color: white;
+		}
+
+		.item .item__text--pullquote {
+			color: $h2pullquote;
+		}
+
+		.item__text--h2 {
+			color: black;
+		}
+
+		.item__link--fake-link {
+			color: white;
+		}
+
+		.item__link--escape-link {
+			color: white;
+			&:before {
+				color: white;
+			}
+		}
+
 		.item {
 			&.mondrian {
 				background-color: $mondrianBorder;
-				color: white;
-				.escapelink:before {
-					color: white;
-				}
-				a {
-					color: white;
-
-				}
+				//.escapelink:before {
+				//	color: white;
+				//}
+				//a {
+				//	color: white;
+                //
+				//}
 			}
 		}
 	}
