@@ -763,20 +763,22 @@
     left: 50%; }
   .professional .centerVV-mondrian .mainPane .item {
     margin-top: 0.8em; }
-  .professional .centerVV-mondrian .item__title {
-    color: white; }
-  .professional .centerVV-mondrian .item__link--escape-link.escape-link--link-embed {
-    color: white; }
-  .professional .centerVV-mondrian .item.mondrian {
+  .professional .centerVV-mondrian .altPane .item {
     margin-top: 1.7em; }
+    .professional .centerVV-mondrian .altPane .item:first-child {
+      padding: 5px 0 3px 7px; }
+  .professional .centerVV-mondrian .altPane .item__title--transmedia {
+    padding-top: 0;
+    margin-top: 0; }
+  .professional .centerVV-mondrian .altPane .item__text--transmedia {
+    padding-top: 0;
+    margin-top: 0; }
   .professional .centerVV-mondrian .item__link--escape-link {
     color: white; }
   .professional .centerVV-mondrian .item__text--h2 {
     padding-top: 10px; }
   .professional .centerVV-mondrian .item .item__text--pullquote {
     padding-top: 0; }
-  .professional .centerVV-mondrian .content .item:first-child.mondrian {
-    padding: 0.1em 0 0.3em 0.3em; }
 
 /*Narrasys pro*/
 @font-face {
