@@ -1095,6 +1095,12 @@
 			}
 		}
 
+		.mainPane {
+			.item {
+				margin-top: 0.8em;
+			}
+		}
+
 		.item__title {
 			color: white;
 		}
@@ -1111,6 +1117,24 @@
 
 		.item__link--escape-link {
 			color: white;
+		}
+
+		.item__text--h2 {
+			padding-top: 10px;
+		}
+
+		.item .item__text--pullquote {
+			padding-top: 0;
+		}
+		.content {
+			.item {
+				&:first-child {
+					&.mondrian {
+						//top right bottom left
+						padding: 0.1em 0 0.3em 0.3em;
+					}
+				}
+			}
 		}
 
 	}
@@ -1141,6 +1165,7 @@ $h2pullquote: #5B5B5B;
 
 @mixin gotham-medium {
 	font-family: "Gotham Medium", sans-serif;
+	font-weight: 400;
 }
 
 @mixin gotham-thin {
@@ -1150,6 +1175,7 @@ $h2pullquote: #5B5B5B;
 .narrasys-pro {
 	//episode font
 	font-family: 'Gotham', sans-serif;
+	//@include gotham-thin;
 	//episode template background image
 	background-image: url("/images/customer/Narrasys_Tree.svg");
 	background-size: 62%;
@@ -1166,6 +1192,18 @@ $h2pullquote: #5B5B5B;
 	.endingscreen {
 		p {
 			@include banner-pq('Gotham Thin', $narrasysOrange, 2.0vmax, 0.1em);
+		}
+	}
+
+	.searchResults {
+		@include gotham-medium;
+		a {
+			color: $narrasysOrange;
+		}
+
+		.text, .itemHead {
+			@include gotham-thin;
+			font-size: 2vh !important;
 		}
 	}
 
@@ -1234,17 +1272,6 @@ $h2pullquote: #5B5B5B;
 			}
 		}
 
-		.content {
-			.item {
-				&:first-child {
-					&.mondrian {
-						//top right bottom left
-						padding: 0.1em 0 0.3em 0.3em;
-					}
-				}
-			}
-		}
-
 		.item__text {
 			color: white;
 		}
@@ -1270,7 +1297,6 @@ $h2pullquote: #5B5B5B;
 				color: white;
 			}
 		}
-
 
 		.item {
 			&.mondrian {
@@ -1314,8 +1340,6 @@ $fieldProMain: #6baa36;
 	.static-bg__main--mondrian {
 		background: url('/images/customer/Grid_Graphic-01.svg');
 	}
-	//the logo / branding section in the episode template
-
 	.landingscreen {
 		h1 {
 			@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw);
@@ -1331,14 +1355,12 @@ $fieldProMain: #6baa36;
 	//search view
 	.searchResults {
 		@include roboto-condensed;
-
-		a {
-			color: $fieldProMain;
-		}
-
-		.text, .itemHead {
+		.item__title--link, .item__link--fake-link, .item__link--escape-link {
 			@include lato-lite;
-			font-size: 2vh !important;
+			color: $fieldProMain;
+			&:before {
+				color: $fieldProInvert;
+			}
 		}
 	}
 
@@ -1363,13 +1385,14 @@ $fieldProMain: #6baa36;
 	}
 
 	.item .item__text--pullquote {
+		color: black;
 		@include lato-lite;
 		font-size: 2.5vw;
 		bottom: 0.2em;
 		&:before {
 			opacity: 0.6;
 			@include roboto-condensed;
-			color: $fieldProInvert;
+			color: $fieldProMain;
 			width: 0.4em;
 			line-height: 0.8em;
 		}
@@ -1416,27 +1439,9 @@ $fieldProMain: #6baa36;
 			}
 		}
 
-		.mainPane {
+		.altPane {
 			.item {
-				margin-top: 0.8em;
-			}
-		}
-		.content {
-			.item {
-				&:first-child {
-					padding-top: 2px;
-				}
-			}
-		}
-
-		.item {
-			background-color: $fieldProInvert;
-			color: white;
-		}
-
-
-		.item .item__text--pullquote {
-			&:before {
+				background-color:  $fieldProInvert;
 				color: white;
 			}
 		}

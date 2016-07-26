@@ -751,6 +751,8 @@
   opacity: 1;
   background-size: cover;
   left: 50%; }
+.professional .centerVV-mondrian .mainPane .item {
+  margin-top: 0.8em; }
 .professional .centerVV-mondrian .item__title {
   color: white; }
 .professional .centerVV-mondrian .item__link--escape-link.escape-link--link-embed {
@@ -759,6 +761,12 @@
   margin-top: 1.7em; }
 .professional .centerVV-mondrian .item__link--escape-link {
   color: white; }
+.professional .centerVV-mondrian .item__text--h2 {
+  padding-top: 10px; }
+.professional .centerVV-mondrian .item .item__text--pullquote {
+  padding-top: 0; }
+.professional .centerVV-mondrian .content .item:first-child.mondrian {
+  padding: 0.1em 0 0.3em 0.3em; }
 
 /*Narrasys pro*/
 @font-face {
@@ -811,8 +819,17 @@
     font-size: 2vmax;
     font-weight: lighter;
     letter-spacing: 0.1em; }
+  .narrasys-pro .searchResults {
+    font-family: "Gotham Medium", sans-serif;
+    font-weight: 400; }
+    .narrasys-pro .searchResults a {
+      color: #de6625; }
+    .narrasys-pro .searchResults .text, .narrasys-pro .searchResults .itemHead {
+      font-family: "Gotham Thin", sans-serif;
+      font-size: 2vh !important; }
   .narrasys-pro .item__title {
-    font-family: "Gotham Medium", sans-serif; }
+    font-family: "Gotham Medium", sans-serif;
+    font-weight: 400; }
   .narrasys-pro .item .item__text--pullquote {
     font-family: 'Gotham Light Italic', sans-serif;
     color: #5b5b5b;
@@ -846,6 +863,7 @@
   .narrasys-pro .centered-pro .item__text--h2 h2 {
     bottom: 1.3em;
     font-family: "Gotham Medium", sans-serif;
+    font-weight: 400;
     font-weight: lighter;
     letter-spacing: 0.3vw; }
   .narrasys-pro .centerVV .item__text--h2 h2 {
@@ -857,8 +875,6 @@
   .narrasys-pro .centerVV-mondrian .bgLayer.bg-alt {
     border-right: 8px solid #4d4d4d;
     background-color: #de6625; }
-  .narrasys-pro .centerVV-mondrian .content .item:first-child.mondrian {
-    padding: 0.1em 0 0.3em 0.3em; }
   .narrasys-pro .centerVV-mondrian .item__text {
     color: white; }
   .narrasys-pro .centerVV-mondrian .item__title--link {
@@ -917,12 +933,12 @@
 .field-pros .searchResults {
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 700; }
-  .field-pros .searchResults a {
-    color: #6baa36; }
-  .field-pros .searchResults .text, .field-pros .searchResults .itemHead {
+  .field-pros .searchResults .item__title--link, .field-pros .searchResults .item__link--fake-link, .field-pros .searchResults .item__link--escape-link {
     font-family: 'Lato', sans-serif;
     font-weight: 300;
-    font-size: 2vh !important; }
+    color: #6baa36; }
+    .field-pros .searchResults .item__title--link:before, .field-pros .searchResults .item__link--fake-link:before, .field-pros .searchResults .item__link--escape-link:before {
+      color: #4b4b52; }
 .field-pros .item__title {
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 700; }
@@ -936,6 +952,7 @@
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 700; }
 .field-pros .item .item__text--pullquote {
+  color: black;
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   font-size: 2.5vw;
@@ -944,7 +961,7 @@
     opacity: 0.6;
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: 700;
-    color: #4b4b52;
+    color: #6baa36;
     width: 0.4em;
     line-height: 0.8em; }
 .field-pros .item__link--escape-link {
@@ -981,14 +998,8 @@
 .field-pros .centerVV-mondrian .bgLayer.bg-alt {
   border-right: 8px solid #4b4b52;
   background-color: #6baa36; }
-.field-pros .centerVV-mondrian .mainPane .item {
-  margin-top: 0.8em; }
-.field-pros .centerVV-mondrian .content .item:first-child {
-  padding-top: 2px; }
-.field-pros .centerVV-mondrian .item {
+.field-pros .centerVV-mondrian .altPane .item {
   background-color: #4b4b52;
-  color: white; }
-.field-pros .centerVV-mondrian .item .item__text--pullquote:before {
   color: white; }
 .field-pros .centerVV-mondrian .item__link--escape-link {
   font-family: 'Roboto Condensed', sans-serif;
