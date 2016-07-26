@@ -771,15 +771,15 @@
 /*Narrasys pro*/
 @font-face {
   font-family: 'Gotham Thin';
-  src: url("/images/font/GothamHTF-Thin.otf"); }
+  src: url("/images/font/Gotham-Thin.otf") format("opentype"); }
 @font-face {
   font-family: 'Gotham Medium';
-  src: url("/images/font/GothamHTF-Medium.otf"); }
+  src: url("/images/font/Gotham-Medium.otf") format("opentype"); }
 @font-face {
   font-family: 'Gotham Light Italic';
-  src: url("/images/font/GothamHTF-LightItalic.otf"); }
+  src: url("/images/font/Gotham-LightItalic.otf") format("opentype"); }
 .narrasys-pro {
-  font-family: 'Gotham', sans-serif;
+  font-family: "Gotham Medium", sans-serif;
   background-image: url("/images/customer/Narrasys_Tree.svg");
   background-size: 62%;
   background-repeat: no-repeat;
@@ -820,16 +820,20 @@
     font-weight: lighter;
     letter-spacing: 0.1em; }
   .narrasys-pro .searchResults {
-    font-family: "Gotham Medium", sans-serif;
-    font-weight: 400; }
-    .narrasys-pro .searchResults a {
-      color: #de6625; }
-    .narrasys-pro .searchResults .text, .narrasys-pro .searchResults .itemHead {
+    font-family: "Gotham Medium", sans-serif; }
+    .narrasys-pro .searchResults .item__title--link, .narrasys-pro .searchResults .item__link--fake-link, .narrasys-pro .searchResults .item__link--escape-link {
       font-family: "Gotham Thin", sans-serif;
-      font-size: 2vh !important; }
+      color: #de6625; }
+      .narrasys-pro .searchResults .item__title--link:before, .narrasys-pro .searchResults .item__link--fake-link:before, .narrasys-pro .searchResults .item__link--escape-link:before {
+        color: #5b5b5b; }
   .narrasys-pro .item__title {
-    font-family: "Gotham Medium", sans-serif;
-    font-weight: 400; }
+    font-family: "Gotham Medium", sans-serif; }
+  .narrasys-pro .item__title--link a {
+    color: #de6625; }
+  .narrasys-pro .item__text {
+    font-family: "Gotham Thin", sans-serif; }
+  .narrasys-pro .item__text--h2 {
+    font-family: "Gotham Medium", sans-serif; }
   .narrasys-pro .item .item__text--pullquote {
     font-family: 'Gotham Light Italic', sans-serif;
     color: #5b5b5b;
@@ -839,10 +843,11 @@
       color: #de6625;
       font-family: 'Gotham';
       opacity: 0.2; }
-  .narrasys-pro .img--link-with-image-no-title {
-    display: block;
-    margin: 0 auto;
-    width: 260px; }
+  .narrasys-pro .item__link--escape-link {
+    font-family: "Gotham Thin", sans-serif;
+    color: #de6625; }
+    .narrasys-pro .item__link--escape-link:before {
+      color: #5b5b5b; }
   .narrasys-pro .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -862,33 +867,26 @@
     letter-spacing: 0.1em; }
   .narrasys-pro .centered-pro .item__text--h2 h2 {
     bottom: 1.3em;
-    font-family: "Gotham Medium", sans-serif;
-    font-weight: 400;
     font-weight: lighter;
     letter-spacing: 0.3vw; }
+  .narrasys-pro .centerVV .item__title--link {
+    font-family: "Gotham Thin", sans-serif; }
+  .narrasys-pro .centerVV .item__tite--link.title--link-embed {
+    font-family: "Gotham Medium", sans-serif; }
   .narrasys-pro .centerVV .item__text--h2 h2 {
     bottom: 0.7em;
     letter-spacing: 0.5vmin;
     font-family: "Gotham Thin", sans-serif; }
-  .narrasys-pro .centerVV .item__text--definition {
-    font-family: "Gotham Thin", sans-serif; }
   .narrasys-pro .centerVV-mondrian .bgLayer.bg-alt {
-    border-right: 8px solid #4d4d4d;
+    border-right: 8px solid #5b5b5b;
     background-color: #de6625; }
-  .narrasys-pro .centerVV-mondrian .item__text {
+  .narrasys-pro .centerVV-mondrian .altPane .item {
+    background-color: #5b5b5b;
     color: white; }
-  .narrasys-pro .centerVV-mondrian .item__title--link {
-    color: white; }
-  .narrasys-pro .centerVV-mondrian .item .item__text--pullquote {
-    color: #5b5b5b; }
-  .narrasys-pro .centerVV-mondrian .item__text--h2 {
-    color: black; }
   .narrasys-pro .centerVV-mondrian .item__link--fake-link {
     color: white; }
   .narrasys-pro .centerVV-mondrian .item__link--escape-link:before {
-    color: white; }
-  .narrasys-pro .centerVV-mondrian .item.mondrian {
-    background-color: #4d4d4d; }
+    color: #de6625; }
 
 .field-pros .static-bg__main {
   background-image: url("/images/customer/Green_BG_01.svg"); }
@@ -969,7 +967,7 @@
   font-weight: 300;
   color: #6baa36; }
   .field-pros .item__link--escape-link:before {
-    color: #6baa36; }
+    color: #4b4b52; }
 .field-pros .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -1000,6 +998,8 @@
   background-color: #6baa36; }
 .field-pros .centerVV-mondrian .altPane .item {
   background-color: #4b4b52;
+  color: white; }
+.field-pros .centerVV-mondrian .item__link--fake-link {
   color: white; }
 .field-pros .centerVV-mondrian .item__link--escape-link {
   font-family: 'Roboto Condensed', sans-serif;
