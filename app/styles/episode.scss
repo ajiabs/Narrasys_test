@@ -891,8 +891,10 @@
 	letter-spacing: $letterSpacing;
 }
 
-
 .professional {
+	background-repeat: no-repeat;
+	background-position: top right;
+	position: absolute;
 	.static-bg__main {
 		@include static-bg;
 	}
@@ -960,10 +962,15 @@
 
 		.pullquote {
 			position: relative;
-
+			font-size: 2.7vw;
+			bottom: 0.3em;
 			&:before {
+				opacity: 0.6;
 				font-size: 4em;
 				content: "“";
+				position: relative;
+				bottom: 5px;
+				right: 5px;
 			}
 		}
 	}
@@ -1157,56 +1164,49 @@
 
 $narrasysMain: #DE6625;
 $narrasysInvert: #5B5B5B;
+$narrassysMondrianText: white;
 
-@mixin gotham-lite-ital {
+
+@mixin narrasys-pq {
 	font-family: 'Gotham Light Italic', sans-serif;
 }
 
-@mixin gotham-medium {
+@mixin narrasys-header {
 	font-family: "Gotham Medium", sans-serif;
 }
 
-@mixin gotham-thin {
+@mixin narrasys-body {
 	font-family: "Gotham Thin", sans-serif;
 }
 
 .narrasys-pro {
-	//episode font
-	//font-family: 'Gotham', sans-serif;
-	@include gotham-medium;
-	//@include gotham-thin;
-	//episode template background image
 	background-image: url("/images/customer/Narrasys_Tree.svg");
 	background-size: 62%;
-	background-repeat: no-repeat;
-	background-position: top right;
-	position: absolute;
-
 	.landingscreen {
 		h1 {
-			@include banner-pq('Gotham Thin', $narrasysMain, 2.0vmax, 0.1em);
+			@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw, 0.1em);
 		}
 	}
 
 	.endingscreen {
 		p {
-			@include banner-pq('Gotham Thin', $narrasysMain, 2.0vmax, 0.1em);
+			@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw, 0.1em);
 		}
 	}
 
 	.searchResults {
-		@include gotham-medium;
+		@include narrasys-header;
 		.item__title--link, .item__link--fake-link, .item__link--escape-link {
-			@include gotham-thin;
+			@include narrasys-body;
 			color: $narrasysMain;
 			&:before {
 				color: $narrasysInvert;
 			}
 		}
 	}
-
+	//item overrides
 	.item__title {
-		@include gotham-medium;
+		@include narrasys-header;
 	}
 
 	.item__title--link {
@@ -1216,27 +1216,29 @@ $narrasysInvert: #5B5B5B;
 	}
 
 	.item__text {
-		@include gotham-thin;
+		@include narrasys-body;
 	}
 
 	.item__text--h2 {
-		@include gotham-medium;
+		@include narrasys-header;
 	}
 
+	.item__text--transmedia, .item__text--definition {
+		h1, h2, h3 {
+			@include narrasys-header;
+		}
+	}
 	.item .item__text--pullquote {
-		@include gotham-lite-ital;
+		@include narrasys-pq;
 		color: $narrasysInvert;
-		font-size: 2.7vmax;
-		bottom: 0.5em;
 		&:before {
 			color: $narrasysMain;
-			font-family: 'Gotham'; //ask abi
-			opacity: 0.2;
+			@include narrasys-header;
 		}
 	}
 
 	.item__link--escape-link {
-		@include gotham-thin;
+		@include narrasys-body;
 		color: $narrasysMain;
 		&:before {
 			color: $narrasysInvert;
@@ -1246,39 +1248,21 @@ $narrasysInvert: #5B5B5B;
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
-				@include banner-pq('Gotham Thin', $narrasysMain, 2.0vmax, 0.1em);
+				@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw, 0.1em);
 			}
 		}
-
-		.item__text--h2 {
-			h2 {
-				bottom: 1.3em;
-				font-weight: lighter;
-				letter-spacing: 0.3vw;
-			}
-		}
-
 	}
 
 	.centerVV {
 		.item__title--link {
-			@include gotham-thin;
+			@include narrasys-body;
 		}
 
 		.item__tite--link.title--link-embed {
-			@include gotham-medium;
-		}
-
-		.item__text--h2 {
-			h2 {
-				bottom: 0.7em;
-				letter-spacing: 0.5vmin;
-				@include gotham-thin;
-			}
+			@include narrasys-body;
 		}
 	}
 	//mondrian styles
-
 	.centerVV-mondrian {
 		.bgLayer {
 			&.bg-alt {
@@ -1290,64 +1274,32 @@ $narrasysInvert: #5B5B5B;
 		.altPane {
 			.item {
 				background-color: $narrasysInvert;
-				color: white;
+				color: $narrassysMondrianText;
 			}
 		}
 
 		.item__link--fake-link {
-			color: white;
+			color: $narrassysMondrianText;
 		}
 
 		.item__link--escape-link {
+			@include narrasys-header;
 			&:before {
 				color: $narrasysMain;
 			}
 		}
-
-		//.item__text {
-		//	color: white;
-		//}
-        //
-		//.item__title--link {
-		//	color: white;
-		//}
-        //
-		//.item .item__text--pullquote {
-		//	color: $h2pullquote;
-		//}
-        //
-		//.item__text--h2 {
-		//	color: black;
-		//}
-        //
-		//.item__link--fake-link {
-		//	color: white;
-		//}
-        //
-		//.item__link--escape-link {
-		//	&:before {
-		//		color: white;
-		//	}
-		//}
-        //
-		//.item {
-		//	&.mondrian {
-		//		background-color: $mondrianBorder;
-		//	}
-		//}
 	}
-
 }
-
 
 $fieldProInvert: #4B4B52;
 $fieldProMain: #6baa36;
+$fieldProMondrianText: white;
 
-@mixin roboto-condensed {
+@mixin fieldpros-header {
 	font-family: 'Roboto Condensed', sans-serif;
 	font-weight: 700;
 }
-@mixin lato-lite {
+@mixin fieldpros-body {
 	font-family: 'Lato', sans-serif;
 	font-weight: 300;
 }
@@ -1355,6 +1307,10 @@ $fieldProMain: #6baa36;
 @mixin invert-colors {
 	background-color: $fieldProInvert;
 	color: $fieldProMain;
+}
+
+@mixin fieldpros-pq {
+	@include fieldpros-body;
 }
 
 .field-pros {
@@ -1374,21 +1330,21 @@ $fieldProMain: #6baa36;
 	}
 	.landingscreen {
 		h1 {
-			@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw);
+			@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw, 0.1em);
 		}
 	}
 
 	.endingscreen {
 		p {
-			@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw);
+			@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw, 0.1em);
 		}
 	}
 
 	//search view
 	.searchResults {
-		@include roboto-condensed;
+		@include fieldpros-header;
 		.item__title--link, .item__link--fake-link, .item__link--escape-link {
-			@include lato-lite;
+			@include fieldpros-body;
 			color: $fieldProMain;
 			&:before {
 				color: $fieldProInvert;
@@ -1398,7 +1354,7 @@ $fieldProMain: #6baa36;
 
 	//item overrides
 	.item__title {
-		@include roboto-condensed;
+		@include fieldpros-header;
 	}
 
 	.item__title--link {
@@ -1408,30 +1364,29 @@ $fieldProMain: #6baa36;
 	}
 
 	.item__text {
-		@include lato-lite;
-		font-size: 1.3vw;
+		@include fieldpros-body;
 	}
 
 	.item__text--h2 {
-		@include roboto-condensed;
+		@include fieldpros-header;
 	}
 
+	.item__text--transmedia, .item__text--definition {
+		h1, h2, h3 {
+			@include fieldpros-header;
+		}
+	}
 	.item .item__text--pullquote {
-		color: black;
-		@include lato-lite;
-		font-size: 2.5vw;
-		bottom: 0.2em;
+		@include fieldpros-pq;
+		color: $fieldProInvert;
 		&:before {
-			opacity: 0.6;
-			@include roboto-condensed;
 			color: $fieldProMain;
-			width: 0.4em;
-			line-height: 0.8em;
+			@include fieldpros-header;
 		}
 	}
 
 	.item__link--escape-link {
-		@include lato-lite;
+		@include fieldpros-body;
 		color: $fieldProMain;
 		&:before {
 			color: $fieldProInvert;
@@ -1442,25 +1397,20 @@ $fieldProMain: #6baa36;
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
-				@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw);
+				@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw, 0.1em);
 			}
 		}
 	}
 
 	.centerVV {
-		.item__link--escape-link {
-			&:before {
-				color: $fieldProInvert
-			}
-		}
-
 		.item__title--link {
-			@include lato-lite;
+			@include fieldpros-body;
 		}
 
 		.item__title--link.title--link-embed {
-			@include roboto-condensed;
+			@include fieldpros-body;
 		}
+
 	}
 
 	.centerVV-mondrian {
@@ -1474,16 +1424,16 @@ $fieldProMain: #6baa36;
 		.altPane {
 			.item {
 				background-color:  $fieldProInvert;
-				color: white;
+				color: $fieldProMondrianText;
 			}
 		}
 
 		.item__link--fake-link {
-			color: white;
+			color: $fieldProMondrianText;
 		}
 
 		.item__link--escape-link {
-			@include roboto-condensed;
+			@include fieldpros-header;
 			&:before {
 				color: $fieldProMain
 			}
