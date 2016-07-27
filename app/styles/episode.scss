@@ -920,6 +920,7 @@
 			width: 350px;
 		}
 		.professional__copyright {
+			z-index: 1;
 			color: grey;
 			vertical-align: baseline;
 			font-size: 14px;
@@ -940,6 +941,12 @@
 		.introtext {
 			width: 100%;
 			margin-bottom: 5em;
+			//professional templates seem to not have a mockup with a
+			//description.
+			//need empty P tag for spacing reasons.
+			p {
+				visibility: hidden;
+			}
 		}
 
 		.videoMagnet {
@@ -969,85 +976,13 @@
 				font-size: 6.5vw;
 				content: "“";
 				position: relative;
-				bottom: 5px;
-				right: 5px;
 			}
 		}
 	}
 
-	//commented out as to remove from final build
-	//uncomment / add as necessary
-
-	//global title
-	//.item__title { }
-    //
-	////global link titles
-	//.item__title--link { }
-    //
-	//.item__title--definition { }
-    //
-	//.item__title--transmedia { }
-    //
-	//.item__title--image { }
-    //
-	//.item__title--image-thumbnail { }
-    //
-	//.item__text--image-inline-with-text { }
-    //
-	////per template title modifier
-	//.title--link { }
-    //
-	//.title--link-embed { }
-    //
-	//.title--description-first { }
-    //
-	//.title--link-modal { }
-    //
-	//.title--link-with-image { }
-    //
-	////global text
-	//.item__text { }
-    //
-	////global link text
-	//.item__text--link { }
-    //
-	//.item__text--definition { }
-    //
-	//.item__text--h1 { }
-    //
-	//.item__text--h2 { }
-    //
-	//.item__text--transmedia { }
-    //
-	//.item__text--image { }
-    //
-	//.item__text--image-thumbnail {}
-    //
-	////per template text modifer
-    //
-	//.text--link { }
-    //
-	//.text--description-first { }
-    //
-	//.text--link-embed { }
-    //
-	//.text--link-modal { }
-    //
-	//.text--link-with-image { }
-    //
-	////global escape link styles
-	//.item_link--escape-link { }
-    //
-	////per template escape link styles
-	//.escape-link--link { }
-    //
-	//.escape-link--link-embed { }
-    //
-	//.escape-link--description-first { }
-    //
-	//.escape-link--link-modal { }
-    //
-	//.escape-link--link-with-image {}
+	.item__text--definition, .item__text--transmedia {
+		font-size: 1.5vw !important; //!important to override item.css line 658 :(
+	}
 
 	.item__text--h2, .item__text--h1 {
 		position: relative;
@@ -1141,6 +1076,79 @@
 		}
 
 	}
+	//commented out as to remove from final build
+	//uncomment / add as necessary
+
+	//global title
+	//.item__title { }
+	//
+	////global link titles
+	//.item__title--link { }
+	//
+	//.item__title--definition { }
+	//
+	//.item__title--transmedia { }
+	//
+	//.item__title--image { }
+	//
+	//.item__title--image-thumbnail { }
+	//
+	//.item__text--image-inline-with-text { }
+	//
+	////per template title modifier
+	//.title--link { }
+	//
+	//.title--link-embed { }
+	//
+	//.title--description-first { }
+	//
+	//.title--link-modal { }
+	//
+	//.title--link-with-image { }
+	//
+	////global text
+	//.item__text { }
+	//
+	////global link text
+	//.item__text--link { }
+	//
+	//.item__text--definition { }
+	//
+	//.item__text--h1 { }
+	//
+	//.item__text--h2 { }
+	//
+	//.item__text--transmedia { }
+	//
+	//.item__text--image { }
+	//
+	//.item__text--image-thumbnail {}
+	//
+	////per template text modifer
+	//
+	//.text--link { }
+	//
+	//.text--description-first { }
+	//
+	//.text--link-embed { }
+	//
+	//.text--link-modal { }
+	//
+	//.text--link-with-image { }
+	//
+	////global escape link styles
+	//.item_link--escape-link { }
+	//
+	////per template escape link styles
+	//.escape-link--link { }
+	//
+	//.escape-link--link-embed { }
+	//
+	//.escape-link--description-first { }
+	//
+	//.escape-link--link-modal { }
+	//
+	//.escape-link--link-with-image {}
 }
 /*Narrasys pro*/
 @font-face {
@@ -1389,6 +1397,7 @@ $fieldProMondrianText: white;
 		&:before {
 			color: $fieldProMain;
 			@include fieldpros-header;
+			top: 0.5vw; // this is a fieldpros specific tweak :(
 		}
 	}
 

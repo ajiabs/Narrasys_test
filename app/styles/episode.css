@@ -701,6 +701,7 @@
     .professional .professional__branding .professional__logo {
       width: 350px; }
     .professional .professional__branding .professional__copyright {
+      z-index: 1;
       color: grey;
       vertical-align: baseline;
       font-size: 14px; }
@@ -715,6 +716,8 @@
     .professional .landingscreen .introtext {
       width: 100%;
       margin-bottom: 5em; }
+      .professional .landingscreen .introtext p {
+        visibility: hidden; }
     .professional .landingscreen .videoMagnet {
       width: 100%; }
   .professional .endingscreen div.pane.introtext p {
@@ -730,9 +733,9 @@
       opacity: 0.6;
       font-size: 6.5vw;
       content: "“";
-      position: relative;
-      bottom: 5px;
-      right: 5px; }
+      position: relative; }
+  .professional .item__text--definition, .professional .item__text--transmedia {
+    font-size: 1.5vw !important; }
   .professional .item__text--h2, .professional .item__text--h1 {
     position: relative;
     bottom: 0.2em; }
@@ -966,7 +969,8 @@
   .field-pros .item .item__text--pullquote:before {
     color: #6baa36;
     font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 700; }
+    font-weight: 700;
+    top: 0.5vw; }
 .field-pros .item__text--image-caption, .field-pros .item__text--image-caption-sliding {
   color: white; }
 .field-pros .item__link--escape-link {
