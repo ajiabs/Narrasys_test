@@ -966,7 +966,7 @@
 			bottom: 0.3em;
 			&:before {
 				opacity: 0.6;
-				font-size: 4em;
+				font-size: 6.5vw;
 				content: "“";
 				position: relative;
 				bottom: 5px;
@@ -1160,7 +1160,7 @@
 
 $narrasysMain: #DE6625;
 $narrasysInvert: #5B5B5B;
-$narrassysMondrianText: white;
+$narrasysMondrianText: white;
 
 
 @mixin narrasys-pq {
@@ -1233,6 +1233,10 @@ $narrassysMondrianText: white;
 		}
 	}
 
+	.item__text--image-caption, .item__text--image-caption-sliding {
+		color: $narrasysMondrianText;
+	}
+
 	.item__link--escape-link {
 		@include narrasys-body;
 		color: $narrasysMain;
@@ -1269,19 +1273,22 @@ $narrassysMondrianText: white;
 
 		.altPane {
 			.item {
-				background-color: $narrasysInvert;
-				color: $narrassysMondrianText;
+				background-color:  $narrasysInvert;
+			}
+
+			.item__text, .item__title, .item__title a {
+				color: $narrasysMondrianText;
 			}
 		}
 
 		.item__link--fake-link {
-			color: $narrassysMondrianText;
+			color: $narrasysMondrianText;
 		}
 
 		.item__link--escape-link {
 			@include narrasys-header;
 			&:before {
-				color: $narrasysMain;
+				color: $narrasysMain
 			}
 		}
 	}
@@ -1298,6 +1305,7 @@ $fieldProMondrianText: white;
 @mixin fieldpros-body {
 	font-family: 'Lato', sans-serif;
 	font-weight: 300;
+	color: $fieldProInvert;
 }
 
 @mixin invert-colors {
@@ -1378,11 +1386,14 @@ $fieldProMondrianText: white;
 	}
 	.item .item__text--pullquote {
 		@include fieldpros-pq;
-		color: $fieldProInvert;
 		&:before {
 			color: $fieldProMain;
 			@include fieldpros-header;
 		}
+	}
+
+	.item__text--image-caption, .item__text--image-caption-sliding {
+		color: $fieldProMondrianText;
 	}
 
 	.item__link--escape-link {
@@ -1424,6 +1435,9 @@ $fieldProMondrianText: white;
 		.altPane {
 			.item {
 				background-color:  $fieldProInvert;
+			}
+
+			.item__text, .item__title, .item__title a {
 				color: $fieldProMondrianText;
 			}
 		}
