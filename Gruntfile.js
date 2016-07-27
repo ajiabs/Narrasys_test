@@ -408,10 +408,10 @@ module.exports = function (grunt) {
 		'concat',
 		'copy:dist',
 		'ngAnnotate',
-		'cssmin',
-		'uglify',
+		// 'cssmin',
+		// 'uglify',
 		'rev',
-		'usemin',
+		// 'usemin',
 		'clean:docs',
 		'ngdocs'
 	]);
