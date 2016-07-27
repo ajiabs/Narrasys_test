@@ -915,7 +915,7 @@
 	.professional__branding {
 		display: flex;
 		justify-content: space-between;
-		align-items: baseline;
+		align-items: flex-end;
 		.professional__logo {
 			width: 350px;
 		}
@@ -932,7 +932,7 @@
 	}
 
 	.landingscreen {
-		padding-top: 0%;
+		padding-top: 0;
 		div {
 			display: flex;
 			flex-direction: column;
@@ -965,6 +965,11 @@
 	.item {
 		.itemCaption {
 			color: white;
+		}
+
+		.imagePlain {
+			margin: 0 auto !important;
+			padding: 1px 10px 1px 5px;
 		}
 
 		.pullquote {
@@ -1219,6 +1224,11 @@ $narrasysMondrianText: white;
 		}
 	}
 
+	.item__link--fake-link {
+		@include narrasys-body;
+		color: $narrasysMain;
+	}
+
 	.item__text {
 		@include narrasys-body;
 	}
@@ -1238,6 +1248,7 @@ $narrasysMondrianText: white;
 		&:before {
 			color: $narrasysMain;
 			@include narrasys-header;
+			font-size: 5.1vw; //narrasys specific tweak :(
 		}
 	}
 
@@ -1376,6 +1387,7 @@ $fieldProMondrianText: white;
 	}
 
 	.item__link--fake-link {
+		@include fieldpros-body;
 		color: $fieldProMain;
 	}
 
