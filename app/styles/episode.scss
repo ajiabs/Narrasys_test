@@ -1359,6 +1359,10 @@ $fieldProMondrianText: white;
 		}
 	}
 
+	.item__link--fake-link {
+		color: $fieldProMain;
+	}
+
 	.item__text {
 		@include fieldpros-body;
 	}

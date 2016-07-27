@@ -943,6 +943,8 @@
   font-weight: 700; }
 .field-pros .item__title--link a {
   color: #6baa36; }
+.field-pros .item__link--fake-link {
+  color: #6baa36; }
 .field-pros .item__text {
   font-family: 'Lato', sans-serif;
   font-weight: 300; }
