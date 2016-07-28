@@ -677,14 +677,14 @@
   position: absolute; }
   .professional .static-bg__main {
     position: absolute;
-    top: 0;
+    top: 45px;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
     width: 50vw; }
   .professional .static-bg__alt {
     position: absolute;
-    top: 0;
+    top: 45px;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
