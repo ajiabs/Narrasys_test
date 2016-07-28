@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .episode {
   padding-top: 45px;
   width: 100%;
@@ -669,30 +670,158 @@
   position: relative;
   bottom: 20px; }
 
-/*Narrasys pro*/
-@font-face {
-  font-family: 'Gotham Thin';
-  src: url("/images/font/GothamHTF-Thin.otf"); }
-@font-face {
-  font-family: 'Gotham Medium';
-  src: url("/images/font/GothamHTF-Medium.otf"); }
-@font-face {
-  font-family: 'Gotham Light Italic';
-  src: url("/images/font/GothamHTF-LightItalic.otf"); }
 /*base template class */
-.narrasys-pro {
-  font-family: 'Gotham', sans-serif;
-  background-image: url("/images/customer/Narrasys_Tree.svg");
-  background-size: 62%;
+.professional {
   background-repeat: no-repeat;
   background-position: top right;
   position: absolute; }
+  .professional .static-bg__main {
+    position: absolute;
+    top: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 50vw; }
+  .professional .static-bg__alt {
+    position: absolute;
+    top: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 50vw; }
+  .professional .mainPane, .professional .altPane {
+    background-color: transparent; }
+  .professional .static-bg__main--mondrian {
+    background-size: cover;
+    height: 100vh; }
+  .professional .professional__branding {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; }
+    .professional .professional__branding .professional__logo {
+      width: 350px; }
+    .professional .professional__branding .professional__copyright {
+      z-index: 1;
+      color: grey;
+      vertical-align: baseline;
+      font-size: 14px; }
+      .professional .professional__branding .professional__copyright a {
+        text-decoration: underline;
+        color: grey; }
+  .professional .landingscreen {
+    padding-top: 0; }
+    .professional .landingscreen div {
+      display: flex;
+      flex-direction: column; }
+    .professional .landingscreen .introtext {
+      width: 100%;
+      margin-bottom: 5em; }
+      .professional .landingscreen .introtext p {
+        visibility: hidden; }
+    .professional .landingscreen .videoMagnet {
+      width: 100%; }
+  .professional .endingscreen div.pane.introtext p {
+    position: relative;
+    top: 0; }
+  .professional .item .itemCaption {
+    color: white; }
+  .professional .item .imagePlain {
+    margin: 0 auto !important;
+    padding: 1px 10px 1px 5px; }
+  .professional .item .pullquote {
+    position: relative;
+    font-size: 2.7vw;
+    bottom: 0.3em; }
+    .professional .item .pullquote:before {
+      opacity: 0.6;
+      font-size: 6.5vw;
+      content: "“";
+      position: relative; }
+  .professional .item__text--definition, .professional .item__text--transmedia {
+    font-size: 1.5vw !important; }
+  .professional .item__text--h2, .professional .item__text--h1 {
+    position: relative;
+    bottom: 0.2em; }
+    .professional .item__text--h2 h1, .professional .item__text--h2 h2, .professional .item__text--h2 h3, .professional .item__text--h1 h1, .professional .item__text--h1 h2, .professional .item__text--h1 h3 {
+      text-align: center; }
+    .professional .item__text--h2 h2, .professional .item__text--h1 h2 {
+      position: relative;
+      font-size: 2vw;
+      bottom: 0.5em; }
+    .professional .item__text--h2 h1, .professional .item__text--h1 h1 {
+      font-size: 2.5vw; }
+    .professional .item__text--h2 h3, .professional .item__text--h1 h3 {
+      font-size: 1.5vw; }
+  .professional .centered-pro .edit-event {
+    top: 1.8em; }
+  .professional .centerVV .item.centerVV-h2 {
+    margin-top: 14px;
+    background: white; }
+  .professional .centerVV .item__text--definition {
+    font-size: 1.7vw; }
+  .professional .centerVV-mondrian .bgLayer.bg-alt {
+    position: fixed;
+    width: 50%;
+    opacity: 1; }
+  .professional .centerVV-mondrian .bgLayer.bg-main {
+    opacity: 1;
+    background-size: cover;
+    left: 50%; }
+  .professional .centerVV-mondrian .mainPane .item {
+    margin-top: 0.8em; }
+  .professional .centerVV-mondrian .altPane .item {
+    margin-top: 1.7em; }
+    .professional .centerVV-mondrian .altPane .item:first-child {
+      padding: 5px 0 3px 7px; }
+  .professional .centerVV-mondrian .altPane .item__title--transmedia {
+    padding-top: 0;
+    margin-top: 0; }
+  .professional .centerVV-mondrian .altPane .item__text--transmedia {
+    padding-top: 0;
+    margin-top: 0; }
+  .professional .centerVV-mondrian .item__link--escape-link {
+    color: white; }
+  .professional .centerVV-mondrian .item__text--h2 {
+    padding-top: 10px; }
+  .professional .centerVV-mondrian .item .item__text--pullquote {
+    padding-top: 0; }
+
+/*Narrasys pro*/
+@font-face {
+  font-family: 'Gotham Thin';
+  src: url("/images/font/Gotham-Thin.otf") format("opentype"); }
+@font-face {
+  font-family: 'Gotham Medium';
+  src: url("/images/font/Gotham-Medium.otf") format("opentype"); }
+@font-face {
+  font-family: 'Gotham Light Italic';
+  src: url("/images/font/Gotham-LightItalic.otf") format("opentype"); }
+.narrasys-pro {
+  background-image: url("/images/customer/Narrasys_Tree.svg");
+  background-size: 62%; }
+  .narrasys-pro .landingscreen h1 {
+    margin-top: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Gotham Medium";
+    color: white;
+    background-color: #de6625;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    min-height: 80px;
+    max-height: 80px;
+    position: absolute;
+    font-size: 2.5vw;
+    font-weight: lighter;
+    letter-spacing: 0.1em; }
   .narrasys-pro .endingscreen p {
     margin-top: 1em;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Gotham Thin';
+    font-family: "Gotham Medium";
     color: white;
     background-color: #de6625;
     width: 100%;
@@ -701,69 +830,52 @@
     min-height: 80px;
     max-height: 80px;
     position: absolute;
-    font-size: 2.0vmax;
+    font-size: 2.5vw;
     font-weight: lighter;
-    letter-spacing: 0.1em;
-    position: relative;
-    top: 0; }
-  .narrasys-pro .landingscreen {
-    padding-top: 0%; }
-    .narrasys-pro .landingscreen div {
-      display: flex;
-      flex-direction: column; }
-    .narrasys-pro .landingscreen .introtext {
-      width: 100%;
-      margin-bottom: 5em; }
-    .narrasys-pro .landingscreen .videoMagnet {
-      width: 100%; }
-    .narrasys-pro .landingscreen h1 {
-      margin-top: 1em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Gotham Thin';
-      color: white;
-      background-color: #de6625;
-      width: 100%;
-      text-align: center;
-      padding: 10px 0;
-      min-height: 80px;
-      max-height: 80px;
-      position: absolute;
-      font-size: 2.0vmax;
-      font-weight: lighter;
-      letter-spacing: 0.1em; }
-  .narrasys-pro .branding {
-    height: 210px;
-    background: none; }
-  .narrasys-pro .item {
-    color: black; }
-    .narrasys-pro .item .itemCaption {
-      color: white; }
-    .narrasys-pro .item .pullquote {
-      font-family: 'Gotham Light Italic';
+    letter-spacing: 0.1em; }
+  .narrasys-pro .searchResults {
+    font-family: "Gotham Medium", sans-serif; }
+    .narrasys-pro .searchResults .item__title--link, .narrasys-pro .searchResults .item__link--fake-link, .narrasys-pro .searchResults .item__link--escape-link {
+      font-family: "Gotham Thin", sans-serif;
       color: #5b5b5b;
-      font-size: 2.7vmax;
-      position: relative;
-      bottom: 0.5em; }
-      .narrasys-pro .item .pullquote:before {
-        color: #de6625;
-        content: U+201C;
-        font-family: "Gotham";
-        font-size: 4em;
-        opacity: 0.2; }
-  .narrasys-pro .link-no-title-img {
-    display: block;
-    margin: 0 auto;
-    width: 260px; }
-  .narrasys-pro .altPane {
-    background-color: white; }
+      color: #de6625; }
+      .narrasys-pro .searchResults .item__title--link:before, .narrasys-pro .searchResults .item__link--fake-link:before, .narrasys-pro .searchResults .item__link--escape-link:before {
+        color: #5b5b5b; }
+  .narrasys-pro .item__title {
+    font-family: "Gotham Medium", sans-serif; }
+  .narrasys-pro .item__title--link a {
+    color: #de6625; }
+  .narrasys-pro .item__link--fake-link {
+    font-family: "Gotham Thin", sans-serif;
+    color: #5b5b5b;
+    color: #de6625; }
+  .narrasys-pro .item__text {
+    font-family: "Gotham Thin", sans-serif;
+    color: #5b5b5b; }
+  .narrasys-pro .item__text--h2 {
+    font-family: "Gotham Medium", sans-serif; }
+  .narrasys-pro .item__text--transmedia h1, .narrasys-pro .item__text--transmedia h2, .narrasys-pro .item__text--transmedia h3, .narrasys-pro .item__text--definition h1, .narrasys-pro .item__text--definition h2, .narrasys-pro .item__text--definition h3 {
+    font-family: "Gotham Medium", sans-serif; }
+  .narrasys-pro .item .item__text--pullquote {
+    font-family: 'Gotham Light Italic', sans-serif; }
+    .narrasys-pro .item .item__text--pullquote:before {
+      color: #de6625;
+      font-family: "Gotham Medium", sans-serif;
+      font-size: 5.1vw; }
+  .narrasys-pro .item__text--image-caption, .narrasys-pro .item__text--image-caption-sliding {
+    color: white; }
+  .narrasys-pro .item__link--escape-link {
+    font-family: "Gotham Thin", sans-serif;
+    color: #5b5b5b;
+    color: #de6625; }
+    .narrasys-pro .item__link--escape-link:before {
+      color: #5b5b5b; }
   .narrasys-pro .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Gotham Thin';
+    font-family: "Gotham Medium";
     color: white;
     background-color: #de6625;
     width: 100%;
@@ -772,69 +884,153 @@
     min-height: 80px;
     max-height: 80px;
     position: absolute;
-    font-size: 2.0vmax;
+    font-size: 2.5vw;
     font-weight: lighter;
     letter-spacing: 0.1em; }
-  .narrasys-pro .centered-pro .banner-pull-quote .edit-event {
-    top: 1.8em; }
-  .narrasys-pro .centered-pro .item h2 {
-    position: relative;
-    bottom: 1.3em;
-    font-family: 'Gotham Medium';
-    font-weight: lighter;
-    font-size: 2vmax;
-    letter-spacing: 0.3vw; }
-  .narrasys-pro .centerVV .bgLayer.bg-alt {
-    opacity: 1;
-    background-size: cover;
-    left: 50%; }
-  .narrasys-pro .centerVV .bgLayer.bg-main {
-    width: 50%;
-    opacity: 1; }
-  .narrasys-pro .centerVV .item {
-    margin-top: 14px;
-    background: transparent;
-    padding-bottom: 0; }
-    .narrasys-pro .centerVV .item.centerVV-h2 {
-      background: white; }
-      .narrasys-pro .centerVV .item.centerVV-h2 h2 {
-        position: relative;
-        bottom: 0.7em;
-        font-weight: lighter;
-        text-align: center;
-        font-size: 2vmax;
-        letter-spacing: 0.5vmin;
-        /*letter-spacing: 0.1em;*/ }
-    .narrasys-pro .centerVV .item .definition .text {
-      font-family: 'Gotham Thin';
-      padding-right: 40px;
-      font-size: 1.5vmax; }
-    .narrasys-pro .centerVV .item .itemHead {
-      /*border: 3px solid black;*/
-      font-family: "Gotham Medium"; }
-    .narrasys-pro .centerVV .item .pullquote {
-      font-size: 2.7vmax;
-      position: relative;
-      bottom: 0.5em; }
-  .narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-alt {
-    position: fixed;
-    width: 50%;
-    border-right: 8px solid #4d4d4d;
-    background-color: #de6625;
-    opacity: 1; }
-  .narrasys-pro .scene.centerVV-mondrian .bgLayer.bg-main {
-    opacity: 1;
-    background-size: cover;
-    left: 50%; }
-  .narrasys-pro .scene.centerVV-mondrian .content .item:first-child.mondrian {
-    padding: 0.1em 0 0.3em 0.3em; }
-  .narrasys-pro .scene.centerVV-mondrian .item.mondrian {
-    margin-top: 1.7em;
-    background-color: #4d4d4d;
+  .narrasys-pro .centerVV .item__title--link {
+    font-family: "Gotham Thin", sans-serif;
+    color: #5b5b5b; }
+  .narrasys-pro .centerVV .item__tite--link.title--link-embed {
+    font-family: "Gotham Thin", sans-serif;
+    color: #5b5b5b; }
+  .narrasys-pro .centerVV-mondrian .bgLayer.bg-alt {
+    border-right: 8px solid #5b5b5b;
+    background-color: #de6625; }
+  .narrasys-pro .centerVV-mondrian .altPane .item {
+    background-color: #5b5b5b; }
+  .narrasys-pro .centerVV-mondrian .altPane .item__text, .narrasys-pro .centerVV-mondrian .altPane .item__title, .narrasys-pro .centerVV-mondrian .altPane .item__title a {
     color: white; }
-    .narrasys-pro .scene.centerVV-mondrian .item.mondrian .escapelink:before {
-      color: white; }
-    .narrasys-pro .scene.centerVV-mondrian .item.mondrian a {
-      color: white; }
-  .narrasys-pro .scene.centerVV-mondrian .title a {
+  .narrasys-pro .centerVV-mondrian .item__link--fake-link {
     color: white; }
+  .narrasys-pro .centerVV-mondrian .item__link--escape-link {
+    font-family: "Gotham Medium", sans-serif; }
+    .narrasys-pro .centerVV-mondrian .item__link--escape-link:before {
+      color: #de6625; }
+
+.field-pros .static-bg__main {
+  background-image: url("/images/customer/Green_BG_01.svg"); }
+.field-pros .static-bg__alt {
+  background-image: url("/images/customer/Grid_Graphic-01.svg"); }
+.field-pros .static-bg__main--mondrian {
+  background: url("/images/customer/Grid_Graphic-01.svg"); }
+.field-pros .landingscreen h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Condensed";
+  color: white;
+  background-color: #6baa36;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  font-weight: lighter;
+  letter-spacing: 0.1em; }
+.field-pros .endingscreen p {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Condensed";
+  color: white;
+  background-color: #6baa36;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  font-weight: lighter;
+  letter-spacing: 0.1em; }
+.field-pros .searchResults {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700; }
+  .field-pros .searchResults .item__title--link, .field-pros .searchResults .item__link--fake-link, .field-pros .searchResults .item__link--escape-link {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: #4b4b52;
+    color: #6baa36; }
+    .field-pros .searchResults .item__title--link:before, .field-pros .searchResults .item__link--fake-link:before, .field-pros .searchResults .item__link--escape-link:before {
+      color: #4b4b52; }
+.field-pros .item__title {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700; }
+.field-pros .item__title--link a {
+  color: #6baa36; }
+.field-pros .item__link--fake-link {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #4b4b52;
+  color: #6baa36; }
+.field-pros .item__text {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #4b4b52; }
+.field-pros .item__text--h2 {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700; }
+.field-pros .item__text--transmedia h1, .field-pros .item__text--transmedia h2, .field-pros .item__text--transmedia h3, .field-pros .item__text--definition h1, .field-pros .item__text--definition h2, .field-pros .item__text--definition h3 {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700; }
+.field-pros .item .item__text--pullquote {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #4b4b52; }
+  .field-pros .item .item__text--pullquote:before {
+    color: #6baa36;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700;
+    top: 0.5vw; }
+.field-pros .item__text--image-caption, .field-pros .item__text--image-caption-sliding {
+  color: white; }
+.field-pros .item__link--escape-link {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #4b4b52;
+  color: #6baa36; }
+  .field-pros .item__link--escape-link:before {
+    color: #4b4b52; }
+.field-pros .centered-pro .banner-pull-quote h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Condensed";
+  color: white;
+  background-color: #6baa36;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  font-weight: lighter;
+  letter-spacing: 0.1em; }
+.field-pros .centerVV .item__title--link {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #4b4b52; }
+.field-pros .centerVV .item__title--link.title--link-embed {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #4b4b52; }
+.field-pros .centerVV-mondrian .bgLayer.bg-alt {
+  border-right: 8px solid #4b4b52;
+  background-color: #6baa36; }
+.field-pros .centerVV-mondrian .altPane .item {
+  background-color: #4b4b52; }
+.field-pros .centerVV-mondrian .altPane .item__text, .field-pros .centerVV-mondrian .altPane .item__title, .field-pros .centerVV-mondrian .altPane .item__title a {
+  color: white; }
+.field-pros .centerVV-mondrian .item__link--fake-link {
+  color: white; }
+.field-pros .centerVV-mondrian .item__link--escape-link {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700; }
+  .field-pros .centerVV-mondrian .item__link--escape-link:before {
+    color: #6baa36; }

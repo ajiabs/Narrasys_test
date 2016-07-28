@@ -10,14 +10,14 @@
 			<span ng-if="item.required">(Required viewing)</span>
 		</div>
 	</div>
-	<div class="text">
-		<div class="title" ng-if="item.display_title | highlightSubstring: appState.searchText" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
+	<div class="text item__text">
+		<div class="title item__title item__title--image-inline-with-text" ng-if="item.display_title | highlightSubstring: appState.searchText" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
 
 		<div class="touchable">
 			<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
 			<div class="touchableIndicator"></div>
 		</div>
-		<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
+		<div class="item__text item__text--image-inline-with-text" ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 		<div class="clear"></div>
 	</div>
 </div>

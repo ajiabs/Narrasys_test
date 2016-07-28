@@ -36,6 +36,23 @@ namespace :deploy do
     end
   end
 
+  desc 'Update available releases page'  
+  task :update_releases_page do
+    on roles(:app) do
+      releases = capture(:ls, File.join(fetch(:deploy_to), 'releases')).split("\n")
+      releases_page = StringIO.new()
+      releases_page.write("<html><head><title>Last #{releases.count} Releases</title></head><body>")
+      releases_page.write("<h2>Last #{releases.count} Releases</h2>")
+      releases.each do |release|
+        releases_page.write("<a href=\"/#/?release=#{release}\">#{release}</a><br>")
+      end
+      releases_page.write("</body></html>")
+      releases_page.rewind()
+      releases_page_location = File.join(fetch(:deploy_to), 'current/dist/releases.html')
+      upload!(releases_page, releases_page_location)
+    end
+  end
+
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
