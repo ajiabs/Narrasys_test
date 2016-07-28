@@ -14,14 +14,14 @@
       <div ng-if="item.display_annotator" class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
       <div ng-if="item.producerItemType == 'annotation' && item.display_title && !item.chapter_marker" class="authorName" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
       <span ng-if="item._type != 'Annotation' && item._type !== 'Chapter'">
-        <a tabindex="0" ng-if="item.noEmbed" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="(item.display_title || '(Untitled)') | highlightSubstring: appState.searchText"></a>
-        <a tabindex="0" role="button" class="fakeLink" ng-if="!item.noEmbed" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="item.showInlineDetail=!item.showInlineDetail" ng-bind-html="(item.display_title || '(Untitled)') | highlightSubstring: appState.searchText" aria-label="Toggle detail display of {{item.display_title}}"></a>
+        <a tabindex="0" ng-if="item.noEmbed" class="fakeLink escapelink item__link--escape-link item__link--fake-lin" ng-click="outgoingLink(item.url)" ng-bind-html="(item.display_title || '(Untitled)') | highlightSubstring: appState.searchText"></a>
+        <a tabindex="0" role="button" class="fakeLink item__link--fake-link" ng-if="!item.noEmbed" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="item.showInlineDetail=!item.showInlineDetail" ng-bind-html="(item.display_title || '(Untitled)') | highlightSubstring: appState.searchText" aria-label="Toggle detail display of {{item.display_title}}"></a>
       </span>
 		<span ng-if="item._type === 'Chapter' || item.chapter_marker">
 			<h2 class="searchChapter" ng-bind-html="(item.display_annotation || item.display_title) | highlightSubstring: appState.searchText"></h2>
 		</span>
     </div>
-    <div class="text">
+    <div class="text item__text">
       <!-- TODO display header/pullquote differently? -->
       <div ng-class="{showAsHeader: item.showAsHeader}" ng-if="!item.chapter_marker" ng-bind-html="item.display_annotation || item.display_description | highlightSubstring: appState.searchText"></div>
     </div>

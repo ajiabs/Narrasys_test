@@ -42,3 +42,4 @@ role :app,  %w{deploy@story-dev.inthetelling.com}
 # setting per server overrides global ssh_options
 
 # fetch(:default_env).merge!(rails_env: :development)
+after "deploy:cleanup", "deploy:update_releases_page"

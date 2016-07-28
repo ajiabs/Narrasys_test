@@ -398,8 +398,8 @@ input[readonly] {
 	display: flex;
 }
 
-.pencil__wrapper > .wrapped {
-	/*border: 1px solid black;*/
+.pencil__wrapper > .edit-pencil {
+	position: relative;
 }
 
 .edit-pencil {

@@ -16,6 +16,28 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
+	.filter('mainCol', function() {
+		return function (items) {
+			var ret = [];
+			angular.forEach(items, function(item) {
+				if (item.layouts && (item.layouts[0] === 'mainBg' || item.layouts[0] === 'mainFg')) {
+					ret.push(item);
+				}
+			});
+			return ret;
+		};
+	})
+	.filter('altCol', function() {
+		return function (items) {
+			var ret = [];
+			angular.forEach(items, function(item) {
+				if (item.layouts && (item.layouts[0] === 'altBg' || item.layouts[0] === 'altFg')) {
+					ret.push(item);
+				}
+			});
+			return ret;
+		};
+	})
 	.filter('annotation', function () {
 		return function (items) {
 			var ret = [];
