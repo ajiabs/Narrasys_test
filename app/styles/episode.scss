@@ -1245,7 +1245,6 @@ $narrasysMondrianText: white;
 	}
 	.item .item__text--pullquote {
 		@include narrasys-pq;
-		color: $narrasysInvert;
 		&:before {
 			color: $narrasysMain;
 			@include narrasys-header;

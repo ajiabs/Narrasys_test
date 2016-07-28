@@ -857,8 +857,7 @@
   .narrasys-pro .item__text--transmedia h1, .narrasys-pro .item__text--transmedia h2, .narrasys-pro .item__text--transmedia h3, .narrasys-pro .item__text--definition h1, .narrasys-pro .item__text--definition h2, .narrasys-pro .item__text--definition h3 {
     font-family: "Gotham Medium", sans-serif; }
   .narrasys-pro .item .item__text--pullquote {
-    font-family: 'Gotham Light Italic', sans-serif;
-    color: #5b5b5b; }
+    font-family: 'Gotham Light Italic', sans-serif; }
     .narrasys-pro .item .item__text--pullquote:before {
       color: #de6625;
       font-family: "Gotham Medium", sans-serif;
