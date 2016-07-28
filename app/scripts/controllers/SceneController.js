@@ -2,9 +2,8 @@
 
 angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter) {
-
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
-
+		$scope.setBgImgUrl = setBgImgUrl;
 		$scope.precalculateSceneValues = function () {
 			// console.log("precalcSceneValues");
 
@@ -25,7 +24,6 @@ angular.module('com.inthetelling.story')
 			$scope.mainBgItems = $filter("itemLayout")($scope.scene.items, "mainBg");
 			$scope.altFgItems = $filter("itemLayout")($scope.scene.items, "altFg");
 			$scope.altBgItems = $filter("itemLayout")($scope.scene.items, "altBg");
-
 			// Content is a little trickier:
 			// * splitRequired:
 			//   main = transcript + optional   / alt=required - transcript
@@ -97,4 +95,17 @@ angular.module('com.inthetelling.story')
 			return (isPullQuote || isH2 || isPullQuoteAttrib) ? item : false;
 		}
 
+		function setBgImgUrl(items, col) {
+			var currItems = $filter('isCurrent')(items);
+			var mainColBgOrFg = $filter(col)(currItems);
+			var opacity = 1;
+			if (mainColBgOrFg.length > 0) {
+				var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
+				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
+					opacity = 0.33;
+				}
+				return { 'background-image': bgUrl, 'opacity': opacity };
+			}
+			return '';
+		}
 	});

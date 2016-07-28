@@ -36,7 +36,11 @@ showCurrent is forced in main.
 	</div>
 	<div class="col">
 		<div class="fill bgLayer bg-main">
-			<div class="item animate" ng-repeat="item in mainBgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+			<div ng-if="currentMainBgItems.length > 0" class="item animate" ng-repeat="item in currentMainBgItems = (mainBgItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+
+			<div ng-if="currentMainBgItems.length === 0">
+				<div class="static-bg__main--mondrian"></div>
+			</div>
 		</div>
 		<div itt-magnet class="videoMagnet">
 			<img src="images/aspectratiopreserver-16x9.gif">
