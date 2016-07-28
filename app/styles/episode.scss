@@ -1186,6 +1186,7 @@ $narrasysMondrianText: white;
 
 @mixin narrasys-body {
 	font-family: "Gotham Thin", sans-serif;
+	color: $narrasysInvert;
 }
 
 .narrasys-pro {
@@ -1325,11 +1326,6 @@ $fieldProMondrianText: white;
 	font-family: 'Lato', sans-serif;
 	font-weight: 300;
 	color: $fieldProInvert;
-}
-
-@mixin invert-colors {
-	background-color: $fieldProInvert;
-	color: $fieldProMain;
 }
 
 @mixin fieldpros-pq {
