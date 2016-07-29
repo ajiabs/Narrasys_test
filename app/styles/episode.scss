@@ -1436,7 +1436,7 @@ $fieldProMondrianText: white;
 		}
 
 		.item__title--link.title--link-embed {
-			@include fieldpros-body;
+			@include fieldpros-header;
 		}
 
 	}
@@ -1457,6 +1457,10 @@ $fieldProMondrianText: white;
 			.item__text, .item__title, .item__title a {
 				color: $fieldProMondrianText;
 			}
+		}
+
+		.item__title--link, .item__title--link a {
+			@include fieldpros-header;
 		}
 
 		.item__link--fake-link {

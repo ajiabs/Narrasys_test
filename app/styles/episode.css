@@ -1019,9 +1019,8 @@
   font-weight: 300;
   color: #4b4b52; }
 .field-pros .centerVV .item__title--link.title--link-embed {
-  font-family: 'Lato', sans-serif;
-  font-weight: 300;
-  color: #4b4b52; }
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700; }
 .field-pros .centerVV-mondrian .bgLayer.bg-alt {
   border-right: 8px solid #4b4b52;
   background-color: #6baa36; }
@@ -1029,6 +1028,9 @@
   background-color: #4b4b52; }
 .field-pros .centerVV-mondrian .altPane .item__text, .field-pros .centerVV-mondrian .altPane .item__title, .field-pros .centerVV-mondrian .altPane .item__title a {
   color: white; }
+.field-pros .centerVV-mondrian .item__title--link, .field-pros .centerVV-mondrian .item__title--link a {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700; }
 .field-pros .centerVV-mondrian .item__link--fake-link {
   color: white; }
 .field-pros .centerVV-mondrian .item__link--escape-link {
