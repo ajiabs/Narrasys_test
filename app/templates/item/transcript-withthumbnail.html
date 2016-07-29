@@ -10,6 +10,6 @@
 		<div class="clear"></div>
 	</div>
 	<div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
-	<div class="text" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
+	<div class="text item__text" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
 	<div class="clear"></div>
 </div>

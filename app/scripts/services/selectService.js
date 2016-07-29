@@ -86,8 +86,8 @@
 					return [
 						{url: 'templates/item/text-h1.html', name: 'Header 1'},
 						{url: 'templates/item/text-h2.html', name: 'Header 2'},
-						{url: 'templates/item/pullquote.html', name: 'Pullquote'},
-						// {url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
+						{url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote'},
+						{url: 'templates/item/pullquote.html', name: 'Pullquote with attribution'},
 						{url: 'templates/item/text-transmedia.html', name: 'Long text (as transmedia)'},
 						{url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
 					];
