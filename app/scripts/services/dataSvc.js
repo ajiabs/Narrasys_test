@@ -127,6 +127,11 @@ angular.module('com.inthetelling.story')
 			return GET("/v3/narratives/" + narrativeId);
 		};
 
+		svc.getNarrativeExportAsSpreadsheet = function(nId) {
+			var url = '/v3/narratives/' + nId + '.xlsx';
+			window.open(url);
+		};
+
 		var cachedPurchases = false;
 		svc.getUserNarratives = function (userId) {
 			if (cachedPurchases) {
