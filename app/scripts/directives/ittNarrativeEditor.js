@@ -42,6 +42,8 @@
 	        scope: {
 				narrative: '=',
 				customers: '=',
+				containerId: '=?',
+				customerId: '=?',
 				onDone: '&',
 				onUpdate: '&'
 			},
@@ -51,7 +53,9 @@
 				var ctrl = this;
 				//copy to dereference original narrative as we are two-way bound (one way binding available in 1.5)
 				ctrl._narrative = angular.copy(this.narrative);
+				ctrl._customerId = angular.copy(this.customerId);
 				ctrl._customers = angular.copy(this.customers);
+				ctrl._containerId = angular.copy(this.containerId);
 				ctrl.handleUpdate = handleUpdate;
 				ctrl.selectCustomer = selectCustomer;
 				ctrl.canAccess = authSvc.userHasRole('admin');
@@ -84,16 +88,22 @@
 						'_id'
 					];
 					var narrative = ittUtils.pick(n, fields);
-					ctrl.onUpdate({n: narrative});
+					if (ittUtils.existy(ctrl._containerId)) {
+						ctrl.onUpdate({data:{n: narrative, c: ctrl._containerId}});
+					} else {
+						ctrl.onUpdate({n: narrative});
+					}
+
 				}
 
 				function setCustomer() {
 					if (ctrl._customers.length === 1) {
 						ctrl.selectedCustomer = ctrl._customers[0];
 					} else {
-						if (ittUtils.existy(ctrl._narrative)) {
+						if (ittUtils.existy(ctrl._narrative) || ittUtils.existy(ctrl._customerId)) {
+							var cId = ctrl._customerId || ctrl._narrative.customer_id;
 							ctrl.selectedCustomer = ctrl._customers.filter(function(c) {
-								return ctrl._narrative.customer_id === c._id;
+								return cId === c._id || cId === c._id;
 							})[0];
 
 						} else {

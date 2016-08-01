@@ -1,10 +1,28 @@
 <!-- recursive template for admin episode list -->
-
 <div class="container" ng-class="{
-		isOpen: container.showChildren, 
+		isOpen: container.showChildren,
 		isClosed: !container.showChildren,
 		hoverIndicator: depth == 3
 	}" ng-if="container._id">
+
+
+
+
+
+	<itt-modal modal-class="narrative__modal" ng-if="showNarrativeModal">
+		<button ng-click="toggleNarrativeModal()">Cancel</button>
+		<itt-narrative-editor
+			customers="customers"
+			container-id="container._id"
+			customer-id="container.customer_id"
+			on-done="toggleNarrativeModal()"
+			on-update="postNewNarrative(data)">
+		</itt-narrative-editor>
+
+		<itt-route-loading is-loading="resolvingNarrative"></itt-route-loading>
+	</itt-modal>
+
+
 	<div class="hoverIndicator">
 		<span ng-if="!container.editingContainer">
 			<a ng-click="toggleChildren()">{{container.name.en}}</a>
@@ -23,6 +41,7 @@
 				Delete
 			</button>
 			<a ng-href="#/assets/{{container._id}}">[Assets]</a>
+			<a ng-if="depth > 0" ng-click="toggleNarrativeModal()">[Generate Narrative]</a>
 		</span>
 	</div>
 	<div ng-if="container.showChildren">
