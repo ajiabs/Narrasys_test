@@ -1281,9 +1281,11 @@ $narrasysMondrianText: white;
 	//timestamps
 	.item {
 		.displayTime, .startTime {
-			@include narrasys-body;
+			@include narrasys-header;
 			color: $narrasysMain;
-
+			&:hover {
+				text-decoration: underline;
+			}
 		}
 	}
 
@@ -1361,6 +1363,9 @@ $narrasysMondrianText: white;
 				@include narrasys-header;
 				color: $narrasysMondrianText;
 
+				a {
+					text-decoration: underline;
+				}
 			}
 		}
 	}
@@ -1490,8 +1495,11 @@ $fieldProMondrianText: white;
 	//timestamp
 	.item {
 		.displayTime, .startTime {
-			@include fieldpros-body;
+			@include fieldpros-header;
 			color: $fieldProMain;
+			&:hover {
+				text-decoration: underline;
+			}
 
 		}
 	}
@@ -1573,6 +1581,9 @@ $fieldProMondrianText: white;
 				@include fieldpros-header;
 				color: $fieldProMondrianText;
 
+				a {
+					text-decoration: underline;
+				}
 			}
 		}
 	}
