@@ -1179,10 +1179,12 @@ $narrasysMondrianText: white;
 
 @mixin narrasys-pq {
 	font-family: 'Gotham Light Italic', sans-serif;
+	color: $narrasysInvert;
 }
 
 @mixin narrasys-header {
 	font-family: "Gotham Medium", sans-serif;
+	color: $narrasysInvert;
 }
 
 @mixin narrasys-body {
@@ -1205,6 +1207,15 @@ $narrasysMondrianText: white;
 		}
 	}
 
+	.searchPanel__wrapper {
+		@include narrasys-body;
+		color: $narrasysInvert;
+		// 'sorted by' button
+		.fake-link--search-results {
+			color: $narrasysMain;
+		}
+	}
+
 	.searchResults {
 		@include narrasys-header;
 		.item__title--link, .item__link--fake-link, .item__link--escape-link {
@@ -1220,7 +1231,7 @@ $narrasysMondrianText: white;
 		@include narrasys-header;
 	}
 
-	.item__title--link {
+	.item__title--link, .item__title--file  {
 		a {
 			color: $narrasysMain;
 		}
@@ -1247,12 +1258,14 @@ $narrasysMondrianText: white;
 	.item .item__text--pullquote {
 		@include narrasys-pq;
 		&:before {
-			color: $narrasysMain;
 			@include narrasys-header;
+			//override color set on mixin
+			color: $narrasysMain;
 			font-size: 5.1vw; //narrasys specific tweak :(
 		}
 	}
 
+	.item__title--image-caption, .item__title--image-caption-sliding,
 	.item__text--image-caption, .item__text--image-caption-sliding {
 		color: $narrasysMondrianText;
 	}
@@ -1265,6 +1278,17 @@ $narrasysMondrianText: white;
 		}
 	}
 
+	//timestamps
+	.item {
+		.displayTime, .startTime {
+			@include narrasys-header;
+			color: $narrasysMain;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
@@ -1274,7 +1298,7 @@ $narrasysMondrianText: white;
 	}
 
 	.centerVV {
-		.item__title--link {
+		.item__title--link, .item__title--file  {
 			@include narrasys-body;
 		}
 
@@ -1299,6 +1323,26 @@ $narrasysMondrianText: white;
 			.item__text, .item__title, .item__title a {
 				color: $narrasysMondrianText;
 			}
+
+			//override from general item level
+			//mondrian BG is solid color, so we need to use
+			//the mondrianText
+			.item__text--transmedia, .item__text--definition {
+				h1, h2, h3 {
+					color: $narrasysMondrianText;
+				}
+			}
+		}
+
+		//item__<link|image|img-thumb> for non URL titles
+		// item__<link|image|img-thumb> a covers both escape and fakeLinks
+		.item__title--link,
+		.item__title--image,
+		.item__title--image-thumbnail,
+		.item__title--link a,
+		.item__title--image a,
+		.item__title--image-thumbnail a {
+			@include narrasys-header;
 		}
 
 		.item__link--fake-link {
@@ -1307,8 +1351,21 @@ $narrasysMondrianText: white;
 
 		.item__link--escape-link {
 			@include narrasys-header;
+			//overide color set at mixin level
+			color: $narrasysMondrianText;
 			&:before {
 				color: $narrasysMain
+			}
+		}
+
+		.item {
+			.displayTime, .startTime {
+				@include narrasys-header;
+				color: $narrasysMondrianText;
+
+				a {
+					text-decoration: underline;
+				}
 			}
 		}
 	}
@@ -1321,6 +1378,7 @@ $fieldProMondrianText: white;
 @mixin fieldpros-header {
 	font-family: 'Roboto Condensed', sans-serif;
 	font-weight: 700;
+	color: $fieldProInvert;
 }
 @mixin fieldpros-body {
 	font-family: 'Lato', sans-serif;
@@ -1359,6 +1417,17 @@ $fieldProMondrianText: white;
 		}
 	}
 
+
+
+	.searchPanel__wrapper {
+		@include fieldpros-body;
+		color: $fieldProInvert;
+		// 'sorted by' button
+		.fake-link--search-results {
+			color: $fieldProMain;
+		}
+	}
+
 	//search view
 	.searchResults {
 		@include fieldpros-header;
@@ -1376,7 +1445,7 @@ $fieldProMondrianText: white;
 		@include fieldpros-header;
 	}
 
-	.item__title--link {
+	.item__title--link, .item__title--file {
 		a {
 			color: $fieldProMain;
 		}
@@ -1403,14 +1472,16 @@ $fieldProMondrianText: white;
 	.item .item__text--pullquote {
 		@include fieldpros-pq;
 		&:before {
-			color: $fieldProMain;
 			@include fieldpros-header;
+			//override color set on mixin
+			color: $fieldProMain;
 			top: 0.5vw; // this is a fieldpros specific tweak :(
 		}
 	}
 
+	.item__title--image-caption, .item__title--image-caption-sliding,
 	.item__text--image-caption, .item__text--image-caption-sliding {
-		color: $fieldProMondrianText;
+		color: $fieldProMondrianText
 	}
 
 	.item__link--escape-link {
@@ -1418,6 +1489,18 @@ $fieldProMondrianText: white;
 		color: $fieldProMain;
 		&:before {
 			color: $fieldProInvert;
+		}
+	}
+
+	//timestamp
+	.item {
+		.displayTime, .startTime {
+			@include fieldpros-header;
+			color: $fieldProMain;
+			&:hover {
+				text-decoration: underline;
+			}
+
 		}
 	}
 
@@ -1431,7 +1514,7 @@ $fieldProMondrianText: white;
 	}
 
 	.centerVV {
-		.item__title--link {
+		.item__title--link, .item__title--file {
 			@include fieldpros-body;
 		}
 
@@ -1457,6 +1540,26 @@ $fieldProMondrianText: white;
 			.item__text, .item__title, .item__title a {
 				color: $fieldProMondrianText;
 			}
+
+			//override from general item level,
+			//mondrian BG is solid color, so we need to use
+			//the mondrianText
+			.item__text--transmedia, .item__text--definition {
+				h1, h2, h3 {
+					color: $fieldProMondrianText;
+				}
+			}
+		}
+
+		//item__<entity> for non URL titles
+		// item__<entity> a covers both escape and fakeLinks
+		.item__title--link,
+		.item__title--image,
+		.item__title--image-thumbnail,
+		.item__title--link a,
+		.item__title--image a,
+		.item__title--image-thumbnail a {
+			@include fieldpros-header;
 		}
 
 		.item__link--fake-link {
@@ -1465,8 +1568,22 @@ $fieldProMondrianText: white;
 
 		.item__link--escape-link {
 			@include fieldpros-header;
+			//overide color set at mixin level
+			color: $fieldProMondrianText;
 			&:before {
 				color: $fieldProMain
+			}
+		}
+
+		//timestamp
+		.item {
+			.displayTime, .startTime {
+				@include fieldpros-header;
+				color: $fieldProMondrianText;
+
+				a {
+					text-decoration: underline;
+				}
 			}
 		}
 	}
