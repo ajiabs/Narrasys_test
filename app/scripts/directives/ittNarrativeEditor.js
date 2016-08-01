@@ -102,7 +102,7 @@
 					} else {
 						if (ittUtils.existy(ctrl._narrative) || ittUtils.existy(ctrl._customerId)) {
 							var cId = ctrl._customerId || ctrl._narrative.customer_id;
-							ctrl.selectedCustomer = ctrl._customers.filter(function(c) { return cId; })[0];
+							ctrl.selectedCustomer = ctrl._customers.filter(function(c) { return c._id === cId; })[0];
 						} else {
 							ctrl._customers.unshift({ name: 'Select a Customer' });
 						}

@@ -41,7 +41,7 @@
 				Delete
 			</button>
 			<a ng-href="#/assets/{{container._id}}">[Assets]</a>
-			<a ng-if="depth > 0" ng-click="toggleNarrativeModal()">[Generate Narrative]</a>
+			<a ng-if="canAccess && depth > 0" ng-click="toggleNarrativeModal()">[Generate Narrative]</a>
 		</span>
 	</div>
 	<div ng-if="container.showChildren">
