@@ -835,6 +835,12 @@
     font-size: 2.5vw;
     font-weight: lighter;
     letter-spacing: 0.1em; }
+  .narrasys-pro .searchPanel__wrapper {
+    font-family: "Gotham Thin", sans-serif;
+    color: #5b5b5b;
+    color: #5b5b5b; }
+    .narrasys-pro .searchPanel__wrapper .fake-link--search-results {
+      color: #de6625; }
   .narrasys-pro .searchResults {
     font-family: "Gotham Medium", sans-serif;
     color: #5b5b5b; }
@@ -847,7 +853,7 @@
   .narrasys-pro .item__title {
     font-family: "Gotham Medium", sans-serif;
     color: #5b5b5b; }
-  .narrasys-pro .item__title--link a {
+  .narrasys-pro .item__title--link a, .narrasys-pro .item__title--file a {
     color: #de6625; }
   .narrasys-pro .item__link--fake-link {
     font-family: "Gotham Thin", sans-serif;
@@ -879,6 +885,12 @@
     color: #de6625; }
     .narrasys-pro .item__link--escape-link:before {
       color: #5b5b5b; }
+  .narrasys-pro .item .displayTime, .narrasys-pro .item .startTime {
+    font-family: "Gotham Medium", sans-serif;
+    color: #5b5b5b;
+    color: #de6625; }
+    .narrasys-pro .item .displayTime:hover, .narrasys-pro .item .startTime:hover {
+      text-decoration: underline; }
   .narrasys-pro .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -896,7 +908,7 @@
     font-size: 2.5vw;
     font-weight: lighter;
     letter-spacing: 0.1em; }
-  .narrasys-pro .centerVV .item__title--link {
+  .narrasys-pro .centerVV .item__title--link, .narrasys-pro .centerVV .item__title--file {
     font-family: "Gotham Thin", sans-serif;
     color: #5b5b5b; }
   .narrasys-pro .centerVV .item__tite--link.title--link-embed {
@@ -927,6 +939,12 @@
     color: white; }
     .narrasys-pro .centerVV-mondrian .item__link--escape-link:before {
       color: #de6625; }
+  .narrasys-pro .centerVV-mondrian .item .displayTime, .narrasys-pro .centerVV-mondrian .item .startTime {
+    font-family: "Gotham Medium", sans-serif;
+    color: #5b5b5b;
+    color: white; }
+    .narrasys-pro .centerVV-mondrian .item .displayTime a, .narrasys-pro .centerVV-mondrian .item .startTime a {
+      text-decoration: underline; }
 
 .field-pros .static-bg__main {
   background-image: url("/images/customer/Green_BG_01.svg"); }
@@ -968,6 +986,13 @@
   font-size: 2.5vw;
   font-weight: lighter;
   letter-spacing: 0.1em; }
+.field-pros .searchPanel__wrapper {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #4b4b52;
+  color: #4b4b52; }
+  .field-pros .searchPanel__wrapper .fake-link--search-results {
+    color: #6baa36; }
 .field-pros .searchResults {
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 700;
@@ -983,7 +1008,7 @@
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 700;
   color: #4b4b52; }
-.field-pros .item__title--link a {
+.field-pros .item__title--link a, .field-pros .item__title--file a {
   color: #6baa36; }
 .field-pros .item__link--fake-link {
   font-family: 'Lato', sans-serif;
@@ -1022,6 +1047,13 @@
   color: #6baa36; }
   .field-pros .item__link--escape-link:before {
     color: #4b4b52; }
+.field-pros .item .displayTime, .field-pros .item .startTime {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700;
+  color: #4b4b52;
+  color: #6baa36; }
+  .field-pros .item .displayTime:hover, .field-pros .item .startTime:hover {
+    text-decoration: underline; }
 .field-pros .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -1039,7 +1071,7 @@
   font-size: 2.5vw;
   font-weight: lighter;
   letter-spacing: 0.1em; }
-.field-pros .centerVV .item__title--link {
+.field-pros .centerVV .item__title--link, .field-pros .centerVV .item__title--file {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   color: #4b4b52; }
@@ -1074,3 +1106,10 @@
   color: white; }
   .field-pros .centerVV-mondrian .item__link--escape-link:before {
     color: #6baa36; }
+.field-pros .centerVV-mondrian .item .displayTime, .field-pros .centerVV-mondrian .item .startTime {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700;
+  color: #4b4b52;
+  color: white; }
+  .field-pros .centerVV-mondrian .item .displayTime a, .field-pros .centerVV-mondrian .item .startTime a {
+    text-decoration: underline; }
