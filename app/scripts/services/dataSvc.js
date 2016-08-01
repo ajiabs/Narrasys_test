@@ -95,6 +95,18 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		//used in ittContainer
+		svc.generateNewNarrative = generateNewNarrative;
+		function generateNewNarrative(containerId, postData) {
+			return SANE_POST('/v3/containers/' + containerId + '/narratives', postData)
+				.then(function(resp) {
+					return resp.data;
+				})
+				.catch(function(e) {
+					console.error("Error generating new narrative:", e);
+				});
+		}
+
 		// WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
 		svc.getNarrative = function (narrativeId) {
 			// Special case here, since it needs to call getNonce differently:
@@ -666,6 +678,10 @@ angular.module('com.inthetelling.story')
 					return resp.data;
 				});
 			});
+		};
+
+		var SANE_POST = function(path, data) {
+			return $http.post(path, data);
 		};
 
 		var PUT = function (path, putData, postprocessCallback) {
