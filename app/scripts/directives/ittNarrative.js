@@ -73,6 +73,7 @@ function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		showTimelineEditor: showTimelineEditor,
 		editorAction: editorAction,
 		deleteTimeline: deleteTimeline,
+		exportToSpreadsheet: dataSvc.getNarrativeExportAsSpreadsheet,
 		isEditing: false,
 		canAccess: false,
 		isEditingTimeline: false,
@@ -126,7 +127,6 @@ function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		$scope.loading = false;
 		_setTotalNarrativeDuration($scope.narrative.timelines);
 	}
-
 
 	function toggleEditing() {
 		$scope.isEditing = !$scope.isEditing;

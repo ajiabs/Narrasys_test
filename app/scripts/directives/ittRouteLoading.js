@@ -20,10 +20,13 @@
 				'	</div><span class="loading__text">Loading</span>',
 				'</div>'
 			].join(' '),
+			scope: {
+				isLoading: '=?'
+			},
 			controller: ['$rootScope', '$scope', '$timeout', 'errorSvc',
 				function ($rootScope, $scope, $timeout, errorSvc) {
 					var ctrl = this;
-					ctrl.isLoading = false;
+					ctrl.isLoading = ctrl.isLoading || false;
 					var threshold;
 
 					$rootScope.$on('$routeChangeStart', function () {

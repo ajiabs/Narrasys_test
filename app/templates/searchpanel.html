@@ -1,8 +1,8 @@
-<div ng-class="episode.styleCss">
+<div ng-class="episode.styleCss" class="searchPanel__wrapper">
 	<div aria-label="sort toggle" class="searchfilters" aria-controls="sortableSearch">
 		<div>
 			Sorted by
-			<button tabindex="0" class="fakeLink" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
+			<button tabindex="0" class="fakeLink fake-link--search-results" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
 		</div>
 	</div>
 	<div class="scrollContainer">

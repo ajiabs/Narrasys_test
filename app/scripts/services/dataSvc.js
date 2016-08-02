@@ -95,6 +95,18 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		//used in ittContainer
+		svc.generateNewNarrative = generateNewNarrative;
+		function generateNewNarrative(containerId, postData) {
+			return SANE_POST('/v3/containers/' + containerId + '/narratives', postData)
+				.then(function(resp) {
+					return resp.data;
+				})
+				.catch(function(e) {
+					console.error("Error generating new narrative:", e);
+				});
+		}
+
 		// WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
 		svc.getNarrative = function (narrativeId) {
 			// Special case here, since it needs to call getNonce differently:
@@ -125,6 +137,11 @@ angular.module('com.inthetelling.story')
 
 		svc.getNarrativeOverview = function (narrativeId) {
 			return GET("/v3/narratives/" + narrativeId);
+		};
+
+		svc.getNarrativeExportAsSpreadsheet = function(nId) {
+			var url = '/v3/narratives/' + nId + '.xlsx';
+			window.open(url);
 		};
 
 		var cachedPurchases = false;
@@ -666,6 +683,10 @@ angular.module('com.inthetelling.story')
 					return resp.data;
 				});
 			});
+		};
+
+		var SANE_POST = function(path, data) {
+			return $http.post(path, data);
 		};
 
 		var PUT = function (path, putData, postprocessCallback) {

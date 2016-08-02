@@ -1207,6 +1207,15 @@ $narrasysMondrianText: white;
 		}
 	}
 
+	.searchPanel__wrapper {
+		@include narrasys-body;
+		color: $narrasysInvert;
+		// 'sorted by' button
+		.fake-link--search-results {
+			color: $narrasysMain;
+		}
+	}
+
 	.searchResults {
 		@include narrasys-header;
 		.item__title--link, .item__link--fake-link, .item__link--escape-link {
@@ -1222,7 +1231,7 @@ $narrasysMondrianText: white;
 		@include narrasys-header;
 	}
 
-	.item__title--link {
+	.item__title--link, .item__title--file  {
 		a {
 			color: $narrasysMain;
 		}
@@ -1269,6 +1278,17 @@ $narrasysMondrianText: white;
 		}
 	}
 
+	//timestamps
+	.item {
+		.displayTime, .startTime {
+			@include narrasys-header;
+			color: $narrasysMain;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
@@ -1278,7 +1298,7 @@ $narrasysMondrianText: white;
 	}
 
 	.centerVV {
-		.item__title--link {
+		.item__title--link, .item__title--file  {
 			@include narrasys-body;
 		}
 
@@ -1337,6 +1357,17 @@ $narrasysMondrianText: white;
 				color: $narrasysMain
 			}
 		}
+
+		.item {
+			.displayTime, .startTime {
+				@include narrasys-header;
+				color: $narrasysMondrianText;
+
+				a {
+					text-decoration: underline;
+				}
+			}
+		}
 	}
 }
 
@@ -1386,6 +1417,17 @@ $fieldProMondrianText: white;
 		}
 	}
 
+
+
+	.searchPanel__wrapper {
+		@include fieldpros-body;
+		color: $fieldProInvert;
+		// 'sorted by' button
+		.fake-link--search-results {
+			color: $fieldProMain;
+		}
+	}
+
 	//search view
 	.searchResults {
 		@include fieldpros-header;
@@ -1403,7 +1445,7 @@ $fieldProMondrianText: white;
 		@include fieldpros-header;
 	}
 
-	.item__title--link {
+	.item__title--link, .item__title--file {
 		a {
 			color: $fieldProMain;
 		}
@@ -1450,6 +1492,18 @@ $fieldProMondrianText: white;
 		}
 	}
 
+	//timestamp
+	.item {
+		.displayTime, .startTime {
+			@include fieldpros-header;
+			color: $fieldProMain;
+			&:hover {
+				text-decoration: underline;
+			}
+
+		}
+	}
+
 	//layout specific overrides
 	.centered-pro {
 		.banner-pull-quote {
@@ -1460,7 +1514,7 @@ $fieldProMondrianText: white;
 	}
 
 	.centerVV {
-		.item__title--link {
+		.item__title--link, .item__title--file {
 			@include fieldpros-body;
 		}
 
@@ -1518,6 +1572,18 @@ $fieldProMondrianText: white;
 			color: $fieldProMondrianText;
 			&:before {
 				color: $fieldProMain
+			}
+		}
+
+		//timestamp
+		.item {
+			.displayTime, .startTime {
+				@include fieldpros-header;
+				color: $fieldProMondrianText;
+
+				a {
+					text-decoration: underline;
+				}
 			}
 		}
 	}

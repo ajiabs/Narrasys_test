@@ -42,6 +42,11 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
+		svc.getCustomersAsArray = getCustomersAsArray;
+		function getCustomersAsArray() {
+			return Object.keys(svc.customers).map(function(c) {return svc.customers[c]; });
+		}
+
 		svc.cache = function (cacheType, item) {
 			if (cacheType === 'narrative') {
 				// NOTE no deriveNarrative used here, not needed so far
