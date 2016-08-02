@@ -48,7 +48,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 
 					if (isCached) {
 						//since this is going to be displayed in a dropdown, it needs to be an array of objects.
-						cachedCustomers = Object.keys(modelSvc.customers).map(function(c) { return modelSvc.customers[c]; });
+						cachedCustomers = modelSvc.getCustomersAsArray();
 						return $q(function(resolve) {
 							return resolve({n: cachedNars, c: cachedCustomers});
 						});
@@ -84,7 +84,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 						(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
 
 					if (doPullFromCache) {
-						cachedCustomers = Object.keys(modelSvc.customers).map(function(c) { return modelSvc.customers[c]; });
+						cachedCustomers = modelSvc.getCustomersAsArray();
 						return $q(function(resolve) {return resolve({n:cachedNarr, c: cachedCustomers });});
 					}
 					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {

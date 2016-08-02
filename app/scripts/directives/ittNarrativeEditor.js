@@ -42,6 +42,10 @@
 	        scope: {
 				narrative: '=',
 				customers: '=',
+				containerId: '=?',
+				customerId: '=?',
+				name: '=?',
+				path: '=?',
 				onDone: '&',
 				onUpdate: '&'
 			},
@@ -49,9 +53,14 @@
 			bindToController: true,
 			controller: ['ittUtils', 'authSvc', function(ittUtils, authSvc) {
 				var ctrl = this;
+				var existy = ittUtils.existy;
 				//copy to dereference original narrative as we are two-way bound (one way binding available in 1.5)
 				ctrl._narrative = angular.copy(this.narrative);
+				ctrl._customerId = angular.copy(this.customerId);
 				ctrl._customers = angular.copy(this.customers);
+				ctrl._containerId = angular.copy(this.containerId);
+				ctrl._name = angular.copy(this.name);
+				ctrl._path = angular.copy(this.path);
 				ctrl.handleUpdate = handleUpdate;
 				ctrl.selectCustomer = selectCustomer;
 				ctrl.canAccess = authSvc.userHasRole('admin');
@@ -59,6 +68,24 @@
 				_onInit();
 
 				function _onInit() {
+					//check for name or path as given input
+					//set input name/path on narrative if it exists
+					//otherwise create narrative object and assign name/path
+					if (existy(ctrl._name)) {
+						if (existy(ctrl._narrative)) {
+							ctrl._narrative.name = ctrl._name;
+						} else {
+							ctrl._narrative = {name: ctrl._name};
+						}
+					}
+
+					if (existy(ctrl._path)) {
+						if (existy(ctrl._narrative)) {
+							ctrl._narrative.path_slug = ctrl._path;
+						} else {
+							ctrl._narrative = {path_slug: ctrl._path };
+						}
+					}
 					setCustomer();
 				}
 				//set selected customer on-change of dropdown select
@@ -68,7 +95,7 @@
 
 				function handleUpdate(n) {
 					//use selected customer from setCustomer() or from drop down select
-					if (ittUtils.existy(ctrl.selectedCustomer)) {
+					if (existy(ctrl.selectedCustomer)) {
 						n.customer_id = ctrl.selectedCustomer._id;
 
 					}
@@ -84,18 +111,21 @@
 						'_id'
 					];
 					var narrative = ittUtils.pick(n, fields);
-					ctrl.onUpdate({n: narrative});
+					if (existy(ctrl._containerId)) {
+						ctrl.onUpdate({data:{n: narrative, c: ctrl._containerId}});
+					} else {
+						ctrl.onUpdate({n: narrative});
+					}
+
 				}
 
 				function setCustomer() {
 					if (ctrl._customers.length === 1) {
 						ctrl.selectedCustomer = ctrl._customers[0];
 					} else {
-						if (ittUtils.existy(ctrl._narrative)) {
-							ctrl.selectedCustomer = ctrl._customers.filter(function(c) {
-								return ctrl._narrative.customer_id === c._id;
-							})[0];
-
+						if (existy(ctrl._narrative) || existy(ctrl._customerId)) {
+							var cId = ctrl._customerId || ctrl._narrative.customer_id;
+							ctrl.selectedCustomer = ctrl._customers.filter(function(c) { return c._id === cId; })[0];
 						} else {
 							ctrl._customers.unshift({ name: 'Select a Customer' });
 						}
