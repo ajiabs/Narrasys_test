@@ -53,6 +53,7 @@
 			bindToController: true,
 			controller: ['ittUtils', 'authSvc', function(ittUtils, authSvc) {
 				var ctrl = this;
+				var existy = ittUtils.existy;
 				//copy to dereference original narrative as we are two-way bound (one way binding available in 1.5)
 				ctrl._narrative = angular.copy(this.narrative);
 				ctrl._customerId = angular.copy(this.customerId);
@@ -65,12 +66,25 @@
 				_onInit();
 
 				function _onInit() {
-					if (ittUtils.existy(ctrl.name)) {
-						ctrl._narrative = {name: {en: ctrl.name}};
+					//check for name or path as given input
+					//set input name/path on narrative if it exists
+					//otherwise create narrative object and assign name/path
+					if (existy(ctrl.name)) {
+						if (existy(ctrl._narrative)) {
+							ctrl._narrative.name.en = ctrl.name;
+						} else {
+							ctrl._narrative = {name: {en: ctrl.name}};
+						}
 					}
-					if (ittUtils.existy(ctrl.path)) {
-						ctrl._narrative = {path_slug: {en: ctrl.path } };
+
+					if (existy(ctrl.path)) {
+						if (existy(ctrl._narrative)) {
+							ctrl._narrative.path_slug.en = ctrl.path;
+						} else {
+							ctrl._narrative = {path_slug: {en: ctrl.path } };
+						}
 					}
+
 					setCustomer();
 				}
 				//set selected customer on-change of dropdown select
@@ -80,7 +94,7 @@
 
 				function handleUpdate(n) {
 					//use selected customer from setCustomer() or from drop down select
-					if (ittUtils.existy(ctrl.selectedCustomer)) {
+					if (existy(ctrl.selectedCustomer)) {
 						n.customer_id = ctrl.selectedCustomer._id;
 
 					}
@@ -96,7 +110,7 @@
 						'_id'
 					];
 					var narrative = ittUtils.pick(n, fields);
-					if (ittUtils.existy(ctrl._containerId)) {
+					if (existy(ctrl._containerId)) {
 						ctrl.onUpdate({data:{n: narrative, c: ctrl._containerId}});
 					} else {
 						ctrl.onUpdate({n: narrative});
@@ -108,7 +122,7 @@
 					if (ctrl._customers.length === 1) {
 						ctrl.selectedCustomer = ctrl._customers[0];
 					} else {
-						if (ittUtils.existy(ctrl._narrative) || ittUtils.existy(ctrl._customerId)) {
+						if (existy(ctrl._narrative) || existy(ctrl._customerId)) {
 							var cId = ctrl._customerId || ctrl._narrative.customer_id;
 							ctrl.selectedCustomer = ctrl._customers.filter(function(c) { return c._id === cId; })[0];
 						} else {
