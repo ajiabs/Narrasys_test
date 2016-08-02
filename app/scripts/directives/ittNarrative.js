@@ -261,7 +261,6 @@ function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		_updateSortOrder(tl.index, $scope.narrative.timelines);
 		dataSvc.createChildEpisode({
 			parent_id: tl.parent_episode._id,
-			title: tl.name
 		})
 			.then(storeChildEpisode)
 			.then(handleEpisodeSegment)
