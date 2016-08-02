@@ -50,7 +50,7 @@
 		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="depth+1"></div>
 		<div ng-if="depth == 3" class="container">
 			<!-- begin episode -->
-			<a class="button" ng-click="container.showGuestUrl=!container.showGuestUrl">
+			<a class="button" ng-if="canAccess" ng-click="container.showGuestUrl=!container.showGuestUrl">
 				<span ng-if="customer.guest_access_allowed">Guest</span>
 				<span ng-if="!customer.guest_access_allowed">ID</span>
 			</a>

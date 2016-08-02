@@ -506,17 +506,13 @@ angular.module('com.inthetelling.story')
 				event.start_time = Number(event.start_time);
 				event.end_time = Number(event.end_time);
 				// add scenes to markedEvents[]:
-				// if (event._type === "Scene") {
-				// 	if (appState.product === 'producer') {
-				// 		// producer gets all scenes, even 'hidden' ones
-				// 		addMarkedEvent(event);
-				// 	} else {
-				// 		// sxs and player just get scenes with titles
-				// 		if (event.display_title) {
-				// 			addMarkedEvent(event);
-				// 		}
-				// 	}
-				// }
+				if (event._type === "Scene") {
+					if (appState.product === 'producer') {
+						// producer gets all scenes, even 'hidden' ones (which are now not 'hidden' but they indicate
+						//change in layout).
+						addMarkedEvent(event);
+					}
+				}
 				if (event._type === 'Chapter' || event.chapter_marker === true) {
 					addMarkedEvent(event);
 				}
