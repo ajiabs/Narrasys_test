@@ -44,6 +44,8 @@
 				customers: '=',
 				containerId: '=?',
 				customerId: '=?',
+				name: '@?',
+				path: '@?',
 				onDone: '&',
 				onUpdate: '&'
 			},
@@ -63,6 +65,12 @@
 				_onInit();
 
 				function _onInit() {
+					if (ittUtils.existy(ctrl.name)) {
+						ctrl._narrative = {name: {en: ctrl.name}};
+					}
+					if (ittUtils.existy(ctrl.path)) {
+						ctrl._narrative = {path_slug: {en: ctrl.path } }
+					}
 					setCustomer();
 				}
 				//set selected customer on-change of dropdown select
