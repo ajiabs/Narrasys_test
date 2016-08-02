@@ -70,7 +70,7 @@
 					//set input name/path on narrative if it exists
 					//otherwise create narrative object and assign name/path
 					if (existy(ctrl.name)) {
-						if (existy(ctrl._narrative)) {
+						if (existy(ctrl._narrative) && existy(ctrl._narrative.name)) {
 							ctrl._narrative.name.en = ctrl.name;
 						} else {
 							ctrl._narrative = {name: {en: ctrl.name}};
@@ -78,7 +78,7 @@
 					}
 
 					if (existy(ctrl.path)) {
-						if (existy(ctrl._narrative)) {
+						if (existy(ctrl._narrative) && existy(ctrl._narrative.path_slug)) {
 							ctrl._narrative.path_slug.en = ctrl.path;
 						} else {
 							ctrl._narrative = {path_slug: {en: ctrl.path } };
