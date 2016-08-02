@@ -69,7 +69,7 @@
 						ctrl._narrative = {name: {en: ctrl.name}};
 					}
 					if (ittUtils.existy(ctrl.path)) {
-						ctrl._narrative = {path_slug: {en: ctrl.path } }
+						ctrl._narrative = {path_slug: {en: ctrl.path } };
 					}
 					setCustomer();
 				}
