@@ -69,22 +69,30 @@
 					//check for name or path as given input
 					//set input name/path on narrative if it exists
 					//otherwise create narrative object and assign name/path
-					if (existy(ctrl.name)) {
-						if (existy(ctrl._narrative) && existy(ctrl._narrative.name)) {
+					if (existy(ctrl._narrative)) {
+						if (existy(ctrl.name) && existy(ctrl._narrative.name)) {
 							ctrl._narrative.name.en = ctrl.name;
-						} else {
-							ctrl._narrative = {name: {en: ctrl.name}};
 						}
-					}
 
-					if (existy(ctrl.path)) {
-						if (existy(ctrl._narrative) && existy(ctrl._narrative.path_slug)) {
+						if (existy(ctrl.path) && existy(ctrl._narrative.path_slug)) {
 							ctrl._narrative.path_slug.en = ctrl.path;
+						}
+					} else {
+						//we have a name, but no narrative
+						if (existy(ctrl.name)) {
+							//create narrative, assign name
+							ctrl._narrative = {name: {en: ctrl.name } };
+							//use a path if they passed us one
+							if (existy(ctrl.path)) {
+								ctrl._narrative.path_slug = {en: ctrl.path };
+							}
 						} else {
-							ctrl._narrative = {path_slug: {en: ctrl.path } };
+							//we have a path, not a name, also not a narrative
+							if (existy(ctrl.path)) {
+								ctrl._narrative = { path_slug: { en: ctrl.path } }
+							}
 						}
 					}
-
 					setCustomer();
 				}
 				//set selected customer on-change of dropdown select
