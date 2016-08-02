@@ -12,13 +12,13 @@ angular.module('com.inthetelling.story')
 			templateUrl: "templates/container.html",
 			controller:['$scope', '$location', 'modelSvc', 'authSvc', function($scope, $location, modelSvc, authSvc) {
 				$scope.toggleNarrativeModal = toggleNarrativeModal;
+				$scope.postNewNarrative = postNewNarrative;
 				$scope.showNarrativeModal = false;
 				$scope.resolvingNarrative = false;
 				$scope.canAccess = authSvc.userHasRole('admin');
-
 				//needs to be an array, not a k/v store
 				$scope.customers = modelSvc.getCustomersAsArray();
-				$scope.postNewNarrative = postNewNarrative;
+
 				function toggleNarrativeModal() {
 					$scope.showNarrativeModal = !$scope.showNarrativeModal;
 				}
