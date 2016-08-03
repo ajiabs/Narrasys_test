@@ -75,8 +75,8 @@
 					_speakerFieldVisibility(true);
 					_templateSelectVisibility(true);
 					return [
-						{url: 'templates/item/transcript.html', name: 'Transcript'},
-						{url: 'templates/item/transcript-withthumbnail.html', name: 'Transcript with thumbnail'}
+						// {url: 'templates/item/transcript.html', name: 'Transcript'},
+						{url: 'templates/item/transcript-withthumbnail.html', name: 'Transcript'},
 						// {url: 'templates/item/transcript-withthumbnail-alt.html', name: 'Transcript with thumbnail B'}
 					];
 				case 'annotation':

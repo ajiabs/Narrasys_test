@@ -375,10 +375,13 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.detachAsset = function() {
-					console.log('detach!');
-					// var asArr = Object.keys(scope.item).map(x => scope.item[x]);
 
-					// console.table(, ['_id']);
+					// console.log(
+					// 	'asset: ', scope.item.asset,
+					// 	'link_image_id', scope.item.link_image_id,
+					// 	'asset_id', scope.item.asset_id,
+					// 	'annotation_image_id', scope.item.annotation_image_id
+					// );
 					if (scope.item.asset) {
 						switch(scope.item.producerItemType) {
 							case 'link':
