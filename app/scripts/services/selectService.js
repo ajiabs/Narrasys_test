@@ -286,9 +286,9 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return _userHasRole('admin');
-						case 'Customize':
 							return false;
+						case 'Customize':
+							return _userHasRole('admin');
 					}
 					break;
 				case 'annotation':

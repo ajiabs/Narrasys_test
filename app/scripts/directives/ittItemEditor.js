@@ -358,6 +358,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.replaceAsset = function () {
+					console.log('replace asset!');
 					scope.showUploadButtons = true;
 
 					if (scope.item.sxs) { // we will delete assets atached to editor items, not from producer items
@@ -374,6 +375,10 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.detachAsset = function() {
+					console.log('detach!');
+					// var asArr = Object.keys(scope.item).map(x => scope.item[x]);
+
+					// console.table(, ['_id']);
 					if (scope.item.asset) {
 						switch(scope.item.producerItemType) {
 							case 'link':
@@ -382,6 +387,9 @@ angular.module('com.inthetelling.story')
 								scope.item.asset_id = null;
 								scope.item.annotation_image_id = null;
 								break;
+							case 'transcript':
+								scope.item.asset = null;
+								scope.item.annotation_image_id = null;
 						}
 					}
 				};
