@@ -510,9 +510,10 @@ Inline images (TODO show these only when image is larger than available space) *
 	font-size: 0.8em
 }
 
-.item .pullquoteSpeaker:before {
-	content: " — ";
-}
+/*now placing emdash in HTML*/
+/*.item .pullquoteSpeaker:before {*/
+	/*content: " — ";*/
+/*}*/
 
 
 /* - - - - - - - - - - - - - -  */
