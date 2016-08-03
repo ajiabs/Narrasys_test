@@ -7,7 +7,8 @@
 	angular.module('com.inthetelling.story')
 		.service('selectService', selectService);
 
-	function selectService(authSvc) {
+	function selectService(authSvc, ittUtils) {
+		var existy = ittUtils.existy;
 		var _videoPositionOpts = [];
 		var _userHasRole = authSvc.userHasRole;
 		//use visibility map with getVisibility() and component directives
@@ -207,6 +208,16 @@
 					} else {
 						item.layouts[0] = 'inline';
 					}
+
+					//if they attach an image, and add a link that we can embed in an iframe,
+					//set their template to link-modal
+					if (item.noEmbed === false && item.mixedContent === false && existy(item.link_image_id)) {
+						item.templateUrl = 'templates/item/link-modal-thumb.html';
+						_templateSelectVisibility(false);
+						console.log('set to linkModalThumb!');
+						return;
+					}
+
 					switch(item.templateUrl) {
 						case 'templates/item/link.html':
 						case 'templates/item/link-withimage.html':
