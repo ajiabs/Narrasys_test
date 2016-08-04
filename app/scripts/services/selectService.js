@@ -66,6 +66,7 @@
 						{url: 'templates/scene/1col.html', name: 'One Column'},
 						{url: 'templates/scene/2colL.html', name: 'Two Columns'},
 						{url: 'templates/scene/2colR.html', name: 'Two Columns (mirrored)'},
+						{url: 'templates/scene/mirrored-twocol.html', name: '2Col (v2 mirrored)'},
 						{url: 'templates/scene/cornerV.html', name: 'Vertical'},
 						{url: 'templates/scene/centerVV.html', name: 'Vertical Pro'},
 						{url: 'templates/scene/centerVV-Mondrian.html', name: 'Vertical Pro Mondrian'},
@@ -88,7 +89,7 @@
 						{url: 'templates/item/text-h1.html', name: 'Header 1'},
 						{url: 'templates/item/text-h2.html', name: 'Header 2'},
 						{url: 'templates/item/pullquote.html', name: 'Pullquote'},
-						// {url: 'templates/item/pullquote.html', name: 'Pullquote with attribution'},
+						{url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
 						{url: 'templates/item/text-transmedia.html', name: 'Long text (as transmedia)'},
 						{url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
 					];
@@ -178,6 +179,7 @@
 						case 'templates/scene/centerVV.html':
 						case 'templates/scene/centerVV-Mondrian.html':
 						case 'templates/scene/pip.html':
+						case 'templates/scene/mirrored-twocol.html':
 							_videoPositionSelectVisibility(true);
 							_videoPositionOpts = [
 								{value: 'videoLeft', name: 'Video on Left'},
@@ -211,12 +213,12 @@
 
 					//if they attach an image, and add a link that we can embed in an iframe,
 					//set their template to link-modal
-					if (item.noEmbed === false && item.mixedContent === false && existy(item.link_image_id)) {
-						item.templateUrl = 'templates/item/link-modal-thumb.html';
-						_templateSelectVisibility(false);
-						console.log('set to linkModalThumb!');
-						return;
-					}
+					// if (item.noEmbed === false && item.mixedContent === false && existy(item.link_image_id)) {
+					// 	item.templateUrl = 'templates/item/link-modal-thumb.html';
+					// 	_templateSelectVisibility(false);
+					// 	console.log('set to linkModalThumb!');
+					// 	return;
+					// }
 
 					switch(item.templateUrl) {
 						case 'templates/item/link.html':
@@ -243,6 +245,7 @@
 							_speakerFieldVisibility(false);
 							_titleFieldVisibility(false);
 							break;
+						case 'templates/item/pullquote-noattrib.html':
 						case 'templates/item/pullquote.html':
 							_speakerFieldVisibility(true);
 							_titleFieldVisibility(false);

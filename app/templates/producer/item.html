@@ -57,10 +57,10 @@
 						<div ng-switch-when="annotation">
 							<!--Time, Annotation Text, Template, Speaker, Title, Flags-->
 							<itt-time-field></itt-time-field>
+							<itt-title-field data="item"></itt-title-field>
 							<itt-annotation-field></itt-annotation-field>
 							<itt-template-select></itt-template-select>
 							<itt-speaker-field></itt-speaker-field>
-							<itt-title-field data="item"></itt-title-field>
 							<itt-flags item="item"
 									   flags="['required', 'stop', 'cosmetic', 'chapter_marker']"></itt-flags>
 						</div>
