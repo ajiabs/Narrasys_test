@@ -21,12 +21,12 @@
 			speakerField: true
 		};
 
-		var _imageFieldVisibility = _curryVis('imageUpload');
-		var _displaySelectVisibility = _curryVis('display');
-		var _videoPositionSelectVisibility = _curryVis('videoPosition');
-		var _titleFieldVisibility = _curryVis('titleField');
-		var _speakerFieldVisibility = _curryVis('speakerField');
-		var _templateSelectVisibility = _curryVis('templateSelect');
+		var _imageFieldVisibility = _partialVis('imageUpload');
+		var _displaySelectVisibility = _partialVis('display');
+		var _videoPositionSelectVisibility = _partialVis('videoPosition');
+		var _titleFieldVisibility = _partialVis('titleField');
+		var _speakerFieldVisibility = _partialVis('speakerField');
+		var _templateSelectVisibility = _partialVis('templateSelect');
 
 		return {
 			showTab: showTab,
@@ -40,7 +40,7 @@
 			_visibility[prop] = bool;
 		}
 
-		function _curryVis(prop) {
+		function _partialVis(prop) {
 			return function (bool) {
 				return _setVisibility(prop, bool);
 			};
