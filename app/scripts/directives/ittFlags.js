@@ -43,6 +43,8 @@
 					chapter_marker: 'itemChapter'
 				};
 
+				$scope.$watch(watchTemplateUrl, setFlags);
+
 				function handleChange() {
 					if (ctrl.item.hasOwnProperty('stop')) {
 						selectService.onSelectChange(ctrl.item);
@@ -53,10 +55,12 @@
 					return (url === 'templates/item/text-h1.html' || url === 'templates/item/text-h2.html');
 				}
 
-				$scope.$watch(function() {
+				function watchTemplateUrl() {
 					return ctrl.item.templateUrl;
-				}, function(newVal, oldVal) {
-					if (newVal !== oldVal) {
+				}
+
+				function setFlags(newVal) {
+					if (newVal) {
 						if (!_h1OrH2(newVal)) {
 							ctrl._flags = ctrl._flags.filter(function(f) {
 								return f !== 'chapter_marker';
@@ -65,7 +69,8 @@
 							ctrl._flags = ctrl.flags;
 						}
 					}
-				});
+				}
+
 			}],
 			controllerAs: 'flags',
 			bindToController: true
