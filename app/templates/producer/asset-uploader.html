@@ -36,7 +36,8 @@
 			or choose
 			<span ng-if="multiple">files</span>
 			<span ng-if="!multiple">a file</span> to upload:
-			<input class="uploadFileInput" type="file" multiple onchange="angular.element(this).scope().handleUploads(this.files)">
+			<!--<input class="uploadFileInput" type="file" multiple onchange="angular.element(this).scope().handleUploads(this.files)">-->
+			<input class="uploadFileInput" type="file" multiple itt-files-handler on-selected="handleUploads(files)">
 		</small>
 		<div ng-if="showInstructions" style="text-align:left">
 			<!--<small>We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. </small>-->
