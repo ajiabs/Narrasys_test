@@ -7,8 +7,7 @@
 	angular.module('com.inthetelling.story')
 		.service('selectService', selectService);
 
-	function selectService(authSvc, ittUtils, modelSvc) {
-		var existy = ittUtils.existy;
+	function selectService(authSvc, modelSvc) {
 		var _userHasRole = authSvc.userHasRole;
 
 		//select opts map
@@ -184,9 +183,9 @@
 			}
 		}
 
-		function onItemFormUpdate(itemForm) {
-
-		}
+		// function onItemFormUpdate(itemForm) {
+		//
+		// }
 
 		function onSelectChange(item) {
 			_displaySelectVisibility(false);

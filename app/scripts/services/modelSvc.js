@@ -444,7 +444,7 @@ angular.module('com.inthetelling.story')
 					} else {
 						event.producerItemType = 'annotation';
 						if (/pullquote/.test(event.templateUrl)) {
-							event.isPq = true
+							event.isPq = true;
 						}
 					}
 				} else if (event._type === 'Upload') {
