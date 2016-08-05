@@ -7,10 +7,17 @@
 	angular.module('com.inthetelling.story')
 		.service('selectService', selectService);
 
-	function selectService(authSvc, ittUtils) {
+	function selectService(authSvc, ittUtils, modelSvc) {
 		var existy = ittUtils.existy;
-		var _videoPositionOpts = [];
 		var _userHasRole = authSvc.userHasRole;
+
+		//select opts map
+		var _select = {
+			video: [],
+			display: [],
+			imagePosition: [],
+			imagePin:[]
+		};
 		//use visibility map with getVisibility() and component directives
 		var _visibility = {
 			templateSelect: true,
@@ -19,6 +26,22 @@
 			videoPosition: false,
 			titleField: true,
 			speakerField: true
+		};
+
+		//moved into a map because we will need to use this
+		//when we are handing updates on background images.
+		var _scenes = {
+			centered: 'templates/scene/centered.html',
+			centeredPro: 'templates/scene/centeredPro.html',
+			'1col': 'templates/scene/1col.html',
+			'2colL': 'templates/scene/2colL.html',
+			'2colR': 'templates/scene/2colR.html',
+			mirroredTwoCol: 'templates/scene/mirrored-twocol.html',
+			cornerV: 'templates/scene/cornerV.html',
+			centerVV: 'templates/scene/centerVV.html',
+			centerVVMondrian: 'templates/scene/centerVV-Mondrian.html',
+			cornerH: 'templates/scene/cornerH.html',
+			pip: 'templates/scene/pip.html'
 		};
 
 		var _imageFieldVisibility = _partialVis('imageUpload');
@@ -30,10 +53,10 @@
 
 		return {
 			showTab: showTab,
-			getVideoPositionOpts: getVideoPositionOpts,
 			onSelectChange: onSelectChange,
 			getTemplates: getTemplates,
-			getVisibility: getVisibility
+			getVisibility: getVisibility,
+			getSelectOpts: getSelectOpts
 		};
 
 		function _setVisibility(prop, bool) {
@@ -46,12 +69,19 @@
 			};
 		}
 
-		function getVisibility(prop) {
-			return _visibility[prop];
+		//not the display name, but the key of the scene map as string.
+		function _getSceneName(scene) {
+			return Object.keys(_scenes).filter(function(key) {
+				return _scenes[key] === scene.templateUrl;
+			})[0];
 		}
 
-		function getVideoPositionOpts() {
-			return _videoPositionOpts;
+		function getSelectOpts(type) {
+			return _select[type];
+		}
+
+		function getVisibility(prop) {
+			return _visibility[prop];
 		}
 
 		function getTemplates(type) {
@@ -61,17 +91,17 @@
 					_videoPositionSelectVisibility(false);
 					_templateSelectVisibility(true);
 					return [
-						{url: 'templates/scene/centered.html', name: 'Centered'},
-						{url: 'templates/scene/centeredPro.html', name: 'Centered Pro' },
-						{url: 'templates/scene/1col.html', name: 'One Column'},
-						{url: 'templates/scene/2colL.html', name: 'Two Columns'},
-						{url: 'templates/scene/2colR.html', name: 'Two Columns (mirrored)'},
-						{url: 'templates/scene/mirrored-twocol.html', name: '2Col (v2 mirrored)'},
-						{url: 'templates/scene/cornerV.html', name: 'Vertical'},
-						{url: 'templates/scene/centerVV.html', name: 'Vertical Pro'},
-						{url: 'templates/scene/centerVV-Mondrian.html', name: 'Vertical Pro Mondrian'},
-						{url: 'templates/scene/cornerH.html', name: 'Horizontal'},
-						{url: 'templates/scene/pip.html', name: 'Picture-in-picture'}
+						{url: _scenes.centered, name: 'Centered'},
+						{url: _scenes.centeredPro, name: 'Centered Pro' },
+						{url: _scenes['1col'], name: 'One Column'},
+						{url: _scenes['2colL'], name: 'Two Columns'},
+						{url: _scenes['2colR'], name: 'Two Columns (mirrored)'},
+						{url: _scenes.mirroredTwoCol, name: '2Col (v2 mirrored)'},
+						{url: _scenes.cornerV ,name: 'Vertical'},
+						{url: _scenes.centerVV, name: 'Vertical Pro'},
+						{url: _scenes.centerVVMondrian, name: 'Vertical Pro Mondrian'},
+						{url: _scenes.cornerH, name: 'Horizontal'},
+						{url: _scenes.pip, name: 'Picture-in-picture'}
 					];
 				case 'transcript':
 					_speakerFieldVisibility(true);
@@ -154,10 +184,18 @@
 			}
 		}
 
+		function onItemFormUpdate(itemForm) {
+
+		}
+
 		function onSelectChange(item) {
 			_displaySelectVisibility(false);
 			switch(item.producerItemType) {
 				case 'scene':
+					_select.display = [
+						{value: '', name: 'Show all content items, highlight current ones'},
+						{value: 'showCurrent', name: 'Show only current items'}
+					];
 					switch(item.templateUrl) {
 						case 'templates/scene/1col.html':
 							if (_userHasRole('admin')) { _displaySelectVisibility(true); }
@@ -165,7 +203,7 @@
 						case 'templates/scene/centered.html':
 						case 'templates/scene/centeredPro.html':
 							_videoPositionSelectVisibility(false);
-							_videoPositionOpts = [
+							_select.video = [
 								{value: 'inline', name: 'Inline'},
 								{value: '', name: 'Centered'}
 							];
@@ -181,7 +219,7 @@
 						case 'templates/scene/pip.html':
 						case 'templates/scene/mirrored-twocol.html':
 							_videoPositionSelectVisibility(true);
-							_videoPositionOpts = [
+							_select.video = [
 								{value: 'videoLeft', name: 'Video on Left'},
 								{value: 'videoRight', name: 'Video on Right'}
 							];
@@ -267,7 +305,22 @@
 					break;
 
 				case 'image':
+					//will set to true in image fill
 					_displaySelectVisibility(false);
+					var _currentScene = modelSvc.scene(item.scene_id);
+					console.log('curScene name', _getSceneName(_currentScene));
+
+					_select.display = [
+						{value: 'windowBg', name: 'Window background'},
+						{value: 'mainBg', name: 'Main content pane background'},
+						{value: 'altBg', name: 'Secondary content pane background'},
+						{value: 'mainFg', name: 'Main content pane foreground'},
+						{value: 'altFg', name: 'Secondary content pane foreground'},
+						{value: 'videoOverlay', name: 'Video overlay'},
+					];
+
+
+
 					switch(item.templateUrl) {
 						case 'templates/item/image-plain.html':
 						case 'templates/item/image-inline-withtext.html':
@@ -275,6 +328,21 @@
 						case 'templates/item/image.html':
 							item.layouts[0] = 'inline';
 							break;
+						case 'templates/item/image-fill.html':
+							_displaySelectVisibility(true);
+							_select.imagePosition = [
+								{value: '', name: 'Fit'},
+								{value: 'cover', name: 'Cover'},
+								{value: 'contain', name: 'Contain'},
+								{value: 'fill', name: 'Fill and stretch'},
+							];
+							_select.imagePin = [
+								{value: 'tl', name: 'Top left'},
+								{value: 'tr', name: 'Top right'},
+								{value: 'bl', name: 'Bottom left'},
+								{value: 'br', name: 'Bottom right'},
+							];
+							item.layouts[1] = item.layouts[1] || 'windowBg';
 					}
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';

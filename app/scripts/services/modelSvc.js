@@ -1176,6 +1176,7 @@ angular.module('com.inthetelling.story')
 			return false;
 		};
 
+		console.log('assets', svc.assets);
 		if (config.debugInBrowser) {
 			console.log("Event cache:", svc.events);
 			console.log("Asset cache:", svc.assets);

@@ -82,10 +82,10 @@
 							<itt-title-field data="item"></itt-title-field>
 							<itt-image-field></itt-image-field>
 							<itt-description-field data="item"></itt-description-field>
-							<itt-url-field ng-if="item.templateUrl === 'templates/item/image-plain.html'"></itt-url-field>
+							<!--<itt-url-field ng-if="item.templateUrl === 'templates/item/image-plain.html'"></itt-url-field>-->
 							<itt-template-select></itt-template-select>
-							<itt-display-select></itt-display-select>
-							<itt-video-position-select></itt-video-position-select>
+							<itt-display-select item="item" item-form="itemForm"></itt-display-select>
+							<!--<itt-video-position-select></itt-video-position-select>-->
 							<!--TODO reccommend moving orientation into layout tab-->
 							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
@@ -140,7 +140,7 @@
 							<itt-time-field></itt-time-field>
 							<itt-template-select></itt-template-select>
 							<itt-video-position-select></itt-video-position-select>
-							<itt-display-select></itt-display-select>
+							<itt-display-select item="item"></itt-display-select>
 						</div>
 						<!--file hidden in style tab-->
 						<!--<div ng-switch-when="file">-->
