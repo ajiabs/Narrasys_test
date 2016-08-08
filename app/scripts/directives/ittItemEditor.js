@@ -101,27 +101,47 @@ angular.module('com.inthetelling.story')
 				if (!scope.item.layouts) {
 					scope.item.layouts = ["inline"];
 				}
+				setupItemForm();
 
+				/*
+				These loops seem to be responsible for setting up itemForm from the styles array.
+				itemForm seems to be where we hold style specific data that pertains to events (aka items).
+				itemForm seems to be used mostly in the customize tab and sets color, timestamp, hightlight and transition options.
+				itemForm is also responsible for setting the 'pin' and 'position' props on a background image event.
+				All of the above is parsed from the itemForm (if its set), and read into the item.styles array.
+				When it comes time to persist, the styles array is used in dataSvc#prepItemForStorage,
+				which reads the strings in the styles array and returns the corresponding ID for the entity in the DB.
 
+				We do the inverse of this inside of watchStyleEdits below, which watches the itemForm, and builds up the styles array from
+				the itemForm props. It also formats background URLs.
+				 */
 				// extract current event styles for the form
-				if (scope.item.styles) {
-					for (var styleType in scope.itemForm) {
-						for (var i = 0; i < scope.item.styles.length; i++) {
-							if (scope.item.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
-								scope.itemForm[styleType] = scope.item.styles[i].substr(styleType.length); // Remainder of scope.item.styles[i]
+
+				function setupItemForm() {
+					if (scope.item.styles) {
+						for (var styleType in scope.itemForm) {
+							for (var i = 0; i < scope.item.styles.length; i++) {
+								if (scope.item.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
+									scope.itemForm[styleType] = scope.item.styles[i].substr(styleType.length); // Remainder of scope.item.styles[i]
+								}
+							}
+						}
+						// position and pin don't have a prefix because I was dumb when I planned this
+						for (var j = 0; j < scope.item.styles.length; j++) {
+							if (scope.item.styles[j] === 'contain' || scope.item.styles[j] === 'cover' || scope.item.styles[j] === 'center' || scope.item.styles[j] === 'fill') {
+								scope.itemForm.position = scope.item.styles[j];
+							}
+							if (scope.item.styles[j] === 'tl' || scope.item.styles[j] === 'tr' || scope.item.styles[j] === 'bl' || scope.item.styles[j] === 'br') {
+								scope.itemForm.pin = scope.item.styles[j];
 							}
 						}
 					}
-					// position and pin don't have a prefix because I was dumb when I planned this
-					for (var j = 0; j < scope.item.styles.length; j++) {
-						if (scope.item.styles[j] === 'contain' || scope.item.styles[j] === 'cover' || scope.item.styles[j] === 'center' || scope.item.styles[j] === 'fill') {
-							scope.itemForm.position = scope.item.styles[j];
-						}
-						if (scope.item.styles[j] === 'tl' || scope.item.styles[j] === 'tr' || scope.item.styles[j] === 'bl' || scope.item.styles[j] === 'br') {
-							scope.itemForm.pin = scope.item.styles[j];
-						}
-					}
+
+					console.log('styles', scope.item.styles);
+					console.log('itemForm setup', scope.itemForm);
 				}
+
+
 
 				if (!scope.item.producerItemType) {
 					errorSvc.error({
@@ -165,20 +185,22 @@ angular.module('com.inthetelling.story')
 					// if old template was image-fill, set cosmetic to false
 					// TODO this is fragile, based on template name:
 
+					//seeing if we can put this logic below into select service
+
 					//for changes to templateUrl, i.e. picking an option from the drop down.
 					if (newItem.templateUrl !== oldItem.templateUrl) {
 
-						if (newItem.templateUrl === 'templates/item/image-fill.html') {
-							scope.item.cosmetic = true;
-							scope.item.layouts = ["windowBg"];
-							scope.itemForm.position = "fill";
-						}
-						if (oldItem.templateUrl === 'templates/item/image-fill.html') {
-							scope.item.cosmetic = false;
-							scope.item.layouts = ["inline"];
-							scope.itemForm.position = "";
-							scope.itemForm.pin = "";
-						}
+						// if (newItem.templateUrl === 'templates/item/image-fill.html') {
+						// 	scope.item.cosmetic = true;
+						// 	scope.item.layouts = ["windowBg"];
+						// 	scope.itemForm.position = "fill";
+						// }
+						// if (oldItem.templateUrl === 'templates/item/image-fill.html') {
+						// 	scope.item.cosmetic = false;
+						// 	scope.item.layouts = ["inline"];
+						// 	scope.itemForm.position = "";
+						// 	scope.itemForm.pin = "";
+						// }
 					}
 
 
@@ -224,7 +246,7 @@ angular.module('com.inthetelling.story')
 						}
 					}
 					scope.item.styles = styles;
-
+					console.log('watch Styles', styles);
 					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
 					if (scope.item.asset) {
 						scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";

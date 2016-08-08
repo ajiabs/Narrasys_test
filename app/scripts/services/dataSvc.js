@@ -1250,6 +1250,11 @@ angular.module('com.inthetelling.story')
 			console.log("DataSvc cache:", dataCache);
 		}
 
+		/*
+		gets ID of Style Class when given the 'css_name'. 'css_name' is a attribute on the Style Class.
+		for example:
+		get_id_values('style', ['cover', '']) -> ['532708d8ed245331bd000007', '52e15b47c9b715cfbb00003f']
+		*/
 		var get_id_values = function (cache, realNames) {
 
 			// HACK These values won't have IDs, they're generated inside modelSvc.

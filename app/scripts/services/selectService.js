@@ -75,6 +75,39 @@
 			})[0];
 		}
 
+		function _setAvailableImageOptsForLayout(sceneType, item, itemForm) {
+			switch (true) {
+				//D2-A
+				case /centered/.test(sceneType):
+				case /centeredPro/.test(sceneType):
+				case /1col/.test(sceneType):
+					_select.display = [
+						{value: 'windowBg', name: 'Full Window background'}
+					];
+					break;
+				//D2-B
+				case /2colL/.test(sceneType):
+				case /2colR/.test(sceneType):
+				case /mirroredTwoCol/.test(sceneType):
+				case /cornerV/.test(sceneType):
+				case /centerVV/.test(sceneType):
+				case /cornerH/.test(sceneType):
+				case /pip/.test(sceneType):
+					_select.display = [
+						{value: 'mainBg', name: 'Text pane (main) background'},
+						{value: 'mainFg', name: 'Text pane foreground'},
+					];
+					break;
+				//D2-C
+				case /centerVVMondrian/.test(sceneType):
+					_select.display = [
+						{value: 'altBg', name: 'Transmedia pane (alt) background'},
+						{value: 'altFg', name: 'Transmedia pane foreground'},
+					];
+					break;
+			}
+		}
+
 		function getSelectOpts(type) {
 			return _select[type];
 		}
@@ -183,11 +216,7 @@
 			}
 		}
 
-		// function onItemFormUpdate(itemForm) {
-		//
-		// }
-
-		function onSelectChange(item) {
+		function onSelectChange(item, itemForm) {
 			_displaySelectVisibility(false);
 			switch(item.producerItemType) {
 				case 'scene':
@@ -306,19 +335,8 @@
 				case 'image':
 					//will set to true in image fill
 					_displaySelectVisibility(false);
-					var _currentScene = modelSvc.scene(item.scene_id);
-					console.log('curScene name', _getSceneName(_currentScene));
-
-					_select.display = [
-						{value: 'windowBg', name: 'Window background'},
-						{value: 'mainBg', name: 'Main content pane background'},
-						{value: 'altBg', name: 'Secondary content pane background'},
-						{value: 'mainFg', name: 'Main content pane foreground'},
-						{value: 'altFg', name: 'Secondary content pane foreground'},
-						{value: 'videoOverlay', name: 'Video overlay'},
-					];
-
-
+					var _currentSceneName = _getSceneName(modelSvc.scene(item.scene_id));
+					_setAvailableImageOptsForLayout(_currentSceneName, item);
 
 					switch(item.templateUrl) {
 						case 'templates/item/image-plain.html':
@@ -328,20 +346,36 @@
 							item.layouts[0] = 'inline';
 							break;
 						case 'templates/item/image-fill.html':
+							item.cosmetic = true;
+
 							_displaySelectVisibility(true);
 							_select.imagePosition = [
+								// {value: 'tl', name: 'Top Left'},
+								// {value: 'tr', name: 'Top Right'},
+								// {value: 'bl', name: 'Bottom Left'},
+								// {value: 'br', name: 'Bottom Right'},
 								{value: '', name: 'Fit'},
-								{value: 'cover', name: 'Cover'},
 								{value: 'contain', name: 'Contain'},
 								{value: 'fill', name: 'Fill and stretch'},
+								{value: 'cover', name: 'Cover and crop'},
 							];
+
+							// switch(itemForm.position) {
+							// 	case 'tl':
+							// 	case 'tr':
+							// 	case 'bl':
+							// 	case 'br':
+							// 		itemForm.pin = itemForm.position;
+							// 		itemForm.position = '';
+							// 		break;
+							// }
+
 							_select.imagePin = [
 								{value: 'tl', name: 'Top left'},
 								{value: 'tr', name: 'Top right'},
 								{value: 'bl', name: 'Bottom left'},
 								{value: 'br', name: 'Bottom right'},
 							];
-							item.layouts[1] = item.layouts[1] || 'windowBg';
 					}
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';

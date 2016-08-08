@@ -18,11 +18,21 @@
 			},
 			template: [
 				'<div class="field" ng-if="displaySelect.getVisibility(\'display\')">',
-				'	<div class="label">Display</div>',
+				'	<div class="label">Display: {{displaySelect.item.layouts}}, index:{{displaySelect.layoutIndex}}</div>',
 				'	<div class="input">',
-				'		<select ng-model="displaySelect.item.layouts[displaySelect.layoutIndex]" 		  ng-options="{{displaySelect.setNgOpts(\'display\')}}"></select>',
-				'		<select ng-if="displaySelect.itemForm" ng-model="displaySelect.itemForm.position" ng-options="{{displaySelect.setNgOpts(\'imagePosition\')}}">',
-				'		<select ng-if="displaySelect.itemForm" ng-model="displaySelect.itemForm.pin" 	  ng-options="{{displaySelect.setNgOpts(\'imagePin\')}}"></select>',
+				'		<select ng-model="displaySelect.item.layouts[displaySelect.layoutIndex]" ng-options="{{displaySelect.setNgOpts(\'display\')}}"></select>',
+				'	</div>',
+				'</div>',
+				'<div class="field">',
+				'	<div class="label">Position: {{displaySelect.itemForm.position}}</div>',
+				'		<div class="input">',
+				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.item, displaySelect.itemForm)" ng-model="displaySelect.itemForm.position" ng-options="{{displaySelect.setNgOpts(\'imagePosition\')}}"></select>',
+				'	</div>',
+				'</div>',
+				'<div class="field">',
+				'	<div class="label">Pin: {{displaySelect.itemForm.pin}}</div>',
+				'		<div class="input">',
+				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.item, displaySelect.itemForm)" ng-model="displaySelect.itemForm.pin" ng-options="{{displaySelect.setNgOpts(\'imagePin\')}}"></select>',
 				'	</div>',
 				'</div>'
 			].join(''),
@@ -30,6 +40,7 @@
 				var ctrl = this;
 				ctrl.getVisibility = selectService.getVisibility;
 				ctrl.getSelectOpts = selectService.getSelectOpts;
+				ctrl.onItemFormUpdate = selectService.onSelectChange;
 				ctrl.setNgOpts = setNgOpts;
 				//layout index should be 0 for images, 1 for scenes
 				ctrl.layoutIndex = (ctrl.item.producerItemType === 'image') ? 0 : 1;
