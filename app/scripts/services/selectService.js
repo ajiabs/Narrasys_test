@@ -89,7 +89,7 @@
 						{value: 'windowBg', name: 'Full Window background'}
 					];
 					if (isInline) {
-						item.layouts = ['windowBg']
+						item.layouts = ['windowBg'];
 					}
 
 					item.layouts = item.layouts || ['windowBg'];

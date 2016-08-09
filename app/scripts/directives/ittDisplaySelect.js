@@ -42,7 +42,7 @@
 				$scope.$watch(watchTemplate, handleChange);
 
 				function watchTemplate() {
-					return ctrl.item.templateUrl
+					return ctrl.item.templateUrl;
 				}
 
 				function handleChange(nv) {
