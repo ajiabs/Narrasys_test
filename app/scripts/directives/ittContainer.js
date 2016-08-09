@@ -15,7 +15,7 @@ angular.module('com.inthetelling.story')
 				$scope.postNewNarrative = postNewNarrative;
 				$scope.showNarrativeModal = false;
 				$scope.resolvingNarrative = false;
-				$scope.canAccess = authSvc.userHasRole('admin');
+				$scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 				//needs to be an array, not a k/v store
 				$scope.customers = modelSvc.getCustomersAsArray();
 

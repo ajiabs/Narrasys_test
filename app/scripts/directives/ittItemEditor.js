@@ -400,12 +400,12 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.detachAsset = function() {
-
 					// console.log(
-					// 	'asset: ', scope.item.asset,
-					// 	'link_image_id', scope.item.link_image_id,
-					// 	'asset_id', scope.item.asset_id,
-					// 	'annotation_image_id', scope.item.annotation_image_id
+					// 	'item:', scope.item,
+					// 	'asset:', scope.item.asset,
+					// 	'link_image_id:', scope.item.link_image_id,
+					// 	'asset_id:', scope.item.asset_id,
+					// 	'annotation_image_id:', scope.item.annotation_image_id
 					// );
 					if (scope.item.asset) {
 						switch(scope.item.producerItemType) {
@@ -418,6 +418,11 @@ angular.module('com.inthetelling.story')
 							case 'transcript':
 								scope.item.asset = null;
 								scope.item.annotation_image_id = null;
+								break;
+							case 'image':
+								scope.item.asset = null;
+								scope.item.asset_id = null;
+								break;
 						}
 					}
 				};

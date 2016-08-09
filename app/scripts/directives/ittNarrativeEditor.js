@@ -63,7 +63,7 @@
 				ctrl._path = angular.copy(this.path);
 				ctrl.handleUpdate = handleUpdate;
 				ctrl.selectCustomer = selectCustomer;
-				ctrl.canAccess = authSvc.userHasRole('admin');
+				ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 
 				_onInit();
 

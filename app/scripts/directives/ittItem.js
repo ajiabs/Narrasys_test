@@ -144,7 +144,11 @@ angular.module('com.inthetelling.story')
 				scope.editItem = function () {
 					appState.editEvent = scope.item;
 					appState.editEvent.templateOpts = selectService.getTemplates(scope.item.producerItemType);
-					selectService.onSelectChange(appState.editEvent);
+					//second arg to onSelectChange is the itemForm, which is created in ittItemEditor and
+					//we do not have access here. Note that itemForm is only really used in background Images.
+					//hack fix is to pass in an empty object, and selectService will add the necessary itemForm
+					//props.
+					selectService.onSelectChange(appState.editEvent, {});
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
 				};

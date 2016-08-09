@@ -79,15 +79,19 @@
 			//if we are set to the default layout,
 			//overwrite it back to an empty array
 			var isInline = item.layouts[0] === 'inline';
-
 			switch (sceneType) {
 				//D2-A
 				case 'centered':
 				case 'centeredPro':
 				case '1col':
 					_select.display = [
-						{value: 'windowBg', name: 'Full Window background'}
+						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
+						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: true},
+						{value: 'mainFg', name: 'Text pane foreground', isDisabled: true},
+						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: true},
+						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: true},
 					];
+
 					if (isInline) {
 						item.layouts = ['windowBg'];
 					}
@@ -104,10 +108,11 @@
 				case 'pip':
 				case 'centerVVMondrian':
 					_select.display = [
-						{value: 'mainBg', name: 'Text pane (main) background'},
-						{value: 'mainFg', name: 'Text pane foreground'},
-						{value: 'altBg', name: 'Transmedia pane (alt) background'},
-						{value: 'altFg', name: 'Transmedia pane foreground'},
+						{value: 'windowBg', name: 'Full Window background', isDisabled: true},
+						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
+						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
+						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: false},
+						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: false}
 					];
 
 					if (isInline) {
@@ -361,7 +366,6 @@
 							item.layouts[0] = 'inline';
 							break;
 						case 'templates/item/image-fill.html':
-							_setAvailableImageOptsForLayout(_currentSceneName, item, itemForm);
 							item.cosmetic = true;
 							_displaySelectVisibility(true);
 							_select.imagePosition = [
@@ -373,12 +377,7 @@
 								{value: 'bl', name: 'Bottom Left'},
 								{value: 'br', name: 'Bottom Right'},
 							];
-							_select.imagePin = [
-								{value: 'tl', name: 'Top left'},
-								{value: 'tr', name: 'Top right'},
-								{value: 'bl', name: 'Bottom left'},
-								{value: 'br', name: 'Bottom right'},
-							];
+							_setAvailableImageOptsForLayout(_currentSceneName, item, itemForm);
 					}
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';

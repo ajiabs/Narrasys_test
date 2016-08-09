@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('SceneController', function ($scope, $filter) {
+	.controller('SceneController', function ($scope, $filter, ittUtils) {
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 		$scope.setBgImgUrl = setBgImgUrl;
 		$scope.precalculateSceneValues = function () {
@@ -99,7 +99,7 @@ angular.module('com.inthetelling.story')
 			var currItems = $filter('isCurrent')(items);
 			var mainColBgOrFg = $filter(col)(currItems);
 			var opacity = 1;
-			if (mainColBgOrFg.length > 0) {
+			if (mainColBgOrFg.length > 0 && ittUtils.existy(mainColBgOrFg[0].asset)) {
 				var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
 				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
 					opacity = 0.25;
