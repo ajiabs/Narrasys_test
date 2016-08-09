@@ -23,7 +23,7 @@
 			for (; pos < len; pos++) {
 				var elm = angular.element(options[pos]);
 
-				if (elm.val() != '') {
+				if (elm.val() != '') { //jshint ignore:line
 					locals = {};
 					locals[attr] = data[index];
 					elm.attr('disabled', fnDisableIfTrue(scope, locals));
