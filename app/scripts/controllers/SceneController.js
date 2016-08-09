@@ -102,7 +102,7 @@ angular.module('com.inthetelling.story')
 			if (mainColBgOrFg.length > 0) {
 				var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
 				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
-					opacity = 0.33;
+					opacity = 0.25;
 				}
 				return { 'background-image': bgUrl, 'opacity': opacity };
 			}

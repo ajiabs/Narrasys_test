@@ -136,12 +136,7 @@ angular.module('com.inthetelling.story')
 							}
 						}
 					}
-
-					console.log('styles', scope.item.styles);
-					console.log('itemForm setup', scope.itemForm);
 				}
-
-
 
 				if (!scope.item.producerItemType) {
 					errorSvc.error({
@@ -150,11 +145,9 @@ angular.module('com.inthetelling.story')
 				}
 				// TODO:this breaks when editing sxs items within producer!
 				scope.itemEditor = 'templates/producer/item/' + appState.product + '-' + scope.item.producerItemType + '.html';
-
 				scope.appState = appState;
 
 				//watch templateUrl
-
 				// TODO this still needs more performance improvements...
 
 				scope.watchEdits = scope.$watch(function () {
@@ -188,20 +181,20 @@ angular.module('com.inthetelling.story')
 					//seeing if we can put this logic below into select service
 
 					//for changes to templateUrl, i.e. picking an option from the drop down.
-					if (newItem.templateUrl !== oldItem.templateUrl) {
-
-						// if (newItem.templateUrl === 'templates/item/image-fill.html') {
-						// 	scope.item.cosmetic = true;
-						// 	scope.item.layouts = ["windowBg"];
-						// 	scope.itemForm.position = "fill";
-						// }
-						// if (oldItem.templateUrl === 'templates/item/image-fill.html') {
-						// 	scope.item.cosmetic = false;
-						// 	scope.item.layouts = ["inline"];
-						// 	scope.itemForm.position = "";
-						// 	scope.itemForm.pin = "";
-						// }
-					}
+					// if (newItem.templateUrl !== oldItem.templateUrl) {
+                    //
+					// 	if (newItem.templateUrl === 'templates/item/image-fill.html') {
+					// 		scope.item.cosmetic = true;
+					// 		scope.item.layouts = ["windowBg"];
+					// 		scope.itemForm.position = "fill";
+					// 	}
+					// 	if (oldItem.templateUrl === 'templates/item/image-fill.html') {
+					// 		scope.item.cosmetic = false;
+					// 		scope.item.layouts = ["inline"];
+					// 		scope.itemForm.position = "";
+					// 		scope.itemForm.pin = "";
+					// 	}
+					// }
 
 
 					//newItem is scope.item
@@ -228,6 +221,16 @@ angular.module('com.inthetelling.story')
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 					}
 					// console.count('$watch turn');
+
+					// console.group('itemStyles');
+					// console.count('incoming item layouts');
+					// console.log('Layouts:', newItem.layouts);
+					// console.log('Styles:', newItem.styles);
+					// console.log('styleCss:', newItem.styleCss);
+					// console.log('\n');
+					// console.log('itemForm.pin', scope.itemForm.pin);
+					// console.log('itemForm.position', scope.itemForm.position);
+					// console.groupEnd('itemStyles');
 
 				}, true);
 
@@ -424,7 +427,7 @@ angular.module('com.inthetelling.story')
 					var asset = modelSvc.assets[asset_id];
 					if (scope.item) {
 						scope.item.asset = asset;
-						selectService.onSelectChange(scope.item);
+						selectService.onSelectChange(scope.item, scope.itemForm);
 						if (scope.item._type === 'Upload' || scope.item._type === 'Plugin') {
 							scope.item.asset_id = asset_id;
 						} else if (scope.item._type === 'Link') {

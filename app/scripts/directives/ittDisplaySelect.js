@@ -18,25 +18,19 @@
 			},
 			template: [
 				'<div class="field" ng-if="displaySelect.getVisibility(\'display\')">',
-				'	<div class="label">Display: {{displaySelect.item.layouts}}, index:{{displaySelect.layoutIndex}}</div>',
+				'	<div class="label">Display:</div>',
 				'	<div class="input">',
-				'		<select ng-model="displaySelect.item.layouts[displaySelect.layoutIndex]" ng-options="{{displaySelect.setNgOpts(\'display\')}}"></select>',
+				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.item, displaySelect.itemForm)" ng-model="displaySelect.item.layouts[displaySelect.layoutIndex]" ng-options="{{displaySelect.setNgOpts(\'display\')}}"></select>',
 				'	</div>',
 				'</div>',
-				'<div class="field">',
-				'	<div class="label">Position: {{displaySelect.itemForm.position}}</div>',
+				'<div class="field" ng-if="displaySelect.isImageFillTemplate">',
+				'	<div class="label">Position:</div>',
 				'		<div class="input">',
 				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.item, displaySelect.itemForm)" ng-model="displaySelect.itemForm.position" ng-options="{{displaySelect.setNgOpts(\'imagePosition\')}}"></select>',
 				'	</div>',
-				'</div>',
-				'<div class="field">',
-				'	<div class="label">Pin: {{displaySelect.itemForm.pin}}</div>',
-				'		<div class="input">',
-				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.item, displaySelect.itemForm)" ng-model="displaySelect.itemForm.pin" ng-options="{{displaySelect.setNgOpts(\'imagePin\')}}"></select>',
-				'	</div>',
 				'</div>'
 			].join(''),
-			controller: ['selectService', function (selectService) {
+			controller: ['$scope', 'selectService', function ($scope, selectService) {
 				var ctrl = this;
 				ctrl.getVisibility = selectService.getVisibility;
 				ctrl.getSelectOpts = selectService.getSelectOpts;
@@ -44,6 +38,17 @@
 				ctrl.setNgOpts = setNgOpts;
 				//layout index should be 0 for images, 1 for scenes
 				ctrl.layoutIndex = (ctrl.item.producerItemType === 'image') ? 0 : 1;
+
+				$scope.$watch(watchTemplate, handleChange);
+
+				function watchTemplate() {
+					return ctrl.item.templateUrl
+				}
+
+				function handleChange(nv) {
+					ctrl.isImageFillTemplate = (nv && nv === 'templates/item/image-fill.html');
+
+				}
 
 				function setNgOpts(type) {
 					return "option.value as option.name for option in displaySelect.getSelectOpts(" + "'" + type + "'" + ")";
