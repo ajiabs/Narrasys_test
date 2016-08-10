@@ -45,16 +45,16 @@
 		};
 
 		var _D1 = {
-			a: 'show only current transmedia items',
-			b: 'Show all transmedia items, highlight current ones'
+			a: {value: 'showCurrent', name: 'show only current transmedia items'},
+			b: {value: '', name: 'Show all transmedia items, highlight current ones'}
 		};
 		var _D2 = {
-			a: 'Show only current text items',
-			b: 'Show all text items, highlight current ones'
+			a: {value: 'showCurrent', name: 'Show only current text items'},
+			b: {value: '', name: 'Show all text items, highlight current ones'}
 		};
 		var _D3 = {
-			a: 'Show only current items',
-			b: 'Show all items, highlight current ones'
+			a: {value: 'showCurrent', name: 'Show only current items'},
+			b: {value: '', name: 'Show all items, highlight current ones'}
 		};
 
 		var _imageFieldVisibility = _partialVis('imageUpload');
@@ -142,40 +142,44 @@
 		}
 
 		function _setSceneDisplayOpts(item) {
+			_displaySelectVisibility(true);
 			switch(item.templateUrl) {
 				case 'templates/scene/1col.html':
+					if (_userHasRole('admin')) {
+						_displaySelectVisibility(true);
+					}
 					_select.display = [
-						{value: '', name: _D3.a},
-						{value: '', name: _D3.b}
+						{value: _D3.a.value, name: _D3.a.name},
+						{value: _D3.b.value, name: _D3.b.name}
 					];
 					break;
 				case 'templates/scene/centered.html':
 				case 'templates/scene/centeredPro.html':
 				case 'templates/scene/centerVV.html':
 				case 'templates/scene/centerVV-Mondrian.html':
-					_select.display = [
-						{value: '', name: _D1.a}
-					];
+					_displaySelectVisibility(false);
+					item.layouts[0] = '';
+					item.layouts[1] = 'showCurrent';
 					break;
 				case 'templates/scene/pip.html':
 				case 'templates/scene/cornerH.html':
 				case 'templates/scene/cornerV.html':
 					_select.display = [
-						{value: '', name: _D1.a},
-						{value: '', name: _D1.b}
+						{value: _D1.a.value, name: _D1.a.name},
+						{value: _D1.b.value, name: _D1.b.name}
 					];
 					break;
 				case 'templates/scene/2colL.html':
 					_select.display = [
-						{value: '', name: _D2.a},
-						{value: '', name: _D2.b}
+						{value: _D2.a.value, name: _D2.a.name},
+						{value: _D2.b.value, name: _D2.b.name}
 					];
 					break;
 				case 'templates/scene/2colR.html':
 				case 'templates/scene/mirrored-twocol.html':
 					_select.display = [
-						{value: '', name: _D3.a},
-						{value: '', name: _D3.b}
+						{value: _D3.a.value, name: _D3.a.name},
+						{value: _D3.b.value, name: _D3.b.name}
 					];
 					break;
 			}
@@ -184,22 +188,13 @@
 		function setSceneVideoPositionAndLayout(item) {
 			switch(item.templateUrl) {
 				case 'templates/scene/1col.html':
-					if (_userHasRole('admin')) {
-						_displaySelectVisibility(true);
-					}
-				/* falls through */
 				case 'templates/scene/centered.html':
 				case 'templates/scene/centeredPro.html':
 					_videoPositionSelectVisibility(false);
-					_select.display = [
-						{value: '', name: _D1.a}
-					];
 					_select.video = [
 						{value: 'inline', name: 'Inline'},
 						{value: '', name: 'Centered'}
 					];
-					item.layouts[0] = '';
-					item.layouts[1] = 'showCurrent';
 					break;
 				case 'templates/scene/2colL.html':
 				case 'templates/scene/2colR.html':
@@ -214,17 +209,14 @@
 						{value: 'videoLeft', name: 'Video on Left'},
 						{value: 'videoRight', name: 'Video on Right'}
 					];
-					item.layouts[0] = 'videoLeft';
+					// item.layouts[0] = 'videoLeft';
 
-					if (/2col/.test(item.templateUrl)) {
-
-						item.layouts[1] = '';
-					} else {
-						item.layouts[1] = 'showCurrent';
-					}
-					if (/pip|corner/.test(item.templateUrl)) {
-						_displaySelectVisibility(true);
-					}
+					// if (/2col/.test(item.templateUrl)) {
+                    //
+					// 	item.layouts[1] = '';
+					// } else {
+					// 	item.layouts[1] = 'showCurrent';
+					// }
 					break;
 			}
 		}
@@ -249,8 +241,8 @@
 						{url: _scenes.cornerV, name: '2 Columns, Video opposite Transmedia'},
 						{url: _scenes['1col'], name: 'One Column, Video Above Content'},
 						{url: _scenes['2colL'], name: '2 Columns, Video opposite Text'},
-						// {url: _scenes['2colR'], name: 'Two Columns (mirrored)'},
-						// {url: _scenes.mirroredTwoCol, name: '2Col (v2 mirrored)'},
+						{url: _scenes['2colR'], name: 'Two Columns (mirrored)'},
+						{url: _scenes.mirroredTwoCol, name: '2Col (v2 mirrored)'},
 						{url: _scenes.centerVV, name: 'Vertical Pro, Hide Transcript'},
 						{url: _scenes.centerVVMondrian, name: 'Vertical Pro Mondrian, Hide Transcript'},
 						{url: _scenes.cornerH, name: '2 Rows, Video above Transmedia'},

@@ -14,9 +14,23 @@ showCurrent is forced in main.
 		<div itt-magnet class="videoMagnet">
 			<img src="images/aspectratiopreserver-16x9.gif">
 		</div>
-		<div class="pane altPane stretchToViewport">
+		<div class="pane mainPane">
 			<div class="fill bgLayer">
 				<div class="item animate" ng-repeat="item in altBgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+			</div>
+			<div class="content contentLayer stretchToViewport" ng-class="{singleitem: mainContentItems.length==1, isNarrow: isNarrow, isEmpty: mainContentItems.length == 0}" itt-width-watch>
+				<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+				<div class="clear"></div>
+			</div>
+			<div class="fill fgLayer overlay">
+				<div class="item animate" ng-repeat="item in altFgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="pane altPane stretchToViewport">
+			<div class="fill bgLayer">
+				<div class="item animate" ng-repeat="item in mainBgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 			</div>
 			<div class="content contentLayer stretchToViewport" ng-class="{
 				singleitem: showCurrent
@@ -28,21 +42,6 @@ showCurrent is forced in main.
 				isNarrow: isNarrow,
 				isEmpty: altContentItems.length == 0
 			}" itt-width-watch>
-				<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
-				</div>
-				<div class="clear"></div>
-			</div>
-			<div class="fill fgLayer overlay">
-				<div class="item animate" ng-repeat="item in altFgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
-			</div>
-		</div>
-	</div>
-	<div class="col">
-		<div class="pane mainPane">
-			<div class="fill bgLayer">
-				<div class="item animate" ng-repeat="item in mainBgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
-			</div>
-			<div class="content contentLayer stretchToViewport" ng-class="{singleitem: mainContentItems.length==1, isNarrow: isNarrow, isEmpty: mainContentItems.length == 0}" itt-width-watch>
 				<div class="item animate" ng-repeat="item in mainItems = (mainContentItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 				<div class="clear"></div>
 			</div>
