@@ -1,7 +1,7 @@
 /**
  * Created by githop on 6/7/16.
  */
-(function() {
+(function () {
 	'use strict';
 
 	angular.module('com.inthetelling.story')
@@ -15,7 +15,7 @@
 			video: [],
 			display: [],
 			imagePosition: [],
-			imagePin:[],
+			imagePin: [],
 			questionType: []
 		};
 		//use visibility map with getVisibility() and component directives
@@ -42,6 +42,19 @@
 			centerVVMondrian: 'templates/scene/centerVV-Mondrian.html',
 			cornerH: 'templates/scene/cornerH.html',
 			pip: 'templates/scene/pip.html'
+		};
+
+		var _D1 = {
+			a: 'show only current transmedia items',
+			b: 'Show all transmedia items, highlight current ones'
+		};
+		var _D2 = {
+			a: 'Show only current text items',
+			b: 'Show all text items, highlight current ones'
+		};
+		var _D3 = {
+			a: 'Show only current items',
+			b: 'Show all items, highlight current ones'
 		};
 
 		var _imageFieldVisibility = _partialVis('imageUpload');
@@ -71,7 +84,7 @@
 
 		//not the display name, but the key of the scene map as string.
 		function _getSceneName(scene) {
-			return Object.keys(_scenes).filter(function(key) {
+			return Object.keys(_scenes).filter(function (key) {
 				return _scenes[key] === scene.templateUrl;
 			})[0];
 		}
@@ -80,8 +93,7 @@
 			//if we are set to the default layout,
 			//overwrite it back to an empty array
 			var isInline = item.layouts[0] === 'inline';
-			switch (sceneType) {
-				//D2-A
+			switch(sceneType) {
 				case 'centered':
 				case 'centeredPro':
 				case '1col':
@@ -99,7 +111,6 @@
 
 					item.layouts = item.layouts || ['windowBg'];
 					break;
-				//D2-B
 				case '2colL':
 				case '2colR':
 				case 'mirroredTwoCol':
@@ -123,11 +134,98 @@
 					item.layouts = item.layouts || ['mainBg'];
 					itemForm.position = itemForm.position || 'fill';
 					break;
-				//D2-C
 			}
 
 			if (itemForm.position) {
 				item.styles = [itemForm.position];
+			}
+		}
+
+		function _setSceneDisplayOpts(item) {
+			switch(item.templateUrl) {
+				case 'templates/scene/1col.html':
+					_select.display = [
+						{value: '', name: _D3.a},
+						{value: '', name: _D3.b}
+					];
+					break;
+				case 'templates/scene/centered.html':
+				case 'templates/scene/centeredPro.html':
+				case 'templates/scene/centerVV.html':
+				case 'templates/scene/centerVV-Mondrian.html':
+					_select.display = [
+						{value: '', name: _D1.a}
+					];
+					break;
+				case 'templates/scene/pip.html':
+				case 'templates/scene/cornerH.html':
+				case 'templates/scene/cornerV.html':
+					_select.display = [
+						{value: '', name: _D1.a},
+						{value: '', name: _D1.b}
+					];
+					break;
+				case 'templates/scene/2colL.html':
+					_select.display = [
+						{value: '', name: _D2.a},
+						{value: '', name: _D2.b}
+					];
+					break;
+				case 'templates/scene/2colR.html':
+				case 'templates/scene/mirrored-twocol.html':
+					_select.display = [
+						{value: '', name: _D3.a},
+						{value: '', name: _D3.b}
+					];
+					break;
+			}
+		}
+
+		function setSceneVideoPositionAndLayout(item) {
+			switch(item.templateUrl) {
+				case 'templates/scene/1col.html':
+					if (_userHasRole('admin')) {
+						_displaySelectVisibility(true);
+					}
+				/* falls through */
+				case 'templates/scene/centered.html':
+				case 'templates/scene/centeredPro.html':
+					_videoPositionSelectVisibility(false);
+					_select.display = [
+						{value: '', name: _D1.a}
+					];
+					_select.video = [
+						{value: 'inline', name: 'Inline'},
+						{value: '', name: 'Centered'}
+					];
+					item.layouts[0] = '';
+					item.layouts[1] = 'showCurrent';
+					break;
+				case 'templates/scene/2colL.html':
+				case 'templates/scene/2colR.html':
+				case 'templates/scene/cornerH.html':
+				case 'templates/scene/cornerV.html':
+				case 'templates/scene/centerVV.html':
+				case 'templates/scene/centerVV-Mondrian.html':
+				case 'templates/scene/pip.html':
+				case 'templates/scene/mirrored-twocol.html':
+					_videoPositionSelectVisibility(true);
+					_select.video = [
+						{value: 'videoLeft', name: 'Video on Left'},
+						{value: 'videoRight', name: 'Video on Right'}
+					];
+					item.layouts[0] = 'videoLeft';
+
+					if (/2col/.test(item.templateUrl)) {
+
+						item.layouts[1] = '';
+					} else {
+						item.layouts[1] = 'showCurrent';
+					}
+					if (/pip|corner/.test(item.templateUrl)) {
+						_displaySelectVisibility(true);
+					}
+					break;
 			}
 		}
 
@@ -140,22 +238,22 @@
 		}
 
 		function getTemplates(type) {
-			switch(type) {
+			switch (type) {
 				case 'scene':
 					_displaySelectVisibility(false);
 					_videoPositionSelectVisibility(false);
 					_templateSelectVisibility(true);
 					return [
 						{url: _scenes.centered, name: 'Centered'},
-						{url: _scenes.centeredPro, name: 'Centered Pro' },
-						{url: _scenes['1col'], name: 'One Column'},
-						{url: _scenes['2colL'], name: 'Two Columns'},
-						{url: _scenes['2colR'], name: 'Two Columns (mirrored)'},
-						{url: _scenes.mirroredTwoCol, name: '2Col (v2 mirrored)'},
-						{url: _scenes.cornerV ,name: 'Vertical'},
-						{url: _scenes.centerVV, name: 'Vertical Pro'},
-						{url: _scenes.centerVVMondrian, name: 'Vertical Pro Mondrian'},
-						{url: _scenes.cornerH, name: 'Horizontal'},
+						{url: _scenes.centeredPro, name: 'Centered Pro, Hide Transcript & Transmedia'},
+						{url: _scenes.cornerV, name: '2 Columns, Video opposite Transmedia'},
+						{url: _scenes['1col'], name: 'One Column, Video Above Content'},
+						{url: _scenes['2colL'], name: '2 Columns, Video opposite Text'},
+						// {url: _scenes['2colR'], name: 'Two Columns (mirrored)'},
+						// {url: _scenes.mirroredTwoCol, name: '2Col (v2 mirrored)'},
+						{url: _scenes.centerVV, name: 'Vertical Pro, Hide Transcript'},
+						{url: _scenes.centerVVMondrian, name: 'Vertical Pro Mondrian, Hide Transcript'},
+						{url: _scenes.cornerH, name: '2 Rows, Video above Transmedia'},
 						{url: _scenes.pip, name: 'Picture-in-picture'}
 					];
 				case 'transcript':
@@ -192,7 +290,10 @@
 						{url: 'templates/item/link-embed.html', name: 'Embedded Link'}
 					];
 					if (_userHasRole('admin')) {
-						linkTemplates.splice(3, 0, {url: 'templates/item/link-descriptionfirst.html', name: 'Link w/ description first'});
+						linkTemplates.splice(3, 0, {
+							url: 'templates/item/link-descriptionfirst.html',
+							name: 'Link w/ description first'
+						});
 					}
 					return linkTemplates;
 				case 'image':
@@ -243,50 +344,8 @@
 			_displaySelectVisibility(false);
 			switch(item.producerItemType) {
 				case 'scene':
-					_select.display = [
-						{value: '', name: 'Show all content items, highlight current ones'},
-						{value: 'showCurrent', name: 'Show only current items'}
-					];
-					switch(item.templateUrl) {
-						case 'templates/scene/1col.html':
-							if (_userHasRole('admin')) { _displaySelectVisibility(true); }
-						/* falls through */
-						case 'templates/scene/centered.html':
-						case 'templates/scene/centeredPro.html':
-							_videoPositionSelectVisibility(false);
-							_select.video = [
-								{value: 'inline', name: 'Inline'},
-								{value: '', name: 'Centered'}
-							];
-							item.layouts[0] = '';
-							item.layouts[1] = 'showCurrent';
-							break;
-						case 'templates/scene/2colL.html':
-						case 'templates/scene/2colR.html':
-						case 'templates/scene/cornerH.html':
-						case 'templates/scene/cornerV.html':
-						case 'templates/scene/centerVV.html':
-						case 'templates/scene/centerVV-Mondrian.html':
-						case 'templates/scene/pip.html':
-						case 'templates/scene/mirrored-twocol.html':
-							_videoPositionSelectVisibility(true);
-							_select.video = [
-								{value: 'videoLeft', name: 'Video on Left'},
-								{value: 'videoRight', name: 'Video on Right'}
-							];
-							item.layouts[0] = 'videoLeft';
-
-							if (/2col/.test(item.templateUrl)) {
-
-								item.layouts[1] = '';
-							} else {
-								item.layouts[1] = 'showCurrent';
-							}
-							if (/pip|corner/.test(item.templateUrl)) {
-								_displaySelectVisibility(true);
-							}
-							break;
-					}
+					_setSceneDisplayOpts(item);
+					setSceneVideoPositionAndLayout(item);
 					break;
 				case 'link':
 					_displaySelectVisibility(true);
