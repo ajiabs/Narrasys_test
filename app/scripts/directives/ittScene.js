@@ -43,14 +43,14 @@ angular.module('com.inthetelling.story')
 					};
 
 					return Object.keys(_scenes).filter(function (key) {
-						return _scenes[key] === sceneTemplate
+						return _scenes[key] === sceneTemplate;
 					})[0];
 				}
 
 				function setCurrentSeneNameOnAppState() {
 					if (scope.scene) {
 						appState.currSceneName = _getSceneName(scope.scene.templateUrl);
-						appState.sceneLayouts = scope.scene.layouts
+						appState.sceneLayouts = scope.scene.layouts;
 					}
 				}
 				//END temp code for debugging purposes
