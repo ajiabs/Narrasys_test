@@ -45,7 +45,7 @@
 							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select></itt-template-select>
 							<itt-image-field></itt-image-field>
-							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
+							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="transcript">
 							<!--time, speaker, transcript-->
@@ -61,7 +61,7 @@
 							<itt-annotation-field></itt-annotation-field>
 							<itt-template-select></itt-template-select>
 							<itt-speaker-field></itt-speaker-field>
-							<itt-flags item="item"
+							<itt-flags data="item"
 									   flags="['required', 'stop', 'cosmetic', 'chapter_marker']"></itt-flags>
 						</div>
 						<!--scenes are layouts; hidden in this tab-->
@@ -74,7 +74,7 @@
 							<itt-file-field></itt-file-field>
 							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select></itt-template-select>
-							<itt-flags item="item" flags="['required']"></itt-flags>
+							<itt-flags data="item" flags="['required']"></itt-flags>
 						</div>
 						<div ng-switch-when="image">
 							<!--Time, Title, Image, Description, Template, Display, Position, Orientation, Flags-->
@@ -84,19 +84,19 @@
 							<itt-description-field data="item"></itt-description-field>
 							<!--<itt-url-field ng-if="item.templateUrl === 'templates/item/image-plain.html'"></itt-url-field>-->
 							<itt-template-select></itt-template-select>
-							<itt-display-select item="item" item-form="itemForm"></itt-display-select>
+							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
 							<!--<itt-video-position-select></itt-video-position-select>-->
 							<!--TODO reccommend moving orientation into layout tab-->
-							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
+							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="question">
 							<!--Time, Question type, Title, Question Text, Image, Answers, Feedback when correct, Feedback when incorrect-->
 							<span class="eventIcon icon-question"></span>
 							<itt-time-field></itt-time-field>
-							<itt-question-type-select></itt-question-type-select>
+							<itt-question-type-select data="item"></itt-question-type-select>
 							<!--investigate log error regarding undefined input for itt-title-->
-							<itt-title-field data="item"></itt-title-field>
-							<itt-question-text-field></itt-question-text-field>
+							<itt-title-field data="item" do-validate="true"></itt-title-field>
+							<itt-question-text-field data="item" do-validate="true"></itt-question-text-field>
 							<itt-image-field></itt-image-field>
 							<itt-question-options></itt-question-options>
 						</div>
@@ -140,7 +140,7 @@
 							<itt-time-field></itt-time-field>
 							<itt-template-select></itt-template-select>
 							<itt-video-position-select></itt-video-position-select>
-							<itt-display-select item="item"></itt-display-select>
+							<itt-display-select data="item"></itt-display-select>
 						</div>
 						<!--file hidden in style tab-->
 						<!--<div ng-switch-when="file">-->
@@ -151,8 +151,8 @@
 						<div ng-switch-when="question">
 							<!--Template, Display, Flags-->
 							<itt-template-select></itt-template-select>
-							<itt-display-select></itt-display-select>
-							<itt-flags item="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
+							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
+							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="chapter">
 							<h4>{{item.producerItemType}}</h4>

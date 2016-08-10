@@ -10,13 +10,19 @@
 	function ittQuestionTextField() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
+	        scope: {
+	        	data: "=",
+	        	doValidate: '=?'
+			},
 			template: [
 			'<div class="field">',
 			'	<div class="label">Question text</div>',
-			'	<div class="input" sxs-input-i18n="item.data._plugin.questiontext" x-inputtype="\'textarea\'"></div>',
+			'	<div class="input" do-validate="qText.doValidate" sxs-input-i18n="qText.data.data._plugin.questiontext" x-inputtype="\'textarea\'"></div>',
 			'</div>'
-			].join(' ')
+			].join(' '),
+			controller: [angular.noop],
+			controllerAs: 'qText',
+			bindToController: true
 	    };
 	}
 

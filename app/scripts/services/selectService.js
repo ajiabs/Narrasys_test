@@ -15,7 +15,8 @@
 			video: [],
 			display: [],
 			imagePosition: [],
-			imagePin:[]
+			imagePin:[],
+			questionType: []
 		};
 		//use visibility map with getVisibility() and component directives
 		var _visibility = {
@@ -227,7 +228,7 @@
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(true);
 					return [
-						{url: 'templates/item/question-mc.html', name: 'Default question display'},
+						// {url: 'templates/item/question-mc.html', name: 'Default question display'},
 						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'}
 						// {url: 'templates/item/question-mc-image-left.html', name: 'Question with image left'}
 					];
@@ -347,11 +348,13 @@
 					}
 					break;
 				case 'question':
-					// item.layouts[0] = 'windowFg';
-					//need a little feedback as the spreadsheet is a little confusing for this
-					//section
+					_select.questionType = [
+						{value: 'mc-poll', name: 'Poll'},
+						{value: 'mc-formative', name: 'Formative'}
+					];
+					item.layouts[0] = 'windowFg';
+					item.stop = true;
 					break;
-
 				case 'image':
 					//will set to true in image fill
 					_displaySelectVisibility(false);
@@ -453,7 +456,7 @@
 						case 'Item':
 							return true;
 						case 'Style':
-							return true;
+							return false;
 						case 'Customize':
 							return _userHasRole('admin');
 					}

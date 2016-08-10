@@ -13,15 +13,15 @@
 		return {
 			restrict: 'EA',
 			scope: {
-				item: '=',
+				data: '=',
 				itemForm: '=?',
 			},
 			template: [
 				'<div class="field" ng-if="displaySelect.getVisibility(\'display\')">',
 				'	<div class="label">Display</div>',
 				'	<div class="input">',
-				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.item, displaySelect.itemForm)"',
-				'			ng-model="displaySelect.item.layouts[displaySelect.layoutIndex]"',
+				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.data, displaySelect.itemForm)"',
+				'			ng-model="displaySelect.data.layouts[displaySelect.layoutIndex]"',
 				'			ng-options="{{displaySelect.setNgOpts(\'display\')}}"',
 				'			itt-options-disabled="option.isDisabled for option in displaySelect.getSelectOpts(\'display\')">',
 				'		</select>',
@@ -30,7 +30,7 @@
 				'<div class="field" ng-if="displaySelect.isImageFillTemplate">',
 				'	<div class="label">Position</div>',
 				'		<div class="input">',
-				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.item, displaySelect.itemForm)" ng-model="displaySelect.itemForm.position" ng-options="{{displaySelect.setNgOpts(\'imagePosition\')}}"></select>',
+				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.data, displaySelect.itemForm)" ng-model="displaySelect.itemForm.position" ng-options="{{displaySelect.setNgOpts(\'imagePosition\')}}"></select>',
 				'	</div>',
 				'</div>'
 			].join(''),
@@ -41,12 +41,12 @@
 				ctrl.onItemFormUpdate = selectService.onSelectChange;
 				ctrl.setNgOpts = setNgOpts;
 				//layout index should be 0 for images, 1 for scenes
-				ctrl.layoutIndex = (ctrl.item.producerItemType === 'image') ? 0 : 1;
+				ctrl.layoutIndex = (ctrl.data.producerItemType === 'image') ? 0 : 1;
 
 				$scope.$watch(watchTemplate, handleChange);
 
 				function watchTemplate() {
-					return ctrl.item.templateUrl;
+					return ctrl.data.templateUrl;
 				}
 
 				function handleChange(nv) {

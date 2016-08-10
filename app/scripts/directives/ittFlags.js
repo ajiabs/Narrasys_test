@@ -13,7 +13,7 @@
 	        restrict: 'EA',
 	        scope: {
 				flags: '=',
-				item: '='
+				data: '='
 			},
 			template: [
 				'<div class="field">',
@@ -21,7 +21,7 @@
 				'	<div class="input">',
 				'		<span ng-repeat="flag in flags._flags">',
 				'			<label for="{{flags._ids[flag]}}"></label>',
-				'			<input id="{{flags._ids[flag]}}" type="checkbox" itt-dynamic-model="\'flags.item.\' + flag" ng-change="flags.handleChange()"/>{{flags._displays[flag]}}',
+				'			<input id="{{flags._ids[flag]}}" type="checkbox" itt-dynamic-model="\'flags.data.\' + flag" ng-change="flags.handleChange()"/>{{flags._displays[flag]}}',
 				'		</span>',
 				'	</div>',
 				'</div>'
@@ -46,8 +46,8 @@
 				$scope.$watch(watchTemplateUrl, setFlags);
 
 				function handleChange() {
-					if (ctrl.item.hasOwnProperty('stop')) {
-						selectService.onSelectChange(ctrl.item);
+					if (ctrl.data.hasOwnProperty('stop')) {
+						selectService.onSelectChange(ctrl.data);
 					}
 				}
 
@@ -56,7 +56,7 @@
 				}
 
 				function watchTemplateUrl() {
-					return ctrl.item.templateUrl;
+					return ctrl.data.templateUrl;
 				}
 
 				function setFlags(newVal) {

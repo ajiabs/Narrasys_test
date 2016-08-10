@@ -420,6 +420,7 @@ angular.module('com.inthetelling.story')
 								scope.item.annotation_image_id = null;
 								break;
 							case 'image':
+							case 'question':
 								scope.item.asset = null;
 								scope.item.asset_id = null;
 								break;
