@@ -11,12 +11,32 @@
 	function ittTranscriptField() {
 		return {
 			restrict: 'EA',
+			scope: {
+				data: '=',
+				//not itemForm, which is a plain old JS object,
+				//this is the 'IttItemForm' a ng-form defined at the head of item.html
+				ittItemForm: '='
+			},
 			template: [
 				'<div class="field">',
-				'	<div class="label">Transcript [{{appState.lang}}]</div>',
-				'		<div class="input" sxs-input-i18n="item.annotation" do-validate="true" x-inputtype="\'textarea\'" autofocus></div>',
+				'	<div class="label">Transcript [{{$ctrl.lang}}]</div>',
+				'	<p ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" class="error-red">Transcript is a required field</p>',
+				'	<div class="input" sxs-input-i18n="$ctrl.data.annotation" do-validate="true" x-inputtype="\'textarea\'" on-emit-name="$ctrl.onName($taName)" autofocus></div>',
 				'</div>'
-			].join(' ')
+			].join(' '),
+			controller: ['appState', function(appState) {
+				var ctrl = this;
+				ctrl.onName = onName;
+				ctrl.lang = appState.lang;
+				ctrl.textAreaName = '';
+
+				function onName(v) {
+					ctrl.textAreaName = v;
+
+				}
+			}],
+			controllerAs: '$ctrl',
+			bindToController: true
 		};
 	}
 

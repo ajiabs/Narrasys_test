@@ -52,14 +52,14 @@
 							<!--time, speaker, transcript-->
 							<itt-time-field></itt-time-field>
 							<itt-speaker-field></itt-speaker-field>
-							<itt-transcript-field></itt-transcript-field>
+							<itt-transcript-field data="item" itt-item-form="ittItemForm"></itt-transcript-field>
 							<itt-speaker-thumb-field></itt-speaker-thumb-field>
 						</div>
 						<div ng-switch-when="annotation">
 							<!--Time, Annotation Text, Template, Speaker, Title, Flags-->
 							<itt-time-field></itt-time-field>
 							<itt-title-field data="item"></itt-title-field>
-							<itt-annotation-field></itt-annotation-field>
+							<itt-annotation-field data="item" itt-item-form="ittItemForm"></itt-annotation-field>
 							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-speaker-field></itt-speaker-field>
 							<itt-flags data="item"

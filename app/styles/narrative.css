@@ -151,10 +151,6 @@
 	width: auto;
 }
 
-.invalid__field {
-	color: red;
-}
-
 .timeline--hidden {
 	opacity: 0.5;
 }

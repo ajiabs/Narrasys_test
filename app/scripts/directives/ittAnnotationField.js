@@ -12,13 +12,31 @@
 	function ittAnnotationField() {
 	    return {
 	        restrict: 'EA',
-	        scope: true,
+	        scope: {
+	        	data: '=',
+				ittItemForm: '='
+			},
 			template: [
-			'<div class="field">',
-			'	<div class="label">Annotation Text [{{appState.lang}}]</div>',
-			'	<div class="input" sxs-input-i18n="item.annotation" do-validate="true" x-inputtype="\'textarea\'" autofocus></div>',
-			'</div>'
-			].join(' ')
+				'<div class="field">',
+				'	<div class="label">Annotation Text [{{$ctrl.lang}}]</div>',
+				'	<p ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" class="error-red">Annotation Text is a required field</p>',
+				'	<div class="input" sxs-input-i18n="$ctrl.data.annotation" do-validate="true" x-inputtype="\'textarea\'" on-emit-name="$ctrl.onName($taName)" autofocus></div>',
+				'</div>'
+			].join(' '),
+			controller: ['appState', function(appState) {
+				var ctrl = this;
+				ctrl.onName = onName;
+				ctrl.lang = appState.lang;
+				ctrl.textAreaName = '';
+
+				function onName(v) {
+					ctrl.textAreaName = v;
+
+				}
+
+			}],
+			controllerAs: '$ctrl',
+			bindToController: true
 	    };
 	}
 
