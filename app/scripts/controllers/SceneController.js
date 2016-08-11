@@ -4,7 +4,9 @@ angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter, ittUtils) {
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 		$scope.setBgImgUrl = setBgImgUrl;
-		$scope.precalculateSceneValues = function () {
+		$scope.precalculateSceneValues = precalculateSceneValues;
+
+		function precalculateSceneValues() {
 			// console.log("precalcSceneValues");
 
 			// clear out old calculations in case we're re-precalculating
@@ -86,7 +88,7 @@ angular.module('com.inthetelling.story')
 					i = $scope.altContentItems.length; // no need to keep checking the rest
 				}
 			}
-		};
+		}
 
 		function byPullquoteOrH2(item) {
 			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';

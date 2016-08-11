@@ -43,7 +43,8 @@
 							<itt-title-field do-validate="true" data="item"></itt-title-field>
 							<itt-url-field></itt-url-field>
 							<itt-description-field data="item"></itt-description-field>
-							<itt-template-select></itt-template-select>
+							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
+
 							<itt-image-field></itt-image-field>
 							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
@@ -59,7 +60,7 @@
 							<itt-time-field></itt-time-field>
 							<itt-title-field data="item"></itt-title-field>
 							<itt-annotation-field></itt-annotation-field>
-							<itt-template-select></itt-template-select>
+							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-speaker-field></itt-speaker-field>
 							<itt-flags data="item"
 									   flags="['required', 'stop', 'cosmetic', 'chapter_marker']"></itt-flags>
@@ -73,7 +74,7 @@
 							<itt-title-field data="item"></itt-title-field>
 							<itt-file-field></itt-file-field>
 							<itt-description-field data="item"></itt-description-field>
-							<itt-template-select></itt-template-select>
+							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-flags data="item" flags="['required']"></itt-flags>
 						</div>
 						<div ng-switch-when="image">
@@ -83,7 +84,7 @@
 							<itt-image-field></itt-image-field>
 							<itt-description-field data="item"></itt-description-field>
 							<!--<itt-url-field ng-if="item.templateUrl === 'templates/item/image-plain.html'"></itt-url-field>-->
-							<itt-template-select></itt-template-select>
+							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
 							<!--<itt-video-position-select></itt-video-position-select>-->
 							<!--TODO reccommend moving orientation into layout tab-->
@@ -128,7 +129,7 @@
 						<!--hidden accross the board-->
 						<div ng-switch-when="transcript">
 							<!--Template, Speaker Thumb, timestamp, highlight-->
-							<itt-template-select></itt-template-select>
+							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 
 						</div>
 						<div ng-switch-when="annotation">
@@ -138,7 +139,7 @@
 						<div ng-switch-when="scene">
 							<!--time, template, position, display-->
 							<itt-time-field></itt-time-field>
-							<itt-template-select></itt-template-select>
+							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-video-position-select></itt-video-position-select>
 							<itt-display-select data="item"></itt-display-select>
 						</div>
@@ -150,7 +151,7 @@
 						<!--</div>-->
 						<div ng-switch-when="question">
 							<!--Template, Display, Flags-->
-							<itt-template-select></itt-template-select>
+							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
 							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>

@@ -17,9 +17,10 @@ showCurrent is forced in main.
 		<div class="pane mainPane">
 			<div class="fill bgLayer">
 				<div class="item animate" ng-repeat="item in altBgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+				<!--<div class="item animate" ng-repeat="item in mainBgItems | isCurrent" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>-->
 			</div>
-			<div class="content contentLayer stretchToViewport" ng-class="{singleitem: mainContentItems.length==1, isNarrow: isNarrow, isEmpty: mainContentItems.length == 0}" itt-width-watch>
-				<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+			<div class="content contentLayer stretchToViewport" ng-class="{singleitem: altContentItems.length==1, isNarrow: isNarrow, isEmpty: altContentItems.length == 0}" itt-width-watch>
+				<div class="item animate" ng-repeat="item in altItems = (altContentItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
 				<div class="clear"></div>
 			</div>
 			<div class="fill fgLayer overlay">
@@ -34,15 +35,16 @@ showCurrent is forced in main.
 			</div>
 			<div class="content contentLayer stretchToViewport" ng-class="{
 				singleitem: showCurrent
-					? (altContentItems | isCurrent).length == 1
-					: (altContentItems).length == 1,
+					? (mainContentItems | isCurrent).length == 1
+					: (mainContentItems).length == 1,
 				allowHighlights: !showCurrent,
-				hasLeftSidebar: altContentHasLeftSidebar,
-				hasRightSidebar: altContentHasRightSidebar,
+				hasLeftSidebar: mainContentHasLeftSidebar,
+				hasRightSidebar: mainContentHasRightSidebar,
 				isNarrow: isNarrow,
-				isEmpty: altContentItems.length == 0
+				isEmpty: mainContentItems.length == 0
 			}" itt-width-watch>
-				<div class="item animate" ng-repeat="item in mainItems = (mainContentItems | isCurrent)" ng-class="item.styleCss + ' ' + item.state" itt-item="item"></div>
+				<div class="item animate" ng-repeat="item in showCurrent ? (mainContentItems | isCurrent) : mainContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
+				</div>
 				<div class="clear"></div>
 			</div>
 			<div class="fill fgLayer overlay">

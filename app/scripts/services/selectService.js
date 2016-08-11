@@ -209,7 +209,7 @@
 						{value: 'videoLeft', name: 'Video on Left'},
 						{value: 'videoRight', name: 'Video on Right'}
 					];
-					// item.layouts[0] = 'videoLeft';
+					item.layouts[0] = 'videoLeft';
 
 					// if (/2col/.test(item.templateUrl)) {
                     //
