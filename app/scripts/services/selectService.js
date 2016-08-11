@@ -178,8 +178,8 @@
 				case 'templates/scene/2colR.html':
 				case 'templates/scene/mirrored-twocol.html':
 					_select.display = [
-						{value: _D3.a.value, name: _D3.a.name},
-						{value: _D3.b.value, name: _D3.b.name}
+						{value: _D2.a.value, name: _D2.a.name},
+						{value: _D2.b.value, name: _D2.b.name}
 					];
 					break;
 			}
