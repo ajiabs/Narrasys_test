@@ -443,9 +443,6 @@ angular.module('com.inthetelling.story')
 						event.producerItemType = 'transcript';
 					} else {
 						event.producerItemType = 'annotation';
-						if (/pullquote/.test(event.templateUrl)) {
-							event.isPq = true;
-						}
 					}
 				} else if (event._type === 'Upload') {
 					if (event.templateUrl.match(/file/)) { // HACK
@@ -469,6 +466,33 @@ angular.module('com.inthetelling.story')
 				if (!event.producerItemType) {
 					console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
 				}
+			}
+
+			//it is helpful for UI purposes to know what type of annotation an event is
+			//the IF statement above only runs if producerItemType has not be set.
+			//when creating a new event, generateEmptyItem (in EditCtrl) will set producerItemType
+			//this code handles the case AFTER producerItemType has been set, and the event is
+			//an annotation, and the user switched the annotation type.
+			switch(event.producerItemType) {
+				case 'annotation':
+					//set to false off the bat, then flip to true for each case
+					event.isPq = event.isHeader = event.isLongText = event.isDef = false;
+					if (/pullquote/.test(event.templateUrl)) {
+						event.isPq = true;
+					}
+					if (/text-h1|text-h2/.test(event.templateUrl)) {
+						console.log("setting header!!");
+						event.isHeader = true;
+					}
+
+					if (/text-transmedia/.test(event.templateUrl)) {
+						event.isLongText = true;
+					}
+
+					if (/text-definition/) {
+						event.isDef = true;
+					}
+					break;
 			}
 
 			event.displayStartTime = $filter("asTime")(event.start_time);
