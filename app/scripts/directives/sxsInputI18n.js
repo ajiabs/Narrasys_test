@@ -18,36 +18,34 @@ angular.module('com.inthetelling.story')
 					};
 				}
 				scope.appState = appState;
+				//do this in both cases so we can use the name on regular text inputs in addition to textareas
+				scope.textangularname = "ta" + new Date().getUTCMilliseconds() + "y" + Math.random().toString(16);
+				/*
+				 textAngular requires unique name attributes set on the textarea or input element
+				 ng-forms will use the name attribute as a namespace for ng-specific state regarding
+				 the various states of validity an item can be in.
+
+				 example:
+				 <form ng-form="aForm">
+				 <input type="text" name="firstName">
+				 </form>
+
+				 will result in an ngform object like so:
+				 aForm.firstName = {$valid: <boolean>, $invalid: <boolean>, $dirty: <boolean>}
+
+				 It's hard to known the name of the textarea, because we ensure that it is unique by
+				 randomly creating a name prop based upon the current time.
+
+				 this makes the following technique a little harder:
+				 <p ng-if="aForm.firstName.$invalid">this is a required field</p>
+				 because firstName (the value of the name attribute on the text area) is randomly generated.
+
+				 the solution is to emit the name up to the directive that is consuming sxsInputI18n
+				 after it has been set, then we can check the state of the validity in the parent component.
+				 */
+				scope.onEmitName({$taName: scope.textangularname});
 
 				if (scope.inputtype === 'textarea') {
-					// textAngular needs some extra magic for autofocus:
-					scope.textangularname = "ta" + new Date().getUTCMilliseconds() + "y" + Math.random().toString(16);
-
-					/*
-					textAngular requires unique name attributes set on the textarea or input element
-					ng-forms will use the name attribute as a namespace for ng-specific state regarding
-					the various states of validity an item can be in.
-
-					example:
-					<form ng-form="aForm">
-						<input type="text" name="firstName">
-					</form>
-
-					will result in an ngform object like so:
-					aForm.firstName = {$valid: <boolean>, $invalid: <boolean>, $dirty: <boolean>}
-
-					It's hard to known the name of the textarea, because we ensure that it is unique by
-					randomly creating a name prop based upon the current time.
-
-					this makes the following technique a little harder:
-					<p ng-if="aForm.firstName.$invalid">this is a required field</p>
-					because firstName (the value of the name attribute on the text area) is randomly generated.
-
-					the solution is to emit the name up to the directive that is consuming sxsInputI18n
-					after it has been set, then we can check the state of the validity in the parent component.
-					*/
-
-					scope.onEmitName({$taName: scope.textangularname});
 
 					$timeout(function () { // wait for DOM
 						if (attrs.autofocus !== undefined) {

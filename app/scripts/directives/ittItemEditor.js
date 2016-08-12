@@ -421,6 +421,7 @@ angular.module('com.inthetelling.story')
 								break;
 							case 'image':
 							case 'question':
+							case 'file':
 								scope.item.asset = null;
 								scope.item.asset_id = null;
 								break;

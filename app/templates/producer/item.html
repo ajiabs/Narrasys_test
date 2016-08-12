@@ -40,7 +40,7 @@
 							<!--Time, Title, URL, Description, Template, Image, Flags-->
 							<!--these are impure component directives that depend inherited scope from item-->
 							<itt-time-field></itt-time-field>
-							<itt-title-field do-validate="true" data="item"></itt-title-field>
+							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
 							<itt-url-field></itt-url-field>
 							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
@@ -74,8 +74,7 @@
 							<itt-title-field data="item"></itt-title-field>
 							<itt-file-field></itt-file-field>
 							<itt-description-field data="item"></itt-description-field>
-							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
-							<itt-flags data="item" flags="['required']"></itt-flags>
+							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="image">
 							<!--Time, Title, Image, Description, Template, Display, Position, Orientation, Flags-->
@@ -96,7 +95,7 @@
 							<itt-time-field></itt-time-field>
 							<itt-question-type-select data="item"></itt-question-type-select>
 							<!--investigate log error regarding undefined input for itt-title-->
-							<itt-title-field data="item" do-validate="true"></itt-title-field>
+							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
 							<itt-question-text-field data="item" do-validate="true"></itt-question-text-field>
 							<itt-image-field></itt-image-field>
 							<itt-question-options></itt-question-options>
@@ -104,7 +103,7 @@
 						<div ng-switch-when="chapter">
 							<!--Time, Title, Description-->
 							<itt-time-field></itt-time-field>
-							<itt-title-field data="item"></itt-title-field>
+							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
 							<itt-description-field data="item"></itt-description-field>
 						</div>
 						<div ng-switch-when="video">
