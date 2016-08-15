@@ -29,7 +29,7 @@
 			controller: [function() {
 				var ctrl = this;
 				ctrl.handleValidationMessage = handleValidationMessage;
-				ctrl.emptyUrl = ctrl.url = ctrl.xFrameOpts = ctrl.mixedContent = false;
+				ctrl.emptyUrl = ctrl.url = ctrl.xFrameOpts = ctrl.mixedContent = {};
 
 				function handleValidationMessage(notice) {
 					//inform user when field is not valid
@@ -38,6 +38,14 @@
 					//show payload data if present
 					if (notice.payload != null) { //jshint ignore:line
 						ctrl[notice.type].payload = notice.payload;
+					}
+
+					//If user fails for xFrameOpts, then fails another unrelated validation,
+					//remove the original xFrameOpts notice...
+					//example: user inputs google.com, is notified for xFrameOpts, then changes URL
+					//to empty string. -> xFrameOpts notice (from google) should no longer be visible.
+					if (ctrl.xFrameOpts.payload !== null && notice.type !== 'xFrameOpts') {
+						ctrl.xFrameOpts.payload = null;
 					}
 
 				}
