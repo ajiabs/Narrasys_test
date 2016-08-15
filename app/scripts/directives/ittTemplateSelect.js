@@ -15,10 +15,10 @@
 				itemForm: '='
 			},
 			template: [
-			'<div class="field" ng-if="templSelect.isVisible(\'templateSelect\')">',
+			'<div class="field" ng-if="$ctrl.isVisible(\'templateSelect\')">',
 			'	<div class="label">Template</div>',
 			'	<div class="input">',
-			'		<select ng-model="templSelect.data.templateUrl" ng-change="templSelect.onSelectChange(templSelect.data, templSelect.itemForm)" ng-options="option.url as option.name for option in templSelect.data.templateOpts"></select>',
+			'		<select ng-model="$ctrl.data.templateUrl" ng-change="$ctrl.onSelectChange($ctrl.data, $ctrl.itemForm)" ng-options="option.url as option.name for option in $ctrl.data.templateOpts" itt-options-disabled="option.isDisabled for option in $ctrl.data.templateOpts"></select>',
 			'	</div>',
 			'</div>'
 			].join(' '),
@@ -26,8 +26,9 @@
 				var ctrl = this;
 				ctrl.isVisible = selectService.getVisibility;
 				ctrl.onSelectChange = selectService.onSelectChange;
+				ctrl.getSelectOpts = selectService.getSelectOpts;
 			}],
-			controllerAs: 'templSelect',
+			controllerAs: '$ctrl',
 			bindToController: true
 
 	    };
