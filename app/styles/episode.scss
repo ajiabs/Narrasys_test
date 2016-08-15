@@ -887,7 +887,6 @@
 	max-height: 80px;
 	position: absolute;
 	font-size: $fontSize;
-	font-weight: lighter;
 	letter-spacing: $letterSpacing;
 }
 
@@ -1599,13 +1598,14 @@ $career-playbookMondrianText: white;
 }
 @mixin career-playbook-body {
 	font-family: 'Lato',  sans-serif;
-	font-weight: 400;
+	font-weight: 300;
 	color: $career-playbookInvert;
 }
 
 @mixin career-playbook-pq {
 	@include career-playbook-body;
 	font-style: italic;
+	font-weight: 400;
 }
 
 .career-playbook {
@@ -1613,11 +1613,11 @@ $career-playbookMondrianText: white;
 	//currently only in use in CenterVV, CenterVV-mondrian layouts.
 
 	.static-bg__main {
-		background-image: url('/images/customer/CPB_ModernSqaures-01.svg')
+		background-image: url('/images/customer/CPB_ModernSqaures-01.svg');
 	}
 
 	.static-bg__alt {
-		//background-image: url('/images/customer/CPB_Textured_BG_v3-01.png')
+		background-image: url('/images/customer/CPB_Textured_BG_v3.png');
 	}
 
 	.static-bg__main--mondrian {

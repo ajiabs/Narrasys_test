@@ -816,7 +816,6 @@
     max-height: 80px;
     position: absolute;
     font-size: 2.5vw;
-    font-weight: lighter;
     letter-spacing: 0.1em; }
   .narrasys-pro .endingscreen p {
     margin-top: 1em;
@@ -833,7 +832,6 @@
     max-height: 80px;
     position: absolute;
     font-size: 2.5vw;
-    font-weight: lighter;
     letter-spacing: 0.1em; }
   .narrasys-pro .searchPanel__wrapper {
     font-family: "Gotham Thin", sans-serif;
@@ -906,7 +904,6 @@
     max-height: 80px;
     position: absolute;
     font-size: 2.5vw;
-    font-weight: lighter;
     letter-spacing: 0.1em; }
   .narrasys-pro .centerVV .item__title--link, .narrasys-pro .centerVV .item__title--file {
     font-family: "Gotham Thin", sans-serif;
@@ -967,7 +964,6 @@
   max-height: 80px;
   position: absolute;
   font-size: 2.5vw;
-  font-weight: lighter;
   letter-spacing: 0.1em; }
 .field-pros .endingscreen p {
   margin-top: 1em;
@@ -984,7 +980,6 @@
   max-height: 80px;
   position: absolute;
   font-size: 2.5vw;
-  font-weight: lighter;
   letter-spacing: 0.1em; }
 .field-pros .searchPanel__wrapper {
   font-family: 'Lato', sans-serif;
@@ -1069,7 +1064,6 @@
   max-height: 80px;
   position: absolute;
   font-size: 2.5vw;
-  font-weight: lighter;
   letter-spacing: 0.1em; }
 .field-pros .centerVV .item__title--link, .field-pros .centerVV .item__title--file {
   font-family: 'Lato', sans-serif;
@@ -1116,6 +1110,8 @@
 
 .career-playbook .static-bg__main {
   background-image: url("/images/customer/CPB_ModernSqaures-01.svg"); }
+.career-playbook .static-bg__alt {
+  background-image: url("/images/customer/CPB_Textured_BG_v3.png"); }
 .career-playbook .landingscreen h1 {
   margin-top: 1em;
   display: flex;
@@ -1131,7 +1127,6 @@
   max-height: 80px;
   position: absolute;
   font-size: 2.5vw;
-  font-weight: lighter;
   letter-spacing: 0.1em; }
 .career-playbook .endingscreen p {
   margin-top: 1em;
@@ -1148,11 +1143,10 @@
   max-height: 80px;
   position: absolute;
   font-size: 2.5vw;
-  font-weight: lighter;
   letter-spacing: 0.1em; }
 .career-playbook .searchPanel__wrapper {
   font-family: 'Lato',  sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   color: #4d4d4d;
   color: #4d4d4d; }
   .career-playbook .searchPanel__wrapper .fake-link--search-results {
@@ -1162,7 +1156,7 @@
   font-weight: 700; }
   .career-playbook .searchResults .item__title--link, .career-playbook .searchResults .item__link--fake-link, .career-playbook .searchResults .item__link--escape-link {
     font-family: 'Lato',  sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     color: #4d4d4d;
     color: #00acee; }
     .career-playbook .searchResults .item__title--link:before, .career-playbook .searchResults .item__link--fake-link:before, .career-playbook .searchResults .item__link--escape-link:before {
@@ -1174,12 +1168,12 @@
   color: #00acee; }
 .career-playbook .item__link--fake-link {
   font-family: 'Lato',  sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   color: #4d4d4d;
   color: #00acee; }
 .career-playbook .item__text {
   font-family: 'Lato',  sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   color: #4d4d4d; }
 .career-playbook .item__text--h2 {
   font-family: 'Lato',  sans-serif;
@@ -1189,9 +1183,10 @@
   font-weight: 700; }
 .career-playbook .item .item__text--pullquote {
   font-family: 'Lato',  sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   color: #4d4d4d;
-  font-style: italic; }
+  font-style: italic;
+  font-weight: 400; }
   .career-playbook .item .item__text--pullquote:before {
     font-family: 'Lato',  sans-serif;
     font-weight: 700;
@@ -1201,7 +1196,7 @@
   color: white; }
 .career-playbook .item__link--escape-link {
   font-family: 'Lato',  sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   color: #4d4d4d;
   color: #00acee; }
   .career-playbook .item__link--escape-link:before {
@@ -1227,15 +1222,14 @@
   max-height: 80px;
   position: absolute;
   font-size: 2.5vw;
-  font-weight: lighter;
   letter-spacing: 0.1em; }
 .career-playbook .centerVV .item__title--link, .career-playbook .centerVV .item__title--file {
   font-family: 'Lato',  sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   color: #4d4d4d; }
 .career-playbook .centerVV .item__title--link.title--link-embed {
   font-family: 'Lato',  sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   color: #4d4d4d; }
 .career-playbook .centerVV-mondrian .bgLayer.bg-alt {
   border-right: 8px solid #4d4d4d;
