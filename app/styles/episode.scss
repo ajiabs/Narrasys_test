@@ -887,7 +887,6 @@
 	max-height: 80px;
 	position: absolute;
 	font-size: $fontSize;
-	font-weight: lighter;
 	letter-spacing: $letterSpacing;
 }
 
@@ -1580,6 +1579,222 @@ $fieldProMondrianText: white;
 			.displayTime, .startTime {
 				@include fieldpros-header;
 				color: $fieldProMondrianText;
+
+				a {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+}
+
+$career-playbookInvert: #4D4D4D;
+$career-playbookMain: #00ACEE;
+$career-playbookMondrianText: white;
+
+@mixin career-playbook-header {
+	font-family: 'Lato',  sans-serif;
+	font-weight: 700;
+}
+@mixin career-playbook-body {
+	font-family: 'Lato',  sans-serif;
+	font-weight: 300;
+	color: $career-playbookInvert;
+}
+
+@mixin career-playbook-pq {
+	@include career-playbook-body;
+	font-style: italic;
+	font-weight: 400;
+}
+
+.career-playbook {
+	//static-bg's are background images in 2 col layouts
+	//currently only in use in CenterVV, CenterVV-mondrian layouts.
+
+	.static-bg__main {
+		background-image: url('/images/customer/CPB_ModernSqaures-01.svg');
+	}
+
+	.static-bg__alt {
+		background-image: url('/images/customer/CPB_Textured_BG_v3.png');
+	}
+
+	.static-bg__main--mondrian {
+
+	}
+
+	.landingscreen {
+		h1 {
+			@include banner-pq('Lato', $career-playbookMain, 2.5vw, 0.1em);
+		}
+	}
+
+	.endingscreen {
+		p {
+			@include banner-pq('Lato', $career-playbookMain, 2.5vw, 0.1em);
+		}
+	}
+
+	//search view
+	.searchPanel__wrapper {
+		@include career-playbook-body;
+		color: $career-playbookInvert;
+		// 'sorted by' button
+		.fake-link--search-results {
+			color: $career-playbookMain;
+		}
+	}
+
+	.searchResults {
+		@include career-playbook-header;
+		.item__title--link, .item__link--fake-link, .item__link--escape-link {
+			@include career-playbook-body;
+			color: $career-playbookMain;
+			&:before {
+				color: $career-playbookInvert;
+			}
+		}
+	}
+
+	//item overrides
+	.item__title {
+		@include career-playbook-header;
+	}
+
+	.item__title--link, .item__title--file {
+		a {
+			color: $career-playbookMain;
+		}
+	}
+
+	.item__link--fake-link {
+		@include career-playbook-body;
+		color: $career-playbookMain;
+	}
+
+	.item__text {
+		@include career-playbook-body;
+	}
+
+	.item__text--h2 {
+		@include career-playbook-header;
+	}
+
+	.item__text--transmedia, .item__text--definition {
+		h1, h2, h3 {
+			@include career-playbook-header;
+		}
+	}
+	.item .item__text--pullquote {
+		@include career-playbook-pq;
+		&:before {
+			@include career-playbook-header;
+			//override color set on mixin
+			color: $career-playbookMain;
+
+		}
+	}
+
+	.item__title--image-caption, .item__title--image-caption-sliding,
+	.item__text--image-caption, .item__text--image-caption-sliding {
+		color: $career-playbookMondrianText;
+	}
+
+	.item__link--escape-link {
+		@include career-playbook-body;
+		color: $career-playbookMain;
+		&:before {
+			color: $career-playbookInvert;
+		}
+	}
+
+	//timestamp
+	.item {
+		.displayTime, .startTime {
+			@include career-playbook-header;
+			color: $career-playbookMain;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	//layout specific overrides
+	.centered-pro {
+		.banner-pull-quote {
+			h1 {
+				@include banner-pq('Lato', $career-playbookMain, 2.5vw, 0.1em);
+			}
+		}
+	}
+
+	.centerVV {
+		.item__title--link, .item__title--file {
+			@include career-playbook-body;
+		}
+
+		.item__title--link.title--link-embed {
+			@include career-playbook-body;
+		}
+
+	}
+
+	.centerVV-mondrian {
+		.bgLayer {
+			&.bg-alt {
+				border-right: 8px solid $career-playbookInvert;
+				background-color: $career-playbookMain;
+			}
+		}
+
+		.altPane {
+			.item {
+				background-color:  $career-playbookInvert;
+			}
+
+			.item__text, .item__title, .item__title a {
+				color: $career-playbookMondrianText;
+			}
+
+			//override from general item level,
+			//mondrian BG is solid color, so we need to use
+			//the mondrianText
+			.item__text--transmedia, .item__text--definition {
+				h1, h2, h3 {
+					color: $career-playbookMondrianText;
+				}
+			}
+		}
+
+
+		//item__<entity> for non URL titles
+		// item__<entity> a covers both escape and fakeLinks
+		.item__title--link,
+		.item__title--image,
+		.item__title--image-thumbnail,
+		.item__title--link a,
+		.item__title--image a,
+		.item__title--image-thumbnail a {
+			@include career-playbook-header;
+		}
+
+		.item__link--fake-link {
+			color: $career-playbookMondrianText;
+		}
+
+		.item__link--escape-link {
+			@include career-playbook-header;
+			color: $career-playbookMondrianText;
+			&:before {
+				color: $career-playbookMain;
+			}
+		}
+
+		.item {
+			.displayTime, .startTime {
+				@include career-playbook-header;
+				color: $career-playbookMondrianText
 
 				a {
 					text-decoration: underline;
