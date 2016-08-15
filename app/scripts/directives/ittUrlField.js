@@ -9,17 +9,41 @@
 		.directive('ittUrlField', ittUrlField);
 
 	function ittUrlField() {
-	    return {
-	        restrict: 'EA',
+		return {
+			restrict: 'EA',
+			scope: {
+				data: '=',
+			},
 			template: [
-			'<div class="field">',
-			'	<div class="label">URL</div>',
-			'	<div class="input">',
-			'		<input type="text" itt-valid-item-url item="item" name="itemUrl" ng-model-options="{ updateOn: \'blur\' }" ng-model="item.url"/>',
-			'	</div>',
-			'</div>'
-			].join(' ')
-	    };
+				'<div class="field">',
+				'	<div class="label">URL</div>',
+				'	<div class="input">',
+				'		<p ng-if="$ctrl.mixedContent.inform" class="error-red">Mixed Content</p>',
+				'		<p ng-if="$ctrl.emptyUrl.inform" class="error-red">Empty Url</p>',
+				'		<p ng-if="$ctrl.url.inform" class="error-red">{{$ctrl.url.payload}}</p>',
+				'		<p ng-if="$ctrl.xFrameOpts.inform" class="error-red">{{$ctrl.xFrameOpts.payload}}</p>',
+				'		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-model-options="{ updateOn: \'blur\' }" itt-valid-item-url on-validation-notice="$ctrl.handleValidationMessage($notice)"/>',
+				'	</div>',
+				'</div>'
+			].join(' '),
+			controller: [function() {
+				var ctrl = this;
+				ctrl.handleValidationMessage = handleValidationMessage;
+				ctrl.emptyUrl = ctrl.url = ctrl.xFrameOpts = ctrl.mixedContent = false;
+
+				function handleValidationMessage(notice) {
+					console.log('payload', notice);
+					ctrl[notice.type] = {inform: !notice.isValid };
+
+					if (notice.payload != null) {
+						ctrl[notice.type].payload = notice.payload;
+					}
+
+				}
+			}],
+			controllerAs: '$ctrl',
+			bindToController: true
+		};
 	}
 
 
