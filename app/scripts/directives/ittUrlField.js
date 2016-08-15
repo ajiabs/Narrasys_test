@@ -36,7 +36,7 @@
 					ctrl[notice.type] = {inform: !notice.isValid };
 
 					//show payload data if present
-					if (notice.payload != null) {
+					if (notice.payload != null) { //jshint ignore:line
 						ctrl[notice.type].payload = notice.payload;
 					}
 

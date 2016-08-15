@@ -46,9 +46,9 @@
 					//always consider mixedContent url 'valid' but notify user
 					ngModel.$validators.mixedContent = function (modelVal, viewVal) {
 						if (ittUtils.existy(viewVal) && viewVal.match(/^http:\/\//)) {
-							scope.onValidationNotice({$notice: {type: 'mixedContent', isValid: false}})
+							scope.onValidationNotice({$notice: {type: 'mixedContent', isValid: false}});
 						} else {
-							scope.onValidationNotice({$notice: {type: 'mixedContent', isValid: true}})
+							scope.onValidationNotice({$notice: {type: 'mixedContent', isValid: true}});
 						}
 						return true;
 					};
@@ -79,7 +79,7 @@
 						if (ngModel.$isEmpty(viewVal) || youtubeSvc.isYoutubeUrl(viewVal) || _emailOrPlaceholder(viewVal)) {
 							return $q(function (resolve) {
 								scope.onValidationNotice({$notice: {type: 'xFrameOpts', isValid: true}});
-								return resolve()
+								return resolve();
 							});
 						}
 
