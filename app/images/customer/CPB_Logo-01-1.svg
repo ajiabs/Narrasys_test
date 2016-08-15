@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="-349 311.6 194.9 80" style="enable-background:new -349 311.6 194.9 80;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{fill:none;stroke:#4D4D4D;stroke-miterlimit:10;}
+	.st2{fill:#00ACEE;}
+	.st3{fill:#4D4D4D;}
+	.st4{font-family:'Lato-Regular';}
+	.st5{font-size:32.7199px;}
+	.st6{font-family:'Lato-Bold';}
+	.st7{font-size:38.0369px;}
+</style>
+<g>
+
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-256" y1="339.1" x2="-256" y2="394.6" gradientTransform="matrix(1 0 0 -1 0 723.2)">
+		<stop  offset="0" style="stop-color:#FFFFFF"/>
+		<stop  offset="1" style="stop-color:#FFFFFF"/>
+	</linearGradient>
+	<rect x="-341.3" y="328.6" class="st0" width="170.6" height="55.5"/>
+	<polyline class="st1" points="-329,329.5 -341.5,329.5 -341.5,384.5 -171,384.5 	"/>
+	<polygon class="st2" points="-166,365 -166,358.2 -160,361.6 -154.1,365 -160,368.4 -166,371.8 	"/>
+	<text transform="matrix(1 0 0 1 -331.6244 339.6822)" class="st3 st4 st5">The Career</text>
+	<text transform="matrix(1 0 0 1 -331.6244 374.0822)" class="st3 st6 st7">Playbook</text>
+</g>
+</svg>
