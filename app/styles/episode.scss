@@ -1605,10 +1605,12 @@ $career-playbookMondrianText: white;
 @mixin career-playbook-pq {
 	@include career-playbook-body;
 	font-style: italic;
-	font-weight: 400;
+	font-weight: 300;
 }
 
 .career-playbook {
+	background-image: url("/images/customer/CPB_Center_BG-01.svg");
+	//background-size: 62%;
 	//static-bg's are background images in 2 col layouts
 	//currently only in use in CenterVV, CenterVV-mondrian layouts.
 
