@@ -1113,3 +1113,157 @@
   color: white; }
   .field-pros .centerVV-mondrian .item .displayTime a, .field-pros .centerVV-mondrian .item .startTime a {
     text-decoration: underline; }
+
+.career-playbook .static-bg__main {
+  background-image: url("/images/customer/CPB_ModernSqaures-01.svg"); }
+.career-playbook .landingscreen h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Lato";
+  color: white;
+  background-color: #00acee;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  font-weight: lighter;
+  letter-spacing: 0.1em; }
+.career-playbook .endingscreen p {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Lato";
+  color: white;
+  background-color: #00acee;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  font-weight: lighter;
+  letter-spacing: 0.1em; }
+.career-playbook .searchPanel__wrapper {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 400;
+  color: #4d4d4d;
+  color: #4d4d4d; }
+  .career-playbook .searchPanel__wrapper .fake-link--search-results {
+    color: #00acee; }
+.career-playbook .searchResults {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 700; }
+  .career-playbook .searchResults .item__title--link, .career-playbook .searchResults .item__link--fake-link, .career-playbook .searchResults .item__link--escape-link {
+    font-family: 'Lato',  sans-serif;
+    font-weight: 400;
+    color: #4d4d4d;
+    color: #00acee; }
+    .career-playbook .searchResults .item__title--link:before, .career-playbook .searchResults .item__link--fake-link:before, .career-playbook .searchResults .item__link--escape-link:before {
+      color: #4d4d4d; }
+.career-playbook .item__title {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 700; }
+.career-playbook .item__title--link a, .career-playbook .item__title--file a {
+  color: #00acee; }
+.career-playbook .item__link--fake-link {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 400;
+  color: #4d4d4d;
+  color: #00acee; }
+.career-playbook .item__text {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 400;
+  color: #4d4d4d; }
+.career-playbook .item__text--h2 {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 700; }
+.career-playbook .item__text--transmedia h1, .career-playbook .item__text--transmedia h2, .career-playbook .item__text--transmedia h3, .career-playbook .item__text--definition h1, .career-playbook .item__text--definition h2, .career-playbook .item__text--definition h3 {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 700; }
+.career-playbook .item .item__text--pullquote {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 400;
+  color: #4d4d4d;
+  font-style: italic; }
+  .career-playbook .item .item__text--pullquote:before {
+    font-family: 'Lato',  sans-serif;
+    font-weight: 700;
+    color: #00acee; }
+.career-playbook .item__title--image-caption, .career-playbook .item__title--image-caption-sliding,
+.career-playbook .item__text--image-caption, .career-playbook .item__text--image-caption-sliding {
+  color: white; }
+.career-playbook .item__link--escape-link {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 400;
+  color: #4d4d4d;
+  color: #00acee; }
+  .career-playbook .item__link--escape-link:before {
+    color: #4d4d4d; }
+.career-playbook .item .displayTime, .career-playbook .item .startTime {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 700;
+  color: #00acee; }
+  .career-playbook .item .displayTime:hover, .career-playbook .item .startTime:hover {
+    text-decoration: underline; }
+.career-playbook .centered-pro .banner-pull-quote h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Lato";
+  color: white;
+  background-color: #00acee;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  font-weight: lighter;
+  letter-spacing: 0.1em; }
+.career-playbook .centerVV .item__title--link, .career-playbook .centerVV .item__title--file {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 400;
+  color: #4d4d4d; }
+.career-playbook .centerVV .item__title--link.title--link-embed {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 400;
+  color: #4d4d4d; }
+.career-playbook .centerVV-mondrian .bgLayer.bg-alt {
+  border-right: 8px solid #4d4d4d;
+  background-color: #00acee; }
+.career-playbook .centerVV-mondrian .altPane .item {
+  background-color: #4d4d4d; }
+.career-playbook .centerVV-mondrian .altPane .item__text, .career-playbook .centerVV-mondrian .altPane .item__title, .career-playbook .centerVV-mondrian .altPane .item__title a {
+  color: white; }
+.career-playbook .centerVV-mondrian .altPane .item__text--transmedia h1, .career-playbook .centerVV-mondrian .altPane .item__text--transmedia h2, .career-playbook .centerVV-mondrian .altPane .item__text--transmedia h3, .career-playbook .centerVV-mondrian .altPane .item__text--definition h1, .career-playbook .centerVV-mondrian .altPane .item__text--definition h2, .career-playbook .centerVV-mondrian .altPane .item__text--definition h3 {
+  color: white; }
+.career-playbook .centerVV-mondrian .item__title--link,
+.career-playbook .centerVV-mondrian .item__title--image,
+.career-playbook .centerVV-mondrian .item__title--image-thumbnail,
+.career-playbook .centerVV-mondrian .item__title--link a,
+.career-playbook .centerVV-mondrian .item__title--image a,
+.career-playbook .centerVV-mondrian .item__title--image-thumbnail a {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 700; }
+.career-playbook .centerVV-mondrian .item__link--fake-link {
+  color: white; }
+.career-playbook .centerVV-mondrian .item__link--escape-link {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 700;
+  color: white; }
+  .career-playbook .centerVV-mondrian .item__link--escape-link:before {
+    color: #00acee; }
+.career-playbook .centerVV-mondrian .item .displayTime, .career-playbook .centerVV-mondrian .item .startTime {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 700;
+  color: white a;
+    color-text-decoration: underline; }
