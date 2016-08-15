@@ -32,9 +32,10 @@
 				ctrl.emptyUrl = ctrl.url = ctrl.xFrameOpts = ctrl.mixedContent = false;
 
 				function handleValidationMessage(notice) {
-					console.log('payload', notice);
+					//inform user when field is not valid
 					ctrl[notice.type] = {inform: !notice.isValid };
 
+					//show payload data if present
 					if (notice.payload != null) {
 						ctrl[notice.type].payload = notice.payload;
 					}
