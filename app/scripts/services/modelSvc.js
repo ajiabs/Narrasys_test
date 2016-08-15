@@ -394,7 +394,6 @@ angular.module('com.inthetelling.story')
 				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//) && isHttps) {
 					event.noEmbed = true;
 					event.mixedContent = true;
-					event.tipText = 'Link Embed is disabled because ' + event.url + ' is not HTTPS';
 					event.showInlineDetail = false;
 				}
 

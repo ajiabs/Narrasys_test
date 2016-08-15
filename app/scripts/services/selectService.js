@@ -7,8 +7,9 @@
 	angular.module('com.inthetelling.story')
 		.service('selectService', selectService);
 
-	function selectService(authSvc, modelSvc) {
+	function selectService(authSvc, modelSvc, ittUtils) {
 		var _userHasRole = authSvc.userHasRole;
+		var existy = ittUtils.existy;
 
 		//select opts map
 		var _select = {
@@ -351,12 +352,12 @@
 
 					//if they attach an image, and add a link that we can embed in an iframe,
 					//set their template to link-modal
-					// if (item.noEmbed === false && item.mixedContent === false && existy(item.link_image_id)) {
-					// 	item.templateUrl = 'templates/item/link-modal-thumb.html';
-					// 	_templateSelectVisibility(false);
-					// 	console.log('set to linkModalThumb!');
-					// 	return;
-					// }
+					if (item.noEmbed === false && item.mixedContent === false && existy(item.link_image_id)) {
+						item.templateUrl = 'templates/item/link-modal-thumb.html';
+						_templateSelectVisibility(false);
+						console.log('set to linkModalThumb!');
+						return;
+					}
 
 					switch(item.templateUrl) {
 						case 'templates/item/link.html':
@@ -370,6 +371,13 @@
 							_imageFieldVisibility(false);
 							break;
 					}
+
+					console.log(
+						'noEmbed', item.noEmbed,
+						'mixedContent', item.mixedContent,
+						'linked_img_id', item.link_image_id
+					);
+
 					break;
 				case 'transcript':
 					_displaySelectVisibility(false);

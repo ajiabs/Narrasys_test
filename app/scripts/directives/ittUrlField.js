@@ -32,34 +32,37 @@
 				ctrl.emptyUrl = ctrl.url = ctrl.xFrameOpts = ctrl.mixedContent = {};
 
 				function _handleItemSideEffects(notice) {
+					console.count('handleSideEffects');
 					switch(notice.type) {
-						case 'xFrameOpts':
-							if (!notice.isValid) {
-								ctrl.data.tipText = notice.payload;
-								ctrl.data.noEmbed = true;
-								ctrl.data.showInlineDetail = false;
-								//grey out disabled options
-								angular.forEach(ctrl.data.templateOpts, function(opt) {
-									opt.isDisabled = (opt.name === 'Embedded Link');
-								});
-							}
-							break;
 						case 'emptyUrl':
 						case 'url':
 							if (notice.isValid) {
 								ctrl.data.noEmbed = false;
-								ctrl.data.tipText = undefined;
+								angular.forEach(ctrl.data.templateOpts, function(opt) {
+									opt.isDisabled = false;
+								});
 							}
 							break;
+						case 'xFrameOpts':
 						case 'mixedContent':
+							if (!notice.isValid) {
+								console.log('invalid mixed content?', notice.type);
+								ctrl.data.noEmbed = true;
+								ctrl.data.showInlineDetail = false;
+								//grey out disabled options
+								angular.forEach(ctrl.data.templateOpts, function(opt) {
+									opt.isDisabled = (opt.name === 'Embedded Link' || opt.name === 'Link Modal');
+								});
+							}
 							break;
 					}
 					//restore greyed out options
-					if (notice.type !== 'xFrameOpts') {
-						angular.forEach(ctrl.data.templateOpts, function(opt) {
-							opt.isDisabled = false;
-						});
-					}
+					// if (notice.type !== 'mixedContent') {
+					// 	console.log('restoring greyed out opts', notice);
+					// 	angular.forEach(ctrl.data.templateOpts, function(opt) {
+					// 		opt.isDisabled = false;
+					// 	});
+					// }
 				}
 
 				function handleValidationMessage(notice) {
@@ -75,9 +78,9 @@
 					//remove the original xFrameOpts notice...
 					//example: user inputs google.com, is notified for xFrameOpts, then changes URL
 					//to empty string -> xFrameOpts notice (from google) should no longer be visible.
-					if (ctrl.xFrameOpts.payload !== null && notice.type !== 'xFrameOpts') {
-						ctrl.xFrameOpts.payload = null;
-					}
+					// if (ctrl.xFrameOpts.payload !== null && notice.type !== 'xFrameOpts') {
+					// 	ctrl.xFrameOpts.payload = null;
+					// }
 					_handleItemSideEffects(notice);
 				}
 			}],
