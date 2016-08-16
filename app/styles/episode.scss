@@ -1399,8 +1399,6 @@ $fieldProMondrianText: white;
 }
 
 .field-pros {
-	//static-bg's are background images in 2 col layouts
-	//currently only in use in CenterVV, CenterVV-mondrian layouts.
 
 	.landingscreen {
 		h1 {
@@ -1509,7 +1507,6 @@ $fieldProMondrianText: white;
 	}
 
 	.centerVV {
-
 		.static-bg__main {
 			background-image: url('/images/customer/Green_BG_01.svg');
 		}
@@ -1529,17 +1526,16 @@ $fieldProMondrianText: white;
 	}
 
 	.centerVV-mondrian {
-
 		.static-bg__main {
-			border-right: 8px solid $fieldProInvert;
+			border: 8px solid $fieldProInvert;
 			background-color: $fieldProMain;
 		}
 
-		.static-bg__main--mondrian {
+		.static-bg__alt {
 			background: url('/images/customer/Grid_Graphic-01.svg');
 		}
 
-		.altPane {
+		.mainPane {
 			.item {
 				background-color:  $fieldProInvert;
 			}
@@ -1618,21 +1614,6 @@ $career-playbookMondrianText: white;
 
 .career-playbook {
 	background-image: url("/images/customer/CPB_Center_BG-01.svg");
-	//background-size: 62%;
-	//static-bg's are background images in 2 col layouts
-	//currently only in use in CenterVV, CenterVV-mondrian layouts.
-
-	.static-bg__main {
-		//background-image: url('/images/customer/CPB_ModernSqaures-01.svg');
-	}
-
-	.static-bg__alt {
-		background-image: url('/images/customer/CPB_Textured_BG_v3.png');
-	}
-
-	.static-bg__main--mondrian {
-
-	}
 
 	.landingscreen {
 		h1 {
@@ -1740,6 +1721,13 @@ $career-playbookMondrianText: white;
 	}
 
 	.centerVV {
+		.static-bg__main {
+			background-image: url('/images/customer/CPB_ModernSqaures-01.svg');
+		}
+
+		.static-bg__alt {
+			background-image: url('/images/customer/CPB_Textured_BG_v3.png');
+		}
 		.item__title--link, .item__title--file {
 			@include career-playbook-body;
 		}
@@ -1754,6 +1742,10 @@ $career-playbookMondrianText: white;
 		.static-bg__main {
 			border: 4px solid $career-playbookInvert;
 			background-color: $career-playbookMain;
+		}
+
+		.static-bg__alt {
+			background-image: url('/images/customer/CPB_Textured_BG_v3.png');
 		}
 
 		.mainPane {
