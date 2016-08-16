@@ -863,7 +863,7 @@
 
 @mixin static-bg {
 	position: absolute;
-	top: 45px;
+	top: 0;
 	background-repeat: no-repeat;
 	background-size: cover;
 	height: 100vh;
@@ -1015,6 +1015,9 @@
 	}
 
 	.centerVV {
+		.col {
+			position: relative;
+		}
 		.item {
 			&.centerVV-h2 {
 				margin-top: 14px;
@@ -1028,20 +1031,23 @@
 	}
 
 	.centerVV-mondrian {
-		.bgLayer {
-			top: 45px;
-			&.bg-alt {
-				position: fixed;
-				width: 50%;
-				opacity: 1;
-			}
-
-			&.bg-main {
-				opacity: 1;
-				background-size: cover;
-				left: 50%;
-			}
+		.col {
+			position: relative;
 		}
+		//.bgLayer {
+		//	top: 45px;
+		//	&.bg-alt {
+		//		position: fixed;
+		//		width: 50%;
+		//		opacity: 1;
+		//	}
+        //
+		//	&.bg-main {
+		//		opacity: 1;
+		//		background-size: cover;
+		//		left: 50%;
+		//	}
+		//}
 
 		.mainPane {
 			.item {
@@ -1195,6 +1201,8 @@ $narrasysMondrianText: white;
 .narrasys-pro {
 	background-image: url("/images/customer/Narrasys_Tree.svg");
 	background-size: 62%;
+
+
 	.landingscreen {
 		h1 {
 			@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw, 0.1em);
@@ -1394,17 +1402,6 @@ $fieldProMondrianText: white;
 	//static-bg's are background images in 2 col layouts
 	//currently only in use in CenterVV, CenterVV-mondrian layouts.
 
-	.static-bg__main {
-		background-image: url('/images/customer/Green_BG_01.svg');
-	}
-
-	.static-bg__alt {
-		background-image: url('/images/customer/Grid_Graphic-01.svg');
-	}
-
-	.static-bg__main--mondrian {
-		background: url('/images/customer/Grid_Graphic-01.svg');
-	}
 	.landingscreen {
 		h1 {
 			@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw, 0.1em);
@@ -1416,8 +1413,6 @@ $fieldProMondrianText: white;
 			@include banner-pq('Roboto Condensed', $fieldProMain, 2.5vw, 0.1em);
 		}
 	}
-
-
 
 	.searchPanel__wrapper {
 		@include fieldpros-body;
@@ -1514,6 +1509,15 @@ $fieldProMondrianText: white;
 	}
 
 	.centerVV {
+
+		.static-bg__main {
+			background-image: url('/images/customer/Green_BG_01.svg');
+		}
+
+		.static-bg__alt {
+			background-image: url('/images/customer/Grid_Graphic-01.svg');
+		}
+
 		.item__title--link, .item__title--file {
 			@include fieldpros-body;
 		}
@@ -1525,11 +1529,14 @@ $fieldProMondrianText: white;
 	}
 
 	.centerVV-mondrian {
-		.bgLayer {
-			&.bg-alt {
-				border-right: 8px solid $fieldProInvert;
-				background-color: $fieldProMain;
-			}
+
+		.static-bg__main {
+			border-right: 8px solid $fieldProInvert;
+			background-color: $fieldProMain;
+		}
+
+		.static-bg__main--mondrian {
+			background: url('/images/customer/Grid_Graphic-01.svg');
 		}
 
 		.altPane {
@@ -1616,7 +1623,7 @@ $career-playbookMondrianText: white;
 	//currently only in use in CenterVV, CenterVV-mondrian layouts.
 
 	.static-bg__main {
-		background-image: url('/images/customer/CPB_ModernSqaures-01.svg');
+		//background-image: url('/images/customer/CPB_ModernSqaures-01.svg');
 	}
 
 	.static-bg__alt {
@@ -1744,14 +1751,12 @@ $career-playbookMondrianText: white;
 	}
 
 	.centerVV-mondrian {
-		.bgLayer {
-			&.bg-alt {
-				border-right: 8px solid $career-playbookInvert;
-				background-color: $career-playbookMain;
-			}
+		.static-bg__main {
+			border: 4px solid $career-playbookInvert;
+			background-color: $career-playbookMain;
 		}
 
-		.altPane {
+		.mainPane {
 			.item {
 				background-color:  $career-playbookInvert;
 			}

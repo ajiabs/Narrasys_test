@@ -677,14 +677,14 @@
   position: absolute; }
   .professional .static-bg__main {
     position: absolute;
-    top: 45px;
+    top: 0;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
     width: 50vw; }
   .professional .static-bg__alt {
     position: absolute;
-    top: 45px;
+    top: 0;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
@@ -755,21 +755,15 @@
       font-size: 1.5vw; }
   .professional .centered-pro .edit-event {
     top: 1.8em; }
+  .professional .centerVV .col {
+    position: relative; }
   .professional .centerVV .item.centerVV-h2 {
     margin-top: 14px;
     background: white; }
   .professional .centerVV .item__text--definition {
     font-size: 1.7vw; }
-  .professional .centerVV-mondrian .bgLayer {
-    top: 45px; }
-    .professional .centerVV-mondrian .bgLayer.bg-alt {
-      position: fixed;
-      width: 50%;
-      opacity: 1; }
-    .professional .centerVV-mondrian .bgLayer.bg-main {
-      opacity: 1;
-      background-size: cover;
-      left: 50%; }
+  .professional .centerVV-mondrian .col {
+    position: relative; }
   .professional .centerVV-mondrian .mainPane .item {
     margin-top: 0.8em; }
   .professional .centerVV-mondrian .altPane .item {
@@ -944,12 +938,6 @@
     .narrasys-pro .centerVV-mondrian .item .displayTime a, .narrasys-pro .centerVV-mondrian .item .startTime a {
       text-decoration: underline; }
 
-.field-pros .static-bg__main {
-  background-image: url("/images/customer/Green_BG_01.svg"); }
-.field-pros .static-bg__alt {
-  background-image: url("/images/customer/Grid_Graphic-01.svg"); }
-.field-pros .static-bg__main--mondrian {
-  background: url("/images/customer/Grid_Graphic-01.svg"); }
 .field-pros .landingscreen h1 {
   margin-top: 1em;
   display: flex;
@@ -1066,6 +1054,10 @@
   position: absolute;
   font-size: 2.5vw;
   letter-spacing: 0.1em; }
+.field-pros .centerVV .static-bg__main {
+  background-image: url("/images/customer/Green_BG_01.svg"); }
+.field-pros .centerVV .static-bg__alt {
+  background-image: url("/images/customer/Grid_Graphic-01.svg"); }
 .field-pros .centerVV .item__title--link, .field-pros .centerVV .item__title--file {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
@@ -1074,9 +1066,11 @@
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   color: #4b4b52; }
-.field-pros .centerVV-mondrian .bgLayer.bg-alt {
+.field-pros .centerVV-mondrian .static-bg__main {
   border-right: 8px solid #4b4b52;
   background-color: #6baa36; }
+.field-pros .centerVV-mondrian .static-bg__main--mondrian {
+  background: url("/images/customer/Grid_Graphic-01.svg"); }
 .field-pros .centerVV-mondrian .altPane .item {
   background-color: #4b4b52; }
 .field-pros .centerVV-mondrian .altPane .item__text, .field-pros .centerVV-mondrian .altPane .item__title, .field-pros .centerVV-mondrian .altPane .item__title a {
@@ -1111,8 +1105,6 @@
 
 .career-playbook {
   background-image: url("/images/customer/CPB_Center_BG-01.svg"); }
-  .career-playbook .static-bg__main {
-    background-image: url("/images/customer/CPB_ModernSqaures-01.svg"); }
   .career-playbook .static-bg__alt {
     background-image: url("/images/customer/CPB_Textured_BG_v3.png"); }
   .career-playbook .landingscreen h1 {
@@ -1234,14 +1226,14 @@
     font-family: 'Lato',  sans-serif;
     font-weight: 300;
     color: #4d4d4d; }
-  .career-playbook .centerVV-mondrian .bgLayer.bg-alt {
-    border-right: 8px solid #4d4d4d;
+  .career-playbook .centerVV-mondrian .static-bg__main {
+    border: 4px solid #4d4d4d;
     background-color: #00acee; }
-  .career-playbook .centerVV-mondrian .altPane .item {
+  .career-playbook .centerVV-mondrian .mainPane .item {
     background-color: #4d4d4d; }
-  .career-playbook .centerVV-mondrian .altPane .item__text, .career-playbook .centerVV-mondrian .altPane .item__title, .career-playbook .centerVV-mondrian .altPane .item__title a {
+  .career-playbook .centerVV-mondrian .mainPane .item__text, .career-playbook .centerVV-mondrian .mainPane .item__title, .career-playbook .centerVV-mondrian .mainPane .item__title a {
     color: white; }
-  .career-playbook .centerVV-mondrian .altPane .item__text--transmedia h1, .career-playbook .centerVV-mondrian .altPane .item__text--transmedia h2, .career-playbook .centerVV-mondrian .altPane .item__text--transmedia h3, .career-playbook .centerVV-mondrian .altPane .item__text--definition h1, .career-playbook .centerVV-mondrian .altPane .item__text--definition h2, .career-playbook .centerVV-mondrian .altPane .item__text--definition h3 {
+  .career-playbook .centerVV-mondrian .mainPane .item__text--transmedia h1, .career-playbook .centerVV-mondrian .mainPane .item__text--transmedia h2, .career-playbook .centerVV-mondrian .mainPane .item__text--transmedia h3, .career-playbook .centerVV-mondrian .mainPane .item__text--definition h1, .career-playbook .centerVV-mondrian .mainPane .item__text--definition h2, .career-playbook .centerVV-mondrian .mainPane .item__text--definition h3 {
     color: white; }
   .career-playbook .centerVV-mondrian .item__title--link,
   .career-playbook .centerVV-mondrian .item__title--image,
