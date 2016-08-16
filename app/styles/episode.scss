@@ -1573,6 +1573,7 @@ $field-prosSecondary: white;
 }
 
 
+
 $career-playbookPrimary: #4D4D4D;
 $career-playbookAccent: #00ACEE;
 $career-playbookSecondary: white;
@@ -1596,7 +1597,7 @@ $career-playbookSecondary: white;
 
 .career-playbook {
 
-	background-image: url('/images/customer/CPB_Center_BG-01.png');
+	background-image: url('/images/customer/CPB_Center_BG-01.svg');
 
 	.landingscreen {
 		h1 {
@@ -1705,11 +1706,11 @@ $career-playbookSecondary: white;
 
 	.centerVV {
 		.static-bg__main {
-			background-image: url('/images/customer/CPB_ModernSqaures-01.png');
+			background-image: url('/images/customer/CPB_ModernSqaures-01.svg');
 		}
 
 		.static-bg__alt {
-			background-image: url('/images/customer/CPB_Textured_BG_v3-01.png');
+			background-image: url('/images/customer/CPB_Textured_BG_v3.png');
 		}
 
 		.item__title--link, .item__title--file {
@@ -1729,7 +1730,7 @@ $career-playbookSecondary: white;
 		}
 
 		.static-bg__alt {
-			background-image: url('/images/customer/CPB_Textured_BG_v3-01.png');
+
 		}
 
 		.mainPane {
