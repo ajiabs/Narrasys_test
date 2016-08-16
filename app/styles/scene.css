@@ -471,6 +471,14 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	width: 95%;
 }
 
+.scene.centerVV-mondrian.videoLeft {
+	flex-direction: row;
+}
+
+.scene.centerVV-mondrian.videoRight {
+	flex-direction: row-reverse;
+}
+
 /* ------------------------------------------- */
 
 .scene.cornerH {}
