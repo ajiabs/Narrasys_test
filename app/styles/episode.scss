@@ -1448,6 +1448,7 @@ $field-prosSecondary: white;
 		&:before {
 			@include field-pros-header;
 			//override color set on mixin
+			top: 0.5vw; // this is a fieldpros specific tweak :(
 			color: $field-prosAccent;
 
 		}
