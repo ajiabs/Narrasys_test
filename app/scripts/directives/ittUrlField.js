@@ -32,11 +32,14 @@
 				ctrl.emptyUrl = ctrl.url = ctrl.xFrameOpts = ctrl.mixedContent = {};
 
 				function _handleItemSideEffects(notice) {
+					console.group('validationNotice');
 					console.count('handleSideEffects');
+					console.info('notice:', '\n', notice);
+					console.groupEnd();
 					switch(notice.type) {
 						case 'emptyUrl':
 						case 'url':
-							if (notice.isValid) {
+							if (!notice.isValid) {
 								ctrl.data.noEmbed = false;
 								angular.forEach(ctrl.data.templateOpts, function(opt) {
 									opt.isDisabled = false;
