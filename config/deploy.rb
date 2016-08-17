@@ -36,6 +36,14 @@ namespace :deploy do
     end
   end
 
+  desc 'Update new relic application id'
+  task :update_new_relic_application_id do
+    on roles(:app) do
+      vendor_combined_path = File.join(fetch(:release_path), 'dist/scripts/*.vendor-combined.min.js')
+      execute "sed -i 's/applicationID:\"3997255\"/applicationID:\"#{fetch(:new_relic_application_id)}\"/g' #{vendor_combined_path}"
+    end
+  end
+
   desc 'Update available releases page'  
   task :update_releases_page do
     on roles(:app) do
