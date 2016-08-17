@@ -1595,7 +1595,9 @@ $career-playbookSecondary: white;
 }
 
 .career-playbook {
-	background-image: url('/images/customer/CPB_Window_BG.png');
+	background-image: url('/images/customer/CPB_Window_BG_720.png');
+	background-size: 100%;
+
 	.landingscreen {
 		h1 {
 			@include banner-pq('Lato', $career-playbookAccent, 2.5vw, 0.1em);

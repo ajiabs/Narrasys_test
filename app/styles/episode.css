@@ -1090,7 +1090,8 @@
     color-text-decoration: underline; }
 
 .career-playbook {
-  background-image: url("/images/customer/CPB_Window_BG.png"); }
+  background-image: url("/images/customer/CPB_Window_BG_720.png");
+  background-size: 100%; }
   .career-playbook .landingscreen h1 {
     margin-top: 1em;
     display: flex;
