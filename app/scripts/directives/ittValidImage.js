@@ -5,9 +5,9 @@
 	'use strict';
 
 	angular.module('com.inthetelling.story')
-		.directive('ittValidateImage', ittValidateImage);
+		.directive('ittValidImage', ittValidImage);
 
-	function ittValidateImage(ittUtils) {
+	function ittValidImage(ittUtils) {
 	    return {
 	        restrict: 'EA',
 			require: '^ngModel',
