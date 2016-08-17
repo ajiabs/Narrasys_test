@@ -7,9 +7,8 @@
 	angular.module('com.inthetelling.story')
 		.service('selectService', selectService);
 
-	function selectService(authSvc, modelSvc, ittUtils) {
+	function selectService(authSvc, modelSvc) {
 		var _userHasRole = authSvc.userHasRole;
-		var existy = ittUtils.existy;
 
 		//select opts map
 		var _select = {
