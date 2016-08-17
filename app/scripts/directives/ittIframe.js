@@ -91,6 +91,9 @@
 			}
 
 			function resizeIframeReviewMode() {
+				var narrasys = 'templates/episode/narrasys-pro.html';
+				var cpb = 'templates/episode/career-playbook.html';
+
 				//only resize iframe in discover mode for the narrasys pro template (at the moment)
 				if (appState.viewMode === 'discover' &&
 					appState.playerTemplate === 'templates/episode/narrasys-pro.html' &&
