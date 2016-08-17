@@ -352,12 +352,12 @@
 
 					//if they attach an image, and add a link that we can embed in an iframe,
 					//set their template to link-modal
-					if (item.noEmbed === false && item.mixedContent === false && existy(item.link_image_id)) {
-						item.templateUrl = 'templates/item/link-modal-thumb.html';
-						_templateSelectVisibility(false);
-						console.log('set to linkModalThumb!');
-						return;
-					}
+					// if (item.noEmbed === false && item.mixedContent === false && existy(item.link_image_id)) {
+					// 	item.templateUrl = 'templates/item/link-modal-thumb.html';
+					// 	_templateSelectVisibility(false);
+					// 	console.log('set to linkModalThumb!');
+					// 	return;
+					// }
 
 					switch(item.templateUrl) {
 						case 'templates/item/link.html':

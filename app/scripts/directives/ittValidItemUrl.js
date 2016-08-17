@@ -68,8 +68,7 @@
 							scope.onValidationNotice({$notice: {type: 'url', isValid: true}});
 							return true;
 						} else {
-							var message = viewVal + ' is not a valid URL.';
-							scope.onValidationNotice({$notice: {type: 'url', isValid: false, payload: message}});
+							scope.onValidationNotice({$notice: {type: 'url', isValid: false, payload: viewVal}});
 							return false;
 						}
 					};
@@ -86,7 +85,7 @@
 						return dataSvc.checkXFrameOpts(viewVal)
 							.then(function (noEmbed) {
 								if (noEmbed) {
-									var tipText = 'Link embed is disabled because ' + viewVal + ' does not allow iframing';
+									var tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
 									scope.onValidationNotice({
 										$notice: {
 											type: 'xFrameOpts',
