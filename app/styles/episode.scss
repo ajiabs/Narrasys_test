@@ -866,7 +866,7 @@
 	top: 0;
 	background-repeat: no-repeat;
 	background-size: cover;
-	height: 100vh;
+	height: 100%;
 	width: 50vw;
 }
 
@@ -911,7 +911,6 @@
 		justify-content: space-between;
 		align-items: flex-end;
 		.professional__logo {
-			border: 1px solid black;
 			height: 130px;
 		}
 		.professional__copyright {
@@ -1030,13 +1029,13 @@
 			position: relative;
 		}
 
-		.mainPane {
+		.altPane {
 			.item {
 				margin-top: 0.8em;
 			}
 		}
 
-		.altPane {
+		.mainPane {
 			.item {
 				margin-top: 1.7em;
 				&:first-child {
