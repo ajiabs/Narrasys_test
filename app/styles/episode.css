@@ -680,14 +680,14 @@
     top: 0;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 100vh;
+    height: 100%;
     width: 50vw; }
   .professional .static-bg__alt {
     position: absolute;
     top: 0;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 100vh;
+    height: 100%;
     width: 50vw; }
   .professional .mainPane, .professional .altPane {
     background-color: transparent; }
@@ -696,7 +696,6 @@
     justify-content: space-between;
     align-items: flex-end; }
     .professional .professional__branding .professional__logo {
-      border: 1px solid black;
       height: 130px; }
     .professional .professional__branding .professional__copyright {
       z-index: 1;
@@ -761,16 +760,16 @@
     font-size: 1.7vw; }
   .professional .centerVV-mondrian .col {
     position: relative; }
-  .professional .centerVV-mondrian .mainPane .item {
-    margin-top: 0.8em; }
   .professional .centerVV-mondrian .altPane .item {
+    margin-top: 0.8em; }
+  .professional .centerVV-mondrian .mainPane .item {
     margin-top: 1.7em; }
-    .professional .centerVV-mondrian .altPane .item:first-child {
+    .professional .centerVV-mondrian .mainPane .item:first-child {
       padding: 5px 0 3px 7px; }
-  .professional .centerVV-mondrian .altPane .item__title--transmedia {
+  .professional .centerVV-mondrian .mainPane .item__title--transmedia {
     padding-top: 0;
     margin-top: 0; }
-  .professional .centerVV-mondrian .altPane .item__text--transmedia {
+  .professional .centerVV-mondrian .mainPane .item__text--transmedia {
     padding-top: 0;
     margin-top: 0; }
   .professional .centerVV-mondrian .item__link--escape-link {
