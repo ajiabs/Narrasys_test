@@ -1,5 +1,6 @@
 set :stage, :demo
 set :rails_env, "demo"
+set :new_relic_application_id, "4116616"
 
 # Simple Role Syntax
 # ==================
@@ -42,3 +43,4 @@ role :app,  %w{deploy@demo.inthetelling.com}
 # setting per server overrides global ssh_options
 
 # fetch(:default_env).merge!(rails_env: :development)
+before "deploy:publishing", "deploy:update_new_relic_application_id"
