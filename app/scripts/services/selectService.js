@@ -371,12 +371,6 @@
 							break;
 					}
 
-					console.log(
-						'noEmbed', item.noEmbed,
-						'mixedContent', item.mixedContent,
-						'linked_img_id', item.link_image_id
-					);
-
 					break;
 				case 'transcript':
 					_displaySelectVisibility(false);
