@@ -680,15 +680,15 @@
     top: 0;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 100vh;
-    width: 50vw; }
+    height: 100%;
+    width: 100%; }
   .professional .static-bg__alt {
     position: absolute;
     top: 0;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 100vh;
-    width: 50vw; }
+    height: 100%;
+    width: 100%; }
   .professional .mainPane, .professional .altPane {
     background-color: transparent; }
   .professional .professional__branding {
@@ -696,7 +696,6 @@
     justify-content: space-between;
     align-items: flex-end; }
     .professional .professional__branding .professional__logo {
-      border: 1px solid black;
       height: 130px; }
     .professional .professional__branding .professional__copyright {
       z-index: 1;
@@ -761,16 +760,16 @@
     font-size: 1.7vw; }
   .professional .centerVV-mondrian .col {
     position: relative; }
-  .professional .centerVV-mondrian .mainPane .item {
-    margin-top: 0.8em; }
   .professional .centerVV-mondrian .altPane .item {
+    margin-top: 0.8em; }
+  .professional .centerVV-mondrian .mainPane .item {
     margin-top: 1.7em; }
-    .professional .centerVV-mondrian .altPane .item:first-child {
+    .professional .centerVV-mondrian .mainPane .item:first-child {
       padding: 5px 0 3px 7px; }
-  .professional .centerVV-mondrian .altPane .item__title--transmedia {
+  .professional .centerVV-mondrian .mainPane .item__title--transmedia {
     padding-top: 0;
     margin-top: 0; }
-  .professional .centerVV-mondrian .altPane .item__text--transmedia {
+  .professional .centerVV-mondrian .mainPane .item__text--transmedia {
     padding-top: 0;
     margin-top: 0; }
   .professional .centerVV-mondrian .item__link--escape-link {
@@ -808,7 +807,7 @@
     max-height: 80px;
     position: absolute;
     font-size: 2.5vw;
-    letter-spacing: 0.1em; }
+    letter-spacing: normal; }
   .narrasys-pro .endingscreen p {
     margin-top: 1em;
     display: flex;
@@ -824,7 +823,7 @@
     max-height: 80px;
     position: absolute;
     font-size: 2.5vw;
-    letter-spacing: 0.1em; }
+    letter-spacing: normal; }
   .narrasys-pro .searchPanel__wrapper {
     font-family: "Gotham Thin", sans-serif;
     color: #5b5b5b;
@@ -896,7 +895,7 @@
     max-height: 80px;
     position: absolute;
     font-size: 2.5vw;
-    letter-spacing: 0.1em; }
+    letter-spacing: normal; }
   .narrasys-pro .centerVV .item__title--link, .narrasys-pro .centerVV .item__title--file {
     font-family: "Gotham Thin", sans-serif;
     color: #5b5b5b; }
@@ -950,7 +949,7 @@
   max-height: 80px;
   position: absolute;
   font-size: 2.5vw;
-  letter-spacing: 0.1em; }
+  letter-spacing: normal; }
 .field-pros .endingscreen p {
   margin-top: 1em;
   display: flex;
@@ -966,7 +965,7 @@
   max-height: 80px;
   position: absolute;
   font-size: 2.5vw;
-  letter-spacing: 0.1em; }
+  letter-spacing: normal; }
 .field-pros .searchPanel__wrapper {
   font-family: 'Lato',  sans-serif;
   font-weight: 300;
@@ -1044,7 +1043,7 @@
   max-height: 80px;
   position: absolute;
   font-size: 2.5vw;
-  letter-spacing: 0.1em; }
+  letter-spacing: normal; }
 .field-pros .centerVV .static-bg__main {
   background-image: url("/images/customer/Green_BG_01.svg"); }
 .field-pros .centerVV .static-bg__alt {
@@ -1091,7 +1090,8 @@
     color-text-decoration: underline; }
 
 .career-playbook {
-  background-image: url("/images/customer/CPB_Center_BG-01.svg"); }
+  background-image: url("/images/customer/CPB_Window_BG_720.png");
+  background-size: 100%; }
   .career-playbook .landingscreen h1 {
     margin-top: 1em;
     display: flex;
@@ -1107,7 +1107,7 @@
     max-height: 80px;
     position: absolute;
     font-size: 2.5vw;
-    letter-spacing: 0.1em; }
+    letter-spacing: normal; }
   .career-playbook .endingscreen p {
     margin-top: 1em;
     display: flex;
@@ -1123,7 +1123,7 @@
     max-height: 80px;
     position: absolute;
     font-size: 2.5vw;
-    letter-spacing: 0.1em; }
+    letter-spacing: normal; }
   .career-playbook .searchPanel__wrapper {
     font-family: 'Lato',  sans-serif;
     font-weight: 300;
@@ -1201,7 +1201,7 @@
     max-height: 80px;
     position: absolute;
     font-size: 2.5vw;
-    letter-spacing: 0.1em; }
+    letter-spacing: normal; }
   .career-playbook .centerVV .static-bg__main {
     background-image: url("/images/customer/CPB_ModernSqaures-01.svg"); }
   .career-playbook .centerVV .static-bg__alt {
