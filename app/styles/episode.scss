@@ -867,7 +867,7 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 	height: 100%;
-	width: 50vw;
+	width: 100%;
 }
 
 /*base template class */
@@ -1185,13 +1185,13 @@ $narrasysMondrianText: white;
 
 	.landingscreen {
 		h1 {
-			@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw, 0.1em);
+			@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw);
 		}
 	}
 
 	.endingscreen {
 		p {
-			@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw, 0.1em);
+			@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw);
 		}
 	}
 
@@ -1280,7 +1280,7 @@ $narrasysMondrianText: white;
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
-				@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw, 0.1em);
+				@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw);
 			}
 		}
 	}
@@ -1382,13 +1382,13 @@ $field-prosSecondary: white;
 .field-pros {
 	.landingscreen {
 		h1 {
-			@include banner-pq('Roboto Condensed', $field-prosAccent, 2.5vw, 0.1em);
+			@include banner-pq('Roboto Condensed', $field-prosAccent, 2.5vw);
 		}
 	}
 
 	.endingscreen {
 		p {
-			@include banner-pq('Roboto Condensed', $field-prosAccent, 2.5vw, 0.1em);
+			@include banner-pq('Roboto Condensed', $field-prosAccent, 2.5vw);
 		}
 	}
 
@@ -1481,7 +1481,7 @@ $field-prosSecondary: white;
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
-				@include banner-pq('Roboto Condensed', $field-prosAccent, 2.5vw, 0.1em);
+				@include banner-pq('Roboto Condensed', $field-prosAccent, 2.5vw);
 			}
 		}
 	}
@@ -1600,13 +1600,13 @@ $career-playbookSecondary: white;
 
 	.landingscreen {
 		h1 {
-			@include banner-pq('Lato', $career-playbookAccent, 2.5vw, 0.1em);
+			@include banner-pq('Lato', $career-playbookAccent, 2.5vw);
 		}
 	}
 
 	.endingscreen {
 		p {
-			@include banner-pq('Lato', $career-playbookAccent, 2.5vw, 0.1em);
+			@include banner-pq('Lato', $career-playbookAccent, 2.5vw);
 		}
 	}
 
@@ -1698,7 +1698,7 @@ $career-playbookSecondary: white;
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
-				@include banner-pq('Lato', $career-playbookAccent, 2.5vw, 0.1em);
+				@include banner-pq('Lato', $career-playbookAccent, 2.5vw);
 			}
 		}
 	}
