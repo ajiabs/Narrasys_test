@@ -681,14 +681,14 @@
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
-    width: 50vw; }
+    width: 100%; }
   .professional .static-bg__alt {
     position: absolute;
     top: 0;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
-    width: 50vw; }
+    width: 100%; }
   .professional .mainPane, .professional .altPane {
     background-color: transparent; }
   .professional .professional__branding {
