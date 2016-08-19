@@ -99,6 +99,7 @@ angular.module('com.inthetelling.story')
 
 
 				if (!scope.item.layouts) {
+					console.log('set layouts array to inline');
 					scope.item.layouts = ["inline"];
 				}
 				setupItemForm();

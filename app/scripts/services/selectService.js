@@ -158,8 +158,6 @@
 				case 'templates/scene/centerVV.html':
 				case 'templates/scene/centerVV-Mondrian.html':
 					_displaySelectVisibility(false);
-					item.layouts[0] = '';
-					item.layouts[1] = 'showCurrent';
 					break;
 				case 'templates/scene/pip.html':
 				case 'templates/scene/cornerH.html':
@@ -178,23 +176,19 @@
 				case 'templates/scene/2colR.html':
 				case 'templates/scene/mirrored-twocol.html':
 					_select.display = [
-						{value: _D2.a.value, name: _D2.a.name},
-						{value: _D2.b.value, name: _D2.b.name}
+						{value: _D3.a.value, name: _D3.a.name},
+						{value: _D3.b.value, name: _D3.b.name}
 					];
 					break;
 			}
 		}
 
-		function setSceneVideoPositionAndLayout(item) {
+		function _setSceneVideoPosition(item) {
 			switch(item.templateUrl) {
 				case 'templates/scene/1col.html':
 				case 'templates/scene/centered.html':
 				case 'templates/scene/centeredPro.html':
 					_videoPositionSelectVisibility(false);
-					_select.video = [
-						{value: 'inline', name: 'Inline'},
-						{value: '', name: 'Centered'}
-					];
 					break;
 				case 'templates/scene/2colL.html':
 				case 'templates/scene/2colR.html':
@@ -209,14 +203,39 @@
 						{value: 'videoLeft', name: 'Video on Left'},
 						{value: 'videoRight', name: 'Video on Right'}
 					];
-					item.layouts[0] = 'videoLeft';
+					break;
+			}
+		}
 
-					// if (/2col/.test(item.templateUrl)) {
-                    //
-					// 	item.layouts[1] = '';
-					// } else {
-					// 	item.layouts[1] = 'showCurrent';
-					// }
+		function _setSceneItemLayout(item) {
+
+			if (!item.layouts) {
+				item.layouts = [];
+			}
+			console.info("layouts", item.layouts);
+			switch(item.templateUrl) {
+				case 'templates/scene/centered.html':
+				case 'templates/scene/centeredPro.html':
+				case 'templates/scene/centerVV.html':
+				case 'templates/scene/centerVV-Mondrian.html':
+					//videoLeft / videoRight unavailable for this case
+					//so ok to reassign layouts array.
+					item.layouts = [_D1.a.value];
+					break;
+				// case 'templates/scene/cornerH.html':
+				// case 'templates/scene/cornerV.html':
+				// case 'templates/scene/pip.html':
+				// 	//D1 = no setting of layout, display dropdown
+				// 	break;
+				case 'templates/scene/1col.html':
+					item.layouts[1] = item.layouts[1] || _D3.b.value;
+					console.log('1col layouts', item.layouts);
+				// case 'templates/scene/2colL.html':
+				// 	break;
+				case 'templates/scene/2colR.html':
+				case 'templates/scene/mirrored-twocol.html':
+					// item.layouts[0] = _D3.a.value;
+					item.layouts[1] = item.layouts[1] || _D3.b.value;
 					break;
 			}
 		}
@@ -235,19 +254,27 @@
 					_displaySelectVisibility(false);
 					_videoPositionSelectVisibility(false);
 					_templateSelectVisibility(true);
-					return [
+					var scenes = [
 						{url: _scenes.centered, name: 'Centered'},
 						{url: _scenes.centeredPro, name: 'Centered Pro, Hide Transcript & Transmedia'},
-						{url: _scenes.cornerV, name: '2 Columns, Video opposite Transmedia'},
-						{url: _scenes['1col'], name: 'One Column, Video Above Content'},
-						{url: _scenes['2colL'], name: '2 Columns, Video opposite Text'},
-						{url: _scenes['2colR'], name: 'Two Columns (mirrored)'},
-						{url: _scenes.mirroredTwoCol, name: '2Col (v2 mirrored)'},
+						{url: _scenes['1col'], name: 'One Column'},
+						{url: _scenes.cornerV, name: 'Corner Video, vertical'},
+						{url: _scenes.mirroredTwoCol, name: 'Two Columns (v2 mirrored vert)'},
+						{url: _scenes.cornerH, name: 'Corner video, horizontal'},
 						{url: _scenes.centerVV, name: 'Vertical Pro, Hide Transcript'},
 						{url: _scenes.centerVVMondrian, name: 'Vertical Pro Mondrian, Hide Transcript'},
-						{url: _scenes.cornerH, name: '2 Rows, Video above Transmedia'},
 						{url: _scenes.pip, name: 'Picture-in-picture'}
 					];
+
+					if (_userHasRole('admin')) {
+						scenes.splice(
+							4, 0,
+							{url: _scenes['2colL'], name: '2 Columns'},
+							{url: _scenes['2colR'], name: 'Two Columns (mirrored)'}
+							)
+					}
+
+					return scenes;
 				case 'transcript':
 					_speakerFieldVisibility(true);
 					_templateSelectVisibility(true);
@@ -337,7 +364,8 @@
 			switch(item.producerItemType) {
 				case 'scene':
 					_setSceneDisplayOpts(item);
-					setSceneVideoPositionAndLayout(item);
+					_setSceneVideoPosition(item);
+					_setSceneItemLayout(item);
 					break;
 				case 'link':
 					_displaySelectVisibility(true);
@@ -348,15 +376,6 @@
 					} else {
 						item.layouts[0] = 'inline';
 					}
-
-					//if they attach an image, and add a link that we can embed in an iframe,
-					//set their template to link-modal
-					// if (item.noEmbed === false && item.mixedContent === false && existy(item.link_image_id)) {
-					// 	item.templateUrl = 'templates/item/link-modal-thumb.html';
-					// 	_templateSelectVisibility(false);
-					// 	console.log('set to linkModalThumb!');
-					// 	return;
-					// }
 
 					switch(item.templateUrl) {
 						case 'templates/item/link.html':

@@ -566,7 +566,9 @@ angular.module('com.inthetelling.story')
 					"title": {},
 					"description": {},
 					"templateOpts": selectService.getTemplates(type),
-					"layouts": ['', 'showCurrent']
+					//set to showCurrent, default value of first available scene
+					//aka centered
+					"layouts": ['showCurrent']
 				};
 			}
 			if (type === 'chapter') {
