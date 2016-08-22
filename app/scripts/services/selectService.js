@@ -137,8 +137,8 @@
 					_displaySelectVisibility(true);
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
-						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
-						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
+						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: true},
+						{value: 'mainFg', name: 'Text pane foreground', isDisabled: true},
 						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: false},
 						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: false}
 					];
@@ -282,6 +282,31 @@
 
 		function getTemplates(type) {
 			switch (type) {
+				case 'episode':
+					return [
+						{name: 'templates/episode/story.html', value: '(Default)'},
+						{name: 'templates/episode/episode.html', value: '(Unbranded)'},
+						{name: 'templates/episode/career-playbook.html', value: 'Career Playbook'},
+						{name: 'templates/episode/columbia.html', value: 'Columbia University'},
+						{name: 'templates/episode/columbiabusiness.html', value: 'Columbia Business School'},
+						{name: 'templates/episode/eliterate.html', value: 'e-Literate TV'},
+						{name: 'templates/episode/ewb.html', value: 'Engineers Without Borders'},
+						{name: 'templates/episode/fieldpros.html', value: 'Field Pros'},
+						{name: 'templates/episode/gw.html', value: 'George Washington'},
+						{name: 'templates/episode/gwlaw.html', value: 'George Washington Law'},
+						{name: 'templates/episode/gwsb.html', value: 'George Washington Fed MOOC'},
+						{name: 'templates/episode/kellogg.html', value: 'Kellogg'},
+						{name: 'templates/episode/narrasys-pro.html', value: 'Narrasys Professional'},
+						{name: 'templates/episode/middlebury.html', value: 'Middlebury'},
+						{name: 'templates/episode/purdue.html', value: 'Purdue'},
+						{name: 'templates/episode/regis.html', value: 'Regis'},
+						{name: 'templates/episode/schoolclimatesolutions.html', value: 'School Climate Solutions'},
+						{name: 'templates/episode/usc.html', value: 'University of Southern California'},
+						{name: 'templates/episode/washingtonSBCTC.html', value: 'Washington SBCTC'},
+						{name: 'templates/episode/wiley1.html', value: 'Wiley'},
+						{name: 'templates/episode/wiley2.html', value: 'Wiley (without endscreen text)'},
+					];
+					break;
 				case 'scene':
 					_displaySelectVisibility(false);
 					_videoPositionSelectVisibility(false);
@@ -323,7 +348,7 @@
 						{url: 'templates/item/text-h1.html', name: 'Header 1'},
 						{url: 'templates/item/text-h2.html', name: 'Header 2'},
 						{url: 'templates/item/pullquote.html', name: 'Pullquote'},
-						{url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
+						// {url: 'templates/item/pullquote-noattrib.html', name: 'Pullquote with attribution'},
 						{url: 'templates/item/text-transmedia.html', name: 'Long text (as transmedia)'},
 						{url: 'templates/item/text-definition.html', name: 'Definition (as transmedia)'}
 					];

@@ -12,16 +12,26 @@
 	        restrict: 'EA',
 	        scope: {
 	        	data: "=",
-	        	doValidate: '=?'
+	        	doValidate: '=?',
+				ittItemForm: '=?'
 			},
 			template: [
-			'<div class="field">',
-			'	<div class="label">Question text</div>',
-			'	<div class="input" do-validate="qText.doValidate" sxs-input-i18n="qText.data.data._plugin.questiontext" x-inputtype="\'textarea\'"></div>',
-			'</div>'
+				'<div class="field">',
+				'	<div class="label">Question text</div>',
+				'	<p ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" class="error-red">Question Text is a required field</p>',
+				'	<div class="input" do-validate="$ctrl.doValidate" on-emit-name="$ctrl.onName($taName)" sxs-input-i18n="$ctrl.data.data._plugin.questiontext" x-inputtype="\'textarea\'"></div>',
+				'</div>'
 			].join(' '),
-			controller: [angular.noop],
-			controllerAs: 'qText',
+			controller: [function() {
+				var ctrl = this;
+				ctrl.onName = onName;
+
+				function onName(v) {
+					console.log("name!", v);
+					ctrl.textAreaName = v;
+				}
+			}],
+			controllerAs: '$ctrl',
 			bindToController: true
 	    };
 	}

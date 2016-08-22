@@ -565,7 +565,7 @@ angular.module('com.inthetelling.story')
 					"_type": "Scene",
 					"title": {},
 					"description": {},
-					"templateOpts": selectService.getTemplates(type),
+					"templateOpts": selectService.getTemplates(type)
 				};
 			}
 			if (type === 'chapter') {

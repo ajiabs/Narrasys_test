@@ -1,13 +1,13 @@
 'use strict';
 
-/* 
+/*
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 
 TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc) {
+	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, authSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -36,6 +36,8 @@ angular.module('com.inthetelling.story')
 				};
 
 				// is the master asset a youtube link? (i.e. is yt the only url we have?)
+				console.log("master assetType?", scope.masterAssetType);
+				console.log("master asset?", scope.masterAsset);
 				if (
 					scope.masterAsset &&
 					scope.masterAsset.urls.youtube.length &&
@@ -45,6 +47,10 @@ angular.module('com.inthetelling.story')
 					scope.masterAssetType = 'Youtube';
 				} else {
 					scope.masterAssetType = 'Video';
+					//if they not ad admin, use Youtube for the unset master asset.
+					if (!authSvc.userHasRole('admin')) {
+						scope.masterAssetType = 'Youtube';
+					}
 				}
 
 				// extract current event styles for the form
@@ -68,7 +74,7 @@ angular.module('com.inthetelling.story')
 				scope.languageWatcher = scope.$watch(function () {
 					return [scope.langForm, scope.episode.defaultLanguage];
 				}, function () {
-					var languageCount = 0; // not sure if necessary -- can use languages.length instead? 
+					var languageCount = 0; // not sure if necessary -- can use languages.length instead?
 					var lastSelectedLanguage = ""; // convenience to stuff into default if the old default is no longer valid
 					var newLanguages = []; // will replace the existing episode languages array
 					for (var lang in scope.langForm) {
@@ -121,7 +127,7 @@ angular.module('com.inthetelling.story')
 				scope.appState = appState;
 
 				// Angular1.3 dependency: watchGroup
-				// Deep-watching the entire episode is not so much with the good performance characteristics so we instead only watch the editable fields 
+				// Deep-watching the entire episode is not so much with the good performance characteristics so we instead only watch the editable fields
 				// TODO would it be worth using watchGroup in itemEdit as well?
 				scope.watchEdits = scope.$watchGroup(
 					// I am kind of amazed that using appState.lang works here, these strings must get recalculated every tick

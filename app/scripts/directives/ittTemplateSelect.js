@@ -12,7 +12,7 @@
 	        restrict: 'EA',
 			scope: {
 	        	data: '=',
-				itemForm: '='
+				itemForm: '=?'
 			},
 			template: [
 			'<div class="field" ng-if="$ctrl.isVisible(\'templateSelect\')">',

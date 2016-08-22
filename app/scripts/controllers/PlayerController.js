@@ -151,6 +151,7 @@ angular.module('com.inthetelling.story')
 					});
 				} else {
 					// Episode has no master asset
+					console.log('episode has no master asset!');
 					$scope.loading = false;
 					// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
 					if (appState.product === 'producer') {
