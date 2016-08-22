@@ -360,13 +360,14 @@
 						{url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
 						{url: 'templates/item/image-fill.html', name: 'Overlay or background fill'}
 					];
-					if (_userHasRole('admin')) {
-						imgTemplates.push(
-							{url: 'templates/item/image.html', name: 'Linked Image'},
-							{url: 'templates/item/image-inline.html', name: 'Inline Image'},
-							{url: 'templates/item/image-caption.html', name: 'Image with caption'}
-						);
-					}
+					//hidden from everyone, should probably remove all together.
+					// if (_userHasRole('admin')) {
+					// 	imgTemplates.push(
+					// 		{url: 'templates/item/image.html', name: 'Linked Image'},
+					// 		{url: 'templates/item/image-inline.html', name: 'Inline Image'},
+					// 		{url: 'templates/item/image-caption.html', name: 'Image with caption'}
+					// 	);
+					// }
 					return imgTemplates;
 				case 'file':
 					_titleFieldVisibility(true);
