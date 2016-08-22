@@ -36,8 +36,6 @@ angular.module('com.inthetelling.story')
 				};
 
 				// is the master asset a youtube link? (i.e. is yt the only url we have?)
-				console.log("master assetType?", scope.masterAssetType);
-				console.log("master asset?", scope.masterAsset);
 				if (
 					scope.masterAsset &&
 					scope.masterAsset.urls.youtube.length &&
@@ -45,12 +43,12 @@ angular.module('com.inthetelling.story')
 						return scope.masterAsset.urls[x].length > 0;
 					}).length === 1) {
 					scope.masterAssetType = 'Youtube';
+					//we have not set a master asset and we are not an admin
+					//for this case: a customer-admin is adding a new episode and is only allowed to use youtube.
+				} else if (!scope.masterAsset && !authSvc.userHasRole('admin')) {
+					scope.masterAssetType = 'Youtube';
 				} else {
 					scope.masterAssetType = 'Video';
-					//if they not ad admin, use Youtube for the unset master asset.
-					if (!authSvc.userHasRole('admin')) {
-						scope.masterAssetType = 'Youtube';
-					}
 				}
 
 				// extract current event styles for the form

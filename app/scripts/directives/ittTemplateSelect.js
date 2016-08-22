@@ -27,6 +27,14 @@
 				ctrl.isVisible = selectService.getVisibility;
 				ctrl.onSelectChange = selectService.onSelectChange;
 				ctrl.getSelectOpts = selectService.getSelectOpts;
+
+				//for episodes, not items (aka events).
+				//need a type of 'episode' for our selectSerivce
+				//switch statement
+				if (!ctrl.data.hasOwnProperty('producerItemType')) {
+					ctrl.data.producerItemType = 'episode';
+				}
+				console.log('data!', ctrl.data);
 			}],
 			controllerAs: '$ctrl',
 			bindToController: true

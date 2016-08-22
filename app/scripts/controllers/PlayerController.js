@@ -3,7 +3,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager) {
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager, selectService) {
 		// console.log("playerController", $scope);
 
 		// $scope.tmp = function () {
@@ -156,6 +156,7 @@ angular.module('com.inthetelling.story')
 					// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
 					if (appState.product === 'producer') {
 						appState.editEpisode = modelSvc.episodes[appState.episodeId];
+						appState.editEpisode.templateOpts = selectService.getTemplates('episode');
 					}
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
