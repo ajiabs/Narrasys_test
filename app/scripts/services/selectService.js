@@ -320,7 +320,6 @@
 						{url: 'templates/episode/wiley1.html', name: 'Wiley'},
 						{url: 'templates/episode/wiley2.html', name: 'Wiley (without endscreen text)'},
 					];
-					break;
 				case 'scene':
 					_displaySelectVisibility(false);
 					_videoPositionSelectVisibility(false);
