@@ -1158,49 +1158,46 @@
 	src: url('/images/font/Gotham-LightItalic.otf') format('opentype');
 }
 
-$narrasysMain: #DE6625;
-$narrasysInvert: #5B5B5B;
-$narrasysMondrianText: white;
-
-
-@mixin narrasys-pq {
-	font-family: 'Gotham Light Italic', sans-serif;
-	color: $narrasysInvert;
-}
+$narrasysPrimary: #4D4D4D;
+$narrasysAccent: #DE6625;
+$narrasysSecondary: white;
 
 @mixin narrasys-header {
-	font-family: "Gotham Medium", sans-serif;
-	color: $narrasysInvert;
+	font-family: 'Gotham Medium',  sans-serif;
 }
-
 @mixin narrasys-body {
-	font-family: "Gotham Thin", sans-serif;
-	color: $narrasysInvert;
+	font-family: 'Gotham Thin',  sans-serif;
+	color: $narrasysPrimary;
 }
 
-.narrasys-pro {
-	background-image: url("/images/customer/Narrasys_Tree.svg");
-	background-size: 62%;
+@mixin narrasys-pq {
+	font-family: 'Gotham Light Italic',  sans-serif;
+	color: $narrasysPrimary;
+}
 
+.narrasys {
+	background-image: url('/images/customer/Narrasys_Tree.svg');
+	background-size: 62%;
 
 	.landingscreen {
 		h1 {
-			@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw);
+			@include banner-pq('Gotham Medium', $narrasysAccent, 2.5vw);
 		}
 	}
 
 	.endingscreen {
 		p {
-			@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw);
+			@include banner-pq('Gotham Medium', $narrasysAccent, 2.5vw);
 		}
 	}
 
+	//search view
 	.searchPanel__wrapper {
 		@include narrasys-body;
-		color: $narrasysInvert;
+		color: $narrasysPrimary;
 		// 'sorted by' button
 		.fake-link--search-results {
-			color: $narrasysMain;
+			color: $narrasysAccent;
 		}
 	}
 
@@ -1208,26 +1205,27 @@ $narrasysMondrianText: white;
 		@include narrasys-header;
 		.item__title--link, .item__link--fake-link, .item__link--escape-link {
 			@include narrasys-body;
-			color: $narrasysMain;
+			color: $narrasysAccent;
 			&:before {
-				color: $narrasysInvert;
+				color: $narrasysPrimary;
 			}
 		}
 	}
+
 	//item overrides
 	.item__title {
 		@include narrasys-header;
 	}
 
-	.item__title--link, .item__title--file  {
+	.item__title--link, .item__title--file {
 		a {
-			color: $narrasysMain;
+			color: $narrasysAccent;
 		}
 	}
 
 	.item__link--fake-link {
 		@include narrasys-body;
-		color: $narrasysMain;
+		color: $narrasysAccent;
 	}
 
 	.item__text {
@@ -1248,82 +1246,93 @@ $narrasysMondrianText: white;
 		&:before {
 			@include narrasys-header;
 			//override color set on mixin
-			color: $narrasysMain;
+			color: $narrasysAccent;
 			font-size: 5.1vw; //narrasys specific tweak :(
 		}
 	}
 
 	.item__title--image-caption, .item__title--image-caption-sliding,
 	.item__text--image-caption, .item__text--image-caption-sliding {
-		color: $narrasysMondrianText;
+		color: $narrasysSecondary;
 	}
 
 	.item__link--escape-link {
 		@include narrasys-body;
-		color: $narrasysMain;
+		color: $narrasysAccent;
 		&:before {
-			color: $narrasysInvert;
+			color: $narrasysPrimary;
 		}
 	}
 
-	//timestamps
+	//timestamp
 	.item {
 		.displayTime, .startTime {
 			@include narrasys-header;
-			color: $narrasysMain;
+			color: $narrasysAccent;
 			&:hover {
 				text-decoration: underline;
 			}
 		}
 	}
 
+	//layout specific overrides
 	.centered-pro {
 		.banner-pull-quote {
 			h1 {
-				@include banner-pq('Gotham Medium', $narrasysMain, 2.5vw);
+				@include banner-pq('Gotham Medium', $narrasysAccent, 2.5vw);
 			}
 		}
 	}
 
 	.centerVV {
-		.item__title--link, .item__title--file  {
+		.static-bg__main {
+		}
+
+		.static-bg__alt {
+		}
+
+		.item__title--link, .item__title--file {
 			@include narrasys-body;
 		}
 
-		.item__tite--link.title--link-embed {
+		.item__title--link.title--link-embed {
 			@include narrasys-body;
 		}
+
 	}
-	//mondrian styles
+
 	.centerVV-mondrian {
-		.bgLayer {
-			&.bg-alt {
-				border-right: 8px solid $narrasysInvert;
-				background-color: $narrasysMain;
-			}
+		.static-bg__main {
+			border: 4px solid $narrasysPrimary;
+			background-color: $narrasysAccent;
 		}
 
-		.altPane {
+		.static-bg__alt {
+
+		}
+
+		.mainPane {
 			.item {
-				background-color:  $narrasysInvert;
+				background-color:  $narrasysPrimary;
 			}
 
 			.item__text, .item__title, .item__title a {
-				color: $narrasysMondrianText;
+				color: $narrasysSecondary;
 			}
 
-			//override from general item level
+			//override from general item level,
 			//mondrian BG is solid color, so we need to use
-			//the mondrianText
+			//the Secondary
 			.item__text--transmedia, .item__text--definition {
 				h1, h2, h3 {
-					color: $narrasysMondrianText;
+					color: $narrasysSecondary;
 				}
 			}
 		}
 
-		//item__<link|image|img-thumb> for non URL titles
-		// item__<link|image|img-thumb> a covers both escape and fakeLinks
+
+		//item__<entity> for non URL titles
+		// item__<entity> a covers both escape and fakeLinks
 		.item__title--link,
 		.item__title--image,
 		.item__title--image-thumbnail,
@@ -1334,22 +1343,21 @@ $narrasysMondrianText: white;
 		}
 
 		.item__link--fake-link {
-			color: $narrasysMondrianText;
+			color: $narrasysSecondary;
 		}
 
 		.item__link--escape-link {
 			@include narrasys-header;
-			//overide color set at mixin level
-			color: $narrasysMondrianText;
+			color: $narrasysSecondary;
 			&:before {
-				color: $narrasysMain
+				color: $narrasysAccent;
 			}
 		}
 
 		.item {
 			.displayTime, .startTime {
 				@include narrasys-header;
-				color: $narrasysMondrianText;
+				color: $narrasysSecondary
 
 				a {
 					text-decoration: underline;

@@ -789,10 +789,10 @@
 @font-face {
   font-family: 'Gotham Light Italic';
   src: url("/images/font/Gotham-LightItalic.otf") format("opentype"); }
-.narrasys-pro {
+.narrasys {
   background-image: url("/images/customer/Narrasys_Tree.svg");
   background-size: 62%; }
-  .narrasys-pro .landingscreen h1 {
+  .narrasys .landingscreen h1 {
     margin-top: 1em;
     display: flex;
     align-items: center;
@@ -808,7 +808,7 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
-  .narrasys-pro .endingscreen p {
+  .narrasys .endingscreen p {
     margin-top: 1em;
     display: flex;
     align-items: center;
@@ -824,63 +824,57 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
-  .narrasys-pro .searchPanel__wrapper {
-    font-family: "Gotham Thin", sans-serif;
-    color: #5b5b5b;
-    color: #5b5b5b; }
-    .narrasys-pro .searchPanel__wrapper .fake-link--search-results {
+  .narrasys .searchPanel__wrapper {
+    font-family: 'Gotham Thin',  sans-serif;
+    color: #4d4d4d;
+    color: #4d4d4d; }
+    .narrasys .searchPanel__wrapper .fake-link--search-results {
       color: #de6625; }
-  .narrasys-pro .searchResults {
-    font-family: "Gotham Medium", sans-serif;
-    color: #5b5b5b; }
-    .narrasys-pro .searchResults .item__title--link, .narrasys-pro .searchResults .item__link--fake-link, .narrasys-pro .searchResults .item__link--escape-link {
-      font-family: "Gotham Thin", sans-serif;
-      color: #5b5b5b;
+  .narrasys .searchResults {
+    font-family: 'Gotham Medium',  sans-serif; }
+    .narrasys .searchResults .item__title--link, .narrasys .searchResults .item__link--fake-link, .narrasys .searchResults .item__link--escape-link {
+      font-family: 'Gotham Thin',  sans-serif;
+      color: #4d4d4d;
       color: #de6625; }
-      .narrasys-pro .searchResults .item__title--link:before, .narrasys-pro .searchResults .item__link--fake-link:before, .narrasys-pro .searchResults .item__link--escape-link:before {
-        color: #5b5b5b; }
-  .narrasys-pro .item__title {
-    font-family: "Gotham Medium", sans-serif;
-    color: #5b5b5b; }
-  .narrasys-pro .item__title--link a, .narrasys-pro .item__title--file a {
+      .narrasys .searchResults .item__title--link:before, .narrasys .searchResults .item__link--fake-link:before, .narrasys .searchResults .item__link--escape-link:before {
+        color: #4d4d4d; }
+  .narrasys .item__title {
+    font-family: 'Gotham Medium',  sans-serif; }
+  .narrasys .item__title--link a, .narrasys .item__title--file a {
     color: #de6625; }
-  .narrasys-pro .item__link--fake-link {
-    font-family: "Gotham Thin", sans-serif;
-    color: #5b5b5b;
+  .narrasys .item__link--fake-link {
+    font-family: 'Gotham Thin',  sans-serif;
+    color: #4d4d4d;
     color: #de6625; }
-  .narrasys-pro .item__text {
-    font-family: "Gotham Thin", sans-serif;
-    color: #5b5b5b; }
-  .narrasys-pro .item__text--h2 {
-    font-family: "Gotham Medium", sans-serif;
-    color: #5b5b5b; }
-  .narrasys-pro .item__text--transmedia h1, .narrasys-pro .item__text--transmedia h2, .narrasys-pro .item__text--transmedia h3, .narrasys-pro .item__text--definition h1, .narrasys-pro .item__text--definition h2, .narrasys-pro .item__text--definition h3 {
-    font-family: "Gotham Medium", sans-serif;
-    color: #5b5b5b; }
-  .narrasys-pro .item .item__text--pullquote {
-    font-family: 'Gotham Light Italic', sans-serif;
-    color: #5b5b5b; }
-    .narrasys-pro .item .item__text--pullquote:before {
-      font-family: "Gotham Medium", sans-serif;
-      color: #5b5b5b;
+  .narrasys .item__text {
+    font-family: 'Gotham Thin',  sans-serif;
+    color: #4d4d4d; }
+  .narrasys .item__text--h2 {
+    font-family: 'Gotham Medium',  sans-serif; }
+  .narrasys .item__text--transmedia h1, .narrasys .item__text--transmedia h2, .narrasys .item__text--transmedia h3, .narrasys .item__text--definition h1, .narrasys .item__text--definition h2, .narrasys .item__text--definition h3 {
+    font-family: 'Gotham Medium',  sans-serif; }
+  .narrasys .item .item__text--pullquote {
+    font-family: 'Gotham Light Italic',  sans-serif;
+    color: #4d4d4d; }
+    .narrasys .item .item__text--pullquote:before {
+      font-family: 'Gotham Medium',  sans-serif;
       color: #de6625;
       font-size: 5.1vw; }
-  .narrasys-pro .item__title--image-caption, .narrasys-pro .item__title--image-caption-sliding,
-  .narrasys-pro .item__text--image-caption, .narrasys-pro .item__text--image-caption-sliding {
+  .narrasys .item__title--image-caption, .narrasys .item__title--image-caption-sliding,
+  .narrasys .item__text--image-caption, .narrasys .item__text--image-caption-sliding {
     color: white; }
-  .narrasys-pro .item__link--escape-link {
-    font-family: "Gotham Thin", sans-serif;
-    color: #5b5b5b;
+  .narrasys .item__link--escape-link {
+    font-family: 'Gotham Thin',  sans-serif;
+    color: #4d4d4d;
     color: #de6625; }
-    .narrasys-pro .item__link--escape-link:before {
-      color: #5b5b5b; }
-  .narrasys-pro .item .displayTime, .narrasys-pro .item .startTime {
-    font-family: "Gotham Medium", sans-serif;
-    color: #5b5b5b;
+    .narrasys .item__link--escape-link:before {
+      color: #4d4d4d; }
+  .narrasys .item .displayTime, .narrasys .item .startTime {
+    font-family: 'Gotham Medium',  sans-serif;
     color: #de6625; }
-    .narrasys-pro .item .displayTime:hover, .narrasys-pro .item .startTime:hover {
+    .narrasys .item .displayTime:hover, .narrasys .item .startTime:hover {
       text-decoration: underline; }
-  .narrasys-pro .centered-pro .banner-pull-quote h1 {
+  .narrasys .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
     align-items: center;
@@ -896,43 +890,39 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
-  .narrasys-pro .centerVV .item__title--link, .narrasys-pro .centerVV .item__title--file {
-    font-family: "Gotham Thin", sans-serif;
-    color: #5b5b5b; }
-  .narrasys-pro .centerVV .item__tite--link.title--link-embed {
-    font-family: "Gotham Thin", sans-serif;
-    color: #5b5b5b; }
-  .narrasys-pro .centerVV-mondrian .bgLayer.bg-alt {
-    border-right: 8px solid #5b5b5b;
+  .narrasys .centerVV .item__title--link, .narrasys .centerVV .item__title--file {
+    font-family: 'Gotham Thin',  sans-serif;
+    color: #4d4d4d; }
+  .narrasys .centerVV .item__title--link.title--link-embed {
+    font-family: 'Gotham Thin',  sans-serif;
+    color: #4d4d4d; }
+  .narrasys .centerVV-mondrian .static-bg__main {
+    border: 4px solid #4d4d4d;
     background-color: #de6625; }
-  .narrasys-pro .centerVV-mondrian .altPane .item {
-    background-color: #5b5b5b; }
-  .narrasys-pro .centerVV-mondrian .altPane .item__text, .narrasys-pro .centerVV-mondrian .altPane .item__title, .narrasys-pro .centerVV-mondrian .altPane .item__title a {
+  .narrasys .centerVV-mondrian .mainPane .item {
+    background-color: #4d4d4d; }
+  .narrasys .centerVV-mondrian .mainPane .item__text, .narrasys .centerVV-mondrian .mainPane .item__title, .narrasys .centerVV-mondrian .mainPane .item__title a {
     color: white; }
-  .narrasys-pro .centerVV-mondrian .altPane .item__text--transmedia h1, .narrasys-pro .centerVV-mondrian .altPane .item__text--transmedia h2, .narrasys-pro .centerVV-mondrian .altPane .item__text--transmedia h3, .narrasys-pro .centerVV-mondrian .altPane .item__text--definition h1, .narrasys-pro .centerVV-mondrian .altPane .item__text--definition h2, .narrasys-pro .centerVV-mondrian .altPane .item__text--definition h3 {
+  .narrasys .centerVV-mondrian .mainPane .item__text--transmedia h1, .narrasys .centerVV-mondrian .mainPane .item__text--transmedia h2, .narrasys .centerVV-mondrian .mainPane .item__text--transmedia h3, .narrasys .centerVV-mondrian .mainPane .item__text--definition h1, .narrasys .centerVV-mondrian .mainPane .item__text--definition h2, .narrasys .centerVV-mondrian .mainPane .item__text--definition h3 {
     color: white; }
-  .narrasys-pro .centerVV-mondrian .item__title--link,
-  .narrasys-pro .centerVV-mondrian .item__title--image,
-  .narrasys-pro .centerVV-mondrian .item__title--image-thumbnail,
-  .narrasys-pro .centerVV-mondrian .item__title--link a,
-  .narrasys-pro .centerVV-mondrian .item__title--image a,
-  .narrasys-pro .centerVV-mondrian .item__title--image-thumbnail a {
-    font-family: "Gotham Medium", sans-serif;
-    color: #5b5b5b; }
-  .narrasys-pro .centerVV-mondrian .item__link--fake-link {
+  .narrasys .centerVV-mondrian .item__title--link,
+  .narrasys .centerVV-mondrian .item__title--image,
+  .narrasys .centerVV-mondrian .item__title--image-thumbnail,
+  .narrasys .centerVV-mondrian .item__title--link a,
+  .narrasys .centerVV-mondrian .item__title--image a,
+  .narrasys .centerVV-mondrian .item__title--image-thumbnail a {
+    font-family: 'Gotham Medium',  sans-serif; }
+  .narrasys .centerVV-mondrian .item__link--fake-link {
     color: white; }
-  .narrasys-pro .centerVV-mondrian .item__link--escape-link {
-    font-family: "Gotham Medium", sans-serif;
-    color: #5b5b5b;
+  .narrasys .centerVV-mondrian .item__link--escape-link {
+    font-family: 'Gotham Medium',  sans-serif;
     color: white; }
-    .narrasys-pro .centerVV-mondrian .item__link--escape-link:before {
+    .narrasys .centerVV-mondrian .item__link--escape-link:before {
       color: #de6625; }
-  .narrasys-pro .centerVV-mondrian .item .displayTime, .narrasys-pro .centerVV-mondrian .item .startTime {
-    font-family: "Gotham Medium", sans-serif;
-    color: #5b5b5b;
-    color: white; }
-    .narrasys-pro .centerVV-mondrian .item .displayTime a, .narrasys-pro .centerVV-mondrian .item .startTime a {
-      text-decoration: underline; }
+  .narrasys .centerVV-mondrian .item .displayTime, .narrasys .centerVV-mondrian .item .startTime {
+    font-family: 'Gotham Medium',  sans-serif;
+    color: white a;
+      color-text-decoration: underline; }
 
 .field-pros .landingscreen h1 {
   margin-top: 1em;
