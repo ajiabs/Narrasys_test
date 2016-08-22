@@ -94,33 +94,32 @@
 			//overwrite it back to an empty array
 			var isInline = item.layouts[0] === 'inline';
 			switch(sceneType) {
-				case 'centered':
 				case 'centeredPro':
+					_displaySelectVisibility(false);
+				/* falls through */
 				case '1col':
+				case 'centered':
+					var isAdmin = _userHasRole('admin');
+					_displaySelectVisibility(true);
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
-						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: true},
-						{value: 'mainFg', name: 'Text pane foreground', isDisabled: true},
-						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: true},
-						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: true},
+						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: !isAdmin},
+						{value: 'mainFg', name: 'Text pane foreground', isDisabled: !isAdmin},
+						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: !isAdmin},
+						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: !isAdmin},
 					];
-
 					if (isInline) {
 						item.layouts = ['windowBg'];
 					}
-
+					itemForm.position = itemForm.position || 'fill'; //P1-A
 					item.layouts = item.layouts || ['windowBg'];
 					break;
 				case '2colL':
 				case '2colR':
 				case 'mirroredTwoCol':
-				case 'cornerV':
-				case 'centerVV':
-				case 'cornerH':
-				case 'pip':
-				case 'centerVVMondrian':
+					_displaySelectVisibility(true);
 					_select.display = [
-						{value: 'windowBg', name: 'Full Window background', isDisabled: true},
+						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
 						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
 						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
 						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: false},
@@ -130,7 +129,45 @@
 					if (isInline) {
 						item.layouts = ['mainBg'];
 					}
+					itemForm.position = itemForm.position || 'fill'; //P1-A
+					item.layouts = item.layouts || ['mainBg'];
+					break;
+				case 'cornerV':
+				case 'centerVV':
+					_displaySelectVisibility(true);
+					_select.display = [
+						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
+						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
+						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
+						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: false},
+						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: false}
+					];
 
+					if (isInline) {
+						item.layouts = ['altBg'];
+					}
+
+					itemForm.position = itemForm.position || 'fill'; //P1-A
+					item.layouts = item.layouts || ['altBg'];
+					break;
+				case 'cornerH':
+				case 'pip':
+					_displaySelectVisibility(false);
+					itemForm.position = itemForm.position || 'tl';
+					item.layouts = ['altBg'];
+					break;
+				case 'centerVVMondrian':
+					_select.display = [
+						{value: 'windowBg', name: 'Full Window background', isDisabled: true},
+						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
+						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
+						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: true},
+						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: true}
+					];
+
+					if (isInline) {
+						item.layouts = ['mainBg'];
+					}
 					item.layouts = item.layouts || ['mainBg'];
 					itemForm.position = itemForm.position || 'fill';
 					break;
@@ -208,30 +245,25 @@
 		}
 
 		function _setSceneItemLayout(item) {
-
-			if (!item.layouts) {
-				item.layouts = [];
-			}
-			console.info("layouts", item.layouts);
 			switch(item.templateUrl) {
 				case 'templates/scene/centered.html':
 				case 'templates/scene/centeredPro.html':
+					break;
 				case 'templates/scene/centerVV.html':
 				case 'templates/scene/centerVV-Mondrian.html':
-					//videoLeft / videoRight unavailable for this case
-					//so ok to reassign layouts array.
-					item.layouts = [_D1.a.value];
+				case 'templates/scene/cornerV.html':
+					if (item.layouts[0] === 'inline') {
+						item.layouts[0] = 'videoLeft';
+						item.layouts[1] = _D1.a.value;
+					}
+					item.layouts[0] = item.layouts[0];
+					// item.layouts[1] = item.layouts[1] || _D1.a.value;
 					break;
-				// case 'templates/scene/cornerH.html':
-				// case 'templates/scene/cornerV.html':
-				// case 'templates/scene/pip.html':
-				// 	//D1 = no setting of layout, display dropdown
-				// 	break;
 				case 'templates/scene/1col.html':
 					item.layouts[1] = item.layouts[1] || _D3.b.value;
 					console.log('1col layouts', item.layouts);
 				// case 'templates/scene/2colL.html':
-				// 	break;
+					break;
 				case 'templates/scene/2colR.html':
 				case 'templates/scene/mirrored-twocol.html':
 					// item.layouts[0] = _D3.a.value;

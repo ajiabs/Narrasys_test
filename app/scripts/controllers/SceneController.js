@@ -101,12 +101,19 @@ angular.module('com.inthetelling.story')
 			var currItems = $filter('isCurrent')(items);
 			var mainColBgOrFg = $filter(col)(currItems);
 			var opacity = 1;
+			var bgSize;
 			if (mainColBgOrFg.length > 0 && ittUtils.existy(mainColBgOrFg[0].asset)) {
 				var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
 				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
 					opacity = 0.25;
 				}
-				return { 'background-image': bgUrl, 'opacity': opacity };
+				var coverOrContain = mainColBgOrFg[0].styleCss.match(/cover|contain/);
+
+				if (coverOrContain) {
+					bgSize = coverOrContain[0];
+				}
+
+				return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity  };
 			}
 			return '';
 		}
