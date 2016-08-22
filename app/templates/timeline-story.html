@@ -70,7 +70,7 @@
 							 ng-repeat="event in timeline.markedEvents"
 							 ng-style="{left: markerPercent(event.start_time)+'%'}"
 							 ng-if="event.stop || event.display_title || appState.product == 'producer'"
-							 ng-class="{stop: (event.type != 'Scene' && event.type != 'Chapter' && event.chapter_marker === false), mini: (event.type == 'Scene' && !event.display_title)}">
+							 ng-class="{stop: (event.type != 'Scene' && event.type != 'Chapter' && event.chapter_marker === false || event.stop), mini: (event.type == 'Scene' && !event.display_title)}">
 
 						</div>
 

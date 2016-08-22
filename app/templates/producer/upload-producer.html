@@ -14,8 +14,8 @@
 	<ng-model ng-model="item.asset" name="imageUpload" itt-valid-image item="item"></ng-model>
 	<div ng-if="item.asset && !showUploadButtons">
 		{{item.asset.display_name}}
-		<button class="button" ng-click="replaceAsset()">Replace this</button>
-		<button class="button" ng-click="detachAsset(); selectService.onSelectChange(item, itemForm)">Remove this</button>
+		<button class="button" ng-click="replaceAsset()">Replace</button>
+		<button class="button" ng-click="detachAsset(); selectService.onSelectChange(item, itemForm)">Remove</button>
 	</div>
 	<div ng-if="showUploadButtons || !item.asset">
 		<span ng-if="showUploadField">
