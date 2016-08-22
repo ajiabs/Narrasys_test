@@ -3,13 +3,14 @@
 		<div ng-if="appState.product == 'sxs'" class="authoringFormScrollContainer">
 			<!-- begin sxs -->
 
-			<div class="field">
-				<div class="label">Time
-				</div>
-				<div class="input">
-					<span sxs-input-time="item" x-input-field="start_time"></span>
-				</div>
-			</div>
+			<!--<div class="field">-->
+				<!--<div class="label">Time-->
+				<!--</div>-->
+				<!--<div class="input">-->
+					<!--<span sxs-input-time="item" x-input-field="start_time"></span>-->
+				<!--</div>-->
+			<!--</div>-->
+			<itt-time-field></itt-time-field>
 			<div ng-include="itemEditor"></div>
 			<!-- end sxs -->
 		</div>
@@ -73,6 +74,7 @@
 							<itt-time-field></itt-time-field>
 							<itt-title-field data="item"></itt-title-field>
 							<itt-file-field></itt-file-field>
+							<itt-template-select data="item"></itt-template-select>
 							<itt-description-field data="item"></itt-description-field>
 							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>

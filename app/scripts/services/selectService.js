@@ -103,6 +103,7 @@
 					_displaySelectVisibility(true);
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
+						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
 						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: !isAdmin},
 						{value: 'mainFg', name: 'Text pane foreground', isDisabled: !isAdmin},
 						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: !isAdmin},
@@ -120,6 +121,7 @@
 					_displaySelectVisibility(true);
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
+						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
 						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
 						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
 						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: false},
@@ -137,6 +139,7 @@
 					_displaySelectVisibility(true);
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
+						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
 						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: true},
 						{value: 'mainFg', name: 'Text pane foreground', isDisabled: true},
 						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: false},
@@ -159,6 +162,7 @@
 				case 'centerVVMondrian':
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: true},
+						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
 						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
 						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
 						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: true},
@@ -261,14 +265,24 @@
 					break;
 				case 'templates/scene/1col.html':
 					item.layouts[1] = item.layouts[1] || _D3.b.value;
-					console.log('1col layouts', item.layouts);
 				// case 'templates/scene/2colL.html':
 					break;
 				case 'templates/scene/2colR.html':
 				case 'templates/scene/mirrored-twocol.html':
-					// item.layouts[0] = _D3.a.value;
+					if (item.layouts[0] === 'inline') {
+						item.layouts[0] = 'videoLeft';
+					}
+
 					item.layouts[1] = item.layouts[1] || _D3.b.value;
 					break;
+				case 'templates/scene/pip.html':
+					if (item.layouts[0] === 'inline') {
+						item.layouts[0] = 'videoLeft';
+					}
+
+					item.layouts[1] = item.layouts[1] || _D1.b.value;
+					break;
+
 			}
 		}
 
@@ -383,7 +397,7 @@
 						{url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
 						{url: 'templates/item/image-caption-sliding.html', name: 'Image with sliding caption'},
 						{url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
-						{url: 'templates/item/image-fill.html', name: 'Overlay or background fill'}
+						{url: 'templates/item/image-fill.html', name: 'Overlay or Background fill'}
 					];
 					//hidden from everyone, should probably remove all together.
 					// if (_userHasRole('admin')) {
@@ -398,7 +412,11 @@
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(true);
 					return [
-						{url: 'templates/item/file.html', name: 'Uploaded File'}
+						{url: 'templates/item/file.html', name: 'Uploaded File'},
+						{url: 'templates/item/link.html', name: 'File inline'},
+						{url: 'templates/item/link-descriptionfirst.html', name: 'File - description first'},
+						{url: 'templates/item/link-embed.html', name: 'File embedded'},
+						{url: 'templates/item/link-modal-thumb.html', name: 'File Modal'},
 					];
 				case 'question':
 					_displaySelectVisibility(true);
@@ -513,6 +531,18 @@
 					}
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';
+					}
+					break;
+				case 'file':
+					item.showInlineDetail = false;
+					switch(item.templateUrl) {
+						case 'templates/item/link.html':
+							item.showInlineDetail = true;
+							break;
+						case 'templates/item/file.html':
+						case 'templates/item/link-descriptionfirst.html':
+						case 'templates/item/link-modal-thumb.html':
+							break;
 					}
 					break;
 			}

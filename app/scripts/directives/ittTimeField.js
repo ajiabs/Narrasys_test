@@ -14,7 +14,7 @@
 			scope: true,
 	        template: [
 			'<div class="field">',
-			'	<div class="label">Time</div>',
+			'	<div class="label">Start</div>',
 			'	<div class="input">',
 			'		<span sxs-input-time="item" x-input-field="start_time"></span>',
 			'		<span ng-if="!(item.stop || item._type === \'Scene\' || item._type === \'Chapter\')">',
