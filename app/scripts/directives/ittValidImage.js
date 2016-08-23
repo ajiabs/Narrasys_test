@@ -31,8 +31,12 @@
 				function handleChanges(newVal) {
 					var tmplUrl = newVal.templateUrl;
 					var asset = newVal.asset;
-
 					switch(tmplUrl) {
+						case 'templates/item/image-plain.html':
+						case 'templates/item/image-inline-withtext.html':
+						case 'templates/item/image-caption-sliding.html':
+						case 'templates/item/image.html':
+						case 'templates/item/image-fill.html':
 						case 'templates/item/link-withimage-notitle.html':
 							if (ittUtils.existy(asset)) {
 								ngModelCtrl.$setValidity('imageUpload', true);

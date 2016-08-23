@@ -49,7 +49,6 @@
 							<itt-url-field data="item"></itt-url-field>
 							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
-
 							<itt-image-field></itt-image-field>
 							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
@@ -85,7 +84,7 @@
 						<div ng-switch-when="image">
 							<!--Time, Title, Image, Description, Template, Display, Position, Orientation, Flags-->
 							<itt-time-field></itt-time-field>
-							<itt-title-field data="item"></itt-title-field>
+							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
 							<itt-image-field></itt-image-field>
 							<itt-description-field data="item"></itt-description-field>
 							<!--<itt-url-field ng-if="item.templateUrl === 'templates/item/image-plain.html'"></itt-url-field>-->

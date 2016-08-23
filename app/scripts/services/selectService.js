@@ -351,7 +351,7 @@
 					if (_userHasRole('admin')) {
 						scenes.splice(
 							4, 0,
-							{url: _scenes['2colL'], name: '2 Columns'},
+							{url: _scenes['2colL'], name: 'Two Columns'},
 							{url: _scenes['2colR'], name: 'Two Columns (mirrored)'}
 							);
 					}
