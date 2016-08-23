@@ -39,7 +39,7 @@
 				}
 
 				function _emailOrPlaceholder(val) {
-					return /mailto:/.test(val) || val === 'https://';
+					return /mailto:/.test(val);
 				}
 
 				function validateUrl() {
