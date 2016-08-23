@@ -28,6 +28,18 @@
 				<div itt-tab class="ittTab"
 					 ng-if="selectService.showTab(item.producerItemType, 'Item')"
 					 title="{{item._type === 'Scene' ? 'Layout' : 'Item'}}">
+
+					<!--current lang select-->
+					<label ng-if="languages.length > 1" style="float:right; padding-right: 24px" for="itemLangSelect">Current Language
+                        <select
+                            id="itemLangSelect"
+                            size="1"
+                            ng-model="appState.lang"
+                            ng-change="forcePreview()"
+                            ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in languages">
+                        </select>
+					</label>
+
 					<div ng-switch on="item.producerItemType">
 						<div ng-switch-when="link">
 							<!--Time, Title, URL, Description, Template, Image, Flags-->

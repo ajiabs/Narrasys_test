@@ -36,7 +36,8 @@
 				<itt-title-field data="episode" model-opts="{ debounce: 500 }"></itt-title-field>
 				<itt-description-field data="episode" model-opts="{debounce: 50}"></itt-description-field>
 
-				<div class="field">
+
+				<div class="field" ng-if="userHasRole('admin')">
 					<div class="label">Poster image
 					</div>
 					<div class="input" ng-include="'templates/producer/upload-poster.html'">
@@ -73,8 +74,8 @@
 			<div class="ittTab" itt-tab title="Style">
 				<!-- begin styles tab -->
 				<itt-template-select data="episode"></itt-template-select>
-				<itt-typography-select></itt-typography-select>
-				<itt-color-select></itt-color-select>
+				<!--<itt-typography-select></itt-typography-select>-->
+				<!--<itt-color-select></itt-color-select>-->
 				<itt-timestamp-select></itt-timestamp-select>
 				<itt-highlight-select></itt-highlight-select>
 				<itt-transition-select></itt-transition-select>
