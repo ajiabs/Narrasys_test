@@ -19,8 +19,7 @@
 	</div>
 	<div class="itemDetail" ng-if="item.showInlineDetail">
 		<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink item__link--escape-link escape-link--description-first">(new window)</a>
-		<itt-iframe ng-if="item.producerItemType !== 'file'" x-src="{{item.url}}" item="item"></itt-iframe>
-		<itt-iframe ng-if="item.producerItemType === 'file'" src="{{item.asset.url}}" item="item"></itt-iframe>
+		<itt-iframe x-src="{{item.url}}" item="item"></itt-iframe>
 	</div>
 	<div class="clear"></div>
 </div>
