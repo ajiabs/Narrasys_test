@@ -34,7 +34,6 @@
 				if (!ctrl.data.hasOwnProperty('producerItemType')) {
 					ctrl.data.producerItemType = 'episode';
 				}
-				console.log('data!', ctrl.data);
 			}],
 			controllerAs: '$ctrl',
 			bindToController: true

@@ -10,13 +10,24 @@
 	function selectService(authSvc, modelSvc) {
 		var _userHasRole = authSvc.userHasRole;
 
+		var _langOpts = [
+			{value: 'en', name: 'English', isDisabled: false},
+			{value: 'es', name: 'Spanish', isDisabled: false},
+			{value: 'zh', name: 'Chinese', isDisabled: false},
+			{value: 'pt', name: 'Portuguese', isDisabled: false},
+			{value: 'fr', name: 'French', isDisabled: false},
+			{value: 'de', name: 'German', isDisabled: false},
+			{value: 'it', name: 'Italian', isDisabled: false}
+		];
+
 		//select opts map
 		var _select = {
 			video: [],
 			display: [],
 			imagePosition: [],
 			imagePin: [],
-			questionType: []
+			questionType: [],
+			language: _langOpts
 		};
 		//use visibility map with getVisibility() and component directives
 		var _visibility = {
@@ -268,6 +279,7 @@
 				// case 'templates/scene/2colL.html':
 					break;
 				case 'templates/scene/2colR.html':
+				case 'templates/scene/2colL.html':
 				case 'templates/scene/mirrored-twocol.html':
 					if (item.layouts[0] === 'inline') {
 						item.layouts[0] = 'videoLeft';

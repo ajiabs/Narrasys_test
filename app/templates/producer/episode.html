@@ -4,34 +4,17 @@
 
 
 		<div class="ittTabs" itt-tabs>
-			<select ng-if="episode.languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()"
-					style="float:right; padding-right: 24px"
-					ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
-			</select>
 
 			<!-- begin tabset -->
 			<div class="ittTab" itt-tab title="Episode">
 				<!-- begin episode content tab -->
 
-				<!--<div class="field">-->
-				<!--<div class="label">Public URL</div>-->
-				<!--<div class="input">-->
-				<!--&lt;!&ndash; not editable; only an input to make text selection easier &ndash;&gt;-->
-				<!--<input ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{episode._id}}" readonly>-->
-				<!--</div>-->
-				<!--</div>-->
-
 				<div class="field" ng-hide="!userHasRole('admin')">
 					<div class="label">Master asset type</div>
 					<div class="input">
-						<!--$parent.masterAssetType because ng-if (above) creates isolated scope-->
 						<select size="1" ng-model="masterAssetType">
 							<option value="Video">Native Video</option>
 							<option value="Youtube">Youtube</option>
-							<!--
-                             <option value="Audio">Audio (TODO)</option>
-                            <option value="Images">Image sequence (TODO)</option>
-                            <option value="None">No master asset (TODO)</option> -->
 						</select>
 					</div>
 				</div>
@@ -50,13 +33,6 @@
 					<div class="input" ng-bind-html="showmessage"></div>
 				</div>
 
-				<!--
-                <div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
-                    <div class="label">Duration</div>
-                    <input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">
-                </div>
-
--->
 				<itt-title-field data="episode" model-opts="{ debounce: 500 }"></itt-title-field>
 				<itt-description-field data="episode" model-opts="{debounce: 50}"></itt-description-field>
 
@@ -76,46 +52,22 @@
 						</select>
 					</div>
 				</div>
-				<div class="field">
-					<div class="label">Languages</div>
+
+				<itt-language-flags></itt-language-flags>
+				<div class="field" ng-if="episode.languages.length > 1">
+					<div class="label">Current Language</div>
 					<div class="input">
-						<label>
-							<input type="checkbox" ng-model="langForm.en">English
-						</label>
-						<label>
-							<input type="checkbox" ng-model="langForm.es">Spanish
-						</label>
-						<label>
-							<input type="checkbox" ng-model="langForm.zh">Chinese
-						</label>
-						<label>
-							<input type="checkbox" ng-model="langForm.pt">Portuguese
-						</label>
-						<label>
-							<input type="checkbox" ng-model="langForm.fr">French
-						</label>
-						<label>
-							<input type="checkbox" ng-model="langForm.de">German
-						</label>
-						<label>
-							<input type="checkbox" ng-model="langForm.it">Italian
-						</label>
-					</div>
-				</div>
-				<div class="field" ng-if="languageCount>1">
-					<div class="label">Default language</div>
-					<div class="input">
-						<select size="1" ng-model="episode.defaultLanguage">
-							<option ng-disabled="!langForm.en" value="en">English</option>
-							<option ng-disabled="!langForm.es" value="es">Spanish</option>
-							<option ng-disabled="!langForm.zh" value="zh">Chinese</option>
-							<option ng-disabled="!langForm.pt" value="pt">Portuguese</option>
-							<option ng-disabled="!langForm.fr" value="fr">French</option>
-							<option ng-disabled="!langForm.de" value="pt">German</option>
-							<option ng-disabled="!langForm.it" value="it">Italian</option>
+						<select size="1" ng-model="appState.lang" ng-change="forcePreview()"
+								ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
 						</select>
 					</div>
 				</div>
+				<itt-language-select
+					ng-if="languageCount > 1"
+					data="episode"
+					lang-form="langForm">
+				</itt-language-select>
+
 				<!-- end episode content tab -->
 			</div>
 			<div class="ittTab" itt-tab title="Style">

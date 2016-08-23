@@ -18,7 +18,8 @@
 		isValidURL: isValidURL,
 		stripHtmlTags: stripHtmlTags,
 		pick: pick,
-		bitwiseCeil: bitwiseCeil
+		bitwiseCeil: bitwiseCeil,
+		setNgOpts: setNgOpts
 	};
 
 	//using bitwise operators up to 20% faster than Math.ceil (js hint not a fan of bitwise operators)
@@ -77,6 +78,11 @@
 		return URL_REGEXP.test(url);
 	}
 
+	//this function depends on selectSerivce, and getSelectOpts being defined on the
+	//controller where used.
+	function setNgOpts(type) {
+		return "option.value as option.name for option in $ctrl.getSelectOpts(" + "'" + type + "'" + ")";
+	}
 
 
 })();

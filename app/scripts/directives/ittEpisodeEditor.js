@@ -63,12 +63,11 @@ angular.module('com.inthetelling.story')
 				}
 
 				// extract episode languages for the form
-				scope.langForm = {};
+				scope.langForm = {'en': true, 'es': false, 'zh': false, 'pt': false, 'fr': false, 'de': false, 'it': false};
 				for (var j = 0; j < scope.episode.languages.length; j++) {
 					scope.langForm[scope.episode.languages[j].code] = true;
 				}
 				scope.langForm[scope.episode.defaultLanguage] = true;
-
 				scope.languageWatcher = scope.$watch(function () {
 					return [scope.langForm, scope.episode.defaultLanguage];
 				}, function () {

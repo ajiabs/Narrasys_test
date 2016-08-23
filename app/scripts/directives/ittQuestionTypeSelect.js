@@ -17,13 +17,13 @@
 				'<div class="field">',
 				'	<div class="label">Question type</div>',
 				'	<div class="input">',
-				'	<select ng-model="qTypeSelect.data.data._plugin.questiontype" ng-options="{{qTypeSelect.setNgOpts(\'questionType\')}}"></select>',
+				'	<select ng-model="$ctrl.data.data._plugin.questiontype" ng-options="{{$ctrl.setNgOpts(\'questionType\')}}"></select>',
 				'	</div>',
 				'</div>'
 			].join(' '),
-			controller: ['selectService', function (selectService) {
+			controller: ['selectService', 'ittUtils', function (selectService, ittUtils) {
 				var ctrl = this;
-				ctrl.setNgOpts = setNgOpts;
+				ctrl.setNgOpts = ittUtils.setNgOpts;
 				ctrl.getSelectOpts = selectService.getSelectOpts;
 				onInit();
 
@@ -32,11 +32,8 @@
 					selectService.onSelectChange(ctrl.data, {});
 				}
 
-				function setNgOpts(type) {
-					return "option.value as option.name for option in qTypeSelect.getSelectOpts(" + "'" + type + "'" + ")";
-				}
 			}],
-			controllerAs: 'qTypeSelect',
+			controllerAs: '$ctrl',
 			bindToController: true
 		};
 	}

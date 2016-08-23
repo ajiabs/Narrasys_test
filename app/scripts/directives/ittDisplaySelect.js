@@ -17,29 +17,29 @@
 				itemForm: '=?',
 			},
 			template: [
-				'<div class="field" ng-if="displaySelect.getVisibility(\'display\')">',
+				'<div class="field" ng-if="$ctrl.getVisibility(\'display\')">',
 				'	<div class="label">Display</div>',
 				'	<div class="input">',
-				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.data, displaySelect.itemForm)"',
-				'			ng-model="displaySelect.data.layouts[displaySelect.layoutIndex]"',
-				'			ng-options="{{displaySelect.setNgOpts(\'display\')}}"',
-				'			itt-options-disabled="option.isDisabled for option in displaySelect.getSelectOpts(\'display\')">',
+				'		<select ng-change="$ctrl.onItemFormUpdate($ctrl.data, $ctrl.itemForm)"',
+				'			ng-model="$ctrl.data.layouts[$ctrl.layoutIndex]"',
+				'			ng-options="{{$ctrl.setNgOpts(\'display\')}}"',
+				'			itt-options-disabled="option.isDisabled for option in $ctrl.getSelectOpts(\'display\')">',
 				'		</select>',
 				'	</div>',
 				'</div>',
-				'<div class="field" ng-if="displaySelect.isImageFillTemplate">',
+				'<div class="field" ng-if="$ctrl.isImageFillTemplate">',
 				'	<div class="label">Position</div>',
 				'		<div class="input">',
-				'		<select ng-change="displaySelect.onItemFormUpdate(displaySelect.data, displaySelect.itemForm)" ng-model="displaySelect.itemForm.position" ng-options="{{displaySelect.setNgOpts(\'imagePosition\')}}"></select>',
+				'		<select ng-change="$ctrl.onItemFormUpdate($ctrl.data, $ctrl.itemForm)" ng-model="$ctrl.itemForm.position" ng-options="{{$ctrl.setNgOpts(\'imagePosition\')}}"></select>',
 				'	</div>',
 				'</div>'
 			].join(''),
-			controller: ['$scope', 'selectService', function ($scope, selectService) {
+			controller: ['$scope', 'selectService', 'ittUtils', function ($scope, selectService, ittUtils) {
 				var ctrl = this;
 				ctrl.getVisibility = selectService.getVisibility;
 				ctrl.getSelectOpts = selectService.getSelectOpts;
 				ctrl.onItemFormUpdate = selectService.onSelectChange;
-				ctrl.setNgOpts = setNgOpts;
+				ctrl.setNgOpts = ittUtils.setNgOpts;
 				//layout index should be 0 for images, 1 for scenes
 				ctrl.layoutIndex = (ctrl.data.producerItemType === 'image') ? 0 : 1;
 
@@ -54,12 +54,8 @@
 
 				}
 
-				function setNgOpts(type) {
-					return "option.value as option.name for option in displaySelect.getSelectOpts(" + "'" + type + "'" + ")";
-				}
-
 			}],
-			controllerAs: 'displaySelect',
+			controllerAs: '$ctrl',
 			bindToController: true
 		};
 	}
