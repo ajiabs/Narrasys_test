@@ -29,7 +29,7 @@
 				ctrl.setNgOpts = setNgOpts;
 				ctrl.langOpts = selectService.getSelectOpts('language');
 
-				$scope.$watch(watchLangForm, handleUpdates);
+				$scope.$watch(watchLangForm, handleUpdates, true);
 
 				function setNgOpts() {
 					return "option.value as option.name for option in $ctrl.langOpts";
