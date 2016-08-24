@@ -2,7 +2,6 @@
 	<div ng-if="appState.product == 'producer'">
 		<!-- <span class="eventIcon icon-episode"></span> -->
 
-
 		<div class="ittTabs" itt-tabs>
 
 			<!-- begin tabset -->
@@ -55,6 +54,11 @@
 				</div>
 
 				<itt-language-flags></itt-language-flags>
+				<itt-language-select
+					ng-if="languageCount > 1"
+					data="episode"
+					lang-form="langForm">
+				</itt-language-select>
 				<div class="field" ng-if="episode.languages.length > 1">
 					<div class="label">Current Language</div>
 					<div class="input">
@@ -63,11 +67,6 @@
 						</select>
 					</div>
 				</div>
-				<itt-language-select
-					ng-if="languageCount > 1"
-					data="episode"
-					lang-form="langForm">
-				</itt-language-select>
 
 				<!-- end episode content tab -->
 			</div>

@@ -21,7 +21,6 @@
             </div>
         </div>
         -->
-
 		<div ng-if="appState.product == 'producer'">
 			<div itt-tabs class="ittTabs">
 				<!--ITEM/SCENE TAB BEGIN-->
@@ -75,9 +74,9 @@
 						<div ng-switch-when="file">
 							<!--Time, Title, File, Description, Template, Flags-->
 							<itt-time-field></itt-time-field>
-							<itt-title-field data="item"></itt-title-field>
+							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
 							<itt-file-field></itt-file-field>
-							<itt-template-select data="item"></itt-template-select>
+							<!--<itt-template-select data="item"></itt-template-select>-->
 							<itt-description-field data="item"></itt-description-field>
 							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>

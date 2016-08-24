@@ -315,13 +315,13 @@
 					return imgTemplates;
 				case 'file':
 					_titleFieldVisibility(true);
-					_templateSelectVisibility(true);
+					_templateSelectVisibility(false);
 					return [
 						{url: 'templates/item/file.html', name: 'Uploaded File'},
-						{url: 'templates/item/link.html', name: 'File inline'},
-						{url: 'templates/item/link-descriptionfirst.html', name: 'File - description first'},
-						{url: 'templates/item/link-embed.html', name: 'File embedded'},
-						{url: 'templates/item/link-modal-thumb.html', name: 'File Modal'},
+						// {url: 'templates/item/link.html', name: 'File inline'},
+						// {url: 'templates/item/link-descriptionfirst.html', name: 'File - description first'},
+						// {url: 'templates/item/link-embed.html', name: 'File embedded'},
+						// {url: 'templates/item/link-modal-thumb.html', name: 'File Modal'},
 					];
 				case 'question':
 					_displaySelectVisibility(true);

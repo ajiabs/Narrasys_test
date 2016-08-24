@@ -13,7 +13,7 @@
 	        restrict: 'EA',
 			template: [
 			'<div class="field">',
-			'	<div class="label">Highlight</div>',
+			'	<div class="label">Highlight<span ng-if="episode"> Style</spann></div>',
 			'	<div class="input">',
 			'		<select size="1" ng-model="itemForm.highlight">',
 			'			<option value="">(Default)</option>',

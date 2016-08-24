@@ -15,7 +15,7 @@
 			'	<div class="label">Transition</div>',
 			'	<div class="input">',
 			'		<select size="1" ng-model="itemForm.transition">',
-			'			<option value="">(Default)</option>',
+			'			<option ng-if="item" value="">(Default)</option>',
 			'			<option value="None">No transition</option>',
 			'			<option value="Fade">Fade</option>',
 			'			<option value="SlideL">Slide left</option>',
