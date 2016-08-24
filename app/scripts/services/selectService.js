@@ -115,10 +115,10 @@
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
 						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
-						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: !isAdmin},
-						{value: 'mainFg', name: 'Text pane foreground', isDisabled: !isAdmin},
-						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: !isAdmin},
-						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: !isAdmin},
+						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: true},
+						{value: 'mainFg', name: 'Text pane foreground', isDisabled: true},
+						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: true},
+						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: true},
 					];
 					if (isInline) {
 						item.layouts = ['windowBg'];
@@ -147,12 +147,13 @@
 					break;
 				case 'cornerV':
 				case 'centerVV':
+				case 'cornerH':
 					_displaySelectVisibility(true);
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
 						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
-						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: true},
-						{value: 'mainFg', name: 'Text pane foreground', isDisabled: true},
+						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
+						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
 						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: false},
 						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: false}
 					];
@@ -164,10 +165,9 @@
 					itemForm.position = itemForm.position || 'fill'; //P1-A
 					item.layouts = item.layouts || ['altBg'];
 					break;
-				case 'cornerH':
 				case 'pip':
 					_displaySelectVisibility(false);
-					itemForm.position = itemForm.position || 'tl';
+					itemForm.position = itemForm.position || 'fill';
 					item.layouts = ['altBg'];
 					break;
 				case 'centerVVMondrian':
