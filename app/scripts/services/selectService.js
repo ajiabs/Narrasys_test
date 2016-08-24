@@ -110,12 +110,13 @@
 				/* falls through */
 				case '1col':
 				case 'centered':
+					var isAdmin = _userHasRole('admin');
 					_displaySelectVisibility(true);
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
 						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
-						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: true},
-						{value: 'mainFg', name: 'Text pane foreground', isDisabled: true},
+						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: !isAdmin},
+						{value: 'mainFg', name: 'Text pane foreground', isDisabled: !isAdmin},
 						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: true},
 						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: true},
 					];
