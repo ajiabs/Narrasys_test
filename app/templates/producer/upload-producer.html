@@ -11,7 +11,7 @@
 
 <div>
 	<!--ng-model as element here so we can attach itt-valid-image, which requires ng-model-->
-	<ng-model ng-model="item.asset" name="imageUpload" itt-valid-image item="item"></ng-model>
+	<ng-model ng-model="item.asset" name="itemAsset" itt-valid-asset item="item"></ng-model>
 	<div ng-if="item.asset && !showUploadButtons">
 		{{item.asset.display_name}}
 		<button class="button" ng-click="replaceAsset()">Replace</button>
