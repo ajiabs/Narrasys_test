@@ -193,111 +193,6 @@
 			}
 		}
 
-		function _setSceneDisplayOpts(item) {
-			_displaySelectVisibility(true);
-			switch(item.templateUrl) {
-				case 'templates/scene/1col.html':
-					if (_userHasRole('admin')) {
-						_displaySelectVisibility(true);
-					}
-					_select.display = [
-						{value: _D3.a.value, name: _D3.a.name},
-						{value: _D3.b.value, name: _D3.b.name}
-					];
-					break;
-				case 'templates/scene/centered.html':
-				case 'templates/scene/centeredPro.html':
-				case 'templates/scene/centerVV.html':
-				case 'templates/scene/centerVV-Mondrian.html':
-					_displaySelectVisibility(false);
-					break;
-				case 'templates/scene/pip.html':
-				case 'templates/scene/cornerH.html':
-				case 'templates/scene/cornerV.html':
-					_select.display = [
-						{value: _D1.a.value, name: _D1.a.name},
-						{value: _D1.b.value, name: _D1.b.name}
-					];
-					break;
-				case 'templates/scene/2colL.html':
-					_select.display = [
-						{value: _D2.a.value, name: _D2.a.name},
-						{value: _D2.b.value, name: _D2.b.name}
-					];
-					break;
-				case 'templates/scene/2colR.html':
-				case 'templates/scene/mirrored-twocol.html':
-					_select.display = [
-						{value: _D3.a.value, name: _D3.a.name},
-						{value: _D3.b.value, name: _D3.b.name}
-					];
-					break;
-			}
-		}
-
-		function _setSceneVideoPosition(item) {
-			switch(item.templateUrl) {
-				case 'templates/scene/1col.html':
-				case 'templates/scene/centered.html':
-				case 'templates/scene/centeredPro.html':
-					_videoPositionSelectVisibility(false);
-					break;
-				case 'templates/scene/2colL.html':
-				case 'templates/scene/2colR.html':
-				case 'templates/scene/cornerH.html':
-				case 'templates/scene/cornerV.html':
-				case 'templates/scene/centerVV.html':
-				case 'templates/scene/centerVV-Mondrian.html':
-				case 'templates/scene/pip.html':
-				case 'templates/scene/mirrored-twocol.html':
-					_videoPositionSelectVisibility(true);
-					_select.video = [
-						{value: 'videoLeft', name: 'Video on Left'},
-						{value: 'videoRight', name: 'Video on Right'}
-					];
-					break;
-			}
-		}
-
-		function _setSceneItemLayout(item) {
-			switch(item.templateUrl) {
-				case 'templates/scene/centered.html':
-				case 'templates/scene/centeredPro.html':
-					break;
-				case 'templates/scene/centerVV.html':
-				case 'templates/scene/centerVV-Mondrian.html':
-				case 'templates/scene/cornerV.html':
-					if (item.layouts[0] === 'inline') {
-						item.layouts[0] = 'videoLeft';
-						item.layouts[1] = _D1.a.value;
-					}
-					item.layouts[0] = item.layouts[0];
-					// item.layouts[1] = item.layouts[1] || _D1.a.value;
-					break;
-				case 'templates/scene/1col.html':
-					item.layouts[1] = item.layouts[1] || _D3.b.value;
-				// case 'templates/scene/2colL.html':
-					break;
-				case 'templates/scene/2colR.html':
-				case 'templates/scene/2colL.html':
-				case 'templates/scene/mirrored-twocol.html':
-					if (item.layouts[0] === 'inline') {
-						item.layouts[0] = 'videoLeft';
-					}
-
-					item.layouts[1] = item.layouts[1] || _D3.b.value;
-					break;
-				case 'templates/scene/pip.html':
-					if (item.layouts[0] === 'inline') {
-						item.layouts[0] = 'videoLeft';
-					}
-
-					item.layouts[1] = item.layouts[1] || _D1.b.value;
-					break;
-
-			}
-		}
-
 		function getSelectOpts(type) {
 			return _select[type];
 		}
@@ -450,9 +345,99 @@
 			_displaySelectVisibility(false);
 			switch(item.producerItemType) {
 				case 'scene':
-					_setSceneDisplayOpts(item);
-					_setSceneVideoPosition(item);
-					_setSceneItemLayout(item);
+					var isInline = item.layouts[0] === 'inline';
+					switch(item.templateUrl) {
+						case 'templates/scene/centered.html': //centered
+						case 'templates/scene/centeredPro.html': //Centered Pro, Hide Transcript & Transmedia
+							_videoPositionSelectVisibility(false);
+							_displaySelectVisibility(false);
+							item.layouts[0] = ''; //P1 Video Centered
+							item.layouts[1] = _D1.a.value;
+							break;
+						case 'templates/scene/centerVV.html': //Vertical Pro, Hide Transcript
+						case 'templates/scene/centerVV-Mondrian.html': //Vertical Pro Mondrian, Hide Transcript
+							_displaySelectVisibility(false);
+							_videoPositionSelectVisibility(true);
+							_select.video = [
+								{value: 'videoLeft', name: 'Video on Left'},
+								{value: 'videoRight', name: 'Video on Right'}
+							];
+							item.layouts[1] = _D1.a.value;
+							if (isInline) {
+								item.layouts[0] = 'videoLeft'; //P2 video left
+							}
+							item.layouts[0] = item.layouts[0];
+							break;
+						case 'templates/scene/cornerV.html': //Corner video, vertical
+						case 'templates/scene/cornerH.html': //Corner video, horizontal
+						case 'templates/scene/pip.html': //picture in picture
+							_displaySelectVisibility(true);
+							_videoPositionSelectVisibility(true);
+							_select.video = [
+								{value: 'videoLeft', name: 'Video on Left'},
+								{value: 'videoRight', name: 'Video on Right'}
+							];
+							_select.display = [
+								{value: _D1.a.value, name: _D1.a.name},
+								{value: _D1.b.value, name: _D1.b.name}
+							];
+							item.layouts[1] = _D1.a.value;
+							if (isInline || item.layouts[0] === '') {
+								item.layouts[0] = 'videoLeft'; //P2 video left
+							}
+							item.layouts[0] = item.layouts[0];
+							break;
+						case 'templates/scene/mirrored-twocol.html': // Two Columns (v2 mirrored vert)
+							_displaySelectVisibility(true);
+							_videoPositionSelectVisibility(true);
+							_select.video = [
+								{value: 'videoLeft', name: 'Video on Left'},
+								{value: 'videoRight', name: 'Video on Right'}
+							];
+							_select.display = [
+								{value: _D2.a.value, name: _D2.a.name},
+								{value: _D2.b.value, name: _D2.b.name}
+							];
+							item.layouts[1] = _D2.b.value;
+							if (isInline) {
+								item.layouts[0] = 'videoLeft'; //P2 video left
+							}
+							item.layouts[0] = item.layouts[0];
+							break;
+						case 'templates/scene/1col.html': //One Column
+							_displaySelectVisibility(true);
+							_videoPositionSelectVisibility(false);
+							_select.display = [
+								{value: _D3.a.value, name: _D3.a.name},
+								{value: _D3.b.value, name: _D3.b.name}
+							];
+							item.layouts[0] = ''; //P1 Video Centered
+							if (isInline) {
+								item.layouts[1] = _D3.b.value;
+							}
+							item.layouts[1] = item.layouts[1];
+							break;
+						case 'templates/scene/2colL.html': // Two Columns
+						case 'templates/scene/2colR.html': //Two Columns mirrored
+							_displaySelectVisibility(true);
+							_videoPositionSelectVisibility(true);
+							_select.video = [
+								{value: '', name: 'Video Centered'},
+								{value: 'videoLeft', name: 'Video on Left'},
+								{value: 'videoRight', name: 'Video on Right'}
+							];
+							_select.display = [
+								{value: _D3.a.value, name: _D3.a.name},
+								{value: _D3.b.value, name: _D3.b.name}
+							];
+							if (isInline) {
+								item.layouts[0] = ''; //P3
+								item.layouts[1] = _D3.b.value;
+							}
+							item.layouts[0] = item.layouts[0];
+							item.layouts[1] = item.layouts[1];
+							break;
+					}
 					break;
 				case 'link':
 					_displaySelectVisibility(true);
