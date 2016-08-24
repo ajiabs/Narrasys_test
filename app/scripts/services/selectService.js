@@ -110,7 +110,6 @@
 				/* falls through */
 				case '1col':
 				case 'centered':
-					var isAdmin = _userHasRole('admin');
 					_displaySelectVisibility(true);
 					_select.display = [
 						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
