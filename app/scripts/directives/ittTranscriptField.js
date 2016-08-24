@@ -20,7 +20,7 @@
 			template: [
 				'<div class="field">',
 				'	<div class="label">Transcript [{{$ctrl.lang}}]</div>',
-				'	<p ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" class="error-red">Transcript is a required field</p>',
+				'	<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Transcript is a required field"></itt-validation-tip>',
 				'	<div class="input" sxs-input-i18n="$ctrl.data.annotation" do-validate="true" x-inputtype="\'textarea\'" on-emit-name="$ctrl.onName($taName)" autofocus></div>',
 				'</div>'
 			].join(' '),

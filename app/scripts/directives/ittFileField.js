@@ -15,7 +15,7 @@
 			template: [
 				'<div class="field">',
 				'	<div class="label">File</div>',
-				'	<i ng-if="ittItemForm.itemAsset.$invalid">File is required</i>',
+				'	<itt-validation-tip ng-if="ittItemForm.itemAsset.$invalid" text="File is required"></itt-validation-tip>',
 				'	<div class="input" ng-include="\'templates/producer/upload-producer.html\'"></div>',
 				'</div>'
 			].join(' ')

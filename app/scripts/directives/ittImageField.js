@@ -13,7 +13,7 @@
 			template: [
 				'<div class="field" ng-show="selectService.getVisibility(\'imageUpload\')">',
 				'	<div class="label">Image</div>',
-				'	<i ng-if="ittItemForm.itemAsset.$invalid">Image is required</i>',
+				'	<itt-validation-tip ng-if="ittItemForm.itemAsset.$invalid" text="Image is required"></itt-validation-tip>',
 				'	<div class="input" ng-include="\'templates/producer/upload-producer.html\'"></div>',
 				'</div>'
 			].join(' ')

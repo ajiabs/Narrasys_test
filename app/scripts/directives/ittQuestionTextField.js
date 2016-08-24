@@ -18,7 +18,7 @@
 			template: [
 				'<div class="field">',
 				'	<div class="label">Question text</div>',
-				'	<p ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" class="error-red">Question Text is a required field</p>',
+				'	<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Question Text is a required field"></itt-validation-tip>',
 				'	<div class="input" do-validate="$ctrl.doValidate" on-emit-name="$ctrl.onName($taName)" sxs-input-i18n="$ctrl.data.data._plugin.questiontext" x-inputtype="\'textarea\'"></div>',
 				'</div>'
 			].join(' '),
