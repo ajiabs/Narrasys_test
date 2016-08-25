@@ -689,6 +689,8 @@ angular.module('com.inthetelling.story')
 				if (a.start_time === b.start_time) {
 					if (a.producerItemType === 'chapter') {
 						return -1;
+					} else if (b.producerItemType === 'chapter') {
+						return 1;
 					} else if (a.templateUrl === 'templates/item/text-h1.html') {
 						return -1;
 					} else if (b.templateUrl === 'templates/item/text-h1.html') {
