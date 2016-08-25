@@ -447,6 +447,10 @@
 					_templateSelectVisibility(true);
 					if (item.stop === true) {
 						item.layouts[0] = 'windowFg';
+						//prevent link-modal template from opening on top of stop-item modal
+						if (item.templateUrl === 'templates/item/link-modal-thumb.html') {
+							item.templateUrl = 'templates/item/link-embed.html';
+						}
 					} else {
 						item.layouts[0] = 'inline';
 					}
