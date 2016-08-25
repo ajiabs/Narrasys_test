@@ -18,11 +18,12 @@
 			},
 			template: [
 				'<div class="field">',
-				'	<div class="label">Annotation Text [{{$ctrl.lang}}]</div>',
-				'	<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Annotation Text is a required field"></itt-validation-tip>',
+				'	<div class="label">Annotation Text [{{$ctrl.lang}}]',
+				'		<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Annotation Text is a required field"></itt-validation-tip>',
+				'	</div>',
 				'	<div class="input" sxs-input-i18n="$ctrl.data.annotation" do-validate="true" x-inputtype="\'textarea\'" on-emit-name="$ctrl.onName($taName)" autofocus></div>',
 				'</div>'
-			].join(' '),
+			].join('\n'),
 			controller: ['appState', function(appState) {
 				var ctrl = this;
 				ctrl.onName = onName;

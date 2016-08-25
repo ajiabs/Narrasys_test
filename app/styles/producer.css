@@ -198,10 +198,6 @@ input[readonly] {
 	padding: 3px 0.25em;
 }
 
-.authoringForm .label:after {
-	content: ":";
-}
-
 .authoringForm .input {
 	width: 75%;
 	float: right;

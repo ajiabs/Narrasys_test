@@ -12,8 +12,9 @@
 			restrict: 'EA',
 			template: [
 				'<div class="field" ng-show="selectService.getVisibility(\'imageUpload\')">',
-				'	<div class="label">Image</div>',
-				'	<itt-validation-tip ng-if="ittItemForm.itemAsset.$invalid" text="Image is required"></itt-validation-tip>',
+				'	<div class="label">Image',
+				'		<itt-validation-tip ng-if="ittItemForm.itemAsset.$invalid" text="Image is required"></itt-validation-tip>',
+				'	</div>',
 				'	<div class="input" ng-include="\'templates/producer/upload-producer.html\'"></div>',
 				'</div>'
 			].join(' ')

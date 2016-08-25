@@ -16,10 +16,10 @@
 				doInfo: '=?'
 			},
 			template: [
-				'<div class="tooltip-static">',
+				'<span class="tooltip-static">',
 				'	<i class="fa fa-info-circle" ng-class="{\'error-red\': !doInfo, \'info-blue\': doInfo}"></i>',
-				'	<p class="tooltip-text">{{text}}</p>',
-				'</div>'
+				'	<span class="tooltip-text">{{text}}</span>',
+				'</span>'
 			].join('\n')
 	    };
 	}

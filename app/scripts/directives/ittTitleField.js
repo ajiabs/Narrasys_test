@@ -18,8 +18,9 @@
 			},
 			template: [
 				'<div class="field" ng-if="$ctrl.isVisible(\'titleField\')">',
-				'	<div class="label">Title [{{$ctrl.lang}}]</div>',
-				'	<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Title is a required field"></itt-validation-tip>',
+				'	<div class="label">Title [{{$ctrl.lang}}]',
+				'		<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Title is a required field"></itt-validation-tip>',
+				'	</div>',
 				'	<div class="input" ng-model-options="$ctrl.modelOpts" do-validate="$ctrl.doValidate" sxs-input-i18n="$ctrl.data.title" on-emit-name="$ctrl.onName($taName)" x-inputtype="\'input\'" autofocus></div>',
 				'</div>'
 			].join(' '),
