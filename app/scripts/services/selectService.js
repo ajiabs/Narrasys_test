@@ -381,11 +381,13 @@
 								{value: _D1.a.value, name: _D1.a.name},
 								{value: _D1.b.value, name: _D1.b.name}
 							];
-							item.layouts[1] = _D1.a.value;
+
 							if (isInline || item.layouts[0] === '') {
 								item.layouts[0] = 'videoLeft'; //P2 video left
+								item.layouts[1] = _D1.a.value;
 							}
 							item.layouts[0] = item.layouts[0];
+							item.layouts[1] = item.layouts[1];
 							break;
 						case 'templates/scene/mirrored-twocol.html': // Two Columns (v2 mirrored vert)
 							_displaySelectVisibility(true);
