@@ -688,7 +688,7 @@ angular.module('com.inthetelling.story')
 			episode.items = items.sort(function (a, b) {
 				if (a.start_time === b.start_time) {
 					if (a.producerItemType === 'chapter') {
-						return -1
+						return -1;
 					} else if (a.templateUrl === 'templates/item/text-h1.html') {
 						return -1;
 					} else if (b.templateUrl === 'templates/item/text-h1.html') {
