@@ -240,4 +240,9 @@ angular.module('com.inthetelling.story')
 		return function (n) {
 			return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n % 26];
 		};
+	})
+	.filter('capitalize', function() {
+		return function(str) {
+			return !!str ? str.charAt(0).toUpperCase() + str.substr(1).toLocaleLowerCase() : '';
+		}
 	});

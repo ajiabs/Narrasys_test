@@ -26,7 +26,7 @@
 				<!--ITEM/SCENE TAB BEGIN-->
 				<div itt-tab class="ittTab"
 					 ng-if="selectService.showTab(item.producerItemType, 'Item')"
-					 title="Item ({{item.producerItemType}})">
+					 title="{{item.producerItemType | capitalize}}">
 					<!--current lang select-->
 					<label ng-if="languages.length > 1" style="float:right; padding-right: 24px" for="itemLangSelect">Current Language
                         <select
