@@ -687,9 +687,13 @@ angular.module('com.inthetelling.story')
 			//5. all other annotations
 			episode.items = items.sort(function (a, b) {
 				if (a.start_time === b.start_time) {
-					if (a.producerItemType === 'chapter' || a.chapter_marker === true) {
+					if (a.producerItemType === 'chapter') {
 						return -1;
-					} else if (b.producerItemType === 'chapter' || b.chapter_marker === true) {
+					} else if (b.producerItemType === 'chapter') {
+						return 1;
+					} else if (a.chapter_marker === true) {
+						return -1;
+					} else if (b.chapter_marker === true) {
 						return 1;
 					} else if (a.templateUrl === 'templates/item/text-h1.html') {
 						return -1;
@@ -718,8 +722,8 @@ angular.module('com.inthetelling.story')
 					} else {
 						return -1;
 					}
-
-				} else {
+				}
+				else {
 					return a.start_time - b.start_time;
 				}
 			});
