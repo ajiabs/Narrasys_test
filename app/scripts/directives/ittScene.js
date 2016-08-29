@@ -26,7 +26,6 @@ angular.module('com.inthetelling.story')
 
 				//BEGIN temp code for debugging purposes
 				setCurrentSeneNameOnAppState();
-				console.log("scene!!!!", scope.scene);
 				function _getSceneName(sceneTemplate) {
 					var _scenes = {
 						centered: 'templates/scene/centered.html',

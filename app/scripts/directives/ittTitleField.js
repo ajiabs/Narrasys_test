@@ -35,7 +35,6 @@
 				}
 
 				function onName(v) {
-					console.log("name!", v);
 					ctrl.textAreaName = v;
 				}
 
