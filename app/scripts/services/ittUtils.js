@@ -89,7 +89,7 @@
 		var ret = [];
 		for (var i = 0; i < x.length; i++) {
 			for (var z = 0; z < y.length; z++) {
-				if (x[i] == y[z]) {
+				if (x[i] == y[z]) { // jshint ignore:line
 					ret.push(i);
 					break;
 				}
