@@ -430,7 +430,6 @@ angular.module('com.inthetelling.story')
 				// 	}
 				// }
 			} else {
-				console.log("Keeping same templateUrl:", event.templateUrl);
 				event.origTemplateUrl = event.templateUrl;
 			}
 
