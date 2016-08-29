@@ -34,6 +34,7 @@
 					switch(tmplUrl) {
 						case 'templates/item/file.html':
 						case 'templates/item/image-plain.html':
+						case 'templates/item/image-inline.html':
 						case 'templates/item/image-inline-withtext.html':
 						case 'templates/item/image-caption-sliding.html':
 						case 'templates/item/image.html':

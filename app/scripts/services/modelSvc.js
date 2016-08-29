@@ -421,15 +421,16 @@ angular.module('com.inthetelling.story')
 					event.templateUrl = "templates/item/image-fill.html";
 				}
 				// hack for old authoring tool quirk:
-				if (event.templateUrl === "templates/item/image-plain.html") {
-					if (event.styles) {
-						event.styles.push("timestampNone");
-					} else {
-						event.styles = ["timestampNone"];
-					}
-				}
+				// if (event.templateUrl === "templates/item/image-plain.html") {
+				// 	console.log('adding timestamp none!!');
+				// 	if (event.styles) {
+				// 		event.styles.push("timestampNone");
+				// 	} else {
+				// 		event.styles = ["timestampNone"];
+				// 	}
+				// }
 			} else {
-				// console.log("Keeping same templateUrl:", event.templateUrl);
+				console.log("Keeping same templateUrl:", event.templateUrl);
 				event.origTemplateUrl = event.templateUrl;
 			}
 
@@ -829,6 +830,16 @@ angular.module('com.inthetelling.story')
 					return;
 				}
 				event.styleCss = cascadeStyles(event);
+				var isImgInline = event.templateUrl === 'templates/item/image-inline.html';
+				var isLongText = event.templateUrl === 'templates/item/text-transmedia.html';
+				var isDef = event.templateUrl === 'templates/item/text-definition.html';
+
+				if (isImgInline || isLongText || isDef) {
+					if (!ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
+						event.styleCss += ' timestampNone';
+					}
+
+				}
 				if (event.layouts) {
 					event.styleCss = event.styleCss + " " + event.layouts.join(' ');
 				}

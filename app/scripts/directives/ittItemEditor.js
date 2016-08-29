@@ -250,7 +250,6 @@ angular.module('com.inthetelling.story')
 						}
 					}
 					scope.item.styles = styles;
-					console.log('watch Styles', styles);
 					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
 					if (scope.item.asset) {
 						scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
