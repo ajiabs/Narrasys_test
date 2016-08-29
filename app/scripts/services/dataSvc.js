@@ -373,7 +373,8 @@ angular.module('com.inthetelling.story')
 						id: item._id,
 						url: item.url,
 						type: (item.applies_to_episodes ? "Episode" : item.event_types ? item.event_types[0] : undefined),
-						displayName: item.name
+						displayName: item.name,
+						customerIds: item.customer_ids
 					};
 				} else if (cacheType === "layouts") {
 					/* API format:
@@ -1249,6 +1250,10 @@ angular.module('com.inthetelling.story')
 			// console.log("DataSvc:", svc);
 			console.log("DataSvc cache:", dataCache);
 		}
+
+		svc.getTemplates = function() {
+			return Object.keys(dataCache.template).map(function(t) { return dataCache.template[t]; });
+		};
 
 		/*
 		gets ID of Style Class when given the 'css_name'. 'css_name' is a attribute on the Style Class.

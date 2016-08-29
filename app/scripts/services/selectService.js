@@ -7,8 +7,9 @@
 	angular.module('com.inthetelling.story')
 		.service('selectService', selectService);
 
-	function selectService(authSvc, modelSvc) {
+	function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
 		var _userHasRole = authSvc.userHasRole;
+		var _existy = ittUtils.existy;
 
 		var _langOpts = [
 			{value: 'en', name: 'English', isDisabled: false},
@@ -204,29 +205,37 @@
 		function getTemplates(type) {
 			switch (type) {
 				case 'episode':
-					return [
-						{url: 'templates/episode/story.html', name: '(Default)'},
-						{url: 'templates/episode/episode.html', name: '(Unbranded)'},
-						{url: 'templates/episode/career-playbook.html', name: 'Career Playbook'},
-						{url: 'templates/episode/columbia.html', name: 'Columbia University'},
-						{url: 'templates/episode/columbiabusiness.html', name: 'Columbia Business School'},
-						{url: 'templates/episode/eliterate.html', name: 'e-Literate TV'},
-						{url: 'templates/episode/ewb.html', name: 'Engineers Without Borders'},
-						{url: 'templates/episode/fieldpros.html', name: 'Field Pros'},
-						{url: 'templates/episode/gw.html', name: 'George Washington'},
-						{url: 'templates/episode/gwlaw.html', name: 'George Washington Law'},
-						{url: 'templates/episode/gwsb.html', name: 'George Washington Fed MOOC'},
-						{url: 'templates/episode/kellogg.html', name: 'Kellogg'},
-						{url: 'templates/episode/narrasys-pro.html', name: 'Narrasys Professional'},
-						{url: 'templates/episode/middlebury.html', name: 'Middlebury'},
-						{url: 'templates/episode/purdue.html', name: 'Purdue'},
-						{url: 'templates/episode/regis.html', name: 'Regis'},
-						{url: 'templates/episode/schoolclimatesolutions.html', name: 'School Climate Solutions'},
-						{url: 'templates/episode/usc.html', name: 'University of Southern California'},
-						{url: 'templates/episode/washingtonSBCTC.html', name: 'Washington SBCTC'},
-						{url: 'templates/episode/wiley1.html', name: 'Wiley'},
-						{url: 'templates/episode/wiley2.html', name: 'Wiley (without endscreen text)'},
-					];
+					var custIds = authSvc.getCustomerIdsFromRoles();
+					var _reduceTemplates = function(accm, curr) {
+						//admins get all templates
+						if (_userHasRole('admin')) {
+							if (curr.type === 'Episode') {
+								accm.push({url: curr.url, name: curr.displayName});
+							}
+							return accm;
+						} else {
+							//return templates with assoc to customer
+							if (curr.type === 'Episode' && _existy(curr.customerIds)) {
+								var hasCustomer = ittUtils.intersection(custIds, curr.customerIds);
+								if (hasCustomer.length > 0 || curr.displayName === '(Default)') {
+									accm.push({url: curr.url, name: curr.displayName});
+								}
+							}
+							return accm;
+						}
+					};
+
+					var _sortAlpha = function(a, b) {
+						if (a.name < b.name) {
+							return -1;
+						} else if (a.name > b.name) {
+							return 1;
+						} else {
+							return 0;
+						}
+					};
+
+					return dataSvc.getTemplates().reduce(_reduceTemplates, []).sort(_sortAlpha);
 				case 'scene':
 					_displaySelectVisibility(false);
 					_videoPositionSelectVisibility(false);
@@ -305,24 +314,12 @@
 						{url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
 						{url: 'templates/item/image-fill.html', name: 'Overlay or Background fill'}
 					];
-					//hidden from everyone, should probably remove all together.
-					// if (_userHasRole('admin')) {
-					// 	imgTemplates.push(
-					// 		{url: 'templates/item/image.html', name: 'Linked Image'},
-					// 		{url: 'templates/item/image-inline.html', name: 'Inline Image'},
-					// 		{url: 'templates/item/image-caption.html', name: 'Image with caption'}
-					// 	);
-					// }
 					return imgTemplates;
 				case 'file':
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(false);
 					return [
 						{url: 'templates/item/file.html', name: 'Uploaded File'},
-						// {url: 'templates/item/link.html', name: 'File inline'},
-						// {url: 'templates/item/link-descriptionfirst.html', name: 'File - description first'},
-						// {url: 'templates/item/link-embed.html', name: 'File embedded'},
-						// {url: 'templates/item/link-modal-thumb.html', name: 'File Modal'},
 					];
 				case 'question':
 					_displaySelectVisibility(true);
@@ -330,9 +327,7 @@
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(true);
 					return [
-						// {url: 'templates/item/question-mc.html', name: 'Default question display'},
 						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'}
-						// {url: 'templates/item/question-mc-image-left.html', name: 'Question with image left'}
 					];
 				case 'chapter':
 					//chapters have no template, but need to do side-effects
@@ -519,6 +514,8 @@
 							//set back to blank when not a BG image.
 							itemForm.pin = itemForm.position = '';
 							item.layouts[0] = 'inline';
+
+							console.log('itemForm', itemForm);
 							break;
 						case 'templates/item/image-fill.html':
 							item.cosmetic = true;
