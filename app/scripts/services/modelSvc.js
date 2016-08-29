@@ -837,11 +837,12 @@ angular.module('com.inthetelling.story')
 					if (!ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
 						event.styleCss += ' timestampNone';
 					}
-
 				}
 				if (event.layouts) {
 					event.styleCss = event.styleCss + " " + event.layouts.join(' ');
 				}
+
+				event.styleCss = event.styleCss.replace(/timestampInline/, '');
 			});
 		};
 
