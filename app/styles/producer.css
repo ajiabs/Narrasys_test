@@ -202,6 +202,10 @@ input[readonly] {
 	width: 75%;
 	float: right;
 }
+
+.authoringForm .input input.ng-invalid {
+	border: 1px solid #c00;
+}
 /* Angular removes the type=text attribute when you use ng-model (grr) so can't use [type="text"] */
 
 .authoringForm .input input,

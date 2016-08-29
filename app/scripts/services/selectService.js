@@ -308,7 +308,7 @@
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(true);
 					var imgTemplates = [
-						{url: 'templates/item/image-plain.html', name: 'Plain image'},
+						{url: 'templates/item/image-inline.html', name: 'Inline Image'},
 						{url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
 						{url: 'templates/item/image-caption-sliding.html', name: 'Image with sliding caption'},
 						{url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
