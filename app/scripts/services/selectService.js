@@ -217,11 +217,8 @@
 							//return templates with assoc to customer
 							if (curr.type === 'Episode' && _existy(curr.customerIds)) {
 								var hasCustomer = ittUtils.intersection(custIds, curr.customerIds);
-								if (hasCustomer.length > 0){
-									accm.push({url: curr.url, name: curr.displayName});
-								}
-								//add default templates
-								if (curr.customerIds.length === 0) {
+								//this customer has an episode template OR the default template
+								if (hasCustomer.length > 0 || curr.customerIds.length === 0){
 									accm.push({url: curr.url, name: curr.displayName});
 								}
 							}
