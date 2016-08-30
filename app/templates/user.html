@@ -1,4 +1,5 @@
 <div class="userHome">
+	<h2>Account</h2>
 	<p><i><span ng-bind="user.role_description"></span></i></p>
 	<div ng-if="!(user.name === 'guest')" style="float:right; width: 79px">
 		<div class="avatar" ng-click="toggleUploadAvatar()" style="cursor:pointer;cursor:hand">
@@ -32,9 +33,9 @@
 	<div ng-if="!inPlayer">
 
 		<div ng-if="userHasRole('admin') || userHasRole('customer admin')">
-			<a href="/#/episodes">Find episodes</a>
+			<a href="/#/projects">Projects</a>
 			<br>
-			<a href="/#/stories">Find narratives</a>
+			<a href="/#/stories">Narratives</a>
 		</div>
 
 

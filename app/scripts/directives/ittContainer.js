@@ -48,7 +48,7 @@ angular.module('com.inthetelling.story')
 						event.target.select(); // convenience for selecting the episode url
 					};
 
-					scope.containerTypes = ["customer", "course", "session", "episode"];
+					scope.containerTypes = ["customer", "project", "module", "episode"];
 					scope.toggleChildren = function () {
 						if (scope.container.children || scope.container.episodes.length) {
 							// have already loaded kids

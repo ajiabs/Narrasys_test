@@ -1,10 +1,12 @@
 <div class="standaloneAncillaryPage">
-	<div itt-episode-list>
 
+	<div itt-episode-list>
+		<h2>Projects</h2>
 		<!-- TODO proper i18n -->
 		<div ng-if="userHasRole('admin') || userHasRole('customer admin')">
 			<div class="ancillaryNav">
-				<a class="button" href="/#/">Home</a>
+				<a class="button" href="/#/stories">Narratives</a>
+				<a class="button" href="/#/">Account</a>
 				<a class="button" ng-click="logout()">Log out</a>
 			</div>
 			<itt-loading ng-if="loading"></itt-loading>

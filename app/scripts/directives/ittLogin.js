@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 No UI for this directive. This originally showed a login form but that led to a flash-of-content when authenticating via lti
 
 */
@@ -56,7 +56,11 @@ angular.module('com.inthetelling.story')
 
 				// for admin logins only, for now. In future maybe oauth-based login will route through here too
 				scope.adminLogin = function () {
-					authSvc.adminLogin(scope.loginForm.auth_key, scope.loginForm.password).then(function () {}, function (data) {
+					authSvc.adminLogin(scope.loginForm.auth_key, scope.loginForm.password)
+						.then(function() {
+							$location.path('/projects');
+						})
+						.catch(function (data) {
 						console.warn("FAILED ADMIN LOGIN", data);
 						scope.badlogin = true;
 					});

@@ -104,8 +104,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				}
 			}
 		})
-		.when('/episodes', {
-			title: "Available episodes",
+		.when('/projects', {
+			title: "Available projects",
 			templateUrl: 'templates/producer/episodelist.html'
 		})
 		.when('/episode/:epId', {
