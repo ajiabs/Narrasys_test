@@ -27,7 +27,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			templateUrl: 'templates/auth.html',
 			reloadOnSearch: false
 		})
-		.when('/user', {
+		.when('/account', {
 			template: '<div class="standaloneAncillaryPage"><div itt-user></div></div>'
 		})
 		.when('/stories', {

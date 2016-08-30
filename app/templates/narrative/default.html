@@ -1,9 +1,10 @@
 <div class="">
-
 	<div class="ancillaryNav">
-		<a class="button" ng-if="user._id" href="/#/user">Home</a>
-		<a class="button" ng-if="user._id" ng-click="logout()">Sign out</a>
 		<a class="button" ng-if="canAccess" ng-click="exportToSpreadsheet(narrative._id)">Export to Spreadsheet</a>
+		<a class="button" ng-if="canAccess" href="/projects">Projects</a>
+		<a class="button" ng-if="canAccess" href="/stories">Narratives</a>
+		<a class="button" ng-if="user._id" href="/#/account">Account</a>
+		<a class="button" ng-if="user._id" ng-click="logout()">Log out</a>
 	</div>
 
 	<div ng-if="!loading">
