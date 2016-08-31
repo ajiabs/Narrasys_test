@@ -49,5 +49,14 @@
 		</table>
 	</div>
 	<br>
-	<div itt-asset-uploader="container._id" multiple> </div>
+	<h1>container assets</h1>
+
+	<div ng-if="isAdmin" itt-asset-uploader="container._id" multiple></div>
+
+	<div ng-if="!isAdmin"
+		 itt-asset-uploader="container._id"
+		 multiple  mime-types="image/*"
+		 instructions="We currently accept all image files."
+		 error-text="Please verify that the file you are trying to upload is an image.">
+	</div>
 </div>

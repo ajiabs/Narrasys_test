@@ -17,6 +17,7 @@ angular.module('com.inthetelling.story')
 
 				scope.loading = true;
 				scope.logout = authSvc.logout;
+				scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 
 				authSvc.authenticate().then(function () {
 					scope.loading = false;

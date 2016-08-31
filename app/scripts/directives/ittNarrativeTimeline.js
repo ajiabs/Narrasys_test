@@ -37,7 +37,9 @@ angular.module('com.inthetelling.story')
 								data: "Sorry, no episode was found in this timeline."
 							});
 						}
-					});
+					}).catch(function(error) {
+						console.log('error', error);
+				});
 
 			}
 		};
