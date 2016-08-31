@@ -19,7 +19,10 @@ angular.module('com.inthetelling.story')
 				// This is an even stupider but relatively harmless HACK to keep it  pointing at the right data:
 				var scopeHack = function () {
 					scope.episode = modelSvc.episodes[appState.episodeId];
-					appState.playerTemplate = scope.episode.templateUrl;
+					if (scope.episode != null) {
+						appState.playerTemplate = scope.episode.templateUrl;
+					}
+
 				};
 				$interval(scopeHack, 457);
 

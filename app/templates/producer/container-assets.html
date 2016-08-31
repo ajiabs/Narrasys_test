@@ -5,7 +5,7 @@
 	<div ng-if="appState.product != 'sxs' && container.parent_id && !showParent">
 		<a class="goUp" ng-click="up()">Parent container</a>
 	</div>
-	<div class="title">{{container.display_name}}
+	<div class="title">{{container.display_name}} - Asset Library
 	</div>
 
 	<div class="controls">
@@ -49,10 +49,7 @@
 		</table>
 	</div>
 	<br>
-	<h1>container assets</h1>
-
 	<div ng-if="isAdmin" itt-asset-uploader="container._id" multiple></div>
-
 	<div ng-if="!isAdmin"
 		 itt-asset-uploader="container._id"
 		 multiple  mime-types="image/*"
