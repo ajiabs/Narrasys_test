@@ -19,14 +19,19 @@
 	</div>
 	<div ng-if="showUploadButtons || !item.asset">
 		<span ng-if="showUploadField">
-			<div itt-asset-uploader="episodeContainerId" callback="assetUploaded"></div>
-				<div ng-if="isAdmin" itt-asset-uploader="container._id" multiple></div>
+
+			<div ng-if="isAdmin"
+				 itt-asset-uploader="episodeContainerId"
+				 callback="assetUploaded">
+			</div>
 
 			<div ng-if="!isAdmin"
-				 itt-asset-uploader="container._id"
-				 multiple mime-types="image/*"
+				 itt-asset-uploader="episodeContainerId"
+				 callback="assetUploaded"
+				 mime-types="image/*"
 				 instructions="We currently accept all image files."
 				 error-text="Please verify that the file you are trying to upload is an image.">
+			</div>
 		</span>
 		<span ng-if="!showUploadField">
 			<button class="button" ng-click="chooseAsset()">Browse uploaded</button>

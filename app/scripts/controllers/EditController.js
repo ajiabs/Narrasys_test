@@ -9,6 +9,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.$log = $log;
 		$scope.userHasRole = authSvc.userHasRole;
+		$scope.isAdmin = authSvc.userHasRole('admin');
 		$scope.selectService = selectService;
 		$scope.chooseAsset = function (assetType) {
 			assetType = assetType || '';
