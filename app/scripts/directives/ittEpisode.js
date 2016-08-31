@@ -22,7 +22,6 @@ angular.module('com.inthetelling.story')
 					if (scope.episode != null) { //jshint ignore:line
 						appState.playerTemplate = scope.episode.templateUrl;
 					}
-
 				};
 				$interval(scopeHack, 457);
 
