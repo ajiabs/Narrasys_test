@@ -1,8 +1,8 @@
 <div class="userHome">
 	<h2>Account</h2>
-	<div class="ancillaryNav" ng-if="userHasRole('admin') || userHasRole('customer admin')">
-		<a class="button"  href="/#/projects">Projects</a>
-		<a class="button"  href="/#/stories">Narratives</a>
+	<div class="ancillaryNav">
+		<a class="button" ng-if="canAccess"  href="/#/projects">Projects</a>
+		<a class="button" ng-if="canAccess" href="/#/stories">Narratives</a>
 		<a class="button" ng-if="user._id" ng-click="logout()">Log out</a>
 	</div>
 	<p><i><span ng-bind="user.role_description"></span></i></p>

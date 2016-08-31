@@ -5,7 +5,7 @@ angular.module('com.inthetelling.story')
 		$scope.containerId = $routeParams.containerId;
 	})
 	/* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
-	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState) {
+	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -13,7 +13,6 @@ angular.module('com.inthetelling.story')
 				containerId: "=sxsContainerAssets"
 			},
 			templateUrl: 'templates/producer/container-assets.html',
-
 			compile: function (element) {
 				// Use the compile function from the recursionHelper,
 				// And return the linking function(s) which it returns
@@ -36,6 +35,7 @@ angular.module('com.inthetelling.story')
 						});
 					}
 
+					scope.isAdmin = authSvc.userHasRole('admin');
 					scope.assets = modelSvc.assets; // this is going to be a horrible performance hit isn't it.  TODO: build asset array inside each container in modelSvc instead?
 					scope.uploadStatus = [];
 					scope.up = function () {
