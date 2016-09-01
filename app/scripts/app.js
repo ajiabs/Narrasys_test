@@ -109,6 +109,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 							var narrativeRole = authSvc.getRoleForNarrative(narrative._id);
 							var defaultProduct = authSvc.getDefaultProductForRole(narrativeRole);
 							appState.product = defaultProduct;
+							appState.productLoadedAs = "narrative";
 							angular.forEach(narrative.timelines, function (timeline) {
 								if (
 									timeline._id === timelinePath ||
@@ -127,7 +128,6 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 								});
 							}
 						}).catch(function(error) {
-							//console.errror here so we can detect it via new relic
 							console.error(error)
 						})
 				}
