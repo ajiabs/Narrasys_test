@@ -130,6 +130,10 @@ angular.module('com.inthetelling.story')
 			getEpisodeWatcher();
 			// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
+
+			//need to set narrative on scope for disable_new_window feature for narratives
+			//this used to happen in ittNarrativeTimelineJs, but has been deprecated
+			$scope.narrative = modelSvc.getNarrativeByPathOrId(appState.narrativeId);
 			modelSvc.setLanguageStrings();
 			wileyNag(); // HACK
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
