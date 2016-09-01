@@ -96,11 +96,40 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			}
 		})
 		.when('/story/:narrativePath/:timelinePath', {
-			template: '<div itt-narrative-timeline></div>',
+			templateUrl: 'templates/player.html',
+			controller: 'PlayerController',
 			resolve: {
-				product: function (appState) {
-					appState.product = "player";
-					appState.productLoadedAs = "narrative";
+				effects: function ($route, appState, dataSvc, authSvc, errorSvc) {
+					var narrativePath = $route.current.params.narrativePath;
+					var timelinePath = $route.current.params.timelinePath;
+					appState.init();
+					return dataSvc.getNarrative(narrativePath)
+						.then(function (narrative) {
+							appState.narrativeId = narrative._id;
+							var narrativeRole = authSvc.getRoleForNarrative(narrative._id);
+							var defaultProduct = authSvc.getDefaultProductForRole(narrativeRole);
+							appState.product = defaultProduct;
+							appState.productLoadedAs = "narrative";
+							angular.forEach(narrative.timelines, function (timeline) {
+								if (
+									timeline._id === timelinePath ||
+									timeline.path_slug.en === timelinePath
+								) {
+									appState.timelineId = timeline._id;
+									if (timeline.episode_segments[0]) {
+										appState.episodeId = timeline.episode_segments[0].episode_id;
+										appState.episodeSegmentId = timeline.episode_segments[0]._id;
+									}
+								}
+							});
+							if (!appState.episodeId) {
+								errorSvc.error({
+									data: "Sorry, no episode was found in this timeline."
+								});
+							}
+						}).catch(function(error) {
+							console.error(error);
+						});
 				}
 			}
 		})
