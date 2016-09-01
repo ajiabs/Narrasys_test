@@ -25,7 +25,7 @@
 				<a class="button button-link" ng-click="addEvent('link')">Link</a>
 				<a class="button button-question" ng-click="addEvent('question')">Question</a>
 				<a class="button button-image" ng-click="addEvent('image')">Image</a>
-				<a class="button button-file" ng-click="addEvent('file')" ng-if="userHasRole('admin')">File</a>
+				<a class="button button-file" ng-click="addEvent('file')" ng-if="userHasRole('admin') || userHasRole('customer admin')">File</a>
 				<a class="button button-chapter" ng-click="addEvent('chapter')">Add Chapter</a>
 			</span>
 		</span>

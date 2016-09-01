@@ -5,12 +5,14 @@ angular.module('com.inthetelling.story')
 		$scope.containerId = $routeParams.containerId;
 	})
 	/* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
-	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc) {
+	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc, MIMES) {
 		return {
 			restrict: 'A',
 			replace: false,
 			scope: {
-				containerId: "=sxsContainerAssets"
+				containerId: "=sxsContainerAssets",
+				allowFiles: '=?', //a poor name for now, but a boolean that will be used in combination with role to determine
+								 //what mimeTypes we should accept.
 			},
 			templateUrl: 'templates/producer/container-assets.html',
 			compile: function (element) {
@@ -35,7 +37,12 @@ angular.module('com.inthetelling.story')
 						});
 					}
 
-					scope.isAdmin = authSvc.userHasRole('admin');
+					scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
+
+					if (scope.canAccess && scope.allowFiles) {
+						scope.mimes = MIMES.adminOrCustAdmin;
+					}
+
 					scope.assets = modelSvc.assets; // this is going to be a horrible performance hit isn't it.  TODO: build asset array inside each container in modelSvc instead?
 					scope.uploadStatus = [];
 					scope.up = function () {

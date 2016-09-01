@@ -49,8 +49,8 @@
 		</table>
 	</div>
 	<br>
-	<div ng-if="isAdmin" itt-asset-uploader="container._id" multiple></div>
-	<div ng-if="!isAdmin"
+	<div ng-if="canAccess && allowFiles" itt-asset-uploader="container._id" mime-types="{{mimes}}" multiple></div>
+	<div ng-if="canAccess && !allowFiles"
 		 itt-asset-uploader="container._id"
 		 multiple
 		 mime-types="image/*"
