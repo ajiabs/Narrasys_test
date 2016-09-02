@@ -68,7 +68,6 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 				//disallow certain file types
 				var stop = false;
 				//gotta filter
-				var fType;
 				angular.forEach(files, function (f) {
 
 					angular.forEach(_mimeTypes, function (m) {
@@ -91,7 +90,7 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 							}
 
 						}
-						_errorText = f.type + ' uploads are not allowed here.'
+						_errorText = f.type + ' uploads are not allowed here.';
 					});
 				});
 
