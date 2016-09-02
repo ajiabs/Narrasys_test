@@ -2,7 +2,7 @@
 
 <div ng-if="showAssetPicker" class="floatAssetPicker">
 	<div class="scrollContainer">
-		<div sxs-container-assets="episodeContainerId" allow-files="item.producerItemType === 'file'"></div>
+		<div sxs-container-assets="episodeContainerId" mime-key="{{item.producerItemType}}"></div>
 	</div>
 	<div class="controlsContainer">
 		<button ng-click="endChooseAsset();">Cancel</button>
@@ -20,17 +20,9 @@
 	<div ng-if="showUploadButtons || !item.asset">
 		<span ng-if="showUploadField">
 
-			<div ng-if="isAdmin"
+			<div ng-if="canAccess"
 				 itt-asset-uploader="episodeContainerId"
-				 callback="assetUploaded">
-			</div>
-
-			<div ng-if="!isAdmin"
-				 itt-asset-uploader="episodeContainerId"
-				 callback="assetUploaded"
-				 mime-types="image/*"
-				 instructions="We currently accept all image files."
-				 error-text="Please verify that the file you are trying to upload is an image.">
+				 callback="assetUploaded" mime-types="{{mimes}}">
 			</div>
 		</span>
 		<span ng-if="!showUploadField">

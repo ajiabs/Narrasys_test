@@ -16,7 +16,9 @@
  */
 angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular', 'ui.tree'])
 	.constant('MIMES', {
-		'adminOrCustAdmin': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf'
+		'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
+		'file':  'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
+		'default': 'image/*'
 	})
 // Configure routing
 .config(function ($routeProvider) {
@@ -197,7 +199,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		.when('/assets/:containerId', {
 			title: "Container Assets test",
 			controller: 'ContainerAssetsTestController',
-			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="/#/projects">Projects</a><div sxs-container-assets="containerId" allow-files="true"></div></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="/#/projects">Projects</a><div sxs-container-assets="containerId" mime-key="assetLib"></div></div></div>'
 		})
 		.when('/event/:eventId', {
 			title: "Event test",
