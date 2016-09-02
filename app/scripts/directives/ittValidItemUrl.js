@@ -93,6 +93,12 @@
 											payload: tipText
 										}
 									});
+								} else {
+									scope.onValidationNotice({
+										$notice: {
+											type: 'xFrameOpts', isValid: true
+										}
+									});
 								}
 							});
 					};
