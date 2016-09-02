@@ -473,6 +473,9 @@ angular.module('com.inthetelling.story')
 			//this code handles the case AFTER producerItemType has been set, and the event is
 			//an annotation, and the user switched the annotation type.
 			switch(event.producerItemType) {
+				case 'chapter':
+					event.isContent = false;
+					break;
 				case 'annotation':
 					//set to false off the bat, then flip to true for each case
 					event.isPq = event.isHeader = event.isLongText = event.isDef = false;
