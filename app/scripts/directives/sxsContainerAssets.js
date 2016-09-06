@@ -40,6 +40,9 @@ angular.module('com.inthetelling.story')
 
 					if (MIMES[scope.mimeKey]) {
 						scope.mimes = MIMES[scope.mimeKey];
+						if (authSvc.userHasRole('admin')) {
+							scope.mimes += ',video/*';
+						}
 					} else {
 						scope.mimes = MIMES.default;
 					}
