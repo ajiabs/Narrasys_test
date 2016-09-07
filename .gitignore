@@ -7,4 +7,3 @@
 *.orig
 /log/newrelic_agent.log
 .idea
-/app/styles/_*.scss

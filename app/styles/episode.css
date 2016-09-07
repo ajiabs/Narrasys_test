@@ -920,9 +920,9 @@
 .default .centerVV-mondrian .mainPane .item__text--transmedia h1, .default .centerVV-mondrian .mainPane .item__text--transmedia h2, .default .centerVV-mondrian .mainPane .item__text--transmedia h3, .default .centerVV-mondrian .mainPane .item__text--definition h1, .default .centerVV-mondrian .mainPane .item__text--definition h2, .default .centerVV-mondrian .mainPane .item__text--definition h3 {
   color: #dddddd; }
 .default .centerVV-mondrian .mainPane .item.colorInvert {
-  background-color: black !important; }
-  .default .centerVV-mondrian .mainPane .item.colorInvert .item__text, .default .centerVV-mondrian .mainPane .item.colorInvert .item_title, .default .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
-    color: #dddddd !important; }
+  background-color: #dddddd !important; }
+  .default .centerVV-mondrian .mainPane .item.colorInvert .item__text, .default .centerVV-mondrian .mainPane .item.colorInvert .item__title, .default .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+    color: black !important; }
 .default .centerVV-mondrian .item__title--link,
 .default .centerVV-mondrian .item__title--image,
 .default .centerVV-mondrian .item__title--image-thumbnail,
@@ -1083,9 +1083,9 @@
 .field-pros .centerVV-mondrian .mainPane .item__text--transmedia h1, .field-pros .centerVV-mondrian .mainPane .item__text--transmedia h2, .field-pros .centerVV-mondrian .mainPane .item__text--transmedia h3, .field-pros .centerVV-mondrian .mainPane .item__text--definition h1, .field-pros .centerVV-mondrian .mainPane .item__text--definition h2, .field-pros .centerVV-mondrian .mainPane .item__text--definition h3 {
   color: white; }
 .field-pros .centerVV-mondrian .mainPane .item.colorInvert {
-  background-color: #5b5b5b !important; }
-  .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__text, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item_title, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
-    color: white !important; }
+  background-color: white !important; }
+  .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__text, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__title, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+    color: #5b5b5b !important; }
 .field-pros .centerVV-mondrian .item__title--link,
 .field-pros .centerVV-mondrian .item__title--image,
 .field-pros .centerVV-mondrian .item__title--image-thumbnail,
@@ -1232,9 +1232,9 @@
   .narrasys .centerVV-mondrian .mainPane .item__text--transmedia h1, .narrasys .centerVV-mondrian .mainPane .item__text--transmedia h2, .narrasys .centerVV-mondrian .mainPane .item__text--transmedia h3, .narrasys .centerVV-mondrian .mainPane .item__text--definition h1, .narrasys .centerVV-mondrian .mainPane .item__text--definition h2, .narrasys .centerVV-mondrian .mainPane .item__text--definition h3 {
     color: white; }
   .narrasys .centerVV-mondrian .mainPane .item.colorInvert {
-    background-color: #4d4d4d !important; }
-    .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__text, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item_title, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
-      color: white !important; }
+    background-color: white !important; }
+    .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__text, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__title, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+      color: #4d4d4d !important; }
   .narrasys .centerVV-mondrian .item__title--link,
   .narrasys .centerVV-mondrian .item__title--image,
   .narrasys .centerVV-mondrian .item__title--image-thumbnail,
@@ -1392,9 +1392,9 @@
   .career-playbook .centerVV-mondrian .mainPane .item__text--transmedia h1, .career-playbook .centerVV-mondrian .mainPane .item__text--transmedia h2, .career-playbook .centerVV-mondrian .mainPane .item__text--transmedia h3, .career-playbook .centerVV-mondrian .mainPane .item__text--definition h1, .career-playbook .centerVV-mondrian .mainPane .item__text--definition h2, .career-playbook .centerVV-mondrian .mainPane .item__text--definition h3 {
     color: white; }
   .career-playbook .centerVV-mondrian .mainPane .item.colorInvert {
-    background-color: #4d4d4d !important; }
-    .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__text, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item_title, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
-      color: white !important; }
+    background-color: white !important; }
+    .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__text, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__title, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+      color: #4d4d4d !important; }
   .career-playbook .centerVV-mondrian .item__title--link,
   .career-playbook .centerVV-mondrian .item__title--image,
   .career-playbook .centerVV-mondrian .item__title--image-thumbnail,

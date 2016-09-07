@@ -1,0 +1,235 @@
+
+    $defaultPrimary: #000000;
+    $defaultAccent: #CCCCCC;
+    $defaultSecondary: #DDDDDD;
+    $defaultLink: #0000CC;
+
+    @mixin default-header {
+    	font-family: 'Droid sans',  sans-serif;
+		font-weight:  700;
+    }
+    @mixin default-body {
+    	font-family: 'Droid sans',  sans-serif;
+		font-weight:  400;
+	    color: $defaultPrimary;
+    }
+
+    @mixin default-pq {
+    	font-family: 'Droid serif',  serif;
+		font-weight:  400;
+	    color: $defaultPrimary;
+    }
+
+    .default {
+        
+        
+        
+        .landingscreen {
+            h1 {
+                @include banner-pq('Droid sans', $defaultAccent, 2.5vw);
+            }
+        }
+
+        .endingscreen {
+            p {
+                @include banner-pq('Droid sans', $defaultAccent, 2.5vw);
+            }
+        }
+
+        //search view
+        .searchPanel__wrapper {
+            @include default-body;
+            color: $defaultPrimary;
+            // 'sorted by' button
+            .fake-link--search-results {
+                color: $defaultLink;
+            }
+        }
+        
+        .searchResults {
+            @include default-header;
+            .item__title--link, .item__link--fake-link, .item__link--escape-link {
+                @include default-body;
+                color: $defaultLink;
+                &:before {
+                    color: $defaultPrimary;
+                }
+            }
+        }
+
+        //item overrides
+        .item__title {
+            @include default-header;
+        }
+
+        .item__title--link, .item__title--file {
+            a {
+                color: $defaultLink;
+            }
+        }
+
+        .item__link--fake-link {
+            @include default-body;
+            color: $defaultLink;
+        }
+
+        .item__text {
+            @include default-body;
+        }
+
+        .item__text--h2 {
+            @include default-header;
+        }
+
+        .item__text--transmedia, .item__text--definition {
+            h1, h2, h3 {
+                @include default-header;
+            }
+        }
+        .item .item__text--pullquote {
+            @include default-pq;
+            &:before {
+                @include default-header;
+                //override color set on mixin
+                color: $defaultAccent;
+
+            }
+        }
+
+       .item__title--image-caption, .item__title--image-caption-sliding,
+	   .item__text--image-caption, .item__text--image-caption-sliding {
+	        color: $defaultSecondary;
+	   }
+        
+        .item__link--escape-link {
+            @include default-body;
+            color: $defaultLink;
+            &:before {
+                color: $defaultPrimary;
+            }
+        }
+        
+        //timestamp
+        .item {
+            .displayTime, .startTime {
+                @include default-header;
+                color: $defaultLink;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+        
+       //invert 
+        .item {
+            &.colorInvert {
+                background-color: $defaultPrimary !important;
+             .item__text {
+                 color: $defaultSecondary !important;
+             }
+            }
+        }
+        
+        //layout specific overrides
+        .centered-pro {
+            .banner-pull-quote {
+                h1 {
+                    @include banner-pq('Droid sans', $defaultAccent, 2.5vw);
+                }
+            }
+        }
+
+        .centerVV {
+            .static-bg__main {
+                
+            }
+            
+            .static-bg__alt {
+                
+            }
+            
+            .item__title--link, .item__title--file {
+                @include default-body;
+            }
+
+            .item__title--link.title--link-embed {
+                @include default-body;
+            }
+
+        }
+
+        .centerVV-mondrian {           
+            .static-bg__main {
+                border: 4px solid $defaultPrimary;
+                background-color: $defaultAccent;
+            }
+            
+            .static-bg__alt {
+                
+            }
+
+      		.mainPane {
+			    .item {
+				    background-color:  $defaultPrimary;
+			    }
+
+			.item__text, .item__title, .item__title a {
+				color: $defaultSecondary;
+			}
+			
+			//override from general item level,
+			//mondrian BG is solid color, so we need to use
+			//the Secondary
+			.item__text--transmedia, .item__text--definition {
+				h1, h2, h3 {
+					color: $defaultSecondary;
+				}
+			}
+			
+			.item {
+			    &.colorInvert {
+			        background-color: $defaultSecondary !important;
+                    .item__text, .item__title, .item__title a {
+                        color: $defaultPrimary !important;
+                    }
+                }
+            }
+			
+		}
+
+        
+		//item__<entity> for non URL titles
+		// item__<entity> a covers both escape and fakeLinks
+		.item__title--link,
+		.item__title--image,
+		.item__title--image-thumbnail,
+		.item__title--link a,
+		.item__title--image a,
+		.item__title--image-thumbnail a {
+			@include default-header;
+		}
+		
+		.item__link--fake-link {
+			color: $defaultSecondary;
+		}
+
+		.item__link--escape-link {
+			@include default-header;
+			color: $defaultSecondary;
+			&:before {
+				color: $defaultAccent;
+			}
+		}
+		
+		.item {
+		    .displayTime, .startTime {
+		        @include default-header;
+		        color: $defaultSecondary;
+		        
+		        a {
+		            text-decoration: underline;
+		        }
+		    }
+		}
+    }
+}
