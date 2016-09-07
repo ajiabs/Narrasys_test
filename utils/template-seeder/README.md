@@ -14,6 +14,7 @@ Create and format the .env file as follows:
 	VHOST=<your vhost url >
 	API_DEV_PASSWORD=<dev password>
     LOCALHOST_PASSWORD=<local password>
+    DEMO_PASSWORD=<demo password>
     STORY_PASSWORD=<your prod password>
     
 these values are used in utils.js    
