@@ -1,0 +1,16 @@
+node index.js --url 'templates/episode/narrasys-pro.html' --applies_to_episode true --name 'Narrasys Professional' --seed_template false
+node index.js --url 'templates/scene/centeredPro.html' --applies_to_episode false --name 'Centered Pro' --seed_template false
+node index.js --url 'templates/scene/centerVV.html' --applies_to_episode false --name 'Center video - vertical' --seed_template false
+node index.js --url 'templates/item/link-withimage-notitle.html' --applies_to_episode false --name 'Link with image - no title' --event_types Link --seed_template false
+node index.js --url 'templates/scene/centerVV-Mondrian.html' --applies_to_episode false --name 'Center video - Mondrian' --seed_template false
+
+node index.js --url 'templates/item/link-modal-thumb.html' --applies_to_episodes false --name 'Link in Modal' --event_types Link --seed_template false
+node index.js --url 'templates/item/link-withimage.html' --applies_to_episodes false --name 'Link with image' --event_types Link --seed_template false
+
+node index.js --url 'templates/item/image-inline-withtext.html' --applies_to_episodes false --name 'Inline image with text' --event_types Upload --seed_template false
+
+node index.js --url 'templates/episode/fieldpros.html' --applies_to_episodes true --name 'Field Pros' --seed_template false
+
+node index.js --url 'templates/scene/mirrored-twocol.html' --applies_to_episodes false --name '2Col (v2 mirrored)' --seed_template false
+
+node index.js --url 'templates/episode/career-playbook.html' --applies_to_episodes true --name 'Career Playbook' --seed_template false

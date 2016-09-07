@@ -789,9 +789,328 @@
 @font-face {
   font-family: 'Gotham Light Italic';
   src: url("/images/font/Gotham-LightItalic.otf") format("opentype"); }
+.default .landingscreen h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Droid sans";
+  color: white;
+  background-color: #cccccc;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  letter-spacing: normal; }
+.default .endingscreen p {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Droid sans";
+  color: white;
+  background-color: #cccccc;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  letter-spacing: normal; }
+.default .searchPanel__wrapper {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 400;
+  color: black;
+  color: black; }
+  .default .searchPanel__wrapper .fake-link--search-results {
+    color: #0000cc; }
+.default .searchResults {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 700; }
+  .default .searchResults .item__title--link, .default .searchResults .item__link--fake-link, .default .searchResults .item__link--escape-link {
+    font-family: 'Droid sans',  sans-serif;
+    font-weight: 400;
+    color: black;
+    color: #0000cc; }
+    .default .searchResults .item__title--link:before, .default .searchResults .item__link--fake-link:before, .default .searchResults .item__link--escape-link:before {
+      color: black; }
+.default .item__title {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 700; }
+.default .item__title--link a, .default .item__title--file a {
+  color: #0000cc; }
+.default .item__link--fake-link {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 400;
+  color: black;
+  color: #0000cc; }
+.default .item__text {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 400;
+  color: black; }
+.default .item__text--h2 {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 700; }
+.default .item__text--transmedia h1, .default .item__text--transmedia h2, .default .item__text--transmedia h3, .default .item__text--definition h1, .default .item__text--definition h2, .default .item__text--definition h3 {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 700; }
+.default .item .item__text--pullquote {
+  font-family: 'Droid serif',  serif;
+  font-weight: 400;
+  color: black; }
+  .default .item .item__text--pullquote:before {
+    font-family: 'Droid sans',  sans-serif;
+    font-weight: 700;
+    color: #cccccc; }
+.default .item__title--image-caption, .default .item__title--image-caption-sliding,
+.default .item__text--image-caption, .default .item__text--image-caption-sliding {
+  color: #dddddd; }
+.default .item__link--escape-link {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 400;
+  color: black;
+  color: #0000cc; }
+  .default .item__link--escape-link:before {
+    color: black; }
+.default .item .displayTime, .default .item .startTime {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 700;
+  color: #0000cc; }
+  .default .item .displayTime:hover, .default .item .startTime:hover {
+    text-decoration: underline; }
+.default .item.colorInvert {
+  background-color: black !important; }
+  .default .item.colorInvert .item__text {
+    color: #dddddd !important; }
+.default .centered-pro .banner-pull-quote h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Droid sans";
+  color: white;
+  background-color: #cccccc;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  letter-spacing: normal; }
+.default .centerVV .item__title--link, .default .centerVV .item__title--file {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 400;
+  color: black; }
+.default .centerVV .item__title--link.title--link-embed {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 400;
+  color: black; }
+.default .centerVV-mondrian .static-bg__main {
+  border: 4px solid black;
+  background-color: #cccccc; }
+.default .centerVV-mondrian .mainPane .item {
+  background-color: black; }
+.default .centerVV-mondrian .mainPane .item__text, .default .centerVV-mondrian .mainPane .item__title, .default .centerVV-mondrian .mainPane .item__title a {
+  color: #dddddd; }
+.default .centerVV-mondrian .mainPane .item__text--transmedia h1, .default .centerVV-mondrian .mainPane .item__text--transmedia h2, .default .centerVV-mondrian .mainPane .item__text--transmedia h3, .default .centerVV-mondrian .mainPane .item__text--definition h1, .default .centerVV-mondrian .mainPane .item__text--definition h2, .default .centerVV-mondrian .mainPane .item__text--definition h3 {
+  color: #dddddd; }
+.default .centerVV-mondrian .mainPane .item.colorInvert {
+  background-color: #dddddd !important; }
+  .default .centerVV-mondrian .mainPane .item.colorInvert .item__text, .default .centerVV-mondrian .mainPane .item.colorInvert .item__title, .default .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+    color: black !important; }
+.default .centerVV-mondrian .item__title--link,
+.default .centerVV-mondrian .item__title--image,
+.default .centerVV-mondrian .item__title--image-thumbnail,
+.default .centerVV-mondrian .item__title--link a,
+.default .centerVV-mondrian .item__title--image a,
+.default .centerVV-mondrian .item__title--image-thumbnail a {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 700; }
+.default .centerVV-mondrian .item__link--fake-link {
+  color: #dddddd; }
+.default .centerVV-mondrian .item__link--escape-link {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 700;
+  color: #dddddd; }
+  .default .centerVV-mondrian .item__link--escape-link:before {
+    color: #cccccc; }
+.default .centerVV-mondrian .item .displayTime, .default .centerVV-mondrian .item .startTime {
+  font-family: 'Droid sans',  sans-serif;
+  font-weight: 700;
+  color: #dddddd; }
+  .default .centerVV-mondrian .item .displayTime a, .default .centerVV-mondrian .item .startTime a {
+    text-decoration: underline; }
+
+.field-pros .landingscreen h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Condensed";
+  color: white;
+  background-color: #6baa36;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  letter-spacing: normal; }
+.field-pros .endingscreen p {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Condensed";
+  color: white;
+  background-color: #6baa36;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  letter-spacing: normal; }
+.field-pros .searchPanel__wrapper {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 300;
+  color: #5b5b5b;
+  color: #5b5b5b; }
+  .field-pros .searchPanel__wrapper .fake-link--search-results {
+    color: #6baa36; }
+.field-pros .searchResults {
+  font-family: 'Roboto Condensed',  sans-serif;
+  font-weight: 700; }
+  .field-pros .searchResults .item__title--link, .field-pros .searchResults .item__link--fake-link, .field-pros .searchResults .item__link--escape-link {
+    font-family: 'Lato',  sans-serif;
+    font-weight: 300;
+    color: #5b5b5b;
+    color: #6baa36; }
+    .field-pros .searchResults .item__title--link:before, .field-pros .searchResults .item__link--fake-link:before, .field-pros .searchResults .item__link--escape-link:before {
+      color: #5b5b5b; }
+.field-pros .item__title {
+  font-family: 'Roboto Condensed',  sans-serif;
+  font-weight: 700; }
+.field-pros .item__title--link a, .field-pros .item__title--file a {
+  color: #6baa36; }
+.field-pros .item__link--fake-link {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 300;
+  color: #5b5b5b;
+  color: #6baa36; }
+.field-pros .item__text {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 300;
+  color: #5b5b5b; }
+.field-pros .item__text--h2 {
+  font-family: 'Roboto Condensed',  sans-serif;
+  font-weight: 700; }
+.field-pros .item__text--transmedia h1, .field-pros .item__text--transmedia h2, .field-pros .item__text--transmedia h3, .field-pros .item__text--definition h1, .field-pros .item__text--definition h2, .field-pros .item__text--definition h3 {
+  font-family: 'Roboto Condensed',  sans-serif;
+  font-weight: 700; }
+.field-pros .item .item__text--pullquote {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 300;
+  color: #5b5b5b; }
+  .field-pros .item .item__text--pullquote:before {
+    font-family: 'Roboto Condensed',  sans-serif;
+    font-weight: 700;
+    color: #6baa36; }
+.field-pros .item__title--image-caption, .field-pros .item__title--image-caption-sliding,
+.field-pros .item__text--image-caption, .field-pros .item__text--image-caption-sliding {
+  color: white; }
+.field-pros .item__link--escape-link {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 300;
+  color: #5b5b5b;
+  color: #6baa36; }
+  .field-pros .item__link--escape-link:before {
+    color: #5b5b5b; }
+.field-pros .item .displayTime, .field-pros .item .startTime {
+  font-family: 'Roboto Condensed',  sans-serif;
+  font-weight: 700;
+  color: #6baa36; }
+  .field-pros .item .displayTime:hover, .field-pros .item .startTime:hover {
+    text-decoration: underline; }
+.field-pros .item.colorInvert {
+  background-color: #5b5b5b !important; }
+  .field-pros .item.colorInvert .item__text {
+    color: white !important; }
+.field-pros .centered-pro .banner-pull-quote h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Condensed";
+  color: white;
+  background-color: #6baa36;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  letter-spacing: normal; }
+.field-pros .centerVV .static-bg__main {
+  background-image: url("/images/customer/Green_BG_01.svg"); }
+.field-pros .centerVV .static-bg__alt {
+  background-image: url("/images/customer/Grid_Graphic_01.svg"); }
+.field-pros .centerVV .item__title--link, .field-pros .centerVV .item__title--file {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 300;
+  color: #5b5b5b; }
+.field-pros .centerVV .item__title--link.title--link-embed {
+  font-family: 'Lato',  sans-serif;
+  font-weight: 300;
+  color: #5b5b5b; }
+.field-pros .centerVV-mondrian .static-bg__main {
+  border: 4px solid #5b5b5b;
+  background-color: #6baa36; }
+.field-pros .centerVV-mondrian .static-bg__alt {
+  background-image: url("/images/customer/Grid_Graphic_01.svg"); }
+.field-pros .centerVV-mondrian .mainPane .item {
+  background-color: #5b5b5b; }
+.field-pros .centerVV-mondrian .mainPane .item__text, .field-pros .centerVV-mondrian .mainPane .item__title, .field-pros .centerVV-mondrian .mainPane .item__title a {
+  color: white; }
+.field-pros .centerVV-mondrian .mainPane .item__text--transmedia h1, .field-pros .centerVV-mondrian .mainPane .item__text--transmedia h2, .field-pros .centerVV-mondrian .mainPane .item__text--transmedia h3, .field-pros .centerVV-mondrian .mainPane .item__text--definition h1, .field-pros .centerVV-mondrian .mainPane .item__text--definition h2, .field-pros .centerVV-mondrian .mainPane .item__text--definition h3 {
+  color: white; }
+.field-pros .centerVV-mondrian .mainPane .item.colorInvert {
+  background-color: white !important; }
+  .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__text, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__title, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+    color: #5b5b5b !important; }
+.field-pros .centerVV-mondrian .item__title--link,
+.field-pros .centerVV-mondrian .item__title--image,
+.field-pros .centerVV-mondrian .item__title--image-thumbnail,
+.field-pros .centerVV-mondrian .item__title--link a,
+.field-pros .centerVV-mondrian .item__title--image a,
+.field-pros .centerVV-mondrian .item__title--image-thumbnail a {
+  font-family: 'Roboto Condensed',  sans-serif;
+  font-weight: 700; }
+.field-pros .centerVV-mondrian .item__link--fake-link {
+  color: white; }
+.field-pros .centerVV-mondrian .item__link--escape-link {
+  font-family: 'Roboto Condensed',  sans-serif;
+  font-weight: 700;
+  color: white; }
+  .field-pros .centerVV-mondrian .item__link--escape-link:before {
+    color: #6baa36; }
+.field-pros .centerVV-mondrian .item .displayTime, .field-pros .centerVV-mondrian .item .startTime {
+  font-family: 'Roboto Condensed',  sans-serif;
+  font-weight: 700;
+  color: white; }
+  .field-pros .centerVV-mondrian .item .displayTime a, .field-pros .centerVV-mondrian .item .startTime a {
+    text-decoration: underline; }
+
 .narrasys {
-  background-image: url("/images/customer/Narrasys_Tree.svg");
-  background-size: 62%; }
+  background-image: url("/images/customer/Narrasys_Tree.svg"); }
   .narrasys .landingscreen h1 {
     margin-top: 1em;
     display: flex;
@@ -829,23 +1148,23 @@
     color: #4d4d4d;
     color: #4d4d4d; }
     .narrasys .searchPanel__wrapper .fake-link--search-results {
-      color: #de6625; }
+      color: #de6626; }
   .narrasys .searchResults {
     font-family: 'Gotham Medium',  sans-serif; }
     .narrasys .searchResults .item__title--link, .narrasys .searchResults .item__link--fake-link, .narrasys .searchResults .item__link--escape-link {
       font-family: 'Gotham Thin',  sans-serif;
       color: #4d4d4d;
-      color: #de6625; }
+      color: #de6626; }
       .narrasys .searchResults .item__title--link:before, .narrasys .searchResults .item__link--fake-link:before, .narrasys .searchResults .item__link--escape-link:before {
         color: #4d4d4d; }
   .narrasys .item__title {
     font-family: 'Gotham Medium',  sans-serif; }
   .narrasys .item__title--link a, .narrasys .item__title--file a {
-    color: #de6625; }
+    color: #de6626; }
   .narrasys .item__link--fake-link {
     font-family: 'Gotham Thin',  sans-serif;
     color: #4d4d4d;
-    color: #de6625; }
+    color: #de6626; }
   .narrasys .item__text {
     font-family: 'Gotham Thin',  sans-serif;
     color: #4d4d4d; }
@@ -858,22 +1177,25 @@
     color: #4d4d4d; }
     .narrasys .item .item__text--pullquote:before {
       font-family: 'Gotham Medium',  sans-serif;
-      color: #de6625;
-      font-size: 5.1vw; }
+      color: #de6625; }
   .narrasys .item__title--image-caption, .narrasys .item__title--image-caption-sliding,
   .narrasys .item__text--image-caption, .narrasys .item__text--image-caption-sliding {
     color: white; }
   .narrasys .item__link--escape-link {
     font-family: 'Gotham Thin',  sans-serif;
     color: #4d4d4d;
-    color: #de6625; }
+    color: #de6626; }
     .narrasys .item__link--escape-link:before {
       color: #4d4d4d; }
   .narrasys .item .displayTime, .narrasys .item .startTime {
     font-family: 'Gotham Medium',  sans-serif;
-    color: #de6625; }
+    color: #de6626; }
     .narrasys .item .displayTime:hover, .narrasys .item .startTime:hover {
       text-decoration: underline; }
+  .narrasys .item.colorInvert {
+    background-color: #4d4d4d !important; }
+    .narrasys .item.colorInvert .item__text {
+      color: white !important; }
   .narrasys .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -890,6 +1212,10 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
+  .narrasys .centerVV .static-bg__main {
+    background-image: url("/images/customer/Camera"); }
+  .narrasys .centerVV .static-bg__alt {
+    background-image: url("/images/customer/network"); }
   .narrasys .centerVV .item__title--link, .narrasys .centerVV .item__title--file {
     font-family: 'Gotham Thin',  sans-serif;
     color: #4d4d4d; }
@@ -905,6 +1231,10 @@
     color: white; }
   .narrasys .centerVV-mondrian .mainPane .item__text--transmedia h1, .narrasys .centerVV-mondrian .mainPane .item__text--transmedia h2, .narrasys .centerVV-mondrian .mainPane .item__text--transmedia h3, .narrasys .centerVV-mondrian .mainPane .item__text--definition h1, .narrasys .centerVV-mondrian .mainPane .item__text--definition h2, .narrasys .centerVV-mondrian .mainPane .item__text--definition h3 {
     color: white; }
+  .narrasys .centerVV-mondrian .mainPane .item.colorInvert {
+    background-color: white !important; }
+    .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__text, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__title, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+      color: #4d4d4d !important; }
   .narrasys .centerVV-mondrian .item__title--link,
   .narrasys .centerVV-mondrian .item__title--image,
   .narrasys .centerVV-mondrian .item__title--image-thumbnail,
@@ -921,167 +1251,12 @@
       color: #de6625; }
   .narrasys .centerVV-mondrian .item .displayTime, .narrasys .centerVV-mondrian .item .startTime {
     font-family: 'Gotham Medium',  sans-serif;
-    color: white a;
-      color-text-decoration: underline; }
-
-.field-pros .landingscreen h1 {
-  margin-top: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Roboto Condensed";
-  color: white;
-  background-color: #6baa36;
-  width: 100%;
-  text-align: center;
-  padding: 10px 0;
-  min-height: 80px;
-  max-height: 80px;
-  position: absolute;
-  font-size: 2.5vw;
-  letter-spacing: normal; }
-.field-pros .endingscreen p {
-  margin-top: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Roboto Condensed";
-  color: white;
-  background-color: #6baa36;
-  width: 100%;
-  text-align: center;
-  padding: 10px 0;
-  min-height: 80px;
-  max-height: 80px;
-  position: absolute;
-  font-size: 2.5vw;
-  letter-spacing: normal; }
-.field-pros .searchPanel__wrapper {
-  font-family: 'Lato',  sans-serif;
-  font-weight: 300;
-  color: #4b4b52;
-  color: #4b4b52; }
-  .field-pros .searchPanel__wrapper .fake-link--search-results {
-    color: #6baa36; }
-.field-pros .searchResults {
-  font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
-  .field-pros .searchResults .item__title--link, .field-pros .searchResults .item__link--fake-link, .field-pros .searchResults .item__link--escape-link {
-    font-family: 'Lato',  sans-serif;
-    font-weight: 300;
-    color: #4b4b52;
-    color: #6baa36; }
-    .field-pros .searchResults .item__title--link:before, .field-pros .searchResults .item__link--fake-link:before, .field-pros .searchResults .item__link--escape-link:before {
-      color: #4b4b52; }
-.field-pros .item__title {
-  font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
-.field-pros .item__title--link a, .field-pros .item__title--file a {
-  color: #6baa36; }
-.field-pros .item__link--fake-link {
-  font-family: 'Lato',  sans-serif;
-  font-weight: 300;
-  color: #4b4b52;
-  color: #6baa36; }
-.field-pros .item__text {
-  font-family: 'Lato',  sans-serif;
-  font-weight: 300;
-  color: #4b4b52; }
-.field-pros .item__text--h2 {
-  font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
-.field-pros .item__text--transmedia h1, .field-pros .item__text--transmedia h2, .field-pros .item__text--transmedia h3, .field-pros .item__text--definition h1, .field-pros .item__text--definition h2, .field-pros .item__text--definition h3 {
-  font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
-.field-pros .item .item__text--pullquote {
-  font-family: 'Lato',  sans-serif;
-  font-weight: 300;
-  color: #4b4b52; }
-  .field-pros .item .item__text--pullquote:before {
-    font-family: 'Roboto Condensed',  sans-serif;
-    font-weight: 700;
-    top: 0.5vw;
-    color: #6baa36; }
-.field-pros .item__title--image-caption, .field-pros .item__title--image-caption-sliding,
-.field-pros .item__text--image-caption, .field-pros .item__text--image-caption-sliding {
-  color: white; }
-.field-pros .item__link--escape-link {
-  font-family: 'Lato',  sans-serif;
-  font-weight: 300;
-  color: #4b4b52;
-  color: #6baa36; }
-  .field-pros .item__link--escape-link:before {
-    color: #4b4b52; }
-.field-pros .item .displayTime, .field-pros .item .startTime {
-  font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700;
-  color: #6baa36; }
-  .field-pros .item .displayTime:hover, .field-pros .item .startTime:hover {
-    text-decoration: underline; }
-.field-pros .centered-pro .banner-pull-quote h1 {
-  margin-top: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Roboto Condensed";
-  color: white;
-  background-color: #6baa36;
-  width: 100%;
-  text-align: center;
-  padding: 10px 0;
-  min-height: 80px;
-  max-height: 80px;
-  position: absolute;
-  font-size: 2.5vw;
-  letter-spacing: normal; }
-.field-pros .centerVV .static-bg__main {
-  background-image: url("/images/customer/Green_BG_01.svg"); }
-.field-pros .centerVV .static-bg__alt {
-  background-image: url("/images/customer/Grid_Graphic_01.svg"); }
-.field-pros .centerVV .item__title--link, .field-pros .centerVV .item__title--file {
-  font-family: 'Lato',  sans-serif;
-  font-weight: 300;
-  color: #4b4b52; }
-.field-pros .centerVV .item__title--link.title--link-embed {
-  font-family: 'Lato',  sans-serif;
-  font-weight: 300;
-  color: #4b4b52; }
-.field-pros .centerVV-mondrian .static-bg__main {
-  border: 4px solid #4b4b52;
-  background-color: #6baa36; }
-.field-pros .centerVV-mondrian .static-bg__alt {
-  background-image: url("/images/customer/Grid_Graphic_01.svg"); }
-.field-pros .centerVV-mondrian .mainPane .item {
-  background-color: #4b4b52; }
-.field-pros .centerVV-mondrian .mainPane .item__text, .field-pros .centerVV-mondrian .mainPane .item__title, .field-pros .centerVV-mondrian .mainPane .item__title a {
-  color: white; }
-.field-pros .centerVV-mondrian .mainPane .item__text--transmedia h1, .field-pros .centerVV-mondrian .mainPane .item__text--transmedia h2, .field-pros .centerVV-mondrian .mainPane .item__text--transmedia h3, .field-pros .centerVV-mondrian .mainPane .item__text--definition h1, .field-pros .centerVV-mondrian .mainPane .item__text--definition h2, .field-pros .centerVV-mondrian .mainPane .item__text--definition h3 {
-  color: white; }
-.field-pros .centerVV-mondrian .item__title--link,
-.field-pros .centerVV-mondrian .item__title--image,
-.field-pros .centerVV-mondrian .item__title--image-thumbnail,
-.field-pros .centerVV-mondrian .item__title--link a,
-.field-pros .centerVV-mondrian .item__title--image a,
-.field-pros .centerVV-mondrian .item__title--image-thumbnail a {
-  font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
-.field-pros .centerVV-mondrian .item__link--fake-link {
-  color: white; }
-.field-pros .centerVV-mondrian .item__link--escape-link {
-  font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700;
-  color: white; }
-  .field-pros .centerVV-mondrian .item__link--escape-link:before {
-    color: #6baa36; }
-.field-pros .centerVV-mondrian .item .displayTime, .field-pros .centerVV-mondrian .item .startTime {
-  font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700;
-  color: white a;
-    color-text-decoration: underline; }
+    color: white; }
+    .narrasys .centerVV-mondrian .item .displayTime a, .narrasys .centerVV-mondrian .item .startTime a {
+      text-decoration: underline; }
 
 .career-playbook {
-  background-image: url("/images/customer/CPB_Window_BG_720.png");
-  background-size: 100%; }
+  background-image: url("/images/customer/CPB_Window_BG_720.png"); }
   .career-playbook .landingscreen h1 {
     margin-top: 1em;
     display: flex;
@@ -1152,8 +1327,7 @@
     font-family: 'Lato',  sans-serif;
     font-weight: 700; }
   .career-playbook .item .item__text--pullquote {
-    font-family: 'Lato',  sans-serif;
-    font-style: italic;
+    font-family: 'Lato Italic',  sans-serif;
     font-weight: 300;
     color: #4d4d4d; }
     .career-playbook .item .item__text--pullquote:before {
@@ -1176,6 +1350,10 @@
     color: #00acee; }
     .career-playbook .item .displayTime:hover, .career-playbook .item .startTime:hover {
       text-decoration: underline; }
+  .career-playbook .item.colorInvert {
+    background-color: #4d4d4d !important; }
+    .career-playbook .item.colorInvert .item__text {
+      color: white !important; }
   .career-playbook .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -1213,6 +1391,10 @@
     color: white; }
   .career-playbook .centerVV-mondrian .mainPane .item__text--transmedia h1, .career-playbook .centerVV-mondrian .mainPane .item__text--transmedia h2, .career-playbook .centerVV-mondrian .mainPane .item__text--transmedia h3, .career-playbook .centerVV-mondrian .mainPane .item__text--definition h1, .career-playbook .centerVV-mondrian .mainPane .item__text--definition h2, .career-playbook .centerVV-mondrian .mainPane .item__text--definition h3 {
     color: white; }
+  .career-playbook .centerVV-mondrian .mainPane .item.colorInvert {
+    background-color: white !important; }
+    .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__text, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__title, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+      color: #4d4d4d !important; }
   .career-playbook .centerVV-mondrian .item__title--link,
   .career-playbook .centerVV-mondrian .item__title--image,
   .career-playbook .centerVV-mondrian .item__title--image-thumbnail,
@@ -1232,5 +1414,6 @@
   .career-playbook .centerVV-mondrian .item .displayTime, .career-playbook .centerVV-mondrian .item .startTime {
     font-family: 'Lato',  sans-serif;
     font-weight: 700;
-    color: white a;
-      color-text-decoration: underline; }
+    color: white; }
+    .career-playbook .centerVV-mondrian .item .displayTime a, .career-playbook .centerVV-mondrian .item .startTime a {
+      text-decoration: underline; }
