@@ -836,17 +836,30 @@ angular.module('com.inthetelling.story')
 				var isLongText = event.templateUrl === 'templates/item/text-transmedia.html';
 				var isDef = event.templateUrl === 'templates/item/text-definition.html';
 
-				if (isImgInline || isLongText || isDef) {
-					if (!ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
-						event.styleCss += ' timestampNone';
+
+				// console.log('event', event);
+				var currentScene;
+				if (event._type !== 'Scene') {
+					currentScene = svc.scene(event.scene_id);
+					console.log('episode', episode);
+					console.log('currentScene', currentScene);
+
+					if (episode.styles.indexOf('timestampNone') === -1 && episode.styles.indexOf('timestampInline') === -1 &&
+						(!ittUtils.existy(currentScene.styles) ||(currentScene.styles.indexOf('timestampNone') === -1 && currentScene.styles.indexOf('timestampInline') === -1) )) {
+						if (isImgInline || isLongText || isDef) {
+							if (!ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
+								event.styleCss += ' timestampNone';
+							}
+						}
 					}
 				}
+
 				if (event.layouts) {
 					event.styleCss = event.styleCss + " " + event.layouts.join(' ');
 				}
 
 				event.styleCss = event.styleCss.replace(/timestampInline/, '');
-			});
+			})
 		};
 
 		svc.resolveEpisodeContainers = function (epId) {
