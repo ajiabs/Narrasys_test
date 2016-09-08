@@ -48,7 +48,6 @@ angular.module('com.inthetelling.story')
 		}
 
 		svc.getNarrativesAsArray = getNarrativesAsArray;
-
 		function getNarrativesAsArray() {
 			return Object.keys(svc.narratives).map(function(n) {return svc.narratives[n];});
 		}
@@ -841,6 +840,9 @@ angular.module('com.inthetelling.story')
 				var isImgInline = event.templateUrl === 'templates/item/image-inline.html';
 				var isLongText = event.templateUrl === 'templates/item/text-transmedia.html';
 				var isDef = event.templateUrl === 'templates/item/text-definition.html';
+				var isH1 = event.templateUrl === 'templates/item/text-h1.html';
+				var isH2 = event.templateUrl === 'templates/item/text-h2.html';
+				var isPq = event.templateUrl === 'templates/item/pullquote-noattrib.html' || 'templates/item/pullquote.html';
 
 
 				// console.log('event', event);
@@ -854,6 +856,9 @@ angular.module('com.inthetelling.story')
 								event.styleCss += ' timestampNone';
 							}
 						}
+					}
+					if (isH1 || isH2 || isPq) {
+						event.styleCss += ' timestampNone';
 					}
 				}
 
