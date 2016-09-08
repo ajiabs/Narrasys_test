@@ -841,11 +841,8 @@ angular.module('com.inthetelling.story')
 				var currentScene;
 				if (event._type !== 'Scene') {
 					currentScene = svc.scene(event.scene_id);
-					console.log('episode', episode);
-					console.log('currentScene', currentScene);
-
 					if (episode.styles.indexOf('timestampNone') === -1 && episode.styles.indexOf('timestampInline') === -1 &&
-						(!ittUtils.existy(currentScene.styles) ||(currentScene.styles.indexOf('timestampNone') === -1 && currentScene.styles.indexOf('timestampInline') === -1) )) {
+						(!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) ||(currentScene.styles.indexOf('timestampNone') === -1 && currentScene.styles.indexOf('timestampInline') === -1) )) {
 						if (isImgInline || isLongText || isDef) {
 							if (!ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
 								event.styleCss += ' timestampNone';
@@ -859,7 +856,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				event.styleCss = event.styleCss.replace(/timestampInline/, '');
-			})
+			});
 		};
 
 		svc.resolveEpisodeContainers = function (epId) {
