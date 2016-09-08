@@ -13,20 +13,28 @@
 	        restrict: 'EA',
 	        scope: {
 				flags: '=',
-				data: '='
+				data: '=',
+				//for the invertColor option
+				itemForm: '=?'
 			},
 			template: [
 				'<div class="field">',
 				'	<div class="label">Flags</div>',
 				'	<div class="input">',
-				'		<span ng-repeat="flag in flags._flags">',
-				'			<label for="{{flags._ids[flag]}}"></label>',
-				'			<input id="{{flags._ids[flag]}}" type="checkbox" itt-dynamic-model="\'flags.data.\' + flag" ng-change="flags.handleChange()"/>{{flags._displays[flag]}}',
+				'		<span ng-repeat="flag in $ctrl._flags">',
+				'			<span ng-if="flag !== \'invertColor\'">',
+				'				<label for="{{$ctrl._ids[flag]}}"></label>',
+				'				<input id="{{$ctrl._ids[flag]}}" type="checkbox" itt-dynamic-model="\'$ctrl.data.\' + flag" ng-change="$ctrl.handleChange()"/>{{$ctrl._displays[flag]}}',
+				'			</span>',
+				'			<span ng-if="flag === \'invertColor\'">',
+				'				<label for="{{$ctrl._ids[flag]}}"></label>',
+				'				<input id="{{$ctrl._ids[flag]}}" type="checkbox" ng-model="$ctrl.itemForm.color" ng-true-value="\'Invert\'" ng-false-value="\'\'" ng-change="$ctrl.handleChange()"/>{{$ctrl._displays[flag]}}',
+				'			</span>',
 				'		</span>',
 				'	</div>',
 				'</div>'
 			].join(' '),
-			controller: ['$scope', 'selectService', function($scope, selectService) {
+			controller: ['$scope', 'selectService', 'ittUtils', function($scope, selectService, ittUtils) {
 				var ctrl = this;
 				ctrl._flags = angular.copy(ctrl.flags);
 				ctrl.handleChange = handleChange;
@@ -34,20 +42,22 @@
 					required: 'Required',
 					stop: 'Stop item',
 					cosmetic: 'Cosmetic',
-					chapter_marker: 'Chapter Event'
+					chapter_marker: 'Chapter Event',
+					invertColor: 'Invert Color'
 				};
 				ctrl._ids = {
 					required: 'itemRequired',
 					stop: 'itemStop',
 					cosmetic: 'itemCosmetic',
-					chapter_marker: 'itemChapter'
+					chapter_marker: 'itemChapter',
+					invertColor: 'Invert'
 				};
 
 				$scope.$watch(watchTemplateUrl, setFlags);
 
 				function handleChange() {
 					if (ctrl.data.hasOwnProperty('stop')) {
-						selectService.onSelectChange(ctrl.data);
+						selectService.onSelectChange(ctrl.data, ctrl.itemForm);
 					}
 				}
 
@@ -62,17 +72,23 @@
 				function setFlags(newVal) {
 					if (newVal) {
 						if (!_h1OrH2(newVal)) {
+							if (ittUtils.existy(ctrl.itemForm) && ctrl.data._id === 'internal:editing') {
+								ctrl.itemForm.color = '';
+							}
 							ctrl._flags = ctrl._flags.filter(function(f) {
-								return f !== 'chapter_marker';
+								return f !== 'chapter_marker' && f !== 'invertColor';
 							});
 						} else {
 							ctrl._flags = ctrl.flags;
+							if (ittUtils.existy(ctrl.itemForm) && ctrl.data._id === 'internal:editing') {
+								ctrl.itemForm.color = 'Invert';
+							}
 						}
 					}
 				}
 
 			}],
-			controllerAs: 'flags',
+			controllerAs: '$ctrl',
 			bindToController: true
 	    };
 	}
