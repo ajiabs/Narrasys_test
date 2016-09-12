@@ -139,7 +139,8 @@
             }
         }
 
-        .centerVV {
+		//two col layouts
+        .centerVV, .cornerV, .twocol {	
             .static-bg__main {
                 background-image: url('/images/customer/Green_BG_01.svg');
             }

@@ -902,11 +902,11 @@
   position: absolute;
   font-size: 2.5vw;
   letter-spacing: normal; }
-.default .centerVV .item__title--link, .default .centerVV .item__title--file {
+.default .centerVV .item__title--link, .default .centerVV .item__title--file, .default .cornerV .item__title--link, .default .cornerV .item__title--file, .default .twocol .item__title--link, .default .twocol .item__title--file {
   font-family: 'Droid sans',  sans-serif;
   font-weight: 400;
   color: black; }
-.default .centerVV .item__title--link.title--link-embed {
+.default .centerVV .item__title--link.title--link-embed, .default .cornerV .item__title--link.title--link-embed, .default .twocol .item__title--link.title--link-embed {
   font-family: 'Droid sans',  sans-serif;
   font-weight: 400;
   color: black; }
@@ -1059,15 +1059,15 @@
   position: absolute;
   font-size: 2.5vw;
   letter-spacing: normal; }
-.field-pros .centerVV .static-bg__main {
+.field-pros .centerVV .static-bg__main, .field-pros .cornerV .static-bg__main, .field-pros .twocol .static-bg__main {
   background-image: url("/images/customer/Green_BG_01.svg"); }
-.field-pros .centerVV .static-bg__alt {
+.field-pros .centerVV .static-bg__alt, .field-pros .cornerV .static-bg__alt, .field-pros .twocol .static-bg__alt {
   background-image: url("/images/customer/Grid_Graphic_01.svg"); }
-.field-pros .centerVV .item__title--link, .field-pros .centerVV .item__title--file {
+.field-pros .centerVV .item__title--link, .field-pros .centerVV .item__title--file, .field-pros .cornerV .item__title--link, .field-pros .cornerV .item__title--file, .field-pros .twocol .item__title--link, .field-pros .twocol .item__title--file {
   font-family: 'Lato',  sans-serif;
   font-weight: 300;
   color: #5b5b5b; }
-.field-pros .centerVV .item__title--link.title--link-embed {
+.field-pros .centerVV .item__title--link.title--link-embed, .field-pros .cornerV .item__title--link.title--link-embed, .field-pros .twocol .item__title--link.title--link-embed {
   font-family: 'Lato',  sans-serif;
   font-weight: 300;
   color: #5b5b5b; }
@@ -1212,14 +1212,14 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
-  .narrasys .centerVV .static-bg__main {
+  .narrasys .centerVV .static-bg__main, .narrasys .cornerV .static-bg__main, .narrasys .twocol .static-bg__main {
     background-image: url("/images/customer/Camera"); }
-  .narrasys .centerVV .static-bg__alt {
+  .narrasys .centerVV .static-bg__alt, .narrasys .cornerV .static-bg__alt, .narrasys .twocol .static-bg__alt {
     background-image: url("/images/customer/network"); }
-  .narrasys .centerVV .item__title--link, .narrasys .centerVV .item__title--file {
+  .narrasys .centerVV .item__title--link, .narrasys .centerVV .item__title--file, .narrasys .cornerV .item__title--link, .narrasys .cornerV .item__title--file, .narrasys .twocol .item__title--link, .narrasys .twocol .item__title--file {
     font-family: 'Gotham Thin',  sans-serif;
     color: #4d4d4d; }
-  .narrasys .centerVV .item__title--link.title--link-embed {
+  .narrasys .centerVV .item__title--link.title--link-embed, .narrasys .cornerV .item__title--link.title--link-embed, .narrasys .twocol .item__title--link.title--link-embed {
     font-family: 'Gotham Thin',  sans-serif;
     color: #4d4d4d; }
   .narrasys .centerVV-mondrian .static-bg__main {
@@ -1370,15 +1370,15 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
-  .career-playbook .centerVV .static-bg__main {
+  .career-playbook .centerVV .static-bg__main, .career-playbook .cornerV .static-bg__main, .career-playbook .twocol .static-bg__main {
     background-image: url("/images/customer/CPB_ModernSqaures-01.svg"); }
-  .career-playbook .centerVV .static-bg__alt {
+  .career-playbook .centerVV .static-bg__alt, .career-playbook .cornerV .static-bg__alt, .career-playbook .twocol .static-bg__alt {
     background-image: url("/images/customer/CPB_Textured_BG_v3.png"); }
-  .career-playbook .centerVV .item__title--link, .career-playbook .centerVV .item__title--file {
+  .career-playbook .centerVV .item__title--link, .career-playbook .centerVV .item__title--file, .career-playbook .cornerV .item__title--link, .career-playbook .cornerV .item__title--file, .career-playbook .twocol .item__title--link, .career-playbook .twocol .item__title--file {
     font-family: 'Lato',  sans-serif;
     font-weight: 300;
     color: #4d4d4d; }
-  .career-playbook .centerVV .item__title--link.title--link-embed {
+  .career-playbook .centerVV .item__title--link.title--link-embed, .career-playbook .cornerV .item__title--link.title--link-embed, .career-playbook .twocol .item__title--link.title--link-embed {
     font-family: 'Lato',  sans-serif;
     font-weight: 300;
     color: #4d4d4d; }

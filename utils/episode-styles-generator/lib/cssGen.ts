@@ -165,7 +165,8 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
             }
         }
 
-        .centerVV {
+		//two col layouts
+        .centerVV, .cornerV, .twocol {	
             .static-bg__main {
                 ${bgImage(bgMain)}
             }
