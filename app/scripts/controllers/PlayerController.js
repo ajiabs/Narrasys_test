@@ -133,7 +133,6 @@ angular.module('com.inthetelling.story')
 
 			//need to set narrative on scope for disable_new_window feature for narratives
 			//this used to happen in ittNarrativeTimelineJs, but has been deprecated
-			$scope.narrative = modelSvc.getNarrativeByPathOrId(appState.narrativeId);
 			modelSvc.setLanguageStrings();
 			wileyNag(); // HACK
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
