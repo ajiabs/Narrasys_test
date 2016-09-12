@@ -139,8 +139,10 @@
             }
         }
 
-		//two col layouts
-        .centerVV, .cornerV, .twocol {	
+		//pro two col: centerVV
+		//non-pro two col: pip, cornerH, cornerV, twocol
+		//non-pro one col: centered, onecol
+        .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {	
             .static-bg__main {
                 background-image: url('/images/customer/CPB_ModernSqaures-01.svg');
             }
