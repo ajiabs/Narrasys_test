@@ -4,6 +4,7 @@
 		<a class="button" ng-if="canAccess"  href="/#/projects">Projects</a>
 		<a class="button" ng-if="canAccess" href="/#/stories">Narratives</a>
 		<a class="button" ng-if="user._id" ng-click="logout()">Log out</a>
+		<a class="button" ng-if="inPlayer && user._id">Account</a>
 	</div>
 	<p><i><span ng-bind="user.role_description"></span></i></p>
 	<div ng-if="!(user.name === 'guest')" style="float:right; width: 79px">
@@ -28,11 +29,6 @@
 			</label>
 		</span>
 	</div>
-	<div style="clear:both; padding-top: 2em">
-		<a style="float:left;" target="_top" href="/#/account" class="button" ng-if="inPlayer && user._id && appState.productLoadedAs != 'narrative'">Home</a>
-
-	</div>
-
 
 	<div ng-if="!inPlayer">
 

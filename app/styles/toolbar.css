@@ -894,6 +894,17 @@ input.userEditable:focus {
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
 
+.profilePanel .button {
+	background-color: #C44343;
+	color: #FFF;
+	border-radius: 0.6em;
+	font-size: 0.8em;
+	padding: 0.1em 0.8em;
+	margin: 0.2em;
+	border: 0;
+	cursor: pointer;
+}
+
 
 /* Undoing a bad decision: */
 
