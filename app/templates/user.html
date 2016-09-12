@@ -1,5 +1,6 @@
 <div class="userHome">
-	<h2>Account</h2>
+	<h2 ng-if="!inPlayer">Account</h2>
+	<h2 ng-if="inPlayer">Profile</h2>
 	<div class="ancillaryNav">
 		<a class="button" ng-if="canAccess"  href="/#/projects">Projects</a>
 		<a class="button" ng-if="canAccess" href="/#/stories">Narratives</a>
