@@ -676,7 +676,7 @@ angular.module('com.inthetelling.story')
 					"transcript": "templates/item/transcript-withthumbnail.html",
 					"annotation": "templates/item/text-h2.html",
 					"link": "templates/item/link.html",
-					"image": "templates/item/image-inline.html",
+					"image": "templates/item/image-plain.html",
 					"file": "templates/item/file.html",
 					"question": "templates/item/question-mc-image-right.html",
 					"video": "TODO:VIDEO"

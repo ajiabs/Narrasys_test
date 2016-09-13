@@ -837,12 +837,12 @@ angular.module('com.inthetelling.story')
 					return;
 				}
 				event.styleCss = cascadeStyles(event);
-				var isImgInline = event.templateUrl === 'templates/item/image-inline.html';
+				var isImgPlain = event.templateUrl === 'templates/item/image-plain.html';
 				var isLongText = event.templateUrl === 'templates/item/text-transmedia.html';
 				var isDef = event.templateUrl === 'templates/item/text-definition.html';
 				var isH1 = event.templateUrl === 'templates/item/text-h1.html';
 				var isH2 = event.templateUrl === 'templates/item/text-h2.html';
-				var isPq = event.templateUrl === 'templates/item/pullquote-noattrib.html' || 'templates/item/pullquote.html';
+				var isPq = event.templateUrl === 'templates/item/pullquote-noattrib.html' || event.templateUrl ===  'templates/item/pullquote.html';
 
 
 				// console.log('event', event);
@@ -851,7 +851,7 @@ angular.module('com.inthetelling.story')
 					currentScene = svc.scene(event.scene_id);
 					if (episode.styles.indexOf('timestampNone') === -1 && episode.styles.indexOf('timestampInline') === -1 &&
 						(!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) ||(currentScene.styles.indexOf('timestampNone') === -1 && currentScene.styles.indexOf('timestampInline') === -1) )) {
-						if (isImgInline || isLongText || isDef) {
+						if (isImgPlain || isLongText || isDef) {
 							if (!ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
 								event.styleCss += ' timestampNone';
 							}
