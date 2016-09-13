@@ -256,5 +256,5 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			return notVideos;
-		}
+		};
 	});
