@@ -37,6 +37,7 @@ angular.module('com.inthetelling.story')
 					}
 
 					scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
+					scope.isCustAdmin = authSvc.userHasRole('customer admin');
 
 					if (MIMES[scope.mimeKey]) {
 						scope.mimes = MIMES[scope.mimeKey];

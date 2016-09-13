@@ -245,4 +245,16 @@ angular.module('com.inthetelling.story')
 		return function(str) {
 			return !!str ? str.charAt(0).toUpperCase() + str.substr(1).toLocaleLowerCase() : '';
 		};
+	})
+	.filter('vidsFromCustAdmins', function() {
+		//assets is actually an object when it comes in.
+		return function(assets) {
+			var notVideos = [];
+			angular.forEach(assets, function(asset) {
+				if (!/video/.test(asset.content_type)) {
+					notVideos.push(asset);
+				}
+			});
+			return notVideos;
+		}
 	});

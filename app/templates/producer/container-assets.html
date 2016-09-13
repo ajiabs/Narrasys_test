@@ -22,7 +22,7 @@
 
 	<div class="scrollPane" ng-if="!hideItems">
 		<div ng-if="gridView">
-			<div class="grid" ng-repeat="asset in assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
+			<div class="grid" ng-repeat="asset in isCustAdmin ? (assets | vidsFromCustAdmins) : assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
 				<div ng-if="asset._type == 'Asset::Image'">
 					<img class="thumbnail" ng-src="{{asset.url}}">
 				</div>
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		<table ng-if="!gridView">
-			<tr ng-repeat="asset in assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
+			<tr ng-repeat="asset in isCustAdmin ? (assets | vidsFromCustAdmins) : assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
 				<td>
 					<div ng-if="asset._type == 'Asset::Image'">
 						<img class="thumbnail" ng-src="{{asset.url}}">
