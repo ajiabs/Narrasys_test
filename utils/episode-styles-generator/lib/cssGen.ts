@@ -27,7 +27,7 @@ const fontFam = (font) => {
 const pqFont = (font: string) => {
     return font.split(',')[0];
 };
-//handle setting the background color for default template only
+//handle setting the background color on the alt (transmedia) pane for default template only
 const isDefault = (nameSpace) => {
 	if (nameSpace === 'default') {
 		return `.altPane {
