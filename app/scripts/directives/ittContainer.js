@@ -41,9 +41,6 @@ angular.module('com.inthetelling.story')
 					scope.appState = appState;
 					scope.containers = modelSvc.containers;
 					scope.customer = modelSvc.customers[scope.container.customer_id];
-					// TEMP obviously
-					scope.isDemoServer = ($location.host().match(/demo|localhost|api-dev|client.dev/));
-
 					scope.selectText = function (event) {
 						event.target.select(); // convenience for selecting the episode url
 					};

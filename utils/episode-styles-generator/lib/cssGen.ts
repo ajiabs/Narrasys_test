@@ -25,6 +25,15 @@ const fontFam = (font) => {
 const pqFont = (font: string) => {
     return font.split(',')[0];
 };
+//handle setting the background color for default template only
+const isDefault = (nameSpace) => {
+	if (nameSpace === 'default') {
+		return `.altPane {
+			background-color: rgba(0, 0, 0, 0.05);
+		}`
+	}
+	return '';
+};
 
 export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, linkColor, highlightColor, headerFont, bodyFont, accentFont, bgMain, bgAlt, bgMondrian, bgWindow}) => {
     return `
@@ -83,6 +92,9 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
                 }
             }
         }
+
+		//custom altPane BG
+		${isDefault(nameSpace)}
 
         //item overrides
         .item__title {

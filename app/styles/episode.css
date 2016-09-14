@@ -838,6 +838,8 @@
     color: #0000cc; }
     .default .searchResults .item__title--link:before, .default .searchResults .item__link--fake-link:before, .default .searchResults .item__link--escape-link:before {
       color: black; }
+.default .altPane {
+  background-color: rgba(0, 0, 0, 0.05); }
 .default .item__title {
   font-family: 'Droid sans',  sans-serif;
   font-weight: 700; }

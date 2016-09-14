@@ -148,14 +148,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		})
 		.when('/editor/:epId', {
 			title: "Telling STORY",
-			controller: 'PlayerController',
-			templateUrl: 'templates/player.html',
-			resolve: {
-				product: function (appState) {
-					appState.product = "sxs";
-					appState.productLoadedAs = "sxs";
-				}
-			}
+			redirectTo: '/episode/:epId'
 		})
 		.when('/producer/:epId', {
 			title: "Telling STORY",
