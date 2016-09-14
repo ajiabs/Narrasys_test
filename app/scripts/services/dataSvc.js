@@ -449,9 +449,20 @@ angular.module('com.inthetelling.story')
 			}
 			if (obj.layout_id) {
 				var layouts = [];
+				if (obj.type === 'Scene') {
+					layouts = ['', ''];
+				}
 				angular.forEach(obj.layout_id, function (id) {
 					if (dataCache.layout[id]) {
-						layouts.push(dataCache.layout[id].css_name);
+						if (obj.type === 'Scene') {
+							if (dataCache.layout[id].css_name === 'showCurrent') {
+								layouts[1] = dataCache.layout[id].css_name;
+							} else {
+								layouts[0] = dataCache.layout[id].css_name;
+							}
+						} else {
+							layouts.push(dataCache.layout[id].css_name);
+						}
 					} else {
 						errorSvc.error({
 							data: "Couldn't get layout for id " + id
@@ -973,7 +984,6 @@ angular.module('com.inthetelling.story')
 		svc.storeItem = function (evt) {
 			evt = prepItemForStorage(evt);
 			if (!evt) {
-				console.log('made it here!!');
 				return $q.reject(false);
 			}
 			if (evt && evt._id && !evt._id.match(/internal/)) {
