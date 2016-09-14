@@ -342,7 +342,6 @@
 			switch(item.producerItemType) {
 				case 'scene':
 					var isInline = item.layouts[0] === 'inline';
-					console.log('is inline', isInline, item.layouts);
 					switch(item.templateUrl) {
 						case 'templates/scene/centered.html': //centered
 						case 'templates/scene/centeredPro.html': //Centered Pro, Hide Transcript & Transmedia
@@ -350,7 +349,6 @@
 							_displaySelectVisibility(false);
 							item.layouts[0] = ''; //P1 Video Centered
 							item.layouts[1] = _D1.a.value; //showCurrent;
-							console.log('layouts', item.layouts);
 							break;
 						case 'templates/scene/centerVV.html': //Vertical Pro, Hide Transcript
 						case 'templates/scene/centerVV-Mondrian.html': //Vertical Pro Mondrian, Hide Transcript
@@ -361,7 +359,7 @@
 								{value: 'videoRight', name: 'Video on Right'}
 							];
 							item.layouts[1] = _D1.a.value;
-							if (isInline) {
+							if (isInline || item.layouts[0] === '') {
 								item.layouts[0] = 'videoLeft'; //P2 video left
 							}
 							break;
@@ -397,7 +395,7 @@
 								{value: _D2.b.value, name: _D2.b.name}
 							];
 							item.layouts[1] = _D2.b.value;
-							if (isInline) {
+							if (isInline || item.layouts[0] === '') {
 								item.layouts[0] = 'videoLeft'; //P2 video left
 							}
 							break;
