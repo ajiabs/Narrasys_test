@@ -43,6 +43,11 @@ const argv = require('yargs')
         describe: 'A color that applies to links and timestamps',
         type: 'string'
     })
+	.option('highlightColor', {
+		alias: 'x',
+		describe: 'The color to use for highlights',
+		type: 'string'
+	})
     .option('brandLogo', {
         alias: 'l',
         describe: 'the brand logo'
@@ -68,7 +73,7 @@ const argv = require('yargs')
 const errhandler = (err) => {
     if (err) console.error(err);
 };
-const {nameSpace, accentColor, primaryColor, secondaryColor, linkColor, headerFont, bodyFont, accentFont, bgMain, bgAlt, bgMondrian, bgWindow, brandLogo} = argv;
+const {nameSpace, accentColor, primaryColor, secondaryColor, linkColor, highlightColor, headerFont, bodyFont, accentFont, bgMain, bgAlt, bgMondrian, bgWindow, brandLogo} = argv;
 
 const cssTemplate = genCss(argv);
 const htmlTemplate = genHtml(nameSpace, brandLogo);

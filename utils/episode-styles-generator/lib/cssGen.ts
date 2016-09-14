@@ -26,12 +26,13 @@ const pqFont = (font: string) => {
     return font.split(',')[0];
 };
 
-export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, linkColor, headerFont, bodyFont, accentFont, bgMain, bgAlt, bgMondrian, bgWindow}) => {
+export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, linkColor, highlightColor, headerFont, bodyFont, accentFont, bgMain, bgAlt, bgMondrian, bgWindow}) => {
     return `
     $${nameSpace}Primary: #${primaryColor};
     $${nameSpace}Accent: #${accentColor};
     $${nameSpace}Secondary: #${secondaryColor};
     $${nameSpace}Link: #${linkColor};
+    $${nameSpace}Highlight: rgba(${highlightColor});
 
     @mixin ${nameSpace}-header {
     ${fontFam(headerFont)};
@@ -154,6 +155,21 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
                  color: $${nameSpace}Secondary !important;
              }
             }
+        }
+        
+        //highlights
+        .content.allowHighlights {
+        	.highlightSolid.item.isCurrent {
+        		background-color: $${nameSpace}Highlight;
+        	}
+        	
+        	.highlightSide.item.isCurrent {
+        		border-left: 10px solid $${nameSpace}Highlight;
+        	}
+        	
+        	.highlightBorder.item.isCurrent {
+        		border: 2px solid $${nameSpace}Highlight;
+        	}
         }
         
         //layout specific overrides

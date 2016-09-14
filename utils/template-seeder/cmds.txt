@@ -14,3 +14,5 @@ node index.js --url 'templates/episode/fieldpros.html' --applies_to_episodes tru
 node index.js --url 'templates/scene/mirrored-twocol.html' --applies_to_episodes false --name '2Col (v2 mirrored)' --seed_template false
 
 node index.js --url 'templates/episode/career-playbook.html' --applies_to_episodes true --name 'Career Playbook' --seed_template false
+
+node index.js --url 'templates/episode/george-washington.html' --applies_to_episodes true --name 'George Washington V2' --seed_template false

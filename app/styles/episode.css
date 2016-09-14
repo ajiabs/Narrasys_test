@@ -1417,3 +1417,166 @@
     color: white; }
     .career-playbook .centerVV-mondrian .item .displayTime a, .career-playbook .centerVV-mondrian .item .startTime a {
       text-decoration: underline; }
+
+.george-washington .landingscreen h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Helvetica";
+  color: white;
+  background-color: #004065;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  letter-spacing: normal; }
+.george-washington .endingscreen p {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Helvetica";
+  color: white;
+  background-color: #004065;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  letter-spacing: normal; }
+.george-washington .searchPanel__wrapper {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 300;
+  color: black;
+  color: black; }
+  .george-washington .searchPanel__wrapper .fake-link--search-results {
+    color: #004065; }
+.george-washington .searchResults {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 700; }
+  .george-washington .searchResults .item__title--link, .george-washington .searchResults .item__link--fake-link, .george-washington .searchResults .item__link--escape-link {
+    font-family: 'Helvetica',  sans-serif;
+    font-weight: 300;
+    color: black;
+    color: #004065; }
+    .george-washington .searchResults .item__title--link:before, .george-washington .searchResults .item__link--fake-link:before, .george-washington .searchResults .item__link--escape-link:before {
+      color: black; }
+.george-washington .item__title {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 700; }
+.george-washington .item__title--link a, .george-washington .item__title--file a {
+  color: #004065; }
+.george-washington .item__link--fake-link {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 300;
+  color: black;
+  color: #004065; }
+.george-washington .item__text {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 300;
+  color: black; }
+.george-washington .item__text--h2 {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 700; }
+.george-washington .item__text--transmedia h1, .george-washington .item__text--transmedia h2, .george-washington .item__text--transmedia h3, .george-washington .item__text--definition h1, .george-washington .item__text--definition h2, .george-washington .item__text--definition h3 {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 700; }
+.george-washington .item .item__text--pullquote {
+  font-family: 'Cardo',  serif;
+  font-weight: 300;
+  color: black; }
+  .george-washington .item .item__text--pullquote:before {
+    font-family: 'Helvetica',  sans-serif;
+    font-weight: 700;
+    color: #004065; }
+.george-washington .item__title--image-caption, .george-washington .item__title--image-caption-sliding,
+.george-washington .item__text--image-caption, .george-washington .item__text--image-caption-sliding {
+  color: white; }
+.george-washington .item__link--escape-link {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 300;
+  color: black;
+  color: #004065; }
+  .george-washington .item__link--escape-link:before {
+    color: black; }
+.george-washington .item .displayTime, .george-washington .item .startTime {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 700;
+  color: #004065; }
+  .george-washington .item .displayTime:hover, .george-washington .item .startTime:hover {
+    text-decoration: underline; }
+.george-washington .item.colorInvert {
+  background-color: black !important; }
+  .george-washington .item.colorInvert .item__text {
+    color: white !important; }
+.george-washington .content.allowHighlights .highlightSolid.item.isCurrent {
+  background-color: rgba(200, 177, 139, 0.3); }
+.george-washington .content.allowHighlights .highlightSide.item.isCurrent {
+  border-left: 10px solid rgba(200, 177, 139, 0.3); }
+.george-washington .content.allowHighlights .highlightBorder.item.isCurrent {
+  border: 2px solid rgba(200, 177, 139, 0.3); }
+.george-washington .centered-pro .banner-pull-quote h1 {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Helvetica";
+  color: white;
+  background-color: #004065;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: 2.5vw;
+  letter-spacing: normal; }
+.george-washington .centerVV .item__title--link, .george-washington .centerVV .item__title--file, .george-washington .cornerV .item__title--link, .george-washington .cornerV .item__title--file, .george-washington .twocol .item__title--link, .george-washington .twocol .item__title--file, .george-washington .centered .item__title--link, .george-washington .centered .item__title--file, .george-washington .cornerH .item__title--link, .george-washington .cornerH .item__title--file, .george-washington .pip .item__title--link, .george-washington .pip .item__title--file, .george-washington .onecol .item__title--link, .george-washington .onecol .item__title--file {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 300;
+  color: black; }
+.george-washington .centerVV .item__title--link.title--link-embed, .george-washington .cornerV .item__title--link.title--link-embed, .george-washington .twocol .item__title--link.title--link-embed, .george-washington .centered .item__title--link.title--link-embed, .george-washington .cornerH .item__title--link.title--link-embed, .george-washington .pip .item__title--link.title--link-embed, .george-washington .onecol .item__title--link.title--link-embed {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 300;
+  color: black; }
+.george-washington .centerVV-mondrian .static-bg__main {
+  border: 4px solid black;
+  background-color: #004065; }
+.george-washington .centerVV-mondrian .mainPane .item {
+  background-color: black; }
+.george-washington .centerVV-mondrian .mainPane .item__text, .george-washington .centerVV-mondrian .mainPane .item__title, .george-washington .centerVV-mondrian .mainPane .item__title a {
+  color: white; }
+.george-washington .centerVV-mondrian .mainPane .item__text--transmedia h1, .george-washington .centerVV-mondrian .mainPane .item__text--transmedia h2, .george-washington .centerVV-mondrian .mainPane .item__text--transmedia h3, .george-washington .centerVV-mondrian .mainPane .item__text--definition h1, .george-washington .centerVV-mondrian .mainPane .item__text--definition h2, .george-washington .centerVV-mondrian .mainPane .item__text--definition h3 {
+  color: white; }
+.george-washington .centerVV-mondrian .mainPane .item.colorInvert {
+  background-color: white !important; }
+  .george-washington .centerVV-mondrian .mainPane .item.colorInvert .item__text, .george-washington .centerVV-mondrian .mainPane .item.colorInvert .item__title, .george-washington .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+    color: black !important; }
+.george-washington .centerVV-mondrian .item__title--link,
+.george-washington .centerVV-mondrian .item__title--image,
+.george-washington .centerVV-mondrian .item__title--image-thumbnail,
+.george-washington .centerVV-mondrian .item__title--link a,
+.george-washington .centerVV-mondrian .item__title--image a,
+.george-washington .centerVV-mondrian .item__title--image-thumbnail a {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 700; }
+.george-washington .centerVV-mondrian .item__link--fake-link {
+  color: white; }
+.george-washington .centerVV-mondrian .item__link--escape-link {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 700;
+  color: white; }
+  .george-washington .centerVV-mondrian .item__link--escape-link:before {
+    color: #004065; }
+.george-washington .centerVV-mondrian .item .displayTime, .george-washington .centerVV-mondrian .item .startTime {
+  font-family: 'Helvetica',  sans-serif;
+  font-weight: 700;
+  color: white; }
+  .george-washington .centerVV-mondrian .item .displayTime a, .george-washington .centerVV-mondrian .item .startTime a {
+    text-decoration: underline; }
