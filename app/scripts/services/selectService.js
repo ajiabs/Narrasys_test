@@ -348,7 +348,7 @@
 							_videoPositionSelectVisibility(false);
 							_displaySelectVisibility(false);
 							item.layouts[0] = ''; //P1 Video Centered
-							item.layouts[1] = _D1.a.value;
+							item.layouts[1] = _D1.a.value; //showCurrent;
 							break;
 						case 'templates/scene/centerVV.html': //Vertical Pro, Hide Transcript
 						case 'templates/scene/centerVV-Mondrian.html': //Vertical Pro Mondrian, Hide Transcript
@@ -359,10 +359,9 @@
 								{value: 'videoRight', name: 'Video on Right'}
 							];
 							item.layouts[1] = _D1.a.value;
-							if (isInline) {
+							if (isInline || item.layouts[0] === '') {
 								item.layouts[0] = 'videoLeft'; //P2 video left
 							}
-							item.layouts[0] = item.layouts[0];
 							break;
 						case 'templates/scene/cornerV.html': //Corner video, vertical
 						case 'templates/scene/cornerH.html': //Corner video, horizontal
@@ -379,11 +378,10 @@
 							];
 
 							if (isInline || item.layouts[0] === '') {
+								console.log('we are getting here');
 								item.layouts[0] = 'videoLeft'; //P2 video left
 								item.layouts[1] = _D1.a.value;
 							}
-							item.layouts[0] = item.layouts[0];
-							item.layouts[1] = item.layouts[1];
 							break;
 						case 'templates/scene/mirrored-twocol.html': // Two Columns (v2 mirrored vert)
 							_displaySelectVisibility(true);
@@ -397,10 +395,9 @@
 								{value: _D2.b.value, name: _D2.b.name}
 							];
 							item.layouts[1] = _D2.b.value;
-							if (isInline) {
+							if (isInline || item.layouts[0] === '') {
 								item.layouts[0] = 'videoLeft'; //P2 video left
 							}
-							item.layouts[0] = item.layouts[0];
 							break;
 						case 'templates/scene/1col.html': //One Column
 							_displaySelectVisibility(true);
@@ -413,7 +410,6 @@
 							if (isInline) {
 								item.layouts[1] = _D3.b.value;
 							}
-							item.layouts[1] = item.layouts[1];
 							break;
 						case 'templates/scene/2colL.html': // Two Columns
 						case 'templates/scene/2colR.html': //Two Columns mirrored
@@ -432,8 +428,6 @@
 								item.layouts[0] = ''; //P3
 								item.layouts[1] = _D3.b.value;
 							}
-							item.layouts[0] = item.layouts[0];
-							item.layouts[1] = item.layouts[1];
 							break;
 					}
 					break;
