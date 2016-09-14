@@ -55,6 +55,7 @@
 				<span ng-if="!customer.guest_access_allowed">ID</span>
 			</a>
 			<a class="button" href="#/episode/{{container.episodes[0]}}">Player</a>
+			<a class="button" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}">Editor</a>
 			<a class="button" href="#/producer/{{container.episodes[0]}}">Producer</a>
 			<div ng-if="container.showGuestUrl && customer.guest_access_allowed">
 				<!-- not editable; only an input to make text selection easier -->
