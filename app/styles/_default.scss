@@ -3,6 +3,7 @@
     $defaultAccent: #CCCCCC;
     $defaultSecondary: #DDDDDD;
     $defaultLink: #0000CC;
+    $defaultHighlight: rgba(0, 0, 0, 0);
 
     @mixin default-header {
     	font-family: 'Droid sans',  sans-serif;
@@ -21,9 +22,9 @@
     }
 
     .default {
-
-
-
+        
+        
+        
         .landingscreen {
             h1 {
                 @include banner-pq('Droid sans', $defaultAccent, 2.5vw);
@@ -45,7 +46,7 @@
                 color: $defaultLink;
             }
         }
-
+        
         .searchResults {
             @include default-header;
             .item__title--link, .item__link--fake-link, .item__link--escape-link {
@@ -57,11 +58,10 @@
             }
         }
 
-		//panes
+		//custom altPane BG
 		.altPane {
 			background-color: rgba(0, 0, 0, 0.05);
 		}
-
 
         //item overrides
         .item__title {
@@ -106,7 +106,7 @@
 	   .item__text--image-caption, .item__text--image-caption-sliding {
 	        color: $defaultSecondary;
 	   }
-
+        
         .item__link--escape-link {
             @include default-body;
             color: $defaultLink;
@@ -114,7 +114,7 @@
                 color: $defaultPrimary;
             }
         }
-
+        
         //timestamp
         .item {
             .displayTime, .startTime {
@@ -125,17 +125,35 @@
                 }
             }
         }
-
-       //invert
+        
+       //invert 
         .item {
             &.colorInvert {
-                background-color: $defaultPrimary !important;
-             .item__text {
-                 color: $defaultSecondary !important;
-             }
+            	background-color: $defaultPrimary !important;
+             	.item__text, .item__title a, .item__link--escape-link, a.displayTime.startTime {
+                 	color: $defaultSecondary !important;
+                 	&:before {
+                 		color: $defaultSecondary !important;
+                 	}
+             	}
             }
         }
-
+        
+        //highlights
+        .content.allowHighlights {
+        	.highlightSolid.item.isCurrent {
+        		background-color: $defaultHighlight;
+        	}
+        	
+        	.highlightSide.item.isCurrent {
+        		border-left: 10px solid $defaultHighlight;
+        	}
+        	
+        	.highlightBorder.item.isCurrent {
+        		border: 2px solid $defaultHighlight;
+        	}
+        }
+        
         //layout specific overrides
         .centered-pro {
             .banner-pull-quote {
@@ -148,15 +166,15 @@
 		//pro two col: centerVV
 		//non-pro two col: pip, cornerH, cornerV, twocol
 		//non-pro one col: centered, onecol
-        .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {
+        .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {	
             .static-bg__main {
-
+                
             }
-
+            
             .static-bg__alt {
-
+                
             }
-
+            
             .item__title--link, .item__title--file {
                 @include default-body;
             }
@@ -167,14 +185,14 @@
 
         }
 
-        .centerVV-mondrian {
+        .centerVV-mondrian {           
             .static-bg__main {
                 border: 4px solid $defaultPrimary;
                 background-color: $defaultAccent;
             }
-
+            
             .static-bg__alt {
-
+                
             }
 
       		.mainPane {
@@ -185,7 +203,7 @@
 			.item__text, .item__title, .item__title a {
 				color: $defaultSecondary;
 			}
-
+			
 			//override from general item level,
 			//mondrian BG is solid color, so we need to use
 			//the Secondary
@@ -194,7 +212,7 @@
 					color: $defaultSecondary;
 				}
 			}
-
+			
 			.item {
 			    &.colorInvert {
 			        background-color: $defaultSecondary !important;
@@ -203,10 +221,10 @@
                     }
                 }
             }
-
+			
 		}
 
-
+        
 		//item__<entity> for non URL titles
 		// item__<entity> a covers both escape and fakeLinks
 		.item__title--link,
@@ -217,7 +235,7 @@
 		.item__title--image-thumbnail a {
 			@include default-header;
 		}
-
+		
 		.item__link--fake-link {
 			color: $defaultSecondary;
 		}
@@ -229,12 +247,12 @@
 				color: $defaultAccent;
 			}
 		}
-
+		
 		.item {
 		    .displayTime, .startTime {
 		        @include default-header;
 		        color: $defaultSecondary;
-
+		        
 		        a {
 		            text-decoration: underline;
 		        }

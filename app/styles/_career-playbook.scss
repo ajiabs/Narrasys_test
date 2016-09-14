@@ -3,6 +3,7 @@
     $career-playbookAccent: #00ACEE;
     $career-playbookSecondary: #FFFFFF;
     $career-playbookLink: #00ACEE;
+    $career-playbookHighlight: rgba(0, 0, 0, 0);
 
     @mixin career-playbook-header {
     	font-family: 'Lato',  sans-serif;
@@ -56,6 +57,9 @@
                 }
             }
         }
+
+		//custom altPane BG
+		
 
         //item overrides
         .item__title {
@@ -123,11 +127,29 @@
        //invert 
         .item {
             &.colorInvert {
-                background-color: $career-playbookPrimary !important;
-             .item__text {
-                 color: $career-playbookSecondary !important;
-             }
+            	background-color: $career-playbookPrimary !important;
+             	.item__text, .item__title a, .item__link--escape-link, a.displayTime.startTime {
+                 	color: $career-playbookSecondary !important;
+                 	&:before {
+                 		color: $career-playbookSecondary !important;
+                 	}
+             	}
             }
+        }
+        
+        //highlights
+        .content.allowHighlights {
+        	.highlightSolid.item.isCurrent {
+        		background-color: $career-playbookHighlight;
+        	}
+        	
+        	.highlightSide.item.isCurrent {
+        		border-left: 10px solid $career-playbookHighlight;
+        	}
+        	
+        	.highlightBorder.item.isCurrent {
+        		border: 2px solid $career-playbookHighlight;
+        	}
         }
         
         //layout specific overrides

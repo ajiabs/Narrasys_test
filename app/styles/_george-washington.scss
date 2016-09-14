@@ -127,10 +127,13 @@
        //invert 
         .item {
             &.colorInvert {
-                background-color: $george-washingtonPrimary !important;
-             .item__text {
-                 color: $george-washingtonSecondary !important;
-             }
+            	background-color: $george-washingtonPrimary !important;
+             	.item__text, .item__title a, .item__link--escape-link, a.displayTime.startTime {
+                 	color: $george-washingtonSecondary !important;
+                 	&:before {
+                 		color: $george-washingtonSecondary !important;
+                 	}
+             	}
             }
         }
         

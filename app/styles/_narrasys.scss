@@ -3,6 +3,7 @@
     $narrasysAccent: #DE6625;
     $narrasysSecondary: #FFFFFF;
     $narrasysLink: #DE6626;
+    $narrasysHighlight: rgba(0, 0, 0, 0);
 
     @mixin narrasys-header {
     	font-family: 'Gotham Medium',  sans-serif;
@@ -53,6 +54,9 @@
                 }
             }
         }
+
+		//custom altPane BG
+		
 
         //item overrides
         .item__title {
@@ -120,11 +124,29 @@
        //invert 
         .item {
             &.colorInvert {
-                background-color: $narrasysPrimary !important;
-             .item__text {
-                 color: $narrasysSecondary !important;
-             }
+            	background-color: $narrasysPrimary !important;
+             	.item__text, .item__title a, .item__link--escape-link, a.displayTime.startTime {
+                 	color: $narrasysSecondary !important;
+                 	&:before {
+                 		color: $narrasysSecondary !important;
+                 	}
+             	}
             }
+        }
+        
+        //highlights
+        .content.allowHighlights {
+        	.highlightSolid.item.isCurrent {
+        		background-color: $narrasysHighlight;
+        	}
+        	
+        	.highlightSide.item.isCurrent {
+        		border-left: 10px solid $narrasysHighlight;
+        	}
+        	
+        	.highlightBorder.item.isCurrent {
+        		border: 2px solid $narrasysHighlight;
+        	}
         }
         
         //layout specific overrides

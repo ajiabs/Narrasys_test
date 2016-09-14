@@ -886,8 +886,16 @@
     text-decoration: underline; }
 .default .item.colorInvert {
   background-color: black !important; }
-  .default .item.colorInvert .item__text {
+  .default .item.colorInvert .item__text, .default .item.colorInvert .item__title a, .default .item.colorInvert .item__link--escape-link, .default .item.colorInvert a.displayTime.startTime {
     color: #dddddd !important; }
+    .default .item.colorInvert .item__text:before, .default .item.colorInvert .item__title a:before, .default .item.colorInvert .item__link--escape-link:before, .default .item.colorInvert a.displayTime.startTime:before {
+      color: #dddddd !important; }
+.default .content.allowHighlights .highlightSolid.item.isCurrent {
+  background-color: transparent; }
+.default .content.allowHighlights .highlightSide.item.isCurrent {
+  border-left: 10px solid transparent; }
+.default .content.allowHighlights .highlightBorder.item.isCurrent {
+  border: 2px solid transparent; }
 .default .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -1043,8 +1051,16 @@
     text-decoration: underline; }
 .field-pros .item.colorInvert {
   background-color: #5b5b5b !important; }
-  .field-pros .item.colorInvert .item__text {
+  .field-pros .item.colorInvert .item__text, .field-pros .item.colorInvert .item__title a, .field-pros .item.colorInvert .item__link--escape-link, .field-pros .item.colorInvert a.displayTime.startTime {
     color: white !important; }
+    .field-pros .item.colorInvert .item__text:before, .field-pros .item.colorInvert .item__title a:before, .field-pros .item.colorInvert .item__link--escape-link:before, .field-pros .item.colorInvert a.displayTime.startTime:before {
+      color: white !important; }
+.field-pros .content.allowHighlights .highlightSolid.item.isCurrent {
+  background-color: transparent; }
+.field-pros .content.allowHighlights .highlightSide.item.isCurrent {
+  border-left: 10px solid transparent; }
+.field-pros .content.allowHighlights .highlightBorder.item.isCurrent {
+  border: 2px solid transparent; }
 .field-pros .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -1196,8 +1212,16 @@
       text-decoration: underline; }
   .narrasys .item.colorInvert {
     background-color: #4d4d4d !important; }
-    .narrasys .item.colorInvert .item__text {
+    .narrasys .item.colorInvert .item__text, .narrasys .item.colorInvert .item__title a, .narrasys .item.colorInvert .item__link--escape-link, .narrasys .item.colorInvert a.displayTime.startTime {
       color: white !important; }
+      .narrasys .item.colorInvert .item__text:before, .narrasys .item.colorInvert .item__title a:before, .narrasys .item.colorInvert .item__link--escape-link:before, .narrasys .item.colorInvert a.displayTime.startTime:before {
+        color: white !important; }
+  .narrasys .content.allowHighlights .highlightSolid.item.isCurrent {
+    background-color: transparent; }
+  .narrasys .content.allowHighlights .highlightSide.item.isCurrent {
+    border-left: 10px solid transparent; }
+  .narrasys .content.allowHighlights .highlightBorder.item.isCurrent {
+    border: 2px solid transparent; }
   .narrasys .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -1354,8 +1378,16 @@
       text-decoration: underline; }
   .career-playbook .item.colorInvert {
     background-color: #4d4d4d !important; }
-    .career-playbook .item.colorInvert .item__text {
+    .career-playbook .item.colorInvert .item__text, .career-playbook .item.colorInvert .item__title a, .career-playbook .item.colorInvert .item__link--escape-link, .career-playbook .item.colorInvert a.displayTime.startTime {
       color: white !important; }
+      .career-playbook .item.colorInvert .item__text:before, .career-playbook .item.colorInvert .item__title a:before, .career-playbook .item.colorInvert .item__link--escape-link:before, .career-playbook .item.colorInvert a.displayTime.startTime:before {
+        color: white !important; }
+  .career-playbook .content.allowHighlights .highlightSolid.item.isCurrent {
+    background-color: transparent; }
+  .career-playbook .content.allowHighlights .highlightSide.item.isCurrent {
+    border-left: 10px solid transparent; }
+  .career-playbook .content.allowHighlights .highlightBorder.item.isCurrent {
+    border: 2px solid transparent; }
   .career-playbook .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -1515,8 +1547,10 @@
     text-decoration: underline; }
 .george-washington .item.colorInvert {
   background-color: black !important; }
-  .george-washington .item.colorInvert .item__text {
+  .george-washington .item.colorInvert .item__text, .george-washington .item.colorInvert .item__title a, .george-washington .item.colorInvert .item__link--escape-link, .george-washington .item.colorInvert a.displayTime.startTime {
     color: white !important; }
+    .george-washington .item.colorInvert .item__text:before, .george-washington .item.colorInvert .item__title a:before, .george-washington .item.colorInvert .item__link--escape-link:before, .george-washington .item.colorInvert a.displayTime.startTime:before {
+      color: white !important; }
 .george-washington .content.allowHighlights .highlightSolid.item.isCurrent {
   background-color: rgba(200, 177, 139, 0.3); }
 .george-washington .content.allowHighlights .highlightSide.item.isCurrent {

@@ -9,6 +9,8 @@ const bgImage = (img) => {
     return '';
 };
 
+const existy = (x) => x != null;
+
 const fontFam = (font) => {
     const fonts = font.split(',');
     const main = fonts[0];
@@ -35,13 +37,21 @@ const isDefault = (nameSpace) => {
 	return '';
 };
 
+const handleHighlight = (highlightColor, nameSpace) => {
+	if (highlightColor === 'none' || highlightColor === '' || !existy(highlightColor)) {
+		//if no highlight color provided, set alpha to completely transparent
+		return `$${nameSpace}Highlight: rgba(0, 0, 0, 0);`;
+	}
+	return `$${nameSpace}Highlight: rgba(${highlightColor});`;
+};
+
 export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, linkColor, highlightColor, headerFont, bodyFont, accentFont, bgMain, bgAlt, bgMondrian, bgWindow}) => {
     return `
     $${nameSpace}Primary: #${primaryColor};
     $${nameSpace}Accent: #${accentColor};
     $${nameSpace}Secondary: #${secondaryColor};
     $${nameSpace}Link: #${linkColor};
-    $${nameSpace}Highlight: rgba(${highlightColor});
+    ${handleHighlight(highlightColor, nameSpace)}
 
     @mixin ${nameSpace}-header {
     ${fontFam(headerFont)};
@@ -162,10 +172,13 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
        //invert 
         .item {
             &.colorInvert {
-                background-color: $${nameSpace}Primary !important;
-             .item__text {
-                 color: $${nameSpace}Secondary !important;
-             }
+            	background-color: $${nameSpace}Primary !important;
+             	.item__text, .item__title a, .item__link--escape-link, a.displayTime.startTime {
+                 	color: $${nameSpace}Secondary !important;
+                 	&:before {
+                 		color: $${nameSpace}Secondary !important;
+                 	}
+             	}
             }
         }
         
