@@ -342,6 +342,7 @@
 			switch(item.producerItemType) {
 				case 'scene':
 					var isInline = item.layouts[0] === 'inline';
+					console.log('is inline', isInline, item.layouts);
 					switch(item.templateUrl) {
 						case 'templates/scene/centered.html': //centered
 						case 'templates/scene/centeredPro.html': //Centered Pro, Hide Transcript & Transmedia

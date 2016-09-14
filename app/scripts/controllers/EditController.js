@@ -83,6 +83,8 @@ angular.module('com.inthetelling.story')
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			timelineSvc.injectEvents([modelSvc.events["internal:editing"]]);
 			if (producerItemType === 'scene') {
+				//to set the defaults on the first pass
+				selectService.onSelectChange(appState.editEvent);
 				timelineSvc.updateSceneTimes(appState.episodeId);
 			}
 			$rootScope.$emit('searchReindexNeeded'); // HACK
