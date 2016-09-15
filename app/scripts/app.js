@@ -171,7 +171,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		.when('/assets/:containerId', {
 			title: "Container Assets test",
 			controller: 'ContainerAssetsTestController',
-			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="/#/projects">Projects</a><div sxs-container-assets="containerId" mime-key="assetLib"></div></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="/#/projects">Projects</a><div sxs-container-assets="containerId" mimes-up="assetLib"></div></div></div>'
 		})
 		.when('/event/:eventId', {
 			title: "Event test",

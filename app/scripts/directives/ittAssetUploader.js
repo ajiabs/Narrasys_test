@@ -3,7 +3,7 @@
 angular.module('com.inthetelling.story')
 	.directive('ittAssetUploader', ittAssetUploader);
 
-function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
+function ittAssetUploader($timeout, awsSvc, appState, modelSvc, ittUtils) {
 	return {
 		restrict: 'A',
 		replace: false,
@@ -16,14 +16,6 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 		},
 		templateUrl: 'templates/producer/asset-uploader.html',
 		link: function (scope, element, attrs) {
-
-			function strStartsWith(str, prefix) {
-				return str.indexOf(prefix) === 0;
-			}
-
-			function strEndsWith(str, match) {
-				return str.substring(str.length - match.length, str.length) === match;
-			}
 
 			if (scope.instructions === undefined) {
 				scope.manPage = 'We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. ';
@@ -66,35 +58,10 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 				}
 
 				//disallow certain file types
-				var stop = false;
-				//gotta filter
-				angular.forEach(files, function (f) {
-
-					angular.forEach(_mimeTypes, function (m) {
-						var paramStrEndsWithStar = strEndsWith(m, '*');
-
-						if (paramStrEndsWithStar) {
-
-							var mimeTypeUntilWildcard = m.slice(0, -1);
-
-							var applicationTypesMatch = strStartsWith(f.type, mimeTypeUntilWildcard);
-
-							if (applicationTypesMatch) {
-								stop = true;
-							}
-
-						} else {
-							//only accept identical mimeType?
-							if (f.type === m) {
-								stop = true;
-							}
-
-						}
-						_errorText = f.type + ' uploads are not allowed here.';
-					});
-				});
-
-				if (!stop) {
+				var filterMimes = ittUtils.filterMimeTypes(files, _mimeTypes);
+				console.log('filterMimes', filterMimes);
+				if (!filterMimes.continue) {
+					_errorText = filterMimes.fType + ' uploads are not allowed here.';
 					scope.errormessage = _errorText;
 					return;
 				}

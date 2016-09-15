@@ -20,7 +20,11 @@
 		pick: pick,
 		bitwiseCeil: bitwiseCeil,
 		setNgOpts: setNgOpts,
-		intersection: intersection
+		intersection: intersection,
+		strStartsWith: strStartsWith,
+		strEndsWith: strEndsWith,
+		filterMimeTypes: filterMimeTypes
+
 	};
 
 	//using bitwise operators up to 20% faster than Math.ceil (js hint not a fan of bitwise operators)
@@ -96,6 +100,47 @@
 			}
 		}
 		return ret;
+	}
+
+	function strStartsWith(str, prefix) {
+		return str.indexOf(prefix) === 0;
+	}
+
+	function strEndsWith(str, match) {
+		return str.substring(str.length - match.length, str.length) === match;
+	}
+
+	//this code came from ittAssetUploader but there are other places in the code
+	//where filtering mimeTypes is needed thus it made sense to move it here.
+	function filterMimeTypes(filesList, mimeTypes) {
+		var stop = false;
+		var mimeType = '';
+		angular.forEach(filesList, function(f) {
+			//f.type if for handling an actual fileList object
+			//f.content_type is for handing one of our 'assets'
+			mimeType = f.type || f.content_type;
+			angular.forEach(mimeTypes, function(m) {
+				var paramStrEndsWithStar = strEndsWith(m, '*');
+
+				if (paramStrEndsWithStar) {
+					var mimeTypeUntilWildcard = m.slice(0, -1);
+					var applicationTypesMatch = strStartsWith(mimeType, mimeTypeUntilWildcard);
+
+					if (applicationTypesMatch) {
+						stop = true;
+					}
+
+				} else {
+					//only accept identical mimeType?
+					if (mimeType === m) {
+						stop = true;
+					}
+
+				}
+			});
+		});
+
+		return {continue: stop, fType: mimeType};
 	}
 
 

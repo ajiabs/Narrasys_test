@@ -1,3 +1,4 @@
+<h3>mimesDown: {{mimesDown}}</h3>
 <div ng-if="showParent">
 	<div sxs-container-assets="container.parent_id"></div>
 </div>
@@ -22,7 +23,7 @@
 
 	<div class="scrollPane" ng-if="!hideItems">
 		<div ng-if="gridView">
-			<div class="grid" ng-repeat="asset in isCustAdmin ? (assets | vidsFromCustAdmins) : assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
+			<div class="grid" ng-repeat="asset in isCustAdmin ? (assets | vidsFromCustAdmins) : assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset)">
 				<div ng-if="asset._type == 'Asset::Image'">
 					<img class="thumbnail" ng-src="{{asset.url}}">
 				</div>
@@ -34,7 +35,7 @@
 			</div>
 		</div>
 		<table ng-if="!gridView">
-			<tr ng-repeat="asset in isCustAdmin ? (assets | vidsFromCustAdmins) : assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
+			<tr ng-repeat="asset in isCustAdmin ? (assets | vidsFromCustAdmins) : assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset)">
 				<td>
 					<div ng-if="asset._type == 'Asset::Image'">
 						<img class="thumbnail" ng-src="{{asset.url}}">
@@ -49,5 +50,6 @@
 		</table>
 	</div>
 	<br>
+	<div class="error-red" ng-if="mainAssetMimeError">{{mainAssetMimeError}}</div>
 	<div ng-if="canAccess" itt-asset-uploader="container._id" mime-types="{{mimes}}" multiple></div>
 </div>

@@ -5,13 +5,16 @@ angular.module('com.inthetelling.story')
 		$scope.containerId = $routeParams.containerId;
 	})
 	/* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
-	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc, MIMES) {
+	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc, MIMES, ittUtils) {
 		return {
 			restrict: 'A',
 			replace: false,
 			scope: {
 				containerId: "=sxsContainerAssets",
-				mimeKey: '@'
+				//for filtering by mimeType when uploading assest
+				mimesUp: '@?',
+				//for filtering by mimeType when selected already uploaded assets
+				mimesDown: '@?',
 			},
 			templateUrl: 'templates/producer/container-assets.html',
 			compile: function (element) {
@@ -39,14 +42,17 @@ angular.module('com.inthetelling.story')
 					scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 					scope.isCustAdmin = authSvc.userHasRole('customer admin');
 
-					if (MIMES[scope.mimeKey]) {
-						scope.mimes = MIMES[scope.mimeKey];
+					if (MIMES[scope.mimesUp]) {
+						scope.mimes = MIMES[scope.mimesUp];
 						if (authSvc.userHasRole('admin')) {
 							scope.mimes += ',video/*';
 						}
 					} else {
 						scope.mimes = MIMES.default;
 					}
+
+
+					console.log('in sxsContainerAssets', scope.mimesDown);
 
 					scope.assets = modelSvc.assets; // this is going to be a horrible performance hit isn't it.  TODO: build asset array inside each container in modelSvc instead?
 					scope.uploadStatus = [];
@@ -61,9 +67,23 @@ angular.module('com.inthetelling.story')
 						scope.gridView = !scope.gridView;
 					};
 
-					scope.assetClick = function (assetId) {
-						console.log("User clicked on asset ", assetId);
-						$rootScope.$emit("UserSelectedAsset", assetId);
+					scope.assetClick = function (asset) {
+						//only attempt to filter if supplied a list to filter against
+						if (ittUtils.existy(scope.mimesDown)) {
+							scope.mimesDown = scope.mimesDown.split(',');
+							var disallow = ittUtils.filterMimeTypes([asset], scope.mimesDown);
+							console.log("User clicked on asset ", disallow, asset);
+
+							if (!disallow.continue) {
+								// $rootScope.$emit("UserSelectedAsset", asset._id);
+								scope.mainAssetMimeError = null;
+							} else {
+								scope.mainAssetMimeError = disallow.fType + ' cannot be used for master assets';
+							}
+						} else {
+							console.log('wtf mate', asset);
+							// $rootScope.$emit("UserSelectedAsset", asset._id);
+						}
 					};
 
 					scope.uploadAsset = function (fileInput) {
