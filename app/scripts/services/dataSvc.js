@@ -455,8 +455,11 @@ angular.module('com.inthetelling.story')
 				angular.forEach(obj.layout_id, function (id) {
 					if (dataCache.layout[id]) {
 						if (obj.type === 'Scene') {
+							//conditions outside of 'showCurrent' necessary for USC scholar
 							if (dataCache.layout[id].css_name === 'showCurrent') {
 								layouts[1] = dataCache.layout[id].css_name;
+							} else if (dataCache.layout[id].css_name === 'splitRequired') {
+								layouts[2] = dataCache.layout[id].css_name;
 							} else {
 								layouts[0] = dataCache.layout[id].css_name;
 							}
