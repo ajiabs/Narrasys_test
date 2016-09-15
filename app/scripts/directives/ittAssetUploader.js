@@ -59,7 +59,6 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc, ittUtils) {
 
 				//disallow certain file types
 				var filterMimes = ittUtils.filterMimeTypes(files, _mimeTypes);
-				console.log('filterMimes', filterMimes);
 				if (!filterMimes.continue) {
 					_errorText = filterMimes.fType + ' uploads are not allowed here.';
 					scope.errormessage = _errorText;

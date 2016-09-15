@@ -52,8 +52,6 @@ angular.module('com.inthetelling.story')
 					}
 
 
-					console.trace('sxsContainerAssets', scope);
-
 					scope.assets = modelSvc.assets; // this is going to be a horrible performance hit isn't it.  TODO: build asset array inside each container in modelSvc instead?
 					scope.uploadStatus = [];
 					scope.up = function () {
@@ -73,20 +71,19 @@ angular.module('com.inthetelling.story')
 
 					scope.assetClick = function (asset) {
 						//only attempt to filter if supplied a list to filter against
-						if (ittUtils.existy(scope.mimesDown)) {
-							scope.mimesDown = scope.mimesDown.split(',');
-							var disallow = ittUtils.filterMimeTypes([asset], scope.mimesDown);
-							console.log("User clicked on asset ", disallow, asset);
+						if (ittUtils.existy(appState.mimesDown)) {
+							var mimesArr = appState.mimesDown.split(',');
+							var disallow = ittUtils.filterMimeTypes([asset], mimesArr);
 
-							if (!disallow.continue) {
-								// $rootScope.$emit("UserSelectedAsset", asset._id);
+							if (disallow.continue) {
+								$rootScope.$emit("UserSelectedAsset", asset._id);
 								scope.mainAssetMimeError = null;
+								appState.mimesDown = null;
 							} else {
-								scope.mainAssetMimeError = disallow.fType + ' cannot be used for master assets';
+								scope.mainAssetMimeError = disallow.fType + ' cannot be used as the master asset.';
 							}
 						} else {
-							console.log('wtf mate', scope);
-							// $rootScope.$emit("UserSelectedAsset", asset._id);
+							$rootScope.$emit("UserSelectedAsset", asset._id);
 						}
 					};
 

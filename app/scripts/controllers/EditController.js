@@ -20,6 +20,11 @@ angular.module('com.inthetelling.story')
 		$scope.chooseAsset = function (assetType) {
 			assetType = assetType || '';
 			$scope.showAssetPicker = true;
+
+			if (assetType === 'Master') {
+				appState.mimesDown = 'video/*';
+			}
+
 			$scope.w1 = $rootScope.$on('UserSelectedAsset', function (e, id) {
 				if (assetType === 'Poster') {
 					$scope.attachPosterAsset(id); // in ittEpisodeEditor
@@ -38,6 +43,9 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.toggleUpload = function (assetType) {
+			if (assetType === 'Master') {
+				appState.mimesDown = 'video/*';
+			}
 			assetType = assetType || '';
 			$scope["showUploadField" + assetType] = !$scope["showUploadField" + assetType];
 		};
