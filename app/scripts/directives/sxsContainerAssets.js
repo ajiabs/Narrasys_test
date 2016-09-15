@@ -5,7 +5,7 @@ angular.module('com.inthetelling.story')
 		$scope.containerId = $routeParams.containerId;
 	})
 	/* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
-	.directive('sxsContainerAssets', function ($routeParams, $rootScope, $timeout, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc, MIMES, ittUtils) {
+	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc, MIMES, ittUtils) {
 		return {
 			restrict: 'A',
 			replace: false,
