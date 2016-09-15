@@ -13,8 +13,6 @@ angular.module('com.inthetelling.story')
 				containerId: "=sxsContainerAssets",
 				//for filtering by mimeType when uploading assest
 				mimesUp: '@?',
-				//for filtering by mimeType when selected already uploaded assets
-				mimesDown: '=?',
 			},
 			templateUrl: 'templates/producer/container-assets.html',
 			compile: function (element) {
