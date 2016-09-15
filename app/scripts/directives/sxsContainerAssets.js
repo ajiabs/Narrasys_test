@@ -5,7 +5,7 @@ angular.module('com.inthetelling.story')
 		$scope.containerId = $routeParams.containerId;
 	})
 	/* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
-	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc, MIMES, ittUtils) {
+	.directive('sxsContainerAssets', function ($routeParams, $rootScope, $timeout, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc, MIMES, ittUtils) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -14,7 +14,7 @@ angular.module('com.inthetelling.story')
 				//for filtering by mimeType when uploading assest
 				mimesUp: '@?',
 				//for filtering by mimeType when selected already uploaded assets
-				mimesDown: '@?',
+				mimesDown: '=?',
 			},
 			templateUrl: 'templates/producer/container-assets.html',
 			compile: function (element) {
@@ -52,12 +52,16 @@ angular.module('com.inthetelling.story')
 					}
 
 
-					console.log('in sxsContainerAssets', scope.mimesDown);
+					console.trace('sxsContainerAssets', scope);
 
 					scope.assets = modelSvc.assets; // this is going to be a horrible performance hit isn't it.  TODO: build asset array inside each container in modelSvc instead?
 					scope.uploadStatus = [];
 					scope.up = function () {
 						scope.showParent = true;
+					};
+
+					scope.readMimesDown = function() {
+						return scope.mimesDown;
 					};
 
 					scope.toggleImages = function () {
@@ -81,7 +85,7 @@ angular.module('com.inthetelling.story')
 								scope.mainAssetMimeError = disallow.fType + ' cannot be used for master assets';
 							}
 						} else {
-							console.log('wtf mate', asset);
+							console.log('wtf mate', scope);
 							// $rootScope.$emit("UserSelectedAsset", asset._id);
 						}
 					};

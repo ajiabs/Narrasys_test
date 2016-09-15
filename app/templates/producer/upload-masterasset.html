@@ -1,9 +1,8 @@
 <!-- producer master asset -->
-<h1>you are where you think you are {{showAssetPicker}}</h1>
 <div ng-if="showAssetPicker" class="floatAssetPicker">
 	<div class="scrollContainer">
 
-		<div sxs-container-assets="episodeContainerId" mimes-down="video/*"></div>
+		<div sxs-container-assets="episodeContainerId" mimes-down="'video/*'"></div>
 		<h1>you are where you think you are {{mimesDown}}</h1>
 	</div>
 	<div class="controlsContainer">
