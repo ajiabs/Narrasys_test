@@ -30,7 +30,7 @@
 			<!--
  		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
  -->
-				<button ng-if="canAccess" ng-disabled="timelineUnderEdit || tmpTimeline" ng-click="addTmpTimeline(null, narrative.timelines)">add timeline</button>
+				<button ng-if="canAccess" ng-disabled="timelineUnderEdit || tmpTimeline" ng-click="addTmpTimeline(null, narrative.timelines)">Add Timeline</button>
 
 
 			<itt-modal ng-if="showEpisodeList">
@@ -85,7 +85,7 @@
 								<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 25px">
 									<div ng-show="!!showLine && canAccess">
 										<!--+<hr>-->
-										<button ng-click="addTmpTimeline(timeline, narrative.timelines)">add new timeline</button>
+										<button ng-click="addTmpTimeline(timeline, narrative.timelines)">Insert Timeline</button>
 									</div>
 								</div>
 
