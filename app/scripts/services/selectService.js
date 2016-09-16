@@ -242,15 +242,15 @@
 					_videoPositionSelectVisibility(false);
 					_templateSelectVisibility(true);
 					var scenes = [
-						{url: _scenes.centered, name: 'Centered'},
-						{url: _scenes.centeredPro, name: 'Centered Pro, Hide Transcript & Transmedia'},
-						{url: _scenes['1col'], name: 'One Column'},
-						{url: _scenes.cornerV, name: 'Corner Video, vertical'},
-						{url: _scenes.mirroredTwoCol, name: 'Two Columns (v2 mirrored vert)'},
-						{url: _scenes.cornerH, name: 'Corner video, horizontal'},
-						{url: _scenes.centerVV, name: 'Vertical Pro, Hide Transcript'},
-						{url: _scenes.centerVVMondrian, name: 'Vertical Pro Mondrian, Hide Transcript'},
-						{url: _scenes.pip, name: 'Picture-in-picture'}
+						{url: _scenes.centered, name: 'Center 1 (\u229eV\u2022TS\u2022TM)'},
+						{url: _scenes.centeredPro, name: 'Center 2 (\u229eV\u2022TM)'},
+						{url: _scenes['1col'], name: 'Center 3 (V\u2022TS\u2022TM)'},
+						{url: _scenes.cornerV, name: 'Split 1 (V\u2022TS|TM)'},
+						{url: _scenes.mirroredTwoCol, name: 'Split 2 (V\u2022TM|TS)'},
+						{url: _scenes.cornerH, name: 'Split 5 (V\u2022TS|TM)'},
+						{url: _scenes.centerVV, name: 'Split 3 (V|TM)'},
+						{url: _scenes.centerVVMondrian, name: 'Split 4 (V|TM Invert)'},
+						{url: _scenes.pip, name: 'Split 6 (TM|V\u2022TS)'}
 					];
 
 					if (_userHasRole('admin')) {
