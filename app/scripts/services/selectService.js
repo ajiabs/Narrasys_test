@@ -56,6 +56,15 @@
 			pip: 'templates/scene/pip.html'
 		};
 
+		var _bgImageTitles = {
+			windowBg: 'Full window Background',
+			videoOverlay: 'Video Overlay (16:9)',
+			mainBg: 'Text pane background',
+			mainFg: 'Text pane foreground',
+			altBg: 'Transmedia pane background',
+			altFg: 'Transmedia pane foreground'
+		};
+
 		var _D1 = {
 			a: {value: 'showCurrent', name: 'show only current transmedia items'},
 			b: {value: '', name: 'Show all transmedia items, highlight current ones'}
@@ -114,12 +123,12 @@
 					var isAdmin = _userHasRole('admin');
 					_displaySelectVisibility(true);
 					_select.display = [
-						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
-						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
-						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: !isAdmin},
-						{value: 'mainFg', name: 'Text pane foreground', isDisabled: !isAdmin},
-						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: true},
-						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: true},
+						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: false},
+						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
+						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: !isAdmin},
+						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: !isAdmin},
+						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: true},
+						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: true},
 					];
 					if (isInline) {
 						item.layouts = ['windowBg'];
@@ -132,12 +141,12 @@
 				case 'mirroredTwoCol':
 					_displaySelectVisibility(true);
 					_select.display = [
-						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
-						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
-						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
-						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
-						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: false},
-						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: false}
+						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: false},
+						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
+						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: false},
+						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: false},
+						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: false},
+						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: false}
 					];
 
 					if (isInline) {
@@ -151,12 +160,12 @@
 				case 'cornerH':
 					_displaySelectVisibility(true);
 					_select.display = [
-						{value: 'windowBg', name: 'Full Window background', isDisabled: false},
-						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
-						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
-						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
-						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: false},
-						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: false}
+						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: false},
+						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
+						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: false},
+						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: false},
+						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: false},
+						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: false}
 					];
 
 					if (isInline) {
@@ -173,12 +182,12 @@
 					break;
 				case 'centerVVMondrian':
 					_select.display = [
-						{value: 'windowBg', name: 'Full Window background', isDisabled: true},
-						{value: 'videoOverlay', name: 'Video Overlay', isDisabled: false},
-						{value: 'mainBg', name: 'Text pane (main) background', isDisabled: false},
-						{value: 'mainFg', name: 'Text pane foreground', isDisabled: false},
-						{value: 'altBg', name: 'Transmedia pane (alt) background', isDisabled: true},
-						{value: 'altFg', name: 'Transmedia pane foreground', isDisabled: true}
+						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: true},
+						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
+						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: false},
+						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: false},
+						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: true},
+						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: true}
 					];
 
 					if (isInline) {
@@ -313,7 +322,7 @@
 						{url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
 						{url: 'templates/item/image-caption-sliding.html', name: 'Image with sliding caption'},
 						{url: 'templates/item/image-thumbnail.html', name: 'Image thumbnail'},
-						{url: 'templates/item/image-fill.html', name: 'Overlay or Background fill'}
+						{url: 'templates/item/image-fill.html', name: 'Background or video overlay'}
 					];
 					return imgTemplates;
 				case 'file':
