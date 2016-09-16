@@ -861,8 +861,9 @@ angular.module('com.inthetelling.story')
 						event.styleCss += ' timestampNone';
 					}
 
-					if (event.layouts.indexOf('showCurrent') === -1 &&
+					if ((!ittUtils.existy(event.layouts) || event.layouts.indexOf('showCurrent') === -1) &&
 						ittUtils.intersection(episode.styles, potentialHighlight).length === 0 &&
+						(!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) || ittUtils.intersection(currentScene.styles, potentialHighlight).length === 0) &&
 						(!ittUtils.existy(event.styles) || ittUtils.intersection(event.styles, potentialHighlight).length === 0)) {
 						event.styleCss += ' highlightSolid';
 					}
