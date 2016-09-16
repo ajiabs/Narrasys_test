@@ -838,13 +838,18 @@ angular.module('com.inthetelling.story')
 				}
 				event.styleCss = cascadeStyles(event);
 				var isImgPlain = event.templateUrl === 'templates/item/image-plain.html';
+				var isInlineImgWText = event.templateUrl === 'templates/item/image-inline-withtext.html';
+				var isImgCap = event.templateUrl === 'templates/item/image-caption-sliding.html';
+				var isImgThumb = event.templateUrl === 'templates/item/image-thumbnail.html';
+				var isBgImage = event.templateUrl === 'templates/item/image-fill.html';
+
 				var isLongText = event.templateUrl === 'templates/item/text-transmedia.html';
 				var isDef = event.templateUrl === 'templates/item/text-definition.html';
 				var isH1 = event.templateUrl === 'templates/item/text-h1.html';
 				var isH2 = event.templateUrl === 'templates/item/text-h2.html';
 				var isPq = event.templateUrl === 'templates/item/pullquote-noattrib.html' || event.templateUrl ===  'templates/item/pullquote.html';
 				var potentialHighlight = ['highlightSolid', 'highlightBorder', 'highlightSide', 'highlightBloom', 'highlightTilt', 'highlightNone'];
-
+				var potentialTransitions = ['transitionFade', 'transitionPop', 'transitionNone', 'transitionSlideL', 'transitionSlideR'];
 				var currentScene;
 
 				if (event._type !== 'Scene') {
@@ -867,6 +872,22 @@ angular.module('com.inthetelling.story')
 						(!ittUtils.existy(event.styles) || ittUtils.intersection(event.styles, potentialHighlight).length === 0)) {
 						event.styleCss += ' highlightSolid';
 					}
+
+					if (ittUtils.intersection(episode.styles, potentialTransitions).length === 0 &&
+						(!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) || ittUtils.intersection(currentScene.styles, potentialTransitions).length === 0) &&
+						(!ittUtils.existy(event.styles) || ittUtils.intersection(event.styles, potentialTransitions).length === 0) ) {
+						if (isImgPlain || isInlineImgWText || isImgCap || isImgThumb || isPq || isBgImage) {
+							if (!ittUtils.existy(event.layouts) || event.layouts.indexOf('videoOverlay') !== -1) {
+								event.styleCss += ' transitionFade';
+							} else {
+								console.log('adding pop', event.start_time, event);
+								event.styleCss += ' transitionPop';
+							}
+						} else {
+							event.styleCss += ' transitionSlideL';
+						}
+					}
+
 				}
 
 				if (event.layouts) {

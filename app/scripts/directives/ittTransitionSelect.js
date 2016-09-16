@@ -22,7 +22,7 @@
 				'			<option value="Fade">Fade</option>',
 				'			<option value="SlideL">Slide left</option>',
 				'			<option value="SlideR">Slide right</option>',
-				'			<option value="ExpandW">Expand</option>',
+				// '			<option value="ExpandW">Expand</option>',
 				'			<option value="Pop">Pop</option>',
 				'		</select>',
 				'	</div>',

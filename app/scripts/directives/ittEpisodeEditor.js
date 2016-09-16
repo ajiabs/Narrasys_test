@@ -28,7 +28,7 @@ angular.module('com.inthetelling.story')
 				scope.uploadStatus = [];
 				scope.uneditedEpisode = angular.copy(scope.episode); // in case of cancel.   Must be a copy, not the original!
 				scope.itemForm = {
-					"transition": "SlideL",
+					"transition": "",
 					"highlight": "",
 					"color": "",
 					"typography": "",
