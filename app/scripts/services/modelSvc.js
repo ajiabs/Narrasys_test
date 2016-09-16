@@ -843,10 +843,10 @@ angular.module('com.inthetelling.story')
 				var isH1 = event.templateUrl === 'templates/item/text-h1.html';
 				var isH2 = event.templateUrl === 'templates/item/text-h2.html';
 				var isPq = event.templateUrl === 'templates/item/pullquote-noattrib.html' || event.templateUrl ===  'templates/item/pullquote.html';
+				var potentialHighlight = ['highlightSolid', 'highlightBorder', 'highlightSide', 'highlightBloom', 'highlightTilt', 'highlightNone'];
 
-
-				// console.log('event', event);
 				var currentScene;
+
 				if (event._type !== 'Scene') {
 					currentScene = svc.scene(event.scene_id);
 					if (episode.styles.indexOf('timestampNone') === -1 && episode.styles.indexOf('timestampInline') === -1 &&
@@ -859,6 +859,12 @@ angular.module('com.inthetelling.story')
 					}
 					if (isH1 || isH2 || isPq) {
 						event.styleCss += ' timestampNone';
+					}
+
+					if (event.layouts.indexOf('showCurrent') === -1 &&
+						ittUtils.intersection(episode.styles, potentialHighlight).length === 0 &&
+						(!ittUtils.existy(event.styles) || ittUtils.intersection(event.styles, potentialHighlight).length === 0)) {
+						event.styleCss += ' highlightSolid';
 					}
 				}
 
