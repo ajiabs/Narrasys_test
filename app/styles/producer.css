@@ -219,6 +219,10 @@ input[readonly] {
 	font-size: 13px;
 }
 
+.authoringForm .input.layouts select {
+	font-size: 20px;
+}
+
 .authoringForm button {
 	border: 1px solid #CCC;
 	background-color: #FFF;
