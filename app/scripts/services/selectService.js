@@ -58,7 +58,7 @@
 
 		var _bgImageTitles = {
 			windowBg: 'Full window background',
-			videoOverlay: 'Video Overlay (16:9)',
+			videoOverlay: 'Video overlay (16:9)',
 			mainBg: 'Text pane background',
 			mainFg: 'Text pane foreground',
 			altBg: 'Transmedia pane background',
