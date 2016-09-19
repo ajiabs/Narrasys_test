@@ -43,17 +43,17 @@
 		//moved into a map because we will need to use this
 		//when we are handing updates on background images.
 		var _scenes = {
-			centered: 'templates/scene/centered.html',
-			centeredPro: 'templates/scene/centeredPro.html',
-			'1col': 'templates/scene/1col.html',
-			'2colL': 'templates/scene/2colL.html',
-			'2colR': 'templates/scene/2colR.html',
-			mirroredTwoCol: 'templates/scene/mirrored-twocol.html',
-			cornerV: 'templates/scene/cornerV.html',
-			centerVV: 'templates/scene/centerVV.html',
-			centerVVMondrian: 'templates/scene/centerVV-Mondrian.html',
-			cornerH: 'templates/scene/cornerH.html',
-			pip: 'templates/scene/pip.html'
+			centered: 'templates/scene/centered.html',      			//Center 1
+			centeredPro: 'templates/scene/centeredPro.html',			//Center 2
+			'1col': 'templates/scene/1col.html',						//Center 3
+			'2colL': 'templates/scene/2colL.html',						//OLD two cols
+			'2colR': 'templates/scene/2colR.html',						//Old Two Cols mirrored
+			mirroredTwoCol: 'templates/scene/mirrored-twocol.html', 	//Split 2
+			cornerV: 'templates/scene/cornerV.html',               		//Split 1
+			centerVV: 'templates/scene/centerVV.html',             		//Split 3
+			centerVVMondrian: 'templates/scene/centerVV-Mondrian.html', //Split 4
+			cornerH: 'templates/scene/cornerH.html',                    //Split 5
+			pip: 'templates/scene/pip.html'                             //Split 6
 		};
 
 		var _bgImageTitles = {
