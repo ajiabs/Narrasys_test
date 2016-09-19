@@ -33,17 +33,27 @@ const pqFont = (font: string) => {
 const isDefault = (nameSpace) => {
 
 	const css =
-		`.professional__branding {
+		`//TS-1109
+		.professional__branding {
 			width: 100%;
 			height: 210px;
 			background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
 			position: relative;
 			color: #FFF;
 		}
-			
+		//TS-1102	
 		.altPane {
 			background-color: rgba(0, 0, 0, 0.05);
-		}`;
+		}
+		
+		//TS-1084 - left align headers
+		.item__text--h2, .item__text--h1 {
+			h1, h2, h3 {
+				text-align: left;
+			}
+		}`
+
+		;
 
 	if (nameSpace === 'default') {
 		return css;
@@ -72,6 +82,11 @@ const handleLandingScreen = (nameSpace, headerFont) => {
 			padding: 10% 15%;
 			div {
 				flex-direction: row-reverse;
+			}
+			
+			.introtext {
+				flex-direction: column;
+				padding-left: 10px;
 			}
 		}`;
 	if (nameSpace !== 'default') {

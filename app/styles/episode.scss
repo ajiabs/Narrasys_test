@@ -909,14 +909,14 @@
 	.professional__branding {
 		display: flex;
 		justify-content: space-between;
-		align-items: flex-end;
+		align-items: center;
+		padding: 5px;
 		.professional__logo {
 			height: 130px;
 		}
 		.professional__copyright {
 			z-index: 1;
 			color: grey;
-			vertical-align: baseline;
 			font-size: 14px;
 			a {
 				text-decoration: underline;
@@ -938,9 +938,9 @@
 			//professional templates seem to not have a mockup with a
 			//description.
 			//need empty P tag for spacing reasons.
-			p {
-				visibility: hidden;
-			}
+			//p {
+			//	visibility: hidden;
+			//}
 		}
 
 		.videoMagnet {

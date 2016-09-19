@@ -694,13 +694,13 @@
   .professional .professional__branding {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end; }
+    align-items: center;
+    padding: 5px; }
     .professional .professional__branding .professional__logo {
       height: 130px; }
     .professional .professional__branding .professional__copyright {
       z-index: 1;
       color: grey;
-      vertical-align: baseline;
       font-size: 14px; }
       .professional .professional__branding .professional__copyright a {
         text-decoration: underline;
@@ -713,8 +713,6 @@
     .professional .landingscreen .introtext {
       width: 100%;
       margin-bottom: 5em; }
-      .professional .landingscreen .introtext p {
-        visibility: hidden; }
     .professional .landingscreen .videoMagnet {
       width: 100%; }
   .professional .endingscreen div.pane.introtext p {
@@ -793,6 +791,9 @@
   padding: 10% 15%; }
   .default .landingscreen div {
     flex-direction: row-reverse; }
+  .default .landingscreen .introtext {
+    flex-direction: column;
+    padding-left: 10px; }
 .default .professional__branding {
   width: 100%;
   height: 210px;
@@ -801,6 +802,8 @@
   color: #FFF; }
 .default .altPane {
   background-color: rgba(0, 0, 0, 0.05); }
+.default .item__text--h2 h1, .default .item__text--h2 h2, .default .item__text--h2 h3, .default .item__text--h1 h1, .default .item__text--h1 h2, .default .item__text--h1 h3 {
+  text-align: left; }
 .default .endingscreen p {
   margin-top: 1em;
   display: flex;
