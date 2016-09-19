@@ -7,10 +7,12 @@
 	<span ng-include="'templates/episode/components/video.html'"></span>
 	<span ng-include="'templates/episode/components/windowfg.html'"></span>
 
-	<div ng-if="appState.viewMode != 'watch'" class="professional__branding">
+	<div ng-if="appState.viewMode != 'watch'" class="professional__branding branding footer">
 
 		<div class="professional__copyright" ng-include="'templates/copyright.html'"></div>
-		<!--<img class="professional__logo" src="images/customer/none"/>-->
+		<a class="itt logo" href="//inthetelling.com" target="_blank">
+			<img src="images/itt.svg" alt="In The Telling logo">
+		</a>
 	</div>
 
 </div>
