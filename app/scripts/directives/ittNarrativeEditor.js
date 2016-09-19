@@ -13,7 +13,7 @@
 	        restrict: 'EA',
 			template: [
 				'<div class="narrative__edit">',
-				'<h4>Narrative Settings</h4>',
+				'<h2>Narrative Settings</h2>',
 				'	<form name="nEditForm">',
 				'		<div ng-show="nEditor.canAccess">',
 				'			<label for="nCustomer">Customer',
@@ -24,7 +24,7 @@
 				'		<label id="nName">Narrative Title',
 				'			<itt-validation-tip ng-if="nEditForm.name.$invalid" text="Title is required"></itt-validation-tip>',
 				'		</label>',
-				'		<input for="nName" type="text" name="name" placeholder="Add Narrative Name" ng-model="nEditor._narrative.name.en" required>',
+				'		<input for="nName" type="text" name="name" placeholder="Add Narrative Title" ng-model="nEditor._narrative.name.en" required>',
 				'		<label for="nDescription">Description</label>',
 				'		<textarea id="nDescription" name="description" placeholder="Add a Description" ng-model="nEditor._narrative.description.en"></textarea>',
 				'		<label for="nPath">Url Path Name',
