@@ -17,7 +17,7 @@
 			template: [
 			'<div class="field" ng-if="$ctrl.isVisible(\'templateSelect\')">',
 			'	<div class="label">{{$ctrl.labelText}}</div>',
-			'	<div class="input" ng-class="{layouts: $ctrl.labelText === \'Template\'}">',
+			'	<div class="input" ng-class="{layouts: $ctrl.labelText === \'Template\' && $ctrl.data.producerItemType === \'scene\'}">',
 			'		<select ng-model="$ctrl.data.templateUrl" ng-change="$ctrl.onSelectChange($ctrl.data, $ctrl.itemForm)" ng-options="option.url as option.name for option in $ctrl.data.templateOpts" itt-options-disabled="option.isDisabled for option in $ctrl.data.templateOpts"></select>',
 			'	</div>',
 			'</div>'
