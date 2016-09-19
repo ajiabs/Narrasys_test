@@ -880,7 +880,6 @@ angular.module('com.inthetelling.story')
 							if (!ittUtils.existy(event.layouts) || event.layouts.indexOf('videoOverlay') !== -1) {
 								event.styleCss += ' transitionFade';
 							} else {
-								console.log('adding pop', event.start_time, event);
 								event.styleCss += ' transitionPop';
 							}
 						} else {

@@ -24,12 +24,26 @@
     .default {
         
         
-        
+             
         .landingscreen {
-            h1 {
-                @include banner-pq('Droid sans', $defaultAccent, 2.5vw);
-            }
-        }
+			padding: 10% 15%;
+			div {
+				flex-direction: row-reverse;
+			}
+		}
+        
+		//custom altPane BG, landingscreen
+		.professional__branding {
+			width: 100%;
+			height: 210px;
+			background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
+			position: relative;
+			color: #FFF;
+		}
+			
+		.altPane {
+			background-color: rgba(0, 0, 0, 0.05);
+		}
 
         .endingscreen {
             p {
@@ -57,11 +71,6 @@
                 }
             }
         }
-
-		//custom altPane BG
-		.altPane {
-			background-color: rgba(0, 0, 0, 0.05);
-		}
 
         //item overrides
         .item__title {

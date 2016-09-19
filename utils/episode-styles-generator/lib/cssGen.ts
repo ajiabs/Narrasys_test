@@ -27,12 +27,26 @@ const fontFam = (font) => {
 const pqFont = (font: string) => {
     return font.split(',')[0];
 };
-//handle setting the background color on the alt (transmedia) pane for default template only
+
+//handle differences from the .professional namespace. currently only for 'default' template
+//which is used to replace our 'unbranded' template option.
 const isDefault = (nameSpace) => {
-	if (nameSpace === 'default') {
-		return `.altPane {
+
+	const css =
+		`.professional__branding {
+			width: 100%;
+			height: 210px;
+			background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
+			position: relative;
+			color: #FFF;
+		}
+			
+		.altPane {
 			background-color: rgba(0, 0, 0, 0.05);
-		}`
+		}`;
+
+	if (nameSpace === 'default') {
+		return css;
 	}
 	return '';
 };
@@ -43,6 +57,26 @@ const handleHighlight = (highlightColor, nameSpace) => {
 		return `$${nameSpace}Highlight: rgba(0, 0, 0, 0);`;
 	}
 	return `$${nameSpace}Highlight: rgba(${highlightColor});`;
+};
+
+const handleLandingScreen = (nameSpace, headerFont) => {
+	const professionalCss =
+		`.landingscreen {
+			h1 {
+				@include banner-pq('${pqFont(headerFont)}', $${nameSpace}Accent, 2.5vw);
+			}
+		}`;
+	const css =
+		`.landingscreen {
+			padding: 10% 15%;
+			div {
+				flex-direction: row-reverse;
+			}
+		}`;
+	if (nameSpace !== 'default') {
+		return professionalCss
+	}
+	return css
 };
 
 export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, linkColor, highlightColor, headerFont, bodyFont, accentFont, bgMain, bgAlt, bgMondrian, bgWindow}) => {
@@ -69,12 +103,11 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
     .${nameSpace} {
         
         ${bgImage(bgWindow)}
+             
+        ${handleLandingScreen(nameSpace, headerFont)}
         
-        .landingscreen {
-            h1 {
-                @include banner-pq('${pqFont(headerFont)}', $${nameSpace}Accent, 2.5vw);
-            }
-        }
+		//custom altPane BG, landingscreen
+		${isDefault(nameSpace)}
 
         .endingscreen {
             p {
@@ -102,9 +135,6 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
                 }
             }
         }
-
-		//custom altPane BG
-		${isDefault(nameSpace)}
 
         //item overrides
         .item__title {
