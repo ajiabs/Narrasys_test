@@ -266,7 +266,7 @@
 						scenes.push(
 							{url: _scenes['2colL'], name: 'OLD Two Columns'},
 							{url: _scenes['2colR'], name: 'OLD Two Columns (mirrored)'}
-						)
+						);
 					}
 
 					return scenes;

@@ -74,8 +74,8 @@
 
 						if (ctrl.data.templateUrl === 'templates/item/image-fill.html') {
 							ctrl._flags = ctrl._flags.filter(function(f) {
-								return f !== 'stop'
-							})
+								return f !== 'stop';
+							});
 						} else {
 							ctrl._flags = ctrl.flags;
 						}
