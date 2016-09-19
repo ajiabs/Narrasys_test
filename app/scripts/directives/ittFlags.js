@@ -73,7 +73,6 @@
 					if (newVal) {
 
 						if (ctrl.data.templateUrl === 'templates/item/image-fill.html') {
-							console.log('remove stop item flag');
 							ctrl._flags = ctrl._flags.filter(function(f) {
 								return f !== 'stop'
 							})
