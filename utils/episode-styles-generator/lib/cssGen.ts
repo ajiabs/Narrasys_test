@@ -268,6 +268,11 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
                 ${bgImage(bgMondrian)}
             }
 
+			
+			.altPane {
+				background-color: transparent;
+			}
+			
       		.mainPane {
 			    .item {
 				    background-color:  $${nameSpace}Primary;

@@ -917,6 +917,8 @@
 .default .centerVV-mondrian .static-bg__main {
   border: 4px solid black;
   background-color: #cccccc; }
+.default .centerVV-mondrian .altPane {
+  background-color: transparent; }
 .default .centerVV-mondrian .mainPane .item {
   background-color: black; }
 .default .centerVV-mondrian .mainPane .item__text, .default .centerVV-mondrian .mainPane .item__title, .default .centerVV-mondrian .mainPane .item__title a {
