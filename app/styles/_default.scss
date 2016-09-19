@@ -3,7 +3,7 @@
     $defaultAccent: #CCCCCC;
     $defaultSecondary: #DDDDDD;
     $defaultLink: #0000CC;
-    $defaultHighlight: rgba(0, 0, 0, 0);
+    $defaultHighlight: rgba(204,204,204, 0.6);
 
     @mixin default-header {
     	font-family: 'Droid sans',  sans-serif;
@@ -160,6 +160,12 @@
         	
         	.highlightBorder.item.isCurrent {
         		border: 2px solid $defaultHighlight;
+        	}
+        	
+        	//hard code alpha to be 0.3 or half of default
+        	//aka translucent
+        	.highlightBloom.item.isCurrent {
+        		background-color: rgba(204,204,204, 0.3);
         	}
         }
         

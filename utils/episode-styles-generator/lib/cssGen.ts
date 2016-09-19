@@ -56,7 +56,8 @@ const handleHighlight = (highlightColor, nameSpace) => {
 		//if no highlight color provided, set alpha to completely transparent
 		return `$${nameSpace}Highlight: rgba(0, 0, 0, 0);`;
 	}
-	return `$${nameSpace}Highlight: rgba(${highlightColor});`;
+	//hard code alpha to 0.6
+	return `$${nameSpace}Highlight: rgba(${highlightColor}, 0.6);`;
 };
 
 const handleLandingScreen = (nameSpace, headerFont) => {
@@ -224,6 +225,12 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
         	
         	.highlightBorder.item.isCurrent {
         		border: 2px solid $${nameSpace}Highlight;
+        	}
+        	
+        	//hard code alpha to be 0.3 or half of default
+        	//aka translucent
+        	.highlightBloom.item.isCurrent {
+        		background-color: rgba(${highlightColor}, 0.3);
         	}
         }
         

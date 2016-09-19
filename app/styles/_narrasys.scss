@@ -3,7 +3,7 @@
     $narrasysAccent: #DE6625;
     $narrasysSecondary: #FFFFFF;
     $narrasysLink: #DE6626;
-    $narrasysHighlight: rgba(0, 0, 0, 0);
+    $narrasysHighlight: rgba(222,102,37, 0.6);
 
     @mixin narrasys-header {
     	font-family: 'Gotham Medium',  sans-serif;
@@ -21,12 +21,15 @@
     .narrasys {
         
         background-image: url('/images/customer/Narrasys_Tree.svg');
-        
+             
         .landingscreen {
-            h1 {
-                @include banner-pq('Gotham Medium', $narrasysAccent, 2.5vw);
-            }
-        }
+			h1 {
+				@include banner-pq('Gotham Medium', $narrasysAccent, 2.5vw);
+			}
+		}
+        
+		//custom altPane BG, landingscreen
+		
 
         .endingscreen {
             p {
@@ -54,9 +57,6 @@
                 }
             }
         }
-
-		//custom altPane BG
-		
 
         //item overrides
         .item__title {
@@ -147,6 +147,12 @@
         	.highlightBorder.item.isCurrent {
         		border: 2px solid $narrasysHighlight;
         	}
+        	
+        	//hard code alpha to be 0.3 or half of default
+        	//aka translucent
+        	.highlightBloom.item.isCurrent {
+        		background-color: rgba(222,102,37, 0.3);
+        	}
         }
         
         //layout specific overrides
@@ -190,6 +196,11 @@
                 
             }
 
+			
+			.altPane {
+				background-color: transparent;
+			}
+			
       		.mainPane {
 			    .item {
 				    background-color:  $narrasysPrimary;

@@ -885,11 +885,13 @@
     .default .item.colorInvert .item__text:before, .default .item.colorInvert .item__title a:before, .default .item.colorInvert .item__link--escape-link:before, .default .item.colorInvert a.displayTime.startTime:before {
       color: #dddddd !important; }
 .default .content.allowHighlights .highlightSolid.item.isCurrent {
-  background-color: transparent; }
+  background-color: rgba(204, 204, 204, 0.6); }
 .default .content.allowHighlights .highlightSide.item.isCurrent {
-  border-left: 10px solid transparent; }
+  border-left: 10px solid rgba(204, 204, 204, 0.6); }
 .default .content.allowHighlights .highlightBorder.item.isCurrent {
-  border: 2px solid transparent; }
+  border: 2px solid rgba(204, 204, 204, 0.6); }
+.default .content.allowHighlights .highlightBloom.item.isCurrent {
+  background-color: rgba(204, 204, 204, 0.3); }
 .default .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -1052,11 +1054,13 @@
     .field-pros .item.colorInvert .item__text:before, .field-pros .item.colorInvert .item__title a:before, .field-pros .item.colorInvert .item__link--escape-link:before, .field-pros .item.colorInvert a.displayTime.startTime:before {
       color: white !important; }
 .field-pros .content.allowHighlights .highlightSolid.item.isCurrent {
-  background-color: transparent; }
+  background-color: rgba(107, 170, 54, 0.6); }
 .field-pros .content.allowHighlights .highlightSide.item.isCurrent {
-  border-left: 10px solid transparent; }
+  border-left: 10px solid rgba(107, 170, 54, 0.6); }
 .field-pros .content.allowHighlights .highlightBorder.item.isCurrent {
-  border: 2px solid transparent; }
+  border: 2px solid rgba(107, 170, 54, 0.6); }
+.field-pros .content.allowHighlights .highlightBloom.item.isCurrent {
+  background-color: rgba(107, 170, 54, 0.3); }
 .field-pros .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -1090,6 +1094,8 @@
   background-color: #6baa36; }
 .field-pros .centerVV-mondrian .static-bg__alt {
   background-image: url("/images/customer/Grid_Graphic_01.svg"); }
+.field-pros .centerVV-mondrian .altPane {
+  background-color: transparent; }
 .field-pros .centerVV-mondrian .mainPane .item {
   background-color: #5b5b5b; }
 .field-pros .centerVV-mondrian .mainPane .item__text, .field-pros .centerVV-mondrian .mainPane .item__title, .field-pros .centerVV-mondrian .mainPane .item__title a {
@@ -1213,11 +1219,13 @@
       .narrasys .item.colorInvert .item__text:before, .narrasys .item.colorInvert .item__title a:before, .narrasys .item.colorInvert .item__link--escape-link:before, .narrasys .item.colorInvert a.displayTime.startTime:before {
         color: white !important; }
   .narrasys .content.allowHighlights .highlightSolid.item.isCurrent {
-    background-color: transparent; }
+    background-color: rgba(222, 102, 37, 0.6); }
   .narrasys .content.allowHighlights .highlightSide.item.isCurrent {
-    border-left: 10px solid transparent; }
+    border-left: 10px solid rgba(222, 102, 37, 0.6); }
   .narrasys .content.allowHighlights .highlightBorder.item.isCurrent {
-    border: 2px solid transparent; }
+    border: 2px solid rgba(222, 102, 37, 0.6); }
+  .narrasys .content.allowHighlights .highlightBloom.item.isCurrent {
+    background-color: rgba(222, 102, 37, 0.3); }
   .narrasys .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -1247,6 +1255,8 @@
   .narrasys .centerVV-mondrian .static-bg__main {
     border: 4px solid #4d4d4d;
     background-color: #de6625; }
+  .narrasys .centerVV-mondrian .altPane {
+    background-color: transparent; }
   .narrasys .centerVV-mondrian .mainPane .item {
     background-color: #4d4d4d; }
   .narrasys .centerVV-mondrian .mainPane .item__text, .narrasys .centerVV-mondrian .mainPane .item__title, .narrasys .centerVV-mondrian .mainPane .item__title a {
@@ -1379,11 +1389,13 @@
       .career-playbook .item.colorInvert .item__text:before, .career-playbook .item.colorInvert .item__title a:before, .career-playbook .item.colorInvert .item__link--escape-link:before, .career-playbook .item.colorInvert a.displayTime.startTime:before {
         color: white !important; }
   .career-playbook .content.allowHighlights .highlightSolid.item.isCurrent {
-    background-color: transparent; }
+    background-color: rgba(0, 172, 238, 0.6); }
   .career-playbook .content.allowHighlights .highlightSide.item.isCurrent {
-    border-left: 10px solid transparent; }
+    border-left: 10px solid rgba(0, 172, 238, 0.6); }
   .career-playbook .content.allowHighlights .highlightBorder.item.isCurrent {
-    border: 2px solid transparent; }
+    border: 2px solid rgba(0, 172, 238, 0.6); }
+  .career-playbook .content.allowHighlights .highlightBloom.item.isCurrent {
+    background-color: rgba(0, 172, 238, 0.3); }
   .career-playbook .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -1415,6 +1427,8 @@
   .career-playbook .centerVV-mondrian .static-bg__main {
     border: 4px solid #4d4d4d;
     background-color: #00acee; }
+  .career-playbook .centerVV-mondrian .altPane {
+    background-color: transparent; }
   .career-playbook .centerVV-mondrian .mainPane .item {
     background-color: #4d4d4d; }
   .career-playbook .centerVV-mondrian .mainPane .item__text, .career-playbook .centerVV-mondrian .mainPane .item__title, .career-playbook .centerVV-mondrian .mainPane .item__title a {
@@ -1548,11 +1562,13 @@
     .george-washington .item.colorInvert .item__text:before, .george-washington .item.colorInvert .item__title a:before, .george-washington .item.colorInvert .item__link--escape-link:before, .george-washington .item.colorInvert a.displayTime.startTime:before {
       color: white !important; }
 .george-washington .content.allowHighlights .highlightSolid.item.isCurrent {
-  background-color: rgba(200, 177, 139, 0.3); }
+  background-color: rgba(200, 177, 139, 0.6); }
 .george-washington .content.allowHighlights .highlightSide.item.isCurrent {
-  border-left: 10px solid rgba(200, 177, 139, 0.3); }
+  border-left: 10px solid rgba(200, 177, 139, 0.6); }
 .george-washington .content.allowHighlights .highlightBorder.item.isCurrent {
-  border: 2px solid rgba(200, 177, 139, 0.3); }
+  border: 2px solid rgba(200, 177, 139, 0.6); }
+.george-washington .content.allowHighlights .highlightBloom.item.isCurrent {
+  background-color: rgba(200, 177, 139, 0.3); }
 .george-washington .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -1580,6 +1596,8 @@
 .george-washington .centerVV-mondrian .static-bg__main {
   border: 4px solid black;
   background-color: #004065; }
+.george-washington .centerVV-mondrian .altPane {
+  background-color: transparent; }
 .george-washington .centerVV-mondrian .mainPane .item {
   background-color: black; }
 .george-washington .centerVV-mondrian .mainPane .item__text, .george-washington .centerVV-mondrian .mainPane .item__title, .george-washington .centerVV-mondrian .mainPane .item__title a {

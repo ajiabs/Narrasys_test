@@ -3,7 +3,7 @@
     $field-prosAccent: #6BAA36;
     $field-prosSecondary: #FFFFFF;
     $field-prosLink: #6BAA36;
-    $field-prosHighlight: rgba(0, 0, 0, 0);
+    $field-prosHighlight: rgba(107,170,54, 0.6);
 
     @mixin field-pros-header {
     	font-family: 'Roboto Condensed',  sans-serif;
@@ -24,12 +24,15 @@
     .field-pros {
         
         
-        
+             
         .landingscreen {
-            h1 {
-                @include banner-pq('Roboto Condensed', $field-prosAccent, 2.5vw);
-            }
-        }
+			h1 {
+				@include banner-pq('Roboto Condensed', $field-prosAccent, 2.5vw);
+			}
+		}
+        
+		//custom altPane BG, landingscreen
+		
 
         .endingscreen {
             p {
@@ -57,9 +60,6 @@
                 }
             }
         }
-
-		//custom altPane BG
-		
 
         //item overrides
         .item__title {
@@ -150,6 +150,12 @@
         	.highlightBorder.item.isCurrent {
         		border: 2px solid $field-prosHighlight;
         	}
+        	
+        	//hard code alpha to be 0.3 or half of default
+        	//aka translucent
+        	.highlightBloom.item.isCurrent {
+        		background-color: rgba(107,170,54, 0.3);
+        	}
         }
         
         //layout specific overrides
@@ -193,6 +199,11 @@
                 background-image: url('/images/customer/Grid_Graphic_01.svg');
             }
 
+			
+			.altPane {
+				background-color: transparent;
+			}
+			
       		.mainPane {
 			    .item {
 				    background-color:  $field-prosPrimary;

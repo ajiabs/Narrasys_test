@@ -23,7 +23,7 @@
 				'			<option value="Solid">Solid</option>',
 				'			<option value="Border">Border</option>',
 				'			<option value="Side">Side</option>',
-				'			<option value="Bloom">Bloom</option>',
+				'			<option value="Bloom">Translucent</option>',
 				'			<option value="Tilt">Tilt</option>',
 				'		</select>',
 				'	</div>',
