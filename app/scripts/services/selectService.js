@@ -252,13 +252,13 @@
 					_templateSelectVisibility(true);
 					var scenes = [
 						{url: _scenes.centered, name: 'Center 1 (+V\u2022TS\u2022TM)'},
-						{url: _scenes.centeredPro, name: 'Center 2 (+V\u2022TM)'},
+						{url: _scenes.centeredPro, name: 'Center 2 (+V\u2022Anno)'},
 						{url: _scenes['1col'], name: 'Center 3 (V\u2022TS\u2022TM)'},
 						{url: _scenes.cornerV, name: 'Split 1 (V\u2022TS|TM)'},
 						{url: _scenes.mirroredTwoCol, name: 'Split 2 (V\u2022TM|TS)'},
-						{url: _scenes.cornerH, name: 'Split 5 (V\u2022TS/TM)'},
 						{url: _scenes.centerVV, name: 'Split 3 (V|TM)'},
 						{url: _scenes.centerVVMondrian, name: 'Split 4 (V|TM Invert)'},
+						{url: _scenes.cornerH, name: 'Split 5 (V\u2022TS/TM)'},
 						{url: _scenes.pip, name: 'Split 6 (TM|V\u2022TS)'}
 					];
 

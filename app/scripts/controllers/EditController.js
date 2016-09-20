@@ -495,7 +495,7 @@ angular.module('com.inthetelling.story')
 						delete modelSvc.events[eventId];
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 
-						if (eventType === 'Scene') {
+						if (eventType === 'Scene' || eventType === 'Chapter') {
 							timelineSvc.updateSceneTimes(appState.episodeId);
 						}
 						saveAdjustedEvents(event, "delete");
