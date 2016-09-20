@@ -697,7 +697,7 @@ angular.module('com.inthetelling.story')
 					var chapterMarker = eventsWithSameStartTime.filter(function(ev) {return ev.chapter_marker;}).length > 0;
 					var chapter = findEventByType(eventsWithSameStartTime, 'Chapter');
 					var scene = findEventByType(eventsWithSameStartTime, 'Scene');
-					if ((chapter|| chapterMarker) && scene) {
+					if ((chapter || chapterMarker) && scene) {
 						svc.markedEvents = svc.markedEvents.filter(function(e) {
 							return e._id !== scene._id;
 						});
