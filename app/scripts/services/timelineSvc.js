@@ -674,33 +674,33 @@ angular.module('com.inthetelling.story')
 			var getEventsWithStartTime = function(events, startTime) {
 				return events.reduce(function(accm, event) {
 					if (event.start_time === startTime) {
-						accm.push(event)
+						accm.push(event);
 					}
 					return accm;
 				}, []);
 			};
 
 			var findEventByType = function(events, type) {
-				var returnEvent;
+				var returnEvent = {};
 				events.forEach(function(event) {
 					if (event.type === type) {
 						returnEvent = event;
 					}
 				});
-				return returnEvent
+				return returnEvent;
 			};
 
 			//handling marked events that have the same start time.
 			angular.forEach(svc.markedEvents, function(event) {
 				var eventsWithSameStartTime = getEventsWithStartTime(svc.markedEvents, event.start_time);
 				if (eventsWithSameStartTime.length > 1) {
-					var chapterMarker = eventsWithSameStartTime.filter(function(ev) {return ev.chapter_marker}).length > 0;
+					var chapterMarker = eventsWithSameStartTime.filter(function(ev) {return ev.chapter_marker;}).length > 0;
 					var chapter = findEventByType(eventsWithSameStartTime, 'Chapter');
 					var scene = findEventByType(eventsWithSameStartTime, 'Scene');
 					if ((chapter|| chapterMarker) && scene) {
 						svc.markedEvents = svc.markedEvents.filter(function(e) {
-							return e._id !== scene._id
-						})
+							return e._id !== scene._id;
+						});
 					}
 				}
 			});
