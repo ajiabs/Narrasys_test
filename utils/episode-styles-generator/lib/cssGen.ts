@@ -246,6 +246,7 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
         	//aka translucent
         	.highlightBloom.item.isCurrent {
         		background-color: rgba(${highlightColor}, 0.3);
+        		box-shadow: 0 0 8px rgba(${highlightColor}, 0.3);
         	}
         }
         

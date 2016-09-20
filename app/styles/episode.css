@@ -894,7 +894,8 @@
 .default .content.allowHighlights .highlightBorder.item.isCurrent {
   border: 2px solid rgba(204, 204, 204, 0.6); }
 .default .content.allowHighlights .highlightBloom.item.isCurrent {
-  background-color: rgba(204, 204, 204, 0.3); }
+  background-color: rgba(204, 204, 204, 0.3);
+  box-shadow: 0 0 8px rgba(204, 204, 204, 0.3); }
 .default .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -1063,7 +1064,8 @@
 .field-pros .content.allowHighlights .highlightBorder.item.isCurrent {
   border: 2px solid rgba(107, 170, 54, 0.6); }
 .field-pros .content.allowHighlights .highlightBloom.item.isCurrent {
-  background-color: rgba(107, 170, 54, 0.3); }
+  background-color: rgba(107, 170, 54, 0.3);
+  box-shadow: 0 0 8px rgba(107, 170, 54, 0.3); }
 .field-pros .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
@@ -1228,7 +1230,8 @@
   .narrasys .content.allowHighlights .highlightBorder.item.isCurrent {
     border: 2px solid rgba(222, 102, 37, 0.6); }
   .narrasys .content.allowHighlights .highlightBloom.item.isCurrent {
-    background-color: rgba(222, 102, 37, 0.3); }
+    background-color: rgba(222, 102, 37, 0.3);
+    box-shadow: 0 0 8px rgba(222, 102, 37, 0.3); }
   .narrasys .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -1398,7 +1401,8 @@
   .career-playbook .content.allowHighlights .highlightBorder.item.isCurrent {
     border: 2px solid rgba(0, 172, 238, 0.6); }
   .career-playbook .content.allowHighlights .highlightBloom.item.isCurrent {
-    background-color: rgba(0, 172, 238, 0.3); }
+    background-color: rgba(0, 172, 238, 0.3);
+    box-shadow: 0 0 8px rgba(0, 172, 238, 0.3); }
   .career-playbook .centered-pro .banner-pull-quote h1 {
     margin-top: 1em;
     display: flex;
@@ -1571,7 +1575,8 @@
 .george-washington .content.allowHighlights .highlightBorder.item.isCurrent {
   border: 2px solid rgba(200, 177, 139, 0.6); }
 .george-washington .content.allowHighlights .highlightBloom.item.isCurrent {
-  background-color: rgba(200, 177, 139, 0.3); }
+  background-color: rgba(200, 177, 139, 0.3);
+  box-shadow: 0 0 8px rgba(200, 177, 139, 0.3); }
 .george-washington .centered-pro .banner-pull-quote h1 {
   margin-top: 1em;
   display: flex;
