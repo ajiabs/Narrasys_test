@@ -589,7 +589,7 @@ angular.module('com.inthetelling.story')
 					map[event.start_time] = [event];
 				}
 				return map;
-			}, {})
+			}, {});
 		}
 
 		function prepGroupedEvents(map) {
