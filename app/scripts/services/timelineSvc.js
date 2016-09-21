@@ -599,11 +599,14 @@ angular.module('com.inthetelling.story')
 					events: val,
 					stop: false,
 					start_time: key,
-					toolTipText: 'this is the tooltip text',
+					toolTipText: '',
 					layoutChange: false
 				};
-				var foundStop = false, chapters = [], foundScene = false;
+				var foundStop = false, chapters = [], foundScene = false, foundInternalScene = false;
 				angular.forEach(val, function(event) {
+					if (/internal:endingscreen|internal:landingscreen/.test(event._id)) {
+						foundInternalScene = true;
+					}
 					if (event.stop) {
 						foundStop = true;
 					}
@@ -619,6 +622,7 @@ angular.module('com.inthetelling.story')
 
 				if (chapters.length === 0 && !foundScene && foundStop) {
 					obj.stop = true;
+					obj.toolTipText = 'Stop item';
 				}
 
 				if (foundScene && chapters.length === 0) {
@@ -639,8 +643,9 @@ angular.module('com.inthetelling.story')
 						obj.toolTipText += ' (Layout Change)';
 					}
 				}
-
-				displayArr.push(obj);
+				if (!foundInternalScene) {
+					displayArr.push(obj);
+				}
 			});
 
 			return displayArr;
