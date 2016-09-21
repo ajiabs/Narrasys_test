@@ -734,19 +734,17 @@
       position: relative; }
   .professional .item__text--definition, .professional .item__text--transmedia {
     font-size: 1.5vw !important; }
-  .professional .item__text--h2, .professional .item__text--h1 {
-    position: relative;
-    bottom: 0.2em; }
-    .professional .item__text--h2 h1, .professional .item__text--h2 h2, .professional .item__text--h2 h3, .professional .item__text--h1 h1, .professional .item__text--h1 h2, .professional .item__text--h1 h3 {
-      text-align: center; }
-    .professional .item__text--h2 h2, .professional .item__text--h1 h2 {
-      position: relative;
-      font-size: 2vw;
-      bottom: 0.5em; }
-    .professional .item__text--h2 h1, .professional .item__text--h1 h1 {
-      font-size: 2.5vw; }
-    .professional .item__text--h2 h3, .professional .item__text--h1 h3 {
-      font-size: 1.5vw; }
+  .professional .item__text--h2 h1, .professional .item__text--h2 h2, .professional .item__text--h2 h3, .professional .item__text--h1 h1, .professional .item__text--h1 h2, .professional .item__text--h1 h3 {
+    text-align: center;
+    margin: 10px auto; }
+  .professional .item__text--h2 h2, .professional .item__text--h1 h2 {
+    font-size: 2vw; }
+  .professional .item__text--h2 h1, .professional .item__text--h1 h1 {
+    font-size: 2.5vw; }
+  .professional .item__text--h2 h3, .professional .item__text--h1 h3 {
+    font-size: 1.5vw; }
+  .professional .centered .item__text--h2 h1, .professional .centered .item__text--h2 h2, .professional .centered .item__text--h2 h3, .professional .centered .item__text--h1 h1, .professional .centered .item__text--h1 h2, .professional .centered .item__text--h1 h3, .professional .onecol .item__text--h2 h1, .professional .onecol .item__text--h2 h2, .professional .onecol .item__text--h2 h3, .professional .onecol .item__text--h1 h1, .professional .onecol .item__text--h1 h2, .professional .onecol .item__text--h1 h3, .professional .cornerV .item__text--h2 h1, .professional .cornerV .item__text--h2 h2, .professional .cornerV .item__text--h2 h3, .professional .cornerV .item__text--h1 h1, .professional .cornerV .item__text--h1 h2, .professional .cornerV .item__text--h1 h3, .professional .cornerH .item__text--h2 h1, .professional .cornerH .item__text--h2 h2, .professional .cornerH .item__text--h2 h3, .professional .cornerH .item__text--h1 h1, .professional .cornerH .item__text--h1 h2, .professional .cornerH .item__text--h1 h3, .professional .twocol .item__text--h2 h1, .professional .twocol .item__text--h2 h2, .professional .twocol .item__text--h2 h3, .professional .twocol .item__text--h1 h1, .professional .twocol .item__text--h1 h2, .professional .twocol .item__text--h1 h3, .professional .pip .item__text--h2 h1, .professional .pip .item__text--h2 h2, .professional .pip .item__text--h2 h3, .professional .pip .item__text--h1 h1, .professional .pip .item__text--h1 h2, .professional .pip .item__text--h1 h3 {
+    text-align: left; }
   .professional .centered-pro .edit-event {
     top: 1.8em; }
   .professional .centerVV .col {
@@ -802,8 +800,6 @@
   color: #FFF; }
 .default .altPane {
   background-color: rgba(0, 0, 0, 0.05); }
-.default .item__text--h2 h1, .default .item__text--h2 h2, .default .item__text--h2 h3, .default .item__text--h1 h1, .default .item__text--h1 h2, .default .item__text--h1 h3 {
-  text-align: left; }
 .default .endingscreen p {
   margin-top: 1em;
   display: flex;

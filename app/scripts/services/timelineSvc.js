@@ -631,7 +631,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				if (chapters.length > 0) {
-					angular.forEach(chapters, function(chap, $index) { 	
+					angular.forEach(chapters, function(chap, $index) {
 						if ($index === 0) {
 							obj.toolTipText = chap.display_annotation || chap.display_title;
 						} else {

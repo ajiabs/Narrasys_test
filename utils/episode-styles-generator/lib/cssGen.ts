@@ -44,16 +44,7 @@ const isDefault = (nameSpace) => {
 		//TS-1102	
 		.altPane {
 			background-color: rgba(0, 0, 0, 0.05);
-		}
-		
-		//TS-1084 - left align headers
-		.item__text--h2, .item__text--h1 {
-			h1, h2, h3 {
-				text-align: left;
-			}
-		}`
-
-		;
+		}`;
 
 	if (nameSpace === 'default') {
 		return css;
