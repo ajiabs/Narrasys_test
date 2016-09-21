@@ -476,6 +476,7 @@ angular.module('com.inthetelling.story')
 			// console.log("timelineSvc.init", episodeId);
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
+			svc.displayMarkedEvents = [];
 			timeMultiplier = 1;
 			appState.duration = 0;
 			appState.timelineState = 'paused';
@@ -576,7 +577,74 @@ angular.module('com.inthetelling.story')
 			});
 
 			svc.sortTimeline();
+			var groupedEvents = groupByStartTime(svc.markedEvents, 'start_time');
+			svc.displayMarkedEvents = prepGroupedEvents(groupedEvents);
 		};
+
+		function groupByStartTime(array) {
+			return array.reduce(function(map, event) {
+				if (map.hasOwnProperty(event.start_time)) {
+					map[event.start_time].push(event);
+				} else {
+					map[event.start_time] = [event];
+				}
+				return map;
+			}, {})
+		}
+
+		function prepGroupedEvents(map) {
+			var displayArr = [];
+			angular.forEach(map, function(val, key) {
+				var obj = {
+					events: val,
+					stop: false,
+					start_time: key,
+					toolTipText: 'this is the tooltip text',
+					layoutChange: false
+				};
+				var foundStop = false, chapters = [], foundScene = false;
+				angular.forEach(val, function(event) {
+					if (event.stop) {
+						foundStop = true;
+					}
+					if (event.type === 'Scene' ) {
+						foundScene = true;
+					}
+
+					if (event.type === 'Chapter' || event.chapter_marker === true) {
+						chapters.push(event);
+					}
+
+				});
+
+				if (chapters.length === 0 && !foundScene && foundStop) {
+					obj.stop = true;
+				}
+
+				if (foundScene && chapters.length === 0) {
+					obj.layoutChange = true;
+					obj.toolTipText = '(Layout Change)';
+				}
+
+				if (chapters.length > 0) {
+					angular.forEach(chapters, function(chap, $index) {
+						if ($index === 0) {
+							obj.toolTipText = chap.display_annotation || chap.display_title;
+						} else {
+							obj.toolTipText += ' / ' + (chap.display_annotation || chap.display_title);
+						}
+					});
+
+					if (foundScene) {
+						obj.toolTipText += ' (Layout Change)';
+					}
+				}
+
+				displayArr.push(obj);
+			});
+
+			return displayArr;
+		}
 
 		var addMarkedEvent = function (newEvent) {
 			// scan through existing markedEvents; if the new event is already there, replace it; otherwise add it
@@ -669,40 +737,6 @@ angular.module('com.inthetelling.story')
 
 			svc.markedEvents = svc.markedEvents.sort(function (a, b) {
 				return a.start_time - b.start_time;
-			});
-
-			var getEventsWithStartTime = function(events, startTime) {
-				return events.reduce(function(accm, event) {
-					if (event.start_time === startTime) {
-						accm.push(event);
-					}
-					return accm;
-				}, []);
-			};
-
-			var findEventByType = function(events, type) {
-				var returnEvent = {};
-				events.forEach(function(event) {
-					if (event.type === type) {
-						returnEvent = event;
-					}
-				});
-				return returnEvent;
-			};
-
-			//handling marked events that have the same start time.
-			angular.forEach(svc.markedEvents, function(event) {
-				var eventsWithSameStartTime = getEventsWithStartTime(svc.markedEvents, event.start_time);
-				if (eventsWithSameStartTime.length > 1) {
-					var chapterMarker = eventsWithSameStartTime.filter(function(ev) {return ev.chapter_marker;}).length > 0;
-					var chapter = findEventByType(eventsWithSameStartTime, 'Chapter');
-					var scene = findEventByType(eventsWithSameStartTime, 'Scene');
-					if ((chapter || chapterMarker) && scene) {
-						svc.markedEvents = svc.markedEvents.filter(function(e) {
-							return e._id !== scene._id;
-						});
-					}
-				}
 			});
 
 			// for (var i = 0; i < svc.timelineEvents.length; i++) {
