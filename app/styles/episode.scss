@@ -902,8 +902,12 @@
 		@include static-bg
 	}
 
-	.mainPane, .altPane {
+	.mainPane {
 		background-color: transparent;
+	}
+	//alt (transmedia) pane background
+	.altPane {
+		background-color: rgba(0, 0, 0, 0.05)
 	}
 
 	.professional__branding {

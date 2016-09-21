@@ -689,8 +689,10 @@
     background-size: cover;
     height: 100%;
     width: 100%; }
-  .professional .mainPane, .professional .altPane {
+  .professional .mainPane {
     background-color: transparent; }
+  .professional .altPane {
+    background-color: rgba(0, 0, 0, 0.05); }
   .professional .professional__branding {
     display: flex;
     justify-content: space-between;
