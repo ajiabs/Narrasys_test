@@ -31,8 +31,12 @@ angular.module('com.inthetelling.story')
 					});
 
 					$scope.onContainerClick = onContainerClick;
-					function onContainerClick (thing) {
-						$scope.lastClickedContainer = thing;
+					function onContainerClick ($container) {
+
+						if ($scope.lastClickedContainer != null && $scope.lastClickedContainer.depth === 3) {
+							$scope.lastClickedContainer.container.showChildren = false;
+						}
+						$scope.lastClickedContainer = $container;
 					}
 
 			}]

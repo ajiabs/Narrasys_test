@@ -52,8 +52,7 @@ angular.module('com.inthetelling.story')
 
 					scope.containerTypes = ["customer", "project", "module", "episode"];
 					scope.toggleChildren = function () {
-						console.log('scope.container', scope.container);
-						scope.onContainerClick({$lastClicked: scope.container});
+						scope.onContainerClick({$container: {container: scope.container, depth: scope.depth}});
 						if (scope.container.children || scope.container.episodes.length) {
 							// have already loaded kids
 							scope.container.showChildren = !scope.container.showChildren;

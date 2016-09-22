@@ -49,7 +49,7 @@
 		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'"
 			 itt-container="containers[child._id]"
 			 depth="depth+1"
-			 on-container-click="rootContext(container)"
+			 on-container-click="rootContext($container)"
 			 root-context="rootContext">
 		</div>
 		<div ng-if="depth == 3" class="container">

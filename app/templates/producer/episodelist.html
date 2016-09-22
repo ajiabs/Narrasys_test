@@ -26,7 +26,7 @@
 			<div ng-repeat="child in root.children | orderBy:'name.en'"
 				 itt-container="containers[child._id]"
 				 depth="0"
-				 on-container-click="onContainerClick(container)"
+				 on-container-click="onContainerClick($container)"
 				 root-context="onContainerClick">
 			</div>
 			<div ng-if="!(userHasRole('admin') || userHasRole('customer admin')) || (!loading && (failedLogin || root.children.length == 0))">
