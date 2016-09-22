@@ -692,7 +692,7 @@
   .professional .mainPane {
     background-color: transparent; }
   .professional .altPane {
-    background-color: #f1f1f1; }
+    background-color: rgba(0, 0, 0, 0.05); }
   .professional .professional__branding {
     display: flex;
     justify-content: space-between;
