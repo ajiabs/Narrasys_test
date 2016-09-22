@@ -46,7 +46,12 @@
 		</span>
 	</div>
 	<div ng-if="container.showChildren">
-		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="depth+1"></div>
+		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'"
+			 itt-container="containers[child._id]"
+			 depth="depth+1"
+			 on-container-click="rootContext($container)"
+			 root-context="rootContext">
+		</div>
 		<div ng-if="depth == 3" class="container">
 			<!-- begin episode -->
 			<a class="button" ng-if="canAccess" ng-click="container.showGuestUrl=!container.showGuestUrl">
