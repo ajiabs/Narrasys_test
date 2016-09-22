@@ -692,7 +692,7 @@
   .professional .mainPane {
     background-color: transparent; }
   .professional .altPane {
-    background-color: rgba(0, 0, 0, 0.05); }
+    background-color: #f1f1f1; }
   .professional .professional__branding {
     display: flex;
     justify-content: space-between;
@@ -749,6 +749,8 @@
     text-align: left; }
   .professional .centered-pro .edit-event {
     top: 1.8em; }
+  .professional .centerVV .altPane {
+    background-color: transparent; }
   .professional .centerVV .col {
     position: relative; }
   .professional .centerVV .item.centerVV-h2 {

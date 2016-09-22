@@ -907,7 +907,7 @@
 	}
 	//alt (transmedia) pane background
 	.altPane {
-		background-color: rgba(0, 0, 0, 0.05)
+		background-color: #f1f1f1;
 	}
 
 	.professional__branding {
@@ -1022,6 +1022,9 @@
 	}
 
 	.centerVV {
+		.altPane {
+			background-color: transparent;
+		}
 		.col {
 			position: relative;
 		}
