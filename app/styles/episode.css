@@ -974,6 +974,10 @@
   position: absolute;
   font-size: 2.5vw;
   letter-spacing: normal; }
+.field-pros .landingscreen .introText {
+  padding-bottom: 2em; }
+.field-pros .landingscreen #episode--description {
+  display: none; }
 .field-pros .endingscreen p {
   margin-top: 1em;
   display: flex;
@@ -1152,6 +1156,10 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
+  .narrasys .landingscreen .introText {
+    padding-bottom: 2em; }
+  .narrasys .landingscreen #episode--description {
+    display: none; }
   .narrasys .endingscreen p {
     margin-top: 1em;
     display: flex;
@@ -1311,6 +1319,10 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
+  .career-playbook .landingscreen .introText {
+    padding-bottom: 2em; }
+  .career-playbook .landingscreen #episode--description {
+    display: none; }
   .career-playbook .endingscreen p {
     margin-top: 1em;
     display: flex;
@@ -1485,6 +1497,10 @@
   position: absolute;
   font-size: 2.5vw;
   letter-spacing: normal; }
+.george-washington .landingscreen .introText {
+  padding-bottom: 2em; }
+.george-washington .landingscreen #episode--description {
+  display: none; }
 .george-washington .endingscreen p {
   margin-top: 1em;
   display: flex;

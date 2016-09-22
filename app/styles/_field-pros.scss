@@ -29,6 +29,14 @@
 			h1 {
 				@include banner-pq('Roboto Condensed', $field-prosAccent, 2.5vw);
 			}
+						
+			.introText {
+				padding-bottom: 2em;
+			}
+			
+			#episode--description {
+				display: none;
+			}
 		}
         
 		//custom altPane BG, landingscreen

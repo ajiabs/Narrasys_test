@@ -67,6 +67,14 @@ const handleLandingScreen = (nameSpace, headerFont) => {
 			h1 {
 				@include banner-pq('${pqFont(headerFont)}', $${nameSpace}Accent, 2.5vw);
 			}
+						
+			.introText {
+				padding-bottom: 2em;
+			}
+			
+			#episode--description {
+				display: none;
+			}
 		}`;
 	const css =
 		`.landingscreen {

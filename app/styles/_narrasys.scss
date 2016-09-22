@@ -26,6 +26,14 @@
 			h1 {
 				@include banner-pq('Gotham Medium', $narrasysAccent, 2.5vw);
 			}
+						
+			.introText {
+				padding-bottom: 2em;
+			}
+			
+			#episode--description {
+				display: none;
+			}
 		}
         
 		//custom altPane BG, landingscreen
