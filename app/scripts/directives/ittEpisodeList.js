@@ -5,8 +5,8 @@ angular.module('com.inthetelling.story')
 		return {
 			restrict: 'A',
 			replace: true,
-			controller: ['$scope', '$location', '$timeout', 'appState', 'authSvc', 'dataSvc', 'modelSvc',
-				function ($scope, $location, $timeout, appState, authSvc, dataSvc, modelSvc) {
+			controller: ['$scope', '$location', '$timeout', 'appState', 'authSvc', 'dataSvc', 'modelSvc', 'ittUtils',
+				function ($scope, $location, $timeout, appState, authSvc, dataSvc, modelSvc, ittUtils) {
 					$scope.logout = function () {
 						authSvc.logout();
 					};
@@ -33,7 +33,7 @@ angular.module('com.inthetelling.story')
 					$scope.onContainerClick = onContainerClick;
 					function onContainerClick ($container) {
 
-						if ($scope.lastClickedContainer != null && $scope.lastClickedContainer.depth === 3) {
+						if (ittUtils.existy($scope.lastClickedContainer) && $scope.lastClickedContainer.depth === 3) {
 							$scope.lastClickedContainer.container.showChildren = false;
 						}
 						$scope.lastClickedContainer = $container;
