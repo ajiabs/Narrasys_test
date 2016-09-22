@@ -21,8 +21,6 @@
 			</div>
 			-->
 
-			<h3>Last clicked container {{lastClickedContainer.name.en}}</h3>
-
 			<div ng-repeat="child in root.children | orderBy:'name.en'"
 				 itt-container="containers[child._id]"
 				 depth="0"
