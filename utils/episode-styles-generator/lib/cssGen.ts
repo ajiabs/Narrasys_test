@@ -68,7 +68,7 @@ const handleLandingScreen = (nameSpace, headerFont) => {
 				@include banner-pq('${pqFont(headerFont)}', $${nameSpace}Accent, 2.5vw);
 			}
 						
-			.introText {
+			.introtext {
 				padding-bottom: 2em;
 			}
 			
