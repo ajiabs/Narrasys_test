@@ -20,7 +20,15 @@
 				</div>
 			</div>
 			-->
-			<div ng-repeat="child in root.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="0"></div>
+
+			<h3>Last clicked container {{lastClickedContainer.name.en}}</h3>
+
+			<div ng-repeat="child in root.children | orderBy:'name.en'"
+				 itt-container="containers[child._id]"
+				 depth="0"
+				 on-container-click="onContainerClick(container)"
+				 root-context="onContainerClick">
+			</div>
 			<div ng-if="!(userHasRole('admin') || userHasRole('customer admin')) || (!loading && (failedLogin || root.children.length == 0))">
 				Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.
 			</div>

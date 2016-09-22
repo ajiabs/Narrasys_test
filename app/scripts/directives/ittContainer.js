@@ -7,7 +7,9 @@ angular.module('com.inthetelling.story')
 			replace: false,
 			scope: {
 				container: '=ittContainer',
-				depth: "=depth"
+				depth: "=depth",
+				onContainerClick: '&',
+				rootContext: '='
 			},
 			templateUrl: "templates/container.html",
 			controller:['$scope', '$location', 'modelSvc', 'authSvc', function($scope, $location, modelSvc, authSvc) {
@@ -50,6 +52,8 @@ angular.module('com.inthetelling.story')
 
 					scope.containerTypes = ["customer", "project", "module", "episode"];
 					scope.toggleChildren = function () {
+						console.log('scope.container', scope.container);
+						scope.onContainerClick({$lastClicked: scope.container});
 						if (scope.container.children || scope.container.episodes.length) {
 							// have already loaded kids
 							scope.container.showChildren = !scope.container.showChildren;
