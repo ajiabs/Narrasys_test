@@ -17,7 +17,7 @@
 				'<div>',
 				'	<header class="nav__header">',
 				'		<div class="nav__item">',
-				'			<img src="images/customer/Narrasys_Logo.png"/>',
+				'			<img src="images/Narrasys_Banner.svg"/>',
 				'		</div>',
 				'		<div class="nav__item">',
 				'			<div class="nav__controls">',

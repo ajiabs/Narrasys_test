@@ -27,6 +27,16 @@
 	padding-bottom: 5%;
 }
 
+@media screen and (max-width: 600px) {
+	.nav__header {
+		flex-direction: column;
+	}
+}
+
+.nav__item img {
+	width: 100%;
+}
+
 .nav__controls {
 	display: flex;
 	flex-direction: row;
