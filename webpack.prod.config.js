@@ -23,7 +23,7 @@ config.output = {
 config.module.loaders = config.module.loaders.concat([
 	{
 		test: /\.(scss|css)$/,
-		loader: ExtractTextPlugin.extract('style', '!css!sass')
+		loader: ExtractTextPlugin.extract({fallbackLoader: 'style-loader', loader: ['css-loader', 'sass-loader']})
 	}
 ]);
 
