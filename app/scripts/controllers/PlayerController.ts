@@ -1,9 +1,10 @@
 'use strict';
 
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
-PlayerController.$inject = ['config', '$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'errorSvc', 'authSvc', 'youTubePlayerManager'];
-export default function PlayerController(config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager) {
-	// console.log("playerController", $scope);
+
+angular.module('com.inthetelling.story')
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager, selectService) {
+		// console.log("playerController", $scope);
 
 		// $scope.tmp = function () {
 		// 	dataSvc.createTemplate({
@@ -83,8 +84,8 @@ export default function PlayerController(config, $scope, $location, $rootScope, 
 
 		if (appState.isFramed) {
 			/*
-				workaround for when instructure canvas fails to size our iframe correctly
-				This will be harmless in other platforms:
+			 workaround for when instructure canvas fails to size our iframe correctly
+			 This will be harmless in other platforms:
 			 */
 			if (Math.max(document.documentElement.clientHeight, window.innerHeight || 0) < 151) {
 				window.parent.postMessage(JSON.stringify({
@@ -129,6 +130,9 @@ export default function PlayerController(config, $scope, $location, $rootScope, 
 			getEpisodeWatcher();
 			// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
+
+			//need to set narrative on scope for disable_new_window feature for narratives
+			//this used to happen in ittNarrativeTimelineJs, but has been deprecated
 			modelSvc.setLanguageStrings();
 			wileyNag(); // HACK
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
@@ -150,10 +154,12 @@ export default function PlayerController(config, $scope, $location, $rootScope, 
 					});
 				} else {
 					// Episode has no master asset
+					console.log('episode has no master asset!');
 					$scope.loading = false;
 					// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
 					if (appState.product === 'producer') {
 						appState.editEpisode = modelSvc.episodes[appState.episodeId];
+						appState.editEpisode.templateOpts = selectService.getTemplates('episode');
 					}
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
@@ -382,7 +388,7 @@ export default function PlayerController(config, $scope, $location, $rootScope, 
 		var autoscrollTimer = false;
 
 		var startScrollWatcher = function () {
-			// console.log("startScrollWatcher");
+			//console.log("startScrollWatcher");
 			if (autoscrollTimer) {
 				return;
 			}
@@ -398,7 +404,7 @@ export default function PlayerController(config, $scope, $location, $rootScope, 
 		};
 
 		var stopScrollWatcher = function () {
-			// console.log("stopScrollWatcher");
+			console.log("stopScrollWatcher");
 			autoscrollableNode.unbind("scroll");
 			$interval.cancel(autoscrollTimer);
 			autoscrollTimer = false;
@@ -416,7 +422,7 @@ export default function PlayerController(config, $scope, $location, $rootScope, 
 		// TODO this is a relatively expensive watch.  Could greatly increase its $interval if we
 		// support directly triggering it from timeline on seek()...
 		var handleAutoscroll = function () {
-			// console.log("handleAutoscroll", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked);
+			//console.log("handleAutoscroll", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked);
 			// if autoscroll is true and autoscrollBlocked is false,
 			// find the topmost visible current item and scroll to put it in the viewport.
 			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
@@ -433,7 +439,7 @@ export default function PlayerController(config, $scope, $location, $rootScope, 
 			// HACK. Need to limit this to search within a pane
 			angular.forEach($('.isCurrent:visible'), function (item) {
 				var t = item.getBoundingClientRect()
-					.top + curScroll;
+						.top + curScroll;
 				if (t < top) {
 					top = t;
 				}
@@ -480,4 +486,4 @@ export default function PlayerController(config, $scope, $location, $rootScope, 
 			firstplayWatcher();
 			escWatcher();
 		});
-}
+	});

@@ -6,20 +6,7 @@
 		<input type="text" ng-model="item.title.en" autofocus>
 	</div>
 </div>
-<div class="field">
-	<div class="label">URL
-	</div>
-	<div class="input">
-		<form name="urlForm">
-			<input type="text"
-				   itt-valid-item-url
-				   item="item"
-				   name="itemUrl"
-				   ng-model-options="{ updateOn: 'blur' }"
-				   ng-model="item.url"/>
-		</form>
-	</div>
-</div>
+<itt-url-field data="item"></itt-url-field>
 <div class="field">
 	<div class="label">Description
 	</div>

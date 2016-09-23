@@ -69,6 +69,7 @@ export function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		showTimelineEditor: showTimelineEditor,
 		editorAction: editorAction,
 		deleteTimeline: deleteTimeline,
+		exportToSpreadsheet: dataSvc.getNarrativeExportAsSpreadsheet,
 		isEditing: false,
 		canAccess: false,
 		isEditingTimeline: false,
@@ -117,13 +118,12 @@ export function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		$scope.narrative = $scope.narrativeData;
 		$scope.customers = $scope.customerData;
 		$scope.user = appState.user;
-		if (authSvc.userHasRole('admin')) {
+		if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
 			$scope.canAccess = true;
 		}
 		$scope.loading = false;
 		_setTotalNarrativeDuration($scope.narrative.timelines);
 	}
-
 
 	function toggleEditing() {
 		$scope.isEditing = !$scope.isEditing;
@@ -260,7 +260,6 @@ export function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		_updateSortOrder(tl.index, $scope.narrative.timelines);
 		dataSvc.createChildEpisode({
 			parent_id: tl.parent_episode._id,
-			title: tl.name
 		})
 			.then(storeChildEpisode)
 			.then(handleEpisodeSegment)

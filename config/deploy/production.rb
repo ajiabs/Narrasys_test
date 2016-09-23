@@ -1,5 +1,6 @@
 set :stage, :production
 set :rails_env, "production"
+set :new_relic_application_id, "4211337"
 
 # Simple Role Syntax
 # ==================
@@ -44,3 +45,4 @@ server 'deploy@vpc-web-03.inthetelling.com', roles: [:app]
 # setting per server overrides global ssh_options
 
 # fetch(:default_env).merge!(rails_env: :production)
+before "deploy:publishing", "deploy:update_new_relic_application_id"

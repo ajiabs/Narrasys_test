@@ -1,10 +1,13 @@
 'use strict';
-SceneController.$inject = ['$scope', '$filter'];
 
-export default function SceneController($scope, $filter) {
-	$scope.precalculateSceneValues = function () {
-		// console.log("precalcSceneValues");
+angular.module('com.inthetelling.story')
+	.controller('SceneController', function ($scope, $filter, ittUtils) {
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
+		$scope.setBgImgUrl = setBgImgUrl;
+		$scope.precalculateSceneValues = precalculateSceneValues;
+
+		function precalculateSceneValues() {
+			// console.log("precalcSceneValues");
 
 			// clear out old calculations in case we're re-precalculating
 			delete $scope.mainContentHasLeftSidebar;
@@ -23,7 +26,6 @@ export default function SceneController($scope, $filter) {
 			$scope.mainBgItems = $filter("itemLayout")($scope.scene.items, "mainBg");
 			$scope.altFgItems = $filter("itemLayout")($scope.scene.items, "altFg");
 			$scope.altBgItems = $filter("itemLayout")($scope.scene.items, "altBg");
-
 			// Content is a little trickier:
 			// * splitRequired:
 			//   main = transcript + optional   / alt=required - transcript
@@ -86,7 +88,7 @@ export default function SceneController($scope, $filter) {
 					i = $scope.altContentItems.length; // no need to keep checking the rest
 				}
 			}
-		};
+		}
 
 		function byPullquoteOrH2(item) {
 			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
@@ -95,4 +97,24 @@ export default function SceneController($scope, $filter) {
 			return (isPullQuote || isH2 || isPullQuoteAttrib) ? item : false;
 		}
 
-	}
+		function setBgImgUrl(items, col) {
+			var currItems = $filter('isCurrent')(items);
+			var mainColBgOrFg = $filter(col)(currItems);
+			var opacity = 1;
+			var bgSize;
+			if (mainColBgOrFg.length > 0 && ittUtils.existy(mainColBgOrFg[0].asset)) {
+				var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
+				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
+					opacity = 0.25;
+				}
+				var coverOrContain = mainColBgOrFg[0].styleCss.match(/cover|contain/);
+
+				if (coverOrContain) {
+					bgSize = coverOrContain[0];
+				}
+
+				return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity  };
+			}
+			return '';
+		}
+	});

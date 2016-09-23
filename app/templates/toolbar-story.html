@@ -15,7 +15,8 @@
 		<img ng-src="images/customer/Narrasys_Logo.png"
 			 id="toolbar-logo-big"
 			 ng-if="episode.templateUrl === 'templates/episode/narrasys-pro.html' && appState.windowWidth > 500">
-
+		<!--Current Scene: {{appState.currSceneName}} <br>-->
+		<!--Layouts: {{appState.sceneLayouts}}-->
 		<img ng-src="images/customer/Narrasys-Tree.png"
 			 id="toolbar-logo-small"
 			 ng-if="episode.templateUrl === 'templates/episode/narrasys-pro.html' && appState.windowWidth <= 500"/>
@@ -55,7 +56,7 @@
 
 <div ng-cloak ng-show="show.navPanel" class="navPanel topDrawer" ng-class="episode.styleCss">
 	<div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
-	<!-- <h2 ng-bind-html="episode.display_title"></h2> -->
+	 <h2 ng-bind-html="episode.display_title" class="fakeLink" ng-click="seek(0)"></h2>
 	<div class="scene" x-ng-if="chapter.display_annotation || chapter.display_title" x-ng-repeat="chapter in episode.chapters" x-ng-class="{currentScene: chapter.isCurrent}" x-ng-click="seek(chapter.start_time)">
 		<span class="displayTime">{{chapter.displayStartTime}}</span>
 		<p>

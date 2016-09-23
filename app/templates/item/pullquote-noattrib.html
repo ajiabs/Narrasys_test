@@ -1,7 +1,10 @@
+<!--DEPRECATED IN PRODUCER V1-->
+<!--DUPLICATE OF PULLQUTE TEMPLATE-->
 <a class="edit-event" ng-click="editItem()">
 	<span>Edit item</span>
 </a>
 <div class="itemTemplate headerItem">
 	<div class="category"></div>
-	<div class="pullquote" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
+	<div class="pullquote item__text item__text--pullquote" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
+	<div class="pullquoteSpeaker" ng-if="item.display_annotator"> — <span ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></span></div>
 </div>

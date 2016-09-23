@@ -47,6 +47,31 @@ var mockEpisodeEvents7 = [
 },
 {
 "_id": "5760289a5c92ebf66e000038",
+"_type": "Chapter",
+"type": "Chapter",
+"start_time": 5,
+"end_time": 971.9,
+"episode_id": "576027925c92eb8b07000017",
+"templateUrl": "",
+"cosmetic": false,
+"title": {
+"en": "Link"
+},
+"url": "https://en.wikipedia.org",
+"noEmbed": false,
+"description": {
+},
+"link_image_id": null,
+"avatar_id": "56f9b8b741f6df37610079cd",
+"style_id": [],
+"layout_id": [
+"52e15b43c9b715cfbb000025"
+],
+"template_id": "52e15b43c9b715cfbb000022",
+"user_id": "565f578227f858b7e20000e4"
+},
+{
+"_id": "5760289a5c92ebf66e000038",
 "_type": "Link",
 "type": "Link",
 "start_time": 5,
@@ -100,7 +125,7 @@ var mockEpisodeEvents7 = [
 "_id": "57604d775c92eb63e70000c3",
 "_type": "Annotation",
 "type": "Annotation",
-"start_time": 92.82,
+"start_time": 5,
 "end_time": 971.9,
 "episode_id": "576027925c92eb8b07000017",
 "templateUrl": "templates/item/pullquote-noattrib.html",
@@ -147,6 +172,34 @@ var mockEpisodeEvents7 = [
 "template_id": "52e15b42c9b715cfbb00001b",
 "user_id": "565f578227f858b7e20000e4",
 "chapter_marker": false
+},
+{
+"_id": "576028725c92eb4255000034",
+"_type": "Annotation",
+"type": "Annotation",
+"start_time": 5,
+"end_time": 971.9,
+"episode_id": "576027925c92eb8b07000017",
+"templateUrl": "templates/item/text-h2.html",
+"cosmetic": false,
+"title": {
+"en": "H2 Anno"
+},
+"noEmbed": false,
+"annotator": {
+},
+"annotation": {
+"en": "H2 Anno"
+},
+"annotation_image_id": null,
+"avatar_id": "56f9b8b741f6df37610079cd",
+"style_id": [],
+"layout_id": [
+"52e15b43c9b715cfbb000025"
+],
+"template_id": "52e15b42c9b715cfbb00001b",
+"user_id": "565f578227f858b7e20000e4",
+"chapter_marker": true
 },
 {
 "_id": "576028875c92ebefe0000036",

@@ -1,8 +1,9 @@
 <div class="">
-
+	<h2>Narratives</h2>
 	<div class="ancillaryNav">
-		<a class="button" ng-if="narrativeList.user._id" href="/#/user">Home</a>
-		<a class="button" ng-if="narrativeList.user._id" ng-click="narrativeList.logout()">Sign out</a>
+		<a class="button" href="/#/projects">Projects</a>
+		<a class="button" ng-if="narrativeList.user._id" href="/#/account">Account</a>
+		<a class="button" ng-if="narrativeList.user._id" ng-click="narrativeList.logout()">Log out</a>
 	</div>
 
 	<div ng-if="narrativeList.canAccess">

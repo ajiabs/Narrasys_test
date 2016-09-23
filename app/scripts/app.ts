@@ -1,37 +1,23 @@
+'use strict';
 
-import './plugin/newrelic';
-import '../config';
 
-import 'angular';
-import 'angular-route';
-import 'angular-animate';
-import 'angular-sanitize';
-import 'angular-ui-tree';
-import './filters/filters';
-import './controllers/Controllers.module';
-import './directives/directives.module';
-import './services/services.module';
-import './templates';
-import './app.module.third-party.ts';
-import './app.module.configs';
-import '../styles/styles';
 
 // Declare the top level application module and its dependencies
-let ittApp = angular.module('iTT', [
-	'ngRoute',
-	'ngAnimate',
-	'ngSanitize',
-	'iTT.3rdPartyLibs',
-	'iTT.configs',
-	'iTT.filters',
-	'iTT.templates',
-	'iTT.controllers',
-	'iTT.directives',
-	'iTT.services'
-])
+/**
+ * @ngdoc interface
+ * @name iTT
+ * @description
+ * The default namespace / angular module which houses the rest of the application code.
+ * Officially titled as 'com.inthetelling.story' but iTT seems a little less verbose
+ * @requires ngRoute
+ * @requires ngAnimate
+ * @requires ngSanitize
+ * @requires textAngular
+ */
+angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular', 'ui.tree'])
 
 // Configure routing
-.config(['$routeProvider', function ($routeProvider) {
+.config(function ($routeProvider) {
 	$routeProvider
 		.when('/', {
 			title: "Telling STORY",
@@ -49,8 +35,10 @@ let ittApp = angular.module('iTT', [
 			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div></div>',
 			controller: 'NarrativesCtrl',
 			resolve: {
-				narrativesResolve: ['$route', '$q', 'ittUtils', 'authSvc', 'dataSvc', 'modelSvc', function($route, $q, ittUtils, authSvc, dataSvc, modelSvc) {
-					var cachedNars = modelSvc.narratives;
+				narrativesResolve: function($route, $q,  ittUtils, authSvc, dataSvc, modelSvc) {
+
+					//needs to be an array
+					var cachedNars = modelSvc.getNarrativesAsArray();
 					var cachedCustomers;
 					//if use visits /story/:id prior to visiting this route, they will have a single
 					//narrative in modelSvc. We consider the cache 'empty' if the only narrative
@@ -61,7 +49,7 @@ let ittApp = angular.module('iTT', [
 
 					if (isCached) {
 						//since this is going to be displayed in a dropdown, it needs to be an array of objects.
-						cachedCustomers = Object.keys(modelSvc.customers).map(function(c) { return modelSvc.customers[c]; });
+						cachedCustomers = modelSvc.getCustomersAsArray();
 						return $q(function(resolve) {
 							return resolve({n: cachedNars, c: cachedCustomers});
 						});
@@ -78,7 +66,7 @@ let ittApp = angular.module('iTT', [
 							});
 						});
 					});
-				}]
+				}
 			}
 		})
 		.when('/story/:narrativePath', {
@@ -97,7 +85,7 @@ let ittApp = angular.module('iTT', [
 						(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
 
 					if (doPullFromCache) {
-						cachedCustomers = Object.keys(modelSvc.customers).map(function(c) { return modelSvc.customers[c]; });
+						cachedCustomers = modelSvc.getCustomersAsArray();
 						return $q(function(resolve) {return resolve({n:cachedNarr, c: cachedCustomers });});
 					}
 					return dataSvc.getNarrative(pathOrId).then(function(narrativeData) {
@@ -105,7 +93,7 @@ let ittApp = angular.module('iTT', [
 							return {n: narrativeData, c: customers};
 						});
 					});
-				}]
+				}
 			}
 		})
 		.when('/story/:narrativePath/:timelinePath', {
@@ -117,8 +105,8 @@ let ittApp = angular.module('iTT', [
 				}]
 			}
 		})
-		.when('/episodes', {
-			title: "Available episodes",
+		.when('/projects', {
+			title: "Available projects",
 			templateUrl: 'templates/producer/episodelist.html'
 		})
 		.when('/episode/:epId', {
@@ -179,7 +167,7 @@ let ittApp = angular.module('iTT', [
 		.when('/assets/:containerId', {
 			title: "Container Assets test",
 			controller: 'ContainerAssetsTestController',
-			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="#episodes">Episodes</a><div sxs-container-assets="containerId"></div></div></div>'
+			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="/#/projects">Projects</a><div sxs-container-assets="containerId" mime-key="assetLib"></div></div></div>'
 		})
 		.when('/event/:eventId', {
 			title: "Event test",
@@ -193,7 +181,7 @@ let ittApp = angular.module('iTT', [
 		});
 
 	//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
-}])
+})
 
 .run(['$rootScope', 'errorSvc', function ($rootScope, errorSvc) {
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {

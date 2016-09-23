@@ -1,11 +1,17 @@
 /**
  * Created by githop on 6/30/16.
  */
-export default function ittColorSelect() {
-	return {
-		restrict: 'EA',
-		scope: true,
-		template: [
+
+(function() {
+	'use strict';
+
+	angular.module('com.inthetelling.story')
+		.directive('ittColorSelect', ittColorSelect);
+
+	function ittColorSelect() {
+	    return {
+	        restrict: 'EA',
+			template: [
 			'<div class="field">',
 			'	<div class="label">Color</div>',
 			'	<div class="input">',
@@ -18,7 +24,9 @@ export default function ittColorSelect() {
 			'		</select>',
 			'	</div>',
 			'</div>'
-		].join(' ')
-	};
-}
+			].join(' ')
+	    };
+	}
 
+
+})();

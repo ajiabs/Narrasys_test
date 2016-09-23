@@ -40,7 +40,7 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 			var _errorText;
 			if (scope.errorText === undefined) {
-				_errorText = 'Whoops!, you may want to try that again!';
+				_errorText = 'Whoops! You may want to try that again!';
 			} else {
 				_errorText = scope.errorText;
 			}
@@ -89,6 +89,7 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 							}
 
 						}
+						_errorText = f.type + ' uploads are not allowed here.';
 					});
 				});
 

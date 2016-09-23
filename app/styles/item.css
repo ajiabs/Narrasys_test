@@ -5,7 +5,8 @@
 //===========================*/
 
 .content .item:first-child {
-	padding-top: 1.5em;
+	padding-top: 0.75em;
+	padding-bottom: 0.75em;
 }
 
 .searchMode .content .item:first-child {
@@ -510,9 +511,10 @@ Inline images (TODO show these only when image is larger than available space) *
 	font-size: 0.8em
 }
 
-.item .pullquoteSpeaker:before {
-	content: " — ";
-}
+/*now placing emdash in HTML*/
+/*.item .pullquoteSpeaker:before {*/
+	/*content: " — ";*/
+/*}*/
 
 
 /* - - - - - - - - - - - - - -  */

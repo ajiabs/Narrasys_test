@@ -141,15 +141,14 @@
 	/*position: absolute;*/
 }
 
-
 .narrative__modal {
 	background-color: #fff;
 	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
 	padding: 10px;
 }
 
-.invalid__field {
-	color: red;
+.narrative__modal input[type="checkbox"] {
+	width: auto;
 }
 
 .timeline--hidden {

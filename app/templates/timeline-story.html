@@ -40,9 +40,8 @@
 					<div class="handle" ng-show="isSeeking" ng-style="{left: markerPercent(willSeekTo)+'%'}">
 						<div class="tip" ng-show="seekHandleVisible">{{willSeekTo | asTime}}</div>
 					</div>
-					<div class="tooltip" ng-if="event.showTooltip" ng-repeat="event in timeline.markedEvents" ng-style="{left: markerPercent(event.start_time)+'%'}">
-						<span ng-if="!event.stop" class="content" ng-bind-html="event.display_annotation || event.display_title"></span>
-						<span ng-if="event.stop" class="content">Stop item</span>
+					<div class="tooltip" ng-if="eventGroup.showTooltip" ng-repeat="eventGroup in timeline.displayMarkedEvents" ng-style="{left: markerPercent(eventGroup.start_time)+'%'}">
+						<span class="content">{{eventGroup.toolTipText}}</span>
 					</div>
 
 					<!-- draggable handles for start/end time editing. TODO make draggable, move them somewhere
@@ -65,13 +64,12 @@
 					<div class="progressbarContainer " ng-style="{width: zoomLevel+'00%'}">
 						<!-- scene markers -->
 						<div class="marker"
-							 ng-mouseover="showTooltip(event);"
-							 ng-mouseout="hideTooltip(event)"
-							 ng-repeat="event in timeline.markedEvents"
-							 ng-style="{left: markerPercent(event.start_time)+'%'}"
-							 ng-if="event.stop || event.display_title || appState.product == 'producer'"
-							 ng-class="{stop: (event.type != 'Scene' && event.type != 'Chapter' && event.chapter_marker === false), mini: (event.type == 'Scene' && !event.display_title)}">
-
+							 ng-mouseover="showTooltip(eventGroup)"
+							 ng-mouseout="hideTooltip(eventGroup)"
+							 ng-repeat="eventGroup in timeline.displayMarkedEvents"
+							 ng-style="{left: markerPercent(eventGroup.start_time)+'%'}"
+							 ng-if="eventGroup.stop || event.display_title || appState.product == 'producer'"
+							 ng-class="{stop: eventGroup.stop, mini: eventGroup.layoutChange}">
 						</div>
 
 						<!-- highlight item being edited -->

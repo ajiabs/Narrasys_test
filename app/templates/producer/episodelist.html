@@ -1,10 +1,12 @@
 <div class="standaloneAncillaryPage">
-	<div itt-episode-list>
 
+	<div itt-episode-list>
+		<h2>Projects</h2>
 		<!-- TODO proper i18n -->
 		<div ng-if="userHasRole('admin') || userHasRole('customer admin')">
 			<div class="ancillaryNav">
-				<a class="button" href="/#/">Home</a>
+				<a class="button" href="/#/stories">Narratives</a>
+				<a class="button" href="/#/account">Account</a>
 				<a class="button" ng-click="logout()">Log out</a>
 			</div>
 			<itt-loading ng-if="loading"></itt-loading>
@@ -18,11 +20,12 @@
 				</div>
 			</div>
 			-->
-			<div ng-repeat="child in root.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="0"></div>
-			<div class="container">
-				<div class="controls">
-					<button disabled>TODO add customer</button>
-				</div>
+
+			<div ng-repeat="child in root.children | orderBy:'name.en'"
+				 itt-container="containers[child._id]"
+				 depth="0"
+				 on-container-click="onContainerClick($container)"
+				 root-context="onContainerClick">
 			</div>
 			<div ng-if="!(userHasRole('admin') || userHasRole('customer admin')) || (!loading && (failedLogin || root.children.length == 0))">
 				Looks like you aren't logged in as an admin -- <a ng-click="logout();">try again</a>.

@@ -12,7 +12,6 @@
 	color: #FFF;
 }
 
-
 /* IE9-specific hack: */
 
 @media all and (min-width: 0\0) and (min-resolution: .001dpcm) {
@@ -862,64 +861,76 @@
 	bottom: 20px
 }
 
-/*Narrasys pro*/
-@font-face {
-	font-family: 'Gotham Thin';
-	src: url('/images/font/GothamHTF-Thin.otf');
+@mixin static-bg {
+	position: absolute;
+	top: 0;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 100%;
+	width: 100%;
 }
 
-@font-face {
-	font-family: 'Gotham Medium';
-	src: url('/images/font/GothamHTF-Medium.otf');
-}
-
-@font-face {
-	font-family: 'Gotham Light Italic';
-	src: url('/images/font/GothamHTF-LightItalic.otf');
-}
-
-$narrasysOrange: #DE6625;
-$mondrianBorder: #4D4D4D;
-$h2pullquote: #5B5B5B;
-
-@mixin banner-pull-quote {
+/*base template class */
+//use 3.0vmax
+@mixin banner-pq($fontFam, $bgColor, $fontSize, $letterSpacing: normal) {
 	margin-top: 1em;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-family: 'Gotham Thin';
+	font-family: $fontFam;
 	color: white;
-	background-color: $narrasysOrange;
+	background-color: $bgColor;
 	width: 100%;
 	text-align: center;
 	padding: 10px 0;
 	min-height: 80px;
 	max-height: 80px;
 	position: absolute;
-	font-size: 2.0vmax;
-	font-weight: lighter;
-	letter-spacing: 0.1em;
+	font-size: $fontSize;
+	letter-spacing: $letterSpacing;
 }
 
-/*base template class */
-.narrasys-pro {
-	font-family: 'Gotham', sans-serif;
-	background-image: url("/images/customer/Narrasys_Tree.svg");
-	background-size: 62%;
+.professional {
 	background-repeat: no-repeat;
 	background-position: top right;
 	position: absolute;
+	.static-bg__main {
+		@include static-bg;
+	}
 
-	.endingscreen {
-		p {
-			@include banner-pull-quote;
-			position: relative;
-			top: 0;
+	.static-bg__alt {
+		@include static-bg
+	}
+
+	.mainPane {
+		background-color: transparent;
+	}
+	//alt (transmedia) pane background
+	.altPane {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+
+	.professional__branding {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 5px;
+		.professional__logo {
+			height: 130px;
+		}
+		.professional__copyright {
+			z-index: 1;
+			color: grey;
+			font-size: 14px;
+			a {
+				text-decoration: underline;
+				color: grey;
+			}
 		}
 	}
 
 	.landingscreen {
-		padding-top: 0%;
+		padding-top: 0;
 		div {
 			display: flex;
 			flex-direction: column;
@@ -928,185 +939,170 @@ $h2pullquote: #5B5B5B;
 		.introtext {
 			width: 100%;
 			margin-bottom: 5em;
+			//professional templates seem to not have a mockup with a
+			//description.
+			//need empty P tag for spacing reasons.
+			//p {
+			//	visibility: hidden;
+			//}
 		}
 
 		.videoMagnet {
 			width: 100%;
 		}
 
-		h1 {
-			@include banner-pull-quote;
+	}
+
+	.endingscreen {
+		div.pane.introtext p {
+			position: relative;
+			top: 0;
 		}
 	}
 
-	.branding {
-		height: 210px;
-		background: none;
-	}
-
 	.item {
-		color: black;
-
 		.itemCaption {
 			color: white;
 		}
 
+		.imagePlain {
+			margin: 0 auto !important;
+			padding: 1px 10px 1px 5px;
+		}
+
 		.pullquote {
-			font-family: 'Gotham Light Italic';
-			color: $h2pullquote;
-			font-size: 2.7vmax;
 			position: relative;
-			bottom: 0.5em;
+			font-size: 2.7vw;
+			bottom: 0.3em;
 			&:before {
-				color: $narrasysOrange;
-				content: U+201C;
-				font-family: "Gotham";
-				font-size: 4em;
-				opacity: 0.2;
+				opacity: 0.6;
+				font-size: 6.5vw;
+				content: "“";
+				position: relative;
 			}
 		}
 	}
 
-	//.videoMask {
-	//	/*border: 3px solid black;*/
-	//}
-
-	.link-no-title-img {
-		display: block;
-		margin: 0 auto;
-		width: 260px;
+	.item__text--definition, .item__text--transmedia {
+		font-size: 1.5vw !important; //!important to override item.css line 658 :(
 	}
 
-	.altPane {
-		background-color: white;
+	.item__text--h2, .item__text--h1 {
+		//position: relative;
+		//bottom: 0.2em; //ask abi OK to remove from narrasys?
+		h1, h2, h3 {
+			text-align: center;
+			margin: 10px auto;
+		}
+		h2 {
+			font-size: 2vw;
+		}
+		h1 {
+			font-size: 2.5vw;
+		}
+		h3 {
+			font-size: 1.5vw;
+		}
+	}
+
+	//TS-1084 - left justify for non-pro layouts
+	.centered, .onecol, .cornerV, .cornerH, .twocol, .pip {
+
+		.item__text--h2, .item__text--h1 {
+			h1, h2, h3 {
+				text-align: left;
+			}
+		}
 	}
 
 	.centered-pro {
-		.banner-pull-quote {
-			h1 {
-				@include banner-pull-quote;
-			}
-			.edit-event {
-				top: 1.8em;
-			}
+		.edit-event {
+			top: 1.8em;
 		}
-
-		.item {
-			h2 {
-				position: relative;
-				bottom: 1.3em;
-				font-family: 'Gotham Medium';
-				font-weight: lighter;
-				font-size: 2vmax;
-				letter-spacing: 0.3vw;
-			}
-		}
-
 	}
 
 	.centerVV {
-		.bgLayer {
-			&.bg-alt {
-				opacity: 1;
-				background-size: cover;
-				left: 50%;
-			}
-
-			&.bg-main {
-				width: 50%;
-				opacity: 1;
+		.altPane {
+			background-color: transparent;
+		}
+		.col {
+			position: relative;
+		}
+		.item {
+			&.centerVV-h2 {
+				margin-top: 14px;
+				background: white;
 			}
 		}
 
-		.item {
-			margin-top: 14px;
-			background: transparent;
-			padding-bottom: 0;
-			&.centerVV-h2 {
-				background: white;
-				h2 {
-					position: relative;
-					bottom: 0.7em;
-					font-weight: lighter;
-					text-align: center;
-					font-size: 2vmax;
-					letter-spacing: 0.5vmin;
-					/*letter-spacing: 0.1em;*/
-				}
-			}
-
-			.definition {
-				.text {
-					font-family: 'Gotham Thin';
-					padding-right: 40px;
-					font-size: 1.5vmax;
-				}
-			}
-
-			.itemHead {
-				/*border: 3px solid black;*/
-				font-family: "Gotham Medium";
-			}
-
-			//pull quote overrides
-			.pullquote {
-				font-size: 2.7vmax;
-				position: relative;
-				bottom: 0.5em;
-			}
+		.item__text--definition {
+			font-size: 1.7vw;
 		}
 	}
 
-	.scene {
-		&.centerVV-mondrian {
-			.bgLayer {
-				&.bg-alt {
-					position: fixed;
-					width: 50%;
-					border-right: 8px solid $mondrianBorder;
-					background-color: $narrasysOrange;
-					opacity: 1;
-				}
-
-				&.bg-main {
-					opacity: 1;
-					background-size: cover;
-					left: 50%;
-				}
-			}
-
-
-			.content {
-				.item:first-child {
-					&.mondrian {
-						//top right bottom left
-						padding: 0.1em 0 0.3em 0.3em;
-					}
-				}
-			}
-
-			.item {
-				&.mondrian {
-					margin-top: 1.7em;
-					background-color: $mondrianBorder;
-					color: white;
-					.escapelink:before {
-						color: white;
-					}
-					a {
-						color: white;
-
-					}
-				}
-			}
-
-			.title {
-				a {
-					color: white;
-				}
-			}
-
+	.centerVV-mondrian {
+		.col {
+			position: relative;
 		}
+
+		.altPane {
+			.item {
+				margin-top: 0.8em;
+			}
+		}
+
+		.mainPane {
+			.item {
+				margin-top: 1.7em;
+				&:first-child {
+					//top right bottom left
+					padding: 5px 0 3px 7px;
+				}
+			}
+
+			.item__title--transmedia {
+				padding-top: 0;
+				margin-top: 0;
+			}
+
+			.item__text--transmedia {
+				padding-top: 0;
+				margin-top: 0;
+			}
+		}
+
+		.item__link--escape-link {
+			color: white;
+		}
+
+		.item__text--h2 {
+			padding-top: 10px;
+		}
+
+		.item .item__text--pullquote {
+			padding-top: 0;
+		}
+
 	}
 }
+/*Narrasys pro*/
+@font-face {
+	font-family: 'Gotham Thin';
+	src: url('/images/font/Gotham-Thin.otf') format('opentype');
+}
 
+@font-face {
+	font-family: 'Gotham Medium';
+	src: url('/images/font/Gotham-Medium.otf') format('opentype');
+}
+
+@font-face {
+	font-family: 'Gotham Light Italic';
+	src: url('/images/font/Gotham-LightItalic.otf') format('opentype');
+}
+
+@import 'default';
+@import 'field-pros';
+@import 'narrasys';
+@import 'career-playbook';
+@import 'george-washington';

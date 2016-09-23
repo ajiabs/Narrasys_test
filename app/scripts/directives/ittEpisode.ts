@@ -18,7 +18,9 @@ export default function ittEpisode($interval, analyticsSvc, modelSvc, appState) 
 				// This is an even stupider but relatively harmless HACK to keep it  pointing at the right data:
 				var scopeHack = function () {
 					scope.episode = modelSvc.episodes[appState.episodeId];
-					appState.playerTemplate = scope.episode.templateUrl;
+					if (scope.episode != null) { //jshint ignore:line
+						appState.playerTemplate = scope.episode.templateUrl;
+					}
 				};
 				$interval(scopeHack, 457);
 
