@@ -20,11 +20,52 @@
 	margin-left: 15px;
 }
 
+.nav__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 5%;
+}
+
+.nav__controls {
+	display: flex;
+	flex-direction: row;
+}
+
+.navControls__item {
+	display: flex;
+	flex-direction: column;
+	padding: 0 3px;
+}
+
+.nav__user {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.nav__user img {
+	border: 1px solid #595A5A;
+	margin-top: 3px;
+	width: 35px;
+	border-radius: 50px;
+}
+
+.item--left {
+	text-align: right;
+	border-right: 1px solid black;
+	padding-right: 5px;
+}
+
+.item--right {
+	align-self: center;
+}
+
 .standaloneAncillaryPage {
 	display: block;
 	height: 100%;
 	overflow: scroll;
-	padding: 5% 10%;
+	padding: 1% 10%;
 	position: absolute;
 	width: 100%;
 	background: url("/images/customer/Narrasys_Tree.svg") no-repeat fixed 50% 80% #fff;
@@ -148,6 +189,7 @@
 .standaloneAncillaryPage .ancillaryNav {
 	text-align: right;
 }
+
 
 .standaloneAncillaryPage hr {
 	border: none;

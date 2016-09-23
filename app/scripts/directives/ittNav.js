@@ -14,15 +14,37 @@
 	        	onLogout: '&'
 			},
 			template: [
-				'<div class="ancillaryNav">',
-				'	<a class="button" ng-if="$ctrl.currentPath !== \'/stories\'" href="/#/stories">Narratives</a>',
-				'	<a class="button" href="/#/account">Account</a>',
-				'	<a class="button" ng-if="$ctrl.currentPath !== \'/projects\'" href="/#/projects">Projects</a>',
-				'	<a class="button" ng-click="$ctrl.onLogout()">Log out</a>',
+				'<div>',
+				'	<header class="nav__header">',
+				'		<div class="nav__item">',
+				'			<img src="images/customer/Narrasys_Logo.png"/>',
+				'		</div>',
+				'		<div class="nav__item">',
+				'			<div class="nav__controls">',
+				'				<div class="navControls__item item--left">',
+				'					<div class="nav__user" ng-click="$ctrl.goToAccounts()">',
+				'						<img ng-src="{{$ctrl.appState.user.avatar}}">',
+				'						<a class="nav__button" ng-if="$ctrl.appState.user">{{$ctrl.appState.user.name}}</a>',
+				'					</div>',
+				'					<a class="nav__button" ng-if="$ctrl.currentPath !== \'/projects\'" href="/#/projects">My Projects</a>',
+				'					<a class="nav__button" ng-if="$ctrl.currentPath !== \'/stories\'" href="/#/stories">My Narratives</a>',
+				'				</div>',
+				'				<div class="navControls__item item--right">',
+				'					<a class="nav__button" ng-click="$ctrl.onLogout()">Log out</a>',
+				'				<div>',
+				'			</div>',
+				'		</div>',
+				'	</header>',
 				'</div>'
 			].join('\n'),
-			controller: ['$location', function($location) {
+			controller: ['$location', 'appState', function($location, appState) {
 				this.currentPath = $location.path();
+				this.appState = appState;
+				this.goToAccounts = goToAccounts;
+
+				function goToAccounts() {
+					$location.url('/account');
+				}
 			}],
 			controllerAs: '$ctrl',
 			bindToController: true
