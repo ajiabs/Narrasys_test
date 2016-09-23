@@ -32,6 +32,7 @@
  */
 timelineSvc.$inject = ['$window', '$timeout', '$interval', '$rootScope', '$filter', 'config', 'modelSvc', 'appState', 'analyticsSvc'];
 export default function timelineSvc($window, $timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc) {
+
 	var svc = {};
 
 	svc.timelineEvents = []; // each entry consists of {t:n, id:eventID|timeline, action:enter|exit|pause|play}. Keep sorted by t.
@@ -474,6 +475,7 @@ export default function timelineSvc($window, $timeout, $interval, $rootScope, $f
 		// console.log("timelineSvc.init", episodeId);
 		svc.timelineEvents = [];
 		svc.markedEvents = [];
+		svc.displayMarkedEvents = [];
 		timeMultiplier = 1;
 		appState.duration = 0;
 		appState.timelineState = 'paused';
@@ -506,14 +508,13 @@ export default function timelineSvc($window, $timeout, $interval, $rootScope, $f
 			// add scenes to markedEvents[]:
 			if (event._type === "Scene") {
 				if (appState.product === 'producer') {
-					// producer gets all scenes, even 'hidden' ones
+					// producer gets all scenes, even 'hidden' ones (which are now not 'hidden' but they indicate
+					//change in layout).
 					addMarkedEvent(event);
-				} else {
-					// sxs and player just get scenes with titles
-					if (event.display_title) {
-						addMarkedEvent(event);
-					}
 				}
+			}
+			if (event._type === 'Chapter' || event.chapter_marker === true) {
+				addMarkedEvent(event);
 			}
 			if (event.start_time === 0 && !event._id.match('internal')) {
 				event.start_time = 0.01;
@@ -575,7 +576,79 @@ export default function timelineSvc($window, $timeout, $interval, $rootScope, $f
 		});
 
 		svc.sortTimeline();
+		var groupedEvents = groupByStartTime(svc.markedEvents, 'start_time');
+		svc.displayMarkedEvents = prepGroupedEvents(groupedEvents);
 	};
+
+	function groupByStartTime(array) {
+		return array.reduce(function (map, event) {
+			if (map.hasOwnProperty(event.start_time)) {
+				map[event.start_time].push(event);
+			} else {
+				map[event.start_time] = [event];
+			}
+			return map;
+		}, {});
+	}
+
+	function prepGroupedEvents(map) {
+		var displayArr = [];
+		angular.forEach(map, function (val, key) {
+			var obj = {
+				events: val,
+				stop: false,
+				start_time: key,
+				toolTipText: '',
+				layoutChange: false
+			};
+			var foundStop = false, chapters = [], foundScene = false, foundInternalScene = false;
+			angular.forEach(val, function (event) {
+				if (/internal:endingscreen|internal:landingscreen/.test(event._id)) {
+					foundInternalScene = true;
+				}
+				if (event.stop) {
+					foundStop = true;
+				}
+				if (event.type === 'Scene') {
+					foundScene = true;
+				}
+
+				if (event.type === 'Chapter' || event.chapter_marker === true) {
+					chapters.push(event);
+				}
+
+			});
+
+			if (chapters.length === 0 && !foundScene && foundStop) {
+				obj.stop = true;
+				obj.toolTipText = 'Stop item';
+			}
+
+			if (foundScene && chapters.length === 0) {
+				obj.layoutChange = true;
+				obj.toolTipText = '(Layout Change)';
+			}
+
+			if (chapters.length > 0) {
+				angular.forEach(chapters, function (chap, $index) {
+					if ($index === 0) {
+						obj.toolTipText = chap.display_annotation || chap.display_title;
+					} else {
+						obj.toolTipText += ' / ' + (chap.display_annotation || chap.display_title);
+					}
+				});
+
+				if (foundScene) {
+					obj.toolTipText += ' (Layout Change)';
+				}
+			}
+			if (!foundInternalScene) {
+				displayArr.push(obj);
+			}
+		});
+
+		return displayArr;
+	}
 
 	var addMarkedEvent = function (newEvent) {
 		// scan through existing markedEvents; if the new event is already there, replace it; otherwise add it
@@ -592,7 +665,8 @@ export default function timelineSvc($window, $timeout, $interval, $rootScope, $f
 		if (!wasFound) {
 			svc.markedEvents.push(newEvent);
 		}
-		//console.log(svc.markedEvents);
+
+		// console.log(svc.markedEvents);
 	};
 
 	svc.removeEvent = function (removeId) {

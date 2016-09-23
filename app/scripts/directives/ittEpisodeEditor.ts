@@ -5,8 +5,8 @@
 
  TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
  */
-ittEpisodeEditor.$inject = ['$rootScope', 'appState', 'errorSvc', 'modelSvc', 'dataSvc', 'awsSvc', 'youtubeSvc'];
-export default function ittEpisodeEditor($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc) {
+ittEpisodeEditor.$inject = ['$rootScope', 'appState', 'errorSvc', 'modelSvc', 'dataSvc', 'awsSvc', 'youtubeSvc', 'authSvc'];
+export default function ittEpisodeEditor($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, authSvc) {
 	return {
 		restrict: 'A',
 		replace: true,
@@ -42,6 +42,10 @@ export default function ittEpisodeEditor($rootScope, appState, errorSvc, modelSv
 					return scope.masterAsset.urls[x].length > 0;
 				}).length === 1) {
 				scope.masterAssetType = 'Youtube';
+				//we have not set a master asset and we are not an admin
+				//for this case: a customer-admin is adding a new episode and is only allowed to use youtube.
+			} else if (!scope.masterAsset && !authSvc.userHasRole('admin')) {
+				scope.masterAssetType = 'Youtube';
 			} else {
 				scope.masterAssetType = 'Video';
 			}
@@ -58,12 +62,11 @@ export default function ittEpisodeEditor($rootScope, appState, errorSvc, modelSv
 			}
 
 			// extract episode languages for the form
-			scope.langForm = {};
+			scope.langForm = {'en': true, 'es': false, 'zh': false, 'pt': false, 'fr': false, 'de': false, 'it': false};
 			for (var j = 0; j < scope.episode.languages.length; j++) {
 				scope.langForm[scope.episode.languages[j].code] = true;
 			}
 			scope.langForm[scope.episode.defaultLanguage] = true;
-
 			scope.languageWatcher = scope.$watch(function () {
 				return [scope.langForm, scope.episode.defaultLanguage];
 			}, function () {

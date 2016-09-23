@@ -4,7 +4,6 @@
 export default function ittTypographySelect() {
 	return {
 		restrict: 'EA',
-		scope: true,
 		template: `
 			<div class="field">
 				<div class="label">Typography</div>

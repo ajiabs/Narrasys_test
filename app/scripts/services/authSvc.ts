@@ -42,6 +42,19 @@ export default function authSvc($routeParams, $http, $q, $location, config, ittU
 		return false;
 	};
 
+	svc.getCustomerIdsFromRoles = function () {
+		if (appState.user && appState.user.roles) {
+			return appState.user.roles.reduce(function (accm, i) {
+				if (i.role === Roles.ADMINISTRATOR &&
+					ittUtils.existy(i.resource_id) &&
+					i.resource_type === Resources.CUSTOMER) {
+					accm.push(i.resource_id);
+				}
+				return accm;
+			}, []);
+		}
+	};
+
 	svc.getRoleForNarrative = function (narrativeId, roles) {
 		roles = typeof roles !== 'undefined' ? roles : appState.user.roles;
 		var role = "";

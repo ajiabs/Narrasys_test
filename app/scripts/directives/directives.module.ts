@@ -39,7 +39,6 @@ import sxsAnnotatorAutocomplete from './sxsAnnotatorAutocomplete';
 import sxsContainerAssets from './sxsContainerAssets';
 import sxsInputI18n from './sxsInputI18n';
 import sxsInputTime from './sxsInputTime';
-
 import {ittYoutube, ittYoutubeCtrl} from './ittYoutubeEmbed';
 import ittToolbarStory from './ittToolbarStory';
 import ittValidItemUrl from './ittValidItemUrl'
@@ -72,6 +71,12 @@ import ittTransitionSelect from './ittTransitionSelect';
 import ittTypographySelect from './ittTypographySelect';
 import ittUrlField from './ittUrlField';
 import ittVideoPositionSelect from './ittVideoPositionSelect';
+import ittLanguageFlags from  './ittLanguageFlags';
+import ittLanguageSelect from './ittLanguageSelect';
+import ittOptionsDisabled from './ittOptionsDisabled';
+import ittValidAsset from './ittValidAsset';
+import ittValidationTip from './ittValidationTip';
+
 
 let directivesModule = angular.module('iTT.directives', [])
 	.directive('autofocus', autofocus)
@@ -148,6 +153,11 @@ let directivesModule = angular.module('iTT.directives', [])
 	.directive('ittTransitionSelect', ittTransitionSelect)
 	.directive('ittTypographySelect', ittTypographySelect)
 	.directive('ittUrlField', ittUrlField)
-	.directive('ittVideoPositionSelect', ittVideoPositionSelect);
+	.directive('ittVideoPositionSelect', ittVideoPositionSelect)
+	.directive('ittLanguageFlags', ittLanguageFlags)
+	.directive('ittLanguageSelect', ittLanguageSelect)
+	.directive('ittOptionsDisabled', ittOptionsDisabled)
+	.directive('ittValidAsset', ittValidAsset)
+	.directive('ittValidationTip', ittValidationTip);
 
 export default directivesModule;

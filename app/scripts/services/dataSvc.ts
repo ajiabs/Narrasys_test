@@ -30,6 +30,7 @@
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$timeout', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
 export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 	var svc = {};
+
 	/* ------------------------------------------------------------------------------ */
 
 	/**
@@ -93,6 +94,18 @@ export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $
 		}
 	};
 
+	//used in ittContainer
+	svc.generateNewNarrative = generateNewNarrative;
+	function generateNewNarrative(containerId, postData) {
+		return SANE_POST('/v3/containers/' + containerId + '/narratives', postData)
+			.then(function (resp) {
+				return resp.data;
+			})
+			.catch(function (e) {
+				console.error("Error generating new narrative:", e);
+			});
+	}
+
 	// WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
 	svc.getNarrative = function (narrativeId) {
 		// Special case here, since it needs to call getNonce differently:
@@ -125,6 +138,11 @@ export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $
 
 	svc.getNarrativeOverview = function (narrativeId) {
 		return GET("/v3/narratives/" + narrativeId);
+	};
+
+	svc.getNarrativeExportAsSpreadsheet = function (nId) {
+		var url = '/v3/narratives/' + nId + '.xlsx';
+		window.open(url);
 	};
 
 	var cachedPurchases = false;
@@ -358,7 +376,8 @@ export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $
 					id: item._id,
 					url: item.url,
 					type: (item.applies_to_episodes ? "Episode" : item.event_types ? item.event_types[0] : undefined),
-					displayName: item.name
+					displayName: item.name,
+					customerIds: item.customer_ids
 				};
 			} else if (cacheType === "layouts") {
 				/* API format:
@@ -433,9 +452,23 @@ export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $
 		}
 		if (obj.layout_id) {
 			var layouts = [];
+			if (obj.type === 'Scene') {
+				layouts = ['', ''];
+			}
 			angular.forEach(obj.layout_id, function (id) {
 				if (dataCache.layout[id]) {
-					layouts.push(dataCache.layout[id].css_name);
+					if (obj.type === 'Scene') {
+						//conditions outside of 'showCurrent' necessary for USC scholar
+						if (dataCache.layout[id].css_name === 'showCurrent') {
+							layouts[1] = dataCache.layout[id].css_name;
+						} else if (dataCache.layout[id].css_name === 'splitRequired') {
+							layouts[2] = dataCache.layout[id].css_name;
+						} else {
+							layouts[0] = dataCache.layout[id].css_name;
+						}
+					} else {
+						layouts.push(dataCache.layout[id].css_name);
+					}
 				} else {
 					errorSvc.error({
 						data: "Couldn't get layout for id " + id
@@ -668,6 +701,10 @@ export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $
 						return resp.data;
 					});
 			});
+	};
+
+	var SANE_POST = function (path, data) {
+		return $http.post(path, data);
 	};
 
 	var PUT = function (path, putData, postprocessCallback) {
@@ -953,7 +990,7 @@ export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $
 	svc.storeItem = function (evt) {
 		evt = prepItemForStorage(evt);
 		if (!evt) {
-			return false;
+			return $q.reject(false);
 		}
 		if (evt && evt._id && !evt._id.match(/internal/)) {
 			// update
@@ -982,6 +1019,7 @@ export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $
 			"start_time",
 			"end_time",
 			"episode_id",
+			"chapter_marker",
 			"template_id",
 			"templateUrl", // We should get this from template_id, but for now there's a dependency in editController on this existing. TODO remove that dependency
 			"stop",
@@ -1049,6 +1087,9 @@ export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $
 		prepped.style_id = get_id_values("style", evt.styles);
 		prepped.layout_id = get_id_values("layout", evt.layouts);
 
+		if (evt._type === 'Chapter') {
+			return prepped;
+		}
 		var template = svc.readCache("template", "url", evt.templateUrl);
 		if (template) {
 			prepped.template_id = template.id;
@@ -1226,6 +1267,17 @@ export default function dataSvc($q, $http, $routeParams, $timeout, $rootScope, $
 		console.log("DataSvc cache:", dataCache);
 	}
 
+	svc.getTemplates = function () {
+		return Object.keys(dataCache.template).map(function (t) {
+			return dataCache.template[t];
+		});
+	};
+
+	/*
+	 gets ID of Style Class when given the 'css_name'. 'css_name' is a attribute on the Style Class.
+	 for example:
+	 get_id_values('style', ['cover', '']) -> ['532708d8ed245331bd000007', '52e15b47c9b715cfbb00003f']
+	 */
 	var get_id_values = function (cache, realNames) {
 
 		// HACK These values won't have IDs, they're generated inside modelSvc.

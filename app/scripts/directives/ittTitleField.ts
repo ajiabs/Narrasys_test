@@ -6,22 +6,34 @@ export default function ittTitleField() {
 		restrict: 'EA',
 		scope: {
 			data: '=',
-			modelOpts: '=?'
+			modelOpts: '=?',
+			doValidate: '=?',
+			ittItemForm: '=?'
 		},
 		template: `
-			<div class="field">
-				<div class="label">Title [{{titleField.lang}}]</div>
-				<div class="input" ng-model-options="titleField.modelOpts" sxs-input-i18n="titleField.data.title" x-inputtype="'input'" autofocus></div>
+			<div class="field" ng-if="$ctrl.isVisible(\'titleField\')">
+				<div class="label">Title [{{$ctrl.lang}}]
+					<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Title is a required field"></itt-validation-tip>
+				</div>
+				<div class="input" ng-model-options="$ctrl.modelOpts" do-validate="$ctrl.doValidate" sxs-input-i18n="$ctrl.data.title" on-emit-name="$ctrl.onName($taName)" x-inputtype="\'input\'" autofocus></div>
 			</div>
-			`,
-		controller: ['appState', 'ittUtils', function (appState, ittUtils) {
+		`,
+		controller: ['appState', 'ittUtils', 'selectService', function (appState, ittUtils, selectService) {
 			var ctrl = this;
 			ctrl.lang = appState.lang;
+			ctrl.isVisible = selectService.getVisibility;
+			ctrl.onName = onName;
+
 			if (!ittUtils.existy(ctrl.modelOpts)) {
 				ctrl.modelOpts = {updateOn: 'default'};
 			}
+
+			function onName(v) {
+				ctrl.textAreaName = v;
+			}
+
 		}],
-		controllerAs: 'titleField',
+		controllerAs: '$ctrl',
 		bindToController: true
 	};
 }

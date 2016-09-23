@@ -5,7 +5,7 @@ var webpack = require('webpack');
 var path    = require('path');
 var config  = require('./webpack.config');
 
-config.devtool = 'inline-source-map';
+config.devtool = 'cheap-source-map';
 config.entry = {
 	app: './app/scripts/app.ts'
 };

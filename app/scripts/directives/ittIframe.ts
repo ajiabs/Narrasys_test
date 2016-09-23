@@ -20,8 +20,8 @@
  * </pre>
  */
 
-ittIframe.$inject = ['appState'];
-export function ittIframe(appState) {
+ittIframe.$inject = ['appState', 'youtubeSvc'];
+export function ittIframe(appState, youtubeSvc) {
 	return {
 		restrict: 'E',
 		scope: {
@@ -37,7 +37,7 @@ export function ittIframe(appState) {
 		link: linkFn
 	};
 
-	function linkFn(scope, elm) {
+	function linkFn(scope, elm, ctrl) {
 		var _btnConst = 95;
 
 		var _unWatch = angular.noop;
@@ -45,7 +45,7 @@ export function ittIframe(appState) {
 		var _timelineBarH = 145;
 		var _offsetConst = _toolbarH + _timelineBarH;
 		var _modalWrapper = $('.w-modal');
-		var _otherModal = $('.modal');
+		var _otherModal   = $('.modal');
 		var _frameBottom = $(window).height() - _offsetConst;
 
 		if (_otherModal.length > 0 && appState.isTouchDevice) {
@@ -54,9 +54,9 @@ export function ittIframe(appState) {
 			//set dimensions on iframeContainer div
 			elm.css('height', _frameBottom);
 
-			scope.$watch(function () {
+			scope.$watch(function() {
 				return elm.height();
-			}, function (newVal, oldval) {
+			}, function(newVal, oldval) {
 				if (newVal !== oldval) {
 					scope.iframeCtrl.styles = {'height': newVal + 'px'};
 					elm.css('height', _frameBottom);
@@ -76,9 +76,9 @@ export function ittIframe(appState) {
 			elm.css('height', y);
 			_modalWrapper.css('overflow-y', 'hidden');
 
-			_unWatch = scope.$watch(function () {
+			_unWatch =  scope.$watch(function() {
 				return _modalWrapper.height();
-			}, function (newVal, oldVal) {
+			}, function(newVal, oldVal) {
 				if (newVal !== oldVal) {
 					var newY = newVal - _btnConst;
 					elm.css('height', newY);
@@ -86,20 +86,26 @@ export function ittIframe(appState) {
 			});
 		}
 
+
 		function resizeIframeReviewMode() {
+			var narrasys = 'templates/episode/narrasys-pro.html';
+			var cpb = 'templates/episode/career-playbook.html';
+			var isYT = youtubeSvc.isYoutubeUrl(ctrl.src);
+
 			//only resize iframe in discover mode for the narrasys pro template (at the moment)
 			if (appState.viewMode === 'discover' &&
-				appState.playerTemplate === 'templates/episode/narrasys-pro.html' && !appState.isTouchDevice) {
+				(appState.playerTemplate === narrasys || appState.playerTemplate === cpb) &&
+				!appState.isTouchDevice &&
+				!isYT) {
 				elm.css('height', _frameBottom);
 			}
 		}
 
 
-		scope.$on('$destroy', function () {
+		scope.$on('$destroy', function() {
 			_unWatch();
 		});
 	}
-
 
 }
 
@@ -137,11 +143,7 @@ export function ittIframeCtrl($scope, ittUtils, youtubeSvc, appState) {
 		_ctrl.iOSScroll = 'no';
 	}
 
-	_ctrl.watcher = $scope.$watchGroup([function () {
-		return _ctrl.src;
-	}, function () {
-		return _ctrl.contenttype;
-	}], function () {
+	_ctrl.watcher = $scope.$watchGroup([function() {return _ctrl.src;}, function() {return _ctrl.contenttype;}], function () {
 		if (!_ctrl.src || !validateFrameUrl(_ctrl.src)) {
 			return;
 		}

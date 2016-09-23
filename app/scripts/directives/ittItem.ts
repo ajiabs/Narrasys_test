@@ -24,8 +24,6 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
 		link: function (scope, element) {
 			//scope.user = appState.user;
 
-			//scope.user = appState.user;
-
 			scope.appState = appState; // to get searchText
 			scope.userHasRole = authSvc.userHasRole;
 
@@ -145,7 +143,12 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
 
 			scope.editItem = function () {
 				appState.editEvent = scope.item;
-				selectService.getTemplates(appState.editEvent.producerItemType);
+				appState.editEvent.templateOpts = selectService.getTemplates(scope.item.producerItemType);
+				//second arg to onSelectChange is the itemForm, which is created in ittItemEditor and
+				//we do not have access here. Note that itemForm is only really used in background Images.
+				//hack fix is to pass in an empty object, and selectService will add the necessary itemForm
+				//props.
+				selectService.onSelectChange(appState.editEvent, {});
 				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 				appState.videoControlsLocked = true;
 			};

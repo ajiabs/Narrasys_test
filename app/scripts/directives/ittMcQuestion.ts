@@ -1,5 +1,6 @@
 'use strict';
 ittMcQuestion.$inject = ['questionAnswersSvc', 'analyticsSvc', 'appState'];
+
 export default function ittMcQuestion(questionAnswersSvc, analyticsSvc, appState) {
 	return {
 		restrict: 'E',

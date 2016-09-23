@@ -4,7 +4,9 @@ export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc
 	return {
 		restrict: 'A',
 		replace: true,
-		scope: {},
+		scope: {
+
+		},
 		templateUrl: 'templates/user.html',
 
 		link: function (scope, element, attrs) {
@@ -14,6 +16,7 @@ export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc
 
 			scope.loading = true;
 			scope.logout = authSvc.logout;
+			scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 
 			authSvc.authenticate().then(function () {
 				scope.loading = false;
@@ -44,31 +47,29 @@ export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc
 					.then(_resizeWithService)
 					.then(_avatarFileFromImg)
 					.then(_postToAWS)
-					.catch(function (e) {
+					.catch(function(e) {
 						console.log('something failed resizing / uploading the image', e);
 					});
 
 				//handler functions; i.e., 'links' in the 'promise chain' ;)
 				function _resizeWithService(img) {
 					return imageResize.resizeImg(img, 60, 60, true)
-						.then(function (dataUrl) {
+						.then(function(dataUrl) {
 							return dataUrl;
 						});
 				}
-
 				//takes a base64 encoded URL with PNG image
 				//and turns it back into a File Object
 				function _avatarFileFromImg(dataUrl) {
-					return $q(function (resolve) {
+					return $q(function(resolve) {
 						var file = imageResize.createFileFromDataURL(dataUrl, files[0].name);
 						resolve(file);
 					});
 				}
-
 				//pass file to AWS service for file upload
 				function _postToAWS(file) {
 					awsSvc.uploadUserFiles(appState.user._id, [file])[0]
-						.then(function (data) {
+						.then(function(data) {
 							scope.showUploadField = false;
 							modelSvc.cache("asset", data.file);
 							if (appState.user.avatar_id) {

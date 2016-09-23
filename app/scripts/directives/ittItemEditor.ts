@@ -26,8 +26,8 @@
  * @requires youtubeSvc
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
-ittItemEditor.$inject = ['$rootScope', '$timeout', 'errorSvc', 'appState', 'modelSvc', 'timelineSvc', 'awsSvc', 'dataSvc', 'youtubeSvc'];
-export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
+ittItemEditor.$inject = ['$rootScope', '$timeout', 'errorSvc', 'appState', 'modelSvc', 'timelineSvc', 'awsSvc', 'dataSvc', 'youtubeSvc', 'selectService'];
+export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc, selectService) {
 	return {
 		restrict: 'A',
 		replace: true,
@@ -61,7 +61,7 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 			// 				scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
 			// 				scope.isRecordingVideo = false;
 			// 				scope.isProcessingVideo = true;
-            //
+			//
 			// 				// onProcessingComplete is not always fired by youtube; force it after 30 secs:
 			// 				$timeout(function () {
 			// 					console.log("Forcing process-complete");
@@ -99,30 +99,46 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 
 
 			if (!scope.item.layouts) {
+				console.log('set layouts array to inline');
 				scope.item.layouts = ["inline"];
 			}
+			setupItemForm();
 
+			/*
+			 These loops seem to be responsible for setting up itemForm from the styles array.
+			 itemForm seems to be where we hold style specific data that pertains to events (aka items).
+			 itemForm seems to be used mostly in the customize tab and sets color, timestamp, hightlight and transition options.
+			 itemForm is also responsible for setting the 'pin' and 'position' props on a background image event.
+			 All of the above is parsed from the itemForm (if its set), and read into the item.styles array.
+			 When it comes time to persist, the styles array is used in dataSvc#prepItemForStorage,
+			 which reads the strings in the styles array and returns the corresponding ID for the entity in the DB.
 
+			 We do the inverse of this inside of watchStyleEdits below, which watches the itemForm, and builds up the styles array from
+			 the itemForm props. It also formats background URLs.
+			 */
 			// extract current event styles for the form
-			if (scope.item.styles) {
-				for (var styleType in scope.itemForm) {
-					for (var i = 0; i < scope.item.styles.length; i++) {
-						if (scope.item.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
-							scope.itemForm[styleType] = scope.item.styles[i].substr(styleType.length); // Remainder of scope.item.styles[i]
+
+			function setupItemForm() {
+				if (scope.item.styles) {
+					for (var styleType in scope.itemForm) {
+						for (var i = 0; i < scope.item.styles.length; i++) {
+							if (scope.item.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
+								scope.itemForm[styleType] = scope.item.styles[i].substr(styleType.length); // Remainder of scope.item.styles[i]
+							}
+						}
+					}
+					// position and pin don't have a prefix because I was dumb when I planned this
+					for (var j = 0; j < scope.item.styles.length; j++) {
+						if (scope.item.styles[j] === 'contain' || scope.item.styles[j] === 'cover' || scope.item.styles[j] === 'center' || scope.item.styles[j] === 'fill') {
+							scope.itemForm.position = scope.item.styles[j];
+						}
+						if (scope.item.styles[j] === 'tl' || scope.item.styles[j] === 'tr' || scope.item.styles[j] === 'bl' || scope.item.styles[j] === 'br') {
+							scope.itemForm.pin = scope.item.styles[j];
 						}
 					}
 				}
-				// position and pin don't have a prefix because I was dumb when I planned this
-				for (var j = 0; j < scope.item.styles.length; j++) {
-					if (scope.item.styles[j] === 'contain' || scope.item.styles[j] === 'cover' || scope.item.styles[j] === 'center' || scope.item.styles[j] === 'fill') {
-						scope.itemForm.position = scope.item.styles[j];
-					}
-					if (scope.item.styles[j] === 'tl' || scope.item.styles[j] === 'tr' || scope.item.styles[j] === 'bl' || scope.item.styles[j] === 'br') {
-						scope.itemForm.pin = scope.item.styles[j];
-					}
-				}
-
 			}
+
 			if (!scope.item.producerItemType) {
 				errorSvc.error({
 					data: "Don't have a producerItemType for item " + scope.item._id
@@ -130,11 +146,9 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 			}
 			// TODO:this breaks when editing sxs items within producer!
 			scope.itemEditor = 'templates/producer/item/' + appState.product + '-' + scope.item.producerItemType + '.html';
-
 			scope.appState = appState;
 
 			//watch templateUrl
-
 			// TODO this still needs more performance improvements...
 
 			scope.watchEdits = scope.$watch(function () {
@@ -145,7 +159,7 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 				}
 
 				// console.log('item:', newItem);
-				console.log('templateUrl: ', newItem.templateUrl, '\n', 'layouts: ', newItem.layouts);
+				// console.log('templateUrl: ', newItem.templateUrl, '\n', 'layouts: ', newItem.layouts);
 				// FOR DEBUGGING
 				/*
 				 angular.forEach(Object.keys(newItem), function (f) {
@@ -165,21 +179,23 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 				// if old template was image-fill, set cosmetic to false
 				// TODO this is fragile, based on template name:
 
-				//for changes to templateUrl, i.e. picking an option from the drop down.
-				if (newItem.templateUrl !== oldItem.templateUrl) {
+				//seeing if we can put this logic below into select service
 
-					if (newItem.templateUrl === 'templates/item/image-fill.html') {
-						scope.item.cosmetic = true;
-						scope.item.layouts = ["windowBg"];
-						scope.itemForm.position = "fill";
-					}
-					if (oldItem.templateUrl === 'templates/item/image-fill.html') {
-						scope.item.cosmetic = false;
-						scope.item.layouts = ["inline"];
-						scope.itemForm.position = "";
-						scope.itemForm.pin = "";
-					}
-				}
+				//for changes to templateUrl, i.e. picking an option from the drop down.
+				// if (newItem.templateUrl !== oldItem.templateUrl) {
+				//
+				// 	if (newItem.templateUrl === 'templates/item/image-fill.html') {
+				// 		scope.item.cosmetic = true;
+				// 		scope.item.layouts = ["windowBg"];
+				// 		scope.itemForm.position = "fill";
+				// 	}
+				// 	if (oldItem.templateUrl === 'templates/item/image-fill.html') {
+				// 		scope.item.cosmetic = false;
+				// 		scope.item.layouts = ["inline"];
+				// 		scope.itemForm.position = "";
+				// 		scope.itemForm.pin = "";
+				// 	}
+				// }
 
 
 				//newItem is scope.item
@@ -187,7 +203,7 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 
 				//for producers, if they edit a URL to link-embed template a site that cannot be embedded,
 				//change the template URL to 'link'
-				if (appState.product === 'producer' && newItem.noEmbed === true && newItem.templateUrl === 'templates/item/link-embed.html') {
+				if (appState.product === 'producer' && newItem.noEmbed === true && (newItem.templateUrl === 'templates/item/link-embed.html' || newItem.templateUrl === 'templates/item/link-modal-thumb.html')) {
 					newItem.templateUrl = 'templates/item/link.html';
 				}
 
@@ -207,6 +223,16 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 				}
 				// console.count('$watch turn');
 
+				// console.group('itemStyles');
+				// console.count('incoming item layouts');
+				// console.log('Layouts:', newItem.layouts);
+				// console.log('Styles:', newItem.styles);
+				// console.log('styleCss:', newItem.styleCss);
+				// console.log('\n');
+				// console.log('itemForm.pin', scope.itemForm.pin);
+				// console.log('itemForm.position', scope.itemForm.position);
+				// console.groupEnd('itemStyles');
+
 			}, true);
 
 			// Transform changes to form fields for styles into item.styles[]:
@@ -224,7 +250,6 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 					}
 				}
 				scope.item.styles = styles;
-
 				// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
 				if (scope.item.asset) {
 					scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
@@ -286,9 +311,7 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 			};
 
 			var getNextStartTime = function (currentScene, currentItem, items) {
-				if (currentItem._type === 'Chapter') {
-					return false;
-				}
+				if (currentItem._type === 'Chapter') { return false; }
 				//HACK to work around TS-412
 				if (!currentScene) {
 					console.warn("getNextStartTime called with no scene (because it's being called for a scene event?)", currentItem, items);
@@ -360,6 +383,7 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 			};
 
 			scope.replaceAsset = function () {
+				console.log('replace asset!');
 				scope.showUploadButtons = true;
 
 				if (scope.item.sxs) { // we will delete assets atached to editor items, not from producer items
@@ -375,16 +399,50 @@ export default function ittItemEditor($rootScope, $timeout, errorSvc, appState, 
 				}
 			};
 
+			scope.detachAsset = function() {
+				// console.log(
+				// 	'item:', scope.item,
+				// 	'asset:', scope.item.asset,
+				// 	'link_image_id:', scope.item.link_image_id,
+				// 	'asset_id:', scope.item.asset_id,
+				// 	'annotation_image_id:', scope.item.annotation_image_id
+				// );
+				if (scope.item.asset) {
+					switch(scope.item.producerItemType) {
+						case 'link':
+							scope.item.asset = null;
+							scope.item.link_image_id = null;
+							scope.item.asset_id = null;
+							scope.item.annotation_image_id = null;
+							break;
+						case 'transcript':
+							scope.item.asset = null;
+							scope.item.annotation_image_id = null;
+							break;
+						case 'image':
+						case 'question':
+						case 'file':
+							scope.item.asset = null;
+							scope.item.asset_id = null;
+							break;
+					}
+				}
+			};
+
 			scope.attachChosenAsset = function (asset_id) {
 				// console.log(scope.item);
 				var asset = modelSvc.assets[asset_id];
 				if (scope.item) {
 					scope.item.asset = asset;
+					selectService.onSelectChange(scope.item, scope.itemForm);
 					if (scope.item._type === 'Upload' || scope.item._type === 'Plugin') {
 						scope.item.asset_id = asset_id;
 					} else if (scope.item._type === 'Link') {
 						scope.item.link_image_id = asset_id;
+						scope.item.asset_id = asset_id;
 					} else if (scope.item._type === 'Annotation') {
+						console.log('you are actually getting here!!');
+						scope.item.asset_id = asset_id;
 						scope.item.annotation_image_id = asset_id;
 					} else {
 						console.error("Tried to select asset for unknown item type", scope.item);

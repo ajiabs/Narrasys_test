@@ -2,6 +2,7 @@
  * Created by githop on 6/24/16.
  */
 
+ittValidUrl.$inject = ['ittUtils'];
 
 export default function ittValidUrl(ittUtils) {
 	return {

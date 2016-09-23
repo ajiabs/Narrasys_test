@@ -8,7 +8,9 @@ export default function ittLogin($location, $routeParams, config, authSvc, appSt
 	return {
 		restrict: 'A',
 		replace: false,
+
 		link: function (scope) {
+
 			scope.userHasRole = authSvc.userHasRole;
 
 			scope.appState = appState;
@@ -43,7 +45,7 @@ export default function ittLogin($location, $routeParams, config, authSvc, appSt
 						}
 
 					} else if (Object.keys($routeParams).length === 0) {
-						$location.path('/user');
+						$location.path('/account');
 
 					}
 				},
@@ -53,11 +55,14 @@ export default function ittLogin($location, $routeParams, config, authSvc, appSt
 
 			// for admin logins only, for now. In future maybe oauth-based login will route through here too
 			scope.adminLogin = function () {
-				authSvc.adminLogin(scope.loginForm.auth_key, scope.loginForm.password).then(function () {
-				}, function (data) {
-					console.warn("FAILED ADMIN LOGIN", data);
-					scope.badlogin = true;
-				});
+				authSvc.adminLogin(scope.loginForm.auth_key, scope.loginForm.password)
+					.then(function() {
+						$location.path('/projects');
+					})
+					.catch(function (data) {
+						console.warn("FAILED ADMIN LOGIN", data);
+						scope.badlogin = true;
+					});
 			};
 
 			scope.logout = function () {

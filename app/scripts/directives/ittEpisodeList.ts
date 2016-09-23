@@ -1,33 +1,41 @@
-ittEpisodeList.$inject = ['$location', '$timeout', 'appState', 'authSvc', 'dataSvc', 'modelSvc'];
-export default function ittEpisodeList($location, $timeout, appState, authSvc, dataSvc, modelSvc) {
+export default function ittEpisodeList() {
 	return {
 		restrict: 'A',
 		replace: true,
-
-		link: function (scope) {
-			scope.logout = function () {
-				authSvc.logout();
-			};
-			scope.appState = appState;
-			scope.loading = true;
-			scope.containers = modelSvc.containers;
-			scope.userHasRole = authSvc.userHasRole;
-			dataSvc.getCustomerList();
-			dataSvc.getContainerRoot().then(function (rootIDs) {
-				scope.root = {
-					children: []
+		controller: ['$scope', '$location', '$timeout', 'appState', 'authSvc', 'dataSvc', 'modelSvc', 'ittUtils',
+			function ($scope, $location, $timeout, appState, authSvc, dataSvc, modelSvc, ittUtils) {
+				$scope.logout = function () {
+					authSvc.logout();
 				};
-				angular.forEach(rootIDs, function (id) {
-					// modelSvc.containers[id].showChildren = true;
-					scope.root.children.push(modelSvc.containers[id]);
+				$scope.appState = appState;
+				$scope.loading = true;
+				$scope.containers = modelSvc.containers;
+				$scope.userHasRole = authSvc.userHasRole;
+				dataSvc.getCustomerList();
+				dataSvc.getContainerRoot().then(function (rootIDs) {
+					$scope.root = {
+						children: []
+					};
+					angular.forEach(rootIDs, function (id) {
+						// modelSvc.containers[id].showChildren = true;
+						$scope.root.children.push(modelSvc.containers[id]);
+					});
+					$scope.loading = false;
+				}, function () {
+					$scope.failedLogin = true;
+					$scope.loading = false;
+
 				});
-				scope.loading = false;
-			}, function () {
-				scope.failedLogin = true;
-				scope.loading = false;
 
-			});
+				$scope.onContainerClick = onContainerClick;
+				function onContainerClick($container) {
 
-		}
+					if (ittUtils.existy($scope.lastClickedContainer) && $scope.lastClickedContainer.depth === 3) {
+						$scope.lastClickedContainer.container.showChildren = false;
+					}
+					$scope.lastClickedContainer = $container;
+				}
+
+			}]
 	};
 }

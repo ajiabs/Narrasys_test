@@ -47,10 +47,10 @@ module.exports = {
 			jQuery: "jquery",
 			'window.jQuery': 'jquery'
 		}),
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'vendor',
-			minChunks: module => /node_modules/.test(module.resource)
-		})
+		// new webpack.optimize.CommonsChunkPlugin({
+		// 	name: 'vendor',
+		// 	minChunks: module => /node_modules/.test(module.resource)
+		// })
 	]
 
 };

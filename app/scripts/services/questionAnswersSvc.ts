@@ -1,5 +1,4 @@
 questionAnswersSvc.$inject = ['$q', 'analyticsSvc', 'appState'];
-
 export default function questionAnswersSvc($q, analyticsSvc, appState) {
 	var svc = {};
 	svc.saveAnswer = function (name, eventID, data) {

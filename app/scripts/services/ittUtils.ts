@@ -14,7 +14,9 @@ IttUtils.prototype = {
 	isValidURL: isValidURL,
 	stripHtmlTags: stripHtmlTags,
 	pick: pick,
-	bitwiseCeil: bitwiseCeil
+	bitwiseCeil: bitwiseCeil,
+	setNgOpts: setNgOpts,
+	intersection: intersection
 };
 
 //using bitwise operators up to 20% faster than Math.ceil (js hint not a fan of bitwise operators)
@@ -23,9 +25,9 @@ function bitwiseCeil(n) {
 }
 
 function pick(obj, arr) {
-	return arr.reduce(function (accm, field) {
+	return arr.reduce(function(accm, field) {
 		if (existy(obj[field])) {
-			accm[field] = angular.copy(obj[field]);
+			accm[field] =  angular.copy(obj[field]);
 		}
 		return accm;
 	}, {});
@@ -51,7 +53,7 @@ function existy(x) {
  e.g. [null, undefined, '', 0, 1, false true].map(truthy)
  -> [false, false, false, false, true, false, true]
  */
-function truthy(x) {
+function truthy (x) {
 	return (x != false) && existy(x); //jshint ignore:line
 }
 
@@ -72,4 +74,24 @@ function isValidURL(url) {
 	var URL_REGEXP = /^(((?:http)s?:\/\/)|(?:\/\/))(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/?|[\/?]\S+)$/i;
 	return URL_REGEXP.test(url);
 }
+
+//this function depends on selectSerivce, and getSelectOpts being defined on the
+//controller where used.
+function setNgOpts(type) {
+	return "option.value as option.name for option in $ctrl.getSelectOpts(" + "'" + type + "'" + ")";
+}
+
+function intersection(x, y){
+	var ret = [];
+	for (var i = 0; i < x.length; i++) {
+		for (var z = 0; z < y.length; z++) {
+			if (x[i] == y[z]) { // jshint ignore:line
+				ret.push(i);
+				break;
+			}
+		}
+	}
+	return ret;
+}
+
 

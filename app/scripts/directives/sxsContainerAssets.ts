@@ -2,16 +2,16 @@
 
 
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
-sxsContainerAssets.$inject = ['$routeParams', '$rootScope', 'recursionHelper', 'dataSvc', 'modelSvc', 'awsSvc', 'appState'];
-export default function sxsContainerAssets($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState) {
+sxsContainerAssets.$inject = ['$routeParams', '$rootScope', 'recursionHelper', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'authSvc', 'MIMES'];
+export default function sxsContainerAssets($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc, MIMES) {
 	return {
 		restrict: 'A',
 		replace: false,
 		scope: {
-			containerId: "=sxsContainerAssets"
+			containerId: "=sxsContainerAssets",
+			mimeKey: '@'
 		},
 		templateUrl: 'templates/producer/container-assets.html',
-
 		compile: function (element) {
 			// Use the compile function from the recursionHelper,
 			// And return the linking function(s) which it returns
@@ -32,6 +32,18 @@ export default function sxsContainerAssets($routeParams, $rootScope, recursionHe
 						scope.container = modelSvc.containers[scope.containerId];
 						dataSvc.getContainerAssets(scope.containerId);
 					});
+				}
+
+				scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
+				scope.isCustAdmin = authSvc.userHasRole('customer admin');
+
+				if (MIMES[scope.mimeKey]) {
+					scope.mimes = MIMES[scope.mimeKey];
+					if (authSvc.userHasRole('admin')) {
+						scope.mimes += ',video/*';
+					}
+				} else {
+					scope.mimes = MIMES.default;
 				}
 
 				scope.assets = modelSvc.assets; // this is going to be a horrible performance hit isn't it.  TODO: build asset array inside each container in modelSvc instead?

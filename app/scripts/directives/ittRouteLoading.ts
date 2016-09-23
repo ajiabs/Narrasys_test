@@ -6,19 +6,22 @@
 export default function ittRouteLoading() {
 	return {
 		restrict: 'EA',
-		template: [
-			'<div ng-if="routeLoadingCtrl.isLoading" class="loading routeLoading">',
-			'	<div class="spinner">',
-			'		<div class="rotating pie"></div>',
-			'		<div class="filler pie"></div>',
-			'		<div class="mask"></div>',
-			'	</div><span class="loading__text">Loading</span>',
-			'</div>'
-		].join(' '),
+		template: `
+			<div ng-if="routeLoadingCtrl.isLoading" class="loading routeLoading">
+				<div class="spinner">
+					<div class="rotating pie"></div>
+					<div class="filler pie"></div>
+					<div class="mask"></div>
+				</div><span class="loading__text">Loading</span>
+			</div>
+		`,
+		scope: {
+			isLoading: '=?'
+		},
 		controller: ['$rootScope', '$scope', '$timeout', 'errorSvc',
 			function ($rootScope, $scope, $timeout, errorSvc) {
 				var ctrl = this;
-				ctrl.isLoading = false;
+				ctrl.isLoading = ctrl.isLoading || false;
 				var threshold;
 
 				$rootScope.$on('$routeChangeStart', function () {
@@ -32,7 +35,7 @@ export default function ittRouteLoading() {
 					ctrl.isLoading = false;
 				});
 
-				$rootScope.$on('$locationChangeSuccess', function () {
+				$rootScope.$on('$locationChangeSuccess', function() {
 					$timeout.cancel(threshold);
 					ctrl.isLoading = false;
 				});

@@ -8,10 +8,34 @@ export default function ittContainer($timeout, $location, $route, appState, mode
 		replace: false,
 		scope: {
 			container: '=ittContainer',
-			depth: "=depth"
+			depth: "=depth",
+			onContainerClick: '&',
+			rootContext: '='
 		},
 		templateUrl: "templates/container.html",
+		controller: ['$scope', '$location', 'modelSvc', 'authSvc', function ($scope, $location, modelSvc, authSvc) {
+			$scope.toggleNarrativeModal = toggleNarrativeModal;
+			$scope.postNewNarrative = postNewNarrative;
+			$scope.showNarrativeModal = false;
+			$scope.resolvingNarrative = false;
+			$scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
+			//needs to be an array, not a k/v store
+			$scope.customers = modelSvc.getCustomersAsArray();
 
+			function toggleNarrativeModal() {
+				$scope.showNarrativeModal = !$scope.showNarrativeModal;
+			}
+
+			function postNewNarrative(narrativeData) {
+				$scope.resolvingNarrative = true;
+				dataSvc.generateNewNarrative(narrativeData.c, narrativeData.n).then(function (narrative) {
+					$location.path('/story/' + narrative._id);
+					$scope.resolvingNarrative = false;
+				});
+			}
+
+
+		}],
 		compile: function (element) {
 
 			// Use the compile function from the recursionHelper,
@@ -20,7 +44,6 @@ export default function ittContainer($timeout, $location, $route, appState, mode
 				scope.appState = appState;
 				scope.containers = modelSvc.containers;
 				scope.customer = modelSvc.customers[scope.container.customer_id];
-
 				// TEMP obviously
 				scope.isDemoServer = ($location.host().match(/demo|localhost|api-dev|client.dev/));
 
@@ -28,8 +51,9 @@ export default function ittContainer($timeout, $location, $route, appState, mode
 					event.target.select(); // convenience for selecting the episode url
 				};
 
-				scope.containerTypes = ["customer", "course", "session", "episode"];
+				scope.containerTypes = ["customer", "project", "module", "episode"];
 				scope.toggleChildren = function () {
+					scope.onContainerClick({$container: {container: scope.container, depth: scope.depth}});
 					if (scope.container.children || scope.container.episodes.length) {
 						// have already loaded kids
 						scope.container.showChildren = !scope.container.showChildren;

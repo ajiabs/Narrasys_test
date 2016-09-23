@@ -13,7 +13,7 @@ export function ittNarrativeList() {
 	};
 }
 
-NarrativeListCtrl.$inject = ['$location', 'authSvc', 'appState', 'dataSvc'];
+NarrativeListCtrl.$inject = ['$location','authSvc', 'appState', 'dataSvc'];
 export function NarrativeListCtrl($location, authSvc, appState, dataSvc) {
 	var ctrl = this;
 
@@ -26,7 +26,7 @@ export function NarrativeListCtrl($location, authSvc, appState, dataSvc) {
 	ctrl.toggleSelectNarrative = toggleSelectNarrative;
 	ctrl.addNarrative = addNarrative;
 
-	if (authSvc.userHasRole('admin')) {
+	if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
 		ctrl.canAccess = true;
 	}
 
@@ -35,7 +35,7 @@ export function NarrativeListCtrl($location, authSvc, appState, dataSvc) {
 	}
 
 	function addNarrative(n) {
-		dataSvc.createNarrative(n).then(function (narrativeResp) {
+		dataSvc.createNarrative(n).then(function(narrativeResp) {
 			$location.path('/story/' + narrativeResp._id);
 		});
 	}

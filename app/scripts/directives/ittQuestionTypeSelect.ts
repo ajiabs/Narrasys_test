@@ -6,18 +6,31 @@
 export default function ittQuestionTypeSelect() {
 	return {
 		restrict: 'EA',
-		scope: true,
+		scope: {
+			data: '='
+		},
 		template: `
 			<div class="field">
 				<div class="label">Question type</div>
 				<div class="input">
-				<select ng-model="item.data._plugin.questiontype">
-					<option value="mc-poll">Poll</option>
-					<option value="mc-formative">Formative</option>
-				</select>
+				<select ng-model="$ctrl.data.data._plugin.questiontype" ng-options="{{$ctrl.setNgOpts('questionType')}}"></select>
 				</div>
-			</div>
-			`
+			</div>`
+		,
+		controller: ['selectService', 'ittUtils', function (selectService, ittUtils) {
+			var ctrl = this;
+			ctrl.setNgOpts = ittUtils.setNgOpts;
+			ctrl.getSelectOpts = selectService.getSelectOpts;
+			onInit();
+
+			function onInit() {
+				//initialize layout data by forcing a pass through the select service.
+				selectService.onSelectChange(ctrl.data, {});
+			}
+
+		}],
+		controllerAs: '$ctrl',
+		bindToController: true
 	};
 }
 
