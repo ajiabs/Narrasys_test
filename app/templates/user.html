@@ -1,12 +1,13 @@
 <div class="userHome">
 	<h2 ng-if="!inPlayer">Account</h2>
 	<h2 ng-if="inPlayer">Profile</h2>
-	<div class="ancillaryNav">
-		<a class="button" ng-if="canAccess"  href="/#/projects">Projects</a>
-		<a class="button" ng-if="canAccess" href="/#/stories">Narratives</a>
-		<a class="button" ng-if="inPlayer && user._id" href="/#/account">Account</a>
-		<a class="button" ng-if="user._id" ng-click="logout()">Log out</a>
-	</div>
+	<itt-nav on-logout="logout()"></itt-nav>
+	<!--<div class="ancillaryNav">-->
+		<!--<a class="button" ng-if="canAccess"  href="/#/projects">Projects</a>-->
+		<!--<a class="button" ng-if="canAccess" href="/#/stories">Narratives</a>-->
+		<!--<a class="button" ng-if="inPlayer && user._id" href="/#/account">Account</a>-->
+		<!--<a class="button" ng-if="user._id" ng-click="logout()">Log out</a>-->
+	<!--</div>-->
 	<p><i><span ng-bind="user.role_description"></span></i></p>
 	<div ng-if="!(user.name === 'guest')" style="float:right; width: 79px">
 		<div class="avatar" ng-click="toggleUploadAvatar()" style="cursor:pointer;cursor:hand">

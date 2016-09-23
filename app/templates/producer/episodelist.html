@@ -4,11 +4,12 @@
 		<h2>Projects</h2>
 		<!-- TODO proper i18n -->
 		<div ng-if="userHasRole('admin') || userHasRole('customer admin')">
-			<div class="ancillaryNav">
-				<a class="button" href="/#/stories">Narratives</a>
-				<a class="button" href="/#/account">Account</a>
-				<a class="button" ng-click="logout()">Log out</a>
-			</div>
+			<!--<div class="ancillaryNav">-->
+				<!--<a class="button" href="/#/stories">Narratives</a>-->
+				<!--<a class="button" href="/#/account">Account</a>-->
+				<!--<a class="button" ng-click="logout()">Log out</a>-->
+			<!--</div>-->
+			<itt-nav on-logout="logout()"></itt-nav>
 			<itt-loading ng-if="loading"></itt-loading>
 			<!--
 			<div class="controls">

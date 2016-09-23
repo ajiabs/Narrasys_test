@@ -426,7 +426,7 @@ input[readonly] {
 }
 
 .button-add:before {
-	content: "\e601";
+	content: "\e908";
 }
 
 .addButtonPanel .button-add:hover {
