@@ -12,9 +12,14 @@
 	angular.module('com.inthetelling.story')
 		.controller('NarrativesCtrl', NarrativesCtrl);
 
-	function NarrativesCtrl($scope, narrativesResolve) {
+	function NarrativesCtrl($scope, authSvc,  narrativesResolve) {
 		$scope.narrativesResolve = narrativesResolve.n;
 		$scope.customersResolve = narrativesResolve.c;
+		$scope.logout = logout;
+
+		function logout() {
+			authSvc.logout();
+		}
 	}
 
 

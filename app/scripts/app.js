@@ -36,7 +36,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		})
 		.when('/stories', {
 			title: "Existing narratives",
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div></div>',
+			template: [
+				'<div class="standaloneAncillaryPage">',
+				'	<itt-nav on-logout="logout()"></itt-nav>',
+				'	<div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div>',
+				'</div>'
+			].join('\n'),
 			controller: 'NarrativesCtrl',
 			resolve: {
 				narrativesResolve: function($route, $q,  ittUtils, authSvc, dataSvc, modelSvc) {

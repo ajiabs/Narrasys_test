@@ -13,13 +13,13 @@
 	        restrict: 'EA',
 			transclude: true,
 			scope: {
-				canAccess: '=',
+				canAccess: '=?',
 				onEdit: '&'
 			},
 			template: [
 				'<div class="pencil__wrapper">',
-				'	<div class="wrapped" ng-transclude></div>',
-				'	<i class="edit-pencil" ng-click="onEdit()" ng-if="showPencil"></i>',
+				'	<div ng-transclude></div>',
+				'	<div class="wrapped"><i class="edit-pencil" ng-click="onEdit()" ng-if="showPencil"></i></div>',
 				'</div>'
 			].join(' '),
 			link: function(scope, elm) {

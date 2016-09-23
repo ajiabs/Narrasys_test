@@ -121,7 +121,7 @@
 }
 
 .container.isOpen:before {
-  content: "-";
+  content: "\25B8";
   display: inline-block;
   width: 1em;
   opacity: 0.5;
@@ -129,15 +129,11 @@
 }
 
 .container.isClosed:before {
-  content: "+";
+  content: "\25BE";
   display: inline-block;
   width: 1em;
   opacity: 0.5;
   float: left;
-}
-
-.hoverIndicator:hover {
-  background-color: #EEE;
 }
 
 .admin .danger {

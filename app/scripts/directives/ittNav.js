@@ -15,7 +15,6 @@
 			},
 			template: [
 				'<div class="ancillaryNav">',
-				'<pre>{{$ctrl.currentPath }}</pre>',
 				'	<a class="button" ng-if="$ctrl.currentPath !== \'/stories\'" href="/#/stories">Narratives</a>',
 				'	<a class="button" href="/#/account">Account</a>',
 				'	<a class="button" ng-if="$ctrl.currentPath !== \'/projects\'" href="/#/projects">Projects</a>',

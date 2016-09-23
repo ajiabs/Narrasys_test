@@ -26,9 +26,11 @@
 
 	<div class="hoverIndicator">
 		<span ng-if="!container.editingContainer">
+			<itt-edit-pencil can-access="true" on-edit="container.editingContainer = true">
 			<a ng-click="toggleChildren()">{{container.name.en}}</a>
 			<span ng-if="depth==3" style="color:#999">({{container.status || Unpublished}})</span>
-			<a style="color:#666" ng-click="container.editingContainer = true">▾</a>
+			<!--<a style="color:#666" ng-click="container.editingContainer = true">▾</a>-->
+			</itt-edit-pencil>
 		</span>
 		<span ng-if="container.editingContainer">
 			<label>Name:&nbsp;
@@ -41,13 +43,15 @@
 			<button class="danger" ng-if="appState.dangerousButtons && !container.children.length && !container.haveNotLoadedChildData" ng-click="deleteEpisodeAndContainer(container._id)">
 				Delete
 			</button>
-			<a ng-href="#/assets/{{container._id}}">[Assets]</a>
-			<a ng-if="canAccess && depth > 0" ng-click="toggleNarrativeModal()">[Generate Narrative]</a>
+			<!--<a ng-href="#/assets/{{container._id}}">[Assets]</a>-->
+			<!--<a ng-if="canAccess && depth > 0" ng-click="toggleNarrativeModal()">[Generate Narrative]</a>-->
 		</span>
 	</div>
 	<div ng-if="container.showChildren">
 		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'"
 			 itt-container="containers[child._id]"
+			 ng-class-even="'container__row--even'"
+			 ng-class-odd="'container__row--odd'"
 			 depth="depth+1"
 			 on-container-click="rootContext($container)"
 			 root-context="rootContext">
@@ -73,16 +77,16 @@
 			<!-- end episode -->
 		</div>
 
-		<div ng-if="!container.addingContainer" class="controls">
-			<button ng-if="depth < 3" ng-click="container.addingContainer = true">Add {{containerTypes[depth+1]}} to {{container.name.en}}</button>
-		</div>
-		<div ng-if="container.addingContainer" class="controls">
-			<label>Name:&nbsp;
-				<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
-			</label>
-			<button ng-click="container.addingContainer = false">Cancel</button>
-			<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
-		</div>
+		<!--<div ng-if="!container.addingContainer" class="controls">-->
+			<!--<button ng-if="depth < 3" ng-click="container.addingContainer = true">Add {{containerTypes[depth+1]}} to {{container.name.en}}</button>-->
+		<!--</div>-->
+		<!--<div ng-if="container.addingContainer" class="controls">-->
+			<!--<label>Name:&nbsp;-->
+				<!--<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;-->
+			<!--</label>-->
+			<!--<button ng-click="container.addingContainer = false">Cancel</button>-->
+			<!--<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>-->
+		<!--</div>-->
 
 	</div>
 
