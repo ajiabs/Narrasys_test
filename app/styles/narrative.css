@@ -24,7 +24,6 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding-bottom: 5%;
 }
 
 @media screen and (max-width: 600px) {
@@ -130,24 +129,39 @@
 }
 
 .edit-pencil {
-	font-size: 10px;
-	position: absolute;
-	border: 2px solid #DC6026;
-	border-radius: 2.5em;
-	width: 2em;
-	height: 2em;
-	padding-left: 2px;
-	padding-top: 2px;
-	/*padding: 3px 5px;*/
+	color: #DC6026;
+	padding-left: 3px;
 	cursor: pointer;
-	/*margin-top: 6px;*/
-	/*margin-left: 5px;*/
 }
 
 .edit-pencil:before {
 	font-family: Story;
-	content: "\e601";
+	content: "\e907";
+}
+
+.icon__button {
+	font-family: Story;
+	color: #595A5A;
+}
+
+.icon__button:hover {
 	color: #DC6026;
+}
+
+.button__assets:before {
+	content: "\e903";
+}
+
+.button__generateNarrative:before {
+	content: "\e90a";
+}
+
+.button__editor:before {
+	content: "\e904";
+}
+
+.button__producer:before {
+	content: "\e905";
 }
 
 .standaloneAncillaryPage button,

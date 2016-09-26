@@ -1,46 +1,48 @@
 .rootLogin h1 {
-  font-size: 1em;
+	font-size: 1em;
 }
 
 .rootLogin form {
-  padding-bottom: 1em;
+	padding-bottom: 1em;
 }
 
 .rootLogin .error {
-  color: #F00;
+	color: #F00;
 }
 
 .rootLogin label {
-  display: block;
-  width: 100%;
-  margin: 0.2em 0;
+	display: block;
+	width: 100%;
+	margin: 0.2em 0;
 }
 
 .rootLogin label span {
-  width: 30%;
-  display: inline-block;
+	width: 30%;
+	display: inline-block;
 }
 
 .rootLogin label input {
-  width: 70%;
-  font-size: 1em;
-  padding: 0.1em;
+	width: 70%;
+	font-size: 1em;
+	padding: 0.1em;
 }
 
 .rootLogin .submit {
-  float: right;
+	float: right;
 }
+
 /* - */
 
 .admin {
-  margin: 1em;
+	margin: 1em;
 }
 
 .admin small {
-  opacity: 0.3;
-  float: right;
-  text-align: right;
+	opacity: 0.3;
+	float: right;
+	text-align: right;
 }
+
 /*.admin button {
   background-color: #fff;
   border: 1px solid;
@@ -58,39 +60,39 @@
 }*/
 
 .container {
-  list-style: none;
-  clear: both;
+	list-style: none;
+	clear: both;
 }
 
 .container .container {
-  margin-left: 1em;
+	margin-left: 1em;
 }
 
 .container .controls {
-  background-color: #FDFDFD;
-  text-align: right;
-  font-size: 0.9em;
-  clear: right;
+	background-color: #FDFDFD;
+	text-align: right;
+	font-size: 0.9em;
+	clear: right;
 }
 
 .container span.controls {
-  background: none;
-  float: right;
+	background: none;
+	float: right;
 }
 
 .container input {
-  width: 50%;
+	width: 50%;
 }
 
 .episodePicker {
-  background: none repeat scroll 0 0 #fff;
-  border: 1px solid;
-  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1em;
-  margin-left: 1em;
-  margin-right: 1em;
-  padding: 0.5em;
-  position: absolute;
+	background: none repeat scroll 0 0 #fff;
+	border: 1px solid;
+	box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+	margin-bottom: 1em;
+	margin-left: 1em;
+	margin-right: 1em;
+	padding: 0.5em;
+	position: absolute;
 }
 
 .admin, .episodePicker {
@@ -117,34 +119,35 @@
 }
 
 .container.customer {
-  margin-left: 0;
+	margin-left: 0;
 }
 
 .container.isOpen:before {
-  content: "\25B8";
-  display: inline-block;
-  width: 1em;
-  opacity: 0.5;
-  float: left;
+	content: "\25BE";
+	display: inline-block;
+	width: 1em;
+	opacity: 0.5;
+	float: left;
 }
 
 .container.isClosed:before {
-  content: "\25BE";
-  display: inline-block;
-  width: 1em;
-  opacity: 0.5;
-  float: left;
+
+	content: "\25B8";
+	display: inline-block;
+	width: 1em;
+	opacity: 0.5;
+	float: left;
 }
 
 .admin .danger {
-  background-color: #C00 !important;
-  color: #FFF;
+	background-color: #C00 !important;
+	color: #FFF;
 }
 
 input.readonly {
-  border: none;
-  width: 100%;
-  background: none;
-  font-size: 0.9em;
+	border: none;
+	width: 100%;
+	background: none;
+	font-size: 0.9em;
 }
 

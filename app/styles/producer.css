@@ -399,7 +399,7 @@ input[readonly] {
 }
 
 .button-add:before {
-	content: "\e908";
+	content: "\e601";
 }
 
 .addButtonPanel .button-add:hover {

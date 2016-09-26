@@ -6,9 +6,6 @@
 	}" ng-if="container._id">
 
 
-
-
-
 	<itt-modal modal-class="narrative__modal" ng-if="showNarrativeModal">
 		<itt-narrative-editor
 			customers="customers"
@@ -22,7 +19,6 @@
 
 		<itt-route-loading is-loading="resolvingNarrative"></itt-route-loading>
 	</itt-modal>
-
 
 	<div class="hoverIndicator">
 		<span ng-if="!container.editingContainer">
@@ -48,6 +44,50 @@
 		</span>
 	</div>
 	<div ng-if="container.showChildren">
+
+		<div ng-if="!container.addingContainer" class="">
+			<button ng-if="depth === 0" ng-click="container.addingContainer = true">+Project</button>
+		</div>
+
+		<div ng-if="container.addingContainer && depth === 0">
+			<label>Name:&nbsp;
+				<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
+			</label>
+			<button ng-click="container.addingContainer = false">Cancel</button>
+			<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
+		</div>
+
+		<div ng-if="!container.addingContainer">
+			<div ng-if="depth === 1">
+				<button ng-click="container.addingContainer = true">+Module</button>
+				<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
+				<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+			</div>
+		</div>
+
+		<div ng-if="container.addingContainer && depth === 1">
+			<label>Name:&nbsp;
+				<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
+			</label>
+			<button ng-click="container.addingContainer = false">Cancel</button>
+			<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
+		</div>
+
+		<div ng-if="depth === 2">
+			<div ng-if="!container.addingContainer">
+				<button ng-click="container.addingContainer = true">+Episode</button>
+				<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
+				<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+			</div>
+			<div ng-if="container.addingContainer">
+				<label>Name:&nbsp;
+					<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
+				</label>
+				<button ng-click="container.addingContainer = false">Cancel</button>
+				<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
+			</div>
+		</div>
+
 		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'"
 			 itt-container="containers[child._id]"
 			 ng-class-even="'container__row--even'"
@@ -56,26 +96,38 @@
 			 on-container-click="rootContext($container)"
 			 root-context="rootContext">
 		</div>
+
+
+
+
 		<div ng-if="depth == 3" class="container">
+
 			<!-- begin episode -->
-			<a class="button" ng-if="canAccess" ng-click="container.showGuestUrl=!container.showGuestUrl">
-				<span ng-if="customer.guest_access_allowed">Guest</span>
-				<span ng-if="!customer.guest_access_allowed">ID</span>
-			</a>
-			<a class="button" href="#/episode/{{container.episodes[0]}}">Player</a>
-			<a class="button" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}">Editor</a>
-			<a class="button" href="#/producer/{{container.episodes[0]}}">Producer</a>
-			<div ng-if="container.showGuestUrl && customer.guest_access_allowed">
-				<!-- not editable; only an input to make text selection easier -->
-				The guest-accessible url for this episode is
-				<input class="readonly" ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{container.episodes[0]}}" readonly>
-			</div>
-			<div ng-if="container.showGuestUrl && !customer.guest_access_allowed">
-				The ID for this episode is {{container.episodes[0]}}
-			</div>
+			<!--<a class="button" ng-if="canAccess" ng-click="container.showGuestUrl=!container.showGuestUrl">-->
+				<!--<span ng-if="customer.guest_access_allowed">Guest</span>-->
+				<!--<span ng-if="!customer.guest_access_allowed">ID</span>-->
+			<!--</a>-->
+			<!--<a class="button" href="#/episode/{{container.episodes[0]}}">Player</a>-->
+
+
+			<a class="icon__button button__editor" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}" title="Go to editor"></a>
+			<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}" title="Go to producer"></a>
+			<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
+			<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+
+			<!--<div ng-if="container.showGuestUrl && customer.guest_access_allowed">-->
+				<!--&lt;!&ndash; not editable; only an input to make text selection easier &ndash;&gt;-->
+				<!--The guest-accessible url for this episode is-->
+				<!--<input class="readonly" ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{container.episodes[0]}}" readonly>-->
+			<!--</div>-->
+			<!--<div ng-if="container.showGuestUrl && !customer.guest_access_allowed">-->
+				<!--The ID for this episode is {{container.episodes[0]}}-->
+			<!--</div>-->
 
 			<!-- end episode -->
 		</div>
+
+
 
 		<!--<div ng-if="!container.addingContainer" class="controls">-->
 			<!--<button ng-if="depth < 3" ng-click="container.addingContainer = true">Add {{containerTypes[depth+1]}} to {{container.name.en}}</button>-->

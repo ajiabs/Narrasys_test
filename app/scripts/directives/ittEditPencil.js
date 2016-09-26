@@ -19,7 +19,7 @@
 			template: [
 				'<div class="pencil__wrapper">',
 				'	<div ng-transclude></div>',
-				'	<div class="wrapped"><i class="edit-pencil" ng-click="onEdit()" ng-if="showPencil"></i></div>',
+				'	<div class="wrapped"><span class="edit-pencil" ng-click="onEdit()" ng-if="showPencil"></span></div>',
 				'</div>'
 			].join(' '),
 			link: function(scope, elm) {

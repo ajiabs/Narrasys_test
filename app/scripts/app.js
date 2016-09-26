@@ -39,6 +39,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			template: [
 				'<div class="standaloneAncillaryPage">',
 				'	<itt-nav on-logout="logout()"></itt-nav>',
+				'	<h1>Narratives</h1>',
 				'	<div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div>',
 				'</div>'
 			].join('\n'),
