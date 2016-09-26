@@ -33,10 +33,15 @@ angular.module('com.inthetelling.story')
 					$scope.onContainerClick = onContainerClick;
 					function onContainerClick ($container) {
 
+
 						if (ittUtils.existy($scope.lastClickedContainer) && $scope.lastClickedContainer.depth === 3) {
 							$scope.lastClickedContainer.container.showChildren = false;
 						}
+
+
+
 						$scope.lastClickedContainer = $container;
+						console.log('container', $container);
 					}
 
 			}]

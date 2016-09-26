@@ -399,14 +399,14 @@ input[readonly] {
 }
 
 .button-add:before {
-	content: "\e601";
+	content: "\e";
 }
 
-.addButtonPanel .button-add:hover {
+.addButtonPanel .button-add:hover, .editButtonPanel .button-add:hover {
 	color: #DE6625;
 }
 
-.addButtonPanel .button:hover {
+.addButtonPanel .button:hover, .editButtonPanel .button:hover {
 	color: #DE6625;
 }
 

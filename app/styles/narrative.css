@@ -129,9 +129,13 @@
 }
 
 .edit-pencil {
-	color: #DC6026;
+	color: #595A5A;
 	padding-left: 3px;
 	cursor: pointer;
+}
+
+.edit-pencil:hover {
+	color: #DC6026;
 }
 
 .edit-pencil:before {
