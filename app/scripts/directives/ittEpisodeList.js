@@ -35,7 +35,7 @@ angular.module('com.inthetelling.story')
 					$scope.onContainerClick = onContainerClick;
 					function onContainerClick ($container) {
 
-						if ($container.container.children && (!$container.container.showChildren || !$container.bool === true)) {
+						if ($container.container.children && (!$container.container.showChildren || $container.bool === false)) {
 							// have already loaded kids
 							$container.container.showChildren = !$container.container.showChildren;
 						} else {
