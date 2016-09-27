@@ -1,12 +1,13 @@
 <div class="userHome">
 	<h2 ng-if="!inPlayer">Account</h2>
 	<h2 ng-if="inPlayer">Profile</h2>
-	<div class="ancillaryNav">
-		<a class="button" ng-if="canAccess"  href="/#/projects">Projects</a>
-		<a class="button" ng-if="canAccess" href="/#/stories">Narratives</a>
-		<a class="button" ng-if="inPlayer && user._id" href="/#/account">Account</a>
-		<a class="button" ng-if="user._id" ng-click="logout()">Log out</a>
-	</div>
+	<itt-nav on-logout="logout()"></itt-nav>
+	<!--<div class="ancillaryNav">-->
+		<!--<a class="button" ng-if="canAccess"  href="/#/projects">Projects</a>-->
+		<!--<a class="button" ng-if="canAccess" href="/#/stories">Narratives</a>-->
+		<!--<a class="button" ng-if="inPlayer && user._id" href="/#/account">Account</a>-->
+		<!--<a class="button" ng-if="user._id" ng-click="logout()">Log out</a>-->
+	<!--</div>-->
 	<p><i><span ng-bind="user.role_description"></span></i></p>
 	<div ng-if="!(user.name === 'guest')" style="float:right; width: 79px">
 		<div class="avatar" ng-click="toggleUploadAvatar()" style="cursor:pointer;cursor:hand">
@@ -31,33 +32,33 @@
 		</span>
 	</div>
 
-	<div ng-if="!inPlayer">
+	<!--<div ng-if="!inPlayer">-->
 
-		<div ng-if="!isGuest() && myPurchases">
-			<h3>Your purchases</h3>
-			<div class="narrativelist" ng-repeat="purchase in myPurchases">
+		<!--<div ng-if="!isGuest() && myPurchases">-->
+			<!--<h3>Your purchases</h3>-->
+			<!--<div class="narrativelist" ng-repeat="purchase in myPurchases">-->
 
-				<div ng-if="purchase.daysUntilExpiration < 0">
-					<h3>{{purchase.narrativeData.name.en}}</h3>
-					<p>We're sorry, this purchase has expired.</p>
-				</div>
+				<!--<div ng-if="purchase.daysUntilExpiration < 0">-->
+					<!--<h3>{{purchase.narrativeData.name.en}}</h3>-->
+					<!--<p>We're sorry, this purchase has expired.</p>-->
+				<!--</div>-->
 
-				<div ng-if="purchase.daysUntilExpiration >=0 || !purchase.daysUntilExpiration">
-					<h3>
-						<a ng-href="/#/story/{{purchase.narrativeData.path_slug.en}}">{{purchase.narrativeData.name.en}}</a>
-					</h3>
-					<p>
-						<i>{{purchase.daysUntilExpiration}} days remaining</i>
-					</p>
-					<p>
-						{{purchase.narrativeData.description.en}}
-					</p>
-				</div>
+				<!--<div ng-if="purchase.daysUntilExpiration >=0 || !purchase.daysUntilExpiration">-->
+					<!--<h3>-->
+						<!--<a ng-href="/#/story/{{purchase.narrativeData.path_slug.en}}">{{purchase.narrativeData.name.en}}</a>-->
+					<!--</h3>-->
+					<!--<p>-->
+						<!--<i>{{purchase.daysUntilExpiration}} days remaining</i>-->
+					<!--</p>-->
+					<!--<p>-->
+						<!--{{purchase.narrativeData.description.en}}-->
+					<!--</p>-->
+				<!--</div>-->
 
-			</div>
-			<div ng-if="myPurchases.length == 0">You have not purchased any stories.</div>
-		</div>
+			<!--</div>-->
+			<!--<div ng-if="myPurchases.length == 0">You have not purchased any stories.</div>-->
+		<!--</div>-->
 
 
-	</div>
+	<!--</div>-->
 </div>

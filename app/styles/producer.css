@@ -392,33 +392,6 @@ input[readonly] {
 	font-size: 1.2em;
 }
 
-
-.pencil__wrapper {
-	display: flex;
-}
-
-.pencil__wrapper > .edit-pencil {
-	position: relative;
-}
-
-.edit-pencil {
-	position: absolute;
-	border: 2px solid #555;
-	border-radius: 2.5em;
-	width: 2em;
-	height: 2em;
-	padding: 4px 5px;
-	cursor: pointer;
-	margin-top: 6px;
-	margin-left: 5px;
-}
-
-.edit-pencil:before {
-	font-family: Story;
-	content: "\e601";
-	color: #000;
-}
-
 .edit-event:before {
 	font-family: Story;
 	content: "\e601";
@@ -426,14 +399,14 @@ input[readonly] {
 }
 
 .button-add:before {
-	content: "\e601";
+	content: "\e90b";
 }
 
-.addButtonPanel .button-add:hover {
+.addButtonPanel .button-add:hover, .editButtonPanel .button-add:hover {
 	color: #DE6625;
 }
 
-.addButtonPanel .button:hover {
+.addButtonPanel .button:hover, .editButtonPanel .button:hover {
 	color: #DE6625;
 }
 

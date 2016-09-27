@@ -12,22 +12,81 @@
 	margin: 0.5em 0;
 }
 
+.narratives__name {
+	padding-left: 5px;
+}
+
+.narratives__description {
+	margin-left: 15px;
+}
+
+.nav__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+@media screen and (max-width: 600px) {
+	.nav__header {
+		flex-direction: column;
+	}
+}
+
+.nav__item img {
+	width: 100%;
+}
+
+.nav__controls {
+	display: flex;
+	flex-direction: row;
+}
+
+.navControls__item {
+	display: flex;
+	flex-direction: column;
+	padding: 0 3px;
+}
+
+.nav__user {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.nav__user img {
+	border: 1px solid #595A5A;
+	margin-top: 3px;
+	width: 35px;
+	border-radius: 50px;
+}
+
+.item--left {
+	text-align: right;
+	border-right: 1px solid black;
+	padding-right: 5px;
+}
+
+.item--right {
+	align-self: center;
+}
+
 .standaloneAncillaryPage {
 	display: block;
 	height: 100%;
 	overflow: scroll;
-	padding: 5% 10%;
+	padding: 1% 10%;
 	position: absolute;
 	width: 100%;
-	background: url("/images/itt.svg") no-repeat fixed 50% 80% #eee;
+	background: url("/images/customer/Narrasys_Tree.svg") no-repeat fixed 50% 80% #fff;
 	font-family: 'Source Sans Pro', 'Droid Sans', Helvetica, sans-serif;
 }
 
 .standaloneAncillaryPage > div {
-	border: 1px solid #CCC;
-	background-color: #FFF;
+	border: 1px solid #F2F2F2;
+	background-color: #F2F2F2;
 	padding: 1em;
 	border-radius: 1em;
+	font-size: 20px;
 }
 
 @media screen and (max-width: 500px) {
@@ -42,17 +101,77 @@
 }
 
 .standaloneAncillaryPage a {
-	color: #C44343;
+	color: #595A5A;
 }
 
 .standaloneAncillaryPage a:hover {
-	text-decoration: underline;
+	text-decoration: none;
+}
+
+.container__row--odd {
+	background-color: #FFFFFF;
+	border: 1px solid #FFFFFF;
+}
+
+.container__row--even {
+	background-color: #e6e6e6;
+	border: 1px solid #e6e6e6;
+}
+
+.hoverIndicator:hover {
+	border: 1px solid #DC6026;
+}
+
+.pencil__wrapper {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+}
+
+.edit-pencil {
+	color: #595A5A;
+	padding-left: 3px;
+	cursor: pointer;
+}
+
+.edit-pencil:hover {
+	color: #DC6026;
+}
+
+.edit-pencil:before {
+	font-family: Story;
+	content: "\e907";
+}
+
+.icon__button {
+	font-family: Story;
+	color: #595A5A;
+}
+
+.icon__button:hover {
+	color: #DC6026;
+}
+
+.button__assets:before {
+	content: "\e903";
+}
+
+.button__generateNarrative:before {
+	content: "\e90a";
+}
+
+.button__editor:before {
+	content: "\e904";
+}
+
+.button__producer:before {
+	content: "\e905";
 }
 
 .standaloneAncillaryPage button,
 .standaloneAncillaryPage .button,
 .standaloneAncillaryPage input[type="submit"] {
-	background-color: #C44343;
+	background-color: #DC6026;
 	color: #FFF;
 	border-radius: 0.6em;
 	font-size: 0.8em;
@@ -98,6 +217,7 @@
 .standaloneAncillaryPage .ancillaryNav {
 	text-align: right;
 }
+
 
 .standaloneAncillaryPage hr {
 	border: none;

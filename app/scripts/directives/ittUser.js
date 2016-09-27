@@ -24,9 +24,10 @@ angular.module('com.inthetelling.story')
 					scope.user = appState.user;
 					scope.userHasRole = authSvc.userHasRole;
 
-					if (!scope.inPlayer && !authSvc.isGuest()) {
-						scope.getMyNarratives();
-					}
+					//TS-1120 - remove purchases
+					// if (!scope.inPlayer && !authSvc.isGuest()) {
+					// 	scope.getMyNarratives();
+					// }
 				});
 
 				// TODO refactor: this is very similar to ittItemEditor's uploadAsset
