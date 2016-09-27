@@ -23,7 +23,7 @@
 				'			<div class="nav__controls">',
 				'				<div class="navControls__item item--left">',
 				'					<div class="nav__user" ng-click="$ctrl.goToAccounts()">',
-				'						<img ng-src="{{$ctrl.appState.user.avatar}}">',
+				'						<img ng-src="{{$ctrl.appState.user.avatar || \'/images/no-avatar.gif\'}}">',
 				'						<a class="nav__button" ng-if="$ctrl.appState.user">{{$ctrl.appState.user.name}}</a>',
 				'					</div>',
 				'					<a class="nav__button" ng-if="$ctrl.currentPath !== \'/projects\'" href="/#/projects">My Projects</a>',

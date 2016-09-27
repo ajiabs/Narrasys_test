@@ -131,13 +131,31 @@
 }
 
 .container.isClosed:before {
-
 	content: "\25B8";
 	display: inline-block;
 	width: 1em;
 	opacity: 0.5;
 	float: left;
 }
+
+.isPublished, .isUnPublished {
+	font-family: Story;
+	position: relative;
+	left: 85%;
+	bottom: 0.5em;
+	color: #DC6026;
+
+}
+
+.isPublished:before {
+	content: "\e906"
+}
+
+.isUnPublished:before {
+	content: "\e908"
+}
+
+
 
 .admin .danger {
 	background-color: #C00 !important;

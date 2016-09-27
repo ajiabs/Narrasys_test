@@ -1,7 +1,7 @@
 <!-- recursive template for admin episode list -->
 <div class="container" ng-class="{
-		isOpen: container.showChildren,
-		isClosed: !container.showChildren,
+		isOpen: container.showChildren && depth !== 3,
+		isClosed: !container.showChildren && depth !== 3,
 		hoverIndicator: depth == 3
 	}" ng-if="container._id">
 
@@ -20,14 +20,13 @@
 		<itt-route-loading is-loading="resolvingNarrative"></itt-route-loading>
 	</itt-modal>
 
-	<div class="hoverIndicator">
+	<div ng-class="{hoverIndicator: depth !== 3}">
 		<span ng-if="!container.editingContainer">
 			<itt-edit-pencil can-access="true" on-edit="container.editingContainer = true">
-			<a ng-click="toggleChildren()">{{container.name.en}}</a>
-			<span ng-if="depth==3" style="color:#999">({{container.status || Unpublished}})</span>
-			<!--<a style="color:#666" ng-click="container.editingContainer = true">▾</a>-->
+				<a ng-click="toggleChildren()">{{container.name.en}}</a>
 			</itt-edit-pencil>
 		</span>
+
 		<span ng-if="container.editingContainer">
 			<label>Name:&nbsp;
 				<input ng-model="container.newContainerName" ng-init="container.newContainerName = container.name.en" type="text" autofocus>&nbsp;
@@ -111,6 +110,7 @@
 			<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}" title="Go to producer"></a>
 			<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
 			<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+			<span ng-if="depth === 3" title="{{container.status}}" ng-class="{isPublished: container.status === 'Published', isUnPublished: container.status !== 'Published'}"></span>
 			<!-- end episode -->
 		</div>
 
