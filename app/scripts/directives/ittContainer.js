@@ -46,10 +46,6 @@ angular.module('com.inthetelling.story')
 					// TEMP obviously
 					scope.isDemoServer = ($location.host().match(/demo|localhost|api-dev|client.dev/));
 
-					scope.projectActive = false;
-					scope.moduleActive = false;
-					scope.episodeActive = false;
-
 					scope.selectText = function (event) {
 						event.target.select(); // convenience for selecting the episode url
 					};
@@ -58,7 +54,6 @@ angular.module('com.inthetelling.story')
 					scope.toggleChildren = function () {
 						scope.onContainerClick({$container: {container: scope.container, depth: scope.depth}});
 
-						console.log('project', scope.projectActive, 'module', scope.moduleActive, 'episode', scope.episodeActive);
 						if (scope.container.children || scope.container.episodes.length) {
 							// have already loaded kids
 							scope.container.showChildren = !scope.container.showChildren;

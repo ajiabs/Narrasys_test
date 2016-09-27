@@ -41,43 +41,49 @@
 			</button>
 		</span>
 	</div>
+
+
 	<div ng-if="container.showChildren">
 
-		<div ng-if="!container.addingContainer">
-			<button ng-if="depth === 0" ng-click="container.addingContainer = true">+Project</button>
+		<div ng-if="depth === 0">
+			<div ng-if="!container.addingContainer">
+				<button ng-click="container.addingContainer = true">+Project</button>
+			</div>
 
-		</div>
-
-		<div ng-if="container.addingContainer && depth === 0">
-			<label>Name:&nbsp;
-				<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
-			</label>
-			<button ng-click="container.addingContainer = false">Cancel</button>
-			<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
-		</div>
-
-		<div ng-if="!container.addingContainer">
-			<div ng-if="depth === 1">
-				pj active? {{projectActive}}
-				<button ng-click="container.addingContainer = true">+Module</button>
-				<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
-				<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+			<div ng-if="container.addingContainer">
+				<label>Name:&nbsp;
+					<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
+				</label>
+				<button ng-click="container.addingContainer = false">Cancel</button>
+				<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
 			</div>
 		</div>
 
-		<div ng-if="container.addingContainer && depth === 1">
-			<label>Name:&nbsp;
-				<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
-			</label>
-			<button ng-click="container.addingContainer = false">Cancel</button>
-			<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
+		<div ng-if="depth === 1">
+			<div ng-if="!container.addingContainer">
+				<div ng-if="container.isActive">
+					<button ng-click="container.addingContainer = true">+Module</button>
+					<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
+					<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+				</div>
+			</div>
+
+			<div ng-if="container.addingContainer">
+				<label>Name:&nbsp;
+					<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
+				</label>
+				<button ng-click="container.addingContainer = false">Cancel</button>
+				<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
+			</div>
 		</div>
 
 		<div ng-if="depth === 2">
 			<div ng-if="!container.addingContainer">
-				<button ng-click="container.addingContainer = true">+Episode</button>
-				<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
-				<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+				<div ng-if="container.isActive">
+					<button ng-click="container.addingContainer = true">+Episode</button>
+					<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
+					<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+				</div>
 			</div>
 			<div ng-if="container.addingContainer">
 				<label>Name:&nbsp;
@@ -99,6 +105,7 @@
 		</div>
 
 		<div ng-if="depth == 3" class="container">
+			<!--show kids{{container.showChildren}} is active{{container.isActive}}-->
 			<!-- begin episode -->
 			<a class="icon__button button__editor" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}" title="Go to editor"></a>
 			<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}" title="Go to producer"></a>

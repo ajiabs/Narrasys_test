@@ -23,6 +23,7 @@ angular.module('com.inthetelling.story')
 							// modelSvc.containers[id].showChildren = true;
 							$scope.root.children.push(modelSvc.containers[id]);
 						});
+
 						$scope.loading = false;
 					}, function () {
 						$scope.failedLogin = true;
@@ -30,18 +31,19 @@ angular.module('com.inthetelling.story')
 
 					});
 
+
 					$scope.onContainerClick = onContainerClick;
 					function onContainerClick ($container) {
+						if (ittUtils.existy($scope.lastClickedContainer)) {
+							$scope.lastClickedContainer.container.isActive = false;
+							if ($scope.lastClickedContainer.depth === 3) {
+								$scope.lastClickedContainer.container.showChildren = false;
 
-
-						if (ittUtils.existy($scope.lastClickedContainer) && $scope.lastClickedContainer.depth === 3) {
-							$scope.lastClickedContainer.container.showChildren = false;
+							}
 						}
 
-
-
 						$scope.lastClickedContainer = $container;
-						console.log('container', $container);
+						$scope.lastClickedContainer.container.isActive = true;
 					}
 
 			}]
