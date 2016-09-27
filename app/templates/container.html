@@ -1,10 +1,12 @@
 <!-- recursive template for admin episode list -->
-<div class="container" ng-class="{
-		isOpen: container.showChildren && depth !== 3,
-		isClosed: !container.showChildren && depth !== 3,
-		hoverIndicator: depth == 3
-	}" ng-if="container._id">
 
+
+
+<div class="container" ng-class="{hoverIndicator: depth == 3}" ng-if="container._id">
+
+	<span ng-class="{isOpen: container.showChildren && depth !== 3, isClosed: !container.showChildren && depth !== 3}"
+		  ng-click="onToggleChildren(false)">
+	</span>
 
 	<itt-modal modal-class="narrative__modal" ng-if="showNarrativeModal">
 		<itt-narrative-editor
@@ -23,7 +25,7 @@
 	<div ng-class="{hoverIndicator: depth !== 3}">
 		<span ng-if="!container.editingContainer">
 			<itt-edit-pencil can-access="true" on-edit="container.editingContainer = true">
-				<a ng-click="toggleChildren()">{{container.name.en}}</a>
+				<a ng-click="onToggleChildren(true)">{{container.name.en}}</a>
 			</itt-edit-pencil>
 		</span>
 
@@ -46,7 +48,9 @@
 
 		<div ng-if="depth === 0">
 			<div ng-if="!container.addingContainer">
-				<button ng-click="container.addingContainer = true">+Project</button>
+				<div ng-if="container.isActive">
+					<button ng-click="container.addingContainer = true">+Project</button>
+				</div>
 			</div>
 
 			<div ng-if="container.addingContainer">
@@ -103,8 +107,9 @@
 			 root-context="rootContext">
 		</div>
 
-		<div ng-if="depth == 3" class="container">
-			<!--show kids{{container.showChildren}} is active{{container.isActive}}-->
+
+		<div ng-if="depth == 3 && container.isActive" class="container">
+
 			<!-- begin episode -->
 			<a class="icon__button button__editor" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}" title="Go to editor"></a>
 			<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}" title="Go to producer"></a>

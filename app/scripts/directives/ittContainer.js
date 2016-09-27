@@ -51,18 +51,9 @@ angular.module('com.inthetelling.story')
 					};
 
 					scope.containerTypes = ["customer", "project", "module", "episode"];
-					scope.toggleChildren = function () {
-						scope.onContainerClick({$container: {container: scope.container, depth: scope.depth}});
 
-						if (scope.container.children || scope.container.episodes.length) {
-							// have already loaded kids
-							scope.container.showChildren = !scope.container.showChildren;
-						} else {
-							dataSvc.getContainer(scope.container._id).then(function (id) {
-								scope.container = modelSvc.containers[id];
-								scope.container.showChildren = true;
-							});
-						}
+					scope.onToggleChildren = function(bool) {
+						scope.onContainerClick({$container: {container: scope.container, bool: bool}});
 					};
 
 					scope.renameContainer = function () {

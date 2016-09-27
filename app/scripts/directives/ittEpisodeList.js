@@ -34,16 +34,35 @@ angular.module('com.inthetelling.story')
 
 					$scope.onContainerClick = onContainerClick;
 					function onContainerClick ($container) {
-						if (ittUtils.existy($scope.lastClickedContainer)) {
-							$scope.lastClickedContainer.container.isActive = false;
-							if ($scope.lastClickedContainer.depth === 3) {
-								$scope.lastClickedContainer.container.showChildren = false;
 
+						if ($container.container.children && (!$container.container.showChildren || !$container.bool === true)) {
+							// have already loaded kids
+							$container.container.showChildren = !$container.container.showChildren;
+						} else {
+							dataSvc.getContainer($container.container._id).then(function (id) {
+								$container.container = modelSvc.containers[id];
+								$container.container.showChildren = true;
+							});
+						}
+
+						if ($container.bool === true) {
+							if (ittUtils.existy($scope.lastClickedContainer)) {
+
+
+								if ($scope.lastClickedContainer.container !== $container.container) {
+									$scope.lastClickedContainer.container.isActive = false;
+									$scope.lastClickedContainer = $container;
+									$scope.lastClickedContainer.container.isActive = true;
+								} else {
+									$scope.lastClickedContainer.container.isActive = !$scope.lastClickedContainer.container.isActive;
+								}
+
+							} else {
+								$scope.lastClickedContainer = $container;
+								$scope.lastClickedContainer.container.isActive = true;
 							}
 						}
 
-						$scope.lastClickedContainer = $container;
-						$scope.lastClickedContainer.container.isActive = true;
 					}
 
 			}]

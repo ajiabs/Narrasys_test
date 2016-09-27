@@ -122,7 +122,12 @@
 	margin-left: 0;
 }
 
-.container.isOpen:before {
+
+.isOpen, .isClosed {
+	cursor: pointer;
+}
+
+.isOpen:before {
 	content: "\25BE";
 	display: inline-block;
 	width: 1em;
@@ -130,7 +135,7 @@
 	float: left;
 }
 
-.container.isClosed:before {
+.isClosed:before {
 	content: "\25B8";
 	display: inline-block;
 	width: 1em;
