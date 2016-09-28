@@ -7,7 +7,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, authSvc) {
+	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, authSvc, selectService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -27,13 +27,7 @@ angular.module('com.inthetelling.story')
 				}
 				scope.uploadStatus = [];
 				scope.uneditedEpisode = angular.copy(scope.episode); // in case of cancel.   Must be a copy, not the original!
-				scope.itemForm = {
-					"transition": "",
-					"highlight": "",
-					"color": "",
-					"typography": "",
-					"timestamp": ""
-				};
+				scope.itemForm = selectService.setupItemForm(scope.episode.styles, 'episode');
 
 				// is the master asset a youtube link? (i.e. is yt the only url we have?)
 				if (
@@ -49,17 +43,6 @@ angular.module('com.inthetelling.story')
 					scope.masterAssetType = 'Youtube';
 				} else {
 					scope.masterAssetType = 'Video';
-				}
-
-				// extract current event styles for the form
-				if (scope.episode.styles) {
-					for (var styleType in scope.itemForm) {
-						for (var i = 0; i < scope.episode.styles.length; i++) {
-							if (scope.episode.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
-								scope.itemForm[styleType] = scope.episode.styles[i].substr(styleType.length); // Remainder of scope.episode.styles[i]
-							}
-						}
-					}
 				}
 
 				// extract episode languages for the form
