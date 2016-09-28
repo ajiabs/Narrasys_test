@@ -148,7 +148,10 @@ angular.module('com.inthetelling.story')
 					//we do not have access here. Note that itemForm is only really used in background Images.
 					//hack fix is to pass in an empty object, and selectService will add the necessary itemForm
 					//props.
-					selectService.onSelectChange(appState.editEvent, {});
+
+					var itemForm = selectService.setupItemForm(appState.editEvent.styles, 'item');
+
+					selectService.onSelectChange(appState.editEvent, itemForm);
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
 				};

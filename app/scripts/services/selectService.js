@@ -90,7 +90,8 @@
 			onSelectChange: onSelectChange,
 			getTemplates: getTemplates,
 			getVisibility: getVisibility,
-			getSelectOpts: getSelectOpts
+			getSelectOpts: getSelectOpts,
+			setupItemForm: setupItemForm
 		};
 
 		function _setVisibility(prop, bool) {
@@ -209,6 +210,64 @@
 
 		function getVisibility(prop) {
 			return _visibility[prop];
+		}
+
+		/*
+		 This logic used to live in ittItemEditor and ittEpisodeEditor and is now consolidated here.
+		 These loops seem to be responsible for setting up itemForm from the styles array.
+		 itemForm seems to be where we hold style specific data that pertains to events (aka items).
+		 itemForm seems to be used mostly in the customize tab and sets color, timestamp, hightlight and transition options.
+		 itemForm is also responsible for setting the 'pin' and 'position' props on a background image event.
+		 All of the above is parsed from the itemForm (if its set), and read into the item.styles array.
+		 When it comes time to persist, the styles array is used in dataSvc#prepItemForStorage,
+		 which reads the strings in the styles array and returns the corresponding ID for the entity in the DB.
+
+		 We do the inverse of this inside of watchStyleEdits below, which watches the itemForm, and builds up the styles array from
+		 the itemForm props. It also formats background URLs.
+		 */
+		function setupItemForm(stylesArr, type) {
+			//global for episode and item
+			var _itemFormStub = {
+				"transition": "",
+				"highlight": "",
+				"color": "",
+				"typography": "",
+				"timestamp": "",
+			};
+			var _itemSpecificOpts = {
+				"position": "", // for image fills only
+				"pin": "" // for image fills only
+			};
+			//add additional props for items
+			if (type === 'item') {
+				_itemFormStub = angular.extend(_itemSpecificOpts, _itemFormStub);
+			}
+
+			// do this in both cases, i.e. for item and episode
+			for (var styleType in _itemFormStub) {
+				for (var i = 0; i < stylesArr.length; i++) {
+					if (stylesArr[i].substr(0, styleType.length) === styleType) { // begins with styleType
+						_itemFormStub[styleType] = stylesArr[i].substr(styleType.length); // Remainder of stylesArr[i]
+					}
+				}
+			}
+
+			//next loop only necessary for items, so early return
+			if (type === 'episode') {
+				return _itemFormStub;
+			}
+			//need more stuff to do for items
+			// position and pin don't have a prefix because I was dumb when I planned this
+			for (var j = 0; j < stylesArr.length; j++) {
+				if (stylesArr[j] === 'contain' || stylesArr[j] === 'cover' || stylesArr[j] === 'center' || stylesArr[j] === 'fill') {
+					_itemFormStub.position = stylesArr[j];
+				}
+				if (stylesArr[j] === 'tl' || stylesArr[j] === 'tr' || stylesArr[j] === 'bl' || stylesArr[j] === 'br') {
+					_itemFormStub.pin = stylesArr[j];
+				}
+			}
+
+			return _itemFormStub;
 		}
 
 		function getTemplates(type) {

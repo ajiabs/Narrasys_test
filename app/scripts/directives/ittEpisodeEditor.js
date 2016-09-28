@@ -7,7 +7,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, authSvc) {
+	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, authSvc, selectService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -53,13 +53,7 @@ angular.module('com.inthetelling.story')
 
 				// extract current event styles for the form
 				if (scope.episode.styles) {
-					for (var styleType in scope.itemForm) {
-						for (var i = 0; i < scope.episode.styles.length; i++) {
-							if (scope.episode.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
-								scope.itemForm[styleType] = scope.episode.styles[i].substr(styleType.length); // Remainder of scope.episode.styles[i]
-							}
-						}
-					}
+					scope.itemForm = selectService.setupItemForm(scope.episode.styles, 'episode');
 				}
 
 				// extract episode languages for the form
