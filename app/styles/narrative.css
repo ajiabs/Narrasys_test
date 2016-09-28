@@ -118,6 +118,10 @@
 	border: 1px solid #e6e6e6;
 }
 
+.hoverIndicator {
+	border: 1px solid rgba(0,0,0,0);
+}
+
 .hoverIndicator:hover {
 	border: 1px solid #DC6026;
 }
@@ -153,7 +157,7 @@
 }
 
 .button__row {
-	margin-left: 10px;
+	margin-left: 20px;
 }
 
 .button__row a, .button__row button {

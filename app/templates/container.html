@@ -48,7 +48,7 @@
 
 		<div ng-if="depth === 0">
 			<div ng-if="!container.addingContainer">
-				<div ng-if="container.isActive">
+				<div ng-if="container.isActive" class="button__row">
 					<button ng-click="container.addingContainer = true">Add Project</button>
 				</div>
 			</div>
@@ -66,14 +66,12 @@
 			<div ng-if="!container.addingContainer">
 				<div ng-if="container.isActive" class="button__row">
 					<button ng-click="container.addingContainer = true">Add Module</button>
-					<span class="tooltip-static">
-						<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
-						<span class="tooltip-text">Go to assets</span>
-					</span>
-					<span class="tooltip-static">
-						<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
-						<span class="tooltip-text">Generate new narrative</span>
-					</span>
+					<itt-tooltip tip-text="Go to assets" css="projects__page">
+						<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
+					</itt-tooltip>
+					<itt-tooltip tip-text="Generate new narrative" css="projects__page">
+						<a ng-if="canAccess" class="icon__button button__generateNarrative" ng-click="toggleNarrativeModal()"></a>
+					</itt-tooltip>
 				</div>
 			</div>
 
@@ -90,14 +88,12 @@
 			<div ng-if="!container.addingContainer">
 				<div ng-if="container.isActive" class="button__row">
 					<button ng-click="container.addingContainer = true">Add Episode</button>
-					<span class="tooltip-static">
-						<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
-						<span class="tooltip-text">Go to assets</span>
-					</span>
-					<span class="tooltip-static">
-						<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
-						<span class="tooltip-text">Generate new narrative</span>
-					</span>
+					<itt-tooltip tip-text="Go to assets" css="projects__page">
+						<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
+					</itt-tooltip>
+					<itt-tooltip tip-text="Generate new narrative" css="projects__page">
+						<a ng-if="canAccess" class="icon__button button__generateNarrative" ng-click="toggleNarrativeModal()"></a>
+					</itt-tooltip>
 				</div>
 			</div>
 			<div ng-if="container.addingContainer">
@@ -123,29 +119,25 @@
 		<div ng-if="depth == 3 && container.isActive" class="container">
 
 			<!-- begin episode -->
-			<span class="tooltip-static">
-				<a class="icon__button button__editor" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}" title="Go to editor"></a>
-				<span class="tooltip-text">Go to editor</span>
-			</span>
-			<span class="tooltip-static">
-				<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}" title="Go to producer"></a>
-				<span class="tooltip-text">Go to producer</span>
-			</span>
-			<span class="tooltip-static">
-				<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}" title="Go to assets"></a>
-				<span class="tooltip-text">Go to assets</span>
-			</span>
-			<span class="tooltip-static">
+			<itt-tooltip tip-text="Go to editor" css="projects__page">
+				<a class="icon__button button__editor" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}"></a>
+			</itt-tooltip>
+
+			<itt-tooltip tip-text="Go to producer" css="projects__page">
+				<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}"></a>
+			</itt-tooltip>
+
+			<itt-tooltip tip-text="Go to assets" css="projects__page">
+				<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
+			</itt-tooltip>
+
+			<itt-tooltip tip-text="Generate new narrative" css="projects__page">
 				<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
-				<span class="tooltip-text">Generate new narrative</span>
-			</span>
-			<span class="tooltip-static published__state">
-				<span
-					title="{{container.status}}"
-					ng-class="{isPublished: container.status === 'Published', isUnPublished: container.status !== 'Published'}">
-				</span>
-				<span class="tooltip-text">{{container.status}}</span>
-			</span>
+			</itt-tooltip>
+
+			<itt-tooltip tip-text="{{container.status}}" css="projects__page" class="published__state">
+				<span ng-class="{isPublished: container.status === 'Published', isUnPublished: container.status !== 'Published'}"></span>
+			</itt-tooltip>
 			<!-- end episode -->
 		</div>
 
