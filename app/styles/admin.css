@@ -143,13 +143,15 @@
 	float: left;
 }
 
-.isPublished, .isUnPublished {
-	font-family: Story;
+.published__state {
 	position: relative;
 	left: 85%;
 	bottom: 0.5em;
 	color: #DC6026;
+}
 
+.isPublished, .isUnPublished {
+	font-family: Story;
 }
 
 .isPublished:before {
