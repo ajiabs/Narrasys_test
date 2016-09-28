@@ -533,6 +533,9 @@ angular.module('com.inthetelling.story')
 
 				if (event._type === 'Scene') {
 					scenes.push(event);
+				} else if (event._type === 'Chapter') {
+					// chapters.push(event);
+					// items.push(event);
 				} else {
 					items.push(event);
 				}
