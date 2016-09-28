@@ -13,7 +13,7 @@
 	        restrict: 'EA',
 			scope: true,
 	        template: [
-			'<div class="field">',
+			'<div class="field" ng-if="!(item._type===\'Scene\' && item.start_time <= 0.1)">',
 			'	<div class="label">Start</div>',
 			'	<div class="input">',
 			'		<span sxs-input-time="item" x-input-field="start_time"></span>',
