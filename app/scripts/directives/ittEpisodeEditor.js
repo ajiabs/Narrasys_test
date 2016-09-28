@@ -27,13 +27,7 @@ angular.module('com.inthetelling.story')
 				}
 				scope.uploadStatus = [];
 				scope.uneditedEpisode = angular.copy(scope.episode); // in case of cancel.   Must be a copy, not the original!
-				scope.itemForm = {
-					"transition": "",
-					"highlight": "",
-					"color": "",
-					"typography": "",
-					"timestamp": ""
-				};
+				scope.itemForm = selectService.setupItemForm(scope.episode.styles, 'episode');
 
 				// is the master asset a youtube link? (i.e. is yt the only url we have?)
 				if (
@@ -49,11 +43,6 @@ angular.module('com.inthetelling.story')
 					scope.masterAssetType = 'Youtube';
 				} else {
 					scope.masterAssetType = 'Video';
-				}
-
-				// extract current event styles for the form
-				if (scope.episode.styles) {
-					scope.itemForm = selectService.setupItemForm(scope.episode.styles, 'episode');
 				}
 
 				// extract episode languages for the form

@@ -86,31 +86,11 @@ angular.module('com.inthetelling.story')
 				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
 				scope.languages = modelSvc.episodes[appState.episodeId].languages;
-
-				scope.itemForm = {
-					"transition": "",
-					"highlight": "",
-					"color": "",
-					"typography": "",
-					"timestamp": "",
-					"position": "", // for image fills only
-					"pin": "" // for image fills only
-				};
-
+				scope.itemForm = selectService.setupItemForm(scope.item.styles, 'item');
 
 				if (!scope.item.layouts) {
 					console.log('set layouts array to inline');
 					scope.item.layouts = ["inline"];
-				}
-				setupItemForm();
-
-
-				// extract current event styles for the form
-
-				function setupItemForm() {
-					if (scope.item.styles) {
-						scope.itemForm = selectService.setupItemForm(scope.item.styles, 'item');
-					}
 				}
 
 				if (!scope.item.producerItemType) {

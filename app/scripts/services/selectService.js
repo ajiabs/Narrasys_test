@@ -242,7 +242,10 @@
 			if (type === 'item') {
 				_itemFormStub = angular.extend(_itemSpecificOpts, _itemFormStub);
 			}
-
+			//return stub object if no array is passed.
+			if (!_existy(stylesArr)) {
+				return _itemFormStub;
+			}
 			// do this in both cases, i.e. for item and episode
 			for (var styleType in _itemFormStub) {
 				for (var i = 0; i < stylesArr.length; i++) {
@@ -251,7 +254,6 @@
 					}
 				}
 			}
-
 			//next loop only necessary for items, so early return
 			if (type === 'episode') {
 				return _itemFormStub;
