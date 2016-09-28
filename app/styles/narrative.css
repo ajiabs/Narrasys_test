@@ -152,6 +152,15 @@
 	color: #DC6026;
 }
 
+.button__row {
+	margin-left: 10px;
+}
+
+.button__row a, .button__row button {
+	vertical-align: middle;
+	padding: 40px 0;
+}
+
 .button__assets:before {
 	content: "\e903";
 }
@@ -171,6 +180,19 @@
 .standaloneAncillaryPage button,
 .standaloneAncillaryPage .button,
 .standaloneAncillaryPage input[type="submit"] {
+	background-color: #595A5A;
+	color: #FFF;
+	border-radius: 0.6em;
+	font-size: 0.8em;
+	padding: 0.1em 0.8em;
+	margin: 0.2em;
+	border: 0;
+	cursor: pointer;
+}
+
+.standaloneAncillaryPage button:hover,
+.standaloneAncillaryPage .button:hover,
+.standaloneAncillaryPage input[type="submit"]:hover {
 	background-color: #DC6026;
 	color: #FFF;
 	border-radius: 0.6em;
