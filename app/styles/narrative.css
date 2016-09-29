@@ -100,6 +100,21 @@
 	}
 }
 
+/*for iphones*/
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 568px) {
+	.standaloneAncillaryPage {
+		padding: 0;
+		background: none;
+	}
+	.standaloneAncillaryPage > div {
+		border: none;
+		padding: 1em 0.5em;
+		font-size: 14px;
+	}
+}
+
 .standaloneAncillaryPage a {
 	color: #595A5A;
 }
@@ -137,8 +152,9 @@
 }
 
 .edit-pencil {
+	position: relative;
 	color: #595A5A;
-	padding-left: 3px;
+	padding: 1px 2px;
 	cursor: pointer;
 }
 
@@ -183,6 +199,12 @@
 
 .button__producer:before {
 	content: "\e905";
+}
+
+.episode__button-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .standaloneAncillaryPage button,

@@ -19,7 +19,7 @@
 	        template: [
 	        	'<span class="tooltip-static">',
 				'	<ng-transclude></ng-transclude>',
-				'	<span class="{{css ? css : \'tooltip-text\'}}">{{tipText}}</span>',
+				'	<span class="{{css ? css : \'tooltip-text\'}}" style="text-indent: 0;">{{tipText}}</span>',
 				'</span>'
 			].join('')
 	    };
