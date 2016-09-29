@@ -20,10 +20,11 @@ angular.module('com.inthetelling.story')
 							children: []
 						};
 						angular.forEach(rootIDs, function (id) {
-							// modelSvc.containers[id].showChildren = true;
 							$scope.root.children.push(modelSvc.containers[id]);
+
 						});
 
+						walkContainers($scope.root.children, true);
 						$scope.loading = false;
 					}, function () {
 						$scope.failedLogin = true;
@@ -32,16 +33,42 @@ angular.module('com.inthetelling.story')
 					});
 
 
+					function walkContainers(containerList, evenOdd) {
+
+						containerList.sort(function(a, b) {
+							if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) {
+								return -1;
+							} else if (a.name.en.toLowerCase() > b.name.en.toLowerCase()) {
+								return 1;
+							} else {
+								return 0;
+							}
+						});
+
+						angular.forEach(containerList, function(_container) {
+							var container = modelSvc.containers[_container._id];
+
+							container.evenOdd = evenOdd;
+							evenOdd = !evenOdd;
+							if (container.showChildren && container.children) {
+								evenOdd = walkContainers((container.children), evenOdd)
+							}
+						});
+
+						return evenOdd;
+					}
+
 					$scope.onContainerClick = onContainerClick;
 					function onContainerClick ($container) {
-
 						if ($container.container.children && (!$container.container.showChildren || $container.bool === false)) {
 							// have already loaded kids
 							$container.container.showChildren = !$container.container.showChildren;
+							walkContainers($scope.root.children, true);
 						} else {
 							dataSvc.getContainer($container.container._id).then(function (id) {
 								$container.container = modelSvc.containers[id];
 								$container.container.showChildren = true;
+								walkContainers($scope.root.children, true);
 							});
 						}
 

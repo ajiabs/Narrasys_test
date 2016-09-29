@@ -64,10 +64,6 @@
 	clear: both;
 }
 
-.container .container {
-	margin-left: 1em;
-}
-
 .container .controls {
 	background-color: #FDFDFD;
 	text-align: right;

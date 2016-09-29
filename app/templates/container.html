@@ -2,7 +2,7 @@
 
 
 
-<div class="container" ng-class="{hoverIndicator: depth == 3}" ng-if="container._id">
+<div class="container" ng-class="{hoverIndicator: depth == 3}" ng-style="{'text-indent': 1 * depth + 'em' }" ng-if="container._id">
 
 	<span ng-class="{isOpen: container.showChildren && depth !== 3, isClosed: !container.showChildren && depth !== 3}"
 		  ng-click="onToggleChildren(false)">
@@ -105,12 +105,12 @@
 			</div>
 		</div>
 
+
 		<!--recur-->
-		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'"
+		<div ng-if="depth < 3" ng-repeat="child in container.children"
 			 itt-container="containers[child._id]"
-			 ng-class-even="'container__row--even'"
-			 ng-class-odd="'container__row--odd'"
 			 depth="depth+1"
+			 ng-class="{'container__row--odd': containers[child._id].evenOdd === false, 'container__row--even': containers[child._id].evenOdd === true }"
 			 on-container-click="rootContext($container)"
 			 root-context="rootContext">
 		</div>
