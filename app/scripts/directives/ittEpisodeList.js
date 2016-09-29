@@ -51,7 +51,7 @@ angular.module('com.inthetelling.story')
 							container.evenOdd = evenOdd;
 							evenOdd = !evenOdd;
 							if (container.showChildren && container.children) {
-								evenOdd = walkContainers((container.children), evenOdd)
+								evenOdd = walkContainers((container.children), evenOdd);
 							}
 						});
 
