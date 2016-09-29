@@ -15,11 +15,7 @@
 	function NarrativesCtrl($scope, authSvc,  narrativesResolve) {
 		$scope.narrativesResolve = narrativesResolve.n;
 		$scope.customersResolve = narrativesResolve.c;
-		$scope.logout = logout;
-
-		function logout() {
-			authSvc.logout();
-		}
+		$scope.logout = authSvc.logout;
 	}
 
 

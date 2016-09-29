@@ -1,10 +1,6 @@
 <div class="">
 	<div class="ancillaryNav">
-		<a class="button" ng-if="canAccess" ng-click="exportToSpreadsheet(narrative._id)">Export to Spreadsheet</a>
-		<a class="button" ng-if="canAccess" href="/#/projects">Projects</a>
-		<a class="button" ng-if="canAccess" href="/#/stories">Narratives</a>
-		<a class="button" ng-if="user._id" href="/#/account">Account</a>
-		<a class="button" ng-if="user._id" ng-click="logout()">Log out</a>
+
 	</div>
 
 	<div ng-if="!loading">
@@ -19,6 +15,8 @@
 				<p>Total Duration: {{totalNarrativeDuration | asTime}}</p>
 			</div>
 
+
+
 			<itt-narrative-editor
 				ng-if="isEditing"
 				narrative="narrative"
@@ -30,8 +28,8 @@
 			<!--
  		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
  -->
-				<button ng-if="canAccess" ng-disabled="timelineUnderEdit || tmpTimeline" ng-click="addTmpTimeline(null, narrative.timelines)">Add Timeline</button>
-
+			<button ng-if="canAccess" ng-disabled="timelineUnderEdit || tmpTimeline" ng-click="addTmpTimeline(null, narrative.timelines)">Add Timeline</button>
+			<a class="button" ng-if="canAccess" ng-click="exportToSpreadsheet(narrative._id)">Export to Spreadsheet</a>
 
 			<itt-modal ng-if="showEpisodeList">
 				<div itt-episode-list class="admin episodePicker">
@@ -58,13 +56,13 @@
 						 ng-repeat="timeline in narrative.timelines">
 
 						<itt-timeline-editor
+							class="tl__editor"
 							ng-if="showTimelineEditor(timeline)"
 							timeline="timeline"
 							on-done="doneEditingTimeline()"
 							on-update="editorAction(t, timeline)"
 							on-delete="deleteTimeline(t)">
 						</itt-timeline-editor>
-
 
 						<div ng-mouseenter="showDrag = true"
 							 ng-mouseleave="showDrag = false"
@@ -75,17 +73,18 @@
 							<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
 								 class="tl__wrapper">
 
-								<itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
+                                    <itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
+                                        <h3>
+                                            <i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
+                                            <a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
 
-									<h3>
-										<i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
-										<a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
-									</h3>
-								</itt-edit-pencil>
+                                        </h3>
+                                    </itt-edit-pencil>
+									<p>{{timeline.episode_segments[0].end_time | asTime}}</p>
 								<p>{{timeline.description.en}}</p>
-								{{timeline.episode_segments[0].end_time | asTime}}
 
-								<div ng-mouseenter="showLine = true" ng-mouseleave="showLine = false" style="height: 25px">
+
+								<div class="tl__addButton" ng-mouseenter="showLine = true" ng-mouseleave="showLine = false">
 									<div ng-show="!!showLine && canAccess">
 										<!--+<hr>-->
 										<button ng-click="addTmpTimeline(timeline, narrative.timelines)">Insert Timeline</button>

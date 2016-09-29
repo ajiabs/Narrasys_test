@@ -132,6 +132,10 @@
 	flex-direction: row;
 }
 
+.edit__pencil-wrapper {
+	padding-top: 1px;
+}
+
 .edit-pencil {
 	color: #595A5A;
 	padding-left: 3px;
@@ -251,8 +255,12 @@
 	height: 1px;
 }
 
+.timeline__edit {
+	padding: 10px;
+}
 
-.narrative__edit input[type="text"], .narrative__edit textarea {
+.narrative__edit input[type="text"], .narrative__edit textarea,
+.timeline__edit input[type="text"], .timeline__edit textarea {
 	width: 100%;
 	padding: 5px;
 	border-radius: 4px;
@@ -279,12 +287,26 @@
 }
 
 .tl__wrapper {
-	margin-left: 20px;
+	margin-left: 27px;
 }
 
 .tlDrag__handle {
-	top: 15px;
+	top: 22px;
+	padding-left: 5px;
 	position: absolute;
+}
+
+.tl__addButton {
+	height: 25px;
+	margin: 5px;
+}
+
+.tl__titleSection {
+	/*float: right;*/
+}
+
+.tl__editorWrapper {
+	/*padding: 10px 5px;*/
 }
 
 .narrative__modal {

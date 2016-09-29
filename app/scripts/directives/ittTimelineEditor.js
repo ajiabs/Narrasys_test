@@ -12,7 +12,7 @@
 	    return {
 	        restrict: 'EA',
 			template: [
-				'<div class="narrative__edit">',
+				'<div class="timeline__edit">',
 				'	<form name="tlEditForm">',
 				'		<label for="tlName">Name',
 				'			<itt-validation-tip ng-if="tlEditForm.name.$invalid" text="Name is required"></itt-validation-tip>',
