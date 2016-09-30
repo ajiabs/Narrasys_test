@@ -32,7 +32,7 @@ angular.module('com.inthetelling.story')
 				scope.isEditing = false;
 				scope.toggleEditing = toggleEditing;
 				function toggleEditing() {
-					scope.isEditing = !scope.isEditing
+					scope.isEditing = !scope.isEditing;
 				}
 
 				// TODO refactor: this is very similar to ittItemEditor's uploadAsset
