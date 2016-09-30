@@ -37,7 +37,7 @@
 				'	</header>',
 				'</div>'
 			].join('\n'),
-			controller: ['$location', 'appState', 'authSvc', function($location, appState) {
+			controller: ['$location', 'appState', function($location, appState) {
 				this.currentPath = $location.path();
 				this.appState = appState;
 				this.goToAccounts = goToAccounts;
