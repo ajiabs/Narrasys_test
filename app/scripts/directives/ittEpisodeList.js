@@ -24,7 +24,7 @@ angular.module('com.inthetelling.story')
 
 						});
 
-						walkContainers($scope.root.children, true);
+						walkContainers($scope.root.children, true, true);
 						$scope.loading = false;
 					}, function () {
 						$scope.failedLogin = true;
@@ -33,7 +33,7 @@ angular.module('com.inthetelling.story')
 					});
 
 
-					function walkContainers(containerList, evenOdd) {
+					function walkContainers(containerList, evenOdd, findLastContainer) {
 
 						containerList.sort(function(a, b) {
 							if (a.name.en.toLowerCase() < b.name.en.toLowerCase()) {
@@ -50,8 +50,13 @@ angular.module('com.inthetelling.story')
 
 							container.evenOdd = evenOdd;
 							evenOdd = !evenOdd;
+
+							if (container.isActive && findLastContainer) {
+								$scope.lastClickedContainer = {container: container, bool: false};
+							}
+
 							if (container.showChildren && container.children) {
-								evenOdd = walkContainers((container.children), evenOdd);
+								evenOdd = walkContainers((container.children), evenOdd, findLastContainer);
 							}
 						});
 
@@ -63,12 +68,12 @@ angular.module('com.inthetelling.story')
 						if ($container.container.children && (!$container.container.showChildren || $container.bool === false)) {
 							// have already loaded kids
 							$container.container.showChildren = !$container.container.showChildren;
-							walkContainers($scope.root.children, true);
+							walkContainers($scope.root.children, true, false);
 						} else {
 							dataSvc.getContainer($container.container._id).then(function (id) {
 								$container.container = modelSvc.containers[id];
 								$container.container.showChildren = true;
-								walkContainers($scope.root.children, true);
+								walkContainers($scope.root.children, true, false);
 							});
 						}
 

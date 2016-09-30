@@ -137,6 +137,10 @@ and (max-device-width : 568px) {
 	border: 1px solid rgba(0,0,0,0);
 }
 
+.isActive {
+	border: 1px solid #DC6026;
+}
+
 .hoverIndicator:hover {
 	border: 1px solid #DC6026;
 }

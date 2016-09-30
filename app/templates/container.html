@@ -1,11 +1,9 @@
 <!-- recursive template for admin episode list -->
-<div class="container" ng-class="{hoverIndicator: depth == 3}" ng-style="{'text-indent': 1 * depth + 'em' }" ng-if="container._id">
-
+<div class="container" ng-class="{hoverIndicator: depth === 3, isActive: container.isActive && depth === 3}" ng-style="{'text-indent': 1 * depth + 'em' }" ng-if="container._id">
 
 	<span ng-class="{isOpen: container.showChildren && depth !== 3, isClosed: !container.showChildren && depth !== 3}"
 		  ng-click="onToggleChildren(false)">
 	</span>
-
 
 	<itt-modal modal-class="narrative__modal" ng-if="showNarrativeModal">
 		<itt-narrative-editor
@@ -21,7 +19,7 @@
 		<itt-route-loading is-loading="resolvingNarrative"></itt-route-loading>
 	</itt-modal>
 
-	<div ng-class="{hoverIndicator: depth !== 3}">
+	<div ng-class="{hoverIndicator: depth !== 3, isActive: container.isActive && depth !== 3}">
 
 		<div ng-if="depth === 3">
 			<itt-tooltip tip-text="{{container.status}}" css="projects__page" class="published__state" style="text-indent: 0;">
@@ -34,23 +32,6 @@
 				<a ng-click="onToggleChildren(true)">{{container.name.en}}</a>
 			</itt-edit-pencil>
 		</span>
-
-		<span ng-if="container.editingContainer">
-			<label>Name:&nbsp;
-				<input ng-model="container.newContainerName" ng-init="container.newContainerName = container.name.en" type="text" autofocus>&nbsp;
-			</label>
-			<button ng-click="container.editingContainer = false">Cancel</button>
-			<button ng-disabled="!container.newContainerName || container.newContainerName == container.name.en" ng-click="renameContainer()">Save</button>
-		</span>
-		<span class="controls">
-			<button class="danger" ng-if="appState.dangerousButtons && !container.children.length && !container.haveNotLoadedChildData" ng-click="deleteEpisodeAndContainer(container._id)">
-				Delete
-			</button>
-		</span>
-	</div>
-
-
-	<div ng-if="container.showChildren">
 
 		<div ng-if="depth === 0">
 			<div ng-if="!container.addingContainer">
@@ -111,6 +92,21 @@
 			</div>
 		</div>
 
+		<span ng-if="container.editingContainer">
+			<label>Name:&nbsp;
+				<input ng-model="container.newContainerName" ng-init="container.newContainerName = container.name.en" type="text" autofocus>&nbsp;
+			</label>
+			<button ng-click="container.editingContainer = false">Cancel</button>
+			<button ng-disabled="!container.newContainerName || container.newContainerName == container.name.en" ng-click="renameContainer()">Save</button>
+		</span>
+		<span class="controls">
+			<button class="danger" ng-if="appState.dangerousButtons && !container.children.length && !container.haveNotLoadedChildData" ng-click="deleteEpisodeAndContainer(container._id)">
+				Delete
+			</button>
+		</span>
+	</div>
+
+	<div ng-if="container.showChildren">
 
 		<!--recur-->
 		<div ng-if="depth < 3" ng-repeat="child in container.children"
@@ -141,13 +137,10 @@
 					<itt-tooltip tip-text="Generate new narrative" css="projects__page">
 						<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
 					</itt-tooltip>
+
 				</div>
 			</div>
-
 			<!-- end episode -->
 		</div>
-
-
 	</div>
-
 </div>
