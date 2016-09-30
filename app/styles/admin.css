@@ -141,14 +141,18 @@
 
 .published__state {
 	position: relative;
-	bottom: 0.5em;
+	float: right;
 	color: #DC6026;
-	margin-right: 5px;
 }
 
 .isPublished, .isUnPublished {
+	/*float: right;*/
 	font-family: Story;
 	padding: 5px;
+}
+
+.isUnPublished {
+	color: #595A5A;
 }
 
 .isPublished:before {

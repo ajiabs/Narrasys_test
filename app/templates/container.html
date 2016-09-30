@@ -22,6 +22,13 @@
 	</itt-modal>
 
 	<div ng-class="{hoverIndicator: depth !== 3}">
+
+		<div ng-if="depth === 3">
+			<itt-tooltip tip-text="{{container.status}}" css="projects__page" class="published__state" style="text-indent: 0;">
+				<span ng-class="{isPublished: container.status === 'Published', isUnPublished: container.status !== 'Published'}"></span>
+			</itt-tooltip>
+		</div>
+
 		<span ng-if="!container.editingContainer">
 			<itt-edit-pencil can-access="true" on-edit="container.editingContainer = true">
 				<a ng-click="onToggleChildren(true)">{{container.name.en}}</a>
@@ -114,7 +121,6 @@
 			 root-context="rootContext">
 		</div>
 
-
 		<div ng-if="depth == 3 && container.isActive" class="container">
 
 			<!-- begin episode -->
@@ -134,11 +140,6 @@
 
 					<itt-tooltip tip-text="Generate new narrative" css="projects__page">
 						<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
-					</itt-tooltip>
-				</div>
-				<div class="episode__button">
-					<itt-tooltip tip-text="{{container.status}}" css="projects__page" class="published__state" style="text-indent: 0;">
-						<span ng-class="{isPublished: container.status === 'Published', isUnPublished: container.status !== 'Published'}"></span>
 					</itt-tooltip>
 				</div>
 			</div>
