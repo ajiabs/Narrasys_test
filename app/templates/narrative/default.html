@@ -15,8 +15,6 @@
 				<p>Total Duration: {{totalNarrativeDuration | asTime}}</p>
 			</div>
 
-
-
 			<itt-narrative-editor
 				ng-if="isEditing"
 				narrative="narrative"
@@ -73,7 +71,7 @@
 							<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
 								 class="tl__wrapper">
 
-                                    <itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
+                                    <itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)" css="narrative-pencil">
                                         <h3>
                                             <i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
                                             <a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>

@@ -18,7 +18,7 @@
 			},
 			template: [
 				'<div>',
-				'	<span ng-transclude></span>',
+				'	<span class="pencil__content" ng-transclude></span>',
 				'	<span style="text-indent: 0">',
 				'		<span class="edit-pencil" ng-click="onEdit()" ng-if="showPencil"></span>',
 				'	</span>',

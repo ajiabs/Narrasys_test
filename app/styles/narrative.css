@@ -159,6 +159,10 @@ and (max-device-width : 568px) {
 	content: "\e907";
 }
 
+.pencil__content * {
+	display: inline;
+}
+
 .icon__button {
 	font-family: Story;
 	color: #595A5A;
