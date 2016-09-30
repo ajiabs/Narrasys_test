@@ -19,7 +19,7 @@
 				'		<div class="nav__item">',
 				'			<img src="images/Narrasys_Banner.svg"/>',
 				'		</div>',
-				'		<div class="nav__item">',
+				'		<div class="nav__item" ng-if="$ctrl.appState.user._id">',
 				'			<div class="nav__controls">',
 				'				<div class="navControls__item item--left">',
 				'					<div class="nav__user" ng-click="$ctrl.goToAccounts()">',
@@ -37,7 +37,7 @@
 				'	</header>',
 				'</div>'
 			].join('\n'),
-			controller: ['$location', 'appState', function($location, appState) {
+			controller: ['$location', 'appState', 'authSvc', function($location, appState) {
 				this.currentPath = $location.path();
 				this.appState = appState;
 				this.goToAccounts = goToAccounts;
