@@ -1,14 +1,10 @@
 <!-- recursive template for admin episode list -->
-
-
-
 <div class="container" ng-class="{hoverIndicator: depth == 3}" ng-style="{'text-indent': 1 * depth + 'em' }" ng-if="container._id">
 
 
 	<span ng-class="{isOpen: container.showChildren && depth !== 3, isClosed: !container.showChildren && depth !== 3}"
 		  ng-click="onToggleChildren(false)">
 	</span>
-
 
 
 	<itt-modal modal-class="narrative__modal" ng-if="showNarrativeModal">

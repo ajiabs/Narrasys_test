@@ -14,7 +14,6 @@ angular.module('com.inthetelling.story')
 
 				scope.inPlayer = attrs.inPlayer;
 				scope.appState = appState;
-
 				scope.loading = true;
 				scope.logout = authSvc.logout;
 				scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
@@ -29,6 +28,12 @@ angular.module('com.inthetelling.story')
 					// 	scope.getMyNarratives();
 					// }
 				});
+
+				scope.isEditing = false;
+				scope.toggleEditing = toggleEditing;
+				function toggleEditing() {
+					scope.isEditing = !scope.isEditing
+				}
 
 				// TODO refactor: this is very similar to ittItemEditor's uploadAsset
 				scope.uploadStatus = [];

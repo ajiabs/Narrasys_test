@@ -32,7 +32,16 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			reloadOnSearch: false
 		})
 		.when('/account', {
-			template: '<div class="standaloneAncillaryPage"><div itt-user></div></div>'
+			template: [
+				'<div class="standaloneAncillaryPage">',
+				'	<itt-nav on-logout="logout()"></itt-nav>',
+				'	<h1>Account</h1>',
+				'	<div itt-user></div>',
+				'</div>'
+			].join(''),
+			controller: ['$scope', 'authSvc', function($scope, authSvc) {
+				$scope.logout = authSvc.logout;
+			}]
 		})
 		.when('/stories', {
 			title: "Existing narratives",

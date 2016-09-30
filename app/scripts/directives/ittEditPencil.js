@@ -17,9 +17,11 @@
 				onEdit: '&'
 			},
 			template: [
-				'<div class="pencil__wrapper">',
-				'	<div ng-transclude></div>',
-				'	<div class="edit__pencil-wrapper" style="text-indent: 0"><span class="edit-pencil" ng-click="onEdit()" ng-if="showPencil"></span></div>',
+				'<div>',
+				'	<span ng-transclude></span>',
+				'	<span style="text-indent: 0">',
+				'		<span class="edit-pencil" ng-click="onEdit()" ng-if="showPencil"></span>',
+				'	</span>',
 				'</div>'
 			].join(' '),
 			link: function(scope, elm) {

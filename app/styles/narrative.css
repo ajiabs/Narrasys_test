@@ -141,20 +141,8 @@ and (max-device-width : 568px) {
 	border: 1px solid #DC6026;
 }
 
-.pencil__wrapper {
-	position: relative;
-	display: flex;
-	flex-direction: row;
-}
-
-.edit__pencil-wrapper {
-	padding-top: 1px;
-}
-
 .edit-pencil {
-	position: relative;
 	color: #595A5A;
-	padding: 1px 2px;
 	cursor: pointer;
 }
 
