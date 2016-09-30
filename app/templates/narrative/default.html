@@ -71,7 +71,7 @@
 							<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
 								 class="tl__wrapper">
 
-                                    <itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)" css="narrative-pencil">
+                                    <itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
                                         <h3>
                                             <i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
                                             <a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
