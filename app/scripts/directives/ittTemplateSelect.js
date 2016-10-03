@@ -29,19 +29,24 @@
 				ctrl.getSelectOpts = selectService.getSelectOpts;
 				ctrl.labelText = 'Template';
 
-				var currentScene = selectService.getSceneName(modelSvc.scene(ctrl.data.scene_id));
 				var isAnnotation = ctrl.data.producerItemType === 'annotation';
-				var isCenteredPro = currentScene === 'centeredPro';
-				var isCenterVV = currentScene === 'centerVV';
-				var isMondrian = currentScene === 'centerVVMondrian';
-				//remove H1s for certain layouts - TS-1137
-				if (isAnnotation && (isCenteredPro || isCenterVV || isMondrian)) {
-					angular.forEach(ctrl.data.templateOpts, function(tmpl) {
-						if (tmpl.name === 'Header 1') {
-							tmpl.isDisabled = true;
-						}
-					});
+				var currentScene, isCenteredPro, isCenterVV, isMondrian;
+				if (isAnnotation) {
+					currentScene = selectService.getSceneName(modelSvc.scene(ctrl.data.scene_id));
+					isCenteredPro = currentScene === 'centeredPro';
+					isCenterVV = currentScene === 'centerVV';
+					isMondrian = currentScene === 'centerVVMondrian';
+					//remove H1s for certain layouts - TS-1137
+					if (isCenteredPro || isCenterVV || isMondrian) {
+						angular.forEach(ctrl.data.templateOpts, function(tmpl) {
+							if (tmpl.name === 'Header 1') {
+								tmpl.isDisabled = true;
+							}
+						});
+					}
 				}
+
+
 
 				//for episodes, not items (aka events).
 				//need a type of 'episode' for our selectSerivce

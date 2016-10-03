@@ -171,7 +171,15 @@
 					item.layouts = item.layouts || ['altBg'];
 					break;
 				case 'pip':
-					_displaySelectVisibility(false);
+					_displaySelectVisibility(true);
+					_select.display = [
+						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: true},
+						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
+						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: false},
+						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: false},
+						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: false},
+						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: false}
+					];
 					itemForm.position = itemForm.position || 'fill';
 					item.layouts = ['altBg'];
 					break;
