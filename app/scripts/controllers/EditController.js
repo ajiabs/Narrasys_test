@@ -680,7 +680,7 @@ angular.module('com.inthetelling.story')
 					"link": "templates/item/link.html",
 					"image": "templates/item/image-plain.html",
 					"file": "templates/item/file.html",
-					"question": "templates/item/question-mc-image-right.html",
+					"question": "templates/item/question-mc.html",
 					"video": "TODO:VIDEO"
 				};
 
