@@ -701,6 +701,7 @@
     .professional .professional__branding .professional__logo {
       height: 130px; }
     .professional .professional__branding .professional__copyright {
+      margin-bottom: 55px;
       z-index: 1;
       color: grey;
       font-size: 14px; }
