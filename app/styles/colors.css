@@ -24,6 +24,15 @@ a:visited,
 a.startTime.displayTime {
 	color: #000;
 }
+
+.nav__button {
+	color: #595A5A;
+}
+
+.nav__button:hover {
+	text-decoration: underline !important;
+}
+
 /*============================
  *
  * colorInvert

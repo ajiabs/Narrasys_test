@@ -56,6 +56,7 @@
 .nav__user img {
 	border: 1px solid #595A5A;
 	margin-top: 3px;
+	margin-right: 3px;
 	width: 35px;
 	border-radius: 50px;
 }
@@ -139,6 +140,7 @@ and (max-device-width : 568px) {
 
 .isActive {
 	background-color: rgba(222,102,37, 0.3);
+	/*box-shadow: 0 0 8px rgba(222,102,37, 0.3);*/
 }
 
 .hoverIndicator:hover {
