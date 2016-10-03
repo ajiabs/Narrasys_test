@@ -10,11 +10,10 @@
 		<div clas="user__item">
 			<div class="user__label">Name</div>
 			<itt-edit-pencil
-				class="user__name"
 				can-access="true"
 				on-edit="toggleEditing()"
 				ng-if="!isEditing">
-				{{user.name}}
+				<p>{{user.name}}</p>
 			</itt-edit-pencil>
 
 			<div ng-if="isEditing">

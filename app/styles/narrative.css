@@ -138,7 +138,7 @@ and (max-device-width : 568px) {
 }
 
 .isActive {
-	border: 1px solid #DC6026;
+	background-color: rgba(222,102,37, 0.3);
 }
 
 .hoverIndicator:hover {
@@ -146,6 +146,7 @@ and (max-device-width : 568px) {
 }
 
 .edit-pencil {
+	position: absolute;
 	color: #595A5A;
 	cursor: pointer;
 }
