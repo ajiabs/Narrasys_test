@@ -26,7 +26,7 @@ a.startTime.displayTime {
 }
 
 .nav__button {
-	color: #595A5A;
+	color: #595A5A !important;
 }
 
 .nav__button:hover {

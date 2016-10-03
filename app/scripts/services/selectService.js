@@ -397,7 +397,7 @@
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(true);
 					return [
-						{url: 'templates/item/question-mc-image-right.html', name: 'Question with image right'}
+						{url: 'templates/item/question-mc.html', name: 'Question'}
 					];
 				case 'chapter':
 					//chapters have no template, but need to do side-effects

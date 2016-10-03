@@ -10,7 +10,7 @@
 	</div>
 	<div class="text item__text item__text--question-mc">
 		<div class="title item__title item__title--question-mc" ng-if="item.display_title | highlightSubstring: appState.searchText" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
-		<div ng-if="item.asset.url" class="touchable">
+		<div ng-if="item.asset.url" class="touchable" style="float:right; max-width: 50%; padding-right: 0.5em">
 			<img x-ng-click="forceModal()" ng-src="{{item.asset.url}}">
 			<div class="touchableIndicator"></div>
 		</div>
