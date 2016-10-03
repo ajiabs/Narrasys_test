@@ -39,11 +39,15 @@
 				'	</header>',
 				'</div>'
 			].join('\n'),
-			controller: ['$location', 'appState', 'authSvc', function($location, appState, authSvc) {
-				this.currentPath = $location.path();
-				this.appState = appState;
-				this.goToAccounts = goToAccounts;
-				this.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
+			controller: ['$location', 'appState', 'authSvc', '$timeout', function($location, appState, authSvc, $timeout) {
+				var ctrl = this;
+				ctrl.currentPath = $location.path();
+				ctrl.appState = appState;
+				ctrl.goToAccounts = goToAccounts;
+
+				$timeout(function() {
+					ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
+				}, 1000);
 
 				function goToAccounts() {
 					$location.url('/account');
