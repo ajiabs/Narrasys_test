@@ -192,7 +192,6 @@
 						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: true},
 						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: true}
 					];
-
 					if (isInline) {
 						item.layouts = ['mainBg'];
 					}
