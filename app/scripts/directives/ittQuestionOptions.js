@@ -16,7 +16,7 @@
 				'<div class="field" ng-repeat="distractor in item.data._plugin.distractors track by $index">',
 				'	<div class="label">',
 				'		{{$index | alpha}} &nbsp;',
-				'		<input type="checkbox" ng-model="distractor.correct" ng-if="item.data._plugin.questiontype == \'mc-formative\'">',
+				'		<input type="checkbox" ng-model="distractor.correct" ng-change="onFormativeChecked(distractor)" ng-if="item.data._plugin.questiontype == \'mc-formative\'">',
 				'	</div>',
 				'	<div class="input" sxs-input-i18n="distractor.text" x-inputtype="\'textarea\'"></div>',
 				'</div>',

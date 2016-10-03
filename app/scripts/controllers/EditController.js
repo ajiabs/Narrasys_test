@@ -49,6 +49,17 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+
+		$scope.onFormativeChecked = onFormativeChecked;
+		function onFormativeChecked(distractor) {
+			angular.forEach($scope.item.data._plugin.distractors, function(_distractor) {
+				if (_distractor !== distractor) {
+					_distractor.correct = undefined;
+				}
+			});
+		}
+
+
 		var isOnExistingSceneStart = function (time) {
 			angular.forEach(getScenes(), function (scene) {
 				if (scene.start_time === time) {
