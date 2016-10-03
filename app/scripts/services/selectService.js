@@ -91,7 +91,8 @@
 			getTemplates: getTemplates,
 			getVisibility: getVisibility,
 			getSelectOpts: getSelectOpts,
-			setupItemForm: setupItemForm
+			setupItemForm: setupItemForm,
+			getSceneName: getSceneName
 		};
 
 		function _setVisibility(prop, bool) {
@@ -102,13 +103,6 @@
 			return function (bool) {
 				return _setVisibility(prop, bool);
 			};
-		}
-
-		//not the display name, but the key of the scene map as string.
-		function _getSceneName(scene) {
-			return Object.keys(_scenes).filter(function (key) {
-				return _scenes[key] === scene.templateUrl;
-			})[0];
 		}
 
 		function _setAvailableImageOptsForLayout(sceneType, item, itemForm) {
@@ -202,6 +196,13 @@
 			if (itemForm.position) {
 				item.styles = [itemForm.position];
 			}
+		}
+
+		//not the display name, but the key of the scene map as string.
+		function getSceneName(scene) {
+			return Object.keys(_scenes).filter(function (key) {
+				return _scenes[key] === scene.templateUrl;
+			})[0];
 		}
 
 		function getSelectOpts(type) {
@@ -569,7 +570,7 @@
 				case 'image':
 					//will set to true in image fill
 					_displaySelectVisibility(false);
-					var _currentSceneName = _getSceneName(modelSvc.scene(item.scene_id));
+					var _currentSceneName = getSceneName(modelSvc.scene(item.scene_id));
 					switch(item.templateUrl) {
 						case 'templates/item/image-plain.html':
 						case 'templates/item/image-inline-withtext.html':
