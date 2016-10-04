@@ -48,7 +48,9 @@
 							<itt-description-field data="item"></itt-description-field>
 							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-image-field></itt-image-field>
-							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
+							<itt-flags data="item"
+									   item-form="itemForm"
+									   flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="transcript">
 							<!--time, speaker, transcript-->
@@ -78,7 +80,9 @@
 							<itt-file-field></itt-file-field>
 							<!--<itt-template-select data="item"></itt-template-select>-->
 							<itt-description-field data="item"></itt-description-field>
-							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
+							<itt-flags data="item"
+									   item-form="itemForm"
+									   flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="image">
 							<!--Time, Title, Image, Description, Template, Display, Position, Orientation, Flags-->
@@ -86,12 +90,12 @@
 							<itt-title-field do-validate="true" data="item" itt-item-form="ittItemForm"></itt-title-field>
 							<itt-image-field></itt-image-field>
 							<itt-description-field data="item"></itt-description-field>
-							<!--<itt-url-field ng-if="item.templateUrl === 'templates/item/image-plain.html'"></itt-url-field>-->
 							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
-							<!--<itt-video-position-select></itt-video-position-select>-->
 							<!--TODO reccommend moving orientation into layout tab-->
-							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
+							<itt-flags data="item"
+									   item-form="itemForm"
+									   flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="question">
 							<!--Time, Question type, Title, Question Text, Image, Answers, Feedback when correct, Feedback when incorrect-->
@@ -156,7 +160,9 @@
 							<!--Template, Display, Flags-->
 							<itt-template-select data="item" item-form="itemForm"></itt-template-select>
 							<itt-display-select data="item" item-form="itemForm"></itt-display-select>
-							<itt-flags data="item" flags="['required', 'stop', 'cosmetic']"></itt-flags>
+							<itt-flags data="item"
+									   item-form="itemForm"
+									   flags="['required', 'stop', 'cosmetic']"></itt-flags>
 						</div>
 						<div ng-switch-when="chapter">
 							<h4>{{item.producerItemType}}</h4>

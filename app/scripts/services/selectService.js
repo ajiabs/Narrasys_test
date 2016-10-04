@@ -600,8 +600,6 @@
 							//set back to blank when not a BG image.
 							itemForm.pin = itemForm.position = '';
 							item.layouts[0] = 'inline';
-
-							console.log('itemForm', itemForm);
 							break;
 						case 'templates/item/image-fill.html':
 							item.cosmetic = true;
