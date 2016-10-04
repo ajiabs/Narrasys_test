@@ -577,7 +577,7 @@ angular.module('com.inthetelling.story')
 			});
 
 			svc.sortTimeline();
-			var groupedEvents = groupByStartTime(svc.markedEvents, 'start_time');
+			var groupedEvents = groupByStartTime(svc.markedEvents);
 			svc.displayMarkedEvents = prepGroupedEvents(groupedEvents);
 		};
 
@@ -598,6 +598,7 @@ angular.module('com.inthetelling.story')
 				var obj = {
 					events: val,
 					stop: false,
+					multiStop: false,
 					start_time: key,
 					toolTipText: '',
 					layoutChange: false
@@ -621,8 +622,15 @@ angular.module('com.inthetelling.story')
 				});
 
 				if (chapters.length === 0 && !foundScene && foundStop) {
-					obj.stop = true;
 					obj.toolTipText = 'Stop item';
+				}
+
+				if (foundStop) {
+					obj.stop = true;
+				}
+
+				if (obj.events.length > 1 && foundStop) {
+					obj.multiStop = true;
 				}
 
 				if (foundScene && chapters.length === 0) {
@@ -641,6 +649,10 @@ angular.module('com.inthetelling.story')
 
 					if (foundScene) {
 						obj.toolTipText += ' (Layout Change)';
+					}
+
+					if (obj.multiStop) {
+						obj.toolTipText += ' / (Stop item)';
 					}
 				}
 				if (!foundInternalScene) {

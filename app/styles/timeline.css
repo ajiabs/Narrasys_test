@@ -163,6 +163,18 @@
 	position: absolute;
 }
 
+.progressbar .marker.multi:before {
+	content: "\e007";
+	font-family: Story;
+	position: absolute;
+	right: 5px;
+}
+
+.progressbar .marker.multi {
+	border-left: 1px solid #000;
+	height: 15px;
+}
+
 .timeline .tooltip {
 	position: absolute;
 	width: 250px;

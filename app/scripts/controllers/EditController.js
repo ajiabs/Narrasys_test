@@ -686,7 +686,7 @@ angular.module('com.inthetelling.story')
 			} else {
 				var defaultTemplateUrls = {
 					"scene": "templates/scene/centered.html",
-					"transcript": "templates/item/transcript-withthumbnail.html",
+					"transcript": "templates/item/transcript.html",
 					"annotation": "templates/item/text-h2.html",
 					"link": "templates/item/link.html",
 					"image": "templates/item/image-plain.html",

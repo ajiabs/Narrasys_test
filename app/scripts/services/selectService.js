@@ -353,9 +353,7 @@
 					_templateSelectVisibility(true);
 					_bgImagePositionSelectVisibility(false);
 					return [
-						// {url: 'templates/item/transcript.html', name: 'Transcript'},
-						{url: 'templates/item/transcript-withthumbnail.html', name: 'Transcript'},
-						// {url: 'templates/item/transcript-withthumbnail-alt.html', name: 'Transcript with thumbnail B'}
+						{url: 'templates/item/transcript.html', name: 'Transcript'}
 					];
 				case 'annotation':
 					_speakerFieldVisibility(false);

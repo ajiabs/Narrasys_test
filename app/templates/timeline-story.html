@@ -69,7 +69,7 @@
 							 ng-repeat="eventGroup in timeline.displayMarkedEvents"
 							 ng-style="{left: markerPercent(eventGroup.start_time)+'%'}"
 							 ng-if="eventGroup.stop || event.display_title || appState.product == 'producer'"
-							 ng-class="{stop: eventGroup.stop, mini: eventGroup.layoutChange}">
+							 ng-class="{stop: eventGroup.stop && !eventGroup.multiStop, mini: eventGroup.layoutChange, multi: eventGroup.multiStop}">
 						</div>
 
 						<!-- highlight item being edited -->
