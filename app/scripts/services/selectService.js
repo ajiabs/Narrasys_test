@@ -486,9 +486,10 @@
 								{value: _D2.a.value, name: _D2.a.name},
 								{value: _D2.b.value, name: _D2.b.name}
 							];
-							item.layouts[1] = _D2.b.value;
+
 							if (isInline || item.layouts[0] === '') {
 								item.layouts[0] = 'videoLeft'; //P2 video left
+								item.layouts[1] = _D2.b.value; //show all + highlight current
 							}
 							break;
 						case 'templates/scene/1col.html': //One Column
