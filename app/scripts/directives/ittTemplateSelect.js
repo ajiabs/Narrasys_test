@@ -30,10 +30,9 @@
 				ctrl.labelText = 'Template';
 
 				var isAnnotation = ctrl.data.producerItemType === 'annotation';
-				var currentScene, isCenteredPro, isCenterVV, isMondrian;
+				var currentScene, isCenterVV, isMondrian;
 				if (isAnnotation) {
 					currentScene = selectService.getSceneName(modelSvc.scene(ctrl.data.scene_id));
-					isCenteredPro = currentScene === 'centeredPro';
 					isCenterVV = currentScene === 'centerVV';
 					isMondrian = currentScene === 'centerVVMondrian';
 					//remove H1s for certain layouts - TS-1137
