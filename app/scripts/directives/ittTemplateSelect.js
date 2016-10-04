@@ -36,7 +36,7 @@
 					isCenterVV = currentScene === 'centerVV';
 					isMondrian = currentScene === 'centerVVMondrian';
 					//remove H1s for certain layouts - TS-1137
-					if (isCenteredPro || isCenterVV || isMondrian) {
+					if (isCenterVV || isMondrian) {
 						angular.forEach(ctrl.data.templateOpts, function(tmpl) {
 							if (tmpl.name === 'Header 1') {
 								tmpl.isDisabled = true;
