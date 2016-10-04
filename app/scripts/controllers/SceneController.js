@@ -3,6 +3,7 @@
 angular.module('com.inthetelling.story')
 	.controller('SceneController', function ($scope, $filter, ittUtils) {
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
+		$scope.centeredProTransmedia = centeredProTransmedia;
 		$scope.setBgImgUrl = setBgImgUrl;
 		$scope.precalculateSceneValues = precalculateSceneValues;
 
@@ -90,11 +91,18 @@ angular.module('com.inthetelling.story')
 			}
 		}
 
+		function centeredProTransmedia(item) {
+			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
+			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
+			var isLongTxt = item.templateUrl === 'templates/item/text-transmedia.html';
+			var isDef = item.templateUrl === 'templates/item/text-definition.html';
+			return (isPullQuote || isH2 || isLongTxt || isDef ) ? item : false;
+		}
+
 		function byPullquoteOrH2(item) {
 			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
-			var isPullQuoteAttrib = item.templateUrl === 'templates/item/pullquote-noattrib.html';
 			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
-			return (isPullQuote || isH2 || isPullQuoteAttrib) ? item : false;
+			return (isPullQuote || isH2) ? item : false;
 		}
 
 		function setBgImgUrl(items, col) {
