@@ -36,6 +36,7 @@
 			imageUpload: false,
 			display: false,
 			videoPosition: false,
+			bgImagePosition: false,
 			titleField: true,
 			speakerField: true
 		};
@@ -84,6 +85,7 @@
 		var _titleFieldVisibility = _partialVis('titleField');
 		var _speakerFieldVisibility = _partialVis('speakerField');
 		var _templateSelectVisibility = _partialVis('templateSelect');
+		var _bgImagePositionSelectVisibility = _partialVis('bgImagePosition');
 
 		return {
 			showTab: showTab,
@@ -109,6 +111,12 @@
 			//if we are set to the default layout,
 			//overwrite it back to an empty array
 			var isInline = item.layouts[0] === 'inline';
+
+			//TS-1147 - hide video position for videoOverlay
+			if (item.layouts.indexOf('videoOverlay') !== -1) {
+				_bgImagePositionSelectVisibility(false);
+			}
+
 			switch(sceneType) {
 				case 'centeredPro':
 					_displaySelectVisibility(false);
@@ -319,6 +327,7 @@
 					_displaySelectVisibility(false);
 					_videoPositionSelectVisibility(false);
 					_templateSelectVisibility(true);
+					_bgImagePositionSelectVisibility(false);
 					var scenes = [ //\u2022 = bullet point
 						{url: _scenes.centered, name: 'Center 1 (+ V\u2022TS\u2022ANT\u2022TM)'},
 						{url: _scenes.centeredPro, name: 'Center 2 (+ V\u2022ANT)'},
@@ -342,6 +351,7 @@
 				case 'transcript':
 					_speakerFieldVisibility(true);
 					_templateSelectVisibility(true);
+					_bgImagePositionSelectVisibility(false);
 					return [
 						// {url: 'templates/item/transcript.html', name: 'Transcript'},
 						{url: 'templates/item/transcript-withthumbnail.html', name: 'Transcript'},
@@ -351,6 +361,7 @@
 					_speakerFieldVisibility(false);
 					_titleFieldVisibility(false);
 					_templateSelectVisibility(true);
+					_bgImagePositionSelectVisibility(false);
 					return [
 						{url: 'templates/item/text-h1.html', name: 'Header 1'},
 						{url: 'templates/item/text-h2.html', name: 'Header 2'},
@@ -365,6 +376,7 @@
 					_imageFieldVisibility(true);
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(true);
+					_bgImagePositionSelectVisibility(false);
 					var linkTemplates = [
 						{url: 'templates/item/link.html', name: 'Link'},
 						{url: 'templates/item/link-withimage-notitle.html', name: 'Link with image / hide title'},
@@ -385,6 +397,7 @@
 					_videoPositionSelectVisibility(false);
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(true);
+					_bgImagePositionSelectVisibility(false);
 					var imgTemplates = [
 						{url: 'templates/item/image-plain.html', name: 'Plain Image'},
 						{url: 'templates/item/image-inline-withtext.html', name: 'Inline Image with text'},
@@ -396,6 +409,7 @@
 				case 'file':
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(false);
+					_bgImagePositionSelectVisibility(false);
 					return [
 						{url: 'templates/item/file.html', name: 'Uploaded File'},
 					];
@@ -404,6 +418,7 @@
 					_imageFieldVisibility(true);
 					_titleFieldVisibility(true);
 					_templateSelectVisibility(true);
+					_bgImagePositionSelectVisibility(false);
 					return [
 						{url: 'templates/item/question-mc.html', name: 'Question'}
 					];
@@ -592,6 +607,7 @@
 						case 'templates/item/image-fill.html':
 							item.cosmetic = true;
 							_displaySelectVisibility(true);
+							_bgImagePositionSelectVisibility(true);
 							_select.imagePosition = [
 								{value: 'fill', name: 'Fill and stretch'},
 								{value: 'contain', name: 'Contain'},

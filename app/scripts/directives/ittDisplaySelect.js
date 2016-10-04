@@ -27,7 +27,7 @@
 				'		</select>',
 				'	</div>',
 				'</div>',
-				'<div class="field" ng-if="$ctrl.isImageFillTemplate">',
+				'<div class="field" ng-if="$ctrl.getVisibility(\'bgImagePosition\')">',
 				'	<div class="label">Position</div>',
 				'		<div class="input">',
 				'		<select ng-change="$ctrl.onItemFormUpdate($ctrl.data, $ctrl.itemForm)" ng-model="$ctrl.itemForm.position" ng-options="{{$ctrl.setNgOpts(\'imagePosition\')}}"></select>',
