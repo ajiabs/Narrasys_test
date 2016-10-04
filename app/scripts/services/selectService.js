@@ -252,7 +252,6 @@
 			};
 			var _itemSpecificOpts = {
 				"position": "", // for image fills only
-				"pin": "" // for image fills only
 			};
 			//add additional props for items
 			if (type === 'item') {
@@ -277,11 +276,11 @@
 			//need more stuff to do for items
 			// position and pin don't have a prefix because I was dumb when I planned this
 			for (var j = 0; j < stylesArr.length; j++) {
-				if (stylesArr[j] === 'contain' || stylesArr[j] === 'cover' || stylesArr[j] === 'center' || stylesArr[j] === 'fill') {
+				if (stylesArr[j] === 'contain' || stylesArr[j] === 'cover' ||
+					stylesArr[j] === 'center'  || stylesArr[j] === 'fill' ||
+					stylesArr[j] === 'tl'      || stylesArr[j] === 'tr' ||
+					stylesArr[j] === 'bl'      || stylesArr[j] === 'br') {
 					_itemFormStub.position = stylesArr[j];
-				}
-				if (stylesArr[j] === 'tl' || stylesArr[j] === 'tr' || stylesArr[j] === 'bl' || stylesArr[j] === 'br') {
-					_itemFormStub.pin = stylesArr[j];
 				}
 			}
 
