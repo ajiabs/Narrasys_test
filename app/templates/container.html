@@ -27,7 +27,7 @@
 			</itt-tooltip>
 		</div>
 
-		<span ng-if="!container.editingContainer">
+		<span ng-if="!container.editingContainer" ng-style="depth === 3 ? {'text-indent': '4em'} : ''">
 			<itt-edit-pencil can-access="true" on-edit="container.editingContainer = true">
 				<a ng-click="onToggleChildren(true)">{{container.name.en}}</a>
 			</itt-edit-pencil>
@@ -106,6 +106,32 @@
 		</span>
 	</div>
 
+	<div ng-if="depth == 3 && container.isActive" class="container" style="text-indent: 4em;">
+
+		<!-- begin episode -->
+		<div class="episode__button-row">
+			<div class="episode__button">
+				<itt-tooltip tip-text="Go to editor" css="projects__page">
+					<a class="icon__button button__editor" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}"></a>
+				</itt-tooltip>
+
+				<itt-tooltip tip-text="Go to producer" css="projects__page">
+					<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}"></a>
+				</itt-tooltip>
+
+				<itt-tooltip tip-text="Go to assets" css="projects__page">
+					<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
+				</itt-tooltip>
+
+				<itt-tooltip tip-text="Generate new narrative" css="projects__page">
+					<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+				</itt-tooltip>
+
+			</div>
+		</div>
+		<!-- end episode -->
+	</div>
+
 	<div ng-if="container.showChildren">
 
 		<!--recur-->
@@ -117,30 +143,6 @@
 			 root-context="rootContext">
 		</div>
 
-		<div ng-if="depth == 3 && container.isActive" class="container">
 
-			<!-- begin episode -->
-			<div class="episode__button-row">
-				<div class="episode__button">
-					<itt-tooltip tip-text="Go to editor" css="projects__page">
-						<a class="icon__button button__editor" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}"></a>
-					</itt-tooltip>
-
-					<itt-tooltip tip-text="Go to producer" css="projects__page">
-						<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}"></a>
-					</itt-tooltip>
-
-					<itt-tooltip tip-text="Go to assets" css="projects__page">
-						<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
-					</itt-tooltip>
-
-					<itt-tooltip tip-text="Generate new narrative" css="projects__page">
-						<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
-					</itt-tooltip>
-
-				</div>
-			</div>
-			<!-- end episode -->
-		</div>
 	</div>
 </div>
