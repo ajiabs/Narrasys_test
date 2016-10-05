@@ -1087,6 +1087,7 @@
 	}
 }
 
+//large desktop
 @media screen and (min-width: 1366px) {
 	.professional {
 		.item {
@@ -1120,6 +1121,7 @@
 	}
 }
 
+//tablet
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 	.professional {
 		.item {
@@ -1152,7 +1154,7 @@
 		}
 	}
 }
-
+//mobile device
 @media screen and (min-width:320px) and (max-width: 768px) {
 	.professional {
 		.item {
