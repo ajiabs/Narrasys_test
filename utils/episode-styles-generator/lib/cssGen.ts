@@ -24,8 +24,19 @@ const fontFam = (font) => {
     return `\tfont-family: '${main}'`;
 };
 
-const pqFont = (font: string) => {
-    return font.split(',')[0];
+const pqFont = (font: string, nameSpace: string) => {
+	const [fontName, fallback, weight, style] = font.split(',');
+	let color = `\n\t\tcolor: $${nameSpace}Primary;`;
+
+	if (existy(style) && existy(weight)) {
+		return `\tfont-family: '${fontName}', ${fallback};\n\t\tfont-weight: ${weight};\n\t\tfont-style: ${style};` + color;
+	}
+
+	if (existy(weight)) {
+		return `\tfont-family: '${fontName}', ${fallback};\n\t\tfont-weight: ${weight};` + color ;
+	}
+
+	return `\tfont-family: '${fontName}', ${fallback};` + color;
 };
 
 //handle differences from the .professional namespace. currently only for 'default' template
@@ -65,7 +76,7 @@ const handleLandingScreen = (nameSpace, headerFont) => {
 	const professionalCss =
 		`.landingscreen {
 			h1 {
-				@include banner-pq('${pqFont(headerFont)}', $${nameSpace}Accent, 2.5vw);
+				@include banner-pq('${headerFont.split(',')[0]}', $${nameSpace}Accent, 2.5vw);
 			}
 						
 			.introtext {
@@ -111,8 +122,7 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
     }
 
     @mixin ${nameSpace}-pq {
-    ${fontFam(accentFont)};
-	    color: $${nameSpace}Primary;
+    ${pqFont(accentFont, nameSpace)}
     }
 
     .${nameSpace} {
@@ -126,7 +136,7 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
 
         .endingscreen {
             p {
-                @include banner-pq('${pqFont(headerFont)}', $${nameSpace}Accent, 2.5vw);
+                @include banner-pq('${headerFont.split(',')[0]}', $${nameSpace}Accent, 2.5vw);
             }
         }
 
@@ -253,7 +263,7 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
         .centered-pro {
             .banner-pull-quote {
                 h1 {
-                    @include banner-pq('${pqFont(headerFont)}', $${nameSpace}Accent, 2.5vw);
+                    @include banner-pq('${headerFont.split(',')[0]}', $${nameSpace}Accent, 2.5vw);
                 }
             }
         }
