@@ -107,6 +107,7 @@ angular.module('com.inthetelling.story')
 						});
 						scope.container.newContainerTitle = '';
 						scope.container.addingContainer = false;
+						scope.onToggleChildren(false);
 					};
 
 					scope.deleteEpisodeAndContainer = function (id) {
