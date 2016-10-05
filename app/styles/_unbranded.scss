@@ -1,140 +1,131 @@
 
-    $defaultPrimary: #000000;
-    $defaultAccent: #CCCCCC;
-    $defaultSecondary: #DDDDDD;
-    $defaultLink: #0000CC;
-    $defaultHighlight: rgba(204,204,204, 0.6);
+    $unbrandedPrimary: #000000;
+    $unbrandedAccent: #CCCCCC;
+    $unbrandedSecondary: #DDDDDD;
+    $unbrandedLink: #0000CC;
+    $unbrandedHighlight: rgba(204,204,204, 0.6);
 
-    @mixin default-header {
+    @mixin unbranded-header {
     	font-family: 'Droid sans',  sans-serif;
 		font-weight:  700;
     }
-    @mixin default-body {
+    @mixin unbranded-body {
     	font-family: 'Droid sans',  sans-serif;
 		font-weight:  400;
-	    color: $defaultPrimary;
+	    color: $unbrandedPrimary;
     }
 
-    @mixin default-pq {
+    @mixin unbranded-pq {
     	font-family: 'Droid serif',  serif;
 		font-weight:  400;
-		color: $defaultPrimary;
+		color: $unbrandedPrimary;
     }
 
-    .default {
+    .unbranded {
         
         
              
         .landingscreen {
-			padding: 10% 15%;
-			div {
-				flex-direction: row-reverse;
+			h1 {
+				@include banner-pq('Droid sans', $unbrandedAccent, 2.5vw);
+			}
+						
+			.introtext {
+				padding-bottom: 2em;
 			}
 			
-			.introtext {
-				flex-direction: column;
-				padding-left: 10px;
+			#episode--description {
+				display: none;
 			}
 		}
         
 		//custom altPane BG, landingscreen
-		//TS-1109
-		.professional__branding {
-			width: 100%;
-			height: 210px;
-			background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
-			position: relative;
-			color: #FFF;
-		}
-		//TS-1102	
-		.altPane {
-			background-color: rgba(0, 0, 0, 0.05);
-		}
+		
 
         .endingscreen {
             p {
-                @include banner-pq('Droid sans', $defaultAccent, 2.5vw);
+                @include banner-pq('Droid sans', $unbrandedAccent, 2.5vw);
             }
         }
 
         //search view
         .searchPanel__wrapper {
-            @include default-body;
-            color: $defaultPrimary;
+            @include unbranded-body;
+            color: $unbrandedPrimary;
             // 'sorted by' button
             .fake-link--search-results {
-                color: $defaultLink;
+                color: $unbrandedLink;
             }
         }
         
         .searchResults {
-            @include default-header;
+            @include unbranded-header;
             .item__title--link, .item__link--fake-link, .item__link--escape-link {
-                @include default-body;
-                color: $defaultLink;
+                @include unbranded-body;
+                color: $unbrandedLink;
                 &:before {
-                    color: $defaultPrimary;
+                    color: $unbrandedPrimary;
                 }
             }
         }
 
         //item overrides
         .item__title {
-            @include default-header;
+            @include unbranded-header;
         }
 
         .item__title--link, .item__title--file {
             a {
-                color: $defaultLink;
+                color: $unbrandedLink;
             }
         }
 
         .item__link--fake-link {
-            @include default-body;
-            color: $defaultLink;
+            @include unbranded-body;
+            color: $unbrandedLink;
         }
 
         .item__text {
-            @include default-body;
+            @include unbranded-body;
         }
 
         .item__text--h2 {
-            @include default-header;
+            @include unbranded-header;
         }
 
         .item__text--transmedia, .item__text--definition {
             h1, h2, h3 {
-                @include default-header;
+                @include unbranded-header;
             }
         }
         .item .item__text--pullquote {
-            @include default-pq;
+            @include unbranded-pq;
             &:before {
-                @include default-header;
+                @include unbranded-header;
                 //override color set on mixin
-                color: $defaultAccent;
+                color: $unbrandedAccent;
 
             }
         }
 
        .item__title--image-caption, .item__title--image-caption-sliding,
 	   .item__text--image-caption, .item__text--image-caption-sliding {
-	        color: $defaultSecondary;
+	        color: $unbrandedSecondary;
 	   }
         
         .item__link--escape-link {
-            @include default-body;
-            color: $defaultLink;
+            @include unbranded-body;
+            color: $unbrandedLink;
             &:before {
-                color: $defaultPrimary;
+                color: $unbrandedPrimary;
             }
         }
         
         //timestamp
         .item {
             .displayTime, .startTime {
-                @include default-header;
-                color: $defaultLink;
+                @include unbranded-header;
+                color: $unbrandedLink;
                 &:hover {
                     text-decoration: underline;
                 }
@@ -144,11 +135,11 @@
        //invert 
         .item {
             &.colorInvert {
-            	background-color: $defaultPrimary !important;
+            	background-color: $unbrandedPrimary !important;
              	.item__text, .item__title a, .item__link--escape-link, a.displayTime.startTime {
-                 	color: $defaultSecondary !important;
+                 	color: $unbrandedSecondary !important;
                  	&:before {
-                 		color: $defaultSecondary !important;
+                 		color: $unbrandedSecondary !important;
                  	}
              	}
             }
@@ -157,15 +148,15 @@
         //highlights
         .content.allowHighlights {
         	.highlightSolid.item.isCurrent {
-        		background-color: $defaultHighlight;
+        		background-color: $unbrandedHighlight;
         	}
         	
         	.highlightSide.item.isCurrent {
-        		border-left: 10px solid $defaultHighlight;
+        		border-left: 10px solid $unbrandedHighlight;
         	}
         	
         	.highlightBorder.item.isCurrent {
-        		border: 2px solid $defaultHighlight;
+        		border: 2px solid $unbrandedHighlight;
         	}
         	
         	//hard code alpha to be 0.3 or half of default
@@ -180,7 +171,7 @@
         .centered-pro {
             .banner-pull-quote {
                 h1 {
-                    @include banner-pq('Droid sans', $defaultAccent, 2.5vw);
+                    @include banner-pq('Droid sans', $unbrandedAccent, 2.5vw);
                 }
             }
         }
@@ -198,19 +189,19 @@
             }
             
             .item__title--link, .item__title--file {
-                @include default-body;
+                @include unbranded-body;
             }
 
             .item__title--link.title--link-embed {
-                @include default-body;
+                @include unbranded-body;
             }
 
         }
 
         .centerVV-mondrian {           
             .static-bg__main {
-                border: 4px solid $defaultPrimary;
-                background-color: $defaultAccent;
+                border: 4px solid $unbrandedPrimary;
+                background-color: $unbrandedAccent;
             }
             
             .static-bg__alt {
@@ -224,11 +215,11 @@
 			
       		.mainPane {
 			    .item {
-				    background-color:  $defaultPrimary;
+				    background-color:  $unbrandedPrimary;
 			    }
 
 			.item__text, .item__title, .item__title a {
-				color: $defaultSecondary;
+				color: $unbrandedSecondary;
 			}
 			
 			//override from general item level,
@@ -236,15 +227,15 @@
 			//the Secondary
 			.item__text--transmedia, .item__text--definition {
 				h1, h2, h3 {
-					color: $defaultSecondary;
+					color: $unbrandedSecondary;
 				}
 			}
 			
 			.item {
 			    &.colorInvert {
-			        background-color: $defaultSecondary !important;
+			        background-color: $unbrandedSecondary !important;
                     .item__text, .item__title, .item__title a {
-                        color: $defaultPrimary !important;
+                        color: $unbrandedPrimary !important;
                     }
                 }
             }
@@ -260,25 +251,25 @@
 		.item__title--link a,
 		.item__title--image a,
 		.item__title--image-thumbnail a {
-			@include default-header;
+			@include unbranded-header;
 		}
 		
 		.item__link--fake-link {
-			color: $defaultSecondary;
+			color: $unbrandedSecondary;
 		}
 
 		.item__link--escape-link {
-			@include default-header;
-			color: $defaultSecondary;
+			@include unbranded-header;
+			color: $unbrandedSecondary;
 			&:before {
-				color: $defaultAccent;
+				color: $unbrandedAccent;
 			}
 		}
 		
 		.item {
 		    .displayTime, .startTime {
-		        @include default-header;
-		        color: $defaultSecondary;
+		        @include unbranded-header;
+		        color: $unbrandedSecondary;
 		        
 		        a {
 		            text-decoration: underline;
