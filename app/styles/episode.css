@@ -1536,26 +1536,40 @@
   .george-washington .centerVV-mondrian .item .displayTime a, .george-washington .centerVV-mondrian .item .startTime a {
     text-decoration: underline; }
 
-.unbranded .landingscreen h1 {
-  margin-top: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Droid sans";
-  color: white;
-  background-color: #cccccc;
+.unbranded .landingscreen {
+  padding: 10% 15%; }
+  .unbranded .landingscreen div {
+    display: block; }
+  .unbranded .landingscreen p {
+    margin: 2em 0 1em 0; }
+  .unbranded .landingscreen .introtext {
+    width: 45%;
+    float: right; }
+  .unbranded .landingscreen .videoMagnet {
+    width: 50%;
+    float: left; }
+@media screen and (max-width: 501px) {
+  .unbranded .landingscreen div {
+    display: block; }
+  .unbranded .landingscreen h1 {
+    font-size: 24px; }
+  .unbranded .landingscreen p {
+    margin: 1em 0; }
+  .unbranded .landingscreen .introtext {
+    width: 100%;
+    float: none;
+    margin: 0; }
+  .unbranded .landingscreen .videoMagnet {
+    width: 100%;
+    float: none; } }
+.unbranded .professional__branding {
   width: 100%;
-  text-align: center;
-  padding: 10px 0;
-  min-height: 80px;
-  max-height: 80px;
-  position: absolute;
-  font-size: 2.5vw;
-  letter-spacing: normal; }
-.unbranded .landingscreen .introtext {
-  padding-bottom: 2em; }
-.unbranded .landingscreen #episode--description {
-  display: none; }
+  height: 210px;
+  background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
+  position: relative;
+  color: #FFF; }
+.unbranded .altPane {
+  background-color: rgba(0, 0, 0, 0.05); }
 .unbranded .endingscreen p {
   margin-top: 1em;
   display: flex;

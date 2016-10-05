@@ -87,16 +87,53 @@ const handleLandingScreen = (nameSpace, headerFont) => {
 				display: none;
 			}
 		}`;
+	//implement non-pro landing screen in professional namespace for unbranded template
 	const css =
 		`.landingscreen {
-			padding: 10% 15%;
+
 			div {
-				flex-direction: row-reverse;
+				display: block;
 			}
-			
+
+			p {
+				margin: 2em 0 1em 0;
+			}
+			padding: 10% 15%;
+
 			.introtext {
-				flex-direction: column;
-				padding-left: 10px;
+				width: 45%;
+				float: right;
+			}
+
+			.videoMagnet {
+				width: 50%;
+				float: left;
+			}
+		}
+
+		@media screen and (max-width: 501px) {
+			.landingscreen {
+				div {
+					display: block;
+				}
+				h1 {
+					font-size: 24px;
+				}
+
+				p {
+					margin: 1em 0;
+				}
+
+				.introtext {
+					width: 100%;
+					float: none;
+					margin: 0;
+				}
+
+				.videoMagnet {
+					width: 100%;
+					float: none;
+				}
 			}
 		}`;
 	if (nameSpace !== 'unbranded') {
