@@ -77,7 +77,11 @@ angular.module('com.inthetelling.story')
 						} else {
 							dataSvc.getContainer($container.container._id).then(function (id) {
 								$container.container = modelSvc.containers[id];
-								$container.container.showChildren = true;
+
+								if ($container.bool === false) {
+									$container.container.showChildren = true;
+								}
+
 								walkContainers($scope.root.children, true, false);
 							});
 						}
