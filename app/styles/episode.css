@@ -780,6 +780,54 @@
   .professional .centerVV-mondrian .item .item__text--pullquote {
     padding-top: 0; }
 
+@media screen and (min-width: 1366px) {
+  .professional .item .pullquote {
+    font-size: 2.0vw; }
+    .professional .item .pullquote:before {
+      font-size: 5.8vw; }
+  .professional .item__text--definition, .professional .item__text--transmedia {
+    font-size: 1.0vw !important; }
+  .professional .item__text--h2 h1, .professional .item__text--h2 h2, .professional .item__text--h2 h3, .professional .item__text--h1 h1, .professional .item__text--h1 h2, .professional .item__text--h1 h3 {
+    text-align: center;
+    margin: 10px auto; }
+  .professional .item__text--h2 h2, .professional .item__text--h1 h2 {
+    font-size: 1.5vw; }
+  .professional .item__text--h2 h1, .professional .item__text--h1 h1 {
+    font-size: 2.0vw; }
+  .professional .item__text--h2 h3, .professional .item__text--h1 h3 {
+    font-size: 1.0vw; } }
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .professional .item .pullquote {
+    font-size: 3.0vw; }
+    .professional .item .pullquote:before {
+      font-size: 6.8vw; }
+  .professional .item__text--definition, .professional .item__text--transmedia {
+    font-size: 1.5vw !important; }
+  .professional .item__text--h2 h1, .professional .item__text--h2 h2, .professional .item__text--h2 h3, .professional .item__text--h1 h1, .professional .item__text--h1 h2, .professional .item__text--h1 h3 {
+    text-align: center;
+    margin: 10px auto; }
+  .professional .item__text--h2 h2, .professional .item__text--h1 h2 {
+    font-size: 2.5vw; }
+  .professional .item__text--h2 h1, .professional .item__text--h1 h1 {
+    font-size: 3.0vw; }
+  .professional .item__text--h2 h3, .professional .item__text--h1 h3 {
+    font-size: 1.5vw; } }
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .professional .item .pullquote {
+    font-size: 3.5vw; }
+    .professional .item .pullquote:before {
+      font-size: 7.0vw; }
+  .professional .item__text--definition, .professional .item__text--transmedia {
+    font-size: 2.0vw !important; }
+  .professional .item__text--h2 h1, .professional .item__text--h2 h2, .professional .item__text--h2 h3, .professional .item__text--h1 h1, .professional .item__text--h1 h2, .professional .item__text--h1 h3 {
+    text-align: center;
+    margin: 10px auto; }
+  .professional .item__text--h2 h2, .professional .item__text--h1 h2 {
+    font-size: 3.0vw; }
+  .professional .item__text--h2 h1, .professional .item__text--h1 h1 {
+    font-size: 3.5vw; }
+  .professional .item__text--h2 h3, .professional .item__text--h1 h3 {
+    font-size: 2.0vw; } }
 /*Narrasys pro*/
 @font-face {
   font-family: 'Gotham Thin';
