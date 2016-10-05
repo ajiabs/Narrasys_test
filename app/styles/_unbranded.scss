@@ -26,21 +26,30 @@
         
              
         .landingscreen {
-			h1 {
-				@include banner-pq('Droid sans', $unbrandedAccent, 2.5vw);
-			}
-						
-			.introtext {
-				padding-bottom: 2em;
+			padding: 10% 15%;
+			div {
+				flex-direction: row-reverse;
 			}
 			
-			#episode--description {
-				display: none;
+			.introtext {
+				flex-direction: column;
+				padding-left: 10px;
 			}
 		}
         
 		//custom altPane BG, landingscreen
-		
+		//TS-1109
+		.professional__branding {
+			width: 100%;
+			height: 210px;
+			background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
+			position: relative;
+			color: #FFF;
+		}
+		//TS-1102	
+		.altPane {
+			background-color: rgba(0, 0, 0, 0.05);
+		}
 
         .endingscreen {
             p {

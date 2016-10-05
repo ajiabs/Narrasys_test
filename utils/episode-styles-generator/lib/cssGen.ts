@@ -39,9 +39,9 @@ const pqFont = (font: string, nameSpace: string) => {
 	return `\tfont-family: '${fontName}', ${fallback};` + color;
 };
 
-//handle differences from the .professional namespace. currently only for 'default' template
+//handle differences from the .professional namespace. currently only for 'unbranded' template
 //which is used to replace our 'unbranded' template option.
-const isDefault = (nameSpace) => {
+const isUnbranded = (nameSpace) => {
 
 	const css =
 		`//TS-1109
@@ -57,7 +57,7 @@ const isDefault = (nameSpace) => {
 			background-color: rgba(0, 0, 0, 0.05);
 		}`;
 
-	if (nameSpace === 'default') {
+	if (nameSpace === 'unbranded') {
 		return css;
 	}
 	return '';
@@ -99,7 +99,7 @@ const handleLandingScreen = (nameSpace, headerFont) => {
 				padding-left: 10px;
 			}
 		}`;
-	if (nameSpace !== 'default') {
+	if (nameSpace !== 'unbranded') {
 		return professionalCss
 	}
 	return css
@@ -132,7 +132,7 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
         ${handleLandingScreen(nameSpace, headerFont)}
         
 		//custom altPane BG, landingscreen
-		${isDefault(nameSpace)}
+		${isUnbranded(nameSpace)}
 
         .endingscreen {
             p {
