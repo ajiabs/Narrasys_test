@@ -137,7 +137,7 @@
 					item.layouts = item.layouts || ['windowBg'];
 					itemForm.position = itemForm.position || 'fill'; //P1-A
 					if (item.layouts[0] === 'videoOverlay' ) {
-						itemForm.position
+						itemForm.position = 'fill';
 					}
 					break;
 				case '1col':
@@ -157,6 +157,9 @@
 					}
 					itemForm.position = itemForm.position || 'fill'; //P1-A
 					item.layouts = item.layouts || ['windowBg'];
+					if (item.layouts[0] === 'videoOverlay' ) {
+						itemForm.position = 'fill';
+					}
 					break;
 				case '2colL':
 				case '2colR':
