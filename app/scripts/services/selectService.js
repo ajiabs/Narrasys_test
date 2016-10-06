@@ -656,6 +656,10 @@
 						case 'templates/item/link-modal-thumb.html':
 							break;
 					}
+					if (item.stop === true) {
+						item.layouts[0] = 'windowFg';
+					}
+
 					break;
 			}
 		}
