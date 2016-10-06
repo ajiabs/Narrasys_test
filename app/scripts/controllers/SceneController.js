@@ -110,18 +110,30 @@ angular.module('com.inthetelling.story')
 			var mainColBgOrFg = $filter(col)(currItems);
 			var opacity = 1;
 			var bgSize;
+			var bgPosition;
+			var bgUrl;
+			var isCover, isContain;
+
 			if (mainColBgOrFg.length > 0 && ittUtils.existy(mainColBgOrFg[0].asset)) {
-				var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
+				bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
 				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
 					opacity = 0.25;
 				}
-				var coverOrContain = mainColBgOrFg[0].styleCss.match(/cover|contain/);
 
-				if (coverOrContain) {
-					bgSize = coverOrContain[0];
+				isCover = /cover/.test(mainColBgOrFg[0].styleCss);
+				isContain = /contain/.test(mainColBgOrFg[0].styleCss);
+
+				if (isCover) {
+					bgSize = 'cover';
+					return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity  };
 				}
-
-				return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity  };
+				//center align contain vertically
+				if (isContain) {
+					bgSize = 'contain';
+					bgPosition = 'center';
+					return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+				}
+				//do nothing
 			}
 			return '';
 		}

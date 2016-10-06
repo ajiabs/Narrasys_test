@@ -60,10 +60,10 @@
 		var _bgImageTitles = {
 			windowBg: 'Full window background',
 			videoOverlay: 'Video overlay (16:9)',
-			mainBg: 'Text pane background',
-			mainFg: 'Text pane foreground',
-			altBg: 'Transmedia pane background',
-			altFg: 'Transmedia pane foreground'
+			textBg: 'Text pane background',
+			textFg: 'Text pane foreground',
+			transmediaBg: 'Transmedia pane background',
+			transmediaFg: 'Transmedia pane foreground'
 		};
 
 		var _D1 = {
@@ -116,7 +116,7 @@
 			if (item.layouts.indexOf('videoOverlay') !== -1) {
 				_bgImagePositionSelectVisibility(false);
 			}
-
+			// altPane = transmedia pane, mainPane = text pane.
 			switch(sceneType) {
 				case 'centeredPro':
 					_displaySelectVisibility(false);
@@ -128,10 +128,10 @@
 					_select.display = [
 						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: false},
 						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
-						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: !isAdmin},
-						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: !isAdmin},
-						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: true},
-						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: true},
+						{value: 'mainBg', 		name: _bgImageTitles.textBg, 		isDisabled: !isAdmin},
+						{value: 'mainFg', 		name: _bgImageTitles.textFg, 		isDisabled: !isAdmin},
+						{value: 'altBg', 		name: _bgImageTitles.transmediaBg, 	isDisabled: true},
+						{value: 'altFg', 		name: _bgImageTitles.transmediaFg, 	isDisabled: true},
 					];
 					if (isInline) {
 						item.layouts = ['windowBg'];
@@ -146,10 +146,10 @@
 					_select.display = [
 						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: false},
 						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
-						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: false},
-						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: false},
-						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: false},
-						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: false}
+						{value: 'mainBg', 		name: _bgImageTitles.textBg, 		isDisabled: false},
+						{value: 'mainFg', 		name: _bgImageTitles.textFg, 		isDisabled: false},
+						{value: 'altBg', 		name: _bgImageTitles.transmediaBg, 	isDisabled: false},
+						{value: 'altFg', 		name: _bgImageTitles.transmediaFg, 	isDisabled: false}
 					];
 
 					if (isInline) {
@@ -165,10 +165,10 @@
 					_select.display = [
 						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: false},
 						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
-						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: false},
-						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: false},
-						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: false},
-						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: false}
+						{value: 'mainBg', 		name: _bgImageTitles.textBg, 		isDisabled: false},
+						{value: 'mainFg', 		name: _bgImageTitles.textFg, 		isDisabled: false},
+						{value: 'altBg', 		name: _bgImageTitles.transmediaBg, 	isDisabled: false},
+						{value: 'altFg', 		name: _bgImageTitles.transmediaFg, 	isDisabled: false}
 					];
 
 					if (isInline) {
@@ -183,22 +183,26 @@
 					_select.display = [
 						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: true},
 						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
-						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: false},
-						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: false},
-						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: false},
-						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: false}
+						{value: 'mainBg', 		name: _bgImageTitles.textBg, 		isDisabled: true},
+						{value: 'mainFg', 		name: _bgImageTitles.textFg, 		isDisabled: true},
+						{value: 'altBg', 		name: _bgImageTitles.transmediaBg, 	isDisabled: false},
+						{value: 'altFg', 		name: _bgImageTitles.transmediaFg, 	isDisabled: false}
 					];
+
+					if (isInline) {
+						item.layouts = ['altBg'];
+					}
 					itemForm.position = itemForm.position || 'fill';
-					item.layouts = ['altBg'];
+					item.layouts = item.layouts || ['altBg'];
 					break;
 				case 'centerVVMondrian':
 					_select.display = [
 						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: true},
 						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
-						{value: 'mainBg', 		name: _bgImageTitles.mainBg, 		isDisabled: false},
-						{value: 'mainFg', 		name: _bgImageTitles.mainFg, 		isDisabled: false},
-						{value: 'altBg', 		name: _bgImageTitles.altBg, 		isDisabled: true},
-						{value: 'altFg', 		name: _bgImageTitles.altFg, 		isDisabled: true}
+						{value: 'mainBg', 		name: _bgImageTitles.textBg, 		isDisabled: false},
+						{value: 'mainFg', 		name: _bgImageTitles.textFg, 		isDisabled: false},
+						{value: 'altBg', 		name: _bgImageTitles.transmediaBg, 	isDisabled: true},
+						{value: 'altFg', 		name: _bgImageTitles.transmediaFg, 	isDisabled: true}
 					];
 					if (isInline) {
 						item.layouts = ['mainBg'];
