@@ -6,15 +6,16 @@ angular.module('com.inthetelling.story')
 	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager, selectService) {
 		// console.log("playerController", $scope);
 
-		// $scope.tmp = function () {
-		// 	dataSvc.createTemplate({
-		// 		url: 'templates/episode/regis.html',
-		// 		name: 'Regis',
-		// 		// event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
-		// 		applies_to_episode: true,
-		// 		applies_to_narrative: false
-		// 	});
-		// };
+		//set to true to enable debug info on api-dev
+		debugToolbarInfo(false);
+		function debugToolbarInfo(debugApiDev) {
+			var envs = 'localhost';
+			if (debugApiDev) {
+				envs += '|api-dev';
+			}
+			var doDebug = new RegExp(envs);
+			$scope.showDebugInfo = doDebug.test($location.host());
+		}
 
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
