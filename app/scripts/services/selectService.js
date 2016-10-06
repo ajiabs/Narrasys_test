@@ -137,7 +137,7 @@
 					item.layouts = item.layouts || ['windowBg'];
 					itemForm.position = itemForm.position || 'fill'; //P1-A
 					if (item.layouts[0] === 'videoOverlay' ) {
-						itemForm.position = 'fill';
+						itemForm.position
 					}
 					break;
 				case '1col':
@@ -157,9 +157,6 @@
 					}
 					itemForm.position = itemForm.position || 'fill'; //P1-A
 					item.layouts = item.layouts || ['windowBg'];
-					if (item.layouts[0] === 'videoOverlay' ) {
-						itemForm.position = 'fill';
-					}
 					break;
 				case '2colL':
 				case '2colR':
@@ -621,7 +618,7 @@
 						case 'templates/item/image-plain.html':
 						case 'templates/item/image-inline-withtext.html':
 						case 'templates/item/image-caption-sliding.html':
-						case 'templates/item/image.html':
+						case 'templates/item/image-thumbnail.html':
 							//set back to blank when not a BG image.
 							itemForm.pin = itemForm.position = '';
 							item.layouts[0] = 'inline';
