@@ -120,7 +120,10 @@
 			switch(sceneType) {
 				case 'centeredPro':
 					_displaySelectVisibility(false);
-				/* falls through */
+					_videoPositionSelectVisibility(true);
+					item.layouts = ['windowBg'];
+					itemForm.position = itemForm.position || 'fill'; //P1-A
+					break;
 				case '1col':
 				case 'centered':
 					var isAdmin = _userHasRole('admin');
