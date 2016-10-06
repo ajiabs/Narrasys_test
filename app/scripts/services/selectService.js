@@ -119,9 +119,22 @@
 			// altPane = transmedia pane, mainPane = text pane.
 			switch(sceneType) {
 				case 'centeredPro':
-					_displaySelectVisibility(false);
+					_displaySelectVisibility(true);
 					_videoPositionSelectVisibility(true);
-					item.layouts = ['windowBg'];
+					_select.display = [
+						{value: 'windowBg', 	name: _bgImageTitles.windowBg, 		isDisabled: false},
+						{value: 'videoOverlay', name: _bgImageTitles.videoOverlay,  isDisabled: false},
+						{value: 'mainBg', 		name: _bgImageTitles.textBg, 		isDisabled: true},
+						{value: 'mainFg', 		name: _bgImageTitles.textFg, 		isDisabled: true},
+						{value: 'altBg', 		name: _bgImageTitles.transmediaBg, 	isDisabled: true},
+						{value: 'altFg', 		name: _bgImageTitles.transmediaFg, 	isDisabled: true}
+					];
+
+					if (isInline) {
+						item.layouts = ['windowBg'];
+					}
+
+					item.layouts = item.layouts || ['windowBg'];
 					itemForm.position = itemForm.position || 'fill'; //P1-A
 					break;
 				case '1col':
