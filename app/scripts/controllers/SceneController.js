@@ -108,33 +108,50 @@ angular.module('com.inthetelling.story')
 		function setBgImgUrl(items, col) {
 			var currItems = $filter('isCurrent')(items);
 			var mainColBgOrFg = $filter(col)(currItems);
+			var bgStyle;
 			var opacity = 1;
 			var bgSize;
 			var bgPosition;
 			var bgUrl;
-			var isCover, isContain;
 
 			if (mainColBgOrFg.length > 0 && ittUtils.existy(mainColBgOrFg[0].asset)) {
 				bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
 				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
 					opacity = 0.25;
 				}
-
-				isCover = /cover/.test(mainColBgOrFg[0].styleCss);
-				isContain = /contain/.test(mainColBgOrFg[0].styleCss);
-
-				if (isCover) {
-					bgSize = 'cover';
-					return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity  };
-				}
-				//center align contain vertically
-				if (isContain) {
-					bgSize = 'contain';
-					bgPosition = 'center';
-					return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+				bgStyle = mainColBgOrFg[0].styles[0];
+				//fill and stretch = background-size: 100% 100%, background-position: 50% 50%
+				switch(bgStyle) {
+					case 'cover':
+						bgSize = 'cover';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity  };
+					case 'contain':
+						bgSize = 'contain';
+						bgPosition = 'center';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'fill':
+						bgSize = '100% 100%';
+						bgPosition = '50% 50%';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'tl':
+						bgSize = 'auto';
+						bgPosition = 'top left';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'tr':
+						bgSize = 'auto';
+						bgPosition = 'top right';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'bl':
+						bgSize = 'auto';
+						bgPosition = 'bottom left';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'br':
+						bgSize = 'auto';
+						bgPosition = 'bottom right';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
 				}
 				//do nothing
+				return '';
 			}
-			return '';
 		}
 	});
