@@ -27,10 +27,19 @@
   display: block;
   top: 1em; }
 
+.branding .narrasys-logo {
+  position: absolute;
+  display: block;
+  top: 1em; }
+
 .branding .logo img {
   border: none; }
 
 .branding a.itt {
+  right: 5%;
+  text-align: right; }
+
+.branding a.narrasys-brand {
   right: 5%;
   text-align: right; }
 
@@ -1602,6 +1611,12 @@
   background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
   position: relative;
   color: #FFF; }
+  .unbranded .professional__branding .professional__copyright {
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+    color: white; }
+    .unbranded .professional__branding .professional__copyright a {
+      color: white;
+      text-decoration: underline; }
 .unbranded .altPane {
   background-color: rgba(0, 0, 0, 0.05); }
 .unbranded .endingscreen p {

@@ -82,6 +82,14 @@
 			background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
 			position: relative;
 			color: #FFF;
+			.professional__copyright {
+				text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+				color: white;
+				a {
+					color:white;
+					text-decoration: underline;
+				}
+			}
 		}
 		//TS-1102	
 		.altPane {

@@ -34,11 +34,22 @@
 	top: 1em;
 }
 
+.branding .narrasys-logo {
+	position: absolute;
+	display: block;
+	top: 1em;
+}
+
 .branding .logo img {
 	border: none;
 }
 
 .branding a.itt {
+	right: 5%;
+	text-align: right;
+}
+
+.branding a.narrasys-brand {
 	right: 5%;
 	text-align: right;
 }
