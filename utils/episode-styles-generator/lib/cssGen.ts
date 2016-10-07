@@ -152,6 +152,7 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
 
     @mixin ${nameSpace}-header {
     ${fontFam(headerFont)};
+    	color: $${nameSpace}Primary;
     }
     @mixin ${nameSpace}-body {
     ${fontFam(bodyFont)};

@@ -881,7 +881,8 @@
     color: #6baa36; }
 .field-pros .searchResults {
   font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: #5b5b5b; }
   .field-pros .searchResults .item__title--link, .field-pros .searchResults .item__link--fake-link, .field-pros .searchResults .item__link--escape-link {
     font-family: 'Lato',  sans-serif;
     font-weight: 300;
@@ -891,7 +892,8 @@
       color: #5b5b5b; }
 .field-pros .item__title {
   font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: #5b5b5b; }
 .field-pros .item__title--link a, .field-pros .item__title--file a {
   color: #6baa36; }
 .field-pros .item__link--fake-link {
@@ -905,10 +907,12 @@
   color: #5b5b5b; }
 .field-pros .item__text--h2 {
   font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: #5b5b5b; }
 .field-pros .item__text--transmedia h1, .field-pros .item__text--transmedia h2, .field-pros .item__text--transmedia h3, .field-pros .item__text--definition h1, .field-pros .item__text--definition h2, .field-pros .item__text--definition h3 {
   font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: #5b5b5b; }
 .field-pros .item .item__text--pullquote {
   font-family: 'Lato',  sans-serif;
   font-weight: 300;
@@ -916,6 +920,7 @@
   .field-pros .item .item__text--pullquote:before {
     font-family: 'Roboto Condensed',  sans-serif;
     font-weight: 700;
+    color: #5b5b5b;
     color: #6baa36; }
 .field-pros .item__title--image-caption, .field-pros .item__title--image-caption-sliding,
 .field-pros .item__text--image-caption, .field-pros .item__text--image-caption-sliding {
@@ -930,6 +935,7 @@
 .field-pros .item .displayTime, .field-pros .item .startTime {
   font-family: 'Roboto Condensed',  sans-serif;
   font-weight: 700;
+  color: #5b5b5b;
   color: #6baa36; }
   .field-pros .item .displayTime:hover, .field-pros .item .startTime:hover {
     text-decoration: underline; }
@@ -1000,18 +1006,21 @@
 .field-pros .centerVV-mondrian .item__title--image a,
 .field-pros .centerVV-mondrian .item__title--image-thumbnail a {
   font-family: 'Roboto Condensed',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: #5b5b5b; }
 .field-pros .centerVV-mondrian .item__link--fake-link {
   color: white; }
 .field-pros .centerVV-mondrian .item__link--escape-link {
   font-family: 'Roboto Condensed',  sans-serif;
   font-weight: 700;
+  color: #5b5b5b;
   color: white; }
   .field-pros .centerVV-mondrian .item__link--escape-link:before {
     color: #6baa36; }
 .field-pros .centerVV-mondrian .item .displayTime, .field-pros .centerVV-mondrian .item .startTime {
   font-family: 'Roboto Condensed',  sans-serif;
   font-weight: 700;
+  color: #5b5b5b;
   color: white; }
   .field-pros .centerVV-mondrian .item .displayTime a, .field-pros .centerVV-mondrian .item .startTime a {
     text-decoration: underline; }
@@ -1061,7 +1070,8 @@
     .narrasys .searchPanel__wrapper .fake-link--search-results {
       color: #de6626; }
   .narrasys .searchResults {
-    font-family: 'Gotham Medium',  sans-serif; }
+    font-family: 'Gotham Medium',  sans-serif;
+    color: #4d4d4d; }
     .narrasys .searchResults .item__title--link, .narrasys .searchResults .item__link--fake-link, .narrasys .searchResults .item__link--escape-link {
       font-family: 'Gotham Thin',  sans-serif;
       color: #4d4d4d;
@@ -1069,7 +1079,8 @@
       .narrasys .searchResults .item__title--link:before, .narrasys .searchResults .item__link--fake-link:before, .narrasys .searchResults .item__link--escape-link:before {
         color: #4d4d4d; }
   .narrasys .item__title {
-    font-family: 'Gotham Medium',  sans-serif; }
+    font-family: 'Gotham Medium',  sans-serif;
+    color: #4d4d4d; }
   .narrasys .item__title--link a, .narrasys .item__title--file a {
     color: #de6626; }
   .narrasys .item__link--fake-link {
@@ -1080,14 +1091,17 @@
     font-family: 'Gotham Thin',  sans-serif;
     color: #4d4d4d; }
   .narrasys .item__text--h2 {
-    font-family: 'Gotham Medium',  sans-serif; }
+    font-family: 'Gotham Medium',  sans-serif;
+    color: #4d4d4d; }
   .narrasys .item__text--transmedia h1, .narrasys .item__text--transmedia h2, .narrasys .item__text--transmedia h3, .narrasys .item__text--definition h1, .narrasys .item__text--definition h2, .narrasys .item__text--definition h3 {
-    font-family: 'Gotham Medium',  sans-serif; }
+    font-family: 'Gotham Medium',  sans-serif;
+    color: #4d4d4d; }
   .narrasys .item .item__text--pullquote {
     font-family: 'Gotham Light Italic',  sans-serif;
     color: #4d4d4d; }
     .narrasys .item .item__text--pullquote:before {
       font-family: 'Gotham Medium',  sans-serif;
+      color: #4d4d4d;
       color: #de6625; }
   .narrasys .item__title--image-caption, .narrasys .item__title--image-caption-sliding,
   .narrasys .item__text--image-caption, .narrasys .item__text--image-caption-sliding {
@@ -1100,6 +1114,7 @@
       color: #4d4d4d; }
   .narrasys .item .displayTime, .narrasys .item .startTime {
     font-family: 'Gotham Medium',  sans-serif;
+    color: #4d4d4d;
     color: #de6626; }
     .narrasys .item .displayTime:hover, .narrasys .item .startTime:hover {
       text-decoration: underline; }
@@ -1165,16 +1180,19 @@
   .narrasys .centerVV-mondrian .item__title--link a,
   .narrasys .centerVV-mondrian .item__title--image a,
   .narrasys .centerVV-mondrian .item__title--image-thumbnail a {
-    font-family: 'Gotham Medium',  sans-serif; }
+    font-family: 'Gotham Medium',  sans-serif;
+    color: #4d4d4d; }
   .narrasys .centerVV-mondrian .item__link--fake-link {
     color: white; }
   .narrasys .centerVV-mondrian .item__link--escape-link {
     font-family: 'Gotham Medium',  sans-serif;
+    color: #4d4d4d;
     color: white; }
     .narrasys .centerVV-mondrian .item__link--escape-link:before {
       color: #de6625; }
   .narrasys .centerVV-mondrian .item .displayTime, .narrasys .centerVV-mondrian .item .startTime {
     font-family: 'Gotham Medium',  sans-serif;
+    color: #4d4d4d;
     color: white; }
     .narrasys .centerVV-mondrian .item .displayTime a, .narrasys .centerVV-mondrian .item .startTime a {
       text-decoration: underline; }
@@ -1226,7 +1244,8 @@
       color: #00acee; }
   .career-playbook .searchResults {
     font-family: 'Lato',  sans-serif;
-    font-weight: 700; }
+    font-weight: 700;
+    color: #4d4d4d; }
     .career-playbook .searchResults .item__title--link, .career-playbook .searchResults .item__link--fake-link, .career-playbook .searchResults .item__link--escape-link {
       font-family: 'Lato',  sans-serif;
       font-weight: 300;
@@ -1236,7 +1255,8 @@
         color: #4d4d4d; }
   .career-playbook .item__title {
     font-family: 'Lato',  sans-serif;
-    font-weight: 700; }
+    font-weight: 700;
+    color: #4d4d4d; }
   .career-playbook .item__title--link a, .career-playbook .item__title--file a {
     color: #00acee; }
   .career-playbook .item__link--fake-link {
@@ -1250,10 +1270,12 @@
     color: #4d4d4d; }
   .career-playbook .item__text--h2 {
     font-family: 'Lato',  sans-serif;
-    font-weight: 700; }
+    font-weight: 700;
+    color: #4d4d4d; }
   .career-playbook .item__text--transmedia h1, .career-playbook .item__text--transmedia h2, .career-playbook .item__text--transmedia h3, .career-playbook .item__text--definition h1, .career-playbook .item__text--definition h2, .career-playbook .item__text--definition h3 {
     font-family: 'Lato',  sans-serif;
-    font-weight: 700; }
+    font-weight: 700;
+    color: #4d4d4d; }
   .career-playbook .item .item__text--pullquote {
     font-family: 'Lato',  sans-serif;
     font-weight: 300;
@@ -1262,6 +1284,7 @@
     .career-playbook .item .item__text--pullquote:before {
       font-family: 'Lato',  sans-serif;
       font-weight: 700;
+      color: #4d4d4d;
       color: #00acee; }
   .career-playbook .item__title--image-caption, .career-playbook .item__title--image-caption-sliding,
   .career-playbook .item__text--image-caption, .career-playbook .item__text--image-caption-sliding {
@@ -1276,6 +1299,7 @@
   .career-playbook .item .displayTime, .career-playbook .item .startTime {
     font-family: 'Lato',  sans-serif;
     font-weight: 700;
+    color: #4d4d4d;
     color: #00acee; }
     .career-playbook .item .displayTime:hover, .career-playbook .item .startTime:hover {
       text-decoration: underline; }
@@ -1344,18 +1368,21 @@
   .career-playbook .centerVV-mondrian .item__title--image a,
   .career-playbook .centerVV-mondrian .item__title--image-thumbnail a {
     font-family: 'Lato',  sans-serif;
-    font-weight: 700; }
+    font-weight: 700;
+    color: #4d4d4d; }
   .career-playbook .centerVV-mondrian .item__link--fake-link {
     color: white; }
   .career-playbook .centerVV-mondrian .item__link--escape-link {
     font-family: 'Lato',  sans-serif;
     font-weight: 700;
+    color: #4d4d4d;
     color: white; }
     .career-playbook .centerVV-mondrian .item__link--escape-link:before {
       color: #00acee; }
   .career-playbook .centerVV-mondrian .item .displayTime, .career-playbook .centerVV-mondrian .item .startTime {
     font-family: 'Lato',  sans-serif;
     font-weight: 700;
+    color: #4d4d4d;
     color: white; }
     .career-playbook .centerVV-mondrian .item .displayTime a, .career-playbook .centerVV-mondrian .item .startTime a {
       text-decoration: underline; }
@@ -1405,7 +1432,8 @@
     color: #004065; }
 .george-washington .searchResults {
   font-family: 'Helvetica',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
   .george-washington .searchResults .item__title--link, .george-washington .searchResults .item__link--fake-link, .george-washington .searchResults .item__link--escape-link {
     font-family: 'Helvetica',  sans-serif;
     font-weight: 300;
@@ -1415,7 +1443,8 @@
       color: black; }
 .george-washington .item__title {
   font-family: 'Helvetica',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
 .george-washington .item__title--link a, .george-washington .item__title--file a {
   color: #004065; }
 .george-washington .item__link--fake-link {
@@ -1429,10 +1458,12 @@
   color: black; }
 .george-washington .item__text--h2 {
   font-family: 'Helvetica',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
 .george-washington .item__text--transmedia h1, .george-washington .item__text--transmedia h2, .george-washington .item__text--transmedia h3, .george-washington .item__text--definition h1, .george-washington .item__text--definition h2, .george-washington .item__text--definition h3 {
   font-family: 'Helvetica',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
 .george-washington .item .item__text--pullquote {
   font-family: 'Cardo',  serif;
   font-weight: 300;
@@ -1440,6 +1471,7 @@
   .george-washington .item .item__text--pullquote:before {
     font-family: 'Helvetica',  sans-serif;
     font-weight: 700;
+    color: black;
     color: #004065; }
 .george-washington .item__title--image-caption, .george-washington .item__title--image-caption-sliding,
 .george-washington .item__text--image-caption, .george-washington .item__text--image-caption-sliding {
@@ -1454,6 +1486,7 @@
 .george-washington .item .displayTime, .george-washington .item .startTime {
   font-family: 'Helvetica',  sans-serif;
   font-weight: 700;
+  color: black;
   color: #004065; }
   .george-washington .item .displayTime:hover, .george-washington .item .startTime:hover {
     text-decoration: underline; }
@@ -1518,18 +1551,21 @@
 .george-washington .centerVV-mondrian .item__title--image a,
 .george-washington .centerVV-mondrian .item__title--image-thumbnail a {
   font-family: 'Helvetica',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
 .george-washington .centerVV-mondrian .item__link--fake-link {
   color: white; }
 .george-washington .centerVV-mondrian .item__link--escape-link {
   font-family: 'Helvetica',  sans-serif;
   font-weight: 700;
+  color: black;
   color: white; }
   .george-washington .centerVV-mondrian .item__link--escape-link:before {
     color: #004065; }
 .george-washington .centerVV-mondrian .item .displayTime, .george-washington .centerVV-mondrian .item .startTime {
   font-family: 'Helvetica',  sans-serif;
   font-weight: 700;
+  color: black;
   color: white; }
   .george-washington .centerVV-mondrian .item .displayTime a, .george-washington .centerVV-mondrian .item .startTime a {
     text-decoration: underline; }
@@ -1593,7 +1629,8 @@
     color: #0000cc; }
 .unbranded .searchResults {
   font-family: 'Droid sans',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
   .unbranded .searchResults .item__title--link, .unbranded .searchResults .item__link--fake-link, .unbranded .searchResults .item__link--escape-link {
     font-family: 'Droid sans',  sans-serif;
     font-weight: 400;
@@ -1603,7 +1640,8 @@
       color: black; }
 .unbranded .item__title {
   font-family: 'Droid sans',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
 .unbranded .item__title--link a, .unbranded .item__title--file a {
   color: #0000cc; }
 .unbranded .item__link--fake-link {
@@ -1617,10 +1655,12 @@
   color: black; }
 .unbranded .item__text--h2 {
   font-family: 'Droid sans',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
 .unbranded .item__text--transmedia h1, .unbranded .item__text--transmedia h2, .unbranded .item__text--transmedia h3, .unbranded .item__text--definition h1, .unbranded .item__text--definition h2, .unbranded .item__text--definition h3 {
   font-family: 'Droid sans',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
 .unbranded .item .item__text--pullquote {
   font-family: 'Droid serif',  serif;
   font-weight: 400;
@@ -1628,6 +1668,7 @@
   .unbranded .item .item__text--pullquote:before {
     font-family: 'Droid sans',  sans-serif;
     font-weight: 700;
+    color: black;
     color: #cccccc; }
 .unbranded .item__title--image-caption, .unbranded .item__title--image-caption-sliding,
 .unbranded .item__text--image-caption, .unbranded .item__text--image-caption-sliding {
@@ -1642,6 +1683,7 @@
 .unbranded .item .displayTime, .unbranded .item .startTime {
   font-family: 'Droid sans',  sans-serif;
   font-weight: 700;
+  color: black;
   color: #0000cc; }
   .unbranded .item .displayTime:hover, .unbranded .item .startTime:hover {
     text-decoration: underline; }
@@ -1706,18 +1748,21 @@
 .unbranded .centerVV-mondrian .item__title--image a,
 .unbranded .centerVV-mondrian .item__title--image-thumbnail a {
   font-family: 'Droid sans',  sans-serif;
-  font-weight: 700; }
+  font-weight: 700;
+  color: black; }
 .unbranded .centerVV-mondrian .item__link--fake-link {
   color: #dddddd; }
 .unbranded .centerVV-mondrian .item__link--escape-link {
   font-family: 'Droid sans',  sans-serif;
   font-weight: 700;
+  color: black;
   color: #dddddd; }
   .unbranded .centerVV-mondrian .item__link--escape-link:before {
     color: #cccccc; }
 .unbranded .centerVV-mondrian .item .displayTime, .unbranded .centerVV-mondrian .item .startTime {
   font-family: 'Droid sans',  sans-serif;
   font-weight: 700;
+  color: black;
   color: #dddddd; }
   .unbranded .centerVV-mondrian .item .displayTime a, .unbranded .centerVV-mondrian .item .startTime a {
     text-decoration: underline; }

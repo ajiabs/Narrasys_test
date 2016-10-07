@@ -9,7 +9,7 @@
 		<img ng-if="item.asset.url" ng-src="{{item.asset.url}}">
 		<div class="clear"></div>
 	</div>
-	<div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
+	<div class="authorName item__title" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
 	<div class="text item__text" ng-bind-html="item.display_annotation | highlightSubstring: appState.searchText"></div>
 	<div class="clear"></div>
 </div>

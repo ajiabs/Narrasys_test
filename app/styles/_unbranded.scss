@@ -8,6 +8,7 @@
     @mixin unbranded-header {
     	font-family: 'Droid sans',  sans-serif;
 		font-weight:  700;
+    	color: $unbrandedPrimary;
     }
     @mixin unbranded-body {
     	font-family: 'Droid sans',  sans-serif;

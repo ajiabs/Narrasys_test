@@ -7,7 +7,7 @@
     " ng-class="{isCosmetic: item.cosmetic}" class="itemTemplate">
     <div class="itemHead">
       <a role="button" aria-label="Seek video to {{item.displayStartTime}}" ng-if="item._type !== 'Chapter' && !item.chapter_marker" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
-      <div class="category">
+      <div class="category item__title">
         <!--{{item.category}}-->
         <span ng-if="item.required">(Required viewing)</span>
       </div>

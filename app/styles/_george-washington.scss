@@ -8,6 +8,7 @@
     @mixin george-washington-header {
     	font-family: 'Helvetica',  sans-serif;
 		font-weight:  700;
+    	color: $george-washingtonPrimary;
     }
     @mixin george-washington-body {
     	font-family: 'Helvetica',  sans-serif;
