@@ -196,7 +196,7 @@ angular.module('com.inthetelling.story')
 					var styles = [];
 					for (var styleType in scope.itemForm) {
 						if (scope.itemForm[styleType]) {
-							if (styleType === 'position' || styleType === 'pin') { // reason #2,142,683 why I should've specced these styles in some more structured way than a simple array
+							if (styleType === 'position') { // reason #2,142,683 why I should've specced these styles in some more structured way than a simple array
 								styles.push(scope.itemForm[styleType]);
 							} else {
 								styles.push(styleType + scope.itemForm[styleType]);
