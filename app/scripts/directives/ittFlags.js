@@ -69,7 +69,13 @@
 					return ctrl.data.templateUrl;
 				}
 
-				function setFlags(newVal) {
+				function setFlags(newVal, oldVal) {
+
+					//reset invert color when switching between templates.
+					if (newVal !== oldVal) {
+						ctrl.itemForm.color = '';
+					}
+
 					if (newVal) {
 						if (ctrl.data.templateUrl === 'templates/item/image-fill.html') {
 							ctrl._flags = ctrl._flags.filter(function(f) {
@@ -80,16 +86,22 @@
 						}
 
 						if (!_h1OrH2(newVal)) {
-							if (ittUtils.existy(ctrl.itemForm)) {
+							//editing non-h1/h2, reset invert
+							//when adding any new annotation, the invert color will be set as H2 by default (and
+							//h2s by default have the invert color applied)
+							//reset it for non h1/h2 annotations
+							if (ittUtils.existy(ctrl.itemForm) && ctrl.data._id === 'internal:editing') {
 								ctrl.itemForm.color = '';
 
 							}
+
 							ctrl._flags = ctrl._flags.filter(function(f) {
 								return f !== 'chapter_marker' && f !== 'invertColor';
 							});
 						} else {
 							ctrl._flags = ctrl.flags;
-							if (ittUtils.existy(ctrl.itemForm)) {
+							//set invert for new h1/h2 as default.
+							if (ittUtils.existy(ctrl.itemForm) && ctrl.data._id === 'internal:editing') {
 								ctrl.itemForm.color = 'Invert';
 							}
 						}
