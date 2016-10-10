@@ -39,16 +39,14 @@
 				'	</header>',
 				'</div>'
 			].join('\n'),
-			controller: ['$location', 'appState', 'authSvc', '$timeout', function($location, appState, authSvc, $timeout) {
+			controller: ['$location', 'appState', 'authSvc', function($location, appState, authSvc) {
 				var ctrl = this;
 				ctrl.currentPath = $location.path();
 				ctrl.appState = appState;
 				ctrl.goToAccounts = goToAccounts;
-
-				$timeout(function() {
+				authSvc.authenticate().then(function() {
 					ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
-				}, 1000);
-
+				});
 				function goToAccounts() {
 					$location.url('/account');
 				}

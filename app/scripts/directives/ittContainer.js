@@ -72,7 +72,7 @@ angular.module('com.inthetelling.story')
 						});
 					};
 
-					scope.addContainer = function () {
+					scope.addContainer = function (container) {
 						var newContainer = {
 							"customer_id": scope.container.customer_id,
 							"parent_id": scope.container._id,
@@ -107,7 +107,11 @@ angular.module('com.inthetelling.story')
 						});
 						scope.container.newContainerTitle = '';
 						scope.container.addingContainer = false;
-						scope.onToggleChildren(false);
+
+						if (container.showChildren === false) {
+							scope.onToggleChildren(false);
+						}
+
 					};
 
 					scope.deleteEpisodeAndContainer = function (id) {

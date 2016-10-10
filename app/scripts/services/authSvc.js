@@ -197,7 +197,9 @@ angular.module('com.inthetelling.story')
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function (nonceParam) {
 			if ($http.defaults.headers.common.Authorization) {
-				if (appState.user) {
+				//appState#init will initialize an empty object as the user property, which will always make
+				//appState.user truthy, thus need to check to see if we actually have a loaded user by looking for the id.
+				if (appState.user._id) {
 					// Have header and user; all done.
 					authenticateDefer.resolve();
 				} else {
