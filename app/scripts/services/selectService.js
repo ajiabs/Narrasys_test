@@ -402,10 +402,10 @@
 					_bgImagePositionSelectVisibility(false);
 					var linkTemplates = [
 						{url: 'templates/item/link.html', name: 'Link'},
-						{url: 'templates/item/link-withimage-notitle.html', name: 'Link with image / hide title'},
-						{url: 'templates/item/link-modal-thumb.html', name: 'Link Modal'},
+						{url: 'templates/item/link-withimage-notitle.html', name: 'Link - hide title'},
+						{url: 'templates/item/link-modal-thumb.html', name: 'Link modal'},
 						// {url: 'templates/item/link-withimage.html', name: 'Link with image'},
-						{url: 'templates/item/link-embed.html', name: 'Embedded Link'}
+						{url: 'templates/item/link-embed.html', name: 'Embedded link'}
 					];
 					if (_userHasRole('admin')) {
 						linkTemplates.splice(3, 0, {
