@@ -71,7 +71,6 @@
 
 				function setFlags(newVal) {
 					if (newVal) {
-
 						if (ctrl.data.templateUrl === 'templates/item/image-fill.html') {
 							ctrl._flags = ctrl._flags.filter(function(f) {
 								return f !== 'stop';
@@ -81,16 +80,16 @@
 						}
 
 						if (!_h1OrH2(newVal)) {
-							if (ittUtils.existy(ctrl.itemForm) && ctrl.data._id === 'internal:editing') {
+							if (ittUtils.existy(ctrl.itemForm)) {
 								ctrl.itemForm.color = '';
+
 							}
 							ctrl._flags = ctrl._flags.filter(function(f) {
 								return f !== 'chapter_marker' && f !== 'invertColor';
 							});
-
 						} else {
 							ctrl._flags = ctrl.flags;
-							if (ittUtils.existy(ctrl.itemForm) && ctrl.data._id === 'internal:editing') {
+							if (ittUtils.existy(ctrl.itemForm)) {
 								ctrl.itemForm.color = 'Invert';
 							}
 						}
