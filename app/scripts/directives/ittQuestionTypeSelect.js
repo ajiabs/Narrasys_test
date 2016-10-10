@@ -15,7 +15,7 @@
 			},
 			template: [
 				'<div class="field">',
-				'	<div class="label">Question type</div>',
+				'	<div class="label">Template</div>',
 				'	<div class="input">',
 				'	<select ng-model="$ctrl.data.data._plugin.questiontype" ng-options="{{$ctrl.setNgOpts(\'questionType\')}}"></select>',
 				'	</div>',
