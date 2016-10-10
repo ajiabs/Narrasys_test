@@ -191,7 +191,20 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		.when('/assets/:containerId', {
 			title: "Container Assets test",
 			controller: 'ContainerAssetsTestController',
-			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="/#/projects">Projects</a><div sxs-container-assets="containerId" mime-key="assetLib"></div></div></div>'
+			template: [
+				'<div class="standaloneAncillaryPage">',
+				'	<itt-nav logout="logout()"></itt-nav>',
+				'	<div>',
+				'		<a class="goUp" href="/#/projects">Projects</a>',
+				'		<div sxs-container-assets="containerId" mime-key="assetLib"></div>',
+				'	</div>',
+				'</div>'].join(''),
+			resolve: {
+					authEffects: ['authSvc', function (authSvc) {
+						//to ensure that canAccess is properly set.
+						return authSvc.authenticate().then(angular.noop);
+					}]
+			}
 		})
 		.when('/event/:eventId', {
 			title: "Event test",

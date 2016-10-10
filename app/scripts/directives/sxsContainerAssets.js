@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller("ContainerAssetsTestController", function ($scope, $routeParams) {
+	.controller("ContainerAssetsTestController", function ($scope, $routeParams, authSvc) {
+		$scope.logout = authSvc.logout;
 		$scope.containerId = $routeParams.containerId;
 	})
 	/* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
-	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, authSvc, MIMES) {
+	.directive('sxsContainerAssets', function ($routeParams, $rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, MIMES, authSvc) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -36,12 +37,13 @@ angular.module('com.inthetelling.story')
 						});
 					}
 
-					scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 					scope.isCustAdmin = authSvc.userHasRole('customer admin');
+					scope.isAdmin = authSvc.userHasRole('admin');
+					scope.canAccess = scope.isCustAdmin || scope.isAdmin;
 
 					if (MIMES[scope.mimeKey]) {
 						scope.mimes = MIMES[scope.mimeKey];
-						if (authSvc.userHasRole('admin')) {
+						if (scope.isAdmin) {
 							scope.mimes += ',video/*';
 						}
 					} else {
