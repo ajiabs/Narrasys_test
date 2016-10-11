@@ -9,7 +9,9 @@ angular.module('com.inthetelling.story')
 				container: '=ittContainer',
 				depth: "=depth",
 				onContainerClick: '&',
-				rootContext: '='
+				onContainerAdd: '&',
+				clickRootContext: '=',
+				addRootContext: '='
 			},
 			templateUrl: "templates/container.html",
 			controller:['$scope', '$location', 'modelSvc', 'authSvc', function($scope, $location, modelSvc, authSvc) {
@@ -101,6 +103,9 @@ angular.module('com.inthetelling.story')
 										};
 
 										dataSvc.storeItem(newScene);
+										//will force a sort
+									}).then(function() {
+										scope.onContainerAdd({$container: container});
 									});
 								});
 							}

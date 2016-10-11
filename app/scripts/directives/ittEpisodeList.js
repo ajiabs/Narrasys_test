@@ -63,6 +63,11 @@ angular.module('com.inthetelling.story')
 						return evenOdd;
 					}
 
+					$scope.onContainerAdd = onContainerAdd;
+					function onContainerAdd($container) {
+						walkContainers($scope.root.children, !$container.evenOdd, false);
+					}
+
 					$scope.onContainerClick = onContainerClick;
 					function onContainerClick ($container) {
 						if ($container.container.children) {

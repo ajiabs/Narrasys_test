@@ -28,7 +28,9 @@
 				 ng-class="{'container__row--odd': containers[child._id].evenOdd === false, 'container__row--even': containers[child._id].evenOdd === true }"
 				 depth="0"
 				 on-container-click="onContainerClick($container)"
-				 root-context="onContainerClick">
+				 on-container-add="onContainerAdd($container)"
+				 add-root-context="onContainerAdd"
+				 click-root-context="onContainerClick">
 
 			</div>
 			<div ng-if="!(userHasRole('admin') || userHasRole('customer admin')) || (!loading && (failedLogin || root.children.length == 0))">

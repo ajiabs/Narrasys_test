@@ -139,8 +139,10 @@
 			 itt-container="containers[child._id]"
 			 depth="depth+1"
 			 ng-class="{'container__row--odd': containers[child._id].evenOdd === false, 'container__row--even': containers[child._id].evenOdd === true }"
-			 on-container-click="rootContext($container)"
-			 root-context="rootContext">
+			 on-container-click="clickRootContext($container)"
+			 on-container-add="addRootContext($container)"
+			 add-root-context="addRootContext"
+			 click-root-context="clickRootContext">
 		</div>
 
 
