@@ -600,7 +600,8 @@ angular.module('com.inthetelling.story')
 					stop: false,
 					multiStop: false,
 					start_time: key,
-					toolTipText: '',
+					//null over '' because empty strings are truthy in JS :(
+					toolTipText: null,
 					layoutChange: false
 				};
 				var foundStop = false, chapters = [], foundScene = false, foundInternalScene = false;

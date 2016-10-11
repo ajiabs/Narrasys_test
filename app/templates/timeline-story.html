@@ -68,7 +68,7 @@
 							 ng-mouseout="hideTooltip(eventGroup)"
 							 ng-repeat="eventGroup in timeline.displayMarkedEvents"
 							 ng-style="{left: markerPercent(eventGroup.start_time)+'%'}"
-							 ng-if="eventGroup.stop || eventGroup.toolTipText || appState.product == 'producer'"
+							 ng-if="eventGroup.stop || eventGroup.toolTipText || appState.product == 'producer' && eventGroup.toolTipText != null"
 							 ng-class="{stop: eventGroup.stop && !eventGroup.multiStop, mini: eventGroup.layoutChange, multi: eventGroup.multiStop}">
 						</div>
 
