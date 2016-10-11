@@ -113,8 +113,10 @@
 			var isInline = item.layouts[0] === 'inline';
 
 			//TS-1147 - hide video position for videoOverlay
+			//TS-1139 - all layouts, if vidOverlay, forced to fill/stretch.
 			if (item.layouts.indexOf('videoOverlay') !== -1) {
 				_bgImagePositionSelectVisibility(false);
+				itemForm.position = 'fill';
 			}
 			// altPane = transmedia pane, mainPane = text pane.
 			switch(sceneType) {
@@ -136,9 +138,6 @@
 
 					item.layouts = item.layouts || ['windowBg'];
 					itemForm.position = itemForm.position || 'fill'; //P1-A
-					if (item.layouts[0] === 'videoOverlay' ) {
-						itemForm.position = 'fill';
-					}
 					break;
 				case '1col':
 				case 'centered':
@@ -157,9 +156,6 @@
 					}
 					itemForm.position = itemForm.position || 'fill'; //P1-A
 					item.layouts = item.layouts || ['windowBg'];
-					if (item.layouts[0] === 'videoOverlay' ) {
-						itemForm.position = 'fill';
-					}
 					break;
 				case '2colL':
 				case '2colR':
