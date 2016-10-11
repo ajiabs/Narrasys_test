@@ -357,13 +357,8 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		$scope.userHasRole = function (role) {
-			return authSvc.userHasRole(role);
-		};
-
-		$scope.logout = function () {
-			return authSvc.logout();
-		};
+		$scope.userHasRole =authSvc.userHasRole;
+		$scope.logout = authSvc.logout;
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 		// Autoscroll

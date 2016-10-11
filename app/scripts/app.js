@@ -193,7 +193,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			controller: 'ContainerAssetsTestController',
 			template: [
 				'<div class="standaloneAncillaryPage">',
-				'	<itt-nav logout="logout()"></itt-nav>',
+				'	<itt-nav on-logout="logout()"></itt-nav>',
 				'	<div>',
 				'		<div sxs-container-assets="containerId" mime-key="assetLib"></div>',
 				'	</div>',
