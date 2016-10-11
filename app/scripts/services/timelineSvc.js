@@ -696,7 +696,9 @@ angular.module('com.inthetelling.story')
 			svc.markedEvents = $filter('filter')(svc.markedEvents, {
 				_id: '!' + removeId
 			});
-
+			//TS-1154 - remove the event from the displayMarkedEvents
+			var groupedEvents = groupByStartTime(svc.markedEvents);
+			svc.displayMarkedEvents = prepGroupedEvents(groupedEvents);
 			svc.updateEventStates();
 		};
 

@@ -127,6 +127,10 @@ angular.module('com.inthetelling.story')
 						scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
 					}
 
+					if (newItem.chapter_marker === false) {
+						timelineSvc.removeEvent(newItem._id);
+					}
+
 					// Special cases:
 					// if new template is image-fill,
 					// 	set cosmetic to true, itemForm.
