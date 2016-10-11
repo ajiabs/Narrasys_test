@@ -51,6 +51,7 @@ const isUnbranded = (nameSpace) => {
 			background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
 			position: relative;
 			color: #FFF;
+			padding: 10px;
 			.professional__copyright {
 				text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
 				color: white;
