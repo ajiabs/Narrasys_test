@@ -108,6 +108,8 @@ angular.module('com.inthetelling.story')
 										scope.onContainerAdd({$container: container});
 									});
 								});
+							} else {
+								scope.onContainerAdd({$container: container});
 							}
 						});
 						scope.container.newContainerTitle = '';
