@@ -35,7 +35,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			template: [
 				'<div class="standaloneAncillaryPage">',
 				'	<itt-nav on-logout="logout()"></itt-nav>',
-				'	<h1>Account</h1>',
+				'	<h1>My Account</h1>',
 				'	<div itt-user></div>',
 				'</div>'
 			].join(''),
@@ -44,7 +44,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			}]
 		})
 		.when('/stories', {
-			title: "Existing narratives",
+			title: "Available Narratives",
 			template: [
 				'<div class="standaloneAncillaryPage">',
 				'	<itt-nav on-logout="logout()"></itt-nav>',
@@ -222,7 +222,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 .run(function ($rootScope, errorSvc) {
 
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
-		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
+		document.title = currentRoute.title ? currentRoute.title : 'Narrative Producer';
 		errorSvc.init(); // clear display of any errors from the previous route
 	});
 	// globally emit rootscope event for certain keypresses:
