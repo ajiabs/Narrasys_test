@@ -1,5 +1,5 @@
-/* 
-	Extra styling for 'current' items. 
+/*
+	Extra styling for 'current' items.
 	For now, avoid adding colors here, instead add images or rgba colors to modify existing background.
 	(Once we have a solidified set of options in colors.css, may add matching variants for each of them here instead.)
 
@@ -12,6 +12,10 @@
 	background-color: rgba(255, 255, 255, 0.3);
 }
 /* - - - - - - */
+/*disable transition for showCurrent scenes*/
+.content.allowHighlights .item {
+	/*transition: none;*/
+}
 
 .content.allowHighlights .highlightSolid.item.isCurrent {
 	background-color: rgba(0, 0, 0, 0.2);

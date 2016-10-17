@@ -344,7 +344,7 @@ angular.module('com.inthetelling.story')
 
 			var tok = svc.getStoredToken();
 			if (user.avatar_id && tok) {
-				console.log('culprit identified', tok);
+				// console.log('culprit identified', tok);
 				$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
