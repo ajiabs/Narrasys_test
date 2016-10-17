@@ -33,6 +33,7 @@
 				'				</div>',
 				'				<div class="navControls__item item--right">',
 				'					<a class="nav__button" ng-click="$ctrl.onLogout()">Log out</a>',
+				'					<a class="nav__button" ng-if="$ctrl.canAccess" target="_blank" rel="noopener noreferrer" href="https://support.narrasys.com">Help</a>',
 				'				<div>',
 				'			</div>',
 				'		</div>',
