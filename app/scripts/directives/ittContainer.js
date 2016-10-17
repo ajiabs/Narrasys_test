@@ -1,7 +1,7 @@
 'use strict';
 /* For admin screen episode list */
 angular.module('com.inthetelling.story')
-	.directive('ittContainer', function ($timeout, $location, $route, appState, modelSvc, recursionHelper, dataSvc) {
+	.directive('ittContainer', function ($timeout, $location, $route, appState, modelSvc, recursionHelper, dataSvc, ittUtils) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -115,7 +115,8 @@ angular.module('com.inthetelling.story')
 						scope.container.newContainerTitle = '';
 						scope.container.addingContainer = false;
 
-						if (container.showChildren === false) {
+						//container.showChildren will be undefined at the project level.
+						if (!ittUtils.existy(container.showChildren) || container.showChildren === false) {
 							scope.onToggleChildren(false);
 						}
 

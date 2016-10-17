@@ -866,7 +866,7 @@ angular.module('com.inthetelling.story')
 					var parentId = data.parent_id;
 
 					// add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
-					console.log(modelSvc.containers[parentId]);
+					// console.log(modelSvc.containers[parentId]);
 					modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
 
 					defer.resolve(data);
