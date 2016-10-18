@@ -14,7 +14,7 @@
 /* - - - - - - */
 /*disable transition for showCurrent scenes*/
 .content.allowHighlights .item {
-	/*transition: none;*/
+	transition: none;
 }
 
 .content.allowHighlights .highlightSolid.item.isCurrent {
