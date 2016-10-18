@@ -17,6 +17,10 @@
 	transition: none;
 }
 
+.content.allowHighlights .highlightSide.item.isCurrent {
+	transition: all ease-in-out 1s;
+}
+
 .content.allowHighlights .highlightSolid.item.isCurrent {
 	background-color: rgba(0, 0, 0, 0.2);
 }
