@@ -197,6 +197,10 @@
                  		color: $unbrandedSecondary !important;
                  	}
              	}
+             	
+             	h1, h2, h3 {
+             		color: $unbrandedPrimary !important;
+             	}
             }
         }
         
@@ -291,6 +295,13 @@
 			        background-color: $unbrandedSecondary !important;
                     .item__text, .item__title, .item__title a {
                         color: $unbrandedPrimary !important;
+                        &:before {
+                        	color: $unbrandedPrimary !important;
+                        }
+                    }
+                    
+                    h1, h2, h3 {
+                    	color: $unbrandedPrimary !important;
                     }
                 }
             }

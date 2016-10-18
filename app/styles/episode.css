@@ -961,6 +961,8 @@
     color: white !important; }
     .field-pros .item.colorInvert .item__text:before, .field-pros .item.colorInvert .item__title a:before, .field-pros .item.colorInvert .item__link--escape-link:before, .field-pros .item.colorInvert a.displayTime.startTime:before {
       color: white !important; }
+  .field-pros .item.colorInvert h1, .field-pros .item.colorInvert h2, .field-pros .item.colorInvert h3 {
+    color: #5b5b5b !important; }
 .field-pros .content.allowHighlights .highlightSolid.item.isCurrent {
   background-color: rgba(107, 170, 54, 0.6); }
 .field-pros .content.allowHighlights .highlightSide.item.isCurrent {
@@ -1014,6 +1016,10 @@
 .field-pros .centerVV-mondrian .mainPane .item.colorInvert {
   background-color: white !important; }
   .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__text, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__title, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+    color: #5b5b5b !important; }
+    .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__text:before, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__title:before, .field-pros .centerVV-mondrian .mainPane .item.colorInvert .item__title a:before {
+      color: #5b5b5b !important; }
+  .field-pros .centerVV-mondrian .mainPane .item.colorInvert h1, .field-pros .centerVV-mondrian .mainPane .item.colorInvert h2, .field-pros .centerVV-mondrian .mainPane .item.colorInvert h3 {
     color: #5b5b5b !important; }
 .field-pros .centerVV-mondrian .item__title--link,
 .field-pros .centerVV-mondrian .item__title--image,
@@ -1140,6 +1146,8 @@
       color: white !important; }
       .narrasys .item.colorInvert .item__text:before, .narrasys .item.colorInvert .item__title a:before, .narrasys .item.colorInvert .item__link--escape-link:before, .narrasys .item.colorInvert a.displayTime.startTime:before {
         color: white !important; }
+    .narrasys .item.colorInvert h1, .narrasys .item.colorInvert h2, .narrasys .item.colorInvert h3 {
+      color: #4d4d4d !important; }
   .narrasys .content.allowHighlights .highlightSolid.item.isCurrent {
     background-color: rgba(222, 102, 37, 0.6); }
   .narrasys .content.allowHighlights .highlightSide.item.isCurrent {
@@ -1165,10 +1173,6 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
-  .narrasys .centerVV .static-bg__main, .narrasys .cornerV .static-bg__main, .narrasys .twocol .static-bg__main, .narrasys .centered .static-bg__main, .narrasys .cornerH .static-bg__main, .narrasys .pip .static-bg__main, .narrasys .onecol .static-bg__main {
-    background-image: url("/images/customer/Camera"); }
-  .narrasys .centerVV .static-bg__alt, .narrasys .cornerV .static-bg__alt, .narrasys .twocol .static-bg__alt, .narrasys .centered .static-bg__alt, .narrasys .cornerH .static-bg__alt, .narrasys .pip .static-bg__alt, .narrasys .onecol .static-bg__alt {
-    background-image: url("/images/customer/network"); }
   .narrasys .centerVV .item__title--link, .narrasys .centerVV .item__title--file, .narrasys .cornerV .item__title--link, .narrasys .cornerV .item__title--file, .narrasys .twocol .item__title--link, .narrasys .twocol .item__title--file, .narrasys .centered .item__title--link, .narrasys .centered .item__title--file, .narrasys .cornerH .item__title--link, .narrasys .cornerH .item__title--file, .narrasys .pip .item__title--link, .narrasys .pip .item__title--file, .narrasys .onecol .item__title--link, .narrasys .onecol .item__title--file {
     font-family: 'Gotham Thin',  sans-serif;
     color: #4d4d4d; }
@@ -1189,6 +1193,10 @@
   .narrasys .centerVV-mondrian .mainPane .item.colorInvert {
     background-color: white !important; }
     .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__text, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__title, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+      color: #4d4d4d !important; }
+      .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__text:before, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__title:before, .narrasys .centerVV-mondrian .mainPane .item.colorInvert .item__title a:before {
+        color: #4d4d4d !important; }
+    .narrasys .centerVV-mondrian .mainPane .item.colorInvert h1, .narrasys .centerVV-mondrian .mainPane .item.colorInvert h2, .narrasys .centerVV-mondrian .mainPane .item.colorInvert h3 {
       color: #4d4d4d !important; }
   .narrasys .centerVV-mondrian .item__title--link,
   .narrasys .centerVV-mondrian .item__title--image,
@@ -1325,6 +1333,8 @@
       color: white !important; }
       .career-playbook .item.colorInvert .item__text:before, .career-playbook .item.colorInvert .item__title a:before, .career-playbook .item.colorInvert .item__link--escape-link:before, .career-playbook .item.colorInvert a.displayTime.startTime:before {
         color: white !important; }
+    .career-playbook .item.colorInvert h1, .career-playbook .item.colorInvert h2, .career-playbook .item.colorInvert h3 {
+      color: #4d4d4d !important; }
   .career-playbook .content.allowHighlights .highlightSolid.item.isCurrent {
     background-color: rgba(0, 172, 238, 0.6); }
   .career-playbook .content.allowHighlights .highlightSide.item.isCurrent {
@@ -1376,6 +1386,10 @@
   .career-playbook .centerVV-mondrian .mainPane .item.colorInvert {
     background-color: white !important; }
     .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__text, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__title, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+      color: #4d4d4d !important; }
+      .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__text:before, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__title:before, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert .item__title a:before {
+        color: #4d4d4d !important; }
+    .career-playbook .centerVV-mondrian .mainPane .item.colorInvert h1, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert h2, .career-playbook .centerVV-mondrian .mainPane .item.colorInvert h3 {
       color: #4d4d4d !important; }
   .career-playbook .centerVV-mondrian .item__title--link,
   .career-playbook .centerVV-mondrian .item__title--image,
@@ -1512,6 +1526,8 @@
     color: white !important; }
     .george-washington .item.colorInvert .item__text:before, .george-washington .item.colorInvert .item__title a:before, .george-washington .item.colorInvert .item__link--escape-link:before, .george-washington .item.colorInvert a.displayTime.startTime:before {
       color: white !important; }
+  .george-washington .item.colorInvert h1, .george-washington .item.colorInvert h2, .george-washington .item.colorInvert h3 {
+    color: black !important; }
 .george-washington .content.allowHighlights .highlightSolid.item.isCurrent {
   background-color: rgba(200, 177, 139, 0.6); }
 .george-washington .content.allowHighlights .highlightSide.item.isCurrent {
@@ -1559,6 +1575,10 @@
 .george-washington .centerVV-mondrian .mainPane .item.colorInvert {
   background-color: white !important; }
   .george-washington .centerVV-mondrian .mainPane .item.colorInvert .item__text, .george-washington .centerVV-mondrian .mainPane .item.colorInvert .item__title, .george-washington .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+    color: black !important; }
+    .george-washington .centerVV-mondrian .mainPane .item.colorInvert .item__text:before, .george-washington .centerVV-mondrian .mainPane .item.colorInvert .item__title:before, .george-washington .centerVV-mondrian .mainPane .item.colorInvert .item__title a:before {
+      color: black !important; }
+  .george-washington .centerVV-mondrian .mainPane .item.colorInvert h1, .george-washington .centerVV-mondrian .mainPane .item.colorInvert h2, .george-washington .centerVV-mondrian .mainPane .item.colorInvert h3 {
     color: black !important; }
 .george-washington .centerVV-mondrian .item__title--link,
 .george-washington .centerVV-mondrian .item__title--image,
@@ -1716,6 +1736,8 @@
     color: #dddddd !important; }
     .unbranded .item.colorInvert .item__text:before, .unbranded .item.colorInvert .item__title a:before, .unbranded .item.colorInvert .item__link--escape-link:before, .unbranded .item.colorInvert a.displayTime.startTime:before {
       color: #dddddd !important; }
+  .unbranded .item.colorInvert h1, .unbranded .item.colorInvert h2, .unbranded .item.colorInvert h3 {
+    color: black !important; }
 .unbranded .content.allowHighlights .highlightSolid.item.isCurrent {
   background-color: rgba(204, 204, 204, 0.6); }
 .unbranded .content.allowHighlights .highlightSide.item.isCurrent {
@@ -1763,6 +1785,10 @@
 .unbranded .centerVV-mondrian .mainPane .item.colorInvert {
   background-color: #dddddd !important; }
   .unbranded .centerVV-mondrian .mainPane .item.colorInvert .item__text, .unbranded .centerVV-mondrian .mainPane .item.colorInvert .item__title, .unbranded .centerVV-mondrian .mainPane .item.colorInvert .item__title a {
+    color: black !important; }
+    .unbranded .centerVV-mondrian .mainPane .item.colorInvert .item__text:before, .unbranded .centerVV-mondrian .mainPane .item.colorInvert .item__title:before, .unbranded .centerVV-mondrian .mainPane .item.colorInvert .item__title a:before {
+      color: black !important; }
+  .unbranded .centerVV-mondrian .mainPane .item.colorInvert h1, .unbranded .centerVV-mondrian .mainPane .item.colorInvert h2, .unbranded .centerVV-mondrian .mainPane .item.colorInvert h3 {
     color: black !important; }
 .unbranded .centerVV-mondrian .item__title--link,
 .unbranded .centerVV-mondrian .item__title--image,

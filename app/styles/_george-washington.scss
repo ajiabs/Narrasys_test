@@ -143,6 +143,10 @@
                  		color: $george-washingtonSecondary !important;
                  	}
              	}
+             	
+             	h1, h2, h3 {
+             		color: $george-washingtonPrimary !important;
+             	}
             }
         }
         
@@ -237,6 +241,13 @@
 			        background-color: $george-washingtonSecondary !important;
                     .item__text, .item__title, .item__title a {
                         color: $george-washingtonPrimary !important;
+                        &:before {
+                        	color: $george-washingtonPrimary !important;
+                        }
+                    }
+                    
+                    h1, h2, h3 {
+                    	color: $george-washingtonPrimary !important;
                     }
                 }
             }

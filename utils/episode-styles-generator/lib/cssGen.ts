@@ -281,6 +281,10 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
                  		color: $${nameSpace}Secondary !important;
                  	}
              	}
+             	
+             	h1, h2, h3 {
+             		color: $${nameSpace}Primary !important;
+             	}
             }
         }
         
@@ -375,6 +379,13 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
 			        background-color: $${nameSpace}Secondary !important;
                     .item__text, .item__title, .item__title a {
                         color: $${nameSpace}Primary !important;
+                        &:before {
+                        	color: $${nameSpace}Primary !important;
+                        }
+                    }
+                    
+                    h1, h2, h3 {
+                    	color: $${nameSpace}Primary !important;
                     }
                 }
             }

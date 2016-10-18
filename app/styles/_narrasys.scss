@@ -140,6 +140,10 @@
                  		color: $narrasysSecondary !important;
                  	}
              	}
+             	
+             	h1, h2, h3 {
+             		color: $narrasysPrimary !important;
+             	}
             }
         }
         
@@ -179,11 +183,11 @@
 		//non-pro one col: centered, onecol
         .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {	
             .static-bg__main {
-                background-image: url('/images/customer/Camera');
+                
             }
             
             .static-bg__alt {
-                background-image: url('/images/customer/network');
+                
             }
             
             .item__title--link, .item__title--file {
@@ -234,6 +238,13 @@
 			        background-color: $narrasysSecondary !important;
                     .item__text, .item__title, .item__title a {
                         color: $narrasysPrimary !important;
+                        &:before {
+                        	color: $narrasysPrimary !important;
+                        }
+                    }
+                    
+                    h1, h2, h3 {
+                    	color: $narrasysPrimary !important;
                     }
                 }
             }

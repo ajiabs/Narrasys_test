@@ -144,6 +144,10 @@
                  		color: $career-playbookSecondary !important;
                  	}
              	}
+             	
+             	h1, h2, h3 {
+             		color: $career-playbookPrimary !important;
+             	}
             }
         }
         
@@ -238,6 +242,13 @@
 			        background-color: $career-playbookSecondary !important;
                     .item__text, .item__title, .item__title a {
                         color: $career-playbookPrimary !important;
+                        &:before {
+                        	color: $career-playbookPrimary !important;
+                        }
+                    }
+                    
+                    h1, h2, h3 {
+                    	color: $career-playbookPrimary !important;
                     }
                 }
             }

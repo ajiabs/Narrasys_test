@@ -143,6 +143,10 @@
                  		color: $field-prosSecondary !important;
                  	}
              	}
+             	
+             	h1, h2, h3 {
+             		color: $field-prosPrimary !important;
+             	}
             }
         }
         
@@ -237,6 +241,13 @@
 			        background-color: $field-prosSecondary !important;
                     .item__text, .item__title, .item__title a {
                         color: $field-prosPrimary !important;
+                        &:before {
+                        	color: $field-prosPrimary !important;
+                        }
+                    }
+                    
+                    h1, h2, h3 {
+                    	color: $field-prosPrimary !important;
                     }
                 }
             }
