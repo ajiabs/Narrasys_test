@@ -962,7 +962,7 @@
     .field-pros .item.colorInvert .item__text:before, .field-pros .item.colorInvert .item__title a:before, .field-pros .item.colorInvert .item__link--escape-link:before, .field-pros .item.colorInvert a.displayTime.startTime:before {
       color: white !important; }
   .field-pros .item.colorInvert h1, .field-pros .item.colorInvert h2, .field-pros .item.colorInvert h3 {
-    color: #5b5b5b !important; }
+    color: white !important; }
 .field-pros .content.allowHighlights .highlightSolid.item.isCurrent {
   background-color: rgba(107, 170, 54, 0.6); }
 .field-pros .content.allowHighlights .highlightSide.item.isCurrent {
@@ -1147,7 +1147,7 @@
       .narrasys .item.colorInvert .item__text:before, .narrasys .item.colorInvert .item__title a:before, .narrasys .item.colorInvert .item__link--escape-link:before, .narrasys .item.colorInvert a.displayTime.startTime:before {
         color: white !important; }
     .narrasys .item.colorInvert h1, .narrasys .item.colorInvert h2, .narrasys .item.colorInvert h3 {
-      color: #4d4d4d !important; }
+      color: white !important; }
   .narrasys .content.allowHighlights .highlightSolid.item.isCurrent {
     background-color: rgba(222, 102, 37, 0.6); }
   .narrasys .content.allowHighlights .highlightSide.item.isCurrent {
@@ -1334,7 +1334,7 @@
       .career-playbook .item.colorInvert .item__text:before, .career-playbook .item.colorInvert .item__title a:before, .career-playbook .item.colorInvert .item__link--escape-link:before, .career-playbook .item.colorInvert a.displayTime.startTime:before {
         color: white !important; }
     .career-playbook .item.colorInvert h1, .career-playbook .item.colorInvert h2, .career-playbook .item.colorInvert h3 {
-      color: #4d4d4d !important; }
+      color: white !important; }
   .career-playbook .content.allowHighlights .highlightSolid.item.isCurrent {
     background-color: rgba(0, 172, 238, 0.6); }
   .career-playbook .content.allowHighlights .highlightSide.item.isCurrent {
@@ -1527,7 +1527,7 @@
     .george-washington .item.colorInvert .item__text:before, .george-washington .item.colorInvert .item__title a:before, .george-washington .item.colorInvert .item__link--escape-link:before, .george-washington .item.colorInvert a.displayTime.startTime:before {
       color: white !important; }
   .george-washington .item.colorInvert h1, .george-washington .item.colorInvert h2, .george-washington .item.colorInvert h3 {
-    color: black !important; }
+    color: white !important; }
 .george-washington .content.allowHighlights .highlightSolid.item.isCurrent {
   background-color: rgba(200, 177, 139, 0.6); }
 .george-washington .content.allowHighlights .highlightSide.item.isCurrent {
@@ -1737,7 +1737,7 @@
     .unbranded .item.colorInvert .item__text:before, .unbranded .item.colorInvert .item__title a:before, .unbranded .item.colorInvert .item__link--escape-link:before, .unbranded .item.colorInvert a.displayTime.startTime:before {
       color: #dddddd !important; }
   .unbranded .item.colorInvert h1, .unbranded .item.colorInvert h2, .unbranded .item.colorInvert h3 {
-    color: black !important; }
+    color: #dddddd !important; }
 .unbranded .content.allowHighlights .highlightSolid.item.isCurrent {
   background-color: rgba(204, 204, 204, 0.6); }
 .unbranded .content.allowHighlights .highlightSide.item.isCurrent {

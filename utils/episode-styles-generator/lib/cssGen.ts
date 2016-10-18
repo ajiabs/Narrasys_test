@@ -283,7 +283,7 @@ export const genCss = ({nameSpace, accentColor, primaryColor, secondaryColor, li
              	}
              	
              	h1, h2, h3 {
-             		color: $${nameSpace}Primary !important;
+             		color: $${nameSpace}Secondary !important;
              	}
             }
         }
