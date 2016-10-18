@@ -19,7 +19,7 @@ angular.module('com.inthetelling.story')
 			play: play,
 			pause: pause,
 			startAtTime: startAtTime,
-			seek: seek,
+			seek: doSeek,
 			setSpeed: setSpeed,
 			currentTime: currentTime,
 			toggleMute: toggleMute,
@@ -275,15 +275,19 @@ angular.module('com.inthetelling.story')
 
 		// play doesn't start immediately -- need to return a promise so timelineSvc can wait until the video is actually playing
 		function play() {
+			// console.log('videoCtrl play!');
 			var defer = $q.defer();
 			if ($scope.videoType === 'youtube') {
 				youTubePlayerManager.play($scope.videoNode.id);
 				html5PlayerManager.pauseOtherEmbeds();
 			} else {
-				$scope.videoNode.play();
+				// console.log('playing!!', $scope.videoNode);
+
+				// $scope.videoNode.play();
+				html5PlayerManager.play($scope.videoNode.id);
 				if (appState.embedYTPlayerAvailable || appState.embedHtml5PlayerAvailable) {
 					youTubePlayerManager.pauseOtherEmbeds();
-					html5PlayerManager.pauseOtherEmbeds();
+					html5PlayerManager.pauseOtherEmbeds($scope.videoNode.id);
 				}
 			}
 
@@ -306,7 +310,8 @@ angular.module('com.inthetelling.story')
 				youTubePlayerManager.seekTo($scope.videoNode.id, appState.time, true);
 				youTubePlayerManager.pause($scope.videoNode.id);
 			} else {
-				$scope.videoNode.pause();
+				// $scope.videoNode.pause();
+				html5PlayerManager.pause($scope.videoNode.id);
 				try {
 					$scope.videoNode.currentTime = appState.time; // in case t has drifted
 				} catch (e) {
@@ -356,7 +361,20 @@ angular.module('com.inthetelling.story')
 			}
 		}
 
+		function newSeek(t, playerInterface) {
+			playerInterface.seekTo(t);
+		}
+
+		function doSeek(t) {
+			if ($scope.videoType === 'youtube') {
+				newSeek(t, youTubePlayerManager);
+			} else {
+				newSeek(t, html5PlayerManager);
+			}
+		}
+
 		function seek(t, intentionalStall, defer) {
+			console.trace('seeking');
 			// console.log("videoController.seek", t, intentionalStall, defer);
 			defer = defer || $q.defer();
 			var videoNotReady = false;
@@ -382,6 +400,7 @@ angular.module('com.inthetelling.story')
 					if ($scope.videoNode.readyState > 1) {
 						$scope.videoNode.currentTime = t;
 						defer.resolve();
+						console.log('hmm');
 					} else {
 						// video is partially loaded but still not seek-ready
 						$scope.intentionalStall = false;

@@ -27,7 +27,7 @@
 			pause: pause,
 			getCurrentTime: getCurrentTime,
 			getPlayerState: getPlayerState,
-			seek: seek,
+			seekTo: seek,
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			getBufferPercent: getBufferPercent
 		};
@@ -75,6 +75,7 @@
 		}
 
 		function onPause(evt) {
+			console.trace('onPause', evt);
 			var player = _derivePlayerFromEvt(evt);
 			player.meta.playerState = 2;
 		}
@@ -166,21 +167,26 @@
 			var instance = _getInstance(pid);
 
 			if (instance !== undefined) {
+
 				instance.play();
 			}
 
 			var mockEvent = { target: { id: pid } };
-			return onPlay(mockEvent);
+			onPlay(mockEvent);
 		}
 
 		function pause(pid) {
+			console.trace('html5Vid#pause');
 			var instance = _getInstance(pid);
 			if (instance !== undefined && !instance.paused) {
+
 				instance.pause();
 			}
 
+
+
 			var mockEvent = { target: { id: pid } };
-			return onPause(mockEvent);
+			onPause(mockEvent);
 		}
 
 		function getCurrentTime(pid) {

@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc) {
+	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc, ittUtils) {
 
 		var svc = {};
 
