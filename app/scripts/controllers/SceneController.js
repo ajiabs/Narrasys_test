@@ -1,9 +1,13 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('SceneController', function ($scope, $filter) {
+	.controller('SceneController', function ($scope, $filter, ittUtils) {
+		$scope.byPullquoteOrH2 = byPullquoteOrH2;
+		$scope.centeredProTransmedia = centeredProTransmedia;
+		$scope.setBgImgUrl = setBgImgUrl;
+		$scope.precalculateSceneValues = precalculateSceneValues;
 
-		$scope.precalculateSceneValues = function () {
+		function precalculateSceneValues() {
 			// console.log("precalcSceneValues");
 
 			// clear out old calculations in case we're re-precalculating
@@ -17,15 +21,14 @@ angular.module('com.inthetelling.story')
 			// some scene templates let you specify showCurrent for one or more columns; others do it automatically (that will be in the template)
 			$scope.showCurrent = ($.inArray("showCurrent", $scope.scene.layouts) > -1);
 
-			// Precalculate each fg, bg, and content pane on scene creation for performance.  
+			// Precalculate each fg, bg, and content pane on scene creation for performance.
 			$scope.contentItems = $filter("isContent")($scope.scene.items);
 			$scope.mainFgItems = $filter("itemLayout")($scope.scene.items, "mainFg");
 			$scope.mainBgItems = $filter("itemLayout")($scope.scene.items, "mainBg");
 			$scope.altFgItems = $filter("itemLayout")($scope.scene.items, "altFg");
 			$scope.altBgItems = $filter("itemLayout")($scope.scene.items, "altBg");
-
 			// Content is a little trickier:
-			// * splitRequired:   
+			// * splitRequired:
 			//   main = transcript + optional   / alt=required - transcript
 			// * splitOptional:
 			//   main=transcript + required / alt=optional - transcript
@@ -86,6 +89,69 @@ angular.module('com.inthetelling.story')
 					i = $scope.altContentItems.length; // no need to keep checking the rest
 				}
 			}
-		};
+		}
 
+		function centeredProTransmedia(item) {
+			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
+			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
+			var isLongTxt = item.templateUrl === 'templates/item/text-transmedia.html';
+			var isDef = item.templateUrl === 'templates/item/text-definition.html';
+			return (isPullQuote || isH2 || isLongTxt || isDef ) ? item : false;
+		}
+
+		function byPullquoteOrH2(item) {
+			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
+			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
+			return (isPullQuote || isH2) ? item : false;
+		}
+
+		function setBgImgUrl(items, col) {
+			var currItems = $filter('isCurrent')(items);
+			var mainColBgOrFg = $filter(col)(currItems);
+			var bgStyle;
+			var opacity = 1;
+			var bgSize;
+			var bgPosition;
+			var bgUrl;
+
+			if (mainColBgOrFg.length > 0 && ittUtils.existy(mainColBgOrFg[0].asset)) {
+				bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
+				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
+					opacity = 0.25;
+				}
+				bgStyle = mainColBgOrFg[0].styles[0];
+				//fill and stretch = background-size: 100% 100%, background-position: 50% 50%
+				switch(bgStyle) {
+					case 'cover':
+						bgSize = 'cover';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity  };
+					case 'contain':
+						bgSize = 'contain';
+						bgPosition = 'center';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'fill':
+						bgSize = '100% 100%';
+						bgPosition = '50% 50%';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'tl':
+						bgSize = 'auto';
+						bgPosition = 'top left';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'tr':
+						bgSize = 'auto';
+						bgPosition = 'top right';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'bl':
+						bgSize = 'auto';
+						bgPosition = 'bottom left';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'br':
+						bgSize = 'auto';
+						bgPosition = 'bottom right';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+				}
+				//do nothing
+				return '';
+			}
+		}
 	});

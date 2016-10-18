@@ -1,26 +1,60 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.factory('authSvc', function (config, $routeParams, $http, $q, $location, appState, modelSvc, errorSvc) {
+	.factory('authSvc', function (config, $routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
 		// console.log('authSvc factory');
 		var svc = {};
+		var Roles = {
+			ADMINISTRATOR: "admin",
+			INSTRUCTOR: "instructor",
+			STUDENT: "student",
+			GUEST: "guest",
+			CUSTOMER_ADMINISTRATOR: 'customer admin'
+		};
+
+		var Resources = {
+			CUSTOMER: 'Customer'
+		};
+
+		svc.isGuest = function isGuest() {
+			var _isGuest = true;
+			angular.forEach(appState.user.roles, function(r) {
+				if (r.role !== Roles.GUEST) {
+					_isGuest = false;
+				}
+			});
+
+			return _isGuest;
+		};
 
 		svc.userHasRole = function (role) {
-
 			if (appState.user && appState.user.roles) {
 				for (var i = 0; i < appState.user.roles.length; i++) {
 					if (appState.user.roles[i].role === role) {
+						if (!(role === Roles.ADMINISTRATOR && ittUtils.existy(appState.user.roles[i].resource_id))) {
+							return true;
+						}
+					} else if (role === Roles.CUSTOMER_ADMINISTRATOR && appState.user.roles[i].role === Roles.ADMINISTRATOR &&
+						ittUtils.existy(appState.user.roles[i].resource_id) &&
+						appState.user.roles[i].resource_type === Resources.CUSTOMER) {
 						return true;
 					}
 				}
 			}
 			return false;
 		};
-		var Roles = {
-			ADMINISTRATOR: "admin",
-			INSTRUCTOR: "instructor",
-			STUDENT: "student",
-			GUEST: "guest",
+
+		svc.getCustomerIdsFromRoles = function () {
+			if (appState.user && appState.user.roles) {
+				return appState.user.roles.reduce(function(accm, i) {
+					if (i.role === Roles.ADMINISTRATOR &&
+						ittUtils.existy(i.resource_id) &&
+						i.resource_type === Resources.CUSTOMER) {
+						accm.push(i.resource_id);
+					}
+					return accm;
+				}, []);
+			}
 		};
 
 		svc.getRoleForNarrative = function (narrativeId, roles) {
@@ -69,11 +103,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getDefaultProductForRole = function (role) {
-			/* 
+			/*
 			This was making it impossible for users with admin role to see editor or player interface.
 			For now, producer should be used only at the /#/episode urls, editor at the narrative urls
 			(producer only works with individual episodes atm anyway)
-			TODO later on we'll make this user-selectable within the product UI (and probably 
+			TODO later on we'll make this user-selectable within the product UI (and probably
 			eliminate appState.productLoadedAs and the /#/episode, /#/editor, etc routes)
 			*/
 			var product = "player";
@@ -163,7 +197,9 @@ angular.module('com.inthetelling.story')
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function (nonceParam) {
 			if ($http.defaults.headers.common.Authorization) {
-				if (appState.user) {
+				//appState#init will initialize an empty object as the user property, which will always make
+				//appState.user truthy, thus need to check to see if we actually have a loaded user by looking for the id.
+				if (appState.user._id) {
 					// Have header and user; all done.
 					authenticateDefer.resolve();
 				} else {
@@ -205,6 +241,7 @@ angular.module('com.inthetelling.story')
 							return svc.authenticateViaNonce(nonceParam);
 						});
 				} else {
+					console.log('auth Via Nonce', nonceParam);
 					// no login info at all, start from scratch
 					return svc.authenticateViaNonce(nonceParam);
 				}
@@ -305,7 +342,10 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
-			if (user.avatar_id) {
+			var tok = svc.getStoredToken();
+			if (user.avatar_id && tok) {
+				// console.log('culprit identified', tok);
+				$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {
 					// console.log("GOT AVATAR", response);

@@ -16,6 +16,28 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
+	.filter('mainCol', function() {
+		return function (items) {
+			var ret = [];
+			angular.forEach(items, function(item) {
+				if (item.layouts && (item.layouts[0] === 'mainBg' || item.layouts[0] === 'mainFg')) {
+					ret.push(item);
+				}
+			});
+			return ret;
+		};
+	})
+	.filter('altCol', function() {
+		return function (items) {
+			var ret = [];
+			angular.forEach(items, function(item) {
+				if (item.layouts && (item.layouts[0] === 'altBg' || item.layouts[0] === 'altFg')) {
+					ret.push(item);
+				}
+			});
+			return ret;
+		};
+	})
 	.filter('annotation', function () {
 		return function (items) {
 			var ret = [];
@@ -217,5 +239,22 @@ angular.module('com.inthetelling.story')
 		// To label ng-repeats by letter, use {{$index | alpha}}
 		return function (n) {
 			return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')[n % 26];
+		};
+	})
+	.filter('capitalize', function() {
+		return function(str) {
+			return !!str ? str.charAt(0).toUpperCase() + str.substr(1).toLocaleLowerCase() : '';
+		};
+	})
+	.filter('vidsFromCustAdmins', function() {
+		//assets is actually an object when it comes in.
+		return function(assets) {
+			var notVideos = [];
+			angular.forEach(assets, function(asset) {
+				if (!/video/.test(asset.content_type)) {
+					notVideos.push(asset);
+				}
+			});
+			return notVideos;
 		};
 	});

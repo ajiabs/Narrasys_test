@@ -3,18 +3,19 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc) {
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager, selectService) {
 		// console.log("playerController", $scope);
 
-		// $scope.tmp = function () {
-		// 	dataSvc.createTemplate({
-		// 		url: 'templates/episode/regis.html',
-		// 		name: 'Regis',
-		// 		// event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
-		// 		applies_to_episode: true,
-		// 		applies_to_narrative: false
-		// 	});
-		// };
+		//set to true to enable debug info on api-dev
+		debugToolbarInfo(false);
+		function debugToolbarInfo(debugApiDev) {
+			var envs = 'localhost';
+			if (debugApiDev) {
+				envs += '|api-dev';
+			}
+			var doDebug = new RegExp(envs);
+			$scope.showDebugInfo = doDebug.test($location.host());
+		}
 
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
@@ -84,8 +85,8 @@ angular.module('com.inthetelling.story')
 
 		if (appState.isFramed) {
 			/*
-				workaround for when instructure canvas fails to size our iframe correctly
-				This will be harmless in other platforms:
+			 workaround for when instructure canvas fails to size our iframe correctly
+			 This will be harmless in other platforms:
 			 */
 			if (Math.max(document.documentElement.clientHeight, window.innerHeight || 0) < 151) {
 				window.parent.postMessage(JSON.stringify({
@@ -130,6 +131,9 @@ angular.module('com.inthetelling.story')
 			getEpisodeWatcher();
 			// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
+
+			//need to set narrative on scope for disable_new_window feature for narratives
+			//this used to happen in ittNarrativeTimelineJs, but has been deprecated
 			modelSvc.setLanguageStrings();
 			wileyNag(); // HACK
 			document.title = modelSvc.episodes[appState.episodeId].display_title; // TODO: update this on language change
@@ -151,16 +155,18 @@ angular.module('com.inthetelling.story')
 					});
 				} else {
 					// Episode has no master asset
+					console.log('episode has no master asset!');
 					$scope.loading = false;
 					// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
 					if (appState.product === 'producer') {
 						appState.editEpisode = modelSvc.episodes[appState.episodeId];
+						appState.editEpisode.templateOpts = selectService.getTemplates('episode');
 					}
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
 				}
 
-				if (appState.productLoadedAs === 'producer' && !authSvc.userHasRole('admin')) {
+				if (appState.productLoadedAs === 'producer' && !(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
 					// TODO redirect instead?
 					appState.product = 'player';
 					appState.productLoadedAs = 'player';
@@ -183,7 +189,7 @@ angular.module('com.inthetelling.story')
 				appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 				appState.videoControlsLocked = true;
 			}
-			if (appState.productLoadedAs === 'producer' && !authSvc.userHasRole('admin')) {
+			if (appState.productLoadedAs === 'producer' && !(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
 				// TODO redirect instead?
 				appState.product = 'player';
 				appState.productLoadedAs = 'player';
@@ -270,7 +276,7 @@ angular.module('com.inthetelling.story')
 		// Misc toolbars too small to rate their own controllers
 		$scope.toggleSearchPanel = function () {
 			appState.show.searchPanel = !appState.show.searchPanel;
-
+			console.log('toggle search pane!', appState.show.searchPanel);
 			if (appState.windowWidth < 480) {
 				$scope.viewMode('review');
 			} else {
@@ -282,6 +288,12 @@ angular.module('com.inthetelling.story')
 				$timeout(function () {
 					document.getElementById('searchtext').focus();
 				});
+			} else {
+				//pause any videos which could be playing in search mode
+				if (appState.embedYTPlayerAvailable) {
+
+					youTubePlayerManager.pauseOtherEmbeds();
+				}
 			}
 		};
 
@@ -345,13 +357,8 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		$scope.userHasRole = function (role) {
-			return authSvc.userHasRole(role);
-		};
-
-		$scope.logout = function () {
-			return authSvc.logout();
-		};
+		$scope.userHasRole =authSvc.userHasRole;
+		$scope.logout = authSvc.logout;
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 		// Autoscroll
@@ -377,7 +384,7 @@ angular.module('com.inthetelling.story')
 		var autoscrollTimer = false;
 
 		var startScrollWatcher = function () {
-			 //console.log("startScrollWatcher");
+			//console.log("startScrollWatcher");
 			if (autoscrollTimer) {
 				return;
 			}
@@ -393,7 +400,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var stopScrollWatcher = function () {
-			 console.log("stopScrollWatcher");
+			console.log("stopScrollWatcher");
 			autoscrollableNode.unbind("scroll");
 			$interval.cancel(autoscrollTimer);
 			autoscrollTimer = false;
@@ -411,7 +418,7 @@ angular.module('com.inthetelling.story')
 		// TODO this is a relatively expensive watch.  Could greatly increase its $interval if we
 		// support directly triggering it from timeline on seek()...
 		var handleAutoscroll = function () {
-			 //console.log("handleAutoscroll", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked);
+			//console.log("handleAutoscroll", "scroll:", appState.autoscroll, "blocked:", appState.autoscrollBlocked);
 			// if autoscroll is true and autoscrollBlocked is false,
 			// find the topmost visible current item and scroll to put it in the viewport.
 			// WARNING this may break if item is inside scrollable elements other than #CONTAINER
@@ -428,7 +435,7 @@ angular.module('com.inthetelling.story')
 			// HACK. Need to limit this to search within a pane
 			angular.forEach($('.isCurrent:visible'), function (item) {
 				var t = item.getBoundingClientRect()
-					.top + curScroll;
+						.top + curScroll;
 				if (t < top) {
 					top = t;
 				}

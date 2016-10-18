@@ -1,15 +1,33 @@
 /*jshint sub:true*/
 'use strict';
 
-/* 
+/*
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 
 TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/when we decide we're going to keep it...
 
 */
 
+/**
+ * @ngDoc directive
+ * @name iTT.directive:ittItemEditor
+ * @restrict 'A'
+ * @scope
+ * @description
+ * Directive for editing items in the producer / editor interface
+ * @requires $rootScope
+ * @requires $timeOut
+ * @requires errorSvc
+ * @requires appState
+ * @requires modelSvc
+ * @requires timelineSvc
+ * @requires awsSvc
+ * @requires dataSvc
+ * @requires youtubeSvc
+ * @param {Object} Item object representing an Event object from the DB to be edited.
+ */
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc, selectService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -20,43 +38,43 @@ angular.module('com.inthetelling.story')
 			controller: 'EditController',
 			link: function (scope) {
 				// console.log("ittItemEditor", scope.item);
-				var widget;
-				scope.startRecordVideo = function () {
-					scope.isRecordingVideo = !scope.isRecordingVideo;
-					var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
-					if (widgetwidth > 500) {
-						widgetwidth = 500;
-					}
-					widget = new window.YT.UploadWidget('recordWidgetContainer', {
-						width: widgetwidth,
-						events: {
-							'onApiReady': function () {
-								// console.log('youtube onApiReady');
-								widget.setVideoPrivacy('unlisted');
-								var d = new Date();
-								var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
-								widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
-								// widget.setVideoDescription();
-								// widget.setVideoKeywords();
-							},
-							'onUploadSuccess': function (ret) {
-								scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
-								scope.isRecordingVideo = false;
-								scope.isProcessingVideo = true;
-
-								// onProcessingComplete is not always fired by youtube; force it after 30 secs:
-								$timeout(function () {
-									console.log("Forcing process-complete");
-									scope.isProcessingVideo = false;
-								}, 30000);
-							},
-							'onProcessingComplete': function () {
-								// console.log("youtube onProcessingComplete");
-								scope.isProcessingVideo = false;
-							}
-						}
-					});
-				};
+				// var widget;
+				// scope.startRecordVideo = function () {
+				// 	scope.isRecordingVideo = !scope.isRecordingVideo;
+				// 	var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
+				// 	if (widgetwidth > 500) {
+				// 		widgetwidth = 500;
+				// 	}
+				// 	widget = new window.YT.UploadWidget('recordWidgetContainer', {
+				// 		width: widgetwidth,
+				// 		events: {
+				// 			'onApiReady': function () {
+				// 				// console.log('youtube onApiReady');
+				// 				widget.setVideoPrivacy('unlisted');
+				// 				var d = new Date();
+				// 				var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
+				// 				widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
+				// 				// widget.setVideoDescription();
+				// 				// widget.setVideoKeywords();
+				// 			},
+				// 			'onUploadSuccess': function (ret) {
+				// 				scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
+				// 				scope.isRecordingVideo = false;
+				// 				scope.isProcessingVideo = true;
+                //
+				// 				// onProcessingComplete is not always fired by youtube; force it after 30 secs:
+				// 				$timeout(function () {
+				// 					console.log("Forcing process-complete");
+				// 					scope.isProcessingVideo = false;
+				// 				}, 30000);
+				// 			},
+				// 			'onProcessingComplete': function () {
+				// 				// console.log("youtube onProcessingComplete");
+				// 				scope.isProcessingVideo = false;
+				// 			}
+				// 		}
+				// 	});
+				// };
 
 				timelineSvc.pause();
 				timelineSvc.seek(scope.item.start_time);
@@ -68,41 +86,13 @@ angular.module('com.inthetelling.story')
 				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
 				scope.languages = modelSvc.episodes[appState.episodeId].languages;
-
-				scope.itemForm = {
-					"transition": "",
-					"highlight": "",
-					"color": "",
-					"typography": "",
-					"timestamp": "",
-					"position": "", // for image fills only
-					"pin": "" // for image fills only
-				};
+				scope.itemForm = selectService.setupItemForm(scope.item.styles, 'item');
 
 				if (!scope.item.layouts) {
+					console.log('set layouts array to inline');
 					scope.item.layouts = ["inline"];
 				}
 
-				// extract current event styles for the form
-				if (scope.item.styles) {
-					for (var styleType in scope.itemForm) {
-						for (var i = 0; i < scope.item.styles.length; i++) {
-							if (scope.item.styles[i].substr(0, styleType.length) === styleType) { // begins with styleType
-								scope.itemForm[styleType] = scope.item.styles[i].substr(styleType.length); // Remainder of scope.item.styles[i]
-							}
-						}
-					}
-					// position and pin don't have a prefix because I was dumb when I planned this
-					for (var j = 0; j < scope.item.styles.length; j++) {
-						if (scope.item.styles[j] === 'contain' || scope.item.styles[j] === 'cover' || scope.item.styles[j] === 'center' || scope.item.styles[j] === 'fill') {
-							scope.itemForm.position = scope.item.styles[j];
-						}
-						if (scope.item.styles[j] === 'tl' || scope.item.styles[j] === 'tr' || scope.item.styles[j] === 'bl' || scope.item.styles[j] === 'br') {
-							scope.itemForm.pin = scope.item.styles[j];
-						}
-					}
-
-				}
 				if (!scope.item.producerItemType) {
 					errorSvc.error({
 						data: "Don't have a producerItemType for item " + scope.item._id
@@ -110,10 +100,11 @@ angular.module('com.inthetelling.story')
 				}
 				// TODO:this breaks when editing sxs items within producer!
 				scope.itemEditor = 'templates/producer/item/' + appState.product + '-' + scope.item.producerItemType + '.html';
-
 				scope.appState = appState;
 
+				//watch templateUrl
 				// TODO this still needs more performance improvements...
+
 				scope.watchEdits = scope.$watch(function () {
 					return scope.item;
 				}, function (newItem, oldItem) {
@@ -121,6 +112,8 @@ angular.module('com.inthetelling.story')
 						return;
 					}
 
+					// console.log('item:', newItem);
+					// console.log('templateUrl: ', newItem.templateUrl, '\n', 'layouts: ', newItem.layouts);
 					// FOR DEBUGGING
 					/*
 										angular.forEach(Object.keys(newItem), function (f) {
@@ -134,26 +127,43 @@ angular.module('com.inthetelling.story')
 						scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
 					}
 
+					if (newItem.chapter_marker === false) {
+						timelineSvc.removeEvent(newItem._id);
+					}
+
 					// Special cases:
-					// if new template is image-fill, 
+					// if new template is image-fill,
 					// 	set cosmetic to true, itemForm.
 					// if old template was image-fill, set cosmetic to false
 					// TODO this is fragile, based on template name:
-					if (newItem.templateUrl !== oldItem.templateUrl) {
-						if (newItem.templateUrl === 'templates/item/image-fill.html') {
-							scope.item.cosmetic = true;
-							scope.item.layouts = ["windowBg"];
-							scope.itemForm.position = "fill";
-						}
-						if (oldItem.templateUrl === 'templates/item/image-fill.html') {
-							scope.item.cosmetic = false;
-							scope.item.layouts = ["inline"];
-							scope.itemForm.position = "";
-							scope.itemForm.pin = "";
-						}
-					}
 
-					scope.item = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+					//seeing if we can put this logic below into select service
+
+					//for changes to templateUrl, i.e. picking an option from the drop down.
+					// if (newItem.templateUrl !== oldItem.templateUrl) {
+                    //
+					// 	if (newItem.templateUrl === 'templates/item/image-fill.html') {
+					// 		scope.item.cosmetic = true;
+					// 		scope.item.layouts = ["windowBg"];
+					// 		scope.itemForm.position = "fill";
+					// 	}
+					// 	if (oldItem.templateUrl === 'templates/item/image-fill.html') {
+					// 		scope.item.cosmetic = false;
+					// 		scope.item.layouts = ["inline"];
+					// 		scope.itemForm.position = "";
+					// 		scope.itemForm.pin = "";
+					// 	}
+					// }
+
+
+					//newItem is scope.item
+					newItem = modelSvc.deriveEvent(newItem); // Overkill. Most of the time all we need is setLang...
+
+					//for producers, if they edit a URL to link-embed template a site that cannot be embedded,
+					//change the template URL to 'link'
+					if (appState.product === 'producer' && newItem.noEmbed === true && (newItem.templateUrl === 'templates/item/link-embed.html' || newItem.templateUrl === 'templates/item/link-modal-thumb.html')) {
+						newItem.templateUrl = 'templates/item/link.html';
+					}
 
 					if (newItem.asset) {
 						scope.item.asset.cssUrl = "url('" + newItem.asset.url + "');";
@@ -169,6 +179,18 @@ angular.module('com.inthetelling.story')
 					if (newItem.start_time !== oldItem.start_time || newItem.start_time !== oldItem.end_time) {
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 					}
+					// console.count('$watch turn');
+
+					// console.group('itemStyles');
+					// console.count('incoming item layouts');
+					// console.log('Layouts:', newItem.layouts);
+					// console.log('Styles:', newItem.styles);
+					// console.log('styleCss:', newItem.styleCss);
+					// console.log('\n');
+					// console.log('itemForm.pin', scope.itemForm.pin);
+					// console.log('itemForm.position', scope.itemForm.position);
+					// console.groupEnd('itemStyles');
+
 				}, true);
 
 				// Transform changes to form fields for styles into item.styles[]:
@@ -178,7 +200,7 @@ angular.module('com.inthetelling.story')
 					var styles = [];
 					for (var styleType in scope.itemForm) {
 						if (scope.itemForm[styleType]) {
-							if (styleType === 'position' || styleType === 'pin') { // reason #2,142,683 why I should've specced these styles in some more structured way than a simple array
+							if (styleType === 'position') { // reason #2,142,683 why I should've specced these styles in some more structured way than a simple array
 								styles.push(scope.itemForm[styleType]);
 							} else {
 								styles.push(styleType + scope.itemForm[styleType]);
@@ -186,7 +208,6 @@ angular.module('com.inthetelling.story')
 						}
 					}
 					scope.item.styles = styles;
-
 					// Slight hack to simplify css for image-fill (ittItem does this too, but this is easier than triggering a re-render of the whole item)
 					if (scope.item.asset) {
 						scope.item.asset.cssUrl = "url('" + scope.item.asset.url + "');";
@@ -248,10 +269,10 @@ angular.module('com.inthetelling.story')
 				};
 
 				var getNextStartTime = function (currentScene, currentItem, items) {
-
+					if (currentItem._type === 'Chapter') { return false; }
 					//HACK to work around TS-412
 					if (!currentScene) {
-						console.warn("getNextStartTime called with no scene (becuase it's being called for a scene event?)", currentItem, items);
+						console.warn("getNextStartTime called with no scene (because it's being called for a scene event?)", currentItem, items);
 						return false;
 					}
 					var nextItem;
@@ -320,6 +341,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.replaceAsset = function () {
+					console.log('replace asset!');
 					scope.showUploadButtons = true;
 
 					if (scope.item.sxs) { // we will delete assets atached to editor items, not from producer items
@@ -335,16 +357,50 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
+				scope.detachAsset = function() {
+					// console.log(
+					// 	'item:', scope.item,
+					// 	'asset:', scope.item.asset,
+					// 	'link_image_id:', scope.item.link_image_id,
+					// 	'asset_id:', scope.item.asset_id,
+					// 	'annotation_image_id:', scope.item.annotation_image_id
+					// );
+					if (scope.item.asset) {
+						switch(scope.item.producerItemType) {
+							case 'link':
+								scope.item.asset = null;
+								scope.item.link_image_id = null;
+								scope.item.asset_id = null;
+								scope.item.annotation_image_id = null;
+								break;
+							case 'transcript':
+								scope.item.asset = null;
+								scope.item.annotation_image_id = null;
+								break;
+							case 'image':
+							case 'question':
+							case 'file':
+								scope.item.asset = null;
+								scope.item.asset_id = null;
+								break;
+						}
+					}
+				};
+
 				scope.attachChosenAsset = function (asset_id) {
 					// console.log(scope.item);
 					var asset = modelSvc.assets[asset_id];
 					if (scope.item) {
 						scope.item.asset = asset;
+						selectService.onSelectChange(scope.item, scope.itemForm);
 						if (scope.item._type === 'Upload' || scope.item._type === 'Plugin') {
 							scope.item.asset_id = asset_id;
 						} else if (scope.item._type === 'Link') {
 							scope.item.link_image_id = asset_id;
+							scope.item.asset_id = asset_id;
 						} else if (scope.item._type === 'Annotation') {
+							console.log('you are actually getting here!!');
+							scope.item.asset_id = asset_id;
 							scope.item.annotation_image_id = asset_id;
 						} else {
 							console.error("Tried to select asset for unknown item type", scope.item);

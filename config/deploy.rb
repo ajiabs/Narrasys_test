@@ -5,6 +5,10 @@ set :scm, :git
 set :last_commit, `git rev-list --tags --max-count=1`
 ask :branch, proc { `git describe --tags #{fetch(:last_commit)}`.chomp }
 
+# Sometimes ask sets the value to the Proc itself rather than the value.  This only happens when accepting the default value. Calling fetch unrolls that.
+# See https://github.com/capistrano/capistrano/issues/859.  They should have just fixed ask when accepting the default value.
+set :branch, fetch(:branch)
+
 set :user, 'deploy'
 set :deploy_to, "/home/deploy/#{fetch(:application)}"
 set :deploy_via, :remote_cache
@@ -29,6 +33,31 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       # execute :touch, release_path.join('tmp/restart.txt')
+    end
+  end
+
+  desc 'Update new relic application id'
+  task :update_new_relic_application_id do
+    on roles(:app) do
+      vendor_combined_path = File.join(fetch(:release_path), 'dist/scripts/*.vendor-combined.min.js')
+      execute "sed -i 's/applicationID:\"3997255\"/applicationID:\"#{fetch(:new_relic_application_id)}\"/g' #{vendor_combined_path}"
+    end
+  end
+
+  desc 'Update available releases page'  
+  task :update_releases_page do
+    on roles(:app) do
+      releases = capture(:ls, File.join(fetch(:deploy_to), 'releases')).split("\n")
+      releases_page = StringIO.new()
+      releases_page.write("<html><head><title>Last #{releases.count} Releases</title></head><body>")
+      releases_page.write("<h2>Last #{releases.count} Releases</h2>")
+      releases.each do |release|
+        releases_page.write("<a href=\"/#/?release=#{release}\">#{release}</a><br>")
+      end
+      releases_page.write("</body></html>")
+      releases_page.rewind()
+      releases_page_location = File.join(fetch(:deploy_to), 'current/dist/releases.html')
+      upload!(releases_page, releases_page_location)
     end
   end
 

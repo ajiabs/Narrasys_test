@@ -216,7 +216,7 @@ a {
 
 .typographyColumbiabusiness {
 	/* They specify Galaxie Sans, we don't have a license. */
-	font-family: 'Source Sans', Arial, Helvetica, sans-serif !important;
+	font-family: 'Source Sans', Arial, Helvetica, sans-serif;
 }
 
 .typographyColumbiabusiness .startTime,
@@ -265,6 +265,9 @@ a {
 	font-family: "Cardo", serif;
 	font-size: 6em;
 }
+
+
+/*kellogg styles*/
 
 .episode-kellogg {
 	font-family: "Arial", "Helvetica", sans-serif;

@@ -1,67 +1,50 @@
 <div class="userHome">
 
-	<p><i><span ng-bind="user.role_description"></span></i></p>
-	<div style="float:right; width: 79px">
-		<div class="avatar" ng-click="toggleUploadAvatar()" style="cursor:pointer;cursor:hand">
-			<img ng-src="{{user.avatar || '/images/no-avatar.gif'}}">
-		</div>
-		<input ng-if="showUploadField && !uploads" style="width: 70px" type="file" onchange="angular.element(this).scope().uploadAvatar(this.files)">
-		<progress ng-if="uploads" style="width:79px" ng-attr-max="{{uploadStatus[0].bytesTotal}}" ng-attr-value="{{uploadStatus[0].bytesSent}}">
-	</div>
-	<div style="margin-right:80px;">
-		<label>
-			<span>Name</span>
-			<input class="userEditable" ng-model="user.name" ng-blur="updateUser()">
-		</label>
-		<span ng-if="!userHasRole('guest')">
-			<br>
-			<label>
-				<span>Email</span>
-				<input class="userEditable" ng-model="user.email" readonly>
-			</label>
-		</span>
-	</div>
-	<div style="clear:both; padding-top: 2em">
-		<a style="float:left;" target="_top" href="/#/user" class="button" ng-if="inPlayer && user._id && appState.productLoadedAs != 'narrative'">Home</a>
-
-		<a style="float:right;" class="button" ng-if="user._id && !appState.isFramed" ng-click="logout()">Sign out</a>
-	</div>
-
-
-	<div ng-if="!inPlayer">
-
-		<div ng-if="userHasRole('admin')">
-			<a href="/#/episodes">Find episodes</a>
-			<br>
-			<a href="/#/stories">Find narratives</a>
+	<div class="user__info">
+		<div class="user__item">
+			<div class="user__label">Role</div>
+			<h4>{{user.role_description}}</h4>
+			<hr>
 		</div>
 
+		<div clas="user__item">
+			<div class="user__label">Name</div>
+			<itt-edit-pencil
+				can-access="true"
+				on-edit="toggleEditing()"
+				ng-if="!isEditing">
+				<p>{{user.name}}</p>
+			</itt-edit-pencil>
 
-		<div ng-if="!userHasRole('guest') && myPurchases">
-			<h3>Your purchases</h3>
-			<div class="narrativelist" ng-repeat="purchase in myPurchases">
-
-				<div ng-if="purchase.daysUntilExpiration < 0">
-					<h3>{{purchase.narrativeData.name.en}}</h3>
-					<p>We're sorry, this purchase has expired.</p>
-				</div>
-
-				<div ng-if="purchase.daysUntilExpiration >=0 || !purchase.daysUntilExpiration">
-					<h3>
-						<a ng-href="/#/story/{{purchase.narrativeData.path_slug.en}}">{{purchase.narrativeData.name.en}}</a>
-					</h3>
-					<p>
-						<i>{{purchase.daysUntilExpiration}} days remaining</i>
-					</p>
-					<p>
-						{{purchase.narrativeData.description.en}}
-					</p>
-				</div>
-
+			<div ng-if="isEditing">
+				<input class="userEditable" ng-model="user.name">
+				<button ng-click="updateUser(); toggleEditing()">save</button>
+				<button ng-click="toggleEditing()">cancel</button>
 			</div>
-			<div ng-if="myPurchases.length == 0">You have not purchased any stories.</div>
+			<hr>
 		</div>
 
+		<div class="user__item" ng-if="!isGuest()">
+			<div class="user__label">Email</div>
+			<div>{{user.email}}</div>
+			<hr>
+		</div>
+
+		<div class="user__item" ng-if="!isGuest()">
+			<div class="user__avatar">
+				<div class="user__label">Avatar</div>
+				<div>
+					<img ng-src="{{appState.user.avatar || '/images/no-avatar.gif'}}">
+				</div>
+
+				<div ng-if="showUploadField && !uploads">
+					<input type="file" accept="image/*" itt-files-handler on-selected="uploadAvatar(files)">
+				</div>
+
+				<button ng-click="toggleUploadAvatar()">{{showUploadField ? 'cancel' : 'replace'}}</button>
+			</div>
+		</div>
 
 	</div>
+
 </div>

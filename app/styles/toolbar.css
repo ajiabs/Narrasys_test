@@ -13,7 +13,8 @@
 }
 
 .toolbar {
-	pointer-events: none
+	pointer-events: none;
+	display: flex;
 }
 
 .toolbar a,
@@ -29,6 +30,35 @@
 	border-radius: 0.75em;
 	margin: 0.3em 0.5em;
 	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.toolbar .nav-item.scene-navs-btns {
+	order: 1;
+}
+
+.toolbar .nav-item.searchgroup {
+	order: 2;
+}
+.toolbar .nav-item.toolbar-logos {
+	height: 40px;
+	flex: 2;
+	order: 3;
+	margin-top: 5px;
+}
+
+#toolbar-logo-big {
+	width: 140px;
+}
+#toolbar-logo-small {
+	width: 40px;
+}
+
+.toolbar .nav-item.new-window-btn {
+	order: 5;
+}
+
+.toolbar .nav-item.profilegroup {
+	order: 4;
 }
 
 button {
@@ -663,7 +693,7 @@ button {
 	width: 60%;
 	max-width: 500px;
 	min-width: 290px;
-	
+
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
@@ -779,7 +809,6 @@ button {
 }
 
 input.userEditable {
-	border: none;
 	background: transparent;
 	border: 1px solid rgba(0, 0, 0, 0);
 	border-bottom: 1px solid #000;
@@ -794,19 +823,24 @@ input.userEditable:focus {
 	border-radius: 4px;
 }
 
-.userHome label span {
-	font-size: 80%;
-	padding: 0 1em;
-	text-align: right;
-	width: 50px !important;
-	display: inline-block;
+.userHome{
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+.user__item {
+	padding: 10px 0;
+}
+
+.user__label {
 	color: #999;
 }
 
 .avatar {
 	width: 60px;
 	height: 60px;
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
+	/*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;*/
 	float: right;
 }
 
@@ -862,6 +896,17 @@ input.userEditable:focus {
 	/* TOOLBAR HEIGHT */
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.profilePanel .button {
+	background-color: #C44343;
+	color: #FFF;
+	border-radius: 0.6em;
+	font-size: 0.8em;
+	padding: 0.1em 0.8em;
+	margin: 0.2em;
+	border: 0;
+	cursor: pointer;
 }
 
 

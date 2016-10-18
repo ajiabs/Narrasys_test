@@ -28,6 +28,7 @@ angular.module('com.inthetelling.story')
 			onReady: onReady
 		});
 
+
 		//private properties
 		var _eventListeners = {};
 		var _numberOfStalls = 0;
@@ -76,7 +77,6 @@ angular.module('com.inthetelling.story')
 		}
 
 		function onPlayerStateChange(event) {
-
 			var state = event.data;
 
 			//console.log('player state changin? videoCtrl', state);
@@ -92,6 +92,12 @@ angular.module('com.inthetelling.story')
 				$scope.playerState = playerStates[parseInt(state, 10)];
 				if ($scope.playerState === 'buffering') {
 					_stall();
+				}
+
+				if ($scope.playerState === 'ended') {
+					//end of video
+					console.log('end of video!!');
+					youTubePlayerManager.stop($scope.videoNode.id);
 				}
 			}
 		}

@@ -1,12 +1,12 @@
 'use strict';
 
-/* 
-NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function, 
+/*
+NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function,
 so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager, selectService) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -25,6 +25,7 @@ angular.module('com.inthetelling.story')
 				//scope.user = appState.user;
 
 				scope.appState = appState; // to get searchText
+				scope.userHasRole = authSvc.userHasRole;
 
 				if (scope.item.avatar_id) {
 					scope.item.avatar = modelSvc.assets[scope.item.avatar_id];
@@ -33,7 +34,7 @@ angular.module('com.inthetelling.story')
 				if (scope.item._id === 'internal:editing') {
 					element.addClass('noTransitions');
 				} else {
-					if (authSvc.userHasRole('admin') || scope.item.user_id === appState.user._id) {
+					if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin') || scope.item.user_id === appState.user._id) {
 						scope.item.editableByThisUser = true;
 					}
 				}
@@ -51,7 +52,7 @@ angular.module('com.inthetelling.story')
 							scope.item.showInlineDetail = true;
 						} else {
 							// otherwise pop a modal:
-							appState.itemDetail = scope.item;
+							appState.itemDetail = {item: scope.item, animate: true};
 						}
 					}
 				};
@@ -82,10 +83,14 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
-				scope.forceModal = function () {
+				scope.forceModal = function (doAnimate) {
+					if (doAnimate === undefined) {
+						doAnimate = true;
+					}
 					timelineSvc.pause();
-					appState.itemDetail = scope.item;
+					appState.itemDetail = {item: scope.item, animate: doAnimate};
 				};
+
 				scope.outgoingLinkOnKeyPress = function (url, $event) {
 					var e = $event;
 					var passThrough = true;
@@ -110,6 +115,23 @@ angular.module('com.inthetelling.story')
 				scope.outgoingLink = function (url) {
 					timelineSvc.pause();
 					scope.captureInteraction();
+
+					if (url.match(/youtube/)) {
+						url = youtubeSvc.embeddableYoutubeUrl(url, false);
+						//if we have an embed set, pause it when
+						//linking to new window.
+						if (appState.embedYTPlayerAvailable) {
+							youTubePlayerManager.pauseOtherEmbeds();
+							var curTime = Math.floor(youTubePlayerManager.getCurrentTime(scope.item._id));
+							if (curTime > 0) {
+								url += '&start=' + curTime;
+								console.log('made it to the right spot!!', url);
+							}
+						}
+
+
+					}
+
 					if (scope.item.targetTop) {
 						$timeout(function () {
 							window.location.href = url;
@@ -121,6 +143,15 @@ angular.module('com.inthetelling.story')
 
 				scope.editItem = function () {
 					appState.editEvent = scope.item;
+					appState.editEvent.templateOpts = selectService.getTemplates(scope.item.producerItemType);
+					//second arg to onSelectChange is the itemForm, which is created in ittItemEditor and
+					//we do not have access here. Note that itemForm is only really used in background Images.
+					//hack fix is to pass in an empty object, and selectService will add the necessary itemForm
+					//props.
+
+					var itemForm = selectService.setupItemForm(appState.editEvent.styles, 'item');
+
+					selectService.onSelectChange(appState.editEvent, itemForm);
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
 				};

@@ -41,10 +41,26 @@ angular.module('com.inthetelling.story')
 			return (ytMatch && ytMatch[1]) ? ytMatch[1] : false;
 		};
 
-		svc.embedParams = function () {
+		svc.isYoutubeUrl = function(origUrl) {
+			if (!origUrl) {
+				return false;
+			}
+			origUrl = origUrl.replace(/%3F/, '?');
+			origUrl = origUrl.replace(/%26/, '&');
+			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+			return getYoutubeID.test(origUrl);
+		};
+
+		svc.embedParams = function (outgoing) {
 			// kept separate from createEmbedLinkFromYoutubeId for convenience in unit tests.
 			// TODO move these into videoController, as playerVar params, instead of embedding them in the url.  (Will need to init youtube as a div instead of as an iframe)
 			// WARN dont remove the wmode param, it works around an IE z-index bug
+
+			if (outgoing === false) {
+				//supported params available at https://developers.google.com/youtube/player_parameters
+				return "?controls=1&autoplay=1&modestbranding=1&showinfo=1&rel=0&iv_load_policy=3&wmode=transparent";
+			}
+
 			return "?enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent";
 		};
 
@@ -52,7 +68,7 @@ angular.module('com.inthetelling.story')
 			if (!ytid) {
 				return false;
 			}
-			return "//www.youtube.com/embed/" + ytid + (suppressParams ? "" : svc.embedParams());
+			return "//www.youtube.com/embed/" + ytid + (suppressParams ? "" : svc.embedParams(suppressParams));
 		};
 
 		svc.embeddableYoutubeUrl = function (origUrl, suppressParams) {

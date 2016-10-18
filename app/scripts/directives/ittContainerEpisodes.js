@@ -6,9 +6,19 @@ angular.module('com.inthetelling.story')
 			replace: false,
 			scope: {
 				container: '=ittContainerEpisodes',
-				forAdmin: '=forAdmin'
+				forAdmin: '=forAdmin',
+				onNodeClick: '&',
+				rootContext: '='
 			},
 			templateUrl: "templates/containerepisodes.html",
+			controller: function($scope) {
+
+				$scope.selectEpisode = function(e) {
+					$scope.onNodeClick({node: e});
+					console.log('ctrl select epi', e);
+					// $scope.emit('episodeSelected', e);
+				};
+			},
 
 			compile: function (element) {
 				// Use the compile function from the recursionHelper,
@@ -25,12 +35,13 @@ angular.module('com.inthetelling.story')
 						}
 					};
 					scope.toggle = function () {
-						scope.wasClicked = !scope.wasClicked;
+						scope.container.wasClicked = !scope.container.wasClicked;
 					};
-					scope.selectEpisode = function () {
-						scope.$emit('episodeSelected', scope.container.episodes[0]);
-
-					};
+					// scope.selectEpisode = function (e) {
+					// 	// console.log(scope.container.episodes[0]);
+					// 	// console.log('hmm', scope.onChoice);
+					// 	scope.$emit('episodeSelected', e);
+					// };
 
 				});
 			}

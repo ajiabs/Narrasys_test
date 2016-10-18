@@ -425,7 +425,7 @@ describe('Service: modelSvc', function () {
 
 		modelSvc.resolveEpisodeEvents("EP1");
 
-		// key should be the default language, or english,  followed by other available languages 
+		// key should be the default language, or english,  followed by other available languages
 		expect(modelSvc.episodes.EP1.annotators["Mister Smith"].key).toEqual("Mister Smith / AA / BB / CC");
 	});
 
@@ -738,6 +738,69 @@ describe('Service: modelSvc', function () {
 		});
 	});
 
+	describe('Event Hierarchy', function () {
+
+		var epId;
+		beforeEach(function () {
+			epId = 'stubEpi';
+			modelSvc.cache('episode', {
+				"_id": epId,
+				"master_asset_id": "masterasset",
+				"title": "Test Episode",
+				"status": "Published",
+				"templateUrl": "templates/episode/purdue.html",
+				"styles": []
+			});
+
+			var data = mockEpisodeEvents7;
+
+			for (var i = 0; i < data.length; i++) {
+				data[i]._id = epId + i;
+				data[i].cur_episode_id = epId;
+				data[i].episode_id = epId;
+				modelSvc.cache('event', data[i]);
+			}
+
+			modelSvc.resolveEpisodeEvents(epId);
+		});
+
+		it('should sort Chapters to the top', function() {
+
+			expect(modelSvc.episodes.stubEpi.items[0]._type).toEqual('Chapter');
+			expect(modelSvc.episodes.stubEpi.items[1].chapter_marker).toEqual(true);
+		});
+
+		it('should sort H1 annotations ahead of H2', function () {
+			expect(modelSvc.episodes.stubEpi.items[2].templateUrl).toEqual('templates/item/text-h1.html');
+			expect(modelSvc.episodes.stubEpi.items[3].templateUrl).toEqual('templates/item/text-h2.html');
+		});
+
+		it('should sort Annotations (H1, H2) ahead of Transcripts', function () {
+			expect(modelSvc.episodes.stubEpi.items[3].producerItemType).toEqual('annotation');
+			expect(modelSvc.episodes.stubEpi.items[4].producerItemType).toEqual('transcript');
+		});
+
+		it('should sort transcripts ahead of Links', function () {
+			expect(modelSvc.episodes.stubEpi.items[4].producerItemType).toEqual('transcript');
+			expect(modelSvc.episodes.stubEpi.items[5].producerItemType).toEqual('link');
+		});
+
+		it('should sort Links ahead of Uploads', function () {
+			expect(modelSvc.episodes.stubEpi.items[5].producerItemType).toEqual('link');
+			expect(modelSvc.episodes.stubEpi.items[6].producerItemType).toEqual('file');
+		});
+
+		it('should sort Documents ahead of Images', function () {
+			expect(modelSvc.episodes.stubEpi.items[6].producerItemType).toEqual('file');
+			expect(modelSvc.episodes.stubEpi.items[7].producerItemType).toEqual('image');
+		});
+
+		it('should put definition, pullquotes, text-as-transmedia, at the bottom', function() {
+			expect(modelSvc.episodes.stubEpi.items[8].templateUrl).toEqual('templates/item/text-definition.html');
+		})
+	});
+
+
 	/* BEGIN real event data tests */
 	// TODO check real event data and ensure it's not dropping any scenes on the floor
 	describe("Testing real episode event data", function () {
@@ -843,5 +906,4 @@ describe('Service: modelSvc', function () {
 
 	});
 	/* END real event data tests */
-
 });

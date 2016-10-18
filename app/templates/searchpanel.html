@@ -1,8 +1,8 @@
-<div ng-class="episode.styleCss">
+<div ng-class="episode.styleCss" class="searchPanel__wrapper">
 	<div aria-label="sort toggle" class="searchfilters" aria-controls="sortableSearch">
 		<div>
 			Sorted by
-			<button tabindex="0" class="fakeLink" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
+			<button tabindex="0" class="fakeLink fake-link--search-results" ng-click="toggleSortBy(sortBy)" aria-label="toggles sort to {{getToggledValue(sortBy)}}">{{getFriendlySortText(sortBy)}}</button>
 		</div>
 	</div>
 	<div class="scrollContainer">
@@ -10,7 +10,7 @@
 			<div ng-if="sortBy == 'startTime'" class="sortByTime">
 				<h1 ng-bind-html="episode.display_title"></h1>
 				<div ng-repeat="scene in episode.scenes">
-					<h2 class="searchCategory" ng-if="scene.start_time > 0 && ([scene.display_title] | filter:appState.searchText).length" ng-bind-html="scene.display_title  | highlightSubstring: appState.searchText"></h2>
+					<!--<h2 class="searchCategory" ng-if="scene.start_time > 0 && ([scene.display_title] | filter:appState.searchText).length" ng-bind-html="scene.display_title  | highlightSubstring: appState.searchText"></h2>-->
 					<!-- Need to filter out cosmetic items when not in producer -->
 					<span ng-switch="appState.product">
 						<div ng-switch-when="producer" ng-repeat="item in sceneItems=(scene.items | orderBy:'wtfchromesort')" ng-show="([item.searchableText] | filter:appState.searchText).length" class="item animate" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>

@@ -290,6 +290,11 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	opacity: 0.5;
 }
 
+.searchMode h2.searchChapter {
+	font-size: 1.6em;
+	margin-left: -55px;
+}
+
 .searchMode h2.searchCategory {
 	font-size: 1.6em;
 }
@@ -355,8 +360,8 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 
 
-/* -------------------------------------------  
-   Landing screen 
+/* -------------------------------------------
+   Landing screen
 */
 
 .landingscreen {
@@ -426,7 +431,53 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 .scene.cornerV.videoRight {
 	flex-direction: row-reverse;
 }
+/* ------------------------------------------- */
 
+.scene.centerVV {
+	display: flex;
+}
+
+.scene.centerVV .col {
+	width: 50%;
+}
+
+.scene.centerVV .videoMagnet {
+	margin: 0 auto;
+	margin-top: 8.5em;
+	width: 95%;
+}
+
+.scene.centerVV.videoLeft {
+	flex-direction: row;
+}
+
+.scene.centerVV.videoRight {
+	flex-direction: row-reverse;
+}
+
+/* ------------------------------------------- */
+
+.scene.centerVV-mondrian {
+	display: flex;
+}
+
+.scene.centerVV-mondrian .col {
+	width: 50%;
+}
+
+.scene.centerVV-mondrian .videoMagnet {
+	margin: 0 auto;
+	margin-top: 5em;
+	width: 95%;
+}
+
+.scene.centerVV-mondrian.videoLeft {
+	flex-direction: row;
+}
+
+.scene.centerVV-mondrian.videoRight {
+	flex-direction: row-reverse;
+}
 
 /* ------------------------------------------- */
 
@@ -497,13 +548,13 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 }
 
 
-/* ------------------------------------------- 
+/* -------------------------------------------
 		1col scene
 */
 
 .scene.onecol .col,
 .scene.onecol .videoMagnet {
-	margin: 0 20%;
+	margin: -3.5px 20%;
 	width: 60%;
 }
 
@@ -520,7 +571,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 @media screen and (min-width: 1000px) and (min-height: 700px) {
 	.scene.onecol .col,
 	.scene.onecol .videoMagnet {
-		margin: 0 25%;
+		margin: -3.5px 25%;
 	}
 	.scene.onecol .videoPositioner {
 		width: 100%;
@@ -557,6 +608,23 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 		padding: 7% 25% 0 25%;
 	}
 }
+
+/* ------------------------------------------- */
+.scene.centered-pro .col {
+	/*top | right | bottom | left*/
+	padding: 2% 20% 0 20%;
+}
+
+.scene.centered-pro .videoMagnet {
+	margin-top: 6em;
+}
+
+
+/*@media screen and (min-width: 900px) {*/
+	/*.scene.centered-pro .col {*/
+		/*padding: 7% 25% 0 25%;*/
+	/*}*/
+/*}*/
 
 
 /* ------------------------------------------- */

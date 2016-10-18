@@ -24,6 +24,34 @@ angular.module('com.inthetelling.story')
 		// TODO discard unused fields before cacheing
 
 		// use angular.extend if an object already exists, so we don't lose existing bindings
+
+		svc.getNarrativeByPathOrId = function(pathOrId) {
+			var isMongoId = /^[0-9a-fA-F]{24}$/.test(pathOrId);
+			if (isMongoId) {
+				return svc.narratives[pathOrId];
+			}
+			//else loop and find the matching path slug passed in.
+			var n;
+			for (n in svc.narratives) {
+				if (svc.narratives.hasOwnProperty(n)) {
+					if (pathOrId === svc.narratives[n].path_slug.en) {
+						return svc.narratives[n];
+					}
+				}
+
+			}
+		};
+
+		svc.getCustomersAsArray = getCustomersAsArray;
+		function getCustomersAsArray() {
+			return Object.keys(svc.customers).map(function(c) {return svc.customers[c]; });
+		}
+
+		svc.getNarrativesAsArray = getNarrativesAsArray;
+		function getNarrativesAsArray() {
+			return Object.keys(svc.narratives).map(function(n) {return svc.narratives[n];});
+		}
+
 		svc.cache = function (cacheType, item) {
 			if (cacheType === 'narrative') {
 				// NOTE no deriveNarrative used here, not needed so far
@@ -430,10 +458,42 @@ angular.module('com.inthetelling.story')
 					if (event.templateUrl.match(/question/)) {
 						event.producerItemType = 'question';
 					}
+				} else if (event._type === 'Chapter') {
+					event.producerItemType = 'chapter';
 				}
 				if (!event.producerItemType) {
 					console.warn("Couldn't determine a producerItemType for ", event.templateUrl);
 				}
+			}
+
+			//it is helpful for UI purposes to know what type of annotation an event is
+			//the IF statement above only runs if producerItemType has not be set.
+			//when creating a new event, generateEmptyItem (in EditCtrl) will set producerItemType
+			//this code handles the case AFTER producerItemType has been set, and the event is
+			//an annotation, and the user switched the annotation type.
+			switch(event.producerItemType) {
+				case 'chapter':
+					event.isContent = false;
+					break;
+				case 'annotation':
+					//set to false off the bat, then flip to true for each case
+					event.isPq = event.isHeader = event.isLongText = event.isDef = false;
+					if (/pullquote/.test(event.templateUrl)) {
+						event.isPq = true;
+					}
+					if (/text-h1|text-h2/.test(event.templateUrl)) {
+						console.log("setting header!!");
+						event.isHeader = true;
+					}
+
+					if (/text-transmedia/.test(event.templateUrl)) {
+						event.isLongText = true;
+					}
+
+					if (/text-definition/) {
+						event.isDef = true;
+					}
+					break;
 			}
 
 			event.displayStartTime = $filter("asTime")(event.start_time);
@@ -496,6 +556,7 @@ angular.module('com.inthetelling.story')
 			//Build up child arrays: episode->scene->item
 			var scenes = [];
 			var items = [];
+			var chapters = [];
 			var episode = svc.episodes[epId];
 			angular.forEach(svc.events, function (event) {
 				if (event.cur_episode_id !== epId) {
@@ -504,6 +565,9 @@ angular.module('com.inthetelling.story')
 
 				if (event._type === 'Scene') {
 					scenes.push(event);
+				} else if (event._type === 'Chapter') {
+					chapters.push(event);
+					items.push(event);
 				} else {
 					items.push(event);
 				}
@@ -516,6 +580,10 @@ angular.module('com.inthetelling.story')
 			// TODO replace all of this, have the API keep track of each annotator as a real, separate entity
 			var annotators = {};
 			angular.forEach(items, function (event) {
+				if (event._type === 'Annotation' && event.chapter_marker === true) {
+					chapters.push(event);
+				}
+
 				if (event._type === 'Annotation' && event.annotator) {
 					// This is kind of a mess
 					// Use the default language as the key; merge any other languages into that key
@@ -554,6 +622,7 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			episode.annotators = annotators;
+			episode.chapters = chapters;
 
 			// WARN Chrome doesn't stable sort!   Don't depend on simultaneous events staying in the same order
 			// attach array of scenes to the episode.
@@ -579,7 +648,8 @@ angular.module('com.inthetelling.story')
 			});
 
 			// and a redundant array of child items to the episode for convenience (they're just references, so it's not like we're wasting a lot of space)
-			episode.items = items.sort(function (a, b) {
+
+			episode.chapters = chapters.sort(function(a, b) {
 				return a.start_time - b.start_time;
 			});
 
@@ -609,6 +679,60 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
+
+			//for items with the same time, ensure hierarchy of items
+			//in the following order:
+			// 1. Annotations:
+			//  	- H1 > H2 > isTranscript
+			// 3. Links
+			// 4. Uploads
+			//		- Document > Image
+			//5. all other annotations
+			episode.items = items.sort(function (a, b) {
+				if (a.start_time === b.start_time) {
+					if (a.producerItemType === 'chapter') {
+						return -1;
+					} else if (b.producerItemType === 'chapter') {
+						return 1;
+					} else if (a.chapter_marker === true) {
+						return -1;
+					} else if (b.chapter_marker === true) {
+						return 1;
+					} else if (a.templateUrl === 'templates/item/text-h1.html') {
+						return -1;
+					} else if (b.templateUrl === 'templates/item/text-h1.html') {
+						return 1;
+					} else if (a.templateUrl === 'templates/item/text-h2.html') {
+						return -1;
+					} else if (b.templateUrl === 'templates/item/text-h2.html') {
+						return 1;
+					} else if (a.isTranscript) {
+						return -1;
+					} else if (b.isTranscript) {
+						return 1;
+					} else if (a._type === 'Link') {
+						return -1;
+					} else if (b._type === 'Link') {
+						return 1;
+					} else if (a._type === 'Upload') {
+						if (a.producerItemType === 'file' || b._type === 'Annotation') {
+							return -1;
+						} else {
+							return 1;
+						}
+					} else if (b._type === 'Upload') {
+						return 1;
+					} else {
+						return -1;
+					}
+				}
+				else {
+					return a.start_time - b.start_time;
+				}
+			});
+
+
+			// console.log('after sort \n', items);
 			// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
 			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
 			for (var i = 1, len = episode.scenes.length; i < len; i++) {
@@ -708,9 +832,63 @@ angular.module('com.inthetelling.story')
 					return;
 				}
 				event.styleCss = cascadeStyles(event);
+				var isImgPlain = event.templateUrl === 'templates/item/image-plain.html';
+				var isInlineImgWText = event.templateUrl === 'templates/item/image-inline-withtext.html';
+				var isImgCap = event.templateUrl === 'templates/item/image-caption-sliding.html';
+				var isImgThumb = event.templateUrl === 'templates/item/image-thumbnail.html';
+				var isBgImage = event.templateUrl === 'templates/item/image-fill.html';
+
+				var isLongText = event.templateUrl === 'templates/item/text-transmedia.html';
+				var isDef = event.templateUrl === 'templates/item/text-definition.html';
+				var isH1 = event.templateUrl === 'templates/item/text-h1.html';
+				var isH2 = event.templateUrl === 'templates/item/text-h2.html';
+				var isPq = event.templateUrl === 'templates/item/pullquote-noattrib.html' || event.templateUrl ===  'templates/item/pullquote.html';
+				var potentialHighlight = ['highlightSolid', 'highlightBorder', 'highlightSide', 'highlightBloom', 'highlightTilt', 'highlightNone'];
+				var potentialTransitions = ['transitionFade', 'transitionPop', 'transitionNone', 'transitionSlideL', 'transitionSlideR'];
+				var currentScene;
+
+				if (event._type !== 'Scene') {
+					currentScene = svc.scene(event.scene_id);
+					if (episode.styles.indexOf('timestampNone') === -1 && episode.styles.indexOf('timestampInline') === -1 &&
+						(!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) ||(currentScene.styles.indexOf('timestampNone') === -1 && currentScene.styles.indexOf('timestampInline') === -1) )) {
+						if (isImgPlain || isLongText || isDef) {
+							if (!ittUtils.existy(event.styles) || (event.styles.indexOf('timestampInline') === -1 && event.styles.indexOf('timestampNone') === -1)) {
+								event.styleCss += ' timestampNone';
+							}
+						}
+					}
+					if (isH1 || isH2 || isPq) {
+						event.styleCss += ' timestampNone';
+					}
+
+					if ((!ittUtils.existy(event.layouts) || event.layouts.indexOf('showCurrent') === -1) &&
+						ittUtils.intersection(episode.styles, potentialHighlight).length === 0 &&
+						(!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) || ittUtils.intersection(currentScene.styles, potentialHighlight).length === 0) &&
+						(!ittUtils.existy(event.styles) || ittUtils.intersection(event.styles, potentialHighlight).length === 0)) {
+						event.styleCss += ' highlightSolid';
+					}
+
+					if (ittUtils.intersection(episode.styles, potentialTransitions).length === 0 &&
+						(!ittUtils.existy(currentScene) || !ittUtils.existy(currentScene.styles) || ittUtils.intersection(currentScene.styles, potentialTransitions).length === 0) &&
+						(!ittUtils.existy(event.styles) || ittUtils.intersection(event.styles, potentialTransitions).length === 0) ) {
+						if (isImgPlain || isInlineImgWText || isImgCap || isImgThumb || isPq || isBgImage) {
+							if (!ittUtils.existy(event.layouts) || event.layouts.indexOf('videoOverlay') !== -1) {
+								event.styleCss += ' transitionFade';
+							} else {
+								event.styleCss += ' transitionPop';
+							}
+						} else {
+							event.styleCss += ' transitionSlideL';
+						}
+					}
+
+				}
+
 				if (event.layouts) {
 					event.styleCss = event.styleCss + " " + event.layouts.join(' ');
 				}
+
+				event.styleCss = event.styleCss.replace(/timestampInline/, '');
 			});
 		};
 

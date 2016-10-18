@@ -7,3 +7,4 @@
 *.orig
 /log/newrelic_agent.log
 .idea
+npm-debug.log

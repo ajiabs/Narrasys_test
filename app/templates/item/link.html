@@ -3,24 +3,45 @@
 </a>
 <div class="itemTemplate">
 	<div class="itemHead">
-
 		<a role="button" aria-label="Seek video to {{item.displayStartTime}}" tabindex="0" class="startTime displayTime" x-ng-click="seek(item.start_time)" x-ng-keypress="seekOnKeyPress(item.start_time, $event)">{{item.displayStartTime}}</a>
-		<div class="category">
+		<div class="category item__title">
 			<!--{{item.category}}-->
 			<span ng-if="item.required">(Required viewing)</span>
 		</div>
 	</div>
-	<div class="text">
-		<div class="title">
-			<a tabindex="0" ng-if="item.noEmbed && !item.targetTop" class="escapelink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
-			<a tabindex="0" ng-if="item.noEmbed && item.targetTop" target="_top" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
-			<a role="button" tabindex="0" ng-if="!item.noEmbed" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
-		</div>
-		<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
+	<div class="text item__text">
+		<span ng-if="item.noEmbed">
+			<span ng-if="!item.targetTop">
+				<div class="title item__title item__title--link title--link-with-image">
+					<a tabindex="0" class="escapelink item__link--escape-link escape-link--link-with-image" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
+				</div>
+				<a tabindex="0" ng-if="item.asset.url" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">
+					<img ng-if="item.asset.url" ng-src="{{item.asset.url}}">
+				</a>
+			</span>
+			<span ng-if="item.targetTop">
+				<div class="title item__title item__title--link title--link-with-image">
+					<a tabindex="0" target="_top" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
+				</div>
+				<a tabindex="0" target="_top" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">
+					<img ng-if="item.asset.url" ng-src="{{item.asset.url}}">
+				</a>
+			</span>
+
+		</span>
+		<span ng-if="!item.noEmbed">
+				<div class="title item__title item__title--link title--link-with-image">
+				<a role="button" x-ng-keypress="toggleDetailOnKeyPress($event)" class="fakeLink item__link--fake-link" tabindex="0" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
+			</div>
+			<img ng-if="item.asset.url" ng-click="toggleDetailView()" ng-src="{{item.asset.url}}">
+		</span>
+		<div class="item__text item__text--link text--link-with-image" ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
 	</div>
-	<div class="itemDetail" ng-if="item.showInlineDetail">
-		<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
-		<itt-iframe x-src="{{item.url}}"></itt-iframe>
-	</div>
-	<div class="clear "></div>
+
 </div>
+
+<div class="itemDetail" ng-if="item.showInlineDetail">
+	<a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink item__link--escape-link escape-link--link-with-image">(new window)</a>
+	<itt-iframe x-src="{{item.url}}" item="item"></itt-iframe>
+</div>
+<div class="clear "></div>

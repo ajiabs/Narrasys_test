@@ -12,22 +12,82 @@
 	margin: 0.5em 0;
 }
 
+.narratives__name {
+	padding-left: 5px;
+}
+
+.narratives__description {
+	margin-left: 15px;
+}
+
+.nav__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+@media screen and (max-width: 600px) {
+	.nav__header {
+		flex-direction: column;
+	}
+}
+
+.nav__item img {
+	width: 100%;
+}
+
+.nav__controls {
+	display: flex;
+	flex-direction: row;
+}
+
+.navControls__item {
+	display: flex;
+	flex-direction: column;
+	padding: 0 3px;
+}
+
+.nav__user {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.nav__user img {
+	border: 1px solid #595A5A;
+	margin-top: 3px;
+	margin-right: 3px;
+	width: 35px;
+	border-radius: 50px;
+}
+
+.item--left {
+	text-align: right;
+	border-right: 1px solid black;
+	padding-right: 5px;
+}
+
+.item--right {
+	align-self: center;
+}
+
 .standaloneAncillaryPage {
 	display: block;
 	height: 100%;
 	overflow: scroll;
-	padding: 5% 10%;
+	padding: 1% 10%;
 	position: absolute;
 	width: 100%;
-	background: url("/images/itt.svg") no-repeat fixed 50% 80% #eee;
-	font-family: 'Source Sans', 'Droid Sans', Helvetica, sans-serif;
+	background: url("/images/customer/Narrasys_Tree.svg") no-repeat fixed 50% 80% #fff;
+	font-family: 'Source Sans Pro', 'Droid Sans', Helvetica, sans-serif;
 }
 
 .standaloneAncillaryPage > div {
-	border: 1px solid #CCC;
-	background-color: #FFF;
+	border: 1px solid #F2F2F2;
+	background-color: #F2F2F2;
 	padding: 1em;
 	border-radius: 1em;
+	font-size: 20px;
 }
 
 @media screen and (max-width: 500px) {
@@ -41,18 +101,127 @@
 	}
 }
 
+/*for iphones*/
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 568px) {
+	.standaloneAncillaryPage {
+		padding: 0;
+		background: none;
+	}
+	.standaloneAncillaryPage > div {
+		border: none;
+		padding: 1em 0.5em;
+		font-size: 14px;
+	}
+}
+
 .standaloneAncillaryPage a {
-	color: #C44343;
+	color: #595A5A;
 }
 
 .standaloneAncillaryPage a:hover {
-	text-decoration: underline;
+	text-decoration: none;
+}
+
+.container__row--odd {
+	background-color: #FFFFFF;
+	border: 1px solid #FFFFFF;
+}
+
+.container__row--even {
+	background-color: #e6e6e6;
+	border: 1px solid #e6e6e6;
+}
+
+.hoverIndicator {
+	border: 1px solid rgba(0,0,0,0);
+}
+
+.isActive {
+	background-color: #f8ddce;
+}
+
+.hoverIndicator:hover {
+	border: 1px solid #DC6026;
+}
+
+.edit-pencil {
+	position: absolute;
+	color: #595A5A;
+	cursor: pointer;
+}
+
+.edit-pencil:hover {
+	color: #DC6026;
+}
+
+.edit-pencil:before {
+	font-family: Story;
+	content: "\e907";
+}
+
+.pencil__content * {
+	display: inline;
+}
+
+.icon__button {
+	font-family: Story;
+	color: #595A5A;
+}
+
+.icon__button:hover {
+	color: #DC6026;
+}
+
+.button__row {
+	margin-left: 20px;
+}
+
+.button__row a, .button__row button {
+	vertical-align: middle;
+	padding: 40px 0;
+}
+
+.button__assets:before {
+	content: "\e903";
+}
+
+.button__generateNarrative:before {
+	content: "\e90a";
+}
+
+.button__editor:before {
+	content: "\e904";
+}
+
+.button__producer:before {
+	content: "\e905";
+}
+
+.episode__button-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .standaloneAncillaryPage button,
 .standaloneAncillaryPage .button,
 .standaloneAncillaryPage input[type="submit"] {
-	background-color: #C44343;
+	background-color: #595A5A;
+	color: #FFF;
+	border-radius: 0.6em;
+	font-size: 0.8em;
+	padding: 0.1em 0.8em;
+	margin: 0.2em;
+	border: 0;
+	cursor: pointer;
+}
+
+.standaloneAncillaryPage button:hover,
+.standaloneAncillaryPage .button:hover,
+.standaloneAncillaryPage input[type="submit"]:hover {
+	background-color: #DC6026;
 	color: #FFF;
 	border-radius: 0.6em;
 	font-size: 0.8em;
@@ -99,9 +268,80 @@
 	text-align: right;
 }
 
+
 .standaloneAncillaryPage hr {
 	border: none;
 	background-color: #CCC;
 	height: 1px;
 }
+
+.timeline__edit {
+	padding: 10px;
+}
+
+.narrative__edit input[type="text"], .narrative__edit textarea,
+.timeline__edit input[type="text"], .timeline__edit textarea {
+	width: 100%;
+	padding: 5px;
+	border-radius: 4px;
+	border: 1px solid black;
+	/*important used here to overide line .sandAloneAncillaryPage textarea above*/
+	font-size: 20px !important;
+}
+
+.timeline__delete {
+	text-align: center;
+	position: fixed;
+	border: 1px solid black;
+	width: 300px;
+	height: 200px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: white;
+	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
+}
+
+.timeline__delete .under__delete {
+	padding: 5px;
+}
+
+.tl__wrapper {
+	margin-left: 27px;
+}
+
+.tlDrag__handle {
+	top: 22px;
+	padding-left: 5px;
+	position: absolute;
+}
+
+.tl__addButton {
+	height: 25px;
+	margin: 5px;
+}
+
+.tl__titleSection {
+	/*float: right;*/
+}
+
+.tl__editorWrapper {
+	/*padding: 10px 5px;*/
+}
+
+.narrative__modal {
+	background-color: #fff;
+	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
+	padding: 10px;
+}
+
+.narrative__modal input[type="checkbox"] {
+	width: auto;
+}
+
+.timeline--hidden {
+	opacity: 0.5;
+}
+
+
 

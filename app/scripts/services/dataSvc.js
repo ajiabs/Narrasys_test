@@ -2,28 +2,133 @@
 
 // TODO: load and resolve categories
 
-// Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
-// the rest gets passed to modelSvc
 
-//  use PUT to update, POST to create new
-// for assets, DELETE then POST
-// to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
+/**
+ * @ngdoc service
+ * @name iTT.service:dataSvc
+ * @description
+ * Service for hitting API endpoints
+ * prior code comments:
+ * Cache here is for things we never need to expose to the rest of the app (style, layout, template IDs)
+ * the rest gets passed to modelSvc
+ * use PUT to update, POST to create new
+ * for assets, DELETE then POST
+ * to store -- must wrap events in 'event: {}'  same for other things?  template didn't seem to need it
+ * @requires $q
+ * @requires $http
+ * @requires $routeParams
+ * @requires $timeout
+ * @requires $rootScope
+ * @requires config
+ * @requires authSvc
+ * @requires appState
+ * @requires modelSvc
+ * @requires errorSvc
+ * @requires mockSvc
+ * @requires questionAnswersSvc
+ */
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
 		var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
+
+		/**
+		 * @ngdoc method
+		 * @name #checkXFrameOpts
+		 * @methodOf iTT.service:dataSvc
+		 * @description
+		 * Used to check whether or not a website can be iframed by inspecting the x-frame-options header
+		 * @param {String} url The target URL of site to inspect
+		 * @returns {Boolean} Whether or not we can embed the input URL in an iframe.
+         */
+		svc.checkXFrameOpts = function(url) {
+			//why use a 'post process callback'
+			//when you can simply chain promises?
+
+			//check protcol for mixed content??
+			var currentOrigin;
+			var parseInputUrl;
+			var encodedUrl = encodeURIComponent(url);
+			return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
+			.then(function(result) {
+				console.log('x-frame-opts: ', result.x_frame_options);
+				return _canEmbed(result.x_frame_options);
+			});
+
+			function _canEmbed(xFrameOpts) {
+				var _noEmbed = true;
+				switch(true) {
+					case /SAMEORIGIN/i.test(xFrameOpts):
+						currentOrigin = $location.host();
+						parseInputUrl = document.createElement('a');
+						parseInputUrl.href = url;
+						//check our origin
+						if (currentOrigin === parseInputUrl.hostname) {
+							_noEmbed = false;
+						}
+						break;
+					case /ALLOW-FROM/i.test(xFrameOpts):
+						//check if we're on the list
+						//split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
+						var xFrameArr = xFrameOpts.split(',');
+						currentOrigin = $location.host();
+						angular.forEach(xFrameArr, function(i) {
+							var url = i.trim().split(' ')[1];
+							var aElm = document.createElement('a');
+							aElm.href = url;
+							if (currentOrigin === aElm.hostname) {
+								_noEmbed = false;
+							}
+						});
+						break;
+					case /DENY/i.test(xFrameOpts):
+						// do nothing
+						break;
+					case /null/.test(xFrameOpts):
+						//ticket to ride
+						_noEmbed = false;
+						break;
+				}
+				return _noEmbed;
+			}
+		};
+
+		//used in ittContainer
+		svc.generateNewNarrative = generateNewNarrative;
+		function generateNewNarrative(containerId, postData) {
+			return SANE_POST('/v3/containers/' + containerId + '/narratives', postData)
+				.then(function(resp) {
+					return resp.data;
+				})
+				.catch(function(e) {
+					console.error("Error generating new narrative:", e);
+				});
+		}
 
 		// WARN ittNarrative and ittNarrativeTimeline call dataSvc directly, bad practice. At least put modelSvc in between
 		svc.getNarrative = function (narrativeId) {
 			// Special case here, since it needs to call getNonce differently:
 			var defer = $q.defer();
+
+			var cachedNarrative = modelSvc.narratives[narrativeId];
+			var subdomain = ittUtils.getSubdomain($location.host());
+			var urlParams = '';
+
+			if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.subDomain) && subdomain !== cachedNarrative.subDomain) {
+				urlParams = '?customer=' + cachedNarrative.subDomain;
+			}
+
 			authSvc.authenticate("narrative=" + narrativeId).then(function () {
-				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve")
+				$http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve" + urlParams)
 					.then(function (response) {
-						console.log("dataSvc.getNarrative", response.data);
+
+						response.data.timelines.sort(function(a, b) {return a.sort_order - b.sort_order;});
+
+
 						modelSvc.cache("narrative", svc.resolveIDs(response.data));
+
 						defer.resolve(modelSvc.narratives[response.data._id]);
 					});
 			});
@@ -32,6 +137,11 @@ angular.module('com.inthetelling.story')
 
 		svc.getNarrativeOverview = function (narrativeId) {
 			return GET("/v3/narratives/" + narrativeId);
+		};
+
+		svc.getNarrativeExportAsSpreadsheet = function(nId) {
+			var url = '/v3/narratives/' + nId + '.xlsx';
+			window.open(url);
 		};
 
 		var cachedPurchases = false;
@@ -60,7 +170,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.getCustomer = function (customerId) {
-			if (!authSvc.userHasRole('admin')) {
+			if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
 				return false;
 			}
 			if (modelSvc.customers[customerId]) {
@@ -145,8 +255,20 @@ angular.module('com.inthetelling.story')
 			return POST("/v3/timelines/" + narrativeId + "/episode_segments", segmentData);
 		};
 
-		svc.storeTimeline = function (narrativeId, timeline) {
-			// console.log("About to store timeline", timeline);
+		svc.storeTimeline = function (narrativeId, origTimeline) {
+
+			var permitted = [
+				'sort_order',
+				'path_slug',
+				'name',
+				'description',
+				'hidden',
+				'timeline_image_id',
+				'narrative_id',
+				'_id'
+			];
+			var timeline = ittUtils.pick(origTimeline, permitted);
+
 			if (timeline._id) {
 				return PUT("/v3/timelines/" + timeline._id, timeline, function (ret) {
 					// TEMPORARY until api stops doing this
@@ -178,6 +300,13 @@ angular.module('com.inthetelling.story')
 					return ret;
 				});
 			}
+		};
+
+		// /v3/timelines/:id
+		svc.deleteTimeline = function(tlId) {
+			return PDELETE('/v3/timelines/' + tlId).then(function(resp) {
+				return resp;
+			});
 		};
 
 		svc.getSingleAsset = function (assetId) {
@@ -244,7 +373,8 @@ angular.module('com.inthetelling.story')
 						id: item._id,
 						url: item.url,
 						type: (item.applies_to_episodes ? "Episode" : item.event_types ? item.event_types[0] : undefined),
-						displayName: item.name
+						displayName: item.name,
+						customerIds: item.customer_ids
 					};
 				} else if (cacheType === "layouts") {
 					/* API format:
@@ -319,9 +449,23 @@ angular.module('com.inthetelling.story')
 			}
 			if (obj.layout_id) {
 				var layouts = [];
+				if (obj.type === 'Scene') {
+					layouts = ['', ''];
+				}
 				angular.forEach(obj.layout_id, function (id) {
 					if (dataCache.layout[id]) {
-						layouts.push(dataCache.layout[id].css_name);
+						if (obj.type === 'Scene') {
+							//conditions outside of 'showCurrent' necessary for USC scholar
+							if (dataCache.layout[id].css_name === 'showCurrent') {
+								layouts[1] = dataCache.layout[id].css_name;
+							} else if (dataCache.layout[id].css_name === 'splitRequired') {
+								layouts[2] = dataCache.layout[id].css_name;
+							} else {
+								layouts[0] = dataCache.layout[id].css_name;
+							}
+						} else {
+							layouts.push(dataCache.layout[id].css_name);
+						}
 					} else {
 						errorSvc.error({
 							data: "Couldn't get layout for id " + id
@@ -417,7 +561,7 @@ angular.module('com.inthetelling.story')
 					if (ret) {
 						episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
 					}
-					if (episodeData.status === "Published" || authSvc.userHasRole("admin")) {
+					if (episodeData.status === "Published" || authSvc.userHasRole("admin") || authSvc.userHasRole('customer admin')) {
 						modelSvc.cache("episode", svc.resolveIDs(episodeData));
 						getEvents(epId, segmentId)
 							.success(function (events) {
@@ -541,6 +685,25 @@ angular.module('com.inthetelling.story')
 			return defer.promise;
 		};
 
+		var SANE_GET = function(path) {
+			//wrapping a method in a promises that is already using functions that return promises
+			//is an anti-pattern.
+			//simply return this promise
+			return authSvc.authenticate()
+			.then(function() {
+				//then return this promise
+				return $http.get(config.apiDataBaseUrl + path)
+				.then(function(resp) {
+					//SANE_GET will resolve to this
+					return resp.data;
+				});
+			});
+		};
+
+		var SANE_POST = function(path, data) {
+			return $http.post(path, data);
+		};
+
 		var PUT = function (path, putData, postprocessCallback) {
 			var defer = $q.defer();
 			$http({
@@ -586,6 +749,15 @@ angular.module('com.inthetelling.story')
 					return defer.resolve(data);
 				});
 			return defer.promise;
+		};
+
+		var PDELETE = function(path) {
+			return $http({
+				method: 'DELETE',
+				url: config.apiDataBaseUrl + path
+			}).then(function(resp) {
+				return resp;
+			});
 		};
 
 		/*
@@ -694,7 +866,7 @@ angular.module('com.inthetelling.story')
 					var parentId = data.parent_id;
 
 					// add it to the parent's child list (WARN I'm mucking around in modelSvc inappropriately here I think)
-					console.log(modelSvc.containers[parentId]);
+					// console.log(modelSvc.containers[parentId]);
 					modelSvc.containers[parentId].children.push(modelSvc.containers[data._id]);
 
 					defer.resolve(data);
@@ -815,7 +987,7 @@ angular.module('com.inthetelling.story')
 		svc.storeItem = function (evt) {
 			evt = prepItemForStorage(evt);
 			if (!evt) {
-				return false;
+				return $q.reject(false);
 			}
 			if (evt && evt._id && !evt._id.match(/internal/)) {
 				// update
@@ -844,6 +1016,7 @@ angular.module('com.inthetelling.story')
 				"start_time",
 				"end_time",
 				"episode_id",
+				"chapter_marker",
 				"template_id",
 				"templateUrl", // We should get this from template_id, but for now there's a dependency in editController on this existing. TODO remove that dependency
 				"stop",
@@ -852,6 +1025,7 @@ angular.module('com.inthetelling.story')
 				"sxs", // for demos, for now
 				"title",
 				"url",
+				"noEmbed",
 				"annotator",
 				"annotation",
 				"description",
@@ -910,6 +1084,9 @@ angular.module('com.inthetelling.story')
 			prepped.style_id = get_id_values("style", evt.styles);
 			prepped.layout_id = get_id_values("layout", evt.layouts);
 
+			if (evt._type === 'Chapter') {
+				return prepped;
+			}
 			var template = svc.readCache("template", "url", evt.templateUrl);
 			if (template) {
 				prepped.template_id = template.id;
@@ -1087,6 +1264,15 @@ angular.module('com.inthetelling.story')
 			console.log("DataSvc cache:", dataCache);
 		}
 
+		svc.getTemplates = function() {
+			return Object.keys(dataCache.template).map(function(t) { return dataCache.template[t]; });
+		};
+
+		/*
+		gets ID of Style Class when given the 'css_name'. 'css_name' is a attribute on the Style Class.
+		for example:
+		get_id_values('style', ['cover', '']) -> ['532708d8ed245331bd000007', '52e15b47c9b715cfbb00003f']
+		*/
 		var get_id_values = function (cache, realNames) {
 
 			// HACK These values won't have IDs, they're generated inside modelSvc.

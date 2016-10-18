@@ -5,17 +5,33 @@
 
 (function () {
 	'use strict';
-
+	/**
+	 * @ngdoc directive
+	 * @name iTT.directive:ittIframe
+	 * @restrict 'E'
+	 * @scope
+	 * @description
+	 * Directive used to display iframed content
+	 * @requires appState
+	 * @param {String} src The Source URL for the iframe
+	 * @param {String=} contenttype The mime type of the iframed content
+	 * @param {Object} item The Item object, aka an Event from the Database
+	 * @example
+	 * <pre>
+	 *     <itt-iframe src="<url>" contenttype="text/html" item="<itemObject>"></itt-iframe>
+	 * </pre>
+	 */
 	angular.module('com.inthetelling.story')
 		.directive('ittIframe', ittIframe)
 		.controller('ittIframeCtrl', ittIframeCtrl);
 
-	function ittIframe() {
+	function ittIframe(appState, youtubeSvc) {
 		return {
 			restrict: 'E',
 			scope: {
 				src: '@',
-				contenttype: '@'
+				contenttype: '@',
+				item: '&'
 			},
 			replace: true,
 			templateUrl: 'templates/iframe.html',
@@ -24,20 +40,115 @@
 			bindToController: true,
 			link: linkFn
 		};
+
+		function linkFn(scope, elm, ctrl) {
+			var _btnConst = 95;
+
+			var _unWatch = angular.noop;
+			var _toolbarH = 75;
+			var _timelineBarH = 145;
+			var _offsetConst = _toolbarH + _timelineBarH;
+			var _modalWrapper = $('.w-modal');
+			var _otherModal   = $('.modal');
+			var _frameBottom = $(window).height() - _offsetConst;
+
+			if (_otherModal.length > 0 && appState.isTouchDevice) {
+				//set dimenions on <iframe>
+				scope.iframeCtrl.styles = {'height': _frameBottom + 'px'};
+				//set dimensions on iframeContainer div
+				elm.css('height', _frameBottom);
+
+				scope.$watch(function() {
+					return elm.height();
+				}, function(newVal, oldval) {
+					if (newVal !== oldval) {
+						scope.iframeCtrl.styles = {'height': newVal + 'px'};
+						elm.css('height', _frameBottom);
+					}
+				});
+			}
+			//search for the 'w-modal" class, if we find one,
+			//then we know that we are using windowfg template, which seems to handle modals.
+			if (_modalWrapper.length > 0) {
+				setIframeHeight();
+			} else {
+				resizeIframeReviewMode();
+			}
+
+			function setIframeHeight() {
+				var y = _modalWrapper.height() - _btnConst;
+				elm.css('height', y);
+				_modalWrapper.css('overflow-y', 'hidden');
+
+				_unWatch =  scope.$watch(function() {
+					return _modalWrapper.height();
+				}, function(newVal, oldVal) {
+					if (newVal !== oldVal) {
+						var newY = newVal - _btnConst;
+						elm.css('height', newY);
+					}
+				});
+			}
+
+
+			function resizeIframeReviewMode() {
+				var narrasys = 'templates/episode/narrasys-pro.html';
+				var cpb = 'templates/episode/career-playbook.html';
+				var isYT = youtubeSvc.isYoutubeUrl(ctrl.src);
+
+				//only resize iframe in discover mode for the narrasys pro template (at the moment)
+				if (appState.viewMode === 'discover' &&
+					(appState.playerTemplate === narrasys || appState.playerTemplate === cpb) &&
+					!appState.isTouchDevice &&
+					!isYT) {
+					elm.css('height', _frameBottom);
+				}
+			}
+
+
+			scope.$on('$destroy', function() {
+				_unWatch();
+			});
+		}
+
+
 	}
 
-	function ittIframeCtrl($scope, youtubeSvc) {
+	function ittIframeCtrl($scope, ittUtils, youtubeSvc, appState) {
 		// moved this all back out of the controller to avoid leaking $scope.sandbox across directives
 		var _ctrl = this; //jshint ignore:line
 		var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
+		var _popupsTopWindow = ' allow-top-navigation allow-popups';
 		_ctrl.isYoutube = false;
+		_ctrl.isLoading = true;
+		_ctrl.isTouchDevice = appState.isTouchDevice;
 
-		if (youtubeSvc.extractYoutubeId(_ctrl.src)) {
-			_ctrl.isYoutube = true;
+
+		function validateFrameUrl(url) {
+			if (youtubeSvc.isYoutubeUrl(url)) {
+				_ctrl.isYoutube = true;
+				_ctrl.isLoading = false;
+				return true;
+			} else if (ittUtils.isValidURL(url)) {
+				_ctrl.isLoading = false;
+				_ctrl.isYoutube = false;
+				return true;
+			} else {
+				_ctrl.isLoading = true;
+				return false;
+			}
+
+		}
+
+		//set scrolling to no if we're on an ipad
+		//and we're attempting to iframe our own player
+		//this stops the player from expanding the iframe its contained in.
+		if (_ctrl.isTouchDevice && /inthetelling.com\/#/.test(_ctrl.src)) {
+			_ctrl.iOSScroll = 'no';
 		}
 
 		_ctrl.watcher = $scope.$watchGroup([function() {return _ctrl.src;}, function() {return _ctrl.contenttype;}], function () {
-			if (!_ctrl.src) {
+			if (!_ctrl.src || !validateFrameUrl(_ctrl.src)) {
 				return;
 			}
 
@@ -53,6 +164,15 @@
 				// Remove it for PDFs (for now; probably we'll be growing this list later on)
 				if (_ctrl.src.match(/.pdf$/)) {
 					delete _ctrl.sandbox;
+				}
+				//give ourselves more permission
+				if (_ctrl.src.match(/inthetelling.com\/#/)) {
+					_ctrl.sandbox += _popupsTopWindow;
+				}
+
+				//for certain browsers, see: TS-757 and TS-773
+				if (_ctrl.src.match(/inthetelling.com\/#/) && _ctrl.src.indexOf('?') === -1) {
+					_ctrl.src += '?embed=1';
 				}
 
 				// Looks like we have some episodes where production used Links item types to point to asset uploads,
@@ -73,36 +193,6 @@
 
 		$scope.$on('$destroy', function () {
 			_ctrl.watcher();
-		});
-	}
-
-	function linkFn(scope, elm) {
-		var _btnConst = 95;
-		var modalWrapper = $('.w-modal');
-		var unWatch = angular.noop;
-
-		//search for the 'w-modal" class, if we find one,
-		//then we know that we are using windowfg template, which seems to handle modals.
-		if (modalWrapper.length > 0) {
-			setIframeHeight();
-		}
-
-		function setIframeHeight() {
-			var y = modalWrapper.height() - _btnConst;
-			elm.css('height', y);
-
-			unWatch =  scope.$watch(function() {
-				return modalWrapper.height();
-			}, function(newVal, oldVal) {
-				if (newVal !== oldVal) {
-					var newY = newVal - _btnConst;
-					elm.css('height', newY);
-				}
-			});
-		}
-
-		scope.$on('$destroy', function() {
-			unWatch();
 		});
 	}
 
