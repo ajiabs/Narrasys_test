@@ -1,13 +1,17 @@
 'use strict';
 /* For admin screen episode list */
 angular.module('com.inthetelling.story')
-	.directive('ittContainer', function ($timeout, $location, $route, appState, modelSvc, recursionHelper, dataSvc) {
+	.directive('ittContainer', function ($timeout, $location, $route, appState, modelSvc, recursionHelper, dataSvc, ittUtils) {
 		return {
 			restrict: 'A',
 			replace: false,
 			scope: {
 				container: '=ittContainer',
-				depth: "=depth"
+				depth: "=depth",
+				onContainerClick: '&',
+				onContainerAdd: '&',
+				clickRootContext: '=',
+				addRootContext: '='
 			},
 			templateUrl: "templates/container.html",
 			controller:['$scope', '$location', 'modelSvc', 'authSvc', function($scope, $location, modelSvc, authSvc) {
@@ -15,7 +19,7 @@ angular.module('com.inthetelling.story')
 				$scope.postNewNarrative = postNewNarrative;
 				$scope.showNarrativeModal = false;
 				$scope.resolvingNarrative = false;
-				$scope.canAccess = authSvc.userHasRole('admin');
+				$scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 				//needs to be an array, not a k/v store
 				$scope.customers = modelSvc.getCustomersAsArray();
 
@@ -48,17 +52,10 @@ angular.module('com.inthetelling.story')
 						event.target.select(); // convenience for selecting the episode url
 					};
 
-					scope.containerTypes = ["customer", "course", "session", "episode"];
-					scope.toggleChildren = function () {
-						if (scope.container.children || scope.container.episodes.length) {
-							// have already loaded kids
-							scope.container.showChildren = !scope.container.showChildren;
-						} else {
-							dataSvc.getContainer(scope.container._id).then(function (id) {
-								scope.container = modelSvc.containers[id];
-								scope.container.showChildren = true;
-							});
-						}
+					scope.containerTypes = ["customer", "project", "module", "episode"];
+
+					scope.onToggleChildren = function(bool) {
+						scope.onContainerClick({$container: {container: scope.container, bool: bool}});
 					};
 
 					scope.renameContainer = function () {
@@ -77,7 +74,7 @@ angular.module('com.inthetelling.story')
 						});
 					};
 
-					scope.addContainer = function () {
+					scope.addContainer = function (container) {
 						var newContainer = {
 							"customer_id": scope.container.customer_id,
 							"parent_id": scope.container._id,
@@ -106,12 +103,23 @@ angular.module('com.inthetelling.story')
 										};
 
 										dataSvc.storeItem(newScene);
+										//will force a sort
+									}).then(function() {
+										scope.onContainerAdd({$container: container});
 									});
 								});
+							} else {
+								scope.onContainerAdd({$container: container});
 							}
 						});
 						scope.container.newContainerTitle = '';
 						scope.container.addingContainer = false;
+
+						//container.showChildren will be undefined at the project level.
+						if (!ittUtils.existy(container.showChildren) || container.showChildren === false) {
+							scope.onToggleChildren(false);
+						}
+
 					};
 
 					scope.deleteEpisodeAndContainer = function (id) {

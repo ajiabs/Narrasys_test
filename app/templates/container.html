@@ -1,16 +1,11 @@
 <!-- recursive template for admin episode list -->
-<div class="container" ng-class="{
-		isOpen: container.showChildren,
-		isClosed: !container.showChildren,
-		hoverIndicator: depth == 3
-	}" ng-if="container._id">
+<div class="container" ng-class="{hoverIndicator: depth === 3, isActive: container.isActive && depth === 3}" ng-style="{'text-indent': 1 * depth + 'em' }" ng-if="container._id">
 
-
-
-
+	<span ng-class="{isOpen: container.showChildren && depth !== 3, isClosed: !container.showChildren && depth !== 3}"
+		  ng-click="onToggleChildren(false)">
+	</span>
 
 	<itt-modal modal-class="narrative__modal" ng-if="showNarrativeModal">
-		<button ng-click="toggleNarrativeModal()">Cancel</button>
 		<itt-narrative-editor
 			customers="customers"
 			container-id="container._id"
@@ -24,13 +19,79 @@
 		<itt-route-loading is-loading="resolvingNarrative"></itt-route-loading>
 	</itt-modal>
 
+	<div ng-class="{hoverIndicator: depth !== 3, isActive: container.isActive && depth !== 3}">
 
-	<div class="hoverIndicator">
-		<span ng-if="!container.editingContainer">
-			<a ng-click="toggleChildren()">{{container.name.en}}</a>
-			<span ng-if="depth==3" style="color:#999">({{container.status || Unpublished}})</span>
-			<a style="color:#666" ng-click="container.editingContainer = true">▾</a>
+		<div ng-if="depth === 3">
+			<itt-tooltip tip-text="{{container.status}}" css="projects__page" class="published__state" style="text-indent: 0;">
+				<span ng-class="{isPublished: container.status === 'Published', isUnPublished: container.status !== 'Published'}"></span>
+			</itt-tooltip>
+		</div>
+
+		<span ng-if="!container.editingContainer" ng-style="depth === 3 ? {'text-indent': '4em'} : ''">
+			<itt-edit-pencil can-access="true" on-edit="container.editingContainer = true">
+				<a ng-click="onToggleChildren(true)">{{container.name.en}}</a>
+			</itt-edit-pencil>
 		</span>
+
+		<div ng-if="depth === 0">
+			<div ng-if="!container.addingContainer">
+				<div ng-if="container.isActive" class="button__row">
+					<button ng-click="container.addingContainer = true">Add Project</button>
+				</div>
+			</div>
+
+			<div ng-if="container.addingContainer">
+				<label>Name:&nbsp;
+					<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
+				</label>
+				<button ng-click="container.addingContainer = false">Cancel</button>
+				<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
+			</div>
+		</div>
+
+		<div ng-if="depth === 1">
+			<div ng-if="!container.addingContainer">
+				<div ng-if="container.isActive" class="button__row">
+					<button ng-click="container.addingContainer = true">Add Module</button>
+					<itt-tooltip tip-text="Go to assets" css="projects__page">
+						<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
+					</itt-tooltip>
+					<itt-tooltip tip-text="Generate new narrative" css="projects__page">
+						<a ng-if="canAccess" class="icon__button button__generateNarrative" ng-click="toggleNarrativeModal()"></a>
+					</itt-tooltip>
+				</div>
+			</div>
+
+			<div ng-if="container.addingContainer">
+				<label>Name:&nbsp;
+					<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
+				</label>
+				<button ng-click="container.addingContainer = false">Cancel</button>
+				<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
+			</div>
+		</div>
+
+		<div ng-if="depth === 2">
+			<div ng-if="!container.addingContainer">
+				<div ng-if="container.isActive" class="button__row">
+					<button ng-click="container.addingContainer = true">Add Episode</button>
+					<itt-tooltip tip-text="Go to assets" css="projects__page">
+						<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
+					</itt-tooltip>
+					<itt-tooltip tip-text="Generate new narrative" css="projects__page">
+						<a ng-if="canAccess" class="icon__button button__generateNarrative" ng-click="toggleNarrativeModal()"></a>
+					</itt-tooltip>
+				</div>
+			</div>
+			<div ng-if="container.addingContainer">
+				<label>Name:&nbsp;
+					<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
+				</label>
+				<button ng-click="container.addingContainer = false">Cancel</button>
+				<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
+			</div>
+		</div>
+
 		<span ng-if="container.editingContainer">
 			<label>Name:&nbsp;
 				<input ng-model="container.newContainerName" ng-init="container.newContainerName = container.name.en" type="text" autofocus>&nbsp;
@@ -42,44 +103,48 @@
 			<button class="danger" ng-if="appState.dangerousButtons && !container.children.length && !container.haveNotLoadedChildData" ng-click="deleteEpisodeAndContainer(container._id)">
 				Delete
 			</button>
-			<a ng-href="#/assets/{{container._id}}">[Assets]</a>
-			<a ng-if="canAccess && depth > 0" ng-click="toggleNarrativeModal()">[Generate Narrative]</a>
 		</span>
 	</div>
-	<div ng-if="container.showChildren">
-		<div ng-if="depth < 3" ng-repeat="child in container.children | orderBy:'name.en'" itt-container="containers[child._id]" depth="depth+1"></div>
-		<div ng-if="depth == 3" class="container">
-			<!-- begin episode -->
-			<a class="button" ng-click="container.showGuestUrl=!container.showGuestUrl">
-				<span ng-if="customer.guest_access_allowed">Guest</span>
-				<span ng-if="!customer.guest_access_allowed">ID</span>
-			</a>
-			<a class="button" href="#/episode/{{container.episodes[0]}}">Player</a>
-			<a class="button" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}">Editor</a>
-			<a class="button" href="#/producer/{{container.episodes[0]}}">Producer</a>
-			<div ng-if="container.showGuestUrl && customer.guest_access_allowed">
-				<!-- not editable; only an input to make text selection easier -->
-				The guest-accessible url for this episode is
-				<input class="readonly" ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{container.episodes[0]}}" readonly>
+
+	<div ng-if="depth == 3 && container.isActive" class="container" style="text-indent: 4em;">
+
+		<!-- begin episode -->
+		<div class="episode__button-row">
+			<div class="episode__button">
+				<itt-tooltip tip-text="Go to editor" css="projects__page">
+					<a class="icon__button button__editor" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}"></a>
+				</itt-tooltip>
+
+				<itt-tooltip tip-text="Go to producer" css="projects__page">
+					<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}"></a>
+				</itt-tooltip>
+
+				<itt-tooltip tip-text="Go to assets" css="projects__page">
+					<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
+				</itt-tooltip>
+
+				<itt-tooltip tip-text="Generate new narrative" css="projects__page">
+					<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
+				</itt-tooltip>
+
 			</div>
-			<div ng-if="container.showGuestUrl && !customer.guest_access_allowed">
-				The ID for this episode is {{container.episodes[0]}}
-			</div>
-
-			<!-- end episode -->
 		</div>
-
-		<div ng-if="!container.addingContainer" class="controls">
-			<button ng-if="depth < 3" ng-click="container.addingContainer = true">Add {{containerTypes[depth+1]}} to {{container.name.en}}</button>
-		</div>
-		<div ng-if="container.addingContainer" class="controls">
-			<label>Name:&nbsp;
-				<input ng-model="container.newContainerTitle" type="text" autofocus>&nbsp;
-			</label>
-			<button ng-click="container.addingContainer = false">Cancel</button>
-			<button ng-disabled="!container.newContainerTitle" ng-click="addContainer(container)">Add</button>
-		</div>
-
+		<!-- end episode -->
 	</div>
 
+	<div ng-if="container.showChildren">
+
+		<!--recur-->
+		<div ng-if="depth < 3" ng-repeat="child in container.children"
+			 itt-container="containers[child._id]"
+			 depth="depth+1"
+			 ng-class="{'container__row--odd': containers[child._id].evenOdd === false, 'container__row--even': containers[child._id].evenOdd === true }"
+			 on-container-click="clickRootContext($container)"
+			 on-container-add="addRootContext($container)"
+			 add-root-context="addRootContext"
+			 click-root-context="clickRootContext">
+		</div>
+
+
+	</div>
 </div>

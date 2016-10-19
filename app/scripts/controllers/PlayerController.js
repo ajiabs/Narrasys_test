@@ -3,18 +3,19 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager) {
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager, selectService) {
 		// console.log("playerController", $scope);
 
-		// $scope.tmp = function () {
-		// 	dataSvc.createTemplate({
-		// 		url: 'templates/episode/regis.html',
-		// 		name: 'Regis',
-		// 		// event_types: ['Plugin'], // Upload, Scene, Plugin, Annotation, Link
-		// 		applies_to_episode: true,
-		// 		applies_to_narrative: false
-		// 	});
-		// };
+		//set to true to enable debug info on api-dev
+		debugToolbarInfo(false);
+		function debugToolbarInfo(debugApiDev) {
+			var envs = 'localhost';
+			if (debugApiDev) {
+				envs += '|api-dev';
+			}
+			var doDebug = new RegExp(envs);
+			$scope.showDebugInfo = doDebug.test($location.host());
+		}
 
 		$scope.viewMode = function (newMode) {
 			appState.viewMode = newMode;
@@ -154,10 +155,12 @@ angular.module('com.inthetelling.story')
 					});
 				} else {
 					// Episode has no master asset
+					console.log('episode has no master asset!');
 					$scope.loading = false;
 					// TODO add help screen for new users. For now, just pop the 'edit episode' pane:
 					if (appState.product === 'producer') {
 						appState.editEpisode = modelSvc.episodes[appState.episodeId];
+						appState.editEpisode.templateOpts = selectService.getTemplates('episode');
 					}
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
@@ -354,13 +357,8 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		$scope.userHasRole = function (role) {
-			return authSvc.userHasRole(role);
-		};
-
-		$scope.logout = function () {
-			return authSvc.logout();
-		};
+		$scope.userHasRole =authSvc.userHasRole;
+		$scope.logout = authSvc.logout;
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 		// Autoscroll

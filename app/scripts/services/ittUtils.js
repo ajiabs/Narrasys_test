@@ -18,7 +18,9 @@
 		isValidURL: isValidURL,
 		stripHtmlTags: stripHtmlTags,
 		pick: pick,
-		bitwiseCeil: bitwiseCeil
+		bitwiseCeil: bitwiseCeil,
+		setNgOpts: setNgOpts,
+		intersection: intersection
 	};
 
 	//using bitwise operators up to 20% faster than Math.ceil (js hint not a fan of bitwise operators)
@@ -77,6 +79,24 @@
 		return URL_REGEXP.test(url);
 	}
 
+	//this function depends on selectSerivce, and getSelectOpts being defined on the
+	//controller where used.
+	function setNgOpts(type) {
+		return "option.value as option.name for option in $ctrl.getSelectOpts(" + "'" + type + "'" + ")";
+	}
+
+	function intersection(x, y){
+		var ret = [];
+		for (var i = 0; i < x.length; i++) {
+			for (var z = 0; z < y.length; z++) {
+				if (x[i] == y[z]) { // jshint ignore:line
+					ret.push(i);
+					break;
+				}
+			}
+		}
+		return ret;
+	}
 
 
 })();

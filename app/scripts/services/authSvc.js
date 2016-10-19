@@ -44,6 +44,19 @@ angular.module('com.inthetelling.story')
 			return false;
 		};
 
+		svc.getCustomerIdsFromRoles = function () {
+			if (appState.user && appState.user.roles) {
+				return appState.user.roles.reduce(function(accm, i) {
+					if (i.role === Roles.ADMINISTRATOR &&
+						ittUtils.existy(i.resource_id) &&
+						i.resource_type === Resources.CUSTOMER) {
+						accm.push(i.resource_id);
+					}
+					return accm;
+				}, []);
+			}
+		};
+
 		svc.getRoleForNarrative = function (narrativeId, roles) {
 			roles = typeof roles !== 'undefined' ? roles : appState.user.roles;
 			var role = "";
@@ -184,7 +197,9 @@ angular.module('com.inthetelling.story')
 		var authenticateDefer = $q.defer();
 		svc.authenticate = function (nonceParam) {
 			if ($http.defaults.headers.common.Authorization) {
-				if (appState.user) {
+				//appState#init will initialize an empty object as the user property, which will always make
+				//appState.user truthy, thus need to check to see if we actually have a loaded user by looking for the id.
+				if (appState.user._id) {
 					// Have header and user; all done.
 					authenticateDefer.resolve();
 				} else {
@@ -329,7 +344,7 @@ angular.module('com.inthetelling.story')
 
 			var tok = svc.getStoredToken();
 			if (user.avatar_id && tok) {
-				console.log('culprit identified', tok);
+				// console.log('culprit identified', tok);
 				$http.defaults.headers.common.Authorization = 'Token token="' + tok + '"';
 				// Load and cache avatar asset for current user
 				$http.get(config.apiDataBaseUrl + "/v1/assets/" + user.avatar_id).then(function (response) {

@@ -14,19 +14,26 @@ angular.module('com.inthetelling.story')
 
 				scope.inPlayer = attrs.inPlayer;
 				scope.appState = appState;
-
 				scope.loading = true;
 				scope.logout = authSvc.logout;
+				scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 
 				authSvc.authenticate().then(function () {
 					scope.loading = false;
 					scope.user = appState.user;
 					scope.userHasRole = authSvc.userHasRole;
 
-					if (!scope.inPlayer && !authSvc.isGuest()) {
-						scope.getMyNarratives();
-					}
+					//TS-1120 - remove purchases
+					// if (!scope.inPlayer && !authSvc.isGuest()) {
+					// 	scope.getMyNarratives();
+					// }
 				});
+
+				scope.isEditing = false;
+				scope.toggleEditing = toggleEditing;
+				function toggleEditing() {
+					scope.isEditing = !scope.isEditing;
+				}
 
 				// TODO refactor: this is very similar to ittItemEditor's uploadAsset
 				scope.uploadStatus = [];

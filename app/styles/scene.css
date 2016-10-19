@@ -290,6 +290,11 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	opacity: 0.5;
 }
 
+.searchMode h2.searchChapter {
+	font-size: 1.6em;
+	margin-left: -55px;
+}
+
 .searchMode h2.searchCategory {
 	font-size: 1.6em;
 }
@@ -549,7 +554,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 
 .scene.onecol .col,
 .scene.onecol .videoMagnet {
-	margin: 0 20%;
+	margin: -3.5px 20%;
 	width: 60%;
 }
 
@@ -566,7 +571,7 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 @media screen and (min-width: 1000px) and (min-height: 700px) {
 	.scene.onecol .col,
 	.scene.onecol .videoMagnet {
-		margin: 0 25%;
+		margin: -3.5px 25%;
 	}
 	.scene.onecol .videoPositioner {
 		width: 100%;

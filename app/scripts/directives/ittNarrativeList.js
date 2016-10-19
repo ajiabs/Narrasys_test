@@ -34,7 +34,7 @@
 		ctrl.toggleSelectNarrative = toggleSelectNarrative;
 		ctrl.addNarrative = addNarrative;
 
-		if (authSvc.userHasRole('admin')) {
+		if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
 			ctrl.canAccess = true;
 		}
 

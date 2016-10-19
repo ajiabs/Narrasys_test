@@ -2,232 +2,82 @@
 	<div ng-if="appState.product == 'producer'">
 		<!-- <span class="eventIcon icon-episode"></span> -->
 
-
 		<div class="ittTabs" itt-tabs>
-			<select ng-if="episode.languages.length > 1" size="1" ng-model="appState.lang" ng-change="forcePreview()" style="float:right; padding-right: 24px" ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
-			</select>
 
 			<!-- begin tabset -->
-			<div class="ittTab" itt-tab="tabs[0]" x-tabindex="0" x-tablabel="Episode">
+			<div class="ittTab" itt-tab title="Episode">
 				<!-- begin episode content tab -->
-				<div class="authoringFormScrollContainer">
 
-					<div class="field">
-						<div class="label">Public URL</div>
-						<div class="input">
-							<!-- not editable; only an input to make text selection easier -->
-							<input ng-click="selectText($event)" value="https://{{customer.domains[0]}}.inthetelling.com/#/episode/{{episode._id}}" readonly>
-						</div>
-					</div>
-
-					<div class="field">
-						<div class="label">Title [{{appState.lang}}]</div>
-						<div class="input" ng-model-options="{ debounce: 500 }" sxs-input-i18n="episode.title" x-inputtype="'input'" autofocus></div>
-					</div>
-					<div class="field">
-						<div class="label">Description [{{appState.lang}}]</div>
-						<div class="input" ng-model-options="{ debounce: 50 }" sxs-input-i18n="episode.description" x-inputtype="'textarea'"></div>
-					</div>
-
-					<div class="field">
-						<div class="label">Status</div>
-						<div class="input">
-							<select size="1" ng-model="episode.status">
-								<option value="Published">Published</option>
-								<option value="Unpublished">Unpublished</option>
-							</select>
-						</div>
-					</div>
-					<div class="field">
-						<div class="label">Languages</div>
-						<div class="input">
-							<label>
-								<input type="checkbox" ng-model="langForm.en">English
-							</label>
-							<label>
-								<input type="checkbox" ng-model="langForm.es">Spanish
-							</label>
-							<label>
-								<input type="checkbox" ng-model="langForm.zh">Chinese
-							</label>
-							<label>
-								<input type="checkbox" ng-model="langForm.pt">Portuguese
-							</label>
-							<label>
-								<input type="checkbox" ng-model="langForm.fr">French
-							</label>
-							<label>
-								<input type="checkbox" ng-model="langForm.de">German
-							</label>
-							<label>
-								<input type="checkbox" ng-model="langForm.it">Italian
-							</label>
-						</div>
-					</div>
-					<div class="field" ng-if="languageCount>1">
-						<div class="label">Default language</div>
-						<div class="input">
-							<select size="1" ng-model="episode.defaultLanguage">
-								<option ng-disabled="!langForm.en" value="en">English</option>
-								<option ng-disabled="!langForm.es" value="es">Spanish</option>
-								<option ng-disabled="!langForm.zh" value="zh">Chinese</option>
-								<option ng-disabled="!langForm.pt" value="pt">Portuguese</option>
-								<option ng-disabled="!langForm.fr" value="fr">French</option>
-								<option ng-disabled="!langForm.de" value="pt">German</option>
-								<option ng-disabled="!langForm.it" value="it">Italian</option>
-							</select>
-						</div>
+				<div class="field" ng-hide="!userHasRole('admin')">
+					<div class="label">Master asset type</div>
+					<div class="input">
+						<select size="1" ng-model="masterAssetType">
+							<option value="Video">Native Video</option>
+							<option value="Youtube">Youtube</option>
+						</select>
 					</div>
 				</div>
+				<div class="field" ng-if="masterAssetType == 'Video' && userHasRole('admin')">
+					<div class="label">Video</div>
+					<div class="input" ng-include="'templates/producer/upload-masterasset.html'"></div>
+				</div>
+				<div class="field" ng-if="masterAssetType == 'Youtube'">
+					<div class="label">Youtube URL</div>
+					<div class="input">
+						<input type="text" ng-model="masterAsset.you_tube_url" style="width: 75%">
+						<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>
+					</div>
+				</div>
+				<div class="field" ng-if="showmessage">
+					<div class="input" ng-bind-html="showmessage"></div>
+				</div>
+
+				<itt-title-field data="episode" model-opts="{ debounce: 500 }"></itt-title-field>
+				<itt-description-field data="episode" model-opts="{debounce: 50}"></itt-description-field>
+
+
+				<div class="field" ng-if="userHasRole('admin')">
+					<div class="label">Poster image
+					</div>
+					<div class="input" ng-include="'templates/producer/upload-poster.html'">
+					</div>
+				</div>
+
+				<div class="field">
+					<div class="label">Status</div>
+					<div class="input">
+						<select size="1" ng-model="episode.status">
+							<option value="Published">Published</option>
+							<option value="Unpublished">Unpublished</option>
+						</select>
+					</div>
+				</div>
+
+				<itt-language-flags></itt-language-flags>
+				<itt-language-select
+					ng-if="languageCount > 1"
+					data="episode"
+					lang-form="langForm">
+				</itt-language-select>
+				<div class="field" ng-if="episode.languages.length > 1">
+					<div class="label">Current Language</div>
+					<div class="input">
+						<select size="1" ng-model="appState.lang" ng-change="forcePreview()"
+								ng-options="language.code as ('['+language.code.toUpperCase()+']') for language in episode.languages">
+						</select>
+					</div>
+				</div>
+
 				<!-- end episode content tab -->
 			</div>
-			<div class="ittTab" itt-tab="tabs[1]" x-tabindex="1" x-tablabel="Master Asset">
-				<!-- begin metadata tab -->
-				<div class="authoringFormScrollContainer">
-					<div class="field">
-						<div class="label">Master asset type</div>
-						<div class="input">
-							<select size="1" ng-model="masterAssetType">
-								<option value="Video">Native Video</option>
-								<option value="Youtube">Youtube</option>
-								<!--
- 								<option value="Audio">Audio (TODO)</option>
-								<option value="Images">Image sequence (TODO)</option>
-								<option value="None">No master asset (TODO)</option>
- -->
-							</select>
-						</div>
-					</div>
-					<div class="field" ng-if="masterAssetType == 'Video'">
-						<div class="label">Video</div>
-						<div class="input" ng-include="'templates/producer/upload-masterasset.html'"></div>
-					</div>
-					<div class="field" ng-if="masterAssetType == 'Youtube'">
-						<div class="label">Youtube URL</div>
-						<div class="input">
-							<input type="text" ng-model="masterAsset.you_tube_url" style="width: 75%">
-							<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>
-						</div>
-					</div>
-					<div class="field" ng-if="showmessage">
-						<div class="input" ng-bind-html="showmessage"></div>
-					</div>
-
-					<!--
-					<div class="field" ng-if="masterAssetType == 'Images' || masterAssetType == 'None'">
-						<div class="label">Duration</div>
-						<input type="text" name="start" ng-model="episode.duration" ng-minlength="1" ng-maxlength="5">
-					</div>
-
- -->
-					<div class="field">
-						<div class="label">Poster image
-						</div>
-						<div class="input" ng-include="'templates/producer/upload-poster.html'">
-						</div>
-					</div>
-
-				</div>
-				<!-- end metadata tab -->
-			</div>
-			<div class="ittTab" itt-tab="tabs[2]" x-tabindex="2" x-tablabel="Style">
+			<div class="ittTab" itt-tab title="Style">
 				<!-- begin styles tab -->
-				<div class="authoringFormScrollContainer">
-					<div class="field">
-						<div class="label">
-							Template
-						</div>
-						<div class="input">
-							<select ng-model="episode.templateUrl">
-								<option value="templates/episode/story.html">(Default)</option>
-								<option value="templates/episode/episode.html">(Unbranded)</option>
-								<option value="templates/episode/career-playbook.html">Career Playbook</option>
-								<option value="templates/episode/columbia.html">Columbia University</option>
-								<option value="templates/episode/columbiabusiness.html">Columbia Business School</option>
-								<option value="templates/episode/eliterate.html">e-Literate TV</option>
-								<option value="templates/episode/ewb.html">Engineers Without Borders</option>
-								<option value="templates/episode/fieldpros.html">Field Pros</option>
-								<option value="templates/episode/gw.html">George Washington</option>
-								<option value="templates/episode/gwlaw.html">George Washington Law</option>
-								<option value="templates/episode/gwsb.html">George Washington Fed MOOC</option>
-								<option value="templates/episode/kellogg.html">Kellogg</option>
-								<option value="templates/episode/narrasys-pro.html">Narrasys Professional</option>
-								<option value="templates/episode/middlebury.html">Middlebury</option>
-								<option value="templates/episode/purdue.html">Purdue</option>
-								<option value="templates/episode/regis.html">Regis</option>
-								<option value="templates/episode/schoolclimatesolutions.html">School Climate Solutions</option>
-								<option value="templates/episode/usc.html">University of Southern California</option>
-								<option value="templates/episode/washingtonSBCTC.html">Washington SBCTC</option>
-								<option value="templates/episode/wiley1.html">Wiley</option>
-								<option value="templates/episode/wiley2.html">Wiley (without endscreen text)</option>
-							</select>
-						</div>
-					</div>
-
-					<div class="field">
-						<div class="label">Typography</div>
-						<div class="input">
-							<select size="1" ng-model="itemForm.typography">
-								<option value="">(Default)</option>
-								<option value="Sans">Sans</option>
-								<option value="Serif">Serif</option>
-								<option value="Book">Book</option>
-								<option value="Swiss">Swiss</option>
-							</select>
-						</div>
-					</div>
-					<div class="field">
-						<div class="label">Color</div>
-						<div class="input">
-							<select size="1" ng-model="itemForm.color">
-								<option value="">(Default)</option>
-								<option value="Invert">Invert</option>
-								<option value="Sepia">Sepia</option>
-								<option value="Solarized">Solarized</option>
-								<option value="Vivid">Vivid</option>
-							</select>
-						</div>
-					</div>
-					<div class="field">
-						<div class="label">Timestamp</div>
-						<div class="input">
-							<select size="1" ng-model="itemForm.timestamp">
-								<option value="">(Default)</option>
-								<option value="None">No timestamp</option>
-								<option value="Inline">Inline timestamp</option>
-							</select>
-						</div>
-					</div>
-					<div class="field">
-						<div class="label">Highlight</div>
-						<div class="input">
-							<select size="1" ng-model="itemForm.highlight">
-								<option value="">(Default)</option>
-
-								<option value="Solid">Solid</option>
-								<option value="Border">Border</option>
-								<option value="Side">Side</option>
-								<option value="Bloom">Bloom</option>
-								<option value="Highlighter">Highlighter</option>
-								<option value="Tilt">Tilt</option>
-							</select>
-						</div>
-					</div>
-					<div class="field">
-						<div class="label">Transition</div>
-						<div class="input">
-							<select size="1" ng-model="itemForm.transition">
-								<option value="">(Default)</option>
-								<option value="None">No transition</option>
-								<option value="Fade">Fade</option>
-								<option value="SlideL">Slide left</option>
-								<option value="SlideR">Slide right</option>
-								<option value="ExpandW">Expand</option>
-								<option value="Pop">Pop</option>
-							</select>
-						</div>
-					</div>
-				</div>
+				<itt-template-select data="episode"></itt-template-select>
+				<!--<itt-typography-select></itt-typography-select>-->
+				<!--<itt-color-select></itt-color-select>-->
+				<itt-timestamp-select></itt-timestamp-select>
+				<itt-highlight-select></itt-highlight-select>
+				<itt-transition-select></itt-transition-select>
 				<!-- end styles tab -->
 			</div>
 			<!-- end of tabset -->
