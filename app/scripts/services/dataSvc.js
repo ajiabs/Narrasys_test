@@ -53,6 +53,7 @@ angular.module('com.inthetelling.story')
 			var encodedUrl = encodeURIComponent(url);
 			return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
 				.then(_handleSuccess)
+				.then(_canEmbed)
 				.catch(_handleErrors);
 
 			function _handleSuccess(result) {
@@ -62,7 +63,7 @@ angular.module('com.inthetelling.story')
 					_xFrameOpts = _xFrameOpts.toUpperCase();
 				}
 				console.log('x-frame-opts: ', _xFrameOpts);
-				return _canEmbed(_xFrameOpts);
+				return _xFrameOpts;
 			}
 
 			function _handleErrors(error) {

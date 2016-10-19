@@ -68,6 +68,8 @@
 						});
 					} else {
 						if (notice.type !== 'xFrameOpts') {
+							//null out to remove UI popover
+							ctrl.xFrameOpts.inform = null;
 							ctrl.data.templateOpts = ctrl.data.templateOpts.map(function(opt) {
 								opt.isDisabled = false;
 								return opt;
