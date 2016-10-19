@@ -16,7 +16,8 @@ angular.module('com.inthetelling.story')
 			CUSTOMER: 'Customer'
 		};
 
-		svc.isGuest = function isGuest() {
+		svc.isTrueGuest = isTrueGuest;
+		function isTrueGuest() {
 			var _isGuest = true;
 			angular.forEach(appState.user.roles, function(r) {
 				if (r.role !== Roles.GUEST) {
@@ -25,7 +26,7 @@ angular.module('com.inthetelling.story')
 			});
 
 			return _isGuest;
-		};
+		}
 
 		svc.userHasRole = function (role) {
 			if (appState.user && appState.user.roles) {
