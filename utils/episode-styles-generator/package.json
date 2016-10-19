@@ -1,0 +1,20 @@
+{
+  "name": "typescript-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "rm -rf dist/* && ./node_modules/.bin/tsc && node dist/index.js",
+    "compile:ts": "./node_modules/.bin/tsc",
+    "watch:ts": "./node_modules/.bin/tsc --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^2.0.3"
+  },
+  "dependencies": {
+    "@types/node": "^6.0.41",
+    "yargs": "^4.8.1"
+  }
+}

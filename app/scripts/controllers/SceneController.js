@@ -1,10 +1,13 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('SceneController', function ($scope, $filter) {
+	.controller('SceneController', function ($scope, $filter, ittUtils) {
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
+		$scope.centeredProTransmedia = centeredProTransmedia;
 		$scope.setBgImgUrl = setBgImgUrl;
-		$scope.precalculateSceneValues = function () {
+		$scope.precalculateSceneValues = precalculateSceneValues;
+
+		function precalculateSceneValues() {
 			// console.log("precalcSceneValues");
 
 			// clear out old calculations in case we're re-precalculating
@@ -86,26 +89,69 @@ angular.module('com.inthetelling.story')
 					i = $scope.altContentItems.length; // no need to keep checking the rest
 				}
 			}
-		};
+		}
+
+		function centeredProTransmedia(item) {
+			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
+			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
+			var isLongTxt = item.templateUrl === 'templates/item/text-transmedia.html';
+			var isDef = item.templateUrl === 'templates/item/text-definition.html';
+			return (isPullQuote || isH2 || isLongTxt || isDef ) ? item : false;
+		}
 
 		function byPullquoteOrH2(item) {
 			var isPullQuote = item.templateUrl === 'templates/item/pullquote.html';
-			var isPullQuoteAttrib = item.templateUrl === 'templates/item/pullquote-noattrib.html';
 			var isH2 = item.templateUrl === 'templates/item/text-h2.html';
-			return (isPullQuote || isH2 || isPullQuoteAttrib) ? item : false;
+			return (isPullQuote || isH2) ? item : false;
 		}
 
 		function setBgImgUrl(items, col) {
 			var currItems = $filter('isCurrent')(items);
 			var mainColBgOrFg = $filter(col)(currItems);
+			var bgStyle;
 			var opacity = 1;
-			if (mainColBgOrFg.length > 0) {
-				var bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
+			var bgSize;
+			var bgPosition;
+			var bgUrl;
+
+			if (mainColBgOrFg.length > 0 && ittUtils.existy(mainColBgOrFg[0].asset)) {
+				bgUrl = 'url('+ mainColBgOrFg[0].asset.url +')';
 				if (/Bg/.test(mainColBgOrFg[0].layoutCss)) {
-					opacity = 0.33;
+					opacity = 0.25;
 				}
-				return { 'background-image': bgUrl, 'opacity': opacity };
+				bgStyle = mainColBgOrFg[0].styles[0];
+				//fill and stretch = background-size: 100% 100%, background-position: 50% 50%
+				switch(bgStyle) {
+					case 'cover':
+						bgSize = 'cover';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity  };
+					case 'contain':
+						bgSize = 'contain';
+						bgPosition = 'center';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'fill':
+						bgSize = '100% 100%';
+						bgPosition = '50% 50%';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'tl':
+						bgSize = 'auto';
+						bgPosition = 'top left';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'tr':
+						bgSize = 'auto';
+						bgPosition = 'top right';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'bl':
+						bgSize = 'auto';
+						bgPosition = 'bottom left';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+					case 'br':
+						bgSize = 'auto';
+						bgPosition = 'bottom right';
+						return { 'background-image': bgUrl, 'background-size': bgSize, 'opacity': opacity, 'background-position': bgPosition  };
+				}
+				//do nothing
+				return '';
 			}
-			return '';
 		}
 	});

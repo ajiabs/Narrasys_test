@@ -1,11 +1,21 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, appState, dataSvc, modelSvc, timelineSvc) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
 		// Poor encapsulation of the upload controls. Sorry about that.
+
+		$scope.userHasRole = authSvc.userHasRole;
+		$scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
+		$scope.selectService = selectService;
+
+		if ($scope.item && MIMES[$scope.item.producerItemType]) {
+			$scope.mimes = MIMES[$scope.item.producerItemType];
+		} else {
+			$scope.mimes = MIMES.default;
+		}
 
 		$scope.chooseAsset = function (assetType) {
 			assetType = assetType || '';
@@ -39,6 +49,17 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
+
+		$scope.onFormativeChecked = onFormativeChecked;
+		function onFormativeChecked(distractor) {
+			angular.forEach($scope.item.data._plugin.distractors, function(_distractor) {
+				if (_distractor !== distractor) {
+					_distractor.correct = undefined;
+				}
+			});
+		}
+
+
 		var isOnExistingSceneStart = function (time) {
 			angular.forEach(getScenes(), function (scene) {
 				if (scene.start_time === time) {
@@ -57,6 +78,8 @@ angular.module('com.inthetelling.story')
 			}
 			// console.log("itemEditController.addEvent");
 			var newEvent = generateEmptyItem(producerItemType);
+
+
 			newEvent.cur_episode_id = appState.episodeId;
 			newEvent.episode_id = appState.episodeId;
 			if (appState.user && appState.user.avatar_id) {
@@ -71,6 +94,8 @@ angular.module('com.inthetelling.story')
 			modelSvc.resolveEpisodeEvents(appState.episodeId);
 			timelineSvc.injectEvents([modelSvc.events["internal:editing"]]);
 			if (producerItemType === 'scene') {
+				//to set the defaults on the first pass
+				selectService.onSelectChange(appState.editEvent);
 				timelineSvc.updateSceneTimes(appState.episodeId);
 			}
 			$rootScope.$emit('searchReindexNeeded'); // HACK
@@ -194,8 +219,6 @@ angular.module('com.inthetelling.story')
 						});
 				});
 			}
-
-			console.log("saving this thing: ", appState.editEvent);
 
 			dataSvc.storeItem(toSave)
 				.then(function (data) {
@@ -433,21 +456,25 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.editCurrentScene = function () {
+
 			angular.forEach(getScenes(), function (scene) {
 				if (scene.isCurrent) {
 					// TODO This is redundant with ittItem editItem...
 					appState.editEvent = modelSvc.events[scene._id];
+					appState.editEvent.templateOpts = selectService.getTemplates('scene');
 					appState.editEvent.cur_episode_id = appState.episodeId;
 					appState.editEvent.episode_id = appState.episodeId;
 					appState.editEvent.producerItemType = 'scene';
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
+					selectService.onSelectChange(appState.editEvent);
 				}
 			});
 		};
 
 		$scope.editEpisode = function () {
 			appState.editEpisode = modelSvc.episodes[appState.episodeId];
+			appState.editEpisode.templateOpts = selectService.getTemplates('episode');
 			appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 			appState.videoControlsLocked = true;
 		};
@@ -479,7 +506,7 @@ angular.module('com.inthetelling.story')
 						delete modelSvc.events[eventId];
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 
-						if (eventType === 'Scene') {
+						if (eventType === 'Scene' || eventType === 'Chapter') {
 							timelineSvc.updateSceneTimes(appState.episodeId);
 						}
 						saveAdjustedEvents(event, "delete");
@@ -558,7 +585,15 @@ angular.module('com.inthetelling.story')
 				stub = {
 					"_type": "Scene",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type)
+				};
+			}
+			if (type === 'chapter') {
+				stub = {
+					'_type': 'Chapter',
+					'title': {},
+					'description': {}
 				};
 			}
 			if (type === 'video') {
@@ -569,7 +604,8 @@ angular.module('com.inthetelling.story')
 					"link_image_id": "",
 					"url": "",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -578,7 +614,8 @@ angular.module('com.inthetelling.story')
 					"_type": "Annotation",
 					"annotation": {},
 					"annotator": {},
-					"annotation_image_id": ""
+					"annotation_image_id": "",
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -587,7 +624,8 @@ angular.module('com.inthetelling.story')
 					"_type": "Upload",
 					"asset_id": "",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -597,7 +635,8 @@ angular.module('com.inthetelling.story')
 					"link_image_id": "",
 					"url": "https://",
 					"title": {},
-					"description": {}
+					"description": {},
+					"templateOpts": selectService.getTemplates(type),
 				};
 			}
 
@@ -606,6 +645,7 @@ angular.module('com.inthetelling.story')
 				stub = {
 					"_type": "Plugin",
 					"title": {},
+					"templateOpts": selectService.getTemplates(type),
 					"data": {
 						"_pluginType": "question",
 						"_version": 2,
@@ -645,15 +685,16 @@ angular.module('com.inthetelling.story')
 				stub.templateUrl = 'templates/item/sxs-' + type + '.html';
 			} else {
 				var defaultTemplateUrls = {
-					"scene": "templates/scene/1col.html",
+					"scene": "templates/scene/centered.html",
 					"transcript": "templates/item/transcript.html",
-					"annotation": "templates/item/pullquote-noattrib.html",
+					"annotation": "templates/item/text-h2.html",
 					"link": "templates/item/link.html",
 					"image": "templates/item/image-plain.html",
 					"file": "templates/item/file.html",
 					"question": "templates/item/question-mc.html",
 					"video": "TODO:VIDEO"
 				};
+
 				stub.templateUrl = defaultTemplateUrls[type];
 			}
 			angular.extend(base, stub);

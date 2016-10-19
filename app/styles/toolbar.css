@@ -809,7 +809,6 @@ button {
 }
 
 input.userEditable {
-	border: none;
 	background: transparent;
 	border: 1px solid rgba(0, 0, 0, 0);
 	border-bottom: 1px solid #000;
@@ -824,12 +823,17 @@ input.userEditable:focus {
 	border-radius: 4px;
 }
 
-.userHome label span {
-	font-size: 80%;
-	padding: 0 1em;
-	text-align: right;
-	width: 50px !important;
-	display: inline-block;
+.userHome{
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+.user__item {
+	padding: 10px 0;
+}
+
+.user__label {
 	color: #999;
 }
 
@@ -892,6 +896,17 @@ input.userEditable:focus {
 	/* TOOLBAR HEIGHT */
 	top: 55px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.profilePanel .button {
+	background-color: #C44343;
+	color: #FFF;
+	border-radius: 0.6em;
+	font-size: 0.8em;
+	padding: 0.1em 0.8em;
+	margin: 0.2em;
+	border: 0;
+	cursor: pointer;
 }
 
 

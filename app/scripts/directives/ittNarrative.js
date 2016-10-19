@@ -121,7 +121,7 @@ function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		$scope.narrative = $scope.narrativeData;
 		$scope.customers = $scope.customerData;
 		$scope.user = appState.user;
-		if (authSvc.userHasRole('admin')) {
+		if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
 			$scope.canAccess = true;
 		}
 		$scope.loading = false;
@@ -261,7 +261,6 @@ function ittNarrativeCtrl($scope, authSvc, appState, dataSvc, ittUtils) {
 		_updateSortOrder(tl.index, $scope.narrative.timelines);
 		dataSvc.createChildEpisode({
 			parent_id: tl.parent_episode._id,
-			title: tl.name
 		})
 			.then(storeChildEpisode)
 			.then(handleEpisodeSegment)

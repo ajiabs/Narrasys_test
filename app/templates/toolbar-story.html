@@ -4,7 +4,7 @@
 			<span>Exit</span>
 		</a>
 		<button tabindex="0" class="button button-nav" ng-click="toggleNavPanel();">
-			<span>Scenes</span>
+			<span>Chapters</span>
 		</button>
 
 		<!-- 		<button ng-click="tmp()">TMP</button>
@@ -15,6 +15,10 @@
 		<img ng-src="images/customer/Narrasys_Logo.png"
 			 id="toolbar-logo-big"
 			 ng-if="episode.templateUrl === 'templates/episode/narrasys-pro.html' && appState.windowWidth > 500">
+		<span ng-if="showDebugInfo">
+			Current Scene: {{appState.currSceneName}} <br>
+			Layouts: {{appState.sceneLayouts}}
+		</span>
 
 		<img ng-src="images/customer/Narrasys-Tree.png"
 			 id="toolbar-logo-small"
@@ -55,13 +59,13 @@
 
 <div ng-cloak ng-show="show.navPanel" class="navPanel topDrawer" ng-class="episode.styleCss">
 	<div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
-	<!-- <h2 ng-bind-html="episode.display_title"></h2> -->
-	<div class="scene" x-ng-if="scene.display_title" x-ng-repeat="scene in episode.scenes" x-ng-class="{currentScene: scene.isCurrent}" x-ng-click="seek(scene.start_time)">
-		<span class="displayTime">{{scene.displayStartTime}}</span>
+	 <h2 ng-bind-html="episode.display_title" class="fakeLink" ng-click="seek(0)"></h2>
+	<div class="scene" x-ng-if="chapter.display_annotation || chapter.display_title" x-ng-repeat="chapter in episode.chapters" x-ng-class="{currentScene: chapter.isCurrent}" x-ng-click="seek(chapter.start_time)">
+		<span class="displayTime">{{chapter.displayStartTime}}</span>
 		<p>
-			<button class="fakeLink" tabindex="0" ng-bind-html="scene.display_title" x-ng-class="{sceneLink: !scene.isCurrent}" ng-focus="showControls()"></button>
+			<button class="fakeLink" tabindex="0" ng-bind-html="chapter.display_annotation || chapter.display_title" x-ng-class="{sceneLink: !chapter.isCurrent}" ng-focus="showControls()"></button>
 			<br>
-			<span ng-bind-html="scene.display_description"></span>
+			<span ng-bind-html="chapter.display_description"></span>
 		</p>
 	</div>
 	<!--

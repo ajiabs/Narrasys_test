@@ -15,7 +15,11 @@
  * @requires textAngular
  */
 angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular', 'ui.tree'])
-
+	.constant('MIMES', {
+		'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
+		'file':  'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
+		'default': 'image/*'
+	})
 // Configure routing
 .config(function ($routeProvider) {
 	$routeProvider
@@ -27,17 +31,33 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			templateUrl: 'templates/auth.html',
 			reloadOnSearch: false
 		})
-		.when('/user', {
-			template: '<div class="standaloneAncillaryPage"><div itt-user></div></div>'
+		.when('/account', {
+			template: [
+				'<div class="standaloneAncillaryPage">',
+				'	<itt-nav on-logout="logout()"></itt-nav>',
+				'	<h1>My Account</h1>',
+				'	<div itt-user></div>',
+				'</div>'
+			].join(''),
+			controller: ['$scope', 'authSvc', function($scope, authSvc) {
+				$scope.logout = authSvc.logout;
+			}]
 		})
 		.when('/stories', {
-			title: "Existing narratives",
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div></div>',
+			title: "Available Narratives",
+			template: [
+				'<div class="standaloneAncillaryPage">',
+				'	<itt-nav on-logout="logout()"></itt-nav>',
+				'	<h1>Narratives</h1>',
+				'	<div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div>',
+				'</div>'
+			].join('\n'),
 			controller: 'NarrativesCtrl',
 			resolve: {
 				narrativesResolve: function($route, $q,  ittUtils, authSvc, dataSvc, modelSvc) {
 
-					var cachedNars = modelSvc.narratives;
+					//needs to be an array
+					var cachedNars = modelSvc.getNarrativesAsArray();
 					var cachedCustomers;
 					//if use visits /story/:id prior to visiting this route, they will have a single
 					//narrative in modelSvc. We consider the cache 'empty' if the only narrative
@@ -69,7 +89,12 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			}
 		})
 		.when('/story/:narrativePath', {
-			template: '<div class="standaloneAncillaryPage"><div itt-narrative narrative-data="narrativeResolve" customer-data="customersResolve"></div></div>',
+			template: [
+				'<div class="standaloneAncillaryPage">',
+				'	<itt-nav on-logout="logout()"></itt-nav>',
+				'	<div itt-narrative narrative-data="narrativeResolve" customer-data="customersResolve">',
+				'</div>'
+			].join(''),
 			controller: 'NarrativeCtrl',
 			resolve: {
 				narrativeResolve: function($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
@@ -104,8 +129,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				}
 			}
 		})
-		.when('/episodes', {
-			title: "Available episodes",
+		.when('/projects', {
+			title: "Available projects",
 			templateUrl: 'templates/producer/episodelist.html'
 		})
 		.when('/episode/:epId', {
@@ -166,7 +191,19 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		.when('/assets/:containerId', {
 			title: "Container Assets test",
 			controller: 'ContainerAssetsTestController',
-			template: '<div class="standaloneAncillaryPage"><div><a class="goUp" href="#episodes">Episodes</a><div sxs-container-assets="containerId"></div></div></div>'
+			template: [
+				'<div class="standaloneAncillaryPage">',
+				'	<itt-nav on-logout="logout()"></itt-nav>',
+				'	<div>',
+				'		<div sxs-container-assets="containerId" mime-key="assetLib"></div>',
+				'	</div>',
+				'</div>'].join(''),
+			resolve: {
+					authEffects: ['authSvc', function (authSvc) {
+						//to ensure that canAccess is properly set.
+						return authSvc.authenticate().then(angular.noop);
+					}]
+			}
 		})
 		.when('/event/:eventId', {
 			title: "Event test",
@@ -185,7 +222,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 .run(function ($rootScope, errorSvc) {
 
 	$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
-		document.title = currentRoute.title ? currentRoute.title : 'Telling STORY';
+		document.title = currentRoute.title ? currentRoute.title : 'Narrative Producer';
 		errorSvc.init(); // clear display of any errors from the previous route
 	});
 	// globally emit rootscope event for certain keypresses:

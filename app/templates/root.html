@@ -1,4 +1,5 @@
 <div class="rootLogin standaloneAncillaryPage" itt-login>
+	<itt-nav on-logout="logout()"></itt-nav>
 	<div class="inner">
 		<div ng-if="appState.user._id">
 			<div itt-user></div>
@@ -7,7 +8,7 @@
 		<div ng-if="!appState.user._id">
 
 			<form ng-submit="adminLogin()">
-				<h1>Sign in to Telling STORY</h1>
+				<h1>Sign in to Narrative Producer</h1>
 				<label>
 					<span>Username</span>
 					<input type="email" name="auth_key" ng-model="loginForm.auth_key">

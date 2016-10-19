@@ -430,5 +430,4 @@ module.exports = function (grunt) {
 		'ngdocs',
 		'browserSync:docs'
 	]);
-
 };

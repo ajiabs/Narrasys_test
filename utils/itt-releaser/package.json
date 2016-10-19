@@ -1,0 +1,16 @@
+{
+  "name": "itt-builder",
+  "version": "1.0.0",
+  "description": "for creating new builds",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom Hopkins",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.2.1",
+    "chalk": "^1.1.1",
+    "inquirer": "^0.11.4"
+  }
+}

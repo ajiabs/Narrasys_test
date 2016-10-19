@@ -6,7 +6,7 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager, selectService) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -143,6 +143,15 @@ angular.module('com.inthetelling.story')
 
 				scope.editItem = function () {
 					appState.editEvent = scope.item;
+					appState.editEvent.templateOpts = selectService.getTemplates(scope.item.producerItemType);
+					//second arg to onSelectChange is the itemForm, which is created in ittItemEditor and
+					//we do not have access here. Note that itemForm is only really used in background Images.
+					//hack fix is to pass in an empty object, and selectService will add the necessary itemForm
+					//props.
+
+					var itemForm = selectService.setupItemForm(appState.editEvent.styles, 'item');
+
+					selectService.onSelectChange(appState.editEvent, itemForm);
 					appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
 					appState.videoControlsLocked = true;
 				};
