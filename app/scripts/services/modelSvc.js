@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, config, appState, youtubeSvc, ittUtils) {
+	.factory('modelSvc', function ($interval, $filter, $location, ittUtils, config, appState, youtubeSvc) {
 
 		var svc = {};
 
@@ -366,7 +366,8 @@ angular.module('com.inthetelling.story')
 				// clear derived flags before re-setting them (in case we're editing an existing item):
 				event.isContent = false;
 				event.isTranscript = false;
-				event.noEmbed = false;
+				event.noEmbed = event.noEmbed === undefined ? false : event.noEmbed;
+				event.mixedContent = false;
 				event.noExternalLink = false;
 				event.targetTop = false;
 				event.html5Embed = false;
@@ -391,8 +392,14 @@ angular.module('com.inthetelling.story')
 					event.noEmbed = true;
 				}
 
-				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//)) {
-					//console.warn("Can't embed http:// link type:", event.url);
+				var isHttps = $location.protocol() === 'https';
+				if (event._type === "Link" && event.url && event.url.match(/^http:\/\//) && isHttps) {
+					event.noEmbed = true;
+					event.mixedContent = true;
+					event.showInlineDetail = false;
+				}
+
+				if (event._type === "Link" && event.url && /mailto/.test(event.url)) {
 					event.noEmbed = true;
 				}
 
@@ -420,13 +427,14 @@ angular.module('com.inthetelling.story')
 					event.templateUrl = "templates/item/image-fill.html";
 				}
 				// hack for old authoring tool quirk:
-				if (event.templateUrl === "templates/item/image-plain.html") {
-					if (event.styles) {
-						event.styles.push("timestampNone");
-					} else {
-						event.styles = ["timestampNone"];
-					}
-				}
+				// if (event.templateUrl === "templates/item/image-plain.html") {
+				// 	console.log('adding timestamp none!!');
+				// 	if (event.styles) {
+				// 		event.styles.push("timestampNone");
+				// 	} else {
+				// 		event.styles = ["timestampNone"];
+				// 	}
+				// }
 			} else {
 				// console.log("Keeping same templateUrl:", event.templateUrl);
 				event.origTemplateUrl = event.templateUrl;

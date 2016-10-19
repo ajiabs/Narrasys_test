@@ -273,6 +273,8 @@ angular.module('com.inthetelling.story')
 
 
 
+
+
 		// play doesn't start immediately -- need to return a promise so timelineSvc can wait until the video is actually playing
 		function play() {
 			// console.log('videoCtrl play!');
@@ -282,7 +284,6 @@ angular.module('com.inthetelling.story')
 				html5PlayerManager.pauseOtherEmbeds();
 			} else {
 				// console.log('playing!!', $scope.videoNode);
-
 				// $scope.videoNode.play();
 				html5PlayerManager.play($scope.videoNode.id);
 				if (appState.embedYTPlayerAvailable || appState.embedHtml5PlayerAvailable) {

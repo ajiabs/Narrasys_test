@@ -343,6 +343,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.play = function () {
+			console.log('PlayerController#play');
 			timelineSvc.play();
 		};
 

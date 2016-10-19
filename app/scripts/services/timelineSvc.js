@@ -113,16 +113,13 @@ angular.module('com.inthetelling.story')
 			}
 
 			videoScope.play().then(function () {
-				console.log('.then of play')
 				appState.timelineState = "playing";
 				startTimelineClock();
 				startEventClock();
 				if (!nocapture) {
 					analyticsSvc.captureEpisodeActivity("play");
 				}
-			}).catch(function(e) {
-				console.log('videoScope err', e);
-			})
+			});
 		};
 
 		if (!svc.enforceSingletonPauseListener) {
@@ -170,7 +167,7 @@ angular.module('com.inthetelling.story')
 
 		svc.unstall = function () {
 			// videoController will call this when ready
-			console.trace("timelineSvc.unstall");
+			console.warn("timelineSvc.unstall");
 			if (svc.wasPlaying) {
 				appState.timelineState = "playing";
 				svc.play();
