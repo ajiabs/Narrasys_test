@@ -52,10 +52,24 @@ angular.module('com.inthetelling.story')
 			var parseInputUrl;
 			var encodedUrl = encodeURIComponent(url);
 			return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
-			.then(function(result) {
-				console.log('x-frame-opts: ', result.x_frame_options);
-				return _canEmbed(result.x_frame_options);
-			});
+				.then(_handleSuccess)
+				.catch(_handleErrors);
+
+			function _handleSuccess(result) {
+				var _xFrameOpts = result.x_frame_options;
+				//not null, so normalize string
+				if (ittUtils.existy(_xFrameOpts)) {
+					_xFrameOpts = _xFrameOpts.toUpperCase();
+				}
+				console.log('x-frame-opts: ', _xFrameOpts);
+				return _canEmbed(_xFrameOpts);
+			}
+
+			function _handleErrors(error) {
+				//true to set _noEmbed to make links no embeddable
+				console.warn('xFrameOpts error:', error);
+				return true
+			}
 
 			function _canEmbed(xFrameOpts) {
 				var _noEmbed = true;
