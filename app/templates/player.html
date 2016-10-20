@@ -47,15 +47,18 @@
 	<div ng-if="appState.itemDetail" itt-item-detail-modal="appState.itemDetail"></div>
 
 
-	<div ng-if="show.profilePanel" class="profilePanel" ng-class="{isFramed: appState.isFramed}">
+	<!--show.profilePanel is toggled toobar-story.html-->
+	<div ng-if="show.profilePanel && !appState.isFramed" class="profilePanel" ng-class="{isFramed: appState.isFramed}">
 		<div class="arrow-up"></div>
 		<!--$parent because ng-if creates a new scope-->
-		<itt-nav on-logout="$parent.logout()" in-player="true" on-edit="toggleAccountModal()"></itt-nav>
-		<itt-modal modal-class="account__modal" ng-if="showAccountModal">
-			<div itt-user></div>
-			<a class="button" ng-click="toggleAccountModal()">close</a>
-		</itt-modal>
+		<itt-nav on-logout="$parent.logout()" in-player="true"></itt-nav>
 	</div>
+
+
+	<itt-modal modal-class="account__modal" ng-if="show.profilePanel && appState.isFramed">
+		<div itt-user></div>
+		<a class="button" ng-click="show.profilePanel = false">close</a>
+	</itt-modal>
 
 	<div ng-cloak ng-if="show.wileyNag &&  (appState.productLoadedAs == 'player'
 	 			|| (appState.productLoadedAs == 'narrative'

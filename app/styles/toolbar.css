@@ -898,7 +898,9 @@ input.userEditable:focus {
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
 
-.profilePanel .button {
+
+
+.account__modal .button {
 	background-color: #595A5A;
 	color: #FFF;
 	border-radius: 0.6em;
@@ -909,7 +911,7 @@ input.userEditable:focus {
 	cursor: pointer;
 }
 
-.profilePanel .button:hover {
+.account__modal .button:hover {
 	background-color: #DC6026;
 	color: #FFF;
 

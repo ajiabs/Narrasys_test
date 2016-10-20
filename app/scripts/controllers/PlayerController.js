@@ -361,12 +361,6 @@ angular.module('com.inthetelling.story')
 		$scope.logout = authSvc.logout;
 		$scope.isTrueGuest = authSvc.isTrueGuest;
 
-		$scope.showAccountModal = false;
-		$scope.toggleAccountModal = toggleAccountModal;
-		function toggleAccountModal() {
-			$scope.showAccountModal = !$scope.showAccountModal;
-		}
-
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 		// Autoscroll
 		// Some jQuery dependencies here (namespaced bindings, animated scroll)
