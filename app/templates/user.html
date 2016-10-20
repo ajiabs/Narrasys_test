@@ -24,13 +24,13 @@
 			<hr>
 		</div>
 
-		<div class="user__item" ng-if="!isGuest()">
+		<div class="user__item" ng-if="!isTrueGuest()">
 			<div class="user__label">Email</div>
 			<div>{{user.email}}</div>
 			<hr>
 		</div>
 
-		<div class="user__item" ng-if="!isGuest()">
+		<div class="user__item" ng-if="!isTrueGuest()">
 			<div class="user__avatar">
 				<div class="user__label">Avatar</div>
 				<div>

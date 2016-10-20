@@ -359,6 +359,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.userHasRole =authSvc.userHasRole;
 		$scope.logout = authSvc.logout;
+		$scope.isTrueGuest = authSvc.isTrueGuest;
 
 		// - - - - - - - - -  - - - - - - - - - - - - - - -
 		// Autoscroll
