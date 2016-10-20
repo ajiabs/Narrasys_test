@@ -16,14 +16,6 @@
 		4: 'HAVE_ENOUGH_DATA'
 	};
 
-	var playerStates = {
-		'-1': 'unstarted',
-		'0': 'ended',
-		'1': 'playing',
-		'2': 'paused',
-		'3': 'buffering',
-		'5': 'video cued'
-	};
 
 	function html5PlayerManager(appState, timelineSvc) {
 		var _html5Video;
@@ -84,7 +76,7 @@
 		}
 
 		function onPause(evt) {
-			console.trace('onPause', evt);
+			// console.trace('onPause', evt);
 			var player = _derivePlayerFromEvt(evt);
 			player.meta.playerState = 2;
 		}
@@ -104,19 +96,19 @@
 
 		function onCanPlay(evt) {
 			appState.playerReady = true;
-			var player = _derivePlayerFromEvt(evt);
+			// var player = _derivePlayerFromEvt(evt);
+            //
+			// if (evt.target.id !== _mainPlayerId) {
+			// 	appState.embedHtml5PlayerAvailable = true;
+			// }
 
-			if (evt.target.id !== _mainPlayerId) {
-				appState.embedHtml5PlayerAvailable = true;
-			}
-
-			player.meta.playerState = 5;
+			// player.meta.playerState = 5;
 			//first play? overwrite playerState
-			if (player.meta.playCount === 0) {
-				player.meta.playerState = -1;
-			}
+			// if (player.meta.playCount === 0) {
+			// 	player.meta.playerState = -1;
+			// }
 
-			player.meta.playCount++;
+			// player.meta.playCount++;
 		}
 
 		function onSeeked(evt) {
@@ -125,9 +117,8 @@
 
 		function onSeeking(evt) {
 			appState.playerReady = false;
-			appState.timelineState = 'buffering';
 			var player = _derivePlayerFromEvt(evt);
-			player.meta.playerState = 3;
+			// player.meta.playerState = 3;
 		}
 
 		function onTimeUpdate(evt) {
@@ -141,12 +132,11 @@
 		}
 
 		function onStalled(evt) {
-			console.log('stall event!!', evt);
 		}
 
 		function onWaiting(evt) {
 			appState.playerReady = false;
-			appState.timelineState = 'buffering';
+			// appState.timelineState = 'buffering';
 			//playbackChannel.doSend('stall', evt.type);
 			var player = _derivePlayerFromEvt(evt);
 			player.meta.playerState = 3;
@@ -185,7 +175,7 @@
 		}
 
 		function pause(pid) {
-			console.trace('html5Vid#pause');
+			// console.trace('html5Vid#pause');
 			var instance = _getInstance(pid);
 			if (instance !== undefined && !instance.paused) {
 

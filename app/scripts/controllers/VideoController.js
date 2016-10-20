@@ -206,36 +206,59 @@ angular.module('com.inthetelling.story')
 
 			}
 
-			function _babysitHTML5Video() {
-				_numberOfStalls = 0;
+			$scope.$watch(function() {
+				return html5PlayerManager.getPlayerState($scope.videoNode.id)
+			}, function(newState, oldState) {
+				console.log('HTML5 PLAYER STATE', playerStates[newState]);
 				if (appState.isIPhone) {
 					return;
 				}
-				// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
-				_babysitter = $interval(function () {
-					// console.log($scope.videoNode.currentTime, appState.timelineState);
-					if (appState.timelineState === 'playing') {
-						if ($scope.lastPlayheadTime === $scope.currentTime()) {
-							if (!$scope.intentionalStall) {
-								analyticsSvc.captureEpisodeActivity("stall");
-							}
-							timelineSvc.stall();
-							if (!$scope.intentionalStall && _numberOfStalls++ === 2) {
-								_changeVideoBandwidth();
-							}
-							// console.log("numberOfStalls = ", _numberOfStalls);
-						}
-						$scope.lastPlayheadTime = $scope.currentTime();
-					} else if (appState.timelineState === 'buffering') {
-						if ($scope.lastPlayheadTime !== $scope.currentTime()) {
-							appState.timelineState = 'playing';
-							timelineSvc.unstall();
-						}
-					}
-				}, 333);
-			}
+				if (playerStates[newState] === 'buffering') {
+					appState.timelineState = 'buffering';
+					timelineSvc.stall()
+				}
 
-			_babysitHTML5Video();
+				if (playerStates[oldState] === 'buffering' && playerStates[newState] === 'playing') {
+					appState.timelineState = 'playing';
+					timelineSvc.unstall();
+				}
+
+				if (playerStates[newState] === 'playing') {
+					appState.timelineState = 'playing';
+				}
+
+			});
+
+			// function _babysitHTML5Video() {
+			// 	_numberOfStalls = 0;
+			// 	if (appState.isIPhone) {
+			// 		return;
+			// 	}
+			// 	// native video will use this instead of $scope.stall and $scope.unstall.  May want to just standardize on this for YT as well
+			// 	_babysitter = $interval(function () {
+			// 		// console.log($scope.videoNode.currentTime, appState.timelineState);
+			// 		if (appState.timelineState === 'playing') {
+			// 			if ($scope.lastPlayheadTime === $scope.currentTime()) {
+			// 				if (!$scope.intentionalStall) {
+			// 					analyticsSvc.captureEpisodeActivity("stall");
+			// 				}
+			// 				timelineSvc.stall();
+			// 				if (!$scope.intentionalStall && _numberOfStalls++ === 2) {
+			// 					_changeVideoBandwidth();
+			// 				}
+			// 				// console.log("numberOfStalls = ", _numberOfStalls);
+			// 			}
+			// 			$scope.lastPlayheadTime = $scope.currentTime();
+			// 		} else if (appState.timelineState === 'buffering') {
+			// 			if ($scope.lastPlayheadTime !== $scope.currentTime()) {
+			// 				appState.timelineState = 'playing';
+			// 				timelineSvc.unstall();
+			// 			}
+			// 		}
+			// 	}, 333);
+			// }
+
+			// _babysitHTML5Video();
 
 			timelineSvc.registerVideo($scope);
 
@@ -312,6 +335,7 @@ angular.module('com.inthetelling.story')
 				youTubePlayerManager.pause($scope.videoNode.id);
 			} else {
 				// $scope.videoNode.pause();
+				console.log('timeline state', appState.timelineState);
 				html5PlayerManager.pause($scope.videoNode.id);
 				try {
 					$scope.videoNode.currentTime = appState.time; // in case t has drifted

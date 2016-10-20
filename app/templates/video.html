@@ -1,5 +1,6 @@
-<div class="video">
 
+<div class="video">
+	<h1>timeline State: {{appState.timelineState}}</h1>
 	<itt-youtube tabindex="-1" ng-if="video.urls.youtube.length" embed-url="{{video.urls.youtube[0]}}"
 				 on-player-state-change="playerStateChange"
 				 on-ready="onReady" main-player="true" player-id="video._id"></itt-youtube>
