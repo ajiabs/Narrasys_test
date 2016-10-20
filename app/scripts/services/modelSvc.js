@@ -226,6 +226,7 @@ angular.module('com.inthetelling.story')
 		svc.deriveAsset = function (asset) {
 			// console.log("deriveAsset:", asset);
 			if (asset._type === "Asset::Video") {
+				console.log('resolve video', asset);
 				asset = resolveVideo(asset);
 			}
 			asset = setLang(asset);

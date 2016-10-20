@@ -16,6 +16,15 @@
 		4: 'HAVE_ENOUGH_DATA'
 	};
 
+	var playerStates = {
+		'-1': 'unstarted',
+		'0': 'ended',
+		'1': 'playing',
+		'2': 'paused',
+		'3': 'buffering',
+		'5': 'video cued'
+	};
+
 	function html5PlayerManager(appState, timelineSvc) {
 		var _html5Video;
 		var _players = {};
@@ -140,7 +149,7 @@
 			appState.timelineState = 'buffering';
 			//playbackChannel.doSend('stall', evt.type);
 			var player = _derivePlayerFromEvt(evt);
-			player.pause();
+			player.meta.playerState = 3;
 		}
 
 		/*
