@@ -47,7 +47,7 @@
 								ctrl.data.showInlineDetail = false;
 								//grey out disabled options
 								ctrl.data.templateOpts = ctrl.data.templateOpts.map(function(opt) {
-									if (opt.name === 'Embedded Link' || opt.name === 'Link Modal') {
+									if (opt.name === 'Embedded link' || opt.name === 'Link modal') {
 										opt.isDisabled = true;
 									}
 									return opt;
@@ -61,13 +61,15 @@
 					//This results in undoing the disabling of templateOpts.
 					if (ctrl.mixedContent.inform) {
 						ctrl.data.templateOpts = ctrl.data.templateOpts.map(function(opt) {
-							if (opt.name === 'Embedded Link' || opt.name === 'Link Modal') {
+							if (opt.name === 'Embedded link' || opt.name === 'Link modal') {
 								opt.isDisabled = true;
 							}
 							return opt;
 						});
 					} else {
 						if (notice.type !== 'xFrameOpts') {
+							//null out to remove UI popover
+							ctrl.xFrameOpts.inform = null;
 							ctrl.data.templateOpts = ctrl.data.templateOpts.map(function(opt) {
 								opt.isDisabled = false;
 								return opt;
