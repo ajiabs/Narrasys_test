@@ -12,7 +12,8 @@
 	        restrict: 'EA',
 			scope: {
 	        	onLogout: '&',
-				inPlayer: '=?'
+				inPlayer: '=?',
+				onEdit: '&'
 			},
 			template: [
 				'<div>',
@@ -49,7 +50,12 @@
 					ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
 				});
 				function goToAccounts() {
-					$location.url('/account');
+					if (ctrl.inPlayer) {
+						ctrl.onEdit();
+					} else {
+						$location.url('/account');
+					}
+
 				}
 			}],
 			controllerAs: '$ctrl',
