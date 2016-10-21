@@ -898,8 +898,10 @@ input.userEditable:focus {
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
 
-.profilePanel .button {
-	background-color: #C44343;
+
+
+.account__modal .button {
+	background-color: #595A5A;
 	color: #FFF;
 	border-radius: 0.6em;
 	font-size: 0.8em;
@@ -907,6 +909,29 @@ input.userEditable:focus {
 	margin: 0.2em;
 	border: 0;
 	cursor: pointer;
+}
+
+.account__modal .button:hover {
+	background-color: #DC6026;
+	color: #FFF;
+
+}
+
+.account__modal--wrapper {
+	position: relative;
+	top: 50px;
+}
+
+.account__modal {
+	z-index: 20;
+	background-color: #f1f1f1;
+	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
+	padding: 10px;
+	border-radius: 5px;
+	width: 50%;
+	position: absolute;
+	top: 0;
+	left: 25%;
 }
 
 

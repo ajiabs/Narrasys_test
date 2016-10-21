@@ -16,10 +16,11 @@
 			restrict: 'EA',
 			transclude: true,
 			scope: {
-				modalClass: '@'
+				modalClass: '@',
+				wrapperClass: '@?'
 			},
 			template: [
-				'<div class="itt__modal"><div class="{{modalClass}}"><ng-transclude></ng-transclude></div></div>'
+				'<div class="{{wrapperClass ? wrapperClass : \'itt__modal\'}}"><div class="{{modalClass}}"><ng-transclude></ng-transclude></div></div>'
 			].join(' ')
 		};
 	}

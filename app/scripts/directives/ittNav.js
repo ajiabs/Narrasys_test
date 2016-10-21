@@ -12,7 +12,7 @@
 	        restrict: 'EA',
 			scope: {
 	        	onLogout: '&',
-				inPlayer: '=?'
+				inPlayer: '=?',
 			},
 			template: [
 				'<div>',
