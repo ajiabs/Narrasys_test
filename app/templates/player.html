@@ -51,16 +51,17 @@
 	<div ng-if="show.profilePanel">
 		<!--<div class="arrow-up"></div>-->
 		<!--$parent because ng-if creates a new scope-->
-		<itt-modal modal-class="account__modal">
-
+		<itt-modal modal-class="account__modal" wrapper-class="account__modal--wrapper">
+			<button ng-hide="appState.isFramed ||  !(userHasRole('admin') || userHasRole('customer admin'))"
+					class="button"
+					ng-click="editInfo = !editInfo">{{editInfo ? 'Done Editing' : 'Edit Profile'}}</button>
+			<a class="button" ng-click="show.profilePanel = false">close</a>
 			<itt-nav ng-if="!editInfo && ((userHasRole('admin') || userHasRole('customer admin')) && !appState.isFramed)"
 					 on-logout="$parent.logout()" in-player="true"></itt-nav>
 
 			<div ng-if="editInfo || appState.isFramed ||  !(userHasRole('admin') || userHasRole('customer admin'))">
 				<div itt-user></div>
 			</div>
-			<button ng-hide="appState.isFramed" class="button" ng-click="editInfo = !editInfo">{{editInfo ? 'Done Editing' : 'Edit Profile'}}</button>
-			<a class="button" ng-click="show.profilePanel = false">close</a>
 		</itt-modal>
 	</div>
 
