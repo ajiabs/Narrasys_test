@@ -924,7 +924,7 @@ input.userEditable:focus {
 	border-radius: 5px;
 	width: 50%;
 	position: absolute;
-	top: 20%;
+	top: 0;
 	left: 25%;
 }
 
