@@ -18,8 +18,8 @@
 
 			<div ng-if="isEditing">
 				<input class="userEditable" ng-model="user.name">
-				<button ng-click="updateUser(); toggleEditing()">save</button>
-				<button ng-click="toggleEditing()">cancel</button>
+				<button class="button" ng-click="updateUser(); toggleEditing()">save</button>
+				<button class="button" ng-click="toggleEditing()">cancel</button>
 			</div>
 			<hr>
 		</div>
@@ -41,7 +41,7 @@
 					<input type="file" accept="image/*" itt-files-handler on-selected="uploadAvatar(files)">
 				</div>
 
-				<button ng-click="toggleUploadAvatar()">{{showUploadField ? 'cancel' : 'replace'}}</button>
+				<button class="button" ng-click="toggleUploadAvatar()">{{showUploadField ? 'cancel' : 'replace'}}</button>
 			</div>
 		</div>
 

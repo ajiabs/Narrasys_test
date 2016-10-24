@@ -24,7 +24,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 .config(function ($routeProvider) {
 	$routeProvider
 		.when('/', {
-			title: "Telling STORY",
+			title: "Narrative Producer",
 			templateUrl: 'templates/root.html'
 		})
 		.when('/auth', {
@@ -134,7 +134,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			templateUrl: 'templates/producer/episodelist.html'
 		})
 		.when('/episode/:epId', {
-			title: "Telling STORY",
+			title: "Narrative Producer",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
@@ -145,7 +145,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			}
 		})
 		.when('/episode/:epId/:viewMode', {
-			title: "Telling STORY",
+			title: "Narrative Producer",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
@@ -156,7 +156,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			}
 		})
 		.when('/sxs/:epId', {
-			title: "Telling STORY",
+			title: "Narrative Producer",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
@@ -167,7 +167,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			}
 		})
 		.when('/editor/:epId', {
-			title: "Telling STORY",
+			title: "Narrative Producer",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
@@ -178,7 +178,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			}
 		})
 		.when('/producer/:epId', {
-			title: "Telling STORY",
+			title: "Narrative Producer",
 			controller: 'PlayerController',
 			templateUrl: 'templates/player.html',
 			resolve: {
@@ -211,7 +211,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			templateUrl: 'templates/testbed-event.html'
 		})
 		.otherwise({
-			title: "Telling STORY: Error",
+			title: "Narrative Producer: Error",
 			controller: 'ErrorController',
 			templateUrl: 'templates/error-404.html'
 		});
