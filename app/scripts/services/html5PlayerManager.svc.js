@@ -17,7 +17,7 @@
 	};
 
 
-	function html5PlayerManager(appState, timelineSvc) {
+	function html5PlayerManager($q, appState, timelineSvc) {
 		var _html5Video;
 		var _players = {};
 		var _mainPlayerId;
@@ -33,23 +33,25 @@
 			getBufferPercent: getBufferPercent
 		};
 
-		function create(divID, mainPlayer) {
+		function create(divID, mainPlayer, stateCb) {
 			var plr = document.getElementById(divID);
-			plr.onplay = onPlay;
-			plr.onpause = onPause;
-			plr.onplaying = onPlaying;
-			plr.onseeked = onSeeked;
+			// plr.onplay = onPlay;
+			// plr.onpause = onPause;
+			// plr.onplaying = onPlaying;
+			// plr.onseeked = onSeeked;
 			plr.onseeking = onSeeking;
-			plr.ontimeupdate = onTimeUpdate;
-			plr.onended = onEnded;
-			plr.onloadstart = onLoadStart;
-			plr.onloadeddata = onLoadedData;
-			plr.onprogress = onProgress;
-			plr.oncanplay = onCanPlay;
-			plr.onstalled = onStalled;
+			// plr.ontimeupdate = onTimeUpdate;
+			// plr.onended = onEnded;
+			// plr.onloadstart = onLoadStart;
+			// plr.onloadeddata = onLoadedData;
+			// plr.onprogress = onProgress;
+			// plr.oncanplay = onCanPlay;
+			// plr.onstalled = onStalled;
 			plr.onwaiting = onWaiting;
 			plr.meta = { playerState: -1, currentTime: 0, playCount: 0 };
 			_players[divID] = plr;
+
+			plr.onStateChange = stateCb;
 
 			if (mainPlayer === true) {
 				_mainPlayerId = divID;
@@ -61,85 +63,89 @@
 		/*
 		 HTML5 media event handlers
 		 */
-		function onPlay(evt) {
-			var player = _derivePlayerFromEvt(evt);
-			player.meta.playerState = 1;
-		}
+		// function onPlay() {
+		// 	console.trace('onPlay!');
+		// 	//'this' is the actual dom element for the HTML5 media element.
+		// 	var player = _getInstance(this.id);
+		// 	player.meta.playerState = 1;
+        //
+        //
+		// }
 
-		function onPlaying(evt) {
-			var player = _derivePlayerFromEvt(evt);
-			player.meta.playerState = 1;
-			pauseOtherEmbeds(evt.target.id);
-			if (evt.target.id !== _mainPlayerId && appState.timelineState === 'playing') {
-				timelineSvc.pause();
-			}
-		}
+		// function onPlaying() {
+		// 	var player = _getInstance(this.id);
+		// 	player.meta.playerState = 1;
+		// 	pauseOtherEmbeds(evt.target.id);
+		// 	if (evt.target.id !== _mainPlayerId && appState.timelineState === 'playing') {
+		// 		timelineSvc.pause();
+		// 	}
+		// }
 
-		function onPause(evt) {
-			// console.trace('onPause', evt);
-			var player = _derivePlayerFromEvt(evt);
-			player.meta.playerState = 2;
-		}
+		// function onPause() {
+		// 	// console.trace('onPause', evt);
+		// 	var player = _getInstance(this.id);
+		// 	player.meta.playerState = 2;
+		// }
 
-		function onLoadStart(evt) {
-			var player = _derivePlayerFromEvt(evt);
-			player.meta.readyState = 'ready';
-		}
+		// function onLoadStart() {
+		// 	var player = _getInstance(this.id);
+		// 	player.meta.readyState = 'ready';
+		// }
 
-		function onLoadedData(evt) {
-			//console.log('data load', evt);
-		}
+		// function onLoadedData() {
+		// 	console.log('data load', evt);
+		// }
+        //
+		// function onProgress() {
+		// 	console.log('progress', evt.type);
+		// }
 
-		function onProgress(evt) {
-			//console.log('progress', evt.type);
-		}
-
-		function onCanPlay(evt) {
-			appState.playerReady = true;
-			// var player = _derivePlayerFromEvt(evt);
-            //
-			// if (evt.target.id !== _mainPlayerId) {
-			// 	appState.embedHtml5PlayerAvailable = true;
-			// }
-
-			// player.meta.playerState = 5;
-			//first play? overwrite playerState
-			// if (player.meta.playCount === 0) {
-			// 	player.meta.playerState = -1;
-			// }
-
-			// player.meta.playCount++;
-		}
-
-		function onSeeked(evt) {
-
-		}
-
-		function onSeeking(evt) {
+		// function onCanPlay() {
+		// 	appState.playerReady = true;
+		// 	var player = _derivePlayerFromEvt(evt);
+        //
+		// 	if (evt.target.id !== _mainPlayerId) {
+		// 		appState.embedHtml5PlayerAvailable = true;
+		// 	}
+        //
+		// 	player.meta.playerState = 5;
+		// 	// first play? overwrite playerState
+		// 	if (player.meta.playCount === 0) {
+		// 		player.meta.playerState = -1;
+		// 	}
+        //
+		// 	player.meta.playCount++;
+		// }
+        //
+		// function onSeeked(evt) {
+        //
+		// }
+        //
+        function onSeeking() {
 			appState.playerReady = false;
-			var player = _derivePlayerFromEvt(evt);
-			// player.meta.playerState = 3;
-		}
+			var instance = _getInstance(this.id);
+			instance.meta.playerState = 3;
+			instance.onStateChange(instance.meta.playerState);
+        }
+        //
+		// function onTimeUpdate() {
+		// 	var player = _getInstance(this.id);
+		// 	player.meta.currentTime = player.currentTime;
+		// }
+        //
+        // function onEnded() {
+			// var player = _getInstance(this.id);
+			// player.meta.playerState = 0;
+        // }
+        //
+		// function onStalled() {
+		// }
 
-		function onTimeUpdate(evt) {
-			var player = _derivePlayerFromEvt(evt);
-			player.meta.currentTime = player.currentTime;
-		}
-
-		function onEnded(evt) {
-			var player = _derivePlayerFromEvt(evt);
-			player.meta.playerState = 0;
-		}
-
-		function onStalled(evt) {
-		}
-
-		function onWaiting(evt) {
+		function onWaiting() {
 			appState.playerReady = false;
-			// appState.timelineState = 'buffering';
-			//playbackChannel.doSend('stall', evt.type);
-			var player = _derivePlayerFromEvt(evt);
-			player.meta.playerState = 3;
+			var instance = _getInstance(this.id);
+			instance.meta.playerState = 3;
+			instance.onStateChange(instance.meta.playerState);
 		}
 
 		/*
@@ -164,34 +170,40 @@
 
 		function play(pid) {
 			var instance = _getInstance(pid);
+			pauseOtherEmbeds(this.id);
 
-			if (instance !== undefined) {
-
-				instance.play();
+			if (this.id !== _mainPlayerId && appState.timelineState === 'playing') {
+				timelineSvc.pause();
 			}
 
-			var mockEvent = { target: { id: pid } };
-			onPlay(mockEvent);
+			return $q(function(resolve) {
+				instance.play();
+				instance.meta.playerState = 1;
+				instance.onplaying = resolve;
+				instance.onStateChange(instance.meta.playerState);
+			});
+
+
 		}
 
 		function pause(pid) {
 			// console.trace('html5Vid#pause');
 			var instance = _getInstance(pid);
-			if (instance !== undefined && !instance.paused) {
-
+			return $q(function(resolve) {
 				instance.pause();
-			}
+				instance.meta.playerState = 2;
+				instance.onpause = resolve;
+				instance.onStateChange(instance.meta.playerState);
 
-
-
-			var mockEvent = { target: { id: pid } };
-			onPause(mockEvent);
+			});
+			// var mockEvent = { target: { id: pid } };
+			// onPause(mockEvent);
 		}
 
 		function getCurrentTime(pid) {
 			var instance = _getInstance(pid);
 			if (instance !== undefined) {
-				return instance.meta.currentTime;
+				return instance.currentTime;
 			}
 		}
 
@@ -204,9 +216,7 @@
 
 		function seek(pid, t) {
 			var instance = _getInstance(pid);
-			if (instance !== undefined) {
-				instance.currentTime = t;
-			}
+			instance.currentTime = t;
 		}
 
 		function pauseOtherEmbeds(id) {

@@ -23,6 +23,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.markerPercent = function (t) {
+			// console.log('marker %', t);
 			return (t === undefined ? 0 : t / appState.duration * 100);
 		};
 

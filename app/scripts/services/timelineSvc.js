@@ -114,6 +114,7 @@ angular.module('com.inthetelling.story')
 
 			videoScope.play().then(function () {
 				appState.timelineState = "playing";
+				console.log('videoScope#play resolved!');
 				startTimelineClock();
 				startEventClock();
 				if (!nocapture) {
@@ -170,7 +171,7 @@ angular.module('com.inthetelling.story')
 			console.warn("timelineSvc.unstall");
 			if (svc.wasPlaying) {
 				appState.timelineState = "playing";
-				svc.play();
+				// svc.play();
 			} else {
 				appState.timelineState = "paused";
 			}

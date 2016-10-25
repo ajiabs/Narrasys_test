@@ -1,6 +1,6 @@
 
 <div class="video">
-	<h1>timeline State: {{appState.timelineState}}</h1>
+	<h5 style="color:white">timeline State: {{appState.timelineState}}, time: {{appState.time}}</h5>
 	<itt-youtube tabindex="-1" ng-if="video.urls.youtube.length" embed-url="{{video.urls.youtube[0]}}"
 				 on-player-state-change="playerStateChange"
 				 on-ready="onReady" main-player="true" player-id="video._id"></itt-youtube>
@@ -11,6 +11,7 @@
 		<source class="webm" ng-if="video.urls.webm[video.curStream]" ng-src="{{video.urls.webm[video.curStream]}}" type="video/webm" />
 		<p>Oh no! Your browser does not support the HTML5 Video element.</p>
 	</video>
+
 
 	<div ng-if="poster && appState.time == 0" class="poster overlay fill" ng-style="{backgroundImage:'url('+poster.url+')'}"></div>
 	<!-- hide this on touch devices before hasBeenPlayed, if youtube, so users can click the YT player directly to init it.

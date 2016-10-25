@@ -51,8 +51,12 @@
 		ctrl.curStream = (appState.isTouchDevice ? 0 : 1);
 
 		$timeout(function(){
-			html5PlayerManager.create(ctrl.playerId);
+			html5PlayerManager.create(ctrl.playerId, false, stateChange);
 		},0);
+
+		function stateChange(state) {
+			console.log('embed player', state)
+		}
 
 		_handleSrcUrl();
 
@@ -87,9 +91,8 @@
 		}
 
 		function togglePlayback(ev) {
-			console.log('event!', ev);
 			var playerState = STATES[parseInt(html5PlayerManager.getPlayerState(ctrl.playerId))];
-
+			console.log('state', playerState);
 			if (playerState === 'unstarted' || playerState === 'paused') {
 				html5PlayerManager.play(ctrl.playerId);
 				ctrl.overlay = false;

@@ -20,6 +20,15 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		'file':  'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
 		'default': 'image/*'
 	})
+	.constant('PLAYERSTATES', {
+			'-1': 'unstarted',
+			'0': 'ended',
+			'1': 'playing',
+			'2': 'paused',
+			'3': 'buffering',
+			'5': 'video cued'
+	})
+	.constant('STATECHANGE', 'onPlayerStateChange')
 // Configure routing
 .config(function ($routeProvider) {
 	$routeProvider
