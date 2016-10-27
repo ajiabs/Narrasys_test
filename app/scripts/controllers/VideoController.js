@@ -12,7 +12,8 @@
 
 angular.module('com.inthetelling.story')
 	// .controller('VideoController', VideoController);
-	.controller('VideoController', VideoCtrlBeta);
+	// .controller('VideoController', VideoCtrlBeta);
+	.controller('VideoController', angular.noop);
 
 
 function VideoCtrlBeta($q, $scope, $timeout, playbackService, timelineSvc, appState, playbackChannel, PLAYERSTATES, STATECHANGE) {
@@ -56,8 +57,11 @@ function VideoCtrlBeta($q, $scope, $timeout, playbackService, timelineSvc, appSt
 		playbackService.getCurrentTime(_id);
 	}
 
-	playbackChannel.receive(STATECHANGE, _onPlayerStateChange);
-	function _onPlayerStateChange(ev, data) {
+	playbackService.registerStateChangeListener(_onPlayerStateChange);
+	// playbackChannel.receive(STATECHANGE, _onPlayerStateChange);
+
+
+	function _onPlayerStateChange(data) {
 		console.log('data', data);
 	}
 
@@ -259,30 +263,7 @@ function VideoController($q, $scope, $rootScope, $timeout, $interval, $window, $
 		//
 		// }
 
-		$scope.$watch(function () {
-			return html5PlayerManager.getPlayerState($scope.videoNode.id)
-		}, function (newState, oldState) {
-			console.log('HTML5 PLAYER STATE', playerStates[newState]);
-			if (appState.isIPhone) {
-				return;
-			}
-			if (playerStates[newState] === 'buffering' && appState.timelineState === 'buffering') {
-				appState.timelineState = 'buffering';
-				timelineSvc.stall()
-			}
 
-			if (playerStates[newState] === 'playing') {
-				appState.timelineState = 'playing';
-				timelineSvc.unstall();
-			}
-
-			if (playerStates[newState] === 'playing') {
-				appState.timelineState = 'playing';
-			}
-
-			$scope.playerState = playerStates[newState];
-
-		});
 
 		// function _babysitHTML5Video() {
 		// 	_numberOfStalls = 0;

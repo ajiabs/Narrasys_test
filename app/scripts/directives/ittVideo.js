@@ -3,14 +3,24 @@
 // use only for master asset!
 
 angular.module('com.inthetelling.story')
-	.directive('ittVideo', function ($timeout, $interval, $rootScope, appState, timelineSvc, dataSvc, modelSvc) {
+	.directive('ittVideo', function ($timeout, $interval, $rootScope, appState, timelineSvc, dataSvc, modelSvc, playbackState) {
 		var uniqueDirectiveID = 0; // Youtube wants to work via DOM IDs; this is a cheap way of getting unique ones
 
 		return {
 			restrict: 'A',
 			replace: true,
 			templateUrl: 'templates/video.html',
-			controller: 'VideoController',
+			controller: ['$scope', '$timeout', 'playbackService', 'playbackState', function($scope, $timeout, playbackService, playbackState) {
+
+				$scope.playbackState = playbackState;
+				$timeout(onInit);
+				function onInit() {
+					$scope.video.curStream = (appState.isTouchDevice ? 0 : 1);
+					playbackService.setPlayer($scope.video, $scope.video._id, true);
+				}
+
+
+			}],
 			scope: {
 				video: "=ittVideo",
 				poster: "="
@@ -21,12 +31,12 @@ angular.module('com.inthetelling.story')
 				scope.appState = appState;
 				scope.uid = ++uniqueDirectiveID;
 
-				$timeout(function () {
-					scope.initVideo(element);
-				}); // in controller
+				// $timeout(function () {
+				// 	scope.initVideo(element);
+				// }); // in controller
 
 				scope.videoClick = function () {
-					if (appState.timelineState === "paused") {
+					if (playbackState.getTimelineState() === "paused") {
 						timelineSvc.play();
 					} else {
 						timelineSvc.pause();

@@ -10,8 +10,8 @@
 				<a ng-click="nudge(1)">›</a>
 				<a ng-click="nudge(5)">»</a>
 			</li>
-			<li ng-click="setTime(appState.time)">
-				<a>Set to current time ({{format(appState.time)}})</a>
+			<li ng-click="setTime(playbackState.getTime())">
+				<a>Set to current time ({{format(playbackState.getTime())}})</a>
 			</li>
 			<span ng-if="item._type != 'Scene' && scene().start_time > 0">
 				<li ng-if="fieldname=='start_time'" ng-click="setTime(scene().start_time)">

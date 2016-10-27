@@ -20,11 +20,12 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, $location, appState, timelineSvc, YoutubePlayerApi, errorSvc) {
+	function youTubePlayerManager($q, $location, appState, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState) {
 
 		var _youTubePlayerManager;
 		var _players = {};
 		var _mainPlayerId;
+		var _cbs = [];
 
 		_youTubePlayerManager = {
 			create: create,
@@ -38,13 +39,16 @@
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			setPlaybackQuality: setPlaybackQuality,
 			setPlayerId: setPlayerId,
-			getBufferPercent: getVideoLoadedFraction,
+			getBufferedPercent: getVideoLoadedFraction,
 			seekTo: seekTo,
 			getCurrentTime: getCurrentTime,
 			isMuted: isMuted,
 			mute: mute,
 			unMute: unMute,
-			setVolume: setVolume
+			setVolume: setVolume,
+			registerStateChangeListener: registerStateChangeListener,
+			//need to see how to make better than returning a hard coded boolean
+			isReady: isReady
 		};
 
 		//private methods
@@ -123,7 +127,17 @@
 			return _key;
 		}
 
+
+
 		//public methods
+
+		function isReady() {
+			return true;
+		}
+
+		function registerStateChangeListener(cb) {
+			_cbs.push(cb);
+		}
 		/**
 		 * @ngdoc method
 		 * @name #create
@@ -138,7 +152,7 @@
 		 * @param {Function} [onReadyCB=noop] Optional onReady callback
 		 * @returns {Void} has no return value
 		 */
-		function create(divId, playerId, videoId, stateCb, qualityChangeCB, onReadyCB) {
+		function create(divId, playerId, videoId, qualityChangeCB, onReadyCB) {
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
@@ -208,8 +222,8 @@
 				}
 
 				if (pid === embed) {
-					if (appState.timelineState === 'playing') {
-						timelineSvc.pause();
+					if (playbackState.getTimelineState() === 'playing') {
+						// timelineSvc.pause();
 						pauseOtherEmbeds(embed);
 					}
 
@@ -222,13 +236,15 @@
 				if (_players[embed] !== undefined &&
 					_players[main] === undefined &&
 					state !== YT.PlayerState.UNSTARTED) {
-					if (appState.timelineState === 'playing' && appState.embedYTPlayerAvailable) {
-						timelineSvc.pause();
+					if (playbackState.getTimelineState() === 'playing' && appState.embedYTPlayerAvailable) {
+						// timelineSvc.pause();
 					}
 				}
 
-				stateCb(event);
 
+				_cbs.forEach(function(cb) {
+					cb(PLAYERSTATES[event.data]);
+				});
 			}
 			/**
 			 * @private
@@ -403,7 +419,7 @@
 
 				if (obj.isMainPlayer) {
 					instance.cueVideoById(videoId, lastTime);
-					timelineSvc.play();
+					// timelineSvc.play();
 				} else {
 					instance.loadVideoById(videoId, lastTime);
 				}
@@ -437,7 +453,7 @@
 		function getVideoLoadedFraction(pid) {
 			var p = _getYTInstance(pid);
 			if (_existy(p)) {
-				return p.getVideoLoadedFraction();
+				return p.getVideoLoadedFraction() * 100;
 			}
 		}
 		/**

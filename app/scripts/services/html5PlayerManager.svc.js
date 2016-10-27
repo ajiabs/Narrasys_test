@@ -17,12 +17,12 @@
 	};
 
 
-	function html5PlayerManager($q, appState, timelineSvc) {
-		var _html5Video;
+	function html5PlayerManager($interval, appState, PLAYERSTATES, playbackState) {
 		var _players = {};
 		var _mainPlayerId;
+		var _checkInterval = 50.0;
 
-		_html5Video = {
+		return {
 			create: create,
 			play: play,
 			pause: pause,
@@ -30,28 +30,29 @@
 			getPlayerState: getPlayerState,
 			seekTo: seek,
 			pauseOtherEmbeds: pauseOtherEmbeds,
-			getBufferPercent: getBufferPercent
+			getBufferedPercent: getBufferedPercent,
+			isReady: isReady
 		};
 
 		function create(divID, mainPlayer, stateCb) {
 			var plr = document.getElementById(divID);
-			// plr.onplay = onPlay;
-			// plr.onpause = onPause;
-			// plr.onplaying = onPlaying;
-			// plr.onseeked = onSeeked;
-			plr.onseeking = onSeeking;
-			// plr.ontimeupdate = onTimeUpdate;
+			plr.onpause = onPause;
+			plr.onplaying = onPlaying;
+			plr.onwaiting = onBuffering;
+			// plr.onstalled = onBuffering;
 			// plr.onended = onEnded;
-			// plr.onloadstart = onLoadStart;
-			// plr.onloadeddata = onLoadedData;
-			// plr.onprogress = onProgress;
-			// plr.oncanplay = onCanPlay;
-			// plr.onstalled = onStalled;
-			plr.onwaiting = onWaiting;
-			plr.meta = { playerState: -1, currentTime: 0, playCount: 0 };
+			plr.meta = {
+				playerState: -1,
+				currentPlayPos: 0,
+				lastPlayPos: 0
+			};
 			_players[divID] = plr;
 
 			plr.onStateChange = stateCb;
+
+			// var checkBuffering = _checkBuffering(plr);
+
+			// var interval = $interval(checkBuffering, _checkInterval);
 
 			if (mainPlayer === true) {
 				_mainPlayerId = divID;
@@ -63,105 +64,32 @@
 		/*
 		 HTML5 media event handlers
 		 */
-		// function onPlay() {
-		// 	console.trace('onPlay!');
-		// 	//'this' is the actual dom element for the HTML5 media element.
-		// 	var player = _getInstance(this.id);
-		// 	player.meta.playerState = 1;
-        //
-        //
-		// }
 
-		// function onPlaying() {
-		// 	var player = _getInstance(this.id);
-		// 	player.meta.playerState = 1;
-		// 	pauseOtherEmbeds(evt.target.id);
-		// 	if (evt.target.id !== _mainPlayerId && appState.timelineState === 'playing') {
-		// 		timelineSvc.pause();
-		// 	}
-		// }
-
-		// function onPause() {
-		// 	// console.trace('onPause', evt);
-		// 	var player = _getInstance(this.id);
-		// 	player.meta.playerState = 2;
-		// }
-
-		// function onLoadStart() {
-		// 	var player = _getInstance(this.id);
-		// 	player.meta.readyState = 'ready';
-		// }
-
-		// function onLoadedData() {
-		// 	console.log('data load', evt);
-		// }
-        //
-		// function onProgress() {
-		// 	console.log('progress', evt.type);
-		// }
-
-		// function onCanPlay() {
-		// 	appState.playerReady = true;
-		// 	var player = _derivePlayerFromEvt(evt);
-        //
-		// 	if (evt.target.id !== _mainPlayerId) {
-		// 		appState.embedHtml5PlayerAvailable = true;
-		// 	}
-        //
-		// 	player.meta.playerState = 5;
-		// 	// first play? overwrite playerState
-		// 	if (player.meta.playCount === 0) {
-		// 		player.meta.playerState = -1;
-		// 	}
-        //
-		// 	player.meta.playCount++;
-		// }
-        //
-		// function onSeeked(evt) {
-        //
-		// }
-        //
-        function onSeeking() {
-			appState.playerReady = false;
+		function onPlaying() {
 			var instance = _getInstance(this.id);
-			instance.meta.playerState = 3;
-			instance.onStateChange(instance.meta.playerState);
-        }
-        //
-		// function onTimeUpdate() {
-		// 	var player = _getInstance(this.id);
-		// 	player.meta.currentTime = player.currentTime;
-		// }
-        //
-        // function onEnded() {
-			// var player = _getInstance(this.id);
-			// player.meta.playerState = 0;
-        // }
-        //
-		// function onStalled() {
-		// }
-
-		function onWaiting() {
-			appState.playerReady = false;
-			var instance = _getInstance(this.id);
-			instance.meta.playerState = 3;
-			instance.onStateChange(instance.meta.playerState);
-		}
-
-		/*
-		 private methods
-		 */
-		function _getInstance(pid) {
-			if (_players[pid]) {
-				return _players[pid];
+			// pauseOtherEmbeds(this.id);
+			if (this.id !== _mainPlayerId && appState.timelineState === 'playing') {
+				//pause timeline
 			}
+			instance.meta.playerState = 1;
+			_emitStateChange(instance);
 		}
 
-		function _derivePlayerFromEvt(event) {
-			var pid = event.target.id;
-			var player = _players[pid];
+		function onPause() {
+			var instance = _getInstance(this.id);
+			instance.meta.playerState = 2;
+			_emitStateChange(instance);
+		}
 
-			return player;
+		function onBuffering() {
+			var instance = _getInstance(this.id);
+			instance.meta.playerState = 3;
+			_emitStateChange(instance);
+		}
+
+        function isReady() {
+			var instance = _getInstance(this.id);
+			return (instance.readyState > 1);
 		}
 
 		/*
@@ -170,34 +98,12 @@
 
 		function play(pid) {
 			var instance = _getInstance(pid);
-			pauseOtherEmbeds(this.id);
-
-			if (this.id !== _mainPlayerId && appState.timelineState === 'playing') {
-				timelineSvc.pause();
-			}
-
-			return $q(function(resolve) {
-				instance.play();
-				instance.meta.playerState = 1;
-				instance.onplaying = resolve;
-				instance.onStateChange(instance.meta.playerState);
-			});
-
-
+			instance.play();
 		}
 
 		function pause(pid) {
-			// console.trace('html5Vid#pause');
 			var instance = _getInstance(pid);
-			return $q(function(resolve) {
-				instance.pause();
-				instance.meta.playerState = 2;
-				instance.onpause = resolve;
-				instance.onStateChange(instance.meta.playerState);
-
-			});
-			// var mockEvent = { target: { id: pid } };
-			// onPause(mockEvent);
+			instance.pause();
 		}
 
 		function getCurrentTime(pid) {
@@ -227,7 +133,7 @@
 			}
 		}
 
-		function getBufferPercent(pid) {
+		function getBufferedPercent(pid) {
 			var instance = _getInstance(pid);
 			if (instance && instance.meta.playerState !== -1) {
 				if (instance.buffered.length > 0) {
@@ -239,13 +145,47 @@
 						bufEnd = bufEnd - bufStart;
 						bufStart = 0;
 					}
-					return bufEnd / appState.duration * 100;
+					return bufEnd / playbackState.getDuration() * 100;
 				}
 			}
 
 		}
 
+		/*
+		 private methods
+		 */
 
-		return _html5Video;
+		function _emitStateChange(instance) {
+			instance.onStateChange(PLAYERSTATES[instance.meta.playerState]);
+		}
+
+		function _getInstance(pid) {
+			if (_players[pid]) {
+				return _players[pid];
+			}
+		}
+
+		//seems not to work very well.
+		function _checkBuffering(player) {
+			console.log('closure wired up');
+			return function() {
+				player.meta.currentPlayPos = player.currentTime;
+				var offset = 1 / _checkInterval;
+
+				if (!player.meta.playerState === 3 &&
+					player.meta.currentPlayPos < (player.meta.lastPlayPos + offset) &&
+					!player.paused) {
+					console.log('buffering detected!');
+					player.meta.playerState = 3;
+					_emitStateChange(player);
+				}
+				// if (player.meta.playerState === 3 &&
+				// 	player.meta.currentPlayPos > (player.meta.lastPlayPos + offset) &&
+				// 	!player.paused) {
+				// 	console.log('no longer buffering');
+				// }
+				player.meta.lastPlayPos = player.meta.currentPlayPos;
+			}
+		}
 	}
 })();

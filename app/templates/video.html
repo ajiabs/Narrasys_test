@@ -1,8 +1,7 @@
 
 <div class="video">
-	<h5 style="color:white">timeline State: {{appState.timelineState}}, time: {{appState.time}}</h5>
+	<h5 style="background-color: white; color:black;">timeline State: {{playbackState.getTimelineState()}}, time: {{playbackState.getTime()}}</h5>
 	<itt-youtube tabindex="-1" ng-if="video.urls.youtube.length" embed-url="{{video.urls.youtube[0]}}"
-				 on-player-state-change="playerStateChange"
 				 on-ready="onReady" main-player="true" player-id="video._id"></itt-youtube>
 	<!-- NOTE in html5 video we can't depend on databinding to change the video src after rendering!  See videoController changeVideoBandwidth -->
 	<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player" id="{{video._id}}">
@@ -13,7 +12,7 @@
 	</video>
 
 
-	<div ng-if="poster && appState.time == 0" class="poster overlay fill" ng-style="{backgroundImage:'url('+poster.url+')'}"></div>
+	<div ng-if="poster && playbackState.getTime() == 0" class="poster overlay fill" ng-style="{backgroundImage:'url('+poster.url+')'}"></div>
 	<!-- hide this on touch devices before hasBeenPlayed, if youtube, so users can click the YT player directly to init it.
 	see also ittTimeline.js -->
 	<!--<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{-->
@@ -24,9 +23,9 @@
 		<!--transcoding: !video.isTranscoded()-->
 	<!--}">-->
 		<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{
-		play: appState.timelineState == 'paused',
+		play: playbackState.getTimelineState() == 'paused',
 		firstplay: !appState.hasBeenPlayed && !poster,
-		rewind: (appState.time > 0 && appState.time >= video.duration - 0.3),
+		rewind: (playbackState.getTime() > 0 && playbackState.getTime() >= video.duration - 0.3),
 		transcoding: !video.isTranscoded()
 	}">
 		<div class="convertingMessage" ng-if="!video.isTranscoded()">

@@ -1,7 +1,7 @@
 <div ng-class="{
 searchitem:true,
 isSxS: item.sxs,
-isCurrent: ((item.start_time <= appState.time) && (item.end_time > appState.time)),
+isCurrent: ((item.start_time <= playbackState.getTime()) && (item.end_time > playbackState.getTime())),
 isCosmetic: item.cosmetic
 }" ng-style="item.sxs?{backgroundImage:'url('+item.avatar.url+')'}:{}">
 	<a class="edit-event" ng-click="editItem(item._id)">

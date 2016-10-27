@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES) {
+	.controller('EditController', function ($q, $scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES, playbackState) {
 		$scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
 		// HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)
@@ -72,7 +72,7 @@ angular.module('com.inthetelling.story')
 		$scope.addEvent = function (producerItemType) {
 			console.warn('add event called!');
 			if (producerItemType === 'scene') {
-				if (isOnExistingSceneStart(appState.time)) {
+				if (isOnExistingSceneStart(playbackState.getTime())) {
 					return $scope.editCurrentScene();
 				}
 			}
@@ -329,7 +329,7 @@ angular.module('com.inthetelling.story')
 						modelSvc.resolveEpisodeEvents(appState.episodeId);
 						// modelSvc.resolveEpisodeContainers(appState.episodeId); // only needed for navigation_depth changes
 						modelSvc.resolveEpisodeAssets(appState.episodeId); // TODO I suspect this is unnecessary...
-						appState.duration = duration;
+						playbackState.setDuration(duration);
 						appState.editEpisode = false;
 						appState.videoControlsLocked = false;
 						timelineSvc.init(appState.episodeId);
@@ -420,7 +420,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var adjustScenes = function (modifiedScene, isDelete) {
-			var duration = appState.duration;
+			var duration = playbackState.getDuration();
 			var scenes = angular.copy(getScenes());
 			var adjusted = [];
 			// get scenes back into original state (before editing,adding,deleting)
@@ -553,7 +553,7 @@ angular.module('com.inthetelling.story')
 		var generateEmptyItem = function (type) {
 			var base = {
 				"_id": "internal:editing",
-				"start_time": appState.time,
+				"start_time": playbackState.getTime(),
 				"episode_id": appState.episodeId,
 				// "type": type,  <-- NOPE that's a bug.  Confusing, so I'm leaving in this comment:  API types are Plugin, Scene, Upload, Link; these producer item types are different
 				"isCurrent": true,

@@ -39,7 +39,6 @@
 			template: '<div id="{{ittYoutubeCtrl.embedId}}"></div>',
 			scope: {
 				embedUrl: '@',
-				onPlayerStateChange: '=?',
 				onPlayerQualityChange: '=?',
 				onReady: '=?',
 				mainPlayer: '&',
@@ -57,10 +56,6 @@
 		_ctrl.ytVideoID = youtubeSvc.extractYoutubeId(_ctrl.embedUrl);
 		var _playerId = _ctrl.playerId();
 
-		if (_ctrl.onPlayerStateChange === undefined) {
-			_ctrl.onPlayerStateChange = angular.noop;
-		}
-
 		if (_ctrl.onReady === undefined) {
 			_ctrl.onReady = angular.noop;
 		}
@@ -74,7 +69,7 @@
 				_ctrl.embedId = divId;
 
 				$timeout(function() {
-					youTubePlayerManager.create(divId, _playerId, _ctrl.ytVideoID, _ctrl.onPlayerStateChange, _ctrl.onPlayerQualityChange, _ctrl.onReady);
+					youTubePlayerManager.create(divId, _playerId, _ctrl.ytVideoID, _ctrl.onPlayerQualityChange, _ctrl.onReady);
 				}, 0);
 			});
 

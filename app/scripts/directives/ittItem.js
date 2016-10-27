@@ -6,7 +6,7 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager, selectService) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager, selectService, playbackState) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -164,7 +164,7 @@ angular.module('com.inthetelling.story')
 				// TODO timelineSvc should be able to inform the item directive directly that enter or exit has happened, $watch is silly
 				if (scope.item.templateUrl === 'templates/item/link-embed.html') {
 					var captureEmbed = scope.$watch(function () {
-						return appState.time > scope.item.start_time;
+						return playbackState.getTime() > scope.item.start_time;
 					}, function (x) {
 						if (x) {
 							scope.captureInteraction();

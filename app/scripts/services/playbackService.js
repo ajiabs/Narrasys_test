@@ -8,21 +8,28 @@
 	angular.module('com.inthetelling.story')
 		.factory('playbackService', playbackService);
 
-	function playbackService(youTubePlayerManager, html5PlayerManager, playbackChannel, PLAYERSTATES, STATECHANGE) {
+	function playbackService($interval, youTubePlayerManager, html5PlayerManager, playbackState, analyticsSvc) {
 
 		var _video = {};
 		var _player = '';
 		var _playerInterface = {};
+		var _playerId;
+		var _cbs = [];
+
+		youTubePlayerManager.registerStateChangeListener(_stateChangeCB);
 
 		return {
 			setPlayer: setPlayer,
 			play: play,
 			pause: pause,
 			seek: seek,
-			getCurrentTime: getCurrentTime
+			getCurrentTime: getCurrentTime,
+			registerStateChangeListener: registerStateChangeListener
 		};
 
+		//public methods
 		function setPlayer(videoObj, id, mainPlayer) {
+			_video = videoObj;
 			if (videoObj.urls.youtube && videoObj.urls.youtube.length) {
 				_player = 'youtube';
 			} else {
@@ -32,34 +39,65 @@
 			_createInterface(_player, id, mainPlayer);
 		}
 
-		function stateChangeCB(state) {
-			playbackChannel.send(STATECHANGE, {state: PLAYERSTATES[state]});
+		function play() {
+			return _playerInterface.play(_playerId);
 		}
 
-
-		function play(id) {
-			return _playerInterface.play(id);
+		function pause() {
+			_playerInterface.pause(_playerId)
 		}
 
-		function pause(id) {
-			_playerInterface.pause(id)
+		function seek(t) {
+			_playerInterface.seekTo(_playerId, t);
 		}
 
-		function seek(id, t) {
-			_playerInterface.seekTo(id, t);
+		function registerStateChangeListener(cb) {
+			_cbs.push(cb);
 		}
 
+		function getCurrentTime() {
+			_playerInterface.getCurrentTime(_playerId);
+		}
+
+		// private methods
 		function _createInterface(type, id, mainPlayer) {
+			_playerId = id;
+			// playbackState.reset();
+			playbackState.setVideoType(type);
 			if (type === 'html5') {
-				html5PlayerManager.create(id, mainPlayer, stateChangeCB);
+				html5PlayerManager.create(id, mainPlayer, _stateChangeCB);
 				_playerInterface = html5PlayerManager;
 			} else {
-				// youTubePlayerManager;
+				_playerInterface = youTubePlayerManager;
 			}
+			_pollBufferedPercent();
 		}
 
-		function getCurrentTime(id) {
-			_playerInterface.getCurrentTime(id);
+		function _stateChangeCB(state) {
+			switch (state) {
+				case 'unstarted':
+					break;
+				case 'ended':
+					break;
+				case 'playing':
+					break;
+				case 'paused':
+					break;
+				case 'buffering':
+					analyticsSvc.captureEpisodeActivity("stall");
+					break;
+				case 'video cued':
+					break;
+			}
+			_cbs.forEach(function(cb) {
+				cb(state);
+			});
+		}
+
+		function _pollBufferedPercent() {
+			$interval(function() {
+				playbackState.setBufferedPercent(_playerInterface.getBufferedPercent(_playerId));
+			}, 200);
 		}
 	}
 
