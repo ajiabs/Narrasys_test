@@ -544,6 +544,59 @@ angular.module('com.inthetelling.story')
 			// todo:  containers
 		};
 
+		//for items with the same time, ensure hierarchy of items
+		//in the following order:
+		// 1. Annotations:
+		//  	- H1 > H2 > isTranscript
+		// 3. Links
+		// 4. Uploads
+		//		- Document > Image
+		//5. all other annotations
+		function _sortItems(items) {
+			return items.sort(function(a, b) {
+				if (a.start_time === b.start_time) {
+					if (a.producerItemType === 'chapter') {
+						return -1;
+					} else if (b.producerItemType === 'chapter') {
+						return 1;
+					} else if (a.chapter_marker === true) {
+						return -1;
+					} else if (b.chapter_marker === true) {
+						return 1;
+					} else if (a.templateUrl === 'templates/item/text-h1.html') {
+						return -1;
+					} else if (b.templateUrl === 'templates/item/text-h1.html') {
+						return 1;
+					} else if (a.templateUrl === 'templates/item/text-h2.html') {
+						return -1;
+					} else if (b.templateUrl === 'templates/item/text-h2.html') {
+						return 1;
+					} else if (a.isTranscript) {
+						return -1;
+					} else if (b.isTranscript) {
+						return 1;
+					} else if (a._type === 'Link') {
+						return -1;
+					} else if (b._type === 'Link') {
+						return 1;
+					} else if (a._type === 'Upload') {
+						if (a.producerItemType === 'file' || b._type === 'Annotation') {
+							return -1;
+						} else {
+							return 1;
+						}
+					} else if (b._type === 'Upload') {
+						return 1;
+					} else {
+						return -1;
+					}
+				}
+				else {
+					return a.start_time - b.start_time;
+				}
+			});
+		}
+
 		/*  Any changes to any scene or item data must call svc.resolveEpisodeEvents afterwards. It sets:
 				- episode.scenes
 				- episode.items
@@ -688,59 +741,7 @@ angular.module('com.inthetelling.story')
 				}
 			});
 
-
-			//for items with the same time, ensure hierarchy of items
-			//in the following order:
-			// 1. Annotations:
-			//  	- H1 > H2 > isTranscript
-			// 3. Links
-			// 4. Uploads
-			//		- Document > Image
-			//5. all other annotations
-			episode.items = items.sort(function (a, b) {
-				if (a.start_time === b.start_time) {
-					if (a.producerItemType === 'chapter') {
-						return -1;
-					} else if (b.producerItemType === 'chapter') {
-						return 1;
-					} else if (a.chapter_marker === true) {
-						return -1;
-					} else if (b.chapter_marker === true) {
-						return 1;
-					} else if (a.templateUrl === 'templates/item/text-h1.html') {
-						return -1;
-					} else if (b.templateUrl === 'templates/item/text-h1.html') {
-						return 1;
-					} else if (a.templateUrl === 'templates/item/text-h2.html') {
-						return -1;
-					} else if (b.templateUrl === 'templates/item/text-h2.html') {
-						return 1;
-					} else if (a.isTranscript) {
-						return -1;
-					} else if (b.isTranscript) {
-						return 1;
-					} else if (a._type === 'Link') {
-						return -1;
-					} else if (b._type === 'Link') {
-						return 1;
-					} else if (a._type === 'Upload') {
-						if (a.producerItemType === 'file' || b._type === 'Annotation') {
-							return -1;
-						} else {
-							return 1;
-						}
-					} else if (b._type === 'Upload') {
-						return 1;
-					} else {
-						return -1;
-					}
-				}
-				else {
-					return a.start_time - b.start_time;
-				}
-			});
-
-
+			episode.items = _sortItems(items);
 			// console.log('after sort \n', items);
 			// ensure scenes are contiguous. Including the ending scene as end_times are relied on in producer in any editable scene.
 			// Note that this means we explicitly ignore scenes' declared end_time; instead we force it to the next scene's start (or the video end)
@@ -819,20 +820,7 @@ angular.module('com.inthetelling.story')
 				}
 				// attach array of items to the scene event:
 				// Note these items are references to objects in svc.events[]; to change item data, do it in svc.events[] instead of here.
-				svc.events[scene._id].items = sceneItems.sort(function (a, b) {
-
-					if (a.start_time !== b.start_time || !b.layouts) {
-						return a.start_time - b.start_time;
-					} else {
-						// put simultaneous sidebar items first:
-						if (b.layouts.indexOf("sidebarL") > -1 || b.layouts.indexOf("sidebarR") > -1) {
-							return 1;
-						} else {
-							return 0;
-						}
-					}
-
-				});
+				svc.events[scene._id].items = _sortItems(sceneItems);
 			}
 			// Now that we have the structure, calculate event styles (for scenes and items:)
 			episode.styleCss = cascadeStyles(episode);
