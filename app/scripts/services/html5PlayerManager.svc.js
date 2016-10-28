@@ -31,8 +31,13 @@
 			seekTo: seek,
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			getBufferedPercent: getBufferedPercent,
-			isReady: isReady
+			isReady: isReady,
+			parseMediaSrc: parseMediaSrc
 		};
+
+
+		//returns str or null
+		function parseMediaSrc(str) {}
 
 		function create(divID, mainPlayer, stateCb) {
 			var plr = document.getElementById(divID);

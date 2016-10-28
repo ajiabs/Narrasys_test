@@ -48,7 +48,8 @@
 			setVolume: setVolume,
 			registerStateChangeListener: registerStateChangeListener,
 			//need to see how to make better than returning a hard coded boolean
-			isReady: isReady
+			isReady: isReady,
+			parseMediaSrc: parseMediaSrc
 		};
 
 		//private methods
@@ -130,6 +131,8 @@
 
 
 		//public methods
+		//returns str or null
+		function parseMediaSrc(str) {}
 
 		function isReady() {
 			return true;

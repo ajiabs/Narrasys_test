@@ -15,6 +15,7 @@
 		var _playerInterface = {};
 		var _playerId;
 		var _cbs = [];
+		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
 
 		youTubePlayerManager.registerStateChangeListener(_stateChangeCB);
 
@@ -59,13 +60,16 @@
 			_playerInterface.getCurrentTime(_playerId);
 		}
 
+
+
 		// private methods
 		function _createInterface(type, id, mainPlayer) {
 			_playerId = id;
 			// playbackState.reset();
 			playbackState.setVideoType(type);
+
 			if (type === 'html5') {
-				html5PlayerManager.create(id, mainPlayer, _stateChangeCB);
+				// html5PlayerManager.create(id, mainPlayer, _stateChangeCB);
 				_playerInterface = html5PlayerManager;
 			} else {
 				_playerInterface = youTubePlayerManager;
