@@ -591,7 +591,7 @@ angular.module('com.inthetelling.story')
 				else {
 					return a.start_time - b.start_time;
 				}
-			})
+			});
 		}
 
 		/*  Any changes to any scene or item data must call svc.resolveEpisodeEvents afterwards. It sets:
