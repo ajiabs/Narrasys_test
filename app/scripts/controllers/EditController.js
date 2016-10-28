@@ -585,8 +585,7 @@ angular.module('com.inthetelling.story')
 				stub = {
 					"_type": "Scene",
 					"title": {},
-					"description": {},
-					"templateOpts": selectService.getTemplates(type)
+					"description": {}
 				};
 			}
 			if (type === 'chapter') {
@@ -604,8 +603,7 @@ angular.module('com.inthetelling.story')
 					"link_image_id": "",
 					"url": "",
 					"title": {},
-					"description": {},
-					"templateOpts": selectService.getTemplates(type),
+					"description": {}
 				};
 			}
 
@@ -614,8 +612,7 @@ angular.module('com.inthetelling.story')
 					"_type": "Annotation",
 					"annotation": {},
 					"annotator": {},
-					"annotation_image_id": "",
-					"templateOpts": selectService.getTemplates(type),
+					"annotation_image_id": ""
 				};
 			}
 
@@ -624,8 +621,7 @@ angular.module('com.inthetelling.story')
 					"_type": "Upload",
 					"asset_id": "",
 					"title": {},
-					"description": {},
-					"templateOpts": selectService.getTemplates(type),
+					"description": {}
 				};
 			}
 
@@ -635,8 +631,7 @@ angular.module('com.inthetelling.story')
 					"link_image_id": "",
 					"url": "https://",
 					"title": {},
-					"description": {},
-					"templateOpts": selectService.getTemplates(type),
+					"description": {}
 				};
 			}
 
@@ -645,7 +640,6 @@ angular.module('com.inthetelling.story')
 				stub = {
 					"_type": "Plugin",
 					"title": {},
-					"templateOpts": selectService.getTemplates(type),
 					"data": {
 						"_pluginType": "question",
 						"_version": 2,
@@ -695,6 +689,7 @@ angular.module('com.inthetelling.story')
 					"video": "TODO:VIDEO"
 				};
 
+				stub.templateOpts = selectService.getTemplates(type);
 				stub.templateUrl = defaultTemplateUrls[type];
 			}
 			angular.extend(base, stub);
