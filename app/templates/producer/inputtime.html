@@ -15,10 +15,10 @@
 			</li>
 			<span ng-if="item._type != 'Scene' && scene().start_time > 0">
 				<li ng-if="fieldname=='start_time'" ng-click="setTime(scene().start_time)">
-					<a>Beginning of scene ({{format(scene().start_time)}})</a>
+					<a>Beginning of layout ({{format(scene().start_time)}})</a>
 				</li>
 				<li ng-if="fieldname=='end_time'" ng-click="setTime(scene().end_time)">
-					<a>End of scene ({{format(scene().end_time)}})</a>
+					<a>End of layout ({{format(scene().end_time)}})</a>
 				</li>
 				<li ng-if="fieldname=='end_time' && isTranscript()" ng-click="TODO">
 					<a>Auto (TODO)</a>
