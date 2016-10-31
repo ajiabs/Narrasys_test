@@ -14,6 +14,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "iTT.directive:ittHtml5Video",
+      "shortName": "ittHtml5Video",
+      "type": "directive",
+      "moduleName": "iTT",
+      "shortDescription": "Directive used to render html5 videos",
+      "keywords": "$timeout api asset directive ea embed embeds event html5 itt main main-player mainplayer object player player-id playerid render service string url video video-url videos videourl youtube"
+    },
+    {
+      "section": "api",
       "id": "iTT.directive:ittIframe",
       "shortName": "ittIframe",
       "type": "directive",
@@ -46,7 +55,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "iTT",
       "shortDescription": "Directive used to render the actual youtube iframe and link",
-      "keywords": "$scope $timeout _players actual api asset callback change control directive ea embed embed-url embedurl event false fired https iframe inside instance instances itt js link main main-player mainplayer object onplayerqualitychange onplayerstatechange onready path pid player player-id playerid players quality ready render service set source true url video youtube youtubeplayermanager youtubesvc yt"
+      "keywords": "$scope $timeout _players actual api asset directive ea embed event https iframe inside instance instances itt js link main main-player mainplayer object path pid player player-id playerid render service set source true url video video-url videourl youtube youtubeplayermanager youtubesvc yt"
     },
     {
       "section": "api",
@@ -82,7 +91,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "iTT",
       "shortDescription": "A service for working with youtube iframes",
-      "keywords": "$location $q _getpidfrominstance _getytinstance _guid _players allowseekahead api app append appstate asset bool buffered buffering callback called calls change changing clear control create cued current currently data desired destroy detecting determine determines digit div divid download element embed embedded embeds emitted ended error errors errorsvc event events false flow generate getcurrenttime getter getvideoloadedfraction guarantee handler handling https identifier iframe iframes instance instances int interacted interaction interface ismuted itt js level loops main mainplayer metadata method mute number numerical object onerror onplayerqualitychange onplayerstatechange onready optional order param parameter pause paused pauseembeds pauseotherembeds percent pick pid play playback player playerstate playing prior properties quality ready representing request reset responsible resume retrieve return seconds seek seekto server service set setplaybackquality setplayer sets setter setvolume source specifies stops stream string svc target time timelinesvc toggles true type unique uniqueness unmute unstarted video videoid videos volume working youtube youtubeplayerapi yt ytinstance"
+      "keywords": "$location $q _getpidfrominstance _getytinstance _guid _players allowseekahead api app append appstate asset bool buffered buffering called calls changing clear create cued current currently data desired destroy detecting determine determines digit div divid download element embed embedded embeds emitted ended error errors errorsvc event events false generate getcurrenttime getter getvideoloadedfraction guarantee handler handling https identifier iframe iframes instance instances int interacted interaction interface ismuted itt js level loops main mainplayer metadata method mute number numerical object onerror onplayerqualitychange onplayerstatechange onready order param parameter pause paused pauseembeds pauseotherembeds percent pick pid play playback player playerid playermanager playerstate playing prior properties quality ready representing request reset responsible resume retrieve return seconds seek seekto server service set setplaybackquality setplayer sets setter setvolume source specifies stops stream string svc target time timelinesvc toggles true type unique uniqueness unmute unstarted video videoid videos volume working youtube youtubeplayerapi yt ytinstance"
     }
   ],
   "apis": {

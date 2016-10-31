@@ -17,16 +17,13 @@
 	 * @requires $scope
 	 * @requires iTT.service:youTubePlayerManager
 	 * @requires youtubeSvc
-	 * @param {String} embedUrl The URL to the youtube video
-	 * @param {Function=} onPlayerStateChange Callback used to control player state
-	 * @param {Function=} onPlayerQualityChange Callback used to change player quality
-	 * @param {Function=} onReady Callback fired when YT instance is ready
-	 * @param {Boolean} mainPlayer Set to false for embed players
-	 * @param {String} playerId ID, either main video asset ID or event ID, used to set PID of YT Instance inside _players Object
+	 * @param {String} videoUrl The URL to the youtube video
+	 * @param {Boolean} mainPlayer Whether or not the player is to be used as the main video or embed.
+	 * @param {String} playerId ID either main video asset ID or event ID, used to set PID of YT Instance inside _players Object
 	 * @example
 	 * <pre>
 	 *     //for the main player
-	 *     <itt-youtube embed-url="path/to/url" main-player="true" player-id="<ID>"></itt-youtube>
+	 *     <itt-youtube video-url="path/to/url" main-player="true" player-id="<ID>"></itt-youtube>
 	 * </pre>
 	 */
 	angular.module('com.inthetelling.story')

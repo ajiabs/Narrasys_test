@@ -4,7 +4,26 @@
 
 (function() {
 	'use strict';
-
+	/**
+	 * @ngdoc directive
+	 * @name iTT.directive:ittHtml5Video
+	 * @restrict 'EA'
+	 * @scope
+	 * @description
+	 * Directive used to render html5 videos
+	 * @requires $timeout
+	 * @requires iTT.service:html5PlayerManager
+	 * @requires iTT.service:appState
+	 * @param {String | Object} videoUrl The URL to the youtube video. can be a string (for embeds), or an object (for the main video).
+	 * @param {Boolean} mainPlayer Whether or not the player is to be used as the main video or embed.
+	 * @param {String} playerId ID either main video asset ID or event ID
+	 * @example
+	 * <pre>
+	 *     //for the main player
+	 *     <itt-html5-video video-url="<OBJECT or URL>" main-player=true player-id="<ID>"></itt-html5-video>
+	 * </pre>
+	 *
+	 */
 	angular.module('com.inthetelling.story')
 		.directive('ittHtml5Video', ittHtml5Video)
 		.controller('ittHtml5VideoCtrl', ittHtml5VideoCtrl);
