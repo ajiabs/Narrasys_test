@@ -1,6 +1,8 @@
 
 <div class="video">
 	<h5 style="background-color: white; color:black;">timeline State: {{playbackState.getTimelineState()}}, time: {{playbackState.getTime()}}</h5>
+
+
 	<itt-youtube
 		tabindex="-1"
 		ng-if="video.urls.youtube.length"
@@ -12,8 +14,8 @@
 	<itt-html5-video
 		ng-if="!video.urls.youtube || !video.urls.youtube.length"
 		video-url="video.urls"
-		player-id="video._id"
-		main-player="true">
+		main-player="true"
+		player-id="video._id">
 	</itt-html5-video>
 
 	<!-- NOTE in html5 video we can't depend on databinding to change the video src after rendering!  See videoController changeVideoBandwidth -->
