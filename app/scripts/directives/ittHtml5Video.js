@@ -22,22 +22,24 @@
 		return {
 			restrict: 'EA',
 			template: [
-    '<div ng-click="ittHtml5Video.togglePlayback($event)">',
-    '	<div class="embedMask" ng-class="{ play: ittHtml5Video.showOverlay() }"></div>',
-    '	<video class="html5Embed" id="{{ittHtml5Video.playerId}}" controls>',
-    '		<source class="m3u8" ng-if="ittHtml5Video.urls.m3u8[0]" ng-src="{{ittHtml5Video.m3u8[0]}}" type="application/x-mpegURL" />',
-    '		<source class="mpeg4" ng-if="ittHtml5Video.urls.mp4[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.mp4[ittHtml5Video.curStream]}}" type="video/mp4" />',
-    '		<source class="webm" ng-if="ittHtml5Video.urls.webm[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.webm[ittHtml5Video.curStream]}}" type="video/webm" />',
-    '		<source class="mp3" ng-if="ittHtml5Video.urls.mp3[ittHtml5Video.curStream]" ng-src="{{ittHtml5Video.urls.mp3[ittHtml5Video.curStream]}}" type="audio/mpeg" />',
-    '	</video>',
-    '</div>'
+				'<div ng-click="$ctrl.togglePlayback($event)">',
+				'	<div class="embedMask" ng-if="!$ctrl.mainPlayer" ng-class="{ play: $ctrl.showOverlay() }"></div>',
+				'	<video class="html5Embed" id="{{$ctrl.playerId}}">',
+				'		<source class="m3u8" ng-if="$ctrl.urls.m3u8[0]" ng-src="{{$ctrl.m3u8[0]}}" type="application/x-mpegURL" />',
+				'		<source class="mpeg4" ng-if="$ctrl.urls.mp4[$ctrl.curStream]" ng-src="{{$ctrl.urls.mp4[$ctrl.curStream]}}" type="video/mp4" />',
+				'		<source class="webm" ng-if="$ctrl.urls.webm[$ctrl.curStream]" ng-src="{{$ctrl.urls.webm[$ctrl.curStream]}}" type="video/webm" />',
+				'		<source class="mp3" ng-if="$ctrl.urls.mp3[$ctrl.curStream]" ng-src="{{$ctrl.urls.mp3[$ctrl.curStream]}}" type="audio/mpeg" />',
+				'		<p>Oh no! Your browser does not support the HTML5 Video element.</p>',
+				'	</video>',
+				'</div>'
 			].join(''),
 			scope: {
-				src: '&',
-				playerId: '@'
+				videoUrl: '=',
+				mainPlayer: '=',
+				playerId: '='
 			},
 			controller: 'ittHtml5VideoCtrl',
-			controllerAs: 'ittHtml5Video',
+			controllerAs: '$ctrl',
 			bindToController: true
 		};
 	}
@@ -51,7 +53,7 @@
 		ctrl.curStream = (appState.isTouchDevice ? 0 : 1);
 
 		$timeout(function(){
-			html5PlayerManager.create(ctrl.playerId, false, stateChange);
+			html5PlayerManager.create(ctrl.playerId, ctrl.mainPlayer);
 		},0);
 
 		function stateChange(state) {
@@ -62,7 +64,8 @@
 
 		function _handleSrcUrl() {
 			//a single source url, determine video type and format as our url obj.
-			ctrl.urls = ctrl.src();
+			ctrl.urls = ctrl.videoUrl;
+
 			if (typeof ctrl.urls === 'string') {
 				if (ctrl.urls.match(/.webm/) || ctrl.urls.match(/.mp4/) || ctrl.urls.match(/.m3u8/) || ctrl.urls.match(/.mp3/)) { //allowed formats
 					//duplicate ctrl.src in arrays to ensure playback regardless of curStream

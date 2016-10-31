@@ -36,46 +36,34 @@
 	function ittYoutube() {
 		return {
 			restrict: 'EA',
-			template: '<div id="{{ittYoutubeCtrl.embedId}}"></div>',
+			template: '<div id="{{$ctrl.embedId}}"></div>',
 			scope: {
-				embedUrl: '@',
-				onPlayerQualityChange: '=?',
-				onReady: '=?',
-				mainPlayer: '&',
-				playerId: '&'
+				videoUrl: '@',
+				mainPlayer: '=',
+				playerId: '='
 			},
 			controller: 'ittYoutubeCtrl',
-			controllerAs: 'ittYoutubeCtrl',
+			controllerAs: '$ctrl',
 			bindToController: true
 		};
 	}
 
 	function ittYoutubeCtrl($timeout, $scope, youTubePlayerManager, youtubeSvc) {
-		var _ctrl = this;  //jshint ignore:line
-		_ctrl.isMainPlayer = _ctrl.mainPlayer();
-		_ctrl.ytVideoID = youtubeSvc.extractYoutubeId(_ctrl.embedUrl);
-		var _playerId = _ctrl.playerId();
+		var ctrl = this;  //jshint ignore:line
+		ctrl.ytVideoID = youtubeSvc.extractYoutubeId(ctrl.videoUrl);
 
-		if (_ctrl.onReady === undefined) {
-			_ctrl.onReady = angular.noop;
-		}
-
-		if (_ctrl.onPlayerQualityChange === undefined) {
-			_ctrl.onPlayerQualityChange = angular.noop;
-		}
-
-		youTubePlayerManager.setPlayerId(_playerId, _ctrl.mainPlayer())
+		youTubePlayerManager.setPlayerId(ctrl.playerId, ctrl.mainPlayer)
 			.then(function(divId) {
-				_ctrl.embedId = divId;
+				ctrl.embedId = divId;
 
 				$timeout(function() {
-					youTubePlayerManager.create(divId, _playerId, _ctrl.ytVideoID, _ctrl.onPlayerQualityChange, _ctrl.onReady);
+					youTubePlayerManager.create(divId, ctrl.playerId, ctrl.ytVideoID);
 				}, 0);
 			});
 
 
 		$scope.$on('$destroy', function() {
-			youTubePlayerManager.destroy(_ctrl.embedId);
+			youTubePlayerManager.destroy(ctrl.embedId);
 		});
 	}
 

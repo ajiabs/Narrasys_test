@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 	The "add" buttons for instructors to choose what type of content they want to add to the episode.
 
 	TODO make this smarter about when it shows buttons; for example instead of matching against appState.time,
@@ -9,7 +9,7 @@
 */
 
 angular.module('com.inthetelling.story')
-	.directive('sxsAddContent', function (appState) {
+	.directive('sxsAddContent', function (appState, playbackState) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -20,6 +20,7 @@ angular.module('com.inthetelling.story')
 			link: function (scope) {
 
 				scope.appState = appState;
+				scope.playbackState = playbackState;
 
 				scope.expand = function () {
 					scope.expanded = true;

@@ -25,7 +25,7 @@
 		var _youTubePlayerManager;
 		var _players = {};
 		var _mainPlayerId;
-		var _cbs = [];
+		var _stateChangeCallbacks = [];
 
 		_youTubePlayerManager = {
 			create: create,
@@ -139,7 +139,7 @@
 		}
 
 		function registerStateChangeListener(cb) {
-			_cbs.push(cb);
+			_stateChangeCallbacks.push(cb);
 		}
 		/**
 		 * @ngdoc method
@@ -149,13 +149,11 @@
 		 * Used to create an instance of the YT object which is necessary to
 		 * interface with the youtube Iframe API
 		 * @param {String} divId Unique ID of Div element to append iframe into
+		 * @param {String} playerId The id instance in the playerManager
 		 * @param {String} videoId The youtube Video ID
-		 * @param {Function} [stateCb=noop] Optional control flow callback
-		 * @param {Function} [qualityChangeCB=noop] Optional quality change callback
-		 * @param {Function} [onReadyCB=noop] Optional onReady callback
-		 * @returns {Void} has no return value
+		 * @returns {void} has no return value
 		 */
-		function create(divId, playerId, videoId, qualityChangeCB, onReadyCB) {
+		function create(divId, playerId, videoId) {
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
@@ -245,7 +243,7 @@
 				}
 
 
-				_cbs.forEach(function(cb) {
+				_stateChangeCallbacks.forEach(function(cb) {
 					cb(PLAYERSTATES[event.data]);
 				});
 			}
@@ -276,7 +274,7 @@
 
 				_players[pid].ready = true;
 
-				onReadyCB(event);
+				// onReadyCB(event);
 			}
 
 			/**
@@ -296,7 +294,7 @@
 					setPlaybackQuality(pid, 'large');
 				}
 
-				qualityChangeCB(event);
+				// qualityChangeCB(event);
 
 			}
 			/**

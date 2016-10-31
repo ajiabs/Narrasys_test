@@ -17,7 +17,11 @@
 		var _cbs = [];
 		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
 
-		youTubePlayerManager.registerStateChangeListener(_stateChangeCB);
+
+		angular.forEach(_playerManagers, function(playerManager) {
+			playerManager.registerStateChangeListener(_stateChangeCB)
+		});
+
 
 		return {
 			setPlayer: setPlayer,

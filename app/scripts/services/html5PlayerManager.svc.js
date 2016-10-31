@@ -21,6 +21,7 @@
 		var _players = {};
 		var _mainPlayerId;
 		var _checkInterval = 50.0;
+		var _stateChangeCallbacks = [];
 
 		return {
 			create: create,
@@ -32,6 +33,7 @@
 			pauseOtherEmbeds: pauseOtherEmbeds,
 			getBufferedPercent: getBufferedPercent,
 			isReady: isReady,
+			registerStateChangeListener: registerStateChangeListener,
 			parseMediaSrc: parseMediaSrc
 		};
 
@@ -39,7 +41,11 @@
 		//returns str or null
 		function parseMediaSrc(str) {}
 
-		function create(divID, mainPlayer, stateCb) {
+		function registerStateChangeListener(cb) {
+			_stateChangeCallbacks.push(cb);
+		}
+
+		function create(divID, mainPlayer) {
 			var plr = document.getElementById(divID);
 			plr.onpause = onPause;
 			plr.onplaying = onPlaying;
@@ -53,7 +59,7 @@
 			};
 			_players[divID] = plr;
 
-			plr.onStateChange = stateCb;
+			plr.onStateChange = _onStateChange;
 
 			// var checkBuffering = _checkBuffering(plr);
 
@@ -62,7 +68,6 @@
 			if (mainPlayer === true) {
 				_mainPlayerId = divID;
 			}
-
 			return plr;
 		}
 
@@ -159,9 +164,14 @@
 		/*
 		 private methods
 		 */
-
 		function _emitStateChange(instance) {
 			instance.onStateChange(PLAYERSTATES[instance.meta.playerState]);
+		}
+
+		function _onStateChange(event) {
+			angular.forEach(_stateChangeCallbacks, function(cb) {
+				cb(event);
+			});
 		}
 
 		function _getInstance(pid) {

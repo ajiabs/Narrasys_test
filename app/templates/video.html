@@ -1,15 +1,28 @@
 
 <div class="video">
 	<h5 style="background-color: white; color:black;">timeline State: {{playbackState.getTimelineState()}}, time: {{playbackState.getTime()}}</h5>
-	<itt-youtube tabindex="-1" ng-if="video.urls.youtube.length" embed-url="{{video.urls.youtube[0]}}"
-				 on-ready="onReady" main-player="true" player-id="video._id"></itt-youtube>
+	<itt-youtube
+		tabindex="-1"
+		ng-if="video.urls.youtube.length"
+		video-url="{{video.urls.youtube[0]}}"
+		main-player="true"
+		player-id="video._id">
+	</itt-youtube>
+
+	<itt-html5-video
+		ng-if="!video.urls.youtube || !video.urls.youtube.length"
+		video-url="video.urls"
+		player-id="video._id"
+		main-player="true">
+	</itt-html5-video>
+
 	<!-- NOTE in html5 video we can't depend on databinding to change the video src after rendering!  See videoController changeVideoBandwidth -->
-	<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player" id="{{video._id}}">
-		<source class="m3u8" ng-if="video.urls.m3u8[0]" ng-src="{{video.urls.m3u8[0]}}" type="application/x-mpegURL" />
-		<source class="mpeg4" ng-if="video.urls.mp4[video.curStream]" ng-src="{{video.urls.mp4[video.curStream]}}" type="video/mp4" />
-		<source class="webm" ng-if="video.urls.webm[video.curStream]" ng-src="{{video.urls.webm[video.curStream]}}" type="video/webm" />
-		<p>Oh no! Your browser does not support the HTML5 Video element.</p>
-	</video>
+	<!--<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player" id="{{video._id}}">-->
+		<!--<source class="m3u8" ng-if="video.urls.m3u8[0]" ng-src="{{video.urls.m3u8[0]}}" type="application/x-mpegURL" />-->
+		<!--<source class="mpeg4" ng-if="video.urls.mp4[video.curStream]" ng-src="{{video.urls.mp4[video.curStream]}}" type="video/mp4" />-->
+		<!--<source class="webm" ng-if="video.urls.webm[video.curStream]" ng-src="{{video.urls.webm[video.curStream]}}" type="video/webm" />-->
+		<!--<p>Oh no! Your browser does not support the HTML5 Video element.</p>-->
+	<!--</video>-->
 
 
 	<div ng-if="poster && playbackState.getTime() == 0" class="poster overlay fill" ng-style="{backgroundImage:'url('+poster.url+')'}"></div>
