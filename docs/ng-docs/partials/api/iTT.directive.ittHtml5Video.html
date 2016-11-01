@@ -1,0 +1,43 @@
+<h1><code ng:non-bindable="">ittHtml5Video</code>
+<div><span class="hint">directive in module <code ng:non-bindable="">iTT</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="itt-directive-page itt-directive-itthtml5video-page"><p>Directive used to render html5 videos</p>
+</div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/ng.$timeout">$timeout</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/iTT.service:html5PlayerManager">html5PlayerManager</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/iTT.service:appState">appState</a></code>
+</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<div class="usage">as element:<pre class="prettyprint linenums">&lt;itt-html5-video
+       video-url="{String | Object}"
+       main-player="{Boolean}"
+       player-id="{String}"&gt;
+&lt;/itt-html5-video&gt;</pre>
+as attribute<pre class="prettyprint linenums">&lt;ANY itt-html5-video
+     video-url="{String | Object}"
+     main-player="{Boolean}"
+     player-id="{String}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h3 id="usage_directive-info">Directive info</h3>
+<div class="directive-info"><ul><li>This directive creates new scope.</li>
+</ul>
+</div>
+<h4 id="usage_directive-info_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>videoUrl</td><td><a href="" class="label type-hint type-hint-string">String </a><a href="" class="label type-hint type-hint-object"> Object</a></td><td><div class="itt-directive-page itt-directive-itthtml5video-page"><p>The URL to the youtube video. can be a string (for embeds), or an object (for the main video).</p>
+</div></td></tr><tr><td>mainPlayer</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="itt-directive-page itt-directive-itthtml5video-page"><p>Whether or not the player is to be used as the main video or embed.</p>
+</div></td></tr><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="itt-directive-page itt-directive-itthtml5video-page"><p>ID either main video asset ID or event ID</p>
+</div></td></tr></tbody></table></div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="itt-directive-page itt-directive-itthtml5video-page"><pre class="prettyprint linenums">
+//for the main player
+&lt;itt-html5-video video-url="&lt;OBJECT or URL&gt;" main-player=true player-id="&lt;ID&gt;"&gt;&lt;/itt-html5-video&gt;
+</pre>
+</div></div>
+</div>
