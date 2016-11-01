@@ -41,8 +41,8 @@
 		return {
 			restrict: 'EA',
 			template: [
-				'<div ng-click="$ctrl.togglePlayback($event)">',
-				'	<div class="embedMask" ng-if="!$ctrl.mainPlayer" ng-class="{ play: $ctrl.showOverlay() }"></div>',
+				// '<div ng-click="$ctrl.togglePlayback($event)">',
+				// '	<div class="embedMask" ng-if="!$ctrl.mainPlayer" ng-class="{ play: $ctrl.showOverlay() }"></div>',
 				'	<video class="html5Embed" id="{{$ctrl.playerId}}">',
 				'		<source class="m3u8" ng-if="$ctrl.urls.m3u8[0]" ng-src="{{$ctrl.m3u8[0]}}" type="application/x-mpegURL" />',
 				'		<source class="mpeg4" ng-if="$ctrl.urls.mp4[$ctrl.curStream]" ng-src="{{$ctrl.urls.mp4[$ctrl.curStream]}}" type="video/mp4" />',
@@ -50,7 +50,7 @@
 				'		<source class="mp3" ng-if="$ctrl.urls.mp3[$ctrl.curStream]" ng-src="{{$ctrl.urls.mp3[$ctrl.curStream]}}" type="audio/mpeg" />',
 				'		<p>Oh no! Your browser does not support the HTML5 Video element.</p>',
 				'	</video>',
-				'</div>'
+				// '</div>'
 			].join(''),
 			scope: {
 				videoUrl: '=',

@@ -33,15 +33,20 @@
 		};
 
 		//public methods
-		function setPlayer(videoObj, id, mainPlayer) {
-			_video = videoObj;
-			if (videoObj.urls.youtube && videoObj.urls.youtube.length) {
-				_player = 'youtube';
-			} else {
-				_player = 'html5';
-			}
 
-			_createInterface(_player, id, mainPlayer);
+		function setPlayer(type, id) {
+			_playerId = id;
+			playbackState.setVideoType(type);
+
+			if (type === 'html5') {
+				// html5PlayerManager.create(id, mainPlayer, _stateChangeCB);
+				_playerInterface = html5PlayerManager;
+				_player = 'html5';
+			} else {
+				_player = 'youtube';
+				_playerInterface = youTubePlayerManager;
+			}
+			_pollBufferedPercent();
 		}
 
 		function play() {
@@ -65,21 +70,7 @@
 		}
 
 
-
 		// private methods
-		function _createInterface(type, id, mainPlayer) {
-			_playerId = id;
-			// playbackState.reset();
-			playbackState.setVideoType(type);
-
-			if (type === 'html5') {
-				// html5PlayerManager.create(id, mainPlayer, _stateChangeCB);
-				_playerInterface = html5PlayerManager;
-			} else {
-				_playerInterface = youTubePlayerManager;
-			}
-			_pollBufferedPercent();
-		}
 
 		function _stateChangeCB(state) {
 			switch (state) {

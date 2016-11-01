@@ -1,6 +1,14 @@
 <div itt-magnetized class="pane videoContainer">
 	<span ng-if="episode.masterAsset">
-		<div class="video contentLayer" itt-video="episode.masterAsset" poster="episode.poster"></div>
+		<!--<div class="video contentLayer" itt-video="episode.masterAsset" poster="episode.poster"></div>-->
+
+
+		<itt-video class="video contentLayer"
+			video-url="episode.masterAsset"
+			poster="episode.poster"
+			player-id="episode.masterAsset._id"
+			main-player="true">
+		</itt-video>
 	</span>
 
 	<div class="pane fill overlay fgLayer">

@@ -1,49 +1,33 @@
 
-<div class="video">
-	<h5 style="background-color: white; color:black;">timeline State: {{playbackState.getTimelineState()}}, time: {{playbackState.getTime()}}</h5>
-
+<div>
+	<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time: {{$ctrl.playbackState.getTime()}}</h5>
 
 	<itt-youtube
 		tabindex="-1"
-		ng-if="video.urls.youtube.length"
-		video-url="{{video.urls.youtube[0]}}"
-		main-player="true"
-		player-id="video._id">
+		ng-if="$ctrl.videoType === 'youtube'"
+		video-url="{{$ctrl.parsedSrc}}"
+		main-player="$ctrl.mainPlayer"
+		player-id="$ctrl.playerId">
 	</itt-youtube>
 
 	<itt-html5-video
-		ng-if="!video.urls.youtube || !video.urls.youtube.length"
-		video-url="video.urls"
-		main-player="true"
-		player-id="video._id">
+		ng-if="$ctrl.videoType === 'html5'"
+		video-url="$ctrl.parsedSrc"
+		main-player="$ctrl.mainPlayer"
+		player-id="$ctrl.playerId">
 	</itt-html5-video>
 
-	<!-- NOTE in html5 video we can't depend on databinding to change the video src after rendering!  See videoController changeVideoBandwidth -->
-	<!--<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player" id="{{video._id}}">-->
-		<!--<source class="m3u8" ng-if="video.urls.m3u8[0]" ng-src="{{video.urls.m3u8[0]}}" type="application/x-mpegURL" />-->
-		<!--<source class="mpeg4" ng-if="video.urls.mp4[video.curStream]" ng-src="{{video.urls.mp4[video.curStream]}}" type="video/mp4" />-->
-		<!--<source class="webm" ng-if="video.urls.webm[video.curStream]" ng-src="{{video.urls.webm[video.curStream]}}" type="video/webm" />-->
-		<!--<p>Oh no! Your browser does not support the HTML5 Video element.</p>-->
-	<!--</video>-->
-
-
-	<div ng-if="poster && playbackState.getTime() == 0" class="poster overlay fill" ng-style="{backgroundImage:'url('+poster.url+')'}"></div>
-	<!-- hide this on touch devices before hasBeenPlayed, if youtube, so users can click the YT player directly to init it.
-	see also ittTimeline.js -->
-	<!--<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{-->
-		<!--play: appState.timelineState == 'paused',-->
-		<!--buffering: appState.timelineState == 'buffering',-->
-		<!--firstplay: !appState.hasBeenPlayed && !poster,-->
-		<!--rewind: (appState.time > 0 && appState.time >= video.duration - 0.3),-->
-		<!--transcoding: !video.isTranscoded()-->
-	<!--}">-->
-		<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{
-		play: playbackState.getTimelineState() == 'paused',
-		firstplay: !appState.hasBeenPlayed && !poster,
-		rewind: (playbackState.getTime() > 0 && playbackState.getTime() >= video.duration - 0.3),
-		transcoding: !video.isTranscoded()
-	}">
-		<div class="convertingMessage" ng-if="!video.isTranscoded()">
+	<div ng-if="$ctrl.poster && $ctrl.playbackState.getTime() == 0" class="poster overlay fill" ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}"></div>
+		<div ng-if="$ctrl.useMask"
+			 ng-click="$ctrl.videoClick()"
+			 class="videoMask"
+			 ng-class="{
+			 play: $ctrl.playbackState.getTimelineState() == 'paused',
+			 firstplay: !$ctrl.appState.hasBeenPlayed && !$ctrl.poster,
+			 rewind: ($ctrl.playbackState.getTime() > 0 && $ctrl.playbackState.getTime() >= $ctrl.videoDuration - 0.3),
+			 transcoding: !$ctrl.isTranscoded()
+			 }">
+		<div class="convertingMessage" ng-if="!$ctrl.isTranscoded()">
 			This video is being converted to a web-playable format and will be ready in a&nbsp;few&nbsp;minutes
 		</div>
 	</div>
