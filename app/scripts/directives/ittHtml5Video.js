@@ -43,7 +43,7 @@
 			template: [
 				// '<div ng-click="$ctrl.togglePlayback($event)">',
 				// '	<div class="embedMask" ng-if="!$ctrl.mainPlayer" ng-class="{ play: $ctrl.showOverlay() }"></div>',
-				'	<video class="html5Embed" id="{{$ctrl.playerId}}">',
+				'	<video class="html5Embed" id="{{$ctrl.playerId}}" controls>',
 				'		<source class="m3u8" ng-if="$ctrl.urls.m3u8[0]" ng-src="{{$ctrl.m3u8[0]}}" type="application/x-mpegURL" />',
 				'		<source class="mpeg4" ng-if="$ctrl.urls.mp4[$ctrl.curStream]" ng-src="{{$ctrl.urls.mp4[$ctrl.curStream]}}" type="video/mp4" />',
 				'		<source class="webm" ng-if="$ctrl.urls.webm[$ctrl.curStream]" ng-src="{{$ctrl.urls.webm[$ctrl.curStream]}}" type="video/webm" />',

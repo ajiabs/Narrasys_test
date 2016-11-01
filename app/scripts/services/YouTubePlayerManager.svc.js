@@ -37,6 +37,7 @@
 			stop: stop,
 			reset: reset,
 			pauseOtherEmbeds: pauseOtherEmbeds,
+			pauseOtherPlayers: pauseOtherPlayers,
 			setPlaybackQuality: setPlaybackQuality,
 			setPlayerId: setPlayerId,
 			getBufferedPercent: getVideoLoadedFraction,
@@ -242,10 +243,8 @@
 					}
 				}
 
-
-				_stateChangeCallbacks.forEach(function(cb) {
-					cb(PLAYERSTATES[event.data]);
-				});
+				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
+				_emitStateChange(stateChangeEvent);
 			}
 			/**
 			 * @private
@@ -586,6 +585,21 @@
 				}
 			}
 		}
+
+		/**
+		 * @ngdoc method
+		 * @name #pauseOtherPlayers
+		 * @param {String} pid the current player
+		 * @description
+		 * loop over all players and pause them if they are not the current player
+		 */
+		function pauseOtherPlayers(pid) {
+			Object.keys(_players).forEach(function(playerId) {
+				if (playerId !== pid) {
+					pause(playerId);
+				}
+			});
+		}
 		/**
 		 * @ngdoc method
 		 * @name #destroy
@@ -602,6 +616,25 @@
 				delete _players[pid];
 			}
 		}
+		/**
+		 * @param event
+		 * @param pid
+		 * @return {{emitterId: string, state: string}}
+		 * @private
+		 */
+		function _formatPlayerStateChangeEvent(event, pid) {
+			return {
+				emitterId: pid,
+				state: PLAYERSTATES[event.data]
+			};
+		}
+
+		function _emitStateChange(playerStateChange) {
+			_stateChangeCallbacks.forEach(function(cb) {
+				cb(playerStateChange);
+			});
+		}
+
 		/**
 		 * @private
 		 * @ngdoc

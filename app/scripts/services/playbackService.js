@@ -13,15 +13,13 @@
 		var _video = {};
 		var _player = '';
 		var _playerInterface = {};
-		var _playerId;
-		var _cbs = [];
+		var _mainPlayerId;
+		var _stateChangeCallbacks = [];
 		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
-
 
 		angular.forEach(_playerManagers, function(playerManager) {
 			playerManager.registerStateChangeListener(_stateChangeCB)
 		});
-
 
 		return {
 			setPlayer: setPlayer,
@@ -34,8 +32,10 @@
 
 		//public methods
 
-		function setPlayer(type, id) {
-			_playerId = id;
+		function setPlayer(type, id, mainPlayer) {
+			if (mainPlayer) {
+				_mainPlayerId = id;
+			}
 			playbackState.setVideoType(type);
 
 			if (type === 'html5') {
@@ -49,36 +49,44 @@
 			_pollBufferedPercent();
 		}
 
+		//called from timlineSvc -> playbackService -> playerManager
 		function play() {
-			return _playerInterface.play(_playerId);
+			return _playerInterface.play(_mainPlayerId);
 		}
 
 		function pause() {
-			_playerInterface.pause(_playerId)
+			_playerInterface.pause(_mainPlayerId)
 		}
 
 		function seek(t) {
-			_playerInterface.seekTo(_playerId, t);
+			_playerInterface.seekTo(_mainPlayerId, t);
 		}
 
 		function registerStateChangeListener(cb) {
-			_cbs.push(cb);
+			_stateChangeCallbacks.push(cb);
 		}
 
 		function getCurrentTime() {
-			_playerInterface.getCurrentTime(_playerId);
+			_playerInterface.getCurrentTime(_mainPlayerId);
 		}
 
 
 		// private methods
+		//respond to events emitted from playerManager
+		//playerManager -> playbackSvc -> timelineSvc (if main)
+		function _stateChangeCB(stateChangeEvent) {
+			var state = stateChangeEvent.state;
+			var emitterId = stateChangeEvent.emitterId;
 
-		function _stateChangeCB(state) {
 			switch (state) {
 				case 'unstarted':
 					break;
 				case 'ended':
 					break;
 				case 'playing':
+					angular.forEach(_playerManagers, function(pm) {
+						pm.pauseOtherPlayers(emitterId);
+					});
 					break;
 				case 'paused':
 					break;
@@ -88,14 +96,17 @@
 				case 'video cued':
 					break;
 			}
-			_cbs.forEach(function(cb) {
-				cb(state);
-			});
+
+			if (emitterId === _mainPlayerId) {
+				angular.forEach(_stateChangeCallbacks, function(cb) {
+					cb(state);
+				});
+			}
 		}
 
 		function _pollBufferedPercent() {
 			$interval(function() {
-				playbackState.setBufferedPercent(_playerInterface.getBufferedPercent(_playerId));
+				playbackState.setBufferedPercent(_playerInterface.getBufferedPercent(_mainPlayerId));
 			}, 200);
 		}
 	}

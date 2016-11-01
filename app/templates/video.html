@@ -1,6 +1,6 @@
-
 <div>
-	<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time: {{$ctrl.playbackState.getTime()}}</h5>
+	<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time:
+		{{$ctrl.playbackState.getTime()}}</h5>
 
 	<itt-youtube
 		tabindex="-1"
@@ -17,18 +17,21 @@
 		player-id="$ctrl.playerId">
 	</itt-html5-video>
 
-	<div ng-if="$ctrl.poster && $ctrl.playbackState.getTime() == 0" class="poster overlay fill" ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}"></div>
-		<div ng-if="$ctrl.useMask"
-			 ng-click="$ctrl.videoClick()"
-			 class="videoMask"
-			 ng-class="{
-			 play: $ctrl.playbackState.getTimelineState() == 'paused',
-			 firstplay: !$ctrl.appState.hasBeenPlayed && !$ctrl.poster,
-			 rewind: ($ctrl.playbackState.getTime() > 0 && $ctrl.playbackState.getTime() >= $ctrl.videoDuration - 0.3),
-			 transcoding: !$ctrl.isTranscoded()
-			 }">
-		<div class="convertingMessage" ng-if="!$ctrl.isTranscoded()">
-			This video is being converted to a web-playable format and will be ready in a&nbsp;few&nbsp;minutes
-		</div>
-	</div>
+	<div ng-if="$ctrl.poster && $ctrl.playbackState.getTime() == 0" class="poster overlay fill"
+		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}"></div>
+
+	<!--<div ng-if="$ctrl.useMask"-->
+		 <!--ng-click="$ctrl.videoClick()"-->
+		 <!--class="videoMask"-->
+		 <!--ng-class="{-->
+			 <!--play: $ctrl.playbackState.getTimelineState() == 'paused',-->
+			 <!--firstplay: !$ctrl.appState.hasBeenPlayed && !$ctrl.poster,-->
+			 <!--rewind: ($ctrl.playbackState.getTime() > 0 && $ctrl.playbackState.getTime() >= $ctrl.videoDuration - 0.3),-->
+			 <!--transcoding: !$ctrl.isTranscoded()-->
+			 <!--}">-->
+		<!--video mask FTW;-->
+		<!--<div class="convertingMessage" ng-if="!$ctrl.isTranscoded()">-->
+			<!--This video is being converted to a web-playable format and will be ready in a&nbsp;few&nbsp;minutes-->
+		<!--</div>-->
+	<!--</div>-->
 </div>

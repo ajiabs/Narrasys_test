@@ -31,6 +31,7 @@
 			getPlayerState: getPlayerState,
 			seekTo: seek,
 			pauseOtherEmbeds: pauseOtherEmbeds,
+			pauseOtherPlayers: pauseOtherPlayers,
 			getBufferedPercent: getBufferedPercent,
 			isReady: isReady,
 			registerStateChangeListener: registerStateChangeListener,
@@ -77,10 +78,6 @@
 
 		function onPlaying() {
 			var instance = _getInstance(this.id);
-			// pauseOtherEmbeds(this.id);
-			if (this.id !== _mainPlayerId && appState.timelineState === 'playing') {
-				//pause timeline
-			}
 			instance.meta.playerState = 1;
 			_emitStateChange(instance);
 		}
@@ -142,6 +139,20 @@
 				}
 			}
 		}
+		/**
+		 * @ngdoc method
+		 * @name #pauseOtherPlayers
+		 * @param {String} pid the current player
+		 * @description
+		 * loop over all players and pause them if they are not the current player
+		 */
+		function pauseOtherPlayers(pid) {
+			Object.keys(_players).forEach(function(playerId) {
+				if (playerId !== pid) {
+					pause(playerId);
+				}
+			});
+		}
 
 		function getBufferedPercent(pid) {
 			var instance = _getInstance(pid);
@@ -164,8 +175,16 @@
 		/*
 		 private methods
 		 */
+
+		function _formatPlayerStateChangeEvent(event, pid) {
+			return {
+				emitterId: pid,
+				state: PLAYERSTATES[event]
+			};
+		}
+
 		function _emitStateChange(instance) {
-			instance.onStateChange(PLAYERSTATES[instance.meta.playerState]);
+			instance.onStateChange(_formatPlayerStateChangeEvent(instance.meta.playerState, instance.id));
 		}
 
 		function _onStateChange(event) {

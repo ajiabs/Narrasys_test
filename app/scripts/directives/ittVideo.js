@@ -38,22 +38,20 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 			ctrl.videoType = urlInfo.videoType;
 
 			console.log('urlInfo', urlInfo, ctrl.playerId);
-			playbackService.setPlayer(urlInfo.videoType, ctrl.playerId);
+			playbackService.setPlayer(urlInfo.videoType, ctrl.playerId, ctrl.mainPlayer);
 		}
 
 		function videoClick() {
 			if (playbackState.getTimelineState() === "paused") {
-				timelineSvc.play();
+				playbackService.play();
 			} else {
-				timelineSvc.pause();
+				playbackService.pause();
 			}
 		}
 
 		function isTranscoded() {
 			return true;
 		}
-
-
 		/**
 		 *
 		 * @param {String} url
