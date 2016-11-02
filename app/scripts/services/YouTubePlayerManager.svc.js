@@ -155,6 +155,7 @@
 		 * @returns {void} has no return value
 		 */
 		function create(divId, playerId, videoId) {
+			console.trace('youtubePlayerManager#create');
 			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);

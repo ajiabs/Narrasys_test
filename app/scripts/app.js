@@ -67,6 +67,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 
 					//needs to be an array
 					var cachedNars = modelSvc.getNarrativesAsArray();
+					console.log('cachedNars', cachedNars[0]);
 					var cachedCustomers;
 					//if use visits /story/:id prior to visiting this route, they will have a single
 					//narrative in modelSvc. We consider the cache 'empty' if the only narrative

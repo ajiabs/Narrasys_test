@@ -33,6 +33,7 @@
 		//public methods
 
 		function setPlayer(type, id, mainPlayer) {
+			console.trace('playbacService#setPlayer');
 			if (mainPlayer) {
 				_mainPlayerId = id;
 			}

@@ -28,8 +28,8 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 
 		onInit();
 
-
 		function onInit() {
+			console.trace('ittVideo#onInit');
 			var urlInfo = _parseVideoUrl(ctrl.videoUrl, ctrl.mainPlayer);
 
 			ctrl.videoDuration = urlInfo.videoDuration;
@@ -37,7 +37,7 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 			ctrl.parsedSrc = urlInfo.parsedSrc;
 			ctrl.videoType = urlInfo.videoType;
 
-			console.log('urlInfo', urlInfo, ctrl.playerId);
+			// console.log('urlInfo', urlInfo, ctrl.playerId);
 			playbackService.setPlayer(urlInfo.videoType, ctrl.playerId, ctrl.mainPlayer);
 		}
 
