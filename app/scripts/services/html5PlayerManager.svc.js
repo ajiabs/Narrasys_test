@@ -66,9 +66,12 @@
 
 			// var interval = $interval(checkBuffering, _checkInterval);
 
+			plr.controls = true;
 			if (mainPlayer === true) {
 				_mainPlayerId = divID;
+				plr.controls = false;
 			}
+
 			return plr;
 		}
 
