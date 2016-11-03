@@ -30,6 +30,8 @@ angular.module('com.inthetelling.story')
 				function postNewNarrative(narrativeData) {
 					$scope.resolvingNarrative = true;
 					dataSvc.generateNewNarrative(narrativeData.c, narrativeData.n).then(function(narrative) {
+						narrative.subDomain = modelSvc.customers[narrative.customer_id].domains[0];
+						modelSvc.cache('narrative', narrative);
 						$location.path('/story/' + narrative._id);
 						$scope.resolvingNarrative = false;
 					});

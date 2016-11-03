@@ -20,9 +20,9 @@
 		};
 	}
 
-	NarrativeListCtrl.$inject = ['$location','authSvc', 'appState', 'dataSvc'];
+	NarrativeListCtrl.$inject = ['$location','authSvc', 'appState', 'dataSvc', 'modelSvc'];
 
-	function NarrativeListCtrl($location, authSvc, appState, dataSvc) {
+	function NarrativeListCtrl($location, authSvc, appState, dataSvc, modelSvc) {
 		var ctrl = this;
 
 		ctrl.narratives = ctrl.narrativesData;
@@ -43,8 +43,10 @@
 		}
 
 		function addNarrative(n) {
-			dataSvc.createNarrative(n).then(function(narrativeResp) {
-				$location.path('/story/' + narrativeResp._id);
+			dataSvc.createNarrative(n).then(function(narrative) {
+				narrative.subDomain = modelSvc.customers[narrative.customer_id].domains[0];
+				modelSvc.cache('narrative', narrative);
+				$location.path('/story/' + narrative._id);
 			});
 		}
 
