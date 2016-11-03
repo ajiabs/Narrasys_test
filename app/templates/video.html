@@ -2,20 +2,22 @@
 	<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time:
 		{{$ctrl.playbackState.getTime()}}</h5>
 
-	<itt-youtube
-		tabindex="-1"
-		ng-if="$ctrl.videoType === 'youtube'"
-		video-url="{{$ctrl.parsedSrc}}"
-		main-player="$ctrl.mainPlayer"
-		player-id="$ctrl.playerId">
-	</itt-youtube>
+	<!--<itt-youtube-->
+		<!--tabindex="-1"-->
+		<!--ng-if="$ctrl.videoType === 'youtube'"-->
+		<!--video-url="{{$ctrl.parsedSrc}}"-->
+		<!--main-player="$ctrl.mainPlayer"-->
+		<!--player-id="$ctrl.playerId">-->
+	<!--</itt-youtube>-->
 
-	<itt-html5-video
-		ng-if="$ctrl.videoType === 'html5'"
-		video-url="$ctrl.parsedSrc"
-		main-player="$ctrl.mainPlayer"
-		player-id="$ctrl.playerId">
-	</itt-html5-video>
+	<!--<itt-html5-video-->
+		<!--ng-if="$ctrl.videoType === 'html5'"-->
+		<!--video-url="$ctrl.parsedSrc"-->
+		<!--main-player="$ctrl.mainPlayer"-->
+		<!--player-id="$ctrl.playerId">-->
+	<!--</itt-html5-video>-->
+
+	<div ng-bind-html="$ctrl.playerElement"></div>
 
 	<div ng-if="$ctrl.poster && $ctrl.playbackState.getTime() == 0" class="poster overlay fill"
 		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}"></div>

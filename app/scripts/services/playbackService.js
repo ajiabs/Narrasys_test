@@ -27,6 +27,7 @@
 			pause: pause,
 			seek: seek,
 			getCurrentTime: getCurrentTime,
+			createInstance: createInstance,
 			registerStateChangeListener: registerStateChangeListener
 		};
 
@@ -48,6 +49,13 @@
 				_playerInterface = youTubePlayerManager;
 			}
 			_pollBufferedPercent();
+
+			return _playerInterface.setPlayerId(id, mainPlayer);
+		}
+
+		function createInstance(playerId, videoId) {
+			console.log('createInstance params', playerId, videoId);
+			_playerInterface.create(playerId, videoId)
 		}
 
 		//called from timlineSvc -> playbackService -> playerManager

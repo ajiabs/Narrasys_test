@@ -45,19 +45,12 @@
 		};
 	}
 
-	function ittYoutubeCtrl($timeout, $scope, youTubePlayerManager, youtubeSvc) {
+	function ittYoutubeCtrl($scope, youTubePlayerManager, youtubeSvc) {
 		var ctrl = this;  //jshint ignore:line
+
 		ctrl.ytVideoID = youtubeSvc.extractYoutubeId(ctrl.videoUrl);
-
-		youTubePlayerManager.setPlayerId(ctrl.playerId, ctrl.mainPlayer)
-			.then(function(divId) {
-				ctrl.embedId = divId;
-
-				$timeout(function() {
-					youTubePlayerManager.create(divId, ctrl.playerId, ctrl.ytVideoID);
-				}, 0);
-			});
-
+		ctrl.embedId = youTubePlayerManager.setPlayerId(ctrl.playerId, ctrl.mainPlayer);
+		youTubePlayerManager.create(ctrl.embedId, ctrl.playerId, ctrl.ytVideoID);
 
 		$scope.$on('$destroy', function() {
 			youTubePlayerManager.destroy(ctrl.embedId);

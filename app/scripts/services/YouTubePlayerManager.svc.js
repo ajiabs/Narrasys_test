@@ -20,7 +20,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, $location, appState, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState) {
+	function youTubePlayerManager($q, $location, appState, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState, youtubeSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -130,11 +130,6 @@
 		}
 
 
-
-		//public methods
-		//returns str or null
-		function parseMediaSrc(str) {}
-
 		function isReady() {
 			return true;
 		}
@@ -154,12 +149,11 @@
 		 * @param {String} videoId The youtube Video ID
 		 * @returns {void} has no return value
 		 */
-		function create(divId, playerId, videoId) {
+		function create(playerId, videoId) {
 			console.trace('youtubePlayerManager#create');
-			_createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+			_createInstance(playerId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
-
 
 			function handleSuccess(ytInstance) {
 				_players[playerId].yt = ytInstance;
@@ -168,7 +162,7 @@
 			}
 
 			function tryAgain() {
-				return _createInstance(divId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+				return _createInstance(playerId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 					.then(handleSuccess)
 					.catch(lastTry);
 			}
@@ -259,9 +253,8 @@
 			 * @returns {Void} has no return value
 			 */
 			function onReady(event) {
-
+				console.log('onReady!!');
 				var pid = _getPidFromInstance(event.target);
-
 
 				if (pid === _mainPlayerId) {
 					appState.mainYTPlayerReady = true;
@@ -273,7 +266,6 @@
 				}
 
 				_players[pid].ready = true;
-
 				// onReadyCB(event);
 			}
 
@@ -635,28 +627,6 @@
 				cb(playerStateChange);
 			});
 		}
-
-		/**
-		 * @private
-		 * @ngdoc
-		 * @name _guid
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Used to generate an 8 digit 'unique' string in order to guarantee
-		 * uniqueness for embedded YT instances div ID's
-		 * @returns {string} 8 digit 'unique' identifier.
-		 */
-		function _guid() {
-			/* jshint ignore:start */
-			var d = new Date().getTime();
-			var uuid = 'xxxxxxxx'.replace(/[xy]/g, function (c) {
-				var r = (d + Math.random() * 16) % 16 | 0;
-				d = Math.floor(d / 16);
-				return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16);
-			});
-			return uuid;
-			/* jshint ignore:end */
-		}
 		/**
 		 * @ngdoc method
 		 * @name #setPlayer
@@ -668,28 +638,33 @@
 		 * @returns {String} Div ID of YT instance.
 		 */
 		function setPlayerId(id, mainPlayer) {
-			var dfd = $q.defer();
-			var _id;
 			if (mainPlayer) {
-				// clear out players obj in the case that we are main player
-				// do not want stale players staying around.
 				_players = {};
-				_id = id;
-				_mainPlayerId = _id;
-				_players[_id] = { isMainPlayer: true };
+				_mainPlayerId = id;
+				_players[id] = { isMainPlayer: true };
 			} else {
-				//the resolved _id is used for the ID of the actual player element
-				//it needs to be unique
-				//the _id passed to the YT constructor to set the divID (see _create() above,
-				//setPlayer is always called prior to create() - see ittYoutubeEmbed )
-				//YT will search the dom for the above _id and insert the iframe player.
-				_id = _guid() + id;
 				_players[id] = { isMainPlayer: false };
-
 			}
 
-			dfd.resolve(_id);
-			return dfd.promise;
+			console.log('players!', _players);
+			return setPlayerDiv(id);
+		}
+
+		function setPlayerDiv(id) {
+			return '<div id="' + id + '"></div>';
+		}
+
+		//public methods
+		//returns str or null
+		function parseMediaSrc(arr) {
+			var len = arr.length, found = null;
+			while (len--) {
+				if (youtubeSvc.isYoutubeUrl(arr[len])) {
+					found = arr[len];
+					break;
+				}
+			}
+			return found;
 		}
 
 		return _youTubePlayerManager;

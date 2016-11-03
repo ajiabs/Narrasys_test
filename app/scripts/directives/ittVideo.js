@@ -12,14 +12,14 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 			videoUrl: '=',
 			playerId: '='
 		},
-		controller: ['playbackService', 'playbackState', 'appState', 'timelineSvc', 'youtubeSvc', videoCtrl],
+		controller: ['$timeout','playbackService', 'playbackState', 'appState', 'timelineSvc', 'youtubeSvc', videoCtrl],
 		bindToController: true,
 		controllerAs: '$ctrl',
 		link: link
 	};
 
 	//TODO: tackle isTranscoded somehow.
-	function videoCtrl(playbackService, playbackState, appState, timelineSvc, youtubeSvc) {
+	function videoCtrl($timeout, playbackService, playbackState, appState, timelineSvc, youtubeSvc) {
 		var ctrl = this;
 		ctrl.playbackState = playbackState;
 		ctrl.appState = appState;
@@ -37,15 +37,17 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 			ctrl.parsedSrc = urlInfo.parsedSrc;
 			ctrl.videoType = urlInfo.videoType;
 
-			// console.log('urlInfo', urlInfo, ctrl.playerId);
-			playbackService.setPlayer(urlInfo.videoType, ctrl.playerId, ctrl.mainPlayer);
+			ctrl.playerElement = playbackService.setPlayer(urlInfo.videoType, ctrl.playerId, ctrl.mainPlayer);
+			$timeout(function() {
+				playbackService.createInstance(ctrl.playerId, urlInfo.ytVideoID)
+			},0);
 		}
 
 		function videoClick() {
 			if (playbackState.getTimelineState() === "paused") {
-				playbackService.play();
+				timelineSvc.play();
 			} else {
-				playbackService.pause();
+				timelineSvc.pause();
 			}
 		}
 
@@ -61,13 +63,14 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 		 * @private
 		 */
 		function _parseVideoUrl(url, mainPlayer) {
-			var videoType, useMask, parsedSrc, vidDuration;
+			var videoType, useMask, parsedSrc, vidDuration, ytVideoID;
 			//URL is a string (must be an embed video), see if it's from youtube
 			if (Object.prototype.toString.call(url) === '[object String]') {
 				if (youtubeSvc.isYoutubeUrl(url)) {
 					videoType = 'youtube';
 					useMask = false;
 					console.log('embed!!');
+					ytVideoID = youtubeSvc.extractYoutubeId(url);
 				} else {
 					videoType = 'html5';
 					useMask = true;
@@ -84,6 +87,7 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 				if (url.urls.youtube && url.urls.youtube.length) {
 					videoType = 'youtube';
 					parsedSrc = url.urls.youtube[0];
+					ytVideoID = youtubeSvc.extractYoutubeId(parsedSrc);
 				} else {
 					videoType = 'html5';
 					console.log('html5 vid!', videoType);
@@ -94,7 +98,8 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 				useMask: useMask,
 				videoType: videoType,
 				parsedSrc: parsedSrc,
-				videoDuration: vidDuration
+				videoDuration: vidDuration,
+				ytVideoID: ytVideoID
 			}
 		}
 	}
