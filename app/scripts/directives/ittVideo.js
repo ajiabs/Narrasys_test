@@ -9,7 +9,7 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 		scope: {
 			poster: "=?",
 			mainPlayer: '=',
-			videoUrl: '=',
+			mediaSrcArr: '=',
 			playerId: '='
 		},
 		controller: ['$timeout','playbackService', 'playbackState', 'appState', 'timelineSvc', 'youtubeSvc', videoCtrl],
@@ -29,18 +29,12 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 		onInit();
 
 		function onInit() {
-			console.trace('ittVideo#onInit');
-			var urlInfo = _parseVideoUrl(ctrl.videoUrl, ctrl.mainPlayer);
 
-			ctrl.videoDuration = urlInfo.videoDuration;
-			ctrl.useMask = urlInfo.useMask;
-			ctrl.parsedSrc = urlInfo.parsedSrc;
-			ctrl.videoType = urlInfo.videoType;
-
-			ctrl.playerElement = playbackService.setPlayer(urlInfo.videoType, ctrl.playerId, ctrl.mainPlayer);
+			ctrl.playerElement = playbackService.setPlayer(ctrl.mediaSrcArr, ctrl.playerId, ctrl.mainPlayer);
 			$timeout(function() {
-				playbackService.createInstance(ctrl.playerId, urlInfo.ytVideoID)
+				playbackService.createInstance(ctrl.mediaSrcArr, ctrl.playerId);
 			},0);
+
 		}
 
 		function videoClick() {

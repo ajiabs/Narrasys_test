@@ -17,13 +17,14 @@
 	};
 
 
-	function html5PlayerManager($interval, appState, PLAYERSTATES, playbackState) {
+	function html5PlayerManager($interval, PLAYERSTATES, playbackState) {
 		var _players = {};
 		var _mainPlayerId;
 		var _checkInterval = 50.0;
 		var _stateChangeCallbacks = [];
 
 		return {
+			type: 'html5',
 			create: create,
 			play: play,
 			pause: pause,

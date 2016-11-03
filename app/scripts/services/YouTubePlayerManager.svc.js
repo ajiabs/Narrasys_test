@@ -28,6 +28,7 @@
 		var _stateChangeCallbacks = [];
 
 		_youTubePlayerManager = {
+			type: 'youtube',
 			create: create,
 			destroy: destroy,
 			play: play,
@@ -144,14 +145,14 @@
 		 * @description
 		 * Used to create an instance of the YT object which is necessary to
 		 * interface with the youtube Iframe API
-		 * @param {String} divId Unique ID of Div element to append iframe into
-		 * @param {String} playerId The id instance in the playerManager
-		 * @param {String} videoId The youtube Video ID
 		 * @returns {void} has no return value
 		 */
-		function create(playerId, videoId) {
-			console.trace('youtubePlayerManager#create');
-			_createInstance(playerId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+		function create(mediaSrcArr, playerId) {
+
+			var srcUrl = parseMediaSrc(mediaSrcArr);
+			var ytId = youtubeSvc.extractYoutubeId(srcUrl);
+
+			_createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
 
@@ -646,16 +647,18 @@
 				_players[id] = { isMainPlayer: false };
 			}
 
-			console.log('players!', _players);
-			return setPlayerDiv(id);
+			return getPlayerDiv(id);
 		}
 
-		function setPlayerDiv(id) {
+		function getPlayerDiv(id) {
 			return '<div id="' + id + '"></div>';
 		}
 
-		//public methods
-		//returns str or null
+		/**
+		 *
+		 * @param arr
+		 * @return {String | null}
+		 */
 		function parseMediaSrc(arr) {
 			var len = arr.length, found = null;
 			while (len--) {

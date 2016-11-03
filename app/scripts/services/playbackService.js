@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('playbackService', playbackService);
 
-	function playbackService($interval, youTubePlayerManager, html5PlayerManager, playbackState, analyticsSvc) {
+	function playbackService($interval, youTubePlayerManager, html5PlayerManager, playbackState, analyticsSvc, ittUtils) {
 
 		var _video = {};
 		var _player = '';
@@ -32,30 +32,19 @@
 		};
 
 		//public methods
-
-		function setPlayer(type, id, mainPlayer) {
-			console.trace('playbacService#setPlayer');
+		function setPlayer(arr, id, mainPlayer) {
+			_playerInterface = _getPlayerManagerFromMediaSrc(arr);
+			playbackState.setVideoType(_playerInterface.type);
 			if (mainPlayer) {
 				_mainPlayerId = id;
+				_pollBufferedPercent();
 			}
-			playbackState.setVideoType(type);
-
-			if (type === 'html5') {
-				// html5PlayerManager.create(id, mainPlayer, _stateChangeCB);
-				_playerInterface = html5PlayerManager;
-				_player = 'html5';
-			} else {
-				_player = 'youtube';
-				_playerInterface = youTubePlayerManager;
-			}
-			_pollBufferedPercent();
 
 			return _playerInterface.setPlayerId(id, mainPlayer);
 		}
 
-		function createInstance(playerId, videoId) {
-			console.log('createInstance params', playerId, videoId);
-			_playerInterface.create(playerId, videoId)
+		function createInstance(mediaSrcArr, playerId) {
+			_playerInterface.create(mediaSrcArr, playerId);
 		}
 
 		//called from timlineSvc -> playbackService -> playerManager
@@ -117,6 +106,19 @@
 			$interval(function() {
 				playbackState.setBufferedPercent(_playerInterface.getBufferedPercent(_mainPlayerId));
 			}, 200);
+		}
+
+		function _getPlayerManagerFromMediaSrc(arr) {
+			var len = _playerManagers.length, pm = null;
+
+			while (len--) {
+				if (ittUtils.existy(_playerManagers[len].parseMediaSrc(arr))) {
+					pm = _playerManagers[len];
+					break;
+				}
+			}
+
+			return pm;
 		}
 	}
 
