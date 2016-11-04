@@ -22,9 +22,11 @@
 		var _mainPlayerId;
 		var _checkInterval = 50.0;
 		var _stateChangeCallbacks = [];
+		var _type = 'html5';
 
 		return {
-			type: 'html5',
+			type: _type,
+			setPlayerId: setPlayerId,
 			create: create,
 			play: play,
 			pause: pause,
@@ -35,19 +37,26 @@
 			pauseOtherPlayers: pauseOtherPlayers,
 			getBufferedPercent: getBufferedPercent,
 			isReady: isReady,
-			registerStateChangeListener: registerStateChangeListener,
-			parseMediaSrc: parseMediaSrc
+			registerStateChangeListener: registerStateChangeListener
 		};
-
-
-		//returns str or null
-		function parseMediaSrc(str) {}
 
 		function registerStateChangeListener(cb) {
 			_stateChangeCallbacks.push(cb);
 		}
 
-		function create(divID, mainPlayer) {
+		function setPlayerId(id, mainPlayer, mediaSrcArr) {
+			if (mainPlayer) {
+				_players = {};
+				_mainPlayerId = id;
+				_players[id] = { isMainPlayer: true };
+			} else {
+				_players[id] = { isMainPlayer: false };
+			}
+
+			return _getPlayerDiv(id, mediaSrcArr);
+		}
+
+		function create(divID) {
 			var plr = document.getElementById(divID);
 			plr.onpause = onPause;
 			plr.onplaying = onPlaying;
@@ -68,7 +77,7 @@
 			// var interval = $interval(checkBuffering, _checkInterval);
 
 			plr.controls = true;
-			if (mainPlayer === true) {
+			if (_mainPlayerId === divID) {
 				_mainPlayerId = divID;
 				plr.controls = false;
 			}
@@ -160,7 +169,7 @@
 
 		function getBufferedPercent(pid) {
 			var instance = _getInstance(pid);
-			if (instance && instance.meta.playerState !== -1) {
+			if (instance && instance.meta && instance.meta.playerState !== -1) {
 				if (instance.buffered.length > 0) {
 					var bufLen = instance.buffered.length;
 					var bufStart = instance.buffered.start(bufLen -1);
@@ -179,6 +188,32 @@
 		/*
 		 private methods
 		 */
+
+		function _getPlayerDiv(id, mediaSrcArr) {
+			var videoObj = _getHtml5VideoObject(mediaSrcArr);
+			var videoElement = '<video id="' + id  +'">';
+			var classAttr, srcAttr, typeAttr;
+			Object.keys(videoObj).forEach(function(fileType) {
+				classAttr = fileType;
+				srcAttr = videoObj[fileType][0];
+
+				if (srcAttr == null) {
+					return;
+				}
+
+				if (fileType === 'm3u8') {
+					typeAttr = 'application/x-mpegURL';
+				} else {
+					typeAttr = 'video/' + fileType;
+				}
+
+				videoElement += '<source class="' + classAttr + '" src="' + srcAttr + '" type="' + typeAttr + '"/>';
+			});
+
+			videoElement += '<p>Oh no! Your browser does not support the HTML5 Video element.</p>';
+			videoElement += '</video>';
+			return videoElement;
+		}
 
 		function _formatPlayerStateChangeEvent(event, pid) {
 			return {
@@ -201,6 +236,16 @@
 			if (_players[pid]) {
 				return _players[pid];
 			}
+		}
+
+		function _getHtml5VideoObject(mediaSrcArr) {
+			var extensionMatch = /(mp4|m3u8|webm)/;
+
+			return mediaSrcArr.reduce(function(videoObject, mediaSrc) {
+				var fileTypeKey = mediaSrc.match(extensionMatch)[1];
+				videoObject[fileTypeKey].push(mediaSrc);
+				return videoObject;
+			}, {mp4: [], webm: [], m3u8: []});
 		}
 
 		//seems not to work very well.

@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('playbackService', playbackService);
 
-	function playbackService($interval, youTubePlayerManager, html5PlayerManager, playbackState, analyticsSvc, ittUtils) {
+	function playbackService($interval, youTubePlayerManager, html5PlayerManager, playbackState, analyticsSvc, ittUtils, urlService) {
 
 		var _video = {};
 		var _player = '';
@@ -32,15 +32,20 @@
 		};
 
 		//public methods
-		function setPlayer(arr, id, mainPlayer) {
-			_playerInterface = _getPlayerManagerFromMediaSrc(arr);
+		function setPlayer(mediaSrcArr, id, mainPlayer) {
+			var parsedMedia = urlService.parseMediaSrc(mediaSrcArr);
+
+			_playerInterface = _getPlayerManagerFromMediaSrc(parsedMedia);
 			playbackState.setVideoType(_playerInterface.type);
 			if (mainPlayer) {
 				_mainPlayerId = id;
 				_pollBufferedPercent();
 			}
 
-			return _playerInterface.setPlayerId(id, mainPlayer);
+			return {
+				parsedMediaSrc: parsedMedia[0].mediaSrcArr,
+				playerDiv: _playerInterface.setPlayerId(id, mainPlayer, parsedMedia[0].mediaSrcArr)
+			};
 		}
 
 		function createInstance(mediaSrcArr, playerId) {
@@ -108,16 +113,14 @@
 			}, 200);
 		}
 
-		function _getPlayerManagerFromMediaSrc(arr) {
+		function _getPlayerManagerFromMediaSrc(parsedMediaSrc) {
 			var len = _playerManagers.length, pm = null;
-
 			while (len--) {
-				if (ittUtils.existy(_playerManagers[len].parseMediaSrc(arr))) {
+				if (parsedMediaSrc.length > 0 && _playerManagers[len].type === parsedMediaSrc[0].type) {
 					pm = _playerManagers[len];
 					break;
 				}
 			}
-
 			return pm;
 		}
 	}

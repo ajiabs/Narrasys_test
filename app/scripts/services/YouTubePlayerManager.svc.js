@@ -26,9 +26,10 @@
 		var _players = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
+		var _type = 'youtube';
 
 		_youTubePlayerManager = {
-			type: 'youtube',
+			type: _type,
 			create: create,
 			destroy: destroy,
 			play: play,
@@ -51,7 +52,6 @@
 			registerStateChangeListener: registerStateChangeListener,
 			//need to see how to make better than returning a hard coded boolean
 			isReady: isReady,
-			parseMediaSrc: parseMediaSrc
 		};
 
 		//private methods
@@ -147,10 +147,9 @@
 		 * interface with the youtube Iframe API
 		 * @returns {void} has no return value
 		 */
-		function create(mediaSrcArr, playerId) {
+		function create(playerId, mediaSrcArr) {
 
-			var srcUrl = parseMediaSrc(mediaSrcArr);
-			var ytId = youtubeSvc.extractYoutubeId(srcUrl);
+			var ytId = youtubeSvc.extractYoutubeId(mediaSrcArr[0]);
 
 			_createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
@@ -647,27 +646,11 @@
 				_players[id] = { isMainPlayer: false };
 			}
 
-			return getPlayerDiv(id);
+			return _getPlayerDiv(id);
 		}
 
-		function getPlayerDiv(id) {
+		function _getPlayerDiv(id) {
 			return '<div id="' + id + '"></div>';
-		}
-
-		/**
-		 *
-		 * @param arr
-		 * @return {String | null}
-		 */
-		function parseMediaSrc(arr) {
-			var len = arr.length, found = null;
-			while (len--) {
-				if (youtubeSvc.isYoutubeUrl(arr[len])) {
-					found = arr[len];
-					break;
-				}
-			}
-			return found;
 		}
 
 		return _youTubePlayerManager;

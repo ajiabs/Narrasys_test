@@ -1150,6 +1150,14 @@ angular.module('com.inthetelling.story')
 			svc.resolveEpisodeEvents(episodeId);
 		};
 
+
+		function resolveMediaSrcArray(videoObject) {
+			return Object.keys(videoObject).reduce(function(mediaSrcArr, mediaSrc) {
+				mediaSrcArr = mediaSrcArr.concat(videoObject[mediaSrc]);
+				return mediaSrcArr;
+			}, []);
+		}
+
 		var resolveVideo = function (videoAsset) {
 			var videoObject = {
 				youtube: [],
@@ -1246,6 +1254,7 @@ angular.module('com.inthetelling.story')
 				return svc.isTranscoded(this);
 			};
 
+			videoAsset.mediaSrcArr = resolveMediaSrcArray(videoObject);
 			return videoAsset;
 		};
 
