@@ -16,7 +16,6 @@
 		4: 'HAVE_ENOUGH_DATA'
 	};
 
-
 	function html5PlayerManager($interval, $timeout, PLAYERSTATES, playbackState) {
 		var _players = {};
 		var _mainPlayerId;
@@ -60,9 +59,11 @@
 			_players[divID].instance = plr;
 
 
+			//temp to test out video source change.
 			$timeout(function() {
-				console.log('BEGIN QUALITY CHANGE!');
+				console.info('BEGIN QUALITY CHANGE!');
 				_changeVideoQuality(divID, 1);
+				_players[divID].meta.playerState = 2;
 				_emitStateChange(plr);
 			}, 8 * 1000);
 
@@ -77,29 +78,6 @@
 			_stateChangeCallbacks.push(cb);
 		}
 
-		function _changeVideoQuality(id, quality) {
-			var player = _getPlayer(id);
-			var videoObj = player.meta.videoObj;
-			var videoChildren = player.instance.childNodes;
-
-			angular.forEach(videoChildren, function(elm) {
-				var fileType = '';
-				if (elm.nodeName === 'SOURCE') {
-					fileType = elm.className;
-					elm.setAttribute('src', videoObj[fileType][quality]);
-				}
-			});
-
-			var wasPlaying = player.meta.playerState === 1;
-			player.meta.playerState = 4;
-			_players[id].instance = player.instance;
-
-			player.instance.load();
-			if (wasPlaying) {
-				play(id);
-			}
-		}
-
 		function getPlayerDiv(id) {
 			return _players[id].meta.div;
 		}
@@ -110,18 +88,19 @@
 				_mainPlayerId = id;
 			}
 
-			_players[id] = {
-				instance: {},
-				meta: {
-					mainPlayer: mainPlayer
-				}
-			};
 			var plrInfo = _initPlayerDiv(id, mediaSrcArr, 0);
 
-			_players[id].meta.div = plrInfo.videoElm;
-			_players[id].meta.videoObj = plrInfo.videoObj;
-
-			return _players[id].meta.div;
+			//store relevant info the particular player in the 'meta' obj.
+			_players[id] = {
+				//instance will be swapped out with the actual video element when create() is called
+				instance: null,
+				meta: {
+					mainPlayer: mainPlayer,
+					playerState: '-1',
+					videoObj: plrInfo.videoObj,
+					div: plrInfo.videoElm
+				}
+			}
 		}
 
 		/*
@@ -167,11 +146,9 @@
 				if (instance.readyState === 4) {
 					delay = playbackState.getTime();
 					//check for a drift then seek to original time to fix.
-					if (timestamp !== delay) {
-						console.log('we made it folks!');
+					if (timestamp <= delay) {
 						instance.currentTime = timestamp;
 					}
-					//resume playback and stop polling.
 					instance.play();
 					$interval.cancel(waitUntilReady);
 				}
@@ -226,7 +203,8 @@
 
 		function getBufferedPercent(pid) {
 			var instance = _getInstance(pid);
-			if (instance && instance.meta && instance.meta.playerState !== -1) {
+			var player = _getPlayer(pid);
+			if (instance && player.meta.playerState !== -1) {
 				if (instance.buffered.length > 0) {
 					var bufLen = instance.buffered.length;
 					var bufStart = instance.buffered.start(bufLen -1);
@@ -316,6 +294,33 @@
 				videoObject[fileTypeKey].push(mediaSrc);
 				return videoObject;
 			}, {mp4: [], webm: [], m3u8: []});
+		}
+
+		function _changeVideoQuality(id, quality) {
+			var player = _getPlayer(id);
+			var videoObj = player.meta.videoObj;
+			var videoChildren = player.instance.childNodes;
+
+			angular.forEach(videoChildren, function(elm) {
+				var fileType = '';
+				if (elm.nodeName === 'SOURCE') {
+					fileType = elm.className;
+					elm.setAttribute('src', videoObj[fileType][quality]);
+				}
+			});
+
+			var wasPlaying = player.meta.playerState === 1;
+
+			//update 'instance' in _players map with new one.
+			_players[id].instance = player.instance;
+			//load new element into DOM.
+			player.instance.load();
+			// player.instance.pause();
+
+			if (wasPlaying) {
+				console.log('wtf mate');
+				play(id);
+			}
 		}
 
 		//seems not to work very well.

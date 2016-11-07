@@ -61,7 +61,7 @@ angular.module('com.inthetelling.story')
 			// '5': 'video cued'
 		function _onPlayerStateChange(state) {
 			playbackState.setTimelineState(state);
-			// console.info('state from player', state, 'timelineState', playbackState.getTimelineState());
+			console.info('state from player', state, 'timelineState', playbackState.getTimelineState());
 
 			switch (state) {
 				case 'unstarted':

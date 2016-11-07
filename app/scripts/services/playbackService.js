@@ -43,10 +43,9 @@
 				_pollBufferedPercent();
 			}
 
-			return {
-				parsedMediaSrc: parsedMedia[0].mediaSrcArr,
-				playerDiv: _playerInterface.setPlayerId(id, mainPlayer, parsedMedia[0].mediaSrcArr)
-			};
+			_playerInterface.setPlayerId(id, mainPlayer, parsedMedia[0].mediaSrcArr);
+
+			return parsedMedia[0].mediaSrcArr;
 		}
 
 		function createInstance(mediaSrcArr, playerId) {
@@ -88,6 +87,7 @@
 
 			switch (state) {
 				case 'unstarted':
+					console.trace('unstarted!');
 					break;
 				case 'ended':
 					break;
@@ -102,10 +102,6 @@
 					analyticsSvc.captureEpisodeActivity("stall");
 					break;
 				case 'video cued':
-					break;
-				case 'quality changed':
-					//do not propagate up to timelineSvc
-					return;
 					break;
 			}
 
