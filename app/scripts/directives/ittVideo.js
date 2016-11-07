@@ -12,31 +12,49 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 			mediaSrcArr: '=',
 			playerId: '='
 		},
-		controller: ['$timeout', '$sce', 'playbackService', 'playbackState', 'appState', 'timelineSvc', 'youtubeSvc', videoCtrl],
+		controller: ['$timeout', '$sce', '$scope', 'playbackService', 'playbackState', 'appState', 'timelineSvc', 'youtubeSvc', videoCtrl],
 		bindToController: true,
 		controllerAs: '$ctrl',
 		link: link
 	};
 
 	//TODO: tackle isTranscoded somehow.
-	function videoCtrl($timeout, $sce, playbackService, playbackState, appState, timelineSvc, youtubeSvc) {
+	function videoCtrl($timeout, $sce, $scope, playbackService, playbackState, appState, timelineSvc, youtubeSvc) {
 		var ctrl = this;
 		ctrl.playbackState = playbackState;
 		ctrl.appState = appState;
 		ctrl.videoClick = videoClick;
 		ctrl.isTranscoded = isTranscoded;
+		ctrl.setPlayerDiv = setPlayerDiv;
 
 		onInit();
 
 		function onInit() {
 
 			var doStuff = playbackService.setPlayer(ctrl.mediaSrcArr, ctrl.playerId, ctrl.mainPlayer);
-			ctrl.playerElement = $sce.trustAsHtml(doStuff.playerDiv);
+			setPlayerDiv();
+
+			playbackService.registerStateChangeListener(onQualityChange);
 
 			$timeout(function() {
 				playbackService.createInstance(ctrl.playerId, doStuff.parsedMediaSrc);
 			},0);
 
+		}
+
+		function onQualityChange(state) {
+
+			if (state === 'quality changed') {
+				console.log('onQualityChange!!', state);
+				// setPlayerDiv();
+				// playbackService.seek(playbackState.getTime());
+			}
+		}
+
+		function setPlayerDiv() {
+			$scope.$evalAsync(function() {
+				ctrl.playerElement = $sce.trustAsHtml(playbackService.getPlayerDiv(ctrl.playerId));
+			});
 		}
 
 		function videoClick() {

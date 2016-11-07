@@ -26,6 +26,7 @@
 			play: play,
 			pause: pause,
 			seek: seek,
+			getPlayerDiv: getPlayerDiv,
 			getCurrentTime: getCurrentTime,
 			createInstance: createInstance,
 			registerStateChangeListener: registerStateChangeListener
@@ -73,6 +74,10 @@
 			_playerInterface.getCurrentTime(_mainPlayerId);
 		}
 
+		function getPlayerDiv(id) {
+			return _playerInterface.getPlayerDiv(id);
+		}
+
 
 		// private methods
 		//respond to events emitted from playerManager
@@ -97,6 +102,10 @@
 					analyticsSvc.captureEpisodeActivity("stall");
 					break;
 				case 'video cued':
+					break;
+				case 'quality changed':
+					//do not propagate up to timelineSvc
+					return;
 					break;
 			}
 

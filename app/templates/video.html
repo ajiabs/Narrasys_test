@@ -19,6 +19,8 @@
 
 	<div ng-bind-html="$ctrl.playerElement"></div>
 
+	<!--<div ng-bind-html="::$ctrl.setPlayerDiv()"></div>-->
+
 	<div ng-if="$ctrl.poster && $ctrl.playbackState.getTime() == 0" class="poster overlay fill"
 		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}"></div>
 

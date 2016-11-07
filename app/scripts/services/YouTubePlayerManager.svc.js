@@ -52,84 +52,14 @@
 			registerStateChangeListener: registerStateChangeListener,
 			//need to see how to make better than returning a hard coded boolean
 			isReady: isReady,
+			getPlayerDiv: getPlayerDiv
 		};
 
-		//private methods
+		//public methods
 
-		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
-
-			var _controls = 1;
-			if (divId === _mainPlayerId) {
-				_controls = 0;
-			}
-
-			var host = $location.host();
-			return YoutubePlayerApi.load().then(function() {
-				return new YT.Player(divId, {
-					videoId: videoID,
-					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
-					playerVars: {
-						'controls': _controls,
-						'enablejsapi': 1,
-						'modestbranding': 1,
-						'showinfo': 0,
-						'rel': 0,
-						'iv_load_policy': 3,
-						'origin': host,
-						'wmode': 'transparent'
-					},
-					events: {
-						onReady: onReadyCB,
-						onStateChange: stateChangeCB,
-						onPlaybackQualityChange: qualityChangeCB,
-						onError: onError
-					}
-				});
-			});
+		function getPlayerDiv(id) {
+			return _players[id].div;
 		}
-		/**
-		 * @private
-		 * @ngdoc
-		 * @name _getYTInstance
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Used to retrieve an instance of the YT player out of the _players object.
-		 * @param {String} pid the ID of the instance to retrieve
-		 * player that emitted it.
-		 * @returns {Object} Youtube Player Instance Object.
-		 */
-		function _getYTInstance(pid) {
-			if (_players[pid] && _players[pid].ready === true) {
-				return _players[pid].yt;
-			}
-		}
-
-		function _existy(x) {
-			return x != null;  // jshint ignore:line
-		}
-		/**
-		 * @private
-		 * @ngdoc
-		 * @name _getPidFromInstance
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Used to retrieve a PID from a YT Instance
-		 * @params {Object} ytInstance
-		 * @returns {String} PID of YT Instance
-		 */
-		function _getPidFromInstance(ytInstance) {
-			var _key;
-			//for some reason, angular.equals was not working in this context.
-			//context: when embedding two identical youtube videos seemed to break
-			angular.forEach(_players, function(p, key) {
-				if (p.yt === ytInstance) {
-					return _key = key; // jshint ignore:line
-				}
-			});
-
-			return _key;
-		}
-
 
 		function isReady() {
 			return true;
@@ -609,6 +539,83 @@
 				delete _players[pid];
 			}
 		}
+
+		//private methods
+
+		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
+
+			var _controls = 1;
+			if (divId === _mainPlayerId) {
+				_controls = 0;
+			}
+
+			var host = $location.host();
+			return YoutubePlayerApi.load().then(function() {
+				return new YT.Player(divId, {
+					videoId: videoID,
+					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
+					playerVars: {
+						'controls': _controls,
+						'enablejsapi': 1,
+						'modestbranding': 1,
+						'showinfo': 0,
+						'rel': 0,
+						'iv_load_policy': 3,
+						'origin': host,
+						'wmode': 'transparent'
+					},
+					events: {
+						onReady: onReadyCB,
+						onStateChange: stateChangeCB,
+						onPlaybackQualityChange: qualityChangeCB,
+						onError: onError
+					}
+				});
+			});
+		}
+		/**
+		 * @private
+		 * @ngdoc
+		 * @name _getYTInstance
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to retrieve an instance of the YT player out of the _players object.
+		 * @param {String} pid the ID of the instance to retrieve
+		 * player that emitted it.
+		 * @returns {Object} Youtube Player Instance Object.
+		 */
+		function _getYTInstance(pid) {
+			if (_players[pid] && _players[pid].ready === true) {
+				return _players[pid].yt;
+			}
+		}
+
+		function _existy(x) {
+			return x != null;  // jshint ignore:line
+		}
+		/**
+		 * @private
+		 * @ngdoc
+		 * @name _getPidFromInstance
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to retrieve a PID from a YT Instance
+		 * @params {Object} ytInstance
+		 * @returns {String} PID of YT Instance
+		 */
+		function _getPidFromInstance(ytInstance) {
+			var _key;
+			//for some reason, angular.equals was not working in this context.
+			//context: when embedding two identical youtube videos seemed to break
+			angular.forEach(_players, function(p, key) {
+				if (p.yt === ytInstance) {
+					return _key = key; // jshint ignore:line
+				}
+			});
+
+			return _key;
+		}
+
 		/**
 		 * @param event
 		 * @param pid
@@ -646,7 +653,9 @@
 				_players[id] = { isMainPlayer: false };
 			}
 
-			return _getPlayerDiv(id);
+			_players[id].div = _getPlayerDiv(id);
+
+			return _players[id].div;
 		}
 
 		function _getPlayerDiv(id) {

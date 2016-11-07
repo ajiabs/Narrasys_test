@@ -17,7 +17,7 @@
 	};
 
 
-	function html5PlayerManager($interval, PLAYERSTATES, playbackState) {
+	function html5PlayerManager($interval, $timeout, PLAYERSTATES, playbackState) {
 		var _players = {};
 		var _mainPlayerId;
 		var _checkInterval = 50.0;
@@ -37,24 +37,9 @@
 			pauseOtherPlayers: pauseOtherPlayers,
 			getBufferedPercent: getBufferedPercent,
 			isReady: isReady,
-			registerStateChangeListener: registerStateChangeListener
+			registerStateChangeListener: registerStateChangeListener,
+			getPlayerDiv: getPlayerDiv
 		};
-
-		function registerStateChangeListener(cb) {
-			_stateChangeCallbacks.push(cb);
-		}
-
-		function setPlayerId(id, mainPlayer, mediaSrcArr) {
-			if (mainPlayer) {
-				_players = {};
-				_mainPlayerId = id;
-				_players[id] = { isMainPlayer: true };
-			} else {
-				_players[id] = { isMainPlayer: false };
-			}
-
-			return _getPlayerDiv(id, mediaSrcArr);
-		}
 
 		function create(divID) {
 			var plr = document.getElementById(divID);
@@ -63,18 +48,8 @@
 			plr.onwaiting = onBuffering;
 			// plr.onstalled = onBuffering;
 			// plr.onended = onEnded;
-			plr.meta = {
-				playerState: -1,
-				currentPlayPos: 0,
-				lastPlayPos: 0
-			};
-			_players[divID] = plr;
 
 			plr.onStateChange = _onStateChange;
-
-			// var checkBuffering = _checkBuffering(plr);
-
-			// var interval = $interval(checkBuffering, _checkInterval);
 
 			plr.controls = true;
 			if (_mainPlayerId === divID) {
@@ -82,7 +57,88 @@
 				plr.controls = false;
 			}
 
+			_players[divID].instance = plr;
+
+
+			$timeout(function() {
+				console.log('BEGIN QUALITY CHANGE!');
+				_changeVideoQuality(divID, 1);
+				_emitStateChange(plr);
+			}, 8 * 1000);
+
+			// var checkBuffering = _checkBuffering(plr);
+
+			// var interval = $interval(checkBuffering, _checkInterval);
+
 			return plr;
+		}
+
+		function registerStateChangeListener(cb) {
+			_stateChangeCallbacks.push(cb);
+		}
+
+		function _changeVideoQuality(id, quality) {
+			var player = _getPlayer(id);
+			var videoObj = player.meta.videoObj;
+			var videoChildren = player.instance.childNodes;
+
+			angular.forEach(videoChildren, function(elm) {
+				var fileType = '';
+				if (elm.nodeName === 'SOURCE') {
+					fileType = elm.className;
+					elm.setAttribute('src', videoObj[fileType][quality]);
+				}
+			});
+
+			var wasPlaying = player.meta.playerState === 1;
+			player.meta.playerState = 4;
+			_players[id].instance = player.instance;
+			player.instance.load();
+
+			if (wasPlaying) {
+				pause(id);
+			}
+
+			var resumeFrom = playbackState.getTime();
+			var pollReadyState = $interval(function() {
+				if (_canPlay(id)) {
+					seek(id, resumeFrom);
+					if (wasPlaying) {
+						play(id);
+					}
+					$interval.cancel(pollReadyState);
+				}
+			}, 10);
+		}
+
+		function _canPlay(id) {
+			var instance = _getInstance(id);
+			return instance.readyState === 4;
+		}
+
+
+		function getPlayerDiv(id) {
+			return _players[id].meta.div;
+		}
+
+		function setPlayerId(id, mainPlayer, mediaSrcArr) {
+			if (mainPlayer) {
+				_players = {};
+				_mainPlayerId = id;
+			}
+
+			_players[id] = {
+				instance: {},
+				meta: {
+					mainPlayer: mainPlayer
+				}
+			};
+			var plrInfo = _initPlayerDiv(id, mediaSrcArr, 0);
+
+			_players[id].meta.div = plrInfo.videoElm;
+			_players[id].meta.videoObj = plrInfo.videoObj;
+
+			return _players[id].meta.div;
 		}
 
 		/*
@@ -91,19 +147,23 @@
 
 		function onPlaying() {
 			var instance = _getInstance(this.id);
-			instance.meta.playerState = 1;
+			var player = _getPlayer(this.id);
+			player.meta.playerState = 1;
+			console.log('ready state!', instance.readyState);
 			_emitStateChange(instance);
 		}
 
 		function onPause() {
 			var instance = _getInstance(this.id);
-			instance.meta.playerState = 2;
+			var player = _getPlayer(this.id);
+			player.meta.playerState = 2;
 			_emitStateChange(instance);
 		}
 
 		function onBuffering() {
 			var instance = _getInstance(this.id);
-			instance.meta.playerState = 3;
+			var player = _getPlayer(this.id);
+			player.meta.playerState = 3;
 			_emitStateChange(instance);
 		}
 
@@ -189,13 +249,19 @@
 		 private methods
 		 */
 
-		function _getPlayerDiv(id, mediaSrcArr) {
+		function _initPlayerDiv(id, mediaSrcArr) {
 			var videoObj = _getHtml5VideoObject(mediaSrcArr);
-			var videoElement = '<video id="' + id  +'">';
+			var videoElm = _drawPlayerDiv(id, videoObj, 0);
+			return {videoObj: videoObj, videoElm: videoElm};
+		}
+
+		function _drawPlayerDiv(id, videoObj, quality) {
+
+			var videoElement = '<video id="' + id  + '">';
 			var classAttr, srcAttr, typeAttr;
 			Object.keys(videoObj).forEach(function(fileType) {
 				classAttr = fileType;
-				srcAttr = videoObj[fileType][0];
+				srcAttr = videoObj[fileType][quality];
 
 				if (srcAttr == null) {
 					return;
@@ -212,7 +278,7 @@
 
 			videoElement += '<p>Oh no! Your browser does not support the HTML5 Video element.</p>';
 			videoElement += '</video>';
-			return videoElement;
+			return videoElement
 		}
 
 		function _formatPlayerStateChangeEvent(event, pid) {
@@ -223,7 +289,8 @@
 		}
 
 		function _emitStateChange(instance) {
-			instance.onStateChange(_formatPlayerStateChangeEvent(instance.meta.playerState, instance.id));
+			var player = _getPlayer(instance.id);
+			instance.onStateChange(_formatPlayerStateChangeEvent(player.meta.playerState, instance.id));
 		}
 
 		function _onStateChange(event) {
@@ -232,9 +299,15 @@
 			});
 		}
 
-		function _getInstance(pid) {
+		function _getPlayer(pid) {
 			if (_players[pid]) {
 				return _players[pid];
+			}
+		}
+
+		function _getInstance(pid) {
+			if (_players[pid]) {
+				return _players[pid].instance;
 			}
 		}
 
