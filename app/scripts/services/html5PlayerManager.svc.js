@@ -93,29 +93,12 @@
 			var wasPlaying = player.meta.playerState === 1;
 			player.meta.playerState = 4;
 			_players[id].instance = player.instance;
+
 			player.instance.load();
-
 			if (wasPlaying) {
-				pause(id);
+				play(id);
 			}
-
-			var resumeFrom = playbackState.getTime();
-			var pollReadyState = $interval(function() {
-				if (_canPlay(id)) {
-					seek(id, resumeFrom);
-					if (wasPlaying) {
-						play(id);
-					}
-					$interval.cancel(pollReadyState);
-				}
-			}, 10);
 		}
-
-		function _canPlay(id) {
-			var instance = _getInstance(id);
-			return instance.readyState === 4;
-		}
-
 
 		function getPlayerDiv(id) {
 			return _players[id].meta.div;
@@ -149,7 +132,6 @@
 			var instance = _getInstance(this.id);
 			var player = _getPlayer(this.id);
 			player.meta.playerState = 1;
-			console.log('ready state!', instance.readyState);
 			_emitStateChange(instance);
 		}
 
@@ -178,7 +160,22 @@
 
 		function play(pid) {
 			var instance = _getInstance(pid);
-			instance.play();
+			var timestamp = playbackState.getTime();
+
+			var waitUntilReady = $interval(function() {
+				var delay;
+				if (instance.readyState === 4) {
+					delay = playbackState.getTime();
+					//check for a drift then seek to original time to fix.
+					if (timestamp !== delay) {
+						console.log('we made it folks!');
+						instance.currentTime = timestamp;
+					}
+					//resume playback and stop polling.
+					instance.play();
+					$interval.cancel(waitUntilReady);
+				}
+			}, 10);
 		}
 
 		function pause(pid) {
