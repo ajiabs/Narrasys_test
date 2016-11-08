@@ -11,7 +11,9 @@
 // babysitters and stalls are disabled on phone therefore.
 
 angular.module('com.inthetelling.story')
-	.controller('VideoController', function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
+	.controller('VideoController', angular.noop);
+
+function VideoController($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
 		//exported functions / props
 		angular.extend($scope, {
 			initVideo: initVideo,
@@ -478,4 +480,4 @@ angular.module('com.inthetelling.story')
 		}
 
 		$scope.$on('$destroy', _destroyMe);
-	});
+	};
