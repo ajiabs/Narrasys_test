@@ -77,9 +77,9 @@
 		 * interface with the youtube Iframe API
 		 * @returns {void} has no return value
 		 */
-		function create(playerId, mediaSrcArr) {
+		function create(playerId) {
 
-			var ytId = youtubeSvc.extractYoutubeId(mediaSrcArr[0]);
+			var ytId = youtubeSvc.extractYoutubeId(_players[playerId].ytUrl);
 
 			_createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
@@ -644,18 +644,13 @@
 		 * @param {Boolean} mainPlayer Determines type of player, embed or main
 		 * @returns {String} Div ID of YT instance.
 		 */
-		function setPlayerId(id, mainPlayer) {
+		function setPlayerId(id, mainPlayer, mediaSrcArr) {
 			if (mainPlayer) {
 				_players = {};
 				_mainPlayerId = id;
-				_players[id] = { isMainPlayer: true };
-			} else {
-				_players[id] = { isMainPlayer: false };
 			}
-
+			_players[id] = { isMainPlayer: mainPlayer, ytUrl: mediaSrcArr[0] };
 			_players[id].div = _getPlayerDiv(id);
-
-			return _players[id].div;
 		}
 
 		function _getPlayerDiv(id) {
