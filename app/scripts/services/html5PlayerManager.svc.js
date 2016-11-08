@@ -59,13 +59,13 @@
 			_players[divID].instance = plr;
 
 
-			//temp to test out video source change.
-			$timeout(function() {
-				console.info('BEGIN QUALITY CHANGE!');
-				_changeVideoQuality(divID, 1);
-				_players[divID].meta.playerState = 2;
-				_emitStateChange(plr);
-			}, 8 * 1000);
+			// temp to test out video source change.
+			// $timeout(function() {
+			// 	console.info('BEGIN QUALITY CHANGE!');
+			// 	_changeVideoQuality(divID, 1);
+			// 	_players[divID].meta.playerState = 2;
+			// 	_emitStateChange(plr);
+			// }, 8 * 1000);
 
 			// var checkBuffering = _checkBuffering(plr);
 
@@ -230,6 +230,7 @@
 			return {videoObj: videoObj, videoElm: videoElm};
 		}
 
+		//quality param is the index into the videoObject[fileType] array of files by size.
 		function _drawPlayerDiv(id, videoObj, quality) {
 
 			var videoElement = '<video id="' + id  + '">';
@@ -311,14 +312,9 @@
 
 			var wasPlaying = player.meta.playerState === 1;
 
-			//update 'instance' in _players map with new one.
-			_players[id].instance = player.instance;
 			//load new element into DOM.
 			player.instance.load();
-			// player.instance.pause();
-
 			if (wasPlaying) {
-				console.log('wtf mate');
 				play(id);
 			}
 		}
