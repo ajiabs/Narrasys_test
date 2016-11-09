@@ -9,16 +9,22 @@
 	angular.module('com.inthetelling.story')
 		.factory('playbackState', playbackState);
 
-	function playbackState() {
-		var _time = 0;
+	function playbackState(ittUtils) {
 		var _timelineState = '';
-		var _duration = 0;
-		var _hasBeenPlayed = false;
-		var _timeMultiplier = 0;
-		var _videoType = '';
-		var _bufferedPercent = 0;
+
+		var _states = {};
+		var _mainPlayerId;
+		var _props =  {
+			time: 0,
+			hasBeenPlayed: false,
+			videoType: '',
+			bufferedPercent: 0,
+			timeMultiplier: 0
+		};
+		var _existy = ittUtils.existy;
 
 		return {
+			setState: setState,
 			getTime: getTime,
 			setTime: setTime,
 			getTimelineState: getTimelineState,
@@ -30,52 +36,86 @@
 			getTimeMultiplier: getTimeMultiplier,
 			setTimeMultiplier: setTimeMultiplier,
 			getVideoType: getVideoType,
-			setVideoType: setVideoType,
 			getBufferedPercent: getBufferedPercent,
 			setBufferedPercent: setBufferedPercent,
 			reset: reset
 		};
 
-		function reset() {
-			_time = 0;
+		function reset(pid) {
 			_timelineState = '';
-			_duration = 0;
-			_hasBeenPlayed = false;
-			_timeMultiplier = 0;
-			_videoType = '';
-			_bufferedPercent = 0;
+			var state = getState(pid);
+			angular.extend(state, _props);
 		}
 
-		function setBufferedPercent(percent) {
-			_bufferedPercent = percent;
+		function setState(pid, mainPlayer, type) {
+			if (mainPlayer) {
+				_mainPlayerId = pid;
+			}
+			_states[pid] = {};
+
+			angular.extend(_states[pid], _props);
+
+			_states[pid].type = type;
 		}
 
-		function getBufferedPercent() {
-			return _bufferedPercent;
+		function _setPid(pid) {
+			if (_existy(pid)) {
+				return pid;
+			}
+			return _mainPlayerId;
 		}
 
-		function setVideoType(type) {
-			_videoType = type;
+		function getState(pid) {
+			return _states[_setPid(pid)];
 		}
 
-		function getVideoType() {
-			return _videoType;
+		function setBufferedPercent(percent, pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				state.bufferedPercent = percent;
+			}
 		}
 
-		function setTimeMultiplier(x) {
-			_timeMultiplier = x;
+		function getBufferedPercent(pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				return state.bufferedPercent;
+			}
 		}
 
-		function getTimeMultiplier() {
-			return _timeMultiplier
+		function getVideoType(pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				return state.videoType;
+			}
 		}
 
-		function getTime() {
-			return _time;
+		function setTimeMultiplier(x, pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				state.timeMultiplier = x;
+			}
 		}
 
-		function setTime(t) {
-			_time = t;
+		function getTimeMultiplier(pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				return state.timeMultiplier;
+			}
+		}
+
+		function getTime(pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				return state.time;
+			}
+		}
+
+		function setTime(t, pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				state.time = t;
+			}
 		}
 
 		function getTimelineState() {
@@ -86,20 +126,32 @@
 			_timelineState = state;
 		}
 
-		function getDuration() {
-			return _duration;
+		function getDuration(pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				return state.duration;
+			}
 		}
 
-		function setDuration(d) {
-			_duration = d;
+		function setDuration(d, pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				state.duration = d;
+			}
 		}
 
-		function getHasBeenPlayed() {
-			return _hasBeenPlayed
+		function getHasBeenPlayed(pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				return state.hasBeenPlayed;
+			}
 		}
 
-		function setHasBeenPlayed(bool) {
-			_hasBeenPlayed = bool;
+		function setHasBeenPlayed(bool, pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				state.hasBeenPlayed = bool;
+			}
 		}
 
 	}

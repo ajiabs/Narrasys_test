@@ -33,7 +33,7 @@
 			create: create,
 			destroy: destroy,
 			play: play,
-			playerState: playerState,
+			getPlayerState: playerState,
 			pause: pause,
 			pauseEmbeds: pauseEmbeds,
 			stop: stop,
@@ -272,7 +272,7 @@
 		function playerState(pid) {
 			var p = _getYTInstance(pid);
 			if (_existy(p)) {
-				return p.getPlayerState();
+				return PLAYERSTATES[p.getPlayerState()];
 			}
 		}
 		/**

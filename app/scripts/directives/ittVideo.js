@@ -12,19 +12,20 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 			mediaSrcArr: '=',
 			playerId: '='
 		},
-		controller: ['$timeout', '$sce', 'playbackService', 'playbackState', 'appState', 'timelineSvc', 'youtubeSvc', videoCtrl],
+		controller: ['$timeout', '$sce', 'playbackService', 'playbackState', 'appState', videoCtrl],
 		bindToController: true,
 		controllerAs: '$ctrl',
 		link: link
 	};
 
 	//TODO: tackle isTranscoded somehow.
-	function videoCtrl($timeout, $sce, playbackService, playbackState, appState, timelineSvc) {
+	function videoCtrl($timeout, $sce, playbackService, playbackState, appState) {
 		var ctrl = this;
 		ctrl.playbackState = playbackState;
 		ctrl.appState = appState;
 		ctrl.videoClick = videoClick;
 		ctrl.isTranscoded = isTranscoded;
+		ctrl.playerIsPaused = playerIsPaused;
 
 		onInit();
 
@@ -34,18 +35,26 @@ function ittVideo($interval, $rootScope, appState, dataSvc, modelSvc) {
 
 			ctrl.playerElement = $sce.trustAsHtml(playbackService.getPlayerDiv(ctrl.playerId));
 
+
 			$timeout(function() {
 				playbackService.createInstance(ctrl.playerId);
 			},0);
 
 		}
 
+		function playerIsPaused() {
+			return playbackService.getPlayerState(ctrl.playerId) === 'paused';
+		}
+
 		function videoClick() {
-			// if (playbackState.getTimelineState() === "paused") {
-			// 	timelineSvc.play();
-			// } else {
-			// 	timelineSvc.pause();
-			// }
+			console.log('videoClick');
+			var state = playbackService.getPlayerState(ctrl.playerId);
+
+			if (state === 'paused' || state === 'unstarted') {
+				playbackService.play(ctrl.playerId);
+			} else {
+				playbackService.pause(ctrl.playerId);
+			}
 		}
 
 		function isTranscoded() {

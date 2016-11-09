@@ -139,14 +139,16 @@
 
 		function play(pid) {
 			var instance = _getInstance(pid);
-			var timestamp = playbackState.getTime();
+			var timestamp = playbackState.getTime(pid);
 
 			var waitUntilReady = $interval(function() {
 				var delay;
 				if (instance.readyState === 4) {
-					delay = playbackState.getTime();
+					delay = playbackState.getTime(pid);
 					//check for a drift then seek to original time to fix.
-					if (timestamp <= delay) {
+					//only for main player, otherwise embed players will attempt
+					//to resume playback according to the timeline time.
+					if (pid === _mainPlayerId && timestamp <= delay) {
 						instance.currentTime = timestamp;
 					}
 					instance.play();
@@ -168,10 +170,9 @@
 		}
 
 		function getPlayerState(pid) {
-			var instance = _getInstance(pid);
-			if (instance !== undefined) {
-				return instance.meta.playerState;
-			}
+			// var instance = _getInstance(pid);
+			var player = _getPlayer(pid);
+			return PLAYERSTATES[player.meta.playerState];
 		}
 
 		function seek(pid, t) {
@@ -214,7 +215,7 @@
 						bufEnd = bufEnd - bufStart;
 						bufStart = 0;
 					}
-					return bufEnd / playbackState.getDuration() * 100;
+					return bufEnd / playbackState.getDuration(pid) * 100;
 				}
 			}
 
@@ -321,7 +322,6 @@
 
 		//seems not to work very well.
 		function _checkBuffering(player) {
-			console.log('closure wired up');
 			return function() {
 				player.meta.currentPlayPos = player.currentTime;
 				var offset = 1 / _checkInterval;
@@ -329,14 +329,12 @@
 				if (!player.meta.playerState === 3 &&
 					player.meta.currentPlayPos < (player.meta.lastPlayPos + offset) &&
 					!player.paused) {
-					console.log('buffering detected!');
 					player.meta.playerState = 3;
 					_emitStateChange(player);
 				}
 				// if (player.meta.playerState === 3 &&
 				// 	player.meta.currentPlayPos > (player.meta.lastPlayPos + offset) &&
 				// 	!player.paused) {
-				// 	console.log('no longer buffering');
 				// }
 				player.meta.lastPlayPos = player.meta.currentPlayPos;
 			}

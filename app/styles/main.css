@@ -391,47 +391,57 @@ TODO: native video seems to perform better when not position:absolute, but ifram
 Check to see if there's a consistent way to do without absolute positioning, or if it's safe to just do it to native and not youtube.
  */
 
-.video iframe,
-.video video,
-.video .videoMask {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	border: none;
-}
+/*.video iframe,*/
+/*.video div video,*/
+/*.video .videoMask {*/
+	/*position: absolute;*/
+	/*width: 100%;*/
+	/*!*height: 100%;*!*/
+	/*border: none;*/
+/*}*/
 
-video.html5Embed {
-	width: 100%    !important;
-	height: auto   !important;
-	border: none;
-	z-index: 1;
-}
+/*.videoMask {*/
+	/*cursor: pointer;*/
+	/*background-size: contain;*/
+	/*background-position: 50% 50%;*/
+	/*background-repeat: no-repeat;*/
+/*}*/
 
-div.embedMask {
-	position: absolute;
-	z-index: 100;
-	background-size: contain;
-	background-position: 50% 50%;
-	width: 100%;
-	height: 100%;
-}
-
-div.embedMask.play {
-	top: 0;
-	background-image: url('/images/play-overlay.png');
-	animation: fadeIn 2s;
-}
-
-.videoMask {
+.np-video {
 	cursor: pointer;
-	background-size: contain;
-	background-position: 50% 50%;
-	background-repeat: no-repeat;
+	position: relative;
+	margin: 0 auto;
 }
 
-.videoMask.play {
+.np-video video {
+	width: 100%;
+	display: block;
+}
+
+.np-video:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 50px;
+	left: 0;
+	z-index: 10;
+}
+
+
+.np-overlay-ui {
+	cursor: pointer;
+	border: 1px solid red;
+	z-index: 1;
+	width: 100%;
+	/*height: 90%;*/
+	position: relative;
+	transform: translate(0, -110%);
+}
+
+.np-overlay-ui.play {
 	background-image: url('/images/play-overlay.png');
-	animation: fadeIn 2s;
+	background-size: 100%;
 }
 
 .videoMask.firstplay {

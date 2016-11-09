@@ -65,10 +65,22 @@ angular.module('com.inthetelling.story')
 
 			switch (state) {
 				case 'unstarted':
+					console.log('unstarted gtfo');
 					break;
 				case 'ended':
 					break;
 				case 'playing':
+
+					if (!playbackState.getHasBeenPlayed()) {
+						$rootScope.$emit("video.firstPlay");
+					}
+
+					// if (!appState.hasBeenPlayed) {
+					// 	console.log('wtf mate');
+					// 	appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
+                    //
+					// }
+
 					startTimelineClock();
 					startEventClock();
 					appState.videoControlsActive = true;
@@ -128,12 +140,6 @@ angular.module('com.inthetelling.story')
 			if (!playbackState.getDuration() || playbackState.getDuration() < 0.1) {
 				console.error("This episode has no duration");
 				return;
-			}
-
-			if (!appState.hasBeenPlayed) {
-				appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
-				$rootScope.$emit("video.firstPlay");
-				return; // playerController needs to catch this and either show the help pane or trigger play again
 			}
 
 			if (playbackState.getTime() > playbackState.getDuration() - 0.1) {
@@ -203,6 +209,7 @@ angular.module('com.inthetelling.story')
 
 			var oldT = playbackState.getTime(); // for analytics
 
+
 			t = parseTime(t);
 			if (t < 0) {
 				t = 0;
@@ -223,7 +230,7 @@ angular.module('com.inthetelling.story')
 			playbackState.setTime(t);
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
 			// videoScope.seek(t, true);
-			playbackService.seek(t, true);
+			playbackService.seek(t);
 
 			svc.updateEventStates();
 			// capture analytics data:

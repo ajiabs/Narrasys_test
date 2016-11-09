@@ -29,7 +29,9 @@
 			getPlayerDiv: getPlayerDiv,
 			getCurrentTime: getCurrentTime,
 			createInstance: createInstance,
-			registerStateChangeListener: registerStateChangeListener
+			registerStateChangeListener: registerStateChangeListener,
+			getPlayerState: getPlayerState,
+			getPlayerType: getPlayerType
 		};
 
 		//public methods
@@ -37,7 +39,7 @@
 			var parsedMedia = urlService.parseMediaSrc(mediaSrcArr);
 
 			_playerInterface = _getPlayerManagerFromMediaSrc(parsedMedia);
-			playbackState.setVideoType(_playerInterface.type);
+			playbackState.setState(id, mainPlayer, _playerInterface.type);
 			if (mainPlayer) {
 				_mainPlayerId = id;
 				_pollBufferedPercent();
@@ -53,32 +55,48 @@
 		}
 
 		//called from timlineSvc -> playbackService -> playerManager
-		function play() {
-			return _playerInterface.play(_mainPlayerId);
+		function play(playerId) {
+			return _playerInterface.play(_setPid(playerId));
 		}
 
-		function pause() {
-			_playerInterface.pause(_mainPlayerId)
+		function pause(playerId) {
+			_playerInterface.pause(_setPid(playerId))
 		}
 
-		function seek(t) {
-			_playerInterface.seekTo(_mainPlayerId, t);
+		function seek(t, playerId) {
+			_playerInterface.seekTo(_setPid(playerId), t);
 		}
 
 		function registerStateChangeListener(cb) {
 			_stateChangeCallbacks.push(cb);
 		}
 
-		function getCurrentTime() {
-			_playerInterface.getCurrentTime(_mainPlayerId);
+		function getCurrentTime(playerId) {
+			_playerInterface.getCurrentTime(_setPid(playerId));
 		}
 
-		function getPlayerDiv(id) {
-			return _playerInterface.getPlayerDiv(id);
+		function getPlayerDiv(playerId) {
+			return _playerInterface.getPlayerDiv(_setPid(playerId));
+		}
+
+		function getPlayerState(playerId) {
+			return _playerInterface.getPlayerState(_setPid(playerId));
+		}
+
+		function getPlayerType() {
+			return _playerInterface.type;
 		}
 
 
 		// private methods
+
+		function _setPid(pid) {
+			if (ittUtils.existy(pid)) {
+				return pid;
+			}
+			return _mainPlayerId;
+		}
+
 		//respond to events emitted from playerManager
 		//playerManager -> playbackSvc -> timelineSvc (if main)
 		function _stateChangeCB(stateChangeEvent) {
@@ -92,6 +110,7 @@
 				case 'ended':
 					break;
 				case 'playing':
+					playbackState.setHasBeenPlayed(true, emitterId);
 					angular.forEach(_playerManagers, function(pm) {
 						pm.pauseOtherPlayers(emitterId);
 					});
