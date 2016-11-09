@@ -72,6 +72,8 @@ angular.module('com.inthetelling.story')
 				case 'playing':
 
 					if (!playbackState.getHasBeenPlayed()) {
+						playbackState.setHasBeenPlayed(true);
+						console.log('wtf mate');
 						$rootScope.$emit("video.firstPlay");
 					}
 

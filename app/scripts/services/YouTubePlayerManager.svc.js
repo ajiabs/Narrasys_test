@@ -125,48 +125,49 @@
 			 */
 			function onPlayerStateChange(event) {
 				//console.log("player state change!", event);
-				var main = _mainPlayerId;
-				var embed;
-				var state = event.data;
+				// var main = _mainPlayerId;
+				// var embed;
+				// var state = event.data;
 				var pid = _getPidFromInstance(event.target);
 
-				if (pid !== _mainPlayerId) {
-					embed = pid;
-				}
-				var embedPlayerState = playerState(embed);
-				var mainPlayerState = playerState(main);
-
-				if (pid === main) {
-					if (mainPlayerState === YT.PlayerState.PLAYING) {
-						pauseEmbeds();
-					}
-
-					if (state === YT.PlayerState.ENDED) {
-						console.log('thanks for watching!!!');
-						//stop in the manager on the emitting player
-						stop(pid);
-					}
-				}
-
-				if (pid === embed) {
-					if (playbackState.getTimelineState() === 'playing') {
-						// timelineSvc.pause();
-						pauseOtherEmbeds(embed);
-					}
-
-					if (embedPlayerState === YT.PlayerState.PLAYING) {
-						pauseOtherEmbeds(embed);
-					}
-				}
-
-				//html5 main video w youtube embed
-				if (_players[embed] !== undefined &&
-					_players[main] === undefined &&
-					state !== YT.PlayerState.UNSTARTED) {
-					if (playbackState.getTimelineState() === 'playing' && appState.embedYTPlayerAvailable) {
-						// timelineSvc.pause();
-					}
-				}
+				console.log('youtube on state change', event.data);
+				// if (pid !== _mainPlayerId) {
+				// 	embed = pid;
+				// }
+				// var embedPlayerState = playerState(embed);
+				// var mainPlayerState = playerState(main);
+                //
+				// if (pid === main) {
+				// 	if (mainPlayerState === YT.PlayerState.PLAYING) {
+				// 		pauseOtherPlayers(main);
+				// 	}
+                //
+				// 	if (state === YT.PlayerState.ENDED) {
+				// 		console.log('thanks for watching!!!');
+				// 		//stop in the manager on the emitting player
+				// 		stop(pid);
+				// 	}
+				// }
+                //
+				// if (pid === embed) {
+				// 	if (playbackState.getTimelineState() === 'playing') {
+				// 		// timelineSvc.pause();
+				// 		pauseOtherPlayers(embed);
+				// 	}
+                //
+				// 	if (embedPlayerState === YT.PlayerState.PLAYING) {
+				// 		pauseOtherPlayers(embed);
+				// 	}
+				// }
+                //
+				// //html5 main video w youtube embed
+				// if (_players[embed] !== undefined &&
+				// 	_players[main] === undefined &&
+				// 	state !== YT.PlayerState.UNSTARTED) {
+				// 	if (playbackState.getTimelineState() === 'playing' && appState.embedYTPlayerAvailable) {
+				// 		// timelineSvc.pause();
+				// 	}
+				// }
 
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
 				_emitStateChange(stateChangeEvent);
@@ -519,7 +520,14 @@
 		function pauseOtherPlayers(pid) {
 			Object.keys(_players).forEach(function(playerId) {
 				if (playerId !== pid) {
-					pause(playerId);
+					var curPlayerState = playerState(playerId);
+					if (curPlayerState !== YT.PlayerState.UNSTARTED &&
+						curPlayerState !== YT.PlayerState.PAUSED &&
+						curPlayerState !== YT.PlayerState.CUED) {
+						console.log('pause other players', curPlayerState);
+						pause(playerId);
+					}
+					// pause(playerId);
 				}
 			});
 		}

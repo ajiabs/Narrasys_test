@@ -7,20 +7,20 @@
 	<!--video element -->
 
 
-	<div class="np-video" ng-bind-html="::$ctrl.playerElement" ng-click="$ctrl.videoClick()"></div>
+	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement" ng-click="$ctrl.videoClick()"></div>
 
 	<!--playback buttons-->
-	<img class="np-overlay-ui play"
+	<img class="np-overlay-ui"
 		 ng-if="$ctrl.playerIsPaused()"
 		 src="/images/play-overlay.png"/>
 
-	<img class="np-overlay-ui first-play"
-		 ng-if="!$ctrl.playbackState.getHasBeenPlayed(ctrl.playerId) && !$ctrl.poster.length"
+	<img class="np-overlay-ui"
+		 ng-if="!$ctrl.playbackState.getHasBeenPlayed($ctrl.playerId) && !$ctrl.poster.length"
 		 src="/images/logo-overlay.png"/>
 
 	<!--<img class="np-overlay-ui buffering"-->
 		 <!--src="/images/buffering-overlay.png"/>-->
-	<!---->
+
 	<!--<img class="np-overlay-ui rewind"-->
 		 <!--src="/images/rewind-overlay.png"/>-->
 
