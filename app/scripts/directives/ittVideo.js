@@ -47,12 +47,13 @@ function ittVideo($interval, $timeout, $rootScope, appState, dataSvc, modelSvc) 
 		}
 
 		function videoClick(checkBailOut) {
+
 			if (checkBailOut === true && ctrl.useMaskControls !== true) {
 				return;
 			}
 
 			var state = playbackService.getPlayerState(ctrl.playerId);
-			if (state === 'paused' || state === 'unstarted') {
+			if (state === 'paused' || state === 'unstarted' || state === 'video cued') {
 				playbackService.play(ctrl.playerId);
 			} else {
 				playbackService.pause(ctrl.playerId);

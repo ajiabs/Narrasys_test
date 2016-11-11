@@ -65,24 +65,11 @@ angular.module('com.inthetelling.story')
 
 			switch (state) {
 				case 'unstarted':
-					console.log('unstarted gtfo');
+					// console.log('unstarted gtfo');
 					break;
 				case 'ended':
 					break;
 				case 'playing':
-
-					if (!playbackState.getHasBeenPlayed()) {
-						playbackState.setHasBeenPlayed(true);
-						console.log('wtf mate');
-						$rootScope.$emit("video.firstPlay");
-					}
-
-					// if (!appState.hasBeenPlayed) {
-					// 	console.log('wtf mate');
-					// 	appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
-                    //
-					// }
-
 					startTimelineClock();
 					startEventClock();
 					appState.videoControlsActive = true;
@@ -144,10 +131,10 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
-			if (playbackState.getTime() > playbackState.getDuration() - 0.1) {
-				svc.seek(0.1); // fudge the time a bit to skip the landing scene
-				svc.play();
-			}
+			// if (playbackState.getTime() > playbackState.getDuration() - 0.1) {
+			// 	svc.seek(0.1); // fudge the time a bit to skip the landing scene
+			// 	svc.play();
+			// }
 			playbackService.play();
 		};
 
@@ -463,7 +450,7 @@ angular.module('com.inthetelling.story')
 			svc.displayMarkedEvents = [];
 			timeMultiplier = 1;
 			playbackState.reset();
-			playbackState.setTimelineState('paused');
+			playbackState.setTimelineState('unstarted');
 			// console.log('do we have the video?', modelSvc.episode(episodeId));
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
 			playbackService.registerStateChangeListener(_onPlayerStateChange);

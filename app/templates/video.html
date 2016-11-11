@@ -1,17 +1,17 @@
+<!--&lt;!&ndash;temp debug code&ndash;&gt;-->
+<!--<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time:-->
+	<!--{{$ctrl.playbackState.getTime()}}</h5>	{{$ctrl.poster.length}} {{$ctrl.playbackState.getHasBeenPlayed($ctrl.playerId)}}-->
+<!--&lt;!&ndash;end temp debug code&ndash;&gt;-->
 <div class="video">
-	<!--temp debug code-->
-	<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time:
-		{{$ctrl.playbackState.getTime()}}</h5>
-	<!--end temp debug code-->
-
 	<!--video element -->
 	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement" ng-click="$ctrl.videoClick(true)"></div>
 
 	<!--playback buttons-->
 	<img class="np-overlay-ui"
-		 ng-click="$ctrl.videoClick()"
+		 ng-click="$ctrl.videoClick() && $ctrl.playbackState.getHasBeenPlayed($ctrl.playerId)"
 		 ng-if="$ctrl.playerIsPaused() && $ctrl.useMaskControls"
 		 src="/images/play-overlay.png"/>
+
 
 	<img class="np-overlay-ui"
 		 ng-click="$ctrl.videoClick()"

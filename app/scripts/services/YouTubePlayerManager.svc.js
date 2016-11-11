@@ -38,7 +38,6 @@
 			pauseEmbeds: pauseEmbeds,
 			stop: stop,
 			reset: reset,
-			pauseOtherEmbeds: pauseOtherEmbeds,
 			pauseOtherPlayers: pauseOtherPlayers,
 			setPlaybackQuality: setPlaybackQuality,
 			setPlayerId: setPlayerId,
@@ -487,7 +486,7 @@
 		}
 		/**
 		 * @ngdoc method
-		 * @name #pauseOtherEmbeds
+		 * @name #pauseOtherPlayers
 		 * @methodOf iTT.service:youTubePlayerManager
 		 * @description
 		 * Loops through all YT instances except main player and
@@ -496,26 +495,6 @@
 		 * embeds except the one you interacted with.
 		 * @param {String} pid The ID of the YT instance
 		 * @returns {Void} No return value.
-		 */
-		function pauseOtherEmbeds(pid) {
-			for (var p in _players) {
-				if (p !== _mainPlayerId && p !== pid) {
-					var curPlayerState = playerState(p);
-					if (curPlayerState !== YT.PlayerState.UNSTARTED &&
-						curPlayerState !== YT.PlayerState.PAUSED &&
-						curPlayerState !== YT.PlayerState.CUED) {
-						pause(p);
-					}
-				}
-			}
-		}
-
-		/**
-		 * @ngdoc method
-		 * @name #pauseOtherPlayers
-		 * @param {String} pid the current player
-		 * @description
-		 * loop over all players and pause them if they are not the current player
 		 */
 		function pauseOtherPlayers(pid) {
 			Object.keys(_players).forEach(function(playerId) {
@@ -527,7 +506,6 @@
 						console.log('pause other players', curPlayerState);
 						pause(playerId);
 					}
-					// pause(playerId);
 				}
 			});
 		}
@@ -564,6 +542,7 @@
 					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
 					playerVars: {
 						'controls': _controls,
+						'fs': _controls,
 						'enablejsapi': 1,
 						'modestbranding': 1,
 						'showinfo': 0,

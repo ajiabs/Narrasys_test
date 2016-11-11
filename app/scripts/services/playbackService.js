@@ -105,12 +105,13 @@
 
 			switch (state) {
 				case 'unstarted':
-					console.trace('unstarted!');
 					break;
 				case 'ended':
 					break;
 				case 'playing':
-					playbackState.setHasBeenPlayed(true, emitterId);
+					if (!playbackState.getHasBeenPlayed(emitterId)) {
+						playbackState.setHasBeenPlayed(true, emitterId);
+					}
 					angular.forEach(_playerManagers, function(pm) {
 						pm.pauseOtherPlayers(emitterId);
 					});
@@ -119,6 +120,7 @@
 					break;
 				case 'buffering':
 					analyticsSvc.captureEpisodeActivity("stall");
+					console.log('has been played!', playbackState.getHasBeenPlayed())
 					break;
 				case 'video cued':
 					break;
