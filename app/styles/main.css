@@ -391,21 +391,6 @@ TODO: native video seems to perform better when not position:absolute, but ifram
 Check to see if there's a consistent way to do without absolute positioning, or if it's safe to just do it to native and not youtube.
  */
 
-/*.video iframe {*/
-	/*position: absolute;*/
-	/*width: 100%;*/
-	/*height: 100%;*/
-	/*border: none;*/
-/*}*/
-
-/*.video video {*/
-	/*position: relative;*/
-	/*width: 100%;*/
-	/*height: 100%;*/
-	/*border: none;*/
-	/*z-index: 10;*/
-/*}*/
-
 .np-video__wrapper {
 	position: relative;
 	padding-bottom: 56.25%; /* 16:9 */
@@ -413,11 +398,8 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 }
 
 .np-video__wrapper video {
-	position: relative;
-	/*top:0;*/
-	/*left:0;*/
 	width: 100%;
-	height: 100%;
+	height: auto;
 }
 
 .np-video__wrapper iframe {
@@ -430,11 +412,11 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 
 .np-overlay-ui {
 	cursor: pointer;
-	border: 1px solid red;
 	z-index: 10;
-	width: 100%;
+	width: 50%;
+	height: 50%;
 	position: absolute;
-	transform: translate(0, -110%);
+	transform: translate(50%, -150%);
 }
 
 .np-overlay-ui.play {

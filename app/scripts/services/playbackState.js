@@ -17,7 +17,6 @@
 		var _props =  {
 			time: 0,
 			hasBeenPlayed: false,
-			videoType: '',
 			bufferedPercent: 0,
 			timeMultiplier: 0
 		};
@@ -51,11 +50,7 @@
 			if (mainPlayer) {
 				_mainPlayerId = pid;
 			}
-			_states[pid] = {};
-
-			angular.extend(_states[pid], _props);
-
-			_states[pid].type = type;
+			_states[pid] = angular.extend({},  _props, {videoType: type});
 		}
 
 		function _setPid(pid) {

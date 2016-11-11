@@ -5,16 +5,16 @@
 	<!--end temp debug code-->
 
 	<!--video element -->
-
-
-	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement" ng-click="$ctrl.videoClick()"></div>
+	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement" ng-click="$ctrl.videoClick(true)"></div>
 
 	<!--playback buttons-->
 	<img class="np-overlay-ui"
-		 ng-if="$ctrl.playerIsPaused()"
+		 ng-click="$ctrl.videoClick()"
+		 ng-if="$ctrl.playerIsPaused() && $ctrl.useMaskControls"
 		 src="/images/play-overlay.png"/>
 
 	<img class="np-overlay-ui"
+		 ng-click="$ctrl.videoClick()"
 		 ng-if="!$ctrl.playbackState.getHasBeenPlayed($ctrl.playerId) && !$ctrl.poster.length"
 		 src="/images/logo-overlay.png"/>
 

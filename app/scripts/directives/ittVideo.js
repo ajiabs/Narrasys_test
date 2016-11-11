@@ -34,10 +34,8 @@ function ittVideo($interval, $timeout, $rootScope, appState, dataSvc, modelSvc) 
 		function onInit() {
 
 			playbackService.setPlayer(ctrl.mediaSrcArr, ctrl.playerId, ctrl.mainPlayer);
-
 			ctrl.playerElement = $sce.trustAsHtml(playbackService.getPlayerDiv(ctrl.playerId));
-
-
+			ctrl.useMaskControls = playbackState.getVideoType(ctrl.playerId) === 'html5';
 			$timeout(function() {
 				playbackService.createInstance(ctrl.playerId);
 			},0);
@@ -48,10 +46,12 @@ function ittVideo($interval, $timeout, $rootScope, appState, dataSvc, modelSvc) 
 			return playbackService.getPlayerState(ctrl.playerId) === 'paused';
 		}
 
-		function videoClick() {
-			var state = playbackService.getPlayerState(ctrl.playerId);
-			console.log('videoClick', state);
+		function videoClick(checkBailOut) {
+			if (checkBailOut === true && ctrl.useMaskControls !== true) {
+				return;
+			}
 
+			var state = playbackService.getPlayerState(ctrl.playerId);
 			if (state === 'paused' || state === 'unstarted') {
 				playbackService.play(ctrl.playerId);
 			} else {
