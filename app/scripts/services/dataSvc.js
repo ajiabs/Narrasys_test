@@ -69,7 +69,7 @@ angular.module('com.inthetelling.story')
 			function _handleErrors(error) {
 				//true to set _noEmbed to make links no embeddable
 				console.warn('xFrameOpts error:', error);
-				return true;
+				return { noEmbed: true };
 			}
 
 			function _canEmbed(result) {

@@ -101,6 +101,7 @@
 						validatedFields['url'] = {showInfo: true, message: viewVal + ' is not a valid URL'}; //jshint ignore:line
 						return false;
 					}
+
 				}
 
 				function xFrameOpts(viewVal) {
@@ -133,6 +134,11 @@
 								validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true}; //jshint ignore:line
 							} else {
 								validatedFields['xFrameOpts'] = {showInfo: false }; //jshint ignore:line
+							}
+
+							//override noEmbed with error
+							if (xFrameOptsObj.error_message) {
+								validatedFields['xFrameOpts'] = {showInfo: true, message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message };
 							}
 						});
 				}
