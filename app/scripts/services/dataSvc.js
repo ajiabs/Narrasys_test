@@ -57,13 +57,13 @@ angular.module('com.inthetelling.story')
 				.catch(_handleErrors);
 
 			function _handleSuccess(result) {
-				var _xFrameOpts = result.x_frame_options;
+				//result could have response_code, location, or x_frame_options fields.
 				//not null, so normalize string
-				if (ittUtils.existy(_xFrameOpts)) {
-					_xFrameOpts = _xFrameOpts.toUpperCase();
+				if (ittUtils.existy(result.x_frame_options)) {
+					result.x_frame_options = result.x_frame_options.toUpperCase();
 				}
-				console.log('x-frame-opts: ', _xFrameOpts);
-				return _xFrameOpts;
+				// console.log('x-frame-opts: ', result);
+				return result
 			}
 
 			function _handleErrors(error) {
@@ -72,19 +72,20 @@ angular.module('com.inthetelling.story')
 				return true;
 			}
 
-			function _canEmbed(xFrameOpts) {
-				var _noEmbed = true;
+			function _canEmbed(result) {
+				// var _noEmbed = true;
+				result.noEmbed = true;
 				switch(true) {
-					case /SAMEORIGIN/i.test(xFrameOpts):
+					case /SAMEORIGIN/i.test(result.x_frame_options):
 						currentOrigin = $location.host();
 						parseInputUrl = document.createElement('a');
 						parseInputUrl.href = url;
 						//check our origin
 						if (currentOrigin === parseInputUrl.hostname) {
-							_noEmbed = false;
+							result.noEmbed = false;
 						}
 						break;
-					case /ALLOW-FROM/i.test(xFrameOpts):
+					case /ALLOW-FROM/i.test(result.x_frame_options):
 						//check if we're on the list
 						//split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
 						var xFrameArr = xFrameOpts.split(',');
@@ -94,19 +95,19 @@ angular.module('com.inthetelling.story')
 							var aElm = document.createElement('a');
 							aElm.href = url;
 							if (currentOrigin === aElm.hostname) {
-								_noEmbed = false;
+								result.noEmbed = false;
 							}
 						});
 						break;
-					case /DENY/i.test(xFrameOpts):
+					case /DENY/i.test(result.x_frame_options):
 						// do nothing
 						break;
-					case /null/.test(xFrameOpts):
+					case /null/.test(result.x_frame_options):
 						//ticket to ride
-						_noEmbed = false;
+						result.noEmbed = false;
 						break;
 				}
-				return _noEmbed;
+				return result
 			}
 		};
 
