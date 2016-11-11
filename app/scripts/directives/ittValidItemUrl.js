@@ -32,7 +32,6 @@
 			require: '?ngModel',
 			scope: {
 				onValidationNotice: '&',
-				url: '='
 			},
 			link: function link(scope, elm, attrs, ngModel) {
 				var message = {
@@ -119,9 +118,8 @@
 							var tipText = '';
 							//check for a new URL if we followed a redirect on the server.
 							if (ittUtils.existy(xFrameOptsObj.location)) {
-								scope.url = xFrameOptsObj.location;
 								tipText = viewVal + 'redirected to ' + xFrameOptsObj.location;
-								validatedFields['301'] = { showInfo: true, message: tipText, doInfo: true }; //jshint ignore:line
+								validatedFields['301'] = { showInfo: true, message: tipText, doInfo: true, url: xFrameOptsObj.location }; //jshint ignore:line
 							}
 
 							if (ittUtils.existy(xFrameOptsObj.response_code) && xFrameOptsObj.response_code === 404) {

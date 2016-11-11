@@ -22,7 +22,7 @@
 				'	</span>',
 				'	</div>',
 				'	<div class="input">',
-				'		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-focus="$ctrl.onFocus()" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url url="$ctrl.data.url" on-validation-notice="$ctrl.handleValidationMessage($notice)"/>',
+				'		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-focus="$ctrl.onFocus()" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url on-validation-notice="$ctrl.handleValidationMessage($notice)"/>',
 				'	</div>',
 				'</div>'
 			].join(' '),
@@ -71,6 +71,10 @@
 
 					if (ctrl.validatedFields.url.showInfo === true) {
 						ctrl.data.noEmbed = false;
+					}
+
+					if (ctrl.validatedFields['301'].showInfo === true) {
+						ctrl.data.url = ctrl.validatedFields['301'].url;
 					}
 				}
 			}],
