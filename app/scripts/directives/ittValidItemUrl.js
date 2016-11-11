@@ -52,7 +52,7 @@
 				scope.$on('url:focus', function() {
 					validatedFields['404'] = message;
 					validatedFields['301'] = message;
-					validatedFields['xFrameOpts'] = message;
+					validatedFields['xFrameOpts'] = message; //jshint ignore:line
 				});
 
 				//sync validators
@@ -65,7 +65,7 @@
 
 				if (ngModel) {
 					scope.$watch(function() {
-						return validatedFields
+						return validatedFields;
 					}, function(newVal, oldVal) {
 
 						if (!angular.equals(newVal, oldVal)) {
@@ -82,9 +82,9 @@
 				function mixedContent(viewVal) {
 
 					if (ittUtils.existy(viewVal) && /^http:\/\//.test(viewVal)) {
-						validatedFields['mixedContent'] = {message: 'Mixed Content Detected', showInfo: true};
+						validatedFields['mixedContent'] = {message: 'Mixed Content Detected', showInfo: true}; //jshint ignore:line
 					} else {
-						validatedFields['mixedContent'] = {message: '', showInfo: false};
+						validatedFields['mixedContent'] = {message: '', showInfo: false}; //jshint ignore:line
 					}
 
 					return true;
@@ -93,13 +93,13 @@
 				function url(viewVal) {
 
 					if (ngModel.$isEmpty(viewVal) && !_emailOrPlaceholder(viewVal)) {
-						validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'};
+						validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'}; //jshint ignore:line
 						return false;
 					} else if (ittUtils.isValidURL(viewVal) || _emailOrPlaceholder(viewVal)) {
-						validatedFields['url'] = {showInfo: false};
+						validatedFields['url'] = {showInfo: false}; //jshint ignore:line
 						return true;
 					} else {
-						validatedFields['url'] = {showInfo: true, message: viewVal + ' is not a valid URL'};
+						validatedFields['url'] = {showInfo: true, message: viewVal + ' is not a valid URL'}; //jshint ignore:line
 						return false;
 					}
 				}
@@ -108,7 +108,7 @@
 					//bail out if empty or link to youtube, mixed content, email or placeholder val
 					if (ngModel.$isEmpty(viewVal) || youtubeSvc.isYoutubeUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
 						return $q(function (resolve) {
-							validatedFields['xFrameOpts'] = {showInfo: false};
+							validatedFields['xFrameOpts'] = {showInfo: false}; //jshint ignore:line
 							return resolve();
 						});
 					}
@@ -121,7 +121,7 @@
 							if (ittUtils.existy(xFrameOptsObj.location)) {
 								scope.url = xFrameOptsObj.location;
 								tipText = viewVal + 'redirected to ' + xFrameOptsObj.location;
-								validatedFields['301'] = { showInfo: true, message: tipText, doInfo: true };
+								validatedFields['301'] = { showInfo: true, message: tipText, doInfo: true }; //jshint ignore:line
 							}
 
 							if (ittUtils.existy(xFrameOptsObj.response_code) && xFrameOptsObj.response_code === 404) {
@@ -132,9 +132,9 @@
 
 							if (xFrameOptsObj.noEmbed) {
 								tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
-								validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
+								validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true}; //jshint ignore:line
 							} else {
-								validatedFields['xFrameOpts'] = {showInfo: false };
+								validatedFields['xFrameOpts'] = {showInfo: false }; //jshint ignore:line
 							}
 						});
 				}

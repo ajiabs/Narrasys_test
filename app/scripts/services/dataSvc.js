@@ -63,7 +63,7 @@ angular.module('com.inthetelling.story')
 					result.x_frame_options = result.x_frame_options.toUpperCase();
 				}
 				// console.log('x-frame-opts: ', result);
-				return result
+				return result;
 			}
 
 			function _handleErrors(error) {
@@ -88,7 +88,7 @@ angular.module('com.inthetelling.story')
 					case /ALLOW-FROM/i.test(result.x_frame_options):
 						//check if we're on the list
 						//split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
-						var xFrameArr = xFrameOpts.split(',');
+						var xFrameArr = result.x_frame_options.split(',');
 						currentOrigin = $location.host();
 						angular.forEach(xFrameArr, function(i) {
 							var url = i.trim().split(' ')[1];
@@ -107,7 +107,7 @@ angular.module('com.inthetelling.story')
 						result.noEmbed = false;
 						break;
 				}
-				return result
+				return result;
 			}
 		};
 
