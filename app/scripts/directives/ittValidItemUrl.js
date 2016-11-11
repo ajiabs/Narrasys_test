@@ -138,7 +138,7 @@
 
 							//override noEmbed with error
 							if (xFrameOptsObj.error_message) {
-								validatedFields['xFrameOpts'] = {showInfo: true, message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message };
+								validatedFields['xFrameOpts'] = {showInfo: true, message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message }; //jshint ignore:line
 							}
 						});
 				}
