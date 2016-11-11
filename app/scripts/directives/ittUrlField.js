@@ -2,7 +2,7 @@
  * Created by githop on 6/30/16.
  */
 
-(function() {
+(function () {
 	'use strict';
 
 	angular.module('com.inthetelling.story')
@@ -17,85 +17,65 @@
 			template: [
 				'<div class="field">',
 				'	<div class="label">URL',
-				'		<itt-validation-tip ng-if="$ctrl.mixedContent.inform" text="Only HTTPS links can be embedded"></itt-validation-tip>',
-				'		<itt-validation-tip ng-if="$ctrl.emptyUrl.inform" text="Url cannot be blank"></itt-validation-tip>',
-				'		<itt-validation-tip ng-if="$ctrl.url.inform && $ctrl.url.payload" text="{{$ctrl.url.payload}} is not a valid URL"></itt-validation-tip>',
-				'		<itt-validation-tip ng-if="$ctrl.xFrameOpts.inform" text="{{$ctrl.xFrameOpts.payload}}" do-info="true"></itt-validation-tip>',
+				'	<span ng-repeat="(field, val) in $ctrl.validatedFields">',
+				'		<itt-validation-tip ng-if="val.showInfo" text="{{val.message}}" do-info="val.doInfo"></itt-validation-tip>',
+				'	</span>',
 				'	</div>',
 				'	<div class="input">',
-				'		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url on-validation-notice="$ctrl.handleValidationMessage($notice)"/>',
+				'		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-focus="$ctrl.onFocus()" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url on-validation-notice="$ctrl.handleValidationMessage($notice)"/>',
 				'	</div>',
 				'</div>'
 			].join(' '),
-			controller: [function() {
+			controller: ['$scope', function ($scope) {
 				var ctrl = this;
 				ctrl.handleValidationMessage = handleValidationMessage;
-				ctrl.emptyUrl = ctrl.url = ctrl.xFrameOpts = ctrl.mixedContent = {};
+				ctrl.onFocus = onFocus;
 
-				function _handleItemSideEffects(notice) {
-					switch(notice.type) {
-						case 'emptyUrl':
-						case 'url':
-							if (!notice.isValid) {
-								ctrl.data.noEmbed = false;
-							}
-							break;
-						case 'xFrameOpts':
-						case 'mixedContent':
-							if (!notice.isValid) {
-								ctrl.data.noEmbed = true;
-								ctrl.data.showInlineDetail = false;
-								//grey out disabled options
-								ctrl.data.templateOpts = ctrl.data.templateOpts.map(function(opt) {
-									if (opt.name === 'Embedded link' || opt.name === 'Link modal') {
-										opt.isDisabled = true;
-									}
-									return opt;
-								});
-							} else {
-								ctrl.data.noEmbed = false;
-							}
-							break;
-					}
-					//emptyUrl and url notices seem to fire after the check for mixedContent.
-					//This results in undoing the disabling of templateOpts.
-					if (ctrl.mixedContent.inform) {
-						ctrl.data.templateOpts = ctrl.data.templateOpts.map(function(opt) {
+				function onFocus() {
+					$scope.$broadcast('url:focus');
+				}
+
+				function handleValidationMessage(notice) {
+					ctrl.validatedFields = {
+						url: null,
+						xFrameOpts: null,
+						'404': null,
+						'301': null,
+						mixedContent: null
+					};
+
+					angular.extend(ctrl.validatedFields, notice);
+
+					var xFrameOptsdisableEmbedTemplates   = ctrl.validatedFields.xFrameOpts.showInfo === true && ctrl.validatedFields.mixedContent.showInfo === false;
+					var mixedContentDisableEmbedTemplates = ctrl.validatedFields.xFrameOpts.showInfo === false && ctrl.validatedFields.mixedContent.showInfo === true;
+
+					if (xFrameOptsdisableEmbedTemplates || mixedContentDisableEmbedTemplates) {
+						ctrl.data.noEmbed = true;
+						ctrl.data.showInlineDetail = false;
+						//grey out disabled options
+						ctrl.data.templateOpts = ctrl.data.templateOpts.map(function (opt) {
 							if (opt.name === 'Embedded link' || opt.name === 'Link modal') {
 								opt.isDisabled = true;
 							}
 							return opt;
 						});
 					} else {
-						if (notice.type !== 'xFrameOpts') {
-							//null out to remove UI popover
-							ctrl.xFrameOpts.inform = null;
-							ctrl.data.templateOpts = ctrl.data.templateOpts.map(function(opt) {
+						ctrl.data.noEmbed = false;
+						ctrl.data.templateOpts = ctrl.data.templateOpts.map(function (opt) {
+							if (opt.name === 'Embedded link' || opt.name === 'Link modal') {
 								opt.isDisabled = false;
-								return opt;
-							});
-						}
-
-					}
-				}
-
-				function handleValidationMessage(notice) {
-					//inform user when field is not valid
-					ctrl[notice.type] = {inform: !notice.isValid };
-
-					//show payload data if present
-					if (notice.payload != null) { //jshint ignore:line
-						ctrl[notice.type].payload = notice.payload;
+							}
+							return opt;
+						});
 					}
 
-					//If user fails for xFrameOpts, then fails another unrelated validation,
-					//remove the original xFrameOpts notice...
-					//example: user inputs google.com, is notified for xFrameOpts, then changes URL
-					//to empty string -> xFrameOpts notice (from google) should no longer be visible.
-					if (ctrl.xFrameOpts.payload !== null && notice.type !== 'xFrameOpts') {
-						ctrl.xFrameOpts.payload = null;
+					if (ctrl.validatedFields.url.showInfo === true) {
+						ctrl.data.noEmbed = false;
 					}
-					_handleItemSideEffects(notice);
+
+					if (ctrl.validatedFields['301'].showInfo === true) {
+						ctrl.data.url = ctrl.validatedFields['301'].url;
+					}
 				}
 			}],
 			controllerAs: '$ctrl',
