@@ -1,15 +1,15 @@
-<!--&lt;!&ndash;temp debug code&ndash;&gt;-->
-<!--<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time:-->
-	<!--{{$ctrl.playbackState.getTime()}}</h5>	{{$ctrl.poster.length}} {{$ctrl.playbackState.getHasBeenPlayed($ctrl.playerId)}}-->
-<!--&lt;!&ndash;end temp debug code&ndash;&gt;-->
+<!--temp debug code-->
+<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time:
+	{{$ctrl.playbackState.getTime()}}</h5>	{{$ctrl.poster.length}} {{$ctrl.playbackState.getHasBeenPlayed($ctrl.playerId)}}
+<!--end temp debug code-->
 <div class="video">
 	<!--video element -->
-	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement" ng-click="$ctrl.videoClick(true)"></div>
+	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement" ng-click="$ctrl.videoClick()"></div>
 
 	<!--playback buttons-->
 	<img class="np-overlay-ui"
 		 ng-click="$ctrl.videoClick() && $ctrl.playbackState.getHasBeenPlayed($ctrl.playerId)"
-		 ng-if="$ctrl.playerIsPaused() && $ctrl.useMaskControls"
+		 ng-if="$ctrl.playerIsPaused()"
 		 src="/images/play-overlay.png"/>
 
 
