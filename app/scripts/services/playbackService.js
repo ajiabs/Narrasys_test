@@ -36,7 +36,7 @@
 
 		//public methods
 		function setPlayer(mediaSrcArr, id, mainPlayer) {
-			var parsedMedia = urlService.parseMediaSrc(mediaSrcArr);
+			var parsedMedia = urlService.parseMediaSrcArr(mediaSrcArr);
 
 			_playerInterface = _getPlayerManagerFromMediaSrc(parsedMedia);
 			playbackState.setState(id, mainPlayer, _playerInterface.type);

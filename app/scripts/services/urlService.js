@@ -13,10 +13,15 @@
 		var _urlSubServices = [youtubeSvc, html5UrlService];
 
 		return {
-			parseMediaSrc: parseMediaSrc
+			parseMediaSrcArr: parseMediaSrcArr
 		};
 
-		function parseMediaSrc(mediaSrcArr) {
+		/**
+		 *
+		 * @param mediaSrcArr
+		 * @return parsedMediaSrcArr Array<{type: string, mediaSrcArr: Array<String>}>
+		 */
+		function parseMediaSrcArr(mediaSrcArr) {
 			return _urlSubServices.reduce(function(parsedMediaSrcArr, urlSrv) {
 				var parsedMediaSrcObj = urlSrv.parseMediaSrc(mediaSrcArr);
 				if (parsedMediaSrcObj.mediaSrcArr.length > 0) {

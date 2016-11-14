@@ -10,20 +10,23 @@
 
 	function html5UrlService() {
 		return {
-			parseMediaSrc: parseMediaSrc,
+			parseMediaSrc: parseMediaSrc
 		};
-
+		/**
+		 *
+		 * @param mediaSrc
+		 * @return mediaObj{type: String, mediaSrcArr: Array<String>}
+		 */
 		function parseMediaSrc(mediaSrc) {
 			var extensionMatch = /(.mp4|.m3u8|.webm)/;
-			return mediaSrc.reduce(function(mediaObj, mediaSrc) {
+			return mediaSrc.reduce(function(parsedMediaObj, mediaSrc) {
 				if (extensionMatch.test(mediaSrc)) {
-					mediaObj.mediaSrcArr.push(mediaSrc);
+					parsedMediaObj.mediaSrcArr.push(mediaSrc);
 				}
-				return mediaObj;
+				return parsedMediaObj;
 			}, {type: 'html5', mediaSrcArr: []});
 
 		}
 	}
-
 
 })();
