@@ -434,11 +434,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.init = function (episodeId) {
+			console.log('timelineSvc#init');
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
 			svc.displayMarkedEvents = [];
 			timeMultiplier = 1;
-			playbackState.reset();
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
 			playbackService.registerStateChangeListener(_onPlayerStateChange);
 			$interval.cancel(clock);

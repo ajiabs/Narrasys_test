@@ -2,7 +2,7 @@
 angular.module('com.inthetelling.story')
 	.directive('ittVideo', ittVideo);
 
-function ittVideo($interval, $timeout, $rootScope, appState, dataSvc, modelSvc) {
+function ittVideo(playbackState) {
 	return {
 		replace: false,
 		templateUrl: 'templates/video.html',
@@ -69,6 +69,7 @@ function ittVideo($interval, $timeout, $rootScope, appState, dataSvc, modelSvc) 
 
 	function link(scope) {
 
+		scope.$on('$destroy', playbackState.reset);
 		// scope.spaceWatcher = $rootScope.$on('userKeypress.SPACE', scope.videoClick);
 		// // if the video is not yet transcoded poll for updates until it is
 		// var pollCount = 0;

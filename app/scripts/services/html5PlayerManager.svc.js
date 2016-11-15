@@ -109,8 +109,18 @@
 		function onCanPlay() {
 			var instance = _getInstance(this.id);
 			var player = _getPlayer(this.id);
-			player.meta.playerState = 6;
-			_emitStateChange(instance)
+
+			if (playbackState.getStartAtTime() > 0) {
+				player.meta.playerState = 5;
+			} else {
+				player.meta.playerState = -1;
+			}
+
+			//emit video cued or unstarted only once
+			if (playbackState.getHasBeenPlayed() === false) {
+				_emitStateChange(instance);
+			}
+
 		}
 
 		function onPlaying() {

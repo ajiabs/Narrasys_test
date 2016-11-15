@@ -59,15 +59,14 @@
 
 		function reset(pid) {
 			_timelineState = '';
-			var state = getState(pid);
-			angular.extend(state, _props);
+			_states[pid] = angular.extend({}, angular.copy(_props));
 		}
 
 		function setState(pid, mainPlayer, type) {
 			if (mainPlayer) {
 				_mainPlayerId = pid;
 			}
-			_states[pid] = angular.extend({},  _props, {videoType: type});
+			_states[pid] = angular.extend({},  angular.copy(_props), {videoType: type});
 		}
 
 		function _setPid(pid) {
@@ -139,14 +138,18 @@
 		}
 
 		function getDuration(pid) {
+			console.trace('get Duration start');
 			var state = getState(pid);
 			if (_existy(state)) {
+				console.log('succs', state.duration);
 				return state.duration;
 			}
 		}
 
 		function setDuration(d, pid) {
+
 			var state = getState(pid);
+			console.trace('set duration!', state);
 			if (_existy(state)) {
 				state.duration = d;
 			}

@@ -149,6 +149,7 @@
 				var startAt = playbackState.getStartAtTime(pid);
 				var stateChangeEvent = _formatPlayerStateChangeEvent({data: -1}, pid);
 				if (startAt > 0) {
+					//will emit a 'video cued' event.
 					event.target.cueVideoById(ytId, startAt);
 				}
 				_emitStateChange(stateChangeEvent);
