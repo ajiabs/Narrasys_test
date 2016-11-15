@@ -51,7 +51,8 @@
 			registerStateChangeListener: registerStateChangeListener,
 			//need to see how to make better than returning a hard coded boolean
 			isReady: isReady,
-			getPlayerDiv: getPlayerDiv
+			getPlayerDiv: getPlayerDiv,
+			setSpeed: setSpeed
 		};
 
 		//public methods
@@ -197,6 +198,15 @@
 				}
 			}
 		}
+
+		function setSpeed(pid, playbackRate) {
+			var p = _getYTInstance(pid);
+			// getAvailablePlayBackRates returns an array of numbers, with at least 1 element; i.e. the default playback rate
+			if (_existy(p) && p.getAvailablePlaybackRates().length > 1) {
+				p.setPlaybackRate(playbackRate);
+			}
+		}
+
 		/**
 		 * @ngdoc method
 		 * @name #getCurrentTime

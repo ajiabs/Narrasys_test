@@ -19,7 +19,7 @@
 			time: 0,
 			hasBeenPlayed: false,
 			bufferedPercent: 0,
-			timeMultiplier: 0
+			timeMultiplier: 1
 		};
 		var _existy = ittUtils.existy;
 
@@ -138,10 +138,10 @@
 		}
 
 		function getDuration(pid) {
-			console.trace('get Duration start');
+			// console.trace('get Duration start');
 			var state = getState(pid);
 			if (_existy(state)) {
-				console.log('succs', state.duration);
+				// console.log('succs', state.duration);
 				return state.duration;
 			}
 		}
@@ -149,7 +149,7 @@
 		function setDuration(d, pid) {
 
 			var state = getState(pid);
-			console.trace('set duration!', state);
+			// console.trace('set duration!', state);
 			if (_existy(state)) {
 				state.duration = d;
 			}

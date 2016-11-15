@@ -35,7 +35,8 @@
 			pauseOtherPlayers: pauseOtherPlayers,
 			getBufferedPercent: getBufferedPercent,
 			registerStateChangeListener: registerStateChangeListener,
-			getPlayerDiv: getPlayerDiv
+			getPlayerDiv: getPlayerDiv,
+			setSpeed: setSpeed
 		};
 
 		function create(divID) {
@@ -194,6 +195,13 @@
 		function seek(pid, t) {
 			var instance = _getInstance(pid);
 			instance.currentTime = t;
+		}
+
+		function setSpeed(pid, playbackRate) {
+
+			var instance = _getInstance(pid);
+			console.log('we made it!', pid, playbackRate);
+			instance.playbackRate = playbackRate;
 		}
 		/**
 		 * @ngdoc method

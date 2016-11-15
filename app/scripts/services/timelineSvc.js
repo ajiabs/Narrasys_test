@@ -107,7 +107,7 @@ angular.module('com.inthetelling.story')
 			timeMultiplier = speed;
 			//here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
 			playbackState.setTimeMultiplier(timeMultiplier);
-			videoScope.setSpeed(speed);
+			playbackService.setSpeed(timeMultiplier);
 			stepEvent();
 		};
 
@@ -207,7 +207,6 @@ angular.module('com.inthetelling.story')
 
 			playbackState.setTime(t);
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
-			// videoScope.seek(t, true);
 			playbackService.seek(t);
 
 			svc.updateEventStates();

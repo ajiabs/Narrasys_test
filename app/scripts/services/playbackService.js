@@ -31,7 +31,8 @@
 			createInstance: createInstance,
 			registerStateChangeListener: registerStateChangeListener,
 			getPlayerState: getPlayerState,
-			getPlayerType: getPlayerType
+			getPlayerType: getPlayerType,
+			setSpeed: setSpeed
 		};
 
 		//public methods
@@ -85,6 +86,11 @@
 
 		function getPlayerType() {
 			return _playerInterface.type;
+		}
+
+		function setSpeed(playbackRate, playerId) {
+			var pid = _setPid(playerId);
+			return _playerInterface.setSpeed(_setPid(playerId), playbackRate);
 		}
 
 
