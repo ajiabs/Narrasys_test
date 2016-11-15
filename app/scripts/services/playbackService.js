@@ -32,7 +32,8 @@
 			registerStateChangeListener: registerStateChangeListener,
 			getPlayerState: getPlayerState,
 			getPlayerType: getPlayerType,
-			setSpeed: setSpeed
+			setSpeed: setSpeed,
+			toggleMute: toggleMute
 		};
 
 		//public methods
@@ -89,8 +90,11 @@
 		}
 
 		function setSpeed(playbackRate, playerId) {
-			var pid = _setPid(playerId);
 			return _playerInterface.setSpeed(_setPid(playerId), playbackRate);
+		}
+
+		function toggleMute(playerId) {
+			return _playerInterface.toggleMute(_setPid(playerId));
 		}
 
 

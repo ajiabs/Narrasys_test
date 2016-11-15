@@ -36,7 +36,8 @@
 			getBufferedPercent: getBufferedPercent,
 			registerStateChangeListener: registerStateChangeListener,
 			getPlayerDiv: getPlayerDiv,
-			setSpeed: setSpeed
+			setSpeed: setSpeed,
+			toggleMute: toggleMute
 		};
 
 		function create(divID) {
@@ -198,11 +199,16 @@
 		}
 
 		function setSpeed(pid, playbackRate) {
-
 			var instance = _getInstance(pid);
 			console.log('we made it!', pid, playbackRate);
 			instance.playbackRate = playbackRate;
 		}
+
+		function toggleMute(pid) {
+			var instance = _getInstance(pid);
+			instance.muted = !instance.muted;
+		}
+
 		/**
 		 * @ngdoc method
 		 * @name #pauseOtherPlayers

@@ -290,7 +290,7 @@ angular.module('com.inthetelling.story')
 
 		svc.toggleMute = function () {
 			appState.muted = !appState.muted;
-			videoScope.toggleMute();
+			playbackService.toggleMute();
 		};
 		svc.setVolume = function (vol) { // 0..100
 			appState.volume = vol;

@@ -44,9 +44,7 @@
 			getBufferedPercent: getVideoLoadedFraction,
 			seekTo: seekTo,
 			getCurrentTime: getCurrentTime,
-			isMuted: isMuted,
-			mute: mute,
-			unMute: unMute,
+			toggleMute: toggleMute,
 			setVolume: setVolume,
 			registerStateChangeListener: registerStateChangeListener,
 			//need to see how to make better than returning a hard coded boolean
@@ -373,6 +371,16 @@
 
 			}
 		}
+
+		function toggleMute(pid) {
+			var p = _getYTInstance(pid);
+			if (p.isMuted()) {
+				p.unMute();
+			} else {
+				p.mute();
+			}
+		}
+
 		/**
 		 * @ngdoc method
 		 * @name #isMuted
