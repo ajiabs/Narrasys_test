@@ -399,38 +399,6 @@
 		}
 		/**
 		 * @ngdoc method
-		 * @name #mute
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Sets isMuted to true
-		 * @param {String} pid The ID of the YT instance
-		 * @returns {Void} No return value.
-		 */
-		function mute(pid) {
-			var p = _getYTInstance(pid);
-
-			if (_existy(p)) {
-				return p.mute();
-			}
-		}
-		/**
-		 * @ngdoc method
-		 * @name #unMute
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Sets isMuted to false
-		 * @param {String} pid The ID of the YT instance
-		 * @returns {Void} No return value.
-		 */
-		function unMute(pid) {
-			var p = _getYTInstance(pid);
-
-			if (_existy(p)) {
-				return p.unMute();
-			}
-		}
-		/**
-		 * @ngdoc method
 		 * @name #setVolume
 		 * @methodOf iTT.service:youTubePlayerManager
 		 * @description

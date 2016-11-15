@@ -294,7 +294,7 @@ angular.module('com.inthetelling.story')
 		};
 		svc.setVolume = function (vol) { // 0..100
 			appState.volume = vol;
-			videoScope.setVolume(vol);
+			playbackService.setVolume(vol);
 		};
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - -

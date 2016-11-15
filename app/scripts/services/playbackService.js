@@ -33,7 +33,8 @@
 			getPlayerState: getPlayerState,
 			getPlayerType: getPlayerType,
 			setSpeed: setSpeed,
-			toggleMute: toggleMute
+			toggleMute: toggleMute,
+			setVolume: setVolume
 		};
 
 		//public methods
@@ -95,6 +96,10 @@
 
 		function toggleMute(playerId) {
 			return _playerInterface.toggleMute(_setPid(playerId));
+		}
+
+		function setVolume(vol, playerId) {
+			_playerInterface.setVolume(_setPid(playerId), vol);
 		}
 
 

@@ -37,7 +37,8 @@
 			registerStateChangeListener: registerStateChangeListener,
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
-			toggleMute: toggleMute
+			toggleMute: toggleMute,
+			setVolume: setVolume
 		};
 
 		function create(divID) {
@@ -200,13 +201,17 @@
 
 		function setSpeed(pid, playbackRate) {
 			var instance = _getInstance(pid);
-			console.log('we made it!', pid, playbackRate);
 			instance.playbackRate = playbackRate;
 		}
 
 		function toggleMute(pid) {
 			var instance = _getInstance(pid);
 			instance.muted = !instance.muted;
+		}
+
+		function setVolume(pid, vol) {
+			var instance = _getInstance(pid);
+			instance.volume = (vol / 100);
 		}
 
 		/**
