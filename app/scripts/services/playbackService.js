@@ -120,7 +120,6 @@
 					break;
 				case 'buffering':
 					analyticsSvc.captureEpisodeActivity("stall");
-					console.log('has been played!', playbackState.getHasBeenPlayed());
 					break;
 				case 'video cued':
 					break;

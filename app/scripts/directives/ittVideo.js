@@ -12,14 +12,14 @@ function ittVideo($interval, $timeout, $rootScope, appState, dataSvc, modelSvc) 
 			mediaSrcArr: '=',
 			playerId: '='
 		},
-		controller: ['$timeout', '$sce', '$rootScope', 'playbackService', 'playbackState', 'appState', videoCtrl],
+		controller: ['$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'playbackState', 'appState', 'ittUtils', videoCtrl],
 		bindToController: true,
 		controllerAs: '$ctrl',
 		link: link
 	};
 
 	//TODO: tackle isTranscoded somehow.
-	function videoCtrl($timeout, $sce, $rootScope, playbackService, playbackState, appState) {
+	function videoCtrl($timeout, $sce, $rootScope, $routeParams, playbackService, playbackState, appState, ittUtils) {
 		var ctrl = this;
 		ctrl.playbackState = playbackState;
 		ctrl.appState = appState;
@@ -37,6 +37,13 @@ function ittVideo($interval, $timeout, $rootScope, appState, dataSvc, modelSvc) 
 			ctrl.playerElement = $sce.trustAsHtml(playbackService.getPlayerDiv(ctrl.playerId));
 			$timeout(function() {
 				playbackService.createInstance(ctrl.playerId);
+
+				if ($routeParams.t && ctrl.mainPlayer === true) {
+					console.log('time param', $routeParams.t);
+
+					playbackState.setStartAtTime(ittUtils.parseTime($routeParams.t), ctrl.playerId);
+				}
+
 			},0);
 
 		}

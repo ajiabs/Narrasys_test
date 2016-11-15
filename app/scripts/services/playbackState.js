@@ -15,6 +15,7 @@
 		var _states = {};
 		var _mainPlayerId;
 		var _props =  {
+			startAtTime: 0,
 			time: 0,
 			hasBeenPlayed: false,
 			bufferedPercent: 0,
@@ -23,6 +24,8 @@
 		var _existy = ittUtils.existy;
 
 		return {
+			getStartAtTime: getStartAtTime,
+			setStartAtTime: setStartAtTime,
 			setState: setState,
 			getTime: getTime,
 			setTime: setTime,
@@ -39,6 +42,20 @@
 			setBufferedPercent: setBufferedPercent,
 			reset: reset
 		};
+
+		function getStartAtTime(pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				return state.startAtTime;
+			}
+		}
+
+		function setStartAtTime(t, pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				state.startAtTime = t;
+			}
+		}
 
 		function reset(pid) {
 			_timelineState = '';

@@ -32,10 +32,8 @@
 			getCurrentTime: getCurrentTime,
 			getPlayerState: getPlayerState,
 			seekTo: seek,
-			pauseOtherEmbeds: pauseOtherEmbeds,
 			pauseOtherPlayers: pauseOtherPlayers,
 			getBufferedPercent: getBufferedPercent,
-			isReady: isReady,
 			registerStateChangeListener: registerStateChangeListener,
 			getPlayerDiv: getPlayerDiv
 		};
@@ -45,6 +43,7 @@
 			plr.onpause = onPause;
 			plr.onplaying = onPlaying;
 			plr.onwaiting = onBuffering;
+			plr.oncanplay = onCanPlay;
 			// plr.onstalled = onBuffering;
 			// plr.onended = onEnded;
 
@@ -106,6 +105,13 @@
 		/*
 		 HTML5 media event handlers
 		 */
+
+		function onCanPlay() {
+			var instance = _getInstance(this.id);
+			var player = _getPlayer(this.id);
+			player.meta.playerState = 6;
+			_emitStateChange(instance)
+		}
 
 		function onPlaying() {
 			var instance = _getInstance(this.id);
@@ -178,14 +184,6 @@
 		function seek(pid, t) {
 			var instance = _getInstance(pid);
 			instance.currentTime = t;
-		}
-
-		function pauseOtherEmbeds(id) {
-			for (var p in _players) {
-				if (p !== id) {
-					pause(p);
-				}
-			}
 		}
 		/**
 		 * @ngdoc method

@@ -20,7 +20,8 @@
 		pick: pick,
 		bitwiseCeil: bitwiseCeil,
 		setNgOpts: setNgOpts,
-		intersection: intersection
+		intersection: intersection,
+		parseTime: parseTime
 	};
 
 	//using bitwise operators up to 20% faster than Math.ceil (js hint not a fan of bitwise operators)
@@ -96,6 +97,26 @@
 			}
 		}
 		return ret;
+	}
+
+	// supports these formats: "1:10", 1m10s", "1m", "10s", or a plain number (in seconds)
+	function parseTime(t) {
+		if (!isNaN(parseFloat(t)) && isFinite(t)) {
+			return t;
+		}
+		var parse = t.match(/^(\d+)[m:]([\d\.]+)s?$/);
+		if (parse) {
+			return (parseFloat(parse[1] * 60) + parseFloat(parse[2]));
+		}
+		parse = t.match(/^([\d\.]+)s$/);
+		if (parse) {
+			return parseFloat(parse[1]);
+		}
+		parse = t.match(/^([\d\.]+)m$/);
+		if (parse) {
+			return parseFloat(parse[1] * 60);
+		}
+		console.error("Tried to parse invalid time string: ", t);
 	}
 
 

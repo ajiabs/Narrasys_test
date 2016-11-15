@@ -55,9 +55,6 @@ angular.module('com.inthetelling.story')
 			});
 		}
 
-		if ($routeParams.t) {
-			timelineSvc.startAtSpecificTime($routeParams.t);
-		}
 
 		// $scope.changeProducerEditLayer = function (newLayer) {
 		// 	appState.producerEditLayer = appState.producerEditLayer + newLayer;

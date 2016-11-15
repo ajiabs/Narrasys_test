@@ -87,6 +87,7 @@
 			function handleSuccess(ytInstance) {
 				_players[playerId].yt = ytInstance;
 				_players[playerId].ready = false;
+				_players[playerId].ytId = ytId;
 
 			}
 
@@ -123,50 +124,8 @@
 			 * @returns {Void} has no return value
 			 */
 			function onPlayerStateChange(event) {
-				//console.log("player state change!", event);
-				// var main = _mainPlayerId;
-				// var embed;
-				// var state = event.data;
+				// console.log("player state change!", PLAYERSTATES[event.data]);
 				var pid = _getPidFromInstance(event.target);
-
-				console.log('youtube on state change', event.data);
-				// if (pid !== _mainPlayerId) {
-				// 	embed = pid;
-				// }
-				// var embedPlayerState = playerState(embed);
-				// var mainPlayerState = playerState(main);
-                //
-				// if (pid === main) {
-				// 	if (mainPlayerState === YT.PlayerState.PLAYING) {
-				// 		pauseOtherPlayers(main);
-				// 	}
-                //
-				// 	if (state === YT.PlayerState.ENDED) {
-				// 		console.log('thanks for watching!!!');
-				// 		//stop in the manager on the emitting player
-				// 		stop(pid);
-				// 	}
-				// }
-                //
-				// if (pid === embed) {
-				// 	if (playbackState.getTimelineState() === 'playing') {
-				// 		// timelineSvc.pause();
-				// 		pauseOtherPlayers(embed);
-				// 	}
-                //
-				// 	if (embedPlayerState === YT.PlayerState.PLAYING) {
-				// 		pauseOtherPlayers(embed);
-				// 	}
-				// }
-                //
-				// //html5 main video w youtube embed
-				// if (_players[embed] !== undefined &&
-				// 	_players[main] === undefined &&
-				// 	state !== YT.PlayerState.UNSTARTED) {
-				// 	if (playbackState.getTimelineState() === 'playing' && appState.embedYTPlayerAvailable) {
-				// 		// timelineSvc.pause();
-				// 	}
-				// }
 
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
 				_emitStateChange(stateChangeEvent);
@@ -183,20 +142,18 @@
 			 * @returns {Void} has no return value
 			 */
 			function onReady(event) {
-				console.log('onReady!!');
 				var pid = _getPidFromInstance(event.target);
 
-				if (pid === _mainPlayerId) {
-					appState.mainYTPlayerReady = true;
-				}
-
-				if (pid !== _mainPlayerId) {
-					appState.embedYTPlayerReady = true;
-					appState.embedYTPlayerAvailable = true;
-				}
-
 				_players[pid].ready = true;
-				// onReadyCB(event);
+				var ytId = _players[pid].ytId;
+				var startAt = playbackState.getStartAtTime(pid);
+				var stateChangeEvent = _formatPlayerStateChangeEvent({data: -1}, pid);
+				if (startAt > 0) {
+					event.target.cueVideoById(ytId, startAt);
+				}
+				_emitStateChange(stateChangeEvent);
+
+
 			}
 
 			/**
@@ -287,6 +244,7 @@
 		function play(pid) {
 			var p = _getYTInstance(pid);
 			if (_existy(p)) {
+
 				return p.playVideo();
 			}
 		}
@@ -395,7 +353,13 @@
 		function seekTo(pid, t, allowSeekAhead) {
 			var p = _getYTInstance(pid);
 			if (_existy(p)) {
-				p.seekTo(t, allowSeekAhead);
+				//handle seek before video has been played
+				if (p.getPlayerState() === YT.PlayerState.CUED) {
+					p.cueVideoById(_players[pid].ytId, t);
+				} else {
+					p.seekTo(t, allowSeekAhead);
+				}
+
 			}
 		}
 		/**

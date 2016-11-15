@@ -32,7 +32,7 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 */
 
 angular.module('com.inthetelling.story')
-	.factory('timelineSvc', function ($window, $timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc, playbackService, PLAYERSTATES, playbackState) {
+	.factory('timelineSvc', function ($window, $timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc, playbackService, PLAYERSTATES, playbackState, ittUtils) {
 
 		var svc = {};
 
@@ -49,8 +49,8 @@ angular.module('com.inthetelling.story')
 		svc.enforceSingletonPauseListener = true; // this is probably unnecessary paranoia
 		var clock;
 		var eventTimeout;
-		var videoScope;
 		var timeMultiplier;
+		var parseTime = ittUtils.parseTime;
 
 			//player states
 			// '-1': 'unstarted',
@@ -65,7 +65,7 @@ angular.module('com.inthetelling.story')
 
 			switch (state) {
 				case 'unstarted':
-					// console.log('unstarted gtfo');
+					playbackState.setTimelineState('unstarted');
 					break;
 				case 'ended':
 					break;
@@ -93,24 +93,14 @@ angular.module('com.inthetelling.story')
 					lastTick = undefined;
 					break;
 				case 'video cued':
+					var startAt = playbackState.getStartAtTime();
+					var firstPlay = playbackState.getHasBeenPlayed();
+					if (startAt > 0 && firstPlay === false) {
+						svc.startAtSpecificTime(startAt);
+					}
 					break;
 			}
 		}
-
-		svc.registerVideo = function (newVideoScope) {
-			// console.log("timelineSvc.registerVideo", newVideoScope);
-			if (videoScope !== undefined) {
-				// Route changes weren't always seeking to the correct time; this forces it on next $digest:
-				$timeout(function () {
-					svc.seek(playbackState.getTime());
-				});
-			}
-			videoScope = newVideoScope;
-		};
-
-		svc.unregisterVideo = function () {
-			videoScope = undefined;
-		};
 
 		svc.setSpeed = function (speed) {
 			// console.log("timelineSvc.setSpeed", speed);
@@ -131,10 +121,10 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
-			// if (playbackState.getTime() > playbackState.getDuration() - 0.1) {
-			// 	svc.seek(0.1); // fudge the time a bit to skip the landing scene
-			// 	svc.play();
-			// }
+			if (playbackState.getTime() > playbackState.getDuration() - 0.1) {
+				svc.seek(0.1); // fudge the time a bit to skip the landing scene
+				svc.play();
+			}
 			playbackService.play();
 		};
 
@@ -159,9 +149,9 @@ angular.module('com.inthetelling.story')
 			}
 
 			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
-			if (appState.isTouchDevice && appState.hasBeenPlayed === false && videoScope.videoType === 'youtube') {
+			if (appState.isTouchDevice && playbackState.getHasBeenPlayed() === false && playbackState.getVideoType() === 'youtube') {
 				//TODO in future it might be possible to trick YT into starting at the correct time even
-				//return;
+				return;
 			}
 
 			t = parseTime(t);
@@ -174,7 +164,6 @@ angular.module('com.inthetelling.story')
 
 			playbackState.setTime(t);
 			svc.updateEventStates();
-			videoScope.startAtTime(t);
 
 			analyticsSvc.captureEpisodeActivity("seek", {
 				method: "URLParameter"
@@ -450,8 +439,6 @@ angular.module('com.inthetelling.story')
 			svc.displayMarkedEvents = [];
 			timeMultiplier = 1;
 			playbackState.reset();
-			playbackState.setTimelineState('unstarted');
-			// console.log('do we have the video?', modelSvc.episode(episodeId));
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
 			playbackService.registerStateChangeListener(_onPlayerStateChange);
 			$interval.cancel(clock);
@@ -789,26 +776,6 @@ angular.module('com.inthetelling.story')
 					alreadyPreloadedImages[event.asset.url].src = event.asset.url;
 				}
 			}
-		};
-
-		// supports these formats: "1:10", 1m10s", "1m", "10s", or a plain number (in seconds)
-		var parseTime = function (t) {
-			if (!isNaN(parseFloat(t)) && isFinite(t)) {
-				return t;
-			}
-			var parse = t.match(/^(\d+)[m:]([\d\.]+)s?$/);
-			if (parse) {
-				return (parseFloat(parse[1] * 60) + parseFloat(parse[2]));
-			}
-			parse = t.match(/^([\d\.]+)s$/);
-			if (parse) {
-				return parseFloat(parse[1]);
-			}
-			parse = t.match(/^([\d\.]+)m$/);
-			if (parse) {
-				return parseFloat(parse[1] * 60);
-			}
-			console.error("Tried to parse invalid time string: ", t);
 		};
 
 		if (config.debugInBrowser) {

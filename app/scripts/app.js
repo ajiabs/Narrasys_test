@@ -27,7 +27,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			'2': 'paused',
 			'3': 'buffering',
 			'5': 'video cued',
-			'4': 'quality changed'
+			'4': 'quality changed',
+			'6': 'player ready'
 	})
 	.constant('STATECHANGE', 'onPlayerStateChange')
 // Configure routing
