@@ -10,9 +10,7 @@
 	 * @description
 	 * A service for working with youtube iframes
 	 * {@link https://github.com/InTheTelling/client/blob/master/app/scripts/services/YouTubePlayerManager.svc.js source}
-	 * @requires $q
 	 * @requires $location
-	 * @requires appState
 	 * @requires timelineSvc
 	 * @requires YoutubePlayerApi
 	 * @requires errorSvc
@@ -20,7 +18,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($q, $location, appState, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState, youtubeSvc) {
+	function youTubePlayerManager($location, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState, youtubeSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -35,7 +33,6 @@
 			play: play,
 			getPlayerState: playerState,
 			pause: pause,
-			pauseEmbeds: pauseEmbeds,
 			stop: stop,
 			reset: reset,
 			pauseOtherPlayers: pauseOtherPlayers,
@@ -47,8 +44,6 @@
 			toggleMute: toggleMute,
 			setVolume: setVolume,
 			registerStateChangeListener: registerStateChangeListener,
-			//need to see how to make better than returning a hard coded boolean
-			isReady: isReady,
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed
 		};
@@ -59,13 +54,29 @@
 			return _players[id].div;
 		}
 
-		function isReady() {
-			return true;
-		}
-
 		function registerStateChangeListener(cb) {
 			_stateChangeCallbacks.push(cb);
 		}
+
+		/**
+		 * @ngdoc method
+		 * @name #setPlayer
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to set the PID / divID for a YT instance, is called prior to create()
+		 * @param {String} id Main Video Asset ID or Event ID (for embeds)
+		 * @param {Boolean} mainPlayer Determines type of player, embed or main
+		 * @returns {String} Div ID of YT instance.
+		 */
+		function setPlayerId(id, mainPlayer, mediaSrcArr) {
+			if (mainPlayer) {
+				_players = {};
+				_mainPlayerId = id;
+			}
+			_players[id] = { isMainPlayer: mainPlayer, ytUrl: mediaSrcArr[0] };
+			_players[id].div = _getPlayerDiv(id);
+		}
+
 		/**
 		 * @ngdoc method
 		 * @name #create
@@ -383,22 +394,6 @@
 
 		/**
 		 * @ngdoc method
-		 * @name #isMuted
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Getter to determine mute state
-		 * @param {String} pid The ID of the YT instance
-		 * @returns {Boolean} Bool representing mute state
-		 */
-		function isMuted(pid) {
-			var p = _getYTInstance(pid);
-
-			if (_existy(p)) {
-				return p.isMuted();
-			}
-		}
-		/**
-		 * @ngdoc method
 		 * @name #setVolume
 		 * @methodOf iTT.service:youTubePlayerManager
 		 * @description
@@ -412,27 +407,6 @@
 
 			if (_existy(p)) {
 				p.setVolume(v);
-			}
-		}
-		/**
-		 * @ngdoc method
-		 * @name #pauseEmbeds
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Loops through all YT instances except main player and calls
-		 * pause() on each one.
-		 * @returns {Void} No return value.
-		 */
-		function pauseEmbeds() {
-			for (var p in _players) {
-				if (p !== _mainPlayerId) {
-					var curPlayerState = playerState(p);
-					if (curPlayerState !== YT.PlayerState.UNSTARTED &&
-						curPlayerState !== YT.PlayerState.PAUSED &&
-						curPlayerState !== YT.PlayerState.CUED) {
-						pause(p);
-					}
-				}
 			}
 		}
 		/**
@@ -571,24 +545,6 @@
 			_stateChangeCallbacks.forEach(function(cb) {
 				cb(playerStateChange);
 			});
-		}
-		/**
-		 * @ngdoc method
-		 * @name #setPlayer
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Used to set the PID / divID for a YT instance, is called prior to create()
-		 * @param {String} id Main Video Asset ID or Event ID (for embeds)
-		 * @param {Boolean} mainPlayer Determines type of player, embed or main
-		 * @returns {String} Div ID of YT instance.
-		 */
-		function setPlayerId(id, mainPlayer, mediaSrcArr) {
-			if (mainPlayer) {
-				_players = {};
-				_mainPlayerId = id;
-			}
-			_players[id] = { isMainPlayer: mainPlayer, ytUrl: mediaSrcArr[0] };
-			_players[id].div = _getPlayerDiv(id);
 		}
 
 		function _getPlayerDiv(id) {
