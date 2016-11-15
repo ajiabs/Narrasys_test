@@ -112,7 +112,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.play = function (nocapture) {
-			// console.log("timelineSvc.play", videoScope);
+			// console.log("timelineSvc.play");
 			// On first play, we need to check if we need to show help menu instead; if so, don't play the video:
 			// (WARN this is a bit of a sloppy mixture of concerns.)
 

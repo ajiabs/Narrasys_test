@@ -147,11 +147,6 @@
 			_emitStateChange(instance);
 		}
 
-        function isReady() {
-			var instance = _getInstance(this.id);
-			return (instance.readyState > 1);
-		}
-
 		/*
 		 Playback exported methods
 		 */
