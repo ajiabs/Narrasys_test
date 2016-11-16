@@ -48,21 +48,36 @@
 				_pollBufferedPercent();
 			}
 
+
+			console.log('type', _playerInterface.type, parsedMedia);
 			_playerInterface.setPlayerId(id, mainPlayer, parsedMedia[0].mediaSrcArr);
 
 			return parsedMedia[0].mediaSrcArr;
 		}
 
-		function createInstance(mediaSrcArr, playerId) {
-			_playerInterface.create(mediaSrcArr, playerId);
+		function createInstance(playerId) {
+
+			angular.forEach(_playerManagers, function(pm) {
+				if (pm.type === playbackState.getVideoType(playerId)) {
+					pm.create(playerId);
+				}
+			});
+
+			// _playerInterface.create(playerId);
 		}
 
 		//called from timlineSvc -> playbackService -> playerManager
 		function play(playerId) {
-			return _playerInterface.play(_setPid(playerId));
+
+			angular.forEach(_playerManagers, function(pm) {
+				pm.play(_setPid(playerId));
+			});
+
+			// return _playerInterface.play(_setPid(playerId));
 		}
 
 		function pause(playerId) {
+			console.log('playbackService#pause', _playerInterface.type);
 			_playerInterface.pause(_setPid(playerId))
 		}
 

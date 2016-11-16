@@ -16,12 +16,13 @@
 		4: 'HAVE_ENOUGH_DATA'
 	};
 
-	function html5PlayerManager($interval, $timeout, PLAYERSTATES, playbackState) {
+	function html5PlayerManager($interval, $timeout, PLAYERSTATES, playbackState, ittUtils) {
 		var _players = {};
 		var _mainPlayerId;
 		var _checkInterval = 50.0;
 		var _stateChangeCallbacks = [];
 		var _type = 'html5';
+		var _existy = ittUtils.existy;
 
 		return {
 			type: _type,
@@ -102,7 +103,8 @@
 					videoObj: plrInfo.videoObj,
 					div: plrInfo.videoElm
 				}
-			}
+			};
+
 		}
 
 		/*
@@ -157,7 +159,7 @@
 
 			var waitUntilReady = $interval(function() {
 				var delay;
-				if (instance.readyState === 4) {
+				if (_existy(instance) && instance.readyState === 4) {
 					delay = playbackState.getTime(pid);
 					//check for a drift then seek to original time to fix.
 					//only for main player, otherwise embed players will attempt
@@ -186,7 +188,11 @@
 		function getPlayerState(pid) {
 			// var instance = _getInstance(pid);
 			var player = _getPlayer(pid);
-			return PLAYERSTATES[player.meta.playerState];
+
+			if (_existy(player)) {
+				return PLAYERSTATES[player.meta.playerState];
+			}
+
 		}
 
 		function seek(pid, t) {
