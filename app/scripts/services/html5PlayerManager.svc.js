@@ -26,20 +26,21 @@
 
 		return {
 			type: _type,
+			seedPlayerManager: seedPlayerManager,
 			create: create,
-			setPlayerId: setPlayerId,
 			play: play,
 			pause: pause,
-			getCurrentTime: getCurrentTime,
-			getPlayerState: getPlayerState,
 			seekTo: seek,
 			pauseOtherPlayers: pauseOtherPlayers,
+			getCurrentTime: getCurrentTime,
+			getPlayerState: getPlayerState,
 			getBufferedPercent: getBufferedPercent,
-			registerStateChangeListener: registerStateChangeListener,
+			toggleMute: toggleMute,
+			setVolume: setVolume,
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
-			toggleMute: toggleMute,
-			setVolume: setVolume
+			registerStateChangeListener: registerStateChangeListener
+			//destroy
 		};
 
 		function create(divID) {
@@ -85,7 +86,7 @@
 			return _players[id].meta.div;
 		}
 
-		function setPlayerId(id, mainPlayer, mediaSrcArr) {
+		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 			if (mainPlayer) {
 				_players = {};
 				_mainPlayerId = id;

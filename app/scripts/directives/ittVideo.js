@@ -33,7 +33,7 @@ function ittVideo(playbackState) {
 
 		function onInit() {
 
-			playbackService.setPlayer(ctrl.mediaSrcArr, ctrl.playerId, ctrl.mainPlayer);
+			playbackService.seedPlayer(ctrl.mediaSrcArr, ctrl.playerId, ctrl.mainPlayer);
 			ctrl.playerElement = $sce.trustAsHtml(playbackService.getPlayerDiv(ctrl.playerId));
 			$timeout(function() {
 				playbackService.createInstance(ctrl.playerId);

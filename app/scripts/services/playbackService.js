@@ -22,7 +22,7 @@
 		});
 
 		return {
-			setPlayer: setPlayer,
+			seedPlayer: seedPlayer,
 			play: play,
 			pause: pause,
 			seek: seek,
@@ -38,7 +38,7 @@
 		};
 
 		//public methods
-		function setPlayer(mediaSrcArr, id, mainPlayer) {
+		function seedPlayer(mediaSrcArr, id, mainPlayer) {
 			var parsedMedia = urlService.parseMediaSrcArr(mediaSrcArr);
 
 			var pm = _getPlayerManagerFromMediaSrc(parsedMedia);
@@ -49,35 +49,20 @@
 				_pollBufferedPercent();
 			}
 
-			pm.setPlayerId(id, mainPlayer, parsedMedia[0].mediaSrcArr);
+			pm.seedPlayerManager(id, mainPlayer, parsedMedia[0].mediaSrcArr);
 		}
 
 		function createInstance(playerId) {
-
 			_playerInterfaces[playerId].create(playerId);
-
-			// _playerInterfaces.create(playerId);
 		}
 
 		//called from timlineSvc -> playbackService -> playerManager
 		function play(playerId) {
-
 			_playerInterfaces[_setPid(playerId)].play(_setPid(playerId));
-
-			// return _playerInterfaces.play(_setPid(playerId));
 		}
 
 		function pause(playerId) {
-			// console.log('playbackService#pause', _playerInterfaces.type);
-			// _playerInterfaces.pause(_setPid(playerId));
-
-			// angular.forEach(_playerManagers, function(pm) {
-			// 	pm.pause(_setPid(playerId));
-			// });
-
-			console.log('pause', _playerInterfaces[_setPid(playerId)]);
 			_playerInterfaces[_setPid(playerId)].pause(_setPid(playerId));
-
 		}
 
 		function seek(t, playerId) {

@@ -28,24 +28,24 @@
 
 		_youTubePlayerManager = {
 			type: _type,
+			seedPlayerManager: seedPlayerManager,
 			create: create,
-			destroy: destroy,
 			play: play,
-			getPlayerState: playerState,
 			pause: pause,
-			stop: stop,
-			reset: reset,
-			pauseOtherPlayers: pauseOtherPlayers,
-			setPlaybackQuality: setPlaybackQuality,
-			setPlayerId: setPlayerId,
-			getBufferedPercent: getVideoLoadedFraction,
 			seekTo: seekTo,
+			pauseOtherPlayers: pauseOtherPlayers,
 			getCurrentTime: getCurrentTime,
+			getPlayerState: playerState,
+			getBufferedPercent: getVideoLoadedFraction,
 			toggleMute: toggleMute,
 			setVolume: setVolume,
-			registerStateChangeListener: registerStateChangeListener,
 			getPlayerDiv: getPlayerDiv,
-			setSpeed: setSpeed
+			setSpeed: setSpeed,
+			registerStateChangeListener: registerStateChangeListener,
+			destroy: destroy,
+			stop: stop,
+			reset: reset,
+			setPlaybackQuality: setPlaybackQuality
 		};
 
 		//public methods
@@ -60,7 +60,7 @@
 
 		/**
 		 * @ngdoc method
-		 * @name #setPlayer
+		 * @name #seedPlayer
 		 * @methodOf iTT.service:youTubePlayerManager
 		 * @description
 		 * Used to set the PID / divID for a YT instance, is called prior to create()
@@ -68,7 +68,7 @@
 		 * @param {Boolean} mainPlayer Determines type of player, embed or main
 		 * @returns {String} Div ID of YT instance.
 		 */
-		function setPlayerId(id, mainPlayer, mediaSrcArr) {
+		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 			if (mainPlayer) {
 				_players = {};
 				_mainPlayerId = id;
