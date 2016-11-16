@@ -46,7 +46,7 @@
 			playbackState.setState(id, mainPlayer, pm.type);
 			if (mainPlayer) {
 				_mainPlayerId = id;
-				_pollBufferedPercent(id);
+				_pollBufferedPercent();
 			}
 
 			pm.setPlayerId(id, mainPlayer, parsedMedia[0].mediaSrcArr);
@@ -161,9 +161,9 @@
 			}
 		}
 
-		function _pollBufferedPercent(id) {
+		function _pollBufferedPercent() {
 			$interval(function() {
-				playbackState.setBufferedPercent(_playerInterfaces[id].getBufferedPercent(_mainPlayerId));
+				playbackState.setBufferedPercent(_playerInterfaces[_mainPlayerId].getBufferedPercent(_mainPlayerId));
 			}, 200);
 		}
 
