@@ -12,7 +12,7 @@
 
 		var _video = {};
 		var _player = '';
-		var _playerInterface = {};
+		var _playerInterfaces = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
 		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
@@ -41,48 +41,47 @@
 		function setPlayer(mediaSrcArr, id, mainPlayer) {
 			var parsedMedia = urlService.parseMediaSrcArr(mediaSrcArr);
 
-			_playerInterface = _getPlayerManagerFromMediaSrc(parsedMedia);
-			playbackState.setState(id, mainPlayer, _playerInterface.type);
+			var pm = _getPlayerManagerFromMediaSrc(parsedMedia);
+			_playerInterfaces[id] = pm;
+			playbackState.setState(id, mainPlayer, pm.type);
 			if (mainPlayer) {
 				_mainPlayerId = id;
-				_pollBufferedPercent();
+				_pollBufferedPercent(id);
 			}
 
-
-			console.log('type', _playerInterface.type, parsedMedia);
-			_playerInterface.setPlayerId(id, mainPlayer, parsedMedia[0].mediaSrcArr);
-
-			return parsedMedia[0].mediaSrcArr;
+			pm.setPlayerId(id, mainPlayer, parsedMedia[0].mediaSrcArr);
 		}
 
 		function createInstance(playerId) {
 
-			angular.forEach(_playerManagers, function(pm) {
-				if (pm.type === playbackState.getVideoType(playerId)) {
-					pm.create(playerId);
-				}
-			});
+			_playerInterfaces[playerId].create(playerId);
 
-			// _playerInterface.create(playerId);
+			// _playerInterfaces.create(playerId);
 		}
 
 		//called from timlineSvc -> playbackService -> playerManager
 		function play(playerId) {
 
-			angular.forEach(_playerManagers, function(pm) {
-				pm.play(_setPid(playerId));
-			});
+			_playerInterfaces[_setPid(playerId)].play(_setPid(playerId));
 
-			// return _playerInterface.play(_setPid(playerId));
+			// return _playerInterfaces.play(_setPid(playerId));
 		}
 
 		function pause(playerId) {
-			console.log('playbackService#pause', _playerInterface.type);
-			_playerInterface.pause(_setPid(playerId))
+			// console.log('playbackService#pause', _playerInterfaces.type);
+			// _playerInterfaces.pause(_setPid(playerId));
+
+			// angular.forEach(_playerManagers, function(pm) {
+			// 	pm.pause(_setPid(playerId));
+			// });
+
+			console.log('pause', _playerInterfaces[_setPid(playerId)]);
+			_playerInterfaces[_setPid(playerId)].pause(_setPid(playerId));
+
 		}
 
 		function seek(t, playerId) {
-			_playerInterface.seekTo(_setPid(playerId), t);
+			_playerInterfaces[_setPid(playerId)].seekTo(_setPid(playerId), t);
 		}
 
 		function registerStateChangeListener(cb) {
@@ -90,31 +89,31 @@
 		}
 
 		function getCurrentTime(playerId) {
-			_playerInterface.getCurrentTime(_setPid(playerId));
+			_playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
 		}
 
 		function getPlayerDiv(playerId) {
-			return _playerInterface.getPlayerDiv(_setPid(playerId));
+			return _playerInterfaces[_setPid(playerId)].getPlayerDiv(_setPid(playerId));
 		}
 
 		function getPlayerState(playerId) {
-			return _playerInterface.getPlayerState(_setPid(playerId));
+			return _playerInterfaces[_setPid(playerId)].getPlayerState(_setPid(playerId));
 		}
 
 		function getPlayerType() {
-			return _playerInterface.type;
+			return _playerInterfaces.type;
 		}
 
 		function setSpeed(playbackRate, playerId) {
-			return _playerInterface.setSpeed(_setPid(playerId), playbackRate);
+			return _playerInterfaces[_setPid(playerId)].setSpeed(_setPid(playerId), playbackRate);
 		}
 
 		function toggleMute(playerId) {
-			return _playerInterface.toggleMute(_setPid(playerId));
+			return _playerInterfaces[_setPid(playerId)].toggleMute(_setPid(playerId));
 		}
 
 		function setVolume(vol, playerId) {
-			_playerInterface.setVolume(_setPid(playerId), vol);
+			_playerInterfaces[_setPid(playerId)].setVolume(_setPid(playerId), vol);
 		}
 
 
@@ -162,9 +161,9 @@
 			}
 		}
 
-		function _pollBufferedPercent() {
+		function _pollBufferedPercent(id) {
 			$interval(function() {
-				playbackState.setBufferedPercent(_playerInterface.getBufferedPercent(_mainPlayerId));
+				playbackState.setBufferedPercent(_playerInterfaces[id].getBufferedPercent(_mainPlayerId));
 			}, 200);
 		}
 
