@@ -279,6 +279,9 @@
 		 */
 		function pause(pid) {
 			var p = _getYTInstance(pid);
+
+			// console.log('pause instance?', p);
+			console.trace('pause called');
 			if (_existy(p)) {
 				return p.pauseVideo();
 			}
@@ -424,13 +427,15 @@
 		function pauseOtherPlayers(pid) {
 			Object.keys(_players).forEach(function(playerId) {
 				if (playerId !== pid) {
-					var curPlayerState = playerState(playerId);
-					if (curPlayerState !== YT.PlayerState.UNSTARTED &&
-						curPlayerState !== YT.PlayerState.PAUSED &&
-						curPlayerState !== YT.PlayerState.CUED) {
-						console.log('pause other players', curPlayerState);
-						pause(playerId);
+					var otherPlayerState = playerState(playerId);
+
+					if (_existy(otherPlayerState)) {
+						if (otherPlayerState === 'playing') {
+							console.log('pauseOtherPlayers, embedded player state before pause', otherPlayerState);
+							pause(playerId);
+						}
 					}
+
 				}
 			});
 		}

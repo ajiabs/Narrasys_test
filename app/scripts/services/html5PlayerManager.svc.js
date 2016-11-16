@@ -25,8 +25,8 @@
 
 		return {
 			type: _type,
-			setPlayerId: setPlayerId,
 			create: create,
+			setPlayerId: setPlayerId,
 			play: play,
 			pause: pause,
 			getCurrentTime: getCurrentTime,

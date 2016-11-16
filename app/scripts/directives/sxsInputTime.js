@@ -7,11 +7,11 @@ angular.module('com.inthetelling.story')
 		return {
 			// require: 'ngModel',
 			scope: {
-				item: '=sxsInputTime',
+				item: '=sxsInputTime'
 			},
 			templateUrl: 'templates/producer/inputtime.html',
 			link: function (scope, elem, attrs) {
-
+				scope.playbackState = playbackState;
 				scope.parse = function (data) {
 					// console.log("Converting view ", data, " to model");
 					var ret;

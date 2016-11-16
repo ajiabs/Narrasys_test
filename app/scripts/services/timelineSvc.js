@@ -197,11 +197,11 @@ angular.module('com.inthetelling.story')
 			}
 
 			// Lots of synch issues caused by seek during playback. Temporary workaround: pause, then seek, then play.
-			var wasPlaying = (playbackState.getTimelineState() === "playing");
-			if (wasPlaying) {
-				// console.log("pausing playback before seek");
-				svc.pause(true);
-			}
+			// var wasPlaying = (playbackState.getTimelineState() === "playing");
+			// if (wasPlaying) {
+			// 	// console.log("pausing playback before seek");
+			// 	svc.pause(true);
+			// }
 
 			stopEventClock();
 
@@ -226,25 +226,28 @@ angular.module('com.inthetelling.story')
 			}
 
 			// Restart playback after seek, unless they seeked (sought?) to a stop event
-			if (wasPlaying) {
-				var doRestart = true,
-					allowedLag = 150;
-				// make sure they didn't seek to a stop event:
-				for (var i = 0; i < svc.timelineEvents.length; i++) {
-					var evt = svc.timelineEvents[i];
-					if (evt.t > (t - allowedLag) && evt.action === 'pause') {
-						doRestart = false;
-					}
-					if (evt.t > t) {
-						break;
-					}
-				}
-				if (doRestart) {
-					$timeout(function () {
-						svc.play();
-					}, allowedLag);
-				}
-			}
+			// if (wasPlaying) {
+			// 	var doRestart = true,
+			// 		allowedLag = 150;
+			// 	// make sure they didn't seek to a stop event:
+			// 	for (var i = 0; i < svc.timelineEvents.length; i++) {
+			// 		var evt = svc.timelineEvents[i];
+			// 		console.log("evt?", evt, t);
+			// 		if (evt.t > (t - allowedLag) && evt.action === 'pause') {
+			// 			doRestart = false;
+			// 		}
+			// 		if (evt.t > t) {
+			// 			console.log('why break?');
+			// 			break;
+			// 		}
+			// 	}
+			// 	if (doRestart) {
+			// 		$timeout(function () {
+			// 			console.log('wtf mate');
+			// 			svc.play();
+			// 		}, allowedLag);
+			// 	}
+			// }
 		};
 
 		svc.prevScene = function () {
@@ -386,6 +389,7 @@ angular.module('com.inthetelling.story')
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
 					playbackState.setTime(event.t);
+					console.log('handle event');
 					svc.pause(); // TODO handle pause with duration too
 				} else {
 					svc.play();
