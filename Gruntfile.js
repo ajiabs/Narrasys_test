@@ -412,9 +412,7 @@ module.exports = function (grunt) {
 		'cssmin',
 		'uglify',
 		'rev',
-		'usemin',
-		'clean:docs',
-		'ngdocs'
+		'usemin'
 	]);
 
 	grunt.registerTask('doWork', [
