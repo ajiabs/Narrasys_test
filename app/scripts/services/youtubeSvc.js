@@ -60,10 +60,10 @@ angular.module('com.inthetelling.story')
 		function parseMediaSrc(mediaSrcArr) {
 			return mediaSrcArr.reduce(function(parsedMediaSrcObj, mediaSrc) {
 				if (svc.isYoutubeUrl(mediaSrc)) {
-					parsedMediaSrcObj.mediaSrcArr.push(mediaSrc)
+					parsedMediaSrcObj.mediaSrcArr.push(mediaSrc);
 				}
 				return parsedMediaSrcObj;
-			}, {type: 'youtube', mediaSrcArr: []})
+			}, {type: 'youtube', mediaSrcArr: []});
 		}
 
 		svc.embedParams = function (outgoing) {

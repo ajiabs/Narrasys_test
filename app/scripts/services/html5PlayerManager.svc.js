@@ -8,18 +8,18 @@
 	angular.module('com.inthetelling.story')
 		.factory('html5PlayerManager', html5PlayerManager);
 
-	var readyStates = {
-		0: 'HAVE_NOTHING',
-		1: 'HAVE_METADATA',
-		2: 'HAVE_CURRENT_DATA',
-		3: 'HAVE_FUTURE_DATA',
-		4: 'HAVE_ENOUGH_DATA'
-	};
+	// var readyStates = {
+	// 	0: 'HAVE_NOTHING',
+	// 	1: 'HAVE_METADATA',
+	// 	2: 'HAVE_CURRENT_DATA',
+	// 	3: 'HAVE_FUTURE_DATA',
+	// 	4: 'HAVE_ENOUGH_DATA'
+	// };
 
 	function html5PlayerManager($interval, $timeout, PLAYERSTATES, playbackState, ittUtils) {
 		var _players = {};
 		var _mainPlayerId;
-		var _checkInterval = 50.0;
+		// var _checkInterval = 50.0;
 		var _stateChangeCallbacks = [];
 		var _type = 'html5';
 		var _existy = ittUtils.existy;
@@ -113,8 +113,8 @@
 		 */
 
 		function onCanPlay() {
-			var instance = _getInstance(this.id);
-			var player = _getPlayer(this.id);
+			var instance = _getInstance(this.id); //jshint ignore:line
+			var player = _getPlayer(this.id); //jshint ignore:line
 
 			if (playbackState.getStartAtTime() > 0) {
 				player.meta.playerState = 5;
@@ -130,22 +130,22 @@
 		}
 
 		function onPlaying() {
-			var instance = _getInstance(this.id);
-			var player = _getPlayer(this.id);
+			var instance = _getInstance(this.id); //jshint ignore:line
+			var player = _getPlayer(this.id); //jshint ignore:line
 			player.meta.playerState = 1;
 			_emitStateChange(instance);
 		}
 
 		function onPause() {
-			var instance = _getInstance(this.id);
-			var player = _getPlayer(this.id);
+			var instance = _getInstance(this.id); //jshint ignore:line
+			var player = _getPlayer(this.id); //jshint ignore:line
 			player.meta.playerState = 2;
 			_emitStateChange(instance);
 		}
 
 		function onBuffering() {
-			var instance = _getInstance(this.id);
-			var player = _getPlayer(this.id);
+			var instance = _getInstance(this.id); //jshint ignore:line
+			var player = _getPlayer(this.id); //jshint ignore:line
 			player.meta.playerState = 3;
 			_emitStateChange(instance);
 		}
@@ -269,7 +269,7 @@
 				classAttr = fileType;
 				srcAttr = videoObj[fileType][quality];
 
-				if (srcAttr == null) {
+				if (!_existy(srcAttr)) {
 					return;
 				}
 
@@ -284,7 +284,7 @@
 
 			videoElement += '<p>Oh no! Your browser does not support the HTML5 Video element.</p>';
 			videoElement += '</video>';
-			return videoElement
+			return videoElement;
 		}
 
 		function _formatPlayerStateChangeEvent(event, pid) {
@@ -327,46 +327,46 @@
 			}, {mp4: [], webm: [], m3u8: []});
 		}
 
-		function _changeVideoQuality(id, quality) {
-			var player = _getPlayer(id);
-			var videoObj = player.meta.videoObj;
-			var videoChildren = player.instance.childNodes;
-
-			angular.forEach(videoChildren, function(elm) {
-				var fileType = '';
-				if (elm.nodeName === 'SOURCE') {
-					fileType = elm.className;
-					elm.setAttribute('src', videoObj[fileType][quality]);
-				}
-			});
-
-			var wasPlaying = player.meta.playerState === 1;
-
-			//load new element into DOM.
-			player.instance.load();
-			if (wasPlaying) {
-				play(id);
-			}
-		}
+		// function _changeVideoQuality(id, quality) {
+		// 	var player = _getPlayer(id);
+		// 	var videoObj = player.meta.videoObj;
+		// 	var videoChildren = player.instance.childNodes;
+        //
+		// 	angular.forEach(videoChildren, function(elm) {
+		// 		var fileType = '';
+		// 		if (elm.nodeName === 'SOURCE') {
+		// 			fileType = elm.className;
+		// 			elm.setAttribute('src', videoObj[fileType][quality]);
+		// 		}
+		// 	});
+        //
+		// 	var wasPlaying = player.meta.playerState === 1;
+        //
+		// 	//load new element into DOM.
+		// 	player.instance.load();
+		// 	if (wasPlaying) {
+		// 		play(id);
+		// 	}
+		// }
 
 		//seems not to work very well.
-		function _checkBuffering(player) {
-			return function() {
-				player.meta.currentPlayPos = player.currentTime;
-				var offset = 1 / _checkInterval;
-
-				if (!player.meta.playerState === 3 &&
-					player.meta.currentPlayPos < (player.meta.lastPlayPos + offset) &&
-					!player.paused) {
-					player.meta.playerState = 3;
-					_emitStateChange(player);
-				}
-				// if (player.meta.playerState === 3 &&
-				// 	player.meta.currentPlayPos > (player.meta.lastPlayPos + offset) &&
-				// 	!player.paused) {
-				// }
-				player.meta.lastPlayPos = player.meta.currentPlayPos;
-			}
-		}
+		// function _checkBuffering(player) {
+		// 	return function() {
+		// 		player.meta.currentPlayPos = player.currentTime;
+		// 		var offset = 1 / _checkInterval;
+        //
+		// 		if (player.meta.playerState !== 3 &&
+		// 			player.meta.currentPlayPos < (player.meta.lastPlayPos + offset) &&
+		// 			!player.paused) {
+		// 			player.meta.playerState = 3;
+		// 			_emitStateChange(player);
+		// 		}
+		// 		// if (player.meta.playerState === 3 &&
+		// 		// 	player.meta.currentPlayPos > (player.meta.lastPlayPos + offset) &&
+		// 		// 	!player.paused) {
+		// 		// }
+		// 		player.meta.lastPlayPos = player.meta.currentPlayPos;
+		// 	}
+		// }
 	}
 })();

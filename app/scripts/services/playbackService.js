@@ -10,15 +10,13 @@
 
 	function playbackService($interval, youTubePlayerManager, html5PlayerManager, playbackState, analyticsSvc, ittUtils, urlService) {
 
-		var _video = {};
-		var _player = '';
 		var _playerInterfaces = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
 		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
 
 		angular.forEach(_playerManagers, function(playerManager) {
-			playerManager.registerStateChangeListener(_stateChangeCB)
+			playerManager.registerStateChangeListener(_stateChangeCB);
 		});
 
 		return {

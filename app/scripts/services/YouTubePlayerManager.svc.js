@@ -102,7 +102,7 @@
 			}
 
 			function tryAgain() {
-				return _createInstance(playerId, videoId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+				return _createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 					.then(handleSuccess)
 					.catch(lastTry);
 			}

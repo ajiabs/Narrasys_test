@@ -20,7 +20,7 @@ function ittVideo(playbackState) {
 
 	//TODO: tackle isTranscoded somehow.
 	function videoCtrl($timeout, $sce, $rootScope, $routeParams, playbackService, playbackState, appState, ittUtils) {
-		var ctrl = this;
+		var ctrl = this; //jshint ignore:line
 		ctrl.playbackState = playbackState;
 		ctrl.appState = appState;
 		ctrl.videoClick = videoClick;

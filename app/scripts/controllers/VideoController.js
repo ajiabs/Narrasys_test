@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 // TODO youtube support for multiple playback speeds?
@@ -179,7 +180,7 @@ function VideoController($q, $scope, $rootScope, $timeout, $interval, $window, $
 				});
 
 				// TODO according to the html5 spec, the way we should change the video stream is like this. but iOS (at least) chokes on it:
-				/*
+				/!*
 				 if ($scope.videoNode.currentSrc !== '') {
 				 var ext = $scope.videoNode.currentSrc.match(/\.(\w+)$/)[1];
 				 if ($scope.video.urls[ext][0] !== $scope.videoNode.currentSrc) {
@@ -194,7 +195,7 @@ function VideoController($q, $scope, $rootScope, $timeout, $interval, $window, $
 				 });
 				 }
 				 }
-				 */
+				 *!/
 
 			}
 
@@ -248,7 +249,7 @@ function VideoController($q, $scope, $rootScope, $timeout, $interval, $window, $
 
 			timelineSvc.registerVideo($scope);
 
-			/* For future reference, all html5 events:
+			/!* For future reference, all html5 events:
 			 loadstart
 			 canplaythrough
 			 canplay
@@ -273,7 +274,7 @@ function VideoController($q, $scope, $rootScope, $timeout, $interval, $window, $
 			 ended
 			 webkitbeginfullscreen
 			 webkitendfullscreen
-			 */
+			 *!/
 
 		} // end of initHTML5Video
 
@@ -480,4 +481,5 @@ function VideoController($q, $scope, $rootScope, $timeout, $interval, $window, $
 		}
 
 		$scope.$on('$destroy', _destroyMe);
-	};
+	}
+*/

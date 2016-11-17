@@ -111,7 +111,7 @@ angular.module('com.inthetelling.story')
 			stepEvent();
 		};
 
-		svc.play = function (nocapture) {
+		svc.play = function () {
 			// console.log("timelineSvc.play");
 			// On first play, we need to check if we need to show help menu instead; if so, don't play the video:
 			// (WARN this is a bit of a sloppy mixture of concerns.)
@@ -193,7 +193,7 @@ angular.module('com.inthetelling.story')
 				t = 0;
 			}
 			if (t > playbackState.getDuration()) {
-				playbackState.setDuration(t)
+				playbackState.setDuration(t);
 			}
 
 			// Lots of synch issues caused by seek during playback. Temporary workaround: pause, then seek, then play.
