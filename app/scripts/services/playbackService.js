@@ -23,18 +23,17 @@
 
 		return {
 			seedPlayer: seedPlayer,
+			createInstance: createInstance,
 			play: play,
 			pause: pause,
 			seek: seek,
-			getPlayerDiv: getPlayerDiv,
 			getCurrentTime: getCurrentTime,
-			createInstance: createInstance,
-			registerStateChangeListener: registerStateChangeListener,
 			getPlayerState: getPlayerState,
-			getPlayerType: getPlayerType,
-			setSpeed: setSpeed,
 			toggleMute: toggleMute,
-			setVolume: setVolume
+			setVolume: setVolume,
+			getPlayerDiv: getPlayerDiv,
+			setSpeed: setSpeed,
+			registerStateChangeListener: registerStateChangeListener
 		};
 
 		//public methods
@@ -83,10 +82,6 @@
 
 		function getPlayerState(playerId) {
 			return _playerInterfaces[_setPid(playerId)].getPlayerState(_setPid(playerId));
-		}
-
-		function getPlayerType() {
-			return _playerInterfaces.type;
 		}
 
 		function setSpeed(playbackRate, playerId) {
