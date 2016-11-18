@@ -2,7 +2,7 @@
 angular.module('com.inthetelling.story')
 	.directive('ittVideo', ittVideo);
 
-function ittVideo(playbackState) {
+function ittVideo() {
 	return {
 		replace: false,
 		templateUrl: 'templates/video.html',
@@ -24,7 +24,7 @@ function ittVideo(playbackState) {
 		ctrl.playbackState = playbackState;
 		ctrl.appState = appState;
 		ctrl.videoClick = videoClick;
-		ctrl.isTranscoded = function() { return true };
+		ctrl.isTranscoded = function() { return true; };
 		ctrl.playerIsPaused = playerIsPaused;
 		ctrl.showUnstartedOverlay = showUnstartedOverlay;
 		ctrl.showReplayOverlay = showReplayOverlay;
@@ -50,7 +50,7 @@ function ittVideo(playbackState) {
 
 		//video mask controls
 		function playerIsPaused() {
-			return playbackService.getPlayerState(ctrl.playerId) === 'paused' && !showReplayOverlay()
+			return playbackService.getPlayerState(ctrl.playerId) === 'paused' && !showReplayOverlay();
 		}
 
 		function videoClick() {
@@ -66,7 +66,6 @@ function ittVideo(playbackState) {
 			if (state === 'paused' || state === 'unstarted' || state === 'video cued') {
 				playbackService.play(ctrl.playerId);
 			} else {
-
 				playbackService.pause(ctrl.playerId);
 			}
 		}
