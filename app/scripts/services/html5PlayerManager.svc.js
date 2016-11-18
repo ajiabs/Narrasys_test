@@ -49,6 +49,7 @@
 			plr.onplaying = onPlaying;
 			plr.onwaiting = onBuffering;
 			plr.oncanplay = onCanPlay;
+			plr.onended = onEnded;
 			// plr.onstalled = onBuffering;
 			// plr.onended = onEnded;
 
@@ -111,6 +112,13 @@
 		/*
 		 HTML5 media event handlers
 		 */
+
+		function onEnded() {
+			var instance = _getInstance(this.id); //jshint ignore:line
+			var player = _getPlayer(this.id); //jshint ignore:line
+			player.meta.playerState = 0;
+			_emitStateChange(instance);
+		}
 
 		function onCanPlay() {
 			var instance = _getInstance(this.id); //jshint ignore:line

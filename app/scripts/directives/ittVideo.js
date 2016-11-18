@@ -12,20 +12,22 @@ function ittVideo(playbackState) {
 			mediaSrcArr: '=',
 			playerId: '='
 		},
-		controller: ['$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'playbackState', 'appState', 'ittUtils', videoCtrl],
+		controller: ['$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'playbackState', 'appState', 'ittUtils', 'timelineSvc', videoCtrl],
 		bindToController: true,
 		controllerAs: '$ctrl',
 		link: link
 	};
 
 	//TODO: tackle isTranscoded somehow.
-	function videoCtrl($timeout, $sce, $rootScope, $routeParams, playbackService, playbackState, appState, ittUtils) {
+	function videoCtrl($timeout, $sce, $rootScope, $routeParams, playbackService, playbackState, appState, ittUtils, timelineSvc) {
 		var ctrl = this; //jshint ignore:line
 		ctrl.playbackState = playbackState;
 		ctrl.appState = appState;
 		ctrl.videoClick = videoClick;
-		ctrl.isTranscoded = isTranscoded;
+		ctrl.isTranscoded = function() { return true };
 		ctrl.playerIsPaused = playerIsPaused;
+		ctrl.showUnstartedOverlay = showUnstartedOverlay;
+		ctrl.showReplayOverlay = showReplayOverlay;
 
 		$rootScope.$on('userKeypress.SPACE', videoClick);
 
@@ -39,8 +41,6 @@ function ittVideo(playbackState) {
 				playbackService.createInstance(ctrl.playerId);
 
 				if ($routeParams.t && ctrl.mainPlayer === true) {
-					console.log('time param', $routeParams.t);
-
 					playbackState.setStartAtTime(ittUtils.parseTime($routeParams.t), ctrl.playerId);
 				}
 
@@ -48,28 +48,48 @@ function ittVideo(playbackState) {
 
 		}
 
+		//video mask controls
 		function playerIsPaused() {
-			return playbackService.getPlayerState(ctrl.playerId) === 'paused';
+			return playbackService.getPlayerState(ctrl.playerId) === 'paused' && !showReplayOverlay()
 		}
 
 		function videoClick() {
-
 			var state = playbackService.getPlayerState(ctrl.playerId);
+
+			if (state === 'ended') {
+				timelineSvc.restartEpisode();
+				return;
+			}
+
+
+
 			if (state === 'paused' || state === 'unstarted' || state === 'video cued') {
 				playbackService.play(ctrl.playerId);
 			} else {
+
 				playbackService.pause(ctrl.playerId);
 			}
 		}
 
-		function isTranscoded() {
-			return true;
+		function showUnstartedOverlay() {
+			return playbackState.getHasBeenPlayed(ctrl.playerId) === false;
 		}
+
+		function showReplayOverlay() {
+			return (playbackState.getTime() > 0 && playbackState.getTime() >= playbackState.getDuration() - 0.3);
+		}
+
+
 	}
 
 	function link(scope) {
-
-		scope.$on('$destroy', playbackState.reset);
+        //TODO: figure out if this is a good place to be calling reset
+		scope.$on('$destroy', function() {
+			if (scope.mainPlayer) {
+				// playbackState.reset();
+				console.log('ittVideo $destroyed');
+			}
+		});
 		// scope.spaceWatcher = $rootScope.$on('userKeypress.SPACE', scope.videoClick);
 		// // if the video is not yet transcoded poll for updates until it is
 		// var pollCount = 0;

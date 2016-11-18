@@ -1,7 +1,8 @@
 <!--temp debug code-->
-<!--<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time:-->
-	<!--{{$ctrl.playbackState.getTime()}}, id: {{$ctrl.playerId}}-->
-<!--</h5>-->
+<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time:
+	{{$ctrl.playbackState.getTime()}}, first play: {{$ctrl.playbackState.getHasBeenPlayed()}}
+	dur: {{$ctrl.playbackState.getDuration()}}
+</h5>
 
 <!--end temp debug code-->
 <div class="video np-video" ng-click="$ctrl.videoClick()">
@@ -10,30 +11,25 @@
 
 	<!--playback buttons-->
 	<img class="np-overlay-ui"
-		 ng-click="$ctrl.videoClick() && $ctrl.playbackState.getHasBeenPlayed($ctrl.playerId)"
+		 ng-click="$ctrl.videoClick()"
 		 ng-if="$ctrl.playerIsPaused()"
 		 src="/images/play-overlay.png"/>
 
-
 	<img class="np-overlay-ui"
 		 ng-click="$ctrl.videoClick()"
-		 ng-if="!$ctrl.playbackState.getHasBeenPlayed($ctrl.playerId) && !$ctrl.poster.length"
+		 ng-if="$ctrl.showUnstartedOverlay()"
 		 src="/images/logo-overlay.png"/>
 
 	<!--<img class="np-overlay-ui buffering"-->
 		 <!--src="/images/buffering-overlay.png"/>-->
 
-	<!--<img class="np-overlay-ui rewind"-->
-		 <!--src="/images/rewind-overlay.png"/>-->
+	<img class="np-overlay-ui rewind"
+		 ng-click="$ctrl.videoClick()"
+		 ng-if="$ctrl.showReplayOverlay()"
+		 src="/images/rewind-overlay.png"/>
 
 
 	<div ng-if="$ctrl.poster && $ctrl.playbackState.getTime() == 0"
 		 class="poster overlay fill"
 		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}"></div>
-
-	<!--<div class="videoMask" ng-if="$ctrl.playerIsPaused() || true">-->
-		<!--<div class="play" ng-if="$ctrl.playerIsPaused()" ></div>-->
-		<!--<div class="firstplay" ng-if="!$ctrl.playbackState.getHasBeenPlayed(ctrl.playerId) && !$ctrl.poster.length"></div>-->
-	<!--</div>-->
-
 </div>

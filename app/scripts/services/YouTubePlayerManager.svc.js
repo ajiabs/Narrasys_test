@@ -98,7 +98,6 @@
 				_players[playerId].yt = ytInstance;
 				_players[playerId].ready = false;
 				_players[playerId].ytId = ytId;
-
 			}
 
 			function tryAgain() {
@@ -134,9 +133,7 @@
 			 * @returns {Void} has no return value
 			 */
 			function onPlayerStateChange(event) {
-				// console.log("player state change!", PLAYERSTATES[event.data]);
 				var pid = _getPidFromInstance(event.target);
-
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
 				_emitStateChange(stateChangeEvent);
 			}
@@ -281,7 +278,6 @@
 			var p = _getYTInstance(pid);
 
 			// console.log('pause instance?', p);
-			console.trace('pause called');
 			if (_existy(p)) {
 				return p.pauseVideo();
 			}
@@ -323,7 +319,6 @@
 
 				if (obj.isMainPlayer) {
 					instance.cueVideoById(videoId, lastTime);
-					// timelineSvc.play();
 				} else {
 					instance.loadVideoById(videoId, lastTime);
 				}
@@ -431,7 +426,6 @@
 
 					if (_existy(otherPlayerState)) {
 						if (otherPlayerState === 'playing') {
-							console.log('pauseOtherPlayers, embedded player state before pause', otherPlayerState);
 							pause(playerId);
 						}
 					}

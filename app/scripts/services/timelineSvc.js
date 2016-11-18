@@ -68,6 +68,8 @@ angular.module('com.inthetelling.story')
 					playbackState.setTimelineState('unstarted');
 					break;
 				case 'ended':
+					// _resetClocks();
+					// playbackState.setTime(playbackState.getDuration());
 					break;
 				case 'playing':
 					startTimelineClock();
@@ -80,17 +82,10 @@ angular.module('com.inthetelling.story')
 					}
 					break;
 				case 'paused':
-					$interval.cancel(clock);
-					stopEventClock();
-					clock = undefined;
-					lastTick = undefined;
-					appState.videoControlsActive = true;
+					_resetClocks();
 					break;
 				case 'buffering':
-					$interval.cancel(clock);
-					stopEventClock();
-					clock = undefined;
-					lastTick = undefined;
+					_resetClocks();
 					break;
 				case 'video cued':
 					var startAt = playbackState.getStartAtTime();
@@ -102,6 +97,14 @@ angular.module('com.inthetelling.story')
 			}
 		}
 
+		function _resetClocks() {
+			$interval.cancel(clock);
+			stopEventClock();
+			clock = undefined;
+			lastTick = undefined;
+			appState.videoControlsActive = true;
+		}
+
 		svc.setSpeed = function (speed) {
 			// console.log("timelineSvc.setSpeed", speed);
 			timeMultiplier = speed;
@@ -110,6 +113,12 @@ angular.module('com.inthetelling.story')
 			playbackService.setSpeed(timeMultiplier);
 			stepEvent();
 		};
+
+		svc.restartEpisode = restartEpisode;
+		function restartEpisode() {
+			svc.seek(0.1);
+			svc.play();
+		}
 
 		svc.play = function () {
 			// console.log("timelineSvc.play");
@@ -121,10 +130,6 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
-			if (playbackState.getTime() > playbackState.getDuration() - 0.1) {
-				svc.seek(0.1); // fudge the time a bit to skip the landing scene
-				svc.play();
-			}
 			playbackService.play();
 		};
 
@@ -369,8 +374,6 @@ angular.module('com.inthetelling.story')
 			}
 			var nextEvent = svc.timelineEvents[i]; // i falls through from the break statements above
 
-			// console.log("Next event is  ", svc.timelineEvents[i]);
-
 			eventClockData.lastVideoTime = vidTime;
 			eventClockData.lastTimelineTime = ourTime;
 
@@ -379,6 +382,12 @@ angular.module('com.inthetelling.story')
 				var timeToNextEvent = (svc.timelineEvents[i].t - ourTime) * 1000 / timeMultiplier;
 				// console.log("next event in ", timeToNextEvent);
 				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
+			}
+
+			if (ittUtils.existy(nextEvent) && /endingscreen/.test(nextEvent.id)) {
+				console.log('ENDING SCEEN EVENT!');
+				_resetClocks();
+
 			}
 		};
 
@@ -427,11 +436,14 @@ angular.module('com.inthetelling.story')
 				svc.pause();
 			}
 
-			// console.log(newTime, appState.time);
-			if (newTime > playbackState.getDuration()) {
-				playbackState.setDuration(newTime);
-				svc.pause();
+			var currentDuration = playbackState.getDuration();
+			if (newTime > currentDuration) {
+				newTime = currentDuration;
+				// svc.pause();
+				// _resetClocks();
 			}
+
+
 			playbackState.setTime(newTime);
 			lastTick = thisTick;
 		};

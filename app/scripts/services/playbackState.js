@@ -58,6 +58,7 @@
 		}
 
 		function reset(pid) {
+			console.trace('resetting!!');
 			_timelineState = '';
 			_states[pid] = angular.extend({}, angular.copy(_props));
 		}
@@ -149,10 +150,11 @@
 		function setDuration(d, pid) {
 
 			var state = getState(pid);
-			// console.trace('set duration!', state);
+
 			if (_existy(state)) {
 				state.duration = d;
 			}
+			console.trace('set duration!', _states);
 		}
 
 		function getHasBeenPlayed(pid) {
