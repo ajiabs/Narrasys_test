@@ -36,7 +36,7 @@
 			replace: true,
 			templateUrl: 'templates/iframe.html',
 			controller: 'ittIframeCtrl',
-			controllerAs: 'iframeCtrl',
+			controllerAs: '$ctrl',
 			bindToController: true,
 			link: linkFn
 		};
@@ -114,7 +114,7 @@
 
 	}
 
-	function ittIframeCtrl($scope, ittUtils, youtubeSvc, appState) {
+	function ittIframeCtrl($scope, ittUtils, appState) {
 		// moved this all back out of the controller to avoid leaking $scope.sandbox across directives
 		var _ctrl = this; //jshint ignore:line
 		var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
@@ -125,13 +125,8 @@
 
 
 		function validateFrameUrl(url) {
-			if (youtubeSvc.isYoutubeUrl(url)) {
-				_ctrl.isYoutube = true;
+		if (ittUtils.isValidURL(url)) {
 				_ctrl.isLoading = false;
-				return true;
-			} else if (ittUtils.isValidURL(url)) {
-				_ctrl.isLoading = false;
-				_ctrl.isYoutube = false;
 				return true;
 			} else {
 				_ctrl.isLoading = true;

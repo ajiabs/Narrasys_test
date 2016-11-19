@@ -34,7 +34,6 @@ function ittVideo() {
 		onInit();
 
 		function onInit() {
-
 			playbackService.seedPlayer(ctrl.mediaSrcArr, ctrl.playerId, ctrl.mainPlayer);
 			ctrl.playerElement = $sce.trustAsHtml(playbackService.getPlayerDiv(ctrl.playerId));
 			$timeout(function() {
@@ -50,7 +49,11 @@ function ittVideo() {
 
 		//video mask controls
 		function playerIsPaused() {
-			return playbackService.getPlayerState(ctrl.playerId) === 'paused' && !showReplayOverlay();
+			if (ctrl.mainPlayer) {
+				return playbackService.getPlayerState(ctrl.playerId) === 'paused' && !showReplayOverlay();
+			}
+			return false;
+
 		}
 
 		function videoClick() {
@@ -75,7 +78,7 @@ function ittVideo() {
 		}
 
 		function showReplayOverlay() {
-			return (playbackState.getTime() > 0 && playbackState.getTime() >= playbackState.getDuration() - 0.3);
+			return (ctrl.mainPlayer === true && playbackState.getTime() > 0 && playbackState.getTime() >= playbackState.getDuration() - 0.3);
 		}
 
 
@@ -84,6 +87,7 @@ function ittVideo() {
 	function link(scope) {
         //TODO: figure out if this is a good place to be calling reset
 		scope.$on('$destroy', function() {
+			console.log('itt video destroy');
 			if (scope.mainPlayer) {
 				// playbackState.reset();
 				console.log('ittVideo $destroyed');

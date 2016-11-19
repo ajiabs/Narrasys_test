@@ -16,15 +16,14 @@
 	</div>
 	<a tabindex="0" class="escapelink item__link--escape-link escape-link--link-embed" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">(new window)</a>
 
-	<!--<itt-iframe ng-if="!item.html5Embed" x-src="{{item.url}}" item="item"></itt-iframe>-->
+	<itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
 
 	<itt-video
-		style="width: 100%; height: 100%;"
+		ng-if="item.isVideoUrl"
 		media-src-arr="[item.url]"
 		player-id="item._id"
 		main-player="false">
 	</itt-video>
-
 
 	<div class="clear"></div>
 </div>

@@ -3,7 +3,13 @@
     <div class="modalmenu">
       <a href="{{item.url}}" target="_blank" class="escapelink">(new window)</a>
     </div>
-    <itt-iframe x-src="{{item.url}}" item="item"></itt-iframe>
+	<itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
+	<itt-video
+		ng-if="item.isVideoUrl"
+		media-src-arr="[item.url]"
+		player-id="item._id"
+		main-player="false">
+	</itt-video>
   </span>
   <span ng-if="item._type == 'Upload'">
     <span ng-switch="item.asset.content_type.indexOf('image/')">

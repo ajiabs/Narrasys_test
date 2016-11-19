@@ -13,7 +13,8 @@
 		var _urlSubServices = [youtubeSvc, html5UrlService];
 
 		return {
-			parseMediaSrcArr: parseMediaSrcArr
+			parseMediaSrcArr: parseMediaSrcArr,
+			checkUrl: checkUrl
 		};
 
 		/**
@@ -29,6 +30,15 @@
 				}
 				return parsedMediaSrcArr;
 			}, []);
+		}
+
+		function checkUrl(url) {
+			return _urlSubServices.reduce(function(map, urlSrv) {
+				if (urlSrv.canPlay(url)) {
+					map.type = urlSrv.type;
+				}
+				return map;
+			}, {type: ''});
 		}
 	}
 

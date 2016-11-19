@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, $location, ittUtils, config, appState, youtubeSvc, playbackState) {
+	.factory('modelSvc', function ($interval, $filter, $location, ittUtils, config, appState, youtubeSvc, playbackState, urlService) {
 
 		var svc = {};
 
@@ -371,7 +371,7 @@ angular.module('com.inthetelling.story')
 				event.mixedContent = false;
 				event.noExternalLink = false;
 				event.targetTop = false;
-				event.html5Embed = false;
+				event.isVideoUrl = false;
 
 				// determine whether the item is in a regular content pane.
 				// items only have one layout (scenes may have more than one...)
@@ -400,16 +400,18 @@ angular.module('com.inthetelling.story')
 					event.showInlineDetail = false;
 				}
 
+				if (event._type === 'Link') {
+					if (urlService.checkUrl(event.url).type.length > 0) {
+						event.isVideoUrl = true;
+					}
+				}
+
 				if (event._type === "Link" && event.url && /mailto/.test(event.url)) {
 					event.noEmbed = true;
 				}
 
-				if (event.templateUrl.match(/link-youtube/) || event.templateUrl.match(/-embed/)) {
+				if (event.templateUrl.match(/-embed/)) {
 					event.noExternalLink = true;
-				}
-
-				if (event.templateUrl.match(/link-embed/) && (event.url.match(/.mp4/) || event.url.match(/.webm/) || event.url.match(/.m3u8/) || event.url.match(/.mp3/) )) {
-					event.html5Embed = true;
 				}
 
 				if (event.templateUrl.match(/frameicide/)) {

@@ -41,6 +41,8 @@ angular.module('com.inthetelling.story')
 			return (ytMatch && ytMatch[1]) ? ytMatch[1] : false;
 		};
 
+
+
 		svc.isYoutubeUrl = function(origUrl) {
 			if (!origUrl) {
 				return false;
@@ -51,6 +53,8 @@ angular.module('com.inthetelling.story')
 			return getYoutubeID.test(origUrl);
 		};
 
+		svc.type = 'youtube';
+		svc.canPlay = svc.isYoutubeUrl;
 		svc.parseMediaSrc = parseMediaSrc;
 		/**
 		 *

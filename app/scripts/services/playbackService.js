@@ -107,6 +107,7 @@
 		//respond to events emitted from playerManager
 		//playerManager -> playbackSvc -> timelineSvc (if main)
 		function _stateChangeCB(stateChangeEvent) {
+			console.log('playbackService state change');
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
 

@@ -9,8 +9,11 @@
 		.factory('html5UrlService', html5UrlService);
 
 	function html5UrlService() {
+		var _type = 'html5';
 		return {
-			parseMediaSrc: parseMediaSrc
+			type: _type,
+			parseMediaSrc: parseMediaSrc,
+			canPlay: isHTML5VideoUrl
 		};
 		/**
 		 *
@@ -18,15 +21,18 @@
 		 * @return mediaObj{type: String, mediaSrcArr: Array<String>}
 		 */
 		function parseMediaSrc(mediaSrc) {
-			var extensionMatch = /(.mp4|.m3u8|.webm)/;
 			return mediaSrc.reduce(function(parsedMediaObj, mediaSrc) {
-				if (extensionMatch.test(mediaSrc)) {
+				if (isHTML5VideoUrl(mediaSrc)) {
 					parsedMediaObj.mediaSrcArr.push(mediaSrc);
 				}
 				return parsedMediaObj;
-			}, {type: 'html5', mediaSrcArr: []});
-
+			}, {type: _type, mediaSrcArr: []});
 		}
+
+		function isHTML5VideoUrl(url) {
+			return /(.mp4|.m3u8|.webm)/.test(url);
+		}
+
 	}
 
 })();

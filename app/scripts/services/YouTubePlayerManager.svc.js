@@ -18,7 +18,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState, youtubeSvc) {
+	function youTubePlayerManager($location, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState, youtubeSvc, ittUtils) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -73,8 +73,13 @@
 				_players = {};
 				_mainPlayerId = id;
 			}
-			_players[id] = { isMainPlayer: mainPlayer, ytUrl: mediaSrcArr[0] };
-			_players[id].div = _getPlayerDiv(id);
+			var uniqId = id + '+' + ittUtils.generateUUID().slice(0,4);
+			_players[id] = { isMainPlayer: mainPlayer, ytUrl: mediaSrcArr[0], uniqId: uniqId };
+			//id must be unique because we can use the same event in multiple places
+			// _players[id].div = _getPlayerDiv(id + '+' +  ittUtils.generateUUID());
+			_players[id].div = _getPlayerDiv(uniqId);
+
+			console.log('set playerManager', _players);
 		}
 
 		/**
@@ -89,8 +94,7 @@
 		function create(playerId) {
 
 			var ytId = youtubeSvc.extractYoutubeId(_players[playerId].ytUrl);
-
-			_createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+			_createInstance(playerId, _players[playerId].uniqId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
 
@@ -150,7 +154,7 @@
 			 */
 			function onReady(event) {
 				var pid = _getPidFromInstance(event.target);
-
+				console.log('hmm', _players[pid]);
 				_players[pid].ready = true;
 				var ytId = _players[pid].ytId;
 				var startAt = playbackState.getStartAtTime(pid);
@@ -420,12 +424,15 @@
 		 * @returns {Void} No return value.
 		 */
 		function pauseOtherPlayers(pid) {
+
 			Object.keys(_players).forEach(function(playerId) {
 				if (playerId !== pid) {
-					var otherPlayerState = playerState(playerId);
 
+					var otherPlayerState = playerState(playerId);
+					console.log('other player state', otherPlayerState);
 					if (_existy(otherPlayerState)) {
 						if (otherPlayerState === 'playing') {
+							console.log('pause other players');
 							pause(playerId);
 						}
 					}
@@ -452,10 +459,10 @@
 
 		//private methods
 
-		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
+		function _createInstance(playerId, divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
 
 			var _controls = 1;
-			if (divId === _mainPlayerId) {
+			if (playerId === _mainPlayerId) {
 				_controls = 0;
 			}
 
@@ -515,16 +522,9 @@
 		 * @returns {String} PID of YT Instance
 		 */
 		function _getPidFromInstance(ytInstance) {
-			var _key;
-			//for some reason, angular.equals was not working in this context.
-			//context: when embedding two identical youtube videos seemed to break
-			angular.forEach(_players, function(p, key) {
-				if (p.yt === ytInstance) {
-					return _key = key; // jshint ignore:line
-				}
-			});
-
-			return _key;
+			var gotPid = ytInstance.getIframe().id.split('+')[0];
+			console.log("got pid?", gotPid);
+			return gotPid
 		}
 
 		/**
