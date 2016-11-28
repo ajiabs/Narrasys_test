@@ -18,7 +18,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState, youtubeSvc, ittUtils) {
+	function youTubePlayerManager($location, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState, youtubeSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -73,11 +73,8 @@
 				_players = {};
 				_mainPlayerId = id;
 			}
-			var uniqId = id + '+' + ittUtils.generateUUID().slice(0,4);
-			_players[id] = { isMainPlayer: mainPlayer, ytUrl: mediaSrcArr[0], uniqId: uniqId };
-			//id must be unique because we can use the same event in multiple places
-			// _players[id].div = _getPlayerDiv(id + '+' +  ittUtils.generateUUID());
-			_players[id].div = _getPlayerDiv(uniqId);
+			_players[id] = { isMainPlayer: mainPlayer, ytUrl: mediaSrcArr[0] };
+			_players[id].div = _getPlayerDiv(id);
 
 			console.log('set playerManager', _players);
 		}
@@ -94,7 +91,7 @@
 		function create(playerId) {
 
 			var ytId = youtubeSvc.extractYoutubeId(_players[playerId].ytUrl);
-			_createInstance(playerId, _players[playerId].uniqId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
+			_createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
 
@@ -459,10 +456,10 @@
 
 		//private methods
 
-		function _createInstance(playerId, divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
+		function _createInstance(divId, videoID, stateChangeCB, qualityChangeCB, onReadyCB, onError) {
 
 			var _controls = 1;
-			if (playerId === _mainPlayerId) {
+			if (divId === _mainPlayerId) {
 				_controls = 0;
 			}
 
@@ -522,9 +519,7 @@
 		 * @returns {String} PID of YT Instance
 		 */
 		function _getPidFromInstance(ytInstance) {
-			var gotPid = ytInstance.getIframe().id.split('+')[0];
-			console.log("got pid?", gotPid);
-			return gotPid
+			return ytInstance.getIframe().id
 		}
 
 		/**
