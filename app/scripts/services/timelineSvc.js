@@ -91,6 +91,7 @@ angular.module('com.inthetelling.story')
 					var startAt = playbackState.getStartAtTime();
 					var firstSeek = playbackState.getHasBeenSought();
 					if (startAt > 0 && firstSeek === false) {
+						console.log('start at specific time');
 						svc.startAtSpecificTime(startAt);
 					}
 					break;

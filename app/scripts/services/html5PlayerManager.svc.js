@@ -121,17 +121,25 @@
 		}
 
 		function onCanPlay() {
+			console.log('onCanPlay');
 			var instance = _getInstance(this.id); //jshint ignore:line
 			var player = _getPlayer(this.id); //jshint ignore:line
 
-			if (playbackState.getStartAtTime() > 0) {
+			var lastState = playbackState.getVideoState(this.id);
+			var startAt = playbackState.getStartAtTime(this.id);
+			var firstSeek = playbackState.getHasBeenSought(this.id);
+
+			if (startAt > 0 && firstSeek === false) {
 				player.meta.playerState = 5;
+				instance.currentTime = startAt;
+				playbackState.setTime(startAt);
+
 			} else {
 				player.meta.playerState = -1;
 			}
 
 			//emit video cued or unstarted only once
-			if (playbackState.getHasBeenPlayed() === false) {
+			if (playbackState.getHasBeenPlayed(this.id) === false) {
 				_emitStateChange(instance);
 			}
 
