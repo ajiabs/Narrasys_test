@@ -31,7 +31,8 @@
 			setVolume: setVolume,
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
-			registerStateChangeListener: registerStateChangeListener
+			registerStateChangeListener: registerStateChangeListener,
+			startAtTime: startAtTime
 		};
 
 		//public methods
@@ -63,6 +64,7 @@
 		}
 
 		function seek(t, playerId) {
+			playbackState.setHasBeenSought(true, _setPid(playerId));
 			_playerInterfaces[_setPid(playerId)].seekTo(_setPid(playerId), t);
 		}
 
@@ -71,7 +73,7 @@
 		}
 
 		function getCurrentTime(playerId) {
-			_playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
+			return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
 		}
 
 		function getPlayerDiv(playerId) {
@@ -94,6 +96,13 @@
 			_playerInterfaces[_setPid(playerId)].setVolume(_setPid(playerId), vol);
 		}
 
+		function startAtTime(playerId) {
+			if (playerId !== _mainPlayerId) {
+				var startAtTime = getCurrentTime(playerId);
+				playbackState.setStartAtTime(startAtTime, playerId);
+			}
+		}
+
 
 		// private methods
 
@@ -107,9 +116,9 @@
 		//respond to events emitted from playerManager
 		//playerManager -> playbackSvc -> timelineSvc (if main)
 		function _stateChangeCB(stateChangeEvent) {
-			console.log('playbackService state change');
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
+			playbackState.setVideoState(state, emitterId);
 
 			switch (state) {
 				case 'unstarted':
@@ -117,7 +126,7 @@
 				case 'ended':
 					break;
 				case 'playing':
-					if (!playbackState.getHasBeenPlayed(emitterId)) {
+					if (playbackState.getHasBeenPlayed(emitterId) === false) {
 						playbackState.setHasBeenPlayed(true, emitterId);
 					}
 					angular.forEach(_playerManagers, function(pm) {

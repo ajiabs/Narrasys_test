@@ -22,12 +22,12 @@ angular.module('com.inthetelling.story')
 				scope.zoomOffset = 0; // multiple by which the timeline is offset to the left
 
 				// Prevent this from being visible on touchscreens before playback, to allow youtube to init from direct user input
-				if (appState.isTouchDevice && !appState.hasBeenPlayed) {
+				if (appState.isTouchDevice && !playbackState.getHasBeenPlayed()) {
 					scope.isSuppressed = true;
 				}
 
 				var watch = scope.$watch(function () {
-					return appState.hasBeenPlayed;
+					return playbackState.getHasBeenPlayed();
 				}, function (wasPlayed) {
 					if (wasPlayed === true) {
 						scope.isSuppressed = false;
@@ -328,20 +328,20 @@ angular.module('com.inthetelling.story')
 					if (!scope.isSeeking) {
 						return;
 					}
-
+					var currentDuration = playbackState.getDuration();
 					// timelineNode is the full timeline, including offscreen portions if zoomed in.
 					// So this math gives how far the pointer is in the full timeline as a percentage,
 					// multiplied by the real duration, which gives the real time.
 					scope.willSeekTo = (evt.clientX - timelineNode.offset()
-						.left) / timelineNode.width() * playbackState.getDuration();
+						.left) / timelineNode.width() * currentDuration;
 
 					// ios is still registering drags outside the visible boundaries of the timeline,
 					// so need to do some sanity checking here:
 					if (scope.willSeekTo < 0) {
 						scope.willSeekTo = 0;
 					}
-					if (scope.willSeekTo > playbackState.getDuration()) {
-						scope.willSeekTo = playbackState.getDuration();
+					if (scope.willSeekTo > currentDuration) {
+						scope.willSeekTo = currentDuration
 					}
 				};
 

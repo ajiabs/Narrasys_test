@@ -42,6 +42,7 @@
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
 			registerStateChangeListener: registerStateChangeListener,
+			unregisterStateChangeListener: unregisterStateChangeListener,
 			destroy: destroy,
 			stop: stop,
 			reset: reset,
@@ -58,6 +59,12 @@
 			_stateChangeCallbacks.push(cb);
 		}
 
+		function unregisterStateChangeListener(cb) {
+			_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
+				return fn.toString() !== cb.toString();
+			});
+		}
+
 		/**
 		 * @ngdoc method
 		 * @name #seedPlayer
@@ -66,9 +73,16 @@
 		 * Used to set the PID / divID for a YT instance, is called prior to create()
 		 * @param {String} id Main Video Asset ID or Event ID (for embeds)
 		 * @param {Boolean} mainPlayer Determines type of player, embed or main
+		 * @param {Array} mediaSrcArr array of youtube URLs
 		 * @returns {String} Div ID of YT instance.
 		 */
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
+
+			//bail if we already have set the instance in the _players map.
+			if (_players[id] && _players[id].ready) {
+				return;
+			}
+
 			if (mainPlayer) {
 				_players = {};
 				_mainPlayerId = id;
@@ -76,7 +90,6 @@
 			_players[id] = { isMainPlayer: mainPlayer, ytUrl: mediaSrcArr[0] };
 			_players[id].div = _getPlayerDiv(id);
 
-			console.log('set playerManager', _players);
 		}
 
 		/**
@@ -151,18 +164,44 @@
 			 */
 			function onReady(event) {
 				var pid = _getPidFromInstance(event.target);
-				console.log('hmm', _players[pid]);
 				_players[pid].ready = true;
 				var ytId = _players[pid].ytId;
 				var startAt = playbackState.getStartAtTime(pid);
+
 				var stateChangeEvent = _formatPlayerStateChangeEvent({data: -1}, pid);
+				var lastState = playbackState.getVideoState(pid);
+
+				//this code helps enable the starAtTime feature
+				//ideally, the video will seek to the offset startAtTime, and call 'play' once, so the user can see
+				//the current frame of the video, as opposed to the youtube thumbnail that is displayed on unstarted videos
+
+				//elsewhwere in the app, we are checking the URL for a 't' parameter, which is the offset start time
+				//if we find this param, we need to seek the youtube video to this offset. We use cueVideoById and pass
+				//the youtube video ID and the offset time.
+				function firstPauseListener(event) {
+					//the 'playing' event here should be emitted by calling playVideo immediately after the video is cued.
+					if (event.state === 'playing') {
+						unregisterStateChangeListener(firstPauseListener);
+						pause(event.emitterId);
+					}
+				}
+
 				if (startAt > 0) {
-					//will emit a 'video cued' event.
-					event.target.cueVideoById(ytId, startAt);
+					if (lastState === 'playing') {
+						event.target.loadVideoById(ytId, startAt);
+					} else {
+						registerStateChangeListener(firstPauseListener);
+						//will emit a 'video cued' event
+						// that the timelineSvc responds to by calling timelineSvc#updateEventStates()
+						//which will ensure that we are in the proper scene that occurs at the offset time.
+						event.target.cueVideoById(ytId, startAt);
+						//will emit a 'playing' event, which our firstPauseListener is waiting for
+						event.target.playVideo();
+						//sets the time for display purposes, i.e. the timeline.
+						playbackState.setTime(startAt, pid);
+					}
 				}
 				_emitStateChange(stateChangeEvent);
-
-
 			}
 
 			/**
@@ -372,11 +411,12 @@
 		function seekTo(pid, t, allowSeekAhead) {
 			var p = _getYTInstance(pid);
 			if (_existy(p)) {
-				//handle seek before video has been played
-				if (p.getPlayerState() === YT.PlayerState.CUED) {
-					p.cueVideoById(_players[pid].ytId, t);
-				} else {
-					p.seekTo(t, allowSeekAhead);
+
+				var currentState = p.getPlayerState();
+				p.seekTo(t);
+
+				if (currentState === YT.PlayerState.PAUSED) {
+					p.pauseVideo();
 				}
 
 			}
@@ -426,10 +466,8 @@
 				if (playerId !== pid) {
 
 					var otherPlayerState = playerState(playerId);
-					console.log('other player state', otherPlayerState);
 					if (_existy(otherPlayerState)) {
 						if (otherPlayerState === 'playing') {
-							console.log('pause other players');
 							pause(playerId);
 						}
 					}

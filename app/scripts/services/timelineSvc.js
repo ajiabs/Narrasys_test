@@ -89,8 +89,8 @@ angular.module('com.inthetelling.story')
 					break;
 				case 'video cued':
 					var startAt = playbackState.getStartAtTime();
-					var firstPlay = playbackState.getHasBeenPlayed();
-					if (startAt > 0 && firstPlay === false) {
+					var firstSeek = playbackState.getHasBeenSought();
+					if (startAt > 0 && firstSeek === false) {
 						svc.startAtSpecificTime(startAt);
 					}
 					break;
@@ -143,15 +143,15 @@ angular.module('com.inthetelling.story')
 
 
 		svc.startAtSpecificTime = function (t) {
-			if (playbackState.getDuration()  === 0) {
-				// if duration = 0, we're trying to seek to a time from a url param before the events
-				// have loaded.  Just poll until events load, that's good enough for now.
-				// TODO throw error and stop looping if this goes on too long
-				$timeout(function () {
-					svc.startAtSpecificTime(t);
-				}, 300);
-				return;
-			}
+			// if (playbackState.getDuration()  === 0) {
+			// 	// if duration = 0, we're trying to seek to a time from a url param before the events
+			// 	// have loaded.  Just poll until events load, that's good enough for now.
+			// 	// TODO throw error and stop looping if this goes on too long
+			// 	$timeout(function () {
+			// 		svc.startAtSpecificTime(t);
+			// 	}, 300);
+			// 	return;
+			// }
 
 			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
 			if (appState.isTouchDevice && playbackState.getHasBeenPlayed() === false && playbackState.getVideoType() === 'youtube') {
@@ -168,6 +168,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			playbackState.setTime(t);
+			playbackState.setHasBeenSought(true);
 			svc.updateEventStates();
 
 			analyticsSvc.captureEpisodeActivity("seek", {
@@ -190,7 +191,7 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
-			var oldT = playbackState.getTime(); // for analytics
+			// var oldT = playbackState.getTime(); // for analytics
 
 
 			t = parseTime(t);
@@ -216,42 +217,18 @@ angular.module('com.inthetelling.story')
 
 			svc.updateEventStates();
 			// capture analytics data:
-			if (method) {
-				var captureData = {
-					"method": method,
-					"seekStart": oldT
-				};
-				if (eventID) {
-					captureData.event_id = eventID;
-				}
-				// console.log("capture", captureData);
-				analyticsSvc.captureEpisodeActivity("seek", captureData);
-			} else {
-				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
-			}
-
-			// Restart playback after seek, unless they seeked (sought?) to a stop event
-			// if (wasPlaying) {
-			// 	var doRestart = true,
-			// 		allowedLag = 150;
-			// 	// make sure they didn't seek to a stop event:
-			// 	for (var i = 0; i < svc.timelineEvents.length; i++) {
-			// 		var evt = svc.timelineEvents[i];
-			// 		console.log("evt?", evt, t);
-			// 		if (evt.t > (t - allowedLag) && evt.action === 'pause') {
-			// 			doRestart = false;
-			// 		}
-			// 		if (evt.t > t) {
-			// 			console.log('why break?');
-			// 			break;
-			// 		}
+			// if (method) {
+			// 	var captureData = {
+			// 		"method": method,
+			// 		"seekStart": oldT
+			// 	};
+			// 	if (eventID) {
+			// 		captureData.event_id = eventID;
 			// 	}
-			// 	if (doRestart) {
-			// 		$timeout(function () {
-			// 			console.log('wtf mate');
-			// 			svc.play();
-			// 		}, allowedLag);
-			// 	}
+			// 	// console.log("capture", captureData);
+			// 	analyticsSvc.captureEpisodeActivity("seek", captureData);
+			// } else {
+			// 	console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
 			// }
 		};
 

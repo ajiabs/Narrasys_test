@@ -18,8 +18,10 @@
 			startAtTime: 0,
 			time: 0,
 			hasBeenPlayed: false,
+			hasBeenSought: false,
 			bufferedPercent: 0,
-			timeMultiplier: 1
+			timeMultiplier: 1,
+			videoState: ''
 		};
 		var _existy = ittUtils.existy;
 
@@ -40,8 +42,26 @@
 			getVideoType: getVideoType,
 			getBufferedPercent: getBufferedPercent,
 			setBufferedPercent: setBufferedPercent,
-			reset: reset
+			reset: reset,
+			getVideoState: getVideoState,
+			setVideoState: setVideoState,
+			getHasBeenSought: getHasBeenSought,
+			setHasBeenSought: setHasBeenSought
 		};
+
+		function getVideoState(pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				return state.videoState;
+			}
+		}
+
+		function setVideoState(videoState, pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				state.videoState = videoState;
+			}
+		}
 
 		function getStartAtTime(pid) {
 			var state = getState(pid);
@@ -58,7 +78,6 @@
 		}
 
 		function reset(pid) {
-			console.trace('resetting!!');
 			_timelineState = '';
 			_states[pid] = angular.extend({}, angular.copy(_props));
 		}
@@ -67,6 +86,11 @@
 			if (mainPlayer) {
 				_mainPlayerId = pid;
 			}
+
+			if (_existy(_states[pid]) && _states[pid].startAtTime) {
+				return;
+			}
+
 			_states[pid] = angular.extend({},  angular.copy(_props), {videoType: type});
 		}
 
@@ -139,22 +163,17 @@
 		}
 
 		function getDuration(pid) {
-			// console.trace('get Duration start');
 			var state = getState(pid);
 			if (_existy(state)) {
-				// console.log('succs', state.duration);
 				return state.duration;
 			}
 		}
 
 		function setDuration(d, pid) {
-
 			var state = getState(pid);
-
 			if (_existy(state)) {
 				state.duration = d;
 			}
-			console.trace('set duration!', _states);
 		}
 
 		function getHasBeenPlayed(pid) {
@@ -171,6 +190,19 @@
 			}
 		}
 
+		function getHasBeenSought(pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				return state.hasBeenSought;
+			}
+		}
+
+		function setHasBeenSought(bool, pid) {
+			var state = getState(pid);
+			if (_existy(state)) {
+				state.hasBeenSought = bool;
+			}
+		}
 	}
 
 

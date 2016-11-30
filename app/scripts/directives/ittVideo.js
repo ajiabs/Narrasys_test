@@ -12,14 +12,13 @@ function ittVideo() {
 			mediaSrcArr: '=',
 			playerId: '='
 		},
-		controller: ['$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'playbackState', 'appState', 'ittUtils', 'timelineSvc', videoCtrl],
+		controller: ['$scope', '$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'playbackState', 'appState', 'ittUtils', 'timelineSvc', videoCtrl],
 		bindToController: true,
-		controllerAs: '$ctrl',
-		link: link
+		controllerAs: '$ctrl'
 	};
 
 	//TODO: tackle isTranscoded somehow.
-	function videoCtrl($timeout, $sce, $rootScope, $routeParams, playbackService, playbackState, appState, ittUtils, timelineSvc) {
+	function videoCtrl($scope, $timeout, $sce, $rootScope, $routeParams, playbackService, playbackState, appState, ittUtils, timelineSvc) {
 		var ctrl = this; //jshint ignore:line
 		ctrl.playbackState = playbackState;
 		ctrl.appState = appState;
@@ -30,12 +29,15 @@ function ittVideo() {
 		ctrl.showReplayOverlay = showReplayOverlay;
 
 		$rootScope.$on('userKeypress.SPACE', videoClick);
+		$scope.$on('$destroy', saveLastPlayerState);
 
 		onInit();
 
 		function onInit() {
+
 			playbackService.seedPlayer(ctrl.mediaSrcArr, ctrl.playerId, ctrl.mainPlayer);
 			ctrl.playerElement = $sce.trustAsHtml(playbackService.getPlayerDiv(ctrl.playerId));
+
 			$timeout(function() {
 				playbackService.createInstance(ctrl.playerId);
 
@@ -44,7 +46,6 @@ function ittVideo() {
 				}
 
 			},0);
-
 		}
 
 		//video mask controls
@@ -64,8 +65,6 @@ function ittVideo() {
 				return;
 			}
 
-
-
 			if (state === 'paused' || state === 'unstarted' || state === 'video cued') {
 				playbackService.play(ctrl.playerId);
 			} else {
@@ -81,44 +80,8 @@ function ittVideo() {
 			return (ctrl.mainPlayer === true && playbackState.getTime() > 0 && playbackState.getTime() >= playbackState.getDuration() - 0.3);
 		}
 
-
-	}
-
-	function link(scope) {
-        //TODO: figure out if this is a good place to be calling reset
-		scope.$on('$destroy', function() {
-			console.log('itt video destroy');
-			if (scope.mainPlayer) {
-				// playbackState.reset();
-				console.log('ittVideo $destroyed');
-			}
-		});
-		// scope.spaceWatcher = $rootScope.$on('userKeypress.SPACE', scope.videoClick);
-		// // if the video is not yet transcoded poll for updates until it is
-		// var pollCount = 0;
-		// scope.pollInterval = $interval(function () {
-		// 	pollCount++;
-		// 	if (pollCount > 360) {
-		// 		$interval.cancel(scope.pollInterval); // Give up after an hour, the user certainly will have
-		// 	}
-		// 	var currentEpisode = modelSvc.episodes[appState.episodeId];
-        //
-		// 	if (currentEpisode && currentEpisode.masterAsset && !modelSvc.isTranscoded(currentEpisode.masterAsset)) {
-		// 		dataSvc.getSingleAsset(currentEpisode.master_asset_id).then(function (latestAsset) {
-        //
-		// 			if (modelSvc.isTranscoded(latestAsset)) {
-		// 				$interval.cancel(scope.pollInterval);
-		// 				modelSvc.cache('asset', latestAsset);
-		// 			}
-		// 		});
-		// 	} else {
-		// 		$interval.cancel(scope.pollInterval);
-		// 	}
-		// }, 10000);
-
-		// scope.$on('$destroy', function () {
-		// 	scope.spaceWatcher();
-		// 	$interval.cancel(scope.pollInterval);
-		// });
+		function saveLastPlayerState() {
+			playbackService.startAtTime(ctrl.playerId);
+		}
 	}
 }
