@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('playbackService', playbackService);
 
-	function playbackService($interval, youTubePlayerManager, html5PlayerManager, playbackState, analyticsSvc, ittUtils, urlService) {
+	function playbackService($interval, youTubePlayerManager, html5PlayerManager, ittUtils, urlService, PLAYERSTATES_WORD) {
 
 		var _playerInterfaces = {};
 		var _mainPlayerId;
@@ -117,6 +117,7 @@
 		function setMetaProp(prop, val, id) {
 			var pid = _setPid(id);
 			if (ittUtils.existy(_playerInterfaces[pid])) {
+
 				_playerInterfaces[pid].setMetaProp(pid, prop, val);
 			}
 		}
@@ -143,7 +144,7 @@
 		function _stateChangeCB(stateChangeEvent) {
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
-			setMetaProp('playerState', state, emitterId);
+			setMetaProp('playerState', PLAYERSTATES_WORD[state], emitterId);
 
 			switch (state) {
 				case 'unstarted':
@@ -161,7 +162,6 @@
 				case 'paused':
 					break;
 				case 'buffering':
-					analyticsSvc.captureEpisodeActivity("stall");
 					break;
 				case 'video cued':
 					break;

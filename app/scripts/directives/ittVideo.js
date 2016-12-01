@@ -12,15 +12,15 @@ function ittVideo() {
 			mediaSrcArr: '=',
 			playerId: '='
 		},
-		controller: ['$scope', '$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'playbackState', 'appState', 'ittUtils', 'timelineSvc', videoCtrl],
+		controller: ['$scope', '$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'appState', 'ittUtils', 'timelineSvc', videoCtrl],
 		bindToController: true,
 		controllerAs: '$ctrl'
 	};
 
 	//TODO: tackle isTranscoded somehow.
-	function videoCtrl($scope, $timeout, $sce, $rootScope, $routeParams, playbackService, playbackState, appState, ittUtils, timelineSvc) {
+	function videoCtrl($scope, $timeout, $sce, $rootScope, $routeParams, playbackService, appState, ittUtils, timelineSvc) {
 		var ctrl = this; //jshint ignore:line
-		ctrl.playbackState = playbackState;
+		ctrl.playbackService = playbackService;
 		ctrl.appState = appState;
 		ctrl.videoClick = videoClick;
 		ctrl.isTranscoded = function() { return true; };
@@ -42,7 +42,7 @@ function ittVideo() {
 				playbackService.createInstance(ctrl.playerId);
 
 				if ($routeParams.t && ctrl.mainPlayer === true) {
-					playbackState.setStartAtTime(ittUtils.parseTime($routeParams.t), ctrl.playerId);
+					playbackService.setMetaProp('startAtTime', ittUtils.parseTime($routeParams.t), ctrl.playerId);
 				}
 
 			},0);
@@ -59,6 +59,7 @@ function ittVideo() {
 
 		function videoClick() {
 			var state = playbackService.getPlayerState(ctrl.playerId);
+			console.log('video click!', state);
 
 			if (state === 'ended') {
 				timelineSvc.restartEpisode();
@@ -73,11 +74,13 @@ function ittVideo() {
 		}
 
 		function showUnstartedOverlay() {
-			return playbackState.getHasBeenPlayed(ctrl.playerId) === false;
+			return playbackService.getMetaProp('hasBeenPlayed', ctrl.playerId) === false;
 		}
 
 		function showReplayOverlay() {
-			return (ctrl.mainPlayer === true && playbackState.getTime() > 0 && playbackState.getTime() >= playbackState.getDuration() - 0.3);
+			var time = playbackService.getMetaProp('time', ctrl.playerId);
+			var duration = playbackService.getMetaProp('duration', ctrl.playerId);
+			return (ctrl.mainPlayer === true && time > 0 && time >= duration - 0.3);
 		}
 
 		function saveLastPlayerState() {

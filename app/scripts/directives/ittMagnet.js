@@ -6,7 +6,7 @@
 // TODO: remove dependence on jQuery?  (.is(:visible))
 
 angular.module('com.inthetelling.story')
-	.directive('ittMagnet', function ($rootScope, appState, playbackState) {
+	.directive('ittMagnet', function ($rootScope, appState, playbackService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -17,7 +17,7 @@ angular.module('com.inthetelling.story')
 					$rootScope.$emit('magnet.changeMagnet', element);
 
 					// skip the animation on first load, and when on mobile
-					if (appState.isTouchDevice || playbackState.getTime() === 0) {
+					if (appState.isTouchDevice || playbackService.getMetaProp('time') === 0) {
 						$rootScope.$emit('magnet.jumpToMagnet');
 					}
 				};

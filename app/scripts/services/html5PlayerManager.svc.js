@@ -40,7 +40,8 @@
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
 			registerStateChangeListener: registerStateChangeListener,
-			getMetaProp: getMetaProp
+			getMetaProp: getMetaProp,
+			setMetaProp: setMetaProp
 			//destroy
 		};
 
@@ -123,7 +124,8 @@
 					hasBeenPlayed: false,
 					hasBeenSought: false,
 					bufferedPercent: 0,
-					timeMultiplier: 1
+					timeMultiplier: 1,
+					videoType: _type
 				}
 			};
 
@@ -207,6 +209,7 @@
 		 */
 
 		function play(pid) {
+			console.log('html5 manager play');
 			var instance = _getInstance(pid);
 			var timestamp = getMetaProp(pid, 'time');
 			var waitUntilReady = $interval(function() {

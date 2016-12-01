@@ -1,7 +1,7 @@
 <!--temp debug code-->
-<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}} | time:
-	{{$ctrl.playbackState.getTime($ctrl.playerId)}} | first play: {{$ctrl.playbackState.getHasBeenPlayed($ctrl.playerId)}} | first seek: {{$ctrl.playbackState.getHasBeenSought($ctrl.playerId)}} |
-	player state: {{$ctrl.playbackState.getVideoState($ctrl.playerId)}} | start at: {{$ctrl.playbackState.getStartAtTime($ctrl.playerId)}}
+<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackService.getTimelineState()}} | time:
+	{{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} | first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} | first seek: {{$ctrl.playbackService.getMetaProp('hasBeenSought', $ctrl.playerId)}} |
+	player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} | start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}}
 </h5>
 
 <!--end temp debug code-->
@@ -29,7 +29,7 @@
 		 src="/images/rewind-overlay.png"/>
 
 
-	<div ng-if="$ctrl.poster && $ctrl.playbackState.getTime() == 0"
+	<div ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('timeMultiplier') == 0"
 		 class="poster overlay fill"
 		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}"></div>
 </div>

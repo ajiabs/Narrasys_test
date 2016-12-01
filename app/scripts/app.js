@@ -29,7 +29,15 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			'5': 'video cued',
 			'4': 'quality changed'
 	})
-	.constant('STATECHANGE', 'onPlayerStateChange')
+	.constant('PLAYERSTATES_WORD', {
+		'unstarted': '-1',
+		'ended': '0',
+		'playing': '1',
+		'paused': '2',
+		'buffering': '3',
+		'quality changed': '4',
+		'video cued': '5'
+	})
 // Configure routing
 .config(function ($routeProvider) {
 	$routeProvider

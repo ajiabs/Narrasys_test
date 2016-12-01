@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, $location, ittUtils, config, appState, youtubeSvc, playbackState, urlService) {
+	.factory('modelSvc', function ($interval, $filter, $location, ittUtils, config, appState, youtubeSvc, playbackService, urlService) {
 
 		var svc = {};
 
@@ -977,7 +977,7 @@ angular.module('com.inthetelling.story')
 
 		// returns whichever scene is current for the given time.
 		svc.sceneAtEpisodeTime = function (epId, t) {
-			t = t || playbackState.getTime();
+			t = t || playbackService.getMetaProp('time');
 			var scenes = svc.episodes[epId].scenes;
 			for (var i = 0; i < scenes.length; i++) {
 				if (scenes[i].start_time <= t && scenes[i].end_time > t) {

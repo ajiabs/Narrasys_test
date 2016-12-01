@@ -21,7 +21,8 @@
 			hasBeenSought: false,
 			bufferedPercent: 0,
 			timeMultiplier: 1,
-			videoState: ''
+			videoState: '',
+			videoType: ''
 		};
 		var _existy = ittUtils.existy;
 

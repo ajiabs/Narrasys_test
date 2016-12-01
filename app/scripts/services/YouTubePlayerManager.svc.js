@@ -46,7 +46,9 @@
 			destroy: destroy,
 			stop: stop,
 			reset: reset,
-			setPlaybackQuality: setPlaybackQuality
+			setPlaybackQuality: setPlaybackQuality,
+			getMetaProp: angular.noop,
+			setMetaProp: angular.noop
 		};
 
 		//public methods
