@@ -14,6 +14,7 @@
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
 		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
+		var _timelineState = '';
 
 		angular.forEach(_playerManagers, function(playerManager) {
 			playerManager.registerStateChangeListener(_stateChangeCB);
@@ -32,7 +33,11 @@
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
 			registerStateChangeListener: registerStateChangeListener,
-			startAtTime: startAtTime
+			startAtTime: startAtTime,
+			getMetaProp: getMetaProp,
+			setMetaProp: setMetaProp,
+			getTimelineState: getTimelineState,
+			setTimelineState: setTimelineState
 		};
 
 		//public methods
@@ -41,7 +46,6 @@
 
 			var pm = _getPlayerManagerFromMediaSrc(parsedMedia);
 			_playerInterfaces[id] = pm;
-			playbackState.setState(id, mainPlayer, pm.type);
 			if (mainPlayer) {
 				_mainPlayerId = id;
 				_pollBufferedPercent();
@@ -98,12 +102,32 @@
 		function startAtTime(playerId) {
 			if (playerId !== _mainPlayerId) {
 				var startAtTime = getCurrentTime(playerId);
-				playbackState.setStartAtTime(startAtTime, playerId);
-				playbackState.setHasBeenPlayed(false, playerId);
-				console.log('destroy state', playbackState.getVideoState(playerId));
+				setMetaProp('startAtTime', startAtTime, playerId);
+				setMetaProp('hasBeenPlayed', false, playerId);
 			}
 		}
 
+		function getMetaProp(prop, id) {
+			var pid = _setPid(id);
+			if (ittUtils.existy(_playerInterfaces[pid])) {
+				return _playerInterfaces[pid].getMetaProp(pid, prop);
+			}
+		}
+
+		function setMetaProp(prop, val, id) {
+			var pid = _setPid(id);
+			if (ittUtils.existy(_playerInterfaces[pid])) {
+				_playerInterfaces[pid].setMetaProp(pid, prop, val);
+			}
+		}
+
+		function getTimelineState() {
+			return _timelineState;
+		}
+
+		function setTimelineState(state) {
+			_timelineState = state;
+		}
 
 		// private methods
 
@@ -119,7 +143,7 @@
 		function _stateChangeCB(stateChangeEvent) {
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
-			playbackState.setVideoState(state, emitterId);
+			setMetaProp('playerState', state, emitterId);
 
 			switch (state) {
 				case 'unstarted':
@@ -127,8 +151,8 @@
 				case 'ended':
 					break;
 				case 'playing':
-					if (playbackState.getHasBeenPlayed(emitterId) === false) {
-						playbackState.setHasBeenPlayed(true, emitterId);
+					if (getMetaProp('hasBeenPlayed', emitterId) === false) {
+						setMetaProp('hasBeenPlayed', true, emitterId);
 					}
 					angular.forEach(_playerManagers, function(pm) {
 						pm.pauseOtherPlayers(emitterId);
@@ -152,7 +176,7 @@
 
 		function _pollBufferedPercent() {
 			$interval(function() {
-				playbackState.setBufferedPercent(_playerInterfaces[_mainPlayerId].getBufferedPercent(_mainPlayerId));
+				setMetaProp('bufferedPercent', getMetaProp('bufferedPercent', _mainPlayerId), _mainPlayerId);
 			}, 200);
 		}
 

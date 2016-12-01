@@ -60,16 +60,16 @@ angular.module('com.inthetelling.story')
 			// '3': 'buffering',
 			// '5': 'video cued'
 		function _onPlayerStateChange(state) {
-			playbackState.setTimelineState(state);
-			console.info('state from player', state, 'timelineState', playbackState.getTimelineState());
+
+			playbackService.setTimelineState(state);
+
+			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
 			switch (state) {
 				case 'unstarted':
-					playbackState.setTimelineState('unstarted');
 					break;
 				case 'ended':
 					// _resetClocks();
-					// playbackState.setTime(playbackState.getDuration());
 					break;
 				case 'playing':
 					startTimelineClock();
@@ -88,8 +88,8 @@ angular.module('com.inthetelling.story')
 					_resetClocks();
 					break;
 				case 'video cued':
-					var startAt = playbackState.getStartAtTime();
-					var firstSeek = playbackState.getHasBeenSought();
+					var startAt = playbackService.getMetaProp('startAtTime');
+					var firstSeek = playbackService.getMetaProp('hasBeenSought');
 					if (startAt > 0 && firstSeek === false) {
 						console.log('start at specific time');
 						svc.startAtSpecificTime(startAt);
@@ -110,7 +110,7 @@ angular.module('com.inthetelling.story')
 			// console.log("timelineSvc.setSpeed", speed);
 			timeMultiplier = speed;
 			//here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
-			playbackState.setTimeMultiplier(timeMultiplier);
+			playbackService.setMetaProp('timeMultiplier', timeMultiplier);
 			playbackService.setSpeed(timeMultiplier);
 			stepEvent();
 		};
@@ -125,6 +125,8 @@ angular.module('com.inthetelling.story')
 			// console.log("timelineSvc.play");
 			// On first play, we need to check if we need to show help menu instead; if so, don't play the video:
 			// (WARN this is a bit of a sloppy mixture of concerns.)
+
+			var duration = playbackService.getMetaProp('duration');
 
 			if (!playbackState.getDuration() || playbackState.getDuration() < 0.1) {
 				console.error("This episode has no duration");

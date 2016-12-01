@@ -16,7 +16,7 @@
 	// 	4: 'HAVE_ENOUGH_DATA'
 	// };
 
-	function html5PlayerManager($interval, PLAYERSTATES, playbackState, ittUtils) {
+	function html5PlayerManager($interval, PLAYERSTATES, ittUtils) {
 		var _players = {};
 		var _mainPlayerId;
 		// var _checkInterval = 50.0;
@@ -39,7 +39,8 @@
 			setVolume: setVolume,
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
-			registerStateChangeListener: registerStateChangeListener
+			registerStateChangeListener: registerStateChangeListener,
+			getMetaProp: getMetaProp
 			//destroy
 		};
 
@@ -88,6 +89,18 @@
 			return _players[id].meta.div;
 		}
 
+		function getMetaProp(pid, prop) {
+			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
+				return _players[pid].meta[prop];
+			}
+		}
+
+		function setMetaProp(pid, prop, val) {
+			if (_existy(_players[pid] && _players[pid].meta)) {
+				_players[pid].meta[prop] = val;
+			}
+		}
+
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 			if (mainPlayer) {
 				_players = {};
@@ -104,7 +117,13 @@
 					mainPlayer: mainPlayer,
 					playerState: '-1',
 					videoObj: plrInfo.videoObj,
-					div: plrInfo.videoElm
+					div: plrInfo.videoElm,
+					startAtTime: 0,
+					time: 0,
+					hasBeenPlayed: false,
+					hasBeenSought: false,
+					bufferedPercent: 0,
+					timeMultiplier: 1
 				}
 			};
 
@@ -126,26 +145,24 @@
 			var instance = _getInstance(this.id); //jshint ignore:line
 			var player = _getPlayer(this.id); //jshint ignore:line
 
-			var lastState = playbackState.getVideoState(this.id);
-			var startAt = playbackState.getStartAtTime(this.id);
-			var firstPlay = playbackState.getHasBeenPlayed(this.id);
-			var firstSeek = playbackState.getHasBeenSought(this.id);
+			var lastState = getMetaProp(this.id, 'playerState');
+			var startAt = getMetaProp(this.id, 'startAtTime');
+			var firstPlay = getMetaProp(this.id, 'hasBeenPlayed');
+			var firstSeek = getMetaProp(this.id, 'hasBeenSought');
 
 			if (startAt > 0) {
 
 				if (firstSeek === false) {
 					player.meta.playerState = 5;
 					instance.currentTime = startAt;
-					playbackState.setTime(startAt);
+					setMetaProp(this.id, 'time', startAt);
 				}
-
-				console.log('LAST STATE', lastState);
 
 				if (lastState === 'playing' && firstPlay === false) {
 					instance.currentTime = startAt;
 					instance.play();
-					playbackState.setTime(startAt);
-					playbackState.setHasBeenPlayed(true, this.id);
+					setMetaProp(this.id, 'time', startAt);
+					setMetaProp(this.id, 'hasBeenPlayed', true);
 				}
 
 			} else {
@@ -153,7 +170,7 @@
 			}
 
 			//emit video cued or unstarted only once
-			if (playbackState.getHasBeenPlayed(this.id) === false) {
+			if (getMetaProp(this.id, 'hasBeenPlayed') === false) {
 				_emitStateChange(instance);
 			}
 
@@ -182,7 +199,7 @@
 		}
 
 		function onSeeked() {
-			playbackState.setHasBeenSought(true, this.id);
+			setMetaProp(this.id, 'hasBeenSought', true);
 		}
 
 		/*
@@ -191,12 +208,11 @@
 
 		function play(pid) {
 			var instance = _getInstance(pid);
-			var timestamp = playbackState.getTime(pid);
-
+			var timestamp = getMetaProp(pid, 'time');
 			var waitUntilReady = $interval(function() {
 				var delay;
 				if (_existy(instance) && instance.readyState === 4) {
-					delay = playbackState.getTime(pid);
+					delay = getMetaProp(pid, 'time');
 					//check for a drift then seek to original time to fix.
 					//only for main player, otherwise embed players will attempt
 					//to resume playback according to the timeline time.
@@ -284,7 +300,7 @@
 						bufEnd = bufEnd - bufStart;
 						bufStart = 0;
 					}
-					return bufEnd / playbackState.getDuration(pid) * 100;
+					return bufEnd / getMetaProp(pid, 'duration') * 100;
 				}
 			}
 
