@@ -16,7 +16,7 @@
 	// 	4: 'HAVE_ENOUGH_DATA'
 	// };
 
-	function html5PlayerManager($interval, $timeout, PLAYERSTATES, playbackState, ittUtils) {
+	function html5PlayerManager($interval, PLAYERSTATES, playbackState, ittUtils) {
 		var _players = {};
 		var _mainPlayerId;
 		// var _checkInterval = 50.0;
@@ -50,6 +50,7 @@
 			plr.onwaiting = onBuffering;
 			plr.oncanplay = onCanPlay;
 			plr.onended = onEnded;
+			plr.onseeked = onSeeked;
 			// plr.onstalled = onBuffering;
 			// plr.onended = onEnded;
 
@@ -127,12 +128,25 @@
 
 			var lastState = playbackState.getVideoState(this.id);
 			var startAt = playbackState.getStartAtTime(this.id);
+			var firstPlay = playbackState.getHasBeenPlayed(this.id);
 			var firstSeek = playbackState.getHasBeenSought(this.id);
 
-			if (startAt > 0 && firstSeek === false) {
-				player.meta.playerState = 5;
-				instance.currentTime = startAt;
-				playbackState.setTime(startAt);
+			if (startAt > 0) {
+
+				if (firstSeek === false) {
+					player.meta.playerState = 5;
+					instance.currentTime = startAt;
+					playbackState.setTime(startAt);
+				}
+
+				console.log('LAST STATE', lastState);
+
+				if (lastState === 'playing' && firstPlay === false) {
+					instance.currentTime = startAt;
+					instance.play();
+					playbackState.setTime(startAt);
+					playbackState.setHasBeenPlayed(true, this.id);
+				}
 
 			} else {
 				player.meta.playerState = -1;
@@ -153,6 +167,7 @@
 		}
 
 		function onPause() {
+			console.trace('onPause');
 			var instance = _getInstance(this.id); //jshint ignore:line
 			var player = _getPlayer(this.id); //jshint ignore:line
 			player.meta.playerState = 2;
@@ -164,6 +179,10 @@
 			var player = _getPlayer(this.id); //jshint ignore:line
 			player.meta.playerState = 3;
 			_emitStateChange(instance);
+		}
+
+		function onSeeked() {
+			playbackState.setHasBeenSought(true, this.id);
 		}
 
 		/*
@@ -242,7 +261,12 @@
 		function pauseOtherPlayers(pid) {
 			Object.keys(_players).forEach(function(playerId) {
 				if (playerId !== pid) {
-					pause(playerId);
+					var otherPlayerState = getPlayerState(playerId);
+					if (_existy(otherPlayerState)) {
+						if (otherPlayerState === 'playing') {
+							pause(playerId);
+						}
+					}
 				}
 			});
 		}

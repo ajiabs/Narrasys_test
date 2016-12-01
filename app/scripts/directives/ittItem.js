@@ -45,7 +45,10 @@ angular.module('com.inthetelling.story')
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
 						scope.item.showInlineDetail = false;
 					} else {
-						timelineSvc.pause();
+						if (playbackState.getTimelineState() === 'playing') {
+							timelineSvc.pause();
+						}
+
 						scope.captureInteraction();
 						if (element.width() > 450) {
 							// show detail inline if there's room for it:
@@ -121,7 +124,7 @@ angular.module('com.inthetelling.story')
 						//if we have an embed set, pause it when
 						//linking to new window.
 						if (appState.embedYTPlayerAvailable) {
-							youTubePlayerManager.pauseOtherEmbeds();
+							youTubePlayerManager.pauseOtherPlayers();
 							var curTime = Math.floor(youTubePlayerManager.getCurrentTime(scope.item._id));
 							if (curTime > 0) {
 								url += '&start=' + curTime;

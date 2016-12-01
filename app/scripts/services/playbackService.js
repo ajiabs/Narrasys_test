@@ -64,7 +64,6 @@
 		}
 
 		function seek(t, playerId) {
-			playbackState.setHasBeenSought(true, _setPid(playerId));
 			_playerInterfaces[_setPid(playerId)].seekTo(_setPid(playerId), t);
 		}
 
@@ -100,6 +99,8 @@
 			if (playerId !== _mainPlayerId) {
 				var startAtTime = getCurrentTime(playerId);
 				playbackState.setStartAtTime(startAtTime, playerId);
+				playbackState.setHasBeenPlayed(false, playerId);
+				console.log('destroy state', playbackState.getVideoState(playerId));
 			}
 		}
 

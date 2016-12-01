@@ -1,8 +1,8 @@
 <!--temp debug code-->
-<!--<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}}, time:-->
-	<!--{{$ctrl.playbackState.getTime()}}, first play: {{$ctrl.playbackState.getHasBeenPlayed()}}-->
-	<!--dur: {{$ctrl.playbackState.getDuration()}}-->
-<!--</h5>-->
+<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackState.getTimelineState()}} | time:
+	{{$ctrl.playbackState.getTime($ctrl.playerId)}} | first play: {{$ctrl.playbackState.getHasBeenPlayed($ctrl.playerId)}} | first seek: {{$ctrl.playbackState.getHasBeenSought($ctrl.playerId)}} |
+	player state: {{$ctrl.playbackState.getVideoState($ctrl.playerId)}} | start at: {{$ctrl.playbackState.getStartAtTime($ctrl.playerId)}}
+</h5>
 
 <!--end temp debug code-->
 <div class="video np-video" ng-click="$ctrl.videoClick()">
