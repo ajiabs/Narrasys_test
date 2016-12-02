@@ -5,7 +5,7 @@
 //===========================*/
 
 body {
-	font-family: 'Droid Sans', sans-serif
+	font-family: 'Open Sans', sans-serif
 }
 
 a {
@@ -34,7 +34,7 @@ a {
 //===========================*/
 
 .typographySans {
-	font-family: 'Droid Sans', sans-serif
+	font-family: 'Open Sans', sans-serif
 }
 
 .item.typographySans,
@@ -42,7 +42,7 @@ a {
 .item.typographySans h2,
 .item.typographySans h3,
 .item.typographySans a {
-	font-family: 'Droid Sans', sans-serif !important;
+	font-family: 'Open Sans', sans-serif !important;
 }
 
 

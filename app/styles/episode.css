@@ -1652,7 +1652,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Droid sans";
+  font-family: "Open Sans";
   color: white;
   background-color: #cccccc;
   width: 100%;
@@ -1664,52 +1664,52 @@
   font-size: 2.5vw;
   letter-spacing: normal; }
 .unbranded .searchPanel__wrapper {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 400;
   color: black;
   color: black; }
   .unbranded .searchPanel__wrapper .fake-link--search-results {
     color: #0000cc; }
 .unbranded .searchResults {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 700;
   color: black; }
   .unbranded .searchResults .item__title--link, .unbranded .searchResults .item__link--fake-link, .unbranded .searchResults .item__link--escape-link {
-    font-family: 'Droid sans',  sans-serif;
+    font-family: 'Open Sans',  sans-serif;
     font-weight: 400;
     color: black;
     color: #0000cc; }
     .unbranded .searchResults .item__title--link:before, .unbranded .searchResults .item__link--fake-link:before, .unbranded .searchResults .item__link--escape-link:before {
       color: black; }
 .unbranded .item__title {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 700;
   color: black; }
 .unbranded .item__title--link a, .unbranded .item__title--file a {
   color: #0000cc; }
 .unbranded .item__link--fake-link {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 400;
   color: black;
   color: #0000cc; }
 .unbranded .item__text {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 400;
   color: black; }
 .unbranded .item__text--h2 {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 700;
   color: black; }
 .unbranded .item__text--transmedia h1, .unbranded .item__text--transmedia h2, .unbranded .item__text--transmedia h3, .unbranded .item__text--definition h1, .unbranded .item__text--definition h2, .unbranded .item__text--definition h3 {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 700;
   color: black; }
 .unbranded .item .item__text--pullquote {
-  font-family: 'Droid serif',  serif;
+  font-family: 'Droid Serif',  serif;
   font-weight: 400;
   color: black; }
   .unbranded .item .item__text--pullquote:before {
-    font-family: 'Droid sans',  sans-serif;
+    font-family: 'Open Sans',  sans-serif;
     font-weight: 700;
     color: black;
     color: #cccccc; }
@@ -1717,14 +1717,14 @@
 .unbranded .item__text--image-caption, .unbranded .item__text--image-caption-sliding {
   color: #dddddd; }
 .unbranded .item__link--escape-link {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 400;
   color: black;
   color: #0000cc; }
   .unbranded .item__link--escape-link:before {
     color: black; }
 .unbranded .item .displayTime, .unbranded .item .startTime {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 700;
   color: black;
   color: #0000cc; }
@@ -1752,7 +1752,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Droid sans";
+  font-family: "Open Sans";
   color: white;
   background-color: #cccccc;
   width: 100%;
@@ -1764,11 +1764,11 @@
   font-size: 2.5vw;
   letter-spacing: normal; }
 .unbranded .centerVV .item__title--link, .unbranded .centerVV .item__title--file, .unbranded .cornerV .item__title--link, .unbranded .cornerV .item__title--file, .unbranded .twocol .item__title--link, .unbranded .twocol .item__title--file, .unbranded .centered .item__title--link, .unbranded .centered .item__title--file, .unbranded .cornerH .item__title--link, .unbranded .cornerH .item__title--file, .unbranded .pip .item__title--link, .unbranded .pip .item__title--file, .unbranded .onecol .item__title--link, .unbranded .onecol .item__title--file {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 400;
   color: black; }
 .unbranded .centerVV .item__title--link.title--link-embed, .unbranded .cornerV .item__title--link.title--link-embed, .unbranded .twocol .item__title--link.title--link-embed, .unbranded .centered .item__title--link.title--link-embed, .unbranded .cornerH .item__title--link.title--link-embed, .unbranded .pip .item__title--link.title--link-embed, .unbranded .onecol .item__title--link.title--link-embed {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 400;
   color: black; }
 .unbranded .centerVV-mondrian .static-bg__main {
@@ -1796,20 +1796,20 @@
 .unbranded .centerVV-mondrian .item__title--link a,
 .unbranded .centerVV-mondrian .item__title--image a,
 .unbranded .centerVV-mondrian .item__title--image-thumbnail a {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 700;
   color: black; }
 .unbranded .centerVV-mondrian .item__link--fake-link {
   color: #dddddd; }
 .unbranded .centerVV-mondrian .item__link--escape-link {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 700;
   color: black;
   color: #dddddd; }
   .unbranded .centerVV-mondrian .item__link--escape-link:before {
     color: #cccccc; }
 .unbranded .centerVV-mondrian .item .displayTime, .unbranded .centerVV-mondrian .item .startTime {
-  font-family: 'Droid sans',  sans-serif;
+  font-family: 'Open Sans',  sans-serif;
   font-weight: 700;
   color: black;
   color: #dddddd; }
