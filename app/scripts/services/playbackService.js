@@ -117,7 +117,6 @@
 		function setMetaProp(prop, val, id) {
 			var pid = _setPid(id);
 			if (ittUtils.existy(_playerInterfaces[pid])) {
-
 				_playerInterfaces[pid].setMetaProp(pid, prop, val);
 			}
 		}

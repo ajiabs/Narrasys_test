@@ -143,7 +143,6 @@
 		}
 
 		function onCanPlay() {
-			console.log('onCanPlay');
 			var instance = _getInstance(this.id); //jshint ignore:line
 			var player = _getPlayer(this.id); //jshint ignore:line
 
@@ -186,7 +185,6 @@
 		}
 
 		function onPause() {
-			console.trace('onPause');
 			var instance = _getInstance(this.id); //jshint ignore:line
 			var player = _getPlayer(this.id); //jshint ignore:line
 			player.meta.playerState = 2;
@@ -209,7 +207,6 @@
 		 */
 
 		function play(pid) {
-			console.log('html5 manager play');
 			var instance = _getInstance(pid);
 			var timestamp = getMetaProp(pid, 'time');
 			var waitUntilReady = $interval(function() {

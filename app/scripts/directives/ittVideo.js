@@ -59,7 +59,6 @@ function ittVideo() {
 
 		function videoClick() {
 			var state = playbackService.getPlayerState(ctrl.playerId);
-			console.log('video click!', state);
 
 			if (state === 'ended') {
 				timelineSvc.restartEpisode();

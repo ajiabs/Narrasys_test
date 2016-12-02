@@ -282,7 +282,7 @@ angular.module('com.inthetelling.story')
 		resetEventClock();
 
 		var startEventClock = function () {
-			eventClockData.lastTimelineTime = playbackService.getMetaProp('duration');
+			eventClockData.lastTimelineTime = playbackService.getMetaProp('time');
 			eventClockData.lastVideoTime = playbackService.getMetaProp('time'); // TODO this should be relative to episode, not timeline
 			stepEvent();
 		};
@@ -295,12 +295,10 @@ angular.module('com.inthetelling.story')
 		var stepEvent = function (ignoreStopEvents) {
 			$timeout.cancel(eventTimeout);
 			if (playbackService.getTimelineState() !== 'playing') {
-				console.log('bail on stepEvent!')
 				return;
 			}
 			var vidTime = playbackService.getCurrentTime();
 			var ourTime = playbackService.getMetaProp('time');
-			console.log('OUR TIME!!!', ourTime);
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
@@ -381,7 +379,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		var _tick = function () {
-			console.log('_tick!');
 			var thisTick = new Date();
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
 			var newTime = parseFloat(playbackService.getMetaProp('time')) + (delta / 1000 * timeMultiplier);
