@@ -18,7 +18,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, YoutubePlayerApi, errorSvc, PLAYERSTATES, playbackState, youtubeSvc) {
+	function youTubePlayerManager($location, YoutubePlayerApi, errorSvc, PLAYERSTATES, youtubeSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -47,14 +47,14 @@
 			stop: stop,
 			reset: reset,
 			setPlaybackQuality: setPlaybackQuality,
-			getMetaProp: angular.noop,
-			setMetaProp: angular.noop
+			getMetaProp: getMetaProp,
+			setMetaProp: setMetaProp
 		};
 
 		//public methods
 
 		function getPlayerDiv(id) {
-			return _players[id].div;
+			return _players[id].meta.div;
 		}
 
 		function registerStateChangeListener(cb) {
@@ -65,6 +65,18 @@
 			_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
 				return fn.toString() !== cb.toString();
 			});
+		}
+
+		function getMetaProp(pid, prop) {
+			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
+				return _players[pid].meta[prop];
+			}
+		}
+
+		function setMetaProp(pid, prop, val) {
+			if (_existy(_players[pid] && _players[pid].meta)) {
+				_players[pid].meta[prop] = val;
+			}
 		}
 
 		/**
@@ -81,7 +93,7 @@
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
 			//bail if we already have set the instance in the _players map.
-			if (_players[id] && _players[id].ready) {
+			if (_players[id] && _players[id].meta.ready) {
 				return;
 			}
 
@@ -89,9 +101,23 @@
 				_players = {};
 				_mainPlayerId = id;
 			}
-			_players[id] = { isMainPlayer: mainPlayer, ytUrl: mediaSrcArr[0] };
-			_players[id].div = _getPlayerDiv(id);
 
+			_players[id] = {
+				instance: null,
+				meta: {
+					mainPlayer: mainPlayer,
+					playerState: '',
+					div: _getPlayerDiv(id),
+					ytUrl: mediaSrcArr[0],
+					startAtTime: 0,
+					time: 0,
+					hasBeenPlayed: false,
+					hasBeenSought: false,
+					bufferedPercent: 0,
+					timeMultiplier: 1,
+					videoType: _type
+				}
+			};
 		}
 
 		/**
@@ -105,15 +131,15 @@
 		 */
 		function create(playerId) {
 
-			var ytId = youtubeSvc.extractYoutubeId(_players[playerId].ytUrl);
+			var ytId = youtubeSvc.extractYoutubeId(_players[playerId].meta.ytUrl);
 			_createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
 
 			function handleSuccess(ytInstance) {
-				_players[playerId].yt = ytInstance;
-				_players[playerId].ready = false;
-				_players[playerId].ytId = ytId;
+				_players[playerId].instance = ytInstance;
+				_players[playerId].meta.ready = false;
+				_players[playerId].meta.ytId = ytId;
 			}
 
 			function tryAgain() {
@@ -150,6 +176,7 @@
 			 */
 			function onPlayerStateChange(event) {
 				var pid = _getPidFromInstance(event.target);
+				_players[pid].meta.playerState = event.data;
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
 				_emitStateChange(stateChangeEvent);
 			}
@@ -166,12 +193,12 @@
 			 */
 			function onReady(event) {
 				var pid = _getPidFromInstance(event.target);
-				_players[pid].ready = true;
-				var ytId = _players[pid].ytId;
-				var startAt = playbackState.getStartAtTime(pid);
+				setMetaProp(pid, 'ready', true);
+				var ytId = getMetaProp(pid, 'ytId');
+				var startAt = getMetaProp(pid, 'startAtTime');
 
 				var stateChangeEvent = _formatPlayerStateChangeEvent({data: -1}, pid);
-				var lastState = playbackState.getVideoState(pid);
+				var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 
 				//this code helps enable the starAtTime feature
 				//ideally, the video will seek to the offset startAtTime, and call 'play' once, so the user can see
@@ -200,7 +227,7 @@
 						//will emit a 'playing' event, which our firstPauseListener is waiting for
 						event.target.playVideo();
 						//sets the time for display purposes, i.e. the timeline.
-						playbackState.setTime(startAt, pid);
+						setMetaProp(pid, 'startAtTime', startAt);
 					}
 				}
 				_emitStateChange(stateChangeEvent);
@@ -352,7 +379,7 @@
 		function reset(pid) {
 
 			var obj = _players[pid];
-			var instance = _players[pid].yt;
+			var instance = _players[pid].instance;
 
 			if (_existy(instance)) {
 				console.log('debug info', instance.getDebugText());
@@ -540,8 +567,8 @@
 		 * @returns {Object} Youtube Player Instance Object.
 		 */
 		function _getYTInstance(pid) {
-			if (_players[pid] && _players[pid].ready === true) {
-				return _players[pid].yt;
+			if (_players[pid] && _players[pid].meta.ready === true) {
+				return _players[pid].instance
 			}
 		}
 

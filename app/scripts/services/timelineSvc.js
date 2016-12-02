@@ -295,6 +295,7 @@ angular.module('com.inthetelling.story')
 		var stepEvent = function (ignoreStopEvents) {
 			$timeout.cancel(eventTimeout);
 			if (playbackService.getTimelineState() !== 'playing') {
+				console.log('bail on stepEvent!')
 				return;
 			}
 			var vidTime = playbackService.getCurrentTime();
@@ -338,7 +339,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			if (ittUtils.existy(nextEvent) && /endingscreen/.test(nextEvent.id)) {
-				// _resetClocks();
+				_resetClocks();
 
 			}
 		};
