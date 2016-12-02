@@ -6,18 +6,18 @@
     $unbrandedHighlight: rgba(204,204,204, 0.6);
 
     @mixin unbranded-header {
-    	font-family: 'Droid sans',  sans-serif;
+    	font-family: 'Open Sans',  sans-serif;
 		font-weight:  700;
     	color: $unbrandedPrimary;
     }
     @mixin unbranded-body {
-    	font-family: 'Droid sans',  sans-serif;
+    	font-family: 'Open Sans',  sans-serif;
 		font-weight:  400;
 	    color: $unbrandedPrimary;
     }
 
     @mixin unbranded-pq {
-    	font-family: 'Droid serif',  serif;
+    	font-family: 'Droid Serif',  serif;
 		font-weight:  400;
 		color: $unbrandedPrimary;
     }
@@ -99,7 +99,7 @@
 
         .endingscreen {
             p {
-                @include banner-pq('Droid sans', $unbrandedAccent, 2.5vw);
+                @include banner-pq('Open Sans', $unbrandedAccent, 2.5vw);
             }
         }
 
@@ -230,7 +230,7 @@
         .centered-pro {
             .banner-pull-quote {
                 h1 {
-                    @include banner-pq('Droid sans', $unbrandedAccent, 2.5vw);
+                    @include banner-pq('Open Sans', $unbrandedAccent, 2.5vw);
                 }
             }
         }
