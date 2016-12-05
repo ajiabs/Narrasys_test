@@ -48,7 +48,9 @@
 			reset: reset,
 			setPlaybackQuality: setPlaybackQuality,
 			getMetaProp: getMetaProp,
-			setMetaProp: setMetaProp
+			setMetaProp: setMetaProp,
+			freezeMetaProps: angular.noop,
+			unFreezeMetaProps: angular.noop
 		};
 
 		//public methods
@@ -130,16 +132,15 @@
 		 * @returns {void} has no return value
 		 */
 		function create(playerId) {
-
-			var ytId = youtubeSvc.extractYoutubeId(_players[playerId].meta.ytUrl);
+			var ytId = youtubeSvc.extractYoutubeId(getMetaProp(playerId, 'ytUrl'));
 			_createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
 
 			function handleSuccess(ytInstance) {
 				_players[playerId].instance = ytInstance;
-				_players[playerId].meta.ready = false;
-				_players[playerId].meta.ytId = ytId;
+				setMetaProp(playerId, 'ready', false);
+				setMetaProp(playerId, 'ytId', ytId);
 			}
 
 			function tryAgain() {
@@ -176,7 +177,7 @@
 			 */
 			function onPlayerStateChange(event) {
 				var pid = _getPidFromInstance(event.target);
-				_players[pid].meta.playerState = event.data;
+				setMetaProp(pid, 'playerState', event.data);
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
 				_emitStateChange(stateChangeEvent);
 			}

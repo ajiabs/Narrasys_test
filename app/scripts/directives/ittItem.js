@@ -45,9 +45,7 @@ angular.module('com.inthetelling.story')
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
 						scope.item.showInlineDetail = false;
 					} else {
-						if (playbackService.getTimelineState() === 'playing') {
 							timelineSvc.pause();
-						}
 
 						scope.captureInteraction();
 						if (element.width() > 450) {

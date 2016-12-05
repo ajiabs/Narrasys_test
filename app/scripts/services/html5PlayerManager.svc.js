@@ -24,6 +24,19 @@
 		var _type = 'html5';
 		var _existy = ittUtils.existy;
 
+		var _validMetaKeys = [
+			'playerState',
+			'startAtTime',
+			'time',
+			'duration',
+			'hasBeenPlayed',
+			'hasBeenSought',
+			'bufferedPercent',
+			'timeMultiplier',
+			'videoType',
+			'ready'
+		];
+
 		return {
 			type: _type,
 			seedPlayerManager: seedPlayerManager,
@@ -41,11 +54,18 @@
 			setSpeed: setSpeed,
 			registerStateChangeListener: registerStateChangeListener,
 			getMetaProp: getMetaProp,
-			setMetaProp: setMetaProp
+			setMetaProp: setMetaProp,
+			freezeMetaProps: freezeMetaProps,
+			unFreezeMetaProps: unFreezeMetaProps
 			//destroy
 		};
 
 		function create(divID) {
+
+			if (Object.isFrozen(_players[divID].meta)) {
+				unFreezeMetaProps(divID);
+			}
+
 			var plr = document.getElementById(divID);
 			plr.onpause = onPause;
 			plr.onplaying = onPlaying;
@@ -65,7 +85,7 @@
 			}
 
 			_players[divID].instance = plr;
-
+			setMetaProp(divID, 'ready', true);
 
 			// temp to test out video source change.
 			// $timeout(function() {
@@ -87,7 +107,25 @@
 		}
 
 		function getPlayerDiv(id) {
-			return _players[id].meta.div;
+			return getMetaProp(id, 'div');
+		}
+
+		function freezeMetaProps(pid) {
+			Object.freeze(_players[pid].meta);
+		}
+
+		function unFreezeMetaProps(pid) {
+			var newMeta, prop, frozenMeta;
+			frozenMeta = _players[pid].meta;
+			newMeta = {};
+
+			for (prop in frozenMeta) {
+				if (frozenMeta.hasOwnProperty(prop)) {
+					newMeta[prop] = frozenMeta[prop];
+				}
+			}
+
+			_players[pid].meta = newMeta;
 		}
 
 		function getMetaProp(pid, prop) {
@@ -97,12 +135,29 @@
 		}
 
 		function setMetaProp(pid, prop, val) {
+
+			if (_validMetaKeys.indexOf(prop) === -1) {
+				throw new Error(prop + ' is not a valid prop for HTML5 meta info');
+			}
+
 			if (_existy(_players[pid] && _players[pid].meta)) {
-				_players[pid].meta[prop] = val;
+
+				try {
+					_players[pid].meta[prop] = val;
+				} catch (e) {
+					console.log('catch read only error:', e);
+				}
+
 			}
 		}
 
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
+
+			//bail if we already have set the instance in the _players map.
+			if (_players[id] && getMetaProp(id, 'ready') === true) {
+				return;
+			}
+
 			if (mainPlayer) {
 				_players = {};
 				_mainPlayerId = id;
@@ -119,7 +174,9 @@
 					playerState: '-1',
 					videoObj: plrInfo.videoObj,
 					div: plrInfo.videoElm,
+					ready: false,
 					startAtTime: 0,
+					duration: 0,
 					time: 0,
 					hasBeenPlayed: false,
 					hasBeenSought: false,
@@ -137,14 +194,12 @@
 
 		function onEnded() {
 			var instance = _getInstance(this.id); //jshint ignore:line
-			var player = _getPlayer(this.id); //jshint ignore:line
-			player.meta.playerState = 0;
+			setMetaProp(this.id, 'playerState', 0);
 			_emitStateChange(instance);
 		}
 
 		function onCanPlay() {
 			var instance = _getInstance(this.id); //jshint ignore:line
-			var player = _getPlayer(this.id); //jshint ignore:line
 
 			var lastState = getMetaProp(this.id, 'playerState');
 			var startAt = getMetaProp(this.id, 'startAtTime');
@@ -154,12 +209,13 @@
 			if (startAt > 0) {
 
 				if (firstSeek === false) {
-					player.meta.playerState = 5;
+					setMetaProp(this.id, 'playerState', 5);
 					instance.currentTime = startAt;
 					setMetaProp(this.id, 'time', startAt);
 				}
 
-				if (lastState === 'playing' && firstPlay === false) {
+
+				if (PLAYERSTATES[lastState] === 'playing' && firstPlay === false) {
 					instance.currentTime = startAt;
 					instance.play();
 					setMetaProp(this.id, 'time', startAt);
@@ -167,7 +223,7 @@
 				}
 
 			} else {
-				player.meta.playerState = -1;
+				setMetaProp(this.id, 'playerState', -1);
 			}
 
 			//emit video cued or unstarted only once
@@ -179,22 +235,19 @@
 
 		function onPlaying() {
 			var instance = _getInstance(this.id); //jshint ignore:line
-			var player = _getPlayer(this.id); //jshint ignore:line
-			player.meta.playerState = 1;
+			setMetaProp(this.id, 'playerState', 1);
 			_emitStateChange(instance);
 		}
 
 		function onPause() {
 			var instance = _getInstance(this.id); //jshint ignore:line
-			var player = _getPlayer(this.id); //jshint ignore:line
-			player.meta.playerState = 2;
+			setMetaProp(this.id, 'playerState', 2);
 			_emitStateChange(instance);
 		}
 
 		function onBuffering() {
 			var instance = _getInstance(this.id); //jshint ignore:line
-			var player = _getPlayer(this.id); //jshint ignore:line
-			player.meta.playerState = 3;
+			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(instance);
 		}
 
@@ -289,8 +342,7 @@
 
 		function getBufferedPercent(pid) {
 			var instance = _getInstance(pid);
-			var player = _getPlayer(pid);
-			if (instance && player.meta.playerState !== -1) {
+			if (instance && getMetaProp(pid, 'playerState') !== -1) {
 				if (instance.buffered.length > 0) {
 					var bufLen = instance.buffered.length;
 					var bufStart = instance.buffered.start(bufLen -1);

@@ -37,7 +37,9 @@
 			getMetaProp: getMetaProp,
 			setMetaProp: setMetaProp,
 			getTimelineState: getTimelineState,
-			setTimelineState: setTimelineState
+			setTimelineState: setTimelineState,
+			freezeMetaProps: freezeMetaProps,
+			unFreezeMetaProps: unFreezeMetaProps
 		};
 
 		//public methods
@@ -104,6 +106,7 @@
 				var startAtTime = getCurrentTime(playerId);
 				setMetaProp('startAtTime', startAtTime, playerId);
 				setMetaProp('hasBeenPlayed', false, playerId);
+				freezeMetaProps(playerId);
 			}
 		}
 
@@ -129,8 +132,15 @@
 			_timelineState = state;
 		}
 
-		// private methods
+		function freezeMetaProps(playerId) {
+			_playerInterfaces[_setPid(playerId)].freezeMetaProps(_setPid(playerId));
+		}
 
+		function unFreezeMetaProps(playerId) {
+			_playerInterfaces[_setPid(playerId)].unFreezeMetaProps(_setPid(playerId));
+		}
+
+		// private methods
 		function _setPid(pid) {
 			if (ittUtils.existy(pid)) {
 				return pid;
