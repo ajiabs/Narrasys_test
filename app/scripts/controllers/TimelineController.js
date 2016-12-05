@@ -3,9 +3,32 @@
 angular.module('com.inthetelling.story')
 	.controller('TimelineController', function ($scope, timelineSvc, modelSvc, appState, playbackService) {
 
-		$scope.play = timelineSvc.play;
-		$scope.pause = timelineSvc.pause;
 		$scope.playbackService = playbackService;
+
+		$scope.timelineBtnClick = timelineBtnClick;
+		$scope.setBtnClass = setBtnClass;
+
+		function _getTimelineState() {
+			var timelineState = playbackService.getTimelineState();
+			return (timelineState === 'paused' || timelineState === 'unstarted' || timelineState === 'video cued')
+		}
+
+		function setBtnClass() {
+			if (_getTimelineState() === true) {
+				$scope.controlText = 'play';
+				return 'button-play';
+			}
+			$scope.controlText = 'pause';
+			return 'button-pause';
+		}
+
+		function timelineBtnClick() {
+			if (_getTimelineState() === true) {
+				timelineSvc.play();
+			} else {
+				timelineSvc.pause();
+			}
+		}
 
 		$scope.changeSpeed = function (n) {
 			// console.log("timelineController.changeSpeed");

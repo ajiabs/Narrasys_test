@@ -238,6 +238,12 @@
 				//emit video cued for main video, for timelineSvc#startAtSpecificTime
 				setMetaProp(this.id, 'playerState', 5);
 				_emitStateChange(instance);
+			} else {
+				//emit 'unstarted' if first time
+				if (getMetaProp(this.id, 'hasBeenPlayed') === false) {
+					setMetaProp(this.id, 'playerState', -1);
+					_emitStateChange(instance);
+				}
 			}
 
 		}

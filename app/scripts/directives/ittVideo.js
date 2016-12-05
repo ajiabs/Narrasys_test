@@ -49,14 +49,6 @@ function ittVideo() {
 		}
 
 		//video mask controls
-		function playerIsPaused() {
-			if (ctrl.mainPlayer) {
-				return playbackService.getPlayerState(ctrl.playerId) === 'paused' && !showReplayOverlay();
-			}
-			return false;
-
-		}
-
 		function videoClick() {
 			var state = playbackService.getPlayerState(ctrl.playerId);
 
@@ -70,6 +62,10 @@ function ittVideo() {
 			} else {
 				playbackService.pause(ctrl.playerId);
 			}
+		}
+
+		function playerIsPaused() {
+			return playbackService.getPlayerState(ctrl.playerId) === 'paused' && !showReplayOverlay();
 		}
 
 		function showUnstartedOverlay() {

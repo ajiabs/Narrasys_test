@@ -12,11 +12,13 @@
 
 	<!--playback buttons-->
 	<img class="np-overlay-ui"
+		 ng-class="{'np--embed': $ctrl.mainPlayer === false}"
 		 ng-click="$ctrl.videoClick()"
 		 ng-if="$ctrl.playerIsPaused()"
 		 src="/images/play-overlay.png"/>
 
 	<img class="np-overlay-ui"
+		 ng-class="{'np--embed': $ctrl.mainPlayer === false}"
 		 ng-click="$ctrl.videoClick()"
 		 ng-if="$ctrl.showUnstartedOverlay()"
 		 src="/images/logo-overlay.png"/>
@@ -25,6 +27,7 @@
 		 <!--src="/images/buffering-overlay.png"/>-->
 
 	<img class="np-overlay-ui rewind"
+		 ng-class="{'np--embed': $ctrl.mainPlayer === false}"
 		 ng-click="$ctrl.videoClick()"
 		 ng-if="$ctrl.showReplayOverlay()"
 		 src="/images/rewind-overlay.png"/>

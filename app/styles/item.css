@@ -274,13 +274,6 @@ Inline images (TODO show these only when image is larger than available space) *
 
 /*============================ ============================ ============================
   inline item detail */
-
-.itemDetail img,
-.itemDetail iframe {
-	width: 100%;
-	background-color: #FFF;
-}
-
 .itemDetail.ng-enter,
 .itemDetail.ng-leave {
 	transition: 1s all;

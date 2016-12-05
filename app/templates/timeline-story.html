@@ -1,10 +1,7 @@
 <div class="timeline" ng-show="!isSuppressed" ng-cloak>
 
-	<button tabindex="0" ng-focus="showControls()" class="button button-play" ng-if="playbackService.getTimelineState() == 'paused' || playbackService.getTimelineState() == 'unstarted'" ng-click="play()">
-		<span class="control-text">Play</span>
-	</button>
-	<button tabindex="0" ng-focus="showControls()" class="button button-pause" ng-if="playbackService.getTimelineState() != 'paused' && playbackService.getTimelineState() !== 'unstarted'" ng-click="pause()">
-		<span class="control-text">Pause</span>
+	<button tabindex="0" ng-focus="showControls()" class="button" ng-class="setBtnClass()" ng-click="timelineBtnClick()">
+		<span class="control-text">{{controlText}}</span>
 	</button>
 
 	<div class="progressbarBox">

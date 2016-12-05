@@ -419,6 +419,10 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 	transform: translate(50%, -150%);
 }
 
+.np-overlay-ui.np--embed {
+	transform: translate(40%, -130%);
+}
+
 .np-overlay-ui.play {
 	background-image: url('/images/play-overlay.png');
 	background-size: 100%;
