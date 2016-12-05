@@ -50,13 +50,11 @@
 						url += '&start=' + startAt;
 					}
 					return url;
-					break;
 				case 'html5':
 					if (startAt > 0) {
 						url += '#t=' + startAt;
 					}
 					return url;
-					break;
 			}
 		}
 	}
