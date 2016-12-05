@@ -54,6 +54,7 @@
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
 			registerStateChangeListener: registerStateChangeListener,
+			unregisterStateChangeListener: unregisterStateChangeListener,
 			getMetaProp: getMetaProp,
 			setMetaProp: setMetaProp,
 			freezeMetaProps: freezeMetaProps,
@@ -105,6 +106,12 @@
 
 		function registerStateChangeListener(cb) {
 			_stateChangeCallbacks.push(cb);
+		}
+
+		function unregisterStateChangeListener(cb) {
+			_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
+				return fn.toString() !== cb.toString();
+			});
 		}
 
 		function getPlayerDiv(id) {

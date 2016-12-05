@@ -43,14 +43,14 @@
 			setSpeed: setSpeed,
 			registerStateChangeListener: registerStateChangeListener,
 			unregisterStateChangeListener: unregisterStateChangeListener,
-			destroy: destroy,
-			stop: stop,
-			reset: reset,
-			setPlaybackQuality: setPlaybackQuality,
 			getMetaProp: getMetaProp,
 			setMetaProp: setMetaProp,
 			freezeMetaProps: angular.noop,
-			unFreezeMetaProps: angular.noop
+			unFreezeMetaProps: angular.noop,
+			setPlaybackQuality: setPlaybackQuality,
+			reset: reset,
+			destroy: destroy,
+			stop: stop
 		};
 
 		//public methods
@@ -110,9 +110,10 @@
 					mainPlayer: mainPlayer,
 					playerState: '',
 					div: _getPlayerDiv(id),
-					ytUrl: mediaSrcArr[0],
+					ready: false,
 					startAtTime: 0,
 					hasResumedFromStartAt: false,
+					ytUrl: mediaSrcArr[0],
 					time: 0,
 					hasBeenPlayed: false,
 					bufferedPercent: 0,

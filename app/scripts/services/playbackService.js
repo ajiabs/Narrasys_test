@@ -33,6 +33,7 @@
 			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
 			registerStateChangeListener: registerStateChangeListener,
+			unregisterStateChangeListener: unregisterStateChangeListener,
 			startAtTime: startAtTime,
 			getMetaProp: getMetaProp,
 			setMetaProp: setMetaProp,
@@ -75,6 +76,12 @@
 
 		function registerStateChangeListener(cb) {
 			_stateChangeCallbacks.push(cb);
+		}
+
+		function unregisterStateChangeListener(cb) {
+			_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
+				return fn.toString() !== cb.toString();
+			});
 		}
 
 		function getCurrentTime(playerId) {
