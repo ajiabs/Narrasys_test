@@ -348,7 +348,7 @@ angular.module('com.inthetelling.story')
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
 					playbackService.setMetaProp('time', event.t);
-					console.log('handle event');
+					// console.log('handle event');
 					svc.pause(); // TODO handle pause with duration too
 				} else {
 					svc.play();
@@ -371,7 +371,6 @@ angular.module('com.inthetelling.story')
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
 		var lastTick;
 		var startTimelineClock = function () {
-			console.warn('start timeline clock');
 			lastTick = undefined;
 			$interval.cancel(clock); // safety belt, in case we're out of synch
 			clock = $interval(_tick, 20);
@@ -400,7 +399,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.init = function (episodeId) {
-			console.log('timelineSvc#init');
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
 			svc.displayMarkedEvents = [];
