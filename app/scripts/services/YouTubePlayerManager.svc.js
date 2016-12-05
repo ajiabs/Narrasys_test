@@ -228,8 +228,6 @@
 						event.target.cueVideoById(ytId, startAt);
 						//will emit a 'playing' event, which our firstPauseListener is waiting for
 						event.target.playVideo();
-						//sets the time for display purposes, i.e. the timeline.
-						setMetaProp(pid, 'time', startAt);
 					}
 				}
 				_emitStateChange(stateChangeEvent);
