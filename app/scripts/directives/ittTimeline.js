@@ -341,7 +341,7 @@ angular.module('com.inthetelling.story')
 						scope.willSeekTo = 0;
 					}
 					if (scope.willSeekTo > currentDuration) {
-						scope.willSeekTo = currentDuration
+						scope.willSeekTo = currentDuration;
 					}
 				};
 

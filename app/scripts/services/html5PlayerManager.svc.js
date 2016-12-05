@@ -4,6 +4,7 @@
 
 (function() {
 	'use strict';
+	/*jshint validthis: true */
 
 	angular.module('com.inthetelling.story')
 		.factory('html5PlayerManager', html5PlayerManager);
@@ -193,7 +194,7 @@
 		 */
 
 		function onEnded() {
-			var instance = _getInstance(this.id); //jshint ignore:line
+			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 0);
 			_emitStateChange(instance);
 		}
@@ -202,7 +203,7 @@
 		//to emit a 'video cued' event for the timelineSvc#startAtSpecific time method or
 		//to resume playback on a destroyed embedded video.
 		function onCanPlay() {
-			var instance = _getInstance(this.id); //jshint ignore:line
+			var instance = _getInstance(this.id);
 
 			var lastState = getMetaProp(this.id, 'playerState');
 			var startAt = getMetaProp(this.id, 'startAtTime');
@@ -235,19 +236,19 @@
 		}
 
 		function onPlaying() {
-			var instance = _getInstance(this.id); //jshint ignore:line
+			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 1);
 			_emitStateChange(instance);
 		}
 
 		function onPause() {
-			var instance = _getInstance(this.id); //jshint ignore:line
+			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 2);
 			_emitStateChange(instance);
 		}
 
 		function onBuffering() {
-			var instance = _getInstance(this.id); //jshint ignore:line
+			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(instance);
 		}

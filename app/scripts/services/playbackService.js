@@ -103,8 +103,7 @@
 
 		function startAtTime(playerId) {
 			if (playerId !== _mainPlayerId) {
-				var startAtTime = getCurrentTime(playerId);
-				setMetaProp('startAtTime', startAtTime, playerId);
+				setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
 				setMetaProp('hasResumedFromStartAt', false, playerId);
 				freezeMetaProps(playerId);
 			}

@@ -432,12 +432,11 @@
 		 * Used to seek the video to a desired time in seconds
 		 * @param {String} pid The ID of the YT instance
 		 * @param {Number} t The desired time to seek to
-		 * @param {Boolean} allowSeekAhead Determines whether the player will make a new request to
 		 * the server if the t (seconds) parameter specifies a time outside of the currently
 		 * buffered video data
 		 * @returns {Void} no return value
 		 */
-		function seekTo(pid, t, allowSeekAhead) {
+		function seekTo(pid, t) {
 			var p = _getYTInstance(pid);
 			if (_existy(p)) {
 
@@ -568,7 +567,7 @@
 		 */
 		function _getYTInstance(pid) {
 			if (_players[pid] && _players[pid].meta.ready === true) {
-				return _players[pid].instance
+				return _players[pid].instance;
 			}
 		}
 
@@ -586,7 +585,7 @@
 		 * @returns {String} PID of YT Instance
 		 */
 		function _getPidFromInstance(ytInstance) {
-			return ytInstance.getIframe().id
+			return ytInstance.getIframe().id;
 		}
 
 		/**
