@@ -1,8 +1,8 @@
 <!--temp debug code-->
-<h5 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackService.getTimelineState()}} | time:
-	{{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} | first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} | first seek: {{$ctrl.playbackService.getMetaProp('hasBeenSought', $ctrl.playerId)}} |
+<h6 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackService.getTimelineState()}} | time:
+	{{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} | first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} | has resumed from startAt: {{$ctrl.playbackService.getMetaProp('hasResumedFromStartAt', $ctrl.playerId)}} |
 	player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} | start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}}
-</h5>
+</h6>
 
 <!--end temp debug code-->
 <div class="video np-video" ng-click="$ctrl.videoClick()">

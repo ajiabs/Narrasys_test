@@ -89,9 +89,8 @@ angular.module('com.inthetelling.story')
 					break;
 				case 'video cued':
 					var startAt = playbackService.getMetaProp('startAtTime');
-					var firstSeek = playbackService.getMetaProp('hasBeenSought');
-					if (startAt > 0 && firstSeek === false) {
-						console.log('start at specific time');
+					var hasResumed = playbackService.getMetaProp('hasResumedFromStartAt');
+					if (startAt > 0 && hasResumed === false) {
 						svc.startAtSpecificTime(startAt);
 					}
 					break;
@@ -162,7 +161,7 @@ angular.module('com.inthetelling.story')
 			}
 
 			playbackService.setMetaProp('time', t);
-			playbackService.setMetaProp('hasBeenSought', true);
+			playbackService.setMetaProp('hasResumedFromStartAt', true);
 			svc.updateEventStates();
 
 			analyticsSvc.captureEpisodeActivity("seek", {

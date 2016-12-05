@@ -30,7 +30,7 @@
 			'time',
 			'duration',
 			'hasBeenPlayed',
-			'hasBeenSought',
+			'hasResumedFromStartAt',
 			'bufferedPercent',
 			'timeMultiplier',
 			'videoType',
@@ -176,10 +176,10 @@
 					div: plrInfo.videoElm,
 					ready: false,
 					startAtTime: 0,
+					hasResumedFromStartAt: false,
 					duration: 0,
 					time: 0,
 					hasBeenPlayed: false,
-					hasBeenSought: false,
 					bufferedPercent: 0,
 					timeMultiplier: 1,
 					videoType: _type
@@ -198,36 +198,37 @@
 			_emitStateChange(instance);
 		}
 
+		//using onCanPlay event in a similar manner as 'onReady' in youtubePlayerManager; i.e.
+		//to emit a 'video cued' event for the timelineSvc#startAtSpecific time method or
+		//to resume playback on a destroyed embedded video.
 		function onCanPlay() {
 			var instance = _getInstance(this.id); //jshint ignore:line
 
 			var lastState = getMetaProp(this.id, 'playerState');
 			var startAt = getMetaProp(this.id, 'startAtTime');
-			var firstPlay = getMetaProp(this.id, 'hasBeenPlayed');
-			var firstSeek = getMetaProp(this.id, 'hasBeenSought');
+			var hasResumed = getMetaProp(this.id, 'hasResumedFromStartAt');
 
 			if (startAt > 0) {
-
-				if (firstSeek === false) {
-					setMetaProp(this.id, 'playerState', 5);
+				//check to see if we need to resume from startAtTime
+				if (hasResumed === false) {
 					instance.currentTime = startAt;
-					setMetaProp(this.id, 'time', startAt);
+
+					if (getMetaProp(this.id, 'mainPlayer') === false) {
+						//for mainPlayer, this will be set in timelineSvc
+						setMetaProp(this.id, 'hasResumedFromStartAt', true);
+
+						//resume playback if the embed was playing when destroyed.
+						if (PLAYERSTATES[lastState] === 'playing') {
+							instance.play();
+							//return to avoid emitting 'video cued' event below.
+							return;
+						}
+					}
+
 				}
 
-
-				if (PLAYERSTATES[lastState] === 'playing' && firstPlay === false) {
-					instance.currentTime = startAt;
-					instance.play();
-					setMetaProp(this.id, 'time', startAt);
-					setMetaProp(this.id, 'hasBeenPlayed', true);
-				}
-
-			} else {
-				setMetaProp(this.id, 'playerState', -1);
-			}
-
-			//emit video cued or unstarted only once
-			if (getMetaProp(this.id, 'hasBeenPlayed') === false) {
+				//emit video cued for main video, for timelineSvc#startAtSpecificTime
+				setMetaProp(this.id, 'playerState', 5);
 				_emitStateChange(instance);
 			}
 
@@ -252,7 +253,6 @@
 		}
 
 		function onSeeked() {
-			setMetaProp(this.id, 'hasBeenSought', true);
 		}
 
 		/*

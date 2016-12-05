@@ -105,7 +105,7 @@
 			if (playerId !== _mainPlayerId) {
 				var startAtTime = getCurrentTime(playerId);
 				setMetaProp('startAtTime', startAtTime, playerId);
-				setMetaProp('hasBeenPlayed', false, playerId);
+				setMetaProp('hasResumedFromStartAt', false, playerId);
 				freezeMetaProps(playerId);
 			}
 		}

@@ -112,9 +112,9 @@
 					div: _getPlayerDiv(id),
 					ytUrl: mediaSrcArr[0],
 					startAtTime: 0,
+					hasResumedFromStartAt: false,
 					time: 0,
 					hasBeenPlayed: false,
-					hasBeenSought: false,
 					bufferedPercent: 0,
 					timeMultiplier: 1,
 					videoType: _type
@@ -218,17 +218,18 @@
 
 				if (startAt > 0) {
 					if (lastState === 'playing') {
+						//loadVideoById week seek to offset time at 'startAt' and resume playback
 						event.target.loadVideoById(ytId, startAt);
 					} else {
 						registerStateChangeListener(firstPauseListener);
-						//will emit a 'video cued' event
+						//cueVideoById will seek to offset and emit a 'video cued' event
 						// that the timelineSvc responds to by calling timelineSvc#updateEventStates()
 						//which will ensure that we are in the proper scene that occurs at the offset time.
 						event.target.cueVideoById(ytId, startAt);
 						//will emit a 'playing' event, which our firstPauseListener is waiting for
 						event.target.playVideo();
 						//sets the time for display purposes, i.e. the timeline.
-						setMetaProp(pid, 'startAtTime', startAt);
+						setMetaProp(pid, 'time', startAt);
 					}
 				}
 				_emitStateChange(stateChangeEvent);
