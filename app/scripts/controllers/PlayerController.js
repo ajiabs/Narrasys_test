@@ -3,7 +3,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager, selectService, playbackService) {
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, selectService, playbackService) {
 		// console.log("playerController", $scope);
 
 		//set to true to enable debug info on api-dev
@@ -288,12 +288,6 @@ angular.module('com.inthetelling.story')
 				$timeout(function () {
 					document.getElementById('searchtext').focus();
 				});
-			} else {
-				//pause any videos which could be playing in search mode
-				if (appState.embedYTPlayerAvailable) {
-
-					youTubePlayerManager.pauseOtherEmbeds();
-				}
 			}
 		};
 
