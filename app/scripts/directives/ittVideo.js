@@ -12,16 +12,15 @@ function ittVideo() {
 			mediaSrcArr: '=',
 			playerId: '='
 		},
-		controller: ['$scope', '$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'appState', 'ittUtils', 'timelineSvc', videoCtrl],
+		controller: ['$scope', '$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'ittUtils', 'timelineSvc', videoCtrl],
 		bindToController: true,
 		controllerAs: '$ctrl'
 	};
 
 	//TODO: tackle isTranscoded somehow.
-	function videoCtrl($scope, $timeout, $sce, $rootScope, $routeParams, playbackService, appState, ittUtils, timelineSvc) {
+	function videoCtrl($scope, $timeout, $sce, $rootScope, $routeParams, playbackService, ittUtils, timelineSvc) {
 		var ctrl = this; //jshint ignore:line
 		ctrl.playbackService = playbackService;
-		ctrl.appState = appState;
 		ctrl.videoClick = videoClick;
 		ctrl.isTranscoded = function() { return true; };
 		ctrl.playerIsPaused = playerIsPaused;
