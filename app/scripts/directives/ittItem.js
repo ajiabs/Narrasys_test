@@ -6,7 +6,7 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, selectService, playbackService) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -117,16 +117,15 @@ angular.module('com.inthetelling.story')
 					timelineSvc.pause();
 					scope.captureInteraction();
 
-					if (url.match(/youtube/)) {
-						url = youtubeSvc.embeddableYoutubeUrl(url, false);
-						//if we have an embed set, pause it when
-						//linking to new window.
+					//check to see if item URL is from a video; i.e. youtube or html5
+					//then do the right thing; i.e. ensure linked to video resumes from
+					//current time.
+					if (urlService.checkUrl(url).type.length > 0) {
 						playbackService.pause(scope.item._id);
 						var curTime = Math.floor(playbackService.getCurrentTime(scope.item._id));
-						if (curTime > 0) {
-							url += '&start=' + curTime;
-						}
+						url = urlService.getOutgoingUrl(url, curTime);
 					}
+
 					if (scope.item.targetTop) {
 						$timeout(function () {
 							window.location.href = url;

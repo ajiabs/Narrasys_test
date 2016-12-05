@@ -14,7 +14,8 @@
 
 		return {
 			parseMediaSrcArr: parseMediaSrcArr,
-			checkUrl: checkUrl
+			checkUrl: checkUrl,
+			getOutgoingUrl: getOutgoingUrl
 		};
 
 		/**
@@ -39,6 +40,24 @@
 				}
 				return map;
 			}, {type: ''});
+		}
+
+		function getOutgoingUrl(url, startAt) {
+			switch(checkUrl(url).type) {
+				case 'youtube':
+					url = youtubeSvc.embeddableYoutubeUrl(url, false);
+					if (startAt > 0) {
+						url += '&start=' + startAt;
+					}
+					return url;
+					break;
+				case 'html5':
+					if (startAt > 0) {
+						url += '#t=' + startAt;
+					}
+					return url;
+					break;
+			}
 		}
 	}
 
