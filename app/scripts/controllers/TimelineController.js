@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('TimelineController', function ($scope, timelineSvc, modelSvc, appState, playbackState) {
+	.controller('TimelineController', function ($scope, timelineSvc, modelSvc, appState, playbackService) {
 
 		$scope.play = timelineSvc.play;
 		$scope.pause = timelineSvc.pause;
-		$scope.playbackState = playbackState;
+		$scope.playbackService = playbackService;
 
 		$scope.changeSpeed = function (n) {
 			// console.log("timelineController.changeSpeed");
 			// Limit speed to between 0.5 and 2 inclusive
-			var newSpeed = playbackState.getTimeMultiplier() + n;
+			var newSpeed = playbackService.getMetaProp('timeMultiplier') + n;
 			if (newSpeed < 0.5) {
 				newSpeed = 0.5;
 			}
@@ -25,7 +25,7 @@ angular.module('com.inthetelling.story')
 
 		$scope.markerPercent = function (t) {
 			// console.log('marker %', t);
-			return (t === undefined ? 0 : t / playbackState.getDuration() * 100);
+			return (t === undefined ? 0 : t / playbackService.getMetaProp('duration') * 100);
 		};
 
 		// Yeah, this is a little odd.  Letting timelineSvc manage all video-related functions,

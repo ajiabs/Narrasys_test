@@ -9,7 +9,7 @@
 */
 
 angular.module('com.inthetelling.story')
-	.directive('sxsAddContent', function (appState, playbackState) {
+	.directive('sxsAddContent', function (appState, playbackService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -20,7 +20,7 @@ angular.module('com.inthetelling.story')
 			link: function (scope) {
 
 				scope.appState = appState;
-				scope.playbackState = playbackState;
+				scope.playbackService = playbackService;
 
 				scope.expand = function () {
 					scope.expanded = true;

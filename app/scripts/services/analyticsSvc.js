@@ -30,7 +30,7 @@ Different types of event can define their own interactions, but the core ones wi
 */
 
 angular.module('com.inthetelling.story')
-	.factory('analyticsSvc', function ($q, $http, $routeParams, $interval, config, appState, playbackState) {
+	.factory('analyticsSvc', function ($q, $http, $routeParams, $interval, config, appState, playbackService) {
 		// console.log('analyticsSvc factory');
 		var svc = {};
 
@@ -60,7 +60,7 @@ angular.module('com.inthetelling.story')
 			var userActivity = {
 				"name": name,
 				"walltime": new Date(),
-				"timestamp": playbackState.getTime(), // TODO this is timeline time, we want episode time!
+				"timestamp": playbackService.getMetaProp('time'), // TODO this is timeline time, we want episode time!
 			};
 			if (data) {
 				userActivity.data = data;

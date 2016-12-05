@@ -3,7 +3,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager, selectService, playbackState) {
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, selectService, playbackService) {
 		// console.log("playerController", $scope);
 
 		//set to true to enable debug info on api-dev
@@ -111,7 +111,7 @@ angular.module('com.inthetelling.story')
 			if (localStorageAllowed && !(localStorage.getItem("noWileyNag"))) {
 				appState.show.wileyNag = true;
 				var nagWatch = $scope.$watch(function() {
-					return playbackState.getTime();
+					return playbackService.getMetaProp('time');
 				}, function (n) {
 					if (n) {
 						appState.show.wileyNag = false;
@@ -200,7 +200,7 @@ angular.module('com.inthetelling.story')
 		}
 
 		$scope.appState = appState;
-		$scope.playbackState = playbackState;
+		$scope.playbackService = playbackService;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
 
@@ -288,12 +288,6 @@ angular.module('com.inthetelling.story')
 				$timeout(function () {
 					document.getElementById('searchtext').focus();
 				});
-			} else {
-				//pause any videos which could be playing in search mode
-				if (appState.embedYTPlayerAvailable) {
-
-					youTubePlayerManager.pauseOtherEmbeds();
-				}
 			}
 		};
 
@@ -350,7 +344,7 @@ angular.module('com.inthetelling.story')
 		$scope.continue = function () {
 			// console.log("continue", modelSvc.episodes[appState.episodeId].masterAsset.duration, appState.time);
 			// If we're close to the end, jsut move to the ending screen and stop.
-			if (modelSvc.episodes[appState.episodeId].masterAsset.duration - playbackState.getTime() < 0.2) {
+			if (modelSvc.episodes[appState.episodeId].masterAsset.duration - playbackService.getMetaProp('time') < 0.2) {
 				timelineSvc.pause();
 				timelineSvc.seek(modelSvc.episodes[appState.episodeId].masterAsset.duration - 0.01);
 			} else {

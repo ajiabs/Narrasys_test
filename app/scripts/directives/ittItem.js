@@ -6,7 +6,7 @@ so they get logged properly: don't draw plain hrefs
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, youTubePlayerManager, selectService, playbackState) {
+	.directive('ittItem', function ($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, youtubeSvc, selectService, playbackService) {
 		return {
 			restrict: 'A',
 			replace: false,
@@ -45,7 +45,8 @@ angular.module('com.inthetelling.story')
 						// if inline detail view is visible, close it. (If a modal is visible, this is inaccessible anyway, so no need to handle that case.)
 						scope.item.showInlineDetail = false;
 					} else {
-						timelineSvc.pause();
+							timelineSvc.pause();
+
 						scope.captureInteraction();
 						if (element.width() > 450) {
 							// show detail inline if there's room for it:
@@ -120,18 +121,12 @@ angular.module('com.inthetelling.story')
 						url = youtubeSvc.embeddableYoutubeUrl(url, false);
 						//if we have an embed set, pause it when
 						//linking to new window.
-						if (appState.embedYTPlayerAvailable) {
-							youTubePlayerManager.pauseOtherEmbeds();
-							var curTime = Math.floor(youTubePlayerManager.getCurrentTime(scope.item._id));
-							if (curTime > 0) {
-								url += '&start=' + curTime;
-								console.log('made it to the right spot!!', url);
-							}
+						playbackService.pause(scope.item._id);
+						var curTime = Math.floor(playbackService.getCurrentTime(scope.item._id));
+						if (curTime > 0) {
+							url += '&start=' + curTime;
 						}
-
-
 					}
-
 					if (scope.item.targetTop) {
 						$timeout(function () {
 							window.location.href = url;
@@ -164,7 +159,7 @@ angular.module('com.inthetelling.story')
 				// TODO timelineSvc should be able to inform the item directive directly that enter or exit has happened, $watch is silly
 				if (scope.item.templateUrl === 'templates/item/link-embed.html') {
 					var captureEmbed = scope.$watch(function () {
-						return playbackState.getTime() > scope.item.start_time;
+						return playbackService.getMetaProp('time') > scope.item.start_time;
 					}, function (x) {
 						if (x) {
 							scope.captureInteraction();
