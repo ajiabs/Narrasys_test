@@ -26,6 +26,23 @@
 		var _stateChangeCallbacks = [];
 		var _type = 'youtube';
 
+		var _youtubeMetaObj = {
+			instance: null,
+			meta: {
+				playerState: '-1',
+				div: '',
+				ready: false,
+				startAtTime: 0,
+				hasResumedFromStartAt: false,
+				ytUrl: '',
+				time: 0,
+				hasBeenPlayed: false,
+				bufferedPercent: 0,
+				timeMultiplier: 1,
+				videoType: _type
+			}
+		};
+
 		_youTubePlayerManager = {
 			type: _type,
 			seedPlayerManager: seedPlayerManager,
@@ -45,12 +62,16 @@
 			unregisterStateChangeListener: unregisterStateChangeListener,
 			getMetaProp: getMetaProp,
 			setMetaProp: setMetaProp,
+			resetPlayers: resetPlayers,
+			resetMetaProps: resetMetaProps,
+			getMetaObj: getMetaObj,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
 			setPlaybackQuality: setPlaybackQuality,
 			reset: reset,
 			destroy: destroy,
 			stop: stop
+
 		};
 
 		//public methods
@@ -112,6 +133,7 @@
 					div: _getPlayerDiv(id),
 					ready: false,
 					startAtTime: 0,
+					duration: 0,
 					hasResumedFromStartAt: false,
 					ytUrl: mediaSrcArr[0],
 					time: 0,
@@ -394,6 +416,30 @@
 				}
 			}
 		}
+
+
+		function getMetaObj(pid) {
+			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
+				return _players[pid].meta;
+			}
+		}
+
+		function resetPlayers() {
+			_players = {};
+		}
+
+		function resetMetaProps(list, id) {
+			if (_existy(_players[id])) {
+
+				list.forEach(function(prop) {
+					if (_players[id].meta.hasOwnProperty(prop)) {
+						//reset to inital value on _metaObj
+						setMetaProp(id, prop, _youtubeMetaObj.meta[prop])
+					}
+				});
+			}
+		}
+
 		/**
 		 * @ngdoc method
 		 * @name #setPlaybackQuality

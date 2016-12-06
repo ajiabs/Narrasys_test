@@ -65,8 +65,18 @@ angular.module('com.inthetelling.story')
 
 			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
+
+			// console.log('duration WTF', playbackService.getMetaProp('duration'));
+
 			switch (state) {
+				case 'reset':
+					if (playbackService.getMetaProp('time') === 0) {
+						_resetClocks();
+						svc.updateEventStates();
+					}
+					break;
 				case 'unstarted':
+
 					break;
 				case 'ended':
 					// _resetClocks();
@@ -399,10 +409,12 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.init = function (episodeId) {
+			console.trace('timelineSvc#init');
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
 			svc.displayMarkedEvents = [];
 			timeMultiplier = 1;
+			playbackService.setMetaProp('duration', 0);
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
 			playbackService.registerStateChangeListener(_onPlayerStateChange);
 			$interval.cancel(clock);

@@ -40,11 +40,24 @@
 			getTimelineState: getTimelineState,
 			setTimelineState: setTimelineState,
 			freezeMetaProps: freezeMetaProps,
-			unFreezeMetaProps: unFreezeMetaProps
+			unFreezeMetaProps: unFreezeMetaProps,
+			resetPlayers: resetPlayers,
+			getMetaObj: getMetaObj
 		};
 
 		//public methods
 		function seedPlayer(mediaSrcArr, id, mainPlayer) {
+			//reset mainplayer if we attempt to re-init it
+			//e.g. coming back into the same episode after navigating away
+			if (_playerInterfaces[id] && mainPlayer) {
+				//set the time here to 0, but leave duration intact
+				// //reset other playerState props to iniial state
+				_playerInterfaces[id].resetMetaProps(['time', 'hasResumedFromStartAt', 'hasBeenPlayed', 'bufferedPercent', 'timeMultiplier'], id);
+				_stateChangeCallbacks.forEach(function(cb) {
+					cb('reset');
+				});
+			}
+
 			var parsedMedia = urlService.parseMediaSrcArr(mediaSrcArr);
 
 			var pm = _getPlayerManagerFromMediaSrc(parsedMedia);
@@ -75,6 +88,15 @@
 		}
 
 		function registerStateChangeListener(cb) {
+			var len = _stateChangeCallbacks.length;
+
+			//do not register the same listener twice
+			while (len--) {
+				if (cb.toString() === _stateChangeCallbacks[len].toString()) {
+					return;
+				}
+			}
+
 			_stateChangeCallbacks.push(cb);
 		}
 
@@ -113,6 +135,9 @@
 				setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
 				setMetaProp('hasResumedFromStartAt', false, playerId);
 				freezeMetaProps(playerId);
+			} else {
+				//tear down stuff
+
 			}
 		}
 
@@ -144,6 +169,18 @@
 
 		function unFreezeMetaProps(playerId) {
 			_playerInterfaces[_setPid(playerId)].unFreezeMetaProps(_setPid(playerId));
+		}
+
+		function resetPlayers() {
+			angular.forEach(_playerInterfaces, function(pm) {
+				pm.resetPlayers();
+			});
+		}
+
+		function getMetaObj(playerId) {
+			if (_playerInterfaces[_setPid(playerId)] != null) {
+				return _playerInterfaces[_setPid(playerId)].getMetaObj(_setPid(playerId));
+			}
 		}
 
 		// private methods

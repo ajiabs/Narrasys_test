@@ -38,6 +38,24 @@
 			'ready'
 		];
 
+		var _html5MetaObj = {
+			instance: null,
+			meta: {
+				playerState: '-1',
+				videoObj: {},
+				div: '',
+				ready: false,
+				startAtTime: 0,
+				hasResumedFromStartAt: false,
+				duration: 0,
+				time: 0,
+				hasBeenPlayed: false,
+				bufferedPercent: 0,
+				timeMultiplier: 1,
+				videoType: _type
+			}
+		};
+
 		return {
 			type: _type,
 			seedPlayerManager: seedPlayerManager,
@@ -58,7 +76,10 @@
 			getMetaProp: getMetaProp,
 			setMetaProp: setMetaProp,
 			freezeMetaProps: freezeMetaProps,
-			unFreezeMetaProps: unFreezeMetaProps
+			unFreezeMetaProps: unFreezeMetaProps,
+			resetPlayers: resetPlayers,
+			resetMetaProps: resetMetaProps,
+			getMetaObj: getMetaObj
 			//destroy
 		};
 
@@ -134,6 +155,13 @@
 			}
 
 			_players[pid].meta = newMeta;
+		}
+
+
+		function getMetaObj(pid) {
+			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
+				return _players[pid].meta;
+			}
 		}
 
 		function getMetaProp(pid, prop) {
@@ -370,6 +398,21 @@
 				}
 			}
 
+		}
+
+		function resetPlayers() {
+			_players = {};
+		}
+
+		function resetMetaProps(list, id) {
+			if (_existy(_players[id])) {
+				list.forEach(function(prop) {
+					if (_players[id].meta.hasOwnProperty(prop)) {
+						//reset to inital value on _metaObj
+						setMetaProp(id, prop, _html5MetaObj.meta[prop])
+					}
+				});
+			}
 		}
 
 		/*
