@@ -119,7 +119,10 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 						scope.uploads[i].then(function (data) {
 							modelSvc.cache("asset", data.file);
 							if (scope.callback) {
-								scope.callback(data.file._id);
+								//should be ok to send boolean back here
+								//as only the attachAsset cb in ittEpisodeEditor
+								//is expecting the second boolean parameter.
+								scope.callback(data.file._id, true);
 							}
 							scope.uploadStatus[i].done = true;
 							scope.oneDone();
