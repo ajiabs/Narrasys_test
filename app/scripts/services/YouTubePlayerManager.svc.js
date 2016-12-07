@@ -434,7 +434,7 @@
 				list.forEach(function(prop) {
 					if (_players[id].meta.hasOwnProperty(prop)) {
 						//reset to inital value on _metaObj
-						setMetaProp(id, prop, _youtubeMetaObj.meta[prop])
+						setMetaProp(id, prop, _youtubeMetaObj.meta[prop]);
 					}
 				});
 			}

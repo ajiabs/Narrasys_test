@@ -409,7 +409,7 @@
 				list.forEach(function(prop) {
 					if (_players[id].meta.hasOwnProperty(prop)) {
 						//reset to inital value on _metaObj
-						setMetaProp(id, prop, _html5MetaObj.meta[prop])
+						setMetaProp(id, prop, _html5MetaObj.meta[prop]);
 					}
 				});
 			}

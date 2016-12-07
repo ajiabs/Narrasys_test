@@ -178,7 +178,7 @@
 		}
 
 		function getMetaObj(playerId) {
-			if (_playerInterfaces[_setPid(playerId)] != null) {
+			if (ittUtils.existy(_playerInterfaces[_setPid(playerId)])) {
 				return _playerInterfaces[_setPid(playerId)].getMetaObj(_setPid(playerId));
 			}
 		}
