@@ -490,10 +490,16 @@
 				var currentState = p.getPlayerState();
 				p.seekTo(t);
 
-				if (currentState === YT.PlayerState.PAUSED) {
-					p.pauseVideo();
+				if (currentState === YT.PlayerState.CUED || currentState === YT.PlayerState.UNSTARTED) {
+					registerStateChangeListener(seekPauseListener);
 				}
+			}
 
+			function seekPauseListener(event) {
+				if (event.state === 'playing') {
+					unregisterStateChangeListener(seekPauseListener);
+					pause(event.emitterId);
+				}
 			}
 		}
 
