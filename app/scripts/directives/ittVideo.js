@@ -100,8 +100,9 @@ function ittVideo() {
 
 				dataSvc.getSingleAsset(currentEpisode.master_asset_id)
 					.then(function(latestAsset) {
-						if (modelSvc.isTranscoded(latestAsset)) {
-							modelSvc.cache('asset', latestAsset);
+						modelSvc.cache('asset', latestAsset);
+						var newAsset = modelSvc.assets[latestAsset._id];
+						if (modelSvc.isTranscoded(newAsset)) {
 							ctrl.isTranscoded = true;
 							$interval.cancel(ctrl.transcodedInterval);
 							//reload to init regular sequence of loading events.

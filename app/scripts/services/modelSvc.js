@@ -226,7 +226,6 @@ angular.module('com.inthetelling.story')
 		svc.deriveAsset = function (asset) {
 			// console.log("deriveAsset:", asset);
 			if (asset._type === "Asset::Video") {
-				// console.log('resolve video', asset);
 				asset = resolveVideo(asset);
 			}
 			asset = setLang(asset);
@@ -1160,6 +1159,7 @@ angular.module('com.inthetelling.story')
 			}, []);
 		}
 
+		//called from modelSvc#deriveAsset() (which can be called from modelSvc#cache)
 		var resolveVideo = function (videoAsset) {
 			var videoObject = {
 				youtube: [],
@@ -1181,9 +1181,13 @@ angular.module('com.inthetelling.story')
 						videoObject[videoAsset.alternate_urls[i].match(extensionMatch)[1]].push(videoAsset.alternate_urls[i]);
 					}
 				}
+
+				//remove after migration
 				if (videoAsset.you_tube_url && youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
 					videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url));
 				}
+				//end remove after migration
+
 				// now by size:
 				// most video files come from the API with their width and height in the URL as blahblah123x456.foo:
 				var videoPixelSize = /(\d+)x(\d+)\.\w+$/; // [1]=w, [2]=h
@@ -1203,14 +1207,16 @@ angular.module('com.inthetelling.story')
 			if (videoObject.youtube.length === 0) {
 				if (videoAsset.url) {
 					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.url)) {
-						videoAsset.you_tube_url = youtubeSvc.embeddableYoutubeUrl(videoAsset.url);
+						videoObject.youtube = [youtubeSvc.embeddableYoutubeUrl(videoAsset.url)];
 					}
 				}
+				//remove after migration
 				if (videoAsset.you_tube_url) {
 					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
 						videoObject.youtube = [youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)];
 					}
 				}
+				//end remove after migration
 			}
 
 			// Same for other types (we used to put the .mp4 in videoAsset.url and just swapped out the extension for other types, which was silly, which is why we stopped doing it, but some old episodes never got updated)
@@ -1249,12 +1255,6 @@ angular.module('com.inthetelling.story')
 			}
 
 			videoAsset.urls = videoObject;
-
-			// We need to know if the video has been transcoded or not in the template,
-			// so let's centralize the logic for that here
-			videoAsset.isTranscoded = function () {
-				return svc.isTranscoded(this);
-			};
 			videoAsset.mediaSrcArr = resolveMediaSrcArray(videoObject);
 			return videoAsset;
 		};
@@ -1262,7 +1262,7 @@ angular.module('com.inthetelling.story')
 		// TODO get rid of this; really wasteful to be checking this constantly, it's only useful
 		//  right after a master asset upload  (put it in ittVideo pollInterval() instead)
 		svc.isTranscoded = function (video) {
-			if (video.alternate_urls.length > 0) {
+			if (video.mediaSrcArr.length > 0) {
 				return true;
 			}
 			return false;

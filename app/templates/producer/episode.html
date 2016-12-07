@@ -24,8 +24,8 @@
 				<div class="field" ng-if="masterAssetType == 'Youtube'">
 					<div class="label">Youtube URL</div>
 					<div class="input">
-						<input type="text" ng-model="masterAsset.you_tube_url" style="width: 75%">
-						<button ng-click="attachYouTube(masterAsset.you_tube_url)">Attach</button>
+						<input type="text" ng-model="tempItem.url" style="width: 75%">
+						<button ng-click="attachYouTube(tempItem.url)">Attach</button>
 					</div>
 				</div>
 				<div class="field" ng-if="showmessage">
