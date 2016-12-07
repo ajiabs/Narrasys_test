@@ -6,7 +6,7 @@
 <!--</h6>-->
 
 <!--end temp debug code-->
-<div class="video np-video" ng-click="$ctrl.videoClick()">
+<div class="video np-video" ng-click="$ctrl.videoClick()" ng-if="$ctrl.mediaSrcArr.length > 0">
 	<!--video element -->
 	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement"></div>
 
@@ -36,4 +36,17 @@
 	<div ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('timeMultiplier') == 0"
 		 class="poster overlay fill"
 		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}"></div>
+</div>
+
+<div ng-if="$ctrl.mediaSrcArr.length < 1" class="np-video__empty">
+
+	<div ng-if="$ctrl.isTranscoded === false">
+		<h3>Video is currently transcoding.</h3>
+		<p>The page will refresh when the transcode is complete!</p>
+	</div>
+
+	<h1 ng-if="$ctrl.isTranscoded === true">
+		No video source available...
+	</h1>
+
 </div>

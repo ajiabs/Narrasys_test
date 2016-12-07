@@ -391,6 +391,13 @@ TODO: native video seems to perform better when not position:absolute, but ifram
 Check to see if there's a consistent way to do without absolute positioning, or if it's safe to just do it to native and not youtube.
  */
 
+.np-video__empty {
+	text-align: center;
+	margin: 0 auto;
+	width: 600px;
+	height: 400px;
+}
+
 .np-video__wrapper {
 	position: relative;
 	padding-bottom: 56.25%; /* 16:9 */

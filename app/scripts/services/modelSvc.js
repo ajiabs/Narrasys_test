@@ -1255,7 +1255,6 @@ angular.module('com.inthetelling.story')
 			videoAsset.isTranscoded = function () {
 				return svc.isTranscoded(this);
 			};
-
 			videoAsset.mediaSrcArr = resolveMediaSrcArray(videoObject);
 			return videoAsset;
 		};
@@ -1263,10 +1262,7 @@ angular.module('com.inthetelling.story')
 		// TODO get rid of this; really wasteful to be checking this constantly, it's only useful
 		//  right after a master asset upload  (put it in ittVideo pollInterval() instead)
 		svc.isTranscoded = function (video) {
-			if (video.urls && video.urls.youtube && video.urls.youtube.length) {
-				return true;
-			}
-			if (video.alternate_urls) {
+			if (video.alternate_urls.length > 0) {
 				return true;
 			}
 			return false;

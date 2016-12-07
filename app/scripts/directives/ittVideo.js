@@ -12,27 +12,40 @@ function ittVideo() {
 			mediaSrcArr: '=',
 			playerId: '='
 		},
-		controller: ['$scope', '$timeout', '$sce', '$rootScope', '$routeParams', 'playbackService', 'ittUtils', 'timelineSvc', videoCtrl],
+		controller: ['$scope', '$timeout', '$interval', '$sce', '$rootScope', '$routeParams', 'playbackService', 'ittUtils', 'timelineSvc', 'modelSvc', 'dataSvc', 'appState', videoCtrl],
 		bindToController: true,
 		controllerAs: '$ctrl'
 	};
 
 	//TODO: tackle isTranscoded somehow.
-	function videoCtrl($scope, $timeout, $sce, $rootScope, $routeParams, playbackService, ittUtils, timelineSvc) {
+	function videoCtrl($scope, $timeout, $interval, $sce, $rootScope, $routeParams, playbackService, ittUtils, timelineSvc, modelSvc, dataSvc, appState) {
 		var ctrl = this; //jshint ignore:line
+
+		//controller public properties
+		ctrl.isTranscoded = false;
+		ctrl.transcodedInterval = angular.noop;
+
+		//controller public methods.
 		ctrl.playbackService = playbackService;
 		ctrl.videoClick = videoClick;
-		ctrl.isTranscoded = function() { return true; };
 		ctrl.playerIsPaused = playerIsPaused;
 		ctrl.showUnstartedOverlay = showUnstartedOverlay;
 		ctrl.showReplayOverlay = showReplayOverlay;
 
+		//controller event bindings
 		$rootScope.$on('userKeypress.SPACE', videoClick);
 		$scope.$on('$destroy', saveLastPlayerState);
 
 		onInit();
 
 		function onInit() {
+			//empty input passed in
+			if (ctrl.mediaSrcArr.length === 0) {
+				console.warn('No MediaSrc Array was passed to ittVideo');
+				//check to see if video has transcoded every 10 seconds
+				ctrl.transcodedInterval = $interval(checkTranscoded, 10 * 1000);
+				return;
+			}
 
 			playbackService.seedPlayer(ctrl.mediaSrcArr, ctrl.playerId, ctrl.mainPlayer);
 			ctrl.playerElement = $sce.trustAsHtml(playbackService.getPlayerDiv(ctrl.playerId));
@@ -79,6 +92,25 @@ function ittVideo() {
 
 		function saveLastPlayerState() {
 			playbackService.startAtTime(ctrl.playerId);
+		}
+
+		function checkTranscoded() {
+			var currentEpisode = modelSvc.episodes[appState.episodeId];
+			if (currentEpisode && currentEpisode.masterAsset && !modelSvc.isTranscoded(currentEpisode.masterAsset)) {
+
+				dataSvc.getSingleAsset(currentEpisode.master_asset_id)
+					.then(function(latestAsset) {
+						if (modelSvc.isTranscoded(latestAsset)) {
+							modelSvc.cache('asset', latestAsset);
+							ctrl.isTranscoded = true;
+							$interval.cancel(ctrl.transcodedInterval);
+							//reload to init regular sequence of loading events.
+							window.location.reload();
+						}
+					});
+			} else {
+				$interval.clear(ctrl.transcodedInterval);
+			}
 		}
 	}
 }
