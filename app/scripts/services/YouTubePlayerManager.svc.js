@@ -590,6 +590,7 @@
 					playerVars: {
 						'controls': _controls,
 						'fs': _controls,
+						'cc_load_policy': 1,
 						'enablejsapi': 1,
 						'modestbranding': 1,
 						'showinfo': 0,
