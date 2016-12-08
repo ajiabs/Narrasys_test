@@ -127,7 +127,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var getEpisodeWatcher = $rootScope.$on("dataSvc.getEpisode.done", function () {
-			getEpisodeWatcher();
+			// getEpisodeWatcher();
 			// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 

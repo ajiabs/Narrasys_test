@@ -105,8 +105,12 @@ function ittVideo() {
 						if (modelSvc.isTranscoded(newAsset)) {
 							ctrl.isTranscoded = true;
 							$interval.cancel(ctrl.transcodedInterval);
-							//reload to init regular sequence of loading events.
-							window.location.reload();
+							//use the new mediaSrcArr from the server
+							ctrl.mediaSrcArr = newAsset.mediaSrcArr;
+							//do this so playerController re-initializes the episode.
+							$rootScope.$broadcast('dataSvc.getEpisode.done');
+							//re-init ittVideo, playbackService etc..
+							onInit();
 						}
 					});
 			} else {
