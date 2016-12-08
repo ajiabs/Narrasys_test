@@ -164,7 +164,7 @@ angular.module('com.inthetelling.story')
 					scope.cancelEpisodeEdit(scope.uneditedEpisode);
 				};
 
-				scope.attachChosenAsset = function (asset_id, isMaster) { // master asset only!
+				scope.attachChosenAsset = function (asset_id) { // master asset only!
 					var asset = modelSvc.assets[asset_id];
 					var previousAsset = modelSvc.assets[scope.episode.master_asset_id];
 					scope.showmessage = "New video attached.";
@@ -180,13 +180,6 @@ angular.module('com.inthetelling.story')
 					scope.masterAsset = asset;
 					scope.episode.masterAsset = asset;
 					modelSvc.deriveEpisode(scope.episode);
-
-					if (isMaster === true) {
-						//will cause page to reload and better handing
-						//the delay for transcoding.
-						scope.saveEpisode();
-					}
-
 				};
 
 				scope.attachPosterAsset = function (assetId) {
@@ -196,10 +189,10 @@ angular.module('com.inthetelling.story')
 					modelSvc.deriveEpisode(scope.episode);
 				};
 
-				scope.assetUploaded = function (assetId, bool) {
+				scope.assetUploaded = function (assetId) {
 					scope.showUploadButtons = false;
 					scope.showUploadField = false;
-					scope.attachChosenAsset(assetId, bool);
+					scope.attachChosenAsset(assetId);
 				};
 				scope.posterUploaded = function (assetId) {
 					scope.showUploadButtonsPoster = false;

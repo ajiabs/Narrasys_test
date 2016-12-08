@@ -24,12 +24,7 @@ angular.module('com.inthetelling.story')
 				if (assetType === 'Poster') {
 					$scope.attachPosterAsset(id); // in ittEpisodeEditor
 				} else {
-					if (assetType === 'Master') {
-						$scope.attachChosenAsset(id, true);
-					} else {
-						$scope.attachChosenAsset(id); // in ittItemEditor or ittEpisodeEditor
-					}
-
+					$scope.attachChosenAsset(id); // in ittItemEditor or ittEpisodeEditor
 				}
 				$scope["showUploadButtons" + assetType] = false;
 				$scope.endChooseAsset();
