@@ -1,5 +1,5 @@
-<div class="modal" ng-style="modalSmooth" ng-click="dismiss();">
-  <span ng-if="item._type == 'Link'">
+<div class="modal" ng-style="modalStyle" ng-click="dismiss();">
+  <span ng-if="item._type == 'Link'" ng-click="$event.stopPropagation()">
     <div class="modalmenu">
       <a href="{{item.url}}" target="_blank" class="escapelink">(new window)</a>
     </div>
