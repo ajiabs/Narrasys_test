@@ -42,7 +42,8 @@
 			freezeMetaProps: freezeMetaProps,
 			unFreezeMetaProps: unFreezeMetaProps,
 			resetPlayers: resetPlayers,
-			getMetaObj: getMetaObj
+			getMetaObj: getMetaObj,
+			pauseOtherPlayers: pauseOtherPlayers
 		};
 
 		//public methods
@@ -85,6 +86,12 @@
 
 		function seek(t, playerId) {
 			_playerInterfaces[_setPid(playerId)].seekTo(_setPid(playerId), t);
+		}
+
+		function pauseOtherPlayers(playerId) {
+			angular.forEach(_playerManagers, function(pm) {
+				pm.pauseOtherPlayers(_setPid(playerId));
+			});
 		}
 
 		function registerStateChangeListener(cb) {
@@ -161,7 +168,6 @@
 
 		function setTimelineState(state) {
 			_timelineState = state;
-			angular.forEach(_playerManagers, function(pm) { pm.setTimelineState(state);});
 		}
 
 		function freezeMetaProps(playerId) {

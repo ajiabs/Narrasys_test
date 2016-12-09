@@ -309,9 +309,10 @@ Inline images (TODO show these only when image is larger than available space) *
 	max-height: calc(100% - 100px);
 	position: fixed;
 	width: 75%;
-	top: 40%;
+	top: 30%;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	height: 80%;
+	transform: translate(-50%, -40%);
 }
 
 .modal.ng-enter,

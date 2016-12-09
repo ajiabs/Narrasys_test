@@ -10,6 +10,9 @@
 	<!--video element -->
 	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement"></div>
 
+	<!--overlay for main player to prevent user interaction-->
+	<div class="np-overlay-ui" ng-if="$ctrl.mainPlayer" ng-click="$ctrl.videoClick()"></div>
+
 	<!--playback buttons-->
 	<img class="np-overlay-ui"
 		 ng-class="{'np--embed': $ctrl.mainPlayer === false}"

@@ -68,7 +68,6 @@
 			getMetaObj: getMetaObj,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
-			setTimelineState: setTimelineState,
 			setPlaybackQuality: setPlaybackQuality,
 			reset: reset,
 			destroy: destroy,
@@ -77,11 +76,6 @@
 		};
 
 		//public methods
-
-		function setTimelineState(state) {
-			_timelineState = state;
-		}
-
 		function getPlayerDiv(id) {
 			return _players[id].meta.div;
 		}
@@ -229,7 +223,6 @@
 
 				var stateChangeEvent = _formatPlayerStateChangeEvent({data: -1}, pid);
 				var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
-				var lastTimelineState = _getTimelineState();
 
 				//this code helps enable the starAtTime feature
 				//ideally, the video will seek to the offset startAtTime, and call 'play' once, so the user can see
@@ -247,7 +240,7 @@
 				}
 
 				if (startAt > 0) {
-					if (lastState === 'playing' && lastTimelineState !== 'playing') {
+					if (lastState === 'playing') {
 						//loadVideoById week seek to offset time at 'startAt' and resume playback
 						event.target.loadVideoById(ytId, startAt);
 					} else {
@@ -677,10 +670,6 @@
 
 		function _getPlayerDiv(id) {
 			return '<div id="' + id + '"></div>';
-		}
-
-		function _getTimelineState() {
-			return _timelineState;
 		}
 
 		return _youTubePlayerManager;

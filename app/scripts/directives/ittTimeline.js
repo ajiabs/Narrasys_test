@@ -295,6 +295,7 @@ angular.module('com.inthetelling.story')
 
 				var startSeek = function (evt) {
 					// console.log('startSeek');
+					playbackService.pauseOtherPlayers();
 					$timeout(function () {
 						// short delay for visibility of handle (don't want it when just clicking)
 						scope.seekHandleVisible = true;

@@ -420,13 +420,15 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 .np-overlay-ui {
 	cursor: pointer;
 	z-index: 10;
-	width: 50%;
-	height: 50%;
+	width: 100%;
+	height: 100%;
 	position: absolute;
-	transform: translate(50%, -150%);
+	transform: translate(0, -100%);
 }
 
 .np-overlay-ui.np--embed {
+	width: 50%;
+	height: 50%;
 	transform: translate(40%, -130%);
 }
 

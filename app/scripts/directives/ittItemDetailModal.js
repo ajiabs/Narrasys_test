@@ -32,9 +32,9 @@ angular.module('com.inthetelling.story')
 				}
 
 				if (scope.item.isVideoUrl) {
-					scope.modalStyle = angular.extend(scope.modalStyle, {'padding': '5%'});
+					scope.modalStyle = angular.extend(scope.modalStyle, {'padding-top': '5%'});
 				} else {
-					scope.modalStyle = angular.extend(scope.modalStyle, {'bottom': '0'});
+					scope.modalStyle = angular.extend(scope.modalStyle, {'bottom': '0', 'padding-top': '5%' });
 				}
 
 				scope.dismiss = function () {

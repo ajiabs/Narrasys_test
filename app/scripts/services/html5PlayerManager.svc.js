@@ -24,7 +24,6 @@
 		var _stateChangeCallbacks = [];
 		var _type = 'html5';
 		var _existy = ittUtils.existy;
-		var _timelineState = '';
 
 		var _validMetaKeys = [
 			'playerState',
@@ -80,15 +79,11 @@
 			unFreezeMetaProps: unFreezeMetaProps,
 			resetPlayers: resetPlayers,
 			resetMetaProps: resetMetaProps,
-			getMetaObj: getMetaObj,
-			setTimelineState: setTimelineState
+			getMetaObj: getMetaObj
 			//destroy
 		};
 
-		function setTimelineState(state) {
-			_timelineState = state;
-		}
-
+		//public methods
 		function create(divID) {
 
 			if (Object.isFrozen(_players[divID].meta)) {
@@ -183,11 +178,10 @@
 			}
 
 			if (_existy(_players[pid] && _players[pid].meta)) {
-
 				try {
 					_players[pid].meta[prop] = val;
 				} catch (e) {
-					console.log('catch read only error:', e);
+					console.log('catch read only error:', e, 'prop', prop, 'val', val);
 				}
 
 			}
@@ -247,7 +241,6 @@
 			var instance = _getInstance(this.id);
 
 			var lastState = getMetaProp(this.id, 'playerState');
-			var lastTimelineState = _getTimelineState();
 			var startAt = getMetaProp(this.id, 'startAtTime');
 			var hasResumed = getMetaProp(this.id, 'hasResumedFromStartAt');
 
@@ -261,7 +254,7 @@
 						setMetaProp(this.id, 'hasResumedFromStartAt', true);
 
 						//resume playback if the embed was playing when destroyed.
-						if (PLAYERSTATES[lastState] === 'playing' && lastTimelineState !== 'playing') {
+						if (PLAYERSTATES[lastState] === 'playing') {
 							instance.play();
 							//return to avoid emitting 'video cued' event below.
 							return;
@@ -497,10 +490,6 @@
 				videoObject[fileTypeKey].push(mediaSrc);
 				return videoObject;
 			}, {mp4: [], webm: [], m3u8: []});
-		}
-
-		function _getTimelineState() {
-			return _timelineState;
 		}
 
 		// function _changeVideoQuality(id, quality) {

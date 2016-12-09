@@ -10,7 +10,7 @@ angular.module('com.inthetelling.story')
 
 		function _getTimelineState() {
 			var timelineState = playbackService.getTimelineState();
-			return (timelineState === 'paused' || timelineState === 'unstarted' || timelineState === 'video cued');
+			return (timelineState === 'paused' || timelineState === 'unstarted' || timelineState === 'video cued' || timelineState === 'ended');
 		}
 
 		function setBtnClass() {

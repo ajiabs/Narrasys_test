@@ -76,7 +76,7 @@ angular.module('com.inthetelling.story')
 
 					break;
 				case 'ended':
-					// _resetClocks();
+					svc.pause();
 					break;
 				case 'playing':
 					startTimelineClock();
@@ -180,7 +180,7 @@ angular.module('com.inthetelling.story')
 		// "method" and "eventID" are for analytics purposes
 		svc.seek = function (t, method, eventID) {
 			// console.log("timelineSvc.seek ", t, method, eventID);
-
+			playbackService.pauseOtherPlayers();
 			var duration = playbackService.getMetaProp('duration');
 
 			if (duration === 0) {
@@ -208,6 +208,7 @@ angular.module('com.inthetelling.story')
 
 			playbackService.setMetaProp('time', t);
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
+
 			playbackService.seek(t);
 
 			svc.updateEventStates();
