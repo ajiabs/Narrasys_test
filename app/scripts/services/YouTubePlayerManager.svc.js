@@ -25,7 +25,6 @@
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
 		var _type = 'youtube';
-		var _timelineState = '';
 
 		var _youtubeMetaObj = {
 			instance: null,
@@ -244,16 +243,13 @@
 						//loadVideoById week seek to offset time at 'startAt' and resume playback
 						event.target.loadVideoById(ytId, startAt);
 					} else {
-
+						registerStateChangeListener(firstPauseListener);
 						//cueVideoById will seek to offset and emit a 'video cued' event
 						// that the timelineSvc responds to by calling timelineSvc#updateEventStates()
 						//which will ensure that we are in the proper scene that occurs at the offset time.
 						event.target.cueVideoById(ytId, startAt);
-
-						if (lastTimelineState !== 'playing') {
-							registerStateChangeListener(firstPauseListener);
-							event.target.playVideo();
-						}
+						//will emit a 'playing' event, which our firstPauseListener is waiting for
+						event.target.playVideo();
 					}
 				}
 				_emitStateChange(stateChangeEvent);
