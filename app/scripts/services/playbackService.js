@@ -161,6 +161,7 @@
 
 		function setTimelineState(state) {
 			_timelineState = state;
+			angular.forEach(_playerManagers, function(pm) { pm.setTimelineState(state);});
 		}
 
 		function freezeMetaProps(playerId) {

@@ -25,6 +25,7 @@
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
 		var _type = 'youtube';
+		var _timelineState = '';
 
 		var _youtubeMetaObj = {
 			instance: null,
@@ -67,6 +68,7 @@
 			getMetaObj: getMetaObj,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
+			setTimelineState: setTimelineState,
 			setPlaybackQuality: setPlaybackQuality,
 			reset: reset,
 			destroy: destroy,
@@ -75,6 +77,10 @@
 		};
 
 		//public methods
+
+		function setTimelineState(state) {
+			_timelineState = state;
+		}
 
 		function getPlayerDiv(id) {
 			return _players[id].meta.div;
@@ -223,6 +229,7 @@
 
 				var stateChangeEvent = _formatPlayerStateChangeEvent({data: -1}, pid);
 				var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
+				var lastTimelineState = _getTimelineState();
 
 				//this code helps enable the starAtTime feature
 				//ideally, the video will seek to the offset startAtTime, and call 'play' once, so the user can see
@@ -240,17 +247,20 @@
 				}
 
 				if (startAt > 0) {
-					if (lastState === 'playing') {
+					if (lastState === 'playing' && lastTimelineState !== 'playing') {
 						//loadVideoById week seek to offset time at 'startAt' and resume playback
 						event.target.loadVideoById(ytId, startAt);
 					} else {
-						registerStateChangeListener(firstPauseListener);
+
 						//cueVideoById will seek to offset and emit a 'video cued' event
 						// that the timelineSvc responds to by calling timelineSvc#updateEventStates()
 						//which will ensure that we are in the proper scene that occurs at the offset time.
 						event.target.cueVideoById(ytId, startAt);
-						//will emit a 'playing' event, which our firstPauseListener is waiting for
-						event.target.playVideo();
+
+						if (lastTimelineState !== 'playing') {
+							registerStateChangeListener(firstPauseListener);
+							event.target.playVideo();
+						}
 					}
 				}
 				_emitStateChange(stateChangeEvent);
@@ -549,7 +559,12 @@
 					var otherPlayerState = playerState(playerId);
 					if (_existy(otherPlayerState)) {
 						if (otherPlayerState === 'playing') {
-							pause(playerId);
+							try {
+								pause(playerId);
+							} catch (e) {
+								console.log('pauseOtherPlayers', e);
+							}
+
 						}
 					}
 
@@ -662,6 +677,10 @@
 
 		function _getPlayerDiv(id) {
 			return '<div id="' + id + '"></div>';
+		}
+
+		function _getTimelineState() {
+			return _timelineState;
 		}
 
 		return _youTubePlayerManager;

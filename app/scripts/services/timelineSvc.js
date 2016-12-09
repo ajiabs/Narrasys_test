@@ -65,9 +65,6 @@ angular.module('com.inthetelling.story')
 
 			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
-
-			// console.log('duration WTF', playbackService.getMetaProp('duration'));
-
 			switch (state) {
 				case 'reset':
 					if (playbackService.getMetaProp('time') === 0) {
