@@ -6,6 +6,7 @@
 	'use strict';
 	/*jshint validthis: true */
 
+
 	angular.module('com.inthetelling.story')
 		.factory('html5PlayerManager', html5PlayerManager);
 
@@ -109,7 +110,6 @@
 			}
 
 			_players[divID].instance = plr;
-			setMetaProp(divID, 'ready', true);
 
 			// temp to test out video source change.
 			// $timeout(function() {
@@ -172,7 +172,6 @@
 		}
 
 		function setMetaProp(pid, prop, val) {
-
 			if (_validMetaKeys.indexOf(prop) === -1) {
 				throw new Error(prop + ' is not a valid prop for HTML5 meta info');
 			}
@@ -189,8 +188,8 @@
 
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
-			//bail if we already have set the instance in the _players map.
-			if (_players[id] && getMetaProp(id, 'ready') === true) {
+			//bail if we were frozen prior to attempting to re-init player.
+			if (_players[id] && Object.isFrozen(_players[id].meta)) {
 				return;
 			}
 
@@ -234,46 +233,14 @@
 			_emitStateChange(instance);
 		}
 
-		//using onCanPlay event in a similar manner as 'onReady' in youtubePlayerManager; i.e.
-		//to emit a 'video cued' event for the timelineSvc#startAtSpecific time method or
-		//to resume playback on a destroyed embedded video.
+		//canPlay event fires every time the video can be played,
+		//in this case, we are only interested in the first one,
+		//we will emit a 'player ready' event.
 		function onCanPlay() {
 			var instance = _getInstance(this.id);
-
-			var lastState = getMetaProp(this.id, 'playerState');
-			var startAt = getMetaProp(this.id, 'startAtTime');
-			var hasResumed = getMetaProp(this.id, 'hasResumedFromStartAt');
-
-			if (startAt > 0) {
-				//check to see if we need to resume from startAtTime
-				if (hasResumed === false) {
-					instance.currentTime = startAt;
-
-					if (getMetaProp(this.id, 'mainPlayer') === false) {
-						//for mainPlayer, this will be set in timelineSvc
-						setMetaProp(this.id, 'hasResumedFromStartAt', true);
-
-						//resume playback if the embed was playing when destroyed.
-						if (PLAYERSTATES[lastState] === 'playing') {
-							instance.play();
-							//return to avoid emitting 'video cued' event below.
-							return;
-						}
-					}
-
-				}
-
-				//emit video cued for main video, for timelineSvc#startAtSpecificTime
-				setMetaProp(this.id, 'playerState', 5);
-				_emitStateChange(instance);
-			} else {
-				//emit 'unstarted' if first time
-				if (getMetaProp(this.id, 'hasBeenPlayed') === false) {
-					setMetaProp(this.id, 'playerState', -1);
-					_emitStateChange(instance);
-				}
+			if (getMetaProp(this.id, 'ready') === false) {
+				_emitStateChange(instance, 6);
 			}
-
 		}
 
 		function onPlaying() {
@@ -362,13 +329,6 @@
 			instance.volume = (vol / 100);
 		}
 
-		/**
-		 * @ngdoc method
-		 * @name #pauseOtherPlayers
-		 * @param {String} pid the current player
-		 * @description
-		 * loop over all players and pause them if they are not the current player
-		 */
 		function pauseOtherPlayers(pid) {
 			Object.keys(_players).forEach(function(playerId) {
 				if (playerId !== pid) {
@@ -459,9 +419,19 @@
 			};
 		}
 
-		function _emitStateChange(instance) {
+		function _emitStateChange(instance, forceState) {
 			var player = _getPlayer(instance.id);
-			instance.onStateChange(_formatPlayerStateChangeEvent(player.meta.playerState, instance.id));
+			var state;
+
+			//for emitting a state but not setting it on the player.
+			if (forceState) {
+				state = forceState;
+				console.log('foring it!');
+			} else {
+				state = player.meta.playerState;
+			}
+
+			instance.onStateChange(_formatPlayerStateChangeEvent(state, instance.id));
 		}
 
 		function _onStateChange(event) {

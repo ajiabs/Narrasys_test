@@ -8,13 +8,14 @@
 	angular.module('com.inthetelling.story')
 		.factory('playbackService', playbackService);
 
-	function playbackService($interval, youTubePlayerManager, html5PlayerManager, ittUtils, urlService, PLAYERSTATES_WORD) {
+	function playbackService($interval, youTubePlayerManager, html5PlayerManager, ittUtils, urlService, PLAYERSTATES_WORD, PLAYERSTATES) {
 
 		var _playerInterfaces = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
 		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
 		var _timelineState = '';
+		var _mainPlayerBufferingPoll;
 
 		angular.forEach(_playerManagers, function(playerManager) {
 			playerManager.registerStateChangeListener(_stateChangeCB);
@@ -53,6 +54,7 @@
 			if (_playerInterfaces[id] && mainPlayer) {
 				//set the time here to 0, but leave duration intact
 				// //reset other playerState props to iniial state
+
 				_playerInterfaces[id].resetMetaProps(['time', 'hasResumedFromStartAt', 'hasBeenPlayed', 'bufferedPercent', 'timeMultiplier'], id);
 				_stateChangeCallbacks.forEach(function(cb) {
 					cb('reset');
@@ -141,10 +143,12 @@
 			if (playerId !== _mainPlayerId) {
 				setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
 				setMetaProp('hasResumedFromStartAt', false, playerId);
+				setMetaProp('ready', false, playerId);
+				// console.log('meta', _playerInterfaces[playerId].getMetaObj(playerId));
 				freezeMetaProps(playerId);
 			} else {
 				//tear down stuff
-
+				$interval.cancel(_mainPlayerBufferingPoll);
 			}
 		}
 
@@ -198,12 +202,45 @@
 			return _mainPlayerId;
 		}
 
+		function _emitStateChange(state) {
+			angular.forEach(_stateChangeCallbacks, function(cb) {
+				cb(state);
+			});
+		}
+
+		function _onPlayerReady(pid) {
+
+			var lastState = PLAYERSTATES[getMetaProp('playerState', pid)];
+			var startAt = getMetaProp('startAtTime', pid);
+			var hasResumed = getMetaProp('hasResumedFromStartAt', pid);
+
+			setMetaProp('ready', true, pid);
+
+			if (pid === _mainPlayerId) {
+				setMetaProp('playerState', '5', pid);
+				_emitStateChange('video cued', pid);
+			}
+
+			if (startAt > 0) {
+				if (hasResumed === false) {
+					seek(startAt, pid);
+
+					if (pid !== _mainPlayerId) {
+						setMetaProp('hasResumedFromStartAt', true, pid);
+
+						if (lastState === 'playing') {
+							play(pid);
+						}
+					}
+				}
+			}
+		}
+
 		//respond to events emitted from playerManager
 		//playerManager -> playbackSvc -> timelineSvc (if main)
 		function _stateChangeCB(stateChangeEvent) {
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
-			setMetaProp('playerState', PLAYERSTATES_WORD[state], emitterId);
 
 			switch (state) {
 				case 'unstarted':
@@ -224,17 +261,22 @@
 					break;
 				case 'video cued':
 					break;
+				case 'player ready':
+					_onPlayerReady(emitterId);
+					break;
+			}
+
+			if (state !== 'player ready') {
+				setMetaProp('playerState', PLAYERSTATES_WORD[state], emitterId);
 			}
 
 			if (emitterId === _mainPlayerId) {
-				angular.forEach(_stateChangeCallbacks, function(cb) {
-					cb(state);
-				});
+				_emitStateChange(state)
 			}
 		}
 
 		function _pollBufferedPercent() {
-			$interval(function() {
+			_mainPlayerBufferingPoll = $interval(function() {
 				setMetaProp('bufferedPercent', getMetaProp('bufferedPercent', _mainPlayerId), _mainPlayerId);
 			}, 200);
 		}
