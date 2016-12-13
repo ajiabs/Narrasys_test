@@ -114,9 +114,6 @@
 			plr.onwaiting = onBuffering;
 			plr.oncanplay = onCanPlay;
 			plr.onended = onEnded;
-			plr.onseeked = onSeeked;
-			// plr.onstalled = onBuffering;
-			// plr.onended = onEnded;
 
 			plr.onStateChange = _onStateChange;
 
@@ -148,6 +145,14 @@
 		 * @returns {Void} returns void
 		 */
 		function registerStateChangeListener(cb) {
+			var len = _stateChangeCallbacks.length;
+
+			while (len--) {
+				if (cb.toString() === _stateChangeCallbacks[len].toString()) {
+					return;
+				}
+			}
+
 			_stateChangeCallbacks.push(cb);
 		}
 		/**
@@ -382,7 +387,7 @@
 		 * @methodOf iTT.service:html5PlayerManager
 		 * @description
 		 * Event handler for 'buffering' event, note that HTML5 media api does not have a 'buffering' event, this is
-		 * bound to the 'onSeeked' event.
+		 * bound to the 'onWaiting' event.
 		 * @returns {Void} returns void but will emit a 'buffering' event.
 		 */
 		function onBuffering() {

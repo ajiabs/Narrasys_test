@@ -97,6 +97,14 @@
 		 * @returns {Void} returns void
 		 */
 		function registerStateChangeListener(cb) {
+			var len = _stateChangeCallbacks.length;
+
+			while (len--) {
+				if (cb.toString() === _stateChangeCallbacks[len].toString()) {
+					return;
+				}
+			}
+
 			_stateChangeCallbacks.push(cb);
 		}
 		/**
