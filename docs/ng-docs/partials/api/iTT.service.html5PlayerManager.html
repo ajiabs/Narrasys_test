@@ -1,0 +1,234 @@
+<h1><code ng:non-bindable="">html5PlayerManager</code>
+<div><span class="hint">service in module <code ng:non-bindable="">iTT</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="itt-service-page itt-service-html5playermanager-page"><p>Implements the PlayerManager interface, wraps HTML5 videos</p>
+</div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/ng.$interval">$interval</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/PLAYERSTATES">PLAYERSTATES</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/ittUtils">ittUtils</a></code>
+</li>
+</ul>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_create">create(divID)</h3>
+<div class="create"><h5 id="methods_create_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>divID</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="-create-page"><p>unique ID of video tag</p>
+</div></td></tr></tbody></table><h5 id="methods_create_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-create-page"><p>no return value</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_freezemetaprops">freezeMetaProps(pid)</h3>
+<div class="freezemetaprops"><div class="-freezemetaprops-page"><p>Freezes the player&#39;s meta data object</p>
+</div><h5 id="methods_freezemetaprops_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-freezemetaprops-page"><p>the pid of the player to freeze.</p>
+</div></td></tr></tbody></table><h5 id="methods_freezemetaprops_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-freezemetaprops-page"><p>returns void</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getbufferedpercent">getBufferedPercent(pid)</h3>
+<div class="getbufferedpercent"><div class="-getbufferedpercent-page"><p>Used to determine the percent of buffered video</p>
+</div><h5 id="methods_getbufferedpercent_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getbufferedpercent-page"><p>The ID of the YT instance</p>
+</div></td></tr></tbody></table><h5 id="methods_getbufferedpercent_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-getbufferedpercent-page"><p>Numerical value representing
+percent of video that is currently buffered</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getcurrenttime">getCurrentTime(pid)</h3>
+<div class="getcurrenttime"><div class="-getcurrenttime-page"><p>reports the current time of video playback.</p>
+</div><h5 id="methods_getcurrenttime_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getcurrenttime-page"><p>the pid of the player</p>
+</div></td></tr></tbody></table><h5 id="methods_getcurrenttime_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-getcurrenttime-page"><p>the time of playback.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmetaobj">getMetaObj(pid)</h3>
+<div class="getmetaobj"><div class="-getmetaobj-page"><p>returns the entire metaObj, currently used only for debugging.</p>
+</div><h5 id="methods_getmetaobj_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getmetaobj-page"><p>the pid of the player</p>
+</div></td></tr></tbody></table><h5 id="methods_getmetaobj_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-getmetaobj-page"><p>The requested objects Meta Props.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmetaprop">getMetaProp(pid, prop)</h3>
+<div class="getmetaprop"><div class="-getmetaprop-page"><p>used to get a particular property of a players&#39;s meta obj</p>
+</div><h5 id="methods_getmetaprop_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getmetaprop-page"><p>the pid of the player</p>
+</div></td></tr><tr><td>prop</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getmetaprop-page"><p>the prop to get</p>
+</div></td></tr></tbody></table><h5 id="methods_getmetaprop_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String | Number | Void</a></td><td><div class="-getmetaprop-page"><p>returns the requested prop if defined.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getplayerdiv">getPlayerDiv(id)</h3>
+<div class="getplayerdiv"><div class="-getplayerdiv-page"><p>returns an HTML string with the ID from the input param</p>
+</div><h5 id="methods_getplayerdiv_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayerdiv-page"><p>the pid of the player</p>
+</div></td></tr></tbody></table><h5 id="methods_getplayerdiv_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayerdiv-page"><p>the HTML string to be used by ittVideo</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getplayerstate">getPlayerState(pid)</h3>
+<div class="getplayerstate"><div class="-getplayerstate-page"><p>returns the current state of the player</p>
+</div><h5 id="methods_getplayerstate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayerstate-page"><p>the player to query for state</p>
+</div></td></tr></tbody></table><h5 id="methods_getplayerstate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayerstate-page"><p>the player state</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_pause">pause(pid)</h3>
+<div class="pause"><div class="-pause-page"><p>used to pause the player</p>
+</div><h5 id="methods_pause_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-pause-page"><p>the pid of the player</p>
+</div></td></tr></tbody></table><h5 id="methods_pause_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-pause-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_pauseotherplayers">pauseOtherPlayers(pid)</h3>
+<div class="pauseotherplayers"><div class="-pauseotherplayers-page"><p>Loops through all YT instances except main player and
+player with same PID as the id param and calls
+pause() on each one. In other words, will pause all
+embeds except the one you interacted with.</p>
+</div><h5 id="methods_pauseotherplayers_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-pauseotherplayers-page"><p>The ID of the YT instance</p>
+</div></td></tr></tbody></table><h5 id="methods_pauseotherplayers_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-pauseotherplayers-page"><p>No return value.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_play">play(pid)</h3>
+<div class="play"><div class="-play-page"><p>Will play the video.</p>
+</div><h5 id="methods_play_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-play-page"><p>the PID of the video to play</p>
+</div></td></tr></tbody></table><h5 id="methods_play_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-play-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_registerstatechangelistener">registerStateChangeListener(cb)</h3>
+<div class="registerstatechangelistener"><h5 id="methods_registerstatechangelistener_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>cb</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-registerstatechangelistener-page"><p>callback to fire</p>
+</div></td></tr></tbody></table><h5 id="methods_registerstatechangelistener_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-registerstatechangelistener-page"><p>returns void</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_seedplayermanager">seedPlayerManager(id, mainPlayer, mediaSrcArr)</h3>
+<div class="seedplayermanager"><div class="-seedplayermanager-page"><p>Used to set the PID / divID for a html5 video element, is called prior to create()</p>
+</div><h5 id="methods_seedplayermanager_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-seedplayermanager-page"><p>Main Video Asset ID or Event ID (for embeds)</p>
+</div></td></tr><tr><td>mainPlayer</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-seedplayermanager-page"><p>Determines type of player, embed or main</p>
+</div></td></tr><tr><td>mediaSrcArr</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="-seedplayermanager-page"><p>array of youtube URLs</p>
+</div></td></tr></tbody></table><h5 id="methods_seedplayermanager_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-seedplayermanager-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_seek">seek(pid, t)</h3>
+<div class="seek"><div class="-seek-page"><p>will seek the video to the input time</p>
+</div><h5 id="methods_seek_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-seek-page"><p>the player to seek</p>
+</div></td></tr><tr><td>t</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-seek-page"><p>the time to seek to.</p>
+</div></td></tr></tbody></table><h5 id="methods_seek_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-seek-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setmetaprop">setMetaProp(pid, prop, val)</h3>
+<div class="setmetaprop"><div class="-setmetaprop-page"><p>sets the particular prop of a player&#39;s meta obj</p>
+</div><h5 id="methods_setmetaprop_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setmetaprop-page"><p>the pid of the player</p>
+</div></td></tr><tr><td>prop</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setmetaprop-page"><p>the prop to set</p>
+</div></td></tr><tr><td>val</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-number">Number</a><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-setmetaprop-page"><p>the val to set the prop with.</p>
+</div></td></tr></tbody></table><h5 id="methods_setmetaprop_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-setmetaprop-page"><p>returns void</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setspeed">setSpeed(pid, playbackRate)</h3>
+<div class="setspeed"><div class="-setspeed-page"><p>used to speed up / slow down the rate of video playback.</p>
+</div><h5 id="methods_setspeed_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setspeed-page"><p>the pid of the player</p>
+</div></td></tr><tr><td>playbackRate</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-setspeed-page"><p>the rate of playback to set</p>
+</div></td></tr></tbody></table><h5 id="methods_setspeed_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-setspeed-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setvolume">setVolume(pid, vol)</h3>
+<div class="setvolume"><div class="-setvolume-page"><p>used to set the volume.</p>
+</div><h5 id="methods_setvolume_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setvolume-page"><p>the pid of the player</p>
+</div></td></tr><tr><td>vol</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-setvolume-page"><p>the value to set the volume to</p>
+</div></td></tr></tbody></table><h5 id="methods_setvolume_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-setvolume-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_togglemute">toggleMute(pid)</h3>
+<div class="togglemute"><div class="-togglemute-page"><p>toggles the mute on / off</p>
+</div><h5 id="methods_togglemute_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-togglemute-page"><p>the pid of the player</p>
+</div></td></tr></tbody></table><h5 id="methods_togglemute_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-togglemute-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_unfreezemetaprops">unFreezeMetaProps(pid)</h3>
+<div class="unfreezemetaprops"><div class="-unfreezemetaprops-page"><p>Unfreeze metaObj by copying (shallow) all of the props into a new object.</p>
+</div><h5 id="methods_unfreezemetaprops_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-unfreezemetaprops-page"><p>the pid of the player to unfreeze</p>
+</div></td></tr></tbody></table><h5 id="methods_unfreezemetaprops_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-unfreezemetaprops-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_unregisterstatechangelistener">unregisterStateChangeListener(cb)</h3>
+<div class="unregisterstatechangelistener"><h5 id="methods_unregisterstatechangelistener_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>cb</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-unregisterstatechangelistener-page"><p>callback to unregister</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods__drawplayerdiv">_drawPlayerDiv(id, videoObj, quality)</h3>
+<div class="_drawplayerdiv"><div class="-drawplayerdiv-page"><p>Helper method that abstracts the functionality of creating a HTML5 video tag</p>
+</div><h5 id="methods__drawplayerdiv_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-drawplayerdiv-page"><p>unique id</p>
+</div></td></tr><tr><td>videoObj</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-drawplayerdiv-page"><p>Object with array of source URLs by file type</p>
+</div></td></tr><tr><td>quality</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-drawplayerdiv-page"><p>index to select the proper source out of the availble sources</p>
+</div></td></tr></tbody></table><h5 id="methods__drawplayerdiv_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="-drawplayerdiv-page"><p>returns HTML5 video element</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__emitstatechange">_emitStateChange(instance, [forceState])</h3>
+<div class="_emitstatechange"><h5 id="methods__emitstatechange_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>instance</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-emitstatechange-page"><p>HTML5 Video element</p>
+</div></td></tr><tr><td>[forceState]</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-emitstatechange-page"><p>optional Boolean if you want to send a message without setting the playerState
+on the meta object.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods__formatplayerstatechangeevent">_formatPlayerStateChangeEvent(event, pid)</h3>
+<div class="_formatplayerstatechangeevent"><div class="-formatplayerstatechangeevent-page"><p>Helper method for creating an object that conforms to our message API between
+the timelineSvc, playbackService, and individual playerManagers</p>
+</div><h5 id="methods__formatplayerstatechangeevent_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-formatplayerstatechangeevent-page"><p>Interger that corresponds to a playerStateChange</p>
+</div></td></tr><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-formatplayerstatechangeevent-page"><p>Unique ID of player</p>
+</div></td></tr></tbody></table><h5 id="methods__formatplayerstatechangeevent_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-formatplayerstatechangeevent-page"><p>Object with emitterID String and state String props</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__gethtml5videoobject">_getHtml5VideoObject(mediaSrcArr)</h3>
+<div class="_gethtml5videoobject"><div class="-gethtml5videoobject-page"><p>reduces an array of URLs into an Object used in other helper methods ultimately to format a
+string of HTML with the provided input URLS as source tags.</p>
+</div><h5 id="methods__gethtml5videoobject_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>mediaSrcArr</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="-gethtml5videoobject-page"><p>array of URLS</p>
+</div></td></tr></tbody></table><h5 id="methods__gethtml5videoobject_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-gethtml5videoobject-page"><p>Object with mp4, webm, and m3u8 props, array of strings</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__getinstance">_getInstance(pid)</h3>
+<div class="_getinstance"><h5 id="methods__getinstance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getinstance-page"><p>Unique ID</p>
+</div></td></tr></tbody></table><h5 id="methods__getinstance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-getinstance-page"><p>returns HTML5 video element</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__getplayer">_getPlayer(pid)</h3>
+<div class="_getplayer"><div class="-getplayer-page"><p>Helper method for getting a particular player out of the _players map</p>
+</div><h5 id="methods__getplayer_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayer-page"><p>the unique ID</p>
+</div></td></tr></tbody></table><h5 id="methods__getplayer_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-getplayer-page"><p>Returns _players object with instance and meta props</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__initplayerdiv">_initPlayerDiv(id, mediaSrcArr)</h3>
+<div class="_initplayerdiv"><div class="-initplayerdiv-page"><p>Used to create a HTML video tag with the src tags mapped to the URLs in the input array.</p>
+</div><h5 id="methods__initplayerdiv_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-initplayerdiv-page"><p>the unique id</p>
+</div></td></tr><tr><td>mediaSrcArr</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="-initplayerdiv-page"><p>array of URLs that could contain .mp4, .webm or .m3u8 files</p>
+</div></td></tr></tbody></table><h5 id="methods__initplayerdiv_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-initplayerdiv-page"><p>Object with videoObj and videoElm properties</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__onstatechange">_onStateChange(event)</h3>
+<div class="_onstatechange"><div class="-onstatechange-page"><p>Method bound to each instance of _player[id] to invoke the stateChangeCallback for any listeners</p>
+</div><h5 id="methods__onstatechange_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-onstatechange-page"><p>the message to send</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_onbuffering">onBuffering()</h3>
+<div class="onbuffering"><div class="onbuffering-page"><p>Event handler for &#39;buffering&#39; event, note that HTML5 media api does not have a &#39;buffering&#39; event, this is
+bound to the &#39;onWaiting&#39; event.</p>
+</div><h5 id="methods_onbuffering_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="onbuffering-page"><p>returns void but will emit a &#39;buffering&#39; event.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_oncanplay">onCanPlay()</h3>
+<div class="oncanplay"><div class="oncanplay-page"><p>Used to determine when the video can be played for the first time</p>
+</div><h5 id="methods_oncanplay_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="oncanplay-page"><p>Returns void but will emit a &#39;player ready&#39; evetn as side-effect.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_onended">onEnded()</h3>
+<div class="onended"><div class="onended-page"><p>HTML5 media event handler bound to HTML5 video element,
+used to handle appropriate side effects and pipe events up stream</p>
+</div><h5 id="methods_onended_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="onended-page"><p>Returns void but will emit a &#39;ended&#39; event as side-effect</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_onpause">onPause()</h3>
+<div class="onpause"><div class="onpause-page"><p>Event handler for &#39;pause&#39; event.</p>
+</div><h5 id="methods_onpause_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="onpause-page"><p>returns void but will emit a &#39;paused&#39; event</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_onplaying">onPlaying()</h3>
+<div class="onplaying"><div class="onplaying-page"><p>Event handler that responds to a &#39;playing&#39; HTML5 media event.</p>
+</div><h5 id="methods_onplaying_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="onplaying-page"><p>returns void but will emit a &#39;playing&#39; event.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_type">type</h3>
+<div class="type"><div class="itt-service-page itt-service-html5playermanager-page"><p>the type of playerManager</p>
+</div></div>
+</li>
+</ul>
+</div>
+</div>

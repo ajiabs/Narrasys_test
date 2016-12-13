@@ -59,16 +59,18 @@ angular.module('com.inthetelling.story')
 			// '2': 'paused',
 			// '3': 'buffering',
 			// '5': 'video cued'
+			// '5': player ready
 		function _onPlayerStateChange(state) {
 
 			playbackService.setTimelineState(state);
 
-			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
+			// console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
 			switch (state) {
 				case 'reset':
 					if (playbackService.getMetaProp('time') === 0) {
 						_resetClocks();
+						console.log('timelineSvc#onReset');
 						svc.updateEventStates();
 					}
 					break;
@@ -98,6 +100,7 @@ angular.module('com.inthetelling.story')
 					var startAt = playbackService.getMetaProp('startAtTime');
 					var hasResumed = playbackService.getMetaProp('hasResumedFromStartAt');
 					if (startAt > 0 && hasResumed === false) {
+						// console.log('about to call startAtSpecificTime');
 						svc.startAtSpecificTime(startAt);
 					}
 					break;

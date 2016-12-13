@@ -6,6 +6,16 @@
 	'use strict';
 	/*jshint validthis: true */
 
+	/**
+	 * @ngdoc service
+	 * @name iTT.service:html5PlayerManager
+	 * @description
+	 * Implements the PlayerManager interface, wraps HTML5 videos
+	 * @property {String} type the type of playerManager
+	 * @requires $interval
+	 * @requires PLAYERSTATES
+	 * @requires ittUtils
+	 */
 	angular.module('com.inthetelling.story')
 		.factory('html5PlayerManager', html5PlayerManager);
 
@@ -84,6 +94,14 @@
 		};
 
 		//public methods
+
+		/**
+		 * @ngdoc method
+		 * @name #create
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @param {string} divID unique ID of video tag
+		 * @returns {Void} no return value
+		 */
 		function create(divID) {
 
 			if (Object.isFrozen(_players[divID].meta)) {
@@ -96,9 +114,6 @@
 			plr.onwaiting = onBuffering;
 			plr.oncanplay = onCanPlay;
 			plr.onended = onEnded;
-			plr.onseeked = onSeeked;
-			// plr.onstalled = onBuffering;
-			// plr.onended = onEnded;
 
 			plr.onStateChange = _onStateChange;
 
@@ -109,7 +124,6 @@
 			}
 
 			_players[divID].instance = plr;
-			setMetaProp(divID, 'ready', true);
 
 			// temp to test out video source change.
 			// $timeout(function() {
@@ -122,28 +136,70 @@
 			// var checkBuffering = _checkBuffering(plr);
 
 			// var interval = $interval(checkBuffering, _checkInterval);
-
-			return plr;
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #registerStateChangeListener
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @param {Function} cb callback to fire
+		 * @returns {Void} returns void
+		 */
 		function registerStateChangeListener(cb) {
+			var len = _stateChangeCallbacks.length;
+
+			while (len--) {
+				if (cb.toString() === _stateChangeCallbacks[len].toString()) {
+					return;
+				}
+			}
+
 			_stateChangeCallbacks.push(cb);
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #unregisterStateChangeListener
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @param {Function} cb callback to unregister
+		 */
 		function unregisterStateChangeListener(cb) {
 			_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
 				return fn.toString() !== cb.toString();
 			});
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #getPlayerDiv
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * returns an HTML string with the ID from the input param
+		 * @param {String} id the pid of the player
+		 * @returns {String} the HTML string to be used by ittVideo
+		 */
 		function getPlayerDiv(id) {
 			return getMetaProp(id, 'div');
 		}
 
+		/**
+		 * @ngdoc method
+		 * @name #freezeMetaProps
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description Freezes the player's meta data object
+		 * @param {String} pid the pid of the player to freeze.
+		 * @returns {Void} returns void
+		 */
 		function freezeMetaProps(pid) {
 			Object.freeze(_players[pid].meta);
 		}
 
+		/**
+		 * @ngdoc method
+		 * @name #unFreezeMetaProps
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Unfreeze metaObj by copying (shallow) all of the props into a new object.
+		 * @param {String} pid the pid of the player to unfreeze
+		 * @returns {Void} returns void.
+		 */
 		function unFreezeMetaProps(pid) {
 			var newMeta, prop, frozenMeta;
 			frozenMeta = _players[pid].meta;
@@ -158,21 +214,47 @@
 			_players[pid].meta = newMeta;
 		}
 
-
+		/**
+		 * @ngdoc method
+		 * @name #getMetaObj
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * returns the entire metaObj, currently used only for debugging.
+		 * @param {String} pid the pid of the player
+		 * @returns {Object} The requested objects Meta Props.
+		 */
 		function getMetaObj(pid) {
 			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
 				return _players[pid].meta;
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #getMetaProp
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * used to get a particular property of a players's meta obj
+		 * @param {String} pid the pid of the player
+		 * @param {String} prop the prop to get
+		 * @returns {String | Number | Void} returns the requested prop if defined.
+		 */
 		function getMetaProp(pid, prop) {
 			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
 				return _players[pid].meta[prop];
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #setMetaProp
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * sets the particular prop of a player's meta obj
+		 * @param {String} pid the pid of the player
+		 * @param {String} prop the prop to set
+		 * @param {String|Number|Boolean} val the val to set the prop with.
+		 * @returns {Void} returns void
+		 */
 		function setMetaProp(pid, prop, val) {
-
 			if (_validMetaKeys.indexOf(prop) === -1) {
 				throw new Error(prop + ' is not a valid prop for HTML5 meta info');
 			}
@@ -186,11 +268,21 @@
 
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #seedPlayerManager
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Used to set the PID / divID for a html5 video element, is called prior to create()
+		 * @param {String} id Main Video Asset ID or Event ID (for embeds)
+		 * @param {Boolean} mainPlayer Determines type of player, embed or main
+		 * @param {Array} mediaSrcArr array of youtube URLs
+		 * @returns {Void} returns void.
+		 */
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
-			//bail if we already have set the instance in the _players map.
-			if (_players[id] && getMetaProp(id, 'ready') === true) {
+			//bail if we were frozen prior to attempting to re-init player.
+			if (_players[id] && getMetaProp(id, 'ready') === false) {
 				return;
 			}
 
@@ -228,79 +320,95 @@
 		 HTML5 media event handlers
 		 */
 
+		/**
+		 * @ngdoc method
+		 * @name onEnded
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * HTML5 media event handler bound to HTML5 video element,
+		 * used to handle appropriate side effects and pipe events up stream
+		 * @private
+		 * @returns {Void} Returns void but will emit a 'ended' event as side-effect
+		 */
 		function onEnded() {
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 0);
 			_emitStateChange(instance);
 		}
-
-		//using onCanPlay event in a similar manner as 'onReady' in youtubePlayerManager; i.e.
-		//to emit a 'video cued' event for the timelineSvc#startAtSpecific time method or
-		//to resume playback on a destroyed embedded video.
+		/**
+		 * @ngdoc method
+		 * @name onCanPlay
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Used to determine when the video can be played for the first time
+		 * @private
+		 * @returns {Void} Returns void but will emit a 'player ready' evetn as side-effect.
+		 */
 		function onCanPlay() {
 			var instance = _getInstance(this.id);
-
-			var lastState = getMetaProp(this.id, 'playerState');
-			var startAt = getMetaProp(this.id, 'startAtTime');
-			var hasResumed = getMetaProp(this.id, 'hasResumedFromStartAt');
-
-			if (startAt > 0) {
-				//check to see if we need to resume from startAtTime
-				if (hasResumed === false) {
-					instance.currentTime = startAt;
-
-					if (getMetaProp(this.id, 'mainPlayer') === false) {
-						//for mainPlayer, this will be set in timelineSvc
-						setMetaProp(this.id, 'hasResumedFromStartAt', true);
-
-						//resume playback if the embed was playing when destroyed.
-						if (PLAYERSTATES[lastState] === 'playing') {
-							instance.play();
-							//return to avoid emitting 'video cued' event below.
-							return;
-						}
-					}
-
-				}
-
-				//emit video cued for main video, for timelineSvc#startAtSpecificTime
-				setMetaProp(this.id, 'playerState', 5);
-				_emitStateChange(instance);
-			} else {
-				//emit 'unstarted' if first time
-				if (getMetaProp(this.id, 'hasBeenPlayed') === false) {
-					setMetaProp(this.id, 'playerState', -1);
-					_emitStateChange(instance);
-				}
+			if (getMetaProp(this.id, 'ready') === false) {
+				_emitStateChange(instance, 6);
 			}
-
 		}
 
+		/**
+		 * @ngdoc method
+		 * @private
+		 * @name onPlaying
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Event handler that responds to a 'playing' HTML5 media event.
+		 * @returns {Void} returns void but will emit a 'playing' event.
+		 */
 		function onPlaying() {
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 1);
 			_emitStateChange(instance);
 		}
 
+		/**
+		 * @ngdoc method
+		 * @private
+		 * @name onPause
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Event handler for 'pause' event.
+		 * @returns {Void} returns void but will emit a 'paused' event
+		 */
 		function onPause() {
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 2);
 			_emitStateChange(instance);
 		}
 
+		/**
+		 * @ngdoc method
+		 * @name onBuffering
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Event handler for 'buffering' event, note that HTML5 media api does not have a 'buffering' event, this is
+		 * bound to the 'onWaiting' event.
+		 * @returns {Void} returns void but will emit a 'buffering' event.
+		 */
 		function onBuffering() {
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(instance);
 		}
 
-		function onSeeked() {
-		}
-
 		/*
 		 Playback exported methods
 		 */
 
+		/**
+		 * @ngdoc method
+		 * @name #play
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Will play the video.
+		 * @param {String} pid the PID of the video to play
+		 * @returns {Void} returns void.
+		 */
 		function play(pid) {
 			var instance = _getInstance(pid);
 			var timestamp = getMetaProp(pid, 'time');
@@ -319,19 +427,42 @@
 				}
 			}, 10);
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #pause
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * used to pause the player
+		 * @param {String} pid the pid of the player
+		 * @returns {Void} returns void.
+		 */
 		function pause(pid) {
 			var instance = _getInstance(pid);
 			instance.pause();
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #getCurrentTime
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * reports the current time of video playback.
+		 * @param {String} pid the pid of the player
+		 * @returns {Number} the time of playback.
+		 */
 		function getCurrentTime(pid) {
 			var instance = _getInstance(pid);
 			if (instance !== undefined) {
 				return instance.currentTime;
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #getPlayerState
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description returns the current state of the player
+		 * @param {String} pid the player to query for state
+		 * @returns {String} the player state
+		 */
 		function getPlayerState(pid) {
 			// var instance = _getInstance(pid);
 			var player = _getPlayer(pid);
@@ -339,35 +470,73 @@
 			if (_existy(player)) {
 				return PLAYERSTATES[player.meta.playerState];
 			}
-
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #seek
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * will seek the video to the input time
+		 * @param {String} pid the player to seek
+		 * @param {Number} t the time to seek to.
+		 * @returns {Void} returns void.
+		 */
 		function seek(pid, t) {
 			var instance = _getInstance(pid);
 			instance.currentTime = t;
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #setSpeed
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * used to speed up / slow down the rate of video playback.
+		 * @param {String} pid the pid of the player
+		 * @param {Number} playbackRate the rate of playback to set
+		 * @returns {Void} returns void.
+		 */
 		function setSpeed(pid, playbackRate) {
 			var instance = _getInstance(pid);
 			instance.playbackRate = playbackRate;
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #toggleMute
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * toggles the mute on / off
+		 * @param {String} pid the pid of the player
+		 * @returns {Void} returns void.
+		 */
 		function toggleMute(pid) {
 			var instance = _getInstance(pid);
 			instance.muted = !instance.muted;
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #setVolume
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * used to set the volume.
+		 * @param {String} pid the pid of the player
+		 * @param {Number} vol the value to set the volume to
+		 * @returns {Void} returns void.
+		 */
 		function setVolume(pid, vol) {
 			var instance = _getInstance(pid);
 			instance.volume = (vol / 100);
 		}
-
 		/**
 		 * @ngdoc method
 		 * @name #pauseOtherPlayers
-		 * @param {String} pid the current player
+		 * @methodOf iTT.service:html5PlayerManager
 		 * @description
-		 * loop over all players and pause them if they are not the current player
+		 * Loops through all YT instances except main player and
+		 * player with same PID as the id param and calls
+		 * pause() on each one. In other words, will pause all
+		 * embeds except the one you interacted with.
+		 * @param {String} pid The ID of the YT instance
+		 * @returns {Void} No return value.
 		 */
 		function pauseOtherPlayers(pid) {
 			Object.keys(_players).forEach(function(playerId) {
@@ -381,7 +550,16 @@
 				}
 			});
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #getBufferedPercent
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Used to determine the percent of buffered video
+		 * @param {String} pid The ID of the YT instance
+		 * @returns {Number} Numerical value representing
+		 * percent of video that is currently buffered
+		 */
 		function getBufferedPercent(pid) {
 			var instance = _getInstance(pid);
 			if (instance && getMetaProp(pid, 'playerState') !== -1) {
@@ -419,13 +597,35 @@
 		 private methods
 		 */
 
+		/**
+		 * @private
+		 * @ngdoc method
+		 * @name _initPlayerDiv
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Used to create a HTML video tag with the src tags mapped to the URLs in the input array.
+		 * @param {String} id the unique id
+		 * @param {Array} mediaSrcArr array of URLs that could contain .mp4, .webm or .m3u8 files
+		 * @returns {Object} Object with videoObj and videoElm properties
+		 */
 		function _initPlayerDiv(id, mediaSrcArr) {
 			var videoObj = _getHtml5VideoObject(mediaSrcArr);
 			var videoElm = _drawPlayerDiv(id, videoObj, 0);
 			return {videoObj: videoObj, videoElm: videoElm};
 		}
 
-		//quality param is the index into the videoObject[fileType] array of files by size.
+		/**
+		 * @ngdoc method
+		 * @name _drawPlayerDiv
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Helper method that abstracts the functionality of creating a HTML5 video tag
+		 * @param {String} id unique id
+		 * @param {Object} videoObj Object with array of source URLs by file type
+		 * @param {Number} quality index to select the proper source out of the availble sources
+		 * @returns {string} returns HTML5 video element
+		 * @private
+		 */
 		function _drawPlayerDiv(id, videoObj, quality) {
 
 			var videoElement = '<video id="' + id  + '">';
@@ -452,36 +652,101 @@
 			return videoElement;
 		}
 
+		/**
+		 * @ngdoc method
+		 * @name _formatPlayerStateChangeEvent
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Helper method for creating an object that conforms to our message API between
+		 * the timelineSvc, playbackService, and individual playerManagers
+		 * @param {Number} event Interger that corresponds to a playerStateChange
+		 * @param {String} pid Unique ID of player
+		 * @returns {Object} Object with emitterID String and state String props
+		 * @private
+		 */
 		function _formatPlayerStateChangeEvent(event, pid) {
 			return {
 				emitterId: pid,
 				state: PLAYERSTATES[event]
 			};
 		}
-
-		function _emitStateChange(instance) {
+		/**
+		 * @ngdoc method
+		 * @name _emitStateChange
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @param {Object} instance HTML5 Video element
+		 * @param {Boolean} [forceState] optional Boolean if you want to send a message without setting the playerState
+		 * on the meta object.
+		 * @private
+		 */
+		function _emitStateChange(instance, forceState) {
 			var player = _getPlayer(instance.id);
-			instance.onStateChange(_formatPlayerStateChangeEvent(player.meta.playerState, instance.id));
-		}
+			var state;
 
+			//for emitting a state but not setting it on the player.
+			if (forceState) {
+				state = forceState;
+				console.log('foring it!');
+			} else {
+				state = player.meta.playerState;
+			}
+
+			instance.onStateChange(_formatPlayerStateChangeEvent(state, instance.id));
+		}
+		/**
+		 * @ngdoc method
+		 * @name _onStateChange
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Method bound to each instance of _player[id] to invoke the stateChangeCallback for any listeners
+		 * @param {Object} event the message to send
+		 * @private
+		 */
 		function _onStateChange(event) {
 			angular.forEach(_stateChangeCallbacks, function(cb) {
 				cb(event);
 			});
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name _getPlayer
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Helper method for getting a particular player out of the _players map
+		 * @param {String} pid the unique ID
+		 * @returns {Object} Returns _players object with instance and meta props
+		 * @private
+		 */
 		function _getPlayer(pid) {
 			if (_players[pid]) {
 				return _players[pid];
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name _getInstance
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @param {String} pid Unique ID
+		 * @returns {Object} returns HTML5 video element
+		 * @private
+		 */
 		function _getInstance(pid) {
 			if (_players[pid]) {
 				return _players[pid].instance;
 			}
 		}
 
+		/**
+		 * @ngdoc method
+		 * @name _getHtml5VideoObject
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * reduces an array of URLs into an Object used in other helper methods ultimately to format a
+		 * string of HTML with the provided input URLS as source tags.
+		 * @param {Array} mediaSrcArr array of URLS
+		 * @returns {Object} Object with mp4, webm, and m3u8 props, array of strings
+		 * @private
+		 */
 		function _getHtml5VideoObject(mediaSrcArr) {
 			var extensionMatch = /(mp4|m3u8|webm)/;
 

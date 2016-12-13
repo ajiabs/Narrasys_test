@@ -1,0 +1,196 @@
+<h1><code ng:non-bindable="">playbackService</code>
+<div><span class="hint">service in module <code ng:non-bindable="">iTT</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="itt-service-page itt-service-playbackservice-page"><p>playbackService exports an interface for the timelineSvc and consumes the interfaces exported from
+the playerManagers. The exported methods of the playbackService are called by timelineSvc or ittVideo directive.</p>
+<p>Videos in the app (either the main video or embeds) are kept track of using the db record _id. See the _players
+object in the playerManagers for an example.</p>
+<p>Most of the exported playback methods (seek, play, pause...etc) accept an optional playerId param. If
+left blank the playerId will be set to the id of the episode.masterAsset, aka the main video. This case is used
+in mostly the timlineSvc, (as it syncs the main video with our episode events) and to query state of video
+playback in the UI.</p>
+<pre><code>//no input parameter, will command main video.
+ //sending a command
+ playbackService.playVideo()
+ //querying playback state
+ playbackService.getMetaprop(&#39;duration&#39;);
+</code></pre></div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/ng.$interval">$interval</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/iTT.service:youTubePlayerManager">youTubePlayerManager</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/iTT.service:html5PlayerManager">html5PlayerManager</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/iTT.service:ittUtils">ittUtils</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/iTT.service:urlService">urlService</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/PLAYERSTATES_WORD">PLAYERSTATES_WORD</a></code>
+</li>
+<li><code ng:non-bindable=""><a href="#/api/PLAYERSTATES">PLAYERSTATES</a></code>
+</li>
+</ul>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_createinstance">createInstance(playerId)</h3>
+<div class="createinstance"><div class="-createinstance-page"><p>Invokes the &#39;create&#39; method on the playerManager with the input id, stores the entry in the
+_playerInterfaces map.</p>
+</div><h5 id="methods_createinstance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-createinstance-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_freezemetaprops">freezeMetaProps(playerId)</h3>
+<div class="freezemetaprops"><div class="-freezemetaprops-page"><p>Invokes the &#39;freezeMetaProps&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_freezemetaprops_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-freezemetaprops-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_getcurrenttime">getCurrentTime(playerId)</h3>
+<div class="getcurrenttime"><div class="-getcurrenttime-page"><p>Invokes the &#39;getCurrentTime&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_getcurrenttime_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getcurrenttime-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_getmetaprop">getMetaProp(prop, id)</h3>
+<div class="getmetaprop"><div class="-getmetaprop-page"><p>Used to query a property of a playerManager meta Object, such as &#39;duration&#39;.</p>
+</div><h5 id="methods_getmetaprop_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>prop</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getmetaprop-page"><p>the name of the property to query.</p>
+</div></td></tr><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getmetaprop-page"><p>Optional id.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table><h5 id="methods_getmetaprop_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String|Number|Boolean|Void</a></td><td><div class="-getmetaprop-page"><p>returns the value of the prop specified</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getplayerdiv">getPlayerDiv(playerId)</h3>
+<div class="getplayerdiv"><div class="-getplayerdiv-page"><p>Invokes the &#39;getPlayerDiv&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_getplayerdiv_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayerdiv-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_getplayerstate">getPlayerState(playerId)</h3>
+<div class="getplayerstate"><div class="-getplayerstate-page"><p>Invokes the &#39;getPlayerState&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_getplayerstate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayerstate-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_gettimelinestate">getTimelineState()</h3>
+<div class="gettimelinestate"><div class="-gettimelinestate-page"><p>Used to query the state of the timeline.</p>
+</div><h5 id="methods_gettimelinestate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-gettimelinestate-page"><p>the state of the timeline.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_pause">pause(playerId)</h3>
+<div class="pause"><div class="-pause-page"><p>Invokes the &#39;pause&#39; method on the playerManager with the passed input id.</p>
+</div><h5 id="methods_pause_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-pause-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_pauseotherplayers">pauseOtherPlayers(playerId)</h3>
+<div class="pauseotherplayers"><div class="-pauseotherplayers-page"><p>Invokes the &#39;pauseOtherPlayers&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_pauseotherplayers_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-pauseotherplayers-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_play">play(playerId)</h3>
+<div class="play"><div class="-play-page"><p>Invokes the &#39;play&#39; method on the playerManager with the passed input id.</p>
+</div><h5 id="methods_play_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-play-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_registerstatechangelistener">registerStateChangeListener(cb)</h3>
+<div class="registerstatechangelistener"><div class="-registerstatechangelistener-page"><p>Wires up a stateChangeListener to which events can be emitted from and responded to.</p>
+</div><h5 id="methods_registerstatechangelistener_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>cb</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-registerstatechangelistener-page"><p>the function to invoke when on a state change.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_seedplayer">seedPlayer(id, mainPlayer, mediaSrcArr)</h3>
+<div class="seedplayer"><div class="-seedplayer-page"><p>Called from ittVideo during initialization. Used to store and setup particular data relevant to creating
+an instance of playerManager.</p>
+</div><h5 id="methods_seedplayer_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-seedplayer-page"><p>Main Video Asset ID or Event ID, for embeds</p>
+</div></td></tr><tr><td>mainPlayer</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-seedplayer-page"><p>Determines type of player, embed or main</p>
+</div></td></tr><tr><td>mediaSrcArr</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="-seedplayer-page"><p>array of youtube URLs</p>
+</div></td></tr></tbody></table><h5 id="methods_seedplayer_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-seedplayer-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_seek">seek(t, playerId)</h3>
+<div class="seek"><div class="-seek-page"><p>Invokes the &#39;seek&#39; method on the playerManager with the passed input id.</p>
+</div><h5 id="methods_seek_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>t</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-seek-page"><p>time to seek playback to.</p>
+</div></td></tr><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-seek-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_setmetaprop">setMetaProp(prop, val, id)</h3>
+<div class="setmetaprop"><div class="-setmetaprop-page"><p>Used to set a property on a playerManager instance&#39;s meta Object.</p>
+</div><h5 id="methods_setmetaprop_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>prop</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setmetaprop-page"><p>the name of the property to query.</p>
+</div></td></tr><tr><td>val</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-number">Number</a><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-setmetaprop-page"><p>The value to set.</p>
+</div></td></tr><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setmetaprop-page"><p>Optional id.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table><h5 id="methods_setmetaprop_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-setmetaprop-page"><p>no return value but does have side-effects.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setspeed">setSpeed(playbackRate, playerId)</h3>
+<div class="setspeed"><div class="-setspeed-page"><p>Invokes the &#39;setSpeed&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_setspeed_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playbackRate</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-setspeed-page"><p>rate to set playback speed to.</p>
+</div></td></tr><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setspeed-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_settimelinestate">setTimelineState(state)</h3>
+<div class="settimelinestate"><div class="-settimelinestate-page"><p>Used set the state of the timeline.</p>
+</div><h5 id="methods_settimelinestate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>state</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-settimelinestate-page"><p>the timelineState to set</p>
+</div></td></tr></tbody></table><h5 id="methods_settimelinestate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-settimelinestate-page"><p>no return val but has side-effects.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_setvolume">setVolume(vol, playerId)</h3>
+<div class="setvolume"><div class="-setvolume-page"><p>Invokes the &#39;setVolume&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_setvolume_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>vol</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-setvolume-page"><p>the volume level to set.</p>
+</div></td></tr><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setvolume-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_startattime">startAtTime(playerId)</h3>
+<div class="startattime"><div class="-startattime-page"><p>Invokes the &#39;startAtTime&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_startattime_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-startattime-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_togglemute">toggleMute(playerId)</h3>
+<div class="togglemute"><div class="-togglemute-page"><p>Invokes the &#39;toggleMute&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_togglemute_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-togglemute-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_unfreezemetaprops">unFreezeMetaProps(playerId)</h3>
+<div class="unfreezemetaprops"><div class="-unfreezemetaprops-page"><p>Invokes the &#39;unFreezeMetaProps&#39; method on all playerManagers with the passed input id.</p>
+</div><h5 id="methods_unfreezemetaprops_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-unfreezemetaprops-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_unregisterstatechangelistener">unregisterStateChangeListener(cb)</h3>
+<div class="unregisterstatechangelistener"><div class="-unregisterstatechangelistener-page"><p>removes a stateChangeListener function from the array of listeners.</p>
+</div><h5 id="methods_unregisterstatechangelistener_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>cb</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-unregisterstatechangelistener-page"><p>the function to remove.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods__emitstatechange">_emitStateChange(state)</h3>
+<div class="_emitstatechange"><div class="-emitstatechange-page"><p>Helper method used to to emit stateChanges upstream to the timelineSvc (or anywhere else that has registered
+a listener)</p>
+</div><h5 id="methods__emitstatechange_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>state</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-emitstatechange-page"><p>State to emit.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods__getplayermanagerfrommediasrc">_getPlayerManagerFromMediaSrc()</h3>
+<div class="_getplayermanagerfrommediasrc"><div class="-getplayermanagerfrommediasrc-page"><p>Loops over the input mediaSrcArr to derive the playerManager that can handle the input parsedMediaSrcArr</p>
+</div><h5 id="methods__getplayermanagerfrommediasrc_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-getplayermanagerfrommediasrc-page"><p>returns the playerManager that can handle the input media</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__onplayerready">_onPlayerReady(pid)</h3>
+<div class="_onplayerready"><div class="-onplayerready-page"><p>Method that handles the &#39;onReady&#39; event fired from a playerManager when the player is ready to accept
+commands. Will seek playback to &#39;startAt&#39; time which is set from either a query string parameter (for the
+main video) or is saved on the ittVideo $destory event, for embeds. If the video was playing prior to being
+destroyed, it will resume playback.</p>
+</div><h5 id="methods__onplayerready_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-onplayerready-page"><p>playerId of player emitting &#39;onReady&#39; event.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods__setpid">_setPid(pid)</h3>
+<div class="_setpid"><div class="-setpid-page"><p>Helper method used to set the playerId to either the input ID or the mainPlayerId if left blank.</p>
+</div><h5 id="methods__setpid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setpid-page"><p>the ID of the player to use.</p>
+</div></td></tr></tbody></table><h5 id="methods__setpid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setpid-page"><p>Either the input ID or the _mainPlayerId</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__statechangecb">_stateChangeCB(stateChangeEvent)</h3>
+<div class="_statechangecb"><div class="-statechangecb-page"><p>Switch statement that handles events emitted from playerManagers and will emit the event up to the
+timelineSvc if the event came from the mainVideo.</p>
+</div><h5 id="methods__statechangecb_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>stateChangeEvent</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-statechangecb-page"><p>Object with state and emitterId properties.</p>
+</div></td></tr></tbody></table><h5 id="methods__statechangecb_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-statechangecb-page"><p>returns void but has side-effects.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__statechangecb">_stateChangeCB()</h3>
+<div class="_statechangecb"><div class="-statechangecb-page"><p>queries the bufferedPercent meta object prop on a 200ms interval</p>
+</div><h5 id="methods__statechangecb_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-statechangecb-page"><p>returns the percent of buffering for the main video</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+</div>
