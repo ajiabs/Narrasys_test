@@ -11,9 +11,10 @@
 	 * A service for working with youtube iframes
 	 * {@link https://github.com/InTheTelling/client/blob/master/app/scripts/services/YouTubePlayerManager.svc.js source}
 	 * @requires $location
-	 * @requires timelineSvc
 	 * @requires YoutubePlayerApi
 	 * @requires errorSvc
+	 * @requires PLAYERSTATES
+	 * @requires youtubeSvc
 	 */
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
@@ -75,42 +76,96 @@
 		};
 
 		//public methods
+		/**
+		 * @ngdoc method
+		 * @name #getPlayerDiv
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * returns an HTML string with the ID from the input param
+		 * @param {String} id the ID of the player
+		 * @return {String} the HTML string to be used by ittVideo
+		 */
 		function getPlayerDiv(id) {
 			return _players[id].meta.div;
 		}
 
+		/**
+		 * @ngdoc method
+		 * @name #registerStateChangeListener
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @param {Function} cb callback to fire
+		 * @returns {Void} returns void
+		 */
 		function registerStateChangeListener(cb) {
 			_stateChangeCallbacks.push(cb);
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #unregisterStateChangeListener
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @param {Function} cb callback to unregister
+		 * @returns {Void} returns void.
+		 */
 		function unregisterStateChangeListener(cb) {
 			_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
 				return fn.toString() !== cb.toString();
 			});
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #getMetaObj
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * returns the entire metaObj, currently used only for debugging.
+		 * @param {String} pid the pid of the player
+		 * @returns {Object} The requested objects Meta Props.
+		 */
+		function getMetaObj(pid) {
+			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
+				return _players[pid].meta;
+			}
+		}
+		/**
+		 * @ngdoc method
+		 * @name #getMetaProp
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * used to get a particular property of a players's meta obj
+		 * @param {String} pid the pid of the player
+		 * @param {String} prop the prop to get
+		 * @returns {String | Number | Void} returns the requested prop if defined.
+		 */
 		function getMetaProp(pid, prop) {
 			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
 				return _players[pid].meta[prop];
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #setMetaProp
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * sets the particular prop of a player's meta obj
+		 * @param {String} pid the pid of the player
+		 * @param {String} prop the prop to set
+		 * @param {String|Number|Boolean} val the val to set
+		 * @returns {Void} returns void
+		 */
 		function setMetaProp(pid, prop, val) {
 			if (_existy(_players[pid] && _players[pid].meta)) {
 				_players[pid].meta[prop] = val;
 			}
 		}
-
 		/**
 		 * @ngdoc method
-		 * @name #seedPlayer
+		 * @name #seedPlayerManager
 		 * @methodOf iTT.service:youTubePlayerManager
 		 * @description
 		 * Used to set the PID / divID for a YT instance, is called prior to create()
-		 * @param {String} id Main Video Asset ID or Event ID (for embeds)
+		 * @param {String} id Main Video Asset ID or Event ID, for embeds
 		 * @param {Boolean} mainPlayer Determines type of player, embed or main
 		 * @param {Array} mediaSrcArr array of youtube URLs
-		 * @returns {String} Div ID of YT instance.
+		 * @returns {Void} returns void.
 		 */
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
@@ -148,6 +203,7 @@
 		 * @ngdoc method
 		 * @name #create
 		 * @methodOf iTT.service:youTubePlayerManager
+		 * @param {String} playerId unique ID of player.
 		 * @description
 		 * Used to create an instance of the YT object which is necessary to
 		 * interface with the youtube Iframe API
@@ -260,7 +316,16 @@
 				}
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #setSpeed
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * used to speed up / slow down the rate of video playback.
+		 * @param {String} pid pid of player
+		 * @param {Number} playbackRate the rate to set playback to.
+		 * @returns {Void} returns void.
+		 */
 		function setSpeed(pid, playbackRate) {
 			var p = _getYTInstance(pid);
 			// getAvailablePlayBackRates returns an array of numbers, with at least 1 element; i.e. the default playback rate
@@ -381,13 +446,6 @@
 			}
 		}
 
-
-		function getMetaObj(pid) {
-			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
-				return _players[pid].meta;
-			}
-		}
-
 		function resetPlayers() {
 			_players = {};
 		}
@@ -461,6 +519,7 @@
 							p.cueVideoById(ytId, t);
 							break;
 						case 'video cued':
+
 							if (pid === _mainPlayerId) {
 								registerStateChangeListener(seekPauseListener);
 								p.loadVideoById(ytId, t);
@@ -485,7 +544,15 @@
 				}
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #toggleMute
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * toggles the mute on / off
+		 * @param {String} pid the pid of the player
+		 * @returns {Void} returns void.
+		 */
 		function toggleMute(pid) {
 			var p = _getYTInstance(pid);
 			if (p.isMuted()) {

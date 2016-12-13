@@ -59,6 +59,7 @@ angular.module('com.inthetelling.story')
 			// '2': 'paused',
 			// '3': 'buffering',
 			// '5': 'video cued'
+			// '5': player ready
 		function _onPlayerStateChange(state) {
 
 			playbackService.setTimelineState(state);
