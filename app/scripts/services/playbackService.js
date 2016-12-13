@@ -44,6 +44,7 @@
 		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
 		var _timelineState = '';
 		var _mainPlayerBufferingPoll;
+		var _playbackServiceHasBeenReset;
 
 		angular.forEach(_playerManagers, function(playerManager) {
 			playerManager.registerStateChangeListener(_stateChangeCB);
@@ -63,7 +64,6 @@
 			setSpeed: setSpeed,
 			registerStateChangeListener: registerStateChangeListener,
 			unregisterStateChangeListener: unregisterStateChangeListener,
-			startAtTime: startAtTime,
 			getMetaProp: getMetaProp,
 			setMetaProp: setMetaProp,
 			getTimelineState: getTimelineState,
@@ -72,10 +72,14 @@
 			unFreezeMetaProps: unFreezeMetaProps,
 			resetPlayers: resetPlayers,
 			getMetaObj: getMetaObj,
-			pauseOtherPlayers: pauseOtherPlayers
+			pauseOtherPlayers: pauseOtherPlayers,
+			handle$Destroy: handle$Destroy,
+			resetPlaybackService: resetPlaybackService
 		};
+		/*
+			PUBLIC METHODS
+		 */
 
-		//public methods
 		/**
 		 * @ngdoc method
 		 * @name #seedPlayer
@@ -91,20 +95,21 @@
 		function seedPlayer(mediaSrcArr, id, mainPlayer) {
 			//reset mainplayer if we attempt to re-init it
 			//e.g. coming back into the same episode after navigating away
-			if (_playerInterfaces[id] && mainPlayer) {
-				//set the time here to 0, but leave duration intact
-				// //reset other playerState props to iniial state
-
-				_playerInterfaces[id].resetMetaProps(['time', 'hasResumedFromStartAt', 'hasBeenPlayed', 'bufferedPercent', 'timeMultiplier'], id);
-				_stateChangeCallbacks.forEach(function(cb) {
-					cb('reset');
-				});
-			}
+			// if (_playerInterfaces[id] && mainPlayer) {
+			// 	//set the time here to 0, but leave duration intact
+			// 	// //reset other playerState props to iniial state
+            //
+			// 	_playerInterfaces[id].resetMetaProps(['time', 'hasResumedFromStartAt', 'hasBeenPlayed', 'bufferedPercent', 'timeMultiplier'], id);
+			// 	_stateChangeCallbacks.forEach(function(cb) {
+			// 		cb('reset');
+			// 	});
+			// }
 
 			var parsedMedia = urlService.parseMediaSrcArr(mediaSrcArr);
 
 			var pm = _getPlayerManagerFromMediaSrc(parsedMedia);
 			_playerInterfaces[id] = pm;
+			_playbackServiceHasBeenReset = false;
 			if (mainPlayer) {
 				_mainPlayerId = id;
 				_pollBufferedPercent();
@@ -278,26 +283,6 @@
 		}
 		/**
 		 * @ngdoc method
-		 * @name #startAtTime
-		 * @methodOf iTT.service:playbackService
-		 * @description
-		 * Invokes the 'startAtTime' method on all playerManagers with the passed input id.
-		 * @param {String} [playerId=mainPlayerId] Optional input param.
-		 */
-		function startAtTime(playerId) {
-			if (playerId !== _mainPlayerId) {
-				setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
-				setMetaProp('hasResumedFromStartAt', false, playerId);
-				setMetaProp('ready', false, playerId);
-				// console.log('meta', _playerInterfaces[playerId].getMetaObj(playerId));
-				freezeMetaProps(playerId);
-			} else {
-				//tear down stuff
-				$interval.cancel(_mainPlayerBufferingPoll);
-			}
-		}
-		/**
-		 * @ngdoc method
 		 * @name #getMetaProp
 		 * @methodOf iTT.service:playbackService
 		 * @description
@@ -387,7 +372,51 @@
 			}
 		}
 
-		// private methods
+		function resetPlaybackService() {
+			_playbackServiceHasBeenReset = true;
+			_playerInterfaces = {};
+			angular.forEach(_playerManagers, function(pm) {
+				pm.resetPlayerManager();
+			});
+			_stateChangeCallbacks = [];
+			_mainPlayerId = '';
+			_timelineState = '';
+			$interval.cancel(_mainPlayerBufferingPoll);
+		}
+
+
+		function handle$Destroy(playerId) {
+			if (playerId !== _mainPlayerId) {
+				if (_playbackServiceHasBeenReset === false) {
+					_handleEmbedDestroy(playerId);
+				}
+			} else {
+				//will call resetPlaybackService from timelineSvc
+				_emitStateChange('reset');
+			}
+		}
+		/*
+			PRIVATE METHODS
+		 */
+
+		/**
+		 * @ngdoc method
+		 * @name _handleEmbedDestroy
+		 * @methodOf iTT.service:playbackService
+		 * @description
+		 * _handleEmbedDestroy
+		 * @param {String} [playerId=mainPlayerId] Optional input param.
+		 * @private
+		 */
+		function _handleEmbedDestroy(playerId) {
+			if (playerId !== _mainPlayerId) {
+				setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
+				setMetaProp('hasResumedFromStartAt', false, playerId);
+				setMetaProp('ready', false, playerId);
+				// console.log('meta', _playerInterfaces[playerId].getMetaObj(playerId));
+				freezeMetaProps(playerId);
+			}
+		}
 		/**
 		 * @ngdoc method
 		 * @name _setPid

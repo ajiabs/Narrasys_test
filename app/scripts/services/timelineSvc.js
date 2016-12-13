@@ -68,11 +68,14 @@ angular.module('com.inthetelling.story')
 
 			switch (state) {
 				case 'reset':
-					if (playbackService.getMetaProp('time') === 0) {
-						_resetClocks();
-						console.log('timelineSvc#onReset');
-						svc.updateEventStates();
-					}
+					console.log('timelineSvc#reset evt');
+					_resetClocks();
+					playbackService.resetPlaybackService();
+					// if (playbackService.getMetaProp('time') === 0) {
+                    //
+					// 	console.log('timelineSvc#onReset');
+					// 	// svc.updateEventStates();
+					// }
 					break;
 				case 'unstarted':
 

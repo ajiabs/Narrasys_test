@@ -87,10 +87,9 @@
 			setMetaProp: setMetaProp,
 			freezeMetaProps: freezeMetaProps,
 			unFreezeMetaProps: unFreezeMetaProps,
-			resetPlayers: resetPlayers,
 			resetMetaProps: resetMetaProps,
-			getMetaObj: getMetaObj
-			//destroy
+			getMetaObj: getMetaObj,
+			resetPlayerManager: resetPlayerManager
 		};
 
 		//public methods
@@ -109,15 +108,11 @@
 			}
 
 			var plr = document.getElementById(divID);
-			plr.onpause = onPause;
-			plr.onplaying = onPlaying;
-			plr.onwaiting = onBuffering;
-			plr.oncanplay = onCanPlay;
-			plr.onended = onEnded;
+			_attachEventListeners(plr);
 
 			plr.onStateChange = _onStateChange;
-
 			plr.controls = true;
+
 			if (_mainPlayerId === divID) {
 				_mainPlayerId = divID;
 				plr.controls = false;
@@ -578,8 +573,43 @@
 
 		}
 
-		function resetPlayers() {
+		function _attachEventListeners(videoElement) {
+			videoElement.addEventListener('pause', onPause);
+			videoElement.addEventListener('playing', onPlaying);
+			videoElement.addEventListener('waiting', onBuffering);
+			videoElement.addEventListener('canplay', onCanPlay);
+			videoElement.addEventListener('ended', onEnded);
+		}
+
+		function _removeEventListeners(pid) {
+			var videoElement;
+			var instance = _getInstance(pid);
+			if (_existy(instance)) {
+				videoElement = _players[pid].instance;
+				videoElement.removeEventListener('pause', onPause);
+				videoElement.removeEventListener('playing', onPlaying);
+				videoElement.removeEventListener('waiting', onBuffering);
+				videoElement.removeEventListener('canplay', onCanPlay);
+				videoElement.removeEventListener('ended', onEnded);
+			}
+		}
+
+		function destroyInstance(pid, doRemove) {
+			if (!_existy(doRemove)) {
+				doRemove = false;
+			}
+			_removeEventListeners(pid);
+			if (doRemove === true) {
+				_players[pid] = {};
+			}
+		}
+
+		function resetPlayerManager() {
+			angular.forEach(_players, function (pm, id) {
+				destroyInstance(id, true);
+			});
 			_players = {};
+			_stateChangeCallbacks = [];
 		}
 
 		function resetMetaProps(list, id) {
@@ -731,7 +761,7 @@
 		 * @private
 		 */
 		function _getInstance(pid) {
-			if (_players[pid]) {
+			if (_existy(_players[pid]) && _existy(_players[pid].instance)) {
 				return _players[pid].instance;
 			}
 		}

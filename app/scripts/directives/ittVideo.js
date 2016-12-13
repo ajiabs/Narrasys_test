@@ -34,7 +34,7 @@ function ittVideo() {
 
 		//controller event bindings
 		$rootScope.$on('userKeypress.SPACE', videoClick);
-		$scope.$on('$destroy', saveLastPlayerState);
+		$scope.$on('$destroy', onDestroy);
 
 		onInit();
 
@@ -90,8 +90,8 @@ function ittVideo() {
 			return (ctrl.mainPlayer === true && time > 0 && time >= duration - 0.3);
 		}
 
-		function saveLastPlayerState() {
-			playbackService.startAtTime(ctrl.playerId);
+		function onDestroy() {
+			playbackService.handle$Destroy(ctrl.playerId);
 		}
 
 		function checkTranscoded() {
