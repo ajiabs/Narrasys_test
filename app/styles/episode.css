@@ -683,7 +683,7 @@
 .professional {
   background-repeat: no-repeat;
   background-position: top right;
-  background-size: 100%;
+  background-size: 100% 100%;
   position: absolute; }
   .professional .static-bg__main {
     position: absolute;
@@ -1821,7 +1821,7 @@
     text-decoration: underline; }
 
 .university-arizona {
-  background-image: url("/images/customer/UofA_Fullscreen_BG.svg"); }
+  background-image: url("/images/customer/UofA_Fullscreen_BG_NoRed.svg"); }
   .university-arizona .landingscreen h1 {
     margin-top: 1em;
     display: flex;
