@@ -789,7 +789,7 @@
 					instance[command](val);
 				} else {
 					//some getters return a value, i.e. getPlayerState
-					returnVal = instance[command]()
+					returnVal = instance[command]();
 				}
 			} catch (err) {
 				console.warn('error trying', command, 'full error:', err);

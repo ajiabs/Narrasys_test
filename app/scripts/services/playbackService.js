@@ -547,7 +547,7 @@
 			}
 
 			if (emitterId === _mainPlayerId) {
-				_emitStateChange(state)
+				_emitStateChange(state);
 			}
 		}
 		/**
