@@ -63,14 +63,14 @@
 			unregisterStateChangeListener: unregisterStateChangeListener,
 			getMetaProp: getMetaProp,
 			setMetaProp: setMetaProp,
-			resetPlayers: resetPlayers,
 			resetMetaProps: resetMetaProps,
 			getMetaObj: getMetaObj,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
 			setPlaybackQuality: setPlaybackQuality,
 			reset: reset,
-			destroy: destroy,
+			destroyInstance: destroyInstance,
+			resetPlayerManager: resetPlayerManager,
 			stop: stop
 
 		};
@@ -454,10 +454,6 @@
 			}
 		}
 
-		function resetPlayers() {
-			_players = {};
-		}
-
 		function resetMetaProps(list, id) {
 			if (_existy(_players[id])) {
 
@@ -616,19 +612,35 @@
 		}
 		/**
 		 * @ngdoc method
-		 * @name #destroy
+		 * @name #destroyInstance
 		 * @methodOf iTT.service:youTubePlayerManager
 		 * @description
 		 * Used to destroy YT instances and clear them from the _players object
 		 * @param {String} pid The ID of the YT instance
+		 * @param {Boolean} [doRemove=false] optional param to optionally reset the instance in the _players map.
 		 * @returns {Void} No return value.
 		 */
-		function destroy(pid) {
+		function destroyInstance(pid, doRemove) {
+			if (!_existy(doRemove)) {
+				doRemove = false;
+			}
 			var p = _getYTInstance(pid);
 			if (_existy(p)) {
-				p.destroy();
-				delete _players[pid];
+
+				_tryCommand(p, 'destroy');
+				if (doRemove === true) {
+					_players[pid] = {};
+				}
+
 			}
+		}
+
+
+		function resetPlayerManager() {
+			angular.forEach(_players, function(pm, id) {
+				destroyInstance(id, true);
+			});
+			_players = {};
 		}
 
 		//private methods
