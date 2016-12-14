@@ -64,7 +64,7 @@ angular.module('com.inthetelling.story')
 
 			playbackService.setTimelineState(state);
 
-			// console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
+			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
 			switch (state) {
 				case 'reset':
@@ -102,10 +102,14 @@ angular.module('com.inthetelling.story')
 				case 'video cued':
 					var startAt = playbackService.getMetaProp('startAtTime');
 					var hasResumed = playbackService.getMetaProp('hasResumedFromStartAt');
+
 					if (startAt > 0 && hasResumed === false) {
 						// console.log('about to call startAtSpecificTime');
 						svc.startAtSpecificTime(startAt);
 					}
+					break;
+				case 'player ready':
+					svc.updateEventStates();
 					break;
 			}
 		}
@@ -413,11 +417,14 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.init = function (episodeId) {
-			console.trace('timelineSvc#init');
+			// console.log('timelineSvc#init', episodeId);
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
 			svc.displayMarkedEvents = [];
 			timeMultiplier = 1;
+			var episode = modelSvc.episode(episodeId);
+			playbackService.seedPlayer(episode.masterAsset.mediaSrcArr, episode.masterAsset._id, true);
+			playbackService.setTimelineState('unstarted');
 			playbackService.setMetaProp('duration', 0);
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
 			playbackService.registerStateChangeListener(_onPlayerStateChange);
@@ -518,6 +525,7 @@ angular.module('com.inthetelling.story')
 			svc.sortTimeline();
 			var groupedEvents = groupByStartTime(svc.markedEvents);
 			svc.displayMarkedEvents = prepGroupedEvents(groupedEvents);
+			console.log('events after!', svc.timelineEvents);
 		};
 
 		function groupByStartTime(array) {
@@ -707,6 +715,8 @@ angular.module('com.inthetelling.story')
 
 			if (svc.timelineEvents.length > 0) {
 				playbackService.setMetaProp('duration', svc.timelineEvents[svc.timelineEvents.length - 1].t);
+				console.log('set duration with:', svc.timelineEvents[svc.timelineEvents.length - 1].t);
+				console.log('setting ep dur', playbackService.getMetaProp('duration'));
 			}
 			svc.updateEventStates();
 		};

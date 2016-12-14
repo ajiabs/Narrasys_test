@@ -70,7 +70,6 @@
 			setTimelineState: setTimelineState,
 			freezeMetaProps: freezeMetaProps,
 			unFreezeMetaProps: unFreezeMetaProps,
-			resetPlayers: resetPlayers,
 			getMetaObj: getMetaObj,
 			pauseOtherPlayers: pauseOtherPlayers,
 			handle$Destroy: handle$Destroy,
@@ -93,18 +92,13 @@
 		 * @returns {Void} returns void.
 		 */
 		function seedPlayer(mediaSrcArr, id, mainPlayer) {
-			//reset mainplayer if we attempt to re-init it
-			//e.g. coming back into the same episode after navigating away
-			// if (_playerInterfaces[id] && mainPlayer) {
-			// 	//set the time here to 0, but leave duration intact
-			// 	// //reset other playerState props to iniial state
-            //
-			// 	_playerInterfaces[id].resetMetaProps(['time', 'hasResumedFromStartAt', 'hasBeenPlayed', 'bufferedPercent', 'timeMultiplier'], id);
-			// 	_stateChangeCallbacks.forEach(function(cb) {
-			// 		cb('reset');
-			// 	});
-			// }
 
+			if (mainPlayer === true) {
+				if (ittUtils.existy(_playerInterfaces[id])) {
+					//bail if we have already set the main player.
+					return;
+				}
+			}
 			var parsedMedia = urlService.parseMediaSrcArr(mediaSrcArr);
 
 			var pm = _getPlayerManagerFromMediaSrc(parsedMedia);
@@ -310,8 +304,22 @@
 		 */
 		function setMetaProp(prop, val, id) {
 			var pid = _setPid(id);
+
 			if (ittUtils.existy(_playerInterfaces[pid])) {
+
+				// if (prop === 'duration') {
+				// 	console.log('setting duration', val);
+                //
+				// }
+
 				_playerInterfaces[pid].setMetaProp(pid, prop, val);
+
+				// if (prop === 'duration') {
+				// 	console.log('did set duration?', getMetaProp('duration', pid))
+				// }
+
+			} else {
+				// console.trace('did not find playerManager in interfaces map', _playerInterfaces[pid]);
 			}
 		}
 		/**
@@ -360,12 +368,6 @@
 			_playerInterfaces[_setPid(playerId)].unFreezeMetaProps(_setPid(playerId));
 		}
 
-		function resetPlayers() {
-			angular.forEach(_playerInterfaces, function(pm) {
-				pm.resetPlayers();
-			});
-		}
-
 		function getMetaObj(playerId) {
 			if (ittUtils.existy(_playerInterfaces[_setPid(playerId)])) {
 				return _playerInterfaces[_setPid(playerId)].getMetaObj(_setPid(playerId));
@@ -378,7 +380,6 @@
 			angular.forEach(_playerManagers, function(pm) {
 				pm.resetPlayerManager();
 			});
-			_stateChangeCallbacks = [];
 			_mainPlayerId = '';
 			_timelineState = '';
 			$interval.cancel(_mainPlayerBufferingPoll);
@@ -461,6 +462,7 @@
 		 * @private
 		 */
 		function _onPlayerReady(pid) {
+			console.log('player ready!', pid);
 
 			var lastState = PLAYERSTATES[getMetaProp('playerState', pid)];
 			var startAt = getMetaProp('startAtTime', pid);

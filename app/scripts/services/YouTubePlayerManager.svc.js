@@ -641,7 +641,6 @@
 				destroyInstance(id, true);
 			});
 			_players = {};
-			_stateChangeCallbacks = [];
 		}
 
 		//private methods

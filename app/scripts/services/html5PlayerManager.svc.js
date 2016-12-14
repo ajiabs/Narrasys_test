@@ -25,7 +25,7 @@
 	// 	2: 'HAVE_CURRENT_DATA',
 	// 	3: 'HAVE_FUTURE_DATA',
 	// 	4: 'HAVE_ENOUGH_DATA'
-	// };
+	// }
 
 	function html5PlayerManager($interval, PLAYERSTATES, ittUtils) {
 		var _players = {};
@@ -609,7 +609,6 @@
 				destroyInstance(id, true);
 			});
 			_players = {};
-			_stateChangeCallbacks = [];
 		}
 
 		function resetMetaProps(list, id) {
@@ -716,7 +715,6 @@
 			//for emitting a state but not setting it on the player.
 			if (forceState) {
 				state = forceState;
-				console.log('foring it!');
 			} else {
 				state = player.meta.playerState;
 			}
