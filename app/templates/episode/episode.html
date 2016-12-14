@@ -7,12 +7,13 @@
 	<span ng-include="'templates/episode/components/video.html'"></span>
 	<span ng-include="'templates/episode/components/windowfg.html'"></span>
 
-	<div ng-if="appState.viewMode != 'watch'" class="professional__branding branding footer">
+	<div ng-if="appState.viewMode != 'watch'" class="professional__branding">
+		<div class="branding--content">
+			<nys-copyright class="professional__copyright"></nys-copyright>
 
-		<nys-copyright class="professional__copyright"></nys-copyright>
-		<a class="professional__logo" href="//narrasys.com" target="_blank">
-			<img src="images/Narrasys_Banner_white.svg" alt="In The Telling logo">
-		</a>
+			<a class="professional__logo" href="//narrasys.com" target="_blank">
+				<img src="images/Narrasys_Banner_white.svg" alt="In The Telling logo">
+			</a>
+		</div>
 	</div>
-
 </div>

@@ -683,6 +683,7 @@
 .professional {
   background-repeat: no-repeat;
   background-position: top right;
+  background-size: 100%;
   position: absolute; }
   .professional .static-bg__main {
     position: absolute;
@@ -703,18 +704,21 @@
   .professional .altPane {
     background-color: rgba(0, 0, 0, 0.05); }
   .professional .professional__branding {
+    position: absolute;
+    width: 100%; }
+  .professional .branding--content {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px; }
-    .professional .professional__branding .professional__logo {
+    .professional .branding--content .professional__logo {
       height: 130px; }
-    .professional .professional__branding .professional__copyright {
+    .professional .branding--content .professional__copyright {
       margin-bottom: 55px;
       z-index: 1;
       color: grey;
       font-size: 14px; }
-      .professional .professional__branding .professional__copyright a {
+      .professional .branding--content .professional__copyright a {
         text-decoration: underline;
         color: grey; }
   .professional .landingscreen {
@@ -1860,7 +1864,7 @@
     color: #072d5b;
     color: #072d5b; }
     .university-arizona .searchPanel__wrapper .fake-link--search-results {
-      color: #072d5b; }
+      color: #ab0520; }
   .university-arizona .searchResults {
     font-family: 'Noto Sans',  sans-serif;
     font-weight: 700;
@@ -1869,7 +1873,7 @@
       font-family: 'Noto Sans',  sans-serif;
       font-weight: 400;
       color: #072d5b;
-      color: #072d5b; }
+      color: #ab0520; }
       .university-arizona .searchResults .item__title--link:before, .university-arizona .searchResults .item__link--fake-link:before, .university-arizona .searchResults .item__link--escape-link:before {
         color: #072d5b; }
   .university-arizona .item__title {
@@ -1877,12 +1881,12 @@
     font-weight: 700;
     color: #072d5b; }
   .university-arizona .item__title--link a, .university-arizona .item__title--file a {
-    color: #072d5b; }
+    color: #ab0520; }
   .university-arizona .item__link--fake-link {
     font-family: 'Noto Sans',  sans-serif;
     font-weight: 400;
     color: #072d5b;
-    color: #072d5b; }
+    color: #ab0520; }
   .university-arizona .item__text {
     font-family: 'Noto Sans',  sans-serif;
     font-weight: 400;
@@ -1911,14 +1915,14 @@
     font-family: 'Noto Sans',  sans-serif;
     font-weight: 400;
     color: #072d5b;
-    color: #072d5b; }
+    color: #ab0520; }
     .university-arizona .item__link--escape-link:before {
       color: #072d5b; }
   .university-arizona .item .displayTime, .university-arizona .item .startTime {
     font-family: 'Noto Sans',  sans-serif;
     font-weight: 700;
     color: #072d5b;
-    color: #072d5b; }
+    color: #ab0520; }
     .university-arizona .item .displayTime:hover, .university-arizona .item .startTime:hover {
       text-decoration: underline; }
   .university-arizona .item.colorInvert {

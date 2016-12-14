@@ -902,8 +902,10 @@
 }
 
 .professional {
+	//full window background
 	background-repeat: no-repeat;
 	background-position: top right;
+	background-size: 100%;
 	position: absolute;
 	.static-bg__main {
 		@include static-bg;
@@ -922,6 +924,11 @@
 	}
 
 	.professional__branding {
+		position: absolute;
+		width: 100%;
+	}
+
+	.branding--content {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
