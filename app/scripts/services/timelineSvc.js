@@ -525,7 +525,6 @@ angular.module('com.inthetelling.story')
 			svc.sortTimeline();
 			var groupedEvents = groupByStartTime(svc.markedEvents);
 			svc.displayMarkedEvents = prepGroupedEvents(groupedEvents);
-			console.log('events after!', svc.timelineEvents);
 		};
 
 		function groupByStartTime(array) {
@@ -715,8 +714,6 @@ angular.module('com.inthetelling.story')
 
 			if (svc.timelineEvents.length > 0) {
 				playbackService.setMetaProp('duration', svc.timelineEvents[svc.timelineEvents.length - 1].t);
-				console.log('set duration with:', svc.timelineEvents[svc.timelineEvents.length - 1].t);
-				console.log('setting ep dur', playbackService.getMetaProp('duration'));
 			}
 			svc.updateEventStates();
 		};

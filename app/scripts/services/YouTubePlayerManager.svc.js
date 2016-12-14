@@ -634,8 +634,14 @@
 
 			}
 		}
-
-
+		/**
+		 * @ngdoc method
+		 * @name #resetPlayerManager
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Will destroy all instances of YT on the _players map and reset it to an empty object.
+		 * @returns {Void} No return value.
+		 */
 		function resetPlayerManager() {
 			angular.forEach(_players, function(pm, id) {
 				destroyInstance(id, true);

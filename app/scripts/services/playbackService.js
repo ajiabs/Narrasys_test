@@ -373,7 +373,14 @@
 				return _playerInterfaces[_setPid(playerId)].getMetaObj(_setPid(playerId));
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #resetPlaybackService
+		 * @methodOf iTT.service:playbackService
+		 * @description
+		 * used when the playbackService needs to be reset back to mostly default state. This is eventually called when
+		 * the main video fires its $destory event
+		 */
 		function resetPlaybackService() {
 			_playbackServiceHasBeenReset = true;
 			_playerInterfaces = {};
@@ -384,8 +391,14 @@
 			_timelineState = '';
 			$interval.cancel(_mainPlayerBufferingPoll);
 		}
-
-
+		/**
+		 * @ngdoc method
+		 * @name #handle$Destroy
+		 * @methodOf iTT.service:playbackService
+		 * @description
+		 * Handles clean up for either main player of embeds. called from ittVideo's $destroy event.
+		 * @param {String} playerId unique id of the player to command
+		 */
 		function handle$Destroy(playerId) {
 			if (playerId !== _mainPlayerId) {
 				if (_playbackServiceHasBeenReset === false) {
@@ -462,8 +475,6 @@
 		 * @private
 		 */
 		function _onPlayerReady(pid) {
-			console.log('player ready!', pid);
-
 			var lastState = PLAYERSTATES[getMetaProp('playerState', pid)];
 			var startAt = getMetaProp('startAtTime', pid);
 			var hasResumed = getMetaProp('hasResumedFromStartAt', pid);

@@ -572,28 +572,17 @@
 			}
 
 		}
-
-		function _attachEventListeners(videoElement) {
-			videoElement.addEventListener('pause', onPause);
-			videoElement.addEventListener('playing', onPlaying);
-			videoElement.addEventListener('waiting', onBuffering);
-			videoElement.addEventListener('canplay', onCanPlay);
-			videoElement.addEventListener('ended', onEnded);
-		}
-
-		function _removeEventListeners(pid) {
-			var videoElement;
-			var instance = _getInstance(pid);
-			if (_existy(instance)) {
-				videoElement = _players[pid].instance;
-				videoElement.removeEventListener('pause', onPause);
-				videoElement.removeEventListener('playing', onPlaying);
-				videoElement.removeEventListener('waiting', onBuffering);
-				videoElement.removeEventListener('canplay', onCanPlay);
-				videoElement.removeEventListener('ended', onEnded);
-			}
-		}
-
+		/**
+		 * @ngdoc method
+		 * @name #destroyInstance
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Removes all event listeners attached to the video element and optionally sets the entry in the _players map
+		 * to an empty object.
+		 * @param {String} pid The ID of the html5 video
+		 * @param {Boolean} [doRemove=false] optional param to optionally reset the instance in the _players map.
+		 * @returns {Void} No return value.
+		 */
 		function destroyInstance(pid, doRemove) {
 			if (!_existy(doRemove)) {
 				doRemove = false;
@@ -603,7 +592,14 @@
 				_players[pid] = {};
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #resetPlayerManager
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * Will clean up all video elements in the _players map and reset it to an empty object.
+		 * @returns {Void} No return value.
+		 */
 		function resetPlayerManager() {
 			angular.forEach(_players, function (pm, id) {
 				destroyInstance(id, true);
@@ -763,7 +759,6 @@
 				return _players[pid].instance;
 			}
 		}
-
 		/**
 		 * @ngdoc method
 		 * @name _getHtml5VideoObject
@@ -783,6 +778,46 @@
 				videoObject[fileTypeKey].push(mediaSrc);
 				return videoObject;
 			}, {mp4: [], webm: [], m3u8: []});
+		}
+
+		/**
+		 * @ngdoc method
+		 * @name _attachEventListeners
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * helper method to abstract attaching of event listeners to the necessary events and wiring up the relevant
+		 * function
+		 * @param {Object} videoElement HTML5 video element
+		 * @private
+		 */
+		function _attachEventListeners(videoElement) {
+			videoElement.addEventListener('pause', onPause);
+			videoElement.addEventListener('playing', onPlaying);
+			videoElement.addEventListener('waiting', onBuffering);
+			videoElement.addEventListener('canplay', onCanPlay);
+			videoElement.addEventListener('ended', onEnded);
+		}
+		/**
+		 * @ngdoc method
+		 * @name _attachEventListeners
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @description
+		 * helper method to remove attached event listeners.
+		 * function
+		 * @param {String} pid id of element to remove listeners from.
+		 * @private
+		 */
+		function _removeEventListeners(pid) {
+			var videoElement;
+			var instance = _getInstance(pid);
+			if (_existy(instance)) {
+				videoElement = _players[pid].instance;
+				videoElement.removeEventListener('pause', onPause);
+				videoElement.removeEventListener('playing', onPlaying);
+				videoElement.removeEventListener('waiting', onBuffering);
+				videoElement.removeEventListener('canplay', onCanPlay);
+				videoElement.removeEventListener('ended', onEnded);
+			}
 		}
 
 		// function _changeVideoQuality(id, quality) {
