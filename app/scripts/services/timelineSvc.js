@@ -391,6 +391,12 @@ angular.module('com.inthetelling.story')
 		var _tick = function () {
 			var thisTick = new Date();
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
+
+			//in the event that the timelineClock is running but the eventClock is not, start the eventClock.
+			if (delta > 0 && eventClockData.lastTimelineTime === 0 && eventClockData.lastVideoTime === 0) {
+				startEventClock();
+			}
+
 			var newTime = parseFloat(playbackService.getMetaProp('time')) + (delta / 1000 * timeMultiplier);
 			// check for out of bounds:
 			if (newTime < 0) {

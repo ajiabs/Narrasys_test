@@ -502,7 +502,13 @@
 		 * @name #seekTo
 		 * @methodOf iTT.service:youTubePlayerManager
 		 * @description
-		 * Used to seek the video to a desired time in seconds
+		 * Used to seek the video to a desired time in seconds. Note: On safari, if seekTo is called with a time where
+		 * the video data is already available (i.e. we seek within our buffered range), the onStateChange event will
+		 * not fire a 'buffering' event, or a 'playing' event after the seek has completed and the playback resumes.
+		 *
+		 * Since a seeking will stop our event clock from running, and a 'playing' event will not be fired when the seek
+		 * operation is finished, we need to manually restart the event clock, which is done in the timelineSvc _tick
+		 * function.
 		 * @param {String} pid The ID of the YT instance
 		 * @param {Number} t The desired time to seek to
 		 * the server if the t (seconds) parameter specifies a time outside of the currently
