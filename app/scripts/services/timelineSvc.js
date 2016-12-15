@@ -68,14 +68,8 @@ angular.module('com.inthetelling.story')
 
 			switch (state) {
 				case 'reset':
-					console.log('timelineSvc#reset evt');
 					_resetClocks();
 					playbackService.resetPlaybackService();
-					// if (playbackService.getMetaProp('time') === 0) {
-                    //
-					// 	console.log('timelineSvc#onReset');
-					// 	// svc.updateEventStates();
-					// }
 					break;
 				case 'unstarted':
 
@@ -116,10 +110,10 @@ angular.module('com.inthetelling.story')
 
 		function _resetClocks() {
 			$interval.cancel(clock);
+			appState.videoControlsActive = true;
 			stopEventClock();
 			clock = undefined;
 			lastTick = undefined;
-			appState.videoControlsActive = true;
 		}
 
 		svc.setSpeed = function (speed) {
@@ -153,6 +147,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.pause = function (nocapture) {
+			_resetClocks();
 			playbackService.pause();
 
 			if (!nocapture) {
@@ -355,7 +350,6 @@ angular.module('com.inthetelling.story')
 
 			if (ittUtils.existy(nextEvent) && /endingscreen/.test(nextEvent.id)) {
 				_resetClocks();
-
 			}
 		};
 
