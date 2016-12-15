@@ -8,13 +8,8 @@ angular.module('com.inthetelling.story')
 		$scope.timelineBtnClick = timelineBtnClick;
 		$scope.setBtnClass = setBtnClass;
 
-		function _getTimelineState() {
-			var timelineState = playbackService.getTimelineState();
-			return (timelineState === 'paused' || timelineState === 'unstarted' || timelineState === 'video cued' || timelineState === 'ended' || timelineState === 'player ready');
-		}
-
 		function setBtnClass() {
-			if (_getTimelineState() === true) {
+			if (_allowPlay() === true) {
 				$scope.controlText = 'play';
 				return 'button-play';
 			}
@@ -23,11 +18,24 @@ angular.module('com.inthetelling.story')
 		}
 
 		function timelineBtnClick() {
-			if (_getTimelineState() === true) {
+			if (_getTimelineState() === 'ended') {
+				timelineSvc.restartEpisode();
+				return;
+			}
+			if (_allowPlay() === true) {
 				timelineSvc.play();
 			} else {
 				timelineSvc.pause();
 			}
+		}
+
+		function _allowPlay() {
+			var timelineState = _getTimelineState();
+			return (timelineState === 'paused' || timelineState === 'unstarted' || timelineState === 'video cued' || timelineState === 'ended' || timelineState === 'player ready');
+		}
+
+		function _getTimelineState() {
+			return playbackService.getTimelineState();
 		}
 
 		$scope.changeSpeed = function (n) {
