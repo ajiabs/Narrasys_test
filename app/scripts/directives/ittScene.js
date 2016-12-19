@@ -25,33 +25,33 @@ angular.module('com.inthetelling.story')
 
 
 				//BEGIN temp code for debugging purposes
-				setCurrentSeneNameOnAppState();
-				function _getSceneName(sceneTemplate) {
-					var _scenes = {
-						centered: 'templates/scene/centered.html',
-						centeredPro: 'templates/scene/centeredPro.html',
-						'1col': 'templates/scene/1col.html',
-						'2colL': 'templates/scene/2colL.html',
-						'2colR': 'templates/scene/2colR.html',
-						mirroredTwoCol: 'templates/scene/mirrored-twocol.html',
-						cornerV: 'templates/scene/cornerV.html',
-						centerVV: 'templates/scene/centerVV.html',
-						centerVVMondrian: 'templates/scene/centerVV-Mondrian.html',
-						cornerH: 'templates/scene/cornerH.html',
-						pip: 'templates/scene/pip.html'
-					};
-
-					return Object.keys(_scenes).filter(function (key) {
-						return _scenes[key] === sceneTemplate;
-					})[0];
-				}
-
-				function setCurrentSeneNameOnAppState() {
-					if (scope.scene) {
-						appState.currSceneName = _getSceneName(scope.scene.templateUrl);
-						appState.sceneLayouts = scope.scene.layouts;
-					}
-				}
+				// setCurrentSeneNameOnAppState();
+				// function _getSceneName(sceneTemplate) {
+				// 	var _scenes = {
+				// 		centered: 'templates/scene/centered.html',
+				// 		centeredPro: 'templates/scene/centeredPro.html',
+				// 		'1col': 'templates/scene/1col.html',
+				// 		'2colL': 'templates/scene/2colL.html',
+				// 		'2colR': 'templates/scene/2colR.html',
+				// 		mirroredTwoCol: 'templates/scene/mirrored-twocol.html',
+				// 		cornerV: 'templates/scene/cornerV.html',
+				// 		centerVV: 'templates/scene/centerVV.html',
+				// 		centerVVMondrian: 'templates/scene/centerVV-Mondrian.html',
+				// 		cornerH: 'templates/scene/cornerH.html',
+				// 		pip: 'templates/scene/pip.html'
+				// 	};
+                //
+				// 	return Object.keys(_scenes).filter(function (key) {
+				// 		return _scenes[key] === sceneTemplate;
+				// 	})[0];
+				// }
+                //
+				// function setCurrentSeneNameOnAppState() {
+				// 	if (scope.scene) {
+				// 		appState.currSceneName = _getSceneName(scope.scene.templateUrl);
+				// 		appState.sceneLayouts = scope.scene.layouts;
+				// 	}
+				// }
 				//END temp code for debugging purposes
 
 				// if (scope.scene._id.match(/internal/)) {

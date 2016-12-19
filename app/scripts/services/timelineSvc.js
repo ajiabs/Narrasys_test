@@ -349,13 +349,21 @@ angular.module('com.inthetelling.story')
 			}
 
 			if (ittUtils.existy(nextEvent) && /endingscreen/.test(nextEvent.id)) {
-				_resetClocks();
+				console.log('end of stepEvent!');
+
 			}
 		};
 
 		// "event" here refers to a timelineEvents event, not the modelSvc.event:
 		var handleEvent = function (event) {
-			//console.log("handle event: ", event);
+			// console.log("handle event: ", event);
+
+			if (/internal:endingscreen/.test(event.id)) {
+				console.warn('HANDLE ENDING SCREEN EVENT');
+				playbackService.setTimelineState('ended');
+				_resetClocks();
+			}
+
 			if (event.id === 'timeline') {
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
@@ -497,6 +505,11 @@ angular.module('com.inthetelling.story')
 						action: "enter"
 					});
 					if (event.end_time || event.end_time === 0) {
+						if (/internal:endingscreen/.test(event._id)) {
+							console.log('do not add exit event for ending screen.');
+							return;
+						}
+
 						svc.timelineEvents.push({
 							t: event.end_time + injectionTime,
 							id: event._id,

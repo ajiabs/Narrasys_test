@@ -264,6 +264,9 @@
 				var pid = _getPidFromInstance(event.target);
 				setMetaProp(pid, 'playerState', event.data);
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
+				if (event.data === YT.PlayerState.ENDED) {
+					console.log('END EVENT');
+				}
 				_emitStateChange(stateChangeEvent);
 			}
 			/**
