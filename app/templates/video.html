@@ -1,39 +1,27 @@
 <!--temp debug code-->
 
-<h6 style="background-color: white; color:black;">timeline State: {{$ctrl.playbackService.getTimelineState()}} | time:
-	{{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} | first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} | has resumed from startAt: {{$ctrl.playbackService.getMetaProp('hasResumedFromStartAt', $ctrl.playerId)}} |
-	player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} | start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}} | ready: {{$ctrl.playbackService.getMetaProp('ready', $ctrl.playerId)}} | playerId: {{$ctrl.playerId}}
+<h6 style="background-color: white; color:black;">
+	<!--timeline State: {{$ctrl.playbackService.getTimelineState()}} | time:-->
+	<!--{{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} | first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} | has resumed from startAt: {{$ctrl.playbackService.getMetaProp('hasResumedFromStartAt', $ctrl.playerId)}} |-->
+	<!--player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} | start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}} | ready: {{$ctrl.playbackService.getMetaProp('ready', $ctrl.playerId)}} | playerId: {{$ctrl.playerId}}-->
+
+	ios stuff: {{$ctrl.showMask()}} iosVersion: {{$ctrl.appState.iOSVersion[0]}} unstarted: {{$ctrl.showUnstartedOverlay()}}
 </h6>
 
 <!--end temp debug code-->
-<div class="video np-video" ng-click="$ctrl.videoClick()" ng-if="$ctrl.mediaSrcArr.length > 0">
+<!--<div class="video np-video" ng-click="$ctrl.videoClick()" ng-if="$ctrl.mediaSrcArr.length > 0">-->
+<div class="video np-video" ng-if="$ctrl.mediaSrcArr.length > 0">
 	<!--video element -->
+
 	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement"></div>
 
+	<div class="np-overlay-ui"
+		 ng-if="$ctrl.showMask()"
+		 ng-class="$ctrl.setCssClass()"
+		 ng-click="$ctrl.videoClick()">
+	</div>
 	<!--overlay for main player to prevent user interaction-->
-	<div class="np-overlay-ui" ng-if="$ctrl.mainPlayer" ng-click="$ctrl.videoClick()"></div>
-
-	<!--playback buttons-->
-	<img class="np-overlay-ui"
-		 ng-class="{'np--embed': $ctrl.mainPlayer === false}"
-		 ng-click="$ctrl.videoClick()"
-		 ng-if="$ctrl.playerIsPaused()"
-		 src="/images/play-overlay.png"/>
-
-	<img class="np-overlay-ui"
-		 ng-class="{'np--embed': $ctrl.mainPlayer === false}"
-		 ng-click="$ctrl.videoClick()"
-		 ng-if="$ctrl.showUnstartedOverlay()"
-		 src="/images/logo-overlay.png"/>
-
-	<!--<img class="np-overlay-ui buffering"-->
-		 <!--src="/images/buffering-overlay.png"/>-->
-
-	<img class="np-overlay-ui rewind"
-		 ng-class="{'np--embed': $ctrl.mainPlayer === false}"
-		 ng-click="$ctrl.videoClick()"
-		 ng-if="$ctrl.showReplayOverlay()"
-		 src="/images/rewind-overlay.png"/>
+	<!--<div class="np-overlay-ui" ng-if="$ctrl.mainPlayer" ng-click="$ctrl.videoClick()"></div>-->
 
 
 	<div ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('timeMultiplier') == 0"

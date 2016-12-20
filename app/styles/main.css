@@ -434,16 +434,18 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 
 .np-overlay-ui.play {
 	background-image: url('/images/play-overlay.png');
-	background-size: 100%;
 }
 
-.videoMask.firstplay {
+.np-overlay-ui.firstplay {
 	background-image: url('/images/logo-overlay.png');
 }
 
-.videoMask.buffering {
+.np-overlay-ui.buffering {
 	background-image: url('/images/buffering-overlay.png');
-	animation: delayedFadeIn 3s;
+}
+
+.np-overlay-ui.rewind {
+	background-image: url('/images/rewind-overlay.png');
 }
 
 .isTouchDevice .videoMask.buffering {
@@ -451,10 +453,7 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 	background-image: none !important;
 }
 
-.videoMask.rewind {
-	background-image: url('/images/rewind-overlay.png');
-	animation: delayedFadeIn 3s;
-}
+
 
 .videoMask.transcoding {
 	background-image: none;

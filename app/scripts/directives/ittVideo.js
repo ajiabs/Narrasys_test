@@ -31,6 +31,10 @@ function ittVideo() {
 		ctrl.playerIsPaused = playerIsPaused;
 		ctrl.showUnstartedOverlay = showUnstartedOverlay;
 		ctrl.showReplayOverlay = showReplayOverlay;
+		ctrl.setCssClass = setCssClass;
+		ctrl.showMask = hideMask;
+		ctrl.appState = appState;
+		var _existy = ittUtils.existy;
 
 		//controller event bindings
 		$rootScope.$on('userKeypress.SPACE', videoClick);
@@ -74,6 +78,29 @@ function ittVideo() {
 			} else {
 				playbackService.pause(ctrl.playerId);
 			}
+		}
+
+		function setCssClass() {
+			var cssClass = {};
+			var embed = {'np--embed': ctrl.mainPlayer === false};
+			var paused = {'play': playerIsPaused()};
+			var firstplay  = {'firstplay': showUnstartedOverlay()};
+			var replay = {'rewind': showReplayOverlay()};
+			angular.extend(cssClass, embed, paused, firstplay, replay);
+			return cssClass;
+		}
+
+		function hideMask() {
+			if (playbackService.getMetaProp('videoType') === 'youtube') {
+				if (_existy(appState.iOSVersion) && _existy(appState.iOSVersion[0])) {
+					if (showUnstartedOverlay()) {
+						return appState.iOSVersion[0] > 9;
+					} else {
+						return true;
+					}
+				}
+			}
+			return true;
 		}
 
 		function playerIsPaused() {
