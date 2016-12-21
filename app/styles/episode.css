@@ -1958,10 +1958,6 @@
     position: absolute;
     font-size: 2.5vw;
     letter-spacing: normal; }
-  .university-arizona .centerVV .static-bg__main, .university-arizona .cornerV .static-bg__main, .university-arizona .twocol .static-bg__main, .university-arizona .centered .static-bg__main, .university-arizona .cornerH .static-bg__main, .university-arizona .pip .static-bg__main, .university-arizona .onecol .static-bg__main {
-    background-image: url("/images/customer/UofA_BluePanel.svg"); }
-  .university-arizona .centerVV .static-bg__alt, .university-arizona .cornerV .static-bg__alt, .university-arizona .twocol .static-bg__alt, .university-arizona .centered .static-bg__alt, .university-arizona .cornerH .static-bg__alt, .university-arizona .pip .static-bg__alt, .university-arizona .onecol .static-bg__alt {
-    background-image: url("/images/customer/UofA_HalfScreen_BG.svg"); }
   .university-arizona .centerVV .item__title--link, .university-arizona .centerVV .item__title--file, .university-arizona .cornerV .item__title--link, .university-arizona .cornerV .item__title--file, .university-arizona .twocol .item__title--link, .university-arizona .twocol .item__title--file, .university-arizona .centered .item__title--link, .university-arizona .centered .item__title--file, .university-arizona .cornerH .item__title--link, .university-arizona .cornerH .item__title--file, .university-arizona .pip .item__title--link, .university-arizona .pip .item__title--file, .university-arizona .onecol .item__title--link, .university-arizona .onecol .item__title--file {
     font-family: 'Noto Sans',  sans-serif;
     font-weight: 400;
@@ -1973,8 +1969,6 @@
   .university-arizona .centerVV-mondrian .static-bg__main {
     border: 4px solid #072d5b;
     background-color: #ab0520; }
-  .university-arizona .centerVV-mondrian .static-bg__alt {
-    background-image: url("/images/customer/UofA_HalfScreen_BG.svg"); }
   .university-arizona .centerVV-mondrian .altPane {
     background-color: transparent; }
   .university-arizona .centerVV-mondrian .mainPane .item {
