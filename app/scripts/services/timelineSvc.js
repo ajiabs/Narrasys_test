@@ -732,7 +732,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.updateEventStates = function () {
-			// console.log("timelineSvc.updateEventStates", appState.time);
+			// console.log("timelineSvc.updateEventStates");
 			// Sets past/present/future state of every event in the timeline.
 			// TODO performance check (though this isn't done often, only on seek and inject.)
 

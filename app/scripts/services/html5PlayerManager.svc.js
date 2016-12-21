@@ -118,7 +118,9 @@
 				plr.controls = false;
 			}
 
+			plr.load();
 			_players[divID].instance = plr;
+
 
 			// temp to test out video source change.
 			// $timeout(function() {
@@ -409,6 +411,7 @@
 			var timestamp = getMetaProp(pid, 'time');
 			var waitUntilReady = $interval(function() {
 				var delay;
+				console.log('play method, readyState', instance.readyState);
 				if (_existy(instance) && instance.readyState === 4) {
 					delay = getMetaProp(pid, 'time');
 					//check for a drift then seek to original time to fix.
@@ -652,12 +655,13 @@
 		 * @private
 		 */
 		function _drawPlayerDiv(id, videoObj, quality) {
-			var videoElement;
-			if (appState.isTouchDevice === true) {
-				videoElement = '<video id="' + id  + '" autoplay>';
-			} else {
-				videoElement = '<video id="' + id  + '">';
-			}
+			var videoElement = '<video id="' + id  + '">';
+
+			// if (appState.isTouchDevice === true) {
+			// 	videoElement = '<video id="' + id  + '" autoplay>';
+			// } else {
+			// 	videoElement = '<video id="' + id  + '">';
+			// }
 
 			var classAttr, srcAttr, typeAttr;
 			Object.keys(videoObj).forEach(function(fileType) {
