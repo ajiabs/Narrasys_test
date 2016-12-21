@@ -27,7 +27,7 @@
 	// 	4: 'HAVE_ENOUGH_DATA'
 	// }
 
-	function html5PlayerManager($interval, PLAYERSTATES, ittUtils) {
+	function html5PlayerManager($interval, PLAYERSTATES, ittUtils, appState) {
 		var _players = {};
 		var _mainPlayerId;
 		// var _checkInterval = 50.0;
@@ -652,8 +652,13 @@
 		 * @private
 		 */
 		function _drawPlayerDiv(id, videoObj, quality) {
+			var videoElement;
+			if (appState.isTouchDevice === true) {
+				videoElement = '<video id="' + id  + '" autoplay>';
+			} else {
+				videoElement = '<video id="' + id  + '">';
+			}
 
-			var videoElement = '<video id="' + id  + '">';
 			var classAttr, srcAttr, typeAttr;
 			Object.keys(videoObj).forEach(function(fileType) {
 				classAttr = fileType;
