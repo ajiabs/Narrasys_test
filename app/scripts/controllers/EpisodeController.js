@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EpisodeController', function ($scope) {
+	.controller('EpisodeController', function () {
 
 	});

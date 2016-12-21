@@ -27,7 +27,7 @@
 	// 	4: 'HAVE_ENOUGH_DATA'
 	// }
 
-	function html5PlayerManager($interval, PLAYERSTATES, ittUtils, appState) {
+	function html5PlayerManager($interval, PLAYERSTATES, ittUtils) {
 		var _players = {};
 		var _mainPlayerId;
 		// var _checkInterval = 50.0;
