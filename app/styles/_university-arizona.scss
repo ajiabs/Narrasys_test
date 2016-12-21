@@ -23,25 +23,25 @@
     }
 
     .university-arizona {
-
-        background-image: url('/images/customer/UofA_Fullscreen_BG_NoRed.svg');
-
+        
+        background-image: url('/images/customer/UofA_Fullscreen_BG_Square.svg');
+             
         .landingscreen {
 			h1 {
 				@include banner-pq('Noto Sans', $university-arizonaAccent, 2.5vw);
 			}
-
+						
 			.introtext {
 				padding-bottom: 2em;
 			}
-
+			
 			#episode--description {
 				display: none;
 			}
 		}
-
+        
 		//custom altPane BG, landingscreen
-
+		
 
         .endingscreen {
             p {
@@ -58,7 +58,7 @@
                 color: $university-arizonaLink;
             }
         }
-
+        
         .searchResults {
             @include university-arizona-header;
             .item__title--link, .item__link--fake-link, .item__link--escape-link {
@@ -113,7 +113,7 @@
 	   .item__text--image-caption, .item__text--image-caption-sliding {
 	        color: $university-arizonaSecondary;
 	   }
-
+        
         .item__link--escape-link {
             @include university-arizona-body;
             color: $university-arizonaLink;
@@ -121,7 +121,7 @@
                 color: $university-arizonaPrimary;
             }
         }
-
+        
         //timestamp
         .item {
             .displayTime, .startTime {
@@ -132,8 +132,8 @@
                 }
             }
         }
-
-       //invert
+        
+       //invert 
         .item {
             &.colorInvert {
             	background-color: $university-arizonaPrimary !important;
@@ -143,27 +143,27 @@
                  		color: $university-arizonaSecondary !important;
                  	}
              	}
-
+             	
              	h1, h2, h3 {
              		color: $university-arizonaSecondary !important;
              	}
             }
         }
-
+        
         //highlights
         .content.allowHighlights {
         	.highlightSolid.item.isCurrent {
         		background-color: $university-arizonaHighlight;
         	}
-
+        	
         	.highlightSide.item.isCurrent {
         		border-left: 10px solid $university-arizonaHighlight;
         	}
-
+        	
         	.highlightBorder.item.isCurrent {
         		border: 2px solid $university-arizonaHighlight;
         	}
-
+        	
         	//hard code alpha to be 0.3 or half of default
         	//aka translucent
         	.highlightBloom.item.isCurrent {
@@ -171,7 +171,7 @@
         		box-shadow: 0 0 8px rgba(171,5,32, 0.3);
         	}
         }
-
+        
         //layout specific overrides
         .centered-pro {
             .banner-pull-quote {
@@ -184,15 +184,15 @@
 		//pro two col: centerVV
 		//non-pro two col: pip, cornerH, cornerV, twocol
 		//non-pro one col: centered, onecol
-        .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {
+        .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {	
             .static-bg__main {
-                //background-image: url('/images/customer/UofA_BluePanel.svg');
+                
             }
-
+            
             .static-bg__alt {
-                //background-image: url('/images/customer/UofA_HalfScreen_BG.svg');
+                
             }
-
+            
             .item__title--link, .item__title--file {
                 @include university-arizona-body;
             }
@@ -203,21 +203,21 @@
 
         }
 
-        .centerVV-mondrian {
+        .centerVV-mondrian {           
             .static-bg__main {
                 border: 4px solid $university-arizonaPrimary;
                 background-color: $university-arizonaAccent;
             }
-
+            
             .static-bg__alt {
-                //background-image: url('/images/customer/UofA_HalfScreen_BG.svg');
+                
             }
 
-
+			
 			.altPane {
 				background-color: transparent;
 			}
-
+			
       		.mainPane {
 			    .item {
 				    background-color:  $university-arizonaPrimary;
@@ -226,7 +226,7 @@
 			.item__text, .item__title, .item__title a {
 				color: $university-arizonaSecondary;
 			}
-
+			
 			//override from general item level,
 			//mondrian BG is solid color, so we need to use
 			//the Secondary
@@ -235,7 +235,7 @@
 					color: $university-arizonaSecondary;
 				}
 			}
-
+			
 			.item {
 			    &.colorInvert {
 			        background-color: $university-arizonaSecondary !important;
@@ -245,16 +245,16 @@
                         	color: $university-arizonaPrimary !important;
                         }
                     }
-
+                    
                     h1, h2, h3 {
                     	color: $university-arizonaPrimary !important;
                     }
                 }
             }
-
+			
 		}
 
-
+        
 		//item__<entity> for non URL titles
 		// item__<entity> a covers both escape and fakeLinks
 		.item__title--link,
@@ -265,7 +265,7 @@
 		.item__title--image-thumbnail a {
 			@include university-arizona-header;
 		}
-
+		
 		.item__link--fake-link {
 			color: $university-arizonaSecondary;
 		}
@@ -277,12 +277,12 @@
 				color: $university-arizonaAccent;
 			}
 		}
-
+		
 		.item {
 		    .displayTime, .startTime {
 		        @include university-arizona-header;
 		        color: $university-arizonaSecondary;
-
+		        
 		        a {
 		            text-decoration: underline;
 		        }
