@@ -1,11 +1,11 @@
 <!--temp debug code-->
 
 <h6 style="background-color: white; color:black;">
-	<!--timeline State: {{$ctrl.playbackService.getTimelineState()}} | time:-->
-	<!--{{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} | first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} | has resumed from startAt: {{$ctrl.playbackService.getMetaProp('hasResumedFromStartAt', $ctrl.playerId)}} |-->
-	<!--player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} | start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}} | ready: {{$ctrl.playbackService.getMetaProp('ready', $ctrl.playerId)}} | playerId: {{$ctrl.playerId}}-->
+	timeline State: {{$ctrl.playbackService.getTimelineState()}} | time:
+	{{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} | first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} | has resumed from startAt: {{$ctrl.playbackService.getMetaProp('hasResumedFromStartAt', $ctrl.playerId)}} |
+	player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} | start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}} | ready: {{$ctrl.playbackService.getMetaProp('ready', $ctrl.playerId)}} | playerId: {{$ctrl.playerId}}
 
-	ios stuff: {{$ctrl.showMask()}} iosVersion: {{$ctrl.appState.iOSVersion[0]}} unstarted: {{$ctrl.showUnstartedOverlay()}}
+	<!--ios stuff: {{$ctrl.showMask()}} iosVersion: {{$ctrl.appState.iOSVersion[0]}} unstarted: {{$ctrl.showUnstartedOverlay()}} | mainplayer {{$ctrl.mainPlayer}}-->
 </h6>
 
 <!--end temp debug code-->
@@ -20,9 +20,6 @@
 		 ng-class="$ctrl.setCssClass()"
 		 ng-click="$ctrl.videoClick()">
 	</div>
-	<!--overlay for main player to prevent user interaction-->
-	<!--<div class="np-overlay-ui" ng-if="$ctrl.mainPlayer" ng-click="$ctrl.videoClick()"></div>-->
-
 
 	<div ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('timeMultiplier') == 0"
 		 class="poster overlay fill"

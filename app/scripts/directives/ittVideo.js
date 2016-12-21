@@ -91,7 +91,6 @@ function ittVideo() {
 		}
 
 		function hideMask() {
-
 			if (playbackService.getMetaProp('videoType') === 'youtube') {
 				if (_existy(appState.iOSVersion) && _existy(appState.iOSVersion[0])) {
 

@@ -1,5 +1,13 @@
-<div class="episode professional university-arizona" ng-class="episode.styleCss">
 
+
+<div style="position: fixed; top: 0; right: 0; padding: 1em; border: 1px solid red; z-index: 11">
+	current: {{currentImg}}
+	<div ng-repeat="bg in uaBgs" ng-click="swapBgImage(bg)">
+		<button>{{bg.name}}</button>
+	</div>
+</div>
+
+<div class="episode professional university-arizona" ng-style="episodeBg" ng-class="episode.styleCss">
 	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
 	<span ng-include="'templates/episode/components/watchmode.html'"></span>
 	<span ng-repeat="scene in episode.scenes | isCurrent"
