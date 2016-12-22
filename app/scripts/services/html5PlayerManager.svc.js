@@ -655,17 +655,18 @@
 		 * @private
 		 */
 		function _drawPlayerDiv(id, videoObj, quality) {
-			var videoElement = '<video id="' + id  + '">';
+			var videoElement = document.createElement('video');
+			videoElement.id = id;
 
-			// if (appState.isTouchDevice === true) {
-			// 	videoElement = '<video id="' + id  + '" autoplay>';
-			// } else {
-			// 	videoElement = '<video id="' + id  + '">';
-			// }
-
-			var classAttr, srcAttr, typeAttr;
 			Object.keys(videoObj).forEach(function(fileType) {
+				var classAttr, srcAttr, typeAttr, srcElement;
+
 				classAttr = fileType;
+
+				if (classAttr === 'mp4') {
+					classAttr = 'mpeg4';
+				}
+
 				srcAttr = videoObj[fileType][quality];
 
 				if (!_existy(srcAttr)) {
@@ -678,12 +679,17 @@
 					typeAttr = 'video/' + fileType;
 				}
 
-				videoElement += '<source class="' + classAttr + '" src="' + srcAttr + '" type="' + typeAttr + '"/>';
+				srcElement = document.createElement('source');
+				srcElement.setAttribute('type', typeAttr);
+				srcElement.setAttribute('src', srcAttr);
+				srcElement.setAttribute('class', classAttr);
+				videoElement.appendChild(srcElement);
 			});
 
-			videoElement += '<p>Oh no! Your browser does not support the HTML5 Video element.</p>';
-			videoElement += '</video>';
-			return videoElement;
+			var fallback = document.createElement('p');
+			fallback.innerText = 'Oh no! Your browser does not support the HTML5 Video element.';
+			videoElement.appendChild(fallback);
+			return videoElement.outerHTML;
 		}
 
 		/**

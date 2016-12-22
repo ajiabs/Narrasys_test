@@ -401,7 +401,10 @@ angular.module('com.inthetelling.story')
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
 
 			//in the event that the timelineClock is running but the eventClock is not, start the eventClock.
-			if (delta > 0 && eventClockData.lastTimelineTime === 0 && eventClockData.lastVideoTime === 0) {
+			if (delta > 0 &&
+				eventClockData.lastTimelineTime === 0 &&
+				eventClockData.lastVideoTime === 0 &&
+				playbackService.getMetaProp('hasBeenPlayed') === false) {
 				startEventClock();
 			}
 
@@ -740,6 +743,7 @@ angular.module('com.inthetelling.story')
 			// instead preset everything to the future, then scan the timeline events up to now and set state based on enter/exit events per the timeline
 			var state = playbackService.getTimelineState();
 			var now = playbackService.getMetaProp('time');
+
 
 			console.log('now?', now, state);
 			// put everything in the future state:

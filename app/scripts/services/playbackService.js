@@ -539,6 +539,7 @@
 					break;
 				case 'player ready':
 					_onPlayerReady(emitterId);
+					setMetaProp('playerState', PLAYERSTATES_WORD[state], emitterId);
 					break;
 			}
 
