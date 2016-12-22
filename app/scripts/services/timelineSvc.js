@@ -75,7 +75,15 @@ angular.module('com.inthetelling.story')
 
 					break;
 				case 'ended':
+					console.log('player state', playbackService.getMetaProp('playerState'));
+					//if the 'ended' event is fired from stepEvent
+					if (playbackService.getMetaProp('playerState') !== 0) {
+						playbackService.unregisterStateChangeListener(_onPlayerStateChange);
+						playbackService.stop();
+						return;
+					}
 					svc.pause();
+
 					break;
 				case 'playing':
 					startTimelineClock();
@@ -127,7 +135,8 @@ angular.module('com.inthetelling.story')
 
 		svc.restartEpisode = restartEpisode;
 		function restartEpisode() {
-			svc.seek(0.1);
+			playbackService.registerStateChangeListener(_onPlayerStateChange);
+			svc.seek(0.01);
 			svc.play();
 		}
 
@@ -310,6 +319,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var stepEvent = function (ignoreStopEvents) {
+
 			$timeout.cancel(eventTimeout);
 			if (playbackService.getTimelineState() !== 'playing') {
 				return;
@@ -324,6 +334,12 @@ angular.module('com.inthetelling.story')
 			for (var i = 0; i < svc.timelineEvents.length; i++) {
 				var evt = svc.timelineEvents[i];
 				if (evt.t >= eventClockData.lastTimelineTime) {
+
+					if (/internal:endingscreen/.test(evt.id)) {
+						console.warn('HANDLE ENDING SCREEN EVENT', evt);
+						_onPlayerStateChange('ended');
+					}
+
 					if (evt.t > ourTime) {
 						break; // NOTE! next event should be this one; let i fall through as is
 					}
@@ -353,22 +369,14 @@ angular.module('com.inthetelling.story')
 				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
 			}
 
-			if (ittUtils.existy(nextEvent) && /endingscreen/.test(nextEvent.id)) {
-				console.log('end of stepEvent!');
-
-			}
+			// if (ittUtils.existy(nextEvent) && /endingscreen/.test(nextEvent.id)) {
+			// 	console.log('end of stepEvent!');
+            //
+			// }
 		};
 
 		// "event" here refers to a timelineEvents event, not the modelSvc.event:
 		var handleEvent = function (event) {
-			// console.log("handle event: ", event);
-
-			if (/internal:endingscreen/.test(event.id)) {
-				console.warn('HANDLE ENDING SCREEN EVENT');
-				playbackService.setTimelineState('ended');
-				_resetClocks();
-			}
-
 			if (event.id === 'timeline') {
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
@@ -743,11 +751,7 @@ angular.module('com.inthetelling.story')
 
 			// DO NOT check event start and end times directly; they're relative to the episode, not the timeline!
 			// instead preset everything to the future, then scan the timeline events up to now and set state based on enter/exit events per the timeline
-			var state = playbackService.getTimelineState();
 			var now = playbackService.getMetaProp('time');
-
-
-			console.log('now?', now, state);
 			// put everything in the future state:
 			angular.forEach(svc.timelineEvents, function (tE) {
 				if (tE.id !== "timeline") {

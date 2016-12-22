@@ -89,7 +89,8 @@
 			unFreezeMetaProps: unFreezeMetaProps,
 			resetMetaProps: resetMetaProps,
 			getMetaObj: getMetaObj,
-			resetPlayerManager: resetPlayerManager
+			resetPlayerManager: resetPlayerManager,
+			stop: angular.noop
 		};
 
 		//public methods

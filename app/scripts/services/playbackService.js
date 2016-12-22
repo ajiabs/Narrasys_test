@@ -73,7 +73,8 @@
 			getMetaObj: getMetaObj,
 			pauseOtherPlayers: pauseOtherPlayers,
 			handle$Destroy: handle$Destroy,
-			resetPlaybackService: resetPlaybackService
+			resetPlaybackService: resetPlaybackService,
+			stop: stop
 		};
 		/*
 			PUBLIC METHODS
@@ -409,6 +410,11 @@
 				_emitStateChange('reset');
 			}
 		}
+
+		function stop(playerId) {
+			_playerInterfaces[_setPid(playerId)].stop(_setPid(playerId));
+		}
+
 		/*
 			PRIVATE METHODS
 		 */
@@ -423,13 +429,11 @@
 		 * @private
 		 */
 		function _handleEmbedDestroy(playerId) {
-			if (playerId !== _mainPlayerId) {
-				setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
-				setMetaProp('hasResumedFromStartAt', false, playerId);
-				setMetaProp('ready', false, playerId);
-				// console.log('meta', _playerInterfaces[playerId].getMetaObj(playerId));
-				freezeMetaProps(playerId);
-			}
+			setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
+			setMetaProp('hasResumedFromStartAt', false, playerId);
+			setMetaProp('ready', false, playerId);
+			// console.log('meta', _playerInterfaces[playerId].getMetaObj(playerId));
+			freezeMetaProps(playerId);
 		}
 		/**
 		 * @ngdoc method
@@ -539,7 +543,6 @@
 					break;
 				case 'player ready':
 					_onPlayerReady(emitterId);
-					setMetaProp('playerState', PLAYERSTATES_WORD[state], emitterId);
 					break;
 			}
 
