@@ -288,12 +288,17 @@ angular.module('com.inthetelling.story')
 		var resetEventClock = function () {
 			eventClockData = {
 				lastTimelineTime: 0,
-				lastVideoTime: 0
+				lastVideoTime: 0,
+				running: false
 			};
 		};
 		resetEventClock();
 
 		var startEventClock = function () {
+			if (eventClockData.running) {
+				return;
+			}
+			eventClockData.running = true;
 			eventClockData.lastTimelineTime = playbackService.getMetaProp('time');
 			eventClockData.lastVideoTime = playbackService.getMetaProp('time'); // TODO this should be relative to episode, not timeline
 			stepEvent();
@@ -401,10 +406,7 @@ angular.module('com.inthetelling.story')
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
 
 			//in the event that the timelineClock is running but the eventClock is not, start the eventClock.
-			if (delta > 0 &&
-				eventClockData.lastTimelineTime === 0 &&
-				eventClockData.lastVideoTime === 0 &&
-				playbackService.getMetaProp('hasBeenPlayed') === false) {
+			if (!eventClockData.running) {
 				startEventClock();
 			}
 
