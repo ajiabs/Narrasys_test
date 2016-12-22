@@ -738,7 +738,10 @@ angular.module('com.inthetelling.story')
 
 			// DO NOT check event start and end times directly; they're relative to the episode, not the timeline!
 			// instead preset everything to the future, then scan the timeline events up to now and set state based on enter/exit events per the timeline
+			var state = playbackService.getTimelineState();
 			var now = playbackService.getMetaProp('time');
+
+			console.log('now?', now, state);
 			// put everything in the future state:
 			angular.forEach(svc.timelineEvents, function (tE) {
 				if (tE.id !== "timeline") {
@@ -765,6 +768,8 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
+
+			// console.log('timelineEvents', svc.timelineEvents);
 		};
 
 		var alreadyPreloadedImages = {};

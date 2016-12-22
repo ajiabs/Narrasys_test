@@ -32,7 +32,7 @@ function ittVideo() {
 		ctrl.showUnstartedOverlay = showUnstartedOverlay;
 		ctrl.showReplayOverlay = showReplayOverlay;
 		ctrl.setCssClass = setCssClass;
-		ctrl.showMask = hideMask;
+		ctrl.showMask = showMask;
 		ctrl.appState = appState;
 		var _existy = ittUtils.existy;
 
@@ -73,7 +73,7 @@ function ittVideo() {
 				return;
 			}
 
-			if (state === 'paused' || state === 'unstarted' || state === 'video cued') {
+			if (state === 'paused' || state === 'unstarted' || state === 'video cued' || state === 'player ready') {
 				playbackService.play(ctrl.playerId);
 			} else {
 				playbackService.pause(ctrl.playerId);
@@ -90,19 +90,13 @@ function ittVideo() {
 			return cssClass;
 		}
 
-		function hideMask() {
-			if (playbackService.getMetaProp('videoType') === 'youtube') {
-				if (_existy(appState.iOSVersion) && _existy(appState.iOSVersion[0])) {
-
-					if (ctrl.mainPlayer === false) {
-						return true;
-					}
-
-					if (showUnstartedOverlay()) {
-						return appState.iOSVersion[0] > 9;
-					} else {
-						return true;
-					}
+		//if have less than iOS 10
+		//if our video is youtube
+		//hide the unstarted mask
+		function showMask() {
+			if (_existy(appState.iOSVersion) && appState.iOSVersion.length && playbackService.getMetaProp('videoType', ctrl.playerId) === 'youtube') {
+				if (showUnstartedOverlay()) {
+					return (appState.iOSVersion[0] > 9);
 				}
 			}
 			return true;
