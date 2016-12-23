@@ -62,6 +62,10 @@ angular.module('com.inthetelling.story')
 			// '5': player ready
 		function _onPlayerStateChange(state) {
 
+                        if (playbackService.getTimelineState() === 'ended' && (state === 'unstarted' || state === 'video cued')) {
+                          return;
+                        }
+
 			playbackService.setTimelineState(state);
 
 			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
@@ -78,7 +82,7 @@ angular.module('com.inthetelling.story')
 					console.log('player state', playbackService.getMetaProp('playerState'));
 					//if the 'ended' event is fired from stepEvent
 					if (playbackService.getMetaProp('playerState') !== 0) {
-						playbackService.unregisterStateChangeListener(_onPlayerStateChange);
+						//playbackService.unregisterStateChangeListener(_onPlayerStateChange);
 						playbackService.stop();
 						return;
 					}
