@@ -208,8 +208,6 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
-
-
 			t = parseTime(t);
 			if (t < 0) {
 				t = 0;
@@ -233,7 +231,7 @@ angular.module('com.inthetelling.story')
 			if (cond === true) {
 				svc.seek(evt.start_time);
 			}
-			if (evt.stop) {
+			if (evt.stop && playbackService.getMetaProp('time') === evt.start_time) {
 				svc.pause();
 			}
 
@@ -258,6 +256,7 @@ angular.module('com.inthetelling.story')
 			for (var i = 0; i < svc.markedEvents.length; i++) {
 				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i]) === true) {
 					found = true;
+					console.log('evt', svc.markedEvents[i]);
 					break;
 				}
 			}
