@@ -523,6 +523,10 @@
 			var ytId = getMetaProp(pid, 'ytId');
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
+                        if (currentState === 'buffering') {
+                          console.log('AVOIDING BUFFERING SEEK')
+                          return;
+                        }
 
 			if (_existy(p)) {
 
