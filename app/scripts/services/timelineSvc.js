@@ -62,7 +62,7 @@ angular.module('com.inthetelling.story')
 			// '5': player ready
 		function _onPlayerStateChange(state) {
 
-			console.info('state from player', state, 'timelineState', playbackService.getTimelineState(), 'has ended', playbackService.getMetaProp('hasEnded'));
+			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
 			if (playbackService.getTimelineState() === 'ended' && playbackService.getMetaProp('hasEnded') === true) {
 				return;
