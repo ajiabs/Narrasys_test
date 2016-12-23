@@ -193,9 +193,7 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		// "method" and "eventID" are for analytics purposes
-		svc.seek = function (t, method, eventID) {
-			// console.log("timelineSvc.seek ", t, method, eventID);
+		svc.seek = function (t) {
 			playbackService.pauseOtherPlayers();
 			var duration = playbackService.getMetaProp('duration');
 
@@ -228,7 +226,19 @@ angular.module('com.inthetelling.story')
 			playbackService.seek(t);
 
 			svc.updateEventStates();
+
 		};
+
+		function _sceneArrowHelper(cond, evt) {
+			if (cond === true) {
+				svc.seek(evt.start_time);
+			}
+			if (evt.stop) {
+				svc.pause();
+			}
+
+			return cond === true;
+		}
 
 		svc.prevScene = function () {
 			for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
@@ -236,12 +246,8 @@ angular.module('com.inthetelling.story')
 				if (playbackService.getTimelineState() === 'playing') {
 					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
 				}
-				if (svc.markedEvents[i].start_time < now) {
-					// console.log("Seeking to ", svc.markedEvents[i].start_time);
-					//scope.enableAutoscroll(); // TODO in playerController
-					svc.seek(svc.markedEvents[i].start_time, "prevScene");
-
-					break;
+				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i]) === true) {
+					break
 				}
 			}
 
@@ -250,17 +256,14 @@ angular.module('com.inthetelling.story')
 		svc.nextScene = function () {
 			var found = false;
 			for (var i = 0; i < svc.markedEvents.length; i++) {
-				if (svc.markedEvents[i].start_time > playbackService.getMetaProp('time')) {
-					// console.log("Seeking to ", svc.markedEvents[i].start_time);
-					//scope.enableAutoscroll(); // TODO in playerController
-					svc.seek(svc.markedEvents[i].start_time, "nextScene");
+				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i]) === true) {
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
 				svc.pause();
-				svc.seek(playbackService.getMetaProp('duration') - 0.01, "nextScene");
+				svc.seek(playbackService.getMetaProp('duration') - 0.01);
 				//scope.enableAutoscroll(); // in playerController
 			}
 		};
@@ -383,7 +386,7 @@ angular.module('com.inthetelling.story')
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
 					playbackService.setMetaProp('time', event.t);
-					// console.log('handle event');
+					console.log('handle stop event');
 					svc.pause(); // TODO handle pause with duration too
 				} else {
 					svc.play();
