@@ -203,7 +203,7 @@ angular.module('com.inthetelling.story')
 				// TODO throw error and stop looping if this goes on too long
 				$timeout(function () {
 					// console.log("waiting for video to be ready");
-					svc.seek(t, method, eventID);
+					svc.seek(t);
 				}, 300);
 				return;
 			}
@@ -247,7 +247,7 @@ angular.module('com.inthetelling.story')
 					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
 				}
 				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i]) === true) {
-					break
+					break;
 				}
 			}
 
