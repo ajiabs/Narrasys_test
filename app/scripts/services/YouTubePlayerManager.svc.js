@@ -516,6 +516,7 @@
 			var ytId = getMetaProp(pid, 'ytId');
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
+			var hasEnded = getMetaProp(pid, 'hasEnded');
 			if (currentState === 'buffering') {
 				return;
 			}
@@ -530,7 +531,12 @@
 						case 'video cued':
 
 							if (pid === _mainPlayerId) {
-								registerStateChangeListener(seekPauseListener);
+								if (hasEnded === false) {
+									registerStateChangeListener(seekPauseListener);
+								} else {
+									setMetaProp(pid, 'hasEnded', false);
+								}
+
 								p.loadVideoById(ytId, t);
 							} else {
 								p.cueVideoById(ytId, t);
@@ -548,7 +554,6 @@
 
 			function seekPauseListener(event) {
 				if (event.state === 'playing') {
-					console.log('seek pause listener');
 					unregisterStateChangeListener(seekPauseListener);
 					pause(event.emitterId);
 				}
