@@ -37,7 +37,6 @@ function ittVideo() {
 		var _existy = ittUtils.existy;
 
 		//controller event bindings
-		$rootScope.$on('userKeypress.SPACE', videoClick);
 		$scope.$on('$destroy', onDestroy);
 
 		onInit();
@@ -73,7 +72,7 @@ function ittVideo() {
 				return;
 			}
 
-			if (state === 'paused' || state === 'unstarted' || state === 'video cued' || state === 'player ready') {
+			if (playbackService.allowPlayback(state)) {
 				playbackService.play(ctrl.playerId);
 			} else {
 				playbackService.pause(ctrl.playerId);

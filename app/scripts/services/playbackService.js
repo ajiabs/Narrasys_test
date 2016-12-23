@@ -74,7 +74,8 @@
 			pauseOtherPlayers: pauseOtherPlayers,
 			handle$Destroy: handle$Destroy,
 			resetPlaybackService: resetPlaybackService,
-			stop: stop
+			stop: stop,
+			allowPlayback: allowPlayback
 		};
 		/*
 			PUBLIC METHODS
@@ -161,6 +162,22 @@
 		function seek(t, playerId) {
 			_playerInterfaces[_setPid(playerId)].seekTo(_setPid(playerId), t);
 		}
+		/**
+		 * @ngdoc method
+		 * @name #allowPlayback
+		 * @methodOf iTT.service:playbackService
+		 * @description
+		 * static method used check playback state prior to toggling between play or pause
+		 * @param {String} state state to check against.
+		 */
+		function allowPlayback(state) {
+			return (state === 'paused' ||
+					state === 'unstarted' ||
+					state === 'video cued' ||
+					state === 'ended' ||
+					state === 'player ready')
+		}
+
 		/**
 		 * @ngdoc method
 		 * @name #pauseOtherPlayers

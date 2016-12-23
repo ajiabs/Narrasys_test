@@ -1,15 +1,18 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('TimelineController', function ($scope, timelineSvc, modelSvc, appState, playbackService) {
+	.controller('TimelineController', function ($scope, $rootScope, timelineSvc, modelSvc, appState, playbackService) {
 
 		$scope.playbackService = playbackService;
 
 		$scope.timelineBtnClick = timelineBtnClick;
 		$scope.setBtnClass = setBtnClass;
 
+		$rootScope.$on('userKeypress.SPACE', timelineBtnClick);
+
 		function setBtnClass() {
-			if (_allowPlay() === true) {
+			var state = _getTimelineState();
+			if (playbackService.allowPlayback(state) === true) {
 				$scope.controlText = 'play';
 				return 'button-play';
 			}
@@ -18,20 +21,16 @@ angular.module('com.inthetelling.story')
 		}
 
 		function timelineBtnClick() {
-			if (_getTimelineState() === 'ended') {
+			var state = _getTimelineState();
+			if (state === 'ended') {
 				timelineSvc.restartEpisode();
 				return;
 			}
-			if (_allowPlay() === true) {
+			if (playbackService.allowPlayback(state) === true) {
 				timelineSvc.play();
 			} else {
 				timelineSvc.pause();
 			}
-		}
-
-		function _allowPlay() {
-			var timelineState = _getTimelineState();
-			return (timelineState === 'paused' || timelineState === 'unstarted' || timelineState === 'video cued' || timelineState === 'ended' || timelineState === 'player ready');
 		}
 
 		function _getTimelineState() {
