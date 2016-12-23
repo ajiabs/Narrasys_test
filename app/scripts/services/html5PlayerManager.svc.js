@@ -388,10 +388,11 @@
 		function play(pid) {
 			var instance = _getInstance(pid);
 			var timestamp = getMetaProp(pid, 'time');
+			var playerRendered = getMetaProp(pid, 'ready');
 			var waitUntilReady = $interval(function() {
 				var delay;
-				console.log('play method, readyState', instance.readyState);
-				if (_existy(instance) && instance.readyState === 4) {
+				//make sure the player is in a state to accept commands
+				if (_existy(instance) && instance.readyState === 4 && playerRendered === true) {
 					delay = getMetaProp(pid, 'time');
 					//check for a drift then seek to original time to fix.
 					//only for main player, otherwise embed players will attempt
@@ -462,7 +463,7 @@
 			var instance = _getInstance(pid);
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			instance.currentTime = t;
-			//if the user seeks after entering the ending screen.
+			//if the user seeks after entering the ending screen, resume playback.
 			if (lastState === 'ended') {
 				play(pid);
 			}
