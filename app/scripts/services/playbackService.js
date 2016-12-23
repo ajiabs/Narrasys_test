@@ -175,7 +175,7 @@
 					state === 'unstarted' ||
 					state === 'video cued' ||
 					state === 'ended' ||
-					state === 'player ready')
+					state === 'player ready');
 		}
 
 		/**
