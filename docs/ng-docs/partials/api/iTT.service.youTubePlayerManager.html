@@ -27,10 +27,11 @@ interface with the youtube Iframe API</p>
 </div></td></tr></tbody></table><h5 id="methods_create_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">void</a></td><td><div class="-create-page"><p>has no return value</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_destroy">destroy(pid)</h3>
-<div class="destroy"><div class="-destroy-page"><p>Used to destroy YT instances and clear them from the _players object</p>
-</div><h5 id="methods_destroy_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-destroy-page"><p>The ID of the YT instance</p>
-</div></td></tr></tbody></table><h5 id="methods_destroy_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-destroy-page"><p>No return value.</p>
+<li><h3 id="methods_destroyinstance">destroyInstance(pid, doRemove)</h3>
+<div class="destroyinstance"><div class="-destroyinstance-page"><p>Used to destroy YT instances and clear them from the _players object</p>
+</div><h5 id="methods_destroyinstance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-destroyinstance-page"><p>The ID of the YT instance</p>
+</div></td></tr><tr><td>doRemove</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-destroyinstance-page"><p>optional param to optionally reset the instance in the _players map.</p>
+</div> <p><em>(default: false)</em></p></td></tr></tbody></table><h5 id="methods_destroyinstance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-destroyinstance-page"><p>No return value.</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_getcurrenttime">getCurrentTime(pid)</h3>
@@ -109,6 +110,11 @@ onError event.</p>
 </div><h5 id="methods_reset_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-reset-page"><p>no return value</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_resetplayermanager">resetPlayerManager()</h3>
+<div class="resetplayermanager"><div class="-resetplayermanager-page"><p>Will destroy all instances of YT on the _players map and reset it to an empty object.</p>
+</div><h5 id="methods_resetplayermanager_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-resetplayermanager-page"><p>No return value.</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_seedplayermanager">seedPlayerManager(id, mainPlayer, mediaSrcArr)</h3>
 <div class="seedplayermanager"><div class="-seedplayermanager-page"><p>Used to set the PID / divID for a YT instance, is called prior to create()</p>
 </div><h5 id="methods_seedplayermanager_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-seedplayermanager-page"><p>Main Video Asset ID or Event ID, for embeds</p>
@@ -118,7 +124,12 @@ onError event.</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_seekto">seekTo(pid, t)</h3>
-<div class="seekto"><div class="-seekto-page"><p>Used to seek the video to a desired time in seconds</p>
+<div class="seekto"><div class="-seekto-page"><p>Used to seek the video to a desired time in seconds. Note: On safari, if seekTo is called with a time where
+the video data is already available (i.e. we seek within our buffered range), the onStateChange event will
+not fire a &#39;buffering&#39; event, or a &#39;playing&#39; event after the seek has completed and the playback resumes.</p>
+<p>Since a seeking will stop our event clock from running, and a &#39;playing&#39; event will not be fired when the seek
+operation is finished, we need to manually restart the event clock, which is done in the timelineSvc _tick
+function.</p>
 </div><h5 id="methods_seekto_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-seekto-page"><p>The ID of the YT instance</p>
 </div></td></tr><tr><td>t</td><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-seekto-page"><p>The desired time to seek to
 the server if the t (seconds) parameter specifies a time outside of the currently
@@ -178,6 +189,11 @@ buffered video data</p>
 </div></td></tr><tr><td>onReadyCB</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-createinstance-page"><p>callback to register to youtube&#39;s &#39;onReady&#39; playerVar</p>
 </div></td></tr><tr><td>onError</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-createinstance-page"><p>callback to register to youtube&#39;s &#39;onError&#39; playerVar</p>
 </div></td></tr></tbody></table><h5 id="methods__createinstance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createinstance-page"><p>instance of YT.Player</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__createmetaobj">_createMetaObj(props)</h3>
+<div class="_createmetaobj"><h5 id="methods__createmetaobj_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>props</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>array of objects (properties) to set on the copy of the meta object.</p>
+</div></td></tr></tbody></table><h5 id="methods__createmetaobj_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>returns copy of new meta object</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods__emitstatechange">_emitStateChange(playerStateChange)</h3>

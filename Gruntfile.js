@@ -411,9 +411,11 @@ module.exports = function (grunt) {
 		'copy:dist',
 		'ngAnnotate',
 		'cssmin',
-		// 'uglify',
+		'uglify',
 		'rev',
-		'usemin'
+		'usemin',
+		'clean:docs',
+		'ngdocs'
 	]);
 
 	grunt.registerTask('doWork', [

@@ -73,6 +73,11 @@ _playerInterfaces map.</p>
 </div><h5 id="methods_gettimelinestate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-gettimelinestate-page"><p>the state of the timeline.</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_handle$destroy">handle$Destroy(playerId)</h3>
+<div class="handle$destroy"><div class="-handle-destroy-page"><p>Handles clean up for either main player of embeds. called from ittVideo&#39;s $destroy event.</p>
+</div><h5 id="methods_handle$destroy_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-handle-destroy-page"><p>unique id of the player to command</p>
+</div></td></tr></tbody></table></div>
+</li>
 <li><h3 id="methods_pause">pause(playerId)</h3>
 <div class="pause"><div class="-pause-page"><p>Invokes the &#39;pause&#39; method on the playerManager with the passed input id.</p>
 </div><h5 id="methods_pause_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-pause-page"><p>Optional input param.</p>
@@ -92,6 +97,11 @@ _playerInterfaces map.</p>
 <div class="registerstatechangelistener"><div class="-registerstatechangelistener-page"><p>Wires up a stateChangeListener to which events can be emitted from and responded to.</p>
 </div><h5 id="methods_registerstatechangelistener_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>cb</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-registerstatechangelistener-page"><p>the function to invoke when on a state change.</p>
 </div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_resetplaybackservice">resetPlaybackService()</h3>
+<div class="resetplaybackservice"><div class="-resetplaybackservice-page"><p>used when the playbackService needs to be reset back to mostly default state. This is eventually called when
+the main video fires its $destory event</p>
+</div></div>
 </li>
 <li><h3 id="methods_seedplayer">seedPlayer(id, mainPlayer, mediaSrcArr)</h3>
 <div class="seedplayer"><div class="-seedplayer-page"><p>Called from ittVideo during initialization. Used to store and setup particular data relevant to creating
@@ -134,11 +144,6 @@ an instance of playerManager.</p>
 </div></td></tr><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setvolume-page"><p>Optional input param.</p>
 </div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
 </li>
-<li><h3 id="methods_startattime">startAtTime(playerId)</h3>
-<div class="startattime"><div class="-startattime-page"><p>Invokes the &#39;startAtTime&#39; method on all playerManagers with the passed input id.</p>
-</div><h5 id="methods_startattime_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-startattime-page"><p>Optional input param.</p>
-</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
-</li>
 <li><h3 id="methods_togglemute">toggleMute(playerId)</h3>
 <div class="togglemute"><div class="-togglemute-page"><p>Invokes the &#39;toggleMute&#39; method on all playerManagers with the passed input id.</p>
 </div><h5 id="methods_togglemute_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-togglemute-page"><p>Optional input param.</p>
@@ -164,6 +169,11 @@ a listener)</p>
 <div class="_getplayermanagerfrommediasrc"><div class="-getplayermanagerfrommediasrc-page"><p>Loops over the input mediaSrcArr to derive the playerManager that can handle the input parsedMediaSrcArr</p>
 </div><h5 id="methods__getplayermanagerfrommediasrc_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-getplayermanagerfrommediasrc-page"><p>returns the playerManager that can handle the input media</p>
 </div></td></tr></table></div>
+</li>
+<li><h3 id="methods__handleembeddestroy">_handleEmbedDestroy(playerId)</h3>
+<div class="_handleembeddestroy"><div class="-handleembeddestroy-page"><p>_handleEmbedDestroy</p>
+</div><h5 id="methods__handleembeddestroy_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-handleembeddestroy-page"><p>Optional input param.</p>
+</div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods__onplayerready">_onPlayerReady(pid)</h3>
 <div class="_onplayerready"><div class="-onplayerready-page"><p>Method that handles the &#39;onReady&#39; event fired from a playerManager when the player is ready to accept

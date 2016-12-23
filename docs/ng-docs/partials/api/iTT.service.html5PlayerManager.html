@@ -20,6 +20,14 @@
 </div></td></tr></tbody></table><h5 id="methods_create_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-create-page"><p>no return value</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_destroyinstance">destroyInstance(pid, doRemove)</h3>
+<div class="destroyinstance"><div class="-destroyinstance-page"><p>Removes all event listeners attached to the video element and optionally sets the entry in the _players map
+to an empty object.</p>
+</div><h5 id="methods_destroyinstance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-destroyinstance-page"><p>The ID of the html5 video</p>
+</div></td></tr><tr><td>doRemove</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-destroyinstance-page"><p>optional param to optionally reset the instance in the _players map.</p>
+</div> <p><em>(default: false)</em></p></td></tr></tbody></table><h5 id="methods_destroyinstance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-destroyinstance-page"><p>No return value.</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_freezemetaprops">freezeMetaProps(pid)</h3>
 <div class="freezemetaprops"><div class="-freezemetaprops-page"><p>Freezes the player&#39;s meta data object</p>
 </div><h5 id="methods_freezemetaprops_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-freezemetaprops-page"><p>the pid of the player to freeze.</p>
@@ -90,6 +98,11 @@ embeds except the one you interacted with.</p>
 </div></td></tr></tbody></table><h5 id="methods_registerstatechangelistener_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-registerstatechangelistener-page"><p>returns void</p>
 </div></td></tr></table></div>
 </li>
+<li><h3 id="methods_resetplayermanager">resetPlayerManager()</h3>
+<div class="resetplayermanager"><div class="-resetplayermanager-page"><p>Will clean up all video elements in the _players map and reset it to an empty object.</p>
+</div><h5 id="methods_resetplayermanager_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-resetplayermanager-page"><p>No return value.</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_seedplayermanager">seedPlayerManager(id, mainPlayer, mediaSrcArr)</h3>
 <div class="seedplayermanager"><div class="-seedplayermanager-page"><p>Used to set the PID / divID for a html5 video element, is called prior to create()</p>
 </div><h5 id="methods_seedplayermanager_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-seedplayermanager-page"><p>Main Video Asset ID or Event ID (for embeds)</p>
@@ -142,6 +155,23 @@ embeds except the one you interacted with.</p>
 <li><h3 id="methods_unregisterstatechangelistener">unregisterStateChangeListener(cb)</h3>
 <div class="unregisterstatechangelistener"><h5 id="methods_unregisterstatechangelistener_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>cb</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-unregisterstatechangelistener-page"><p>callback to unregister</p>
 </div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods__attacheventlisteners">_attachEventListeners(videoElement)</h3>
+<div class="_attacheventlisteners"><div class="-attacheventlisteners-page"><p>helper method to abstract attaching of event listeners to the necessary events and wiring up the relevant
+function</p>
+</div><h5 id="methods__attacheventlisteners_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>videoElement</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-attacheventlisteners-page"><p>HTML5 video element</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods__attacheventlisteners">_attachEventListeners(pid)</h3>
+<div class="_attacheventlisteners"><div class="-attacheventlisteners-page"><p>helper method to remove attached event listeners.
+function</p>
+</div><h5 id="methods__attacheventlisteners_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-attacheventlisteners-page"><p>id of element to remove listeners from.</p>
+</div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods__createmetaobj">_createMetaObj(props)</h3>
+<div class="_createmetaobj"><h5 id="methods__createmetaobj_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>props</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>array of objects (properties) to set on the copy of the meta object.</p>
+</div></td></tr></tbody></table><h5 id="methods__createmetaobj_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>returns copy of new meta object</p>
+</div></td></tr></table></div>
 </li>
 <li><h3 id="methods__drawplayerdiv">_drawPlayerDiv(id, videoObj, quality)</h3>
 <div class="_drawplayerdiv"><div class="-drawplayerdiv-page"><p>Helper method that abstracts the functionality of creating a HTML5 video tag</p>
