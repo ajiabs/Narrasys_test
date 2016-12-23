@@ -70,8 +70,6 @@ angular.module('com.inthetelling.story')
 
 			playbackService.setTimelineState(state);
 
-
-
 			switch (state) {
 				case 'reset':
 					_resetClocks();
