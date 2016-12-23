@@ -51,12 +51,14 @@
 		var _html5MetaObj = {
 			instance: null,
 			meta: {
+				mainPlayer: false,
 				playerState: '-1',
 				videoObj: {},
 				div: '',
 				ready: false,
 				startAtTime: 0,
 				hasResumedFromStartAt: false,
+				hasEnded: false,
 				duration: 0,
 				time: 0,
 				hasBeenPlayed: false,
@@ -290,28 +292,14 @@
 			}
 
 			var plrInfo = _initPlayerDiv(id, mediaSrcArr, 0);
-
 			//store relevant info the particular player in the 'meta' obj.
-			_players[id] = {
-				//instance will be swapped out with the actual video element when create() is called
-				instance: null,
-				meta: {
+			var newProps = {
 					mainPlayer: mainPlayer,
-					playerState: '-1',
 					videoObj: plrInfo.videoObj,
-					div: plrInfo.videoElm,
-					ready: false,
-					startAtTime: 0,
-					hasResumedFromStartAt: false,
-					duration: 0,
-					time: 0,
-					hasBeenPlayed: false,
-					bufferedPercent: 0,
-					timeMultiplier: 1,
-					videoType: _type
-				}
+					div: plrInfo.videoElm
 			};
 
+			_players[id] = _createMetaObj(newProps, _html5MetaObj);
 		}
 
 		/*
@@ -834,6 +822,20 @@
 				videoElement.removeEventListener('canplay', onCanPlay);
 				videoElement.removeEventListener('ended', onEnded);
 			}
+		}
+
+		/**
+		 * @private
+		 * @ngdoc method
+		 * @name _createMetaObj
+		 * @methodOf iTT.service:html5PlayerManager
+		 * @param {Object} props array of objects (properties) to set on the copy of the meta object.
+		 * @returns {Object} returns copy of new meta object
+		 */
+		function _createMetaObj(props, base) {
+			var newMetaObj = angular.copy(base);
+			newMetaObj.meta = angular.extend(newMetaObj.meta, props);
+			return newMetaObj;
 		}
 
 		// function _changeVideoQuality(id, quality) {

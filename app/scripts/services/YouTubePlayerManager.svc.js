@@ -30,14 +30,17 @@
 		var _youtubeMetaObj = {
 			instance: null,
 			meta: {
+				mainPlayer: false,
 				playerState: '-1',
 				div: '',
 				ready: false,
 				startAtTime: 0,
-				hasResumedFromStartAt: false,
+				duration: 0,
 				ytUrl: '',
 				time: 0,
+				hasResumedFromStartAt: false,
 				hasBeenPlayed: false,
+				hasEnded: false,
 				bufferedPercent: 0,
 				timeMultiplier: 1,
 				videoType: _type
@@ -187,25 +190,15 @@
 				_mainPlayerId = id;
 			}
 
-			_players[id] = {
-				instance: null,
-				meta: {
-					mainPlayer: mainPlayer,
-					playerState: '',
-					div: _getPlayerDiv(id),
-					ready: false,
-					startAtTime: 0,
-					duration: 0,
-					hasResumedFromStartAt: false,
-					ytUrl: mediaSrcArr[0],
-					time: 0,
-					hasBeenPlayed: false,
-					bufferedPercent: 0,
-					timeMultiplier: 1,
-					videoType: _type
-				}
+			var newProps = {
+				mainPlayer: mainPlayer,
+				div: _getPlayerDiv(id),
+				ytUrl: mediaSrcArr[0]
 			};
+
+			_players[id] = _createMetaObj(newProps, _youtubeMetaObj);
 		}
+
 
 		/**
 		 * @ngdoc method
@@ -524,7 +517,6 @@
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
 			if (currentState === 'buffering') {
-				console.log('AVOIDING BUFFERING SEEK');
 				return;
 			}
 
@@ -556,6 +548,7 @@
 
 			function seekPauseListener(event) {
 				if (event.state === 'playing') {
+					console.log('seek pause listener');
 					unregisterStateChangeListener(seekPauseListener);
 					pause(event.emitterId);
 				}
@@ -811,6 +804,20 @@
 			if (_existy(returnVal)) {
 				return returnVal;
 			}
+		}
+
+		/**
+		 * @private
+		 * @ngdoc method
+		 * @name _createMetaObj
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @param {Object} props array of objects (properties) to set on the copy of the meta object.
+		 * @returns {Object} returns copy of new meta object
+		 */
+		function _createMetaObj(props, base) {
+			var newMetaObj = angular.copy(base);
+			newMetaObj.meta = angular.extend(newMetaObj.meta, props);
+			return newMetaObj;
 		}
 
 		return _youTubePlayerManager;

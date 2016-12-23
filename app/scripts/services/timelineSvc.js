@@ -62,13 +62,15 @@ angular.module('com.inthetelling.story')
 			// '5': player ready
 		function _onPlayerStateChange(state) {
 
-			if (playbackService.getTimelineState() === 'ended' && (state === 'unstarted' || state === 'video cued')) {
+			console.info('state from player', state, 'timelineState', playbackService.getTimelineState(), 'has ended', playbackService.getMetaProp('hasEnded'));
+
+			if (playbackService.getTimelineState() === 'ended' && playbackService.getMetaProp('hasEnded')) {
 				return;
 			}
 
 			playbackService.setTimelineState(state);
 
-			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
+
 
 			switch (state) {
 				case 'reset':
@@ -82,6 +84,7 @@ angular.module('com.inthetelling.story')
 					//if the 'ended' event is fired from stepEvent
 					if (playbackService.getMetaProp('playerState') !== 0) {
 						playbackService.stop();
+						playbackService.setMetaProp('hasEnded', true);
 						return;
 					}
 					svc.pause();
