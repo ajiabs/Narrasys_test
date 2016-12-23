@@ -35,19 +35,6 @@
 		var _type = 'html5';
 		var _existy = ittUtils.existy;
 
-		var _validMetaKeys = [
-			'playerState',
-			'startAtTime',
-			'time',
-			'duration',
-			'hasBeenPlayed',
-			'hasResumedFromStartAt',
-			'bufferedPercent',
-			'timeMultiplier',
-			'videoType',
-			'ready'
-		];
-
 		var _html5MetaObj = {
 			instance: null,
 			meta: {
@@ -67,6 +54,8 @@
 				videoType: _type
 			}
 		};
+
+		var _validMetaKeys = Object.keys(_html5MetaObj.meta);
 
 		return {
 			type: _type,
@@ -349,6 +338,7 @@
 		function onPlaying() {
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 1);
+			setMetaProp(this.id, 'hasEnded', false);
 			_emitStateChange(instance);
 		}
 
@@ -470,7 +460,12 @@
 		 */
 		function seek(pid, t) {
 			var instance = _getInstance(pid);
+			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			instance.currentTime = t;
+			//if the user seeks after entering the ending screen.
+			if (lastState === 'ended') {
+				play(pid);
+			}
 		}
 		/**
 		 * @ngdoc method
