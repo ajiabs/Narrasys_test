@@ -193,7 +193,7 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		svc.seek = function (t) {
+		svc.seek = function (t, method, eventID) {
 			playbackService.pauseOtherPlayers();
 			var duration = playbackService.getMetaProp('duration');
 
@@ -222,9 +222,21 @@ angular.module('com.inthetelling.story')
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
 
 			playbackService.seek(t);
-
 			svc.updateEventStates();
 
+			//capture analytics
+			var captureData = {method: '', seekStart: ''};
+			if (ittUtils.existy(method)) {
+				captureData.method = method;
+				captureData.seekStart = playbackService.getMetaProp('time');
+
+				if (ittUtils.existy(eventID)) {
+
+					captureData.event_id = eventID;
+				}
+
+				analyticsSvc.captureEpisodeActivity('seek', captureData);
+			}
 		};
 
 		function _sceneArrowHelper(cond, evt) {

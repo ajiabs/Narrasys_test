@@ -517,6 +517,9 @@
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
 			var hasEnded = getMetaProp(pid, 'hasEnded');
+
+			console.log('currentState', currentState);
+
 			if (currentState === 'buffering') {
 				return;
 			}
