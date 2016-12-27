@@ -424,13 +424,16 @@ Check to see if there's a consistent way to do without absolute positioning, or 
 	height: 100%;
 	position: absolute;
 	background-size: cover;
-	transform: translate(0, -110%);
+	transform: translate(0, -100%);
 }
 
 .np-overlay-ui.np--embed {
-	width: 50%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 85%;
 	height: 50%;
-	transform: translate(40%, -130%);
+	transform: translate(2.5%, -125%);
 }
 
 .np-overlay-ui.play {
