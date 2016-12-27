@@ -97,6 +97,7 @@ angular.module('com.inthetelling.story')
 					if ($window.parent !== $window) {
 						$window.parent.postMessage('pauseEpisodePlayback', '*'); // negligible risk in using a global here
 					}
+					analyticsSvc.captureEpisodeActivity("play");
 					break;
 				case 'paused':
 					_resetClocks();
