@@ -9,21 +9,24 @@
 <!--</h6>-->
 
 <!--end temp debug code-->
-<!--<div class="video np-video" ng-click="$ctrl.videoClick()" ng-if="$ctrl.mediaSrcArr.length > 0">-->
-<div class="video np-video" ng-if="$ctrl.mediaSrcArr.length > 0">
-	<!--video element -->
+<div class="np-video"
+	 ng-if="$ctrl.mediaSrcArr.length > 0"
+	 ng-class="{'np--embed': $ctrl.mainPlayer === false}">
 
-	<div class="np-video__wrapper" ng-bind-html="::$ctrl.playerElement"></div>
-
-	<div class="np-overlay-ui"
+	<div class="np-video__overlay-ui"
 		 ng-if="$ctrl.showMask()"
 		 ng-class="$ctrl.setCssClass()"
 		 ng-click="$ctrl.videoClick()">
 	</div>
 
-	<div ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('timeMultiplier') == 0"
-		 class="poster overlay fill"
-		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}"></div>
+	<div class="np-video__wrapper">
+		<div class="np-video__element" ng-bind-html="::$ctrl.playerElement"></div>
+	</div>
+
+	<div class="poster overlay fill"
+		 ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('timeMultiplier') == 0"
+		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}">
+	</div>
 </div>
 
 <div ng-if="$ctrl.mediaSrcArr.length < 1" class="np-video__empty">

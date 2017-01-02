@@ -391,88 +391,94 @@ TODO: native video seems to perform better when not position:absolute, but ifram
 Check to see if there's a consistent way to do without absolute positioning, or if it's safe to just do it to native and not youtube.
  */
 
+
+div.np-video {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+div.np-video.np--embed {
+	padding-bottom: 56.25%;
+}
+
+div.np-video__wrapper {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+div.np-video__element {
+	position: relative;
+	padding-bottom: 56.25%;
+	z-index: 1;
+}
+
+div.np-video__element iframe {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+div.np-video__element video {
+	width: 100%;
+	height: auto;
+}
+
+div.np-video__overlay-ui {
+	position: absolute;
+	z-index: 99;
+	width: 100%;
+	height: 100%;
+	background-position: center center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+div.np-video__overlay-ui.np--embed {
+	height: 83%;
+	background-position: 50% 20px;
+}
+
+div.np-video__overlay-ui.play {
+	background-image: url('/images/play-overlay.png');
+}
+
+div.np-video__overlay-ui.firstplay {
+	background-image: url('/images/logo-overlay.png');
+}
+
+div.np-video__overlay-ui.rewind {
+	background-image: url('/images/rewind-overlay.png');
+}
+
 .np-video__empty {
 	text-align: center;
 	margin: 0 auto;
 	width: 600px;
 	height: 400px;
 }
+/*old styles below*/
 
-.np-video__wrapper {
-	position: relative;
-	padding-bottom: 56.25%; /* 16:9 */
-	height: 0;
-}
+/*.isTouchDevice .videoMask.buffering {*/
+	/*!* HACK iOS always has the wrong state for this, hiding it until I can find a proper fix *!*/
+	/*background-image: none !important;*/
+/*}*/
 
-.np-video__wrapper video {
-	width: 100%;
-	height: auto;
-}
+/*.videoMask.transcoding {*/
+	/*background-image: none;*/
+/*}*/
 
-.np-video__wrapper iframe {
-	position: absolute;
-	top:0;
-	left:0;
-	width: 100%;
-	height: 100%;
-}
-
-.np-overlay-ui {
-	cursor: pointer;
-	z-index: 10;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	background-size: cover;
-	transform: translate(0, -100%);
-}
-
-.np-overlay-ui.np--embed {
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center center;
-	width: 85%;
-	height: 50%;
-	transform: translate(2.5%, -125%);
-}
-
-.np-overlay-ui.play {
-	background-image: url('/images/play-overlay.png');
-}
-
-.np-overlay-ui.firstplay {
-	background-image: url('/images/logo-overlay.png');
-}
-
-.np-overlay-ui.buffering {
-	background-image: url('/images/buffering-overlay.png');
-}
-
-.np-overlay-ui.rewind {
-	background-image: url('/images/rewind-overlay.png');
-}
-
-.isTouchDevice .videoMask.buffering {
-	/* HACK iOS always has the wrong state for this, hiding it until I can find a proper fix */
-	background-image: none !important;
-}
-
-
-
-.videoMask.transcoding {
-	background-image: none;
-}
-
-.videoMask .convertingMessage {
-	align-items: center;
-	background-color: #000;
-	color: #fff;
-	display: flex;
-	height: 100%;
-	padding: 0 1em;
-	text-align: center;
-	width: 100%;
-}
+/*.videoMask .convertingMessage {*/
+	/*align-items: center;*/
+	/*background-color: #000;*/
+	/*color: #fff;*/
+	/*display: flex;*/
+	/*height: 100%;*/
+	/*padding: 0 1em;*/
+	/*text-align: center;*/
+	/*width: 100%;*/
+/*}*/
 
 
 /*
