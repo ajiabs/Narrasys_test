@@ -449,7 +449,6 @@
 			setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
 			setMetaProp('hasResumedFromStartAt', false, playerId);
 			setMetaProp('ready', false, playerId);
-			// console.log('meta', _playerInterfaces[playerId].getMetaObj(playerId));
 			freezeMetaProps(playerId);
 		}
 		/**

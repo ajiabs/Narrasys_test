@@ -35,7 +35,7 @@
           <a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink item__link--escape-link">(new window)</a>
 			<itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
             <itt-video
-				ng-if="item.isVideoUrl"
+				ng-if="item.isVideoUrl && appState.viewMode == 'review'"
 				media-src-arr="[item.url]"
 				player-id="item._id"
 				main-player="false">
@@ -44,7 +44,7 @@
         <span ng-switch-when="video">
           <span ng-switch-when="file">
 			  <itt-video
-				  ng-if="item.isVideoUrl"
+				  ng-if="item.isVideoUrl && appState.viewMode == 'review'"
 				  media-src-arr="[item.url]"
 				  player-id="item._id"
 				  main-player="false">

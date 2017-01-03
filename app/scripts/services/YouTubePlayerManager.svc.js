@@ -181,7 +181,7 @@
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
 			//bail if we already have set the instance in the _players map.
-			if (_players[id] && _players[id].meta.ready === false) {
+			if (_players[id] && getMetaProp(id, 'startAtTime') > 0) {
 				return;
 			}
 
@@ -518,7 +518,7 @@
 			var currentState = playerState(pid);
 			var hasEnded = getMetaProp(pid, 'hasEnded');
 
-			console.log('currentState', currentState);
+			// console.log('currentState', currentState);
 
 			if (currentState === 'buffering') {
 				return;
