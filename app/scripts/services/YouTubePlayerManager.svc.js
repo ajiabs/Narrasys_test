@@ -260,6 +260,7 @@
 				if (event.data === YT.PlayerState.ENDED) {
 					console.log('END EVENT');
 				}
+				console.log('yt State', PLAYERSTATES[event.data]);
 				_emitStateChange(stateChangeEvent);
 			}
 			/**
@@ -534,12 +535,7 @@
 						case 'video cued':
 
 							if (pid === _mainPlayerId) {
-								if (hasEnded === false) {
-									registerStateChangeListener(seekPauseListener);
-								} else {
-									setMetaProp(pid, 'hasEnded', false);
-								}
-
+								registerStateChangeListener(seekPauseListener);
 								p.loadVideoById(ytId, t);
 							} else {
 								p.cueVideoById(ytId, t);
@@ -556,9 +552,16 @@
 			}
 
 			function seekPauseListener(event) {
+				var hasEnded = getMetaProp(event.emitterId, 'hasEnded');
+				var hasResumed = getMetaProp(event.emitterId, 'hasResumedFromStartAt');
+
 				if (event.state === 'playing') {
 					unregisterStateChangeListener(seekPauseListener);
-					pause(event.emitterId);
+					if (hasEnded === true || hasResumed === true) {
+						pause(event.emitterId);
+						setMetaProp(event.emitterId, 'hasEnded', false);
+					}
+
 				}
 			}
 		}
