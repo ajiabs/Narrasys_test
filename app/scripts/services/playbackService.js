@@ -513,7 +513,7 @@
 					if (pid !== _mainPlayerId) {
 						setMetaProp('hasResumedFromStartAt', true, pid);
 
-						if (lastState === 'playing') {
+						if (lastState === 'playing' && getTimelineState() !== 'playing') {
 							play(pid);
 						}
 					}

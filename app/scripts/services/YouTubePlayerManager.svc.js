@@ -257,10 +257,6 @@
 				var pid = _getPidFromInstance(event.target);
 				setMetaProp(pid, 'playerState', event.data);
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
-				if (event.data === YT.PlayerState.ENDED) {
-					console.log('END EVENT');
-				}
-				console.log('yt State', PLAYERSTATES[event.data]);
 				_emitStateChange(stateChangeEvent);
 			}
 			/**
@@ -523,10 +519,11 @@
 			}
 
 			if (_existy(p)) {
-
 				if (currentState === 'video cued') {
 					switch(lastState) {
 						case 'paused':
+						case 'playing':
+							/* falls through */
 							p.cueVideoById(ytId, t);
 							break;
 						case 'video cued':
@@ -537,9 +534,6 @@
 							} else {
 								p.cueVideoById(ytId, t);
 							}
-							break;
-						case 'playing':
-							p.loadVideoById(ytId, t);
 							break;
 					}
 				} else {
