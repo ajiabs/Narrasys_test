@@ -45,7 +45,6 @@
 				ready: false,
 				startAtTime: 0,
 				hasResumedFromStartAt: false,
-				hasEnded: false,
 				duration: 0,
 				time: 0,
 				hasBeenPlayed: false,
@@ -338,7 +337,6 @@
 		function onPlaying() {
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 1);
-			setMetaProp(this.id, 'hasEnded', false);
 			_emitStateChange(instance);
 		}
 
@@ -461,12 +459,7 @@
 		 */
 		function seek(pid, t) {
 			var instance = _getInstance(pid);
-			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			instance.currentTime = t;
-			//if the user seeks after entering the ending screen, resume playback.
-			if (lastState === 'ended') {
-				play(pid);
-			}
 		}
 		/**
 		 * @ngdoc method

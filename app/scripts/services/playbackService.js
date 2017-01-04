@@ -190,6 +190,13 @@
 			angular.forEach(_playerManagers, function(pm) {
 				pm.pauseOtherPlayers(_setPid(playerId));
 			});
+            //on emebds, be sure to set the playerState to paused if the $destroy event pre-empts pause from being
+			//set naturally
+			angular.forEach(_playerInterfaces, function(pi, pid) {
+				if (pid !== playerId && pid !== _mainPlayerId) {
+					pi.setMetaProp(pid, 'playerState', '2');
+				}
+			});
 		}
 
 		/**

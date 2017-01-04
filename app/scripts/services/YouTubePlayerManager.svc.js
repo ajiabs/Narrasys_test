@@ -40,7 +40,6 @@
 				time: 0,
 				hasResumedFromStartAt: false,
 				hasBeenPlayed: false,
-				hasEnded: false,
 				bufferedPercent: 0,
 				timeMultiplier: 1,
 				videoType: _type
@@ -516,7 +515,6 @@
 			var ytId = getMetaProp(pid, 'ytId');
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
-			var hasEnded = getMetaProp(pid, 'hasEnded');
 
 			// console.log('currentState', currentState);
 
@@ -534,12 +532,12 @@
 						case 'video cued':
 
 							if (pid === _mainPlayerId) {
-								if (hasEnded === false) {
+								//if we're in video cued and we are not restarting, e.g. seeking in the paused state
+								//then we want to immediately pause after playback resumes.
+								// (to get the correct frame of video visible)
+								if (t > 0.1) {
 									registerStateChangeListener(seekPauseListener);
-								} else {
-									setMetaProp(pid, 'hasEnded', false);
 								}
-
 								p.loadVideoById(ytId, t);
 							} else {
 								p.cueVideoById(ytId, t);

@@ -64,7 +64,7 @@ angular.module('com.inthetelling.story')
 
 			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
-			if (playbackService.getTimelineState() === 'ended' && playbackService.getMetaProp('hasEnded') === true) {
+			if (playbackService.getTimelineState() === 'ended' && (state === 'unstarted' || state === 'video cued')) {
 				return;
 			}
 
@@ -82,7 +82,6 @@ angular.module('com.inthetelling.story')
 					//if the 'ended' event is fired from stepEvent
 					if (playbackService.getMetaProp('playerState') !== 0) {
 						playbackService.stop();
-						playbackService.setMetaProp('hasEnded', true);
 						return;
 					}
 					svc.pause();
@@ -197,6 +196,13 @@ angular.module('com.inthetelling.story')
 		svc.seek = function (t, method, eventID) {
 			playbackService.pauseOtherPlayers();
 			var duration = playbackService.getMetaProp('duration');
+
+			var timelineState = playbackService.getTimelineState();
+
+			if (timelineState === 'ended') {
+				//to avoid restarting the video after the video has ended when the user initiates a seek
+				playbackService.setTimelineState('paused');
+			}
 
 			if (duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events
