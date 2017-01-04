@@ -50,6 +50,7 @@
 				hasBeenPlayed: false,
 				bufferedPercent: 0,
 				timeMultiplier: 1,
+				unfrozen: false,
 				videoType: _type
 			}
 		};
@@ -176,6 +177,7 @@
 		 * @returns {Void} returns void
 		 */
 		function freezeMetaProps(pid) {
+                       console.log("FROZEN PLAYER", pid);
 			Object.freeze(_players[pid].meta);
 		}
 
@@ -199,7 +201,10 @@
 				}
 			}
 
+                        newMeta['unfrozen'] = true;
+
 			_players[pid].meta = newMeta;
+                       console.log("UNFROZEN PLAYER", pid);
 		}
 
 		/**
@@ -352,9 +357,14 @@
 		 */
 		function onPause() {
 			var instance = _getInstance(this.id);
-			setMetaProp(this.id, 'playerState', 2);
-			console.trace('onPause wtf');
-			_emitStateChange(instance);
+                        if(getMetaProp(this.id, 'unfrozen') === true ) {
+                          console.log("IGNORING PAUSE");
+                          setMetaProp(this.id, 'unfrozen', false);
+                        } else {
+			  setMetaProp(this.id, 'playerState', 2);
+			  console.trace('onPause wtf');
+			  _emitStateChange(instance);
+                        }
 		}
 
 		/**
@@ -415,6 +425,7 @@
 		 * @returns {Void} returns void.
 		 */
 		function pause(pid) {
+                  console.log("IN PAUSE FOR", pid);
 			var instance = _getInstance(pid);
 			instance.pause();
 		}
