@@ -453,6 +453,12 @@
 		 * @private
 		 */
 		function _handleEmbedDestroy(playerId) {
+
+
+			if (_playerInterfaces[playerId].type === 'html5') {
+				console.log('playerState handle embed destroy', getPlayerState(playerId));
+			}
+
 			setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
 			setMetaProp('hasResumedFromStartAt', false, playerId);
 			setMetaProp('ready', false, playerId);
@@ -519,7 +525,7 @@
 
 					if (pid !== _mainPlayerId) {
 						setMetaProp('hasResumedFromStartAt', true, pid);
-
+						console.log('last state before resume', lastState);
 						if (lastState === 'playing') {
 							play(pid);
 						}
@@ -559,6 +565,7 @@
 					});
 					break;
 				case 'paused':
+					console.log('wtf');
 					break;
 				case 'buffering':
 					break;

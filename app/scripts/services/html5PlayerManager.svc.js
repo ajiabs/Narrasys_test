@@ -271,6 +271,7 @@
 
 			//bail if we were frozen prior to attempting to re-init player.
 			if (_players[id] && getMetaProp(id, 'startAtTime') > 0) {
+				console.log('player state html5 pm', getPlayerState(id));
 				return;
 			}
 
@@ -352,6 +353,7 @@
 		function onPause() {
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 2);
+			console.trace('onPause wtf');
 			_emitStateChange(instance);
 		}
 
