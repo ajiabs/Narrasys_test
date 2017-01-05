@@ -177,7 +177,6 @@
 		 * @returns {Void} returns void
 		 */
 		function freezeMetaProps(pid) {
-                       console.log("FROZEN PLAYER", pid);
 			Object.freeze(_players[pid].meta);
 		}
 
@@ -201,15 +200,14 @@
 				}
 			}
 
-                        //If this is a Safari browser, there will be a pause event that gets emitted after this unfreeze happens.
-                        //This would cause the state to be recorded as paused and would therefore break the automatic resumption of the html5 video.
-                        //Therefore, we will suppress that pause event.
-                        if(/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
-                          _ignoreNextEventIfPause = true;
-                        }
+			//If this is a Safari browser, there will be a pause event that gets emitted after this unfreeze happens.
+			//This would cause the state to be recorded as paused and would therefore break the automatic resumption of the html5 video.
+			//Therefore, we will suppress that pause event.
+			if (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+				_ignoreNextEventIfPause = true;
+			}
 
 			_players[pid].meta = newMeta;
-                       console.log("UNFROZEN PLAYER", pid);
 		}
 
 		/**
@@ -281,7 +279,6 @@
 
 			//bail if we were frozen prior to attempting to re-init player.
 			if (_players[id] && getMetaProp(id, 'startAtTime') > 0) {
-				console.log('player state html5 pm', getPlayerState(id));
 				return;
 			}
 
@@ -362,14 +359,12 @@
 		 */
 		function onPause() {
 			var instance = _getInstance(this.id);
-                        //Bail out if we are ignoring the next pause event
-                        if(_ignoreNextEventIfPause === true) {
-                          console.log("IGNORED PAUSE");
-                          _ignoreNextEventIfPause = false;
-                          return;
-                        }
+			//Bail out if we are ignoring the next pause event
+			if (_ignoreNextEventIfPause === true) {
+				_ignoreNextEventIfPause = false;
+				return;
+			}
 			setMetaProp(this.id, 'playerState', 2);
-			console.trace('onPause wtf');
 			_emitStateChange(instance);
 		}
 
@@ -431,7 +426,6 @@
 		 * @returns {Void} returns void.
 		 */
 		function pause(pid) {
-                  console.log("IN PAUSE FOR", pid);
 			var instance = _getInstance(pid);
 			instance.pause();
 		}
