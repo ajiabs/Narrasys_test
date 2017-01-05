@@ -32,6 +32,7 @@
 		var _mainPlayerId;
 		// var _checkInterval = 50.0;
 		var _stateChangeCallbacks = [];
+		var _ignoreNextEventIfPause = false;
 		var _type = 'html5';
 		var _existy = ittUtils.existy;
 
@@ -50,7 +51,6 @@
 				hasBeenPlayed: false,
 				bufferedPercent: 0,
 				timeMultiplier: 1,
-				unfrozen: false,
 				videoType: _type
 			}
 		};
@@ -201,7 +201,12 @@
 				}
 			}
 
-                        newMeta['unfrozen'] = true;
+                        //If this is a Safari browser, there will be a pause event that gets emitted after this unfreeze happens.
+                        //This would cause the state to be recorded as paused and would therefore break the automatic resumption of the html5 video.
+                        //Therefore, we will suppress that pause event.
+                        if(/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+                          _ignoreNextEventIfPause = true;
+                        }
 
 			_players[pid].meta = newMeta;
                        console.log("UNFROZEN PLAYER", pid);
@@ -357,14 +362,15 @@
 		 */
 		function onPause() {
 			var instance = _getInstance(this.id);
-                        if(getMetaProp(this.id, 'unfrozen') === true ) {
-                          console.log("IGNORING PAUSE");
-                          setMetaProp(this.id, 'unfrozen', false);
-                        } else {
-			  setMetaProp(this.id, 'playerState', 2);
-			  console.trace('onPause wtf');
-			  _emitStateChange(instance);
+                        //Bail out if we are ignoring the next pause event
+                        if(_ignoreNextEventIfPause === true) {
+                          console.log("IGNORED PAUSE");
+                          _ignoreNextEventIfPause = false;
+                          return;
                         }
+			setMetaProp(this.id, 'playerState', 2);
+			console.trace('onPause wtf');
+			_emitStateChange(instance);
 		}
 
 		/**
