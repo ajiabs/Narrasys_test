@@ -25,6 +25,7 @@
 		var _players = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
+		var _tmpStateChangeListeners = [];
 		var _type = 'youtube';
 
 		var _youtubeMetaObj = {
@@ -256,9 +257,6 @@
 				var pid = _getPidFromInstance(event.target);
 				setMetaProp(pid, 'playerState', event.data);
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
-				if (event.data === YT.PlayerState.ENDED) {
-					console.log('END EVENT');
-				}
 				_emitStateChange(stateChangeEvent);
 			}
 			/**
@@ -523,7 +521,6 @@
 			}
 
 			if (_existy(p)) {
-
 				if (currentState === 'video cued') {
 					switch(lastState) {
 						case 'paused':
@@ -536,8 +533,9 @@
 								//then we want to immediately pause after playback resumes.
 								// (to get the correct frame of video visible)
 								if (t > 0.1) {
-									registerStateChangeListener(seekPauseListener);
-									_emitStateChange(_formatPlayerStateChangeEvent({data: '7'}, event.emitterId));
+									//to ignore next play to not generate a false playing analytics
+									_tmpStateChangeListeners = _stateChangeCallbacks;
+									_stateChangeCallbacks = [seekPauseListener];
 								}
 								p.loadVideoById(ytId, t);
 							} else {
@@ -556,8 +554,8 @@
 
 			function seekPauseListener(event) {
 				if (event.state === 'playing') {
-					unregisterStateChangeListener(seekPauseListener);
 					pause(event.emitterId);
+					_stateChangeCallbacks = _tmpStateChangeListeners;
 				}
 			}
 		}

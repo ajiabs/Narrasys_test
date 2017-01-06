@@ -45,7 +45,6 @@
 		var _timelineState = '';
 		var _mainPlayerBufferingPoll;
 		var _playbackServiceHasBeenReset;
-		var _ignoreNextPlay = false;
 
 		angular.forEach(_playerManagers, function(playerManager) {
 			playerManager.registerStateChangeListener(_stateChangeCB);
@@ -559,10 +558,6 @@
 				case 'ended':
 					break;
 				case 'playing':
-					if (_ignoreNextPlay === true) {
-						_ignoreNextPlay = false;
-						return;
-					}
 					if (getMetaProp('hasBeenPlayed', emitterId) === false) {
 						setMetaProp('hasBeenPlayed', true, emitterId);
 					}
@@ -572,7 +567,6 @@
 
 					break;
 				case 'paused':
-					console.log('wtf');
 					break;
 				case 'buffering':
 					break;
@@ -580,10 +574,6 @@
 					break;
 				case 'player ready':
 					_onPlayerReady(emitterId);
-					break;
-				case 'ignore next play':
-					console.log('ignore next play?');
-					_ignoreNextPlay = true;
 					break;
 
 			}

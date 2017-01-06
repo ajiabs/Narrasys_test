@@ -27,8 +27,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		'3': 'buffering',
 		'5': 'video cued',
 		'4': 'quality changed',
-		'6': 'player ready',
-		'7': 'ignore next play'
+		'6': 'player ready'
 	})
 	.constant('PLAYERSTATES_WORD', {
 		'unstarted': '-1',
@@ -38,8 +37,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		'buffering': '3',
 		'quality changed': '4',
 		'video cued': '5',
-		'player ready': '6',
-		'ignore next play': '7'
+		'player ready': '6'
 	})
 	// Configure routing
 	.config(function ($routeProvider) {
