@@ -48,9 +48,13 @@ angular.module('com.inthetelling.story')
 
 		// for episode-related activity
 		svc.captureEpisodeActivity = function (name, data) {
+
+			console.log('capturing analytics:', name);
 			if (config.disableAnalytics) {
 				return;
 			}
+
+
 			if (
 				(appState.user && appState.user._id) &&
 				(!appState.user.track_episode_metrics)
@@ -60,7 +64,8 @@ angular.module('com.inthetelling.story')
 			var userActivity = {
 				"name": name,
 				"walltime": new Date(),
-				"timestamp": playbackService.getMetaProp('time'), // TODO this is timeline time, we want episode time!
+				//if metaProps time hasn't been set,
+				"timestamp": playbackService.getMetaProp('time') || 0, // TODO this is timeline time, we want episode time!
 			};
 			if (data) {
 				userActivity.data = data;
