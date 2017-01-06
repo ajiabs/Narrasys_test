@@ -215,6 +215,8 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
+			var captureData = {method: '', seekStart: playbackService.getMetaProp('time')};
+
 			t = parseTime(t);
 			if (t < 0) {
 				t = 0;
@@ -225,7 +227,7 @@ angular.module('com.inthetelling.story')
 
 			stopEventClock();
 
-			var captureData = {method: '', seekStart: playbackService.getMetaProp('time')};
+
 			playbackService.setMetaProp('time', t);
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
 
