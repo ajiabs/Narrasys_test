@@ -249,12 +249,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		function _sceneArrowHelper(cond, evt, prevScene) {
-
-			if (!ittUtils.existy(prevScene)) {
-				prevScene = false;
-			}
-
+		function _sceneArrowHelper(cond, evt, type) {
 			var seekTo;
 			if (cond === true) {
 
@@ -262,7 +257,7 @@ angular.module('com.inthetelling.story')
 
 				//pad time if pressing next/prev scene and the time is near the landing screen
 				if (seekTo === 0.01) {
-					if (prevScene === false) {
+					if (type === 'nextScene') {
 						seekTo = evt.start_time + 0.1;
 					} else {
 						//if the user clicks next scene (on an unstarted video), then prev scene
@@ -273,7 +268,7 @@ angular.module('com.inthetelling.story')
 
 				}
 
-				svc.seek(seekTo);
+				svc.seek(seekTo, type);
 			}
 			if (evt.stop && playbackService.getMetaProp('time') === evt.start_time) {
 				svc.pause();
@@ -290,7 +285,7 @@ angular.module('com.inthetelling.story')
 				if (playbackService.getTimelineState() === 'playing') {
 					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
 				}
-				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], true) === true) {
+				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], 'prevScene') === true) {
 					break;
 				}
 			}
@@ -300,14 +295,14 @@ angular.module('com.inthetelling.story')
 		svc.nextScene = function () {
 			var found = false;
 			for (var i = 0; i < svc.markedEvents.length; i++) {
-				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i]) === true) {
+				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i], 'nextScene') === true) {
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
 				svc.pause();
-				svc.seek(playbackService.getMetaProp('duration') - 0.01);
+				svc.seek(playbackService.getMetaProp('duration') - 0.01, 'nextScene');
 				//scope.enableAutoscroll(); // in playerController
 			}
 		};
