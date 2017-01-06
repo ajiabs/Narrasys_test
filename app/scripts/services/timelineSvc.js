@@ -246,9 +246,31 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		function _sceneArrowHelper(cond, evt) {
+		function _sceneArrowHelper(cond, evt, prevScene) {
+
+			if (!ittUtils.existy(prevScene)) {
+				prevScene = false;
+			}
+
+			var seekTo;
 			if (cond === true) {
-				svc.seek(evt.start_time);
+
+				seekTo = evt.start_time;
+
+				//pad time if pressing next/prev scene and the time is near the landing screen
+				if (seekTo === 0.01) {
+					if (prevScene === false) {
+						seekTo = evt.start_time + 0.1;
+					} else {
+						//if the user clicks next scene (on an unstarted video), then prev scene
+						//remove the padding added from clicking 'next scene' so we can get back
+						//to the landing screen without having to click thru the first scene.
+						seekTo = evt.start_time - 0.1;
+					}
+
+				}
+
+				svc.seek(seekTo);
 			}
 			if (evt.stop && playbackService.getMetaProp('time') === evt.start_time) {
 				svc.pause();
@@ -259,11 +281,13 @@ angular.module('com.inthetelling.story')
 
 		svc.prevScene = function () {
 			for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
+
+
 				var now = playbackService.getMetaProp('time');
 				if (playbackService.getTimelineState() === 'playing') {
 					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
 				}
-				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i]) === true) {
+				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], true) === true) {
 					break;
 				}
 			}
@@ -275,7 +299,6 @@ angular.module('com.inthetelling.story')
 			for (var i = 0; i < svc.markedEvents.length; i++) {
 				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i]) === true) {
 					found = true;
-					console.log('evt', svc.markedEvents[i]);
 					break;
 				}
 			}
