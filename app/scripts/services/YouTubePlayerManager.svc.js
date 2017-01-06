@@ -537,6 +537,7 @@
 								// (to get the correct frame of video visible)
 								if (t > 0.1) {
 									registerStateChangeListener(seekPauseListener);
+									_emitStateChange(_formatPlayerStateChangeEvent({data: '7'}, event.emitterId));
 								}
 								p.loadVideoById(ytId, t);
 							} else {

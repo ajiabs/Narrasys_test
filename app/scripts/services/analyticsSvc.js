@@ -65,7 +65,7 @@ angular.module('com.inthetelling.story')
 				"name": name,
 				"walltime": new Date(),
 				//if metaProps time hasn't been set,
-				"timestamp": playbackService.getMetaProp('time') || 0, // TODO this is timeline time, we want episode time!
+				"timestamp": playbackService.getMetaProp('time') || 0 // TODO this is timeline time, we want episode time!
 			};
 			if (data) {
 				userActivity.data = data;
