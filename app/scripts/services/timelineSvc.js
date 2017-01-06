@@ -232,10 +232,9 @@ angular.module('com.inthetelling.story')
 			svc.updateEventStates();
 
 			//capture analytics
-			var captureData = {method: '', seekStart: ''};
+			var captureData = {method: '', seekStart: playbackService.getMetaProp('time')};
 			if (ittUtils.existy(method)) {
 				captureData.method = method;
-				captureData.seekStart = playbackService.getMetaProp('time');
 
 				if (ittUtils.existy(eventID)) {
 
