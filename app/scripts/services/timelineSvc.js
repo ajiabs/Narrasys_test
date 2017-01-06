@@ -228,11 +228,13 @@ angular.module('com.inthetelling.story')
 			playbackService.setMetaProp('time', t);
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
 
+			var captureData = {method: '', seekStart: playbackService.getMetaProp('time')};
+
 			playbackService.seek(t);
 			svc.updateEventStates();
 
 			//capture analytics
-			var captureData = {method: '', seekStart: playbackService.getMetaProp('time')};
+
 			if (ittUtils.existy(method)) {
 				captureData.method = method;
 
