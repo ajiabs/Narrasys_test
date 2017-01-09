@@ -365,7 +365,6 @@
 				return;
 			}
 			setMetaProp(this.id, 'playerState', 2);
-			setMetaProp(this.id, 'hasEnded', false);
 			_emitStateChange(instance);
 		}
 

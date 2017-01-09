@@ -453,12 +453,6 @@
 		 * @private
 		 */
 		function _handleEmbedDestroy(playerId) {
-
-
-			if (_playerInterfaces[playerId].type === 'html5') {
-				console.log('playerState handle embed destroy', getPlayerState(playerId));
-			}
-
 			setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
 			setMetaProp('hasResumedFromStartAt', false, playerId);
 			setMetaProp('ready', false, playerId);

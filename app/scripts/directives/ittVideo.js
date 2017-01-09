@@ -116,9 +116,6 @@ function ittVideo() {
 		}
 
 		function onDestroy() {
-			if (playbackService.getMetaProp('videoType', ctrl.playerId) === 'html5') {
-				console.log('html5 destroy');
-			}
 			playbackService.handle$Destroy(ctrl.playerId);
 		}
 

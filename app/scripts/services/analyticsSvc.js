@@ -49,7 +49,6 @@ angular.module('com.inthetelling.story')
 		// for episode-related activity
 		svc.captureEpisodeActivity = function (name, data) {
 
-			console.log('capturing analytics:', name);
 			if (config.disableAnalytics) {
 				return;
 			}
