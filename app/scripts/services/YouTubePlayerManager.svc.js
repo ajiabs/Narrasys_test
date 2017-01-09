@@ -19,7 +19,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, YoutubePlayerApi, errorSvc, PLAYERSTATES, youtubeSvc) {
+	function youTubePlayerManager($location, $timeout, $interval, YoutubePlayerApi, errorSvc, PLAYERSTATES, youtubeSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -257,6 +257,24 @@
 				var pid = _getPidFromInstance(event.target);
 				setMetaProp(pid, 'playerState', event.data);
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
+				console.log('YT PlayerState', PLAYERSTATES[event.data]);
+
+				var bufferTimeout;
+
+				if (event.data === YT.PlayerState.BUFFERING) {
+
+					bufferTimeout = $timeout(function() {
+						if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
+							console.log('still buffeirng? reset');
+							reset(pid);
+						} else {
+							$timeout.cancel(bufferTimeout);
+						}
+					}, 3 * 1000);
+				} else {
+					$timeout.cancel(bufferTimeout);
+				}
+
 				_emitStateChange(stateChangeEvent);
 			}
 			/**
@@ -514,6 +532,7 @@
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
 			if (currentState === 'buffering') {
+				console.log('why buffering?');
 				return;
 			}
 
