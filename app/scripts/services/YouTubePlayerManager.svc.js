@@ -513,9 +513,6 @@
 			var ytId = getMetaProp(pid, 'ytId');
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
-
-			// console.log('currentState', currentState);
-
 			if (currentState === 'buffering') {
 				return;
 			}
@@ -524,6 +521,8 @@
 				if (currentState === 'video cued') {
 					switch(lastState) {
 						case 'paused':
+						case 'playing':
+							/* falls through */
 							p.cueVideoById(ytId, t);
 							break;
 						case 'video cued':
@@ -542,9 +541,6 @@
 								p.cueVideoById(ytId, t);
 							}
 							break;
-						case 'playing':
-							p.loadVideoById(ytId, t);
-							break;
 					}
 				} else {
 					_tryCommand(p, 'seekTo', t);
@@ -556,6 +552,7 @@
 				if (event.state === 'playing') {
 					pause(event.emitterId);
 					_stateChangeCallbacks = _tmpStateChangeListeners;
+
 				}
 			}
 		}

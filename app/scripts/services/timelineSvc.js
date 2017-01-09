@@ -139,6 +139,8 @@ angular.module('com.inthetelling.story')
 
 		svc.restartEpisode = restartEpisode;
 		function restartEpisode() {
+			playbackService.setMetaProp('hasEnded', false);
+			playbackService.setMetaProp('hasResumedFromStartAt', false);
 			svc.seek(0.01);
 			svc.play();
 		}

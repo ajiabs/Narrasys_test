@@ -525,7 +525,6 @@
 
 					if (pid !== _mainPlayerId) {
 						setMetaProp('hasResumedFromStartAt', true, pid);
-						console.log('last state before resume', lastState);
 						if (lastState === 'playing') {
 							play(pid);
 						}
