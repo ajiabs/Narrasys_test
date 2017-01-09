@@ -64,7 +64,7 @@ angular.module('com.inthetelling.story')
 
 			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
-			if (playbackService.getTimelineState() === 'ended' && playbackService.getMetaProp('hasEnded') === true) {
+			if (playbackService.getTimelineState() === 'ended' && (state === 'unstarted' || state === 'video cued')) {
 				return;
 			}
 
@@ -82,7 +82,7 @@ angular.module('com.inthetelling.story')
 					//if the 'ended' event is fired from stepEvent
 					if (playbackService.getMetaProp('playerState') !== 0) {
 						playbackService.stop();
-						playbackService.setMetaProp('hasEnded', true);
+						analyticsSvc.captureEpisodeActivity("pause");
 						return;
 					}
 					svc.pause();
@@ -200,6 +200,13 @@ angular.module('com.inthetelling.story')
 			playbackService.pauseOtherPlayers();
 			var duration = playbackService.getMetaProp('duration');
 
+			var timelineState = playbackService.getTimelineState();
+
+			if (timelineState === 'ended') {
+				//to avoid restarting the video after the video has ended when the user initiates a seek
+				playbackService.setTimelineState('paused');
+			}
+
 			if (duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events
 				// have loaded.  Just poll until events load, that's good enough for now.
@@ -211,6 +218,8 @@ angular.module('com.inthetelling.story')
 				return;
 			}
 
+			var captureData = {method: '', seekStart: playbackService.getMetaProp('time')};
+
 			t = parseTime(t);
 			if (t < 0) {
 				t = 0;
@@ -221,17 +230,18 @@ angular.module('com.inthetelling.story')
 
 			stopEventClock();
 
+
 			playbackService.setMetaProp('time', t);
 			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
+
 
 			playbackService.seek(t);
 			svc.updateEventStates();
 
 			//capture analytics
-			var captureData = {method: '', seekStart: ''};
+
 			if (ittUtils.existy(method)) {
 				captureData.method = method;
-				captureData.seekStart = playbackService.getMetaProp('time');
 
 				if (ittUtils.existy(eventID)) {
 
@@ -242,9 +252,26 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		function _sceneArrowHelper(cond, evt) {
+		function _sceneArrowHelper(cond, evt, type) {
+			var seekTo;
 			if (cond === true) {
-				svc.seek(evt.start_time);
+
+				seekTo = evt.start_time;
+
+				//pad time if pressing next/prev scene and the time is near the landing screen
+				if (seekTo === 0.01) {
+					if (type === 'nextScene') {
+						seekTo = evt.start_time + 0.1;
+					} else {
+						//if the user clicks next scene (on an unstarted video), then prev scene
+						//remove the padding added from clicking 'next scene' so we can get back
+						//to the landing screen without having to click thru the first scene.
+						seekTo = evt.start_time - 0.1;
+					}
+
+				}
+
+				svc.seek(seekTo, type);
 			}
 			if (evt.stop && playbackService.getMetaProp('time') === evt.start_time) {
 				svc.pause();
@@ -255,11 +282,13 @@ angular.module('com.inthetelling.story')
 
 		svc.prevScene = function () {
 			for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
+
+
 				var now = playbackService.getMetaProp('time');
 				if (playbackService.getTimelineState() === 'playing') {
 					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
 				}
-				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i]) === true) {
+				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], 'prevScene') === true) {
 					break;
 				}
 			}
@@ -269,15 +298,14 @@ angular.module('com.inthetelling.story')
 		svc.nextScene = function () {
 			var found = false;
 			for (var i = 0; i < svc.markedEvents.length; i++) {
-				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i]) === true) {
+				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i], 'nextScene') === true) {
 					found = true;
-					console.log('evt', svc.markedEvents[i]);
 					break;
 				}
 			}
 			if (!found) {
 				svc.pause();
-				svc.seek(playbackService.getMetaProp('duration') - 0.01);
+				svc.seek(playbackService.getMetaProp('duration') - 0.01, 'nextScene');
 				//scope.enableAutoscroll(); // in playerController
 			}
 		};

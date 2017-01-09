@@ -5,7 +5,7 @@
 	<!--time: {{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} |-->
 	<!--first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} |-->
 	<!--has resumed from startAt: {{$ctrl.playbackService.getMetaProp('hasResumedFromStartAt', $ctrl.playerId)}} |-->
-	<!--player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}}|-->
+	<!--player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} |-->
 	<!--start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}} |-->
 	<!--ready: {{$ctrl.playbackService.getMetaProp('ready', $ctrl.playerId)}} |-->
 	<!--playerId: {{$ctrl.playerId}}-->
@@ -16,6 +16,7 @@
 <!--end temp debug code-->
 <div class="np-video"
 	 ng-if="$ctrl.mediaSrcArr.length > 0"
+	 ng-click="$ctrl.videoClick()"
 	 ng-class="{'np--embed': $ctrl.mainPlayer === false}">
 
 	<div class="np-video__overlay-ui"

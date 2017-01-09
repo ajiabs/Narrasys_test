@@ -25,6 +25,7 @@
 		var _players = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
+		var _tmpStateChangeListeners = [];
 		var _type = 'youtube';
 
 		var _youtubeMetaObj = {
@@ -40,7 +41,6 @@
 				time: 0,
 				hasResumedFromStartAt: false,
 				hasBeenPlayed: false,
-				hasEnded: false,
 				bufferedPercent: 0,
 				timeMultiplier: 1,
 				videoType: _type
@@ -513,7 +513,6 @@
 			var ytId = getMetaProp(pid, 'ytId');
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
-
 			if (currentState === 'buffering') {
 				return;
 			}
@@ -529,7 +528,14 @@
 						case 'video cued':
 
 							if (pid === _mainPlayerId) {
-								registerStateChangeListener(seekPauseListener);
+								//if we're in video cued and we are not restarting, e.g. seeking in the paused state
+								//then we want to immediately pause after playback resumes.
+								// (to get the correct frame of video visible)
+								if (t > 0.1) {
+									//to ignore next play to not generate a false playing analytics
+									_tmpStateChangeListeners = _stateChangeCallbacks;
+									_stateChangeCallbacks = [seekPauseListener];
+								}
 								p.loadVideoById(ytId, t);
 							} else {
 								p.cueVideoById(ytId, t);
@@ -543,15 +549,9 @@
 			}
 
 			function seekPauseListener(event) {
-				var hasEnded = getMetaProp(event.emitterId, 'hasEnded');
-				var hasResumed = getMetaProp(event.emitterId, 'hasResumedFromStartAt');
-
 				if (event.state === 'playing') {
-					unregisterStateChangeListener(seekPauseListener);
-					if (hasEnded === true || hasResumed === true) {
-						pause(event.emitterId);
-						setMetaProp(event.emitterId, 'hasEnded', false);
-					}
+					pause(event.emitterId);
+					_stateChangeCallbacks = _tmpStateChangeListeners;
 
 				}
 			}

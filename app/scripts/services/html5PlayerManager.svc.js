@@ -32,6 +32,7 @@
 		var _mainPlayerId;
 		// var _checkInterval = 50.0;
 		var _stateChangeCallbacks = [];
+		var _ignoreNextEventIfPause = false;
 		var _type = 'html5';
 		var _existy = ittUtils.existy;
 
@@ -45,7 +46,6 @@
 				ready: false,
 				startAtTime: 0,
 				hasResumedFromStartAt: false,
-				hasEnded: false,
 				duration: 0,
 				time: 0,
 				hasBeenPlayed: false,
@@ -200,6 +200,13 @@
 				}
 			}
 
+			//If this is a Safari browser, there will be a pause event that gets emitted after this unfreeze happens.
+			//This would cause the state to be recorded as paused and would therefore break the automatic resumption of the html5 video.
+			//Therefore, we will suppress that pause event.
+			if (/Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)) {
+				_ignoreNextEventIfPause = true;
+			}
+
 			_players[pid].meta = newMeta;
 		}
 
@@ -338,7 +345,6 @@
 		function onPlaying() {
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 1);
-			setMetaProp(this.id, 'hasEnded', false);
 			_emitStateChange(instance);
 		}
 
@@ -353,6 +359,11 @@
 		 */
 		function onPause() {
 			var instance = _getInstance(this.id);
+			//Bail out if we are ignoring the next pause event
+			if (_ignoreNextEventIfPause === true) {
+				_ignoreNextEventIfPause = false;
+				return;
+			}
 			setMetaProp(this.id, 'playerState', 2);
 			setMetaProp(this.id, 'hasEnded', false);
 			_emitStateChange(instance);
@@ -463,12 +474,6 @@
 		function seek(pid, t) {
 			var instance = _getInstance(pid);
 			instance.currentTime = t;
-
-			var hasEnded = getMetaProp(pid, 'hasEnded');
-			if (hasEnded === true) {
-				//bind to set the 'this' context to instance
-				onPause.bind(instance)();
-			}
 		}
 		/**
 		 * @ngdoc method

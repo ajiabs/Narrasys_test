@@ -190,6 +190,13 @@
 			angular.forEach(_playerManagers, function(pm) {
 				pm.pauseOtherPlayers(_setPid(playerId));
 			});
+            //on emebds, be sure to set the playerState to paused if the $destroy event pre-empts pause from being
+			//set naturally
+			angular.forEach(_playerInterfaces, function(pi, pid) {
+				if (pid !== playerId && pid !== _mainPlayerId) {
+					pi.setMetaProp(pid, 'playerState', '2');
+				}
+			});
 		}
 
 		/**
@@ -446,6 +453,12 @@
 		 * @private
 		 */
 		function _handleEmbedDestroy(playerId) {
+
+
+			if (_playerInterfaces[playerId].type === 'html5') {
+				console.log('playerState handle embed destroy', getPlayerState(playerId));
+			}
+
 			setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
 			setMetaProp('hasResumedFromStartAt', false, playerId);
 			setMetaProp('ready', false, playerId);
@@ -512,14 +525,14 @@
 
 					if (pid !== _mainPlayerId) {
 						setMetaProp('hasResumedFromStartAt', true, pid);
-
-						if (lastState === 'playing' && getTimelineState() !== 'playing') {
+						if (lastState === 'playing') {
 							play(pid);
 						}
 					}
 				}
 			}
 		}
+
 
 		//respond to events emitted from playerManager
 		//playerManager -> playbackSvc -> timelineSvc (if main)
@@ -550,6 +563,7 @@
 					angular.forEach(_playerManagers, function(pm) {
 						pm.pauseOtherPlayers(emitterId);
 					});
+
 					break;
 				case 'paused':
 					break;
@@ -560,6 +574,7 @@
 				case 'player ready':
 					_onPlayerReady(emitterId);
 					break;
+
 			}
 
 			if (state !== 'player ready') {
