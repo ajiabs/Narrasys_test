@@ -557,7 +557,6 @@
 			}
 		}
 		/**
-		/**
 		 * @ngdoc method
 		 * @name #toggleMute
 		 * @methodOf iTT.service:youTubePlayerManager
