@@ -292,6 +292,8 @@
 				var pid = _getPidFromInstance(event.target);
 
 				var playerReadyEv = _formatPlayerStateChangeEvent({data: '6'}, pid);
+				setMetaProp(pid, 'duration', event.target.getDuration());
+				console.log('reset duration!');
 				_emitStateChange(playerReadyEv);
 			}
 
@@ -531,10 +533,14 @@
 			var ytId = getMetaProp(pid, 'ytId');
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
-			if (currentState === 'buffering') {
-				console.log('why buffering?');
-				return;
-			}
+			var duration = p.getDuration();
+
+			// if (currentState === 'buffering') {
+			// 	console.log('why buffering?');
+			// 	return;
+			// }
+
+			console.log('seekTo time:', t, 'duration', duration);
 
 			if (_existy(p)) {
 				if (currentState === 'video cued') {

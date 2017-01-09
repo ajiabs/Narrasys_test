@@ -62,7 +62,7 @@ angular.module('com.inthetelling.story')
 			// '5': player ready
 		function _onPlayerStateChange(state) {
 
-			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
+			// console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
 			if (playbackService.getTimelineState() === 'ended' && (state === 'unstarted' || state === 'video cued')) {
 				return;
@@ -139,8 +139,6 @@ angular.module('com.inthetelling.story')
 
 		svc.restartEpisode = restartEpisode;
 		function restartEpisode() {
-			playbackService.setMetaProp('hasEnded', false);
-			playbackService.setMetaProp('hasResumedFromStartAt', false);
 			svc.seek(0.01);
 			svc.play();
 		}
@@ -269,6 +267,10 @@ angular.module('com.inthetelling.story')
 						seekTo = evt.start_time - 0.1;
 					}
 
+				}
+
+				if (/endingscreen/.test(evt._id)) {
+					seekTo = playbackService.getMetaProp('duration');
 				}
 
 				svc.seek(seekTo, type);
