@@ -555,6 +555,7 @@
 									_tmpStateChangeListeners = _stateChangeCallbacks;
 									_stateChangeCallbacks = [seekPauseListener];
 								}
+								// console.log('player state before is buffering', p.getPlayerState() === YT.PlayerState.BUFFERING);
 								p.loadVideoById(ytId, t);
 							} else {
 								p.cueVideoById(ytId, t);
@@ -568,6 +569,7 @@
 			}
 
 			function seekPauseListener(event) {
+				console.log('in seek pause listener', event);
 				if (event.state === 'playing') {
 					pause(event.emitterId);
 					_stateChangeCallbacks = _tmpStateChangeListeners;

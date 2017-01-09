@@ -81,7 +81,7 @@ angular.module('com.inthetelling.story')
 				case 'ended':
 					//if the 'ended' event is fired from stepEvent
 					if (playbackService.getMetaProp('playerState') !== 0) {
-						playbackService.stop();
+						// playbackService.stop();
 						analyticsSvc.captureEpisodeActivity("pause");
 						return;
 					}
