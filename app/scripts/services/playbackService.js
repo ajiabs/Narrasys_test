@@ -534,7 +534,7 @@
 		 */
 		function _onPlayerReady(pid) {
 			var lastState = PLAYERSTATES[getMetaProp('playerState', pid)];
-			var startAt = getMetaProp('startAtTime', pid);
+			var startAt = parseFloat(getMetaProp('startAtTime', pid));
 			var hasResumed = getMetaProp('hasResumedFromStartAt', pid);
 
 			setMetaProp('ready', true, pid);
