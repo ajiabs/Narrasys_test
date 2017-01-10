@@ -259,21 +259,25 @@
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
 				console.log('YT PlayerState', PLAYERSTATES[event.data]);
 
-				var bufferTimeout;
-
-				if (event.data === YT.PlayerState.BUFFERING) {
-
-					bufferTimeout = $timeout(function() {
-						if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
-							console.log('still buffeirng? reset');
-							reset(pid);
-						} else {
-							$timeout.cancel(bufferTimeout);
-						}
-					}, 3 * 1000);
-				} else {
-					$timeout.cancel(bufferTimeout);
+				if (event.data === YT.PlayerState.ENDED) {
+					event.target.stopVideo();
 				}
+
+				// var bufferTimeout;
+                //
+				// if (event.data === YT.PlayerState.BUFFERING) {
+                //
+				// 	bufferTimeout = $timeout(function() {
+				// 		if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
+				// 			console.log('still buffeirng? reset');
+				// 			reset(pid);
+				// 		} else {
+				// 			$timeout.cancel(bufferTimeout);
+				// 		}
+				// 	}, 3 * 1000);
+				// } else {
+				// 	$timeout.cancel(bufferTimeout);
+				// }
 
 				_emitStateChange(stateChangeEvent);
 			}
@@ -540,7 +544,7 @@
 			// 	return;
 			// }
 
-			console.log('seekTo time:', t);
+			console.log('seekTo time:', t, {lastState, currentState});
 
 			if (_existy(p)) {
 				if (currentState === 'video cued') {
@@ -561,8 +565,7 @@
 									_tmpStateChangeListeners = _stateChangeCallbacks;
 									_stateChangeCallbacks = [seekPauseListener];
 								}
-								// console.log('player state before is buffering', p.getPlayerState() === YT.PlayerState.BUFFERING);
-								p.loadVideoById(ytId, t);
+								_tryCommand(p, 'seekTo', t);
 							} else {
 								p.cueVideoById(ytId, t);
 							}
