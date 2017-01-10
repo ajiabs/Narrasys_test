@@ -19,7 +19,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, $timeout, $interval, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeSvc) {
+	function youTubePlayerManager($location, $timeout, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
