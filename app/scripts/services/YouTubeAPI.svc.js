@@ -36,10 +36,7 @@
 			var doReject;
 			return $q(function(resolve, reject) {
 
-				doReject = 	$timeout(function() {
-					console.log('too slow!!');
-					reject();
-				}, TIMEOUT);
+				doReject = 	$timeout(reject, TIMEOUT);
 
 				//check for YT global
 				if (typeof(YT) == 'undefined' || typeof(YT.Player) == 'undefined') { //jshint ignore:line
