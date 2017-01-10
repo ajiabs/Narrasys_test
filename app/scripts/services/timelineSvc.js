@@ -292,7 +292,7 @@ angular.module('com.inthetelling.story')
 
 
 				var now = playbackService.getMetaProp('time');
-				if (playbackService.getTimelineState() === 'playing') {
+				if (playbackService.getTimelineState() === 'playing' || playbackService.getTimelineState() === 'ended') {
 					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
 				}
 				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], 'prevScene') === true) {
