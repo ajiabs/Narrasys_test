@@ -533,14 +533,14 @@
 			var ytId = getMetaProp(pid, 'ytId');
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
-			var duration = p.getDuration();
+			// var duration = p.getDuration();
 
 			// if (currentState === 'buffering') {
 			// 	console.log('why buffering?');
 			// 	return;
 			// }
 
-			console.log('seekTo time:', t, 'duration', duration);
+			console.log('seekTo time:', t);
 
 			if (_existy(p)) {
 				if (currentState === 'video cued') {

@@ -82,9 +82,11 @@ angular.module('com.inthetelling.story')
 					//if the 'ended' event is fired from stepEvent
 					if (playbackService.getMetaProp('playerState') !== 0) {
 						// playbackService.stop();
+						console.log('playerstate != 0 timelineSvc Ended');
 						analyticsSvc.captureEpisodeActivity("pause");
 						return;
 					}
+					console.log('timelineSvc#ended!!');
 					svc.pause();
 
 					break;
