@@ -166,7 +166,7 @@
 		 */
 		function seek(t, playerId) {
 		    if(getMetaProp('ready', _setPid(playerId)) === true ) {
-			_playerInterfaces[_setPid(playerId)].seekTo(_setPid(playerId), t);
+			_playerInterfaces[_setPid(playerId)].seekTo(_setPid(playerId), parseFloat(t));
 		    }
 		}
 		/**
@@ -534,7 +534,7 @@
 		 */
 		function _onPlayerReady(pid) {
 			var lastState = PLAYERSTATES[getMetaProp('playerState', pid)];
-			var startAt = parseFloat(getMetaProp('startAtTime', pid));
+			var startAt = getMetaProp('startAtTime', pid);
 			var hasResumed = getMetaProp('hasResumedFromStartAt', pid);
 
 			setMetaProp('ready', true, pid);
