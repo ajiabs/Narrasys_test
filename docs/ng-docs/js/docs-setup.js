@@ -92,6 +92,15 @@ NG_DOCS={
       "moduleName": "iTT",
       "shortDescription": "A service for working with youtube iframes",
       "keywords": "$location _createinstance _createmetaobj _emitstatechange _formatplayerstatechange _getpidfrominstance _getplayerdiv _getytinstance _players _tick _trycommand api app array asset buffered buffering callback called calls cb change changing clear clock command completed copy create cued current currently data debugging defined desired destroy destroyinstance detecting determine determines div divid dom download element embed embedded embeds emiiterid emitted empty ended entire error errors errorsvc event events finished fire fired function getcurrenttime getmetaobj getmetaprop getplayerdiv getter getvideoloadedfraction handler handling html https iframe iframes input instance instances int interacted interaction interface invoke itt ittvideo js level loops main mainplayer manually map mediasrcarr meta metadata metaobj method mute note number numerical obj object objects onerror onplayerqualitychange onplayerstatechange onqualitychange onready onreadycb onstatechange operation optional optionally param parameter pause paused pauseotherplayers percent pick pid play playback playbackrate player playerid players playerstate playerstatechange playerstates playervar playing prior prop properties property props quality qualitychangecb range rate ready register registerstatechangelistener representation representing requested reset resetplayermanager responsible restart resume resumes retrieve return returns running safari seconds seedplayermanager seek seeking seekto server service set setmetaprop setplaybackquality sets setspeed setter setvolume slow source specifies speed statechangecb stops stream string svc target time timelinesvc togglemute toggles type unique unregister unregisterstatechangelistener unstarted urls val video videoid videos void volume working youtube youtubeplayerapi youtubesvc yt ytinstance"
+    },
+    {
+      "section": "api",
+      "id": "iTT.service:YTScriptLoader",
+      "shortName": "YTScriptLoader",
+      "type": "service",
+      "moduleName": "iTT",
+      "shortDescription": "A service for downloading youtube player scripts",
+      "keywords": "$q $timeout api async downloading downloads injecting itt load method player promise returns script scripts service turn www-widgetapi youtube"
     }
   ],
   "apis": {

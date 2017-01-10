@@ -19,7 +19,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, $timeout, $interval, YoutubePlayerApi, errorSvc, PLAYERSTATES, youtubeSvc) {
+	function youTubePlayerManager($location, $timeout, $interval, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeSvc) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -224,10 +224,10 @@
 			function tryAgain() {
 				return _createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 					.then(handleSuccess)
-					.catch(lastTry);
+					.catch(handleFail);
 			}
 
-			function lastTry(e) {
+			function handleFail(e) {
 				var errorMsg = 'Network timeout initializing video player. Please try again.';
 				errorSvc.error({data: errorMsg}, e);
 			}
@@ -707,7 +707,7 @@
 			}
 
 			var host = $location.host();
-			return YoutubePlayerApi.load().then(function() {
+			return YTScriptLoader.load().then(function() {
 				return new YT.Player(divId, {
 					videoId: videoID,
 					//enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&wmode=transparent
