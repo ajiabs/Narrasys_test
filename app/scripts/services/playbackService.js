@@ -199,7 +199,7 @@
 			var time = getMetaProp('time', pid);
 			var duration = getMetaProp('duration', pid);
 
-			if (time >= duration) {
+			if (time >= duration && pid === _mainPlayerId) {
 				return restartFn();
 			}
 
