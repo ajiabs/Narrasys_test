@@ -28,7 +28,7 @@
 		var _tmpStateChangeListeners = [];
 		var _type = 'youtube';
 		var _isBuffering;
-		var _WAITFORBUFFERING = 3 * 1000;
+		var _WAITFORBUFFERING = 7 * 1000;
 
 		var _youtubeMetaObj = {
 			instance: null,
