@@ -536,34 +536,28 @@
 			var currentState = playerState(pid);
 
 			if (_existy(p)) {
-				if (currentState === 'video cued') {
-					switch(lastState) {
-						case 'paused':
-						case 'playing':
-							/* falls through */
-							p.cueVideoById(ytId, t);
-							break;
-						case 'video cued':
+				//for seeking before the video has started
+				if (currentState === 'video cued' && lastState === 'video cued') {
 
-							if (pid === _mainPlayerId) {
-								//if we're in video cued and we are not restarting, e.g. seeking in the paused state
-								//then we want to immediately pause after playback resumes.
-								// (to get the correct frame of video visible)
-								if (t > 0.1) {
-									//to ignore next play to not generate a false playing analytics
-									_tmpStateChangeListeners = _stateChangeCallbacks;
-									_stateChangeCallbacks = [seekPauseListener];
-								}
-								_tryCommand(p, 'seekTo', t);
-							} else {
-								p.cueVideoById(ytId, t);
-							}
-							break;
+					if (pid === _mainPlayerId) {
+						//if we're in video cued and we are not restarting, e.g. seeking in the paused state
+						//then we want to immediately pause after playback resumes.
+						// (to get the correct frame of video visible)
+						if (t > 0.1) {
+							//to ignore next play to not generate a false playing analytics
+							_tmpStateChangeListeners = _stateChangeCallbacks;
+							_stateChangeCallbacks = [seekPauseListener];
+						}
+						_tryCommand(p, 'seekTo', t);
+					} else {
+						//for saving state on embeds
+						p.cueVideoById(ytId, t);
 					}
+
 				} else {
+					//regular seek
 					_tryCommand(p, 'seekTo', t);
 				}
-
 			}
 
 			function seekPauseListener(event) {
