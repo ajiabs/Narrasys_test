@@ -197,6 +197,9 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.seek = function (t, method, eventID) {
+		        if(playbackService.getMetaProp('ready') !== true) {
+			    return;
+		        }
 			playbackService.pauseOtherPlayers();
 			var duration = playbackService.getMetaProp('duration');
 

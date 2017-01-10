@@ -137,7 +137,9 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function play(playerId) {
+		    if(getMetaProp('ready', _setPid(playerId)) === true ) {
 			_playerInterfaces[_setPid(playerId)].play(_setPid(playerId));
+		    }
 		}
 		/**
 		 * @ngdoc method
@@ -148,7 +150,9 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function pause(playerId) {
+		    if(getMetaProp('ready', _setPid(playerId)) === true ) {
 			_playerInterfaces[_setPid(playerId)].pause(_setPid(playerId));
+		    }
 		}
 		/**
 		 * @ngdoc method
@@ -160,7 +164,9 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function seek(t, playerId) {
+		    if(getMetaProp('ready', _setPid(playerId)) === true ) {
 			_playerInterfaces[_setPid(playerId)].seekTo(_setPid(playerId), t);
+		    }
 		}
 		/**
 		 * @ngdoc method
