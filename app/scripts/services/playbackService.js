@@ -75,7 +75,8 @@
 			handle$Destroy: handle$Destroy,
 			resetPlaybackService: resetPlaybackService,
 			stop: stop,
-			allowPlayback: allowPlayback
+			allowPlayback: allowPlayback,
+			togglePlayback: togglePlayback
 		};
 		/*
 			PUBLIC METHODS
@@ -183,7 +184,31 @@
 					state === 'ended' ||
 					state === 'player ready');
 		}
+		/**
+		 * @ngdoc method
+		 * @name #togglePlayback
+		 * @methodOf iTT.service:playbackService
+		 * @description
+		 * static method which is bound to play/pause buttons / video mask.
+		 * @param {String} pid id of the player to drive
+		 * @param {Function} restartFn function to call when restarting.
+		 */
+		function togglePlayback(pid, restartFn) {
+			pid = _setPid(pid);
+			var state = getPlayerState(pid);
+			var time = getMetaProp('time', pid);
+			var duration = getMetaProp('duration', pid);
 
+			if (time >= duration) {
+				return restartFn();
+			}
+
+			if (allowPlayback(state) === true) {
+				play(pid);
+			} else {
+				pause(pid);
+			}
+		}
 		/**
 		 * @ngdoc method
 		 * @name #pauseOtherPlayers

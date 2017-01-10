@@ -65,18 +65,7 @@ function ittVideo() {
 
 		//video mask controls
 		function videoClick() {
-			var state = playbackService.getPlayerState(ctrl.playerId);
-
-			if (playbackService.getTimelineState() === 'ended') {
-				timelineSvc.restartEpisode();
-				return;
-			}
-
-			if (playbackService.allowPlayback(state)) {
-				playbackService.play(ctrl.playerId);
-			} else {
-				playbackService.pause(ctrl.playerId);
-			}
+			playbackService.togglePlayback(ctrl.playerId, timelineSvc.restartEpisode);
 		}
 
 		function setCssClass() {

@@ -21,16 +21,7 @@ angular.module('com.inthetelling.story')
 		}
 
 		function timelineBtnClick() {
-			var state = _getTimelineState();
-			if (state === 'ended') {
-				timelineSvc.restartEpisode();
-				return;
-			}
-			if (playbackService.allowPlayback(state) === true) {
-				timelineSvc.play();
-			} else {
-				timelineSvc.pause();
-			}
+			playbackService.togglePlayback(null, timelineSvc.restartEpisode);
 		}
 
 		function _getTimelineState() {
