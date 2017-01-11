@@ -82,6 +82,8 @@ angular.module('com.inthetelling.story')
 				case 'ended':
 					//if the 'ended' event is fired from stepEvent
 					if (playbackService.getMetaProp('playerState') !== 0) {
+						_resetClocks();
+						playbackService.setMetaProp('time', playbackService.getMetaProp('duration'));
 						playbackService.stop();
 						// console.log('playerstate != 0 timelineSvc Ended');
 						analyticsSvc.captureEpisodeActivity("pause");
@@ -198,9 +200,9 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.seek = function (t, method, eventID) {
-		        if(playbackService.getMetaProp('ready') !== true) {
-			    return;
-		        }
+			if (playbackService.getMetaProp('ready') !== true) {
+				return;
+			}
 			playbackService.pauseOtherPlayers();
 			var duration = playbackService.getMetaProp('duration');
 
@@ -352,11 +354,12 @@ angular.module('com.inthetelling.story')
 		$interval(function() {
 
 			if (eventClockData && eventClockData.lastTimelineTime && eventClockData.lastVideoTime) {
-				console.log('last timeline time:', eventClockData.lastTimelineTime, 'last video time:', eventClockData.lastVideoTime)
+				console.log('last timeline time:', eventClockData.lastTimelineTime, 'last video time:', eventClockData.lastVideoTime, 'duration', playbackService.getMetaProp('duration'));
 			}
 		}, 1 * 1000);
 
 		var resetEventClock = function () {
+			console.log('RESET EVENT CLOCK');
 			eventClockData = {
 				lastTimelineTime: 0,
 				lastVideoTime: 0,
@@ -366,6 +369,7 @@ angular.module('com.inthetelling.story')
 		resetEventClock();
 
 		var startEventClock = function () {
+			console.log('START EVENT CLOCK');
 			if (eventClockData.running) {
 				return;
 			}
@@ -376,6 +380,10 @@ angular.module('com.inthetelling.story')
 		};
 
 		var stopEventClock = function () {
+			console.log('STOP EVENT CLOCK', playbackService.getCurrentTime());
+			// playbackService.setMetaProp('time', playbackService.getCurrentTime() || 0);
+
+
 			$timeout.cancel(eventTimeout);
 			resetEventClock();
 		};
@@ -466,6 +474,7 @@ angular.module('com.inthetelling.story')
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
 		var lastTick;
 		var startTimelineClock = function () {
+			console.log('START TIMELINE CLOCK');
 			lastTick = undefined;
 			$interval.cancel(clock); // safety belt, in case we're out of synch
 			clock = $interval(_tick, 20);
@@ -477,6 +486,7 @@ angular.module('com.inthetelling.story')
 
 			//in the event that the timelineClock is running but the eventClock is not, start the eventClock.
 			if (!eventClockData.running) {
+				console.log('detected running');
 				startEventClock();
 			}
 
