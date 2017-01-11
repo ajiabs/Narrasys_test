@@ -399,6 +399,7 @@ angular.module('com.inthetelling.story')
 			console.count('stepEvent');
 			console.log('vid time current', vidTime, 'last', eventClockData.lastVideoTime);
 			console.log('timelineTime', ourTime, 'last', eventClockData.lastTimelineTime);
+			console.log('diff', Math.abs(vidTime - ourTime));
 			console.groupEnd('times');
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
