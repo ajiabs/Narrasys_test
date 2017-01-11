@@ -504,9 +504,21 @@ angular.module('com.inthetelling.story')
 				// _resetClocks();
 			}
 
+		    var correctedForSlew = false;
+		    if(Math.abs(newTime - playbackService.getCurrentTime()) > 0.75) {
+			console.log("CORRECTING SLEW OF: ", Math.abs(newTime - playbackService.getCurrentTime()));
+			newTime = playbackService.getCurrentTime();
+			eventClockData.lastVideoTime = newTime;
+			eventClockData.lastTimelineTime = newTime;
+			correctedForSlew = true;
+		    }
 
 			playbackService.setMetaProp('time', newTime);
 			lastTick = thisTick;
+
+		    if(correctedForSlew === true) {
+			svc.updateEventStates();
+		    }
 		};
 
 		svc.init = function (episodeId) {
