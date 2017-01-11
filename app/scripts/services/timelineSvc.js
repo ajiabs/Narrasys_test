@@ -52,6 +52,11 @@ angular.module('com.inthetelling.story')
 		var timeMultiplier;
 		var parseTime = ittUtils.parseTime;
 
+
+		$interval(function() {
+			console.log('VIDEO TIME:', playbackService.getMetaProp('time'));
+		}, 1 * 1000);
+
 			//player states
 			// '-1': 'unstarted',
 			// '0': 'ended',
