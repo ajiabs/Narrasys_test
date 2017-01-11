@@ -351,15 +351,15 @@ angular.module('com.inthetelling.story')
 
 		var eventClockData;
 
-		$interval(function() {
-
-			if (eventClockData && eventClockData.lastTimelineTime && eventClockData.lastVideoTime) {
-				console.log('last timeline time:', eventClockData.lastTimelineTime, 'last video time:', eventClockData.lastVideoTime, 'duration', playbackService.getMetaProp('duration'));
-			}
-		}, 1 * 1000);
+		// $interval(function() {
+        //
+		// 	if (eventClockData && eventClockData.lastTimelineTime && eventClockData.lastVideoTime) {
+		// 		console.log('last timeline time:', eventClockData.lastTimelineTime, 'last video time:', eventClockData.lastVideoTime, 'duration', playbackService.getMetaProp('duration'));
+		// 	}
+		// }, 1 * 1000);
 
 		var resetEventClock = function () {
-			console.log('RESET EVENT CLOCK');
+			// console.log('RESET EVENT CLOCK');
 			eventClockData = {
 				lastTimelineTime: 0,
 				lastVideoTime: 0,
@@ -369,7 +369,7 @@ angular.module('com.inthetelling.story')
 		resetEventClock();
 
 		var startEventClock = function () {
-			console.log('START EVENT CLOCK');
+			// console.log('START EVENT CLOCK');
 			if (eventClockData.running) {
 				return;
 			}
@@ -380,7 +380,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var stopEventClock = function () {
-			console.log('STOP EVENT CLOCK', playbackService.getCurrentTime());
+			// console.log('STOP EVENT CLOCK', playbackService.getCurrentTime());
 			// playbackService.setMetaProp('time', playbackService.getCurrentTime() || 0);
 
 
@@ -389,13 +389,17 @@ angular.module('com.inthetelling.story')
 		};
 
 		var stepEvent = function (ignoreStopEvents) {
-
 			$timeout.cancel(eventTimeout);
 			if (playbackService.getTimelineState() !== 'playing') {
 				return;
 			}
 			var vidTime = playbackService.getCurrentTime();
 			var ourTime = playbackService.getMetaProp('time');
+			console.group('times');
+			console.count('stepEvent');
+			console.log('vid time current', vidTime, 'last', eventClockData.lastVideoTime);
+			console.log('timelineTime', ourTime, 'last', eventClockData.lastTimelineTime);
+			console.groupEnd('times');
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
@@ -474,7 +478,7 @@ angular.module('com.inthetelling.story')
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
 		var lastTick;
 		var startTimelineClock = function () {
-			console.log('START TIMELINE CLOCK');
+			// console.log('START TIMELINE CLOCK');
 			lastTick = undefined;
 			$interval.cancel(clock); // safety belt, in case we're out of synch
 			clock = $interval(_tick, 20);
@@ -487,7 +491,7 @@ angular.module('com.inthetelling.story')
 			//in the event that the timelineClock is running but the eventClock is not, start the eventClock.
 			if (!eventClockData.running) {
 				console.log('detected running');
-				startEventClock();
+				// startEventClock();
 			}
 
 			var newTime = parseFloat(playbackService.getMetaProp('time')) + (delta / 1000 * timeMultiplier);
