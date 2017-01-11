@@ -61,6 +61,9 @@ angular.module('com.inthetelling.story')
 			// '3': 'buffering',
 			// '5': 'video cued'
 			// '5': player ready
+
+		var startedBuffer;
+
 		function _onPlayerStateChange(state) {
 
 			// console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
@@ -94,6 +97,24 @@ angular.module('com.inthetelling.story')
 
 					break;
 				case 'playing':
+					console.log('playing');
+					// logDiff();
+					var now = new Date();
+
+					if (startedBuffer) {
+						console.log('diff? ',now - startedBuffer);
+						startedBuffer = undefined;
+					}
+
+					var currentTime = playbackService.getCurrentTime();
+					var ourTime = playbackService.getMetaProp('time');
+
+					if (Math.abs(ourTime - currentTime) > 0.75) {
+						playbackService.setMetaProp('time', currentTime);
+						console.count('fixing skew');
+					}
+
+
 					startTimelineClock();
 					startEventClock();
 					appState.videoControlsActive = true;
@@ -108,6 +129,8 @@ angular.module('com.inthetelling.story')
 					_resetClocks();
 					break;
 				case 'buffering':
+					console.log('buffering');
+					startedBuffer = new Date();
 					_resetClocks();
 					break;
 				case 'video cued':
@@ -335,6 +358,19 @@ angular.module('com.inthetelling.story')
 			playbackService.setVolume(vol);
 		};
 
+		function logDiff() {
+
+			var vidTime = playbackService.getCurrentTime();
+			var ourTime = playbackService.getMetaProp('time');
+
+			console.group('times');
+			console.count('stepEvent');
+			console.log('vid time current', vidTime, 'last', eventClockData.lastVideoTime);
+			console.log('timelineTime', ourTime, 'last', eventClockData.lastTimelineTime);
+			console.log('diff', Math.abs(vidTime - ourTime));
+			console.groupEnd('times');
+		}
+
 		// - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// Event clock
 
@@ -395,12 +431,12 @@ angular.module('com.inthetelling.story')
 			}
 			var vidTime = playbackService.getCurrentTime();
 			var ourTime = playbackService.getMetaProp('time');
-			console.group('times');
-			console.count('stepEvent');
-			console.log('vid time current', vidTime, 'last', eventClockData.lastVideoTime);
-			console.log('timelineTime', ourTime, 'last', eventClockData.lastTimelineTime);
-			console.log('diff', Math.abs(vidTime - ourTime));
-			console.groupEnd('times');
+			// console.group('times');
+			// console.count('stepEvent');
+			// console.log('vid time current', vidTime, 'last', eventClockData.lastVideoTime);
+			// console.log('timelineTime', ourTime, 'last', eventClockData.lastTimelineTime);
+			// console.log('diff', Math.abs(vidTime - ourTime));
+			// console.groupEnd('times');
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
