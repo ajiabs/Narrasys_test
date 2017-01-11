@@ -53,10 +53,6 @@ angular.module('com.inthetelling.story')
 		var parseTime = ittUtils.parseTime;
 
 
-		$interval(function() {
-			console.log('VIDEO TIME:', playbackService.getMetaProp('time'));
-		}, 1 * 1000);
-
 			//player states
 			// '-1': 'unstarted',
 			// '0': 'ended',
@@ -352,6 +348,13 @@ angular.module('com.inthetelling.story')
 		*/
 
 		var eventClockData;
+
+		$interval(function() {
+
+			if (eventClockData && eventClockData.lastTimelineTime && eventClockData.lastVideoTime) {
+				console.log('last timeline time:', eventClockData.lastTimelineTime, 'last video time:', eventClockData.lastVideoTime)
+			}
+		}, 1 * 1000);
 
 		var resetEventClock = function () {
 			eventClockData = {
