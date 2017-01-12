@@ -560,7 +560,7 @@
 							break;
 					}
 				} else {
-					_tryCommand(p, 'seekTo', t);
+					_tryCommand(p, 'seekTo', t, true);
 				}
 
 			}
@@ -807,10 +807,12 @@
 		 * @param {String | Number} val the val to set
 		 * @returns {Void |String | Number} returns void, or the getter value.
 		 */
-		function _tryCommand(instance, command, val) {
+		function _tryCommand(instance, command, val, bool) {
 			var returnVal;
 			try {
-				if (_existy(val)) {
+				if (_existy(val) && _existy(bool)) {
+					instance[command](val, bool);
+				} else if (_existy(val)) {
 					instance[command](val);
 				} else {
 					//some getters return a value, i.e. getPlayerState
