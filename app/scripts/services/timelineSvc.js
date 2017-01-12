@@ -111,6 +111,7 @@ angular.module('com.inthetelling.story')
 
 					if (Math.abs(ourTime - currentTime) > 0.75) {
 						playbackService.setMetaProp('time', currentTime);
+					        stepEvent(true);
 						console.count('fixing skew');
 					}
 
@@ -528,7 +529,7 @@ angular.module('com.inthetelling.story')
 			//in the event that the timelineClock is running but the eventClock is not, start the eventClock.
 			if (!eventClockData.running) {
 				console.log('detected running');
-				// startEventClock();
+				startEventClock();
 			}
 
 			var newTime = parseFloat(playbackService.getMetaProp('time')) + (delta / 1000 * timeMultiplier);
