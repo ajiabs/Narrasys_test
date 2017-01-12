@@ -800,6 +800,7 @@
 			videoElement.addEventListener('pause', onPause);
 			videoElement.addEventListener('playing', onPlaying);
 			videoElement.addEventListener('waiting', onBuffering);
+			videoElement.addEventListener('seeked', onBuffering);
 			videoElement.addEventListener('canplay', onCanPlay);
 			videoElement.addEventListener('ended', onEnded);
 		}
@@ -821,6 +822,7 @@
 				videoElement.removeEventListener('pause', onPause);
 				videoElement.removeEventListener('playing', onPlaying);
 				videoElement.removeEventListener('waiting', onBuffering);
+				videoElement.removeEventListener('seeked', onBuffering);
 				videoElement.removeEventListener('canplay', onCanPlay);
 				videoElement.removeEventListener('ended', onEnded);
 			}
