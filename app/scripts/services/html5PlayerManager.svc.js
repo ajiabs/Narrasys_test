@@ -350,7 +350,6 @@
 		 * @returns {Void} returns void but will emit a 'playing' event.
 		 */
 		function onPlaying() {
-			console.log('on playing');
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 1);
 			_emitStateChange(instance);
@@ -386,7 +385,6 @@
 		 * @returns {Void} returns void but will emit a 'buffering' event.
 		 */
 		function onBuffering() {
-			console.log('on buffering');
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(instance);
