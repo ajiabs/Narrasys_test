@@ -149,6 +149,11 @@ an instance of playerManager.</p>
 </div></td></tr><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setvolume-page"><p>Optional input param.</p>
 </div> <p><em>(default: mainPlayerId)</em></p></td></tr></tbody></table></div>
 </li>
+<li><h3 id="methods_stop">stop(playerId)</h3>
+<div class="stop"><div class="-stop-page"><p>for calling stop for youtube videos</p>
+</div><h5 id="methods_stop_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-stop-page"><p>unique id of the player to command</p>
+</div></td></tr></tbody></table></div>
+</li>
 <li><h3 id="methods_togglemute">toggleMute(playerId)</h3>
 <div class="togglemute"><div class="-togglemute-page"><p>Invokes the &#39;toggleMute&#39; method on all playerManagers with the passed input id.</p>
 </div><h5 id="methods_togglemute_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-togglemute-page"><p>Optional input param.</p>
@@ -211,6 +216,11 @@ timelineSvc if the event came from the mainVideo.</p>
 <div class="_statechangecb"><div class="-statechangecb-page"><p>queries the bufferedPercent meta object prop on a 200ms interval</p>
 </div><h5 id="methods__statechangecb_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-number">Number</a></td><td><div class="-statechangecb-page"><p>returns the percent of buffering for the main video</p>
 </div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getbufferedpercent">getBufferedPercent(playerId)</h3>
+<div class="getbufferedpercent"><div class="getbufferedpercent-page"><p>for drawing the amount of video that has buffered in the timeline.</p>
+</div><h5 id="methods_getbufferedpercent_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="getbufferedpercent-page"><p>unique id of the player to command</p>
+</div></td></tr></tbody></table></div>
 </li>
 </ul>
 </div>
