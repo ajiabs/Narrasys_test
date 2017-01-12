@@ -305,7 +305,7 @@
 			var state = getPlayerState(this.id);
 			if (state === 'playing' || state === 'buffering' && appState.isIEOrEdge === true) {
 				//manually fire onPlaying for IE/Edge only as to avoid duplicate onplaying events.
-				onPlaying.call(_getInstance(this.id));
+				onPlaying.call(this);
 			}
 		}
 
