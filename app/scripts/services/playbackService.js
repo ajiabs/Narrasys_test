@@ -110,6 +110,7 @@
 			if (mainPlayer) {
 				_mainPlayerId = id;
 				_pollBufferedPercent();
+
 			}
 
 			pm.seedPlayerManager(id, mainPlayer, parsedMedia[0].mediaSrcArr);
@@ -465,7 +466,14 @@
 				_emitStateChange('reset');
 			}
 		}
-
+		/**
+		 * @ngdoc method
+		 * @name #stop
+		 * @methodOf iTT.service:playbackService
+		 * @description
+		 * for calling stop for youtube videos
+		 * @param {String} playerId unique id of the player to command
+		 */
 		function stop(playerId) {
 			_playerInterfaces[_setPid(playerId)].stop(_setPid(playerId));
 		}
@@ -474,6 +482,19 @@
 			PRIVATE METHODS
 		 */
 
+		/**
+		 * @ngdoc method
+		 * @name getBufferedPercent
+		 * @methodOf iTT.service:playbackService
+		 * @description
+		 * for drawing the amount of video that has buffered in the timeline.
+		 * @param {String} playerId unique id of the player to command
+		 * @private
+		 */
+		function _getBufferedPercent(pid) {
+			pid = _setPid(pid);
+			return _playerInterfaces[pid].getBufferedPercent(pid);
+		}
 		/**
 		 * @ngdoc method
 		 * @name _handleEmbedDestroy
@@ -621,7 +642,7 @@
 		 */
 		function _pollBufferedPercent() {
 			_mainPlayerBufferingPoll = $interval(function() {
-				setMetaProp('bufferedPercent', getMetaProp('bufferedPercent', _mainPlayerId), _mainPlayerId);
+				setMetaProp('bufferedPercent', _getBufferedPercent(_mainPlayerId), _mainPlayerId);
 			}, 200);
 		}
 		/**
