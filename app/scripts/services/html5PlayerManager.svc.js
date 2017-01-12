@@ -27,7 +27,7 @@
 	// 	4: 'HAVE_ENOUGH_DATA'
 	// }
 
-	function html5PlayerManager($interval, PLAYERSTATES, ittUtils) {
+	function html5PlayerManager($interval, PLAYERSTATES, ittUtils, appState) {
 		var _players = {};
 		var _mainPlayerId;
 		// var _checkInterval = 50.0;
@@ -301,6 +301,13 @@
 		/*
 		 HTML5 media event handlers
 		 */
+		function onSeeked() {
+			var state = getPlayerState(this.id);
+			if (state === 'playing' || state === 'buffering' && appState.isIEOrEdge === true) {
+				//manually fire onPlaying for IE/Edge only as to avoid duplicate onplaying events.
+				onPlaying.call(_getInstance(this.id));
+			}
+		}
 
 		/**
 		 * @ngdoc method
@@ -343,6 +350,7 @@
 		 * @returns {Void} returns void but will emit a 'playing' event.
 		 */
 		function onPlaying() {
+			console.log('on playing');
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 1);
 			_emitStateChange(instance);
@@ -378,11 +386,11 @@
 		 * @returns {Void} returns void but will emit a 'buffering' event.
 		 */
 		function onBuffering() {
+			console.log('on buffering');
 			var instance = _getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(instance);
 		}
-
 		/*
 		 Playback exported methods
 		 */
@@ -800,7 +808,7 @@
 			videoElement.addEventListener('pause', onPause);
 			videoElement.addEventListener('playing', onPlaying);
 			videoElement.addEventListener('waiting', onBuffering);
-			videoElement.addEventListener('seeked', onBuffering);
+			videoElement.addEventListener('seeked', onSeeked);
 			videoElement.addEventListener('canplay', onCanPlay);
 			videoElement.addEventListener('ended', onEnded);
 		}
@@ -822,7 +830,7 @@
 				videoElement.removeEventListener('pause', onPause);
 				videoElement.removeEventListener('playing', onPlaying);
 				videoElement.removeEventListener('waiting', onBuffering);
-				videoElement.removeEventListener('seeked', onBuffering);
+				videoElement.removeEventListener('seeked', onSeeked);
 				videoElement.removeEventListener('canplay', onCanPlay);
 				videoElement.removeEventListener('ended', onEnded);
 			}
