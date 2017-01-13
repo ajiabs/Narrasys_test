@@ -3,68 +3,62 @@
  */
 (function(){
 	"use strict";
+	/**
+	 * @ngdoc service
+	 * @name iTT.service:YTScriptLoader
+	 * @description
+	 * A service for downloading youtube player scripts
+	 * @requires $q
+	 * @requires $timeout
+	 */
 	angular.module('com.inthetelling.story')
-		.service('YoutubePlayerApi', YoutubePlayerApi);
+		.factory('YTScriptLoader', YTScriptLoader);
 
-	function YoutubePlayerApi($timeout, $q) {
-		this.$q = $q;
-		this.$timeout = $timeout;
-		//this.timesRan = 0;
+	function YTScriptLoader($q, $timeout) {
+		//allow 2 seconds download time per each try
+		//4 seconds total, as on first error, we retry
+		//see YoutubePlayerManager#create
+		var TIMEOUT = 2 * 1000;
+		return {
+			load: load
+		};
+
+		/**
+		 * @ngdoc method
+		 * @name #load
+		 * @methodOf iTT.service:YTScriptLoader
+		 * @description
+		 * for injecting the youtube.com/iframe_api script which in turn async downloads
+		 * www-widgetapi script
+		 * @returns {Promise} returns Promise<Void>
+		 */
+		function load() {
+			var doReject;
+			return $q(function(resolve, reject) {
+
+				doReject = $timeout(reject, TIMEOUT);
+
+				//check for YT global
+				if (typeof(YT) == 'undefined' || typeof(YT.Player) == 'undefined') { //jshint ignore:line
+					var url = '//www.youtube.com/iframe_api';
+					var tag = document.createElement('script');
+					tag.src = url;
+					tag.id  = 'yt-iframe-api';
+					var firstScriptTag = document.getElementsByTagName('script')[0];
+					firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+				} else {
+					//we have already fired onYoutubeIframeAPIReady
+					$timeout.cancel(doReject);
+					resolve();
+				}
+
+				window.onYouTubeIframeAPIReady = function() {
+					//youtube.com/iframe_api script will invoke
+					//this function after it downloads www-widgetapi script.
+					$timeout.cancel(doReject);
+					resolve();
+				};
+			});
+		}
 	}
-
-	YoutubePlayerApi.prototype.load = function() {
-		this.dfd = this.$q.defer();
-		//pass the promise where it can be resolved when onYoutubeIframeReady cb fires.
-		this.onYouTubeIframeAPIReady(this.dfd);
-		if (this.checkForScriptTag(this.dfd) === false) {
-			var url = '//www.youtube.com/iframe_api';
-			var tag = document.createElement('script');
-			tag.src = url;
-			tag.id  = 'yt-iframe-api';
-			var firstScriptTag = document.getElementsByTagName('script')[0];
-			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-		}
-
-		this.cancelIframe = this.$timeout(function(){
-			//attempting to call reject after promise resolves results in a noop.
-			this.dfd.reject('too long!');
-		}.bind(this), 2000);
-
-		return this.dfd.promise;
-	};
-
-	YoutubePlayerApi.prototype.onYouTubeIframeAPIReady = function(dfd) {
-		window.onYouTubeIframeAPIReady = function() {
-			dfd.resolve();
-			this.$timeout.cancel(this.cancelIframe);
-		}.bind(this);
-	};
-
-	//for testing purposes
-	//YoutubePlayerApi.prototype.fails = function(times, dfd) {
-	//	if (this.timesRan < times) {
-	//		this.timesRan++;
-	//		dfd.reject();
-	//	}
-	//};
-
-	YoutubePlayerApi.prototype.checkForScriptTag = function(dfd) {
-		var scriptTags = document.getElementsByTagName('script');
-		var firstIframe = document.getElementById('yt-iframe-api');
-		var found = false;
-		var i = 0, len = scriptTags.length;
-		for (i; i < len; i++) {
-			if (scriptTags[i].getAttribute('id') === 'www-widgetapi-script') {
-				found = true;
-				dfd.resolve();
-				break;
-			}
-		}
-
-		if(firstIframe) {
-			return;
-		}
-
-		return found;
-	};
 })();

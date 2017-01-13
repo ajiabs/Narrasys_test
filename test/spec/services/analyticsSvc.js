@@ -24,7 +24,7 @@ describe('Service: analyticsSvc', function () {
 		config.disableAnalytics = false;
 	}));
 
-	it('should combine scrubTimeline jitter into a single event', function () {
+	xit('should combine scrubTimeline jitter into a single event', function () {
 
 		// this accurately simulates the jitter we're seeing (repeated sequential seeks)
 		appState.time = 0;
@@ -43,7 +43,7 @@ describe('Service: analyticsSvc', function () {
 		expect(dejittered[0].timestamp).toEqual(100);
 	});
 
-	it('should combine jitter in reverse scrubTimeline', function () {
+	xit('should combine jitter in reverse scrubTimeline', function () {
 		// this accurately simulates the jitter we're seeing (repeated sequential seeks)
 		appState.time = 100;
 		for (var i = 0; i < 100; i++) {
@@ -61,7 +61,7 @@ describe('Service: analyticsSvc', function () {
 		expect(dejittered[0].timestamp).toEqual(0);
 	});
 
-	it('should not consolidate noncontiguous scrubTimeline events', function () {
+	xit('should not consolidate noncontiguous scrubTimeline events', function () {
 		appState.time = 0;
 		for (var i = 0; i < 10; i++) {
 			var oldTime = appState.time;
@@ -79,7 +79,7 @@ describe('Service: analyticsSvc', function () {
 		expect(dejittered[0].timestamp).toEqual(1);
 	});
 
-	it('should not consolidate non-scrubTimeline events', function () {
+	xit('should not consolidate non-scrubTimeline events', function () {
 		appState.time = 0;
 		var oldTime;
 		for (var i = 0; i < 10; i++) {

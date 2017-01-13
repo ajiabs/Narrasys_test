@@ -5,7 +5,7 @@
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
 
 angular.module('com.inthetelling.story')
-	.directive('ittTimeline', function ($rootScope, $timeout, appState, timelineSvc, modelSvc) {
+	.directive('ittTimeline', function ($rootScope, $timeout, appState, timelineSvc, modelSvc, playbackService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -15,18 +15,19 @@ angular.module('com.inthetelling.story')
 			link: function (scope, element) {
 				// console.log('ittTimeline', scope, element);
 				scope.appState = appState;
+
 				scope.timeline = timelineSvc;
 				scope.handlePosition = 0; // position of draghandle (as a fraction of full timeline)
 				scope.zoomLevel = 1; // multiples by which the timeline is zoomed in
 				scope.zoomOffset = 0; // multiple by which the timeline is offset to the left
 
 				// Prevent this from being visible on touchscreens before playback, to allow youtube to init from direct user input
-				if (appState.isTouchDevice && !appState.hasBeenPlayed) {
+				if (appState.isTouchDevice && !playbackService.getMetaProp('hasBeenPlayed')) {
 					scope.isSuppressed = true;
 				}
 
 				var watch = scope.$watch(function () {
-					return appState.hasBeenPlayed;
+					return playbackService.getMetaProp('hasBeenPlayed');
 				}, function (wasPlayed) {
 					if (wasPlayed === true) {
 						scope.isSuppressed = false;
@@ -48,7 +49,7 @@ angular.module('com.inthetelling.story')
 
 					scope.savedZoomLevel = scope.zoomLevel;
 					var itemLength = item.end_time - item.start_time;
-					var toEnd = (appState.duration - item.end_time);
+					var toEnd = (playbackService.getMetaProp('duration') - item.end_time);
 
 					// toEnd/itemLength puts the item end at the right edge of the visible playhead.
 					// trim it back by 40% for some wiggle room, and cap it at 2000% zoom so we don't go nuts on short-duration events
@@ -256,7 +257,7 @@ angular.module('com.inthetelling.story')
 
 				// adjust the position of the playhead after a scale change:
 				var zoom = function () {
-					scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
+					scope.zoomOffset = -((scope.zoomLevel - 1) * (playbackService.getMetaProp('time') / playbackService.getMetaProp('duration')));
 					// console.log("zoom().scope.zoomOffset = ", scope.zoomOffset);
 					// console.log("zoom().scope.zoomLevel = ", scope.zoomLevel);
 					timelineNode.stop().animate({
@@ -271,12 +272,12 @@ angular.module('com.inthetelling.story')
 				// cosmetic: stop watching while zoom-animation is in progress
 				scope.$watch(function () {
 					return {
-						t: appState.time,
-						d: appState.duration,
+						t: playbackService.getMetaProp('time'),
+						d: playbackService.getMetaProp('duration')
 					};
 				}, function () {
 					if (!scope.stopWatching) {
-						scope.zoomOffset = -((scope.zoomLevel - 1) * (appState.time / appState.duration));
+						scope.zoomOffset = -((scope.zoomLevel - 1) * (playbackService.getMetaProp('time') / playbackService.getMetaProp('duration')));
 						if (timelineNode) {
 							timelineNode.css({
 								"left": (scope.zoomOffset * 100) + '%'
@@ -294,6 +295,7 @@ angular.module('com.inthetelling.story')
 
 				var startSeek = function (evt) {
 					// console.log('startSeek');
+					playbackService.pauseOtherPlayers();
 					$timeout(function () {
 						// short delay for visibility of handle (don't want it when just clicking)
 						scope.seekHandleVisible = true;
@@ -313,10 +315,10 @@ angular.module('com.inthetelling.story')
 
 				/* SxS. Needed to position the edit handle when not actively dragging timeline */
 				scope.$watch(function () {
-					return appState.time;
+					return playbackService.getMetaProp('time');
 				}, function () {
 					if (appState.editEvent) {
-						scope.willSeekTo = appState.time;
+						scope.willSeekTo = playbackService.getMetaProp('time');
 					}
 				});
 
@@ -327,20 +329,20 @@ angular.module('com.inthetelling.story')
 					if (!scope.isSeeking) {
 						return;
 					}
-
+					var currentDuration = playbackService.getMetaProp('duration');
 					// timelineNode is the full timeline, including offscreen portions if zoomed in.
 					// So this math gives how far the pointer is in the full timeline as a percentage,
 					// multiplied by the real duration, which gives the real time.
 					scope.willSeekTo = (evt.clientX - timelineNode.offset()
-						.left) / timelineNode.width() * appState.duration;
+						.left) / timelineNode.width() * currentDuration;
 
 					// ios is still registering drags outside the visible boundaries of the timeline,
 					// so need to do some sanity checking here:
 					if (scope.willSeekTo < 0) {
 						scope.willSeekTo = 0;
 					}
-					if (scope.willSeekTo > appState.duration) {
-						scope.willSeekTo = appState.duration;
+					if (scope.willSeekTo > currentDuration) {
+						scope.willSeekTo = currentDuration;
 					}
 				};
 
@@ -348,7 +350,7 @@ angular.module('com.inthetelling.story')
 					// console.log("timeline mouseup or touchend");
 					scope.stopWatching = true;
 					scope.enableAutoscroll(); // in playerController
-					timelineSvc.seek(scope.willSeekTo, "scrubTimeline");
+					timelineSvc.seek(scope.willSeekTo, 'scrubTimeline');
 					zoom();
 				};
 

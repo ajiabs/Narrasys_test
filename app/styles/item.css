@@ -274,13 +274,6 @@ Inline images (TODO show these only when image is larger than available space) *
 
 /*============================ ============================ ============================
   inline item detail */
-
-.itemDetail img,
-.itemDetail iframe {
-	width: 100%;
-	background-color: #FFF;
-}
-
 .itemDetail.ng-enter,
 .itemDetail.ng-leave {
 	transition: 1s all;
@@ -312,13 +305,14 @@ Inline images (TODO show these only when image is larger than available space) *
   Modal overlay */
 
 .modal {
-	position: fixed;
-	left: 5%;
-	right: 5%;
-	top: 10%;
-	bottom: 5%;
-	overflow: auto;
 	transition: 1s all;
+	max-height: calc(100% - 100px);
+	position: fixed;
+	width: 75%;
+	top: 30%;
+	left: 50%;
+	height: 80%;
+	transform: translate(-50%, -40%);
 }
 
 .modal.ng-enter,

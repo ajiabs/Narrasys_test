@@ -14,7 +14,13 @@
 		<div class="modalmenu" ng-if="!item.noExternalLink">
 			<a ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 		</div>
-		<itt-iframe x-src="{{item.url}}" item="item"></itt-iframe>
+		<itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
+		<itt-video
+			ng-if="item.isVideoUrl"
+			media-src-arr="[item.url]"
+			player-id="item._id"
+			main-player="false">
+		</itt-video>
 	</div>
 	<div class="clear"></div>
 </div>

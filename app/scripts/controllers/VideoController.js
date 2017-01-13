@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 // TODO youtube support for multiple playback speeds?
@@ -11,7 +12,9 @@
 // babysitters and stalls are disabled on phone therefore.
 
 angular.module('com.inthetelling.story')
-	.controller('VideoController', function ($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
+	.controller('VideoController', angular.noop);
+
+function VideoController($q, $scope, $rootScope, $timeout, $interval, $window, $document, appState, timelineSvc, analyticsSvc, youTubePlayerManager) {
 		//exported functions / props
 		angular.extend($scope, {
 			initVideo: initVideo,
@@ -121,7 +124,7 @@ angular.module('com.inthetelling.story')
 
 			timelineSvc.registerVideo($scope);
 
-			 //but we still need to wait for youtube to Do More Stuff, apparently:
+			//but we still need to wait for youtube to Do More Stuff, apparently:
 			$scope.$watch(function () {
 				return youTubePlayerManager.getVideoLoadedFraction($scope.videoNode.id);
 			}, function (cur) {
@@ -177,22 +180,22 @@ angular.module('com.inthetelling.story')
 				});
 
 				// TODO according to the html5 spec, the way we should change the video stream is like this. but iOS (at least) chokes on it:
-				/*
-								if ($scope.videoNode.currentSrc !== '') {
-									var ext = $scope.videoNode.currentSrc.match(/\.(\w+)$/)[1];
-									if ($scope.video.urls[ext][0] !== $scope.videoNode.currentSrc) {
+				/!*
+				 if ($scope.videoNode.currentSrc !== '') {
+				 var ext = $scope.videoNode.currentSrc.match(/\.(\w+)$/)[1];
+				 if ($scope.video.urls[ext][0] !== $scope.videoNode.currentSrc) {
 
-										var currentTime = $scope.videoNode.currentTime;
-										$scope.videoNode.pause();
-										$scope.videoNode.src = $scope.video.urls[ext][0];
-										$scope.videoNode.load();
-										$scope.seek(currentTime);
-										$timeout(function () {
-											$scope.videoNode.play();
-										});
-									}
-								}
-				*/
+				 var currentTime = $scope.videoNode.currentTime;
+				 $scope.videoNode.pause();
+				 $scope.videoNode.src = $scope.video.urls[ext][0];
+				 $scope.videoNode.load();
+				 $scope.seek(currentTime);
+				 $timeout(function () {
+				 $scope.videoNode.play();
+				 });
+				 }
+				 }
+				 *!/
 
 			}
 
@@ -246,32 +249,32 @@ angular.module('com.inthetelling.story')
 
 			timelineSvc.registerVideo($scope);
 
-			/* For future reference, all html5 events:
-				loadstart
-				canplaythrough
-				canplay
-				loadeddata
-				loadedmetadata
-				abort
-				emptied
-				error
-				stalled
-				suspend
-				waiting
-				pause
-				play
-				volumechange
-				playing
-				seeked
-				seeking
-				durationchange
-				progress
-				ratechange
-				timeupdate
-				ended
-				webkitbeginfullscreen
-				webkitendfullscreen
-			*/
+			/!* For future reference, all html5 events:
+			 loadstart
+			 canplaythrough
+			 canplay
+			 loadeddata
+			 loadedmetadata
+			 abort
+			 emptied
+			 error
+			 stalled
+			 suspend
+			 waiting
+			 pause
+			 play
+			 volumechange
+			 playing
+			 seeked
+			 seeking
+			 durationchange
+			 progress
+			 ratechange
+			 timeupdate
+			 ended
+			 webkitbeginfullscreen
+			 webkitendfullscreen
+			 *!/
 
 		} // end of initHTML5Video
 
@@ -307,7 +310,7 @@ angular.module('com.inthetelling.story')
 
 		function pause() {
 			if ($scope.videoType === 'youtube') {
-				 // in case t has drifted
+				// in case t has drifted
 				youTubePlayerManager.seekTo($scope.videoNode.id, appState.time, true);
 				youTubePlayerManager.pause($scope.videoNode.id);
 			} else {
@@ -478,4 +481,5 @@ angular.module('com.inthetelling.story')
 		}
 
 		$scope.$on('$destroy', _destroyMe);
-	});
+	}
+*/

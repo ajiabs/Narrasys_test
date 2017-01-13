@@ -1,6 +1,6 @@
 'use strict';
 
-/* 
+/*
 There are two separate types of user activity to capture, which go to separate API endpoints.
 Some types must contain additional info in a "data" object:
 
@@ -30,7 +30,7 @@ Different types of event can define their own interactions, but the core ones wi
 */
 
 angular.module('com.inthetelling.story')
-	.factory('analyticsSvc', function ($q, $http, $routeParams, $interval, config, appState) {
+	.factory('analyticsSvc', function ($q, $http, $routeParams, $interval, config, appState, playbackService) {
 		// console.log('analyticsSvc factory');
 		var svc = {};
 
@@ -48,9 +48,12 @@ angular.module('com.inthetelling.story')
 
 		// for episode-related activity
 		svc.captureEpisodeActivity = function (name, data) {
+
 			if (config.disableAnalytics) {
 				return;
 			}
+
+
 			if (
 				(appState.user && appState.user._id) &&
 				(!appState.user.track_episode_metrics)
@@ -60,7 +63,8 @@ angular.module('com.inthetelling.story')
 			var userActivity = {
 				"name": name,
 				"walltime": new Date(),
-				"timestamp": appState.time, // TODO this is timeline time, we want episode time!
+				//if metaProps time hasn't been set,
+				"timestamp": playbackService.getMetaProp('time') || 0 // TODO this is timeline time, we want episode time!
 			};
 			if (data) {
 				userActivity.data = data;
@@ -91,12 +95,12 @@ angular.module('com.inthetelling.story')
 		svc.forceCaptureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
 			svc.captureEventActivity(name, eventID, data, true);
-			return svc.flushActivityQueue(); //this is async, and returns a promise.	
+			return svc.flushActivityQueue(); //this is async, and returns a promise.
 		};
 		svc.captureEventActivityWithPromise = function (name, eventID, data) {
 			//we know this is syncronous
 			svc.captureEventActivity(name, eventID, data);
-			return svc.flushActivityQueue(); //this is async, and returns a promise.	
+			return svc.flushActivityQueue(); //this is async, and returns a promise.
 		};
 
 		// read from API:

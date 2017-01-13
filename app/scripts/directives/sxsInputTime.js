@@ -3,20 +3,20 @@
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
 
 angular.module('com.inthetelling.story')
-	.directive('sxsInputTime', function (appState, $rootScope, $timeout, modelSvc, timelineSvc) {
+	.directive('sxsInputTime', function (appState, $rootScope, $timeout, modelSvc, timelineSvc, playbackService) {
 		return {
 			// require: 'ngModel',
 			scope: {
-				item: '=sxsInputTime',
+				item: '=sxsInputTime'
 			},
 			templateUrl: 'templates/producer/inputtime.html',
 			link: function (scope, elem, attrs) {
-
+				scope.playbackService = playbackService;
 				scope.parse = function (data) {
 					// console.log("Converting view ", data, " to model");
 					var ret;
 					if (data === undefined || data === '') {
-						ret = appState.time;
+						ret = playbackService.getMetaProp('time');
 					} else if (isNaN(data)) {
 						var mss = data.split(':');
 						if (mss.length === 2) {
@@ -28,7 +28,7 @@ angular.module('com.inthetelling.story')
 							}
 							ret = (Number(mss[0]) * 60 + Number(mss[1]));
 						} else {
-							ret = appState.time;
+							ret = playbackService.getMetaProp('time');
 						}
 					} else {
 						ret = data;
@@ -76,7 +76,7 @@ angular.module('com.inthetelling.story')
 					};
 				} else {
 					scope.scene = function () {
-						return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, appState.time);
+						return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, playbackService.getMetaProp('time'));
 					};
 				}
 

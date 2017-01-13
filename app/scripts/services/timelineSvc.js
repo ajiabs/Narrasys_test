@@ -32,96 +32,12 @@ TODO: have a way to delete a portion of the timeline (so sXs users can skip scen
 */
 
 angular.module('com.inthetelling.story')
-	.factory('timelineSvc', function ($window, $timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc) {
+	.factory('timelineSvc', function ($window, $timeout, $interval, $rootScope, $filter, config, modelSvc, appState, analyticsSvc, playbackService, PLAYERSTATES, ittUtils) {
 
 		var svc = {};
 
 		svc.timelineEvents = []; // each entry consists of {t:n, id:eventID|timeline, action:enter|exit|pause|play}. Keep sorted by t.
 		svc.markedEvents = []; // time, title of marked events (scenes, currently)
-
-		var clock;
-		var eventTimeout;
-		var videoScope;
-
-		var timeMultiplier;
-
-		svc.registerVideo = function (newVideoScope) {
-			// console.log("timelineSvc.registerVideo", newVideoScope);
-			if (videoScope !== undefined) {
-				// Route changes weren't always seeking to the correct time; this forces it on next $digest:
-				$timeout(function () {
-					svc.seek(appState.time);
-				});
-			}
-			videoScope = newVideoScope;
-		};
-
-		svc.unregisterVideo = function () {
-			videoScope = undefined;
-		};
-
-		svc.setSpeed = function (speed) {
-			// console.log("timelineSvc.setSpeed", speed);
-			timeMultiplier = speed;
-			appState.timeMultiplier = timeMultiplier; // here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
-			videoScope.setSpeed(speed);
-			stepEvent();
-		};
-
-		svc.play = function (nocapture) {
-			// console.log("timelineSvc.play", videoScope);
-			// On first play, we need to check if we need to show help menu instead; if so, don't play the video:
-			// (WARN this is a bit of a sloppy mixture of concerns.)
-
-			if (!appState.duration || appState.duration < 0.1) {
-				console.error("This episode has no duration");
-				return;
-			}
-
-			if (!appState.hasBeenPlayed) {
-				appState.hasBeenPlayed = true; // do this before the $emit, or else endless loop
-				$rootScope.$emit("video.firstPlay");
-				return; // playerController needs to catch this and either show the help pane or trigger play again
-			}
-
-			if (appState.time > appState.duration - 0.1) {
-				svc.seek(0.1); // fudge the time a bit to skip the landing scene
-				svc.play();
-			}
-
-			// wait until the video is ready:
-			if (videoScope === undefined) {
-				var unwatch = $rootScope.$watch(function () {
-					return videoScope !== undefined;
-				}, function (itIsReady) {
-					if (itIsReady) {
-						unwatch();
-						svc.play();
-					}
-				});
-				return;
-			}
-
-			// console.log("timelineSvc.play (passed preflight)");
-			appState.videoControlsActive = true;
-			appState.show.navPanel = false;
-			appState.timelineState = "buffering";
-
-			// For episodes embedded within episodes:
-			if ($window.parent !== $window) {
-				$window.parent.postMessage('pauseEpisodePlayback', '*'); // negligible risk in using a global here
-			}
-
-			videoScope.play().then(function () {
-				appState.timelineState = "playing";
-				startTimelineClock();
-				startEventClock();
-				if (!nocapture) {
-					analyticsSvc.captureEpisodeActivity("play");
-				}
-			});
-		};
-
 		if (!svc.enforceSingletonPauseListener) {
 			$window.addEventListener('message', function (e) {
 				if (e.data === 'pauseEpisodePlayback') {
@@ -129,82 +45,161 @@ angular.module('com.inthetelling.story')
 				}
 			}, false);
 		}
-		svc.enforceSingletonPauseListener = true; // this is probably unnecessary paranoia
 
-		svc.pause = function (nocapture) {
-			// console.log("timelineSvc.pause");
-			appState.videoControlsActive = true;
+		svc.enforceSingletonPauseListener = true; // this is probably unnecessary paranoia
+		var clock;
+		var eventTimeout;
+		var timeMultiplier;
+		var parseTime = ittUtils.parseTime;
+
+
+			//player states
+			// '-1': 'unstarted',
+			// '0': 'ended',
+			// '1': 'playing',
+			// '2': 'paused',
+			// '3': 'buffering',
+			// '5': 'video cued'
+			// '5': player ready
+		function _onPlayerStateChange(state) {
+
+			// console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
+
+			if (playbackService.getTimelineState() === 'ended' && (state === 'unstarted' || state === 'video cued')) {
+				return;
+			}
+
+			playbackService.setTimelineState(state);
+
+			switch (state) {
+				case 'reset':
+					_resetClocks();
+					playbackService.resetPlaybackService();
+					break;
+				case 'unstarted':
+
+					break;
+				case 'ended':
+					//if the 'ended' event is fired from stepEvent
+					if (playbackService.getMetaProp('playerState') !== 0) {
+						_resetClocks();
+						playbackService.setMetaProp('time', playbackService.getMetaProp('duration'));
+						playbackService.stop();
+						analyticsSvc.captureEpisodeActivity("pause");
+						return;
+					}
+					svc.pause();
+
+					break;
+				case 'playing':
+
+					var currentTime = playbackService.getCurrentTime();
+					var ourTime = playbackService.getMetaProp('time');
+
+					if (Math.abs(ourTime - currentTime) > 0.75) {
+						playbackService.setMetaProp('time', currentTime);
+						stepEvent(true);
+					}
+
+
+					startTimelineClock();
+					startEventClock();
+					appState.videoControlsActive = true;
+					appState.show.navPanel = false;
+					// For episodes embedded within episodes:
+					if ($window.parent !== $window) {
+						$window.parent.postMessage('pauseEpisodePlayback', '*'); // negligible risk in using a global here
+					}
+					analyticsSvc.captureEpisodeActivity("play");
+					break;
+				case 'paused':
+					_resetClocks();
+					break;
+				case 'buffering':
+					_resetClocks();
+					break;
+				case 'video cued':
+					var startAt = playbackService.getMetaProp('startAtTime');
+					var hasResumed = playbackService.getMetaProp('hasResumedFromStartAt');
+
+					if (startAt > 0 && hasResumed === false) {
+						// console.log('about to call startAtSpecificTime');
+						svc.startAtSpecificTime(startAt);
+					}
+					break;
+				case 'player ready':
+					svc.updateEventStates();
+					break;
+			}
+		}
+
+		function _resetClocks() {
 			$interval.cancel(clock);
+			appState.videoControlsActive = true;
 			stopEventClock();
 			clock = undefined;
 			lastTick = undefined;
+		}
 
-			appState.timelineState = "paused";
-			if (videoScope) {
-				videoScope.pause();
+		svc.setSpeed = function (speed) {
+			// console.log("timelineSvc.setSpeed", speed);
+			timeMultiplier = speed;
+			//here, and only here, make this public. (an earlier version of this tweaked the private timeMultiplier variable if the video and timeline fell out of synch.  Fancy.  Too fancy.  Didn't work. Stopped doing it.)
+			playbackService.setMetaProp('timeMultiplier', timeMultiplier);
+			playbackService.setSpeed(timeMultiplier);
+			stepEvent();
+		};
+
+		svc.restartEpisode = restartEpisode;
+		function restartEpisode() {
+			svc.seek(0.01);
+			svc.play();
+		}
+
+		svc.play = function () {
+			// console.log("timelineSvc.play");
+			// On first play, we need to check if we need to show help menu instead; if so, don't play the video:
+			// (WARN this is a bit of a sloppy mixture of concerns.)
+
+			var duration = playbackService.getMetaProp('duration');
+
+			if (!duration|| duration < 0.1) {
+				console.error("This episode has no duration");
+				return;
 			}
-			// TODO we're not using timed pauses yet...
-			// if (n) {
-			// 	$timeout(svc.play, (n * 1000 * Math.abs(timeMultiplier)));
-			// }
+
+			playbackService.play();
+		};
+
+		svc.pause = function (nocapture) {
+			_resetClocks();
+			playbackService.pause();
 
 			if (!nocapture) {
 				analyticsSvc.captureEpisodeActivity("pause");
 			}
 		};
 
-		svc.stall = function () {
-			console.warn("timelineSvc.stall");
-			// called by videoController when video stalls.  Essentially similar to pause() but sets different states
-			// (and doesn't tell the video to pause)
-			$interval.cancel(clock);
-			stopEventClock();
-			clock = undefined;
-			lastTick = undefined;
-			svc.wasPlaying = (appState.timelineState === "playing");
-			appState.timelineState = "buffering";
-		};
-
-		svc.unstall = function () {
-			// videoController will call this when ready
-			console.warn("timelineSvc.unstall");
-			if (svc.wasPlaying) {
-				appState.timelineState = "playing";
-				svc.play();
-			} else {
-				appState.timelineState = "paused";
-			}
-			svc.wasPlaying = undefined;
-		};
 
 		svc.startAtSpecificTime = function (t) {
-			if (!videoScope || appState.duration === 0) {
-				// if duration = 0, we're trying to seek to a time from a url param before the events
-				// have loaded.  Just poll until events load, that's good enough for now.
-				// TODO throw error and stop looping if this goes on too long
-				$timeout(function () {
-					svc.startAtSpecificTime(t);
-				}, 300);
-				return;
-			}
 
 			// Youtube on touchscreens can't auto-seek to the correct time, we have to wait for the user to init youtube manually.
-			if (appState.isTouchDevice && appState.hasBeenPlayed === false && videoScope.videoType === 'youtube') {
+			if (appState.isTouchDevice && playbackService.getMetaProp('hasBeenPlayed') === false && playbackService.getMetaProp('videoType') === 'youtube') {
 				//TODO in future it might be possible to trick YT into starting at the correct time even
-				//return;
+				return;
 			}
 
 			t = parseTime(t);
 			if (t < 0) {
 				t = 0;
 			}
-			if (t > appState.duration) {
-				t = appState.duration;
+			if (t > playbackService.getMetaProp('duration')) {
+				playbackService.setMetaProp('duration', t);
 			}
 
-			appState.time = t;
+			playbackService.setMetaProp('time', t);
+			playbackService.setMetaProp('hasResumedFromStartAt', true);
 			svc.updateEventStates();
-			videoScope.startAtTime(t);
 
 			analyticsSvc.captureEpisodeActivity("seek", {
 				method: "URLParameter"
@@ -212,92 +207,106 @@ angular.module('com.inthetelling.story')
 
 		};
 
-		// "method" and "eventID" are for analytics purposes
 		svc.seek = function (t, method, eventID) {
-			// console.log("timelineSvc.seek ", t, method, eventID);
-			if (!videoScope || appState.duration === 0) {
+			if (playbackService.getMetaProp('ready') !== true) {
+				return;
+			}
+			playbackService.pauseOtherPlayers();
+			var duration = playbackService.getMetaProp('duration');
+
+			var timelineState = playbackService.getTimelineState();
+
+			if (timelineState === 'ended') {
+				//to avoid restarting the video after the video has ended when the user initiates a seek
+				playbackService.setTimelineState('paused');
+			}
+
+			if (duration === 0) {
 				// if duration = 0, we're trying to seek to a time from a url param before the events
 				// have loaded.  Just poll until events load, that's good enough for now.
 				// TODO throw error and stop looping if this goes on too long
 				$timeout(function () {
 					// console.log("waiting for video to be ready");
-					svc.seek(t, method, eventID);
+					svc.seek(t);
 				}, 300);
 				return;
 			}
 
-			var oldT = appState.time; // for analytics
+			var captureData = {method: '', seekStart: playbackService.getMetaProp('time')};
 
 			t = parseTime(t);
 			if (t < 0) {
 				t = 0;
 			}
-			if (t > appState.duration) {
-				t = appState.duration;
-			}
-
-			// Lots of synch issues caused by seek during playback. Temporary workaround: pause, then seek, then play.
-			var wasPlaying = (appState.timelineState === "playing");
-			if (wasPlaying) {
-				// console.log("pausing playback before seek");
-				svc.pause(true);
+			if (t > duration) {
+				playbackService.setMetaProp('duration', t);
 			}
 
 			stopEventClock();
 
-			appState.time = t;
-			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
-			videoScope.seek(t, true);
 
+			playbackService.setMetaProp('time', t);
+			// youtube depends on an accurate appState.timelineState here, so don't modify that by calling svc.stall() before the seek:
+
+
+			playbackService.seek(t);
 			svc.updateEventStates();
-			// capture analytics data:
-			if (method) {
-				var captureData = {
-					"method": method,
-					"seekStart": oldT
-				};
-				if (eventID) {
+
+			//capture analytics
+
+			if (ittUtils.existy(method)) {
+				captureData.method = method;
+
+				if (ittUtils.existy(eventID)) {
+
 					captureData.event_id = eventID;
 				}
-				// console.log("capture", captureData);
-				analyticsSvc.captureEpisodeActivity("seek", captureData);
-			} else {
-				console.warn("timelineSvc.seek called without method.  Could be normal resynch, could be a bug");
-			}
 
-			// Restart playback after seek, unless they seeked (sought?) to a stop event
-			if (wasPlaying) {
-				var doRestart = true,
-					allowedLag = 150;
-				// make sure they didn't seek to a stop event:
-				for (var i = 0; i < svc.timelineEvents.length; i++) {
-					var evt = svc.timelineEvents[i];
-					if (evt.t > (t - allowedLag) && evt.action === 'pause') {
-						doRestart = false;
-					}
-					if (evt.t > t) {
-						break;
-					}
-				}
-				if (doRestart) {
-					$timeout(function () {
-						svc.play();
-					}, allowedLag);
-				}
+				analyticsSvc.captureEpisodeActivity('seek', captureData);
 			}
 		};
 
+		function _sceneArrowHelper(cond, evt, type) {
+			var seekTo;
+			if (cond === true) {
+
+				seekTo = evt.start_time;
+
+				//pad time if pressing next/prev scene and the time is near the landing screen
+				if (seekTo === 0.01) {
+					if (type === 'nextScene') {
+						seekTo = evt.start_time + 0.1;
+					} else {
+						//if the user clicks next scene (on an unstarted video), then prev scene
+						//remove the padding added from clicking 'next scene' so we can get back
+						//to the landing screen without having to click thru the first scene.
+						seekTo = evt.start_time - 0.1;
+					}
+
+				}
+
+				if (/endingscreen/.test(evt._id)) {
+					seekTo = playbackService.getMetaProp('duration');
+				}
+
+				svc.seek(seekTo, type);
+			}
+			if (evt.stop && playbackService.getMetaProp('time') === evt.start_time) {
+				svc.pause();
+			}
+
+			return cond === true;
+		}
+
 		svc.prevScene = function () {
 			for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
-				var now = appState.time;
-				if (appState.timelineState === 'playing') {
+
+
+				var now = playbackService.getMetaProp('time');
+				if (playbackService.getTimelineState() === 'playing' || playbackService.getTimelineState() === 'ended') {
 					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
 				}
-				if (svc.markedEvents[i].start_time < now) {
-					// console.log("Seeking to ", svc.markedEvents[i].start_time);
-					//scope.enableAutoscroll(); // TODO in playerController
-					svc.seek(svc.markedEvents[i].start_time, "prevScene");
-
+				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], 'prevScene') === true) {
 					break;
 				}
 			}
@@ -307,17 +316,14 @@ angular.module('com.inthetelling.story')
 		svc.nextScene = function () {
 			var found = false;
 			for (var i = 0; i < svc.markedEvents.length; i++) {
-				if (svc.markedEvents[i].start_time > appState.time) {
-					// console.log("Seeking to ", svc.markedEvents[i].start_time);
-					//scope.enableAutoscroll(); // TODO in playerController
-					svc.seek(svc.markedEvents[i].start_time, "nextScene");
+				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i], 'nextScene') === true) {
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
 				svc.pause();
-				svc.seek(appState.duration - 0.01, "nextScene");
+				svc.seek(playbackService.getMetaProp('duration') - 0.01, 'nextScene');
 				//scope.enableAutoscroll(); // in playerController
 			}
 		};
@@ -330,11 +336,11 @@ angular.module('com.inthetelling.story')
 
 		svc.toggleMute = function () {
 			appState.muted = !appState.muted;
-			videoScope.toggleMute();
+			playbackService.toggleMute();
 		};
 		svc.setVolume = function (vol) { // 0..100
 			appState.volume = vol;
-			videoScope.setVolume(vol);
+			playbackService.setVolume(vol);
 		};
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -354,31 +360,42 @@ angular.module('com.inthetelling.story')
 		var eventClockData;
 
 		var resetEventClock = function () {
+			// console.log('RESET EVENT CLOCK');
 			eventClockData = {
 				lastTimelineTime: 0,
-				lastVideoTime: 0
+				lastVideoTime: 0,
+				running: false
 			};
 		};
 		resetEventClock();
 
 		var startEventClock = function () {
-			eventClockData.lastTimelineTime = appState.time;
-			eventClockData.lastVideoTime = appState.time; // TODO this should be relative to episode, not timeline
+			// console.log('START EVENT CLOCK');
+			if (eventClockData.running) {
+				return;
+			}
+			eventClockData.running = true;
+			eventClockData.lastTimelineTime = playbackService.getMetaProp('time');
+			eventClockData.lastVideoTime = playbackService.getMetaProp('time'); // TODO this should be relative to episode, not timeline
 			stepEvent();
 		};
 
 		var stopEventClock = function () {
+			// console.log('STOP EVENT CLOCK', playbackService.getCurrentTime());
+			// playbackService.setMetaProp('time', playbackService.getCurrentTime() || 0);
+
+
 			$timeout.cancel(eventTimeout);
 			resetEventClock();
 		};
 
 		var stepEvent = function (ignoreStopEvents) {
 			$timeout.cancel(eventTimeout);
-			if (appState.timelineState !== 'playing') {
+			if (playbackService.getTimelineState() !== 'playing') {
 				return;
 			}
-			var vidTime = videoScope.currentTime();
-			var ourTime = appState.time;
+			var vidTime = playbackService.getCurrentTime();
+			var ourTime = playbackService.getMetaProp('time');
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
@@ -387,6 +404,12 @@ angular.module('com.inthetelling.story')
 			for (var i = 0; i < svc.timelineEvents.length; i++) {
 				var evt = svc.timelineEvents[i];
 				if (evt.t >= eventClockData.lastTimelineTime) {
+
+					if (/internal:endingscreen/.test(evt.id)) {
+						console.warn('HANDLE ENDING SCREEN EVENT', evt);
+						_onPlayerStateChange('ended');
+					}
+
 					if (evt.t > ourTime) {
 						break; // NOTE! next event should be this one; let i fall through as is
 					}
@@ -406,26 +429,29 @@ angular.module('com.inthetelling.story')
 			}
 			var nextEvent = svc.timelineEvents[i]; // i falls through from the break statements above
 
-			// console.log("Next event is  ", svc.timelineEvents[i]);
-
 			eventClockData.lastVideoTime = vidTime;
 			eventClockData.lastTimelineTime = ourTime;
 
-			if (nextEvent && appState.timelineState === "playing") { // need to check timelineState in case there were stop events above
+			if (nextEvent && playbackService.getTimelineState() === "playing") { // need to check timelineState in case there were stop events above
 				// Find out how long until the next event, and aim for just a bit after it.
 				var timeToNextEvent = (svc.timelineEvents[i].t - ourTime) * 1000 / timeMultiplier;
 				// console.log("next event in ", timeToNextEvent);
 				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
 			}
+
+			// if (ittUtils.existy(nextEvent) && /endingscreen/.test(nextEvent.id)) {
+			// 	console.log('end of stepEvent!');
+            //
+			// }
 		};
 
 		// "event" here refers to a timelineEvents event, not the modelSvc.event:
 		var handleEvent = function (event) {
-			//console.log("handle event: ", event);
 			if (event.id === 'timeline') {
 				//console.log("TIMELINE EVENT");
 				if (event.action === 'pause') {
-					appState.time = event.t;
+					playbackService.setMetaProp('time', event.t);
+					console.log('handle stop event');
 					svc.pause(); // TODO handle pause with duration too
 				} else {
 					svc.play();
@@ -448,6 +474,7 @@ angular.module('com.inthetelling.story')
 		// This is ONLY used to update appState.time in "real" time.  Events are handled by stepEvent.
 		var lastTick;
 		var startTimelineClock = function () {
+			// console.log('START TIMELINE CLOCK');
 			lastTick = undefined;
 			$interval.cancel(clock); // safety belt, in case we're out of synch
 			clock = $interval(_tick, 20);
@@ -456,32 +483,44 @@ angular.module('com.inthetelling.story')
 		var _tick = function () {
 			var thisTick = new Date();
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
-			var newTime = parseFloat(appState.time) + (delta / 1000 * timeMultiplier);
+
+			//in the event that the timelineClock is running but the eventClock is not, start the eventClock.
+			if (!eventClockData.running) {
+				console.log('detected running');
+				startEventClock();
+			}
+
+			var newTime = parseFloat(playbackService.getMetaProp('time')) + (delta / 1000 * timeMultiplier);
 			// check for out of bounds:
 			if (newTime < 0) {
 				newTime = 0;
 				svc.pause();
 			}
 
-			// console.log(newTime, appState.time);
-			if (newTime > appState.duration) {
-				newTime = appState.duration;
-				svc.pause();
+			var currentDuration = playbackService.getMetaProp('duration');
+			if (newTime > currentDuration) {
+				newTime = currentDuration;
+				// svc.pause();
+				// _resetClocks();
 			}
-			appState.time = newTime;
+
+
+			playbackService.setMetaProp('time', newTime);
 			lastTick = thisTick;
 		};
 
 		svc.init = function (episodeId) {
-			// console.log("timelineSvc.init", episodeId);
+			// console.log('timelineSvc#init', episodeId);
 			svc.timelineEvents = [];
 			svc.markedEvents = [];
 			svc.displayMarkedEvents = [];
 			timeMultiplier = 1;
-			appState.duration = 0;
-			appState.timelineState = 'paused';
-
+			var episode = modelSvc.episode(episodeId);
+			playbackService.seedPlayer(episode.masterAsset.mediaSrcArr, episode.masterAsset._id, true);
+			playbackService.setTimelineState('unstarted');
+			playbackService.setMetaProp('duration', 0);
 			svc.injectEvents(modelSvc.episodeEvents(episodeId), 0);
+			playbackService.registerStateChangeListener(_onPlayerStateChange);
 			$interval.cancel(clock);
 			stopEventClock();
 		};
@@ -551,6 +590,11 @@ angular.module('com.inthetelling.story')
 						action: "enter"
 					});
 					if (event.end_time || event.end_time === 0) {
+						if (/internal:endingscreen/.test(event._id)) {
+							console.log('do not add exit event for ending screen.');
+							return;
+						}
+
 						svc.timelineEvents.push({
 							t: event.end_time + injectionTime,
 							id: event._id,
@@ -767,19 +811,19 @@ angular.module('com.inthetelling.story')
 			// TODO this will need to change when we support multiple episodes in one timeline
 
 			if (svc.timelineEvents.length > 0) {
-				appState.duration = svc.timelineEvents[svc.timelineEvents.length - 1].t;
+				playbackService.setMetaProp('duration', svc.timelineEvents[svc.timelineEvents.length - 1].t);
 			}
 			svc.updateEventStates();
 		};
 
 		svc.updateEventStates = function () {
-			// console.log("timelineSvc.updateEventStates", appState.time);
+			// console.log("timelineSvc.updateEventStates");
 			// Sets past/present/future state of every event in the timeline.
 			// TODO performance check (though this isn't done often, only on seek and inject.)
 
 			// DO NOT check event start and end times directly; they're relative to the episode, not the timeline!
 			// instead preset everything to the future, then scan the timeline events up to now and set state based on enter/exit events per the timeline
-			var now = appState.time;
+			var now = playbackService.getMetaProp('time');
 			// put everything in the future state:
 			angular.forEach(svc.timelineEvents, function (tE) {
 				if (tE.id !== "timeline") {
@@ -806,6 +850,8 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
+
+			// console.log('timelineEvents', svc.timelineEvents);
 		};
 
 		var alreadyPreloadedImages = {};
@@ -817,26 +863,6 @@ angular.module('com.inthetelling.story')
 					alreadyPreloadedImages[event.asset.url].src = event.asset.url;
 				}
 			}
-		};
-
-		// supports these formats: "1:10", 1m10s", "1m", "10s", or a plain number (in seconds)
-		var parseTime = function (t) {
-			if (!isNaN(parseFloat(t)) && isFinite(t)) {
-				return t;
-			}
-			var parse = t.match(/^(\d+)[m:]([\d\.]+)s?$/);
-			if (parse) {
-				return (parseFloat(parse[1] * 60) + parseFloat(parse[2]));
-			}
-			parse = t.match(/^([\d\.]+)s$/);
-			if (parse) {
-				return parseFloat(parse[1]);
-			}
-			parse = t.match(/^([\d\.]+)m$/);
-			if (parse) {
-				return parseFloat(parse[1] * 60);
-			}
-			console.error("Tried to parse invalid time string: ", t);
 		};
 
 		if (config.debugInBrowser) {

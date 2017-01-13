@@ -65,8 +65,10 @@ angular.module('com.inthetelling.story')
 			/* jshint +W116 */
 
 			// sniff sniff
-			svc.isTouchDevice = (/iPad|iPod|iPhone/.test(navigator.platform) || /Android/.test(navigator.userAvent));
+			svc.isTouchDevice = (/iPad|iPod|iPhone/.test(navigator.platform) || /Android/.test(navigator.userAgent));
+			svc.isIEOrEdge = (/Trident|Edge/.test(navigator.userAgent) || /Trident|Edge/.test(navigator.platform));
 			svc.isIPhone = (navigator.platform.match(/iPod|iPhone/)); // iPhone has weird video handling, see  timelineSvc
+			svc.iOSVersion = getIOSVersion(navigator);
 
 			svc.windowWidth = 0;
 			svc.windowHeight = 0;
@@ -108,6 +110,15 @@ angular.module('com.inthetelling.story')
 			svc.lang = false; // set to false so the episode default knows when to override it
 		};
 		svc.init();
+
+		function getIOSVersion(navigator) {
+			var iOSDeviceRe = /iP(hone|od|ad)/;
+			var versionRe = /OS (\d+)_(\d+)_?(\d+)?/;
+			if (iOSDeviceRe.test(navigator.platform) || iOSDeviceRe.test(navigator.userAgent)) {
+				var v = (navigator.appVersion).match(versionRe);
+				return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+			}
+		}
 
 		// workaround for iOS crasher (can't bind to window.resize when inside an iframe)
 		$interval(function () {

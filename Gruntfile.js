@@ -343,7 +343,8 @@ module.exports = function (grunt) {
 		browserSync: {
 			dev: {
 				bsFiles: {
-					src : ['<%= yeoman.app %>/styles/**/*.css', '<%= yeoman.app %>/scripts/**/*.js']
+					// src : ['<%= yeoman.app %>/styles/**/*.css', '<%= yeoman.app %>/scripts/**/*.js']
+					src : ['<%= yeoman.app %>/styles/**/*.css']
 				},
 				options: {
 					port:'3333',
