@@ -9,7 +9,9 @@
 		.factory('kalturaUrlService', kalturaUrlService);
 
 	function kalturaUrlService() {
+		var _type = 'kaltura';
 		return {
+			type: _type,
 			getKalturaObjectFromEmbedCode: getKalturaObjectFromEmbedCode,
 			buildAutoEmbedURLFromKalturaObject: buildAutoEmbedURLFromKalturaObject,
 			getKalturaObjectFromAutoEmbedURL: getKalturaObjectFromAutoEmbedURL
