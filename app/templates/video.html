@@ -1,6 +1,6 @@
 <!--temp debug code-->
 
-<!--<h6 style="background-color: white; color:black;">-->
+<h6 style="background-color: white; color:black;">
 	<!--timeline State: {{$ctrl.playbackService.getTimelineState()}} |-->
 	<!--time: {{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} |-->
 	<!--first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} |-->
@@ -11,7 +11,8 @@
 	<!--playerId: {{$ctrl.playerId}}-->
 
 	<!--ios stuff: {{$ctrl.showMask()}} iosVersion: {{$ctrl.appState.iOSVersion[0]}} unstarted: {{$ctrl.showUnstartedOverlay()}} | mainplayer {{$ctrl.mainPlayer}}-->
-<!--</h6>-->
+	<!--poster: {{$ctrl.poster}}-->
+</h6>
 
 <!--end temp debug code-->
 <div class="np-video"
@@ -30,7 +31,7 @@
 	</div>
 
 	<div class="poster overlay fill"
-		 ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('timeMultiplier') == 0"
+		 ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('time') === 0"
 		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}">
 	</div>
 </div>
