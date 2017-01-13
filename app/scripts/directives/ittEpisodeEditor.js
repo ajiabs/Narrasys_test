@@ -7,7 +7,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, authSvc, selectService) {
+	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, kalturaUrlService, authSvc, selectService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -199,6 +199,22 @@ angular.module('com.inthetelling.story')
 					scope.showUploadFieldPoster = false;
 					scope.attachPosterAsset(assetId);
 				};
+
+				function attachKaltura(embedCode) {
+					var asset = {};
+					asset.url = kalturaUrlService
+					asset.content_type = 'video/x-kaltura';
+					asset.duration = 0; //02:37
+
+					asset.name = {
+						en: 'Kaltura Guy'
+					};
+					asset.description = {
+						en: 'Another Kaltura guy'
+					};
+
+					//parse url to get ids
+				}
 
 				scope.attachYouTube = function (url) {
 					scope.showmessage = "Getting video from YouTube...";
