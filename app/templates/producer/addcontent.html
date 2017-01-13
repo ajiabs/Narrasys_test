@@ -5,10 +5,10 @@
 
 	<div ng-if="appState.product == 'producer'" class="editButtonPanel">
 		<a class="button button-episode" ng-click="editEpisode()">Edit episode</a>
-		<a class="button button-scene" ng-if="appState.time > 0  && appState.time < (appState.duration - 0.1) && appState.viewMode == 'discover'" ng-click="editCurrentScene()">Edit Layout</a>
+		<a class="button button-scene" ng-if="playbackService.getMetaProp('time') > 0  && playbackService.getMetaProp('time') < (playbackService.getMetaProp('duration') - 0.1) && appState.viewMode == 'discover'" ng-click="editCurrentScene()">Edit Layout</a>
 	</div>
 
-	<div class="producer addButtonPanel" ng-show="!item && appState.time > 0 && appState.time < (appState.duration - 0.1) ">
+	<div class="producer addButtonPanel" ng-show="!item && playbackService.getMetaProp('time') > 0 && playbackService.getMetaProp('time') < (playbackService.getMetaProp('duration') - 0.1) ">
 		<span ng-if="expanded" style="padding: 0 1em" class="animate transitionExpandW">
 			<span ng-if="appState.product == 'sxs'">
 				<a class="button button-comment" ng-click="addEvent('annotation')">Comment</a>

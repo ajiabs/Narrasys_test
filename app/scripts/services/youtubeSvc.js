@@ -41,6 +41,8 @@ angular.module('com.inthetelling.story')
 			return (ytMatch && ytMatch[1]) ? ytMatch[1] : false;
 		};
 
+
+
 		svc.isYoutubeUrl = function(origUrl) {
 			if (!origUrl) {
 				return false;
@@ -50,6 +52,23 @@ angular.module('com.inthetelling.story')
 			var getYoutubeID = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
 			return getYoutubeID.test(origUrl);
 		};
+
+		svc.type = 'youtube';
+		svc.canPlay = svc.isYoutubeUrl;
+		svc.parseMediaSrc = parseMediaSrc;
+		/**
+		 *
+		 * @param mediaSrcArr
+		 * @return mediaSrcObj {type: string, mediaSrcArr: Array<String>}
+		 */
+		function parseMediaSrc(mediaSrcArr) {
+			return mediaSrcArr.reduce(function(parsedMediaSrcObj, mediaSrc) {
+				if (svc.isYoutubeUrl(mediaSrc)) {
+					parsedMediaSrcObj.mediaSrcArr.push(mediaSrc);
+				}
+				return parsedMediaSrcObj;
+			}, {type: 'youtube', mediaSrcArr: []});
+		}
 
 		svc.embedParams = function (outgoing) {
 			// kept separate from createEmbedLinkFromYoutubeId for convenience in unit tests.

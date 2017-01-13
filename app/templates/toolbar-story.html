@@ -16,8 +16,11 @@
 			 id="toolbar-logo-big"
 			 ng-if="episode.templateUrl === 'templates/episode/narrasys-pro.html' && appState.windowWidth > 500">
 		<span ng-if="showDebugInfo">
-			Current Scene: {{appState.currSceneName}} <br>
-			Layouts: {{appState.sceneLayouts}}
+			<!--Current Scene: {{appState.currSceneName}} <br>-->
+			<!--Layouts: {{appState.sceneLayouts}}-->
+			<!--<div>-->
+				<!--<pre>{{playbackService.getMetaObj() | json}}</pre>-->
+			<!--</div>-->
 		</span>
 
 		<img ng-src="images/customer/Narrasys-Tree.png"
@@ -31,7 +34,7 @@
 	 			|| (appState.productLoadedAs == 'narrative'
 	 			&& !narrative.disable_new_window ) )" class="escapegroup buttongroup">
 			<!-- this needs to be an <a> or it trips popup blockers -->
-			<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{appState.time || 0}}&access_token={{appState.user.access_token}}" target="_blank">
+			<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{playbackService.getMetaProp('time')|| 0}}&access_token={{appState.user.access_token}}" target="_blank">
 				<span>New window</span>
 			</a>
 		</div>

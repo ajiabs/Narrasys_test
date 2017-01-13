@@ -1,33 +1,49 @@
-<div class="video">
-	<itt-youtube tabindex="-1" ng-if="video.urls.youtube.length" embed-url="{{video.urls.youtube[0]}}"
-				 on-player-state-change="playerStateChange"
-				 on-ready="onReady" main-player="true" player-id="video._id"></itt-youtube>
-	<!-- NOTE in html5 video we can't depend on databinding to change the video src after rendering!  See videoController changeVideoBandwidth -->
-	<video ng-if="!video.urls.youtube || !video.urls.youtube.length" aria-label="media player">
-		<source class="m3u8" ng-if="video.urls.m3u8[0]" ng-src="{{video.urls.m3u8[0]}}" type="application/x-mpegURL" />
-		<source class="mpeg4" ng-if="video.urls.mp4[video.curStream]" ng-src="{{video.urls.mp4[video.curStream]}}" type="video/mp4" />
-		<source class="webm" ng-if="video.urls.webm[video.curStream]" ng-src="{{video.urls.webm[video.curStream]}}" type="video/webm" />
-		<p>Oh no! Your browser does not support the HTML5 Video element.</p>
-	</video>
+<!--temp debug code-->
 
-	<div ng-if="poster && appState.time == 0" class="poster overlay fill" ng-style="{backgroundImage:'url('+poster.url+')'}"></div>
-	<!-- hide this on touch devices before hasBeenPlayed, if youtube, so users can click the YT player directly to init it.
-	see also ittTimeline.js -->
-	<!--<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{-->
-		<!--play: appState.timelineState == 'paused',-->
-		<!--buffering: appState.timelineState == 'buffering',-->
-		<!--firstplay: !appState.hasBeenPlayed && !poster,-->
-		<!--rewind: (appState.time > 0 && appState.time >= video.duration - 0.3),-->
-		<!--transcoding: !video.isTranscoded()-->
-	<!--}">-->
-		<div ng-hide="( video.urls.youtube.length && !appState.hasBeenPlayed && appState.isTouchDevice)" ng-click="videoClick()" class="videoMask" ng-class="{
-		play: appState.timelineState == 'paused',
-		firstplay: !appState.hasBeenPlayed && !poster,
-		rewind: (appState.time > 0 && appState.time >= video.duration - 0.3),
-		transcoding: !video.isTranscoded()
-	}">
-		<div class="convertingMessage" ng-if="!video.isTranscoded()">
-			This video is being converted to a web-playable format and will be ready in a&nbsp;few&nbsp;minutes
-		</div>
+<!--<h6 style="background-color: white; color:black;">-->
+	<!--timeline State: {{$ctrl.playbackService.getTimelineState()}} |-->
+	<!--time: {{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} |-->
+	<!--first play: {{$ctrl.playbackService.getMetaProp('hasBeenPlayed', $ctrl.playerId)}} |-->
+	<!--has resumed from startAt: {{$ctrl.playbackService.getMetaProp('hasResumedFromStartAt', $ctrl.playerId)}} |-->
+	<!--player state: {{$ctrl.playbackService.getMetaProp('playerState', $ctrl.playerId)}} |-->
+	<!--start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}} |-->
+	<!--ready: {{$ctrl.playbackService.getMetaProp('ready', $ctrl.playerId)}} |-->
+	<!--playerId: {{$ctrl.playerId}}-->
+
+	<!--ios stuff: {{$ctrl.showMask()}} iosVersion: {{$ctrl.appState.iOSVersion[0]}} unstarted: {{$ctrl.showUnstartedOverlay()}} | mainplayer {{$ctrl.mainPlayer}}-->
+<!--</h6>-->
+
+<!--end temp debug code-->
+<div class="np-video"
+	 ng-if="$ctrl.mediaSrcArr.length > 0"
+	 ng-click="$ctrl.videoClick()"
+	 ng-class="{'np--embed': $ctrl.mainPlayer === false}">
+
+	<div class="np-video__overlay-ui"
+		 ng-if="$ctrl.showMask()"
+		 ng-class="$ctrl.setCssClass()"
+		 ng-click="$ctrl.videoClick()">
 	</div>
+
+	<div class="np-video__wrapper">
+		<div class="np-video__element" ng-bind-html="::$ctrl.playerElement"></div>
+	</div>
+
+	<div class="poster overlay fill"
+		 ng-if="$ctrl.poster && $ctrl.playbackService.getMetaProp('timeMultiplier') == 0"
+		 ng-style="{backgroundImage:'url('+$ctrl.poster.url+')'}">
+	</div>
+</div>
+
+<div ng-if="$ctrl.mediaSrcArr.length < 1" class="np-video__empty">
+
+	<div ng-if="$ctrl.isTranscoded === false">
+		<h3>Video is currently transcoding.</h3>
+		<p>The page will refresh when the transcode is complete!</p>
+	</div>
+
+	<h1 ng-if="$ctrl.isTranscoded === true">
+		No video source available...
+	</h1>
+
 </div>

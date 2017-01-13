@@ -26,14 +26,17 @@ angular.module('com.inthetelling.story')
 			},
 			templateUrl: 'templates/item/modal.html',
 			link: function (scope) {
-				var modalSmooth = {
-					'transition': 'none'
-				};
+				scope.item = scope.item.item;
 				if (!scope.item.animate) {
-					scope.modalSmooth = modalSmooth;
+					scope.modalStyle = { 'transition': 'none' };
 				}
 
-				scope.item = scope.item.item;
+				if (scope.item.isVideoUrl) {
+					scope.modalStyle = angular.extend(scope.modalStyle, {'padding-top': '5%'});
+				} else {
+					scope.modalStyle = angular.extend(scope.modalStyle, {'bottom': '0', 'padding-top': '5%' });
+				}
+
 				scope.dismiss = function () {
 					appState.itemDetail = false;
 				};

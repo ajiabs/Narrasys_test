@@ -207,7 +207,7 @@ angular.module('com.inthetelling.story')
 						youtubeSvc.getVideoData(youtubeId)
 							.then(function (data) {
 								var asset = {}; //createDefaultAsset()
-								asset.you_tube_url = asset.url = youtubeSvc.embeddableYoutubeUrl(url);
+								asset.url = youtubeSvc.embeddableYoutubeUrl(url);
 								asset.duration = data.duration;
 								asset.name = {
 									en: data.title
@@ -218,6 +218,7 @@ angular.module('com.inthetelling.story')
 								asset.content_type = "video/x-youtube";
 
 								dataSvc.createAsset(scope.episodeContainerId, asset).then(function (data) {
+									//will go through modelSvc#resolveVideo
 									modelSvc.cache("asset", data);
 									// this may override the showmessage, so do it last:
 									scope.attachChosenAsset(data._id);

@@ -1,15 +1,37 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('TimelineController', function ($scope, timelineSvc, modelSvc, appState) {
+	.controller('TimelineController', function ($scope, $rootScope, timelineSvc, modelSvc, appState, playbackService) {
 
-		$scope.play = timelineSvc.play;
-		$scope.pause = timelineSvc.pause;
+		$scope.playbackService = playbackService;
+
+		$scope.timelineBtnClick = timelineBtnClick;
+		$scope.setBtnClass = setBtnClass;
+
+		$rootScope.$on('userKeypress.SPACE', timelineBtnClick);
+
+		function setBtnClass() {
+			var state = _getTimelineState();
+			if (playbackService.allowPlayback(state) === true) {
+				$scope.controlText = 'play';
+				return 'button-play';
+			}
+			$scope.controlText = 'pause';
+			return 'button-pause';
+		}
+
+		function timelineBtnClick() {
+			playbackService.togglePlayback(null, timelineSvc.restartEpisode);
+		}
+
+		function _getTimelineState() {
+			return playbackService.getTimelineState();
+		}
 
 		$scope.changeSpeed = function (n) {
 			// console.log("timelineController.changeSpeed");
 			// Limit speed to between 0.5 and 2 inclusive
-			var newSpeed = appState.timeMultiplier + n;
+			var newSpeed = playbackService.getMetaProp('timeMultiplier') + n;
 			if (newSpeed < 0.5) {
 				newSpeed = 0.5;
 			}
@@ -23,7 +45,8 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.markerPercent = function (t) {
-			return (t === undefined ? 0 : t / appState.duration * 100);
+			// console.log('marker %', t);
+			return (t === undefined ? 0 : t / playbackService.getMetaProp('duration') * 100);
 		};
 
 		// Yeah, this is a little odd.  Letting timelineSvc manage all video-related functions,

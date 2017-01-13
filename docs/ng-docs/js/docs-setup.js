@@ -41,15 +41,6 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "iTT.directive:ittYoutube",
-      "shortName": "ittYoutube",
-      "type": "directive",
-      "moduleName": "iTT",
-      "shortDescription": "Directive used to render the actual youtube iframe and link",
-      "keywords": "$scope $timeout _players actual api asset callback change control directive ea embed embed-url embedurl event false fired https iframe inside instance instances itt js link main main-player mainplayer object onplayerqualitychange onplayerstatechange onready path pid player player-id playerid players quality ready render service set source true url video youtube youtubeplayermanager youtubesvc yt"
-    },
-    {
-      "section": "api",
       "id": "iTT.service:appState",
       "shortName": "appState",
       "type": "service",
@@ -68,6 +59,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "iTT.service:html5PlayerManager",
+      "shortName": "html5PlayerManager",
+      "type": "service",
+      "moduleName": "iTT",
+      "shortDescription": "Implements the PlayerManager interface, wraps HTML5 videos",
+      "keywords": "$interval _attacheventlisteners _createmetaobj _drawplayerdiv _emitstatechange _formatplayerstatechangeevent _gethtml5videoobject _getinstance _getplayer _initplayerdiv _onstatechange _player _players abstract abstracts api appropriate array asset attached attaching availble boolean bound buffered buffering callback called calls cb class clean conforms copy copying corresponds create creating current currently data debugging defined destroyinstance determine determines divid effects element elements embed embeds emit emitterid empty ended entire entry event events evetn file files fire format freeze freezemetaprops freezes function functionality getbufferedpercent getcurrenttime getmetaobj getmetaprop getplayerdiv getplayerstate handle handler helper html html5 implements individual input instance instances interacted interface interger invoke itt itt-service-html5playermanager-page itt-service-page ittutils ittvideo listeners loops m3u8 main mainplayer map mapped media mediasrcarr message meta metaobj method methods mp4 mute note number numerical obj object objects onbuffering oncanplay onended onpause onplaying onwaiting optional optionally param pause paused pauseotherplayers percent pid pipe play playback playbackrate playbackservice played player playermanager playermanagers players playerstate playerstatechange playerstates playing prior prop proper properties property props provided quality query rate ready reduces registerstatechangelistener relevant remove removes reports representing requested reset resetplayermanager responds return returns seedplayermanager seek select send service set setmetaprop sets setspeed setting setvolume side side-effect slow source sources speed src statechangecallback stream string strings tag tags time timelinesvc togglemute toggles type ultimately unfreeze unfreezemetaprops unique unregister unregisterstatechangelistener urls val video videoelement videoelm videoobj videos void volume webm wiring wraps youtube yt"
+    },
+    {
+      "section": "api",
       "id": "iTT.service:imageResize",
       "shortName": "imageResize",
       "type": "service",
@@ -77,12 +77,30 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "iTT.service:playbackService",
+      "shortName": "playbackService",
+      "type": "service",
+      "moduleName": "iTT",
+      "shortDescription": "playbackService exports an interface for the timelineSvc and consumes the interfaces exported from",
+      "keywords": "$destory $destroy $interval _emitstatechange _getplayermanagerfrommediasrc _handleembeddestroy _id _mainplayerid _onplayerready _playerinterfaces _players _setpid _statechangecb accept aka allowplayback amount api app array asset blank bound buffered bufferedpercent buffering buttons call called calling case cb change check clean command commands consumes create createinstance creating data db default derive destroyed determines directive drawing drive duration embed embeds emit emitted emitterid emitting entry episode event events eventually example exported exports fired fires freezemetaprops function getbufferedpercent getcurrenttime getmetaprop getplayerdiv getplayerstate gettimelinestate handle handles helper initialization input instance interface interfaces interval invoke invokes itt ittvideo left level listener listeners loops main mainplayer mainplayerid mainvideo map mask masterasset media mediasrcarr meta method methods object onready optional param parameter parsedmediasrcarr passed pause pauseotherplayers percent pid play playback playbackrate playbackservice player playerid playermanager playermanagers playerstates playerstates_word playing playvideo prior prop properties property queries query rate ready record registered registerstatechangelistener relevant remove removes reset resetplaybackservice responded restartfn restarting resume return returns saved seedplayer seek service set setmetaprop setspeed settimelinestate setup setvolume side-effects speed startat statechangeevent statechangelistener statechanges statement static store stores string switch syncs time timeline timelinestate timelinesvc timlinesvc togglemute toggleplayback toggling track type ui unfreezemetaprops unique unregisterstatechangelistener upstream urls val video videos void volume wires youtube"
+    },
+    {
+      "section": "api",
       "id": "iTT.service:youTubePlayerManager",
       "shortName": "youTubePlayerManager",
       "type": "service",
       "moduleName": "iTT",
       "shortDescription": "A service for working with youtube iframes",
-      "keywords": "$location $q _getpidfrominstance _getytinstance _guid _players allowseekahead api app append appstate asset bool buffered buffering callback called calls change changing clear control create cued current currently data desired destroy detecting determine determines digit div divid download element embed embedded embeds emitted ended error errors errorsvc event events false flow generate getcurrenttime getter getvideoloadedfraction guarantee handler handling https identifier iframe iframes instance instances int interacted interaction interface ismuted itt js level loops main mainplayer metadata method mute number numerical object onerror onplayerqualitychange onplayerstatechange onready optional order param parameter pause paused pauseembeds pauseotherembeds percent pick pid play playback player playerstate playing prior properties quality ready representing request reset responsible resume retrieve return seconds seek seekto server service set setplaybackquality setplayer sets setter setvolume source specifies stops stream string svc target time timelinesvc toggles true type unique uniqueness unmute unstarted video videoid videos volume working youtube youtubeplayerapi yt ytinstance"
+      "keywords": "$location _createinstance _createmetaobj _emitstatechange _formatplayerstatechange _getpidfrominstance _getplayerdiv _getytinstance _players _tick _trycommand api app array asset buffered buffering callback called calls cb change changing clear clock command completed copy create cued current currently data debugging defined desired destroy destroyinstance detecting determine determines div divid dom download element embed embedded embeds emiiterid emitted empty ended entire error errors errorsvc event events finished fire fired function getcurrenttime getmetaobj getmetaprop getplayerdiv getter getvideoloadedfraction handler handling html https iframe iframes input instance instances int interacted interaction interface invoke itt ittvideo js level loops main mainplayer manually map mediasrcarr meta metadata metaobj method mute note number numerical obj object objects onerror onplayerqualitychange onplayerstatechange onqualitychange onready onreadycb onstatechange operation optional optionally param parameter pause paused pauseotherplayers percent pick pid play playback playbackrate player playerid players playerstate playerstatechange playerstates playervar playing prior prop properties property props quality qualitychangecb range rate ready register registerstatechangelistener representation representing requested reset resetplayermanager responsible restart resume resumes retrieve return returns running safari seconds seedplayermanager seek seeking seekto server service set setmetaprop setplaybackquality sets setspeed setter setvolume slow source specifies speed statechangecb stops stream string svc target time timelinesvc togglemute toggles type unique unregister unregisterstatechangelistener unstarted urls val video videoid videos void volume working youtube youtubeplayerapi youtubesvc yt ytinstance"
+    },
+    {
+      "section": "api",
+      "id": "iTT.service:YTScriptLoader",
+      "shortName": "YTScriptLoader",
+      "type": "service",
+      "moduleName": "iTT",
+      "shortDescription": "A service for downloading youtube player scripts",
+      "keywords": "$q $timeout api async downloading downloads injecting itt load method player promise returns script scripts service turn www-widgetapi youtube"
     }
   ],
   "apis": {

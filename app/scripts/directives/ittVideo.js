@@ -1,80 +1,135 @@
 'use strict';
-
-// use only for master asset!
-
 angular.module('com.inthetelling.story')
-	.directive('ittVideo', function ($timeout, $interval, $rootScope, appState, timelineSvc, dataSvc, modelSvc) {
-		var uniqueDirectiveID = 0; // Youtube wants to work via DOM IDs; this is a cheap way of getting unique ones
+	.directive('ittVideo', ittVideo);
 
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'templates/video.html',
-			controller: 'VideoController',
-			scope: {
-				video: "=ittVideo",
-				poster: "="
-			},
-			link: function (scope, element) {
-				// console.log('ittVideo', scope.video);
+function ittVideo() {
+	return {
+		replace: false,
+		templateUrl: 'templates/video.html',
+		scope: {
+			poster: "=?",
+			mainPlayer: '=',
+			mediaSrcArr: '=',
+			playerId: '='
+		},
+		controller: ['$scope', '$timeout', '$interval', '$sce', '$rootScope', '$routeParams', 'playbackService', 'ittUtils', 'timelineSvc', 'modelSvc', 'dataSvc', 'appState', videoCtrl],
+		bindToController: true,
+		controllerAs: '$ctrl'
+	};
 
-				scope.appState = appState;
-				scope.uid = ++uniqueDirectiveID;
+	//TODO: tackle isTranscoded somehow.
+	function videoCtrl($scope, $timeout, $interval, $sce, $rootScope, $routeParams, playbackService, ittUtils, timelineSvc, modelSvc, dataSvc, appState) {
+		var ctrl = this; //jshint ignore:line
 
-				$timeout(function () {
-					scope.initVideo(element);
-				}); // in controller
+		//controller public properties
+		ctrl.isTranscoded = false;
+		ctrl.transcodedInterval = angular.noop;
 
-				scope.videoClick = function () {
-					if (appState.timelineState === "paused") {
-						timelineSvc.play();
-					} else {
-						timelineSvc.pause();
-					}
-				};
+		//controller public methods.
+		ctrl.playbackService = playbackService;
+		ctrl.videoClick = videoClick;
+		ctrl.playerIsPaused = playerIsPaused;
+		ctrl.showUnstartedOverlay = showUnstartedOverlay;
+		ctrl.showReplayOverlay = showReplayOverlay;
+		ctrl.setCssClass = setCssClass;
+		ctrl.showMask = showMask;
+		ctrl.appState = appState;
+		var _existy = ittUtils.existy;
 
-				scope.spaceWatcher = $rootScope.$on('userKeypress.SPACE', scope.videoClick);
+		//controller event bindings
+		$scope.$on('$destroy', onDestroy);
 
-				// watch buffered amount on an interval
-				scope.bufferInterval = $interval(function () {
-					if (!scope.getBufferPercent) {
-						return;
-					}
-					var pct = scope.getBufferPercent();
-					if (pct > 98) { // close enough
-						$interval.cancel(scope.bufferInterval);
-						appState.bufferedPercent = 100;
-					}
-				}, 200);
+		onInit();
 
-				// if the video is not yet transcoded poll for updates until it is
-				var pollCount = 0;
-				scope.pollInterval = $interval(function () {
-					pollCount++;
-					if (pollCount > 360) {
-						$interval.cancel(scope.pollInterval); // Give up after an hour, the user certainly will have
-					}
-					var currentEpisode = modelSvc.episodes[appState.episodeId];
+		function onInit() {
+			//empty input passed in
+			if (ctrl.mediaSrcArr.length === 0) {
+				console.warn('No MediaSrc Array was passed to ittVideo');
+				//check to see if video has transcoded every 10 seconds
+				ctrl.transcodedInterval = $interval(checkTranscoded, 10 * 1000);
+				return;
+			}
 
-					if (currentEpisode && currentEpisode.masterAsset && !modelSvc.isTranscoded(currentEpisode.masterAsset)) {
-						dataSvc.getSingleAsset(currentEpisode.master_asset_id).then(function (latestAsset) {
+			playbackService.seedPlayer(ctrl.mediaSrcArr, ctrl.playerId, ctrl.mainPlayer);
+			ctrl.playerElement = $sce.trustAsHtml(playbackService.getPlayerDiv(ctrl.playerId));
 
-							if (modelSvc.isTranscoded(latestAsset)) {
-								$interval.cancel(scope.pollInterval);
-								modelSvc.cache('asset', latestAsset);
-							}
-						});
-					} else {
-						$interval.cancel(scope.pollInterval);
-					}
-				}, 10000);
+			$timeout(function() {
+				playbackService.createInstance(ctrl.playerId);
 
-				scope.$on('$destroy', function () {
-					scope.spaceWatcher();
-					$interval.cancel(scope.bufferInterval);
-					$interval.cancel(scope.pollInterval);
-				});
-			},
+				if ($routeParams.t && ctrl.mainPlayer === true) {
+					playbackService.setMetaProp('startAtTime', ittUtils.parseTime($routeParams.t), ctrl.playerId);
+				}
 
-		};
-	});
+			},0);
+		}
+
+		//video mask controls
+		function videoClick() {
+			playbackService.togglePlayback(ctrl.playerId, timelineSvc.restartEpisode);
+		}
+
+		function setCssClass() {
+			var cssClass = {};
+			var embed = {'np--embed': ctrl.mainPlayer === false};
+			var paused = {'play': playerIsPaused()};
+			var firstplay  = {'firstplay': showUnstartedOverlay()};
+			var replay = {'rewind': showReplayOverlay()};
+			angular.extend(cssClass, embed, paused, firstplay, replay);
+			return cssClass;
+		}
+
+		//if have less than iOS 10
+		//if our video is youtube
+		//hide the unstarted mask
+		function showMask() {
+			if (_existy(appState.iOSVersion) && appState.iOSVersion.length && playbackService.getMetaProp('videoType', ctrl.playerId) === 'youtube') {
+				if (showUnstartedOverlay()) {
+					return (appState.iOSVersion[0] > 9);
+				}
+			}
+			return true;
+		}
+
+		function playerIsPaused() {
+			return playbackService.getPlayerState(ctrl.playerId) === 'paused' && !showReplayOverlay();
+		}
+
+		function showUnstartedOverlay() {
+			return playbackService.getMetaProp('hasBeenPlayed', ctrl.playerId) === false;
+		}
+
+		function showReplayOverlay() {
+			var time = playbackService.getMetaProp('time', ctrl.playerId);
+			var duration = playbackService.getMetaProp('duration', ctrl.playerId);
+			return (ctrl.mainPlayer === true && time > 0 && time >= duration - 0.3);
+		}
+
+		function onDestroy() {
+			playbackService.handle$Destroy(ctrl.playerId);
+		}
+
+		function checkTranscoded() {
+			var currentEpisode = modelSvc.episodes[appState.episodeId];
+			if (currentEpisode && currentEpisode.masterAsset && !modelSvc.isTranscoded(currentEpisode.masterAsset)) {
+
+				dataSvc.getSingleAsset(currentEpisode.master_asset_id)
+					.then(function(latestAsset) {
+						modelSvc.cache('asset', latestAsset);
+						var newAsset = modelSvc.assets[latestAsset._id];
+						if (modelSvc.isTranscoded(newAsset)) {
+							ctrl.isTranscoded = true;
+							$interval.cancel(ctrl.transcodedInterval);
+							//use the new mediaSrcArr from the server
+							ctrl.mediaSrcArr = newAsset.mediaSrcArr;
+							//do this so playerController re-initializes the episode.
+							$rootScope.$broadcast('dataSvc.getEpisode.done');
+							//re-init ittVideo, playbackService etc..
+							onInit();
+						}
+					});
+			} else {
+				$interval.clear(ctrl.transcodedInterval);
+			}
+		}
+	}
+}

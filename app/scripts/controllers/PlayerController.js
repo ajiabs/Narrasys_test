@@ -3,7 +3,7 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
 angular.module('com.inthetelling.story')
-	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, youTubePlayerManager, selectService) {
+	.controller('PlayerController', function (config, $scope, $location, $rootScope, $routeParams, $timeout, $interval, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, errorSvc, authSvc, selectService, playbackService) {
 		// console.log("playerController", $scope);
 
 		//set to true to enable debug info on api-dev
@@ -55,9 +55,6 @@ angular.module('com.inthetelling.story')
 			});
 		}
 
-		if ($routeParams.t) {
-			timelineSvc.startAtSpecificTime($routeParams.t);
-		}
 
 		// $scope.changeProducerEditLayer = function (newLayer) {
 		// 	appState.producerEditLayer = appState.producerEditLayer + newLayer;
@@ -113,7 +110,9 @@ angular.module('com.inthetelling.story')
 			}
 			if (localStorageAllowed && !(localStorage.getItem("noWileyNag"))) {
 				appState.show.wileyNag = true;
-				var nagWatch = $scope.$watch('appState.time', function (n) {
+				var nagWatch = $scope.$watch(function() {
+					return playbackService.getMetaProp('time');
+				}, function (n) {
 					if (n) {
 						appState.show.wileyNag = false;
 						nagWatch();
@@ -128,7 +127,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var getEpisodeWatcher = $rootScope.$on("dataSvc.getEpisode.done", function () {
-			getEpisodeWatcher();
+			// getEpisodeWatcher();
 			// Wait until we have both the master asset and the episode's items; update the timeline and current language when found
 			appState.lang = ($routeParams.lang) ? $routeParams.lang.toLowerCase() : modelSvc.episodes[appState.episodeId].defaultLanguage;
 
@@ -201,6 +200,7 @@ angular.module('com.inthetelling.story')
 		}
 
 		$scope.appState = appState;
+		$scope.playbackService = playbackService;
 		$scope.show = appState.show; // yes, slightly redundant, but makes templates a bit easier to read
 		$scope.now = new Date();
 
@@ -288,12 +288,6 @@ angular.module('com.inthetelling.story')
 				$timeout(function () {
 					document.getElementById('searchtext').focus();
 				});
-			} else {
-				//pause any videos which could be playing in search mode
-				if (appState.embedYTPlayerAvailable) {
-
-					youTubePlayerManager.pauseOtherEmbeds();
-				}
 			}
 		};
 
@@ -343,13 +337,14 @@ angular.module('com.inthetelling.story')
 		};
 
 		$scope.play = function () {
+			console.log('PlayerController#play');
 			timelineSvc.play();
 		};
 
 		$scope.continue = function () {
 			// console.log("continue", modelSvc.episodes[appState.episodeId].masterAsset.duration, appState.time);
 			// If we're close to the end, jsut move to the ending screen and stop.
-			if (modelSvc.episodes[appState.episodeId].masterAsset.duration - appState.time < 0.2) {
+			if (modelSvc.episodes[appState.episodeId].masterAsset.duration - playbackService.getMetaProp('time') < 0.2) {
 				timelineSvc.pause();
 				timelineSvc.seek(modelSvc.episodes[appState.episodeId].masterAsset.duration - 0.01);
 			} else {
