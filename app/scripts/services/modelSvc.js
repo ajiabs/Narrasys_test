@@ -1165,7 +1165,8 @@ angular.module('com.inthetelling.story')
 				youtube: [],
 				mp4: [],
 				webm: [],
-				m3u8: []
+				m3u8: [],
+				kaltura: []
 			};
 
 			var extensionMatch = /\.(\w+)$/;
@@ -1252,6 +1253,10 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				});
+			}
+
+			if (/cdnapisec.kaltura.com/.test(videoAsset.url)) {
+				videoObject.kaltura.push(videoAsset.url);
 			}
 
 			videoAsset.urls = videoObject;

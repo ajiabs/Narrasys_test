@@ -200,11 +200,15 @@ angular.module('com.inthetelling.story')
 					scope.attachPosterAsset(assetId);
 				};
 
+				scope.attachKaltura = attachKaltura;
 				function attachKaltura(embedCode) {
 					var asset = {};
-					asset.url = kalturaUrlService
+					var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
+					var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
+
+					asset.url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
 					asset.content_type = 'video/x-kaltura';
-					asset.duration = 0; //02:37
+					asset.duration = 157; //02:37
 
 					asset.name = {
 						en: 'Kaltura Guy'
@@ -213,7 +217,10 @@ angular.module('com.inthetelling.story')
 						en: 'Another Kaltura guy'
 					};
 
-					//parse url to get ids
+					dataSvc.createAsset(scope.episodeContainerId, asset).then(function(data) {
+						modelSvc.cache('asset', data);
+						scope.attachChosenAsset(data._id);
+					});
 				}
 
 				scope.attachYouTube = function (url) {

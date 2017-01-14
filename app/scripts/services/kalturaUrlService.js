@@ -12,10 +12,24 @@
 		var _type = 'kaltura';
 		return {
 			type: _type,
+			canPlay: isKalturaUrl,
+			parseMediaSrc: parseMediaSrc,
 			getKalturaObjectFromEmbedCode: getKalturaObjectFromEmbedCode,
 			buildAutoEmbedURLFromKalturaObject: buildAutoEmbedURLFromKalturaObject,
 			getKalturaObjectFromAutoEmbedURL: getKalturaObjectFromAutoEmbedURL
 		};
+
+		function parseMediaSrc(mediaSrc) {
+			return mediaSrc.reduce(function(parsedMediaObj, mediaSrc) {
+				if (isKalturaUrl(mediaSrc)) {
+					parsedMediaObj.mediaSrcArr.push(mediaSrc);
+				}
+			}, {type: _type, mediaSrcArr: []})
+		}
+
+		function isKalturaUrl(url) {
+			return /cdnapisec.kaltura.com/.test(url);
+		}
 
 		function getKalturaObjectFromEmbedCode(embedCode) {
 			var params = {};

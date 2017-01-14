@@ -8,9 +8,9 @@
 	angular.module('com.inthetelling.story')
 		.factory('urlService', urlService);
 
-	function urlService(youtubeSvc, html5UrlService) {
+	function urlService(youtubeSvc, html5UrlService, kalturaUrlService) {
 
-		var _urlSubServices = [youtubeSvc, html5UrlService];
+		var _urlSubServices = [youtubeSvc, html5UrlService, kalturaUrlService];
 
 		return {
 			parseMediaSrcArr: parseMediaSrcArr,
