@@ -24,7 +24,8 @@
 				if (isKalturaUrl(mediaSrc)) {
 					parsedMediaObj.mediaSrcArr.push(mediaSrc);
 				}
-			}, {type: _type, mediaSrcArr: []})
+				return parsedMediaObj;
+			}, {type: _type, mediaSrcArr: []});
 		}
 
 		function isKalturaUrl(url) {

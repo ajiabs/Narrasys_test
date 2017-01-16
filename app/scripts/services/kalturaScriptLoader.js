@@ -18,7 +18,7 @@
 			return $q(function(resolve){
 				var src = '//cdnapisec.kaltura.com/p/' + partnerId + '/sp/{' + partnerId + '00/embedIframeJs/uiconf_id/' + uiConfId + '/partner_id/{partnerId}';
 				var tag = document.createElement('script');
-				tag.src = url;
+				tag.src = src;
 				tag.id = partnerId;
 				var firstScriptTag = document.getElementsByTagName('script')[0];
 				firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);

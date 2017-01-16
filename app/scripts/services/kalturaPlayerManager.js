@@ -41,11 +41,13 @@
 		};
 
 		function create(playerId) {
-			var partnerID, entryID, uiConfId;
+			var ktObj = _players[playerId].ktObj,
+				partnerId = ktObj.partnerId,
+				entryId = ktObj.entryId,
+				uiConfId = ktObj.uiconfId;
 
-			_createKWidget(playerId, partnerID, entryID, uiConfId, readyCallback)
+			_createKWidget(playerId, partnerId, entryId, uiConfId, readyCallback)
 				.then(handleSuccess);
-
 
 			function handleSuccess() {
 				console.log('widget created!');
