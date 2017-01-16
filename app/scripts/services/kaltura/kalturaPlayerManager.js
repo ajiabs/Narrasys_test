@@ -40,22 +40,6 @@
 			getPlayerDiv: getPlayerDiv
 		};
 
-		function create(playerId) {
-			var partnerID, entryID, uiConfId;
-
-			_createKWidget(playerId, partnerID, entryID, uiConfId, readyCallback)
-				.then(handleSuccess);
-
-
-			function handleSuccess() {
-				console.log('widget created!');
-			}
-
-			function readyCallback(hm) {
-				console.log('ready cb fired!', hm);
-			}
-		}
-
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 			if (_players[id] && getMetaProp(id, 'startAtTime') > 0) {
 				return;
@@ -73,6 +57,25 @@
 			};
 
 			_players[id] = _createMetaObj(newProps, _kalturaMetaObj);
+		}
+
+		function create(playerId) {
+			var ktObj = _players[playerId].ktObj,
+				partnerId = ktObj.partnerId,
+				entryId = ktObj.entryId,
+				uiConfId = ktObj.uiconfId;
+
+			_createKWidget(playerId, partnerId, entryId, uiConfId, readyCallback)
+				.then(handleSuccess);
+
+
+			function handleSuccess() {
+				console.log('widget created!');
+			}
+
+			function readyCallback(hm) {
+				console.log('ready cb fired!', hm);
+			}
 		}
 
 		function getPlayerDiv(id) {

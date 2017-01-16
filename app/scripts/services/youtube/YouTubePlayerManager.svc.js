@@ -19,7 +19,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, $timeout, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeSvc) {
+	function youTubePlayerManager($location, $timeout, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeSvc, playerManagerCommons) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -48,6 +48,14 @@
 				videoType: _type
 			}
 		};
+
+		var commons = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks});
+		var getPlayer = commons.getPlayer;
+		var setPlayer = commons.setPlayer;
+		var getMetaProp = commons.getMetaProp;
+		var setMetaProp = commons.setMetaProp;
+		var registerStateChangeListener = commons.registerStateChangeListener;
+		var unregisterStateChangeListener = commons.unregisterStateChangeListener;
 
 		_youTubePlayerManager = {
 			type: _type,
@@ -91,39 +99,12 @@
 		 * @return {String} the HTML string to be used by ittVideo
 		 */
 		function getPlayerDiv(id) {
-			return _players[id].meta.div;
+			// return getPlayer(id).meta.div;
+			// return _players[id].meta.div;
+			return getMetaProp(id, 'div');
 		}
 
-		/**
-		 * @ngdoc method
-		 * @name #registerStateChangeListener
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @param {Function} cb callback to fire
-		 * @returns {Void} returns void
-		 */
-		function registerStateChangeListener(cb) {
-			var len = _stateChangeCallbacks.length;
 
-			while (len--) {
-				if (cb.toString() === _stateChangeCallbacks[len].toString()) {
-					return;
-				}
-			}
-
-			_stateChangeCallbacks.push(cb);
-		}
-		/**
-		 * @ngdoc method
-		 * @name #unregisterStateChangeListener
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @param {Function} cb callback to unregister
-		 * @returns {Void} returns void.
-		 */
-		function unregisterStateChangeListener(cb) {
-			_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
-				return fn.toString() !== cb.toString();
-			});
-		}
 		/**
 		 * @ngdoc method
 		 * @name #getMetaObj
@@ -148,27 +129,27 @@
 		 * @param {String} prop the prop to get
 		 * @returns {String | Number | Void} returns the requested prop if defined.
 		 */
-		function getMetaProp(pid, prop) {
-			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
-				return _players[pid].meta[prop];
-			}
-		}
-		/**
-		 * @ngdoc method
-		 * @name #setMetaProp
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * sets the particular prop of a player's meta obj
-		 * @param {String} pid the pid of the player
-		 * @param {String} prop the prop to set
-		 * @param {String|Number|Boolean} val the val to set
-		 * @returns {Void} returns void
-		 */
-		function setMetaProp(pid, prop, val) {
-			if (_existy(_players[pid] && _players[pid].meta)) {
-				_players[pid].meta[prop] = val;
-			}
-		}
+		// function getMetaProp(pid, prop) {
+		// 	if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
+		// 		return _players[pid].meta[prop];
+		// 	}
+		// }
+		// /**
+		//  * @ngdoc method
+		//  * @name #setMetaProp
+		//  * @methodOf iTT.service:youTubePlayerManager
+		//  * @description
+		//  * sets the particular prop of a player's meta obj
+		//  * @param {String} pid the pid of the player
+		//  * @param {String} prop the prop to set
+		//  * @param {String|Number|Boolean} val the val to set
+		//  * @returns {Void} returns void
+		//  */
+		// function setMetaProp(pid, prop, val) {
+		// 	if (_existy(_players[pid] && _players[pid].meta)) {
+		// 		_players[pid].meta[prop] = val;
+		// 	}
+		// }
 		/**
 		 * @ngdoc method
 		 * @name #seedPlayerManager
@@ -178,16 +159,17 @@
 		 * @param {String} id Main Video Asset ID or Event ID, for embeds
 		 * @param {Boolean} mainPlayer Determines type of player, embed or main
 		 * @param {Array} mediaSrcArr array of youtube URLs
-		 * @returns {Void} returns void.
+		 * @returns {Vofid} returns void.
 		 */
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
 			//bail if we already have set the instance in the _players map.
-			if (_players[id] && getMetaProp(id, 'startAtTime') > 0) {
+			if (getPlayer(id) && getMetaProp(id, 'startAtTime') > 0) {
 				return;
 			}
 
 			if (mainPlayer) {
+				// setPlayer(id, {});
 				_players = {};
 				_mainPlayerId = id;
 			}
@@ -198,7 +180,8 @@
 				ytUrl: mediaSrcArr[0]
 			};
 
-			_players[id] = _createMetaObj(newProps, _youtubeMetaObj);
+			setPlayer(id, _createMetaObj(newProps, _youtubeMetaObj));
+			console.log('wtf', getPlayer(id));
 		}
 
 
@@ -219,7 +202,8 @@
 				.catch(tryAgain);
 
 			function handleSuccess(ytInstance) {
-				_players[playerId].instance = ytInstance;
+				getPlayer(playerId).instance = ytInstance;
+				console.log('succ', ytId, getPlayer(playerId));
 				setMetaProp(playerId, 'ytId', ytId);
 			}
 
@@ -452,8 +436,8 @@
 		 */
 		function reset(pid) {
 
-			var obj = _players[pid];
-			var instance = _players[pid].instance;
+			var obj = getPlayer(pid);
+			var instance = obj.instance;
 
 			if (_existy(instance)) {
 				console.log('debug info', instance.getDebugText());
@@ -469,10 +453,10 @@
 		}
 
 		function resetMetaProps(list, id) {
-			if (_existy(_players[id])) {
+			if (_existy(getPlayer(id))) {
 
 				list.forEach(function(prop) {
-					if (_players[id].meta.hasOwnProperty(prop)) {
+					if (getPlayer(id).meta.hasOwnProperty(prop)) {
 						//reset to inital value on _metaObj
 						setMetaProp(id, prop, _youtubeMetaObj.meta[prop]);
 					}
@@ -733,8 +717,12 @@
 		 * @returns {Object} Youtube Player Instance Object.
 		 */
 		function _getYTInstance(pid) {
-			if (_players[pid] && _players[pid].meta.ready === true) {
-				return _players[pid].instance;
+			// if (getPlayer(pid).meta && getPlayer(pid).meta.ready === true) {
+			// 	return getPlayer(pid).instance;
+			// }
+
+			if (getMetaProp(pid, 'ready') === true) {
+				return getPlayer(pid).instance
 			}
 		}
 

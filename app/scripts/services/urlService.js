@@ -10,7 +10,7 @@
 
 	function urlService(youtubeSvc, html5UrlService, kalturaUrlService) {
 
-		var _urlSubServices = [youtubeSvc, html5UrlService, kalturaUrlService];
+		var _urlSubServices = [youtubeSvc, html5UrlService];
 
 		return {
 			parseMediaSrcArr: parseMediaSrcArr,
