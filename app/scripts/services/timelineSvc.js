@@ -95,7 +95,7 @@ angular.module('com.inthetelling.story')
 
 					var currentTime = playbackService.getCurrentTime();
 					var ourTime = playbackService.getMetaProp('time');
-
+					console.log('onPlaying', currentTime);
 					if (Math.abs(ourTime - currentTime) > 0.75) {
 						playbackService.setMetaProp('time', currentTime);
 						stepEvent(true);
