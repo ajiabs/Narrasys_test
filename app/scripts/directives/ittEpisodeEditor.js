@@ -205,11 +205,10 @@ angular.module('com.inthetelling.story')
 					var asset = {};
 					var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
 					var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
+					var getKtObjFromUrl = kalturaUrlService.getKalturaObjectFromAutoEmbedURL;
 					asset.url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
 					asset.content_type = 'video/x-kaltura';
-					asset.type = 'video';
 					asset.duration = 157; //02:37
-
 					asset.name = {
 						en: 'Kaltura Guy'
 					};
@@ -217,7 +216,9 @@ angular.module('com.inthetelling.story')
 						en: 'Another Kaltura guy'
 					};
 
-					// console.log('asset', asset);
+					console.log('url that works', asset.url);
+					console.log('wtf mate?', getKtObjFromUrl(asset.url));
+
 					dataSvc.createAsset(scope.episodeContainerId, asset).then(function(data) {
 						console.log('resp', data);
 						modelSvc.cache('asset', data);

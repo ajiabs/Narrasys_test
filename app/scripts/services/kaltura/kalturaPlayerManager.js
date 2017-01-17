@@ -23,7 +23,7 @@
 				ready: false,
 				startAtTime: 0,
 				duration: 0,
-				ktUrl: '',
+				ktObj: {},
 				time: 0,
 				hasResumedFromStartAt: false,
 				hasBeenPlayed: false,
@@ -33,7 +33,7 @@
 			}
 		};
 
-		var _validMetaKeys = Object.keys(_html5MetaObj.meta);
+		var _validMetaKeys = Object.keys(_kalturaMetaObj.meta);
 		var predicate = function(pid) {
 			return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
 		};
@@ -61,7 +61,10 @@
 			getMetaObj: getMetaObj,
 			registerStateChangeListener: registerStateChangeListener,
 			unregisterStateChangeListener: unregisterStateChangeListener,
-			pauseOtherPlayers: pauseOtherPlayers
+			pauseOtherPlayers: pauseOtherPlayers,
+			getPlayerState: getPlayerState,
+			pause: pause,
+			getBufferedPercent: getBufferedPercent
 		};
 
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
@@ -74,21 +77,30 @@
 				_mainPlayerId = id;
 			}
 
+
+			console.log('media srcArr', mediaSrcArr[0]);
+			var ktObj = kalturaUrlService.getKalturaObjectFromAutoEmbedURL(mediaSrcArr[0]);
+			// console.log('ktObj', ktObj);
+
 			var newProps = {
 				mainPlayer: mainPlayer,
 				div: _getPlayerDiv(id),
-				ktObj: kalturaUrlService.getKalturaObjectFromAutoEmbedURL(mediaSrcArr[0])
+				ktObj: ktObj
 			};
 
+			// console.log('props', newProps);
 
 			setPlayer(id, createMetaObj(newProps, _kalturaMetaObj));
 		}
 
 		function create(playerId) {
-			var ktObj = _players[playerId].ktObj,
-				partnerId = ktObj.partnerId,
+
+			var ktObj = getMetaProp(playerId, 'ktObj');
+			var partnerId = ktObj.partnerId,
 				entryId = ktObj.entryId,
 				uiConfId = ktObj.uiconfId;
+
+
 
 			_createKWidget(playerId, partnerId, entryId, uiConfId, readyCallback)
 				.then(handleSuccess);
@@ -122,7 +134,13 @@
 			return '<div id="' + id + '"></div>';
 		}
 
+		function pause() {}
 
+		function getPlayerState() {}
+
+		function getBufferedPercent() {
+			return 0;
+		}
 
 	}
 

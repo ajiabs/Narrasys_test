@@ -36,12 +36,12 @@
 	angular.module('com.inthetelling.story')
 		.factory('playbackService', playbackService);
 
-	function playbackService($interval, youTubePlayerManager, html5PlayerManager, ittUtils, urlService, PLAYERSTATES_WORD, PLAYERSTATES) {
+	function playbackService($interval, youTubePlayerManager, html5PlayerManager, kalturaPlayerManager, ittUtils, urlService, PLAYERSTATES_WORD, PLAYERSTATES) {
 
 		var _playerInterfaces = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
-		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
+		var _playerManagers = [html5PlayerManager, youTubePlayerManager, kalturaPlayerManager];
 		var _timelineState = '';
 		var _mainPlayerBufferingPoll;
 		var _playbackServiceHasBeenReset;
