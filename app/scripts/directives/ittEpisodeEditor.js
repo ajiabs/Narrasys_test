@@ -205,9 +205,9 @@ angular.module('com.inthetelling.story')
 					var asset = {};
 					var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
 					var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
-
 					asset.url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
 					asset.content_type = 'video/x-kaltura';
+					asset.type = 'Asset::Video';
 					asset.duration = 157; //02:37
 
 					asset.name = {
@@ -217,10 +217,14 @@ angular.module('com.inthetelling.story')
 						en: 'Another Kaltura guy'
 					};
 
+					// console.log('asset', asset);
 					dataSvc.createAsset(scope.episodeContainerId, asset).then(function(data) {
+						console.log('resp', data);
 						modelSvc.cache('asset', data);
 						scope.attachChosenAsset(data._id);
-					});
+					}).catch(function(e) {
+						console.log('errr', e);
+					})
 				}
 
 				scope.attachYouTube = function (url) {
@@ -239,13 +243,13 @@ angular.module('com.inthetelling.story')
 									en: data.description
 								};
 								asset.content_type = "video/x-youtube";
-
-								dataSvc.createAsset(scope.episodeContainerId, asset).then(function (data) {
-									//will go through modelSvc#resolveVideo
-									modelSvc.cache("asset", data);
-									// this may override the showmessage, so do it last:
-									scope.attachChosenAsset(data._id);
-								});
+								console.log('asset', asset);
+								// dataSvc.createAsset(scope.episodeContainerId, asset).then(function (data) {
+								// 	//will go through modelSvc#resolveVideo
+								// 	modelSvc.cache("asset", data);
+								// 	// this may override the showmessage, so do it last:
+								// 	scope.attachChosenAsset(data._id);
+								// });
 
 							}, function (error) {
 								console.error("Error getting duration from youtube:", error);

@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('kalturaPlayerManager', kalturaPlayerManager);
 
-	function kalturaPlayerManager(kalturaScriptLoader, kalturaUrlService) {
+	function kalturaPlayerManager(playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
 		var _players = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
@@ -33,11 +33,35 @@
 			}
 		};
 
+		var _validMetaKeys = Object.keys(_html5MetaObj.meta);
+		var predicate = function(pid) {
+			return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
+		};
+
+		var commons = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
+		var getPlayer = commons.getPlayer;
+		var setPlayer = commons.setPlayer;
+		var getPlayerDiv = commons.getPlayerDiv;
+		var getInstance = commons.getInstance(predicate);
+		var createMetaObj = commons.createMetaObj;
+		var getMetaObj = commons.getMetaObj;
+		var getMetaProp = commons.getMetaProp;
+		var setMetaProp = commons.setMetaProp(_validMetaKeys);
+		var registerStateChangeListener = commons.registerStateChangeListener;
+		var unregisterStateChangeListener = commons.unregisterStateChangeListener;
+		var pauseOtherPlayers = commons.pauseOtherPlayers(pause, getPlayerState);
+
 		return {
 			type: _type,
 			seedPlayerManager: seedPlayerManager,
 			create: create,
-			getPlayerDiv: getPlayerDiv
+			getPlayerDiv: getPlayerDiv,
+			getMetaProp: getMetaProp,
+			setMetaProp: setMetaProp,
+			getMetaObj: getMetaObj,
+			registerStateChangeListener: registerStateChangeListener,
+			unregisterStateChangeListener: unregisterStateChangeListener,
+			pauseOtherPlayers: pauseOtherPlayers
 		};
 
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
@@ -56,7 +80,8 @@
 				ktObj: kalturaUrlService.getKalturaObjectFromAutoEmbedURL(mediaSrcArr[0])
 			};
 
-			_players[id] = _createMetaObj(newProps, _kalturaMetaObj);
+
+			setPlayer(id, createMetaObj(newProps, _kalturaMetaObj));
 		}
 
 		function create(playerId) {
@@ -78,46 +103,6 @@
 			}
 		}
 
-		function getPlayerDiv(id) {
-			return _players[id].meta.div;
-		}
-
-		function _getPlayerDiv(id) {
-			return '<div id="' + id + '"></div>';
-		}
-
-		/**
-		 * @ngdoc method
-		 * @name #getMetaProp
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * used to get a particular property of a players's meta obj
-		 * @param {String} pid the pid of the player
-		 * @param {String} prop the prop to get
-		 * @returns {String | Number | Void} returns the requested prop if defined.
-		 */
-		function getMetaProp(pid, prop) {
-			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
-				return _players[pid].meta[prop];
-			}
-		}
-		/**
-		 * @ngdoc method
-		 * @name #setMetaProp
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * sets the particular prop of a player's meta obj
-		 * @param {String} pid the pid of the player
-		 * @param {String} prop the prop to set
-		 * @param {String|Number|Boolean} val the val to set
-		 * @returns {Void} returns void
-		 */
-		function setMetaProp(pid, prop, val) {
-			if (_existy(_players[pid] && _players[pid].meta)) {
-				_players[pid].meta[prop] = val;
-			}
-		}
-
 		function _createKWidget(divId, partnerID, entryID, uiConfId, onReadyCB) {
 			return kalturaScriptLoader.load(partnerID, uiConfId).then(function() {
 				KWidget.embed({
@@ -133,19 +118,10 @@
 			});
 		}
 
-		/**
-		 * @private
-		 * @ngdoc method
-		 * @name _createMetaObj
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @param {Object} props array of objects (properties) to set on the copy of the meta object.
-		 * @returns {Object} returns copy of new meta object
-		 */
-		function _createMetaObj(props, base) {
-			var newMetaObj = angular.copy(base);
-			newMetaObj.meta = angular.extend(newMetaObj.meta, props);
-			return newMetaObj;
+		function _getPlayerDiv(id) {
+			return '<div id="' + id + '"></div>';
 		}
+
 
 
 	}
