@@ -273,7 +273,9 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function getCurrentTime(playerId) {
-			return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
+			if (ittUtils.existy(_playerInterfaces[playerId])) {
+				return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
+			}
 		}
 		/**
 		 * @ngdoc method
