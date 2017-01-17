@@ -122,7 +122,7 @@ angular.module('com.inthetelling.story')
 					//current time.
 					if (urlService.checkUrl(url).type.length > 0) {
 						playbackService.pause(scope.item._id);
-						var curTime = Math.floor(playbackService.getCurrentTime(scope.item._id));
+						var curTime = Math.floor(playbackService.getCurrentTime(scope.item._id))
 						url = urlService.getOutgoingUrl(url, curTime);
 					}
 

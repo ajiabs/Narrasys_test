@@ -139,6 +139,7 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function play(playerId) {
+			console.log('pbs#play');
 		    if(getMetaProp('ready', _setPid(playerId)) === true ) {
 			_playerInterfaces[_setPid(playerId)].play(_setPid(playerId));
 		    }
@@ -273,7 +274,9 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function getCurrentTime(playerId) {
-			return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
+			if (ittUtils.existy(_playerInterfaces[playerId])) {
+				return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
+			}
 		}
 		/**
 		 * @ngdoc method
@@ -505,7 +508,7 @@
 		 * @private
 		 */
 		function _handleEmbedDestroy(playerId) {
-			setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
+			setMetaProp('startAtTime', entTime(playerId), playerId);
 			setMetaProp('hasResumedFromStartAt', false, playerId);
 			setMetaProp('ready', false, playerId);
 			freezeMetaProps(playerId);
@@ -560,6 +563,8 @@
 
 			setMetaProp('ready', true, pid);
 
+			console.log('we ready!');
+
 			if (pid === _mainPlayerId) {
 				setMetaProp('playerState', '5', pid);
 				_emitStateChange('video cued', pid);
@@ -596,7 +601,7 @@
 		function _stateChangeCB(stateChangeEvent) {
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
-
+			console.log('pbs#stateChangeCB', state, emitterId);
 			switch (state) {
 				case 'unstarted':
 					break;

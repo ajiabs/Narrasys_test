@@ -37,24 +37,24 @@
 			var myArray = [];
 			if (embedCode.substring(0, 7) === "<script") {
 				myArray = /^.*?src\=.https?\:\/\/cdnapi(?:sec)\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?.*entry_id\=(.*?)&playerId\=(.*?)&.*/g.exec(embedCode);
-				params["partnerId"] = myArray[1];
-				params["uiconfId"] = myArray[3];
-				params["entryId"] = myArray[5];
-				params["uniqueObjId"] = myArray[6];
+				if(myArray != null) {
+					params["partnerId"] = myArray[1];
+					params["uiconfId"] = myArray[3];
+					params["entryId"] = myArray[5];
+					params["uniqueObjId"] = myArray[6];
+				} else {
+					params = getKalturaObjectFromDynamicEmbedCode(embedCode);
+				}
 			} else if (embedCode.substring(0, 4) === "<div") {
-				myArray = /^.*?kWidget\..*?mbed\(.*?\n*.*?targetId.*?\:.*?\'(.*?)\'.*?\n*.*?wid.*?\:.*?\'_(.*?)\'.*?\n*.*?uiconf_id.*?\:.*?\'(.*?)\'.*?\n*.*?.*entry_id.*?\:.*?\'(.*?)\'.*?/g.exec(embedCode);
-				params["uniqueObjId"] = myArray[1];
-				params["partnerId"] = myArray[2];
-				params["uiconfId"] = myArray[3];
-				params["entryId"] = myArray[4];
+				params = getKalturaObjectFromDynamicEmbedCode(embedCode);
 			} else if (embedCode.substring(0, 7) === "<iframe") {
-				myArray = /^.*?src\=.https?\:\/\/www\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?.*?&playerId\=(.*?)&entry_id\=(.*?)\".*/g.exec(embedCode);
+				myArray = /^.*?src\=.https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?.*?&playerId\=(.*?)&entry_id\=(.*?)\".*/g.exec(embedCode);
 				params["partnerId"] = myArray[1];
 				params["uiconfId"] = myArray[3];
 				params["uniqueObjId"] = myArray[5];
 				params["entryId"] = myArray[6];
 			} else if (embedCode.substring(0, 7) === "<object") {
-				myArray = /^.*\n*?.*?id\=.(.*?)\"(.*?\n*)*?data\=.*?https?\:\/\/www\.kaltura\.com\/kwidget\/wid\/_(.*?)\/uiconf_id\/(.*?)\/entry_id\/(.*?)\".*/g.exec(embedCode);
+				myArray = /^.*\n*?.*?id\=.(.*?)\"(.*?\n*)*?data\=.*?https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/kwidget\/wid\/_(.*?)\/uiconf_id\/(.*?)\/entry_id\/(.*?)\".*/g.exec(embedCode);
 				params["uniqueObjId"] = myArray[1];
 				params["partnerId"] = myArray[3];
 				params["uiconfId"] = myArray[4];
@@ -69,9 +69,6 @@
 			return "https://cdnapisec.kaltura.com/p/" +kalturaObject["partnerId"]+ "/sp/" +kalturaObject["partnerId"]+ "00/embedIframeJs/uiconf_id/" +kalturaObject["uiconfId"]+ "/partner_id/" +kalturaObject["partnerId"]+ "?entry_id=" +kalturaObject["entryId"]+ "&playerId=" +kalturaObject["uniqueObjId"]+ "&autoembed=true&width=" +width+ "&height=" +height+ "&"
 		}
 
-
-
-		var damn = 'https://cdnapisec.kaltura.com/p/2166751/sp/216675100/embedIframeJs/uiconf_id/37947851/partner_id/2166751%3Fentry_id=0_aohl11vg%26playerId=kaltura_player_1484679533%26autoembed=true%26width=1024%26height=768%26'
 		function getKalturaObjectFromAutoEmbedURL(url) {
 			var params = {};
 			var myArray = /^https\:\/\/cdnapisec\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?entry_id\=(.*?)&playerId\=(.*?)&.*/g;
@@ -80,6 +77,16 @@
 			params["uiconfId"] = myArray[3];
 			params["entryId"] = myArray[5];
 			params["uniqueObjId"] = myArray[6];
+			return params;
+		}
+
+		function getKalturaObjectFromDynamicEmbedCode(embedCode) {
+			var params = {};
+			var kWidgetParams = JSON.parse(/^(?:.|\n|\r)*?kWidget\..*?mbed\(({(?:.|\n|\r)*})\).*?/g.exec(embedCode)[1]);
+			params["uniqueObjId"] = kWidgetParams.targetId;
+			params["partnerId"] = kWidgetParams.wid.substring(1);
+			params["uiconfId"] = kWidgetParams.uiconf_id;
+			params["entryId"] = kWidgetParams.entry_id;
 			return params;
 		}
 	}

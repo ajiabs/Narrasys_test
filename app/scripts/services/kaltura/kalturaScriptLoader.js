@@ -22,7 +22,8 @@
 				tag.id = partnerId;
 				var firstScriptTag = document.getElementsByTagName('script')[0];
 				firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-				$timeout(resolve, 500);
+
+				$timeout(resolve, 900);
 			});
 		}
 	}

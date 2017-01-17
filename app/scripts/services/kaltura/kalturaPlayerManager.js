@@ -8,11 +8,12 @@
 	angular.module('com.inthetelling.story')
 		.factory('kalturaPlayerManager', kalturaPlayerManager);
 
-	function kalturaPlayerManager(playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
+	function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
 		var _players = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
 		var _type = 'kaltura';
+		var _existy = ittUtils.existy;
 
 		var _kalturaMetaObj = {
 			instance: null,
@@ -64,7 +65,10 @@
 			pauseOtherPlayers: pauseOtherPlayers,
 			getPlayerState: getPlayerState,
 			pause: pause,
-			getBufferedPercent: getBufferedPercent
+			play: play,
+			stop: angular.noop,
+			getBufferedPercent: getBufferedPercent,
+			getCurrentTime: getCurrentTime
 		};
 
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
@@ -100,18 +104,57 @@
 				entryId = ktObj.entryId,
 				uiConfId = ktObj.uiconfId;
 
-
-
 			_createKWidget(playerId, partnerId, entryId, uiConfId, readyCallback)
 				.then(handleSuccess);
 
 
-			function handleSuccess() {
-				console.log('widget created!');
+			function handleSuccess() {}
+
+			function readyCallback(playerId) {
+				// setMetaProp(playerId, 'ready', true);
+				var kdp = document.getElementById(playerId);
+				getPlayer(playerId).instance = kdp;
+
+				// var readyEv = _formatPlayerStateChangeEvent('6', playerId);
+
+				kdp.kBind('playerStateChange', onPlayerStateChange);
+
+				['doPlay', 'doPause'].forEach(function(evtName) {
+					(function(e) {
+						console.log('e', e);
+						kdp.kBind(e + '.narrasys', function(event) {
+							kdp.sendNotification(evtName);
+						})
+
+					})(evtName);
+				});
+
+
+				// _emitStateChange(readyEv);
+
 			}
 
-			function readyCallback(hm) {
-				console.log('ready cb fired!', hm);
+			function onPlayerStateChange(state) {
+
+				//states: uninitialized, loading, ready, playing, paused, buffering, playbackError
+
+				var ktStates = {
+					'uninitialized': null,
+					'playbackError': null,
+					'loading': null,
+					//ones we already are using.
+					'ready': '6',
+					'playing': '1',
+					'paused': '2',
+					'buffering': '3'
+				};
+
+				var stateChangeEv = _formatPlayerStateChangeEvent(ktStates[state], this.id);
+				// console.log('kdp state change', state);
+				// var time = getCurrentTime(this.id);
+				if (_existy(ktStates[state])) {
+					_emitStateChange(stateChangeEv);
+				}
 			}
 		}
 
@@ -134,12 +177,44 @@
 			return '<div id="' + id + '"></div>';
 		}
 
-		function pause() {}
+		function play(pid) {
+			_sendKdpNotice(pid, 'doPlay.narrasys');
+		}
 
-		function getPlayerState() {}
+		function pause(pid) {
+			_sendKdpNotice(pid, 'doPause.narrasys');
+		}
+
+		function _sendKdpNotice(pid, notice) {
+			var kdp = getInstance(pid);
+			kdp.sendNotification(notice);
+		}
+
+		function getPlayerState(pid) {
+			return PLAYERSTATES[getMetaProp(pid, 'playerState')];
+		}
+
+		function getCurrentTime(pid) {
+			var instance = getInstance(pid);
+			return instance.evaluate('{video.player.currentTime}');
+		}
 
 		function getBufferedPercent() {
 			return 0;
+		}
+
+		//put it in base PM
+		function _emitStateChange(playerStateChange) {
+			_stateChangeCallbacks.forEach(function(cb) {
+				cb(playerStateChange);
+			});
+		}
+
+		function _formatPlayerStateChangeEvent(state, pid) {
+			return {
+				emitterId: pid,
+				state: PLAYERSTATES[state]
+			};
 		}
 
 	}
