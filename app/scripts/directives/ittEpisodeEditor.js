@@ -207,7 +207,7 @@ angular.module('com.inthetelling.story')
 					var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
 					asset.url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
 					asset.content_type = 'video/x-kaltura';
-					asset.type = 'Asset::Video';
+					asset.type = 'video';
 					asset.duration = 157; //02:37
 
 					asset.name = {
