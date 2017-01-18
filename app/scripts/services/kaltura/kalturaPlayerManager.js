@@ -137,10 +137,9 @@
 
 
 		function onPlaying(pid) {
-			if (_existy(pid)) {
-				setMetaProp(pid, 'playerState', 1);
-				_emitStateChange(pid);
-			}
+			console.log('onPlaying!', pid);
+			setMetaProp(pid, 'playerState', 1);
+			_emitStateChange(pid);
 		}
 
 		function onPaused(pid) {
@@ -148,15 +147,17 @@
 			_emitStateChange(pid);
 		}
 
-		function onBufferChange(isBuffering) {
-			if (isBuffering) {
-				setMetaProp(this.id, 'playerState', 3);
-				_emitStateChange(this.id);
+		function onBufferChange(ev) {
+
+			var currentState = getMetaProp(this.id, 'playerState');
+			setMetaProp(this.id, 'playerState', 3);
+			if (currentState === 1 && _existy(ev)) {
+				play(this.id);
 			}
+			_emitStateChange(this.id);
 		}
 
 		function onSeeked(t) {
-			console.log('onSeeked', t);
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(this.id);
 		}
@@ -166,14 +167,29 @@
 			_emitStateChange(pid);
 		}
 
+		function onPlayerStateChange(state) {
+			console.log('state', state);
+			var statesMap = {
+				'ready': 6,
+				'buffering': 3,
+				'playing': 1,
+				'paused': 2
+			};
+
+			setMetaProp(this.id, 'playerState', statesMap[state]);
+			_emitStateChange(this.id);
+		}
+
 		function _attachEventListeners(kdp) {
 			var kMap = {
-				'seeked': onSeeked,
-				'playerPlayed': onPlaying,
-				'playerPaused': onPaused,
-				'bufferChange': onBufferChange,
-				'playerPlayEnd': onPlayerPlayEnd,
-				'playerReady': onPlayerReady
+				// 'seeked': onSeeked,
+				// 'playerPlayed': onPlaying,
+				// 'playerPaused': onPaused,
+				'bufferStartEvent': onBufferChange,
+				'bufferEndEvent': onBufferChange,
+				// 'playerPlayEnd': onPlayerPlayEnd,
+				// 'playerReady': onPlayerReady,
+				'playerStateChange': onPlayerStateChange
 			};
 			var nameSpace = '.nys';
 			Object.keys(kMap).forEach(function(evtName) {
@@ -182,6 +198,7 @@
 				})(evtName)
 			});
 		}
+
 
 		function play(pid) {
 			_sendKdpNotice(pid, 'doPlay');
@@ -197,10 +214,15 @@
 
 		function _sendKdpNotice(pid, notice, val) {
 			var kdp = getInstance(pid);
-			if (_existy(val)) {
-				kdp.sendNotification(notice, val);
-			} else {
-				kdp.sendNotification(notice);
+
+			try {
+				if (_existy(val)) {
+					kdp.sendNotification(notice, val);
+				} else {
+					kdp.sendNotification(notice);
+				}
+			} catch(e) {
+				console.log('error sending', notice);
 			}
 		}
 
@@ -210,11 +232,16 @@
 
 		function getCurrentTime(pid) {
 			var instance = getInstance(pid);
-			return instance.evaluate('{video.player.currentTime}');
+			var time = instance.evaluate('{video.player.currentTime}');
+			console.log('hmm', time);
+			return time || 0;
 		}
 
-		function getBufferedPercent() {
-			return 0;
+		function getBufferedPercent(pid) {
+			var instance = getInstance(pid);
+			if (getMetaProp(pid, 'ready') === true) {
+				return instance.evaluate('{video.buffer.percent}') * 100;
+			}
 		}
 
 		function _emitStateChange(pid) {

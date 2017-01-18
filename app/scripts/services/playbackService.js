@@ -139,7 +139,6 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function play(playerId) {
-			console.log('pbs#play');
 		    if(getMetaProp('ready', _setPid(playerId)) === true ) {
 			_playerInterfaces[_setPid(playerId)].play(_setPid(playerId));
 		    }
@@ -274,7 +273,8 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function getCurrentTime(playerId) {
-			if (ittUtils.existy(_playerInterfaces[playerId])) {
+			if (ittUtils.existy(_playerInterfaces[_setPid(playerId)])) {
+				console.warn('get current time!');
 				return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
 			}
 		}
@@ -601,7 +601,7 @@
 		function _stateChangeCB(stateChangeEvent) {
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
-			console.log('pbs#stateChangeCB', state, emitterId);
+			// console.log('pbs#stateChangeCB', state, emitterId);
 			switch (state) {
 				case 'unstarted':
 					break;
