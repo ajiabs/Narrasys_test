@@ -92,16 +92,12 @@ angular.module('com.inthetelling.story')
 
 					break;
 				case 'playing':
-
 					var currentTime = playbackService.getCurrentTime();
 					var ourTime = playbackService.getMetaProp('time');
-					console.log('onPlaying', currentTime);
 					if (Math.abs(ourTime - currentTime) > 0.75) {
 						playbackService.setMetaProp('time', currentTime);
 						stepEvent(true);
 					}
-
-
 					startTimelineClock();
 					startEventClock();
 					appState.videoControlsActive = true;
@@ -591,7 +587,6 @@ angular.module('com.inthetelling.story')
 					});
 					if (event.end_time || event.end_time === 0) {
 						if (/internal:endingscreen/.test(event._id)) {
-							console.log('do not add exit event for ending screen.');
 							return;
 						}
 

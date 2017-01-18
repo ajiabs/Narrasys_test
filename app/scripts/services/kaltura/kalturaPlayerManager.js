@@ -67,6 +67,7 @@
 			pause: pause,
 			play: play,
 			stop: angular.noop,
+			seekTo: seekTo,
 			getBufferedPercent: getBufferedPercent,
 			getCurrentTime: getCurrentTime
 		};
@@ -80,20 +81,12 @@
 				_players = {};
 				_mainPlayerId = id;
 			}
-
-
-			console.log('media srcArr', mediaSrcArr[0]);
 			var ktObj = kalturaUrlService.getKalturaObjectFromAutoEmbedURL(mediaSrcArr[0]);
-			// console.log('ktObj', ktObj);
-
 			var newProps = {
 				mainPlayer: mainPlayer,
 				div: _getPlayerDiv(id),
 				ktObj: ktObj
 			};
-
-			// console.log('props', newProps);
-
 			setPlayer(id, createMetaObj(newProps, _kalturaMetaObj));
 		}
 
@@ -111,51 +104,11 @@
 			function handleSuccess() {}
 
 			function readyCallback(playerId) {
-				// setMetaProp(playerId, 'ready', true);
 				var kdp = document.getElementById(playerId);
 				getPlayer(playerId).instance = kdp;
-
-				// var readyEv = _formatPlayerStateChangeEvent('6', playerId);
-
-				kdp.kBind('playerStateChange', onPlayerStateChange);
-
-				['doPlay', 'doPause'].forEach(function(evtName) {
-					(function(e) {
-						console.log('e', e);
-						kdp.kBind(e + '.narrasys', function(event) {
-							kdp.sendNotification(evtName);
-						})
-
-					})(evtName);
-				});
-
-
-				// _emitStateChange(readyEv);
-
+				_attachEventListeners(kdp);
 			}
 
-			function onPlayerStateChange(state) {
-
-				//states: uninitialized, loading, ready, playing, paused, buffering, playbackError
-
-				var ktStates = {
-					'uninitialized': null,
-					'playbackError': null,
-					'loading': null,
-					//ones we already are using.
-					'ready': '6',
-					'playing': '1',
-					'paused': '2',
-					'buffering': '3'
-				};
-
-				var stateChangeEv = _formatPlayerStateChangeEvent(ktStates[state], this.id);
-				// console.log('kdp state change', state);
-				// var time = getCurrentTime(this.id);
-				if (_existy(ktStates[state])) {
-					_emitStateChange(stateChangeEv);
-				}
-			}
 		}
 
 		function _createKWidget(divId, partnerID, entryID, uiConfId, onReadyCB) {
@@ -177,17 +130,78 @@
 			return '<div id="' + id + '"></div>';
 		}
 
+		function onPlayerReady(pid) {
+			setMetaProp(pid, 'playerState', 6);
+			_emitStateChange(pid);
+		}
+
+
+		function onPlaying(pid) {
+			if (_existy(pid)) {
+				setMetaProp(pid, 'playerState', 1);
+				_emitStateChange(pid);
+			}
+		}
+
+		function onPaused(pid) {
+			setMetaProp(pid, 'playerState', 2);
+			_emitStateChange(pid);
+		}
+
+		function onBufferChange(isBuffering) {
+			if (isBuffering) {
+				setMetaProp(this.id, 'playerState', 3);
+				_emitStateChange(this.id);
+			}
+		}
+
+		function onSeeked(t) {
+			console.log('onSeeked', t);
+			setMetaProp(this.id, 'playerState', 3);
+			_emitStateChange(this.id);
+		}
+
+		function onPlayerPlayEnd(pid) {
+			setMetaProp(pid, 'playerState', 5);
+			_emitStateChange(pid);
+		}
+
+		function _attachEventListeners(kdp) {
+			var kMap = {
+				'seeked': onSeeked,
+				'playerPlayed': onPlaying,
+				'playerPaused': onPaused,
+				'bufferChange': onBufferChange,
+				'playerPlayEnd': onPlayerPlayEnd,
+				'playerReady': onPlayerReady
+			};
+			var nameSpace = '.nys';
+			Object.keys(kMap).forEach(function(evtName) {
+				(function(evtName) {
+					kdp.kBind(evtName + nameSpace, kMap[evtName]);
+				})(evtName)
+			});
+		}
+
 		function play(pid) {
-			_sendKdpNotice(pid, 'doPlay.narrasys');
+			_sendKdpNotice(pid, 'doPlay');
 		}
 
 		function pause(pid) {
-			_sendKdpNotice(pid, 'doPause.narrasys');
+			_sendKdpNotice(pid, 'doPause');
 		}
 
-		function _sendKdpNotice(pid, notice) {
+		function seekTo(pid, t) {
+			_sendKdpNotice(pid, 'doSeek', t);
+		}
+
+		function _sendKdpNotice(pid, notice, val) {
 			var kdp = getInstance(pid);
-			kdp.sendNotification(notice);
+			if (_existy(val)) {
+				kdp.sendNotification(notice, val);
+			} else {
+				kdp.sendNotification(notice);
+			}
 		}
 
 		function getPlayerState(pid) {
@@ -203,10 +217,9 @@
 			return 0;
 		}
 
-		//put it in base PM
-		function _emitStateChange(playerStateChange) {
+		function _emitStateChange(pid) {
 			_stateChangeCallbacks.forEach(function(cb) {
-				cb(playerStateChange);
+				cb(_formatPlayerStateChangeEvent(getMetaProp(pid, 'playerState'), pid));
 			});
 		}
 

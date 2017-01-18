@@ -24,15 +24,26 @@
 				'	<div class="input">',
 				'		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-focus="$ctrl.onFocus()" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url on-validation-notice="$ctrl.handleValidationMessage($notice)"/>',
 				'	</div>',
+				'	<div>',
+				'		<input type="text" name="kalturaEmbedCode" ng-model="kaltura.embed" ng-change="$ctrl.kaltura(kaltura.embed)"/>',
+				'	</div>',
 				'</div>'
 			].join(' '),
-			controller: ['$scope', function ($scope) {
+			controller: ['$scope', 'kalturaUrlService', function ($scope, kalturaUrlService) {
 				var ctrl = this;
 				ctrl.handleValidationMessage = handleValidationMessage;
 				ctrl.onFocus = onFocus;
+				ctrl.kaltura = kaltura;
 
 				function onFocus() {
 					$scope.$broadcast('url:focus');
+				}
+
+				function kaltura(embedCode) {
+					console.log('embed code!', embedCode);
+					var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
+					var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
+					ctrl.data.url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
 				}
 
 				function handleValidationMessage(notice) {

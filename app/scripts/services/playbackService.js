@@ -508,7 +508,7 @@
 		 * @private
 		 */
 		function _handleEmbedDestroy(playerId) {
-			setMetaProp('startAtTime', entTime(playerId), playerId);
+			setMetaProp('startAtTime', getCurrentTime(playerId), playerId);
 			setMetaProp('hasResumedFromStartAt', false, playerId);
 			setMetaProp('ready', false, playerId);
 			freezeMetaProps(playerId);

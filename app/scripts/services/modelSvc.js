@@ -1261,7 +1261,6 @@ angular.module('com.inthetelling.story')
 
 			videoAsset.urls = videoObject;
 			videoAsset.mediaSrcArr = resolveMediaSrcArray(videoObject);
-			console.log('hmm', videoAsset);
 			return videoAsset;
 		};
 
