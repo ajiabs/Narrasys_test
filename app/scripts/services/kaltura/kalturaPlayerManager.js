@@ -147,13 +147,15 @@
 			_emitStateChange(pid);
 		}
 
-		function onBufferChange(ev) {
-
+		function onBufferEnd(ev) {
 			var currentState = getMetaProp(this.id, 'playerState');
+
+			console.log('buffend', currentState);
+			play(this.id);
+		}
+
+		function onBufferStart() {
 			setMetaProp(this.id, 'playerState', 3);
-			if (currentState === 1 && _existy(ev)) {
-				play(this.id);
-			}
 			_emitStateChange(this.id);
 		}
 
@@ -168,7 +170,7 @@
 		}
 
 		function onPlayerStateChange(state) {
-			console.log('state', state);
+			// console.log('state', state);
 			var statesMap = {
 				'ready': 6,
 				'buffering': 3,
@@ -177,19 +179,21 @@
 			};
 
 			setMetaProp(this.id, 'playerState', statesMap[state]);
-			_emitStateChange(this.id);
+			if (_existy(statesMap[state])) {
+				_emitStateChange(this.id);
+			}
 		}
 
 		function _attachEventListeners(kdp) {
 			var kMap = {
 				// 'seeked': onSeeked,
-				// 'playerPlayed': onPlaying,
-				// 'playerPaused': onPaused,
-				'bufferStartEvent': onBufferChange,
-				'bufferEndEvent': onBufferChange,
-				// 'playerPlayEnd': onPlayerPlayEnd,
-				// 'playerReady': onPlayerReady,
-				'playerStateChange': onPlayerStateChange
+				'playerPlayed': onPlaying,
+				'playerPaused': onPaused,
+				'bufferStartEvent': onBufferStart,
+				'bufferEndEvent': onBufferEnd,
+				'playerPlayEnd': onPlayerPlayEnd,
+				'playerReady': onPlayerReady,
+				// 'playerStateChange': onPlayerStateChange
 			};
 			var nameSpace = '.nys';
 			Object.keys(kMap).forEach(function(evtName) {

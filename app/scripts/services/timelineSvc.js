@@ -63,7 +63,7 @@ angular.module('com.inthetelling.story')
 			// '5': player ready
 		function _onPlayerStateChange(state) {
 
-			// console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
+			console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
 
 			if (playbackService.getTimelineState() === 'ended' && (state === 'unstarted' || state === 'video cued')) {
 				return;
@@ -92,12 +92,12 @@ angular.module('com.inthetelling.story')
 
 					break;
 				case 'playing':
-					var currentTime = playbackService.getCurrentTime();
-					var ourTime = playbackService.getMetaProp('time');
-					if (Math.abs(ourTime - currentTime) > 0.75) {
-						playbackService.setMetaProp('time', currentTime);
-						stepEvent(true);
-					}
+					// var currentTime = playbackService.getCurrentTime();
+					// var ourTime = playbackService.getMetaProp('time');
+					// if (Math.abs(ourTime - currentTime) > 0.75) {
+					// 	playbackService.setMetaProp('time', currentTime);
+					// 	stepEvent(true);
+					// }
 					startTimelineClock();
 					startEventClock();
 					appState.videoControlsActive = true;
@@ -477,6 +477,7 @@ angular.module('com.inthetelling.story')
 		};
 
 		var _tick = function () {
+			console.log('tick tock');
 			var thisTick = new Date();
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
 

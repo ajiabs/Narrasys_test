@@ -274,7 +274,6 @@
 		 */
 		function getCurrentTime(playerId) {
 			if (ittUtils.existy(_playerInterfaces[_setPid(playerId)])) {
-				console.warn('get current time!');
 				return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
 			}
 		}
