@@ -273,7 +273,7 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function getCurrentTime(playerId) {
-			if (ittUtils.existy(_playerInterfaces[playerId])) {
+			if (ittUtils.existy(_playerInterfaces[_setPid(playerId)])) {
 				return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
 			}
 		}
