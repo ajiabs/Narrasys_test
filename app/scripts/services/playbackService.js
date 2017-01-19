@@ -562,8 +562,6 @@
 
 			setMetaProp('ready', true, pid);
 
-			console.log('we ready!');
-
 			if (pid === _mainPlayerId) {
 				setMetaProp('playerState', '5', pid);
 				_emitStateChange('video cued', pid);

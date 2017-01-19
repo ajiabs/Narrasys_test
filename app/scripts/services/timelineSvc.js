@@ -477,13 +477,11 @@ angular.module('com.inthetelling.story')
 		};
 
 		var _tick = function () {
-			console.log('tick tock');
 			var thisTick = new Date();
 			var delta = (isNaN(thisTick - lastTick)) ? 0 : (thisTick - lastTick);
 
 			//in the event that the timelineClock is running but the eventClock is not, start the eventClock.
 			if (!eventClockData.running) {
-				console.log('detected running');
 				startEventClock();
 			}
 

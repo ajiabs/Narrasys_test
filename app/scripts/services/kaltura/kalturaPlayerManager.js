@@ -25,6 +25,8 @@
 				startAtTime: 0,
 				duration: 0,
 				ktObj: {},
+				isMuted: false,
+				vol: 0,
 				time: 0,
 				hasResumedFromStartAt: false,
 				hasBeenPlayed: false,
@@ -72,7 +74,9 @@
 			stop: angular.noop,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
-			resetPlayerManager: angular.noop
+			resetPlayerManager: angular.noop,
+			toggleMute: toggleMute,
+			setVolume: setVolume
 		};
 
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
@@ -139,7 +143,6 @@
 		}
 
 		function onPlaying(pid) {
-			console.log('onPlaying!', pid);
 			setMetaProp(pid, 'playerState', 1);
 			_emitStateChange(pid);
 		}
@@ -150,18 +153,14 @@
 		}
 
 		function onBufferEnd(ev) {
-			var currentState = getMetaProp(this.id, 'playerState');
+			var currentState = PLAYERSTATES[getMetaProp(this.id, 'playerState')];
 
-			console.log('buffend', currentState);
-			play(this.id);
+			if (currentState === 'buffering') {
+				play(this.id);
+			}
 		}
 
 		function onBufferStart() {
-			setMetaProp(this.id, 'playerState', 3);
-			_emitStateChange(this.id);
-		}
-
-		function onSeeked(t) {
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(this.id);
 		}
@@ -171,20 +170,25 @@
 			_emitStateChange(pid);
 		}
 
-		function onPlayerStateChange(state) {
-			// console.log('state', state);
-			var statesMap = {
-				'ready': 6,
-				'buffering': 3,
-				'playing': 1,
-				'paused': 2
-			};
+		// function onSeeked(t) {
+		// 	setMetaProp(this.id, 'playerState', 3);
+		// 	_emitStateChange(this.id);
+		// }
 
-			setMetaProp(this.id, 'playerState', statesMap[state]);
-			if (_existy(statesMap[state])) {
-				_emitStateChange(this.id);
-			}
-		}
+		// function onPlayerStateChange(state) {
+		// 	// console.log('state', state);
+		// 	var statesMap = {
+		// 		'ready': 6,
+		// 		'buffering': 3,
+		// 		'playing': 1,
+		// 		'paused': 2
+		// 	};
+        //
+		// 	setMetaProp(this.id, 'playerState', statesMap[state]);
+		// 	if (_existy(statesMap[state])) {
+		// 		_emitStateChange(this.id);
+		// 	}
+		// }
 
 		function onPlayerError(e) {
 			console.warn('PLAYER ERROR', e);
@@ -212,7 +216,6 @@
 
 
 		function play(pid) {
-			console.log('play recieved and sent');
 			_sendKdpNotice(pid, 'doPlay');
 		}
 
@@ -243,16 +246,12 @@
 		}
 
 		function getCurrentTime(pid) {
-			var instance = getInstance(pid);
-			var time = instance.evaluate('{video.player.currentTime}');
-			console.log('hmm', time);
-			return time || 0;
+			return _kdpEval(pid, 'video.player.currentTime') || 0;
 		}
 
 		function getBufferedPercent(pid) {
-			var instance = getInstance(pid);
 			if (getMetaProp(pid, 'ready') === true) {
-				return instance.evaluate('{video.buffer.percent}') * 100;
+				return _kdpEval(pid, 'video.buffer.percent') * 100;
 			}
 		}
 
@@ -262,11 +261,35 @@
 			});
 		}
 
+		function _kdpEval(pid, prop) {
+			var instance = getInstance(pid);
+			return instance.evaluate('{' + prop + '}');
+		}
+
 		function _formatPlayerStateChangeEvent(state, pid) {
 			return {
 				emitterId: pid,
 				state: PLAYERSTATES[state]
 			};
+		}
+
+		function toggleMute(pid) {
+			var isMuted = getMetaProp(pid, 'isMuted');
+
+			if (isMuted === false) {
+				//save last known vol
+				var lastVol = _kdpEval(pid, 'video.volume') * 100;
+				setMetaProp(pid, 'vol', lastVol);
+				setVolume(pid, 0);
+			} else {
+				setVolume(pid, getMetaProp(pid, 'vol'));
+			}
+
+			setMetaProp(pid, 'isMuted', !isMuted);
+		}
+
+		function setVolume(pid, v) {
+			_sendKdpNotice(pid, 'changeVolume', v / 100);
 		}
 
 	}
