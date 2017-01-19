@@ -72,6 +72,7 @@
 		var registerStateChangeListener = base.registerStateChangeListener;
 		var unregisterStateChangeListener = base.unregisterStateChangeListener;
 		var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
+		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
 
 		return {
 			type: _type,
@@ -82,6 +83,7 @@
 			pauseOtherPlayers: pauseOtherPlayers,
 			registerStateChangeListener: registerStateChangeListener,
 			unregisterStateChangeListener: unregisterStateChangeListener,
+			resetPlayerManager: resetPlayerManager,
 			seedPlayerManager: seedPlayerManager,
 			create: create,
 			getPlayerState: getPlayerState,
@@ -95,7 +97,6 @@
 			setSpeed: setSpeed,
 			freezeMetaProps: freezeMetaProps,
 			unFreezeMetaProps: unFreezeMetaProps,
-			resetPlayerManager: resetPlayerManager,
 			stop: angular.noop
 		};
 
@@ -469,41 +470,6 @@
 			}
 
 		}
-		/**
-		 * @ngdoc method
-		 * @name #destroyInstance
-		 * @methodOf iTT.service:html5PlayerManager
-		 * @description
-		 * Removes all event listeners attached to the video element and optionally sets the entry in the _players map
-		 * to an empty object.
-		 * @param {String} pid The ID of the html5 video
-		 * @param {Boolean} [doRemove=false] optional param to optionally reset the instance in the _players map.
-		 * @returns {Void} No return value.
-		 */
-		function destroyInstance(pid, doRemove) {
-			if (!_existy(doRemove)) {
-				doRemove = false;
-			}
-			_removeEventListeners(pid);
-			if (doRemove === true) {
-				_players[pid] = {};
-			}
-		}
-		/**
-		 * @ngdoc method
-		 * @name #resetPlayerManager
-		 * @methodOf iTT.service:html5PlayerManager
-		 * @description
-		 * Will clean up all video elements in the _players map and reset it to an empty object.
-		 * @returns {Void} No return value.
-		 */
-		function resetPlayerManager() {
-			angular.forEach(_players, function (pm, id) {
-				destroyInstance(id, true);
-			});
-			_players = {};
-		}
-
 		/*
 		 private methods
 		 */

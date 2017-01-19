@@ -54,6 +54,11 @@
 			return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
 		};
 
+		var destroyFn = function(pid) {
+			var p = getInstance(pid);
+			_tryCommand(p, 'destroy');
+		};
+
 		var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
 		var getPlayer = base.getPlayer;
 		var setPlayer = base.setPlayer;
@@ -66,33 +71,32 @@
 		var unregisterStateChangeListener = base.unregisterStateChangeListener;
 		var pauseOtherPlayers = base.pauseOtherPlayers(pause, playerState);
 		var getPlayerDiv = base.getPlayerDiv;
+		var resetPlayerManager = base.resetPlayerManager(destroyFn);
 
 		_youTubePlayerManager = {
 			type: _type,
+			getMetaProp: getMetaProp,
+			setMetaProp: setMetaProp,
+			getMetaObj: getMetaObj,
+			getPlayerDiv: getPlayerDiv,
+			pauseOtherPlayers: pauseOtherPlayers,
+			registerStateChangeListener: registerStateChangeListener,
+			unregisterStateChangeListener: unregisterStateChangeListener,
+			resetPlayerManager: resetPlayerManager,
 			seedPlayerManager: seedPlayerManager,
 			create: create,
 			play: play,
 			pause: pause,
 			seekTo: seekTo,
-			pauseOtherPlayers: pauseOtherPlayers,
 			getCurrentTime: getCurrentTime,
 			getPlayerState: playerState,
 			getBufferedPercent: getVideoLoadedFraction,
 			toggleMute: toggleMute,
 			setVolume: setVolume,
-			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
-			registerStateChangeListener: registerStateChangeListener,
-			unregisterStateChangeListener: unregisterStateChangeListener,
-			getMetaProp: getMetaProp,
-			setMetaProp: setMetaProp,
-			getMetaObj: getMetaObj,
+			setPlaybackQuality: setPlaybackQuality,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
-			setPlaybackQuality: setPlaybackQuality,
-			reset: reset,
-			destroyInstance: destroyInstance,
-			resetPlayerManager: resetPlayerManager,
 			stop: stop
 
 		};
@@ -200,7 +204,7 @@
 				if (event.data === YT.PlayerState.BUFFERING) {
 					_isBuffering = $timeout(function() {
 						if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
-							reset(pid);
+							_reset(pid);
 						}
 					}, _WAITFORBUFFERING);
 
@@ -226,7 +230,7 @@
 
 				var playerReadyEv = _formatPlayerStateChangeEvent({data: '6'}, pid);
 				setMetaProp(pid, 'duration', event.target.getDuration());
-				console.log('reset duration!');
+				console.log('_reset duration!');
 				_emitStateChange(playerReadyEv);
 			}
 
@@ -264,9 +268,9 @@
 			function onError(event) {
 				var brokePlayerPID = _getPidFromInstance(event.target);
 				if (event.data === 5) {
-					//only reset for HTML5 player errors
+					//only _reset for HTML5 player errors
 					console.warn('resetting for chrome!!!');
-					reset(brokePlayerPID);
+					_reset(brokePlayerPID);
 				}
 			}
 		}
@@ -372,34 +376,6 @@
 				_tryCommand(p, 'stopVideo');
 			}
 		}
-		/**
-		 * @ngdoc method
-		 * @name #reset
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Used to reset the player after detecting
-		 * onError event.
-		 * @params pid The id of the player
-		 * @returns {Void} no return value
-		 */
-		function reset(pid) {
-
-			var obj = getPlayer(pid);
-			var instance = obj.instance;
-
-			if (_existy(instance)) {
-				console.log('debug info', instance.getDebugText());
-				var videoId = instance.getVideoData().video_id;
-				var lastTime = instance.getCurrentTime();
-
-				if (obj.isMainPlayer) {
-					instance.cueVideoById(videoId, lastTime);
-				} else {
-					instance.loadVideoById(videoId, lastTime);
-				}
-			}
-		}
-
 		/**
 		 * @ngdoc method
 		 * @name #setPlaybackQuality
@@ -528,46 +504,38 @@
 				p.setVolume(v);
 			}
 		}
-		/**
-		 * @ngdoc method
-		 * @name #destroyInstance
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Used to destroy YT instances and clear them from the _players object
-		 * @param {String} pid The ID of the YT instance
-		 * @param {Boolean} [doRemove=false] optional param to optionally reset the instance in the _players map.
-		 * @returns {Void} No return value.
-		 */
-		function destroyInstance(pid, doRemove) {
-			if (!_existy(doRemove)) {
-				doRemove = false;
-			}
-			var p = getInstance(pid);
-			if (_existy(p)) {
-
-				_tryCommand(p, 'destroy');
-				if (doRemove === true) {
-					_players[pid] = {};
-				}
-
-			}
-		}
-		/**
-		 * @ngdoc method
-		 * @name #resetPlayerManager
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Will destroy all instances of YT on the _players map and reset it to an empty object.
-		 * @returns {Void} No return value.
-		 */
-		function resetPlayerManager() {
-			angular.forEach(_players, function(pm, id) {
-				destroyInstance(id, true);
-			});
-			_players = {};
-		}
 
 		//private methods
+
+		/**
+		 * @ngdoc method
+		 * @name _reset
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to _reset the player after detecting
+		 * onError event.
+		 * @params pid The id of the player
+		 * @returns {Void} no return value
+		 * @private
+		 */
+		function _reset(pid) {
+
+			var obj = getPlayer(pid);
+			var instance = obj.instance;
+
+			if (_existy(instance)) {
+				console.log('debug info', instance.getDebugText());
+				var videoId = instance.getVideoData().video_id;
+				var lastTime = instance.getCurrentTime();
+
+				if (obj.isMainPlayer) {
+					instance.cueVideoById(videoId, lastTime);
+				} else {
+					instance.loadVideoById(videoId, lastTime);
+				}
+			}
+		}
+
 		/**
 		 * @private
 		 * @ngdoc method

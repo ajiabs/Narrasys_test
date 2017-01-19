@@ -53,6 +53,7 @@
 		var registerStateChangeListener = commons.registerStateChangeListener;
 		var unregisterStateChangeListener = commons.unregisterStateChangeListener;
 		var pauseOtherPlayers = commons.pauseOtherPlayers(pause, getPlayerState);
+		var resetPlayerManager = commons.resetPlayerManager(_removeEventListeners);
 
 		return {
 			type: _type,
@@ -63,6 +64,7 @@
 			pauseOtherPlayers: pauseOtherPlayers,
 			registerStateChangeListener: registerStateChangeListener,
 			unregisterStateChangeListener: unregisterStateChangeListener,
+			resetPlayerManager: resetPlayerManager,
 			seedPlayerManager: seedPlayerManager,
 			create: create,
 			getPlayerState: getPlayerState,
@@ -76,7 +78,6 @@
 			setSpeed: angular.noop,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
-			resetPlayerManager: angular.noop,
 			stop: angular.noop
 		};
 
@@ -96,7 +97,7 @@
 			function readyCallback(playerId) {
 				var kdp = document.getElementById(playerId);
 				getPlayer(playerId).instance = kdp;
-				_attachEventListeners(kdp);
+				_attachEventListeners(kdp, playerId);
 			}
 
 		}
@@ -243,7 +244,7 @@
 			return '<div id="' + id + '"></div>';
 		}
 
-		function _attachEventListeners(kdp) {
+		function _attachEventListeners(kdp, pid) {
 			var kMap = {
 				'playerPlayed': onPlaying,
 				'playerPaused': onPaused,
@@ -253,12 +254,16 @@
 				'playerError': onPlayerError,
 				'mediaReady': onMediaReady
 			};
-			var nameSpace = '.nys';
 			Object.keys(kMap).forEach(function(evtName) {
 				(function(evtName) {
-					kdp.kBind(evtName + nameSpace, kMap[evtName]);
+					kdp.kBind(evtName + '.' + pid, kMap[evtName]);
 				})(evtName)
 			});
+		}
+
+		function _removeEventListeners(pid) {
+			var kdp = getInstance(pid);
+			kdp.kUnbind('.' + pid);
 		}
 
 		function _emitStateChange(pid, forceState) {

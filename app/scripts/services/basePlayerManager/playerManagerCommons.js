@@ -28,7 +28,8 @@
 				getInstance: getInstance,
 				registerStateChangeListener: registerStateChangeListener,
 				unregisterStateChangeListener: unregisterStateChangeListener,
-				pauseOtherPlayers: pauseOtherPlayers
+				pauseOtherPlayers: pauseOtherPlayers,
+				resetPlayerManager: resetPlayerManager
 			};
 
 			function getPlayers() {
@@ -170,6 +171,44 @@
 				_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
 					return fn.toString() !== cb.toString();
 				});
+			}
+			/**
+			 * @ngdoc method
+			 * @name #resetPlayerManager
+			 * @methodOf iTT.service:youTubePlayerManager
+			 * @description
+			 * Will destroy all instances of YT on the _players map and reset it to an empty object.
+			 * @returns {Void} No return value.
+			 */
+			function resetPlayerManager(destroyFn) {
+				return function() {
+					angular.forEach(getPlayers(), function (pm, id) {
+						_destroyInstance(id, true, destroyFn);
+					});
+					_players = {};
+				}
+			}
+			/**
+			 * @ngdoc method
+			 * @name #destroyInstance
+			 * @methodOf iTT.service:youTubePlayerManager
+			 * @description
+			 * Used to destroy YT instances and clear them from the _players object
+			 * @param {String} pid The ID of the YT instance
+			 * @param {Boolean} [doRemove=false] optional param to optionally reset the instance in the _players map.
+			 * @returns {Void} No return value.
+			 * @private
+			 */
+			function _destroyInstance(pid, doRemove, sideEffects) {
+				if (!_existy(doRemove)) {
+					doRemove = false;
+				}
+
+				sideEffects(pid);
+
+				if (doRemove === true) {
+					setPlayer(pid, {});
+				}
 			}
 		}
 	}
