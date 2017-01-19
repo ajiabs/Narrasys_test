@@ -54,22 +54,25 @@
 
 		return {
 			type: _type,
-			seedPlayerManager: seedPlayerManager,
-			create: create,
-			getPlayerDiv: getPlayerDiv,
 			getMetaProp: getMetaProp,
 			setMetaProp: setMetaProp,
 			getMetaObj: getMetaObj,
+			getPlayerDiv: getPlayerDiv,
+			pauseOtherPlayers: pauseOtherPlayers,
 			registerStateChangeListener: registerStateChangeListener,
 			unregisterStateChangeListener: unregisterStateChangeListener,
-			pauseOtherPlayers: pauseOtherPlayers,
+			seedPlayerManager: seedPlayerManager,
+			create: create,
 			getPlayerState: getPlayerState,
-			pause: pause,
 			play: play,
-			stop: angular.noop,
+			pause: pause,
 			seekTo: seekTo,
+			getCurrentTime: getCurrentTime,
 			getBufferedPercent: getBufferedPercent,
-			getCurrentTime: getCurrentTime
+			stop: angular.noop,
+			freezeMetaProps: angular.noop,
+			unFreezeMetaProps: angular.noop,
+			resetPlayerManager: angular.noop
 		};
 
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
@@ -130,11 +133,10 @@
 			return '<div id="' + id + '"></div>';
 		}
 
-		function onPlayerReady(pid) {
+		function onMediaReady(pid) {
 			setMetaProp(pid, 'playerState', 6);
 			_emitStateChange(pid);
 		}
-
 
 		function onPlaying(pid) {
 			console.log('onPlaying!', pid);
@@ -184,6 +186,10 @@
 			}
 		}
 
+		function onPlayerError(e) {
+			console.warn('PLAYER ERROR', e);
+		}
+
 		function _attachEventListeners(kdp) {
 			var kMap = {
 				// 'seeked': onSeeked,
@@ -192,7 +198,8 @@
 				'bufferStartEvent': onBufferStart,
 				'bufferEndEvent': onBufferEnd,
 				'playerPlayEnd': onPlayerPlayEnd,
-				'playerReady': onPlayerReady,
+				'playerError': onPlayerError,
+				'mediaReady': onMediaReady
 				// 'playerStateChange': onPlayerStateChange
 			};
 			var nameSpace = '.nys';
@@ -205,6 +212,7 @@
 
 
 		function play(pid) {
+			console.log('play recieved and sent');
 			_sendKdpNotice(pid, 'doPlay');
 		}
 
