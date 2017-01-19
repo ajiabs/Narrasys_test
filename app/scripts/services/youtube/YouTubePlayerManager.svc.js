@@ -98,39 +98,6 @@
 		};
 
 		//public methods
-
-
-		/**
-		 * @ngdoc method
-		 * @name #getMetaProp
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * used to get a particular property of a players's meta obj
-		 * @param {String} pid the pid of the player
-		 * @param {String} prop the prop to get
-		 * @returns {String | Number | Void} returns the requested prop if defined.
-		 */
-		// function getMetaProp(pid, prop) {
-		// 	if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
-		// 		return _players[pid].meta[prop];
-		// 	}
-		// }
-		// /**
-		//  * @ngdoc method
-		//  * @name #setMetaProp
-		//  * @methodOf iTT.service:youTubePlayerManager
-		//  * @description
-		//  * sets the particular prop of a player's meta obj
-		//  * @param {String} pid the pid of the player
-		//  * @param {String} prop the prop to set
-		//  * @param {String|Number|Boolean} val the val to set
-		//  * @returns {Void} returns void
-		//  */
-		// function setMetaProp(pid, prop, val) {
-		// 	if (_existy(_players[pid] && _players[pid].meta)) {
-		// 		_players[pid].meta[prop] = val;
-		// 	}
-		// }
 		/**
 		 * @ngdoc method
 		 * @name #seedPlayerManager

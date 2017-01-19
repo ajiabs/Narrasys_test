@@ -71,32 +71,14 @@
 			seekTo: seekTo,
 			getCurrentTime: getCurrentTime,
 			getBufferedPercent: getBufferedPercent,
-			stop: angular.noop,
+			toggleMute: toggleMute,
+			setVolume: setVolume,
+			setSpeed: angular.noop,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
 			resetPlayerManager: angular.noop,
-			setSpeed: angular.noop,
-			toggleMute: toggleMute,
-			setVolume: setVolume
+			stop: angular.noop
 		};
-
-		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
-			if (_existy(getPlayer(id)) && getMetaProp(id, 'startAtTime') > 0) {
-				return;
-			}
-
-			if (mainPlayer) {
-				_players = {};
-				_mainPlayerId = id;
-			}
-			var ktObj = kalturaUrlService.getKalturaObjectFromAutoEmbedURL(mediaSrcArr[0]);
-			var newProps = {
-				mainPlayer: mainPlayer,
-				div: _getPlayerDiv(id),
-				ktObj: ktObj
-			};
-			setPlayer(id, createMetaObj(newProps, _kalturaMetaObj));
-		}
 
 		function create(playerId) {
 
@@ -119,24 +101,27 @@
 
 		}
 
-		function _createKWidget(divId, partnerID, entryID, uiConfId, onReadyCB) {
-			return kalturaScriptLoader.load(partnerID, uiConfId).then(function() {
-				KWidget.embed({
-					"targetId": divId,
-					"wid": "_" + partnerID,
-					"uiconf_id": uiConfId,
-					"flashVars": {
+		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
+			if (_existy(getPlayer(id)) && getMetaProp(id, 'startAtTime') > 0) {
+				return;
+			}
 
-					},
-					"entry_id": entryID,
-					"readyCallback": onReadyCB
-				});
-			});
+			if (mainPlayer) {
+				_players = {};
+				_mainPlayerId = id;
+			}
+			var ktObj = kalturaUrlService.getKalturaObjectFromAutoEmbedURL(mediaSrcArr[0]);
+			var newProps = {
+				mainPlayer: mainPlayer,
+				div: _getPlayerDiv(id),
+				ktObj: ktObj
+			};
+			setPlayer(id, createMetaObj(newProps, _kalturaMetaObj));
 		}
 
-		function _getPlayerDiv(id) {
-			return '<div id="' + id + '"></div>';
-		}
+		/*
+			Event Bound functions
+		 */
 
 		function onMediaReady(pid) {
 			_emitStateChange(pid, 6);
@@ -170,51 +155,13 @@
 			_emitStateChange(pid);
 		}
 
-		// function onSeeked(t) {
-		// 	setMetaProp(this.id, 'playerState', 3);
-		// 	_emitStateChange(this.id);
-		// }
-
-		// function onPlayerStateChange(state) {
-		// 	// console.log('state', state);
-		// 	var statesMap = {
-		// 		'ready': 6,
-		// 		'buffering': 3,
-		// 		'playing': 1,
-		// 		'paused': 2
-		// 	};
-        //
-		// 	setMetaProp(this.id, 'playerState', statesMap[state]);
-		// 	if (_existy(statesMap[state])) {
-		// 		_emitStateChange(this.id);
-		// 	}
-		// }
-
 		function onPlayerError(e) {
 			console.warn('PLAYER ERROR', e);
 		}
 
-		function _attachEventListeners(kdp) {
-			var kMap = {
-				// 'seeked': onSeeked,
-				'playerPlayed': onPlaying,
-				'playerPaused': onPaused,
-				'bufferStartEvent': onBufferStart,
-				'bufferEndEvent': onBufferEnd,
-				'playerPlayEnd': onPlayerPlayEnd,
-				'playerError': onPlayerError,
-				'mediaReady': onMediaReady
-				// 'playerStateChange': onPlayerStateChange
-			};
-			var nameSpace = '.nys';
-			Object.keys(kMap).forEach(function(evtName) {
-				(function(evtName) {
-					kdp.kBind(evtName + nameSpace, kMap[evtName]);
-				})(evtName)
-			});
-		}
-
-
+		/*
+			Public Methods
+		 */
 		function play(pid) {
 			_sendKdpNotice(pid, 'doPlay');
 		}
@@ -226,6 +173,42 @@
 		function seekTo(pid, t) {
 			_sendKdpNotice(pid, 'doSeek', t);
 		}
+
+		function getPlayerState(pid) {
+			return PLAYERSTATES[getMetaProp(pid, 'playerState')];
+		}
+
+		function getCurrentTime(pid) {
+			return _kdpEval(pid, 'video.player.currentTime') || 0;
+		}
+
+		function getBufferedPercent(pid) {
+			if (getMetaProp(pid, 'ready') === true) {
+				return _kdpEval(pid, 'video.buffer.percent') * 100;
+			}
+		}
+		function toggleMute(pid) {
+			var isMuted = getMetaProp(pid, 'isMuted');
+
+			if (isMuted === false) {
+				//save last known vol
+				var lastVol = _kdpEval(pid, 'video.volume') * 100;
+				setMetaProp(pid, 'vol', lastVol);
+				setVolume(pid, 0);
+			} else {
+				setVolume(pid, getMetaProp(pid, 'vol'));
+			}
+
+			setMetaProp(pid, 'isMuted', !isMuted);
+		}
+
+		function setVolume(pid, v) {
+			_sendKdpNotice(pid, 'changeVolume', v / 100);
+		}
+
+		/*
+			Private methods
+		 */
 
 		function _sendKdpNotice(pid, notice, val) {
 			var kdp = getInstance(pid);
@@ -241,18 +224,41 @@
 			}
 		}
 
-		function getPlayerState(pid) {
-			return PLAYERSTATES[getMetaProp(pid, 'playerState')];
+		function _createKWidget(divId, partnerID, entryID, uiConfId, onReadyCB) {
+			return kalturaScriptLoader.load(partnerID, uiConfId).then(function() {
+				KWidget.embed({
+					"targetId": divId,
+					"wid": "_" + partnerID,
+					"uiconf_id": uiConfId,
+					"flashVars": {
+
+					},
+					"entry_id": entryID,
+					"readyCallback": onReadyCB
+				});
+			});
 		}
 
-		function getCurrentTime(pid) {
-			return _kdpEval(pid, 'video.player.currentTime') || 0;
+		function _getPlayerDiv(id) {
+			return '<div id="' + id + '"></div>';
 		}
 
-		function getBufferedPercent(pid) {
-			if (getMetaProp(pid, 'ready') === true) {
-				return _kdpEval(pid, 'video.buffer.percent') * 100;
-			}
+		function _attachEventListeners(kdp) {
+			var kMap = {
+				'playerPlayed': onPlaying,
+				'playerPaused': onPaused,
+				'bufferStartEvent': onBufferStart,
+				'bufferEndEvent': onBufferEnd,
+				'playerPlayEnd': onPlayerPlayEnd,
+				'playerError': onPlayerError,
+				'mediaReady': onMediaReady
+			};
+			var nameSpace = '.nys';
+			Object.keys(kMap).forEach(function(evtName) {
+				(function(evtName) {
+					kdp.kBind(evtName + nameSpace, kMap[evtName]);
+				})(evtName)
+			});
 		}
 
 		function _emitStateChange(pid, forceState) {
@@ -279,25 +285,6 @@
 				emitterId: pid,
 				state: PLAYERSTATES[state]
 			};
-		}
-
-		function toggleMute(pid) {
-			var isMuted = getMetaProp(pid, 'isMuted');
-
-			if (isMuted === false) {
-				//save last known vol
-				var lastVol = _kdpEval(pid, 'video.volume') * 100;
-				setMetaProp(pid, 'vol', lastVol);
-				setVolume(pid, 0);
-			} else {
-				setVolume(pid, getMetaProp(pid, 'vol'));
-			}
-
-			setMetaProp(pid, 'isMuted', !isMuted);
-		}
-
-		function setVolume(pid, v) {
-			_sendKdpNotice(pid, 'changeVolume', v / 100);
 		}
 
 	}

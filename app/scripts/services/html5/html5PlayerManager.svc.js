@@ -142,35 +142,6 @@
 
 			// var interval = $interval(checkBuffering, _checkInterval);
 		}
-		// /**
-		//  * @ngdoc method
-		//  * @name #registerStateChangeListener
-		//  * @methodOf iTT.service:html5PlayerManager
-		//  * @param {Function} cb callback to fire
-		//  * @returns {Void} returns void
-		//  */
-		// function registerStateChangeListener(cb) {
-		// 	var len = _stateChangeCallbacks.length;
-        //
-		// 	while (len--) {
-		// 		if (cb.toString() === _stateChangeCallbacks[len].toString()) {
-		// 			return;
-		// 		}
-		// 	}
-        //
-		// 	_stateChangeCallbacks.push(cb);
-		// }
-		// /**
-		//  * @ngdoc method
-		//  * @name #unregisterStateChangeListener
-		//  * @methodOf iTT.service:html5PlayerManager
-		//  * @param {Function} cb callback to unregister
-		//  */
-		// function unregisterStateChangeListener(cb) {
-		// 	_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
-		// 		return fn.toString() !== cb.toString();
-		// 	});
-		// }
 
 		/**
 		 * @ngdoc method
@@ -216,46 +187,6 @@
 
 		/**
 		 * @ngdoc method
-		 * @name #getMetaProp
-		 * @methodOf iTT.service:html5PlayerManager
-		 * @description
-		 * used to get a particular property of a players's meta obj
-		 * @param {String} pid the pid of the player
-		 * @param {String} prop the prop to get
-		 * @returns {String | Number | Void} returns the requested prop if defined.
-		 */
-		// function getMetaProp(pid, prop) {
-		// 	if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
-		// 		return _players[pid].meta[prop];
-		// 	}
-		// }
-		/**
-		 * @ngdoc method
-		 * @name #setMetaProp
-		 * @methodOf iTT.service:html5PlayerManager
-		 * @description
-		 * sets the particular prop of a player's meta obj
-		 * @param {String} pid the pid of the player
-		 * @param {String} prop the prop to set
-		 * @param {String|Number|Boolean} val the val to set the prop with.
-		 * @returns {Void} returns void
-		 */
-		// function setMetaProp(pid, prop, val) {
-		// 	if (_validMetaKeys.indexOf(prop) === -1) {
-		// 		throw new Error(prop + ' is not a valid prop for HTML5 meta info');
-		// 	}
-        //
-		// 	if (_existy(_players[pid] && _players[pid].meta)) {
-		// 		try {
-		// 			_players[pid].meta[prop] = val;
-		// 		} catch (e) {
-		// 			console.log('catch read only error:', e, 'prop', prop, 'val', val);
-		// 		}
-        //
-		// 	}
-		// }
-		/**
-		 * @ngdoc method
 		 * @name #seedPlayerManager
 		 * @methodOf iTT.service:html5PlayerManager
 		 * @description
@@ -285,7 +216,6 @@
 					div: plrInfo.videoElm
 			};
 
-			// _players[id] =
 			setPlayer(id, createMetaObj(newProps, _html5MetaObj));
 		}
 
@@ -512,30 +442,6 @@
 			var instance = getInstance(pid);
 			instance.volume = (vol / 100);
 		}
-		/**
-		 * @ngdoc method
-		 * @name #pauseOtherPlayers
-		 * @methodOf iTT.service:html5PlayerManager
-		 * @description
-		 * Loops through all YT instances except main player and
-		 * player with same PID as the id param and calls
-		 * pause() on each one. In other words, will pause all
-		 * embeds except the one you interacted with.
-		 * @param {String} pid The ID of the YT instance
-		 * @returns {Void} No return value.
-		 */
-		// function pauseOtherPlayers(pid) {
-		// 	Object.keys(getPlayers()).forEach(function(playerId) {
-		// 		if (playerId !== pid) {
-		// 			var otherPlayerState = getPlayerState(playerId);
-		// 			if (_existy(otherPlayerState)) {
-		// 				if (otherPlayerState === 'playing') {
-		// 					pause(playerId);
-		// 				}
-		// 			}
-		// 		}
-		// 	});
-		// }
 		/**
 		 * @ngdoc method
 		 * @name #getBufferedPercent
