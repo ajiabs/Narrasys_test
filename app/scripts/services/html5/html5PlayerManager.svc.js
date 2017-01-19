@@ -268,7 +268,7 @@
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
 			//bail if we were frozen prior to attempting to re-init player.
-			if (getPlayer(id) && getMetaProp(id, 'startAtTime') > 0) {
+			if (_existy(getPlayer(id)) && getMetaProp(id, 'startAtTime') > 0) {
 				return;
 			}
 

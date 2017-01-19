@@ -145,7 +145,7 @@
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
 			//bail if we already have set the instance in the _players map.
-			if (getPlayer(id) && getMetaProp(id, 'startAtTime') > 0) {
+			if (_existy(getPlayer(id)) && getMetaProp(id, 'startAtTime') > 0) {
 				return;
 			}
 

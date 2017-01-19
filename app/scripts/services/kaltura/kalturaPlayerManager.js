@@ -75,12 +75,13 @@
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
 			resetPlayerManager: angular.noop,
+			setSpeed: angular.noop,
 			toggleMute: toggleMute,
 			setVolume: setVolume
 		};
 
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
-			if (_players[id] && getMetaProp(id, 'startAtTime') > 0) {
+			if (_existy(getPlayer(id)) && getMetaProp(id, 'startAtTime') > 0) {
 				return;
 			}
 
@@ -138,8 +139,7 @@
 		}
 
 		function onMediaReady(pid) {
-			setMetaProp(pid, 'playerState', 6);
-			_emitStateChange(pid);
+			_emitStateChange(pid, 6);
 		}
 
 		function onPlaying(pid) {
@@ -255,9 +255,17 @@
 			}
 		}
 
-		function _emitStateChange(pid) {
+		function _emitStateChange(pid, forceState) {
+			var state;
+
+			if (forceState) {
+				state = forceState
+			} else {
+				state = getMetaProp(pid, 'playerState');
+			}
+
 			_stateChangeCallbacks.forEach(function(cb) {
-				cb(_formatPlayerStateChangeEvent(getMetaProp(pid, 'playerState'), pid));
+				cb(_formatPlayerStateChangeEvent(state, pid));
 			});
 		}
 
