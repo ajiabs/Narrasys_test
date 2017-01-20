@@ -628,12 +628,20 @@
 		 * @private
 		 */
 		function _attachEventListeners(videoElement) {
-			videoElement.addEventListener('pause', onPause);
-			videoElement.addEventListener('playing', onPlaying);
-			videoElement.addEventListener('waiting', onBuffering);
-			videoElement.addEventListener('seeked', onSeeked);
-			videoElement.addEventListener('canplay', onCanPlay);
-			videoElement.addEventListener('ended', onEnded);
+			var evMap = {
+				'pause': onPause,
+				'playing': onPlaying,
+				'waiting': onBuffering,
+				'seeked': onSeeked,
+				'canplay': onCanPlay,
+				'ended': onEnded
+			};
+
+			Object.keys(evMap).forEach(function(evtName) {
+				(function(evtName) {
+					videoElement.addEventListener(evtName, evMap[evtName]);
+				})(evtName)
+			});
 		}
 		/**
 		 * @ngdoc method

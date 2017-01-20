@@ -188,6 +188,7 @@
 				return _kdpEval(pid, 'video.buffer.percent') * 100;
 			}
 		}
+
 		function toggleMute(pid) {
 			var isMuted = getMetaProp(pid, 'isMuted');
 
@@ -210,7 +211,6 @@
 		/*
 			Private methods
 		 */
-
 		function _sendKdpNotice(pid, notice, val) {
 			var kdp = getInstance(pid);
 
@@ -226,17 +226,27 @@
 		}
 
 		function _createKWidget(divId, partnerID, entryID, uiConfId, onReadyCB) {
-			return kalturaScriptLoader.load(partnerID, uiConfId).then(function() {
-				KWidget.embed({
-					"targetId": divId,
-					"wid": "_" + partnerID,
-					"uiconf_id": uiConfId,
-					"flashVars": {
 
-					},
-					"entry_id": entryID,
-					"readyCallback": onReadyCB
-				});
+			var embedObj = {
+				'targetId': divId,
+				'wid': '_' + partnerID,
+				'uiconf_id': uiConfId,
+				'readyCallback': onReadyCB,
+				'entry_id': entryID,
+				'flashvars': {}
+			};
+
+			var embedControls = {
+				'EmbedPlayer.NativeControls': true,
+				'EmbedPlayer.DisableHTML5FlashFallback': true
+			};
+
+			if (divId !== _mainPlayerId) {
+				angular.extend(embedObj.flashvars, embedControls);
+			}
+
+			return kalturaScriptLoader.load(partnerID, uiConfId).then(function() {
+				KWidget.embed(embedObj);
 			});
 		}
 
