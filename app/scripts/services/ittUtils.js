@@ -21,7 +21,8 @@
 		bitwiseCeil: bitwiseCeil,
 		setNgOpts: setNgOpts,
 		intersection: intersection,
-		parseTime: parseTime
+		parseTime: parseTime,
+		renameKey:renameKey
 	};
 
 	//using bitwise operators up to 20% faster than Math.ceil (js hint not a fan of bitwise operators)
@@ -117,6 +118,13 @@
 			return parseFloat(parse[1] * 60);
 		}
 		console.error("Tried to parse invalid time string: ", t);
+	}
+
+	function renameKey(oldName, newName, obj) {
+		if (obj.hasOwnProperty(oldName) && !obj.hasOwnProperty(newName) && oldName !== newName) {
+			obj[newName] = obj[oldName];
+			delete obj[oldName];
+		}
 	}
 
 

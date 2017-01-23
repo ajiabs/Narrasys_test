@@ -29,7 +29,8 @@
 				registerStateChangeListener: registerStateChangeListener,
 				unregisterStateChangeListener: unregisterStateChangeListener,
 				pauseOtherPlayers: pauseOtherPlayers,
-				resetPlayerManager: resetPlayerManager
+				resetPlayerManager: resetPlayerManager,
+				renamePid: renamePid
 			};
 
 			function getPlayers() {
@@ -188,6 +189,11 @@
 					_players = {};
 				}
 			}
+
+			function renamePid(oldName, newName) {
+				ittUtils.renameKey(oldName, newName, _players);
+			}
+
 			/**
 			 * @ngdoc method
 			 * @name #destroyInstance

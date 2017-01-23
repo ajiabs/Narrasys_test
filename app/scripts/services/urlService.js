@@ -15,8 +15,31 @@
 		return {
 			parseMediaSrcArr: parseMediaSrcArr,
 			checkUrl: checkUrl,
-			getOutgoingUrl: getOutgoingUrl
+			getOutgoingUrl: getOutgoingUrl,
+			parseMasterAssetInput: parseMasterAssetInput
 		};
+
+
+		function parseMasterAssetInput(input) {
+			var parsedUrl;
+			var urlType = checkUrl(input).type;
+			if (urlType.length > 0) {
+				switch (urlType) {
+					case 'kaltura':
+						var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
+						var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
+						// var getKtObjFromUrl = kalturaUrlService.getKalturaObjectFromAutoEmbedURL;
+						parsedUrl = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(input), 1024, 768);
+						break;
+					case 'youtube':
+					case 'html5':
+						parsedUrl = input;
+						break;
+				}
+
+				return parsedUrl
+			}
+		}
 
 		/**
 		 *

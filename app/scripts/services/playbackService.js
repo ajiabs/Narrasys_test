@@ -45,6 +45,7 @@
 		var _timelineState = '';
 		var _mainPlayerBufferingPoll;
 		var _playbackServiceHasBeenReset;
+		var _existy = ittUtils.existy;
 
 		angular.forEach(_playerManagers, function(playerManager) {
 			playerManager.registerStateChangeListener(_stateChangeCB);
@@ -76,7 +77,8 @@
 			resetPlaybackService: resetPlaybackService,
 			stop: stop,
 			allowPlayback: allowPlayback,
-			togglePlayback: togglePlayback
+			togglePlayback: togglePlayback,
+			renamePid: renamePid
 		};
 		/*
 			PUBLIC METHODS
@@ -95,9 +97,8 @@
 		 * @returns {Void} returns void.
 		 */
 		function seedPlayer(mediaSrcArr, id, mainPlayer) {
-
 			if (mainPlayer === true) {
-				if (ittUtils.existy(_playerInterfaces[id])) {
+				if (_existy(_playerInterfaces[id])) {
 					//bail if we have already set the main player.
 					return;
 				}
@@ -273,7 +274,7 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function getCurrentTime(playerId) {
-			if (ittUtils.existy(_playerInterfaces[_setPid(playerId)])) {
+			if (_existy(_playerInterfaces[_setPid(playerId)])) {
 				return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
 			}
 		}
@@ -346,7 +347,7 @@
 		 */
 		function getMetaProp(prop, id) {
 			var pid = _setPid(id);
-			if (ittUtils.existy(_playerInterfaces[pid])) {
+			if (_existy(_playerInterfaces[pid])) {
 				return _playerInterfaces[pid].getMetaProp(pid, prop);
 			}
 		}
@@ -364,7 +365,7 @@
 		function setMetaProp(prop, val, id) {
 			var pid = _setPid(id);
 
-			if (ittUtils.existy(_playerInterfaces[pid])) {
+			if (_existy(_playerInterfaces[pid])) {
 
 				// if (prop === 'duration') {
 				// 	console.log('setting duration', val);
@@ -428,7 +429,7 @@
 		}
 
 		function getMetaObj(playerId) {
-			if (ittUtils.existy(_playerInterfaces[_setPid(playerId)])) {
+			if (_existy(_playerInterfaces[_setPid(playerId)])) {
 				return _playerInterfaces[_setPid(playerId)].getMetaObj(_setPid(playerId));
 			}
 		}
@@ -480,6 +481,14 @@
 			_playerInterfaces[_setPid(playerId)].stop(_setPid(playerId));
 		}
 
+		function renamePid(oldName, newName) {
+			//rename player manager
+			if (_existy(_playerInterfaces[oldName])) {
+				_playerInterfaces[oldName].renamePid(oldName, newName);
+			}
+			//rename _playerInterface that calls player managers
+			ittUtils.renameKey(oldName, newName, _playerInterfaces);
+		}
 		/*
 			PRIVATE METHODS
 		 */
@@ -523,7 +532,7 @@
 		 * @private
 		 */
 		function _setPid(pid) {
-			if (ittUtils.existy(pid)) {
+			if (_existy(pid)) {
 				return pid;
 			}
 			return _mainPlayerId;

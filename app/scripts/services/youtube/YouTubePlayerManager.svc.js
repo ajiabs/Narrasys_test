@@ -133,7 +133,6 @@
 			};
 
 			setPlayer(id, createMetaObj(newProps, _youtubeMetaObj));
-			console.log('wtf', getPlayer(id));
 		}
 
 
@@ -155,7 +154,6 @@
 
 			function handleSuccess(ytInstance) {
 				getPlayer(playerId).instance = ytInstance;
-				console.log('succ', ytId, getPlayer(playerId));
 				setMetaProp(playerId, 'ytId', ytId);
 			}
 

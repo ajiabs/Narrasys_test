@@ -140,7 +140,7 @@
 
 		function onBufferEnd(ev) {
 			var currentState = PLAYERSTATES[getMetaProp(this.id, 'playerState')];
-
+			//TODO: better way to handle restarting playback
 			if (currentState === 'buffering') {
 				play(this.id);
 			}
