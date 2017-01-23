@@ -233,7 +233,12 @@
 				'uiconf_id': uiConfId,
 				'readyCallback': onReadyCB,
 				'entry_id': entryID,
-				'flashvars': {}
+				'flashvars': {
+					// 'IframeCustomPluginCss1' : 'chromeless.css',
+					'controlBarContainer.plugin': false,
+					'largePlayBtn.plugin': false,
+					'loadingSpinner.plugin': false
+				}
 			};
 
 			var embedControls = {
