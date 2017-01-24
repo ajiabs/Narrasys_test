@@ -32,8 +32,8 @@
 				<div class="field" ng-if="masterAssetType === 'Kaltura'">
 					<div class="label">Embed Code</div>
 					<div class="input">
-						<textarea ng-model="kaltura.embedCode"></textarea>
-						<button ng-click="attachKaltura(kaltura.embedCode)">add kaltura video</button>
+						<textarea ng-model="masterAsset.mediaSrcArr[0]"></textarea>
+						<button ng-click="attachKaltura(masterAsset.mediaSrcArr[0])">Attach</button>
 					</div>
 				</div>
 				<div class="field" ng-if="showmessage">

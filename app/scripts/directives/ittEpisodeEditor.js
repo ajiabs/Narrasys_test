@@ -7,7 +7,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, $timeout, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, kalturaUrlService, authSvc, selectService, playbackService) {
+	.directive('ittEpisodeEditor', function ($rootScope, $timeout, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, kalturaUrlService, authSvc, selectService, playbackService, timelineSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -165,6 +165,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.attachChosenAsset = function (asset_id) { // master asset only!
+					scope.episode.replacingMasterAsset = false;
 					var asset = modelSvc.assets[asset_id];
 					var previousAsset = modelSvc.assets[scope.episode.master_asset_id];
 					scope.showmessage = "New video attached.";
@@ -200,49 +201,34 @@ angular.module('com.inthetelling.story')
 					scope.attachPosterAsset(assetId);
 				};
 
-				scope.attachKaltura = attachKaltura;
-				function attachKaltura(embedCode) {
-
-					var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
-					var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
-					// var getKtObjFromUrl = kalturaUrlService.getKalturaObjectFromAutoEmbedURL;
-					var url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
-
-
-					//to force itt-video to be instantiated in components/video.html
-					scope.episode.masterAsset = {
-						_id: 'replaceMe',
-						mediaSrcArr: [url]
-					};
-					var afterReady = waitForDuration(createKalturaAsset, url);
-					playbackService.registerStateChangeListener(afterReady);
-				}
-
-				function waitForDuration(onDone, url) {
+				function waitForDuration(onDone, url, type) {
 					return function(state) {
 						if (state === 'player ready') {
 							playbackService.unregisterStateChangeListener(waitForDuration);
 							//push to end of event loop.
 							$timeout(function() {
-								onDone({duration: playbackService.getMetaProp('duration', 'replaceMe'), url: url});
+								onDone({
+									duration: playbackService.getMetaProp('duration', 'replaceMe'),
+									url: url,
+									type: type
+								});
+								//remove temp
+								scope.episode.swap = {};
 							}, 0);
 
 						}
 					}
 				}
 
-				function createKalturaAsset(ktInfo) {
+				function createAssetFromTmp(tmpAsset) {
 					var asset = {};
-					asset.content_type = 'video/x-kaltura';
-					asset.duration = ktInfo.duration; //02:37
-					asset.url = ktInfo.url;
+					asset.content_type = tmpAsset.type;
+					asset.duration = tmpAsset.duration; //02:37
+					asset.url = tmpAsset.url;
 					asset.name = scope.episode.title;
 					asset.description = scope.episode.description;
-
 					dataSvc.createAsset(scope.episodeContainerId, asset).then(function(data) {
-						console.log('resp', data);
 						modelSvc.cache('asset', data);
-						//set final name with asset ID.
 						playbackService.renamePid('replaceMe', data._id);
 						scope.attachChosenAsset(data._id);
 					}).catch(function(e) {
@@ -250,39 +236,36 @@ angular.module('com.inthetelling.story')
 					})
 				}
 
-				scope.attachYouTube = function (url) {
+				scope.attachYouTube = attachYouTube;
+				function attachYouTube(url) {
+					scope.episode.replacingMasterAsset = true;
 					scope.showmessage = "Getting video from YouTube...";
-					var youtubeId = youtubeSvc.extractYoutubeId(url);
-					if (youtubeId) {
-						youtubeSvc.getVideoData(youtubeId)
-							.then(function (data) {
-								var asset = {}; //createDefaultAsset()
-								asset.url = youtubeSvc.embeddableYoutubeUrl(url);
-								asset.duration = data.duration;
-								asset.name = {
-									en: data.title
-								};
-								asset.description = {
-									en: data.description
-								};
-								asset.content_type = "video/x-youtube";
-								console.log('asset', asset);
-								dataSvc.createAsset(scope.episodeContainerId, asset).then(function (data) {
-									//will go through modelSvc#resolveVideo
-									modelSvc.cache("asset", data);
-									// this may override the showmessage, so do it last:
-									scope.attachChosenAsset(data._id);
-								});
+					var ytUrl = youtubeSvc.embeddableYoutubeUrl(url);
 
-							}, function (error) {
-								console.error("Error getting duration from youtube:", error);
-								scope.showmessage = "Sorry, couldn't find that video on YouTube.";
-							});
-					} else {
-						console.warn("attachYoutube tried to attach a bad URL", url);
-						scope.showmessage = "Sorry, couldn't match that to a valid YouTube url.";
-					}
-				};
+					scope.episode.swap = {
+						_id: 'replaceMe',
+						mediaSrcArr: [ytUrl]
+					};
+
+					var afterReady = waitForDuration(createAssetFromTmp, ytUrl, 'video/x-youtube');
+					playbackService.registerStateChangeListener(afterReady);
+				}
+
+				scope.attachKaltura = attachKaltura;
+				function attachKaltura(embedCode) {
+					scope.episode.replacingMasterAsset = true;
+					scope.showmessage = "Getting video from Kaltura...";
+					var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
+					var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
+					var url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
+
+					scope.episode.swap = {
+						_id: 'replaceMe',
+						mediaSrcArr: [url]
+					};
+					var afterReady = waitForDuration(createAssetFromTmp, url, 'video/x-kaltura');
+					playbackService.registerStateChangeListener(afterReady);
+				}
 
 				scope.replaceAsset = function (assetType) {
 					assetType = assetType || '';

@@ -72,6 +72,7 @@
 		var pauseOtherPlayers = base.pauseOtherPlayers(pause, playerState);
 		var getPlayerDiv = base.getPlayerDiv;
 		var resetPlayerManager = base.resetPlayerManager(destroyFn);
+		var renamePid = base.renamePid;
 
 		_youTubePlayerManager = {
 			type: _type,
@@ -83,6 +84,7 @@
 			registerStateChangeListener: registerStateChangeListener,
 			unregisterStateChangeListener: unregisterStateChangeListener,
 			resetPlayerManager: resetPlayerManager,
+			renamePid: renamePid,
 			seedPlayerManager: seedPlayerManager,
 			create: create,
 			play: play,

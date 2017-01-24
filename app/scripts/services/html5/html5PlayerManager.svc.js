@@ -73,6 +73,7 @@
 		var unregisterStateChangeListener = base.unregisterStateChangeListener;
 		var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
 		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
+		var renamePid = base.renamePid;
 
 		return {
 			type: _type,
@@ -84,6 +85,7 @@
 			registerStateChangeListener: registerStateChangeListener,
 			unregisterStateChangeListener: unregisterStateChangeListener,
 			resetPlayerManager: resetPlayerManager,
+			renamePid: renamePid,
 			seedPlayerManager: seedPlayerManager,
 			create: create,
 			getPlayerState: getPlayerState,
