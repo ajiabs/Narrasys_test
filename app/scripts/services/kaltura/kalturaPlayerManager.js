@@ -54,6 +54,7 @@
 		var unregisterStateChangeListener = commons.unregisterStateChangeListener;
 		var pauseOtherPlayers = commons.pauseOtherPlayers(pause, getPlayerState);
 		var resetPlayerManager = commons.resetPlayerManager(_removeEventListeners);
+		var renamePid = commons.renamePid;
 
 		return {
 			type: _type,
@@ -65,6 +66,7 @@
 			registerStateChangeListener: registerStateChangeListener,
 			unregisterStateChangeListener: unregisterStateChangeListener,
 			resetPlayerManager: resetPlayerManager,
+			renamePid: renamePid,
 			seedPlayerManager: seedPlayerManager,
 			create: create,
 			getPlayerState: getPlayerState,
@@ -126,6 +128,7 @@
 
 		function onMediaReady(pid) {
 			_emitStateChange(pid, 6);
+			setMetaProp(pid, 'duration', _kdpEval(pid, 'duration'));
 		}
 
 		function onPlaying(pid) {

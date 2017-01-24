@@ -486,6 +486,10 @@
 			if (_existy(_playerInterfaces[oldName])) {
 				_playerInterfaces[oldName].renamePid(oldName, newName);
 			}
+			//check if main player is being renamed.
+			if (oldName === _mainPlayerId) {
+				_mainPlayerId = newName;
+			}
 			//rename _playerInterface that calls player managers
 			ittUtils.renameKey(oldName, newName, _playerInterfaces);
 		}
