@@ -4,7 +4,7 @@
 /*
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 
-TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/when we decide we're going to keep it...
+TODO some youtube-specific functionality in here.  Refactor into youtubeUrlService if/when we decide we're going to keep it...
 
 */
 
@@ -23,11 +23,11 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeSvc if/w
  * @requires timelineSvc
  * @requires awsSvc
  * @requires dataSvc
- * @requires youtubeSvc
+ * @requires youtubeUrlService
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeSvc, selectService) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeUrlService, selectService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -58,7 +58,7 @@ angular.module('com.inthetelling.story')
 				// 				// widget.setVideoKeywords();
 				// 			},
 				// 			'onUploadSuccess': function (ret) {
-				// 				scope.item.url = youtubeSvc.createEmbedLinkFromYoutubeId(ret.data.videoId);
+				// 				scope.item.url = youtubeUrlService.createEmbedLinkFromYoutubeId(ret.data.videoId);
 				// 				scope.isRecordingVideo = false;
 				// 				scope.isProcessingVideo = true;
                 //
@@ -124,7 +124,7 @@ angular.module('com.inthetelling.story')
 					*/
 
 					if (newItem.yturl !== oldItem.yturl) {
-						scope.item.url = youtubeSvc.embeddableYoutubeUrl(newItem.yturl);
+						scope.item.url = youtubeUrlService.embeddableYoutubeUrl(newItem.yturl);
 					}
 
 					if (newItem.chapter_marker === false) {

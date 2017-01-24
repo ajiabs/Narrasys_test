@@ -6,7 +6,7 @@ var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
 and derives secondary data where necessary for performance/convenience/fun */
 
 angular.module('com.inthetelling.story')
-	.factory('modelSvc', function ($interval, $filter, $location, ittUtils, config, appState, youtubeSvc, playbackService, urlService) {
+	.factory('modelSvc', function ($interval, $filter, $location, ittUtils, config, appState, youtubeUrlService, playbackService, urlService) {
 
 		var svc = {};
 
@@ -1175,8 +1175,8 @@ angular.module('com.inthetelling.story')
 				// Sort them out by file extension first:
 				for (var i = 0; i < videoAsset.alternate_urls.length; i++) {
 					if (videoAsset.alternate_urls[i].match(/youtube/)) {
-						if (youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i])) {
-							videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
+						if (youtubeUrlService.embeddableYoutubeUrl(videoAsset.alternate_urls[i])) {
+							videoObject.youtube.push(youtubeUrlService.embeddableYoutubeUrl(videoAsset.alternate_urls[i]));
 						}
 					} else {
 						videoObject[videoAsset.alternate_urls[i].match(extensionMatch)[1]].push(videoAsset.alternate_urls[i]);
@@ -1184,8 +1184,8 @@ angular.module('com.inthetelling.story')
 				}
 
 				//remove after migration
-				if (videoAsset.you_tube_url && youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
-					videoObject.youtube.push(youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url));
+				if (videoAsset.you_tube_url && youtubeUrlService.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
+					videoObject.youtube.push(youtubeUrlService.embeddableYoutubeUrl(videoAsset.you_tube_url));
 				}
 				//end remove after migration
 
@@ -1207,14 +1207,14 @@ angular.module('com.inthetelling.story')
 			// Use the you_tube_url,  if it's not present in alternate_urls:
 			if (videoObject.youtube.length === 0) {
 				if (videoAsset.url) {
-					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.url)) {
-						videoObject.youtube = [youtubeSvc.embeddableYoutubeUrl(videoAsset.url)];
+					if (youtubeUrlService.embeddableYoutubeUrl(videoAsset.url)) {
+						videoObject.youtube = [youtubeUrlService.embeddableYoutubeUrl(videoAsset.url)];
 					}
 				}
 				//remove after migration
 				if (videoAsset.you_tube_url) {
-					if (youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
-						videoObject.youtube = [youtubeSvc.embeddableYoutubeUrl(videoAsset.you_tube_url)];
+					if (youtubeUrlService.embeddableYoutubeUrl(videoAsset.you_tube_url)) {
+						videoObject.youtube = [youtubeUrlService.embeddableYoutubeUrl(videoAsset.you_tube_url)];
 					}
 				}
 				//end remove after migration

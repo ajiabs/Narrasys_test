@@ -14,12 +14,12 @@
 	 * @requires YoutubePlayerApi
 	 * @requires errorSvc
 	 * @requires PLAYERSTATES
-	 * @requires youtubeSvc
+	 * @requires youtubeUrlService
 	 */
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, $timeout, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeSvc, playerManagerCommons) {
+	function youTubePlayerManager($location, $timeout, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeUrlService, playerManagerCommons) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -131,7 +131,7 @@
 			var newProps = {
 				mainPlayer: mainPlayer,
 				div: _getPlayerDiv(id),
-				ytId: youtubeSvc.extractYoutubeId(mediaSrcArr[0])
+				ytId: youtubeUrlService.extractYoutubeId(mediaSrcArr[0])
 			};
 
 			setPlayer(id, createMetaObj(newProps, _youtubeMetaObj));

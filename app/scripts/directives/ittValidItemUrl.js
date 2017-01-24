@@ -15,7 +15,7 @@
 	 * @requires $q
 	 * @requires ngModel
 	 * @requires errorSvc
-	 * @requires youtubeSvc
+	 * @requires youtubeUrlService
 	 * @requires ittUtils
 	 * @requires dataSvc
 	 * @param {Object} item The item that the url we are validating belongs to
@@ -27,7 +27,7 @@
 	angular.module('com.inthetelling.story')
 		.directive('ittValidItemUrl', ittValidItemUrl);
 
-	function ittValidItemUrl($q, youtubeSvc, ittUtils, dataSvc) {
+	function ittValidItemUrl($q, youtubeUrlService, ittUtils, dataSvc) {
 		return {
 			require: '?ngModel',
 			scope: {
@@ -106,7 +106,7 @@
 
 				function xFrameOpts(viewVal) {
 					//bail out if empty or link to youtube, mixed content, email or placeholder val
-					if (ngModel.$isEmpty(viewVal) || youtubeSvc.isYoutubeUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
+					if (ngModel.$isEmpty(viewVal) || youtubeUrlService.isYoutubeUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
 						return $q(function (resolve) {
 							validatedFields['xFrameOpts'] = {showInfo: false}; //jshint ignore:line
 							return resolve();

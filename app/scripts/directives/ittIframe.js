@@ -25,7 +25,7 @@
 		.directive('ittIframe', ittIframe)
 		.controller('ittIframeCtrl', ittIframeCtrl);
 
-	function ittIframe(appState, youtubeSvc) {
+	function ittIframe(appState, youtubeUrlService) {
 		return {
 			restrict: 'E',
 			scope: {
@@ -94,7 +94,7 @@
 			function resizeIframeReviewMode() {
 				var narrasys = 'templates/episode/narrasys-pro.html';
 				var cpb = 'templates/episode/career-playbook.html';
-				var isYT = youtubeSvc.isYoutubeUrl(ctrl.src);
+				var isYT = youtubeUrlService.isYoutubeUrl(ctrl.src);
 
 				//only resize iframe in discover mode for the narrasys pro template (at the moment)
 				if (appState.viewMode === 'discover' &&

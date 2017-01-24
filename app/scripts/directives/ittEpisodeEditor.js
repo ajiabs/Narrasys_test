@@ -7,7 +7,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, $timeout, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, kalturaUrlService, authSvc, selectService, playbackService, timelineSvc) {
+	.directive('ittEpisodeEditor', function ($rootScope, $timeout, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeUrlService, kalturaUrlService, authSvc, selectService, playbackService, timelineSvc) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -240,7 +240,7 @@ angular.module('com.inthetelling.story')
 				function attachYouTube(url) {
 					scope.episode.replacingMasterAsset = true;
 					scope.showmessage = "Getting video from YouTube...";
-					var ytUrl = youtubeSvc.embeddableYoutubeUrl(url);
+					var ytUrl = youtubeUrlService.embeddableYoutubeUrl(url);
 
 					scope.episode.swap = {
 						_id: 'replaceMe',

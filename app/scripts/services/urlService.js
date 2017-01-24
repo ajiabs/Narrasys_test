@@ -8,9 +8,9 @@
 	angular.module('com.inthetelling.story')
 		.factory('urlService', urlService);
 
-	function urlService(youtubeSvc, html5UrlService, kalturaUrlService) {
+	function urlService(youtubeUrlService, html5UrlService, kalturaUrlService) {
 
-		var _urlSubServices = [youtubeSvc, html5UrlService, kalturaUrlService];
+		var _urlSubServices = [youtubeUrlService, html5UrlService, kalturaUrlService];
 
 		return {
 			parseMediaSrcArr: parseMediaSrcArr,
@@ -41,6 +41,10 @@
 			}
 		}
 
+		function parseInput(input) {
+
+		}
+
 		/**
 		 *
 		 * @param mediaSrcArr
@@ -68,7 +72,7 @@
 		function getOutgoingUrl(url, startAt) {
 			switch(checkUrl(url).type) {
 				case 'youtube':
-					url = youtubeSvc.embeddableYoutubeUrl(url, false);
+					url = youtubeUrlService.embeddableYoutubeUrl(url, false);
 					if (startAt > 0) {
 						url += '&start=' + startAt;
 					}

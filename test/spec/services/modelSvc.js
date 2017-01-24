@@ -67,9 +67,9 @@ describe('Service: modelSvc', function () {
 		return Object.keys(eventsInEpisode).length;
 	};
 
-	beforeEach(inject(function (_modelSvc_, _youtubeSvc_) {
+	beforeEach(inject(function (_modelSvc_, _youtubeUrlService_) {
 		modelSvc = _modelSvc_;
-		youtubeSvc = _youtubeSvc_; // only to retrieve embed params
+		youtubeSvc = _youtubeUrlService_; // only to retrieve embed params
 
 		// data to test against
 		modelSvc.cache("episode", {
