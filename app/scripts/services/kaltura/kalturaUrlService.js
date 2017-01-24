@@ -16,8 +16,13 @@
 			parseMediaSrc: parseMediaSrc,
 			getKalturaObjectFromEmbedCode: getKalturaObjectFromEmbedCode,
 			buildAutoEmbedURLFromKalturaObject: buildAutoEmbedURLFromKalturaObject,
-			getKalturaObjectFromAutoEmbedURL: getKalturaObjectFromAutoEmbedURL
+			getKalturaObjectFromAutoEmbedURL: getKalturaObjectFromAutoEmbedURL,
+			parseInput: parseInput
 		};
+
+		function parseInput(input) {
+			return buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(input), 1024, 768);
+		}
 
 		function parseMediaSrc(mediaSrc) {
 			return mediaSrc.reduce(function(parsedMediaObj, mediaSrc) {

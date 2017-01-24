@@ -10,49 +10,33 @@
 
 	function urlService(youtubeUrlService, html5UrlService, kalturaUrlService) {
 
-		var _urlSubServices = [youtubeUrlService, html5UrlService, kalturaUrlService];
+		var _urlSubServices = {
+			youtube: youtubeUrlService,
+			html5: html5UrlService,
+			kaltura: kalturaUrlService
+		};
 
 		return {
 			parseMediaSrcArr: parseMediaSrcArr,
 			checkUrl: checkUrl,
 			getOutgoingUrl: getOutgoingUrl,
-			parseMasterAssetInput: parseMasterAssetInput
+			parseInput: parseInput
 		};
 
-
-		function parseMasterAssetInput(input) {
-			var parsedUrl;
-			var urlType = checkUrl(input).type;
-			if (urlType.length > 0) {
-				switch (urlType) {
-					case 'kaltura':
-						var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
-						var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
-						// var getKtObjFromUrl = kalturaUrlService.getKalturaObjectFromAutoEmbedURL;
-						parsedUrl = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(input), 1024, 768);
-						break;
-					case 'youtube':
-					case 'html5':
-						parsedUrl = input;
-						break;
-				}
-
-				return parsedUrl
+		function parseInput(input) {
+			var type = checkUrl(input).type;
+			if (type.length > 0) {
+				return _urlSubServices[type].parseInput(input);
 			}
 		}
-
-		function parseInput(input) {
-
-		}
-
 		/**
 		 *
 		 * @param mediaSrcArr
 		 * @return parsedMediaSrcArr Array<{type: string, mediaSrcArr: Array<String>}>
 		 */
 		function parseMediaSrcArr(mediaSrcArr) {
-			return _urlSubServices.reduce(function(parsedMediaSrcArr, urlSrv) {
-				var parsedMediaSrcObj = urlSrv.parseMediaSrc(mediaSrcArr);
+			return Object.keys(_urlSubServices).reduce(function(parsedMediaSrcArr, urlSrv) {
+				var parsedMediaSrcObj = _urlSubServices[urlSrv].parseMediaSrc(mediaSrcArr);
 				if (parsedMediaSrcObj.mediaSrcArr.length > 0) {
 					parsedMediaSrcArr.push(parsedMediaSrcObj);
 				}
@@ -61,8 +45,8 @@
 		}
 
 		function checkUrl(url) {
-			return _urlSubServices.reduce(function(map, urlSrv) {
-				if (urlSrv.canPlay(url)) {
+			return Object.keys(_urlSubServices).reduce(function(map, urlSrv) {
+				if (_urlSubServices[urlSrv].canPlay(url)) {
 					map.type = urlSrv.type;
 				}
 				return map;

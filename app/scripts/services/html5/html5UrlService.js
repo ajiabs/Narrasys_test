@@ -13,7 +13,8 @@
 		return {
 			type: _type,
 			parseMediaSrc: parseMediaSrc,
-			canPlay: isHTML5VideoUrl
+			canPlay: isHTML5VideoUrl,
+			parseInput: parseInput
 		};
 		/**
 		 *
@@ -31,6 +32,12 @@
 
 		function isHTML5VideoUrl(url) {
 			return /(.mp4|.m3u8|.webm)/.test(url);
+		}
+
+		function parseInput(url) {
+			if (isHTML5VideoUrl(url)) {
+				return url;
+			}
 		}
 
 	}

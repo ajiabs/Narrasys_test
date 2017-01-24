@@ -10,7 +10,8 @@ angular.module('com.inthetelling.story')
 			parseMediaSrc: parseMediaSrc,
 			embedParams: embedParams,
 			createEmbedLinkFromYoutubeId: createEmbedLinkFromYoutubeId,
-			embeddableYoutubeUrl: embeddableYoutubeUrl
+			embeddableYoutubeUrl: embeddableYoutubeUrl,
+			parseInput: embeddableYoutubeUrl
 		};
 
 		function extractYoutubeId(origUrl) {
