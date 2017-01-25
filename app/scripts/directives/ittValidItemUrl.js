@@ -15,7 +15,7 @@
 	 * @requires $q
 	 * @requires ngModel
 	 * @requires errorSvc
-	 * @requires youtubeUrlService
+	 * @requires urlService
 	 * @requires ittUtils
 	 * @requires dataSvc
 	 * @param {Object} item The item that the url we are validating belongs to
@@ -27,11 +27,11 @@
 	angular.module('com.inthetelling.story')
 		.directive('ittValidItemUrl', ittValidItemUrl);
 
-	function ittValidItemUrl($q, youtubeUrlService, ittUtils, dataSvc) {
+	function ittValidItemUrl($q, ittUtils, dataSvc, urlService) {
 		return {
 			require: '?ngModel',
 			scope: {
-				onValidationNotice: '&',
+				onValidationNotice: '&'
 			},
 			link: function link(scope, elm, attrs, ngModel) {
 				var message = {
@@ -45,7 +45,7 @@
 					'301': message,
 					url: message,
 					mixedContent: message,
-					xFrameOpts: message,
+					xFrameOpts: message
 				};
 
 				scope.$on('url:focus', function() {
@@ -90,14 +90,15 @@
 				}
 
 				function url(viewVal) {
-
+					var type = urlService.checkUrl(viewVal).type;
 					if (ngModel.$isEmpty(viewVal) && !_emailOrPlaceholder(viewVal)) {
 						validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'}; //jshint ignore:line
 						return false;
-					} else if (ittUtils.isValidURL(viewVal) || _emailOrPlaceholder(viewVal)) {
+					} else if (type.length > 0 ||ittUtils.isValidURL(viewVal) || _emailOrPlaceholder(viewVal)) {
 						validatedFields['url'] = {showInfo: false}; //jshint ignore:line
 						return true;
 					} else {
+						console.log('double wtf mate?');
 						validatedFields['url'] = {showInfo: true, message: viewVal + ' is not a valid URL'}; //jshint ignore:line
 						return false;
 					}
@@ -105,8 +106,9 @@
 				}
 
 				function xFrameOpts(viewVal) {
-					//bail out if empty or link to youtube, mixed content, email or placeholder val
-					if (ngModel.$isEmpty(viewVal) || youtubeUrlService.isYoutubeUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
+					var type = urlService.checkUrl(viewVal).type;
+					//bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
+					if (ngModel.$isEmpty(viewVal) || type.length > 0 || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
 						return $q(function (resolve) {
 							validatedFields['xFrameOpts'] = {showInfo: false}; //jshint ignore:line
 							return resolve();

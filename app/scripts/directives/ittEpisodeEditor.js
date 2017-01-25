@@ -7,7 +7,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, $timeout, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeUrlService, kalturaUrlService, authSvc, selectService, playbackService, urlService) {
+	.directive('ittEpisodeEditor', function ($rootScope, $timeout, appState, errorSvc, modelSvc, dataSvc, awsSvc, authSvc, selectService, playbackService, urlService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -29,20 +29,12 @@ angular.module('com.inthetelling.story')
 				scope.uneditedEpisode = angular.copy(scope.episode); // in case of cancel.   Must be a copy, not the original!
 				scope.itemForm = selectService.setupItemForm(scope.episode.styles, 'episode');
 
-				// is the master asset a youtube link? (i.e. is yt the only url we have?)
-				if (
-					scope.masterAsset &&
-					scope.masterAsset.urls.youtube.length &&
-					Object.keys(scope.masterAsset.urls).filter(function (x) {
-						return scope.masterAsset.urls[x].length > 0;
-					}).length === 1) {
-					scope.masterAssetType = 'Youtube';
-					//we have not set a master asset and we are not an admin
-					//for this case: a customer-admin is adding a new episode and is only allowed to use youtube.
-				} else if (!scope.masterAsset && !authSvc.userHasRole('admin')) {
-					scope.masterAssetType = 'Youtube';
-				} else {
-					scope.masterAssetType = 'Video';
+				if (scope.masterAsset) {
+					if (scope.masterAsset.content_type === 'video/x-kaltura' || scope.masterAsset.content_type === 'video/x-youtube') {
+						scope.masterAssetType = 'WebUrl';
+					} else {
+						scope.masterAssetType = 'Video';
+					}
 				}
 
 				// extract episode languages for the form
@@ -253,37 +245,6 @@ angular.module('com.inthetelling.story')
 						playbackService.registerStateChangeListener(afterReady);
 					}
 				}
-
-				// scope.attachYouTube = attachYouTube;
-				// function attachYouTube(url) {
-				// 	scope.episode.replacingMasterAsset = true;
-				// 	scope.showmessage = "Getting video from YouTube...";
-				// 	var ytUrl = youtubeUrlService.embeddableYoutubeUrl(url);
-                //
-				// 	scope.episode.swap = {
-				// 		_id: 'replaceMe',
-				// 		mediaSrcArr: [ytUrl]
-				// 	};
-                //
-				// 	var afterReady = waitForDuration(createAssetFromTmp, ytUrl, 'video/x-youtube');
-				// 	playbackService.registerStateChangeListener(afterReady);
-				// }
-                //
-				// scope.attachKaltura = attachKaltura;
-				// function attachKaltura(embedCode) {
-				// 	scope.episode.replacingMasterAsset = true;
-				// 	scope.showmessage = "Getting video from Kaltura...";
-				// 	var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
-				// 	var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
-				// 	var url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
-                //
-				// 	scope.episode.swap = {
-				// 		_id: 'replaceMe',
-				// 		mediaSrcArr: [url]
-				// 	};
-				// 	var afterReady = waitForDuration(createAssetFromTmp, url, 'video/x-kaltura');
-				// 	playbackService.registerStateChangeListener(afterReady);
-				// }
 
 				scope.replaceAsset = function (assetType) {
 					assetType = assetType || '';

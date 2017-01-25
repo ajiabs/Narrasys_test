@@ -13,8 +13,7 @@
 					<div class="input">
 						<select size="1" ng-model="masterAssetType">
 							<option value="Video">Native Video</option>
-							<option value="Youtube">Youtube</option>
-							<option value="Kaltura">Kaltura</option>
+							<option value="WebUrl">Youtube / Kaltura</option>
 						</select>
 					</div>
 				</div>
@@ -23,28 +22,13 @@
 					<div class="input" ng-include="'templates/producer/upload-masterasset.html'"></div>
 				</div>
 
-				<div class="field" ng-if="masterAssetType === 'Youtube' || masterAssetType === 'Kaltura'">
-					<div class="label">Youtube / Kaltura</div>
-					<div class="input">
-						<input type="text" ng-model="masterAsset.mediaSrcArr[0]" style="width: 75%">
-						<button ng-click="attachMediaSrc(masterAsset.mediaSrcArr[0])">Attach</button>
-					</div>
-				</div>
+				<itt-url-field
+					ng-if="masterAssetType === 'WebUrl'"
+					data="masterAsset.mediaSrcArr[0]"
+					video-only="true"
+					on-attach="attachMediaSrc($url)">
+				</itt-url-field>
 
-				<!--<div class="field" ng-if="masterAssetType == 'Youtube'">-->
-					<!--<div class="label">Youtube URL</div>-->
-					<!--<div class="input">-->
-						<!--<input type="text" ng-model="masterAsset.mediaSrcArr[0]" style="width: 75%">-->
-						<!--<button ng-click="attachYouTube(masterAsset.mediaSrcArr[0])">Attach</button>-->
-					<!--</div>-->
-				<!--</div>-->
-				<!--<div class="field" ng-if="masterAssetType === 'Kaltura'">-->
-					<!--<div class="label">Embed Code</div>-->
-					<!--<div class="input">-->
-						<!--<textarea ng-model="masterAsset.mediaSrcArr[0]"></textarea>-->
-						<!--<button ng-click="attachKaltura(masterAsset.mediaSrcArr[0])">Attach</button>-->
-					<!--</div>-->
-				<!--</div>-->
 				<div class="field" ng-if="showmessage">
 					<div class="input" ng-bind-html="showmessage"></div>
 				</div>

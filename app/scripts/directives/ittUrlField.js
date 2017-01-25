@@ -13,6 +13,8 @@
 			restrict: 'EA',
 			scope: {
 				data: '=',
+				videoOnly: '=',
+				onAttach: '&'
 			},
 			template: [
 				'<div class="field">',
@@ -21,29 +23,49 @@
 				'		<itt-validation-tip ng-if="val.showInfo" text="{{val.message}}" do-info="val.doInfo"></itt-validation-tip>',
 				'	</span>',
 				'	</div>',
-				'	<div class="input">',
+				'	<div class="input" ng-if="!$ctrl.videoOnly">',
 				'		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-focus="$ctrl.onFocus()" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url on-validation-notice="$ctrl.handleValidationMessage($notice)"/>',
 				'	</div>',
-				'	<div>',
-				'		<input type="text" name="kalturaEmbedCode" ng-model="kaltura.embed" ng-change="$ctrl.kaltura(kaltura.embed)"/>',
+				'	<div class="input" ng-if="$ctrl.videoOnly === true">',
+				'		<input type="text" ng-model="$ctrl.data" ng-change="$ctrl.handleMasterAssetUrl($ctrl.data)"/>',
+				'		<button ng-if="$ctrl.data" ng-click="$ctrl.onAttach({$url: $ctrl.data})">Attach Video</button>',
 				'	</div>',
 				'</div>'
 			].join(' '),
-			controller: ['$scope', 'kalturaUrlService', function ($scope, kalturaUrlService) {
+			controller: ['$scope', 'urlService', function ($scope, urlService) {
 				var ctrl = this;
 				ctrl.handleValidationMessage = handleValidationMessage;
 				ctrl.onFocus = onFocus;
-				ctrl.kaltura = kaltura;
+				ctrl.handleMasterAssetUrl = handleMasterAssetUrl;
+
+				onInit();
+
+				function onInit() {
+					if (ctrl.videoOnly === true) {
+						handleMasterAssetUrl(ctrl.data);
+					}
+				}
+
+				function handleMasterAssetUrl(url) {
+					var type;
+					var message;
+					if (url.length) {
+						type = urlService.checkUrl(url).type;
+						if (type.length > 0) {
+							message = {
+								showInfo: true,
+								message: type,
+								doInfo: true
+							};
+							ctrl.validatedFields = {
+								type: message
+							};
+						}
+					}
+				}
 
 				function onFocus() {
 					$scope.$broadcast('url:focus');
-				}
-
-				function kaltura(embedCode) {
-					console.log('embed code!', embedCode);
-					var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
-					var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
-					ctrl.data.url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
 				}
 
 				function handleValidationMessage(notice) {
