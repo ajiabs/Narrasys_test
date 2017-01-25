@@ -47,7 +47,7 @@
 		function checkUrl(url) {
 			return Object.keys(_urlSubServices).reduce(function(map, urlSrv) {
 				if (_urlSubServices[urlSrv].canPlay(url)) {
-					map.type = urlSrv.type;
+					map.type = urlSrv;
 				}
 				return map;
 			}, {type: ''});

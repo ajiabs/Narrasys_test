@@ -7,7 +7,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, $timeout, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeUrlService, kalturaUrlService, authSvc, selectService, playbackService, timelineSvc) {
+	.directive('ittEpisodeEditor', function ($rootScope, $timeout, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeUrlService, kalturaUrlService, authSvc, selectService, playbackService, urlService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -236,36 +236,54 @@ angular.module('com.inthetelling.story')
 					})
 				}
 
-				scope.attachYouTube = attachYouTube;
-				function attachYouTube(url) {
-					scope.episode.replacingMasterAsset = true;
-					scope.showmessage = "Getting video from YouTube...";
-					var ytUrl = youtubeUrlService.embeddableYoutubeUrl(url);
+				scope.attachMediaSrc = attachMediaSrc;
+				function attachMediaSrc(urlOrEmbedCode) {
+					var type = urlService.checkUrl(urlOrEmbedCode).type;
+					if (type.length > 0) {
+						scope.episode.replacingMasterAsset = true;
+						scope.showmessage = "Getting video from " + type + "...";
+						var mediaSrcUrl = urlService.parseInput(urlOrEmbedCode);
 
-					scope.episode.swap = {
-						_id: 'replaceMe',
-						mediaSrcArr: [ytUrl]
-					};
+						scope.episode.swap = {
+							_id: 'replaceMe',
+							mediaSrcArr: [mediaSrcUrl]
+						};
 
-					var afterReady = waitForDuration(createAssetFromTmp, ytUrl, 'video/x-youtube');
-					playbackService.registerStateChangeListener(afterReady);
+						var afterReady = waitForDuration(createAssetFromTmp, mediaSrcUrl, 'video/' + type);
+						playbackService.registerStateChangeListener(afterReady);
+					}
 				}
 
-				scope.attachKaltura = attachKaltura;
-				function attachKaltura(embedCode) {
-					scope.episode.replacingMasterAsset = true;
-					scope.showmessage = "Getting video from Kaltura...";
-					var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
-					var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
-					var url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
-
-					scope.episode.swap = {
-						_id: 'replaceMe',
-						mediaSrcArr: [url]
-					};
-					var afterReady = waitForDuration(createAssetFromTmp, url, 'video/x-kaltura');
-					playbackService.registerStateChangeListener(afterReady);
-				}
+				// scope.attachYouTube = attachYouTube;
+				// function attachYouTube(url) {
+				// 	scope.episode.replacingMasterAsset = true;
+				// 	scope.showmessage = "Getting video from YouTube...";
+				// 	var ytUrl = youtubeUrlService.embeddableYoutubeUrl(url);
+                //
+				// 	scope.episode.swap = {
+				// 		_id: 'replaceMe',
+				// 		mediaSrcArr: [ytUrl]
+				// 	};
+                //
+				// 	var afterReady = waitForDuration(createAssetFromTmp, ytUrl, 'video/x-youtube');
+				// 	playbackService.registerStateChangeListener(afterReady);
+				// }
+                //
+				// scope.attachKaltura = attachKaltura;
+				// function attachKaltura(embedCode) {
+				// 	scope.episode.replacingMasterAsset = true;
+				// 	scope.showmessage = "Getting video from Kaltura...";
+				// 	var getKalturaObjectFromEmbedCode = kalturaUrlService.getKalturaObjectFromEmbedCode;
+				// 	var buildAutoEmbedURLFromKalturaObject = kalturaUrlService.buildAutoEmbedURLFromKalturaObject;
+				// 	var url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(embedCode), 1024, 768);
+                //
+				// 	scope.episode.swap = {
+				// 		_id: 'replaceMe',
+				// 		mediaSrcArr: [url]
+				// 	};
+				// 	var afterReady = waitForDuration(createAssetFromTmp, url, 'video/x-kaltura');
+				// 	playbackService.registerStateChangeListener(afterReady);
+				// }
 
 				scope.replaceAsset = function (assetType) {
 					assetType = assetType || '';
