@@ -8,14 +8,24 @@
 	angular.module('com.inthetelling.story')
 		.factory('html5UrlService', html5UrlService);
 
-	function html5UrlService() {
+	function html5UrlService(ittUtils) {
 		var _type = 'html5';
+		var _existy = ittUtils.existy;
 		return {
 			type: _type,
 			parseMediaSrc: parseMediaSrc,
 			canPlay: isHTML5VideoUrl,
-			parseInput: parseInput
+			parseInput: parseInput,
+			getOutgoingUrl: getOutgoingUrl
 		};
+
+		function getOutgoingUrl(url, startAt) {
+			if (_existy(startAt) && startAt > 0) {
+				url += '#t=' + startAt;
+			}
+			return url;
+		}
+
 		/**
 		 *
 		 * @param mediaSrc

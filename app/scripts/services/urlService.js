@@ -54,19 +54,11 @@
 		}
 
 		function getOutgoingUrl(url, startAt) {
-			switch(checkUrl(url).type) {
-				case 'youtube':
-					url = youtubeUrlService.embeddableYoutubeUrl(url, false);
-					if (startAt > 0) {
-						url += '&start=' + startAt;
-					}
-					return url;
-				case 'html5':
-					if (startAt > 0) {
-						url += '#t=' + startAt;
-					}
-					return url;
+			var type = checkUrl(url).type;
+			if (type.length > 0) {
+				return _urlSubServices[type].getOutgoingUrl(url, startAt);
 			}
+
 		}
 	}
 

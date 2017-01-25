@@ -17,7 +17,8 @@
 			getKalturaObjectFromEmbedCode: getKalturaObjectFromEmbedCode,
 			buildAutoEmbedURLFromKalturaObject: buildAutoEmbedURLFromKalturaObject,
 			getKalturaObjectFromAutoEmbedURL: getKalturaObjectFromAutoEmbedURL,
-			parseInput: parseInput
+			parseInput: parseInput,
+			getOutgoingUrl: angular.noop
 		};
 
 		function parseInput(input) {

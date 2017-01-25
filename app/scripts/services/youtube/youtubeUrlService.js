@@ -1,6 +1,10 @@
-'use strict';
-angular.module('com.inthetelling.story')
-	.factory('youtubeUrlService', function () {
+(function () {
+	'use strict';
+	angular.module('com.inthetelling.story')
+		.factory('youtubeUrlService', youtubeUrlService);
+
+	function youtubeUrlService(ittUtils) {
+		var _existy = ittUtils.existy;
 		var _type = 'youtube';
 		return {
 			type: _type,
@@ -11,8 +15,17 @@ angular.module('com.inthetelling.story')
 			embedParams: embedParams,
 			createEmbedLinkFromYoutubeId: createEmbedLinkFromYoutubeId,
 			embeddableYoutubeUrl: embeddableYoutubeUrl,
-			parseInput: embeddableYoutubeUrl
+			parseInput: embeddableYoutubeUrl,
+			getOutgoingUrl: getOutgoingUrl
 		};
+
+		function getOutgoingUrl(url, startAt) {
+			url = embeddableYoutubeUrl(url, false);
+			if (_existy(startAt) && startAt > 0) {
+				url += '&start=' + startAt;
+			}
+			return url;
+		}
 
 		function extractYoutubeId(origUrl) {
 			if (!origUrl) {
@@ -41,7 +54,7 @@ angular.module('com.inthetelling.story')
 		 * @return mediaSrcObj {type: string, mediaSrcArr: Array<String>}
 		 */
 		function parseMediaSrc(mediaSrcArr) {
-			return mediaSrcArr.reduce(function(parsedMediaSrcObj, mediaSrc) {
+			return mediaSrcArr.reduce(function (parsedMediaSrcObj, mediaSrc) {
 				if (isYoutubeUrl(mediaSrc)) {
 					parsedMediaSrcObj.mediaSrcArr.push(mediaSrc);
 				}
@@ -93,15 +106,15 @@ angular.module('com.inthetelling.story')
 		// 	}
 		// 	return duration;
 		// };
-        //
+		//
 		// var getVideoMetaData = function (id) {
 		// 	var url = "https://www.googleapis.com/youtube/v3/videos?id=" + id + "&part=contentDetails,snippet&key=" + config.youtube.apikey;
 		// 	var defer = $q.defer();
-        //
+		//
 		// 	var timeoutPromise = $timeout(function () {
 		// 		defer.reject("Youtube API request timed out");
 		// 	}, config.youtube.timeout);
-        //
+		//
 		// 	$http({
 		// 		method: 'GET',
 		// 		url: url,
@@ -148,4 +161,5 @@ angular.module('com.inthetelling.story')
 		// 		);
 		// 	return defer.promise;
 		// };
-	});
+	}
+})();
