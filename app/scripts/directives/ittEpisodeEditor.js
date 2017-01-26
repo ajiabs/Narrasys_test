@@ -213,7 +213,7 @@ angular.module('com.inthetelling.story')
 				function createAssetFromTmp(tmpAsset) {
 					var asset = {};
 					asset.content_type = tmpAsset.type;
-					asset.duration = tmpAsset.duration; //02:37
+					asset.duration = tmpAsset.duration;
 					asset.url = tmpAsset.url;
 					asset.name = scope.episode.title;
 					asset.description = scope.episode.description;
@@ -228,10 +228,18 @@ angular.module('com.inthetelling.story')
 
 				scope.attachMediaSrc = attachMediaSrc;
 				function attachMediaSrc(urlOrEmbedCode) {
+					var contentType;
 					var type = urlService.checkUrl(urlOrEmbedCode).type;
 					if (type.length > 0) {
+
+						if (type === 'html5') {
+							contentType = 'video/' + urlOrEmbedCode.match(/(mp4|m3u8|webm)/)[0];
+						} else {
+							contentType = 'video/x-' + type;
+						}
+
 						scope.episode.replacingMasterAsset = true;
-						scope.showmessage = "Getting video from " + type + "...";
+						scope.showmessage = 'Getting ' + type + ' video...';
 						var mediaSrcUrl = urlService.parseInput(urlOrEmbedCode);
 
 						scope.episode.swap = {

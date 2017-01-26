@@ -261,6 +261,7 @@
 			var instance = getInstance(this.id);
 			if (getMetaProp(this.id, 'ready') === false) {
 				_emitStateChange(instance, 6);
+				setMetaProp(this.id, 'duration', instance.duration);
 			}
 		}
 
