@@ -16,7 +16,7 @@
 </li>
 <li><code ng:non-bindable=""><a href="#/api/PLAYERSTATES">PLAYERSTATES</a></code>
 </li>
-<li><code ng:non-bindable=""><a href="#/api/youtubeSvc">youtubeUrlService</a></code>
+<li><code ng:non-bindable=""><a href="#/api/youtubeUrlService">youtubeUrlService</a></code>
 </li>
 </ul>
 <div class="member method"><h2 id="methods">Methods</h2>
@@ -46,13 +46,6 @@ interface with the youtube Iframe API</p>
 </div></td></tr></tbody></table><h5 id="methods_getmetaobj_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-getmetaobj-page"><p>The requested objects Meta Props.</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_getmetaprop">getMetaProp(pid, prop)</h3>
-<div class="getmetaprop"><div class="-getmetaprop-page"><p>used to get a particular property of a players&#39;s meta obj</p>
-</div><h5 id="methods_getmetaprop_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getmetaprop-page"><p>the pid of the player</p>
-</div></td></tr><tr><td>prop</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getmetaprop-page"><p>the prop to get</p>
-</div></td></tr></tbody></table><h5 id="methods_getmetaprop_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String | Number | Void</a></td><td><div class="-getmetaprop-page"><p>returns the requested prop if defined.</p>
-</div></td></tr></table></div>
-</li>
 <li><h3 id="methods_getplayerdiv">getPlayerDiv(id)</h3>
 <div class="getplayerdiv"><div class="-getplayerdiv-page"><p>returns an HTML string with the ID from the input param</p>
 </div><h5 id="methods_getplayerdiv_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayerdiv-page"><p>the ID of the player</p>
@@ -70,15 +63,6 @@ percent of video that is currently buffered</p>
 <div class="pause"><div class="-pause-page"><p>Used to pause playback</p>
 </div><h5 id="methods_pause_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-pause-page"><p>The ID of the YT instance</p>
 </div></td></tr></tbody></table><h5 id="methods_pause_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-pause-page"><p>no return value</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="methods_pauseotherplayers">pauseOtherPlayers(pid)</h3>
-<div class="pauseotherplayers"><div class="-pauseotherplayers-page"><p>Loops through all YT instances except main player and
-player with same PID as the id param and calls
-pause() on each one. In other words, will pause all
-embeds except the one you interacted with.</p>
-</div><h5 id="methods_pauseotherplayers_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-pauseotherplayers-page"><p>The ID of the YT instance</p>
-</div></td></tr></tbody></table><h5 id="methods_pauseotherplayers_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-pauseotherplayers-page"><p>No return value.</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_play">play(pid)</h3>
@@ -104,12 +88,6 @@ embeds except the one you interacted with.</p>
 </div></td></tr></tbody></table><h5 id="methods_registerstatechangelistener_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-registerstatechangelistener-page"><p>returns void</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods_reset">reset()</h3>
-<div class="reset"><div class="-reset-page"><p>Used to reset the player after detecting
-onError event.</p>
-</div><h5 id="methods_reset_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-reset-page"><p>no return value</p>
-</div></td></tr></table></div>
-</li>
 <li><h3 id="methods_resetplayermanager">resetPlayerManager()</h3>
 <div class="resetplayermanager"><div class="-resetplayermanager-page"><p>Will destroy all instances of YT on the _players map and reset it to an empty object.</p>
 </div><h5 id="methods_resetplayermanager_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-resetplayermanager-page"><p>No return value.</p>
@@ -120,7 +98,7 @@ onError event.</p>
 </div><h5 id="methods_seedplayermanager_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-seedplayermanager-page"><p>Main Video Asset ID or Event ID, for embeds</p>
 </div></td></tr><tr><td>mainPlayer</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-seedplayermanager-page"><p>Determines type of player, embed or main</p>
 </div></td></tr><tr><td>mediaSrcArr</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="-seedplayermanager-page"><p>array of youtube URLs</p>
-</div></td></tr></tbody></table><h5 id="methods_seedplayermanager_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-seedplayermanager-page"><p>returns void.</p>
+</div></td></tr></tbody></table><h5 id="methods_seedplayermanager_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-vofid">Vofid</a></td><td><div class="-seedplayermanager-page"><p>returns void.</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_seekto">seekTo(pid, t)</h3>
@@ -135,14 +113,6 @@ function.</p>
 the server if the t (seconds) parameter specifies a time outside of the currently
 buffered video data</p>
 </div></td></tr></tbody></table><h5 id="methods_seekto_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-seekto-page"><p>no return value</p>
-</div></td></tr></table></div>
-</li>
-<li><h3 id="methods_setmetaprop">setMetaProp(pid, prop, val)</h3>
-<div class="setmetaprop"><div class="-setmetaprop-page"><p>sets the particular prop of a player&#39;s meta obj</p>
-</div><h5 id="methods_setmetaprop_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setmetaprop-page"><p>the pid of the player</p>
-</div></td></tr><tr><td>prop</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-setmetaprop-page"><p>the prop to set</p>
-</div></td></tr><tr><td>val</td><td><a href="" class="label type-hint type-hint-string">String</a><a href="" class="label type-hint type-hint-number">Number</a><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-setmetaprop-page"><p>the val to set</p>
-</div></td></tr></tbody></table><h5 id="methods_setmetaprop_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-setmetaprop-page"><p>returns void</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods_setplaybackquality">setPlaybackQuality(pid)</h3>
@@ -191,11 +161,6 @@ buffered video data</p>
 </div></td></tr></tbody></table><h5 id="methods__createinstance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createinstance-page"><p>instance of YT.Player</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods__createmetaobj">_createMetaObj(props)</h3>
-<div class="_createmetaobj"><h5 id="methods__createmetaobj_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>props</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>array of objects (properties) to set on the copy of the meta object.</p>
-</div></td></tr></tbody></table><h5 id="methods__createmetaobj_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>returns copy of new meta object</p>
-</div></td></tr></table></div>
-</li>
 <li><h3 id="methods__emitstatechange">_emitStateChange(playerStateChange)</h3>
 <div class="_emitstatechange"><h5 id="methods__emitstatechange_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerStateChange</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-emitstatechange-page"><p>callback to fire</p>
 </div></td></tr></tbody></table><h5 id="methods__emitstatechange_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-emitstatechange-page"><p>returns void 0.</p>
@@ -217,11 +182,10 @@ buffered video data</p>
 </div></td></tr></tbody></table><h5 id="methods__getplayerdiv_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="-getplayerdiv-page"><p>HTML div with ID of player</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods__getytinstance">_getYTInstance(pid)</h3>
-<div class="_getytinstance"><div class="-getytinstance-page"><p>Used to retrieve an instance of the YT player out of the _players object.</p>
-</div><h5 id="methods__getytinstance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getytinstance-page"><p>the ID of the instance to retrieve
-player that emitted it.</p>
-</div></td></tr></tbody></table><h5 id="methods__getytinstance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-getytinstance-page"><p>Youtube Player Instance Object.</p>
+<li><h3 id="methods__reset">_reset()</h3>
+<div class="_reset"><div class="-reset-page"><p>Used to _reset the player after detecting
+onError event.</p>
+</div><h5 id="methods__reset_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-reset-page"><p>no return value</p>
 </div></td></tr></table></div>
 </li>
 <li><h3 id="methods__trycommand">_tryCommand(instance, command, val)</h3>
