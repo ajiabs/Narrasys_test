@@ -77,7 +77,7 @@
 			getBufferedPercent: getBufferedPercent,
 			toggleMute: toggleMute,
 			setVolume: setVolume,
-			setSpeed: angular.noop,
+			setSpeed: setSpeed,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
 			stop: angular.noop
@@ -163,6 +163,10 @@
 			console.warn('PLAYER ERROR', e);
 		}
 
+		function onUpdatedPlaybackRate(e) {
+			console.log('new rate',e)
+		}
+
 		/*
 			Public Methods
 		 */
@@ -207,6 +211,11 @@
 			setMetaProp(pid, 'isMuted', !isMuted);
 		}
 
+		function setSpeed(pid, playbackRate) {
+			console.log('setting speed to', playbackRate);
+			_sendKdpNotice(pid, 'playbackRateChangeSpeed', playbackRate);
+		}
+
 		function setVolume(pid, v) {
 			_sendKdpNotice(pid, 'changeVolume', v / 100);
 		}
@@ -237,7 +246,7 @@
 				'readyCallback': onReadyCB,
 				'entry_id': entryID,
 				'flashvars': {
-					// 'IframeCustomPluginCss1' : 'chromeless.css',
+					'playbackRateSelector.plugin':true,
 					'controlBarContainer.plugin': false,
 					'largePlayBtn.plugin': false,
 					'loadingSpinner.plugin': false
@@ -270,7 +279,8 @@
 				'bufferEndEvent': onBufferEnd,
 				'playerPlayEnd': onPlayerPlayEnd,
 				'playerError': onPlayerError,
-				'mediaReady': onMediaReady
+				'mediaReady': onMediaReady,
+				'updatedPlaybackRate': onUpdatedPlaybackRate
 			};
 			Object.keys(kMap).forEach(function(evtName) {
 				(function(evtName) {

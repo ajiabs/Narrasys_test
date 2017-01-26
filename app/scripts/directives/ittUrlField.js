@@ -33,11 +33,12 @@
 				'	</div>',
 				'</div>'
 			].join(' '),
-			controller: ['$scope', 'urlService', function ($scope, urlService) {
+			controller: ['$scope', 'urlService', 'ittUtils', function ($scope, urlService, ittUtils) {
 				var ctrl = this;
 				ctrl.handleValidationMessage = handleValidationMessage;
 				ctrl.onFocus = onFocus;
 				ctrl.handleMasterAssetUrl = handleMasterAssetUrl;
+				var _existy = ittUtils.existy;
 
 				onInit();
 
@@ -50,7 +51,7 @@
 				function handleMasterAssetUrl(url) {
 					var type;
 					var message;
-					if (url.length) {
+					if (_existy(url) && url.length) {
 						type = urlService.checkUrl(url).type;
 						if (type.length > 0) {
 							message = {
