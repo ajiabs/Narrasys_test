@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('urlService', urlService);
 
-	function urlService(youtubeUrlService, html5UrlService, kalturaUrlService) {
+	function urlService(youtubeUrlService, html5UrlService, kalturaUrlService, config) {
 
 		var _urlSubServices = {
 			youtube: youtubeUrlService,

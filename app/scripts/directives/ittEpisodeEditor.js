@@ -207,7 +207,7 @@ angular.module('com.inthetelling.story')
 							}, 0);
 
 						}
-					}
+					};
 				}
 
 				function createAssetFromTmp(tmpAsset) {
@@ -223,7 +223,7 @@ angular.module('com.inthetelling.story')
 						scope.attachChosenAsset(data._id);
 					}).catch(function(e) {
 						console.log('errr', e);
-					})
+					});
 				}
 
 				scope.attachMediaSrc = attachMediaSrc;
