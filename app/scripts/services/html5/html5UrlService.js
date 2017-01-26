@@ -13,11 +13,16 @@
 		var _existy = ittUtils.existy;
 		return {
 			type: _type,
+			getMimeType: getMimeType,
 			parseMediaSrc: parseMediaSrc,
 			canPlay: isHTML5VideoUrl,
 			parseInput: parseInput,
 			getOutgoingUrl: getOutgoingUrl
 		};
+
+		function getMimeType(url) {
+			return 'video/' + url.match(/(mp4|m3u8|webm)/)[0];
+		}
 
 		function getOutgoingUrl(url, startAt) {
 			if (_existy(startAt) && startAt > 0) {

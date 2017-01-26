@@ -54,13 +54,7 @@
 			return Object.keys(_urlSubServices).reduce(function(map, urlSrv) {
 				if (_urlSubServices[urlSrv].canPlay(url)) {
 					map.type = urlSrv;
-
-					if (urlSrv === 'html5') {
-						map.mimeType = 'video/' + url.match(/(mp4|m3u8|webm)/)[0];
-					} else {
-						map.mimeType = 'video/x-' + urlSrv;
-					}
-
+					map.mimeType = _urlSubServices[urlSrv].getMimeType(url);
 				}
 				return map;
 			}, {type: '', mimeType: ''});

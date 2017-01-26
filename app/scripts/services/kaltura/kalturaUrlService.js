@@ -10,8 +10,10 @@
 
 	function kalturaUrlService() {
 		var _type = 'kaltura';
+		var _mimeType = 'video/x-' + _type;
 		return {
 			type: _type,
+			getMimeType: getMimeType,
 			canPlay: isKalturaUrl,
 			parseMediaSrc: parseMediaSrc,
 			getKalturaObjectFromEmbedCode: getKalturaObjectFromEmbedCode,
@@ -20,6 +22,10 @@
 			parseInput: parseInput,
 			getOutgoingUrl: angular.noop
 		};
+
+		function getMimeType() {
+			return _mimeType;
+		}
 
 		function parseInput(input) {
 			return buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(input), 1024, 768);

@@ -6,8 +6,10 @@
 	function youtubeUrlService(ittUtils) {
 		var _existy = ittUtils.existy;
 		var _type = 'youtube';
+		var _mimeType = 'video/x-' + _type;
 		return {
 			type: _type,
+			getMimeType: getMimeType,
 			extractYoutubeId: extractYoutubeId,
 			isYoutubeUrl: isYoutubeUrl,
 			canPlay: isYoutubeUrl,
@@ -18,6 +20,10 @@
 			parseInput: embeddableYoutubeUrl,
 			getOutgoingUrl: getOutgoingUrl
 		};
+
+		function getMimeType() {
+			return _mimeType;
+		}
 
 		function getOutgoingUrl(url, startAt) {
 			url = embeddableYoutubeUrl(url, false);
