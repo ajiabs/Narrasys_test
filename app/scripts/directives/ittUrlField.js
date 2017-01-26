@@ -14,11 +14,12 @@
 			scope: {
 				data: '=',
 				videoOnly: '=',
+				label: '@',
 				onAttach: '&'
 			},
 			template: [
 				'<div class="field">',
-				'	<div class="label">URL',
+				'	<div class="label">{{$ctrl.label || "URL"}}',
 				'	<span ng-repeat="(field, val) in $ctrl.validatedFields">',
 				'		<itt-validation-tip ng-if="val.showInfo" text="{{val.message}}" do-info="val.doInfo"></itt-validation-tip>',
 				'	</span>',

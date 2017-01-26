@@ -400,7 +400,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				if (event._type === 'Link') {
-					if (urlService.checkUrl(event.url).type.length > 0) {
+					if (urlService.isVideoUrl(event.url)) {
 						event.isVideoUrl = true;
 					}
 				}

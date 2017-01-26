@@ -29,12 +29,10 @@ angular.module('com.inthetelling.story')
 				scope.uneditedEpisode = angular.copy(scope.episode); // in case of cancel.   Must be a copy, not the original!
 				scope.itemForm = selectService.setupItemForm(scope.episode.styles, 'episode');
 
-				if (scope.masterAsset) {
-					if (scope.masterAsset.content_type === 'video/x-kaltura' || scope.masterAsset.content_type === 'video/x-youtube') {
-						scope.masterAssetType = 'WebUrl';
-					} else {
-						scope.masterAssetType = 'Video';
-					}
+				if (scope.masterAsset && /video\/x-/.test(scope.masterAsset.content_type)) {
+					scope.masterAssetType = 'WebUrl';
+				} else {
+					scope.masterAssetType = 'Video';
 				}
 
 				// extract episode languages for the form

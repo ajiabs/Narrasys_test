@@ -4,7 +4,6 @@
 /*
 TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 
-TODO some youtube-specific functionality in here.  Refactor into youtubeUrlService if/when we decide we're going to keep it...
 
 */
 
@@ -23,11 +22,10 @@ TODO some youtube-specific functionality in here.  Refactor into youtubeUrlServi
  * @requires timelineSvc
  * @requires awsSvc
  * @requires dataSvc
- * @requires youtubeUrlService
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
 angular.module('com.inthetelling.story')
-	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, youtubeUrlService, selectService) {
+	.directive('ittItemEditor', function ($rootScope, $timeout, errorSvc, appState, modelSvc, timelineSvc, awsSvc, dataSvc, selectService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -37,44 +35,6 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/producer/item.html',
 			controller: 'EditController',
 			link: function (scope) {
-				// console.log("ittItemEditor", scope.item);
-				// var widget;
-				// scope.startRecordVideo = function () {
-				// 	scope.isRecordingVideo = !scope.isRecordingVideo;
-				// 	var widgetwidth = 0.8 * (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
-				// 	if (widgetwidth > 500) {
-				// 		widgetwidth = 500;
-				// 	}
-				// 	widget = new window.YT.UploadWidget('recordWidgetContainer', {
-				// 		width: widgetwidth,
-				// 		events: {
-				// 			'onApiReady': function () {
-				// 				// console.log('youtube onApiReady');
-				// 				widget.setVideoPrivacy('unlisted');
-				// 				var d = new Date();
-				// 				var dateString = (d.getMonth() + 1) + "-" + d.getDate() + "-" + d.getFullYear() + " " + (d.getHours() % 12) + ":" + d.getMinutes() + (d.getHours() > 12 ? " pm" : " am");
-				// 				widget.setVideoTitle('In The Telling webcam recording: ' + dateString);
-				// 				// widget.setVideoDescription();
-				// 				// widget.setVideoKeywords();
-				// 			},
-				// 			'onUploadSuccess': function (ret) {
-				// 				scope.item.url = youtubeUrlService.createEmbedLinkFromYoutubeId(ret.data.videoId);
-				// 				scope.isRecordingVideo = false;
-				// 				scope.isProcessingVideo = true;
-                //
-				// 				// onProcessingComplete is not always fired by youtube; force it after 30 secs:
-				// 				$timeout(function () {
-				// 					console.log("Forcing process-complete");
-				// 					scope.isProcessingVideo = false;
-				// 				}, 30000);
-				// 			},
-				// 			'onProcessingComplete': function () {
-				// 				// console.log("youtube onProcessingComplete");
-				// 				scope.isProcessingVideo = false;
-				// 			}
-				// 		}
-				// 	});
-				// };
 
 				timelineSvc.pause();
 				timelineSvc.seek(scope.item.start_time);
@@ -122,10 +82,6 @@ angular.module('com.inthetelling.story')
 											}
 										});
 					*/
-
-					if (newItem.yturl !== oldItem.yturl) {
-						scope.item.url = youtubeUrlService.embeddableYoutubeUrl(newItem.yturl);
-					}
 
 					if (newItem.chapter_marker === false) {
 						timelineSvc.removeEvent(newItem._id);

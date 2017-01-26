@@ -25,7 +25,7 @@
 		.directive('ittIframe', ittIframe)
 		.controller('ittIframeCtrl', ittIframeCtrl);
 
-	function ittIframe(appState, youtubeUrlService) {
+	function ittIframe(appState) {
 		return {
 			restrict: 'E',
 			scope: {
@@ -41,7 +41,7 @@
 			link: linkFn
 		};
 
-		function linkFn(scope, elm, ctrl) {
+		function linkFn(scope, elm) {
 			var _btnConst = 95;
 
 			var _unWatch = angular.noop;
@@ -94,13 +94,11 @@
 			function resizeIframeReviewMode() {
 				var narrasys = 'templates/episode/narrasys-pro.html';
 				var cpb = 'templates/episode/career-playbook.html';
-				var isYT = youtubeUrlService.isYoutubeUrl(ctrl.src);
 
 				//only resize iframe in discover mode for the narrasys pro template (at the moment)
 				if (appState.viewMode === 'discover' &&
 					(appState.playerTemplate === narrasys || appState.playerTemplate === cpb) &&
-					!appState.isTouchDevice &&
-					!isYT) {
+					!appState.isTouchDevice) {
 					elm.css('height', _frameBottom);
 				}
 			}
@@ -119,7 +117,6 @@
 		var _ctrl = this; //jshint ignore:line
 		var _sandboxAttrs = 'allow-forms allow-same-origin allow-scripts';
 		var _popupsTopWindow = ' allow-top-navigation allow-popups';
-		_ctrl.isYoutube = false;
 		_ctrl.isLoading = true;
 		_ctrl.isTouchDevice = appState.isTouchDevice;
 

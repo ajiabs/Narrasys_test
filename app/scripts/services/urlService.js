@@ -20,7 +20,8 @@
 			parseMediaSrcArr: parseMediaSrcArr,
 			checkUrl: checkUrl,
 			getOutgoingUrl: getOutgoingUrl,
-			parseInput: parseInput
+			parseInput: parseInput,
+			isVideoUrl: isVideoUrl
 		};
 
 		function parseInput(input) {
@@ -42,6 +43,10 @@
 				}
 				return parsedMediaSrcArr;
 			}, []);
+		}
+
+		function isVideoUrl(url) {
+			return checkUrl(url).type.length > 0;
 		}
 
 		function checkUrl(url) {

@@ -90,15 +90,13 @@
 				}
 
 				function url(viewVal) {
-					var type = urlService.checkUrl(viewVal).type;
 					if (ngModel.$isEmpty(viewVal) && !_emailOrPlaceholder(viewVal)) {
 						validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'}; //jshint ignore:line
 						return false;
-					} else if (type.length > 0 ||ittUtils.isValidURL(viewVal) || _emailOrPlaceholder(viewVal)) {
+					} else if (urlService.isVideoUrl(viewVal) ||ittUtils.isValidURL(viewVal) || _emailOrPlaceholder(viewVal)) {
 						validatedFields['url'] = {showInfo: false}; //jshint ignore:line
 						return true;
 					} else {
-						console.log('double wtf mate?');
 						validatedFields['url'] = {showInfo: true, message: viewVal + ' is not a valid URL'}; //jshint ignore:line
 						return false;
 					}
@@ -106,9 +104,8 @@
 				}
 
 				function xFrameOpts(viewVal) {
-					var type = urlService.checkUrl(viewVal).type;
 					//bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
-					if (ngModel.$isEmpty(viewVal) || type.length > 0 || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
+					if (ngModel.$isEmpty(viewVal) || urlService.isVideoUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
 						return $q(function (resolve) {
 							validatedFields['xFrameOpts'] = {showInfo: false}; //jshint ignore:line
 							return resolve();
