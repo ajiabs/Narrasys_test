@@ -17,7 +17,7 @@ var config = {
 	localStorageKey: "storyToken",
 	youtube: {
 		disabled: false,
-		timeout: 5000
+		timeout: 5000,
 		// apikey: 'AIzaSyDBU-E8lrZdKdAJ9XaVva95FuZLYoL-Tb4'
 	},
 	disableAnalytics: false,
