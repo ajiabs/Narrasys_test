@@ -247,7 +247,7 @@ angular.module('com.inthetelling.story')
 							mediaSrcArr: [mediaSrcUrl]
 						};
 
-						var afterReady = waitForDuration(createAssetFromTmp, mediaSrcUrl, 'video/x-' + type);
+						var afterReady = waitForDuration(createAssetFromTmp, mediaSrcUrl, contentType);
 						playbackService.registerStateChangeListener(afterReady);
 					}
 				}
