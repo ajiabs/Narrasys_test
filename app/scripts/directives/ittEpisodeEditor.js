@@ -229,15 +229,10 @@ angular.module('com.inthetelling.story')
 				scope.attachMediaSrc = attachMediaSrc;
 				function attachMediaSrc(urlOrEmbedCode) {
 					var contentType;
-					var type = urlService.checkUrl(urlOrEmbedCode).type;
+					var pmTypeAndMimeType = urlService.checkUrl(urlOrEmbedCode);
+					var type = pmTypeAndMimeType.type;
 					if (type.length > 0) {
-
-						if (type === 'html5') {
-							contentType = 'video/' + urlOrEmbedCode.match(/(mp4|m3u8|webm)/)[0];
-						} else {
-							contentType = 'video/x-' + type;
-						}
-
+						contentType = pmTypeAndMimeType.mimeType;
 						scope.episode.replacingMasterAsset = true;
 						scope.showmessage = 'Getting ' + type + ' video...';
 						var mediaSrcUrl = urlService.parseInput(urlOrEmbedCode);

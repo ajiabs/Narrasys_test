@@ -54,9 +54,16 @@
 			return Object.keys(_urlSubServices).reduce(function(map, urlSrv) {
 				if (_urlSubServices[urlSrv].canPlay(url)) {
 					map.type = urlSrv;
+
+					if (urlSrv === 'html5') {
+						map.mimeType = 'video/' + url.match(/(mp4|m3u8|webm)/)[0];
+					} else {
+						map.mimeType = 'video/x-' + urlSrv;
+					}
+
 				}
 				return map;
-			}, {type: ''});
+			}, {type: '', mimeType: ''});
 		}
 
 		function getOutgoingUrl(url, startAt) {
