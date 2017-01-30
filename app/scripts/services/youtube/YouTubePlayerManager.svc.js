@@ -28,7 +28,6 @@
 		var _tmpStateChangeListeners = [];
 		var _type = 'youtube';
 		var _isBuffering;
-		var _WAITFORBUFFERING = 7 * 1000;
 
 		var _youtubeMetaObj = {
 			instance: null,
@@ -73,6 +72,7 @@
 		var getPlayerDiv = base.getPlayerDiv;
 		var resetPlayerManager = base.resetPlayerManager(destroyFn);
 		var renamePid = base.renamePid;
+		var waitForBuffering = base.waitForBuffering;
 
 		_youTubePlayerManager = {
 			type: _type,
@@ -202,11 +202,12 @@
 				}
 
 				if (event.data === YT.PlayerState.BUFFERING) {
-					_isBuffering = $timeout(function() {
+
+					_isBuffering = waitForBuffering(function() {
 						if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
 							_reset(pid);
 						}
-					}, _WAITFORBUFFERING);
+					});
 
 				} else {
 					$timeout.cancel(_isBuffering);

@@ -92,12 +92,12 @@ angular.module('com.inthetelling.story')
 
 					break;
 				case 'playing':
-					// var currentTime = playbackService.getCurrentTime();
-					// var ourTime = playbackService.getMetaProp('time');
-					// if (Math.abs(ourTime - currentTime) > 0.75) {
-					// 	playbackService.setMetaProp('time', currentTime);
-					// 	stepEvent(true);
-					// }
+					var currentTime = playbackService.getCurrentTime();
+					var ourTime = playbackService.getMetaProp('time');
+					if (Math.abs(ourTime - currentTime) > 0.75) {
+						playbackService.setMetaProp('time', currentTime);
+						stepEvent(true);
+					}
 					startTimelineClock();
 					startEventClock();
 					appState.videoControlsActive = true;
@@ -393,19 +393,21 @@ angular.module('com.inthetelling.story')
 			var vidTime = playbackService.getCurrentTime();
 			var ourTime = playbackService.getMetaProp('time');
 
+
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
 
 			// find timeline events since last time stepEvent ran, handle them in order until one is a stop or a seek
 			for (var i = 0; i < svc.timelineEvents.length; i++) {
 				var evt = svc.timelineEvents[i];
+
+
+				if (/internal:endingscreen/.test(evt.id)) {
+					console.warn('HANDLE ENDING SCREEN EVENT', evt);
+					_onPlayerStateChange('ended');
+				}
+
 				if (evt.t >= eventClockData.lastTimelineTime) {
-
-					if (/internal:endingscreen/.test(evt.id)) {
-						console.warn('HANDLE ENDING SCREEN EVENT', evt);
-						_onPlayerStateChange('ended');
-					}
-
 					if (evt.t > ourTime) {
 						break; // NOTE! next event should be this one; let i fall through as is
 					}

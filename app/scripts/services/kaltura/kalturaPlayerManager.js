@@ -14,6 +14,7 @@
 		var _stateChangeCallbacks = [];
 		var _type = 'kaltura';
 		var _existy = ittUtils.existy;
+		var _isBuffering;
 
 		var _kalturaMetaObj = {
 			instance: null,
@@ -41,20 +42,21 @@
 			return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
 		};
 
-		var commons = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
-		var getPlayer = commons.getPlayer;
-		var setPlayer = commons.setPlayer;
-		var getPlayerDiv = commons.getPlayerDiv;
-		var getInstance = commons.getInstance(predicate);
-		var createMetaObj = commons.createMetaObj;
-		var getMetaObj = commons.getMetaObj;
-		var getMetaProp = commons.getMetaProp;
-		var setMetaProp = commons.setMetaProp(_validMetaKeys);
-		var registerStateChangeListener = commons.registerStateChangeListener;
-		var unregisterStateChangeListener = commons.unregisterStateChangeListener;
-		var pauseOtherPlayers = commons.pauseOtherPlayers(pause, getPlayerState);
-		var resetPlayerManager = commons.resetPlayerManager(_removeEventListeners);
-		var renamePid = commons.renamePid;
+		var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
+		var getPlayer = base.getPlayer;
+		var setPlayer = base.setPlayer;
+		var getPlayerDiv = base.getPlayerDiv;
+		var getInstance = base.getInstance(predicate);
+		var createMetaObj = base.createMetaObj;
+		var getMetaObj = base.getMetaObj;
+		var getMetaProp = base.getMetaProp;
+		var setMetaProp = base.setMetaProp(_validMetaKeys);
+		var registerStateChangeListener = base.registerStateChangeListener;
+		var unregisterStateChangeListener = base.unregisterStateChangeListener;
+		var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
+		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
+		var renamePid = base.renamePid;
+		var waitForBuffering = base.waitForBuffering;
 
 		return {
 			type: _type,
@@ -80,7 +82,7 @@
 			setSpeed: setSpeed,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
-			stop: angular.noop
+			stop: stop
 		};
 
 		function create(playerId) {
@@ -145,17 +147,36 @@
 			var currentState = PLAYERSTATES[getMetaProp(this.id, 'playerState')];
 			//TODO: better way to handle restarting playback
 			if (currentState === 'buffering') {
+				console.log('buffer end!', currentState);
 				play(this.id);
+			}
+
+			if (_existy(_isBuffering)) {
+				console.log('cancel buffer interval!');
+				$timeout.cancel(_isBuffering);
 			}
 		}
 
 		function onBufferStart() {
+			// var preBuffState = PLAYERSTATES[getMetaProp(this.id, 'playerState')];
+
+			// console.log('buff starting', preBuffState);
+			var pid = this.id;
+
+			_isBuffering = waitForBuffering(function() {
+				var entry = getMetaProp(pid, 'ktObj').entryId;
+				console.log('stuck in buffer land');
+				_sendKdpNotice(pid, 'changeMedia', {"entryId": entry})
+			}, 3 * 1000);
+
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(this.id);
+
 		}
 
 		function onPlayerPlayEnd(pid) {
 			setMetaProp(pid, 'playerState', 5);
+			console.log('playerPlayEnd!');
 			_emitStateChange(pid);
 		}
 
@@ -165,6 +186,18 @@
 
 		function onUpdatedPlaybackRate(e) {
 			console.log('new rate',e)
+		}
+
+		function onBufferProgress(ev) {
+            //
+			// var d = _kdpEval(this.id, 'duration');
+            //
+			// if (ev.newTime === Math.floor(d)) {
+			// 	console.log('replay!');
+			// 	_sendKdpNotice(this.id, 'doStop');
+			// }
+            //
+			// console.log('buffer progress', ev);
 		}
 
 		/*
@@ -180,6 +213,10 @@
 
 		function seekTo(pid, t) {
 			_sendKdpNotice(pid, 'doSeek', t);
+		}
+
+		function stop(pid) {
+			_sendKdpNotice(pid, 'doStop');
 		}
 
 		function getPlayerState(pid) {
@@ -249,7 +286,7 @@
 					'playbackRateSelector.plugin':true,
 					'controlBarContainer.plugin': false,
 					'largePlayBtn.plugin': false,
-					'loadingSpinner.plugin': false
+					'loadingSpinner.plugin': true
 				}
 			};
 

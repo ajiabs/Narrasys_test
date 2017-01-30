@@ -8,13 +8,14 @@
 	angular.module('com.inthetelling.story')
 		.factory('playerManagerCommons', playerManagerCommons);
 
-	function playerManagerCommons(ittUtils) {
+	function playerManagerCommons($timeout, ittUtils) {
 		var _existy = ittUtils.existy;
 		return function(locals) {
 
 			var _players = locals.players;
 			var _stateChangeCallbacks = locals.stateChangeCallbacks;
 			var _type = locals.type;
+			var _WAITFORBUFFERING = 7 * 1000;
 
 			return {
 				getPlayers: getPlayers,
@@ -30,7 +31,8 @@
 				unregisterStateChangeListener: unregisterStateChangeListener,
 				pauseOtherPlayers: pauseOtherPlayers,
 				resetPlayerManager: resetPlayerManager,
-				renamePid: renamePid
+				renamePid: renamePid,
+				waitForBuffering: waitForBuffering
 			};
 
 			function getPlayers() {
@@ -192,6 +194,10 @@
 
 			function renamePid(oldName, newName) {
 				ittUtils.renameKey(oldName, newName, _players);
+			}
+
+			function waitForBuffering(fn, timeoutLn) {
+				return $timeout(fn, timeoutLn || _WAITFORBUFFERING);
 			}
 
 			/**
