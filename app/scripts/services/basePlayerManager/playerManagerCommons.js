@@ -32,7 +32,8 @@
 				pauseOtherPlayers: pauseOtherPlayers,
 				resetPlayerManager: resetPlayerManager,
 				renamePid: renamePid,
-				waitForBuffering: waitForBuffering
+				waitForBuffering: waitForBuffering,
+				cancelWaitForBuffering: cancelWaitForBuffering
 			};
 
 			function getPlayers() {
@@ -198,6 +199,10 @@
 
 			function waitForBuffering(fn, timeoutLn) {
 				return $timeout(fn, timeoutLn || _WAITFORBUFFERING);
+			}
+
+			function cancelWaitForBuffering(timeoutFn) {
+				$timeout.cancel(timeoutFn);
 			}
 
 			/**

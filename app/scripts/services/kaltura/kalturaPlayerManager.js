@@ -8,13 +8,12 @@
 	angular.module('com.inthetelling.story')
 		.factory('kalturaPlayerManager', kalturaPlayerManager);
 
-	function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
+	function kalturaPlayerManager($timeout, ittUtils, PLAYERSTATES, playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
 		var _players = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
 		var _type = 'kaltura';
 		var _existy = ittUtils.existy;
-		var _isBuffering;
 
 		var _kalturaMetaObj = {
 			instance: null,
@@ -33,7 +32,8 @@
 				hasBeenPlayed: false,
 				bufferedPercent: 0,
 				timeMultiplier: 1,
-				videoType: _type
+				videoType: _type,
+				bufferInterval: null
 			}
 		};
 
@@ -57,6 +57,7 @@
 		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
 		var renamePid = base.renamePid;
 		var waitForBuffering = base.waitForBuffering;
+		var cancelBuffering = base.cancelWaitForBuffering;
 
 		return {
 			type: _type,
@@ -145,15 +146,19 @@
 
 		function onBufferEnd(ev) {
 			var currentState = PLAYERSTATES[getMetaProp(this.id, 'playerState')];
+			var isBuffering = getMetaProp(this.id, 'bufferInterval');
+
+			console.log('is buffering', isBuffering);
+			if (_existy(isBuffering)) {
+				console.log('cancel buffer interval!', isBuffering);
+				cancelBuffering(isBuffering)
+
+			}
+
 			//TODO: better way to handle restarting playback
 			if (currentState === 'buffering') {
 				console.log('buffer end!', currentState);
 				play(this.id);
-			}
-
-			if (_existy(_isBuffering)) {
-				console.log('cancel buffer interval!');
-				$timeout.cancel(_isBuffering);
 			}
 		}
 
@@ -162,13 +167,13 @@
 
 			// console.log('buff starting', preBuffState);
 			var pid = this.id;
-
-			_isBuffering = waitForBuffering(function() {
+			var isBuffering = waitForBuffering(function() {
 				var entry = getMetaProp(pid, 'ktObj').entryId;
 				console.log('stuck in buffer land');
 				_sendKdpNotice(pid, 'changeMedia', {"entryId": entry})
 			}, 3 * 1000);
 
+			setMetaProp(this.id, 'bufferInterval', isBuffering);
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(this.id);
 

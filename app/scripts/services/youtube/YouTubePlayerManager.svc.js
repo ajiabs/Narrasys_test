@@ -19,7 +19,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, $timeout, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeUrlService, playerManagerCommons) {
+	function youTubePlayerManager($location, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeUrlService, playerManagerCommons) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -27,7 +27,6 @@
 		var _stateChangeCallbacks = [];
 		var _tmpStateChangeListeners = [];
 		var _type = 'youtube';
-		var _isBuffering;
 
 		var _youtubeMetaObj = {
 			instance: null,
@@ -44,7 +43,8 @@
 				hasBeenPlayed: false,
 				bufferedPercent: 0,
 				timeMultiplier: 1,
-				videoType: _type
+				videoType: _type,
+				bufferInterval: null
 			}
 		};
 
@@ -73,6 +73,7 @@
 		var resetPlayerManager = base.resetPlayerManager(destroyFn);
 		var renamePid = base.renamePid;
 		var waitForBuffering = base.waitForBuffering;
+		var cancelBuffering = base.cancelWaitForBuffering;
 
 		_youTubePlayerManager = {
 			type: _type,
@@ -195,6 +196,7 @@
 				var pid = _getPidFromInstance(event.target);
 				setMetaProp(pid, 'playerState', event.data);
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
+				var isBuffering = getMetaProp(pid, 'bufferInterval');
 				// console.log('YT PlayerState', PLAYERSTATES[event.data]);
 
 				if (event.data === YT.PlayerState.ENDED) {
@@ -202,15 +204,14 @@
 				}
 
 				if (event.data === YT.PlayerState.BUFFERING) {
-
-					_isBuffering = waitForBuffering(function() {
+					isBuffering = waitForBuffering(function() {
 						if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
 							_reset(pid);
 						}
 					});
-
+					setMetaProp(pid, 'bufferInterval', isBuffering);
 				} else {
-					$timeout.cancel(_isBuffering);
+					cancelBuffering(isBuffering)
 				}
 
 				_emitStateChange(stateChangeEvent);
