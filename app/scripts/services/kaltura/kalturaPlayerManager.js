@@ -148,14 +148,11 @@
 			var currentState = PLAYERSTATES[getMetaProp(this.id, 'playerState')];
 			var isBuffering = getMetaProp(this.id, 'bufferInterval');
 
-			console.log('is buffering', isBuffering);
 			if (_existy(isBuffering)) {
 				console.log('cancel buffer interval!', isBuffering);
 				cancelBuffering(isBuffering)
-
 			}
 
-			//TODO: better way to handle restarting playback
 			if (currentState === 'buffering') {
 				console.log('buffer end!', currentState);
 				play(this.id);
@@ -163,20 +160,15 @@
 		}
 
 		function onBufferStart() {
-			// var preBuffState = PLAYERSTATES[getMetaProp(this.id, 'playerState')];
-
-			// console.log('buff starting', preBuffState);
 			var pid = this.id;
 			var isBuffering = waitForBuffering(function() {
-				var entry = getMetaProp(pid, 'ktObj').entryId;
 				console.log('stuck in buffer land');
-				_sendKdpNotice(pid, 'changeMedia', {"entryId": entry})
-			}, 3 * 1000);
+				_reset(pid);
+			});
 
 			setMetaProp(this.id, 'bufferInterval', isBuffering);
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(this.id);
-
 		}
 
 		function onPlayerPlayEnd(pid) {
@@ -191,18 +183,6 @@
 
 		function onUpdatedPlaybackRate(e) {
 			console.log('new rate',e)
-		}
-
-		function onBufferProgress(ev) {
-            //
-			// var d = _kdpEval(this.id, 'duration');
-            //
-			// if (ev.newTime === Math.floor(d)) {
-			// 	console.log('replay!');
-			// 	_sendKdpNotice(this.id, 'doStop');
-			// }
-            //
-			// console.log('buffer progress', ev);
 		}
 
 		/*
@@ -265,6 +245,16 @@
 		/*
 			Private methods
 		 */
+
+		function _reset(pid) {
+			console.log('about to reset!');
+			var currentTime = getCurrentTime(pid);
+			setMetaProp(pid, 'startAtTime', currentTime);
+			var entryId = getMetaProp(pid, 'ktObj').entryId;
+			_sendKdpNotice(pid, 'changeMedia', { 'entryId': entryId });
+			play(pid);
+		}
+
 		function _sendKdpNotice(pid, notice, val) {
 			var kdp = getInstance(pid);
 
