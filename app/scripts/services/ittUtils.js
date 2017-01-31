@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.service('ittUtils', IttUtils);
 
-	function IttUtils($timeout) { }
+	function IttUtils($timeout) { } //jshint ignore:line
 
 	IttUtils.prototype = {
 		getSubdomain: getSubdomain,
@@ -28,11 +28,11 @@
 	};
 
 	function ngTimeout(fn, duration) {
-		return $timeout(fn, duration || 0);
+		return $timeout(fn, duration || 0); //jshint ignore:line
 	}
 
 	function cancelNgTimeout(fn) {
-		$timeout.cancel(fn);
+		$timeout.cancel(fn); //jshint ignore:line
 	}
 
 	//using bitwise operators up to 20% faster than Math.ceil (js hint not a fan of bitwise operators)
