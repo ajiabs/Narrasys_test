@@ -247,11 +247,14 @@
 		 */
 
 		function _reset(pid) {
+			//changeMedia will emit a 'onMediaReady' event after the media has been successfully changed
+			//when handling the 'onMediaReady' event, the playbackService will seek to the startAtTime
 			console.log('about to reset!');
 			var currentTime = getCurrentTime(pid);
 			setMetaProp(pid, 'startAtTime', currentTime);
 			var entryId = getMetaProp(pid, 'ktObj').entryId;
 			_sendKdpNotice(pid, 'changeMedia', { 'entryId': entryId });
+			//emit a play to resume playback.
 			play(pid);
 		}
 
