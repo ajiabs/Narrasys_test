@@ -14,6 +14,7 @@
 		var _stateChangeCallbacks = [];
 		var _type = 'kaltura';
 		var _existy = ittUtils.existy;
+		var _seekStatus;
 
 		var _kalturaMetaObj = {
 			instance: null,
@@ -33,7 +34,8 @@
 				bufferedPercent: 0,
 				timeMultiplier: 1,
 				videoType: _type,
-				bufferInterval: null
+				bufferInterval: null,
+				timeouts: {buffering: null, seeking: null}
 			}
 		};
 
@@ -56,8 +58,8 @@
 		var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
 		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
 		var renamePid = base.renamePid;
-		var waitForBuffering = base.waitForBuffering;
-		var cancelBuffering = base.cancelWaitForBuffering;
+		var waitForBuffering = ittUtils.ngTimeout;
+		var cancelBuffering = ittUtils.cancelNgTimeout;
 
 		return {
 			type: _type,
@@ -160,11 +162,12 @@
 		}
 
 		function onBufferStart() {
+			console.log('start buffering!');
 			var pid = this.id;
 			var isBuffering = waitForBuffering(function() {
 				console.log('stuck in buffer land');
 				_reset(pid);
-			});
+			}, 7 * 1000);
 
 			setMetaProp(this.id, 'bufferInterval', isBuffering);
 			setMetaProp(this.id, 'playerState', 3);
@@ -177,12 +180,31 @@
 			_emitStateChange(pid);
 		}
 
-		function onPlayerError(e) {
+		function onMediaError(e) {
 			console.warn('PLAYER ERROR', e);
 		}
 
 		function onUpdatedPlaybackRate(e) {
 			console.log('new rate',e)
+		}
+
+		function onPreSeek(ev) {
+			var pid = this.id;
+
+			if (_existy(_seekStatus)) {
+				$timeout.cancel(_seekStatus)
+			}
+
+			_seekStatus = $timeout(function() {
+				console.log('reset from preSEek');
+				_reset(pid, ev);
+			}, 7 * 1000);
+		}
+
+		function onSeeked() {
+			if (_existy(_seekStatus)) {
+				$timeout.cancel(_seekStatus)
+			}
 		}
 
 		/*
@@ -197,6 +219,7 @@
 		}
 
 		function seekTo(pid, t) {
+			console.log('do seek to', t);
 			_sendKdpNotice(pid, 'doSeek', t);
 		}
 
@@ -246,11 +269,11 @@
 			Private methods
 		 */
 
-		function _reset(pid) {
+		function _reset(pid, t) {
 			//changeMedia will emit a 'onMediaReady' event after the media has been successfully changed
 			//when handling the 'onMediaReady' event, the playbackService will seek to the startAtTime
 			console.log('about to reset!');
-			var currentTime = getCurrentTime(pid);
+			var currentTime = t || getCurrentTime(pid);
 			setMetaProp(pid, 'startAtTime', currentTime);
 			var entryId = getMetaProp(pid, 'ktObj').entryId;
 			_sendKdpNotice(pid, 'changeMedia', { 'entryId': entryId });
@@ -313,9 +336,11 @@
 				'bufferStartEvent': onBufferStart,
 				'bufferEndEvent': onBufferEnd,
 				'playerPlayEnd': onPlayerPlayEnd,
-				'playerError': onPlayerError,
+				'mediaError': onMediaError,
 				'mediaReady': onMediaReady,
-				'updatedPlaybackRate': onUpdatedPlaybackRate
+				'updatedPlaybackRate': onUpdatedPlaybackRate,
+				'preSeek': onPreSeek,
+				'seeked': onSeeked
 			};
 			Object.keys(kMap).forEach(function(evtName) {
 				(function(evtName) {

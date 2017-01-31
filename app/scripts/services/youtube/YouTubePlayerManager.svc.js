@@ -19,7 +19,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeUrlService, playerManagerCommons) {
+	function youTubePlayerManager($location, ittUtils, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeUrlService, playerManagerCommons) {
 
 		var _youTubePlayerManager;
 		var _players = {};
@@ -72,8 +72,8 @@
 		var getPlayerDiv = base.getPlayerDiv;
 		var resetPlayerManager = base.resetPlayerManager(destroyFn);
 		var renamePid = base.renamePid;
-		var waitForBuffering = base.waitForBuffering;
-		var cancelBuffering = base.cancelWaitForBuffering;
+		var waitForBuffering = ittUtils.ngTimeout;
+		var cancelBuffering = ittUtils.cancelNgTimeout;
 
 		_youTubePlayerManager = {
 			type: _type,
@@ -208,7 +208,7 @@
 						if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
 							_reset(pid);
 						}
-					});
+					}, 7 * 1000);
 					setMetaProp(pid, 'bufferInterval', isBuffering);
 				} else {
 					cancelBuffering(isBuffering)

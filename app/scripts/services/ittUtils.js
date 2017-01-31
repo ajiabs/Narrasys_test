@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.service('ittUtils', IttUtils);
 
-	function IttUtils() { }
+	function IttUtils($timeout) { }
 
 	IttUtils.prototype = {
 		getSubdomain: getSubdomain,
@@ -22,8 +22,18 @@
 		setNgOpts: setNgOpts,
 		intersection: intersection,
 		parseTime: parseTime,
-		renameKey:renameKey
+		renameKey:renameKey,
+		ngTimeout: ngTimeout,
+		cancelNgTimeout: cancelNgTimeout
 	};
+
+	function ngTimeout(fn, duration) {
+		return $timeout(fn, duration || 0);
+	}
+
+	function cancelNgTimeout(fn) {
+		$timeout.cancel(fn);
+	}
 
 	//using bitwise operators up to 20% faster than Math.ceil (js hint not a fan of bitwise operators)
 	function bitwiseCeil(n) {
