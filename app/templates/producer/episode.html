@@ -68,6 +68,8 @@
 					</div>
 				</div>
 
+				<itt-upload-transcripts ng-if="userHasRole('admin')" episode-id="{{episode._id}}"></itt-upload-transcripts>
+
 				<!-- end episode content tab -->
 			</div>
 			<div class="ittTab" itt-tab title="Style">
