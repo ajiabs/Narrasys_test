@@ -3,13 +3,14 @@
 angular.module('com.inthetelling.story')
 	.directive('ittAssetUploader', ittAssetUploader);
 
-function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
+function ittAssetUploader($timeout, awsSvc, appState, modelSvc, dataSvc) {
 	return {
 		restrict: 'A',
 		replace: false,
 		scope: {
 			containerId: '=ittAssetUploader', // If no container ID is supplied, the uploaded asset(s) will be placed in user space instead.
-			callback: '=callback', // function that will be called for each uploaded file (with the newly cretaed asset's ID)
+			episodeId: '@', //for uploading transcripts
+			callback: '&', // function that will be called for each uploaded file (with the newly cretaed asset's ID)
 			mimeTypes: '@',
 			instructions: '@',
 			errorText: '@'
@@ -51,6 +52,12 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 				_mimeTypes[i] = m.trim();
 			});
 
+			function handleTranscripts(episodeId, postData) {
+				var fd = new FormData();
+				fd.append('subtitles', postData);
+				return dataSvc.batchUploadTranscripts(episodeId, fd);
+			}
+
 			scope.uploadStatus = [];
 			scope.uploads = [];
 			scope.uploadsinprogress = 0;
@@ -67,8 +74,17 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 				//disallow certain file types
 				var stop = false;
-				//gotta filter
+				// gotta filter
 				angular.forEach(files, function (f) {
+					//properties on a File (such as type) are read only.
+					var ftype = f.type;
+					//if batch uploading transcripts get mimetype off of name
+					if (scope.episodeId) {
+						var ext = f.name.match(/(vtt|srt)/);
+						if (ext && ext.length) {
+							ftype = 'text/' + ext[0];
+						}
+					}
 
 					angular.forEach(_mimeTypes, function (m) {
 						var paramStrEndsWithStar = strEndsWith(m, '*');
@@ -77,7 +93,7 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 							var mimeTypeUntilWildcard = m.slice(0, -1);
 
-							var applicationTypesMatch = strStartsWith(f.type, mimeTypeUntilWildcard);
+							var applicationTypesMatch = strStartsWith(ftype, mimeTypeUntilWildcard);
 
 							if (applicationTypesMatch) {
 								stop = true;
@@ -85,12 +101,12 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 
 						} else {
 							//only accept identical mimeType?
-							if (f.type === m) {
+							if (ftype === m) {
 								stop = true;
 							}
 
 						}
-						_errorText = f.type + ' uploads are not allowed here.';
+						_errorText = ftype + ' uploads are not allowed here.';
 					});
 				});
 
@@ -105,7 +121,9 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 				scope.uploadsinprogress = scope.uploadsinprogress + files.length;
 				if (scope.containerId) {
 					scope.uploads = scope.uploads.concat(awsSvc.uploadContainerFiles(scope.containerId, files));
-				} else {
+				} else if (scope.episodeId) {
+					scope.uploads = scope.uploads.concat(handleTranscripts(scope.episodeId, files[0]));
+				} else{
 					scope.uploads = scope.uploads.concat(awsSvc.uploadUserFiles(appState.user._id, files));
 				}
 				for (var i = oldstack; i < newstack; i++) {
@@ -117,9 +135,17 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc) {
 							"name": files[i - oldstack].name
 						};
 						scope.uploads[i].then(function (data) {
+
+							if (scope.episodeId && scope.callback) {
+								scope.callback({data: data});
+								scope.uploadStatus[i].done = true;
+								scope.oneDone();
+								return
+							}
+
 							modelSvc.cache("asset", data.file);
 							if (scope.callback) {
-								scope.callback(data.file._id);
+								scope.callback({data: data.file._id});
 							}
 							scope.uploadStatus[i].done = true;
 							scope.oneDone();
