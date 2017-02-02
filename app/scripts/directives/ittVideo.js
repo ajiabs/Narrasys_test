@@ -34,12 +34,18 @@ function ittVideo() {
 		ctrl.setCssClass = setCssClass;
 		ctrl.showMask = showMask;
 		ctrl.appState = appState;
+		ctrl.resetKaltura = resetKaltura;
 		var _existy = ittUtils.existy;
 
 		//controller event bindings
 		$scope.$on('$destroy', onDestroy);
 
 		onInit();
+
+		//for debugging only
+		function resetKaltura() {
+			playbackService.debugReset(ctrl.playerId);
+		}
 
 		function onInit() {
 			//empty input passed in

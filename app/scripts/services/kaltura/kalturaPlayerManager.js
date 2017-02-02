@@ -14,7 +14,6 @@
 		var _stateChangeCallbacks = [];
 		var _type = 'kaltura';
 		var _existy = ittUtils.existy;
-		var _seekStatus;
 
 		var _kalturaMetaObj = {
 			instance: null,
@@ -34,8 +33,9 @@
 				bufferedPercent: 0,
 				timeMultiplier: 1,
 				videoType: _type,
-				bufferInterval: null,
-				timeouts: {buffering: null, seeking: null}
+				bufferTimeout: null,
+				seekTimeout: null,
+				resetInProgress: false
 			}
 		};
 
@@ -58,8 +58,8 @@
 		var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
 		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
 		var renamePid = base.renamePid;
-		var waitForBuffering = ittUtils.ngTimeout;
-		var cancelBuffering = ittUtils.cancelNgTimeout;
+		var ittTimeout = ittUtils.ngTimeout;
+		var cancelIttTimeout = ittUtils.cancelNgTimeout;
 
 		return {
 			type: _type,
@@ -85,7 +85,8 @@
 			setSpeed: setSpeed,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
-			stop: stop
+			stop: stop,
+			debugReset: _reset
 		};
 
 		function create(playerId) {
@@ -138,7 +139,9 @@
 
 		function onPlaying(pid) {
 			setMetaProp(pid, 'playerState', 1);
-			_emitStateChange(pid);
+			if (getMetaProp(pid, 'ready') === true) {
+				_emitStateChange(pid);
+			}
 		}
 
 		function onPaused(pid) {
@@ -148,34 +151,32 @@
 
 		function onBufferEnd(ev) {
 			var currentState = PLAYERSTATES[getMetaProp(this.id, 'playerState')];
-			var isBuffering = getMetaProp(this.id, 'bufferInterval');
+			var isBuffering = getMetaProp(this.id, 'bufferTimeout');
 
 			if (_existy(isBuffering)) {
-				console.log('cancel buffer interval!', isBuffering);
-				cancelBuffering(isBuffering)
+				cancelIttTimeout(isBuffering);
 			}
 
 			if (currentState === 'buffering') {
-				console.log('buffer end!', currentState);
 				play(this.id);
 			}
 		}
 
 		function onBufferStart() {
-			console.log('start buffering!');
 			var pid = this.id;
-			var isBuffering = waitForBuffering(function() {
-				console.log('stuck in buffer land');
-				_reset(pid);
-			}, 7 * 1000);
 
-			setMetaProp(this.id, 'bufferInterval', isBuffering);
+			var isBuffering = ittTimeout(function() {
+				console.log('stuck in buffer land', getMetaProp(pid, 'time'));
+				_reset(pid);
+			}, 15 * 1000);
+
+			setMetaProp(this.id, 'bufferTimeout', isBuffering);
 			setMetaProp(this.id, 'playerState', 3);
 			_emitStateChange(this.id);
 		}
 
 		function onPlayerPlayEnd(pid) {
-			setMetaProp(pid, 'playerState', 5);
+			setMetaProp(pid, 'playerState', 0);
 			console.log('playerPlayEnd!');
 			_emitStateChange(pid);
 		}
@@ -191,20 +192,20 @@
 		function onPreSeek(ev) {
 			var pid = this.id;
 
-			if (_existy(_seekStatus)) {
-				$timeout.cancel(_seekStatus)
-			}
-
-			_seekStatus = $timeout(function() {
-				console.log('reset from preSEek');
-				_reset(pid, ev);
-			}, 7 * 1000);
+			// if (_existy(_isWaiting)) {
+			// 	cancelIttTimeout(_isWaiting)
+			// }
+            //
+			// _isWaiting = $timeout(function() {
+			// 	console.log('reset from preSEek', pid, ev);
+			// 	_reset(pid, ev);
+			// }, 7 * 1000);
 		}
 
 		function onSeeked() {
-			if (_existy(_seekStatus)) {
-				$timeout.cancel(_seekStatus)
-			}
+			// if (_existy(_isWaiting)) {
+				// $timeout.cancel(_isWaiting);
+			// }
 		}
 
 		/*
@@ -219,7 +220,6 @@
 		}
 
 		function seekTo(pid, t) {
-			console.log('do seek to', t);
 			_sendKdpNotice(pid, 'doSeek', t);
 		}
 
@@ -269,16 +269,18 @@
 			Private methods
 		 */
 
+
 		function _reset(pid, t) {
+			var currentTime = t || getMetaProp(pid, 'time');
 			//changeMedia will emit a 'onMediaReady' event after the media has been successfully changed
 			//when handling the 'onMediaReady' event, the playbackService will seek to the startAtTime
-			console.log('about to reset!');
-			var currentTime = t || getCurrentTime(pid);
+			console.log('about to reset to t=', currentTime);
 			setMetaProp(pid, 'startAtTime', currentTime);
+			setMetaProp(pid, 'hasResumedFromStartAt', false);
+			setMetaProp(pid, 'resetInProgress', true);
 			var entryId = getMetaProp(pid, 'ktObj').entryId;
 			_sendKdpNotice(pid, 'changeMedia', { 'entryId': entryId });
-			//emit a play to resume playback.
-			play(pid);
+			setMetaProp(pid, 'ready', false);
 		}
 
 		function _sendKdpNotice(pid, notice, val) {
@@ -370,7 +372,9 @@
 
 		function _kdpEval(pid, prop) {
 			var instance = getInstance(pid);
-			return instance.evaluate('{' + prop + '}');
+			if (_existy(instance)) {
+				return instance.evaluate('{' + prop + '}');
+			}
 		}
 
 		function _formatPlayerStateChangeEvent(state, pid) {

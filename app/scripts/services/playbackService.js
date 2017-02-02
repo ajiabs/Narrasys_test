@@ -78,11 +78,17 @@
 			stop: stop,
 			allowPlayback: allowPlayback,
 			togglePlayback: togglePlayback,
-			renamePid: renamePid
+			renamePid: renamePid,
+			debugReset: debugReset
 		};
 		/*
 			PUBLIC METHODS
 		 */
+
+
+		function debugReset(id) {
+			kalturaPlayerManager.debugReset(id);
+		}
 
 		/**
 		 * @ngdoc method
@@ -572,10 +578,10 @@
 			var lastState = PLAYERSTATES[getMetaProp('playerState', pid)];
 			var startAt = getMetaProp('startAtTime', pid);
 			var hasResumed = getMetaProp('hasResumedFromStartAt', pid);
-
+			var isBeingReset = getMetaProp('resetInProgress', pid);
 			setMetaProp('ready', true, pid);
 
-			if (pid === _mainPlayerId) {
+			if (pid === _mainPlayerId && isBeingReset === false) {
 				setMetaProp('playerState', '5', pid);
 				_emitStateChange('video cued', pid);
 			}
@@ -583,6 +589,13 @@
 			if (startAt > 0) {
 				if (hasResumed === false) {
 					seek(startAt, pid);
+					console.log('onPlayerReady', isBeingReset);
+
+					if (isBeingReset === true) {
+						play(pid);
+						setMetaProp('resetInProgress', false, pid);
+						return;
+					}
 
 					if (pid !== _mainPlayerId) {
 						setMetaProp('hasResumedFromStartAt', true, pid);
@@ -611,7 +624,7 @@
 		function _stateChangeCB(stateChangeEvent) {
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
-			// console.log('pbs#stateChangeCB', state, emitterId);
+			console.log('pbs#stateChangeCB', state);
 			switch (state) {
 				case 'unstarted':
 					break;
