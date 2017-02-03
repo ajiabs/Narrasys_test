@@ -17,7 +17,8 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 	.constant('MIMES', {
 		'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
 		'file': 'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
-		'default': 'image/*'
+		'default': 'image/*',
+		'transcripts': 'text/vtt,text/srt'
 	})
 	.constant('PLAYERSTATES', {
 		'-1': 'unstarted',

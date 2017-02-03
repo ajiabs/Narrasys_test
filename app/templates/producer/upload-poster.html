@@ -16,7 +16,7 @@
 	</div>
 	<div ng-if="showUploadButtonsPoster || !episode.poster">
 		<span ng-if="showUploadFieldPoster">
-			<div itt-asset-uploader="episodeContainerId" callback="posterUploaded"> </div>
+			<div itt-asset-uploader="episodeContainerId" callback="posterUploaded(data)"> </div>
 		</span>
 		<span ng-if="!showUploadFieldPoster">
 			<button class="button" ng-click="chooseAsset('Poster')">Browse uploaded</button>
