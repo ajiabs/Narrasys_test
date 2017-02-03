@@ -17,6 +17,40 @@ angular.module('com.inthetelling.story')
 			templateUrl: 'templates/producer/episode.html',
 			controller: 'EditController',
 			link: function (scope) {
+
+        scope.translationMessage = translationMessage;
+				function translationMessage(langArr) {
+				  var prefix = '';
+				  var langs = langArr.filter(function(l) {
+            if (l.default == undefined) {
+              return true;
+            } else {
+              prefix = 'Translate from ' +  l.code + ' to: ';
+              return false;
+            }
+          }).map(function(l) {
+            return l = l.code;
+          }).join(', ');
+				  return prefix + langs;
+				}
+
+				scope.beginBackgroundTranslations = beginBackgroundTranslations;
+        function beginBackgroundTranslations(episodeId) {
+          dataSvc.beginBackgroundTranslations(episodeId)
+            .then(handleSuccess)
+            .catch(handleError);
+
+          function handleSuccess(resp) {
+            console.log('resp from translations!', resp);
+
+            scope.doCheckForTranslations = true;
+          }
+
+          function handleError(e) {
+            console.log('error:', e)
+          }
+        }
+
 				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
 				var container = modelSvc.containers[scope.episodeContainerId];

@@ -34,6 +34,11 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
+		svc.beginBackgroundTranslations = beginBackgroundTranslations;
+		function beginBackgroundTranslations(episodeId) {
+		  return SANE_GET('/v3/episodes/'+ episodeId +'/update_translations');
+    }
+
 		svc.batchUploadTranscripts = batchUploadTranscripts;
 		function batchUploadTranscripts(episodeId, formData) {
 			// return $q(function(resolve) {
