@@ -42,7 +42,11 @@ angular.module('com.inthetelling.story')
 
           function handleSuccess(resp) {
             console.log('resp from translations!', resp);
-
+            if (resp.status === 'Request for translations queued') {
+              scope.afterTranslationAttempt = resp.status + ', check back later!';
+            } else {
+              scope.afterTranslationAttempt = 'Something went wrong...';
+            }
             scope.doCheckForTranslations = true;
           }
 

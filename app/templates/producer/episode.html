@@ -32,7 +32,7 @@
 					<div class="input" ng-bind-html="showmessage"></div>
 				</div>
 
-				<itt-title-field data="episode" model-opts="{ debounce: 500 }"></itt-title-field>
+        <itt-title-field data="episode" model-opts="{ debounce: 500 }"></itt-title-field>
 				<itt-description-field data="episode" model-opts="{debounce: 50}"></itt-description-field>
 
 
@@ -75,7 +75,7 @@
 						<button ng-click="beginBackgroundTranslations(episode._id)">Begin translation</button>
 					</div>
           <div ng-if="doCheckForTranslations === true">
-            <h4>Processing translations, check back later!</h4>
+            {{afterTranslationAttempt}}
           </div>
 				</div>
 
