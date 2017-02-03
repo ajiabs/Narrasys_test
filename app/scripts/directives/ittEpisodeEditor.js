@@ -22,7 +22,7 @@ angular.module('com.inthetelling.story')
 				function translationMessage(langArr) {
 				  var prefix = '';
 				  var langs = langArr.filter(function(l) {
-            if (l.default == undefined) {
+            if (l.default == undefined) { //jshint ignore:line
               return true;
             } else {
               prefix = 'Translate from ' +  l.code + ' to: ';
@@ -51,7 +51,7 @@ angular.module('com.inthetelling.story')
           }
 
           function handleError(e) {
-            console.log('error:', e)
+            console.log('error:', e);
           }
         }
 
