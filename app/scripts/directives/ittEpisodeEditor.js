@@ -29,7 +29,8 @@ angular.module('com.inthetelling.story')
               return false;
             }
           }).map(function(l) {
-            return l = l.code;
+            l = l.code;
+            return l;
           }).join(', ');
 				  return prefix + langs;
 				}
