@@ -34,6 +34,21 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
+		svc.beginBackgroundTranslations = beginBackgroundTranslations;
+		function beginBackgroundTranslations(episodeId) {
+		  return SANE_GET('/v3/episodes/'+ episodeId +'/update_translations');
+    }
+
+		svc.batchUploadTranscripts = batchUploadTranscripts;
+		function batchUploadTranscripts(episodeId, formData) {
+			// return $q(function(resolve) {
+			// 	return resolve(postData);
+			// });
+			return SANE_POST('/v3/episodes/' + episodeId + '/events/import_subtitles', formData, {
+				transformRequest: angular.identity,
+				headers: {'Content-type': undefined}
+			});
+		}
 		/**
 		 * @ngdoc method
 		 * @name #checkXFrameOpts
@@ -716,7 +731,10 @@ angular.module('com.inthetelling.story')
 			});
 		};
 
-		var SANE_POST = function(path, data) {
+		var SANE_POST = function(path, data, config) {
+			if (config) {
+				return $http.post(path, data, config);
+			}
 			return $http.post(path, data);
 		};
 

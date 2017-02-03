@@ -18,7 +18,7 @@
 			},
 			template: [
 				'<div class="field" ng-if="$ctrl.isVisible(\'titleField\')">',
-				'	<div class="label">Title [{{$ctrl.lang}}]',
+				'	<div class="label">Title [{{$ctrl.appState.lang}}]',
 				'		<itt-validation-tip ng-if="$ctrl.ittItemForm[$ctrl.textAreaName].$invalid" text="Title is a required field"></itt-validation-tip>',
 				'	</div>',
 				'	<div class="input" ng-model-options="$ctrl.modelOpts" do-validate="$ctrl.doValidate" sxs-input-i18n="$ctrl.data.title" on-emit-name="$ctrl.onName($taName)" x-inputtype="\'input\'" autofocus></div>',
@@ -26,7 +26,7 @@
 			].join(' '),
 			controller: ['appState', 'ittUtils', 'selectService', function (appState, ittUtils, selectService) {
 				var ctrl = this;
-				ctrl.lang = appState.lang;
+				ctrl.appState = appState;
 				ctrl.isVisible = selectService.getVisibility;
 				ctrl.onName = onName;
 

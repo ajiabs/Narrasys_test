@@ -33,7 +33,7 @@
 					<div class="input" ng-bind-html="showmessage"></div>
 				</div>
 
-				<itt-title-field data="episode" model-opts="{ debounce: 500 }"></itt-title-field>
+        <itt-title-field data="episode" model-opts="{ debounce: 500 }"></itt-title-field>
 				<itt-description-field data="episode" model-opts="{debounce: 50}"></itt-description-field>
 
 
@@ -68,6 +68,19 @@
 						</select>
 					</div>
 				</div>
+
+				<div class="field" ng-if="userHasRole('admin') && episode.languages.length > 1">
+					<div class="label">Translations</div>
+					<div class="input" ng-if="doCheckForTranslations == null">
+            {{translationMessage(episode.languages)}}
+						<button ng-click="beginBackgroundTranslations(episode._id)">Begin translation</button>
+					</div>
+          <div ng-if="doCheckForTranslations === true">
+            {{afterTranslationAttempt}}
+          </div>
+				</div>
+
+				<itt-upload-transcripts ng-if="userHasRole('admin')" episode-id="{{episode._id}}"></itt-upload-transcripts>
 
 				<!-- end episode content tab -->
 			</div>
