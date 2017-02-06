@@ -61,6 +61,13 @@ angular.module('com.inthetelling.story')
 			// '3': 'buffering',
 			// '5': 'video cued'
 			// '5': player ready
+
+    function _endedSideEffects() {
+      _resetClocks();
+      console.log('made it here!');
+      analyticsSvc.captureEpisodeActivity("pause");
+    }
+
 		function _onPlayerStateChange(state) {
 
 			// console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
@@ -80,16 +87,7 @@ angular.module('com.inthetelling.story')
 
 					break;
 				case 'ended':
-					//if the 'ended' event is fired from stepEvent
-					if (playbackService.getMetaProp('playerState') !== 0) {
-						_resetClocks();
-						playbackService.setMetaProp('time', playbackService.getMetaProp('duration'));
-						playbackService.stop();
-						analyticsSvc.captureEpisodeActivity("pause");
-						return;
-					}
-					svc.pause();
-
+          playbackService.handleTimelineEnd(_endedSideEffects);
 					break;
 				case 'playing':
 					var currentTime = playbackService.getCurrentTime();
@@ -403,12 +401,14 @@ angular.module('com.inthetelling.story')
 				var evt = svc.timelineEvents[i];
 
 
-				if (/internal:endingscreen/.test(evt.id)) {
-					console.warn('HANDLE ENDING SCREEN EVENT', evt);
-					_onPlayerStateChange('ended');
-				}
+
 
 				if (evt.t >= eventClockData.lastTimelineTime) {
+          // if (/internal:endingscreen/.test(evt.id) && evt.action === 'enter') {
+          //   console.warn('HANDLE ENDING SCREEN EVENT', evt);
+          //   _onPlayerStateChange('ended');
+          //   return;
+          // }
 					if (evt.t > ourTime) {
 						break; // NOTE! next event should be this one; let i fall through as is
 					}

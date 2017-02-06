@@ -79,7 +79,8 @@
 			allowPlayback: allowPlayback,
 			togglePlayback: togglePlayback,
 			renamePid: renamePid,
-			debugReset: debugReset
+			debugReset: debugReset,
+      handleTimelineEnd: handleTimelineEnd
 		};
 		/*
 			PUBLIC METHODS
@@ -89,6 +90,13 @@
 		function debugReset(id) {
 			kalturaPlayerManager.debugReset(id);
 		}
+
+		function handleTimelineEnd(sideEffects, pid) {
+		  pid = _setPid(pid);
+		  if (_existy(_playerInterfaces[pid])) {
+		    _playerInterfaces[pid].handleTimelineEnd(pid, sideEffects);
+      }
+    }
 
 		/**
 		 * @ngdoc method

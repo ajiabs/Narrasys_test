@@ -58,6 +58,12 @@
 			_tryCommand(p, 'destroy');
 		};
 
+		var youtubeEnding = function(pid, sideEffects) {
+      sideEffects();
+      setMetaProp(pid, 'time', getMetaProp(pid, 'duration'));
+		  stop(pid);
+    };
+
 		var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
 		var getPlayer = base.getPlayer;
 		var setPlayer = base.setPlayer;
@@ -72,6 +78,7 @@
 		var getPlayerDiv = base.getPlayerDiv;
 		var resetPlayerManager = base.resetPlayerManager(destroyFn);
 		var renamePid = base.renamePid;
+		var handleTimelineEnd = base.handleTimelineEnd(youtubeEnding);
 		var waitForBuffering = ittUtils.ngTimeout;
 		var cancelBuffering = ittUtils.cancelNgTimeout;
 
@@ -100,8 +107,8 @@
 			setPlaybackQuality: setPlaybackQuality,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
-			stop: stop
-
+			stop: stop,
+      handleTimelineEnd: handleTimelineEnd
 		};
 
 		//public methods

@@ -99,7 +99,8 @@
 			setSpeed: setSpeed,
 			freezeMetaProps: freezeMetaProps,
 			unFreezeMetaProps: unFreezeMetaProps,
-			stop: angular.noop
+			stop: angular.noop,
+      handleTimelineEnd: angular.noop
 		};
 
 		//public methods

@@ -33,7 +33,8 @@
 				resetPlayerManager: resetPlayerManager,
 				renamePid: renamePid,
 				waitForBuffering: waitForBuffering,
-				cancelWaitForBuffering: cancelWaitForBuffering
+				cancelWaitForBuffering: cancelWaitForBuffering,
+        handleTimelineEnd: handleTimelineEnd
 			};
 
 			function getPlayers() {
@@ -204,6 +205,12 @@
 			function cancelWaitForBuffering(timeoutFn) {
 				$timeout.cancel(timeoutFn);
 			}
+
+			function handleTimelineEnd(fn) {
+			  return function(pid, sideEffects) {
+			    return fn(pid, sideEffects);
+        }
+      }
 
 			/**
 			 * @ngdoc method

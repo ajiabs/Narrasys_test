@@ -27,7 +27,7 @@
 				ktObj: {},
 				isMuted: false,
 				vol: 0,
-				time: 0,
+        time: 0,
 				hasResumedFromStartAt: false,
 				hasBeenPlayed: false,
 				bufferedPercent: 0,
@@ -44,6 +44,11 @@
 			return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
 		};
 
+		var kalturaEndingFn = function(pid, sideEffects) {
+      sideEffects();
+      stop(pid);
+    };
+
 		var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
 		var getPlayer = base.getPlayer;
 		var setPlayer = base.setPlayer;
@@ -58,6 +63,7 @@
 		var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
 		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
 		var renamePid = base.renamePid;
+		var handleTimelineEnd = base.handleTimelineEnd(kalturaEndingFn);
 		var ittTimeout = ittUtils.ngTimeout;
 		var cancelIttTimeout = ittUtils.cancelNgTimeout;
 
@@ -86,7 +92,8 @@
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
 			stop: stop,
-			debugReset: _reset
+			debugReset: _reset,
+      handleTimelineEnd: handleTimelineEnd
 		};
 
 		function create(playerId) {
@@ -220,6 +227,12 @@
 		}
 
 		function seekTo(pid, t) {
+		  var d = getMetaProp(pid, 'duration');
+
+      // if (t === d) {
+		   //  t -= 0.05;
+		   //  console.log('fudge seek');
+      // }
 			_sendKdpNotice(pid, 'doSeek', t);
 		}
 
