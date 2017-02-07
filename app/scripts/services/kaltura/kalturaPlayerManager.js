@@ -208,6 +208,11 @@
 			// }
 		}
 
+		function onPlayerUpdatePlayhead(ev) {
+		  console.log('update time', ev);
+		  setMetaProp(this.id, 'time', ev);
+    }
+
 		/*
 			Public Methods
 		 */
@@ -348,7 +353,8 @@
 				'mediaReady': onMediaReady,
 				'updatedPlaybackRate': onUpdatedPlaybackRate,
 				'preSeek': onPreSeek,
-				'seeked': onSeeked
+				'seeked': onSeeked,
+        'playerUpdatePlayhead': onPlayerUpdatePlayhead
 			};
 			Object.keys(kMap).forEach(function(evtName) {
 				(function(evtName) {
