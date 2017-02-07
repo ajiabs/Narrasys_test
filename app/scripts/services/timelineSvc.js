@@ -430,7 +430,7 @@ angular.module('com.inthetelling.story')
 
         if (/internal:endingscreen/.test(evt.id) && evt.action === 'enter') {
           console.trace('HANDLE ENDING SCREEN EVENT');
-          _doEndingSequence()
+          _doEndingSequence();
         }
 
 			}
