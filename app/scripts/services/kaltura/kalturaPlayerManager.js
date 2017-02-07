@@ -40,7 +40,7 @@
 		};
 
 		var kalturaEndingFn = function(pid) {
-		  //
+		  //add logic if necessary
     };
 
     var getPlayer = base.getPlayer;
