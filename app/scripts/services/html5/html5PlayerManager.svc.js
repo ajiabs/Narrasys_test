@@ -35,32 +35,27 @@
 		var _ignoreNextEventIfPause = false;
 		var _type = 'html5';
 		var _existy = ittUtils.existy;
+    var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
+    var commonMetaProps = base.commonMetaProps;
+
+		var _html5MetaProps = {
+      videoObj: {},
+      videoType: _type
+    };
 
 		var _html5MetaObj = {
 			instance: null,
-			meta: {
-				mainPlayer: false,
-				playerState: '-1',
-				videoObj: {},
-				div: '',
-				ready: false,
-				startAtTime: 0,
-				hasResumedFromStartAt: false,
-				duration: 0,
-				time: 0,
-				hasBeenPlayed: false,
-				bufferedPercent: 0,
-				timeMultiplier: 1,
-				videoType: _type
-			}
+			meta: {}
 		};
+
+		angular.extend(_html5MetaObj.meta, _html5MetaProps, commonMetaProps);
 
 		var _validMetaKeys = Object.keys(_html5MetaObj.meta);
 		var predicate = function(pid) {
 			return (_existy(getPlayer(pid)) && _existy(getPlayer(pid).instance))
 		};
 
-		var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
+
 		var getPlayer = base.getPlayer;
 		var setPlayer = base.setPlayer;
 		var getPlayerDiv = base.getPlayerDiv;

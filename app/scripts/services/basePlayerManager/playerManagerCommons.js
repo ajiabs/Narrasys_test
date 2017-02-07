@@ -17,7 +17,23 @@
 			var _type = locals.type;
 			var _WAITFORBUFFERING = 7 * 1000;
 
+			var commonMetaProps = {
+        mainPlayer: false,
+        playerState: '-1',
+        div: '',
+        ready: false,
+        startAtTime: 0,
+        hasResumedFromStartAt: false,
+        duration: 0,
+        time: 0,
+        hasBeenPlayed: false,
+        bufferedPercent: 0,
+        timeMultiplier: 1,
+        resetInProgress: false
+      };
+
 			return {
+			  commonMetaProps: commonMetaProps,
 				getPlayers: getPlayers,
 				getPlayer: getPlayer,
 				setPlayer: setPlayer,

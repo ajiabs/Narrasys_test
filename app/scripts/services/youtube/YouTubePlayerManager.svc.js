@@ -28,27 +28,23 @@
 		var _tmpStateChangeListeners = [];
 		var _type = 'youtube';
 
+    var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
+    var commonMetaProps = base.commonMetaProps;
+
+    var _youtubeMetaProps = {
+      ytId: '',
+      videoType: _type,
+      bufferInterval: null
+    };
+
 		var _youtubeMetaObj = {
 			instance: null,
-			meta: {
-				mainPlayer: false,
-				playerState: '-1',
-				div: '',
-				ready: false,
-				startAtTime: 0,
-				duration: 0,
-				ytId: '',
-				time: 0,
-				hasResumedFromStartAt: false,
-				hasBeenPlayed: false,
-				bufferedPercent: 0,
-				timeMultiplier: 1,
-				videoType: _type,
-				bufferInterval: null
-			}
+			meta: {}
 		};
 
+		angular.extend(_youtubeMetaObj.meta, _youtubeMetaProps, commonMetaProps);
 		var _validMetaKeys = Object.keys(_youtubeMetaObj.meta);
+
 		var predicate = function(pid) {
 			return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
 		};
@@ -64,7 +60,6 @@
 		  stop(pid);
     };
 
-		var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
 		var getPlayer = base.getPlayer;
 		var setPlayer = base.setPlayer;
 		var getInstance = base.getInstance(predicate);

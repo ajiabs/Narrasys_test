@@ -15,31 +15,26 @@
 		var _type = 'kaltura';
 		var _existy = ittUtils.existy;
 
+    var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
+    var commonMetaProps = base.commonMetaProps;
+
+    var _kalturaMetaProps = {
+      ktObj: {},
+      isMuted: false,
+      vol: 0,
+      videoType: _type,
+      bufferTimeout: null,
+      seekTimeout: null
+    };
+
 		var _kalturaMetaObj = {
 			instance: null,
-			meta: {
-				mainPlayer: false,
-				playerState: '-1',
-				div: '',
-				ready: false,
-				startAtTime: 0,
-				duration: 0,
-				ktObj: {},
-				isMuted: false,
-				vol: 0,
-        time: 0,
-				hasResumedFromStartAt: false,
-				hasBeenPlayed: false,
-				bufferedPercent: 0,
-				timeMultiplier: 1,
-				videoType: _type,
-				bufferTimeout: null,
-				seekTimeout: null,
-				resetInProgress: false
-			}
+      meta: {}
 		};
 
-		var _validMetaKeys = Object.keys(_kalturaMetaObj.meta);
+		angular.extend(_kalturaMetaObj.meta, _kalturaMetaProps, commonMetaProps);
+    var _validMetaKeys = Object.keys(_kalturaMetaObj.meta);
+
 		var predicate = function(pid) {
 			return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
 		};
@@ -49,23 +44,22 @@
       stop(pid);
     };
 
-		var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
-		var getPlayer = base.getPlayer;
-		var setPlayer = base.setPlayer;
-		var getPlayerDiv = base.getPlayerDiv;
-		var getInstance = base.getInstance(predicate);
-		var createMetaObj = base.createMetaObj;
-		var getMetaObj = base.getMetaObj;
-		var getMetaProp = base.getMetaProp;
-		var setMetaProp = base.setMetaProp(_validMetaKeys);
-		var registerStateChangeListener = base.registerStateChangeListener;
-		var unregisterStateChangeListener = base.unregisterStateChangeListener;
-		var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
-		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
-		var renamePid = base.renamePid;
-		var handleTimelineEnd = base.handleTimelineEnd(kalturaEndingFn);
-		var ittTimeout = ittUtils.ngTimeout;
-		var cancelIttTimeout = ittUtils.cancelNgTimeout;
+    var getPlayer = base.getPlayer;
+    var setPlayer = base.setPlayer;
+    var getPlayerDiv = base.getPlayerDiv;
+    var getInstance = base.getInstance(predicate);
+    var createMetaObj = base.createMetaObj;
+    var getMetaObj = base.getMetaObj;
+    var getMetaProp = base.getMetaProp;
+    var setMetaProp = base.setMetaProp(_validMetaKeys);
+    var registerStateChangeListener = base.registerStateChangeListener;
+    var unregisterStateChangeListener = base.unregisterStateChangeListener;
+    var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
+    var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
+    var renamePid = base.renamePid;
+    var handleTimelineEnd = base.handleTimelineEnd(kalturaEndingFn);
+    var ittTimeout = ittUtils.ngTimeout;
+    var cancelIttTimeout = ittUtils.cancelNgTimeout;
 
 		return {
 			type: _type,
@@ -227,7 +221,7 @@
 		}
 
 		function seekTo(pid, t) {
-		  var d = getMetaProp(pid, 'duration');
+		  // var d = getMetaProp(pid, 'duration');
 
       // if (t === d) {
 		   //  t -= 0.05;
