@@ -55,6 +55,9 @@
 			return (_existy(getPlayer(pid)) && _existy(getPlayer(pid).instance))
 		};
 
+		function html5Ending(pid) {
+		  stop(pid);
+    }
 
 		var getPlayer = base.getPlayer;
 		var setPlayer = base.setPlayer;
@@ -69,6 +72,7 @@
 		var pauseOtherPlayers = base.pauseOtherPlayers(pause, getPlayerState);
 		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
 		var renamePid = base.renamePid;
+    var handleTimelineEnd = base.handleTimelineEnd(html5Ending);
 
 		return {
 			type: _type,
@@ -94,12 +98,11 @@
 			setSpeed: setSpeed,
 			freezeMetaProps: freezeMetaProps,
 			unFreezeMetaProps: unFreezeMetaProps,
-			stop: angular.noop,
-      handleTimelineEnd: angular.noop
+			stop: stop,
+      handleTimelineEnd: handleTimelineEnd
 		};
 
 		//public methods
-
 		/**
 		 * @ngdoc method
 		 * @name #create
@@ -242,7 +245,7 @@
 		function onEnded() {
 			var instance = getInstance(this.id);
 			setMetaProp(this.id, 'playerState', 0);
-			_emitStateChange(instance);
+			// _emitStateChange(instance);
 		}
 		/**
 		 * @ngdoc method
@@ -356,6 +359,13 @@
 			var instance = getInstance(pid);
 			instance.pause();
 		}
+
+		function stop(pid) {
+		  setMetaProp(pid, 'time', getMetaProp(pid, 'duration'));
+		  console.log('stopped!');
+		  pause(pid);
+    }
+
 		/**
 		 * @ngdoc method
 		 * @name #getCurrentTime

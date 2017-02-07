@@ -223,8 +223,8 @@
 			}
 
 			function handleTimelineEnd(fn) {
-			  return function(pid, sideEffects) {
-			    return fn(pid, sideEffects);
+			  return function(pid) {
+			    return fn(pid);
         }
       }
 

@@ -39,8 +39,7 @@
 			return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
 		};
 
-		var kalturaEndingFn = function(pid, sideEffects) {
-      sideEffects();
+		var kalturaEndingFn = function(pid) {
       stop(pid);
     };
 
@@ -177,8 +176,8 @@
 		}
 
 		function onPlayerPlayEnd(pid) {
+		  console.log('playerState ended', getMetaProp(pid, 'playerState'));
 			setMetaProp(pid, 'playerState', 0);
-			console.log('playerPlayEnd!');
 			_emitStateChange(pid);
 		}
 

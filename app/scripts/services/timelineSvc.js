@@ -29,6 +29,16 @@ TODO: support sequential episodes
 TODO: support injecting into the middle of an episode
 TODO: have a way to delete a portion of the timeline (so sXs users can skip scenes)
 
+timeline ending sequence:
+-do no wait for video to emit and 'ended' event
+-manually signal an ending sequence upon entering the endingscreen's enter event detected in stepEvent
+sequence
+
+-> ending screen entered -> timelineSvc#_doEndingSequence -> do nothing on 'ended' event emitted from player
+
+note: ending screen can be entered naturally as the video progresses or from seeking,
+either from the timeline or the next scene arrow
+
 */
 
 angular.module('com.inthetelling.story')
@@ -62,12 +72,6 @@ angular.module('com.inthetelling.story')
 			// '5': 'video cued'
 			// '5': player ready
 
-    function _endedSideEffects() {
-      _resetClocks();
-      console.log('made it here!');
-      analyticsSvc.captureEpisodeActivity("pause");
-    }
-
 		function _onPlayerStateChange(state) {
 
 			// console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
@@ -87,7 +91,8 @@ angular.module('com.inthetelling.story')
 
 					break;
 				case 'ended':
-          playbackService.handleTimelineEnd(_endedSideEffects);
+				  console.log('timelineSvc#ended event!');
+          // playbackService.handleTimelineEnd(_endedSideEffects);
 					break;
 				case 'playing':
 					var currentTime = playbackService.getCurrentTime();
@@ -135,6 +140,12 @@ angular.module('com.inthetelling.story')
 			clock = undefined;
 			lastTick = undefined;
 		}
+
+    function _doEndingSequence() {
+		  _resetClocks();
+		  playbackService.handleTimelineEnd();
+		  analyticsSvc.captureEpisodeActivity('pause');
+    }
 
 		svc.setSpeed = function (speed) {
 			// console.log("timelineSvc.setSpeed", speed);
@@ -395,20 +406,11 @@ angular.module('com.inthetelling.story')
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
-
 			// find timeline events since last time stepEvent ran, handle them in order until one is a stop or a seek
 			for (var i = 0; i < svc.timelineEvents.length; i++) {
 				var evt = svc.timelineEvents[i];
 
-
-
-
 				if (evt.t >= eventClockData.lastTimelineTime) {
-          // if (/internal:endingscreen/.test(evt.id) && evt.action === 'enter') {
-          //   console.warn('HANDLE ENDING SCREEN EVENT', evt);
-          //   _onPlayerStateChange('ended');
-          //   return;
-          // }
 					if (evt.t > ourTime) {
 						break; // NOTE! next event should be this one; let i fall through as is
 					}
@@ -425,6 +427,12 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				}
+
+        if (/internal:endingscreen/.test(evt.id) && evt.action === 'enter') {
+          console.trace('HANDLE ENDING SCREEN EVENT');
+          _doEndingSequence()
+        }
+
 			}
 			var nextEvent = svc.timelineEvents[i]; // i falls through from the break statements above
 

@@ -54,8 +54,7 @@
 			_tryCommand(p, 'destroy');
 		};
 
-		var youtubeEnding = function(pid, sideEffects) {
-      sideEffects();
+		var youtubeEnding = function(pid) {
       setMetaProp(pid, 'time', getMetaProp(pid, 'duration'));
 		  stop(pid);
     };

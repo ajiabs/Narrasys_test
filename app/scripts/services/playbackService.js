@@ -91,10 +91,10 @@
 			kalturaPlayerManager.debugReset(id);
 		}
 
-		function handleTimelineEnd(sideEffects, pid) {
+		function handleTimelineEnd(pid) {
 		  pid = _setPid(pid);
 		  if (_existy(_playerInterfaces[pid])) {
-		    _playerInterfaces[pid].handleTimelineEnd(pid, sideEffects);
+		    _playerInterfaces[pid].handleTimelineEnd(pid);
       }
     }
 
