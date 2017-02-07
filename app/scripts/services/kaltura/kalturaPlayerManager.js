@@ -8,7 +8,7 @@
 	angular.module('com.inthetelling.story')
 		.factory('kalturaPlayerManager', kalturaPlayerManager);
 
-	function kalturaPlayerManager($timeout, ittUtils, PLAYERSTATES, playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
+	function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
 		var _players = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
@@ -40,7 +40,7 @@
 		};
 
 		var kalturaEndingFn = function(pid) {
-      stop(pid);
+		  //
     };
 
     var getPlayer = base.getPlayer;
