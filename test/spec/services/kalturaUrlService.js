@@ -26,42 +26,60 @@ describe('Service: kalturaUrlservice', function() {
   };
 
   describe('getKalturaObjectFromAutoEmbedURL method', function (){
-    it('should have a partnerId key with a valid value', function() {
-
-    })
-  });
-
-  xdescribe('parse input method', function() {
-
-
-    describe('auto embed as url', function() {
-      it('should handle auto embed https urls', function() {
-        var result = kalturaUrlService.parseInput(input.autoEmbedUrl.https);
-
-        expect(result).toBe(result);
-      });
-
-      xit('should handle converting http auto embed urls to https', function() {
-
-        var result = kalturaUrlService.parseInput(input.autoEmbedUrl.http);
-
-        expect(result).toBe()
-
-      });
+    var ktObj;
+    beforeEach(function() {
+      ktObj = kalturaUrlService.getKalturaObjectFromAutoEmbedURL(input.autoEmbedUrl.https);
     });
 
-
-    describe('auto embed as tag', function() {
-
+    it('should have a partnerId field with a not null', function() {
+      expect(ktObj).toBe(!undefined);
     });
 
-    describe('dynamic', function() {
-
+    it('should have a uiconfId field with a not null value', function () {
+      expect(ktObj.uiconfId).toBe(!undefined);
     });
 
-    describe('iframe', function() {
+    it('should have a entryId field with a not null value', function() {
+      expect(ktObj.entryId).toBe(!undefined);
+    });
 
+    it('should have a uniqueObjId field with a not null value', function() {
+      expect(ktObj.uniqueObjId).toBe(!undefined);
     });
 
   });
+
+  // describe('parse input method', function() {
+  //
+  //
+  //   describe('auto embed as url', function() {
+  //     it('should handle auto embed https urls', function() {
+  //       var result = kalturaUrlService.parseInput(input.autoEmbedUrl.https);
+  //
+  //       expect(result).toBe(result);
+  //     });
+  //
+  //     xit('should handle converting http auto embed urls to https', function() {
+  //
+  //       var result = kalturaUrlService.parseInput(input.autoEmbedUrl.http);
+  //
+  //       expect(result).toBe()
+  //
+  //     });
+  //   });
+  //
+  //
+  //   describe('auto embed as tag', function() {
+  //
+  //   });
+  //
+  //   describe('dynamic', function() {
+  //
+  //   });
+  //
+  //   describe('iframe', function() {
+  //
+  //   });
+  //
+  // });
 });

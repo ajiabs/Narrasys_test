@@ -18,7 +18,7 @@
 			parseMediaSrc: parseMediaSrc,
 			getKalturaObjectFromEmbedCode: getKalturaObjectFromEmbedCode,
 			buildAutoEmbedURLFromKalturaObject: buildAutoEmbedURLFromKalturaObject,
-			getKalturaObjectFromAutoEmbedURL: getKalturaObjectFromAutoEmbedURL,
+      getKalturaObjectFromAutoEmbedURL: getKalturaObjectFromAutoEmbedURL,
 			parseInput: parseInput,
 			getOutgoingUrl: angular.noop
 		};
@@ -119,7 +119,8 @@
 			params["uiconfId"] = myArray[3];
 			params["entryId"] = myArray[5];
 			params["uniqueObjId"] = myArray[6];
-			return params;
+			console.log('params', params);
+			return params || {};
 		}
 	}
 })();
