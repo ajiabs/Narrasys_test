@@ -4,7 +4,7 @@
 
 'use strict';
 
-describe('Service: kalturaUrlservice', function() {
+describe('Service: kalturaUrlservice\n', function() {
 
   beforeEach(module('com.inthetelling.story'));
 
@@ -18,7 +18,8 @@ describe('Service: kalturaUrlservice', function() {
     dynamic: {
       //from our kmc middlebury-test-episode
       https: '<script src="https://cdnapisec.kaltura.com/p/2166751/sp/216675100/embedIframeJs/uiconf_id/37947851/partner_id/2166751"></script> <div id="kaltura_player_1486590843" style="width: 560px; height: 315px;"></div> <script> kWidget.embed({ "targetId": "kaltura_player_1486590843", "wid": "_2166751", "uiconf_id": 37947851, "flashvars": { "streamerType": "auto" }, "cache_st": 1486590843, "entry_id": "0_aohl11vg" }); </script>',
-      http: '<script src="http://cdnapi.kaltura.com/p/2166751/sp/216675100/embedIframeJs/uiconf_id/37947851/partner_id/2166751"></script> <div id="kaltura_player_1486590887" style="width: 560px; height: 315px;"></div> <script> kWidget.embed({ "targetId": "kaltura_player_1486590887", "wid": "_2166751", "uiconf_id": 37947851, "flashvars": { "streamerType": "auto" }, "cache_st": 1486590887, "entry_id": "0_aohl11vg" }); </script>'
+      http: '<script src="http://cdnapi.kaltura.com/p/2166751/sp/216675100/embedIframeJs/uiconf_id/37947851/partner_id/2166751"></script> <div id="kaltura_player_1486590887" style="width: 560px; height: 315px;"></div> <script> kWidget.embed({ "targetId": "kaltura_player_1486590887", "wid": "_2166751", "uiconf_id": 37947851, "flashvars": { "streamerType": "auto" }, "cache_st": 1486590887, "entry_id": "0_aohl11vg" }); </script>',
+      bobRoss: '<script src="https://cdnapisec.kaltura.com/p/351361/sp/35136100/embedIframeJs/uiconf_id/11975631/partner_id/351361"></script><div id="kaltura_player_1485191873" style="width: 560px; height: 315px;"></div> <script>kWidget.embed({"targetId": "kaltura_player_1379095684","wid": "_351361","uiconf_id" : "11975631","entry_id" : "1_rfj4zdka","flashvars":{"autoPlay": false},"params":{"wmode": "transparent"}}); </script>'
     },
     autoEmbedTag: {
       //from our kmc middlebury-test-episode
