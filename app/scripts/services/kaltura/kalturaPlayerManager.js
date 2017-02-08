@@ -118,7 +118,7 @@
 				_players = {};
 				_mainPlayerId = id;
 			}
-			var ktObj = kalturaUrlService.getKalturaObjectFromAutoEmbedURL(mediaSrcArr[0]);
+			var ktObj = kalturaUrlService.getKalturaObject(mediaSrcArr[0]);
 			var newProps = {
 				mainPlayer: mainPlayer,
 				div: _getPlayerDiv(id),
