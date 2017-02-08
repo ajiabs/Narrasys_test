@@ -85,7 +85,6 @@
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
 			stop: stop,
-			debugReset: _reset,
       handleTimelineEnd: handleTimelineEnd
 		};
 

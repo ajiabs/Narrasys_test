@@ -28,13 +28,16 @@
 		}
 
 		function _isAutoEmbedUrl(str) {
-		  return /(?=.*cdnapisec.kaltura.com)(?=.*autoembed=true).*/.test(str);
+		  return /^(?![<script])(?=.*cdnapi(sec)?.kaltura.com)(?=.*autoembed=true).*/.test(str);
     }
 
 		function parseInput(input) {
 
       if (_isAutoEmbedUrl(input)) {
-        return input;
+        var url = buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromAutoEmbedURL(input), 1024, 768);
+        console.log('url', url);
+        return url;
+        // return buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromAutoEmbedURL(input), 1024, 768);
       }
 
 			return buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(input), 1024, 768)
@@ -50,7 +53,7 @@
 		}
 
 		function isKalturaUrl(url) {
-			return /cdnapisec.kaltura.com/.test(url);
+			return /cdnapi(sec)?.kaltura.com/.test(url);
 		}
 
 		function getKalturaObjectFromEmbedCode(embedCode) {

@@ -79,18 +79,21 @@
 			allowPlayback: allowPlayback,
 			togglePlayback: togglePlayback,
 			renamePid: renamePid,
-			debugReset: debugReset,
       handleTimelineEnd: handleTimelineEnd
 		};
 		/*
 			PUBLIC METHODS
 		 */
 
-
-		function debugReset(id) {
-			kalturaPlayerManager.debugReset(id);
-		}
-
+    /**
+     * @ngdoc method
+     * @name #handleTimelineEnd
+     * @methodOf iTT.service:playbackService
+     * @description
+     * Used to allow flexibility between player managers when it comes to reaching the end of the timeline.
+     * @param {String} pid the pid of the player
+     * @returns {Void} returns void.
+     */
 		function handleTimelineEnd(pid) {
 		  pid = _setPid(pid);
 		  if (_existy(_playerInterfaces[pid])) {
@@ -378,22 +381,8 @@
 		 */
 		function setMetaProp(prop, val, id) {
 			var pid = _setPid(id);
-
 			if (_existy(_playerInterfaces[pid])) {
-
-				// if (prop === 'duration') {
-				// 	console.log('setting duration', val);
-                //
-				// }
-
 				_playerInterfaces[pid].setMetaProp(pid, prop, val);
-
-				// if (prop === 'duration') {
-				// 	console.log('did set duration?', getMetaProp('duration', pid))
-				// }
-
-			} else {
-				// console.trace('did not find playerManager in interfaces map', _playerInterfaces[pid]);
 			}
 		}
 		/**
@@ -494,6 +483,7 @@
 		function stop(playerId) {
 			_playerInterfaces[_setPid(playerId)].stop(_setPid(playerId));
 		}
+
 
 		function renamePid(oldName, newName) {
 			//rename player manager
