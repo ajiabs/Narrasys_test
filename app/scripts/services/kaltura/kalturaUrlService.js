@@ -37,7 +37,7 @@
         return input;
       }
 
-			return buildAutoEmbedURLFromKalturaObject(isNotUrl, 1024, 768);
+			return buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(input), 1024, 768)
 		}
 
 		function parseMediaSrc(mediaSrc) {
