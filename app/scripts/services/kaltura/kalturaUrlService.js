@@ -27,8 +27,17 @@
 			return _mimeType;
 		}
 
+		function _isAutoEmbedUrl(str) {
+		  return /(?=.*cdnapisec.kaltura.com)(?=.*autoembed=true).*/.test(str);
+    }
+
 		function parseInput(input) {
-			return buildAutoEmbedURLFromKalturaObject(getKalturaObjectFromEmbedCode(input), 1024, 768);
+
+      if (_isAutoEmbedUrl(input)) {
+        return input;
+      }
+
+			return buildAutoEmbedURLFromKalturaObject(isNotUrl, 1024, 768);
 		}
 
 		function parseMediaSrc(mediaSrc) {
