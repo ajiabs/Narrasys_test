@@ -49,25 +49,28 @@ describe('Service: kalturaUrlservice\n', function() {
         Object.keys(input[key])
           .forEach(function(type) {
 
-            it(key + ' ' + type + ': should have a partnerId field with a not null', function() {
-              var ktObj = kalturaUrlService.getKalturaObject(input[key][type]);
-              expect(ktObj.partnerId).not.toBe(null);
-            });
-
-            it(key + ' ' + type + ': should have a uiconfId field with a not null value', function () {
+            it(key + ' ' + type + ': should make a kaltura object with a not null', function() {
               var ktObj = kalturaUrlService.getKalturaObject(input[key][type]);
               expect(ktObj.uiconfId).not.toBe(null);
-            });
-
-            it(key + ' ' + type + ': should have a entryId field with a not null value', function() {
-              var ktObj = kalturaUrlService.getKalturaObject(input[key][type]);
+              expect(ktObj.partnerId).not.toBe(null);
               expect(ktObj.entryId).not.toBe(null);
-            });
-
-            it(key + ' ' + type + ': should have a uniqueObjId field with a not null value', function() {
-              var ktObj = kalturaUrlService.getKalturaObject(input[key][type]);
               expect(ktObj.uniqueObjId).not.toBe(null);
             });
+
+            // it(key + ' ' + type + ': should have a uiconfId field with a not null value', function () {
+            //   var ktObj = kalturaUrlService.getKalturaObject(input[key][type]);
+            //   expect(ktObj.uiconfId).not.toBe(null);
+            // });
+            //
+            // it(key + ' ' + type + ': should have a entryId field with a not null value', function() {
+            //   var ktObj = kalturaUrlService.getKalturaObject(input[key][type]);
+            //   expect(ktObj.entryId).not.toBe(null);
+            // });
+            //
+            // it(key + ' ' + type + ': should have a uniqueObjId field with a not null value', function() {
+            //   var ktObj = kalturaUrlService.getKalturaObject(input[key][type]);
+            //   expect(ktObj.uniqueObjId).not.toBe(null);
+            // });
 
           })
       });
