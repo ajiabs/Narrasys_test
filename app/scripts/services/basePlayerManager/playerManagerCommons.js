@@ -4,18 +4,25 @@
 
 (function() {
 	'use strict';
-
+  /**
+   * @ngdoc service
+   * @name iTT.service:playerManagerCommons
+   * @description
+   * Implements / exports common methods used across all player managers.
+   * @property {Object} commonMetaProps public metaProps
+   * @requires ittUtils
+   *
+   */
 	angular.module('com.inthetelling.story')
 		.factory('playerManagerCommons', playerManagerCommons);
 
-	function playerManagerCommons($timeout, ittUtils) {
+	function playerManagerCommons(ittUtils) {
 		var _existy = ittUtils.existy;
 		return function(locals) {
 
 			var _players = locals.players;
 			var _stateChangeCallbacks = locals.stateChangeCallbacks;
 			var _type = locals.type;
-			var _WAITFORBUFFERING = 7 * 1000;
 
 			var commonMetaProps = {
         mainPlayer: false,
@@ -48,8 +55,6 @@
 				pauseOtherPlayers: pauseOtherPlayers,
 				resetPlayerManager: resetPlayerManager,
 				renamePid: renamePid,
-				waitForBuffering: waitForBuffering,
-				cancelWaitForBuffering: cancelWaitForBuffering,
         handleTimelineEnd: handleTimelineEnd
 			};
 
@@ -92,7 +97,7 @@
 			/**
 			 * @ngdoc method
 			 * @name #getMetaObj
-			 * @methodOf iTT.service:youTubePlayerManager
+			 * @methodOf iTT.service:playerManagerCommons
 			 * @description
 			 * returns the entire metaObj, currently used only for debugging.
 			 * @param {String} pid the pid of the player
@@ -108,7 +113,7 @@
 			 * @private
 			 * @ngdoc method
 			 * @name _createMetaObj
-			 * @methodOf iTT.service:html5PlayerManager
+			 * @methodOf iTT.service:playerManagerCommons
 			 * @param {Object} base base object to copy from.
 			 * @param {Object} props array of objects (properties) to set on the copy of the meta object.
 			 * @returns {Object} returns copy of new meta object
@@ -122,7 +127,7 @@
 			/**
 			 * @ngdoc method
 			 * @name #getPlayerDiv
-			 * @methodOf iTT.service:youTubePlayerManager
+			 * @methodOf iTT.service:playerManagerCommons
 			 * @description
 			 * returns an HTML string with the ID from the input param
 			 * @param {String} id the ID of the player
@@ -150,7 +155,7 @@
 			/**
 			 * @ngdoc method
 			 * @name getInstance
-			 * @methodOf iTT.service:html5PlayerManager
+			 * @methodOf iTT.service:playerManagerCommons
 			 * @param {String} pid Unique ID
 			 * @returns {Object} returns HTML5 video element
 			 * @private
@@ -166,7 +171,7 @@
 			/**
 			 * @ngdoc method
 			 * @name #registerStateChangeListener
-			 * @methodOf iTT.service:youTubePlayerManager
+			 * @methodOf iTT.service:playerManagerCommons
 			 * @param {Function} cb callback to fire
 			 * @returns {Void} returns void
 			 */
@@ -184,7 +189,7 @@
 			/**
 			 * @ngdoc method
 			 * @name #unregisterStateChangeListener
-			 * @methodOf iTT.service:youTubePlayerManager
+			 * @methodOf iTT.service:playerManagerCommons
 			 * @param {Function} cb callback to unregister
 			 * @returns {Void} returns void.
 			 */
@@ -196,7 +201,7 @@
 			/**
 			 * @ngdoc method
 			 * @name #resetPlayerManager
-			 * @methodOf iTT.service:youTubePlayerManager
+			 * @methodOf iTT.service:playerManagerCommons
 			 * @description
 			 * Will destroy all instances of YT on the _players map and reset it to an empty object.
 			 * @returns {Void} No return value.
@@ -214,14 +219,6 @@
 				ittUtils.renameKey(oldName, newName, _players);
 			}
 
-			function waitForBuffering(fn, timeoutLn) {
-				return $timeout(fn, timeoutLn || _WAITFORBUFFERING);
-			}
-
-			function cancelWaitForBuffering(timeoutFn) {
-				$timeout.cancel(timeoutFn);
-			}
-
 			function handleTimelineEnd(fn) {
 			  return function(pid) {
 			    return fn(pid);
@@ -231,7 +228,7 @@
 			/**
 			 * @ngdoc method
 			 * @name #destroyInstance
-			 * @methodOf iTT.service:youTubePlayerManager
+			 * @methodOf iTT.service:playerManagerCommons
 			 * @description
 			 * Used to destroy YT instances and clear them from the _players object
 			 * @param {String} pid The ID of the YT instance

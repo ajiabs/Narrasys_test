@@ -4,7 +4,18 @@
 
 (function() {
 	'use strict';
-
+  /**
+   * @ngdoc service
+   * @name iTT.service:kalturaPlayerManager
+   * @description
+   * Implements the PlayerManager interface, wraps kaltura videos
+   * @property {String} type the type of playerManager
+   * @requires playerManagerCommons
+   * @requires kalturaScriptLoader
+   * @requires kalturaUrlService
+   * @requires PLAYERSTATES
+   * @requires ittUtils
+   */
 	angular.module('com.inthetelling.story')
 		.factory('kalturaPlayerManager', kalturaPlayerManager);
 

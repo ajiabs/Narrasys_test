@@ -484,7 +484,14 @@
 			_playerInterfaces[_setPid(playerId)].stop(_setPid(playerId));
 		}
 
-
+    /**
+     * @ngdoc method
+     * @name renamePid
+     * @methodOf iTT.service:playbackService
+     * @param {String} oldName the name to find and replace
+     * @param {String} newName the target name
+     * @returns {Void} no return value
+     */
 		function renamePid(oldName, newName) {
 			//rename player manager
 			if (_existy(_playerInterfaces[oldName])) {
