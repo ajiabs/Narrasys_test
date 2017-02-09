@@ -86,6 +86,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "iTT.service:kalturaUrlService",
+      "shortName": "kalturaUrlService",
+      "type": "service",
+      "moduleName": "iTT",
+      "shortDescription": "handles kaltura specifc parsing of URLs / embed codes",
+      "keywords": "api associated class codes embed handles itt itt-service-kalturaurlservice-page itt-service-page kaltura parsing service specifc type urls"
+    },
+    {
+      "section": "api",
       "id": "iTT.service:playbackService",
       "shortName": "playbackService",
       "type": "service",
