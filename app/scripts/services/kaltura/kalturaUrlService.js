@@ -81,25 +81,31 @@
 			} else if (input.substring(0, 4) === "<div") {
 				params = getKalturaObjectFromDynamicEmbedCode(input);
 			} else if (input.substring(0, 7) === "<iframe") {
-				myArray = /^.*?src\=.https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?(.*?)\".*/g.exec(input);
+			    myArray = /^.*?src\=.https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?(.*?)\".*/g.exec(input);
+			    if(myArray != null) {
 				params["partnerId"] = myArray[1];
 				params["uiconfId"] = myArray[3];
 				urlParams = parseUrlParams(myArray[5]);
 				params["uniqueObjId"] = urlParams.playerId;
 				params["entryId"] = urlParams.entry_id;
+			    }
 			} else if (input.substring(0, 7) === "<object") {
-				myArray = /^.*\n*?.*?id\=.(.*?)\"(.*?\n*)*?data\=.*?https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/kwidget\/wid\/_(.*?)\/uiconf_id\/(.*?)\/entry_id\/(.*?)\".*/g.exec(input);
+			    myArray = /^.*\n*?.*?id\=.(.*?)\"(.*?\n*)*?data\=.*?https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/kwidget\/wid\/_(.*?)\/uiconf_id\/(.*?)\/entry_id\/(.*?)\".*/g.exec(input);
+			    if(myArray != null) {
 				params["uniqueObjId"] = myArray[1];
 				params["partnerId"] = myArray[3];
 				params["uiconfId"] = myArray[4];
 				params["entryId"] = myArray[5];
+			    }
 			} else if (input.substring(0, 4) === "http") {
 			    myArray = /^https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?(.*)/g.exec(decodeURIComponent(input));
-			    params["partnerId"] = myArray[1];
-			    params["uiconfId"] = myArray[3];
-			    urlParams = parseUrlParams(myArray[5]);
-			    params["entryId"] = urlParams.entry_id;
-			    params["uniqueObjId"] = urlParams.playerId;
+			    if(myArray != null) {
+				params["partnerId"] = myArray[1];
+				params["uiconfId"] = myArray[3];
+				urlParams = parseUrlParams(myArray[5]);
+				params["entryId"] = urlParams.entry_id;
+				params["uniqueObjId"] = urlParams.playerId;
+			    }
 			} else {
 				console.log("Detected an invalid embed code");
 			}
