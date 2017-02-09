@@ -28,6 +28,10 @@ var input = {
     https: '<iframe src="https://cdnapisec.kaltura.com/p/2166751/sp/216675100/embedIframeJs/uiconf_id/37947851/partner_id/2166751?iframeembed=true&playerId=kaltura_player_1486590953&entry_id=0_aohl11vg&flashvars[streamerType]=auto" width="560" height="315" allowfullscreen webkitallowfullscreen mozAllowFullScreen frameborder="0"></iframe>',
     http: '<iframe src="http://cdnapi.kaltura.com/p/2166751/sp/216675100/embedIframeJs/uiconf_id/37947851/partner_id/2166751?iframeembed=true&playerId=kaltura_player_1486590927&entry_id=0_aohl11vg&flashvars[streamerType]=auto" width="560" height="315" allowfullscreen webkitallowfullscreen mozAllowFullScreen frameborder="0"></iframe>',
     www: '<iframe src="http://www.kaltura.com/p/2166751/sp/216675100/embedIframeJs/uiconf_id/37947851/partner_id/2166751?iframeembed=true&playerId=kaltura_player_1486590927&entry_id=0_aohl11vg&flashvars[streamerType]=auto" width="560" height="315" allowfullscreen webkitallowfullscreen mozAllowFullScreen frameborder="0"></iframe>'
+  },
+  wildCards: {
+    http: 'http://',
+    empty: ''
   }
 };
 
