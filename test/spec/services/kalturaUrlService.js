@@ -55,4 +55,19 @@ describe('\nService: kalturaUrlservice -\n', function() {
       });
   });
 
+  describe('\tparseMediaSrc', function() {
+    Object.keys(input)
+      .forEach(function(key) {
+        Object.keys(input[key])
+          .forEach(function(type) {
+
+            it(key +' ' + type + ': it should handle determing the type of the URL to be kaltura', function() {
+              var medaSrc = kalturaUrlService.parseMediaSrc([input[key][type]]);
+              expect(medaSrc.type).toBe('kaltura');
+            });
+
+          });
+      });
+  });
+
 });

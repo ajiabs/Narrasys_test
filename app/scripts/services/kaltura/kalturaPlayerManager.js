@@ -199,27 +199,7 @@
 			console.log('new rate',e)
 		}
 
-		function onPreSeek(ev) {
-			var pid = this.id;
-
-			// if (_existy(_isWaiting)) {
-			// 	cancelIttTimeout(_isWaiting)
-			// }
-            //
-			// _isWaiting = $timeout(function() {
-			// 	console.log('reset from preSEek', pid, ev);
-			// 	_reset(pid, ev);
-			// }, 7 * 1000);
-		}
-
-		function onSeeked() {
-			// if (_existy(_isWaiting)) {
-				// $timeout.cancel(_isWaiting);
-			// }
-		}
-
 		function onPlayerUpdatePlayhead(ev) {
-		  console.log('update time', ev);
 		  setMetaProp(this.id, 'time', ev);
     }
 
@@ -235,12 +215,6 @@
 		}
 
 		function seekTo(pid, t) {
-		  // var d = getMetaProp(pid, 'duration');
-
-      // if (t === d) {
-		   //  t -= 0.05;
-		   //  console.log('fudge seek');
-      // }
 			_sendKdpNotice(pid, 'doSeek', t);
 		}
 
@@ -362,8 +336,6 @@
 				'mediaError': onMediaError,
 				'mediaReady': onMediaReady,
 				'updatedPlaybackRate': onUpdatedPlaybackRate,
-				'preSeek': onPreSeek,
-				'seeked': onSeeked,
         'playerUpdatePlayhead': onPlayerUpdatePlayhead
 			};
 			Object.keys(kMap).forEach(function(evtName) {

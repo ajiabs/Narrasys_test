@@ -5,6 +5,15 @@
 (function() {
 	'use strict';
 
+  /**
+   * @ngdoc service
+   * @name iTT.service:kalturaUrlService
+   * @description
+   * handles kaltura specifc parsing of URLs / embed codes
+   * @property {String} type the type this is associated with, i.e. kaltura
+   *
+   */
+
 	angular.module('com.inthetelling.story')
 		.factory('kalturaUrlService', kalturaUrlService);
 
@@ -19,7 +28,7 @@
 			getKalturaObject: getKalturaObject,
 			buildAutoEmbedURLFromKalturaObject: buildAutoEmbedURLFromKalturaObject,
 			parseInput: parseInput,
-			getOutgoingUrl: angular.noop
+			getOutgoingUrl: function() {}
 		};
 
 		function getMimeType() {
@@ -29,6 +38,13 @@
 		function parseInput(input) {
 			return buildAutoEmbedURLFromKalturaObject(getKalturaObject(input), 1024, 768)
 		}
+
+    /**
+     * @name parseMediaSrc
+     * @methodOf iTT.service:kalturaUrlService
+     * @param {Array} mediaSrc array of media sources, could be a URL or embed code.
+     * @returns {Object} Object with type<String> and mediaSrcArr<Array> properties.
+     */
 
 		function parseMediaSrc(mediaSrc) {
 			return mediaSrc.reduce(function(parsedMediaObj, mediaSrc) {
@@ -40,7 +56,11 @@
 		}
 
 		function isKalturaUrl(url) {
-			return /cdnapi(sec)?.kaltura.com/.test(url);
+		  var keys = ['partnerId', 'uiconfId', 'entryId', 'uniqueObjId'];
+		  var test = getKalturaObject(url);
+		  return keys.every(function(k) {
+		    return (test.hasOwnProperty(k) && test[k] != null); //jshint ignore:line
+      });
 		}
 
 		function getKalturaObject(input) {
