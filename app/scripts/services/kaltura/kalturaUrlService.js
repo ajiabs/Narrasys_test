@@ -125,13 +125,16 @@
     }
 
 		function getKalturaObjectFromDynamicEmbedCode(embedCode) {
-			var params = {};
-			var kWidgetParams = JSON.parse(/^(?:.|\n|\r)*?kWidget\..*?mbed\(({(?:.|\n|\r)*})\).*?/g.exec(embedCode)[1]);
+		    var params = {};
+		    var myArray = /^(?:.|\n|\r)*?kWidget\..*?mbed\(({(?:.|\n|\r)*})\).*?/g.exec(embedCode);
+		    if(myArray != null) {
+			var kWidgetParams = JSON.parse(myArray[1]);
 			params["uniqueObjId"] = kWidgetParams.targetId;
 			params["partnerId"] = kWidgetParams.wid.substring(1);
 			params["uiconfId"] = kWidgetParams.uiconf_id;
 			params["entryId"] = kWidgetParams.entry_id;
-			return params;
+		    }
+		    return params;
 		}
 
 	}
