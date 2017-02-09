@@ -98,23 +98,17 @@ percent of video that is currently buffered</p>
 </div></td></tr></tbody></table><h5 id="methods_unfreezemetaprops_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-unfreezemetaprops-page"><p>returns void.</p>
 </div></td></tr></table></div>
 </li>
-<li><h3 id="methods__attacheventlisteners">_attachEventListeners(videoElement)</h3>
-<div class="_attacheventlisteners"><div class="-attacheventlisteners-page"><p>helper method to abstract attaching of event listeners to the necessary events and wiring up the relevant
-function</p>
-</div><h5 id="methods__attacheventlisteners_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>videoElement</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-attacheventlisteners-page"><p>HTML5 video element</p>
-</div></td></tr></tbody></table></div>
-</li>
 <li><h3 id="methods__attacheventlisteners">_attachEventListeners(pid)</h3>
 <div class="_attacheventlisteners"><div class="-attacheventlisteners-page"><p>helper method to remove attached event listeners.
 function</p>
 </div><h5 id="methods__attacheventlisteners_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-attacheventlisteners-page"><p>id of element to remove listeners from.</p>
 </div></td></tr></tbody></table></div>
 </li>
-<li><h3 id="methods__createmetaobj">_createMetaObj(base, props)</h3>
-<div class="_createmetaobj"><h5 id="methods__createmetaobj_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>base</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>base object to copy from.</p>
-</div></td></tr><tr><td>props</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>array of objects (properties) to set on the copy of the meta object.</p>
-</div></td></tr></tbody></table><h5 id="methods__createmetaobj_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>returns copy of new meta object</p>
-</div></td></tr></table></div>
+<li><h3 id="methods__attacheventlisteners">_attachEventListeners(videoElement)</h3>
+<div class="_attacheventlisteners"><div class="-attacheventlisteners-page"><p>helper method to abstract attaching of event listeners to the necessary events and wiring up the relevant
+function</p>
+</div><h5 id="methods__attacheventlisteners_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>videoElement</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-attacheventlisteners-page"><p>HTML5 video element</p>
+</div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="methods__drawplayerdiv">_drawPlayerDiv(id, videoObj, quality)</h3>
 <div class="_drawplayerdiv"><div class="-drawplayerdiv-page"><p>Helper method that abstracts the functionality of creating a HTML5 video tag</p>
@@ -156,11 +150,6 @@ string of HTML with the provided input URLS as source tags.</p>
 <div class="_onstatechange"><div class="-onstatechange-page"><p>Method bound to each instance of _player[id] to invoke the stateChangeCallback for any listeners</p>
 </div><h5 id="methods__onstatechange_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-onstatechange-page"><p>the message to send</p>
 </div></td></tr></tbody></table></div>
-</li>
-<li><h3 id="methods_getinstance">getInstance(pid)</h3>
-<div class="getinstance"><h5 id="methods_getinstance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="getinstance-page"><p>Unique ID</p>
-</div></td></tr></tbody></table><h5 id="methods_getinstance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="getinstance-page"><p>returns HTML5 video element</p>
-</div></td></tr></table></div>
 </li>
 <li><h3 id="methods_onbuffering">onBuffering()</h3>
 <div class="onbuffering"><div class="onbuffering-page"><p>Event handler for &#39;buffering&#39; event, note that HTML5 media api does not have a &#39;buffering&#39; event, this is
