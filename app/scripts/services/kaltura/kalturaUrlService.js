@@ -48,7 +48,7 @@
 			var myArray = [];
 			var urlParams;
 			if (input.substring(0, 7) === "<script") {
-				myArray = /^.*?src\=.https?\:\/\/cdnapi(?:sec)\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?(.*?)\".*/g.exec(input);
+				myArray = /^.*?src\=.https?\:\/\/(?:www|cdnapi|cdnapisec)\.kaltura\.com\/p\/(.*?)\/sp\/(.*?)00.*?\/embedIframeJs\/uiconf_id\/(.*?)\/partner_id\/(.*?)\?(.*?)\".*/g.exec(input);
 				if(myArray != null) {
 					params["partnerId"] = myArray[1];
 					params["uiconfId"] = myArray[3];
@@ -90,8 +90,12 @@
 			return "https://cdnapisec.kaltura.com/p/" +kalturaObject["partnerId"]+ "/sp/" +kalturaObject["partnerId"]+ "00/embedIframeJs/uiconf_id/" +kalturaObject["uiconfId"]+ "/partner_id/" +kalturaObject["partnerId"]+ "?entry_id=" +kalturaObject["entryId"]+ "&playerId=" +kalturaObject["uniqueObjId"]+ "&autoembed=true&width=" +width+ "&height=" +height;
 		}
 
-		function parseUrlParams(urlParamsString) {
-			return JSON.parse('{"' + urlParamsString.replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+	    function parseUrlParams(urlParamsString) {
+		    //Remove any trailing ampersand if there is one
+		    if (urlParamsString.charAt(urlParamsString.length - 1) == '&') {
+			urlParamsString = urlParamsString.substr(0, urlParamsString.length - 1);
+		    }
+		    return JSON.parse('{"' + urlParamsString.replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
 		}
 
 		function getKalturaObjectFromDynamicEmbedCode(embedCode) {
@@ -101,7 +105,6 @@
 			params["partnerId"] = kWidgetParams.wid.substring(1);
 			params["uiconfId"] = kWidgetParams.uiconf_id;
 			params["entryId"] = kWidgetParams.entry_id;
-			console.log("PARSED PARAMS", params);
 			return params;
 		}
 
