@@ -90,13 +90,13 @@
 			return "https://cdnapisec.kaltura.com/p/" +kalturaObject["partnerId"]+ "/sp/" +kalturaObject["partnerId"]+ "00/embedIframeJs/uiconf_id/" +kalturaObject["uiconfId"]+ "/partner_id/" +kalturaObject["partnerId"]+ "?entry_id=" +kalturaObject["entryId"]+ "&playerId=" +kalturaObject["uniqueObjId"]+ "&autoembed=true&width=" +width+ "&height=" +height;
 		}
 
-	    function parseUrlParams(urlParamsString) {
-		    //Remove any trailing ampersand if there is one
-		    if (urlParamsString.charAt(urlParamsString.length - 1) == '&') {
-			urlParamsString = urlParamsString.substr(0, urlParamsString.length - 1);
-		    }
-		    return JSON.parse('{"' + urlParamsString.replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-		}
+    function parseUrlParams(urlParamsString) {
+      //Remove any trailing ampersand if there is one
+      if (urlParamsString.charAt(urlParamsString.length - 1) == '&') {
+        urlParamsString = urlParamsString.substr(0, urlParamsString.length - 1);
+      }
+      return JSON.parse('{"' + urlParamsString.replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+    }
 
 		function getKalturaObjectFromDynamicEmbedCode(embedCode) {
 			var params = {};
