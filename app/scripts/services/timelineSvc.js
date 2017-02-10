@@ -408,12 +408,6 @@ angular.module('com.inthetelling.story')
 						}
 					}
 				}
-
-        if (/internal:endingscreen/.test(evt.id) && evt.action === 'enter') {
-          console.trace('HANDLE ENDING SCREEN EVENT');
-          _doEndingSequence();
-        }
-
 			}
 			var nextEvent = svc.timelineEvents[i]; // i falls through from the break statements above
 
@@ -427,10 +421,10 @@ angular.module('com.inthetelling.story')
 				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
 			}
 
-			// if (ittUtils.existy(nextEvent) && /endingscreen/.test(nextEvent.id)) {
-			// 	console.log('end of stepEvent!');
-            //
-			// }
+			if (ittUtils.existy(nextEvent) && /internal:endingscreen/.test(nextEvent.id)) {
+        console.trace('HANDLE ENDING SCREEN EVENT');
+        _doEndingSequence();
+			}
 		};
 
 		// "event" here refers to a timelineEvents event, not the modelSvc.event:
@@ -577,9 +571,6 @@ angular.module('com.inthetelling.story')
 						action: "enter"
 					});
 					if (event.end_time || event.end_time === 0) {
-						if (/internal:endingscreen/.test(event._id)) {
-							return;
-						}
 
 						svc.timelineEvents.push({
 							t: event.end_time + injectionTime,
