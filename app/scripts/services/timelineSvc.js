@@ -272,70 +272,7 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		function _sceneArrowHelper(cond, evt, type) {
-			var seekTo;
-			if (cond === true) {
-
-				seekTo = evt.start_time;
-
-				//pad time if pressing next/prev scene and the time is near the landing screen
-				if (seekTo === 0.01) {
-					if (type === 'nextScene') {
-						seekTo = evt.start_time + 0.1;
-					} else {
-						//if the user clicks next scene (on an unstarted video), then prev scene
-						//remove the padding added from clicking 'next scene' so we can get back
-						//to the landing screen without having to click thru the first scene.
-						seekTo = evt.start_time - 0.1;
-					}
-
-				}
-
-				if (/endingscreen/.test(evt._id)) {
-					seekTo = playbackService.getMetaProp('duration');
-				}
-
-				svc.seek(seekTo, type);
-			}
-			if (evt.stop && playbackService.getMetaProp('time') === evt.start_time) {
-				svc.pause();
-			}
-
-			return cond === true;
-		}
-
-		// svc.prevScene = function () {
-		// 	for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
-    //
-    //
-		// 		var now = playbackService.getMetaProp('time');
-		// 		if (playbackService.getTimelineState() === 'playing' || playbackService.getTimelineState() === 'ended') {
-		// 			// now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
-		// 		}
-		// 		if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], 'prevScene') === true) {
-		// 			break;
-		// 		}
-		// 	}
-    //
-		// };
-    //
-		// svc.nextScene = function () {
-		// 	var found = false;
-		// 	for (var i = 0; i < svc.markedEvents.length; i++) {
-		// 		if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i], 'nextScene') === true) {
-		// 			found = true;
-		// 			break;
-		// 		}
-		// 	}
-		// 	if (!found) {
-		// 		svc.pause();
-		// 		svc.seek(playbackService.getMetaProp('duration') - 0.01, 'nextScene');
-		// 		//scope.enableAutoscroll(); // in playerController
-		// 	}
-		// };
-
-
-    svc.nextScene =nextScene;
+    svc.nextScene = nextScene;
 		function nextScene() {
       var found = false;
       var currentTime = playbackService.getMetaProp('time');
@@ -372,9 +309,6 @@ angular.module('com.inthetelling.story')
 
       for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
         if (svc.markedEvents[i].start_time < now) {
-          // console.log("Seeking to ", svc.markedEvents[i].start_time);
-          //scope.enableAutoscroll(); // TODO in playerController
-          // console.log('scene', svc.markedEvents[i]);
           svc.seek(svc.markedEvents[i].start_time, "prevScene");
           break;
         }
