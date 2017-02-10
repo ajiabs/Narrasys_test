@@ -282,7 +282,7 @@ angular.module('com.inthetelling.story')
         if (svc.markedEvents[i].start_time > currentTime) {
           // console.log("Seeking to ", svc.markedEvents[i].start_time);
           //scope.enableAutoscroll(); // TODO in playerController
-          svc.seek(svc.markedEvents[i].start_time, "nextScene");
+          handleScene(i, 'nextScene');
           found = true;
           break;
         }
@@ -296,7 +296,11 @@ angular.module('com.inthetelling.story')
 
     svc.handleScene = handleScene;
 		function handleScene(index, action) {
-		  svc.seek(svc.markedEvents[index].start_time, action);
+		  var s = svc.markedEvents[index];
+		  svc.seek(s.start_time, action);
+		  if (s.stop === true) {
+		    svc.pause();
+      }
     }
 
     svc.prevScene = prevScene;
@@ -310,6 +314,7 @@ angular.module('com.inthetelling.story')
       for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
         if (svc.markedEvents[i].start_time < now) {
           svc.seek(svc.markedEvents[i].start_time, "prevScene");
+          handleScene(i, 'prevScene');
           break;
         }
       }
