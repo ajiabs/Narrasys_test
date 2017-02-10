@@ -304,35 +304,82 @@ angular.module('com.inthetelling.story')
 			return cond === true;
 		}
 
-		svc.prevScene = function () {
-			for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
+		// svc.prevScene = function () {
+		// 	for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
+    //
+    //
+		// 		var now = playbackService.getMetaProp('time');
+		// 		if (playbackService.getTimelineState() === 'playing' || playbackService.getTimelineState() === 'ended') {
+		// 			// now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
+		// 		}
+		// 		if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], 'prevScene') === true) {
+		// 			break;
+		// 		}
+		// 	}
+    //
+		// };
+    //
+		// svc.nextScene = function () {
+		// 	var found = false;
+		// 	for (var i = 0; i < svc.markedEvents.length; i++) {
+		// 		if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i], 'nextScene') === true) {
+		// 			found = true;
+		// 			break;
+		// 		}
+		// 	}
+		// 	if (!found) {
+		// 		svc.pause();
+		// 		svc.seek(playbackService.getMetaProp('duration') - 0.01, 'nextScene');
+		// 		//scope.enableAutoscroll(); // in playerController
+		// 	}
+		// };
 
 
-				var now = playbackService.getMetaProp('time');
-				if (playbackService.getTimelineState() === 'playing' || playbackService.getTimelineState() === 'ended') {
-					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
-				}
-				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], 'prevScene') === true) {
-					break;
-				}
-			}
+    svc.nextScene =nextScene;
+		function nextScene() {
+      var found = false;
+      var currentTime = playbackService.getMetaProp('time');
+      var currentDuration = playbackService.getMetaProp('duration');
 
-		};
+      for (var i = 0; i < svc.markedEvents.length; i++) {
+        if (svc.markedEvents[i].start_time > currentTime) {
+          // console.log("Seeking to ", svc.markedEvents[i].start_time);
+          //scope.enableAutoscroll(); // TODO in playerController
+          svc.seek(svc.markedEvents[i].start_time, "nextScene");
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        svc.pause();
+        svc.seek(currentDuration- 0.01, "nextScene");
+        //scope.enableAutoscroll(); // in playerController
+      }
+    }
 
-		svc.nextScene = function () {
-			var found = false;
-			for (var i = 0; i < svc.markedEvents.length; i++) {
-				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i], 'nextScene') === true) {
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				svc.pause();
-				svc.seek(playbackService.getMetaProp('duration') - 0.01, 'nextScene');
-				//scope.enableAutoscroll(); // in playerController
-			}
-		};
+    svc.handleScene = handleScene;
+		function handleScene(index, action) {
+		  svc.seek(svc.markedEvents[index].start_time, action);
+    }
+
+    svc.prevScene = prevScene;
+		function prevScene() {
+      var now = playbackService.getMetaProp('time');
+      var timelineState = playbackService.getTimelineState();
+      if (timelineState === 'playing') {
+        now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
+      }
+
+      for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
+        if (svc.markedEvents[i].start_time < now) {
+          // console.log("Seeking to ", svc.markedEvents[i].start_time);
+          //scope.enableAutoscroll(); // TODO in playerController
+          // console.log('scene', svc.markedEvents[i]);
+          svc.seek(svc.markedEvents[i].start_time, "prevScene");
+          break;
+        }
+      }
+    }
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - -
 
