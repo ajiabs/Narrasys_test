@@ -21,7 +21,7 @@
 		return function(locals) {
 
 			var _players = locals.players;
-			var _stateChangeCallbacks = locals.stateChangeCallbacks;
+			var _stateChangeCallbacks = [];
 			var _type = locals.type;
 
 			var commonMetaProps = {
@@ -52,11 +52,16 @@
 				getInstance: getInstance,
 				registerStateChangeListener: registerStateChangeListener,
 				unregisterStateChangeListener: unregisterStateChangeListener,
+        getStateChangeListeners: getStateChangeListeners,
 				pauseOtherPlayers: pauseOtherPlayers,
 				resetPlayerManager: resetPlayerManager,
 				renamePid: renamePid,
         handleTimelineEnd: handleTimelineEnd
 			};
+
+			function getStateChangeListeners() {
+			  return _stateChangeCallbacks;
+      }
 
 			function getPlayers() {
 				return _players;

@@ -31,11 +31,10 @@
 		var _players = {};
 		var _mainPlayerId;
 		// var _checkInterval = 50.0;
-		var _stateChangeCallbacks = [];
 		var _ignoreNextEventIfPause = false;
 		var _type = 'html5';
 		var _existy = ittUtils.existy;
-    var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
+    var base = playerManagerCommons({players:_players, type: _type});
     var commonMetaProps = base.commonMetaProps;
 
 		var _html5MetaProps = {
@@ -73,6 +72,7 @@
 		var resetPlayerManager = base.resetPlayerManager(_removeEventListeners);
 		var renamePid = base.renamePid;
     var handleTimelineEnd = base.handleTimelineEnd(html5Ending);
+    var _getStateChangeListeners = base.getStateChangeListeners;
 
 		return {
 			type: _type,
@@ -600,7 +600,7 @@
 		 * @private
 		 */
 		function _onStateChange(event) {
-			angular.forEach(_stateChangeCallbacks, function(cb) {
+			angular.forEach(_getStateChangeListeners(), function(cb) {
 				cb(event);
 			});
 		}

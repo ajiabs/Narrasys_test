@@ -22,11 +22,10 @@
 	function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
 		var _players = {};
 		var _mainPlayerId;
-		var _stateChangeCallbacks = [];
 		var _type = 'kaltura';
 		var _existy = ittUtils.existy;
 
-    var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
+    var base = playerManagerCommons({players:_players, type: _type});
     var commonMetaProps = base.commonMetaProps;
 
     var _kalturaMetaProps = {
@@ -70,6 +69,7 @@
     var handleTimelineEnd = base.handleTimelineEnd(kalturaEndingFn);
     var ittTimeout = ittUtils.ngTimeout;
     var cancelIttTimeout = ittUtils.cancelNgTimeout;
+    var _getStateChangeListeners = base.getStateChangeListeners;
 
 		return {
 			type: _type,
@@ -359,7 +359,7 @@
 				state = getMetaProp(pid, 'playerState');
 			}
 
-			_stateChangeCallbacks.forEach(function(cb) {
+			_getStateChangeListeners().forEach(function(cb) {
 				cb(_formatPlayerStateChangeEvent(state, pid));
 			});
 		}

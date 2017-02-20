@@ -24,11 +24,9 @@
 		var _youTubePlayerManager;
 		var _players = {};
 		var _mainPlayerId;
-		var _stateChangeCallbacks = [];
-		var _tmpStateChangeListeners = [];
 		var _type = 'youtube';
 
-    var base = playerManagerCommons({players:_players, stateChangeCallbacks: _stateChangeCallbacks, type: _type});
+    var base = playerManagerCommons({players:_players, type: _type});
     var commonMetaProps = base.commonMetaProps;
 
     var _youtubeMetaProps = {
@@ -75,6 +73,7 @@
 		var handleTimelineEnd = base.handleTimelineEnd(youtubeEnding);
 		var waitForBuffering = ittUtils.ngTimeout;
 		var cancelBuffering = ittUtils.cancelNgTimeout;
+		var _getStateChangeListeners = base.getStateChangeListeners;
 
 		_youTubePlayerManager = {
 			type: _type,
@@ -449,8 +448,7 @@
 								// (to get the correct frame of video visible)
 								if (t > 0.1) {
 									//to ignore next play to not generate a false playing analytics
-									_tmpStateChangeListeners = _stateChangeCallbacks;
-									_stateChangeCallbacks = [seekPauseListener];
+									registerStateChangeListener(_seekPauseListener);
 								}
 								_tryCommand(p, 'seekTo', t);
 							} else {
@@ -462,14 +460,6 @@
 					_tryCommand(p, 'seekTo', t, true);
 				}
 
-			}
-
-			function seekPauseListener(event) {
-				if (event.state === 'playing') {
-					pause(event.emitterId);
-					_stateChangeCallbacks = _tmpStateChangeListeners;
-
-				}
 			}
 		}
 		/**
@@ -509,6 +499,13 @@
 		}
 
 		//private methods
+
+    function _seekPauseListener(event) {
+      if (event.state === 'playing') {
+        unregisterStateChangeListener(_seekPauseListener);
+        pause(event.emitterId);
+      }
+    }
 
 		/**
 		 * @ngdoc method
@@ -629,7 +626,7 @@
 		 *@returns {Void} returns void 0.
 		 */
 		function _emitStateChange(playerStateChange) {
-			_stateChangeCallbacks.forEach(function(cb) {
+			_getStateChangeListeners().forEach(function(cb) {
 				cb(playerStateChange);
 			});
 		}
