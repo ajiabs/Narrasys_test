@@ -34,7 +34,7 @@ timeline ending sequence:
 -manually signal an ending sequence upon entering the endingscreen's enter event detected in stepEvent
 sequence
 
--> ending screen entered -> timelineSvc#_doEndingSequence -> do nothing on 'ended' event emitted from player
+-> ending screen entered -> timelineSvc#_doEndingSequence -> on 'ended' event emitted from player, set time to the duration
 
 note: ending screen can be entered naturally as the video progresses or from seeking,
 either from the timeline or the next scene arrow
@@ -92,7 +92,7 @@ angular.module('com.inthetelling.story')
 					break;
 				case 'ended':
 				  console.log('timelineSvc#ended event!');
-          // playbackService.handleTimelineEnd(_endedSideEffects);
+          playbackService.setMetaProp('time', playbackService.getMetaProp('duration'));
 					break;
 				case 'playing':
 					var currentTime = playbackService.getCurrentTime();
@@ -375,20 +375,14 @@ angular.module('com.inthetelling.story')
 		var stopEventClock = function () {
 			// console.log('STOP EVENT CLOCK', playbackService.getCurrentTime());
 			// playbackService.setMetaProp('time', playbackService.getCurrentTime() || 0);
-
-
 			$timeout.cancel(eventTimeout);
 			resetEventClock();
 		};
 
 		var stepEvent = function (ignoreStopEvents) {
 			$timeout.cancel(eventTimeout);
-			if (playbackService.getTimelineState() !== 'playing') {
-				return;
-			}
 			var vidTime = playbackService.getCurrentTime();
 			var ourTime = playbackService.getMetaProp('time');
-
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
@@ -414,7 +408,14 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			}
+
 			var nextEvent = svc.timelineEvents[i]; // i falls through from the break statements above
+      var lastEvent = svc.timelineEvents[svc.timelineEvents.length - 1];
+
+      if (!ittUtils.existy(nextEvent) && ittUtils.existy(lastEvent) && /internal:endingscreen/.test(lastEvent.id)) {
+        console.log('last ev', lastEvent);
+        _doEndingSequence();
+      }
 
 			eventClockData.lastVideoTime = vidTime;
 			eventClockData.lastTimelineTime = ourTime;
@@ -424,11 +425,6 @@ angular.module('com.inthetelling.story')
 				var timeToNextEvent = (svc.timelineEvents[i].t - ourTime) * 1000 / timeMultiplier;
 				// console.log("next event in ", timeToNextEvent);
 				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
-			}
-
-			if (ittUtils.existy(nextEvent) && /internal:endingscreen/.test(nextEvent.id)) {
-        console.trace('HANDLE ENDING SCREEN EVENT');
-        _doEndingSequence();
 			}
 		};
 
@@ -575,8 +571,12 @@ angular.module('com.inthetelling.story')
 						id: event._id,
 						action: "enter"
 					});
-					if (event.end_time || event.end_time === 0) {
 
+					if (event.end_time || event.end_time === 0) {
+            if (/internal:endingscreen/.test(event._id)) {
+              // console.log('do not add exit event for ending screen.');
+              return;
+            }
 						svc.timelineEvents.push({
 							t: event.end_time + injectionTime,
 							id: event._id,

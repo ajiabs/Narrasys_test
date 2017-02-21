@@ -9,7 +9,9 @@
 	<!--start at: {{$ctrl.playbackService.getMetaProp('startAtTime', $ctrl.playerId)}} |-->
 	<!--ready: {{$ctrl.playbackService.getMetaProp('ready', $ctrl.playerId)}} |-->
 	<!--playerId: {{$ctrl.playerId}}-->
+  <!--duration:  {{$ctrl.playbackService.getMetaProp('duration', $ctrl.playerId)}}|-->
   <!--time: {{$ctrl.playbackService.getMetaProp('time', $ctrl.playerId)}} |-->
+  <!--player time: {{$ctrl.playbackService.getCurrentTime()}} |-->
 	<!--ios stuff: {{$ctrl.showMask()}} iosVersion: {{$ctrl.appState.iOSVersion[0]}} unstarted: {{$ctrl.showUnstartedOverlay()}} | mainplayer {{$ctrl.mainPlayer}}-->
 	<!--poster: {{$ctrl.poster}}-->
 	<!--<button ng-click="$ctrl.resetKaltura()">reset kaltura</button>-->

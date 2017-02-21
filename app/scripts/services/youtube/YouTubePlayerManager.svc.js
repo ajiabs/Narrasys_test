@@ -54,7 +54,12 @@
 
 		var youtubeEnding = function(pid) {
       setMetaProp(pid, 'time', getMetaProp(pid, 'duration'));
-		  stop(pid);
+      ittUtils.ngTimeout(function() {
+        if (playerState(pid) !== 'ended') {
+          console.log('on ended state', playerState(pid));
+          stop(pid);
+        }
+      }, 500);
     };
 
 		var getPlayer = base.getPlayer;
