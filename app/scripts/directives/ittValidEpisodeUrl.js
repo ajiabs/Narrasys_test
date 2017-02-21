@@ -40,20 +40,20 @@
           }
 
           function handleUpdates(newVal) {
-            scope.onValidationNotice({$notice: newVal})
+            scope.onValidationNotice({$notice: newVal});
           }
 
           function episodeUrl(viewVal) {
             validatedFields = {};
             if (ngModel.$isEmpty(viewVal)) {
-              validatedFields['error'] = {showInfo: true, message: 'Field cannot be blank.'};
+              validatedFields['error'] = {showInfo: true, message: 'Field cannot be blank.'}; //jshint ignore:line
               return false;
             } else if (urlService.isVideoUrl(viewVal)) {
               var type = urlService.checkUrl(viewVal).type;
               validatedFields[type] = { showInfo: true, message: _capitalize(type) + ' detected', doInfo: true };
               return true;
             } else {
-              validatedFields['error'] = { showInfo: true, message: viewVal + ' is not a valid episode URL'};
+              validatedFields['error'] = { showInfo: true, message: viewVal + ' is not a valid episode URL'}; //jshint ignore:line
               return false;
             }
           }
