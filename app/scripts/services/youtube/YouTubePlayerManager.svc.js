@@ -524,23 +524,20 @@
 		 * @private
 		 */
 		function _reset(pid) {
-
-			var obj = getPlayer(pid);
-			var instance = obj.instance;
+			var instance = getInstance(pid);
+      var isMainPlayer = getMetaProp(pid, 'mainPlayer');
 
 			if (_existy(instance)) {
 				console.log('debug info', instance.getDebugText());
-				// var videoId = instance.getVideoData().video_id;
+				var videoId = instance.getVideoData().video_id;
 				var lastTime = instance.getCurrentTime();
-				// var lastState = playerState(pid);
 
-				// if (obj.isMainPlayer) {
-				// 	instance.cueVideoById(videoId, lastTime);
-				// } else {
-				// 	instance.loadVideoById(videoId, lastTime);
-				// }
+				if (isMainPlayer === true) {
+					instance.cueVideoById(videoId, lastTime);
+				} else {
+					instance.loadVideoById(videoId, lastTime);
+				}
 
-        seekTo(pid, lastTime);
 			}
 		}
 
