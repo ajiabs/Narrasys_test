@@ -50,6 +50,12 @@
               return false;
             } else if (urlService.isVideoUrl(viewVal)) {
               var type = urlService.checkUrl(viewVal).type;
+
+              if (type === 'html5') {
+                validatedFields[type] = { showInfo: true, message: _capitalize(type) + ' currently not supported'};
+                return false;
+              }
+
               validatedFields[type] = { showInfo: true, message: _capitalize(type) + ' detected', doInfo: true };
               return true;
             } else {
