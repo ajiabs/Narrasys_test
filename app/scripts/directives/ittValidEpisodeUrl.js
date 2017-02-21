@@ -52,7 +52,7 @@
               var type = urlService.checkUrl(viewVal).type;
 
               if (type === 'html5') {
-                validatedFields[type] = { showInfo: true, message: _capitalize(type) + ' currently not supported'};
+                validatedFields[type] = { showInfo: true, message: _capitalize(type) + ' video currently not supported'};
                 return false;
               }
 
