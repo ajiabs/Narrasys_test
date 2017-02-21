@@ -23,8 +23,15 @@
 			parseTime: parseTime,
 			renameKey: renameKey,
 			ngTimeout: ngTimeout,
-			cancelNgTimeout: cancelNgTimeout
+			cancelNgTimeout: cancelNgTimeout,
+      capitalize: capitalize
 		};
+
+		function capitalize(str) {
+		  if (existy(str)) {
+        return str.slice(0, 1).toUpperCase() + str.slice(1);
+      }
+    }
 
 		function ngTimeout(fn, duration) {
 			return $timeout(fn, duration || 0);

@@ -25,52 +25,35 @@
 				'	</span>',
 				'	</div>',
 				'	<div class="input" ng-if="!$ctrl.videoOnly">',
-				'		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-focus="$ctrl.onFocus()" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url on-validation-notice="$ctrl.handleValidationMessage($notice)"/>',
+				'		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-focus="$ctrl.onFocus()" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url on-validation-notice="$ctrl.handleItemValidationMessage($notice)"/>',
 				'	</div>',
 				'	<div class="input" ng-if="$ctrl.videoOnly === true">',
-				'		<input type="text" ng-model="$ctrl.data" ng-change="$ctrl.handleMasterAssetUrl($ctrl.data)"/>',
+				'		<input type="text" ng-model="$ctrl.data" itt-valid-episode-url on-validation-notice="$ctrl.handleEpisodeValidationMessage($notice)"/>',
 				'		<button ng-if="$ctrl.data" ng-click="$ctrl.onAttach({$url: $ctrl.data})">Attach Video</button>',
 				'	</div>',
 				'</div>'
 			].join(' '),
-			controller: ['$scope', 'urlService', 'ittUtils', function ($scope, urlService, ittUtils) {
+			controller: ['$scope', function ($scope) {
 				var ctrl = this;
-				ctrl.handleValidationMessage = handleValidationMessage;
-				ctrl.onFocus = onFocus;
-				ctrl.handleMasterAssetUrl = handleMasterAssetUrl;
-				var _existy = ittUtils.existy;
-
-				onInit();
-
-				function onInit() {
-					if (ctrl.videoOnly === true) {
-						handleMasterAssetUrl(ctrl.data);
-					}
-				}
-
-				function handleMasterAssetUrl(url) {
-					var type;
-					var message;
-					if (_existy(url) && url.length) {
-						type = urlService.checkUrl(url).type;
-						if (type.length > 0) {
-							message = {
-								showInfo: true,
-								message: type,
-								doInfo: true
-							};
-							ctrl.validatedFields = {
-								type: message
-							};
-						}
-					}
-				}
+				ctrl.handleItemValidationMessage = handleItemValidationMessage;
+				ctrl.handleEpisodeValidationMessage = handleEpisodeValidationMessage;
+        ctrl.onFocus = onFocus;
 
 				function onFocus() {
 					$scope.$broadcast('url:focus');
 				}
 
-				function handleValidationMessage(notice) {
+				function handleEpisodeValidationMessage(notice) {
+          ctrl.validatedFields = {
+            kaltura: null,
+            youtube: null,
+            html5: null,
+            error: null
+          };
+          angular.extend(ctrl.validatedFields, notice);
+        }
+
+				function handleItemValidationMessage(notice) {
 					ctrl.validatedFields = {
 						url: null,
 						xFrameOpts: null,

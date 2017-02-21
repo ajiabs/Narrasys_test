@@ -107,7 +107,7 @@
 				params["uniqueObjId"] = urlParams.playerId;
 			    }
 			} else {
-				console.log("Detected an invalid embed code");
+				// console.log("Detected an invalid embed code");
 			}
 			return params;
 		}
