@@ -310,10 +310,16 @@ angular.module('com.inthetelling.story')
       if (timelineState === 'playing') {
         now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
       }
-
-      for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
+      var len = svc.markedEvents.length -1;
+      var i = len;
+      for (; i >= 0; i--) {
         if (svc.markedEvents[i].start_time < now) {
           svc.seek(svc.markedEvents[i].start_time, "prevScene");
+
+          if (i === len) { //allow user to seek to event just prior to ending screen.
+            --i;
+          }
+
           handleScene(i, 'prevScene');
           break;
         }
@@ -413,7 +419,6 @@ angular.module('com.inthetelling.story')
       var lastEvent = svc.timelineEvents[svc.timelineEvents.length - 1];
 
       if (!ittUtils.existy(nextEvent) && ittUtils.existy(lastEvent) && /internal:endingscreen/.test(lastEvent.id)) {
-        console.log('last ev', lastEvent);
         _doEndingSequence();
       }
 
