@@ -277,8 +277,9 @@ angular.module('com.inthetelling.story')
       var found = false;
       var currentTime = playbackService.getMetaProp('time');
       var currentDuration = playbackService.getMetaProp('duration');
-
-      for (var i = 0; i < svc.markedEvents.length; i++) {
+      var len = svc.markedEvents.length;
+      var i = 0;
+      for (; i < len; i++) {
         if (svc.markedEvents[i].start_time > currentTime) {
           // console.log("Seeking to ", svc.markedEvents[i].start_time);
           //scope.enableAutoscroll(); // TODO in playerController
@@ -297,7 +298,13 @@ angular.module('com.inthetelling.story')
     svc.handleScene = handleScene;
 		function handleScene(index, action) {
 		  var s = svc.markedEvents[index];
-		  svc.seek(s.start_time, action);
+		  var t = s.start_time;
+
+		  if (t === 0.01) { //to allow seekPauseListener to pause if using nextScene arrow on unstarted episode
+		    t += 0.1;
+      }
+
+		  svc.seek(t, action);
 		  if (s.stop === true) {
 		    svc.pause();
       }
