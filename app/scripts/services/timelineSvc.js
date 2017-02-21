@@ -277,7 +277,7 @@ angular.module('com.inthetelling.story')
       var found = false;
       var currentTime = playbackService.getMetaProp('time');
       var currentDuration = playbackService.getMetaProp('duration');
-      var len = svc.markedEvents.length;
+      var len = svc.markedEvents.length - 1;
       var i = 0;
       for (; i < len; i++) {
         if (svc.markedEvents[i].start_time > currentTime) {
