@@ -530,14 +530,17 @@
 
 			if (_existy(instance)) {
 				console.log('debug info', instance.getDebugText());
-				var videoId = instance.getVideoData().video_id;
+				// var videoId = instance.getVideoData().video_id;
 				var lastTime = instance.getCurrentTime();
+				// var lastState = playerState(pid);
 
-				if (obj.isMainPlayer) {
-					instance.cueVideoById(videoId, lastTime);
-				} else {
-					instance.loadVideoById(videoId, lastTime);
-				}
+				// if (obj.isMainPlayer) {
+				// 	instance.cueVideoById(videoId, lastTime);
+				// } else {
+				// 	instance.loadVideoById(videoId, lastTime);
+				// }
+
+        seekTo(pid, lastTime);
 			}
 		}
 
