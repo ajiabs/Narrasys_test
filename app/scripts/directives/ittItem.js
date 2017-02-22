@@ -120,7 +120,7 @@ angular.module('com.inthetelling.story')
 					//check to see if item URL is from a video; i.e. youtube or html5
 					//then do the right thing; i.e. ensure linked to video resumes from
 					//current time.
-					if (urlService.checkUrl(url).type.length > 0) {
+					if (urlService.isVideoUrl(url)) {
 						playbackService.pause(scope.item._id);
 						var curTime = Math.floor(playbackService.getCurrentTime(scope.item._id)) || 0;
 						url = urlService.getOutgoingUrl(url, curTime);

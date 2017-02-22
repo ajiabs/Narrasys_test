@@ -56,7 +56,7 @@
 // 					second = el1.html();
 // 				});
 //
-// 				it('should parse the embedUrl param to get the youtube video ID (using youtubeSvc)', function() {
+// 				it('should parse the embedUrl param to get the youtube video ID (using youtubeUrlService)', function() {
 // 					expect(_ctrl0.ytVideoID).toBe('6wKqH6vlGHU');
 // 				});
 //

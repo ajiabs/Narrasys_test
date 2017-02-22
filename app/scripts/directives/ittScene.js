@@ -48,8 +48,8 @@ angular.module('com.inthetelling.story')
                 //
 				// function setCurrentSeneNameOnAppState() {
 				// 	if (scope.scene) {
-				// 		appState.currSceneName = _getSceneName(scope.scene.templateUrl);
-				// 		appState.sceneLayouts = scope.scene.layouts;
+				// 		appState.currSceneName = scope.scene.templateUrl;
+				// 		// appState.sceneLayouts = scope.scene.layouts;
 				// 	}
 				// }
 				//END temp code for debugging purposes

@@ -36,15 +36,16 @@
 	angular.module('com.inthetelling.story')
 		.factory('playbackService', playbackService);
 
-	function playbackService($interval, youTubePlayerManager, html5PlayerManager, ittUtils, urlService, PLAYERSTATES_WORD, PLAYERSTATES) {
+	function playbackService($interval, youTubePlayerManager, html5PlayerManager, kalturaPlayerManager, ittUtils, urlService, PLAYERSTATES_WORD, PLAYERSTATES) {
 
 		var _playerInterfaces = {};
 		var _mainPlayerId;
 		var _stateChangeCallbacks = [];
-		var _playerManagers = [html5PlayerManager, youTubePlayerManager];
+		var _playerManagers = [html5PlayerManager, youTubePlayerManager, kalturaPlayerManager];
 		var _timelineState = '';
 		var _mainPlayerBufferingPoll;
 		var _playbackServiceHasBeenReset;
+		var _existy = ittUtils.existy;
 
 		angular.forEach(_playerManagers, function(playerManager) {
 			playerManager.registerStateChangeListener(_stateChangeCB);
@@ -76,11 +77,29 @@
 			resetPlaybackService: resetPlaybackService,
 			stop: stop,
 			allowPlayback: allowPlayback,
-			togglePlayback: togglePlayback
+			togglePlayback: togglePlayback,
+			renamePid: renamePid,
+      handleTimelineEnd: handleTimelineEnd
 		};
 		/*
 			PUBLIC METHODS
 		 */
+
+    /**
+     * @ngdoc method
+     * @name #handleTimelineEnd
+     * @methodOf iTT.service:playbackService
+     * @description
+     * Used to allow flexibility between player managers when it comes to reaching the end of the timeline.
+     * @param {String} pid the pid of the player
+     * @returns {Void} returns void.
+     */
+		function handleTimelineEnd(pid) {
+		  pid = _setPid(pid);
+		  if (_existy(_playerInterfaces[pid])) {
+		    _playerInterfaces[pid].handleTimelineEnd(pid);
+      }
+    }
 
 		/**
 		 * @ngdoc method
@@ -95,9 +114,8 @@
 		 * @returns {Void} returns void.
 		 */
 		function seedPlayer(mediaSrcArr, id, mainPlayer) {
-
 			if (mainPlayer === true) {
-				if (ittUtils.existy(_playerInterfaces[id])) {
+				if (_existy(_playerInterfaces[id])) {
 					//bail if we have already set the main player.
 					return;
 				}
@@ -273,7 +291,7 @@
 		 * @param {String} [playerId=mainPlayerId] Optional input param.
 		 */
 		function getCurrentTime(playerId) {
-			if (ittUtils.existy(_playerInterfaces[_setPid(playerId)])) {
+			if (_existy(_playerInterfaces[_setPid(playerId)])) {
 				return _playerInterfaces[_setPid(playerId)].getCurrentTime(_setPid(playerId));
 			}
 		}
@@ -346,7 +364,7 @@
 		 */
 		function getMetaProp(prop, id) {
 			var pid = _setPid(id);
-			if (ittUtils.existy(_playerInterfaces[pid])) {
+			if (_existy(_playerInterfaces[pid])) {
 				return _playerInterfaces[pid].getMetaProp(pid, prop);
 			}
 		}
@@ -363,22 +381,8 @@
 		 */
 		function setMetaProp(prop, val, id) {
 			var pid = _setPid(id);
-
-			if (ittUtils.existy(_playerInterfaces[pid])) {
-
-				// if (prop === 'duration') {
-				// 	console.log('setting duration', val);
-                //
-				// }
-
+			if (_existy(_playerInterfaces[pid])) {
 				_playerInterfaces[pid].setMetaProp(pid, prop, val);
-
-				// if (prop === 'duration') {
-				// 	console.log('did set duration?', getMetaProp('duration', pid))
-				// }
-
-			} else {
-				// console.trace('did not find playerManager in interfaces map', _playerInterfaces[pid]);
 			}
 		}
 		/**
@@ -428,7 +432,7 @@
 		}
 
 		function getMetaObj(playerId) {
-			if (ittUtils.existy(_playerInterfaces[_setPid(playerId)])) {
+			if (_existy(_playerInterfaces[_setPid(playerId)])) {
 				return _playerInterfaces[_setPid(playerId)].getMetaObj(_setPid(playerId));
 			}
 		}
@@ -480,6 +484,26 @@
 			_playerInterfaces[_setPid(playerId)].stop(_setPid(playerId));
 		}
 
+    /**
+     * @ngdoc method
+     * @name renamePid
+     * @methodOf iTT.service:playbackService
+     * @param {String} oldName the name to find and replace
+     * @param {String} newName the target name
+     * @returns {Void} no return value
+     */
+		function renamePid(oldName, newName) {
+			//rename player manager
+			if (_existy(_playerInterfaces[oldName])) {
+				_playerInterfaces[oldName].renamePid(oldName, newName);
+			}
+			//check if main player is being renamed.
+			if (oldName === _mainPlayerId) {
+				_mainPlayerId = newName;
+			}
+			//rename _playerInterface that calls player managers
+			ittUtils.renameKey(oldName, newName, _playerInterfaces);
+		}
 		/*
 			PRIVATE METHODS
 		 */
@@ -523,7 +547,7 @@
 		 * @private
 		 */
 		function _setPid(pid) {
-			if (ittUtils.existy(pid)) {
+			if (_existy(pid)) {
 				return pid;
 			}
 			return _mainPlayerId;
@@ -559,10 +583,10 @@
 			var lastState = PLAYERSTATES[getMetaProp('playerState', pid)];
 			var startAt = getMetaProp('startAtTime', pid);
 			var hasResumed = getMetaProp('hasResumedFromStartAt', pid);
-
+			var isBeingReset = getMetaProp('resetInProgress', pid);
 			setMetaProp('ready', true, pid);
 
-			if (pid === _mainPlayerId) {
+			if (pid === _mainPlayerId && isBeingReset === false) {
 				setMetaProp('playerState', '5', pid);
 				_emitStateChange('video cued', pid);
 			}
@@ -570,6 +594,13 @@
 			if (startAt > 0) {
 				if (hasResumed === false) {
 					seek(startAt, pid);
+					console.log('onPlayerReady', isBeingReset);
+
+					if (isBeingReset === true) {
+						play(pid);
+						setMetaProp('resetInProgress', false, pid);
+						return;
+					}
 
 					if (pid !== _mainPlayerId) {
 						setMetaProp('hasResumedFromStartAt', true, pid);
@@ -598,7 +629,7 @@
 		function _stateChangeCB(stateChangeEvent) {
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
-
+			console.log('pbs#stateChangeCB', state);
 			switch (state) {
 				case 'unstarted':
 					break;

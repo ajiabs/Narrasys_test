@@ -34,6 +34,11 @@ angular.module('com.inthetelling.story')
 
 		/* ------------------------------------------------------------------------------ */
 
+		svc.beginBackgroundTranslations = beginBackgroundTranslations;
+		function beginBackgroundTranslations(episodeId) {
+		  return SANE_GET('/v3/episodes/'+ episodeId +'/update_translations');
+    }
+
 		svc.batchUploadTranscripts = batchUploadTranscripts;
 		function batchUploadTranscripts(episodeId, formData) {
 			// return $q(function(resolve) {
@@ -992,12 +997,14 @@ angular.module('com.inthetelling.story')
 		};
 		svc.createAsset = function (containerId, asset) {
 			var createAssetDefer = $q.defer();
-			console.log("Attempting to create asset ", asset);
+
 			asset.container_id = containerId;
 			if (asset._id && asset._id.match(/internal/)) {
 				delete asset._id;
 			}
+
 			asset = modelSvc.deriveAsset(asset);
+			console.log("Attempting to create asset ", asset);
 			POST("/v1/containers/" + containerId + "/assets", asset)
 				.then(function (data) {
 					modelSvc.containers[data.file.container_id].episodes = [data.file._id];

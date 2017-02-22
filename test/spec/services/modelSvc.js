@@ -67,9 +67,9 @@ describe('Service: modelSvc', function () {
 		return Object.keys(eventsInEpisode).length;
 	};
 
-	beforeEach(inject(function (_modelSvc_, _youtubeSvc_) {
+	beforeEach(inject(function (_modelSvc_, _youtubeUrlService_) {
 		modelSvc = _modelSvc_;
-		youtubeSvc = _youtubeSvc_; // only to retrieve embed params
+		youtubeSvc = _youtubeUrlService_; // only to retrieve embed params
 
 		// data to test against
 		modelSvc.cache("episode", {
@@ -592,6 +592,8 @@ describe('Service: modelSvc', function () {
 	/* BEGIN resolveVideo tests: */
 	/* NOTE some of these will fail in Chrome (we add fake params to the url in chrome to allow playback in multiple windows) */
 	it('resolveVideoAsset should cope with missing alternate_urls', function () {
+
+
 		modelSvc.cache("asset", {
 			_id: "vid1",
 			_type: "Asset::Video",
@@ -601,7 +603,8 @@ describe('Service: modelSvc', function () {
 			"mp4": ["foo.mp4"],
 			"webm": ["foo.webm"],
 			"m3u8": ["foo.m3u8"],
-			"youtube": []
+			"youtube": [],
+			"kaltura": []
 		});
 	});
 
@@ -618,7 +621,8 @@ describe('Service: modelSvc', function () {
 			"mp4": [],
 			"webm": ["bar.webm"],
 			"m3u8": [],
-			"youtube": []
+			"youtube": [],
+			"kaltura": []
 		});
 	});
 
@@ -633,7 +637,8 @@ describe('Service: modelSvc', function () {
 			"mp4": ["foo.mp4"],
 			"webm": ["foo.webm"],
 			"m3u8": ["foo.m3u8"],
-			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA' + youtubeSvc.embedParams()]
+			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA' + youtubeSvc.embedParams()],
+			"kaltura": []
 		});
 	});
 
@@ -647,7 +652,8 @@ describe('Service: modelSvc', function () {
 			"mp4": [],
 			"webm": [],
 			"m3u8": [],
-			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA' + youtubeSvc.embedParams()]
+			"youtube": ['//www.youtube.com/embed/AAAAAAAAAAA' + youtubeSvc.embedParams()],
+			"kaltura": []
 		});
 	});
 
@@ -662,7 +668,8 @@ describe('Service: modelSvc', function () {
 			"mp4": [],
 			"webm": [],
 			"m3u8": [],
-			"youtube": []
+			"youtube": [],
+			"kaltura": []
 		});
 	});
 
@@ -679,7 +686,8 @@ describe('Service: modelSvc', function () {
 			"mp4": [],
 			"webm": [],
 			"m3u8": [],
-			"youtube": []
+			"youtube": [],
+			"kaltura": []
 		});
 	});
 
@@ -696,7 +704,8 @@ describe('Service: modelSvc', function () {
 			"mp4": ["bar.mp4"],
 			"webm": [],
 			"m3u8": [],
-			"youtube": []
+			"youtube": [],
+			"kaltura": []
 		});
 	});
 
@@ -713,7 +722,8 @@ describe('Service: modelSvc', function () {
 			"mp4": [],
 			"webm": [],
 			"m3u8": [],
-			"youtube": ['//www.youtube.com/embed/BBBBBBBBBBB' + youtubeSvc.embedParams()]
+			"youtube": ['//www.youtube.com/embed/BBBBBBBBBBB' + youtubeSvc.embedParams()],
+			"kaltura": []
 		});
 	});
 
@@ -734,7 +744,8 @@ describe('Service: modelSvc', function () {
 			mp4: ['bar250x250.mp4', 'bar500x400.mp4', 'bar1000x1000.mp4'],
 			webm: ['bar123x123.webm', 'bar321x321.webm'],
 			m3u8: [],
-			youtube: []
+			youtube: [],
+			kaltura: []
 		});
 	});
 
