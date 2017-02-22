@@ -546,6 +546,10 @@ angular.module('com.inthetelling.story')
 						//change in layout).
 						addMarkedEvent(event);
 					}
+
+					if (/internal:(landing|ending)screen/.test(event._id)) {
+            addMarkedEvent(event);
+          }
 				}
 				if (event._type === 'Chapter' || event.chapter_marker === true) {
 					addMarkedEvent(event);
