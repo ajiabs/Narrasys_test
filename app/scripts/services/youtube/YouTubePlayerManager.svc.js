@@ -14,161 +14,102 @@
 	 * @requires YoutubePlayerApi
 	 * @requires errorSvc
 	 * @requires PLAYERSTATES
-	 * @requires youtubeSvc
+	 * @requires youtubeUrlService
 	 */
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
-	function youTubePlayerManager($location, $timeout, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeSvc) {
+	function youTubePlayerManager($location, ittUtils, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeUrlService, playerManagerCommons) {
 
 		var _youTubePlayerManager;
 		var _players = {};
 		var _mainPlayerId;
-		var _stateChangeCallbacks = [];
-		var _tmpStateChangeListeners = [];
 		var _type = 'youtube';
-		var _isBuffering;
-		var _WAITFORBUFFERING = 7 * 1000;
+
+    var base = playerManagerCommons({players:_players, type: _type});
+    var commonMetaProps = base.commonMetaProps;
+
+    var _youtubeMetaProps = {
+      ytId: '',
+      videoType: _type,
+      bufferInterval: null
+    };
 
 		var _youtubeMetaObj = {
 			instance: null,
-			meta: {
-				mainPlayer: false,
-				playerState: '-1',
-				div: '',
-				ready: false,
-				startAtTime: 0,
-				duration: 0,
-				ytUrl: '',
-				time: 0,
-				hasResumedFromStartAt: false,
-				hasBeenPlayed: false,
-				bufferedPercent: 0,
-				timeMultiplier: 1,
-				videoType: _type
-			}
+			meta: {}
 		};
+
+		angular.extend(_youtubeMetaObj.meta, _youtubeMetaProps, commonMetaProps);
+		var _validMetaKeys = Object.keys(_youtubeMetaObj.meta);
+
+		var predicate = function(pid) {
+			return (_existy(getPlayer(pid)) && getMetaProp(pid, 'ready') === true);
+		};
+
+		var destroyFn = function(pid) {
+			var p = getInstance(pid);
+			_tryCommand(p, 'destroy');
+		};
+
+		var youtubeEnding = function(pid) {
+      setMetaProp(pid, 'time', getMetaProp(pid, 'duration'));
+      ittUtils.ngTimeout(function() {
+        if (playerState(pid) !== 'ended') {
+          console.log('on ended state', playerState(pid));
+          stop(pid);
+        }
+      }, 500);
+    };
+
+		var getPlayer = base.getPlayer;
+		var setPlayer = base.setPlayer;
+		var getInstance = base.getInstance(predicate);
+		var createMetaObj = base.createMetaObj;
+		var getMetaObj = base.getMetaObj;
+		var getMetaProp = base.getMetaProp;
+		var setMetaProp = base.setMetaProp(_validMetaKeys);
+		var registerStateChangeListener = base.registerStateChangeListener;
+		var unregisterStateChangeListener = base.unregisterStateChangeListener;
+		var pauseOtherPlayers = base.pauseOtherPlayers(pause, playerState);
+		var getPlayerDiv = base.getPlayerDiv;
+		var resetPlayerManager = base.resetPlayerManager(destroyFn);
+		var renamePid = base.renamePid;
+		var handleTimelineEnd = base.handleTimelineEnd(youtubeEnding);
+		var waitForBuffering = ittUtils.ngTimeout;
+		var cancelBuffering = ittUtils.cancelNgTimeout;
+		var _getStateChangeListeners = base.getStateChangeListeners;
 
 		_youTubePlayerManager = {
 			type: _type,
+			getMetaProp: getMetaProp,
+			setMetaProp: setMetaProp,
+			getMetaObj: getMetaObj,
+			getPlayerDiv: getPlayerDiv,
+			pauseOtherPlayers: pauseOtherPlayers,
+			registerStateChangeListener: registerStateChangeListener,
+			unregisterStateChangeListener: unregisterStateChangeListener,
+			resetPlayerManager: resetPlayerManager,
+			renamePid: renamePid,
 			seedPlayerManager: seedPlayerManager,
 			create: create,
 			play: play,
 			pause: pause,
 			seekTo: seekTo,
-			pauseOtherPlayers: pauseOtherPlayers,
 			getCurrentTime: getCurrentTime,
 			getPlayerState: playerState,
 			getBufferedPercent: getVideoLoadedFraction,
 			toggleMute: toggleMute,
 			setVolume: setVolume,
-			getPlayerDiv: getPlayerDiv,
 			setSpeed: setSpeed,
-			registerStateChangeListener: registerStateChangeListener,
-			unregisterStateChangeListener: unregisterStateChangeListener,
-			getMetaProp: getMetaProp,
-			setMetaProp: setMetaProp,
-			resetMetaProps: resetMetaProps,
-			getMetaObj: getMetaObj,
+			setPlaybackQuality: setPlaybackQuality,
 			freezeMetaProps: angular.noop,
 			unFreezeMetaProps: angular.noop,
-			setPlaybackQuality: setPlaybackQuality,
-			reset: reset,
-			destroyInstance: destroyInstance,
-			resetPlayerManager: resetPlayerManager,
-			stop: stop
-
+			stop: stop,
+      handleTimelineEnd: handleTimelineEnd
 		};
 
 		//public methods
-		/**
-		 * @ngdoc method
-		 * @name #getPlayerDiv
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * returns an HTML string with the ID from the input param
-		 * @param {String} id the ID of the player
-		 * @return {String} the HTML string to be used by ittVideo
-		 */
-		function getPlayerDiv(id) {
-			return _players[id].meta.div;
-		}
-
-		/**
-		 * @ngdoc method
-		 * @name #registerStateChangeListener
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @param {Function} cb callback to fire
-		 * @returns {Void} returns void
-		 */
-		function registerStateChangeListener(cb) {
-			var len = _stateChangeCallbacks.length;
-
-			while (len--) {
-				if (cb.toString() === _stateChangeCallbacks[len].toString()) {
-					return;
-				}
-			}
-
-			_stateChangeCallbacks.push(cb);
-		}
-		/**
-		 * @ngdoc method
-		 * @name #unregisterStateChangeListener
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @param {Function} cb callback to unregister
-		 * @returns {Void} returns void.
-		 */
-		function unregisterStateChangeListener(cb) {
-			_stateChangeCallbacks = _stateChangeCallbacks.filter(function(fn) {
-				return fn.toString() !== cb.toString();
-			});
-		}
-		/**
-		 * @ngdoc method
-		 * @name #getMetaObj
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * returns the entire metaObj, currently used only for debugging.
-		 * @param {String} pid the pid of the player
-		 * @returns {Object} The requested objects Meta Props.
-		 */
-		function getMetaObj(pid) {
-			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
-				return _players[pid].meta;
-			}
-		}
-		/**
-		 * @ngdoc method
-		 * @name #getMetaProp
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * used to get a particular property of a players's meta obj
-		 * @param {String} pid the pid of the player
-		 * @param {String} prop the prop to get
-		 * @returns {String | Number | Void} returns the requested prop if defined.
-		 */
-		function getMetaProp(pid, prop) {
-			if (_existy(_players[pid]) && _existy(_players[pid].meta)) {
-				return _players[pid].meta[prop];
-			}
-		}
-		/**
-		 * @ngdoc method
-		 * @name #setMetaProp
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * sets the particular prop of a player's meta obj
-		 * @param {String} pid the pid of the player
-		 * @param {String} prop the prop to set
-		 * @param {String|Number|Boolean} val the val to set
-		 * @returns {Void} returns void
-		 */
-		function setMetaProp(pid, prop, val) {
-			if (_existy(_players[pid] && _players[pid].meta)) {
-				_players[pid].meta[prop] = val;
-			}
-		}
 		/**
 		 * @ngdoc method
 		 * @name #seedPlayerManager
@@ -178,16 +119,17 @@
 		 * @param {String} id Main Video Asset ID or Event ID, for embeds
 		 * @param {Boolean} mainPlayer Determines type of player, embed or main
 		 * @param {Array} mediaSrcArr array of youtube URLs
-		 * @returns {Void} returns void.
+		 * @returns {Vofid} returns void.
 		 */
 		function seedPlayerManager(id, mainPlayer, mediaSrcArr) {
 
 			//bail if we already have set the instance in the _players map.
-			if (_players[id] && getMetaProp(id, 'startAtTime') > 0) {
+			if (_existy(getPlayer(id)) && getMetaProp(id, 'startAtTime') > 0) {
 				return;
 			}
 
 			if (mainPlayer) {
+				// setPlayer(id, {});
 				_players = {};
 				_mainPlayerId = id;
 			}
@@ -195,10 +137,10 @@
 			var newProps = {
 				mainPlayer: mainPlayer,
 				div: _getPlayerDiv(id),
-				ytUrl: mediaSrcArr[0]
+				ytId: youtubeUrlService.extractYoutubeId(mediaSrcArr[0])
 			};
 
-			_players[id] = _createMetaObj(newProps, _youtubeMetaObj);
+			setPlayer(id, createMetaObj(newProps, _youtubeMetaObj));
 		}
 
 
@@ -213,13 +155,13 @@
 		 * @returns {void} has no return value
 		 */
 		function create(playerId) {
-			var ytId = youtubeSvc.extractYoutubeId(getMetaProp(playerId, 'ytUrl'));
+			var ytId = getMetaProp(playerId, 'ytId');
 			_createInstance(playerId, ytId, onPlayerStateChange, onPlayerQualityChange, onReady, onError)
 				.then(handleSuccess)
 				.catch(tryAgain);
 
 			function handleSuccess(ytInstance) {
-				_players[playerId].instance = ytInstance;
+				getPlayer(playerId).instance = ytInstance;
 				setMetaProp(playerId, 'ytId', ytId);
 			}
 
@@ -259,6 +201,7 @@
 				var pid = _getPidFromInstance(event.target);
 				setMetaProp(pid, 'playerState', event.data);
 				var stateChangeEvent = _formatPlayerStateChangeEvent(event, pid);
+				var isBuffering = getMetaProp(pid, 'bufferInterval');
 				// console.log('YT PlayerState', PLAYERSTATES[event.data]);
 
 				if (event.data === YT.PlayerState.ENDED) {
@@ -266,14 +209,14 @@
 				}
 
 				if (event.data === YT.PlayerState.BUFFERING) {
-					_isBuffering = $timeout(function() {
+					isBuffering = waitForBuffering(function() {
 						if (event.target.getPlayerState() === YT.PlayerState.BUFFERING) {
-							reset(pid);
+							_reset(pid);
 						}
-					}, _WAITFORBUFFERING);
-
+					}, 7 * 1000);
+					setMetaProp(pid, 'bufferInterval', isBuffering);
 				} else {
-					$timeout.cancel(_isBuffering);
+					cancelBuffering(isBuffering)
 				}
 
 				_emitStateChange(stateChangeEvent);
@@ -294,7 +237,7 @@
 
 				var playerReadyEv = _formatPlayerStateChangeEvent({data: '6'}, pid);
 				setMetaProp(pid, 'duration', event.target.getDuration());
-				console.log('reset duration!');
+				console.log('_reset duration!');
 				_emitStateChange(playerReadyEv);
 			}
 
@@ -332,9 +275,9 @@
 			function onError(event) {
 				var brokePlayerPID = _getPidFromInstance(event.target);
 				if (event.data === 5) {
-					//only reset for HTML5 player errors
+					//only _reset for HTML5 player errors
 					console.warn('resetting for chrome!!!');
-					reset(brokePlayerPID);
+					_reset(brokePlayerPID);
 				}
 			}
 		}
@@ -349,7 +292,7 @@
 		 * @returns {Void} returns void.
 		 */
 		function setSpeed(pid, playbackRate) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 			// getAvailablePlayBackRates returns an array of numbers, with at least 1 element; i.e. the default playback rate
 			if (_existy(p) && p.getAvailablePlaybackRates().length > 1) {
 				p.setPlaybackRate(playbackRate);
@@ -366,7 +309,7 @@
 		 * @returns {Number} The current time of video in seconds.
 		 */
 		function getCurrentTime(pid) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 			if (_existy(p)) {
 				return _tryCommand(p, 'getCurrentTime');
 			}
@@ -387,7 +330,7 @@
 		 * @returns {Number} Int representing current player state.
 		 */
 		function playerState(pid) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 			if (_existy(p)) {
 				return PLAYERSTATES[_tryCommand(p, 'getPlayerState')];
 			}
@@ -403,7 +346,7 @@
 		 * @returns {Void} no return value
 		 */
 		function play(pid) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 			if (_existy(p)) {
 				_tryCommand(p, 'playVideo');
 			}
@@ -418,7 +361,7 @@
 		 * @returns {Void} no return value
 		 */
 		function pause(pid) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 
 			// console.log('pause instance?', p);
 			if (_existy(p)) {
@@ -435,51 +378,11 @@
 		 * @returns {Void} no return value
 		 */
 		function stop(pid) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 			if (_existy(p)) {
 				_tryCommand(p, 'stopVideo');
 			}
 		}
-		/**
-		 * @ngdoc method
-		 * @name #reset
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Used to reset the player after detecting
-		 * onError event.
-		 * @params pid The id of the player
-		 * @returns {Void} no return value
-		 */
-		function reset(pid) {
-
-			var obj = _players[pid];
-			var instance = _players[pid].instance;
-
-			if (_existy(instance)) {
-				console.log('debug info', instance.getDebugText());
-				var videoId = instance.getVideoData().video_id;
-				var lastTime = instance.getCurrentTime();
-
-				if (obj.isMainPlayer) {
-					instance.cueVideoById(videoId, lastTime);
-				} else {
-					instance.loadVideoById(videoId, lastTime);
-				}
-			}
-		}
-
-		function resetMetaProps(list, id) {
-			if (_existy(_players[id])) {
-
-				list.forEach(function(prop) {
-					if (_players[id].meta.hasOwnProperty(prop)) {
-						//reset to inital value on _metaObj
-						setMetaProp(id, prop, _youtubeMetaObj.meta[prop]);
-					}
-				});
-			}
-		}
-
 		/**
 		 * @ngdoc method
 		 * @name #setPlaybackQuality
@@ -490,7 +393,7 @@
 		 * @returns {Void} no return value
 		 */
 		function setPlaybackQuality(pid, size) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 			if (_existy(p)) {
 				p.setPlaybackQuality(size);
 			}
@@ -506,7 +409,7 @@
 		 * percent of video that is currently buffered
 		 */
 		function getVideoLoadedFraction(pid) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 			if (_existy(p)) {
 				return p.getVideoLoadedFraction() * 100;
 			}
@@ -530,7 +433,7 @@
 		 * @returns {Void} no return value
 		 */
 		function seekTo(pid, t) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 			var ytId = getMetaProp(pid, 'ytId');
 			var lastState = PLAYERSTATES[getMetaProp(pid, 'playerState')];
 			var currentState = playerState(pid);
@@ -550,8 +453,7 @@
 								// (to get the correct frame of video visible)
 								if (t > 0.1) {
 									//to ignore next play to not generate a false playing analytics
-									_tmpStateChangeListeners = _stateChangeCallbacks;
-									_stateChangeCallbacks = [seekPauseListener];
+									registerStateChangeListener(_seekPauseListener);
 								}
 								_tryCommand(p, 'seekTo', t);
 							} else {
@@ -564,14 +466,6 @@
 				}
 
 			}
-
-			function seekPauseListener(event) {
-				if (event.state === 'playing') {
-					pause(event.emitterId);
-					_stateChangeCallbacks = _tmpStateChangeListeners;
-
-				}
-			}
 		}
 		/**
 		 * @ngdoc method
@@ -583,7 +477,7 @@
 		 * @returns {Void} returns void.
 		 */
 		function toggleMute(pid) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 			if (p.isMuted()) {
 				p.unMute();
 			} else {
@@ -602,79 +496,51 @@
 		 * @returns {Void} No return value.
 		 */
 		function setVolume(pid, v) {
-			var p = _getYTInstance(pid);
+			var p = getInstance(pid);
 
 			if (_existy(p)) {
 				p.setVolume(v);
 			}
 		}
-		/**
-		 * @ngdoc method
-		 * @name #pauseOtherPlayers
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Loops through all YT instances except main player and
-		 * player with same PID as the id param and calls
-		 * pause() on each one. In other words, will pause all
-		 * embeds except the one you interacted with.
-		 * @param {String} pid The ID of the YT instance
-		 * @returns {Void} No return value.
-		 */
-		function pauseOtherPlayers(pid) {
-
-			Object.keys(_players).forEach(function(playerId) {
-				if (playerId !== pid) {
-
-					var otherPlayerState = playerState(playerId);
-					if (_existy(otherPlayerState)) {
-						if (otherPlayerState === 'playing') {
-							pause(playerId);
-						}
-					}
-
-				}
-			});
-		}
-		/**
-		 * @ngdoc method
-		 * @name #destroyInstance
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Used to destroy YT instances and clear them from the _players object
-		 * @param {String} pid The ID of the YT instance
-		 * @param {Boolean} [doRemove=false] optional param to optionally reset the instance in the _players map.
-		 * @returns {Void} No return value.
-		 */
-		function destroyInstance(pid, doRemove) {
-			if (!_existy(doRemove)) {
-				doRemove = false;
-			}
-			var p = _getYTInstance(pid);
-			if (_existy(p)) {
-
-				_tryCommand(p, 'destroy');
-				if (doRemove === true) {
-					_players[pid] = {};
-				}
-
-			}
-		}
-		/**
-		 * @ngdoc method
-		 * @name #resetPlayerManager
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Will destroy all instances of YT on the _players map and reset it to an empty object.
-		 * @returns {Void} No return value.
-		 */
-		function resetPlayerManager() {
-			angular.forEach(_players, function(pm, id) {
-				destroyInstance(id, true);
-			});
-			_players = {};
-		}
 
 		//private methods
+
+    function _seekPauseListener(event) {
+      if (event.state === 'playing') {
+        unregisterStateChangeListener(_seekPauseListener);
+        pause(event.emitterId);
+      }
+    }
+
+		/**
+		 * @ngdoc method
+		 * @name _reset
+		 * @methodOf iTT.service:youTubePlayerManager
+		 * @description
+		 * Used to _reset the player after detecting
+		 * onError event.
+		 * @params pid The id of the player
+		 * @returns {Void} no return value
+		 * @private
+		 */
+		function _reset(pid) {
+			var instance = getInstance(pid);
+      var isMainPlayer = getMetaProp(pid, 'mainPlayer');
+
+			if (_existy(instance)) {
+				console.log('debug info', instance.getDebugText());
+				var videoId = instance.getVideoData().video_id;
+				var lastTime = instance.getCurrentTime();
+
+				if (isMainPlayer === true) {
+					instance.cueVideoById(videoId, lastTime);
+				} else {
+					instance.loadVideoById(videoId, lastTime);
+				}
+
+			}
+		}
+
 		/**
 		 * @private
 		 * @ngdoc method
@@ -721,22 +587,6 @@
 				});
 			});
 		}
-		/**
-		 * @private
-		 * @ngdoc method
-		 * @name _getYTInstance
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @description
-		 * Used to retrieve an instance of the YT player out of the _players object.
-		 * @param {String} pid the ID of the instance to retrieve
-		 * player that emitted it.
-		 * @returns {Object} Youtube Player Instance Object.
-		 */
-		function _getYTInstance(pid) {
-			if (_players[pid] && _players[pid].meta.ready === true) {
-				return _players[pid].instance;
-			}
-		}
 
 		function _existy(x) {
 			return x != null;  // jshint ignore:line
@@ -781,7 +631,7 @@
 		 *@returns {Void} returns void 0.
 		 */
 		function _emitStateChange(playerStateChange) {
-			_stateChangeCallbacks.forEach(function(cb) {
+			_getStateChangeListeners().forEach(function(cb) {
 				cb(playerStateChange);
 			});
 		}
@@ -816,29 +666,16 @@
 					instance[command](val);
 				} else {
 					//some getters return a value, i.e. getPlayerState
+					// console.log('hmm', instance, command);
 					returnVal = instance[command]();
 				}
 			} catch (err) {
-				console.warn('error trying', command, 'full error:', err);
+				console.warn('error trying', command, 'with', instance[command], 'full error:', err);
 			}
 
 			if (_existy(returnVal)) {
 				return returnVal;
 			}
-		}
-
-		/**
-		 * @private
-		 * @ngdoc method
-		 * @name _createMetaObj
-		 * @methodOf iTT.service:youTubePlayerManager
-		 * @param {Object} props array of objects (properties) to set on the copy of the meta object.
-		 * @returns {Object} returns copy of new meta object
-		 */
-		function _createMetaObj(props, base) {
-			var newMetaObj = angular.copy(base);
-			newMetaObj.meta = angular.extend(newMetaObj.meta, props);
-			return newMetaObj;
 		}
 
 		return _youTubePlayerManager;

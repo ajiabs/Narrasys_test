@@ -83,6 +83,12 @@ _playerInterfaces map.</p>
 </div><h5 id="methods_handle$destroy_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-handle-destroy-page"><p>unique id of the player to command</p>
 </div></td></tr></tbody></table></div>
 </li>
+<li><h3 id="methods_handletimelineend">handleTimelineEnd(pid)</h3>
+<div class="handletimelineend"><div class="-handletimelineend-page"><p>Used to allow flexibility between player managers when it comes to reaching the end of the timeline.</p>
+</div><h5 id="methods_handletimelineend_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-handletimelineend-page"><p>the pid of the player</p>
+</div></td></tr></tbody></table><h5 id="methods_handletimelineend_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-handletimelineend-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
 <li><h3 id="methods_pause">pause(playerId)</h3>
 <div class="pause"><div class="-pause-page"><p>Invokes the &#39;pause&#39; method on the playerManager with the passed input id.</p>
 </div><h5 id="methods_pause_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-pause-page"><p>Optional input param.</p>
@@ -221,6 +227,12 @@ timelineSvc if the event came from the mainVideo.</p>
 <div class="getbufferedpercent"><div class="getbufferedpercent-page"><p>for drawing the amount of video that has buffered in the timeline.</p>
 </div><h5 id="methods_getbufferedpercent_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>playerId</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="getbufferedpercent-page"><p>unique id of the player to command</p>
 </div></td></tr></tbody></table></div>
+</li>
+<li><h3 id="methods_renamepid">renamePid(oldName, newName)</h3>
+<div class="renamepid"><h5 id="methods_renamepid_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>oldName</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="renamepid-page"><p>the name to find and replace</p>
+</div></td></tr><tr><td>newName</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="renamepid-page"><p>the target name</p>
+</div></td></tr></tbody></table><h5 id="methods_renamepid_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="renamepid-page"><p>no return value</p>
+</div></td></tr></table></div>
 </li>
 </ul>
 </div>

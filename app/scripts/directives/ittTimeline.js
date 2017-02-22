@@ -92,6 +92,45 @@ angular.module('com.inthetelling.story')
 					}
 				};
 
+
+        // scope.handleScene = handleScene;
+        // function handleScene(scene, markedEvents, action) {
+        //
+        //   var origIndex = markedEvents.indexOf(scene);
+        //   var len = markedEvents.length;
+        //   var targetIndex;
+        //   console.log('scene', scene);
+        //   console.log('array', markedEvents);
+        //
+        //   switch (action) {
+        //     case 'nextScene':
+        //       if (origIndex === len - 1) {
+        //         return;
+        //       }
+        //       targetIndex = origIndex + 1;
+        //       timelineSvc.handleScene(targetIndex, action);
+        //       break;
+        //     case 'prevScene':
+        //       var now = playbackService.getMetaProp('time') - 2;
+        //       if (origIndex === 0) {
+        //         return;
+        //       }
+        //
+        //       // console.log('og index', origIndex, 'evt start', scene.start_time, 'now', now);
+        //
+        //       //if we are within 3 seconds of the beginning of the current scene,
+        //       //decrement the index to allow going back to the previous scene.
+        //       if (scene.start_time > now) {
+        //         origIndex = origIndex - 1;
+        //       }
+        //
+        //       targetIndex = Math.max(origIndex, 1);
+        //       console.log('target index', targetIndex);
+        //       timelineSvc.handleScene(targetIndex, action);
+        //       break;
+        //   }
+        // }
+
 				scope.prevScene = function () {
 					// console.log("prevScene");
 					timelineSvc.prevScene();

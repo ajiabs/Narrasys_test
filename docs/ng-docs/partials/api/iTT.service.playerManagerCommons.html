@@ -1,0 +1,68 @@
+<h1><code ng:non-bindable="">playerManagerCommons</code>
+<div><span class="hint">service in module <code ng:non-bindable="">iTT</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="itt-service-page itt-service-playermanagercommons-page"><p>Implements / exports common methods used across all player managers.</p>
+</div></div>
+<h2 id="dependencies">Dependencies</h2>
+<ul class="dependencies"><li><code ng:non-bindable=""><a href="#/api/ittUtils">ittUtils</a></code>
+</li>
+</ul>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_destroyinstance">destroyInstance(pid, doRemove)</h3>
+<div class="destroyinstance"><div class="-destroyinstance-page"><p>Used to destroy YT instances and clear them from the _players object</p>
+</div><h5 id="methods_destroyinstance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-destroyinstance-page"><p>The ID of the YT instance</p>
+</div></td></tr><tr><td>doRemove</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="-destroyinstance-page"><p>optional param to optionally reset the instance in the _players map.</p>
+</div> <p><em>(default: false)</em></p></td></tr></tbody></table><h5 id="methods_destroyinstance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-destroyinstance-page"><p>No return value.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getmetaobj">getMetaObj(pid)</h3>
+<div class="getmetaobj"><div class="-getmetaobj-page"><p>returns the entire metaObj, currently used only for debugging.</p>
+</div><h5 id="methods_getmetaobj_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getmetaobj-page"><p>the pid of the player</p>
+</div></td></tr></tbody></table><h5 id="methods_getmetaobj_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-getmetaobj-page"><p>The requested objects Meta Props.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getplayerdiv">getPlayerDiv(id)</h3>
+<div class="getplayerdiv"><div class="-getplayerdiv-page"><p>returns an HTML string with the ID from the input param</p>
+</div><h5 id="methods_getplayerdiv_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>id</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayerdiv-page"><p>the ID of the player</p>
+</div></td></tr></tbody></table><h5 id="methods_getplayerdiv_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="-getplayerdiv-page"><p>the HTML string to be used by ittVideo</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_registerstatechangelistener">registerStateChangeListener(cb)</h3>
+<div class="registerstatechangelistener"><h5 id="methods_registerstatechangelistener_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>cb</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-registerstatechangelistener-page"><p>callback to fire</p>
+</div></td></tr></tbody></table><h5 id="methods_registerstatechangelistener_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-registerstatechangelistener-page"><p>returns void</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_resetplayermanager">resetPlayerManager()</h3>
+<div class="resetplayermanager"><div class="-resetplayermanager-page"><p>Will destroy all instances of YT on the _players map and reset it to an empty object.</p>
+</div><h5 id="methods_resetplayermanager_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-resetplayermanager-page"><p>No return value.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_unregisterstatechangelistener">unregisterStateChangeListener(cb)</h3>
+<div class="unregisterstatechangelistener"><h5 id="methods_unregisterstatechangelistener_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>cb</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="-unregisterstatechangelistener-page"><p>callback to unregister</p>
+</div></td></tr></tbody></table><h5 id="methods_unregisterstatechangelistener_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-void">Void</a></td><td><div class="-unregisterstatechangelistener-page"><p>returns void.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods__createmetaobj">_createMetaObj(base, props)</h3>
+<div class="_createmetaobj"><h5 id="methods__createmetaobj_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>base</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>base object to copy from.</p>
+</div></td></tr><tr><td>props</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>array of objects (properties) to set on the copy of the meta object.</p>
+</div></td></tr></tbody></table><h5 id="methods__createmetaobj_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="-createmetaobj-page"><p>returns copy of new meta object</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_getinstance">getInstance(pid)</h3>
+<div class="getinstance"><h5 id="methods_getinstance_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>pid</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="getinstance-page"><p>Unique ID</p>
+</div></td></tr></tbody></table><h5 id="methods_getinstance_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="getinstance-page"><p>returns HTML5 video element</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_commonmetaprops">commonMetaProps</h3>
+<div class="commonmetaprops"><div class="itt-service-page itt-service-playermanagercommons-page"><p>public metaProps</p>
+</div></div>
+</li>
+</ul>
+</div>
+</div>

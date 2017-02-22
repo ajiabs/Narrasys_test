@@ -8,13 +8,29 @@
 	angular.module('com.inthetelling.story')
 		.factory('html5UrlService', html5UrlService);
 
-	function html5UrlService() {
+	function html5UrlService(ittUtils) {
 		var _type = 'html5';
+		var _existy = ittUtils.existy;
 		return {
 			type: _type,
+			getMimeType: getMimeType,
 			parseMediaSrc: parseMediaSrc,
-			canPlay: isHTML5VideoUrl
+			canPlay: isHTML5VideoUrl,
+			parseInput: parseInput,
+			getOutgoingUrl: getOutgoingUrl
 		};
+
+		function getMimeType(url) {
+			return 'video/' + url.match(/(mp4|m3u8|webm)/)[0];
+		}
+
+		function getOutgoingUrl(url, startAt) {
+			if (_existy(startAt) && startAt > 0) {
+				url += '#t=' + startAt;
+			}
+			return url;
+		}
+
 		/**
 		 *
 		 * @param mediaSrc
@@ -31,6 +47,12 @@
 
 		function isHTML5VideoUrl(url) {
 			return /(.mp4|.m3u8|.webm)/.test(url);
+		}
+
+		function parseInput(url) {
+			if (isHTML5VideoUrl(url)) {
+				return url;
+			}
 		}
 
 	}

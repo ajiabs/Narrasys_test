@@ -15,7 +15,7 @@
 	 * @requires $q
 	 * @requires ngModel
 	 * @requires errorSvc
-	 * @requires youtubeSvc
+	 * @requires urlService
 	 * @requires ittUtils
 	 * @requires dataSvc
 	 * @param {Object} item The item that the url we are validating belongs to
@@ -27,11 +27,11 @@
 	angular.module('com.inthetelling.story')
 		.directive('ittValidItemUrl', ittValidItemUrl);
 
-	function ittValidItemUrl($q, youtubeSvc, ittUtils, dataSvc) {
+	function ittValidItemUrl($q, ittUtils, dataSvc, urlService) {
 		return {
 			require: '?ngModel',
 			scope: {
-				onValidationNotice: '&',
+				onValidationNotice: '&'
 			},
 			link: function link(scope, elm, attrs, ngModel) {
 				var message = {
@@ -45,7 +45,7 @@
 					'301': message,
 					url: message,
 					mixedContent: message,
-					xFrameOpts: message,
+					xFrameOpts: message
 				};
 
 				scope.$on('url:focus', function() {
@@ -90,11 +90,10 @@
 				}
 
 				function url(viewVal) {
-
 					if (ngModel.$isEmpty(viewVal) && !_emailOrPlaceholder(viewVal)) {
 						validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'}; //jshint ignore:line
 						return false;
-					} else if (ittUtils.isValidURL(viewVal) || _emailOrPlaceholder(viewVal)) {
+					} else if (urlService.isVideoUrl(viewVal) ||ittUtils.isValidURL(viewVal) || _emailOrPlaceholder(viewVal)) {
 						validatedFields['url'] = {showInfo: false}; //jshint ignore:line
 						return true;
 					} else {
@@ -105,8 +104,8 @@
 				}
 
 				function xFrameOpts(viewVal) {
-					//bail out if empty or link to youtube, mixed content, email or placeholder val
-					if (ngModel.$isEmpty(viewVal) || youtubeSvc.isYoutubeUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
+					//bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
+					if (ngModel.$isEmpty(viewVal) || urlService.isVideoUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
 						return $q(function (resolve) {
 							validatedFields['xFrameOpts'] = {showInfo: false}; //jshint ignore:line
 							return resolve();
