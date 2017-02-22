@@ -70,16 +70,16 @@
             </div>
           </div>
 
-          <!--<div class="field" ng-if="userHasRole('admin') && episode.languages.length > 1">-->
-          <!--<div class="label">Translations</div>-->
-          <!--<div class="input" ng-if="doCheckForTranslations == null">-->
-          <!--{{translationMessage(episode.languages)}}-->
-          <!--<button ng-click="beginBackgroundTranslations(episode._id)">Begin translation</button>-->
-          <!--</div>-->
-          <!--<div ng-if="doCheckForTranslations === true">-->
-          <!--{{afterTranslationAttempt}}-->
-          <!--</div>-->
-          <!--</div>-->
+          <div class="field" ng-if="userHasRole('admin') && episode.languages.length > 1">
+            <div class="label">Translations</div>
+            <div class="input" ng-if="doCheckForTranslations == null">
+              {{translationMessage(episode.languages)}}
+              <button ng-click="beginBackgroundTranslations(episode._id)">Begin translation</button>
+            </div>
+            <div ng-if="doCheckForTranslations === true">
+              {{afterTranslationAttempt}}
+            </div>
+          </div>
 
           <itt-upload-transcripts ng-if="userHasRole('admin')" episode-id="{{episode._id}}"></itt-upload-transcripts>
 
