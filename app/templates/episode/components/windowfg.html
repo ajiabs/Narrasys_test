@@ -1,9 +1,11 @@
 <div ng-if="(episode.items | isCurrent | itemLayout:'windowFg').length > 0" class="overlay windowFg fgLayer animate transitionFade">
 	<div class="content w-modal">
+    <!--state: {{playbackService.getTimelineState()}} time: {{playbackService.getMetaProp('time')}}-->
 		<div ng-class="item.styleCss + ' ' + item.state" itt-item="item" class="item animate  timestampNone" ng-repeat="item in episode.items | isCurrent | itemLayout:'windowFg'">
 		</div>
 
-		<a ng-if="!appState.editEvent && playbackService.getTimelineState() == 'paused'" class="button-continue" ng-click="continue()">
+
+		<a ng-if="!appState.editEvent" class="button-continue" ng-click="continue()">
 			<span>Continue</span>
 		</a>
 	</div>

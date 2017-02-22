@@ -32,7 +32,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				var moveToMagnet = function () {
-					$timeout(function () { // needs the timeout, otherwise endless digest loop
+					window.requestAnimationFrame(function () { // needs the timeout, otherwise endless digest loop
 						element.css("position", (scope.magnet.css("position") === "fixed") ? "fixed" : "absolute");
 
 						var diffT = scope.magnet.offset().top - element.offset().top;

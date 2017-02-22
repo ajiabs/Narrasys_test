@@ -7,7 +7,7 @@ TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the ep
 */
 
 angular.module('com.inthetelling.story')
-	.directive('ittEpisodeEditor', function ($rootScope, appState, errorSvc, modelSvc, dataSvc, awsSvc, youtubeSvc, authSvc, selectService) {
+	.directive('ittEpisodeEditor', function ($rootScope, $timeout, appState, errorSvc, modelSvc, dataSvc, awsSvc, authSvc, selectService, playbackService, urlService) {
 		return {
 			restrict: 'A',
 			replace: true,
@@ -18,43 +18,43 @@ angular.module('com.inthetelling.story')
 			controller: 'EditController',
 			link: function (scope) {
 
-        scope.translationMessage = translationMessage;
-				function translationMessage(langArr) {
-				  var prefix = '';
-				  var langs = langArr.filter(function(l) {
-            if (l.default == undefined) { //jshint ignore:line
-              return true;
-            } else {
-              prefix = 'Translate from ' +  l.code + ' to: ';
-              return false;
-            }
-          }).map(function(l) {
-            l = l.code;
-            return l;
-          }).join(', ');
-				  return prefix + langs;
-				}
-
-				scope.beginBackgroundTranslations = beginBackgroundTranslations;
-        function beginBackgroundTranslations(episodeId) {
-          dataSvc.beginBackgroundTranslations(episodeId)
-            .then(handleSuccess)
-            .catch(handleError);
-
-          function handleSuccess(resp) {
-            console.log('resp from translations!', resp);
-            if (resp.status === 'Request for translations queued') {
-              scope.afterTranslationAttempt = resp.status + ', check back later!';
-            } else {
-              scope.afterTranslationAttempt = 'Something went wrong...';
-            }
-            scope.doCheckForTranslations = true;
-          }
-
-          function handleError(e) {
-            console.log('error:', e);
-          }
-        }
+        // scope.translationMessage = translationMessage;
+        // function translationMessage(langArr) {
+				 //  var prefix = '';
+				 //  var langs = langArr.filter(function(l) {
+        //     if (l.default == undefined) { //jshint ignore:line
+        //       return true;
+        //     } else {
+        //       prefix = 'Translate from ' +  l.code + ' to: ';
+        //       return false;
+        //     }
+        //   }).map(function(l) {
+        //     l = l.code;
+        //     return l;
+        //   }).join(', ');
+				 //  return prefix + langs;
+        // }
+        //
+        // scope.beginBackgroundTranslations = beginBackgroundTranslations;
+        // function beginBackgroundTranslations(episodeId) {
+        //   dataSvc.beginBackgroundTranslations(episodeId)
+        //     .then(handleSuccess)
+        //     .catch(handleError);
+        //
+        //   function handleSuccess(resp) {
+        //     console.log('resp from translations!', resp);
+        //     if (resp.status === 'Request for translations queued') {
+        //       scope.afterTranslationAttempt = resp.status + ', check back later!';
+        //     } else {
+        //       scope.afterTranslationAttempt = 'Something went wrong...';
+        //     }
+        //     scope.doCheckForTranslations = true;
+        //   }
+        //
+        //   function handleError(e) {
+        //     console.log('error:', e);
+        //   }
+        // }
 
 				scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
@@ -68,18 +68,8 @@ angular.module('com.inthetelling.story')
 				scope.uneditedEpisode = angular.copy(scope.episode); // in case of cancel.   Must be a copy, not the original!
 				scope.itemForm = selectService.setupItemForm(scope.episode.styles, 'episode');
 
-				// is the master asset a youtube link? (i.e. is yt the only url we have?)
-				if (
-					scope.masterAsset &&
-					scope.masterAsset.urls.youtube.length &&
-					Object.keys(scope.masterAsset.urls).filter(function (x) {
-						return scope.masterAsset.urls[x].length > 0;
-					}).length === 1) {
-					scope.masterAssetType = 'Youtube';
-					//we have not set a master asset and we are not an admin
-					//for this case: a customer-admin is adding a new episode and is only allowed to use youtube.
-				} else if (!scope.masterAsset && !authSvc.userHasRole('admin')) {
-					scope.masterAssetType = 'Youtube';
+				if (scope.masterAsset && /video\/x-/.test(scope.masterAsset.content_type)) {
+					scope.masterAssetType = 'WebUrl';
 				} else {
 					scope.masterAssetType = 'Video';
 				}
@@ -204,6 +194,7 @@ angular.module('com.inthetelling.story')
 				};
 
 				scope.attachChosenAsset = function (asset_id) { // master asset only!
+					scope.episode.replacingMasterAsset = false;
 					var asset = modelSvc.assets[asset_id];
 					var previousAsset = modelSvc.assets[scope.episode.master_asset_id];
 					scope.showmessage = "New video attached.";
@@ -239,39 +230,61 @@ angular.module('com.inthetelling.story')
 					scope.attachPosterAsset(assetId);
 				};
 
-				scope.attachYouTube = function (url) {
-					scope.showmessage = "Getting video from YouTube...";
-					var youtubeId = youtubeSvc.extractYoutubeId(url);
-					if (youtubeId) {
-						youtubeSvc.getVideoData(youtubeId)
-							.then(function (data) {
-								var asset = {}; //createDefaultAsset()
-								asset.url = youtubeSvc.embeddableYoutubeUrl(url);
-								asset.duration = data.duration;
-								asset.name = {
-									en: data.title
-								};
-								asset.description = {
-									en: data.description
-								};
-								asset.content_type = "video/x-youtube";
-
-								dataSvc.createAsset(scope.episodeContainerId, asset).then(function (data) {
-									//will go through modelSvc#resolveVideo
-									modelSvc.cache("asset", data);
-									// this may override the showmessage, so do it last:
-									scope.attachChosenAsset(data._id);
+				function waitForDuration(onDone, url, type) {
+					return function(state) {
+						if (state === 'player ready') {
+							playbackService.unregisterStateChangeListener(waitForDuration);
+							//push to end of event loop.
+							$timeout(function() {
+								onDone({
+									duration: playbackService.getMetaProp('duration', 'replaceMe'),
+									url: url,
+									type: type
 								});
+								//remove temp
+								scope.episode.swap = {};
+							}, 0);
 
-							}, function (error) {
-								console.error("Error getting duration from youtube:", error);
-								scope.showmessage = "Sorry, couldn't find that video on YouTube.";
-							});
-					} else {
-						console.warn("attachYoutube tried to attach a bad URL", url);
-						scope.showmessage = "Sorry, couldn't match that to a valid YouTube url.";
+						}
+					};
+				}
+
+				function createAssetFromTmp(tmpAsset) {
+					var asset = {};
+					asset.content_type = tmpAsset.type;
+					asset.duration = tmpAsset.duration;
+					asset.url = tmpAsset.url;
+					asset.name = scope.episode.title;
+					asset.description = scope.episode.description;
+					dataSvc.createAsset(scope.episodeContainerId, asset).then(function(data) {
+						modelSvc.cache('asset', data);
+						playbackService.renamePid('replaceMe', data._id);
+						scope.attachChosenAsset(data._id);
+					}).catch(function(e) {
+						console.log('errr', e);
+					});
+				}
+
+				scope.attachMediaSrc = attachMediaSrc;
+				function attachMediaSrc(urlOrEmbedCode) {
+					var contentType;
+					var pmTypeAndMimeType = urlService.checkUrl(urlOrEmbedCode);
+					var type = pmTypeAndMimeType.type;
+					if (type.length > 0) {
+						contentType = pmTypeAndMimeType.mimeType;
+						scope.episode.replacingMasterAsset = true;
+						scope.showmessage = 'Getting ' + type + ' video...';
+						var mediaSrcUrl = urlService.parseInput(urlOrEmbedCode);
+
+						scope.episode.swap = {
+							_id: 'replaceMe',
+							mediaSrcArr: [mediaSrcUrl]
+						};
+
+						var afterReady = waitForDuration(createAssetFromTmp, mediaSrcUrl, contentType);
+						playbackService.registerStateChangeListener(afterReady);
 					}
-				};
+				}
 
 				scope.replaceAsset = function (assetType) {
 					assetType = assetType || '';

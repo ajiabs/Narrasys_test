@@ -29,6 +29,16 @@ TODO: support sequential episodes
 TODO: support injecting into the middle of an episode
 TODO: have a way to delete a portion of the timeline (so sXs users can skip scenes)
 
+timeline ending sequence:
+-do no wait for video to emit and 'ended' event
+-manually signal an ending sequence upon entering the endingscreen's enter event detected in stepEvent
+sequence
+
+-> ending screen entered -> timelineSvc#_doEndingSequence -> on 'ended' event emitted from player, set time to the duration
+
+note: ending screen can be entered naturally as the video progresses or from seeking,
+either from the timeline or the next scene arrow
+
 */
 
 angular.module('com.inthetelling.story')
@@ -61,6 +71,7 @@ angular.module('com.inthetelling.story')
 			// '3': 'buffering',
 			// '5': 'video cued'
 			// '5': player ready
+
 		function _onPlayerStateChange(state) {
 
 			// console.info('state from player', state, 'timelineState', playbackService.getTimelineState());
@@ -80,28 +91,17 @@ angular.module('com.inthetelling.story')
 
 					break;
 				case 'ended':
-					//if the 'ended' event is fired from stepEvent
-					if (playbackService.getMetaProp('playerState') !== 0) {
-						_resetClocks();
-						playbackService.setMetaProp('time', playbackService.getMetaProp('duration'));
-						playbackService.stop();
-						analyticsSvc.captureEpisodeActivity("pause");
-						return;
-					}
-					svc.pause();
-
+				  console.log('timelineSvc#ended event!');
+          playbackService.setMetaProp('time', playbackService.getMetaProp('duration'));
 					break;
 				case 'playing':
-
 					var currentTime = playbackService.getCurrentTime();
 					var ourTime = playbackService.getMetaProp('time');
-
-					if (Math.abs(ourTime - currentTime) > 0.75) {
+					var isBeingReset = playbackService.getMetaProp('resetInProgress');
+					if (Math.abs(ourTime - currentTime) > 0.75 && isBeingReset === false) {
 						playbackService.setMetaProp('time', currentTime);
 						stepEvent(true);
 					}
-
-
 					startTimelineClock();
 					startEventClock();
 					appState.videoControlsActive = true;
@@ -140,6 +140,12 @@ angular.module('com.inthetelling.story')
 			clock = undefined;
 			lastTick = undefined;
 		}
+
+    function _doEndingSequence() {
+		  _resetClocks();
+		  playbackService.handleTimelineEnd();
+		  analyticsSvc.captureEpisodeActivity('pause');
+    }
 
 		svc.setSpeed = function (speed) {
 			// console.log("timelineSvc.setSpeed", speed);
@@ -266,67 +272,66 @@ angular.module('com.inthetelling.story')
 			}
 		};
 
-		function _sceneArrowHelper(cond, evt, type) {
-			var seekTo;
-			if (cond === true) {
+    svc.nextScene = nextScene;
+		function nextScene() {
+      var found = false;
+      var currentTime = playbackService.getMetaProp('time');
+      var currentDuration = playbackService.getMetaProp('duration');
+      var len = svc.markedEvents.length - 1;
+      var i = 0;
+      for (; i < len; i++) {
+        if (svc.markedEvents[i].start_time > currentTime) {
+          // console.log("Seeking to ", svc.markedEvents[i].start_time);
+          //scope.enableAutoscroll(); // TODO in playerController
+          handleScene(i, 'nextScene');
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        svc.pause();
+        svc.seek(currentDuration- 0.01, "nextScene");
+        //scope.enableAutoscroll(); // in playerController
+      }
+    }
 
-				seekTo = evt.start_time;
+    svc.handleScene = handleScene;
+		function handleScene(index, action) {
+		  var s = svc.markedEvents[index];
+		  var t = s.start_time;
 
-				//pad time if pressing next/prev scene and the time is near the landing screen
-				if (seekTo === 0.01) {
-					if (type === 'nextScene') {
-						seekTo = evt.start_time + 0.1;
-					} else {
-						//if the user clicks next scene (on an unstarted video), then prev scene
-						//remove the padding added from clicking 'next scene' so we can get back
-						//to the landing screen without having to click thru the first scene.
-						seekTo = evt.start_time - 0.1;
-					}
+		  if (t === 0.01 && action !== 'prevScene') { //to allow seekPauseListener to pause if using nextScene arrow on unstarted episode
+		    t += 0.1;
+      }
 
-				}
+		  svc.seek(t, action);
+		  if (s.stop === true) {
+		    svc.pause();
+      }
+    }
 
-				if (/endingscreen/.test(evt._id)) {
-					seekTo = playbackService.getMetaProp('duration');
-				}
+    svc.prevScene = prevScene;
+		function prevScene() {
+      var now = playbackService.getMetaProp('time');
+      var timelineState = playbackService.getTimelineState();
+      if (timelineState === 'playing') {
+        now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
+      }
+      var len = svc.markedEvents.length -1;
+      var i = len;
+      for (; i >= 0; i--) {
+        if (svc.markedEvents[i].start_time < now) {
+          svc.seek(svc.markedEvents[i].start_time, "prevScene");
 
-				svc.seek(seekTo, type);
-			}
-			if (evt.stop && playbackService.getMetaProp('time') === evt.start_time) {
-				svc.pause();
-			}
+          if (i === len) { //allow user to seek to event just prior to ending screen.
+            --i;
+          }
 
-			return cond === true;
-		}
-
-		svc.prevScene = function () {
-			for (var i = svc.markedEvents.length - 1; i >= 0; i--) {
-
-
-				var now = playbackService.getMetaProp('time');
-				if (playbackService.getTimelineState() === 'playing' || playbackService.getTimelineState() === 'ended') {
-					now = now - 3; // leave a bit of fudge when skipping backwards in a video that's currently playing
-				}
-				if (_sceneArrowHelper(svc.markedEvents[i].start_time < now, svc.markedEvents[i], 'prevScene') === true) {
-					break;
-				}
-			}
-
-		};
-
-		svc.nextScene = function () {
-			var found = false;
-			for (var i = 0; i < svc.markedEvents.length; i++) {
-				if (_sceneArrowHelper(svc.markedEvents[i].start_time > playbackService.getMetaProp('time'), svc.markedEvents[i], 'nextScene') === true) {
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				svc.pause();
-				svc.seek(playbackService.getMetaProp('duration') - 0.01, 'nextScene');
-				//scope.enableAutoscroll(); // in playerController
-			}
-		};
+          handleScene(i, 'prevScene');
+          break;
+        }
+      }
+    }
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -383,33 +388,22 @@ angular.module('com.inthetelling.story')
 		var stopEventClock = function () {
 			// console.log('STOP EVENT CLOCK', playbackService.getCurrentTime());
 			// playbackService.setMetaProp('time', playbackService.getCurrentTime() || 0);
-
-
 			$timeout.cancel(eventTimeout);
 			resetEventClock();
 		};
 
 		var stepEvent = function (ignoreStopEvents) {
 			$timeout.cancel(eventTimeout);
-			if (playbackService.getTimelineState() !== 'playing') {
-				return;
-			}
 			var vidTime = playbackService.getCurrentTime();
 			var ourTime = playbackService.getMetaProp('time');
 
 			// TODO check video time delta, adjust ourTime as needed (most likely case is that video stalled
 			// and timeline has run ahead, so we'll be backtracking the timeline to match the video before we handle the events.)
-
 			// find timeline events since last time stepEvent ran, handle them in order until one is a stop or a seek
 			for (var i = 0; i < svc.timelineEvents.length; i++) {
 				var evt = svc.timelineEvents[i];
+
 				if (evt.t >= eventClockData.lastTimelineTime) {
-
-					if (/internal:endingscreen/.test(evt.id)) {
-						console.warn('HANDLE ENDING SCREEN EVENT', evt);
-						_onPlayerStateChange('ended');
-					}
-
 					if (evt.t > ourTime) {
 						break; // NOTE! next event should be this one; let i fall through as is
 					}
@@ -427,7 +421,13 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			}
+
 			var nextEvent = svc.timelineEvents[i]; // i falls through from the break statements above
+      var lastEvent = svc.timelineEvents[svc.timelineEvents.length - 1];
+
+      if (!ittUtils.existy(nextEvent) && ittUtils.existy(lastEvent) && /internal:endingscreen/.test(lastEvent.id)) {
+        _doEndingSequence();
+      }
 
 			eventClockData.lastVideoTime = vidTime;
 			eventClockData.lastTimelineTime = ourTime;
@@ -438,11 +438,6 @@ angular.module('com.inthetelling.story')
 				// console.log("next event in ", timeToNextEvent);
 				eventTimeout = $timeout(stepEvent, timeToNextEvent + 10);
 			}
-
-			// if (ittUtils.existy(nextEvent) && /endingscreen/.test(nextEvent.id)) {
-			// 	console.log('end of stepEvent!');
-            //
-			// }
 		};
 
 		// "event" here refers to a timelineEvents event, not the modelSvc.event:
@@ -486,7 +481,6 @@ angular.module('com.inthetelling.story')
 
 			//in the event that the timelineClock is running but the eventClock is not, start the eventClock.
 			if (!eventClockData.running) {
-				console.log('detected running');
 				startEventClock();
 			}
 
@@ -552,6 +546,10 @@ angular.module('com.inthetelling.story')
 						//change in layout).
 						addMarkedEvent(event);
 					}
+
+					if (/internal:(landing|ending)screen/.test(event._id)) {
+            addMarkedEvent(event);
+          }
 				}
 				if (event._type === 'Chapter' || event.chapter_marker === true) {
 					addMarkedEvent(event);
@@ -589,12 +587,12 @@ angular.module('com.inthetelling.story')
 						id: event._id,
 						action: "enter"
 					});
-					if (event.end_time || event.end_time === 0) {
-						if (/internal:endingscreen/.test(event._id)) {
-							console.log('do not add exit event for ending screen.');
-							return;
-						}
 
+					if (event.end_time || event.end_time === 0) {
+            if (/internal:endingscreen/.test(event._id)) {
+              // console.log('do not add exit event for ending screen.');
+              return;
+            }
 						svc.timelineEvents.push({
 							t: event.end_time + injectionTime,
 							id: event._id,

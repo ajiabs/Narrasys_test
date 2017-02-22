@@ -43,7 +43,7 @@ function ittVideo() {
 
 		function onInit() {
 			//empty input passed in
-			if (ctrl.mediaSrcArr.length === 0) {
+			if (!_existy(ctrl.mediaSrcArr) || ctrl.mediaSrcArr.length === 0) {
 				console.warn('No MediaSrc Array was passed to ittVideo');
 				//check to see if video has transcoded every 10 seconds
 				ctrl.transcodedInterval = $interval(checkTranscoded, 10 * 1000);
@@ -133,3 +133,5 @@ function ittVideo() {
 		}
 	}
 }
+
+
