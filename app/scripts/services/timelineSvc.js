@@ -300,7 +300,7 @@ angular.module('com.inthetelling.story')
 		  var s = svc.markedEvents[index];
 		  var t = s.start_time;
 
-		  if (t === 0.01) { //to allow seekPauseListener to pause if using nextScene arrow on unstarted episode
+		  if (t === 0.01 && action !== 'prevScene') { //to allow seekPauseListener to pause if using nextScene arrow on unstarted episode
 		    t += 0.1;
       }
 
