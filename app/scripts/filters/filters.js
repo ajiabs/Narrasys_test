@@ -274,5 +274,5 @@ angular.module('com.inthetelling.story')
         return keys[code];
       }
       return '';
-    }
+    };
   });
