@@ -257,4 +257,22 @@ angular.module('com.inthetelling.story')
 			});
 			return notVideos;
 		};
-	});
+	})
+  .filter('langDisplay', function(ittUtils) {
+    var _existy = ittUtils.existy;
+    var keys = {
+      'en': 'English',
+      'es': 'Spanish',
+      'zh': 'Chinese',
+      'pt': 'Portuguese',
+      'fr': 'French',
+      'de': 'German',
+      'it': 'Latin'
+    };
+    return function(code) {
+      if (_existy(code)) {
+        return keys[code];
+      }
+      return '';
+    }
+  });
