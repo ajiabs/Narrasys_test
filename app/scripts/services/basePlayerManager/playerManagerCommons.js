@@ -36,7 +36,8 @@
         hasBeenPlayed: false,
         bufferedPercent: 0,
         timeMultiplier: 1,
-        resetInProgress: false
+        resetInProgress: false,
+        autoplay: false
       };
 
 			return {
