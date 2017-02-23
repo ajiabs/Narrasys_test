@@ -13,12 +13,8 @@
 	  Kaltura script loading strategy:
 	  - check for KWidget in global scope
 	  -- if KWidget is not present, load script tag with partnerID and uIConfId, store loaded script in _scriptsMap
-	  -- if KWidget is present, check _scriptsMap to see if we have already created a script for this partnerID,
+	  -- if KWidget is present, check _scriptsMap to see if we have already created a script for this partnerID + uiConfId,
 	  if we haven't, load script and store result in _scriptsMap
-
-    notes: the approach above only checks for uniqueness of partnerID and not the uiConfId. If there is an episode with
-    multiple Kaltura videos from the same partnerId but different uiConfIds, only 1 script tag will be generated and
-    each subsequent video will use the uiConf id provided from the first video.
 	 */
 
 	function kalturaScriptLoader($q, ittUtils) {
@@ -38,13 +34,15 @@
 		function load(partnerId, uiConfId) {
 			return $q(function(resolve){
 
-			  if (!_existy(_scriptsMap[partnerId])) {
-          _scriptsMap[partnerId] = 'ready';
+			  var scriptKey = uiConfId + partnerId;
+
+			  if (!_existy(_scriptsMap[scriptKey])) {
+          _scriptsMap[scriptKey] = 'ready';
         }
 
 				if (typeof(KWidget) == 'undefined') {
           _loadScript(partnerId, uiConfId, _scriptsMap, resolve);
-				} else if (_scriptsMap[partnerId] === 'ready') {
+				} else if (_scriptsMap[scriptKey] === 'ready') {
           _loadScript(partnerId, uiConfId, _scriptsMap, resolve);
         } else {
 					resolve();
@@ -56,7 +54,7 @@
       var tagSrc = _getScriptTagSrc(partnerId, uiConfId);
       var tag = _appendScript(tagSrc, partnerId);
       tag.onload = onDone;
-      history[partnerId] = tag;
+      history[uiConfId + partnerId] = tag;
     }
 
 		function _getScriptTagSrc(partnerId, uiConfId) {
