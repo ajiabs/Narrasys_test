@@ -304,7 +304,8 @@
 					'playbackRateSelector.plugin':true,
 					'controlBarContainer.plugin': false,
 					'largePlayBtn.plugin': false,
-					'loadingSpinner.plugin': true
+					'loadingSpinner.plugin': true,
+          'closedCaptions.displayCaptions': false
 				}
 			};
 
