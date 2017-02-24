@@ -56,9 +56,15 @@ function ittVideo() {
 			$timeout(function() {
 				playbackService.createInstance(ctrl.playerId);
 
-				if ($routeParams.t && ctrl.mainPlayer === true) {
-					playbackService.setMetaProp('startAtTime', ittUtils.parseTime($routeParams.t), ctrl.playerId);
-				}
+        if (ctrl.mainPlayer === true) {
+          if ($routeParams.t) {
+            playbackService.setMetaProp('startAtTime', ittUtils.parseTime($routeParams.t), ctrl.playerId);
+          }
+
+          if ($routeParams.autoplay === 'true') {
+            playbackService.setMetaProp('autoplay', true, ctrl.playerId);
+          }
+        }
 
 			},0);
 		}

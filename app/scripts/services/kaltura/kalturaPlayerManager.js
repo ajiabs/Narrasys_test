@@ -215,6 +215,9 @@
 		}
 
 		function seekTo(pid, t) {
+      if (t > 60 && t % 10 === 0) { //certain startAtTime values seem to lock the player up in chrome
+        t -= 0.5;
+      }
 			_sendKdpNotice(pid, 'doSeek', t);
 		}
 
@@ -304,7 +307,8 @@
 					'playbackRateSelector.plugin':true,
 					'controlBarContainer.plugin': false,
 					'largePlayBtn.plugin': false,
-					'loadingSpinner.plugin': true
+					'loadingSpinner.plugin': true,
+          'closedCaptions.displayCaptions': false
 				}
 			};
 

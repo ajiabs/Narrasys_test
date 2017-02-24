@@ -451,7 +451,7 @@
 								//if we're in video cued and we are not restarting, e.g. seeking in the paused state
 								//then we want to immediately pause after playback resumes.
 								// (to get the correct frame of video visible)
-								if (t > 0.1) {
+								if (t > 0.1 && getMetaProp(pid, 'autoplay') === false) {
 									//to ignore next play to not generate a false playing analytics
 									registerStateChangeListener(_seekPauseListener);
 								}
