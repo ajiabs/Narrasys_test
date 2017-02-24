@@ -591,16 +591,25 @@
 				_emitStateChange('video cued', pid);
 			}
 
+			if (startAt === 0 && getMetaProp('autoplay', pid) === true) {
+        play(pid);
+        setMetaProp('autoplay', false, pid);
+      }
+
 			if (startAt > 0) {
 				if (hasResumed === false) {
 					seek(startAt, pid);
-					console.log('onPlayerReady', isBeingReset);
 
 					if (isBeingReset === true) {
 						play(pid);
 						setMetaProp('resetInProgress', false, pid);
 						return;
 					}
+
+          if (getMetaProp('autoplay', pid) === true) {
+            play(pid);
+            setMetaProp('autoplay', false, pid);
+          }
 
 					if (pid !== _mainPlayerId) {
 						setMetaProp('hasResumedFromStartAt', true, pid);
