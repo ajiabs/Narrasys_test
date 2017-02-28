@@ -32,7 +32,7 @@ angular.module('com.inthetelling.story')
 				}
 
 				var baseStyle = {'bottom': '0', 'padding-top': '5%' };
-				var imgStyle = {'overflow-y': 'scroll', 'top': '40%', 'height': '85%', 'z-index': '11' };
+				var imgStyle = {'overflow-y': 'auto', 'top': '40%', 'height': '85%', 'z-index': '11' };
 
 				if (scope.item.isVideoUrl) {
 					scope.modalStyle = angular.extend(scope.modalStyle, {'padding-top': '5%'});
