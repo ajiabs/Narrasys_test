@@ -55,7 +55,7 @@ NG_DOCS={
       "type": "service",
       "moduleName": "iTT",
       "shortDescription": "Service for hitting API endpoints",
-      "keywords": "$http $q $rootscope $routeparams $timeout api app appstate assets authsvc cache check checkxframeopts code comments config create delete didn embed endpoints errorsvc event events expose header hitting ids iframe iframed input inspect inspecting itt layout method mocksvc modelsvc passed post prior questionanswerssvc rest service site store target template things update url website wrap x-frame-options"
+      "keywords": "$http $q $rootscope $routeparams api app appstate assets authsvc cache check checkxframeopts code comments config create delete didn embed endpoints errorsvc event events expose header hitting ids iframe iframed input inspect inspecting itt layout method mocksvc modelsvc passed post prior questionanswerssvc rest service site store target template things update url website wrap x-frame-options"
     },
     {
       "section": "api",
