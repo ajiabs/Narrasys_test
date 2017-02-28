@@ -1,106 +1,102 @@
 <div class="">
-	<div class="ancillaryNav">
+  <div ng-if="!loading">
+    <div class="narrative">
 
-	</div>
+      <!-- begin display -->
+      <div ng-hide="isEditing">
+        <itt-edit-pencil can-access="canAccess" on-edit="toggleEditing()">
+          <h2 ng-bind-html="narrative.name.en"></h2>
+        </itt-edit-pencil>
+        <p ng-bind-html="narrative.description.en"></p>
+        <p>Total Duration: {{totalNarrativeDuration | asTime}}</p>
+      </div>
 
-	<div ng-if="!loading">
-		<div class="narrative">
+      <itt-narrative-editor
+        ng-if="isEditing"
+        narrative="narrative"
+        customers="customers"
+        on-done="toggleEditing()"
+        on-update="updateNarrative(n)">
+      </itt-narrative-editor>
 
-			<!-- begin display -->
-			<div ng-hide="isEditing">
-				<itt-edit-pencil can-access="canAccess" on-edit="toggleEditing()">
-					<h2 ng-bind-html="narrative.name.en"></h2>
-				</itt-edit-pencil>
-				<p ng-bind-html="narrative.description.en"></p>
-				<p>Total Duration: {{totalNarrativeDuration | asTime}}</p>
-			</div>
-
-			<itt-narrative-editor
-				ng-if="isEditing"
-				narrative="narrative"
-				customers="customers"
-				on-done="toggleEditing()"
-				on-update="updateNarrative(n)">
-			</itt-narrative-editor>
-
-			<!--
- 		<div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
+      <!--
+     <div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
  -->
-			<button ng-if="canAccess" ng-disabled="timelineUnderEdit || tmpTimeline" ng-click="addTmpTimeline(null, narrative.timelines)">Add Timeline</button>
-			<a class="button" ng-if="canAccess" ng-click="exportToSpreadsheet(narrative._id)">Export to Spreadsheet</a>
+      <button ng-if="canAccess" ng-disabled="timelineUnderEdit || tmpTimeline"
+              ng-click="addTmpTimeline(null, narrative.timelines)">Add Timeline
+      </button>
+      <a class="button" ng-if="canAccess" ng-click="exportToSpreadsheet(narrative._id)">Export to Spreadsheet</a>
 
-			<itt-modal ng-if="showEpisodeList">
-				<div itt-episode-list class="admin episodePicker">
-					<!--Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>-->
-					Choose an episode: <button ng-click="toggleEpisodeList(); doneEditingTimeline()">cancel</button>
-					<ul
-						ng-repeat="child in root.children"
-						x-for-admin="true"
-						itt-container-episodes="containers[child._id]"
-						on-node-click="onEpisodeSelect(node)" root-context="onEpisodeSelect"
-						depth="0"></ul>
-				</div>
-			</itt-modal>
+      <itt-modal ng-if="showEpisodeList">
+        <div itt-episode-list class="admin episodePicker">
+          <!--Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>-->
+          Choose an episode:
+          <button ng-click="toggleEpisodeList(); doneEditingTimeline()">cancel</button>
+          <ul
+            ng-repeat="child in root.children"
+            x-for-admin="true"
+            itt-container-episodes="containers[child._id]"
+            on-node-click="onEpisodeSelect(node)" root-context="onEpisodeSelect"
+            depth="0"></ul>
+        </div>
+      </itt-modal>
 
+      <div ui-tree="treeOpts" ng-if="narrative.timelines.length !== 0">
+        <div ui-tree-nodes ng-model="narrative.timelines">
+          <!--note: do not use track by on ng-repeats with ui-tree-->
+          <div class="storyTimeline hoverIndicator"
+               ng-class-even="'container__row--even'"
+               ng-class-odd="'container__row--odd'"
+               ui-tree-node
+               ng-repeat="timeline in narrative.timelines | filter: (canAccess === false || undefined) && {hidden: false}">
 
+            <itt-timeline-editor
+              class="tl__editor"
+              ng-if="showTimelineEditor(timeline)"
+              timeline="timeline"
+              on-done="doneEditingTimeline()"
+              on-update="editorAction(t, timeline)"
+              on-delete="deleteTimeline(t)">
+            </itt-timeline-editor>
 
-			<div ui-tree="treeOpts" ng-if="narrative.timelines.length !== 0">
-				<div ui-tree-nodes ng-model="narrative.timelines">
-					<!--note: do not use track by on ng-repeats with ui-tree-->
-					<div class="storyTimeline hoverIndicator"
-						 ng-class-even="'container__row--even'"
-						 ng-class-odd="'container__row--odd'"
-						 ui-tree-node
-						 ng-repeat="timeline in narrative.timelines">
+            <div ng-mouseenter="showDrag = true"
+                 ng-mouseleave="showDrag = false"
+                 ng-class="{'timeline--hidden': timeline.hidden}">
 
-						<itt-timeline-editor
-							class="tl__editor"
-							ng-if="showTimelineEditor(timeline)"
-							timeline="timeline"
-							on-done="doneEditingTimeline()"
-							on-update="editorAction(t, timeline)"
-							on-delete="deleteTimeline(t)">
-						</itt-timeline-editor>
-
-						<div ng-mouseenter="showDrag = true"
-							 ng-mouseleave="showDrag = false"
-							 ng-class="{'timeline--hidden': timeline.hidden}">
 							<span ng-show="canAccess && showDrag" class="tlDrag__handle" ui-tree-handle>
 								<i class="fa fa-arrows"></i>
 							</span>
-							<div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
-								 class="tl__wrapper">
+              <div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
+                   class="tl__wrapper">
 
-                                    <itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
-                                        <h3>
-                                            <i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
-                                            <a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
-
-                                        </h3>
-                                    </itt-edit-pencil>
-									<p>{{timeline.episode_segments[0].end_time | asTime}}</p>
-								<p>{{timeline.description.en}}</p>
-
-
-								<div class="tl__addButton" ng-mouseenter="showLine = true" ng-mouseleave="showLine = false">
-									<div ng-show="!!showLine && canAccess">
-										<!--+<hr>-->
-										<button ng-click="addTmpTimeline(timeline, narrative.timelines)">Insert Timeline</button>
-									</div>
-								</div>
-
-							</div>
-						</div>
-					</div>
-					<!--end repeat-->
-				</div>
-			</div>
-			<!--end ui-tree-->
-		</div>
-		<!-- end display -->
+                <itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
+                  <h3>
+                    <i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
+                    <a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
+                  </h3>
+                </itt-edit-pencil>
+                <p>{{timeline.episode_segments[0].end_time | asTime}}</p>
+                <p>{{timeline.description.en}}</p>
 
 
-	</div>
+                <div class="tl__addButton" ng-mouseenter="showLine = true" ng-mouseleave="showLine = false">
+                  <div ng-show="!!showLine && canAccess">
+                    <!--+<hr>-->
+                    <button ng-click="addTmpTimeline(timeline, narrative.timelines)">Insert Timeline</button>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+          <!--end repeat-->
+        </div>
+      </div>
+      <!--end ui-tree-->
+    </div>
+    <!-- end display -->
+  </div>
 </div>
-	<a ng-if="narrative.support_url" target="_blank" ng-href="{{narrative.support_url}}">Support</a>
+<a ng-if="narrative.support_url" target="_blank" ng-href="{{narrative.support_url}}">Support</a>
 </div>
