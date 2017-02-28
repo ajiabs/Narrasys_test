@@ -254,8 +254,22 @@ angular.module('com.inthetelling.story')
 			return GET("/v3/episodes/" + epId);
 		};
 
-		svc.getNarrativeList = function () {
-			return GET("/v3/narratives/");
+		svc.getNarrativeList = function (customer) {
+		  if (!ittUtils.existy(customer)) {
+        return GET("/v3/narratives/");
+      }
+
+      return GET('/v3/narratives?customer_id=' + customer._id)
+        .then(function(narratives) {
+          narratives.forEach(function(narrative) {
+            narrative.subDomain = customer.domains[0];
+            modelSvc.cache('narrative', narrative);
+          });
+          customer.narratives = narratives;
+          modelSvc.cache('customer', customer);
+          return customer;
+        });
+
 		};
 
 		svc.createUserGroup = function (groupName) {

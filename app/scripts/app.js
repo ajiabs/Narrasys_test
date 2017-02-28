@@ -77,35 +77,40 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 					narrativesResolve: function ($route, $q, ittUtils, authSvc, dataSvc, modelSvc) {
 
 						//needs to be an array
-						var cachedNars = modelSvc.getNarrativesAsArray();
-						console.log('cachedNars', cachedNars[0]);
-						var cachedCustomers;
+            var cachedCustomers = modelSvc.getCustomersAsArray();
 						//if use visits /story/:id prior to visiting this route, they will have a single
 						//narrative in modelSvc. We consider the cache 'empty' if the only narrative
 						//in it came from loading data for /story/:id. Otherwise when they visit
 						// /stories, the only listing they would see would be the narrative from
 						// /stories/:id.
-						var isCached = Object.keys(cachedNars).length > 1;
+						var isCached = Object.keys(cachedCustomers).length > 0;
 
 						if (isCached) {
 							//since this is going to be displayed in a dropdown, it needs to be an array of objects.
-							cachedCustomers = modelSvc.getCustomersAsArray();
+
 							return $q(function (resolve) {
-								return resolve({n: cachedNars, c: cachedCustomers});
+								return resolve({c: cachedCustomers});
 							});
 						}
 
-						return authSvc.authenticate().then(function () {
-							return dataSvc.getCustomerList().then(function (customers) {
-								return dataSvc.getNarrativeList().then(function (narratives) {
-									angular.forEach(narratives, function (n) {
-										n.subDomain = modelSvc.customers[n.customer_id].domains[0];
-										modelSvc.cache('narrative', n);
-									});
-									return {n: narratives, c: customers};
-								});
-							});
-						});
+						// return authSvc.authenticate().then(function () {
+						// 	return dataSvc.getCustomerList().then(function (customers) {
+						// 		return dataSvc.getNarrativeList().then(function (narratives) {
+						// 			angular.forEach(narratives, function (n) {
+						// 			  var cust = modelSvc.customers[n.customer_id];
+						// 				n.subDomain = cust.domains[0];
+						// 				modelSvc.cache('narrative', n);
+						// 			});
+						// 			return {n: narratives, c: customers};
+						// 		});
+						// 	});
+						// });
+
+            return authSvc.authenticate().then(function () {
+              return dataSvc.getCustomerList().then(function (customers) {
+                return {c: customers};
+              });
+            });
 					}
 				}
 			})
