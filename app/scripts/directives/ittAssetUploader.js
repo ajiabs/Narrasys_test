@@ -3,6 +3,7 @@
 angular.module('com.inthetelling.story')
 	.directive('ittAssetUploader', ittAssetUploader);
 
+ittAssetUploader.$inject = ['$timeout', 'awsSvc', 'appState', 'modelSvc', 'dataSvc'];
 function ittAssetUploader($timeout, awsSvc, appState, modelSvc, dataSvc) {
 	return {
 		restrict: 'A',

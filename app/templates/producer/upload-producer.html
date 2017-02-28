@@ -22,7 +22,7 @@
 
 			<div ng-if="canAccess"
 				 itt-asset-uploader="episodeContainerId"
-				 callback="assetUploaded" mime-types="{{mimes}}">
+				 callback="assetUploaded(data)" mime-types="{{mimes}}">
 			</div>
 		</span>
 		<span ng-if="!showUploadField">

@@ -29,8 +29,11 @@
  */
 
 angular.module('com.inthetelling.story')
-	.factory('dataSvc', function ($q, $http, $routeParams, $timeout, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
-		var svc = {};
+  .factory('dataSvc', dataSvc);
+
+dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
+function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+  var svc = {};
 
 		/* ------------------------------------------------------------------------------ */
 
@@ -1368,5 +1371,5 @@ angular.module('com.inthetelling.story')
 			return ids;
 		};
 
-		return svc;
-	});
+  return svc;
+}
