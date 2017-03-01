@@ -83,18 +83,71 @@
 
 
             function _toggleNarrativesDisplay(customer, $index) {
-              
-              customer.showNarratives = !customer.showNarratives;
-              customer.narratives.forEach(function(narr, index, arr) {
-                narr.evenOdd = (arr.length + index) % 2 === 0;
-              });
 
-              ctrl.customersData.forEach(function(cust) {
-                if (customer._id !== cust._id) {
-                  cust.showNarratives = false;
-                  cust.evenOdd = !cust.evenOdd;
+              customer.showNarratives = !customer.showNarratives;
+
+              var currentEvenOdd = ctrl.customersData[$index].evenOdd;
+
+              customer.narratives = customer.narratives.reduce(function(narrs, narr, index) {
+                if (index === 0) {
+                  narr.evenOdd = !currentEvenOdd;
+                  narrs.push(narr);
+                  return narrs;
                 }
-              });
+
+                  narr.evenOdd = !narrs[index - 1].evenOdd;
+                  narrs.push(narr);
+                  return narrs;
+              }, []);
+
+
+
+              // var lastNarEvenOdd = customer.narratives[customer.narratives.length - 1].evenOdd;
+              // custRest.forEach(function(customer, index) {
+              //   if (index === 0) {
+              //     customer.evenOdd = !lastNarEvenOdd;
+              //   } else {
+              //     customer.evenOdd = !custRest[index - 1].evenOdd
+              //   }
+              // });
+              //
+              // ctrl.customersData = [custHead].concat(custRest);
+
+
+              // customer.narratives = customer.narratives.reduce(function(narrs, narr, index) {
+              //
+              //   if (index === 0) {
+              //     narr.evenOdd = lastCustEvenOdd;
+              //     narrs.push(narr);
+              //     return narrs;
+              //   }
+              //
+              //   narr.evenOdd = !narrs[index - 1].evenOdd;
+              //   narrs.push(narr);
+              //   return narrs;
+              // }, []);
+              //
+              // var lastNarrEvenOdd = customer.narratives.length % 2 === 0;
+              // var rest = $index + 1;
+              //
+              // for (; rest < ctrl.customersData.length; rest++) {
+              //   ctrl.customersData[rest].showNarratives = false;
+              //
+              //   if (rest - 1 === $index) {
+              //     ctrl.customersData[rest].evenOdd = !lastNarrEvenOdd;
+              //     // rest++;
+              //     break;
+              //   }
+              //
+              //   ctrl.customersData[rest].evenOdd = !ctrl.customersData[rest - 1].evenOdd;
+              // }
+
+              // ctrl.customersData.forEach(function(cust) {
+              //   if (customer._id !== cust._id) {
+              //     cust.showNarratives = false;
+              //     cust.evenOdd = !cust.evenOdd;
+              //   }
+              // });
             }
           }
 
