@@ -60,6 +60,11 @@
             });
           }
 
+          function gotoNarrative(narrativeId, $ev) {
+            $ev.stopPropagation();
+            window.location.href = '/#/story/' + narrativeId;
+          }
+
           function customerRowClick(customer) {
             customer.isActive = !customer.isActive;
 
@@ -88,10 +93,14 @@
           }
 
           function _toggleNarrativesOpened(customer, $index) {
+            //lazily load customers and cache them for later
             if (!_existy(customer.narratives) || customer.narratives.length === 0) {
+              //fetch and cache is async and will handle setting the evenOdd on the narratives/customers
+              //after they have resolved.
               _fetchAndCacheNarratives(customer, $index);
             }
-
+            //if we already cached our narratives and the list length is odd
+            //need to update the customers evenOdd.
             if (_existy(customer.narratives) && customer.narratives.length % 2 === 1) {
               _updateCustomersEvenOdd($index, $index % 2 === 0);
             }
@@ -100,6 +109,7 @@
 
           function _fetchAndCacheNarratives(customer, $index) {
             dataSvc.getNarrativeList(customer).then(function(customerResp) {
+              //setting evenOdd after fetching should only need to happen the first time.
               _updateNarrativeEvenOdd(customerResp, $index);
               if (customer.narratives.length % 2 === 1) {
                 _updateCustomersEvenOdd($index, $index % 2 === 0);
@@ -117,12 +127,13 @@
               ctrl.customersData[rest].evenOdd = !ctrl.customersData[rest - 1].evenOdd;
             }
           }
-
+          //look at the evenOdd of the customer selected,
+          //set the first narrative to the opposite of the above
           function _updateNarrativeEvenOdd(customer, $index) {
             var currentEvenOdd = ctrl.customersData[$index].evenOdd;
             customer.narratives = customer.narratives.reduce(function(narrs, narr, index) {
               if (index === 0) {
-                //set first narrative to be opposed of customer
+                //set first narrative to be opposite of customer
                 narr.evenOdd = !currentEvenOdd;
                 narrs.push(narr);
                 return narrs;
@@ -134,12 +145,6 @@
               return narrs;
             }, []);
           }
-
-          function gotoNarrative(narrativeId, $ev) {
-            $ev.stopPropagation();
-            window.location.href = '/#/story/' + narrativeId;
-          }
-
         }],
       controllerAs: '$ctrl',
       bindToController: true
