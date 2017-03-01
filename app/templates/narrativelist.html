@@ -5,6 +5,7 @@
 
     <itt-narrative-editor
       customers="$ctrl.selectedCustomer"
+      hide-customer-dropdown="true"
       on-done="$ctrl.toggleSelectNarrative()"
       on-update="$ctrl.addNarrative(n)">
     </itt-narrative-editor>
@@ -16,7 +17,7 @@
        ng-class="{'container__row--even': customer.evenOdd === false, 'container__row--odd': customer.evenOdd === true}">
 
     <!--drop down arrow-->
-    <span ng-click="$ctrl.fetchNarratives(customer, $event, $index)" ng-class="{ 'isOpen': customer.showNarratives, 'isClosed': !customer.showNarratives }">
+    <span ng-click="$ctrl.toggleRow(customer, $event, $index)" ng-class="{ 'isOpen': customer.showNarratives, 'isClosed': !customer.showNarratives }">
     </span>
 
     <p>{{customer.name}}</p>
