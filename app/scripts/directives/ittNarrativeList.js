@@ -37,14 +37,22 @@
               ctrl.canAccess = true;
             }
 
-            ctrl.customersData.forEach(function(cust, index) {
-              cust.evenOdd = index % 2 === 0;
-              if (_existy(cust.narratives) && cust.narratives.length >= 1) {
-                cust.narratives.forEach(function(narr, index) {
-                  narr.evenOdd = index % 2 === 0;
-                });
+            var len = ctrl.customersData.length, i = 0;
+            for (; i < len; i++) {
+              var currentCust = ctrl.customersData[i];
+              currentCust.evenOdd = i % 2 === 0;
+
+              var hasNarrativesOpen = _existy(currentCust.showNarratives) &&
+                                      currentCust.showNarratives === true &&
+                                      currentCust.narratives.length % 2 === 1;
+
+              if (hasNarrativesOpen) {
+                _updateCustomersEvenOdd(i, i % 2 === 0);
+                break;
               }
-            });
+            }
+
+
           }
 
           function toggleSelectNarrative(customer) {
@@ -62,7 +70,7 @@
 
           function gotoNarrative(narrativeId, $ev) {
             $ev.stopPropagation();
-            window.location.href = '/#/story/' + narrativeId;
+            $location.path('/story/' + narrativeId);
           }
 
           function customerRowClick(customer) {
