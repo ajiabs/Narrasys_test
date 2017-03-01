@@ -75,79 +75,64 @@
 
             if (!_existy(customer.narratives) || customer.narratives.length === 0) {
               dataSvc.getNarrativeList(customer).then(function(customer) {
+                console.log('open and fetch');
                 _toggleNarrativesDisplay(customer, $index);
               });
             } else {
-              _toggleNarrativesDisplay(customer, $index);
+              console.log('close!');
+              _toggleNarrativesDisplay(customer, $index, true);
             }
 
 
-            function _toggleNarrativesDisplay(customer, $index) {
+            function _toggleNarrativesDisplay(customer, $index, isClosing) {
 
               customer.showNarratives = !customer.showNarratives;
 
+              //determine the evenOdd of the selected customer
+              //for the first narrative, flip the evenOdd of the selected customer to maintain
+              //the alternating row color scheme.
               var currentEvenOdd = ctrl.customersData[$index].evenOdd;
-
               customer.narratives = customer.narratives.reduce(function(narrs, narr, index) {
                 if (index === 0) {
+                  //set first narrative to be opposed of customer
                   narr.evenOdd = !currentEvenOdd;
                   narrs.push(narr);
                   return narrs;
                 }
 
-                  narr.evenOdd = !narrs[index - 1].evenOdd;
-                  narrs.push(narr);
-                  return narrs;
+                //continue alternating scheme by looking at the prior index and flipping it.
+                narr.evenOdd = !narrs[index - 1].evenOdd;
+                narrs.push(narr);
+                return narrs;
               }, []);
 
+              //determine the evenOdd of the last narrative
+              var lastNarEvenOdd;
+              var rest;
 
+              if (isClosing === true) {
+                //upon close, revert next customer to the original color
+                ctrl.customersData[$index + 1].evenOdd = !ctrl.customersData[$index].evenOdd;
+                console.log('no dice');
+                rest = $index + 1;
+                for (; rest < ctrl.customersData.length; rest++) {
+                  ctrl.customersData[rest].evenOdd = !ctrl.customersData[rest - 1].evenOdd;
+                }
+                return;
+              }
 
-              // var lastNarEvenOdd = customer.narratives[customer.narratives.length - 1].evenOdd;
-              // custRest.forEach(function(customer, index) {
-              //   if (index === 0) {
-              //     customer.evenOdd = !lastNarEvenOdd;
-              //   } else {
-              //     customer.evenOdd = !custRest[index - 1].evenOdd
-              //   }
-              // });
-              //
-              // ctrl.customersData = [custHead].concat(custRest);
+              if (_existy(customer.narratives[customer.narratives.length -1])) {
+                lastNarEvenOdd = customer.narratives[customer.narratives.length - 1].evenOdd;
+                rest = $index + 1;
+                for (; rest < ctrl.customersData.length; rest++) {
+                  if (rest === $index + 1) {
+                    ctrl.customersData[rest].evenOdd = !lastNarEvenOdd;
+                    continue;
+                  }
 
-
-              // customer.narratives = customer.narratives.reduce(function(narrs, narr, index) {
-              //
-              //   if (index === 0) {
-              //     narr.evenOdd = lastCustEvenOdd;
-              //     narrs.push(narr);
-              //     return narrs;
-              //   }
-              //
-              //   narr.evenOdd = !narrs[index - 1].evenOdd;
-              //   narrs.push(narr);
-              //   return narrs;
-              // }, []);
-              //
-              // var lastNarrEvenOdd = customer.narratives.length % 2 === 0;
-              // var rest = $index + 1;
-              //
-              // for (; rest < ctrl.customersData.length; rest++) {
-              //   ctrl.customersData[rest].showNarratives = false;
-              //
-              //   if (rest - 1 === $index) {
-              //     ctrl.customersData[rest].evenOdd = !lastNarrEvenOdd;
-              //     // rest++;
-              //     break;
-              //   }
-              //
-              //   ctrl.customersData[rest].evenOdd = !ctrl.customersData[rest - 1].evenOdd;
-              // }
-
-              // ctrl.customersData.forEach(function(cust) {
-              //   if (customer._id !== cust._id) {
-              //     cust.showNarratives = false;
-              //     cust.evenOdd = !cust.evenOdd;
-              //   }
-              // });
+                  ctrl.customersData[rest].evenOdd = !ctrl.customersData[rest - 1].evenOdd;
+                }
+              }
             }
           }
 
