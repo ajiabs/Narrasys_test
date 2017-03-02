@@ -51,8 +51,6 @@
                 break;
               }
             }
-
-
           }
 
           function toggleSelectNarrative(customer) {
@@ -68,8 +66,9 @@
             });
           }
 
-          function gotoNarrative(narrativeId, $ev) {
+          function gotoNarrative(narrativeId, customer, $ev) {
             $ev.stopPropagation();
+            _closeOpenNarratives(customer, true);
             $location.path('/story/' + narrativeId);
           }
 
@@ -85,12 +84,29 @@
 
           function toggleRow(customer, $ev, $index) {
             $ev.stopPropagation();
-            customer.showNarratives = !customer.showNarratives;
-
+            _closeOpenNarratives(customer);
             if (customer.showNarratives) {
               _toggleNarrativesOpened(customer, $index);
             } else {
-              _toggleNarrativesClosed(customer, $index);
+              // customer.showNarratives = false;
+              // _toggleNarrativesClosed(customer, $index);
+            }
+          }
+
+          function _closeOpenNarratives(customer, skip) {
+            var len = ctrl.customersData.length - 1;
+            for (; len >= 0; --len) {
+              var currentCust = ctrl.customersData[len];
+
+              if (currentCust._id === customer._id && !skip) {
+                console.log('should skip', skip);
+                currentCust.showNarratives = !currentCust.showNarratives;
+              } else {
+                currentCust.showNarratives = false;
+                if (_existy(currentCust.narratives)) {
+                  _toggleNarrativesClosed(currentCust, len);
+                }
+              }
             }
           }
 

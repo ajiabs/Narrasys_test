@@ -29,11 +29,11 @@
     </div>
 
     <div ng-repeat="narrative in customer.narratives"
-         style="text-indent: 1em"
+         style="padding-left: 2em;"
          ng-if="customer.showNarratives === true"
          ng-class="{'hoverIndicator': customer.showNarratives, 'container__row--even': narrative.evenOdd === false, 'container__row--odd': narrative.evenOdd === true}">
       <div>
-        <p><a ng-click="$ctrl.gotoNarrative(narrative._id, $event)">{{narrative.name.en}}</a></p>
+        <p><a ng-click="$ctrl.gotoNarrative(narrative._id, customer, $event)">{{narrative.name.en}}</a></p>
         <small>
           <p ng-if="narrative.description">{{narrative.description.en}}</p>
         </small>
