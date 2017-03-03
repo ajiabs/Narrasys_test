@@ -441,19 +441,6 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
     }
     scenes = scenes.sort(sortByStartTime);
 
-
-    function fixEndTimes(scenes, duration) {
-      for (var i = 1, len = scenes.length; i < len; i++) {
-        if (i === len - 1) {
-          scenes[i].end_time = duration;
-        } else {
-          if (scenes[i].end_time !== scenes[i + 1].start_time) {
-            scenes[i].end_time = scenes[i + 1].start_time;
-          }
-        }
-      }
-    }
-
     for (var i = 1, len = scenes.length; i < len; i++) {
       if (i === len - 1) {
         if (scenes[i].end_time !== duration) {
