@@ -61,12 +61,11 @@ angular.module('com.inthetelling.story')
 
 
 		var isOnExistingSceneStart = function (time) {
-			angular.forEach(getScenes(), function (scene) {
-				if (scene.start_time === time) {
-					return true;
-				}
-			});
-			return false;
+		  //Array.some returns a boolean
+      //will stop iterating if condition is met and return true
+			return getScenes().some(function(scene) {
+			  return scene.start_time === time;
+      });
 		};
 
 		$scope.addEvent = function (producerItemType) {
