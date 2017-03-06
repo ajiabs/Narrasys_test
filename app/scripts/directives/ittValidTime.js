@@ -18,7 +18,7 @@
         if (ngModel && scope.item._type === 'Scene') {
           ngModel.$validators = {
             time: validateStartTime
-          }
+          };
         }
 
         function validateStartTime(viewVal) {
