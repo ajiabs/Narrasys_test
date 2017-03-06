@@ -66,13 +66,13 @@
             });
           }
 
-          function gotoNarrative(narrativeId, customer, $ev) {
+          function gotoNarrative(narrativeId, $ev) {
             $ev.stopPropagation();
-            _closeOpenNarratives(customer, true);
             $location.path('/story/' + narrativeId);
           }
 
-          function customerRowClick(customer) {
+          function customerRowClick(customer, $ev) {
+            $ev.stopPropagation();
             customer.isActive = !customer.isActive;
 
             ctrl.customersData.forEach(function(cust) {
@@ -88,6 +88,7 @@
             if (customer.showNarratives) {
               _toggleNarrativesOpened(customer, $index);
             } else {
+              // console.log('closing row!');
               // customer.showNarratives = false;
               // _toggleNarrativesClosed(customer, $index);
             }
@@ -99,7 +100,6 @@
               var currentCust = ctrl.customersData[len];
 
               if (currentCust._id === customer._id && !skip) {
-                console.log('should skip', skip);
                 currentCust.showNarratives = !currentCust.showNarratives;
               } else {
                 currentCust.showNarratives = false;

@@ -13,7 +13,6 @@
 		.controller('NarrativesCtrl', NarrativesCtrl);
 
 	function NarrativesCtrl($scope, authSvc,  narrativesResolve) {
-		$scope.narrativesResolve = narrativesResolve.n;
 		$scope.customersResolve = narrativesResolve.c;
 		$scope.logout = authSvc.logout;
 	}

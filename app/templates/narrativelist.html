@@ -13,7 +13,7 @@
   </itt-modal>
 
   <div ng-repeat="customer in $ctrl.customersData"
-       ng-click="$ctrl.customerRowClick(customer)"
+       ng-click="$ctrl.customerRowClick(customer, $event)"
        ng-class="{'container__row--even': customer.evenOdd === false, 'container__row--odd': customer.evenOdd === true}">
 
     <!--drop down arrow-->
@@ -31,9 +31,10 @@
     <div ng-repeat="narrative in customer.narratives"
          style="padding-left: 2em;"
          ng-if="customer.showNarratives === true"
+         ng-click="$ctrl.gotoNarrative(narrative._id, $event)"
          ng-class="{'hoverIndicator': customer.showNarratives, 'container__row--even': narrative.evenOdd === false, 'container__row--odd': narrative.evenOdd === true}">
       <div>
-        <p><a ng-click="$ctrl.gotoNarrative(narrative._id, customer, $event)">{{narrative.name.en}}</a></p>
+        <p>{{narrative.name.en}}</p>
         <small>
           <p ng-if="narrative.description">{{narrative.description.en}}</p>
         </small>

@@ -69,7 +69,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 					'<div class="standaloneAncillaryPage">',
 					'	<itt-nav on-logout="logout()"></itt-nav>',
 					'	<h1>Narratives</h1>',
-					'	<div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div>',
+					'	<div itt-narrative-list customers-data="customersResolve"></div>',
 					'</div>'
 				].join('\n'),
 				controller: 'NarrativesCtrl',
@@ -93,22 +93,9 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 							});
 						}
 
-						// return authSvc.authenticate().then(function () {
-						// 	return dataSvc.getCustomerList().then(function (customers) {
-						// 		return dataSvc.getNarrativeList().then(function (narratives) {
-						// 			angular.forEach(narratives, function (n) {
-						// 			  var cust = modelSvc.customers[n.customer_id];
-						// 				n.subDomain = cust.domains[0];
-						// 				modelSvc.cache('narrative', n);
-						// 			});
-						// 			return {n: narratives, c: customers};
-						// 		});
-						// 	});
-						// });
-
             return authSvc.authenticate().then(function () {
               return dataSvc.getCustomerList().then(function (customers) {
-                return {c: customers};
+                return { c: customers };
               });
             });
 					}
