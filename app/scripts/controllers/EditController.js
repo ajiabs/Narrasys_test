@@ -234,8 +234,13 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
           timelineSvc.injectEvents([modelSvc.events[data._id]]);
           saveAdjustedEvents(data, "create");
         } else {
-          modelSvc.resolveEpisodeEvents(appState.episodeId);
-          timelineSvc.updateEventTimes(modelSvc.events[data._id]);
+          if (data._type === 'Scene') {
+            timelineSvc.timelineEvents = [];
+            timelineSvc.injectEvents(modelSvc.episodeEvents(appState.episodeId), 0);
+          } else {
+            modelSvc.resolveEpisodeEvents(appState.episodeId);
+            timelineSvc.updateEventTimes(modelSvc.events[data._id]);
+          }
           saveAdjustedEvents(data, "update"); //TODO: send in the original (pre-move) event as last param
         }
 

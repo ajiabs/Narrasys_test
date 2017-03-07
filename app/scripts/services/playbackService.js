@@ -638,7 +638,7 @@
 		function _stateChangeCB(stateChangeEvent) {
 			var state = stateChangeEvent.state;
 			var emitterId = stateChangeEvent.emitterId;
-			console.log('pbs#stateChangeCB', state);
+			// console.log('pbs#stateChangeCB', state);
 			switch (state) {
 				case 'unstarted':
 					break;

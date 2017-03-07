@@ -815,7 +815,6 @@ angular.module('com.inthetelling.story')
 		};
 
 		svc.updateEventStates = function () {
-			// console.log("timelineSvc.updateEventStates");
 			// Sets past/present/future state of every event in the timeline.
 			// TODO performance check (though this isn't done often, only on seek and inject.)
 
@@ -848,8 +847,8 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
-
-			// console.log('timelineEvents', svc.timelineEvents);
+			console.log('tlEvents', svc.timelineEvents);
+			console.info('UPDATE EVENT STATES!', modelSvc.getScenes(appState.episodeId));
 		};
 
 		var alreadyPreloadedImages = {};
