@@ -5,12 +5,12 @@
 angular.module('com.inthetelling.story')
 	.directive('sxsInputTime', function (appState, $rootScope, $timeout, modelSvc, timelineSvc, playbackService) {
 		return {
-			// require: 'ngModel',
+			require: '?^^form',
 			scope: {
 				item: '=sxsInputTime'
 			},
 			templateUrl: 'templates/producer/inputtime.html',
-			link: function (scope, elem, attrs) {
+			link: function (scope, elem, attrs, ngForm) {
 				scope.playbackService = playbackService;
 				scope.parse = function (data) {
 					// console.log("Converting view ", data, " to model");
@@ -111,8 +111,13 @@ angular.module('com.inthetelling.story')
 
 				scope.setTime = function (t) { // pass in parsed values only!
 					// Validation:
-					if (t < 0) {
-						t = 0;
+					if (t < 0.1) {
+					  if (ngForm) {
+					    ngForm.time.$setValidity('time', false);
+					    ngForm.time.$setViewValue(scope.format(t));
+					    ngForm.time.$render();
+					    return;
+            }
 					}
 					if (t > episodeDuration) {
 						t = episodeDuration;

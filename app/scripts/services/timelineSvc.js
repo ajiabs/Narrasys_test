@@ -848,7 +848,6 @@ angular.module('com.inthetelling.story')
 				}
 			});
 			console.log('tlEvents', svc.timelineEvents);
-			console.info('UPDATE EVENT STATES!', modelSvc.getScenes(appState.episodeId));
 		};
 
 		var alreadyPreloadedImages = {};
