@@ -225,6 +225,12 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
     dataSvc.storeItem(toSave)
       .then(function (data) {
         data.cur_episode_id = appState.episodeId;
+
+
+        if (data._type === 'Scene') {
+          timelineSvc.timelineEvents = [];
+        }
+
         if (appState.editEvent._id === 'internal:editing') {
           // update the new item with its real ID (and remove the temp version)
           timelineSvc.removeEvent("internal:editing");
@@ -235,7 +241,6 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
           saveAdjustedEvents(data, "create");
         } else {
           if (data._type === 'Scene') {
-            timelineSvc.timelineEvents = [];
             timelineSvc.injectEvents(modelSvc.episodeEvents(appState.episodeId), 0);
           } else {
             modelSvc.resolveEpisodeEvents(appState.episodeId);

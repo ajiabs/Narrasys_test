@@ -64,6 +64,9 @@ function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc, pla
       }
 
       function handelValidation(t) {
+        scope.item.validationMessage = null;
+        ngForm.time.$setValidity('time', true);
+
         //these validations are specific to scenes.
         if (scope.item._type !== 'Scene') {
           return true;
@@ -74,7 +77,7 @@ function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc, pla
         var isOnExistingScene = validateSceneStartTime(t);
 
         isValidInput = validStartTime && isOnExistingScene;
-        scope.item.validationMessage = null;
+
         if (!isValidInput) {
           if (ngForm) {
             ngForm.time.$setValidity('time', false);
