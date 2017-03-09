@@ -3,7 +3,7 @@
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
 
 angular.module('com.inthetelling.story')
-	.directive('sxsInputTime', function (appState, $rootScope, $timeout, modelSvc, timelineSvc, playbackService) {
+	.directive('sxsInputTime', function (appState, $rootScope, $timeout, modelSvc, timelineSvc, playbackService, ittUtils) {
 		return {
 			require: '?^^form',
 			scope: {
@@ -11,8 +11,123 @@ angular.module('com.inthetelling.story')
 			},
 			templateUrl: 'templates/producer/inputtime.html',
 			link: function (scope, elem, attrs, ngForm) {
-				scope.playbackService = playbackService;
-				scope.parse = function (data) {
+
+			  var _existy = ittUtils.existy;
+
+        angular.extend(scope, {
+          fieldname: angular.copy(attrs.inputField), // start_time or end_time
+          realValue: angular.copy(scope.item[attrs.inputField]), // internal representation of the selected time.  Don't parse or format this, it causes rounding errors,
+          playbackService: playbackService,
+          model: format(angular.copy(scope.item[attrs.inputField])), // user input
+          appState: appState,
+          parse: parse,
+          format: format,
+          nudge: nudge,
+          setTime: setTime,
+          showTools: showTools,
+          isTranscript: isTranscript
+        });
+
+        onInit();
+
+        function onInit() {
+          if (scope.item._type === 'Scene') {
+            scope.scene = function () {
+              return scope.item;
+            };
+          } else {
+            scope.scene = function () {
+              return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, playbackService.getMetaProp('time'));
+            };
+          }
+        }
+
+        // Watch for user input, send it to item if different
+        scope.$watch(watchModel, handleUpdates);
+
+        function watchModel() {
+          return parse(scope.model);
+        }
+
+        function handleUpdates(parsedTime) {
+
+          setTime(parsedTime);
+
+          // Stop questions should always have the same start + end
+          if (attrs.inputField === 'start_time' && scope.item.stop) {
+            scope.item.end_time = parsedTime;
+          }
+        }
+
+        function handelValidation(t) {
+          var isValidInput = false;
+          var validStartTime = validateStartTime(t);
+          var isOnExistingScene = validateSceneStartTime(t);
+
+          isValidInput = validStartTime && isOnExistingScene;
+          scope.item.validationMessage = null;
+          if (!isValidInput) {
+            if (ngForm) {
+              ngForm.time.$setValidity('time', false);
+              ngForm.time.$setViewValue(format(t));
+              ngForm.time.$render();
+
+
+              if (!isOnExistingScene) {
+                scope.item.validationMessage = 'Scenes cannot share the same start time.';
+              }
+
+              if (!validStartTime) {
+                scope.item.validationMessage = 'Scenes cannot have a start time less than 0.1 seconds.';
+              }
+
+            }
+          }
+
+          return isValidInput
+        }
+
+        function validateSceneStartTime(t) {
+          var isOnSameStartTime;
+          var isValid = true;
+
+          if (scope.item._type === 'Scene') {
+
+            //don't check the current scene
+            if (scope.item.start_time !== t) {
+              isOnSameStartTime = modelSvc.isOnExistingSceneStart(t);
+              isValid = !isOnSameStartTime;
+              console.log("huh", isValid);
+            }
+          }
+
+          return isValid;
+        }
+
+        function validateStartTime(t) {
+          return (_existy(t) && t > 0.1);
+        }
+
+        function setTime(t) { // pass in parsed values only!
+
+          if (handelValidation(t) === false) {
+            return;
+          }
+
+          if (t > episodeDuration) {
+            t = episodeDuration;
+          }
+          if (scope.item.stop) {
+            scope.item.end_time = t;
+          }
+          scope.realValue = t;
+          scope.item[attrs.inputField] = scope.realValue;
+          scope.model = scope.format(t);
+
+          scope.item.invalid_end_time = (scope.item.start_time > scope.item.end_time);
+        }
+
+				function parse(data) {
 					// console.log("Converting view ", data, " to model");
 					var ret;
 					if (data === undefined || data === '') {
@@ -39,9 +154,9 @@ angular.module('com.inthetelling.story')
 					}
 					$rootScope.$emit('searchReindexNeeded'); // HACK
 					return ret;
-				};
+				}
 
-				scope.format = function (data) {
+				function format(data) {
 					// convert model value to view value
 					// in a way which is not completely borken, for a change
 					// srsly how was that even working before
@@ -51,90 +166,27 @@ angular.module('com.inthetelling.story')
 						secs = "0" + secs;
 					}
 					return mins + ":" + secs;
-				};
-
-				/* These are from back when I was cargo-culting using ngModel directly:
-				ngModel.$parsers.push(function toModel(data) {
-					return scope.parse(data);
-				});
-
-				ngModel.$formatters.push(function toView(data) {
-					return scope.format(data);
-				});
-				*/
-
-				scope.fieldname = angular.copy(attrs.inputField); // start_time or end_time
-				scope.realValue = angular.copy(scope.item[attrs.inputField]); // internal representation of the selected time.  Don't parse or format this, it causes rounding errors
-				scope.model = scope.format(scope.realValue); // user input
-				scope.appState = appState;
-				// console.log("initing inputTime: ", scope.realValue, scope.model);
-
-				scope.scene = (scope.item.type === 'Scene') ? scope.item : modelSvc.events[scope.item.scene_id];
-				if (scope.item._type === 'Scene') {
-					scope.scene = function () {
-						return scope.item;
-					};
-				} else {
-					scope.scene = function () {
-						return modelSvc.sceneAtEpisodeTime(scope.item.cur_episode_id, playbackService.getMetaProp('time'));
-					};
 				}
 
+				// console.log("initing inputTime: ", scope.realValue, scope.model);
 				// TODO this will break in multi-episode timelines
 				var episodeDuration = modelSvc.episodes[scope.item.cur_episode_id].masterAsset.duration;
 
-				// Watch for user input, send it to item if different
-				scope.$watch(function () {
-					return scope.parse(scope.model);
-				}, function (t) {
-					scope.setTime(t);
-
-					// Stop questions should always have the same start + end
-					if (attrs.inputField === 'start_time' && scope.item.stop) {
-						scope.item.end_time = t;
-					}
-
-				});
-
-				scope.nudge = function (amt) {
+				function nudge(amt) {
 					// keep the tooltip panel open:
 					$timeout.cancel(tooltipHider);
 					elem.find('.inputfield').focus();
 
 					// This ends up triggering setTime twice (it changes scope.model, which triggers the $watch)  Oh Well
 					var diff = amt / 30; // pretend 1 frame is always 1/30s for now
-					scope.setTime(scope.item[attrs.inputField] + diff);
+					setTime(scope.item[attrs.inputField] + diff);
 					if (attrs.inputField === 'start_time') {
 						timelineSvc.seek(scope.item[attrs.inputField] + diff);
 					}
-				};
-
-				scope.setTime = function (t) { // pass in parsed values only!
-					// Validation:
-					if (t < 0.1) {
-					  if (ngForm) {
-					    ngForm.time.$setValidity('time', false);
-					    ngForm.time.$setViewValue(scope.format(t));
-					    ngForm.time.$render();
-					    return;
-            }
-					}
-					if (t > episodeDuration) {
-						t = episodeDuration;
-					}
-					if (scope.item.stop) {
-						scope.item.end_time = t;
-					}
-					scope.realValue = t;
-					scope.item[attrs.inputField] = scope.realValue;
-					scope.model = scope.format(t);
-
-					scope.item.invalid_end_time = (scope.item.start_time > scope.item.end_time);
-
-				};
+				}
 
 				var tooltipHider;
-				scope.showTools = function (x) {
+				function showTools(x) {
 					if (x) {
 						scope.tooltip = true;
 					} else {
@@ -143,12 +195,12 @@ angular.module('com.inthetelling.story')
 							scope.tooltip = false;
 						}, 300);
 					}
-				};
+				}
 
-				scope.isTranscript = function () {
+				function isTranscript() {
 					// TODO
 					return false;
-				};
+				}
 
 			}
 		};

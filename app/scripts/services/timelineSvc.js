@@ -847,7 +847,7 @@ angular.module('com.inthetelling.story')
 					}
 				}
 			});
-			console.log('tlEvents', svc.timelineEvents);
+			// console.log('tlEvents', svc.timelineEvents);
 		};
 
 		var alreadyPreloadedImages = {};
