@@ -982,6 +982,23 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
     return ret;
   };
 
+  svc.isOnExistingSceneStart  = isOnExistingSceneStart;
+  function isOnExistingSceneStart(t) {
+    return getEpisodeScenes().some(function(scene) {
+      return scene.start_time === ittUtils.parseTime(t);
+    });
+  }
+
+  svc.getEpisodeScenes = getEpisodeScenes;
+  function getEpisodeScenes() {
+    return Object.keys(svc.events).reduce(function(scenes, key) {
+      if (svc.events[key].episode_id === appState.episodeId) {
+        scenes.push(svc.events[key]);
+      }
+      return scenes;
+    }, []);
+  }
+
   // returns whichever scene is current for the given time.
   svc.sceneAtEpisodeTime = function (epId, t) {
     t = t || playbackService.getMetaProp('time');

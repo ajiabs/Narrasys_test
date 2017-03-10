@@ -63,18 +63,10 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
   }
 
 
-  var isOnExistingSceneStart = function (time) {
-    //Array.some returns a boolean
-    //will stop iterating if condition is met and return true
-    return getScenes().some(function (scene) {
-      return scene.start_time === time;
-    });
-  };
 
   $scope.addEvent = function (producerItemType) {
-    console.warn('add event called!');
     if (producerItemType === 'scene') {
-      if (isOnExistingSceneStart(playbackService.getMetaProp('time'))) {
+      if (modelSvc.isOnExistingSceneStart(Math.round(playbackService.getMetaProp('time') * 100) / 100)) {
         return $scope.editCurrentScene();
       }
     }
@@ -225,19 +217,27 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
     dataSvc.storeItem(toSave)
       .then(function (data) {
         data.cur_episode_id = appState.episodeId;
+
+        var saveOperation = 'update';
         if (appState.editEvent._id === 'internal:editing') {
           // update the new item with its real ID (and remove the temp version)
           timelineSvc.removeEvent("internal:editing");
           delete(modelSvc.events["internal:editing"]);
           modelSvc.cache("event", dataSvc.resolveIDs(data));
           modelSvc.resolveEpisodeEvents(appState.episodeId);
-          timelineSvc.injectEvents([modelSvc.events[data._id]]);
-          saveAdjustedEvents(data, "create");
+          saveOperation = 'create';
+          console.log('test');
+        }
+
+        if (data._type === 'Scene') {
+          timelineSvc.timelineEvents = [];
+          timelineSvc.injectEvents(modelSvc.episodeEvents(appState.episodeId), 0);
         } else {
           modelSvc.resolveEpisodeEvents(appState.episodeId);
           timelineSvc.updateEventTimes(modelSvc.events[data._id]);
-          saveAdjustedEvents(data, "update"); //TODO: send in the original (pre-move) event as last param
         }
+
+        saveAdjustedEvents(data, saveOperation);
 
         // Delete attached asset(s)  (this should only occur for sxs items, for now)
         // yes we could combine these into one call I suppose but there will almost always only be one
