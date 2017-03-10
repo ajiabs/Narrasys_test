@@ -1,10 +1,6 @@
 <div class="episode episode-story" ng-class="episode.styleCss">
 	<span ng-include="'templates/episode/components/reviewmode.html'"></span>
 	<span ng-include="'templates/episode/components/watchmode.html'"></span>
-  <span ng-repeat="s in episode.scenes" ng-style="s.state === 'isCurrent' ? {'color': 'green', 'border': '1px solid green'} : {'color': 'red'}">
-
-    &nbsp; range: {{s.start_time}} to {{s.end_time}} - {{s.state}} &nbsp;
-  </span>
 	<span ng-repeat="scene in episode.scenes | isCurrent " ng-include="'templates/episode/components/discovermode.html'"></span>
 	<span ng-include="'templates/episode/components/video.html'"></span>
 	<span ng-include="'templates/episode/components/windowfg.html'"></span>
