@@ -90,7 +90,7 @@ function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc, pla
             }
 
             if (!validStartTime) {
-              scope.item.validationMessage = 'Scenes cannot have a start time less than 0.1 seconds.';
+              scope.item.validationMessage = 'For a start time <=0:00.1, please edit the first layout';
             }
 
           }
