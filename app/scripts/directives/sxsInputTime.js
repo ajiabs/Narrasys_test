@@ -96,7 +96,7 @@ function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc, pla
           }
         }
 
-        return isValidInput
+        return isValidInput;
       }
 
       function validateSceneStartTime(t) {
