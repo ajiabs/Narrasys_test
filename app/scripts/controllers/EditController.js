@@ -65,10 +65,8 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
 
 
   $scope.addEvent = function (producerItemType) {
-    console.warn('add event called!');
     if (producerItemType === 'scene') {
       if (modelSvc.isOnExistingSceneStart(Math.round(playbackService.getMetaProp('time') * 100) / 100)) {
-        console.log('editing!');
         return $scope.editCurrentScene();
       }
     }
