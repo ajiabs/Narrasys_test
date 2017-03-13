@@ -21,7 +21,7 @@ angular.module('com.inthetelling.story')
 				$scope.resolvingNarrative = false;
 				$scope.isAdmin = authSvc.userHasRole('admin');
 				$scope.canAccess = $scope.isAdmin|| authSvc.userHasRole('customer admin');
-        $scope.getLinkStatusReport = dataSvc.getCustomerLinkStatusReportSpreadsheet;
+				$scope.getLinkStatusReport = dataSvc.getCustomerLinkStatusReportSpreadsheet;
         //needs to be an array, not a k/v store
 				$scope.customers = modelSvc.getCustomersAsArray();
 
