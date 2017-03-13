@@ -14,13 +14,15 @@ angular.module('com.inthetelling.story')
 				addRootContext: '='
 			},
 			templateUrl: "templates/container.html",
-			controller:['$scope', '$location', 'modelSvc', 'authSvc', function($scope, $location, modelSvc, authSvc) {
+			controller:['$scope', '$location', 'modelSvc', 'authSvc', 'dataSvc', function($scope, $location, modelSvc, authSvc, dataSvc) {
 				$scope.toggleNarrativeModal = toggleNarrativeModal;
 				$scope.postNewNarrative = postNewNarrative;
 				$scope.showNarrativeModal = false;
 				$scope.resolvingNarrative = false;
-				$scope.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
-				//needs to be an array, not a k/v store
+				$scope.isAdmin = authSvc.userHasRole('admin');
+				$scope.canAccess = $scope.isAdmin|| authSvc.userHasRole('customer admin');
+				$scope.getLinkStatusReport = dataSvc.getCustomerLinkStatusReportSpreadsheet;
+        //needs to be an array, not a k/v store
 				$scope.customers = modelSvc.getCustomersAsArray();
 
 				function toggleNarrativeModal() {

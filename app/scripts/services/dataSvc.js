@@ -178,6 +178,12 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
     window.open(url);
   };
 
+  svc.getCustomerLinkStatusReportSpreadsheet = getCustomerLinkStatusReportSpreadsheet;
+  function getCustomerLinkStatusReportSpreadsheet(customerId) {
+    var url = '/v3/customers/' + customerId + '/link_status.xlsx';
+    window.open(url);
+  }
+
   var cachedPurchases = false;
   svc.getUserNarratives = function (userId) {
     if (cachedPurchases) {
