@@ -23,7 +23,7 @@
             //methods
             logout: authSvc.logout,
             user: appState.user,
-            toggleSelectNarrative: toggleSelectNarrative,
+            setSelectedNarrative: setSelectedNarrative,
             addNarrative: addNarrative,
             customerRowClick: customerRowClick,
             gotoNarrative: gotoNarrative,
@@ -37,23 +37,10 @@
               ctrl.canAccess = true;
             }
 
-            var len = ctrl.customersData.length, i = 0;
-            for (; i < len; i++) {
-              var currentCust = ctrl.customersData[i];
-              currentCust.evenOdd = i % 2 === 0;
-
-              var hasNarrativesOpen = _existy(currentCust.showNarratives) &&
-                                      currentCust.showNarratives === true &&
-                                      currentCust.narratives.length % 2 === 1;
-
-              if (hasNarrativesOpen) {
-                _updateAllEvenOdd();
-                break;
-              }
-            }
+            _updateAllEvenOdd();
           }
 
-          function toggleSelectNarrative(customer) {
+          function setSelectedNarrative(customer) {
             ctrl.narrativeSelect = !ctrl.narrativeSelect;
             ctrl.selectedCustomer = [customer];
           }
@@ -82,43 +69,43 @@
             });
           }
 
-          function toggleRow(customer, $ev, $index) {
+          function toggleRow(customer, $ev) {
             $ev.stopPropagation();
             // _closeOpenNarratives(customer);
             customer.showNarratives = !customer.showNarratives;
             if (customer.showNarratives) {
-              _toggleNarrativesOpened(customer, $index);
+              _toggleNarrativesOpened(customer);
             } else {
               customer.showNarratives = false;
-              _toggleNarrativesClosed(customer, $index);
+              _toggleNarrativesClosed(customer);
             }
           }
 
-          function _toggleNarrativesClosed(customer, $index) {
+          function _toggleNarrativesClosed(customer) {
             if (customer.narratives.length % 2 === 1) {
-              _updateAllEvenOdd($index);
+              _updateAllEvenOdd();
             }
           }
 
-          function _toggleNarrativesOpened(customer, $index) {
+          function _toggleNarrativesOpened(customer) {
             //lazily load customers and cache them for later
             if (!_existy(customer.narratives) || customer.narratives.length === 0) {
               //fetch and cache is async and will handle setting the evenOdd on the narratives/customers
               //after they have resolved.
-              _fetchAndCacheNarratives(customer, $index);
+              _fetchAndCacheNarratives(customer);
             }
             //if we already cached our narratives and the list length is odd
             //need to update the customers evenOdd.
             if (_existy(customer.narratives) && customer.narratives.length % 2 === 1) {
-              _updateAllEvenOdd($index);
+              _updateAllEvenOdd();
             }
 
           }
 
-          function _fetchAndCacheNarratives(customer, $index) {
+          function _fetchAndCacheNarratives(customer) {
             dataSvc.getNarrativeList(customer).then(function(customerResp) {
               //setting evenOdd after fetching should only need to happen the first time.
-              _updateAllEvenOdd($index);
+              _updateAllEvenOdd();
             });
           }
 
