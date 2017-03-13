@@ -47,7 +47,7 @@
                                       currentCust.narratives.length % 2 === 1;
 
               if (hasNarrativesOpen) {
-                _updateCustomersEvenOdd(i, i % 2 === 0);
+                _updateAllEvenOdd();
                 break;
               }
             }
@@ -84,35 +84,19 @@
 
           function toggleRow(customer, $ev, $index) {
             $ev.stopPropagation();
-            _closeOpenNarratives(customer);
+            // _closeOpenNarratives(customer);
+            customer.showNarratives = !customer.showNarratives;
             if (customer.showNarratives) {
               _toggleNarrativesOpened(customer, $index);
             } else {
-              // console.log('closing row!');
-              // customer.showNarratives = false;
-              // _toggleNarrativesClosed(customer, $index);
-            }
-          }
-
-          function _closeOpenNarratives(customer, skip) {
-            var len = ctrl.customersData.length - 1;
-            for (; len >= 0; --len) {
-              var currentCust = ctrl.customersData[len];
-
-              if (currentCust._id === customer._id && !skip) {
-                currentCust.showNarratives = !currentCust.showNarratives;
-              } else {
-                currentCust.showNarratives = false;
-                if (_existy(currentCust.narratives)) {
-                  _toggleNarrativesClosed(currentCust, len);
-                }
-              }
+              customer.showNarratives = false;
+              _toggleNarrativesClosed(customer, $index);
             }
           }
 
           function _toggleNarrativesClosed(customer, $index) {
             if (customer.narratives.length % 2 === 1) {
-              _updateCustomersEvenOdd($index, $index % 2 === 1);
+              _updateAllEvenOdd($index);
             }
           }
 
@@ -126,7 +110,7 @@
             //if we already cached our narratives and the list length is odd
             //need to update the customers evenOdd.
             if (_existy(customer.narratives) && customer.narratives.length % 2 === 1) {
-              _updateCustomersEvenOdd($index, $index % 2 === 0);
+              _updateAllEvenOdd($index);
             }
 
           }
@@ -134,31 +118,40 @@
           function _fetchAndCacheNarratives(customer, $index) {
             dataSvc.getNarrativeList(customer).then(function(customerResp) {
               //setting evenOdd after fetching should only need to happen the first time.
-              _updateNarrativeEvenOdd(customerResp, $index);
-              if (customer.narratives.length % 2 === 1) {
-                _updateCustomersEvenOdd($index, $index % 2 === 0);
-              }
+              _updateAllEvenOdd($index);
             });
           }
 
-          function _updateCustomersEvenOdd($index, bool) {
-            var rest = $index + 1;
-            for (; rest < ctrl.customersData.length; rest++) {
-              if (rest === $index + 1) {
-                ctrl.customersData[rest].evenOdd = bool;
-                continue;
+          function _updateAllEvenOdd() {
+            var rest = 1;
+            var len = ctrl.customersData.length;
+            for (; rest < len; rest++) {
+
+              var nextCust = ctrl.customersData[rest];
+              var currentCust = ctrl.customersData[rest - 1];
+              var lastNarr = null;
+
+              if (_existy(currentCust.narratives) && currentCust.narratives.length > 0 && currentCust.showNarratives === true) {
+                _updateNarrativeEvenOdd(currentCust, rest);
+                lastNarr = currentCust.narratives[currentCust.narratives.length - 1];
               }
-              ctrl.customersData[rest].evenOdd = !ctrl.customersData[rest - 1].evenOdd;
+
+              if (_existy(lastNarr)) {
+                nextCust.evenOdd = !lastNarr.evenOdd
+              } else {
+                nextCust.evenOdd = !currentCust.evenOdd;
+              }
+
             }
           }
+
           //look at the evenOdd of the customer selected,
           //set the first narrative to the opposite of the above
-          function _updateNarrativeEvenOdd(customer, $index) {
-            var currentEvenOdd = ctrl.customersData[$index].evenOdd;
+          function _updateNarrativeEvenOdd(customer) {
             customer.narratives = customer.narratives.reduce(function(narrs, narr, index) {
               if (index === 0) {
                 //set first narrative to be opposite of customer
-                narr.evenOdd = !currentEvenOdd;
+                narr.evenOdd = !customer.evenOdd;
                 narrs.push(narr);
                 return narrs;
               }
