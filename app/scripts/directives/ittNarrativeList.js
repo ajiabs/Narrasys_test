@@ -27,7 +27,9 @@
             addNarrative: addNarrative,
             customerRowClick: customerRowClick,
             gotoNarrative: gotoNarrative,
-            toggleRow: toggleRow
+            toggleRow: toggleRow,
+            setRowClasses: setRowClasses,
+            setNarrativeRowClasses: setNarrativeRowClasses
           });
 
           onInit();
@@ -43,6 +45,23 @@
           function setSelectedNarrative(customer) {
             ctrl.narrativeSelect = !ctrl.narrativeSelect;
             ctrl.selectedCustomer = [customer];
+          }
+
+          function setRowClasses(customer) {
+            return {
+              'hoverIndicator': !customer.showNarratives,
+              'container__row--even': customer.evenOdd === false,
+              'container__row--odd': customer.evenOdd === true,
+              'isActive': customer.isActive
+            };
+          }
+
+          function setNarrativeRowClasses(customer, narrative) {
+            return {
+              'hoverIndicator': customer.showNarratives,
+              'container__row--even': narrative.evenOdd === false,
+              'container__row--odd': narrative.evenOdd === true
+            }
           }
 
           function addNarrative(n) {
@@ -77,14 +96,12 @@
               _toggleNarrativesOpened(customer);
             } else {
               customer.showNarratives = false;
-              _toggleNarrativesClosed(customer);
+              _toggleNarrativesClosed();
             }
           }
 
-          function _toggleNarrativesClosed(customer) {
-            if (customer.narratives.length % 2 === 1) {
-              _updateAllEvenOdd();
-            }
+          function _toggleNarrativesClosed() {
+            _updateAllEvenOdd();
           }
 
           function _toggleNarrativesOpened(customer) {
@@ -96,7 +113,7 @@
             }
             //if we already cached our narratives and the list length is odd
             //need to update the customers evenOdd.
-            if (_existy(customer.narratives) && customer.narratives.length % 2 === 1) {
+            if (_existy(customer.narratives) && customer.narratives.length >= 1) {
               _updateAllEvenOdd();
             }
 
@@ -113,7 +130,9 @@
             var rest = 1;
             var len = ctrl.customersData.length;
             for (; rest < len; rest++) {
-
+              if (rest - 1 === 0) {
+                ctrl.customersData[0].evenOdd = false;
+              }
               var nextCust = ctrl.customersData[rest];
               var currentCust = ctrl.customersData[rest - 1];
               var lastNarr = null;

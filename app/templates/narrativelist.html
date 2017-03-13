@@ -14,8 +14,7 @@
 
   <div ng-repeat="customer in $ctrl.customersData"
        ng-click="$ctrl.customerRowClick(customer, $event)"
-       ng-class="{'container__row--even': customer.evenOdd === false, 'container__row--odd': customer.evenOdd === true}">
-
+       ng-class="$ctrl.setRowClasses(customer)">
     <!--drop down arrow-->
     <span ng-click="$ctrl.toggleRow(customer, $event)" ng-class="{ 'isOpen': customer.showNarratives, 'isClosed': !customer.showNarratives }">
     </span>
@@ -23,16 +22,16 @@
     <p>{{customer.name}}</p>
 
     <div ng-if="customer.isActive === true">
-      <div ng-if="$ctrl.canAccess" style="padding-left: 2em;">
+      <div ng-if="$ctrl.canAccess" style="padding-left: 1em;">
         <button ng-click="$ctrl.setSelectedNarrative(customer)">Add Narrative</button>
       </div>
     </div>
 
     <div ng-repeat="narrative in customer.narratives"
-         style="padding-left: 1em;"
+         style="padding-left: 2em;"
          ng-if="customer.showNarratives === true"
          ng-click="$ctrl.gotoNarrative(narrative._id, $event)"
-         ng-class="{'hoverIndicator': customer.showNarratives, 'container__row--even': narrative.evenOdd === false, 'container__row--odd': narrative.evenOdd === true}">
+         ng-class="$ctrl.setNarrativeRowClasses(customer, narrative)">
       <div>
         <p>{{narrative.name.en}}</p>
         <small>
