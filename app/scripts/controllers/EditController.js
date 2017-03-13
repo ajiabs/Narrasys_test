@@ -66,8 +66,9 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
 
   $scope.addEvent = function (producerItemType) {
     if (producerItemType === 'scene') {
-      if (modelSvc.isOnExistingSceneStart(Math.round(playbackService.getMetaProp('time') * 100) / 100)) {
-        return $scope.editCurrentScene();
+      var t = Math.round(playbackService.getMetaProp('time') * 100) / 100;
+      if (modelSvc.isOnExistingSceneStart(t)) {
+        return $scope.editCurrentScene(t);
       }
     }
     // console.log("itemEditController.addEvent");
@@ -253,9 +254,7 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
       });
   };
 
-  var getScenes = function () {
-    return modelSvc.episodes[appState.episodeId].scenes;
-  };
+  var getScenes = modelSvc.getEpisodeScenes;
 
   var isInternal = function (item) {
     return (item._id && item._id.match(/internal/));
@@ -458,21 +457,16 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
     return adjusted;
   };
 
-  $scope.editCurrentScene = function () {
-
-    angular.forEach(getScenes(), function (scene) {
-      if (scene.isCurrent) {
-        // TODO This is redundant with ittItem editItem...
-        appState.editEvent = modelSvc.events[scene._id];
-        appState.editEvent.templateOpts = selectService.getTemplates('scene');
-        appState.editEvent.cur_episode_id = appState.episodeId;
-        appState.editEvent.episode_id = appState.episodeId;
-        appState.editEvent.producerItemType = 'scene';
-        appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
-        appState.videoControlsLocked = true;
-        selectService.onSelectChange(appState.editEvent);
-      }
-    });
+  $scope.editCurrentScene = function (t) {
+    var scene = modelSvc.sceneAtEpisodeTime(appState.episodeId, t);
+    appState.editEvent = modelSvc.events[scene._id];
+    appState.editEvent.templateOpts = selectService.getTemplates('scene');
+    appState.editEvent.cur_episode_id = appState.episodeId;
+    appState.editEvent.episode_id = appState.episodeId;
+    appState.editEvent.producerItemType = 'scene';
+    appState.videoControlsActive = true; // TODO see playerController showControls; this may not be sufficient on touchscreens
+    appState.videoControlsLocked = true;
+    selectService.onSelectChange(appState.editEvent);
   };
 
   $scope.editEpisode = function () {
