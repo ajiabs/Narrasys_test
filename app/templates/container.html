@@ -37,6 +37,7 @@
 			<div ng-if="!container.addingContainer">
 				<div ng-if="container.isActive" class="button__row">
 					<button ng-click="container.addingContainer = true">Add Project</button>
+          <button ng-if="isAdmin" ng-click="getLinkStatusReport(container.customer_id)">Link Status Report</button>
 				</div>
 			</div>
 
