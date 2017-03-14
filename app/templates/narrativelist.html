@@ -19,7 +19,7 @@
     <span ng-click="$ctrl.toggleRow(customer, $event)" ng-class="customer.showNarratives ? 'isOpen' : 'isClosed'">
     </span>
 
-    <p>{{customer.name}}</p>
+    <a>{{customer.name}}</a>
 
     <div ng-if="customer.isActive === true">
       <div ng-if="$ctrl.canAccess" style="padding-left: 1em;">
@@ -33,9 +33,9 @@
          ng-click="$ctrl.gotoNarrative(narrative._id, $event)"
          ng-class="$ctrl.setNarrativeRowClasses(customer, narrative)">
       <div>
-        <p>{{narrative.name.en}}</p>
+        <a>{{narrative.name.en}}</a>
         <small>
-          <p ng-if="narrative.description">{{narrative.description.en}}</p>
+          <a ng-if="narrative.description">{{narrative.description.en}}</a>
         </small>
       </div>
     </div>
