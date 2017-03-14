@@ -143,7 +143,7 @@
               var lastNarr = null;
 
               if (_existy(currentCust.narratives) && currentCust.narratives.length > 0 && currentCust.showNarratives === true) {
-                _updateNarrativeEvenOdd(currentCust, rest);
+                _updateNarrativeEvenOdd(currentCust);
                 lastNarr = currentCust.narratives[currentCust.narratives.length - 1];
               }
 
@@ -164,11 +164,11 @@
                 var aName = a.name.en.toLowerCase();
                 var bName = b.name.en.toLowerCase();
                 if (aName < bName) {
-                  return -1
+                  return -1;
                 } else if (aName > bName) {
-                  return 1
+                  return 1;
                 }
-                return 0
+                return 0;
               })
               .reduce(function(narrs, narr, index) {
               if (index === 0) {
