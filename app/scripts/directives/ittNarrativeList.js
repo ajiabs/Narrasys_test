@@ -61,7 +61,7 @@
               'hoverIndicator': customer.showNarratives,
               'container__row--even': narrative.evenOdd === false,
               'container__row--odd': narrative.evenOdd === true
-            }
+            };
           }
 
           function addNarrative(n) {
@@ -143,7 +143,7 @@
               }
 
               if (_existy(lastNarr)) {
-                nextCust.evenOdd = !lastNarr.evenOdd
+                nextCust.evenOdd = !lastNarr.evenOdd;
               } else {
                 nextCust.evenOdd = !currentCust.evenOdd;
               }
