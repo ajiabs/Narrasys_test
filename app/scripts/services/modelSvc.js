@@ -45,6 +45,28 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
 
     }
   };
+  //add subdomain to each narrative then cache
+  //add narratives to customer object then cache customer.
+  svc.assocNarrativesWithCustomer = assocNarrativesWithCustomer;
+  function assocNarrativesWithCustomer(customer, narratives) {
+    narratives.forEach(function (narrative) {
+      narrative.subDomain = customer.domains[0];
+      svc.cache('narrative', narrative);
+    });
+    customer.narratives = cachedNarrativesByCustomer(customer);
+    svc.cache('customer', customer);
+    return customer;
+  }
+
+  svc.cachedNarrativesByCustomer = cachedNarrativesByCustomer;
+  function cachedNarrativesByCustomer(customer) {
+    return Object.keys(svc.narratives).reduce(function(narratives, key) {
+      if (svc.narratives[key].customer_id === customer._id) {
+        narratives.push(svc.narratives[key]);
+      }
+      return narratives;
+    }, []);
+  }
 
   svc.getCustomersAsArray = getCustomersAsArray;
   function getCustomersAsArray() {
@@ -59,6 +81,7 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
       return svc.narratives[n];
     });
   }
+
 
   svc.cache = function (cacheType, item) {
     if (cacheType === 'narrative') {

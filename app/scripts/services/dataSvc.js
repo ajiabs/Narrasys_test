@@ -270,12 +270,7 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
 
     return GET('/v3/narratives?customer_id=' + customer._id)
       .then(function (narratives) {
-        narratives.forEach(function (narrative) {
-          narrative.subDomain = customer.domains[0];
-          modelSvc.cache('narrative', narrative);
-        });
-        customer.narratives = narratives;
-        modelSvc.cache('customer', customer);
+        modelSvc.assocNarrativesWithCustomer(customer, narratives);
       });
   };
 

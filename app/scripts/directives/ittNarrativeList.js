@@ -66,8 +66,13 @@
 
           function addNarrative(n) {
             dataSvc.createNarrative(n).then(function (narrative) {
-              narrative.subDomain = modelSvc.customers[narrative.customer_id].domains[0];
-              modelSvc.cache('narrative', narrative);
+              var customer = modelSvc.customers[narrative.customer_id];
+              customer = modelSvc.assocNarrativesWithCustomer(customer, [narrative]);
+              var custOnScope = ctrl.customersData.filter(function(cust) {return cust._id === customer._id});
+              if (custOnScope.length === 1) {
+                _updateNarrativeEvenOdd(customer);
+                custOnScope[0] = customer;
+              }
               $location.path('/story/' + narrative._id);
             });
           }
@@ -154,7 +159,18 @@
           //look at the evenOdd of the customer selected,
           //set the first narrative to the opposite of the above
           function _updateNarrativeEvenOdd(customer) {
-            customer.narratives = customer.narratives.reduce(function(narrs, narr, index) {
+            customer.narratives = customer.narratives
+              .sort(function(a, b) {
+                var aName = a.name.en.toLowerCase();
+                var bName = b.name.en.toLowerCase();
+                if (aName < bName) {
+                  return -1
+                } else if (aName > bName) {
+                  return 1
+                }
+                return 0
+              })
+              .reduce(function(narrs, narr, index) {
               if (index === 0) {
                 //set first narrative to be opposite of customer
                 narr.evenOdd = !customer.evenOdd;
