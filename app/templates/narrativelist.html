@@ -34,9 +34,9 @@
          ng-class="$ctrl.setNarrativeRowClasses(customer, narrative)">
       <div>
         <a>{{narrative.name.en}}</a>
-        <small>
-          <a ng-if="narrative.description">{{narrative.description.en}}</a>
-        </small>
+        <p ng-if="narrative.description">
+          <small>{{narrative.description.en}}</small>
+        </p>
       </div>
     </div>
 
