@@ -68,7 +68,7 @@
             dataSvc.createNarrative(n).then(function (narrative) {
               var customer = modelSvc.customers[narrative.customer_id];
               customer = modelSvc.assocNarrativesWithCustomer(customer, [narrative]);
-              var custOnScope = ctrl.customersData.filter(function(cust) {return cust._id === customer._id});
+              var custOnScope = ctrl.customersData.filter(function(cust) {return cust._id === customer._id;});
               if (custOnScope.length === 1) {
                 _updateNarrativeEvenOdd(customer);
                 custOnScope[0] = customer;
