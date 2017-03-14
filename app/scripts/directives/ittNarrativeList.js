@@ -134,7 +134,7 @@
           function _updateAllEvenOdd() {
             var rest = 1;
             var len = ctrl.customersData.length;
-            for (; rest < len; rest++) {
+            for (; rest <= len; rest++) {
               if (rest - 1 === 0) {
                 ctrl.customersData[0].evenOdd = false;
               }
@@ -145,6 +145,10 @@
               if (_existy(currentCust.narratives) && currentCust.narratives.length > 0 && currentCust.showNarratives === true) {
                 _updateNarrativeEvenOdd(currentCust);
                 lastNarr = currentCust.narratives[currentCust.narratives.length - 1];
+              }
+
+              if (!_existy(nextCust)) {
+                return;
               }
 
               if (_existy(lastNarr)) {
