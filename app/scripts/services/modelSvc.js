@@ -992,7 +992,7 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
   svc.getEpisodeScenes = getEpisodeScenes;
   function getEpisodeScenes() {
     return Object.keys(svc.events).reduce(function(scenes, key) {
-      if (svc.events[key].episode_id === appState.episodeId) {
+      if (svc.events[key]._type === 'Scene' && svc.events[key].episode_id === appState.episodeId) {
         scenes.push(svc.events[key]);
       }
       return scenes;
