@@ -276,9 +276,7 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
         });
         customer.narratives = narratives;
         modelSvc.cache('customer', customer);
-        return customer;
       });
-
   };
 
   svc.createUserGroup = function (groupName) {

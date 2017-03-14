@@ -120,7 +120,7 @@
           }
 
           function _fetchAndCacheNarratives(customer) {
-            dataSvc.getNarrativeList(customer).then(function(customerResp) {
+            dataSvc.getNarrativeList(customer).then(function() {
               //setting evenOdd after fetching should only need to happen the first time.
               _updateAllEvenOdd();
             });
