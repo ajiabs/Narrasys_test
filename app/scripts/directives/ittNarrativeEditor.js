@@ -18,6 +18,7 @@
 				'		<div ng-show="!nEditor.hideCustomerDropdown && nEditor.canAccess">',
 				'			<label for="nCustomer">Customer',
 				'				<itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>',
+				'				<itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>',
 				'			</label>',
 				'			<select id="nCustomer" name="customer" required ng-model="nEditor.selectedCustomer" ng-change="nEditor.selectCustomer(nEditor.selectedCustomer)" ng-options="cust.name for cust in nEditor._customers track by cust._id"></select></br>',
 				'		</div>',
@@ -27,10 +28,11 @@
 				'		<input for="nName" type="text" name="name" placeholder="Add Narrative Title" ng-model="nEditor._narrative.name.en" required>',
 				'		<label for="nDescription">Description</label>',
 				'		<textarea id="nDescription" name="description" placeholder="Add a Description" ng-model="nEditor._narrative.description.en"></textarea>',
-				'		<label for="nPath">Url Path Name',
-				'			<itt-validation-tip ng-if="nEditForm.path.$invalid"  text="Url Path Name is required"></itt-validation-tip>',
+				'		<label for="nPath">Human-readable url:',
+				'			<itt-validation-tip ng-if="nEditForm.path.$invalid"  text="A human friendly URL is required"></itt-validation-tip>',
 				'		</label>',
-				'		<input id="nPath" type="text" name="path" placeholder="link-to-narrative" ng-model="nEditor._narrative.path_slug.en" required/>',
+        '   {{nEditor.host}}/#/{{nEditor._narrative.path_slug.en | slugify }}',
+				'		<input id="nPath" type="text" name="path" placeholder="human-friendly-link-to-narrative" ng-model="nEditor._narrative.path_slug.en" required/>',
 				'		<label for="nSupportUrl">Support Url',
 				'			<itt-validation-tip ng-if="nEditForm.supportUrl.$invalid" text="Not a valid URL"></itt-validation-tip>',
 				'		</label>',
@@ -61,7 +63,7 @@
 			},
 			controllerAs: 'nEditor',
 			bindToController: true,
-			controller: ['ittUtils', 'authSvc', function(ittUtils, authSvc) {
+			controller: ['$location', 'ittUtils', 'authSvc', function($location, ittUtils, authSvc) {
 				var ctrl = this;
 				var existy = ittUtils.existy;
 				//copy to dereference original narrative as we are two-way bound (one way binding available in 1.5)
@@ -74,7 +76,7 @@
 				ctrl.handleUpdate = handleUpdate;
 				ctrl.selectCustomer = selectCustomer;
 				ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
-
+				ctrl.host = $location.host();
 				_onInit();
 
 				function _onInit() {
