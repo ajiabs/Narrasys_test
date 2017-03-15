@@ -20,7 +20,7 @@
 				'<div>',
 				'	<span class="pencil__content" ng-transclude></span>',
 				'	<span style="text-indent: 0">',
-				'		<span class="edit-pencil" ng-click="onEdit()" ng-if="showPencil"></span>',
+				'		<span class="edit-pencil" ng-click="onEdit({$event: $event})" ng-if="showPencil"></span>',
 				'	</span>',
 				'</div>'
 			].join(' '),

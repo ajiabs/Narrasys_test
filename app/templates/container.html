@@ -28,9 +28,11 @@
 		</div>
 
 		<span ng-if="!container.editingContainer" ng-style="depth === 3 ? {'text-indent': '4em'} : ''">
-			<itt-edit-pencil can-access="true" on-edit="container.editingContainer = true">
+			<itt-edit-pencil ng-if="depth !== 0" can-access="true" on-edit="container.editingContainer = true">
 				<a ng-click="onToggleChildren(true)">{{container.name.en}}</a>
 			</itt-edit-pencil>
+
+      <a ng-if="depth === 0" ng-click="onToggleChildren(true)">{{container.name.en}}</a>
 		</span>
 
 		<div ng-if="depth === 0">

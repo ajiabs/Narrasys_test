@@ -1,13 +1,14 @@
 <div class="">
 
-  <itt-modal modal-class="narrative__modal" ng-if="$ctrl.narrativeSelect">
+  <itt-modal modal-class="narrative__modal" ng-if="$ctrl.narrativeSelect || $ctrl.narrativeToEdit">
     <h3>Add Narrative</h3>
 
     <itt-narrative-editor
       customers="$ctrl.selectedCustomer"
+      narrative="$ctrl.narrativeToEdit"
       hide-customer-dropdown="true"
-      on-done="$ctrl.setSelectedNarrative()"
-      on-update="$ctrl.addNarrative(n)">
+      on-done="$ctrl.closeAddOrEditModal()"
+      on-update="$ctrl.addOrUpdateNarrative(n)">
     </itt-narrative-editor>
 
   </itt-modal>
@@ -33,7 +34,9 @@
          ng-click="$ctrl.gotoNarrative(narrative._id, $event)"
          ng-class="$ctrl.setNarrativeRowClasses(customer, narrative)">
       <div>
-        <a>{{narrative.name.en}}</a>
+        <itt-edit-pencil can-access="true" on-edit="$ctrl.setNarrativeToEdit($event, narrative, customer)">
+          <a>{{narrative.name.en}}</a>
+        </itt-edit-pencil>
         <p ng-if="narrative.description">
           <small>{{narrative.description.en}}</small>
         </p>

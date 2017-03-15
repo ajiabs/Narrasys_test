@@ -24,12 +24,14 @@
             logout: authSvc.logout,
             user: appState.user,
             setSelectedNarrative: setSelectedNarrative,
-            addNarrative: addNarrative,
             customerRowClick: customerRowClick,
             gotoNarrative: gotoNarrative,
             toggleRow: toggleRow,
             setRowClasses: setRowClasses,
-            setNarrativeRowClasses: setNarrativeRowClasses
+            setNarrativeRowClasses: setNarrativeRowClasses,
+            setNarrativeToEdit: setNarrativeToEdit,
+            closeAddOrEditModal: closeAddOrEditModal,
+            addOrUpdateNarrative: addOrUpdateNarrative
           });
 
           onInit();
@@ -42,8 +44,36 @@
             _updateAllEvenOdd();
           }
 
+          function closeAddOrEditModal() {
+            ctrl.narrativeSelect = false;
+            ctrl.selectedCustomer = [];
+            ctrl.narrativeToEdit = false;
+          }
+
+          function addOrUpdateNarrative(n) {
+            var method = '';
+            if (ctrl.narrativeSelect === true) {
+              method = 'createNarrative'
+            } else if (Object.prototype.toString.call(n) === '[object Object]') {
+              method = 'updateNarrative';
+            }
+            _addOrUpdateNarr(n, method)
+              .then(function(narrativeId) {
+                if (method === 'createNarrative') {
+                  $location.path('/story/' + narrativeId);
+                }
+              })
+              .then(closeAddOrEditModal)
+          }
+
           function setSelectedNarrative(customer) {
             ctrl.narrativeSelect = !ctrl.narrativeSelect;
+            ctrl.selectedCustomer = [customer];
+          }
+
+          function setNarrativeToEdit($ev, narrative, customer) {
+            $ev.stopPropagation();
+            ctrl.narrativeToEdit = narrative;
             ctrl.selectedCustomer = [customer];
           }
 
@@ -62,19 +92,6 @@
               'container__row--even': narrative.evenOdd === false,
               'container__row--odd': narrative.evenOdd === true
             };
-          }
-
-          function addNarrative(n) {
-            dataSvc.createNarrative(n).then(function (narrative) {
-              var customer = modelSvc.customers[narrative.customer_id];
-              customer = modelSvc.assocNarrativesWithCustomer(customer, [narrative]);
-              var custOnScope = ctrl.customersData.filter(function(cust) {return cust._id === customer._id;});
-              if (custOnScope.length === 1) {
-                _updateNarrativeEvenOdd(customer);
-                custOnScope[0] = customer;
-              }
-              $location.path('/story/' + narrative._id);
-            });
           }
 
           function gotoNarrative(narrativeId, $ev) {
@@ -103,6 +120,20 @@
               customer.showNarratives = false;
               _toggleNarrativesClosed();
             }
+          }
+
+          function _addOrUpdateNarr(n, method) {
+            return dataSvc[method](n)
+              .then(function(narrative) {
+                var customer = modelSvc.customers[narrative.customer_id];
+                customer = modelSvc.assocNarrativesWithCustomer(customer, [narrative]);
+                var custOnScope = ctrl.customersData.filter(function(cust) {return cust._id === customer._id;});
+                if (custOnScope.length === 1) {
+                  _updateNarrativeEvenOdd(customer);
+                  custOnScope[0] = customer;
+                  return narrative._id;
+                }
+              });
           }
 
           function _toggleNarrativesClosed() {
