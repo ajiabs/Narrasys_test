@@ -56,12 +56,12 @@
           function addOrUpdateNarrative(n) {
             var method = '';
             if (ctrl.narrativeSelect === true) {
-              method = 'createNarrative'
+              method = 'createNarrative';
             } else if (Object.prototype.toString.call(n) === '[object Object]') {
               method = 'updateNarrative';
             }
 
-            _addOrUpdateNarr(n, method).then(closeAddOrEditModal)
+            _addOrUpdateNarr(n, method).then(closeAddOrEditModal);
           }
 
           function setSelectedNarrative(customer) {

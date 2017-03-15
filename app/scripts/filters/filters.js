@@ -282,5 +282,5 @@ angular.module('com.inthetelling.story')
         return ittUtils.slugify(str);
       }
       return '';
-    }
+    };
   });
