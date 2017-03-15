@@ -18,7 +18,6 @@
         '		<div ng-show="!$ctrl.hideCustomerDropdown && $ctrl.canAccess">',
         '			<label for="nCustomer">Customer',
         '				<itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>',
-        '				<itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>',
         '			</label>',
         '			<select id="nCustomer" name="customer" required ng-model="$ctrl.selectedCustomer" ng-change="$ctrl.selectCustomer($ctrl.selectedCustomer)" ng-options="cust.name for cust in $ctrl._customers track by cust._id"></select></br>',
         '		</div>',
@@ -39,9 +38,9 @@
         '		</label>',
         '		<input id="nSupportUrl" type="text" name="supportUrl" itt-valid-url placeholder="link for support" ng-model="$ctrl._narrative.support_url"/>',
         '		<label for="nNewWindow">Disable New Window</label>',
-        '		<input id="nNewWindow" type="checkbox" ng-model="$ctrl._narrative.disable_new_window"/>',
+        '		<input id="nNewWindow" type="checkbox" ng-model="$ctrl._narrative.disable_new_window"/> | ',
         '		<label for="nDisableNav">Disable Navigation</label>',
-        '		<input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/>',
+        '		<input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/> | ',
         '		<label for="nGuestAccess">Enable Guest Access</label>',
         '		<input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/>',
         '		<div class="ancillaryNav">',
@@ -58,13 +57,12 @@
         customerId: '=?',
         hideCustomerDropdown: '=?',
         name: '=?',
-        path: '=?',
         onDone: '&',
         onUpdate: '&'
       },
       controllerAs: '$ctrl',
       bindToController: true,
-      controller: ['$location', 'ittUtils', 'authSvc', function ($location, ittUtils, authSvc) {
+      controller: ['$location', 'ittUtils', 'authSvc', 'config', function ($location, ittUtils, authSvc, config) {
         var ctrl = this;
         var existy = ittUtils.existy;
         //copy to dereference original narrative as we are two-way bound (one way binding available in 1.5)
@@ -73,11 +71,10 @@
         ctrl._customers = angular.copy(this.customers);
         ctrl._containerId = angular.copy(this.containerId);
         ctrl._name = angular.copy(this.name);
-        ctrl._path = angular.copy(this.path);
         ctrl.handleUpdate = handleUpdate;
         ctrl.selectCustomer = selectCustomer;
         ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
-        ctrl.host = $location.host();
+        ctrl.host = $location.protocol() + ':' + config.apiDataBaseUrl;
         _onInit();
 
         function _onInit() {
@@ -92,13 +89,6 @@
             }
           }
 
-          if (existy(ctrl._path)) {
-            if (existy(ctrl._narrative)) {
-              ctrl._narrative.path_slug = ctrl._path;
-            } else {
-              ctrl._narrative = {path_slug: ctrl._path};
-            }
-          }
           setCustomer();
         }
 

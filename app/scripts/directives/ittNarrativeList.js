@@ -44,10 +44,13 @@
             _updateAllEvenOdd();
           }
 
-          function closeAddOrEditModal() {
+          function closeAddOrEditModal(narrativeId) {
             ctrl.narrativeSelect = false;
             ctrl.selectedCustomer = [];
             ctrl.narrativeToEdit = false;
+            if (narrativeId) {
+              $location.path('/story/' + narrativeId);
+            }
           }
 
           function addOrUpdateNarrative(n) {
@@ -57,13 +60,8 @@
             } else if (Object.prototype.toString.call(n) === '[object Object]') {
               method = 'updateNarrative';
             }
-            _addOrUpdateNarr(n, method)
-              .then(function(narrativeId) {
-                if (method === 'createNarrative') {
-                  $location.path('/story/' + narrativeId);
-                }
-              })
-              .then(closeAddOrEditModal)
+
+            _addOrUpdateNarr(n, method).then(closeAddOrEditModal)
           }
 
           function setSelectedNarrative(customer) {
@@ -112,7 +110,6 @@
 
           function toggleRow(customer, $ev) {
             $ev.stopPropagation();
-            // _closeOpenNarratives(customer);
             customer.showNarratives = !customer.showNarratives;
             if (customer.showNarratives) {
               _toggleNarrativesOpened(customer);
@@ -131,7 +128,9 @@
                 if (custOnScope.length === 1) {
                   _updateNarrativeEvenOdd(customer);
                   custOnScope[0] = customer;
-                  return narrative._id;
+                  if (method === 'createNarrative') {
+                    return narrative._id;
+                  }
                 }
               });
           }
