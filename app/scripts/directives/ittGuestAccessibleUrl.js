@@ -50,7 +50,7 @@
               timeline: 'tlPath',
               narrative: 'nPath'
             },
-            placeholder: 'human-friendly-link-to' + ctrl.type
+            placeholder: 'human-friendly-link-to ' + ctrl.type
           };
           ctrl.subDomain = _existy(ctrl.subDomain) && ctrl.subDomain || _existy(ctrl.narrative.subDomain) && ctrl.narrative.subDomain;
           console.log('subby', ctrl.subDomain);
