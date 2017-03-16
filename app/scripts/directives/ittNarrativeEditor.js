@@ -27,12 +27,7 @@
         '		<input for="nName" type="text" name="name" placeholder="Add Narrative Title" ng-model="$ctrl._narrative.name.en" required>',
         '		<label for="nDescription">Description</label>',
         '		<textarea id="nDescription" name="description" placeholder="Add a Description" ng-model="$ctrl._narrative.description.en"></textarea>',
-        '   <div ng-if="$ctrl._narrative.guest_access_allowed">',
-        '		  <label for="nPath">Guest Accessible URL: <span>{{$ctrl.host}}/#/{{$ctrl._narrative.path_slug.en | slugify }}</span>',
-        '			  <itt-validation-tip ng-if="nEditForm.path.$invalid"  text="A human friendly URL is required"></itt-validation-tip>',
-        '		  </label>',
-        '		  <input id="nPath" type="text" name="path" placeholder="human-friendly-link-to-narrative" ng-model="$ctrl._narrative.path_slug.en"/>',
-        '   </div>',
+        '   <itt-guest-accessible-url narrative="$ctrl._narrative" sub-domain="{{$ctrl.selectedCustomer.domains[0]}}"></itt-guest-accessible-url>',
         '		<label for="nSupportUrl">Support Url',
         '			<itt-validation-tip ng-if="nEditForm.supportUrl.$invalid" text="Not a valid URL"></itt-validation-tip>',
         '		</label>',
@@ -135,7 +130,6 @@
             } else {
               ctrl._customers.unshift({name: 'Select a Customer'});
             }
-
           }
         }
       }]

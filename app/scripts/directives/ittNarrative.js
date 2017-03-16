@@ -211,7 +211,6 @@ function ittNarrative() {
           name: {en: ''},
           description: {en: ''},
           hidden: false,
-          path_slug: '',
           sort_order: currSortOrder,
           isTemp: true,
           index: newIndex
