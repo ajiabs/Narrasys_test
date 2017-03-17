@@ -26,19 +26,22 @@
 			].join(' '),
 			link: function(scope, elm) {
 				scope.showPencil = false;
-				if (scope.canAccess === true) {
-					elm.mouseenter(function() {
-						scope.$apply(function() {
-							scope.showPencil = true;
-						});
-					});
 
-					elm.mouseleave(function() {
-						scope.$apply(function() {
-							scope.showPencil = false;
-						});
-					});
-				}
+        elm.mouseenter(function() {
+          if (scope.canAccess === true) {
+            scope.$apply(function() {
+              scope.showPencil = true;
+            });
+          }
+        });
+
+        elm.mouseleave(function() {
+          if (scope.canAccess === true) {
+            scope.$apply(function() {
+              scope.showPencil = false;
+            });
+          }
+        });
 			}
 	    };
 	}

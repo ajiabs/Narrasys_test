@@ -4,7 +4,7 @@
 
       <!-- begin display -->
       <div ng-hide="isEditing">
-        <itt-edit-pencil can-access="canAccess" on-edit="toggleEditing()">
+        <itt-edit-pencil can-access="!isEditingTimeline && canAccess" on-edit="toggleEditing()">
           <h2 ng-bind-html="narrative.name.en"></h2>
         </itt-edit-pencil>
         <p ng-bind-html="narrative.description.en"></p>
@@ -70,7 +70,8 @@
               <div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
                    class="tl__wrapper">
 
-                <itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
+                wtf {{!isEditingTimeline}}
+                <itt-edit-pencil can-access="!isEditing && !isEditingTimeline && canAccess" on-edit="toggleEditingTimeline(timeline)">
                   <h3>
                     <i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
                     <a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>

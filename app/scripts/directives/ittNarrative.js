@@ -129,7 +129,7 @@ function ittNarrative() {
 
       function toggleEditingTimeline(tl) {
         $scope.timelineUnderEdit = tl;
-        $scope.isEditingTimeline = !$scope.isEditingTimeline;
+        $scope.isEditingTimeline = true;
       }
 
       function toggleOwnership() {
@@ -147,6 +147,7 @@ function ittNarrative() {
           return tl !== $scope.tmpTimeline;
         });
         $scope.tmpTimeline = null;
+        $scope.isEditingTimeline = false;
       }
 
       function editorAction(newTl, currTl) {
