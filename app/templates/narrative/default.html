@@ -70,7 +70,6 @@
               <div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
                    class="tl__wrapper">
 
-                wtf {{!isEditingTimeline}}
                 <itt-edit-pencil can-access="!isEditing && !isEditingTimeline && canAccess" on-edit="toggleEditingTimeline(timeline)">
                   <h3>
                     <i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
