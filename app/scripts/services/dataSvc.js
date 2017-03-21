@@ -284,11 +284,11 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
 
   svc.createNarrative = function (narrativeData) {
     delete narrativeData.templateUrl;
-    return POST("/v3/narratives", narrativeData);
+    return SANE_POST("/v3/narratives", narrativeData);
   };
   svc.updateNarrative = function (narrativeData) {
     delete narrativeData.templateUrl;
-    return PUT("/v3/narratives/" + narrativeData._id, narrativeData);
+    return SANE_PUT("/v3/narratives/" + narrativeData._id, narrativeData);
   };
 
   svc.createChildEpisode = function (childData) {
@@ -754,6 +754,10 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
       return $http.post(path, data, config);
     }
     return $http.post(path, data);
+  };
+
+  var SANE_PUT = function(path, data) {
+    return $http.put(config.apiDataBaseUrl + path, data);
   };
 
   var PUT = function (path, putData, postprocessCallback) {

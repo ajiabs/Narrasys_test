@@ -17,6 +17,7 @@
         '   <label>LTI Url:</label><p class="--break-word"><small>{{::$ctrl.formatLTIUrl()}}</small></p>',
         ' </div>',
         ' <div ng-if="$ctrl.narrative.guest_access_allowed === true">',
+        '     <itt-validation-tip ng-if="$ctrl.error" text="{{$ctrl.error}}"></itt-validation-tip>',
         '	    <label for="{{$ctrl.display.id[$ctrl.type]}}">Guest Accessible URL:</label><p class="--break-word"><small>{{$ctrl.formatGuestAccessibleUrl() | slugify}}</small></p>',
         '     <input id="{{$ctrl.display.id[$ctrl.type]}}" type="text" name="path" placeholder="{{$ctrl.display.placeholder}}" ng-model="$ctrl[$ctrl.type].path_slug.en">',
         ' </div>',
@@ -25,7 +26,8 @@
       scope: {
         narrative: '=',
         timeline: '=?',
-        subDomain: '@?'
+        subDomain: '@?',
+        error: '@?'
       },
       controller: ['ittUtils', function(ittUtils) {
         var ctrl = this;

@@ -286,6 +286,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		$httpProvider.interceptors.push(function ($q, errorSvc) {
 			return {
 				'responseError': function (rejection) {
+
+				  if (rejection.data.path_slug) {
+				    return $q(function(resolve, reject) {return reject(rejection);});
+          }
+
 					errorSvc.error(rejection);
 					return $q.reject(rejection);
 				}

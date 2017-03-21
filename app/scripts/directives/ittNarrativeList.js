@@ -44,12 +44,18 @@
             _updateAllEvenOdd();
           }
 
-          function closeAddOrEditModal(narrativeId) {
+          function closeAddOrEditModal(narrative) {
             ctrl.narrativeSelect = false;
             ctrl.selectedCustomer = [];
             ctrl.narrativeToEdit = false;
-            if (narrativeId) {
-              $location.path('/story/' + narrativeId);
+            if (narrative) {
+              $location.path('/story/' + narrative._id);
+            }
+          }
+
+          function handleErr(err) {
+            if (err.data.path_slug) {
+              ctrl.narrativeToEdit.error = 'path slug is already taken';
             }
           }
 
@@ -61,7 +67,12 @@
               method = 'updateNarrative';
             }
 
-            _addOrUpdateNarr(n, method).then(closeAddOrEditModal);
+            _addOrUpdateNarr(n, method)
+              .then(closeAddOrEditModal)
+              .catch(function(err) {
+                handleErr(err);
+              })
+
           }
 
           function setSelectedNarrative(customer) {
@@ -121,7 +132,8 @@
 
           function _addOrUpdateNarr(n, method) {
             return dataSvc[method](n)
-              .then(function(narrative) {
+              .then(function(resp) {
+                var narrative = resp.data;
                 var customer = modelSvc.customers[narrative.customer_id];
                 customer = modelSvc.assocNarrativesWithCustomer(customer, [narrative]);
                 var custOnScope = ctrl.customersData.filter(function(cust) {return cust._id === customer._id;});
@@ -129,7 +141,7 @@
                   _updateNarrativeEvenOdd(customer);
                   custOnScope[0] = customer;
                   if (method === 'createNarrative') {
-                    return narrative._id;
+                    return narrative;
                   }
                 }
               });

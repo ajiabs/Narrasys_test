@@ -2,49 +2,59 @@
  * Created by githop on 6/16/16.
  */
 
-(function() {
-	'use strict';
+(function () {
+  'use strict';
 
-	angular.module('com.inthetelling.story')
-		.directive('ittEditPencil', ittEditPencil);
+  angular.module('com.inthetelling.story')
+    .directive('ittEditPencil', ittEditPencil);
 
-	function ittEditPencil() {
-	    return {
-	        restrict: 'EA',
-			transclude: true,
-			scope: {
-				canAccess: '=?',
-				onEdit: '&'
-			},
-			template: [
-				'<div>',
-				'	<span class="pencil__content" ng-transclude></span>',
-				'	<span style="text-indent: 0">',
-				'		<span class="edit-pencil" ng-click="onEdit({$event: $event})" ng-if="showPencil"></span>',
-				'	</span>',
-				'</div>'
-			].join(' '),
-			link: function(scope, elm) {
-				scope.showPencil = false;
+  function ittEditPencil() {
+    return {
+      restrict: 'EA',
+      transclude: true,
+      scope: {
+        canAccess: '=?',
+        onEdit: '&'
+      },
+      template: [
+        '<div>',
+        '	<span class="pencil__content" ng-transclude></span>',
+        '	<span style="text-indent: 0">',
+        '		<span class="edit-pencil" ng-click="sendEdit($event)" ng-if="showPencil"></span>',
+        '	</span>',
+        '</div>'
+      ].join(' '),
+      link: function (scope, elm) {
+        scope.showPencil = false;
 
-        elm.mouseenter(function() {
+        scope.sendEdit = sendEdit;
+        elm.mouseenter(mouseenter);
+        elm.mouseleave(mouseleave);
+
+        function sendEdit($ev) {
+          scope.showPencil = false;
+          scope.onEdit({$event: $ev});
+        }
+
+        function mouseenter() {
           if (scope.canAccess === true) {
-            scope.$apply(function() {
+            scope.$apply(function () {
               scope.showPencil = true;
             });
           }
-        });
+        }
 
-        elm.mouseleave(function() {
+        function mouseleave() {
           if (scope.canAccess === true) {
-            scope.$apply(function() {
+            scope.$apply(function () {
               scope.showPencil = false;
             });
           }
-        });
-			}
-	    };
-	}
+        }
+
+      }
+    };
+  }
 
 
 })();

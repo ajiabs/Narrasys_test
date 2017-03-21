@@ -60,8 +60,8 @@
               on-delete="deleteTimeline(t)">
             </itt-timeline-editor>
 
-            <div ng-mouseenter="showDrag = true"
-                 ng-mouseleave="showDrag = false"
+            <div ng-mouseenter="timelineMouseEv($event)"
+                 ng-mouseleave="timelineMouseEv($event)"
                  ng-class="{'timeline--hidden': timeline.hidden}">
 
 							<span ng-show="canAccess && showDrag" class="tlDrag__handle" ui-tree-handle>

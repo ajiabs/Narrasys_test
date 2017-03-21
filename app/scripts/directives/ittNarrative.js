@@ -69,6 +69,7 @@ function ittNarrative() {
         editorAction: editorAction,
         deleteTimeline: deleteTimeline,
         exportToSpreadsheet: dataSvc.getNarrativeExportAsSpreadsheet,
+        timelineMouseEv: timelineMouseEv,
         isEditing: false,
         canAccess: false,
         isEditingTimeline: false,
@@ -123,6 +124,19 @@ function ittNarrative() {
         _setTotalNarrativeDuration($scope.narrative.timelines);
       }
 
+      function timelineMouseEv($ev) {
+        //the 'this' context here refers to the current item scope
+        //e.g. the timeline row that was entered/left
+        switch ($ev.type) {
+          case 'mouseenter':
+            this.showDrag = true;
+            break;
+          case 'mouseleave':
+            this.showDrag = false;
+            break;
+        }
+      }
+
       function toggleEditing() {
         $scope.isEditing = !$scope.isEditing;
       }
@@ -130,6 +144,9 @@ function ittNarrative() {
       function toggleEditingTimeline(tl) {
         $scope.timelineUnderEdit = tl;
         $scope.isEditingTimeline = true;
+        //the 'this' context here refers to the current item scope
+        //eg the timeline that was clicked.
+        this.showDrag = false;
       }
 
       function toggleOwnership() {
