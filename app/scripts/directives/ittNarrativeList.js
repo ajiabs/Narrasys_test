@@ -153,7 +153,7 @@
 
           function _toggleNarrativesOpened(customer) {
             //lazily load customers and cache them for later
-            if (!_existy(customer.narratives) || customer.narratives.length === 0) {
+            if (!_existy(customer.narratives) || customer.narratives.length <= 1) {
               //fetch and cache is async and will handle setting the evenOdd on the narratives/customers
               //after they have resolved.
               _fetchAndCacheNarratives(customer);

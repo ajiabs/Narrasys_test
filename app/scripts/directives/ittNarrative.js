@@ -36,8 +36,8 @@ function ittNarrative() {
 			narrativeData: '=',
 			customerData: '='
 		},
-    controller: ['$scope', 'authSvc', 'appState', 'dataSvc', 'ittUtils',
-      function ($scope, authSvc, appState, dataSvc, ittUtils) {
+    controller: ['$scope', 'authSvc', 'appState', 'dataSvc', 'modelSvc', 'ittUtils',
+      function ($scope, authSvc, appState, dataSvc, modelSvc, ittUtils) {
 
       var treeOpts = {
         accept: function(/*sourceNodeScope, destNodesScope, destIndex*/) {
@@ -314,7 +314,9 @@ function ittNarrative() {
           $scope.isEditing = false;
           //updateNarrative returns just the new narrative object, without timelines array
           //merge the existing narrative on scope with the one returned via our post resp.
-          angular.extend($scope.narrative, resp);
+          angular.extend($scope.narrative, resp.data);
+          var cust = modelSvc.customers[resp.data.customer_id];
+          modelSvc.assocNarrativesWithCustomer(cust, [resp.data]);
         });
       }
 
