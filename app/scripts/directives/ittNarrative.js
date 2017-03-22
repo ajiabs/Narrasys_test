@@ -129,10 +129,10 @@ function ittNarrative() {
         //e.g. the timeline row that was entered/left
         switch ($ev.type) {
           case 'mouseenter':
-            this.showDrag = true;
+            this.showDrag = true; //jshint ignore:line
             break;
           case 'mouseleave':
-            this.showDrag = false;
+            this.showDrag = false; //jshint ignore:line
             break;
         }
       }
@@ -146,7 +146,7 @@ function ittNarrative() {
         $scope.isEditingTimeline = true;
         //the 'this' context here refers to the current item scope
         //eg the timeline that was clicked.
-        this.showDrag = false;
+        this.showDrag = false; // jshint ignore:line
       }
 
       function toggleOwnership() {

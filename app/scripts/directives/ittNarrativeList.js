@@ -71,7 +71,7 @@
               .then(closeAddOrEditModal)
               .catch(function(err) {
                 handleErr(err);
-              })
+              });
 
           }
 
