@@ -7,7 +7,37 @@
 
   angular.module('com.inthetelling.story')
     .directive('ittNarrativeEditor', ittNarrativeEditor);
+  /**
+   * @ngdoc directive
+   * @name iTT.directive:ittNarrativeEditor
+   * @restrict 'EA'
+   * @scope
+   * @description
+   * A presentational component used to edit narratives
+   * @param {Object} narrative the narrative to edit
+   * @param {Array} customers an array of customers associated with the narrative
+   * @param {customerId:string, containerId:string, name:string} containerInfo container specific info to set on the narrative
+   * @param {Function} onDone output to call when on cancel.
+   * @param {function} onUpdate output to call when saving.
+   * @example
+   * <pre>
+   *  //containers page
+   *  <itt-narrative-editor
+        customers="customers"
+        container-info="{containerId: container._id, customerId: container.customer_id, name: container.name}"
+        on-done="toggleNarrativeModal()"
+        on-update="postNewNarrative(data)">
+      </itt-narrative-editor>
 
+      //narrative show/index pages
+      <itt-narrative-editor
+        customers="$ctrl.selectedCustomer"
+        narrative="$ctrl.narrativeToEdit"
+        on-done="$ctrl.closeAddOrEditModal()"
+        on-update="$ctrl.addOrUpdateNarrative(n)">
+      </itt-narrative-editor>
+   * </pre>
+   */
   function ittNarrativeEditor() {
     return {
       restrict: 'EA',
@@ -15,12 +45,15 @@
         '<div class="narrative__edit">',
         '<h2>Narrative Settings</h2>',
         '	<form name="nEditForm">',
-        '		<div ng-show="!$ctrl.hideCustomerDropdown && $ctrl.canAccess">',
+        '		<div ng-show="$ctrl._containerInfo && $ctrl.canAccess">',
         '			<label for="nCustomer">Customer',
         '				<itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>',
         '			</label>',
         '			<select id="nCustomer" name="customer" required ng-model="$ctrl.selectedCustomer" ng-change="$ctrl.selectCustomer($ctrl.selectedCustomer)" ng-options="cust.name for cust in $ctrl._customers track by cust._id"></select></br>',
         '		</div>',
+        '   <div ng-if="$ctrl.selectedCustomer && $ctrl._containerInfo == null">',
+        '   <h5>{{$ctrl.selectedCustomer.name}}</h5>',
+        '   </div>',
         '		<label id="nName">Narrative Title',
         '			<itt-validation-tip ng-if="nEditForm.name.$invalid" text="Title is required"></itt-validation-tip>',
         '		</label>',
@@ -46,45 +79,34 @@
         '</div>'
       ].join(' '),
       scope: {
-        narrative: '=',
+        narrative: '=?',
         customers: '=',
-        containerId: '=?',
-        customerId: '=?',
-        hideCustomerDropdown: '=?',
-        name: '=?',
+        containerInfo: '=?',
         onDone: '&',
         onUpdate: '&'
       },
       controllerAs: '$ctrl',
       bindToController: true,
-      controller: ['$location', 'ittUtils', 'authSvc', 'config', function ($location, ittUtils, authSvc, config) {
+      controller: ['ittUtils', 'authSvc', function (ittUtils, authSvc) {
         var ctrl = this;
         var existy = ittUtils.existy;
-        //copy to dereference original narrative as we are two-way bound (one way binding available in 1.5)
-        ctrl._narrative = angular.copy(this.narrative);
-        ctrl._customerId = angular.copy(this.customerId);
-        ctrl._customers = angular.copy(this.customers);
-        ctrl._containerId = angular.copy(this.containerId);
-        ctrl._name = angular.copy(this.name);
-        ctrl.handleUpdate = handleUpdate;
-        ctrl.selectCustomer = selectCustomer;
-        ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
-        ctrl.host = $location.protocol() + ':' + config.apiDataBaseUrl;
+
+        angular.extend(ctrl, {
+          canAccess: authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'),
+          _narrative: angular.copy(ctrl.narrative),
+          _customers: angular.copy(ctrl.customers),
+          _containerInfo: angular.copy(ctrl.containerInfo),
+          selectedCustomer: null,
+          //
+          handleUpdate: handleUpdate,
+          selectCustomer: selectCustomer
+        });
+
         _onInit();
 
         function _onInit() {
-          //check for name or path as given input
-          //set input name/path on narrative if it exists
-          //otherwise create narrative object and assign name/path
-          if (existy(ctrl._name)) {
-            if (existy(ctrl._narrative)) {
-              ctrl._narrative.name = ctrl._name;
-            } else {
-              ctrl._narrative = {name: ctrl._name};
-            }
-          }
-
-          setCustomer();
+          _setNameFromContainer();
+          _setCustomer();
         }
 
         //set selected customer on-change of dropdown select
@@ -110,20 +132,32 @@
             '_id'
           ];
           var narrative = ittUtils.pick(n, fields);
-          if (existy(ctrl._containerId)) {
-            ctrl.onUpdate({data: {n: narrative, c: ctrl._containerId}});
+          if (existy(ctrl._containerInfo)) {
+            ctrl.onUpdate({data: {n: narrative, c: ctrl._containerInfo.containerId}});
           } else {
             ctrl.onUpdate({n: narrative});
           }
 
         }
+        //check for name or path as given input from the containerInfo param
+        //set input name/path on narrative if it exists
+        //otherwise create narrative object and assign name/path
+        function _setNameFromContainer() {
+          if (existy(ctrl._containerInfo)) {
+            if (existy(ctrl._narrative)) {
+              ctrl._narrative.name = ctrl._containerInfo.name;
+            } else {
+              ctrl._narrative = {name: ctrl._containerInfo.name};
+            }
+          }
+        }
 
-        function setCustomer() {
+        function _setCustomer() {
           if (ctrl._customers.length === 1) {
             ctrl.selectedCustomer = ctrl._customers[0];
           } else {
-            if (existy(ctrl._narrative) || existy(ctrl._customerId)) {
-              var cId = ctrl._customerId || ctrl._narrative.customer_id;
+            if (existy(ctrl._narrative) || existy(ctrl._containerInfo)) {
+              var cId = existy(ctrl._containerInfo) && ctrl._containerInfo.customerId || ctrl._narrative.customer_id;
               ctrl.selectedCustomer = ctrl._customers.filter(function (c) {
                 return c._id === cId;
               })[0];

@@ -287,7 +287,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 			return {
 				'responseError': function (rejection) {
 
-				  if (rejection.data.path_slug) {
+				  if (rejection.data && rejection.data.path_slug) {
 				    return $q(function(resolve, reject) {return reject(rejection);});
           }
 

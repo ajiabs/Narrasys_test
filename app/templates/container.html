@@ -8,9 +8,7 @@
 	<itt-modal modal-class="narrative__modal" ng-if="showNarrativeModal">
 		<itt-narrative-editor
 			customers="customers"
-			container-id="container._id"
-			name="container.name"
-			customer-id="container.customer_id"
+      container-info="{containerId: container._id, customerId: container.customer_id, name: container.name}"
 			on-done="toggleNarrativeModal()"
 			on-update="postNewNarrative(data)">
 		</itt-narrative-editor>
