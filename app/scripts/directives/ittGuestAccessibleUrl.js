@@ -12,7 +12,7 @@
     return {
       restrict: 'EA',
       template: [
-        '<div>',
+        '<div ng-if="!$ctrl.clipboardMode">',
         ' <div ng-if="$ctrl.showLTIUrl()">',
         '   <label>LTI Url:</label><p class="--break-word"><small>{{::$ctrl.formatLTIUrl()}}</small></p>',
         ' </div>',
@@ -21,11 +21,13 @@
         '	    <label for="{{$ctrl.display.id[$ctrl.type]}}">Guest Accessible URL:</label><p class="--break-word"><small>{{$ctrl.formatGuestAccessibleUrl() | slugify}}</small></p>',
         '     <input id="{{$ctrl.display.id[$ctrl.type]}}" type="text" name="path" placeholder="{{$ctrl.display.placeholder}}" ng-model="$ctrl[$ctrl.type].path_slug.en">',
         ' </div>',
-        '</div>'
+        '</div>',
+        '<button ng-if="$ctrl.clipboardMode" itt-clipboard source-text="{{$ctrl.formatUrlToCopy()}}">{{$ctrl.clipboardMode}}</button>'
       ].join(''),
       scope: {
         narrative: '=',
         timeline: '=?',
+        clipboardMode: '@?',
         subDomain: '@?',
         error: '@?'
       },
@@ -41,7 +43,8 @@
           display: null,
           showLTIUrl: showLTIUrl,
           formatLTIUrl: formatLTIUrl,
-          formatGuestAccessibleUrl: formatGuestAccessibleUrl
+          formatGuestAccessibleUrl: formatGuestAccessibleUrl,
+          formatUrlToCopy: formatUrlToCopy
         });
 
         onInit();
@@ -56,6 +59,14 @@
           };
           ctrl.subDomain = _existy(ctrl.subDomain) && ctrl.subDomain || _existy(ctrl.narrative.subDomain) && ctrl.narrative.subDomain;
           pathPrefix = protocol + ctrl.subDomain + domain;
+        }
+
+        function formatUrlToCopy() {
+          if (_existy(ctrl.narrative) && ctrl.narrative.guest_access_allowed === false) {
+            return formatLTIUrl();
+          } else {
+            return ittUtils.slugify(formatGuestAccessibleUrl());
+          }
         }
 
         function showLTIUrl() {
@@ -82,13 +93,12 @@
           var hasNarrativePathslug = hasNarrative && _existy(ctrl.narrative.path_slug) && _existy(ctrl.narrative.path_slug.en);
           var hasTimeline = _existy(ctrl.timeline);
           var hasTimelinePathslug = hasTimeline && _existy(ctrl.timeline.path_slug) && _existy(ctrl.timeline.path_slug.en);
-
           if (ctrl.type === 'timeline' && hasTimelinePathslug) {
-            return pathPrefix + 'story/' + ctrl.narrative.path_slug.en + '/' + ctrl.timeline.path_slug.en;
+            return pathPrefix + '#/story/' + ctrl.narrative.path_slug.en + '/' + ctrl.timeline.path_slug.en;
           }
 
           if (hasNarrativePathslug) {
-            return pathPrefix + 'story/' + ctrl.narrative.path_slug.en;
+            return pathPrefix + '#/story/' + ctrl.narrative.path_slug.en;
           }
 
         }

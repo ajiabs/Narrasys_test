@@ -14,13 +14,14 @@
       transclude: true,
       scope: {
         canAccess: '=?',
+        force: '=?',
         onEdit: '&'
       },
       template: [
         '<div>',
         '	<span class="pencil__content" ng-transclude></span>',
         '	<span style="text-indent: 0">',
-        '		<span class="edit-pencil" ng-click="sendEdit($event)" ng-if="showPencil"></span>',
+        '		<span class="edit-pencil" ng-click="sendEdit($event)" ng-if="showPencil || force"></span>',
         '	</span>',
         '</div>'
       ].join(' '),

@@ -55,7 +55,7 @@ function ittNarrative() {
       };
 
       angular.extend($scope, {
-        toggleEditing: toggleEditing,
+        toggleEditNarrativeModal: toggleEditNarrativeModal,
         toggleEditingTimeline: toggleEditingTimeline,
         doneEditingTimeline: doneEditingTimeline,
         toggleOwnership: toggleOwnership,
@@ -69,10 +69,7 @@ function ittNarrative() {
         editorAction: editorAction,
         deleteTimeline: deleteTimeline,
         exportToSpreadsheet: dataSvc.getNarrativeExportAsSpreadsheet,
-        timelineMouseEv: timelineMouseEv,
-        isEditing: false,
         canAccess: false,
-        isEditingTimeline: false,
         treeOpts: treeOpts
       });
 
@@ -124,29 +121,12 @@ function ittNarrative() {
         _setTotalNarrativeDuration($scope.narrative.timelines);
       }
 
-      function timelineMouseEv($ev) {
-        //the 'this' context here refers to the current item scope
-        //e.g. the timeline row that was entered/left
-        switch ($ev.type) {
-          case 'mouseenter':
-            this.showDrag = true; //jshint ignore:line
-            break;
-          case 'mouseleave':
-            this.showDrag = false; //jshint ignore:line
-            break;
-        }
-      }
-
-      function toggleEditing() {
-        $scope.isEditing = !$scope.isEditing;
+      function toggleEditNarrativeModal() {
+        $scope.editingNarrative = !$scope.editingNarrative;
       }
 
       function toggleEditingTimeline(tl) {
         $scope.timelineUnderEdit = tl;
-        $scope.isEditingTimeline = true;
-        //the 'this' context here refers to the current item scope
-        //eg the timeline that was clicked.
-        this.showDrag = false; // jshint ignore:line
       }
 
       function toggleOwnership() {
@@ -164,7 +144,6 @@ function ittNarrative() {
           return tl !== $scope.tmpTimeline;
         });
         $scope.tmpTimeline = null;
-        $scope.isEditingTimeline = false;
       }
 
       function editorAction(newTl, currTl) {
@@ -311,7 +290,7 @@ function ittNarrative() {
 
       function updateNarrative(update) {
         dataSvc.updateNarrative(update).then(function (resp) {
-          $scope.isEditing = false;
+          $scope.editingNarrative = false;
           //updateNarrative returns just the new narrative object, without timelines array
           //merge the existing narrative on scope with the one returned via our post resp.
           angular.extend($scope.narrative, resp.data);
