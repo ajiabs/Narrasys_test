@@ -65,7 +65,6 @@ function ittNarrative() {
         addTmpTimeline: addTmpTimeline,
         onEpisodeSelect: onEpisodeSelect,
         persistTmpTimeline: persistTmpTimeline,
-        showTimelineEditor: showTimelineEditor,
         editorAction: editorAction,
         deleteTimeline: deleteTimeline,
         exportToSpreadsheet: dataSvc.getNarrativeExportAsSpreadsheet,
@@ -164,10 +163,6 @@ function ittNarrative() {
         }
       }
 
-      function showTimelineEditor(tl) {
-        return (tl === $scope.timelineUnderEdit || tl === $scope.tmpTimeline);
-      }
-
       function _setTotalNarrativeDuration(timelines) {
         $scope.totalNarrativeDuration = timelines.map(function (tl) {
           return tl.episode_segments.map(function(s) {return s.end_time;})[0];
@@ -254,6 +249,8 @@ function ittNarrative() {
             }
             //to close episode select modal after select
             toggleEpisodeList();
+            //to open the timeline editor modal
+            persistTmpTimeline($scope.tmpTimeline);
           });
         });
       }
