@@ -60,7 +60,7 @@
               if (_existy(id)) {
                 if (id !== n._id) {
                   slugSet.push(n.path_slug.en);
-                  return slugSet
+                  return slugSet;
                 }
               } else {
                 slugSet.push(n.path_slug.en);
