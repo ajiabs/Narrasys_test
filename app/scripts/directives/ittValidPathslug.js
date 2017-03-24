@@ -37,22 +37,21 @@
         }
 
         function validPathslug(viewVal) {
-          parentCtrl.error = null;
+          parentCtrl[parentCtrl.type].error = null;
 
           if (ngModel.$isEmpty(viewVal)) {
-            parentCtrl.error = 'Slug cannot be empty';
-            return false;
+            parentCtrl[parentCtrl.type].error = 'Slug cannot be empty';
+            return true;
           }
 
           var asSlug = _slugify(viewVal);
           var subdomainSet = _gatherPathSlugs(pathSlugs, id);
 
           if (subdomainSet.indexOf(asSlug) !== -1) {
-            parentCtrl.error = asSlug + ' is already taken.';
-            return false;
-          } else {
-            return true;
+            parentCtrl[parentCtrl.type].error = asSlug + ' is already taken.';
           }
+          return true;
+
         }
 
         function _gatherPathSlugs(pathSlugs, id) {

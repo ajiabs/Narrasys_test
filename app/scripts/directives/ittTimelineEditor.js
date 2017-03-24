@@ -24,7 +24,7 @@
         '		<label>Hidden</label>',
         '		<input type="checkbox" ng-model="tEditor._timeline.hidden"/>',
         '		<div class="ancillaryNav">',
-        '			<button class="button" ng-disabled="tlEditForm.$invalid" ng-click="tEditor.onUpdate({t: tEditor._timeline})">Save</button>',
+        '			<button class="button" ng-disabled="tlEditForm.$invalid || tEditor._timeline.error" ng-click="tEditor.onUpdate({t: tEditor._timeline})">Save</button>',
         '			<button class="button" ng-click="tEditor.confirmDelete()">Delete</button>',
         '			<button class="button" ng-click="tEditor.onDone()">cancel</button>',
         '		</div>',
