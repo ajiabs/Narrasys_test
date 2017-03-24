@@ -29,6 +29,7 @@
       scope: {
         narrative: '=',
         timeline: '=?',
+        customer: '=?',
         clipboardMode: '@?',
         subDomain: '@?',
         error: '@?'
@@ -59,8 +60,8 @@
             },
             placeholder: 'human-friendly-link-to ' + ctrl.type
           };
-          ctrl.subDomain = _existy(ctrl.subDomain) && ctrl.subDomain || _existy(ctrl.narrative.subDomain) && ctrl.narrative.subDomain;
-          pathPrefix = protocol + ctrl.subDomain + domain;
+          var _subDomain = _existy(ctrl.subDomain) && ctrl.subDomain || _existy(ctrl.narrative.subDomain) && ctrl.narrative.subDomain;
+          pathPrefix = protocol + _subDomain + domain;
         }
 
         function formatUrlToCopy() {

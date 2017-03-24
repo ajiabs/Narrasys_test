@@ -76,8 +76,20 @@
           }
 
           function setSelectedNarrative(customer) {
-            ctrl.narrativeSelect = !ctrl.narrativeSelect;
+
             ctrl.selectedCustomer = [customer];
+
+            var cachedNarratives = ittUtils.existy(ctrl.selectedCustomer.narratives) && ctrl.selectedCustomer.narratives.length > 1;
+            //need list of other narratives to for validation of path slugs.
+            if (!cachedNarratives) {
+              dataSvc.getNarrativeList(customer)
+                .then(function() {
+                  ctrl.narrativeSelect = !ctrl.narrativeSelect;
+                });
+            } else {
+              ctrl.narrativeSelect = !ctrl.narrativeSelect;
+            }
+
           }
 
           function setNarrativeToEdit($ev, narrative, customer) {

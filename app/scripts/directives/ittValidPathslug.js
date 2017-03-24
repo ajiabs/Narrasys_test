@@ -18,9 +18,11 @@
       restrict: 'EA',
       link: function(scope, elm, attr, ctrls) {
         var _slugify = ittUtils.slugify;
+        var _existy = ittUtils.existy;
         var ngModel = ctrls[0];
         var parentCtrl = ctrls[1];
-        var customer = modelSvc.customers[parentCtrl.narrative.customer_id];
+        var customer = modelSvc.customers[parentCtrl.narrative.customer_id] || parentCtrl.customer;
+
 
         var pathSlugs = parentCtrl.type === 'narrative' ?
           modelSvc.cachedNarrativesByCustomer(customer) :
@@ -54,11 +56,19 @@
         }
 
         function _gatherPathSlugs(pathSlugs, id) {
-          return pathSlugs.map(function(n) {
-            if (n.path_slug && n.path_slug.en && id !== n._id) {
-              return n.path_slug.en;
+          return pathSlugs.reduce(function(slugSet, n) {
+            if (n.path_slug && n.path_slug.en) {
+              if (_existy(id)) {
+                if (id !== n._id) {
+                  slugSet.push(n.path_slug.en);
+                  return slugSet
+                }
+              } else {
+                slugSet.push(n.path_slug.en);
+              }
             }
-          });
+            return slugSet;
+          }, []);
         }
 
       }
