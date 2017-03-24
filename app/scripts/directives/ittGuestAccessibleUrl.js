@@ -19,7 +19,7 @@
         ' <div ng-if="$ctrl.narrative.guest_access_allowed === true">',
         '	    <label for="{{$ctrl.display.id[$ctrl.type]}}">Guest Accessible URL:',
         '       <itt-validation-tip ng-if="$ctrl[$ctrl.type].error" text="{{$ctrl[$ctrl.type].error}}"></itt-validation-tip>',
-        '       <p class="--break-word"><small ng-class="{ \'error-red\': $ctrl[$ctrl.type].error, unselectable: $ctrl[$ctrl.type].error }">{{$ctrl.formatGuestAccessibleUrl() | slugify}}</small></p>',
+        '       <p class="--break-word"><small ng-class="{ \'error-red\': $ctrl[$ctrl.type].error, unselectable: $ctrl[$ctrl.type].error }">{{$ctrl.formatGuestAccessibleUrl()}}</small></p>',
         '     </label>',
         '     <input id="{{$ctrl.display.id[$ctrl.type]}}" type="text" name="path" placeholder="{{$ctrl.display.placeholder}}" itt-valid-pathslug narrative-id="{{$ctrl.narrative._id}}" ng-model="$ctrl[$ctrl.type].path_slug.en">',
         ' </div>',
@@ -36,6 +36,7 @@
       controller: ['ittUtils', function(ittUtils) {
         var ctrl = this;
         var _existy = ittUtils.existy;
+        var _slugify = ittUtils.slugify;
         var protocol = 'https://';
         var domain = '.narrasys.com/';
         var pathPrefix;
@@ -96,11 +97,11 @@
           var hasTimeline = _existy(ctrl.timeline);
           var hasTimelinePathslug = hasTimeline && _existy(ctrl.timeline.path_slug) && _existy(ctrl.timeline.path_slug.en);
           if (ctrl.type === 'timeline' && hasTimelinePathslug) {
-            return pathPrefix + '#/story/' + ctrl.narrative.path_slug.en + '/' + ctrl.timeline.path_slug.en;
+            return pathPrefix + '#/story/' + ctrl.narrative.path_slug.en + '/' + _slugify(ctrl.timeline.path_slug.en);
           }
 
           if (hasNarrativePathslug) {
-            return pathPrefix + '#/story/' + ctrl.narrative.path_slug.en;
+            return pathPrefix + '#/story/' + _slugify(ctrl.narrative.path_slug.en);
           }
 
         }
