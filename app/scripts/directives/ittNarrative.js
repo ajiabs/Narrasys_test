@@ -129,7 +129,7 @@ function ittNarrative() {
           dataSvc.getNarrativeList($scope.customers[0])
             .then(function() {
               $scope.editingNarrative = !$scope.editingNarrative;
-            })
+            });
         } else {
           $scope.editingNarrative = !$scope.editingNarrative;
         }

@@ -22,16 +22,16 @@
         var parentCtrl = ctrls[1];
         var customer = modelSvc.customers[parentCtrl.narrative.customer_id];
 
-        var pathSlugs = parentCtrl.type === 'narrative'
-          ? modelSvc.cachedNarrativesByCustomer(customer)
-          : parentCtrl.narrative.timelines;
+        var pathSlugs = parentCtrl.type === 'narrative' ?
+          modelSvc.cachedNarrativesByCustomer(customer) :
+          parentCtrl.narrative.timelines;
 
         var id = parentCtrl[parentCtrl.type]._id;
 
         if (ngModel) {
           ngModel.$validators = {
             validPathslug: validPathslug
-          }
+          };
         }
 
         function validPathslug(viewVal) {
@@ -56,9 +56,9 @@
         function _gatherPathSlugs(pathSlugs, id) {
           return pathSlugs.map(function(n) {
             if (n.path_slug && n.path_slug.en && id !== n._id) {
-              return n.path_slug.en
+              return n.path_slug.en;
             }
-          })
+          });
         }
 
       }
