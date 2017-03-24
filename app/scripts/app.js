@@ -105,7 +105,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				template: [
 					'<div class="standaloneAncillaryPage">',
 					'	<itt-nav on-logout="logout()"></itt-nav>',
-					'	<div itt-narrative narrative-data="narrativeResolve" customer-data="customersResolve">',
+					'	<div itt-narrative narrative-data="narrativeResolve" customer-data="customerResolve">',
 					'</div>'
 				].join(''),
 				controller: 'NarrativeCtrl',
@@ -114,7 +114,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 						var pathOrId = $route.current.params.narrativePath;
 						//this only pulls from the cache.
 						var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
-						var cachedCustomers;
+						var cachedCustomer;
 
 						var doPullFromCache = ittUtils.existy(cachedNarr) &&
 							ittUtils.existy(cachedNarr.path_slug) &&
@@ -122,14 +122,14 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 							(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
 
 						if (doPullFromCache) {
-							cachedCustomers = modelSvc.getCustomersAsArray();
+							cachedCustomer = modelSvc.customers[cachedNarr.customer_id];
 							return $q(function (resolve) {
-								return resolve({n: cachedNarr, c: cachedCustomers});
+								return resolve({n: cachedNarr, c: cachedCustomer});
 							});
 						}
 						return dataSvc.getNarrative(pathOrId).then(function (narrativeData) {
-							return dataSvc.getCustomerList().then(function (customers) {
-								return {n: narrativeData, c: customers};
+							return dataSvc.getCustomer(narrativeData.customer_id, true).then(function (customer) {
+								return {n: narrativeData, c: [customer]};
 							});
 						});
 					}

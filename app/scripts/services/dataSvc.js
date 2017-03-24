@@ -209,11 +209,15 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
 
   };
 
-  svc.getCustomer = function (customerId) {
+  svc.getCustomer = function (customerId, retrieve) {
     if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
       return false;
     }
     if (modelSvc.customers[customerId]) {
+
+      if (retrieve) {
+        return $q(function(resolve) {resolve(modelSvc.customers[customerId]);});
+      }
       // have it already, or at least already getting it
       return;
     } else {

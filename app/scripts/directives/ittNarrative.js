@@ -122,7 +122,17 @@ function ittNarrative() {
       }
 
       function toggleEditNarrativeModal() {
-        $scope.editingNarrative = !$scope.editingNarrative;
+
+        var cachedNarratives = ittUtils.existy($scope.customers[0].narratives) && $scope.customers[0].narratives.length > 1;
+        //need list of other narratives to for validation of path slugs.
+        if (!cachedNarratives) {
+          dataSvc.getNarrativeList($scope.customers[0])
+            .then(function() {
+              $scope.editingNarrative = !$scope.editingNarrative;
+            })
+        } else {
+          $scope.editingNarrative = !$scope.editingNarrative;
+        }
       }
 
       function toggleEditingTimeline(tl) {
