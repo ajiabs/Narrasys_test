@@ -13,9 +13,6 @@
       restrict: 'EA',
       template: [
         '<div ng-if="!$ctrl.clipboardMode">',
-        ' <div ng-if="$ctrl.showLTIUrl()">',
-        '   <label>LTI Url:</label><p class="--break-word"><small>{{::$ctrl.formatLTIUrl()}}</small></p>',
-        ' </div>',
         ' <div ng-if="$ctrl.narrative.guest_access_allowed === true">',
         '	    <label for="{{$ctrl.display.id[$ctrl.type]}}">Guest Accessible URL:',
         '       <itt-validation-tip ng-if="$ctrl[$ctrl.type].error" text="{{$ctrl[$ctrl.type].error}}"></itt-validation-tip>',
@@ -44,7 +41,6 @@
         angular.extend(ctrl, {
           type: _existy(ctrl.timeline) ? 'timeline' : 'narrative',
           display: null,
-          showLTIUrl: showLTIUrl,
           formatLTIUrl: formatLTIUrl,
           formatGuestAccessibleUrl: formatGuestAccessibleUrl,
           formatUrlToCopy: formatUrlToCopy
@@ -70,16 +66,6 @@
           } else {
             return ittUtils.slugify(formatGuestAccessibleUrl());
           }
-        }
-
-        function showLTIUrl() {
-          if (_existy(ctrl.narrative) && ctrl.narrative.guest_access_allowed === false) {
-            if (ctrl.type === 'timeline') {
-              return _existy(ctrl.timeline._id);
-            }
-            return _existy(ctrl.narrative._id);
-          }
-          return false;
         }
 
         function formatLTIUrl() {
