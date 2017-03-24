@@ -124,7 +124,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 						if (doPullFromCache) {
 							cachedCustomer = modelSvc.customers[cachedNarr.customer_id];
 							return $q(function (resolve) {
-								return resolve({n: cachedNarr, c: cachedCustomer});
+								return resolve({n: cachedNarr, c: [cachedCustomer]});
 							});
 						}
 						return dataSvc.getNarrative(pathOrId).then(function (narrativeData) {
