@@ -25,6 +25,7 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
   // splits event into scenes and items.  Not sure yet whether we care about containers, discarding them for now.
 
   // TODO? normalize items before cacheing: (annotation_image_id and link_image_id -> asset_id, etc)
+  //^^ NP-1310
   // TODO discard unused fields before cacheing
 
   // use angular.extend if an object already exists, so we don't lose existing bindings
@@ -1121,6 +1122,13 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
 
     return cssArr.join(' ');
   };
+
+  svc.assocEventWithAsset = assocEventWithAsset;
+  function assocEventWithAsset(eventId, assetId) {
+    if (svc.events[eventId] && svc.assets[assetId]) {
+      svc.events[eventId].asset = svc.assets[assetId];
+    }
+  }
 
   svc.resolveEpisodeAssets = function (episodeId) {
     // console.log("resolveEpisodeAssets");
