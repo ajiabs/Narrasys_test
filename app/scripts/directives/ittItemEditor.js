@@ -288,6 +288,7 @@ angular.module('com.inthetelling.story')
 					// TODO Shouldn't need to be worrying about asset field names here, handle this in modelSvc?
 					if (scope.item._type === 'Link') {
 						scope.item.link_image_id = assetId;
+						console.log('link asset!');
 					} else if (scope.item._type === 'Annotation') {
 						scope.item.annotation_image_id = assetId;
 					} else {

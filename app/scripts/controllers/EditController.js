@@ -227,7 +227,8 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
           modelSvc.cache("event", dataSvc.resolveIDs(data));
           modelSvc.resolveEpisodeEvents(appState.episodeId);
           saveOperation = 'create';
-          console.log('test');
+          console.log('data', data);
+          console.log('event after', modelSvc.events[data._id]);
         }
 
         if (data._type === 'Scene') {
