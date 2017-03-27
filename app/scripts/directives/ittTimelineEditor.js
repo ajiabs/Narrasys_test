@@ -26,7 +26,7 @@
         '		<div class="ancillaryNav">',
         '			<button class="button" ng-disabled="tlEditForm.$invalid || tEditor._timeline.error" ng-click="tEditor.onUpdate({t: tEditor._timeline})">Save</button>',
         '			<button class="button" ng-click="tEditor.confirmDelete()">Delete</button>',
-        '			<button class="button" ng-click="tEditor.onDone()">cancel</button>',
+        '			<button class="button" ng-click="tEditor.onDone()">Cancel</button>',
         '		</div>',
         '	</form>',
         '</div>',
