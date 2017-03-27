@@ -64,7 +64,7 @@
           if (_existy(ctrl.narrative) && ctrl.narrative.guest_access_allowed === false) {
             return formatLTIUrl();
           } else {
-            return ittUtils.slugify(formatGuestAccessibleUrl());
+            return formatGuestAccessibleUrl();
           }
         }
 
