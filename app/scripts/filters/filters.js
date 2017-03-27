@@ -275,4 +275,12 @@ angular.module('com.inthetelling.story')
       }
       return '';
     };
+  })
+  .filter('slugify', function(ittUtils) {
+    return function(str) {
+      if (ittUtils.existy(str)) {
+        return ittUtils.slugify(str);
+      }
+      return '';
+    };
   });

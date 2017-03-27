@@ -343,5 +343,9 @@ and (max-device-width : 568px) {
 	opacity: 0.5;
 }
 
+.--break-word {
+  word-wrap: break-word;
+}
+
 
 

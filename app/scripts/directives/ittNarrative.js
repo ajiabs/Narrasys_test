@@ -36,8 +36,8 @@ function ittNarrative() {
 			narrativeData: '=',
 			customerData: '='
 		},
-    controller: ['$scope', 'authSvc', 'appState', 'dataSvc', 'ittUtils',
-      function ($scope, authSvc, appState, dataSvc, ittUtils) {
+    controller: ['$scope', 'authSvc', 'appState', 'dataSvc', 'modelSvc', 'ittUtils',
+      function ($scope, authSvc, appState, dataSvc, modelSvc, ittUtils) {
 
       var treeOpts = {
         accept: function(/*sourceNodeScope, destNodesScope, destIndex*/) {
@@ -55,7 +55,7 @@ function ittNarrative() {
       };
 
       angular.extend($scope, {
-        toggleEditing: toggleEditing,
+        toggleEditNarrativeModal: toggleEditNarrativeModal,
         toggleEditingTimeline: toggleEditingTimeline,
         doneEditingTimeline: doneEditingTimeline,
         toggleOwnership: toggleOwnership,
@@ -65,13 +65,10 @@ function ittNarrative() {
         addTmpTimeline: addTmpTimeline,
         onEpisodeSelect: onEpisodeSelect,
         persistTmpTimeline: persistTmpTimeline,
-        showTimelineEditor: showTimelineEditor,
         editorAction: editorAction,
         deleteTimeline: deleteTimeline,
         exportToSpreadsheet: dataSvc.getNarrativeExportAsSpreadsheet,
-        isEditing: false,
         canAccess: false,
-        isEditingTimeline: false,
         treeOpts: treeOpts
       });
 
@@ -123,13 +120,22 @@ function ittNarrative() {
         _setTotalNarrativeDuration($scope.narrative.timelines);
       }
 
-      function toggleEditing() {
-        $scope.isEditing = !$scope.isEditing;
+      function toggleEditNarrativeModal() {
+
+        var cachedNarratives = ittUtils.existy($scope.customers[0].narratives) && $scope.customers[0].narratives.length > 1;
+        //need list of other narratives to for validation of path slugs.
+        if (!cachedNarratives) {
+          dataSvc.getNarrativeList($scope.customers[0])
+            .then(function() {
+              $scope.editingNarrative = !$scope.editingNarrative;
+            });
+        } else {
+          $scope.editingNarrative = !$scope.editingNarrative;
+        }
       }
 
       function toggleEditingTimeline(tl) {
         $scope.timelineUnderEdit = tl;
-        $scope.isEditingTimeline = !$scope.isEditingTimeline;
       }
 
       function toggleOwnership() {
@@ -155,10 +161,6 @@ function ittNarrative() {
         } else {
           updateTimeline(newTl, currTl);
         }
-      }
-
-      function showTimelineEditor(tl) {
-        return (tl === $scope.timelineUnderEdit || tl === $scope.tmpTimeline);
       }
 
       function _setTotalNarrativeDuration(timelines) {
@@ -211,7 +213,6 @@ function ittNarrative() {
           name: {en: ''},
           description: {en: ''},
           hidden: false,
-          path_slug: '',
           sort_order: currSortOrder,
           isTemp: true,
           index: newIndex
@@ -248,6 +249,8 @@ function ittNarrative() {
             }
             //to close episode select modal after select
             toggleEpisodeList();
+            //to open the timeline editor modal
+            persistTmpTimeline($scope.tmpTimeline);
           });
         });
       }
@@ -294,10 +297,12 @@ function ittNarrative() {
 
       function updateNarrative(update) {
         dataSvc.updateNarrative(update).then(function (resp) {
-          $scope.isEditing = false;
+          $scope.editingNarrative = false;
           //updateNarrative returns just the new narrative object, without timelines array
           //merge the existing narrative on scope with the one returned via our post resp.
-          angular.extend($scope.narrative, resp);
+          angular.extend($scope.narrative, resp.data);
+          var cust = modelSvc.customers[resp.data.customer_id];
+          modelSvc.assocNarrativesWithCustomer(cust, [resp.data]);
         });
       }
 

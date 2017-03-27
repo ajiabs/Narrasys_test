@@ -69,7 +69,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 					'<div class="standaloneAncillaryPage">',
 					'	<itt-nav on-logout="logout()"></itt-nav>',
 					'	<h1>Narratives</h1>',
-					'	<div itt-narrative-list narratives-data="narrativesResolve" customers-data="customersResolve"></div>',
+					'	<div itt-narrative-list customers-data="customersResolve"></div>',
 					'</div>'
 				].join('\n'),
 				controller: 'NarrativesCtrl',
@@ -77,35 +77,27 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 					narrativesResolve: function ($route, $q, ittUtils, authSvc, dataSvc, modelSvc) {
 
 						//needs to be an array
-						var cachedNars = modelSvc.getNarrativesAsArray();
-						console.log('cachedNars', cachedNars[0]);
-						var cachedCustomers;
+            var cachedCustomers = modelSvc.getCustomersAsArray();
 						//if use visits /story/:id prior to visiting this route, they will have a single
 						//narrative in modelSvc. We consider the cache 'empty' if the only narrative
 						//in it came from loading data for /story/:id. Otherwise when they visit
 						// /stories, the only listing they would see would be the narrative from
 						// /stories/:id.
-						var isCached = Object.keys(cachedNars).length > 1;
+						var isCached = Object.keys(cachedCustomers).length > 0;
 
 						if (isCached) {
 							//since this is going to be displayed in a dropdown, it needs to be an array of objects.
-							cachedCustomers = modelSvc.getCustomersAsArray();
+
 							return $q(function (resolve) {
-								return resolve({n: cachedNars, c: cachedCustomers});
+								return resolve({c: cachedCustomers});
 							});
 						}
 
-						return authSvc.authenticate().then(function () {
-							return dataSvc.getCustomerList().then(function (customers) {
-								return dataSvc.getNarrativeList().then(function (narratives) {
-									angular.forEach(narratives, function (n) {
-										n.subDomain = modelSvc.customers[n.customer_id].domains[0];
-										modelSvc.cache('narrative', n);
-									});
-									return {n: narratives, c: customers};
-								});
-							});
-						});
+            return authSvc.authenticate().then(function () {
+              return dataSvc.getCustomerList().then(function (customers) {
+                return { c: customers };
+              });
+            });
 					}
 				}
 			})
@@ -113,7 +105,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 				template: [
 					'<div class="standaloneAncillaryPage">',
 					'	<itt-nav on-logout="logout()"></itt-nav>',
-					'	<div itt-narrative narrative-data="narrativeResolve" customer-data="customersResolve">',
+					'	<div itt-narrative narrative-data="narrativeResolve" customer-data="customerResolve">',
 					'</div>'
 				].join(''),
 				controller: 'NarrativeCtrl',
@@ -122,7 +114,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 						var pathOrId = $route.current.params.narrativePath;
 						//this only pulls from the cache.
 						var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
-						var cachedCustomers;
+						var cachedCustomer;
 
 						var doPullFromCache = ittUtils.existy(cachedNarr) &&
 							ittUtils.existy(cachedNarr.path_slug) &&
@@ -130,14 +122,14 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 							(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
 
 						if (doPullFromCache) {
-							cachedCustomers = modelSvc.getCustomersAsArray();
+							cachedCustomer = modelSvc.customers[cachedNarr.customer_id];
 							return $q(function (resolve) {
-								return resolve({n: cachedNarr, c: cachedCustomers});
+								return resolve({n: cachedNarr, c: [cachedCustomer]});
 							});
 						}
 						return dataSvc.getNarrative(pathOrId).then(function (narrativeData) {
-							return dataSvc.getCustomerList().then(function (customers) {
-								return {n: narrativeData, c: customers};
+							return dataSvc.getCustomer(narrativeData.customer_id, true).then(function (customer) {
+								return {n: narrativeData, c: [customer]};
 							});
 						});
 					}
@@ -294,6 +286,11 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		$httpProvider.interceptors.push(function ($q, errorSvc) {
 			return {
 				'responseError': function (rejection) {
+
+				  if (rejection.data && rejection.data.path_slug) {
+				    return $q(function(resolve, reject) {return reject(rejection);});
+          }
+
 					errorSvc.error(rejection);
 					return $q.reject(rejection);
 				}

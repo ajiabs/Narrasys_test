@@ -209,11 +209,15 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
 
   };
 
-  svc.getCustomer = function (customerId) {
+  svc.getCustomer = function (customerId, retrieve) {
     if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
       return false;
     }
     if (modelSvc.customers[customerId]) {
+
+      if (retrieve) {
+        return $q(function(resolve) {resolve(modelSvc.customers[customerId]);});
+      }
       // have it already, or at least already getting it
       return;
     } else {
@@ -263,8 +267,15 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
     return GET("/v3/episodes/" + epId);
   };
 
-  svc.getNarrativeList = function () {
-    return GET("/v3/narratives/");
+  svc.getNarrativeList = function (customer) {
+    if (!ittUtils.existy(customer)) {
+      return GET("/v3/narratives/");
+    }
+
+    return GET('/v3/narratives?customer_id=' + customer._id)
+      .then(function (narratives) {
+        modelSvc.assocNarrativesWithCustomer(customer, narratives);
+      });
   };
 
   svc.createUserGroup = function (groupName) {
@@ -277,11 +288,11 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
 
   svc.createNarrative = function (narrativeData) {
     delete narrativeData.templateUrl;
-    return POST("/v3/narratives", narrativeData);
+    return SANE_POST("/v3/narratives", narrativeData);
   };
   svc.updateNarrative = function (narrativeData) {
     delete narrativeData.templateUrl;
-    return PUT("/v3/narratives/" + narrativeData._id, narrativeData);
+    return SANE_PUT("/v3/narratives/" + narrativeData._id, narrativeData);
   };
 
   svc.createChildEpisode = function (childData) {
@@ -747,6 +758,10 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
       return $http.post(path, data, config);
     }
     return $http.post(path, data);
+  };
+
+  var SANE_PUT = function(path, data) {
+    return $http.put(config.apiDataBaseUrl + path, data);
   };
 
   var PUT = function (path, putData, postprocessCallback) {
