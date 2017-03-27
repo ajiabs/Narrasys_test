@@ -1122,6 +1122,13 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
     return cssArr.join(' ');
   };
 
+  svc.assocEventWithAsset = assocEventWithAsset;
+  function assocEventWithAsset(eventId, assetId) {
+    if (svc.events[eventId] && svc.assets[assetId]) {
+      svc.events[eventId].asset = svc.assets[assetId];
+    }
+  }
+
   svc.resolveEpisodeAssets = function (episodeId) {
     // console.log("resolveEpisodeAssets");
     // attaches assets to svc.events
