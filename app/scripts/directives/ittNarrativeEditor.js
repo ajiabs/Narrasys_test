@@ -60,7 +60,7 @@
         '		<input for="nName" type="text" name="name" placeholder="Add Narrative Title" ng-model="$ctrl._narrative.name.en" required>',
         '		<label for="nDescription">Description</label>',
         '		<textarea id="nDescription" name="description" placeholder="Add a Description" ng-model="$ctrl._narrative.description.en"></textarea>',
-        '   <div ng-if="!$ctrl._containerInfo"><itt-guest-accessible-url narrative="$ctrl._narrative" sub-domain="{{$ctrl.selectedCustomer.domains[0]}}" customer="$ctrl.selectedCustomer"></itt-guest-accessible-url></div>',
+        '   <div ng-if="!$ctrl.hidePathSlug"><itt-guest-accessible-url narrative="$ctrl._narrative" sub-domain="{{$ctrl.selectedCustomer.domains[0]}}" customer="$ctrl.selectedCustomer"></itt-guest-accessible-url></div>',
         '		<label for="nSupportUrl">Support Url',
         '			<itt-validation-tip ng-if="nEditForm.supportUrl.$invalid" text="Not a valid URL"></itt-validation-tip>',
         '		</label>',
@@ -82,6 +82,7 @@
         narrative: '=?',
         customers: '=',
         containerInfo: '=?',
+        hidePathSlug: '=?',
         onDone: '&',
         onUpdate: '&'
       },

@@ -97,10 +97,11 @@
 
           function setSelectedNarrative(customer) {
 
-            ctrl.selectedCustomer = [customer];
+            var cachedNarratives = ittUtils.existy(customer.narratives) && customer.narratives.length > 1;
 
-            var cachedNarratives = ittUtils.existy(ctrl.selectedCustomer.narratives) && ctrl.selectedCustomer.narratives.length > 1;
+            ctrl.selectedCustomer = [customer];
             //need list of other narratives to for validation of path slugs.
+
             if (!cachedNarratives) {
               dataSvc.getNarrativeList(customer)
                 .then(function() {
@@ -109,7 +110,6 @@
             } else {
               ctrl.narrativeSelect = !ctrl.narrativeSelect;
             }
-
           }
 
           function setNarrativeToEdit($ev, narrative, customer) {
