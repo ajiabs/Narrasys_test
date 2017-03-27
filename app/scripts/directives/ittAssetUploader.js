@@ -146,7 +146,6 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc, dataSvc) {
 
 							modelSvc.cache("asset", data.file);
 							if (scope.callback) {
-							  console.log('cb in asset uploader', data.file._id);
 								scope.callback({data: data.file._id});
 							}
 							scope.uploadStatus[i].done = true;
