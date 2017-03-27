@@ -19,10 +19,10 @@
 	</div>
 	<div ng-if="showUploadButtons || !item.asset">
 		<span ng-if="showUploadField">
-
 			<div ng-if="canAccess"
 				 itt-asset-uploader="episodeContainerId"
 				 callback="assetUploaded(data)" mime-types="{{mimes}}">
+
 			</div>
 		</span>
 		<span ng-if="!showUploadField">
