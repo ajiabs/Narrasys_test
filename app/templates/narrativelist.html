@@ -30,7 +30,7 @@
     <div ng-repeat="narrative in customer.narratives"
          style="padding-left: 2em;"
          ng-if="customer.showNarratives === true"
-         ng-click="$ctrl.gotoNarrative(narrative._id, $event)"
+         ng-click="$ctrl.toggleNarrativeRow(narrative, $event)"
          ng-class="$ctrl.setNarrativeRowClasses(customer, narrative)">
       <div>
         <itt-edit-pencil can-access="true" on-edit="$ctrl.setNarrativeToEdit($event, narrative, customer)">
@@ -39,6 +39,16 @@
         <p ng-if="narrative.description">
           <small>{{narrative.description.en}}</small>
         </p>
+
+        <div ng-if="$ctrl.narrativeRow._id === narrative._id">
+          <itt-tooltip tip-text="Go to Narrative" css="projects__page">
+            <a ng-click="$ctrl.gotoNarrative(narrative._id, $event)" class="icon__button button__generateNarrative" title="Go to Narrative"></a>
+          </itt-tooltip>
+          <a itt-guest-accessible-url narrative="narrative" clipboard-mode="Click to Copy"></a>
+        </div>
+
+
+
       </div>
     </div>
 

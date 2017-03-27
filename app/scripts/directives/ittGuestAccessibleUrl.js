@@ -21,7 +21,7 @@
         '     <input id="{{$ctrl.display.id[$ctrl.type]}}" type="text" name="path" placeholder="{{$ctrl.display.placeholder}}" itt-valid-pathslug narrative-id="{{$ctrl.narrative._id}}" ng-model="$ctrl[$ctrl.type].path_slug.en">',
         ' </div>',
         '</div>',
-        '<button ng-if="$ctrl.clipboardMode" itt-clipboard source-text="{{$ctrl.formatUrlToCopy()}}">{{$ctrl.clipboardMode}}</button>'
+        '<button ng-if="$ctrl.clipboardMode" itt-clipboard source-text="{{$ctrl.formatUrlToCopy()}}" on-copy="$event.stopPropagation()">{{$ctrl.clipboardMode}}</button>'
       ].join(''),
       scope: {
         narrative: '=',
