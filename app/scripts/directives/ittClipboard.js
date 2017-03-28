@@ -30,7 +30,6 @@
         function bubbleEvent($event) {
           copyText(ctrl.sourceText);
           ctrl.onCopy({$event: $event});
-          console.log('copied!');
         }
 
         function copyText(text) {
