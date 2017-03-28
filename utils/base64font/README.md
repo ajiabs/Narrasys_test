@@ -1,10 +1,10 @@
 
-##Encode Font files
+## Encode Font files
 
 1. update main.css with new EOT file
 2. update inline base64 encoded url with new string.
 
-###how to use this tool
+### how to use this tool
     node index.js <path-to-font> | pbcopy
 example:
 
