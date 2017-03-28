@@ -21,12 +21,13 @@
       ].join(''),
       scope: {
         sourceText: '@',
+        tipText: '@?',
         onCopy: '&'
       },
       controller: [function() {
         var ctrl = this;
         var _ngTimeout = ittUtils.ngTimeout;
-        var _defaultText = 'Click to Copy';
+        var _defaultText = ctrl.tipText ||  'Click to Copy';
         angular.extend(ctrl, {
           tipText: _defaultText,
           bubbleEvent: bubbleEvent
@@ -38,7 +39,7 @@
           ctrl.tipText = 'Copied!';
           _ngTimeout(function() {
             ctrl.tipText = _defaultText;
-          }, 1500)
+          }, 1500);
         }
 
         function copyText(text) {
