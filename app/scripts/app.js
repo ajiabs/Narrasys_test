@@ -14,6 +14,45 @@
  * @requires textAngular
  */
 
+angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular', 'ui.tree'])
+  .constant('MIMES', {
+    'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
+    'file': 'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
+    'default': 'image/*',
+    'transcripts': 'text/vtt,text/srt'
+  })
+  .constant('PLAYERSTATES', {
+    '-1': 'unstarted',
+    '0': 'ended',
+    '1': 'playing',
+    '2': 'paused',
+    '3': 'buffering',
+    '5': 'video cued',
+    '4': 'quality changed',
+    '6': 'player ready'
+  })
+  .constant('PLAYERSTATES_WORD', {
+    'unstarted': '-1',
+    'ended': '0',
+    'playing': '1',
+    'paused': '2',
+    'buffering': '3',
+    'quality changed': '4',
+    'video cued': '5',
+    'player ready': '6'
+  })
+  // Configure routing
+  .config(['$routeProvider', routerConfig])
+  // Configure x-domain resource whitelist (TODO: do we actually need this?)
+  .config(['$sceDelegateProvider', xDomainConfig])
+  // Configure http headers and intercept http errors
+  .config(['$httpProvider', authInterceptorConfig])
+  // Configuration for textAngular toolbar
+  .config(['$provide', textAngularConfig])
+  //config for debug info disable
+  .config(['$compileProvider', debugInfoConfig])
+  .run(['$rootScope', 'errorSvc', runFunction]);
+
 function routerConfig($routeProvider) {
   $routeProvider
     .when('/', {
@@ -47,7 +86,8 @@ function routerConfig($routeProvider) {
       ].join('\n'),
       controller: 'NarrativesCtrl',
       resolve: {
-        narrativesResolve: function ($route, $q, ittUtils, authSvc, dataSvc, modelSvc) {
+        narrativesResolve: ['$route', '$q', 'ittUtils', 'authSvc', 'dataSvc', 'modelSvc',
+          function ($route, $q, ittUtils, authSvc, dataSvc, modelSvc) {
 
           //needs to be an array
           var cachedCustomers = modelSvc.getCustomersAsArray();
@@ -71,7 +111,7 @@ function routerConfig($routeProvider) {
               return { c: customers };
             });
           });
-        }
+        }]
       }
     })
     .when('/story/:narrativePath', {
@@ -83,7 +123,8 @@ function routerConfig($routeProvider) {
       ].join(''),
       controller: 'NarrativeCtrl',
       resolve: {
-        narrativeResolve: function ($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
+        narrativeResolve: ['$route', '$q', 'authSvc', 'dataSvc', 'modelSvc', 'ittUtils',
+          function ($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
           var pathOrId = $route.current.params.narrativePath;
           //this only pulls from the cache.
           var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
@@ -105,16 +146,16 @@ function routerConfig($routeProvider) {
               return {n: narrativeData, c: [customer]};
             });
           });
-        }
+        }]
       }
     })
     .when('/story/:narrativePath/:timelinePath', {
       template: '<div itt-narrative-timeline></div>',
       resolve: {
-        product: function (appState) {
+        product: ['appState', function (appState) {
           appState.product = "player";
           appState.productLoadedAs = "narrative";
-        }
+        }]
       }
     })
     .when('/projects', {
@@ -126,10 +167,10 @@ function routerConfig($routeProvider) {
       controller: 'PlayerController',
       templateUrl: 'templates/player.html',
       resolve: {
-        product: function (appState) {
+        product: ['appState', function (appState) {
           appState.product = "player";
           appState.productLoadedAs = "player";
-        }
+        }]
       }
     })
     .when('/episode/:epId/:viewMode', {
@@ -137,10 +178,10 @@ function routerConfig($routeProvider) {
       controller: 'PlayerController',
       templateUrl: 'templates/player.html',
       resolve: {
-        product: function (appState) {
+        product: ['appState', function (appState) {
           appState.product = "player";
           appState.productLoadedAs = "player";
-        }
+        }]
       }
     })
     .when('/sxs/:epId', {
@@ -148,10 +189,10 @@ function routerConfig($routeProvider) {
       controller: 'PlayerController',
       templateUrl: 'templates/player.html',
       resolve: {
-        product: function (appState) {
+        product: ['appState', function (appState) {
           appState.product = "sxs";
           appState.productLoadedAs = "sxs";
-        }
+        }]
       }
     })
     .when('/editor/:epId', {
@@ -159,10 +200,10 @@ function routerConfig($routeProvider) {
       controller: 'PlayerController',
       templateUrl: 'templates/player.html',
       resolve: {
-        product: function (appState) {
+        product: ['appState', function (appState) {
           appState.product = "sxs";
           appState.productLoadedAs = "sxs";
-        }
+        }]
       }
     })
     .when('/producer/:epId', {
@@ -170,10 +211,10 @@ function routerConfig($routeProvider) {
       controller: 'PlayerController',
       templateUrl: 'templates/player.html',
       resolve: {
-        product: function (appState) {
+        product: ['appState', function (appState) {
           appState.product = "producer";
           appState.productLoadedAs = "producer";
-        }
+        }]
       }
     })
     .when('/assets/:containerId', {
@@ -207,124 +248,92 @@ function routerConfig($routeProvider) {
   //$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
 }
 
-angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular', 'ui.tree'])
-	.constant('MIMES', {
-		'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
-		'file': 'text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
-		'default': 'image/*',
-		'transcripts': 'text/vtt,text/srt'
-	})
-	.constant('PLAYERSTATES', {
-		'-1': 'unstarted',
-		'0': 'ended',
-		'1': 'playing',
-		'2': 'paused',
-		'3': 'buffering',
-		'5': 'video cued',
-		'4': 'quality changed',
-		'6': 'player ready'
-	})
-	.constant('PLAYERSTATES_WORD', {
-		'unstarted': '-1',
-		'ended': '0',
-		'playing': '1',
-		'paused': '2',
-		'buffering': '3',
-		'quality changed': '4',
-		'video cued': '5',
-		'player ready': '6'
-	})
-	// Configure routing
-	.config(['$routeProvider', routerConfig])
-	.run(function ($rootScope, errorSvc) {
+function xDomainConfig($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    'self',
+    /.*/,
+    /^http(s)?:\/\/platformuniv-p.edgesuite.net/,
+    /^http(s)?:\/\/themes.googleusercontent.com/
+  ]);
+}
 
-		$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
-			document.title = currentRoute.title ? currentRoute.title : 'Narrative Producer';
-			errorSvc.init(); // clear display of any errors from the previous route
-		});
-		// globally emit rootscope event for certain keypresses:
-		var fhotkb = false; // user's forehead is not on the keyboard
-		$(document).on("keydown", function (e) {
-			if (
-				fhotkb ||
-				document.activeElement.tagName === 'INPUT' ||
-				document.activeElement.tagName === 'TEXTAREA' ||
-				document.activeElement.attributes.contenteditable
-			) {
-				return;
-			}
+function authInterceptorConfig($httpProvider) {
+  $httpProvider.defaults.useXDomain = true;
+  $httpProvider.defaults.withCredentials = true;
+  delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  $httpProvider.interceptors.push(['$q', 'errorSvc',function ($q, errorSvc) {
+    return {
+      'responseError': function (rejection) {
 
-			fhotkb = true;
-			if (e.keyCode === 27) {
-				$rootScope.$emit("userKeypress.ESC");
-				e.preventDefault();
-			}
-			if (e.which === 32) {
-				$rootScope.$emit("userKeypress.SPACE");
-				e.preventDefault();
-			}
+        if (rejection.data && rejection.data.path_slug) {
+          return $q(function(resolve, reject) {return reject(rejection);});
+        }
 
-		});
-		$(document).on("keyup", function () {
-			fhotkb = false; // oh good they've woken up
-		});
-	})
+        errorSvc.error(rejection);
+        return $q.reject(rejection);
+      }
+    };
+  }]);
+}
 
-	// Configure x-domain resource whitelist (TODO: do we actually need this?)
-	.config(function ($sceDelegateProvider) {
-		$sceDelegateProvider.resourceUrlWhitelist([
-			'self',
-			/.*/,
-			/^http(s)?:\/\/platformuniv-p.edgesuite.net/,
-			/^http(s)?:\/\/themes.googleusercontent.com/
-		]);
-	})
+function textAngularConfig($provide) {
+  $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
+    taOptions.defaultFileDropHandler = function (a, b) {}; //jshint ignore:line
+    taOptions.toolbar = [
+      ['h1', 'h2', 'h3'],
+      ['bold', 'italics', 'underline', 'strikeThrough'],
+      ['ul', 'ol'],
+      ['undo', 'redo', 'clear']
+      // ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
+      // ['justifyLeft','justifyCenter','justifyRight','indent','outdent'],
+      // ['html', 'insertImage', 'insertLink', 'insertVideo', 'wordcount', 'charcount']
+    ];
+    return taOptions;
+  }]);
+}
 
-	// Configure http headers and intercept http errors
-	.config(function ($httpProvider) {
-		$httpProvider.defaults.useXDomain = true;
-		$httpProvider.defaults.withCredentials = true;
-		delete $httpProvider.defaults.headers.common['X-Requested-With'];
-		$httpProvider.interceptors.push(function ($q, errorSvc) {
-			return {
-				'responseError': function (rejection) {
+function debugInfoConfig($compileProvider) {
+  var isDev = false;
+  var currentHost = window.location.hostname;
+  if (currentHost.indexOf('localhost') === 0 || currentHost.indexOf('api-dev') === 0) {
+    isDev = true;
+  }
 
-				  if (rejection.data && rejection.data.path_slug) {
-				    return $q(function(resolve, reject) {return reject(rejection);});
-          }
+  if (isDev === false) {
+    $compileProvider.debugInfoEnabled(false);
+  }
+}
 
-					errorSvc.error(rejection);
-					return $q.reject(rejection);
-				}
-			};
-		});
-	})
+function runFunction($rootScope, errorSvc) {
 
-	// Configuration for textAngular toolbar
-	.config(function ($provide) {
-		$provide.decorator('taOptions', ['taRegisterTool', '$delegate', function (taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating
-			taOptions.defaultFileDropHandler = function (a, b) {}; //jshint ignore:line
-			taOptions.toolbar = [
-				['h1', 'h2', 'h3'],
-				['bold', 'italics', 'underline', 'strikeThrough'],
-				['ul', 'ol'],
-				['undo', 'redo', 'clear']
-				// ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
-				// ['justifyLeft','justifyCenter','justifyRight','indent','outdent'],
-				// ['html', 'insertImage', 'insertLink', 'insertVideo', 'wordcount', 'charcount']
-			];
-			return taOptions;
-		}]);
-	})
+  $rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
+    document.title = currentRoute.title ? currentRoute.title : 'Narrative Producer';
+    errorSvc.init(); // clear display of any errors from the previous route
+  });
+  // globally emit rootscope event for certain keypresses:
+  var fhotkb = false; // user's forehead is not on the keyboard
+  $(document).on("keydown", function (e) {
+    if (
+      fhotkb ||
+      document.activeElement.tagName === 'INPUT' ||
+      document.activeElement.tagName === 'TEXTAREA' ||
+      document.activeElement.attributes.contenteditable
+    ) {
+      return;
+    }
 
-	.config(function ($compileProvider) {
-		var isDev = false;
-		var currentHost = window.location.hostname;
-		if (currentHost.indexOf('localhost') === 0 || currentHost.indexOf('api-dev') === 0) {
-			isDev = true;
-		}
+    fhotkb = true;
+    if (e.keyCode === 27) {
+      $rootScope.$emit("userKeypress.ESC");
+      e.preventDefault();
+    }
+    if (e.which === 32) {
+      $rootScope.$emit("userKeypress.SPACE");
+      e.preventDefault();
+    }
 
-		if (isDev === false) {
-			$compileProvider.debugInfoEnabled(false);
-		}
-	});
+  });
+  $(document).on("keyup", function () {
+    fhotkb = false; // oh good they've woken up
+  });
+}
