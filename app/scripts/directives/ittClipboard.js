@@ -8,12 +8,14 @@
   angular.module('com.inthetelling.story')
     .directive('ittClipboard', ittClipboard);
 
-  function ittClipboard() {
+  ittClipboard.$inject = ['ittUtils'];
+
+  function ittClipboard(ittUtils) {
     return {
       restrict: 'EA',
       transclude: true,
       template: [
-        '<itt-tooltip tip-text="Click to Copy" ng-click="$ctrl.bubbleEvent($event)">',
+        '<itt-tooltip tip-text="{{$ctrl.tipText}}" ng-click="$ctrl.bubbleEvent($event)">',
         ' <a class="icon__button button__clipboard"></a>',
         '</itt-tooltip>'
       ].join(''),
@@ -23,13 +25,19 @@
       },
       controller: [function() {
         var ctrl = this;
+        var _ngTimeout = ittUtils.ngTimeout;
         angular.extend(ctrl, {
+          tipText: 'Click to Copy',
           bubbleEvent: bubbleEvent
         });
 
         function bubbleEvent($event) {
           copyText(ctrl.sourceText);
           ctrl.onCopy({$event: $event});
+          ctrl.tipText = 'Copied!';
+          _ngTimeout(function() {
+            ctrl.tipText = 'Click to Copy';
+          }, 1500)
         }
 
         function copyText(text) {
