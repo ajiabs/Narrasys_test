@@ -2,125 +2,129 @@
 
 // Controller for the search panel results
 angular.module('com.inthetelling.story')
-	.controller('SearchPanelController', function ($scope, $rootScope, $timeout, timelineSvc, modelSvc, appState) {
+  .controller('SearchPanelController', SearchPanelController);
 
-		// Events searchableText is:
-		// (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator)
+SearchPanelController.$inject = ['$scope', '$rootScope', '$timeout', 'appState'];
 
-		// default sort order
-		$scope.sortBy = "startTime";
+function SearchPanelController($scope, $rootScope, $timeout, appState) {
 
-		$scope.toggleSortBy = function (sortedBy) {
-			$scope.sortBy = getFlippedSortValue(sortedBy);
-			appState.autoscroll = ($scope.sortBy === 'startTime'); // autoscroll only when sorted by time
-		};
+  // Events searchableText is:
+  // (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator)
 
-		$scope.getToggledValue = function (currentSortBy) {
-			return getFlippedSortValue(currentSortBy);
-		};
+  // default sort order
+  $scope.sortBy = "startTime";
 
-		var getFlippedSortValue = function (current) {
-			if (current === "startTime") {
-				return "type";
-			} else {
-				return "startTime";
-			}
-		};
+  $scope.toggleSortBy = function (sortedBy) {
+    $scope.sortBy = getFlippedSortValue(sortedBy);
+    appState.autoscroll = ($scope.sortBy === 'startTime'); // autoscroll only when sorted by time
+  };
 
-		$scope.getFriendlySortText = function (sortBy) {
-			if (sortBy === "startTime") {
-				return "time";
-			} else {
-				return "type";
-			}
-		};
+  $scope.getToggledValue = function (currentSortBy) {
+    return getFlippedSortValue(currentSortBy);
+  };
 
-		// generate searchable text for the episode (on demand).
-		// TODO need to handle multi-episode timelines.
+  var getFlippedSortValue = function (current) {
+    if (current === "startTime") {
+      return "type";
+    } else {
+      return "startTime";
+    }
+  };
 
-		$scope.indexed = false;
+  $scope.getFriendlySortText = function (sortBy) {
+    if (sortBy === "startTime") {
+      return "time";
+    } else {
+      return "type";
+    }
+  };
 
-		$scope.indexEvents = function () {
-			if (!$scope.episode.items) {
-				$timeout(function () { // HACK Sorry, future me
-					$scope.indexEvents();
-				}, 300);
-				return false;
-			}
-			$scope.indexed = true;
-			// map the increasingly-misnamed producerItemType to search categories.
-			// Array so we can control sort order in panel.
-			$scope.typeCategories = [
-				"transcript", "annotation", "file", "image", "link", "video", "question", "other"
-			];
+  // generate searchable text for the episode (on demand).
+  // TODO need to handle multi-episode timelines.
 
-			// map type literals to pretty/printable version. 
-			$scope.showTypes = {
-				transcript: {
-					name: "Transcript",
-					items: []
-				},
-				annotation: {
-					name: "Annotations",
-					items: []
-				},
-				file: {
-					name: "Files",
-					items: []
-				},
-				image: {
-					name: "Images",
-					items: []
-				},
-				link: {
-					name: "Links",
-					items: []
-				},
-				video: {
-					name: "Videos",
-					items: []
-				},
-				question: {
-					name: "Questions",
-					items: []
-				},
-				other: {
-					name: "Other",
-					items: []
-				}
-			};
+  $scope.indexed = false;
 
-			var padDigits = function (number, digits) {
-				return new Array(Math.max(digits - String(parseInt(number, 10)).length + 1, 0)).join(0) + number;
-			};
+  $scope.indexEvents = function () {
+    if (!$scope.episode.items) {
+      $timeout(function () { // HACK Sorry, future me
+        $scope.indexEvents();
+      }, 300);
+      return false;
+    }
+    $scope.indexed = true;
+    // map the increasingly-misnamed producerItemType to search categories.
+    // Array so we can control sort order in panel.
+    $scope.typeCategories = [
+      "transcript", "annotation", "file", "image", "link", "video", "question", "other"
+    ];
 
-			angular.forEach($scope.episode.items, function (item) {
-				// Chrome has decided to sort these alphabetically instead of numerically...
-				item.wtfchromesort = padDigits(item.start_time, 5);
+    // map type literals to pretty/printable version.
+    $scope.showTypes = {
+      transcript: {
+        name: "Transcript",
+        items: []
+      },
+      annotation: {
+        name: "Annotations",
+        items: []
+      },
+      file: {
+        name: "Files",
+        items: []
+      },
+      image: {
+        name: "Images",
+        items: []
+      },
+      link: {
+        name: "Links",
+        items: []
+      },
+      video: {
+        name: "Videos",
+        items: []
+      },
+      question: {
+        name: "Questions",
+        items: []
+      },
+      other: {
+        name: "Other",
+        items: []
+      }
+    };
 
-				// include cosmetic items only in producer:
-				if (appState.product !== 'producer' && item.cosmetic) {
-					return;
-				}
-				if (item._type === 'Scene') {
-					return;
-				}
+    var padDigits = function (number, digits) {
+      return new Array(Math.max(digits - String(parseInt(number, 10)).length + 1, 0)).join(0) + number;
+    };
 
-				// build 'by type' arrays:
-				if (item.producerItemType && $scope.showTypes[item.producerItemType]) {
-					$scope.showTypes[item.producerItemType].items.push(item);
-				} else {
-					$scope.showTypes.other.items.push(item);
-				}
+    angular.forEach($scope.episode.items, function (item) {
+      // Chrome has decided to sort these alphabetically instead of numerically...
+      item.wtfchromesort = padDigits(item.start_time, 5);
 
-				// control whether annotations are shown header-style:
-				if (item.producerItemType === 'annotation') {
-					// HACK template url dependency
-					item.showAsHeader = !(item.templateUrl.match(/(transmedia|definition)/));
-				}
-			});
-		};
+      // include cosmetic items only in producer:
+      if (appState.product !== 'producer' && item.cosmetic) {
+        return;
+      }
+      if (item._type === 'Scene') {
+        return;
+      }
 
-		$rootScope.$on('searchReindexNeeded', $scope.indexEvents); // HACK
+      // build 'by type' arrays:
+      if (item.producerItemType && $scope.showTypes[item.producerItemType]) {
+        $scope.showTypes[item.producerItemType].items.push(item);
+      } else {
+        $scope.showTypes.other.items.push(item);
+      }
 
-	});
+      // control whether annotations are shown header-style:
+      if (item.producerItemType === 'annotation') {
+        // HACK template url dependency
+        item.showAsHeader = !(item.templateUrl.match(/(transmedia|definition)/));
+      }
+    });
+  };
+
+  $rootScope.$on('searchReindexNeeded', $scope.indexEvents); // HACK
+
+}

@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('SceneController', function ($scope, $filter, ittUtils) {
+	.controller('SceneController', SceneController);
+
+SceneController.$inject = ['$scope', '$filter', 'ittUtils'];
+
+function SceneController($scope, $filter, ittUtils) {
 		$scope.byPullquoteOrH2 = byPullquoteOrH2;
 		$scope.centeredProTransmedia = centeredProTransmedia;
 		$scope.setBgImgUrl = setBgImgUrl;
@@ -154,4 +158,4 @@ angular.module('com.inthetelling.story')
 				return '';
 			}
 		}
-	});
+	}
