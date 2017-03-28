@@ -33,7 +33,8 @@
           bubbleEvent: bubbleEvent
         });
 
-        function bubbleEvent($event) {
+        function bubbleEvent($event) {y
+          
           copyText(ctrl.sourceText);
           ctrl.onCopy({$event: $event});
           ctrl.tipText = 'Copied!';
