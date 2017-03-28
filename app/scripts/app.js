@@ -13,6 +13,200 @@
  * @requires ngSanitize
  * @requires textAngular
  */
+
+function routerConfig($routeProvider) {
+  $routeProvider
+    .when('/', {
+      title: "Narrative Producer",
+      templateUrl: 'templates/root.html'
+    })
+    .when('/auth', {
+      templateUrl: 'templates/auth.html',
+      reloadOnSearch: false
+    })
+    .when('/account', {
+      template: [
+        '<div class="standaloneAncillaryPage">',
+        '	<itt-nav on-logout="logout()"></itt-nav>',
+        '	<h1>My Account</h1>',
+        '	<div itt-user></div>',
+        '</div>'
+      ].join(''),
+      controller: ['$scope', 'authSvc', function ($scope, authSvc) {
+        $scope.logout = authSvc.logout;
+      }]
+    })
+    .when('/stories', {
+      title: "Available Narratives",
+      template: [
+        '<div class="standaloneAncillaryPage">',
+        '	<itt-nav on-logout="logout()"></itt-nav>',
+        '	<h1>Narratives</h1>',
+        '	<div itt-narrative-list customers-data="customersResolve"></div>',
+        '</div>'
+      ].join('\n'),
+      controller: 'NarrativesCtrl',
+      resolve: {
+        narrativesResolve: function ($route, $q, ittUtils, authSvc, dataSvc, modelSvc) {
+
+          //needs to be an array
+          var cachedCustomers = modelSvc.getCustomersAsArray();
+          //if use visits /story/:id prior to visiting this route, they will have a single
+          //narrative in modelSvc. We consider the cache 'empty' if the only narrative
+          //in it came from loading data for /story/:id. Otherwise when they visit
+          // /stories, the only listing they would see would be the narrative from
+          // /stories/:id.
+          var isCached = Object.keys(cachedCustomers).length > 0;
+
+          if (isCached) {
+            //since this is going to be displayed in a dropdown, it needs to be an array of objects.
+
+            return $q(function (resolve) {
+              return resolve({c: cachedCustomers});
+            });
+          }
+
+          return authSvc.authenticate().then(function () {
+            return dataSvc.getCustomerList().then(function (customers) {
+              return { c: customers };
+            });
+          });
+        }
+      }
+    })
+    .when('/story/:narrativePath', {
+      template: [
+        '<div class="standaloneAncillaryPage">',
+        '	<itt-nav on-logout="logout()"></itt-nav>',
+        '	<div itt-narrative narrative-data="narrativeResolve" customer-data="customerResolve">',
+        '</div>'
+      ].join(''),
+      controller: 'NarrativeCtrl',
+      resolve: {
+        narrativeResolve: function ($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
+          var pathOrId = $route.current.params.narrativePath;
+          //this only pulls from the cache.
+          var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
+          var cachedCustomer;
+
+          var doPullFromCache = ittUtils.existy(cachedNarr) &&
+            ittUtils.existy(cachedNarr.path_slug) &&
+            ittUtils.existy(cachedNarr.timelines) &&
+            (cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
+
+          if (doPullFromCache) {
+            cachedCustomer = modelSvc.customers[cachedNarr.customer_id];
+            return $q(function (resolve) {
+              return resolve({n: cachedNarr, c: [cachedCustomer]});
+            });
+          }
+          return dataSvc.getNarrative(pathOrId).then(function (narrativeData) {
+            return dataSvc.getCustomer(narrativeData.customer_id, true).then(function (customer) {
+              return {n: narrativeData, c: [customer]};
+            });
+          });
+        }
+      }
+    })
+    .when('/story/:narrativePath/:timelinePath', {
+      template: '<div itt-narrative-timeline></div>',
+      resolve: {
+        product: function (appState) {
+          appState.product = "player";
+          appState.productLoadedAs = "narrative";
+        }
+      }
+    })
+    .when('/projects', {
+      title: "Available projects",
+      templateUrl: 'templates/producer/episodelist.html'
+    })
+    .when('/episode/:epId', {
+      title: "Narrative Producer",
+      controller: 'PlayerController',
+      templateUrl: 'templates/player.html',
+      resolve: {
+        product: function (appState) {
+          appState.product = "player";
+          appState.productLoadedAs = "player";
+        }
+      }
+    })
+    .when('/episode/:epId/:viewMode', {
+      title: "Narrative Producer",
+      controller: 'PlayerController',
+      templateUrl: 'templates/player.html',
+      resolve: {
+        product: function (appState) {
+          appState.product = "player";
+          appState.productLoadedAs = "player";
+        }
+      }
+    })
+    .when('/sxs/:epId', {
+      title: "Narrative Producer",
+      controller: 'PlayerController',
+      templateUrl: 'templates/player.html',
+      resolve: {
+        product: function (appState) {
+          appState.product = "sxs";
+          appState.productLoadedAs = "sxs";
+        }
+      }
+    })
+    .when('/editor/:epId', {
+      title: "Narrative Producer",
+      controller: 'PlayerController',
+      templateUrl: 'templates/player.html',
+      resolve: {
+        product: function (appState) {
+          appState.product = "sxs";
+          appState.productLoadedAs = "sxs";
+        }
+      }
+    })
+    .when('/producer/:epId', {
+      title: "Narrative Producer",
+      controller: 'PlayerController',
+      templateUrl: 'templates/player.html',
+      resolve: {
+        product: function (appState) {
+          appState.product = "producer";
+          appState.productLoadedAs = "producer";
+        }
+      }
+    })
+    .when('/assets/:containerId', {
+      title: "Container Assets test",
+      controller: 'ContainerAssetsTestController',
+      template: [
+        '<div class="standaloneAncillaryPage">',
+        '	<itt-nav on-logout="logout()"></itt-nav>',
+        '	<div>',
+        '		<div sxs-container-assets="containerId" mime-key="assetLib"></div>',
+        '	</div>',
+        '</div>'].join(''),
+      resolve: {
+        authEffects: ['authSvc', function (authSvc) {
+          //to ensure that canAccess is properly set.
+          return authSvc.authenticate().then(angular.noop);
+        }]
+      }
+    })
+    .when('/event/:eventId', {
+      title: "Event test",
+      controller: 'EventTestController',
+      templateUrl: 'templates/testbed-event.html'
+    })
+    .otherwise({
+      title: "Narrative Producer: Error",
+      controller: 'ErrorController',
+      templateUrl: 'templates/error-404.html'
+    });
+
+  //$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
+}
+
 angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 'textAngular', 'ui.tree'])
 	.constant('MIMES', {
 		'assetLib': 'image/*,text/plain,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/rtf',
@@ -41,199 +235,7 @@ angular.module('com.inthetelling.story', ['ngRoute', 'ngAnimate', 'ngSanitize', 
 		'player ready': '6'
 	})
 	// Configure routing
-	.config(function ($routeProvider) {
-		$routeProvider
-			.when('/', {
-				title: "Narrative Producer",
-				templateUrl: 'templates/root.html'
-			})
-			.when('/auth', {
-				templateUrl: 'templates/auth.html',
-				reloadOnSearch: false
-			})
-			.when('/account', {
-				template: [
-					'<div class="standaloneAncillaryPage">',
-					'	<itt-nav on-logout="logout()"></itt-nav>',
-					'	<h1>My Account</h1>',
-					'	<div itt-user></div>',
-					'</div>'
-				].join(''),
-				controller: ['$scope', 'authSvc', function ($scope, authSvc) {
-					$scope.logout = authSvc.logout;
-				}]
-			})
-			.when('/stories', {
-				title: "Available Narratives",
-				template: [
-					'<div class="standaloneAncillaryPage">',
-					'	<itt-nav on-logout="logout()"></itt-nav>',
-					'	<h1>Narratives</h1>',
-					'	<div itt-narrative-list customers-data="customersResolve"></div>',
-					'</div>'
-				].join('\n'),
-				controller: 'NarrativesCtrl',
-				resolve: {
-					narrativesResolve: function ($route, $q, ittUtils, authSvc, dataSvc, modelSvc) {
-
-						//needs to be an array
-            var cachedCustomers = modelSvc.getCustomersAsArray();
-						//if use visits /story/:id prior to visiting this route, they will have a single
-						//narrative in modelSvc. We consider the cache 'empty' if the only narrative
-						//in it came from loading data for /story/:id. Otherwise when they visit
-						// /stories, the only listing they would see would be the narrative from
-						// /stories/:id.
-						var isCached = Object.keys(cachedCustomers).length > 0;
-
-						if (isCached) {
-							//since this is going to be displayed in a dropdown, it needs to be an array of objects.
-
-							return $q(function (resolve) {
-								return resolve({c: cachedCustomers});
-							});
-						}
-
-            return authSvc.authenticate().then(function () {
-              return dataSvc.getCustomerList().then(function (customers) {
-                return { c: customers };
-              });
-            });
-					}
-				}
-			})
-			.when('/story/:narrativePath', {
-				template: [
-					'<div class="standaloneAncillaryPage">',
-					'	<itt-nav on-logout="logout()"></itt-nav>',
-					'	<div itt-narrative narrative-data="narrativeResolve" customer-data="customerResolve">',
-					'</div>'
-				].join(''),
-				controller: 'NarrativeCtrl',
-				resolve: {
-					narrativeResolve: function ($route, $q, authSvc, dataSvc, modelSvc, ittUtils) {
-						var pathOrId = $route.current.params.narrativePath;
-						//this only pulls from the cache.
-						var cachedNarr = modelSvc.getNarrativeByPathOrId(pathOrId);
-						var cachedCustomer;
-
-						var doPullFromCache = ittUtils.existy(cachedNarr) &&
-							ittUtils.existy(cachedNarr.path_slug) &&
-							ittUtils.existy(cachedNarr.timelines) &&
-							(cachedNarr.path_slug.en === pathOrId || cachedNarr._id === pathOrId);
-
-						if (doPullFromCache) {
-							cachedCustomer = modelSvc.customers[cachedNarr.customer_id];
-							return $q(function (resolve) {
-								return resolve({n: cachedNarr, c: [cachedCustomer]});
-							});
-						}
-						return dataSvc.getNarrative(pathOrId).then(function (narrativeData) {
-							return dataSvc.getCustomer(narrativeData.customer_id, true).then(function (customer) {
-								return {n: narrativeData, c: [customer]};
-							});
-						});
-					}
-				}
-			})
-			.when('/story/:narrativePath/:timelinePath', {
-				template: '<div itt-narrative-timeline></div>',
-				resolve: {
-					product: function (appState) {
-						appState.product = "player";
-						appState.productLoadedAs = "narrative";
-					}
-				}
-			})
-			.when('/projects', {
-				title: "Available projects",
-				templateUrl: 'templates/producer/episodelist.html'
-			})
-			.when('/episode/:epId', {
-				title: "Narrative Producer",
-				controller: 'PlayerController',
-				templateUrl: 'templates/player.html',
-				resolve: {
-					product: function (appState) {
-						appState.product = "player";
-						appState.productLoadedAs = "player";
-					}
-				}
-			})
-			.when('/episode/:epId/:viewMode', {
-				title: "Narrative Producer",
-				controller: 'PlayerController',
-				templateUrl: 'templates/player.html',
-				resolve: {
-					product: function (appState) {
-						appState.product = "player";
-						appState.productLoadedAs = "player";
-					}
-				}
-			})
-			.when('/sxs/:epId', {
-				title: "Narrative Producer",
-				controller: 'PlayerController',
-				templateUrl: 'templates/player.html',
-				resolve: {
-					product: function (appState) {
-						appState.product = "sxs";
-						appState.productLoadedAs = "sxs";
-					}
-				}
-			})
-			.when('/editor/:epId', {
-				title: "Narrative Producer",
-				controller: 'PlayerController',
-				templateUrl: 'templates/player.html',
-				resolve: {
-					product: function (appState) {
-						appState.product = "sxs";
-						appState.productLoadedAs = "sxs";
-					}
-				}
-			})
-			.when('/producer/:epId', {
-				title: "Narrative Producer",
-				controller: 'PlayerController',
-				templateUrl: 'templates/player.html',
-				resolve: {
-					product: function (appState) {
-						appState.product = "producer";
-						appState.productLoadedAs = "producer";
-					}
-				}
-			})
-			.when('/assets/:containerId', {
-				title: "Container Assets test",
-				controller: 'ContainerAssetsTestController',
-				template: [
-					'<div class="standaloneAncillaryPage">',
-					'	<itt-nav on-logout="logout()"></itt-nav>',
-					'	<div>',
-					'		<div sxs-container-assets="containerId" mime-key="assetLib"></div>',
-					'	</div>',
-					'</div>'].join(''),
-				resolve: {
-					authEffects: ['authSvc', function (authSvc) {
-						//to ensure that canAccess is properly set.
-						return authSvc.authenticate().then(angular.noop);
-					}]
-				}
-			})
-			.when('/event/:eventId', {
-				title: "Event test",
-				controller: 'EventTestController',
-				templateUrl: 'templates/testbed-event.html'
-			})
-			.otherwise({
-				title: "Narrative Producer: Error",
-				controller: 'ErrorController',
-				templateUrl: 'templates/error-404.html'
-			});
-
-		//$locationProvider.html5Mode(false); // TODO we had trouble getting the server config working for this... thought we had it but IE still choked
-	})
-
+	.config(['$routeProvider', routerConfig])
 	.run(function ($rootScope, errorSvc) {
 
 		$rootScope.$on("$routeChangeSuccess", function (event, currentRoute) {
