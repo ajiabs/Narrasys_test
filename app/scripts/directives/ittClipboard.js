@@ -13,8 +13,8 @@
       restrict: 'EA',
       transclude: true,
       template: [
-        '<itt-tooltip tip-text="{{$ctrl.sourceText}}" ng-click="$ctrl.bubbleEvent($event)">',
-        '<ng-transclude></ng-transclude>',
+        '<itt-tooltip tip-text="Click to Copy" ng-click="$ctrl.bubbleEvent($event)">',
+        ' <a class="icon__button button__clipboard"></a>',
         '</itt-tooltip>'
       ].join(''),
       scope: {

@@ -199,6 +199,10 @@ and (max-device-width : 568px) {
 	content: "\e905";
 }
 
+.button__clipboard:before {
+  content: "\e90c";
+}
+
 .episode__button-row {
 	display: flex;
 	flex-direction: row;
