@@ -20,6 +20,7 @@
           angular.extend(ctrl, {
             //properties
             narrativeSelect: false,
+            narrativeRow: null,
             //methods
             logout: authSvc.logout,
             user: appState.user,
@@ -31,7 +32,8 @@
             setNarrativeRowClasses: setNarrativeRowClasses,
             setNarrativeToEdit: setNarrativeToEdit,
             closeAddOrEditModal: closeAddOrEditModal,
-            addOrUpdateNarrative: addOrUpdateNarrative
+            addOrUpdateNarrative: addOrUpdateNarrative,
+            toggleNarrativeRow: toggleNarrativeRow
           });
 
           onInit();
@@ -42,6 +44,24 @@
             }
 
             _updateAllEvenOdd();
+          }
+
+          function toggleNarrativeRow(narrative, $ev) {
+            $ev.stopPropagation();
+
+            if (ctrl.narrativeRow === null) {
+              ctrl.narrativeRow = narrative;
+            } else if (narrative === ctrl.narrativeRow) {
+              ctrl.narrativeRow = null;
+            } else {
+              ctrl.narrativeRow = narrative;
+            }
+
+            //close any selected customers
+            ctrl.customersData.forEach(function(cust) {
+              cust.isActive = false;
+            });
+
           }
 
           function closeAddOrEditModal(narrative) {
@@ -77,10 +97,11 @@
 
           function setSelectedNarrative(customer) {
 
-            ctrl.selectedCustomer = [customer];
+            var cachedNarratives = ittUtils.existy(customer.narratives) && customer.narratives.length > 1;
 
-            var cachedNarratives = ittUtils.existy(ctrl.selectedCustomer.narratives) && ctrl.selectedCustomer.narratives.length > 1;
+            ctrl.selectedCustomer = [customer];
             //need list of other narratives to for validation of path slugs.
+
             if (!cachedNarratives) {
               dataSvc.getNarrativeList(customer)
                 .then(function() {
@@ -89,7 +110,6 @@
             } else {
               ctrl.narrativeSelect = !ctrl.narrativeSelect;
             }
-
           }
 
           function setNarrativeToEdit($ev, narrative, customer) {
@@ -111,7 +131,8 @@
             return {
               'hoverIndicator': customer.showNarratives,
               'container__row--even': narrative.evenOdd === false,
-              'container__row--odd': narrative.evenOdd === true
+              'container__row--odd': narrative.evenOdd === true,
+              'isActive': narrative === ctrl.narrativeRow
             };
           }
 
@@ -123,7 +144,7 @@
           function customerRowClick(customer, $ev) {
             $ev.stopPropagation();
             customer.isActive = !customer.isActive;
-
+            ctrl.narrativeRow = null;
             ctrl.customersData.forEach(function(cust) {
               if (customer._id !== cust._id) {
                 cust.isActive = false;

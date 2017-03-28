@@ -227,7 +227,10 @@ function EditController($scope, $rootScope, $timeout, $window, selectService, ap
           modelSvc.cache("event", dataSvc.resolveIDs(data));
           modelSvc.resolveEpisodeEvents(appState.episodeId);
           saveOperation = 'create';
-          console.log('test');
+          var assetId = data.asset_id || data.link_image_id || data.annotation_image_id;
+          if (assetId && toSave.asset && toSave.asset._id === assetId) {
+            modelSvc.assocEventWithAsset(data._id, assetId);
+          }
         }
 
         if (data._type === 'Scene') {

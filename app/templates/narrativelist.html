@@ -1,11 +1,13 @@
 <div class="">
 
+
   <itt-modal modal-class="narrative__modal" ng-if="$ctrl.narrativeSelect || $ctrl.narrativeToEdit">
     <h3>{{$ctrl.narrativeSelect ? 'Add' : 'Edit'}} Narrative</h3>
 
     <itt-narrative-editor
       customers="$ctrl.selectedCustomer"
       narrative="$ctrl.narrativeToEdit"
+      hide-path-slug="$ctrl.narrativeSelect"
       on-done="$ctrl.closeAddOrEditModal()"
       on-update="$ctrl.addOrUpdateNarrative(n)">
     </itt-narrative-editor>
@@ -30,7 +32,7 @@
     <div ng-repeat="narrative in customer.narratives"
          style="padding-left: 2em;"
          ng-if="customer.showNarratives === true"
-         ng-click="$ctrl.gotoNarrative(narrative._id, $event)"
+         ng-click="$ctrl.toggleNarrativeRow(narrative, $event)"
          ng-class="$ctrl.setNarrativeRowClasses(customer, narrative)">
       <div>
         <itt-edit-pencil can-access="true" on-edit="$ctrl.setNarrativeToEdit($event, narrative, customer)">
@@ -39,6 +41,16 @@
         <p ng-if="narrative.description">
           <small>{{narrative.description.en}}</small>
         </p>
+
+        <div ng-if="$ctrl.narrativeRow._id === narrative._id">
+          <itt-tooltip tip-text="Go to Narrative" css="projects__page">
+            <a ng-click="$ctrl.gotoNarrative(narrative._id, $event)" class="icon__button button__generateNarrative" title="Go to Narrative"></a>
+          </itt-tooltip>
+          <a itt-guest-accessible-url narrative="narrative" clipboard-mode="Click to Copy"></a>
+        </div>
+
+
+
       </div>
     </div>
 
