@@ -39,7 +39,7 @@
           ctrl.tipText = 'Copied!';
           _ngTimeout(function() {
             ctrl.tipText = _defaultText;
-          }, 1500)
+          }, 1500);
         }
 
         function copyText(text) {
