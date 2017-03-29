@@ -16,6 +16,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('playerManagerCommons', playerManagerCommons);
 
+  playerManagerCommons.$inject = ['ittUtils'];
+
 	function playerManagerCommons(ittUtils) {
 		var _existy = ittUtils.existy;
 		return function(locals) {
