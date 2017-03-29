@@ -19,6 +19,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('kalturaPlayerManager', kalturaPlayerManager);
 
+  kalturaPlayerManager.$inject = ['ittUtils', 'PLAYERSTATES', 'playerManagerCommons', 'kalturaScriptLoader', 'kalturaUrlService'];
+
 	function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManagerCommons, kalturaScriptLoader, kalturaUrlService) {
 		var _players = {};
 		var _mainPlayerId;
