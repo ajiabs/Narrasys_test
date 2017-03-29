@@ -93,7 +93,7 @@ angular.module('com.inthetelling.story')
 			return ret;
 		};
 	})
-	.filter('reviewMode', function (appState) {
+	.filter('reviewMode', ['appState', function (appState) {
 		return function (items) {
 			var ret = [];
 			var isProducer = (appState.product === 'producer');
@@ -111,7 +111,7 @@ angular.module('com.inthetelling.story')
 			});
 			return ret;
 		};
-	})
+	}])
 	.filter('transcriptandrequired', function () {
 		// returns transcript AND required transmedia:
 		return function (items) {
@@ -187,7 +187,7 @@ angular.module('com.inthetelling.story')
 			return JSON.stringify(json, undefined, 2);
 		};
 	})
-	.filter('i18n', function (appState) {
+	.filter('i18n', ['appState', function (appState) {
 		// Used for plugin data only; other fields precalculate into display_foo.
 		// let's see if this is a huge performance hit, if not maybe we'll skip the precalc...
 		return function (input) {
@@ -199,7 +199,7 @@ angular.module('com.inthetelling.story')
 			}
 			return input;
 		};
-	})
+	}])
 	.filter('asBytes', function () {
 		// quick + sloppy
 		return function (b) {
@@ -258,7 +258,7 @@ angular.module('com.inthetelling.story')
 			return notVideos;
 		};
 	})
-  .filter('langDisplay', function(ittUtils) {
+  .filter('langDisplay', ['ittUtils', function(ittUtils) {
     var _existy = ittUtils.existy;
     var keys = {
       'en': 'English',
@@ -275,12 +275,12 @@ angular.module('com.inthetelling.story')
       }
       return '';
     };
-  })
-  .filter('slugify', function(ittUtils) {
+  }])
+  .filter('slugify', ['ittUtils', function(ittUtils) {
     return function(str) {
       if (ittUtils.existy(str)) {
         return ittUtils.slugify(str);
       }
       return '';
     };
-  });
+  }]);
