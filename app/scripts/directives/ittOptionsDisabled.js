@@ -8,6 +8,8 @@
 	angular.module('com.inthetelling.story')
 		.directive('ittOptionsDisabled', ittOptionsDisabled);
 
+  ittOptionsDisabled.$inject = ['$parse'];
+
 	//from: http://stackoverflow.com/a/16203547
 	function ittOptionsDisabled($parse) {
 	    return {
