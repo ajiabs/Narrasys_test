@@ -36,42 +36,45 @@
 	border-color: #2d6099;
 }
 
+/*css based approach in use throughout the app*/
 .tooltip-static {
-	position: relative;
+  position: relative;
 }
 
 .tooltip-static .tooltip-text {
-	visibility: hidden;
-	background-color: black;
-	color: #fff;
-	text-align: center;
-	border-radius: 6px;
-	/* Position the tooltip */
-	position: absolute;
-	z-index: 1;
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
 }
 
 .tooltip-static:hover .tooltip-text {
-	visibility: visible;
-	padding: 5px;
+  visibility: visible;
+  padding: 5px;
 }
 
-.tooltip-static .projects__page {
-	visibility: hidden;
+/*styles for itt-tooltip directive*/
+.ittTooltip {
+  position: relative;
+}
+
+.ittTooltip__text {
 	background-color: black;
 	color: #fff;
 	text-align: center;
 	border-radius: 6px;
+  padding: 3px 5px;
 	/* Position the tooltip */
 	position: absolute;
-	top: 1.3em;
-	left: 1.3em;
+  /*transform: translate(0, 1.3em);*/
+  top: 1.13em;
+  left: 1.3em;
 	z-index: 1;
-}
-
-.tooltip-static:hover .projects__page {
-	visibility: visible;
-	padding: 5px;
+  pointer-events: none;
 }
 
 * {
