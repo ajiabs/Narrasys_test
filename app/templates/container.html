@@ -20,7 +20,7 @@
 	<div ng-class="{hoverIndicator: depth !== 3, isActive: container.isActive && depth !== 3}">
 
 		<div ng-if="depth === 3">
-			<itt-tooltip tip-text="{{container.status}}" css="projects__page" class="published__state" style="text-indent: 0;">
+			<itt-tooltip tip-text="{{container.status}}"  class="published__state" style="text-indent: 0;">
 				<span ng-class="{isPublished: container.status === 'Published', isUnPublished: container.status !== 'Published'}"></span>
 			</itt-tooltip>
 		</div>
@@ -36,8 +36,15 @@
 		<div ng-if="depth === 0">
 			<div ng-if="!container.addingContainer">
 				<div ng-if="container.isActive" class="button__row">
-					<button ng-click="container.addingContainer = true">Add Project</button>
-          <button ng-if="isAdmin" ng-click="getLinkStatusReport(container.customer_id)">Link Status Report</button>
+          <div>
+            <itt-tooltip tip-text="Add Project">
+              <a class="icon__button button__add-inverted" ng-click="container.addingContainer = true"></a>
+            </itt-tooltip>
+            <itt-tooltip tip-text="Link Status Report">
+              <a ng-if="isAdmin" class="icon__button button__link-status"
+                 ng-click="getLinkStatusReport(container.customer_id)"></a>
+            </itt-tooltip>
+          </div>
 				</div>
 			</div>
 
@@ -53,13 +60,17 @@
 		<div ng-if="depth === 1">
 			<div ng-if="!container.addingContainer">
 				<div ng-if="container.isActive" class="button__row">
-					<button ng-click="container.addingContainer = true">Add Module</button>
-					<itt-tooltip tip-text="Go to assets" css="projects__page">
-						<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
-					</itt-tooltip>
-					<itt-tooltip tip-text="Generate new narrative" css="projects__page">
-						<a ng-if="canAccess" class="icon__button button__generateNarrative" ng-click="toggleNarrativeModal()"></a>
-					</itt-tooltip>
+          <div>
+            <itt-tooltip tip-text="Add Module">
+              <a class="icon__button button__add-inverted" ng-click="container.addingContainer = true"></a>
+            </itt-tooltip>
+            <itt-tooltip tip-text="Go to assets">
+              <a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
+            </itt-tooltip>
+            <itt-tooltip tip-text="Generate new narrative">
+              <a ng-if="canAccess" class="icon__button button__generateNarrative" ng-click="toggleNarrativeModal()"></a>
+            </itt-tooltip>
+          </div>
 				</div>
 			</div>
 
@@ -75,11 +86,13 @@
 		<div ng-if="depth === 2">
 			<div ng-if="!container.addingContainer">
 				<div ng-if="container.isActive" class="button__row">
-					<button ng-click="container.addingContainer = true">Add Episode</button>
-					<itt-tooltip tip-text="Go to assets" css="projects__page">
+          <itt-tooltip tip-text="Add Episode">
+            <a class="icon__button button__add-inverted" ng-click="container.addingContainer = true"></a>
+          </itt-tooltip>
+					<itt-tooltip tip-text="Go to assets" >
 						<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
 					</itt-tooltip>
-					<itt-tooltip tip-text="Generate new narrative" css="projects__page">
+					<itt-tooltip tip-text="Generate new narrative" >
 						<a ng-if="canAccess" class="icon__button button__generateNarrative" ng-click="toggleNarrativeModal()"></a>
 					</itt-tooltip>
 				</div>
@@ -112,19 +125,19 @@
 		<!-- begin episode -->
 		<div class="episode__button-row">
 			<div class="episode__button">
-				<itt-tooltip tip-text="Go to editor" css="projects__page">
+				<itt-tooltip tip-text="Go to editor">
 					<a class="icon__button button__editor" ng-if="isDemoServer" href="#/editor/{{container.episodes[0]}}"></a>
 				</itt-tooltip>
 
-				<itt-tooltip tip-text="Go to producer" css="projects__page">
+				<itt-tooltip tip-text="Go to producer">
 					<a class="icon__button button__producer" href="#/producer/{{container.episodes[0]}}"></a>
 				</itt-tooltip>
 
-				<itt-tooltip tip-text="Go to assets" css="projects__page">
+				<itt-tooltip tip-text="Go to assets">
 					<a class="icon__button button__assets" ng-href="#/assets/{{container._id}}"></a>
 				</itt-tooltip>
 
-				<itt-tooltip tip-text="Generate new narrative" css="projects__page">
+				<itt-tooltip tip-text="Generate new narrative">
 					<a ng-if="canAccess" class="icon__button button__generateNarrative" title="Generate new narrative" ng-click="toggleNarrativeModal()"></a>
 				</itt-tooltip>
 

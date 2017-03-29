@@ -25,7 +25,9 @@
 
     <div ng-if="customer.isActive === true">
       <div ng-if="$ctrl.canAccess" style="padding-left: 1em;">
-        <button ng-click="$ctrl.setSelectedNarrative(customer)">Add Narrative</button>
+        <itt-tooltip tip-text="Add Narrative">
+          <a class="icon__button button__add-inverted" ng-click="$ctrl.setSelectedNarrative(customer)"></a>
+        </itt-tooltip>
       </div>
     </div>
 
@@ -43,7 +45,7 @@
         </p>
 
         <div ng-if="$ctrl.narrativeRow._id === narrative._id">
-          <itt-tooltip tip-text="Go to Narrative" css="projects__page">
+          <itt-tooltip tip-text="Go to Narrative">
             <a ng-click="$ctrl.gotoNarrative(narrative._id, $event)" class="icon__button button__generateNarrative" title="Go to Narrative"></a>
           </itt-tooltip>
           <a itt-guest-accessible-url narrative="narrative" clipboard-mode="Click to Copy"></a>
