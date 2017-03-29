@@ -27,6 +27,8 @@
 	// 	4: 'HAVE_ENOUGH_DATA'
 	// }
 
+  html5PlayerManager.$inject = ['$interval', 'PLAYERSTATES', 'ittUtils', 'appState', 'playerManagerCommons'];
+
 	function html5PlayerManager($interval, PLAYERSTATES, ittUtils, appState, playerManagerCommons) {
 		var _players = {};
 		var _mainPlayerId;
