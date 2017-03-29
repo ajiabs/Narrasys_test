@@ -12,6 +12,8 @@
 	angular.module('com.inthetelling.story')
 		.controller('NarrativesCtrl', NarrativesCtrl);
 
+  NarrativesCtrl.$inject = ['$scope', 'authSvc', 'narrativesResolve'];
+
 	function NarrativesCtrl($scope, authSvc,  narrativesResolve) {
 		$scope.customersResolve = narrativesResolve.c;
 		$scope.logout = authSvc.logout;
