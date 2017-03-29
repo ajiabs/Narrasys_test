@@ -8,6 +8,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('urlService', urlService);
 
+  urlService.$inject = ['youtubeUrlService', 'html5UrlService', 'kalturaUrlService', 'config'];
+
 	function urlService(youtubeUrlService, html5UrlService, kalturaUrlService, config) {
 
 		var _urlSubServices = {
