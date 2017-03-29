@@ -24,14 +24,14 @@
       ].join(''),
       link: function(scope, elm) {
         elm.mouseenter(onMouseenter);
-        function onMouseenter(ev) {
+        function onMouseenter() {
           scope.$apply(function () {
             scope.showTip = true;
           });
         }
 
         elm.mouseleave(onMouseleave);
-        function onMouseleave(ev) {
+        function onMouseleave() {
           scope.$apply(function () {
             scope.showTip = false;
           });
