@@ -19,6 +19,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('youTubePlayerManager', youTubePlayerManager);
 
+  youTubePlayerManager.$inject = ['$location', 'ittUtils', 'YTScriptLoader', 'errorSvc', 'PLAYERSTATES', 'youtubeUrlService', 'playerManagerCommons'];
+
 	function youTubePlayerManager($location, ittUtils, YTScriptLoader, errorSvc, PLAYERSTATES, youtubeUrlService, playerManagerCommons) {
 
 		var _youTubePlayerManager;
