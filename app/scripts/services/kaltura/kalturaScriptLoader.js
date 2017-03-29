@@ -17,6 +17,8 @@
 	  if we haven't, load script and store result in _scriptsMap
 	 */
 
+  kalturaScriptLoader.$inject = ['$q', 'ittUtils'];
+
 	function kalturaScriptLoader($q, ittUtils) {
     var _scriptsMap = {};
     var _existy = ittUtils.existy;
