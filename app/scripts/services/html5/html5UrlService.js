@@ -8,6 +8,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('html5UrlService', html5UrlService);
 
+  html5UrlService.$inject = ['ittUtils'];
+
 	function html5UrlService(ittUtils) {
 		var _type = 'html5';
 		var _existy = ittUtils.existy;
