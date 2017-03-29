@@ -18,6 +18,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('imageResize', imageResize);
 
+  imageResize.$inject = ['$q'];
+
 	function imageResize($q) {
 		return {
 			createFileFromDataURL: createFileFromDataURL,
