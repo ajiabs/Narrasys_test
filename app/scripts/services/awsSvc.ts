@@ -1,12 +1,7 @@
-/*jshint bitwise: false*/
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .factory('awsSvc', awsSvc);
 
 awsSvc.$inject = ['$http', '$q', 'config'];
 
-function awsSvc($http, $q, config) {
+export default function awsSvc($http, $q, config) {
   // console.log('awsSvc, user: ', appState.user);
   var MAX_CHUNKS = 1000;
   var MAX_RETRIES = 4;

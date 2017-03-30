@@ -1,13 +1,8 @@
-'use strict';
-
-// Expose the global window.config object as an injectable
-angular.module('com.inthetelling.story')
-  .factory('config', config);
 
 
 config.$inject = [];
 
-function config() {
+export default function config() {
   var config = window.config ? window.config : {};
 
   // Find out the API data url, if not specified:

@@ -16,6 +16,7 @@
 import './plugin/newrelic';
 import './controllers/controllers.module';
 import './filters/filters';
+import './services/services.module';
 
 angular.module('itt', [
   'ngRoute',
@@ -24,7 +25,8 @@ angular.module('itt', [
   'textAngular',
   'ui.tree',
   'itt.controllers',
-  'itt.filters'
+  'itt.filters',
+  'itt.services'
   ]
 )
   .constant('MIMES', {

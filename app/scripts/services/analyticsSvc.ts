@@ -1,5 +1,3 @@
-'use strict';
-
 /*
  There are two separate types of user activity to capture, which go to separate API endpoints.
  Some types must contain additional info in a "data" object:
@@ -29,12 +27,9 @@
  question-answered		for quiz questions.  Data field should be {answer: 'answer text', correct: t/f}
  */
 
-angular.module('com.inthetelling.story')
-  .factory('analyticsSvc', analyticsSvc);
-
 analyticsSvc.$inject = ['$q', '$http', '$routeParams', '$interval', 'config', 'appState', 'playbackService'];
 
-function analyticsSvc($q, $http, $routeParams, $interval, config, appState, playbackService) {
+export default function analyticsSvc($q, $http, $routeParams, $interval, config, appState, playbackService) {
   // console.log('analyticsSvc factory');
   var svc = {};
 

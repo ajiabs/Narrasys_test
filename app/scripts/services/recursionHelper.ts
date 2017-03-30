@@ -1,11 +1,6 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .factory('recursionHelper', recursionHelper);
-
 recursionHelper.$inject = ['$compile'];
 
-function recursionHelper($compile) {
+export default function recursionHelper($compile) {
   return {
     // snarfed this from a SO answer.  Allows a directive to include itself without endless loops
 

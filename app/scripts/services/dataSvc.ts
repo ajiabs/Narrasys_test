@@ -1,5 +1,3 @@
-'use strict';
-
 // TODO: load and resolve categories
 
 
@@ -27,11 +25,8 @@
  * @requires questionAnswersSvc
  */
 
-angular.module('com.inthetelling.story')
-  .factory('dataSvc', dataSvc);
-
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
-function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
+export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
   var svc = {};
 
   /* ------------------------------------------------------------------------------ */

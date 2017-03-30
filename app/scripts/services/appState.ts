@@ -1,5 +1,3 @@
-'use strict';
-
 /*
  Stash for shared information, to save us a lot of $watching and $emitting.
  It's convenient.  Maybe -too- convenient.
@@ -49,12 +47,9 @@
  * @property {Object} editEpisode Episode currently being edited by user. yes I did kind of paint myself into a corner here
  * @property {Object} lang set to false so the episode default knows when to override it
  */
-angular.module('com.inthetelling.story')
-  .factory('appState', appState);
-
 appState.$inject = ['$interval', 'config'];
 
-function appState($interval, config) {
+export default function appState($interval, config) {
 
   var svc = {};
 

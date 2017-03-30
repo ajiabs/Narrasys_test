@@ -1,16 +1,11 @@
-'use strict';
-
-
 
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
-angular.module('com.inthetelling.story')
-  .factory('modelSvc', modelSvc);
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
 
-function modelSvc($filter, $location, ittUtils, config, appState, playbackService, urlService) {
+export default function modelSvc($filter, $location, ittUtils, config, appState, playbackService, urlService) {
   var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
   var svc = {};
 

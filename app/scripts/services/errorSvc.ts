@@ -1,5 +1,3 @@
-'use strict';
-
 /*
  to throw explicit errors:
  errorSvc.error({data: "This episode has not yet been published."});
@@ -8,12 +6,11 @@
  throw() or other js errors also get sent here by $exceptionHandler (though we're ignoring them for now)
  */
 
-angular.module('com.inthetelling.story')
-  .factory('errorSvc', errorSvc);
+
 
 errorSvc.$inject = ['$location'];
 
-function errorSvc($location) {
+export default function errorSvc($location) {
   var svc = {};
 
   // TODO This is a mess.  make the field names less ridiculously inconsistent.

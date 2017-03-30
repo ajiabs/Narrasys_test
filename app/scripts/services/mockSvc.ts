@@ -1,15 +1,11 @@
-'use strict';
-
 // for quick debugging of templates.
 
 // TODO: figure out how to get grunt to omit this from the build
 
-angular.module('com.inthetelling.story')
-  .factory('mockSvc', mockSvc);
 
 mockSvc.$inject = ['modelSvc'];
 
-function mockSvc(modelSvc) {
+export default function mockSvc(modelSvc) {
   var svc = {};
   svc.keepJsLintHappy = function () {
     var noop = modelSvc.episodes.noop;

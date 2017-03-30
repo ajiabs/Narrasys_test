@@ -1,5 +1,3 @@
-'use strict';
-
 /*
  Son of cuePointScheduler, with a smattering of video controls.
 
@@ -40,13 +38,9 @@
  either from the timeline or the next scene arrow
 
  */
-
-angular.module('com.inthetelling.story')
-  .factory('timelineSvc', timelineSvc);
-
 timelineSvc.$inject = ['$window', '$timeout', '$interval', '$filter', 'config', 'modelSvc', 'appState', 'analyticsSvc', 'playbackService', 'ittUtils'];
 
-function timelineSvc($window, $timeout, $interval, $filter, config, modelSvc, appState, analyticsSvc, playbackService, ittUtils) {
+export default function timelineSvc($window, $timeout, $interval, $filter, config, modelSvc, appState, analyticsSvc, playbackService, ittUtils) {
 
   var svc = {};
 

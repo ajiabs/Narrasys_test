@@ -1,10 +1,7 @@
 'use strict';
-angular.module('com.inthetelling.story')
-  .factory('questionAnswersSvc', questionAnswersSvc);
-
 questionAnswersSvc.$inject = ['$q', 'analyticsSvc', 'appState'];
 
-function questionAnswersSvc($q, analyticsSvc, appState) {
+export default function questionAnswersSvc($q, analyticsSvc, appState) {
   var svc = {};
   svc.saveAnswer = function (name, eventID, data) {
     return analyticsSvc.forceCaptureEventActivityWithPromise(name, eventID, data);

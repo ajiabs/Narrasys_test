@@ -1,12 +1,6 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-	.factory('authSvc', authSvc);
-
-
 authSvc.$inject = ['config', '$routeParams', '$http', '$q', '$location', 'ittUtils', 'appState', 'modelSvc', 'errorSvc'];
 
-function authSvc(config, $routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
+export default function authSvc(config, $routeParams, $http, $q, $location, ittUtils, appState, modelSvc, errorSvc) {
   // console.log('authSvc factory');
   var svc = {};
   var Roles = {
