@@ -102,11 +102,11 @@ function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc, pla
       function validateSceneStartTime(t) {
         var isOnSameStartTime;
         var isValid = true;
-          //don't check the current scene
-          if (scope.item.start_time !== t) {
-            isOnSameStartTime = modelSvc.isOnExistingSceneStart(t);
-            isValid = !isOnSameStartTime;
-          }
+        //don't check the current scene
+        if (scope.item.start_time !== t) {
+          isOnSameStartTime = modelSvc.isOnExistingSceneStart(t);
+          isValid = !isOnSameStartTime;
+        }
 
         return isValid;
       }
