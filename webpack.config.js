@@ -7,10 +7,12 @@ module.exports = (env) => {
       extensions: ['.ts', '.js']
     },
     entry: {
-
+      app: resolve(__dirname, 'app', 'scripts', 'app.ts')
     },
     output: {
-
+      filename: '[name].bundle.js',
+      publicPath: '/',
+      path: resolve(__dirname, 'dist')
     },
     module: {
       loaders: [
@@ -21,7 +23,7 @@ module.exports = (env) => {
         {
           test: /\.ts$/,
           exclude: [/app\/scripts\/plugin/, /node_modules/],
-          loader: 'awesome-typescript-loader'
+          loader: 'ts-loader'
         }
       ]
     },
