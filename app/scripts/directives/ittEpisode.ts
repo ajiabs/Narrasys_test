@@ -1,11 +1,6 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .directive('ittEpisode', ittEpisode);
-
 ittEpisode.$inject = ['$interval', 'analyticsSvc', 'modelSvc', 'appState'];
 
-function ittEpisode($interval, analyticsSvc, modelSvc, appState) {
+export default function ittEpisode($interval, analyticsSvc, modelSvc, appState) {
   return {
     restrict: 'A',
     replace: true,

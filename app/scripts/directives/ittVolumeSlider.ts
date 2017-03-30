@@ -1,11 +1,6 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .directive('ittVolumeSlider', ittVolumeSlider);
-
 ittVolumeSlider.$inject = ['appState'];
 
-function ittVolumeSlider(appState) {
+export default function ittVolumeSlider(appState) {
   return {
     restrict: 'E',
     scope: true,

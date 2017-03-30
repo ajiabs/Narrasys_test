@@ -1,11 +1,5 @@
-'use strict';
-
 // an angular.js wrapper for flot charting library -http://www.flotcharts.org/ but using flot.pie.js
-angular.module('com.inthetelling.story')
-  .directive('ittFlotr2Chart', ittFlotr2Chart);
-
-
-function ittFlotr2Chart() {
+export default function ittFlotr2Chart() {
   var uniqueId = 1;
   return {
     restrict: 'E',

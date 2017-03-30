@@ -1,14 +1,6 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .directive('ittShowHideVisualOnly', ittShowHideVisualOnly)
-  .animation(".visual-hide", visualHideAnimation);
-
-
 ittShowHideVisualOnly.$inject = ['$animate'];
 
-
-function ittShowHideVisualOnly($animate) {
+export function ittShowHideVisualOnly($animate) {
   return {
     restrict: 'A',
     multiElement: true,
@@ -24,7 +16,7 @@ function ittShowHideVisualOnly($animate) {
   };
 }
 
-function visualHideAnimation() {
+export function visualHideAnimation() {
   return {
     addClass: function (element) {
       //we'll use opacity, so we aren't hidden from screen readers, just hidden from eyes.

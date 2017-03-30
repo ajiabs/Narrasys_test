@@ -1,12 +1,8 @@
 'use strict';
 
 // TODO: remove dependence on jQuery? (lots of it here)
-
-angular.module('com.inthetelling.story')
-  .directive('ittMagnetized', ittMagnetized);
-
 ittMagnetized.$inject = ['$rootScope', 'appState'];
-function ittMagnetized($rootScope, appState) {
+export default function ittMagnetized($rootScope, appState) {
   return {
     restrict: 'A',
     replace: true,

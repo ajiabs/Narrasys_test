@@ -1,16 +1,10 @@
-'use strict';
-
 // Sends magnet signal whenever becomes visible.
 // In watch mode (only), also watches the window size and tries to keep the video from overflowing the window height
 
 // TODO: remove dependence on jQuery?  (.is(:visible))
-
-angular.module('com.inthetelling.story')
-  .directive('ittMagnet', ittMagnet);
-
 ittMagnet.$inject = ['$rootScope', 'appState', 'playbackService'];
 
-function ittMagnet($rootScope, appState, playbackService) {
+export default function ittMagnet($rootScope, appState, playbackService) {
   return {
     restrict: 'A',
     replace: true,

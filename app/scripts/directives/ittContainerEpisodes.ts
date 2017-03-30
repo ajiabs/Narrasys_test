@@ -1,10 +1,6 @@
-'use strict';
-angular.module('com.inthetelling.story')
-  .directive('ittContainerEpisodes', ittContainerEpisodes);
-
 ittContainerEpisodes.$inject = ['modelSvc', 'recursionHelper', 'appState', 'dataSvc'];
 
-function ittContainerEpisodes(modelSvc, recursionHelper, appState, dataSvc) {
+export default function ittContainerEpisodes(modelSvc, recursionHelper, appState, dataSvc) {
   return {
     restrict: 'A',
     replace: false,

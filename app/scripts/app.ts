@@ -13,10 +13,20 @@
  * @requires ngSanitize
  * @requires textAngular
  */
+
+import 'angular-animate';
+import 'angular-route';
+import 'angular-sanitize';
+import 'angular-ui-tree';
+import 'textAngular/dist/textAngular-sanitize.min';
+import 'textAngular';
 import './plugin/newrelic';
+import '../config';
+
 import './controllers/controllers.module';
 import './filters/filters';
 import './services/services.module';
+import './directives/directives.module';
 
 angular.module('itt', [
   'ngRoute',
@@ -26,7 +36,8 @@ angular.module('itt', [
   'ui.tree',
   'itt.controllers',
   'itt.filters',
-  'itt.services'
+  'itt.services',
+  'itt.directives'
   ]
 )
   .constant('MIMES', {

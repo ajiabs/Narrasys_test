@@ -1,8 +1,4 @@
-'use strict';
-angular.module('com.inthetelling.story')
-  .directive('ittVideo', ittVideo);
-
-function ittVideo() {
+export default function ittVideo() {
   return {
     replace: false,
     templateUrl: 'templates/video.html',

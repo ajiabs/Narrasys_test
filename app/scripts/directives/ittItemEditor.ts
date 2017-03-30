@@ -1,5 +1,4 @@
 /*jshint sub:true*/
-'use strict';
 
 /*
  TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
@@ -24,12 +23,11 @@
  * @requires dataSvc
  * @param {Object} Item object representing an Event object from the DB to be edited.
  */
-angular.module('com.inthetelling.story')
-  .directive('ittItemEditor', ittItemEditor);
+
 
 ittItemEditor.$inject = ['$rootScope', 'errorSvc', 'appState', 'modelSvc', 'timelineSvc', 'selectService'];
 
-function ittItemEditor($rootScope, errorSvc, appState, modelSvc, timelineSvc, selectService) {
+export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, timelineSvc, selectService) {
   return {
     restrict: 'A',
     replace: true,

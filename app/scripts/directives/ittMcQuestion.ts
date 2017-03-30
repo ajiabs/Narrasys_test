@@ -1,11 +1,6 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .directive('ittMcQuestion', ittMcQuestion);
-
 ittMcQuestion.$inject = ['questionAnswersSvc', 'analyticsSvc', 'appState'];
 
-function ittMcQuestion(questionAnswersSvc, analyticsSvc, appState) {
+export default function ittMcQuestion(questionAnswersSvc, analyticsSvc, appState) {
   return {
     restrict: 'E',
     replace: false,

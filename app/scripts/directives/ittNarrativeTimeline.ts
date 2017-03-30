@@ -1,12 +1,7 @@
-'use strict';
 /* For now this is just a thin wrapper around the playerController */
-
-angular.module('com.inthetelling.story')
-  .directive('ittNarrativeTimeline', ittNarrativeTimeline);
-
 ittNarrativeTimeline.$inject = ['$routeParams', 'dataSvc', 'appState', 'authSvc', 'errorSvc'];
 
-function ittNarrativeTimeline($routeParams, dataSvc, appState, authSvc, errorSvc) {
+export default function ittNarrativeTimeline($routeParams, dataSvc, appState, authSvc, errorSvc) {
   return {
     restrict: 'A',
     replace: true,

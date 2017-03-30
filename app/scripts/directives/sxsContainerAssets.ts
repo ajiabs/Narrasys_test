@@ -1,12 +1,8 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
-  .directive('sxsContainerAssets', sxsContainerAssets);
 
 sxsContainerAssets.$inject = ['$rootScope', 'recursionHelper', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'MIMES', 'authSvc'];
 
-function sxsContainerAssets($rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, MIMES, authSvc) {
+export default function sxsContainerAssets($rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, MIMES, authSvc) {
   return {
     restrict: 'A',
     replace: false,

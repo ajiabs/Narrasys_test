@@ -1,15 +1,9 @@
-'use strict';
-
 // jQuery dependencies: offset(), animate(), namespaced .bind and .unbind
 // TODO some events need to be unbound on destroy, which I'll get around to implementing if this ever needs to be destroyed
 // TODO for now simply hiding volume controls on touchscreen devices (they'll use native buttons). Future, see if we can include those and have them work properly...
-
-angular.module('com.inthetelling.story')
-  .directive('ittTimeline', ittTimeline);
-
 ittTimeline.$inject = ['$timeout', 'appState', 'timelineSvc', 'modelSvc', 'playbackService'];
 
-function ittTimeline($timeout, appState, timelineSvc, modelSvc, playbackService) {
+export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, playbackService) {
   return {
     restrict: 'A',
     replace: true,

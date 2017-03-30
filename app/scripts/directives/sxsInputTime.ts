@@ -1,13 +1,7 @@
-'use strict';
-
 /*For form fields: displays m:ss, sets model as number of seconds. accepts s or m:ss as input. */
-
-angular.module('com.inthetelling.story')
-  .directive('sxsInputTime', sxsInputTime);
-
 sxsInputTime.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'timelineSvc', 'playbackService', 'ittUtils'];
 
-function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc, playbackService, ittUtils) {
+export default function sxsInputTime($rootScope, $timeout, appState, modelSvc, timelineSvc, playbackService, ittUtils) {
   return {
     require: '?^^form',
     scope: {

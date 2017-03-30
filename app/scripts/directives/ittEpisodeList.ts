@@ -1,9 +1,4 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .directive('ittEpisodeList', ittEpisodeList);
-
-function ittEpisodeList() {
+export default function ittEpisodeList() {
   return {
     restrict: 'A',
     replace: true,

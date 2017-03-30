@@ -1,15 +1,10 @@
-'use strict';
-
 /*
  No UI for this directive. This originally showed a login form but that led to a flash-of-content when authenticating via lti
 
  */
-angular.module('com.inthetelling.story')
-  .directive('ittLogin', ittLogin);
-
 ittLogin.$inject = ['$location', '$routeParams', 'config', 'authSvc', 'appState', 'errorSvc'];
 
-function ittLogin($location, $routeParams, config, authSvc, appState, errorSvc) {
+export default function ittLogin($location, $routeParams, config, authSvc, appState, errorSvc) {
   return {
     restrict: 'A',
     replace: false,

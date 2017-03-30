@@ -1,4 +1,3 @@
-'use strict';
 
 /*
  The "add" buttons for instructors to choose what type of content they want to add to the episode.
@@ -7,13 +6,9 @@
  look for current scene.id matching "internal".  Dim buttons instead of hiding them completely.
 
  */
-
-angular.module('com.inthetelling.story')
-  .directive('sxsAddContent', sxsAddContent);
-
 sxsAddContent.$inject = ['appState', 'playbackService'];
 
-function sxsAddContent(appState, playbackService) {
+export default function sxsAddContent(appState, playbackService) {
   return {
     restrict: 'A',
     replace: true,

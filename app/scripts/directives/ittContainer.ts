@@ -1,11 +1,7 @@
-'use strict';
 /* For admin screen episode list */
-angular.module('com.inthetelling.story')
-  .directive('ittContainer', ittContainer);
-
 ittContainer.$inject = ['$timeout', '$location', 'appState', 'modelSvc', 'recursionHelper', 'dataSvc', 'ittUtils'];
 
-function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils) {
+export default function ittContainer($timeout, $location, appState, modelSvc, recursionHelper, dataSvc, ittUtils) {
   return {
     restrict: 'A',
     replace: false,

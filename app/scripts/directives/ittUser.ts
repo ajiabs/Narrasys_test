@@ -1,11 +1,6 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .directive('ittUser', ittUser);
-
 ittUser.$inject = ['$q', 'appState', 'authSvc', 'dataSvc', 'awsSvc', 'modelSvc', 'imageResize'];
 
-function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc, imageResize) {
+export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc, imageResize) {
   return {
     restrict: 'A',
     replace: true,

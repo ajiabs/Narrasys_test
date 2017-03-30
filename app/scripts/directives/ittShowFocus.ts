@@ -1,11 +1,6 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .directive('ittShowFocus', ittShowFocus);
-
 ittShowFocus.$inject = ['$timeout'];
 
-function ittShowFocus($timeout) {
+export default function ittShowFocus($timeout) {
   return function (scope, element, attrs) {
     scope.$watch(attrs.ittShowFocus,
       function (newValue) {

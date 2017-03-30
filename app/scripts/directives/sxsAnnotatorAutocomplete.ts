@@ -1,16 +1,10 @@
-'use strict';
-
 /*
  TODO: make sure newly added annotators wind up in hte episode.annotators list
  TODO: disentangle annotator_image_id from this, move it into parent template
  */
-
-angular.module('com.inthetelling.story')
-  .directive('sxsAnnotatorAutocomplete', sxsAnnotatorAutocomplete);
-
 sxsAnnotatorAutocomplete.$inject = ['$timeout', 'modelSvc', 'appState'];
 
-function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
+export default function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
   return {
     require: 'ngModel',
     templateUrl: "templates/producer/annotator-autocomplete.html",

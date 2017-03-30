@@ -1,17 +1,12 @@
-'use strict';
-
 // Force scenes to render scenes sequentially instead of all in one ng-repeat, because it looks faster that way.
 
 // (why don't all ng-repeats do this?  More to the point, why don't all of OUR ng-repeats do this?)
 
 // NOTE this is only used in the "review mode", not in the new combined search/review
 
-angular.module('com.inthetelling.story')
-  .directive('ittReviewMode', ittReviewMode);
-
 ittReviewMode.$inject = ['$timeout', 'appState'];
 
-function ittReviewMode($timeout, appState) {
+export default function ittReviewMode($timeout, appState) {
   return {
     restrict: 'A',
     replace: false,

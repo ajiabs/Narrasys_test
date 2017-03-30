@@ -1,13 +1,7 @@
-'use strict';
-
 // Minor jquery dependency ($.inArray)
-
-angular.module('com.inthetelling.story')
-  .directive('ittScene', ittScene);
-
 ittScene.$inject = ['$interval', 'appState'];
 
-function ittScene($interval, appState) {
+export default function ittScene($interval, appState) {
   return {
     restrict: 'A',
     replace: false,

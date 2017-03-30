@@ -1,9 +1,5 @@
-'use strict';
 /* Attach this to content panes, so they can tell their items when to drop into inline timestamps. */
-angular.module('com.inthetelling.story')
-  .directive('ittWidthWatch', ittWidthWatch);
-
-function ittWidthWatch() {
+export default function ittWidthWatch() {
   return {
     restrict: 'A',
     replace: false,

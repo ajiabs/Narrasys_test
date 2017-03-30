@@ -1,12 +1,7 @@
-'use strict';
 // attach to any directive to make its first input/textarea autofocus
-
-angular.module('com.inthetelling.story')
-  .directive('autofocus', autofocus);
-
 autofocus.$inject = ['$timeout'];
 
-function autofocus($timeout) {
+export default function autofocus($timeout) {
   return {
     link: function (scope, element) {
       $timeout(function () { // give any child directives time to render themselves...

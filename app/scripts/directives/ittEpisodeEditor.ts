@@ -1,17 +1,11 @@
-'use strict';
-
 /*
  TODO: right now we're re-building the episode structure on every keystroke.  That's a tiny bit wasteful of cpu :)  At the very least, debounce input to a more reasonable interval
 
  TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
  */
-
-angular.module('com.inthetelling.story')
-  .directive('ittEpisodeEditor', ittEpisodeEditor);
-
 ittEpisodeEditor.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'dataSvc', 'authSvc', 'selectService', 'playbackService', 'urlService'];
 
-function ittEpisodeEditor($rootScope, $timeout, appState, modelSvc, dataSvc, authSvc, selectService, playbackService, urlService) {
+export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSvc, dataSvc, authSvc, selectService, playbackService, urlService) {
   return {
     restrict: 'A',
     replace: true,

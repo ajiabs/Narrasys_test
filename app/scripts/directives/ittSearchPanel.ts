@@ -1,14 +1,9 @@
-'use strict';
-
 // Was a 'panel' in the old three-modes style.  New layout combined search with review mode, still uses this.
 // Maybe rename it after we finally migrate completely away from the three-modes layout.
 
-angular.module('com.inthetelling.story')
-  .directive('ittSearchPanel', ittSearchPanel);
-
 ittSearchPanel.$inject = ['appState'];
 
-function ittSearchPanel(appState) {
+export default function ittSearchPanel(appState) {
   return {
     restrict: 'A',
     replace: true,

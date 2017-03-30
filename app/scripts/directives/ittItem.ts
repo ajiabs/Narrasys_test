@@ -1,16 +1,10 @@
-'use strict';
-
 /*
  NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function,
  so they get logged properly: don't draw plain hrefs
  */
-
-angular.module('com.inthetelling.story')
-  .directive('ittItem', ittItem);
-
 ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService'];
 
-function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService) {
+export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService) {
   return {
     restrict: 'A',
     replace: false,
