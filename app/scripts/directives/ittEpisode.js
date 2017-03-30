@@ -3,7 +3,7 @@
 angular.module('com.inthetelling.story')
   .directive('ittEpisode', ittEpisode);
 
-ittEpisode.$inject = [$interval, analyticsSvc, modelSvc, appState];
+ittEpisode.$inject = ['$interval', 'analyticsSvc', 'modelSvc', 'appState'];
 
 function ittEpisode($interval, analyticsSvc, modelSvc, appState) {
   return {
