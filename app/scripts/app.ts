@@ -13,7 +13,7 @@
  * @requires ngSanitize
  * @requires textAngular
  */
-
+import './plugin/newrelic';
 import './controllers/controllers.module';
 import './filters/filters';
 
