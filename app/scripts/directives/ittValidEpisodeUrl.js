@@ -2,70 +2,72 @@
  * Created by githop on 2/21/17.
  */
 
-(function() {
-	'use strict';
+(function () {
+  'use strict';
 
-	angular.module('com.inthetelling.story')
-		.directive('ittValidEpisodeUrl', ittValidEpisodeUrl);
+  angular.module('com.inthetelling.story')
+    .directive('ittValidEpisodeUrl', ittValidEpisodeUrl);
 
-	function ittValidEpisodeUrl(urlService, ittUtils) {
-	    return {
-        require: '?ngModel',
-        scope: {
-          onValidationNotice: '&'
-        },
-        link: function(scope, elm, attr, ngModel) {
-          var _capitalize = ittUtils.capitalize;
-          var message = {
-            showInfo: false,
-            message: '',
-            doInfo: false
-          };
+  ittValidEpisodeUrl.$inject = ['urlService', 'ittUtils'];
 
-          var validatedFields = {
-            kaltura: message,
-            youtube: message,
-            html5: message,
-            error: message
-          };
+  function ittValidEpisodeUrl(urlService, ittUtils) {
+    return {
+      require: '?ngModel',
+      scope: {
+        onValidationNotice: '&'
+      },
+      link: function (scope, elm, attr, ngModel) {
+        var _capitalize = ittUtils.capitalize;
+        var message = {
+          showInfo: false,
+          message: '',
+          doInfo: false
+        };
 
-          ngModel.$validators = {
-            episodeUrl: episodeUrl
-          };
+        var validatedFields = {
+          kaltura: message,
+          youtube: message,
+          html5: message,
+          error: message
+        };
 
-          scope.$watch(watchFields, handleUpdates, true);
+        ngModel.$validators = {
+          episodeUrl: episodeUrl
+        };
 
-          function watchFields() {
-            return validatedFields;
-          }
+        scope.$watch(watchFields, handleUpdates, true);
 
-          function handleUpdates(newVal) {
-            scope.onValidationNotice({$notice: newVal});
-          }
+        function watchFields() {
+          return validatedFields;
+        }
 
-          function episodeUrl(viewVal) {
-            validatedFields = {};
-            if (ngModel.$isEmpty(viewVal)) {
-              validatedFields['error'] = {showInfo: true, message: 'Field cannot be blank.'}; //jshint ignore:line
-              return false;
-            } else if (urlService.isVideoUrl(viewVal)) {
-              var type = urlService.checkUrl(viewVal).type;
+        function handleUpdates(newVal) {
+          scope.onValidationNotice({$notice: newVal});
+        }
 
-              if (type === 'html5') {
-                validatedFields[type] = { showInfo: true, message: _capitalize(type) + ' video currently not supported'};
-                return false;
-              }
+        function episodeUrl(viewVal) {
+          validatedFields = {};
+          if (ngModel.$isEmpty(viewVal)) {
+            validatedFields['error'] = {showInfo: true, message: 'Field cannot be blank.'}; //jshint ignore:line
+            return false;
+          } else if (urlService.isVideoUrl(viewVal)) {
+            var type = urlService.checkUrl(viewVal).type;
 
-              validatedFields[type] = { showInfo: true, message: _capitalize(type) + ' detected', doInfo: true };
-              return true;
-            } else {
-              validatedFields['error'] = { showInfo: true, message: viewVal + ' is not a valid episode URL'}; //jshint ignore:line
+            if (type === 'html5') {
+              validatedFields[type] = {showInfo: true, message: _capitalize(type) + ' video currently not supported'};
               return false;
             }
+
+            validatedFields[type] = {showInfo: true, message: _capitalize(type) + ' detected', doInfo: true};
+            return true;
+          } else {
+            validatedFields['error'] = {showInfo: true, message: viewVal + ' is not a valid episode URL'}; //jshint ignore:line
+            return false;
           }
         }
-	    };
-	}
+      }
+    };
+  }
 
 
 })();
