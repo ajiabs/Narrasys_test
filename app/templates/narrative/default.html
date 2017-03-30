@@ -3,30 +3,37 @@
     <div class="narrative">
 
       <!-- begin display -->
-      <div ng-hide="isEditing">
-        <itt-edit-pencil can-access="canAccess" on-edit="toggleEditing()">
+      <div>
+        <itt-edit-pencil can-access="canAccess" on-edit="toggleEditNarrativeModal()">
           <h2 ng-bind-html="narrative.name.en"></h2>
         </itt-edit-pencil>
         <p ng-bind-html="narrative.description.en"></p>
         <p>Total Duration: {{totalNarrativeDuration | asTime}}</p>
       </div>
 
-      <itt-narrative-editor
-        ng-if="isEditing"
-        narrative="narrative"
-        customers="customers"
-        on-done="toggleEditing()"
-        on-update="updateNarrative(n)">
-      </itt-narrative-editor>
-
       <!--
      <div ng-if="narrative.user_id == user._id">You are the owner of this narrative</div>
  -->
-      <button ng-if="canAccess" ng-disabled="timelineUnderEdit || tmpTimeline"
-              ng-click="addTmpTimeline(null, narrative.timelines)">Add Timeline
-      </button>
-      <a class="button" ng-if="canAccess" ng-click="exportToSpreadsheet(narrative._id)">Export to Spreadsheet</a>
+      <!--narrative action buttons row-->
+      <div class="episode__button-row">
+        <div>
+          <!--overlay class is pointer-events: none, to disable clicks while editing.-->
+          <itt-tooltip tip-text="Add Timeline" ng-class="{overlay: timelineUnderEdit || tmpTimeline}">
+            <a class="icon__button button__add-inverted" ng-click="addTmpTimeline(null, narrative.timelines)"></a>
+          </itt-tooltip>
+          <itt-tooltip tip-text="Export links to spreadsheet">
+            <a ng-if="canAccess"
+               class="icon__button button__export-spreadsheet"
+               ng-click="exportToSpreadsheet(narrative._id)">
+            </a>
+          </itt-tooltip>
+          <itt-guest-accessible-url narrative="narrative" clipboard-mode="Click to copy URL"></itt-guest-accessible-url>
+        </div>
+      </div>
 
+      <!--modals-->
+
+      <!--add narrative modal top level-->
       <itt-modal ng-if="showEpisodeList">
         <div itt-episode-list class="admin episodePicker">
           <!--Choose an episode: <button ng-click="toggleEpisodeList()">cancel</button>-->
@@ -41,35 +48,54 @@
         </div>
       </itt-modal>
 
+      <!--edit narrative or timeline modal-->
+      <itt-modal wrapper-class="narrative__index" modal-class="narrative__modal"
+                 ng-if="editingNarrative || timelineUnderEdit != null">
+
+        <div ng-if="editingNarrative">
+          <itt-narrative-editor
+            narrative="narrative"
+            customers="customers"
+            on-done="toggleEditNarrativeModal()"
+            on-update="updateNarrative(n)">
+          </itt-narrative-editor>
+        </div>
+
+        <div ng-if="timelineUnderEdit != null">
+          <itt-timeline-editor
+            class="tl__editor"
+            timeline="timelineUnderEdit"
+            narrative="narrative"
+            on-done="doneEditingTimeline()"
+            on-update="editorAction(t, timelineUnderEdit)"
+            on-delete="deleteTimeline(t)">
+          </itt-timeline-editor>
+        </div>
+
+      </itt-modal>
+
+      <!--end modals-->
+
+
+      <!--list of timelines-->
       <div ui-tree="treeOpts" ng-if="narrative.timelines.length !== 0">
         <div ui-tree-nodes ng-model="narrative.timelines">
-          <!--note: do not use track by on ng-repeats with ui-tree-->
+          <!--begin ng-repeat - note: do not use track by on ng-repeats with ui-tree-->
           <div class="storyTimeline hoverIndicator"
                ng-class-even="'container__row--even'"
                ng-class-odd="'container__row--odd'"
+               ng-mouseenter="rowHover = true"
+               ng-mouseleave="rowHover = false"
                ui-tree-node
                ng-repeat="timeline in narrative.timelines | filter: (canAccess === false || undefined) && {hidden: false}">
 
-            <itt-timeline-editor
-              class="tl__editor"
-              ng-if="showTimelineEditor(timeline)"
-              timeline="timeline"
-              on-done="doneEditingTimeline()"
-              on-update="editorAction(t, timeline)"
-              on-delete="deleteTimeline(t)">
-            </itt-timeline-editor>
+            <div ng-class="{'timeline--hidden': timeline.hidden}">
 
-            <div ng-mouseenter="showDrag = true"
-                 ng-mouseleave="showDrag = false"
-                 ng-class="{'timeline--hidden': timeline.hidden}">
-
-							<span ng-show="canAccess && showDrag" class="tlDrag__handle" ui-tree-handle>
+							<span ng-show="canAccess && rowHover" class="tlDrag__handle" ui-tree-handle>
 								<i class="fa fa-arrows"></i>
 							</span>
-              <div ng-hide="timelineUnderEdit === timeline || tmpTimeline === timeline"
-                   class="tl__wrapper">
-
-                <itt-edit-pencil can-access="canAccess" on-edit="toggleEditingTimeline(timeline)">
+              <div class="tl__wrapper">
+                <itt-edit-pencil can-access="canAccess" force="rowHover" on-edit="toggleEditingTimeline(timeline)">
                   <h3>
                     <i ng-if="timeline.hidden" class="fa fa-eye-slash"></i>
                     <a href="/#/story/{{narrative._id}}/{{timeline._id}}">{{timeline.name.en}}</a>
@@ -79,10 +105,19 @@
                 <p>{{timeline.description.en}}</p>
 
 
-                <div class="tl__addButton" ng-mouseenter="showLine = true" ng-mouseleave="showLine = false">
-                  <div ng-show="!!showLine && canAccess">
-                    <!--+<hr>-->
-                    <button ng-click="addTmpTimeline(timeline, narrative.timelines)">Insert Timeline</button>
+                <div class="tl__addButton">
+                  <div ng-if="rowHover" class="episode__button-row">
+                    <div>
+                      <itt-tooltip tip-text="Insert Timeline">
+                        <a ng-if="canAccess" class="icon__button button__add-inverted"
+                           ng-click="addTmpTimeline(timeline, narrative.timelines)"></a>
+                      </itt-tooltip>
+                      <itt-guest-accessible-url
+                        narrative="narrative"
+                        timeline="timeline"
+                        clipboard-mode="Copy to Clipboard">
+                      </itt-guest-accessible-url>
+                    </div>
                   </div>
                 </div>
               </div>

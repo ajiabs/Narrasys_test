@@ -25,6 +25,7 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
   // splits event into scenes and items.  Not sure yet whether we care about containers, discarding them for now.
 
   // TODO? normalize items before cacheing: (annotation_image_id and link_image_id -> asset_id, etc)
+  //^^ NP-1310
   // TODO discard unused fields before cacheing
 
   // use angular.extend if an object already exists, so we don't lose existing bindings
@@ -45,6 +46,47 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
 
     }
   };
+  //add subdomain to each narrative then cache
+  //add narratives to customer object then cache customer.
+  svc.assocNarrativesWithCustomer = assocNarrativesWithCustomer;
+  function assocNarrativesWithCustomer(customer, narratives) {
+    narratives.forEach(function (narrative) {
+      narrative.subDomain = customer.domains[0];
+      svc.cache('narrative', narrative);
+    });
+    customer.narratives = cachedNarrativesByCustomer(customer);
+    svc.cache('customer', customer);
+    // //remove any old customer references if narrative was changed to a different customer
+    // Object.keys(svc.customers)
+    //   .filter(function(key) {
+    //   return customer._id !== key;
+    // })
+    //   .forEach(function(customerId) {
+    //     var cust = svc.customers[customerId];
+    //     var custNarratives = cust.narratives;
+    //     var found;
+    //     if (ittUtils.existy(custNarratives) && custNarratives.length > 0 && narratives.length === 1) {
+    //       var narrative = svc.narratives[narratives[0]._id];
+    //       found = custNarratives.indexOf(narrative);
+    //       if (found !== -1) {
+    //         cust.narratives.splice(found, 1);
+    //         svc.cache('customer', cust);
+    //       }
+    //     }
+    //   });
+
+    return customer;
+  }
+
+  svc.cachedNarrativesByCustomer = cachedNarrativesByCustomer;
+  function cachedNarrativesByCustomer(customer) {
+    return Object.keys(svc.narratives).reduce(function(narratives, key) {
+      if (svc.narratives[key].customer_id === customer._id) {
+        narratives.push(svc.narratives[key]);
+      }
+      return narratives;
+    }, []);
+  }
 
   svc.getCustomersAsArray = getCustomersAsArray;
   function getCustomersAsArray() {
@@ -59,6 +101,7 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
       return svc.narratives[n];
     });
   }
+
 
   svc.cache = function (cacheType, item) {
     if (cacheType === 'narrative') {
@@ -1079,6 +1122,13 @@ function modelSvc($filter, $location, ittUtils, config, appState, playbackServic
 
     return cssArr.join(' ');
   };
+
+  svc.assocEventWithAsset = assocEventWithAsset;
+  function assocEventWithAsset(eventId, assetId) {
+    if (svc.events[eventId] && svc.assets[assetId]) {
+      svc.events[eventId].asset = svc.assets[assetId];
+    }
+  }
 
   svc.resolveEpisodeAssets = function (episodeId) {
     // console.log("resolveEpisodeAssets");
