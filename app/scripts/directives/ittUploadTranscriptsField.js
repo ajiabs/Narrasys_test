@@ -23,16 +23,19 @@
 			scope: {
 				episodeId: '@'
 			},
-			controller: ['$rootScope', 'MIMES', 'modelSvc', 'dataSvc', 'timelineSvc', 'ittUtils', 'errorSvc', function ($rootScope, MIMES, modelSvc, dataSvc, timelineSvc, ittUtils, errorSvc) {
+			controller: ['$rootScope', 'MIMES', 'modelSvc', 'dataSvc', 'timelineSvc', 'ittUtils', 'errorSvc',
+        function ($rootScope, MIMES, modelSvc, dataSvc, timelineSvc, ittUtils, errorSvc) {
 				var ctrl = this;
 				ctrl.mimes = MIMES.transcripts;
 				ctrl.handleTranscripts = handleTranscripts;
 				var _existy = ittUtils.existy;
 
 				function handleTranscripts(transcriptsResp) {
-					if (_existy(transcriptsResp) && _existy(transcriptsResp.data) && transcriptsResp.data.length > 0) {
-						window.location.reload();
 
+          console.log('hey oh!!', transcriptsResp);
+
+					if (_existy(transcriptsResp) && _existy(transcriptsResp.data) && transcriptsResp.data.length > 0) {
+						// window.location.reload();
 						//failed attempts to add the transcripts without requiring a page reload.
 						// transcriptsResp.data.forEach(function (transcript) {
 						// 	modelSvc.cache('event', dataSvc.resolveIDs(transcript));
@@ -49,7 +52,7 @@
 						// $rootScope.$emit('searchReindexNeeded'); // HACK
 					} else {
 
-						errorSvc.error({data: 'No new transcripts were detected'});
+						// errorSvc.error({data: 'No new transcripts were detected'});
 					}
 				}
 			}],

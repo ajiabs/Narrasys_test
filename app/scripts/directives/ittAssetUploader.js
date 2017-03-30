@@ -127,6 +127,11 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc, dataSvc) {
 				} else{
 					scope.uploads = scope.uploads.concat(awsSvc.uploadUserFiles(appState.user._id, files));
 				}
+				//send promise up to parent directive for transcripts
+        if (scope.episodeId && scope.callback) {
+          scope.callback({data: scope.uploads});
+          return;
+        }
 				for (var i = oldstack; i < newstack; i++) {
 					(function (i) { // closure for i
 						scope.uploadStatus[i] = {
@@ -138,9 +143,6 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc, dataSvc) {
 						scope.uploads[i].then(function (data) {
 
 							if (scope.episodeId && scope.callback) {
-								scope.callback({data: data});
-								scope.uploadStatus[i].done = true;
-								scope.oneDone();
 								return;
 							}
 
