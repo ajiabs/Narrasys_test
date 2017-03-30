@@ -226,6 +226,7 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
       });
       return GET("/v3/customers/" + customerId, function (customer) {
         modelSvc.cache("customer", customer); // the real thing
+        return modelSvc.customers[customer._id];
       });
     }
   };
