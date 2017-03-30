@@ -27,7 +27,7 @@
       controller: [function() {
         var ctrl = this;
         var _ngTimeout = ittUtils.ngTimeout;
-        var _defaultText = ctrl.tipText ||  'Click to Copy';
+        var _defaultText = ctrl.tipText ||  'Click to copy URL';
         angular.extend(ctrl, {
           tipText: _defaultText,
           bubbleEvent: bubbleEvent
