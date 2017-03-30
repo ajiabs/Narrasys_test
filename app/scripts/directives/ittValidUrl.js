@@ -7,6 +7,8 @@
 	angular.module('com.inthetelling.story')
 		.directive('ittValidUrl', ittValidUrl);
 
+  ittValidUrl.$inject = ['ittUtils'];
+
 	function ittValidUrl(ittUtils) {
 	    return {
 			require: '?ngModel',
