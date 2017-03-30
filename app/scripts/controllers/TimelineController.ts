@@ -1,11 +1,6 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .controller('TimelineController', TimelineController);
-
 TimelineController.$inject = ['$scope', '$rootScope', 'timelineSvc', 'playbackService'];
 
-function TimelineController($scope, $rootScope, timelineSvc, playbackService) {
+export default function TimelineController($scope, $rootScope, timelineSvc, playbackService) {
 
   $scope.playbackService = playbackService;
 

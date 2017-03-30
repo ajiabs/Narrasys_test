@@ -1,11 +1,7 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .controller('EventTestController', EventTestController);
 
 EventTestController.$inject = ['$scope', '$routeParams', 'mockSvc', 'modelSvc', 'appState'];
 
-function EventTestController($scope, $routeParams, mockSvc, modelSvc, appState) {
+export default function EventTestController($scope, $routeParams, mockSvc, modelSvc, appState) {
   // console.log('EventTestContrller');
 
   mockSvc.mockEpisode("ep1");

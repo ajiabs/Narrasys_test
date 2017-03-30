@@ -1,11 +1,7 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .controller('ItemController', ItemController);
 
 ItemController.$inject = ['$scope', 'timelineSvc'];
 
-function ItemController($scope, timelineSvc) {
+export default function ItemController($scope, timelineSvc) {
   $scope.seek = function (t) {
     timelineSvc.seek(t, "clickedOnItem", $scope.item._id);
   };

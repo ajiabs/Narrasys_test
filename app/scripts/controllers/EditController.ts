@@ -1,11 +1,10 @@
 'use strict';
 
-angular.module('com.inthetelling.story')
-  .controller('EditController', EditController);
+
 
 EditController.$inject = ['$scope', '$rootScope', '$timeout', '$window', 'selectService', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'authSvc', 'MIMES', 'playbackService'];
 
-function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES, playbackService) {
+export default function EditController($scope, $rootScope, $timeout, $window, selectService, appState, dataSvc, modelSvc, timelineSvc, authSvc, MIMES, playbackService) {
   $scope.uneditedScene = angular.copy($scope.item); // to help with diff of original scenes
 
   // HACK assetType below is optional, only needed when there is more than one asset to manage for a single object (for now, episode poster + master asset)

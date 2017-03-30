@@ -1,11 +1,7 @@
-'use strict';
-
-angular.module('com.inthetelling.story')
-  .controller('ErrorController', ErrorController);
 
 ErrorController.$inject = ['$scope', 'errorSvc', 'appState', 'authSvc'];
 
-function ErrorController($scope, errorSvc, appState, authSvc) {
+export default function ErrorController($scope, errorSvc, appState, authSvc) {
   // console.log("errorController", $scope);
 
   $scope.errorSvc = errorSvc;

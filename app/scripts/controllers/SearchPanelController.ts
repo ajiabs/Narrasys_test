@@ -1,12 +1,6 @@
-'use strict';
-
-// Controller for the search panel results
-angular.module('com.inthetelling.story')
-  .controller('SearchPanelController', SearchPanelController);
-
 SearchPanelController.$inject = ['$scope', '$rootScope', '$timeout', 'appState'];
 
-function SearchPanelController($scope, $rootScope, $timeout, appState) {
+export default function SearchPanelController($scope, $rootScope, $timeout, appState) {
 
   // Events searchableText is:
   // (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator)

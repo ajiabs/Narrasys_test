@@ -6,19 +6,12 @@
  * Created by githop on 6/13/16.
  */
 
-(function() {
-	'use strict';
+NarrativesCtrl.$inject = ['$scope', 'authSvc', 'narrativesResolve'];
 
-	angular.module('com.inthetelling.story')
-		.controller('NarrativesCtrl', NarrativesCtrl);
-
-  NarrativesCtrl.$inject = ['$scope', 'authSvc', 'narrativesResolve'];
-
-	function NarrativesCtrl($scope, authSvc,  narrativesResolve) {
-		$scope.customersResolve = narrativesResolve.c;
-		$scope.logout = authSvc.logout;
-	}
+export default function NarrativesCtrl($scope, authSvc, narrativesResolve) {
+  $scope.customersResolve = narrativesResolve.c;
+  $scope.logout = authSvc.logout;
+}
 
 
-})();
 

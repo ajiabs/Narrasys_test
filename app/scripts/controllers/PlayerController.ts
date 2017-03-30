@@ -1,13 +1,8 @@
-'use strict';
-
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
-
-angular.module('com.inthetelling.story')
-  .controller('PlayerController', PlayerController);
 
 PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'config', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService'];
 
-function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService) {
+export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService) {
   // console.log("playerController", $scope);
 
   //set to true to enable debug info on api-dev
