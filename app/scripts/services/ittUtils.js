@@ -8,6 +8,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('ittUtils', IttUtils);
 
+  IttUtils.$inject = ['$timeout'];
+
 	function IttUtils($timeout) {
 		return {
 			getSubdomain: getSubdomain,

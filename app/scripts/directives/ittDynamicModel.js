@@ -8,6 +8,8 @@
 	angular.module('com.inthetelling.story')
 		.directive('ittDynamicModel', ittDynamicModel);
 
+  ittDynamicModel.$inject = ['$compile', '$parse'];
+
 	//http://stackoverflow.com/a/32096328
 	function ittDynamicModel($compile, $parse) {
 		return {

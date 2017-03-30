@@ -23,7 +23,7 @@
 				'	</div>',
 				'</div>'
 			].join('\n'),
-			controller: ['$scope','selectService', 'ittUtils', function($scope, selectService) {
+			controller: ['$scope','selectService', function($scope, selectService) {
 				var ctrl = this;
 				ctrl.getSelectOpts = selectService.getSelectOpts;
 				ctrl.setNgOpts = setNgOpts;

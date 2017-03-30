@@ -1,110 +1,114 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.directive('ittMcQuestion', function (questionAnswersSvc, analyticsSvc, appState) {
-		return {
-			restrict: 'E',
-			replace: false,
-			scope: {
-				plugin: '=data',
-				qid: '=',
-				choices: '=',
-				correct: '=',
-				onChoice: '=',
-				questionType: '@',
-				showChart: '='
-			},
-			templateUrl: "templates/item/question-mc-inner.html",
-			link: function (scope) {
+  .directive('ittMcQuestion', ittMcQuestion);
 
-				scope.scoreQuiz = function (i) {
-					scope.plugin.distractors[i].selected = true;
-					scope.plugin.hasBeenAnswered = true;
-					scope.plugin.selectedDistractor = scope.plugin.distractors[i].index;
-					analyticsSvc.captureEventActivity("question-answered", scope.qid, {
-						'answer': scope.plugin.distractors[i].text,
-						'index': scope.plugin.distractors[i].index,
-						'correct': !!(scope.plugin.distractors[i].correct)
-					});
-				};
+ittMcQuestion.$inject = ['questionAnswersSvc', 'analyticsSvc', 'appState'];
 
-				scope.feedback = function () {
-					for (var i = 0; i < scope.plugin.distractors.length; i++) {
-						if (scope.plugin.distractors[i].index === scope.plugin.selectedDistractor) {
-							return (scope.plugin.distractors[i].correct) ? scope.plugin.correctfeedback : scope.plugin.incorrectfeedback;
-						}
-					}
-				};
+function ittMcQuestion(questionAnswersSvc, analyticsSvc, appState) {
+  return {
+    restrict: 'E',
+    replace: false,
+    scope: {
+      plugin: '=data',
+      qid: '=',
+      choices: '=',
+      correct: '=',
+      onChoice: '=',
+      questionType: '@',
+      showChart: '='
+    },
+    templateUrl: "templates/item/question-mc-inner.html",
+    link: function (scope) {
 
-				scope.questionType = scope.plugin.questiontype;
+      scope.scoreQuiz = function (i) {
+        scope.plugin.distractors[i].selected = true;
+        scope.plugin.hasBeenAnswered = true;
+        scope.plugin.selectedDistractor = scope.plugin.distractors[i].index;
+        analyticsSvc.captureEventActivity("question-answered", scope.qid, {
+          'answer': scope.plugin.distractors[i].text,
+          'index': scope.plugin.distractors[i].index,
+          'correct': !!(scope.plugin.distractors[i].correct)
+        });
+      };
 
-				// NOT YET SUPPORTED IN ittFlotChart:
-				scope.chartOptions = {}; // moving default chartOptions into ittFlotChart; use this to override.
+      scope.feedback = function () {
+        for (var i = 0; i < scope.plugin.distractors.length; i++) {
+          if (scope.plugin.distractors[i].index === scope.plugin.selectedDistractor) {
+            return (scope.plugin.distractors[i].correct) ? scope.plugin.correctfeedback : scope.plugin.incorrectfeedback;
+          }
+        }
+      };
 
-				var formatAnswersForFlotPieChart = function (grouped) {
-					// console.log("Formatting ", grouped, " for ", scope.plugin);
-					var chartData = [];
-					for (var answerIndex in grouped) {
-						if (grouped.hasOwnProperty(answerIndex)) {
-							// translate the index into the answer text
-							angular.forEach(scope.plugin.distractors, function (distractor) {
-								if (distractor.index + "" === answerIndex + "") {
-									var label = distractor.text;
-									if (typeof (label) === 'object') {
-										label = label[appState.lang] || label.en || "";
-									}
-									chartData.push({
-										data: grouped[answerIndex],
-										label: label
-									});
-								}
-							});
-						}
-					}
-					return chartData;
-				};
+      scope.questionType = scope.plugin.questiontype;
 
-				if (scope.plugin.hasBeenAnswered === true) {
+      // NOT YET SUPPORTED IN ittFlotChart:
+      scope.chartOptions = {}; // moving default chartOptions into ittFlotChart; use this to override.
 
-					/*
-					answer_counts is included in event data as {
-						index: count,
-						index: count
-					}
-					*/
-					if (typeof scope.plugin.answer_counts === 'undefined') {
-						// This is in case of failure on the API side to return answer_counts (which shouldn't happen):
-						console.error("No answer_counts returned from API");
-						scope.plugin.answer_counts = {};
-					}
+      var formatAnswersForFlotPieChart = function (grouped) {
+        // console.log("Formatting ", grouped, " for ", scope.plugin);
+        var chartData = [];
+        for (var answerIndex in grouped) {
+          if (grouped.hasOwnProperty(answerIndex)) {
+            // translate the index into the answer text
+            angular.forEach(scope.plugin.distractors, function (distractor) {
+              if (distractor.index + "" === answerIndex + "") {
+                var label = distractor.text;
+                if (typeof (label) === 'object') {
+                  label = label[appState.lang] || label.en || "";
+                }
+                chartData.push({
+                  data: grouped[answerIndex],
+                  label: label
+                });
+              }
+            });
+          }
+        }
+        return chartData;
+      };
 
-					var grouped = scope.plugin.answer_counts;
-					var chartData = formatAnswersForFlotPieChart(grouped);
-					scope.chartData = chartData;
-				}
+      if (scope.plugin.hasBeenAnswered === true) {
 
-				scope.scorePoll = function (i) {
-					console.log("scorePoll");
-					questionAnswersSvc.saveAnswer("question-answered", scope.qid, {
-							'answer': scope.plugin.distractors[i].text,
-							'index': scope.plugin.distractors[i].index,
-							'correct': !!(scope.plugin.distractors[i].correct)
-						})
-						.then(function () {
-							scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
-							questionAnswersSvc.incrementAnswerCount(scope.plugin.answer_counts, scope.plugin.distractors[i].index);
-							var grouped = scope.plugin.answer_counts;
-							var chartData = formatAnswersForFlotPieChart(grouped);
-							scope.chartData = chartData;
-							scope.plugin.distractors[i].selected = true;
-							scope.plugin.hasBeenAnswered = true;
-							scope.plugin.selectedDistractor = scope.plugin.distractors[i].index;
-							//});
-						});
+        /*
+         answer_counts is included in event data as {
+         index: count,
+         index: count
+         }
+         */
+        if (typeof scope.plugin.answer_counts === 'undefined') {
+          // This is in case of failure on the API side to return answer_counts (which shouldn't happen):
+          console.error("No answer_counts returned from API");
+          scope.plugin.answer_counts = {};
+        }
 
-				};
+        var grouped = scope.plugin.answer_counts;
+        var chartData = formatAnswersForFlotPieChart(grouped);
+        scope.chartData = chartData;
+      }
 
-			}
+      scope.scorePoll = function (i) {
+        console.log("scorePoll");
+        questionAnswersSvc.saveAnswer("question-answered", scope.qid, {
+          'answer': scope.plugin.distractors[i].text,
+          'index': scope.plugin.distractors[i].index,
+          'correct': !!(scope.plugin.distractors[i].correct)
+        })
+          .then(function () {
+            scope.plugin.answer_counts = (typeof scope.plugin.answer_counts === 'undefined') ? {} : scope.plugin.answer_counts;
+            questionAnswersSvc.incrementAnswerCount(scope.plugin.answer_counts, scope.plugin.distractors[i].index);
+            var grouped = scope.plugin.answer_counts;
+            var chartData = formatAnswersForFlotPieChart(grouped);
+            scope.chartData = chartData;
+            scope.plugin.distractors[i].selected = true;
+            scope.plugin.hasBeenAnswered = true;
+            scope.plugin.selectedDistractor = scope.plugin.distractors[i].index;
+            //});
+          });
 
-		};
-	});
+      };
+
+    }
+
+  };
+}

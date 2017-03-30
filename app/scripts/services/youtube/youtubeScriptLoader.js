@@ -14,6 +14,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('YTScriptLoader', YTScriptLoader);
 
+  YTScriptLoader.$inject = ['$q', '$timeout'];
+
 	function YTScriptLoader($q, $timeout) {
 		//allow 2 seconds download time per each try
 		//4 seconds total, as on first error, we retry

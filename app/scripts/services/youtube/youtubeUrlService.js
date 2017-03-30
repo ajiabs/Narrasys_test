@@ -3,6 +3,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('youtubeUrlService', youtubeUrlService);
 
+  youtubeUrlService.$inject = ['ittUtils'];
+
 	function youtubeUrlService(ittUtils) {
 		var _existy = ittUtils.existy;
 		var _type = 'youtube';

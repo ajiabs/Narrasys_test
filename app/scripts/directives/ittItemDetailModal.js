@@ -15,37 +15,39 @@
  */
 
 angular.module('com.inthetelling.story')
-	.directive('ittItemDetailModal', ittItemDetailModal);
+  .directive('ittItemDetailModal', ittItemDetailModal);
 
-	function ittItemDetailModal(appState) {
-		return {
-			restrict: 'A',
-			replace: true,
-			scope: {
-				item: '=ittItemDetailModal'
-			},
-			templateUrl: 'templates/item/modal.html',
-			link: function (scope) {
-				scope.item = scope.item.item;
-				if (!scope.item.animate) {
-					scope.modalStyle = { 'transition': 'none' };
-				}
+ittItemDetailModal.$inject = ['appState'];
 
-				var baseStyle = {'bottom': '0', 'padding-top': '5%' };
-				var imgStyle = {'overflow-y': 'auto', 'top': '40%', 'height': '85%', 'z-index': '11' };
+function ittItemDetailModal(appState) {
+  return {
+    restrict: 'A',
+    replace: true,
+    scope: {
+      item: '=ittItemDetailModal'
+    },
+    templateUrl: 'templates/item/modal.html',
+    link: function (scope) {
+      scope.item = scope.item.item;
+      if (!scope.item.animate) {
+        scope.modalStyle = {'transition': 'none'};
+      }
 
-				if (scope.item.isVideoUrl) {
-					scope.modalStyle = angular.extend(scope.modalStyle, {'padding-top': '5%'});
-				} else if (scope.item.producerItemType === 'image') {
-				  scope.modalStyle = angular.extend(scope.modalStyle, imgStyle);
-        } else {
-					scope.modalStyle = angular.extend(scope.modalStyle, baseStyle);
-				}
+      var baseStyle = {'bottom': '0', 'padding-top': '5%'};
+      var imgStyle = {'overflow-y': 'auto', 'top': '40%', 'height': '85%', 'z-index': '11'};
 
-				scope.dismiss = function () {
-					appState.itemDetail = false;
-				};
-			}
+      if (scope.item.isVideoUrl) {
+        scope.modalStyle = angular.extend(scope.modalStyle, {'padding-top': '5%'});
+      } else if (scope.item.producerItemType === 'image') {
+        scope.modalStyle = angular.extend(scope.modalStyle, imgStyle);
+      } else {
+        scope.modalStyle = angular.extend(scope.modalStyle, baseStyle);
+      }
 
-		};
-	}
+      scope.dismiss = function () {
+        appState.itemDetail = false;
+      };
+    }
+
+  };
+}

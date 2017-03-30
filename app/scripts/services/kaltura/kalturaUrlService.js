@@ -17,6 +17,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('kalturaUrlService', kalturaUrlService);
 
+  kalturaUrlService.$inject = [];
+
 	function kalturaUrlService() {
 		var _type = 'kaltura';
 		var _mimeType = 'video/x-' + _type;

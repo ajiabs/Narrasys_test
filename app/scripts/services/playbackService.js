@@ -36,6 +36,8 @@
 	angular.module('com.inthetelling.story')
 		.factory('playbackService', playbackService);
 
+  playbackService.$inject = ['$interval', 'youTubePlayerManager', 'html5PlayerManager', 'kalturaPlayerManager', 'ittUtils', 'urlService', 'PLAYERSTATES_WORD', 'PLAYERSTATES'];
+
 	function playbackService($interval, youTubePlayerManager, html5PlayerManager, kalturaPlayerManager, ittUtils, urlService, PLAYERSTATES_WORD, PLAYERSTATES) {
 
 		var _playerInterfaces = {};

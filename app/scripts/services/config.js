@@ -2,24 +2,29 @@
 
 // Expose the global window.config object as an injectable
 angular.module('com.inthetelling.story')
-	.factory('config', function () {
-		var config = window.config ? window.config : {};
+  .factory('config', config);
 
-		// Find out the API data url, if not specified:
-		if (!config.apiDataBaseUrl) {
-			config.apiDataBaseUrl = "//" + window.location.host;
-		}
 
-		if (!config.localStorageKey) {
-			config.localStorageKey = "storyToken";
-		}
+config.$inject = [];
 
-		if (!config.youtube) {
-			config.youtube = {
-				domain: "//gdata.youtube.com/",
-				timeout: 5000
-			};
-		}
+function config() {
+  var config = window.config ? window.config : {};
 
-		return config;
-	});
+  // Find out the API data url, if not specified:
+  if (!config.apiDataBaseUrl) {
+    config.apiDataBaseUrl = "//" + window.location.host;
+  }
+
+  if (!config.localStorageKey) {
+    config.localStorageKey = "storyToken";
+  }
+
+  if (!config.youtube) {
+    config.youtube = {
+      domain: "//gdata.youtube.com/",
+      timeout: 5000
+    };
+  }
+
+  return config;
+}

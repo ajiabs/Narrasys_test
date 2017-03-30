@@ -176,11 +176,11 @@ and (max-device-width : 568px) {
 
 .button__row {
 	margin-left: 20px;
+  padding-bottom: 5px;
 }
 
 .button__row a, .button__row button {
 	vertical-align: middle;
-	padding: 40px 0;
 }
 
 .button__assets:before {
@@ -199,10 +199,25 @@ and (max-device-width : 568px) {
 	content: "\e905";
 }
 
+.button__clipboard:before {
+  content: "\e90d";
+}
+
+.button__add-inverted:before  {
+  content: '\e90e';
+}
+
+.button__link-status:before  {
+  content: '\e912';
+}
+
+.button__export-spreadsheet:before  {
+  content: '\e914';
+}
+
 .episode__button-row {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
 }
 
 .standaloneAncillaryPage button,

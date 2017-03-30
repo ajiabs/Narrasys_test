@@ -7,6 +7,8 @@
 	angular.module('com.inthetelling.story')
 		.service('selectService', selectService);
 
+  selectService.$inject = ['authSvc', 'modelSvc', 'dataSvc', 'ittUtils'];
+
 	function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
 		var _userHasRole = authSvc.userHasRole;
 		var _existy = ittUtils.existy;
