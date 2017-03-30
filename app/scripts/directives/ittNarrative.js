@@ -112,6 +112,7 @@ function ittNarrative() {
         $scope.isOwner = false;
         $scope.narrative = $scope.narrativeData;
         $scope.customers = $scope.customerData;
+        console.log('custys', $scope.customers);
         $scope.user = appState.user;
         if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
           $scope.canAccess = true;
@@ -122,7 +123,9 @@ function ittNarrative() {
 
       function toggleEditNarrativeModal() {
 
-        var cachedNarratives = ittUtils.existy($scope.customers[0].narratives) && $scope.customers[0].narratives.length > 1;
+        var cachedNarratives = ittUtils.existy($scope.customers[0]) &&
+          ittUtils.existy($scope.customers[0].narratives) &&
+          $scope.customers[0].narratives.length > 1;
         //need list of other narratives to for validation of path slugs.
         if (!cachedNarratives) {
           dataSvc.getNarrativeList($scope.customers[0])
