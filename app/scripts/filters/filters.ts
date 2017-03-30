@@ -2,8 +2,7 @@
 
 // TODO make up my mind about 'foo' versus 'isFoo'
 
-angular.module('com.inthetelling.story')
-
+let ittFilters = angular.module('itt.filters', [])
 /* List filters */
 .filter('itemLayout', function () {
 		return function (items, layout) {
@@ -284,3 +283,5 @@ angular.module('com.inthetelling.story')
       return '';
     };
   }]);
+
+export default ittFilters;

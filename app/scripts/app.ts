@@ -14,8 +14,8 @@
  * @requires textAngular
  */
 
-import ittControllers from './controllers/controllers.module';
-
+import './controllers/controllers.module';
+import './filters/filters';
 
 angular.module('itt', [
   'ngRoute',
@@ -23,7 +23,8 @@ angular.module('itt', [
   'ngSanitize',
   'textAngular',
   'ui.tree',
-  'itt.controllers'
+  'itt.controllers',
+  'itt.filters'
   ]
 )
   .constant('MIMES', {
