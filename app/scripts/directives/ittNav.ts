@@ -25,9 +25,9 @@ export default function ittNav() {
       '					<a class="nav__button" ng-if="$ctrl.currentPath !== \'/projects\' && $ctrl.canAccess" href="/#/projects">My Projects</a>',
       '					<a class="nav__button" ng-if="$ctrl.currentPath !== \'/stories\' && $ctrl.canAccess" href="/#/stories">My Narratives</a>',
       '				</div>',
-      '				<div class="navControls__item item--right">',
+      '				<div class="navControls__item item--right" ng-if="$ctrl.canAccess">',
       '					<a class="nav__button" ng-click="$ctrl.onLogout()">Log out</a>',
-      '					<a class="nav__button" ng-if="$ctrl.canAccess" target="_blank" rel="noopener noreferrer" href="https://support.narrasys.com">Help</a>',
+      '					<a class="nav__button" target="_blank" rel="noopener noreferrer" href="https://support.narrasys.com">Help</a>',
       '				<div>',
       '			</div>',
       '		</div>',
@@ -40,10 +40,12 @@ export default function ittNav() {
       ctrl.appState = appState;
       ctrl.goToAccounts = goToAccounts;
       authSvc.authenticate().then(function () {
-        ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin');
+        ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin') || authSvc.userHasRole('instructor');
       });
       function goToAccounts() {
-        $location.url('/account');
+        if (ctrl.canAccess) {
+          $location.url('/account');
+        }
       }
     }],
     controllerAs: '$ctrl',

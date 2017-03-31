@@ -35,10 +35,10 @@ export default function ittNarrative() {
       function ($scope, authSvc, appState, dataSvc, modelSvc, ittUtils) {
 
         var treeOpts = {
-          accept: function (/*sourceNodeScope, destNodesScope, destIndex*/) {
+          accept: function(/*sourceNodeScope, destNodesScope, destIndex*/) {
             return true;
           },
-          dropped: function (event) {
+          dropped: function(event) {
             var destIndex = event.dest.index;
             var srcIndex = event.source.index;
             if (destIndex !== srcIndex) {
@@ -95,7 +95,7 @@ export default function ittNarrative() {
         }
 
         function _persistTimelineSortUpdate(timeline) {
-          dataSvc.storeTimeline($scope.narrative._id, timeline).then(function (resp) {
+          dataSvc.storeTimeline($scope.narrative._id, timeline).then(function(resp) {
             angular.extend(timeline, resp);
           });
         }
@@ -107,6 +107,7 @@ export default function ittNarrative() {
           $scope.isOwner = false;
           $scope.narrative = $scope.narrativeData;
           $scope.customers = $scope.customerData;
+          console.log('custys', $scope.customers);
           $scope.user = appState.user;
           if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
             $scope.canAccess = true;
@@ -117,11 +118,13 @@ export default function ittNarrative() {
 
         function toggleEditNarrativeModal() {
 
-          var cachedNarratives = ittUtils.existy($scope.customers[0].narratives) && $scope.customers[0].narratives.length > 1;
+          var cachedNarratives = ittUtils.existy($scope.customers[0]) &&
+            ittUtils.existy($scope.customers[0].narratives) &&
+            $scope.customers[0].narratives.length > 1;
           //need list of other narratives to for validation of path slugs.
           if (!cachedNarratives) {
             dataSvc.getNarrativeList($scope.customers[0])
-              .then(function () {
+              .then(function() {
                 $scope.editingNarrative = !$scope.editingNarrative;
               });
           } else {
@@ -144,7 +147,7 @@ export default function ittNarrative() {
         function doneEditingTimeline() {
           $scope.timelineUnderEdit = null;
           //remove tmp tl from timelines;
-          $scope.narrative.timelines = $scope.narrative.timelines.filter(function (tl) {
+          $scope.narrative.timelines = $scope.narrative.timelines.filter(function(tl) {
             return tl !== $scope.tmpTimeline;
           });
           $scope.tmpTimeline = null;
@@ -160,17 +163,15 @@ export default function ittNarrative() {
 
         function _setTotalNarrativeDuration(timelines) {
           $scope.totalNarrativeDuration = timelines.map(function (tl) {
-            return tl.episode_segments.map(function (s) {
-              return s.end_time;
-            })[0];
-          }).reduce(function (accm, durs) {
+            return tl.episode_segments.map(function(s) {return s.end_time;})[0];
+          }).reduce(function(accm, durs) {
             return accm += durs;
           }, 0);
         }
 
         function deleteTimeline(tl) {
-          dataSvc.deleteTimeline(tl._id).then(function () {
-            $scope.narrative.timelines = $scope.narrative.timelines.filter(function (t) {
+          dataSvc.deleteTimeline(tl._id).then(function() {
+            $scope.narrative.timelines = $scope.narrative.timelines.filter(function(t) {
               return tl._id !== t._id;
             });
             doneEditingTimeline();
@@ -228,7 +229,7 @@ export default function ittNarrative() {
         function onEpisodeSelect(epId) {
           //if tmpTimeline is not set, assume
           // this is the first timeline to create;
-          dataSvc.getEpisodeOverview(epId).then(function (episodeData) {
+          dataSvc.getEpisodeOverview(epId).then(function(episodeData) {
             $scope.tmpTimeline.parent_episode = episodeData;
 
             if (ittUtils.existy(episodeData.description)) {
@@ -237,8 +238,8 @@ export default function ittNarrative() {
 
             $scope.tmpTimeline.name.en = ittUtils.stripHtmlTags(episodeData.title.en);
             return episodeData;
-          }).then(function (episodeData) {
-            dataSvc.getSingleAsset(episodeData.master_asset_id).then(function (data) {
+          }).then(function(episodeData) {
+            dataSvc.getSingleAsset(episodeData.master_asset_id).then(function(data) {
               if (data) {
                 $scope.tmpTimeline.duration = data.duration;
               } else {
@@ -262,7 +263,7 @@ export default function ittNarrative() {
             .catch(logErr);
 
           function storeChildEpisode(childEpisode) {
-            return dataSvc.storeTimeline($scope.narrative._id, tl).then(function (tlData) {
+            return dataSvc.storeTimeline($scope.narrative._id, tl).then(function(tlData) {
               return {d: tlData, e: childEpisode};
             });
           }
@@ -276,9 +277,9 @@ export default function ittNarrative() {
               end_time: tl.duration,
               sort_order: 0,
               timeline_id: tlData._id
-            }).then(function (segmentData) {
+            }).then(function(segmentData) {
               tlData.episode_segments = [segmentData];
-              angular.forEach($scope.narrative.timelines, function (tl) {
+              angular.forEach($scope.narrative.timelines, function(tl) {
                 if (tl.sort_order === tlData.sort_order) {
                   angular.extend(tl, tlData);
                 }
@@ -289,9 +290,7 @@ export default function ittNarrative() {
             });
           }
 
-          function logErr(e) {
-            console.log(e);
-          }
+          function logErr(e) { console.log(e); }
         }
 
         function updateNarrative(update) {
@@ -306,7 +305,7 @@ export default function ittNarrative() {
         }
 
         function updateTimeline(newTimeline, oldTimeline) {
-          dataSvc.storeTimeline($scope.narrative._id, newTimeline).then(function (resp) {
+          dataSvc.storeTimeline($scope.narrative._id, newTimeline).then(function(resp) {
             angular.extend(oldTimeline, resp);
             doneEditingTimeline();
           });
