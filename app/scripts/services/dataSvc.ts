@@ -206,7 +206,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   svc.getCustomer = function (customerId, retrieve) {
     if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
-      return false;
+      return $q(function(resolve) {resolve({});});
     }
     if (modelSvc.customers[customerId]) {
 
@@ -214,14 +214,14 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         return $q(function(resolve) {resolve(modelSvc.customers[customerId]);});
       }
       // have it already, or at least already getting it
-      return;
     } else {
       // cache a stub:
       modelSvc.cache("customer", {
         _id: customerId
       });
-      GET("/v3/customers/" + customerId, function (customer) {
+      return GET("/v3/customers/" + customerId, function (customer) {
         modelSvc.cache("customer", customer); // the real thing
+        return modelSvc.customers[customer._id];
       });
     }
   };
