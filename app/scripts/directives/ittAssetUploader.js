@@ -8,6 +8,7 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc, dataSvc) {
 	return {
 		restrict: 'A',
 		replace: false,
+		transclude: true,
 		scope: {
 			containerId: '=ittAssetUploader', // If no container ID is supplied, the uploaded asset(s) will be placed in user space instead.
 			episodeId: '@', //for uploading transcripts
@@ -53,10 +54,10 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc, dataSvc) {
 				_mimeTypes[i] = m.trim();
 			});
 
-			function handleTranscripts(episodeId, postData) {
+			function handleTranscripts(episodeId, postData, params) {
 				var fd = new FormData();
 				fd.append('subtitles', postData);
-				return dataSvc.batchUploadTranscripts(episodeId, fd);
+				return dataSvc.batchUploadTranscripts(episodeId, fd, params);
 			}
 
 			scope.uploadStatus = [];
@@ -123,46 +124,70 @@ function ittAssetUploader($timeout, awsSvc, appState, modelSvc, dataSvc) {
 				if (scope.containerId) {
 					scope.uploads = scope.uploads.concat(awsSvc.uploadContainerFiles(scope.containerId, files));
 				} else if (scope.episodeId) {
-					scope.uploads = scope.uploads.concat(handleTranscripts(scope.episodeId, files[0]));
+				  //store copy of files on scope
+				  scope.tempTranscripts = files;
+          //and let parent controller know
+          scope.callback();
+          //for view
+          scope.uploadStatus.push({
+            "bytesSent": 0,
+            "bytesTotal": 1,
+            "percent": 0,
+            "name": files[0].name
+          });
+          scope.uploads = scope.uploadStatus;
+          //and wait for $broadcast to receive optional params for transcripts then upload files
+          return;
 				} else{
 					scope.uploads = scope.uploads.concat(awsSvc.uploadUserFiles(appState.user._id, files));
 				}
-				//send promise up to parent directive for transcripts
-        if (scope.episodeId && scope.callback) {
-          scope.callback({data: scope.uploads});
-          return;
-        }
-				for (var i = oldstack; i < newstack; i++) {
-					(function (i) { // closure for i
-						scope.uploadStatus[i] = {
-							"bytesSent": 0,
-							"bytesTotal": 1,
-							"percent": 0,
-							"name": files[i - oldstack].name
-						};
-						scope.uploads[i].then(function (data) {
 
-							if (scope.episodeId && scope.callback) {
-								return;
-							}
-
-							modelSvc.cache("asset", data.file);
-							if (scope.callback) {
-								scope.callback({data: data.file._id});
-							}
-							scope.uploadStatus[i].done = true;
-							scope.oneDone();
-						}, function (data) {
-							scope.uploadStatus[i].error = data;
-							scope.oneDone();
-						}, function (update) {
-							scope.uploadStatus[i].bytesSent = update.bytesSent;
-							scope.uploadStatus[i].bytesTotal = update.bytesTotal;
-							scope.uploadStatus[i].percent = Math.ceil(update.bytesSent / update.bytesTotal * 100);
-						});
-					})(i);
-				}
+        resolveUploads(oldstack, newstack, files);
 			};
+
+			scope.$on('transcriptsReceived', function(e, params) {
+        var files = scope.tempTranscripts;
+        scope.uploads = [handleTranscripts(scope.episodeId, files[0], params)];
+        scope.uploadStatus = [];
+        resolveUploads(0, 1, files);
+      });
+
+			function resolveUploads(oldstack, newstack, files) {
+        for (var i = oldstack; i < newstack; i++) {
+          (function (i) { // closure for i
+            scope.uploadStatus[i] = {
+              "bytesSent": 0,
+              "bytesTotal": 1,
+              "percent": 0,
+              "name": files[i - oldstack].name
+            };
+            scope.uploads[i].then(function (data) {
+
+              if (scope.episodeId && scope.callback) {
+                //this currently only happens when batch uploading transcripts
+                scope.uploadStatus[i].done = true;
+                scope.oneDone();
+                scope.$emit('transcriptsUploaded');
+                return;
+              }
+
+              modelSvc.cache("asset", data.file);
+              if (scope.callback) {
+                scope.callback({data: data.file._id});
+              }
+              scope.uploadStatus[i].done = true;
+              scope.oneDone();
+            }, function (data) {
+              scope.uploadStatus[i].error = data;
+              scope.oneDone();
+            }, function (update) {
+              scope.uploadStatus[i].bytesSent = update.bytesSent;
+              scope.uploadStatus[i].bytesTotal = update.bytesTotal;
+              scope.uploadStatus[i].percent = Math.ceil(update.bytesSent / update.bytesTotal * 100);
+            });
+          })(i);
+        }
+      }
 
 			scope.oneDone = function () {
 				scope.uploadsinprogress = scope.uploadsinprogress - 1;
