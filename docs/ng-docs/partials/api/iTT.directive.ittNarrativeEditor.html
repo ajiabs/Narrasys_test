@@ -1,0 +1,54 @@
+<h1><code ng:non-bindable="">ittNarrativeEditor</code>
+<div><span class="hint">directive in module <code ng:non-bindable="">iTT</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="itt-directive-page itt-directive-ittnarrativeeditor-page"><p>A presentational component used to edit narratives</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage">as element:<pre class="prettyprint linenums">&lt;itt-narrative-editor
+       narrative="{Object}"
+       customers="{Array}"
+       container-info="{customerId:string, containerId:string, name:string}"
+       on-done="{Function}"
+       on-update="{function}"&gt;
+&lt;/itt-narrative-editor&gt;</pre>
+as attribute<pre class="prettyprint linenums">&lt;ANY itt-narrative-editor
+     narrative="{Object}"
+     customers="{Array}"
+     container-info="{customerId:string, containerId:string, name:string}"
+     on-done="{Function}"
+     on-update="{function}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h3 id="usage_directive-info">Directive info</h3>
+<div class="directive-info"><ul><li>This directive creates new scope.</li>
+</ul>
+</div>
+<h4 id="usage_directive-info_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>narrative</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="itt-directive-page itt-directive-ittnarrativeeditor-page"><p>the narrative to edit</p>
+</div></td></tr><tr><td>customers</td><td><a href="" class="label type-hint type-hint-array">Array</a></td><td><div class="itt-directive-page itt-directive-ittnarrativeeditor-page"><p>an array of customers associated with the narrative</p>
+</div></td></tr><tr><td>containerInfo</td><td><a href="" class="label type-hint type-hint-customerid">customerId:string, containerId:string, name:string</a></td><td><div class="itt-directive-page itt-directive-ittnarrativeeditor-page"><p>container specific info to set on the narrative</p>
+</div></td></tr><tr><td>onDone</td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="itt-directive-page itt-directive-ittnarrativeeditor-page"><p>output to call when on cancel.</p>
+</div></td></tr><tr><td>onUpdate</td><td><a href="" class="label type-hint type-hint-function">function</a></td><td><div class="itt-directive-page itt-directive-ittnarrativeeditor-page"><p>output to call when saving.</p>
+</div></td></tr></tbody></table></div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="itt-directive-page itt-directive-ittnarrativeeditor-page"><pre class="prettyprint linenums">
+//containers page
+&lt;itt-narrative-editor
+       customers="customers"
+       container-info="{containerId: container._id, customerId: container.customer_id, name: container.name}"
+       on-done="toggleNarrativeModal()"
+       on-update="postNewNarrative(data)"&gt;
+     &lt;/itt-narrative-editor&gt;
+
+     //narrative show/index pages
+     &lt;itt-narrative-editor
+       customers="$ctrl.selectedCustomer"
+       narrative="$ctrl.narrativeToEdit"
+       on-done="$ctrl.closeAddOrEditModal()"
+       on-update="$ctrl.addOrUpdateNarrative(n)"&gt;
+     &lt;/itt-narrative-editor&gt;
+</pre>
+</div></div>
+</div>

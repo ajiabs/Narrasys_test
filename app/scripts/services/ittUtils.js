@@ -24,7 +24,8 @@
 			renameKey: renameKey,
 			ngTimeout: ngTimeout,
 			cancelNgTimeout: cancelNgTimeout,
-      capitalize: capitalize
+      capitalize: capitalize,
+      slugify: slugify
 		};
 
 		function capitalize(str) {
@@ -142,6 +143,10 @@
 				delete obj[oldName];
 			}
 		}
+
+		function slugify(str) {
+		  return str.toLowerCase().replace(/ /g,"-").replace(/[^\w-]/g,"");
+    }
 	}
 
 

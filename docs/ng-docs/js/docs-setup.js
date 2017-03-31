@@ -32,6 +32,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "iTT.directive:ittNarrativeEditor",
+      "shortName": "ittNarrativeEditor",
+      "type": "directive",
+      "moduleName": "iTT",
+      "shortDescription": "A presentational component used to edit narratives",
+      "keywords": "$ctrl _id addorupdatenarrative api array associated call cancel closeaddoreditmodal component container container-info containerid containerinfo customer_id customerid customers directive ea edit info itt narrative narratives narrativetoedit on-done on-update ondone onupdate output postnewnarrative presentational saving selectedcustomer set specific togglenarrativemodal"
+    },
+    {
+      "section": "api",
       "id": "iTT.directive:ittValidateUrl",
       "shortName": "ittValidateUrl",
       "type": "directive",

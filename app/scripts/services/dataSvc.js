@@ -178,6 +178,12 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
     window.open(url);
   };
 
+  svc.getCustomerLinkStatusReportSpreadsheet = getCustomerLinkStatusReportSpreadsheet;
+  function getCustomerLinkStatusReportSpreadsheet(customerId) {
+    var url = '/v3/customers/' + customerId + '/link_status.xlsx';
+    window.open(url);
+  }
+
   var cachedPurchases = false;
   svc.getUserNarratives = function (userId) {
     if (cachedPurchases) {
@@ -203,20 +209,24 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
 
   };
 
-  svc.getCustomer = function (customerId) {
+  svc.getCustomer = function (customerId, retrieve) {
     if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
-      return false;
+      return $q(function(resolve) {resolve({});});
     }
     if (modelSvc.customers[customerId]) {
+
+      if (retrieve) {
+        return $q(function(resolve) {resolve(modelSvc.customers[customerId]);});
+      }
       // have it already, or at least already getting it
-      return;
     } else {
       // cache a stub:
       modelSvc.cache("customer", {
         _id: customerId
       });
-      GET("/v3/customers/" + customerId, function (customer) {
+      return GET("/v3/customers/" + customerId, function (customer) {
         modelSvc.cache("customer", customer); // the real thing
+        return modelSvc.customers[customer._id];
       });
     }
   };
@@ -257,8 +267,15 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
     return GET("/v3/episodes/" + epId);
   };
 
-  svc.getNarrativeList = function () {
-    return GET("/v3/narratives/");
+  svc.getNarrativeList = function (customer) {
+    if (!ittUtils.existy(customer)) {
+      return GET("/v3/narratives/");
+    }
+
+    return GET('/v3/narratives?customer_id=' + customer._id)
+      .then(function (narratives) {
+        modelSvc.assocNarrativesWithCustomer(customer, narratives);
+      });
   };
 
   svc.createUserGroup = function (groupName) {
@@ -271,11 +288,11 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
 
   svc.createNarrative = function (narrativeData) {
     delete narrativeData.templateUrl;
-    return POST("/v3/narratives", narrativeData);
+    return SANE_POST("/v3/narratives", narrativeData);
   };
   svc.updateNarrative = function (narrativeData) {
     delete narrativeData.templateUrl;
-    return PUT("/v3/narratives/" + narrativeData._id, narrativeData);
+    return SANE_PUT("/v3/narratives/" + narrativeData._id, narrativeData);
   };
 
   svc.createChildEpisode = function (childData) {
@@ -741,6 +758,10 @@ function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, confi
       return $http.post(path, data, config);
     }
     return $http.post(path, data);
+  };
+
+  var SANE_PUT = function(path, data) {
+    return $http.put(config.apiDataBaseUrl + path, data);
   };
 
   var PUT = function (path, putData, postprocessCallback) {

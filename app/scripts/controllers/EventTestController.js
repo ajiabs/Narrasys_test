@@ -1,19 +1,23 @@
 'use strict';
 
 angular.module('com.inthetelling.story')
-	.controller('EventTestController', function ($scope, $routeParams, mockSvc, modelSvc, appState) {
-		console.log('EventTestContrller');
+  .controller('EventTestController', EventTestController);
 
-		mockSvc.mockEpisode("ep1");
-		appState.episodeId = "ep1";
+EventTestController.$inject = ['$scope', '$routeParams', 'mockSvc', 'modelSvc', 'appState'];
 
-		appState.product = 'producer';
-		appState.lang = "en";
+function EventTestController($scope, $routeParams, mockSvc, modelSvc, appState) {
+  // console.log('EventTestContrller');
 
-		// $scope.itemId = $routeParams["eventId"];
+  mockSvc.mockEpisode("ep1");
+  appState.episodeId = "ep1";
 
-		$scope.item = modelSvc.events[$routeParams.eventId];
+  appState.product = 'producer';
+  appState.lang = "en";
 
-		console.log(modelSvc);
+  // $scope.itemId = $routeParams["eventId"];
 
-	});
+  $scope.item = modelSvc.events[$routeParams.eventId];
+
+  console.log(modelSvc);
+
+}

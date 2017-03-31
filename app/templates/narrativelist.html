@@ -1,41 +1,60 @@
 <div class="">
 
-	<!--<h2>Narratives</h2>-->
-	<!--<div class="ancillaryNav">-->
-		<!--<a class="button" href="/#/projects">Projects</a>-->
-		<!--<a class="button" ng-if="narrativeList.user._id" href="/#/account">Account</a>-->
-		<!--<a class="button" ng-if="narrativeList.user._id" ng-click="narrativeList.logout()">Log out</a>-->
-	<!--</div>-->
+
+  <itt-modal modal-class="narrative__modal" ng-if="$ctrl.narrativeSelect || $ctrl.narrativeToEdit">
+    <h3>{{$ctrl.narrativeSelect ? 'Add' : 'Edit'}} Narrative</h3>
+
+    <itt-narrative-editor
+      customers="$ctrl.selectedCustomer"
+      narrative="$ctrl.narrativeToEdit"
+      hide-path-slug="$ctrl.narrativeSelect"
+      on-done="$ctrl.closeAddOrEditModal()"
+      on-update="$ctrl.addOrUpdateNarrative(n)">
+    </itt-narrative-editor>
+
+  </itt-modal>
+
+  <div ng-repeat="customer in $ctrl.customersData"
+       ng-click="$ctrl.customerRowClick(customer, $event)"
+       ng-class="$ctrl.setRowClasses(customer)">
+    <!--drop down arrow-->
+    <span ng-click="$ctrl.toggleRow(customer, $event)" ng-class="customer.showNarratives ? 'isOpen' : 'isClosed'">
+    </span>
+
+    <a>{{customer.name}}</a>
+
+    <div ng-if="customer.isActive === true">
+      <div ng-if="$ctrl.canAccess" style="padding-left: 1em;">
+        <itt-tooltip tip-text="Add Narrative">
+          <a class="icon__button button__add-inverted" ng-click="$ctrl.setSelectedNarrative(customer)"></a>
+        </itt-tooltip>
+      </div>
+    </div>
+
+    <div ng-repeat="narrative in customer.narratives"
+         style="padding-left: 2em;"
+         ng-if="customer.showNarratives === true"
+         ng-click="$ctrl.toggleNarrativeRow(narrative, $event)"
+         ng-class="$ctrl.setNarrativeRowClasses(customer, narrative)">
+      <div>
+        <itt-edit-pencil can-access="true" on-edit="$ctrl.setNarrativeToEdit($event, narrative, customer)">
+          <a>{{narrative.name.en}}</a>
+        </itt-edit-pencil>
+        <p ng-if="narrative.description">
+          <small>{{narrative.description.en}}</small>
+        </p>
+
+        <div ng-if="$ctrl.narrativeRow._id === narrative._id">
+          <itt-tooltip tip-text="Go to Narrative">
+            <a ng-click="$ctrl.gotoNarrative(narrative._id, $event)" class="icon__button button__generateNarrative" title="Go to Narrative"></a>
+          </itt-tooltip>
+          <a itt-guest-accessible-url narrative="narrative" clipboard-mode="Click to Copy"></a>
+        </div>
 
 
 
-	<div ng-if="narrativeList.canAccess">
-		<button ng-click="narrativeList.toggleSelectNarrative()">Add Narrative</button>
+      </div>
+    </div>
 
-		<itt-modal modal-class="narrative__modal" ng-if="narrativeList.narrativeSelect">
-			<h3>Add Narrative</h3>
-
-			<itt-narrative-editor
-				customers="narrativeList.customers"
-				on-done="narrativeList.toggleSelectNarrative()"
-				on-update="narrativeList.addNarrative(n)">
-			</itt-narrative-editor>
-
-		</itt-modal>
-
-	</div>
-
-		<div ng-repeat="narrative in narrativeList.narratives" class="hoverIndicator" ng-class-even="'container__row--even'" ng-class-odd="'container__row--odd'">
-			<div>
-				<h3 class="narratives__name"><a href="/#/story/{{narrative._id}}">{{narrative.name.en}}</a></h3>
-				<p class="narratives__description" ng-if="narrative.description.en">{{narrative.description.en}}</p>
-			</div>
-
-		</div>
-		<!--<span ng-if="showAddNarrative">-->
-			<!--<hr>-->
-			<!--<a href="/#/story/?admin">Create new narrative</a>-->
-		<!--</span>-->
-
-
+  </div>
 </div>
