@@ -2,8 +2,8 @@
   "name": "com.inthetelling.story",
   "version": "0.0.0",
   "scripts": {
-    "start": "rm -rf dist && ./node_modules/.bin/webpack --watch",
-    "prod": "rm -rf dist && ./node_modules/.bin/webpack -p"
+    "start": "rm -rf dist && ./node_modules/.bin/webpack --env.dev --progress --watch",
+    "prod": "rm -rf dist && ./node_modules/.bin/webpack --env.prod --progress -p"
   },
   "dependencies": {
     "@types/angular-animate": "^1.5.6",
