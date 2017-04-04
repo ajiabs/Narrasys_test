@@ -106,7 +106,7 @@ function confirmFinalVersion(finalVersion) {
 
 function tryWebpackBuild(finalVersion) {
     utils.inform('attempting to build ', finalVersion);
-    const gruntBuild = utils.spawnChildProcess('./node_modules/.bin/webpack', ['--env.prod', '-p', '--progress', '--colors']);
+    const gruntBuild = utils.spawnChildProcess('npm', ['run', 'prod']);
     gruntBuild.stdout.on('data', data => utils.stream(data));
     gruntBuild.stderr.on('data', data => utils.stream(data));
     gruntBuild.on('close', code => {
