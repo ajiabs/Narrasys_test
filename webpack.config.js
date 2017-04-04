@@ -1,7 +1,8 @@
 const {resolve, join} = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const WebpackChunkHash = require('webpack-chunk-hash');
+const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 
 module.exports = (env) => {
   return {
@@ -12,7 +13,7 @@ module.exports = (env) => {
       app: resolve(__dirname, 'app', 'scripts', 'app.ts')
     },
     output: {
-      filename: env.prod ? '[name]-[hash].min.js' : '[name].bundle.js',
+      filename: env.prod ? '[name].[chunkHash].min.js' : '[name].bundle.js',
       publicPath: '/',
       path: resolve(__dirname, 'dist')
     },
@@ -67,7 +68,7 @@ module.exports = (env) => {
           test: /\.(eot|otf|ttf|woff|woff2)$/,
           loader: 'url-loader',
           options: {
-            limit: 10000
+            limit: 1000
           }
         },
         {
@@ -127,9 +128,15 @@ module.exports = (env) => {
           return module.context && module.context.indexOf('node_modules') !== -1;
         }
       }) : undefined,
-      // new webpack.ProvidePlugin({
-      //   'angular': 'angular'
-      // })
+      env.prod ? new webpack.optimize.CommonsChunkPlugin({
+        name: 'manifest',
+        minChunks: Infinity
+      }): undefined,
+      env.prod ? new WebpackChunkHash({algorithm: 'md5'}) : undefined,
+      env.prod ? new ChunkManifestPlugin({
+        filename: "manifest.json",
+        manifestVariable: "webpackManifest"
+      }) : undefined
     ].filter(p => !!p)
   }
 };
