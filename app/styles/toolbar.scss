@@ -1,0 +1,944 @@
+.toolbar {
+	font-size: 16px;
+	text-align: center;
+	position: fixed;
+	height: 85px;
+	margin-bottom: -40px;
+	background-image: url('/images/toolbar.png');
+	background-repeat: repeat-x;
+	background-size: 100% 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+.toolbar {
+	pointer-events: none;
+	display: flex;
+}
+
+.toolbar a,
+.toolbar div {
+	pointer-events: auto
+}
+
+.toolbar .buttongroup {
+	float: left;
+	box-shadow: 4px 3px 8px rgba(0, 0, 0, 0.1) inset;
+	position: relative;
+	height: 1.5em;
+	border-radius: 0.75em;
+	margin: 0.3em 0.5em;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.toolbar .nav-item.scene-navs-btns {
+	order: 1;
+}
+
+.toolbar .nav-item.searchgroup {
+	order: 2;
+}
+.toolbar .nav-item.toolbar-logos {
+	height: 40px;
+	flex: 2;
+	order: 3;
+	margin-top: 5px;
+}
+
+#toolbar-logo-big {
+	width: 140px;
+}
+#toolbar-logo-small {
+	width: 40px;
+}
+
+.toolbar .nav-item.new-window-btn {
+	order: 5;
+}
+
+.toolbar .nav-item.profilegroup {
+	order: 4;
+}
+
+button {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-family: inherit;
+	font-size: 1em;
+	cursor: pointer;
+}
+
+.toolbar .buttongroup .button span {
+	display: block;
+	position: absolute;
+	top: 20px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	opacity: 0;
+	color: #666;
+	font-size: 12px;
+}
+
+.toolbar .buttongroup:hover .button span {
+	opacity: 0 !important
+}
+
+.toolbar .buttongroup .button:hover span {
+	opacity: 1 !important;
+	transition: opacity 0.3s;
+}
+
+.toolbar .buttongroup.modegroup {
+	padding: 0 0.5em;
+}
+
+.toolbar .buttongroup.modegroup .button.cur span {
+	animation: delayedFadeOut 7s ease-out;
+}
+
+.toolbar .escapegroup,
+.toolbar .profilegroup {
+	float: right;
+}
+
+.toolbar .searchgroup .hidden {
+	position: absolute;
+	left: 0;
+	top: -500px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.button-profile {
+	background: url('/images/tmp-user.png');
+	background-size: 16px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	width: 30px;
+}
+
+.toolbar .buttongroup.searchgroup {
+	transition: all 1s;
+	width: 2em;
+}
+
+@media screen and (max-width: 300px) {
+	.isFramed .toolbar .buttongroup.searchgroup {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 421px) {
+	/*
+	.isFramed .toolbar .buttongroup.modegroup {
+		display: none;
+	}
+	*/
+	.banner-logo {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.button-discover {
+		/* See also helpPanel below */
+		display: none !important;
+	}
+	.volumebar {
+		display: none;
+	}
+	.speedcontrol {
+		display: none !important;
+	}
+}
+
+.toolbar .buttongroup.escapegroup .button span {
+	margin-left: -120px;
+	text-align: right !important;
+	width: 150px;
+}
+
+.toolbar .buttongroup.searchgroup .button {
+	float: left;
+}
+
+.toolbar .buttongroup.searchgroup.cur {
+	padding-top: 3px;
+	font-size: 20px;
+	width: 50%;
+}
+
+.toolbar .buttongroup.searchgroup.cur .button span {
+	display: none
+}
+
+#searchtext {
+	background: none;
+	border: none;
+	font-size: 1em;
+	margin: 0;
+	width: 0;
+	transition: all 1s;
+	position: absolute;
+	left: 40px;
+	top: 2px;
+}
+
+#searchtext:focus {
+	outline: 0;
+}
+
+.cur #searchtext {
+	width: 80%
+}
+
+.toolbar .button {
+	padding: 0 0.5em;
+	line-height: 24px;
+	height: 24px;
+	cursor: pointer;
+	color: #555;
+	display: inline-block;
+}
+
+.producerEditLayers {
+	background: url("/images/producer-edit.png") top center transparent;
+	background-size: contain;
+	width: 60px;
+	height: 24px;
+	line-height: 24px;
+	display: inline-block;
+}
+
+.producerEditLayers.bg {
+	background-image: url("/images/producer-edit-bg.png");
+}
+
+.producerEditLayers.fg {
+	background-image: url("/images/producer-edit-fg.png");
+}
+
+.modegroup .button {
+	color: #AAA;
+}
+
+.modegroup .button.cur {
+	background-color: rgba(255, 255, 255, 0.6);
+}
+
+.toolbar .button.cur {
+	color: #000;
+	text-shadow: -1px -1px 2px #FFF;
+}
+
+.toolbar .button:before {
+	font-family: Story;
+	font-size: 1em;
+}
+
+.button-watch:before {
+	content: "\e610"
+}
+
+.button-exitEpisode:before {
+	font-family: sans-serif;
+	content: "«";
+	font-size: 22px !important;
+	line-height: 18px;
+}
+
+.button-discover:before {
+	content: "\e60f"
+}
+
+.button-review:before {
+	content: "\e611"
+}
+
+.button-search {
+	display: block;
+	width: 2em;
+}
+
+.button-nav:before {
+	content: "\e60b";
+	font-size: 0.8em !important;
+}
+
+.button-search:before {
+	content: "\e609"
+}
+
+.cur .button-search:before {
+	content: "\e60a"
+}
+
+.button-mainframeescape:before {
+	content: "\e60e"
+}
+
+.escapelink:before {
+	font-family: Story;
+	content: "\e60e";
+	padding-right: 0.5em;
+	font-size: 0.86em;
+	color: #333;
+}
+
+.button-preview {
+	margin-right: 0.5em;
+}
+
+.button-preview:before {
+	content: "✔";
+	font-size: 18px !important;
+	position: absolute;
+}
+
+.colorInvert .escapelink:before {
+	color: #CCC
+}
+
+.autoscroll {
+	position: fixed;
+	right: 16px;
+	bottom: 156px;
+	width: 32px;
+	height: 32px;
+	opacity: 0.7;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.toolbar-bottom,
+.toolbar-bottom-controltrigger {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	min-height: 60px;
+	margin-bottom: -3px;
+}
+
+.toolbar-bottom {
+	pointer-events: none;
+	padding-top: 27px;
+	color: #333;
+	background-image: url('/images/toolbar-bottom.png');
+	background-repeat: repeat-x;
+	background-size: 100% 30px;
+	background-position: top;
+}
+
+.toolbar-bottom-fill {
+	pointer-events: auto;
+	background-color: rgba(255, 255, 255, 0.9);
+}
+
+.toolbar-bottom.ng-hide-remove {
+	transition: opacity 0.25s;
+	opacity: 0;
+}
+
+.toolbar-bottom.ng-hide-remove.ng-hide-remove-active {
+	opacity: 1;
+}
+
+.toolbar-bottom.ng-hide-add {
+	transition: opacity 3s;
+	opacity: 1;
+}
+
+.toolbar-bottom.ng-hide-add.ng-hide-add-active {
+	opacity: 0;
+}
+
+.offscreen {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px);
+	/* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+	padding: 0 !important;
+	border: 0 !important;
+	height: 1px !important;
+	width: 1px !important;
+	overflow: hidden;
+	-webkit-transition: all linear 5s;
+	transition: all linear 5s;
+}
+
+.visual-hide {
+	opacity: 0;
+}
+
+.offscreen-animate {
+	transition: opacity 3s;
+	opacity: .3;
+}
+
+
+/*============================
+*
+* Side Panels
+*
+//===========================*/
+
+.modal-backdrop {
+	transition: 1s linear all;
+	opacity: 1;
+}
+
+.modal-backdrop.ng-hide {
+	opacity: 0;
+}
+
+.modal-backdrop.ng-hide-add,
+.modal-backdrop.ng-hide-remove {
+	display: block!important;
+}
+
+
+/*============================
+ *
+ * Search Panel
+ *
+//===========================*/
+
+.searchPanel,
+.searchPanel-backdrop {
+	top: 45px;
+	/* TOOLBAR HEIGHT */
+}
+
+.searchPanel {
+	bottom: 0;
+	right: 0;
+	width: 40%;
+	background-color: #FFF;
+}
+
+@media screen and (max-width: 421px) {
+	.searchPanel {
+		width: 90%;
+	}
+}
+
+@media screen and (min-width: 422px) and (max-width: 601px) {
+	.searchPanel {
+		width: 60%;
+	}
+}
+
+.searchPanel .scrollContainer {
+	top: 20px;
+	bottom: 0;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	right: -16px;
+	padding: 0 24px 80px 8px;
+	left: 0px;
+	position: absolute;
+}
+
+.searchPanel .searchresults {
+	padding: 1em;
+}
+
+.searchPanel.ng-hide .searchfilters {
+	opacity: 0;
+}
+
+.searchPanel .searchfilters {
+	opacity: 1;
+	animation: delayedFadeIn 4s ease-out;
+	margin-top: 0.3em;
+	font-size: 0.86em;
+	text-align: right;
+	padding-right: 1em;
+}
+
+
+/*.searchfilters label {
+	float: right;
+	margin-right: 0.5em;
+	cursor: pointer;
+}
+.searchfilters input[type="radio"] {
+	display: none
+}
+*/
+
+.searchResults h3 {
+	padding: 0.5em 0.3em 0.1em 0.3em
+}
+
+.searchResults .item {
+	clear: both;
+}
+
+.searchResults .searchitem {
+	border-top: 1px solid #EEE;
+}
+
+.searchResults .item.isCurrent {
+	background-color: #EEE;
+}
+
+.searchResults .searchitem {
+	padding: 0.2em;
+}
+
+.searchResults .item .isSxS {
+	/* background-image will be set inline by searchresults template */
+	background-position: top right;
+	background-repeat: no-repeat;
+	background-size: 24px;
+	margin-right: -4px;
+	margin-top: -2px;
+	padding-right: 24px;
+}
+
+.searchResults .item .displayTime button {
+	cursor: pointer;
+	cursor: hand;
+	float: left;
+	display: inline;
+	width: 45px;
+}
+
+.searchResults .description {
+	margin-left: 45px;
+}
+
+.searchResults .type {
+	opacity: 0.4;
+}
+
+.searchResults .sortedbytype .type {
+	display: none
+}
+
+
+/* Panel animations */
+
+.searchPanel {
+	position: fixed;
+	transition: 1s all;
+	transform-origin: 100% 50%;
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.searchPanel.ng-hide {
+	opacity: 0;
+	transform: translateX(200px);
+}
+
+.searchPanel.ng-hide-add,
+.searchPanel.ng-hide-remove {
+	display: block!important;
+}
+
+.ui-match {
+	border-color: rgba(0, 0, 0, 0.2);
+	border-radius: 6px;
+	border-style: solid;
+	border-width: 1px 1px 3px;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+	margin: -4px;
+	padding: 2px 4px 0;
+	background-color: #rgba(255, 255, 255, 0.5);
+}
+
+
+/*============================
+*
+* Top Panels
+*
+//===========================*/
+
+.topDrawer {
+	position: fixed;
+	top: 45px;
+	left: 0;
+	right: 0;
+	background-color: #FFF;
+	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.5);
+}
+
+
+/*============================
+ *
+ * Nav Panel
+ *
+//===========================*/
+
+.navPanel {
+	max-height: 300px;
+	transition: 1s all;
+	overflow-y: scroll;
+}
+
+.navPanel.ng-hide-add,
+.navPanel.ng-hide-remove {
+	display: block!important;
+}
+
+.navPanel.ng-hide-add {
+	max-height: 300px;
+}
+
+.navPanel.ng-hide-add-active {
+	max-height: 0;
+}
+
+.navPanel.ng-hide-remove {
+	max-height: 0;
+}
+
+.navPanel.ng-hide-remove-active {
+	max-height: 300px;
+}
+
+@media screen and (max-width: 500px) {
+	.navPanel {
+		margin: 0 0.5em;
+	}
+}
+
+@media screen and (max-width: 300px) {
+	.navPanel {
+		font-size: 60%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.navPanel {
+		padding-bottom: 0.4em !important;
+	}
+}
+
+@media screen and (min-width: 301px) and (max-width: 500px) {
+	.navPanel {
+		font-size: 75%;
+	}
+}
+
+@media screen and (min-width: 700px) {
+	.navPanel {
+		margin: 0 72px;
+	}
+}
+
+.navPanel h2 {
+	font-size: 120%;
+	font-weight: bold;
+	padding-bottom: 0.5em;
+	padding-left: 1em;
+	border-top: none;
+}
+
+.navPanel .scene {
+	cursor: pointer;
+	cursor: hand;
+	padding: 0.3em;
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
+	padding-left: 45px;
+}
+
+.navPanel .currentScene {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.navPanel .displayTime {
+	width: 45px;
+	float: left;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.navPanel .parent {
+	font-size: 0.8em;
+}
+
+.navPanel .crossEpisode {
+	font-size: 0.8em;
+}
+
+.navPanel .nextEpisode {
+	float: right;
+}
+
+
+/*============================
+ *
+ * Help Panel
+ *
+//===========================*/
+
+
+/*
+.helpPanel {
+	background-color: #EEE;
+	border-radius: 15px;
+	font-size: 0.86em;
+	left: 2em;
+	padding: 15px;
+	position: absolute;
+	width: 60%;
+	max-width: 500px;
+	min-width: 290px;
+
+	top: 55px;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.helpPanel ul {
+	list-style: none;
+	margin: 0.5em 1em;
+}
+
+.helpPanel li:before,
+.helpPanel h3 {
+	height: 30px;
+	margin: 0;
+}
+
+.helpPanel li {
+	clear: both;
+	border-top: 1px solid #EEE;
+	padding: 0.5em 0;
+}
+
+.helpPanel li:before {
+	float: left;
+	font-family: Story;
+	font-size: 1.7em;
+	padding-right: 0.5em;
+}
+
+.helpPanel li.video:before {
+	content: "\e610"
+}
+
+.helpPanel li.directed:before {
+	content: "\e60f"
+}
+
+@media screen and (max-width: 480px) {
+	.helpPanel li.directed {
+		display: none !important;
+	}
+}
+
+.helpPanel li.explore:before {
+	content: "\e611"
+}
+
+.helpPanel .goAway {
+	float: right;
+	color: #069;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-family: inherit;
+	font-size: 1em;
+	cursor: pointer;
+}
+*/
+
+.wileyNag {
+	background-color: #fff;
+	border-radius: 15px;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+	font-size: 0.86em;
+	max-width: 220px;
+	padding: 5px 10px;
+	position: absolute;
+	right: 10px;
+	top: 38px;
+	width: 60%;
+	z-index: 99;
+}
+
+.wileyNag .goAway {
+	float: left;
+	color: #069;
+	cursor: pointer;
+	font-size: 0.7em;
+	padding: 5px 0 0 5px;
+}
+
+.arrow-up {
+	width: 20px;
+	height: 20px;
+	background-color: #EEE;
+	position: absolute;
+	top: -10px;
+	box-shadow: -5px -3px 3px rgba(0, 0, 0, 0.2);
+	z-index: 5;
+	transform: rotate(45deg);
+}
+
+
+/*
+.helpPanel .arrow-up {
+	left: 30px;
+}
+*/
+
+.profilePanel .arrow-up {
+	right: -1000px;
+}
+
+.isFramed.profilePanel .arrow-up {
+	right: 35px;
+}
+
+.profilePanel .authoringForm {
+	position: absolute;
+	left: 85px;
+	right: 0;
+	top: 0;
+}
+
+input.userEditable {
+	background: transparent;
+	border: 1px solid rgba(0, 0, 0, 0);
+	border-bottom: 1px solid #000;
+	padding: 2px 5px;
+	margin: 2px;
+	font-size: 15px !important;
+}
+
+input.userEditable:focus {
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	border-radius: 4px;
+}
+
+.userHome{
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+.user__item {
+	padding: 10px 0;
+}
+
+.user__label {
+	color: #999;
+}
+
+.avatar {
+	width: 60px;
+	height: 60px;
+	/*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;*/
+	float: right;
+}
+
+.avatar img {
+	width: 60px;
+	height: 60px;
+}
+
+
+/*
+.helpPanel .screen-reader-offscreen {
+	position: absolute;
+	left: -999px;
+	width: 1px;
+	height: 1px;
+	top: auto;
+}
+*/
+
+
+/* .button-continue appears in windowFg: */
+
+.button-continue:after {
+	font-family: Story;
+	content: "\e001";
+	color: #000 !important;
+	font-size: 3em;
+	float: right
+}
+
+.button-continue {
+	line-height: 50px;
+	height: 50px;
+	float: right;
+	position: fixed;
+	bottom: 80px;
+	right: 4em;
+	background-color: #FFF;
+	padding: 0 1em;
+	z-index: 2;
+}
+
+.profilePanel {
+	background-color: #EEE;
+	border-radius: 15px;
+	font-size: 0.86em;
+	right: 2em;
+	padding: 15px;
+	position: fixed;
+	width: 60%;
+	max-width: 500px;
+	min-width: 290px;
+	/* TOOLBAR HEIGHT */
+	top: 55px;
+	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+
+.account__modal {
+	z-index: 20;
+	background-color: #f1f1f1;
+	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.50);
+	padding: 10px;
+	width: 40%;
+	border-radius: 5px;
+	position: absolute;
+	top: 48px;
+	left: 30%;
+}
+
+@media screen and (min-width:320px) and (max-width: 768px) {
+	.account__modal {
+		width: 80%;
+		left: 10%;
+	}
+}
+
+.account__modal .button {
+	background-color: #595A5A;
+	color: #FFF;
+	border-radius: 0.6em;
+	font-size: 0.8em;
+	padding: 0.1em 0.8em;
+	margin: 0.2em;
+	border: 0;
+	cursor: pointer;
+}
+
+.account__modal .button:hover {
+	background-color: #DC6026;
+	color: #FFF;
+
+}
+
+
+
+/* Undoing a bad decision: */
+
+.banner-logo {
+	visibility: hidden;
+}
+

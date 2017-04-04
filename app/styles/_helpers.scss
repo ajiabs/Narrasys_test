@@ -1,0 +1,28 @@
+@mixin static-bg {
+  position: absolute;
+  top: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+
+/*base template class */
+//use 3.0vmax
+@mixin banner-pq($fontFam, $bgColor, $fontSize, $letterSpacing: normal) {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $fontFam;
+  color: white;
+  background-color: $bgColor;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  min-height: 80px;
+  max-height: 80px;
+  position: absolute;
+  font-size: $fontSize;
+  letter-spacing: $letterSpacing;
+}

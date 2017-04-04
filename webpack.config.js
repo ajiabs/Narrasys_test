@@ -1,13 +1,25 @@
-const {resolve, join} = require('path');
+const {resolve, join, sep} = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackChunkHash = require('webpack-chunk-hash');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 
-module.exports = (env) => {
-  return {
+const nodeModulesDir = join(__dirname, './node_modules');
+
+const deps = [
+  'jquery/dist/jquery.min.js',
+  'angular-animate/angular-animate.min.js',
+  'angular-route/angular-route.min.js',
+  'angular-sanitize/angular-sanitize.min.js',
+  'angular-ui-tree/dist/angular-ui-tree.min.js',
+  'textangular/dist/textAngular-sanitize.min.js',
+  'textangular/dist/textAngular.min.js'
+];
+
+function configWp(env) {
+  const wpConfig =  {
     resolve: {
-      extensions: ['.ts', '.js']
+      extensions: ['.ts', '.js'],
     },
     entry: {
       app: resolve(__dirname, 'app', 'scripts', 'app.ts')
@@ -109,17 +121,17 @@ module.exports = (env) => {
         inject: 'body',
         hash: false
       }),
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
-        'window.jQuery': 'jquery'
-      }),
       new webpack.LoaderOptionsPlugin({
         options: {
           htmlLoader: {
             root: join(__dirname, 'app')
           },
         }
+      }),
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        'window.jQuery': 'jquery'
       }),
       env.prod ? new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
@@ -128,6 +140,7 @@ module.exports = (env) => {
           return module.context && module.context.indexOf('node_modules') !== -1;
         }
       }) : undefined,
+      env.prod ? new webpack.HashedModuleIdsPlugin() : undefined,
       env.prod ? new webpack.optimize.CommonsChunkPlugin({
         name: 'manifest',
         minChunks: Infinity
@@ -138,5 +151,20 @@ module.exports = (env) => {
         manifestVariable: "webpackManifest"
       }) : undefined
     ].filter(p => !!p)
+  };
+
+  if (env.dev) {
+    wpConfig.resolve.alias = {};
+    wpConfig.module.noParse = [];
+    deps.forEach((dep) => {
+      const depPath = resolve(nodeModulesDir, dep);
+      wpConfig.resolve.alias[dep.split(sep)[0]] = depPath;
+      wpConfig.module.noParse.push(depPath);
+    });
   }
-};
+
+  return wpConfig
+}
+
+
+module.exports = (env) => configWp(env);
