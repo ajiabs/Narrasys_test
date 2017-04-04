@@ -2,6 +2,8 @@
  * Created by githop on 3/30/17.
  */
 
+import 'angular';
+
 import ContainerAssetsTestController from './ContainerAssetsTestController';
 import EditController from './EditController';
 import EpisodeController from './EpisodeController';

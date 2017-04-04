@@ -8,7 +8,7 @@
 	</div>
 	<div ng-if="appState.windowWidth >= 480" class="pane altPane">
 		<div class="content allowHighlights" ng-class="{isNarrow: isNarrow}" itt-width-watch>
-			<img ng-if="$index==1" src="images/aspectratiopreserver-16x9.gif" class="videoPadding ">
+			<img ng-if="$index==1" src="/images/aspectratiopreserver-16x9.gif" class="videoPadding ">
 			<!-- contentAlt -->
 			<div class="item animate" ng-repeat="item in scene.items | reviewMode | transmedia" ng-class="item.state + ' ' + item.uscReviewModeHack" itt-item="item" forceTemplate="review-transmedia">
 			</div>

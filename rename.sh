@@ -1,4 +1,4 @@
-for file in *.js
+for file in *.css
 do
- mv "$file" "${file%.js}.ts"
+ mv "$file" "${file%.css}.scss"
 done

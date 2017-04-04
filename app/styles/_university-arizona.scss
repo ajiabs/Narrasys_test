@@ -4,6 +4,8 @@
     $university-arizonaSecondary: #FFFFFF;
     $university-arizonaLink: #AB0520;
     $university-arizonaHighlight: rgba(171,5,32, 0.6);
+    @import "helpers";
+
 
     @mixin university-arizona-header {
     	font-family: 'Noto Sans',  sans-serif;

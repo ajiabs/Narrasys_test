@@ -14,6 +14,16 @@
  * @requires textAngular
  */
 
+const templates = require.context('../templates', true, /\.html$/);
+const styles = require.context('../styles', false, /\.scss$/);
+
+[templates, styles].forEach(asset => {
+  asset.keys().forEach((path) => {
+    asset(path);
+  })
+});
+
+import 'angular';
 import 'angular-animate';
 import 'angular-route';
 import 'angular-sanitize';
@@ -28,7 +38,7 @@ import './filters/filters';
 import './services/services.module';
 import './directives/directives.module';
 
-angular.module('itt', [
+let itt = angular.module('iTT', [
   'ngRoute',
   'ngAnimate',
   'ngSanitize',

@@ -2,6 +2,8 @@
  * Created by githop on 3/30/17.
  */
 
+import 'angular';
+
 import analyticsSvc from './analyticsSvc';
 import appState from './appState';
 import authSvc from './authSvc';

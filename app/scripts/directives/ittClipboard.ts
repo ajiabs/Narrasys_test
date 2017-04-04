@@ -1,9 +1,6 @@
 /**
  * Created by githop on 3/22/17.
  */
-angular.module('com.inthetelling.story')
-  .directive('ittClipboard', ittClipboard);
-
 ittClipboard.$inject = ['ittUtils'];
 
 export default function ittClipboard(ittUtils) {

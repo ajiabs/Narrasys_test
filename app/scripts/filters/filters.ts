@@ -2,6 +2,8 @@
 
 // TODO make up my mind about 'foo' versus 'isFoo'
 
+import 'angular';
+
 let ittFilters = angular.module('itt.filters', [])
 /* List filters */
 .filter('itemLayout', function () {

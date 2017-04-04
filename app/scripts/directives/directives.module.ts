@@ -3,6 +3,8 @@
  */
 
 
+import 'angular';
+
 import autofocus from './autofocus';
 import ittAnnotationField from './ittAnnotationField';
 import ittAssetUploader from './ittAssetUploader';
