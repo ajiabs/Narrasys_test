@@ -53,6 +53,18 @@ input[readonly] {
 	width: 70%;
 }
 
+.asset__field-group {
+  display: flex;
+  flex-direction: column;
+  padding: 1px 0;
+}
+
+.asset__field-group div {
+  display: flex;
+  justify-content: flex-start;
+  padding: 2px 0;
+}
+
 .containerAssets {
 	padding: 1em;
 	clear: both;

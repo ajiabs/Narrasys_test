@@ -37,13 +37,20 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   }
 
   svc.batchUploadTranscripts = batchUploadTranscripts;
-  function batchUploadTranscripts(episodeId, formData) {
-
-    return SANE_POST('/v3/episodes/' + episodeId + '/events/import_subtitles', formData, {
+  function batchUploadTranscripts(episodeId, formData, params) {
+    var config = {
       transformRequest: angular.identity,
       headers: {'Content-type': undefined}
-    });
+    };
+
+    if (ittUtils.existy(params) && Object.keys(params).length > 0) {
+      angular.extend(config, {params:params});
+    }
+
+    // return $q(function(resolve){return resolve(formData)});
+    return SANE_POST('/v3/episodes/' + episodeId + '/events/import_subtitles', formData, config);
   }
+
 
   /**
    * @ngdoc method
