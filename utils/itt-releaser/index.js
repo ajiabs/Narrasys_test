@@ -98,25 +98,40 @@ function confirmFinalVersion(finalVersion) {
                     throw err;
                 }
                 utils.success('version.txt updated to', finalVersion);
-                utils.updateConfig(() => tryGruntBuild(finalVersion));
+                utils.updateConfig(() => tryWebpackBuild(finalVersion));
             });
         }
     }
 }
 
-function tryGruntBuild(finalVersion) {
+function tryWebpackBuild(finalVersion) {
     utils.inform('attempting to build ', finalVersion);
-    const gruntBuild = utils.spawnChildProcess('grunt', ['build']);
+    const gruntBuild = utils.spawnChildProcess('./node_modules/.bin/webpack', ['--env.prod', '-p', '--progress', '--colors']);
     gruntBuild.stdout.on('data', data => utils.stream(data));
+    gruntBuild.stderr.on('data', data => utils.stream(data));
     gruntBuild.on('close', code => {
         if (code !== 0) {
             utils.warn('build task failed');
             revertVersionNumber();
         } else  {
             utils.success('build', finalVersion, 'completed.');
-            gitMagic(finalVersion);
+            gzipJs(finalVersion)
         }
     });
+}
+
+function gzipJs(finalVersion) {
+  utils.inform('compressing js');
+  const gzip = utils.spawnChildProcess('sh', ['gzip.sh']);
+  gzip.stdout.on('data', data => utils.stream(data));
+  gzip.on('close', code => {
+    if (code !== 0) {
+      utils.warn('gzip error');
+    } else {
+      utils.success('js gzipped!');
+      gitMagic(finalVersion);
+    }
+  })
 }
 
 function gitMagic(finalVersion) {

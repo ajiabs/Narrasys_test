@@ -61,8 +61,12 @@ const utils = args => {
         fs.writeFile(file, version, cb);
     }
 
-    function spawnChildProcess(cmd, args) {
-        return spawn(cmd, args, {cwd: clientDir});
+    function spawnChildProcess(cmd, args, env) {
+      let config = { cwd: clientDir };
+      if (env != null) {
+        Object.assign(config, process.env, {PATH: process.env.PATH + ':/usr/local/bin'})
+      }
+        return spawn(cmd, args, config);
     }
 
     function promisifySpawnChildProcess(cmd, args) {
