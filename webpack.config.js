@@ -89,7 +89,7 @@ function configWp(env) {
             {
               loader: 'file-loader',
               query: {
-                name: 'images/[name]-[hash].[ext]'
+                name: env.prod ?  'images/[name].[hash].[ext]' : 'images/[name].[ext]'
               }
             },
             {

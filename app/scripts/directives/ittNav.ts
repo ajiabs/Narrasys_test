@@ -2,6 +2,9 @@
  * Created by githop on 9/22/16.
  */
 
+const bannerImg = require('../../images/Narrasys_Banner.svg');
+const logo = require('../../images/customer/Narrasys-Tree.png');
+
 export default function ittNav() {
   return {
     restrict: 'EA',
@@ -40,9 +43,9 @@ export default function ittNav() {
       ctrl.currentPath = $location.path();
       ctrl.appState = appState;
       ctrl.goToAccounts = goToAccounts;
-      ctrl.bannerImg = require('../../images/Narrasys_Banner.svg');
-      ctrl.noAvatar = require('../../images/no-avatar.gif');
-      ctrl.logo = require('../../images/customer/Narrasys-Tree.png');
+      ctrl.bannerImg = bannerImg;
+      ctrl.noAvatar = appState.noAvatarImg;
+      ctrl.logo = logo;
       authSvc.authenticate().then(function () {
         ctrl.canAccess = authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin') || authSvc.userHasRole('instructor');
       });

@@ -6,6 +6,8 @@
 
  */
 
+const noAvatarImg = require('../../images/no-avatar.gif');
+
 /**
  * @ngdoc service
  * @name iTT.service:appState
@@ -68,7 +70,7 @@ export default function appState($interval, config) {
     svc.isIEOrEdge = (/Trident|Edge/.test(navigator.userAgent) || /Trident|Edge/.test(navigator.platform));
     svc.isIPhone = (navigator.platform.match(/iPod|iPhone/)); // iPhone has weird video handling, see  timelineSvc
     svc.iOSVersion = getIOSVersion(navigator);
-
+    svc.noAvatarImg = noAvatarImg;
     svc.windowWidth = 0;
     svc.windowHeight = 0;
 

@@ -1,3 +1,6 @@
+
+const noAvatarImg = require('../../images/no-avatar.gif');
+
 ittUser.$inject = ['$q', 'appState', 'authSvc', 'dataSvc', 'awsSvc', 'modelSvc', 'imageResize'];
 
 export default function ittUser($q, appState, authSvc, dataSvc, awsSvc, modelSvc, imageResize) {
