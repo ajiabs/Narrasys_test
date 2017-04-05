@@ -2,15 +2,10 @@ const {resolve, join, sep} = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackChunkHash = require('webpack-chunk-hash');
-const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
-
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const nodeModulesDir = join(__dirname, './node_modules');
 
 const deps = [
-  'jquery/dist/jquery.min.js',
-  'angular-animate/angular-animate.min.js',
-  'angular-route/angular-route.min.js',
-  'angular-sanitize/angular-sanitize.min.js',
   'angular-ui-tree/dist/angular-ui-tree.min.js',
   'textangular/dist/textAngular-sanitize.min.js',
   'textangular/dist/textAngular.min.js'
@@ -30,6 +25,9 @@ function configWp(env) {
       path: resolve(__dirname, 'dist')
     },
     devtool: env.prod ? 'source-map' : 'eval',
+    externals: {
+      'angular': 'angular'
+    },
     module: {
       rules: [
         {
@@ -128,11 +126,19 @@ function configWp(env) {
           },
         }
       }),
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
-        'window.jQuery': 'jquery'
-      }),
+      env.prod ? new webpack.optimize.UglifyJsPlugin({
+        beautify: false,
+        mangle: {
+          screw_ie8: true,
+          keep_fnames: true
+        },
+        compress: {
+          drop_console: true,
+          screw_ie8: true
+        },
+        comments: false,
+        sourceMap: true
+      }) : undefined,
       env.prod ? new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         minChunks: function (module) {
@@ -146,9 +152,8 @@ function configWp(env) {
         minChunks: Infinity
       }): undefined,
       env.prod ? new WebpackChunkHash({algorithm: 'md5'}) : undefined,
-      env.prod ? new ChunkManifestPlugin({
-        filename: "manifest.json",
-        manifestVariable: "webpackManifest"
+      env.prod ? 	new InlineManifestWebpackPlugin({
+        name: 'webpackManifest'
       }) : undefined
     ].filter(p => !!p)
   };

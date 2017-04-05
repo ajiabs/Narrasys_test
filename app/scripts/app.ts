@@ -22,17 +22,12 @@ const styles = require.context('../styles', false, /\.scss$/);
     asset(path);
   })
 });
-
-import 'font-awesome/css/font-awesome.css';
-import 'aws-sdk';
+import './plugin/plugins';
 import 'angular';
-import 'angular-animate';
-import 'angular-route';
-import 'angular-sanitize';
 import 'angular-ui-tree';
 import 'textAngular/dist/textAngular-sanitize.min';
 import 'textAngular';
-import './plugin/newrelic';
+
 import '../config';
 
 import './controllers/controllers.module';
