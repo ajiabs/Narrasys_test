@@ -23,6 +23,8 @@ const styles = require.context('../styles', false, /\.scss$/);
   })
 });
 
+import 'font-awesome/css/font-awesome.css';
+import 'aws-sdk';
 import 'angular';
 import 'angular-animate';
 import 'angular-route';

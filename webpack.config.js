@@ -60,7 +60,7 @@ function configWp(env) {
           ]
         },
         {
-          test: /\.scss$/i,
+          test: /\.(css|scss)$/i,
           use: [
             {
               loader: "style-loader" // creates style nodes from JS strings
