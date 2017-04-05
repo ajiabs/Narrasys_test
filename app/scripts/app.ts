@@ -15,13 +15,14 @@
  */
 
 const templates = require.context('../templates', true, /\.html$/);
-const styles = require.context('../styles', false, /\.scss$/);
 
-[templates, styles].forEach(asset => {
-  asset.keys().forEach((path) => {
-    asset(path);
-  })
+templates.keys().forEach((path) => {
+  templates(path);
 });
+
+import '../styles/app.scss';
+import '../styles/vendor.scss';
+
 import './plugin/plugins';
 import 'angular';
 import 'angular-ui-tree';

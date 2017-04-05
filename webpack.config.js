@@ -70,6 +70,12 @@ function configWp(env) {
               }
             },
             {
+              loader: 'postcss-loader',
+              options: {
+                plugins: _ => [require('autoprefixer')({browsers: 'last 2 versions'})]
+              }
+            },
+            {
               loader: "sass-loader" // compiles Sass to CSS
             }
           ]
