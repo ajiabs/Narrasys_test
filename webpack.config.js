@@ -1,4 +1,5 @@
 const {resolve, join, sep} = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackChunkHash = require('webpack-chunk-hash');
@@ -10,6 +11,9 @@ const deps = [
   'textangular/dist/textAngular-sanitize.min.js',
   'textangular/dist/textAngular.min.js'
 ];
+function readVersionNum() {
+  return fs.readFileSync(resolve(__dirname, 'app', 'version.txt'))
+}
 
 function configWp(env) {
   const wpConfig =  {
@@ -20,7 +24,7 @@ function configWp(env) {
       app: resolve(__dirname, 'app', 'scripts', 'app.ts')
     },
     output: {
-      filename: env.prod ? '[name].[chunkHash].min.js' : '[name].bundle.js',
+      filename: env.prod ? `${readVersionNum()}.[name].[chunkHash].min.js` : '[name].bundle.js',
       publicPath: '/',
       path: resolve(__dirname, 'dist')
     },
