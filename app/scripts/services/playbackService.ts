@@ -155,6 +155,9 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
    * @param {String} [playerId=mainPlayerId] Optional input param.
    */
   function play(playerId) {
+    angular.forEach(_playerManagers, function (pm) {
+      pm.pauseOtherPlayers(_setPid(playerId));
+    });
     if (getMetaProp('ready', _setPid(playerId)) === true) {
       _playerInterfaces[_setPid(playerId)].play(_setPid(playerId));
     }
@@ -672,10 +675,6 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
         if (getMetaProp('hasBeenPlayed', emitterId) === false) {
           setMetaProp('hasBeenPlayed', true, emitterId);
         }
-        angular.forEach(_playerManagers, function (pm) {
-          pm.pauseOtherPlayers(emitterId);
-        });
-
         break;
       case 'paused':
         break;
