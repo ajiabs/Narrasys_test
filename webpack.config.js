@@ -1,5 +1,4 @@
 const {resolve, join, sep} = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackChunkHash = require('webpack-chunk-hash');
@@ -11,9 +10,6 @@ const deps = [
   'textangular/dist/textAngular-sanitize.min.js',
   'textangular/dist/textAngular.min.js'
 ];
-function readVersionNum() {
-  return fs.readFileSync(resolve(__dirname, 'app', 'version.txt'))
-}
 
 function configWp(env) {
   const wpConfig =  {
@@ -21,10 +17,11 @@ function configWp(env) {
       extensions: ['.ts', '.js'],
     },
     entry: {
+      polyfills: 'core-js/shim',
       app: resolve(__dirname, 'app', 'scripts', 'app.ts')
     },
     output: {
-      filename: env.prod ? `${readVersionNum()}.[name].[chunkHash].min.js` : '[name].bundle.js',
+      filename: env.prod ? `[name].[chunkHash].min.js` : '[name].bundle.js',
       publicPath: '/',
       path: resolve(__dirname, 'dist')
     },
@@ -70,7 +67,8 @@ function configWp(env) {
             {
               loader: "css-loader", // translates CSS into CommonJS
               options: {
-                root: join(__dirname, './app/')
+                root: join(__dirname, './app/'),
+                sourceMap: true
               }
             },
             {
@@ -80,7 +78,10 @@ function configWp(env) {
               }
             },
             {
-              loader: "sass-loader" // compiles Sass to CSS
+              loader: "sass-loader", // compiles Sass to CSS
+              options: {
+                sourceMap: true
+              }
             }
           ]
         },
@@ -88,7 +89,8 @@ function configWp(env) {
           test: /\.(eot|otf|ttf|woff|woff2)$/,
           loader: 'url-loader',
           options: {
-            limit: 1000
+            limit: 1000,
+            name: env.prod ? '[name].[hash].[ext]' : '[name].[ext]'
           }
         },
         {
@@ -127,7 +129,14 @@ function configWp(env) {
       new HtmlWebpackPlugin({
         template: './app/index.html',
         inject: 'body',
-        hash: false
+        hash: false,
+        chunksSortMode: (c1, c2) => {
+          //sort polyfills to be first
+          let orders = ['polyfills', 'vendor', 'app'];
+          let o1 = orders.indexOf(c1.names[0]);
+          let o2 = orders.indexOf(c2.names[0]);
+          return o1 - o2;
+        }
       }),
       new webpack.LoaderOptionsPlugin({
         options: {

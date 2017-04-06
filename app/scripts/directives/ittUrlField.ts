@@ -36,7 +36,7 @@ export default function ittUrlField() {
       ctrl.onFocus = onFocus;
 
       function onFocus() {
-        $scope.$broadcast('url:focus');
+        $scope.$broadcast('url:focus', ctrl.validatedFields);
       }
 
       function handleEpisodeValidationMessage(notice) {

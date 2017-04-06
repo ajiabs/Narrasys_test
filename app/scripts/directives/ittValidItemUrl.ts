@@ -2,6 +2,8 @@
  *
  * Created by githop on 4/21/16.
  */
+
+
 /**
  * @ngdoc directive
  * @name iTT.directive:ittValidateUrl
@@ -21,6 +23,23 @@
  *     <input type="url" itt-validate-url item="item"/>
  * </pre>
  */
+
+interface ILinkValidationMessage {
+  showInfo: boolean
+  message?: string
+  doInfo?: boolean
+  url?: string
+}
+
+interface ILinkValidFields {
+  404: ILinkValidationMessage
+  301: ILinkValidationMessage
+  url: ILinkValidationMessage
+  mixedContent: ILinkValidationMessage
+  xFrameOpts: ILinkValidationMessage;
+  [key: string]: ILinkValidationMessage;
+}
+
 ittValidItemUrl.$inject = ['$q', 'ittUtils', 'dataSvc', 'urlService'];
 
 export default function ittValidItemUrl($q, ittUtils, dataSvc, urlService) {
@@ -30,13 +49,13 @@ export default function ittValidItemUrl($q, ittUtils, dataSvc, urlService) {
       onValidationNotice: '&'
     },
     link: function link(scope, elm, attrs, ngModel) {
-      var message = {
+      let message: ILinkValidationMessage = {
         showInfo: false,
         message: '',
         doInfo: false
       };
 
-      var validatedFields = {
+      let validatedFields: ILinkValidFields = {
         '404': message,
         '301': message,
         url: message,
@@ -44,10 +63,21 @@ export default function ittValidItemUrl($q, ittUtils, dataSvc, urlService) {
         xFrameOpts: message
       };
 
-      scope.$on('url:focus', function () {
+      scope.$on('url:focus', function (e: Event, previousFields: ILinkValidFields) {
+        console.log('previous fields', previousFields);
+
+        // if (ittUtils.existy(previousFields)) {
+        //   Object.assign(validatedFields, previousFields);
+        // } else {
+        //   validatedFields['404'] = message;
+        //   validatedFields['301'] = message;
+        //   validatedFields['xFrameOpts'] = message; //jshint ignore:line
+        // }
+
         validatedFields['404'] = message;
         validatedFields['301'] = message;
         validatedFields['xFrameOpts'] = message; //jshint ignore:line
+
       });
 
       //sync validators
@@ -62,7 +92,6 @@ export default function ittValidItemUrl($q, ittUtils, dataSvc, urlService) {
         scope.$watch(function () {
           return validatedFields;
         }, function (newVal, oldVal) {
-
           if (!angular.equals(newVal, oldVal)) {
             scope.onValidationNotice({$notice: newVal});
           }
