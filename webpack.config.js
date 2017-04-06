@@ -17,7 +17,6 @@ function configWp(env) {
       extensions: ['.ts', '.js'],
     },
     entry: {
-      polyfills: 'core-js/shim',
       app: resolve(__dirname, 'app', 'scripts', 'app.ts')
     },
     output: {
@@ -129,14 +128,7 @@ function configWp(env) {
       new HtmlWebpackPlugin({
         template: './app/index.html',
         inject: 'body',
-        hash: false,
-        chunksSortMode: (c1, c2) => {
-          //sort polyfills to be first
-          let orders = ['polyfills', 'vendor', 'app'];
-          let o1 = orders.indexOf(c1.names[0]);
-          let o2 = orders.indexOf(c2.names[0]);
-          return o1 - o2;
-        }
+        hash: false
       }),
       new webpack.LoaderOptionsPlugin({
         options: {

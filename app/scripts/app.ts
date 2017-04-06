@@ -24,6 +24,7 @@ import '../styles/app.scss';
 import '../styles/vendor.scss';
 
 import './plugin/plugins';
+import 'core-js/shim';
 import 'angular';
 import 'angular-ui-tree';
 import 'textAngular/dist/textAngular-sanitize.min';
