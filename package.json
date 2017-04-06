@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "rm -rf dist && ./node_modules/.bin/webpack --env.dev --progress --watch --colors",
-    "prod": "rm -rf dist && ./node_modules/.bin/webpack --env.prod --progress -p --colors"
+    "prod": "rm -rf dist && ./node_modules/.bin/webpack --env.prod --progress -p --colors",
+    "prod:watch": "rm -rf dist && ./node_modules/.bin/webpack --env.prod --progress -p --colors --watch"
   },
   "dependencies": {
     "@types/angular-animate": "^1.5.6",
