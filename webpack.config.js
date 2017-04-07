@@ -22,7 +22,28 @@ function handleSourceMapUrl(env) {
   return LOCAL_ENV_URL + '[url]';
 }
 
+function setLoaderOptionsConfig(env) {
+  let config = {};
+  let baseOpts = {
+    options: {
+      htmlLoader: {
+        root: join(__dirname, 'app')
+      }
+    }
+  };
+
+  if (env.prod) {
+    config = Object.assign({}, baseOpts.options, {
+      debug: false,
+      minimize: true
+    })
+  }
+
+  return config
+}
+
 function configWp(env) {
+
   const wpConfig =  {
     resolve: {
       extensions: ['.ts', '.js'],
@@ -148,13 +169,7 @@ function configWp(env) {
         inject: false,
         hash: false,
       }),
-      new webpack.LoaderOptionsPlugin({
-        options: {
-          htmlLoader: {
-            root: join(__dirname, 'app')
-          },
-        }
-      }),
+      new webpack.LoaderOptionsPlugin(setLoaderOptionsConfig(env)),
       env.prod ? new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',
         append: `\n//# sourceMappingUrl=${handleSourceMapUrl(env)}`,
