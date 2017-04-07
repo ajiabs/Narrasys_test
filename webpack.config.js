@@ -56,7 +56,7 @@ function configWp(env) {
         },
         {
           test: /\.html$/,
-          exclude: resolve(__dirname, 'app', 'index.html'),
+          exclude:[resolve(__dirname, 'app', 'index.html'), resolve(__dirname, 'app', 'privacy.html')],
           use: [
             {
               loader: 'ngtemplate-loader',
@@ -141,6 +141,12 @@ function configWp(env) {
         template: './app/index.html',
         inject: 'body',
         hash: false
+      }),
+      new HtmlWebpackPlugin({
+        filename: 'privacy.html',
+        template: './app/privacy.html',
+        inject: false,
+        hash: false,
       }),
       new webpack.LoaderOptionsPlugin({
         options: {
