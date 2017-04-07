@@ -158,7 +158,7 @@ function configWp(env) {
       }),
       env.prod ? new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',
-        append: `\n//# sourceMappingUrl=${handleSourceMapUrl(env)}`,
+        append: `\n//# sourceMappingURL=${handleSourceMapUrl(env)}`,
       }) : undefined,
       env.prod ? new webpack.optimize.UglifyJsPlugin({
         beautify: false,
