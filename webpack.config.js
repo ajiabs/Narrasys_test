@@ -11,6 +11,17 @@ const deps = [
   'textangular/dist/textAngular.min.js'
 ];
 
+
+const LOCAL_ENV_URL = 'https://localhost.inthetelling.com/';//<feel free to insert what you have in your hosts file here
+
+function handleSourceMapUrl(env) {
+  if (env.dev === 'local' || env.prod === 'local') {
+    return '[url]';
+  }
+  //prefix sourceMapUrl
+  return LOCAL_ENV_URL + '[url]';
+}
+
 function configWp(env) {
   const wpConfig =  {
     resolve: {
@@ -21,13 +32,14 @@ function configWp(env) {
     },
     output: {
       filename: env.prod ? `[name].[chunkHash].min.js` : '[name].bundle.js',
+      chunkFilename: env.prod ? '[name].[chunkhash].min.js' : '[name].bundle.js',
       publicPath: '/',
       path: resolve(__dirname, 'dist')
     },
-    devtool: env.prod ? 'source-map' : 'eval',
     externals: {
       'angular': 'angular'
     },
+    devtool: env.dev ? 'eval' : false,
     module: {
       rules: [
         {
@@ -89,7 +101,7 @@ function configWp(env) {
           loader: 'url-loader',
           options: {
             limit: 1000,
-            name: env.prod ? '[name].[hash].[ext]' : '[name].[ext]'
+            name: env.prod ? 'font.[hash].[ext]' : '[name].[ext]'
           }
         },
         {
@@ -137,6 +149,10 @@ function configWp(env) {
           },
         }
       }),
+      env.prod ? new webpack.SourceMapDevToolPlugin({
+        filename: '[file].map',
+        append: `\n//# sourceMappingUrl=${handleSourceMapUrl(env)}`,
+      }) : undefined,
       env.prod ? new webpack.optimize.UglifyJsPlugin({
         beautify: false,
         mangle: {
@@ -148,7 +164,7 @@ function configWp(env) {
           screw_ie8: true
         },
         comments: false,
-        sourceMap: true
+        sourceMap: true,
       }) : undefined,
       env.prod ? new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
