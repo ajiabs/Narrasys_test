@@ -19,7 +19,7 @@ function handleSourceMapUrl(env) {
     return '[url]';
   }
   //prefix sourceMapUrl
-  return LOCAL_ENV_URL + '[url]';
+  return LOCAL_ENV_URL + 'sourcemaps/[url]';
 }
 
 function configWp(env) {
