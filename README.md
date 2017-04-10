@@ -40,10 +40,13 @@ necessary requests to the rails server.)
  - Used when doing client side dev work. Runs wepback in watch mode and outputs unminified build with inline source maps.
  
  
-    npm run prod
-    npm run prod:local
-    npm run prod:watch
-
+ 
+      npm run prod
+      npm run prod:local
+      npm run prod:watch
+      
+      
+ 
  - Use to create a minified production build, with app and vendor bundles. the :watch and :local
  variants are used to debugging production builds locally. prod:local will not output the
  source maps in a separate directory. prod:watch will rebundle on file edits.
@@ -66,6 +69,5 @@ necessary requests to the rails server.)
 
     node index.js
     
-
 3. Follow the prompts 
 4. Provide a diff between versions on github for review.
