@@ -37,28 +37,25 @@ necessary requests to the rails server.)
     
     npm run start
 
- - Used when doing client side dev work. Runs wepback in watch mode and outputs unminified build with inline source maps.
- 
- 
+Used when doing client side dev work. Runs wepback in watch mode and outputs unminified build with inline source maps.
  
       npm run prod
       npm run prod:local
       npm run prod:watch
       
       
- 
- - Use to create a minified production build, with app and vendor bundles. the :watch and :local
- variants are used to debugging production builds locally. prod:local will not output the
- source maps in a separate directory. prod:watch will rebundle on file edits.
+Use to create a minified production build, with app and vendor bundles. the :watch and :local
+variants are used to debugging production builds locally. prod:local will not output the
+source maps in a separate directory. prod:watch will rebundle on file edits.
  
 ### Client utils
  
-  The <code>utils</code> directory contains three tools to help automate common
-  client side processes. <code>episode-styles-generator</code> is used in tandem
-  producers to create scss for a new client theme. <code>itt-releaser</code> is used
-  to automate the client side release process. <code>template-seeder</code> is used
-  in tandem with <code>episode-styles-generator</code> to create a reference to the 
-  client template in the database. 
+ The <code>utils</code> directory contains three tools to help automate common
+ client side processes. <code>episode-styles-generator</code> is used in tandem
+ producers to create scss for a new client theme. <code>itt-releaser</code> is used
+ to automate the client side release process. <code>template-seeder</code> is used
+ in tandem with <code>episode-styles-generator</code> to create a reference to the 
+ client template in the database. 
     
     
 ### Create a Release with <code>itt-releaser</code>
@@ -68,6 +65,8 @@ necessary requests to the rails server.)
 
 
     node index.js
+
     
+
 3. Follow the prompts 
 4. Provide a diff between versions on github for review.
