@@ -270,7 +270,12 @@ function gitMagic(finalVersion) {
                 utils.success('tag pushed');
                 utils.success('build', finalVersion, 'ready for release!');
                 utils.success('DONT FORGET TO SYNC DEV BRANCH!');
+                utils.success('View diff:', '\n', showVersionDiff(finalVersion));
             }
         });
     }
+}
+
+function showVersionDiff(newVersion) {
+  return `https://github.com/inthetelling/client/compare/${currentVersion}...${newVersion}`;
 }
