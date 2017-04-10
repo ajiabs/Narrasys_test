@@ -65,6 +65,7 @@ necessary requests to the rails server.)
 
 
     node index.js
+    
 
 3. Follow the prompts 
 4. Provide a diff between versions on github for review.
