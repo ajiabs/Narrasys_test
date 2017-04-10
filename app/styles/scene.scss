@@ -682,3 +682,9 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	left: 30px;
 }
 
+.stretchToViewport {
+  height: 100%;
+  max-height: calc(100vh + 220px) !important;
+}
+
+
