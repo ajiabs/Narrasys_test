@@ -2,6 +2,8 @@
  TODO: make sure newly added annotators wind up in hte episode.annotators list
  TODO: disentangle annotator_image_id from this, move it into parent template
  */
+import { IAnnotators } from "../interfaces";
+
 sxsAnnotatorAutocomplete.$inject = ['$timeout', 'modelSvc', 'appState'];
 
 export default function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
@@ -35,8 +37,30 @@ export default function sxsAnnotatorAutocomplete($timeout, modelSvc, appState) {
         scope.annotator.imageUrl = modelSvc.assets[scope.annotators[scope.item.annotator].annotation_image_id].url;
       }
 
-      scope.filteredAnnotators = angular.copy(scope.annotators);
+      scope.filteredAnnotators =  _sortAvailableAnnotators(angular.copy(scope.annotators));
       scope.preselectedItem = -1;
+
+      function _sortAvailableAnnotators(annotators: IAnnotators) {
+        let _filteredAnnotators = Object.keys(annotators).map(key => annotators[key]);
+        let _nextAnnotator = _filteredAnnotators.pop();
+        let _sortedAndFiltered = _filteredAnnotators.sort((a, b) => {
+          if (a.key.toLowerCase() < b.key.toLowerCase()) {
+            return -1;
+          } else if (a.key.toLowerCase() > b.key.toLowerCase()) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+        _sortedAndFiltered.push(_nextAnnotator);
+        //return object built from sorted array
+        return _sortedAndFiltered.reduce((sortedObj, annotator) => {
+          sortedObj[annotator.key] = annotator;
+          return sortedObj;
+        }, {});
+      }
+
+
 
       element.find('.annotatorChooser').bind("keydown", function (event) {
         switch (event.which) {

@@ -2,6 +2,7 @@
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
+import {IAnnotators} from '../interfaces';
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
 
@@ -687,7 +688,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     // Try to merge partially-translated annotator names into the more fully-translated versions.
     // This is imperfect -- a few will slip through if there is a missing translation in the default language -- but good enough for now
     // TODO replace all of this, have the API keep track of each annotator as a real, separate entity
-    var annotators = {};
+    var annotators: IAnnotators = {};
     angular.forEach(items, function (event) {
       if (event._type === 'Annotation' && event.chapter_marker === true) {
         chapters.push(event);
