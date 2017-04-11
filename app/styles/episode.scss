@@ -3,7 +3,11 @@
 .episode {
   padding-top: 45px;
   width: 100%;
-  min-height: 100%;
+}
+
+.discoverMode {
+  min-height: calc(100vh - 93px);
+  height: 100%;
 }
 
 .branding {
@@ -874,8 +878,6 @@
   bottom: 20px
 }
 
-
-
 .professional {
   //full window background
   background-repeat: no-repeat;
@@ -1013,10 +1015,6 @@
     .edit-event {
       top: 1.8em;
     }
-  }
-
-  .col {
-    height: 100vh;
   }
 
   .centerVV {

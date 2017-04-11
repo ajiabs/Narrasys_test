@@ -682,9 +682,17 @@ TODO there's probably a less counterintuitive way of handling sidebar widths tha
 	left: 30px;
 }
 
-.stretchToViewport {
+//to give ittScene#twiddleScene some help.
+//allow column to take up all available space made by
+//stretchToViewport class + ittScene#twiddleScene
+.col {
   height: 100%;
-  max-height: calc(100vh + 220px) !important;
+}
+.scene__container {
+  height: 100%;
+}
+.stretchToViewport {
+    min-height: 100vh;
 }
 
 
