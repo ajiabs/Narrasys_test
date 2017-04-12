@@ -30,6 +30,11 @@ import kalturaUrlService from './kaltura/kalturaUrlService';
 import youTubePlayerManager from './youtube/YouTubePlayerManager.svc'
 import YTScriptLoader from './youtube/youtubeScriptLoader';
 import youtubeUrlService from './youtube/youtubeUrlService';
+import {
+  WistiaUrlService,
+  WistiaScriptLoader,
+  WistiaPlayerManager
+} from "./wistia/index";
 
 let servicesModule = angular.module('itt.services', [])
   .factory('appState', appState)
@@ -57,6 +62,9 @@ let servicesModule = angular.module('itt.services', [])
   .factory('youTubePlayerManager', youTubePlayerManager)
   .factory('YTScriptLoader', YTScriptLoader)
   .factory('youtubeUrlService', youtubeUrlService)
-  .factory('analyticsSvc', analyticsSvc);
+  .factory('analyticsSvc', analyticsSvc)
+  .service('wistiaUrlService', WistiaUrlService)
+  .service('wistiaPlayerManager', WistiaPlayerManager)
+  .service('wistiaScriptLoader', WistiaScriptLoader);
 
 export default servicesModule;

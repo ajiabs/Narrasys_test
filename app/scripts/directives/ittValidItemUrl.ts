@@ -24,7 +24,22 @@
  * </pre>
  */
 
-import {ILinkValidationMessage, ILinkValidFields} from '../interfaces';
+
+interface ILinkValidationMessage {
+  showInfo: boolean
+  message?: string
+  doInfo?: boolean
+  url?: string
+}
+
+interface ILinkValidFields {
+  404: ILinkValidationMessage
+  301: ILinkValidationMessage
+  url: ILinkValidationMessage
+  mixedContent: ILinkValidationMessage
+  xFrameOpts: ILinkValidationMessage
+  [key: string]: ILinkValidationMessage
+}
 
 ittValidItemUrl.$inject = ['$q', 'ittUtils', 'dataSvc', 'urlService'];
 

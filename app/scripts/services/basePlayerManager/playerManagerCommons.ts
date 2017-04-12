@@ -12,6 +12,42 @@
  *
  */
 
+export interface IMetaProps {
+  mainPlayer: boolean
+  playerState: string
+  div: string
+  ready: boolean
+  startAtTime: number
+  hasResumedFromStartAt: boolean
+  duration: number
+  time: number
+  hasBeenPlayed: boolean
+  bufferedPercent: number
+  timeMultiplier: number
+  resetInProgress: boolean
+  autoplay: boolean
+}
+
+export interface IBasePlayerManager {
+  commonMetaProps: IMetaProps
+  getPlayers(): object
+  getPlayer(pid: string): any
+  setPlayer(pid: string, val: any): void
+  getMetaProp(pid: string, prop: string): any
+  setMetaProp(validKeys: () => {}): (pid: string, prop: string, val: any) => void
+  createMetaObj(props: object, base: object): object
+  getMetaObj(pid: string): object
+  getPlayerDiv(pid: string): string
+  getInstance(predicate: () => boolean): (pid: string) => object
+  registerStateChangeListener(cb: () => {}): void
+  unregisterStateChangeListener(cb: () => {}): void
+  getStateChangeListeners(): any[]
+  pauseOtherPlayers(pauseFn: () => void, getPlayerState: () => number): (pid: string) => void
+  resetPlayerManager(destroyFn: () => void): () => void
+  renamePid(oldName: string, newName: string): void
+  handleTimelineEnd(fn: () => void): (pid: string) => void
+}
+
 
 playerManagerCommons.$inject = ['ittUtils'];
 
@@ -23,7 +59,7 @@ export default function playerManagerCommons(ittUtils) {
     var _stateChangeCallbacks = [];
     var _type = locals.type;
 
-    var commonMetaProps = {
+    var commonMetaProps: IMetaProps = {
       mainPlayer: false,
       playerState: '-1',
       div: '',
@@ -39,25 +75,27 @@ export default function playerManagerCommons(ittUtils) {
       autoplay: false
     };
 
-    return {
-      commonMetaProps: commonMetaProps,
-      getPlayers: getPlayers,
-      getPlayer: getPlayer,
-      setPlayer: setPlayer,
-      getMetaProp: getMetaProp,
-      setMetaProp: setMetaProp,
-      createMetaObj: createMetaObj,
-      getMetaObj: getMetaObj,
-      getPlayerDiv: getPlayerDiv,
-      getInstance: getInstance,
-      registerStateChangeListener: registerStateChangeListener,
-      unregisterStateChangeListener: unregisterStateChangeListener,
-      getStateChangeListeners: getStateChangeListeners,
-      pauseOtherPlayers: pauseOtherPlayers,
-      resetPlayerManager: resetPlayerManager,
-      renamePid: renamePid,
-      handleTimelineEnd: handleTimelineEnd
+    const pm: IBasePlayerManager = {
+      commonMetaProps,
+      getPlayers,
+      getPlayer,
+      setPlayer,
+      getMetaProp,
+      setMetaProp,
+      createMetaObj,
+      getMetaObj,
+      getPlayerDiv,
+      getInstance,
+      registerStateChangeListener,
+      unregisterStateChangeListener,
+      getStateChangeListeners,
+      pauseOtherPlayers,
+      resetPlayerManager,
+      renamePid,
+      handleTimelineEnd
     };
+
+    return pm;
 
     function getStateChangeListeners() {
       return _stateChangeCallbacks;
