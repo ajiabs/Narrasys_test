@@ -83,8 +83,12 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
       });
   }
 
-  getPlayerState() {
+  getPlayerState(pid) {
+    const instance = this.getInstance(pid);
+    if (instance) {
 
+    }
+    return instance.state
   }
 
   getBufferedPercent() {
@@ -122,6 +126,16 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     if (_existy(pid)) {
       return 0;
     }
+  }
+
+  play(pid): void {
+    console.log('huh', this.getInstance(pid));
+    this.getInstance(pid).play();
+  }
+
+  pause(pid): void {
+    console.log('huh', this.getInstance(pid));
+    this.getInstance(pid).pause();
   }
 
   private setPlayerDiv(pid: string, wistiaId: string) {
@@ -164,15 +178,17 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
       'play': this.onPlay.bind(this)
     };
 
-    wistiaEvents
+    Object.entries(wistiaEvents).forEach(([key, val]) => {
+      instance.bind(key, val);
+    });
   }
 
   private onPlay(event) {
-
+    console.log('on play?', event);
   }
 
   private onPause(event) {
-
+    console.log('on pause?', event);
   }
 
   private formatStateChangeEvent(state, emitterId) {
