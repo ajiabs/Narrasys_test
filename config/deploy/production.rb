@@ -45,4 +45,4 @@ server 'deploy@vpc-web-03.inthetelling.com', roles: [:app]
 # setting per server overrides global ssh_options
 
 # fetch(:default_env).merge!(rails_env: :production)
-before "deploy:publishing", "deploy:update_new_relic_application_id"
+before "deploy:compress_assets", "deploy:update_new_relic_application_id"
