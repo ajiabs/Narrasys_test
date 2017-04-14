@@ -16,7 +16,6 @@
     "angular": "1.5.11",
     "angular-ui-tree": "^2.22.5",
     "core-js": "^2.4.1",
-    "extract-text-webpack-plugin": "^2.1.0",
     "textangular": "^1.5.16"
   },
   "devDependencies": {
