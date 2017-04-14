@@ -3,7 +3,6 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc, d
   return {
     restrict: 'A',
     replace: false,
-    transclude: true,
     scope: {
       containerId: '=ittAssetUploader', // If no container ID is supplied, the uploaded asset(s) will be placed in user space instead.
       episodeId: '@', //for uploading transcripts
@@ -49,10 +48,10 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc, d
         _mimeTypes[i] = m.trim();
       });
 
-      function handleTranscripts(episodeId, postData, params) {
+      function handleTranscripts(episodeId, postData) {
         var fd = new FormData();
         fd.append('subtitles', postData);
-        return dataSvc.batchUploadTranscripts(episodeId, fd, params);
+        return dataSvc.batchUploadTranscripts(episodeId, fd);
       }
 
       scope.uploadStatus = [];
@@ -119,35 +118,10 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc, d
         if (scope.containerId) {
           scope.uploads = scope.uploads.concat(awsSvc.uploadContainerFiles(scope.containerId, files));
         } else if (scope.episodeId) {
-          //store copy of files on scope
-          scope.tempTranscripts = files;
-          //and let parent controller know
-          scope.callback();
-          //for view
-          scope.uploadStatus.push({
-            "bytesSent": 0,
-            "bytesTotal": 1,
-            "percent": 0,
-            "name": files[0].name
-          });
-          scope.uploads = scope.uploadStatus;
-          //and wait for $broadcast to receive optional params for transcripts then upload files
-          return;
+          scope.uploads = scope.uploads.concat(handleTranscripts(scope.episodeId, files[0]));
         } else{
           scope.uploads = scope.uploads.concat(awsSvc.uploadUserFiles(appState.user._id, files));
         }
-
-        resolveUploads(oldstack, newstack, files);
-      };
-
-      scope.$on('transcriptsReceived', function(e, params) {
-        var files = scope.tempTranscripts;
-        scope.uploads = [handleTranscripts(scope.episodeId, files[0], params)];
-        scope.uploadStatus = [];
-        resolveUploads(0, 1, files);
-      });
-
-      function resolveUploads(oldstack, newstack, files) {
         for (var i = oldstack; i < newstack; i++) {
           (function (i) { // closure for i
             scope.uploadStatus[i] = {
@@ -159,10 +133,9 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc, d
             scope.uploads[i].then(function (data) {
 
               if (scope.episodeId && scope.callback) {
-                //this currently only happens when batch uploading transcripts
+                scope.callback({data: data});
                 scope.uploadStatus[i].done = true;
                 scope.oneDone();
-                scope.$emit('transcriptsUploaded');
                 return;
               }
 
@@ -182,7 +155,7 @@ export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc, d
             });
           })(i);
         }
-      }
+      };
 
       scope.oneDone = function () {
         scope.uploadsinprogress = scope.uploadsinprogress - 1;
