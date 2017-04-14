@@ -55,6 +55,7 @@ let itt = angular.module('iTT', [
     'default': 'image/*',
     'transcripts': 'text/vtt,text/srt'
   })
+  //TODO merge constants below into playbackservice/index as exports
   .constant('PLAYERSTATES', {
     '-1': 'unstarted',
     '0': 'ended',

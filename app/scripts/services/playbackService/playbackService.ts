@@ -2,8 +2,8 @@
  * Created by githop on 10/24/16.
  */
 
-import {IWistiaPlayerManager} from "../interfaces";
-import {IBasePlayerManager} from "./basePlayerManager/playerManagerCommons";
+import {IWistiaPlayerManager} from "../../interfaces";
+import {IBasePlayerManager} from "../basePlayerManager/playerManagerCommons";
 
 /**
  * @ngdoc service

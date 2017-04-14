@@ -15,7 +15,7 @@ import imageResize from './imageResizeSvc';
 import ittUtils from './IttUtils';
 import mockSvc from './mockSvc';
 import modelSvc from './modelSvc';
-import playbackService from './playbackService';
+import playbackService from './playbackService/playbackService';
 import questionAnswersSvc from './questionAnswersSvc';
 import recursionHelper from './recursionHelper';
 import selectService from './selectService';

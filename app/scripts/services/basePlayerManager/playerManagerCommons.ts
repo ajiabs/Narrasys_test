@@ -30,11 +30,11 @@ export interface IMetaProps {
 
 export interface IBasePlayerManager {
   commonMetaProps: IMetaProps
-  getPlayers(): object
   getPlayer(pid: string): any
   setPlayer(pid: string, val: any): void
   getMetaProp(pid: string, prop: string): any
   setMetaProp(validKeys: () => {}): (pid: string, prop: string, val: any) => void
+  setInstance(pid: string, instance: object): void
   createMetaObj(props: object, base: object): object
   getMetaObj(pid: string): object
   getPlayerDiv(pid: string): string
@@ -77,10 +77,10 @@ export default function playerManagerCommons(ittUtils) {
 
     const pm: IBasePlayerManager = {
       commonMetaProps,
-      getPlayers,
       getPlayer,
       setPlayer,
       getMetaProp,
+      setInstance,
       setMetaProp,
       createMetaObj,
       getMetaObj,
@@ -101,14 +101,15 @@ export default function playerManagerCommons(ittUtils) {
       return _stateChangeCallbacks;
     }
 
-    function getPlayers() {
-      return _players;
-    }
-
     function getPlayer(pid) {
       if (_existy(_players[pid])) {
         return _players[pid];
       }
+    }
+
+    function setInstance(pid, instance): void {
+      let playerObj = getPlayer(pid);
+      playerObj.instance = instance;
     }
 
     function setPlayer(pid, val) {
@@ -254,7 +255,7 @@ export default function playerManagerCommons(ittUtils) {
      */
     function resetPlayerManager(destroyFn) {
       return function () {
-        angular.forEach(getPlayers(), function (pm, id) {
+        angular.forEach(_getPlayers(), function (pm, id) {
           _destroyInstance(id, true, destroyFn);
         });
         _players = {};
@@ -292,6 +293,10 @@ export default function playerManagerCommons(ittUtils) {
       if (doRemove === true) {
         setPlayer(pid, {});
       }
+    }
+
+    function _getPlayers() {
+      return _players;
     }
   }
 }

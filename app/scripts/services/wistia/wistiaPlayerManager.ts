@@ -1,4 +1,5 @@
 import {IBasePlayerManager, IScriptLoader, IWistiaUrlservice} from "../../interfaces";
+import {PLAYERSTATES} from "../playbackService/index";
 /**
  * Created by githop on 4/12/17.
  */
@@ -18,6 +19,8 @@ function _existy(x: any) {
   return x != null;
 }
 
+
+
 export class WistiaPlayerManager implements IWistiaPlayerManager {
   private _players = {};
   private _mainPlayerId;
@@ -25,7 +28,8 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   private base;
   public commonMetaProps;
   private _setMetaProps;
-  private wistaMetaProps = {
+  private _getInstance;
+  private wistiaMetaProps = {
     videoType: this.type
   };
 
@@ -43,10 +47,12 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
 
     this.base = <IBasePlayerManager> playerManagerCommons({players: this._players, type: this.type});
 
-    Object.assign(this.wistiaMetaObj.meta, this.wistiaMetaObj, this.base.commonMetaProps);
+    Object.assign(this.wistiaMetaObj.meta, this.wistiaMetaProps, this.base.commonMetaProps);
     const validKeys = Object.keys(this.wistiaMetaObj.meta);
     this._setMetaProps = this.base.setMetaProp(validKeys);
 
+    const getInstance = this.base.getInstance(pid => _existy(pid) && this.getMetaProp(pid, 'ready') === true);
+    this._getInstance = getInstance;
   }
 
   seedPlayerManager(id: string, mainPlayer: boolean, mediaSrcArr: string[]) {
@@ -74,13 +80,6 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     this.createWpInstance(pid)
       .then((success) => {
 
-
-
-        this.ittUtils.ngTimeout(_ => {
-          Wistia.embeds.setup();
-          let v = Wistia.api(pid);
-          console.log('v?', v.ready());
-        },500);
       });
   }
 
@@ -92,12 +91,12 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
 
   }
 
-  registerStateChangeListener() {
-
+  registerStateChangeListener(fn) {
+    return this.base.registerStateChangeListener(fn);
   }
 
-  unregisterStateChangeListener() {
-
+  unregisterStateChangeListener(fn) {
+    return this.base.unregisterStateChangeListener(fn);
   }
 
   getMetaProp(pid: string, prop: string) {
@@ -110,6 +109,19 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
 
   getPlayerDiv(id) {
     return this.base.getPlayerDiv(id);
+  }
+
+  renamePid(oldName, newName) {
+    return this.base.renamePid(oldName, newName)
+  }
+
+  freezeMetaProps() {}
+
+
+  getCurrentTime(pid) {
+    if (_existy(pid)) {
+      return 0;
+    }
   }
 
   private setPlayerDiv(pid: string, wistiaId: string) {
@@ -128,18 +140,64 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     return this.base.createMetaObj(props, base);
   }
 
-  private createWpInstance(id: string) {
-    return this.wistiaScriptLoader.load(id)
+  private createWpInstance(pid: string) {
+    return this.wistiaScriptLoader.load(pid)
       .then(_ =>  {
+        window._wq  = window._wq || [];
         window._wq.push({
-          id: id,
-          onReady: function(video) {
-          }
+          id: pid,
+          onReady: (video) => this.onReady(pid, video)
         });
       });
   }
 
-  private onReady(video) {
-    console.log('we ready!', video);
+  private onReady(pid, wistiaInstance) {
+    console.log('wistia ready!', wistiaInstance);
+    this.base.setInstance(pid, wistiaInstance);
+    this.attachEventListeners(wistiaInstance, pid);
+    this.emitStateChange(pid, 6);
   }
+
+  private attachEventListeners(instance, pid) {
+    const wistiaEvents = {
+      'pause': this.onPause.bind(this),
+      'play': this.onPlay.bind(this)
+    };
+
+    wistiaEvents
+  }
+
+  private onPlay(event) {
+
+  }
+
+  private onPause(event) {
+
+  }
+
+  private formatStateChangeEvent(state, emitterId) {
+    return {
+      emitterId,
+      state: PLAYERSTATES[state]
+    }
+  }
+
+  private emitStateChange(pid, forceState?) {
+    let state;
+
+    if (forceState) {
+      state = forceState
+    } else {
+      state = this.getMetaProp(pid, 'playerState');
+    }
+
+    this.base.getStateChangeListeners().forEach(cb => {
+      cb(this.formatStateChangeEvent(state, pid));
+    });
+  }
+
+  private getInstance(pid) {
+    return this._getInstance(pid);
+  }
+
 }

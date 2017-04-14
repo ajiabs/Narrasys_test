@@ -166,6 +166,10 @@ export default function urlService(youtubeUrlService, html5UrlService, kalturaUr
       videoObject.kaltura.push(videoAsset.url);
     }
 
+    if (wistiaUrlService.canPlay(videoAsset.url)) {
+      videoObject.wistia.push(videoAsset.url);
+    }
+
     videoAsset.urls = videoObject;
     videoAsset.mediaSrcArr = _resolveMediaSrcArray(videoObject);
     return videoAsset;

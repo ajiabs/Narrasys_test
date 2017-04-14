@@ -353,7 +353,7 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
     kdp.kUnbind('.' + pid);
   }
 
-  function _emitStateChange(pid, forceState) {
+  function _emitStateChange(pid, forceState?) {
     var state;
 
     if (forceState) {

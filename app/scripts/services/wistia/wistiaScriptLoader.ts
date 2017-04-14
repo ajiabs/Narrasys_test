@@ -24,7 +24,6 @@ export class WistiaScriptLoader implements IScriptLoader {
   load(assetId: string) {
     return this.$q((resolve) => {
       if (window._wq == null) {
-        window._wq  = window._wq || [];
         this._appendScript(assetId, resolve);
       }
     });

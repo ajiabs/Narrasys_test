@@ -20,3 +20,37 @@ the window object where configurations are pushed.
 
 we can generate the second script ourselves, where the id of the wistia video is the string
 in 'wistia_async_<wistia id>'
+
+### notes
+
+Bare minimum amount of punlic methods in each sevice needed to load 
+a player-manager using the episode tab:
+
+scriptLoader
+- load
+
+urlService
+- parseMediaSrc
+- parseInput
+- canPlay
+- getOutGoingUrl*
+- getMimeType 
+
+playerManager
+- seedPlayerManager
+- create
+- getPlayearState*
+- getBufferedpercent*
+- registerStateChangeListener*
+- unregisterStateChangeListner*
+- getMetaProp
+- setMetaProp
+- getPlayerDiv
+ 
+note: * means a noop will do. 
+ 
+ 
+
+it looks like using display:none with wistia causes the player not to initialize as
+it's not in the render tree. use visibility: hidden instead. 
+
