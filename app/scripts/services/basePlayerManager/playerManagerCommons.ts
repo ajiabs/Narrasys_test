@@ -39,7 +39,7 @@ export interface IBasePlayerManager {
   getMetaObj(pid: string): object
   getPlayerDiv(pid: string): string
   getInstance(predicate: () => boolean): (pid: string) => object
-  registerStateChangeListener(cb: () => {}): void
+  registerStateChangeListener(stateChangeListener: (stateChangeEvent: object) => void): void
   unregisterStateChangeListener(cb: () => {}): void
   getStateChangeListeners(): any[]
   pauseOtherPlayers(pauseFn: () => void, getPlayerState: () => number): (pid: string) => void

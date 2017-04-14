@@ -4,7 +4,11 @@ import {IParsedMediaSrcObj, IUrlSubService} from "../../interfaces";
  */
 
 
-export class WistiaUrlService implements IUrlSubService {
+export interface IWistiaUrlservice extends IUrlSubService {
+  extractId(input: string): string
+}
+
+export class WistiaUrlService implements IWistiaUrlservice {
   public type = 'wistia';
   public mimetype = `video/x-${this.type}`;
 
@@ -21,8 +25,18 @@ export class WistiaUrlService implements IUrlSubService {
     }, {type: this.type, mediaSrcArr: []})
   }
 
-  parseInput(input) {
-    return input;
+  //refactor to work with embed codes and urls
+  parseInput(input: string) {
+    if (this.isWistiaUrl(input)) {
+      return input;
+    }
+  }
+
+  extractId(input: string) {
+    //simple url input for now
+    if (this.isWistiaUrl(input)) {
+      return this.parseIdfromUrl(input);
+    }
   }
 
   canPlay(input) {
@@ -37,6 +51,15 @@ export class WistiaUrlService implements IUrlSubService {
   private isWistiaUrl(url: string) {
     var re: RegExp = /https?:\/\/(.+)?(wistia\.com|wi\.st)\/.*/;
     return re.test(url);
+  }
+
+  private parseIdfromUrl(url: string) {
+    let a = document.createElement('a');
+    a.href = url;
+
+    //id should be last in the path
+    let path = a.pathname.split('/');
+    return path[path.length -1];
   }
 }
 

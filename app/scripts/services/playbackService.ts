@@ -2,6 +2,9 @@
  * Created by githop on 10/24/16.
  */
 
+import {IWistiaPlayerManager} from "../interfaces";
+import {IBasePlayerManager} from "./basePlayerManager/playerManagerCommons";
+
 /**
  * @ngdoc service
  * @name iTT.service:playbackService
@@ -32,20 +35,20 @@
  * @requires PLAYERSTATES
  */
 
-playbackService.$inject = ['$interval', 'youTubePlayerManager', 'html5PlayerManager', 'kalturaPlayerManager', 'ittUtils', 'urlService', 'PLAYERSTATES_WORD', 'PLAYERSTATES'];
+playbackService.$inject = ['$interval', 'youTubePlayerManager', 'html5PlayerManager', 'kalturaPlayerManager', 'wistiaPlayerManager', 'ittUtils', 'urlService', 'PLAYERSTATES_WORD', 'PLAYERSTATES'];
 
-export default function playbackService($interval, youTubePlayerManager, html5PlayerManager, kalturaPlayerManager, ittUtils, urlService, PLAYERSTATES_WORD, PLAYERSTATES) {
+export default function playbackService($interval, youTubePlayerManager, html5PlayerManager, kalturaPlayerManager, wistiaPlayerManager: IWistiaPlayerManager, ittUtils, urlService, PLAYERSTATES_WORD, PLAYERSTATES) {
 
   var _playerInterfaces = {};
   var _mainPlayerId;
   var _stateChangeCallbacks = [];
-  var _playerManagers = [html5PlayerManager, youTubePlayerManager, kalturaPlayerManager];
+  var _playerManagers = [html5PlayerManager, youTubePlayerManager, kalturaPlayerManager, wistiaPlayerManager];
   var _timelineState = '';
   var _mainPlayerBufferingPoll;
   var _playbackServiceHasBeenReset;
   var _existy = ittUtils.existy;
 
-  angular.forEach(_playerManagers, function (playerManager) {
+  angular.forEach(_playerManagers, function (playerManager: IBasePlayerManager) {
     playerManager.registerStateChangeListener(_stateChangeCB);
   });
 
@@ -248,7 +251,7 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
     });
     //on emebds, be sure to set the playerState to paused if the $destroy event pre-empts pause from being
     //set naturally
-    angular.forEach(_playerInterfaces, function (pi, pid) {
+    angular.forEach(_playerInterfaces, function (pi: IWistiaPlayerManager, pid) {
       if (pid !== playerId && pid !== _mainPlayerId) {
         pi.setMetaProp(pid, 'playerState', '2');
       }

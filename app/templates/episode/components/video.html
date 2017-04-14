@@ -1,6 +1,8 @@
 <div itt-magnetized class="pane videoContainer">
 
+  {{episode.replacingMasterAsset}}
 	<span ng-if="episode.swap && episode.replacingMasterAsset" style="display: none;">
+    HUH {{episode.swap}}
 		<itt-video class="video contentLayer"
 				   media-src-arr="episode.swap.mediaSrcArr"
 				   poster="episode.poster"

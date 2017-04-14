@@ -1,15 +1,17 @@
+import {IWistiaUrlservice} from "../interfaces";
 /**
  * Created by githop on 11/3/16.
  */
 
-urlService.$inject = ['youtubeUrlService', 'html5UrlService', 'kalturaUrlService', 'config'];
+urlService.$inject = ['youtubeUrlService', 'html5UrlService', 'kalturaUrlService', 'wistiaUrlService', 'config'];
 
-export default function urlService(youtubeUrlService, html5UrlService, kalturaUrlService, config) {
+export default function urlService(youtubeUrlService, html5UrlService, kalturaUrlService, wistiaUrlService: IWistiaUrlservice, config) {
 
   var _urlSubServices = {
     youtube: youtubeUrlService,
     html5: html5UrlService,
-    kaltura: kalturaUrlService
+    kaltura: kalturaUrlService,
+    wistia: wistiaUrlService
   };
 
   return {
@@ -70,7 +72,8 @@ export default function urlService(youtubeUrlService, html5UrlService, kalturaUr
       mp4: [],
       webm: [],
       m3u8: [],
-      kaltura: []
+      kaltura: [],
+      wistia: []
     };
 
     var extensionMatch = /\.(\w+)$/;
