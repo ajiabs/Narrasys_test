@@ -12,7 +12,7 @@ showCurrent is forced in Main.
 <div class="scene cornerH" ng-class="scene.styleCss + ' '+ scene.state">
 	<div class="row">
 		<div itt-magnet class="videoMagnet">
-			<img src="images/aspectratiopreserver-16x9.gif">
+			<img src="/images/aspectratiopreserver-16x9.gif">
 		</div>
 		<div class="pane mainPane matchVideoHeight">
 			<div class="fill bgLayer">
@@ -36,9 +36,9 @@ showCurrent is forced in Main.
 			<div class="content contentLayer stretchToViewport" ng-class="{
 				singleitem: showCurrent
 					? (altContentItems | isCurrent).length == 1
-					: (altContentItems).length == 1, 
+					: (altContentItems).length == 1,
 				allowHighlights: !showCurrent,
-				hasLeftSidebar: altContentHasLeftSidebar, 
+				hasLeftSidebar: altContentHasLeftSidebar,
 				hasRightSidebar: altContentHasRightSidebar,
 				isNarrow: isNarrow,
 				isEmpty: altContentItems.length == 0

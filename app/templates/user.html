@@ -34,7 +34,7 @@
 			<div class="user__avatar">
 				<div class="user__label">Avatar</div>
 				<div>
-					<img ng-src="{{appState.user.avatar || '/images/no-avatar.gif'}}">
+					<img ng-src="{{appState.user.avatar || appState.noAvatar }}">
 				</div>
 
 				<div ng-if="showUploadField && !uploads">

@@ -4,6 +4,7 @@
     $unbrandedSecondary: #DDDDDD;
     $unbrandedLink: #0000CC;
     $unbrandedHighlight: rgba(204,204,204, 0.6);
+    @import "helpers";
 
     @mixin unbranded-header {
     	font-family: 'Open Sans',  sans-serif;
@@ -23,9 +24,9 @@
     }
 
     .unbranded {
-        
-        
-             
+
+
+
         .landingscreen {
 
 			div {
@@ -73,7 +74,7 @@
 				}
 			}
 		}
-        
+
 		//custom altPane BG, landingscreen
 		//TS-1109
 		.professional__branding {
@@ -92,7 +93,7 @@
 				}
 			}
 		}
-		//TS-1102	
+		//TS-1102
 		.altPane {
 			background-color: rgba(0, 0, 0, 0.05);
 		}
@@ -112,7 +113,7 @@
                 color: $unbrandedLink;
             }
         }
-        
+
         .searchResults {
             @include unbranded-header;
             .item__title--link, .item__link--fake-link, .item__link--escape-link {
@@ -167,7 +168,7 @@
 	   .item__text--image-caption, .item__text--image-caption-sliding {
 	        color: $unbrandedSecondary;
 	   }
-        
+
         .item__link--escape-link {
             @include unbranded-body;
             color: $unbrandedLink;
@@ -175,7 +176,7 @@
                 color: $unbrandedPrimary;
             }
         }
-        
+
         //timestamp
         .item {
             .displayTime, .startTime {
@@ -186,8 +187,8 @@
                 }
             }
         }
-        
-       //invert 
+
+       //invert
         .item {
             &.colorInvert {
             	background-color: $unbrandedPrimary !important;
@@ -197,27 +198,27 @@
                  		color: $unbrandedSecondary !important;
                  	}
              	}
-             	
+
              	h1, h2, h3 {
              		color: $unbrandedSecondary !important;
              	}
             }
         }
-        
+
         //highlights
         .content.allowHighlights {
         	.highlightSolid.item.isCurrent {
         		background-color: $unbrandedHighlight;
         	}
-        	
+
         	.highlightSide.item.isCurrent {
         		border-left: 10px solid $unbrandedHighlight;
         	}
-        	
+
         	.highlightBorder.item.isCurrent {
         		border: 2px solid $unbrandedHighlight;
         	}
-        	
+
         	//hard code alpha to be 0.3 or half of default
         	//aka translucent
         	.highlightBloom.item.isCurrent {
@@ -225,7 +226,7 @@
         		box-shadow: 0 0 8px rgba(204,204,204, 0.3);
         	}
         }
-        
+
         //layout specific overrides
         .centered-pro {
             .banner-pull-quote {
@@ -238,15 +239,15 @@
 		//pro two col: centerVV
 		//non-pro two col: pip, cornerH, cornerV, twocol
 		//non-pro one col: centered, onecol
-        .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {	
+        .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {
             .static-bg__main {
-                
+
             }
-            
+
             .static-bg__alt {
-                
+
             }
-            
+
             .item__title--link, .item__title--file {
                 @include unbranded-body;
             }
@@ -257,21 +258,21 @@
 
         }
 
-        .centerVV-mondrian {           
+        .centerVV-mondrian {
             .static-bg__main {
                 border: 4px solid $unbrandedPrimary;
                 background-color: $unbrandedAccent;
             }
-            
+
             .static-bg__alt {
-                
+
             }
 
-			
+
 			.altPane {
 				background-color: transparent;
 			}
-			
+
       		.mainPane {
 			    .item {
 				    background-color:  $unbrandedPrimary;
@@ -280,7 +281,7 @@
 			.item__text, .item__title, .item__title a {
 				color: $unbrandedSecondary;
 			}
-			
+
 			//override from general item level,
 			//mondrian BG is solid color, so we need to use
 			//the Secondary
@@ -289,7 +290,7 @@
 					color: $unbrandedSecondary;
 				}
 			}
-			
+
 			.item {
 			    &.colorInvert {
 			        background-color: $unbrandedSecondary !important;
@@ -299,16 +300,16 @@
                         	color: $unbrandedPrimary !important;
                         }
                     }
-                    
+
                     h1, h2, h3 {
                     	color: $unbrandedPrimary !important;
                     }
                 }
             }
-			
+
 		}
 
-        
+
 		//item__<entity> for non URL titles
 		// item__<entity> a covers both escape and fakeLinks
 		.item__title--link,
@@ -319,7 +320,7 @@
 		.item__title--image-thumbnail a {
 			@include unbranded-header;
 		}
-		
+
 		.item__link--fake-link {
 			color: $unbrandedSecondary;
 		}
@@ -331,12 +332,12 @@
 				color: $unbrandedAccent;
 			}
 		}
-		
+
 		.item {
 		    .displayTime, .startTime {
 		        @include unbranded-header;
 		        color: $unbrandedSecondary;
-		        
+
 		        a {
 		            text-decoration: underline;
 		        }
