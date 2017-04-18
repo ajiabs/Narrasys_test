@@ -36,10 +36,13 @@
 				<div ng-repeat="category in typeCategories">
 					<h3 ng-if="matchedItems.length > 0" ng-bind-html="showTypes[category].name"></h3>
 					<!-- controller handles stripping cosmetic items from showTypes.items, so no need to do it in template. -->
-					<div class="item animate" ng-repeat="item in matchedItems=
-						(showTypes[category].items)" ng-show="
-							([item.searchableText] | filter:appState.searchText).length
-						" ng-class="item.state" itt-item="item" forceTemplate="searchresults-all"></div>
+					<div class="item animate"
+               ng-repeat="item in matchedItems=(showTypes[category].items | orderBy:'start_time')"
+               ng-show="([item.searchableText] | filter:appState.searchText).length"
+               ng-class="item.state"
+               itt-item="item"
+               forceTemplate="searchresults-all">
+          </div>
 				</div>
 				<div ng-if="(episode.items | filter:{'searchableText': appState.searchText||'', 'cosmetic': false}).length == 0">
 					(Nothing matched your search.)
