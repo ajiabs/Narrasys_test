@@ -49,23 +49,6 @@ export default function ittValidItemUrl($q, ittUtils, dataSvc, urlService) {
         xFrameOpts: message
       };
 
-      scope.$on('url:focus', function (e: Event, previousFields: ILinkValidFields) {
-        console.log('previous fields', previousFields);
-
-        // if (ittUtils.existy(previousFields)) {
-        //   Object.assign(validatedFields, previousFields);
-        // } else {
-        //   validatedFields['404'] = message;
-        //   validatedFields['301'] = message;
-        //   validatedFields['xFrameOpts'] = message; //jshint ignore:line
-        // }
-
-        validatedFields['404'] = message;
-        validatedFields['301'] = message;
-        validatedFields['xFrameOpts'] = message; //jshint ignore:line
-
-      });
-
       //sync validators
       ngModel.$validators = {
         mixedContent: mixedContent,

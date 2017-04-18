@@ -1,3 +1,4 @@
+import {ILinkValidationMessage, ILinkValidFields} from "../interfaces";
 /**
  * Created by githop on 6/30/16.
  */
@@ -35,7 +36,14 @@ export default function ittUrlField() {
       ctrl.onFocus = onFocus;
 
       function onFocus() {
-        $scope.$broadcast('url:focus', ctrl.validatedFields);
+        let reset: ILinkValidationMessage = {showInfo: false, doInfo: false, message: ''};
+
+        ctrl.validatedFields = {
+          '404': reset,
+          '301': reset,
+          'xFrameOpts': reset
+        }
+
       }
 
       function handleEpisodeValidationMessage(notice) {
@@ -49,7 +57,7 @@ export default function ittUrlField() {
       }
 
       function handleItemValidationMessage(notice) {
-        ctrl.validatedFields = {
+        ctrl.validatedFields = <ILinkValidFields> {
           url: null,
           xFrameOpts: null,
           '404': null,
@@ -59,27 +67,21 @@ export default function ittUrlField() {
 
         angular.extend(ctrl.validatedFields, notice);
 
-        var xFrameOptsdisableEmbedTemplates = ctrl.validatedFields.xFrameOpts.showInfo === true && ctrl.validatedFields.mixedContent.showInfo === false;
-        var mixedContentDisableEmbedTemplates = ctrl.validatedFields.xFrameOpts.showInfo === false && ctrl.validatedFields.mixedContent.showInfo === true;
+        const {
+          xFrameOpts: { showInfo: xShowInfo },
+          mixedContent: { showInfo: mShowInfo }
+        } = ctrl.validatedFields;
 
-        if (xFrameOptsdisableEmbedTemplates || mixedContentDisableEmbedTemplates) {
-          ctrl.data.noEmbed = true;
+        const xFrameOptsdisableEmbedTemplates = xShowInfo === true && mShowInfo === false;
+        const mixedContentDisableEmbedTemplates = xShowInfo === false && mShowInfo === true;
+
+        const disableEmbedTemplates = (xFrameOptsdisableEmbedTemplates || mixedContentDisableEmbedTemplates);
+
+        ctrl.data.noEmbed = disableEmbedTemplates;
+        ctrl.data.templateOpts = _setTemplateOpts(disableEmbedTemplates);
+
+        if (disableEmbedTemplates === false) {
           ctrl.data.showInlineDetail = false;
-          //grey out disabled options
-          ctrl.data.templateOpts = ctrl.data.templateOpts.map(function (opt) {
-            if (opt.name === 'Embedded link' || opt.name === 'Link modal') {
-              opt.isDisabled = true;
-            }
-            return opt;
-          });
-        } else {
-          ctrl.data.noEmbed = false;
-          ctrl.data.templateOpts = ctrl.data.templateOpts.map(function (opt) {
-            if (opt.name === 'Embedded link' || opt.name === 'Link modal') {
-              opt.isDisabled = false;
-            }
-            return opt;
-          });
         }
 
         if (ctrl.validatedFields.url.showInfo === true) {
@@ -89,6 +91,15 @@ export default function ittUrlField() {
         if (ctrl.validatedFields['301'].showInfo === true) {
           ctrl.data.url = ctrl.validatedFields['301'].url;
         }
+      }
+
+      function _setTemplateOpts(disable: boolean): any[] {
+        return ctrl.data.templateOpts.map((opt) => {
+          if (opt.name === 'Embedded link' || opt.name === 'Link modal') {
+            opt.isDisabled = disable;
+          }
+          return opt;
+        });
       }
     }],
     controllerAs: '$ctrl',
