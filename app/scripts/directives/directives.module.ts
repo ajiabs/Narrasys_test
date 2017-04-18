@@ -87,6 +87,8 @@ import sxsAnnotatorAutocomplete from './sxsAnnotatorAutocomplete';
 import sxsContainerAssets from './sxsContainerAssets';
 import sxsInputI18n from './sxsInputI18n';
 import sxsInputTime from './sxsInputTime';
+import {EditorSidePanel} from "./ittEditorSidePanel";
+
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -171,6 +173,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('sxsContainerAssets', sxsContainerAssets)
   .directive('sxsInputI18n', sxsInputI18n)
   .directive('sxsInputTime', sxsInputTime)
-  .directive('autofocus', autofocus);
+  .directive('autofocus', autofocus)
+  .component(EditorSidePanel.Name, new EditorSidePanel());
 
 export default directivesModule;
