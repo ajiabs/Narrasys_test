@@ -1077,6 +1077,16 @@
 
   }
 }
+//NP-1128
+.item__text--h2 {
+  display: table;
+
+  h2 {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0.33em 0;
+  }
+}
 
 //large desktop
 @media screen and (min-width: 1366px) {
