@@ -381,6 +381,19 @@ button {
 	opacity: .3;
 }
 
+.sidePanel__wrapper {
+  transition: all 0.3s ease-in-out;
+  margin-bottom: -3px;
+}
+
+.sidePanel__toggle {
+  pointer-events: all;
+  position: absolute;
+}
+
+.sidePanel-open {
+  margin-left: 5em;
+}
 
 /*============================
 *

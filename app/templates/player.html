@@ -21,14 +21,14 @@
 	}"></div>
 
 		<div class="toolbar-bottom" itt-show-hide-visual-only="appState.videoControlsActive" ng-mouseenter="showControls();" ng-click="showControls();" ng-mouseleave="allowControlsExit()">
-			<div class="toolbar-bottom-fill">
-				<div ng-show="appState.editEvent || appState.editEpisode" class="navPanel editPanel">
-					<div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
-					<div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>
-				</div>
+      <itt-editor-side-panel current-view-mode="appState.viewMode">
+          <div ng-show="appState.editEvent || appState.editEpisode" class="navPanel editPanel">
+            <div ng-if="appState.editEvent" itt-item-editor="appState.editEvent"></div>
+            <div ng-if="appState.editEpisode" itt-episode-editor="appState.editEpisode"></div>
+          </div>
+      </itt-editor-side-panel>
 
-				<div itt-timeline></div>
-			</div>
+      <div class="toolbar-bottom-fill" itt-timeline></div>
 		</div>
 		<div class="toolbar-bottom-controltrigger" ng-mouseenter="showControls();" ng-click="showControls();" ng-focus="showControls()"></div>
 	</div>
