@@ -608,7 +608,6 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
       case 'image':
         //will set to true in image fill
         _displaySelectVisibility(false);
-        _bgImagePositionSelectVisibility(false);
         var _currentSceneName = getSceneName(modelSvc.scene(item.scene_id));
         switch (item.templateUrl) {
           case 'templates/item/image-plain.html':
