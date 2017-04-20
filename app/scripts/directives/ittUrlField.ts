@@ -22,29 +22,17 @@ export default function ittUrlField() {
       	</span>
       	</div>
       	<div class="input" ng-if="!$ctrl.videoOnly">
-      		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-focus="$ctrl.onFocus()" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url on-validation-notice="$ctrl.handleItemValidationMessage($notice)"/>
+      		<input type="text" name="itemUrl" ng-model="$ctrl.data.url" ng-model-options="{ updateOn: \'blur\' }"  itt-valid-item-url on-validation-notice="$ctrl.handleItemValidationMessage($notice)"/>
       	</div>
       	<div class="input" ng-if="$ctrl.videoOnly === true">
       		<input type="text" ng-model="$ctrl.data" itt-valid-episode-url on-validation-notice="$ctrl.handleEpisodeValidationMessage($notice)"/>
       		<button ng-if="$ctrl.data" ng-click="$ctrl.onAttach({$url: $ctrl.data})">Attach Video</button>
       	</div>
       </div>`,
-    controller: ['$scope', function ($scope) {
+    controller: [function() {
       var ctrl = this;
       ctrl.handleItemValidationMessage = handleItemValidationMessage;
       ctrl.handleEpisodeValidationMessage = handleEpisodeValidationMessage;
-      ctrl.onFocus = onFocus;
-
-      function onFocus() {
-        let reset: ILinkValidationMessage = {showInfo: false, doInfo: false, message: ''};
-
-        ctrl.validatedFields = {
-          '404': reset,
-          '301': reset,
-          'xFrameOpts': reset
-        }
-
-      }
 
       function handleEpisodeValidationMessage(notice) {
         ctrl.validatedFields = {
