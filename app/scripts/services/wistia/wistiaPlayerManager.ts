@@ -14,6 +14,13 @@ export interface IWistiaPlayerManager extends IBasePlayerManager {
 
 }
 
+const WISTIA_PLAYERSTATES = {
+  'playing': 'playing',
+  'paused': 'paused',
+  'beforeplay': 'unstarted',
+  'ended': 'ended'
+};
+
 //TODO refactor ittUtils into ES module
 function _existy(x: any) {
   return x != null;
@@ -21,7 +28,7 @@ function _existy(x: any) {
 
 
 
-export class WistiaPlayerManager implements IWistiaPlayerManager {
+export class WistiaPlayerManager {
   private _players = {};
   private _mainPlayerId;
   public type = 'wistia';
@@ -29,8 +36,12 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   public commonMetaProps;
   private _setMetaProps;
   private _getInstance;
+  private _pauseOtherPlayers;
+  private _resetPm;
   private wistiaMetaProps = {
-    videoType: this.type
+    videoType: this.type,
+    isMuted: false,
+    vol: 0
   };
 
   private wistiaMetaObj = {
@@ -44,15 +55,13 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     private wistiaScriptLoader: IScriptLoader,
     private wistiaUrlService: IWistiaUrlservice,
     private ittUtils) {
-
     this.base = <IBasePlayerManager> playerManagerCommons({players: this._players, type: this.type});
-
     Object.assign(this.wistiaMetaObj.meta, this.wistiaMetaProps, this.base.commonMetaProps);
     const validKeys = Object.keys(this.wistiaMetaObj.meta);
     this._setMetaProps = this.base.setMetaProp(validKeys);
-
-    const getInstance = this.base.getInstance(pid => _existy(pid) && this.getMetaProp(pid, 'ready') === true);
-    this._getInstance = getInstance;
+    this._getInstance = this.base.getInstance(pid => _existy(pid) && this.getMetaProp(pid, 'ready') === true);
+    this._pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause, this.getPlayerState);
+    this._resetPm = this.base.resetPlayerManager(angular.noop);
   }
 
   seedPlayerManager(id: string, mainPlayer: boolean, mediaSrcArr: string[]) {
@@ -86,13 +95,15 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   getPlayerState(pid) {
     const instance = this.getInstance(pid);
     if (instance) {
-
+      return WISTIA_PLAYERSTATES[instance.state()];
     }
-    return instance.state
   }
 
   getBufferedPercent() {
-
+    /*
+    it doesn't appear that wistia has ways to get
+    info on buffered ranges, need to do more research.
+     */
   }
 
   registerStateChangeListener(fn) {
@@ -119,27 +130,81 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     return this.base.renamePid(oldName, newName)
   }
 
+  resetPlayerManager() {
+    this._resetPm()
+  }
+
   freezeMetaProps() {}
 
+  unFreezeMetaProps() {}
 
-  getCurrentTime(pid) {
-    if (_existy(pid)) {
-      return 0;
-    }
+  getCurrentTime(pid): number | void {
+    return this.invokeMethod(pid, 'time');
   }
 
   play(pid): void {
-    console.log('huh', this.getInstance(pid));
-    this.getInstance(pid).play();
+    this.invokeMethod(pid, 'play');
   }
 
   pause(pid): void {
-    console.log('huh', this.getInstance(pid));
-    this.getInstance(pid).pause();
+    this.invokeMethod(pid, 'pause');
+  }
+
+  pauseOtherPlayers(pid): void {
+    this._pauseOtherPlayers(pid);
+  }
+
+  seekTo(pid, t): void {
+    this.invokeMethod(pid, 'time', t);
+  }
+
+  stop(pid) {
+
+  }
+
+  handleTimelineEnd(pid) {
+
+  }
+
+  toggleMute(pid) {
+    const isMusted = this.getMetaProp(pid, 'isMuted');
+    if (isMusted === false) {
+      const lastVol = this.invokeMethod(pid, 'volume') * 100;
+      this.setMetaProp(pid, 'vol', lastVol);
+      this.setVolume(pid, 0);
+    } else {
+      this.setVolume(pid, this.getMetaProp(pid, 'vol'))
+    }
+
+    this.setMetaProp(pid, 'isMuted', !isMusted);
+  }
+
+  setVolume(pid, v) {
+    this.invokeMethod(pid, 'volume', v / 100)
+  }
+
+  private invokeMethod(pid, method, val?) {
+    const instance = this.getInstance(pid);
+    if (_existy(instance)) {
+      try {
+        if (_existy(val)) {
+          return instance[method](val);
+        } else {
+          return instance[method]();
+        }
+      } catch (e) {
+        console.log('error trying', method, 'with', instance[method], 'error:', e);
+      }
+    }
   }
 
   private setPlayerDiv(pid: string, wistiaId: string) {
-    return `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
+    return `
+<div class="wistia_responsive_padding" style="padding:56.25% 0 28px 0;position:relative;">
+  <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+    <div id="${pid}" class="wistia_embed wistia_async_${wistiaId}" style="height:100%;width:100%">&nbsp;</div>
+  </div>
+</div>`;
   }
 
   private getPlayer(pid) {
@@ -166,16 +231,26 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   }
 
   private onReady(pid, wistiaInstance) {
-    console.log('wistia ready!', wistiaInstance);
     this.base.setInstance(pid, wistiaInstance);
     this.attachEventListeners(wistiaInstance, pid);
     this.emitStateChange(pid, 6);
+    this.setMetaProp(pid, 'duration', wistiaInstance.duration());
   }
 
   private attachEventListeners(instance, pid) {
+    //arrow fn so 'this' is preserved
+    //in the final closure
+    const bindPid = (pid) => {
+      return (fn, ev?) => {
+        return fn.call(this, pid, ev);
+      }
+    };
+
+    const boundPid = bindPid(pid);
+
     const wistiaEvents = {
-      'pause': this.onPause.bind(this),
-      'play': this.onPlay.bind(this)
+      'play': (e) => boundPid(this.onPlay),
+      'pause': (e) => boundPid(this.onPause),
     };
 
     Object.entries(wistiaEvents).forEach(([key, val]) => {
@@ -183,12 +258,18 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     });
   }
 
-  private onPlay(event) {
-    console.log('on play?', event);
+  private onSecondchange(pid, event) {
+    console.log('second change?', event);
   }
 
-  private onPause(event) {
-    console.log('on pause?', event);
+  private onPlay(pid) {
+    this.setMetaProp(pid, 'playerState', 1);
+    this.emitStateChange(pid);
+  }
+
+  private onPause(pid) {
+    this.setMetaProp(pid, 'playerState', 2);
+    this.emitStateChange(pid);
   }
 
   private formatStateChangeEvent(state, emitterId) {
