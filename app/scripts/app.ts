@@ -27,9 +27,12 @@ import './plugin/plugins';
 import 'core-js/shim';
 import 'angular';
 import 'angular-ui-tree';
+//text angular
+import 'rangy'
+import 'rangy/lib/rangy-selectionsaverestore'
 import 'textAngular/dist/textAngular-sanitize.min';
-import 'textAngular';
-
+import 'textAngular/dist/textAngular.min';
+//end text angular
 import '../config';
 
 import './controllers/controllers.module';

@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackChunkHash = require('webpack-chunk-hash');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
+const WebpackNotifierPlugin = require('webpack-notifier');
 const nodeModulesDir = join(__dirname, './node_modules');
 
 const deps = [
@@ -156,6 +157,7 @@ function configWp(env) {
           }
         }
       }),
+      env.dev ? new WebpackNotifierPlugin({alwaysNotify: true}) : undefined,
       env.prod ? new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',
         append: `\n//# sourceMappingURL=${handleSourceMapUrl(env)}`,
