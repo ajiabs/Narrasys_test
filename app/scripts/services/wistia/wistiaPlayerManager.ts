@@ -1,4 +1,4 @@
-import {IBasePlayerManager, IScriptLoader, IWistiaUrlservice} from "../../interfaces";
+import {IBasePlayerManager, IPlayerManager, IScriptLoader, IWistiaUrlservice} from "../../interfaces";
 import {PLAYERSTATES} from "../playbackService/index";
 /**
  * Created by githop on 4/12/17.
@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-export interface IWistiaPlayerManager extends IBasePlayerManager {
+export interface IWistiaPlayerManager extends IPlayerManager {
 
 }
 
@@ -26,9 +26,7 @@ function _existy(x: any) {
   return x != null;
 }
 
-
-
-export class WistiaPlayerManager {
+export class WistiaPlayerManager implements IWistiaPlayerManager {
   private _players = {};
   private _mainPlayerId;
   public type = 'wistia';
@@ -104,6 +102,7 @@ export class WistiaPlayerManager {
     it doesn't appear that wistia has ways to get
     info on buffered ranges, need to do more research.
      */
+    return 0;
   }
 
   registerStateChangeListener(fn) {
@@ -134,11 +133,11 @@ export class WistiaPlayerManager {
     this._resetPm()
   }
 
-  freezeMetaProps() {}
+  freezeMetaProps(pid) {}
 
-  unFreezeMetaProps() {}
+  unfreezeMetaProps(pid) {}
 
-  getCurrentTime(pid): number | void {
+  getCurrentTime(pid): number | string | void {
     return this.invokeMethod(pid, 'time');
   }
 
@@ -159,6 +158,10 @@ export class WistiaPlayerManager {
   }
 
   stop(pid) {
+
+  }
+
+  setSpeed(pid) {
 
   }
 
