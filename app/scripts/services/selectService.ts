@@ -338,7 +338,7 @@ export default function selectService(authSvc, modelSvc, dataSvc, ittUtils) {
             return 0;
           }
         };
-
+        _titleFieldVisibility(true); // NP-1159
         return dataSvc.getTemplates().reduce(_reduceTemplates, []).sort(_sortAlpha);
       case 'scene':
         _displaySelectVisibility(false);

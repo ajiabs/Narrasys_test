@@ -88,14 +88,8 @@ export default function SearchPanelController($scope, $rootScope, $timeout, appS
       }
     };
 
-    var padDigits = function (number, digits) {
-      return new Array(Math.max(digits - String(parseInt(number, 10)).length + 1, 0)).join(0) + number;
-    };
 
     angular.forEach($scope.episode.items, function (item) {
-      // Chrome has decided to sort these alphabetically instead of numerically...
-      item.wtfchromesort = padDigits(item.start_time, 5);
-
       // include cosmetic items only in producer:
       if (appState.product !== 'producer' && item.cosmetic) {
         return;
