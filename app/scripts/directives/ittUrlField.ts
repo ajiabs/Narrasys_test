@@ -70,42 +70,68 @@ export default function ittUrlField() {
 
         function $onInit() {
           if (!ctrl.videoOnly) {
-            $watchItemUrl = $scope.$watch(watchItemUrl, handleChanges);
+            //run once on initial value and setup watch, if initial value isn't
+            //the default value (e.g. 'https://') for new link events
+            if (_existy(ctrl.data.url) && ctrl.data.url !== 'https://') {
+              itemUrlValidationPipeline(ctrl.data.url);
+            }
+            subscribeWatch();
           }
         }
 
         function $onDestroy() {
           if (!ctrl.videoOnly) {
-            $watchItemUrl();
+            unsubscribeWatch();
           }
+        }
+
+        function subscribeWatch() {
+          $watchItemUrl = $scope.$watch(watchItemUrl, handleChanges);
+        }
+
+        function unsubscribeWatch() {
+          $watchItemUrl();
         }
 
         function watchItemUrl() {
           return ctrl.data.url;
         }
 
-        function handleChanges(nextUrl) {
-          _resetFields();
-          let isValidUrl = _setValidity(url(nextUrl));
-          let isMixed = mixedContent(nextUrl);
-          ctrl.data.templateOpts = _disableTemplateOpts(!isMixed);
+        function handleChanges(nextUrl, origUrl) {
           if (nextUrl === 'https://') { //consider initial value 'not valid', i.e. make them input something.
             _setValidity(false);
             return;
           }
+          console.log(nextUrl, origUrl);
+          if (nextUrl !== origUrl) {
+            itemUrlValidationPipeline(nextUrl);
+          }
+        }
 
-          if (isMixed && isValidUrl) { //only do async stuff if necessary
-            xFrameOpts(nextUrl)
-              .then((noEmbed: boolean) => {
+        function itemUrlValidationPipeline(url: string): void {
+          _resetFields();
+          let isValidUrl = _setValidity(validateUrl(url));
+          let isMixedContent = mixedContent(url);
+          ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
+          if (!isMixedContent && isValidUrl) { //only do async stuff if necessary
+            xFrameOpts(url)
+              .then(({noEmbed, location}: {noEmbed:boolean, location:string}) => {
                 ctrl.data.templateOpts = _disableTemplateOpts(noEmbed);
                 _setValidity(true);
                 ctrl.data.noEmbed = noEmbed;
+                if (_existy(location)) {
+                  //turn off watch for a moment to avoid triggering
+                  //a $digest from mutating ctrl.data.url
+                  unsubscribeWatch();
+                  ctrl.data.url = location;
+                  subscribeWatch();
+                }
               })
               .catch(_ => _setValidity(false));
           }
         }
 
-        function _disableTemplateOpts(val: boolean) {
+        function _disableTemplateOpts(val: boolean): any[] {
 
           if (val === true) {
             ctrl.data.showInlineDetail = false;
@@ -119,18 +145,18 @@ export default function ittUrlField() {
           });
         }
 
-        function mixedContent(viewVal) {
+        function mixedContent(viewVal: string): boolean {
           if (_existy(viewVal) && /^http:\/\//.test(viewVal)) {
             //mixed content detected!
             ctrl.validatedFields['mixedContent'] = {message: 'Mixed Content Detected', showInfo: true};
-            return false;
+            return true;
           } else {
             ctrl.validatedFields['mixedContent'] = {message: '', showInfo: false};
-            return true;
+            return false;
           }
         }
 
-        function url(viewVal) {
+        function validateUrl(viewVal: string): boolean {
           if (viewVal === '' && !_emailOrPlaceholder(viewVal)) {
             ctrl.validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'};
             return false;
@@ -143,22 +169,12 @@ export default function ittUrlField() {
           }
         }
 
-        function handleEpisodeValidationMessage(notice) {
-          ctrl.validatedFields = {
-            kaltura: null,
-            youtube: null,
-            html5: null,
-            error: null
-          };
-          angular.extend(ctrl.validatedFields, notice);
-        }
-
-        function xFrameOpts(viewVal) {
+        function xFrameOpts(viewVal: string) {
           //bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
           if (viewVal === '' || urlService.isVideoUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
             return $q(function (resolve) {
               ctrl.validatedFields['xFrameOpts'] = {showInfo: false};
-              return resolve();
+              return resolve({noEmbed: false, location: null});
             });
           }
 
@@ -197,21 +213,34 @@ export default function ittUrlField() {
                   message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
                 };
               }
-              return xFrameOptsObj.noEmbed;
+              return {noEmbed: xFrameOptsObj.noEmbed, location: xFrameOptsObj.location};
             });
         }
+
+        //validation of episode URLs in episode tab still use old pattern; e.g. custom validator that emits
+        //a message
+        function handleEpisodeValidationMessage(notice) {
+          ctrl.validatedFields = {
+            kaltura: null,
+            youtube: null,
+            html5: null,
+            error: null
+          };
+          angular.extend(ctrl.validatedFields, notice);
+        }
+
         //private methods
-        function _emailOrPlaceholder(val) {
+        function _emailOrPlaceholder(val: string): boolean {
           return /mailto:/.test(val) || val === 'https://';
         }
 
-        function _resetFields() {
+        function _resetFields(): void {
           Object.keys(validatedFields)
             .forEach(key => validatedFields[key] = message);
         }
 
-        function _setValidity(val: boolean, field: string = 'itemUrl'): boolean {
-          ctrl.ittItemForm.$setValidity(field, val);
+        function _setValidity(val: boolean, field: string = 'itemUrl', controller = ctrl): boolean {
+          controller.ittItemForm.$setValidity(field, val);
           return val;
         }
 
