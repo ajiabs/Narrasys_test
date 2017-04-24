@@ -102,7 +102,6 @@ export default function ittUrlField() {
             _setValidity(false);
             return;
           }
-          console.log(nextUrl, origUrl);
           if (nextUrl !== origUrl) {
             itemUrlValidationPipeline(nextUrl);
           }
@@ -169,7 +168,7 @@ export default function ittUrlField() {
           }
         }
 
-        function xFrameOpts(viewVal: string) {
+        function xFrameOpts(viewVal: string): ng.IPromise<{noEmbed: boolean, location: string | null}> {
           //bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
           if (viewVal === '' || urlService.isVideoUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
             return $q(function (resolve) {
