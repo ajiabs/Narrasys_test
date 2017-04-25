@@ -58,7 +58,7 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     const validKeys = Object.keys(this.wistiaMetaObj.meta);
     this._setMetaProps = this.base.setMetaProp(validKeys);
     this._getInstance = this.base.getInstance(pid => _existy(pid) && this.getMetaProp(pid, 'ready') === true);
-    this._pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause, this.getPlayerState);
+    this._pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause.bind(this), this.getPlayerState.bind(this));
     this._resetPm = this.base.resetPlayerManager(angular.noop);
   }
 
@@ -84,6 +84,7 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   }
 
   create(pid: string) {
+    console.log('create instance with:', pid);
     this.createWpInstance(pid)
       .then(_ => {/* noop */});
   }
@@ -200,13 +201,13 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   }
 
   private setPlayerDiv(pid: string, wistiaId: string) {
-
-    const responsive = `
-<div class="wistia_responsive_padding" style="padding:56.25% 0 28px 0;position:relative;">
-  <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
-    <div id="${pid}" class="wistia_embed wistia_async_${wistiaId}" style="height:100%;width:100%">&nbsp;</div>
-  </div>
-</div>`;
+    console.log('setting div!', pid, wistiaId);
+//     const responsive = `
+// <div class="wistia_responsive_padding" style="padding:56.25% 0 28px 0;position:relative;">
+//   <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+//     <div id="${pid}" class="wistia_embed wistia_async_${wistiaId}" style="height:100%;width:100%">&nbsp;</div>
+//   </div>
+// </div>`;
 
     const bare = `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
 
@@ -236,6 +237,7 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
       volumeControl: false
 
     };
+    console.log('create instance PID', pid);
     return this.wistiaScriptLoader.load(pid)
       .then(_ =>  {
         window.wistiaInitQueue  = window.wistiaInitQueue || [];
@@ -244,10 +246,22 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
           options: wistiaEmbedOptions,
           onReady: (video) => this.onReady(pid, video)
         });
+
+        //
+        // window.wistiaInit = (W) => {
+        //   W.options(pid, {
+        //     ...wistiaEmbedOptions,
+        //     onReady: (video) => {
+        //       console.log('onReady!!!');
+        //       this.onReady(pid, video);
+        //     }
+        //   });
+        // };
       });
   }
 
   private onReady(pid, wistiaInstance) {
+    console.log('we ready!');
     this.base.setInstance(pid, wistiaInstance);
     this.attachEventListeners(wistiaInstance, pid);
     this.emitStateChange(pid, 6);
@@ -258,8 +272,8 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     //arrow fn so 'this' is preserved
     //in the final closure
     const bindPid = (pid) => {
-      return (fn, ev?) => {
-        return fn.call(this, pid, ev);
+      return (fn, ...ev) => {
+        return fn.call(this, pid, ...ev);
       };
     };
 
@@ -268,6 +282,7 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     const wistiaEvents = {
       'play': (e) => boundPid(this.onPlay),
       'pause': (e) => boundPid(this.onPause),
+      'seek': (currentTime, lastTime) => boundPid(this.onSeek, currentTime, lastTime)
     };
 
     Object.entries(wistiaEvents).forEach(([key, val]) => {
@@ -275,8 +290,8 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     });
   }
 
-  private onSecondchange(pid, event) {
-    console.log('second change?', pid, event);
+  private onSeek(pid, currentTime, lastTime) {
+    this.setMetaProp(pid, 'time', currentTime);
   }
 
   private onPlay(pid) {

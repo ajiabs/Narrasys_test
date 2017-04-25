@@ -5,14 +5,14 @@
 
 
 interface IPlayerStates {
-  '-1': 'unstarted'
-  '0': 'ended'
-  '1': 'playing'
-  '2': 'paused'
-  '3': 'buffering'
-  '4': 'quality changed'
-  '5': 'video cued'
-  '6': 'player ready'
+  '-1': 'unstarted';
+  '0': 'ended';
+  '1': 'playing';
+  '2': 'paused';
+  '3': 'buffering';
+  '4': 'quality changed';
+  '5': 'video cued';
+  '6': 'player ready';
 }
 
 export const PLAYERSTATES: IPlayerStates = {
