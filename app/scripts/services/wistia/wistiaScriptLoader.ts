@@ -1,27 +1,15 @@
-import {IScriptLoader} from "../../interfaces";
+import {IScriptLoader} from '../../interfaces';
 /**
  * Created by githop on 4/12/17.
  */
-
-
-declare global {
-  interface Window {
-    _wq: any;
-  }
-}
-
-interface AsycnScript extends HTMLScriptElement {
-  onreadystatechange(): any
-  readyState: string | void
-}
 
 export class WistiaScriptLoader implements IScriptLoader {
   private WISTIA_HREF = 'https://fast.wistia.com/assets/external/E-v1.js';
 
   static $inject = ['$q'];
-  constructor(private $q: ng.IQService) { };
+  constructor(private $q: ng.IQService) {  }
 
-  load(assetId: string) {
+  load(assetId: string): ng.IPromise<{}> {
     return this.$q((resolve) => {
       if (window._wq == null) {
         this._appendScript(assetId, resolve);
@@ -30,7 +18,7 @@ export class WistiaScriptLoader implements IScriptLoader {
   }
 
   private _appendScript(id, resolve): void {
-    let tag = <AsycnScript> document.createElement('script');
+    let tag = <HTMLScriptElement> document.createElement('script');
     tag.setAttribute('src', this.WISTIA_HREF);
     tag.setAttribute('type', 'text/javascript');
     tag.setAttribute('async', '');

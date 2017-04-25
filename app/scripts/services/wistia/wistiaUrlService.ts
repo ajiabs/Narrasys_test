@@ -1,11 +1,11 @@
-import {IParsedMediaSrcObj, IUrlSubService} from "../../interfaces";
+import {IParsedMediaSrcObj, IUrlSubService} from '../../interfaces';
 /**
  * Created by githop on 4/12/17.
  */
 
 
 export interface IWistiaUrlservice extends IUrlSubService {
-  extractId(input: string): string
+  extractId(input: string): string;
 }
 
 export class WistiaUrlService implements IWistiaUrlservice {
@@ -22,7 +22,7 @@ export class WistiaUrlService implements IWistiaUrlservice {
         pmo.mediaSrcArr.push(mediaSrc);
       }
       return pmo;
-    }, {type: this.type, mediaSrcArr: []})
+    }, {type: this.type, mediaSrcArr: []});
   }
 
   //refactor to work with embed codes and urls
@@ -44,7 +44,7 @@ export class WistiaUrlService implements IWistiaUrlservice {
   }
 
   getOutgoingUrl(url, startAt) {
-
+    //noop
   }
 
   //expand eventually to work with embed codes as well as URLs
