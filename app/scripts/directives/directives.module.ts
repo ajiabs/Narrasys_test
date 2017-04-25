@@ -74,7 +74,6 @@ import ittUser from './ittUser';
 import ittValidAsset from './ittValidAsset';
 import ittValidationTip from './ittValidationTip';
 import ittValidEpisodeUrl from './ittValidEpisodeUrl';
-import ittValidItemUrl from './ittValidItemUrl';
 import ittValidPathslug from './ittValidPathslug';
 import ittValidUrl from './ittValidUrl';
 import ittVideo from './ittVideo';
@@ -158,7 +157,6 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittValidAsset', ittValidAsset)
   .directive('ittValidationTip', ittValidationTip)
   .directive('ittValidEpisodeUrl', ittValidEpisodeUrl)
-  .directive('ittValidItemUrl', ittValidItemUrl)
   .directive('ittValidPathslug', ittValidPathslug)
   .directive('ittValidUrl', ittValidUrl)
   .directive('ittVideo', ittVideo)
