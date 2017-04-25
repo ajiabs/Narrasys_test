@@ -200,12 +200,17 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   }
 
   private setPlayerDiv(pid: string, wistiaId: string) {
-    return `
+
+    const responsive = `
 <div class="wistia_responsive_padding" style="padding:56.25% 0 28px 0;position:relative;">
   <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
     <div id="${pid}" class="wistia_embed wistia_async_${wistiaId}" style="height:100%;width:100%">&nbsp;</div>
   </div>
 </div>`;
+
+    const bare = `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
+
+    return bare;
   }
 
   private getPlayer(pid) {
@@ -221,12 +226,22 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   }
 
   private createWpInstance(pid: string) {
+    const wistiaEmbedOptions = {
+      playbar: false,
+      videoFoam: true,
+      fullscreenButton: false,
+      playButton: false,
+      settingsControl: false,
+      smallPlayButton: false,
+      volumeControl: false
+
+    };
     return this.wistiaScriptLoader.load(pid)
       .then(_ =>  {
-
-        window.wistiaInitQueue  = window.wistiaInitQueue|| [];
+        window.wistiaInitQueue  = window.wistiaInitQueue || [];
         window.wistiaInitQueue.push({
           id: pid,
+          options: wistiaEmbedOptions,
           onReady: (video) => this.onReady(pid, video)
         });
       });

@@ -7,6 +7,8 @@
 ## potential input formats
 
 - wistia URL to video; e.g. https://narrasys.wistia.com/medias/cbqa9uzl0y
+- https://support.wistia.com/medias/26sk4lmiix
+
 
 wista embed code; e.g.
  

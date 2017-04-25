@@ -23,11 +23,11 @@
      ng-if="$ctrl.mediaSrcArr.length > 0"
      ng-class="{'np--embed': $ctrl.mainPlayer === false}">
 
-  <!--<div class="np-video__overlay-ui"-->
-  <!--ng-if="$ctrl.showMask()"-->
-  <!--ng-class="$ctrl.setCssClass()"-->
-  <!--ng-click="$ctrl.videoClick()">-->
-  <!--</div>-->
+  <div class="np-video__overlay-ui"
+       ng-if="$ctrl.showMask()"
+       ng-class="$ctrl.setCssClass()"
+       ng-click="$ctrl.videoClick()">
+  </div>
 
   <div class="np-video__wrapper">
     <div class="np-video__element" ng-bind-html="::$ctrl.playerElement"></div>
