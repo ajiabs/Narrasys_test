@@ -655,3 +655,10 @@ Inline images (TODO show these only when image is larger than available space) *
 	background: url('/images/definition-2.png') top left no-repeat;
 }
 
+.item__text--transmedia li {
+  list-style: disc outside none;
+}
+
+.li--indent {
+  padding-left: 15px;
+}
