@@ -232,7 +232,7 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     };
     return this.wistiaScriptLoader.load(pid)
       .then(_ =>  {
-        window.wistiaInitQueue  = window.wistiaInitQueue || [];
+        window.wistiaInitQueue = window.wistiaInitQueue || [];
         window.wistiaInitQueue.push({
           id: pid,
           options: wistiaEmbedOptions,

@@ -54,5 +54,38 @@ note: * means a noop will do.
  
 
 it looks like using display:none with wistia causes the player not to initialize as
-it's not in the render tree. use visibility: hidden instead. 
+it's not in the render tree. use visibility: hidden instead.
+ 
+ ### Initializing a wistia player
+ 
+Unlike youtube or kaltura, wistia uses async script tags, per their docs:
+ >Because E-v1.js is loaded asynchronously, we need to make sure any code that references it only runs after 
+ <code>window.Wistia</code> is defined. There are a few ways to do that.
+ 
+The pattern we use for handling downloading necessary third party scripts (E-v1.js in this case)
+ is to load the script as lazily as possible, e.g. the first time a player is 
+  loaded, we inject the relevant script tag to the document.
+  
+  For Wistia, we avoid injecting E-v1.js on subsequent player events by checking
+  for the <code>Wistia</code> object on <code>window</code>. 
+
+We ended up using the <code>wistiaInitQue</code> they advised:
+```
+window.wistiaInitQueue = window.wistiaInitQueue || [];
+window.wistiaInitQueue.push(function(W) {
+  console.log("Wistia library loaded and available in the W argument!");
+});
+```
+We push a config object rather than a function into the initQueue as it makes
+it easier to wire up a callback when the player is ready:
+```
+//wistiaPlayerManager.ts ...
+window.wistiaInitQueue.push({
+  id: pid,
+  options: wistiaEmbedOptions,
+  onReady: (video) => this.onReady(pid, video)
+});
+```
+
+where <code>video</code> is the wistia instance (W in the first example).
 
