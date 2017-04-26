@@ -1,5 +1,6 @@
 import {IBasePlayerManager, IPlayerManager, IScriptLoader, IWistiaUrlservice, IMetaProps, IMetaObj} from '../../interfaces';
 import {PLAYERSTATES} from '../playbackService/index';
+import {BasePlayerManager} from '../basePlayerManager/basePlayerManager';
 /**
  * Created by githop on 4/12/17.
  */
@@ -36,6 +37,55 @@ const WISTIA_PLAYERSTATES = {
 function _existy(x: any) {
   return x != null;
 }
+
+export class WistiaPm extends BasePlayerManager {
+  public type = 'wistia';
+  private wistiaMetaProps = {
+    videoType: this.type,
+    isMuted: false,
+    vol: 0
+  };
+  constructor(
+    private wistiaScriptLoader: IScriptLoader,
+    private wistiaUrlService: IWistiaUrlservice) {
+    super();
+    Object.assign(this.metaProps, this.wistiaMetaProps);
+  }
+
+  static setPlayerDiv(pid: string, wistiaId: string): string {
+    //videoFoam is set on init to make video responsive.
+    return `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
+  }
+
+  seedPlayerManager(id: string, mainPlayer: boolean, mediaSrcArr: string[]): void {
+    if (_existy(this.getPlayer(id)) && this.getMetaProp(id, 'startAtTime') > 0) {
+      return;
+    }
+
+    if (mainPlayer) {
+      this.players = {};
+      this.mainPlayerId = id;
+    }
+
+    const wistiaId = this.wistiaUrlService.extractId(mediaSrcArr[0]);
+
+    const newProps = {
+      mainPlayer: mainPlayer,
+      div: WistiaPm.setPlayerDiv(id, wistiaId),
+      wistiaId: wistiaId
+    };
+
+    this.setPlayer(id, this.createMetaObj(newProps));
+    console.log('player!', this.getPlayer(id));
+  }
+
+  create(pid: string): void {
+    this.createWpInstance(pid)
+      .then(_ => {/* noop */});
+  }
+
+}
+
 
 export class WistiaPlayerManager implements IWistiaPlayerManager {
   private _players = {};
@@ -215,7 +265,6 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   private setPlayerDiv(pid: string, wistiaId: string): string {
     //videoFoam is set on init to make video responsive.
     return `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
-
   }
 
   private getPlayer(pid: string): object {
