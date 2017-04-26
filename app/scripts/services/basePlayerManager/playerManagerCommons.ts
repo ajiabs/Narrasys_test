@@ -13,39 +13,44 @@
  */
 
 export interface IMetaProps {
-  mainPlayer: boolean
-  playerState: string
-  div: string
-  ready: boolean
-  startAtTime: number
-  hasResumedFromStartAt: boolean
-  duration: number
-  time: number
-  hasBeenPlayed: boolean
-  bufferedPercent: number
-  timeMultiplier: number
-  resetInProgress: boolean
-  autoplay: boolean
+  mainPlayer: boolean;
+  playerState: string | number;
+  div: string;
+  ready: boolean;
+  startAtTime: number;
+  hasResumedFromStartAt: boolean;
+  duration: number;
+  time: number;
+  hasBeenPlayed: boolean;
+  bufferedPercent: number;
+  timeMultiplier: number;
+  resetInProgress: boolean;
+  autoplay: boolean;
+}
+
+export interface IMetaObj {
+  instance: any;
+  meta: IMetaProps;
 }
 
 export interface IBasePlayerManager {
-  commonMetaProps: IMetaProps
-  getPlayer(pid: string): any
-  setPlayer(pid: string, val: any): void
-  getMetaProp(pid: string, prop: string): any
-  setMetaProp(validKeys: () => {}): (pid: string, prop: string, val: any) => void
-  setInstance(pid: string, instance: object): void
-  createMetaObj(props: object, base: object): object
-  getMetaObj(pid: string): object
-  getPlayerDiv(pid: string): string
-  getInstance(predicate: () => boolean): (pid: string) => object
-  registerStateChangeListener(stateChangeListener: (stateChangeEvent: object) => void): void
-  unregisterStateChangeListener(cb: () => {}): void
-  getStateChangeListeners(): any[]
-  pauseOtherPlayers(pauseFn: () => void, getPlayerState: () => number): (pid: string) => void
-  resetPlayerManager(destroyFn: () => void): () => void
-  renamePid(oldName: string, newName: string): void
-  handleTimelineEnd(fn: () => void): (pid: string) => void
+  commonMetaProps: IMetaProps;
+  getPlayer(pid: string): any;
+  setPlayer(pid: string, val: any): void;
+  getMetaProp(pid: string, prop: string): any;
+  setMetaProp(validKeys: () => {}): (pid: string, prop: string, val: any) => void;
+  setInstance(pid: string, instance: object): void;
+  createMetaObj(props: object, base: object): object;
+  getMetaObj(pid: string): object;
+  getPlayerDiv(pid: string): string;
+  getInstance(predicate: () => boolean): (pid: string) => object;
+  registerStateChangeListener(stateChangeListener: (stateChangeEvent: object) => void): void;
+  unregisterStateChangeListener(cb: () => {}): void;
+  getStateChangeListeners(): any[];
+  pauseOtherPlayers(pauseFn: () => void, getPlayerState: () => number): (pid: string) => void;
+  resetPlayerManager(destroyFn: () => void): () => void;
+  renamePid(oldName: string, newName: string): void;
+  handleTimelineEnd(fn: () => void): (pid: string) => void;
 }
 
 
@@ -298,7 +303,7 @@ export default function playerManagerCommons(ittUtils) {
     function _getPlayers() {
       return _players;
     }
-  }
+  };
 }
 
 
