@@ -141,7 +141,7 @@ export default function playerManagerCommons(ittUtils) {
             console.log('catch read only error:', e, 'prop', prop, 'val', val);
           }
         }
-      }
+      };
     }
 
     /**
@@ -199,7 +199,7 @@ export default function playerManagerCommons(ittUtils) {
             }
           }
         });
-      }
+      };
     }
 
     /**
@@ -215,7 +215,7 @@ export default function playerManagerCommons(ittUtils) {
         if (predicate(pid) === true) {
           return getPlayer(pid).instance;
         }
-      }
+      };
     }
 
     /**
@@ -264,7 +264,7 @@ export default function playerManagerCommons(ittUtils) {
           _destroyInstance(id, true, destroyFn);
         });
         _players = {};
-      }
+      };
     }
 
     function renamePid(oldName, newName) {
@@ -274,7 +274,7 @@ export default function playerManagerCommons(ittUtils) {
     function handleTimelineEnd(fn) {
       return function (pid) {
         return fn(pid);
-      }
+      };
     }
 
     /**
