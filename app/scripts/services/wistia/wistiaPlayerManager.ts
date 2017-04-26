@@ -123,11 +123,11 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     return this.base.unregisterStateChangeListener(fn);
   }
 
-  getMetaProp<T, K extends keyof IWistiaMetaProps>(pid: T, prop: K): IWistiaMetaProps[K] {
+  getMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K): IWistiaMetaProps[K] {
     return this.base.getMetaProp(pid, prop);
   }
 
-  setMetaProp<T, K extends keyof IWistiaMetaProps>(pid: T, prop: K, val: IWistiaMetaProps[K]): void {
+  setMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K, val: IWistiaMetaProps[K]): void {
     return this._setMetaProps(pid, prop, val);
   }
 
