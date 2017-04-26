@@ -201,17 +201,9 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   }
 
   private setPlayerDiv(pid: string, wistiaId: string) {
-    console.log('setting div!', pid, wistiaId);
-//     const responsive = `
-// <div class="wistia_responsive_padding" style="padding:56.25% 0 28px 0;position:relative;">
-//   <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
-//     <div id="${pid}" class="wistia_embed wistia_async_${wistiaId}" style="height:100%;width:100%">&nbsp;</div>
-//   </div>
-// </div>`;
+    //videoFoam is set on init to make video responsive.
+    return `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
 
-    const bare = `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
-
-    return bare;
   }
 
   private getPlayer(pid) {
@@ -227,17 +219,17 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   }
 
   private createWpInstance(pid: string) {
+    const isEmbed = this._mainPlayerId !== pid;
     const wistiaEmbedOptions = {
-      playbar: false,
+      playbar: isEmbed,
       videoFoam: true,
-      fullscreenButton: false,
-      playButton: false,
-      settingsControl: false,
-      smallPlayButton: false,
-      volumeControl: false
+      fullscreenButton: isEmbed,
+      playButton: isEmbed,
+      settingsControl: isEmbed,
+      smallPlayButton: isEmbed,
+      volumeControl: isEmbed
 
     };
-    console.log('create instance PID', pid);
     return this.wistiaScriptLoader.load(pid)
       .then(_ =>  {
         window.wistiaInitQueue  = window.wistiaInitQueue || [];
@@ -246,22 +238,10 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
           options: wistiaEmbedOptions,
           onReady: (video) => this.onReady(pid, video)
         });
-
-        //
-        // window.wistiaInit = (W) => {
-        //   W.options(pid, {
-        //     ...wistiaEmbedOptions,
-        //     onReady: (video) => {
-        //       console.log('onReady!!!');
-        //       this.onReady(pid, video);
-        //     }
-        //   });
-        // };
       });
   }
 
   private onReady(pid, wistiaInstance) {
-    console.log('we ready!');
     this.base.setInstance(pid, wistiaInstance);
     this.attachEventListeners(wistiaInstance, pid);
     this.emitStateChange(pid, 6);

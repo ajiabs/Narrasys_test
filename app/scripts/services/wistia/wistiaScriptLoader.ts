@@ -3,6 +3,8 @@ import {IScriptLoader} from '../../interfaces';
  * Created by githop on 4/12/17.
  */
 
+declare const Wistia:object;
+
 export class WistiaScriptLoader implements IScriptLoader {
   private WISTIA_HREF = 'https://fast.wistia.com/assets/external/E-v1.js';
 
@@ -11,8 +13,10 @@ export class WistiaScriptLoader implements IScriptLoader {
 
   load(assetId: string): ng.IPromise<{}> {
     return this.$q((resolve) => {
-      if (window._wq == null) {
+      if (typeof Wistia === 'undefined') {
         this._appendScript(assetId, resolve);
+      } else {
+        resolve();
       }
     });
   }
