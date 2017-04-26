@@ -160,8 +160,9 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     //noop
   }
 
-  setSpeed(pid) {
+  setSpeed(pid: string, rate: number) {
     //noop
+    this.invokeMethod(pid, 'playbackRate', rate);
   }
 
   handleTimelineEnd(pid) {
