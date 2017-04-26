@@ -1,7 +1,7 @@
 import {IBasePlayerManager, IMetaObj, IMetaProps} from './services/basePlayerManager/playerManagerCommons';
-import {IAnnotators} from "./directives/sxsAnnotatorAutocomplete";
-import {IWistiaPlayerManager} from "./services/wistia/wistiaPlayerManager";
-import {IWistiaUrlservice} from "./services/wistia/wistiaUrlService";
+import {IAnnotators} from './directives/sxsAnnotatorAutocomplete';
+import {IWistiaPlayerManager} from './services/wistia/wistiaPlayerManager';
+import {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
 /**
  * Created by githop on 4/11/17.
  */
