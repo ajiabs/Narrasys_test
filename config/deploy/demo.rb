@@ -43,4 +43,4 @@ role :app,  %w{deploy@demo.inthetelling.com}
 # setting per server overrides global ssh_options
 
 # fetch(:default_env).merge!(rails_env: :development)
-before "deploy:publishing", "deploy:update_new_relic_application_id"
+before "deploy:compress_assets", "deploy:update_new_relic_application_id"

@@ -1,0 +1,662 @@
+/*============================
+ *
+ * Defaults
+ *
+//===========================*/
+
+.content .item:first-child {
+	padding-top: 0.75em;
+	padding-bottom: 0.75em;
+}
+
+.searchMode .content .item:first-child {
+	padding-top: 0;
+}
+
+.content .item.sidebarL:first-child,
+.content .item.sidebarR:first-child {
+	padding-top: 0.5em;
+}
+
+.content .item {
+	padding: 0.3em 0.5em 0.3em 60px;
+}
+
+.windowFg .content .item {
+	padding: 0;
+}
+
+.item {
+	transition: all ease-in-out 1s;
+}
+
+.item .itemHead {
+	display: inline;
+	line-height: 1em
+}
+
+.item .icon {
+	max-width: 55px;
+}
+
+.item .icon img {
+	width: 100%;
+}
+
+.item .startTime {
+	cursor: pointer;
+	cursor: hand;
+	width: 50px;
+	text-align: right;
+	float: left;
+}
+
+.item .title {
+	margin-bottom: 0.5em;
+}
+
+a.startTime.displayTime {
+	text-decoration: none;
+	text-shadow: none;
+}
+
+
+/* iframes */
+
+.iframeContainer {
+	width: 100%;
+	position: relative;
+	background-color: #FFF;
+	/*for ios*/
+	-webkit-overflow-scrolling: touch;
+	overflow-y: scroll;
+}
+
+.modal .iframeContainer {
+	height: 100%;
+}
+
+.item .iframeContainer {
+	height: 320px;
+}
+
+.touchDevice .iframeContainer {
+	/* TODO make sure this class is being applied */
+	-webkit-overflow-scrolling: touch;
+	overflow-y: scroll;
+}
+
+.iframeContainer .loading,
+.iframeContainer iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 100%;
+}
+
+.iframeContainer iframe {
+	background-color: #FFF;
+	/* can't be transparent; otherwise loading spinner stays visible if framed content is smaller than iframe */
+	border: none;
+	width: 100%;
+	height: 98%;
+}
+
+
+/*
+	.singleitem panes are intended for cleaner transitions when there's only one content item in the pane at a time.
+	TODO: this works fine when moving from single item to single item, but transitioning between
+	single and multiple is not so hot.  try again later
+ */
+
+
+/* .singleitem .item {
+	position:absolute;
+	width:100%;
+}
+.singleitem .item:after {
+	clear:both;
+	content:"";
+	display:block;
+}
+*/
+
+
+/*============================ ============================ ============================
+image-fill items */
+
+
+/*
+	item.contain, item.cover, and item.fill should use background-image.  Others should use the img, and resize to fit the img.
+
+*/
+
+.item.fill .itemTemplate,
+.item.contain .itemTemplate,
+.item.cover .itemTemplate {
+	overflow: hidden;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.fill .item.contain .fillImg,
+.fill .item.cover .fillImg,
+.fill .item.fill .fillImg,
+.windowFg .item.contain .fillImg,
+.windowFg .item.cover .fillImg,
+.windowFg .item.fill .fillImg {
+	display: none;
+}
+
+.item.fill .itemTemplate {
+	background-size: 100% 100%;
+}
+
+.item.contain .itemTemplate {
+	background-size: contain;
+}
+
+.item.cover .itemTemplate {
+	background-size: cover;
+}
+
+.fill .item .fillImg {
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 100%;
+	position: absolute;
+}
+
+.fill .item.center .fillImg {
+	/* This was position:static, but that broke in IE.  temporary fix. */
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.fill .item.tr img,
+.fill .item.br .fillImg {
+	right: 0;
+}
+
+.fill .item.bl img,
+.fill .item.br .fillImg {
+	bottom: 0;
+}
+
+.fill .item.tl img,
+.fill .item.tr .fillImg {
+	top: 0;
+}
+
+.fill .item.bl img,
+.fill .item.tl .fillImg {
+	left: 0;
+}
+
+.fill .item.center .itemTemplate {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+/* this background-image is only used for contain or cover styles; never in content: */
+
+.content .itemTemplate.imageFill {
+	background-image: none !important;
+	padding-left: 5px;
+}
+
+
+/*============================ ============================ ============================
+Inline images (TODO show these only when image is larger than available space) */
+
+.content .item:first-child .imagePlain {
+	/* override first-child padding for plain images: */
+	margin-top: -1.5em;
+}
+
+.content .item .imagePlain {
+	/* and override content pane's margin always: */
+	margin-right: -0.5em;
+	margin-left: -0.5em;
+}
+
+.content img {
+	max-width: 100%;
+}
+
+.item .touchable {
+	cursor: pointer;
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.item .touchable img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.item .touchableIndicator {
+	opacity: 0;
+	transition: opacity 1.5s;
+	position: absolute;
+	bottom: 7px;
+	right: 5px;
+	font-family: Story;
+	font-size: 1em;
+	pointer-events: none;
+	/* let clicks pass through to the image */
+}
+
+.touchableIndicator:before {
+	content: "\e609";
+	text-shadow: 1px 1px 1px #FFF;
+}
+
+.item .touchable:hover .touchableIndicator {
+	opacity: 0.8;
+}
+
+
+/*============================ ============================ ============================
+  inline item detail */
+.itemDetail.ng-enter,
+.itemDetail.ng-leave {
+	transition: 1s all;
+	overflow: hidden;
+}
+
+.itemDetail.ng-enter {
+	height: 1px;
+	opacity: 0;
+}
+
+.itemDetail.ng-enter-active {
+	height: 300px;
+	opacity: 1;
+}
+
+.itemDetail.ng-leave {
+	height: 300px;
+	opacity: 1;
+}
+
+.itemDetail.ng-leave-active {
+	height: 1px;
+	opacity: 0;
+}
+
+
+/*============================ ============================ ============================
+  Modal overlay */
+
+.modal {
+	transition: 1s all;
+	max-height: calc(100% - 100px);
+	position: fixed;
+	width: 75%;
+	top: 30%;
+	left: 50%;
+	height: 80%;
+	transform: translate(-50%, -40%);
+}
+
+.modal.ng-enter,
+.modal.ng-leave.ng-leave-active {
+	left: 49%;
+	right: 49%;
+	top: 33%;
+	overflow: hidden;
+}
+
+.modal.ng-enter-active,
+.modal.ng-leave {
+	left: 5%;
+	right: 5%;
+	top: 10%;
+	display: block !important;
+	overflow: hidden;
+}
+
+.modalmenu {
+	border-radius: 1em 1em 0 0;
+	text-align: right;
+	padding: 0 1em;
+	color: #FFF;
+	background-color: #000;
+	height: 30px;
+	line-height: 30px
+}
+
+.modalmenu a,
+.modalmenu a:before {
+	color: #FFF !important;
+}
+
+.modalimage {
+	text-align: center;
+	/* width and height are needed for IE, which otherwise borks exit animation: see TS-847 */
+	width: 100%;
+	height: 100%;
+}
+
+.modalimage img {
+	max-width: 100%;
+	box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.9);
+	background-color: #FFF;
+}
+
+
+/*============================ ============================ ============================
+ *
+ * timestamps
+
+	normal:                     item: pad 60px, timestamp -60px
+	normal, timestampInline:    item: pad 0,    timestamp 0 inline;
+	normal, timestampNone:      item: pad 0,    timestamp display none
+  normal, headerItem:         item: -60px,    timestamp display none;
+  normal, sidebar:            item: pad 0,    timestamp display none;
+
+	narrow:                     item: pad 0,    timestamp 0 inline;
+	narrow, timestampInline:    item: pad 0,    timestamp 0 inline;
+	narrow, timestampNone:      item: pad 0,    timestamp display none;
+  normal, headerItem:         item: pad 0,    timestamp display none;
+  narrow, sidebar:            item: pad 0,    timestamp display none;
+
+=========================== */
+
+.content .item {
+	padding-left: 60px;
+}
+
+.content .item .startTime {
+	margin-left: -55px;
+}
+
+.searchMode .content .item .sxs-item .startTime {
+	/* these items have 10px padding */
+	margin-left: -65px;
+}
+
+.content .item .headerItem {
+	margin-left: -50px;
+}
+
+.content .item.timestampInline,
+.content .item.timestampNone,
+.content .item.sidebarL,
+.content .item.sidebarR {
+	padding-left: 0.5em;
+}
+
+.content.isNarrow .item,
+.content.isNarrow .item.timestampInline,
+.content.isNarrow .item.timestampNone,
+.content.isNarrow .item.sidebarL,
+.content.isNarrow .item.sidebarR {
+	padding-left: 0.5em;
+}
+
+.content.isNarrow .item.timestampNone .startTime,
+.content.isNarrow .item.headerItem .startTime,
+.content.isNarrow .item.sidebarL .startTime,
+.content.isNarrow .item.sidebarR .startTime {
+	display: none;
+}
+
+
+/* =========================== */
+
+.item.timestampNone .startTime {
+	display: none
+}
+
+
+/* =========================== */
+
+.content.isNarrow .item .headerItem,
+.timestampNone .headerItem,
+.timestampInline .headerItem {
+	margin-left: 0 !important;
+}
+
+.content.isNarrow .item .startTime,
+.content.isNarrow .item .sxs-item .startTime,
+.item.timestampInline .startTime {
+	display: inline;
+	margin-left: 0;
+	width: auto;
+	text-align: left;
+	margin-right: 0.4em;
+}
+
+.content.isNarrow .item .pullquote:before {
+	display: inline;
+	margin-left: 0;
+	width: auto;
+	text-align: left;
+	height: 1px;
+	padding-right: 5px;
+}
+
+
+/* =========================== */
+
+.item.timestampSidebar .startTime {
+	transform: rotate(90deg) translateX(100%);
+	transform-origin: 100% 0;
+	width: auto;
+	font-size: 20px;
+	margin-left: -45px;
+}
+
+
+/* =========================== */
+
+.item.timestampSmall .displayTime {
+	font-size: 0.86em;
+}
+
+
+/* =========================== */
+
+
+/*============================ ============================ ============================
+ *
+ * Template variants
+ *
+//=========================== */
+
+.item .pullquote:before {
+	color: rgba(0, 0, 0, 0.1);
+	content: "“";
+	float: left;
+	font-size: 2.5em;
+	line-height: 0.8em;
+	text-align: right;
+	width: 50px;
+	text-shadow: none !important;
+	height: 1px;
+}
+
+.item .pullquote {
+	font-size: 2em;
+	padding-top: 0.3em;
+	line-height: 1.1em;
+}
+
+.item .pullquoteSpeaker {
+	text-align: right;
+	font-style: italic;
+	font-size: 0.8em
+}
+
+/*now placing emdash in HTML*/
+/*.item .pullquoteSpeaker:before {*/
+	/*content: " — ";*/
+/*}*/
+
+
+/* - - - - - - - - - - - - - -  */
+
+.item .captionContainer {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+}
+
+.item .caption {
+	position: absolute;
+	/* TODO why is this not zero: */
+	bottom: 4px;
+	left: 0;
+	right: 0;
+	padding: 0.5em;
+	opacity: 1;
+	transition: 0.7s all;
+	background-color: #333;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-top: 1px solid #666;
+	color: #FFF;
+}
+
+.item .captionContainer img {
+	width: 100%;
+}
+
+.item.colorInvert .caption {
+	background-color: #eee;
+	background-color: rgba(255, 255, 255, 0.7);
+	color: #000;
+	border-top: 1px solid #666;
+}
+
+.item:hover .caption {
+	opacity: 0;
+}
+
+.item .slidingcaption {
+	transform: translateY(0);
+}
+
+.item:hover .slidingcaption {
+	transform: translateY(100%);
+}
+
+
+/* - - - - - - - - - - - - - -  */
+
+.item .thumbnail img {
+	width: 100%;
+}
+
+.item .thumbnail {
+	max-width: 72px;
+	transition: all 0.7s;
+	float: left;
+	margin-right: 1em;
+}
+
+.item .thumbnail.fullsize {
+	max-width: 100%;
+	float: none;
+}
+
+
+/* - - - - - - - - - - - - - -  */
+
+.item .question label {
+	display: block;
+	padding: 0.3em;
+}
+
+.item .question .correct {
+	border-left: 5px solid #0C0;
+}
+
+.item .question .incorrect {
+	border-left: 5px solid #C00;
+}
+
+.item .question input[type="radio"] {
+	margin-right: 0.5em;
+}
+
+.item .flotContainer {
+	position: relative;
+}
+
+.item .flotContainer:after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.item .chartContainer {
+	width: 50%;
+	max-width: 400px;
+	float: left;
+}
+
+.item .legendContainer {
+	float: right;
+	width: 50%;
+}
+
+.item .legendContainer td {
+	padding: 2px;
+	vertical-align: top;
+}
+
+.isNarrow .item .chartContainer {
+	width: auto;
+	max-width: auto;
+	margin: auto;
+	float: none;
+}
+
+.isNarrow .item .legendContainer {
+	float: none;
+	max-width: 100%;
+}
+
+
+/* - - - - - - - - - - - - - -  */
+
+.item .definition .itemHead div {
+	padding-left: 40px;
+	background: url('/images/definition-1.png') top left no-repeat;
+}
+
+.item .definition .itemHead div span {
+	font-size: 1.6em;
+	font-weight: 700;
+	line-height: 1.6em;
+	border-bottom: 1px solid;
+}
+
+.item .definition .text {
+	padding-left: 40px;
+	background: url('/images/definition-2.png') top left no-repeat;
+}
+
+.item__text--transmedia, .item__text--h2 {
+  ul {
+    padding-left: 40px;
+  }
+}
+

@@ -1,0 +1,191 @@
+.rootLogin h1 {
+	font-size: 1em;
+}
+
+.rootLogin form {
+	padding-bottom: 1em;
+}
+
+.rootLogin .error {
+	color: #F00;
+}
+
+.rootLogin label {
+	display: block;
+	width: 100%;
+	margin: 0.2em 0;
+}
+
+.rootLogin label span {
+	width: 29%;
+	display: inline-block;
+}
+
+.rootLogin label input {
+	width: 70%;
+	font-size: 1em;
+	padding: 0.1em;
+}
+
+.rootLogin .submit {
+	float: right;
+}
+
+/* - */
+
+.admin {
+	margin: 1em;
+}
+
+.admin small {
+	opacity: 0.3;
+	float: right;
+	text-align: right;
+}
+
+/*.admin button {
+  background-color: #fff;
+  border: 1px solid;
+  border-color: #ccc #999 #999 #ccc;
+  border-radius: 0.3em;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  font-size: 0.76em;
+  margin: 0.2em;
+  padding: 0 0.4em;
+}
+
+.admin button:disabled {
+  border-color: #EEE;
+  color: #EEE;
+}*/
+
+.container {
+	list-style: none;
+	clear: both;
+}
+
+.container .controls {
+	background-color: #FDFDFD;
+	text-align: right;
+	font-size: 0.9em;
+	clear: right;
+}
+
+.container span.controls {
+	background: none;
+	float: right;
+}
+
+.container input {
+	width: 50%;
+}
+
+.episodePicker {
+	background: none repeat scroll 0 0 #fff;
+	border: 1px solid;
+	box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+	margin-bottom: 1em;
+	margin-left: 1em;
+	margin-right: 1em;
+	padding: 0.5em;
+	position: absolute;
+}
+
+.admin, .episodePicker {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	background: none repeat scroll 0 0 #fff;
+	border: 1px solid;
+	box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+	padding: 1em;
+	position: absolute;
+	overflow: auto;
+}
+
+.itt__modal {
+	max-height: calc(100% - 100px);
+	position: fixed;
+	width: 85%;
+	height: 85%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+}
+
+.narrative__index {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.container.customer {
+	margin-left: 0;
+}
+
+
+.isOpen, .isClosed {
+	cursor: pointer;
+}
+
+.isOpen:before {
+	content: "\25BE";
+	display: inline-block;
+	width: 1em;
+	opacity: 0.5;
+	float: left;
+}
+
+.isClosed:before {
+	content: "\25B8";
+	display: inline-block;
+	width: 1em;
+	opacity: 0.5;
+	float: left;
+}
+
+.published__state {
+	position: relative;
+	float: right;
+	color: #DC6026;
+}
+
+.isPublished, .isUnPublished {
+	/*float: right;*/
+	font-family: Story;
+	padding: 5px;
+}
+
+.isUnPublished {
+	color: #595A5A;
+}
+
+.isPublished:before {
+	content: "\e906"
+}
+
+.isUnPublished:before {
+	content: "\e908"
+}
+
+
+
+.admin .danger {
+	background-color: #C00 !important;
+	color: #FFF;
+}
+
+input.readonly {
+	border: none;
+	width: 100%;
+	background: none;
+	font-size: 0.9em;
+}
+

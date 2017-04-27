@@ -3,7 +3,7 @@
 		<span>Edit item</span>
 	</a>
 	<div class="avatar">
-		<img ng-src="{{item.avatar.url || '/images/no-avatar.gif'}}">
+		<img ng-src="{{item.avatar.url || appState.noAvatar }}">
 	</div>
 	<div class="itemHead">
 		<div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>

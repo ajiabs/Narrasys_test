@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-ng-app="com.inthetelling.story">
+<html lang="en" ng-app="iTT" ng-strict-di>
 
 <head>
 	<meta charset="utf-8">
@@ -10,37 +10,15 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="pinterest" content="nopin"/>
 
+  <base href="/">
+
 	<link href="favicon.ico" rel="icon" type="image/x-icon">
 	<link href="apple-touch-icon.png" rel="apple-touch-icon-precomposed">
 	<link href="apple-touch-icon-72.png" sizes="72x72" rel="apple-touch-icon-precomposed">
 	<link href="apple-touch-icon-114.png" sizes="114x114" rel="apple-touch-icon-precomposed">
 
-	<base href="/">
-	<!-- build:css(.tmp) styles/app-combined.css -->
-	<link rel="stylesheet" href="styles/main.css">
-	<link rel="stylesheet" href="styles/timeline.css">
-	<link rel="stylesheet" href="styles/toolbar.css">
-	<link rel="stylesheet" href="styles/episode.css">
-	<link rel="stylesheet" href="styles/scene.css">
-	<link rel="stylesheet" href="styles/item.css">
-
-	<link rel="stylesheet" href="styles/highlights.css">
-	<link rel="stylesheet" href="styles/transitions.css">
-	<link rel="stylesheet" href="styles/typography.css">
-	<link rel="stylesheet" href="styles/colors.css">
-
-	<link rel="stylesheet" href="styles/narrative.css">
-
-	<link rel="stylesheet" href="styles/admin.css">
-	<link rel="stylesheet" href="styles/producer.css">
-	<!-- endbuild -->
-
-	<!-- build:css(.tmp) styles/vendor-combined.css -->
-	<link rel="stylesheet" href="styles/textangular.css">
-	<link rel="stylesheet" href="styles/angular-ui-tree.css">
-	<!-- endbuild -->
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<!-- TODO: build only the fonts needed for the current episode -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="//fonts.googleapis.com/css?family=Amiri:400,400i,700,700i|Noto+Sans:400,400i,700,700i|Cardo:400,400i|Crimson+Text:400,400i,700,700i|Droid+Serif:400,400i|EB+Garamond|Lato:100,100i,300,300i,400,400i,700,700i|Montserrat:400,700|Open+Sans:400,400i,700,700i|Roboto+Condensed:700,700i|Roboto:300,300i,400,400i,700,700i|Source+Sans+Pro:300,300i,400,400i" rel="stylesheet">
 </head>
 
@@ -52,157 +30,15 @@
 <itt-route-loading></itt-route-loading>
 <div id="CONTAINER" x-ng-view=""></div>
 <div ng-controller="ErrorController" ng-include="'templates/error.html'"></div>
-
-<script src="config.js"></script>
-<!-- CDN links-->
-<script src="//sdk.amazonaws.com/js/aws-sdk-2.2.30.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-animate.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-sanitize.min.js"></script>
-<!-- end CDN -->
-
-<!-- build:js({.tmp,app}) scripts/vendor-combined.min.js -->
-<script src="bower_components/flot/jquery.flot.js"></script>
-<script src="bower_components/flot/jquery.flot.pie.js"></script>
-<script src="bower_components/textAngular/dist/textAngular-rangy.min.js"></script>
-<script src="bower_components/textAngular/dist/textAngular-sanitize.min.js"></script>
-<script src="bower_components/textAngular/dist/textAngular.min.js"></script>
-<script src="bower_components/angular-ui-tree/dist/angular-ui-tree.min.js"></script>
-<script src="scripts/plugin/newrelic.js"></script>
 <!-- endbuild -->
-<!-- build:js({.tmp,app}) scripts/app-combined.min.js -->
-<script src="scripts/app.js"></script>
-<script src="scripts/templates.js"></script>
-<script src="scripts/services/config.js"></script>
-<script src="scripts/services/appState.js"></script>
-<script src="scripts/services/authSvc.js"></script>
-<script src="scripts/services/awsSvc.js"></script>
-<script src="scripts/services/dataSvc.js"></script>
-<script src="scripts/services/errorSvc.js"></script>
-<script src="scripts/services/modelSvc.js"></script>
-<script src="scripts/services/timelineSvc.js"></script>
-<script src="scripts/services/analyticsSvc.js"></script>
-<script src="scripts/services/youtube/youtubeUrlService.js"></script>
-<script src="scripts/services/youtube/youtubeScriptLoader.js"></script>
-<script src="scripts/services/youtube/YouTubePlayerManager.svc.js"></script>
-<script src="scripts/services/questionAnswersSvc.js"></script>
-<script src="scripts/services/recursionHelper.js"></script>
-<script src="scripts/services/mockSvc.js"></script>
-<script src="scripts/services/imageResizeSvc.js"></script>
-<script src="scripts/services/ittUtils.js"></script>
-<script src="scripts/services/selectService.js"></script>
-<script src="scripts/filters/filters.js"></script>
-<script src="scripts/services/playbackService.js"></script>
-<script src="scripts/services/urlService.js"></script>
-<script src="scripts/services/basePlayerManager/playerManagerCommons.js"></script>
-<script src="scripts/services/html5/html5PlayerManager.svc.js"></script>
-<script src="scripts/services/html5/html5UrlService.js"></script>
-<script src="scripts/services/kaltura/kalturaPlayerManager.js"></script>
-<script src="scripts/services/kaltura/kalturaUrlService.js"></script>
-<script src="scripts/services/kaltura/kalturaScriptLoader.js"></script>
+<script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise"></script>
+<script src="//sdk.amazonaws.com/js/aws-sdk-2.38.0.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-route.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
 
-<script src="scripts/controllers/ErrorController.js"></script>
-
-<script src="scripts/controllers/TimelineController.js"></script>
-<script src="scripts/controllers/PlayerController.js"></script>
-<script src="scripts/controllers/EpisodeController.js"></script>
-<script src="scripts/controllers/SceneController.js"></script>
-<script src="scripts/controllers/ItemController.js"></script>
-<script src="scripts/controllers/SearchPanelController.js"></script>
-<script src="scripts/controllers/NarrativeController.js"></script>
-<script src="scripts/controllers/NarrativesController.js"></script>
-
-<script src="scripts/controllers/EditController.js"></script>
-<script src="scripts/controllers/EventTestController.js"></script>
-
-<script src="scripts/directives/ittLogin.js"></script>
-<script src="scripts/directives/autofocus.js"></script>
-
-<script src="scripts/directives/ittMcQuestion.js"></script>
-<script src="scripts/directives/ittFlotChart.js"></script>
-
-<script src="scripts/directives/ittTimeline.js"></script>
-<script src="scripts/directives/ittEpisode.js"></script>
-<script src="scripts/directives/ittScene.js"></script>
-<script src="scripts/directives/ittShowHideVisualOnly.js"></script>
-<script src="scripts/directives/ittShowFocus.js"></script>
-<script src="scripts/directives/ittToolbarStory.js"></script>
-<script src="scripts/directives/ittVolumeSlider.js"></script>
-<script src="scripts/directives/ittIframe.js"></script>
-<script src="scripts/directives/ittLoading.js"></script>
-
-<script src="scripts/directives/ittWidthWatch.js"></script>
-<script src="scripts/directives/ittReviewMode.js"></script>
-<script src="scripts/directives/ittItem.js"></script>
-<script src="scripts/directives/ittItemDetailModal.js"></script>
-<script src="scripts/directives/ittEpisodeEditor.js"></script>
-<script src="scripts/directives/ittItemEditor.js"></script>
-<script src="scripts/directives/ittVideo.js"></script>
-<script src="scripts/directives/ittMagnetized.js"></script>
-<script src="scripts/directives/ittMagnet.js"></script>
-<script src="scripts/directives/ittSearchPanel.js"></script>
-<script src="scripts/directives/ittContainer.js"></script>
-<script src="scripts/directives/ittContainerEpisodes.js"></script>
-<script src="scripts/directives/ittEpisodeList.js"></script>
-<script src="scripts/directives/ittUser.js"></script>
-<script src="scripts/directives/ittNarrative.js"></script>
-<script src="scripts/directives/ittNarrativeList.js"></script>
-<script src="scripts/directives/ittValidItemUrl.js"></script>
-<script src="scripts/directives/ittRouteLoading.js"></script>
-<script src="scripts/directives/ittValidUrl.js"></script>
-
-<script src="scripts/directives/sxsAddContent.js"></script>
-<script src="scripts/directives/sxsInputTime.js"></script>
-<script src="scripts/directives/sxsAnnotatorAutocomplete.js"></script>
-<script src="scripts/directives/sxsInputI18n.js"></script>
-<script src="scripts/directives/ittTabs.js"></script>
-<script src="scripts/directives/sxsContainerAssets.js"></script>
-<script src="scripts/directives/ittAssetUploader.js"></script>
-<script src="scripts/directives/ittModal.js"></script>
-<script src="scripts/directives/ittEditPencil.js"></script>
-<script src="scripts/directives/ittNarrativeEditor.js"></script>
-<script src="scripts/directives/ittTimelineEditor.js"></script>
-<script src="scripts/directives/ittTimeField.js"></script>
-<script src="scripts/directives/ittTitleField.js"></script>
-<script src="scripts/directives/ittUrlField.js"></script>
-<script src="scripts/directives/ittDescriptionField.js"></script>
-<script src="scripts/directives/ittTemplateSelect.js"></script>
-<script src="scripts/directives/ittImageField.js"></script>
-<script src="scripts/directives/ittFlags.js"></script>
-<script src="scripts/directives/ittSpeakerField.js"></script>
-<script src="scripts/directives/ittTranscriptField.js"></script>
-<script src="scripts/directives/ittSpeakerThumbField.js"></script>
-<script src="scripts/directives/ittAnnotationField.js"></script>
-<script src="scripts/directives/ittQuestionTypeSelect.js"></script>
-<script src="scripts/directives/ittQuestionTextField.js"></script>
-<script src="scripts/directives/ittQuestionOptions.js"></script>
-<script src="scripts/directives/ittDisplaySelect.js"></script>
-<script src="scripts/directives/ittVideoPositionSelect.js"></script>
-<script src="scripts/directives/ittTypographySelect.js"></script>
-<script src="scripts/directives/ittColorSelect.js"></script>
-<script src="scripts/directives/ittTimestampSelect.js"></script>
-<script src="scripts/directives/ittHighlightSelect.js"></script>
-<script src="scripts/directives/ittTransitionSelect.js"></script>
-<script src="scripts/directives/ittFileField.js"></script>
-<script src="scripts/directives/ittDynamicModel.js"></script>
-<script src="scripts/directives/ittValidAsset.js"></script>
-<script src="scripts/directives/ittFilesHandler.js"></script>
-<script src="scripts/directives/ittOptionsDisabled.js"></script>
-<script src="scripts/directives/ittLanguageFlags.js"></script>
-<script src="scripts/directives/ittLanguageSelect.js"></script>
-<script src="scripts/directives/ittValidationTip.js"></script>
-<script src="scripts/directives/ittNarrativeTimeline.js"></script>
-<script src="scripts/directives/ittNav.js"></script>
-<script src="scripts/directives/ittTooltip.js"></script>
-<script src="scripts/directives/nys-copyright.js"></script>
-<script src="scripts/directives/ittUploadTranscriptsField.js"></script>
-<script src="scripts/directives/ittValidEpisodeUrl.js"></script>
-<script src="scripts/directives/ittGuestAccessibleUrl.js"></script>
-<script src="scripts/directives/ittClipboard.js"></script>
-<script src="scripts/directives/ittValidPathslug.js"></script>
-<!-- endbuild -->
+<%=htmlWebpackPlugin.files.webpackManifest%>
 </body>
 
 </html>

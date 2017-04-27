@@ -2,108 +2,108 @@
 <html lang="en">
 
 <head>
-	<title>NARRASYS Privacy Policy</title>
-	<style>
-		* {
-			font-family: sans-serif;
-			color: #595A5A;
-		}
+  <title>NARRASYS Privacy Policy</title>
+  <style>
+    * {
+      font-family: sans-serif;
+      color: #595A5A;
+    }
 
-		body {
-			background-color: #f1f1f1;
-		}
+    body {
+      background-color: #f1f1f1;
+    }
 
-		div.logo, h1, h2 {
-			text-align: center;
-		}
+    div.logo, h1, h2 {
+      text-align: center;
+    }
 
-		div.content {
-			background-color: white;
-			padding: 0 50px;
-			margin: 0 50px;
-			border: 1px solid black;
-			border-radius: 5px;
-		}
+    div.content {
+      background-color: white;
+      padding: 0 50px;
+      margin: 0 50px;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
 
-		div.logo img {
-			max-width: 500px;
-			width: 100%;
-		}
-		@media screen and (min-width:320px) and (max-width: 768px) {
-			div.content {
-				padding: 0 10px;
-				margin: 0 5px;
-			}
-		}
-	</style>
+    div.logo img {
+      max-width: 500px;
+      width: 100%;
+    }
+    @media screen and (min-width:320px) and (max-width: 768px) {
+      div.content {
+        padding: 0 10px;
+        margin: 0 5px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 <div class="logo">
-	<img src="/images/Narrasys_Banner.svg">
+  <img src="<%=require('./images/Narrasys_Banner.svg')%>">
 </div>
 
 <div class="content">
 
-	<h1>NARRASYS Privacy Policy</h1>
+  <h1>NARRASYS Privacy Policy</h1>
 
-	<p>This policy describes what information Narrasys collects from our users, and how we use it.</p>
+  <p>This policy describes what information Narrasys collects from our users, and how we use it.</p>
 
-	<p>To get the important part out of the way first: we do not and have no plans to share personally identifiable
-		information with any third parties for advertising or direct marketing purposes. Narrasys is not in the ad
-		business.</p>
+  <p>To get the important part out of the way first: we do not and have no plans to share personally identifiable
+    information with any third parties for advertising or direct marketing purposes. Narrasys is not in the ad
+    business.</p>
 
-	<h2>Anonymous users</h2>
+  <h2>Anonymous users</h2>
 
-	<p>Narrasys collects some usage data from all users: we keep track how people use our episodes, which parts get
-		skipped and which get rewatched, which outgoing links get clicked and which ones don't, and so forth. We use
-		localStorage (a web browser feature similar to cookies) to keep track of repeat visits by the same user -- this
-		is the only personally identifiable information we collect in episodes which allow anonymous access.</p>
+  <p>Narrasys collects some usage data from all users: we keep track how people use our episodes, which parts get
+    skipped and which get rewatched, which outgoing links get clicked and which ones don't, and so forth. We use
+    localStorage (a web browser feature similar to cookies) to keep track of repeat visits by the same user -- this
+    is the only personally identifiable information we collect in episodes which allow anonymous access.</p>
 
-	<p>We collect this information solely for the purpose of learning how we can best improve our product. We may
-		eventually disclose aggregate reports based on this data, but do not and will not pass on individually
-		identifiable information of this type to any third parties.</p>
+  <p>We collect this information solely for the purpose of learning how we can best improve our product. We may
+    eventually disclose aggregate reports based on this data, but do not and will not pass on individually
+    identifiable information of this type to any third parties.</p>
 
-	<h2>OAuth users</h2>
+  <h2>OAuth users</h2>
 
-	<p>Some Narrative(s) require users to log in via OAuth in order to view the episode.</p>
+  <p>Some Narrative(s) require users to log in via OAuth in order to view the episode.</p>
 
-	<p>OAuth is a protocol which allows you to access Narrative(s) using your existing login information from an OAuth
-		provider (such as Facebook, Twitter, Google, or others), while giving you a degree of control of how much of
-		that information we receive (we never get your password, for example.) The amount of information we receive from
-		those authentication providers differs slightly depending on the provider; please see their respective privacy
-		policies for more details.</p>
+  <p>OAuth is a protocol which allows you to access Narrative(s) using your existing login information from an OAuth
+    provider (such as Facebook, Twitter, Google, or others), while giving you a degree of control of how much of
+    that information we receive (we never get your password, for example.) The amount of information we receive from
+    those authentication providers differs slightly depending on the provider; please see their respective privacy
+    policies for more details.</p>
 
-	<p>If you wish, you may opt out of this by selecting "None" when we ask which OAuth provider you wish to use; some
-		features of these episodes will be disabled if you choose this option.</p>
+  <p>If you wish, you may opt out of this by selecting "None" when we ask which OAuth provider you wish to use; some
+    features of these episodes will be disabled if you choose this option.</p>
 
-	<p>A small number of Narrative(s) support "badges" or "achievements" -- for these episodes we keep track of your
-		progress towards those "achievements". If (and only if) you choose to 'collect' an acheived badge, that
-		information will be passed on to the third-party provider of that service (credly.com).</p>
+  <p>A small number of Narrative(s) support "badges" or "achievements" -- for these episodes we keep track of your
+    progress towards those "achievements". If (and only if) you choose to 'collect' an acheived badge, that
+    information will be passed on to the third-party provider of that service (credly.com).</p>
 
-	<p>Some episodes may also contain polls, quiz questions, and (in the near future) notes, discussion forums, and so
-		forth; if you choose to use these features, we store and redisplay the information you enter as needed. (We may
-		delete or modify inappropriate content entered via these features, at our discretion.)</p>
+  <p>Some episodes may also contain polls, quiz questions, and (in the near future) notes, discussion forums, and so
+    forth; if you choose to use these features, we store and redisplay the information you enter as needed. (We may
+    delete or modify inappropriate content entered via these features, at our discretion.)</p>
 
-	<h2>LTI users</h2>
+  <h2>LTI users</h2>
 
-	<p>LTI stands for "Learning Tool Interoperability" -- if you're viewing a Narrative within a learning management
-		system such as Blackboard or Canvas, LTI passes your identity from that system to ours so we're able to show you
-		the episode without requiring you to log in again. (As with OAuth, we do not receive your password from
-		LTI.)</p>
+  <p>LTI stands for "Learning Tool Interoperability" -- if you're viewing a Narrative within a learning management
+    system such as Blackboard or Canvas, LTI passes your identity from that system to ours so we're able to show you
+    the episode without requiring you to log in again. (As with OAuth, we do not receive your password from
+    LTI.)</p>
 
-	<p>Narrative(s) which require LTI authentication are not accessible without LTI.</p>
+  <p>Narrative(s) which require LTI authentication are not accessible without LTI.</p>
 
-	<p>If you are using a Narrative in an educational context, personally identifiable information about your usage of
-		the episode (including your responses to quizzes, usage of links and discussion forums, and so on) may be shared
-		with your instructor or others at your educational institution.</p>
+  <p>If you are using a Narrative in an educational context, personally identifiable information about your usage of
+    the episode (including your responses to quizzes, usage of links and discussion forums, and so on) may be shared
+    with your instructor or others at your educational institution.</p>
 
-	<h2>All users</h2>
+  <h2>All users</h2>
 
-	<p>We may disclose personal information if we are required by law or legal process to do so; to protect and defend
-		our rights, services or property; or to protect against misuse or unauthorized use of our service.</p>
+  <p>We may disclose personal information if we are required by law or legal process to do so; to protect and defend
+    our rights, services or property; or to protect against misuse or unauthorized use of our service.</p>
 
-	<p>This policy was written on July 14, 2014, and is subject to change at any time.</p>
+  <p>This policy was written on July 14, 2014, and is subject to change at any time.</p>
 </div>
 </body>
 

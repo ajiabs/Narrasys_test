@@ -39,8 +39,16 @@ namespace :deploy do
   desc 'Update new relic application id'
   task :update_new_relic_application_id do
     on roles(:app) do
-      vendor_combined_path = File.join(fetch(:release_path), 'dist/scripts/*.vendor-combined.min.js')
-      execute "sed -i 's/applicationID:\"3997255\"/applicationID:\"#{fetch(:new_relic_application_id)}\"/g' #{vendor_combined_path}"
+      app_path = File.join(fetch(:release_path), 'dist/app.*.min.js')
+      execute "sed -i 's/applicationID:\"3997255\"/applicationID:\"#{fetch(:new_relic_application_id)}\"/g' #{app_path}"
+    end
+  end
+
+  desc 'Compress certain assets for better web serving performance'
+  task :compress_assets do
+    on roles(:app) do
+      dist_path = File.join(fetch(:release_path), 'dist/')
+      execute "find -L #{dist_path} \\( -name \"*.js\" \\) -exec bash -c '[ ! -f {}.gz ] && 7z a -tgzip -mx=9 {}.gz {}' \\; "
     end
   end
 
@@ -70,6 +78,7 @@ namespace :deploy do
     end
   end
 
+  before 'deploy:publishing', 'deploy:compress_assets'
   after :finishing, 'deploy:cleanup'
 
 end

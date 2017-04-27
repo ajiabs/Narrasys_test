@@ -4,6 +4,8 @@
     $narrasysSecondary: #FFFFFF;
     $narrasysLink: #DE6626;
     $narrasysHighlight: rgba(222,102,37, 0.6);
+    @import "helpers";
+
 
     @mixin narrasys-header {
     	font-family: 'Gotham Medium',  sans-serif;
@@ -20,25 +22,25 @@
     }
 
     .narrasys {
-        
+
         background-image: url('/images/customer/Narrasys_Tree.svg');
-             
+
         .landingscreen {
 			h1 {
 				@include banner-pq('Gotham Medium', $narrasysAccent, 2.5vw);
 			}
-						
+
 			.introtext {
 				padding-bottom: 2em;
 			}
-			
+
 			#episode--description {
 				display: none;
 			}
 		}
-        
+
 		//custom altPane BG, landingscreen
-		
+
 
         .endingscreen {
             p {
@@ -55,7 +57,7 @@
                 color: $narrasysLink;
             }
         }
-        
+
         .searchResults {
             @include narrasys-header;
             .item__title--link, .item__link--fake-link, .item__link--escape-link {
@@ -110,7 +112,7 @@
 	   .item__text--image-caption, .item__text--image-caption-sliding {
 	        color: $narrasysSecondary;
 	   }
-        
+
         .item__link--escape-link {
             @include narrasys-body;
             color: $narrasysLink;
@@ -118,7 +120,7 @@
                 color: $narrasysPrimary;
             }
         }
-        
+
         //timestamp
         .item {
             .displayTime, .startTime {
@@ -129,8 +131,8 @@
                 }
             }
         }
-        
-       //invert 
+
+       //invert
         .item {
             &.colorInvert {
             	background-color: $narrasysPrimary !important;
@@ -140,27 +142,27 @@
                  		color: $narrasysSecondary !important;
                  	}
              	}
-             	
+
              	h1, h2, h3 {
              		color: $narrasysSecondary !important;
              	}
             }
         }
-        
+
         //highlights
         .content.allowHighlights {
         	.highlightSolid.item.isCurrent {
         		background-color: $narrasysHighlight;
         	}
-        	
+
         	.highlightSide.item.isCurrent {
         		border-left: 10px solid $narrasysHighlight;
         	}
-        	
+
         	.highlightBorder.item.isCurrent {
         		border: 2px solid $narrasysHighlight;
         	}
-        	
+
         	//hard code alpha to be 0.3 or half of default
         	//aka translucent
         	.highlightBloom.item.isCurrent {
@@ -168,7 +170,7 @@
         		box-shadow: 0 0 8px rgba(222,102,37, 0.3);
         	}
         }
-        
+
         //layout specific overrides
         .centered-pro {
             .banner-pull-quote {
@@ -181,15 +183,15 @@
 		//pro two col: centerVV
 		//non-pro two col: pip, cornerH, cornerV, twocol
 		//non-pro one col: centered, onecol
-        .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {	
+        .centerVV, .cornerV, .twocol, .centered, .cornerH, .pip, .onecol {
             .static-bg__main {
-                
+
             }
-            
+
             .static-bg__alt {
-                
+
             }
-            
+
             .item__title--link, .item__title--file {
                 @include narrasys-body;
             }
@@ -200,21 +202,21 @@
 
         }
 
-        .centerVV-mondrian {           
+        .centerVV-mondrian {
             .static-bg__main {
                 border: 4px solid $narrasysPrimary;
                 background-color: $narrasysAccent;
             }
-            
+
             .static-bg__alt {
-                
+
             }
 
-			
+
 			.altPane {
 				background-color: transparent;
 			}
-			
+
       		.mainPane {
 			    .item {
 				    background-color:  $narrasysPrimary;
@@ -223,7 +225,7 @@
 			.item__text, .item__title, .item__title a {
 				color: $narrasysSecondary;
 			}
-			
+
 			//override from general item level,
 			//mondrian BG is solid color, so we need to use
 			//the Secondary
@@ -232,7 +234,7 @@
 					color: $narrasysSecondary;
 				}
 			}
-			
+
 			.item {
 			    &.colorInvert {
 			        background-color: $narrasysSecondary !important;
@@ -242,16 +244,16 @@
                         	color: $narrasysPrimary !important;
                         }
                     }
-                    
+
                     h1, h2, h3 {
                     	color: $narrasysPrimary !important;
                     }
                 }
             }
-			
+
 		}
 
-        
+
 		//item__<entity> for non URL titles
 		// item__<entity> a covers both escape and fakeLinks
 		.item__title--link,
@@ -262,7 +264,7 @@
 		.item__title--image-thumbnail a {
 			@include narrasys-header;
 		}
-		
+
 		.item__link--fake-link {
 			color: $narrasysSecondary;
 		}
@@ -274,12 +276,12 @@
 				color: $narrasysAccent;
 			}
 		}
-		
+
 		.item {
 		    .displayTime, .startTime {
 		        @include narrasys-header;
 		        color: $narrasysSecondary;
-		        
+
 		        a {
 		            text-decoration: underline;
 		        }

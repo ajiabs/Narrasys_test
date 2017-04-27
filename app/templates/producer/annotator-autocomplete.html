@@ -3,7 +3,7 @@
 	<input class="annotatorChooser" type="text" ng-model="searchText" ng-focus="showAutocomplete()" ng-blur="hideAutocomplete()" ng-change="handleAutocomplete()">
 
 	<div class="autocompleteList animate transitionFade" ng-if="autoCompleting">
-		<div class="autocompleteItem" ng-repeat="annotator in filteredAnnotators | orderBy:'name'" ng-click="select(annotator)" ng-class="{selected: ($index == preselectedItem)}" style="white-space: nowrap">
+		<div class="autocompleteItem" ng-repeat="annotator in filteredAnnotators" ng-click="select(annotator)" ng-class="{selected: ($index == preselectedItem)}" style="white-space: nowrap">
 			<img ng-src="{{annotator.imageUrl}}">
 			<span ng-bind-html="(annotator.key | highlightSubstring: searchText) || '(New speaker)'"></span>
 		</div>

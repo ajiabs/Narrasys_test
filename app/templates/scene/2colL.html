@@ -1,7 +1,7 @@
 <div class="scene twocol" ng-class="scene.styleCss + ' '+ scene.state">
 	<div class="videoPositioner">
 		<div itt-magnet class="videoMagnet">
-			<img src="images/aspectratiopreserver-16x9.gif">
+			<img src="/images/aspectratiopreserver-16x9.gif">
 		</div>
 	</div>
 	<div class="col col1">
@@ -12,14 +12,14 @@
 			<div class="content contentLayer stretchToViewport" ng-class="{
 				singleitem: showCurrent
 					? (mainContentItems | isCurrent).length == 1
-					: (mainContentItems).length == 1, 
+					: (mainContentItems).length == 1,
 				allowHighlights: !showCurrent,
-				hasLeftSidebar: mainContentHasLeftSidebar, 
+				hasLeftSidebar: mainContentHasLeftSidebar,
 				hasRightSidebar: mainContentHasRightSidebar,
 				isNarrow: isNarrow,
 				isEmpty: mainContentItems.length == 0
 			}" itt-width-watch>
-				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
+				<img src="/images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
 				<div class="clear"></div>
 				<div class="item animate" ng-repeat="item in showCurrent ? (mainContentItems | isCurrent) : mainContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
@@ -38,14 +38,14 @@
 			<div class="content contentLayer stretchToViewport" ng-class="{
 				singleitem: showCurrent
 					? (altContentItems | isCurrent).length == 1
-					: (altContentItems).length == 1, 
+					: (altContentItems).length == 1,
 				allowHighlights: !showCurrent,
-				hasLeftSidebar: altContentHasLeftSidebar, 
+				hasLeftSidebar: altContentHasLeftSidebar,
 				hasRightSidebar: altContentHasRightSidebar,
 				isNarrow: isNarrow,
 				isEmpty: altContentItems.length == 0
 			}" itt-width-watch>
-				<img src="images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
+				<img src="/images/aspectratiopreserver-16x9.gif" class="matchVideoHeight ">
 				<div class="item animate" ng-repeat="item in showCurrent ? (altContentItems | isCurrent) : altContentItems" ng-class="item.styleCss + ' ' + item.state" itt-item="item">
 				</div>
 				<div class="clear "></div>
