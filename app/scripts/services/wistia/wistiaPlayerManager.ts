@@ -74,7 +74,7 @@ export class WistiaPlayerManager extends BasePlayerManager {
       ...wistiaMetaProps
     };
 
-    this.setPlayer(id, this.createMetaObj(newProps));
+    this.setPlayer(id, WistiaPlayerManager.createMetaObj(newProps));
   }
 
   create(pid: string): void {

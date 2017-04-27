@@ -27,11 +27,7 @@ export abstract class BasePlayerManager {
 
   protected statechangeCallbacks = [];
 
-  constructor() {
-    //foo
-  }
-
-  protected createMetaObj(newProps: any): {instance: any, meta: any} {
+  static createMetaObj(newProps: any): {instance: any, meta: any} {
 
     const commonMetaProps: IMetaProps = {
       mainPlayer: false,
