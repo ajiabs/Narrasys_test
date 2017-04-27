@@ -13,7 +13,7 @@ declare global {
 }
 
 export interface IWistiaMetaProps extends IMetaProps {
-  videoType: string;
+  videoType: 'wistia';
   isMuted: boolean;
   vol: number;
 }
@@ -26,7 +26,6 @@ const WISTIA_PLAYERSTATES = {
 };
 
 const wistiaMetaProps = {
-  videoType: this.type,
   isMuted: false,
   vol: 0
 };
@@ -71,6 +70,7 @@ export class WistiaPlayerManager extends BasePlayerManager {
       mainPlayer: mainPlayer,
       div: WistiaPlayerManager.setPlayerDiv(id, wistiaId),
       wistiaId: wistiaId,
+      videoType: this.type,
       ...wistiaMetaProps
     };
 
