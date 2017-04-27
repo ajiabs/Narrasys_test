@@ -27,14 +27,14 @@ import html5UrlService from './html5/html5UrlService';
 import kalturaPlayerManager from './kaltura/kalturaPlayerManager';
 import kalturaScriptLoader from './kaltura/kalturaScriptLoader';
 import kalturaUrlService from './kaltura/kalturaUrlService';
-import youTubePlayerManager from './youtube/YouTubePlayerManager.svc'
+import youTubePlayerManager from './youtube/YouTubePlayerManager.svc';
 import YTScriptLoader from './youtube/youtubeScriptLoader';
 import youtubeUrlService from './youtube/youtubeUrlService';
 import {
   WistiaUrlService,
   WistiaScriptLoader,
   WistiaPlayerManager
-} from "./wistia/index";
+} from './wistia/index';
 
 let servicesModule = angular.module('itt.services', [])
   .factory('appState', appState)

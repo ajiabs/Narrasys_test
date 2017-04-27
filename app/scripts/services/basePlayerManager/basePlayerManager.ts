@@ -1,0 +1,170 @@
+import {IMetaProps, IWistiaMetaProps} from '../../interfaces';
+
+/**
+ * Created by githop on 4/26/17.
+ */
+
+function _existy(x: any): boolean {
+  return x != null;
+}
+
+function renameKey(oldName, newName, obj) {
+  if (obj.hasOwnProperty(oldName) && !obj.hasOwnProperty(newName) && oldName !== newName) {
+    obj[newName] = obj[oldName];
+    delete obj[oldName];
+  }
+}
+
+interface IPlayer {
+  instance: any;
+  meta: IMetaProps;
+}
+
+/*
+ prior to v5.0.0 we simulated single inheritance with the
+ playerManagerCommons service.
+
+ With typescripe we can use actual inheritance to acheive the same
+ pattern in a more straight forward manner.
+ Eventually we could implement all the player managers as classes
+ that extend this one.
+*/
+
+export abstract class BasePlayerManager {
+  public type: string;
+  protected players: {[pid: string]: IPlayer} = {};
+  protected mainPlayerId: string;
+
+  protected statechangeCallbacks = [];
+
+  constructor() {
+    //foo
+  }
+
+  protected createMetaObj(newProps: any): {instance: any, meta: any} {
+
+    const commonMetaProps: IMetaProps = {
+      mainPlayer: false,
+      playerState: '-1',
+      div: '',
+      ready: false,
+      startAtTime: 0,
+      hasResumedFromStartAt: false,
+      duration: 0,
+      time: 0,
+      hasBeenPlayed: false,
+      bufferedPercent: 0,
+      timeMultiplier: 1,
+      resetInProgress: false,
+      autoplay: false
+    };
+
+    const metaObj = {
+      instance: null,
+      meta: commonMetaProps
+    };
+
+    Object.assign(commonMetaProps, newProps);
+    Object.assign(metaObj.meta, commonMetaProps);
+    return metaObj;
+  }
+
+  protected getPlayer(pid: string): IPlayer {
+    if (_existy(this.players[pid])) {
+      return this.players[pid];
+    }
+  }
+
+  protected setInstance(pid:string, instance:any): void {
+    let player = this.getPlayer(pid);
+    player.instance = instance;
+  }
+
+  protected setPlayer(pid: string, val: any): void {
+    this.players[pid] = val;
+  }
+
+  //overload
+  getMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K): IWistiaMetaProps[K];
+  getMetaProp(pid: string, prop: any) {
+    let player = this.getPlayer(pid);
+    if (_existy(player) && _existy(player.meta)) {
+      return player.meta[prop];
+    }
+  }
+
+  setMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K, val: IWistiaMetaProps[K]): void;
+  setMetaProp(pid: string, prop: string, val: any): void {
+    if (_existy(this.players[pid]) && this.players[pid].meta) {
+      try {
+        this.players[pid].meta[prop] = val;
+      } catch (e) {
+        console.log('catch read only error:', e, 'prop', prop, 'val', val);
+      }
+    }
+  }
+
+  getPlayerDiv(pid: string): string {
+    return this.getMetaProp(pid, 'div');
+  }
+
+  //must be overridden
+  getPlayerState(pid: string): string | number {
+    return '';
+  }
+  //must be overridden
+  pause(pid: string): void {
+    //noop;
+  }
+
+  stop(pid: string) {
+    //noop
+  }
+
+  freezeMetaProps(pid: string) { /* noop */ }
+
+  unfreezeMetaProps(pid: string) { /* noop */ }
+
+  pauseOtherPlayers(pid: string): void {
+    Object.keys(this.players).forEach((playerId: string) => {
+      if (playerId !== pid) {
+        let otherPlayerState = this.getPlayerState(playerId);
+        if (_existy(otherPlayerState)) {
+          if (otherPlayerState === 'playing') {
+            this.pause(playerId);
+          }
+        }
+      }
+    });
+  }
+
+  registerStateChangeListener(cb: (statechangeEvent: object) => void): void {
+    let found = this.statechangeCallbacks.find(listener => {
+      return cb.toString() === listener.toString();
+    });
+
+    if (!found) {
+      this.statechangeCallbacks.push(cb);
+    }
+  }
+
+  unregisterStateChangeListener(cb: () => {}): void {
+    this.statechangeCallbacks = this.statechangeCallbacks.filter(fn => {
+      return fn.toString !== cb.toString();
+    });
+  }
+
+  renamePid(oldName, newName) {
+    renameKey(oldName, newName, this.players);
+  }
+
+  handleTimelineEnd(pid: string) {
+    //noop;
+  }
+
+  protected destroyInstance(pid, doRemove) {
+    //foo
+  }
+
+}
+

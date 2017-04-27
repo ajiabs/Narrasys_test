@@ -3,9 +3,9 @@
  */
 
 
-import {WistiaScriptLoader} from "./wistiaScriptLoader";
-import {WistiaUrlService} from "./wistiaUrlService";
-import {WistiaPlayerManager} from "./wistiaPlayerManager";
+import {WistiaScriptLoader} from './wistiaScriptLoader';
+import {WistiaUrlService} from './wistiaUrlService';
+import {WistiaPlayerManager} from './wistiaPlayerManager';
 
-export {WistiaScriptLoader, WistiaUrlService, WistiaPlayerManager}
+export {WistiaScriptLoader, WistiaUrlService, WistiaPlayerManager};
 
