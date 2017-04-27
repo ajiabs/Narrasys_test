@@ -1,6 +1,7 @@
 import { IScriptLoader, IWistiaUrlservice, IMetaProps } from '../../interfaces';
 import { PLAYERSTATES } from '../playbackService/index';
 import { BasePlayerManager } from '../basePlayerManager/basePlayerManager';
+import {existy} from '../ittUtils';
 /**
  * Created by githop on 4/12/17.
  */
@@ -23,11 +24,6 @@ const WISTIA_PLAYERSTATES = {
   'beforeplay': 'unstarted',
   'ended': 'ended'
 };
-
-//TODO refactor ittUtils into ES module
-function _existy(x: any) {
-  return x != null;
-}
 
 const wistiaMetaProps = {
   videoType: this.type,
@@ -60,7 +56,7 @@ export class WistiaPlayerManager extends BasePlayerManager {
   }
 
   seedPlayerManager(id: string, mainPlayer: boolean, mediaSrcArr: string[]): void {
-    if (_existy(this.getPlayer(id)) && this.getMetaProp(id, 'startAtTime') > 0) {
+    if (existy(this.getPlayer(id)) && this.getMetaProp(id, 'startAtTime') > 0) {
       return;
     }
 
@@ -141,9 +137,9 @@ export class WistiaPlayerManager extends BasePlayerManager {
 
   private invokeMethod(pid: string, method: string, val?: any): any {
     const instance = this.getInstance(pid);
-    if (_existy(instance)) {
+    if (existy(instance)) {
       try {
-        if (_existy(val)) {
+        if (existy(val)) {
           return instance[method](val);
         } else {
           return instance[method]();
@@ -155,7 +151,7 @@ export class WistiaPlayerManager extends BasePlayerManager {
   }
 
   private getInstance(pid: string): any {
-    if (_existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true) {
+    if (existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true) {
       return this.getPlayer(pid).instance;
     }
   }
@@ -230,7 +226,7 @@ export class WistiaPlayerManager extends BasePlayerManager {
   private emitStateChange(pid: string, forceState?: number): void {
     let state;
 
-    if (_existy(forceState)) {
+    if (existy(forceState)) {
       state = forceState;
     } else {
       state = this.getMetaProp(pid, 'playerState');

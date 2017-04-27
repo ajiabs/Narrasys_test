@@ -12,7 +12,7 @@ import config from './config';
 import dataSvc from './dataSvc';
 import errorSvc from './errorSvc';
 import imageResize from './imageResizeSvc';
-import ittUtils from './IttUtils';
+import {ittUtils} from './IttUtils';
 import mockSvc from './mockSvc';
 import modelSvc from './modelSvc';
 import playbackService from './playbackService/playbackService';

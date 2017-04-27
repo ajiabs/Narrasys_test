@@ -1,24 +1,9 @@
 import {IMetaProps, IWistiaMetaProps} from '../../interfaces';
+import {existy, renameKey} from '../ittUtils';
 
 /**
  * Created by githop on 4/26/17.
  */
-
-function _existy(x: any): boolean {
-  return x != null;
-}
-
-function renameKey(oldName, newName, obj) {
-  if (obj.hasOwnProperty(oldName) && !obj.hasOwnProperty(newName) && oldName !== newName) {
-    obj[newName] = obj[oldName];
-    delete obj[oldName];
-  }
-}
-
-interface IPlayer {
-  instance: any;
-  meta: IMetaProps;
-}
 
 /*
  prior to v5.0.0 we simulated single inheritance with the
@@ -29,6 +14,11 @@ interface IPlayer {
  Eventually we could implement all the player managers as classes
  that extend this one.
 */
+
+interface IPlayer {
+  instance: any;
+  meta: IMetaProps;
+}
 
 export abstract class BasePlayerManager {
   public type: string;
@@ -70,7 +60,7 @@ export abstract class BasePlayerManager {
   }
 
   protected getPlayer(pid: string): IPlayer {
-    if (_existy(this.players[pid])) {
+    if (existy(this.players[pid])) {
       return this.players[pid];
     }
   }
@@ -88,14 +78,14 @@ export abstract class BasePlayerManager {
   getMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K): IWistiaMetaProps[K];
   getMetaProp(pid: string, prop: any) {
     let player = this.getPlayer(pid);
-    if (_existy(player) && _existy(player.meta)) {
+    if (existy(player) && existy(player.meta)) {
       return player.meta[prop];
     }
   }
 
   setMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K, val: IWistiaMetaProps[K]): void;
   setMetaProp(pid: string, prop: string, val: any): void {
-    if (_existy(this.players[pid]) && this.players[pid].meta) {
+    if (existy(this.players[pid]) && this.players[pid].meta) {
       try {
         this.players[pid].meta[prop] = val;
       } catch (e) {
@@ -129,7 +119,7 @@ export abstract class BasePlayerManager {
     Object.keys(this.players).forEach((playerId: string) => {
       if (playerId !== pid) {
         let otherPlayerState = this.getPlayerState(playerId);
-        if (_existy(otherPlayerState)) {
+        if (existy(otherPlayerState)) {
           if (otherPlayerState === 'playing') {
             this.pause(playerId);
           }
