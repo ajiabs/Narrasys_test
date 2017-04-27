@@ -1,4 +1,5 @@
-import {IMetaProps} from './playerManagerCommons';
+import {IMetaProps, IWistiaMetaProps} from '../../interfaces';
+
 /**
  * Created by githop on 4/26/17.
  */
@@ -31,38 +32,41 @@ interface IPlayer {
 
 export abstract class BasePlayerManager {
   public type: string;
-  protected players: {[pid: string]: IPlayer};
+  protected players: {[pid: string]: IPlayer} = {};
   protected mainPlayerId: string;
 
-  protected metaProps: IMetaProps = {
-    mainPlayer: false,
-    playerState: '-1',
-    div: '',
-    ready: false,
-    startAtTime: 0,
-    hasResumedFromStartAt: false,
-    duration: 0,
-    time: 0,
-    hasBeenPlayed: false,
-    bufferedPercent: 0,
-    timeMultiplier: 1,
-    resetInProgress: false,
-    autoplay: false
-  };
-
-  protected metaObj: IPlayer = {
-    instance: null,
-    meta: this.metaProps
-  };
-  private statechangeCallbacks = [];
+  protected statechangeCallbacks = [];
 
   constructor() {
     //foo
   }
 
-  protected createMetaObj(newProps: any) {
-    let newMetaObj = Object.assign({}, this.metaObj);
-    return Object.assign(newMetaObj.meta, newProps, this.metaProps);
+  protected createMetaObj(newProps: any): {instance: any, meta: any} {
+
+    const commonMetaProps: IMetaProps = {
+      mainPlayer: false,
+      playerState: '-1',
+      div: '',
+      ready: false,
+      startAtTime: 0,
+      hasResumedFromStartAt: false,
+      duration: 0,
+      time: 0,
+      hasBeenPlayed: false,
+      bufferedPercent: 0,
+      timeMultiplier: 1,
+      resetInProgress: false,
+      autoplay: false
+    };
+
+    const metaObj = {
+      instance: null,
+      meta: commonMetaProps
+    };
+
+    Object.assign(commonMetaProps, newProps);
+    Object.assign(metaObj.meta, commonMetaProps);
+    return metaObj;
   }
 
   protected getPlayer(pid: string): IPlayer {
@@ -80,19 +84,17 @@ export abstract class BasePlayerManager {
     this.players[pid] = val;
   }
 
-  getMetaProp<P extends keyof IMetaProps>(pid: string, prop: P): IMetaProps[P] {
+  //overload
+  getMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K): IWistiaMetaProps[K];
+  getMetaProp(pid: string, prop: any) {
     let player = this.getPlayer(pid);
     if (_existy(player) && _existy(player.meta)) {
       return player.meta[prop];
     }
   }
 
-  setMetaProp<P extends keyof IMetaProps>(pid: string, prop: P, val: IMetaProps[P]): void {
-    let validKeys = Object.keys(this.metaProps);
-    if (validKeys.indexOf(prop) === -1) {
-      throw new Error(`${prop} is not a valid prop for ${this.type} meta info`);
-    }
-
+  setMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K, val: IWistiaMetaProps[K]): void;
+  setMetaProp(pid: string, prop: string, val: any): void {
     if (_existy(this.players[pid]) && this.players[pid].meta) {
       try {
         this.players[pid].meta[prop] = val;
@@ -115,6 +117,13 @@ export abstract class BasePlayerManager {
     //noop;
   }
 
+  stop(pid: string) {
+    //noop
+  }
+
+  freezeMetaProps(pid: string) { /* noop */ }
+
+  unfreezeMetaProps(pid: string) { /* noop */ }
 
   pauseOtherPlayers(pid: string): void {
     Object.keys(this.players).forEach((playerId: string) => {
@@ -157,24 +166,5 @@ export abstract class BasePlayerManager {
     //foo
   }
 
-
 }
 
-
-class Pm extends BasePlayerManager {
-  type = 'wistia';
-  private wistiaMetaProps = {
-    videoType: this.type,
-    isMuted: false,
-    vol: 0
-  };
-  constructor() {
-    super();
-    Object.assign(this.metaProps, this.wistiaMetaProps);
-
-  }
-
-
-}
-
-let test = new Pm();

@@ -1,6 +1,6 @@
-import {IBasePlayerManager, IPlayerManager, IScriptLoader, IWistiaUrlservice, IMetaProps, IMetaObj} from '../../interfaces';
-import {PLAYERSTATES} from '../playbackService/index';
-import {BasePlayerManager} from '../basePlayerManager/basePlayerManager';
+import { IScriptLoader, IWistiaUrlservice, IMetaProps } from '../../interfaces';
+import { PLAYERSTATES } from '../playbackService/index';
+import { BasePlayerManager } from '../basePlayerManager/basePlayerManager';
 /**
  * Created by githop on 4/12/17.
  */
@@ -11,19 +11,10 @@ declare global {
   }
 }
 
-export interface IWistiaPlayerManager extends IPlayerManager {
-
-}
-
-interface IWistiaMetaProps extends IMetaProps {
+export interface IWistiaMetaProps extends IMetaProps {
   videoType: string;
   isMuted: boolean;
   vol: number;
-}
-
-interface IWistiaMetaObj extends IMetaObj {
-  instance: any;
-  meta: IWistiaMetaProps;
 }
 
 const WISTIA_PLAYERSTATES = {
@@ -38,23 +29,34 @@ function _existy(x: any) {
   return x != null;
 }
 
-export class WistiaPm extends BasePlayerManager {
+const wistiaMetaProps = {
+  videoType: this.type,
+  isMuted: false,
+  vol: 0
+};
+
+/*
+  wistia PM with inheritance
+ */
+export class WistiaPlayerManager extends BasePlayerManager {
   public type = 'wistia';
-  private wistiaMetaProps = {
-    videoType: this.type,
-    isMuted: false,
-    vol: 0
-  };
+  static $inject = ['wistiaScriptLoader', 'wistiaUrlService'];
   constructor(
     private wistiaScriptLoader: IScriptLoader,
     private wistiaUrlService: IWistiaUrlservice) {
     super();
-    Object.assign(this.metaProps, this.wistiaMetaProps);
   }
 
   static setPlayerDiv(pid: string, wistiaId: string): string {
     //videoFoam is set on init to make video responsive.
     return `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
+  }
+
+  static formatStateChangeEvent(state: string, emitterId: string): {emitterId: string, state: string} {
+    return {
+      emitterId,
+      state: PLAYERSTATES[state]
+    };
   }
 
   seedPlayerManager(id: string, mainPlayer: boolean, mediaSrcArr: string[]): void {
@@ -71,78 +73,12 @@ export class WistiaPm extends BasePlayerManager {
 
     const newProps = {
       mainPlayer: mainPlayer,
-      div: WistiaPm.setPlayerDiv(id, wistiaId),
-      wistiaId: wistiaId
+      div: WistiaPlayerManager.setPlayerDiv(id, wistiaId),
+      wistiaId: wistiaId,
+      ...wistiaMetaProps
     };
 
     this.setPlayer(id, this.createMetaObj(newProps));
-    console.log('player!', this.getPlayer(id));
-  }
-
-  create(pid: string): void {
-    this.createWpInstance(pid)
-      .then(_ => {/* noop */});
-  }
-
-}
-
-
-export class WistiaPlayerManager implements IWistiaPlayerManager {
-  private _players = {};
-  private _mainPlayerId;
-  public type = 'wistia';
-  private base;
-  public commonMetaProps;
-  private _setMetaProps;
-  private _getInstance;
-  private _pauseOtherPlayers;
-  private _resetPm;
-  private wistiaMetaProps = {
-    videoType: this.type,
-    isMuted: false,
-    vol: 0
-  };
-
-  private wistiaMetaObj = {
-    instance: null,
-    meta: {}
-  };
-
-  static $inject = ['playerManagerCommons', 'wistiaScriptLoader', 'wistiaUrlService', 'ittUtils'];
-  constructor(
-    public playerManagerCommons,
-    private wistiaScriptLoader: IScriptLoader,
-    private wistiaUrlService: IWistiaUrlservice,
-    private ittUtils) {
-    this.base = <IBasePlayerManager> playerManagerCommons({players: this._players, type: this.type});
-    Object.assign(this.wistiaMetaObj.meta, this.wistiaMetaProps, this.base.commonMetaProps);
-    const validKeys = Object.keys(this.wistiaMetaObj.meta);
-    this._setMetaProps = this.base.setMetaProp(validKeys);
-    this._getInstance = this.base.getInstance(pid => _existy(pid) && this.getMetaProp(pid, 'ready') === true);
-    this._pauseOtherPlayers = this.base.pauseOtherPlayers(this.pause.bind(this), this.getPlayerState.bind(this));
-    this._resetPm = this.base.resetPlayerManager(angular.noop);
-  }
-
-  seedPlayerManager(id: string, mainPlayer: boolean, mediaSrcArr: string[]): void {
-    if (_existy(this.getPlayer(id)) && this.getMetaProp(id, 'startAtTime') > 0) {
-      return;
-    }
-
-    if (mainPlayer) {
-      this._players = {};
-      this._mainPlayerId = id;
-    }
-
-    const wistiaId = this.wistiaUrlService.extractId(mediaSrcArr[0]);
-
-    const newProps = {
-      mainPlayer: mainPlayer,
-      div: this.setPlayerDiv(id, wistiaId),
-      wistiaId: wistiaId
-    };
-
-    this.setPlayer(id, this.createMetaObj(newProps, this.wistiaMetaObj));
-    console.log('player!', this.getPlayer(id));
   }
 
   create(pid: string): void {
@@ -159,43 +95,11 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
 
   getBufferedPercent(pid: string): number {
     /*
-    it doesn't appear that wistia has ways to get
-    info on buffered ranges, need to do more research.
+     it doesn't appear that wistia has ways to get
+     info on buffered ranges, need to do more research.
      */
     return 0;
   }
-
-  registerStateChangeListener(fn: () => {}): void {
-    return this.base.registerStateChangeListener(fn);
-  }
-
-  unregisterStateChangeListener(fn: () => {}): void {
-    return this.base.unregisterStateChangeListener(fn);
-  }
-
-  getMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K): IWistiaMetaProps[K] {
-    return this.base.getMetaProp(pid, prop);
-  }
-
-  setMetaProp<K extends keyof IWistiaMetaProps>(pid: string, prop: K, val: IWistiaMetaProps[K]): void {
-    return this._setMetaProps(pid, prop, val);
-  }
-
-  getPlayerDiv(id: string): string {
-    return this.base.getPlayerDiv(id);
-  }
-
-  renamePid(oldName: string, newName: string): void {
-    return this.base.renamePid(oldName, newName);
-  }
-
-  resetPlayerManager(): void {
-    this._resetPm();
-  }
-
-  freezeMetaProps(pid: string) { /* noop */ }
-
-  unfreezeMetaProps(pid: string) { /* noop */ }
 
   getCurrentTime(pid: string): number | string | void {
     return this.invokeMethod(pid, 'time');
@@ -209,25 +113,13 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     this.invokeMethod(pid, 'pause');
   }
 
-  pauseOtherPlayers(pid: string): void {
-    this._pauseOtherPlayers(pid);
-  }
-
   seekTo(pid: string, t: number): void {
     this.invokeMethod(pid, 'time', t);
-  }
-
-  stop(pid: string) {
-    //noop
   }
 
   setSpeed(pid: string, rate: number) {
     //noop
     this.invokeMethod(pid, 'playbackRate', rate);
-  }
-
-  handleTimelineEnd(pid: string) {
-    //noop
   }
 
   toggleMute(pid: string): void {
@@ -262,25 +154,15 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     }
   }
 
-  private setPlayerDiv(pid: string, wistiaId: string): string {
-    //videoFoam is set on init to make video responsive.
-    return `<div id="${pid}" class="wistia_embed wistia_async_${wistiaId}">&nbsp;</div>`;
-  }
-
-  private getPlayer(pid: string): object {
-    return this.base.getPlayer(pid);
-  }
-
-  private setPlayer(pid: string, val: any): void {
-    return this.base.setPlayer(pid, val);
-  }
-
-  private createMetaObj(props: object, base: {instance: null, meta: object}): IWistiaMetaObj {
-    return this.base.createMetaObj(props, base);
+  private getInstance(pid: string): any {
+    if (_existy(this.getPlayer(pid)) && this.getMetaProp(pid, 'ready') === true) {
+      return this.getPlayer(pid).instance;
+    }
   }
 
   private createWpInstance(pid: string): ng.IPromise<void> {
-    const isEmbed = this._mainPlayerId !== pid;
+
+    const isEmbed = this.mainPlayerId !== pid;
     const wistiaEmbedOptions = {
       playbar: isEmbed,
       videoFoam: true,
@@ -303,7 +185,7 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
   }
 
   private onReady(pid: string, wistiaInstance: any) {
-    this.base.setInstance(pid, wistiaInstance);
+    this.setInstance(pid, wistiaInstance);
     this.attachEventListeners(wistiaInstance, pid);
     this.emitStateChange(pid, 6);
     this.setMetaProp(pid, 'duration', wistiaInstance.duration());
@@ -345,13 +227,6 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
     this.emitStateChange(pid);
   }
 
-  private formatStateChangeEvent(state: string, emitterId: string): {emitterId: string, state: string} {
-    return {
-      emitterId,
-      state: PLAYERSTATES[state]
-    };
-  }
-
   private emitStateChange(pid: string, forceState?: number): void {
     let state;
 
@@ -361,13 +236,10 @@ export class WistiaPlayerManager implements IWistiaPlayerManager {
       state = this.getMetaProp(pid, 'playerState');
     }
 
-    this.base.getStateChangeListeners().forEach(cb => {
-      cb(this.formatStateChangeEvent(state, pid));
+    this.statechangeCallbacks.forEach(cb => {
+      cb(WistiaPlayerManager.formatStateChangeEvent(state, pid));
     });
   }
 
-  private getInstance(pid: string): any {
-    return this._getInstance(pid);
-  }
-
 }
+
