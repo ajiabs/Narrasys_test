@@ -17,43 +17,43 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
     controller: 'EditController',
     link: function (scope) {
 
-      // scope.translationMessage = translationMessage;
-      // function translationMessage(langArr) {
-      //  var prefix = '';
-      //  var langs = langArr.filter(function(l) {
-      //     if (l.default == undefined) { //jshint ignore:line
-      //       return true;
-      //     } else {
-      //       prefix = 'Translate from ' +  l.code + ' to: ';
-      //       return false;
-      //     }
-      //   }).map(function(l) {
-      //     l = l.code;
-      //     return l;
-      //   }).join(', ');
-      //  return prefix + langs;
-      // }
-      //
-      // scope.beginBackgroundTranslations = beginBackgroundTranslations;
-      // function beginBackgroundTranslations(episodeId) {
-      //   dataSvc.beginBackgroundTranslations(episodeId)
-      //     .then(handleSuccess)
-      //     .catch(handleError);
-      //
-      //   function handleSuccess(resp) {
-      //     console.log('resp from translations!', resp);
-      //     if (resp.status === 'Request for translations queued') {
-      //       scope.afterTranslationAttempt = resp.status + ', check back later!';
-      //     } else {
-      //       scope.afterTranslationAttempt = 'Something went wrong...';
-      //     }
-      //     scope.doCheckForTranslations = true;
-      //   }
-      //
-      //   function handleError(e) {
-      //     console.log('error:', e);
-      //   }
-      // }
+      scope.translationMessage = translationMessage;
+      function translationMessage(langArr) {
+       var prefix = '';
+       var langs = langArr.filter(function(l) {
+          if (l.default == undefined) { //jshint ignore:line
+            return true;
+          } else {
+            prefix = 'Translate from ' +  l.code + ' to: ';
+            return false;
+          }
+        }).map(function(l) {
+          l = l.code;
+          return l;
+        }).join(', ');
+       return prefix + langs;
+      }
+
+      scope.beginBackgroundTranslations = beginBackgroundTranslations;
+      function beginBackgroundTranslations(episodeId) {
+        dataSvc.beginBackgroundTranslations(episodeId)
+          .then(handleSuccess)
+          .catch(handleError);
+
+        function handleSuccess(resp) {
+          console.log('resp from translations!', resp);
+          if (resp.status === 'Request for translations queued') {
+            scope.afterTranslationAttempt = resp.status + ', check back later!';
+          } else {
+            scope.afterTranslationAttempt = 'Something went wrong...';
+          }
+          scope.doCheckForTranslations = true;
+        }
+
+        function handleError(e) {
+          console.log('error:', e);
+        }
+      }
 
       scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
