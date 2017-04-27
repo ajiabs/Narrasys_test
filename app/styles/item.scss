@@ -654,9 +654,23 @@ Inline images (TODO show these only when image is larger than available space) *
 	background: url('/images/definition-2.png') top left no-repeat;
 }
 
-.item__text--transmedia, .item__text--h2 {
+.item__text--transmedia,
+.item__text--h2,
+.item__text--image {
   ul {
     padding-left: 40px;
   }
 }
+
+.item__text--pullquote ul {
+  padding-left: 80px;
+}
+
+.item__text--transcript,
+.item__text--link{
+  ul {
+    padding-left: 20px;
+  }
+}
+
 
