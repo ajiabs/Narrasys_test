@@ -60,6 +60,10 @@
 	width: 1px;
 }
 
+.ta-bind li {
+  list-style: disc inside;
+}
+
 .ta-root.focussed > .ta-scroll-window.form-control {
 	outline: 0 none;
 }
