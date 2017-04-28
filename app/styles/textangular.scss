@@ -60,6 +60,10 @@
 	width: 1px;
 }
 
+.ta-bind li {
+  list-style: disc inside;
+}
+
 .ta-root.focussed > .ta-scroll-window.form-control {
 	outline: 0 none;
 }
@@ -67,7 +71,7 @@
 .ta-editor.ta-html,
 .ta-scroll-window.form-control {
 	font-family: inherit;
-	font-size: 0.86em;
+	//font-size: 0.86em;
 	height: auto;
 	overflow: auto;
 }
