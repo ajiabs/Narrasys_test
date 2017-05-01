@@ -53,6 +53,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
 
 
+  interface IXFrameOptsResult {
+    x_frame_options: string;
+    location?: string;
+    noEmbed: boolean;
+  }
   /**
    * @ngdoc method
    * @name #checkXFrameOpts
@@ -62,14 +67,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
    * @param {String} url The target URL of site to inspect
    * @returns {Boolean} Whether or not we can embed the input URL in an iframe.
    */
-  svc.checkXFrameOpts = function (url) {
+  svc.checkXFrameOpts = function (url: string): ng.IPromise<IXFrameOptsResult> {
     //why use a 'post process callback'
     //when you can simply chain promises?
 
     //check protcol for mixed content??
-    var currentOrigin;
-    var parseInputUrl;
-    var encodedUrl = encodeURIComponent(url);
+    const encodedUrl = encodeURIComponent(url);
     return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
       .then(_handleSuccess)
       .then(_canEmbed)
@@ -92,43 +95,48 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
 
     function _canEmbed(result) {
-      // var _noEmbed = true;
-      result.noEmbed = true;
-      switch (true) {
-        case /SAMEORIGIN/i.test(result.x_frame_options):
-          currentOrigin = $location.host();
-          parseInputUrl = document.createElement('a');
-          parseInputUrl.href = url;
-          //check our origin
-          if (currentOrigin === parseInputUrl.hostname) {
-            result.noEmbed = false;
-          }
-          break;
-        case /ALLOW-FROM/i.test(result.x_frame_options):
-          //check if we're on the list
-          //split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
-          var xFrameArr = result.x_frame_options.split(',');
-          currentOrigin = $location.host();
-          angular.forEach(xFrameArr, function (i) {
-            var url = i.trim().split(' ')[1];
-            var aElm = document.createElement('a');
-            aElm.href = url;
-            if (currentOrigin === aElm.hostname) {
-              result.noEmbed = false;
-            }
-          });
-          break;
-        case /DENY/i.test(result.x_frame_options):
-          // do nothing
-          break;
-        case /null/.test(result.x_frame_options):
-          //ticket to ride
-          result.noEmbed = false;
-          break;
-      }
+      result.noEmbed = handleXFrameOptionsHeader(url, result.x_frame_options);
       return result;
     }
   };
+
+  svc.handleXFrameOptionsHeader = handleXFrameOptionsHeader;
+  function handleXFrameOptionsHeader(url: string, header: string): boolean {
+    let noEmbed = true;
+    switch (true) {
+      case /SAMEORIGIN/i.test(header):
+        let currentOrigin = $location.host();
+        let parseInputUrl = document.createElement('a');
+        parseInputUrl.href = url;
+        //check our origin
+        if (currentOrigin === parseInputUrl.hostname) {
+          noEmbed = false;
+        }
+        break;
+      case /ALLOW-FROM/i.test(header):
+        //check if we're on the list
+        //split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
+        const xFrameArr = header.split(',');
+        currentOrigin = $location.host();
+        angular.forEach(xFrameArr, function (i) {
+          const url = i.trim().split(' ')[1];
+          const aElm = document.createElement('a');
+          aElm.href = url;
+          if (currentOrigin === aElm.hostname) {
+            noEmbed = false;
+          }
+        });
+        break;
+      case /DENY/i.test(header):
+        // do nothing
+        break;
+      case /null/.test(header):
+        //ticket to ride
+        noEmbed = false;
+        break;
+    }
+    return noEmbed;
+  }
 
   //used in ittContainer
   svc.generateNewNarrative = generateNewNarrative;

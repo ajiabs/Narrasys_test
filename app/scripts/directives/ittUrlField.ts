@@ -1,8 +1,16 @@
+import {ILink, ILinkStatus} from '../models';
 /**
  * Created by githop on 6/30/16.
  */
 
-
+//link event or URL string if used in episode tab
+interface IUrlFieldScope extends ng.IScope {
+  data: ILink | string;
+  videoOnly: boolean;
+  label: string;
+  onAttach: () => string;
+  ittItemForm?: ng.IFormController;
+}
 
 export default function ittUrlField() {
   return {
@@ -38,7 +46,7 @@ export default function ittUrlField() {
       	</div>
       </div>`,
     controller: ['$scope', '$q', 'ittUtils', 'urlService', 'dataSvc',
-      function ($scope: ng.IScope, $q: ng.IQService, ittUtils, urlService, dataSvc) {
+      function ($scope: IUrlFieldScope, $q: ng.IQService, ittUtils, urlService, dataSvc) {
         const ctrl = this;
         const _existy = ittUtils.existy;
 
@@ -73,7 +81,7 @@ export default function ittUrlField() {
             //run once on initial value and setup watch, if initial value isn't
             //the default value (e.g. 'https://') for new link events
             if (_existy(ctrl.data.url) && ctrl.data.url !== 'https://') {
-              itemUrlValidationPipeline(ctrl.data.url);
+              itemUrlValidationPipeline(ctrl.data.url, ctrl.data.url_status);
             }
             subscribeWatch();
           }
@@ -107,13 +115,13 @@ export default function ittUrlField() {
           }
         }
 
-        function itemUrlValidationPipeline(url: string): void {
+        function itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus): void {
           _resetFields();
           let isValidUrl = _setValidity(validateUrl(url));
           let isMixedContent = mixedContent(url);
           ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
           if (!isMixedContent && isValidUrl) { //only do async stuff if necessary
-            xFrameOpts(url)
+            xFrameOpts(url, cachedResults)
               .then(({noEmbed, location}: {noEmbed:boolean, location:string}) => {
                 ctrl.data.templateOpts = _disableTemplateOpts(noEmbed);
                 _setValidity(true);
@@ -168,7 +176,18 @@ export default function ittUrlField() {
           }
         }
 
-        function xFrameOpts(viewVal: string): ng.IPromise<{noEmbed: boolean, location: string | null}> {
+        function xFrameOpts(viewVal: string, cachedResults?: ILinkStatus): ng.IPromise<{noEmbed: boolean, location: string | null}> {
+
+          if (cachedResults != null) {
+
+            return $q((resolve) => {
+              let ret = {
+                noEmbed: dataSvc.handleXFrameOptionsHeader(viewVal, cachedResults.x_frame_options)
+              };
+              return resolve(handleXframeOptsObj(viewVal, ret));
+            });
+          }
+
           //bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
           if (viewVal === '' || urlService.isVideoUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
             return $q(function (resolve) {
@@ -179,41 +198,43 @@ export default function ittUrlField() {
 
           return dataSvc.checkXFrameOpts(viewVal)
           //xFrameOptsObj will have at least x_frame_options field and could have response_code and location fields
-            .then(function (xFrameOptsObj) {
-              let tipText = '';
-              //check for a new URL if we followed a redirect on the server.
-              if (ittUtils.existy(xFrameOptsObj.location)) {
-                tipText = viewVal + ' redirected to ' + xFrameOptsObj.location;
-                ctrl.validatedFields['301'] = {
-                  showInfo: true,
-                  message: tipText,
-                  doInfo: true,
-                  url: xFrameOptsObj.location
-                };
-              }
+            .then(xFrameOptsObj => handleXframeOptsObj(viewVal, xFrameOptsObj));
+        }
 
-              if (ittUtils.existy(xFrameOptsObj.response_code) && xFrameOptsObj.response_code === 404) {
-                tipText = viewVal + ' cannot be found';
-                ctrl.validatedFields['404'] = {showInfo: true, message: tipText};
-                return $q.reject('404');
-              }
+        function handleXframeOptsObj(viewVal: string, xFrameOptsObj) {
+          let tipText = '';
+          //check for a new URL if we followed a redirect on the server.
+          if (ittUtils.existy(xFrameOptsObj.location)) {
+            tipText = viewVal + ' redirected to ' + xFrameOptsObj.location;
+            ctrl.validatedFields['301'] = {
+              showInfo: true,
+              message: tipText,
+              doInfo: true,
+              url: xFrameOptsObj.location
+            };
+          }
 
-              if (xFrameOptsObj.noEmbed) {
-                tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
-                ctrl.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
-              } else {
-                ctrl.validatedFields['xFrameOpts'] = {showInfo: false};
-              }
+          if (ittUtils.existy(xFrameOptsObj.response_code) && xFrameOptsObj.response_code === 404) {
+            tipText = viewVal + ' cannot be found';
+            ctrl.validatedFields['404'] = {showInfo: true, message: tipText};
+            return $q.reject('404');
+          }
 
-              //override noEmbed with error
-              if (xFrameOptsObj.error_message) {
-                ctrl.validatedFields['xFrameOpts'] = {
-                  showInfo: true,
-                  message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
-                };
-              }
-              return {noEmbed: xFrameOptsObj.noEmbed, location: xFrameOptsObj.location};
-            });
+          if (xFrameOptsObj.noEmbed) {
+            tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
+            ctrl.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
+          } else {
+            ctrl.validatedFields['xFrameOpts'] = {showInfo: false};
+          }
+
+          //override noEmbed with error
+          if (xFrameOptsObj.error_message) {
+            ctrl.validatedFields['xFrameOpts'] = {
+              showInfo: true,
+              message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
+            };
+          }
+          return {noEmbed: xFrameOptsObj.noEmbed, location: xFrameOptsObj.location};
         }
 
         //validation of episode URLs in episode tab still use old pattern; e.g. custom validator that emits
