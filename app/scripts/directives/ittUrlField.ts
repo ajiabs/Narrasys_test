@@ -133,6 +133,7 @@ export default function ittUrlField() {
                 ctrl.data.templateOpts = _disableTemplateOpts(noEmbed);
                 _setValidity(true);
                 ctrl.data.noEmbed = noEmbed;
+                ctrl.data.target = _setTarget(noEmbed);
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering
                   //a $digest from mutating ctrl.data.url
@@ -143,6 +144,10 @@ export default function ittUrlField() {
               })
               .catch(_ => _setValidity(false));
           }
+        }
+
+        function _setTarget(canEmbed: boolean): '_blank' | '_self' {
+          return canEmbed ? '_blank' : '_self';
         }
 
         function _disableTemplateOpts(val: boolean): any[] {

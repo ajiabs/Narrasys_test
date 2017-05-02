@@ -1099,7 +1099,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       "sxs", // for demos, for now
       "title",
       "url",
-      "noEmbed",
+      "target",
       "annotator",
       "annotation",
       "description",

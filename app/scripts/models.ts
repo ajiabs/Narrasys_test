@@ -21,6 +21,7 @@ export class IEvent {
   template_id: string;
   layout_id: string;
   style_id: string;
+  templateUrl?: string;
   //group ??
   //event_category ??
 }
@@ -47,7 +48,7 @@ export class ILink extends IEvent {
   //relations
   link_image_id: string;
   url_status?: ILinkStatus;
-  templateUrl?: string;
+
 }
 
 export class IAnnotation extends IEvent {
@@ -58,7 +59,6 @@ export class IAnnotation extends IEvent {
   chapter_marker: boolean = false;
   //belongs_to annotation image;
   annotation_image_id: string;
-  templateUrl?: string;
 }
 
 export class IBookmark extends IEvent {
@@ -99,7 +99,6 @@ export class IPlugin extends IEvent {
 export class IScene extends IEvent {
   type: 'Scene';
   _type: 'Scene';
-  templateUrl?: string;
 }
 
 export class IText extends IEvent {
