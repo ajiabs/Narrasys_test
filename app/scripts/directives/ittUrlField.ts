@@ -132,8 +132,8 @@ export default function ittUrlField() {
               .then(({noEmbed, location}: {noEmbed:boolean, location:string}) => {
                 ctrl.data.templateOpts = _disableTemplateOpts(noEmbed);
                 _setValidity(true);
-                ctrl.data.noEmbed = noEmbed;
-                ctrl.data.target = _setTarget(noEmbed);
+                // ctrl.data.noEmbed = noEmbed;
+                // ctrl.data.target = _setTarget(noEmbed);
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering
                   //a $digest from mutating ctrl.data.url
@@ -196,7 +196,7 @@ export default function ittUrlField() {
               let ret = {
                 noEmbed: dataSvc.handleXFrameOptionsHeader(viewVal, cachedResults.x_frame_options)
               };
-              return resolve(handleXframeOptsObj(viewVal, ret));
+              return resolve(dataSvc.handleXframeOptsObj(viewVal, ret));
             });
           }
 
@@ -210,43 +210,7 @@ export default function ittUrlField() {
 
           return dataSvc.checkXFrameOpts(viewVal)
           //xFrameOptsObj will have at least x_frame_options field and could have response_code and location fields
-            .then(xFrameOptsObj => handleXframeOptsObj(viewVal, xFrameOptsObj));
-        }
-
-        function handleXframeOptsObj(viewVal: string, xFrameOptsObj) {
-          let tipText = '';
-          //check for a new URL if we followed a redirect on the server.
-          if (ittUtils.existy(xFrameOptsObj.location)) {
-            tipText = viewVal + ' redirected to ' + xFrameOptsObj.location;
-            ctrl.validatedFields['301'] = {
-              showInfo: true,
-              message: tipText,
-              doInfo: true,
-              url: xFrameOptsObj.location
-            };
-          }
-
-          if (ittUtils.existy(xFrameOptsObj.response_code) && xFrameOptsObj.response_code === 404) {
-            tipText = viewVal + ' cannot be found';
-            ctrl.validatedFields['404'] = {showInfo: true, message: tipText};
-            return $q.reject('404');
-          }
-
-          if (xFrameOptsObj.noEmbed) {
-            tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
-            ctrl.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
-          } else {
-            ctrl.validatedFields['xFrameOpts'] = {showInfo: false};
-          }
-
-          //override noEmbed with error
-          if (xFrameOptsObj.error_message) {
-            ctrl.validatedFields['xFrameOpts'] = {
-              showInfo: true,
-              message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
-            };
-          }
-          return {noEmbed: xFrameOptsObj.noEmbed, location: xFrameOptsObj.location};
+            .then(xFrameOptsObj => dataSvc.handleXframeOptsObj(viewVal, xFrameOptsObj, ctrl));
         }
 
         //validation of episode URLs in episode tab still use old pattern; e.g. custom validator that emits
