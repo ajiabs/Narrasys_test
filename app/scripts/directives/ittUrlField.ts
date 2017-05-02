@@ -1,4 +1,5 @@
 import {ILink, ILinkStatus} from '../models';
+import {IValidationSvc} from '../services/validation.svc';
 /**
  * Created by githop on 6/30/16.
  */
@@ -52,8 +53,8 @@ export default function ittUrlField() {
       		<button ng-if="$ctrl.data" ng-click="$ctrl.onAttach({$url: $ctrl.data})">Attach Video</button>
       	</div>
       </div>`,
-    controller: ['$scope', '$q', 'ittUtils', 'urlService', 'dataSvc',
-      function ($scope: IUrlFieldScope, $q: ng.IQService, ittUtils, urlService, dataSvc) {
+    controller: ['$scope', '$q', 'ittUtils', 'validationSvc',
+      function ($scope: IUrlFieldScope, $q: ng.IQService, ittUtils, validationSvc: IValidationSvc) {
         const ctrl: IUrlFieldScope = this;
         const _existy = ittUtils.existy;
 
@@ -124,11 +125,11 @@ export default function ittUrlField() {
 
         function itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus): void {
           _resetFields();
-          let isValidUrl = _setValidity(validateUrl(url));
-          let isMixedContent = mixedContent(url);
+          let isValidUrl = _setValidity(validationSvc.validateUrl(url, ctrl));
+          let isMixedContent = validationSvc.mixedContent(url, ctrl);
           ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
           if (!isMixedContent && isValidUrl) { //only do async stuff if necessary
-            xFrameOpts(url, cachedResults)
+            validationSvc.xFrameOpts(url, ctrl, cachedResults)
               .then(({noEmbed, location}: {noEmbed:boolean, location:string}) => {
                 ctrl.data.templateOpts = _disableTemplateOpts(noEmbed);
                 _setValidity(true);
@@ -146,10 +147,6 @@ export default function ittUrlField() {
           }
         }
 
-        function _setTarget(canEmbed: boolean): '_blank' | '_self' {
-          return canEmbed ? '_blank' : '_self';
-        }
-
         function _disableTemplateOpts(val: boolean): any[] {
 
           if (val === true) {
@@ -162,55 +159,6 @@ export default function ittUrlField() {
             }
             return opt
           });
-        }
-
-        function mixedContent(viewVal: string): boolean {
-          if (_existy(viewVal) && /^http:\/\//.test(viewVal)) {
-            //mixed content detected!
-            ctrl.validatedFields['mixedContent'] = {message: 'Mixed Content Detected', showInfo: true};
-            return true;
-          } else {
-            ctrl.validatedFields['mixedContent'] = {message: '', showInfo: false};
-            return false;
-          }
-        }
-
-        function validateUrl(viewVal: string): boolean {
-          if (viewVal === '' && !_emailOrPlaceholder(viewVal)) {
-            ctrl.validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'};
-            return false;
-          } else if (urlService.isVideoUrl(viewVal) || ittUtils.isValidURL(viewVal) || _emailOrPlaceholder(viewVal)) {
-            ctrl.validatedFields['url'] = {showInfo: false};
-            return true;
-          } else {
-            ctrl.validatedFields['url'] = {showInfo: true, message: viewVal + ' is not a valid URL'}; //jshint ignore:line
-            return false;
-          }
-        }
-
-        function xFrameOpts(viewVal: string, cachedResults?: ILinkStatus): ng.IPromise<{noEmbed: boolean, location: string | null}> {
-
-          if (cachedResults != null) {
-
-            return $q((resolve) => {
-              let ret = {
-                noEmbed: dataSvc.handleXFrameOptionsHeader(viewVal, cachedResults.x_frame_options)
-              };
-              return resolve(dataSvc.handleXframeOptsObj(viewVal, ret));
-            });
-          }
-
-          //bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
-          if (viewVal === '' || urlService.isVideoUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
-            return $q(function (resolve) {
-              ctrl.validatedFields['xFrameOpts'] = {showInfo: false};
-              return resolve({noEmbed: false, location: null});
-            });
-          }
-
-          return dataSvc.checkXFrameOpts(viewVal)
-          //xFrameOptsObj will have at least x_frame_options field and could have response_code and location fields
-            .then(xFrameOptsObj => dataSvc.handleXframeOptsObj(viewVal, xFrameOptsObj, ctrl));
         }
 
         //validation of episode URLs in episode tab still use old pattern; e.g. custom validator that emits
@@ -226,9 +174,7 @@ export default function ittUrlField() {
         }
 
         //private methods
-        function _emailOrPlaceholder(val: string): boolean {
-          return /mailto:/.test(val) || val === 'https://';
-        }
+
 
         function _resetFields(): void {
           Object.keys(validatedFields)

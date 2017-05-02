@@ -24,12 +24,9 @@ import {createInstance} from '../models';
  * @requires questionAnswersSvc
  */
 
-interface IDataSvc {
+export interface IDataSvc {
   beginBackgroundTranslations(episodeId: string): any;
   batchUploadTranscripts(episodeId: string, formData: any, params: any): ng.IPromise<{}>;
-  checkXFrameOpts(url: string): any
-  handleXFrameOptionsHeader(url, header): any;
-  handleXframeOptsObj(viewVal: string, xFrameOptsObj, displayObj): { noEmbed: boolean, location?: string };
   generateNewNarrative(containerId, postData): ng.IPromise<{}>;
   getNarrative(narrativeId): ng.IPromise<{}>;
   getNarrativeOverview(narrativeId): ng.IPromise<{}>;
@@ -71,7 +68,6 @@ interface IDataSvc {
   prepItemForStorage(evt): any;
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
   readCache(cache, field, val): object | boolean;
-
 }
 
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
@@ -98,129 +94,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
     // return $q(function(resolve){return resolve(formData)});
     return SANE_POST('/v3/episodes/' + episodeId + '/events/import_subtitles', formData, config);
-  }
-
-
-  interface IXFrameOptsResult {
-    x_frame_options: string;
-    location?: string;
-    noEmbed: boolean;
-  }
-  /**
-   * @ngdoc method
-   * @name #checkXFrameOpts
-   * @methodOf iTT.service:dataSvc
-   * @description
-   * Used to check whether or not a website can be iframed by inspecting the x-frame-options header
-   * @param {String} url The target URL of site to inspect
-   * @returns {Boolean} Whether or not we can embed the input URL in an iframe.
-   */
-  svc.checkXFrameOpts = function (url: string): ng.IPromise<IXFrameOptsResult> {
-    //why use a 'post process callback'
-    //when you can simply chain promises?
-
-    //check protcol for mixed content??
-    const encodedUrl = encodeURIComponent(url);
-    return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
-      .then(_handleSuccess)
-      .then(_canEmbed)
-      .catch(_handleErrors);
-
-    function _handleSuccess(result) {
-      //result could have response_code, location, or x_frame_options fields.
-      //not null, so normalize string
-      if (ittUtils.existy(result.x_frame_options)) {
-        result.x_frame_options = result.x_frame_options.toUpperCase();
-      }
-      // console.log('x-frame-opts: ', result);
-      return result;
-    }
-
-    function _handleErrors(error) {
-      //true to set _noEmbed to make links no embeddable
-      console.warn('xFrameOpts error:', error);
-      return {noEmbed: true};
-    }
-
-    function _canEmbed(result) {
-      result.noEmbed = handleXFrameOptionsHeader(url, result.x_frame_options);
-      return result;
-    }
-  };
-
-  svc.handleXFrameOptionsHeader = handleXFrameOptionsHeader;
-  function handleXFrameOptionsHeader(url: string, header: string): boolean {
-    let noEmbed = true;
-    switch (true) {
-      case /SAMEORIGIN/i.test(header):
-        let currentOrigin = $location.host();
-        let parseInputUrl = document.createElement('a');
-        parseInputUrl.href = url;
-        //check our origin
-        if (currentOrigin === parseInputUrl.hostname) {
-          noEmbed = false;
-        }
-        break;
-      case /ALLOW-FROM/i.test(header):
-        //check if we're on the list
-        //split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
-        const xFrameArr = header.split(',');
-        currentOrigin = $location.host();
-        angular.forEach(xFrameArr, function (i) {
-          const url = i.trim().split(' ')[1];
-          const aElm = document.createElement('a');
-          aElm.href = url;
-          if (currentOrigin === aElm.hostname) {
-            noEmbed = false;
-          }
-        });
-        break;
-      case /DENY/i.test(header):
-        // do nothing
-        break;
-      case /null/.test(header):
-        //ticket to ride
-        noEmbed = false;
-        break;
-    }
-    return noEmbed;
-  }
-
-  svc.handleXframeOptsObj = handleXframeOptsObj;
-  function handleXframeOptsObj(viewVal: string, xFrameOptsObj, displayObj) {
-    let tipText = '';
-    //check for a new URL if we followed a redirect on the server.
-    if (ittUtils.existy(xFrameOptsObj.location)) {
-      tipText = viewVal + ' redirected to ' + xFrameOptsObj.location;
-      displayObj.validatedFields['301'] = {
-        showInfo: true,
-        message: tipText,
-        doInfo: true,
-        url: xFrameOptsObj.location
-      };
-    }
-
-    if (ittUtils.existy(xFrameOptsObj.response_code) && xFrameOptsObj.response_code === 404) {
-      tipText = viewVal + ' cannot be found';
-      displayObj.validatedFields['404'] = {showInfo: true, message: tipText};
-      return $q.reject('404');
-    }
-
-    if (xFrameOptsObj.noEmbed) {
-      tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
-      displayObj.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
-    } else {
-      displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
-    }
-
-    //override noEmbed with error
-    if (xFrameOptsObj.error_message) {
-      displayObj.validatedFields['xFrameOpts'] = {
-        showInfo: true,
-        message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
-      };
-    }
-    return {noEmbed: xFrameOptsObj.noEmbed, location: xFrameOptsObj.location};
   }
 
   //used in ittContainer

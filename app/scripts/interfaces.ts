@@ -1,7 +1,7 @@
+import {IDataSvc} from './services/dataSvc';
 /**
  * Created by githop on 4/11/17.
  */
-
 export interface ILangform {
   en: boolean
   es?: boolean
@@ -38,3 +38,5 @@ export interface ILinkValidFields {
   xFrameOpts: ILinkValidationMessage;
   [key: string]: ILinkValidationMessage;
 }
+
+export {IDataSvc};
