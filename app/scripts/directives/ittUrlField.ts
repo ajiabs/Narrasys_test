@@ -3,13 +3,13 @@ import {ILink, ILinkStatus} from '../models';
  * Created by githop on 6/30/16.
  */
 
-//link event or URL string if used in episode tab
+//link event
 interface IUrlFieldScope extends ng.IScope {
-  data: ILink | string;
+  data: ILink;
   videoOnly: boolean;
   label: string;
-  onAttach: () => string;
-  ittItemForm?: ng.IFormController;
+  onAttach: ($url: string) => string;
+  ittItemForm?: ng.INgModelController
 }
 
 export default function ittUrlField() {
@@ -23,6 +23,13 @@ export default function ittUrlField() {
       ittItemForm: '<?'
     },
     template: `
+      <div class="field">
+        <div class="label">Force open in new Tab
+          <div class="input">
+            <input type="checkbox" ng-model="$ctrl.data.noEmbed">
+          </div>
+        </div>
+      </div>
       <div class="field">
       	<div class="label">{{$ctrl.label || "URL"}}
       	<span ng-repeat="(field, val) in $ctrl.validatedFields">
@@ -47,7 +54,7 @@ export default function ittUrlField() {
       </div>`,
     controller: ['$scope', '$q', 'ittUtils', 'urlService', 'dataSvc',
       function ($scope: IUrlFieldScope, $q: ng.IQService, ittUtils, urlService, dataSvc) {
-        const ctrl = this;
+        const ctrl: IUrlFieldScope = this;
         const _existy = ittUtils.existy;
 
         let validatedFields = {

@@ -1,6 +1,5 @@
 // TODO: load and resolve categories
-
-
+import {createInstance} from '../models';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -633,7 +632,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
               getEventActivityDataForUser(events, "Plugin", epId);
               angular.forEach(events, function (eventData) {
                 eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-                modelSvc.cache("event", svc.resolveIDs(eventData));
+                let evData = svc.resolveIDs(eventData);
+                let evModel = createInstance(eventData.type, evData);
+                modelSvc.cache("event", evModel);
               });
               modelSvc.resolveEpisodeEvents(epId);
               var assetIds = getAssetIdsFromEvents(events);

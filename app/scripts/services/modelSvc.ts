@@ -350,32 +350,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     }
   };
 
-  function initEventByType(event): NEvent {
-    switch (event._type) {
-      case 'Link':
-        return new ILink(event);
-      case 'Annotation':
-        return new IAnnotation(event);
-      case 'Bookmark':
-        return new IBookmark(event);
-      case 'Chapter':
-        return new IChapter(event);
-      case 'Image':
-        return new IImage(event);
-      case 'Plugin':
-        return new IPlugin(event);
-      case 'Scene':
-        return new IScene(event);
-      case 'Text':
-        return new IText(event);
-      case 'Upload':
-        return new IUpload(event);
-    }
-  }
-
   svc.deriveEvent = function (event: NEvent): NEvent {
     event = setLang(event);
-    event = initEventByType(event);
     if (event._type !== 'Scene') {
 
       event.searchableText = (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator);

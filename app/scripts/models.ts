@@ -1,21 +1,20 @@
-import {link} from 'fs';
 /**
  * Created by githop on 5/1/17.
  */
-
 
 export class IEvent {
   //props
   start_time: number;
   type: 'Annotation' | 'Bookmark' | 'File' | 'Image' | 'Link' | 'Plugin' | 'Scene' | 'Chapter' | 'Text' | 'Upload';
   end_time: number;
-  title: {[lang: string]: string};
-  description: {[lang: string]: string};
+  title: { [lang: string]: string };
+  description: { [lang: string]: string };
   cosmetic: boolean;
   stop: boolean;
 //props not in any schema but added dynamically either on the backend somewhere client-side;
   noEmbed?: boolean;
   avatar_id: string;
+  templateOpts?: any;
   //relations
   episode_id: string;
   user_id: string;
@@ -24,10 +23,6 @@ export class IEvent {
   style_id: string;
   //group ??
   //event_category ??
-  constructor(eventData) {
-    Object.entries(eventData)
-      .forEach(([key, val]) => this[key] = val);
-  }
 }
 
 export class ILinkStatus {
@@ -37,76 +32,56 @@ export class ILinkStatus {
   location: string;
   updated_at: Date;
   x_frame_options: string;
-  constructor(linkStatus) {
-    Object.entries(linkStatus)
-      .forEach(([key, val]) => this[key] = val);
-  }
 }
 
 export class ILink extends IEvent {
   type: 'Link';
   _type: 'Link';
+  target: '_blank' | '_self';
   url: string;
   display_title?: string;
   display_description?: string;
   styles?: string[];
-  target: '_blank' | '_self';
+  forceEmbed?: false;
+  showInlineDetail?: boolean;
   //relations
   link_image_id: string;
   url_status?: ILinkStatus;
   templateUrl?: string;
-  constructor(eventData) {
-    super(eventData);
-    if (eventData.url_status != null) {
-      this.url_status = new ILinkStatus(eventData.url_status);
-    }
-  }
 }
 
 export class IAnnotation extends IEvent {
   type: 'Annotation';
   _type: 'Annotation';
-  annotator: {[lang: string]: string};
-  annotation: {[lang: string]: string};
+  annotator: { [lang: string]: string };
+  annotation: { [lang: string]: string };
   chapter_marker: boolean = false;
   //belongs_to annotation image;
   annotation_image_id: string;
   templateUrl?: string;
-  constructor(eventData) {
-    super(eventData);
-  }
 }
 
 export class IBookmark extends IEvent {
   type: 'Bookmark';
   _type: 'Bookmark';
-  constructor(eventData) {
-    super(eventData);
-  }
 }
 
 export class IChapter extends IEvent {
   type: 'Chapter';
   _type: 'Chapter';
-  constructor(eventData) {
-    super(eventData);
-  }
 }
 
 export class IImage extends IEvent {
   type: 'Image';
   _type: 'Image';
   templateUrl?: string;
-  constructor(eventData) {
-    super(eventData);
-  }
 }
 
 class IPluginData {
-  correctFeedback: {[lang: string]: string};
-  distractors: {index: number, text: string}[];
-  incorrectFeedback: {[lang: string]: string};
-  questionText: {[lang: string]: string};
+  correctFeedback: { [lang: string]: string };
+  distractors: { index: number, text: string }[];
+  incorrectFeedback: { [lang: string]: string };
+  questionText: { [lang: string]: string };
   questionType: string;
 }
 
@@ -119,35 +94,58 @@ export class IPlugin extends IEvent {
     _version: number
     _plugin: IPluginData;
   };
-  constructor(eventData) {
-    super(eventData);
-  }
 }
 
 export class IScene extends IEvent {
   type: 'Scene';
   _type: 'Scene';
   templateUrl?: string;
-  constructor(eventData) {
-    super(eventData);
-  }
 }
 
 export class IText extends IEvent {
   type: 'Text';
   _type: 'Text';
-  constructor(eventData) {
-    super(eventData);
-  }
 }
 
 export class IUpload extends IEvent {
   type: 'Upload';
   _type: 'Upload';
   asset_id: string;
-  constructor(eventData) {
-    super(eventData);
+}
+
+export function createInstance(type: string, data: any): NEvent {
+  let model;
+  switch (type) {
+    case 'Link':
+      model = new ILink();
+      break;
+    case 'Annotation':
+      model = new IAnnotation();
+      break;
+    case 'Bookmark':
+      model = new IBookmark();
+      break;
+    case 'Chapter':
+      model = new IChapter();
+      break;
+    case 'Image':
+      model = new IImage();
+      break;
+    case 'Plugin':
+      model = new IPlugin();
+      break;
+    case 'Scene':
+      model = new IScene();
+      break;
+    case 'Text':
+      model = new IText();
+      break;
+    case 'Upload':
+      model = new IUpload();
+      break;
   }
+  Object.assign(model, data);
+  return model;
 }
 
 //union type to provide type checking
@@ -161,4 +159,7 @@ export type NEvent =
   IScene |
   IText |
   IUpload;
+
+
+
 
