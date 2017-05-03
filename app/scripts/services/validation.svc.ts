@@ -6,14 +6,14 @@ import {ILinkStatus} from '../models';
 interface IXFrameOptsResult {
   x_frame_options: string;
   location?: string;
-  noEmbed: boolean;
+  canEmbed: boolean;
 }
 export interface IValidationSvc {
   checkXFrameOpts(url: string): ng.IPromise<IXFrameOptsResult>;
-  xFrameHeaderNotEmbeddable(url: string, header: string): boolean;
+  xFrameHeaderCanEmbed(url: string, header: string): boolean;
   mixedContent(viewVal: string, displayObj): boolean;
   validateUrl(viewVal:string, displayObj): boolean;
-  xFrameOpts(viewVal: string, displayObj, cachedResults?: ILinkStatus): ng.IPromise<{location?: string, noEmbed: boolean}>;
+  xFrameOpts(viewVal: string, displayObj, cachedResults?: ILinkStatus): ng.IPromise<{location?: string, canEmbed: boolean}>;
 }
 export class ValidationService implements IValidationSvc {
 
@@ -26,7 +26,6 @@ export class ValidationService implements IValidationSvc {
               private ittUtils,
               private urlService) {}
 
-
   checkXFrameOpts(url: string): ng.IPromise<IXFrameOptsResult> {
     const encodedUrl = encodeURIComponent(url);
     //HTTP methods could one day be implemented in a parent class.
@@ -36,19 +35,11 @@ export class ValidationService implements IValidationSvc {
       .catch(e => ValidationService.handleErrors(e));
   }
 
-  xFrameHeaderNotEmbeddable(url: string, header: string): boolean {
-
-    let noEmbed = true;
-
-
-    //for when null is the value and not the string 'null';
-
-    if (header == null) {
-      noEmbed = false;
-      console.log('wtf', noEmbed);
-      return noEmbed;
+  xFrameHeaderCanEmbed(url: string, header: string): boolean {
+    let canEmbed = true;
+    if (header == null || header === 'null') {
+      return false
     }
-
 
     switch (true) {
       case /SAMEORIGIN/i.test(header):
@@ -57,7 +48,7 @@ export class ValidationService implements IValidationSvc {
         parseInputUrl.href = url;
         //check our origin
         if (currentOrigin === parseInputUrl.hostname) {
-          noEmbed = false;
+          canEmbed = false;
         }
         break;
       case /ALLOW-FROM/i.test(header):
@@ -70,19 +61,15 @@ export class ValidationService implements IValidationSvc {
           const aElm = document.createElement('a');
           aElm.href = url;
           if (currentOrigin === aElm.hostname) {
-            noEmbed = false;
+            canEmbed = false;
           }
         });
         break;
       case /DENY/i.test(header):
         // do nothing
         break;
-      case /null/.test(header):
-        //ticket to ride
-        noEmbed = false;
-        break;
     }
-    return noEmbed;
+    return canEmbed;
   }
 
   mixedContent(viewVal, displayObj): boolean {
@@ -113,7 +100,7 @@ export class ValidationService implements IValidationSvc {
     if (cachedResults != null) {
       return this.$q((resolve) => {
         let ret = {
-          noEmbed: this.xFrameHeaderNotEmbeddable(viewVal, cachedResults.x_frame_options)
+          canEmbed: this.xFrameHeaderCanEmbed(viewVal, cachedResults.x_frame_options)
         };
         return resolve(this.handleXframeOptsObj(viewVal, ret, displayObj));
       });
@@ -123,7 +110,7 @@ export class ValidationService implements IValidationSvc {
     if (viewVal === '' || this.urlService.isVideoUrl(viewVal) || ValidationService.emailOrPlaceholder(viewVal)) {
       return this.$q(function (resolve) {
         displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
-        return resolve({noEmbed: false, location: null});
+        return resolve({canEmbed: false, location: null});
       });
     }
 
@@ -151,7 +138,7 @@ export class ValidationService implements IValidationSvc {
     return this.$q.reject('404');
   }
 
-  if (xFrameOptsObj.noEmbed) {
+  if (!xFrameOptsObj.canEmbed) {
     tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
     displayObj.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
   } else {
@@ -165,7 +152,7 @@ export class ValidationService implements IValidationSvc {
       message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
     };
   }
-  return {noEmbed: xFrameOptsObj.noEmbed, location: xFrameOptsObj.location};
+  return {canEmbed: xFrameOptsObj.canEmbed, location: xFrameOptsObj.location};
 }
 
   private static emailOrPlaceholder(val: string): boolean {
@@ -175,18 +162,7 @@ export class ValidationService implements IValidationSvc {
   private static handleErrors(error) {
     //true to set _noEmbed to make links no embeddable
     console.warn('xFrameOpts error:', error);
-    return {noEmbed: true};
-  }
-
-
-  private SANE_GET(path) {
-    return this.authSvc.authenticate()
-      .then(() => {
-        return this.$http.get(this.config.apiDataBaseUrl + path)
-          .then((resp) => {
-            return resp.data;
-          });
-      });
+    return {canEmbed: true};
   }
 
   private handleSuccess(result) {
@@ -200,7 +176,17 @@ export class ValidationService implements IValidationSvc {
   }
 
   private canEmbed(result, url) {
-    result.noEmbed = this.xFrameHeaderNotEmbeddable(url, result.x_frame_options);
+    result.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
     return result;
+  }
+
+  private SANE_GET(path) {
+    return this.authSvc.authenticate()
+      .then(() => {
+        return this.$http.get(this.config.apiDataBaseUrl + path)
+          .then((resp) => {
+            return resp.data;
+          });
+      });
   }
 }

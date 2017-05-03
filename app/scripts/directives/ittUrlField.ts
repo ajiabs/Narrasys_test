@@ -126,15 +126,17 @@ export default function ittUrlField() {
         function itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus): void {
           _resetFields();
           let isValidUrl = _setValidity(validationSvc.validateUrl(url, ctrl));
-          let isMixedContent = validationSvc.mixedContent(url, ctrl);
-          ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
+          // let isMixedContent = validationSvc.mixedContent(url, ctrl);
+          // ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
           if (isValidUrl) { //only do async stuff if necessary
             validationSvc.xFrameOpts(url, ctrl, cachedResults)
-              .then(({noEmbed, location}: {noEmbed:boolean, location:string}) => {
-                ctrl.data.templateOpts = _disableTemplateOpts(noEmbed);
+              .then(({canEmbed, location}: {canEmbed:boolean, location:string}) => {
+                ctrl.data.templateOpts = _disableTemplateOpts(canEmbed);
                 _setValidity(true);
                 // ctrl.data.noEmbed = noEmbed;
                 // ctrl.data.target = _setTarget(noEmbed);
+
+
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering
                   //a $digest from mutating ctrl.data.url
