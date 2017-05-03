@@ -24,10 +24,15 @@ export default function ittUrlField() {
       ittItemForm: '<?'
     },
     template: `
-      <div class="field">
+      <div class="field" ng-if="$ctrl.canEmbed">
         <div class="label">Force open in new Tab
           <div class="input">
-            <input type="checkbox" ng-model="$ctrl.data.noEmbed">
+            <input
+            type="checkbox"
+            ng-true-value="'_blank'"
+            ng-false-value="'_self'"
+            ng-model="$ctrl.data.target"/>
+
           </div>
         </div>
       </div>
@@ -136,6 +141,7 @@ export default function ittUrlField() {
                 // ctrl.data.noEmbed = noEmbed;
                 // ctrl.data.target = _setTarget(noEmbed);
 
+                ctrl.canEmbed = canEmbed;
 
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering

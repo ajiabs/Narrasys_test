@@ -36,9 +36,9 @@ export class ValidationService implements IValidationSvc {
   }
 
   xFrameHeaderCanEmbed(url: string, header: string): boolean {
-    let canEmbed = true;
+    let canEmbed = false;
     if (header == null || header === 'null') {
-      return false
+      return true;
     }
 
     switch (true) {
@@ -48,7 +48,7 @@ export class ValidationService implements IValidationSvc {
         parseInputUrl.href = url;
         //check our origin
         if (currentOrigin === parseInputUrl.hostname) {
-          canEmbed = false;
+          canEmbed = true;
         }
         break;
       case /ALLOW-FROM/i.test(header):
@@ -61,12 +61,12 @@ export class ValidationService implements IValidationSvc {
           const aElm = document.createElement('a');
           aElm.href = url;
           if (currentOrigin === aElm.hostname) {
-            canEmbed = false;
+            canEmbed = true;
           }
         });
         break;
       case /DENY/i.test(header):
-        // do nothing
+        canEmbed = true;
         break;
     }
     return canEmbed;
@@ -152,6 +152,7 @@ export class ValidationService implements IValidationSvc {
       message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
     };
   }
+
   return {canEmbed: xFrameOptsObj.canEmbed, location: xFrameOptsObj.location};
 }
 
