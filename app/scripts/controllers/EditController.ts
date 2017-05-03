@@ -1,4 +1,5 @@
 'use strict';
+import {createInstance} from '../models';
 
 
 
@@ -223,7 +224,9 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
           // update the new item with its real ID (and remove the temp version)
           timelineSvc.removeEvent("internal:editing");
           delete(modelSvc.events["internal:editing"]);
-          modelSvc.cache("event", dataSvc.resolveIDs(data));
+          let evData = dataSvc.resolveIDs(data);
+          let model = createInstance(data._type, evData);
+          modelSvc.cache("event", model);
           modelSvc.resolveEpisodeEvents(appState.episodeId);
           saveOperation = 'create';
           var assetId = data.asset_id || data.link_image_id || data.annotation_image_id;

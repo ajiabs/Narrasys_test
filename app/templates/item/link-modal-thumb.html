@@ -11,7 +11,7 @@
 		</div>
 	</div>
 	<div class="text item__text">
-		<span ng-if="item.target === '_blank'">
+		<span ng-if="handleOutgoingLinkDisplay()">
 			<span ng-if="!item.targetTop">
 				<div class="title item__title item__title--link title--link-modal">
 					<a tabindex="0" class="escapelink item__link--escape-link escape-link--link-modal"
@@ -36,7 +36,7 @@
 			</span>
 
 		</span>
-		<span ng-if="item.target === '_self'">
+		<span ng-if="!handleOutgoingLinkDisplay()">
 				<div class="title item__title item__title--link title--link-modal">
 				<a role="button" x-ng-keypress="toggleDetailOnKeyPress($event)" class="fakeLink item__link--fake-link" tabindex="0"
 				   ng-click="forceModal(false)"

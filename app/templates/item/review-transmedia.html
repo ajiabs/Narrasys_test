@@ -30,8 +30,8 @@
 					<span ng-if="item._type != 'Annotation'">
 						<div class="text">
 							<div class="title">
-								<a tabindex="0" ng-if="item.target === '_blank'" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
-								<a tabindex="0" role="button" class="fakeLink" ng-if="item.target === '_self'" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText" aria-label="Toggle detail display of {{item.display_title}}"></a>
+								<a tabindex="0" ng-if="handleOutgoingLinkDisplay()" class="fakeLink escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>
+								<a tabindex="0" role="button" class="fakeLink" ng-if="!handleOutgoingLinkDisplay()" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText" aria-label="Toggle detail display of {{item.display_title}}"></a>
 							</div>
 							<div ng-bind-html="item.display_description"></div>
 						</div>
