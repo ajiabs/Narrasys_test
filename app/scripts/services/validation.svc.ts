@@ -10,12 +10,12 @@ interface IXFrameOptsResult {
 }
 export interface IValidationSvc {
   checkXFrameOpts(url: string): ng.IPromise<IXFrameOptsResult>;
-  handleXFrameOptionsHeader(url: string, header: string): boolean;
+  xFrameHeaderNotEmbeddable(url: string, header: string): boolean;
   mixedContent(viewVal: string, displayObj): boolean;
   validateUrl(viewVal:string, displayObj): boolean;
   xFrameOpts(viewVal: string, displayObj, cachedResults?: ILinkStatus): ng.IPromise<{location?: string, noEmbed: boolean}>;
 }
-export class ValidationService {
+export class ValidationService implements IValidationSvc {
 
   static $inject = ['$http', '$location', '$q', 'authSvc', 'config', 'ittUtils', 'urlService'];
   constructor(private $http: ng.IHttpService,
@@ -36,8 +36,20 @@ export class ValidationService {
       .catch(e => ValidationService.handleErrors(e));
   }
 
-  handleXFrameOptionsHeader(url: string, header: string): boolean {
+  xFrameHeaderNotEmbeddable(url: string, header: string): boolean {
+
     let noEmbed = true;
+
+
+    //for when null is the value and not the string 'null';
+
+    if (header == null) {
+      noEmbed = false;
+      console.log('wtf', noEmbed);
+      return noEmbed;
+    }
+
+
     switch (true) {
       case /SAMEORIGIN/i.test(header):
         let currentOrigin = this.$location.host();
@@ -101,14 +113,14 @@ export class ValidationService {
     if (cachedResults != null) {
       return this.$q((resolve) => {
         let ret = {
-          noEmbed: this.handleXFrameOptionsHeader(viewVal, cachedResults.x_frame_options)
+          noEmbed: this.xFrameHeaderNotEmbeddable(viewVal, cachedResults.x_frame_options)
         };
         return resolve(this.handleXframeOptsObj(viewVal, ret, displayObj));
       });
     }
 
     //bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
-    if (viewVal === '' || this.urlService.isVideoUrl(viewVal) || /^http:\/\//.test(viewVal) || ValidationService.emailOrPlaceholder(viewVal)) {
+    if (viewVal === '' || this.urlService.isVideoUrl(viewVal) || ValidationService.emailOrPlaceholder(viewVal)) {
       return this.$q(function (resolve) {
         displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
         return resolve({noEmbed: false, location: null});
@@ -188,7 +200,7 @@ export class ValidationService {
   }
 
   private canEmbed(result, url) {
-    result.noEmbed = this.handleXFrameOptionsHeader(url, result.x_frame_options);
+    result.noEmbed = this.xFrameHeaderNotEmbeddable(url, result.x_frame_options);
     return result;
   }
 }

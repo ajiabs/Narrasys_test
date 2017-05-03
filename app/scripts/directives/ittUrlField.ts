@@ -128,7 +128,7 @@ export default function ittUrlField() {
           let isValidUrl = _setValidity(validationSvc.validateUrl(url, ctrl));
           let isMixedContent = validationSvc.mixedContent(url, ctrl);
           ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
-          if (!isMixedContent && isValidUrl) { //only do async stuff if necessary
+          if (isValidUrl) { //only do async stuff if necessary
             validationSvc.xFrameOpts(url, ctrl, cachedResults)
               .then(({noEmbed, location}: {noEmbed:boolean, location:string}) => {
                 ctrl.data.templateOpts = _disableTemplateOpts(noEmbed);

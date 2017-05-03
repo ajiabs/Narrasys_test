@@ -10,6 +10,7 @@
 		</div>
 	</div>
 	<div class="text item__text">
+    <!--open in new tab-->
 		<span ng-if="handleOutgoingLinkDisplay()">
 			<span ng-if="!item.targetTop">
 				<div class="title item__title item__title--link title--link-with-image">
@@ -27,8 +28,8 @@
 					<img ng-if="item.asset.url" ng-src="{{item.asset.url}}">
 				</a>
 			</span>
-
 		</span>
+    <!--open in detail view-->
 		<span ng-if="!handleOutgoingLinkDisplay()">
 				<div class="title item__title item__title--link title--link-with-image">
 				<a role="button" x-ng-keypress="toggleDetailOnKeyPress($event)" class="fakeLink item__link--fake-link" tabindex="0" ng-click="toggleDetailView()" ng-bind-html="item.display_title || '(Untitled)' | highlightSubstring: appState.searchText"></a>

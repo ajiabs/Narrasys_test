@@ -41,8 +41,9 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
       scope.handleOutgoingLinkDisplay = handleOutgoingLinkDisplay;
       function handleOutgoingLinkDisplay(): boolean {
         if (scope.item.url != null && scope.item.url_status != null && scope.item.target != null) {
-          let xFrameOpts = validationSvc.handleXFrameOptionsHeader(scope.item.url, scope.item.url_status);
+          let xFrameOpts = validationSvc.xFrameHeaderNotEmbeddable(scope.item.url, scope.item.url_status.x_frame_options);
           // console.log('wtf', scope.item);
+          // console.log('huh', xFrameOpts, scope.item.url);
           return (xFrameOpts && scope.item.target !== '_blank');
         }
       }
