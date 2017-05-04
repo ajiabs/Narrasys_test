@@ -8,6 +8,15 @@ interface IXFrameOptsResult {
   location?: string;
   canEmbed: boolean;
 }
+
+//the object returned from the x_frame_options proxy
+interface IXFrameOptsResponse {
+  x_frame_options: string | null;
+  location?: string
+  error?: string
+  response_code: number;
+}
+
 export interface IValidationSvc {
   checkXFrameOpts(url: string): ng.IPromise<IXFrameOptsResult>;
   xFrameHeaderCanEmbed(url: string, header: string): boolean;
@@ -32,8 +41,8 @@ export class ValidationService implements IValidationSvc {
     const encodedUrl = encodeURIComponent(url);
     //HTTP methods could one day be implemented in a parent class.
     return this.SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
-      .then(result => this.handleSuccess(result))
-      .then(result => this.canEmbed(result, url))
+      .then((resp: IXFrameOptsResponse) => this.handleSuccess(resp))
+      .then((result:IXFrameOptsResult)  => this.canEmbed(result, url))
       .catch(e => ValidationService.handleErrors(e));
   }
 
@@ -192,7 +201,7 @@ export class ValidationService implements IValidationSvc {
     return result;
   }
 
-  private canEmbed(result, url) {
+  private canEmbed(result, url): IXFrameOptsResult {
     result.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
     return result;
   }
