@@ -1,6 +1,7 @@
 // TODO: load and resolve categories
 
 
+import {createInstance} from '../models';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -90,84 +91,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       headers: {'Content-type': undefined}
     });
   }
-
-
-  /**
-   * @ngdoc method
-   * @name #checkXFrameOpts
-   * @methodOf iTT.service:dataSvc
-   * @description
-   * Used to check whether or not a website can be iframed by inspecting the x-frame-options header
-   * @param {String} url The target URL of site to inspect
-   * @returns {Boolean} Whether or not we can embed the input URL in an iframe.
-   */
-  svc.checkXFrameOpts = function (url) {
-    //why use a 'post process callback'
-    //when you can simply chain promises?
-
-    //check protcol for mixed content??
-    var currentOrigin;
-    var parseInputUrl;
-    var encodedUrl = encodeURIComponent(url);
-    return SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
-      .then(_handleSuccess)
-      .then(_canEmbed)
-      .catch(_handleErrors);
-
-    function _handleSuccess(result) {
-      //result could have response_code, location, or x_frame_options fields.
-      //not null, so normalize string
-      if (ittUtils.existy(result.x_frame_options)) {
-        result.x_frame_options = result.x_frame_options.toUpperCase();
-      }
-      // console.log('x-frame-opts: ', result);
-      return result;
-    }
-
-    function _handleErrors(error) {
-      //true to set _noEmbed to make links no embeddable
-      console.warn('xFrameOpts error:', error);
-      return {noEmbed: true};
-    }
-
-    function _canEmbed(result) {
-      // var _noEmbed = true;
-      result.noEmbed = true;
-      switch (true) {
-        case /SAMEORIGIN/i.test(result.x_frame_options):
-          currentOrigin = $location.host();
-          parseInputUrl = document.createElement('a');
-          parseInputUrl.href = url;
-          //check our origin
-          if (currentOrigin === parseInputUrl.hostname) {
-            result.noEmbed = false;
-          }
-          break;
-        case /ALLOW-FROM/i.test(result.x_frame_options):
-          //check if we're on the list
-          //split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
-          var xFrameArr = result.x_frame_options.split(',');
-          currentOrigin = $location.host();
-          angular.forEach(xFrameArr, function (i) {
-            var url = i.trim().split(' ')[1];
-            var aElm = document.createElement('a');
-            aElm.href = url;
-            if (currentOrigin === aElm.hostname) {
-              result.noEmbed = false;
-            }
-          });
-          break;
-        case /DENY/i.test(result.x_frame_options):
-          // do nothing
-          break;
-        case /null/.test(result.x_frame_options):
-          //ticket to ride
-          result.noEmbed = false;
-          break;
-      }
-      return result;
-    }
-  };
 
   //used in ittContainer
   svc.generateNewNarrative = generateNewNarrative;
@@ -668,7 +591,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
               getEventActivityDataForUser(events, 'Plugin', epId);
               angular.forEach(events, function (eventData) {
                 eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-                modelSvc.cache('event', svc.resolveIDs(eventData));
+                let evData = svc.resolveIDs(eventData);
+                let evModel = createInstance(eventData.type, evData);
+                modelSvc.cache('event', evModel);
               });
               modelSvc.resolveEpisodeEvents(epId);
               var assetIds = getAssetIdsFromEvents(events);
@@ -767,7 +692,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   // a different idiom here, let's see if this is easier to conceptualize.
 
   // to use GET(), pass in the API endpoint, and an optional callback for post-processing of the results
-  var GET = function (path, postprocessCallback) {
+  var GET = function (path, postprocessCallback?) {
     // console.log("GET", path);
     var defer = $q.defer();
     authSvc.authenticate()
@@ -799,7 +724,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       });
   };
 
-  var SANE_POST = function (path, data, config) {
+  var SANE_POST = function (path, data, config?) {
     if (config) {
       return $http.post(path, data, config);
     }
@@ -1133,7 +1058,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'sxs', // for demos, for now
       'title',
       'url',
-      'noEmbed',
+      'target',
+      'url_status',
       'annotator',
       'annotation',
       'description',
