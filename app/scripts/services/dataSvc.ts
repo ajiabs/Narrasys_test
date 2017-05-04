@@ -92,7 +92,6 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   }
 
 
-
   /**
    * @ngdoc method
    * @name #checkXFrameOpts
@@ -178,7 +177,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         return resp.data;
       })
       .catch(function (e) {
-        console.error("Error generating new narrative:", e);
+        console.error('Error generating new narrative:', e);
       });
   }
 
@@ -195,8 +194,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       urlParams = '?customer=' + cachedNarrative.subDomain;
     }
 
-    authSvc.authenticate("narrative=" + narrativeId).then(function () {
-      $http.get(config.apiDataBaseUrl + "/v3/narratives/" + narrativeId + "/resolve" + urlParams)
+    authSvc.authenticate('narrative=' + narrativeId).then(function () {
+      $http.get(config.apiDataBaseUrl + '/v3/narratives/' + narrativeId + '/resolve' + urlParams)
         .then(function (response) {
 
           response.data.timelines.sort(function (a, b) {
@@ -204,7 +203,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           });
 
 
-          modelSvc.cache("narrative", svc.resolveIDs(response.data));
+          modelSvc.cache('narrative', svc.resolveIDs(response.data));
 
           defer.resolve(modelSvc.narratives[response.data._id]);
         });
@@ -213,7 +212,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.getNarrativeOverview = function (narrativeId) {
-    return GET("/v3/narratives/" + narrativeId);
+    return GET('/v3/narratives/' + narrativeId);
   };
 
   svc.getNarrativeExportAsSpreadsheet = function (nId) {
@@ -234,7 +233,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       defer.resolve(cachedPurchases);
       return defer.promise;
     } else {
-      return GET("/v3/users/" + userId + "/narrative_purchases", function (data) {
+      return GET('/v3/users/' + userId + '/narrative_purchases', function (data) {
         cachedPurchases = data;
         return data;
       });
@@ -243,9 +242,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.getCustomerList = function () {
-    return GET("/v3/customers/", function (customers) {
+    return GET('/v3/customers/', function (customers) {
       angular.forEach(customers, function (customer) {
-        modelSvc.cache("customer", customer);
+        modelSvc.cache('customer', customer);
       });
       return customers;
     });
@@ -254,21 +253,25 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   svc.getCustomer = function (customerId, retrieve) {
     if (!(authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'))) {
-      return $q(function(resolve) {resolve({});});
+      return $q(function (resolve) {
+        resolve({});
+      });
     }
     if (modelSvc.customers[customerId]) {
 
       if (retrieve) {
-        return $q(function(resolve) {resolve(modelSvc.customers[customerId]);});
+        return $q(function (resolve) {
+          resolve(modelSvc.customers[customerId]);
+        });
       }
       // have it already, or at least already getting it
     } else {
       // cache a stub:
-      modelSvc.cache("customer", {
+      modelSvc.cache('customer', {
         _id: customerId
       });
-      return GET("/v3/customers/" + customerId, function (customer) {
-        modelSvc.cache("customer", customer); // the real thing
+      return GET('/v3/customers/' + customerId, function (customer) {
+        modelSvc.cache('customer', customer); // the real thing
         return modelSvc.customers[customer._id];
       });
     }
@@ -278,7 +281,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   // to modelSvc.  No promises needed, let the $digest do the work
   svc.getEpisode = function (epId, segmentId) {
     if (!epId) {
-      throw ("no episode ID supplied to dataSvc.getEpisode");
+      throw ('no episode ID supplied to dataSvc.getEpisode');
     }
 
     // Removing this as it caused race conditions: sometimes the asset and event data has already been loaded, sometimes not.
@@ -288,14 +291,14 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     // 	$rootScope.$emit("dataSvc.getEpisode.done");
     // 	return; // already requested
     // }
-    modelSvc.cache("episode", {
+    modelSvc.cache('episode', {
       _id: epId
     }); // init with empty object to be filled by asynch process
 
     if ($routeParams.local) {
       mockSvc.mockEpisode(epId);
       // console.log("Got all events");
-      $rootScope.$emit("dataSvc.getEpisode.done");
+      $rootScope.$emit('dataSvc.getEpisode.done');
     } else {
       authSvc.authenticate()
         .then(function () {
@@ -307,12 +310,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
   };
   svc.getEpisodeOverview = function (epId) {
-    return GET("/v3/episodes/" + epId);
+    return GET('/v3/episodes/' + epId);
   };
 
   svc.getNarrativeList = function (customer) {
     if (!ittUtils.existy(customer)) {
-      return GET("/v3/narratives/");
+      return GET('/v3/narratives/');
     }
 
     return GET('/v3/narratives?customer_id=' + customer._id)
@@ -322,31 +325,31 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.createUserGroup = function (groupName) {
-    return POST("/v3/groups", {
-      "group": {
-        "name": groupName
+    return POST('/v3/groups', {
+      'group': {
+        'name': groupName
       }
     });
   };
 
   svc.createNarrative = function (narrativeData) {
     delete narrativeData.templateUrl;
-    return SANE_POST("/v3/narratives", narrativeData);
+    return SANE_POST('/v3/narratives', narrativeData);
   };
   svc.updateNarrative = function (narrativeData) {
     delete narrativeData.templateUrl;
-    return SANE_PUT("/v3/narratives/" + narrativeData._id, narrativeData);
+    return SANE_PUT('/v3/narratives/' + narrativeData._id, narrativeData);
   };
 
   svc.createChildEpisode = function (childData) {
     // console.log("about to create child epsiode", childData);
-    return POST("/v3/episodes", {
-      "episode": childData
+    return POST('/v3/episodes', {
+      'episode': childData
     });
   };
 
   svc.createEpisodeSegment = function (narrativeId, segmentData) {
-    return POST("/v3/timelines/" + narrativeId + "/episode_segments", segmentData);
+    return POST('/v3/timelines/' + narrativeId + '/episode_segments', segmentData);
   };
 
   svc.storeTimeline = function (narrativeId, origTimeline) {
@@ -364,7 +367,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     var timeline = ittUtils.pick(origTimeline, permitted);
 
     if (timeline._id) {
-      return PUT("/v3/timelines/" + timeline._id, timeline, function (ret) {
+      return PUT('/v3/timelines/' + timeline._id, timeline, function (ret) {
         // TEMPORARY until api stops doing this
         if (typeof ret.name === 'string') {
           ret.name = {
@@ -379,7 +382,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         return ret;
       });
     } else {
-      return POST("/v3/narratives/" + narrativeId + "/timelines", timeline, function (ret) {
+      return POST('/v3/narratives/' + narrativeId + '/timelines', timeline, function (ret) {
         // TEMPORARY until api stops doing this
         if (typeof ret.name === 'string') {
           ret.name = {
@@ -405,7 +408,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   svc.getSingleAsset = function (assetId) {
     if (assetId) {
-      return GET("/v1/assets/" + assetId);
+      return GET('/v1/assets/' + assetId);
     } else {
       return $q(function (resolve) {
         resolve(undefined);
@@ -435,9 +438,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         $http.get(config.apiDataBaseUrl + '/v1/styles')
       ])
         .then(function (responses) {
-          svc.cache("templates", responses[0].data);
-          svc.cache("layouts", responses[1].data);
-          svc.cache("styles", responses[2].data);
+          svc.cache('templates', responses[0].data);
+          svc.cache('layouts', responses[1].data);
+          svc.cache('styles', responses[2].data);
 
           gettingCommon = true;
           getCommonDefer.resolve();
@@ -455,7 +458,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   svc.cache = function (cacheType, dataList) {
     // console.log("dataSvc.cache", cacheType, dataList);
     angular.forEach(dataList, function (item) {
-      if (cacheType === "templates") {
+      if (cacheType === 'templates') {
         /* API format:
          _id									"528d17ebba4f65e578000007"
          applies_to_episodes	false  (if true, event_types is empty)
@@ -468,11 +471,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         dataCache.template[item._id] = {
           id: item._id,
           url: item.url,
-          type: (item.applies_to_episodes ? "Episode" : item.event_types ? item.event_types[0] : undefined),
+          type: (item.applies_to_episodes ? 'Episode' : item.event_types ? item.event_types[0] : undefined),
           displayName: item.name,
           customerIds: item.customer_ids
         };
-      } else if (cacheType === "layouts") {
+      } else if (cacheType === 'layouts') {
         /* API format:
          _id									"528d17ebba4f65e57800000a"
          created_at					"2013-11-20T20:13:31Z"
@@ -487,7 +490,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           displayName: item.display_name
         };
 
-      } else if (cacheType === "styles") {
+      } else if (cacheType === 'styles') {
         /* API format:
          _id						"528d17f1ba4f65e578000036"
          created_at		"2013-11-20T20:13:37Z"
@@ -517,7 +520,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
      applies_to_narrative: false
      }
      */
-    return POST("/v1/templates", templateData);
+    return POST('/v1/templates', templateData);
   };
   // svc.createStyle = function (styleData) {
   // 	// ALSO TEMPORARY, UNSAFE
@@ -530,7 +533,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
     // temporary:
     if (obj.everyone_group && !obj.template_id) {
-      obj.templateUrl = "templates/narrative/default.html";
+      obj.templateUrl = 'templates/narrative/default.html';
     }
 
     if (obj.template_id) {
@@ -539,7 +542,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
         delete obj.template_id;
       } else {
         errorSvc.error({
-          data: "Couldn't get templateUrl for id " + obj.template_id
+          data: 'Couldn\'t get templateUrl for id ' + obj.template_id
         });
       }
     }
@@ -564,7 +567,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           }
         } else {
           errorSvc.error({
-            data: "Couldn't get layout for id " + id
+            data: 'Couldn\'t get layout for id ' + id
           });
         }
       });
@@ -580,7 +583,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
           styles.push(dataCache.style[id].css_name);
         } else {
           errorSvc.error({
-            data: "Couldn't get style for id " + id
+            data: 'Couldn\'t get style for id ' + id
           });
         }
       });
@@ -593,22 +596,22 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   var getAssetIdFromEvent = function (event) {
-    if (event.hasOwnProperty("asset_id")) {
+    if (event.hasOwnProperty('asset_id')) {
       if (event.asset_id) {
         return event.asset_id;
       }
     }
-    if (event.hasOwnProperty("annotation_image_id")) {
+    if (event.hasOwnProperty('annotation_image_id')) {
       if (event.annotation_image_id) {
         return event.annotation_image_id;
       }
     }
-    if (event.hasOwnProperty("link_image_id")) {
+    if (event.hasOwnProperty('link_image_id')) {
       if (event.link_image_id) {
         return event.link_image_id;
       }
     }
-    if (event.hasOwnProperty("avatar_id")) {
+    if (event.hasOwnProperty('avatar_id')) {
       if (event.avatar_id) {
         return event.avatar_id;
       }
@@ -634,7 +637,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.getAssetsByAssetIds = function (assetIds, callback) {
-    var endpoint = "/v1/assets";
+    var endpoint = '/v1/assets';
     var assetIdsObj = {};
     assetIdsObj.asset_ids = assetIds;
     return $http.post(config.apiDataBaseUrl + endpoint, assetIdsObj)
@@ -650,22 +653,22 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   var getEpisode = function (epId, segmentId) {
     // The url and return data differ depending on whether we're getting a (resolved) segment or a normal episode:
     // console.log("dataSvc.getEpisode");
-    var url = (segmentId) ? "/v3/episode_segments/" + segmentId + "/resolve" : "/v3/episodes/" + epId;
+    var url = (segmentId) ? '/v3/episode_segments/' + segmentId + '/resolve' : '/v3/episodes/' + epId;
     $http.get(config.apiDataBaseUrl + url)
       .success(function (ret) {
         var episodeData = {};
         if (ret) {
           episodeData = (ret.episode ? ret.episode : ret); // segment has the episode data in ret.episode; that's all we care about at this point
         }
-        if (episodeData.status === "Published" || authSvc.userHasRole("admin") || authSvc.userHasRole('customer admin')) {
-          modelSvc.cache("episode", svc.resolveIDs(episodeData));
+        if (episodeData.status === 'Published' || authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
+          modelSvc.cache('episode', svc.resolveIDs(episodeData));
           getEvents(epId, segmentId)
             .success(function (events) {
               events = events || [];
-              getEventActivityDataForUser(events, "Plugin", epId);
+              getEventActivityDataForUser(events, 'Plugin', epId);
               angular.forEach(events, function (eventData) {
                 eventData.cur_episode_id = epId; // So the player doesn't need to care whether it's a child or parent episode
-                modelSvc.cache("event", svc.resolveIDs(eventData));
+                modelSvc.cache('event', svc.resolveIDs(eventData));
               });
               modelSvc.resolveEpisodeEvents(epId);
               var assetIds = getAssetIdsFromEvents(events);
@@ -680,27 +683,27 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
               //batch get assets
               svc.getAssetsByAssetIds(assetIds, function (assets) {
                 angular.forEach(assets.files, function (asset) {
-                  modelSvc.cache("asset", asset);
+                  modelSvc.cache('asset', asset);
                 });
                 modelSvc.resolveEpisodeAssets(epId);
-                $rootScope.$emit("dataSvc.getEpisode.done");
+                $rootScope.$emit('dataSvc.getEpisode.done');
               });
             })
             .error(function () {
               errorSvc.error({
-                data: "API call to get events failed."
+                data: 'API call to get events failed.'
               });
             });
 
         } else {
           errorSvc.error({
-            data: "This episode has not yet been published."
+            data: 'This episode has not yet been published.'
           });
         }
       })
       .error(function () {
         errorSvc.error({
-          data: "API call to /v3/episodes/" + epId + " failed (bad episode ID?)"
+          data: 'API call to /v3/episodes/' + epId + ' failed (bad episode ID?)'
         });
       });
   };
@@ -722,13 +725,13 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   //getEvents returns the data via a promise, instead of just setting modelSvc
   var getEvents = function (epId, segmentId) {
-    var endpoint = (segmentId) ? "/v3/episode_segments/" + segmentId + "/events" : "/v3/episodes/" + epId + "/events";
+    var endpoint = (segmentId) ? '/v3/episode_segments/' + segmentId + '/events' : '/v3/episodes/' + epId + '/events';
     return $http.get(config.apiDataBaseUrl + endpoint);
   };
 
   var getEventActivityDataForUser = function (events, activityType, epId) {
     angular.forEach(events, function (eventData) {
-      if (eventData.type === "Plugin") {
+      if (eventData.type === 'Plugin') {
         (function (evData) {
           questionAnswersSvc.getUserAnswer(evData._id, appState.user._id)
             .then(function (userAnswer) {
@@ -747,9 +750,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
                     i++;
                   }
                 });
-                modelSvc.cache("event", svc.resolveIDs(evData));
+                modelSvc.cache('event', svc.resolveIDs(evData));
               } else {
-                console.error("Got no user data from getUserAnswer:", userAnswer);
+                console.error('Got no user data from getUserAnswer:', userAnswer);
               }
             });
         }(eventData));
@@ -803,11 +806,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return $http.post(path, data);
   };
 
-  var SANE_PUT = function(path, data) {
+  var SANE_PUT = function (path, data) {
     return $http.put(config.apiDataBaseUrl + path, data);
   };
 
-  var PUT = function (path, putData, postprocessCallback) {
+  var PUT = function (path, putData, postprocessCallback?) {
     var defer = $q.defer();
     $http({
       method: 'PUT',
@@ -824,7 +827,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return defer.promise;
   };
 
-  var POST = function (path, postData, postprocessCallback) {
+  var POST = function (path, postData, postprocessCallback?) {
     var defer = $q.defer();
     $http({
       method: 'POST',
@@ -877,11 +880,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   svc.getContainerRoot = function () {
     // This is only used by episodelist.  Loads root container, returns a list of root-level container IDs
-    return GET("/v3/containers", function (containers) {
+    return GET('/v3/containers', function (containers) {
       var customerIDs = [];
       angular.forEach(containers, function (customer) {
         // cache the customer data:
-        modelSvc.cache("container", customer);
+        modelSvc.cache('container', customer);
         customerIDs.push(customer._id);
       });
       return customerIDs;
@@ -889,8 +892,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.getContainer = function (id, episodeId) {
-    return GET("/v3/containers/" + id, function (containers) {
-      modelSvc.cache("container", containers[0]);
+    return GET('/v3/containers/' + id, function (containers) {
+      modelSvc.cache('container', containers[0]);
       var container = modelSvc.containers[containers[0]._id];
 
       // Get the container' asset list:
@@ -919,11 +922,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
                   if (overview) {
                     child.status = overview.status;
                     child.title = overview.title; // name == container, title == episode
-                    modelSvc.cache("container", child); // trigger setLang
+                    modelSvc.cache('container', child); // trigger setLang
                   } else {
                     // This shouldn't ever happen, but apparently it does.
                     // (Is this a permissions error? adding warning to help track it down)
-                    console.error("Got no episode data for ", child.episodes[0]);
+                    console.error('Got no episode data for ', child.episodes[0]);
                   }
                 });
             }
@@ -937,11 +940,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.getContainerAssets = function (containerId, episodeId) {
-    return $http.get(config.apiDataBaseUrl + "/v1/containers/" + containerId + "/assets")
+    return $http.get(config.apiDataBaseUrl + '/v1/containers/' + containerId + '/assets')
       .success(function (containerAssets) {
         modelSvc.containers[containerId].assetsHaveLoaded = true;
         angular.forEach(containerAssets.files, function (asset) {
-          modelSvc.cache("asset", asset);
+          modelSvc.cache('asset', asset);
         });
         modelSvc.resolveEpisodeAssets(episodeId);
       });
@@ -961,10 +964,10 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     };
     // store in API and resolve with results instead of container
 
-    POST("/v3/containers", newContainer)
+    POST('/v3/containers', newContainer)
       .then(function (data) {
         // console.log("CREATED CONTAINER", data);
-        modelSvc.cache("container", data);
+        modelSvc.cache('container', data);
 
         var parentId = data.parent_id;
 
@@ -981,11 +984,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     //TODO sanitize
     var defer = $q.defer();
     if (!container._id) {
-      console.error("Tried to update a container with no id", container);
+      console.error('Tried to update a container with no id', container);
       defer.reject();
     }
-    PUT("/v3/containers/" + container._id, container, function (data) {
-      modelSvc.cache("container", data);
+    PUT('/v3/containers/' + container._id, container, function (data) {
+      modelSvc.cache('container', data);
       defer.resolve(data);
     });
     return defer.promise;
@@ -999,7 +1002,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
     delete modelSvc.containers[containerId]; // WARN this assumes success......
 
-    return DELETE("/v3/containers/" + containerId);
+    return DELETE('/v3/containers/' + containerId);
   };
 
   // Create new episodes, c.f. storeEpisode.   TODO mild cruft
@@ -1010,7 +1013,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
     var defer = $q.defer();
     // console.log("Attempting to create ", episode);
-    POST("/v3/episodes", episode)
+    POST('/v3/episodes', episode)
       .then(function (data) {
         // console.log("Created episode: ", data);
         // muck around in modelSvc.containers again:
@@ -1024,9 +1027,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   // Update existing episodes, c.f. createEpisode TODO mild cruft
   svc.storeEpisode = function (epData) {
     var preppedData = prepEpisodeForStorage(epData);
-    console.log("prepped for storage:", preppedData);
+    console.log('prepped for storage:', preppedData);
     if (preppedData) {
-      return PUT("/v3/episodes/" + preppedData._id, preppedData);
+      return PUT('/v3/episodes/' + preppedData._id, preppedData);
     } else {
       return false;
     }
@@ -1039,22 +1042,22 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     // probably first need to remove events etc if there are any
     var deleteEpisodeDefer = $q.defer();
     // delete episode_user_metrics
-    GET("/v2/episodes/" + episodeId + "/episode_user_metrics")
+    GET('/v2/episodes/' + episodeId + '/episode_user_metrics')
       .then(function (metrics) {
-        console.log("GOT METRICS: ", metrics);
+        console.log('GOT METRICS: ', metrics);
         if (metrics.length) {
           var deleteMetricsActions = [];
 
           for (var i = 0; i < metrics.length; i++) {
-            deleteMetricsActions.push(DELETE("/v2/episode_user_metrics/" + metrics[i]._id));
+            deleteMetricsActions.push(DELETE('/v2/episode_user_metrics/' + metrics[i]._id));
           }
           $q.all(deleteMetricsActions)
             .then(function () {
-              DELETE("/v3/episodes/" + episodeId);
+              DELETE('/v3/episodes/' + episodeId);
               deleteEpisodeDefer.resolve();
             });
         } else {
-          DELETE("/v3/episodes/" + episodeId);
+          DELETE('/v3/episodes/' + episodeId);
           deleteEpisodeDefer.resolve();
         }
       });
@@ -1062,7 +1065,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.deleteItem = function (evtId) {
-    return DELETE("/v3/events/" + evtId);
+    return DELETE('/v3/events/' + evtId);
   };
   svc.createAsset = function (containerId, asset) {
     var createAssetDefer = $q.defer();
@@ -1073,11 +1076,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
 
     asset = modelSvc.deriveAsset(asset);
-    console.log("Attempting to create asset ", asset);
-    POST("/v1/containers/" + containerId + "/assets", asset)
+    console.log('Attempting to create asset ', asset);
+    POST('/v1/containers/' + containerId + '/assets', asset)
       .then(function (data) {
         modelSvc.containers[data.file.container_id].episodes = [data.file._id];
-        modelSvc.cache("asset", data.file);
+        modelSvc.cache('asset', data.file);
         createAssetDefer.resolve(data.file);
         //modelSvc.resolveEpisodeAssets(episodeId);
       });
@@ -1085,7 +1088,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
 
   svc.deleteAsset = function (assetId) {
-    return DELETE("/v1/assets/" + assetId);
+    return DELETE('/v1/assets/' + assetId);
   };
 
   // TODO need safety checking here
@@ -1096,12 +1099,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
     if (evt && evt._id && !evt._id.match(/internal/)) {
       // update
-      return PUT("/v3/events/" + evt._id, {
+      return PUT('/v3/events/' + evt._id, {
         event: evt
       });
     } else {
       // create
-      return POST("/v3/episodes/" + evt.episode_id + "/events", {
+      return POST('/v3/episodes/' + evt.episode_id + '/events', {
         event: evt
       });
     }
@@ -1116,29 +1119,29 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
     //  The data we want to store:
     var fields = [
-      "_id",
+      '_id',
       //				"producerItemType", // Nope
-      "start_time",
-      "end_time",
-      "episode_id",
-      "chapter_marker",
-      "template_id",
-      "templateUrl", // We should get this from template_id, but for now there's a dependency in editController on this existing. TODO remove that dependency
-      "stop",
-      "required",
-      "cosmetic",
-      "sxs", // for demos, for now
-      "title",
-      "url",
-      "noEmbed",
-      "annotator",
-      "annotation",
-      "description",
-      "data",
-      "asset_id",
-      "link_image_id",
-      "annotation_image_id",
-      "avatar_id"
+      'start_time',
+      'end_time',
+      'episode_id',
+      'chapter_marker',
+      'template_id',
+      'templateUrl', // We should get this from template_id, but for now there's a dependency in editController on this existing. TODO remove that dependency
+      'stop',
+      'required',
+      'cosmetic',
+      'sxs', // for demos, for now
+      'title',
+      'url',
+      'noEmbed',
+      'annotator',
+      'annotation',
+      'description',
+      'data',
+      'asset_id',
+      'link_image_id',
+      'annotation_image_id',
+      'avatar_id'
     ];
 
     prepped.type = evt._type;
@@ -1154,13 +1157,13 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       var endFloat = parseFloat(prepped.end_time);
       if (isNaN(startFloat) || isNaN(endFloat)) {
         errorSvc.error({
-          data: "Tried to store an invalid start_time or end_time."
+          data: 'Tried to store an invalid start_time or end_time.'
         });
         return false;
       }
       if (startFloat > endFloat) {
         errorSvc.error({
-          data: "Tried to store a start_time that is after the end_time."
+          data: 'Tried to store a start_time that is after the end_time.'
         });
         return false;
       }
@@ -1186,13 +1189,13 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
     // convert style/layout selections back into their IDs.
     // trust evt.styles[] and evt.layouts[], DO NOT use styleCss (it contains the scene and episode data too!)
-    prepped.style_id = get_id_values("style", evt.styles);
-    prepped.layout_id = get_id_values("layout", evt.layouts);
+    prepped.style_id = get_id_values('style', evt.styles);
+    prepped.layout_id = get_id_values('layout', evt.layouts);
 
     if (evt._type === 'Chapter') {
       return prepped;
     }
-    var template = svc.readCache("template", "url", evt.templateUrl);
+    var template = svc.readCache('template', 'url', evt.templateUrl);
     if (template) {
       prepped.template_id = template.id;
     } else {
@@ -1202,7 +1205,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       return prepped;
     } else {
       errorSvc.error({
-        data: "Tried to store a template with no ID: " + evt.templateUrl
+        data: 'Tried to store a template with no ID: ' + evt.templateUrl
       });
       return false;
     }
@@ -1236,12 +1239,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
     if (evt && evt._id && !evt._id.match(/internal/)) {
       // update
-      return PUT("/v3/events/" + evt._id, {
+      return PUT('/v3/events/' + evt._id, {
         event: evt
       });
     } else {
       // create
-      return POST("/v3/episodes/" + evt.episode_id + "/events", {
+      return POST('/v3/episodes/' + evt.episode_id + '/events', {
         event: evt
       });
     }
@@ -1254,15 +1257,15 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     }
 
     var fields = [
-      "_id",
-      "title",
-      "description",
-      "container_id",
-      "customer_id",
-      "master_asset_id",
-      "poster_frame_id",
-      "status",
-      "languages"
+      '_id',
+      'title',
+      'description',
+      'container_id',
+      'customer_id',
+      'master_asset_id',
+      'poster_frame_id',
+      'status',
+      'languages'
       // "navigation_depth" // (0 for no cross-episode nav, 1 for siblings only, 2 for course and session, 3 for customer/course/session)
     ];
 
@@ -1272,9 +1275,9 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       }
     }
 
-    prepped.style_id = get_id_values("style", epData.styles);
+    prepped.style_id = get_id_values('style', epData.styles);
 
-    var template = svc.readCache("template", "url", epData.templateUrl);
+    var template = svc.readCache('template', 'url', epData.templateUrl);
     if (template) {
       prepped.template_id = template.id;
     } else {
@@ -1284,7 +1287,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       return prepped;
     } else {
       errorSvc.error({
-        data: "Tried to store a template with no ID: " + epData.templateUrl
+        data: 'Tried to store a template with no ID: ' + epData.templateUrl
       });
       return false;
     }
@@ -1295,56 +1298,56 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     // TODO: can I just talk bill into letting me store templateUrls directly and skip the whole ID business?
     var reverseTemplates = {
       // episodes
-      "templates/episode/episode.html": "templates/episode-default.html",
-      "templates/episode/eliterate.html": "templates/episode-eliterate.html",
-      "templates/episode/ewb.html": "templates/episode-ewb.html",
-      "templates/episode/gw.html": "templates/episode-gw.html",
-      "templates/episode/purdue.html": "templates/episode-purdue.html",
-      "templates/episode/story.html": "templates/episode-tellingstory.html",
+      'templates/episode/episode.html': 'templates/episode-default.html',
+      'templates/episode/eliterate.html': 'templates/episode-eliterate.html',
+      'templates/episode/ewb.html': 'templates/episode-ewb.html',
+      'templates/episode/gw.html': 'templates/episode-gw.html',
+      'templates/episode/purdue.html': 'templates/episode-purdue.html',
+      'templates/episode/story.html': 'templates/episode-tellingstory.html',
 
       // annotation
-      "templates/item/transcript.html": "templates/transcript-default.html",
-      "templates/item/transcript-withthumbnail.html": "templates/transcript-withthumbnail.html",
-      "templates/item/transcript-withthumbnail-alt.html": "templates/transcript-withthumbnail-alt.html",
-      "templates/item/text-h1.html": "templates/text-h1.html",
-      "templates/item/text-h2.html": "templates/text-h2.html",
-      "templates/item/pullquote-noattrib.html": "templates/text-pullquote-noattrib.html",
-      "templates/item/pullquote.html": "templates/text-pullquote.html",
+      'templates/item/transcript.html': 'templates/transcript-default.html',
+      'templates/item/transcript-withthumbnail.html': 'templates/transcript-withthumbnail.html',
+      'templates/item/transcript-withthumbnail-alt.html': 'templates/transcript-withthumbnail-alt.html',
+      'templates/item/text-h1.html': 'templates/text-h1.html',
+      'templates/item/text-h2.html': 'templates/text-h2.html',
+      'templates/item/pullquote-noattrib.html': 'templates/text-pullquote-noattrib.html',
+      'templates/item/pullquote.html': 'templates/text-pullquote.html',
 
       // upload
-      "templates/item/image.html": "templates/transmedia-image-default.html",
-      "templates/item/image-caption.html": "templates/transmedia-caption.html",
-      "templates/item/image-caption-sliding.html": "templates/transmedia-slidingcaption.html",
-      "templates/item/image-fill.html": "templates/transmedia-image-fill.html",
-      "templates/item/image-plain.html": "templates/transmedia-image-plain.html",
-      "templates/item/image-linkonly.html": "templates/transmedia-linkonly.html",
-      "templates/item/image-thumbnail.html": "templates/transmedia-thumbnail.html",
+      'templates/item/image.html': 'templates/transmedia-image-default.html',
+      'templates/item/image-caption.html': 'templates/transmedia-caption.html',
+      'templates/item/image-caption-sliding.html': 'templates/transmedia-slidingcaption.html',
+      'templates/item/image-fill.html': 'templates/transmedia-image-fill.html',
+      'templates/item/image-plain.html': 'templates/transmedia-image-plain.html',
+      'templates/item/image-linkonly.html': 'templates/transmedia-linkonly.html',
+      'templates/item/image-thumbnail.html': 'templates/transmedia-thumbnail.html',
 
       //link
-      "templates/item/link.html": "templates/transmedia-link-default.html",
-      "templates/item/link-embed.html": "templates/transmedia-link-embed.html",
+      'templates/item/link.html': 'templates/transmedia-link-default.html',
+      'templates/item/link-embed.html': 'templates/transmedia-link-embed.html',
 
       //scene
-      "templates/scene/1col.html": "templates/scene-1col.html",
-      "templates/scene/2colL.html": "templates/scene-2colL.html",
-      "templates/scene/2colR.html": "templates/scene-2colR.html",
-      "templates/scene/centered.html": "templates/scene-centered.html",
-      "templates/scene/cornerH.html": "templates/scene-cornerH.html",
-      "templates/scene/cornerV.html": "templates/scene-cornerV.html",
+      'templates/scene/1col.html': 'templates/scene-1col.html',
+      'templates/scene/2colL.html': 'templates/scene-2colL.html',
+      'templates/scene/2colR.html': 'templates/scene-2colR.html',
+      'templates/scene/centered.html': 'templates/scene-centered.html',
+      'templates/scene/cornerH.html': 'templates/scene-cornerH.html',
+      'templates/scene/cornerV.html': 'templates/scene-cornerV.html',
 
       //question
-      "templates/item/question-mc-formative.html": "templates/question-mc-formative.html",
-      "templates/item/question-mc-poll.html": "templates/question-mc-poll.html",
+      'templates/item/question-mc-formative.html': 'templates/question-mc-formative.html',
+      'templates/item/question-mc-poll.html': 'templates/question-mc-poll.html',
 
-      "templates/item/question-mc.html": "templates/question-mc.html",
-      "templates/item/question-mc-image-left.html": "templates/question-mc-image-left.html",
-      "templates/item/question-mc-image-right.html": "templates/question-mc-image-right.html",
+      'templates/item/question-mc.html': 'templates/question-mc.html',
+      'templates/item/question-mc-image-left.html': 'templates/question-mc-image-left.html',
+      'templates/item/question-mc-image-right.html': 'templates/question-mc-image-right.html',
 
-      "templates/item/sxs-question.html": "templates/sxs-question.html",
-      "templates/item/sxs-link.html": "templates/sxs-link.html"
+      'templates/item/sxs-question.html': 'templates/sxs-question.html',
+      'templates/item/sxs-link.html': 'templates/sxs-link.html'
     };
     if (reverseTemplates[templateUrl]) {
-      var template = svc.readCache("template", "url", reverseTemplates[templateUrl]);
+      var template = svc.readCache('template', 'url', reverseTemplates[templateUrl]);
       return template.id;
     } else {
       return false;
@@ -1366,7 +1369,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   };
   if (config.debugInBrowser) {
     // console.log("DataSvc:", svc);
-    console.log("DataSvc cache:", dataCache);
+    console.log('DataSvc cache:', dataCache);
   }
 
   svc.getTemplates = function () {
@@ -1385,20 +1388,20 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     // HACK These values won't have IDs, they're generated inside modelSvc.
     // Can remove this after template config is updated
     var pseudos = [
-      "colorEliterate",
-      "colorGw",
-      "colorGwsb",
-      "colorPurdue",
-      "colorUsc",
-      "colorColumbia",
-      "colorColumbiabusiness",
-      "typographyEliterate",
-      "typographyGw",
-      "typographyGwsb",
-      "typographyPurdue",
-      "typographyUsc",
-      "typographyColumbia",
-      "typographyColumbiabusiness"
+      'colorEliterate',
+      'colorGw',
+      'colorGwsb',
+      'colorPurdue',
+      'colorUsc',
+      'colorColumbia',
+      'colorColumbiabusiness',
+      'typographyEliterate',
+      'typographyGw',
+      'typographyGwsb',
+      'typographyPurdue',
+      'typographyUsc',
+      'typographyColumbia',
+      'typographyColumbiabusiness'
     ];
 
     // convert real styles and layouts back into id arrays. Not for templateUrls!
@@ -1406,18 +1409,18 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
     angular.forEach(realNames, function (realName) {
       if (realName) {
-        var cachedValue = svc.readCache(cache, "css_name", realName);
+        var cachedValue = svc.readCache(cache, 'css_name', realName);
         if (cachedValue) {
           ids.push(cachedValue.id);
         } else {
           // HACK ignore pseudo-styles generated within modelSvc:
           if (pseudos.indexOf(realName) === -1) {
             errorSvc.error({
-              data: "Tried to store a " + cache + " with no ID: " + realName
+              data: 'Tried to store a ' + cache + ' with no ID: ' + realName
             });
             return false;
           } else {
-            console.log("Ignoring ", realName);
+            console.log('Ignoring ', realName);
           }
         }
       }
