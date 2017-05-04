@@ -101,10 +101,14 @@ export class ValidationService implements IValidationSvc {
   xFrameOpts(viewVal: string, displayObj, cachedResults?: ILinkStatus) {
     if (cachedResults != null) {
       return this.$q((resolve) => {
-        let ret = {
+        let xFrameOptsObj = {
+          location: cachedResults.location,
+          x_frame_options: cachedResults.x_frame_options,
           canEmbed: this.xFrameHeaderCanEmbed(viewVal, cachedResults.x_frame_options)
         };
-        return resolve(this.handleXframeOptsObj(viewVal, ret, displayObj));
+
+        const obj = this.handleXframeOptsObj(viewVal, xFrameOptsObj, displayObj);
+        return resolve(obj);
       });
     }
 
@@ -148,7 +152,6 @@ export class ValidationService implements IValidationSvc {
         displayObj.validatedFields['301'] = {};
       }
 
-      console.log('tip text!', tipText);
       displayObj.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
     } else {
       displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
