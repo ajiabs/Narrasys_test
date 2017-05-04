@@ -135,7 +135,7 @@ export default function ittUrlField() {
           // ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
           if (isValidUrl) { //only do async stuff if necessary
             validationSvc.xFrameOpts(url, ctrl, cachedResults)
-              .then(({canEmbed, location}: {canEmbed:boolean, location:string}) => {
+              .then(({canEmbed, location, x_frame_options}) => {
                 ctrl.data.templateOpts = _disableTemplateOpts(canEmbed);
                 _setValidity(true);
                 // ctrl.data.noEmbed = noEmbed;
@@ -143,11 +143,14 @@ export default function ittUrlField() {
 
                 ctrl.canEmbed = canEmbed;
 
+                ctrl.data.url_status = {x_frame_options};
+
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering
                   //a $digest from mutating ctrl.data.url
                   unsubscribeWatch();
                   ctrl.data.url = location;
+
                   subscribeWatch();
                 }
               })

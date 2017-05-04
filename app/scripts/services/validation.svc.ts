@@ -12,19 +12,21 @@ export interface IValidationSvc {
   checkXFrameOpts(url: string): ng.IPromise<IXFrameOptsResult>;
   xFrameHeaderCanEmbed(url: string, header: string): boolean;
   mixedContent(viewVal: string, displayObj): boolean;
-  validateUrl(viewVal:string, displayObj): boolean;
-  xFrameOpts(viewVal: string, displayObj, cachedResults?: ILinkStatus): ng.IPromise<{location?: string, canEmbed: boolean}>;
+  validateUrl(viewVal: string, displayObj): boolean;
+  xFrameOpts(viewVal: string, displayObj, cachedResults?: ILinkStatus): ng.IPromise<IXFrameOptsResult>;
 }
 export class ValidationService implements IValidationSvc {
 
   static $inject = ['$http', '$location', '$q', 'authSvc', 'config', 'ittUtils', 'urlService'];
+
   constructor(private $http: ng.IHttpService,
               private $location: ng.ILocationService,
               private $q: ng.IQService,
               private authSvc,
               private config,
               private ittUtils,
-              private urlService) {}
+              private urlService) {
+  }
 
   checkXFrameOpts(url: string): ng.IPromise<IXFrameOptsResult> {
     const encodedUrl = encodeURIComponent(url);
@@ -83,7 +85,7 @@ export class ValidationService implements IValidationSvc {
     }
   }
 
-  validateUrl(viewVal:string, displayObj): boolean {
+  validateUrl(viewVal: string, displayObj): boolean {
     if (viewVal === '' && !ValidationService.emailOrPlaceholder(viewVal)) {
       displayObj.validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'};
       return false;
@@ -120,45 +122,56 @@ export class ValidationService implements IValidationSvc {
   }
 
   private handleXframeOptsObj(viewVal: string, xFrameOptsObj, displayObj) {
-  let tipText = '';
-  //check for a new URL if we followed a redirect on the server.
-  if (this.ittUtils.existy(xFrameOptsObj.location)) {
-    tipText = viewVal + ' redirected to ' + xFrameOptsObj.location;
-    displayObj.validatedFields['301'] = {
-      showInfo: true,
-      message: tipText,
-      doInfo: true,
-      url: xFrameOptsObj.location
+    let tipText = '';
+    //check for a new URL if we followed a redirect on the server.
+    if (this.ittUtils.existy(xFrameOptsObj.location)) {
+      tipText = viewVal + ' redirected to ' + xFrameOptsObj.location;
+      displayObj.validatedFields['301'] = {
+        showInfo: true,
+        message: tipText,
+        doInfo: true
+      };
+    }
+
+    if (this.ittUtils.existy(xFrameOptsObj.response_code) && xFrameOptsObj.response_code === 404) {
+      tipText = viewVal + ' cannot be found';
+      displayObj.validatedFields['404'] = {showInfo: true, message: tipText};
+      return this.$q.reject('404');
+    }
+
+    if (!xFrameOptsObj.canEmbed) {
+      tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
+      //we got redirected to resource that can't be embedded.
+      //merge the errors into one.
+      if (xFrameOptsObj.location) {
+        tipText += '. ' + displayObj.validatedFields['301'].message;
+        displayObj.validatedFields['301'] = {};
+      }
+
+      console.log('tip text!', tipText);
+      displayObj.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
+    } else {
+      displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
+    }
+
+    //override noEmbed with error
+    if (xFrameOptsObj.error_message) {
+      displayObj.validatedFields['xFrameOpts'] = {
+        showInfo: true,
+        message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
+      };
+    }
+
+    return {
+      canEmbed: xFrameOptsObj.canEmbed,
+      location: xFrameOptsObj.location,
+      x_frame_options: xFrameOptsObj.x_frame_options
     };
   }
-
-  if (this.ittUtils.existy(xFrameOptsObj.response_code) && xFrameOptsObj.response_code === 404) {
-    tipText = viewVal + ' cannot be found';
-    displayObj.validatedFields['404'] = {showInfo: true, message: tipText};
-    return this.$q.reject('404');
-  }
-
-  if (!xFrameOptsObj.canEmbed) {
-    tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
-    displayObj.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
-  } else {
-    displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
-  }
-
-  //override noEmbed with error
-  if (xFrameOptsObj.error_message) {
-    displayObj.validatedFields['xFrameOpts'] = {
-      showInfo: true,
-      message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
-    };
-  }
-
-  return {canEmbed: xFrameOptsObj.canEmbed, location: xFrameOptsObj.location};
-}
 
   private static emailOrPlaceholder(val: string): boolean {
-  return /mailto:/.test(val) || val === 'https://';
-}
+    return /mailto:/.test(val) || val === 'https://';
+  }
 
   private static handleErrors(error) {
     //true to set _noEmbed to make links no embeddable
@@ -178,6 +191,7 @@ export class ValidationService implements IValidationSvc {
 
   private canEmbed(result, url) {
     result.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
+    console.log('result!', result);
     return result;
   }
 

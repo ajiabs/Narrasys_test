@@ -633,7 +633,9 @@ export default function EditController($scope, $rootScope, $timeout, $window, se
         "link_image_id": "",
         "url": "https://",
         "title": {},
-        "description": {}
+        "target": "_self",
+        "description": {},
+        "url_status": {}
       };
     }
 

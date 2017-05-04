@@ -27,11 +27,11 @@ export class IEvent {
 }
 
 export class ILinkStatus {
-  _id: string;
-  status: string;
-  response_code: number;
-  location: string;
-  updated_at: Date;
+  _id?: string;
+  status?: string;
+  response_code?: number;
+  location?: string;
+  updated_at?: Date;
   x_frame_options: string;
 }
 
