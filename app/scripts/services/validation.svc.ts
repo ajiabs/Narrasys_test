@@ -58,7 +58,7 @@ export class ValidationService implements IValidationSvc {
         //split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
         const xFrameArr = header.split(',');
         currentOrigin = this.$location.host();
-        angular.forEach(xFrameArr, function (i) {
+          angular.forEach(xFrameArr, function (i) {
           const url = i.trim().split(' ')[1];
           const aElm = document.createElement('a');
           aElm.href = url;
