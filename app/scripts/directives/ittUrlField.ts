@@ -4,8 +4,8 @@ import {IValidationSvc} from '../services/validation.svc';
  * Created by githop on 6/30/16.
  */
 
-//link event
 interface IUrlFieldScope extends ng.IScope {
+  //link event
   data: ILink;
   videoOnly: boolean;
   label: string;

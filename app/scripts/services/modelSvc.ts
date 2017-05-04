@@ -434,15 +434,9 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       if (isTranscript(event)) {
         event.isTranscript = true;
       }
-      if (event.templateUrl.match(/noembed/)) {
-        event.target = '_blank';
-        event.noEmbed = true;
-      }
 
       var isHttps = $location.protocol() === 'https';
       if (event._type === "Link" && event.url && event.url.match(/^http:\/\//) && isHttps) {
-        event.noEmbed = true;
-        event.target = '_blank';
         event.mixedContent = true;
         event.showInlineDetail = false;
       }
@@ -454,7 +448,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       }
 
       if (event._type === "Link" && event.url && /mailto/.test(event.url)) {
-        event.noEmbed = true;
+        // event.noEmbed = true;
         event.target = '_blank';
       }
 
@@ -464,8 +458,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
       if (event.templateUrl.match(/frameicide/)) {
         event.targetTop = true;
-        event.noEmbed = true;
-        event.target = '_blank';
       }
     }
 

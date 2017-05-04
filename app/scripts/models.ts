@@ -12,7 +12,6 @@ export class IEvent {
   cosmetic: boolean;
   stop: boolean;
 //props not in any schema but added dynamically either on the backend somewhere client-side;
-  noEmbed?: boolean;
   avatar_id: string;
   templateOpts?: any;
   //relations
