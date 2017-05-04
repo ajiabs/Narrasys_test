@@ -138,12 +138,16 @@ export default function ittUrlField() {
               .then(({canEmbed, location, x_frame_options}) => {
                 ctrl.data.templateOpts = _disableTemplateOpts(canEmbed);
                 _setValidity(true);
-                // ctrl.data.noEmbed = noEmbed;
-                // ctrl.data.target = _setTarget(noEmbed);
-
                 ctrl.canEmbed = canEmbed;
-
                 ctrl.data.url_status = {x_frame_options};
+
+                //since all HTTP links are checked, it is possible that the target site
+                //allows for iframing, but is not served from a secure context so it would not
+                //be iframeable in our app.
+                if (x_frame_options == null) {
+                  validationSvc.mixedContent(url, ctrl);
+
+                }
 
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering

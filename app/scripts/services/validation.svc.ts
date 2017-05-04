@@ -194,7 +194,6 @@ export class ValidationService implements IValidationSvc {
 
   private canEmbed(result, url) {
     result.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
-    console.log('result!', result);
     return result;
   }
 
