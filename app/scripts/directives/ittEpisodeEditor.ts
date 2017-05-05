@@ -58,7 +58,9 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
       scope.episodeContainerId = modelSvc.episodes[appState.episodeId].container_id;
 
       var container = modelSvc.containers[scope.episodeContainerId];
-      scope.customer = modelSvc.customers[container.customer_id];
+      if (container != null) {
+        scope.customer = modelSvc.customers[container.customer_id];
+      }
 
       if (scope.episode.master_asset_id && scope.episode.master_asset_id !== "") {
         scope.masterAsset = modelSvc.assets[scope.episode.master_asset_id];

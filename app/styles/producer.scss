@@ -53,18 +53,6 @@ input[readonly] {
 	width: 70%;
 }
 
-.asset__field-group {
-  display: flex;
-  flex-direction: column;
-  padding: 1px 0;
-}
-
-.asset__field-group div {
-  display: flex;
-  justify-content: flex-start;
-  padding: 2px 0;
-}
-
 .containerAssets {
 	padding: 1em;
 	clear: both;
@@ -627,3 +615,19 @@ li.tab-pane {
 	right: 0;
 }
 
+.smart-sentences__wrapper {
+  padding: 3em;
+
+  div {
+    padding: 0.75em 0;
+
+    input, label {
+      margin: 0;
+      padding: 0;
+    }
+
+    label {
+      font-size: 16px !important;
+    }
+  }
+}

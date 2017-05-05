@@ -6,23 +6,43 @@ export default function ittUploadTranscripts() {
   return {
     restrict: 'EA',
     template: `
-        <div class="field">
-        	<div class="label">Batch Upload Transcripts
-        	</div>
-        	<div class="input">
-        		<div itt-asset-uploader episode-id="{{$ctrl.episodeId}}" mime-types="{{$ctrl.mimes}}" callback="$ctrl.showOptions = true">
-             <div ng-if="$ctrl.showOptions" class="asset__field-group">
-               <div>
-                 <label>group into sentences <input type="radio" ng-model="$ctrl.selectedParam" value="group_into_sentences"/></label>
-                 <label>smart sentences <input type="radio" ng-model="$ctrl.selectedParam" value="smart_sentences"/></label>
-                 <label>none <input type="radio" ng-model="$ctrl.selectedParam" value="none"/></label></br>
-               </div>
-               <div><label>max subtitle duration <input type="number" ng-model="$ctrl.maxDuration"/></label></div>
-               <div><button ng-click="$ctrl.commenseUpload()">upload transcripts</button></div>
-             </div>
-           </div>
-        	</div>
-        </div>`,
+<div class="field">
+  <div class="label">Batch Upload Transcripts
+  </div>
+  <div class="input">
+    <div ng-if="!$ctrl.showUploader">
+      <span><button ng-click="$ctrl.showUploader = true">Batch Upload Transcripts</button></span>
+    </div>
+    <div ng-if="$ctrl.showUploader"
+         itt-asset-uploader
+         episode-id="{{$ctrl.episodeId}}"
+         mime-types="{{$ctrl.mimes}}"
+         callback="$ctrl.showOptions = true">
+
+      <itt-modal modal-class="narrative__modal" ng-if="$ctrl.showOptions">
+        <div class="smart-sentences__wrapper">
+          <div>
+            <label class="smart-sentences__input"
+             for="groupParam">Would you like to group CC segments into complete sentences?</label>
+            <input class="smart-sentences__input" id="groupParam" type="checkbox" ng-model="$ctrl.selectedParam"
+                   ng-false-value="'none'"
+                   ng-true-value="'group_into_sentences'"/>
+          </div>
+          <div>
+            Thank you for using this new feature currently in Beta! Are you sure you want to proceed? Once saved,
+            transcript entries must be individually edited or deleted.
+          </div>
+        </div>
+        <div>
+          <button ng-click="$ctrl.commenseUpload()">upload transcripts</button>
+          <button ng-click="$ctrl.cancelUpload()">cancel</button>
+         </div>
+      </itt-modal>
+
+    </div>
+  </div>
+</div>
+    `,
     scope: {
       episodeId: '@'
     },
@@ -35,10 +55,17 @@ export default function ittUploadTranscripts() {
         angular.extend(ctrl, {
           mimes: MIMES.transcripts,
           showOptions: false,
+          showUploader: false,
           selectedParam: 'none',
           maxDuration: null,
-          commenseUpload: commenseUpload
+          commenseUpload,
+          cancelUpload
         });
+
+        function cancelUpload() {
+          ctrl.showUploader = false;
+          ctrl.showOptions = false;
+        }
 
         function commenseUpload() {
           var optionalParams = {};
