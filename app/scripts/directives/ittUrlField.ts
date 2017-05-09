@@ -33,7 +33,7 @@ export default function ittUrlField() {
       	</div>
       	<div class="input" ng-if="!$ctrl.videoOnly">
       	  <div ng-if="$ctrl.canEmbed">
-      	   <itt-tooltip tip-text="Force open in new tab">
+      	   <itt-tooltip tip-text="Force link to open in a new tab" css="ittTooltip__text--url">
       	   <span class="escapelink"></span> 
            </itt-tooltip>
            <input 
