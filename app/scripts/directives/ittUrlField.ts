@@ -1,10 +1,11 @@
 import {ILink, ILinkStatus} from '../models';
-import {IValidationSvc} from '../services/validation.svc';
+import {IValidationSvc, IValidationDisplay} from '../interfaces';
+
 /**
  * Created by githop on 6/30/16.
  */
 
-interface IUrlFieldScope extends ng.IScope {
+interface IUrlFieldScope extends ng.IScope, IValidationDisplay {
   //link event
   data: ILink;
   videoOnly: boolean;
@@ -24,18 +25,6 @@ export default function ittUrlField() {
       ittItemForm: '<?'
     },
     template: `
-      <div class="field" ng-if="$ctrl.canEmbed">
-        <div class="label">Force open in new Tab
-          <div class="input">
-            <input
-            type="checkbox"
-            ng-true-value="'_blank'"
-            ng-false-value="'_self'"
-            ng-model="$ctrl.data.target"/>
-
-          </div>
-        </div>
-      </div>
       <div class="field">
       	<div class="label">{{$ctrl.label || "URL"}}
       	<span ng-repeat="(field, val) in $ctrl.validatedFields">
@@ -43,6 +32,17 @@ export default function ittUrlField() {
       	</span>
       	</div>
       	<div class="input" ng-if="!$ctrl.videoOnly">
+      	  <div ng-if="$ctrl.canEmbed">
+      	   <itt-tooltip tip-text="Force open in new tab">
+      	   <span class="escapelink"></span> 
+           </itt-tooltip>
+           <input 
+            type="checkbox"
+            ng-change="$ctrl.updateTemplateOpts()"
+            ng-true-value="'_blank'"
+            ng-false-value="'_self'"
+            ng-model="$ctrl.data.target"/>
+          </div>
       		<input
       		  type="text"
       		  name="itemUrl"
@@ -85,6 +85,7 @@ export default function ittUrlField() {
           $onDestroy,
           //methods
           handleEpisodeValidationMessage,
+          updateTemplateOpts
         });
 
         let $watchItemUrl = angular.noop;
@@ -114,6 +115,10 @@ export default function ittUrlField() {
           $watchItemUrl();
         }
 
+        function updateTemplateOpts() {
+          ctrl.data.templateOpts = _disableTemplateOpts(ctrl.data.target === '_blank');
+        }
+
         function watchItemUrl() {
           return ctrl.data.url;
         }
@@ -136,19 +141,15 @@ export default function ittUrlField() {
           if (isValidUrl) { //only do async stuff if necessary
             validationSvc.xFrameOpts(url, ctrl, cachedResults)
               .then(({canEmbed, location, x_frame_options}) => {
-                ctrl.data.templateOpts = _disableTemplateOpts(canEmbed);
-                _setValidity(true);
-                ctrl.canEmbed = canEmbed;
-                ctrl.data.url_status = {x_frame_options};
 
+                _setValidity(true);
+                let isMixedContent = validationSvc.mixedContent(url, ctrl);
                 //since all HTTP links are checked, it is possible that the target site
                 //allows for iframing, but is not served from a secure context so it would not
                 //be iframeable in our app.
-                if (x_frame_options == null) {
-                  validationSvc.mixedContent(url, ctrl);
-
-                }
-
+                ctrl.canEmbed = canEmbed && !isMixedContent;
+                ctrl.data.templateOpts = _disableTemplateOpts(!ctrl.canEmbed);
+                ctrl.data.url_status = {x_frame_options};
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering
                   //a $digest from mutating ctrl.data.url

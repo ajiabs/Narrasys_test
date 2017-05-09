@@ -1,4 +1,5 @@
 import {ILinkStatus} from '../models';
+import {ILinkValidFields} from '../interfaces';
 /**
  * Created by githop on 5/2/17.
  */
@@ -16,13 +17,19 @@ interface IXFrameOptsResponse {
   error?: string
   response_code: number;
 }
+//validatedFields is a prop on the ittUrlField directive controller but any object
+//that implements the interface would work.
+export interface IValidationDisplay {
+  validatedFields: ILinkValidFields;
+}
 
 export interface IValidationSvc {
   checkXFrameOpts(url: string): ng.IPromise<IXFrameOptsResult>;
   xFrameHeaderCanEmbed(url: string, header: string): boolean;
-  mixedContent(viewVal: string, displayObj): boolean;
-  validateUrl(viewVal: string, displayObj): boolean;
-  xFrameOpts(viewVal: string, displayObj, cachedResults?: ILinkStatus): ng.IPromise<IXFrameOptsResult>;
+  mixedContent(viewVal: string, displayObj: IValidationDisplay): boolean;
+  mixedContentUrl(url: string): boolean;
+  validateUrl(viewVal: string, displayObj: IValidationDisplay): boolean;
+  xFrameOpts(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus): ng.IPromise<IXFrameOptsResult>;
 }
 export class ValidationService implements IValidationSvc {
 
@@ -83,8 +90,8 @@ export class ValidationService implements IValidationSvc {
     return canEmbed;
   }
 
-  mixedContent(viewVal, displayObj): boolean {
-    if (this.ittUtils.existy(viewVal) && /^http:\/\//.test(viewVal)) {
+  mixedContent(viewVal, displayObj: IValidationDisplay): boolean {
+    if (this.mixedContentUrl(viewVal)) {
       //mixed content detected!
       displayObj.validatedFields['mixedContent'] = {message: 'Mixed Content Detected', showInfo: true};
       return true;
@@ -94,7 +101,11 @@ export class ValidationService implements IValidationSvc {
     }
   }
 
-  validateUrl(viewVal: string, displayObj): boolean {
+  mixedContentUrl(url: string): boolean {
+    return this.ittUtils.existy(url) && /^http:\/\//.test(url);
+  }
+
+  validateUrl(viewVal: string, displayObj: IValidationDisplay): boolean {
     if (viewVal === '' && !ValidationService.emailOrPlaceholder(viewVal)) {
       displayObj.validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'};
       return false;
@@ -107,7 +118,7 @@ export class ValidationService implements IValidationSvc {
     }
   }
 
-  xFrameOpts(viewVal: string, displayObj, cachedResults?: ILinkStatus) {
+  xFrameOpts(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus) {
     if (cachedResults != null) {
       return this.$q((resolve) => {
         let xFrameOptsObj = {
@@ -134,7 +145,7 @@ export class ValidationService implements IValidationSvc {
       .then(xFrameOptsObj => this.handleXframeOptsObj(viewVal, xFrameOptsObj, displayObj));
   }
 
-  private handleXframeOptsObj(viewVal: string, xFrameOptsObj, displayObj) {
+  private handleXframeOptsObj(viewVal: string, xFrameOptsObj, displayObj: IValidationDisplay) {
     let tipText = '';
     //check for a new URL if we followed a redirect on the server.
     if (this.ittUtils.existy(xFrameOptsObj.location)) {

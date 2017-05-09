@@ -42,9 +42,10 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
       function handleOutgoingLinkDisplay(): boolean {
         if (scope.item.url != null && scope.item.url_status != null && scope.item.target != null) {
           let {url, url_status: {x_frame_options}} = scope.item;
+          let isMixedContent = validationSvc.mixedContentUrl(url);
           let canEmbed = validationSvc.xFrameHeaderCanEmbed(url, x_frame_options);
           //open in new tab
-          return (!canEmbed || scope.item.target === '_blank');
+          return (!canEmbed || scope.item.target === '_blank') || isMixedContent;
         }
       }
 

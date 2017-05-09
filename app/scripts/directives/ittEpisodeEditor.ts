@@ -249,7 +249,7 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
       }
 
       function createAssetFromTmp(tmpAsset) {
-        var asset = {};
+        var asset = Object.create(null);
         asset.content_type = tmpAsset.type;
         asset.duration = tmpAsset.duration;
         asset.url = tmpAsset.url;
