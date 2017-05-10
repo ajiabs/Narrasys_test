@@ -31,7 +31,7 @@ export class ILinkStatus {
   response_code?: number;
   location?: string;
   updated_at?: Date;
-  x_frame_options: string;
+  x_frame_options?: string;
 }
 
 export class ILink extends IEvent {
@@ -42,7 +42,6 @@ export class ILink extends IEvent {
   display_title?: string;
   display_description?: string;
   styles?: string[];
-  forceEmbed?: false;
   showInlineDetail?: boolean;
   //relations
   link_image_id: string;

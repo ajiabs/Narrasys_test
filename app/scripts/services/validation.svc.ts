@@ -12,9 +12,9 @@ interface IXFrameOptsResult {
 
 //the object returned from the x_frame_options proxy
 interface IXFrameOptsResponse {
-  x_frame_options: string | null;
+  x_frame_options?: string | null;
   location?: string
-  error?: string
+  error_message?: string
   response_code: number;
 }
 //validatedFields is a prop on the ittUrlField directive controller but any object
@@ -161,6 +161,9 @@ export class ValidationService implements IValidationSvc {
       tipText = viewVal + ' cannot be found';
       displayObj.validatedFields['404'] = {showInfo: true, message: tipText};
       return this.$q.reject('404');
+
+
+
     }
 
     if (!xFrameOptsObj.canEmbed) {
@@ -179,6 +182,7 @@ export class ValidationService implements IValidationSvc {
 
     //override noEmbed with error
     if (xFrameOptsObj.error_message) {
+      console.log('huh', xFrameOptsObj);
       displayObj.validatedFields['xFrameOpts'] = {
         showInfo: true,
         message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
@@ -213,7 +217,11 @@ export class ValidationService implements IValidationSvc {
   }
 
   private canEmbed(result, url): IXFrameOptsResult {
-    result.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
+    if (result.error_message != null) {
+      result.canEmbed = false;
+    } else {
+      result.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
+    }
     return result;
   }
 

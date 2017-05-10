@@ -32,16 +32,19 @@ export default function ittUrlField() {
       	</span>
       	</div>
       	<div class="input" ng-if="!$ctrl.videoOnly">
-      	  <div ng-if="$ctrl.canEmbed">
-      	   <itt-tooltip tip-text="Force link to open in a new tab" css="ittTooltip__text--url">
-      	   <span class="escapelink"></span> 
-           </itt-tooltip>
-           <input 
+      	  <div ng-if="$ctrl.canEmbed" class="ittUrl__escapeLink">
+
+            <input 
+            id="urlEscapeLink"
             type="checkbox"
             ng-change="$ctrl.updateTemplateOpts()"
             ng-true-value="'_blank'"
             ng-false-value="'_self'"
             ng-model="$ctrl.data.target"/>
+           <span class="escapelink"></span> 
+           <label for="urlEscapeLink">Force new tab</label>
+
+
           </div>
       		<input
       		  type="text"
@@ -149,7 +152,7 @@ export default function ittUrlField() {
                 //be iframeable in our app.
                 ctrl.canEmbed = canEmbed && !isMixedContent;
                 ctrl.data.templateOpts = _disableTemplateOpts(!ctrl.canEmbed);
-                ctrl.data.url_status = {x_frame_options};
+                ctrl.data.url_status = { x_frame_options };
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering
                   //a $digest from mutating ctrl.data.url
