@@ -119,7 +119,7 @@ export default function ittItemEditor($rootScope, errorSvc, appState, modelSvc, 
 
         //for producers, if they edit a URL to link-embed template a site that cannot be embedded,
         //change the template URL to 'link'
-        if (appState.product === 'producer' && newItem.noEmbed === true && (newItem.templateUrl === 'templates/item/link-embed.html' || newItem.templateUrl === 'templates/item/link-modal-thumb.html')) {
+        if (appState.product === 'producer' && newItem.target === '_blank' && (newItem.templateUrl === 'templates/item/link-embed.html' || newItem.templateUrl === 'templates/item/link-modal-thumb.html')) {
           newItem.templateUrl = 'templates/item/link.html';
         }
 

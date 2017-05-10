@@ -77,6 +77,22 @@
   pointer-events: none;
 }
 
+.ittTooltip__text--url {
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 5px;
+  /* Position the tooltip */
+  position: absolute;
+  /*transform: translate(0, 1.3em);*/
+  top: 1.13em;
+  left: 1.3em;
+  z-index: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;

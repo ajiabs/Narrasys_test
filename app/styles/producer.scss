@@ -627,3 +627,16 @@ li.tab-pane {
 	right: 0;
 }
 
+.ittUrl__escapeLink {
+  input {
+    margin: 0;
+    padding: 0 !important;
+    width: 1em !important;
+  }
+
+  label {
+    margin-left: -5px;
+    font-size: 16px;
+  }
+}
+

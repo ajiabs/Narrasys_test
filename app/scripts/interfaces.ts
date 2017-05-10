@@ -1,40 +1,48 @@
+import {IDataSvc} from './services/dataSvc';
+import {IValidationDisplay, IValidationSvc} from './services/validation.svc';
 /**
  * Created by githop on 4/11/17.
  */
-
 export interface ILangform {
-  en: boolean
-  es?: boolean
-  zh?: boolean
-  pt?: boolean
-  fr?: boolean
-  de?: boolean
-  it?: boolean
+  en: boolean;
+  es?: boolean;
+  zh?: boolean;
+  pt?: boolean;
+  fr?: boolean;
+  de?: boolean;
+  it?: boolean;
 }
 
 export interface IAnnotator {
-  name: { en: string }
-  annotation_image_id: string
-  key?: string
-  imageUrl?: string
+  name: { en: string };
+  annotation_image_id: string;
+  key?: string;
+  imageUrl?: string;
 }
 
 export interface IAnnotators {
-  [key: string]: IAnnotator
+  [key: string]: IAnnotator;
 }
 
 export interface ILinkValidationMessage {
-  showInfo: boolean
-  message?: string
-  doInfo?: boolean
-  url?: string
+  showInfo?: boolean;
+  message?: string;
+  doInfo?: boolean;
+  url?: string;
 }
 
 export interface ILinkValidFields {
-  404: ILinkValidationMessage
-  301: ILinkValidationMessage
-  url: ILinkValidationMessage
-  mixedContent: ILinkValidationMessage
+  404: ILinkValidationMessage;
+  301: ILinkValidationMessage;
+  url: ILinkValidationMessage;
+  mixedContent: ILinkValidationMessage;
   xFrameOpts: ILinkValidationMessage;
+  kaltura?: ILinkValidationMessage | null,
+  youtube?: ILinkValidationMessage | null ,
+  html5?: ILinkValidationMessage | null,
+  error: ILinkValidationMessage | null
   [key: string]: ILinkValidationMessage;
 }
+
+
+export {IDataSvc, IValidationDisplay, IValidationSvc };
