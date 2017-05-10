@@ -5,7 +5,7 @@ import {ILinkValidFields} from '../interfaces';
  */
 
 interface IXFrameOptsResult {
-  x_frame_options: string;
+  xFrameData: {header: string, response_code: number, err: string};
   location?: string;
   canEmbed: boolean;
 }
@@ -14,7 +14,7 @@ interface IXFrameOptsResult {
 interface IXFrameOptsResponse {
   x_frame_options?: string | null;
   location?: string
-  error_message?: string
+  err?: string
   response_code: number;
 }
 //validatedFields is a prop on the ittUrlField directive controller but any object
@@ -49,7 +49,7 @@ export class ValidationService implements IValidationSvc {
     //HTTP methods could one day be implemented in a parent class.
     return this.SANE_GET('/x_frame_options_proxy?url=' + encodedUrl)
       .then((resp: IXFrameOptsResponse) => this.handleSuccess(resp))
-      .then((result:IXFrameOptsResult)  => this.canEmbed(result, url))
+      .then((result:IXFrameOptsResponse)  => this.canEmbed(result, url))
       .catch(e => ValidationService.handleErrors(e));
   }
 
@@ -121,13 +121,19 @@ export class ValidationService implements IValidationSvc {
   xFrameOpts(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus) {
     if (cachedResults != null) {
       return this.$q((resolve) => {
+
         let xFrameOptsObj = {
           location: cachedResults.location,
-          x_frame_options: cachedResults.x_frame_options,
+          xFrameData: {
+            header: cachedResults.x_frame_options,
+            response_code: cachedResults.response_code,
+            err: cachedResults.err
+          },
           canEmbed: this.xFrameHeaderCanEmbed(viewVal, cachedResults.x_frame_options)
         };
 
         const obj = this.handleXframeOptsObj(viewVal, xFrameOptsObj, displayObj);
+        console.log('from cache', obj, cachedResults);
         return resolve(obj);
       });
     }
@@ -161,12 +167,14 @@ export class ValidationService implements IValidationSvc {
       tipText = viewVal + ' cannot be found';
       displayObj.validatedFields['404'] = {showInfo: true, message: tipText};
       return this.$q.reject('404');
-
-
-
     }
 
-    if (!xFrameOptsObj.canEmbed) {
+    if (xFrameOptsObj.err != null && xFrameOptsObj.response_code !== 999) {
+     displayObj.validatedFields['xFrameOpts'] = {
+        showInfo: true,
+        message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.err
+      }
+    } else if (!xFrameOptsObj.canEmbed) {
       tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
       //we got redirected to resource that can't be embedded.
       //merge the errors into one.
@@ -174,25 +182,19 @@ export class ValidationService implements IValidationSvc {
         tipText += '. ' + displayObj.validatedFields['301'].message;
         displayObj.validatedFields['301'] = {};
       }
-
       displayObj.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
     } else {
       displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
     }
 
-    //override noEmbed with error
-    if (xFrameOptsObj.error_message) {
-      console.log('huh', xFrameOptsObj);
-      displayObj.validatedFields['xFrameOpts'] = {
-        showInfo: true,
-        message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
-      };
-    }
-
     return {
       canEmbed: xFrameOptsObj.canEmbed,
       location: xFrameOptsObj.location,
-      x_frame_options: xFrameOptsObj.x_frame_options
+      xFrameData: {
+        header: xFrameOptsObj.xFrameData.header,
+        response_code: xFrameOptsObj.xFrameData.response_code,
+        err: xFrameOptsObj.xFrameData.err
+      }
     };
   }
 
@@ -201,12 +203,11 @@ export class ValidationService implements IValidationSvc {
   }
 
   private static handleErrors(error) {
-    //true to set _noEmbed to make links no embeddable
     console.warn('xFrameOpts error:', error);
-    return {canEmbed: true};
+    return {canEmbed: false};
   }
 
-  private handleSuccess(result) {
+  private handleSuccess(result: IXFrameOptsResponse): IXFrameOptsResponse {
     //result could have response_code, location, or x_frame_options fields.
     //not null, so normalize string
     if (this.ittUtils.existy(result.x_frame_options)) {
@@ -216,13 +217,18 @@ export class ValidationService implements IValidationSvc {
     return result;
   }
 
-  private canEmbed(result, url): IXFrameOptsResult {
-    if (result.error_message != null) {
-      result.canEmbed = false;
+  private canEmbed(result: IXFrameOptsResponse, url: string): IXFrameOptsResult {
+
+    const xFrameData = {header: result.x_frame_options, err: result.err, response_code: result.response_code};
+    let xFrameOptsObj: IXFrameOptsResult = Object.create(null);
+
+    if (result.response_code === 999) {
+      xFrameOptsObj.canEmbed = false;
     } else {
-      result.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
+      xFrameOptsObj.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
     }
-    return result;
+    Object.assign(xFrameOptsObj, {xFrameData});
+    return xFrameOptsObj;
   }
 
   private SANE_GET(path) {

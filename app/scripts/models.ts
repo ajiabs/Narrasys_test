@@ -31,6 +31,7 @@ export class ILinkStatus {
   response_code?: number;
   location?: string;
   updated_at?: Date;
+  err?: string;
   x_frame_options?: string;
 }
 

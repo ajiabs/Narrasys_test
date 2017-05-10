@@ -143,8 +143,7 @@ export default function ittUrlField() {
           // ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
           if (isValidUrl) { //only do async stuff if necessary
             validationSvc.xFrameOpts(url, ctrl, cachedResults)
-              .then(({canEmbed, location, x_frame_options}) => {
-
+              .then(({canEmbed, location, xFrameData}) => {
                 _setValidity(true);
                 let isMixedContent = validationSvc.mixedContent(url, ctrl);
                 //since all HTTP links are checked, it is possible that the target site
@@ -152,13 +151,17 @@ export default function ittUrlField() {
                 //be iframeable in our app.
                 ctrl.canEmbed = canEmbed && !isMixedContent;
                 ctrl.data.templateOpts = _disableTemplateOpts(!ctrl.canEmbed);
-                ctrl.data.url_status = { x_frame_options };
+                ctrl.data.url_status = {
+                  x_frame_options: xFrameData.header,
+                  err: xFrameData.err,
+                  response_code: xFrameData.response_code
+                };
+
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering
                   //a $digest from mutating ctrl.data.url
                   unsubscribeWatch();
                   ctrl.data.url = location;
-
                   subscribeWatch();
                 }
               })
