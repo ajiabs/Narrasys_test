@@ -90,7 +90,7 @@ export class ValidationService implements IValidationSvc {
     return canEmbed;
   }
 
-  mixedContent(viewVal, displayObj: IValidationDisplay): boolean {
+  mixedContent(viewVal:string, displayObj: IValidationDisplay): boolean {
     if (this.mixedContentUrl(viewVal)) {
       //mixed content detected!
       displayObj.validatedFields['mixedContent'] = {message: 'Mixed Content Detected', showInfo: true};
@@ -133,7 +133,6 @@ export class ValidationService implements IValidationSvc {
         };
 
         const obj = this.handleXframeOptsObj(viewVal, xFrameOptsObj, displayObj);
-        console.log('from cache', obj, cachedResults);
         return resolve(obj);
       });
     }
@@ -142,7 +141,7 @@ export class ValidationService implements IValidationSvc {
     if (viewVal === '' || this.urlService.isVideoUrl(viewVal) || ValidationService.emailOrPlaceholder(viewVal)) {
       return this.$q(function (resolve) {
         displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
-        return resolve({canEmbed: false, location: null});
+        return resolve({canEmbed: true, location: null, xFrameData: {header: null, response_code: null, err: null}});
       });
     }
 

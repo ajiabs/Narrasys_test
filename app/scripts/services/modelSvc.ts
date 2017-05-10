@@ -2,8 +2,8 @@
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
-import {IAnnotators} from '../interfaces';
-import {IAnnotation, IBookmark, IChapter, IImage, ILink, IPlugin, IScene, IText, IUpload, NEvent} from '../models';
+import { IAnnotators } from '../interfaces';
+import { NEvent } from '../models';
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
 
