@@ -145,7 +145,7 @@ export default function ittUrlField() {
             validationSvc.xFrameOpts(url, ctrl, cachedResults)
               .then(({canEmbed, location, urlStatus}: IXFrameOptsResult) => {
                 _setValidity(true);
-                let isMixedContent = validationSvc.mixedContent(url, ctrl);
+                let isMixedContent = validationSvc.mixedContent(location || url, ctrl);
                 //since all HTTP links are checked, it is possible that the target site
                 //allows for iframing, but is not served from a secure context so it would not
                 //be iframeable in our app.
