@@ -1,5 +1,5 @@
-import {ILink, ILinkStatus} from '../models';
-import {IValidationSvc, IValidationDisplay} from '../interfaces';
+import { ILink, ILinkStatus } from '../models';
+import {IValidationSvc, IValidationDisplay, IXFrameOptsResult} from '../interfaces';
 
 /**
  * Created by githop on 6/30/16.
@@ -143,7 +143,7 @@ export default function ittUrlField() {
           // ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
           if (isValidUrl) { //only do async stuff if necessary
             validationSvc.xFrameOpts(url, ctrl, cachedResults)
-              .then(({canEmbed, location, xFrameData}) => {
+              .then(({canEmbed, location, urlStatus}: IXFrameOptsResult) => {
                 _setValidity(true);
                 let isMixedContent = validationSvc.mixedContent(url, ctrl);
                 //since all HTTP links are checked, it is possible that the target site
@@ -151,11 +151,7 @@ export default function ittUrlField() {
                 //be iframeable in our app.
                 ctrl.canEmbed = canEmbed && !isMixedContent;
                 ctrl.data.templateOpts = _disableTemplateOpts(!ctrl.canEmbed);
-                ctrl.data.url_status = {
-                  x_frame_options: xFrameData.header,
-                  err: xFrameData.err,
-                  response_code: xFrameData.response_code
-                };
+                ctrl.data.url_status = Object.assign(new ILinkStatus(), urlStatus);
 
                 if (_existy(location)) {
                   //turn off watch for a moment to avoid triggering

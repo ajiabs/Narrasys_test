@@ -26,13 +26,13 @@ export class IEvent {
 }
 
 export class ILinkStatus {
+  x_frame_options: string;
+  response_code: number;
+  err: string;
   _id?: string;
   status?: string;
-  response_code?: number;
   location?: string;
   updated_at?: Date;
-  err?: string;
-  x_frame_options?: string;
 }
 
 export class ILink extends IEvent {
