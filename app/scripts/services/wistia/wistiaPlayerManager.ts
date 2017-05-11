@@ -1,4 +1,4 @@
-import { IScriptLoader, IWistiaUrlservice, IMetaProps } from '../../interfaces';
+import {IScriptLoader, IWistiaUrlservice, IMetaProps, IPlayerManager} from '../../interfaces';
 import { PLAYERSTATES } from '../playbackService/index';
 import { BasePlayerManager } from '../basePlayerManager/basePlayerManager';
 import {existy} from '../ittUtils';
@@ -30,10 +30,14 @@ const wistiaMetaProps = {
   vol: 0
 };
 
+export interface IWistiaPlayerManager extends IPlayerManager {
+  destroySideEffects(pid: string): any;
+}
+
 /*
   wistia PM with inheritance
  */
-export class WistiaPlayerManager extends BasePlayerManager {
+export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPlayerManager {
   public type = 'wistia';
   static $inject = ['wistiaScriptLoader', 'wistiaUrlService'];
   constructor(
@@ -133,6 +137,10 @@ export class WistiaPlayerManager extends BasePlayerManager {
 
   setVolume(pid: string, v: number): void {
     this.invokeMethod(pid, 'volume', v / 100);
+  }
+
+  destroySideEffects(pid: string) {
+    //noop;
   }
 
   private invokeMethod(pid: string, method: string, val?: any): any {

@@ -1,7 +1,7 @@
 import {IBasePlayerManager, IMetaObj, IMetaProps} from './services/basePlayerManager/playerManagerCommons';
 import {IAnnotators} from './directives/sxsAnnotatorAutocomplete';
 import {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
-import {IWistiaMetaProps} from './services/wistia/wistiaPlayerManager';
+import {IWistiaMetaProps, IWistiaPlayerManager} from './services/wistia/wistiaPlayerManager';
 import {IDataSvc} from './services/dataSvc';
 import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
 /**
@@ -22,10 +22,10 @@ export interface IScriptLoader {
 }
 
 export interface ILinkValidationMessage {
-  showInfo: boolean
-  message?: string
-  doInfo?: boolean
-  url?: string
+  showInfo?: boolean;
+  message?: string;
+  doInfo?: boolean;
+  url?: string;
 }
 
 export interface ILinkValidFields {
@@ -42,7 +42,7 @@ export interface ILinkValidFields {
 }
 
 export interface IUrlService {
-  parseMediaSrcArr(mediaSrcArr: string[]): IParsedMediaSrcObj;
+  parseMediaSrcArr(mediaSrcArr: string[]): IParsedMediaSrcObj[];
   checkUrl(url: string): { type: string, mimeType: string };
   getOutgoingUrl(url: string): string | void;
   parseInput(input: string): string;
@@ -86,7 +86,7 @@ export interface IPlayerManager {
   setVolume(pid: string, v: number): void;
   setSpeed(pid: string, speed: number): void;
   freezeMetaProps(pid: string): void;
-  unfreezeMetaProps(pid: string): void;
+  unFreezeMetaProps(pid: string): void;
   stop(pid: string): void;
   handleTimelineEnd(pid: string): void;
 }
@@ -108,6 +108,7 @@ export {
   IMetaProps,
   IValidationDisplay,
   IValidationSvc,
+  IWistiaPlayerManager,
   IWistiaMetaProps,
   IWistiaUrlservice,
   IXFrameOptsResult

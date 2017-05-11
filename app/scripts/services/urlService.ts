@@ -1,4 +1,4 @@
-import {IWistiaUrlservice} from "../interfaces";
+import {IParsedMediaSrcObj, IUrlService, IWistiaUrlservice} from '../interfaces';
 /**
  * Created by githop on 11/3/16.
  */
@@ -14,7 +14,7 @@ export default function urlService(youtubeUrlService, html5UrlService, kalturaUr
     wistia: wistiaUrlService
   };
 
-  return {
+  return <IUrlService> {
     parseMediaSrcArr: parseMediaSrcArr,
     checkUrl: checkUrl,
     getOutgoingUrl: getOutgoingUrl,
@@ -35,7 +35,7 @@ export default function urlService(youtubeUrlService, html5UrlService, kalturaUr
    * @param mediaSrcArr
    * @return parsedMediaSrcArr Array<{type: string, mediaSrcArr: Array<String>}>
    */
-  function parseMediaSrcArr(mediaSrcArr) {
+  function parseMediaSrcArr(mediaSrcArr: string[]): IParsedMediaSrcObj[] {
     return Object.keys(_urlSubServices).reduce(function (parsedMediaSrcArr, urlSrv) {
       var parsedMediaSrcObj = _urlSubServices[urlSrv].parseMediaSrc(mediaSrcArr);
       if (parsedMediaSrcObj.mediaSrcArr.length > 0) {

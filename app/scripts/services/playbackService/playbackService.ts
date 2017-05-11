@@ -2,8 +2,7 @@
  * Created by githop on 10/24/16.
  */
 
-import {IWistiaPlayerManager} from "../../interfaces";
-import {IBasePlayerManager} from "../basePlayerManager/playerManagerCommons";
+import {IUrlService, IWistiaPlayerManager, IPlayerManager} from '../../interfaces';
 
 /**
  * @ngdoc service
@@ -37,18 +36,18 @@ import {IBasePlayerManager} from "../basePlayerManager/playerManagerCommons";
 
 playbackService.$inject = ['$interval', 'youTubePlayerManager', 'html5PlayerManager', 'kalturaPlayerManager', 'wistiaPlayerManager', 'ittUtils', 'urlService', 'PLAYERSTATES_WORD', 'PLAYERSTATES'];
 
-export default function playbackService($interval, youTubePlayerManager, html5PlayerManager, kalturaPlayerManager, wistiaPlayerManager: IWistiaPlayerManager, ittUtils, urlService, PLAYERSTATES_WORD, PLAYERSTATES) {
+export default function playbackService($interval, youTubePlayerManager, html5PlayerManager, kalturaPlayerManager, wistiaPlayerManager: IWistiaPlayerManager, ittUtils, urlService: IUrlService, PLAYERSTATES_WORD, PLAYERSTATES) {
 
-  var _playerInterfaces = {};
+  var _playerInterfaces: { [id: string]: IPlayerManager } = {};
   var _mainPlayerId;
   var _stateChangeCallbacks = [];
-  var _playerManagers = [html5PlayerManager, youTubePlayerManager, kalturaPlayerManager, wistiaPlayerManager];
+  var _playerManagers: IPlayerManager[] = [html5PlayerManager, youTubePlayerManager, kalturaPlayerManager, wistiaPlayerManager];
   var _timelineState = '';
   var _mainPlayerBufferingPoll;
   var _playbackServiceHasBeenReset;
   var _existy = ittUtils.existy;
 
-  angular.forEach(_playerManagers, function (playerManager: IBasePlayerManager) {
+  angular.forEach(_playerManagers, function (playerManager: IPlayerManager) {
     playerManager.registerStateChangeListener(_stateChangeCB);
   });
 
@@ -72,7 +71,7 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
     setTimelineState: setTimelineState,
     freezeMetaProps: freezeMetaProps,
     unFreezeMetaProps: unFreezeMetaProps,
-    getMetaObj: getMetaObj,
+    // getMetaObj: getMetaObj,
     pauseOtherPlayers: pauseOtherPlayers,
     handle$Destroy: handle$Destroy,
     resetPlaybackService: resetPlaybackService,
@@ -453,11 +452,11 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
     _playerInterfaces[_setPid(playerId)].unFreezeMetaProps(_setPid(playerId));
   }
 
-  function getMetaObj(playerId) {
-    if (_existy(_playerInterfaces[_setPid(playerId)])) {
-      return _playerInterfaces[_setPid(playerId)].getMetaObj(_setPid(playerId));
-    }
-  }
+  // function getMetaObj(playerId) {
+  //   if (_existy(_playerInterfaces[_setPid(playerId)])) {
+  //     return _playerInterfaces[_setPid(playerId)].getMetaObj(_setPid(playerId));
+  //   }
+  // }
 
   /**
    * @ngdoc method
@@ -618,7 +617,7 @@ export default function playbackService($interval, youTubePlayerManager, html5Pl
 
     if (pid === _mainPlayerId && isBeingReset === false) {
       setMetaProp('playerState', '5', pid);
-      _emitStateChange('video cued', pid);
+      _emitStateChange('video cued');
     }
 
     if (startAt === 0 && getMetaProp('autoplay', pid) === true) {

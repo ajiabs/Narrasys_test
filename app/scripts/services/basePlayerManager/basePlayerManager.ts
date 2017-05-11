@@ -13,7 +13,7 @@ import {existy, renameKey} from '../ittUtils';
  pattern in a more straight forward manner.
  Eventually we could implement all the player managers as classes
  that extend this one.
-*/
+ */
 
 interface IPlayer {
   instance: any;
@@ -22,12 +22,12 @@ interface IPlayer {
 
 export abstract class BasePlayerManager {
   public type: string;
-  protected players: {[pid: string]: IPlayer} = {};
+  protected players: { [pid: string]: IPlayer } = {};
   protected mainPlayerId: string;
 
   protected statechangeCallbacks = [];
 
-  static createMetaObj(newProps: any): {instance: any, meta: any} {
+  static createMetaObj(newProps: any): { instance: any, meta: any } {
 
     const commonMetaProps: IMetaProps = {
       mainPlayer: false,
@@ -61,7 +61,7 @@ export abstract class BasePlayerManager {
     }
   }
 
-  protected setInstance(pid:string, instance:any): void {
+  protected setInstance(pid: string, instance: any): void {
     let player = this.getPlayer(pid);
     player.instance = instance;
   }
@@ -109,7 +109,7 @@ export abstract class BasePlayerManager {
 
   freezeMetaProps(pid: string) { /* noop */ }
 
-  unfreezeMetaProps(pid: string) { /* noop */ }
+  unFreezeMetaProps(pid: string) { /* noop */ }
 
   pauseOtherPlayers(pid: string): void {
     Object.keys(this.players).forEach((playerId: string) => {
@@ -140,7 +140,7 @@ export abstract class BasePlayerManager {
     });
   }
 
-  renamePid(oldName, newName) {
+  renamePid(oldName: string, newName: string) {
     renameKey(oldName, newName, this.players);
   }
 
@@ -148,8 +148,28 @@ export abstract class BasePlayerManager {
     //noop;
   }
 
-  protected destroyInstance(pid, doRemove) {
-    //foo
+  resetPlayerManager() {
+    Object.keys(this.players)
+      .forEach(key => {
+        this.destroyInstance(key, true)
+      });
+    this.players = {};
+  }
+
+  protected destroyInstance(pid:string, doRemove:boolean) {
+    if (!existy(doRemove)) {
+      doRemove = false;
+    }
+
+    this.destroySideEffects(pid);
+
+    if (doRemove === true) {
+      this.setPlayer(pid, {});
+    }
+  }
+
+  protected destroySideEffects(pid: string) {
+    //noop;
   }
 
 }
