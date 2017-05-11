@@ -139,9 +139,14 @@ export class ValidationService implements IValidationSvc {
 
     //bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
     if (viewVal === '' || this.urlService.isVideoUrl(viewVal) || ValidationService.emailOrPlaceholder(viewVal)) {
-      return this.$q(function (resolve) {
+      return this.$q((resolve) => {
         displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
-        return resolve({canEmbed: true, location: null, xFrameData: {header: null, response_code: null, err: null}});
+        let stubXFOR: IXFrameOptsResult = {canEmbed: true, location: null, xFrameData: {header: null, response_code: null, err: null}};
+        if (this.urlService.checkUrl(viewVal).type === 'kaltura') {
+          stubXFOR.location = this.urlService.parseInput(viewVal);
+        }
+
+        return resolve(stubXFOR);
       });
     }
 
