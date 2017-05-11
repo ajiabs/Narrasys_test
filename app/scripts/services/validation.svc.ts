@@ -4,7 +4,7 @@ import {ILinkValidFields} from '../interfaces';
  * Created by githop on 5/2/17.
  */
 
-interface IXFrameOptsResult {
+export interface IXFrameOptsResult {
   urlStatus: ILinkStatus
   location?: string;
   canEmbed: boolean;

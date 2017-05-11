@@ -1,5 +1,5 @@
 import {IDataSvc} from './services/dataSvc';
-import {IValidationDisplay, IValidationSvc} from './services/validation.svc';
+import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
 /**
  * Created by githop on 4/11/17.
  */
@@ -45,4 +45,4 @@ export interface ILinkValidFields {
 }
 
 
-export {IDataSvc, IValidationDisplay, IValidationSvc };
+export {IDataSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult };
