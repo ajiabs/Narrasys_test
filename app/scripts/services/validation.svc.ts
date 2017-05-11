@@ -5,7 +5,7 @@ import {ILinkValidFields} from '../interfaces';
  */
 
 interface IXFrameOptsResult {
-  xFrameData: {header: string, response_code: number, err: string};
+  urlStatus: ILinkStatus
   location?: string;
   canEmbed: boolean;
 }
@@ -125,8 +125,8 @@ export class ValidationService implements IValidationSvc {
         let xFrameOptsObj: IXFrameOptsResult = {
           canEmbed: this.xFrameHeaderCanEmbed(viewVal, cachedResults.x_frame_options),
           location: cachedResults.location,
-          xFrameData: {
-            header: cachedResults.x_frame_options,
+          urlStatus: <ILinkStatus> {
+            x_frame_options: cachedResults.x_frame_options,
             response_code: cachedResults.response_code,
             err: cachedResults.err
           },
@@ -144,8 +144,8 @@ export class ValidationService implements IValidationSvc {
         let stubXFOR: IXFrameOptsResult = {
           canEmbed: true,
           location: null,
-          xFrameData: {
-            header: null, response_code: null, err: null
+          urlStatus: <ILinkStatus> {
+            x_frame_options: null, response_code: null, err: null
           }
         };
         if (this.urlService.checkUrl(viewVal).type === 'kaltura') {
@@ -173,16 +173,16 @@ export class ValidationService implements IValidationSvc {
       };
     }
 
-    if (this.ittUtils.existy(XFOResult.xFrameData.response_code) && XFOResult.xFrameData.response_code === 404) {
+    if (this.ittUtils.existy(XFOResult.urlStatus.response_code) && XFOResult.urlStatus.response_code === 404) {
       tipText = viewVal + ' cannot be found';
       displayObj.validatedFields['404'] = {showInfo: true, message: tipText};
       return this.$q.reject('404');
     }
 
-    if (XFOResult.xFrameData.err != null && XFOResult.xFrameData.response_code !== 999) {
+    if (XFOResult.urlStatus.err != null && XFOResult.urlStatus.response_code !== 999) {
      displayObj.validatedFields['xFrameOpts'] = {
         showInfo: true,
-        message: viewVal + ' cannot be embedded: ' + XFOResult.xFrameData.err
+        message: viewVal + ' cannot be embedded: ' + XFOResult.urlStatus.err
       }
     } else if (!XFOResult.canEmbed) {
       tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
@@ -197,15 +197,7 @@ export class ValidationService implements IValidationSvc {
       displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
     }
 
-    return {
-      canEmbed: XFOResult.canEmbed,
-      location: XFOResult.location,
-      xFrameData: {
-        header: XFOResult.xFrameData.header,
-        response_code: XFOResult.xFrameData.response_code,
-        err: XFOResult.xFrameData.err
-      }
-    };
+    return XFOResult;
   }
 
   private static emailOrPlaceholder(val: string): boolean {
@@ -229,7 +221,12 @@ export class ValidationService implements IValidationSvc {
 
   private canEmbed(result: IXFrameOptsResponse, url: string): IXFrameOptsResult {
 
-    const xFrameData = {header: result.x_frame_options, err: result.err, response_code: result.response_code};
+    const urlStatus: ILinkStatus = {
+      x_frame_options: result.x_frame_options,
+      err: result.err,
+      response_code: result.response_code
+    };
+
     let xFrameOptsObj: IXFrameOptsResult = Object.create(null);
     const location = result.location;
 
@@ -238,7 +235,7 @@ export class ValidationService implements IValidationSvc {
     } else {
       xFrameOptsObj.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
     }
-    Object.assign(xFrameOptsObj, {location}, {xFrameData});
+    Object.assign(xFrameOptsObj, {location}, {urlStatus});
     return xFrameOptsObj;
   }
 
