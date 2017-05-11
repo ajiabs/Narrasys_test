@@ -161,7 +161,7 @@ export class ValidationService implements IValidationSvc {
       .then((xFOResult: IXFrameOptsResult) => this.handleXframeOptsObj(viewVal, xFOResult, displayObj));
   }
 
-  private handleXframeOptsObj(viewVal: string, XFOResult: IXFrameOptsResult, displayObj: IValidationDisplay) {
+  private handleXframeOptsObj(viewVal: string, XFOResult: IXFrameOptsResult, displayObj: IValidationDisplay): IXFrameOptsResult | ng.IPromise<{}> {
     let tipText = '';
     //check for a new URL if we followed a redirect on the server.
     if (this.ittUtils.existy(XFOResult.location)) {
