@@ -152,7 +152,7 @@ export class ValidationService implements IValidationSvc {
 
     return this.checkXFrameOpts(viewVal)
     //xFrameOptsObj will have at least x_frame_options field and could have response_code and location fields
-      .then(xFrameOptsObj => this.handleXframeOptsObj(viewVal, xFrameOptsObj, displayObj));
+      .then((xFrameOptsObj: IXFrameOptsResult) => this.handleXframeOptsObj(viewVal, xFrameOptsObj, displayObj));
   }
 
   private handleXframeOptsObj(viewVal: string, xFrameOptsObj, displayObj: IValidationDisplay) {
@@ -184,7 +184,7 @@ export class ValidationService implements IValidationSvc {
       //merge the errors into one.
       if (xFrameOptsObj.location) {
         tipText += '. ' + displayObj.validatedFields['301'].message;
-        displayObj.validatedFields['301'] = {};
+        displayObj.validatedFields['301'] = Object.create(null);
       }
       displayObj.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
     } else {

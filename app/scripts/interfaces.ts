@@ -12,17 +12,6 @@ export interface IScriptLoader {
   load(...args:any[]): ng.IPromise<{}>;
 }
 
-export interface IAnnotator {
-  name: { en: string }
-  annotation_image_id: string
-  key?: string
-  imageUrl?: string
-}
-
-export interface IAnnotators {
-  [key: string]: IAnnotator
-}
-
 export interface ILinkValidationMessage {
   showInfo: boolean
   message?: string
@@ -99,9 +88,13 @@ export interface IPlayerManager {
  */
 
 export {
+  IAnnotators,
   IBasePlayerManager,
+  IDataSvc,
   IMetaObj,
   IMetaProps,
+  IValidationDisplay,
+  IValidationSvc,
   IWistiaMetaProps,
-  IWistiaUrlservice
+  IWistiaUrlservice,
 };
