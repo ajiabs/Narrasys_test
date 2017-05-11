@@ -331,9 +331,11 @@ function textAngularConfig($provide) {
 }
 
 function debugInfoConfig($compileProvider) {
-  var isDev = false;
-  var currentHost = window.location.hostname;
-  if (currentHost.indexOf('localhost') === 0 || currentHost.indexOf('api-dev') === 0) {
+  let isDev = false;
+  const currentHost = window.location.hostname;
+  if (currentHost.indexOf('localhost') === 0 ||
+    currentHost.indexOf('api-dev') === 0 ||
+    currentHost.indexOf('np-dev') === 0) {
     isDev = true;
   }
 

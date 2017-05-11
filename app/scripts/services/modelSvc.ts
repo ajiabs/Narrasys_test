@@ -2,7 +2,8 @@
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
-import {IAnnotators} from '../interfaces';
+import { IAnnotators } from '../interfaces';
+import { NEvent } from '../models';
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
 
@@ -349,10 +350,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     }
   };
 
-  svc.deriveEvent = function (event) {
-
+  svc.deriveEvent = function (event: NEvent): NEvent {
     event = setLang(event);
-
     if (event._type !== 'Scene') {
 
       event.searchableText = (event.display_annotation || event.display_description) + " " + (event.display_title || event.display_annotator);
@@ -413,7 +412,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       // clear derived flags before re-setting them (in case we're editing an existing item):
       event.isContent = false;
       event.isTranscript = false;
-      event.noEmbed = event.noEmbed === undefined ? false : event.noEmbed;
+      // event.noEmbed = event.noEmbed === undefined ? false : event.noEmbed;
       event.mixedContent = false;
       event.noExternalLink = false;
       event.targetTop = false;
@@ -435,13 +434,9 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       if (isTranscript(event)) {
         event.isTranscript = true;
       }
-      if (event.templateUrl.match(/noembed/)) {
-        event.noEmbed = true;
-      }
 
       var isHttps = $location.protocol() === 'https';
       if (event._type === "Link" && event.url && event.url.match(/^http:\/\//) && isHttps) {
-        event.noEmbed = true;
         event.mixedContent = true;
         event.showInlineDetail = false;
       }
@@ -453,7 +448,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
       }
 
       if (event._type === "Link" && event.url && /mailto/.test(event.url)) {
-        event.noEmbed = true;
+        // event.noEmbed = true;
+        event.target = '_blank';
       }
 
       if (event.templateUrl.match(/-embed/)) {
@@ -462,7 +458,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
 
       if (event.templateUrl.match(/frameicide/)) {
         event.targetTop = true;
-        event.noEmbed = true;
       }
     }
 
@@ -554,7 +549,6 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     }
 
     event.displayStartTime = $filter("asTime")(event.start_time);
-
     return event;
   };
 

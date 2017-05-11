@@ -10,7 +10,7 @@
 		</div>
 	</div>
 	<div class="text item__text">
-		<span ng-if="item.noEmbed">
+		<span ng-if="handleOutgoingLinkDisplay()">
 			<span ng-if="!item.targetTop">
 				<a tabindex="0" ng-if="item.asset.url" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)">
 					<img ng-src="{{item.asset.url}}" class="img--link-with-image-no-title">
@@ -22,7 +22,7 @@
 				</a>
 			</span>
 		</span>
-		<span ng-if="!item.noEmbed">
+		<span ng-if="!handleOutgoingLinkDisplay()">
 			<img ng-click="toggleDetailView()" ng-src="{{item.asset.url}}" class="img--link-with-image-no-title">
 		</span>
 		<div class="item__text item__text--link text--link-with-image" ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>

@@ -2,9 +2,10 @@
  NOTE: when authoring templates make sure that outgoing links call the outgoingLink() function,
  so they get logged properly: don't draw plain hrefs
  */
-ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService'];
+import {IValidationSvc} from '../services/validation.svc';
+ittItem.$inject = ['$http', '$timeout', '$interval', 'config', 'authSvc', 'appState', 'analyticsSvc', 'timelineSvc', 'modelSvc', 'selectService', 'playbackService', 'urlService', 'validationSvc'];
 
-export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService) {
+export default function ittItem($http, $timeout, $interval, config, authSvc, appState, analyticsSvc, timelineSvc, modelSvc, selectService, playbackService, urlService, validationSvc: IValidationSvc) {
   return {
     restrict: 'A',
     replace: false,
@@ -34,6 +35,17 @@ export default function ittItem($http, $timeout, $interval, config, authSvc, app
       } else {
         if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin') || scope.item.user_id === appState.user._id) {
           scope.item.editableByThisUser = true;
+        }
+      }
+
+      scope.handleOutgoingLinkDisplay = handleOutgoingLinkDisplay;
+      function handleOutgoingLinkDisplay(): boolean {
+        if (scope.item.url != null && scope.item.url_status != null && scope.item.target != null) {
+          let {url, target, url_status: {x_frame_options}} = scope.item;
+          let isMixedContent = validationSvc.mixedContentUrl(url);
+          let canEmbed = validationSvc.xFrameHeaderCanEmbed(url, x_frame_options);
+          //open in new tab
+          return (!canEmbed || target === '_blank') || isMixedContent;
         }
       }
 

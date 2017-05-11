@@ -25,10 +25,7 @@
 		</span>
 	</div>
 	<div ng-if="errormessage" class="error-red" ng-bind-html="errormessage"></div>
-  <!--transclusion currently only used to display extra fields when uplaoding transcripts-->
-  <div>
-    <ng-transclude></ng-transclude>
-  </div>
+
 
 	<div class="uploadDropTarget">
 		<a style="float:right" ng-click="showInstructions=!showInstructions">(?)</a> Drag and drop

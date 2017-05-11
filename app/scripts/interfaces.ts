@@ -2,12 +2,41 @@ import {IBasePlayerManager, IMetaObj, IMetaProps} from './services/basePlayerMan
 import {IAnnotators} from './directives/sxsAnnotatorAutocomplete';
 import {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
 import {IWistiaMetaProps} from './services/wistia/wistiaPlayerManager';
+import {IDataSvc} from './services/dataSvc';
+import {IValidationDisplay, IValidationSvc} from './services/validation.svc';
 /**
  * Created by githop on 4/11/17.
  */
 
 export interface IScriptLoader {
   load(...args:any[]): ng.IPromise<{}>;
+}
+
+export interface IAnnotator {
+  name: { en: string }
+  annotation_image_id: string
+  key?: string
+  imageUrl?: string
+}
+
+export interface IAnnotators {
+  [key: string]: IAnnotator
+}
+
+export interface ILinkValidationMessage {
+  showInfo: boolean
+  message?: string
+  doInfo?: boolean
+  url?: string
+}
+
+export interface ILinkValidFields {
+  404: ILinkValidationMessage
+  301: ILinkValidationMessage
+  url: ILinkValidationMessage
+  mixedContent: ILinkValidationMessage
+  xFrameOpts: ILinkValidationMessage;
+  [key: string]: ILinkValidationMessage;
 }
 
 export interface IUrlService {
@@ -61,22 +90,18 @@ export interface IPlayerManager {
 }
 
 /*
-  it's nice to have the interface close to the method / object it is annotating. It's also nice to have a common
-  point from where to import interfaces from.
+ it's nice to have the interface close to the method / object it is annotating. It's also nice to have a common
+ point from where to import interfaces from.
 
-  To accommodate both options above, if an interface is needed outside of the file it is defined in, import it here
-  then re-export it. In the file that needs the interface, it can be imported from here, instead of the file where
-  it was defined.
+ To accommodate both options above, if an interface is needed outside of the file it is defined in, import it here
+ then re-export it. In the file that needs the interface, it can be imported from here, instead of the file where
+ it was defined.
  */
 
 export {
-  IAnnotators,
   IBasePlayerManager,
   IMetaObj,
   IMetaProps,
   IWistiaMetaProps,
   IWistiaUrlservice
 };
-
-
-

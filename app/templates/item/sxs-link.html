@@ -7,10 +7,10 @@
 		<div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
 	</div>
 
-	<a ng-if="item.noEmbed" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.title.en ||'(Untitled)'"></a>
-	<h3 ng-if="!item.noEmbed" ng-bind-html="item.title.en ||'(Untitled)'"></h3>
+	<a ng-if="handleOutgoingLinkDisplay()" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.title.en ||'(Untitled)'"></a>
+	<h3 ng-if="!handleOutgoingLinkDisplay()" ng-bind-html="item.title.en ||'(Untitled)'"></h3>
 	<div class="text" ng-bind-html="item.description.en"></div>
-	<div class="itemDetail" ng-if="item.url && !item.noEmbed && item.url != 'https://'">
+	<div class="itemDetail" ng-if="item.url && handleOutgoingLinkDisplay() && item.url != 'https://'">
 		<div class="modalmenu" ng-if="!item.noExternalLink">
 			<a ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 		</div>
