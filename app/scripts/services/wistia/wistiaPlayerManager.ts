@@ -167,15 +167,18 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   private createWpInstance(pid: string): ng.IPromise<void> {
 
     const isEmbed = this.mainPlayerId !== pid;
+
     const wistiaEmbedOptions = {
       playbar: isEmbed,
       videoFoam: true,
       fullscreenButton: isEmbed,
+      controlsVisibleOnLoad: isEmbed,
+      playbackRateControl: isEmbed,
       playButton: isEmbed,
       settingsControl: isEmbed,
+      qualityControl: isEmbed,
       smallPlayButton: isEmbed,
       volumeControl: isEmbed
-
     };
     return this.wistiaScriptLoader.load(pid)
       .then(_ =>  {
