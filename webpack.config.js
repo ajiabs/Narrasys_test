@@ -87,6 +87,7 @@ function configWp(env) {
             {
               loader: 'postcss-loader',
               options: {
+                sourceMap: true,
                 plugins: _ => [require('autoprefixer')({browsers: 'last 2 versions'})]
               }
             },

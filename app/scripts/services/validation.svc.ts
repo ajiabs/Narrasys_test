@@ -84,7 +84,7 @@ export class ValidationService implements IValidationSvc {
         });
         break;
       case /DENY/i.test(header):
-        canEmbed = true;
+        //do nothing
         break;
     }
     return canEmbed;
