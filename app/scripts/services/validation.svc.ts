@@ -12,11 +12,13 @@ export interface IXFrameOptsResult {
 
 //the object returned from the x_frame_options proxy
 interface IXFrameOptsResponse {
-  x_frame_options?: string | null;
+  x_frame_options: string | null;
+  content_security_policy: string | null;
   location?: string
   err?: string
   response_code: number;
 }
+
 //validatedFields is a prop on the ittUrlField directive controller but any object
 //that implements the interface would work.
 export interface IValidationDisplay {
@@ -25,13 +27,26 @@ export interface IValidationDisplay {
 
 export interface IValidationSvc {
   checkXFrameOpts(url: string): ng.IPromise<IXFrameOptsResult>;
-  xFrameHeaderCanEmbed(url: string, header: string): boolean;
+  urlIsEmbeddable(url: string, cspOrXFrameHeader: any): boolean;
   mixedContent(viewVal: string, displayObj: IValidationDisplay): boolean;
   mixedContentUrl(url: string): boolean;
   validateUrl(viewVal: string, displayObj: IValidationDisplay): boolean;
   xFrameOpts(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus): ng.IPromise<IXFrameOptsResult>;
 }
 export class ValidationService implements IValidationSvc {
+
+  static parseCSP(csp: string): object {
+    if (csp != null) {
+      return csp.split(';').reduce((result: object, directive: string) => {
+        const directiveSet = directive.trim().split(/\s+/g);
+        const key = directiveSet.shift();
+        if (key) {
+          result[key] = directiveSet;
+        }
+        return result
+      }, {})
+    }
+  }
 
   static $inject = ['$http', '$location', '$q', 'authSvc', 'config', 'ittUtils', 'urlService'];
 
@@ -53,42 +68,13 @@ export class ValidationService implements IValidationSvc {
       .catch(e => ValidationService.handleErrors(e));
   }
 
-  xFrameHeaderCanEmbed(url: string, header: string): boolean {
-    let canEmbed = false;
-    if (header == null || header === 'null') {
-      return true;
-    }
+  urlIsEmbeddable(url:string, cspOrXFrameHeader: any): boolean {
+    let xFrameCanEmbed = this.xFrameHeaderCanEmbed(url, cspOrXFrameHeader.x_frame_options);
+    let cspCanEmbed = this.cspCanEmbed(url, cspOrXFrameHeader.content_security_policy);
 
-    switch (true) {
-      case /SAMEORIGIN/i.test(header):
-        let currentOrigin = this.$location.host();
-        let parseInputUrl = document.createElement('a');
-        parseInputUrl.href = url;
-        //check our origin
-        if (currentOrigin === parseInputUrl.hostname) {
-          canEmbed = true;
-        }
-        break;
-      case /ALLOW-FROM/i.test(header):
-        //check if we're on the list
-        //split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
-        const xFrameArr = header.split(',');
-        currentOrigin = this.$location.host();
-          angular.forEach(xFrameArr, function (i) {
-          const url = i.trim().split(' ')[1];
-          const aElm = document.createElement('a');
-          aElm.href = url;
-          if (currentOrigin === aElm.hostname) {
-            canEmbed = true;
-          }
-        });
-        break;
-      case /DENY/i.test(header):
-        //do nothing
-        break;
-    }
-    return canEmbed;
+    return xFrameCanEmbed && cspCanEmbed;
   }
+
 
   mixedContent(viewVal:string, displayObj: IValidationDisplay): boolean {
     if (this.mixedContentUrl(viewVal)) {
@@ -123,9 +109,10 @@ export class ValidationService implements IValidationSvc {
       return this.$q((resolve) => {
 
         let xFrameOptsObj: IXFrameOptsResult = {
-          canEmbed: this.xFrameHeaderCanEmbed(viewVal, cachedResults.x_frame_options),
+          canEmbed: this.urlIsEmbeddable(viewVal, cachedResults),
           location: cachedResults.location,
           urlStatus: <ILinkStatus> {
+            content_security_policy: cachedResults.content_security_policy,
             x_frame_options: cachedResults.x_frame_options,
             response_code: cachedResults.response_code,
             err: cachedResults.err
@@ -145,7 +132,7 @@ export class ValidationService implements IValidationSvc {
           canEmbed: true,
           location: null,
           urlStatus: <ILinkStatus> {
-            x_frame_options: null, response_code: null, err: null
+            content_security_policy: null, x_frame_options: null, response_code: null, err: null
           }
         };
         if (this.urlService.checkUrl(viewVal).type === 'kaltura') {
@@ -159,6 +146,88 @@ export class ValidationService implements IValidationSvc {
     return this.checkXFrameOpts(viewVal)
     //xFrameOptsObj will have at least x_frame_options field and could have response_code and location fields
       .then((xFOResult: IXFrameOptsResult) => this.handleXframeOptsObj(viewVal, xFOResult, displayObj));
+  }
+
+  private cspCanEmbed(url: string, csp: string): boolean {
+    //frame-ancestors: null -> true
+    //frame-ancestors: 'self' - url contains host domain -> true
+    //frame-ancestors: sources-list contains host domain -> true
+    //frame-ancestors: 'none' -> false
+
+    if (csp == null) {
+      return true;
+    }
+
+    let cspObj = ValidationService.parseCSP(csp);
+    const ancestorSourceList = cspObj['frame-ancestors'];
+
+    if (ancestorSourceList == null || ancestorSourceList.length === 0) {
+      return true;
+
+    } else {
+
+      const currentHost = this.$location.host();
+
+      //handle 'self', 'none' or a frame-ancestor list with only 1 member.
+      if (ancestorSourceList.length === 1) {
+        const onlyAncestor = ancestorSourceList[0];
+        //if CSP is self and the URL is our own, or the only frame-ancestor comes from our own
+        if ((onlyAncestor === "'self'" && url.includes(currentHost)) || onlyAncestor.includes(currentHost)) {
+          return true;
+        }
+
+        if (onlyAncestor === "'none'") {
+          return false;
+        }
+      }
+
+      //loop over list of sources
+      for (let source of ancestorSourceList) {
+        if (source.includes(currentHost)) {
+          return true
+        }
+      }
+
+
+      return false;
+    }
+  }
+
+  private xFrameHeaderCanEmbed(url: string, header: string): boolean {
+    let canEmbed = false;
+    if (header == null || header === 'null') {
+      return true;
+    }
+
+    switch (true) {
+      case /SAMEORIGIN/i.test(header):
+        let currentOrigin = this.$location.host();
+        let parseInputUrl = document.createElement('a');
+        parseInputUrl.href = url;
+        //check our origin
+        if (currentOrigin === parseInputUrl.hostname) {
+          canEmbed = true;
+        }
+        break;
+      case /ALLOW-FROM/i.test(header):
+        //check if we're on the list
+        //split on comma to get CSV array of strings; e.g: ["ALLOW-FROM: <url>", " ALLOW-FROM: <url>", ...]
+        const xFrameArr = header.split(',');
+        currentOrigin = this.$location.host();
+        angular.forEach(xFrameArr, function (i) {
+          const url = i.trim().split(' ')[1];
+          const aElm = document.createElement('a');
+          aElm.href = url;
+          if (currentOrigin === aElm.hostname) {
+            canEmbed = true;
+          }
+        });
+        break;
+      case /DENY/i.test(header):
+        //do nothing
+        break;
+    }
+    return canEmbed;
   }
 
   private handleXframeOptsObj(viewVal: string, XFOResult: IXFrameOptsResult, displayObj: IValidationDisplay): IXFrameOptsResult | ng.IPromise<{}> {
@@ -184,7 +253,7 @@ export class ValidationService implements IValidationSvc {
         showInfo: true,
         message: viewVal + ' cannot be embedded: ' + XFOResult.urlStatus.err
       }
-    } else if (!XFOResult.canEmbed) {
+    } else if (!XFOResult.canEmbed && !this.mixedContentUrl(viewVal)) {
       tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
       //we got redirected to resource that can't be embedded.
       //merge the errors into one.
@@ -222,6 +291,7 @@ export class ValidationService implements IValidationSvc {
   private canEmbed(result: IXFrameOptsResponse, url: string): IXFrameOptsResult {
 
     const urlStatus: ILinkStatus = {
+      content_security_policy: result.content_security_policy,
       x_frame_options: result.x_frame_options,
       err: result.err,
       response_code: result.response_code
@@ -233,9 +303,11 @@ export class ValidationService implements IValidationSvc {
     if (result.response_code === 999) {
       xFrameOptsObj.canEmbed = false;
     } else {
-      xFrameOptsObj.canEmbed = this.xFrameHeaderCanEmbed(url, result.x_frame_options);
+      xFrameOptsObj.canEmbed = this.urlIsEmbeddable(url, result);
     }
+
     Object.assign(xFrameOptsObj, {location}, {urlStatus});
+    console.log('hmm this should work?', xFrameOptsObj);
     return xFrameOptsObj;
   }
 
