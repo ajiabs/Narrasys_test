@@ -2,10 +2,10 @@
   "name": "com.inthetelling.story",
   "version": "0.0.0",
   "scripts": {
-    "start": "rm -rf dist/* && ./node_modules/.bin/webpack --env.dev local --progress --watch --colors",
+    "start": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.dev local --progress --watch --colors",
     "prod": "rm -rf dist/* && ./node_modules/.bin/webpack --progress --colors --env.prod",
-    "prod:local": "rm -rf dist/* && ./node_modules/.bin/webpack --progress --colors --env.prod local",
-    "prod:watch": "rm -rf dist/* && ./node_modules/.bin/webpack --env.prod --progress --colors --watch"
+    "prod:local": "rm -rf tmp/* && ./node_modules/.bin/webpack --progress --colors --env.prod local",
+    "prod:watch": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.prod --progress --colors --watch"
   },
   "dependencies": {
     "@types/angular": "1.5.11",

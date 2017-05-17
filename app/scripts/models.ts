@@ -26,7 +26,8 @@ export class IEvent {
 }
 
 export class ILinkStatus {
-  x_frame_options: string;
+  content_security_policy: string | null;
+  x_frame_options: string | null;
   response_code: number;
   err: string;
   _id?: string;
