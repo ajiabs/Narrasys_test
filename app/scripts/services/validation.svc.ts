@@ -1,5 +1,5 @@
 import {ILinkStatus} from '../models';
-import {ILinkValidFields} from '../interfaces';
+import {ILinkValidFields, Partial} from '../interfaces';
 /**
  * Created by githop on 5/2/17.
  */
@@ -22,7 +22,7 @@ interface IXFrameOptsResponse {
 //validatedFields is a prop on the ittUrlField directive controller but any object
 //that implements the interface would work.
 export interface IValidationDisplay {
-  validatedFields: ILinkValidFields;
+  validatedFields: Partial<ILinkValidFields>;
 }
 
 export interface IValidationSvc {
@@ -31,7 +31,7 @@ export interface IValidationSvc {
   mixedContent(viewVal: string, displayObj: IValidationDisplay): boolean;
   mixedContentUrl(url: string): boolean;
   validateUrl(viewVal: string, displayObj: IValidationDisplay): boolean;
-  xFrameOpts(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus): ng.IPromise<IXFrameOptsResult>;
+  inspectHeadersAsync(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus): ng.IPromise<IXFrameOptsResult>;
 }
 export class ValidationService implements IValidationSvc {
 
@@ -104,7 +104,7 @@ export class ValidationService implements IValidationSvc {
     }
   }
 
-  xFrameOpts(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus) {
+  inspectHeadersAsync(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus) {
     if (cachedResults != null) {
       return this.$q((resolve) => {
 
@@ -127,7 +127,7 @@ export class ValidationService implements IValidationSvc {
     //bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
     if (viewVal === '' || this.urlService.isVideoUrl(viewVal) || ValidationService.emailOrPlaceholder(viewVal)) {
       return this.$q((resolve) => {
-        displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
+        displayObj.validatedFields['iframeHeaders'] = {showInfo: false};
         let stubXFOR: IXFrameOptsResult = {
           canEmbed: true,
           location: null,
@@ -242,14 +242,14 @@ export class ValidationService implements IValidationSvc {
       };
     }
 
-    if (this.ittUtils.existy(XFOResult.urlStatus.response_code) && XFOResult.urlStatus.response_code === 404) {
+    if (this.ittUtils.existy(XFOResult.urlStatus.response_code) && XFOResult.urlStatus.response_code === 422) {
       tipText = viewVal + ' cannot be found';
       displayObj.validatedFields['404'] = {showInfo: true, message: tipText};
       return this.$q.reject('404');
     }
 
     if (XFOResult.urlStatus.err != null && XFOResult.urlStatus.response_code !== 999) {
-     displayObj.validatedFields['xFrameOpts'] = {
+     displayObj.validatedFields['iframeHeaders'] = {
         showInfo: true,
         message: viewVal + ' cannot be embedded: ' + XFOResult.urlStatus.err
       }
@@ -261,9 +261,9 @@ export class ValidationService implements IValidationSvc {
         tipText += '. ' + displayObj.validatedFields['301'].message;
         displayObj.validatedFields['301'] = {};
       }
-      displayObj.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
+      displayObj.validatedFields['iframeHeaders'] = {showInfo: true, message: tipText, doInfo: true};
     } else {
-      displayObj.validatedFields['xFrameOpts'] = {showInfo: false};
+      displayObj.validatedFields['iframeHeaders'] = {showInfo: false};
     }
 
     return XFOResult;
@@ -307,7 +307,6 @@ export class ValidationService implements IValidationSvc {
     }
 
     Object.assign(xFrameOptsObj, {location}, {urlStatus});
-    console.log('hmm this should work?', xFrameOptsObj);
     return xFrameOptsObj;
   }
 

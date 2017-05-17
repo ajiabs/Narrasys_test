@@ -1,13 +1,20 @@
 import { ILink, ILinkStatus } from '../models';
-import {IValidationSvc, IValidationDisplay, IXFrameOptsResult} from '../interfaces';
+import {
+  Partial,
+  ILinkValidationMessage,
+  ILinkValidFields,
+  IValidationSvc,
+  IXFrameOptsResult,
+} from '../interfaces';
 
 /**
  * Created by githop on 6/30/16.
  */
 
-interface IUrlFieldScope extends ng.IScope, IValidationDisplay {
+interface IUrlFieldScope extends ng.IScope {
   //link event
   data: ILink;
+  validatedFields: Partial<ILinkValidFields>;
   videoOnly: boolean;
   label: string;
   onAttach: ($url: string) => string;
@@ -66,15 +73,15 @@ export default function ittUrlField() {
         const ctrl: IUrlFieldScope = this;
         const _existy = ittUtils.existy;
 
-        let validatedFields = {
+        let validatedFields: Partial<ILinkValidFields> = {
           url: null,
-          xFrameOpts: null,
+          iframeHeaders: null,
           '404': null,
           '301': null,
           mixedContent: null
         };
 
-        let message = {
+        let message: ILinkValidationMessage = {
           showInfo: false,
           message: '',
           doInfo: false
@@ -97,7 +104,7 @@ export default function ittUrlField() {
           if (!ctrl.videoOnly) {
             //run once on initial value and setup watch, if initial value isn't
             //the default value (e.g. 'https://') for new link events
-            if (_existy(ctrl.data.url) && ctrl.data.url !== 'https://') {
+            if (typeof ctrl.data !== 'string' && ctrl.data.url !== 'https://') {
               itemUrlValidationPipeline(ctrl.data.url, ctrl.data.url_status);
             }
             subscribeWatch();
@@ -142,26 +149,36 @@ export default function ittUrlField() {
           // let isMixedContent = validationSvc.mixedContent(url, ctrl);
           // ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
           if (isValidUrl) { //only do async stuff if necessary
-            validationSvc.xFrameOpts(url, ctrl, cachedResults)
-              .then(({canEmbed, location, urlStatus}: IXFrameOptsResult) => {
-                _setValidity(true);
-                let isMixedContent = validationSvc.mixedContent(location || url, ctrl);
-                //since all HTTP links are checked, it is possible that the target site
-                //allows for iframing, but is not served from a secure context so it would not
-                //be iframeable in our app.
-                ctrl.canEmbed = canEmbed && !isMixedContent;
-                ctrl.data.templateOpts = _disableTemplateOpts(!ctrl.canEmbed);
-                ctrl.data.url_status = Object.assign(new ILinkStatus(), urlStatus);
+            inspectHeaders(url, cachedResults);
+          }
+        }
 
-                if (_existy(location)) {
-                  //turn off watch for a moment to avoid triggering
-                  //a $digest from mutating ctrl.data.url
-                  unsubscribeWatch();
-                  ctrl.data.url = location;
-                  subscribeWatch();
-                }
-              })
-              .catch(_ => _setValidity(false));
+        async function inspectHeaders(url, cachedResults) {
+          try {
+            const {
+              canEmbed,
+              location,
+              urlStatus
+            }: IXFrameOptsResult = await validationSvc.inspectHeadersAsync(url, ctrl, cachedResults);
+
+            _setValidity(true);
+            let isMixedContent = validationSvc.mixedContent(location || url, ctrl);
+            //since all HTTP links are checked, it is possible that the target site
+            //allows for iframing, but is not served from a secure context so it would not
+            //be iframeable in our app.
+            ctrl.canEmbed = canEmbed && !isMixedContent;
+            ctrl.data.templateOpts = _disableTemplateOpts(!ctrl.canEmbed);
+            ctrl.data.url_status = Object.assign(new ILinkStatus(), urlStatus);
+
+            if (_existy(location)) {
+              //turn off watch for a moment to avoid triggering
+              //a $digest from mutating ctrl.data.url
+              unsubscribeWatch();
+              ctrl.data.url = location;
+              subscribeWatch();
+            }
+          } catch (e) {
+            _setValidity(false);
           }
         }
 

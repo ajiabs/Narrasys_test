@@ -13,7 +13,7 @@ export class IEvent {
   stop: boolean;
 //props not in any schema but added dynamically either on the backend somewhere client-side;
   avatar_id: string;
-  templateOpts?: any;
+  templateOpts?: any[];
   //relations
   episode_id: string;
   user_id: string;

@@ -21,6 +21,10 @@ export interface IScriptLoader {
   load(...args:any[]): ng.IPromise<{}>;
 }
 
+export type Partial<T> = {
+  [P in keyof T]?: T[P];
+}
+
 export interface ILinkValidationMessage {
   showInfo?: boolean;
   message?: string;
@@ -29,16 +33,15 @@ export interface ILinkValidationMessage {
 }
 
 export interface ILinkValidFields {
-  404: ILinkValidationMessage
-  301: ILinkValidationMessage
-  url: ILinkValidationMessage
-  mixedContent: ILinkValidationMessage
-  xFrameOpts: ILinkValidationMessage;
-  kaltura?: ILinkValidationMessage | null,
-  youtube?: ILinkValidationMessage | null ,
-  html5?: ILinkValidationMessage | null,
-  error: ILinkValidationMessage | null
-  [key: string]: ILinkValidationMessage;
+  404: ILinkValidationMessage;
+  301: ILinkValidationMessage;
+  url: ILinkValidationMessage;
+  mixedContent: ILinkValidationMessage;
+  iframeHeaders: ILinkValidationMessage;
+  kaltura: ILinkValidationMessage | null;
+  youtube: ILinkValidationMessage | null;
+  html5: ILinkValidationMessage | null;
+  error: ILinkValidationMessage | null;
 }
 
 export interface IUrlService {
