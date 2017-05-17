@@ -253,7 +253,7 @@ export class ValidationService implements IValidationSvc {
         showInfo: true,
         message: viewVal + ' cannot be embedded: ' + XFOResult.urlStatus.err
       }
-    } else if (!XFOResult.canEmbed) {
+    } else if (!XFOResult.canEmbed && !this.mixedContentUrl(viewVal)) {
       tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
       //we got redirected to resource that can't be embedded.
       //merge the errors into one.
