@@ -24,6 +24,10 @@ export interface IAnnotators {
   [key: string]: IAnnotator;
 }
 
+export type Partial<T> = {
+  [P in keyof T]?: T[P];
+}
+
 export interface ILinkValidationMessage {
   showInfo?: boolean;
   message?: string;
@@ -36,12 +40,11 @@ export interface ILinkValidFields {
   301: ILinkValidationMessage;
   url: ILinkValidationMessage;
   mixedContent: ILinkValidationMessage;
-  xFrameOpts: ILinkValidationMessage;
-  kaltura?: ILinkValidationMessage | null,
-  youtube?: ILinkValidationMessage | null ,
-  html5?: ILinkValidationMessage | null,
-  error: ILinkValidationMessage | null
-  [key: string]: ILinkValidationMessage;
+  iframeHeaders: ILinkValidationMessage;
+  kaltura: ILinkValidationMessage | null;
+  youtube: ILinkValidationMessage | null;
+  html5: ILinkValidationMessage | null;
+  error: ILinkValidationMessage | null;
 }
 
 
