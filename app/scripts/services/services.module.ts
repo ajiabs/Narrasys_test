@@ -30,6 +30,7 @@ import kalturaUrlService from './kaltura/kalturaUrlService';
 import youTubePlayerManager from './youtube/YouTubePlayerManager.svc'
 import YTScriptLoader from './youtube/youtubeScriptLoader';
 import youtubeUrlService from './youtube/youtubeUrlService';
+import {ValidationService} from './validation.svc';
 
 let servicesModule = angular.module('itt.services', [])
   .factory('appState', appState)
@@ -57,6 +58,7 @@ let servicesModule = angular.module('itt.services', [])
   .factory('youTubePlayerManager', youTubePlayerManager)
   .factory('YTScriptLoader', YTScriptLoader)
   .factory('youtubeUrlService', youtubeUrlService)
-  .factory('analyticsSvc', analyticsSvc);
+  .factory('analyticsSvc', analyticsSvc)
+  .service('validationSvc', ValidationService);
 
 export default servicesModule;

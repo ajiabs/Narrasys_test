@@ -36,7 +36,7 @@ function configWp(env) {
       filename: env.prod ? `[name].[chunkHash].min.js` : '[name].bundle.js',
       chunkFilename: env.prod ? '[name].[chunkhash].min.js' : '[name].bundle.js',
       publicPath: '/',
-      path: resolve(__dirname, 'dist')
+      path: env.dev || env.prod === 'local' ? resolve(__dirname, 'tmp') : resolve(__dirname, 'dist')
     },
     externals: {
       'angular': 'angular'
@@ -87,6 +87,7 @@ function configWp(env) {
             {
               loader: 'postcss-loader',
               options: {
+                sourceMap: true,
                 plugins: _ => [require('autoprefixer')({browsers: 'last 2 versions'})]
               }
             },

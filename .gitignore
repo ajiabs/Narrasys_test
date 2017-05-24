@@ -1,5 +1,5 @@
 node_modules
-.tmp
+tmp
 .sass-cache
 /app/scripts/templates.js
 *.swp

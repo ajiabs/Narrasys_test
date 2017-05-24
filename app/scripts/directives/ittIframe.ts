@@ -125,7 +125,7 @@ export default function ittIframe(appState) {
 
       if (_otherModal.length > 0 && appState.isTouchDevice) {
         //set dimenions on <iframe>
-        scope.iframeCtrl.styles = {'height': _frameBottom + 'px'};
+        scope.$ctrl.styles = {'height': _frameBottom + 'px'};
         //set dimensions on iframeContainer div
         elm.css('height', _frameBottom);
 
@@ -133,7 +133,7 @@ export default function ittIframe(appState) {
           return elm.height();
         }, function (newVal, oldval) {
           if (newVal !== oldval) {
-            scope.iframeCtrl.styles = {'height': newVal + 'px'};
+            scope.$ctrl.styles = {'height': newVal + 'px'};
             elm.css('height', _frameBottom);
           }
         });

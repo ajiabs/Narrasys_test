@@ -14,8 +14,8 @@
       <div ng-if="item.display_annotator && item.producerItemType !== 'annotation' || item.isPq" class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
       <div ng-if="item.producerItemType == 'annotation' && item.display_title && !item.isHeader && !item.isPq" class="authorName" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
       <span ng-if="item._type != 'Annotation' && item._type !== 'Chapter'">
-        <a tabindex="0" ng-if="item.noEmbed" class="fakeLink escapelink item__link--escape-link item__link--fake-link" ng-click="outgoingLink(item.url)" ng-bind-html="(item.display_title || '(Untitled)') | highlightSubstring: appState.searchText"></a>
-        <a tabindex="0" role="button" class="fakeLink item__link--fake-link" ng-if="!item.noEmbed" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="item.showInlineDetail=!item.showInlineDetail" ng-bind-html="(item.display_title || '(Untitled)') | highlightSubstring: appState.searchText" aria-label="Toggle detail display of {{item.display_title}}"></a>
+        <a tabindex="0" ng-if="handleOutgoingLinkDisplay()" class="fakeLink escapelink item__link--escape-link item__link--fake-link" ng-click="outgoingLink(item.url)" ng-bind-html="(item.display_title || '(Untitled)') | highlightSubstring: appState.searchText"></a>
+        <a tabindex="0" role="button" class="fakeLink item__link--fake-link" ng-if="!handleOutgoingLinkDisplay()" x-ng-keypress="toggleDetailOnKeyPress($event)" ng-click="item.showInlineDetail=!item.showInlineDetail" ng-bind-html="(item.display_title || '(Untitled)') | highlightSubstring: appState.searchText" aria-label="Toggle detail display of {{item.display_title}}"></a>
       </span>
 		<span ng-if="item._type === 'Chapter' || item.chapter_marker">
 			<h2 class="searchChapter" ng-bind-html="(item.display_annotation || item.display_title) | highlightSubstring: appState.searchText"></h2>
@@ -29,11 +29,11 @@
       <span ng-switch="item.producerItemType">
         <span ng-switch-when="file">
           <a tabindex="0" x-ng-keypress="outgoingLinkOnKeyPress(item.asset.url,$event)" ng-click="outgoingLink(item.asset.url)" class="escapelink item__link--escape-link">(new window)</a>
-          <itt-iframe x-src="{{item.asset.url}}" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
+          <itt-iframe ng-if="appState.viewMode == 'review'" x-src="{{item.asset.url}}" x-contenttype="{{item.asset.content_type}}"></itt-iframe>
         </span>
         <span ng-switch-when="link">
           <a tabindex="0" ng-if="!item.noExternalLink" x-ng-keypress="outgoingLinkOnKeyPress(item.url,$event)" ng-click="outgoingLink(item.url)" class="escapelink item__link--escape-link">(new window)</a>
-			<itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
+			<itt-iframe ng-if="!item.isVideoUrl && appState.viewMode == 'review'" x-src="{{item.url}}" item="item"></itt-iframe>
             <itt-video
 				ng-if="item.isVideoUrl && appState.viewMode == 'review'"
 				media-src-arr="[item.url]"

@@ -1,8 +1,25 @@
+import { ILink, ILinkStatus } from '../models';
+import {
+  Partial,
+  ILinkValidationMessage,
+  ILinkValidFields,
+  IValidationSvc,
+  IXFrameOptsResult,
+} from '../interfaces';
+
 /**
  * Created by githop on 6/30/16.
  */
 
-
+interface IUrlFieldScope extends ng.IScope {
+  //link event
+  data: ILink;
+  validatedFields: Partial<ILinkValidFields>;
+  videoOnly: boolean;
+  label: string;
+  onAttach: ($url: string) => string;
+  ittItemForm?: ng.INgModelController
+}
 
 export default function ittUrlField() {
   return {
@@ -22,6 +39,20 @@ export default function ittUrlField() {
       	</span>
       	</div>
       	<div class="input" ng-if="!$ctrl.videoOnly">
+      	  <div ng-if="$ctrl.canEmbed" class="ittUrl__escapeLink">
+
+            <input 
+            id="urlEscapeLink"
+            type="checkbox"
+            ng-change="$ctrl.updateTemplateOpts()"
+            ng-true-value="'_blank'"
+            ng-false-value="'_self'"
+            ng-model="$ctrl.data.target"/>
+           <span class="escapelink"></span> 
+           <label for="urlEscapeLink">Force new tab</label>
+
+
+          </div>
       		<input
       		  type="text"
       		  name="itemUrl"
@@ -37,20 +68,20 @@ export default function ittUrlField() {
       		<button ng-if="$ctrl.data" ng-click="$ctrl.onAttach({$url: $ctrl.data})">Attach Video</button>
       	</div>
       </div>`,
-    controller: ['$scope', '$q', 'ittUtils', 'urlService', 'dataSvc',
-      function ($scope: ng.IScope, $q: ng.IQService, ittUtils, urlService, dataSvc) {
-        const ctrl = this;
+    controller: ['$scope', '$q', 'ittUtils', 'validationSvc',
+      function ($scope: IUrlFieldScope, $q: ng.IQService, ittUtils, validationSvc: IValidationSvc) {
+        const ctrl: IUrlFieldScope = this;
         const _existy = ittUtils.existy;
 
-        let validatedFields = {
+        let validatedFields: Partial<ILinkValidFields> = {
           url: null,
-          xFrameOpts: null,
+          iframeHeaders: null,
           '404': null,
           '301': null,
           mixedContent: null
         };
 
-        let message = {
+        let message: ILinkValidationMessage = {
           showInfo: false,
           message: '',
           doInfo: false
@@ -64,6 +95,7 @@ export default function ittUrlField() {
           $onDestroy,
           //methods
           handleEpisodeValidationMessage,
+          updateTemplateOpts
         });
 
         let $watchItemUrl = angular.noop;
@@ -72,8 +104,8 @@ export default function ittUrlField() {
           if (!ctrl.videoOnly) {
             //run once on initial value and setup watch, if initial value isn't
             //the default value (e.g. 'https://') for new link events
-            if (_existy(ctrl.data.url) && ctrl.data.url !== 'https://') {
-              itemUrlValidationPipeline(ctrl.data.url);
+            if (typeof ctrl.data !== 'string' && ctrl.data.url !== 'https://') {
+              itemUrlValidationPipeline(ctrl.data.url, ctrl.data.url_status);
             }
             subscribeWatch();
           }
@@ -93,6 +125,10 @@ export default function ittUrlField() {
           $watchItemUrl();
         }
 
+        function updateTemplateOpts() {
+          ctrl.data.templateOpts = _disableTemplateOpts(ctrl.data.target === '_blank');
+        }
+
         function watchItemUrl() {
           return ctrl.data.url;
         }
@@ -107,26 +143,42 @@ export default function ittUrlField() {
           }
         }
 
-        function itemUrlValidationPipeline(url: string): void {
+        function itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus): void {
           _resetFields();
-          let isValidUrl = _setValidity(validateUrl(url));
-          let isMixedContent = mixedContent(url);
-          ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
-          if (!isMixedContent && isValidUrl) { //only do async stuff if necessary
-            xFrameOpts(url)
-              .then(({noEmbed, location}: {noEmbed:boolean, location:string}) => {
-                ctrl.data.templateOpts = _disableTemplateOpts(noEmbed);
-                _setValidity(true);
-                ctrl.data.noEmbed = noEmbed;
-                if (_existy(location)) {
-                  //turn off watch for a moment to avoid triggering
-                  //a $digest from mutating ctrl.data.url
-                  unsubscribeWatch();
-                  ctrl.data.url = location;
-                  subscribeWatch();
-                }
-              })
-              .catch(_ => _setValidity(false));
+          let isValidUrl = _setValidity(validationSvc.validateUrl(url, ctrl));
+          // let isMixedContent = validationSvc.mixedContent(url, ctrl);
+          // ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
+          if (isValidUrl) { //only do async stuff if necessary
+            inspectHeaders(url, cachedResults);
+          }
+        }
+
+        async function inspectHeaders(url, cachedResults) {
+          try {
+            const {
+              canEmbed,
+              location,
+              urlStatus
+            }: IXFrameOptsResult = await validationSvc.inspectHeadersAsync(url, ctrl, cachedResults);
+
+            _setValidity(true);
+            let isMixedContent = validationSvc.mixedContent(location || url, ctrl);
+            //since all HTTP links are checked, it is possible that the target site
+            //allows for iframing, but is not served from a secure context so it would not
+            //be iframeable in our app.
+            ctrl.canEmbed = canEmbed && !isMixedContent;
+            ctrl.data.templateOpts = _disableTemplateOpts(!ctrl.canEmbed);
+            ctrl.data.url_status = Object.assign(new ILinkStatus(), urlStatus);
+
+            if (_existy(location)) {
+              //turn off watch for a moment to avoid triggering
+              //a $digest from mutating ctrl.data.url
+              unsubscribeWatch();
+              ctrl.data.url = location;
+              subscribeWatch();
+            }
+          } catch (e) {
+            _setValidity(false);
           }
         }
 
@@ -144,78 +196,6 @@ export default function ittUrlField() {
           });
         }
 
-        function mixedContent(viewVal: string): boolean {
-          if (_existy(viewVal) && /^http:\/\//.test(viewVal)) {
-            //mixed content detected!
-            ctrl.validatedFields['mixedContent'] = {message: 'Mixed Content Detected', showInfo: true};
-            return true;
-          } else {
-            ctrl.validatedFields['mixedContent'] = {message: '', showInfo: false};
-            return false;
-          }
-        }
-
-        function validateUrl(viewVal: string): boolean {
-          if (viewVal === '' && !_emailOrPlaceholder(viewVal)) {
-            ctrl.validatedFields['url'] = {showInfo: true, message: 'Url cannot be blank'};
-            return false;
-          } else if (urlService.isVideoUrl(viewVal) || ittUtils.isValidURL(viewVal) || _emailOrPlaceholder(viewVal)) {
-            ctrl.validatedFields['url'] = {showInfo: false};
-            return true;
-          } else {
-            ctrl.validatedFields['url'] = {showInfo: true, message: viewVal + ' is not a valid URL'}; //jshint ignore:line
-            return false;
-          }
-        }
-
-        function xFrameOpts(viewVal: string): ng.IPromise<{noEmbed: boolean, location: string | null}> {
-          //bail out if empty or link to youtube/kaltura/html5 video, mixed content, email or placeholder val
-          if (viewVal === '' || urlService.isVideoUrl(viewVal) || /^http:\/\//.test(viewVal) || _emailOrPlaceholder(viewVal)) {
-            return $q(function (resolve) {
-              ctrl.validatedFields['xFrameOpts'] = {showInfo: false};
-              return resolve({noEmbed: false, location: null});
-            });
-          }
-
-          return dataSvc.checkXFrameOpts(viewVal)
-          //xFrameOptsObj will have at least x_frame_options field and could have response_code and location fields
-            .then(function (xFrameOptsObj) {
-              let tipText = '';
-              //check for a new URL if we followed a redirect on the server.
-              if (ittUtils.existy(xFrameOptsObj.location)) {
-                tipText = viewVal + ' redirected to ' + xFrameOptsObj.location;
-                ctrl.validatedFields['301'] = {
-                  showInfo: true,
-                  message: tipText,
-                  doInfo: true,
-                  url: xFrameOptsObj.location
-                };
-              }
-
-              if (ittUtils.existy(xFrameOptsObj.response_code) && xFrameOptsObj.response_code === 404) {
-                tipText = viewVal + ' cannot be found';
-                ctrl.validatedFields['404'] = {showInfo: true, message: tipText};
-                return $q.reject('404');
-              }
-
-              if (xFrameOptsObj.noEmbed) {
-                tipText = 'Embedded link template is disabled because ' + viewVal + ' does not allow iframing';
-                ctrl.validatedFields['xFrameOpts'] = {showInfo: true, message: tipText, doInfo: true};
-              } else {
-                ctrl.validatedFields['xFrameOpts'] = {showInfo: false};
-              }
-
-              //override noEmbed with error
-              if (xFrameOptsObj.error_message) {
-                ctrl.validatedFields['xFrameOpts'] = {
-                  showInfo: true,
-                  message: viewVal + ' cannot be embedded: ' + xFrameOptsObj.error_message
-                };
-              }
-              return {noEmbed: xFrameOptsObj.noEmbed, location: xFrameOptsObj.location};
-            });
-        }
-
         //validation of episode URLs in episode tab still use old pattern; e.g. custom validator that emits
         //a message
         function handleEpisodeValidationMessage(notice) {
@@ -229,9 +209,7 @@ export default function ittUrlField() {
         }
 
         //private methods
-        function _emailOrPlaceholder(val: string): boolean {
-          return /mailto:/.test(val) || val === 'https://';
-        }
+
 
         function _resetFields(): void {
           Object.keys(validatedFields)
