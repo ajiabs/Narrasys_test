@@ -1,5 +1,6 @@
 import {IDataSvc} from './services/dataSvc';
 import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
+import {TUrlFieldContexts} from './directives/ittUrlField';
 /**
  * Created by githop on 4/11/17.
  */
@@ -48,4 +49,4 @@ export interface ILinkValidFields {
 }
 
 
-export {IDataSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult };
+export {IDataSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts};

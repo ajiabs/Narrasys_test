@@ -1,13 +1,14 @@
 import {ILinkStatus} from '../models';
-import {ILinkValidFields, Partial} from '../interfaces';
+import {ILinkValidFields, Partial, TUrlFieldContexts} from '../interfaces';
 /**
  * Created by githop on 5/2/17.
  */
 
 export interface IXFrameOptsResult {
   urlStatus: ILinkStatus
-  location?: string;
   canEmbed: boolean;
+  location?: string;
+  context?: TUrlFieldContexts;
 }
 
 //the object returned from the x_frame_options proxy
@@ -31,7 +32,7 @@ export interface IValidationSvc {
   mixedContent(viewVal: string, displayObj: IValidationDisplay): boolean;
   mixedContentUrl(url: string): boolean;
   validateUrl(viewVal: string, displayObj: IValidationDisplay): boolean;
-  inspectHeadersAsync(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus): ng.IPromise<IXFrameOptsResult>;
+  inspectHeadersAsync(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus, context?: TUrlFieldContexts): ng.IPromise<IXFrameOptsResult>;
 }
 export class ValidationService implements IValidationSvc {
 
@@ -104,7 +105,42 @@ export class ValidationService implements IValidationSvc {
     }
   }
 
-  inspectHeadersAsync(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus) {
+  inspectHeadersAsync(viewVal: string, displayObj: IValidationDisplay, cachedResults?: ILinkStatus, context?: string) {
+
+    if (context && context === 'editor-video' && !this.urlService.isVideoUrl(viewVal)) {
+      return this.$q((resolve) => {
+        let stubXFOR: IXFrameOptsResult = {
+          canEmbed: true,
+          location: null,
+          context,
+          urlStatus: <ILinkStatus> {
+            content_security_policy: null, x_frame_options: null, response_code: null, err: null
+          }
+        };
+        if (this.urlService.checkUrl(viewVal).type === 'kaltura') {
+          stubXFOR.location = this.urlService.parseInput(viewVal);
+        }
+
+        const obj = this.handleXframeOptsObj(viewVal, stubXFOR, displayObj);
+        return resolve(obj);
+      });
+    }
+
+    if (context && context === 'editor' && this.urlService.isVideoUrl(viewVal)) {
+      return this.$q((resolve) => {
+        let stubXFOR: IXFrameOptsResult = {
+          canEmbed: false,
+          location: null,
+          context,
+          urlStatus: <ILinkStatus> {
+            content_security_policy: null, x_frame_options: null, response_code: null, err: null
+          }
+        };
+        const obj = this.handleXframeOptsObj(viewVal, stubXFOR, displayObj);
+        return resolve(obj);
+      });
+    }
+
     if (cachedResults != null) {
       return this.$q((resolve) => {
 
@@ -233,6 +269,23 @@ export class ValidationService implements IValidationSvc {
   private handleXframeOptsObj(viewVal: string, XFOResult: IXFrameOptsResult, displayObj: IValidationDisplay): IXFrameOptsResult | ng.IPromise<{}> {
     let tipText = '';
     //check for a new URL if we followed a redirect on the server.
+
+    if (XFOResult.context && XFOResult.context === 'editor-video') {
+      displayObj.validatedFields['videoOnly'] = {
+        showInfo: true,
+        message: 'Only Youtube, Kaltura, or HTML5 videos allowed here.'
+      };
+      return this.$q.reject('videoONly');
+    }
+
+    if (XFOResult.context && XFOResult.context === 'editor') {
+      displayObj.validatedFields['videoOnly'] = {
+        showInfo: true,
+        message: 'Youtube, Kaltura, or HTML5 videos not allowed here.'
+      };
+      return this.$q.reject('videoONly');
+    }
+
     if (this.ittUtils.existy(XFOResult.location)) {
       tipText = viewVal + ' redirected to ' + XFOResult.location;
       displayObj.validatedFields['301'] = {

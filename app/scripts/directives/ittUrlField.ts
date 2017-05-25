@@ -11,11 +11,13 @@ import {
  * Created by githop on 6/30/16.
  */
 
+export type TUrlFieldContexts = 'episode' | 'producer' | 'editor' | 'editor-video';
+
 interface IUrlFieldScope extends ng.IScope {
   //link event
   data: ILink;
   validatedFields: Partial<ILinkValidFields>;
-  context?: 'episode' | 'producer' | 'editor';
+  context?: TUrlFieldContexts
   label: string;
   onAttach: ($url: string) => string;
   ittItemForm?: ng.INgModelController
@@ -110,7 +112,7 @@ export default function ittUrlField() {
             //ctrl.data will be a string literal when the context is episode and an object (link event)
             //when the context is producer/editor
             if (typeof ctrl.data !== 'string' && ctrl.data.url !== 'https://') {
-              itemUrlValidationPipeline(ctrl.data.url, ctrl.data.url_status);
+              itemUrlValidationPipeline(ctrl.data.url, ctrl.data.url_status, ctrl.context);
             }
             subscribeWatch();
           }
@@ -144,27 +146,27 @@ export default function ittUrlField() {
             return;
           }
           if (nextUrl !== origUrl) {
-            itemUrlValidationPipeline(nextUrl);
+            itemUrlValidationPipeline(nextUrl, null, ctrl.context);
           }
         }
 
-        function itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus): void {
+        function itemUrlValidationPipeline(url: string, cachedResults?: ILinkStatus, context?: TUrlFieldContexts): void {
           _resetFields();
           let isValidUrl = _setValidity(validationSvc.validateUrl(url, ctrl));
           // let isMixedContent = validationSvc.mixedContent(url, ctrl);
           // ctrl.data.templateOpts = _disableTemplateOpts(isMixedContent);
           if (isValidUrl) { //only do async stuff if necessary
-            inspectHeaders(url, cachedResults);
+            inspectHeaders(url, cachedResults, context);
           }
         }
 
-        async function inspectHeaders(url, cachedResults) {
+        async function inspectHeaders(url, cachedResults, context?: TUrlFieldContexts) {
           try {
             const {
               canEmbed,
               location,
               urlStatus
-            }: IXFrameOptsResult = await validationSvc.inspectHeadersAsync(url, ctrl, cachedResults);
+            }: IXFrameOptsResult = await validationSvc.inspectHeadersAsync(url, ctrl, cachedResults, context);
 
             _setValidity(true);
             let isMixedContent = validationSvc.mixedContent(location || url, ctrl);
@@ -184,6 +186,7 @@ export default function ittUrlField() {
             }
           } catch (e) {
             _setValidity(false);
+            ctrl.data.showInlineDetail = false;
           }
         }
 
@@ -193,7 +196,7 @@ export default function ittUrlField() {
             ctrl.data.showInlineDetail = false;
           }
 
-          if (ctrl.context === 'editor') {
+          if (ctrl.context === 'editor' || ctrl.context === 'editor-video') {
             //editors do not have the option to specify the template.
             return;
           }

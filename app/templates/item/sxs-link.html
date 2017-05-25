@@ -10,17 +10,11 @@
 	<a ng-if="handleOutgoingLinkDisplay()" class="escapelink" ng-click="outgoingLink(item.url)" ng-bind-html="item.title.en ||'(Untitled)'"></a>
 	<h3 ng-if="!handleOutgoingLinkDisplay()" ng-bind-html="item.title.en ||'(Untitled)'"></h3>
 	<div class="text" ng-bind-html="item.description.en"></div>
-	<div class="itemDetail" ng-if="item.url && !handleOutgoingLinkDisplay() && item.url != 'https://'">
+	<div class="itemDetail" ng-if="item.url && !handleOutgoingLinkDisplay() && item.url != 'https://' && !item.isVideoUrl">
 		<div class="modalmenu" ng-if="!item.noExternalLink">
 			<a ng-click="outgoingLink(item.url)" class="escapelink">(new window)</a>
 		</div>
-		<itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
-		<itt-video
-			ng-if="item.isVideoUrl"
-			media-src-arr="[item.url]"
-			player-id="item._id"
-			main-player="false">
-		</itt-video>
+		<itt-iframe x-src="{{item.url}}" item="item"></itt-iframe>
 	</div>
 	<div class="clear"></div>
 </div>

@@ -13,7 +13,6 @@
 
 	<a class="escapelink" ng-click="outgoingLink(item.url)">New window</a>
   <div class="sxs-video">
-    <itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
     <itt-video
       ng-if="item.isVideoUrl"
       media-src-arr="[item.url]"
