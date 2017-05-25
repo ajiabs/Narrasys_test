@@ -186,7 +186,6 @@ export default function ittUrlField() {
             }
           } catch (e) {
             _setValidity(false);
-            ctrl.data.showInlineDetail = false;
           }
         }
 

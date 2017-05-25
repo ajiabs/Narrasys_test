@@ -1,24 +1,27 @@
 <div class="itemTemplate sxs-item">
-	<a class="edit-event" ng-click="editItem()" ng-if="item.editableByThisUser">[Edit]</a>
-	<div class="avatar">
-		<img ng-src="{{item.avatar.url || appState.noAvatar }}">
-	</div>
-	<div class="itemHead">
-		<div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
-	</div>
-	<div class="text">
-		<div class="title" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
-		<div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
-	</div>
-
-	<a class="escapelink" ng-click="outgoingLink(item.url)">New window</a>
-  <div class="sxs-video">
-    <itt-video
-      ng-if="item.isVideoUrl"
-      media-src-arr="[item.url]"
-      player-id="item._id"
-      main-player="false">
-    </itt-video>
-    <div class="clear"></div>
+  <a class="edit-event" ng-click="editItem()" ng-if="item.editableByThisUser">[Edit]</a>
+  <div class="avatar">
+    <img ng-src="{{item.avatar.url || appState.noAvatar }}">
   </div>
+  <div class="itemHead">
+    <div class="authorName" ng-bind-html="item.display_annotator | highlightSubstring: appState.searchText"></div>
+  </div>
+  <div class="text">
+    <div class="title" ng-bind-html="item.display_title | highlightSubstring: appState.searchText"></div>
+    <div ng-bind-html="item.display_description | highlightSubstring: appState.searchText"></div>
+  </div>
+
+  <a class="escapelink" ng-click="outgoingLink(item.url)">New window</a>
+  <div ng-if="!handleOutgoingLinkDisplay()">
+    <itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
+    <div class="sxs-video">
+      <itt-video
+        ng-if="item.isVideoUrl"
+        media-src-arr="[item.url]"
+        player-id="item._id"
+        main-player="false">
+      </itt-video>
+    </div>
+  </div>
+  <div class="clear"></div>
 </div>
