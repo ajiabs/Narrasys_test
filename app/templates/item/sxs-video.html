@@ -12,12 +12,14 @@
 	</div>
 
 	<a class="escapelink" ng-click="outgoingLink(item.url)">New window</a>
-	<itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
-	<itt-video
-		ng-if="item.isVideoUrl"
-		media-src-arr="[item.url]"
-		player-id="item._id"
-		main-player="false">
-	</itt-video>
-	<div class="clear"></div>
+  <div class="sxs-video">
+    <itt-iframe ng-if="!item.isVideoUrl" x-src="{{item.url}}" item="item"></itt-iframe>
+    <itt-video
+      ng-if="item.isVideoUrl"
+      media-src-arr="[item.url]"
+      player-id="item._id"
+      main-player="false">
+    </itt-video>
+    <div class="clear"></div>
+  </div>
 </div>

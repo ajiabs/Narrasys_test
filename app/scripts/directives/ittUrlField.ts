@@ -15,7 +15,7 @@ interface IUrlFieldScope extends ng.IScope {
   //link event
   data: ILink;
   validatedFields: Partial<ILinkValidFields>;
-  videoOnly: boolean;
+  context?: 'episode' | 'producer' | 'editor';
   label: string;
   onAttach: ($url: string) => string;
   ittItemForm?: ng.INgModelController
@@ -26,48 +26,47 @@ export default function ittUrlField() {
     restrict: 'EA',
     scope: {
       data: '=',
-      videoOnly: '=',
+      context: '@?',
       label: '@',
       onAttach: '&',
       ittItemForm: '<?'
     },
     template: `
-      <div class="field">
-      	<div class="label">{{$ctrl.label || "URL"}}
-      	<span ng-repeat="(field, val) in $ctrl.validatedFields">
-      		<itt-validation-tip ng-if="val.showInfo" text="{{val.message}}" do-info="val.doInfo"></itt-validation-tip>
-      	</span>
-      	</div>
-      	<div class="input" ng-if="!$ctrl.videoOnly">
-      	  <div ng-if="$ctrl.canEmbed" class="ittUrl__escapeLink">
+<div class="field">
+  <div class="label">{{$ctrl.label || "URL"}}
+    <span ng-repeat="(field, val) in $ctrl.validatedFields">
+      <itt-validation-tip ng-if="val.showInfo" text="{{val.message}}" do-info="val.doInfo"></itt-validation-tip>
+     </span>
+  </div>
+  <div class="input" ng-if="$ctrl.context !== 'episode'">
+    <div ng-if="$ctrl.canEmbed" class="ittUrl__escapeLink">
 
-            <input 
-            id="urlEscapeLink"
-            type="checkbox"
-            ng-change="$ctrl.updateTemplateOpts()"
-            ng-true-value="'_blank'"
-            ng-false-value="'_self'"
-            ng-model="$ctrl.data.target"/>
-           <span class="escapelink"></span> 
-           <label for="urlEscapeLink">Force new tab</label>
+      <input
+        id="urlEscapeLink"
+        type="checkbox"
+        ng-change="$ctrl.updateTemplateOpts()"
+        ng-true-value="'_blank'"
+        ng-false-value="'_self'"
+        ng-model="$ctrl.data.target"/>
+      <span class="escapelink"></span>
+      <label for="urlEscapeLink">Force new tab</label>
 
-
-          </div>
-      		<input
-      		  type="text"
-      		  name="itemUrl"
-      		  ng-model="$ctrl.data.url"
-      		  ng-model-options="{ updateOn: \'blur\' }"/>
-      	</div>
-      	<div class="input" ng-if="$ctrl.videoOnly === true">
-      		<input
-      		  type="text"
-      		  ng-model="$ctrl.data"
-      		  itt-valid-episode-url
-      		  on-validation-notice="$ctrl.handleEpisodeValidationMessage($notice)"/>
-      		<button ng-if="$ctrl.data" ng-click="$ctrl.onAttach({$url: $ctrl.data})">Attach Video</button>
-      	</div>
-      </div>`,
+    </div>
+    <input
+      type="text"
+      name="itemUrl"
+      ng-model="$ctrl.data.url"
+      ng-model-options="{ updateOn: \'blur\' }"/>
+  </div>
+  <div class="input" ng-if="$ctrl.context === 'episode'">
+    <input
+      type="text"
+      ng-model="$ctrl.data"
+      itt-valid-episode-url
+      on-validation-notice="$ctrl.handleEpisodeValidationMessage($notice)"/>
+    <button ng-if="$ctrl.data" ng-click="$ctrl.onAttach({$url: $ctrl.data})">Attach Video</button>
+  </div>
+</div>`,
     controller: ['$scope', '$q', 'ittUtils', 'validationSvc',
       function ($scope: IUrlFieldScope, $q: ng.IQService, ittUtils, validationSvc: IValidationSvc) {
         const ctrl: IUrlFieldScope = this;
@@ -101,9 +100,15 @@ export default function ittUrlField() {
         let $watchItemUrl = angular.noop;
 
         function $onInit() {
-          if (!ctrl.videoOnly) {
+          if (ctrl.context == null) {
+            //default to producer
+            ctrl.context = 'producer';
+          }
+          if (ctrl.context !== 'episode') {
             //run once on initial value and setup watch, if initial value isn't
             //the default value (e.g. 'https://') for new link events
+            //ctrl.data will be a string literal when the context is episode and an object (link event)
+            //when the context is producer/editor
             if (typeof ctrl.data !== 'string' && ctrl.data.url !== 'https://') {
               itemUrlValidationPipeline(ctrl.data.url, ctrl.data.url_status);
             }
@@ -112,7 +117,7 @@ export default function ittUrlField() {
         }
 
         function $onDestroy() {
-          if (!ctrl.videoOnly) {
+          if (ctrl.context !== 'episode') {
             unsubscribeWatch();
           }
         }
@@ -186,6 +191,11 @@ export default function ittUrlField() {
 
           if (val === true) {
             ctrl.data.showInlineDetail = false;
+          }
+
+          if (ctrl.context === 'editor') {
+            //editors do not have the option to specify the template.
+            return;
           }
 
           return ctrl.data.templateOpts.map(function (opt) {

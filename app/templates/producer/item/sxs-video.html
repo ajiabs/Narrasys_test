@@ -1,22 +1,4 @@
 <span class="eventIcon icon-video"></span>
-<div class="field">
-	<small>
-		<div style="width:20%; display:inline-block"></div>
-		<div style="width:80%; display:inline-block">Link to a video on YouTube...</div>
-		<!--<div style="width:32%; display:inline-block">...or record your own</div>-->
-	</small>
-</div>
-
-<itt-url-field data="item" label="Youtube Url"></itt-url-field>
-<div class="field">
-	<div class="label">Title
-	</div>
-	<div class="input">
-		<input type="text" ng-model="item.title.en" autofocus>
-	</div>
-</div>
-<div class="field">
-	<div class="label">Description
-	</div>
-	<div class="input" sxs-input-i18n="item.description" x-inputtype="'textarea'"></div>
-</div>
+<itt-url-field data="item" label="Youtube Url" context="editor" itt-item-form="ittItemForm"></itt-url-field>
+<itt-title-field do-validate="false" data="item" itt-item-form="ittItemForm"></itt-title-field>
+<itt-description-field data="item"></itt-description-field>
