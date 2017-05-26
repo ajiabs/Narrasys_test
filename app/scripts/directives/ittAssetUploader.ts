@@ -1,4 +1,5 @@
 import {IModelSvc, IDataSvc} from '../interfaces';
+import {TRANSCRIPT_UPLOAD} from './ittUploadTranscriptsField';
 
 interface AssetUploaderBindings {
   containerId?: string;
@@ -79,10 +80,17 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
   }
 
   $onChanges(changesObj) {
-    const { fileReceive: { currentValue } } = changesObj;
-    const { square, wide } = currentValue;
-    if (square && wide) {
-      //do uploads
+    if (changesObj.fileReceive) {
+      const { fileReceive: { currentValue } } = changesObj;
+      const { payload } = currentValue;
+      if (payload != null) {
+        switch (payload.type) {
+          case TRANSCRIPT_UPLOAD:
+            const {promises, files} = payload;
+            this.commenseUploads(files, promises);
+            break;
+        }
+      }
     }
   }
 
@@ -101,8 +109,6 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
     this.awsSvc.cancelUpload();
   };
 
-
-
   private handleUploads(files: FileList) {
     if (this.multiple) {
       if (files.length > 1 || this.uploads.length > 0) {
@@ -116,6 +122,8 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       return;
     }
 
+    //if optional onFiledrop attr is used,
+    //emit FileList to parent component and bail
     if (this.onFiledrop) {
       this.$scope.$apply(() => {
         this.onFiledrop({data: files});
@@ -126,12 +134,12 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
     this.commenseUploads(files);
   }
 
-  private commenseUploads(files) {
-    const {oldstack, newstack} = this.setupUploadDisplay(files);
+  private commenseUploads(files, data?) {
+    const {oldstack, newstack} = this.setupUploadDisplay(files, data);
     this.processUploads(oldstack, newstack, files);
   }
 
-  private setupUploadDisplay(files) {
+  private setupUploadDisplay(files, data?) {
     let oldstack = this.uploads.length;
     let newstack = this.uploads.length + files.length;
     this.uploadsinprogress = this.uploadsinprogress + files.length;
@@ -146,7 +154,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
     if (this.containerId) {
       this.uploads = this.uploads.concat(this.awsSvc.uploadContainerFiles(this.containerId, files));
     } else if (this.episodeId) {
-      this.uploads = this.uploads.concat(this.handleTranscripts(this.episodeId, files[0]));
+      this.uploads = this.uploads.concat(data);
     } else {
       this.uploads = this.uploads.concat(this.awsSvc.uploadUserFiles(this.appState.user._id, files));
     }
@@ -261,12 +269,6 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
 
   private static strEndsWith(str, match) {
     return str.substring(str.length - match.length, str.length) === match;
-  }
-
-  private handleTranscripts(episodeId, postData) {
-    let fd = new FormData();
-    fd.append('subtitles', postData);
-    return this.dataSvc.batchUploadTranscripts(episodeId, fd);
   }
 
 }

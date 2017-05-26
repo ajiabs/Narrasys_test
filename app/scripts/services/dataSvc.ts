@@ -70,6 +70,7 @@ export interface IDataSvc {
   prepItemForStorage(evt): any;
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
   readCache(cache, field, val): object | boolean;
+  getTemplates(): any;
 }
 
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
@@ -84,12 +85,18 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   }
   //NEED to find impl with params arg
   svc.batchUploadTranscripts = batchUploadTranscripts;
-  function batchUploadTranscripts(episodeId, formData) {
-
-    return SANE_POST('/v3/episodes/' + episodeId + '/events/import_subtitles', formData, {
+  function batchUploadTranscripts(episodeId, formData, params) {
+    var config = {
       transformRequest: angular.identity,
       headers: {'Content-type': undefined}
-    });
+    };
+
+    if (ittUtils.existy(params) && Object.keys(params).length > 0) {
+      Object.assign(config, {params:params});
+    }
+
+    // return $q(function(resolve){return resolve(formData)});
+    return SANE_POST('/v3/episodes/' + episodeId + '/events/import_subtitles', formData, config);
   }
 
   //used in ittContainer

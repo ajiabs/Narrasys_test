@@ -69,7 +69,7 @@ import ittTooltip from './ittTooltip';
 import ittTranscriptField from './ittTranscriptField';
 import ittTransitionSelect from './ittTransitionSelect';
 import ittTypographySelect from './ittTypographySelect';
-import ittUploadTranscripts from './ittUploadTranscriptsField';
+import {UploadTranscripts} from './ittUploadTranscriptsField';
 import ittUrlField from './ittUrlField';
 import ittUser from './ittUser';
 import ittValidAsset from './ittValidAsset';
@@ -152,7 +152,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittTranscriptField', ittTranscriptField)
   .directive('ittTransitionSelect', ittTransitionSelect)
   .directive('ittTypographySelect', ittTypographySelect)
-  .directive('ittUploadTranscripts', ittUploadTranscripts)
+  .component(UploadTranscripts.Name, new UploadTranscripts())
   .directive('ittUrlField', ittUrlField)
   .directive('ittUser', ittUser)
   .directive('ittValidAsset', ittValidAsset)
