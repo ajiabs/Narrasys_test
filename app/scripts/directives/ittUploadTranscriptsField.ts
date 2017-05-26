@@ -130,7 +130,6 @@ class UploadTranscriptsController implements ng.IComponentController {
 
 }
 
-
 export class UploadTranscripts implements ng.IComponentOptions {
   static Name: string = 'ittUploadTranscripts';
   bindings: any = {
@@ -138,55 +137,4 @@ export class UploadTranscripts implements ng.IComponentOptions {
   };
   template: string = TEMPLATE;
   controller: ng.IComponentController = UploadTranscriptsController;
-}
-
-export function ittUploadTranscripts() {
-  return {
-    restrict: 'EA',
-    template: `
-    `,
-    scope: {
-      episodeId: '@'
-    },
-    controller: ['$scope', 'MIMES', 'modelSvc', 'dataSvc', 'timelineSvc', 'ittUtils',
-      function ($scope, MIMES, modelSvc, dataSvc, timelineSvc, ittUtils) {
-        const ctrl = this;
-        const _existy = ittUtils.existy;
-        const _maxDurParam = 'max_subtitle_duration';
-
-        angular.extend(ctrl, {
-          mimes: MIMES.transcripts,
-          showOptions: false,
-          showUploader: false,
-          selectedParam: 'none',
-          maxDuration: null,
-          commenseUpload,
-          cancelUpload
-        });
-
-        function cancelUpload() {
-          ctrl.showUploader = false;
-          ctrl.showOptions = false;
-        }
-
-        function commenseUpload() {
-          var optionalParams = {};
-          if (ctrl.selectedParam !== 'none') {
-            optionalParams[ctrl.selectedParam] = true;
-          }
-
-          if (_existy(ctrl.maxDuration)) {
-            optionalParams[_maxDurParam] = ctrl.maxDuration;
-          }
-
-          $scope.$broadcast('transcriptsReceived', optionalParams);
-          $scope.$on('transcriptsUploaded', function () {
-            ctrl.showOptions = null;
-            window.location.reload();
-          });
-        }
-      }],
-    controllerAs: '$ctrl',
-    bindToController: true
-  };
 }
