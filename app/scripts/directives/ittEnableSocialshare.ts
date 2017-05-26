@@ -2,6 +2,7 @@
  * Created by githop on 5/26/17.
  */
 import {IimageResize, Partial} from '../interfaces';
+import {SOCIAL_UPLOAD} from './ittAssetUploader';
 /**
  * Created by githop on 5/22/17.
  */
@@ -27,7 +28,7 @@ const TEMPLATE = `
   <itt-asset-uploader
     mimeTypes="image/*"
     on-filedrop="$ctrl.handleImage(data)"
-    file-receive="$ctrl.files">
+    file-receive="$ctrl.uploads">
   </itt-asset-uploader>
 </div>
 `;
@@ -52,10 +53,18 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     square: null,
     wide: null,
   };
-  files: Partial<IImages> = {
+  uploads = {
+    payload: {
+      type: SOCIAL_UPLOAD,
+      square: null,
+      wide: null
+    }
+  };
+  private files = {
     square: {name: '', path: '', file: null},
     wide: {name: '', path: '', file: null}
   };
+
   private type: 'narrative' | 'timeline';
   static $inject = ['imageResize'];
   constructor(private imageResize: IimageResize){
@@ -85,11 +94,18 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
   sendUploads(): void {
     //using a new object will change the ref thus trigger $onChanges in the
     //asset uploader component
-    this.files = {
-      square: this.files.square,
-      wide: this.files.wide
+
+
+    this.uploads = {
+      payload: {
+        type: SOCIAL_UPLOAD,
+        square: this.files.square,
+        wide: this.files.wide
+      }
     };
   }
+
+
 
   checkAspectRatio(file: File) {
     this.editorForm.$setValidity(this.editorForm.$name, false, this.editorForm);

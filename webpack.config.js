@@ -41,7 +41,7 @@ function configWp(env) {
     externals: {
       'angular': 'angular'
     },
-    devtool: env.dev ? 'cheap-module-source-map' : false,
+    devtool: env.dev ? 'eval-source-map' : false,
     module: {
       rules: [
         {
@@ -100,7 +100,14 @@ function configWp(env) {
           ]
         },
         {
-          test: /\.(eot|otf|ttf|woff|woff2)$/,
+          test: /.eot$/,
+          loader: 'file-loader',
+          options: {
+            name: env.prod ? 'font.[hash].[ext]' : '[name].[ext]'
+          }
+        },
+        {
+          test: /\.(otf|ttf|woff|woff2)$/,
           loader: 'url-loader',
           options: {
             limit: 20000,

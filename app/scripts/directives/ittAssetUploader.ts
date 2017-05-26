@@ -1,7 +1,7 @@
 import {IModelSvc, IDataSvc} from '../interfaces';
 
 const TRANSCRIPT_UPLOAD = 'TRANSCRIPT_UPLOAD';
-const SOCIAL_UPLOAD = 'SOCIAL_UPLOAD';
+export const SOCIAL_UPLOAD = 'SOCIAL_UPLOAD';
 
 interface AssetUploaderBindings {
   containerId?: string;
@@ -36,10 +36,9 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
   private droptarget: JQuery;
   private fileinput: JQuery;
   private mimeTypesArr: string[];
-  static $inject = ['$timeout', '$scope', '$element', 'awsSvc', 'appState', 'modelSvc', 'dataSvc'];
+  static $inject = ['$timeout', '$element', 'awsSvc', 'appState', 'modelSvc', 'dataSvc'];
 
   constructor(public $timeout: ng.ITimeoutService,
-              public $scope: ng.IScope,
               public $element,
               public awsSvc,
               public appState,
@@ -87,9 +86,9 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       const { payload } = currentValue;
       if (payload != null) {
         switch (payload.type) {
-          case TRANSCRIPT_UPLOAD:
-            const {promises, files} = payload;
-            this.commenseUploads(files, promises);
+          case SOCIAL_UPLOAD:
+            // const {promises, files} = payload;
+            // this.commenseUploads(files, promises);
             break;
         }
       }
@@ -127,21 +126,19 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
     //if optional onFiledrop attr is used,
     //emit FileList to parent component and bail
     if (this.onFiledrop) {
-      this.$scope.$apply(() => {
-        this.onFiledrop({data: files});
-      });
+      this.onFiledrop({data: files});
       return;
     }
 
     this.commenseUploads(files);
   }
 
-  private commenseUploads(files, data?) {
-    const {oldstack, newstack} = this.setupUploadDisplay(files, data);
+  private commenseUploads(files) {
+    const {oldstack, newstack} = this.setupUploadDisplay(files);
     this.processUploads(oldstack, newstack, files);
   }
 
-  private setupUploadDisplay(files, data?) {
+  private setupUploadDisplay(files) {
     let oldstack = this.uploads.length;
     let newstack = this.uploads.length + files.length;
     this.uploadsinprogress = this.uploadsinprogress + files.length;
@@ -156,7 +153,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
     if (this.containerId) {
       this.uploads = this.uploads.concat(this.awsSvc.uploadContainerFiles(this.containerId, files));
     } else if (this.episodeId) {
-      this.uploads = this.uploads.concat(data);
+      this.uploads = this.uploads.concat(this.handleTranscripts(this.episodeId, files[0]));
     } else {
       this.uploads = this.uploads.concat(this.awsSvc.uploadUserFiles(this.appState.user._id, files));
     }
@@ -264,6 +261,12 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
   private handleDragLeave(e) {
     this.droptarget.removeClass('droppable');
   };
+
+  private handleTranscripts(episodeId, postData) {
+    let fd = new FormData();
+    fd.append('subtitles', postData);
+    return this.dataSvc.batchUploadTranscripts(episodeId, fd);
+  }
 
   private static strStartsWith(str, prefix) {
     return str.indexOf(prefix) === 0;

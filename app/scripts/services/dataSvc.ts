@@ -193,10 +193,13 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       modelSvc.cache('customer', {
         _id: customerId
       });
-      return GET('/v3/customers/' + customerId, function (customer) {
-        modelSvc.cache('customer', customer); // the real thing
-        return modelSvc.customers[customer._id];
-      });
+      return SANE_GET('/v3/customers/' + customerId)
+        .then(customer => {
+
+          modelSvc.cache('customer', customer); // the real thing
+          return modelSvc.customers[customer._id];
+        })
+        .catch(e => console.log('wtf mate?', e));
     }
   };
 
