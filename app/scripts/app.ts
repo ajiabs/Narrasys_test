@@ -14,7 +14,7 @@
  * @requires textAngular
  */
 
-const templates = require.context('../templates', true, /\.html$/);
+const templates = (<any>require).context('../templates', true, /\.html$/);
 
 templates.keys().forEach((path) => {
   templates(path);

@@ -3,8 +3,17 @@
 
  TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
  */
-import { ILangform } from "../interfaces";
 ittEpisodeEditor.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'dataSvc', 'authSvc', 'selectService', 'playbackService', 'urlService'];
+
+export interface ILangform {
+  en: boolean
+  es?: boolean
+  zh?: boolean
+  pt?: boolean
+  fr?: boolean
+  de?: boolean
+  it?: boolean
+}
 
 export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSvc, dataSvc, authSvc, selectService, playbackService, urlService) {
   return {

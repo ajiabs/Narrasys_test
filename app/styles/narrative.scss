@@ -362,5 +362,10 @@ and (max-device-width : 568px) {
   word-wrap: break-word;
 }
 
-
+.social-images {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
 

@@ -36,43 +36,53 @@
 export default function ittNarrativeEditor() {
   return {
     restrict: 'EA',
-    template: [
-      '<div class="narrative__edit">',
-      '<h2>Narrative Settings</h2>',
-      '	<form name="nEditForm">',
-      '		<div ng-show="$ctrl._containerInfo && $ctrl.canAccess">',
-      '			<label for="nCustomer">Customer',
-      '				<itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>',
-      '			</label>',
-      '			<select id="nCustomer" name="customer" required ng-model="$ctrl.selectedCustomer" ng-change="$ctrl.selectCustomer($ctrl.selectedCustomer)" ng-options="cust.name for cust in $ctrl._customers track by cust._id"></select></br>',
-      '		</div>',
-      '   <div ng-if="$ctrl.selectedCustomer && $ctrl._containerInfo == null">',
-      '   <h5>{{$ctrl.selectedCustomer.name}}</h5>',
-      '   </div>',
-      '		<label id="nName">Narrative Title',
-      '			<itt-validation-tip ng-if="nEditForm.name.$invalid" text="Title is required"></itt-validation-tip>',
-      '		</label>',
-      '		<input for="nName" type="text" name="name" placeholder="Add Narrative Title" ng-model="$ctrl._narrative.name.en" required>',
-      '		<label for="nDescription">Description</label>',
-      '		<textarea id="nDescription" name="description" placeholder="Add a Description" ng-model="$ctrl._narrative.description.en"></textarea>',
-      '   <div ng-if="!$ctrl.hidePathSlug"><itt-guest-accessible-url narrative="$ctrl._narrative" sub-domain="{{$ctrl.selectedCustomer.domains[0]}}" customer="$ctrl.selectedCustomer"></itt-guest-accessible-url></div>',
-      '		<label for="nSupportUrl">Support Url',
-      '			<itt-validation-tip ng-if="nEditForm.supportUrl.$invalid" text="Not a valid URL"></itt-validation-tip>',
-      '		</label>',
-      '		<input id="nSupportUrl" type="text" name="supportUrl" itt-valid-url placeholder="link for support" ng-model="$ctrl._narrative.support_url"/>',
-      '		<label for="nNewWindow">Disable New Window</label>',
-      '		<input id="nNewWindow" type="checkbox" ng-model="$ctrl._narrative.disable_new_window"/> | ',
-      '		<label for="nDisableNav">Disable Navigation</label>',
-      '		<input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/> | ',
-      '		<label for="nGuestAccess">Enable Guest Access</label>',
-      '		<input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/>',
-      '		<div class="ancillaryNav">',
-      '			<button class="done" ng-click="$ctrl.handleUpdate($ctrl._narrative)" ng-disabled="nEditForm.$invalid || $ctrl._narrative.error">Save</button>',
-      '			<button class="done" ng-click="$ctrl.onDone({$event: $event})">Cancel</button>',
-      '		</div>',
-      '	</form>',
-      '</div>'
-    ].join(' '),
+    template: `
+<div class="narrative__edit">
+  <h2>Narrative Settings</h2>
+  <form name="nEditForm">
+    <div ng-show="$ctrl._containerInfo && $ctrl.canAccess">
+      <label for="nCustomer">Customer
+        <itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>
+      </label>
+      <select id="nCustomer" name="customer" required ng-model="$ctrl.selectedCustomer"
+              ng-change="$ctrl.selectCustomer($ctrl.selectedCustomer)"
+              ng-options="cust.name for cust in $ctrl._customers track by cust._id"></select></br>
+    </div>
+    <div ng-if="$ctrl.selectedCustomer && $ctrl._containerInfo == null">
+      <h5>{{$ctrl.selectedCustomer.name}}</h5>
+    </div>
+    <label id="nName">Narrative Title
+      <itt-validation-tip ng-if="nEditForm.name.$invalid" text="Title is required"></itt-validation-tip>
+    </label>
+    <input for="nName" type="text" name="name" placeholder="Add Narrative Title"
+           ng-model="$ctrl._narrative.name.en" required>
+    <label for="nDescription">Description</label>
+    <textarea id="nDescription" name="description" placeholder="Add a Description"
+              ng-model="$ctrl._narrative.description.en"></textarea>
+    <div ng-if="!$ctrl.hidePathSlug">
+      <itt-guest-accessible-url narrative="$ctrl._narrative" sub-domain="{{$ctrl.selectedCustomer.domains[0]}}"
+                                customer="$ctrl.selectedCustomer"></itt-guest-accessible-url>
+    </div>
+    <label for="nSupportUrl">Support Url
+      <itt-validation-tip ng-if="nEditForm.supportUrl.$invalid" text="Not a valid URL"></itt-validation-tip>
+    </label>
+    <input id="nSupportUrl" type="text" name="supportUrl" itt-valid-url placeholder="link for support"
+           ng-model="$ctrl._narrative.support_url"/>
+    <label for="nNewWindow">Disable New Window</label>
+    <input id="nNewWindow" type="checkbox" ng-model="$ctrl._narrative.disable_new_window"/> |
+    <label for="nDisableNav">Disable Navigation</label>
+    <input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/> |
+    <label for="nGuestAccess">Enable Guest Access</label>
+    <input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/> |
+    <itt-enable-socialshare narrative="$ctrl._narrative" editor-form="nEditForm"></itt-enable-socialshare>
+    <div class="ancillaryNav">
+      <button class="done" ng-click="$ctrl.handleUpdate($ctrl._narrative)"
+              ng-disabled="nEditForm.$invalid || $ctrl._narrative.error">Save
+      </button>
+      <button class="done" ng-click="$ctrl.onDone({$event: $event})">Cancel</button>
+    </div>
+  </form>
+</div>`,
     scope: {
       narrative: '=?',
       customers: '=',
@@ -121,6 +131,7 @@ export default function ittNarrativeEditor() {
           'description',
           'customer_id',
           'guest_access_allowed',
+          'enable_social_sharing',
           'path_slug',
           'support_url',
           'disable_navigation',

@@ -7,7 +7,8 @@ import 'angular';
 
 import autofocus from './autofocus';
 import ittAnnotationField from './ittAnnotationField';
-import ittAssetUploader from './ittAssetUploader';
+// import ittAssetUploader from './ittAssetUploader';
+import {AssetUploader} from './ittAssetUploader';
 import ittClipboard from './ittClipboard';
 import ittColorSelect from './ittColorSelect';
 import ittContainer from './ittContainer';
@@ -86,10 +87,13 @@ import sxsAnnotatorAutocomplete from './sxsAnnotatorAutocomplete';
 import sxsContainerAssets from './sxsContainerAssets';
 import sxsInputI18n from './sxsInputI18n';
 import sxsInputTime from './sxsInputTime';
+import {IttSocialShare} from './ittSocialShare';
+import {EnableSocialshare} from './ittEnableSocialshare';
+
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
-  .directive('ittAssetUploader', ittAssetUploader)
+  .component(AssetUploader.Name, new AssetUploader())
   .directive('ittClipboard', ittClipboard)
   .directive('ittColorSelect', ittColorSelect)
   .directive('ittContainer', ittContainer)
@@ -169,6 +173,8 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('sxsContainerAssets', sxsContainerAssets)
   .directive('sxsInputI18n', sxsInputI18n)
   .directive('sxsInputTime', sxsInputTime)
-  .directive('autofocus', autofocus);
+  .directive('autofocus', autofocus)
+  .component(IttSocialShare.Name, new IttSocialShare())
+  .component(EnableSocialshare.Name, new EnableSocialshare());
 
 export default directivesModule;

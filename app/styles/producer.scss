@@ -432,6 +432,26 @@ input[readonly] {
 	content: "\e600";
 }
 
+.button-facebook:before,
+.eventIcon.icon-comment:before {
+  content: '\e917';
+}
+
+.button-twitter:before,
+.eventIcon.icon-comment:before {
+  content: '\e918';
+}
+
+.button-linkedin:before,
+.eventIcon.icon-comment:before {
+  content: '\e916';
+}
+
+.button-google:before,
+.eventIcon.icon-comment:before {
+  content: '\e919';
+}
+
 .button-link:before,
 .eventIcon.icon-link:before {
 	content: "\e604";

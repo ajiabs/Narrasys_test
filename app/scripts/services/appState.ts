@@ -7,7 +7,6 @@
  */
 
 const noAvatarImg = require('../../images/no-avatar.gif');
-
 /**
  * @ngdoc service
  * @name iTT.service:appState
@@ -49,87 +48,121 @@ const noAvatarImg = require('../../images/no-avatar.gif');
  * @property {Object} editEpisode Episode currently being edited by user. yes I did kind of paint myself into a corner here
  * @property {Object} lang set to false so the episode default knows when to override it
  */
-appState.$inject = ['$interval', 'config'];
+// appState.$inject = ['$interval', 'config'];
 
-export default function appState($interval, config) {
+const INITIAL_APP_STATE = {
+  user: {}, // whatever authSvc gets back from getAccessToken
+  episodeId: false, // ID of current episode
+  episodeSegmentId: false, // ID of current episode segment (only relevant in narratives)
+  narrativeId: false, // also only relevant in narratives
+  timelineId: false, // ditto
+  isFramed: (window.parent != window), // are we inside an iframe?  Don't use !== because IE8 gets it wrong
+  isTouchDevice: (/iPad|iPod|iPhone/.test(navigator.platform) || /Android/.test(navigator.userAgent)),
+  isIEOrEdge: (/Trident|Edge/.test(navigator.userAgent) || /Trident|Edge/.test(navigator.platform)),
+  isIPhone: (navigator.platform.match(/iPod|iPhone/)), // iPhone has weird video handling, see  timelineSvc
+  iOSVersion: '',
+  noAvatarImg: noAvatarImg,
+  windowWidth: 0,
+  windowHeight: 0,
+  viewMode: ($(window).width() > 480) ? 'discover' : 'review', // default view mode
+  producerEditLayer: 0, // a bit hacky, this.  Only has an effect in producer in discover mode, 0 is default, -1 is background layers only, 1 is foreground layers only
+  hideCaptions: false, // visibility of "closed captions" in watch mode
+  show: {
+    searchPanel: false,
+    // helpPanel: false,
+    navPanel: false
+  },
+  videoControlsActive: false, // whether bottom toolbar is visible
+  videoControlsLocked: false, // force bottom toolbar to stay in its current visible/hidden state
+  itemDetail: false, // Put item data here to show it as a modal overlay
+  autoscroll: false, //scroll window to make current items visible (in relevant modes)
+  autoscrollBlocked: false, // User has disabled autoscroll
+  crossEpisodePath: '',
+  product: '',
+  productLoadedAs: '', // same as product but only set on initial load, this lets producer toggle back to player preview temporarily
+  editEvent: false, // Scene or item currently being edited by user
+  editEpisode: false, // Episode currently being edited by user. yes I did kind of paint myself into a corner here
+// svc.youtubeIsReady: false, // Set to true when youtube API finishes loading.  DO NOT set this to false on init, otherwise navigating from episode to episode breaks (we reinit on new episode but that won't trigger youtube's ready event)
+  lang: false, // set to false
+};
 
-  var svc = {};
+export class AppState {
+  static $inject = ['$interval', 'config'];
+  user;
+  episodeId;
+  episodeSegmentId;
+  narrativeId;
+  timelineId;
+  isFramed;
+  isTouchDevice;
+  isIEOrEdge;
+  isIPhone;
+  iOSVersion;
+  noAvatarImg;
+  windowWidth;
+  windowHeight;
+  viewMode;
+  producerEditLayer;
+  volume;
+  muted;
+  hideCaptions;
+  show;
+  videoControlsActive;
+  videoControlsLocked;
+  itemDetail;
+  autoscroll;
+  autoscrollBlocked;
+  crossEpisodePath;
+  product: 'player' | 'sxs' | 'producer';
+  productLoadedAs;
+  editEvent;
+  editEpisode;
+  lang;
 
-  svc.init = function () {
-    svc.user = svc.user || {}; // whatever authSvc gets back from getAccessToken
-    svc.episodeId = false; // ID of current episode
-    svc.episodeSegmentId = false; // ID of current episode segment (only relevant in narratives)
-    svc.narrativeId = false; // also only relevant in narratives
-    svc.timelineId = false; // ditto
-    /* jshint -W116 */
-    svc.isFramed = (window.parent != window); // are we inside an iframe?  Don't use !== because IE8 gets it wrong
-    /* jshint +W116 */
-
-    // sniff sniff
-    svc.isTouchDevice = (/iPad|iPod|iPhone/.test(navigator.platform) || /Android/.test(navigator.userAgent));
-    svc.isIEOrEdge = (/Trident|Edge/.test(navigator.userAgent) || /Trident|Edge/.test(navigator.platform));
-    svc.isIPhone = (navigator.platform.match(/iPod|iPhone/)); // iPhone has weird video handling, see  timelineSvc
-    svc.iOSVersion = getIOSVersion(navigator);
-    svc.noAvatarImg = noAvatarImg;
-    svc.windowWidth = 0;
-    svc.windowHeight = 0;
-
-    svc.viewMode = ($(window).width() > 480) ? 'discover' : 'review'; // default view mode
-    svc.producerEditLayer = 0; // a bit hacky, this.  Only has an effect in producer in discover mode; 0 is default, -1 is background layers only, 1 is foreground layers only
-
-    svc.time = 0; // current playhead position (in seconds) relative to timeline NOT TO EPISODE!
-    svc.bufferedPercent = 0; // portion of video that has been buffered (as pct instead of time because that's how youtube reports it, and that's what we end up displaying anyway)
-    svc.timeMultiplier = 1; // sets player speed (0.5 = half speed; 2=double;etc)
-    svc.duration = 0; // duration of timeline (in seconds)
-    svc.timelineState = 'paused'; // "playing", "paused", or "buffering" (set by timelineSvc). Future = "locked" (by stop question or etc)
-    svc.hasBeenPlayed = false; // set to true after first time the video plays (used so we can interrupt that first play with a helpful help)
-    svc.volume = 100; // Audio for main video
-    svc.muted = false; // audio for main video
-    svc.hideCaptions = false; // visibility of "closed captions" in watch mode
-    svc.show = {
-      searchPanel: false,
-      // helpPanel: false,
-      navPanel: false
-    };
-    svc.videoControlsActive = false; // whether bottom toolbar is visible
-    svc.videoControlsLocked = false; // force bottom toolbar to stay in its current visible/hidden state
-    svc.itemDetail = false; // Put item data here to show it as a modal overlay
-    svc.autoscroll = false; //scroll window to make current items visible (in relevant modes)
-    svc.autoscrollBlocked = false; // User has disabled autoscroll
-
-    svc.product = svc.product; // "player", "sxs", or "producer"
-    svc.productLoadedAs = svc.productLoadedAs; // same as product but only set on initial load, this lets producer toggle back to player preview temporarily
-    if (svc.product === 'sxs' || svc.product === 'producer') {
-      svc.crossEpisodePath = svc.product;
-    } else {
-      svc.crossEpisodePath = "episode"; // yeah, that was kind of a dumb decision to switch from episode to "player"
-    }
-
-    svc.editEvent = false; // Scene or item currently being edited by user
-    svc.editEpisode = false; // Episode currently being edited by user. yes I did kind of paint myself into a corner here
-    // svc.youtubeIsReady = false; // Set to true when youtube API finishes loading.  DO NOT set this to false on init, otherwise navigating from episode to episode breaks (we reinit on new episode but that won't trigger youtube's ready event)
-    svc.lang = false; // set to false so the episode default knows when to override it
-  };
-  svc.init();
-
-  function getIOSVersion(navigator) {
-    var iOSDeviceRe = /iP(hone|od|ad)/;
-    var versionRe = /OS (\d+)_(\d+)_?(\d+)?/;
+  static getIOSVersion(navigator): number[] | void {
+    const iOSDeviceRe = /iP(hone|od|ad)/;
+    const versionRe = /OS (\d+)_(\d+)_?(\d+)?/;
     if (iOSDeviceRe.test(navigator.platform) || iOSDeviceRe.test(navigator.userAgent)) {
-      var v = (navigator.appVersion).match(versionRe);
+      const v = (navigator.appVersion).match(versionRe);
       return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
     }
   }
 
-  // workaround for iOS crasher (can't bind to window.resize when inside an iframe)
-  $interval(function () {
-    svc.windowHeight = angular.element(window).height();
-    svc.windowWidth = angular.element(window).width();
-  }, 50, 0, false);
-
-  if (config.debugInBrowser) {
-    console.log("appState:", svc);
+  constructor(private $interval, private config) {
+    this.initService();
   }
 
-  return svc;
+  init() {
+    let crossEpisodePath;
+    if (this.product === 'sxs' || this.product === 'producer') {
+      crossEpisodePath = this.product;
+    } else {
+      crossEpisodePath = "episode"; // yeah, that was kind of a dumb decision to switch from episode to "player"
+    }
+    const overrides = {
+      iOSVersion: AppState.getIOSVersion(navigator),
+      crossEpisodePath,
+      product: this.product,
+      productLoadedAs: this.productLoadedAs,
+      user: this.user || {}
+    };
+
+    Object.assign(this, INITIAL_APP_STATE, overrides);
+  }
+
+  initService() {
+    this.init();
+    this.watchWidth();
+  }
+
+  watchWidth() {
+    this.$interval(() => {
+      this.windowHeight = angular.element(window).height();
+      this.windowWidth = angular.element(window).width();
+    }, 50, 0, false);
+
+    if (this.config.debugInBrowser) {
+      console.log('appState:', this);
+    }
+  }
 }

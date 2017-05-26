@@ -1,5 +1,7 @@
 import {IDataSvc} from './services/dataSvc';
 import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
+import {IModelSvc} from './services/modelSvc';
+import {IimageResize} from './services/imageResizeSvc';
 import {TUrlFieldContexts} from './directives/ittUrlField';
 /**
  * Created by githop on 4/11/17.
@@ -48,5 +50,4 @@ export interface ILinkValidFields {
   error: ILinkValidationMessage | null;
 }
 
-
-export {IDataSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts};
+export {IDataSvc, IimageResize, IModelSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts};

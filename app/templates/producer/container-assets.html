@@ -49,5 +49,5 @@
 		</table>
 	</div>
 	<br>
-	<div ng-if="canAccess" itt-asset-uploader="container._id" mime-types="{{mimes}}" multiple></div>
+  <itt-asset-uploader container-id="{{container._id}}" mime-types="{{mimes}}" multiple="true" ng-if="canAccess"></itt-asset-uploader>
 </div>

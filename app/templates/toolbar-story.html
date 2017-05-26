@@ -46,6 +46,14 @@
 		<label for="searchtext" class="hidden">Search Text</label>
 		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="appState.searchText" ng-model-options="{ debounce: 200 }" />
 	</div>
+  <div class="nav-item socialshare social-buttongroup">
+    <itt-social-share
+      ng-if="socialShareInfo"
+      subdomain="{{socialShareInfo.subDomain}}"
+      paths="{narrative: socialShareInfo.narrative, timeline: socialShareInfo.timeline}"
+      providers="['twitter', 'facebook', 'google', 'email', 'linkedin']">
+    </itt-social-share>
+  </div>
 	<!-- for now, hide user panel in regular player. TODO maybe show it for non-guest users here? -->
 	<div class="nav-item profilegroup buttongroup">
 		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && (userHasRole('admin') || userHasRole('customer admin'))" ng-click="toggleProducerPreview()">

@@ -1,8 +1,9 @@
 //TODO Some of this could be split into separate controllers (though that may not confer any advantage other than keeping this file small...)
 
+import {IModelSvc, IDataSvc} from '../interfaces';
 PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams', '$timeout', '$interval', 'config', 'appState', 'dataSvc', 'modelSvc', 'timelineSvc', 'analyticsSvc', 'authSvc', 'selectService', 'playbackService'];
 
-export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc, modelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService) {
+export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService) {
   // console.log("playerController", $scope);
 
   //set to true to enable debug info on api-dev
@@ -170,7 +171,27 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
         appState.productLoadedAs = 'player';
       }
 
-    });
+    })
+    //assume episode / narrative has been resolved by now...
+      .then(_ => {
+        if ($routeParams.narrativePath != null) {
+          let {subDomain, customer_id} = modelSvc.getNarrativeByPathOrId($scope.narrativeId);
+          // dataSvc#getCustomer should only hit the API if the episode is not already in cache.
+          dataSvc.getCustomer(customer_id, true)
+            .then(customer => {
+              if (subDomain == null) {
+                //need to assoc narrative with customer object to set subdomain
+                subDomain = customer.domains[0];
+              }
+              $scope.socialShareInfo = {
+                subDomain,
+                narrative: $routeParams.narrativePath,
+                timeline: $routeParams.timelinePath
+              };
+            })
+        }
+
+      });
   });
 
   if (modelSvc.episodes[appState.episodeId]) {

@@ -5,7 +5,7 @@
 import 'angular';
 
 import analyticsSvc from './analyticsSvc';
-import appState from './appState';
+import {AppState} from './appState';
 import authSvc from './authSvc';
 import awsSvc from './awsSvc';
 import config from './config';
@@ -33,7 +33,7 @@ import youtubeUrlService from './youtube/youtubeUrlService';
 import {ValidationService} from './validation.svc';
 
 let servicesModule = angular.module('itt.services', [])
-  .factory('appState', appState)
+  .service('appState', AppState)
   .factory('authSvc', authSvc)
   .factory('awsSvc', awsSvc)
   .factory('config', config)
