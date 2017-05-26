@@ -4,6 +4,7 @@ import {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
 import {IWistiaMetaProps, IWistiaPlayerManager} from './services/wistia/wistiaPlayerManager';
 import {IDataSvc} from './services/dataSvc';
 import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
+import {TUrlFieldContexts} from './directives/ittUrlField';
 /**
  * Created by githop on 4/11/17.
  */
@@ -23,7 +24,7 @@ export interface IScriptLoader {
 
 export type Partial<T> = {
   [P in keyof T]?: T[P];
-}
+};
 
 export interface ILinkValidationMessage {
   showInfo?: boolean;
@@ -114,5 +115,6 @@ export {
   IWistiaPlayerManager,
   IWistiaMetaProps,
   IWistiaUrlservice,
-  IXFrameOptsResult
+  IXFrameOptsResult,
+  TUrlFieldContexts
 };

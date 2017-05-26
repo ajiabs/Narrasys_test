@@ -1,14 +1,5 @@
 <span class="eventIcon icon-link"></span>
-<div class="field">
-	<div class="label">Title
-	</div>
-	<div class="input">
-		<input type="text" ng-model="item.title.en" autofocus>
-	</div>
-</div>
-<itt-url-field data="item"></itt-url-field>
-<div class="field">
-	<div class="label">Description
-	</div>
-	<div class="input" sxs-input-i18n="item.description" x-inputtype="'textarea'"></div>
-</div>
+<itt-title-field do-validate="false" data="item" itt-item-form="ittItemForm"></itt-title-field>
+<itt-url-field data="item" context="editor" itt-item-form="ittItemForm"></itt-url-field>
+<itt-description-field data="item"></itt-description-field>
+

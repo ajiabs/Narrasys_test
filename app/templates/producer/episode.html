@@ -27,7 +27,7 @@
             label="Video URL"
             ng-if="masterAssetType === 'WebUrl'"
             data="::masterAsset.mediaSrcArr[0]"
-            video-only="true"
+            context="episode"
             on-attach="attachMediaSrc($url)">
           </itt-url-field>
 
