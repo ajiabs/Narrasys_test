@@ -34,10 +34,9 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
   private droptarget: JQuery;
   private fileinput: JQuery;
   private mimeTypesArr: string[];
-  static $inject = ['$timeout', '$scope', '$element', 'awsSvc', 'appState', 'modelSvc', 'dataSvc'];
+  static $inject = ['$timeout', '$element', 'awsSvc', 'appState', 'modelSvc', 'dataSvc'];
 
   constructor(public $timeout: ng.ITimeoutService,
-              public $scope: ng.IScope,
               public $element,
               public awsSvc,
               public appState,
@@ -125,9 +124,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
     //if optional onFiledrop attr is used,
     //emit FileList to parent component and bail
     if (this.onFiledrop) {
-      this.$scope.$apply(() => {
-        this.onFiledrop({data: files});
-      });
+      this.onFiledrop({data: files});
       return;
     }
 
