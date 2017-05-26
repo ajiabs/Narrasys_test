@@ -36,7 +36,7 @@ export interface IDataSvc {
   getCustomerLinkStatusReportSpreadsheet(customerId): void;
   getUserNarratives(userId): ng.IPromise<{}>;
   getCustomerList(): any;
-  getCustomer(customerId, retrieve): ng.IPromise<{}>;
+  getCustomer(customerId: string, retrieve: boolean): ng.IPromise<any>;
   getEpisode(epId, segmentId): void;
   getEpisodeOverview(epId): ng.IPromise<{}>;
   getNarrativeList(customer): ng.IPromise<{}>;
@@ -74,7 +74,7 @@ export interface IDataSvc {
 
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
 export default function dataSvc($q, $http, $routeParams, $rootScope, $location, ittUtils, config, authSvc, appState, modelSvc, errorSvc, mockSvc, questionAnswersSvc) {
-  var svc = {};
+  var svc: IDataSvc = Object.create(null);
 
   /* ------------------------------------------------------------------------------ */
 
@@ -82,7 +82,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   function beginBackgroundTranslations(episodeId) {
     return SANE_GET('/v3/episodes/' + episodeId + '/update_translations');
   }
-
+  //NEED to find impl with params arg
   svc.batchUploadTranscripts = batchUploadTranscripts;
   function batchUploadTranscripts(episodeId, formData) {
 

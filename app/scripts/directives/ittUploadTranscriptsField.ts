@@ -10,7 +10,7 @@ export default function ittUploadTranscripts() {
       	<div class="label">Batch Upload Transcripts
       	</div>
       	<div class="input">
-      		<div itt-asset-uploader episode-id="{{$ctrl.episodeId}}" mime-types="{{$ctrl.mimes}}" callback="$ctrl.handleTranscripts(data)"></div>
+      		<itt-asset-uploader episode-id="{{$ctrl.episodeId}}" mime-types="{{$ctrl.mimes}}" callback="$ctrl.handleTranscripts(data)"></itt-asset-uploader>
       	</div>
       </div>`,
     scope: {

@@ -16,7 +16,7 @@
 	</div>
 	<div ng-if="showUploadButtonsMaster || !(masterAsset.original_filename)">
 		<span ng-if="showUploadFieldMaster">
-			<div itt-asset-uploader="episodeContainerId" callback="assetUploaded(data)"> </div>
+      <itt-asset-uploader container-id="{{episodeContainerId}}" callback="assetUploaded(data)"></itt-asset-uploader>
 		</span>
 		<span ng-if="!showUploadFieldMaster">
 			<button class="button" ng-click="chooseAsset('Master')">Browse uploaded assets</button>

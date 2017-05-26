@@ -7,7 +7,8 @@ import 'angular';
 
 import autofocus from './autofocus';
 import ittAnnotationField from './ittAnnotationField';
-import ittAssetUploader from './ittAssetUploader';
+// import ittAssetUploader from './ittAssetUploader';
+import {AssetUploader} from './ittAssetUploader';
 import ittClipboard from './ittClipboard';
 import ittColorSelect from './ittColorSelect';
 import ittContainer from './ittContainer';
@@ -89,7 +90,7 @@ import sxsInputTime from './sxsInputTime';
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
-  .directive('ittAssetUploader', ittAssetUploader)
+  .component(AssetUploader.Name, new AssetUploader())
   .directive('ittClipboard', ittClipboard)
   .directive('ittColorSelect', ittColorSelect)
   .directive('ittContainer', ittContainer)

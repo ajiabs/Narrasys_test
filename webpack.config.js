@@ -41,7 +41,7 @@ function configWp(env) {
     externals: {
       'angular': 'angular'
     },
-    devtool: env.dev ? 'eval' : false,
+    devtool: env.dev ? 'cheap-module-source-map' : false,
     module: {
       rules: [
         {
@@ -103,7 +103,7 @@ function configWp(env) {
           test: /\.(eot|otf|ttf|woff|woff2)$/,
           loader: 'url-loader',
           options: {
-            limit: 1000,
+            limit: 20000,
             name: env.prod ? 'font.[hash].[ext]' : '[name].[ext]'
           }
         },
