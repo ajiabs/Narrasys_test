@@ -32,6 +32,7 @@ import 'rangy'
 import 'rangy/lib/rangy-selectionsaverestore'
 import 'textAngular/dist/textAngular-sanitize.min';
 import 'textAngular/dist/textAngular.min';
+import 'angular-socialshare';
 //end text angular
 import '../config';
 
@@ -46,6 +47,7 @@ let itt = angular.module('iTT', [
   'ngSanitize',
   'textAngular',
   'ui.tree',
+  '720kb.socialshare',
   'itt.controllers',
   'itt.filters',
   'itt.services',
@@ -58,6 +60,7 @@ let itt = angular.module('iTT', [
     'default': 'image/*',
     'transcripts': 'text/vtt,text/srt'
   })
+  //TODO merge constants below into playbackservice/index as exports
   .constant('PLAYERSTATES', {
     '-1': 'unstarted',
     '0': 'ended',
