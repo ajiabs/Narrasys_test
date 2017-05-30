@@ -203,6 +203,10 @@ and (max-device-width : 568px) {
   content: "\e90d";
 }
 
+.button__clipboard--light:before {
+  content: '\e90c';
+}
+
 .button__add-inverted:before  {
   content: '\e90e';
 }

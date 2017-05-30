@@ -175,7 +175,7 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
     //assume episode / narrative has been resolved by now...
       .then(_ => {
         if ($routeParams.narrativePath != null) {
-          let {subDomain, customer_id} = modelSvc.getNarrativeByPathOrId($scope.narrativeId);
+          let {subDomain, customer_id} = modelSvc.getNarrativeByPathOrId($routeParams.narrativePath);
           // dataSvc#getCustomer should only hit the API if the episode is not already in cache.
           dataSvc.getCustomer(customer_id, true)
             .then(customer => {

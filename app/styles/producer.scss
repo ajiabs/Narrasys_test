@@ -452,6 +452,21 @@ input[readonly] {
   content: '\e919';
 }
 
+.button-reddit:before,
+.eventIcon.icon-comment:before {
+  content: '\e91d';
+}
+
+.button-email:before,
+.eventIcon.icon-comment:before {
+  content: '\e91a';
+}
+
+.button-share:before,
+.eventIcon.icon-comment:before {
+  content: '\e915';
+}
+
 .button-link:before,
 .eventIcon.icon-link:before {
 	content: "\e604";
@@ -485,6 +500,11 @@ input[readonly] {
 .button-episode:before,
 .eventIcon.icon-episode:before {
 	content: "\e610";
+}
+
+.button-text-copied:before,
+.eventIcon.icon-episode:before {
+  content: '\e91c';
 }
 
 .searchMode .sxs-item {

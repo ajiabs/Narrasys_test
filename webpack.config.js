@@ -41,7 +41,7 @@ function configWp(env) {
     externals: {
       'angular': 'angular'
     },
-    devtool: env.dev ? 'eval-source-map' : false,
+    devtool: env.dev ? 'eval' : false,
     module: {
       rules: [
         {
