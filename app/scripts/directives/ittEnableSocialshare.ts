@@ -37,6 +37,7 @@ interface EnableSocialShareBindings {
   narrative: any;
   editorForm: ng.IFormController;
   timeline?: any;
+  containerId?: string
 }
 
 interface IImages {
@@ -95,7 +96,6 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     //using a new object will change the ref thus trigger $onChanges in the
     //asset uploader component
 
-
     this.uploads = {
       payload: {
         type: SOCIAL_UPLOAD,
@@ -105,24 +105,21 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     };
   }
 
-
-
   checkAspectRatio(file: File) {
     this.editorForm.$setValidity(this.editorForm.$name, false, this.editorForm);
     return this.imageResize.readFileToImg(file)
       .then((img: HTMLImageElement) => {
         const tag = this.imageResize.getImageTagType(img.width, img.height);
-        const images = {[tag]: {name: file.name, path: img.src } };
+        const images = { [tag]: {name: file.name, path: img.src } };
         return {images, tag};
       });
   }
-
-
 }
 
 export class EnableSocialshare implements ng.IComponentOptions {
   static Name: string = 'ittEnableSocialshare';
   bindings: any = {
+    containerId: '@?',
     narrative: '=',
     editorForm: '=',
     timeline: '=?'

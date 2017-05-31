@@ -175,7 +175,14 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
     //assume episode / narrative has been resolved by now...
       .then(_ => {
         if ($routeParams.narrativePath != null) {
-          let {subDomain, customer_id} = modelSvc.getNarrativeByPathOrId($routeParams.narrativePath);
+          let narrativePath = $routeParams.narrativePath;
+          let tlPath = $routeParams.timelinePath;
+          let narrative = modelSvc.getNarrativeByPathOrId(narrativePath);
+          let timeline = narrative.timelines.filter((tl: any) => tl._id === tlPath || tl.path_slug.en === tlPath)[0];
+          let narrativeUrl = narrative.path_slug.en;
+          let timelineUrl = timeline.path_slug.en;
+
+          let {subDomain, customer_id} = narrative;
           // dataSvc#getCustomer should only hit the API if the episode is not already in cache.
           dataSvc.getCustomer(customer_id, true)
             .then(customer => {
@@ -185,8 +192,8 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
               }
               $scope.socialShareInfo = {
                 subDomain,
-                narrative: $routeParams.narrativePath,
-                timeline: $routeParams.timelinePath
+                narrative: narrativeUrl,
+                timeline: timelineUrl
               };
             })
         }

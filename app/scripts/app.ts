@@ -264,7 +264,7 @@ function routerConfig($routeProvider) {
         '<div class="standaloneAncillaryPage">',
         '	<itt-nav on-logout="logout()"></itt-nav>',
         '	<div>',
-        '		<div sxs-container-assets="containerId" mime-key="assetLib"></div>',
+        '		<sxs-container-assets container-id="{{containerId}}" mime-key="assetLib"></sxs-container-assets>',
         '	</div>',
         '</div>'].join(''),
       resolve: {

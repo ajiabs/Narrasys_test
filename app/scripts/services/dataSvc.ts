@@ -55,8 +55,8 @@ export interface IDataSvc {
   getAssetsByAssetIds(assetIds, callback): ng.IPromise<{}>;
   getContainerAncestry(containerId, episodeId, defer): ng.IPromise<{}>;
   getContainerRoot(): string[];
-  getContainer(id, episodeId): ng.IPromise<{}>;
-  getContainerAssets(containerId, episodeId): ng.IPromise<{}>;
+  getContainer(id, episodeId?): ng.IPromise<{}>;
+  getContainerAssets(containerId, episodeId?): ng.IPromise<{}>;
   createContainer(container): ng.IPromise<{}>;
   updateContainer(container): ng.IPromise<{}>;
   deleteContainer(containerId): ng.IPromise<{}>;
@@ -819,7 +819,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     });
   };
 
-  svc.getContainer = function (id, episodeId) {
+  svc.getContainer = function (id, episodeId?) {
     return GET('/v3/containers/' + id, function (containers) {
       modelSvc.cache('container', containers[0]);
       var container = modelSvc.containers[containers[0]._id];
@@ -867,7 +867,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   };
 
-  svc.getContainerAssets = function (containerId, episodeId) {
+  svc.getContainerAssets = function (containerId, episodeId?) {
     return $http.get(config.apiDataBaseUrl + '/v1/containers/' + containerId + '/assets')
       .success(function (containerAssets) {
         modelSvc.containers[containerId].assetsHaveLoaded = true;
