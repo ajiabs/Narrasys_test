@@ -3,55 +3,43 @@
  */
 import {IimageResize, Partial} from '../interfaces';
 import {SOCIAL_UPLOAD} from './ittAssetUploader';
+import {IDataSvc} from '../services/dataSvc';
+import {IModelSvc} from '../services/modelSvc';
+import {createInstance, IAsset} from '../models';
 /**
  * Created by githop on 5/22/17.
  */
 
 const TEMPLATE = `
 <div>
-  <button ng-if="!$ctrl[$ctrl.type].enable_social_sharing" ng-click="$ctrl.enableSocialSharing()">Enable social share
-  </button>
+  <button ng-if="!$ctrl.editSocialshare" ng-click="$ctrl.toggleEditsocialshare()">Social share settings</button>
 </div>
-<div ng-if="$ctrl[$ctrl.type].enable_social_sharing">
+
+<div ng-if="$ctrl.editSocialshare">
+  <label for="socialshare-checkbox">Enable Socialshare</label>
+  <input id="socialshare-checkbox" type="checkbox" ng-model="$ctrl[$ctrl.type].enable_social_sharing"/>
+</div>
+
+<div ng-if="$ctrl[$ctrl.type].enable_social_sharing && $ctrl.editSocialshare">
 
   <div class="controls" ng-if="!$ctrl.selection">
     <button ng-click="$ctrl.setSelection('uploadNew')">upload new</button>
     <button ng-click="$ctrl.setSelection('browseUploaded')">browse uploaded</button>
+    <itt-social-images images="$ctrl.images"></itt-social-images>
   </div>
   <!--browse uploaded-->
   <itt-modal modal-class="narrative__modal" ng-if="$ctrl.selection === 'browseUploaded'" class="brows-uploaded">
     <div class="scrollContainer">
-      <sxs-container-assets container-id="{{$ctrl.containerId}}"></sxs-container-assets>
+      <sxs-container-assets container-id="{{$ctrl.containerId}}" context="narrative"></sxs-container-assets>
     </div>
     <div class="controlsContainer">
-      <button>Cancel</button>
+      <button ng-click="$ctrl.setSelection(null)">Cancel</button>
     </div>
   </itt-modal>
   <!--upload new-->
   <div ng-if="$ctrl.selection === 'uploadNew'" class="upload-new">
-    <div class="social-images__required-tags">
-      <itt-validation-tip text="One 'square' and one 'wide' image required"></itt-validation-tip>
-      tags: 
-      <span
-        class="button social-images--tag"
-        ng-class="val.file != null ? 'set' : 'unset'"
-        ng-repeat="(type, val) in $ctrl.files">
-          {{type}}
-        </span>
-        
-        <button
-          ng-click="$ctrl.sendUploads()"
-          ng-if="$ctrl.images.square.path && $ctrl.images.wide.path">Upload images
-        </button>
-    </div>
-    <div class="social-images">
-      <div class="social-images__img" ng-repeat="(imgType, imgPath) in $ctrl.images">
-       <span ng-if="imgPath.path.length > 0">
-        <img width="95px" ng-src="{{imgPath.path}}"/>
-       </span>
-      </div>
-    </div>
 
+    <itt-social-images images="$ctrl.images"></itt-social-images>
     <itt-asset-uploader
       container-id="{{$ctrl.containerId}}"
       mimeTypes="image/*"
@@ -59,8 +47,12 @@ const TEMPLATE = `
       file-receive="$ctrl.uploads"
       callback="$ctrl.handleComplete(data)">
     </itt-asset-uploader>
+    
+    <button
+      ng-click="$ctrl.sendUploads()"
+      ng-if="$ctrl.images.square.path && $ctrl.images.wide.path">Upload images
+    </button>
   </div>
-
 </div>
 `;
 
@@ -82,7 +74,8 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
   containerId;
   editorForm: ng.IFormController;
   //
-  selection: 'uploadNew' | 'browseUploaded';
+  editSocialshare: boolean = false;
+  selection: 'uploadNew' | 'browseUploaded' | null;
   images: Partial<IImages> = {
     square: null,
     wide: null,
@@ -93,14 +86,21 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
       files: null
     }
   };
+  model: any;
+  imageIdsArr: string[];
+  newImgIds: string[] = [];
   private files = {
     square: {name: '', path: '', file: null},
     wide: {name: '', path: '', file: null}
   };
 
   private type: 'narrative' | 'timeline';
-  static $inject = ['imageResize'];
-  constructor(private imageResize: IimageResize) {}
+  static $inject = ['$scope', 'imageResize', 'dataSvc', 'modelSvc'];
+  constructor(
+    private $scope: ng.IScope,
+    private imageResize: IimageResize,
+    private dataSvc: IDataSvc,
+    private modelSvc: IModelSvc) {}
 
   $onInit() {
     if (this.timeline == null) {
@@ -108,14 +108,38 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     } else {
       this.type = 'timeline';
     }
+    this.model = this[this.type];
+    this.imageIdsArr = this.model[this.type + '_image_ids'];
+    console.log('it worked!', this.imageIdsArr);
   }
 
   setSelection(type: 'uploadNew' | 'browseUploaded'): void {
     this.selection = type;
   }
 
-  enableSocialSharing() {
-    this[this.type].enable_social_sharing = true;
+  toggleEditsocialshare() {
+    this.editSocialshare = !this.editSocialshare;
+    //get social images
+    if (this.model.enable_social_sharing === true && this.imageIdsArr.length === 2) {
+      this.getImageAssets();
+    }
+  }
+
+  async getImageAssets() {
+    const [a, b] = this.imageIdsArr;
+    const [imgA, imgB] = [this.dataSvc.getSingleAsset(a), this.dataSvc.getSingleAsset(b)];
+    try {
+      for (const resp of [imgA, imgB]) {
+        const img: IAsset = createInstance('Asset', await resp);
+        const tagType = img.tags[0];
+        this.modelSvc.cache('asset', img);
+        this.images[tagType] = {path: img.url};
+
+      }
+    } catch (e) {
+      console.log('whoops!', e);
+    }
+    this.$scope.$apply();
   }
 
   handleImage(data: FileList): void {
@@ -144,6 +168,29 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     };
   }
 
+  handleComplete(data) {
+    //as file uploads complete, the file id is returned
+    //push the returned id into the relevant image_ids array
+    // if (this[this.type][this.type + '_image_ids'] && this[this.type][this.type + '_image_ids'].length) {
+    //   this[this.type][this.type + '_image_ids'].push(data);
+    //
+    //   if(this[this.type][this.type + '_image_ids'].length === 2) {
+    //     //when we have both of our files, set form back to valid and allow user to save.
+    //     this.editorForm.$setValidity(this.editorForm.$name, true, this.editorForm);
+    //   }
+    //
+    // } else {
+    //   this[this.type][this.type + '_image_ids'] = [data];
+    // }
+
+    this.newImgIds.push(data);
+    if (this.newImgIds.length === 2) {
+      this.editorForm.$setValidity(this.editorForm.$name, true, this.editorForm);
+      this.model[this.type + '_image_ids'] = this.newImgIds;
+    }
+
+  }
+
   private checkAspectRatio(file: File) {
     this.editorForm.$setValidity(this.editorForm.$name, false, this.editorForm);
     return this.imageResize.readFileToImg(file)
@@ -152,23 +199,6 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
         const images = { [tag]: {name: file.name, path: img.src } };
         return {images, tag};
       });
-  }
-
-  handleComplete(data) {
-    //as file uploads complete, the file id is returned
-    //push the returned id into the relevant image_ids array
-    if (this[this.type][this.type + '_image_ids'] && this[this.type][this.type + '_image_ids'].length) {
-      this[this.type][this.type + '_image_ids'].push(data);
-
-      if(this[this.type][this.type + '_image_ids'].length === 2) {
-        //when we have both of our files, set form back to valid and allow user to save.
-        this.editorForm.$setValidity(this.editorForm.$name, true, this.editorForm);
-      }
-
-    } else {
-      this[this.type][this.type + '_image_ids'] = [data];
-    }
-
   }
 }
 

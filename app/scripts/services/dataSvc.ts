@@ -1,7 +1,7 @@
 // TODO: load and resolve categories
 
 
-import {createInstance} from '../models';
+import {createInstance, IAsset} from '../models';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -47,7 +47,7 @@ export interface IDataSvc {
   createEpisodeSegment(narrativeId, segmentData): ng.IPromise<{}>;
   storeTimeline(narrativeId, origTimeline): ng.IPromise<{}>;
   deleteTimeline(tlId): ng.IPromise<{}>;
-  getSingleAsset(assetId)
+  getSingleAsset(assetId): IAsset;
   getCommon(): ng.IPromise<{}>;
   cache(cacheType, dataList): void;
   createTemplate(templateData): ng.IPromise<{}>;
@@ -330,7 +330,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     });
   };
 
-  svc.getSingleAsset = function (assetId) {
+  svc.getSingleAsset = function (assetId: string): IAsset {
     if (assetId) {
       return GET('/v1/assets/' + assetId);
     } else {

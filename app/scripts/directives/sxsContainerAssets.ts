@@ -193,7 +193,8 @@ export class SxsContainerAssets implements ng.IComponentOptions {
   static Name: string = 'sxsContainerAssets';
   bindings: any = {
     containerId: '@',
-    mimeKey: '@?'
+    mimeKey: '@?',
+    context: '@?'
   };
   templateUrl: string = 'templates/producer/container-assets.html';
   controller: ng.IComponentController = SxsContainerAssetsController;

@@ -52,5 +52,11 @@
 		</table>
 	</div>
 	<br>
-  <itt-asset-uploader container-id="{{$ctrl.container._id}}" mime-types="{{$ctrl.mimes}}" multiple="true" ng-if="$ctrl.canAccess"></itt-asset-uploader>
+
+  <itt-asset-uploader
+    container-id="{{$ctrl.container._id}}"
+    mime-types="{{$ctrl.mimes}}"
+    multiple="true"
+    ng-if="$ctrl.canAccess && $ctrl.context !== 'narrative'">
+  </itt-asset-uploader>
 </div>

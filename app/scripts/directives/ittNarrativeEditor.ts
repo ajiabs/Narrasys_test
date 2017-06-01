@@ -73,7 +73,7 @@ export default function ittNarrativeEditor() {
     <label for="nDisableNav">Disable Navigation</label>
     <input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/> |
     <label for="nGuestAccess">Enable Guest Access</label>
-    <input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/> |
+    <input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/>
     <itt-enable-socialshare
       container-id="{{$ctrl.selectedCustomer.root_container_id}}"
       narrative="$ctrl._narrative"

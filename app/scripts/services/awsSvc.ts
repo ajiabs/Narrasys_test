@@ -694,6 +694,10 @@ export default function awsSvc($http, $q, config) {
       'original_filename': fileBeingUploaded.name
     };
 
+    if (fileBeingUploaded.tags && fileBeingUploaded.tags.length) {
+      Object.assign(assetData, {tags: fileBeingUploaded.tags});
+    }
+
     $http.post(config.apiDataBaseUrl + assetEndpoint, assetData)
       .success(function (data) {
         deferredUploads[fileIndex].resolve(data);

@@ -19,6 +19,32 @@ export class INarrative {
   narrative_image_ids: string[];
 }
 
+export class IAsset {
+  _id: string;
+  _type: string;
+  status: string;
+  upload: any;
+  url: string;
+  filename: string;
+  original_filename: string;
+  content_type: string;
+  extension: string;
+  size: number;
+  name: ILangForm;
+  description: ILangForm;
+  tags: string[];
+  episodes_count: number;
+  episode_poster_frames_count: number;
+  links_count: number;
+  annotations_count: number;
+  narratives_count: number;
+  timelines_count: number;
+  uploads_count: number;
+  plugins_count: number;
+  container_id: string;
+  user_id: string;
+}
+
 export class IEvent {
   //props
   start_time: number;
@@ -129,7 +155,7 @@ export class IUpload extends IEvent {
   asset_id: string;
 }
 
-export function createInstance(type: string, data: any): NRecord {
+export function createInstance(type: string, data: any) {
   let model;
   switch (type) {
     case 'Link':
@@ -162,6 +188,9 @@ export function createInstance(type: string, data: any): NRecord {
     case 'Narrative':
       model = new INarrative();
       break;
+    case 'Asset':
+      model = new IAsset();
+      break;
   }
   Object.assign(model, data);
   return model;
@@ -181,5 +210,6 @@ export type NEvent =
 
 export type NRecord =
   NEvent |
-  INarrative;
+  INarrative |
+  IAsset;
 
