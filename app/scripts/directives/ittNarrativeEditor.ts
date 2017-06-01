@@ -74,7 +74,10 @@ export default function ittNarrativeEditor() {
     <input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/> |
     <label for="nGuestAccess">Enable Guest Access</label>
     <input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/> |
-    <itt-enable-socialshare narrative="$ctrl._narrative" editor-form="nEditForm"></itt-enable-socialshare>
+    <itt-enable-socialshare
+      container-id="{{$ctrl.selectedCustomer.root_container_id}}"
+      narrative="$ctrl._narrative"
+      editor-form="nEditForm"></itt-enable-socialshare>
     <div class="ancillaryNav">
       <button class="done" ng-click="$ctrl.handleUpdate($ctrl._narrative)"
               ng-disabled="nEditForm.$invalid || $ctrl._narrative.error">Save
@@ -113,6 +116,7 @@ export default function ittNarrativeEditor() {
       function _onInit() {
         _setNameFromContainer();
         _setCustomer();
+        console.log('selected cust', )
       }
 
       //set selected customer on-change of dropdown select
@@ -132,6 +136,8 @@ export default function ittNarrativeEditor() {
           'customer_id',
           'guest_access_allowed',
           'enable_social_sharing',
+          'narrative_image_ids',
+          'timeline_image_ids',
           'path_slug',
           'support_url',
           'disable_navigation',

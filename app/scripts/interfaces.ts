@@ -6,14 +6,12 @@ import {TUrlFieldContexts} from './directives/ittUrlField';
 /**
  * Created by githop on 4/11/17.
  */
-export interface ILangform {
-  en: boolean;
-  es?: boolean;
-  zh?: boolean;
-  pt?: boolean;
-  fr?: boolean;
-  de?: boolean;
-  it?: boolean;
+
+
+type ILangformKeys = 'en' | 'es' | 'zh' | 'pt' | 'fr' | 'de' | 'it';
+
+export type ILangForm = {
+  [K in ILangformKeys]: string
 }
 
 export interface IAnnotator {

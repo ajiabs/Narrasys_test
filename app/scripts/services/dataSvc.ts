@@ -125,9 +125,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             return a.sort_order - b.sort_order;
           });
 
-
-          modelSvc.cache('narrative', svc.resolveIDs(response.data));
-
+          modelSvc.cache('narrative', createInstance('Narrative', svc.resolveIDs(response.data)));
           defer.resolve(modelSvc.narratives[response.data._id]);
         });
     });

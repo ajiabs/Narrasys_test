@@ -5,7 +5,7 @@
  */
 ittEpisodeEditor.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'dataSvc', 'authSvc', 'selectService', 'playbackService', 'urlService'];
 
-export interface ILangform {
+export interface ILangformFlags {
   en: boolean
   es?: boolean
   zh?: boolean
@@ -83,7 +83,7 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
       }
 
       // extract episode languages for the form
-      scope.langForm = <ILangform> {'en': true, 'es': false, 'zh': false, 'pt': false, 'fr': false, 'de': false, 'it': false};
+      scope.langForm = <ILangformFlags> {'en': true, 'es': false, 'zh': false, 'pt': false, 'fr': false, 'de': false, 'it': false};
       for (var j = 0; j < scope.episode.languages.length; j++) {
         scope.langForm[scope.episode.languages[j].code] = true;
       }

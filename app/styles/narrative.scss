@@ -373,3 +373,23 @@ and (max-device-width : 568px) {
   align-items: center;
 }
 
+.social-images__img {
+  margin-left: 1em;
+}
+
+.social-images--tag {
+  font-family: Story, sans-serif;
+  color: white;
+  &.unset {
+    background-color: #c00;
+  }
+
+  &.set {
+    background-color: green;
+  }
+}
+
+.social-images--tag:before {
+  content: '\e91c';
+}
+

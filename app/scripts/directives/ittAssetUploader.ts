@@ -87,8 +87,12 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       if (payload != null) {
         switch (payload.type) {
           case SOCIAL_UPLOAD:
-            // const {promises, files} = payload;
-            // this.commenseUploads(files, promises);
+            Object.entries(payload.files)
+              .map(([type, fileData]: any) => {
+                fileData.file[0].tags = [type];
+                return fileData.file;
+              })
+              .forEach((fl: FileList) => this.commenseUploads(fl));
             break;
         }
       }
@@ -138,7 +142,7 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
     this.processUploads(oldstack, newstack, files);
   }
 
-  private setupUploadDisplay(files) {
+  private setupUploadDisplay(files: FileList) {
     let oldstack = this.uploads.length;
     let newstack = this.uploads.length + files.length;
     this.uploadsinprogress = this.uploadsinprogress + files.length;

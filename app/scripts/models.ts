@@ -1,14 +1,31 @@
+import {ILangForm} from './interfaces';
 /**
  * Created by githop on 5/1/17.
  */
+
+
+export class INarrative {
+  name: ILangForm;
+  description: ILangForm;
+  guest_access_allowed: boolean;
+  authenticated_access_allowed: boolean;
+  disable_navigation: boolean;
+  disable_new_window: boolean;
+  enable_social_sharing: boolean;
+  path_slug: ILangForm;
+  support_url: string;
+  timelines: any[];
+  timeline_image_ids: string[];
+  narrative_image_ids: string[];
+}
 
 export class IEvent {
   //props
   start_time: number;
   type: 'Annotation' | 'Bookmark' | 'File' | 'Image' | 'Link' | 'Plugin' | 'Scene' | 'Chapter' | 'Text' | 'Upload';
   end_time: number;
-  title: { [lang: string]: string };
-  description: { [lang: string]: string };
+  title: ILangForm;
+  description: ILangForm;
   cosmetic: boolean;
   stop: boolean;
 //props not in any schema but added dynamically either on the backend somewhere client-side;
@@ -54,8 +71,8 @@ export class ILink extends IEvent {
 export class IAnnotation extends IEvent {
   type: 'Annotation';
   _type: 'Annotation';
-  annotator: { [lang: string]: string };
-  annotation: { [lang: string]: string };
+  annotator: ILangForm;
+  annotation: ILangForm;
   chapter_marker: boolean = false;
   //belongs_to annotation image;
   annotation_image_id: string;
@@ -78,10 +95,10 @@ export class IImage extends IEvent {
 }
 
 class IPluginData {
-  correctFeedback: { [lang: string]: string };
+  correctFeedback: ILangForm;
   distractors: { index: number, text: string }[];
-  incorrectFeedback: { [lang: string]: string };
-  questionText: { [lang: string]: string };
+  incorrectFeedback: ILangForm;
+  questionText: ILangForm;
   questionType: string;
 }
 
@@ -112,7 +129,7 @@ export class IUpload extends IEvent {
   asset_id: string;
 }
 
-export function createInstance(type: string, data: any): NEvent {
+export function createInstance(type: string, data: any): NRecord {
   let model;
   switch (type) {
     case 'Link':
@@ -142,6 +159,9 @@ export function createInstance(type: string, data: any): NEvent {
     case 'Upload':
       model = new IUpload();
       break;
+    case 'Narrative':
+      model = new INarrative();
+      break;
   }
   Object.assign(model, data);
   return model;
@@ -159,6 +179,7 @@ export type NEvent =
   IText |
   IUpload;
 
-
-
+export type NRecord =
+  NEvent |
+  INarrative;
 
