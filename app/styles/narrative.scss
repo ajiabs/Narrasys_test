@@ -366,31 +366,3 @@ and (max-device-width : 568px) {
   word-wrap: break-word;
 }
 
-.social-images {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.social-images__img {
-  margin-left: 1em;
-}
-
-.social-images--tag {
-  font-family: Story, sans-serif;
-  color: white;
-
-  &:before {
-    content: '\e91c';
-  }
-
-  &.unset {
-    background-color: #c00;
-  }
-
-  &.set {
-    background-color: green;
-  }
-}
-

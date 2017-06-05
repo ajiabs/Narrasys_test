@@ -10,7 +10,7 @@ import {createInstance, IAsset} from '../models';
  * Created by githop on 5/22/17.
  */
 
-const TEMPLATE = `
+const old = `
 <div>
   <button ng-if="!$ctrl.editSocialshare" ng-click="$ctrl.toggleEditsocialshare()">Social share settings</button>
 </div>
@@ -57,6 +57,39 @@ const TEMPLATE = `
       callback="$ctrl.handleComplete(data)">
     </itt-asset-uploader>
     
+  </div>
+</div>
+`;
+
+const TEMPLATE = `
+<span>
+  <label for="socialshare-checkbox">Enable Socialshare</label>
+  <input id="socialshare-checkbox" type="checkbox" ng-model="$ctrl[$ctrl.type].enable_social_sharing"/>
+</span>
+<div ng-if="$ctrl[$ctrl.type].enable_social_sharing" class="socialshare-filedrop">
+  <itt-filedrop
+    class="itt-filedrop__square"
+    ng-if="$ctrl.images.square == null"
+    on-drop="$ctrl.handleImage(files)">
+  </itt-filedrop>
+  <div class="itt-filedrop__square" ng-if="$ctrl.images.square.path">
+   <span class="socialshare__img--cancel" ng-click="$ctrl.resetImg('square')"></span>
+   <img class="socialshare__img" ng-src="{{$ctrl.images.square.path}}"/>
+  </div>
+  <itt-filedrop
+    class="itt-filedrop__wide"
+    ng-if="$ctrl.images.wide == null"
+    on-drop="$ctrl.handleImage(files)">
+  </itt-filedrop>
+  <div class="itt-filedrop__wide" ng-if="$ctrl.images.wide.path">
+    <span class="socialshare__img--cancel" ng-click="$ctrl.resetImg('wide')"></span>
+    <img class="socialshare__img" ng-src="{{$ctrl.images.wide.path}}"/>
+  </div>
+  
+  <div class="socialshare__controls">
+    <button>Browse Uploaded</button>
+    <label class="button" for="fileBtn">Upload New</label>
+    <input id="fileBtn" type="file" accept="image/*" itt-files-handler on-selected="$ctrl.handleImage(files)"/>
   </div>
 </div>
 `;
@@ -115,37 +148,40 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     }
     this.model = this[this.type];
     this.imageIdsArr = this.model[this.type + '_image_ids'];
-    console.log('it worked!', this.imageIdsArr);
   }
 
-  setSelection(type: 'uploadNew' | 'browseUploaded'): void {
-    this.selection = type;
+  // setSelection(type: 'uploadNew' | 'browseUploaded'): void {
+  //   this.selection = type;
+  // }
+
+  resetImg(type: string): void {
+    this.images[type] = null;
   }
 
-  toggleEditsocialshare() {
-    this.editSocialshare = !this.editSocialshare;
-    //get social images
-    if (this.model.enable_social_sharing === true && this.imageIdsArr.length === 2) {
-      this.getImageAssets();
-    }
-  }
+  // toggleEditsocialshare() {
+  //   this.editSocialshare = !this.editSocialshare;
+  //   //get social images
+  //   if (this.model.enable_social_sharing === true && this.imageIdsArr.length === 2) {
+  //     this.getImageAssets();
+  //   }
+  // }
 
-  async getImageAssets() {
-    const [a, b] = this.imageIdsArr;
-    const [imgA, imgB] = [this.dataSvc.getSingleAsset(a), this.dataSvc.getSingleAsset(b)];
-    try {
-      for (const resp of [imgA, imgB]) {
-        const img: IAsset = createInstance('Asset', await resp);
-        const tagType = img.tags[0];
-        this.modelSvc.cache('asset', img);
-        this.images[tagType] = {path: img.url};
-      }
-      //async await happens outside of digest loop unfortunately
-      this.$scope.$apply();
-    } catch (e) {
-      console.log('whoops!', e);
-    }
-  }
+  // async getImageAssets() {
+  //   const [a, b] = this.imageIdsArr;
+  //   const [imgA, imgB] = [this.dataSvc.getSingleAsset(a), this.dataSvc.getSingleAsset(b)];
+  //   try {
+  //     for (const resp of [imgA, imgB]) {
+  //       const img: IAsset = createInstance('Asset', await resp);
+  //       const tagType = img.tags[0];
+  //       this.modelSvc.cache('asset', img);
+  //       this.images[tagType] = {path: img.url};
+  //     }
+  //     //async await happens outside of digest loop unfortunately
+  //     this.$scope.$apply();
+  //   } catch (e) {
+  //     console.log('whoops!', e);
+  //   }
+  // }
 
   handleImage(data: FileList): void {
     this.checkAspectRatio(data[0])
@@ -158,20 +194,20 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
       .catch(e => console.log('whoopsies', e));
   }
 
-  sendUploads(): void {
-    //using a new object will change the ref thus trigger $onChanges in the
-    //asset uploader component
-
-    this.uploads = {
-      payload: {
-        type: SOCIAL_UPLOAD,
-        files: {
-          square: this.files.square,
-          wide: this.files.wide
-        }
-      }
-    };
-  }
+  // sendUploads(): void {
+  //   //using a new object will change the ref thus trigger $onChanges in the
+  //   //asset uploader component
+  //
+  //   this.uploads = {
+  //     payload: {
+  //       type: SOCIAL_UPLOAD,
+  //       files: {
+  //         square: this.files.square,
+  //         wide: this.files.wide
+  //       }
+  //     }
+  //   };
+  // }
 
   handleComplete(data) {
     //as file uploads complete, the file id is returned
