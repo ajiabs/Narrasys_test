@@ -380,6 +380,11 @@ and (max-device-width : 568px) {
 .social-images--tag {
   font-family: Story, sans-serif;
   color: white;
+
+  &:before {
+    content: '\e91c';
+  }
+
   &.unset {
     background-color: #c00;
   }
@@ -387,9 +392,5 @@ and (max-device-width : 568px) {
   &.set {
     background-color: green;
   }
-}
-
-.social-images--tag:before {
-  content: '\e91c';
 }
 

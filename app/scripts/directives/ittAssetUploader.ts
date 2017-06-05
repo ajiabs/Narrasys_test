@@ -87,13 +87,13 @@ class AssetUploaderController implements ng.IComponentController, AssetUploaderB
       if (payload != null) {
         switch (payload.type) {
           case SOCIAL_UPLOAD:
-            Object.entries(payload.files)
-              .map(([type, fileData]: any) => {
-                fileData.file[0].tags = [type];
-                return fileData.file;
-              })
-              .forEach((fl: FileList) => this.commenseUploads(fl));
-            break;
+            // Object.entries(payload.files)
+            //   .map(([type, fileData]: any) => {
+            //     fileData.file[0].tags = [type];
+            //     return fileData.file;
+            //   })
+            //   .forEach((fl: FileList) => this.commenseUploads(fl));
+            // break;
         }
       }
     }

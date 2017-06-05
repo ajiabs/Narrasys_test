@@ -162,6 +162,10 @@ class SxsContainerAssetsController implements ng.IComponentController {
     this.gridView = !this.gridView;
   }
 
+  assetSelect() {
+      //emit with isolate scope &
+  }
+
   assetClick(assetId) {
     console.log('User clicked on asset ', assetId);
     this.$rootScope.$emit('UserSelectedAsset', assetId);

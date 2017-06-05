@@ -24,8 +24,11 @@ const TEMPLATE = `
 
   <div class="controls" ng-if="!$ctrl.selection">
     <button ng-click="$ctrl.setSelection('uploadNew')">upload new</button>
-    <button ng-click="$ctrl.setSelection('browseUploaded')">browse uploaded</button>
-    <itt-social-images images="$ctrl.images"></itt-social-images>
+    <div ng-if="$ctrl.imageIdsArr.length > 0">
+    
+      <button ng-click="$ctrl.setSelection('browseUploaded')">browse uploaded</button>
+      <itt-social-images images="$ctrl.images"></itt-social-images>
+    </div>
   </div>
   <!--browse uploaded-->
   <itt-modal modal-class="narrative__modal" ng-if="$ctrl.selection === 'browseUploaded'" class="brows-uploaded">
@@ -39,7 +42,13 @@ const TEMPLATE = `
   <!--upload new-->
   <div ng-if="$ctrl.selection === 'uploadNew'" class="upload-new">
 
-    <itt-social-images images="$ctrl.images"></itt-social-images>
+    <itt-social-images images="$ctrl.images">
+      <button
+        ng-click="$ctrl.sendUploads()"
+        ng-if="$ctrl.images.square.path && $ctrl.images.wide.path">Upload images
+      </button>    
+    </itt-social-images>
+
     <itt-asset-uploader
       container-id="{{$ctrl.containerId}}"
       mimeTypes="image/*"
@@ -48,10 +57,6 @@ const TEMPLATE = `
       callback="$ctrl.handleComplete(data)">
     </itt-asset-uploader>
     
-    <button
-      ng-click="$ctrl.sendUploads()"
-      ng-if="$ctrl.images.square.path && $ctrl.images.wide.path">Upload images
-    </button>
   </div>
 </div>
 `;
@@ -134,12 +139,12 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
         const tagType = img.tags[0];
         this.modelSvc.cache('asset', img);
         this.images[tagType] = {path: img.url};
-
       }
+      //async await happens outside of digest loop unfortunately
+      this.$scope.$apply();
     } catch (e) {
       console.log('whoops!', e);
     }
-    this.$scope.$apply();
   }
 
   handleImage(data: FileList): void {

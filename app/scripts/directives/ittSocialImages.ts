@@ -12,6 +12,7 @@ const TEMPLATE = `
     ng-repeat="(type, val) in $ctrl.images">
           {{type}}
   </span>
+  <span ng-transclude></span>
 </div>
 <div class="social-images">
   <div class="social-images__img" ng-repeat="(imgType, imgPath) in $ctrl.images">
@@ -28,6 +29,7 @@ class SocialImagesController implements ng.IComponentController {
 
 export class SocialImages implements ng.IComponentOptions {
   static Name: string = 'ittSocialImages';
+  transclude: boolean = true;
   bindings: any = {
     images: '<'
   };
