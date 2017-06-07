@@ -107,7 +107,6 @@ export default function ittNarrative() {
           $scope.isOwner = false;
           $scope.narrative = $scope.narrativeData;
           $scope.customers = $scope.customerData;
-          console.log('custys', $scope.customers);
           $scope.user = appState.user;
           if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
             $scope.canAccess = true;
@@ -295,7 +294,7 @@ export default function ittNarrative() {
 
         function updateNarrative(update) {
           dataSvc.updateNarrative(update).then(function (resp) {
-            $scope.editingNarrative = false;
+            // $scope.editingNarrative = false;
             //updateNarrative returns just the new narrative object, without timelines array
             //merge the existing narrative on scope with the one returned via our post resp.
             angular.extend($scope.narrative, resp.data);

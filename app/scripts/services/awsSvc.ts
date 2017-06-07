@@ -60,6 +60,7 @@ export default function awsSvc($http, $q, config) {
    */
 
   svc.uploadContainerFiles = function (containerId, fileList) {
+    console.log('aws - upload container files', containerId, fileList);
     return uploadFiles("/v1/containers/" + containerId + "/assets", fileList);
   };
   svc.uploadUserFiles = function (userId, fileList) {

@@ -32,7 +32,7 @@
 				<div ng-if="asset._type != 'Asset::Image'">
 					<div class="thumbnail">{{asset._type}}</div>
 				</div>
-				{{asset.display_name}}
+        {{asset.display_name}} <span ng-if="asset.tags[0]"> - {{asset.tags[0]}}</span>
 			</div>
 		</div>
 		<table ng-if="!$ctrl.gridView">
@@ -48,6 +48,7 @@
 				<td>
 					{{asset.display_name}}
 				</td>
+        <td ng-if="asset.tags[0]">{{asset.tags[0]}}</td>
 			</tr>
 		</table>
 	</div>

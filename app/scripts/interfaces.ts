@@ -48,4 +48,6 @@ export interface ILinkValidFields {
   error: ILinkValidationMessage | null;
 }
 
+export {IUploadData} from './services/uploadsService';
+
 export {IDataSvc, IimageResize, IModelSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts};

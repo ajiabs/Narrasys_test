@@ -91,11 +91,15 @@ import {IDataSvc, IModelSvc} from '../interfaces';
 interface ISxsContainerAssetsBindings {
   containerId: string;
   mimeKey: string;
+  context?: string;
+  onAssetSelect: ($assetId: string) => string;
 }
 
 class SxsContainerAssetsController implements ng.IComponentController {
   containerId: string;
   mimeKey?: string;
+  context?: string;
+  onAssetSelect?: ($assetId) => string;
   //
   mimes: string;
   isAdmin: boolean;
@@ -162,33 +166,15 @@ class SxsContainerAssetsController implements ng.IComponentController {
     this.gridView = !this.gridView;
   }
 
-  assetSelect() {
-      //emit with isolate scope &
-  }
-
   assetClick(assetId) {
     console.log('User clicked on asset ', assetId);
+    //when it comes time to emit data from a component
+    //"isolate scope &" is a better fit than pubsub with $rootScope
+    if (this.context && this.context === 'narrative') {
+      this.onAssetSelect({$assetId: assetId});
+      return;
+    }
     this.$rootScope.$emit('UserSelectedAsset', assetId);
-  }
-
-  uploadAsset(fileInput) {
-    const files = fileInput.files;
-    //Start the upload status out at 0 so that the
-    //progress bar renders correctly at first
-    this.uploadStatus[0] = {
-      'bytesSent': 0,
-      'bytesTotal': 1
-    };
-    this.uploads = this.awsSvc.uploadContainerFiles(this.containerId, files);
-    this.uploads[0].then((data) => {
-      this.modelSvc.cache('asset', data.file);
-      fileInput.value = '';
-      delete this.uploads;
-    }, function (data) {
-      console.log('FAIL', data);
-    }, function (update) {
-      this.uploadStatus[0] = update;
-    });
   }
 }
 
@@ -198,7 +184,8 @@ export class SxsContainerAssets implements ng.IComponentOptions {
   bindings: any = {
     containerId: '@',
     mimeKey: '@?',
-    context: '@?'
+    context: '@?',
+    onAssetSelect: '&?'
   };
   templateUrl: string = 'templates/producer/container-assets.html';
   controller: ng.IComponentController = SxsContainerAssetsController;

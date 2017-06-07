@@ -96,7 +96,7 @@ export default function ittNarrativeEditor() {
     },
     controllerAs: '$ctrl',
     bindToController: true,
-    controller: ['ittUtils', 'authSvc', function (ittUtils, authSvc) {
+    controller: ['ittUtils', 'authSvc', 'uploadsService', function (ittUtils, authSvc, uploadsService) {
       var ctrl = this;
       var existy = ittUtils.existy;
 
@@ -144,6 +144,26 @@ export default function ittNarrativeEditor() {
           'disable_new_window',
           '_id'
         ];
+        let socialImagesToUpload = [];
+        if (n.square) {
+          socialImagesToUpload.push(n.square.file);
+        }
+
+        if (n.wide) {
+          socialImagesToUpload.push(n.wide.file);
+        }
+
+        if (socialImagesToUpload.length > 0) {
+          console.log('welp!', socialImagesToUpload, ctrl.selectedCustomer.root_container_id);
+          uploadsService.uploadTaggedFiles(socialImagesToUpload, ctrl.selectedCustomer.root_container_id)
+            .then((assets) => {
+              console.log('hey now! did it work?', assets);
+              ctrl.onUpdate({n: narrative});
+              return;
+            });
+        }
+
+
         var narrative = ittUtils.pick(n, fields);
         if (existy(ctrl._containerInfo)) {
           ctrl.onUpdate({data: {n: narrative, c: ctrl._containerInfo.containerId}});

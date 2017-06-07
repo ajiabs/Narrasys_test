@@ -91,6 +91,7 @@ import {IttSocialShare} from './ittSocialShare';
 import {EnableSocialshare} from './ittEnableSocialshare';
 import {SocialImages} from './ittSocialImages';
 import {Filedrop} from './ittFiledrop';
+import {UploadProgress} from './ittUploadProgress';
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -178,6 +179,7 @@ let directivesModule = angular.module('itt.directives', [])
   .component(IttSocialShare.Name, new IttSocialShare())
   .component(EnableSocialshare.Name, new EnableSocialshare())
   .component(SocialImages.Name, new SocialImages())
-  .component(Filedrop.Name, new Filedrop());
+  .component(Filedrop.Name, new Filedrop())
+  .component(UploadProgress.Name, new UploadProgress());
 
 export default directivesModule;

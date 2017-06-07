@@ -3,6 +3,22 @@ import {ILangForm} from './interfaces';
  * Created by githop on 5/1/17.
  */
 
+export class ICustomer {
+  _id: string;
+  name: ILangForm;
+  domains: string[];
+  active: boolean;
+  guest_access_allowed: boolean;
+  create_s3_transcodes: boolean;
+  youtube_allowed: boolean;
+  login_url: boolean;
+  login_via_top_window_only: boolean;
+  track_user_event_actions: boolean;
+  track_user_episode_metrics: boolean;
+  oauth2_message: ILangForm;
+  oauth2_providers: string[];
+  root_container_id: string;
+}
 
 export class INarrative {
   name: ILangForm;
@@ -191,6 +207,9 @@ export function createInstance(type: string, data: any) {
     case 'Asset':
       model = new IAsset();
       break;
+    case 'Customer':
+      model = new ICustomer();
+      break;
   }
   Object.assign(model, data);
   return model;
@@ -211,5 +230,6 @@ export type NEvent =
 export type NRecord =
   NEvent |
   INarrative |
-  IAsset;
+  IAsset |
+  ICustomer;
 
