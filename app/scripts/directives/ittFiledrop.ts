@@ -3,7 +3,7 @@
  */
 
 const TEMPLATE = `
-<div class="itt-filedrop">
+<div class="itt-filedrop itt-filedrop--border">
 
   <div class="itt-filedrop__wrapper">
     <span class="itt-filedrop__placeholder"></span>

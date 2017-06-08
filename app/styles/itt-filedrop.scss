@@ -7,6 +7,10 @@
   height: 100%;
 }
 
+.itt-filedrop--border {
+  border: 5px dashed $file-drop-grey;
+}
+
 .itt-filedrop__wrapper {
   display: flex;
   justify-content: center;

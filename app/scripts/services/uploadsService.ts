@@ -10,8 +10,8 @@ export interface IUploadData {
 }
 
 interface IUploadsService {
-  uploadTaggedFiles(fileLists: any[], containerId: string): ng.IPromise<any>;
-  resetUploadDisplay(): void;
+  uploadTaggedFiles(fileLists: {file: FileList, tag: string}[], containerId: string, tag): ng.IPromise<any>
+  resetUploads(): void;
 }
 
 //so the upload progess state is not coupled to a component.
@@ -29,19 +29,18 @@ export class UploadsService implements IUploadsService {
 
   }
 
-  uploadTaggedFiles(fileLists: any[], containerId: string): ng.IPromise<any> {
+  uploadTaggedFiles(fileLists: {file: FileList, tag: string}[], containerId: string, tag): ng.IPromise<any> {
 
     return this.$q((resolve, reject) => {
-      for (const fileList of fileLists) {
-        const tagType = fileList[0].tags[0];
-        this.uploadsDisplay[tagType] = {
+      for (const {file, tag} of fileLists) {
+        this.uploadsDisplay[tag] = {
           'bytesSent': 0,
           'bytesTotal': 1,
           'percent': 0,
-          'name': fileList[0].name
+          'name': file[0].name
         };
 
-        this.uploadQueue.push(this.uploadToAws(containerId, fileList, tagType));
+        this.uploadQueue.push(this.uploadToAws(containerId, file, tag));
       }
 
       return this.$q.all(this.uploadQueue)
@@ -51,32 +50,22 @@ export class UploadsService implements IUploadsService {
 
   }
 
-  resetUploadDisplay(): void {
+  resetUploads(): void {
     this.uploadsDisplay = {
       square: null,
       wide: null,
     };
+    this.uploadQueue = [];
   }
 
   private uploadToAws(containerId, fileList, tagType) {
-    return this.awsSvc.uploadContainerFiles(containerId, fileList)[0]
-      // .then(
-      //   (asset) => asset,
-      //   (e) => console.error('e', e),
-      //   (progress) => {
-      //     this.uploadsDisplay[tagType].bytesSent = progress.bytesSent;
-      //     this.uploadsDisplay[tagType].bytesTotal = progress.bytesTotal;
-      //     this.uploadsDisplay[tagType].percent = Math.ceil(progress.bytesSent / progress.bytesTotal * 100);
-      //     console.log('progress is a thing', this.uploadsDisplay);
-      //   }
-      // );
+    return this.awsSvc.uploadContainerFiles(containerId, fileList, tagType)[0]
       .then(asset => asset)
       .catch(e => console.error('upload error', e))
-      .finally(null, progress => {
+      .finally(null, (progress) => {
         this.uploadsDisplay[tagType].bytesSent = progress.bytesSent;
         this.uploadsDisplay[tagType].bytesTotal = progress.bytesTotal;
         this.uploadsDisplay[tagType].percent = Math.ceil(progress.bytesSent / progress.bytesTotal * 100);
-        console.log('progress is a thing', this.uploadsDisplay);
       });
   }
 

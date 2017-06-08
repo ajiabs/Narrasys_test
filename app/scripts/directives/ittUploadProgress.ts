@@ -5,27 +5,21 @@
 import {IUploadData} from '../interfaces';
 
 const TEMPLATE = `
-directive exists?
-<span ng-if="$ctrl.upload != null">
-  <span>{{$ctrl.upload.name}}</span>
+
+<div class="upload-progress" ng-if="$ctrl.upload != null">
+  <h5>{{$ctrl.upload.name}} - {{$ctrl.upload.percent}}%</h5>
   <progress
     ng-attr-max="{{$ctrl.upload.bytesTotal}}"
     ng-attr-value="{{$ctrl.upload.bytesSent}}">
   </progress>
-</span>
+</div>
+
+<!--<div class="upload-progress">-->
+  <!--<p>File name! - 80%</p>-->
+  <!--<progress max="10" value="8"></progress>-->
+<!--</div>-->
+
 `;
-
-interface IUploadProgressBindings {
-  upload: IUploadData
-}
-
-// class UploadProgressController implements ng.IComponentController, IUploadProgressBindings {
-//   static $inject = [];
-//   constructor(){
-//
-//   }
-// }
-
 
 export class UploadProgress implements ng.IComponentOptions {
   static Name: string = 'ittUploadProgress';
@@ -33,5 +27,4 @@ export class UploadProgress implements ng.IComponentOptions {
     upload: '<'
   };
   template: string = TEMPLATE;
-  // controller: ng.IComponentController = UploadProgressController;
 }

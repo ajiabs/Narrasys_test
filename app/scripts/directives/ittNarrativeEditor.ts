@@ -2,6 +2,7 @@
  * Created by githop on 6/16/16.
  */
 
+import {IAsset} from '../models';
 /**
  * @ngdoc directive
  * @name iTT.directive:ittNarrativeEditor
@@ -73,11 +74,11 @@ export default function ittNarrativeEditor() {
     <label for="nDisableNav">Disable Navigation</label>
     <input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/> |
     <label for="nGuestAccess">Enable Guest Access</label>
-    <input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/> | 
+    <input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/> |
     <itt-enable-socialshare
       container-id="{{$ctrl.selectedCustomer.root_container_id}}"
-      narrative="$ctrl._narrative"
-      editor-form="nEditForm"></itt-enable-socialshare>
+      narrative="$ctrl._narrative">
+    </itt-enable-socialshare>
     <div class="ancillaryNav">
       <button class="done" ng-click="$ctrl.handleUpdate($ctrl._narrative)"
               ng-disabled="nEditForm.$invalid || $ctrl._narrative.error">Save
@@ -97,8 +98,8 @@ export default function ittNarrativeEditor() {
     controllerAs: '$ctrl',
     bindToController: true,
     controller: ['ittUtils', 'authSvc', 'uploadsService', function (ittUtils, authSvc, uploadsService) {
-      var ctrl = this;
-      var existy = ittUtils.existy;
+      const ctrl = this;
+      const existy = ittUtils.existy;
 
       angular.extend(ctrl, {
         canAccess: authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'),
@@ -130,7 +131,7 @@ export default function ittNarrativeEditor() {
           n.customer_id = ctrl.selectedCustomer._id;
 
         }
-        var fields = [
+        const fields = [
           'name',
           'description',
           'customer_id',
@@ -144,28 +145,33 @@ export default function ittNarrativeEditor() {
           'disable_new_window',
           '_id'
         ];
-        let socialImagesToUpload = [];
+
+        let narrative = ittUtils.pick(n, fields);
+        let socialImagesToUpload: {file: FileList, tag: string}[] = [];
         if (n.square) {
-          socialImagesToUpload.push(n.square.file);
+          socialImagesToUpload.push({file: n.square.file, tag: 'square'});
         }
 
         if (n.wide) {
-          socialImagesToUpload.push(n.wide.file);
+          socialImagesToUpload.push({file: n.wide.file, tag: 'wide'});
         }
 
+        //if there are pending social image uploads, upload them
+        //then push the asset ID in the img ids array.
         if (socialImagesToUpload.length > 0) {
-          console.log('welp!', socialImagesToUpload, ctrl.selectedCustomer.root_container_id);
           uploadsService.uploadTaggedFiles(socialImagesToUpload, ctrl.selectedCustomer.root_container_id)
             .then((assets) => {
-              console.log('hey now! did it work?', assets);
+
+              if (!narrative.narrative_image_ids) {
+                narrative.narrative_image_ids = [];
+              }
+
+              assets.forEach((asset) => narrative.narrative_image_ids.push(asset.file._id));
+              uploadsService.resetUploads();
               ctrl.onUpdate({n: narrative});
               return;
             });
-        }
-
-
-        var narrative = ittUtils.pick(n, fields);
-        if (existy(ctrl._containerInfo)) {
+        } else if (existy(ctrl._containerInfo)) {
           ctrl.onUpdate({data: {n: narrative, c: ctrl._containerInfo.containerId}});
         } else {
           ctrl.onUpdate({n: narrative});

@@ -1,0 +1,23 @@
+
+.upload-progress {
+  position: absolute;
+  top: 33%;
+  background-color: rgba(255, 255, 255, 0.66);
+  width: 99%;
+  progress[value] {
+    width: 100%;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+
+  }
+
+  ::-webkit-progress-value {
+    background-color: $narrasysOrange;
+  }
+
+  ::-moz-progress-bar {
+    background-color: $narrasysOrange;
+  }
+}
