@@ -41,7 +41,7 @@ export interface IModelSvc {
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
 
 export default function modelSvc($filter, $location, ittUtils, config, appState, playbackService, urlService) {
-  var DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/story.html';
+  const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
   var svc: IModelSvc = Object.create(null);
 
   svc.episodes = {};
