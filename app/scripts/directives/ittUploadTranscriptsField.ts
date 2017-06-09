@@ -29,6 +29,11 @@ const TEMPLATE = `
       modal-class="transcripts__modal--content"
       ng-if="$ctrl.showOptions">
       <div class="smart-sentences__wrapper">
+        <div><p>
+          Thank you for using this new feature currently in Beta! Are you sure you want to proceed? Once saved,
+          transcript entries must be individually edited or deleted. This page will automatically refresh after
+          transcripts have successfully uploaded.</p>
+        </div>
         <div>
           <input class="smart-sentences__input" id="groupParam" type="checkbox" ng-model="$ctrl.selectedParam"
                  ng-false-value="'none'"
@@ -36,16 +41,12 @@ const TEMPLATE = `
           <label class="smart-sentences__input"
                  for="groupParam">Group transcript segments into complete sentences</label>
         </div>
-        <div><p>
-          Thank you for using this new feature currently in Beta! Are you sure you want to proceed? Once saved,
-           transcript entries must be individually edited or deleted. This page will automatically refresh after
-            transcripts have successfully uploaded.</p>
+        <div>
+          <button ng-click="$ctrl.commenseUpload()">upload transcripts</button>
+          <button ng-click="$ctrl.cancelUpload()">cancel</button>
         </div>
       </div>
-      <div>
-        <button ng-click="$ctrl.commenseUpload()">upload transcripts</button>
-        <button ng-click="$ctrl.cancelUpload()">cancel</button>
-      </div>
+
     </itt-modal>
   </div>
 </div>`;
