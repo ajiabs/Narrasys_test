@@ -28,7 +28,7 @@ import {createInstance, IAsset} from '../models';
 
 export interface IDataSvc {
   beginBackgroundTranslations(episodeId: string): any;
-  batchUploadTranscripts(episodeId: string, formData: any): ng.IPromise<{}>;
+  batchUploadTranscripts(episodeId: string, formData: any, params: any): ng.IPromise<{}>;
   generateNewNarrative(containerId, postData): ng.IPromise<{}>;
   getNarrative(narrativeId): ng.IPromise<{}>;
   getNarrativeOverview(narrativeId): ng.IPromise<{}>;
