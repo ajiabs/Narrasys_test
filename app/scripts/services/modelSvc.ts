@@ -2,14 +2,47 @@
 /* Parses API data into player-acceptable format,
  and derives secondary data where necessary for performance/convenience/fun */
 
-import { IAnnotators } from '../interfaces';
-import { NEvent } from '../models';
+import {IAnnotators, Partial} from '../interfaces';
+import {IScene, NEvent} from '../models';
+
+export interface IModelSvc {
+  episodes: { [episodeId:string]: any };
+  assets: { [assetId: string]: any };
+  events: { [eventId: string]: NEvent };
+  containers: { [containerId:string]: any };
+  narratives: { [narrativeId: string]: any };
+  customers: { [customerId:string]: any };
+  getNarrativeByPathOrId(pathOrId: string): any;
+  assocNarrativesWithCustomer(customer: any, narratives: any): any;
+  cachedNarrativesByCustomer(customer:any): any;
+  getCustomersAsArray(): any[];
+  getNarrativesAsArray(): any[];
+  cache(cacheType:string, item: any): void;
+  deriveEpisode(episode:any): void;
+  deriveAsset(asset: any): any;
+  deriveContainer(container: any): any;
+  deriveEvent(event: Partial<NEvent>): NEvent;
+  setLanguageStrings(): void;
+  resolveEpisodeEvents(epId:string): void;
+  resolveEpisodeContainers(epId: string): void;
+  episode(epId: string): any;
+  episodeEvents(epId: string): NEvent[];
+  isOnExistingSceneStart(t:number): boolean;
+  getEpisodeScenes(): IScene[];
+  sceneAtEpisodeTime(epId: string, t: number): IScene;
+  scene(sceneId: string): IScene;
+  assocEventWithAsset(eventId: string, assetId: string): void;
+  resolveEpisodeAssets(episodeId: string): void;
+  addLandingScreen(episodeId: string): void;
+  addEndingScreen(episodeId:string): void;
+  isTranscoded(video: any): boolean;
+}
 
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
 
 export default function modelSvc($filter, $location, ittUtils, config, appState, playbackService, urlService) {
+  var svc: IModelSvc = Object.create(null);
   const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
-  var svc = {};
 
   svc.episodes = {};
   svc.assets = {};
