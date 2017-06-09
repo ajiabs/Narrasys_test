@@ -74,7 +74,11 @@ export default function ittNarrativeEditor() {
     <label for="nDisableNav">Disable Navigation</label>
     <input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/> |
     <label for="nGuestAccess">Enable Guest Access</label>
-    <input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/> |
+    <input
+      id="nGuestAccess"
+      type="checkbox"
+      ng-change="$ctrl.guestAccessEffects()"
+      ng-model="$ctrl._narrative.guest_access_allowed"/> |
     <itt-enable-socialshare
       container-id="{{$ctrl.selectedCustomer.root_container_id}}"
       narrative="$ctrl._narrative">
@@ -108,8 +112,9 @@ export default function ittNarrativeEditor() {
         _containerInfo: angular.copy(ctrl.containerInfo),
         selectedCustomer: null,
         //
-        handleUpdate: handleUpdate,
-        selectCustomer: selectCustomer
+        handleUpdate,
+        selectCustomer,
+        guestAccessEffects
       });
 
       _onInit();
@@ -117,7 +122,15 @@ export default function ittNarrativeEditor() {
       function _onInit() {
         _setNameFromContainer();
         _setCustomer();
-        console.log('selected cust', )
+      }
+
+      function guestAccessEffects() {
+        if (ctrl._narrative.guest_access_allowed === false) {
+          ctrl._narrative.enable_social_sharing = false;
+          ctrl._narrative.disableSocialshare = true;
+        } else {
+          ctrl._narrative.disableSocialshare = false;
+        }
       }
 
       //set selected customer on-change of dropdown select

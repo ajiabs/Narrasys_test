@@ -17,7 +17,11 @@ export default function ittTimelineEditor() {
          <itt-guest-accessible-url narrative="$ctrl.narrative" timeline="$ctrl._timeline"></itt-guest-accessible-url>
       		<label>Hidden</label>
       		<input type="checkbox" ng-model="$ctrl._timeline.hidden"/>
-      		<itt-enable-socialshare narrative="$ctrl.narrative" timeline="$ctrl._timeline"></itt-enable-socialshare>
+      		<itt-enable-socialshare
+      		  narrative="$ctrl.narrative"
+      		  container-id="$ctrl.containerId"
+      		  timeline="$ctrl._timeline">
+          </itt-enable-socialshare>
       		<div class="ancillaryNav">
       			<button class="button" ng-disabled="tlEditForm.$invalid || $ctrl._timeline.error" ng-click="$ctrl.onUpdate({t: $ctrl._timeline})">Save</button>
       			<button class="button" ng-click="$ctrl.confirmDelete()">Delete</button>
@@ -35,6 +39,7 @@ export default function ittTimelineEditor() {
     scope: {
       timeline: '=',
       narrative: '=',
+      containerId: '@?',
       onUpdate: '&',
       onDelete: '&',
       onDone: '&'

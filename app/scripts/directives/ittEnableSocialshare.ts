@@ -12,7 +12,11 @@ import { IAsset } from '../models';
 const TEMPLATE = `
 <span>
   <label for="socialshare-checkbox">Enable Socialshare</label>
-  <input id="socialshare-checkbox" type="checkbox" ng-model="$ctrl[$ctrl.type].enable_social_sharing"/>
+  <input
+    id="socialshare-checkbox"
+    type="checkbox"
+    ng-disabled="$ctrl.type === 'timeline' || $ctrl.narrative.disableSocialshare"
+    ng-model="$ctrl.narrative.enable_social_sharing"/>
 </span>
 <div ng-if="$ctrl[$ctrl.type].enable_social_sharing" class="socialshare-filedrop">
 
@@ -105,7 +109,6 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
   }
 
   resetImg(img, type: string): void {
-    console.log('huh', img, type);
     this.images[type] = null;
     if (img.assetId) {
       this.removeImageId(img.assetId);
