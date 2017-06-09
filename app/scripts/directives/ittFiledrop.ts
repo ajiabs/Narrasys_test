@@ -54,12 +54,12 @@ class FiledropController implements ng.IComponentController {
     return false;
   };
 
-  private handleDragEnter(e) {
-    this.$element.addClass('itt-filedrop--droppable');
+  private handleDragEnter(ev) {
+    this.$element.children().addClass('itt-filedrop--droppable');
   };
 
-  private handleDragLeave(e) {
-    this.$element.removeClass('itt-filedrop--droppable');
+  private handleDragLeave(ev) {
+    this.$element.children().removeClass('itt-filedrop--droppable');
   };
 }
 
