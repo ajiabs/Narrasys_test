@@ -13,8 +13,8 @@ const TEMPLATE = `
     <div ng-if="!$ctrl.showUploader">
       <span><button ng-click="$ctrl.showUploader = true">Batch Upload Transcripts</button></span>
     </div>
-    
-    
+
+
     <itt-asset-uploader
       ng-if="$ctrl.showUploader"
       episode-id="{{$ctrl.episodeId}}"
@@ -24,19 +24,22 @@ const TEMPLATE = `
       callback="$ctrl.onUploadComplete()">
     </itt-asset-uploader>
 
-    <itt-modal modal-class="narrative__modal" ng-if="$ctrl.showOptions">
+    <itt-modal
+      wrapper-class="transcripts__modal--wrapper"
+      modal-class="transcripts__modal--content"
+      ng-if="$ctrl.showOptions">
       <div class="smart-sentences__wrapper">
         <div>
-          <label class="smart-sentences__input"
-                 for="groupParam">Would you like to group CC segments into complete sentences?</label>
           <input class="smart-sentences__input" id="groupParam" type="checkbox" ng-model="$ctrl.selectedParam"
                  ng-false-value="'none'"
                  ng-true-value="'group_into_sentences'"/>
+          <label class="smart-sentences__input"
+                 for="groupParam">Group transcript segments into complete sentences</label>
         </div>
-        <div>
+        <div><p>
           Thank you for using this new feature currently in Beta! Are you sure you want to proceed? Once saved,
-          transcript entries must be individually edited or deleted.
-          (page will refresh after transcripts have successfully uploaded)
+           transcript entries must be individually edited or deleted. This page will automatically refresh after
+            transcripts have successfully uploaded.</p>
         </div>
       </div>
       <div>
