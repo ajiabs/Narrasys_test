@@ -3,6 +3,16 @@ import {ILangForm} from './interfaces';
  * Created by githop on 5/1/17.
  */
 
+export class ITimeline {
+  _id: string;
+  name: ILangForm;
+  description: ILangForm;
+  hidden: boolean;
+  sort_order: number;
+  path_slug: ILangForm;
+  episode_segments: any[];
+}
+
 export class ICustomer {
   _id: string;
   name: ILangForm;
@@ -210,6 +220,9 @@ export function createInstance(type: string, data: any) {
     case 'Customer':
       model = new ICustomer();
       break;
+    case 'Timeline':
+      model = new ITimeline();
+      break;
   }
   Object.assign(model, data);
   return model;
@@ -231,5 +244,6 @@ export type NRecord =
   NEvent |
   INarrative |
   IAsset |
-  ICustomer;
+  ICustomer |
+  ITimeline;
 

@@ -80,6 +80,7 @@ export default function ittNarrativeEditor() {
       ng-change="$ctrl.guestAccessEffects()"
       ng-model="$ctrl._narrative.guest_access_allowed"/> |
     <itt-enable-socialshare
+      ng-if="$ctrl._narrative._id"
       container-id="{{$ctrl.selectedCustomer.root_container_id}}"
       narrative="$ctrl._narrative">
     </itt-enable-socialshare>
@@ -122,9 +123,15 @@ export default function ittNarrativeEditor() {
       function _onInit() {
         _setNameFromContainer();
         _setCustomer();
+        guestAccessEffects();
       }
 
       function guestAccessEffects() {
+
+        if (ctrl._narrative == null) {
+          return;
+        }
+
         if (ctrl._narrative.guest_access_allowed === false) {
           ctrl._narrative.enable_social_sharing = false;
           ctrl._narrative.disableSocialshare = true;
