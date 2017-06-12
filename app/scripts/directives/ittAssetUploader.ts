@@ -1,215 +1,288 @@
-ittAssetUploader.$inject = ['$timeout', 'awsSvc', 'appState', 'modelSvc', 'dataSvc'];
-export default function ittAssetUploader($timeout, awsSvc, appState, modelSvc, dataSvc) {
-  return {
-    restrict: 'A',
-    replace: false,
-    scope: {
-      containerId: '=ittAssetUploader', // If no container ID is supplied, the uploaded asset(s) will be placed in user space instead.
-      episodeId: '@', //for uploading transcripts
-      callback: '&', // function that will be called for each uploaded file (with the newly cretaed asset's ID)
-      mimeTypes: '@',
-      instructions: '@',
-      errorText: '@'
-    },
-    templateUrl: 'templates/producer/asset-uploader.html',
-    link: function (scope, element, attrs) {
+import {IModelSvc, IDataSvc} from '../interfaces';
+import {TRANSCRIPT_UPLOAD} from './ittUploadTranscriptsField';
 
-      function strStartsWith(str, prefix) {
-        return str.indexOf(prefix) === 0;
-      }
+interface AssetUploaderBindings {
+  containerId?: string;
+  episodeId?: string;
+  callback?: (data: any) => any;
+  onFiledrop?: (data: any) => any;
+  fileReceive?: any;
+  mimeTypes: string;
+  instructions?: string;
+  errorText?: string;
+  multiple?: boolean;
+}
 
-      function strEndsWith(str, match) {
-        return str.substring(str.length - match.length, str.length) === match;
-      }
+class AssetUploaderController implements ng.IComponentController, AssetUploaderBindings {
+  //bindings
+  containerId: string;
+  episodeId: string;
+  callback: (data: any) => any;
+  onFiledrop?: (data: any) => { data: FileList };
+  fileReceive?: any;
+  mimeTypes: string;
+  instructions: string | undefined;
+  errorText: string;
+  multiple: boolean = false;
+  //props
+  uploadsinprogress = 0;
+  paused: boolean = false;
+  errormessage: string;
+  uploadStatus = [];
+  uploads = [];
+  manPage: string;
+  private droptarget: JQuery;
+  private fileinput: JQuery;
+  private mimeTypesArr: string[];
+  static $inject = ['$timeout', '$element', 'awsSvc', 'appState', 'modelSvc', 'dataSvc'];
 
-      if (scope.instructions === undefined) {
-        scope.manPage = 'We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. ';
-      } else {
-        scope.manPage = scope.instructions;
-      }
+  constructor(public $timeout: ng.ITimeoutService,
+              public $element,
+              public awsSvc,
+              public appState,
+              public modelSvc: IModelSvc,
+              public dataSvc: IDataSvc) {
+  }
 
-      var _mimeTypes;
-      if (scope.mimeTypes === undefined) {
-        //allow basically doc, image, or video.
-        _mimeTypes = ['application/*', 'image/*', 'video/*', 'text/*', 'audio/*', 'model/*'];
-      } else {
-        _mimeTypes = scope.mimeTypes.split(',');
-      }
+  $onInit() {
+    if (this.instructions === undefined) {
+      this.manPage = 'We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. ';
+    } else {
+      this.manPage = this.instructions;
+    }
 
-      var _errorText;
-      if (scope.errorText === undefined) {
-        _errorText = 'Whoops! You may want to try that again!';
-      } else {
-        _errorText = scope.errorText;
-      }
+    if (this.mimeTypes == null) {
+      //allow basically doc, image, or video.
+      this.mimeTypesArr = ['application/*', 'image/*', 'video/*', 'text/*', 'audio/*', 'model/*'];
+    } else {
+      this.mimeTypesArr = (<string>this.mimeTypes).split(',');
+    }
 
-      //normalize passed in params
-      angular.forEach(_mimeTypes, function (m, i) {
-        _mimeTypes[i] = m.trim();
-      });
+    if (this.errorText === undefined) {
+      this.errorText = 'Whoops! You may want to try that again!';
+    }
 
-      function handleTranscripts(episodeId, postData) {
-        var fd = new FormData();
-        fd.append('subtitles', postData);
-        return dataSvc.batchUploadTranscripts(episodeId, fd);
-      }
+    //normalize passed in params
+    this.mimeTypesArr = this.mimeTypesArr.map(m => m.trim());
+  }
 
-      scope.uploadStatus = [];
-      scope.uploads = [];
-      scope.uploadsinprogress = 0;
-      scope.multiple = (attrs.multiple !== undefined);
+  $postLink() {
+    this.$timeout(() => { // need to wait for the DOM
+      this.droptarget = this.$element.find('.uploadDropTarget');
+      this.fileinput = this.$element.find('.uploadFileInput');
+      this.uploadsinprogress = 0;
+      this.droptarget[0].addEventListener('drop', (ev) => this.handleDrop(ev));
+      this.droptarget[0].addEventListener('dragover', (ev) => this.handleDragOver(ev));
+      this.droptarget[0].addEventListener('dragenter', (ev) => this.handleDragEnter(ev));
+      this.droptarget[0].addEventListener('dragleave', (ev) => this.handleDragLeave(ev));
+    });
+  }
 
-      scope.handleUploads = function (files) {
-
-        if (!scope.multiple) {
-          if (files.length > 1 || scope.uploads.length > 0) {
-            scope.errormessage = "You may only upload one file at a time here.";
-            return false;
-          }
+  $onChanges(changesObj) {
+    if (changesObj.fileReceive) {
+      const { fileReceive: { currentValue } } = changesObj;
+      const { payload } = currentValue;
+      if (payload != null) {
+        switch (payload.type) {
+          case TRANSCRIPT_UPLOAD:
+            const {promises, files} = payload;
+            this.commenseUploads(files, promises);
+            break;
         }
+      }
+    }
+  }
 
-        //disallow certain file types
-        var stop = false;
-        // gotta filter
-        angular.forEach(files, function (f) {
-          //properties on a File (such as type) are read only.
-          var ftype = f.type;
-          //if batch uploading transcripts get mimetype off of name
-          if (scope.episodeId) {
-            var ext = f.name.match(/(vtt|srt)/);
-            if (ext && ext.length) {
-              ftype = 'text/' + ext[0];
-            }
-          }
+  //pause and resume and cancel are currently broken on story prior to refactoring into component...
+  pauseUpload() {
+    this.awsSvc.pauseUpload();
+    this.paused = true;
+  };
 
-          angular.forEach(_mimeTypes, function (m) {
-            var paramStrEndsWithStar = strEndsWith(m, '*');
+  resumeUpload() {
+    this.awsSvc.resumeUpload();
+    this.paused = false;
+  };
 
-            if (paramStrEndsWithStar) {
+  cancelUpload() {
+    this.awsSvc.cancelUpload();
+  };
 
-              var mimeTypeUntilWildcard = m.slice(0, -1);
-
-              var applicationTypesMatch = strStartsWith(ftype, mimeTypeUntilWildcard);
-
-              if (applicationTypesMatch) {
-                stop = true;
-              }
-
-            } else {
-              //only accept identical mimeType?
-              if (ftype === m) {
-                stop = true;
-              }
-
-            }
-            _errorText = ftype + ' uploads are not allowed here.';
-          });
-        });
-
-        if (!stop) {
-          scope.errormessage = _errorText;
-          return;
-        }
-
-        // push these onto the end of the existing uploads array, if any:
-        var oldstack = scope.uploads.length;
-        var newstack = scope.uploads.length + files.length;
-        scope.uploadsinprogress = scope.uploadsinprogress + files.length;
-        if (scope.containerId) {
-          scope.uploads = scope.uploads.concat(awsSvc.uploadContainerFiles(scope.containerId, files));
-        } else if (scope.episodeId) {
-          scope.uploads = scope.uploads.concat(handleTranscripts(scope.episodeId, files[0]));
-        } else{
-          scope.uploads = scope.uploads.concat(awsSvc.uploadUserFiles(appState.user._id, files));
-        }
-        for (var i = oldstack; i < newstack; i++) {
-          (function (i) { // closure for i
-            scope.uploadStatus[i] = {
-              "bytesSent": 0,
-              "bytesTotal": 1,
-              "percent": 0,
-              "name": files[i - oldstack].name
-            };
-            scope.uploads[i].then(function (data) {
-
-              if (scope.episodeId && scope.callback) {
-                scope.callback({data: data});
-                scope.uploadStatus[i].done = true;
-                scope.oneDone();
-                return;
-              }
-
-              modelSvc.cache("asset", data.file);
-              if (scope.callback) {
-                scope.callback({data: data.file._id});
-              }
-              scope.uploadStatus[i].done = true;
-              scope.oneDone();
-            }, function (data) {
-              scope.uploadStatus[i].error = data;
-              scope.oneDone();
-            }, function (update) {
-              scope.uploadStatus[i].bytesSent = update.bytesSent;
-              scope.uploadStatus[i].bytesTotal = update.bytesTotal;
-              scope.uploadStatus[i].percent = Math.ceil(update.bytesSent / update.bytesTotal * 100);
-            });
-          })(i);
-        }
-      };
-
-      scope.oneDone = function () {
-        scope.uploadsinprogress = scope.uploadsinprogress - 1;
-        if (scope.uploadsinprogress === 0) {
-          scope.fileinput.value = '';
-          scope.paused = false;
-        }
-      };
-
-      scope.handleDrop = function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        scope.handleDragLeave();
-        scope.handleUploads(e.dataTransfer.files);
-      };
-
-      scope.handleDragOver = function (e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        scope.handleDragEnter();
+  private handleUploads(files: FileList) {
+    if (this.multiple) {
+      if (files.length > 1 || this.uploads.length > 0) {
+        this.errormessage = 'You may only upload one file at a time here.';
         return false;
-      };
-      scope.handleDragEnter = function () {
-        scope.droptarget.addClass('droppable');
+      }
+    }
 
-      };
-      scope.handleDragLeave = function () {
-        scope.droptarget.removeClass('droppable');
+    if (!this.checkMimeType(files)) {
+      this.errormessage = this.errorText;
+      return;
+    }
 
-      };
+    //if optional onFiledrop attr is used,
+    //emit FileList to parent component and bail
+    if (this.onFiledrop) {
+      this.onFiledrop({data: files});
+      return;
+    }
 
-      scope.pauseUpload = function () {
-        awsSvc.pauseUpload();
-        scope.paused = true;
-      };
+    this.commenseUploads(files);
+  }
 
-      scope.resumeUpload = function () {
-        awsSvc.resumeUpload();
-        scope.paused = false;
-      };
+  private commenseUploads(files, data?) {
+    const {oldstack, newstack} = this.setupUploadDisplay(files, data);
+    this.processUploads(oldstack, newstack, files);
+  }
 
-      scope.cancelUpload = function () {
-        awsSvc.cancelUpload();
-      };
+  private setupUploadDisplay(files, data?) {
+    let oldstack = this.uploads.length;
+    let newstack = this.uploads.length + files.length;
+    this.uploadsinprogress = this.uploadsinprogress + files.length;
 
-      $timeout(function () { // need to wait for the DOM
-        scope.droptarget = element.find('.uploadDropTarget');
-        scope.fileinput = element.find('.uploadFileInput');
-        scope.uploadsinprogress = 0;
-        scope.droptarget[0].addEventListener('drop', scope.handleDrop);
-        scope.droptarget[0].addEventListener('dragover', scope.handleDragOver);
-        scope.droptarget[0].addEventListener('dragenter', scope.handleDragEnter);
-        scope.droptarget[0].addEventListener('dragleave', scope.handleDragLeave);
+    this.uploadStatus.push({
+      'bytesSent': 0,
+      'bytesTotal': 1,
+      'percent': 0,
+      'name': files[0].name
+    });
+
+    if (this.containerId) {
+      this.uploads = this.uploads.concat(this.awsSvc.uploadContainerFiles(this.containerId, files));
+    } else if (this.episodeId) {
+      this.uploads = this.uploads.concat(data);
+    } else {
+      this.uploads = this.uploads.concat(this.awsSvc.uploadUserFiles(this.appState.user._id, files));
+    }
+
+    return {oldstack, newstack};
+  }
+
+  private checkMimeType(files): boolean {
+    let acceptMimeTypes = false;
+    //because fileList object is not iterable, convert it to an array for .forEach to work
+    Array.from(files).forEach((file: File) => {
+      let fileType = file.type;
+
+      if (this.episodeId) {
+        let ext = file.name.match(/(vtt|srt)/);
+        if (ext && ext.length) {
+          fileType = 'text/' + ext[0];
+        }
+      }
+
+      this.mimeTypesArr.forEach((m: string) => {
+        const paramStrEndsWithStar = AssetUploaderController.strEndsWith(m, '*');
+        if (paramStrEndsWithStar) {
+          const mimeTypeUntilWildcard = m.slice(0, -1);
+          const applicationTypesMatch = AssetUploaderController.strStartsWith(fileType, mimeTypeUntilWildcard);
+          if (applicationTypesMatch) {
+            acceptMimeTypes = true;
+          }
+        } else {
+          if (fileType === m) {
+            acceptMimeTypes = true;
+          }
+        }
+        this.errorText = fileType + ' uploads are not allowed here.';
       });
+    });
+    return acceptMimeTypes;
+  }
+
+  private processUploads(oldstack, newstack, files) {
+    for (let i = oldstack; i < newstack; i++) {
+      ((i) => { // closure for i
+        this.uploadStatus[i] = {
+          'bytesSent': 0,
+          'bytesTotal': 1,
+          'percent': 0,
+          'name': files[i - oldstack].name
+        };
+
+        this.uploads[i]
+          .then((data) => {
+            if (this.episodeId && this.callback) {
+              this.callback({data: data});
+              this.uploadStatus[i].done = true;
+              this.oneDone();
+              return;
+            }
+
+            this.modelSvc.cache('asset', data.file);
+            if (this.callback) {
+              this.callback({data: data.file._id});
+            }
+            this.uploadStatus[i].done = true;
+            this.oneDone();
+          })
+          .catch(error => {
+            this.uploadStatus[i].error = error;
+          })
+          //second arg $q finally is 'nofify' to handle updaing upload progress
+          .finally(null, update => {
+            this.uploadStatus[i].bytesSent = update.bytesSent;
+            this.uploadStatus[i].bytesTotal = update.bytesTotal;
+            this.uploadStatus[i].percent = Math.ceil(update.bytesSent / update.bytesTotal * 100);
+          });
+      })(i);
+    }
+  }
+
+  private oneDone() {
+    this.uploadsinprogress = this.uploadsinprogress - 1;
+    if (this.uploadsinprogress === 0) {
+      this.fileinput.value = '';
+      this.paused = false;
     }
   };
+
+  private handleDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.handleDragLeave(e);
+    this.handleUploads(e.dataTransfer.files);
+  };
+
+  private handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    this.handleDragEnter(e);
+    return false;
+  };
+
+  private handleDragEnter(e) {
+    this.droptarget.addClass('droppable');
+  };
+
+  private handleDragLeave(e) {
+    this.droptarget.removeClass('droppable');
+  };
+
+  private static strStartsWith(str, prefix) {
+    return str.indexOf(prefix) === 0;
+  }
+
+  private static strEndsWith(str, match) {
+    return str.substring(str.length - match.length, str.length) === match;
+  }
+
+}
+
+export class AssetUploader implements ng.IComponentOptions {
+  static Name: string = 'ittAssetUploader';
+  bindings: any = {
+    containerId: '@?', // If no container ID is supplied, the uploaded asset(s) will be placed in user space instead.
+    episodeId: '@?', //for uploading transcripts
+    callback: '&?', // function that will be called for each uploaded file (with the newly cretaed asset's ID)
+    onFiledrop: '&?',
+    fileReceive: '<?',
+    mimeTypes: '@?',
+    instructions: '@?',
+    errorText: '@?',
+    multiple: '<?'
+  };
+  templateUrl: string = 'templates/producer/asset-uploader.html';
+  controller: ng.IComponentController = AssetUploaderController;
 }

@@ -1,10 +1,7 @@
-import {IBasePlayerManager, IMetaObj, IMetaProps} from './services/basePlayerManager/playerManagerCommons';
-import {IAnnotators} from './directives/sxsAnnotatorAutocomplete';
-import {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
-import {IWistiaMetaProps, IWistiaPlayerManager} from './services/wistia/wistiaPlayerManager';
 import {IDataSvc} from './services/dataSvc';
 import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
 import {TUrlFieldContexts} from './directives/ittUrlField';
+import {IModelSvc} from './services/modelSvc';
 /**
  * Created by githop on 4/11/17.
  */
@@ -45,6 +42,7 @@ export interface ILinkValidFields {
   error: ILinkValidationMessage | null;
 }
 
+
 export interface IUrlService {
   parseMediaSrcArr(mediaSrcArr: string[]): IParsedMediaSrcObj[];
   checkUrl(url: string): { type: string, mimeType: string };
@@ -52,9 +50,7 @@ export interface IUrlService {
   parseInput(input: string): string;
   isVideoUrl(url: string): boolean;
   resolveVideo(): any;
-}
-
-export interface IParsedMediaSrcObj {
+}export interface IParsedMediaSrcObj {
   type: 'kaltura' | 'youtube' | 'html5' | 'wistia';
   mediaSrcArr: string[];
 }
@@ -104,17 +100,12 @@ export interface IPlayerManager {
  it was defined.
  */
 
+export {IDataSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts, IModelSvc};
+
+
 export {
   IAnnotators,
-  IBasePlayerManager,
-  IDataSvc,
-  IMetaObj,
-  IMetaProps,
-  IValidationDisplay,
-  IValidationSvc,
-  IWistiaPlayerManager,
+  IBasePlayerManager,IDataSvc,IMetaObj,
+  IMetaProps, IValidationDisplay, IValidationSvc,IWistiaPlayerManager,
   IWistiaMetaProps,
-  IWistiaUrlservice,
-  IXFrameOptsResult,
-  TUrlFieldContexts
-};
+  IWistiaUrlservice, IXFrameOptsResult, TUrlFieldContexts, IModelSvc};

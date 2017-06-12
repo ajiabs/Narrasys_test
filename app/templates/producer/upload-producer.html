@@ -20,10 +20,12 @@
 	<div ng-if="showUploadButtons || !item.asset">
 		<span ng-if="showUploadField">
 
-			<div ng-if="canAccess"
-				 itt-asset-uploader="episodeContainerId"
-				 callback="assetUploaded(data)" mime-types="{{mimes}}">
-			</div>
+			<itt-asset-uploader
+        container-id="{{episodeContainerId}}"
+        ng-if="canAccess"
+        callback="assetUploaded(data)"
+        mime-types="{{mimes}}">
+      </itt-asset-uploader>
 		</span>
 		<span ng-if="!showUploadField">
 			<button class="button" ng-click="chooseAsset()">Browse uploaded</button>
