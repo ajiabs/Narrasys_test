@@ -126,7 +126,7 @@
   z-index: 10;
 }
 
-.transcripts__modal--wrapper {
+.transcripts-modal__wrapper {
   max-height: calc(100% - 100px);
   position: fixed;
   width: 85%;
@@ -140,10 +140,11 @@
   align-items: center;
 }
 
-.transcripts__modal--content {
+.transcripts-modal__content {
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.50);
   background-color: white;
   padding: 5em;
+  width: 100%;
 }
 
 .smart-sentences__wrapper {
@@ -151,13 +152,24 @@
     padding: 1em 0;
   }
 
-  label {
-    font-size: 16px !important;
-  }
 }
 
 .smart-sentences__input {
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  div {
+    padding: 0.1em;
+  }
+  input {
+    width: 1.5em !important;
+  }
+
+  label {
+    font-size: 16px !important;
+    white-space: normal !important;
+  }
 }
 
 .container.customer {
