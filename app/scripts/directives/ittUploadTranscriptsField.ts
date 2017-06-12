@@ -25,8 +25,8 @@ const TEMPLATE = `
     </itt-asset-uploader>
 
     <itt-modal
-      wrapper-class="transcripts__modal--wrapper"
-      modal-class="transcripts__modal--content"
+      wrapper-class="transcripts-modal__wrapper"
+      modal-class="transcripts-modal__content"
       ng-if="$ctrl.showOptions">
       <div class="smart-sentences__wrapper">
         <div><p>
@@ -35,11 +35,16 @@ const TEMPLATE = `
           transcripts have successfully uploaded.</p>
         </div>
         <div class="smart-sentences__input">
-          <input class="smart-sentences__input" id="groupParam" type="checkbox" ng-model="$ctrl.selectedParam"
-                 ng-false-value="'none'"
-                 ng-true-value="'group_into_sentences'"/>
-          <label class="smart-sentences__input"
-                 for="groupParam">Group transcript segments into complete sentences (recommended for closed caption transcripts)</label>
+          <div>
+            <input class="smart-sentences__input" id="groupParam" type="checkbox" ng-model="$ctrl.selectedParam"
+                   ng-false-value="'none'"
+                   ng-true-value="'group_into_sentences'"/>
+          </div>
+          <div>
+            <label class="smart-sentences__input"
+                   for="groupParam">Group transcript segments into complete sentences (recommended for closed caption
+              transcripts)</label>
+          </div>
         </div>
         <div>
           <button ng-click="$ctrl.commenseUpload()">upload transcripts</button>
