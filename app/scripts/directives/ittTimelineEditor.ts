@@ -19,7 +19,7 @@ export default function ittTimelineEditor() {
       		<input type="checkbox" ng-model="$ctrl._timeline.hidden"/>
       		<itt-enable-socialshare
       		  narrative="$ctrl.narrative"
-      		  container-id="$ctrl.containerId"
+      		  container-id="{{$ctrl.containerId}}"
       		  timeline="$ctrl._timeline">
           </itt-enable-socialshare>
       		<div class="ancillaryNav">

@@ -5,7 +5,8 @@
     "start": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.dev local --progress --watch --colors",
     "prod": "rm -rf dist/* && ./node_modules/.bin/webpack --progress --colors --env.prod",
     "prod:local": "rm -rf tmp/* && ./node_modules/.bin/webpack --progress --colors --env.prod local",
-    "prod:watch": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.prod --progress --colors --watch"
+    "prod:watch": "rm -rf tmp/* && ./node_modules/.bin/webpack --env.prod --progress --colors --watch",
+    "analyze": "rm -rf dist/* && ./node_modules/.bin/webpack --env.prod analyze --progress --colors"
   },
   "dependencies": {
     "@types/angular": "1.5.11",
@@ -38,6 +39,7 @@
     "typescript": "^2.3.3",
     "url-loader": "^0.5.8",
     "webpack": "^2.6.0",
+    "webpack-bundle-analyzer": "^2.8.2",
     "webpack-chunk-hash": "^0.4.0",
     "webpack-notifier": "^1.5.0"
   }

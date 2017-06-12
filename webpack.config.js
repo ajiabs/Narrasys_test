@@ -5,6 +5,8 @@ const WebpackChunkHash = require('webpack-chunk-hash');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const nodeModulesDir = join(__dirname, './node_modules');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 const deps = [
   'angular-ui-tree/dist/angular-ui-tree.min.js',
@@ -165,6 +167,7 @@ function configWp(env) {
           }
         }
       }),
+      env.prod === 'analyze' ? new BundleAnalyzerPlugin() : undefined,
       env.dev ? new WebpackNotifierPlugin({alwaysNotify: true}) : undefined,
       env.prod ? new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',

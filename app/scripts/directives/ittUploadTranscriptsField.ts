@@ -34,12 +34,12 @@ const TEMPLATE = `
           transcript entries must be individually edited or deleted. This page will automatically refresh after
           transcripts have successfully uploaded.</p>
         </div>
-        <div>
+        <div class="smart-sentences__input">
           <input class="smart-sentences__input" id="groupParam" type="checkbox" ng-model="$ctrl.selectedParam"
                  ng-false-value="'none'"
                  ng-true-value="'group_into_sentences'"/>
           <label class="smart-sentences__input"
-                 for="groupParam">Group transcript segments into complete sentences</label>
+                 for="groupParam">Group transcript segments into complete sentences (recommended for closed caption transcripts)</label>
         </div>
         <div>
           <button ng-click="$ctrl.commenseUpload()">upload transcripts</button>

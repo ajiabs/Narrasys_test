@@ -18,7 +18,7 @@ const TEMPLATE = `
     ng-disabled="$ctrl.type === 'timeline' || $ctrl.narrative.disableSocialshare"
     ng-model="$ctrl.narrative.enable_social_sharing"/>
 </span>
-<div ng-if="$ctrl[$ctrl.type].enable_social_sharing" class="socialshare-filedrop">
+<div ng-if="$ctrl.narrative.enable_social_sharing" class="socialshare-filedrop">
 
   <div ng-repeat="(tag, imgObj) in $ctrl.images" ng-class="'itt-filedrop__' + tag">
     <itt-filedrop
@@ -138,7 +138,6 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
         this.files[tag].file = data;
         this.images = Object.assign({}, this.images, images);
         //set a reference to the uploaded file
-        console.log('aha!');
         this.model[tag] = {file: data};
       })
       .catch(e => console.log('whoopsies', e));
