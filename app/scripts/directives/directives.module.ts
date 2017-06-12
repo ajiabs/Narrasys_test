@@ -7,7 +7,8 @@ import 'angular';
 
 import autofocus from './autofocus';
 import ittAnnotationField from './ittAnnotationField';
-import ittAssetUploader from './ittAssetUploader';
+// import ittAssetUploader from './ittAssetUploader';
+import {AssetUploader} from './ittAssetUploader';
 import ittClipboard from './ittClipboard';
 import ittColorSelect from './ittColorSelect';
 import ittContainer from './ittContainer';
@@ -68,7 +69,7 @@ import ittTooltip from './ittTooltip';
 import ittTranscriptField from './ittTranscriptField';
 import ittTransitionSelect from './ittTransitionSelect';
 import ittTypographySelect from './ittTypographySelect';
-import ittUploadTranscripts from './ittUploadTranscriptsField';
+import {UploadTranscripts} from './ittUploadTranscriptsField';
 import ittUrlField from './ittUrlField';
 import ittUser from './ittUser';
 import ittValidAsset from './ittValidAsset';
@@ -89,7 +90,7 @@ import sxsInputTime from './sxsInputTime';
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
-  .directive('ittAssetUploader', ittAssetUploader)
+  .component(AssetUploader.Name, new AssetUploader())
   .directive('ittClipboard', ittClipboard)
   .directive('ittColorSelect', ittColorSelect)
   .directive('ittContainer', ittContainer)
@@ -151,7 +152,7 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('ittTranscriptField', ittTranscriptField)
   .directive('ittTransitionSelect', ittTransitionSelect)
   .directive('ittTypographySelect', ittTypographySelect)
-  .directive('ittUploadTranscripts', ittUploadTranscripts)
+  .component(UploadTranscripts.Name, new UploadTranscripts())
   .directive('ittUrlField', ittUrlField)
   .directive('ittUser', ittUser)
   .directive('ittValidAsset', ittValidAsset)

@@ -1,48 +1,48 @@
 <div class="assetUploader">
-	<div ng-if="uploads.length">
-		<div class="uploadList" ng-repeat="upload in uploads">
+  <div ng-if="$ctrl.uploads.length">
+    <div class="uploadList" ng-repeat="upload in $ctrl.uploads">
 			<span class="uploadName">
-				{{uploadStatus[$index].name}}:
+				{{$ctrl.uploadStatus[$index].name}}:
 			</span>
-			<span class="uploadProgress">
-				<span ng-if="uploadStatus[$index].done">Upload complete</span>
-				<div ng-if="uploadStatus[$index].error">Error</div>
-				<span ng-if="!uploadStatus[$index].done && !uploadStatus[$index].error">
-					<progress ng-attr-max="{{uploadStatus[$index].bytesTotal}}" ng-attr-value="{{uploadStatus[$index].bytesSent}}">
+      <span class="uploadProgress">
+				<span ng-if="$ctrl.uploadStatus[$index].done">Upload complete</span>
+				<div ng-if="$ctrl.uploadStatus[$index].error">Error</div>
+				<span ng-if="!$ctrl.uploadStatus[$index].done && !$ctrl.uploadStatus[$index].error">
+					<progress ng-attr-max="{{$ctrl.uploadStatus[$index].bytesTotal}}" ng-attr-value="{{$ctrl.uploadStatus[$index].bytesSent}}">
 					</progress>
-					<span ng-switch="uploadStatus[$index].percent">
+					<span ng-switch="$ctrl.uploadStatus[$index].percent">
 						<span ng-switch-when="100">...</span>
-						<span ng-switch-default>{{uploadStatus[$index].percent}}%</span>
+						<span ng-switch-default>{{$ctrl.uploadStatus[$index].percent}}%</span>
 					</span>
 				</span>
 			</span>
-			<div ng-if="uploadStatus[$index].error">{{uploadStatus[$index].error}}</div>
-		</div>
-		<span ng-if="uploadsinprogress > 0">{{uploadsinprogress}} files remaining
-			<button ng-if="!paused" ng-click="pauseUpload()">Pause</button>
-			<button ng-if="paused" ng-click="resumeUpload()">Resume</button>
-			<button ng-click="cancelUpload()">Cancel</button>
+      <div ng-if="$ctrl.uploadStatus[$index].error">{{$ctrl.uploadStatus[$index].error}}</div>
+    </div>
+    <span ng-if="$ctrl.uploadsinprogress > 0">{{$ctrl.uploadsinprogress}} files remaining
+			<button ng-if="!$ctrl.paused" ng-click="$ctrl.pauseUpload()">Pause</button>
+			<button ng-if="$ctrl.paused" ng-click="$ctrl.resumeUpload()">Resume</button>
+			<button ng-click="$ctrl.cancelUpload()">Cancel</button>
 		</span>
-	</div>
-	<div ng-if="errormessage" class="error-red" ng-bind-html="errormessage"></div>
+  </div>
+  <div ng-if="$ctrl.errormessage" class="error-red" ng-bind-html="$ctrl.errormessage"></div>
 
 
-	<div class="uploadDropTarget">
-		<a style="float:right" ng-click="showInstructions=!showInstructions">(?)</a> Drag and drop
-		<span ng-if="multiple">files</span>
-		<span ng-if="!multiple">a file</span> here
-		<br>
-		<small>
-			or choose
-			<span ng-if="multiple">files</span>
-			<span ng-if="!multiple">a file</span> to upload:
-			<!--<input class="uploadFileInput" type="file" multiple onchange="angular.element(this).scope().handleUploads(this.files)">-->
-			<input class="uploadFileInput" type="file" multiple itt-files-handler on-selected="handleUploads(files)">
-		</small>
-		<div ng-if="showInstructions" style="text-align:left">
-			<!--<small>We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. </small>-->
-			<small>{{manPage}}</small>
-		</div>
-	</div>
+  <div class="uploadDropTarget">
+    <a style="float:right" ng-click="$ctrl.showInstructions = !$ctrl.showInstructions">(?)</a> Drag and drop
+    <span ng-if="$ctrl.multiple">files</span>
+    <span ng-if="!$ctrl.multiple">a file</span> here
+    <br>
+    <small>
+      or choose
+      <span ng-if="$ctrl.multiple">files</span>
+      <span ng-if="!$ctrl.multiple">a file</span> to upload:
+      <!--<input class="uploadFileInput" type="file" multiple onchange="angular.element(this).scope().handleUploads(this.files)">-->
+      <input class="uploadFileInput" type="file" multiple="true" itt-files-handler on-selected="$ctrl.handleUploads(files)">
+    </small>
+    <div ng-if="$ctrl.showInstructions" style="text-align:left">
+      <!--<small>We support uploads of most common file formats, including .doc, .docx, .jpeg, .jpg, .pdf, .png, .ppt, .pptx, .rtf, .txt, and .zip. </small>-->
+      <small>{{$ctrl.manPage}}</small>
+    </div>
+  </div>
 
 </div>

@@ -81,7 +81,10 @@
             </div>
           </div>
 
-          <itt-upload-transcripts ng-if="userHasRole('admin')" episode-id="{{episode._id}}"></itt-upload-transcripts>
+          <itt-upload-transcripts
+            ng-if="episode.master_asset_id && !episode._master_asset_was_changed  && (userHasRole('admin') || userHasRole('customer admin'))"
+            episode-id="{{episode._id}}">
+          </itt-upload-transcripts>
 
           <!-- end episode content tab -->
         </div>
