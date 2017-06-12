@@ -24,7 +24,7 @@ import '../styles/app.scss';
 import '../styles/vendor.scss';
 
 import './plugin/plugins';
-import 'core-js/shim';
+import 'core-js/client/shim';
 import 'angular';
 import 'angular-ui-tree';
 //text angular
