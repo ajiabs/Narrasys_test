@@ -62,7 +62,7 @@ interface ITranscriptPayload {
     type: 'TRANSCRIPT_UPLOAD';
     promises: ng.IPromise<any>;
     files: FileList;
-  }
+  };
 }
 
 class UploadTranscriptsController implements ng.IComponentController {
