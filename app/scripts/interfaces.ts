@@ -2,6 +2,9 @@ import {IDataSvc} from './services/dataSvc';
 import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
 import {TUrlFieldContexts} from './directives/ittUrlField';
 import {IModelSvc} from './services/modelSvc';
+import {IBasePlayerManager, IMetaObj, IMetaProps} from './services/basePlayerManager/playerManagerCommons';
+import {IWistiaMetaProps, IWistiaPlayerManager} from './services/wistia/wistiaPlayerManager';
+import {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
 /**
  * Created by githop on 4/11/17.
  */
@@ -15,13 +18,24 @@ export interface ILangform {
   it?: boolean;
 }
 
-export interface IScriptLoader {
-  load(...args:any[]): ng.IPromise<{}>;
+export interface IAnnotator {
+  name: { en: string };
+  annotation_image_id: string;
+  key?: string;
+  imageUrl?: string;
+}
+
+export interface IAnnotators {
+  [key: string]: IAnnotator;
 }
 
 export type Partial<T> = {
   [P in keyof T]?: T[P];
 };
+
+export interface IScriptLoader {
+  load(...args:any[]): ng.IPromise<{}>;
+}
 
 export interface ILinkValidationMessage {
   showInfo?: boolean;
@@ -100,12 +114,18 @@ export interface IPlayerManager {
  it was defined.
  */
 
-export {IDataSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts, IModelSvc};
-
 
 export {
-  IAnnotators,
-  IBasePlayerManager,IDataSvc,IMetaObj,
-  IMetaProps, IValidationDisplay, IValidationSvc,IWistiaPlayerManager,
+  IBasePlayerManager,
+  IDataSvc,
+  IMetaObj,
+  IMetaProps,
+  IModelSvc,
+  IValidationDisplay,
+  IValidationSvc,
+  IWistiaPlayerManager,
   IWistiaMetaProps,
-  IWistiaUrlservice, IXFrameOptsResult, TUrlFieldContexts, IModelSvc};
+  IWistiaUrlservice,
+  IXFrameOptsResult,
+  TUrlFieldContexts
+};
