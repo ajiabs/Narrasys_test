@@ -432,29 +432,75 @@ input[readonly] {
 	content: "\e600";
 }
 
-.button-facebook:before,
-.eventIcon.icon-comment:before {
-  content: '\e917';
+//.button-facebook:before,
+//.eventIcon.icon-comment:before {
+//
+//}
+
+.button-facebook,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e917';
+  }
+
+  &:hover {
+    color: $fb-blue;
+  }
 }
 
-.button-twitter:before,
-.eventIcon.icon-comment:before {
-  content: '\e918';
+.button-twitter,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e918';
+  }
+
+  &:hover {
+    color: $twitter-blue;
+  }
 }
 
-.button-linkedin:before,
-.eventIcon.icon-comment:before {
-  content: '\e916';
+.button-linkedin,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e916';
+  }
+
+  &:hover {
+    color: $linkedin-blue;
+  }
 }
 
-.button-google:before,
-.eventIcon.icon-comment:before {
-  content: '\e919';
+.button-google,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e919';
+  }
+
+  &:hover {
+    color: $gplus-red;
+  }
 }
 
-.button-reddit:before,
-.eventIcon.icon-comment:before {
-  content: '\e91d';
+.button-reddit,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e91d';
+  }
+
+  &:hover {
+    color: $reddit-orange;
+  }
+}
+
+.button-pinterest,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e91b';
+  }
+
+  &:hover {
+    color: $pinterest-red;
+  }
 }
 
 .button-email:before,

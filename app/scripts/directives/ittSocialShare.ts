@@ -51,7 +51,7 @@ const TEMPLTE = `
 </span>
 `;
 
-type SupportedProviders = 'facebook' | 'twitter' | 'google' | 'linkedin' | 'email';
+type SupportedProviders = 'facebook' | 'twitter' | 'google' | 'linkedin' | 'email' | 'reddit' | 'pinterest';
 interface ISocialShareBindings {
   providers: SupportedProviders[];
   subdomain: string;
