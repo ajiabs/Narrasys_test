@@ -884,7 +884,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       .success(function (containerAssets) {
         modelSvc.containers[containerId].assetsHaveLoaded = true;
         angular.forEach(containerAssets.files, function (asset) {
-          modelSvc.cache('asset', asset);
+          modelSvc.cache('asset', createInstance('Asset', asset));
         });
         modelSvc.resolveEpisodeAssets(episodeId);
       });

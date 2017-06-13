@@ -35,7 +35,7 @@ const TEMPLATE = `
   <!--end social controls-->
 
   <!--begin browse uploaded-->
-  <itt-modal modal-class="narrative__modal" ng-if="$ctrl.browseUploaded">
+  <itt-modal wrapper-class="responsive-modal__wrapper" modal-class="narrative__modal" ng-if="$ctrl.browseUploaded">
     <div class="scrollContainer">
       <sxs-container-assets
         container-id="{{$ctrl.containerId}}"
