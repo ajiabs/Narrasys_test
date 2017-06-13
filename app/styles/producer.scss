@@ -503,14 +503,26 @@ input[readonly] {
   }
 }
 
-.button-email:before,
-.eventIcon.icon-comment:before {
-  content: '\e91a';
+.button-email,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e91a';
+  }
+
+  &:hover {
+    color: $narrasysOrange;
+  }
 }
 
-.button-share:before,
-.eventIcon.icon-comment:before {
-  content: '\e915';
+.button-share,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e915';
+  }
+
+  &:hover {
+    color: $narrasysOrange;
+  }
 }
 
 .button-link:before,

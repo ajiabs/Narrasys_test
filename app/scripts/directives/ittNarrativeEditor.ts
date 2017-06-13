@@ -90,7 +90,7 @@ export default function ittNarrativeEditor() {
         <label for="nGuestAccess">Enable Guest Access</label>
       </div>
 
-      <div>
+      <div ng-if="$ctrl._narrative._id">
         <input
           id="socialshare-checkbox"
           type="checkbox"
