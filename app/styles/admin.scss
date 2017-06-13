@@ -126,7 +126,7 @@
   z-index: 10;
 }
 
-.transcripts-modal__wrapper {
+.responsive-modal__wrapper {
   max-height: calc(100% - 100px);
   position: fixed;
   width: 100%;
@@ -141,7 +141,7 @@
   padding: 0.5em;
 }
 
-.transcripts-modal__content {
+.responsive-modal__content {
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.50);
   background-color: white;
   width: 100%;
