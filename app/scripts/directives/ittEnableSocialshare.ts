@@ -74,7 +74,6 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
   narrative;
   timeline;
   containerId;
-  editorForm: ng.IFormController;
   //
   browseUploaded: boolean = false;
   images: Partial<IImages> = {
@@ -82,13 +81,12 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     wide: null,
   };
   model: any;
-  imageIdsArr: string[];
   private files = {
     square: { file: null },
     wide: { file: null }
   };
-
   private type: 'narrative' | 'timeline';
+
   static $inject = ['uploadsService', 'imageResize', 'dataSvc', 'modelSvc'];
   constructor(
     public uploadsService,
@@ -105,6 +103,9 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     this.model = this[this.type];
     if (this.model[this.type + '_image_ids'] && this.model[this.type + '_image_ids'].length > 0) {
       this.getImageAssets();
+    } else {
+      //narratives / timelines depend on the client for adding the <type>_image_ids array to new records...
+      this.model[this.type + '_image_ids'] = [];
     }
   }
 

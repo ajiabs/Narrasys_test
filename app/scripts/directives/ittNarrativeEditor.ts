@@ -158,7 +158,6 @@ export default function ittNarrativeEditor() {
           'guest_access_allowed',
           'enable_social_sharing',
           'narrative_image_ids',
-          'timeline_image_ids',
           'path_slug',
           'support_url',
           'disable_navigation',
@@ -181,11 +180,6 @@ export default function ittNarrativeEditor() {
         if (socialImagesToUpload.length > 0) {
           uploadsService.uploadTaggedFiles(socialImagesToUpload, ctrl.selectedCustomer.root_container_id)
             .then((assets) => {
-
-              if (!narrative.narrative_image_ids) {
-                narrative.narrative_image_ids = [];
-              }
-
               assets.forEach((asset) => narrative.narrative_image_ids.push(asset.file._id));
               uploadsService.resetUploads();
               ctrl.onUpdate({n: narrative});

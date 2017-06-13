@@ -287,7 +287,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'name',
       'description',
       'hidden',
-      'timeline_image_id',
+      'timeline_image_ids',
       'narrative_id',
       '_id'
     ];
