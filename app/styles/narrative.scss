@@ -354,8 +354,13 @@ and (max-device-width : 568px) {
 	padding: 10px;
 }
 
-.narrative__modal input[type="checkbox"] {
-	width: auto;
+.narrative__modal {
+  input[type="checkbox"] {
+    width: auto;
+  }
+  input:disabled+label {
+    color: grey;
+  }
 }
 
 .timeline--hidden {
@@ -364,5 +369,12 @@ and (max-device-width : 568px) {
 
 .--break-word {
   word-wrap: break-word;
+}
+
+.narrative-flags {
+  display: flex;
+  div {
+    padding: 0.1em 0.5em;
+  }
 }
 

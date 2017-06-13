@@ -69,16 +69,37 @@ export default function ittNarrativeEditor() {
     </label>
     <input id="nSupportUrl" type="text" name="supportUrl" itt-valid-url placeholder="link for support"
            ng-model="$ctrl._narrative.support_url"/>
-    <label for="nNewWindow">Disable New Window</label>
-    <input id="nNewWindow" type="checkbox" ng-model="$ctrl._narrative.disable_new_window"/> |
-    <label for="nDisableNav">Disable Navigation</label>
-    <input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/> |
-    <label for="nGuestAccess">Enable Guest Access</label>
-    <input
-      id="nGuestAccess"
-      type="checkbox"
-      ng-change="$ctrl.guestAccessEffects()"
-      ng-model="$ctrl._narrative.guest_access_allowed"/> |
+
+    <div class="narrative-flags">
+      <div>
+        <input id="nNewWindow" type="checkbox" ng-model="$ctrl._narrative.disable_new_window"/>
+        <label for="nNewWindow">Disable New Window</label>
+      </div>
+
+      <div>
+        <input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/>
+        <label for="nDisableNav">Disable Navigation</label>
+      </div>
+
+      <div>
+        <input
+          id="nGuestAccess"
+          type="checkbox"
+          ng-change="$ctrl.guestAccessEffects()"
+          ng-model="$ctrl._narrative.guest_access_allowed"/>
+        <label for="nGuestAccess">Enable Guest Access</label>
+      </div>
+
+      <div>
+        <input
+          id="socialshare-checkbox"
+          type="checkbox"
+          ng-disabled="$ctrl._narrative.disableSocialshare"
+          ng-model="$ctrl._narrative.enable_social_sharing"/>
+        <label for="socialshare-checkbox">Enable Socialshare</label>
+      </div>
+    </div>
+
     <itt-enable-socialshare
       ng-if="$ctrl._narrative._id"
       container-id="{{$ctrl.selectedCustomer.root_container_id}}"

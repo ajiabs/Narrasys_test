@@ -10,14 +10,6 @@ import { IAsset } from '../models';
  */
 
 const TEMPLATE = `
-<span>
-  <label for="socialshare-checkbox">Enable Socialshare</label>
-  <input
-    id="socialshare-checkbox"
-    type="checkbox"
-    ng-disabled="$ctrl.type === 'timeline' || $ctrl.narrative.disableSocialshare"
-    ng-model="$ctrl.narrative.enable_social_sharing"/>
-</span>
 <div ng-if="$ctrl.narrative.enable_social_sharing" class="socialshare-filedrop">
 
   <div ng-repeat="(tag, imgObj) in $ctrl.images" ng-class="'itt-filedrop__' + tag">
