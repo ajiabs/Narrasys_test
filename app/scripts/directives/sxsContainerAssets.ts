@@ -1,6 +1,7 @@
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
 
 import {IDataSvc, IModelSvc} from '../interfaces';
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
 
 interface ISxsContainerAssetsBindings {
   containerId: string;
@@ -62,7 +63,7 @@ class SxsContainerAssetsController implements ng.IComponentController {
         this.assets = Object.keys(this.modelSvc.assets)
           .reduce((newAssets: any, assetKey: any) => {
             const asset = this.modelSvc.assets[assetKey];
-            if (asset.tags && asset.tags[0] === 'square' || asset.tags[0] === 'wide') {
+            if (asset.tags && asset.tags[0] === SOCIAL_IMAGE_SQUARE || asset.tags[0] === SOCIAL_IMAGE_WIDE) {
               newAssets[assetKey] = asset;
             }
             return newAssets

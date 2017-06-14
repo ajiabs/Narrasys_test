@@ -3,6 +3,8 @@
  */
 
 import {IAsset} from '../models';
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants'
+
 /**
  * @ngdoc directive
  * @name iTT.directive:ittNarrativeEditor
@@ -189,12 +191,12 @@ export default function ittNarrativeEditor() {
 
         let narrative = ittUtils.pick(n, fields);
         let socialImagesToUpload: {file: FileList, tag: string}[] = [];
-        if (n.square) {
-          socialImagesToUpload.push({file: n.square.file, tag: 'square'});
+        if (n.social_image_square) {
+          socialImagesToUpload.push({file: n.social_image_square.file, tag: SOCIAL_IMAGE_SQUARE});
         }
 
-        if (n.wide) {
-          socialImagesToUpload.push({file: n.wide.file, tag: 'wide'});
+        if (n.social_image_wide) {
+          socialImagesToUpload.push({file: n.social_image_wide.file, tag: SOCIAL_IMAGE_WIDE});
         }
 
         //if there are pending social image uploads, upload them

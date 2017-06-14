@@ -89,7 +89,6 @@ import sxsInputI18n from './sxsInputI18n';
 import sxsInputTime from './sxsInputTime';
 import {IttSocialShare} from './ittSocialShare';
 import {EnableSocialshare} from './ittEnableSocialshare';
-import {SocialImages} from './ittSocialImages';
 import {Filedrop} from './ittFiledrop';
 import {UploadProgress} from './ittUploadProgress';
 
@@ -178,7 +177,6 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('autofocus', autofocus)
   .component(IttSocialShare.Name, new IttSocialShare())
   .component(EnableSocialshare.Name, new EnableSocialshare())
-  .component(SocialImages.Name, new SocialImages())
   .component(Filedrop.Name, new Filedrop())
   .component(UploadProgress.Name, new UploadProgress());
 

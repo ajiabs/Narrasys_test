@@ -2,6 +2,7 @@
  *
  * Created by githop on 3/23/16.
  */
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants'
 
 /**
  * @ngdoc service
@@ -21,8 +22,9 @@ export interface IimageResize {
   readFileToImg(file: File): ng.IPromise<HTMLImageElement>;
   resizeImg(img: HTMLImageElement, maxWidth: number, maxHeight: number, center:boolean): ng.IPromise<string>;
   calcAspectRatio(w: number, h: number): number;
-  getImageTagType(w: number, h: number): 'square' | 'wide';
+  getImageTagType(w: number, h: number): 'social_image_square' | 'social_image_wide';
 }
+
 
 //When this module was authored, Safari did not support the use of File Objects. A workaround
 //is to coerce a Blob into a File by adding the missing properties
@@ -180,9 +182,9 @@ export default function imageResize($q): IimageResize {
   function getImageTagType(w: number, h: number): 'social_image_square' | 'social_image_wide' {
     const aspectRatio = calcAspectRatio(w, h);
     if (aspectRatio > 1.25) {
-      return 'social_image_wide';
+      return SOCIAL_IMAGE_WIDE;
     } else {
-      return 'social_image_square';
+      return SOCIAL_IMAGE_SQUARE;
     }
   }
 
