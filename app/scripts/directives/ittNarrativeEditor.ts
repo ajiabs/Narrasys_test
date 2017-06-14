@@ -2,6 +2,7 @@
  * Created by githop on 6/16/16.
  */
 
+import {IAsset} from '../models';
 /**
  * @ngdoc directive
  * @name iTT.directive:ittNarrativeEditor
@@ -36,43 +37,82 @@
 export default function ittNarrativeEditor() {
   return {
     restrict: 'EA',
-    template: [
-      '<div class="narrative__edit">',
-      '<h2>Narrative Settings</h2>',
-      '	<form name="nEditForm">',
-      '		<div ng-show="$ctrl._containerInfo && $ctrl.canAccess">',
-      '			<label for="nCustomer">Customer',
-      '				<itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>',
-      '			</label>',
-      '			<select id="nCustomer" name="customer" required ng-model="$ctrl.selectedCustomer" ng-change="$ctrl.selectCustomer($ctrl.selectedCustomer)" ng-options="cust.name for cust in $ctrl._customers track by cust._id"></select></br>',
-      '		</div>',
-      '   <div ng-if="$ctrl.selectedCustomer && $ctrl._containerInfo == null">',
-      '   <h5>{{$ctrl.selectedCustomer.name}}</h5>',
-      '   </div>',
-      '		<label id="nName">Narrative Title',
-      '			<itt-validation-tip ng-if="nEditForm.name.$invalid" text="Title is required"></itt-validation-tip>',
-      '		</label>',
-      '		<input for="nName" type="text" name="name" placeholder="Add Narrative Title" ng-model="$ctrl._narrative.name.en" required>',
-      '		<label for="nDescription">Description</label>',
-      '		<textarea id="nDescription" name="description" placeholder="Add a Description" ng-model="$ctrl._narrative.description.en"></textarea>',
-      '   <div ng-if="!$ctrl.hidePathSlug"><itt-guest-accessible-url narrative="$ctrl._narrative" sub-domain="{{$ctrl.selectedCustomer.domains[0]}}" customer="$ctrl.selectedCustomer"></itt-guest-accessible-url></div>',
-      '		<label for="nSupportUrl">Support Url',
-      '			<itt-validation-tip ng-if="nEditForm.supportUrl.$invalid" text="Not a valid URL"></itt-validation-tip>',
-      '		</label>',
-      '		<input id="nSupportUrl" type="text" name="supportUrl" itt-valid-url placeholder="link for support" ng-model="$ctrl._narrative.support_url"/>',
-      '		<label for="nNewWindow">Disable New Window</label>',
-      '		<input id="nNewWindow" type="checkbox" ng-model="$ctrl._narrative.disable_new_window"/> | ',
-      '		<label for="nDisableNav">Disable Navigation</label>',
-      '		<input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/> | ',
-      '		<label for="nGuestAccess">Enable Guest Access</label>',
-      '		<input id="nGuestAccess" type="checkbox" ng-model="$ctrl._narrative.guest_access_allowed"/>',
-      '		<div class="ancillaryNav">',
-      '			<button class="done" ng-click="$ctrl.handleUpdate($ctrl._narrative)" ng-disabled="nEditForm.$invalid || $ctrl._narrative.error">Save</button>',
-      '			<button class="done" ng-click="$ctrl.onDone({$event: $event})">Cancel</button>',
-      '		</div>',
-      '	</form>',
-      '</div>'
-    ].join(' '),
+    template: `
+<div class="narrative__edit">
+  <h2>Narrative Settings</h2>
+  <form name="nEditForm">
+    <div ng-show="$ctrl._containerInfo && $ctrl.canAccess">
+      <label for="nCustomer">Customer
+        <itt-validation-tip ng-if="nEditForm.customer.$invalid" text="A customer must be set"></itt-validation-tip>
+      </label>
+      <select id="nCustomer" name="customer" required ng-model="$ctrl.selectedCustomer"
+              ng-change="$ctrl.selectCustomer($ctrl.selectedCustomer)"
+              ng-options="cust.name for cust in $ctrl._customers track by cust._id"></select></br>
+    </div>
+    <div ng-if="$ctrl.selectedCustomer && $ctrl._containerInfo == null">
+      <h5>{{$ctrl.selectedCustomer.name}}</h5>
+    </div>
+    <label id="nName">Narrative Title
+      <itt-validation-tip ng-if="nEditForm.name.$invalid" text="Title is required"></itt-validation-tip>
+    </label>
+    <input for="nName" type="text" name="name" placeholder="Add Narrative Title"
+           ng-model="$ctrl._narrative.name.en" required>
+    <label for="nDescription">Description</label>
+    <textarea id="nDescription" name="description" placeholder="Add a Description"
+              ng-model="$ctrl._narrative.description.en"></textarea>
+    <div ng-if="!$ctrl.hidePathSlug">
+      <itt-guest-accessible-url narrative="$ctrl._narrative" sub-domain="{{$ctrl.selectedCustomer.domains[0]}}"
+                                customer="$ctrl.selectedCustomer"></itt-guest-accessible-url>
+    </div>
+    <label for="nSupportUrl">Support Url
+      <itt-validation-tip ng-if="nEditForm.supportUrl.$invalid" text="Not a valid URL"></itt-validation-tip>
+    </label>
+    <input id="nSupportUrl" type="text" name="supportUrl" itt-valid-url placeholder="link for support"
+           ng-model="$ctrl._narrative.support_url"/>
+
+    <div class="narrative-flags">
+      <div>
+        <input id="nNewWindow" type="checkbox" ng-model="$ctrl._narrative.disable_new_window"/>
+        <label for="nNewWindow">Disable New Window</label>
+      </div>
+
+      <div>
+        <input id="nDisableNav" type="checkbox" ng-model="$ctrl._narrative.disable_navigation"/>
+        <label for="nDisableNav">Disable Navigation</label>
+      </div>
+
+      <div>
+        <input
+          id="nGuestAccess"
+          type="checkbox"
+          ng-change="$ctrl.guestAccessEffects()"
+          ng-model="$ctrl._narrative.guest_access_allowed"/>
+        <label for="nGuestAccess">Enable Guest Access</label>
+      </div>
+
+      <div ng-if="$ctrl.trueAdmin && $ctrl._narrative._id">
+        <input
+          id="socialshare-checkbox"
+          type="checkbox"
+          ng-disabled="$ctrl._narrative.disableSocialshare"
+          ng-model="$ctrl._narrative.enable_social_sharing"/>
+        <label for="socialshare-checkbox">Enable Socialshare</label>
+      </div>
+    </div>
+
+    <itt-enable-socialshare
+      ng-if="$ctrl.trueAdmin && $ctrl._narrative._id"
+      container-id="{{$ctrl.selectedCustomer.root_container_id}}"
+      narrative="$ctrl._narrative">
+    </itt-enable-socialshare>
+    <div class="ancillaryNav">
+      <button class="done" ng-click="$ctrl.handleUpdate($ctrl._narrative)"
+              ng-disabled="nEditForm.$invalid || $ctrl._narrative.error">Save
+      </button>
+      <button class="done" ng-click="$ctrl.onDone({$event: $event})">Cancel</button>
+    </div>
+  </form>
+</div>`,
     scope: {
       narrative: '=?',
       customers: '=',
@@ -83,19 +123,21 @@ export default function ittNarrativeEditor() {
     },
     controllerAs: '$ctrl',
     bindToController: true,
-    controller: ['ittUtils', 'authSvc', function (ittUtils, authSvc) {
-      var ctrl = this;
-      var existy = ittUtils.existy;
+    controller: ['ittUtils', 'authSvc', 'uploadsService', function (ittUtils, authSvc, uploadsService) {
+      const ctrl = this;
+      const existy = ittUtils.existy;
 
       angular.extend(ctrl, {
+        trueAdmin: authSvc.userHasRole('admin'),
         canAccess: authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'),
         _narrative: angular.copy(ctrl.narrative),
         _customers: angular.copy(ctrl.customers),
         _containerInfo: angular.copy(ctrl.containerInfo),
         selectedCustomer: null,
         //
-        handleUpdate: handleUpdate,
-        selectCustomer: selectCustomer
+        handleUpdate,
+        selectCustomer,
+        guestAccessEffects
       });
 
       _onInit();
@@ -103,6 +145,21 @@ export default function ittNarrativeEditor() {
       function _onInit() {
         _setNameFromContainer();
         _setCustomer();
+        guestAccessEffects();
+      }
+
+      function guestAccessEffects() {
+
+        if (ctrl._narrative == null) {
+          return;
+        }
+
+        if (ctrl._narrative.guest_access_allowed === false) {
+          ctrl._narrative.enable_social_sharing = false;
+          ctrl._narrative.disableSocialshare = true;
+        } else {
+          ctrl._narrative.disableSocialshare = false;
+        }
       }
 
       //set selected customer on-change of dropdown select
@@ -116,19 +173,41 @@ export default function ittNarrativeEditor() {
           n.customer_id = ctrl.selectedCustomer._id;
 
         }
-        var fields = [
+        const fields = [
           'name',
           'description',
           'customer_id',
           'guest_access_allowed',
+          'enable_social_sharing',
+          'narrative_image_ids',
           'path_slug',
           'support_url',
           'disable_navigation',
           'disable_new_window',
           '_id'
         ];
-        var narrative = ittUtils.pick(n, fields);
-        if (existy(ctrl._containerInfo)) {
+
+        let narrative = ittUtils.pick(n, fields);
+        let socialImagesToUpload: {file: FileList, tag: string}[] = [];
+        if (n.square) {
+          socialImagesToUpload.push({file: n.square.file, tag: 'square'});
+        }
+
+        if (n.wide) {
+          socialImagesToUpload.push({file: n.wide.file, tag: 'wide'});
+        }
+
+        //if there are pending social image uploads, upload them
+        //then push the asset ID in the img ids array.
+        if (socialImagesToUpload.length > 0) {
+          uploadsService.uploadTaggedFiles(socialImagesToUpload, ctrl.selectedCustomer.root_container_id)
+            .then((assets) => {
+              assets.forEach((asset) => narrative.narrative_image_ids.push(asset.file._id));
+              uploadsService.resetUploads();
+              ctrl.onUpdate({n: narrative});
+              return;
+            });
+        } else if (existy(ctrl._containerInfo)) {
           ctrl.onUpdate({data: {n: narrative, c: ctrl._containerInfo.containerId}});
         } else {
           ctrl.onUpdate({n: narrative});

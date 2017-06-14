@@ -23,6 +23,7 @@ export default function awsSvc($http, $q, config) {
   var chunks = [];
   var chunkSearchIndex = 0;
   var files = [];
+  var fileMeta = {};
   var fileIndex = 0;
   var fileBeingUploaded;
   var bytesUploaded = 0;
@@ -59,21 +60,26 @@ export default function awsSvc($http, $q, config) {
    or at the very least to handle it within these next two functions instead of passing it all the way down the chain
    */
 
-  svc.uploadContainerFiles = function (containerId, fileList) {
-    return uploadFiles("/v1/containers/" + containerId + "/assets", fileList);
+  svc.uploadContainerFiles = function (containerId, fileList, tag?) {
+    console.log('aws - upload container files', containerId, fileList);
+    return uploadFiles("/v1/containers/" + containerId + "/assets", fileList, tag);
   };
   svc.uploadUserFiles = function (userId, fileList) {
     return uploadFiles("/v1/users/" + userId + "/assets", fileList);
   };
 
   //Pass in a FileList object and the container in which the files are to be placed
-  var uploadFiles = function (assetEndpoint, fileList) {
+  var uploadFiles = function (assetEndpoint, fileList, tag?) {
     var deferredUploadsPromises = [];
     // console.log('files: ', files);
     for (var i = 0; i < fileList.length; i++) {
       //can access this with regular array index
       //https://developer.mozilla.org/en-US/docs/Web/API/FileList#Example
       files.push(fileList[i]);
+      if (tag != null) {
+        fileMeta[fileList[i].name] = [tag];
+        console.log('adding meta stuff', fileMeta);
+      }
       var deferred = $q.defer();
       deferredUploads.push(deferred);
       deferredUploadsPromises.push(deferred.promise);
@@ -693,6 +699,11 @@ export default function awsSvc($http, $q, config) {
       'size': fileBeingUploaded.size,
       'original_filename': fileBeingUploaded.name
     };
+    //add tag if necessary
+    if (fileMeta[fileBeingUploaded.name]) {
+      Object.assign(assetData, {tags: fileMeta[fileBeingUploaded.name]});
+      fileMeta[fileBeingUploaded.name] = null;
+    }
 
     $http.post(config.apiDataBaseUrl + assetEndpoint, assetData)
       .success(function (data) {

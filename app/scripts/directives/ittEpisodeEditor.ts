@@ -3,8 +3,17 @@
 
  TODO: some redundancy with ittItemEditor, esp. in the 'styles'.  I expect the episode styling to drift away from the event styling, though, so letting myself repeat myself repeat myself for now
  */
-import { ILangform } from "../interfaces";
 ittEpisodeEditor.$inject = ['$rootScope', '$timeout', 'appState', 'modelSvc', 'dataSvc', 'authSvc', 'selectService', 'playbackService', 'urlService'];
+
+export interface ILangformFlags {
+  en: boolean
+  es?: boolean
+  zh?: boolean
+  pt?: boolean
+  fr?: boolean
+  de?: boolean
+  it?: boolean
+}
 
 export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSvc, dataSvc, authSvc, selectService, playbackService, urlService) {
   return {
@@ -74,7 +83,7 @@ export default function ittEpisodeEditor($rootScope, $timeout, appState, modelSv
       }
 
       // extract episode languages for the form
-      scope.langForm = <ILangform> {'en': true, 'es': false, 'zh': false, 'pt': false, 'fr': false, 'de': false, 'it': false};
+      scope.langForm = <ILangformFlags> {'en': true, 'es': false, 'zh': false, 'pt': false, 'fr': false, 'de': false, 'it': false};
       for (var j = 0; j < scope.episode.languages.length; j++) {
         scope.langForm[scope.episode.languages[j].code] = true;
       }

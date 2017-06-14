@@ -5,6 +5,8 @@ const WebpackChunkHash = require('webpack-chunk-hash');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const nodeModulesDir = join(__dirname, './node_modules');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 const deps = [
   'angular-ui-tree/dist/angular-ui-tree.min.js',
@@ -100,7 +102,14 @@ function configWp(env) {
           ]
         },
         {
-          test: /\.(eot|otf|ttf|woff|woff2)$/,
+          test: /.eot$/,
+          loader: 'file-loader',
+          options: {
+            name: env.prod ? 'font.[hash].[ext]' : '[name].[ext]'
+          }
+        },
+        {
+          test: /\.(otf|ttf|woff|woff2)$/,
           loader: 'url-loader',
           options: {
             limit: 20000,
@@ -158,6 +167,7 @@ function configWp(env) {
           }
         }
       }),
+      env.prod === 'analyze' ? new BundleAnalyzerPlugin() : undefined,
       env.dev ? new WebpackNotifierPlugin({alwaysNotify: true}) : undefined,
       env.prod ? new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',
@@ -180,7 +190,8 @@ function configWp(env) {
         name: 'vendor',
         minChunks: function (module) {
           // this assumes your vendor imports exist in the node_modules directory
-          return module.context && module.context.indexOf('node_modules') !== -1;
+          return module.context &&
+            (module.context.indexOf('node_modules') !== -1 || module.context.indexOf('plugin') !== -1);
         }
       }) : undefined,
       env.prod ? new webpack.HashedModuleIdsPlugin() : undefined,

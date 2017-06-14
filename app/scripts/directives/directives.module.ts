@@ -84,9 +84,14 @@ import ittWidthWatch from './ittWidthWatch';
 import nysCopyright from './nys-copyright';
 import sxsAddContent from './sxsAddContent';
 import sxsAnnotatorAutocomplete from './sxsAnnotatorAutocomplete';
-import sxsContainerAssets from './sxsContainerAssets';
+import {SxsContainerAssets} from './sxsContainerAssets';
 import sxsInputI18n from './sxsInputI18n';
 import sxsInputTime from './sxsInputTime';
+import {IttSocialShare} from './ittSocialShare';
+import {EnableSocialshare} from './ittEnableSocialshare';
+import {SocialImages} from './ittSocialImages';
+import {Filedrop} from './ittFiledrop';
+import {UploadProgress} from './ittUploadProgress';
 
 let directivesModule = angular.module('itt.directives', [])
   .directive('ittAnnotationField', ittAnnotationField)
@@ -167,9 +172,14 @@ let directivesModule = angular.module('itt.directives', [])
   .directive('nysCopyright', nysCopyright)
   .directive('sxsAddContent', sxsAddContent)
   .directive('sxsAnnotatorAutocomplete', sxsAnnotatorAutocomplete)
-  .directive('sxsContainerAssets', sxsContainerAssets)
+  .component(SxsContainerAssets.Name, new SxsContainerAssets())
   .directive('sxsInputI18n', sxsInputI18n)
   .directive('sxsInputTime', sxsInputTime)
-  .directive('autofocus', autofocus);
+  .directive('autofocus', autofocus)
+  .component(IttSocialShare.Name, new IttSocialShare())
+  .component(EnableSocialshare.Name, new EnableSocialshare())
+  .component(SocialImages.Name, new SocialImages())
+  .component(Filedrop.Name, new Filedrop())
+  .component(UploadProgress.Name, new UploadProgress());
 
 export default directivesModule;

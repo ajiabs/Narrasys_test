@@ -107,7 +107,6 @@ export default function ittNarrative() {
           $scope.isOwner = false;
           $scope.narrative = $scope.narrativeData;
           $scope.customers = $scope.customerData;
-          console.log('custys', $scope.customers);
           $scope.user = appState.user;
           if (authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin')) {
             $scope.canAccess = true;

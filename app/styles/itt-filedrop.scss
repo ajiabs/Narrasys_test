@@ -1,0 +1,47 @@
+
+
+
+.itt-filedrop {
+  width: 100%;
+  height: 100%;
+}
+
+.itt-filedrop--border {
+  border: 5px dashed $file-drop-grey;
+}
+
+.itt-filedrop__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.itt-filedrop__placeholder {
+  font-family: 'Story', sans-serif;
+  font-size: 96px;
+  color: $file-drop-grey;
+  &:before {
+    content: '\e603';
+  }
+}
+
+.itt-filedrop--droppable {
+  transition-duration: 0.33s;
+  background-color: $narrasysOrange-fade;
+}
+
+.itt-filedrop__wide {
+  width: 13.3em;
+  height: 7em;
+}
+
+.itt-filedrop__square {
+  width: 7em;
+  height: 7em;
+}
+
+.itt-filedrop__square, .itt-filedrop__wide {
+  position: relative;
+  margin: 1em;
+}
