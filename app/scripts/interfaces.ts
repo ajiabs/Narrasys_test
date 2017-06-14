@@ -1,18 +1,17 @@
 import {IDataSvc} from './services/dataSvc';
 import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
-import {TUrlFieldContexts} from './directives/ittUrlField';
 import {IModelSvc} from './services/modelSvc';
+import {IimageResize} from './services/imageResizeSvc';
+import {TUrlFieldContexts} from './directives/ittUrlField';
 /**
  * Created by githop on 4/11/17.
  */
-export interface ILangform {
-  en: boolean;
-  es?: boolean;
-  zh?: boolean;
-  pt?: boolean;
-  fr?: boolean;
-  de?: boolean;
-  it?: boolean;
+
+
+type ILangformKeys = 'en' | 'es' | 'zh' | 'pt' | 'fr' | 'de' | 'it';
+
+export type ILangForm = {
+  [K in ILangformKeys]: string
 }
 
 export interface IAnnotator {
@@ -49,4 +48,6 @@ export interface ILinkValidFields {
   error: ILinkValidationMessage | null;
 }
 
-export {IDataSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts, IModelSvc};
+export {IUploadData} from './services/uploadsService';
+
+export {IDataSvc, IimageResize, IModelSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts};

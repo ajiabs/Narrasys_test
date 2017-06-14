@@ -12,7 +12,7 @@
 //<link rel="stylesheet" href="styles/narrative.css">
 //<link rel="stylesheet" href="styles/admin.css">
 //<link rel="stylesheet" href="styles/producer.css">
-
+@import "variables";
 @import "main";
 @import "timeline";
 @import "toolbar";
@@ -26,6 +26,9 @@
 @import "narrative";
 @import "admin";
 @import "producer";
+@import "itt-upload-progress";
+@import "enable-socialshare";
+@import "itt-filedrop";
 
 //@import "admin";
 //@import "colors";

@@ -203,6 +203,10 @@ and (max-device-width : 568px) {
   content: "\e90d";
 }
 
+.button__clipboard--light:before {
+  content: '\e90c';
+}
+
 .button__add-inverted:before  {
   content: '\e90e';
 }
@@ -350,8 +354,13 @@ and (max-device-width : 568px) {
 	padding: 10px;
 }
 
-.narrative__modal input[type="checkbox"] {
-	width: auto;
+.narrative__modal {
+  input[type="checkbox"] {
+    width: auto;
+  }
+  input:disabled+label {
+    color: grey;
+  }
 }
 
 .timeline--hidden {
@@ -362,5 +371,10 @@ and (max-device-width : 568px) {
   word-wrap: break-word;
 }
 
-
+.narrative-flags {
+  display: flex;
+  div {
+    padding: 0.1em 0.5em;
+  }
+}
 

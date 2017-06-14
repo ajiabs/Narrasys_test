@@ -5,7 +5,7 @@
 import 'angular';
 
 import analyticsSvc from './analyticsSvc';
-import appState from './appState';
+import {AppState} from './appState';
 import authSvc from './authSvc';
 import awsSvc from './awsSvc';
 import config from './config';
@@ -31,9 +31,10 @@ import youTubePlayerManager from './youtube/YouTubePlayerManager.svc'
 import YTScriptLoader from './youtube/youtubeScriptLoader';
 import youtubeUrlService from './youtube/youtubeUrlService';
 import {ValidationService} from './validation.svc';
+import {UploadsService} from './uploadsService';
 
 let servicesModule = angular.module('itt.services', [])
-  .factory('appState', appState)
+  .service('appState', AppState)
   .factory('authSvc', authSvc)
   .factory('awsSvc', awsSvc)
   .factory('config', config)
@@ -59,6 +60,7 @@ let servicesModule = angular.module('itt.services', [])
   .factory('YTScriptLoader', YTScriptLoader)
   .factory('youtubeUrlService', youtubeUrlService)
   .factory('analyticsSvc', analyticsSvc)
-  .service('validationSvc', ValidationService);
+  .service('validationSvc', ValidationService)
+  .service('uploadsService', UploadsService);
 
 export default servicesModule;

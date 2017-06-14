@@ -54,11 +54,15 @@
 }
 
 .toolbar .nav-item.new-window-btn {
-	order: 5;
+	order: 6;
 }
 
 .toolbar .nav-item.profilegroup {
-	order: 4;
+	order: 5;
+}
+
+.toolbar .nav-item.socialshare {
+  order: 4
 }
 
 button {
@@ -934,11 +938,74 @@ input.userEditable:focus {
 
 }
 
-
-
 /* Undoing a bad decision: */
 
 .banner-logo {
 	visibility: hidden;
 }
 
+.toolbar .social-buttongroup {
+  float: left;
+  position: relative;
+  height: 1.5em;
+  margin: 0.3em 0.5em;
+}
+
+.itt-socialshare {
+  text-align: right;
+  .button {
+    margin: 0;
+    padding: 0 0.1em;
+    font-size: 1.4em;
+  }
+  .icon__button {
+    font-size: 2.3em;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.socialshare__row {
+  border: 1px solid #565656;
+}
+
+.socialshare__row--expanded {
+  width: 300px;
+  height: 160px;
+  text-align: left;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 1em;
+
+  .button {
+    padding-right: 0.5em;
+  }
+
+  p {
+    padding: 0.5em 0;
+    font-size: small;
+  }
+}
+
+.socialshare__clipboard {
+  display: flex;
+  align-items: center;
+  .button {
+    padding: 0;
+    font-size: small;
+  }
+  .text--notice {
+    font-size: small;
+  }
+}
+
+.socialshare__exit {
+  position: absolute;
+  right: 0.2em;
+  .fa-times-circle:before {
+    color: #565656;
+  }
+}

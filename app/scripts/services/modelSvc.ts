@@ -41,8 +41,8 @@ export interface IModelSvc {
 modelSvc.$inject = ['$filter', '$location', 'ittUtils', 'config', 'appState', 'playbackService', 'urlService'];
 
 export default function modelSvc($filter, $location, ittUtils, config, appState, playbackService, urlService) {
-  var svc: IModelSvc = Object.create(null);
   const DEFAULT_EPISODE_TEMPLATE_URL = 'templates/episode/episode.html';
+  var svc: IModelSvc = Object.create(null);
 
   svc.episodes = {};
   svc.assets = {};
@@ -383,7 +383,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
     }
   };
 
-  svc.deriveEvent = function (event: NEvent): NEvent {
+  svc.deriveEvent = function (event: Partial<NEvent>): NEvent {
     event = setLang(event);
     if (event._type !== 'Scene') {
 
