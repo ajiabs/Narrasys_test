@@ -90,7 +90,7 @@ export default function ittNarrativeEditor() {
         <label for="nGuestAccess">Enable Guest Access</label>
       </div>
 
-      <div ng-if="$ctrl._narrative._id">
+      <div ng-if="$ctrl.trueAdmin && $ctrl._narrative._id">
         <input
           id="socialshare-checkbox"
           type="checkbox"
@@ -101,7 +101,7 @@ export default function ittNarrativeEditor() {
     </div>
 
     <itt-enable-socialshare
-      ng-if="$ctrl._narrative._id"
+      ng-if="$ctrl.trueAdmin && $ctrl._narrative._id"
       container-id="{{$ctrl.selectedCustomer.root_container_id}}"
       narrative="$ctrl._narrative">
     </itt-enable-socialshare>
@@ -128,6 +128,7 @@ export default function ittNarrativeEditor() {
       const existy = ittUtils.existy;
 
       angular.extend(ctrl, {
+        trueAdmin: authSvc.userHasRole('admin'),
         canAccess: authSvc.userHasRole('admin') || authSvc.userHasRole('customer admin'),
         _narrative: angular.copy(ctrl.narrative),
         _customers: angular.copy(ctrl.customers),

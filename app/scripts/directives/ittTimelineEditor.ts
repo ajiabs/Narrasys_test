@@ -20,6 +20,7 @@ export default function ittTimelineEditor() {
     <label>Hidden</label>
     <input type="checkbox" ng-model="$ctrl._timeline.hidden"/>
     <itt-enable-socialshare
+      ng-if="$ctrl.trueAdmin"
       narrative="$ctrl.narrative"
       container-id="{{$ctrl.containerId}}"
       timeline="$ctrl._timeline">
@@ -48,13 +49,14 @@ export default function ittTimelineEditor() {
       onDelete: '&',
       onDone: '&'
     },
-    controller: ['$location', 'ittUtils', 'config', 'uploadsService',function ($location, ittUtils, config, uploadsService) {
+    controller: ['$location', 'ittUtils', 'config', 'uploadsService', 'authSvc',
+      function ($location, ittUtils, config, uploadsService, authSvc) {
       const ctrl = this;
       const existy = ittUtils.existy;
       ctrl.confirmDelete = confirmDelete;
       ctrl.handleUpdate = handleUpdate;
       ctrl.underDelete = false;
-
+      ctrl.trueAdmin = authSvc.userHasRole('admin');
       onInit();
 
       function onInit() {

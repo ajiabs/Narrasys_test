@@ -6,9 +6,9 @@ PlayerController.$inject = ['$scope', '$location', '$rootScope', '$routeParams',
 export default function PlayerController($scope, $location, $rootScope, $routeParams, $timeout, $interval, config, appState, dataSvc: IDataSvc, modelSvc: IModelSvc, timelineSvc, analyticsSvc, authSvc, selectService, playbackService) {
   // console.log("playerController", $scope);
 
-  // disableSocialShareOnDev();
+  disableSocialShareOnDev();
   //uncomment above to disable after testing.
-  $scope.enableSocialSharing = true;
+  // $scope.enableSocialSharing = true;
   function disableSocialShareOnDev() {
     $scope.enableSocialSharing = !(/api-dev|np-dev|demo/.test($location.host()));
   }
