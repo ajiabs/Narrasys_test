@@ -119,10 +119,21 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
   }
 
   getImageAssets() {
-    this.dataSvc.fetchAndCacheAssetsByIds(this.model[this.type + '_image_ids'])
-      .then((assets: IAsset[]) => {
-        assets.forEach((asset) => this.setImageFromAsset(asset));
-      });
+    const assetsToFetch = [];
+    this.model[this.type + '_image_ids'].forEach(assetId => {
+      if (assetId && this.modelSvc.assets[assetId]) {
+        this.setImageFromAsset(this.modelSvc.assets[assetId]);
+      } else {
+        assetsToFetch.push(assetId);
+      }
+    });
+
+    if (assetsToFetch.length > 0) {
+      this.dataSvc.fetchAndCacheAssetsByIds(assetsToFetch)
+        .then((assets: IAsset[]) => {
+          assets.forEach((asset) => this.setImageFromAsset(asset));
+        });
+    }
   }
 
   handleImage(data): void {
