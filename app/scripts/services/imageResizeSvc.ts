@@ -177,12 +177,12 @@ export default function imageResize($q): IimageResize {
     return w / h;
   }
 
-  function getImageTagType(w: number, h: number): 'square' | 'wide' {
+  function getImageTagType(w: number, h: number): 'social_image_square' | 'social_image_wide' {
     const aspectRatio = calcAspectRatio(w, h);
     if (aspectRatio > 1.25) {
-      return 'wide';
+      return 'social_image_wide';
     } else {
-      return 'square';
+      return 'social_image_square';
     }
   }
 
