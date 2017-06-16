@@ -3,6 +3,7 @@
 // TODO make up my mind about 'foo' versus 'isFoo'
 
 import 'angular';
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
 
 let ittFilters = angular.module('itt.filters', [])
 /* List filters */
@@ -284,6 +285,17 @@ let ittFilters = angular.module('itt.filters', [])
       }
       return '';
     };
+  }])
+  .filter('tagName', [() => {
+    const tagMap = {
+      [SOCIAL_IMAGE_SQUARE]: 'Square',
+      [SOCIAL_IMAGE_WIDE]: 'Wide'
+    };
+    return (str) => {
+      if (str && tagMap.hasOwnProperty(str)) {
+        return tagMap[str];
+      }
+    }
   }]);
 
 export default ittFilters;
