@@ -58,8 +58,8 @@ interface EnableSocialShareBindings {
 }
 
 interface IImages {
-  square: { assetId?: string, name:string, path: string, file: FileList | null };
-  wide: { assetId?: string, name: string, path: string, file: FileList | null };
+  social_image_square: { assetId?: string, name:string, path: string, file: FileList | null };
+  social_image_wide: { assetId?: string, name: string, path: string, file: FileList | null };
 }
 
 class EnableSocialshareController implements ng.IComponentController, EnableSocialShareBindings {
@@ -69,13 +69,13 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
   //
   browseUploaded: boolean = false;
   images: Partial<IImages> = {
-    square: null,
-    wide: null,
+    social_image_square: null,
+    social_image_wide: null,
   };
   model: any;
   private files = {
-    square: { file: null },
-    wide: { file: null }
+    social_image_square: { file: null },
+    social_image_wide: { file: null }
   };
   private type: 'narrative' | 'timeline';
 
@@ -119,10 +119,21 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
   }
 
   getImageAssets() {
-    this.dataSvc.fetchAndCacheAssetsByIds(this.model[this.type + '_image_ids'])
-      .then((assets: IAsset[]) => {
-        assets.forEach((asset) => this.setImageFromAsset(asset));
-      });
+    const assetsToFetch = [];
+    this.model[this.type + '_image_ids'].forEach(assetId => {
+      if (assetId && this.modelSvc.assets[assetId]) {
+        this.setImageFromAsset(this.modelSvc.assets[assetId]);
+      } else {
+        assetsToFetch.push(assetId);
+      }
+    });
+
+    if (assetsToFetch.length > 0) {
+      this.dataSvc.fetchAndCacheAssetsByIds(assetsToFetch)
+        .then((assets: IAsset[]) => {
+          assets.forEach((asset) => this.setImageFromAsset(asset));
+        });
+    }
   }
 
   handleImage(data): void {

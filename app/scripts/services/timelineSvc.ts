@@ -338,11 +338,9 @@ export default function timelineSvc($window, $timeout, $interval, $filter, confi
   // Also because there isn't an obviously better place for it.  If this is dumb, TODO: be less dumb
 
   svc.toggleMute = function () {
-    appState.muted = !appState.muted;
     playbackService.toggleMute();
   };
   svc.setVolume = function (vol) { // 0..100
-    appState.volume = vol;
     playbackService.setVolume(vol);
   };
 
