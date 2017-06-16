@@ -46,7 +46,7 @@
   </div>
   <div class="nav-item socialshare social-buttongroup">
     <itt-social-share
-      ng-if="enableSocialSharing && socialShareInfo"
+      ng-if="socialShareInfo"
       subdomain="{{socialShareInfo.subDomain}}"
       paths="{narrative: socialShareInfo.narrative, timeline: socialShareInfo.timeline}"
       providers="['facebook', 'linkedin', 'twitter', 'google', 'reddit', 'email']">

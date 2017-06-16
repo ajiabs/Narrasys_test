@@ -1,7 +1,7 @@
 /* For now this is just a thin wrapper around the playerController */
-ittNarrativeTimeline.$inject = ['$routeParams', 'dataSvc', 'appState', 'authSvc', 'errorSvc'];
+ittNarrativeTimeline.$inject = ['$routeParams', '$location', 'dataSvc', 'appState', 'authSvc', 'errorSvc'];
 
-export default function ittNarrativeTimeline($routeParams, dataSvc, appState, authSvc, errorSvc) {
+export default function ittNarrativeTimeline($routeParams, $location, dataSvc, appState, authSvc, errorSvc) {
   return {
     restrict: 'A',
     replace: true,
@@ -38,7 +38,7 @@ export default function ittNarrativeTimeline($routeParams, dataSvc, appState, au
           let narrativeUrl = narrative.path_slug.en;
           let timelineUrl = currentTl.path_slug.en;
           let {narrative_subdomain:  subDomain} = narrative;
-          if (narrative.enable_social_sharing === true) {
+          if (narrative.enable_social_sharing === true && scope.enableSocialSharing === true) {
 
             scope.socialShareInfo = {
               subDomain,
@@ -53,6 +53,14 @@ export default function ittNarrativeTimeline($routeParams, dataSvc, appState, au
             });
           }
         });
+
+
+      disableSocialShareOnDev();
+      //uncomment above to disable after testing.
+      // scope.enableSocialSharing = true;
+      function disableSocialShareOnDev() {
+        scope.enableSocialSharing = !(/api-dev|np-dev|demo/.test($location.host()));
+      }
 
     }
   };
