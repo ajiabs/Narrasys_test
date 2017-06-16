@@ -36,7 +36,9 @@ export default function playerManagerCommons(ittUtils) {
       bufferedPercent: 0,
       timeMultiplier: 1,
       resetInProgress: false,
-      autoplay: false
+      autoplay: false,
+      volume: 100,
+      muted: false
     };
 
     return {

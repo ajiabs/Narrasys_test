@@ -100,7 +100,7 @@ export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, p
       };
 
       scope.userChangingVolume = function (evt) {
-        if (appState.muted) {
+        if (playbackService.getMetaProp('muted')) {
           scope.toggleMute();
         }
         var volumeNode = angular.element(evt.currentTarget);
@@ -213,18 +213,18 @@ export default function ittTimeline($timeout, appState, timelineSvc, modelSvc, p
       }
 
       scope.currentVolume = function () {
-        if (appState.muted) {
+        if (playbackService.getMetaProp('muted')) {
           return 0;
         } else {
-          return appState.volume;
+          return playbackService.getMetaProp('volume');
         }
       };
 
       scope.audioIcon = function () {
-        if (appState.muted) {
+        if (playbackService.getMetaProp('muted')) {
           return "muted";
         } else {
-          return "vol" + Math.floor(appState.volume / 34);
+          return "vol" + Math.floor(playbackService.getMetaProp('volume') / 34);
         }
       };
 
