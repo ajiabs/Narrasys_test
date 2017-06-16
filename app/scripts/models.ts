@@ -31,6 +31,7 @@ export class ICustomer {
 }
 
 export class INarrative {
+  _id: string;
   name: ILangForm;
   description: ILangForm;
   guest_access_allowed: boolean;
@@ -40,7 +41,8 @@ export class INarrative {
   enable_social_sharing: boolean;
   path_slug: ILangForm;
   support_url: string;
-  timelines: any[];
+  narrative_subdomain: string;
+  timelines?: ITimeline[];
   timeline_image_ids: string[];
   narrative_image_ids: string[];
 }

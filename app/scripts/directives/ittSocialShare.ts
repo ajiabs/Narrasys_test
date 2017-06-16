@@ -55,12 +55,13 @@ type SupportedProviders = 'facebook' | 'twitter' | 'google' | 'linkedin' | 'emai
 interface ISocialShareBindings {
   providers: SupportedProviders[];
   subdomain: string;
+  shareTitle?: string;
   paths: { narrative: string, timeline?: string };
 }
 
 class SocialShareController implements ng.IComponentController, ISocialShareBindings {
   // bindings
-  assetIds: string[];
+  shareTitle?: string;
   providers: SupportedProviders[];
   subdomain: string;
   // props
@@ -78,7 +79,7 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
     }
   }
 
-  onShare(provider) {
+  onShare(provider: SupportedProviders) {
     // available providers, params: https://github.com/720kb/angular-socialshare
     const shareConfig = {
       provider: provider,
@@ -88,6 +89,12 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
     switch (provider) {
       case 'email':
         Object.assign(shareConfig.attrs, { socialshareBody: this.stubUrl });
+        break;
+      case 'linkedin':
+      case 'twitter':
+      case 'reddit':
+        // these providers in 720.kb use the socialshareText attr.
+        Object.assign(shareConfig.attrs, {socialshareText: this.shareTitle}, {socialshareUrl: this.stubUrl});
         break;
       default:
         Object.assign(shareConfig.attrs, { socialshareUrl: this.stubUrl });
@@ -118,6 +125,7 @@ export class IttSocialShare implements ng.IComponentOptions {
   bindings: any = {
     providers: '<',
     subdomain: '@',
+    shareTitle: '@',
     paths: '<'
   };
   template: string = TEMPLTE;
