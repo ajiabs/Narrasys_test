@@ -51,7 +51,7 @@ const TEMPLTE = `
 </span>
 `;
 
-type SupportedProviders = 'facebook' | 'twitter' | 'google' | 'linkedin' | 'email' | 'reddit' | 'pinterest';
+type SupportedProviders = 'facebook' | 'twitter' | 'google' | 'linkedin' | 'email' | 'reddit';
 interface ISocialShareBindings {
   providers: SupportedProviders[];
   subdomain: string;
@@ -59,13 +59,16 @@ interface ISocialShareBindings {
 }
 
 class SocialShareController implements ng.IComponentController, ISocialShareBindings {
-  static $inject = ['Socialshare'];
+  // bindings
+  assetIds: string[];
   providers: SupportedProviders[];
   subdomain: string;
+  // props
   paths: {narrative: string, timeline?: string};
   stubUrl: string = 'https://thecareerplaybook.narrasys.com/narratives/jim-citrin';
   expanded: boolean = false;
   _textCopied: boolean = false;
+  static $inject = ['Socialshare'];
   constructor(public Socialshare) {}
 
   $onInit() {
@@ -76,12 +79,19 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
   }
 
   onShare(provider) {
+    // available providers, params: https://github.com/720kb/angular-socialshare
     const shareConfig = {
       provider: provider,
-      attrs: {
-        socialshareUrl: this.stubUrl
-      }
+      attrs: {}
     };
+
+    switch (provider) {
+      case 'email':
+        Object.assign(shareConfig.attrs, { socialshareBody: this.stubUrl });
+        break;
+      default:
+        Object.assign(shareConfig.attrs, { socialshareUrl: this.stubUrl });
+    }
 
     this.Socialshare.share(shareConfig);
   }

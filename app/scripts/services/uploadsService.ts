@@ -19,8 +19,8 @@ export class UploadsService implements IUploadsService {
 
   // uploadsDisplay: IUploadData[];
   uploadsDisplay = {
-    square: null,
-    wide: null,
+    social_image_square: null,
+    social_image_wide: null,
   };
   private uploadQueue: ng.IPromise<any>[] = [];
 
@@ -52,8 +52,8 @@ export class UploadsService implements IUploadsService {
 
   resetUploads(): void {
     this.uploadsDisplay = {
-      square: null,
-      wide: null,
+      social_image_square: null,
+      social_image_wide: null,
     };
     this.uploadQueue = [];
   }

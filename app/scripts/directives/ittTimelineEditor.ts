@@ -1,4 +1,5 @@
 import {pick} from '../services/ittUtils';
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
 /**
  * Created by githop on 6/16/16.
  */
@@ -68,7 +69,6 @@ export default function ittTimelineEditor() {
         }
       }
 
-
       function handleUpdate(t) {
 
 
@@ -86,12 +86,12 @@ export default function ittTimelineEditor() {
         const tlToSave = pick(t, tlFileds);
 
         let socialImagesToUpload: {file: FileList, tag: string}[] = [];
-        if (t.square) {
-          socialImagesToUpload.push({file: t.square.file, tag: 'square'});
+        if (t.social_image_square) {
+          socialImagesToUpload.push({file: t.social_image_square.file, tag: SOCIAL_IMAGE_SQUARE });
         }
 
-        if (t.wide) {
-          socialImagesToUpload.push({file: t.wide.file, tag: 'wide'});
+        if (t.social_image_wide) {
+          socialImagesToUpload.push({file: t.social_image_wide.file, tag: SOCIAL_IMAGE_WIDE});
         }
 
         if (socialImagesToUpload.length > 0) {

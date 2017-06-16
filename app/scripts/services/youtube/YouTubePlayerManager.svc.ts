@@ -488,8 +488,10 @@ export default function youTubePlayerManager($location, ittUtils, YTScriptLoader
     var p = getInstance(pid);
     if (p.isMuted()) {
       p.unMute();
+      setMetaProp(pid, 'muted', false);
     } else {
       p.mute();
+      setMetaProp(pid, 'muted', true);
     }
   }
 
@@ -508,6 +510,7 @@ export default function youTubePlayerManager($location, ittUtils, YTScriptLoader
 
     if (_existy(p)) {
       p.setVolume(v);
+      setMetaProp(pid, 'volume', v);
     }
   }
 

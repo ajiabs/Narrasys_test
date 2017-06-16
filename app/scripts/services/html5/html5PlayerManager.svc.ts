@@ -439,6 +439,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
   function toggleMute(pid) {
     var instance = getInstance(pid);
     instance.muted = !instance.muted;
+    setMetaProp(pid, 'muted', instance.muted);
   }
 
   /**
@@ -454,6 +455,7 @@ export default function html5PlayerManager($interval, PLAYERSTATES, ittUtils, ap
   function setVolume(pid, vol) {
     var instance = getInstance(pid);
     instance.volume = (vol / 100);
+    setMetaProp(pid, 'volume', vol);
   }
 
   /**
