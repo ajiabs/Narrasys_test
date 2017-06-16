@@ -167,34 +167,7 @@ export default function PlayerController($scope, $location, $rootScope, $routePa
         appState.productLoadedAs = 'player';
       }
 
-    })
-    //assume episode / narrative has been resolved by now...
-      .then(_ => {
-        if ($routeParams.narrativePath != null) {
-          let narrativePath = $routeParams.narrativePath;
-          let tlPath = $routeParams.timelinePath;
-          let narrative = modelSvc.getNarrativeByPathOrId(narrativePath);
-          let timeline = narrative.timelines.filter((tl: any) => tl._id === tlPath || tl.path_slug.en === tlPath)[0];
-          let narrativeUrl = narrative.path_slug.en;
-          let timelineUrl = timeline.path_slug.en;
-
-          let {subDomain, customer_id} = narrative;
-          // dataSvc#getCustomer should only hit the API if the episode is not already in cache.
-          dataSvc.getCustomer(customer_id, true)
-            .then(customer => {
-              if (subDomain == null) {
-                //need to assoc narrative with customer object to set subdomain
-                subDomain = customer.domains[0];
-              }
-              $scope.socialShareInfo = {
-                subDomain,
-                narrative: narrativeUrl,
-                timeline: timelineUrl
-              };
-            })
-        }
-
-      });
+    });
   });
 
   if (modelSvc.episodes[appState.episodeId]) {
