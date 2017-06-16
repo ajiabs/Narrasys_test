@@ -24,6 +24,7 @@
 
 
  */
+import {INarrative} from '../models';
 export default function ittNarrative() {
   return {
     templateUrl: 'templates/narrative/default.html',
@@ -293,7 +294,7 @@ export default function ittNarrative() {
         }
 
         function updateNarrative(update) {
-          dataSvc.updateNarrative(update).then(function (resp) {
+          dataSvc.updateNarrative(update).then(function (resp: {data: INarrative}) {
             $scope.editingNarrative = false;
             //updateNarrative returns just the new narrative object, without timelines array
             //merge the existing narrative on scope with the one returned via our post resp.

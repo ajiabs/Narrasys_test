@@ -50,7 +50,7 @@ export default function ittGuestAccessibleUrl() {
           },
           placeholder: 'human-friendly-link-to ' + ctrl.type
         };
-        var _subDomain = _existy(ctrl.subDomain) && ctrl.subDomain || _existy(ctrl.narrative.subDomain) && ctrl.narrative.subDomain;
+        var _subDomain = _existy(ctrl.subDomain) && ctrl.subDomain || _existy(ctrl.narrative.narrative_subdomain) && ctrl.narrative.narrative_subdomain;
         pathPrefix = protocol + _subDomain + domain;
       }
 

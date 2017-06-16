@@ -121,8 +121,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     var subdomain = ittUtils.getSubdomain($location.host());
     var urlParams = '';
 
-    if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.subDomain) && subdomain !== cachedNarrative.subDomain) {
-      urlParams = '?customer=' + cachedNarrative.subDomain;
+    if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.narrative_subdomain) && subdomain !== cachedNarrative.narrative_subdomain) {
+      urlParams = '?customer=' + cachedNarrative.narrative_subdomain;
     }
 
     authSvc.authenticate('narrative=' + narrativeId).then(function () {

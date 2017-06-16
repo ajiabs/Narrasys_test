@@ -3,7 +3,7 @@
  and derives secondary data where necessary for performance/convenience/fun */
 
 import {IAnnotators, Partial} from '../interfaces';
-import {IScene, NEvent} from '../models';
+import {ICustomer, INarrative, IScene, NEvent} from '../models';
 
 export interface IModelSvc {
   episodes: { [episodeId:string]: any };
@@ -13,7 +13,7 @@ export interface IModelSvc {
   narratives: { [narrativeId: string]: any };
   customers: { [customerId:string]: any };
   getNarrativeByPathOrId(pathOrId: string): any;
-  assocNarrativesWithCustomer(customer: any, narratives: any): any;
+  assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer;
   cachedNarrativesByCustomer(customer:any): any;
   getCustomersAsArray(): any[];
   getNarrativesAsArray(): any[];
@@ -79,9 +79,8 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   //add subdomain to each narrative then cache
   //add narratives to customer object then cache customer.
   svc.assocNarrativesWithCustomer = assocNarrativesWithCustomer;
-  function assocNarrativesWithCustomer(customer, narratives) {
+  function assocNarrativesWithCustomer(customer: ICustomer, narratives: INarrative[]): ICustomer {
     narratives.forEach(function (narrative) {
-      narrative.subDomain = customer.domains[0];
       svc.cache('narrative', narrative);
     });
     customer.narratives = cachedNarrativesByCustomer(customer);
@@ -109,7 +108,7 @@ export default function modelSvc($filter, $location, ittUtils, config, appState,
   }
 
   svc.cachedNarrativesByCustomer = cachedNarrativesByCustomer;
-  function cachedNarrativesByCustomer(customer) {
+  function cachedNarrativesByCustomer(customer: ICustomer): INarrative[] {
     return Object.keys(svc.narratives).reduce(function(narratives, key) {
       if (svc.narratives[key].customer_id === customer._id) {
         narratives.push(svc.narratives[key]);
