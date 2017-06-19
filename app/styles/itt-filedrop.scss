@@ -16,6 +16,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  width: 95%;
 }
 
 .itt-filedrop__placeholder {
@@ -33,13 +34,13 @@
 }
 
 .itt-filedrop__social_image_wide {
-  width: 13.3em;
-  height: 7em;
+  width: $socialshare-image-width;
+  height: $socialshare-image-height;
 }
 
 .itt-filedrop__social_image_square {
-  width: 7em;
-  height: 7em;
+  width: $socialshare-image-height;
+  height: $socialshare-image-height;
 }
 
 .itt-filedrop__social_image_square, .itt-filedrop__social_image_wide {

@@ -196,6 +196,6 @@ export class EnableSocialshare implements ng.IComponentOptions {
     timeline: '=?'
   };
   template: string = TEMPLATE;
-  controller: ng.IComponentController = EnableSocialshareController;
+  controller = EnableSocialshareController;
 }
 

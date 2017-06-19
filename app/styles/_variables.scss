@@ -8,3 +8,7 @@ $pinterest-red: #cb2027;
 $gplus-red: #cd3b28;
 $linkedin-blue: #007bb6;
 $reddit-orange: #ff5700;
+
+$socialshare-image-height: 6em;
+$socialshare-image-aspect: 1.9; // 19 : 10 aspect ratio
+$socialshare-image-width: ($socialshare-image-aspect * $socialshare-image-height);
