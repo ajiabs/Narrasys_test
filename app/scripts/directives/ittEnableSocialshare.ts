@@ -14,16 +14,25 @@ const TEMPLATE = `
 
   <div ng-repeat="(tag, imgObj) in $ctrl.images" ng-class="'itt-filedrop__' + tag">
     <itt-filedrop
-      ng-if="imgObj == null"
       on-drop="$ctrl.handleImage(files)">
+      
+      <itt-filedrop-target>
+        <div class="itt-filedrop__wrapper" ng-if="imgObj.path == null">
+          <span class="itt-filedrop__placeholder"></span>
+        </div>
+      </itt-filedrop-target>
+
+      <itt-filedrop-preview>
+        <div ng-if="imgObj.path">
+          <span class="socialshare__img--cancel" ng-click="$ctrl.resetImg(imgObj, tag)"></span>
+          <div class="socialshare__img">
+            <itt-upload-progress upload="$ctrl.uploadsService.uploadsDisplay[tag]"></itt-upload-progress>
+            <img ng-src="{{imgObj.path}}"/>
+          </div>
+        </div>
+      </itt-filedrop-preview> 
+
     </itt-filedrop>
-    <div ng-if="imgObj.path">
-      <span class="socialshare__img--cancel" ng-click="$ctrl.resetImg(imgObj, tag)"></span>
-      <div class="socialshare__img">
-        <itt-upload-progress upload="$ctrl.uploadsService.uploadsDisplay[tag]"></itt-upload-progress>
-        <img ng-src="{{imgObj.path}}"/>
-      </div>
-    </div>
   </div>
 
   <!--begin social controls-->

@@ -3,12 +3,9 @@
  */
 
 const TEMPLATE = `
-<div class="itt-filedrop itt-filedrop--border">
-
-  <div class="itt-filedrop__wrapper">
-    <span class="itt-filedrop__placeholder"></span>
-  </div>
-
+<div class="itt-filedrop itt-filedrop--border">  
+  <div ng-transclude="target"></div>
+  <div ng-transclude="preview"></div>
 </div>
 `;
 
@@ -66,9 +63,13 @@ class FiledropController implements ng.IComponentController {
 
 export class Filedrop implements ng.IComponentOptions {
   static Name: string = 'ittFiledrop';
+  transclude = {
+    'target': 'ittFiledropTarget',
+    'preview': 'ittFiledropPreview'
+  };
   bindings: any = {
     onDrop: '&'
   };
   template: string = TEMPLATE;
-  controller: ng.IComponentController = FiledropController;
+  controller = FiledropController;
 }
