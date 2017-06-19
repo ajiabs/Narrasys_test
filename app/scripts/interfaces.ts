@@ -49,5 +49,5 @@ export interface ILinkValidFields {
 }
 
 export {IUploadData} from './services/uploadsService';
-
+export {IEmailFields} from './directives/ittSocialShare';
 export {IDataSvc, IimageResize, IModelSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts};
