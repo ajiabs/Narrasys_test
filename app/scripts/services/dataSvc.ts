@@ -2,6 +2,7 @@
 
 
 import {createInstance, IAsset} from '../models';
+import {IEmailFields} from '../interfaces';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -72,6 +73,7 @@ export interface IDataSvc {
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
   readCache(cache, field, val): object | boolean;
   getTemplates(): any;
+  sendSocialshareEmail(tlId:string, email: IEmailFields): ng.IPromise<void>;
 }
 
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
@@ -79,6 +81,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   var svc: IDataSvc = Object.create(null);
 
   /* ------------------------------------------------------------------------------ */
+
+  svc.sendSocialshareEmail = sendSocialshareEmail;
+  function sendSocialshareEmail(tlId: string, email: IEmailFields): ng.IPromise<void> {
+    return SANE_POST(`/v3/timelines/${tlId}/share_via_email`, email);
+  }
 
   svc.beginBackgroundTranslations = beginBackgroundTranslations;
   function beginBackgroundTranslations(episodeId) {
@@ -121,8 +128,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     var subdomain = ittUtils.getSubdomain($location.host());
     var urlParams = '';
 
-    if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.subDomain) && subdomain !== cachedNarrative.subDomain) {
-      urlParams = '?customer=' + cachedNarrative.subDomain;
+    if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.narrative_subdomain) && subdomain !== cachedNarrative.narrative_subdomain) {
+      urlParams = '?customer=' + cachedNarrative.narrative_subdomain;
     }
 
     authSvc.authenticate('narrative=' + narrativeId).then(function () {

@@ -63,7 +63,7 @@ export default function ittNarrativeEditor() {
     <textarea id="nDescription" name="description" placeholder="Add a Description"
               ng-model="$ctrl._narrative.description.en"></textarea>
     <div ng-if="!$ctrl.hidePathSlug">
-      <itt-guest-accessible-url narrative="$ctrl._narrative" sub-domain="{{$ctrl.selectedCustomer.domains[0]}}"
+      <itt-guest-accessible-url narrative="$ctrl._narrative" sub-domain="{{$ctrl._narrative.narrative_subdomain}}"
                                 customer="$ctrl.selectedCustomer"></itt-guest-accessible-url>
     </div>
     <label for="nSupportUrl">Support Url

@@ -28,6 +28,7 @@ export class ICustomer {
   oauth2_message: ILangForm;
   oauth2_providers: string[];
   root_container_id: string;
+  narratives?: INarrative[];
 }
 
 export class INarrative {
@@ -36,6 +37,7 @@ export class INarrative {
   description: ILangForm;
   guest_access_allowed: boolean;
   authenticated_access_allowed: boolean;
+  customer_id: string;
   disable_navigation: boolean;
   disable_new_window: boolean;
   enable_social_sharing: boolean;
