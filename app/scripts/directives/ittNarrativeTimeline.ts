@@ -21,6 +21,7 @@ export default function ittNarrativeTimeline($routeParams, $location, dataSvc, a
           var defaultProduct = authSvc.getDefaultProductForRole(narrativeRole);
           let currentTl = Object.create(null);
           let tlTitle = '';
+          let tlId = '';
           appState.product = defaultProduct;
           angular.forEach(narrative.timelines, function (timeline) {
             if (
@@ -29,7 +30,7 @@ export default function ittNarrativeTimeline($routeParams, $location, dataSvc, a
             ) {
               currentTl = timeline;
               tlTitle = timeline.name.en;
-
+              tlId = timeline._id;
               appState.timelineId = timeline._id;
               if (timeline.episode_segments[0]) {
                 appState.episodeId = timeline.episode_segments[0].episode_id;
@@ -48,7 +49,7 @@ export default function ittNarrativeTimeline($routeParams, $location, dataSvc, a
               subDomain,
               tlTitle,
               narrative: narrativeUrl,
-              timeline: timelineUrl,
+              timeline: {url: timelineUrl, id: tlId},
             };
           }
 
