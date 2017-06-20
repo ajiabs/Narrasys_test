@@ -3,15 +3,21 @@
  */
 
 const TEMPLATE = `
-<div class="itt-filedrop itt-filedrop--border">  
+<div class="itt-filedrop itt-filedrop--border" ng-class="{'--drop-error': $ctrl.onError}"> 
   <div ng-transclude="target"></div>
-  <div ng-transclude="preview"></div>
+  
+   <div class="itt-filedrop__wrapper" ng-if="$ctrl.onError">
+    <span class="itt-filedrop__placeholder --drop-error"></span>
+   </div>
+  
+  <div ng-if="!$ctrl.error" ng-transclude="preview"></div>
 </div>
 `;
 
 class FiledropController implements ng.IComponentController {
   static $inject = ['$element'];
   onDrop: (files: any) => FileList;
+  onError: boolean;
   constructor(public $element){
   }
 
@@ -68,6 +74,7 @@ export class Filedrop implements ng.IComponentOptions {
     'preview': 'ittFiledropPreview'
   };
   bindings: any = {
+    onError: '<',
     onDrop: '&'
   };
   template: string = TEMPLATE;

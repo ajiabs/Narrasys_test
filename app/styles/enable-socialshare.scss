@@ -9,6 +9,11 @@
     max-width: 100%;
     //subtract to account for itt-filedrop--border thickness
     max-height: calc(#{$socialshare-image-height} - 9.5px);
+
+    &.--drop-error {
+      opacity: 0;
+    }
+    transition-duration: $socialshare-error-animation-duration;
   }
 }
 

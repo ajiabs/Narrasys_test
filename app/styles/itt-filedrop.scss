@@ -8,6 +8,12 @@
 
 .itt-filedrop--border {
   border: 5px dashed $file-drop-grey;
+
+  &.--drop-error {
+    border: 5px dashed red;
+  }
+
+  transition-duration: $socialshare-error-animation-duration;
 }
 
 .itt-filedrop__wrapper {
@@ -28,6 +34,12 @@
   &:before {
     content: '\e603';
   }
+
+  &.--drop-error {
+    color: red;
+  }
+
+  transition-duration: $socialshare-error-animation-duration;
 }
 
 .itt-filedrop--droppable {
