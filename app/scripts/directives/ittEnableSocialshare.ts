@@ -91,8 +91,8 @@ interface IImages {
 }
 
 const DEFAULT_DISPLAY_TEXT = {
-  social_image_square: 'Recommend 600 x 600',
-  social_image_wide: 'Recommend 1280 x 600'
+  social_image_square: 'Recommend 500 x 500',
+  social_image_wide: 'Recommend 1200 x 630'
 };
 
 class EnableSocialshareController implements ng.IComponentController, EnableSocialShareBindings {
