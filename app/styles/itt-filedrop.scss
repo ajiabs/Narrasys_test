@@ -16,7 +16,9 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 95%;
+  width: 100%;
+  // to account for the itt-filedrop--border
+  transform: translate(-5px, -5px);
 }
 
 .itt-filedrop__placeholder {
