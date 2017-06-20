@@ -125,7 +125,6 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
     if (this.subdomain && this.paths && this.paths.narrative && this.paths.timeline) {
       this.stubUrl = SocialShareController.formatShareUrl(this.subdomain, this.paths.narrative, this.paths.timeline.url);
     }
-    console.log('huh?', this.paths.timeline);
   }
 
   onShare(provider: SupportedProviders) {
