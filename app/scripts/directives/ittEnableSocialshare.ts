@@ -14,16 +14,27 @@ const TEMPLATE = `
 
   <div ng-repeat="(tag, imgObj) in $ctrl.images" ng-class="'itt-filedrop__' + tag">
     <itt-filedrop
-      ng-if="imgObj == null"
-      on-drop="$ctrl.handleImage(files)">
-    </itt-filedrop>
-    <div ng-if="imgObj.path">
-      <span class="socialshare__img--cancel" ng-click="$ctrl.resetImg(imgObj, tag)"></span>
-      <div class="socialshare__img">
-        <itt-upload-progress upload="$ctrl.uploadsService.uploadsDisplay[tag]"></itt-upload-progress>
-        <img ng-src="{{imgObj.path}}"/>
-      </div>
-    </div>
+      on-error="$ctrl.display[tag].error"
+      on-drop="$ctrl.handleImage(files, tag)">
+      
+      <itt-filedrop-target>
+        <div class="itt-filedrop__wrapper" ng-if="imgObj.path == null">
+          <span class="itt-filedrop__placeholder"></span>
+        </div>
+      </itt-filedrop-target>
+
+      <itt-filedrop-preview>
+        <div ng-if="imgObj.path">
+          <span class="socialshare__img--cancel" ng-click="$ctrl.resetImg(imgObj, tag)"></span>
+          <div class="socialshare__img">
+            <itt-upload-progress upload="$ctrl.uploadsService.uploadsDisplay[tag]"></itt-upload-progress>
+            <img ng-src="{{imgObj.path}}" ng-class="{'--drop-error': $ctrl.display[tag].error}"/>
+          </div>
+        </div>
+      </itt-filedrop-preview> 
+
+    </itt-filedrop> 
+    <div>{{$ctrl.display[tag].text}}</div>
   </div>
 
   <!--begin social controls-->
@@ -57,10 +68,32 @@ interface EnableSocialShareBindings {
   timeline?: any;
 }
 
-interface IImages {
-  social_image_square: { assetId?: string, name:string, path: string, file: FileList | null };
-  social_image_wide: { assetId?: string, name: string, path: string, file: FileList | null };
+interface ITagPayload {
+  assetId?: string;
+  name:string;
+  path: string;
+  file: FileList | null;
 }
+
+interface IDisplay {
+  text: string;
+  error: boolean;
+}
+
+interface ITagDisplay {
+  social_image_square: IDisplay;
+  social_image_wide: IDisplay;
+}
+
+interface IImages {
+  social_image_square: ITagPayload;
+  social_image_wide: ITagPayload;
+}
+
+const DEFAULT_DISPLAY_TEXT = {
+  social_image_square: 'Recommend 500 x 500',
+  social_image_wide: 'Recommend 1200 x 630'
+};
 
 class EnableSocialshareController implements ng.IComponentController, EnableSocialShareBindings {
   narrative;
@@ -72,6 +105,16 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     social_image_square: null,
     social_image_wide: null,
   };
+  display: ITagDisplay = {
+    social_image_square: {
+      text: DEFAULT_DISPLAY_TEXT.social_image_square,
+      error: false
+    },
+    social_image_wide: {
+      text: DEFAULT_DISPLAY_TEXT.social_image_wide,
+      error: false
+    }
+  };
   model: any;
   private files = {
     social_image_square: { file: null },
@@ -79,8 +122,10 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
   };
   private type: 'narrative' | 'timeline';
 
-  static $inject = ['uploadsService', 'imageResize', 'dataSvc', 'modelSvc'];
+  static $inject = ['$q', '$timeout', 'uploadsService', 'imageResize', 'dataSvc', 'modelSvc'];
   constructor(
+    private $q: ng.IQService,
+    private $timeout: ng.ITimeoutService,
     public uploadsService,
     private imageResize: IimageResize,
     private dataSvc: IDataSvc,
@@ -136,19 +181,32 @@ class EnableSocialshareController implements ng.IComponentController, EnableSoci
     }
   }
 
-  handleImage(data): void {
+  handleImage(data, currentTag): void {
     this.checkAspectRatio(data[0])
       .then(({images, tag}) => {
+
+      if (currentTag !== tag) {
+        return this.$q.reject({errorType: 'TAG_MISMATCH', currentTag, tag});
+      }
+
         this.files[tag].file = data;
         this.images = Object.assign({}, this.images, images);
         //set a reference to the uploaded file
         this.model[tag] = {file: data};
       })
-      .catch(e => console.log('whoopsies', e));
+      .catch(({errorType, currentTag, tag}) => this.handleTagmismatchError(errorType, currentTag, tag));
+  }
+
+  private handleTagmismatchError(errorType: string, currentTag: string, newTag: string) {
+    this.display[currentTag].error = true;
+    this.display[currentTag].text = 'The aspect ratio is not correct.';
+    this.$timeout(() => {
+      this.display[currentTag].error = false;
+      this.display[currentTag].text = DEFAULT_DISPLAY_TEXT[currentTag];
+    }, 3 * 1000);
   }
 
   private checkAspectRatio(file: File) {
-    // this.editorForm.$setValidity(this.editorForm.$name, false, this.editorForm);
     return this.imageResize.readFileToImg(file)
       .then((img: HTMLImageElement) => {
         const tag = this.imageResize.getImageTagType(img.width, img.height);
@@ -187,6 +245,6 @@ export class EnableSocialshare implements ng.IComponentOptions {
     timeline: '=?'
   };
   template: string = TEMPLATE;
-  controller: ng.IComponentController = EnableSocialshareController;
+  controller = EnableSocialshareController;
 }
 

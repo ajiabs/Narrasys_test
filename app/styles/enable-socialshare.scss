@@ -4,10 +4,16 @@
 }
 
 .socialshare__img {
-  border: 2px dashed $file-drop-grey;
+  //border: 2px dashed $file-drop-grey;
   img {
     max-width: 100%;
-    max-height: 10em;
+    //subtract to account for itt-filedrop--border thickness
+    max-height: calc(#{$socialshare-image-height} - 9.5px);
+
+    &.--drop-error {
+      opacity: 0;
+    }
+    transition-duration: $socialshare-error-animation-duration;
   }
 }
 

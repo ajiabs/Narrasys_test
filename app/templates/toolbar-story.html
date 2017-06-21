@@ -49,6 +49,7 @@
       ng-if="socialShareInfo"
       subdomain="{{socialShareInfo.subDomain}}"
       paths="{narrative: socialShareInfo.narrative, timeline: socialShareInfo.timeline}"
+      share-title="{{socialShareInfo.tlTitle}}"
       providers="['facebook', 'linkedin', 'twitter', 'google', 'reddit', 'email']">
     </itt-social-share>
   </div>
