@@ -43,7 +43,7 @@ export class INarrative {
   enable_social_sharing: boolean;
   path_slug: ILangForm;
   support_url: string;
-  narrative_subdomain: string;
+  narrative_subdomain?: string;
   timelines?: ITimeline[];
   timeline_image_ids: string[];
   narrative_image_ids: string[];
