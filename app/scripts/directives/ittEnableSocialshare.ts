@@ -91,7 +91,7 @@ interface IImages {
 }
 
 const DEFAULT_DISPLAY_TEXT = {
-  social_image_square: 'Recommend 500 x 500',
+  social_image_square: 'Recommend 576 x 576',
   social_image_wide: 'Recommend 1200 x 630'
 };
 
