@@ -79,7 +79,6 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
   }
 
   ontextCopied(e: any) {
-    console.log('text copied wtf?');
     this.textCopied = true;
   }
 
@@ -91,7 +90,7 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
       return;
     }
     this.dataSvc.sendSocialshareEmail(this.paths.timeline.id, email)
-      .then(resp => {this.closeAll()})
+      .then(resp => this.closeAll())
       .catch(e => console.log('error!', e));
 
   }
