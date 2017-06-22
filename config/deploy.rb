@@ -49,6 +49,7 @@ namespace :deploy do
     on roles(:app) do
       dist_path = File.join(fetch(:release_path), 'dist/')
       execute "find -L #{dist_path} \\( -name \"*.js\" \\) -exec bash -c '[ ! -f {}.gz ] && 7z a -tgzip -mx=9 {}.gz {}' \\; "
+      execute "find -L #{dist_path} \\( -name \"*.css\" \\) -exec bash -c '[ ! -f {}.gz ] && 7z a -tgzip -mx=9 {}.gz {}' \\; "
     end
   end
 
