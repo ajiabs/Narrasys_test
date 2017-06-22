@@ -89,9 +89,9 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
       });
       return;
     }
-    this.dataSvc.sendSocialshareEmail(this.paths.timeline.id, email)
-      .then(resp => this.closeAll())
-      .catch(e => console.log('error!', e));
+    // this.dataSvc.sendSocialshareEmail(this.paths.timeline.id, email)
+    //   .then(resp => this.closeAll())
+    //   .catch(e => console.log('error!', e));
 
   }
 
