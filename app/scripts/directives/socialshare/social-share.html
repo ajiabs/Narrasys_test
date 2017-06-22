@@ -1,0 +1,95 @@
+<span class="itt-socialshare">
+
+  <span ng-if="!$ctrl.expanded">
+    <a class="button button-facebook" ng-click="$ctrl.onShare('facebook')"></a>
+    <a class="button button-linkedin" ng-click="$ctrl.onShare('linkedin')"></a>
+    <a class="button button-share" ng-click="$ctrl.toggleExpanded()"></a>
+  </span>
+
+  <div class="socialshare__row" ng-if="$ctrl.expanded">
+    <button class="socialshare__exit"
+            ng-click="$ctrl.toggleExpanded()">
+    </button>
+    <div class="socialshare__row--expanded">
+      <div>
+        <!--share button row-->
+        <p>Share episode</p>
+        <a ng-repeat="provider in $ctrl.providers"
+           class="button"
+           ng-click="$ctrl.onShare(provider)"
+           ng-class="'button-' + provider">
+        </a>
+      </div>
+    <!--end share button row-->
+    <!--copy link row-->
+      <div>
+        <p>Copy link</p>
+        <div class="socialshare__clipboard">
+          <itt-clipboard
+            light="true"
+            custom-notice="true"
+            on-copy="$ctrl.ontextCopied($event)"
+            source-text="{{$ctrl.stubUrl}}">
+          </itt-clipboard>
+          <div ng-if="$ctrl.textCopied">
+            <span class="button button-text-copied"></span>
+            <span class="text--notice">(Link copied to clipboard)</span>
+          </div>
+        </div>
+      </div>
+    <!--end copy link row-->
+    <!--email options-->
+    <itt-modal
+      wrapper-class="responsive-modal__wrapper"
+      modal-class="email-modal__content"
+      ng-if="$ctrl.emailshareExpanded">
+      <form name="emailshareForm">
+        <div class="socialshare__email-row">
+          <div class="socialshare__email-from">
+            <span>
+              <label for="ssFromName">From name</label>
+              <input type="text" id="ssFromName" ng-model="email.from_name" required/>
+            </span>
+            <span>
+              <label for="ssFromEmail">From email</label>
+              <input type="email" id="ssFromEmail" ng-model="email.from_email_address" required/>
+            </span>
+          </div>
+          <div class="socialshare__email-to">
+            <span>
+              <label for="ssToName">To name</label>
+              <input id="ssToName" type="text" ng-model="email.to_name" required/>
+            </span>
+            <span>
+              <label for="ssToEmail">To email</label>
+              <input type="email" id="ssToEmail" ng-model="email.to_email_address" required/>
+            </span>
+          </div>
+          <div class="socialshare__email-subject">
+            <span>
+              <label for="ssSubject">Subject</label>
+              <input type="text" id="ssSubject" ng-init="email.subject = $ctrl.shareTitle" ng-model="email.subject" required/>
+            </span>
+            <span>
+              <label for="ssSenderCopy">Send me a copy</label>
+              <input type="checkbox" id="ssSenderCopy" ng-init="email.sender_copy = true" ng-model="email.sender_copy"/>
+            </span>
+          </div>
+          <div class="socialshare__email-message email-row--flex-full">
+            <label for="ssMessage">Message</label>
+            <textarea id="ssMessage" ng-model="email.message" required></textarea>
+          </div>
+          <div class="socialshare__email-buttons email-row--flex-full">
+            <button ng-click="$ctrl.handleEmailShare(email, emailshareForm)" type="submit">Send email</button>
+            <button ng-click="$ctrl.toggleEmailshare()">close</button>
+          </div>
+        </div>
+      </form>
+    </itt-modal>
+
+    <!--end email options-->
+
+    </div>
+  </div>
+
+</span>

@@ -53,22 +53,34 @@
 .socialshare__exit {
   position: absolute;
   right: 0.2em;
-  .fa-times-circle:before {
-    color: #565656;
+  color: #565656;
+  &:before {
+    font-family: 'Story', sans-serif;
+    content: '\e91e';
   }
 }
 
 .socialshare__email-row {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
+  padding: 2em;
 
-  button, textarea {
+  span {
+    width: 100%;
+    padding: 0.2em;
+  }
+
+  button, textarea, input {
     width: 100%;
   }
 
-  input.ng-invalid-required {
-    border: 1px solid red;
+  input, textarea {
+    &.ng-invalid-email {
+      border: 1px solid red;
+    }
+    &.ng-invalid-required.ng-touched {
+      border: 1px solid red;
+    }
   }
 
   button {
@@ -89,3 +101,23 @@
 .email-row--flex-full {
   width: 100%;
 }
+
+.email-modal__content {
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.50);
+  background-color: white;
+  padding: 2em;
+  width: 50%;
+}
+
+.socialshare__email-from,
+.socialshare__email-to,
+.socialshare__email-subject,
+.socialshare__email-buttons {
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    width: 100%;
+  }
+}
+
