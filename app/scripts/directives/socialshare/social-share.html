@@ -40,7 +40,7 @@
     <!--end copy link row-->
     <!--email options-->
     <itt-modal
-      wrapper-class="responsive-modal__wrapper"
+      wrapper-class="email-modal__wrapper"
       modal-class="email-modal__content"
       ng-if="$ctrl.emailshareExpanded">
       <form name="emailshareForm">
@@ -84,7 +84,7 @@
           </div>
           <div class="socialshare__email-buttons">
             <button ng-click="$ctrl.handleEmailShare(email, emailshareForm)" type="submit">Send email</button>
-            <button ng-click="$ctrl.toggleEmailshare()">close</button>
+            <button ng-click="$ctrl.toggleEmailshare()">Close</button>
           </div>
         </div>
       </form>
