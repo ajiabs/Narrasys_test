@@ -15,9 +15,10 @@
  */
 
 const templates = (<any>require).context('../templates', true, /\.html$/);
+const componentTemplates = (<any>require).context('./directives', true, /\.html$/);
 
-templates.keys().forEach((path) => {
-  templates(path);
+[templates, componentTemplates].forEach((templateSource) => {
+  templateSource.keys().forEach(path => templateSource(path));
 });
 
 import '../styles/app.scss';

@@ -1,10 +1,10 @@
 /**
  * Created by githop on 5/26/17.
  */
-import {IimageResize, Partial} from '../interfaces';
-import {IDataSvc} from '../services/dataSvc';
-import {IModelSvc} from '../services/modelSvc';
-import { IAsset } from '../models';
+import {IimageResize, Partial} from '../../interfaces';
+import {IDataSvc} from '../../services/dataSvc';
+import {IModelSvc} from '../../services/modelSvc';
+import { IAsset } from '../../models';
 /**
  * Created by githop on 5/22/17.
  */

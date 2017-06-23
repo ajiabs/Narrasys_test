@@ -61,9 +61,9 @@ export default function ittNarrativeTimeline($routeParams, $location, dataSvc, a
         });
 
 
-      disableSocialShareOnDev();
+      // disableSocialShareOnDev();
       //uncomment above to disable after testing.
-      // scope.enableSocialSharing = true;
+      scope.enableSocialSharing = true;
       function disableSocialShareOnDev() {
         scope.enableSocialSharing = !(/api-dev|np-dev|demo/.test($location.host()));
       }

@@ -27,9 +27,9 @@
 @import "admin";
 @import "producer";
 @import "itt-upload-progress";
-@import "enable-socialshare";
+@import "../scripts/directives/socialshare/enable-socialshare";
 @import "itt-filedrop";
-@import "itt-socialshare";
+@import "../scripts/directives/socialshare/itt-socialshare";
 
 //old order
 //@import "admin";
