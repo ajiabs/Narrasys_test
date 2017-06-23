@@ -70,7 +70,7 @@
     padding: 0.2em;
   }
 
-  button, textarea, input {
+  textarea, input {
     width: 100%;
   }
 
@@ -84,22 +84,15 @@
   }
 
   button {
+    width: 49%;
     padding: 0.5em;
     color: white;
     background-color: $narrasysPrimary;
 
-    &:hover{
+    &:hover {
       background-color: $narrasysOrange;
     }
   }
-}
-
-.email-row--flex-half {
-  width: 50%;
-}
-
-.email-row--flex-full {
-  width: 100%;
 }
 
 .email-modal__content {

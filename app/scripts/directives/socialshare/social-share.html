@@ -68,18 +68,21 @@
           <div class="socialshare__email-subject">
             <span>
               <label for="ssSubject">Subject</label>
-              <input type="text" id="ssSubject" ng-init="email.subject = $ctrl.shareTitle" ng-model="email.subject" required/>
+              <input type="text" id="ssSubject" ng-init="email.subject = $ctrl.shareTitle"
+                     ng-model="email.subject" required/>
             </span>
+          </div>
+          <div class="socialshare__email-message">
+            <label for="ssMessage">Message</label>
+            <textarea id="ssMessage" ng-model="email.message" required></textarea>
+          </div>
+          <div class="socialshare__email-sender-copy">
             <span>
               <label for="ssSenderCopy">Send me a copy</label>
               <input type="checkbox" id="ssSenderCopy" ng-init="email.sender_copy = true" ng-model="email.sender_copy"/>
             </span>
           </div>
-          <div class="socialshare__email-message email-row--flex-full">
-            <label for="ssMessage">Message</label>
-            <textarea id="ssMessage" ng-model="email.message" required></textarea>
-          </div>
-          <div class="socialshare__email-buttons email-row--flex-full">
+          <div class="socialshare__email-buttons">
             <button ng-click="$ctrl.handleEmailShare(email, emailshareForm)" type="submit">Send email</button>
             <button ng-click="$ctrl.toggleEmailshare()">close</button>
           </div>

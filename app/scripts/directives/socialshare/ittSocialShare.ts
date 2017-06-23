@@ -76,6 +76,7 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
   toggleExpanded() {
     this.expanded = !this.expanded;
     this.textCopied = false;
+    this.emailshareExpanded = false;
   }
 
   ontextCopied(e: any) {
