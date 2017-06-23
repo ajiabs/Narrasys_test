@@ -85,6 +85,7 @@
 
   button {
     width: 49%;
+    margin: 0.5em 0;
     padding: 0.5em;
     color: white;
     background-color: $narrasysPrimary;
@@ -100,6 +101,12 @@
   background-color: white;
   padding: 2em;
   width: 50%;
+}
+
+.socialshare__email-sender-copy {
+  input {
+    width: auto;
+  }
 }
 
 .socialshare__email-from,
