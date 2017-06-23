@@ -68,8 +68,7 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
         Object.assign(shareConfig.attrs, { socialshareUrl: this.stubUrl });
     }
 
-    // todo: uncomment, re-enable for prod build
-    // this.Socialshare.share(shareConfig);
+    this.Socialshare.share(shareConfig);
     this.closeAll();
   }
 
@@ -90,9 +89,9 @@ class SocialShareController implements ng.IComponentController, ISocialShareBind
       });
       return;
     }
-    // this.dataSvc.sendSocialshareEmail(this.paths.timeline.id, email)
-    //   .then(resp => this.closeAll())
-    //   .catch(e => console.log('error!', e));
+    this.dataSvc.sendSocialshareEmail(this.paths.timeline.id, email)
+      .then(resp => this.closeAll())
+      .catch(e => console.log('error!', e));
 
   }
 
