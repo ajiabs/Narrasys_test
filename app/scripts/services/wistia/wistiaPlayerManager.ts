@@ -219,7 +219,9 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   }
 
   private onSeek(pid: string, currentTime: number, lastTime: number): void {
+    this.setMetaProp(pid, 'playerState', 3);
     this.setMetaProp(pid, 'time', currentTime);
+    this.emitStateChange(pid);
   }
 
   private onPlay(pid: string): void {
