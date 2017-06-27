@@ -1,89 +1,125 @@
 /* WARN I badly misnamed this; it's used in  producer.  TODO eliminate the sxs prefix, it never made sense anyway */
 
-sxsContainerAssets.$inject = ['$rootScope', 'recursionHelper', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'MIMES', 'authSvc'];
+import {IDataSvc, IModelSvc} from '../interfaces';
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants';
 
-export default function sxsContainerAssets($rootScope, recursionHelper, dataSvc, modelSvc, awsSvc, appState, MIMES, authSvc) {
-  return {
-    restrict: 'A',
-    replace: false,
-    scope: {
-      containerId: "=sxsContainerAssets",
-      mimeKey: '@'
-    },
-    templateUrl: 'templates/producer/container-assets.html',
-    compile: function (element) {
-      // Use the compile function from the recursionHelper,
-      // And return the linking function(s) which it returns
-      return recursionHelper.compile(element, function (scope) {
-        scope.appState = appState;
+interface ISxsContainerAssetsBindings {
+  containerId: string;
+  mimeKey: string;
+  context?: string;
+  onAssetSelect: ($assetId: string) => string;
+}
 
-        if (modelSvc.containers[scope.containerId]) {
-          // console.log("Container already loaded");
-          scope.container = modelSvc.containers[scope.containerId];
-          if (!scope.container.assetsHaveLoaded) {
-            // console.log("Assets had not loaded, getting them");
-            dataSvc.getContainerAssets(scope.containerId);
-          }
+class SxsContainerAssetsController implements ng.IComponentController {
+  containerId: string;
+  mimeKey?: string;
+  context?: string;
+  onAssetSelect?: ($assetId) => string;
+  //
+  mimes: string;
+  isAdmin: boolean;
+  isCustAdmin: boolean;
+  canAccess: boolean;
+  showParent: boolean;
+  container: any;
+  assets: any;
+  onlyImages: boolean;
+  gridView: boolean;
+  static $inject = ['$rootScope', '$q', 'dataSvc', 'modelSvc', 'awsSvc', 'appState', 'MIMES', 'authSvc'];
+  constructor(
+    public $rootScope: ng.IRootScopeService,
+    private $q: ng.IQService,
+    public dataSvc: IDataSvc,
+    public modelSvc: IModelSvc,
+    public awsSvc,
+    public appState,
+    public MIMES,
+    public authSvc){ }
+
+  $onInit() {
+    this.$q((resolve, reject) => {
+      if (this.modelSvc.containers[this.containerId]) {
+        // console.log("Container already loaded");
+        this.container = this.modelSvc.containers[this.containerId];
+        if (!this.container.assetsHaveLoaded) {
+          // console.log("Assets had not loaded, getting them");
+          this.dataSvc.getContainerAssets(this.containerId)
+            .then(resolve);
         } else {
-          // console.log("Getting container");
-          dataSvc.getContainer(scope.containerId).then(function () {
-            // console.log("Getting assets");
-            scope.container = modelSvc.containers[scope.containerId];
-            dataSvc.getContainerAssets(scope.containerId);
-          });
+          resolve();
         }
 
-        scope.isCustAdmin = authSvc.userHasRole('customer admin');
-        scope.isAdmin = authSvc.userHasRole('admin');
-        scope.canAccess = scope.isCustAdmin || scope.isAdmin;
+      } else {
+        // console.log("Getting container");
+        this.dataSvc.getContainer(this.containerId).then(() => {
+          this.container = this.modelSvc.containers[this.containerId];
+          this.dataSvc.getContainerAssets(this.containerId)
+            .then(resolve);
+        });
+      }
+    }).then(_ => {
+      //filter assets if necessary
+      if (this.context === 'narrative') {
+        this.assets = Object.keys(this.modelSvc.assets)
+          .reduce((newAssets: any, assetKey: any) => {
+            const asset = this.modelSvc.assets[assetKey];
+            if (asset.tags && asset.tags[0] === SOCIAL_IMAGE_SQUARE || asset.tags[0] === SOCIAL_IMAGE_WIDE) {
+              newAssets[assetKey] = asset;
+            }
+            return newAssets
+          }, {});
+      } else {
+        this.assets = this.modelSvc.assets;
+      }
 
-        if (MIMES[scope.mimeKey]) {
-          scope.mimes = MIMES[scope.mimeKey];
-          if (scope.isAdmin) {
-            scope.mimes += ',video/*';
-          }
-        } else {
-          scope.mimes = MIMES.default;
+      this.isCustAdmin = this.authSvc.userHasRole('customer admin');
+      this.isAdmin = this.authSvc.userHasRole('admin');
+      this.canAccess = this.isCustAdmin || this.isAdmin;
+
+      if (this.MIMES[this.mimeKey]) {
+        this.mimes = this.MIMES[this.mimeKey];
+        if (this.isAdmin) {
+          this.mimes += ',video/*';
         }
+      } else {
+        this.mimes = this.MIMES.default;
+      }
+    });
+  }
 
-        scope.assets = modelSvc.assets; // this is going to be a horrible performance hit isn't it.  TODO: build asset array inside each container in modelSvc instead?
-        scope.uploadStatus = [];
-        scope.up = function () {
-          scope.showParent = true;
-        };
+  up() {
+    this.showParent = true;
+  }
 
-        scope.toggleImages = function () {
-          scope.onlyImages = !scope.onlyImages;
-        };
-        scope.toggleGrid = function () {
-          scope.gridView = !scope.gridView;
-        };
+  toggleImages() {
+    this.onlyImages = !this.onlyImages;
+  }
 
-        scope.assetClick = function (assetId) {
-          console.log("User clicked on asset ", assetId);
-          $rootScope.$emit("UserSelectedAsset", assetId);
-        };
+  toggleGrid() {
+    this.gridView = !this.gridView;
+  }
 
-        scope.uploadAsset = function (fileInput) {
-          var files = fileInput.files;
-          //Start the upload status out at 0 so that the
-          //progress bar renders correctly at first
-          scope.uploadStatus[0] = {
-            "bytesSent": 0,
-            "bytesTotal": 1
-          };
-          scope.uploads = awsSvc.uploadContainerFiles(scope.containerId, files);
-          scope.uploads[0].then(function (data) {
-            modelSvc.cache("asset", data.file);
-            fileInput.value = '';
-            delete scope.uploads;
-          }, function (data) {
-            console.log("FAIL", data);
-          }, function (update) {
-            scope.uploadStatus[0] = update;
-          });
-        };
-      });
+  assetClick(assetId) {
+    console.log('User clicked on asset ', assetId);
+    //when it comes time to emit data from a component
+    //"isolate scope &" is a better fit than pubsub with $rootScope
+    if (this.context && this.context === 'narrative') {
+      this.onAssetSelect({$assetId: assetId});
+      return;
     }
+    this.$rootScope.$emit('UserSelectedAsset', assetId);
+  }
+}
+
+
+export class SxsContainerAssets implements ng.IComponentOptions {
+  static Name: string = 'sxsContainerAssets';
+  bindings: any = {
+    containerId: '@',
+    mimeKey: '@?',
+    context: '@?',
+    onAssetSelect: '&?'
   };
+  templateUrl: string = 'templates/producer/container-assets.html';
+  controller: ng.IComponentController = SxsContainerAssetsController;
 }

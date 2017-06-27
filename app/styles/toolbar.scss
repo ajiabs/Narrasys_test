@@ -54,11 +54,15 @@
 }
 
 .toolbar .nav-item.new-window-btn {
-	order: 5;
+	order: 6;
 }
 
 .toolbar .nav-item.profilegroup {
-	order: 4;
+	order: 5;
+}
+
+.toolbar .nav-item.socialshare {
+  order: 4
 }
 
 button {
@@ -934,11 +938,16 @@ input.userEditable:focus {
 
 }
 
-
-
 /* Undoing a bad decision: */
 
 .banner-logo {
 	visibility: hidden;
+}
+
+.toolbar .social-buttongroup {
+  float: left;
+  position: relative;
+  height: 1.5em;
+  margin: 0.3em 0.5em;
 }
 

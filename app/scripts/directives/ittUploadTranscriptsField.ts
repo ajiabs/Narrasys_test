@@ -25,8 +25,8 @@ const TEMPLATE = `
     </itt-asset-uploader>
 
     <itt-modal
-      wrapper-class="transcripts-modal__wrapper"
-      modal-class="transcripts-modal__content"
+      wrapper-class="responsive-modal__wrapper"
+      modal-class="responsive-modal__content"
       ng-if="$ctrl.showOptions">
       <div class="smart-sentences__wrapper">
         <div><p>

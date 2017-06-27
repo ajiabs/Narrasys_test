@@ -5,6 +5,8 @@ const WebpackChunkHash = require('webpack-chunk-hash');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const nodeModulesDir = join(__dirname, './node_modules');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const deps = [
   'angular-ui-tree/dist/angular-ui-tree.min.js',
@@ -36,7 +38,7 @@ function configWp(env) {
       filename: env.prod ? `[name].[chunkHash].min.js` : '[name].bundle.js',
       chunkFilename: env.prod ? '[name].[chunkhash].min.js' : '[name].bundle.js',
       publicPath: '/',
-      path: env.dev || env.prod === 'local' ? resolve(__dirname, 'tmp') : resolve(__dirname, 'dist')
+      path: env.dev || env.prod === 'local' || env.prod === 'analyze' ? resolve(__dirname, 'tmp') : resolve(__dirname, 'dist')
     },
     externals: {
       'angular': 'angular'
@@ -72,35 +74,14 @@ function configWp(env) {
           ]
         },
         {
-          test: /\.(css|scss)$/i,
-          use: [
-            {
-              loader: "style-loader" // creates style nodes from JS strings
-            },
-            {
-              loader: "css-loader", // translates CSS into CommonJS
-              options: {
-                root: join(__dirname, './app/'),
-                sourceMap: true
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: true,
-                plugins: _ => [require('autoprefixer')({browsers: 'last 2 versions'})]
-              }
-            },
-            {
-              loader: "sass-loader", // compiles Sass to CSS
-              options: {
-                sourceMap: true
-              }
-            }
-          ]
+          test: /.eot$/,
+          loader: 'file-loader',
+          options: {
+            name: env.prod ? 'font.[hash].[ext]' : '[name].[ext]'
+          }
         },
         {
-          test: /\.(eot|otf|ttf|woff|woff2)$/,
+          test: /\.(otf|ttf|woff|woff2)$/,
           loader: 'url-loader',
           options: {
             limit: 20000,
@@ -159,6 +140,7 @@ function configWp(env) {
         }
       }),
       env.dev ? new WebpackNotifierPlugin({alwaysNotify: true}) : undefined,
+      env.prod ? new ExtractTextPlugin('[name].[contenthash].min.css') : undefined,
       env.prod ? new webpack.SourceMapDevToolPlugin({
         filename: '[file].map',
         append: `\n//# sourceMappingURL=${handleSourceMapUrl(env)}`,
@@ -180,7 +162,8 @@ function configWp(env) {
         name: 'vendor',
         minChunks: function (module) {
           // this assumes your vendor imports exist in the node_modules directory
-          return module.context && module.context.indexOf('node_modules') !== -1;
+          return module.context &&
+            (module.context.indexOf('node_modules') !== -1 || module.context.indexOf('plugin') !== -1);
         }
       }) : undefined,
       env.prod ? new webpack.HashedModuleIdsPlugin() : undefined,
@@ -191,9 +174,72 @@ function configWp(env) {
       env.prod ? new WebpackChunkHash({algorithm: 'md5'}) : undefined,
       env.prod ? 	new InlineManifestWebpackPlugin({
         name: 'webpackManifest'
-      }) : undefined
+      }) : undefined,
+      env.prod ? new webpack.optimize.ModuleConcatenationPlugin() : undefined,
+      env.prod === 'analyze' ? new BundleAnalyzerPlugin() : undefined,
     ].filter(p => !!p)
   };
+
+  const devCssConfig = {
+    test: /\.(css|scss)$/i,
+    use: [
+      {
+        loader: "style-loader" // creates style nodes from JS strings
+      },
+      {
+        loader: "css-loader", // translates CSS into CommonJS
+        options: {
+          root: join(__dirname, './app/'),
+          sourceMap: true
+        }
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true,
+          plugins: _ => [require('autoprefixer')({browsers: 'last 2 versions'})]
+        }
+      },
+      {
+        loader: "sass-loader", // compiles Sass to CSS
+        options: {
+          sourceMap: true
+        }
+      }
+    ]
+  };
+
+  const prodCssConfig = {
+    test: /\.scss$/i,
+    use: ExtractTextPlugin.extract({
+      fallback: 'style-loader',
+      use: [
+        {
+          loader: "css-loader", // translates CSS into CommonJS
+          options: {
+            root: join(__dirname, './app/'),
+            sourceMap: true,
+            minimize: true
+          }
+        },
+        {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true,
+            plugins: _ => [require('autoprefixer')({browsers: 'last 2 versions'})]
+          }
+        },
+        {
+          loader: "sass-loader", // compiles Sass to CSS
+          options: {
+            sourceMap: true
+          }
+        }
+      ]
+    })
+  };
+
+  wpConfig.module.rules.push(env.dev ? devCssConfig : prodCssConfig);
 
   if (env.dev) {
     wpConfig.resolve.alias = {};
@@ -203,6 +249,7 @@ function configWp(env) {
       wpConfig.resolve.alias[dep.split(sep)[0]] = depPath;
       wpConfig.module.noParse.push(depPath);
     });
+
   }
 
   return wpConfig

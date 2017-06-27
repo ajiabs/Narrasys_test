@@ -14,17 +14,18 @@
  * @requires textAngular
  */
 
-const templates = require.context('../templates', true, /\.html$/);
+const templates = (<any>require).context('../templates', true, /\.html$/);
+const componentTemplates = (<any>require).context('./directives', true, /\.html$/);
 
-templates.keys().forEach((path) => {
-  templates(path);
+[templates, componentTemplates].forEach((templateSource) => {
+  templateSource.keys().forEach(path => templateSource(path));
 });
 
 import '../styles/app.scss';
 import '../styles/vendor.scss';
 
 import './plugin/plugins';
-import 'core-js/shim';
+import 'core-js/client/shim';
 import 'angular';
 import 'angular-ui-tree';
 //text angular
@@ -32,6 +33,7 @@ import 'rangy'
 import 'rangy/lib/rangy-selectionsaverestore'
 import 'textAngular/dist/textAngular-sanitize.min';
 import 'textAngular/dist/textAngular.min';
+import 'angular-socialshare';
 //end text angular
 import '../config';
 
@@ -46,6 +48,7 @@ let itt = angular.module('iTT', [
   'ngSanitize',
   'textAngular',
   'ui.tree',
+  '720kb.socialshare',
   'itt.controllers',
   'itt.filters',
   'itt.services',
@@ -262,7 +265,7 @@ function routerConfig($routeProvider) {
         '<div class="standaloneAncillaryPage">',
         '	<itt-nav on-logout="logout()"></itt-nav>',
         '	<div>',
-        '		<div sxs-container-assets="containerId" mime-key="assetLib"></div>',
+        '		<sxs-container-assets container-id="{{containerId}}" mime-key="assetLib"></sxs-container-assets>',
         '	</div>',
         '</div>'].join(''),
       resolve: {

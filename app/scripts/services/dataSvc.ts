@@ -1,7 +1,8 @@
 // TODO: load and resolve categories
 
 
-import {createInstance} from '../models';
+import {createInstance, IAsset} from '../models';
+import {IEmailFields} from '../interfaces';
 /**
  * @ngdoc service
  * @name iTT.service:dataSvc
@@ -47,16 +48,17 @@ export interface IDataSvc {
   createEpisodeSegment(narrativeId, segmentData): ng.IPromise<{}>;
   storeTimeline(narrativeId, origTimeline): ng.IPromise<{}>;
   deleteTimeline(tlId): ng.IPromise<{}>;
-  getSingleAsset(assetId)
+  getSingleAsset(assetId): IAsset;
   getCommon(): ng.IPromise<{}>;
   cache(cacheType, dataList): void;
   createTemplate(templateData): ng.IPromise<{}>;
   resolveIDs(obj): object;
-  getAssetsByAssetIds(assetIds, callback): ng.IPromise<{}>;
+  getAssetsByAssetIds(assetIds: string[]): ng.IPromise<IAsset[]>;
+  fetchAndCacheAssetsByIds(assetIds: string[]): ng.IPromise<IAsset[]>;
   getContainerAncestry(containerId, episodeId, defer): ng.IPromise<{}>;
   getContainerRoot(): string[];
-  getContainer(id, episodeId): ng.IPromise<{}>;
-  getContainerAssets(containerId, episodeId): ng.IPromise<{}>;
+  getContainer(id, episodeId?): ng.IPromise<{}>;
+  getContainerAssets(containerId, episodeId?): ng.IPromise<{}>;
   createContainer(container): ng.IPromise<{}>;
   updateContainer(container): ng.IPromise<{}>;
   deleteContainer(containerId): ng.IPromise<{}>;
@@ -71,6 +73,7 @@ export interface IDataSvc {
   detachEventAsset(evt, assetId): ng.IPromise<{}>;
   readCache(cache, field, val): object | boolean;
   getTemplates(): any;
+  sendSocialshareEmail(tlId:string, email: IEmailFields): ng.IPromise<void>;
 }
 
 dataSvc.$inject = ['$q', '$http', '$routeParams', '$rootScope', '$location', 'ittUtils', 'config', 'authSvc', 'appState', 'modelSvc', 'errorSvc', 'mockSvc', 'questionAnswersSvc'];
@@ -78,6 +81,11 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   var svc: IDataSvc = Object.create(null);
 
   /* ------------------------------------------------------------------------------ */
+
+  svc.sendSocialshareEmail = sendSocialshareEmail;
+  function sendSocialshareEmail(tlId: string, email: IEmailFields): ng.IPromise<void> {
+    return SANE_POST(`/v3/timelines/${tlId}/share_via_email`, email);
+  }
 
   svc.beginBackgroundTranslations = beginBackgroundTranslations;
   function beginBackgroundTranslations(episodeId) {
@@ -120,8 +128,8 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     var subdomain = ittUtils.getSubdomain($location.host());
     var urlParams = '';
 
-    if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.subDomain) && subdomain !== cachedNarrative.subDomain) {
-      urlParams = '?customer=' + cachedNarrative.subDomain;
+    if (ittUtils.existy(cachedNarrative) && ittUtils.existy(cachedNarrative.narrative_subdomain) && subdomain !== cachedNarrative.narrative_subdomain) {
+      urlParams = '?customer=' + cachedNarrative.narrative_subdomain;
     }
 
     authSvc.authenticate('narrative=' + narrativeId).then(function () {
@@ -132,9 +140,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
             return a.sort_order - b.sort_order;
           });
 
-
-          modelSvc.cache('narrative', svc.resolveIDs(response.data));
-
+          modelSvc.cache('narrative', createInstance('Narrative', svc.resolveIDs(response.data)));
           defer.resolve(modelSvc.narratives[response.data._id]);
         });
     });
@@ -174,7 +180,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
   svc.getCustomerList = function () {
     return GET('/v3/customers/', function (customers) {
       angular.forEach(customers, function (customer) {
-        modelSvc.cache('customer', customer);
+        modelSvc.cache('customer', createInstance('Customer', customer));
       });
       return customers;
     });
@@ -196,14 +202,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       }
       // have it already, or at least already getting it
     } else {
-      // cache a stub:
-      modelSvc.cache('customer', {
-        _id: customerId
-      });
-      return GET('/v3/customers/' + customerId, function (customer) {
-        modelSvc.cache('customer', customer); // the real thing
-        return modelSvc.customers[customer._id];
-      });
+      return SANE_GET('/v3/customers/' + customerId)
+        .then(customer => {
+          modelSvc.cache('customer', createInstance('Customer', customer)); // the real thing
+          return modelSvc.customers[customer._id];
+        })
+        .catch(e => console.log('wtf mate?', e));
     }
   };
 
@@ -290,7 +294,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
       'name',
       'description',
       'hidden',
-      'timeline_image_id',
+      'timeline_image_ids',
       'narrative_id',
       '_id'
     ];
@@ -336,7 +340,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     });
   };
 
-  svc.getSingleAsset = function (assetId) {
+  svc.getSingleAsset = function (assetId: string): IAsset {
     if (assetId) {
       return GET('/v1/assets/' + assetId);
     } else {
@@ -566,18 +570,29 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     return ids;
   };
 
-  svc.getAssetsByAssetIds = function (assetIds, callback) {
-    var endpoint = '/v1/assets';
-    var assetIdsObj = {};
+  svc.getAssetsByAssetIds = getAssetsByAssetIds;
+  function getAssetsByAssetIds(assetIds: string[]): ng.IPromise<IAsset[]> {
+    var assetIdsObj = Object.create(null);
     assetIdsObj.asset_ids = assetIds;
-    return $http.post(config.apiDataBaseUrl + endpoint, assetIdsObj)
-      .success(function (data) {
-        callback(data);
-      })
-      .error(function () {
-        callback();
+    return SANE_POST('/v1/assets', assetIdsObj)
+      .then(resp => resp.data.files);
+  }
+
+  svc.fetchAndCacheAssetsByIds = fetchAndCacheAssetsByIds;
+  function fetchAndCacheAssetsByIds(assetIds: string[]): ng.IPromise<IAsset[]> {
+    return getAssetsByAssetIds(assetIds)
+      .then((assets: IAsset[]) => {
+        assets.forEach((asset) => {
+          modelSvc.cache('asset', createInstance('Asset', asset))
+        });
+        //return cached assets
+        return assetIds.reduce((asx, id) => {
+            asx.push(modelSvc.assets[id]);
+            return asx
+        }, []);
+
       });
-  };
+  }
 
   // auth and common are already done before this is called.  Batches all necessary API calls to construct an episode
   var getEpisode = function (epId, segmentId) {
@@ -611,15 +626,15 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
               if (episodeData.poster_frame_id) {
                 assetIds.push(episodeData.poster_frame_id);
               }
-
               //batch get assets
-              svc.getAssetsByAssetIds(assetIds, function (assets) {
-                angular.forEach(assets.files, function (asset) {
-                  modelSvc.cache('asset', asset);
+              getAssetsByAssetIds(assetIds)
+                .then((assets: IAsset[]) => {
+                  assets.forEach((asset) => {
+                    modelSvc.cache('asset', createInstance('Asset', asset))
+                  });
+                  modelSvc.resolveEpisodeAssets(epId);
+                  $rootScope.$emit('dataSvc.getEpisode.done');
                 });
-                modelSvc.resolveEpisodeAssets(epId);
-                $rootScope.$emit('dataSvc.getEpisode.done');
-              });
             })
             .error(function () {
               errorSvc.error({
@@ -823,7 +838,7 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
     });
   };
 
-  svc.getContainer = function (id, episodeId) {
+  svc.getContainer = function (id, episodeId?) {
     return GET('/v3/containers/' + id, function (containers) {
       modelSvc.cache('container', containers[0]);
       var container = modelSvc.containers[containers[0]._id];
@@ -871,12 +886,12 @@ export default function dataSvc($q, $http, $routeParams, $rootScope, $location, 
 
   };
 
-  svc.getContainerAssets = function (containerId, episodeId) {
+  svc.getContainerAssets = function (containerId, episodeId?) {
     return $http.get(config.apiDataBaseUrl + '/v1/containers/' + containerId + '/assets')
       .success(function (containerAssets) {
         modelSvc.containers[containerId].assetsHaveLoaded = true;
         angular.forEach(containerAssets.files, function (asset) {
-          modelSvc.cache('asset', asset);
+          modelSvc.cache('asset', createInstance('Asset', asset));
         });
         modelSvc.resolveEpisodeAssets(episodeId);
       });

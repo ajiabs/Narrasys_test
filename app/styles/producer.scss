@@ -432,6 +432,99 @@ input[readonly] {
 	content: "\e600";
 }
 
+//.button-facebook:before,
+//.eventIcon.icon-comment:before {
+//
+//}
+
+.button-facebook,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e917';
+  }
+
+  &:hover {
+    color: $fb-blue;
+  }
+}
+
+.button-twitter,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e918';
+  }
+
+  &:hover {
+    color: $twitter-blue;
+  }
+}
+
+.button-linkedin,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e916';
+  }
+
+  &:hover {
+    color: $linkedin-blue;
+  }
+}
+
+.button-google,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e919';
+  }
+
+  &:hover {
+    color: $gplus-red;
+  }
+}
+
+.button-reddit,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e91d';
+  }
+
+  &:hover {
+    color: $reddit-orange;
+  }
+}
+
+.button-pinterest,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e91b';
+  }
+
+  &:hover {
+    color: $pinterest-red;
+  }
+}
+
+.button-email,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e91a';
+  }
+
+  &:hover {
+    color: $narrasysOrange;
+  }
+}
+
+.button-share,
+.eventIcon.icon-comment {
+  &:before {
+    content: '\e915';
+  }
+
+  &:hover {
+    color: $narrasysOrange;
+  }
+}
+
 .button-link:before,
 .eventIcon.icon-link:before {
 	content: "\e604";
@@ -465,6 +558,11 @@ input[readonly] {
 .button-episode:before,
 .eventIcon.icon-episode:before {
 	content: "\e610";
+}
+
+.button-text-copied:before,
+.eventIcon.icon-episode:before {
+  content: '\e91c';
 }
 
 .searchMode .sxs-item {

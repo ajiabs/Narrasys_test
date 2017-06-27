@@ -28,11 +28,10 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
 
   var _kalturaMetaProps = {
     ktObj: {},
-    isMuted: false,
-    vol: 0,
     videoType: _type,
     bufferTimeout: null,
-    seekTimeout: null
+    seekTimeout: null,
+    lastVol: 100
   };
 
   var _kalturaMetaObj = {
@@ -239,18 +238,16 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
   }
 
   function toggleMute(pid) {
-    var isMuted = getMetaProp(pid, 'isMuted');
+    var isMuted = getMetaProp(pid, 'muted');
 
     if (isMuted === false) {
-      //save last known vol
-      var lastVol = _kdpEval(pid, 'video.volume') * 100;
-      setMetaProp(pid, 'vol', lastVol);
+      setMetaProp(pid, 'lastVol', getMetaProp(pid, 'volume'));
       setVolume(pid, 0);
     } else {
-      setVolume(pid, getMetaProp(pid, 'vol'));
+      setVolume(pid, getMetaProp(pid, 'lastVol'));
     }
 
-    setMetaProp(pid, 'isMuted', !isMuted);
+    setMetaProp(pid, 'muted', !isMuted);
   }
 
   function setSpeed(pid, playbackRate) {
@@ -260,6 +257,7 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
 
   function setVolume(pid, v) {
     _sendKdpNotice(pid, 'changeVolume', v / 100);
+    setMetaProp(pid, 'volume', v);
   }
 
   /*

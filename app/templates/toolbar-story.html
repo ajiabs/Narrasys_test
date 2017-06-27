@@ -1,80 +1,92 @@
 <div class="toolbar">
-	<div class="buttongroup nav-item scene-nav-btns">
-		<a ng-if="appState.productLoadedAs == 'narrative' && !narrative.disable_navigation" class="button button-exitEpisode" href="/#/story/{{narrative.path_slug.en}}">
-			<span>Exit</span>
-		</a>
-		<button tabindex="0" class="button button-nav" ng-click="toggleNavPanel();">
-			<span>Chapters</span>
-		</button>
+  <div class="buttongroup nav-item scene-nav-btns">
+    <a ng-if="appState.productLoadedAs == 'narrative' && !narrative.disable_navigation"
+       class="button button-exitEpisode" href="/#/story/{{narrative.path_slug.en}}">
+      <span>Exit</span>
+    </a>
+    <button tabindex="0" class="button button-nav" ng-click="toggleNavPanel();">
+      <span>Chapters</span>
+    </button>
 
-		<!-- 		<button ng-click="tmp()">TMP</button>
+    <!-- 		<button ng-click="tmp()">TMP</button>
  -->
-	</div>
+  </div>
 
-	<div class="nav-item toolbar-logos">
-		<img src="/images/customer/Narrasys_Logo.png"
-			 id="toolbar-logo-big"
-			 ng-if="episode.templateUrl === 'templates/episode/narrasys-pro.html' && appState.windowWidth > 500">
-		<span ng-if="showDebugInfo">
-			<!--Current Scene: {{appState.currSceneName}} <br>-->
-			<!--Layouts: {{appState.sceneLayouts}}-->
-			<!--<div>-->
-				<!--<pre>{{playbackService.getMetaObj() | json}}</pre>-->
-			<!--</div>-->
-		</span>
+  <div class="nav-item toolbar-logos">
+    <img src="/images/customer/Narrasys_Logo.png"
+         id="toolbar-logo-big"
+         ng-if="episode.templateUrl === 'templates/episode/narrasys-pro.html' && appState.windowWidth > 500">
 
-		<img src="/images/customer/Narrasys-Tree.png"
-			 id="toolbar-logo-small"
-			 ng-if="episode.templateUrl === 'templates/episode/narrasys-pro.html' && appState.windowWidth <= 500"/>
-	</div>
+    <img src="/images/customer/Narrasys-Tree.png"
+         id="toolbar-logo-small"
+         ng-if="episode.templateUrl === 'templates/episode/narrasys-pro.html' && appState.windowWidth <= 500"/>
+  </div>
 
-	<!--if we are a player, isFramed-->
-	<div class="nav-item new-window-btn">
-		<div ng-if="appState.isFramed && (appState.productLoadedAs == 'player'
+  <!--if we are a player, isFramed-->
+  <div class="nav-item new-window-btn">
+    <div ng-if="appState.isFramed && (appState.productLoadedAs == 'player'
 	 			|| (appState.productLoadedAs == 'narrative'
 	 			&& !narrative.disable_new_window ) )" class="escapegroup buttongroup">
-			<!-- this needs to be an <a> or it trips popup blockers -->
-			<a class="button button-mainframeescape" ng-click="pause()" ng-href="{{newWindowUrl}}&t={{playbackService.getMetaProp('time')|| 0}}&access_token={{appState.user.access_token}}" target="_blank">
-				<span>New window</span>
-			</a>
-		</div>
-	</div>
-	<div class="nav-item searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
-		<button tabindex="2" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search" aria-expanded="{{show.searchPanel}}">
-			<span>Search</span>
-		</button>
-		<label for="searchtext" class="hidden">Search Text</label>
-		<input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel" ng-model="appState.searchText" ng-model-options="{ debounce: 200 }" />
-	</div>
-	<!-- for now, hide user panel in regular player. TODO maybe show it for non-guest users here? -->
-	<div class="nav-item profilegroup buttongroup">
-		<a class="button button-preview" ng-if="appState.productLoadedAs=='producer' && (userHasRole('admin') || userHasRole('customer admin'))" ng-click="toggleProducerPreview()">
-			<span ng-if="appState.product == 'producer'">Preview</span>
-			<span ng-if="appState.product == 'player'">Edit</span>
-		</a>
-		<a class="button button-profile"
-		   ng-hide="isTrueGuest()"
-		   ng-click="appState.show.profilePanel = !appState.show.profilePanel">
-			<span>Profile</span>
-		</a>
-	</div>
+      <!-- this needs to be an <a> or it trips popup blockers -->
+      <a class="button button-mainframeescape" ng-click="pause()"
+         ng-href="{{newWindowUrl}}&t={{playbackService.getMetaProp('time')|| 0}}&access_token={{appState.user.access_token}}"
+         target="_blank">
+        <span>New window</span>
+      </a>
+    </div>
+  </div>
+  <div class="nav-item searchgroup buttongroup" ng-class="{cur: show.searchPanel}">
+    <button tabindex="2" class="button button-search" ng-click="toggleSearchPanel()" aria-label="Search"
+            aria-expanded="{{show.searchPanel}}">
+      <span>Search</span>
+    </button>
+    <label for="searchtext" class="hidden">Search Text</label>
+    <input tabindex="2" name="searchtext" id="searchtext" type="text" ng-show="show.searchPanel"
+           ng-model="appState.searchText" ng-model-options="{ debounce: 200 }"/>
+  </div>
+  <div class="nav-item socialshare social-buttongroup">
+    <itt-social-share
+      ng-if="socialShareInfo"
+      subdomain="{{socialShareInfo.subDomain}}"
+      paths="{narrative: socialShareInfo.narrative, timeline: socialShareInfo.timeline}"
+      share-title="{{socialShareInfo.tlTitle}}"
+      providers="['facebook', 'linkedin', 'twitter', 'google', 'reddit', 'email']">
+    </itt-social-share>
+  </div>
+  <!-- for now, hide user panel in regular player. TODO maybe show it for non-guest users here? -->
+  <div class="nav-item profilegroup buttongroup">
+    <a class="button button-preview"
+       ng-if="appState.productLoadedAs=='producer' && (userHasRole('admin') || userHasRole('customer admin'))"
+       ng-click="toggleProducerPreview()">
+      <span ng-if="appState.product == 'producer'">Preview</span>
+      <span ng-if="appState.product == 'player'">Edit</span>
+    </a>
+    <a class="button button-profile"
+       ng-hide="isTrueGuest()"
+       ng-click="appState.show.profilePanel = !appState.show.profilePanel">
+      <span>Profile</span>
+    </a>
+  </div>
 </div>
 
 <div ng-cloak ng-show="show.navPanel" class="navPanel topDrawer" ng-class="episode.styleCss">
-	<div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
-	 <h2 ng-bind-html="episode.display_title" class="fakeLink" ng-click="seek(0)"></h2>
-	<div class="scene" x-ng-if="chapter.display_annotation || chapter.display_title" x-ng-repeat="chapter in episode.chapters" x-ng-class="{currentScene: chapter.isCurrent}" x-ng-click="seek(chapter.start_time)">
-		<span class="displayTime">{{chapter.displayStartTime}}</span>
-		<p>
-			<button class="fakeLink" tabindex="0" ng-bind-html="chapter.display_annotation || chapter.display_title" x-ng-class="{sceneLink: !chapter.isCurrent}" ng-focus="showControls()"></button>
-			<br>
-			<span ng-bind-html="chapter.display_description"></span>
-		</p>
-	</div>
-	<!--
-	<div class="crossEpisode">
-		<a class="prevEpisode" ng-if="episode.previousEpisodeContainer" ng-href="/#/{{appState.crossEpisodePath}}/{{episode.previousEpisodeContainer.episodes[0]}}" title="{{episode.previousEpisodeContainer.display_name}}">Previous episode</a>
-		<a class="nextEpisode" ng-if="episode.nextEpisodeContainer" ng-href="/#/{{appState.crossEpisodePath}}/{{episode.nextEpisodeContainer.episodes[0]}}" title="{{episode.nextEpisodeContainer.display_name}}">Next Episode</a>
-	</div>
+  <div class="parent" ng-repeat="parent in episode.parents" ng-bind-html="parent.display_name"></div>
+  <h2 ng-bind-html="episode.display_title" class="fakeLink" ng-click="seek(0)"></h2>
+  <div class="scene" x-ng-if="chapter.display_annotation || chapter.display_title"
+       x-ng-repeat="chapter in episode.chapters" x-ng-class="{currentScene: chapter.isCurrent}"
+       x-ng-click="seek(chapter.start_time)">
+    <span class="displayTime">{{chapter.displayStartTime}}</span>
+    <p>
+      <button class="fakeLink" tabindex="0" ng-bind-html="chapter.display_annotation || chapter.display_title"
+              x-ng-class="{sceneLink: !chapter.isCurrent}" ng-focus="showControls()"></button>
+      <br>
+      <span ng-bind-html="chapter.display_description"></span>
+    </p>
+  </div>
+  <!--
+  <div class="crossEpisode">
+    <a class="prevEpisode" ng-if="episode.previousEpisodeContainer" ng-href="/#/{{appState.crossEpisodePath}}/{{episode.previousEpisodeContainer.episodes[0]}}" title="{{episode.previousEpisodeContainer.display_name}}">Previous episode</a>
+    <a class="nextEpisode" ng-if="episode.nextEpisodeContainer" ng-href="/#/{{appState.crossEpisodePath}}/{{episode.nextEpisodeContainer.episodes[0]}}" title="{{episode.nextEpisodeContainer.display_name}}">Next Episode</a>
+  </div>
  -->
 </div>

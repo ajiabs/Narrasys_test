@@ -7,15 +7,17 @@ export default function ittClipboard(ittUtils) {
   return {
     restrict: 'EA',
     transclude: true,
-    template: [
-      '<itt-tooltip tip-text="{{$ctrl.tipText}}" ng-click="$ctrl.bubbleEvent($event)">',
-      ' <a class="icon__button button__clipboard"></a>',
-      '</itt-tooltip>'
-    ].join(''),
+    template: `
+    <itt-tooltip tip-text="{{$ctrl.tipText}}" ng-click="$ctrl.bubbleEvent($event)">
+       <a class="icon__button" ng-class="$ctrl.light ? 'button__clipboard--light' : 'button__clipboard'"></a>
+      </itt-tooltip>
+    `,
     scope: {
       sourceText: '@',
       tipText: '@?',
-      onCopy: '&'
+      onCopy: '&',
+      light: '<?',
+      customNotice: '<?'
     },
     controller: [function () {
       var ctrl = this;
@@ -29,10 +31,12 @@ export default function ittClipboard(ittUtils) {
       function bubbleEvent($event) {
         copyText(ctrl.sourceText);
         ctrl.onCopy({$event: $event});
-        ctrl.tipText = 'Copied!';
-        _ngTimeout(function () {
-          ctrl.tipText = _defaultText;
-        }, 1500);
+        if (ctrl.customNotice == null) {
+          ctrl.tipText = 'Copied!';
+          _ngTimeout(function () {
+            ctrl.tipText = _defaultText;
+          }, 1500);
+        }
       }
 
       function copyText(text) {

@@ -1,28 +1,30 @@
-<div ng-if="showParent">
-	<div sxs-container-assets="container.parent_id"></div>
+<div ng-if="$ctrl.showParent">
+  <sxs-container-assets container-id="{{$ctrl.container.parent_id}}"></sxs-container-assets>
 </div>
 <div class="containerAssets">
-	<div ng-if="appState.product != 'sxs' && container.parent_id && !showParent">
-		<a class="goUp" ng-click="up()">Parent container</a>
+	<div ng-if="$ctrl.appState.product != 'sxs' && $ctrl.container.parent_id && !$ctrl.showParent">
+		<a class="goUp" ng-click="$ctrl.up()">Parent container</a>
 	</div>
-	<div class="title">{{container.display_name}} - Asset Library
+	<div class="title">{{$ctrl.container.display_name}} - Asset Library
 	</div>
 
 	<div class="controls">
-		<a ng-click="toggleImages()">
-			<span ng-if="onlyImages">Images</span>
-			<span ng-if="!onlyImages">All</span>
+		<a ng-click="$ctrl.toggleImages()">
+			<span ng-if="$ctrl.onlyImages">Images</span>
+			<span ng-if="!$ctrl.onlyImages">All</span>
 		</a>
 		&nbsp;
-		<a ng-click="toggleGrid()">
-			<span ng-if="gridView">▦</span>
-			<span ng-if="!gridView">☰</span>
+		<a ng-click="$ctrl.toggleGrid()">
+			<span ng-if="$ctrl.gridView">▦</span>
+			<span ng-if="!$ctrl.gridView">☰</span>
 		</a>
 	</div>
 
-	<div class="scrollPane" ng-if="!hideItems">
-		<div ng-if="gridView">
-			<div class="grid" ng-repeat="asset in isCustAdmin ? (assets | vidsFromCustAdmins) : assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
+	<div class="scrollPane" ng-if="!$ctrl.hideItems">
+		<div ng-if="$ctrl.gridView">
+			<div class="grid"
+           ng-repeat="asset in $ctrl.isCustAdmin ? ($ctrl.assets | vidsFromCustAdmins) : $ctrl.assets" ng-if="asset.container_id == $ctrl.containerId && !($ctrl.onlyImages && asset._type != 'Asset::Image')"
+           ng-click="$ctrl.assetClick(asset._id)">
 				<div ng-if="asset._type == 'Asset::Image'">
 					<img class="thumbnail" ng-src="{{asset.url}}">
 				</div>
@@ -30,11 +32,12 @@
 				<div ng-if="asset._type != 'Asset::Image'">
 					<div class="thumbnail">{{asset._type}}</div>
 				</div>
-				{{asset.display_name}}
+        {{asset.display_name}} <span ng-if="asset.tags[0]"> - {{asset.tags[0] | tagName}}</span>
 			</div>
 		</div>
-		<table ng-if="!gridView">
-			<tr ng-repeat="asset in isCustAdmin ? (assets | vidsFromCustAdmins) : assets" ng-if="asset.container_id == containerId && !(onlyImages && asset._type != 'Asset::Image')" ng-click="assetClick(asset._id)">
+		<table ng-if="!$ctrl.gridView">
+			<tr ng-repeat="asset in $ctrl.isCustAdmin ? ($ctrl.assets | vidsFromCustAdmins) : $ctrl.assets" ng-if="asset.container_id == $ctrl.containerId && !($ctrl.onlyImages && asset._type != 'Asset::Image')"
+          ng-click="$ctrl.assetClick(asset._id)">
 				<td>
 					<div ng-if="asset._type == 'Asset::Image'">
 						<img class="thumbnail" ng-src="{{asset.url}}">
@@ -45,9 +48,16 @@
 				<td>
 					{{asset.display_name}}
 				</td>
+        <td ng-if="asset.tags[0]">{{asset.tags[0] | tagName}}</td>
 			</tr>
 		</table>
 	</div>
 	<br>
-  <itt-asset-uploader container-id="{{container._id}}" mime-types="{{mimes}}" multiple="true" ng-if="canAccess"></itt-asset-uploader>
+
+  <itt-asset-uploader
+    container-id="{{$ctrl.container._id}}"
+    mime-types="{{$ctrl.mimes}}"
+    multiple="true"
+    ng-if="$ctrl.canAccess && $ctrl.context !== 'narrative'">
+  </itt-asset-uploader>
 </div>

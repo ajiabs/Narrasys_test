@@ -2,6 +2,7 @@
  *
  * Created by githop on 3/23/16.
  */
+import {SOCIAL_IMAGE_SQUARE, SOCIAL_IMAGE_WIDE} from '../constants'
 
 /**
  * @ngdoc service
@@ -15,11 +16,31 @@
  */
 imageResize.$inject = ['$q'];
 
-export default function imageResize($q) {
+export interface IimageResize {
+  createFileFromDataURL(url: string, fileName: string): FileBlob;
+  readFileToDataURI(file: File): ng.IPromise<string>
+  readFileToImg(file: File): ng.IPromise<HTMLImageElement>;
+  resizeImg(img: HTMLImageElement, maxWidth: number, maxHeight: number, center:boolean): ng.IPromise<string>;
+  calcAspectRatio(w: number, h: number): number;
+  getImageTagType(w: number, h: number): 'social_image_square' | 'social_image_wide';
+}
+
+
+//When this module was authored, Safari did not support the use of File Objects. A workaround
+//is to coerce a Blob into a File by adding the missing properties
+interface FileBlob extends Blob{
+  name?: string;
+  lastModifiedDate?: Date;
+}
+
+export default function imageResize($q): IimageResize {
   return {
-    createFileFromDataURL: createFileFromDataURL,
-    readFileToImg: readFileToImg,
-    resizeImg: resizeImg
+    calcAspectRatio,
+    createFileFromDataURL,
+    readFileToDataURI,
+    readFileToImg,
+    resizeImg,
+    getImageTagType
   };
   /**
    * @ngdoc method
@@ -35,8 +56,8 @@ export default function imageResize($q) {
    *     var file = imageResize.createFileFromDataURL(dataUrl);
    * </pre>
    */
-  function createFileFromDataURL(url, fileName) {
-    var _blob = _dataURLToBlob(url);
+  function createFileFromDataURL(url, fileName): FileBlob {
+    let _blob = _dataURLToBlob(url);
     _blob.name = 'resized' + fileName;
     _blob.lastModifiedDate = new Date();
     return _blob;
@@ -57,22 +78,10 @@ export default function imageResize($q) {
 		 *     }));
    * </pre>
    */
-  function readFileToImg(file) {
-    var _reader = new FileReader();
-    var _img = new Image();
-    return $q(function (resolve, reject) {
-      _reader.onloadend = function () {
-        console.log('onloadend fileReader!!');
-        resolve(_reader.result);
-      };
-      _reader.onerror = function () {
-        console.log('FIleReader Err', _reader.error);
-        reject(_reader.error);
-      };
-      _reader.readAsDataURL(file);
-    }).then(function (imgUrl) {
+  function readFileToImg(file: File): ng.IPromise<HTMLImageElement> {
+    const _img = new Image();
+    return readFileToDataURI(file).then((imgUrl) => {
       _img.src = imgUrl;
-      console.log('image preload', _img);
       return $q(function (resolve, reject) {
         _img.onload = function () {
           resolve(_img);
@@ -84,6 +93,19 @@ export default function imageResize($q) {
         return img;
       });
     });
+  }
+
+  function readFileToDataURI(file: File): ng.IPromise<string> {
+    const _reader = new FileReader();
+    return $q((resolve, reject) => {
+      _reader.onloadend = () => {
+        resolve(_reader.result);
+      };
+      _reader.onerror = () => {
+        reject(_reader.error);
+      };
+      _reader.readAsDataURL(file);
+    }).then(imgUrl => imgUrl);
   }
 
   /**
@@ -153,6 +175,19 @@ export default function imageResize($q) {
     });
   }
 
+  function calcAspectRatio(w: number, h: number): number {
+    return w / h;
+  }
+
+  function getImageTagType(w: number, h: number): 'social_image_square' | 'social_image_wide' {
+    const aspectRatio = calcAspectRatio(w, h);
+    if (aspectRatio > 1.25) {
+      return SOCIAL_IMAGE_WIDE;
+    } else {
+      return SOCIAL_IMAGE_SQUARE;
+    }
+  }
+
   /**
    * @private
    * @ngdoc
@@ -186,18 +221,12 @@ export default function imageResize($q) {
    * @param {Number} [dy=0] Optional param, Amount to vertically offset the image inside the canvas element, defaults to 0.
    * @returns {Object} HTML5 canvas element.
    */
-  function _resizeImgWithCanvas(c, w, h, cW, cH, dx, dy) {
-    if (dy === undefined) {
-      dy = 0;
-    }
-    if (dx === undefined) {
-      dx = 0;
-    }
+  function _resizeImgWithCanvas(c, w, h, cW = w, cH = h, dx = 0, dy = 0) {
     //console.log('drawImage inputs: ', 'c', c, 'dx', dx, 'dy', dy, 'w', w, 'h', h);
-    var _resizeCvs = document.createElement('canvas');
-    var _resizeCtx = _getContext(_resizeCvs);
-    _resizeCvs.width = cW !== undefined ? cW : w;
-    _resizeCvs.height = cH !== undefined ? cH : h;
+    let _resizeCvs = document.createElement('canvas');
+    let _resizeCtx = _getContext(_resizeCvs);
+    _resizeCvs.width = cW;
+    _resizeCvs.height = cH;
     _resizeCtx.drawImage(c, dx, dy, w, h);
 
     return _resizeCvs;
@@ -214,7 +243,7 @@ export default function imageResize($q) {
    * @returns {Object} HTML5 Canvas Context object.
    */
   function _getContext(canvas) {
-    var context = canvas.getContext('2d');
+    let context = canvas.getContext('2d');
     context.imageSmoothingEnabled = true;
     context.mozImageSmoothingEnabled = true;
     context.oImageSmoothingEnabled = true;
@@ -233,24 +262,24 @@ export default function imageResize($q) {
    * @param {String} dataURL base64 encoded string containing image
    * @returns {Object} Blob Object
    */
-  function _dataURLToBlob(dataURL) {
-    var BASE64_MARKER = ';base64,';
+  function _dataURLToBlob(dataURL: string): FileBlob {
+    let BASE64_MARKER = ';base64,';
     if (dataURL.indexOf(BASE64_MARKER) == -1) {  //jshint ignore:line
-      var parts = dataURL.split(',');
-      var contentType = parts[0].split(':')[1];
-      var raw = decodeURIComponent(parts[1]);
+      let parts = dataURL.split(',');
+      let contentType = parts[0].split(':')[1];
+      let raw = decodeURIComponent(parts[1]);
 
       return new Blob([raw], {type: contentType});
     }
 
-    var parts = dataURL.split(BASE64_MARKER); //jshint ignore:line
-    var contentType = parts[0].split(':')[1]; //jshint ignore:line
-    var raw = window.atob(parts[1]); //jshint ignore:line
-    var rawLength = raw.length;
+    let parts = dataURL.split(BASE64_MARKER); //jshint ignore:line
+    let contentType = parts[0].split(':')[1]; //jshint ignore:line
+    let raw = window.atob(parts[1]); //jshint ignore:line
+    let rawLength = raw.length;
 
-    var uInt8Array = new Uint8Array(rawLength);
+    let uInt8Array = new Uint8Array(rawLength);
 
-    for (var i = 0; i < rawLength; ++i) {
+    for (let i = 0; i < rawLength; ++i) {
       uInt8Array[i] = raw.charCodeAt(i);
     }
 
@@ -271,7 +300,7 @@ export default function imageResize($q) {
    * @returns {Object} Object with width and height properties as integers.
    */
   function _calculateNewDimensions(srcWidth, srcHeight, maxWidth, maxHeight) {
-    var _ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+    let _ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
     return {width: Math.floor(srcWidth * _ratio), height: Math.floor(srcHeight * _ratio)};
   }

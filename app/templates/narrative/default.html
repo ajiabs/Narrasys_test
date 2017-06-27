@@ -26,7 +26,7 @@
                ng-click="exportToSpreadsheet(narrative._id)">
             </a>
           </itt-tooltip>
-          <itt-guest-accessible-url narrative="narrative" sub-domain="{{customers[0].domains[0]}}" clipboard-mode="Click to copy URL"></itt-guest-accessible-url>
+          <itt-guest-accessible-url narrative="narrative" sub-domain="{{narrative.narrative_subdomain}}" clipboard-mode="Click to copy URL"></itt-guest-accessible-url>
         </div>
       </div>
 
@@ -48,7 +48,7 @@
       </itt-modal>
 
       <!--edit narrative or timeline modal-->
-      <itt-modal wrapper-class="narrative__index" modal-class="narrative__modal"
+      <itt-modal wrapper-class="responsive-modal__wrapper" modal-class="narrative__modal"
                  ng-if="editingNarrative || timelineUnderEdit != null">
 
         <div ng-if="editingNarrative">
@@ -66,6 +66,7 @@
             class="tl__editor"
             timeline="timelineUnderEdit"
             narrative="narrative"
+            container-id="{{customers[0].root_container_id}}"
             on-done="doneEditingTimeline()"
             on-update="editorAction(t, timelineUnderEdit)"
             on-delete="deleteTimeline(t)">

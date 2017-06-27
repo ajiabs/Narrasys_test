@@ -1,0 +1,136 @@
+.itt-socialshare {
+  text-align: right;
+  .button {
+    margin: 0;
+    padding: 0 0.1em;
+    font-size: 1.4em;
+  }
+  .icon__button {
+    font-size: 2.3em;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.socialshare__row {
+  border: 1px solid #565656;
+}
+
+.socialshare__row--expanded {
+  width: 300px;
+  min-height: 160px;
+  text-align: left;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 1em;
+
+  .button {
+    padding-right: 0.5em;
+    font-size: 1.7em;
+  }
+
+  p {
+    padding: 0.5em 0;
+    font-size: small;
+  }
+}
+
+.socialshare__clipboard {
+  display: flex;
+  align-items: center;
+  .button {
+    padding: 0;
+    font-size: small;
+  }
+  .text--notice {
+    font-size: small;
+  }
+}
+
+.socialshare__exit {
+  position: absolute;
+  right: 0.2em;
+  color: #565656;
+  &:before {
+    font-family: 'Story', sans-serif;
+    content: '\e91e';
+  }
+}
+
+.socialshare__email-row {
+  display: flex;
+  flex-direction: column;
+  padding: 2em;
+
+  span {
+    width: 100%;
+    padding: 0.2em;
+  }
+
+  textarea, input {
+    width: 100%;
+  }
+
+  input, textarea {
+    &.ng-invalid-email {
+      border: 1px solid red;
+    }
+    &.ng-invalid-required.ng-touched {
+      border: 1px solid red;
+    }
+  }
+
+  button {
+    width: 49%;
+    margin: 0.5em 0;
+    padding: 0.5em;
+    color: white;
+    background-color: $narrasysPrimary;
+
+    &:hover {
+      background-color: $narrasysOrange;
+    }
+  }
+}
+
+.email-modal__wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5em;
+}
+
+.email-modal__content {
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.50);
+  background-color: white;
+  padding: 2em;
+  width: 50%;
+}
+
+.socialshare__email-sender-copy {
+  input {
+    width: auto;
+  }
+}
+
+.socialshare__email-from,
+.socialshare__email-to,
+.socialshare__email-subject,
+.socialshare__email-buttons {
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    width: 100%;
+  }
+}
+

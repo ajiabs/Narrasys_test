@@ -8,14 +8,12 @@ import {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
 /**
  * Created by githop on 4/11/17.
  */
-export interface ILangform {
-  en: boolean;
-  es?: boolean;
-  zh?: boolean;
-  pt?: boolean;
-  fr?: boolean;
-  de?: boolean;
-  it?: boolean;
+
+
+type ILangformKeys = 'en' | 'es' | 'zh' | 'pt' | 'fr' | 'de' | 'it';
+
+export type ILangForm = {
+  [K in ILangformKeys]: string
 }
 
 export interface IAnnotator {
@@ -56,6 +54,9 @@ export interface ILinkValidFields {
   error: ILinkValidationMessage | null;
 }
 
+export {IUploadData} from './services/uploadsService';
+export {IEmailFields} from './directives/socialshare/ittSocialShare';
+export {IDataSvc, IimageResize, IModelSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts};
 
 export interface IUrlService {
   parseMediaSrcArr(mediaSrcArr: string[]): IParsedMediaSrcObj[];

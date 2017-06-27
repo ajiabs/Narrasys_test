@@ -5,7 +5,7 @@
 import 'angular';
 
 import analyticsSvc from './analyticsSvc';
-import appState from './appState';
+import {AppState} from './appState';
 import authSvc from './authSvc';
 import awsSvc from './awsSvc';
 import config from './config';
@@ -36,9 +36,10 @@ import {
   WistiaPlayerManager
 } from './wistia/index';
 import {ValidationService} from './validation.svc';
+import {UploadsService} from './uploadsService';
 
 let servicesModule = angular.module('itt.services', [])
-  .factory('appState', appState)
+  .service('appState', AppState)
   .factory('authSvc', authSvc)
   .factory('awsSvc', awsSvc)
   .factory('config', config)
@@ -67,6 +68,7 @@ let servicesModule = angular.module('itt.services', [])
   .service('wistiaUrlService', WistiaUrlService)
   .service('wistiaPlayerManager', WistiaPlayerManager)
   .service('wistiaScriptLoader', WistiaScriptLoader)
-  .service('validationSvc', ValidationService);
+  .service('validationSvc', ValidationService)
+  .service('uploadsService', UploadsService);
 
 export default servicesModule;

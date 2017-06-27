@@ -1,6 +1,6 @@
-ittVolumeSlider.$inject = ['appState'];
+ittVolumeSlider.$inject = ['playbackService'];
 
-export default function ittVolumeSlider(appState) {
+export default function ittVolumeSlider(playbackService) {
   return {
     restrict: 'E',
     scope: true,
@@ -8,12 +8,7 @@ export default function ittVolumeSlider(appState) {
     multiElement: false,
     link: function (scope) {
 
-      scope.appState = appState;
-
       scope.userChangingVolume = function (evt) {
-        //					if (appState.muted) {
-        //						scope.toggleMute();
-        //					}
         var volumeNode = angular.element(evt.currentTarget);
         var updateVolume = function (movement, noApplyNeeded) {
           var newVolume = (movement.clientX - volumeNode.offset()
@@ -123,10 +118,10 @@ export default function ittVolumeSlider(appState) {
       }
 
       scope.currentVolume = function () {
-        if (appState.muted) {
+        if (playbackService.getMetaProp('muted')) {
           return 0;
         } else {
-          return appState.volume;
+          return playbackService.getMetaProp('volume');
         }
       };
 
