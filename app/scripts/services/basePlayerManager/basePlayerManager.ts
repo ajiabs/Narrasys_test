@@ -42,7 +42,9 @@ export abstract class BasePlayerManager {
       bufferedPercent: 0,
       timeMultiplier: 1,
       resetInProgress: false,
-      autoplay: false
+      autoplay: false,
+      volume: 100,
+      muted: false
     };
 
     const metaObj = {
@@ -151,7 +153,7 @@ export abstract class BasePlayerManager {
   resetPlayerManager() {
     Object.keys(this.players)
       .forEach(key => {
-        this.destroyInstance(key, true)
+        this.destroyInstance(key, true);
       });
     this.players = {};
   }

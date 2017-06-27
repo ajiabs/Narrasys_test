@@ -3,15 +3,15 @@
  TODO: disentangle annotator_image_id from this, move it into parent template
  */
 
-interface IAnnotator {
-  name: { en: string }
-  annotation_image_id: string
-  key?: string
-  imageUrl?: string
+export interface IAnnotator {
+  name: { en: string };
+  annotation_image_id: string;
+  key?: string;
+  imageUrl?: string;
 }
 
 export interface IAnnotators {
-  [key: string]: IAnnotator
+  [key: string]: IAnnotator;
 }
 
 sxsAnnotatorAutocomplete.$inject = ['$timeout', 'modelSvc', 'appState'];

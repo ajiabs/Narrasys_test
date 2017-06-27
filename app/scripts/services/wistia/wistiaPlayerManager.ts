@@ -14,8 +14,7 @@ declare global {
 
 export interface IWistiaMetaProps extends IMetaProps {
   videoType: 'wistia';
-  isMuted: boolean;
-  vol: number;
+  lastVol: number;
 }
 
 const WISTIA_PLAYERSTATES = {
@@ -26,8 +25,7 @@ const WISTIA_PLAYERSTATES = {
 };
 
 const wistiaMetaProps = {
-  isMuted: false,
-  vol: 0
+  lastVol: 100
 };
 
 export interface IWistiaPlayerManager extends IPlayerManager {
@@ -123,20 +121,20 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   }
 
   toggleMute(pid: string): void {
-    const isMuted = this.getMetaProp(pid, 'isMuted');
+    const isMuted = this.getMetaProp(pid, 'muted');
     if (isMuted === false) {
-      const lastVol = this.invokeMethod(pid, 'volume') * 100;
-      this.setMetaProp(pid, 'vol', lastVol);
+      this.setMetaProp(pid, 'lastVol', this.getMetaProp(pid, 'volume'));
       this.setVolume(pid, 0);
     } else {
-      this.setVolume(pid, this.getMetaProp(pid, 'vol'));
+      this.setVolume(pid, this.getMetaProp(pid, 'lastVol'));
     }
 
-    this.setMetaProp(pid, 'isMuted', !isMuted);
+    this.setMetaProp(pid, 'muted', !isMuted);
   }
 
   setVolume(pid: string, v: number): void {
     this.invokeMethod(pid, 'volume', v / 100);
+    this.setMetaProp(pid, 'volume', v);
   }
 
   destroySideEffects(pid: string) {

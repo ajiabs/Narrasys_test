@@ -1,10 +1,3 @@
-import {IDataSvc} from './services/dataSvc';
-import {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
-import {TUrlFieldContexts} from './directives/ittUrlField';
-import {IModelSvc} from './services/modelSvc';
-import {IBasePlayerManager, IMetaObj, IMetaProps} from './services/basePlayerManager/playerManagerCommons';
-import {IWistiaMetaProps, IWistiaPlayerManager} from './services/wistia/wistiaPlayerManager';
-import {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
 /**
  * Created by githop on 4/11/17.
  */
@@ -14,18 +7,7 @@ type ILangformKeys = 'en' | 'es' | 'zh' | 'pt' | 'fr' | 'de' | 'it';
 
 export type ILangForm = {
   [K in ILangformKeys]: string
-}
-
-export interface IAnnotator {
-  name: { en: string };
-  annotation_image_id: string;
-  key?: string;
-  imageUrl?: string;
-}
-
-export interface IAnnotators {
-  [key: string]: IAnnotator;
-}
+};
 
 export type Partial<T> = {
   [P in keyof T]?: T[P];
@@ -53,10 +35,6 @@ export interface ILinkValidFields {
   html5: ILinkValidationMessage | null;
   error: ILinkValidationMessage | null;
 }
-
-export {IUploadData} from './services/uploadsService';
-export {IEmailFields} from './directives/socialshare/ittSocialShare';
-export {IDataSvc, IimageResize, IModelSvc, IValidationDisplay, IValidationSvc, IXFrameOptsResult, TUrlFieldContexts};
 
 export interface IUrlService {
   parseMediaSrcArr(mediaSrcArr: string[]): IParsedMediaSrcObj[];
@@ -114,19 +92,14 @@ export interface IPlayerManager {
  then re-export it. In the file that needs the interface, it can be imported from here, instead of the file where
  it was defined.
  */
-
-
-export {
-  IBasePlayerManager,
-  IDataSvc,
-  IMetaObj,
-  IMetaProps,
-  IModelSvc,
-  IValidationDisplay,
-  IValidationSvc,
-  IWistiaPlayerManager,
-  IWistiaMetaProps,
-  IWistiaUrlservice,
-  IXFrameOptsResult,
-  TUrlFieldContexts
-};
+export {IDataSvc} from './services/dataSvc';
+export {IValidationDisplay, IValidationSvc, IXFrameOptsResult} from './services/validation.svc';
+export {TUrlFieldContexts} from './directives/ittUrlField';
+export {IModelSvc} from './services/modelSvc';
+export {IBasePlayerManager, IMetaObj, IMetaProps} from './services/basePlayerManager/playerManagerCommons';
+export {IWistiaMetaProps, IWistiaPlayerManager} from './services/wistia/wistiaPlayerManager';
+export {IWistiaUrlservice} from './services/wistia/wistiaUrlService';
+export {IUploadData} from './services/uploadsService';
+export {IEmailFields} from './directives/socialshare/ittSocialShare';
+export {IAnnotators} from './directives/sxsAnnotatorAutocomplete';
+export {IimageResize} from './services/imageResizeSvc';

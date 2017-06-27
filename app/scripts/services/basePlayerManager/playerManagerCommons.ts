@@ -26,6 +26,8 @@ export interface IMetaProps {
   timeMultiplier: number;
   resetInProgress: boolean;
   autoplay: boolean;
+  volume: number;
+  muted: boolean;
 }
 
 export interface IMetaObj {
