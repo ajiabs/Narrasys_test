@@ -2,6 +2,8 @@
  * Created by githop on 1/16/17.
  */
 
+import {IMetaProps} from '../../interfaces';
+import {commonMetaProps} from './index';
 /**
  * @ngdoc service
  * @name iTT.service:playerManagerCommons
@@ -12,28 +14,6 @@
  *
  */
 
-export interface IMetaProps {
-  mainPlayer: boolean;
-  playerState: string | number;
-  div: string;
-  ready: boolean;
-  startAtTime: number;
-  hasResumedFromStartAt: boolean;
-  duration: number;
-  time: number;
-  hasBeenPlayed: boolean;
-  bufferedPercent: number;
-  timeMultiplier: number;
-  resetInProgress: boolean;
-  autoplay: boolean;
-  volume: number;
-  muted: boolean;
-}
-
-export interface IMetaObj {
-  instance: any;
-  meta: IMetaProps;
-}
 
 export interface IBasePlayerManager {
   commonMetaProps: IMetaProps;
@@ -55,7 +35,6 @@ export interface IBasePlayerManager {
   handleTimelineEnd(fn: () => void): (pid: string) => void;
 }
 
-
 playerManagerCommons.$inject = ['ittUtils'];
 
 export default function playerManagerCommons(ittUtils) {
@@ -66,23 +45,6 @@ export default function playerManagerCommons(ittUtils) {
     var _stateChangeCallbacks = [];
     var _type = locals.type;
 
-    var commonMetaProps: IMetaProps = {
-      mainPlayer: false,
-      playerState: '-1',
-      div: '',
-      ready: false,
-      startAtTime: 0,
-      hasResumedFromStartAt: false,
-      duration: 0,
-      time: 0,
-      hasBeenPlayed: false,
-      bufferedPercent: 0,
-      timeMultiplier: 1,
-      resetInProgress: false,
-      autoplay: false,
-      volume: 100,
-      muted: false
-    };
 
     const pm: IBasePlayerManager = {
       commonMetaProps,

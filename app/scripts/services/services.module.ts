@@ -16,27 +16,28 @@ import {ittUtils} from './ittUtils';
 import mockSvc from './mockSvc';
 import modelSvc from './modelSvc';
 import playbackService from './playbackService/playbackService';
+import playerManagerCommons from './basePlayerManager/playerManagerCommons';
 import questionAnswersSvc from './questionAnswersSvc';
 import recursionHelper from './recursionHelper';
 import selectService from './selectService';
 import timelineSvc from './timelineSvc';
 import urlService from './urlService';
-import playerManagerCommons from './basePlayerManager/playerManagerCommons';
 import html5PlayerManager from './html5/html5PlayerManager.svc';
 import html5UrlService from './html5/html5UrlService';
 import kalturaPlayerManager from './kaltura/kalturaPlayerManager';
 import kalturaScriptLoader from './kaltura/kalturaScriptLoader';
 import kalturaUrlService from './kaltura/kalturaUrlService';
-import youTubePlayerManager from './youtube/YouTubePlayerManager.svc'
+import youTubePlayerManager from './youtube/YouTubePlayerManager.svc';
 import YTScriptLoader from './youtube/youtubeScriptLoader';
 import youtubeUrlService from './youtube/youtubeUrlService';
 import {
-  WistiaUrlService,
+  WistiaPlayerManager,
   WistiaScriptLoader,
-  WistiaPlayerManager
+  WistiaUrlService
 } from './wistia/index';
-import {ValidationService} from './validation.svc';
+
 import {UploadsService} from './uploadsService';
+import {ValidationService} from './validation.svc';
 
 let servicesModule = angular.module('itt.services', [])
   .service('appState', AppState)

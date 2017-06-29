@@ -3,7 +3,7 @@ import {IScriptLoader} from '../../interfaces';
  * Created by githop on 4/12/17.
  */
 
-declare const Wistia:object;
+declare const Wistia: object;
 
 export class WistiaScriptLoader implements IScriptLoader {
   private WISTIA_HREF = 'https://fast.wistia.com/assets/external/E-v1.js';

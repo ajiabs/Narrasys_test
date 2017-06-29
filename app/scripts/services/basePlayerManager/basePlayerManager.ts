@@ -1,5 +1,6 @@
 import {IMetaProps, IWistiaMetaProps} from '../../interfaces';
 import {existy, renameKey} from '../ittUtils';
+import {commonMetaProps} from './index';
 
 /**
  * Created by githop on 4/26/17.
@@ -28,25 +29,6 @@ export abstract class BasePlayerManager {
   protected statechangeCallbacks = [];
 
   static createMetaObj(newProps: any): { instance: any, meta: any } {
-
-    const commonMetaProps: IMetaProps = {
-      mainPlayer: false,
-      playerState: '-1',
-      div: '',
-      ready: false,
-      startAtTime: 0,
-      hasResumedFromStartAt: false,
-      duration: 0,
-      time: 0,
-      hasBeenPlayed: false,
-      bufferedPercent: 0,
-      timeMultiplier: 1,
-      resetInProgress: false,
-      autoplay: false,
-      volume: 100,
-      muted: false
-    };
-
     const metaObj = {
       instance: null,
       meta: commonMetaProps
@@ -65,11 +47,14 @@ export abstract class BasePlayerManager {
 
   protected setInstance(pid: string, instance: any): void {
     let player = this.getPlayer(pid);
-    player.instance = instance;
+    if (existy(player)) {
+      player.instance = instance;
+    }
   }
 
   protected setPlayer(pid: string, val: any): void {
     this.players[pid] = val;
+    // console.log('setPlayer', this.players[pid], pid);
   }
 
   //overload
@@ -158,7 +143,7 @@ export abstract class BasePlayerManager {
     this.players = {};
   }
 
-  protected destroyInstance(pid:string, doRemove:boolean) {
+  protected destroyInstance(pid: string, doRemove: boolean) {
     if (!existy(doRemove)) {
       doRemove = false;
     }

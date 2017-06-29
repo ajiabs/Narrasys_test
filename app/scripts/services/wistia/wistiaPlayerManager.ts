@@ -1,4 +1,4 @@
-import {IScriptLoader, IWistiaUrlservice, IMetaProps, IPlayerManager} from '../../interfaces';
+import { IMetaProps, IPlayerManager, IScriptLoader, IWistiaUrlservice} from '../../interfaces';
 import { PLAYERSTATES } from '../playbackService/index';
 import { BasePlayerManager } from '../basePlayerManager/basePlayerManager';
 import {existy} from '../ittUtils';
@@ -7,8 +7,8 @@ import {existy} from '../ittUtils';
  */
 
 declare global {
-  interface Window {
-    wistiaInitQueue: object[];
+  interface Window { // tslint:disable-line
+    wistiaInitQueue: any[];
   }
 }
 
@@ -69,9 +69,9 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
     const wistiaId = this.wistiaUrlService.extractId(mediaSrcArr[0]);
 
     const newProps = {
-      mainPlayer: mainPlayer,
+      mainPlayer,
       div: WistiaPlayerManager.setPlayerDiv(id, wistiaId),
-      wistiaId: wistiaId,
+      wistiaId,
       videoType: this.type,
       ...wistiaMetaProps
     };
@@ -199,9 +199,9 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
   private attachEventListeners(instance: any, pid: string) {
     //arrow fn so 'this' is preserved
     //in the final closure
-    const bindPid = (pid) => {
+    const bindPid = (playerId) => {
       return (fn, ...ev) => {
-        return fn.call(this, pid, ...ev);
+        return fn.call(this, playerId, ...ev);
       };
     };
 
@@ -210,7 +210,9 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
     const wistiaEvents = {
       'play': (e) => boundPid(this.onPlay),
       'pause': (e) => boundPid(this.onPause),
-      'seek': (currentTime, lastTime) => boundPid(this.onSeek, currentTime, lastTime)
+      // 'seek': (currentTime, lastTime) => boundPid(this.onSeek, currentTime, lastTime),
+      'end': () => boundPid(this.onEnd),
+      'timechange': (e) => boundPid(this.onTimechange, e)
     };
 
     Object.entries(wistiaEvents).forEach(([key, val]) => {
@@ -218,11 +220,24 @@ export class WistiaPlayerManager extends BasePlayerManager implements IWistiaPla
     });
   }
 
-  private onSeek(pid: string, currentTime: number, lastTime: number): void {
-    this.setMetaProp(pid, 'playerState', 3);
-    this.setMetaProp(pid, 'time', currentTime);
+  private onEnd(pid) {
+    this.setMetaProp(pid, 'playerState', 0);
     this.emitStateChange(pid);
   }
+
+  private onTimechange(pid, timechange) {
+    // check for drift and correct if necessary
+    const curTime = this.getMetaProp(pid, 'time');
+    if (curTime > timechange) {
+      this.setMetaProp(pid, 'time', timechange);
+    }
+  }
+
+  // private onSeek(pid: string, currentTime: number, lastTime: number): void {
+  //   // this.setMetaProp(pid, 'playerState', 3);
+  //   // this.emitStateChange(pid);
+  //   console.log('on seek!', this.getPlayerState(pid));
+  // }
 
   private onPlay(pid: string): void {
     this.setMetaProp(pid, 'playerState', 1);

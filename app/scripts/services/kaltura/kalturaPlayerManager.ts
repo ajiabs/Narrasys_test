@@ -108,6 +108,7 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
 
 
     function handleSuccess() {
+      // noop
     }
 
     function readyCallback(playerId) {
@@ -194,7 +195,7 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
   }
 
   function onUpdatedPlaybackRate(e) {
-    console.log('new rate', e)
+    console.log('new rate', e);
   }
 
   function onPlayerUpdatePlayhead(ev) {
@@ -263,9 +264,7 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
   /*
    Private methods
    */
-
-
-  function _reset(pid, t) {
+  function _reset(pid, t?) {
     var currentTime = t || getMetaProp(pid, 'time');
     //changeMedia will emit a 'onMediaReady' event after the media has been successfully changed
     //when handling the 'onMediaReady' event, the playbackService will seek to the startAtTime
@@ -278,7 +277,7 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
     setMetaProp(pid, 'ready', false);
   }
 
-  function _sendKdpNotice(pid, notice, val) {
+  function _sendKdpNotice(pid, notice, val?) {
     var kdp = getInstance(pid);
 
     try {
@@ -342,7 +341,7 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
     Object.keys(kMap).forEach(function (evtName) {
       (function (evtName) {
         kdp.kBind(evtName + '.' + pid, kMap[evtName]);
-      })(evtName)
+      })(evtName);
     });
   }
 
@@ -355,7 +354,7 @@ export default function kalturaPlayerManager(ittUtils, PLAYERSTATES, playerManag
     var state;
 
     if (forceState) {
-      state = forceState
+      state = forceState;
     } else {
       state = getMetaProp(pid, 'playerState');
     }
